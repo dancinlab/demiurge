@@ -7,7 +7,7 @@
 
 @I arch_id := "hexa-arch" :: identity-claim [d=2026-05-18 draft]
   kind = "universal hexa-native technical-design architecture program"
-  brief = "설계→쌓기→적층→검증→계산, 분야는 플러그인 도메인; chip 첫 도메인"
+  brief = "명세→구조→설계→해석⟲→합성→검증→인계 (7-verb cited), 분야 플러그인; chip 첫/리드 도메인"
   alias = "📐 만능 설계 아키텍쳐 프로그램"
   repo = "standalone ~/core/hexa-arch (own git, created 2026-05-18)"
   family = "hexa-matter(물질·소재) · hexa-bio(화학분자) 형제 — 외부-흡수 패턴 동일"
@@ -20,19 +20,19 @@
   PLAN.md -> "진행 로그 SSOT (measured-distance)"
   ARCH.tape -> "this · identity · 도메인맵 · 흡수 패턴"
 
-@N pipeline := "범용 5-verb 파이프라인" :: note [d=2026-05-18 active]
-  verbs = "설계(model) → 쌓기(synthesize) → 적층(layer) → 검증(verify) → 계산(simulate)"
-  domain_neutral = "분야 무관 — chip 은 인스턴스 1개; space/mech 후속"
+@N pipeline := "범용 7-verb 파이프라인 (cited, design.md D5)" :: note [d=2026-05-18 active]
+  verbs = "명세 SPECIFY → 구조 ARCHITECT → 설계 DESIGN → 해석 ANALYZE ⟲ → 합성 SYNTHESIZE → 검증 VERIFY (+VALIDATE) → 인계 HANDOFF"
+  basis = "9개 라이프사이클 (ISO/IEC/IEEE 15288 · V-model · NASA SE · FDA · EDA · MBSE/OOSEM · PLM · 가속기 · spacecraft) 전수조사 — design.md Decision 5"
+  analyze_iterates = "ANALYZE 는 반복 게이트 (CAE↔CAD), terminal 아님"
+  verify_validate = "표준상 별 verb 이나 같은 게이트 위치 — 의도된 압축"
+  domain_neutral = "명시 코호트 = chip · cern · antimatter · rtsc · space · energy · brain (design.md D3)"
 
-@N chip_absorb_map := "chip 도메인 외부 오픈소스 전수 (흡수 대상)" :: note [d=2026-05-18 active]
-  noc_sim = "gem5(+Garnet) · BookSim2 · Noxim · Ratatoskr  — 첫 흡수, comb F1/F2 직격"
-  synth = "Yosys (RTL→netlist)"
-  layout = "OpenROAD/OpenLane2 · Magic · KLayout (place&route→GDSII)"
-  verify = "Verilator · cocotb · SymbiYosys(formal) · OpenSTA(timing)"
-  analog = "ngspice"
-  pdk = "SkyWater SKY130 · IHP SG13G2 (fab-free, tapeout-ready 설계용)"
-  rtl_gen = "Chisel/FIRRTL · Amaranth"
-  full = "HANDOFF.md §5"
+@N chip_absorb_map := "chip 도메인 외부 공개면 매핑 (7-verb 1:1)" :: note [d=2026-05-18 active]
+  source = "HANDOFF.md §5 (SSOT — 7-verb 행 × OSS/상용공개문서 열 + 횡단자원 + 흡수순서)"
+  boundary = "공개면 클린룸 (design.md D1) — OSS+arxiv+특허+표준+상용툴 공개문서, closed-binary RE 0"
+  first_absorption = "BookSim2 (gem5 아님 — Agent-2 cited) + per-link wire-delay 모델 + Leighton oracle"
+  rfc = "proposals/rfc_001_booksim2_noc_absorption.md"
+  shared_abstraction = "MC transport (Geant4/OpenMC) + FEM EM/thermal (FEMM/COMSOL공개) = 6 도메인 중 5 공통 (Agent-3)"
 
 @D d_absorption := "도메인별 외부-흡수 패턴" :: decision [d=2026-05-18 active]
   rule = "각 외부 도구 = proposals/rfc_0NN_<tool>_absorption.md 1개. python 0 · shell-out 0 · 측정 · 가짜진전 0."
@@ -53,6 +53,7 @@
   hexa_space = "~/core/hexa-space — 별개; 향후 space 도메인 연계 가능"
   hexa_lang = "~/core/hexa-lang — substrate; comb/ 첫 소비자; 흡수-RFC 패턴 출처"
 
-@N status := "scaffold" :: note [d=2026-05-18 active]
-  state = "문서 5개만, 코드 0"
-  next = "proposals/rfc_001_noc_sim_absorption.md (BookSim2/gem5-Garnet)"
+@N status := "scaffold + redesign-applied" :: note [d=2026-05-18 active]
+  state = "문서 6개 (design.md 추가) + 첫 RFC 골격; 코드 0"
+  next = "proposals/rfc_001_booksim2_noc_absorption.md (BookSim2 + per-link wire-delay + Leighton oracle)"
+  decisions = "design.md D1..D5 (research-boundary · matter/bio-decouple · cohort-sequencing · research-first · 7-verb spine)"
