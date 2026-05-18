@@ -581,3 +581,36 @@ tolerance), not asserted here.
 - honest scope — the residual is explicit and recorded (ABC stays
   foreign substrate until its own re-derivation lands); no
   over-claim, the boundary is named in rfc_006 §7 and here.
+
+### Decision 19 — rfc_006 §4 module implementation belongs to a hexa-lang session (hexa-arch stops at the design boundary)
+
+**picked**: this hexa-arch session delivers the rfc_006 **design**
+(spec §1–§9 + D18) and stops at the repo boundary. The actual §4
+clean-room module implementation + self-tests + §5 oracle
+verification happen in a **hexa-lang session**, because per D15 the
+7 modules (`rtlil / read_verilog / passes / liberty / abc_map /
+write_verilog / yosys`) physically land in `hexa-lang/stdlib/yosys/`
+— hexa-lang's tree, hexa-lang's review. hexa-arch consumes the
+result via a typed reference (D2 pattern). rfc_006 §4/§5 *is* the
+implementation spec the hexa-lang session works against. (Rejected:
+implement now into the hexa-lang working tree from this session —
+would grow hexa-lang's unpushed pile to 3 stacked commits
+[`d5a63a82` booksim, `61866308` comb patches, + yosys] under an
+already-pending "user reviews in hexa-lang session" agreement,
+blurring the session/review boundary.)
+
+**rationale**:
+- D15 single-source — stdlib is hexa-lang's exclusively; writing the
+  modules from a hexa-arch session still puts them in hexa-lang's
+  tree, so the owning session *should* be hexa-lang's (review +
+  push authority co-located with ownership).
+- no unpushed-pile entanglement — `d5a63a82` + `61866308` already
+  await the user's hexa-lang-session review; stacking yosys on top
+  from here couples three independent reviews and risks the same
+  cross-repo no-sync class of failure seen this session.
+- clean boundary, no work lost — rfc_006 §4/§5 is a complete,
+  cited, g3-gated spec; the hexa-lang session implements against it
+  with zero re-derivation of intent. hexa-arch's deliverable
+  (design + decisions D18/D19) is whole and committed.
+- g3 — nothing is claimed "absorbed"; this only relocates *where*
+  the gated implementation happens, not whether the gate exists.

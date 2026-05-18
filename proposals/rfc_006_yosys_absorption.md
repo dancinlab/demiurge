@@ -83,6 +83,15 @@ pending hexa-lang review — booksim/d5a63a82 precedent). hexa-arch
 references it as the chip-domain SYNTHESIZE tool; this RFC is the
 design only.
 
+> **D19 — implementation session boundary.** The §4 modules +
+> self-tests + §5 oracle verification are implemented in a
+> **hexa-lang session** (modules live in hexa-lang's tree per D15;
+> review+push authority co-located with ownership; avoids stacking
+> a 3rd review on hexa-lang's pending `d5a63a82`/`61866308`). This
+> RFC §4/§5 *is* the spec that session works against. hexa-arch's
+> deliverable = design + D18/D19 (committed, whole). See
+> `design.md` D19.
+
 ## 7. The hard part — ABC tech-mapping (honest, g3)
 
 Yosys shells out to **ABC** (Berkeley logic-synthesis, also OSS) for

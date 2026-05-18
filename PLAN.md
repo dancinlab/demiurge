@@ -599,3 +599,13 @@
   뒤에서 정체.) "Yosys absorbed" 는 여전히 §5 게이트로만 (미주장,
   g3). design.md D18 + rfc_006 §7 RESOLVED 반영. **다음 = rfc_006
   §4 모듈 착수** (clean-room, hexa-lang/stdlib/yosys/, §5 게이트).
+- 2026-05-18 — **D19 결정 게이트**: rfc_006 §4 모듈 7개 구현 +
+  self-test + §5 oracle 검증은 **hexa-lang 세션**에서 (사용자 픽
+  "hexa-arch 설계만"). 근거: D15 = stdlib 는 hexa-lang 전유 →
+  소유·리뷰·push 권한 동소화; hexa-lang 미푸시 `d5a63a82`/`61866308`
+  위에 3번째 리뷰 적재 회피; rfc_006 §4/§5 = 그 세션이 작업할
+  완결 spec. (이 세션서 hexa-lang 워킹트리 직접 착수 = 기각.)
+  rfc_006 §6 D19 배너 + design.md `### Decision 19` 반영.
+  **이로써 Phase 2 의 hexa-arch 경계 작업 = 완료** (rfc_006 설계 +
+  D18 + D19). 공은 hexa-lang 세션으로. hexa-arch 잔여 로드맵 =
+  Phase 3 chain seams · Phase 4 macOS Swift GUI.
