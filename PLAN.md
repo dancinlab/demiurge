@@ -684,3 +684,19 @@
   (D19) ③ hexa-lang 미push ④ chip 측정 ⑤ Swift 빌드 — 전부
   cross-session/gated, hexa-arch 설계경계 밖. 다음 = 신규 지시
   대기.**
+- 2026-05-19 — **inbox 핸드오프 적재 + g3 정정** (사용자 "inbox
+  넣었어?" — 미적재 인정 후 즉시 시정). hexa-lang
+  `inbox/PATCHES.yaml` +2 항목 + `inbox/notes/2026-05-19-hexa-arch-
+  rfc006-yosys-handoff.md` + INDEX.md, hexa-lang 로컬 커밋
+  `58dbd02b` (`docs(inbox):` 규약, **미push** — booksim/브랜치
+  push는 D19상 hexa-lang 세션 몫; ahead 18). `tool/inbox_sync.hexa`
+  검증: 내 2항목 통과(booksim=pending→head_or_main well-formed,
+  comb=applied→source_present 5/5); exit=1 은 기존 무관 5건.
+  **g3 정정 (중요)**: 이전 D19/debt 로그가 "③ 미push
+  `d5a63a82`·`61866308`" 라 적었으나 실측 결과 **`61866308`(comb
+  cite)은 이미 origin push됨** — 미push는 `d5a63a82`(booksim)
+  하나뿐. 과거 로그는 append-only라 본 항목으로 supersede-forward
+  정정(D17이 D12 정정한 방식). 잔여 정정후: ② D19 yosys §4 구현
+  (hexa-lang 세션) · ③ **`d5a63a82` push만** (hexa-lang 세션) ·
+  ④ chip 측정 · ⑤ Swift 빌드. 핸드오프는 이제 hexa-lang inbox 에
+  실제 적재됨 (이전엔 hexa-arch 문서에만 기록 — 그 갭이 닫힘).
