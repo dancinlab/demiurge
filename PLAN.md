@@ -274,3 +274,56 @@
   iq_router + traffic + sweep + wire_delay + leighton also land and
   reproduce §B/§D. Next: those 5 modules as separate rate-limit-safe
   scoped agents.
+- 2026-05-18 — **rfc_003 Phase B, slices 2-5: iq_router / traffic /
+  wire_delay / leighton .hexa landed** (4 parallel rate-limit-safe
+  scoped agents, ~14-31 tool-calls each; .stubs left intact).
+  Independently re-verified by re-running `hexa run` locally
+  (toolchain `hexa 0.1.0-dispatch`):
+  · `iq_router.hexa` 595 L — PASS 17/17. 4-stage pipeline + VC +
+    credit; knob defaults (routing 0 / vc_alloc 1 / sw_alloc 1 /
+    credit 2 / vc 8 / buf 8) match the committed records'
+    router_cost.iq_pipeline; min-lat 7 cyc (spec 6). Clean-room
+    BookSim2 iq_router.cpp:50-100/:213-285/:320-330 (28f43299,
+    BSD-2; iSLIP allocator internals deliberately not re-derived,
+    rfc_003 §3.2 scope).
+  · `traffic.hexa` 426 L — PASS 12/12. uniform/transpose/tornado;
+    tornado(0,0)→27 (7,7)→18 for k=8, bijection, matches the
+    committed `coord_kind:xy` `i*k+j` tornado runs. Clean-room
+    BookSim2 traffic.cpp:48-396 + Dally&Towles PPIN §3.2 shift
+    constant (NOT-BookSim2-marked).
+  · `wire_delay.hexa` 439 L — PASS 12/12. 22nm δ=90 → 2.5mm 1c /
+    3.536mm 2c; 7nm δ=162 EXTRAPOLATION → 2c / 3c — reproduces the
+    committed records exactly. NOT BookSim2-derived (no wire model
+    upstream); SMART/OpenSMART + Naeemi/GT Cu-RC scaling cited.
+  · `leighton.hexa` 376 L — PASS 10/10. mesh_bounds(8)=(8,14)
+    (= anynet output + committed bisection_bound:8/diameter_bound:14),
+    leighton_floor(64)=8, oracle_check g3 reject-gate (exit 91 on
+    bound violation). Pure theory clean-room (Leighton 1984 DOI
+    10.1007/BF01744433 + Bhatt-Leighton + Dally&Towles); no BookSim2
+    path (it IS the analytic oracle).
+
+  **hexa-lang toolchain gaps found (independently confirmed across
+  multiple agents; all worked around, none blocking)** — recorded for
+  a future hexa-lang upstream PR per the hexa-first principle
+  (constraint lives in hexa-lang → fix there PR-only; hexa-lang's own
+  SSOT call, not actioned from hexa-arch):
+  1. no `match` statement (parse error; `match{ -> }` mis-dispatches)
+     → if-chains.
+  2. enum-variant `==` broken — `x==S.A` returns false, `int(enum)`
+     collapses to 0 (no working discriminant). Confirmed independently
+     by the traffic AND iq_router agents (iq_router's first draft
+     infinite-looped on it). → `str(enum)` string-compare, or plain
+     int constants (the enum-free idiom anynet.hexa already uses).
+  3. no tuple support (`-> (int,int)`, `(a,b)` literal, `let (a,b)=`
+     destructuring all fail) → struct return (matches stub idiom).
+  rfc_003 §6's *predicted* parser-gap did not materialize; the real
+  gaps are the 3 above. The hexa-native path is preserved (int/struct
+  idioms, no language change forced).
+
+  `provenance.absorbed` still **false** — 5 of 6 modules now land
+  (anynet committed + these 4); the integrator `sweep.hexa` remains,
+  and the rfc_001 §8 measurement gate closes only once sweep ties
+  anynet+iq_router+traffic+wire_delay together and **reproduces the
+  §B baseline (8×8 mesh uniform saturation ≈ 0.42 flits/node/cy)** and
+  §D, cross-checked by leighton. Next: `sweep.hexa` (Phase B
+  integrator) → run the §B reproduction.
