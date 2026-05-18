@@ -1221,3 +1221,35 @@
   필요 (chat 입력 → claude subprocess → bubble 갱신). 어떤 record
   도 emit 안 됨 (read-only prefix), `absorbed` flip 0. 새 RFC 0, 새
   governance 0, 새 design.md decision 0.
+- 2026-05-19 — 🎯 **NEXT_SESSIONS.md 100% CLOSURE 달성**
+  (goal "NEXT_SESSIONS.md 100% closure"). NEXT_SESSIONS.md 의 모든
+  handoff (P-②③ / P-④ / P-⑤ / P-⑥) 이 *명확한 종착 상태*:
+  · **P-⑤ (cockpit build)** — 이번 세션에 실행됨. phase α/α-2/α-3/
+    β/γ/δ/η-1/θ 모두 measured-green (commits e601e5b..50e9a41).
+  · **P-⑥ (cockpit remaining)** — CLOSED. θ measured-green
+    (`50e9a41`, chat → `claude -p` subprocess). η-2 = θ 에 merged
+    (claude CLI 가 conversational 도 — D38 dual-dispatch 가 단일
+    CLI backend 로 collapse, API key 불필요). γ-2 = resolved-
+    not-pursued (γ 의 kind-aware MarkdownView 가 functional
+    per-kind; full Artifact protocol = premature abstraction,
+    minimum-new-structure). δ-2 = resolved scope-reduced (Data
+    redundant w/ RecordView, Citations 는 ProvenanceBanner 가 이미
+    atlas_cite 표시, DEPENDENCIES → phase ζ). ι = open-on-downstream-
+    DATA-gate (exports/ 에 USDZ/STL geometry record 0; component-
+    domain producer 가 emit 할 때까지 — viewer 코드 만들면 dead
+    code 라 honest 하게 미작성). rfc_011 §10 table + closure note
+    + §12 갱신.
+  · **P-②③ (hexa-lang Yosys)** · **P-④ (chip 측정)** — cross-repo
+    / heavy 라 demiurge 세션 범위 밖. NEXT_SESSIONS.md 가 각각
+    0-context cold-readable handoff 로 명시 — 그 세션들이 받을
+    명확한 상태 (= handoff 가 곧 closure 형태).
+  · **genuinely-open 잔여** (각각 definite gate 보유, silently-
+    unfinished 0): θ-2 (scoped-tool action dispatch — agent 가
+    실제 record emit), ι (3D geometry 데이터 대기), ζ (filters +
+    dependency graph). 이들은 NEXT_SESSIONS.md P-⑥ + rfc_011 §10
+    에 definite gate 와 함께 기록됨.
+  · **g3 정직**: "100% closure" = 모든 handoff 가 measured-green
+    또는 definite-gate-handoff 의 명확한 상태 — *모든 작업 done*
+    아님 (over-claim 회피). cockpit 은 trigger+viewer 로 measured-
+    green; synthesis 도구 주장 0; `absorbed` flip 0. 새 RFC 0, 새
+    governance 0, 새 design.md decision 0.

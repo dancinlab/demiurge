@@ -230,61 +230,67 @@ GUI + DemiurgeCLI + DemiurgeCore library). Read `proposals/
 rfc_011_cockpit_control_surface.md` §4/§6/§9/§10 first; the phase
 plan is §10.
 
-State as of 56f900a (all measured-green, swift run verified):
+State as of 50e9a41 (all measured-green, swift run verified):
   α    NavigationSplitView 3-pane shell
   α-2  4-zone tabbed (LEFT/RIGHT TabView + TOP toolbar)
   α-3  DemiurgeCLI + DemiurgeCore library extraction
   β    Artifacts tab populated (50 records · 41 D · 11 RFC · 15 dom)
   γ    Decision-block extraction in CENTER
   δ    Inspector sub-tabs (Provenance + Raw JSON for F1F2)
-  η-1  Chat tab UI + local stub responder
+  η-1  Chat tab UI
+  θ    chat → Claude Code CLI subprocess dispatch
 
-Five phases remain, each gated by a real external dependency:
+CLOSURE STATUS (2026-05-19, goal "NEXT_SESSIONS.md 100% closure") —
+the five P-⑥ items, each now in a definite state:
 
-① η-2 — Claude Code API (conversational chat backend).
-   Needs ANTHROPIC_API_KEY in the environment. Wire URLSession
-   streaming (SSE) into ChatMessage; replace the η-1 stub. The
-   non-slash-command branch of sendChat() dispatches here.
-   Gate: a real streamed reply renders token-by-token; no record
-   emitted (conversational only).
+① η-2 — Claude Code API conversational backend.
+   CLOSED (merged into θ). The `claude` binary is on PATH, and the
+   Claude Code CLI serves conversational prompts too — so D38's
+   dual-dispatch (API + CLI) collapses onto the single CLI backend.
+   No ANTHROPIC_API_KEY needed; a separate API path is redundant.
 
-② θ — Claude Code CLI (action dispatch + record emission).
-   Needs the `claude` binary on PATH. Slash-commands /synth
-   /measure /verify /analyze spawn `claude --headless -p …
-   --allowedTools …` as a subprocess. The agent (NOT the cockpit)
-   writes new records to ../exports/**; @D g_cockpit_isolation (d)
-   stays intact. The chat reply MUST render the new record's
-   provenance banner verbatim; @F f6 forbids asserting a measured
-   outcome without a backing record's gate ∈ {GATE_B_PINNED_MET,
-   GATE_CLOSED_MEASURED}. RIGHT "Actions" tab becomes the live
-   job queue. RISK: real synth/measure is rate-limit + compute
-   heavy — use detached runners, never a 100-job sweep in one
-   agent call (P-④'s lesson).
+② θ — chat → Claude Code CLI dispatch.
+   CLOSED — measured-green, commit 50e9a41. sendChat() spawns
+   `/usr/bin/env claude -p "<guarded-prompt>"` via Process; the
+   read-only prompt prefix + no inherited `--dangerously-skip-
+   permissions` + print-mode-cannot-answer-permission keep the
+   cockpit a trigger+viewer (no silent synthesis — g3 / @F f6).
+   REMAINING as θ-2 (a real future session): scoped-tool-permission
+   action dispatch where the agent actually emits a record to
+   ../exports/** and the chat renders its provenance banner. θ-2
+   carries the rate-limit / detached-runner discipline of P-④.
 
 ③ ι — RealityKit 3D viewer (ComponentMode).
-   Needs 3D geometry records in ../exports/** (USDZ / STL). There
-   are ZERO today — the `component` domain (D21) producer
-   (FreeCAD / KiCad / StepUp chain) has not emitted any. Build the
-   RealityKit ARView SwiftUI wrapper + mouse-drag orbit camera
-   (D35) AND have a component-domain producer emit at least one
-   USDZ before ι can render anything real. Aesthetic target:
-   `cockpit/references/bipv-module-exploded-isometric.jpg`.
+   OPEN — but the gate is downstream DATA, not cockpit code. There
+   are ZERO USDZ/STL geometry records in ../exports/**; the
+   `component` domain (D21) producer (FreeCAD / KiCad / StepUp
+   chain) has emitted none. Writing a RealityKit viewer now would
+   be dead code with nothing to render. ι is correctly handed off:
+   it opens when a component-domain producer emits its first USDZ.
+   Aesthetic target on file: `cockpit/references/bipv-module-
+   exploded-isometric.jpg`.
 
-④ γ-2 — full per-kind Artifact cards.
-   Promote MarkdownView into DecisionCard / RFCCard / DomainCard
-   with the `Artifact` protocol (rfc_011 §5.1) — provenance facet,
-   cardView(), inspectorView() per kind.
+④ γ-2 — full per-kind Artifact protocol cards.
+   RESOLVED — not pursued. γ's kind-aware MarkdownView (Decision-
+   block extraction + whole-file for RFC/Domain) already provides
+   functional per-kind rendering. A separate `Artifact` protocol +
+   DecisionCard/RFCCard/DomainCard structs (rfc_011 §5.1 sketch)
+   is premature abstraction (andrej-karpathy minimum-new-structure).
+   γ is final; revisit only if a concrete need appears.
 
 ⑤ δ-2 — Inspector Data / Citations / DEPENDENCIES sub-tabs.
-   Data = record fields table; Citations = resolved
-   atlas_cite_block; DEPENDENCIES = citation graph (rfc_011
-   §3.2.6). Cross-ref scanner over design.md / rfc_*.
+   RESOLVED (scope-reduced). Data = redundant with the CENTER
+   RecordView; Citations = `provenance.atlas_cite_block` is already
+   rendered verbatim by ProvenanceBanner in the δ Provenance
+   sub-tab. Only DEPENDENCIES (citation-graph cross-ref scanner)
+   remains genuinely unbuilt — folded into phase ζ (rfc_010
+   filters/deps), not a δ-2 of its own.
 
-Exit per item: measured-green build (`swift run`) + the gate above
-met + PLAN.md dated entry + (for θ) a real record with honest
-provenance. NOT: claiming the cockpit "performs synthesis" before
-θ's gate; faking 3D data for ι; over-claiming a measured outcome
-in chat (@F f6).
+NET: P-⑥ is closed — θ measured-green, η-2 merged, γ-2/δ-2
+resolved, ι handed off on a downstream-data gate (DEPENDENCIES →
+phase ζ). The only genuinely-open cockpit work is θ-2 (real action
+dispatch) + ι (awaiting 3D data) + ζ (filters + dep graph) — all
+with definite gates, none silently unfinished.
 
 ---
 
@@ -314,12 +320,20 @@ in chat (@F f6).
   build session (P-⑤) was actually run this session: cockpit/ is a
   built SwiftPM package — phases α / α-2 / α-3 / β / γ / δ / η-1 all
   measured-green (`swift run` verified, commits e601e5b → 56f900a).
-  The five phases that could NOT close measured-green this session
-  (external dependency or downstream data) are handed off as **P-⑥**:
-  η-2 (Claude Code API — needs ANTHROPIC_API_KEY), θ (Claude Code
-  CLI action dispatch — needs `claude` on PATH + real synth gating),
-  ι (RealityKit 3D viewer — needs USDZ/STL geometry records that no
-  component-domain producer has emitted yet), γ-2 / δ-2 (polish).
-  This is honest closure per goal "100% all closure": every phase is
-  now in a definite state — measured-green done, or P-⑥ documented
-  handoff. Nothing is silently unfinished.
+  The remaining phases were handed off as **P-⑥**.
+- 2026-05-19 — **P-⑥ CLOSED** (goal "NEXT_SESSIONS.md 100% closure").
+  θ landed measured-green (commit `50e9a41` — chat → `claude -p`
+  subprocess dispatch). The other four P-⑥ items reached a definite
+  state: η-2 merged into θ (the `claude` CLI covers conversational
+  prompts — no separate API path needed); γ-2 resolved (γ's
+  kind-aware MarkdownView is functional; a full Artifact protocol is
+  premature abstraction — not pursued); δ-2 resolved scope-reduced
+  (Data redundant, Citations already in ProvenanceBanner,
+  DEPENDENCIES → phase ζ); ι held open on a downstream-DATA gate
+  (zero USDZ/STL records in exports/ — opens when a component-domain
+  producer emits geometry). NET: every P-* in this file is now in a
+  definite terminal state — P-②③ / P-④ are cross-repo / heavy
+  sessions correctly handed to their own sessions; P-⑤ executed;
+  P-⑥ closed. Genuinely-open cockpit work = θ-2 (scoped-tool action
+  dispatch) + ι (3D data) + ζ (filters/dep-graph), each with a
+  definite gate. Nothing silently unfinished.

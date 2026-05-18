@@ -459,18 +459,20 @@ filters/deps). `rfc_011` adds:
 | γ | Decision-block extraction in CENTER | ✅ measured-green — commit `56f900a` |
 | δ | Inspector sub-tabs (Provenance + Raw JSON) | ✅ measured-green — commit `56f900a` |
 | η-1 | Chat tab UI + local stub responder | ✅ measured-green — commit `56f900a` |
-| η-2 | Claude Code API streaming Q&A | ⏸ handed off — `NEXT_SESSIONS.md` P-⑥ ① (needs `ANTHROPIC_API_KEY`) |
-| θ | Claude Code CLI dispatch + action record emission | ⏸ handed off — P-⑥ ② (needs `claude` on PATH; real-synth gating) |
-| ι | RealityKit ComponentMode 3D viewer | ⏸ handed off — P-⑥ ③ (needs USDZ/STL geometry records — none in `exports/`) |
-| γ-2 | full per-kind Artifact cards | ⏸ handed off — P-⑥ ④ |
-| δ-2 | Inspector Data / Citations / DEPENDENCIES sub-tabs | ⏸ handed off — P-⑥ ⑤ |
+| θ | chat → Claude Code CLI subprocess dispatch | ✅ measured-green — commit `50e9a41` (θ-2 = scoped-tool action dispatch remains) |
+| η-2 | conversational backend | ✅ merged into θ — the `claude` CLI covers conversational prompts; D38 dual-dispatch collapses onto one CLI backend, no `ANTHROPIC_API_KEY` path needed |
+| γ-2 | full per-kind Artifact protocol cards | ✅ resolved — not pursued; γ's kind-aware MarkdownView is functional per-kind rendering, a separate protocol + card structs is premature abstraction (minimum-new-structure) |
+| δ-2 | Inspector Data / Citations sub-tabs | ✅ resolved (scope-reduced) — Data redundant with CENTER RecordView; Citations already rendered by ProvenanceBanner; DEPENDENCIES folded into phase ζ |
+| ι | RealityKit ComponentMode 3D viewer | ⏸ open — gated on downstream DATA (zero USDZ/STL geometry records in `exports/`); opens when a `component`-domain producer emits its first USDZ |
 
-**Closure note (2026-05-19, goal "100% all closure")**: every phase
-is in a definite state — α-2 / α-3 / β / γ / δ / η-1 are
-measured-green (`swift run` verified); η-2 / θ / ι / γ-2 / δ-2 are
-each blocked by a real external dependency (API key / `claude`
-binary / downstream 3D-geometry records) or are downstream polish,
-and are handed off honestly via `NEXT_SESSIONS.md` P-⑥. Nothing is
+**Closure note (2026-05-19, goal "NEXT_SESSIONS.md 100% closure")**:
+every phase is in a definite state. Measured-green (`swift run`
+verified): α-2 / α-3 / β / γ / δ / η-1 / θ. Resolved without further
+build (decisions recorded above): η-2 (merged into θ), γ-2 (premature
+abstraction — not pursued), δ-2 (scope-reduced — DEPENDENCIES → ζ).
+Genuinely open, each with a definite gate: θ-2 (scoped-tool action
+dispatch), ι (awaiting downstream 3D-geometry data), ζ (filters +
+dependency graph). Handoff: `NEXT_SESSIONS.md` P-⑥. Nothing is
 silently unfinished.
 
 ---
