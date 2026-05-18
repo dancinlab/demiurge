@@ -135,3 +135,19 @@
   다음 = §7 hexa-native 재구현 (`stdlib/booksim/{anynet, iq_router,
   traffic, sweep, wire_delay, leighton}.hexa`) → §B/§D 재현 시 측정
   게이트 GREEN → `provenance.absorbed = true` 일괄 flip.
+
+- 2026-05-18 — Background batch 2 (4 agents): **Agent-5 ✅** —
+  `proposals/rfc_003_booksim_native_rederivation_plan.md` + `stdlib/
+  booksim/README.md` + 7 `*.hexa.stub` (6 모듈 + dispatcher; 시그니처만,
+  TBD 바디, clean-room provenance). 위치 = **hexa-arch 로컬 추천**
+  (BookSim2 = domain-bound + F1F2-record producer → audit chain
+  colocated); hexa-lang 흡수는 2nd consumer 시 deferred. **Agent-7 ✅** —
+  comb 5개 citation patch draft (`/tmp/hexa-arch-comb-patches-2026-05-18/`;
+  hexa-lang `AGENTS.tape` governance deny 충돌 0; g7 해석 게이트 1개
+  플래그 = inbox-route vs sibling-read carve-out). **Agent-8 ✅** —
+  Cohort 3 인벤토리 (잔여 14 repo; os/earth/cosmos 추천 + never-cohort 7
+  + defer 4). **Agent-6 ❌** — rfc_001 §9 sweep (clock/king-move/FinFET)
+  API rate-limit 으로 57 tool-calls 후 중단, records 미생성 — 재발사 필요.
+- 2026-05-18 — **D8: Cohort 3 보류(deferred)**. 네임드 코호트 =
+  Cohort 1 (7) + Cohort 2 (7) = 14 유지. Agent-8 survey 는 향후 재개용
+  입력으로 보존; `domains/{os,earth,cosmos}.md` 미작성.

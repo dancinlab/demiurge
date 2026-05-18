@@ -201,6 +201,28 @@ needed; recorded here for transparency):
   appears (e.g. cern, grid), promote then; until then speculative-scope
   is banned (lattice-as-tool g1/g2/g3, no-over-claim).
 
+### Decision 8 — Cohort 3 deferred
+
+**picked**: Cohort 3 is **deferred** — not composed now. Named cohorts
+remain Cohort 1 (Decision 3, 7 domains) + Cohort 2 (Decision 6, 7 domains)
+= 14 shallow/deep maps plus chip. Agent-8's Cohort-3 survey (recommended
+os · earth · cosmos; 14 residual hexa-* repos inventoried by
+design-blueprint affinity; 7 never-cohort + 4 defer candidates identified)
+is retained in the task record as input for a future re-opening. No
+`domains/{os,earth,cosmos}.md` files written.
+
+**rationale**:
+- User elected to pass — focus stays on the existing 14-domain surface and
+  the in-flight chip-deep work (rfc_001 §8 measurement, rfc_003
+  re-derivation) rather than widening domain count now.
+- no-big-bang / andrej-karpathy simplicity — not every family repo needs a
+  cohort; deferring keeps scope matched to what is actively worked.
+- Reversible at zero cost — Agent-8's affinity inventory (Y/maybe/N per
+  repo) is preserved, so re-opening Cohort 3 later needs no re-survey.
+- The never-cohort list (7 orthogonal substrates) + defer list (4) from
+  Agent-8 §4 are NOT recorded as governance yet — available to land
+  separately if the user later wants the 35/35 audit-completeness artifact.
+
 ### Decision-gate note on Agent-2 location finding
 
 Agent-2 discovered `rfc_057` does **not** exist under `~/core/hexa-lang/
