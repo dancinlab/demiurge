@@ -71,6 +71,10 @@ absorbed** (decoupled siblings). "물질합성부터 … 전부 아우르는
   OpenROAD, …) clean-room. This is already the rfc_001/002/003 pattern
   — i.e. C is a *subset of A made explicit*, not a distinct option.
 
+> **RESOLVED 2026-05-18 — D11 = A (meta-conductor). See `design.md`
+> Decision 11. D2 preserved (matter/bio typed-interface-consumed);
+> B and Defer declined.**
+
 **Recommendation: A** (with C's comb-library absorption as its §5
 work-stream). Rationale:
 - Delivers the user's "전부 아우르는" literally — one project conducts
@@ -200,8 +204,8 @@ no-big-bang incremental · public-surface clean-room (D1).
 
 ## 9. Open decisions (gate list)
 
-- **D11 (PIVOTAL, gate now)** — §3 reading: A meta-conductor
-  (recommended) / B monolith re-absorb / C (= A subset).
+- **D11 — RESOLVED = A meta-conductor** (`design.md` Decision 11;
+  B / Defer declined; D2 preserved).
 - D12+ (enumerated, not gated yet): comb-library absorption ordering;
   chain-stage granularity (how fine is "부품설계"?); product-surface
   tech stack (deferred — execution); whether hexa-arch[component] is a

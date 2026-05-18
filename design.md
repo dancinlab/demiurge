@@ -305,3 +305,35 @@ agent reports.
 - Reversible at zero cost — the rfc_003 §7 phased path + agent reports
   document the exact re-entry; re-opening the execution gate later
   needs no rework.
+
+### Decision 11 — "전부 아우르는" = meta-conductor (D2 preserved)
+
+**picked**: hexa-arch is the **meta-conductor** of a *chained series*
+of 7-verb domain passes (`rfc_004` §3 option A). 물질합성 → 칩아키텍쳐
+→ 부품설계 is the cited spine applied in series: each pass's HANDOFF
+feeds the next pass's SPECIFY via a typed inter-stage contract
+(rfc_002-style per seam). hexa-arch owns the chain/orchestration, the
+seam contracts, and the per-domain *tooling* absorption (EDA stack
+etc., rfc_005..012 §5). hexa-matter / hexa-bio remain **typed-
+interface-consumed providers, NOT absorbed** — Decision 2 stands,
+unre-litigated. (Rejected: B monolith re-absorb — breaks D2 /
+no-big-bang / the HEXA sibling-family architecture, unbounded scope;
+Defer — declined, user picked A.) Does not touch any `absorbed`
+state; pure scope-architecture reading. Design-only (D10) — rfc_004
+is the *plan*; building/execution stays gated.
+
+**rationale**:
+- Delivers the user's "물질합성부터 부품설계까지 전부 아우르는 1
+  프로젝트" literally — one program conducts the whole chain — without
+  breaking the constraint that has held all session (D2 decoupled
+  siblings, no-big-bang, sibling family).
+- No new mechanism — the cited 7-verb spine is already chainable
+  (HANDOFF→SPECIFY seam); meta-conductor = wiring existing passes in
+  series. andrej-karpathy: minimum new structure.
+- Honest scope split — hexa-arch absorbs *tooling* it can clean-room +
+  measure; it *consumes* mature science siblings via typed contracts
+  it cannot honestly re-derive. g3 no-over-claim intact.
+- Incremental & reversible — each chain seam / library is its own
+  absorption-RFC; the program grows per-domain, never big-bang;
+  re-opening B later would still be possible but is explicitly not
+  chosen.

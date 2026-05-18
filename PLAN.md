@@ -398,3 +398,13 @@
   product feature; building it = gated downstream like fab, D10).
   All design-only (D10): rfc_004 is a design *plan*, in scope;
   execution/parity/SaaS-build remain gated. D11 awaiting user pick.
+- 2026-05-18 — **D11 RESOLVED = A meta-conductor**. hexa-arch
+  conducts a chained series of 7-verb domain passes
+  (물질→칩→부품; HANDOFF→SPECIFY seams, rfc_002-style per seam);
+  hexa-matter/hexa-bio remain typed-interface-consumed providers —
+  **Decision 2 preserved** (B monolith re-absorb + Defer declined).
+  Pure scope-architecture reading; no `absorbed` state touched;
+  design-only (D10). Applied: design.md D11, rfc_004 §3/§9 marked
+  RESOLVED, CHARTER Mission (meta-conductor sentence). Next concrete
+  design work per rfc_004 §7 Phase 2 (comb-stack absorption *designs*
+  rfc_005..012) — all design-only, awaiting user direction.
