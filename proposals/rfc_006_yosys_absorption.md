@@ -88,15 +88,24 @@ design only.
 Yosys shells out to **ABC** (Berkeley logic-synthesis, also OSS) for
 the actual technology mapping (`abc -liberty`). Clean-room
 re-derivation of ABC's mapping/optimization is a *very large*
-program (≫ rfc_003). Two paths, a real decision (**D18, open**):
+program (≫ rfc_003).
 
-- **(7a) bounded-subprocess** — re-derive the Yosys flow hexa-native
-  but invoke ABC as a documented absorbed-substrate subprocess,
-  fail-loud (rfc_048/D14 precedent, bounded g5 exception). Fast,
-  reproduces the oracle now; ABC re-derivation = scheduled follow-on.
-- **(7b) full ABC re-derivation now** — months, rate-limit-prone;
-  not recommended as the first step.
-- recommend **(7a)** — parity with the rfc_048/D14 hybrid precedent.
+> **D18 RESOLVED 2026-05-18 → (7a) bounded-subprocess.** The Yosys
+> flow is re-derived hexa-native; **ABC is invoked as a documented
+> absorbed-substrate subprocess, fail-loud** (rfc_048/D14 hybrid g5
+> exception, AGENTS.tape `g_hexa_native`-sanctioned). Reproduces the
+> §2 oracle now; per-pass ABC re-derivation = scheduled follow-on.
+> "Yosys absorbed" remains gated by §5 (not asserted here — g3).
+> Rejected: (7b) full ABC re-derivation now (≫10× rfc_003, would
+> stall all of Phase 2 behind one engine). See `design.md` D18.
+
+- **(7a) bounded-subprocess** ✅ PICKED — re-derive the Yosys flow
+  hexa-native but invoke ABC as a documented absorbed-substrate
+  subprocess, fail-loud (rfc_048/D14 precedent, bounded g5
+  exception). Reproduces the oracle now; ABC re-derivation =
+  scheduled follow-on.
+- **(7b) full ABC re-derivation now** — rejected (months,
+  rate-limit-prone, stalls Phase 2 on one engine).
 
 Other open: SKY130 `.lib` parse scope; synthesizable-subset coverage
 of `read_verilog` (router_d{4,6}.v is small/clean — scope to what it

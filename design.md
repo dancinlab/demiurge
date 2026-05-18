@@ -544,3 +544,40 @@ absorption; the parity belongs to hexa-lang.
 - Avoids an irreversible mistake — ⑤⑥ would have renamed/deleted a
   repo hexa-lang's SSOT still references as the absorption source;
   cancelled (g3 + look-before-you-absorb).
+
+### Decision 18 — Yosys absorption: ABC tech-mapping via bounded-subprocess (rfc_006 §7, 7a)
+
+**picked**: in the rfc_006 Yosys absorption (Phase 2, SYNTHESIZE
+verb), the **Yosys flow is re-derived hexa-native** (rtlil /
+read_verilog / passes / liberty / write_verilog) but **ABC** (the
+Berkeley logic-synthesis engine Yosys shells to for technology
+mapping, `abc -liberty`) is invoked as a **documented
+absorbed-substrate subprocess, fail-loud** — the rfc_048/D14 hybrid
+g5 exception, not a clean-room ABC re-derivation. This reproduces
+comb's measured `router_d{4,6}` 1.516× SKY130 area oracle now and
+schedules per-pass ABC re-derivation as the follow-on. (Rejected:
+7b full ABC re-derivation now — ≫10× rfc_003 scale, months,
+rate-limit-prone, would stall all of Phase 2 behind one engine.)
+g3: this is a *bounded* g5 exception (AGENTS.tape `g_hexa_native`
+already permits the rfc_048-precedented form); "Yosys absorbed" is
+still gated by rfc_006 §5 (reproduce the cited oracle within
+tolerance), not asserted here.
+
+**rationale**:
+- precedent parity — AGENTS.tape `g_hexa_native` + D14 already
+  sanction exactly this shape (verbatim foreign substrate as a
+  documented fail-loud subprocess, re-derivation = scheduled
+  follow-on); choosing 7a keeps Phase 2 consistent with the
+  established rfc_048 idiom rather than inventing a new posture.
+- unblocks the measured gate now — 7a can hit rfc_006 §5 (reproduce
+  the real comb d4/d6 area oracle) in bounded scoped work; g3 is
+  satisfied by *measuring against the oracle*, not by how ABC's
+  internals are implemented.
+- risk containment — ABC re-derivation is the single largest effort
+  driver in the whole comb-stack (≫ BookSim2); gating all of Phase
+  2 (rfc_007..012) behind it = the exact "session stalls on one
+  engine" failure mode 7b warns of. 7a isolates it as an
+  independent scheduled follow-on.
+- honest scope — the residual is explicit and recorded (ABC stays
+  foreign substrate until its own re-derivation lands); no
+  over-claim, the boundary is named in rfc_006 §7 and here.

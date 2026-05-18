@@ -589,3 +589,13 @@
   clean-room 모듈은 후속 rate-limit-safe scoped 작업(rfc_003 패턴),
   §5 게이트로 검증. rfc_005=hexa-matter(D17 superseded)라 rfc_006
   부터 comb-stack.
+- 2026-05-18 — **D18 결정 게이트 (1결정 1게이트)**: rfc_006 §7
+  ABC tech-mapping 경로 = **(7a) bounded-subprocess** 채택 (사용자
+  픽). Yosys flow 는 hexa-native 재도출, ABC 는 문서화된 흡수-기질
+  subprocess 로 fail-loud 호출 (rfc_048/D14 하이브리드 g5 예외,
+  AGENTS.tape `g_hexa_native` 가 이미 허용). comb d4/d6 1.516×
+  oracle 을 지금 재현 가능, ABC 전면 재도출은 scheduled follow-on.
+  (7b 전면 재도출 now 기각 — ≫10× rfc_003, Phase 2 전체가 한 엔진
+  뒤에서 정체.) "Yosys absorbed" 는 여전히 §5 게이트로만 (미주장,
+  g3). design.md D18 + rfc_006 §7 RESOLVED 반영. **다음 = rfc_006
+  §4 모듈 착수** (clean-room, hexa-lang/stdlib/yosys/, §5 게이트).
