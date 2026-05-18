@@ -912,3 +912,55 @@
   `swift run` 처럼 `run`-기반 verb 는 통과; macOS-only Swift
   코드를 Linux roster 호스트로 잘못 라우팅하는 휴리스틱 갭은
   여전 (이전 D28 시점에 발견), 이번엔 명령어 선택으로 우회됨.
+- 2026-05-19 — **D30 lock + 파일 picker (measured-green)**: cockpit
+  툴바에 "Open Record…" 액션 추가 — AppKit NSOpenPanel,
+  `directoryURL = RecordLoader.f1f2RecordsRoot` (`../exports/chip/
+  noc/f1f2/records`), `.json` content-type 제한, directories
+  비선택. 동시에 `RecordLoader.load(url:)` 에 **runtime 경계
+  검증** 추가 — URL canonical path 가 `RecordLoader.exportsRoot`
+  의 prefix 아니면 새 에러 `pathOutsideExports` 반환 → RecordView
+  의 REJECTED 카드 패턴이 동일하게 트리거. `@D g_cockpit_isolation
+  invariant (a)` 가 governance 문서뿐 아니라 *코드 레벨*에서 enforce
+  되는 첫 사례. ~30 LoC diff, `swift run` PASS 2.63s incremental.
+- 2026-05-19 — **D31 lock + `proposals/rfc_010_cockpit_architecture.md`
+  작성** (디자인 only — `rfc_009` §3 의 information-architecture
+  부분 상세화). PNG 분석 (Palantir Foundry Quiver "Overview
+  Analysis", `cockpit/references/quiver-overview.png`) 기반 3-pane
+  cockpit 아키텍처 + Artifact protocol + Phase α..ζ 점진 로드맵
+  명세 (~340 lines). 핵심: (a) 3-pane `NavigationSplitView`
+  정보-아키 (좌:tree · 중:canvas · 우:inspector) · (b) Quiver-mirror
+  카드 시스템 + `$<id>` artifact 토큰 + 5+ artifact 타입 · (c)
+  **honesty-mode 차별점** (gate chip 카드-헤더 강제 · inspector
+  첫 탭 = Provenance · REJECTED 카드 mode · DEPENDENCIES = citation
+  graph) · (d) 6-phase α..ζ ~730 LoC 추정 · (e) 7 open decision
+  게이트 D32-D38 flag. RFC = 디자인-only (D22/D19 idiom). 빌드는
+  phase α 부터 별도 commit. 새 도메인맵 0, 새 governance 0.
+- 2026-05-19 — 🎉 **Phase α LANDED + user-side BREAKTHROUGH
+  validation**: `NavigationSplitView` 3-pane shell 적용. `CockpitApp.
+  swift` ContentView 가 sidebar (LEFT, placeholder sections —
+  Records/Decisions/RFCs/Domains/Parameters) + content (CENTER,
+  기존 D29 RecordView 그대로 embed) + detail (RIGHT, inspector
+  placeholder text — phase δ 의 4 탭 + DEPENDENCIES 안내) 3
+  슬롯으로 분할. D26 g_swift_native canonical: 새 import 0 (이미
+  있는 SwiftUI + AppKit + Foundation + UniformTypeIdentifiers).
+  Phase α 빌드: `swift run` PASS 2.38s incremental, 0 warnings.
+  **사용자가 직접 같은 빌드를 실행 + 스크린샷 캡쳐 + 보관 요청 →
+  `cockpit/references/screenshot-2026-05-19-0347.png` (540KB,
+  md5 `c7b325a4...`)**. PNG 분석 결과 visual 검증 완료:
+  · LEFT sidebar 5 섹션 + placeholder 텍스트 정확
+  · CENTER 의 `PLACEHOLDER_HXC_A12_PENDING_TOOL` record_id, 토폴로지,
+    verdict, ProvenanceBanner 모두 렌더
+  · 🟠 **GATE_OPEN orange chip · absorbed: false · 정확히 5개
+    scope_caveats verbatim** — D29 design.md 의 예측과 verbatim 일치
+  · RIGHT inspector placeholder 의 5 항목 (Provenance/Data/Citations/
+    Raw/DEPENDENCIES) 정확 렌더
+  · "Open Record…" 버튼 우상단 visible (D30 picker)
+  · dark mode + window title "Demiurge Cockpit" ✓
+  이로써 **D27..D31 + Phase α 전체가 end-to-end measured-green** —
+  코드만 빌드되는 게 아니라 **사용자 macOS 화면에서 렌더 결과가
+  설계 예측과 일치**. honesty-as-feature 가 처음으로 *visual proof*
+  로 작동한 순간. rfc_010 §8 "NOT built" 리스트는 그대로 유효
+  (트리 미populate · 카드 protocol 미적용 · inspector 탭 미구현 ·
+  card variety 미구현 · DEPS 미파싱 · 필터 미존재) — Phase α 는
+  *shell* 만 lands, phase β..ζ 가 점진 채움. 새 도메인맵 0, 새
+  governance 0, 새 RFC 0.
