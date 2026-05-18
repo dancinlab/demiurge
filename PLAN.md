@@ -762,3 +762,14 @@
   at creation` 으로 갱신** (rfc_007/8/9 가 seam/cockpit 으로
   점유됨을 명시; 도구는 rfc_010+ 부터). 외부 cold reader 가 받는
   RFC-번호 picture 도 D22 결정과 정합.
+- 2026-05-19 — **`NEXT_SESSIONS.md` 생성** (사용자 요청: "4,5...
+  다음세션 프롬프트"). 3개 forward-handoff 프롬프트 각각 0-context
+  cold-readable: P-②③ hexa-lang(D19 Yosys §4 모듈 + d5a63a82 push,
+  기 적재된 inbox 핸드오프 참조) · P-④ chip 측정(`GATE_B_PINNED_MET`
+  → 측정 parity, ubu 풀 rate-limit 이력·detached nohup·기 스코프
+  주의 명시) · P-⑤ macOS Swift cockpit 빌드(rfc_009 spec 대상,
+  honesty=feature UI, downstream 위치 결정 게이트 포함). 각 프롬프트
+  에 게이트·NOT(g3)·exit 기준 명시 — 도메인이 'absorbed' 주장 금지
+  /파일 위조 금지/gate 비-upgrade/silent-skip 금지. HANDOFF.md §10
+  RESUME(=hexa-arch 세션 픽업)의 보완 — 이 파일 = 그 4-Phase 설계가
+  유발한 **3개 downstream 세션** 의 픽업. 새 결정 0, 새 RFC 0.
