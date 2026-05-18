@@ -1,6 +1,15 @@
 # RFC 005 — hexa-matter absorption + tombstone (program)
 
-> Status: **draft / program — NOT complete** · 2026-05-18 · Source:
+> **SUPERSEDED 2026-05-18 — design.md D17.** hexa-matter's absorption
+> SSOT = hexa-lang (already 완전 이관 완료; hexa-lang `stdlib/PLAN.md`).
+> This hexa-arch-absorb + tombstone program is RESCINDED:
+> `domains/matter/` → pointer README; ⑤⑥ rename/delete CANCELLED from
+> hexa-arch's side (that is hexa-lang's call). Retained below as the
+> audit record of what was done (D12/②③) + the ④ conflict find.
+> g3: the §4 38/38 parity is real but is hexa-lang's absorption, not
+> a hexa-arch ownership claim.
+>
+> Status: **SUPERSEDED (D17)** — was draft/program · 2026-05-18 · Source:
 > user directive + `design.md` Decision 12. Pattern mirror:
 > `hexa-lang/proposals/rfc_047_mc_integrate_absorption.md`,
 > `rfc_048_xeno_absorption.md` (absorb → archive_ rename → local

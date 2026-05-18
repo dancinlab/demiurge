@@ -561,3 +561,18 @@
   SSOT still references as the source + violate D15 + over-claim.
   Reconciliation = **design.md D17 (gate, pending)**. Nothing
   destructive/outward done; originals untouched.
+- 2026-05-18 — **D17 RESOLVED = A** (hexa-lang = SSOT, hexa-arch =
+  consumer-pointer). **Supersedes D12/D13/D14 + rfc_005 tombstone.**
+  Actions: redundant `domains/matter/` verbatim copy (471 files /
+  8 MB) `git rm`'d → replaced with `domains/matter/README.md`
+  pointer (hexa-lang owns absorption; hexa-arch consumes via typed
+  seam, rfc_004 §4; recoverable from git history; `~/core/hexa-matter`
+  + hexa-lang absorption intact). rfc_005 → SUPERSEDED banner;
+  ⑤⑥ rename/delete CANCELLED from hexa-arch side (hexa-lang's call,
+  not made here). Docs reconciled: design.md D17, AGENTS.tape
+  `g_decouple` (hexa-matter now typed-consumed like hexa-bio/comb),
+  GOAL.md (NOT/위치 lines), rfc_005 status. **g3 honest**: the
+  measured 38/38·29/29 parity is real but is hexa-lang's absorption,
+  not a hexa-arch ownership claim — audit entries D12/D13/D14/rfc_005
+  preserved (record what was done + the conflict find), D17
+  supersedes going forward. hexa-arch never over-claimed ownership.

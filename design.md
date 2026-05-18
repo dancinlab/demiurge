@@ -505,3 +505,42 @@ WEB's sole advantage is already covered.
 - core integrity preserved — Swift front is a decoupled consumer
   (D2 pattern); no embedded web stack pressuring the hexa-native
   boundary (g5).
+
+### Decision 17 — hexa-matter: hexa-lang = SSOT, hexa-arch = consumer-pointer (supersedes D12/D13/D14 + rfc_005 tombstone)
+
+**picked**: A — the materials toolkit's absorption SSOT is
+**hexa-lang** (already complete: hexa-lang's own `stdlib/PLAN.md`
+"hexa-matter stdlib-only 6모듈 | 완료 | 완전 이관, .py 제거, selftest
+38/38" + `inbox/notes/2026-05-14-hexa-matter-absorption-plan.md`).
+hexa-arch does **not** own a copy. **Supersedes D12** (hexa-arch-as-
+absorption-home), **D13** (`domains/matter/` placement), **D14**
+(verbatim+shim), and the **rfc_005 tombstone** (⑤⑥ rename/delete
+CANCELLED from hexa-arch's side — `dancinlab/hexa-matter`'s
+disposition belongs to hexa-lang, not decided here). The redundant
+verbatim copy (471 files / 8 MB) was `git rm`'d; `domains/matter/`
+is now a pointer README. (Rejected: B dual-existence — needless
+duplicate; C proceed-D12-tombstone — violates D15, duplicates
+hexa-lang's completed absorption, irreversibly destroys a repo
+hexa-lang's SSOT references.)
+
+**g3 reconciliation (honest, audit-preserved)**: D12/D14 + rfc_005 §4
+happened — the measured selftest **38/38 · parity 29/29** is *real*,
+but the ④ inventory revealed it re-verifies **hexa-lang's**
+absorption, not a distinct hexa-arch one. The audit entries
+(D12/D13/D14, rfc_005) are NOT deleted (they record what was done +
+the conflict discovery); D17 supersedes them going forward and the
+docs are reconciled. Nothing over-claimed: hexa-arch never owned the
+absorption; the parity belongs to hexa-lang.
+
+**rationale**:
+- Honors the user's own latest governance D15 (`stdlib ⊂ hexa-lang;
+  hexa-arch = consumer`) — a materials toolkit is exactly that class;
+  hexa-lang already did it.
+- Matches discovered ground truth (hexa-lang `stdlib/PLAN.md` =
+  완전 이관 완료) — proceeding otherwise = duplicate + contradiction.
+- D2/D11 consistent — hexa-arch is the meta-conductor that *consumes*
+  the materials stage via a typed seam (rfc_004 §4), not an owner of
+  the toolkit. hexa-matter rejoins hexa-bio/comb as typed-consumed.
+- Avoids an irreversible mistake — ⑤⑥ would have renamed/deleted a
+  repo hexa-lang's SSOT still references as the absorption source;
+  cancelled (g3 + look-before-you-absorb).

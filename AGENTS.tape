@@ -20,7 +20,7 @@
   rule = "External prior art absorbed from public surface only (OSS/arxiv/patents/standards/datasheets/vendor public docs). No closed-binary RE, no license/DRM circumvention."
 
 @D g_decouple := "typed-interface decoupling (D2/D11)" :: governance [d=2026-05-18 active]
-  rule = "hexa-bio + comb stay typed-interface-consumed (decoupled siblings). hexa-matter = absorbed exception (D12, domains/matter/). comb SSOT stays hexa-lang; archive/comb = non-SSOT mirror."
+  rule = "hexa-bio + comb + hexa-matter ALL typed-interface-consumed (decoupled). hexa-matter's absorption SSOT = hexa-lang (already 완전 이관; D17 supersedes the D12 hexa-arch-absorb — domains/matter/ is a pointer, not a copy). comb SSOT stays hexa-lang; archive/comb = non-SSOT mirror."
 
 @D g_scope := "scope (D10 rescinded → full)" :: governance [d=2026-05-18 active]
   rule = "design-only (D10) RESCINDED per user (D12) — full scope incl. execution/absorption. Still: no-big-bang incremental, hexa-first."

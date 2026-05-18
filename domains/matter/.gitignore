@@ -1,9 +1,0 @@
-# build/state artifacts
-build/
-state/
-*.tmp
-.DS_Store
-
-# Claude Code session state (transient worktrees + auto-generated files)
-.claude/
-CLAUDE.md

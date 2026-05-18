@@ -16,8 +16,9 @@
 - 단일-도메인 모델러 아님 (vs SysML / Modelica — 분야 무관 spine)
 - proprietary 블랙박스 아님 (vs Cadence / Synopsys — cited·공개감사·honest-gated)
 - 물질/분자 *계산기* 아님 — 그건 hexa-matter(물질)·hexa-bio(분자);
-  hexa-arch 는 **설계 자체**를 계산 (hexa-matter 는 D12 흡수 *도메인*,
-  hexa-bio·comb 는 typed-interface 소비)
+  hexa-arch 는 **설계 자체**를 계산 (hexa-matter·hexa-bio·comb 모두
+  typed-interface 소비 — hexa-matter 흡수 SSOT = hexa-lang, D17 이
+  D12 supersede; hexa-arch 는 소비자)
 - 측정 없이 "absorbed/parity/resolved" 주장하는 것 아님 (g3 — `@F f2`)
 
 ## 무엇인가 (IS)
@@ -52,10 +53,13 @@
 
 - ✅ 7-verb spine cited (9 라이프사이클) · 14 도메인 공개면 맵 ·
   rfc_001..005 · AGENTS.tape 거버넌스 · D1–D16 감사추적 · comb archive
-- ✅ **hexa-matter ABSORBED at measured parity** — `domains/matter/`,
-  rfc_005 §4 게이트 MET: selftest **38/38** · parity **29/29** ·
-  verify 4/4 · 36/36 spec (로컬, 흡수트리, cited; 32→38 supersession
-  문서화). 첫 진짜 measured-parity.
+- ✅ **hexa-matter measured-parity 검증됨 (단, hexa-lang 소유 — D17)**:
+  rfc_005 §4 selftest **38/38** · parity **29/29** · verify 4/4 ·
+  36/36 spec 는 실측 사실이나, ④ 조사로 그것이 **hexa-lang 의 이미
+  완료된 흡수**임이 드러남. D17 = hexa-lang SSOT · hexa-arch 는
+  소비-포인터 (`domains/matter/` 중복 사본 git-rm, pointer 化;
+  rfc_005 tombstone CANCELLED). over-claim 0 — hexa-arch 는 흡수
+  소유 주장 안 함.
 - 🟡 chip §B = **GATE_B_PINNED_MET** — pinned 기준 PASS(모델 단순화
   하에) 이나 full-curve parity·§D 미입증; `absorbed=false` 유지 (g3).
 - 🕳️ **GUI 미완** (D16 = macOS Swift, *설계 결정만*; 빌드 downstream) ·
