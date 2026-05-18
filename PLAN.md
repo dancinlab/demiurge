@@ -380,3 +380,21 @@
   over-claim: nothing asserted beyond measured; design complete,
   execution honestly gated. CHARTER non-goals + design.md D10 record
   the scope.
+- 2026-05-18 — **`proposals/rfc_004_e2e_design_program.md`** —
+  exhaustive end-to-end design-program brainstorm (user vision:
+  물질합성→칩아키텍쳐→부품설계 전부 아우르는 1 프로젝트 · comb
+  라이브러리 전수 흡수 · SaaS/Web/GUI). Re-checked the final goal
+  against SSOT (CHARTER/HANDOFF/README) — the expanded vision is a
+  **zoom-in, not a scope change**: the 7-verb spine is already
+  chainable (HANDOFF→SPECIFY seam), so 물질→칩→부품 = the spine in
+  series across domains. Pivotal reconciliation surfaced as **D11**
+  (gated): A meta-conductor (hexa-arch orchestrates the chained
+  passes; matter/bio stay typed-interface-consumed per D2 —
+  recommended) vs B monolith re-absorb (rejected — breaks D2 /
+  no-big-bang / sibling family) vs C (= A subset, explicit comb-lib
+  absorption). §5 = full comb-stack absorption plan
+  (rfc_005..012, design-only); §6 = product-surface *design*
+  (front-end as typed-interface consumer; honesty/GATE-state as the
+  product feature; building it = gated downstream like fab, D10).
+  All design-only (D10): rfc_004 is a design *plan*, in scope;
+  execution/parity/SaaS-build remain gated. D11 awaiting user pick.
