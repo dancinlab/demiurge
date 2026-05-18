@@ -1090,3 +1090,47 @@
   · 새 RFC 0, 새 design.md decision 0 (phase = rfc_011 §10 의
     execution이지 새 결정 아님), 새 governance 0 (rfc_011 commit 의
     g_ai_agent_* 이미 등록). 도메인맵 0.
+- 2026-05-19 — ⭐️ **Phase β LANDED + measured-green (Artifacts tab
+  populated + D41 boundary read scope)**. commit `1b3a53e`. rfc_011
+  §10 phase β build gate 충족. 변경 요약: (1) **DemiurgeCore 새
+  Artifacts 모듈** — `ArtifactStub.swift` (ArtifactKind/ArtifactID/
+  ArtifactStub, `$<id>` D32 token 정합) + `ArtifactRegistry.swift`
+  (loadAll/load(kind:)/loadF1F2/loadDecisions/loadRFCs/loadDomains —
+  filesystem walk + `### Decision N` regex parse). public API 라
+  GUI + CLI 공유. (2) **CockpitApp** — Artifacts 탭이 placeholder
+  에서 *5 sections 실제 populate* 로 승격 (Records 50 + Decisions
+  41 + RFCs 11 + Domains 15 + Parameters deferred ζ). `List
+  (selection:)` 의 native sidebar 선택 + onChange 가 F1F2 면
+  RecordLoader 호출, 그 외는 `MarkdownView` (Foundation
+  AttributedString markdown init, macOS 13+ canonical) 새 view 가
+  CENTER 표시. Inspector 탭은 selected stub 의 id/kind/title/path
+  metadata 4 라인 추가 (phase δ 전 minimum). LEFT initial tab =
+  `.artifacts` (사용자가 첫 화면에서 트리 visible). macOS 13 compat
+  fix: `.onChange(of:)` single-param closure (two-param 은 macOS
+  14+). (3) **DemiurgeCLI** — 새 4 subcommand: `list-all` ·
+  `list-decisions` · `list-rfcs` · `list-domains` (all
+  ArtifactRegistry.load(kind:) 기반). `list-records` 도 같은 registry
+  사용으로 통합. 동적 padding (max-id 계산) 으로 `$DOM:antimatter`
+  등 긴 id 도 정렬 안 잘림. version 0.0.2 = "phase α-3 + β". (4)
+  **design.md D41 lock** — Boundary read scope clarification:
+  invariant (a) 가 (a-records) strict `../exports/**` + (a-docs)
+  read-only navigation docs (design.md/proposals/domains/inbox/
+  archive/README/CHARTER/HANDOFF/GOAL/PLAN/ARCH.tape/AGENTS.tape/
+  cockpit/references/) 로 분리. (a-docs) contents 가 measurement_gate
+  /absorbed/parity claim 의 출처가 절대 되지 않음 — g3 safety pin
+  명문화. (5) **AGENTS.tape** — `@D g_cockpit_isolation` rule string
+  보강 (D27 + D41 명시 + (a-records)/(a-docs) sub-clause + (d)
+  one-way 두 read scope 모두), `@N ssot.decisions` D1..D41. (6)
+  **cockpit/README.md** CLI subcommand 표 4 row 추가. **빌드
+  measured-green** (Mini, swift 6.3.1): swift run CockpitApp PASS
+  1.12s · 0 warnings · 4-zone tabbed shell + populated sidebar
+  visible. CLI 4 subcommand 모두 PASS — list-records (50) /
+  list-decisions (40 = D1..D41 중 dedupe 후) / list-rfcs (11) /
+  list-domains (15 = 14 + matter pointer). `@D g_cockpit_isolation`
+  4 invariant + a-records/a-docs sub-clause 모두 정합. g3 정직:
+  per-kind 카드 미구현 (γ), Inspector real tabs 미구현 (δ), Chat
+  backend (η) · agent action (θ) · 3D viewer (ι) 모두 NOT built;
+  Decision/RFC/Domain CENTER 는 MarkdownView 가 raw markdown 만
+  렌더 (Apple AttributedString fallback to monospaced). 어떤 record
+  의 absorbed 도 flip 안 됨. 새 RFC 0, 새 도메인맵 0, 새 governance
+  0 (g_cockpit_isolation rule expansion 만).
