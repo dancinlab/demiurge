@@ -627,3 +627,23 @@
   시 자체 게이트(rfc_007 §8) — 여기서 선결 안 함. design.md
   `### Decision 20`. **다음 = (a) chip→component seam 게이트 열기
   or (b) Phase 4 GUI 설계** — 지시 대기.
+- 2026-05-19 — **Phase 3 두 seam DESIGN-COMPLETE** (사용자 픽:
+  "Phase 3 완결 — chip→component seam"). 먼저 deferred 결정을
+  batch 안 하고 게이트로 열어 **D21** 채택: hexa-arch[component]
+  = **신규 top-level 도메인** (chip 서브 아님 — D11 '1 pass=1
+  도메인' 정합, 기계/EM/thermal ≠ EDA 도구군). 산출:
+  `proposals/rfc_008_chain_seam_chip_to_component.md` (rfc_007
+  쌍둥이, 반대 seam) + `exports/seams/chip_to_component/{schema/
+  v0.md, records/README.md}` + `domains/component.md` (D21 신규
+  도메인 shallow 맵 — provenance 정직: agent-retrieved 아님,
+  일반지식 기반 ⚠ 플래그, cited-research = follow-on). g3 정확:
+  rfc_008 records 빈 사유는 rfc_007과 **다름** — producer가
+  hexa-arch[chip] 자체이나 측정된 chip HANDOFF 부재(NoC
+  GATE_B_PINNED_MET·synth design-only)라 위조 시 `@F f2` 위반.
+  rfc_004 §5(번호: rfc_007/008=seam, 도구 rfc_009~로 shift) ·
+  §7(Phase 3 seam DESIGN-COMPLETE, ≠wired) · §9(component shape
+  RESOLVED=D21; 내부 sub-staging = domain-internal·non-gate)
+  reconcile. design.md `### Decision 21`. **정직 위치: Phase 3
+  seam 계약설계 완료 — 단 아무것도 wired/absorbed 아님(g3),
+  records 0, v0(≠v1.0). 다음 = Phase 4 macOS Swift GUI 설계
+  RFC or chip 파이프라인 측정작업 — 지시 대기.**

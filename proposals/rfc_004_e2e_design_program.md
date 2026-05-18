@@ -149,12 +149,13 @@ caveat (rfc_003 finding) → execution gated (D10).
 > are assigned at *creation order* (precedent: rfc_002 is itself a
 > seam contract sitting among absorption RFCs; rfc_005 was
 > repurposed for hexa-matter then SUPERSEDED by D17). Actual:
-> Yosys = **rfc_006 ✅** (created, D18/D19); the Phase-3
-> materials→chip seam took the next free number **rfc_007**
-> (`design.md` D20). The remaining tool absorptions get the next
-> free numbers at creation (Verilator → rfc_008, SymbiYosys →
-> rfc_009, OpenSTA → rfc_010, ngspice → rfc_011, Chisel/Amaranth →
-> rfc_012, PDK → rfc_013) — indicative, re-confirmed when created.
+> Yosys = **rfc_006 ✅** (created, D18/D19); Phase-3 seams took the
+> next free numbers — **rfc_007 ✅** materials→chip (`design.md`
+> D20), **rfc_008 ✅** chip→component (`design.md` D21). The
+> remaining tool absorptions get the next free numbers at creation
+> (Verilator → rfc_009, SymbiYosys → rfc_010, OpenSTA → rfc_011,
+> ngspice → rfc_012, Chisel/Amaranth → rfc_013, PDK → rfc_014) —
+> indicative, re-confirmed when created.
 
 ## 6. Product surface — SaaS / Web / GUI (design of, not build of)
 
@@ -209,11 +210,15 @@ Building it = execution → gated (D10). This RFC = its design only.
 - **Phase 3**: chain seam contracts — typed inter-stage records
   (material-property contract from hexa-matter, mirroring rfc_002);
   hexa-matter/bio consumer contracts (D2-consistent).
-  *(IN PROGRESS — entry seam `materials → chip` = **rfc_007 ✅
-  drafted** (D20), contract spec + `exports/seams/
-  materials_to_chip/` (records empty, g3); `chip → component` seam
-  + the §9 hexa-arch[component] domain-shape decision = explicitly
-  deferred to a gated follow-on, rfc_007 §8.)*
+  *(Phase 3 seams DESIGN-COMPLETE — both chain seams drafted at the
+  contract level: `materials → chip` = **rfc_007 ✅** (D20),
+  `chip → component` = **rfc_008 ✅** (D21, after resolving the §9
+  component-domain-shape gate = new top-level domain →
+  `domains/component.md`). Both: contract spec + `exports/seams/<>/`
+  with records empty by design (g3, distinct honest reasons —
+  rfc_007 §5 / rfc_008 §5). Component-domain **internal** sub-staging
+  = domain-internal per D21, not gated. NOTE: design-complete ≠
+  wired — no record flows, nothing absorbed, g3.)*
 - **Phase 4**: product-surface design — API spec + UI/workflow spec
   (rfc_0NN), front-end as typed-interface consumer.
 - Each phase = incremental, per-domain, no-big-bang; nothing flips
@@ -232,12 +237,17 @@ no-big-bang incremental · public-surface clean-room (D1).
 - **D11 — RESOLVED = A meta-conductor** (`design.md` Decision 11;
   B / Defer declined; D2 preserved).
 - D12+ (enumerated): comb-library absorption ordering; product-surface
-  tech stack (deferred — execution). **Material-property typed
-  contract schema (Phase 3) → ADDRESSED by rfc_007 (D20), v0 draft.**
-  STILL OPEN (deferred to gated follow-on, rfc_007 §8): chain-stage
-  granularity (how fine is "부품설계"?) + whether
-  hexa-arch[component] is a new top-level domain or a chip sub-domain
-  — these gate the *chip → component* seam, not the materials→chip one.
+  tech stack (deferred — execution).
+- **Phase 3 seam schemas — RESOLVED**: materials→chip typed contract
+  → **rfc_007** (`design.md` D20, v0 draft); chip→component typed
+  contract → **rfc_008** (`design.md` D21, v0 draft).
+- **hexa-arch[component] shape — RESOLVED = new top-level domain**
+  (`design.md` D21 → `domains/component.md`); was the gate the
+  chip→component seam depended on.
+- **STILL OPEN but NOT gating** (declared domain-internal per D21,
+  not a seam blocker): component-domain *internal* sub-staging
+  granularity (package vs system sub-passes) — decided inside the
+  component domain later, no gate now.
 
 ## 10. Cross-references
 

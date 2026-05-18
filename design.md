@@ -653,3 +653,39 @@ materials→chip is the unambiguous, dependency-free chain head.)
   exactly (twin seam, opposite chain end); no new mechanism
   invented, the cited 7-verb HANDOFF→SPECIFY edge already supports
   it. RFC-number reconciliation noted honestly in rfc_004 §5.
+
+### Decision 21 — hexa-arch[component] = a NEW top-level domain (not a chip sub-domain); resolves rfc_004 §9 / rfc_007 §8
+
+**picked**: the chain's 3rd pass — **component / package / system
+design (FEM / EM / thermal)** — is a **new top-level domain**
+(`domains/component.md`, sibling to chip), its own 7-verb pass, fed
+by the **chip→component typed seam** (rfc_008). It is **not** folded
+into the chip domain. This resolves the rfc_004 §9 / rfc_007 §8
+deferred branch (the gate that had to open before the chip→component
+seam contract could fix its producer/consumer boundary). Sub-point —
+**chain-stage granularity** (does "부품설계" split into package vs
+system sub-passes?) is declared a **domain-internal** matter, **not
+a seam blocker and not gated now**: the seam treats component as one
+consumer; any internal sub-staging is decided inside the component
+domain later (deferred as non-gate, honest scope). (Rejected: B
+chip sub-domain — conflates two disciplines/tool-classes under one
+domain and breaks the D11 "1 pass = 1 domain" chain model.)
+
+**rationale**:
+- D11 meta-conductor consistency — the chain is materials→chip→
+  component = 3 serial 7-verb passes; under D11 each pass = one
+  domain. Merging component into chip would make one domain carry
+  two passes, breaking the conductor model the user accepted.
+- discipline / tool-class separation — component design is
+  mechanical/EM/thermal FEM (Elmer, openEMS, FEMM, CalculiX,
+  FreeCAD…), a different absorbed tool-class than chip EDA
+  (Yosys/OpenROAD); domains/* already maps these as distinct
+  classes. One domain = one coherent tool-class is cleaner.
+- domain-pluggable architecture — GOAL.md frames chip as *domain 1*
+  of a cohort; component as another top-level domain is the same
+  pattern as the 14 Cohort maps, not a special case.
+- coupling already expressed by the seam — chip-package co-design
+  tightness (the only argument for B) is already modelled by the
+  rfc_008 typed seam (same as materials↔chip via rfc_007); no need
+  to merge domains to express it. g3: nothing absorbed/wired by
+  this decision — it only fixes *where the domain lives*.
