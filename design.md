@@ -689,3 +689,43 @@ domain and breaks the D11 "1 pass = 1 domain" chain model.)
   rfc_008 typed seam (same as materials↔chip via rfc_007); no need
   to merge domains to express it. g3: nothing absorbed/wired by
   this decision — it only fixes *where the domain lives*.
+
+### Decision 22 — Phase 4 entry = rfc_009 product-surface spec (macOS Swift cockpit); build explicitly out-of-scope
+
+**picked**: Phase 4 (product surface) enters with **rfc_009** — the
+detailed design spec for the **macOS Swift cockpit**: a read-only
+typed-consumer of `exports/{chip/noc/f1f2, seams/materials_to_chip,
+seams/chip_to_component}`, with honesty-as-feature UI (every output
+renders `absorbed` / `measurement_gate` / citations, never upgraded)
+and a g5-unpressured boundary (app outside the governance line). This
+is **accepted-plan execution**, not a new user branch: D16 already
+fixed surface = native macOS Swift (lock-in accepted) and rfc_004 §6
+framed it; rfc_009 only *details* what §6 pointed to (like rfc_002/
+007/008 detail their seams). The one explicit scope line drawn here:
+**the build is OUT of scope** — no Xcode project / Swift source /
+app — reusing the D19 idiom (implementation belongs to a dedicated
+downstream session that works against rfc_009 §2–§6); building =
+gated execution (D10, rfc_004 §6). (Rejected: scoping the build into
+this RFC — violates D10 and the D19 design/impl-session boundary,
+and would invite an over-claim of a "working cockpit" g3 forbids.)
+
+**rationale**:
+- accepted-plan execution, not a manufactured gate — D16 + rfc_004
+  §6/§7 already decided the surface (Swift, local, consumer,
+  design-only); re-gating it would be ceremony. The genuine scope
+  line (build in vs out) IS recorded, not skipped.
+- D2/g5 integrity — the cockpit's *only* coupling is the committed
+  typed exports; it embeds no web stack and cannot mutate gate
+  state, so the hexa-native-only boundary (g5) stays unpressured —
+  consistent with the D16 reframe (GitHub = public audit, app =
+  local cockpit).
+- honesty = the product thesis (g3 as a feature) — rfc_009 §4 makes
+  `absorbed`/`measurement_gate`/citations the *visible*
+  differentiator vs Cadence/Synopsys/COMSOL black boxes; this is
+  GOAL.md's "honesty is the product feature" rendered, not new
+  scope.
+- minimum new structure — rfc_009 invents no new mechanism: Codable
+  structs 1:1 with the existing rfc_002/007/008 schemas, the 7-verb
+  spine as the workflow, the rfc_004 §4 chain as the canvas;
+  forward-compat via the rfc_002 §6 unknown-key idiom. Build
+  deferred honestly (D19 precedent), nothing claimed built (g3).

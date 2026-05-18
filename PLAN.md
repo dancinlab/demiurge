@@ -647,3 +647,20 @@
   seam 계약설계 완료 — 단 아무것도 wired/absorbed 아님(g3),
   records 0, v0(≠v1.0). 다음 = Phase 4 macOS Swift GUI 설계
   RFC or chip 파이프라인 측정작업 — 지시 대기.**
+- 2026-05-19 — **Phase 4 DESIGN-COMPLETE: `proposals/rfc_009_
+  product_surface_macos_cockpit.md`** (D22, 채택-계획 실행 —
+  D16+rfc_004 §6이 이미 Swift 결정, rfc_009는 그 상세 spec, 새
+  유저 게이트 아님). 내용: 타입드-소비 계약(§2 — exports/{chip/
+  noc/f1f2, seams/*} → Swift Codable 1:1) · 7-verb 정보구조
+  (§3 ASCII) · **정직=제품기능 UI**(§4 — 모든 출력에 absorbed/
+  measurement_gate/citations 렌더, 앱은 절대 upgrade 안 함;
+  provenance 없으면 REJECTED 카드 = `@F f4` 미러) · g5 경계
+  (§5 — 앱은 거버넌스 경계 밖, 코어 무압박) · forward-compat(§6,
+  rfc_002 §6 idiom). **명시 범위선: 빌드는 범위밖** — Xcode/Swift
+  소스/앱 0개, 빌드 = gated downstream 세션(D19 idiom). rfc_004
+  §5(번호노트 de-enumerate — churn 정지) · §6(rfc_009 포인터) ·
+  §7(Phase 4 DESIGN-COMPLETE ≠built) reconcile. design.md
+  `### Decision 22`. **정직 위치: 로드맵 4-Phase 설계 전부 완결 —
+  단 코드/앱/wired/absorbed 0 (g3). 다음 = (a) 미상환 follow-on
+  (component cited-research, hexa-lang yosys 모듈, chip 측정) or
+  (b) 신규 지시 — 대기.**

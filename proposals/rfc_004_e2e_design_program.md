@@ -145,17 +145,18 @@ until per-tool measured parity (g3), interpreted-toolchain-throughput
 caveat (rfc_003 finding) → execution gated (D10).
 
 > **RFC-number note (honest reconciliation).** The `rfc_007..012`
-> above are **indicative projections, not bindings** — RFC numbers
-> are assigned at *creation order* (precedent: rfc_002 is itself a
-> seam contract sitting among absorption RFCs; rfc_005 was
-> repurposed for hexa-matter then SUPERSEDED by D17). Actual:
-> Yosys = **rfc_006 ✅** (created, D18/D19); Phase-3 seams took the
-> next free numbers — **rfc_007 ✅** materials→chip (`design.md`
-> D20), **rfc_008 ✅** chip→component (`design.md` D21). The
-> remaining tool absorptions get the next free numbers at creation
-> (Verilator → rfc_009, SymbiYosys → rfc_010, OpenSTA → rfc_011,
-> ngspice → rfc_012, Chisel/Amaranth → rfc_013, PDK → rfc_014) —
-> indicative, re-confirmed when created.
+> tool numbers above are **indicative only, NOT bindings** — RFC
+> numbers are assigned at *creation order* across all RFC kinds
+> (precedent: rfc_002 is itself a seam contract among absorption
+> RFCs; rfc_005 was repurposed then SUPERSEDED by D17). Created so
+> far: rfc_006 ✅ Yosys (D18/D19) · rfc_007 ✅ materials→chip seam
+> (D20) · rfc_008 ✅ chip→component seam (D21) · rfc_009 ✅
+> product-surface spec (D22). **Rule (de-enumerated to stop churn):
+> the remaining comb-stack tool absorptions (Verilator, SymbiYosys,
+> OpenSTA, ngspice, Chisel/Amaranth, PDK — §5 table) each take the
+> next free `rfc_0NN` at the time they are created** (so they begin
+> at rfc_010+); the exact number is fixed only when the RFC is
+> written, not pre-bound here.
 
 ## 6. Product surface — SaaS / Web / GUI (design of, not build of)
 
@@ -198,6 +199,13 @@ Design principles for the surface:
 
 Building it = execution → gated (D10). This RFC = its design only.
 
+> **Detailed spec landed: `proposals/rfc_009_product_surface_macos_
+> cockpit.md` (`design.md` D22).** rfc_009 details what §6 framed —
+> the typed-consumption contract (§2), 7-verb information
+> architecture (§3), honesty-as-feature UI (§4), the g5 boundary
+> (§5), forward-compat (§6). Build remains out of scope (gated
+> downstream session, D19 idiom) — g3: no app exists.
+
 ## 7. Phasing (all design-only; execution/SaaS-build/parity gated)
 
 - **Phase 0 — DONE**: 7-verb spine (cited) · chip-domain absorption
@@ -221,6 +229,11 @@ Building it = execution → gated (D10). This RFC = its design only.
   wired — no record flows, nothing absorbed, g3.)*
 - **Phase 4**: product-surface design — API spec + UI/workflow spec
   (rfc_0NN), front-end as typed-interface consumer.
+  *(DESIGN-COMPLETE — **rfc_009 ✅** (D22): macOS Swift cockpit spec,
+  typed-consumer of `exports/{chip/noc/f1f2, seams/*}`, honesty-as-
+  feature UI, g5 boundary. NOTE: design-complete ≠ built — no Xcode
+  project / Swift source / app exists; build = gated downstream
+  session, D10/D19 idiom, g3.)*
 - Each phase = incremental, per-domain, no-big-bang; nothing flips
   `absorbed=true` without measured parity (g3).
 
