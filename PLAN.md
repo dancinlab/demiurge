@@ -1198,3 +1198,26 @@
   의 명확한 상태 — *모든 게 done* 아님 (over-claim 회피). cockpit 은
   trigger+viewer 로 measured-green, synthesis 도구 주장은 θ build
   gate 전까지 안 함. `absorbed` flip 0.
+- 2026-05-19 — **Phase θ LANDED + measured-green (chat → Claude Code
+  CLI subprocess dispatch)**. goal "NEXT_SESSIONS.md 100% closure"
+  진행. 환경 probe: `claude` binary 있음 (2.1.143), `ANTHROPIC_API_KEY`
+  없음, exports/ 3D geometry record 0. **핵심 발견**: claude CLI 가
+  conversational + action 둘 다 커버하므로 D38 의 "API(conversational)
+  + CLI(action)" dual-dispatch 가 **CLI 단일 backend 로 통합** — API
+  key 불필요, η-2 가 θ 에 흡수됨. 구현: `CockpitApp.swift` 의
+  `sendChat()` 이 stub 대신 `Self.runClaude(prompt:)` 호출 — `Process`
+  로 `/usr/bin/env claude -p "<guarded-prompt>"` subprocess 실행,
+  stdout 캡쳐, async/await + `withCheckedContinuation`, MainActor 에서
+  chat bubble 갱신. **safety (g3 / @F f6)**: prompt 에 read-only
+  prefix ("do NOT modify files, run builds, or invoke tools"); `env`
+  로 호출하므로 shell alias `--dangerously-skip-permissions` 미상속;
+  `claude -p` print mode 가 GUI subprocess 에서 tool-permission prompt
+  에 응답 불가 → tool use fail-safe → cockpit chat 이 *trigger+viewer*
+  유지, 자동 synthesis 안 함. 실제 scoped-tool-permission action
+  dispatch 는 θ-2. **빌드 measured-green** (Mini, swift 6.3.1):
+  `swift run CockpitApp` PASS 4.75s · 0 warnings · app launch.
+  **g3**: θ *코드* measured-green (compiles+links, chat 가 claude CLI
+  에 연결됨). *실제 claude 응답 렌더* 는 사용자 GUI 인터랙션 검증
+  필요 (chat 입력 → claude subprocess → bubble 갱신). 어떤 record
+  도 emit 안 됨 (read-only prefix), `absorbed` flip 0. 새 RFC 0, 새
+  governance 0, 새 design.md decision 0.

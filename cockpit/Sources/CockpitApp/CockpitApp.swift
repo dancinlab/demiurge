@@ -210,22 +210,64 @@ struct ContentView: View {
         }
     }
 
-    /// Phase η-1 stub responder. η-2 replaces this with Claude Code API
-    /// streaming; θ adds Claude Code CLI subprocess dispatch for actions.
+    /// Phase θ — dispatch chat input to the Claude Code CLI (`claude -p`)
+    /// as a subprocess (D34 / D38 / @D g_ai_agent_chat_surface). Since the
+    /// `claude` binary is on PATH, the dual-dispatch of D38 collapses onto
+    /// one backend: the CLI serves both conversational and action prompts.
+    ///
+    /// Safety (g3 / @F f6): the prompt is prefixed with a read-only
+    /// instruction, and `claude -p` (print mode) without granted tool
+    /// permissions cannot run builds / write files from a GUI subprocess
+    /// (no way to answer a permission prompt) — so the cockpit chat stays
+    /// a *trigger + viewer*, never silently performs synthesis. Real
+    /// action dispatch with scoped tool-permissions is phase θ-2.
     private func sendChat() {
         let text = chatInput.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return }
         chatMessages.append(ChatMessage(role: .user, text: text))
         chatInput = ""
-        let isAction = ["/synth", "/measure", "/verify", "/analyze"]
-            .contains { text.hasPrefix($0) }
-        let reply: String
-        if isAction {
-            reply = "[stub η-1] action command detected. Phase θ routes this to Claude Code CLI (D34 / D38 / @D g_ai_agent_action_surface). Not dispatched — agent action surface not yet wired; no record emitted."
-        } else {
-            reply = "[stub η-1] conversational query. Phase η-2 routes this to Claude Code API (streaming). Not dispatched — backend not yet wired."
+        let thinkingIndex = chatMessages.count
+        chatMessages.append(ChatMessage(role: .assistant, text: "… dispatching to Claude Code CLI …"))
+        Task {
+            let reply = await Self.runClaude(prompt: text)
+            await MainActor.run {
+                if thinkingIndex < chatMessages.count {
+                    chatMessages[thinkingIndex] = ChatMessage(role: .assistant, text: reply)
+                }
+            }
         }
-        chatMessages.append(ChatMessage(role: .assistant, text: reply))
+    }
+
+    /// Invoke `claude -p <prompt>` as a subprocess and capture stdout.
+    /// `/usr/bin/env` resolves `claude` on PATH (shell aliases do not apply
+    /// to Process, so the `--dangerously-skip-permissions` alias is NOT
+    /// inherited — print mode without tool permissions stays read-only).
+    private static func runClaude(prompt: String) async -> String {
+        let guarded = "[demiurge cockpit chat — answer concisely; do NOT modify files, run builds, or invoke tools] \(prompt)"
+        return await withCheckedContinuation { cont in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let proc = Process()
+                proc.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+                proc.arguments = ["claude", "-p", guarded]
+                let pipe = Pipe()
+                proc.standardOutput = pipe
+                proc.standardError = pipe
+                do {
+                    try proc.run()
+                    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+                    proc.waitUntilExit()
+                    let out = (String(data: data, encoding: .utf8) ?? "")
+                        .trimmingCharacters(in: .whitespacesAndNewlines)
+                    if out.isEmpty {
+                        cont.resume(returning: "(claude returned no output; exit \(proc.terminationStatus))")
+                    } else {
+                        cont.resume(returning: out)
+                    }
+                } catch {
+                    cont.resume(returning: "claude invocation failed: \(error.localizedDescription)\n(phase θ — `claude` must be on PATH)")
+                }
+            }
+        }
     }
 
     /// LEFT 2nd (D33) — Artifacts tree populated by ArtifactRegistry (phase β).
