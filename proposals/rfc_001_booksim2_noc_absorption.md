@@ -191,3 +191,21 @@ required, closed-binary RE refused (`design.md` Decision 1).
 - Topology theory: Slim NoC arXiv:2010.10683.
 - Open PDKs: SkyWater SKY130, IHP-Open-PDK
   <https://github.com/IHP-GmbH/IHP-Open-PDK>.
+
+## 11. Export interface — `F1F2-record` schema v1.0
+
+This RFC is the **producer** of the BookSim2 absorption. The
+**consumer contract** (what fields are emitted, in what format, with
+what provenance guarantees) is split into a sibling RFC per HANDOFF §7
+"one absorption-RFC per concept":
+
+→ `proposals/rfc_002_f1f2_export_interface.md` — typed-interface
+   contract for the `hexa-arch:chip:noc:F1F2-record` artifact consumed
+   by hexa-lang `comb` (`design.md` Decision 2 typed-interface +
+   Decision 7 producer-owned path).
+
+Records are emitted to `~/core/hexa-arch/exports/chip/noc/f1f2/`;
+carrier is HXC v2 byte-canonical wire (forced by hexa-lang `@D g_hxc`);
+per-record provenance enforced (`provenance.absorbed = false` until
+this RFC's §8 measurement gate closes). See rfc_002 §3 for the schema,
+§4 for provenance fields, §5 for the path convention.

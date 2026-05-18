@@ -47,3 +47,91 @@
   PLAN 일제 7-verb 갱신. `proposals/rfc_001_booksim2_noc_absorption.md`
   골격 작성 (BookSim2 — gem5 아님 — + per-link wire-delay 모델 +
   Leighton oracle, 측정 게이트 명시). 코드 미착수.
+- 2026-05-18 — **D6 코호트 2 확정** (7 repos: fusion · scope · sscb ·
+  mobility · bot · grid · aura) — Cohort-1 사이즈(7) 동형, seed 4/5 cover,
+  4 산출물 클래스(물리계기·전력전자·차량/로봇·네트워크/웨어러블)
+  스트레스. 7개 shallow public-surface map 작성 = background Agent
+  진행 중 (RFC 057 location 정정 포함: hexa-lang/proposals/ 아닌
+  hexa-lang/comb/RFC.md 가 canonical).
+- 2026-05-18 — **D7 F1/F2 export artifact 위치 확정 = producer-owned**
+  (`~/core/hexa-arch/exports/chip/noc/f1f2/`); atlas 승격은 2nd consumer
+  등장 시 deferred. 신설:
+    · `proposals/rfc_002_f1f2_export_interface.md` — typed-interface
+      contract (rfc_001 = producer, rfc_002 = contract; HANDOFF §7
+      "one absorption-RFC per concept").
+    · `exports/chip/noc/f1f2/schema/v1_0.md` — human-readable schema
+      reference doc (HXC v2 carrier — 강제: hexa-lang `@D g_hxc`).
+    · rfc_001 §11 = rfc_002 포인터.
+  사용자측 9 파일 (~/core/hexa-lang/comb/T1_experiment ·
+  T1A_analytical · sim/README · COMB.tape · PLAN.md) = citation-only
+  패치, cross-repo 규율상 별 hexa-lang 세션에서 처리 예정.
+- 2026-05-18 — Background agents 상태 스냅: Agent-1 (rfc_001 §8 측정
+  게이트 baseline — BookSim2 build/run + wire-delay + Leighton)
+  진행 중; Agent-4 (Cohort 2의 7 도메인 shallow map) 진행 중.
+  완료 시 자동 알림 후 결과 검토 → 커밋 분할 판단.
+
+- 2026-05-18 — Agent-4 완료: Cohort 2 7개 shallow map 작성
+  (`domains/{fusion,scope,sscb,mobility,bot,grid,aura}.md`).
+  `domains/README.md` 업데이트: Cohort 2 파일 목록 + Agent-4 cross-cohort
+  insight 3개 ((a) MC-transport+FEM 재사용 5/6 → **8/13**; (b) `bot` =
+  all-open reference 도메인 (proprietary 갭이 *capability*가 아니라 throughput
+  + regulatory에만 있음); (c) **새 공유 패턴 = regulatory-verify proprietary
+  lock-in** — Cohort 1의 `brain`(Sim4Life MDDT) 1건이 Cohort 2에서 `mobility`
+  (ANSYS medini, ISO 26262/21448), `sscb`(UL 489I 1st-ed 2025-10-22),
+  `aura`(Sim4Life lower-bar) 3건 더 cross-confirmed; 알고리즘으로 못 닫고
+  *regulatory qualification 캠페인*으로만 닫힘 → 새 README synthesis bullet).
+
+- 2026-05-18 — **Agent-1 완료: rfc_001 §8 외부-reference baseline 측정**
+  (BookSim2 commit `28f43299`, BSD-2-Clause, 빌드 = Apple clang 21.0;
+  `/tmp/hexa-arch-rfc001-measurement/`).
+
+  Provenance (D1 공개면 클린룸 audit):
+  · 시뮬: BookSim2 `28f43299` (github.com/booksim/booksim2, BSD-2-Clause)
+  · Wire-delay: SMART 22 nm, δ = **90 ps/mm** (Krishna CSAIL 2013 ·
+    Kwon & Krishna OpenSMART ISPASS 2017)
+  · Analytic oracle: Leighton VLSI bounds (Springer DOI 10.1007/BF01744433);
+    Dally & Towles PPIN 2004 §3.2-3.3 mesh closed-forms
+
+  §B 8×8 mesh uniform: saturation **0.42 flits/node/cycle** — Jiang
+  ISPASS'13 Fig 7 + Dally PPIN Fig 25.2 publish-band 0.35–0.45 안
+  (band-membership ✓; 픽셀-정밀 overlay는 후속). zero-load 패킷 latency
+  50.2 cy @ inj 0.05. RNG stability 5.8 % (seed 1 vs 42 @ inj 0.35).
+
+  §D Tornado (22 nm, 4 GHz, 20 mm × 20 mm 정사각형 die, 8×8 grid,
+  a = 2.5 mm tile pitch; mesh links = 1 cy, hex cardinal = 1 cy, hex
+  diagonal = 2 cy):
+
+  | topology      | zero-load lat | avg hops | saturation (tornado) |
+  |---------------|--------------:|---------:|---------------------:|
+  | d=4 2-D mesh  |      64.70 cy |     8.49 | ~0.155 flits/node/cy |
+  | d=6 axial hex |      57.40 cy |     7.14 | ~0.195 flits/node/cy |
+  | 비율 d6/d4    |        0.887× |   0.841× |          **1.26×**   |
+
+  → **d=6 hex 가 d=4 mesh를 양 축에서 outperform** 한 단일 (4 GHz · 22 nm ·
+  axial-hex 정사각형 placement) 점. **regime 주장 아님** — 클럭 sweep,
+  d=6 uniform, 대체 hex placement, wire-delay-number sensitivity 미수행.
+
+  §E Leighton oracle (g3): **6/6 부등식 cross-check PASS** (bisection
+  floor · tornado throughput ceiling · zero-load latency floor 양쪽 ·
+  uniform hop-count analytic · tornado hop-count analytic). 시뮬이 이론
+  한계 위반 없음 → run accepted.
+
+  §F 정직한 게이트 평가: rfc_001 §8 (1) 재현 band-membership ✓ ·
+  (2) d=4 vs d=6 wire-delay-injected curve + Leighton 교차 ✓ · (3)
+  "absorbed at measured parity"는 **아직** — §7 hexa-native 재구현이
+  이 §B/§D 숫자를 재현할 때 비로소. 본 run은 *외부 reference target
+  생성*까지.
+
+  새 산출물: `exports/chip/noc/f1f2/records/{d4_mesh,d6_hex}_tornado_
+  22nm_4ghz.json` (2 records) + `pair_verdicts/d4_vs_d6_tornado_22nm_
+  4ghz.json` (1 derived). 전부 `provenance.absorbed = false` ·
+  `measurement_gate = GATE_OPEN` (no over-claim, g3).
+
+  3개 살아있는 open questions (rfc_001 §9 refined): (i) axial-hex on
+  square grid same-sign diameter = mesh와 동일 → 대체 placement 평가
+  필요; (ii) 4 GHz는 첫 정수-cycle 경계 — 클럭 sweep 없으면 regime claim
+  X; (iii) newer-FinFET 문헌 sensitivity 미수행.
+
+  다음 = §7 hexa-native 재구현 (`stdlib/booksim/{anynet, iq_router,
+  traffic, sweep, wire_delay, leighton}.hexa`) → §B/§D 재현 시 측정
+  게이트 GREEN → `provenance.absorbed = true` 일괄 flip.

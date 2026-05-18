@@ -53,7 +53,16 @@
   hexa_space = "~/core/hexa-space — 별개; 향후 space 도메인 연계 가능"
   hexa_lang = "~/core/hexa-lang — substrate; comb/ 첫 소비자; 흡수-RFC 패턴 출처"
 
-@N status := "scaffold + redesign-applied" :: note [d=2026-05-18 active]
-  state = "문서 6개 (design.md 추가) + 첫 RFC 골격; 코드 0"
-  next = "proposals/rfc_001_booksim2_noc_absorption.md (BookSim2 + per-link wire-delay + Leighton oracle)"
-  decisions = "design.md D1..D5 (research-boundary · matter/bio-decouple · cohort-sequencing · research-first · 7-verb spine)"
+@D d_typed_interface := "F1/F2 export interface (chip→comb)" :: decision [d=2026-05-18 active]
+  picked = "producer-owned ~/core/hexa-arch/exports/chip/noc/f1f2/ (design.md D7)"
+  carrier = "HXC v2 byte-canonical + tape v1.2 audit sibling (hexa-lang @D g_hxc — 불변)"
+  rfc_contract = "proposals/rfc_002_f1f2_export_interface.md"
+  rfc_producer = "proposals/rfc_001_booksim2_noc_absorption.md §11 = pointer"
+  schema = "exports/chip/noc/f1f2/schema/v1_0.md (draft; HXC tool 등장 시 v1_0.hxc 생성)"
+  atlas_promotion = "deferred until 2nd consumer beyond comb (e.g. cern/grid)"
+
+@N status := "scaffold + redesign + interface-contract + baseline-measured" :: note [d=2026-05-18 active]
+  state = "design.md D1..D7 + rfc_001/rfc_002 + exports/chip/noc/f1f2/{schema, records×2, pair_verdicts×1} + domains/*.md (Cohort 1 6 + Cohort 2 7); 코드 0"
+  baseline = "rfc_001 §8 외부-reference baseline complete (Agent-1, BookSim2 28f43299) — d=6 hex outperforms d=4 mesh at single (4 GHz · 22 nm · axial-hex 정사각형 placement) point; Leighton 6/6 PASS; regime 주장 아님 (rfc_001 §9 open questions 3개 live)"
+  next = "rfc_001 §7 hexa-native 재구현 → §B/§D 재현 시 측정 게이트 GREEN → provenance.absorbed 일괄 flip"
+  decisions = "design.md D1..D7 (research-boundary · matter/bio-decouple · cohort-sequencing · research-first · 7-verb spine · cohort-2 · export-path-producer-owned)"

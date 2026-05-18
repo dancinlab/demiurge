@@ -137,3 +137,76 @@ re-gated; user retains veto.
 - Right altitude — 7 ≈ NASA Phase A–F / PED-4.0 natural phase granularity;
   C(9) over-grained, B(5) re-conflates; no-over-claim: grounded, cited,
   not asserted.
+
+### Decision 6 — Cohort 2 composition (7 repos, size-matched to Cohort 1)
+
+**picked**: Cohort 2 = `hexa-fusion · hexa-scope · hexa-sscb · hexa-mobility
+· hexa-bot · hexa-grid · hexa-aura` (7 repos). Selected from the 27
+remaining hexa-* repos under github.com/dancinlab (Agent-3 survey output,
+2026-05-18). Cohort 1 (chip-deep + 6 shallow per Decision 3) remains the
+depth/template cohort; Cohort 2 gets the same shallow public-surface map
+treatment per the D3 hybrid pattern, replicating Cohort 1's
+`domains/<name>.md` shape. (Rejected: B = 3-repo HEP-narrow {fusion +
+scope + cosmos}; C = 3-repo industrial {sscb + mobility + grid}; D =
+5-repo seed-verbatim {fusion + scope + cosmos + sscb + mobility}.)
+
+**rationale**:
+- Size matches Cohort 1 (7) — proven no-big-bang cadence; no governance
+  recalibration needed.
+- Covers 4 of 5 user seed-hints (fusion · scope · sscb · mobility); drops
+  only borderline `cosmos` (theory-leaning per its own description; low
+  engineering-blueprint affinity).
+- Spans 4 deliverable classes simultaneously — physics-instrument
+  (fusion / scope) · power-electronics (sscb) · vehicle / robot
+  (mobility / bot) · network / wearable (grid / aura) — maximum
+  stress-test of the 7-verb spine's universality across non-physics
+  engineering (Agent-3 flagged SPECIFY / ARCHITECT / HANDOFF as the
+  under-evidenced slots in Cohort 1's cross-domain synthesis).
+- All 7 named artifacts are concrete engineering deliverables in their
+  own GitHub public description (no "maybe"s); no over-claim risk on
+  inclusion grounds.
+
+### Decision 7 — F1/F2 export artifact location: producer-owned
+
+**picked**: F1/F2 measurement records produced by hexa-arch[chip] live at
+`~/core/hexa-arch/exports/chip/noc/f1f2/` (producer-owned). `comb` reads
+by absolute path. Atlas promotion to `~/core/atlas/hexa-arch::chip::noc::
+f1f2/` is **deferred** until a *second* consumer beyond comb materializes
+(e.g. cern / grid wanting noc records). (Rejected: B = atlas-registered
+now — invents fleet-wide responsibility no third consumer has asked for;
+violates lattice-as-tool + andrej-karpathy simplicity.)
+
+Agent-2-defaulted sub-choices (cited governance — no separate user gate
+needed; recorded here for transparency):
+- Carrier = **HXC v2 byte-canonical wire** + tape v1.2 audit sibling
+  (forced by hexa-lang `CLAUDE.md` `@D g_hxc`).
+- RFC structure = **split** into new `proposals/rfc_002_f1f2_export_
+  interface.md` (HANDOFF §7 "one absorption-RFC per concept"); rfc_001
+  receives only a §11 pointer.
+- Schema status = **draft v1.0**; frozen only after first measured record
+  (`provenance.absorbed = true`) per no-over-claim g3.
+
+**rationale**:
+- D2 cleanliness — the interface is between *two* repos (hexa-arch ↔
+  hexa-lang/comb). Atlas promotion now would invent fleet-wide
+  responsibility that no third consumer has asked for (lattice-as-tool +
+  andrej-karpathy simplicity).
+- Audit chain `sim_commit_hash → emit_path → record` colocated inside
+  hexa-arch git — zero cross-repo forensics needed when a measurement is
+  later questioned.
+- Cross-repo friendliness preserved — absolute path + HXC byte-canonical
+  payload means any consumer clone reads identically; no registry server
+  required.
+- Atlas promotion trigger explicit and recorded — when a second consumer
+  appears (e.g. cern, grid), promote then; until then speculative-scope
+  is banned (lattice-as-tool g1/g2/g3, no-over-claim).
+
+### Decision-gate note on Agent-2 location finding
+
+Agent-2 discovered `rfc_057` does **not** exist under `~/core/hexa-lang/
+proposals/`. The canonical "RFC 057" lives at `~/core/hexa-lang/comb/
+RFC.md` (its own SSOT per flame/forge precedent). Recorded here so the
+audit trail does not assume `proposals/rfc_057_*`; cross-references in
+hexa-arch should cite `comb/RFC.md` + the operationalization files
+(`comb/T1_experiment.md`, `comb/T1A_analytical.md`,
+`comb/sim/f1_parametric.hexa`).

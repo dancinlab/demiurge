@@ -1,0 +1,105 @@
+{
+  "interface": "hexa-arch:chip:noc:F1F2-record",
+  "schema_version": "1.0",
+  "record_id": "PLACEHOLDER_HXC_A12_PENDING_TOOL",
+  "produced_at_utc": "2026-05-18T00:00:00Z",
+
+  "topology": {
+    "kind": "hex_axial",
+    "degree": 6,
+    "node_count": 64,
+    "region_shape": "k_by_k",
+    "routing": "min",
+    "boundary": "open",
+    "coord_kind": "axial_qr_projected_to_square_grid"
+  },
+
+  "wire_delay_model": {
+    "node": "22nm",
+    "ps_per_mm": 90,
+    "cycle_period_ps": 250,
+    "rc_exponent": 2,
+    "source_citations": [
+      "@x_smart_csail_2013_krishna",
+      "@x_opensmart_ispass17_kwon_krishna"
+    ],
+    "links_note": "8x8 axial hex projected onto same 20mm x 20mm die / 2.5 mm tile pitch. Cardinal links (4 of 6 neighbours) = 2.5 mm = 1 cycle. Diagonal links (2 of 6 neighbours, axis +i/-j) = 2.5 * sqrt(2) ~ 3.536 mm = 2 cycles (wire delay 318 ps > 250 ps period). Generator: /tmp/hexa-arch-rfc001-measurement/runs/gen_topologies.py."
+  },
+
+  "router_cost": {
+    "port_area_norm": 1.50,
+    "port_energy_norm": 1.50,
+    "iq_pipeline": {
+      "routing_delay": 0,
+      "vc_alloc_delay": 1,
+      "sw_alloc_delay": 1,
+      "credit_delay": 2
+    },
+    "vc_count": 8,
+    "buffer_per_vc_flits": 8,
+    "packet_size_flits": 20,
+    "input_speedup": 2,
+    "source_citations": [
+      "@x_dally_towles_2004_ppin",
+      "@x_jiang_ispass13_booksim2",
+      "@x_t1a_analytical_section_2"
+    ]
+  },
+
+  "traffic": "tornado",
+
+  "latency_curve": [
+    { "injection_rate": 0.05, "avg_latency_cycles": 57.40 },
+    { "injection_rate": 0.10, "avg_latency_cycles": 66.51 },
+    { "injection_rate": 0.15, "avg_latency_cycles": 86.10 },
+    { "injection_rate": 0.16, "avg_latency_cycles": 88.42 },
+    { "injection_rate": 0.17, "avg_latency_cycles": 97.46 },
+    { "injection_rate": 0.18, "avg_latency_cycles": 124.47 },
+    { "injection_rate": 0.19, "avg_latency_cycles": 137.29 }
+  ],
+
+  "saturation_throughput": {
+    "injection_rate_at_knee": 0.195,
+    "knee_definition": "first_unstable_injection_rate"
+  },
+
+  "leighton_oracle": {
+    "status": "PASS",
+    "bisection_bound": 8,
+    "bisection_observed": 15,
+    "diameter_bound": 14,
+    "diameter_observed": 14,
+    "source_citation": "@x_leighton_1992_doi_10.1007_BF01744433"
+  },
+
+  "verdict": {
+    "f1": "INCONCLUSIVE",
+    "f2": "INCONCLUSIVE",
+    "rationale": "single-topology record; F1/F2 verdict requires the pair-verdict aggregator over this + the degree-4 mesh mate at identical (traffic, node, wire_delay_model)"
+  },
+
+  "provenance": {
+    "absorbed": false,
+    "sim_engine": "booksim2_external_reference",
+    "sim_commit_hash": "28f43299f1706a3160ffac721ca461d74eb6e618",
+    "wire_delay_source": {
+      "doi_or_url": "https://people.csail.mit.edu/suvinay/pubs/2013.smart.computer.pdf",
+      "node_basis": "SMART 22nm TSMC GP, characterization Table 2; reaffirmed OpenSMART ISPASS 2017 §III"
+    },
+    "leighton_source": {
+      "doi": "10.1007/BF01744433",
+      "edition": "Leighton 1984 + Leighton 1992 §1.4; Dally & Towles PPIN 2004 §3.2-3.3"
+    },
+    "measurement_gate": "GATE_OPEN",
+    "gate_failures": [],
+    "consumer_target": "hexa-lang:comb:RFC_057:F1F2",
+    "atlas_cite_block": "@cite hexa-arch:rfc_001 §4 + §5 + §8; design.md D1 + D7",
+    "scope_caveats": [
+      "single (clock, node, placement) point — not a regime claim",
+      "axial-hex on square grid same-sign pair diameter = 14 (same as d=4 mesh); degree-6 advantage only helps opposite-sign pairs — alternative hex placements (e.g. king-move d=8) unevaluated",
+      "4 GHz is the first integer-cycle frequency where diagonal links cost 2 cycles; clock sweep not performed",
+      "22nm SMART is the most-modern public characterization; newer-FinFET sensitivity not performed",
+      "routing = min (DOR variant); adaptive routing under-utilises diagonal links and may understate d=6 throughput"
+    ]
+  }
+}
