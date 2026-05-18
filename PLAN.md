@@ -1253,3 +1253,32 @@
     아님 (over-claim 회피). cockpit 은 trigger+viewer 로 measured-
     green; synthesis 도구 주장 0; `absorbed` flip 0. 새 RFC 0, 새
     governance 0, 새 design.md decision 0.
+- 2026-05-19 — **Phase ι LANDED (viewer shell measured-green) +
+  AR/visionOS 목표 AGENTS.tape 기록**. 사용자 pick A' (RealityKit,
+  D35 유지). 새 파일 `cockpit/Sources/CockpitApp/Views/
+  ComponentView3D.swift` — `ExplodedStackView` (`NSViewRepresentable`
+  로 RealityKit `ARView` wrap) + `ComponentView3D` (SwiftUI). 내용:
+  procedural 5-layer exploded box stack (Glass/PV/Frame/Sink/Mount
+  흉내, `MeshResource.generateBox` + `SimpleMaterial`) + `PerspectiveCamera`
+  entity + `DragGesture` orbit (yaw/pitch 누적, onEnded base 갱신 —
+  D35 "마우스 드래그 회전만, 자동 애니메이션 0"). `$DOM:component`
+  선택 시 CENTER 가 `domainCanvas()` 통해 ComponentView3D 표시 (그
+  외 domain 은 MarkdownView). **빌드 measured-green** (Mini, swift
+  6.3.1): `swift run CockpitApp` PASS 3.21s · 0 warnings. 빌드
+  과정의 honest 기록: macOS RealityKit `ARView` API 가 iOS 와 달라
+  3회 fix — `cameraMode:.nonAR`/`environment.background` 는 macOS
+  미지원 (macOS 는 ARKit 없음, `ARView(frame:)` 가 plain virtual
+  3D viewport), `import DemiurgeCore` 누락, switch-case ViewBuilder
+  추론 깨짐 → `domainCanvas()` 함수 추출로 해결. **g3 정직**:
+  ComponentView3D 는 **PLACEHOLDER procedural geometry** —
+  `../exports/**` 에 USDZ/STL geometry record 0 개라 실 component
+  데이터 아님; view 본문 + PLAN 에 "placeholder" 명시. ι-2 = 실제
+  USDZ 로드 (component-domain producer 가 emit 할 때 — downstream
+  데이터 게이트). **AR/visionOS**: 사용자 directive "AR/visionOS
+  지원 목표로 하자 AGENTS.tape 기록" → 새 `@N n_cockpit_ar_target`
+  등록 (RealityKit picked 이유 = visionOS-native forward path;
+  macOS 는 v0 desktop viewport, AR/visionOS spatial 은 future
+  target, 같은 RealityKit scene graph 재사용). rfc_011 §10 ι row +
+  NEXT_SESSIONS P-⑥ ③ 갱신 (viewer shell CLOSED measured-green,
+  ι-2 = real-USDZ 데이터 게이트). 새 RFC 0, 새 design.md decision
+  0, 새 governance @D 0 (note 1개).

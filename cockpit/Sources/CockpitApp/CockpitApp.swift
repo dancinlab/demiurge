@@ -319,8 +319,10 @@ struct ContentView: View {
                     } else {
                         ProgressView("loading record…")
                     }
-                case .decision, .rfc, .domain:
+                case .decision, .rfc:
                     MarkdownView(stub: stub)
+                case .domain:
+                    domainCanvas(stub)
                 }
             } else if let result = recordResult {
                 RecordView(result: result)
@@ -329,6 +331,16 @@ struct ContentView: View {
             }
         }
         .frame(minWidth: 540)
+    }
+
+    /// Domain CENTER view — `component` (D21) gets the phase-ι RealityKit
+    /// 3D ComponentMode viewer; other domains render their `.md` summary.
+    @ViewBuilder private func domainCanvas(_ stub: ArtifactStub) -> some View {
+        if stub.id.key == "component" {
+            ComponentView3D(stub: stub)
+        } else {
+            MarkdownView(stub: stub)
+        }
     }
 
     // MARK: — RIGHT pane

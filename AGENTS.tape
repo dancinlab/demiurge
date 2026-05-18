@@ -74,3 +74,8 @@
   goal = "GOAL.md (한 문장 north-star + 정직한 현 위치)"
   progress = "PLAN.md (append-only log)"
   index = "ARCH.tape"
+
+@N n_cockpit_ar_target := "cockpit 3D viewer targets AR / visionOS portability" :: note [d=2026-05-19 active]
+  text = "The cockpit's 3D viewer (phase ι — `ComponentView3D`, the exploded-isometric ComponentMode) uses RealityKit (D35) specifically so it can port to AR / visionOS spatial rendering. RealityKit was picked over SceneKit for exactly this forward path — visionOS is RealityKit-native. On macOS the cockpit runs a plain virtual `ARView` viewport with mouse-drag orbit (v0, measured-green); AR / visionOS spatial is the stated future target — new platform surfaces reuse the same RealityKit scene graph."
+  decision_ref = "design.md D35 · rfc_011 §9"
+  user_directive = "2026-05-19 — 'AR/visionOS 지원 목표로 하자 AGENTS.tape 기록'"

@@ -261,14 +261,16 @@ the five P-⑥ items, each now in a definite state:
    carries the rate-limit / detached-runner discipline of P-④.
 
 ③ ι — RealityKit 3D viewer (ComponentMode).
-   OPEN — but the gate is downstream DATA, not cockpit code. There
-   are ZERO USDZ/STL geometry records in ../exports/**; the
+   viewer SHELL: CLOSED — measured-green. `ComponentView3D`
+   (RealityKit `ARView` + procedural 5-layer exploded box stack +
+   mouse-drag orbit, D35) renders when `$DOM:component` is selected.
+   It is explicitly labelled PLACEHOLDER geometry (g3). AR/visionOS
+   portability recorded — `AGENTS.tape @N n_cockpit_ar_target`.
+   REMAINING as ι-2: load a REAL USDZ/STL — gated on downstream
+   DATA, since `../exports/**` holds zero geometry records; the
    `component` domain (D21) producer (FreeCAD / KiCad / StepUp
-   chain) has emitted none. Writing a RealityKit viewer now would
-   be dead code with nothing to render. ι is correctly handed off:
-   it opens when a component-domain producer emits its first USDZ.
-   Aesthetic target on file: `cockpit/references/bipv-module-
-   exploded-isometric.jpg`.
+   chain) must emit one first. Aesthetic target on file:
+   `cockpit/references/bipv-module-exploded-isometric.jpg`.
 
 ④ γ-2 — full per-kind Artifact protocol cards.
    RESOLVED — not pursued. γ's kind-aware MarkdownView (Decision-

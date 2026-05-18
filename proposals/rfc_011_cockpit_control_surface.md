@@ -463,7 +463,7 @@ filters/deps). `rfc_011` adds:
 | η-2 | conversational backend | ✅ merged into θ — the `claude` CLI covers conversational prompts; D38 dual-dispatch collapses onto one CLI backend, no `ANTHROPIC_API_KEY` path needed |
 | γ-2 | full per-kind Artifact protocol cards | ✅ resolved — not pursued; γ's kind-aware MarkdownView is functional per-kind rendering, a separate protocol + card structs is premature abstraction (minimum-new-structure) |
 | δ-2 | Inspector Data / Citations sub-tabs | ✅ resolved (scope-reduced) — Data redundant with CENTER RecordView; Citations already rendered by ProvenanceBanner; DEPENDENCIES folded into phase ζ |
-| ι | RealityKit ComponentMode 3D viewer | ⏸ open — gated on downstream DATA (zero USDZ/STL geometry records in `exports/`); opens when a `component`-domain producer emits its first USDZ |
+| ι | RealityKit ComponentMode 3D viewer | ✅ measured-green (placeholder) — `ComponentView3D`: RealityKit `ARView` + procedural 5-layer exploded box stack + mouse-drag orbit (D35). ι-2 = load real USDZ awaits a `component`-domain producer (zero geometry records in `exports/` today). AR/visionOS portability = `@N n_cockpit_ar_target` |
 
 **Closure note (2026-05-19, goal "NEXT_SESSIONS.md 100% closure")**:
 every phase is in a definite state. Measured-green (`swift run`
