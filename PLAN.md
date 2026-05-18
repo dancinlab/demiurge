@@ -451,3 +451,17 @@
   protected (15 commits pushed). Next: ③ run hexa-matter selftest
   under the hexa-arch tree (g3 gate) → then ④ dependents → ⑤⑥ with
   explicit go.
+- 2026-05-18 — **Governance correction (user): `stdlib/` ⊂ hexa-lang
+  ONLY; hexa-arch = consumer (가져다쓸분), never owns stdlib/.**
+  Recorded in new **`AGENTS.tape`** (`@D g_stdlib_ownership` +
+  `@F f1` deny + consolidated load-bearing governance: g3-retained,
+  D1 clean-room, D2/D11 decouple, D10-rescinded, absorption pattern,
+  g5 hybrid exception, SSOT map). ⚠ **Known violation flagged**:
+  `hexa-arch/stdlib/booksim/{anynet,iq_router,traffic,sweep,
+  wire_delay,leighton}.hexa(+.stub)` (committed 211e0b9/9dfac28/
+  036fc0a) sits under a hexa-arch `stdlib/` tree → violates the new
+  rule. Remediation = **D15 (pending gate)**: migrate to
+  hexa-lang/stdlib/booksim/ (rfc_047/048 precedent; cross-repo, =
+  hexa-lang session/PR per hexa-first) vs keep as non-stdlib
+  hexa-arch domain artifacts. ③ hexa-matter selftest agent
+  (a58e8f5…) runs independently (domains/matter/ only — unaffected).
