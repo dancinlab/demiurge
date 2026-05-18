@@ -539,3 +539,25 @@
   only — building it is downstream** (rfc_004 §6; D10-rescinded
   permits it but it is not started). rfc_004 §6 RESOLVED banner +
   design.md D16 recorded.
+- 2026-05-18 — **rfc_005 ④ dependents inventory DONE — BLOCKING
+  CONFLICT surfaced (g3; ⑤⑥ HELD)**. Breaking on ⑤: `hexa-bio/
+  README.md:636` + `AGENTS.md:183` hard URL links to
+  `github.com/dancinlab/hexa-matter` (cross-repo → 404 on rename);
+  Zenodo DOI 10.5281/zenodo.20102811 metadata repo-URL would dangle
+  (the DOI archive itself is immutable/persists). **CRITICAL: hexa-
+  matter is ALREADY absorbed into hexa-lang** — hexa-lang's own
+  `stdlib/PLAN.md` L1/L37 ("hexa-matter stdlib-only 6모듈 | 완료 |
+  ✅ 완전 이관, .py 제거, selftest 38/38") + 21 KB
+  `inbox/notes/2026-05-14-hexa-matter-absorption-plan.md`. Our
+  session's D12/rfc_005 (absorb into hexa-arch domains/matter/ +
+  tombstone dancinlab/hexa-matter) **conflicts** with (i) that
+  pre-existing completed hexa-lang absorption and (ii) the user's
+  OWN D15 (`stdlib ⊂ hexa-lang; hexa-arch = consumer` — a materials
+  toolkit is exactly that class). The "38/38" our ③ gate verified is
+  the same count hexa-lang's prior migration reports → likely a
+  re-verification of what hexa-lang already owns, not a distinct
+  hexa-arch absorption. **⑤⑥ (GitHub rename / local delete) NOT done
+  and HELD** — proceeding would irreversibly act on a repo hexa-lang's
+  SSOT still references as the source + violate D15 + over-claim.
+  Reconciliation = **design.md D17 (gate, pending)**. Nothing
+  destructive/outward done; originals untouched.

@@ -125,9 +125,17 @@ Updated 2026-05-18 — status by step (rfc_005 §6):
   `domains/matter/`; D13/D14).
 - ③ selftest gate — **DONE / GATE MET** (§4: 38/38 · 29/29 · 4/4 ·
   36/36, cited). hexa-matter is **absorbed at measured parity**.
-- ④ dependents check — **NOT done** (HEXA-family READMEs / sibling
-  badges / Zenodo DOI / refs to dancinlab/hexa-matter — inventory
-  pending).
+- ④ dependents check — **DONE; BLOCKING CONFLICT found** (see
+  design.md D17 gate). Breaking on ⑤: hexa-bio README.md:636 +
+  AGENTS.md:183 hard URL links to dancinlab/hexa-matter (cross-repo,
+  404 on rename); Zenodo DOI 10.5281/zenodo.20102811 metadata
+  repo-URL dangles (DOI archive itself immutable, persists). CRITICAL:
+  hexa-lang already absorbed hexa-matter — its own stdlib/PLAN.md
+  ("hexa-matter stdlib-only 6모듈 | 완료 | ✅ 완전 이관, .py 제거,
+  selftest 38/38") + inbox/notes/2026-05-14-hexa-matter-absorption-
+  plan.md. Our D12 (hexa-arch absorb) conflicts with the pre-existing
+  hexa-lang absorption AND with the user's own D15 (stdlib ⊂
+  hexa-lang; hexa-arch = consumer). ⑤⑥ HELD pending D17.
 - ⑤ GitHub `hexa-matter → archive_hexa-matter` rename — **NOT done**
   (outward/irreversible; explicit per-step go required, confirmed #3).
 - ⑥ `~/core/hexa-matter` local delete — **NOT done** (destructive;
