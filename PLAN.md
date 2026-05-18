@@ -172,3 +172,23 @@
   hop ratio (flagged definitional, not drift). Refined open Qs:
   absolute FinFET ps/mm, finer throughput-knee grid, d=8 router
   silicon cost, adaptive routing.
+- 2026-05-18 — OpenROAD build (ubu pool) **BLOCKED on host availability**.
+  ORFS (OpenROAD-flow-scripts, BSD/Apache OSS) cloned `--recursive` to
+  ubu-2 `~/core/OpenROAD-flow-scripts` (5.2 GB, all submodules incl.
+  yosys). `etc/DependencyInstaller.sh -all` ran ~50 min then failed
+  (wilson-pool autosync rsync dropped, exit 255); ubu-2 then went fully
+  unreachable (SSH banner timeout — overload/thrash; ubu-1 + macOS host
+  already off-roster → pool empty). No `openroad` binary produced.
+  comb T3 (P&R) NOT reached — but comb T3 inputs CONFIRMED present on
+  ubu-2 (`comb/` sync OK; artifacts are not the blocker; blocker = absent
+  binary). **ORACLE CROSS-CHECK PASS** (no P&R needed): comb yosys SKY130
+  area d4 = 61,762.99 µm² · d6 = 93,608.53 µm² → ratio 1.5156x, matches
+  comb HANDOFF §4 oracle 1.516x exactly. Post-P&R area = pending build.
+  T3 caveat: `comb/rtl/pnr_run.tcl` line 22 hardcodes liberty path
+  `/tmp/sky130/.../sky130_fd_sc_hd__tt_025C_1v80.lib` — must
+  `git clone efabless/skywater-pdk-libs-sky130_fd_sc_hd` on the build
+  host first. wilson-pool routing gotcha: bare `git clone` /
+  `DependencyInstaller.sh` don't keyword-match → need a `cmake`-token
+  nudge to route to the pool. Resume = ubu-2 back on roster → installer
+  → build → `openroad -version` → T3. comb coordination (HANDOFF §5):
+  openroad landed on Linux = NO.
