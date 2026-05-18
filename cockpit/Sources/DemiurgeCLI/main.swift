@@ -1,45 +1,52 @@
-// DemiurgeCLI — phase α-3 minimum read-only scaffold (rfc_011 §10 / D34 / D38).
+// DemiurgeCLI — phase α-3 + β minimum read-only scaffold
+// (rfc_011 §10 / D34 / D38).
 //
 // Subcommands (v0, read-only):
 //   demiurge --version | -v           Print version banner
 //   demiurge --help    | -h           This help
+//   demiurge list-all                 List artifacts of all kinds
 //   demiurge list-records             List F1F2 records under ../exports/
-//   demiurge show <path>              Show one record (path relative to pwd
-//                                     under ../exports/** per invariant a)
+//   demiurge list-decisions           List design.md decisions
+//   demiurge list-rfcs                List ../proposals/rfc_*.md
+//   demiurge list-domains             List ../domains/*.md
+//   demiurge show <path>              Show one F1F2 record + provenance
 //
 // Action subcommands (rfc_011 §6, Phase θ — NOT here yet):
-//   demiurge synth   <args>           AI-agent dispatch via Claude Code CLI
-//   demiurge measure <args>           ↑
-//   demiurge verify  <args>           ↑
-//   demiurge analyze <args>           ↑
+//   demiurge synth   <args>
+//   demiurge measure <args>
+//   demiurge verify  <args>
+//   demiurge analyze <args>
 //
-// All subcommands respect @D g_cockpit_isolation invariant (a): inputs that
-// resolve outside ../exports/** are rejected with the same error path used
-// by the GUI (RecordLoaderError.pathOutsideExports).
-//
-// Build: cd cockpit && swift build
-// Run:   swift run DemiurgeCLI <subcommand> [args…]
+// All `list-*` subcommands use `ArtifactRegistry` (DemiurgeCore) — the same
+// abstraction that drives the GUI Artifacts tab. `show` uses `RecordLoader`
+// with invariant-a runtime check (paths outside ../exports/** are
+// rejected).
 
 import Foundation
 import DemiurgeCore
 
-let version = "0.0.1 (phase α-3, read-only — rfc_011 §10)"
+let version = "0.0.2 (phase α-3 + β, read-only — rfc_011 §10)"
 
 func usage() {
     print("""
     demiurge — Demiurge cockpit CLI (read-only)
 
     USAGE:
-      demiurge list-records           List F1F2 records under ../exports/
-      demiurge show <path>            Show one record (relative path)
-      demiurge --version              Print version
-      demiurge --help                 This help
+      demiurge list-all                List artifacts of all kinds
+      demiurge list-records            List F1F2 records under ../exports/
+      demiurge list-decisions          List design.md decisions
+      demiurge list-rfcs               List ../proposals/rfc_*.md
+      demiurge list-domains            List ../domains/*.md
+      demiurge show <path>             Show one F1F2 record + provenance
+      demiurge --version | -v          Print version
+      demiurge --help    | -h          This help
 
     NOTES:
-      - Reads ONLY ../exports/** (@D g_cockpit_isolation invariant a).
+      - Records strictly read from ../exports/** (@D g_cockpit_isolation a).
+      - Navigation docs read READ-ONLY per design.md D41 clarification.
       - Action subcommands (synth / measure / verify / analyze) land in
-        Phase θ via Claude Code CLI dispatch (D34 / D38 / @D
-        g_ai_agent_action_surface).
+        Phase θ via Claude Code CLI dispatch (D34 / D38 /
+        @D g_ai_agent_action_surface).
     """)
 }
 
@@ -47,27 +54,23 @@ func printVersion() {
     print("demiurge \(version)")
 }
 
-func listRecords() -> Int32 {
-    let root = RecordLoader.f1f2RecordsRoot
-    let fm = FileManager.default
-    var isDir: ObjCBool = false
-    guard fm.fileExists(atPath: root.path, isDirectory: &isDir), isDir.boolValue else {
-        FileHandle.standardError.write(Data("list-records: directory not found: \(root.path)\n".utf8))
-        return 2
+func list(kind: ArtifactKind) -> Int32 {
+    let stubs = ArtifactRegistry.load(kind: kind)
+    print("\(kind.rawValue) (\(stubs.count)):")
+    // pad to the longest id in this batch so columns align without
+    // truncating the id (matters for $DOM:<name> which varies in length)
+    let maxLen = stubs.map { $0.id.display.count }.max() ?? 0
+    for s in stubs {
+        let pad = String(repeating: " ", count: max(0, maxLen - s.id.display.count))
+        print("  \(s.id.display)\(pad)  \(s.title)")
     }
-    let urls: [URL]
-    do {
-        urls = try fm.contentsOfDirectory(at: root, includingPropertiesForKeys: nil)
-    } catch {
-        FileHandle.standardError.write(Data("list-records: \(error.localizedDescription)\n".utf8))
-        return 2
-    }
-    let jsonFiles = urls
-        .filter { $0.pathExtension == "json" }
-        .sorted { $0.lastPathComponent < $1.lastPathComponent }
-    print("F1F2 records (\(jsonFiles.count)) at \(root.path):")
-    for f in jsonFiles {
-        print("  \(f.lastPathComponent)")
+    return 0
+}
+
+func listAll() -> Int32 {
+    for k in ArtifactKind.allCases {
+        _ = list(kind: k)
+        print("")
     }
     return 0
 }
@@ -124,8 +127,16 @@ case "--version", "-v":
 case "--help", "-h":
     usage()
     exitCode = 0
+case "list-all":
+    exitCode = listAll()
 case "list-records":
-    exitCode = listRecords()
+    exitCode = list(kind: .f1f2)
+case "list-decisions":
+    exitCode = list(kind: .decision)
+case "list-rfcs":
+    exitCode = list(kind: .rfc)
+case "list-domains":
+    exitCode = list(kind: .domain)
 case "show":
     guard args.count >= 3 else {
         FileHandle.standardError.write(Data("show: missing <path> argument\n".utf8))

@@ -1383,3 +1383,45 @@ single-window without toolbar — `+Synth` 같은 session-wide action
 - 미래 확장 여유 — TabView 라 새 탭 추가가 layout 깨지 않음 (History,
   Search, Action queue, 7-verb tracker 모두 점진 lands). Phase
   α-2 → η → θ → ι 의 점진 addition 가 그대로.
+
+### Decision 41 — Cockpit boundary read scope clarification (records strict + navigation docs read-only)
+
+**picked**: phase β 의 LEFT Artifacts tab 이 design.md / proposals/ /
+domains/ 같은 project metadata 를 sidebar 채우기 위해 읽어야 하는데,
+기존 `@D g_cockpit_isolation` invariant (a) 의 rule string ("reads
+ONLY ../exports/**") 그대로 narrow 해석하면 docs 도 못 읽음. 그래서
+invariant (a) 를 **두 sub-clause 로 명료화** — (a-records) records 는
+*strict* 하게 `../exports/**` 에서만 읽고, `RecordLoader` 의 runtime
+check (`pathOutsideExports` 에러) 로 enforce. (a-docs) **navigation
+documents** (`../design.md`, `../proposals/`, `../domains/`, `../inbox/`,
+`../archive/`, `../README.md`, `../CHARTER.md`, `../HANDOFF.md`,
+`../GOAL.md`, `../PLAN.md`, `../ARCH.tape`, `../AGENTS.tape`,
+`../cockpit/references/`) 는 cockpit/CLI 가 **read-only navigation
+metadata** 로 읽어도 됨. 단 (a-docs) 의 contents 는 NEVER measurement-
+gate / absorbed / parity claim 으로 인용되지 않음 — 즉 docs 는 *카드
+표시 + 트리 navigation* 용도이며 *측정 사실의 출처* 가 아님. (b/c/d)
+invariant 들 그대로 유지. AGENTS.tape `@D g_cockpit_isolation` 의
+rule 이 이 명료화를 반영하도록 수정. (Rejected: invariant (a) 를
+records-only 로 strict 유지 — sidebar 가 자기 repo 의 docs 조차 못
+읽으면 product surface 가 navigable 안 됨, rfc_010 §4 / rfc_011 §3
+부터 모순.) (Rejected: 전부 broad scope 으로 — invariant 의 g3
+record-honesty 안전핀 약화.)
+
+**rationale**:
+- phase β 의 implementation forcing function — `ArtifactRegistry.
+  loadDecisions/loadRFCs/loadDomains` 가 `../design.md`/`../proposals/`
+  /`../domains/` 를 읽어야 sidebar 구현 가능. invariant (a) 가
+  명료화 안 되면 거버넌스 위반 우려.
+- *records* 와 *navigation docs* 의 자연 분리 — records 는 producer
+  가 honest-gate 와 함께 emit, docs 는 governance / design / human-
+  readable. 둘 invariant scope 가 자연 다름.
+- (a-docs) 의 안전핀 — docs contents 가 measurement_gate 주장으로
+  인용 금지. 즉 cockpit 이 design.md 의 D29 본문에서 "measured-
+  green" 라 적은 prose 를 봤다고, 그 자체로 새 record 의 gate 를
+  upgrade 못 함. 모든 gate claim 은 *records* 에서만.
+- 새 governance 안 추가, 기존 `@D g_cockpit_isolation` rule 의 1
+  field 만 보강 — minimum-new-structure (andrej-karpathy) 정합.
+- ArtifactRegistry 의 read path 가 RecordLoader 의 invariant-a
+  runtime check 우회하는데 — 그건 의도. records 가 아니므로 runtime
+  check 대상 아님. docs read 가 `String(contentsOf:)` 같은 일반 IO
+  로 일어남, fail 시 sidebar 가 (empty) 표시 그대로.

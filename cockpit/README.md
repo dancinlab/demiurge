@@ -44,13 +44,17 @@ full IDE (Previews / Instruments / debug). Both executables share the
 `DemiurgeCore` library — schema changes land once, GUI + CLI see them
 together (D27 monorepo schema-drift-free).
 
-## What the CLI does today (phase α-3, read-only)
+## What the CLI does today (phase α-3 + β, read-only)
 
 | Subcommand | Behaviour |
 | ---------- | --------- |
 | `--version` / `-v` | Print version banner |
 | `--help` / `-h` | Usage |
+| `list-all` | List all artifact kinds in one pass |
 | `list-records` | List F1F2 records under `RecordLoader.f1f2RecordsRoot` (= `../exports/chip/noc/f1f2/records/`) |
+| `list-decisions` | List `design.md` decisions (`### Decision N — title` parse) |
+| `list-rfcs` | List `../proposals/rfc_*.md` |
+| `list-domains` | List `../domains/*.md` (excluding README; includes `matter/` pointer per D17) |
 | `show <path>` | Decode one record + dump key fields + `provenance.*` verbatim (CLI equivalent of the GUI's `ProvenanceBanner`) |
 
 ## What the CLI does NOT do yet (phase θ — coming)

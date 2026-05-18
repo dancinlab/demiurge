@@ -1,30 +1,24 @@
 // Demiurge cockpit — entry point.
-// rfc_009 macOS Swift cockpit · D22 design · D27 monorepo · D28 SwiftPM
-// · D29 first slice (F1F2 viewer + ProvenanceBanner)
-// · D30 file picker (NSOpenPanel pinned to ../exports/**)
-// · D31 rfc_010 cockpit-architecture spec
-// · Phase α — NavigationSplitView 3-pane shell (rfc_010)
-// · D32..D40 rfc_011 control surface (Quiver-mirror tabbed 4-zone)
-// · Phase α-2 — LEFT TabView + RIGHT TabView + TOP toolbar (this file).
+// rfc_009 / rfc_010 / rfc_011 + Phase α/α-2/α-3/β (this file at β).
 //
-// Phase α-2 scope (intentionally narrow — rfc_011 §10):
-//   LEFT TabView    [Chat (1st, D37)] [Artifacts (2nd, D33)]
-//                   Chat tab placeholder for Claude Code CLI+API (D38)
-//                   landing in phase η.
-//                   Artifacts tab keeps the rfc_010 phase α placeholder
-//                   sections — phase β populates by filesystem walk.
-//   CENTER          existing D29 RecordView embedded verbatim.
-//   RIGHT TabView   [Inspector (1st, D39)] [Action queue (2nd)]
-//                   Inspector tab is the phase α RIGHT placeholder
-//                   pending phase δ tab realisation.
-//                   Action queue tab is a phase θ placeholder for
-//                   agent jobs (rfc_011 §6).
-//   TOP toolbar     [Open Record…] (D30) + [+ Synthesize] [+ Measure]
-//                   disabled-with-help (phase θ — action surface).
+// Phase β scope (rfc_011 §10):
+//   - LEFT Artifacts tab populated by ArtifactRegistry (5 sections):
+//     Records / Decisions / RFCs / Domains / Parameters(deferred ζ).
+//   - Sidebar row selection drives CENTER:
+//       F1F2 record → RecordView (D29)
+//       Decision / RFC / Domain → MarkdownView (β minimum)
+//   - Picker (D30) remains for ad-hoc Open Record from any path under
+//     ../exports/** (clears sidebar selection; CENTER falls back to
+//     recordResult).
 //
-// Each tab is a single VStack today; phase η/θ/δ/ι fill them in.
+// Boundary: @D g_cockpit_isolation
+//   (a) records strictly read from ../exports/** via RecordLoader
+//       (runtime invariant a); navigation docs (design.md / proposals /
+//       domains) read READ-ONLY by ArtifactRegistry per D41 clarification.
+//   (b/c/d) unchanged.
+//
 // Canonical-first (D26 g_swift_native): SwiftUI + AppKit + Foundation
-// + UniformTypeIdentifiers only. No third-party deps.
+// + UniformTypeIdentifiers + DemiurgeCore only.
 
 import SwiftUI
 import AppKit
@@ -40,7 +34,7 @@ struct CockpitApp: App {
     }
 }
 
-// MARK: — Tab enums (top-level so Picker can iterate)
+// MARK: — Tab enums
 
 enum LeftTab: String, CaseIterable, Identifiable {
     case chat       = "Chat"
@@ -55,16 +49,11 @@ enum RightTab: String, CaseIterable, Identifiable {
 }
 
 struct ContentView: View {
-    /// First-slice default record (D29). Relative to the cockpit/ package
-    /// dir (SwiftPM `swift run` sets pwd to package root). Phase β replaces
-    /// this entry-point with Artifacts-tab tree selection.
-    private static let firstSliceRecord =
-        "../exports/chip/noc/f1f2/records/2026-05-18_d8_king_tornado_7nm_1ghz.json"
-
-    @State private var result: Result<F1F2Record, RecordLoaderError>?
-    @State private var currentDisplayPath: String = firstSliceRecord
-    @State private var leftTab:  LeftTab  = .chat        // D37 — Chat 1st
-    @State private var rightTab: RightTab = .inspector   // D39 — Inspector 1st
+    @State private var artifacts: [ArtifactStub] = []
+    @State private var selection: ArtifactID?
+    @State private var recordResult: Result<F1F2Record, RecordLoaderError>?
+    @State private var leftTab:  LeftTab  = .artifacts   // β: default to Artifacts so the populated tree is visible immediately
+    @State private var rightTab: RightTab = .inspector   // D39
 
     var body: some View {
         NavigationSplitView {
@@ -91,12 +80,31 @@ struct ContentView: View {
                     .help("Open an F1F2 JSON record from ../exports/** (D30 picker, @D g_cockpit_isolation a)")
             }
         }
-        .onAppear {
-            self.result = RecordLoader.load(relativePath: Self.firstSliceRecord)
+        .onAppear(perform: bootstrap)
+        .onChange(of: selection) { newValue in
+            handleSelectionChange(newValue)
         }
     }
 
-    // MARK: — LEFT pane (D40 — TabView wrapper around D37 Chat 1st + D33 Artifacts 2nd)
+    // MARK: — bootstrap
+
+    private func bootstrap() {
+        artifacts = ArtifactRegistry.loadAll()
+        if selection == nil,
+           let firstF1F2 = artifacts.first(where: { $0.id.kind == .f1f2 }) {
+            selection = firstF1F2.id
+        }
+    }
+
+    private func handleSelectionChange(_ newID: ArtifactID?) {
+        guard let newID, newID.kind == .f1f2,
+              let stub = artifacts.first(where: { $0.id == newID }) else {
+            return
+        }
+        recordResult = RecordLoader.load(relativePath: stub.path)
+    }
+
+    // MARK: — LEFT pane
 
     @ViewBuilder private var leftPane: some View {
         VStack(spacing: 0) {
@@ -119,10 +127,10 @@ struct ContentView: View {
                 }
             }
         }
-        .frame(minWidth: 260)
+        .frame(minWidth: 280)
     }
 
-    /// LEFT 1st (D37) — Claude Code CLI + API chat surface placeholder (phase η).
+    /// LEFT 1st (D37) — Chat tab placeholder (Phase η).
     @ViewBuilder private var chatTab: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Chat")
@@ -134,14 +142,7 @@ struct ContentView: View {
                 .font(.callout)
                 .foregroundColor(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
-            ScrollView {
-                VStack(alignment: .leading, spacing: 8) {
-                    placeholder("conversation history renders here")
-                    placeholder("AI replies that produce a record carry a ProvenanceBanner inline")
-                    placeholder("REJECTED banner on @F f6 (unmeasured outcome claim)")
-                }
-                .padding(.horizontal, 12)
-            }
+            Spacer()
             Divider()
             HStack(spacing: 8) {
                 TextField("type a message…", text: .constant(""))
@@ -153,29 +154,24 @@ struct ContentView: View {
             .padding(12)
         }
         .padding(.top, 12)
+        .padding(.horizontal, 12)
     }
 
-    /// LEFT 2nd (D33) — Artifacts tree placeholder; phase β fills by filesystem walk.
+    /// LEFT 2nd (D33) — Artifacts tree populated by ArtifactRegistry (phase β).
     @ViewBuilder private var artifactsTab: some View {
-        List {
-            Section("Records") {
-                Label {
-                    Text(currentDisplayPath)
-                        .lineLimit(1)
-                        .truncationMode(.middle)
-                        .font(.caption)
-                } icon: {
-                    Image(systemName: "doc.text")
+        List(selection: $selection) {
+            ForEach(ArtifactKind.allCases) { kind in
+                let stubs = artifacts.filter { $0.id.kind == kind }
+                Section("\(kind.rawValue) (\(stubs.count))") {
+                    if stubs.isEmpty {
+                        placeholder("(empty)")
+                    } else {
+                        ForEach(stubs) { stub in
+                            row(stub)
+                                .tag(stub.id)
+                        }
+                    }
                 }
-            }
-            Section("Decisions") {
-                placeholder("phase β — design.md walk · $D1..$D40")
-            }
-            Section("RFCs") {
-                placeholder("phase β — proposals/* walk · $RFC1..$RFC11")
-            }
-            Section("Domains") {
-                placeholder("phase β — domains/*.md walk · $DOM:chip etc.")
             }
             Section("Parameters") {
                 placeholder("phase ζ — gate · node · absorbed filters")
@@ -184,20 +180,45 @@ struct ContentView: View {
         .listStyle(.sidebar)
     }
 
-    // MARK: — CENTER canvas (rfc_010 §4 — D29 single-record view in v0; phase γ adds card protocol)
+    @ViewBuilder private func row(_ stub: ArtifactStub) -> some View {
+        HStack(spacing: 8) {
+            Text(stub.id.display)
+                .font(.system(.caption, design: .monospaced))
+                .foregroundColor(.secondary)
+                .frame(width: 70, alignment: .leading)
+            Text(stub.title)
+                .font(.caption)
+                .lineLimit(1)
+                .truncationMode(.middle)
+        }
+    }
+
+    // MARK: — CENTER canvas
 
     @ViewBuilder private var canvas: some View {
         Group {
-            if let result {
+            if let sel = selection,
+               let stub = artifacts.first(where: { $0.id == sel }) {
+                switch sel.kind {
+                case .f1f2:
+                    if let result = recordResult {
+                        RecordView(result: result)
+                    } else {
+                        ProgressView("loading record…")
+                    }
+                case .decision, .rfc, .domain:
+                    MarkdownView(stub: stub)
+                }
+            } else if let result = recordResult {
                 RecordView(result: result)
             } else {
-                ProgressView("loading record …")
+                ProgressView("loading…")
             }
         }
         .frame(minWidth: 540)
     }
 
-    // MARK: — RIGHT pane (D40 — TabView wrapper around D39 Inspector 1st + Actions 2nd)
+    // MARK: — RIGHT pane
 
     @ViewBuilder private var rightPane: some View {
         VStack(spacing: 0) {
@@ -223,7 +244,7 @@ struct ContentView: View {
         .frame(minWidth: 320)
     }
 
-    /// RIGHT 1st (D39) — Inspector / Provenance verbatim placeholder; phase δ realises sub-tabs.
+    /// RIGHT 1st (D39) — Inspector placeholder (phase δ).
     @ViewBuilder private var inspectorTab: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Inspector")
@@ -231,6 +252,18 @@ struct ContentView: View {
             Text("phase δ placeholder")
                 .font(.caption)
                 .foregroundColor(.secondary)
+            if let sel = selection,
+               let stub = artifacts.first(where: { $0.id == sel }) {
+                Divider()
+                VStack(alignment: .leading, spacing: 4) {
+                    LabeledContent("id",    value: stub.id.display)
+                    LabeledContent("kind",  value: stub.id.kind.rawValue)
+                    LabeledContent("title", value: stub.title)
+                    LabeledContent("path",  value: stub.path)
+                        .lineLimit(2)
+                }
+                .font(.system(.caption, design: .monospaced))
+            }
             Divider()
             Text("Selection-bound sub-tabs (rfc_011 §5):")
                 .font(.callout)
@@ -250,7 +283,7 @@ struct ContentView: View {
         .padding(20)
     }
 
-    /// RIGHT 2nd — Action queue (rfc_011 §6.3, phase θ).
+    /// RIGHT 2nd — Action queue placeholder (phase θ).
     @ViewBuilder private var actionsTab: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Actions")
@@ -259,7 +292,7 @@ struct ContentView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
             Divider()
-            Text("AI agent action surface (D34, @D g_ai_agent_action_surface):")
+            Text("AI agent action surface (D34 / @D g_ai_agent_action_surface):")
                 .font(.callout)
                 .foregroundColor(.secondary)
             VStack(alignment: .leading, spacing: 4) {
@@ -279,8 +312,7 @@ struct ContentView: View {
     // MARK: — picker (D30)
 
     /// NSOpenPanel pinned to `RecordLoader.f1f2RecordsRoot`. Loader runtime-
-    /// validates the URL (`@D g_cockpit_isolation` invariant a) so paths outside
-    /// `../exports/**` surface as REJECTED cards.
+    /// validates invariant (a); REJECTED card on out-of-scope path.
     private func presentPicker() {
         let panel = NSOpenPanel()
         panel.title = "Open F1F2 record"
@@ -291,8 +323,8 @@ struct ContentView: View {
         panel.canChooseDirectories = false
         panel.canChooseFiles = true
         guard panel.runModal() == .OK, let url = panel.url else { return }
-        self.currentDisplayPath = url.path
-        self.result = RecordLoader.load(url: url)
+        selection = nil               // ad-hoc, not in registry
+        recordResult = RecordLoader.load(url: url)
     }
 
     // MARK: — helpers
