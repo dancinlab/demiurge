@@ -172,6 +172,27 @@ required, closed-binary RE refused (`design.md` Decision 1).
 - Whether `tornado` alone is sufficient for adversarial bisection
   stress, or whether a degree-aware adversarial pattern is needed.
 
+### §9 status — 2026-05-18 sweep (relaunch #2; PLAN.md log)
+
+- **Placement — CLOSED.** Measured king-move d=8 and brick-hex d=6
+  alongside axial-hex. King-move d=8 beats axial-hex on every axis
+  (22 nm/4 GHz: lat 0.778 vs 0.887, thr 1.81 vs 1.26 cand/base);
+  brick-hex also strictly better. The "axial-hex diameter = mesh
+  diameter" pessimism is a placement artifact, not a degree ceiling.
+- **Clock — CLOSED (added question).** 1–6 GHz swept: d=6 latency win
+  is clock-robust (ratio 0.85–0.89, never flips); throughput win is
+  conditional (clean 4–6 GHz, coarse-grid-noisy elsewhere).
+- **Wire-delay number — PARTLY OPEN.** No directly-characterized
+  ≤7 nm ps/mm public figure found; δ_7nm = 162 ps/mm is an
+  EXTRAPOLATION from Georgia Tech RC scaling — flagged per-record. A
+  measured FinFET interconnect ps/mm number is still needed.
+- New refined open questions: finer throughput-knee injection grid;
+  d=8 router silicon cost (no comb d=8 RTL exists); adaptive routing
+  (all runs used `routing=min`).
+- Evidence: 46 records + 48 pair-verdicts in `exports/chip/noc/f1f2/`,
+  all `provenance.absorbed = false` · `GATE_OPEN` (still external
+  reference — §8 hexa-native gate not closed).
+
 ## 10. References (Decision 1 public-surface only)
 
 - BookSim2: <https://github.com/booksim/booksim2>, `doc/manual.tex`

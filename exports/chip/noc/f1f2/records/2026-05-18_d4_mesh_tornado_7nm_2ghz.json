@@ -1,0 +1,115 @@
+{
+  "interface": "hexa-arch:chip:noc:F1F2-record",
+  "schema_version": "1.0",
+  "record_id": "PLACEHOLDER_HXC_A12_PENDING_TOOL",
+  "produced_at_utc": "2026-05-18T00:00:00Z",
+  "topology": {
+    "kind": "mesh_2d",
+    "degree": 4,
+    "node_count": 64,
+    "region_shape": "k_by_k",
+    "routing": "min",
+    "boundary": "open",
+    "coord_kind": "xy"
+  },
+  "wire_delay_model": {
+    "node": "7nm",
+    "ps_per_mm": 162.0,
+    "cycle_period_ps": 500.0,
+    "rc_exponent": 2,
+    "source_citations": [
+      "@x_smart_csail_2013_krishna",
+      "@x_naeemi_gatech_cu_rc_scaling",
+      "@x_semiengineering_interconnect_challenges"
+    ],
+    "links_note": "8x8 grid on 20mm x 20mm die, 2.5 mm tile pitch. 7nm delta=162.0 ps/mm, clock 2 GHz (period 500.00 ps). cardinal link 2.5 mm = 1 cycle(s); diagonal link 3.536 mm = 2 cycle(s). Generator: /tmp/hexa-arch-rfc001-measurement/runs/gen_topologies_v2.py."
+  },
+  "router_cost": {
+    "port_area_norm": 1.0,
+    "port_energy_norm": 1.0,
+    "iq_pipeline": {
+      "routing_delay": 0,
+      "vc_alloc_delay": 1,
+      "sw_alloc_delay": 1,
+      "credit_delay": 2
+    },
+    "vc_count": 8,
+    "buffer_per_vc_flits": 8,
+    "packet_size_flits": 20,
+    "input_speedup": 2,
+    "source_citations": [
+      "@x_dally_towles_2004_ppin",
+      "@x_jiang_ispass13_booksim2"
+    ],
+    "port_cost_basis": "d4 baseline = 1.0x normalization reference"
+  },
+  "traffic": "tornado",
+  "latency_curve": [
+    {
+      "injection_rate": 0.05,
+      "avg_latency_cycles": 64.7
+    },
+    {
+      "injection_rate": 0.1,
+      "avg_latency_cycles": 86.74
+    },
+    {
+      "injection_rate": 0.125,
+      "avg_latency_cycles": 113.22
+    },
+    {
+      "injection_rate": 0.15,
+      "avg_latency_cycles": 400.99
+    }
+  ],
+  "saturation_throughput": {
+    "injection_rate_at_knee": 0.16,
+    "knee_definition": "first_unstable_injection_rate"
+  },
+  "leighton_oracle": {
+    "status": "PASS",
+    "bisection_bound": 8,
+    "bisection_observed": 8,
+    "diameter_bound": 4,
+    "diameter_observed": 14,
+    "source_citation": "@x_leighton_1992_doi_10.1007_BF01744433"
+  },
+  "verdict": {
+    "f1": "INCONCLUSIVE",
+    "f2": "INCONCLUSIVE",
+    "rationale": "single-topology record; F1/F2 verdict requires the pair-verdict aggregator over this + a degree-paired mate at identical (traffic, node, clock, wire_delay_model)"
+  },
+  "provenance": {
+    "absorbed": false,
+    "sim_engine": "booksim2_external_reference",
+    "sim_commit_hash": "28f43299f1706a3160ffac721ca461d74eb6e618",
+    "wire_delay_source": {
+      "doi_or_url": "https://semiengineering.com/interconnect-challenges-grow-3/",
+      "node_basis": "SMART 22nm delta=90 ps/mm extrapolated to 7nm via Naeemi/Georgia Tech public copper-RC scaling (+21.8% 22->11nm, +48% 11->7nm; 90*1.218*1.48=162 ps/mm) -- EXTRAPOLATION, not a direct 7nm characterization"
+    },
+    "leighton_source": {
+      "doi": "10.1007/BF01744433",
+      "edition": "Leighton 1984 + Leighton 1992 1.4; Dally & Towles PPIN 2004 3.2-3.3 mesh closed forms"
+    },
+    "measurement_gate": "GATE_OPEN",
+    "gate_failures": [],
+    "consumer_target": "hexa-lang:comb:RFC_057:F1F2",
+    "atlas_cite_block": "@cite hexa-arch:rfc_001 4 + 5 + 8 + 9; rfc_002 3; design.md D1 + D7",
+    "scope_caveats": [
+      "single (2 GHz, 7nm, d4_mesh placement) point under tornado -- one cell of the rfc_001 9 sweep, not a standalone regime claim",
+      "router_cost.port_*_norm is an analytic degree-scaling estimate (T1A 2 / Dally-Towles port-count), NOT measured silicon area",
+      "routing = min (DOR-class shortest-path); adaptive routing may shift saturation throughput",
+      "7nm delta=162 ps/mm is an EXTRAPOLATION from SMART 22nm via Naeemi/Georgia Tech copper-RC scaling -- no direct public 7nm wire-delay characterization was found in the survey; treat as sensitivity bound, not ground truth"
+    ]
+  },
+  "_analysis_aux": {
+    "avg_hops_zero_load": 8.48862,
+    "zero_load_pkt_latency": 64.7045,
+    "graph_hop_diameter": 14,
+    "graph_avg_hops": 5.3333,
+    "graph_cycle_diameter": 14,
+    "graph_bisection_edgecut": 8,
+    "cardinal_link_cycles": 1,
+    "diagonal_link_cycles": 2
+  }
+}

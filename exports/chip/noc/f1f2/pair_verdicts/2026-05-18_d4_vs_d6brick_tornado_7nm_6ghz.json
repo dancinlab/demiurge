@@ -1,0 +1,94 @@
+{
+  "interface": "hexa-arch:chip:noc:F1F2-pair-verdict",
+  "schema_version": "1.0",
+  "record_id": "PLACEHOLDER_HXC_A12_PENDING_TOOL",
+  "produced_at_utc": "2026-05-18T00:00:00Z",
+  "pair_baseline_record": "records/2026-05-18_d4_mesh_tornado_7nm_6ghz.json",
+  "pair_candidate_record": "records/2026-05-18_d6_brick_tornado_7nm_6ghz.json",
+  "shared": {
+    "traffic": "tornado",
+    "schema_version": "1.0",
+    "wire_delay_model_node": "7nm",
+    "wire_delay_model_ps_per_mm": 162.0,
+    "router_pipeline": "IQ_iSLIP_VC8_buf8_pkt20",
+    "die_geometry": "20mm x 20mm, 8x8 grid, 2.5 mm tile pitch",
+    "clock_ghz": 6.0
+  },
+  "differing": {
+    "topology_degree": [
+      4,
+      6
+    ],
+    "topology_kind": [
+      "mesh_2d",
+      "hex_brick"
+    ],
+    "router_port_area_norm": [
+      1.0,
+      1.516
+    ]
+  },
+  "headline_metrics": {
+    "zero_load_packet_latency_cy": {
+      "baseline": 84.3514,
+      "candidate": 69.0326,
+      "ratio_cand_over_base": 0.8184
+    },
+    "avg_hops": {
+      "baseline": 8.49272,
+      "candidate": 6.61759,
+      "ratio_cand_over_base": 0.7792
+    },
+    "saturation_throughput_flits_per_node_per_cycle": {
+      "baseline": 0.16,
+      "candidate": 0.19,
+      "ratio_cand_over_base": 1.1875
+    },
+    "hop_diameter": {
+      "baseline": 14,
+      "candidate": 11
+    },
+    "cycle_diameter": {
+      "baseline": 42,
+      "candidate": 33
+    }
+  },
+  "leighton_oracle_aggregate": {
+    "status": "PASS",
+    "checks_passed": 4,
+    "checks_total": 4,
+    "detail": [
+      "baseline bisection: 8 >= floor 8 PASS",
+      "candidate bisection: 15 >= floor 8 PASS",
+      "baseline diameter: 14 >= Moore floor 4 PASS",
+      "candidate diameter: 11 >= Moore floor 3 PASS"
+    ],
+    "source_citation": "@x_leighton_1992_doi_10.1007_BF01744433"
+  },
+  "verdict": {
+    "f1": "INCONCLUSIVE",
+    "f2": "INCONCLUSIVE",
+    "rationale": "At (6.0 GHz, 7nm, tornado) point: zero-load packet latency 84.3514 (baseline d=4) vs 69.0326 (candidate d=6) = 0.8184x; saturation knee 0.16 vs 0.19 = 1.1875x. Latency lean: candidate. Throughput lean: candidate. NOT a regime claim -- one cell of the rfc_001 9 sweep. verdict enum stays INCONCLUSIVE (single point).",
+    "informal_lean": "latency->candidate, throughput->candidate"
+  },
+  "provenance": {
+    "absorbed": false,
+    "sim_engine": "booksim2_external_reference",
+    "sim_commit_hash": "28f43299f1706a3160ffac721ca461d74eb6e618",
+    "wire_delay_source": {
+      "doi_or_url": "https://semiengineering.com/interconnect-challenges-grow-3/",
+      "node_basis": "SMART 22nm delta=90 ps/mm extrapolated to 7nm via Naeemi/Georgia Tech public copper-RC scaling (+21.8% 22->11nm, +48% 11->7nm; 90*1.218*1.48=162 ps/mm) -- EXTRAPOLATION, not a direct 7nm characterization"
+    },
+    "leighton_source": {
+      "doi": "10.1007/BF01744433",
+      "edition": "Leighton 1984 + Leighton 1992 1.4; Dally & Towles PPIN 2004 3.2-3.3 mesh closed forms"
+    },
+    "measurement_gate": "GATE_OPEN",
+    "gate_failures": [],
+    "consumer_target": "hexa-lang:comb:RFC_057:F1F2",
+    "atlas_cite_block": "@cite hexa-arch:rfc_001 4 + 5 + 8 + 9; rfc_002 3 pair-record convention; design.md D1 + D7",
+    "scope_caveats": [
+      "single (clock, node, placement-pair) cell -- F1/F2 PASS/FAIL needs the full rfc_001 9 sweep aggregated"
+    ]
+  }
+}

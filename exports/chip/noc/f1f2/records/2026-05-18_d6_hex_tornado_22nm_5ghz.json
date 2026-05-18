@@ -1,0 +1,127 @@
+{
+  "interface": "hexa-arch:chip:noc:F1F2-record",
+  "schema_version": "1.0",
+  "record_id": "PLACEHOLDER_HXC_A12_PENDING_TOOL",
+  "produced_at_utc": "2026-05-18T00:00:00Z",
+  "topology": {
+    "kind": "hex_axial",
+    "degree": 6,
+    "node_count": 64,
+    "region_shape": "k_by_k",
+    "routing": "min",
+    "boundary": "open",
+    "coord_kind": "axial_qr_projected_to_square_grid"
+  },
+  "wire_delay_model": {
+    "node": "22nm",
+    "ps_per_mm": 90.0,
+    "cycle_period_ps": 200.0,
+    "rc_exponent": 2,
+    "source_citations": [
+      "@x_smart_csail_2013_krishna",
+      "@x_opensmart_ispass17_kwon_krishna"
+    ],
+    "links_note": "8x8 grid on 20mm x 20mm die, 2.5 mm tile pitch. 22nm delta=90.0 ps/mm, clock 5 GHz (period 200.00 ps). cardinal link 2.5 mm = 2 cycle(s); diagonal link 3.536 mm = 2 cycle(s). Generator: /tmp/hexa-arch-rfc001-measurement/runs/gen_topologies_v2.py."
+  },
+  "router_cost": {
+    "port_area_norm": 1.516,
+    "port_energy_norm": 1.516,
+    "iq_pipeline": {
+      "routing_delay": 0,
+      "vc_alloc_delay": 1,
+      "sw_alloc_delay": 1,
+      "credit_delay": 2
+    },
+    "vc_count": 8,
+    "buffer_per_vc_flits": 8,
+    "packet_size_flits": 20,
+    "input_speedup": 2,
+    "source_citations": [
+      "@x_dally_towles_2004_ppin",
+      "@x_jiang_ispass13_booksim2",
+      "@x_comb_handoff_2026_05_18_sky130_area"
+    ],
+    "port_cost_basis": "d6/d4 = 1.516x -- comb SKY130 yosys+abc measured (d4=61763 um^2, d6=93608 um^2), comb HANDOFF_TO_HEXA_ARCH.md \u00a74"
+  },
+  "traffic": "tornado",
+  "latency_curve": [
+    {
+      "injection_rate": 0.05,
+      "avg_latency_cycles": 63.51
+    },
+    {
+      "injection_rate": 0.125,
+      "avg_latency_cycles": 79.45
+    },
+    {
+      "injection_rate": 0.15,
+      "avg_latency_cycles": 92.95
+    },
+    {
+      "injection_rate": 0.16,
+      "avg_latency_cycles": 96.13
+    },
+    {
+      "injection_rate": 0.17,
+      "avg_latency_cycles": 103.35
+    },
+    {
+      "injection_rate": 0.18,
+      "avg_latency_cycles": 125.58
+    },
+    {
+      "injection_rate": 0.19,
+      "avg_latency_cycles": 158.25
+    }
+  ],
+  "saturation_throughput": {
+    "injection_rate_at_knee": 0.1,
+    "knee_definition": "first_unstable_injection_rate"
+  },
+  "leighton_oracle": {
+    "status": "PASS",
+    "bisection_bound": 8,
+    "bisection_observed": 15,
+    "diameter_bound": 3,
+    "diameter_observed": 14,
+    "source_citation": "@x_leighton_1992_doi_10.1007_BF01744433"
+  },
+  "verdict": {
+    "f1": "INCONCLUSIVE",
+    "f2": "INCONCLUSIVE",
+    "rationale": "single-topology record; F1/F2 verdict requires the pair-verdict aggregator over this + a degree-paired mate at identical (traffic, node, clock, wire_delay_model)"
+  },
+  "provenance": {
+    "absorbed": false,
+    "sim_engine": "booksim2_external_reference",
+    "sim_commit_hash": "28f43299f1706a3160ffac721ca461d74eb6e618",
+    "wire_delay_source": {
+      "doi_or_url": "https://people.csail.mit.edu/suvinay/pubs/2013.smart.computer.pdf",
+      "node_basis": "SMART 22nm TSMC GP, characterization Table 2; reaffirmed OpenSMART ISPASS 2017 III"
+    },
+    "leighton_source": {
+      "doi": "10.1007/BF01744433",
+      "edition": "Leighton 1984 + Leighton 1992 1.4; Dally & Towles PPIN 2004 3.2-3.3 mesh closed forms"
+    },
+    "measurement_gate": "GATE_OPEN",
+    "gate_failures": [],
+    "consumer_target": "hexa-lang:comb:RFC_057:F1F2",
+    "atlas_cite_block": "@cite hexa-arch:rfc_001 4 + 5 + 8 + 9; rfc_002 3; design.md D1 + D7",
+    "scope_caveats": [
+      "single (5 GHz, 22nm, d6_hex placement) point under tornado -- one cell of the rfc_001 9 sweep, not a standalone regime claim",
+      "router_cost.port_*_norm is an analytic degree-scaling estimate (T1A 2 / Dally-Towles port-count), NOT measured silicon area",
+      "routing = min (DOR-class shortest-path); adaptive routing may shift saturation throughput",
+      "axial-hex-on-square-grid has hop-diameter 14 = the d=4 mesh diameter (no NW diagonal); the degree-6 advantage is avg-hops (4.54 vs 5.33) and bisection (15 vs 8), NOT diameter"
+    ]
+  },
+  "_analysis_aux": {
+    "avg_hops_zero_load": 7.12344,
+    "zero_load_pkt_latency": 63.511,
+    "graph_hop_diameter": 14,
+    "graph_avg_hops": 4.5417,
+    "graph_cycle_diameter": 28,
+    "graph_bisection_edgecut": 15,
+    "cardinal_link_cycles": 2,
+    "diagonal_link_cycles": 2
+  }
+}

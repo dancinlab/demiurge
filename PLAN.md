@@ -151,3 +151,24 @@
 - 2026-05-18 — **D8: Cohort 3 보류(deferred)**. 네임드 코호트 =
   Cohort 1 (7) + Cohort 2 (7) = 14 유지. Agent-8 survey 는 향후 재개용
   입력으로 보존; `domains/{os,earth,cosmos}.md` 미작성.
+- 2026-05-18 — rfc_001 §9 open-questions closure (relaunch #2; BookSim2
+  28f43299 external-reference, tornado, 8x8/20mm/2.5mm-pitch, IQ-iSLIP
+  VC8/buf8/pkt20). Emitted 46 records + 48 pair-verdicts to
+  exports/chip/noc/f1f2/ (4 placements x 2 nodes x 6 clocks); all
+  absorbed=false, GATE_OPEN, Leighton PASS, verdict INCONCLUSIVE.
+  §9(i) hex-placement CLOSED — king-move d=8 beats axial-hex on every
+  axis (22nm/4GHz: lat 0.778 vs 0.887, thr 1.81 vs 1.26 cand/base);
+  axial-hex-diameter=mesh-diameter is a placement artifact, not a
+  degree ceiling; brick-hex (hop-diam 11) also strictly better.
+  §9(ii) clock-sweep CLOSED — d=6 latency win clock-robust 1-6 GHz
+  (ratio 0.85-0.89, never flips); throughput win conditional (clean
+  at 4-6 GHz, coarse-grid-noisy elsewhere). §9(iii) FinFET δ PARTLY
+  OPEN — no direct public 7nm ps/mm number; used δ_7nm=162 ps/mm
+  EXTRAPOLATED from Georgia Tech RC scaling (+21.8% 22->11nm, +48%
+  11->7nm, SemiEngineering "Interconnect Challenges"); d=6 advantage
+  survives at 7nm. comb oracle: F1 low-load sign reproduced (no flip);
+  SKY130 1.516x port-area applied to all d=6 records; D_hex/D_mesh
+  1/sqrt(3) is a continuum limit, not reproduced as a discrete-lattice
+  hop ratio (flagged definitional, not drift). Refined open Qs:
+  absolute FinFET ps/mm, finer throughput-knee grid, d=8 router
+  silicon cost, adaptive routing.
