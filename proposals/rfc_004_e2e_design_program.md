@@ -19,10 +19,10 @@
 - HANDOFF §2: *"Not a chip tool. A universal technical-design
   architecture program … the 7 verbs are domain-neutral … 'Chip' is
   one plug-in domain among many."*
-- README 정체: *"📐 만능 설계 아키텍쳐 프로그램 … hexa-arch = 설계
+- README 정체: *"📐 만능 설계 아키텍쳐 프로그램 … demiurge = 설계
   자체를 계산·검증 (분야 무관 메타프레임워크)."*
 
-**Distilled invariant**: hexa-arch is the domain-neutral 7-verb
+**Distilled invariant**: demiurge is the domain-neutral 7-verb
 *technical-design meta-framework*. It does not compute matter (that is
 hexa-matter) or molecules (hexa-bio) — it computes & verifies *the
 design itself*, for any engineered system, domains plugged in,
@@ -51,23 +51,23 @@ D2 froze: hexa-matter / hexa-bio are **typed-interface consumed, NOT
 absorbed** (decoupled siblings). "물질합성부터 … 전부 아우르는
 프로젝트로" can be read two ways:
 
-- **Option A — meta-conductor (recommended).** hexa-arch is the
+- **Option A — meta-conductor (recommended).** demiurge is the
   *umbrella that orchestrates a chained series of 7-verb domain
   passes*. 물질합성 = the first pass, **consumed from hexa-matter via a
   typed interface** (mirroring rfc_002's F1F2 contract — NOT absorbed,
-  D2 holds). 칩아키텍쳐 = next pass (hexa-arch[chip], EDA stack
-  absorbed). 부품설계 = next pass (hexa-arch[component]). Each pass's
-  HANDOFF → next pass's SPECIFY, all under one hexa-arch program.
-  hexa-arch owns: the chain/orchestration, the inter-stage typed
+  D2 holds). 칩아키텍쳐 = next pass (demiurge[chip], EDA stack
+  absorbed). 부품설계 = next pass (demiurge[component]). Each pass's
+  HANDOFF → next pass's SPECIFY, all under one demiurge program.
+  demiurge owns: the chain/orchestration, the inter-stage typed
   contracts, and the *per-domain tooling* absorption (EDA, FEM,
   transport…). The *science* siblings (matter/bio) stay decoupled
   providers. = "전부 아우르는 1 프로젝트" via conducting, not swallowing.
 - **Option B — monolith re-absorb.** Pull hexa-matter/hexa-bio (and
-  every library) into one hexa-arch mega-repo. Contradicts D2,
+  every library) into one demiurge mega-repo. Contradicts D2,
   no-big-bang, the entire HEXA sibling-family architecture; unbounded
   scope; over-claim risk. **Rejected.**
 - **Option C — A + explicit chip-adjacent absorption.** = A, plus
-  hexa-arch[chip] absorbs the *EDA libraries comb needs* (Yosys,
+  demiurge[chip] absorbs the *EDA libraries comb needs* (Yosys,
   OpenROAD, …) clean-room. This is already the rfc_001/002/003 pattern
   — i.e. C is a *subset of A made explicit*, not a distinct option.
 
@@ -84,7 +84,7 @@ work-stream). Rationale:
 - The 7-verb spine *is* the conductor: chaining = HANDOFF→SPECIFY
   edges. No new mechanism invented; the cited spine already supports
   it. (andrej-karpathy: minimum new structure.)
-- Honest scope — hexa-arch absorbs *tooling* it can clean-room +
+- Honest scope — demiurge absorbs *tooling* it can clean-room +
   measure; it *consumes* mature science siblings via typed contracts
   it cannot honestly re-derive. Keeps g3 no-over-claim intact.
 - Reversible & incremental — each chain stage / library is its own
@@ -97,7 +97,7 @@ HANDOFF feeding downstream SPECIFY via a typed contract (rfc_002-style
 per seam).
 
 ```
- ┌── hexa-matter ──┐   typed    ┌── hexa-arch[chip] ──┐  typed   ┌── hexa-arch[component] ──┐
+ ┌── hexa-matter ──┐   typed    ┌── demiurge[chip] ──┐  typed   ┌── demiurge[component] ──┐
  │ 물질합성·소재   │  contract  │ 칩 아키텍쳐 설계     │ contract │ 부품 / 패키지 설계        │
  │ (consumed, D2)  │ ─────────▶ │ (EDA stack absorbed) │ ───────▶ │ (mech/EM/thermal absorbed)│
  │ SPECIFY..HANDOFF│  matprops  │ SPECIFY..HANDOFF     │ netlist/ │ SPECIFY..HANDOFF          │
@@ -110,13 +110,13 @@ per seam).
 | chain stage | 7-verb owner | external prior art (clean-room absorb) | seam OUT → next SPECIFY |
 |---|---|---|---|
 | 물질합성·소재 | **hexa-matter** (consumed, D2) | ASE/pymatgen (hexa-matter's own) | material-property record (typed; new rfc) |
-| 소자/공정 (device/PDK) | hexa-arch[chip] | SKY130 · SG13G2 PDK | process/cell-lib characterization |
-| 칩 아키텍쳐 (NoC/system) | hexa-arch[chip] | **BookSim2 ✅** (rfc_001/003) · gem5 | F1F2 typed record (rfc_002 ✅) |
-| RTL → netlist (synth) | hexa-arch[chip] | **Yosys** (rfc planned) | gate netlist |
-| 물리설계 P&R → GDSII | hexa-arch[chip] | **OpenROAD ✅ built ubu-1** (rfc planned) | T3 post-P&R record (rfc_002 §pnr ✅) |
-| 검증 (sim/formal/STA) | hexa-arch[chip] | Verilator · SymbiYosys · **OpenSTA** | signoff record |
-| 아날로그 | hexa-arch[chip] | ngspice | SPICE record |
-| 부품/패키지/시스템 | hexa-arch[component] (new domain) | FEM/EM/thermal (FEMM/COMSOL-pub) — already mapped in domains/* | system BoM + thermal/EM dossier |
+| 소자/공정 (device/PDK) | demiurge[chip] | SKY130 · SG13G2 PDK | process/cell-lib characterization |
+| 칩 아키텍쳐 (NoC/system) | demiurge[chip] | **BookSim2 ✅** (rfc_001/003) · gem5 | F1F2 typed record (rfc_002 ✅) |
+| RTL → netlist (synth) | demiurge[chip] | **Yosys** (rfc planned) | gate netlist |
+| 물리설계 P&R → GDSII | demiurge[chip] | **OpenROAD ✅ built ubu-1** (rfc planned) | T3 post-P&R record (rfc_002 §pnr ✅) |
+| 검증 (sim/formal/STA) | demiurge[chip] | Verilator · SymbiYosys · **OpenSTA** | signoff record |
+| 아날로그 | demiurge[chip] | ngspice | SPICE record |
+| 부품/패키지/시스템 | demiurge[component] (new domain) | FEM/EM/thermal (FEMM/COMSOL-pub) — already mapped in domains/* | system BoM + thermal/EM dossier |
 
 The 14 Cohort-1/2 domain maps already enumerate the per-domain tool
 classes; this RFC wires them into a *series* under one program.
@@ -194,7 +194,7 @@ Design principles for the surface:
   chain (§4) = a pipeline canvas. ANALYZE ⟲ = the iterate-back loop in
   the UI.
 - vs existing: SysML/Modelica/Cadence are single-domain or
-  proprietary-opaque; hexa-arch's surface = domain-neutral + cited +
+  proprietary-opaque; demiurge's surface = domain-neutral + cited +
   honest-gated. (Comparison axis preserved.)
 
 Building it = execution → gated (D10). This RFC = its design only.
@@ -254,7 +254,7 @@ no-big-bang incremental · public-surface clean-room (D1).
 - **Phase 3 seam schemas — RESOLVED**: materials→chip typed contract
   → **rfc_007** (`design.md` D20, v0 draft); chip→component typed
   contract → **rfc_008** (`design.md` D21, v0 draft).
-- **hexa-arch[component] shape — RESOLVED = new top-level domain**
+- **demiurge[component] shape — RESOLVED = new top-level domain**
   (`design.md` D21 → `domains/component.md`); was the gate the
   chip→component seam depended on.
 - **STILL OPEN but NOT gating** (declared domain-internal per D21,

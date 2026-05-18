@@ -1,4 +1,4 @@
-# RFC 002 — F1/F2 export interface (`hexa-arch[chip] → comb`)
+# RFC 002 — F1/F2 export interface (`demiurge[chip] → comb`)
 
 > Status: **draft** · Created: 2026-05-18 · Source decisions: `design.md`
 > Decision 1 (public-surface clean-room), Decision 2 (typed-interface,
@@ -29,7 +29,7 @@ hex region of radius R), does the *cost side* of the inequality
 (D_mesh − D_hex) · Ē_hop   >   Δ_router + Δ_wire,diag
         ─── LHS ───              ─────── RHS ───────
    graph-constants fixed         process- / placement-dependent
-   (T1-A complete)               (requires hexa-arch[chip] sim)
+   (T1-A complete)               (requires demiurge[chip] sim)
 ```
 
 resolve in degree-6's favour at modern node, after EDA cost.
@@ -39,13 +39,13 @@ resolve in degree-6's favour at modern node, after EDA cost.
 - **F2 falsified iff** hex P&R overhead at ≤ 7 nm ≥ the UC Davis VCL
   65 nm 2012 gain band (−17 ~ −21 % power / area / wire-distance).
 
-What `comb` therefore needs from hexa-arch[chip] is the **RHS** of the
+What `comb` therefore needs from demiurge[chip] is the **RHS** of the
 inequality, as measured quantities under a shared topology spec and the
 synthetic load set comb pre-registered:
 
 | input class | requirement | granularity |
 |---|---|---|
-| topology agreement | identical degree-4 mesh + degree-6 hex axial specs (coords, neighbours, boundary, routing) — comb supplies, hexa-arch consumes | per-run |
+| topology agreement | identical degree-4 mesh + degree-6 hex axial specs (coords, neighbours, boundary, routing) — comb supplies, demiurge consumes | per-run |
 | wire-delay model parameters | per-link cycle latency from physical wire length × public-literature wire-delay-per-mm at named modern node | per-link |
 | router cost model | port-area / port-energy as a function of degree d | per-degree |
 | latency curve | avg packet latency vs injection rate (canonical NoC sweep) | per-(topology, traffic, node) |
@@ -60,7 +60,7 @@ RFC covers T1 only.
 
 ---
 
-## 2. What hexa-arch[chip] / rfc_001 produces
+## 2. What demiurge[chip] / rfc_001 produces
 
 Source: `proposals/rfc_001_booksim2_noc_absorption.md` §3, §4, §7.1, §8.
 
@@ -103,10 +103,10 @@ no shell-out, no third-party serializer.
 ### Schema (rendered as JSON for human read; wire form = HXC A1-A35 canonicalisation of the same key set)
 
 ```jsonc
-// type: hexa-arch:chip:noc:F1F2-record  (interface name)
+// type: demiurge:chip:noc:F1F2-record  (interface name)
 // schema_version: "1.0"  // see §6
 {
-  "interface": "hexa-arch:chip:noc:F1F2-record",
+  "interface": "demiurge:chip:noc:F1F2-record",
   "schema_version": "1.0",
   "record_id": "<content-hash of body, HXC A12-canon hex>",
   "produced_at_utc": "2026-05-18T00:00:00Z",
@@ -191,12 +191,12 @@ verdict is derived by `comb` from **two records** sharing identical
 `{ traffic, node, schema_version, wire_delay_model.node,
 wire_delay_model.ps_per_mm }` but differing in `topology.degree`. The
 schema reserves `verdict.f1/f2` to hold the *pair-level* verdict when an
-aggregator writes a derived record (field `interface = "hexa-arch:chip:
+aggregator writes a derived record (field `interface = "demiurge:chip:
 noc:F1F2-pair-verdict"` for the aggregate; same provenance discipline).
 
 ### Concrete example — degree-6 hex region R=7, tornado, 7 nm
 
-A worked example record is provided at `~/core/hexa-arch/exports/chip/
+A worked example record is provided at `~/core/demiurge/exports/chip/
 noc/f1f2/schema/v1_0.md` §B (the schema's own example block).
 
 ---
@@ -208,9 +208,9 @@ All required, all checked by the producer before emitting the record
 
 | field | type | enforced by | purpose |
 |---|---|---|---|
-| `provenance.absorbed` | bool | rfc_001 §8 measurement gate | `true` only after BookSim2 reproduction of published 8×8 mesh curve within stated error AND degree-4/6 wire-delay-injected curves filed in `hexa-arch/PLAN.md`. Otherwise `false`. |
-| `provenance.sim_engine` | string | producer | module path within hexa-arch (e.g. `hexa-arch:stdlib/booksim`) |
-| `provenance.sim_commit_hash` | string | producer | git short-sha of hexa-arch HEAD that produced the record |
+| `provenance.absorbed` | bool | rfc_001 §8 measurement gate | `true` only after BookSim2 reproduction of published 8×8 mesh curve within stated error AND degree-4/6 wire-delay-injected curves filed in `demiurge/PLAN.md`. Otherwise `false`. |
+| `provenance.sim_engine` | string | producer | module path within demiurge (e.g. `demiurge:stdlib/booksim`) |
+| `provenance.sim_commit_hash` | string | producer | git short-sha of demiurge HEAD that produced the record |
 | `provenance.wire_delay_source` | object | rfc_001 §4 | `{doi_or_url, node_basis}`; extrapolation MUST be flagged in `node_basis` (e.g. "SMART 22nm extrapolated to 7nm") |
 | `provenance.leighton_source` | object | rfc_001 §5 | Bhatt–Leighton DOI / Springer edition |
 | `provenance.measurement_gate` | enum | rfc_001 §8 | `GATE_OPEN` (no claim) · **`GATE_B_PINNED_MET`** (hexa-native re-derivation reproduced the rfc_003 §4 *pinned* §B criteria under a documented model simplification; `absorbed` stays false — full-curve + §D NOT demonstrated; design.md D9) · `GATE_CLOSED_MEASURED` (full parity reproduced) · `GATE_FAILED` |
@@ -237,7 +237,7 @@ Repo-governance alignment:
 ## 5. Path convention (producer-owned per Decision 7)
 
 ```
-~/core/hexa-arch/
+~/core/demiurge/
   exports/
     chip/
       noc/
@@ -256,10 +256,10 @@ Consumer side (comb) reads by absolute path; no symlink, no copy:
 
 ```
 ~/core/hexa-lang/comb/T1_experiment.md  ←  cites
-   ~/core/hexa-arch/exports/chip/noc/f1f2/records/<id>.hxc
+   ~/core/demiurge/exports/chip/noc/f1f2/records/<id>.hxc
 ```
 
-Atlas promotion (`~/core/atlas/hexa-arch::chip::noc::f1f2/`) is **deferred
+Atlas promotion (`~/core/atlas/demiurge::chip::noc::f1f2/`) is **deferred
 until a second consumer beyond comb materializes** (e.g. cern / grid
 wanting noc records). Until then, atlas promotion is speculative scope
 banned by lattice-as-tool g1/g2/g3 + andrej-karpathy simplicity
@@ -274,7 +274,7 @@ banned by lattice-as-tool g1/g2/g3 + andrej-karpathy simplicity
 | `schema_version` | semver MAJOR.MINOR (e.g. "1.0"); MAJOR = breaking, MINOR = additive. PATCH not used. |
 | `record_id` | HXC A12 — content-addressed hex digest of body excluding `record_id` itself |
 | `produced_at_utc` | ISO-8601 wall-time (informational; not used for equality) |
-| `provenance.sim_commit_hash` | git short-sha; pairs the record to a *concrete* hexa-arch source commit |
+| `provenance.sim_commit_hash` | git short-sha; pairs the record to a *concrete* demiurge source commit |
 
 Semver bump rules:
 
@@ -293,14 +293,14 @@ in `exports/.../schema/` so in-flight consumers can pin.
 
 ## 7. Cross-repo landing path
 
-### hexa-arch side (this repo — landed in this commit + adjacent)
+### demiurge side (this repo — landed in this commit + adjacent)
 
 1. `proposals/rfc_001_booksim2_noc_absorption.md` — add §11 pointer to
    this RFC. ✓ (landed alongside)
 2. `proposals/rfc_002_f1f2_export_interface.md` — this file. ✓
 3. `exports/chip/noc/f1f2/schema/v1_0.md` — human-readable schema doc. ✓
 4. `exports/chip/noc/f1f2/schema/v1_0.hxc` — HXC v2 canonicalisation
-   (deferred — generated when the hexa-arch HXC tool exists).
+   (deferred — generated when the demiurge HXC tool exists).
 5. `PLAN.md` — appended progress-log entry.
 6. `ARCH.tape` — appended `@D` entry for the typed-interface contract.
 
@@ -318,7 +318,7 @@ governance. Pending list (citation-only updates — no governance change):
    subsection: comb's harness reads HXC records from the absolute path
    in §5.
 10. `comb/COMB.tape` — `@X` external-citation entry pointing to the
-    hexa-arch schema.
+    demiurge schema.
 11. `comb/PLAN.md` — append entry when first F1/F2 pair-verdict record
     is read.
 
@@ -349,7 +349,7 @@ event in audit terms).
 
 ## 9. Open / deferred
 
-- HXC v2 generation tool inside hexa-arch (for emitting
+- HXC v2 generation tool inside demiurge (for emitting
   `schema/v1_0.hxc`) — deferred until the hexa-native re-derivation of
   rfc_001 §7 exists; until then the human-readable `v1_0.md` is the
   reference and consumers may parse the equivalent JSON.

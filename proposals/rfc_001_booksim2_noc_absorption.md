@@ -8,7 +8,7 @@
 ## 1. Purpose
 
 Absorb the minimal subset of **BookSim2** (the field-reference NoC
-cycle-accurate simulator) into hexa-arch[chip] under the 7-verb spine's
+cycle-accurate simulator) into demiurge[chip] under the 7-verb spine's
 **해석 ANALYZE** stage (system-cycle sub-verb). The goal is unblocking
 hexa-lang `comb` RFC 057 falsifiers **F1/F2** — answering whether
 degree-6 outperforms degree-4 at a modern process node under
@@ -116,20 +116,20 @@ Engine modules are **pure hexa** (no Python, no shell-out, no FFI to
 upstream C++). Dispatcher = `stdlib/booksim/booksim.hexa` — single entry
 point routed from `self/main.hexa` `else if sub == "booksim"` branch.
 
-### 7.2 CLI surface (hexa-arch[chip] entry point)
+### 7.2 CLI surface (demiurge[chip] entry point)
 
 ```sh
-hexa-arch booksim                       # default = help
-hexa-arch booksim topology load <file>  # anynet topology file → typed
-hexa-arch booksim sweep --topology <f> --traffic uniform --rate 0.05..0.5
-hexa-arch booksim wire-delay --node 22nm --topology <f>
-hexa-arch booksim oracle --degree 6 --bisection --diameter
-hexa-arch booksim measure --baseline degree-4 --candidate degree-6 \
+demiurge booksim                       # default = help
+demiurge booksim topology load <file>  # anynet topology file → typed
+demiurge booksim sweep --topology <f> --traffic uniform --rate 0.05..0.5
+demiurge booksim wire-delay --node 22nm --topology <f>
+demiurge booksim oracle --degree 6 --bisection --diameter
+demiurge booksim measure --baseline degree-4 --candidate degree-6 \
                           --node 22nm --traffic tornado --report json
-hexa-arch booksim --help, -h / --version, -v
+demiurge booksim --help, -h / --version, -v
 ```
 
-`hexa-arch --help` STDLIB CLI section to surface the `booksim` subcommand
+`demiurge --help` STDLIB CLI section to surface the `booksim` subcommand
 group, mirroring rfc_047 §4 cmd_help integration.
 
 ### 7.3 Fail-loud exit codes (rfc_048 §3 mirror — raw-91 doctrine)
@@ -238,11 +238,11 @@ what provenance guarantees) is split into a sibling RFC per HANDOFF §7
 "one absorption-RFC per concept":
 
 → `proposals/rfc_002_f1f2_export_interface.md` — typed-interface
-   contract for the `hexa-arch:chip:noc:F1F2-record` artifact consumed
+   contract for the `demiurge:chip:noc:F1F2-record` artifact consumed
    by hexa-lang `comb` (`design.md` Decision 2 typed-interface +
    Decision 7 producer-owned path).
 
-Records are emitted to `~/core/hexa-arch/exports/chip/noc/f1f2/`;
+Records are emitted to `~/core/demiurge/exports/chip/noc/f1f2/`;
 carrier is HXC v2 byte-canonical wire (forced by hexa-lang `@D g_hxc`);
 per-record provenance enforced (`provenance.absorbed = false` until
 this RFC's §8 measurement gate closes). See rfc_002 §3 for the schema,

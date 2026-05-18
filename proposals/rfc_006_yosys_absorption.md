@@ -46,7 +46,7 @@ RTLIL pass library) is out of scope.
 ## 4. Module breakdown (hexa-native → `hexa-lang/stdlib/yosys/`, D15)
 
 Per D15 the modules live in hexa-lang/stdlib; this RFC (design) lives
-in hexa-arch/proposals; hexa-arch references as consumer.
+in demiurge/proposals; demiurge references as consumer.
 
 | module | re-derives (clean-room, cited) |
 |---|---|
@@ -79,7 +79,7 @@ may say "Yosys absorbed" before this gate.
 ## 6. Location / consumer
 
 Modules → `hexa-lang/stdlib/yosys/` (D15, hexa-lang commit, unpushed
-pending hexa-lang review — booksim/d5a63a82 precedent). hexa-arch
+pending hexa-lang review — booksim/d5a63a82 precedent). demiurge
 references it as the chip-domain SYNTHESIZE tool; this RFC is the
 design only.
 
@@ -88,7 +88,7 @@ design only.
 > **hexa-lang session** (modules live in hexa-lang's tree per D15;
 > review+push authority co-located with ownership; avoids stacking
 > a 3rd review on hexa-lang's pending `d5a63a82`/`61866308`). This
-> RFC §4/§5 *is* the spec that session works against. hexa-arch's
+> RFC §4/§5 *is* the spec that session works against. demiurge's
 > deliverable = design + D18/D19 (committed, whole). See
 > `design.md` D19.
 

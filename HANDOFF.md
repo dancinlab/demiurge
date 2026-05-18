@@ -1,6 +1,6 @@
-# hexa-arch — HANDOFF (self-contained · cold-readable · 0-context)
+# Demiurge — HANDOFF (self-contained · cold-readable · 0-context)
 
-> 2026-05-19 · This single file is everything needed to continue hexa-arch
+> 2026-05-19 · This single file is everything needed to continue demiurge
 > anywhere (new machine / new agent / new repo) with **zero prior context**.
 > Read top to bottom; the RESUME block at the end is copy-paste ready.
 > Reconciled to `design.md` D1–D22 (post-Phase-4 design-complete).
@@ -9,19 +9,19 @@
 
 ## 1. TL;DR (3 lines)
 
-- **hexa-arch** = a hexa-native, domain-pluggable program to **specify →
+- **demiurge** = a hexa-native, domain-pluggable program to **specify →
   architect → design → analyze → synthesize → verify → handoff** *any*
   engineered system (7-verb spine, cited — see §4 and `design.md` D5).
   Also the **meta-conductor** of a chained materials→chip→component
   program (D11), each pass joined by a typed seam (`rfc_007`, `rfc_008`).
 - **Typed-interface consumer** (not absorber) of **hexa-matter** and
   **hexa-bio** (D2). hexa-matter's absorption SSOT is **hexa-lang**
-  (D17); hexa-arch carries only `domains/matter/` pointer. Chip is the
+  (D17); demiurge carries only `domains/matter/` pointer. Chip is the
   lead domain; `component` (FEM/EM/thermal) is a new top-level domain
   for the chain's 3rd pass (D21); 13 other domains shallow-mapped.
 - Each domain absorbs external prior art via an absorption-RFC; the
-  re-derived modules land in **`hexa-lang/stdlib/`**, not under hexa-arch
-  (D15 — stdlib is hexa-lang's exclusively, hexa-arch is the consumer).
+  re-derived modules land in **`hexa-lang/stdlib/`**, not under demiurge
+  (D15 — stdlib is hexa-lang's exclusively, demiurge is the consumer).
   No fake progress; measured gate per absorption (g3).
 
 ## 2. Why this exists / vision
@@ -41,7 +41,7 @@ closed-binary RE), every absorption gated by measured feature-parity.
 ## 3. Identity
 
 ```
-📐 HEXA-ARCH — "만능 설계 아키텍쳐 프로그램"
+📐 DEMIURGE — "만능 설계 아키텍쳐 프로그램"
 - 하는 일: 어떤 공학 시스템이든 명세→구조→설계→해석⟲→합성→검증→인계, 분야는 플러그인
 - 비유: 만능 설계실 — 칩/우주선/기계 책상이 한 건물 안에
 ```
@@ -51,17 +51,17 @@ Family position:
 ```
 hexa-lang    🧰  substrate + stdlib SSOT (D15)   ← hosts absorbed modules
   └ hexa-matter content (absorption SSOT here per D17) · comb/ (consumer)
-hexa-matter  🧱  물질·소재 sibling                 ⟵ typed-consumed by hexa-arch (D2)
-hexa-bio     🧬  화학분자 sibling                  ⟵ typed-consumed by hexa-arch (D2)
-hexa-arch    📐  모든 기술설계 메타프레임          ⟵ (per-domain absorption — §5) ← THIS
+hexa-matter  🧱  물질·소재 sibling                 ⟵ typed-consumed by demiurge (D2)
+hexa-bio     🧬  화학분자 sibling                  ⟵ typed-consumed by demiurge (D2)
+demiurge    📐  모든 기술설계 메타프레임          ⟵ (per-domain absorption — §5) ← THIS
   ├ domain chip       (lead, deep)
   ├ domain component  (NEW top-level, D21 — chain 3rd pass)
   └ 13 cohort domains (shallow public-surface maps)
-comb         🧊  n=6 fabric                       (hexa-arch[chip]의 소비자)
+comb         🧊  n=6 fabric                       (demiurge[chip]의 소비자)
 macOS cockpit📺  product surface (D16, rfc_009)   (typed-consumer of exports/; build OOS)
 ```
 
-Repo: standalone `~/core/hexa-arch` (own git). Created 2026-05-18.
+Repo: standalone `~/core/demiurge` (own git). Created 2026-05-18.
 
 ## 4. Universal pipeline (the 7 verbs — cited, `design.md` Decision 5)
 
@@ -140,14 +140,14 @@ SMART ISPASS'17 · Leighton DOI 10.1007/BF01744433 등 — 상세 인용은
 타 6개 도메인 (cern · antimatter · rtsc · space · energy · brain) =
 별도 *얕은* 공개면 맵 (Decision 3 하이브리드) — 후속 파일로 분리 예정
 (Agent-3 출력 기반: Monte-Carlo transport + FEM EM/thermal 추상화가 5/6
-도메인 공통; 통합 글루가 hexa-arch 의 일관된 니치).
+도메인 공통; 통합 글루가 demiurge 의 일관된 니치).
 
 ## 6. comb relationship (decoupled — important)
 
 - **comb** lives in `~/core/hexa-lang/comb/` (n=6 hexagonal fabric R&D,
-  RFC 057, falsifiers F1–F5). It is a **consumer** of hexa-arch's chip
+  RFC 057, falsifiers F1–F5). It is a **consumer** of demiurge's chip
   domain — NOT the EDA absorber. Do not fold EDA absorption into comb.
-- comb needs from hexa-arch[chip]: (T1) a NoC cycle sim to resolve F1/F2
+- comb needs from demiurge[chip]: (T1) a NoC cycle sim to resolve F1/F2
   degree-6 vs degree-4 @ modern node; (T2) RTL + cycle-accurate sim; (T3)
   tapeout-ready design (Yosys/OpenROAD/SKY130). No fab.
 - comb governance carried over: g1·g2 lattice-is-tool, binary-tile fixed,
@@ -163,7 +163,7 @@ SMART ISPASS'17 · Leighton DOI 10.1007/BF01744433 등 — 상세 인용은
   banned (`AGENTS.tape` `g3_no_over_claim` · `@F f2`/`@F f4`).
 - **hexa-native-only (g5)** — absorbed substrate runs as hexa intrinsics;
   re-derived modules belong in **`hexa-lang/stdlib/`**, NOT under
-  hexa-arch (D15; hexa-arch carries no `stdlib/` tree — `@F f1`).
+  demiurge (D15; demiurge carries no `stdlib/` tree — `@F f1`).
   Bounded exception per the rfc_048 precedent: verbatim foreign
   substrate as a documented fail-loud subprocess (e.g. ABC inside the
   Yosys flow per D18), re-derivation as scheduled follow-on.
@@ -176,22 +176,22 @@ SMART ISPASS'17 · Leighton DOI 10.1007/BF01744433 등 — 상세 인용은
 ## 8. Related repos (avoid confusion)
 
 - `~/core/hexa-lang` — substrate + **single SSOT for `stdlib/`** (D15).
-  Hosts the re-derived modules hexa-arch references: e.g.
+  Hosts the re-derived modules demiurge references: e.g.
   `stdlib/booksim/` (rfc_003 absorption, hexa-lang commit `d5a63a82`,
   pending push in a hexa-lang session per D19) and the planned
-  `stdlib/yosys/` (rfc_006 §4 impl pending, D19). hexa-arch references
+  `stdlib/yosys/` (rfc_006 §4 impl pending, D19). demiurge references
   these; it does **not** carry them.
 - `~/core/hexa-matter` — sibling; absorption SSOT = hexa-lang per D17.
-  hexa-arch's `domains/matter/` is a pointer README, not a copy.
+  demiurge's `domains/matter/` is a pointer README, not a copy.
 - `~/core/hexa-chip` — **distinct existing repo** (5G/6G, advanced
-  packaging, accel). NOT hexa-arch's chip domain. If overlap emerges,
+  packaging, accel). NOT demiurge's chip domain. If overlap emerges,
   coordinate; do not merge blindly.
 - `~/core/hexa-space` — distinct existing repo; potential future space domain.
 - **macOS Swift cockpit (D16, rfc_009)** — the product surface, a
   read-only consumer of `exports/{chip/noc/f1f2, seams/*}`. Build is
   **out of scope here** (D22) — belongs to a downstream session
   (D19 idiom). Public honest-audit surface is the public GitHub
-  `dancinlab/hexa-arch` repo itself (D16).
+  `dancinlab/demiurge` repo itself (D16).
 
 ## 9. Current state (post-D22, g3 — measured distance only)
 
@@ -220,7 +220,7 @@ audit trail. Current snapshot:
 - `d5a63a82` (booksim absorb) — committed locally in hexa-lang
   (`rfc043-hexa-torch` ahead 18), **unpushed** — hexa-lang session.
   inbox handoff filed: `~/core/hexa-lang/inbox/notes/2026-05-19-
-  hexa-arch-rfc006-yosys-handoff.md` + `inbox/PATCHES.yaml` +2.
+  demiurge-rfc006-yosys-handoff.md` + `inbox/PATCHES.yaml` +2.
 - chip §B full-curve / §D — not measured; `absorbed=false`.
 - Seam records — 0; both rfc_007/008 schemas at v0, `records/`
   intentionally empty (g3 — no fabricated data).
@@ -230,7 +230,7 @@ audit trail. Current snapshot:
 ## 10. RESUME (copy-paste anywhere)
 
 ```
-hexa-arch 이어서. 이 repo(~/core/hexa-arch) 의 SSOT 4종:
+demiurge 이어서. 이 repo(~/core/demiurge) 의 SSOT 4종:
 HANDOFF.md (cold-readable 아키텍처) · CHARTER.md (mission/거버넌스) ·
 design.md (D1–D22 결정 감사추적) · PLAN.md (진행/측정 거리, append-only).
 거버넌스 SSOT = AGENTS.tape (g_stdlib_ownership · g3_no_over_claim · g5).
@@ -239,15 +239,15 @@ design.md (D1–D22 결정 감사추적) · PLAN.md (진행/측정 거리, appen
 cited, D5) 을 materials→chip→component 체인에 직렬 적용. 도메인 = chip
 (deep) + component (NEW top-level, D21) + 13 cohort shallow 맵.
 hexa-matter / hexa-bio = typed-interface 소비 (D2); hexa-matter 흡수
-SSOT = hexa-lang (D17 — hexa-arch 는 소비-포인터). 재도출 모듈은
-hexa-lang/stdlib/ 행 (D15 — hexa-arch 는 stdlib 미보유). 공개면 클린룸
+SSOT = hexa-lang (D17 — demiurge 는 소비-포인터). 재도출 모듈은
+hexa-lang/stdlib/ 행 (D15 — demiurge 는 stdlib 미보유). 공개면 클린룸
 한정(D1). 산출표면 = macOS Swift cockpit(D16, rfc_009 spec; 빌드는
 범위밖 — D22, downstream 세션). 거버넌스 = g3 RETAINED + g5 + g_clean_
 room + rfc_048-precedented bounded-subprocess 예외(D18). 현 상태(g3):
 **4-Phase 설계 design-complete · 9 RFC · D1–D22 · 15 도메인맵 · 코드/
 앱 0 · absorbed 0 · chip §B GATE_B_PINNED_MET**. 다음 = (a) hexa-lang
 세션에서 `d5a63a82` push + rfc_006 §4 Yosys 모듈 (inbox handoff 적재
-완료: `hexa-lang/inbox/notes/2026-05-19-hexa-arch-rfc006-yosys-
+완료: `hexa-lang/inbox/notes/2026-05-19-demiurge-rfc006-yosys-
 handoff.md`) · (b) chip 측정 (gated) · (c) Swift 빌드 (downstream).
 ```
 

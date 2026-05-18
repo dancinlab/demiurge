@@ -14,7 +14,7 @@
 
 ## 1. Purpose
 
-Specify the **hexa-arch product surface**: a native **macOS Swift**
+Specify the **demiurge product surface**: a native **macOS Swift**
 app — a *local design cockpit*, pure read-only consumer of the typed
 exports, zero server / auth / DB, the hexa-native core untouched
 (D16). **This RFC is the design only**; building it is downstream and
@@ -36,7 +36,7 @@ It reads, never writes back into the core (g5 boundary, §5):
 
 Mapping convention: each JSON schema → a Swift `Codable` struct 1:1
 (field names verbatim; `null` → Swift optional). Wire form (HXC v2)
-is consumed **when the hexa-arch HXC tool lands** (the schemas'
+is consumed **when the demiurge HXC tool lands** (the schemas'
 `v*.hxc` note); until then the app reads the human/JSON form. No
 schema is re-modelled or "enriched" in the app (g3 — it renders what
 the producer emitted, nothing more).
@@ -48,7 +48,7 @@ picker; the meta-conductor chain (rfc_004 §4) = a pipeline canvas;
 ANALYZE ⟲ = the visible iterate-back loop.
 
 ```
-┌──────────────────────── hexa-arch cockpit (macOS) ────────────────────────┐
+┌──────────────────────── demiurge cockpit (macOS) ────────────────────────┐
 │ [domain ▾ chip|component|matter|…14]      [chain canvas: mat▶chip▶comp]    │
 ├───────────────────────────────────────────────────────────────────────────┤
 │  SPECIFY → ARCHITECT → DESIGN → ANALYZE⟲ → SYNTHESIZE → VERIFY → HANDOFF   │
@@ -82,7 +82,7 @@ renders, verbatim from the producer's `provenance` block:
   fail-loud; the app does not invent a default).
 
 vs Cadence / Synopsys / COMSOL black boxes: those present results
-without absorbed/gate/citation provenance. hexa-arch's surface makes
+without absorbed/gate/citation provenance. demiurge's surface makes
 the no-over-claim discipline the **visible** differentiator (GOAL.md:
 "honesty is the product feature").
 
@@ -130,7 +130,7 @@ over-claim g3 / `@F f2` forbids).
 ## 8. Open / deferred (not gating this design)
 
 - actual build (Xcode/SwiftUI project) — gated downstream session.
-- HXC v2 consumption — deferred until the hexa-arch HXC tool lands
+- HXC v2 consumption — deferred until the demiurge HXC tool lands
   (schemas already note this); app reads JSON until then.
 - macOS minimum version / toolchain / packaging — a build-session
   concern, not a design-spec branch (no gate now).

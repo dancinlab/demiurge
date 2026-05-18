@@ -1,10 +1,10 @@
-# GOAL — hexa-arch 의 한 문장
+# GOAL — Demiurge 의 한 문장
 
 ```
-/goal hexa-arch 가 — 칩 전용 EDA 툴이나 단일-도메인 모델러가 아니라 — 어떤 공학 시스템이든 명세→구조→설계→해석⟲→합성→검증→인계 7-verb 로 *설계 자체*를 계산·검증하고, 물질합성→칩아키텍쳐→부품설계를 한 줄로 잇는, 측정 전엔 무엇도 과대주장하지 않는(g3) 정직한 hexa-native 메타-컨덕터가 되게 만든다.
+/goal demiurge 가 — 칩 전용 EDA 툴이나 단일-도메인 모델러가 아니라 — 어떤 공학 시스템이든 명세→구조→설계→해석⟲→합성→검증→인계 7-verb 로 *설계 자체*를 계산·검증하고, 물질합성→칩아키텍쳐→부품설계를 한 줄로 잇는, 측정 전엔 무엇도 과대주장하지 않는(g3) 정직한 hexa-native 메타-컨덕터가 되게 만든다.
 ```
 
-> **한 문장 (canonical)**: hexa-arch 는 분야-무관 7-verb 로 *설계 자체*를
+> **한 문장 (canonical)**: demiurge 는 분야-무관 7-verb 로 *설계 자체*를
 > 계산·검증하고 외부 선행기술을 공개면 clean-room 으로 흡수해 **물질→칩→
 > 부품을 직렬로 지휘**하는, **정직(no-over-claim, g3)** 한 hexa-native
 > 메타프레임워크다.
@@ -16,9 +16,9 @@
 - 단일-도메인 모델러 아님 (vs SysML / Modelica — 분야 무관 spine)
 - proprietary 블랙박스 아님 (vs Cadence / Synopsys — cited·공개감사·honest-gated)
 - 물질/분자 *계산기* 아님 — 그건 hexa-matter(물질)·hexa-bio(분자);
-  hexa-arch 는 **설계 자체**를 계산 (hexa-matter·hexa-bio·comb 모두
+  demiurge 는 **설계 자체**를 계산 (hexa-matter·hexa-bio·comb 모두
   typed-interface 소비 — hexa-matter 흡수 SSOT = hexa-lang, D17 이
-  D12 supersede; hexa-arch 는 소비자)
+  D12 supersede; demiurge 는 소비자)
 - 측정 없이 "absorbed/parity/resolved" 주장하는 것 아님 (g3 — `@F f2`)
 
 ## 무엇인가 (IS)
@@ -28,7 +28,7 @@
 - **메타-컨덕터** (D11): 물질합성→칩아키텍쳐→부품설계를 직렬로,
   각 pass 의 HANDOFF → 다음 pass 의 SPECIFY (rfc_004 §3/§4)
 - 외부 선행기술을 **공개면 clean-room** (D1) 으로 흡수 → hexa-native
-  (재사용 모듈은 `hexa-lang/stdlib/`, D15 — hexa-arch 는 소비자)
+  (재사용 모듈은 `hexa-lang/stdlib/`, D15 — demiurge 는 소비자)
 - **정직**: 모든 산출이 `provenance.absorbed`·`measurement_gate`
   (OPEN / B_PINNED_MET / CLOSED) · citation 을 들고 다님 (g3)
 - 산출 = *설계* + 로컬 macOS Swift 코크핏 (D16); 공개 honest-audit =
@@ -60,11 +60,11 @@ north-star 불변. 측정된 거리 (g3 — 과대주장 금지):
   AGENTS.tape 거버넌스 (D22 정합) · CHARTER+HANDOFF reconciled.
 - ✅ **hexa-matter measured-parity 검증됨 (단 hexa-lang 소유 — D17)**:
   selftest **38/38** · parity **29/29** 는 실측 사실이나 **hexa-lang
-  의 이미 완료된 흡수** (D17 = hexa-lang SSOT · hexa-arch =
+  의 이미 완료된 흡수** (D17 = hexa-lang SSOT · demiurge =
   소비-포인터; `domains/matter/` pointer 化, rfc_005 tombstone
-  CANCELLED). hexa-arch 는 흡수 소유 주장 안 함.
+  CANCELLED). demiurge 는 흡수 소유 주장 안 함.
 - ✅ **inbox handoff 적재 완료**: `hexa-lang/inbox/notes/2026-05-19-
-  hexa-arch-rfc006-yosys-handoff.md` + `PATCHES.yaml` +2 (booksim
+  demiurge-rfc006-yosys-handoff.md` + `PATCHES.yaml` +2 (booksim
   `d5a63a82`=pending·comb `61866308`=applied), `inbox_sync` 통과.
 - ✅ **component cited-research debt 상환** (debt ①): KiCad·Elmer·
   openEMS 등 10 OSS + ANSYS Icepak·COMSOL 등 4 상용 검증, 출처

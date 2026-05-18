@@ -2,12 +2,12 @@
 
 > **SUPERSEDED 2026-05-18 — design.md D17.** hexa-matter's absorption
 > SSOT = hexa-lang (already 완전 이관 완료; hexa-lang `stdlib/PLAN.md`).
-> This hexa-arch-absorb + tombstone program is RESCINDED:
+> This demiurge-absorb + tombstone program is RESCINDED:
 > `domains/matter/` → pointer README; ⑤⑥ rename/delete CANCELLED from
-> hexa-arch's side (that is hexa-lang's call). Retained below as the
+> demiurge's side (that is hexa-lang's call). Retained below as the
 > audit record of what was done (D12/②③) + the ④ conflict find.
 > g3: the §4 38/38 parity is real but is hexa-lang's absorption, not
-> a hexa-arch ownership claim.
+> a demiurge ownership claim.
 >
 > Status: **SUPERSEDED (D17)** — was draft/program · 2026-05-18 · Source:
 > user directive + `design.md` Decision 12. Pattern mirror:
@@ -21,7 +21,7 @@
 ## 1. Goal
 
 Consolidate `~/core/hexa-matter` (own sibling repo,
-`github.com/dancinlab/hexa-matter`, MIT) **into hexa-arch** as the
+`github.com/dancinlab/hexa-matter`, MIT) **into demiurge** as the
 **materials-synthesis stage** of the meta-conductor chain
 (rfc_004 §4: 물질합성 → 칩아키텍쳐 → 부품설계), then tombstone the
 sibling repo (archive_ rename + local delete). Reverses D2/D11 *for
@@ -46,7 +46,7 @@ hexa-matter only* (D12); hexa-bio + comb stay decoupled.
   2026-05-18** (anti-data-loss precondition for the eventual delete;
   D12 sequencing).
 
-## 3. Target placement in hexa-arch
+## 3. Target placement in demiurge
 
 Recommend `domains/matter/` (the materials-synthesis chain stage —
 consistent with the 14 Cohort domain maps + rfc_004 §4 meta-conductor
@@ -57,15 +57,15 @@ tree. Pending user pick before content lands.
 ## 4. g3 measurement gate — when "absorbed" may be claimed
 
 `absorbed` (project-wide honesty, retained per D12) flips only when,
-**under the hexa-arch tree**:
+**under the demiurge tree**:
 
 - hexa-matter's own **selftest 32/32 GREEN** + **29/29 parity gates
   GREEN** reproduce, and
-- the 36 verbs run via the hexa-arch entrypoint, and
+- the 36 verbs run via the demiurge entrypoint, and
 - the result is filed in `PLAN.md` with cited numbers.
 
 > **GATE MET 2026-05-18 (g3 — cited, honest).** Run from the
-> absorbed tree `/Users/ghost/core/hexa-arch/domains/matter/`, local
+> absorbed tree `/Users/ghost/core/demiurge/domains/matter/`, local
 > host, via the tree's own canonical scoreboard `selftest/run_all.sh`:
 > **selftest 38/38 GREEN, 0 FAIL** · **parity 29/29 GREEN, 0 skipped**
 > · `verify/run_all.hexa` **4/4** · `verify/spec_presence.hexa`
@@ -105,11 +105,11 @@ for parity of pattern, with (5a) as incremental follow-on per verb.
 
 ```
 ① D12 recorded ✓ · rfc_005 (this) ✓ · comb archive snapshot ✓
-② hexa-matter content → hexa-arch domains/matter/ (per §3/§5 pick)
-③ verify: §4 gate GREEN under hexa-arch tree + hexa-arch pushed
+② hexa-matter content → demiurge domains/matter/ (per §3/§5 pick)
+③ verify: §4 gate GREEN under demiurge tree + demiurge pushed
 ④ dependents check + fix: who references dancinlab/hexa-matter —
    HEXA-family READMEs, hexa-bio/hexa-space/hexa-physics sibling
-   badges, comb, hexa-arch's own refs, the Zenodo DOI record
+   badges, comb, demiurge's own refs, the Zenodo DOI record
 ⑤ GitHub rename dancinlab/hexa-matter → dancinlab/archive_hexa-matter
    (OUTWARD, irreversible — explicit go required at this step)
 ⑥ delete ~/core/hexa-matter (DESTRUCTIVE — only after ②③④⑤)
@@ -142,9 +142,9 @@ Updated 2026-05-18 — status by step (rfc_005 §6):
   hexa-lang already absorbed hexa-matter — its own stdlib/PLAN.md
   ("hexa-matter stdlib-only 6모듈 | 완료 | ✅ 완전 이관, .py 제거,
   selftest 38/38") + inbox/notes/2026-05-14-hexa-matter-absorption-
-  plan.md. Our D12 (hexa-arch absorb) conflicts with the pre-existing
+  plan.md. Our D12 (demiurge absorb) conflicts with the pre-existing
   hexa-lang absorption AND with the user's own D15 (stdlib ⊂
-  hexa-lang; hexa-arch = consumer). ⑤⑥ HELD pending D17.
+  hexa-lang; demiurge = consumer). ⑤⑥ HELD pending D17.
 - ⑤ GitHub `hexa-matter → archive_hexa-matter` rename — **NOT done**
   (outward/irreversible; explicit per-step go required, confirmed #3).
 - ⑥ `~/core/hexa-matter` local delete — **NOT done** (destructive;

@@ -23,10 +23,10 @@ landing session has zero new design questions to resolve.
 
 **In scope (this RFC)**:
 
-1. Location decision (hexa-arch local vs hexa-lang absorption) — §2.
+1. Location decision (demiurge local vs hexa-lang absorption) — §2.
 2. Per-module interface design (six modules + dispatcher) — §3.
 3. Numerical acceptance criterion vs Agent-1's BookSim2 reference run
-   under `/tmp/hexa-arch-rfc001-measurement/runs/` — §4.
+   under `/tmp/demiurge-rfc001-measurement/runs/` — §4.
 4. Clean-room provenance map — every re-derived line cites a BookSim2
    source line-range + commit hash, plus the analytic theorem (Leighton,
    SMART) any number is anchored on — §5.
@@ -55,17 +55,17 @@ landing session has zero new design questions to resolve.
 
 ---
 
-## 2. Location decision (hexa-arch local vs hexa-lang absorption)
+## 2. Location decision (demiurge local vs hexa-lang absorption)
 
 > **RESOLVED 2026-05-18 — design.md D15 + AGENTS.tape
 > `g_stdlib_ownership`: `stdlib/` is EXCLUSIVELY hexa-lang's;
-> hexa-arch is a consumer. The 6 modules + .stubs live at
+> demiurge is a consumer. The 6 modules + .stubs live at
 > `hexa-lang/stdlib/booksim/` (hexa-lang commit `d5a63a82`,
 > self-tests re-verified GREEN there, unpushed pending hexa-lang
-> review). hexa-arch carries NO `stdlib/` tree; `stdlib/booksim/*`
-> below denotes the hexa-lang location hexa-arch references.**
+> review). demiurge carries NO `stdlib/` tree; `stdlib/booksim/*`
+> below denotes the hexa-lang location demiurge references.**
 
-The question: does `stdlib/booksim/` land in **hexa-arch** itself, or
+The question: does `stdlib/booksim/` land in **demiurge** itself, or
 get absorbed upstream into **hexa-lang/stdlib/booksim/** the way qrng /
 mc_integrate / xeno were (rfc_044 / rfc_047 / rfc_048)?
 
@@ -86,22 +86,22 @@ domain — they sit at the *substrate* layer.
 
 1. **Domain-bound by construction.** BookSim2 is a NoC (network-on-chip)
    cycle-accurate simulator. It is the chip-domain absorption that
-   rfc_001 explicitly scopes to hexa-arch[chip] first. Nothing in the
+   rfc_001 explicitly scopes to demiurge[chip] first. Nothing in the
    surveyed Cohort 1 (cern · antimatter · rtsc · space · energy · brain)
    or Cohort 2 (fusion · scope · sscb · mobility · bot · grid · aura)
    has filed a request for NoC sim.
 2. **Producer-of-exports, not language-level primitive.** Per Decision
-   7, hexa-arch[chip] is the *producer* of the F1F2-record artifact
+   7, demiurge[chip] is the *producer* of the F1F2-record artifact
    consumed by comb. The producer naturally co-locates with the records
-   it emits (`~/core/hexa-arch/exports/chip/noc/f1f2/`), and the sim
+   it emits (`~/core/demiurge/exports/chip/noc/f1f2/`), and the sim
    engine that produces those records ought to live in the same repo to
    keep the audit chain `sim_commit_hash → emit_path → record` colocated
    inside one git history (rfc_002 §5 rationale).
 
-### Recommendation: **A — land in hexa-arch local `stdlib/booksim/`**
+### Recommendation: **A — land in demiurge local `stdlib/booksim/`**
 
 The skeleton stubs in this RFC are written to
-`~/core/hexa-arch/stdlib/booksim/`. This:
+`~/core/demiurge/stdlib/booksim/`. This:
 
 - honors Decision 7's producer-owned discipline (sim engine colocated
   with records);
@@ -115,7 +115,7 @@ The skeleton stubs in this RFC are written to
 
 ### Promotion criterion (deferred to a D8 gate the user owns)
 
-Promote `stdlib/booksim/` from `hexa-arch/` to `hexa-lang/stdlib/booksim/`
+Promote `stdlib/booksim/` from `demiurge/` to `hexa-lang/stdlib/booksim/`
 when **either** of:
 
 - a second consumer outside `comb` requests NoC sim (e.g. cern packet
@@ -123,7 +123,7 @@ when **either** of:
 - a hexa-lang core change (e.g. discrete-event queue stdlib) makes the
   upstream home strictly cheaper.
 
-Until then: hexa-arch local. **The user's D8 decision gate at landing
+Until then: demiurge local. **The user's D8 decision gate at landing
 time pins this** (see §8 Q1).
 
 ### Rejected: B — absorb directly into hexa-lang now
@@ -421,7 +421,7 @@ surface mirrors rfc_001 §7.2 verbatim. Exit code policy: rfc_001 §7.3
 (0 / 1 / 2 / 90 / 91).
 
 ```hexa
-// hexa-arch booksim <subcmd> [...]
+// demiurge booksim <subcmd> [...]
 fn cmd_booksim(argv: [str]) -> int { /* TBD — dispatch table */ }
 
 // subcommands:
@@ -440,7 +440,7 @@ fn cmd_booksim(argv: [str]) -> int { /* TBD — dispatch table */ }
 
 ## 4. Acceptance criterion (rfc_001 §8 reproduction target)
 
-Agent-1's BookSim2 runs at `/tmp/hexa-arch-rfc001-measurement/runs/`
+Agent-1's BookSim2 runs at `/tmp/demiurge-rfc001-measurement/runs/`
 are the **reference output** the hexa-native re-derivation must
 reproduce. The numerical tolerances below are stated as **absolute**
 bands because the underlying RNG seed and floating math differ between
@@ -522,7 +522,7 @@ file + line range it was derived from, by inspection only; no
 copy-paste of upstream code, no transliteration of upstream identifiers
 beyond what the spec (manual.tex) standardizes. License: BookSim2 is
 BSD-2-Clause (Stanford 2007-2015) — see
-`/tmp/hexa-arch-rfc001-measurement/booksim2/LICENSE.md`. Commit at
+`/tmp/demiurge-rfc001-measurement/booksim2/LICENSE.md`. Commit at
 time of re-derivation = `28f43299f1706a3160ffac721ca461d74eb6e618`.
 
 | module | re-derives from (BookSim2 path:lines) | cites (theorem / paper) |
@@ -557,7 +557,7 @@ Surveyed `~/core/hexa-lang/stdlib/` 2026-05-18:
 | RNG (LCG / urandom) | ✅ | `stdlib/qrng/` (RFC 044) | yes — `traffic_dest_uniform` consumes `qrng_route_collect` or LCG seeded from `seed` |
 | Monte Carlo / numerics | ✅ | `stdlib/mc_integrate/` (RFC 047) | not required for F1/F2 directly, but the `engine.hexa` is the structural template for `sweep.hexa` |
 | JSON / YAML | ✅ partial | `stdlib/json.hexa`, `stdlib/yaml.hexa` | yes for report emission (machine-readable surfaces → eventually HXC per `g_hxc`) |
-| HXC v2 wire codec | ✗ in hexa-arch | hexa-lang has it (`compiler/atlas/hxc_loader.hexa`) | **GAP for record emission** — see §8 Q3 |
+| HXC v2 wire codec | ✗ in demiurge | hexa-lang has it (`compiler/atlas/hxc_loader.hexa`) | **GAP for record emission** — see §8 Q3 |
 | anynet key=value file parser | ✗ | — | **GAP — small ad-hoc parser inside `anynet.hexa`** (~50 LoC, line+space tokenized; not generic enough to promote upstream) |
 | arena / pool allocator for discrete-event queue | ✗ in stdlib (allocators exist under `stdlib/alloc/` but not surveyed for fit) | `stdlib/alloc/` | **POSSIBLE GAP — needs spike** in the bodies-landing RFC to confirm the existing arenas are adequate for the per-flit pool |
 | priority queue / min-heap | ✗ | — | **GAP — small inline heap inside `_sim_step.hexa`** (or stdlib promotion if a second user emerges) |
@@ -568,7 +568,7 @@ Surveyed `~/core/hexa-lang/stdlib/` 2026-05-18:
 1. **Anynet parser** — file-format-specific. Embed in `anynet.hexa`,
    ~50 LoC. Do **not** promote to a generic `stdlib/parse/anynet`
    — single consumer = anti-promotion.
-2. **HXC v2 emitter inside hexa-arch** — already deferred by rfc_002
+2. **HXC v2 emitter inside demiurge** — already deferred by rfc_002
    §9. Pre-GREEN: emit `F1F2-record` as JSON via `stdlib/json.hexa`
    and let `comb` parse JSON; flip to HXC when the tool lands (§8 Q3).
 3. **Min-heap for the discrete-event queue** — embed inside the
@@ -589,7 +589,7 @@ embeds privately inside `stdlib/booksim/`, or is a deferred (rfc_002
 ## 7. Phased landing plan — minimum-viable path to GREEN
 
 Phases land as separate commits / RFCs under the chosen location (§2:
-recommend hexa-arch local). Each phase has its own falsifier set in
+recommend demiurge local). Each phase has its own falsifier set in
 the rfc_001 §7.3 exit-code style; a phase passes only when all
 falsifiers return 0.
 
@@ -647,7 +647,7 @@ falsifiers return 0.
 
 - Implement the dispatcher's `measure --report json` path emitting the
   rfc_002 §3 schema as JSON (HXC deferred, §8 Q3).
-- Write the first record into `~/core/hexa-arch/exports/chip/noc/f1f2/
+- Write the first record into `~/core/demiurge/exports/chip/noc/f1f2/
   records/`.
 - Flip `provenance.absorbed = true` retroactively for prior records
   per rfc_002 §8.
@@ -674,14 +674,14 @@ that succeeded under rfc_044/rfc_047.
 
 ### Q1 — landing location (decision gate)
 
-This RFC recommends **hexa-arch local `stdlib/booksim/`** (§2). The
+This RFC recommends **demiurge local `stdlib/booksim/`** (§2). The
 alternative (absorb into `hexa-lang/stdlib/booksim/` immediately) is
 viable but loses Decision 7 colocation and forces the
 `hexa-lang/inbox/patches/` pipeline. **User picks at landing time.**
 
 ### Q2 — HXC tool prerequisite
 
-rfc_002 §9 defers the HXC v2 emitter tool inside hexa-arch "until the
+rfc_002 §9 defers the HXC v2 emitter tool inside demiurge "until the
 hexa-native re-derivation of rfc_001 §7 exists". This RFC *is* that
 re-derivation. So: should Phase F's JSON-only path be a permanent
 fallback, or is the HXC tool gated to land before Phase F (blocking)
@@ -735,7 +735,7 @@ of scope; will be a separate rfc_004 once F1 lands.**
 - hexa-lang governance: `~/core/hexa-lang/AGENTS.tape` §3 g_hxc,
   g_inbox_dual_track; rfc_047 (mc_integrate absorption), rfc_048
   (xeno absorption — raw-91 doctrine).
-- hexa-arch governance: `CHARTER.md`, `design.md` D1/D5/D7,
+- demiurge governance: `CHARTER.md`, `design.md` D1/D5/D7,
   `proposals/rfc_001_booksim2_noc_absorption.md`,
   `proposals/rfc_002_f1f2_export_interface.md`.
 

@@ -55,16 +55,16 @@
    domain.
 3. **Two shared tool-classes appear in 5 of 6 domains**:
    **Monte-Carlo particle transport** (Geant4 / OpenMC / FLUKA) and
-   **FEM EM/thermal** (FEMM / COMSOL / Maxwell). A single hexa-arch
+   **FEM EM/thermal** (FEMM / COMSOL / Maxwell). A single demiurge
    `transport` abstraction + `fem` abstraction would serve those 5 — a
-   concrete lever for hexa-arch's "integration glue" niche (point 5).
+   concrete lever for demiurge's "integration glue" niche (point 5).
 4. **Proprietary gap by domain**: smallest in `space` (NASA's fully open
    GMAT / OpenMDAO / OpenVSP / Trick / Basilisk stack); largest in
    `brain` (regulatory-grade implant safety sim has no open equivalent);
    `cern` and `rtsc` sit in between (open 2-D / proprietary 3-D split).
 5. **The consistent missing piece is integration glue** — every domain
    has strong point tools but weak open cross-stage / cross-domain
-   coupling. **This is precisely hexa-arch's niche.**
+   coupling. **This is precisely demiurge's niche.**
 
 ## Cross-cohort synthesis update — Cohort 2 evidence (Agent-4)
 
@@ -86,7 +86,7 @@ shows what was true at each cohort close.
    Crocoddyl + CasADi cover everything credibly). Proprietary advantage
    here is throughput (Isaac Sim photoreal-GPU) + regulatory
    qualification, **not capability**. Worth calling out explicitly as
-   the "ceiling test" for what hexa-arch's integration glue can look
+   the "ceiling test" for what demiurge's integration glue can look
    like when the underlying tools have no proprietary gaps.
 
 3. **New shared tool-class emerges: regulatory-verify proprietary

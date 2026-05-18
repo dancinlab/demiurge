@@ -6,13 +6,13 @@
 The materials toolkit is **already absorbed into hexa-lang** — its
 SSOT is `hexa-lang/stdlib/` (hexa-lang's own `stdlib/PLAN.md`:
 "hexa-matter stdlib-only 6모듈 | 완료 | 완전 이관, .py 제거,
-selftest 38/38"). hexa-arch does **not** own a copy of it.
+selftest 38/38"). demiurge does **not** own a copy of it.
 
-Per D15 (`stdlib` is exclusively hexa-lang's; hexa-arch is a
+Per D15 (`stdlib` is exclusively hexa-lang's; demiurge is a
 consumer) + D2/D11 (meta-conductor): the **materials-synthesis chain
 stage** (rfc_004 §4) is satisfied by *consuming* hexa-lang's absorbed
 materials over a typed-interface seam (a material-property record,
-rfc_002-style) feeding the chip stage's SPECIFY — hexa-arch conducts,
+rfc_002-style) feeding the chip stage's SPECIFY — demiurge conducts,
 it does not hold the toolkit.
 
 What happened (g3 — honest audit, nothing hidden):
@@ -21,12 +21,12 @@ What happened (g3 — honest audit, nothing hidden):
   tree. That parity is **real but it is hexa-lang's absorption** —
   the ④ dependents inventory then found hexa-lang had already
   completed the absorption (its stdlib/PLAN.md + 2026-05-14 plan).
-- D17 reconciled the conflict: hexa-lang = SSOT, hexa-arch = pointer.
+- D17 reconciled the conflict: hexa-lang = SSOT, demiurge = pointer.
   The redundant copy here was `git rm`'d 2026-05-18 (recoverable from
   git history; `~/core/hexa-matter` original intact + pushed;
   hexa-lang owns the live absorption).
 - `dancinlab/hexa-matter` rename/delete (rfc_005 ⑤⑥) is **NOT a
-  hexa-arch action** — its disposition belongs to hexa-lang. CANCELLED
+  demiurge action** — its disposition belongs to hexa-lang. CANCELLED
   from this repo's side.
 
 See: `proposals/rfc_005_hexa_matter_absorption.md` (SUPERSEDED

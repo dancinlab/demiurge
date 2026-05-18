@@ -3,7 +3,7 @@
 > Status: **draft / design only — NOT wired** · 2026-05-19 ·
 > Source: rfc_004 §4 (chained meta-pipeline) + §7 Phase 3.
 > Decisions: `design.md` D2 (typed-interface), D7 (producer-owned
-> export path), D11 (meta-conductor), **D21** (hexa-arch[component]
+> export path), D11 (meta-conductor), **D21** (demiurge[component]
 > = new top-level domain — the gate this RFC depended on), g3
 > (no-over-claim — no fabricated records). Pattern mirror:
 > **rfc_002 / rfc_007** (the two existing seams — same shape).
@@ -16,7 +16,7 @@ The chain's **second seam** — chip HANDOFF feeding the new component
 domain's SPECIFY (rfc_004 §4):
 
 ```
-┌── hexa-arch[chip] ──┐  THIS RFC   ┌── hexa-arch[component] ──┐
+┌── demiurge[chip] ──┐  THIS RFC   ┌── demiurge[component] ──┐
 │ NoC/arch→synth→P&R  │  typed      │ 부품/패키지/시스템 설계   │
 │ →signoff            │  contract   │ (FEM/EM/thermal)         │
 │ …SPECIFY..HANDOFF ─▶│  chip-      │ SPECIFY.. (own 7-verb)   │
@@ -24,7 +24,7 @@ domain's SPECIFY (rfc_004 §4):
 └─────────────────────┘  dossier    └──────────────────────────┘
 ```
 
-With D21, both ends are hexa-arch domains; the seam is a typed
+With D21, both ends are demiurge domains; the seam is a typed
 contract between two of its own passes (vs rfc_007 where the producer
 is the external hexa-matter sibling).
 
@@ -32,12 +32,12 @@ is the external hexa-matter sibling).
 
 | side | owner | role | this RFC |
 |---|---|---|---|
-| producer | `hexa-arch[chip]` HANDOFF | emits the chip-handoff dossier at the end of its 7-verb pass | producer-owned (D7) — hexa-arch *can* emit it (chip is an absorbed-tooling domain) |
-| consumer | `hexa-arch[component]` SPECIFY (new domain, D21) | reads it to parameterise package/thermal/EM design | **this contract** |
+| producer | `demiurge[chip]` HANDOFF | emits the chip-handoff dossier at the end of its 7-verb pass | producer-owned (D7) — demiurge *can* emit it (chip is an absorbed-tooling domain) |
+| consumer | `demiurge[component]` SPECIFY (new domain, D21) | reads it to parameterise package/thermal/EM design | **this contract** |
 
-Unlike rfc_007 (producer = external hexa-matter, hexa-arch never
-emits), here the producer **is hexa-arch[chip]** — so the records are
-*producible by hexa-arch in principle* (D7). They are still **absent
+Unlike rfc_007 (producer = external hexa-matter, demiurge never
+emits), here the producer **is demiurge[chip]** — so the records are
+*producible by demiurge in principle* (D7). They are still **absent
 today** for a different, honest reason (§5).
 
 ## 3. Schema v0 (draft — the chip-handoff dossier key set)
@@ -49,10 +49,10 @@ honest, g3). Units explicit. JSON for human read; wire = HXC v2
 
 ```jsonc
 {
-  "interface": "hexa-arch:seam:chip->component:handoff-dossier",
+  "interface": "demiurge:seam:chip->component:handoff-dossier",
   "schema_version": "0.1",
   "record_id": "<content-hash of body, HXC A12-canon hex>",
-  "produced_at_utc": "<ISO-8601 UTC — set by hexa-arch[chip] HANDOFF>",
+  "produced_at_utc": "<ISO-8601 UTC — set by demiurge[chip] HANDOFF>",
 
   "die": {
     "node":           "<process node string>",
@@ -92,7 +92,7 @@ package/thermal/EM model declares; unknown keys ignored
 
 ```jsonc
 "provenance": {
-  "producer":          "hexa-arch[chip]@<rev>",
+  "producer":          "demiurge[chip]@<rev>",
   "absorbed":          false,           // chip EDA stack not yet
                                         // measured-absorbed (g3)
   "measurement_gate":  "GATE_OPEN" | "GATE_B_PINNED_MET" |
@@ -104,7 +104,7 @@ package/thermal/EM model declares; unknown keys ignored
 
 `measurement_gate` reflects the **chip pipeline's real state**
 (today: NoC `GATE_B_PINNED_MET`; Yosys = rfc_006 design-only; not
-`absorbed`). hexa-arch renders it on every consuming output (D16
+`absorbed`). demiurge renders it on every consuming output (D16
 cockpit honesty) and **never upgrades** it. No `provenance` →
 **rejected fail-loud** (`@F f4`).
 
@@ -118,7 +118,7 @@ exports/seams/chip_to_component/
 
 `records/` is empty — but **for a different honest reason than
 rfc_007**. There the producer is external (hexa-matter); here the
-producer **is hexa-arch[chip]**, so hexa-arch *could* emit these. It
+producer **is demiurge[chip]**, so demiurge *could* emit these. It
 does not yet because **no real chip HANDOFF dossier exists**: the
 chip pipeline is `GATE_B_PINNED_MET` (NoC) with synth/P&R still
 design-only (rfc_006). Emitting a sample dossier now would imply a

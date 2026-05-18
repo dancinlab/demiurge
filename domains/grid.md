@@ -45,7 +45,7 @@ deployed at hyperscale (NVIDIA Slinky to >8000 GPUs).
 backplane / package / interposer co-design — no open equivalent at the
 fidelity required for ≥ 112 Gb/s SerDes channels. Note that this overlap
 with `cern.md` (3-D RF EM) and `rtsc.md` (3-D coupled EM) makes a shared
-hexa-arch `fem` abstraction a load-bearing cross-domain lever (Cohort 1
+demiurge `fem` abstraction a load-bearing cross-domain lever (Cohort 1
 synthesis point 3).
 
 ## 5. Cited sources

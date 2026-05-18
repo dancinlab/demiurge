@@ -1,4 +1,4 @@
-# hexa-arch PLAN — progress / measured-distance SSOT
+# Demiurge PLAN — progress / measured-distance SSOT
 
 > Head (editable) + `## 진행 로그` (append-only, chronological).
 > Architecture/why SSOT = `CHARTER.md` + `HANDOFF.md`. No over-claim:
@@ -6,9 +6,9 @@
 
 ## 헤드
 
-- 정체: 📐 hexa-arch — 모든 기술설계의 hexa-native 메타프레임워크.
+- 정체: 📐 demiurge — 모든 기술설계의 hexa-native 메타프레임워크.
   **7-verb pipeline** = 명세→구조→설계→해석⟲→합성→검증→인계 (cited, 9
-  라이프사이클; `design.md` D5). standalone `~/core/hexa-arch`.
+  라이프사이클; `design.md` D5). standalone `~/core/demiurge`.
 - 가족: hexa-matter(물질) · hexa-bio(분자) 와 **형제, typed-interface 소비**
   (흡수 X — `design.md` D2).
 - 명시 코호트 (D3 하이브리드): chip 깊이 + cern · antimatter · rtsc · space ·
@@ -59,11 +59,11 @@
 
 ## 진행 로그
 
-- 2026-05-18 — repo 생성 (standalone `~/core/hexa-arch`, git init).
+- 2026-05-18 — repo 생성 (standalone `~/core/demiurge`, git init).
   스캐폴드 5문서 작성. scope 확정: 범용 기술설계 메타프레임워크 (실리콘 전용
   아님 — chip 은 도메인 1개; space/mech 등 후속). comb 와 분리 (comb=소비자).
   외부 EDA 매핑 전수 HANDOFF §5 에 고정. 코드 미착수.
-- 2026-05-18 — GitHub 발행: `dancinlab/hexa-arch` PUBLIC, scaffold push.
+- 2026-05-18 — GitHub 발행: `dancinlab/demiurge` PUBLIC, scaffold push.
   형제 6개와 컨벤션 일치 (`dancinlab/*` · PUBLIC).
 - 2026-05-18 — **전면 재설계 (Decisions 1–5, design.md 신설)**:
   D1 공개면 클린룸 (open-source-only → 공개면 전체 + clean-room) ·
@@ -86,7 +86,7 @@
   진행 중 (RFC 057 location 정정 포함: hexa-lang/proposals/ 아닌
   hexa-lang/comb/RFC.md 가 canonical).
 - 2026-05-18 — **D7 F1/F2 export artifact 위치 확정 = producer-owned**
-  (`~/core/hexa-arch/exports/chip/noc/f1f2/`); atlas 승격은 2nd consumer
+  (`~/core/demiurge/exports/chip/noc/f1f2/`); atlas 승격은 2nd consumer
   등장 시 deferred. 신설:
     · `proposals/rfc_002_f1f2_export_interface.md` — typed-interface
       contract (rfc_001 = producer, rfc_002 = contract; HANDOFF §7
@@ -115,7 +115,7 @@
 
 - 2026-05-18 — **Agent-1 완료: rfc_001 §8 외부-reference baseline 측정**
   (BookSim2 commit `28f43299`, BSD-2-Clause, 빌드 = Apple clang 21.0;
-  `/tmp/hexa-arch-rfc001-measurement/`).
+  `/tmp/demiurge-rfc001-measurement/`).
 
   Provenance (D1 공개면 클린룸 audit):
   · 시뮬: BookSim2 `28f43299` (github.com/booksim/booksim2, BSD-2-Clause)
@@ -171,10 +171,10 @@
 - 2026-05-18 — Background batch 2 (4 agents): **Agent-5 ✅** —
   `proposals/rfc_003_booksim_native_rederivation_plan.md` + `stdlib/
   booksim/README.md` + 7 `*.hexa.stub` (6 모듈 + dispatcher; 시그니처만,
-  TBD 바디, clean-room provenance). 위치 = **hexa-arch 로컬 추천**
+  TBD 바디, clean-room provenance). 위치 = **demiurge 로컬 추천**
   (BookSim2 = domain-bound + F1F2-record producer → audit chain
   colocated); hexa-lang 흡수는 2nd consumer 시 deferred. **Agent-7 ✅** —
-  comb 5개 citation patch draft (`/tmp/hexa-arch-comb-patches-2026-05-18/`;
+  comb 5개 citation patch draft (`/tmp/demiurge-comb-patches-2026-05-18/`;
   hexa-lang `AGENTS.tape` governance deny 충돌 0; g7 해석 게이트 1개
   플래그 = inbox-route vs sibling-read carve-out). **Agent-8 ✅** —
   Cohort 3 인벤토리 (잔여 14 repo; os/earth/cosmos 추천 + never-cohort 7
@@ -225,23 +225,23 @@
   → build → `openroad -version` → T3. comb coordination (HANDOFF §5):
   openroad landed on Linux = NO.
 - 2026-05-18 — consumer back-pointer (NOT a transfer; Decision 2 keeps
-  comb↔hexa-arch decoupled): comb consumed the `hexa-arch:chip:noc:F1F2`
+  comb↔demiurge decoupled): comb consumed the `demiurge:chip:noc:F1F2`
   typed interface (rfc_002 v1.0) and **DELIVERED its T3 design-only**
   milestone — comb commit `2abe76c4`, doc `comb/T3_DESIGN_FINAL.md`
-  (comb SSOT; stays comb-side, NOT ingested into hexa-arch). Part D
+  (comb SSOT; stays comb-side, NOT ingested into demiurge). Part D
   (NoC architectural design) = COMPLETE via rfc_001 §8 baseline + §9
   46-record sweep; Part E (routed GDS) = comb-side execution gate.
   Substantive cross-check: comb's standalone N=7 cycle-accurate fabric
   had F1 *FALSIFIED* (d4 mesh wins, single-issue 1-cycle LL sink),
-  while hexa-arch's N=64 IQ-iSLIP §9 sweep shows d6 LEAN-PASS
+  while demiurge's N=64 IQ-iSLIP §9 sweep shows d6 LEAN-PASS
   (lat+thr, clock-robust). comb reconciles these as **orthogonal
   effects** (small-N + weak-router center-concentration vs N=64 VC +
   input-speedup relieving it) — comb's pre-registered reversal caveat
-  empirically vindicated. **No contradiction with hexa-arch records**:
+  empirically vindicated. **No contradiction with demiurge records**:
   both sides stay INCONCLUSIVE · GATE_OPEN · absorbed=false (g3
   no-over-claim intact); this is an independent characterization
   cross-check, not a regime claim. Synth-area oracle also mutually
-  consistent (comb yosys d6/d4 = 1.5156x ≡ hexa-arch records'
+  consistent (comb yosys d6/d4 = 1.5156x ≡ demiurge records'
   router_port_area_norm 1.516).
 - 2026-05-18 — **Part E (routed GDS) COMPLETE on ubu-1** — the
   long-blocked execution gate is closed. Host story: macOS abandoned
@@ -276,7 +276,7 @@
 
   Emitted: `exports/chip/noc/f1f2/records/2026-05-18_router_d{4,6}_
   pnr_sky130hd.json` + `pair_verdicts/2026-05-18_d4_vs_d6_post_pnr_
-  sky130hd.json` (interface `hexa-arch:chip:pnr:T3-record`,
+  sky130hd.json` (interface `demiurge:chip:pnr:T3-record`,
   distinct from the NoC-sim interface; `provenance.absorbed=false` —
   external OpenROAD, hexa-native rfc_003 re-derivation still pending).
   comb T3_DESIGN_FINAL.md §4 "Part E = execution gate" re-entry
@@ -338,7 +338,7 @@
   multiple agents; all worked around, none blocking)** — recorded for
   a future hexa-lang upstream PR per the hexa-first principle
   (constraint lives in hexa-lang → fix there PR-only; hexa-lang's own
-  SSOT call, not actioned from hexa-arch):
+  SSOT call, not actioned from demiurge):
   1. no `match` statement (parse error; `match{ -> }` mis-dispatches)
      → if-chains.
   2. enum-variant `==` broken — `x==S.A` returns false, `int(enum)`
@@ -398,13 +398,13 @@
   added to the measurement_gate vocabulary (rfc_002 §1/§4, schema
   v1_0.md, rfc_001 §8). absorbed stays false; external-ref records
   not relabeled. Committed `5e82a01`.
-- 2026-05-18 — **D10: hexa-arch scope = design-only** (user "hexa-arch
+- 2026-05-18 — **D10: demiurge scope = design-only** (user "demiurge
   설계만 진행"). rfc_003 arc CLOSED at the design boundary: 6/6
   hexa-native re-derivation modules landed + self-tested + provenanced
   (`GATE_B_PINNED_MET`); RFCs (001/002/003), typed F1F2 interface +
   schema, 14 domain maps, and the external-reference characterization
   records are the **design deliverable**. Full-curve parity + §D +
-  `absorbed=true` = an **execution gate, out of hexa-arch design
+  `absorbed=true` = an **execution gate, out of demiurge design
   scope** (binding constraint = interpreted hexa-lang toolchain
   throughput; a hexa-lang-side concern — hexa-first PR-only). Same
   discipline as the fab non-goal and comb RFC 057 §6 design-only.
@@ -420,7 +420,7 @@
   **zoom-in, not a scope change**: the 7-verb spine is already
   chainable (HANDOFF→SPECIFY seam), so 물질→칩→부품 = the spine in
   series across domains. Pivotal reconciliation surfaced as **D11**
-  (gated): A meta-conductor (hexa-arch orchestrates the chained
+  (gated): A meta-conductor (demiurge orchestrates the chained
   passes; matter/bio stay typed-interface-consumed per D2 —
   recommended) vs B monolith re-absorb (rejected — breaks D2 /
   no-big-bang / sibling family) vs C (= A subset, explicit comb-lib
@@ -430,7 +430,7 @@
   product feature; building it = gated downstream like fab, D10).
   All design-only (D10): rfc_004 is a design *plan*, in scope;
   execution/parity/SaaS-build remain gated. D11 awaiting user pick.
-- 2026-05-18 — **D11 RESOLVED = A meta-conductor**. hexa-arch
+- 2026-05-18 — **D11 RESOLVED = A meta-conductor**. demiurge
   conducts a chained series of 7-verb domain passes
   (물질→칩→부품; HANDOFF→SPECIFY seams, rfc_002-style per seam);
   hexa-matter/hexa-bio remain typed-interface-consumed providers —
@@ -449,7 +449,7 @@
   inherited from user identity SSOT); user confirmed g3 stays, so
   "완전 흡수" = a *measured absorption program*, never instant
   "완료". **comb = archive snapshot only** at
-  `hexa-arch/archive/comb/` (71 files / 3.3M, incl. failed work; D2
+  `demiurge/archive/comb/` (71 files / 3.3M, incl. failed work; D2
   substance preserved — live SSOT remains hexa-lang/comb
   rfc043-hexa-torch; ARCHIVE_NOTE.md states non-SSOT).
   Anti-data-loss: **hexa-matter 15 unpushed commits PUSHED to
@@ -461,7 +461,7 @@
   flagged: §5 hexa-native-only (g5) vs 2356 Python files → D14 open
   (verbatim+shim per rfc_048 vs full re-derivation); §3 placement →
   D13 open (`domains/matter/` recommended). g3 gate §4 = selftest
-  32/32 + 29 parity gates GREEN *under the hexa-arch tree* before any
+  32/32 + 29 parity gates GREEN *under the demiurge tree* before any
   "absorbed" claim. Tombstone (rename+delete) gated steps ⑤⑥ —
   NOT done; explicit per-step go required (confirmed #3). RFC = the
   program design only; the 9755-file move / selftest-rerun / rename /
@@ -476,34 +476,34 @@
   **git-tracked tree only = 469 files / 8.0 MB** (169 md · 98 py ·
   61 json · 57 tape · 42 hexa; 63 material-domain subdirs).
   + `domains/matter/ABSORB_NOTE.md` + `matter.hexa.stub` (shim plan).
-  hexa-arch repo total now ~15 MB (sane). **g3: NOT "absorbed"** —
+  demiurge repo total now ~15 MB (sane). **g3: NOT "absorbed"** —
   copy ≠ parity; flips only at rfc_005 §4 gate (selftest 32/32 + 29
   parity GREEN under this tree). Tombstone ⑤⑥ (GitHub rename +
   ~/core/hexa-matter delete) GATED — not done; hexa-matter origin
   protected (15 commits pushed). Next: ③ run hexa-matter selftest
-  under the hexa-arch tree (g3 gate) → then ④ dependents → ⑤⑥ with
+  under the demiurge tree (g3 gate) → then ④ dependents → ⑤⑥ with
   explicit go.
 - 2026-05-18 — **Governance correction (user): `stdlib/` ⊂ hexa-lang
-  ONLY; hexa-arch = consumer (가져다쓸분), never owns stdlib/.**
+  ONLY; demiurge = consumer (가져다쓸분), never owns stdlib/.**
   Recorded in new **`AGENTS.tape`** (`@D g_stdlib_ownership` +
   `@F f1` deny + consolidated load-bearing governance: g3-retained,
   D1 clean-room, D2/D11 decouple, D10-rescinded, absorption pattern,
   g5 hybrid exception, SSOT map). ⚠ **Known violation flagged**:
-  `hexa-arch/stdlib/booksim/{anynet,iq_router,traffic,sweep,
+  `demiurge/stdlib/booksim/{anynet,iq_router,traffic,sweep,
   wire_delay,leighton}.hexa(+.stub)` (committed 211e0b9/9dfac28/
-  036fc0a) sits under a hexa-arch `stdlib/` tree → violates the new
+  036fc0a) sits under a demiurge `stdlib/` tree → violates the new
   rule. Remediation = **D15 (pending gate)**: migrate to
   hexa-lang/stdlib/booksim/ (rfc_047/048 precedent; cross-repo, =
   hexa-lang session/PR per hexa-first) vs keep as non-stdlib
-  hexa-arch domain artifacts. ③ hexa-matter selftest agent
+  demiurge domain artifacts. ③ hexa-matter selftest agent
   (a58e8f5…) runs independently (domains/matter/ only — unaffected).
 - 2026-05-18 — **D15 APPLIED**: 6 booksim modules + .stubs migrated
-  hexa-arch/stdlib/ → `hexa-lang/stdlib/booksim/` (hexa-lang commit
+  demiurge/stdlib/ → `hexa-lang/stdlib/booksim/` (hexa-lang commit
   `d5a63a82` on rfc043-hexa-torch, **NOT pushed** — hexa-lang
   session/user review). Self-tests **re-verified GREEN under the
   hexa-lang tree** (anynet 14/14 · iq_router 17/17 · traffic 12/12 ·
-  wire_delay 12/12 · leighton 10/10 · sweep 5/5). hexa-arch
-  `stdlib/` git-rm'd — hexa-arch carries NO stdlib/ (AGENTS.tape
+  wire_delay 12/12 · leighton 10/10 · sweep 5/5). demiurge
+  `stdlib/` git-rm'd — demiurge carries NO stdlib/ (AGENTS.tape
   `g_stdlib_ownership`/`@F f1` satisfied; known_violation→resolved).
   rfc_003 §2 RESOLVED banner points to the hexa-lang location.
 - 2026-05-18 — ⭐️ **rfc_005 §4 g3 gate MET — hexa-matter ABSORBED AT
@@ -549,40 +549,40 @@
   `stdlib/PLAN.md` L1/L37 ("hexa-matter stdlib-only 6모듈 | 완료 |
   ✅ 완전 이관, .py 제거, selftest 38/38") + 21 KB
   `inbox/notes/2026-05-14-hexa-matter-absorption-plan.md`. Our
-  session's D12/rfc_005 (absorb into hexa-arch domains/matter/ +
+  session's D12/rfc_005 (absorb into demiurge domains/matter/ +
   tombstone dancinlab/hexa-matter) **conflicts** with (i) that
   pre-existing completed hexa-lang absorption and (ii) the user's
-  OWN D15 (`stdlib ⊂ hexa-lang; hexa-arch = consumer` — a materials
+  OWN D15 (`stdlib ⊂ hexa-lang; demiurge = consumer` — a materials
   toolkit is exactly that class). The "38/38" our ③ gate verified is
   the same count hexa-lang's prior migration reports → likely a
   re-verification of what hexa-lang already owns, not a distinct
-  hexa-arch absorption. **⑤⑥ (GitHub rename / local delete) NOT done
+  demiurge absorption. **⑤⑥ (GitHub rename / local delete) NOT done
   and HELD** — proceeding would irreversibly act on a repo hexa-lang's
   SSOT still references as the source + violate D15 + over-claim.
   Reconciliation = **design.md D17 (gate, pending)**. Nothing
   destructive/outward done; originals untouched.
-- 2026-05-18 — **D17 RESOLVED = A** (hexa-lang = SSOT, hexa-arch =
+- 2026-05-18 — **D17 RESOLVED = A** (hexa-lang = SSOT, demiurge =
   consumer-pointer). **Supersedes D12/D13/D14 + rfc_005 tombstone.**
   Actions: redundant `domains/matter/` verbatim copy (471 files /
   8 MB) `git rm`'d → replaced with `domains/matter/README.md`
-  pointer (hexa-lang owns absorption; hexa-arch consumes via typed
+  pointer (hexa-lang owns absorption; demiurge consumes via typed
   seam, rfc_004 §4; recoverable from git history; `~/core/hexa-matter`
   + hexa-lang absorption intact). rfc_005 → SUPERSEDED banner;
-  ⑤⑥ rename/delete CANCELLED from hexa-arch side (hexa-lang's call,
+  ⑤⑥ rename/delete CANCELLED from demiurge side (hexa-lang's call,
   not made here). Docs reconciled: design.md D17, AGENTS.tape
   `g_decouple` (hexa-matter now typed-consumed like hexa-bio/comb),
   GOAL.md (NOT/위치 lines), rfc_005 status. **g3 honest**: the
   measured 38/38·29/29 parity is real but is hexa-lang's absorption,
-  not a hexa-arch ownership claim — audit entries D12/D13/D14/rfc_005
+  not a demiurge ownership claim — audit entries D12/D13/D14/rfc_005
   preserved (record what was done + the conflict find), D17
-  supersedes going forward. hexa-arch never over-claimed ownership.
+  supersedes going forward. demiurge never over-claimed ownership.
 - 2026-05-18 — **Phase 2 시작: `proposals/rfc_006_yosys_absorption.md`**
   (design only). Yosys = SYNTHESIZE-verb 도구, EDA flow상 NoC-sim
   다음. Parity 타깃이 *이미 존재* (g3): comb T3 산출 router_d{4,6}.v
   + yosys netlist + 측정 area d4 61,762.99 / d6 93,608.53 µm²
   (1.5156× = §5 게이트 목표). 모듈 7개 (rtlil·read_verilog·passes·
   liberty·abc_map·write_verilog·dispatcher) → `hexa-lang/stdlib/
-  yosys/` (D15); rfc 는 hexa-arch 설계 산출. 정직 플래그: ABC
+  yosys/` (D15); rfc 는 demiurge 설계 산출. 정직 플래그: ABC
   tech-mapping 재도출은 거대 → **D18 (open)**: (7a) bounded-
   subprocess(rfc_048/D14 선례, 권장) vs (7b) 전면 재도출. RFC =
   설계만 — 모듈 미작성, 합성 미실행, "Yosys absorbed" 주장 0 (g3);
@@ -601,13 +601,13 @@
   §4 모듈 착수** (clean-room, hexa-lang/stdlib/yosys/, §5 게이트).
 - 2026-05-18 — **D19 결정 게이트**: rfc_006 §4 모듈 7개 구현 +
   self-test + §5 oracle 검증은 **hexa-lang 세션**에서 (사용자 픽
-  "hexa-arch 설계만"). 근거: D15 = stdlib 는 hexa-lang 전유 →
+  "demiurge 설계만"). 근거: D15 = stdlib 는 hexa-lang 전유 →
   소유·리뷰·push 권한 동소화; hexa-lang 미푸시 `d5a63a82`/`61866308`
   위에 3번째 리뷰 적재 회피; rfc_006 §4/§5 = 그 세션이 작업할
   완결 spec. (이 세션서 hexa-lang 워킹트리 직접 착수 = 기각.)
   rfc_006 §6 D19 배너 + design.md `### Decision 19` 반영.
-  **이로써 Phase 2 의 hexa-arch 경계 작업 = 완료** (rfc_006 설계 +
-  D18 + D19). 공은 hexa-lang 세션으로. hexa-arch 잔여 로드맵 =
+  **이로써 Phase 2 의 demiurge 경계 작업 = 완료** (rfc_006 설계 +
+  D18 + D19). 공은 hexa-lang 세션으로. demiurge 잔여 로드맵 =
   Phase 3 chain seams · Phase 4 macOS Swift GUI.
 - 2026-05-19 — **Phase 3 진입: `proposals/rfc_007_chain_seam_
   materials_to_chip.md`** (D20, 채택된 rfc_004 §7 계획 실행 —
@@ -615,21 +615,21 @@
   HANDOFF→SPECIFY 계약, rfc_002 미러(쌍둥이 seam, 체인 반대끝).
   산출: rfc_007 + `exports/seams/materials_to_chip/schema/v0.md`
   (계약) + `records/README.md` (**의도적 빈 디렉토리** — 레코드는
-  상류 hexa-matter/hexa-lang 산출, D7/D17; hexa-arch 가 위조하면
+  상류 hexa-matter/hexa-lang 산출, D7/D17; demiurge 가 위조하면
   `@F f2` 위반 → g3 위조 0). D2/D17 정합: hexa-matter 는 여전히
-  typed-consumed(미흡수), SSOT=hexa-lang; hexa-arch 는 chip
+  typed-consumed(미흡수), SSOT=hexa-lang; demiurge 는 chip
   SPECIFY 가 읽을 것만 선언. v0(≠v1.0) — 상류 HANDOFF 미pin
   정직 명시. rfc_004 §5 번호 reconcile(rfc_007=seam, 도구번호
   indicative·rfc_002/rfc_005 선례), §7/§9 갱신(§9 material-prop
   schema = rfc_007 로 ADDRESSED). **명시적 deferral (실제 게이트
-  보존)**: chip→component seam + §9 hexa-arch[component] 도메인
+  보존)**: chip→component seam + §9 demiurge[component] 도메인
   형태(신규 top-level vs chip 서브) = Phase 3 2번째 seam 활성화
   시 자체 게이트(rfc_007 §8) — 여기서 선결 안 함. design.md
   `### Decision 20`. **다음 = (a) chip→component seam 게이트 열기
   or (b) Phase 4 GUI 설계** — 지시 대기.
 - 2026-05-19 — **Phase 3 두 seam DESIGN-COMPLETE** (사용자 픽:
   "Phase 3 완결 — chip→component seam"). 먼저 deferred 결정을
-  batch 안 하고 게이트로 열어 **D21** 채택: hexa-arch[component]
+  batch 안 하고 게이트로 열어 **D21** 채택: demiurge[component]
   = **신규 top-level 도메인** (chip 서브 아님 — D11 '1 pass=1
   도메인' 정합, 기계/EM/thermal ≠ EDA 도구군). 산출:
   `proposals/rfc_008_chain_seam_chip_to_component.md` (rfc_007
@@ -638,7 +638,7 @@
   도메인 shallow 맵 — provenance 정직: agent-retrieved 아님,
   일반지식 기반 ⚠ 플래그, cited-research = follow-on). g3 정확:
   rfc_008 records 빈 사유는 rfc_007과 **다름** — producer가
-  hexa-arch[chip] 자체이나 측정된 chip HANDOFF 부재(NoC
+  demiurge[chip] 자체이나 측정된 chip HANDOFF 부재(NoC
   GATE_B_PINNED_MET·synth design-only)라 위조 시 `@F f2` 위반.
   rfc_004 §5(번호: rfc_007/008=seam, 도구 rfc_009~로 shift) ·
   §7(Phase 3 seam DESIGN-COMPLETE, ≠wired) · §9(component shape
@@ -682,11 +682,11 @@
   (8/13 등 historical 수치 un-recount, g3 — 원 survey 에 없던
   도메인). **debt ① 닫힘. 잔여 미상환: ② hexa-lang yosys 모듈
   (D19) ③ hexa-lang 미push ④ chip 측정 ⑤ Swift 빌드 — 전부
-  cross-session/gated, hexa-arch 설계경계 밖. 다음 = 신규 지시
+  cross-session/gated, demiurge 설계경계 밖. 다음 = 신규 지시
   대기.**
 - 2026-05-19 — **inbox 핸드오프 적재 + g3 정정** (사용자 "inbox
   넣었어?" — 미적재 인정 후 즉시 시정). hexa-lang
-  `inbox/PATCHES.yaml` +2 항목 + `inbox/notes/2026-05-19-hexa-arch-
+  `inbox/PATCHES.yaml` +2 항목 + `inbox/notes/2026-05-19-demiurge-
   rfc006-yosys-handoff.md` + INDEX.md, hexa-lang 로컬 커밋
   `58dbd02b` (`docs(inbox):` 규약, **미push** — booksim/브랜치
   push는 D19상 hexa-lang 세션 몫; ahead 18). `tool/inbox_sync.hexa`
@@ -699,7 +699,7 @@
   정정(D17이 D12 정정한 방식). 잔여 정정후: ② D19 yosys §4 구현
   (hexa-lang 세션) · ③ **`d5a63a82` push만** (hexa-lang 세션) ·
   ④ chip 측정 · ⑤ Swift 빌드. 핸드오프는 이제 hexa-lang inbox 에
-  실제 적재됨 (이전엔 hexa-arch 문서에만 기록 — 그 갭이 닫힘).
+  실제 적재됨 (이전엔 demiurge 문서에만 기록 — 그 갭이 닫힘).
 - 2026-05-19 — **CHARTER + HANDOFF reconciliation pass** (채택-계획
   실행; 분기 아님). D15~D22 동안 한 번도 안 손댄 아키텍처/미션
   SSOT 가 결정 22건과 어긋난 위험을 정정. 정정 항목 (g3 정직):
@@ -771,5 +771,44 @@
   honesty=feature UI, downstream 위치 결정 게이트 포함). 각 프롬프트
   에 게이트·NOT(g3)·exit 기준 명시 — 도메인이 'absorbed' 주장 금지
   /파일 위조 금지/gate 비-upgrade/silent-skip 금지. HANDOFF.md §10
-  RESUME(=hexa-arch 세션 픽업)의 보완 — 이 파일 = 그 4-Phase 설계가
+  RESUME(=demiurge 세션 픽업)의 보완 — 이 파일 = 그 4-Phase 설계가
   유발한 **3개 downstream 세션** 의 픽업. 새 결정 0, 새 RFC 0.
+- 2026-05-19 — **프로젝트·repo rename: `hexa-arch` → `Demiurge`
+  / 데미우르지** (paired with sibling brand `Phanes` / 파네스 in
+  `dancinlab/phanes`). 4 decisions landed: **D23** brand mark =
+  Demiurge (한글 데미우르지 4음절, 5음절 데미우르고스 거부 —
+  파네스 3음절과 리듬 정합); collision-clean per g3 evidence
+  (5 web-search rounds, 4 verified-clean / 8+ adjacent burned —
+  proposal frozen at `inbox/notes/brand-name-demiurge-pair-with-
+  phanes.md`). **D24** rename scope = mass text replacement
+  (`hexa-arch` → `demiurge`, `HEXA-ARCH` → `DEMIURGE`,
+  `hexa_arch_role` → `demiurge_role`) across 22 mutable docs
+  (README/GOAL/CHARTER/HANDOFF/PLAN/NEXT_SESSIONS/design.md
+  D1–D22/ARCH.tape/AGENTS.tape/proposals/rfc_001..009/domains/*.md);
+  **excluded** for g3 records-honesty: `.git/` · `exports/` (committed
+  provenance records) · `archive/` (historical absorbed-predecessor
+  mirrors) · `inbox/` (cross-repo synced handoffs). One-line Naming
+  history banner added to design.md as the g3-anchor for the rename
+  event. H1 brand-capitalization hand-fixed in 7 files (README /
+  HANDOFF / GOAL / CHARTER / PLAN / ARCH.tape / AGENTS.tape) —
+  codebase identifier remains lowercase `demiurge` per
+  phanes-sibling convention. **D25** GitHub repo = in-place `gh
+  repo rename demiurge` on existing PUBLIC `dancinlab/hexa-arch`
+  (commits / description / 0 issues / 0 PRs / 0 stars preserved;
+  HTTP 301 permanent redirect from old URL); `git remote set-url
+  origin` to the new URL; local directory rename `~/core/hexa-arch`
+  → `~/core/demiurge` deferred to LAST step (after sed+commit+push
+  to keep working-tree path stable). **D26** new governance @D
+  `g_swift_native` (required d=2026-05-19) registered in
+  `AGENTS.tape`: when implementing Swift (rfc_009 macOS cockpit,
+  D22 downstream) prefer SwiftUI / Foundation / AppKit native idiom
+  + Apple-canonical patterns FIRST; third-party libs / custom DSLs /
+  non-canonical structures require explicit per-PR justification
+  (g5-spirit applied to Swift dialect, andrej-karpathy minimum-new-
+  structure principle). New RFCs 0, new domain maps 0; rename
+  surgery only. **g3 stance**: 측정된 사실 — sed 가 22 files 에
+  적용됨, 4-경로 제외 명시, design.md 에 Naming history banner +
+  D23–D26 audit trail 추가. 주장하지 않음 — Swift cockpit 빌드
+  (D22 OOS), yosys §4 모듈 (D19, hexa-lang 세션), chip §B
+  full-curve (P-④), seam records (rfc_007/008 v0). 이름만 바뀌었고,
+  설계 내용은 동일.

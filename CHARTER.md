@@ -1,6 +1,6 @@
-# hexa-arch CHARTER
+# Demiurge CHARTER
 
-> Standalone repo `~/core/hexa-arch`. Authoritative scope/governance.
+> Standalone repo `~/core/demiurge`. Authoritative scope/governance.
 > Kept self-contained with `HANDOFF.md` (continuable anywhere).
 
 ## Mission
@@ -17,8 +17,8 @@ meta-conductor's 3rd pass. **Typed-interface consumer**, NOT
 absorber, of `hexa-matter` (물질·소재) and `hexa-bio` (화학분자)
 (`design.md` Decision 2) — and per `design.md` Decision 17,
 hexa-matter's *absorption SSOT is hexa-lang* (`stdlib/`), so
-hexa-arch is the consumer-pointer side (`domains/matter/` = pointer,
-not a copy). hexa-arch is the **meta-conductor** of a *chained*
+demiurge is the consumer-pointer side (`domains/matter/` = pointer,
+not a copy). demiurge is the **meta-conductor** of a *chained*
 materials→chip→component program: the 7-verb spine applied in
 series, each pass's HANDOFF feeding the next's SPECIFY via a typed
 seam contract (`rfc_007` materials→chip · `rfc_008` chip→component);
@@ -43,10 +43,10 @@ papers · patents (public reverse-engineering disclosure) · standards ·
 datasheets · proprietary tools' *public documentation* (capability/gap
 mapping + clean-room re-derivation only). The same absorption-RFC
 pattern hexa-matter/hexa-bio used (⟵ ASE/pymatgen, AlphaFold/RDKit);
-hexa-arch reuses the pattern but **consumes** those siblings typed-only
+demiurge reuses the pattern but **consumes** those siblings typed-only
 (Decision 2). **Re-derived reusable modules land in `hexa-lang/stdlib/`,
-not under hexa-arch** (Decision 15 — stdlib is hexa-lang's exclusively;
-hexa-arch is the consumer that references the hexa-lang location).
+not under demiurge** (Decision 15 — stdlib is hexa-lang's exclusively;
+demiurge is the consumer that references the hexa-lang location).
 Python-0 · measured · no fake progress. See `design.md` Decisions 1, 15.
 
 ## Non-goals (governance)
@@ -57,7 +57,7 @@ Python-0 · measured · no fake progress. See `design.md` Decisions 1, 15.
   is-tool · measured-only · `AGENTS.tape @F f2/f4`).
 - **hexa-native-only (g5)** — absorbed substrate runs as hexa intrinsics;
   re-derived reusable modules belong in **`hexa-lang/stdlib/`**, NOT
-  under hexa-arch (`design.md` Decision 15; hexa-arch carries no
+  under demiurge (`design.md` Decision 15; demiurge carries no
   `stdlib/` tree — `AGENTS.tape @F f1`). The rfc_048-precedented
   **bounded exception** is permitted: verbatim foreign substrate
   invoked as a documented fail-loud subprocess (e.g. ABC inside the
@@ -101,11 +101,11 @@ Progress / measured distance lives in `PLAN.md`; decision audit in
 
 - `~/core/hexa-lang` — substrate + the **single SSOT for `stdlib/`**
   (D15); first consumer `comb/`. Hosts the absorbed re-derived
-  modules hexa-arch references (e.g. `stdlib/booksim/` per rfc_003,
+  modules demiurge references (e.g. `stdlib/booksim/` per rfc_003,
   hexa-lang commit `d5a63a82` — pending push in a hexa-lang session,
   D19).
 - `~/core/hexa-matter` — sibling; absorption SSOT = hexa-lang per
-  D17. hexa-arch carries only `domains/matter/` pointer.
+  D17. demiurge carries only `domains/matter/` pointer.
 - `~/core/hexa-chip` (5G/6G·packaging) and `~/core/hexa-space` —
   distinct existing repos.
 - macOS Swift cockpit (D16, rfc_009): the product surface =

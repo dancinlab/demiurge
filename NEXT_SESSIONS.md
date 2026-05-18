@@ -1,6 +1,6 @@
 # NEXT_SESSIONS — copy-paste session-pickup prompts
 
-> 2026-05-19 · hexa-arch repo at `d4c22bf`+ (4-Phase design-complete).
+> 2026-05-19 · demiurge repo at `d4c22bf`+ (4-Phase design-complete).
 > Three forward-handoff prompts, one per session — each is
 > **0-context cold-readable** (a fresh Claude Code session reads it
 > and has enough). Pick whichever to start; they are independent.
@@ -15,34 +15,34 @@
 
 **Use this when:** you open `~/core/hexa-lang` to do the D19 work +
 push `d5a63a82`. An inbox handoff is **already filed** in hexa-lang:
-`inbox/notes/2026-05-19-hexa-arch-rfc006-yosys-handoff.md` +
+`inbox/notes/2026-05-19-demiurge-rfc006-yosys-handoff.md` +
 `inbox/PATCHES.yaml` entries `stdlib-booksim-rederive-from-hexa-
-arch-rfc003` (pending) and `comb-cite-hexa-arch-rfc002-f1f2`
+arch-rfc003` (pending) and `comb-cite-demiurge-rfc002-f1f2`
 (applied — corrects the earlier mis-statement that this was
 unpushed). Read that note first; the prompt below cold-starts the
 session.
 
 ```
-hexa-lang session — actuate the hexa-arch handoff (D19 + booksim push).
+hexa-lang session — actuate the demiurge handoff (D19 + booksim push).
 Repo: ~/core/hexa-lang · branch: rfc043-hexa-torch (ahead 18,
-unpushed). Read `inbox/notes/2026-05-19-hexa-arch-rfc006-yosys-
+unpushed). Read `inbox/notes/2026-05-19-demiurge-rfc006-yosys-
 handoff.md` first — it carries the full context.
 
 Two jobs (do them in order):
 
 ① PUSH the booksim absorb commit.
    - SHA `d5a63a82` `feat(stdlib/booksim): absorb NoC-sim re-
-     derivation modules from hexa-arch (rfc_003)` — 14 files,
+     derivation modules from demiurge (rfc_003)` — 14 files,
      +4005, pure stdlib/booksim/ (leaf, transpile-only).
    - Already tracked: PATCHES.yaml id
-     `stdlib-booksim-rederive-from-hexa-arch-rfc003` status `pending`.
-   - Review the diff vs hexa-arch/proposals/rfc_003 + D15 (stdlib ⊂
+     `stdlib-booksim-rederive-from-demiurge-rfc003` status `pending`.
+   - Review the diff vs demiurge/proposals/rfc_003 + D15 (stdlib ⊂
      hexa-lang ONLY). Push the branch.
    - Run `hexa tool/inbox_sync.hexa` — the entry should flip toward
      `applied` once the push lands and source_files verify.
 
 ② IMPLEMENT rfc_006 §4 Yosys modules into stdlib/yosys/.
-   - Read `~/core/hexa-arch/proposals/rfc_006_yosys_absorption.md`
+   - Read `~/core/demiurge/proposals/rfc_006_yosys_absorption.md`
      §4 (module list) and §5 (measured gate). Do NOT re-litigate
      decisions D15/D18/D19 — they are committed, cited.
    - 7 modules, clean-room, hexa-native, into hexa-lang/stdlib/yosys/:
@@ -72,7 +72,7 @@ NOT:
    - Do not claim Yosys absorbed before the gate. Do not assert
      parity from partial coverage. Do not silent-skip a failing
      case (`@F f4`).
-   - Do not carry stdlib under hexa-arch (`@F f1` — D15).
+   - Do not carry stdlib under demiurge (`@F f1` — D15).
    - Do not start ABC full re-derivation in this session (D18=7a).
 
 Exit criterion (any one suffices to end the session honestly):
@@ -93,11 +93,11 @@ OpenROAD attempts were rate-limit-killed twice (session history) —
 this session needs to be planned for that risk.
 
 ```
-hexa-arch chip measurement session — close GATE_B_PINNED_MET to
+demiurge chip measurement session — close GATE_B_PINNED_MET to
 measured parity for the NoC §B full-curve and (if scoped) §D.
-Repo: ~/core/hexa-arch (records land here, D7 producer-owned).
+Repo: ~/core/demiurge (records land here, D7 producer-owned).
 Implementation: ~/core/hexa-lang/stdlib/booksim/ (D15 — modules in
-hexa-lang, hexa-arch consumes/records).
+hexa-lang, demiurge consumes/records).
 
 Current state (do not over-claim — measured by Agent-1 baseline only):
    chip §B = GATE_B_PINNED_MET (pinned baseline only, model-simplified):
@@ -153,20 +153,20 @@ Exit criterion (any one ends the session honestly):
 ## P-⑤ — macOS Swift cockpit build session (rfc_009 implementation)
 
 **Use this when:** you start building the macOS Swift app. Per D22
-the build is OUT of scope of hexa-arch's design session — this is
+the build is OUT of scope of demiurge's design session — this is
 the dedicated downstream build session that works against
 `proposals/rfc_009_product_surface_macos_cockpit.md` §2–§6.
 
 ```
-hexa-arch macOS Swift cockpit build session — implement rfc_009.
-Spec: ~/core/hexa-arch/proposals/rfc_009_product_surface_macos_
+demiurge macOS Swift cockpit build session — implement rfc_009.
+Spec: ~/core/demiurge/proposals/rfc_009_product_surface_macos_
 cockpit.md (read §2–§6, decisions D16/D22).
 
 Where the app lives (you decide first, then commit to it):
-   Recommended: a NEW sibling repo `~/core/hexa-arch-cockpit/`
-   (clean separation — rfc_009 §5 places the app OUTSIDE hexa-arch's
+   Recommended: a NEW sibling repo `~/core/demiurge-cockpit/`
+   (clean separation — rfc_009 §5 places the app OUTSIDE demiurge's
    governance boundary so g5 stays unpressured). Alternatives:
-   a top-level `cockpit/` dir in hexa-arch (also fine; the boundary
+   a top-level `cockpit/` dir in demiurge (also fine; the boundary
    is governance-defined, not directory-defined). Decide and record
    the choice as a design.md decision before writing code.
 
@@ -174,7 +174,7 @@ The job (read rfc_009 §2..§7; this prompt restates the anchors):
    - Pure SwiftUI macOS app. Codable structs 1:1 with rfc_002 (F1F2),
      rfc_007 (mat→chip seam v0), rfc_008 (chip→component seam v0).
      `null` in JSON -> Swift Optional.
-   - Read-only from `~/core/hexa-arch/exports/**` (Files-app picker
+   - Read-only from `~/core/demiurge/exports/**` (Files-app picker
      or a recorded path). NO net, NO auth, NO DB, NO server.
    - 7-verb workflow as the spine (rfc_009 §3 ASCII): SPECIFY -> ...
      -> HANDOFF with ANALYZE as a visible iterate-back loop. Domain
@@ -191,7 +191,7 @@ The job (read rfc_009 §2..§7; this prompt restates the anchors):
      v0 — upstream unpinned" badge.
 
 HXC v2 wire form:
-   The schemas note `v*.hxc` will be generated when the hexa-arch
+   The schemas note `v*.hxc` will be generated when the demiurge
    HXC tool lands. Until then the app reads JSON. Do NOT block the
    build on HXC; design the Codable layer for either.
 
@@ -204,10 +204,10 @@ NOT (g3 — non-negotiable):
      SwiftUI native only (rfc_009 §5: g5 boundary unpressured).
    - Do NOT claim "cockpit complete / Yosys absorbed / chain wired"
      in commit messages until the underlying gates are actually
-     flipped in hexa-arch's PLAN.md.
+     flipped in demiurge's PLAN.md.
 
 Exit criterion:
-   A built .app that opens a local hexa-arch checkout's exports/,
+   A built .app that opens a local demiurge checkout's exports/,
    renders the F1F2 records with provenance/gate banners visible,
    and renders the two v0 seams as DRAFT contract-only edges
    (empty records honestly shown — NOT faked). Anything beyond is
@@ -218,7 +218,7 @@ Exit criterion:
 
 ## Cross-cutting notes (apply to all 3)
 
-- hexa-arch decisions D1–D22 are committed; do not re-litigate them
+- demiurge decisions D1–D22 are committed; do not re-litigate them
   in a session. Cite them. New session-specific decisions go into
   that session's repo's design.md / decision SSOT.
 - The repo's append-only PLAN.md / `## 진행 로그` is the progress
@@ -236,5 +236,5 @@ Exit criterion:
   yosys+push, P-④ chip measurement, P-⑤ Swift cockpit build).
   Each is 0-context cold-readable, names its gate, and forbids the
   matching over-claim path. Companion to `HANDOFF.md` §10 RESUME
-  (which is the *hexa-arch session* pickup; this file is for the
-  three downstream sessions hexa-arch's 4-Phase design enables).
+  (which is the *demiurge session* pickup; this file is for the
+  three downstream sessions demiurge's 4-Phase design enables).

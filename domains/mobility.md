@@ -46,7 +46,7 @@ requirements / work-product management — the open AV stacks (Apollo,
 Autoware) implement *what to verify*, but the *evidence-traceability +
 qualified tool-chain* layer expected by type-approval authorities is
 entirely proprietary (medini, DOORS, qualified codegen). This is the
-hexa-arch SPECIFY+VERIFY gap that Cohort-1 synthesis flagged as
+demiurge SPECIFY+VERIFY gap that Cohort-1 synthesis flagged as
 "under-evidenced" — mobility makes it concrete.
 
 ## 5. Cited sources
