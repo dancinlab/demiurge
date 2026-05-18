@@ -271,3 +271,37 @@ parity + §D are not demonstrated.)
 - Minimal, reversible schema surface — one enum value, scoped to the
   hexa-native re-derivation status; existing records untouched (no
   mislabeling of external-reference records).
+
+### Decision 10 — hexa-arch scope = design-only; execution-parity is a gated non-goal
+
+**picked**: hexa-arch proceeds **design-only** (user: "hexa-arch
+설계만 진행"). The deliverable is the *design*: the 7-verb spine, the
+absorption RFCs (rfc_001 / rfc_002 / rfc_003), the clean-room
+hexa-native re-derivation modules (`stdlib/booksim/*.hexa` — 6 landed,
+self-tested, provenanced, at `GATE_B_PINNED_MET`), the typed F1F2
+interface + schema, the 14 domain maps, and the external-reference
+measurement records that characterize comb T1A's inequality. **Full-
+curve parity, §D, and the `absorbed=true` flip are an execution gate,
+explicitly OUT of hexa-arch design scope** — not pursued under
+hexa-arch unless the user re-opens it. Re-entry condition (faster
+substrate / bounded per-flit DES) is preserved in rfc_003 §7 + the
+agent reports.
+
+**rationale**:
+- Charter-consistent — hexa-arch is defined as a "technical-design
+  architecture program"; "design complete, execution gated" is the
+  same discipline already applied to fab (CHARTER non-goal:
+  tapeout-ready *design* only) and to comb's own T3 (RFC 057 §6:
+  design-only, fab/execution a non-goal). Extending it to
+  measurement-parity is coherent closure, not a retreat.
+- no-over-claim honored at closure — `GATE_B_PINNED_MET` +
+  `absorbed=false` stand; nothing asserted beyond what was measured.
+  The design artifacts (RFCs, re-derivation modules, schema, records)
+  are real, self-tested, and shipped.
+- The binding blocker (interpreted hexa-lang toolchain throughput
+  ~1e4 ops/s) lives in hexa-lang, not hexa-arch — hexa-first principle
+  says fix it there PR-only; chasing it under hexa-arch would
+  mis-place the work and risk SKIP-mode pressure on g3.
+- Reversible at zero cost — the rfc_003 §7 phased path + agent reports
+  document the exact re-entry; re-opening the execution gate later
+  needs no rework.

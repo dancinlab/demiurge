@@ -362,3 +362,21 @@
   milestone*, recorded as such — its exact formalization
   (plain-false vs an explicit partial-gate marker) is a decision
   gate (see design.md).
+- 2026-05-18 — **D9 applied**: `GATE_B_PINNED_MET` partial-gate state
+  added to the measurement_gate vocabulary (rfc_002 §1/§4, schema
+  v1_0.md, rfc_001 §8). absorbed stays false; external-ref records
+  not relabeled. Committed `5e82a01`.
+- 2026-05-18 — **D10: hexa-arch scope = design-only** (user "hexa-arch
+  설계만 진행"). rfc_003 arc CLOSED at the design boundary: 6/6
+  hexa-native re-derivation modules landed + self-tested + provenanced
+  (`GATE_B_PINNED_MET`); RFCs (001/002/003), typed F1F2 interface +
+  schema, 14 domain maps, and the external-reference characterization
+  records are the **design deliverable**. Full-curve parity + §D +
+  `absorbed=true` = an **execution gate, out of hexa-arch design
+  scope** (binding constraint = interpreted hexa-lang toolchain
+  throughput; a hexa-lang-side concern — hexa-first PR-only). Same
+  discipline as the fab non-goal and comb RFC 057 §6 design-only.
+  Re-entry condition preserved (rfc_003 §7 + agent reports). No
+  over-claim: nothing asserted beyond measured; design complete,
+  execution honestly gated. CHARTER non-goals + design.md D10 record
+  the scope.

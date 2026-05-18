@@ -44,6 +44,11 @@ shell-out-0 · measured · no fake progress. See `design.md` Decision 1.
 - **No closed-binary RE** — public-surface clean-room only: no decompilation
   of closed binaries, no license/DRM circumvention, no trade-secret
   extraction (`design.md` Decision 1).
+- **Design-only** — execution to full measured parity (per-flit DES,
+  §D full-curve, the `absorbed=true` flip) is a *gated non-goal*; the
+  clean-room hexa-native re-derivation + RFCs + typed interface + the
+  characterization records are the deliverable. Same discipline as the
+  fab non-goal above (`design.md` Decision 10).
 - **Not comb** — comb (hexa-lang, n=6 fabric) is a *consumer* of the chip
   domain, not the EDA absorber. Decoupled by design.
 
