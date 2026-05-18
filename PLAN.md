@@ -250,3 +250,27 @@
   comb T3_DESIGN_FINAL.md §4 "Part E = execution gate" re-entry
   condition is now satisfied producer-side (comb-side doc update is
   comb's own SSOT call, not transferred — Decision 2).
+- 2026-05-18 — **rfc_003 Phase B, slice 1: `stdlib/booksim/anynet.hexa`
+  landed** (first real hexa-native re-derivation module; .hexa.stub
+  left intact as historical skeleton). 662 LoC, clean-room from
+  BookSim2 `anynet.cpp:60-126` + `:324-430` (commit 28f43299,
+  BSD-2-Clause; manual.tex format vocab only; no upstream code copied,
+  7 `// CLEAN-ROOM` markers). Compiles + runs under the hexa toolchain
+  (`hexa parse` clean, `hexa run` exit 0); **14/14 self-test PASS** —
+  d4 8×8 mesh routers=64 edges=224(=112 undir) **B=8 D=14** maxdeg=4,
+  d6 8×8 axial-hex routers=64 edges=322 D=14 maxdeg=6, emit→parse
+  round-trip identity. The B=8/D=14 structural output **matches the
+  committed Leighton-oracle values** in
+  `exports/.../records/2026-05-18_d4_mesh_tornado_*.json`
+  (`bisection_observed:8`, `diameter_observed:14`) — producer
+  re-derivation structurally consistent with the emitted records.
+  De-risking: **rfc_003 §6's flagged hexa-lang parser-gap did NOT
+  materialize** — toolchain handled structs / `[Struct]` arrays /
+  `core/parse` / `read_file` / `exit(91)` / `fn main()` self-test;
+  the ~50-LoC inline anynet parser per §6.1 sufficed, no upstream
+  hexa-lang change forced. One bug found+fixed in-agent (bisection
+  `/2` double-count). `provenance.absorbed` stays **false** — this is
+  1 of 6 modules; the rfc_001 §8 measurement gate closes only when
+  iq_router + traffic + sweep + wire_delay + leighton also land and
+  reproduce §B/§D. Next: those 5 modules as separate rate-limit-safe
+  scoped agents.
