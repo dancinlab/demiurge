@@ -700,3 +700,22 @@
   (hexa-lang 세션) · ③ **`d5a63a82` push만** (hexa-lang 세션) ·
   ④ chip 측정 · ⑤ Swift 빌드. 핸드오프는 이제 hexa-lang inbox 에
   실제 적재됨 (이전엔 hexa-arch 문서에만 기록 — 그 갭이 닫힘).
+- 2026-05-19 — **CHARTER + HANDOFF reconciliation pass** (채택-계획
+  실행; 분기 아님). D15~D22 동안 한 번도 안 손댄 아키텍처/미션
+  SSOT 가 결정 22건과 어긋난 위험을 정정. 정정 항목 (g3 정직):
+  ⓐ CHARTER Mission — hexa-matter framing → D17(SSOT=hexa-lang,
+  소비-포인터) + component domain(D21) 추가. ⓑ CHARTER Domain
+  plugin model — D15 명시(재도출 모듈은 hexa-lang/stdlib/ 행).
+  ⓒ CHARTER 비목표 — "Design-only(D10)" 항목이 **D12로 RESCIND
+  됐는데 비목표로 박혀있던 현 거버넌스 정면 모순** 정정: 비목표는
+  no-big-bang 으로, D15+D18 bounded-subprocess 예외 명시.
+  ⓓ "First milestone(BookSim2 scaffold)" → "**Current state**"
+  (9 RFC · D1–D22 · 15 도메인맵 · §B GATE_B_PINNED_MET · 코드 0).
+  ⓔ Related repos — hexa-lang(stdlib SSOT D15) · 매터 D17 · Swift
+  cockpit D16/D22 추가. ⓕ HANDOFF §1 TL;DR · §3 family diagram ·
+  §7 거버넌스 · §8 Related · **§9 First milestones→Current state
+  (post-D22)** · §10 RESUME block 전면 갱신(SCAFFOLD-era 였음).
+  ⓖ trailer note "scaffold is scaffold" → D22-정합 문구. 새 결정
+  없음, 새 RFC 없음 — *문서 정합* 만. PLAN/design.md/AGENTS.tape
+  은 손대지 않음(이미 정합). 외부 cold reader 가 받는 정체상이
+  결정 SSOT 와 일치.
