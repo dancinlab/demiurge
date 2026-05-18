@@ -144,6 +144,18 @@ All carry: clean-room provenance (D1), `provenance.absorbed=false`
 until per-tool measured parity (g3), interpreted-toolchain-throughput
 caveat (rfc_003 finding) → execution gated (D10).
 
+> **RFC-number note (honest reconciliation).** The `rfc_007..012`
+> above are **indicative projections, not bindings** — RFC numbers
+> are assigned at *creation order* (precedent: rfc_002 is itself a
+> seam contract sitting among absorption RFCs; rfc_005 was
+> repurposed for hexa-matter then SUPERSEDED by D17). Actual:
+> Yosys = **rfc_006 ✅** (created, D18/D19); the Phase-3
+> materials→chip seam took the next free number **rfc_007**
+> (`design.md` D20). The remaining tool absorptions get the next
+> free numbers at creation (Verilator → rfc_008, SymbiYosys →
+> rfc_009, OpenSTA → rfc_010, ngspice → rfc_011, Chisel/Amaranth →
+> rfc_012, PDK → rfc_013) — indicative, re-confirmed when created.
+
 ## 6. Product surface — SaaS / Web / GUI (design of, not build of)
 
 > **RESOLVED 2026-05-18 — D16 = native macOS Swift app** (user
@@ -197,6 +209,11 @@ Building it = execution → gated (D10). This RFC = its design only.
 - **Phase 3**: chain seam contracts — typed inter-stage records
   (material-property contract from hexa-matter, mirroring rfc_002);
   hexa-matter/bio consumer contracts (D2-consistent).
+  *(IN PROGRESS — entry seam `materials → chip` = **rfc_007 ✅
+  drafted** (D20), contract spec + `exports/seams/
+  materials_to_chip/` (records empty, g3); `chip → component` seam
+  + the §9 hexa-arch[component] domain-shape decision = explicitly
+  deferred to a gated follow-on, rfc_007 §8.)*
 - **Phase 4**: product-surface design — API spec + UI/workflow spec
   (rfc_0NN), front-end as typed-interface consumer.
 - Each phase = incremental, per-domain, no-big-bang; nothing flips
@@ -214,11 +231,13 @@ no-big-bang incremental · public-surface clean-room (D1).
 
 - **D11 — RESOLVED = A meta-conductor** (`design.md` Decision 11;
   B / Defer declined; D2 preserved).
-- D12+ (enumerated, not gated yet): comb-library absorption ordering;
-  chain-stage granularity (how fine is "부품설계"?); product-surface
-  tech stack (deferred — execution); whether hexa-arch[component] is a
-  new top-level domain or a chip sub-domain; material-property typed
-  contract schema (Phase 3).
+- D12+ (enumerated): comb-library absorption ordering; product-surface
+  tech stack (deferred — execution). **Material-property typed
+  contract schema (Phase 3) → ADDRESSED by rfc_007 (D20), v0 draft.**
+  STILL OPEN (deferred to gated follow-on, rfc_007 §8): chain-stage
+  granularity (how fine is "부품설계"?) + whether
+  hexa-arch[component] is a new top-level domain or a chip sub-domain
+  — these gate the *chip → component* seam, not the materials→chip one.
 
 ## 10. Cross-references
 

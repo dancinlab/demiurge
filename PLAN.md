@@ -609,3 +609,21 @@
   **이로써 Phase 2 의 hexa-arch 경계 작업 = 완료** (rfc_006 설계 +
   D18 + D19). 공은 hexa-lang 세션으로. hexa-arch 잔여 로드맵 =
   Phase 3 chain seams · Phase 4 macOS Swift GUI.
+- 2026-05-19 — **Phase 3 진입: `proposals/rfc_007_chain_seam_
+  materials_to_chip.md`** (D20, 채택된 rfc_004 §7 계획 실행 —
+  새 유저 게이트 아님). 체인 머리 = materials→chip seam 의 타입드
+  HANDOFF→SPECIFY 계약, rfc_002 미러(쌍둥이 seam, 체인 반대끝).
+  산출: rfc_007 + `exports/seams/materials_to_chip/schema/v0.md`
+  (계약) + `records/README.md` (**의도적 빈 디렉토리** — 레코드는
+  상류 hexa-matter/hexa-lang 산출, D7/D17; hexa-arch 가 위조하면
+  `@F f2` 위반 → g3 위조 0). D2/D17 정합: hexa-matter 는 여전히
+  typed-consumed(미흡수), SSOT=hexa-lang; hexa-arch 는 chip
+  SPECIFY 가 읽을 것만 선언. v0(≠v1.0) — 상류 HANDOFF 미pin
+  정직 명시. rfc_004 §5 번호 reconcile(rfc_007=seam, 도구번호
+  indicative·rfc_002/rfc_005 선례), §7/§9 갱신(§9 material-prop
+  schema = rfc_007 로 ADDRESSED). **명시적 deferral (실제 게이트
+  보존)**: chip→component seam + §9 hexa-arch[component] 도메인
+  형태(신규 top-level vs chip 서브) = Phase 3 2번째 seam 활성화
+  시 자체 게이트(rfc_007 §8) — 여기서 선결 안 함. design.md
+  `### Decision 20`. **다음 = (a) chip→component seam 게이트 열기
+  or (b) Phase 4 GUI 설계** — 지시 대기.

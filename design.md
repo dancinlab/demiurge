@@ -614,3 +614,42 @@ blurring the session/review boundary.)
   (design + decisions D18/D19) is whole and committed.
 - g3 — nothing is claimed "absorbed"; this only relocates *where*
   the gated implementation happens, not whether the gate exists.
+
+### Decision 20 — Phase 3 entry = materials→chip seam (rfc_007); chip→component + component-domain-shape deferred to a gated follow-on
+
+**picked**: Phase 3 (chain seam contracts) enters at the **chain
+head — the materials→chip seam**, specified by **rfc_007**
+(`hexa-arch:seam:materials->chip:matprop-record`, v0 draft +
+`exports/seams/materials_to_chip/` contract spec, records empty by
+design). This is **executing the already-accepted plan**, not a new
+user branch: rfc_004 §7 (D11-accepted) already fixes Phase 3 as
+"material-property contract from hexa-matter, mirroring rfc_002",
+and rfc_004 §9 lists exactly this as the open schema. The **second
+seam (chip→component)** and rfc_004 §9's *"hexa-arch[component] = new
+top-level domain vs chip sub-domain"* + chain-stage-granularity
+questions are a **real branch point** — **explicitly deferred to
+their own decision gate** when Phase 3's second seam is active
+(rfc_007 §8), NOT pre-decided here. (Rejected: doing chip→component
+first — it is blocked on the undecided component-domain shape;
+materials→chip is the unambiguous, dependency-free chain head.)
+
+**rationale**:
+- accepted-plan execution, not a manufactured gate — rfc_004 §7/§9
+  (under the D11 meta-conductor decision the user already accepted)
+  names this seam as the Phase-3 entry; gating it again would be
+  ceremony. The genuine branch (component-domain shape) IS preserved
+  as a future gate (rfc_007 §8) — gate discipline honored, not
+  diluted.
+- D2/D17-clean — the seam is a pure *consumption contract*:
+  hexa-matter stays typed-interface-consumed (D2), its absorption
+  SSOT stays hexa-lang (D17); hexa-arch declares only what chip
+  SPECIFY reads. No re-litigation of D2/D17.
+- g3 honest scope — `exports/seams/.../records/` is **empty by
+  design** with a README; hexa-arch ships the contract, never
+  fabricates material records (that is the over-claim `@F f2`
+  forbids). v0 (not v1.0) because the upstream hexa-lang HANDOFF
+  shape is unpinned — stated, not hidden.
+- minimum new structure (andrej-karpathy) — rfc_007 mirrors rfc_002
+  exactly (twin seam, opposite chain end); no new mechanism
+  invented, the cited 7-verb HANDOFF→SPECIFY edge already supports
+  it. RFC-number reconciliation noted honestly in rfc_004 §5.
