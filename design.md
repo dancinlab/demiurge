@@ -441,3 +441,32 @@ per-step go (confirmed #3). hexa-matter origin already protected
   g3 / no-fake-progress.
 - Tombstone stays gated — irreversible/outward steps need measured
   verification first (g3 + confirmed #3); nothing destructive done.
+
+### Decision 15 — `hexa-arch/stdlib/booksim/` → migrate to `hexa-lang/stdlib/booksim/`
+
+**picked**: A — the rfc_003 re-derivation modules (anynet, iq_router,
+traffic, sweep, wire_delay, leighton + dispatcher/README + .stubs)
+migrate to **`hexa-lang/stdlib/booksim/`**; hexa-arch carries NO
+`stdlib/` tree (AGENTS.tape `g_stdlib_ownership` / `@F f1`); rfc_003
+is updated to *reference* the hexa-lang location (hexa-arch =
+consumer). Cross-repo write done in hexa-lang context, committed in
+hexa-lang, **not pushed** (user reviews/pushes in a hexa-lang
+session — comb-patch precedent). Modules re-verified under the
+hexa-lang tree post-move (g3 — migration not claimed OK without
+re-running the self-tests). (Rejected: B keep-in-hexa-arch
+non-stdlib path — contradicts "reusable hexa-native ⊂ hexa-lang
+stdlib"; C remove-now-defer — orphans 6 verified modules from the
+working tree.)
+
+**rationale**:
+- rfc_047/048 precedent exactly — absorbed reusable hexa-native
+  modules live in hexa-lang/stdlib/ (qrng/mc-integrate/xeno);
+  booksim (NoC-sim re-derivation) is that same class.
+- Honors `g_stdlib_ownership` literally — hexa-arch owns zero
+  stdlib/; the verified modules keep a real home (not history-only).
+- hexa-arch becomes the clean consumer ("가져다쓸분") — rfc_003
+  references hexa-lang/stdlib/booksim/; resolves the AGENTS.tape
+  known_violation.
+- Safe/incremental — hexa-lang commit unpushed (user review);
+  hexa-arch `git rm stdlib/` is reversible via history; g3 honored
+  by re-verifying self-tests in the new tree.

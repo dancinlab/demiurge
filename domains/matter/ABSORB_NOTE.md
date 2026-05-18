@@ -17,9 +17,14 @@
   hexa-native re-derivation = rfc_006+ follow-on (NOT done).
 - **D13**: `domains/matter/` = materials-synthesis stage of the
   meta-conductor chain (rfc_004 §4).
-- **g3 (RETAINED, D12) — NOT yet "absorbed"**: copy ≠ parity.
-  `absorbed` flips only when hexa-matter selftest 32/32 + 29
-  parity gates run GREEN *under this tree* (rfc_005 §4), filed in
-  PLAN.md with cited numbers. Until then: program-in-progress.
-- Tombstone (rfc_005 §6 ⑤⑥ GitHub rename + local delete): GATED —
-  not done; needs ③ selftest-GREEN + ④ dependents + explicit go.
+- **g3 (RETAINED, D12) — ABSORBED AT MEASURED PARITY (2026-05-18)**:
+  rfc_005 §4 gate MET, run from this tree on local host —
+  **selftest 38/38** GREEN 0-FAIL (supersets the stale "32/32"
+  badge; 32→38 documented) · **parity 29/29** 0-skip ·
+  `verify/run_all.hexa` 4/4 · 36/36 verb specs resolve. Filed in
+  PLAN.md with these cited numbers. Faithful-set exclusion verified
+  not depended-on; D14 python-subprocess shim worked as designed.
+- Tombstone (rfc_005 §6): ③ selftest-GREEN **DONE**; ④ dependents
+  **pending**; ⑤ GitHub rename + ⑥ local delete **GATED** (outward/
+  destructive — explicit per-step go required, confirmed #3; NOT
+  done). hexa-matter origin protected (15 commits pushed).

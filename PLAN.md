@@ -465,3 +465,31 @@
   hexa-lang session/PR per hexa-first) vs keep as non-stdlib
   hexa-arch domain artifacts. ③ hexa-matter selftest agent
   (a58e8f5…) runs independently (domains/matter/ only — unaffected).
+- 2026-05-18 — **D15 APPLIED**: 6 booksim modules + .stubs migrated
+  hexa-arch/stdlib/ → `hexa-lang/stdlib/booksim/` (hexa-lang commit
+  `d5a63a82` on rfc043-hexa-torch, **NOT pushed** — hexa-lang
+  session/user review). Self-tests **re-verified GREEN under the
+  hexa-lang tree** (anynet 14/14 · iq_router 17/17 · traffic 12/12 ·
+  wire_delay 12/12 · leighton 10/10 · sweep 5/5). hexa-arch
+  `stdlib/` git-rm'd — hexa-arch carries NO stdlib/ (AGENTS.tape
+  `g_stdlib_ownership`/`@F f1` satisfied; known_violation→resolved).
+  rfc_003 §2 RESOLVED banner points to the hexa-lang location.
+- 2026-05-18 — ⭐️ **rfc_005 §4 g3 gate MET — hexa-matter ABSORBED AT
+  MEASURED PARITY** (first true measured-parity in this program; g3
+  honored throughout). Run from the absorbed tree
+  `domains/matter/` on local host via the tree's own
+  `selftest/run_all.sh`: **selftest 38/38 GREEN 0-FAIL · parity
+  29/29 GREEN 0-skipped · verify/run_all.hexa 4/4 · 36/36 verb
+  specs resolve**. The rfc_005 §4 wording said "32/32" (stale
+  2026-05-18 README badge); the tree grew (Phase J/K) to its own
+  SSOT 38/38 (`AGENTS.tape g6`/`hexa.toml`) — a strict superset of
+  the 32 (all 32 original GREEN + 6 added). Supersession
+  **documented, not fudged**. Faithful-set exclusion
+  (`.claude/worktrees/`+`state/`) verified NOT depended-on (D14
+  correction was sound). D14 python-subprocess shim worked as
+  designed (26 gates `[hexa]`, rest fail-loud subprocess; rewrite
+  deferred rfc_006+). Recorded: rfc_005 §4/§8, ABSORB_NOTE.
+  **Tombstone remaining**: ④ dependents inventory (pending) → ⑤
+  GitHub rename → ⑥ local delete — ⑤⑥ GATED, explicit per-step go
+  required (confirmed #3); NOT done. hexa-matter origin protected
+  (15 commits pushed).

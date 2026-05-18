@@ -10,7 +10,7 @@
   rule = "The `stdlib/` namespace belongs EXCLUSIVELY to hexa-lang. hexa-arch is a *consumer* of hexa-lang stdlib — it MUST NOT own or carry a `stdlib/` tree."
   hexa_arch_role = "가져다 쓰는 쪽 (consumer). Absorbed/re-derived reusable hexa-native modules belong in hexa-lang/stdlib/ (rfc_047/048 precedent), referenced from hexa-arch."
   user_directive = "2026-05-18 — 'stdlib 은 오로지 hexa-lang 이 보유 · hexa-arch 는 가져다쓸분'"
-  known_violation = "hexa-arch/stdlib/booksim/{anynet,iq_router,traffic,sweep,wire_delay,leighton}.hexa(+.stub) currently committed here — VIOLATES this rule. Remediation = design.md D15 (pending)."
+  violation_resolved = "design.md D15 applied 2026-05-18: the 6 modules + .stubs migrated to hexa-lang/stdlib/booksim/ (committed hexa-lang d5a63a82, self-tests re-verified GREEN there, unpushed pending hexa-lang review); hexa-arch/stdlib/ git-rm'd. hexa-arch now carries NO stdlib/ tree — rule satisfied. rfc_003 references the hexa-lang location."
 
 @D g3_no_over_claim := "no-over-claim — RETAINED" :: governance [required d=2026-05-18 active]
   rule = "Never assert unmeasured/unproven results. 'absorbed'/'parity'/'resolved' only at a measured gate, filed with cited numbers. SKIP-mode regression banned."

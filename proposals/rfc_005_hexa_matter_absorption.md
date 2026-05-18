@@ -55,9 +55,21 @@ tree. Pending user pick before content lands.
 - the 36 verbs run via the hexa-arch entrypoint, and
 - the result is filed in `PLAN.md` with cited numbers.
 
-Until then status = **program-in-progress** (the rfc_003 idiom:
-GATE-style, not asserted). No record/PLAN line may say
-"hexa-matter absorbed" before this gate.
+> **GATE MET 2026-05-18 (g3 — cited, honest).** Run from the
+> absorbed tree `/Users/ghost/core/hexa-arch/domains/matter/`, local
+> host, via the tree's own canonical scoreboard `selftest/run_all.sh`:
+> **selftest 38/38 GREEN, 0 FAIL** · **parity 29/29 GREEN, 0 skipped**
+> · `verify/run_all.hexa` **4/4** · `verify/spec_presence.hexa`
+> **36/36 verb specs resolve**. The "32/32" above is the stale
+> 2026-05-18 README badge quoted in §2; the tree grew (Phase
+> J/K gates) — its own SSOT (`AGENTS.tape g6`, `hexa.toml
+> selftest_pass=38/38`) is **38/38**, a strict superset of the 32
+> the gate asked for (all 32 original GREEN + 6 added). Supersession
+> documented, not fudged. Faithful-set exclusion
+> (`.claude/worktrees/`+`state/`) verified NOT depended on. D14
+> python-subprocess shim worked as designed (26 gates `[hexa]`, rest
+> fail-loud subprocess). → `provenance.absorbed` MAY be claimed for
+> hexa-matter with these cited numbers (filed in PLAN.md).
 
 ## 5. The hexa-native tension (major, honest — g3)
 
@@ -108,10 +120,19 @@ protected (15 commits pushed).
 
 ## 8. What is NOT done (g3 honesty)
 
-The 9755-file content is **not** moved; selftest is **not** re-run
-under hexa-arch; the repo is **not** renamed; the local folder is
-**not** deleted. This RFC is the *program design only*. Nothing here
-asserts hexa-matter is absorbed.
+Updated 2026-05-18 — status by step (rfc_005 §6):
+- ② content move — **DONE** (git-tracked faithful set 469 f / 8 MB →
+  `domains/matter/`; D13/D14).
+- ③ selftest gate — **DONE / GATE MET** (§4: 38/38 · 29/29 · 4/4 ·
+  36/36, cited). hexa-matter is **absorbed at measured parity**.
+- ④ dependents check — **NOT done** (HEXA-family READMEs / sibling
+  badges / Zenodo DOI / refs to dancinlab/hexa-matter — inventory
+  pending).
+- ⑤ GitHub `hexa-matter → archive_hexa-matter` rename — **NOT done**
+  (outward/irreversible; explicit per-step go required, confirmed #3).
+- ⑥ `~/core/hexa-matter` local delete — **NOT done** (destructive;
+  only after ④⑤ + explicit go). Origin already protected (15 commits
+  pushed).
 
 ## 9. Cross-references
 

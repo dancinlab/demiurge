@@ -57,6 +57,14 @@ landing session has zero new design questions to resolve.
 
 ## 2. Location decision (hexa-arch local vs hexa-lang absorption)
 
+> **RESOLVED 2026-05-18 — design.md D15 + AGENTS.tape
+> `g_stdlib_ownership`: `stdlib/` is EXCLUSIVELY hexa-lang's;
+> hexa-arch is a consumer. The 6 modules + .stubs live at
+> `hexa-lang/stdlib/booksim/` (hexa-lang commit `d5a63a82`,
+> self-tests re-verified GREEN there, unpushed pending hexa-lang
+> review). hexa-arch carries NO `stdlib/` tree; `stdlib/booksim/*`
+> below denotes the hexa-lang location hexa-arch references.**
+
 The question: does `stdlib/booksim/` land in **hexa-arch** itself, or
 get absorbed upstream into **hexa-lang/stdlib/booksim/** the way qrng /
 mc_integrate / xeno were (rfc_044 / rfc_047 / rfc_048)?
