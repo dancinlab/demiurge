@@ -1,0 +1,62 @@
+{
+  "interface": "hexa-arch:chip:pnr:T3-record",
+  "schema_version": "1.0",
+  "record_id": "PLACEHOLDER_HXC_A12_PENDING_TOOL",
+  "produced_at_utc": "2026-05-18T11:26:51Z",
+  "design": "router_d6",
+  "platform": "sky130hd",
+  "variant": "base",
+  "topology": {
+    "kind": "hex_axial",
+    "degree": 6,
+    "node_count": 1,
+    "region_shape": "router_block",
+    "routing": "n/a (single router block)",
+    "boundary": "n/a",
+    "coord_kind": "n/a"
+  },
+  "pnr_metrics": {
+    "instance_area_um2": 154984,
+    "core_area_um2": 445408,
+    "die_area_um2": 450328,
+    "instance_utilization": 0.347958,
+    "total_power_w": 0.554583,
+    "power_internal_w": 0.262142,
+    "power_switching_w": 0.29244,
+    "power_leakage_w": 5.58568e-08,
+    "setup_wns_ns": -8.5184,
+    "setup_tns_ns": -7730.72,
+    "setup_violation_count": 951,
+    "hold_wns_ns": 0.318639,
+    "fmax_hz": 73973300.0
+  },
+  "leighton_oracle": {
+    "status": "N/A_for_router_block",
+    "reason": "Leighton bisection/diameter bounds apply to the fabric topology, not a single synthesized router block; oracle is checked on the NoC-sim side (exports/.../records/*tornado*.json)"
+  },
+  "verdict": {
+    "f1": "INCONCLUSIVE",
+    "f2": "INCONCLUSIVE",
+    "rationale": "Single router-block post-P&R result; F1/F2 is the fabric-level question. This record supplies the physical EDA-cost RHS of comb T1A's inequality; the d4-vs-d6 pair-verdict carries the cross-check."
+  },
+  "provenance": {
+    "absorbed": false,
+    "sim_engine": "OpenROAD-flow-scripts (external reference; NOT hexa-native rfc_003 re-derivation)",
+    "sim_version": "openroad 26Q2-1164-g08f67ee5ec",
+    "orfs_commit_hash": "2f6e9c9bd",
+    "build_host": "aiden@ubu-1 (linux, 12c/30G; clean build, none of comb HANDOFF \u00a71's 3 macOS-arm64 patches needed)",
+    "orfs_make_target": "DESIGN_CONFIG=./designs/sky130hd/router_d6/config.mk",
+    "comb_input_artifact": "hexa-lang/comb/rtl/orfs/sky130hd/router_d6/router_d6.v (+ constraint.sdc)",
+    "leighton_source": "N/A_for_router_block",
+    "measurement_gate": "GATE_OPEN",
+    "gate_failures": [],
+    "consumer_target": "hexa-lang:comb:RFC_057:F1F2",
+    "atlas_cite_block": "@cite hexa-arch:rfc_001 \u00a711 + rfc_002; design.md D1+D2+D7; comb HANDOFF \u00a72+\u00a74; comb T3_DESIGN_FINAL.md",
+    "scope_caveats": [
+      "post-P&R single router block (not the fabric); F1/F2 fabric verdict is the NoC-sim side",
+      "external OpenROAD binary (26Q2-1164) \u2014 hexa-native rfc_003 re-derivation still pending; absorbed=false",
+      "SKY130 130nm PDK (ORFS sky130hd) \u2014 not a modern node; modern-node implication is NoC-sim-side (rfc_001 \u00a79)",
+      "first-pass ORFS flow, timing NOT closed at the comb 5ns/200MHz SDC (setup WNS negative; fmax < 200MHz) \u2014 honest, not optimized"
+    ]
+  }
+}

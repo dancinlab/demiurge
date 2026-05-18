@@ -211,3 +211,42 @@
   cross-check, not a regime claim. Synth-area oracle also mutually
   consistent (comb yosys d6/d4 = 1.5156x ≡ hexa-arch records'
   router_port_area_norm 1.516).
+- 2026-05-18 — **Part E (routed GDS) COMPLETE on ubu-1** — the
+  long-blocked execution gate is closed. Host story: macOS abandoned
+  (3-patch dead-end + 부하) → ubu-2 thrash/unreachable ×N → background
+  agent API rate-limit ×2 → ubu-2 down → **ubu-1 recovered** →
+  OpenROAD prebuilt clean on ubu-1 (`build_openroad.sh --local`,
+  MAKEFLAGS=-j8 to avoid thrash; openroad `26Q2-1164-g08f67ee5ec`,
+  ORFS HEAD `2f6e9c9bd`; comb HANDOFF §1's 3 macOS-arm64 patches NOT
+  needed on Linux — confirmed) → detached ORFS T3 for both designs:
+  `router_d4` make OK ~4 min, `router_d6` ~6 min, `6_final.gds`
+  9.5M / 16M produced. **comb HANDOFF §5 coordination: openroad
+  landed on Linux = YES** (was NO).
+
+  Post-P&R measured (ORFS `6_report.json`, sky130hd, first-pass):
+  · instance area d4 = 95,541.6 µm² · d6 = 154,984 µm² →
+    **ratio 1.6222×** (vs comb synth oracle 1.516× = **+7.0%**;
+    the P&R-stage EDA cost = timing-repair buffers + clock tree +
+    routing — NOT a contradiction of the synth oracle, a different
+    stage)
+  · power d4 0.158 W · d6 0.555 W → **3.507×** (degree-6 power
+    penalty far exceeds the area penalty)
+  · timing: BOTH fail the comb 5 ns / 200 MHz SDC — d4 WNS
+    −4.98 ns (696 viol, fmax ≈ 100 MHz), d6 WNS −8.52 ns (951 viol,
+    fmax ≈ 74 MHz). First-pass ORFS, not optimized — honest.
+
+  Significance: this supplies the **measured physical EDA-cost RHS**
+  of comb T1A's 승리 부등식. The degree-6 NoC-latency benefit (LHS,
+  rfc_001 §9: lat 0.78–0.89×, thr up to 1.81×) must clear area
+  1.62× + power 3.5× + degraded timing. Both sides now quantified;
+  still **INCONCLUSIVE** as a regime claim (single PDK/SDC/util
+  point, timing not closed, g3, GATE_OPEN).
+
+  Emitted: `exports/chip/noc/f1f2/records/2026-05-18_router_d{4,6}_
+  pnr_sky130hd.json` + `pair_verdicts/2026-05-18_d4_vs_d6_post_pnr_
+  sky130hd.json` (interface `hexa-arch:chip:pnr:T3-record`,
+  distinct from the NoC-sim interface; `provenance.absorbed=false` —
+  external OpenROAD, hexa-native rfc_003 re-derivation still pending).
+  comb T3_DESIGN_FINAL.md §4 "Part E = execution gate" re-entry
+  condition is now satisfied producer-side (comb-side doc update is
+  comb's own SSOT call, not transferred — Decision 2).
