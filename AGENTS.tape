@@ -38,6 +38,13 @@
   user_directive = "2026-05-19 — 'swift 작성시 구현시 native, canonical 방식 우선 => AGENTS.tape 등록'"
   decision_ref = "design.md D26"
 
+@D g_cockpit_isolation := "cockpit/ logical-boundary isolation (D27)" :: governance [required d=2026-05-19 active]
+  rule = "The Swift cockpit lives in `cockpit/` (monorepo, D27) but is logically OUTSIDE Demiurge's governance boundary per rfc_009 §5. Enforcement: (a) cockpit Swift code reads ONLY `../exports/**` (typed records — D2 typed-interface contract); (b) cockpit code MUST NOT import or invoke `hexa-lang/stdlib/*` nor any demiurge hexa-native module; (c) cockpit build artifacts (`.build/`, `DerivedData/`, `*.xcodeproj/xcuserdata/`, `.swiftpm/`) MUST stay in `.gitignore` — never enter records SSOT; (d) edit-direction is one-way: cockpit reads exports, exports never reads cockpit."
+  reason = "rfc_009 §5 architecture diagram draws a governance boundary so g5 (hexa-native-only) stays unpressured. D27 picks monorepo placement (B) — the boundary becomes **logical** (consumption-direction + no-import + .gitignore) rather than **physical** (separate repo). This rule makes the logical boundary auditable: any PR that violates (a)/(b)/(c)/(d) is rejected on the same grounds a separate-repo violation would be."
+  applies_to = "every commit landing in `cockpit/` subdir + every PR touching the exports/cockpit boundary"
+  decision_ref = "design.md D27 (monorepo placement) · rfc_009 §5 (boundary semantics) · D2 (typed-interface decoupling) · D26 (g_swift_native sister rule)"
+  enforcement_check = "pre-commit grep: `grep -rE 'import.*hexa|import.*stdlib' cockpit/` MUST return 0 matches; CI smoke: `git ls-files cockpit/ | xargs grep -l 'exports/' | head` shows consumer paths read from `exports/` only."
+
 @F forbidden := "hard denies" :: governance [required d=2026-05-18 active]
   f1 = "creating/extending a `stdlib/` tree under demiurge (g_stdlib_ownership)"
   f2 = "over-claim — asserting unmeasured 'absorbed/parity/resolved' (g3)"
@@ -47,7 +54,7 @@
 
 @N ssot := "where governance + decisions live" :: note [d=2026-05-19 active]
   governance = "this AGENTS.tape (enforced rules + @F denies)"
-  decisions = "design.md D1..D26 (gated decision audit trail; D15 stdlib ownership, D16 macOS Swift surface, D17 hexa-matter SSOT=hexa-lang, D18 Yosys ABC bounded-subprocess, D19 yosys impl belongs to hexa-lang session, D20 materials→chip seam rfc_007, D21 component = new top-level domain, D22 Phase-4 cockpit spec rfc_009 — build OOS, D23 brand mark = Demiurge / 데미우르지 (paired with Phanes), D24 rename scope = mass replace excl. records, D25 GitHub repo = in-place rename to dancinlab/demiurge, D26 swift = native + canonical patterns first)"
+  decisions = "design.md D1..D27 (gated decision audit trail; D15 stdlib ownership, D16 macOS Swift surface, D17 hexa-matter SSOT=hexa-lang, D18 Yosys ABC bounded-subprocess, D19 yosys impl belongs to hexa-lang session, D20 materials→chip seam rfc_007, D21 component = new top-level domain, D22 Phase-4 cockpit spec rfc_009 — build OOS, D23 brand mark = Demiurge / 데미우르지 (paired with Phanes), D24 rename scope = mass replace excl. records, D25 GitHub repo = in-place rename to dancinlab/demiurge, D26 swift = native + canonical patterns first, D27 cockpit lives in cockpit/ subdir of demiurge — logical boundary not physical, enforced by @D g_cockpit_isolation)"
   arch_why = "CHARTER.md + HANDOFF.md (reconciled to D22 on 2026-05-19)"
   goal = "GOAL.md (한 문장 north-star + 정직한 현 위치)"
   progress = "PLAN.md (append-only log)"

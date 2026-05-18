@@ -900,3 +900,47 @@ thesis 와 g5 hexa-native 정신 양쪽 모두 압박; D26 이 그 default 를
   AGENTS.tape `@D g_swift_native` 가 enforce. exception 은 PR-단
   documented-justification 으로 escape hatch (g5 의 rfc_048
   bounded-exception 패턴 미러).
+
+### Decision 27 — Swift cockpit lives in `cockpit/` subdir of demiurge (monorepo; logical boundary not physical)
+
+**picked**: rfc_009 macOS Swift cockpit 의 구현체가 살 위치는
+**demiurge repo 안의 새로운 top-level `cockpit/` subdir** (monorepo).
+별도 sibling repo `demiurge-cockpit` 옵션은 거부됨. rfc_009 §5 의
+governance boundary 는 **logical typed-interface 경계** (`exports/**`
+가 유일 coupling 점, D2) 로 유지되며 — repo 경계가 아니라 import-
+direction 경계 임을 명시. Swift 코드는 `cockpit/` 안에서 `../exports/`
+만 읽고 hexa-lang/stdlib/* 와 demiurge 의 hexa-native core 어떤 것도
+import 하지 않음으로써 g5 (D26 `g_swift_native`) 와 D2 typed-
+decoupling 을 보존. `.gitignore` 가 Xcode build artifacts (`.build/`,
+`DerivedData/`, `*.xcodeproj/xcuserdata/` 등) 을 records SSOT 에서
+격리. AGENTS.tape 에 새 `@D g_cockpit_isolation` 이 logical 경계를
+거버넌스로 명문화 (D27 enforcement 부산물). (Rejected: NEW sibling
+repo `demiurge-cockpit` — cross-repo PR pairing overhead, schema
+drift 즉시-검출 어려움, 별도 origin/AGENTS.tape/design.md/README
+스캐폴딩 비용, sibling 대칭은 brand 단위이지 tooling 단위 아님.)
+
+**rationale**:
+- user-explicit picked authority — 2026-05-19 user 가 D27 에서 B
+  picked (1-clone 의 product-surface 직관 우선). 사용자의 trade-off
+  가중치를 audit trail 에 honest 하게 기록 — 권고 A 와 달랐음을 명시.
+- governance boundary 는 logical 이지 physical 아님 — rfc_009 §5
+  diagram 이 의도하는 본질은 **consumption direction** (Swift →
+  `exports/**` only) 와 **no engine import** (Swift !import hexa-
+  native core). 두 invariant 는 directory layout 과 무관 — code-
+  review + `.gitignore` + `@D g_cockpit_isolation` 으로 enforce
+  가능. boundary 가 무너지는 건 *위치* 가 아니라 *의존 방향* 이
+  깨질 때.
+- schema drift 즉시-검출 (monorepo 장점) — rfc_002/007/008 JSON
+  schemas 의 Codable mirror struct 가 같은 repo 에 사니까,
+  producer (records 생성기) 와 consumer (Swift Codable) 의 schema
+  update 가 같은 PR / 같은 commit 에서 동기. 별도 repo 라면 cross-
+  repo PR pair 가 필요해 friction + drift 윈도우 발생.
+- minimum-new-structure (andrej-karpathy) — 새 GitHub repo · 새
+  origin · 새 AGENTS.tape · 새 design.md · 새 README 5종 스캐폴딩
+  비용 대비, monorepo 에 `cockpit/` 1개 디렉토리 추가 + `.gitignore`
+  +1 line + `@D g_cockpit_isolation` 1개가 절대적으로 경량.
+- brand-cosmology 단순화 — Phanes ⇄ Demiurge 의 sibling 대칭은
+  **brand 단위** 이지 **tooling 단위** 가 아님. cockpit 은 별개
+  brand 가 아닌 Demiurge 의 *cockpit* (즉 Demiurge 의 일부). 별도
+  repo 분리 시 외부 reader 가 "Demiurge-cockpit 이 또 다른 brand
+  인가?" 라는 의문 발생; monorepo 가 이를 disambiguate.
