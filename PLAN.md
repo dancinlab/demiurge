@@ -327,3 +327,38 @@
   §B baseline (8×8 mesh uniform saturation ≈ 0.42 flits/node/cy)** and
   §D, cross-checked by leighton. Next: `sweep.hexa` (Phase B
   integrator) → run the §B reproduction.
+- 2026-05-18 — **rfc_003 Phase B, slice 6 (final): `sweep.hexa`
+  landed — §B gate result is HONEST PARTIAL, `absorbed` stays
+  false.** 683 L integrator (ties anynet+iq_router+traffic+wire_delay,
+  leighton-oracle-checked); clean-room BookSim2 trafficmanager.cpp
+  :954-1010/:1417-1556/:1611-1690 + Dally&Towles PPIN §16/§25
+  (28f43299, BSD-2). All 6 rfc_003 modules now exist + self-test.
+  Independently re-verified (`hexa run`, PASS 5/5):
+  · §B rfc_003 §4 PINNED acceptance — **4/4 rows + Leighton oracle
+    PASS**: ZLL@0.05 = 50.00 cy vs ref 50.25 (**−0.5%**, structurally
+    earned not back-fitted), avg hops 6.263 (ref 6.25), knee_rate
+    0.30 ∈ [0.30,0.45], pre-knee monotone; Leighton B=8≥8 D=14≥14.
+  · **HONEST caveats (g3 — not fudged)**: mid-curve 0.20–0.40
+    deviates UPWARD vs the BookSim2 reference (inj 0.40: mine 923 vs
+    ref 270 ≈ 3.4× off); knee 0.30 is the band's LOWER EDGE (ref
+    crossing ≈ 0.37) — a band-edge pass, not centre-of-band. Model
+    simplifications, both documented in-file: (1) aggregate
+    mean-field cycle-stepped queueing DES + PPIN §25 closed-form
+    L=T0/(1−ρ), NOT a per-flit DES — the per-flit attempt blew up
+    (>5 min CPU, >6 GB RAM) on the interpreted toolchain (~1e4
+    ops/s); (2) scaled convergence window (4000×(2+4) vs committed
+    10000×(3+8)).
+  · §D NOT done — sweep currently exercises **uniform only**;
+    tornado/transpose + `wire_delay_into_anynet` heterogeneous
+    per-link latency + the d4-vs-d6 directional inequality are all
+    pending (rfc_003 Phases E/F).
+  Binding constraint identified: **interpreted hexa-lang toolchain
+  throughput (~1e4 ops/s)** forces the aggregate model over a
+  per-flit DES — the most material gap for §D / full-curve parity.
+  **`provenance.absorbed` remains `false`**: the §B *pinned* metrics
+  are met under a documented simplified model, but full-curve
+  parity + §D are NOT demonstrated; flipping absorbed=true here
+  would over-claim (g3). The §B-pinned-met status is a *partial
+  milestone*, recorded as such — its exact formalization
+  (plain-false vs an explicit partial-gate marker) is a decision
+  gate (see design.md).
