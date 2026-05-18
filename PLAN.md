@@ -737,3 +737,28 @@
   push됨 g3정정). 새 결정 없음, 새 RFC 없음 — *cold-reader 정직성*
   닫음. 이로써 **외부 노출 표면(README) · 거버넌스 SSOT
   (AGENTS.tape) · north-star(GOAL) 전부 D22 정합**.
+- 2026-05-19 — **ARCH.tape 정합 + cross-link integrity scan**
+  (정합 패스 part 3, 새 결정 0). ⓐ ARCH.tape 6블록 갱신: `@I
+  arch_id` family(D2/D17)+ssot 5종 명시 · `@L l1` 레이아웃을
+  README/HANDOFF/CHARTER/**GOAL/design/AGENTS.tape**/ARCH.tape +
+  proposals/domains/exports 디렉토리 11항(LSP `key=val` 형식으로
+  변환 — `->` edge 가 LSP 거부) · `@N pipeline domain_neutral` 에
+  component(D21) + 메타-컨덕터 체인(D11/rfc_007/008) 추가 · `@D
+  d_absorption` rule 에 D15 명시 + bounded_exception(rfc_048
+  선례, D14 무효-by-D17, D18 활성) · `@D d_nongoal` hexa_native 에
+  D15/D18 + 신규 no_bigbang(D10 RESCIND-by-D12 명시) · `@N related`
+  hexa-matter(D17) + macOS Swift cockpit(D16/D22) 추가 · `@D
+  d_typed_interface` 를 chain seam 인덱스로 확장(rfc_002 f1f2 +
+  rfc_007 mat→chip + rfc_008 chip→comp, 각 records 상태 g3 명시)
+  · `@N status` 를 scaffold-era → post-D22 (RFC 9 · D1..D22 22결정
+  한줄 요지 · 코드 0). ⓑ **cross-link integrity scan**: RFC 참조 ↔
+  파일(rfc_001..009 ✓), `D<N>` 참조 ↔ design.md(max=22, dangling
+  0), `@F f<N>` 참조 ↔ AGENTS.tape(f1/f2/f4 인용, f3/f5 정의만
+  — 정상), domains/(15 .md + matter/ pointer ✓), exports/(105
+  files, seams records=0 README 존재로 g3 정합), 크로스-리포 경로
+  3건 모두 존재 ✓. **dangling 발견 1건**: rfc_004 §5 테이블 셀이
+  pre-D20/21/22 projection(Verilator→rfc_007 등) 그대로였음 (노트는
+  정정됐으나 테이블 셀 미정) → **각 행을 `TBA — next free rfc_0NN
+  at creation` 으로 갱신** (rfc_007/8/9 가 seam/cockpit 으로
+  점유됨을 명시; 도구는 rfc_010+ 부터). 외부 cold reader 가 받는
+  RFC-번호 picture 도 D22 결정과 정합.

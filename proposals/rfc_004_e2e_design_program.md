@@ -131,14 +131,14 @@ RFC is the deliverable; full measured parity gated like rfc_003 §B).
 | library | role | status | plan |
 |---|---|---|---|
 | BookSim2 | NoC cycle sim | ✅ rfc_001 + rfc_003 (6 modules, GATE_B_PINNED_MET) | done (design) |
-| OpenROAD/ORFS | P&R → GDSII | ✅ built ubu-1; T3 records emitted | rfc_005: clean-room re-derivation *design* (exec gated) |
-| Yosys | RTL synthesis | mapped (HANDOFF §5) | rfc_006: absorption design |
-| Verilator + cocotb | functional sim | mapped | rfc_007 |
-| SymbiYosys | formal | mapped | rfc_008 |
-| OpenSTA | timing signoff | mapped | rfc_009 |
-| ngspice | analog SPICE | mapped | rfc_010 |
-| Chisel/FIRRTL · Amaranth | RTL-gen (DESIGN verb) | mapped | rfc_011 |
-| SKY130 · SG13G2 PDK | process node (⊥ resource) | mapped | rfc_012 (cross-cutting) |
+| OpenROAD/ORFS | P&R → GDSII | ✅ built ubu-1; T3 records emitted | TBA — clean-room re-derivation *design* (rfc_005 originally projected; that number was repurposed for hexa-matter then SUPERSEDED by D17 — next free `rfc_0NN` at creation) |
+| Yosys | RTL synthesis | ✅ rfc_006 (D18/D19; modules → hexa-lang/stdlib/yosys/ per D15, pending hexa-lang session) | done (design) |
+| Verilator + cocotb | functional sim | mapped | TBA — next free `rfc_0NN` at creation (begins rfc_010+; rfc_007/008/009 are now used for seams + cockpit per D20/D21/D22) |
+| SymbiYosys | formal | mapped | TBA — next free `rfc_0NN` |
+| OpenSTA | timing signoff | mapped | TBA — next free `rfc_0NN` |
+| ngspice | analog SPICE | mapped | TBA — next free `rfc_0NN` |
+| Chisel/FIRRTL · Amaranth | RTL-gen (DESIGN verb) | mapped | TBA — next free `rfc_0NN` |
+| SKY130 · SG13G2 PDK | process node (⊥ resource) | mapped | TBA — next free `rfc_0NN` (cross-cutting) |
 
 All carry: clean-room provenance (D1), `provenance.absorbed=false`
 until per-tool measured parity (g3), interpreted-toolchain-throughput
