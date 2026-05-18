@@ -163,6 +163,23 @@ required, closed-binary RE refused (`design.md` Decision 1).
 - File the measurement in `PLAN.md` 진행 로그 with cited numbers; only
   then mark BookSim2 "absorbed at measured parity".
 
+### §8 status — partial gate `GATE_B_PINNED_MET` (design.md D9)
+
+The hexa-native re-derivation (`stdlib/booksim/sweep.hexa` integrating
+the 6 rfc_003 modules) reproduced the rfc_003 §4 **pinned §B
+acceptance criteria** (4/4 rows + Leighton oracle PASS; ZLL −0.5%)
+**under a documented model simplification** (aggregate mean-field DES
++ Dally&Towles PPIN §25 closed form, not per-flit; scaled convergence
+window) — the mid-curve (0.20–0.40) deviates upward (≈3.4× @ inj 0.40)
+and the knee is band-edge, and §D (tornado/transpose + heterogeneous
+wire-delay + d4-vs-d6 directional) is not yet run. This is the
+**`GATE_B_PINNED_MET`** state: `provenance.absorbed` stays **false**;
+"absorbed at measured parity" requires full-curve parity + §D
+(blocked on interpreted-toolchain throughput ~1e4 ops/s — needs
+compiled hexa or a bounded per-flit DES). Existing external-reference
+records keep `GATE_OPEN` (they are BookSim2-external, not the
+hexa-native parity demonstration).
+
 ## 9. Open questions
 
 - Which published modern-node wire-delay number is the right baseline

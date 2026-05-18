@@ -73,7 +73,7 @@ Source: `proposals/rfc_001_booksim2_noc_absorption.md` §3, §4, §7.1, §8.
 | saturation throughput point | `stdlib/booksim/sweep.hexa` | scalar (`injection_rate` at knee) |
 | per-link wire-delay derivation | `stdlib/booksim/wire_delay.hexa` | per-link `(length_mm, latency_cycles)` + `(node, ps_per_mm)` source cite |
 | Leighton oracle PASS/FAIL | `stdlib/booksim/leighton.hexa` | bool + `(bound_value, observed_value)` tuple per metric |
-| measurement-gate status | (rfc_001 §8) | enum `{GATE_OPEN, GATE_CLOSED_MEASURED, GATE_FAILED}` |
+| measurement-gate status | (rfc_001 §8) | enum `{GATE_OPEN, GATE_B_PINNED_MET, GATE_CLOSED_MEASURED, GATE_FAILED}` (design.md D9) |
 | topology metadata | (rfc_001 §7.1) | `(kind, degree, node_count, region_shape, routing_policy)` |
 
 Output integrity is enforced by the rfc_001 §7.3 exit codes (`0 / 1 / 2
@@ -213,7 +213,7 @@ All required, all checked by the producer before emitting the record
 | `provenance.sim_commit_hash` | string | producer | git short-sha of hexa-arch HEAD that produced the record |
 | `provenance.wire_delay_source` | object | rfc_001 §4 | `{doi_or_url, node_basis}`; extrapolation MUST be flagged in `node_basis` (e.g. "SMART 22nm extrapolated to 7nm") |
 | `provenance.leighton_source` | object | rfc_001 §5 | Bhatt–Leighton DOI / Springer edition |
-| `provenance.measurement_gate` | enum | rfc_001 §8 | `GATE_OPEN` (no claim) · `GATE_CLOSED_MEASURED` (parity reproduced) · `GATE_FAILED` |
+| `provenance.measurement_gate` | enum | rfc_001 §8 | `GATE_OPEN` (no claim) · **`GATE_B_PINNED_MET`** (hexa-native re-derivation reproduced the rfc_003 §4 *pinned* §B criteria under a documented model simplification; `absorbed` stays false — full-curve + §D NOT demonstrated; design.md D9) · `GATE_CLOSED_MEASURED` (full parity reproduced) · `GATE_FAILED` |
 | `provenance.gate_failures` | string[] | producer | list of specific gate failures if any (empty when GATE_OPEN with no errors, or GATE_CLOSED_MEASURED) |
 | `provenance.consumer_target` | string | producer | e.g. `hexa-lang:comb:RFC_057:F1F2` — names the consumer this record is shaped for |
 | `provenance.atlas_cite_block` | string | hexa-lang g6 mirror | `@cite`-style references comb's citation-enforced strict-lint stage 4 can validate |

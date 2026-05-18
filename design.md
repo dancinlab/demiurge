@@ -232,3 +232,42 @@ audit trail does not assume `proposals/rfc_057_*`; cross-references in
 hexa-arch should cite `comb/RFC.md` + the operationalization files
 (`comb/T1_experiment.md`, `comb/T1A_analytical.md`,
 `comb/sim/f1_parametric.hexa`).
+
+### Decision 9 — §B partial-gate marker (`GATE_B_PINNED_MET`)
+
+**picked**: Introduce an explicit intermediate measurement-gate state
+**`GATE_B_PINNED_MET`** between `GATE_OPEN` and `GATE_CLOSED_MEASURED`.
+`provenance.absorbed` stays **false**. Meaning: the hexa-native
+re-derivation (`stdlib/booksim/sweep.hexa` integrating the 6 modules)
+reproduced the rfc_003 §4 *pinned* §B acceptance criteria (4/4 rows +
+Leighton oracle PASS; ZLL −0.5%) **under a documented model
+simplification** (aggregate mean-field DES + PPIN §25 closed form, not
+per-flit; scaled convergence window) and with the mid-curve / §D NOT
+yet matched. Added to the `measurement_gate` enum in
+`proposals/rfc_002_f1f2_export_interface.md` (§1 table, §4 provenance
+table), `exports/chip/noc/f1f2/schema/v1_0.md`, and noted in
+`proposals/rfc_001_booksim2_noc_absorption.md` §8. Existing external-
+reference NoC-sim records are NOT relabeled (they are BookSim2-external,
+not the hexa-native parity demonstration); the marker applies to the
+hexa-native re-derivation status (PLAN.md + future Phase-F hexa-native
+record). (Rejected: B = plain false, prose-only — loses the
+machine-readable partial-progress signal for the comb consumer;
+C = flip absorbed=true — over-claims, g3 violation, since full-curve
+parity + §D are not demonstrated.)
+
+**rationale**:
+- g3 no-over-claim preserved both ways — `absorbed` stays false (full
+  parity NOT demonstrated: mid-curve deviates ≈3.4× @0.40, knee
+  band-edge, §D undone, model simplified) so no over-claim; the real
+  pinned-criteria pass is not erased either, so no under-claim.
+- Machine-readable honest signal for the consumer — comb consumes the
+  F1F2 interface; `GATE_B_PINNED_MET` tells comb "hexa-native
+  re-derivation reproduces §B pinned metrics under documented
+  simplification", actionably distinct from both `GATE_OPEN` (nothing
+  demonstrated) and `GATE_CLOSED_MEASURED` (full parity).
+- Audit precision — design.md + schema fields record EXACTLY what was
+  and was not demonstrated; matches measured-not-asserted discipline
+  (lattice-as-tool g1·g2·g3).
+- Minimal, reversible schema surface — one enum value, scoped to the
+  hexa-native re-derivation status; existing records untouched (no
+  mislabeling of external-reference records).
