@@ -1003,3 +1003,38 @@
   swift run 검증 가능한 다음 phase = α-2 (4-zone tabbed shell). g3
   position: D27..D31 + Phase α measured-green 그대로, D32..D40 은
   spec only (코드 0, 빌드 0 — 빌드 미주장).
+- 2026-05-19 — **Phase α-2 LANDED + measured-green (4-zone tabbed
+  shell)**: `CockpitApp.swift` 의 `ContentView` 를 4-zone tabbed
+  으로 업그레이드 — (1) **TOP toolbar**: `+ Synthesize` ·
+  `+ Measure` (disabled-with-help, phase θ 의 action surface 대기) ·
+  `Open Record…` (D30, working). (2) **LEFT TabView**: `[Chat (1st,
+  D37)] [Artifacts (2nd, D33)]` 두 탭 — Chat tab 은 phase η
+  placeholder (Claude Code CLI + API dual dispatch, slash-command
+  routing 안내, TextField 비활성), Artifacts tab 은 phase α 의 5
+  sections (Records / Decisions / RFCs / Domains / Parameters)
+  그대로 — phase β 가 filesystem walk 으로 채울 예정. (3) **CENTER
+  canvas**: 기존 D29 `RecordView` 그대로 embed (single-record viewer,
+  phase γ 에서 Artifact protocol + multi-card). (4) **RIGHT TabView**:
+  `[Inspector (1st, D39)] [Actions (2nd)]` 두 탭 — Inspector 는 phase
+  δ placeholder (5 sub-tabs 안내: Provenance/Data/Citations/Raw/
+  DEPENDENCIES), Actions 는 phase θ placeholder (Claude Code CLI 의
+  running jobs / tool calls / new records emit 안내). 두 TabView 의
+  picker style = `.segmented` (macOS canonical, `g_swift_native`
+  정합). 핸드픽스된 brand-cap 없음, 새 import 없음 (`SwiftUI` +
+  `AppKit` + `UniformTypeIdentifiers` + `Foundation` only). **빌드**:
+  `swift run` (pool-safe verb 재사용) PASS 2.70s incremental, **0
+  warnings**, app launch 까지 도달 (exit=124 timeout). 빌드 산출물
+  `cockpit/.build/arm64-apple-macosx/debug/CockpitApp` 갱신; `.gitignore`
+  가 격리 유지. `@D g_cockpit_isolation` 4 invariant 모두 검사 통과
+  (read-only on `../exports/**` · no hexa-lang/stdlib imports · build
+  artifacts gitignored · one-way data flow). 이로써 **rfc_011 §10
+  의 phase α-2 build gate 충족** — 4-zone tabbed shell 가
+  measured-green. **여전히 미측정** (rfc_011 §12 NOT-built 리스트
+  유효): chat backend 0 (API/CLI 미연결, η 미시작), 카드 protocol 0
+  (γ 미시작), Inspector 실제 탭 0 (δ 미시작), 3D viewer 0 (ι 미시작),
+  agent action 0 (θ 미시작) — Phase α-2 는 **shell + 탭 슬롯** 만,
+  phase η/θ/δ/γ/ι/β/ε/ζ 가 점진 채움. 새 RFC 0, 새 도메인맵 0, 새
+  governance 0 (rfc_011 의 g_ai_agent_* 는 직전 commit 에서 등록 완료).
+  사용자 macOS 로컬 `swift run` 으로 4-zone tabbed 시각 검증 가능
+  (LEFT 의 Chat/Artifacts 토글 + RIGHT 의 Inspector/Actions 토글 +
+  TOP 의 3 버튼 visible).
