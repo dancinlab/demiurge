@@ -1177,3 +1177,24 @@
     `NEXT_SESSIONS.md` 의 honest handoff 로 closure 됨 (다음 항목
     로그 참조). 새 RFC 0, 새 도메인맵 0, 새 governance 0, 새 design.md
     decision 0 (phase = rfc_011 §10 execution).
+- 2026-05-19 — 🎯 **CLOSURE REPORT — goal "100% all closure"**
+  (commit `7b6929e`). cockpit 의 모든 phase 가 *명확한 상태*:
+  silently-unfinished 0. **measured-green** (this session, swift run
+  검증): α (e601e5b) · α-2 (735dbd8) · α-3 (b09304b) · β (1b3a53e) ·
+  γ·δ·η-1 (56f900a) — 7 phase. **honest handoff** (`NEXT_SESSIONS.md`
+  P-⑥): η-2 (Claude Code API — `ANTHROPIC_API_KEY` 의존) · θ (Claude
+  Code CLI action — `claude` 바이너리 + 실측 게이트 + rate-limit) ·
+  ι (RealityKit 3D — exports/ 에 USDZ/STL geometry record 0) · γ-2 ·
+  δ-2 — 5 항목, 외부 의존 또는 downstream polish 라 이 세션
+  measured-green 불가 → handoff = closure 형태. rfc_011 §10 phase
+  table 에 status column 추가, §12 NOT-built 갱신, §11 open gate
+  D41→D42+ renumber (design.md D41 = boundary-read-scope 점유).
+  **이 세션 전체 closure**: demiurge rename (D23-D25) · swift-native
+  governance (D26) · cockpit decisions D27-D41 (15건) 전부 lock ·
+  cockpit α..η-1 7 phase measured-green · recovered checkpoint
+  handled · inbox brand note resolved · phanes cross-link pushed ·
+  downstream P-②③/P-④ valid · P-⑤ 부분실행→잔여 P-⑥ 승계. **g3**:
+  "100% closure" = 모든 작업이 measured-green 또는 documented-handoff
+  의 명확한 상태 — *모든 게 done* 아님 (over-claim 회피). cockpit 은
+  trigger+viewer 로 measured-green, synthesis 도구 주장은 θ build
+  gate 전까지 안 함. `absorbed` flip 0.
