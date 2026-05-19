@@ -104,3 +104,37 @@ always indexes the 2-D memory) — they are best landed together with
 incremental router_d4.v parse-progress checks. SKY130 PDK
 (`~/.volare/`) and ABC (`/opt/homebrew/bin/abc` → yosys-abc) need no
 re-provisioning.
+
+## UPDATE 2026-05-20 (d) — 4/6 components landed; remaining = RTLIL elaboration core
+
+read_verilog scope expansion now 4/6 components on hexa-lang branch
+`rfc006-yosys-rv-scope` (HEAD `762786ba`; note a sibling session's
+`da6badba` codegen-perf commit interleaves the history — harmless, the
+read_verilog.hexa work is intact and cumulative):
+
+- ✅ `b4b916ff` constant-expression evaluator — 16/16
+- ✅ `294a9026` parameter/localparam declaration parsing — 19/19
+- ✅ `b8e1d5dd` width elaboration + ANSI-style ports — 22/22
+- ✅ `762786ba` function-automatic declaration parsing — 24/24
+
+These four are the *declaration / constant* half of the Verilog
+frontend — relatively independent, each cleanly self-tested.
+
+Remaining 2 components are the **RTLIL-elaboration core** — the hard,
+mutually-coupled half (yosys `genrtlil.cc` territory):
+
+- ⬜ SigSpec / expression elaboration — bit-select, part-select (`-:`),
+  concat, and compound expressions (`fifo_head[p] == fifo_tail[p]`,
+  `(grant_in + 1) % P`) → RTLIL cell trees ($eq/$add/$mod/…). This is
+  the prerequisite for both generate-body and always-body parsing.
+- ⬜ genvar/generate-for unroll + always-block → RTLIL Process/$dff
+  inference + multi-D Memory + signed. Coupled: generate bodies and
+  always bodies both consume the SigSpec layer; always inference is
+  the yosys `proc` pass clean-room.
+
+This core is verified only when router_d{4,6}.v actually synthesises —
+so it cannot be incrementally self-tested in isolation the way the
+first four were. It is genuinely multi-session work (ABSORPTION.md
+§178). A follow-up session resumes from `rfc006-yosys-rv-scope`
+`762786ba`; the four landed components are stable foundation. SKY130
+PDK + ABC remain provisioned.
