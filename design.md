@@ -1425,3 +1425,126 @@ record-honesty 안전핀 약화.)
   runtime check 우회하는데 — 그건 의도. records 가 아니므로 runtime
   check 대상 아님. docs read 가 `String(contentsOf:)` 같은 일반 IO
   로 일어남, fail 시 sidebar 가 (empty) 표시 그대로.
+
+### Decision 42 — Cockpit = project workbench, 3-column layout (rfc_012 §5)
+
+**picked**: cockpit 을 read-only record viewer 에서 **project
+workbench** 로 진화 — 단일 화면 3-column: **① 7-verb 레시피 rail**
+(좁음) · **③ LLM chat "요리선생님"** (좁음, 프로젝트 진행 주축) ·
+**② work zone** (가장 넓음 — 상단 재료선반 strip + 하단 3D·차트·
+record 시각화 메인) + **④ 상단 toolbar**. rfc_012 §5 가 SSOT.
+(Rejected: 기존 D40 4-zone tabbed 유지 — 프로젝트 생성/workbench
+개념 미수용; 5-zone narrow-icon-rail — D40 `.sidebarAdaptable` 와
+구조 충돌.)
+
+**rationale**:
+- user directive (2026-05-19) "프로젝트 생성 · 일반인도 이해·사용
+  쉬움" — read-only viewer 로는 미충족, workbench 필요.
+- "면적 ≠ 주축" — chat 은 좁아도 프로젝트를 *끌고*, ② 는 넓어
+  *결과 전시*; demiurge 의 meta-conductor (지휘) 정신과 정합.
+- 사용자가 layout 을 여러 turn 의 gate 로 직접 picked (1·3·2 →
+  재료선반=메인창 상단 → ② widest + 상하분할).
+
+### Decision 43 — `+` button = ④ top toolbar; project-creation flow (rfc_012 §3)
+
+**picked**: 프로젝트 생성 진입 = **④ 상단 toolbar 의 `+` 버튼**.
+별도 "프로젝트 고르기" 화면 없음 (단일 화면). flow: `+` → 프로젝트명
+입력 → "무엇을 만들고 싶으세요?" 자유 입력 → AI 도메인 추론+유저
+확인 → ② workbench 가 verb 1 (명세) 부터 진입. (Rejected: 별도
+프로젝트-고르기 화면 — 사용자가 불필요로 정정; `+` 를 ① rail 에 —
+toolbar 가 session-wide action 의 canonical home.)
+
+**rationale**:
+- 사용자 directive — "+ 버튼 필요 · 프로젝트명 입력받아 생성".
+- 단일 화면 + 화면-내 `+` = 사용자 명시 ("화면 A 불필요, 화면 B
+  에서 + 운용").
+- ④ toolbar 는 macOS 에서 new-document 류 action 의 canonical
+  위치 (D40 toolbar 와 일관).
+
+### Decision 44 — "무엇을 설계" = free text → AI infers domain → user confirms (rfc_012 §3, option C)
+
+**picked**: 프로젝트 생성 시 "무엇을 설계" 입력 = **자유 텍스트 →
+LLM 이 도메인 추론 → 유저 [네/바꾸기] 확인** (rfc_012 option C).
+유저는 15 도메인명 (`cern`/`rtsc`/…) 을 몰라도 평소 말로 목표 기술;
+AI 가 도메인 매핑, 유저가 ratify. (Rejected: A 15-도메인 메뉴 —
+일반인이 도메인명 모름; B 자유텍스트 only — 시스템이 도메인 못
+정하면 stall.)
+
+**rationale**:
+- 사용자 directive "일반인도 이해·사용 쉬움" 직접 정합 — 전문
+  도메인명 노출 0.
+- demiurge 의 분야-무관 meta-conductor thesis — AI 가 분야 추론이
+  7-verb spine 정신과 맞음.
+- g3 — AI 는 *추론* 하되 *확정* 안 함; 유저 확인 step 이 human
+  authority 보존.
+
+### Decision 45 — Project data model = manifest in App Support, records via AI agent (rfc_012 §7, option C)
+
+**picked**: 두 데이터 종류 분리 — **🗄 project manifest** (이름·
+무엇을설계·7-verb 진행상태 = cockpit 의 작업 상태) 는 `~/Library/
+Application Support/lab.dancin.demiurge/projects/<name>/` (exports/
+밖); **📸 project 가 생성한 records** 는 AI agent (Claude Code CLI,
+θ) 가 producer 로서 `exports/` 에 emit (`@D g_ai_agent_action_
+surface` D34). cockpit 은 trigger, 직접 exports/ write 0. `@D
+g_cockpit_isolation` 에 cockpit-app-state 절 추가 (본 결정의
+governance 부산물). (Rejected: A cockpit 이 exports/ 직접 write —
+invariant (d) 폐기 + g3 위험; B manifest 도 agent 경유 — trivial
+write 에 subprocess 과잉.)
+
+**rationale**:
+- manifest = cockpit 작업 상태, records honesty 경계 (exports/)
+  와 별개 범주 — App Support 가 macOS 앱 데이터 canonical 위치.
+- records 는 D7 producer-owned + D34 agent-mediated 유지 — g3
+  measurement gate 보존.
+- `@D g_cockpit_isolation` 의 records-honesty 경계 무손상; D41 의
+  a-records/a-docs 분리와 같은 패턴으로 app-state 절 1개 추가.
+
+### Decision 46 — Plain-language layer + expert toggle (rfc_012 §4/§6, option B)
+
+**picked**: 일반인용 **plain-language layer** — `GATE_*`/`provenance`/
+`F1F2` 등 전문어를 ⏳(아직 측정 안 됨)/🔶(일부만)/✅(측정 확인됨)
+신호등 + 평이 어휘로. **expert toggle** (④ toolbar, 기본 OFF) 켜면
+raw 값 verbatim 표시. (Rejected: A plain-only — 전문가 provenance
+검증 차단, g3 공개감사 약화; C 항상 둘 다 — 화면 복잡, 일반인
+산만.)
+
+**rationale**:
+- 사용자 directive "일반인도 쉬움" — 평이 신호등이 디폴트.
+- g3 honesty 보존 — 신호등은 `measurement_gate` verbatim 소스,
+  UI 가 ⏳→✅ upgrade 금지; expert 토글이 raw 검증 가능성 유지.
+- toggle 기본 OFF — 일반인은 존재 몰라도 무해, 전문가만 켬.
+
+### Decision 47 — Project ↔ existing records = own-only + reference view (rfc_012 §7, option C)
+
+**picked**: 프로젝트는 **자기 7-verb run 이 생성한 records 만 소유**;
+기존 ~50 `exports/` records (rfc_001–003 NoC 측정) 는 ② work zone
+에서 **참고 열람** 가능하나 프로젝트에 *편입 안 됨*. provenance
+1:1 (각 record ↔ 정확히 한 producing project). (Rejected: A
+own-only + 참고뷰 없음 — 측정 자산 사장; B 기존 records 자동 편입
+— 경계 모호, g3 provenance 추적 흐림.)
+
+**rationale**:
+- provenance 1:1 추적 — 어느 record 가 어느 프로젝트 산물인지
+  명확, g3 정합.
+- cockpit 의 원래 viewer 역할 (rfc_009–011) 유지 — 기존 records
+  참고 열람은 그 기능.
+- 일반인 — "내 프로젝트" 가 백지에서 시작 (명확), 막히면 기존
+  측정 참고 (도움).
+
+### Decision 48 — Verb "develop" = conversation-default, θ-2 for real runs (rfc_012 §8, option C)
+
+**picked**: 7-verb 각 단계의 진행 = **기본 대화/계획** (LLM chat);
+측정 verb (해석/합성/검증) 에서 **"실제로 돌리기"** 액션 → **θ-2**
+(rfc_011 의 scoped AI-agent action dispatch) 가 실제 도구 (Yosys/
+OpenROAD/…) 실행. un-run 단계 = ⏳, θ-2 measured record 가 있는
+단계만 ✅ (§6 신호등, g3). (Rejected: A design-only — 측정 0,
+GOAL 의 "설계 자체를 계산·검증" 미충족; B 항상 자동 실행 — verb
+진입마다 도구 호출, rate-limit 폭발 (P-④ 교훈).)
+
+**rationale**:
+- GOAL 의 "*설계 자체를 계산·검증*" — 측정 verb 의 실제 도구
+  실행 필요; A 는 계획서 작성기로 전락.
+- B 의 rate-limit 위험 회피 — 사용자가 *언제* 측정할지 명시
+  트리거.
+- rfc_011 θ-2 (scoped-tool action dispatch) 와 정확히 정합 —
+  θ-2 가 "실제로 돌리기" 의 backend.

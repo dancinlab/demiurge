@@ -1442,3 +1442,24 @@
   코드 0 — lock+build 는 별도 go (rfc_009 D22 의 design/build
   분리 패턴). cockpit 은 여전히 rfc_009–011 read-only viewer
   (`1a6da4c`). 다음 = design.md D42.. lock + governance.
+- 2026-05-19 — **rfc_012 의 7 픽 → design.md D42–D48 lock +
+  governance** (사용자 "A→B" 의 B). design.md 에 D42–D48 7개
+  `### Decision` 블록 append (각 `**picked**` + `**rationale**`
+  3+ bullets + rfc_012 cross-ref): D42 workbench 3-column ·
+  D43 `+` 버튼 상단 toolbar · D44 자유텍스트 도메인추론 ·
+  D45 데이터모델 = manifest in App Support · D46 plain-language
+  + expert 토글 · D47 project↔records own-only+참고열람 ·
+  D48 verb develop = 대화default + θ-2 실행. AGENTS.tape:
+  `@D g_cockpit_isolation` 에 절 (e) 추가 — cockpit 은 자기
+  app-state (manifest/설정) 를 `~/Library/Application Support/
+  lab.dancin.demiurge/` 에 쓸 수 있음 (exports/ 아님 · record
+  아님 → 정직성 경계 무손상; records 는 여전히 AI agent →
+  exports/). `@D g_stdlib_ownership` 보강 — 2026-05-19 사용자
+  directive "hexa-lang=SSOT, demiurge=pointer; 모든 stdlib 는
+  hexa-lang 소유" 를 `user_directive` 에 reaffirm + `general_
+  principle` 줄 신설 (stdlib 뿐 아니라 모든 재사용 absorbed
+  모듈로 일반화 — D17 hexa-matter 선례). `@N ssot.decisions`
+  D1..D41 → D1..D48. **g3 정직**: 종이 설계(rfc_012)가 이제
+  결정-감사추적(D42–D48)+거버넌스로 lock — 그러나 cockpit
+  코드는 여전히 viewer (`1a6da4c`), workbench build 0. 다음 =
+  rfc_012 workbench 의 실제 Swift 구현 (별도 go).
