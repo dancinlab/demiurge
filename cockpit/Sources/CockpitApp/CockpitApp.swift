@@ -62,6 +62,9 @@ struct WorkbenchView: View {
     @State private var chatMessages: [ChatMessage] = []
     @State private var chatInput = ""
 
+    // ② ingredient-shelf picks (group title → chosen option).
+    @State private var shelfPicks: [String: String] = [:]
+
     // ② reference browser — the original viewer role (rfc_012 §7).
     @State private var artifacts: [ArtifactStub] = []
     @State private var refSelection: ArtifactID?
@@ -187,6 +190,46 @@ struct WorkbenchView: View {
         projects.removeAll { $0.id == project.id }
         activeProjectID = projects.last?.id
         chatMessages = []
+        shelfPicks = [:]
+    }
+
+    // MARK: — verb progress (rfc_012 §5 / D48)
+
+    /// Step the active project's verb pointer forward and re-save its
+    /// manifest. Conversation-default progress (D48) — the pointer
+    /// moves, but a stage turns ✅ only via a measured θ-2 record (g3).
+    private func advanceVerb() {
+        guard var project = activeProject else { return }
+        project.advance()
+        persistActive(project)
+    }
+
+    private func retreatVerb() {
+        guard var project = activeProject else { return }
+        project.retreat()
+        persistActive(project)
+    }
+
+    /// Write a mutated project back to the in-memory list + manifest,
+    /// and clear shelf picks (the shelf changes with the verb).
+    private func persistActive(_ project: Project) {
+        if let idx = projects.firstIndex(where: { $0.id == project.id }) {
+            projects[idx] = project
+        }
+        try? ProjectStore.save(project)
+        shelfPicks = [:]
+    }
+
+    /// "[냄비에 넣기]" — fold the shelf picks into the chat input as the
+    /// next turn's draft (rfc_012 §5 — the user still presses 보내기).
+    private func addToPotFromShelf(_ groups: [IngredientGroup]) {
+        let picked = groups.compactMap { group -> String? in
+            guard let option = shelfPicks[group.title] else { return nil }
+            return "\(group.title): \(option)"
+        }
+        guard !picked.isEmpty else { return }
+        chatInput = "[재료 선반] " + picked.joined(separator: " · ")
+        shelfPicks = [:]
     }
 
     /// ④ 7-step progress bar — the verb spine, current verb highlighted.
@@ -215,6 +258,7 @@ struct WorkbenchView: View {
         switch state {
         case .done:     return .green
         case .current:  return .accentColor
+        case .visited:  return .orange
         case .upcoming: return .secondary
         }
     }
@@ -228,7 +272,11 @@ struct WorkbenchView: View {
                     verbRow(verb)
                 }
             }
-            if activeProject == nil {
+            if let project = activeProject {
+                Section(expertMode ? "verb pointer" : "단계 이동") {
+                    verbStepper(project)
+                }
+            } else {
                 Section {
                     Text("＋ 로 첫 프로젝트를 만들면\n레시피가 켜집니다.")
                         .font(.caption2)
@@ -238,6 +286,28 @@ struct WorkbenchView: View {
             }
         }
         .listStyle(.sidebar)
+    }
+
+    /// Verb-pointer stepper — conversation-default progress (D48). It
+    /// moves the pointer only; a stage stays ⏳ until a measured θ-2
+    /// record turns it ✅ (g3 — never upgraded by a click).
+    @ViewBuilder private func verbStepper(_ project: Project) -> some View {
+        HStack(spacing: 6) {
+            Button { retreatVerb() } label: {
+                Image(systemName: "chevron.left")
+            }
+            .buttonStyle(.borderless)
+            .disabled(!project.canRetreat)
+            Spacer()
+            Text(expertMode ? project.currentVerb.canonical : project.currentVerb.plain)
+                .font(.caption.weight(.medium))
+            Spacer()
+            Button { advanceVerb() } label: {
+                Image(systemName: "chevron.right")
+            }
+            .buttonStyle(.borderless)
+            .disabled(!project.canAdvance)
+        }
     }
 
     @ViewBuilder private func verbRow(_ verb: Verb) -> some View {
@@ -265,6 +335,7 @@ struct WorkbenchView: View {
         switch state {
         case .done:     return "checkmark.circle.fill"
         case .current:  return "circle.inset.filled"
+        case .visited:  return "hourglass"
         case .upcoming: return verb.symbol
         }
     }
@@ -347,28 +418,71 @@ struct WorkbenchView: View {
     @ViewBuilder private var workZone: some View {
         VSplitView {
             ingredientShelf
-                .frame(minHeight: 64, idealHeight: 96, maxHeight: 168)
+                .frame(minHeight: 72, idealHeight: 132, maxHeight: 240)
             resultZone
                 .frame(minHeight: 320)
         }
         .navigationTitle(activeProject?.name ?? "Demiurge")
     }
 
-    /// ② top — ingredient shelf (rfc_012 §5). Phase κ-1 placeholder;
-    /// the option-pick → "[냄비에 넣기]" → next chat turn lands κ-2.
+    /// ② top — ingredient shelf (rfc_012 §5). Plain option pick →
+    /// "[냄비에 넣기]" drafts the choice into the next chat turn. The
+    /// option sets are a κ-3 stub (IngredientShelf); real per-domain
+    /// option data is sourced from the domain maps in a later phase.
     @ViewBuilder private var ingredientShelf: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Label(expertMode ? "Ingredient shelf" : "재료 선반",
-                  systemImage: "tray.full")
-                .font(.subheadline.weight(.medium))
-            Text("설계 옵션을 골라 \"[냄비에 넣기]\" 로 대화에 넘기는 자리입니다 — phase κ-2.")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: 0)
+        let groups = activeProject.map {
+            IngredientShelf.groups(domain: $0.domain, verb: $0.currentVerb)
+        } ?? []
+        ScrollView {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Label(expertMode ? "Ingredient shelf" : "재료 선반",
+                          systemImage: "tray.full")
+                        .font(.subheadline.weight(.medium))
+                    Spacer()
+                    Button {
+                        addToPotFromShelf(groups)
+                    } label: {
+                        Label("냄비에 넣기", systemImage: "arrow.down.to.line")
+                    }
+                    .disabled(shelfPicks.isEmpty)
+                }
+                if groups.isEmpty {
+                    Text(activeProject == nil
+                         ? "프로젝트를 만들면 이 단계의 재료가 여기에 나옵니다."
+                         : "이 단계엔 고를 재료가 아직 없어요 — 대화로 진행하세요.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    ForEach(groups) { group in
+                        shelfGroup(group)
+                    }
+                }
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
+    }
+
+    @ViewBuilder private func shelfGroup(_ group: IngredientGroup) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(group.title)
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.secondary)
+            HStack(spacing: 6) {
+                ForEach(group.options, id: \.self) { option in
+                    let picked = shelfPicks[group.title] == option
+                    Button {
+                        shelfPicks[group.title] = picked ? nil : option
+                    } label: {
+                        Text(option).font(.caption)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(picked ? .accentColor : .secondary)
+                }
+            }
+        }
     }
 
     /// ② bottom — result visualization + reference browser (§5 / §7).

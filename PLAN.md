@@ -1505,3 +1505,24 @@
   re-save 는 κ-3+) · 재료선반 여전히 placeholder · signal-light
   ↔ measurement_gate 미바인딩 (θ-2). 다음 = κ-3 (재료선반
   동작 + verb 진행 → manifest re-save).
+- 2026-05-19 — **phase κ-3 — 재료 선반 동작 + verb 진행 빌드
+  green** (rfc_012 §5 ② top · D48 verb develop). 두 메커니즘
+  착수: (1) **verb 진행** — `Verb` 에 `advance`/`retreat`/
+  `canAdvance`/`canRetreat`, `VerbState` 에 `.visited` 추가
+  (verb 포인터는 지났으나 미측정 = ⏳ orange; ✅ 는 측정
+  record 전용 — g3 §6). ① recipe rail 하단에 단계 stepper
+  (◀ / ▶) — currentVerb 이동 시 `ProjectStore.save` re-save.
+  **D48 정직**: 포인터 이동은 conversation-default 진행일
+  뿐, doneVerbs 는 안 건드림 — 측정 없는 ✅ 불가. (2) **재료
+  선반** — 신규 `DemiurgeCore/Models/Ingredient.swift`
+  (`IngredientGroup` · `IngredientShelf.groups(domain:verb:)`
+  κ-3 stub 테이블 — chip/component/energy 일부 verb). ② 상단
+  선반이 현재 domain+verb 의 옵션 그룹 표시 → 단일선택 →
+  "[냄비에 넣기]" → 선택을 `[재료 선반] …` 문장으로 chat
+  input 에 draft (사용자가 보내기 — rfc_012 §5). 측정:
+  `swift run CockpitApp` 로컬 빌드 — 17/17 Compiling ·
+  `Build of product 'CockpitApp' complete!` (8.48s) · 에러 0 ·
+  경고 0. **g3 정직**: 재료 옵션은 stub (진짜 도메인별 옵션 =
+  domains/** 소싱, 후속) · signal-light 는 verbState 기반일
+  뿐 measurement_gate 미바인딩 (θ-2) · 실제 도구 실행 0.
+  다음 = κ-4 (chat ↔ verb 연동 / θ-2 실제 실행 경로).

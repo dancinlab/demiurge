@@ -60,7 +60,15 @@ public enum Verb: Int, CaseIterable, Codable, Identifiable, Sendable {
 
 /// A verb stage's progress relative to the project's current verb.
 public enum VerbState: String, Codable, Sendable {
-    case done, current, upcoming
+    /// Measured ✅ — a θ-2 run produced a record (g3, rfc_012 §6).
+    case done
+    /// The verb the project is working on now (◉).
+    case current
+    /// The verb pointer has passed this stage but no measurement
+    /// backs it yet — honest ⏳, never silently upgraded to ✅.
+    case visited
+    /// Not reached yet (grey).
+    case upcoming
 }
 
 /// A user-created workbench project (rfc_012 §2).
@@ -100,7 +108,28 @@ public struct Project: Codable, Identifiable, Sendable {
     public func state(of verb: Verb) -> VerbState {
         if doneVerbs.contains(verb.rawValue) { return .done }
         if verb == currentVerb { return .current }
+        if verb.rawValue < currentVerb.rawValue { return .visited }
         return .upcoming
+    }
+
+    /// Whether the verb pointer can step forward / back. The 7-verb
+    /// spine is sequential, so advance/retreat move one stage only.
+    public var canAdvance: Bool { currentVerb != .handoff }
+    public var canRetreat: Bool { currentVerb != .specify }
+
+    /// Step the verb pointer (conversation-default progress — D48).
+    /// This moves the *pointer* only; it never marks a stage `.done`,
+    /// which stays reserved for a measured θ-2 record (g3).
+    public mutating func advance() {
+        if let next = Verb(rawValue: currentVerb.rawValue + 1) {
+            currentVerb = next
+        }
+    }
+
+    public mutating func retreat() {
+        if let prev = Verb(rawValue: currentVerb.rawValue - 1) {
+            currentVerb = prev
+        }
     }
 }
 
