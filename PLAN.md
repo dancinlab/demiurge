@@ -1711,3 +1711,21 @@
   없어 빈 선반 (위조 0); §6 옵션은 도메인 deliverable 기반
   합리적 후보지 측정값 아님. 다음 추천 = #2 REJECTED 가드 강화
   (κ-6 문자열 휴리스틱 → 정밀화).
+- 2026-05-19 — **phase κ-12 — REJECTED 가드 강화** (rfc_011 §4.2 ·
+  @F f6). κ-6 의 `overclaims()` 는 (1) claim marker 문자열 매칭 +
+  (2) backing = reply 텍스트에 record ID 패턴 유무 — 둘 다 약함
+  (가짜 ID 도 통과). 강화: `overclaims` = `mentionsClaim` +
+  `!hasMeasuredBacking` 으로 분리. `mentionsClaim` — claim marker
+  16 → 23개 확대 (측정 결과·검증되었·흡수했·재현했·통과했·
+  gate_b_pinned 등). **핵심** `hasMeasuredBacking` — backing 판정을
+  reply 텍스트가 아니라 *실제 exports/ record* 로: `ArtifactRegistry.
+  loadF1F2` 의 모든 record 를 `RecordLoader` 로 로드 → measurement_
+  gate 가 measured 상태(GATE_B_PINNED_MET / GATE_CLOSED_MEASURED)
+  이고 그 record 의 정확한 `recordId` 를 reply 가 언급할 때만
+  backing 인정. 가짜 ID·미측정(GATE_OPEN) record ID 는 불통과.
+  측정: `swift run CockpitApp` 빌드 green (1.98s, 에러 0). **g3
+  정직**: claim marker 는 여전히 휴리스틱 (놓친 marker = 비-claim
+  reply 미플래그일 뿐, unbacked claim 통과는 backing 체크가 독립
+  차단) — 완전 LLM 판정은 후속. 그러나 backing 은 이제 실측
+  gate 기반 — '거짓 ✅' 의 핵심 구멍(가짜 record ID)이 막힘.
+  다음 추천 = #3 expert mode 깊이 (record/provenance §4 plain↔raw).

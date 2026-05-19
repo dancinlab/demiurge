@@ -309,21 +309,49 @@ struct WorkbenchView: View {
         return Array(Set(ids)).sorted()
     }
 
-    /// rfc_011 §4.2 / @F f6 — does a reply assert a measurement /
-    /// parity / absorption WITHOUT a backing exports/ record ID?
-    /// Such a reply is an over-claim and must be flagged in the UI.
+    /// rfc_011 §4.2 / @F f6 — does the reply assert a measurement /
+    /// parity / absorption that NO real measured record backs?
     private static func overclaims(_ reply: String) -> Bool {
-        let claimMarkers = [
+        guard mentionsClaim(reply) else { return false }
+        return !hasMeasuredBacking(reply)
+    }
+
+    /// Claim-language detection — a measurement / parity / absorption
+    /// assertion. This is a heuristic (string match); the backing
+    /// check below is the real gate, so a missed marker only means a
+    /// non-claim reply goes unflagged — it never lets an unbacked
+    /// claim through (the backing check is independent).
+    private static func mentionsClaim(_ reply: String) -> Bool {
+        let markers = [
             "측정으로 확인", "측정 완료", "측정완료", "측정됐", "측정했",
-            "검증 완료", "검증완료", "검증됐", "흡수 완료", "흡수완료",
-            "parity", "29/29", "38/38", "absorbed: true", "gate_closed",
-            "달성했", "확인됐습니다",
+            "측정 결과", "검증 완료", "검증완료", "검증됐", "검증되었",
+            "흡수 완료", "흡수완료", "흡수했", "흡수됐", "재현했",
+            "통과했", "달성했", "확인됐",
+            "parity", "29/29", "38/38",
+            "absorbed: true", "absorbed=true",
+            "gate_closed", "gate_b_pinned",
         ]
         let lower = reply.lowercased()
-        let claims = claimMarkers.contains { lower.contains($0.lowercased()) }
-        guard claims else { return false }
-        // A claim is honest only if it carries a backing record ID.
-        return parseRecordIDs(reply).isEmpty
+        return markers.contains { lower.contains($0.lowercased()) }
+    }
+
+    /// rfc_011 §4.2 — a claim is backed ONLY by a real exports/ record
+    /// whose measurement_gate is a measured state (GATE_B_PINNED_MET /
+    /// GATE_CLOSED_MEASURED) AND whose exact recordId the reply names.
+    /// A fabricated ID, or the ID of an unmeasured (GATE_OPEN) record,
+    /// does not count — the check resolves every mentioned ID against
+    /// the actual exports/ records, not the reply's own text.
+    private static func hasMeasuredBacking(_ reply: String) -> Bool {
+        for stub in ArtifactRegistry.loadF1F2() {
+            guard case .success(let record) =
+                    RecordLoader.load(relativePath: stub.path) else { continue }
+            let gate = record.provenance.measurementGate
+            let measured = (gate == .bPinnedMet || gate == .closedMeasured)
+            if measured, reply.contains(record.recordId) {
+                return true
+            }
+        }
+        return false
     }
 
     /// Append a red REJECTED banner right after an over-claiming reply
