@@ -12,9 +12,11 @@
 // fallback.
 //
 // κ-30 (this commit, D53): adds `matter + analyze` → MatterAnalyzer.
+// κ-34 (D55): adds `sscb + analyze` → SSCBProducer (ngspice 46 transient).
 //
 // Currently wired:
 //   • component + synthesize → ComponentEmitter.emitBundled
+//                              (FreeCAD parametric per κ-33 / D54)
 //   • chip      + verify     → booksim self-test sniffer
 //                              (honest-gap if hexa not on PATH or
 //                               cmd_measure body not on local branch)
@@ -27,6 +29,11 @@
 //                              (honest-gap if hexa-matter SSOT missing
 //                               or commit hash not capturable — D17:
 //                               hexa-matter is owner, demiurge consumer)
+//   • sscb      + analyze    → ngspice 46 transient producer (κ-34 /
+//                              D55 — FIRST cohort domain crossing the
+//                              measuring-producer threshold; real
+//                              numbers, plausible-not-absorbed circuit,
+//                              GATE_OPEN永구 / absorbed=false ALWAYS)
 //
 // Honesty (g3, @F f6): the action prompt instructs the agent to
 // report "no engine tool" plainly when none is available, and never
@@ -106,6 +113,8 @@ public enum ActionDispatch {
             return runChipSynthesize()
         case (.analyze, "matter"):
             return runMatterAnalyze()
+        case (.analyze, "sscb"):
+            return runSSCBAnalyze()
         default:
             let prompt = actionPrompt(verb: verb)
             let reply = askClaude(prompt: prompt, context: context)
@@ -141,6 +150,26 @@ public enum ActionDispatch {
     /// captured a real commit hash (honest pinning, g3).
     private static func runMatterAnalyze() -> ActionResult {
         let r = MatterAnalyzer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `sscb + analyze` engine tool (κ-34 / D55) — spawn ngspice 46 via
+    /// `cockpit/scripts/sscb_ngspice.py` to run a 600 V / 100 A DC
+    /// hard-switching transient (HEXA-SSCB mk1 plausible topology),
+    /// then persist a typed `SSCBRecord` under
+    /// `exports/sscb/transient/<stamp>/`. Producer = `ngspice@<v>` —
+    /// the simulator is the instrument, but the circuit is plausible-
+    /// not-absorbed so measurement_gate stays GATE_OPEN AND absorbed
+    /// is permanently false (g3 — see SSCBProducer scope_caveats).
+    /// FIRST cohort domain (out of 13 in domains/*.md) crossing the
+    /// measuring-producer threshold — proves the breadth survey can
+    /// turn into real producers, narrow scope is honest g3.
+    private static func runSSCBAnalyze() -> ActionResult {
+        let r = SSCBProducer.runAnalyze()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],

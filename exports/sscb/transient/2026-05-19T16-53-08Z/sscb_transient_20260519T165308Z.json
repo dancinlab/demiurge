@@ -1,0 +1,50 @@
+{
+  "artifacts" : {
+    "log" : "sscb_v1.log",
+    "meta" : "sscb_v1.meta.json",
+    "netlist" : "sscb_v1.cir",
+    "raw" : "sscb_v1.raw"
+  },
+  "geometry_id" : "sscb_v1",
+  "interface" : "demiurge:sscb:transient-record",
+  "measurements" : {
+    "i_load_peak_A" : 99.6678,
+    "i_load_post_trip_A" : 35.0983,
+    "i_load_pre_trip_A" : 99.6678,
+    "interrupt_ratio" : 0.3521528517735919,
+    "rise_time_s" : 1.532449e-06,
+    "rows" : 1223,
+    "v_sw_peak_V" : 598.0782,
+    "v_sw_post_trip_V" : 428.2151,
+    "v_sw_pre_trip_V" : 1.993355
+  },
+  "netlist_sha256_16" : "0581743f3f8ee10b",
+  "ngspice_exit" : 0,
+  "ngspice_version" : "46",
+  "produced_at_utc" : "2026-05-19T16:53:08Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "ngspice@46",
+    "scope_caveats" : [
+      "ngspice 의 transient 시뮬레이션 결과 — 숫자는 실제 (IEEE-754 솔버 출력) 이지만, 회로 자체는 plausible HEXA-SSCB mk1 topology 이며 datasheet 흡수 아님 (g3 — SiC 스위치 = generic Ron/Roff 모델).",
+      "snubber (100 nF · 5 Ω) 는 generic-not-engineered — post-trip interrupt_ratio (~0.35 at 1.5 µs) 가 HEXA-SSCB mk1 ≤ 1 µs 목표를 만족하지 않는 것은 buggy 가 아니라 honest gap (스너버 sizing + 자기적 보조 차단이 후속).",
+      "measurement_gate = GATE_OPEN 영구 (단일점 시뮬, 디바이스 모델 미흡수). UL 489I 인증은 별도 게이트 — accredited lab type-test 이지 ngspice 가 아님 (domains/sscb.md §4).",
+      "absorbed=true 절대 금지 — Wolfspeed C3M0021120K class .lib + bench-validated load + DEVSIM TCAD coupling 이 들어와야 진짜 흡수 (D17 — hexa-matter / hexa-lang 가 절차 SSOT, demiurge 는 consumer)."
+    ]
+  },
+  "record_id" : "sscb_transient_20260519T165308Z",
+  "schema_version" : "1.0",
+  "topology" : {
+    "l_bus_H" : 1e-06,
+    "r_load_ohm" : 6,
+    "sim_time_s" : 6e-06,
+    "snubber_C_F" : 1e-07,
+    "snubber_R_ohm" : 5,
+    "step_s" : 5e-09,
+    "switch_roff_ohm" : 1000000000,
+    "switch_ron_ohm" : 0.02,
+    "trip_time_s" : 1e-06,
+    "v_dc_V" : 600
+  }
+}
