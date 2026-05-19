@@ -2118,3 +2118,22 @@
   *측정* 아님. cmd_sweep/cmd_measure 여전 gate, F1F2 record 0,
   "absorbed" 0. 다음 = ①-step2b cmd_sweep (sweep_curve) ·
   step2c cmd_measure (F1F2 emit, rfc_001 §8).
+- 2026-05-19 — **phase ①-step2b — booksim cmd_sweep wired**
+  (cross-repo, hexa-lang). `cmd_sweep` 의 exit-91 stub → 실제
+  §B 파이프라인 (sweep.hexa fn main 패턴): `anynet_mesh_8x8_d4_
+  text` → `anynet_parse` → `wire_delay_profile_lookup(22nm)` →
+  `WireLink` 리스트 → `wire_delay_apply` → `wire_delay_into_
+  anynet` → `SweepConfig`(uniform·iq_router_default·scaled
+  window) → `sweep_curve`(rates 0.05..0.50). booksim.hexa 가
+  wire_delay/iq_router/traffic/sweep 까지 `use` (enum fix
+  promote 덕에 전부 컴파일). 측정: `hexa run booksim.hexa` →
+  dispatcher selftest **7/7 PASS** rc 0; `booksim sweep` →
+  points=10 zero_load_lat=50.0 knee_rate=0.3 (실 sweep 시뮬
+  동작). hexa-lang local commit `02e3a5de`. **g3 정직**:
+  cmd_sweep 는 sweep 시뮬을 돌려 SweepCurve 를 *in-memory
+  출력* — F1F2 record emit 0. cmd_measure (F1F2 producer,
+  rfc_001 §8) 가 step2c 로 남음 → demiurge exports/ 측정
+  record 여전 0, "absorbed" 0. push 보류 지속 (rfc043 working
+  tree 병렬 세션 미커밋 — git 안전). 다음 = ①-step2c
+  cmd_measure (anynet→wire_delay→sweep→leighton oracle →
+  F1F2 JSON → exports/ write — chip §B 측정 본체).
