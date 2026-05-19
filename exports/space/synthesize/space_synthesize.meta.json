@@ -1,0 +1,100 @@
+{
+  "artifacts": {
+    "meta": "space_synthesize.meta.json",
+    "trade_ndjson": "space_synthesize_trade.ndjson"
+  },
+  "best": {
+    "dv_mps": 10.0,
+    "m_initial_kg": 18000.0,
+    "m_payload_kg": 16442.7323,
+    "m_propellant_kg": 57.2677
+  },
+  "geometry_id": "space_circular_insertion_v1",
+  "input_sha256_16": "59a317d06b9c7528",
+  "interface": "demiurge:space:synthesize-record",
+  "model": {
+    "constraints": [
+      "m_propellant_kg <= propellant_budget_kg",
+      "m_payload_kg >= 0"
+    ],
+    "design_variables": [
+      "dv_mps"
+    ],
+    "discipline_count": 1,
+    "dv_bounds_mps": [
+      10.0,
+      4000.0
+    ],
+    "isp_s": 320.0,
+    "m_dry_kg": 1500.0,
+    "name": "circular_orbit_insertion_rocket_equation",
+    "objective": "maximise(m_payload_kg)",
+    "propellant_budget_kg": 12000.0,
+    "wet_mass_samples_kg": [
+      8000.0,
+      12500.0,
+      18000.0
+    ]
+  },
+  "numpy_version": "2.3.5",
+  "ok": true,
+  "openmdao_version": "3.43.0",
+  "run_at_utc": "2026-05-19T20:57:34.932600Z",
+  "samples": [
+    {
+      "isp_s": 320.0,
+      "m_dry_kg": 1500.0,
+      "m_initial_kg": 8000.0,
+      "optimised": {
+        "dv_mps": 10.0,
+        "m_payload_kg": 6474.5477,
+        "m_propellant_kg": 25.4523
+      },
+      "propellant_budget_kg": 12000.0,
+      "solver": {
+        "maxiter": 200,
+        "ok": true,
+        "optimizer": "SLSQP",
+        "propellant_constraint_active": false,
+        "tol": 1e-08
+      }
+    },
+    {
+      "isp_s": 320.0,
+      "m_dry_kg": 1500.0,
+      "m_initial_kg": 12500.0,
+      "optimised": {
+        "dv_mps": 10.0,
+        "m_payload_kg": 10960.2307,
+        "m_propellant_kg": 39.7693
+      },
+      "propellant_budget_kg": 12000.0,
+      "solver": {
+        "maxiter": 200,
+        "ok": true,
+        "optimizer": "SLSQP",
+        "propellant_constraint_active": false,
+        "tol": 1e-08
+      }
+    },
+    {
+      "isp_s": 320.0,
+      "m_dry_kg": 1500.0,
+      "m_initial_kg": 18000.0,
+      "optimised": {
+        "dv_mps": 10.0,
+        "m_payload_kg": 16442.7323,
+        "m_propellant_kg": 57.2677
+      },
+      "propellant_budget_kg": 12000.0,
+      "solver": {
+        "maxiter": 200,
+        "ok": true,
+        "optimizer": "SLSQP",
+        "propellant_constraint_active": false,
+        "tol": 1e-08
+      }
+    }
+  ],
+  "scipy_version": "1.17.1"
+}

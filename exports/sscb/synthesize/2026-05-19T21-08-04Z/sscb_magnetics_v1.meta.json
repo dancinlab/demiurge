@@ -1,0 +1,164 @@
+{
+  "artifacts": {
+    "csv": "sscb_magnetics_v1.candidates.csv"
+  },
+  "best": {
+    "B_peak_mT": 716.5273957215597,
+    "L_uH": 1.1177827373256333,
+    "core_A_e_m2": 5.2e-05,
+    "core_V_e_m3": 2.99e-06,
+    "core_id": "EE25_N87",
+    "core_l_e_m": 0.0575,
+    "core_mu_r_initial": 2200,
+    "loss_est_W": 2.2931306111950964,
+    "saturates": true,
+    "score": 7.0599059993516295,
+    "turns": 3
+  },
+  "candidates": [
+    {
+      "B_peak_mT": 716.5273957215597,
+      "L_uH": 1.1177827373256333,
+      "core_A_e_m2": 5.2e-05,
+      "core_V_e_m3": 2.99e-06,
+      "core_id": "EE25_N87",
+      "core_l_e_m": 0.0575,
+      "core_mu_r_initial": 2200,
+      "loss_est_W": 2.2931306111950964,
+      "saturates": true,
+      "score": 7.0599059993516295,
+      "turns": 3
+    },
+    {
+      "B_peak_mT": 1194.2123262025996,
+      "L_uH": 3.104952048126759,
+      "core_A_e_m2": 5.2e-05,
+      "core_V_e_m3": 2.99e-06,
+      "core_id": "EE25_N87",
+      "core_l_e_m": 0.0575,
+      "core_mu_r_initial": 2200,
+      "loss_est_W": 3.821884351991827,
+      "saturates": true,
+      "score": 17.00849081817009,
+      "turns": 5
+    },
+    {
+      "B_peak_mT": 1910.7397219241593,
+      "L_uH": 7.948677243204502,
+      "core_A_e_m2": 5.2e-05,
+      "core_V_e_m3": 2.99e-06,
+      "core_id": "EE25_N87",
+      "core_l_e_m": 0.0575,
+      "core_mu_r_initial": 2200,
+      "loss_est_W": 6.115014963186924,
+      "saturates": true,
+      "score": 33.79433927527383,
+      "turns": 8
+    },
+    {
+      "B_peak_mT": 707.0592161532014,
+      "L_uH": 1.7605774482214716,
+      "core_A_e_m2": 8.3e-05,
+      "core_V_e_m3": 6.06e-06,
+      "core_id": "EE32_N87",
+      "core_l_e_m": 0.073,
+      "core_mu_r_initial": 2200,
+      "loss_est_W": 2.897117878167886,
+      "saturates": true,
+      "score": 7.544897717441495,
+      "turns": 3
+    },
+    {
+      "B_peak_mT": 1178.4320269220023,
+      "L_uH": 4.89049291172631,
+      "core_A_e_m2": 8.3e-05,
+      "core_V_e_m3": 6.06e-06,
+      "core_id": "EE32_N87",
+      "core_l_e_m": 0.073,
+      "core_mu_r_initial": 2200,
+      "loss_est_W": 4.828529796946478,
+      "saturates": true,
+      "score": 18.53102669375968,
+      "turns": 5
+    },
+    {
+      "B_peak_mT": 1885.4912430752038,
+      "L_uH": 12.519661854019354,
+      "core_A_e_m2": 8.3e-05,
+      "core_V_e_m3": 6.06e-06,
+      "core_id": "EE32_N87",
+      "core_l_e_m": 0.073,
+      "core_mu_r_initial": 2200,
+      "loss_est_W": 7.725647675114363,
+      "saturates": true,
+      "score": 37.94451590527275,
+      "turns": 8
+    },
+    {
+      "B_peak_mT": 692.5932864699,
+      "L_uH": 3.6984481497492663,
+      "core_A_e_m2": 0.000178,
+      "core_V_e_m3": 1.735e-05,
+      "core_id": "EE42_N87",
+      "core_l_e_m": 0.0975,
+      "core_mu_r_initial": 2200,
+      "loss_est_W": 4.2426491723921735,
+      "saturates": true,
+      "score": 9.241669590914267,
+      "turns": 3
+    },
+    {
+      "B_peak_mT": 1154.3221441165,
+      "L_uH": 10.27346708263685,
+      "core_A_e_m2": 0.000178,
+      "core_V_e_m3": 1.735e-05,
+      "core_id": "EE42_N87",
+      "core_l_e_m": 0.0975,
+      "core_mu_r_initial": 2200,
+      "loss_est_W": 7.071081953986955,
+      "saturates": true,
+      "score": 23.51216948457852,
+      "turns": 5
+    },
+    {
+      "B_peak_mT": 1846.9154305864001,
+      "L_uH": 26.300075731550336,
+      "core_A_e_m2": 0.000178,
+      "core_V_e_m3": 1.735e-05,
+      "core_id": "EE42_N87",
+      "core_l_e_m": 0.0975,
+      "core_mu_r_initial": 2200,
+      "loss_est_W": 11.313731126379128,
+      "saturates": true,
+      "score": 51.081999574657004,
+      "turns": 8
+    }
+  ],
+  "femmt_version": null,
+  "fingerprint": "75daef609dc2db52",
+  "geometry_id": "sscb_magnetics_v1",
+  "ok": true,
+  "produced_at_utc": "2026-05-19T21:08:05Z",
+  "python_version": "3.13.13",
+  "solver": "analytic_fallback",
+  "sweep": {
+    "cores": [
+      "EE25_N87",
+      "EE32_N87",
+      "EE42_N87"
+    ],
+    "n_candidates": 9,
+    "n_safe": 0,
+    "turns_grid": [
+      3,
+      5,
+      8
+    ]
+  },
+  "target": {
+    "B_sat_T": 0.3,
+    "I_peak_A": 100.0,
+    "L_target_H": 1e-06,
+    "f_sw_Hz": 50000.0
+  }
+}

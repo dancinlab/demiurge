@@ -160,6 +160,8 @@ public enum ActionDispatch {
             return runSSCBAnalyze()
         case (.analyze, "energy"):
             return runEnergyAnalyze()
+        case (.synthesize, "energy"):
+            return runEnergySynthesize()
         case (.analyze, "antimatter"):
             return runAntimatterAnalyze()
         case (.analyze, "fusion"):
@@ -184,6 +186,18 @@ public enum ActionDispatch {
             return runScopeAnalyze()
         case (.analyze, "cern"):
             return runCernAnalyze()
+        case (.synthesize, "sscb"):
+            return runSSCBSynth()
+        case (.verify, "sscb"):
+            return runSSCBVerify()
+        case (.synthesize, "bot"):
+            return runBotSynthesize()
+        case (.synthesize, "scope"):
+            return runScopeSynthesize()
+        case (.verify, "scope"):
+            return runScopeVerify()
+        case (.synthesize, "space"):
+            return runSpaceSynthesize()
         default:
             let prompt = actionPrompt(verb: verb)
             let reply = askClaude(prompt: prompt, context: context)
@@ -258,6 +272,34 @@ public enum ActionDispatch {
     /// the FIRST renewable-energy cell.
     private static func runEnergyAnalyze() -> ActionResult {
         let r = EnergyAnalyzeProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `energy + synthesize` engine tool — spawn the PyPSA + HiGHS
+    /// capacity-expansion producer via
+    /// `~/core/hexa-lang/stdlib/energy/pypsa_capacity.py` and persist a
+    /// typed `EnergySynthRecord` under `exports/energy/synth/<stamp>/`.
+    /// Producer = `pypsa@<v> + HiGHS@<v>`. The SECOND energy-domain
+    /// producer after `energy + analyze` (pvlib clear-sky), and the
+    /// FIRST `synthesize`-verb cell in the energy domain — ROI rank 5
+    /// from `inbox/notes/absorption-empty-cells-research-2026-05-20.md`
+    /// (⭐⭐⭐⭐⭐ pure pip).
+    /// D61-compliant from birth (script SSOT in hexa-lang/stdlib/,
+    /// never in cockpit/scripts/). D72 thin domain adapter — PyPSA is
+    /// power-system optimization, not FEM/MC/graph; promotes to
+    /// `kernels/power_opt/` only if 2nd consumer appears.
+    /// LP IS solved to optimality (HiGHS reports termination optimal)
+    /// but inputs (capital_cost · demand · CF · topology) are textbook
+    /// / synthetic, so measurement_gate stays GATE_OPEN AND absorbed
+    /// is permanently false (g3 — see EnergySynthProducer
+    /// scope_caveats; citation: PyPSA — Brown·Hörsch·Schlachtberger,
+    /// JORS 2018, doi:10.5334/jors.188).
+    private static func runEnergySynthesize() -> ActionResult {
+        let r = EnergySynthProducer.runSynthesize()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],
@@ -910,5 +952,101 @@ public enum ActionDispatch {
             return "claude invocation failed: \(error.localizedDescription)\n"
                 + "(`claude` must be on PATH)"
         }
+    }
+
+    /// `sscb + synthesize` engine tool (ROI rank 1 — FEMMT + analytic
+    /// fallback magnetics sizing). SSOT = `~/core/hexa-lang/stdlib/sscb/
+    /// femmt_sweep.py` (D61). D72 ①b thin adapter — magnetics math stays
+    /// adapter-local until 2nd consumer. GATE_OPEN / absorbed=false (g3
+    /// — parametric EE-class ferrite catalogue, not measured datasheets;
+    /// see SSCBSynthProducer scope_caveats).
+    private static func runSSCBSynth() -> ActionResult {
+        let r = SSCBSynthProducer.runSynth()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `sscb + verify` engine tool (ROI rank 2 — ngspice bolted-fault
+    /// breaking-capacity, UL 489I-style figures-of-merit: I_peak / I²t /
+    /// t_clear). SSOT = `~/core/hexa-lang/stdlib/sscb/ngspice_breaking.py`
+    /// (D61). Distinct from sscb+analyze (interrupt_ratio transient).
+    /// OpenFOAM thermal-margin skipped (heavy, separate session).
+    /// GATE_OPEN / absorbed=false (g3 — generic device model).
+    private static func runSSCBVerify() -> ActionResult {
+        let r = SSCBVerifyProducer.runVerify()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `bot + synthesize` engine tool (ROI rank 9 — Pinocchio FK / Jacobian
+    /// / RNEA on the bot+structure URDF). SSOT = `~/core/hexa-lang/stdlib/
+    /// bot/pinocchio_rbd.py` (D61). D72: `kernels/urdf/` (κ-45) owns URDF
+    /// loading; Pinocchio stays in bot adapter until 2nd RBD consumer.
+    /// Cross-cell parity via byte-identical URDF (urdf_sha256_16 matches
+    /// bot+structure κ-37). GATE_OPEN / absorbed=false (open-loop, no
+    /// contact/payload/actuator dynamics — bot+verify Drake/Gazebo
+    /// deferred per ROI rank 13).
+    private static func runBotSynthesize() -> ActionResult {
+        let r = BotSynthProducer.runSynthesize()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `scope + synthesize` engine tool (ROI rank 4 — OpenMDAO segmented-
+    /// primary aperture sizing). SSOT = `~/core/hexa-lang/stdlib/scope/
+    /// openmdao_sizing.py` (D61). D72 ①b adapter; wave-optics math
+    /// delegated to `kernels/wave_optics/`. OpenMDAO kernel promotion
+    /// candidate at 2nd MDO consumer (note: space+synthesize is 2nd —
+    /// `inbox/notes/openmdao-kernel-promotion-pickup.md`). GATE_OPEN /
+    /// absorbed=false (parametric aperture + areal-density placeholder
+    /// mass).
+    private static func runScopeSynthesize() -> ActionResult {
+        let r = ScopeSynthProducer.runSynthesize()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `scope + verify` engine tool (ROI rank 3 — POPPY + optional WebbPSF
+    /// + synphot signoff via `kernels/wave_optics/`). SSOT = `~/core/hexa-
+    /// lang/stdlib/scope/poppy_psf_verify.py` (D61). 5 checks: repro,
+    /// diffraction-limit closure (1.22 λ/D ±20%), encircled-energy
+    /// monotonicity, WebbPSF cross-check (skipped if missing), synphot
+    /// round-trip (skipped if missing). GATE_OPEN / absorbed=false
+    /// (parametric aperture, not flight data).
+    private static func runScopeVerify() -> ActionResult {
+        let r = ScopeVerifyProducer.runVerify()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `space + synthesize` engine tool (ROI rank 8 — OpenMDAO SLSQP wet-
+    /// mass sweep via single-discipline Tsiolkovsky rollup). SSOT =
+    /// `~/core/hexa-lang/stdlib/space/openmdao_mission.py` (D61). 2nd
+    /// OpenMDAO consumer after scope+synthesize → kernel-promotion
+    /// candidate (see `inbox/notes/openmdao-kernel-promotion-pickup.md`).
+    /// GATE_OPEN / absorbed=false (scoping-level MDO, textbook nominal
+    /// inputs, no GMAT coupling). Citation NASA GSC-17177-1.
+    private static func runSpaceSynthesize() -> ActionResult {
+        let r = SpaceSynthProducer.runSynthesize()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
     }
 }

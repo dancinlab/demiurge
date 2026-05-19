@@ -1,0 +1,77 @@
+{
+  "artifacts": {
+    "csv": "single_bus_capex_4tech_168h_v1.csv"
+  },
+  "error": null,
+  "generators_catalogue": [
+    {
+      "availability": "solar",
+      "capital_cost_eur_per_mw_yr": 35000.0,
+      "carrier": "solar",
+      "marginal_cost_eur_per_mwh": 0.0,
+      "name": "solar_pv"
+    },
+    {
+      "availability": "wind",
+      "capital_cost_eur_per_mw_yr": 55000.0,
+      "carrier": "wind",
+      "marginal_cost_eur_per_mwh": 1.0,
+      "name": "onshore_wind"
+    },
+    {
+      "availability": "constant",
+      "capital_cost_eur_per_mw_yr": 25000.0,
+      "carrier": "gas",
+      "marginal_cost_eur_per_mwh": 85.0,
+      "name": "ccgt_gas"
+    }
+  ],
+  "geometry_id": "single_bus_capex_4tech_168h_v1",
+  "highs_version": "1.14.0",
+  "measurements": {
+    "csv_artifact": "single_bus_capex_4tech_168h_v1.csv",
+    "horizon_hours": 168,
+    "objective_eur": 19376177.524,
+    "per_generator": {
+      "ccgt_gas": {
+        "capital_cost_eur_per_mw_yr": 25000.0,
+        "carrier": "gas",
+        "generation_mwh": 50929.788,
+        "marginal_cost_eur_per_mwh": 85.0,
+        "p_nom_opt_mw": 64.2486,
+        "peak_mw": 64.2486
+      },
+      "onshore_wind": {
+        "capital_cost_eur_per_mw_yr": 55000.0,
+        "carrier": "wind",
+        "generation_mwh": 421931.637,
+        "marginal_cost_eur_per_mwh": 1.0,
+        "p_nom_opt_mw": 199.4631,
+        "peak_mw": 89.7375
+      },
+      "solar_pv": {
+        "capital_cost_eur_per_mw_yr": 35000.0,
+        "carrier": "solar",
+        "generation_mwh": 162269.86,
+        "marginal_cost_eur_per_mwh": 0.0,
+        "p_nom_opt_mw": 58.5294,
+        "peak_mw": 58.5294
+      }
+    },
+    "renewable_share": 0.9198,
+    "rows": 168,
+    "total_load_mwh": 635131.286
+  },
+  "ok": true,
+  "problem": {
+    "formulation": "LP capacity-expansion (single-bus, linear cost)",
+    "horizon_hours": 168,
+    "n_buses": 1,
+    "n_generators": 3,
+    "n_loads": 1,
+    "solver": "HiGHS"
+  },
+  "problem_id": "single_bus_capex_4tech_168h_v1",
+  "pypsa_version": "1.2.1",
+  "python_version": "3.14.4"
+}

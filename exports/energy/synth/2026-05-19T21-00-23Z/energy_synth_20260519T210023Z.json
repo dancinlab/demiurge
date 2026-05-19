@@ -1,0 +1,92 @@
+{
+  "artifacts" : {
+    "csv" : "single_bus_capex_4tech_168h_v1.csv",
+    "meta" : "single_bus_capex_4tech_168h_v1.meta.json"
+  },
+  "generators_catalogue" : [
+    {
+      "availability" : "solar",
+      "capital_cost_eur_per_mw_yr" : 35000,
+      "carrier" : "solar",
+      "marginal_cost_eur_per_mwh" : 0,
+      "name" : "solar_pv"
+    },
+    {
+      "availability" : "wind",
+      "capital_cost_eur_per_mw_yr" : 55000,
+      "carrier" : "wind",
+      "marginal_cost_eur_per_mwh" : 1,
+      "name" : "onshore_wind"
+    },
+    {
+      "availability" : "constant",
+      "capital_cost_eur_per_mw_yr" : 25000,
+      "carrier" : "gas",
+      "marginal_cost_eur_per_mwh" : 85,
+      "name" : "ccgt_gas"
+    }
+  ],
+  "geometry_id" : "single_bus_capex_4tech_168h_v1",
+  "highs_version" : "1.14.0",
+  "interface" : "demiurge:energy:pypsa-capacity-synth-record",
+  "measurements" : {
+    "horizon_hours" : 168,
+    "objective_eur" : 19376177.524,
+    "per_generator" : {
+      "ccgt_gas" : {
+        "capital_cost_eur_per_mw_yr" : 25000,
+        "carrier" : "gas",
+        "generation_mwh" : 50929.788,
+        "marginal_cost_eur_per_mwh" : 85,
+        "p_nom_opt_mw" : 64.2486,
+        "peak_mw" : 64.2486
+      },
+      "onshore_wind" : {
+        "capital_cost_eur_per_mw_yr" : 55000,
+        "carrier" : "wind",
+        "generation_mwh" : 421931.637,
+        "marginal_cost_eur_per_mwh" : 1,
+        "p_nom_opt_mw" : 199.4631,
+        "peak_mw" : 89.7375
+      },
+      "solar_pv" : {
+        "capital_cost_eur_per_mw_yr" : 35000,
+        "carrier" : "solar",
+        "generation_mwh" : 162269.86,
+        "marginal_cost_eur_per_mwh" : 0,
+        "p_nom_opt_mw" : 58.5294,
+        "peak_mw" : 58.5294
+      }
+    },
+    "renewable_share" : 0.9198,
+    "rows" : 168,
+    "total_load_mwh" : 635131.286
+  },
+  "problem" : {
+    "formulation" : "LP capacity-expansion (single-bus, linear cost)",
+    "horizon_hours" : 168,
+    "n_buses" : 1,
+    "n_generators" : 3,
+    "n_loads" : 1,
+    "solver" : "HiGHS"
+  },
+  "produced_at_utc" : "2026-05-19T21:00:23Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "pypsa@1.2.1 + HiGHS@1.14.0",
+    "scope_caveats" : [
+      "capital_cost 숫자는 round figures (solar 35k · wind 55k · gas 25k EUR/MW/yr) — NREL ATB tendencies 에서 영감 받았으나 *sourced ATB pull 이 아님*. 실제 흡수에 해당하려면 atb.nrel.gov 에서 modelling year 의 capital_cost / fixed_om / variable_om 을 사이트 SSOT 로 끌어와야 함 (g3).",
+      "demand profile = synthetic 단일 버스 toy (주중/주말 + 아침/저녁 피크 더블 피크, 168시간 1주). 실제 capacity-expansion 은 ERCOT / PJM / ENTSO-E 의 historical hourly 8760-시간 load profile 또는 clustered-typical-day 표본을 사용. 본 record 의 demand 는 *deterministic synthetic*, 실측이 아니다 (g3).",
+      "renewable capacity factor = 결정론적 삼각 함수 (clear-sky 근사 + 다일 envelope 의 wind). 실제 LP 는 TMY3 / NSRDB / ERA5 / NREL WIND 의 site-measured irradiance·wind speed 시계열을 입력으로 받음. 본 record 의 CF 는 *synthetic*, 측정이 아니다 (g3).",
+      "network topology = single-bus (transmission 없음). 실제 capacity-expansion 은 multi-bus AC power-flow (KCL/KVL + line capacity + losses) 를 함께 푸는 SCOPF / OPF formulation. 본 record 는 *copper-plate* 단일 버스 — transmission constraint 의 영향을 보지 못한다 (g3).",
+      "snapshot weighting = 8760/168 ≈ 52.14 (1주를 1년으로 scale-up). 실제 planning 은 8760-h sequential 또는 clustered-typical-day (CTD) 표본으로 storage cycling / ramping constraint 를 보존. 본 record 의 LP 는 *aggregated week*, week 내부의 storage / unit-commitment 동역학이 honest 하게 단순화되어 있다 (g3).",
+      "storage / unit-commitment 미모델링 — 본 record 에는 Store / StorageUnit 객체가 없고, ramp_limit_up/_down · min_up_time · min_down_time 등 commitment 제약이 모두 off. 실제 시스템에서 renewable share 90%+ 의 dispatch 는 storage 가 결정한다 — 본 record 의 dispatch 는 *upper bound* 이지 운영 가능한 schedule 이 아니다 (g3).",
+      "measurement_gate = GATE_OPEN 영구 / absorbed = false 영구 — PyPSA BSD-3 + HiGHS MIT 는 흡수 가능한 OSS 스택이지만, 본 LP 의 *입력 (capital_cost · demand · CF · topology)* 이 모두 textbook / synthetic. 본 phase 의 scope 는 *PyPSA capacity-expansion 스택이 hexa-lang/stdlib 에서 동작함을 측정* 이지 portfolio signoff 가 아님. 흡수에 해당하려면 (sourced ATB · 실측 demand · 실측 CF · multi-bus AC · storage cycling · UC 제약) 6 종이 모두 record 안으로 들어와야 한다 (g3)."
+    ]
+  },
+  "pypsa_version" : "1.2.1",
+  "python_version" : "3.14.4",
+  "record_id" : "energy_synth_20260519T210023Z",
+  "schema_version" : "1.0"
+}

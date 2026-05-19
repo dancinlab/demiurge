@@ -1,0 +1,116 @@
+{
+  "artifacts" : {
+    "meta" : "space_synthesize.meta.json",
+    "trade_ndjson" : "space_synthesize_trade.ndjson"
+  },
+  "best" : {
+    "dv_mps" : 10,
+    "m_initial_kg" : 18000,
+    "m_payload_kg" : 16442.7323,
+    "m_propellant_kg" : 57.2677
+  },
+  "geometry_id" : "space_circular_insertion_v1",
+  "input_sha256_16" : "59a317d06b9c7528",
+  "interface" : "demiurge:space:synthesize-record",
+  "model" : {
+    "constraints" : [
+      "m_propellant_kg <= propellant_budget_kg",
+      "m_payload_kg >= 0"
+    ],
+    "design_variables" : [
+      "dv_mps"
+    ],
+    "discipline_count" : 1,
+    "dv_bounds_mps" : [
+      10,
+      4000
+    ],
+    "isp_s" : 320,
+    "m_dry_kg" : 1500,
+    "name" : "circular_orbit_insertion_rocket_equation",
+    "objective" : "maximise(m_payload_kg)",
+    "propellant_budget_kg" : 12000,
+    "wet_mass_samples_kg" : [
+      8000,
+      12500,
+      18000
+    ]
+  },
+  "numpy_version" : "2.3.5",
+  "openmdao_version" : "3.43.0",
+  "produced_at_utc" : "2026-05-19T20:57:32Z",
+  "provenance" : {
+    "absorbed" : false,
+    "atlas_cite_block" : "NASA GSC-17177-1 (OpenMDAO 오픈소스 SSOT, BSD-3, Glenn Research Center · https://openmdao.org · MDO framework for multidisciplinary analysis & optimisation)",
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "openmdao@3.43.0+scipy@1.17.1",
+    "scope_caveats" : [
+      "OpenMDAO ScipyOptimizeDriver (SLSQP) 의 converged 출력 — 최적화 자체는 deterministic 하지만 모델은 SCOPING-LEVEL: 단일 discipline (Tsiolkovsky 로켓방정식), gravity loss / atmospheric drag / staging / AOCS / thermal / comms 일체 포함 안 함. mission design 결론 아님 (g3).",
+      "input 은 텍스트북 nominal — Isp=320 s, m_dry=1500 kg, propellant_budget=12000 kg 모두 generic upper-stage 값. 실제 launcher spec sheet 흡수 아님 (g3 — 측정 input 부재).",
+      "GMAT 결합 부재 — flight-validated mission profile 은 별도 ROI rank 15 셀 (binary download, 본 라운드 deliberately skip). closedMeasured 로 게이트 닫으려면 GMAT 또는 AGI STK 의 verified scenario 와 trade point parity 필요.",
+      "propellant constraint 가 active 한 sample 에서는 trade 가 propellant budget 의 hard wall 에 pinning — optimiser 가 ΔV upper-bound 쪽으로 밀려가는 corner. 본 record 의 samples[].solver.propellant_constraint_active 로 surface.",
+      "OpenMDAO 는 EXTERNAL Python 라이브러리 (pip install) — hexa-lang / hexa-arch 로 absorbed 아님 (D17 — demiurge consumer, upstream tool owner). absorbed=true 절대 금지.",
+      "D72 kernel-promotion 후보 — OpenMDAO 는 generic MDO (도메인 독립). scope+synthesize 가 두 번째 consumer 로 OpenMDAO 를 채택하면 ~/core/hexa-lang/stdlib/kernels/mdo/ 로 promotion 후보. pickup 노트: inbox/notes/openmdao-kernel-promotion-pickup.md."
+    ]
+  },
+  "record_id" : "space_synth_20260519T205732Z",
+  "run_at_utc" : "2026-05-19T20:57:34.932600Z",
+  "samples" : [
+    {
+      "isp_s" : 320,
+      "m_dry_kg" : 1500,
+      "m_initial_kg" : 8000,
+      "optimised" : {
+        "dv_mps" : 10,
+        "m_payload_kg" : 6474.5477,
+        "m_propellant_kg" : 25.4523
+      },
+      "propellant_budget_kg" : 12000,
+      "solver" : {
+        "maxiter" : 200,
+        "ok" : true,
+        "optimizer" : "SLSQP",
+        "propellant_constraint_active" : false,
+        "tol" : 1e-08
+      }
+    },
+    {
+      "isp_s" : 320,
+      "m_dry_kg" : 1500,
+      "m_initial_kg" : 12500,
+      "optimised" : {
+        "dv_mps" : 10,
+        "m_payload_kg" : 10960.2307,
+        "m_propellant_kg" : 39.7693
+      },
+      "propellant_budget_kg" : 12000,
+      "solver" : {
+        "maxiter" : 200,
+        "ok" : true,
+        "optimizer" : "SLSQP",
+        "propellant_constraint_active" : false,
+        "tol" : 1e-08
+      }
+    },
+    {
+      "isp_s" : 320,
+      "m_dry_kg" : 1500,
+      "m_initial_kg" : 18000,
+      "optimised" : {
+        "dv_mps" : 10,
+        "m_payload_kg" : 16442.7323,
+        "m_propellant_kg" : 57.2677
+      },
+      "propellant_budget_kg" : 12000,
+      "solver" : {
+        "maxiter" : 200,
+        "ok" : true,
+        "optimizer" : "SLSQP",
+        "propellant_constraint_active" : false,
+        "tol" : 1e-08
+      }
+    }
+  ],
+  "schema_version" : "1.0",
+  "scipy_version" : "1.17.1"
+}

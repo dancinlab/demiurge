@@ -1,0 +1,143 @@
+{
+  "artifacts" : {
+    "csv" : "sscb_magnetics_v1.candidates.csv",
+    "meta" : "sscb_magnetics_v1.meta.json"
+  },
+  "best" : {
+    "B_peak_mT" : 716.5273957215597,
+    "L_uH" : 1.1177827373256333,
+    "core_id" : "EE25_N87",
+    "loss_est_W" : 2.2931306111950964,
+    "saturates" : true,
+    "score" : 7.0599059993516295,
+    "turns" : 3
+  },
+  "candidates" : [
+    {
+      "B_peak_mT" : 716.5273957215597,
+      "L_uH" : 1.1177827373256333,
+      "core_id" : "EE25_N87",
+      "loss_est_W" : 2.2931306111950964,
+      "saturates" : true,
+      "score" : 7.0599059993516295,
+      "turns" : 3
+    },
+    {
+      "B_peak_mT" : 1194.2123262025996,
+      "L_uH" : 3.104952048126759,
+      "core_id" : "EE25_N87",
+      "loss_est_W" : 3.821884351991827,
+      "saturates" : true,
+      "score" : 17.00849081817009,
+      "turns" : 5
+    },
+    {
+      "B_peak_mT" : 1910.7397219241593,
+      "L_uH" : 7.948677243204502,
+      "core_id" : "EE25_N87",
+      "loss_est_W" : 6.115014963186924,
+      "saturates" : true,
+      "score" : 33.79433927527383,
+      "turns" : 8
+    },
+    {
+      "B_peak_mT" : 707.0592161532014,
+      "L_uH" : 1.7605774482214716,
+      "core_id" : "EE32_N87",
+      "loss_est_W" : 2.897117878167886,
+      "saturates" : true,
+      "score" : 7.544897717441495,
+      "turns" : 3
+    },
+    {
+      "B_peak_mT" : 1178.4320269220023,
+      "L_uH" : 4.89049291172631,
+      "core_id" : "EE32_N87",
+      "loss_est_W" : 4.828529796946478,
+      "saturates" : true,
+      "score" : 18.53102669375968,
+      "turns" : 5
+    },
+    {
+      "B_peak_mT" : 1885.4912430752038,
+      "L_uH" : 12.519661854019354,
+      "core_id" : "EE32_N87",
+      "loss_est_W" : 7.725647675114363,
+      "saturates" : true,
+      "score" : 37.94451590527275,
+      "turns" : 8
+    },
+    {
+      "B_peak_mT" : 692.5932864699,
+      "L_uH" : 3.6984481497492663,
+      "core_id" : "EE42_N87",
+      "loss_est_W" : 4.2426491723921735,
+      "saturates" : true,
+      "score" : 9.241669590914267,
+      "turns" : 3
+    },
+    {
+      "B_peak_mT" : 1154.3221441165,
+      "L_uH" : 10.27346708263685,
+      "core_id" : "EE42_N87",
+      "loss_est_W" : 7.071081953986955,
+      "saturates" : true,
+      "score" : 23.51216948457852,
+      "turns" : 5
+    },
+    {
+      "B_peak_mT" : 1846.9154305864001,
+      "L_uH" : 26.300075731550336,
+      "core_id" : "EE42_N87",
+      "loss_est_W" : 11.313731126379128,
+      "saturates" : true,
+      "score" : 51.081999574657004,
+      "turns" : 8
+    }
+  ],
+  "fingerprint" : "75daef609dc2db52",
+  "geometry_id" : "sscb_magnetics_v1",
+  "interface" : "demiurge:sscb:synthesize-record",
+  "produced_at_utc" : "2026-05-19T21:08:04Z",
+  "provenance" : {
+    "absorbed" : false,
+    "citations" : [
+      "DEVSIM JOSS doi:10.21105/joss.03898 (Sanchez 2022) — TCAD anchor",
+      "FEMMT (upb-lea/FEM_Magnetics_Toolbox, GPL-3) — cited synthesis instrument",
+      "OpenMagnetics catalogue — analytic A_L fallback reference",
+      "Hagedorn, Magnetic Components §7.4 (gapped-core reluctance)"
+    ],
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "analytic_fallback (femmt unavailable)",
+    "scope_caveats" : [
+      "FEMMT 또는 analytic-fallback (gapped-core reluctance, Hagedorn §7.4) sweep — 숫자는 실제 (deterministic 분석값) 이지만 core / winding / gap geometry 가 PARAMETRIC EE-class ferrite 카탈로그 값일 뿐 measured datasheet 흡수 아님 (g3).",
+      "B-H curve / saturation flux / loss density = N87 ferrite 의 textbook 100 °C reference (B_sat ≈ 0.30 T). 실제 lot-to-lot drift / temperature derating / DC-bias permeability 변화 0 종 적용. 흡수에 해당하려면 supplier datasheet B-H + Hot-Disk thermal + Bertotti loss split 필요.",
+      "OpenMagnetics 카탈로그 + FEMMT GPL-3 = cited synthesis instrument (domains/sscb.md §2). 본 producer 가 femmt 의 full GetDP/ONELAB FEM solve 를 invoke 하지는 않음 — analytic estimate (gap-dominated reluctance) 가 reproducibility anchor. 풀 FEM solve 는 후속 phase.",
+      "measurement_gate = GATE_OPEN 영구 / absorbed = false 영구 — absorbed=true 는 (1) 실제 magnetic-material datasheet B-H 흡수, (2) 한 candidate 의 bench winding-loss 측정, (3) thermal coupling (Φ-N 측정 + 열저항), (4) measured stray-inductance 회로 통합, 4종 동시 필요. 본 phase 는 sizing의 *first honest witness* (g3)."
+    ]
+  },
+  "python_version" : "3.13.13",
+  "record_id" : "sscb_synth_20260519T210804Z",
+  "schema_version" : "1.0",
+  "solver" : "analytic_fallback",
+  "sweep" : {
+    "cores" : [
+      "EE25_N87",
+      "EE32_N87",
+      "EE42_N87"
+    ],
+    "n_candidates" : 9,
+    "n_safe" : 0,
+    "turns_grid" : [
+      3,
+      5,
+      8
+    ]
+  },
+  "target" : {
+    "B_sat_T" : 0.3,
+    "I_peak_A" : 100,
+    "L_target_H" : 1e-06,
+    "f_sw_Hz" : 50000
+  }
+}

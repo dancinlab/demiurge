@@ -3635,3 +3635,28 @@
   완료 후 통합). 빈-셀 라운드 (κ-46 동시 진행 중) 8 agent 중 3
   rate-limited (component analyze · cern synth · rtsc analyze) — retry
   대기, 5 알림 대기.
+- 2026-05-20 — **phase κ-47 — 빈-셀 라운드 7 cell 통합 (sscb synth+
+  verify · scope synth+verify · space synth · bot synth · energy
+  synth)**. 8 병렬 agent 중 7 alive substrate / Swift 산출물을 main
+  session 이 직접 통합 (3 agent rate-limited @ Anthropic 서버 일시
+  제한). hexa-lang origin/main `167ade23` 에 4 substrate landed
+  (`stdlib/energy/pypsa_capacity.py` · `stdlib/bot/pinocchio_rbd.py` ·
+  `stdlib/sscb/femmt_sweep.py` · `stdlib/sscb/ngspice_breaking.py`);
+  scope · space substrate 는 별도 commit 으로 이미 origin/main
+  landed (`08ad8983` scope · `76b2a7ea` space). demiurge 측 7 새
+  Swift Producer + 7 새 Record + ActionDispatch 6 case wiring (energy
+  case 는 별도 main 직pp 부터 있었음, 통합 시 그대로 유지 — 총 7
+  cell). exports/sscb/synthesize · exports/space/synthesize · exports/
+  energy/synth 에 실측 record landed (모두 GATE_OPEN / absorbed=false
+  per g3 — substrate 만 흡수, hexa-native parity 없음).
+  `inbox/notes/openmdao-kernel-promotion-pickup.md` 추가 (scope+synth
+  + space+synth 2nd consumer 모임 — D72 OpenMDAO kernel 승급 candidate
+  flag). **잔여 미흡수 cell** (rate-limit 으로 substrate 미작성):
+  component+analyze (CalculiX 별 세션 prep), cern+synth (Xsuite 별
+  세션), rtsc+analyze (pyfemm Linux-pool 별 세션). D72 적용: 새
+  kernel 추가 0 — 모두 기존 13 kernel 재사용 (energy=power_opt
+  candidate, bot=urdf+adapter, scope=wave_optics, space=mdo candidate,
+  sscb=circuit). g3 — substrate 만 흡수, 측정 record gate=OPEN /
+  absorbed=false 유지; hexa-native port 는 후속 라운드. 통합 작업 =
+  main session 의 직접 cp + Edit (rate-limited 5 agent 의 ephemeral
+  worktree 결과물 회수 — 작업 손실 0).
