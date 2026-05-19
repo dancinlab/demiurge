@@ -2085,3 +2085,19 @@
   아님 — booksim `cmd_measure`(F1F2 producer) 미실행, exports/
   측정 record 0. enum 해제 = B2 가 *가능해진* 것. demiurge
   코드 0 — 검토·기록만.
+- 2026-05-19 — **phase ①-step1 — hexa promote (검증 환경 확보)**
+  (사용자 "① / hexa upstream / 이세션 진행 / 허용"). 진단: 내
+  `hexa` 명령 = `~/core/hexa-lang/hexa` wrapper → `hexadrv` →
+  `self/native/hexa_v2`. rfc043 의 hexa_v2 = 1533496 bytes
+  (enum fix *이전* build) — source 는 fix(_is_enum_name)됐으나
+  binary stale. **promote**: main `8ff19d2a` 의 enum-fix
+  `hexa_v2`(1533992) + 재생성 `hexa_cc.c` 를 rfc043 로 복사
+  (hexa-lang commit `67c58198`). 측정: `hexa run` —
+  `leighton.hexa` PASS 10/10 · `sweep.hexa` PASS 5/5 ·
+  `traffic.hexa` PASS 12/12 (전부 내 환경 hexa, enum-bearing
+  모듈 컴파일·실행 확인). **g3**: 검증 환경 닫힘 — 이제 booksim
+  cmd_measure body 를 이 checkout 에서 measured-green 으로 작성
+  가능. 단 — 이건 *검증 도구* 확보일 뿐, demiurge `exports/`
+  측정 record 는 여전 0 (cmd_measure body 미구현). 다음 =
+  ①-step2 cmd_measure body (anynet→wire_delay→sweep→leighton→
+  F1F2 emit, rfc_001 §8).
