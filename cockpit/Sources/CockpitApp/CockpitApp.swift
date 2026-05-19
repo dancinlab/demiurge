@@ -76,6 +76,10 @@ struct WorkbenchView: View {
     // θ-2 "▶ 실제로 돌리기" action in flight (D49).
     @State private var isRunningAction = false
 
+    // ② reference-browser gate filter (κ-14, phase ζ filter-only).
+    @State private var recordFilterMeasuredOnly = false
+    @State private var recordGates: [ArtifactID: F1F2Record.MeasurementGate] = [:]
+
     // ② work-zone result view tab (κ-7).
     @State private var resultTab: ResultTab = .result
 
@@ -126,6 +130,7 @@ struct WorkbenchView: View {
             artifacts = ArtifactRegistry.loadAll()
             projects = ProjectStore.loadAll()            // D45 — restore manifests
             if activeProjectID == nil { activeProjectID = projects.last?.id }
+            loadRecordGates()                            // κ-14 — cache for filter
         }
         .onChange(of: refSelection) { _, newValue in
             handleRefSelection(newValue)
@@ -864,27 +869,103 @@ struct WorkbenchView: View {
     /// project (rfc_012 §7, D47 option C).
     @ViewBuilder private var referenceBrowser: some View {
         HSplitView {
-            List(selection: $refSelection) {
-                Section(expertMode ? "exports/** (reference)" : "참고 자료 (기존 측정 기록)") {
-                    let records = artifacts.filter { $0.id.kind == .f1f2 }
-                    if records.isEmpty {
-                        Text("(없음)")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    ForEach(records) { stub in
-                        Text(stub.title)
-                            .font(.caption)
-                            .lineLimit(1)
-                            .tag(stub.id)
+            VStack(spacing: 0) {
+                HStack(spacing: 6) {
+                    Toggle(expertMode ? "measured only" : "측정된 것만",
+                           isOn: $recordFilterMeasuredOnly)
+                        .toggleStyle(.switch)
+                        .controlSize(.small)
+                        .help("gate ∈ {GATE_B_PINNED_MET, GATE_CLOSED_MEASURED} 만 (rfc_011 §4.2)")
+                    Spacer()
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                Divider()
+                List(selection: $refSelection) {
+                    let records = filteredRecords
+                    Section(referenceSectionTitle(visible: records.count)) {
+                        if records.isEmpty {
+                            Text(recordFilterMeasuredOnly
+                                 ? "(필터 — 측정된 record 0)"
+                                 : "(없음)")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        ForEach(records) { stub in
+                            recordRow(stub)
+                                .tag(stub.id)
+                        }
                     }
                 }
             }
-            .frame(minWidth: 200, maxWidth: 300)
+            .frame(minWidth: 220, maxWidth: 320)
 
             referenceCanvas
                 .frame(minWidth: 360)
         }
+    }
+
+    private var filteredRecords: [ArtifactStub] {
+        let all = artifacts.filter { $0.id.kind == .f1f2 }
+        guard recordFilterMeasuredOnly else { return all }
+        return all.filter { stub in
+            guard let gate = recordGates[stub.id] else { return false }
+            return gate == .bPinnedMet || gate == .closedMeasured
+        }
+    }
+
+    private func referenceSectionTitle(visible: Int) -> String {
+        let total = artifacts.filter { $0.id.kind == .f1f2 }.count
+        let count = recordFilterMeasuredOnly ? "\(visible) / \(total)" : "\(visible)"
+        return expertMode
+            ? "exports/** (reference, \(count))"
+            : "참고 자료 (\(count))"
+    }
+
+    /// One record row — gate dot (color = the gate) + title.
+    @ViewBuilder private func recordRow(_ stub: ArtifactStub) -> some View {
+        HStack(spacing: 6) {
+            Image(systemName: recordRowSymbol(stub))
+                .foregroundStyle(recordRowTint(stub))
+                .imageScale(.small)
+                .frame(width: 14)
+            Text(stub.title)
+                .font(.caption)
+                .lineLimit(1)
+                .truncationMode(.middle)
+        }
+    }
+
+    private func recordRowSymbol(_ stub: ArtifactStub) -> String {
+        guard let gate = recordGates[stub.id] else { return "questionmark.circle" }
+        switch gate {
+        case .open:           return "hourglass"
+        case .bPinnedMet:     return "diamond.fill"
+        case .closedMeasured: return "checkmark.seal.fill"
+        case .failed:         return "xmark.octagon.fill"
+        }
+    }
+
+    private func recordRowTint(_ stub: ArtifactStub) -> Color {
+        guard let gate = recordGates[stub.id] else { return .secondary }
+        switch gate {
+        case .open:           return .orange
+        case .bPinnedMet:     return .blue
+        case .closedMeasured: return .green
+        case .failed:         return .red
+        }
+    }
+
+    /// Load every F1F2 record once and cache its measurement_gate so the
+    /// filter is a dict lookup — not a 50-record reload per render.
+    private func loadRecordGates() {
+        var gates: [ArtifactID: F1F2Record.MeasurementGate] = [:]
+        for stub in artifacts where stub.id.kind == .f1f2 {
+            if case .success(let r) = RecordLoader.load(relativePath: stub.path) {
+                gates[stub.id] = r.provenance.measurementGate
+            }
+        }
+        recordGates = gates
     }
 
     @ViewBuilder private var referenceCanvas: some View {

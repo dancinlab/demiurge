@@ -1748,3 +1748,20 @@
   *표시 면*만 바꿈 — gate 상태 자체는 불변 (plain "✅" 도
   GATE_CLOSED_MEASURED 일 때만; 정직성 경계 무손상). 다음 추천 =
   #4 phase ζ (필터 + dependency graph).
+- 2026-05-19 — **phase κ-14 — phase ζ record 필터** (rfc_010 ζ
+  viewer-잔재의 workbench-맞춤 범위; 사용자 게이트 — 3택 중
+  "record 필터만" 선택, dependency graph 는 workbench 가치 불명확
+  으로 제외). ② work zone "참고 자료" referenceBrowser 에:
+  (1) 상단 `Toggle("측정된 것만" / "measured only")` —
+  recordFilterMeasuredOnly state · (2) gate dot 줄 — 각 record
+  앞에 gate 색 SF Symbol (hourglass orange · diamond blue ·
+  checkmark.seal green · xmark.octagon red) · (3) Section 제목
+  "참고 자료 (N / total)" — 필터링 시 보이는/전체 카운트 ·
+  (4) gate 캐시 — onAppear 에 `loadRecordGates()` 가 모든 F1F2
+  record 를 1회 로드해 `[ArtifactID: MeasurementGate]` dict 채움
+  (50개 record 매 렌더 reload 회피). 필터 = gate ∈
+  {bPinnedMet, closedMeasured} (rfc_011 §4.2). 측정: `swift run
+  CockpitApp` 빌드 green (3.84s, 에러 0). **g3 정직**: gate
+  unknown record 는 캐시에 없어 필터 시 숨김 — 가짜 통과 0.
+  dependency graph 는 별도 (사용자 게이트 — workbench 가치 재고
+  필요). 다음 추천 = #5 CLI θ 액션 subcommand 골격.
