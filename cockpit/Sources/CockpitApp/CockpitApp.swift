@@ -76,6 +76,7 @@ struct ContentView: View {
     @State private var chatMessages: [ChatMessage] = []                // η-1
     @State private var chatInput: String = ""                         // η-1
     @State private var colorScheme: ColorScheme = .light               // light default, rail toggles
+    @State private var hoveredRail: String?                            // icon-rail hover tooltip
 
     var body: some View {
         HStack(spacing: 0) {
@@ -117,20 +118,13 @@ struct ContentView: View {
 
     /// Leftmost icon-only rail — top-level LEFT-pane mode switch (Chat /
     /// Artifacts) + a light/dark toggle at the bottom. Icon-only, ~52pt.
+    /// Each icon shows its menu name as a Liquid-Glass hover tooltip.
     @ViewBuilder private var iconRail: some View {
         VStack(spacing: 6) {
             railButton(.chat,      symbol: "bubble.left.and.bubble.right", help: "Chat")
             railButton(.artifacts, symbol: "list.bullet.rectangle",        help: "Artifacts")
             Spacer()
-            Button {
-                colorScheme = (colorScheme == .light) ? .dark : .light
-            } label: {
-                Image(systemName: colorScheme == .light ? "moon" : "sun.max")
-                    .font(.system(size: 16))
-                    .frame(width: 38, height: 38)
-            }
-            .buttonStyle(.plain)
-            .help("Toggle light / dark")
+            railToggleButton
         }
         .padding(.vertical, 10)
         .frame(width: 52)
@@ -150,7 +144,46 @@ struct ContentView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .buttonStyle(.plain)
-        .help(help)
+        .help(help)                                  // macOS system tooltip (canonical fallback)
+        .onHover { hovering in
+            hoveredRail = hovering ? help : (hoveredRail == help ? nil : hoveredRail)
+        }
+        .overlay(alignment: .leading) {
+            if hoveredRail == help { railTooltip(help) }
+        }
+    }
+
+    private var railToggleButton: some View {
+        let label = "Toggle light / dark"
+        return Button {
+            colorScheme = (colorScheme == .light) ? .dark : .light
+        } label: {
+            Image(systemName: colorScheme == .light ? "moon" : "sun.max")
+                .font(.system(size: 16))
+                .frame(width: 38, height: 38)
+        }
+        .buttonStyle(.plain)
+        .help(label)
+        .onHover { hovering in
+            hoveredRail = hovering ? label : (hoveredRail == label ? nil : hoveredRail)
+        }
+        .overlay(alignment: .leading) {
+            if hoveredRail == label { railTooltip(label) }
+        }
+    }
+
+    /// Liquid-Glass hover tooltip (macOS 26) — the icon's menu name,
+    /// floating to the right of the rail. Non-interactive.
+    @ViewBuilder private func railTooltip(_ text: String) -> some View {
+        Text(text)
+            .font(.caption.weight(.medium))
+            .fixedSize()
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .glassEffect(.regular, in: Capsule())
+            .offset(x: 48)
+            .allowsHitTesting(false)
+            .zIndex(100)
     }
 
     // MARK: — bootstrap
