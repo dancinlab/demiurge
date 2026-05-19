@@ -2370,3 +2370,77 @@
     은 여전히 fallback. 다음 pickup = 다른 매핑 가능 producer (예:
     materials F1F2 stack 검증) 발굴 또는 cmd_measure body 머지로
     chip+verify 자동 record-producing 전환.
+- 2026-05-20 — **phase κ-33 — `component + synthesize` producer 를
+  FreeCAD parametric 으로 승급 (P-⑨ start)** (rfc_011 §6.3 · D54 ·
+  D53 cite · D50 g_ssot_single_source · g3). κ-29 의 절차 placeholder
+  (Swift box stack → .usda/.usdz) 옆에 진짜 OpenCascade B-Rep kernel
+  을 두 번째 path 로 추가 — `freecadcmd` 가 있으면 parametric, 없으면
+  procedural fallback. 매핑 셀 (`(.synthesize, "component")`) 변경
+  없음 — producer 의 internal upgrade.
+  - **신규 SSOT**: `cockpit/scripts/bipv_freecad.py` — Python sidecar,
+    `LAYERS` 테이블 (Glass 3.2 / PV 0.2 / Frame 8 / Sink 12 / Mount 18
+    mm, 1000×1000mm) 가 Swift `ComponentGeometry.bipv5Layer` 의
+    sibling SSOT (drift 감지: emitter 가 layer_count + 총 두께 ±0.05
+    mm 차이 거부 → record 안 쓰임, fallback 트리거). 5 종 `LayerRender`
+    (slab / cell_grid 8×8 / frame_border / finned_sink 15-fin /
+    mount_base 4-bracket) 의 Swift box stack 과 1:1 매핑. exports:
+    `.step` (AP214 13520 entities) + `.brep` (native OpenCascade) +
+    `.stl` (ASCII tessellation, 0.5mm deflection) + `.meta.json`
+    (kernel version + layer table + honest_gap caveats).
+  - **신규**: `DemiurgeCore/Loaders/FreeCADBIPVProducer.swift` — Swift
+    harness. (a) `locateFreeCADCmd()` 가 `/Applications/FreeCAD.app/
+    Contents/Resources/bin/freecadcmd` + brew prefix + PATH 후보 탐색
+    (없으면 nil), (b) `locateScript()` 가 `<projectRoot>/cockpit/
+    scripts/bipv_freecad.py` 위치 확인, (c) `Process` 로
+    `freecadcmd <script> --pass <output_dir>` spawn — **`--pass` 가
+    중요**: 없으면 FreeCAD 가 output_dir 을 문서로 열려 시도 ("File
+    format not supported"), (d) merged stdout/stderr 에서
+    `BIPV_FREECAD_RESULT <json>` 라인 파싱 (FreeCAD 가 stdout 을 자기
+    chatter 로 점유 — Python 측 stderr.write), (e) defence-in-depth:
+    각 claimed file 의 디스크 존재 + non-zero size 검증.
+  - **확장**: `DemiurgeCore/Models/ComponentRecord.swift` —
+    schema_version 1.0 → 1.1. 새 optional 필드 4종: `step_file` /
+    `brep_file` / `stl_file` / `meta_file`. `usda_file` 을 String? 로
+    완화 (FreeCAD producer 는 USDA 안 씀). 새 builder
+    `ComponentRecord.freecad(for:producedAtUtc:producerVersion:
+    artifacts:)` — `producer = "freecad@<version>"`,
+    `measurement_gate = GATE_OPEN`, `absorbed = false`, scope_caveats
+    4종 (parametric/SSOT/separate-gates/P-⑨ owner).
+  - **확장**: `DemiurgeCore/Loaders/ComponentEmitter.swift` —
+    `emitBundled()` 가 두 경로로 분기. (a) `locateFreeCADCmd() != nil`
+    이면 `emitFreeCAD()` 시도, ok=true → freecad record 쓰고 return.
+    (b) FreeCAD 없거나 ok=false → `emitProcedural()` (κ-29 본체)
+    로 fallback, gap 라인을 record 앞에 prepend (honest-gap path
+    visible in chat). 두 sub-emitter 는 public 으로 노출 — 후속에
+    CLI flag `--producer freecad|procedural` 로 강제 선택 가능.
+  - **ActionDispatch 무변경**: `(.synthesize, "component")` 셀은 D53
+    의 measurable-only 매핑 그대로 — 변경된 것은 `ComponentEmitter`
+    내부 분기 1단 뿐. CLI / cockpit GUI 진입점 byte-identical (D50).
+  - **g3 정직 갭 (제일 중요)**: ① parametric ≠ measured — FreeCAD
+    OpenCascade B-Rep 는 box stack 보다 정밀하지만 여전히 placeholder.
+    `measurement_gate = GATE_OPEN`, `absorbed = false`. 열/구조/광학
+    verdict 는 별도 producer (gmsh + Elmer / Code_Aster, 후속 phase)
+    가 emit. ② layer 치수 = ComponentGeometry.bipv5Layer mirror —
+    plausible, datasheet 에서 안 가져옴, 물리적 part 와 검증 0.
+    ③ macOS-only 의존성 — Linux/Windows host 에서 fallback 자동 (절차
+    placeholder), 동일 chat/CLI 진입점, record 의 `producer` 필드가
+    honest cross-host evidence. ④ Swift ↔ Python sibling SSOT drift
+    risk — 후속에 layer 테이블을 Swift 에서 emit→Python read 로 단일
+    SSOT 화 가능 (이번 phase 는 scope out).
+  - **측정 (이 worktree, mac local, swift 6.3.1)**: `swift run
+    DemiurgeCLI action synthesize component` →
+    `freecadcmd .../bipv_freecad.py — exit 0` ·
+    `FreeCAD version: 1.1.1` · `artifacts written: brep, meta, step,
+    stl` · `producer=freecad@1.1.1 (parametric · g3)` · 새 record →
+    `exports/component/geometry/bipv_freecad_v1.json` (1248 bytes).
+    파일 크기: `.step` 543407 / `.brep` 350971 / `.stl` 54084 /
+    `.meta.json` 2361. 빌드 green (pre-existing RealityKit MainActor
+    warning 만, 에러 0 · 신규 warning 0).
+  - **다음 pickup**: ① structure (구조) producer — gmsh + Calculix
+    또는 Code_Aster 로 BIPV 의 결합 stress 계산, F1F2-style record
+    (component+verify 셀). ② thermal producer — Elmer FEM 으로 정상
+    상태 온도장, BIPV 의 sink 효율 verdict. ③ Swift↔Python SSOT
+    통합 — `ComponentGeometry` 를 JSON 으로 dump → Python 이 read
+    하여 단일 SSOT. ④ cockpit GUI Component 탭이 STEP 파일을 직접
+    렌더 (현재는 USDA only) — RealityKit STEP 미지원 → Open Cascade
+    Cascade.js 같은 web 뷰 또는 STL 폴백.
