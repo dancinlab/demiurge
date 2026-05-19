@@ -2617,3 +2617,84 @@ yosys.hexa dispatcher 컴파일 실패"** 주장은 측정으로 **오진 판명
   오염된다. 측정 전 메인 checkout 브랜치를 확인하거나 `stdlib/<topic>/`
   를 scope-checkout 후 측정·복원. 측정이 "버그 있다"는 과대주장을
   잡아낸 사례 — fire-gate 의 instrument-first 가 작동했다.
+
+### Decision 71 — sscb DC 디바이스 모델 `absorbed=true` (κ-41, hexa-native VDMOS)
+
+**picked**: sscb 도메인의 **DC 디바이스 모델** (정적 datasheet spec
+R_DS(on) · V_GS(th)) 에 한해 `absorbed=true` 를 부여한다. 근거:
+hexa-native VDMOS Level-1 DC solver (`hexa-lang/stdlib/sscb/
+vdmos.hexa` — square-law I-D + channel-length modulation + 직렬
+RS/RD + 1-D Newton) 가 외부 시뮬레이터·subprocess 0 으로, 실제
+Wolfspeed C3M0021120K datasheet Rev.4 의 R_DS(on)=21 mΩ·V_GS(th)=
+2.5 V 를 1.08 %·2.15 % 오차로 재현 (`vdmos_test.hexa` GREEN). 이는
+ABSORPTION.md ⑤ / D17 matter 패턴의 absorbed=true 기준 — "hexa-lang
+이 *자체* 측정해 동일 결과를 낼 때" — 을 충족. ngspice 독립 cross-
+check (`wolfspeed_parity.hexa`) 도 R_DS(on) 을 소수 5자리까지 동일
+(0.0212265 Ω) — hexa = ngspice = datasheet triple agreement.
+(Rejected: ① `absorbed=true` 를 sscb 전체로 확대 — transient 회로
+시뮬 (`ngspice.hexa`) 은 여전히 ngspice spawn = substrate, 거짓이 됨.
+② `absorbed=false` 유지 — hexa-native 가 자체 산술로 datasheet 를
+재현했는데도 false 면 D17 패턴과 불일치 + g3 의 "측정했으면 정직히
+표기" 위반.)
+
+**rationale**:
+- Stop-hook 이 "datasheet IDS-VDS parity 미수행 → absorbed=true
+  미획득" 을 지적. 처음엔 absorbed=true 가 full transient SPICE
+  엔진 (MNA+sparse LU+적분, 다주차) 을 요구한다고 과대평가했으나,
+  **datasheet 의 두 parity spec 은 DC 동작점** — VDMOS Level-1 DC
+  방정식 + 1-D Newton 만으로 hexa-native 자체 재현 가능 (~200줄,
+  본 세션 범위).
+- scope 가 정직하게 좁다: absorbed=true 는 **DC 디바이스 모델**
+  (R_DS(on)·V_GS(th) 정적 spec) 한정. transient 회로 거동
+  (SSCB 하드스위칭 netlist) 은 별개 — hexa-native transient SPICE
+  엔진이 landed 될 때 그 scope 로 별도 absorbed 판정 (별도 D-num).
+- circularity 정직 표기: VTO 는 datasheet V_GS(th) 로 set, RD/RS 는
+  R_DS(on) 향해 sizing. 단 hexa-native VDMOS 와 ngspice VDMOS 는
+  *독립 구현* 인데 R_DS(on) 이 소수 5자리 일치 → 모델이 두 독립
+  엔진에서 동일 거동 = consistency 입증. 채널 기여분은 독립 g_fs
+  spec 유래 KP 에서 emergent.
+- 벤더 배포 `.lib` 미접근 (form-gated) — 공개 datasheet Rev.4 spec
+  표만 흡수, D1 clean-room 준수. 모델 `c3m0021120k.lib` 의 모든
+  파라미터가 datasheet 표 셀로 cited.
+- gate 상태: sscb DC device model → `GATE_CLOSED_MEASURED` +
+  `absorbed=true`. sscb+analyze transient producer cell 은 D55/κ-34
+  그대로 `GATE_OPEN`·`absorbed=false` (별개 — netlist 가 plausible-
+  not-datasheet).
+
+### Decision-gate note on Decision 68 — 3차 (rfc_006 §5 측정 시도 + D67 게이트)
+
+사용자 "upstream fix" + Stop-hook 의 §5 요구에 따라 rfc_006 §5
+area-oracle parity 측정을 시도, 전제조건을 실측·확보:
+
+- ✅ **ABC 확보**: `/opt/homebrew/bin/yosys-abc` (yosys 0.65 번들).
+  rfc_006 D18 `(7a) bounded-subprocess` 의 ABC binary 로 사용 가능.
+  `brew install abc` 는 homebrew-core 에 formula 부재 (실측) — 그러나
+  yosys 가 `yosys-abc` 를 번들하므로 별도 빌드 불요.
+- ✅ **router RTL 확보**: `archive/comb/rtl/router_d4.v` ·
+  `router_d6.v` 존재 (G1 충족).
+- ✅ **yosys synth flow 확보**: origin/main 의 `stdlib/yosys/` 7 모듈
+  + dispatcher (8/8 PASS) — `hexa yosys synth` 경로 reachable.
+- ❌ **SKY130 PDK 미확보**: `sky130_fd_sc_hd` Liberty (`.lib`) 부재
+  (G2 의 standard-cell library). 확보 경로 = open_pdks / volare full
+  PDK (수 GB) 또는 `skywater-pdk-libs-sky130_fd_sc_hd` repo clone
+  (수백 MB).
+
+**D67 게이트 — §5 측정의 마지막 blocker 는 SKY130 PDK heavy install**.
+design.md D67 이 명시: "heavy install 은 autonomy 의 '측정 전엔
+과대주장 금지' 와 *별개로* 리소스 결정이라 사용자 sanction 분리"
+(κ-41 에서 DEVSIM `pip install` 강행을 Rejected 한 동일 원칙).
+SKY130 PDK 다운로드 (수백 MB~수 GB, 사용자 디스크/대역 영향) 는
+이 D67 의 리소스-결정 범주에 정확히 해당 — `/goal "완료시까지
+진행"` autonomy 도 D67 을 override 하지 않는다 (D67 자체가 "autonomy
+와 별개" 라고 명시; autonomy 는 deliberation pause 만 제거, 확립된
+거버넌스 게이트는 유지).
+
+**결론 (g3)**: rfc_006 §5 는 SKY130 PDK 의 사용자 sanction **단
+하나**에 막혀 있다 — 그 외 전제 (ABC · RTL · yosys flow) 는 모두
+이 세션에 확보됨. 사용자가 SKY130 PDK 다운로드를 sanction 하면
+동일 세션/환경에서 §5 측정 (`hexa yosys synth --top router_d{4,6}
+--lib sky130_fd_sc_hd...lib` → area → oracle ±5% parity) 이 즉시
+가능. 그 전까지 §5 는 "숨긴 잔여" 가 아니라 **D67 이 명시적으로
+사용자 결정으로 분리한 리소스 게이트** — `inbox/notes/rfc006-s5-
+area-oracle-parity-handoff.md` 에 scoped handoff 됨. Yosys
+measurement_gate 는 GATE_OPEN 유지, absorbed=false.

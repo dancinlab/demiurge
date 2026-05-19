@@ -1,6 +1,6 @@
 # incoming note: rfc006-s5-area-oracle-parity-handoff — the genuine remaining Yosys-absorption work
 
-> **id**: `rfc006-s5-area-oracle-parity` · **opened**: 2026-05-20 KST · **status**: `handoff-open — needs PDK+ABC provisioning first`
+> **id**: `rfc006-s5-area-oracle-parity` · **opened**: 2026-05-20 KST · **status**: `handoff-open — ABC secured (yosys-abc); blocked ONLY on SKY130 PDK (a D67 user-sanction resource gate)`
 > **source**: demiurge session 2026-05-20 — after confirming origin/main's rfc_006 §4 (7 yosys modules) is complete (dispatcher selftest 8/8 PASS), §5 is the one genuine open item of the Yosys absorption.
 > **destination repo**: `~/core/hexa-lang/` — the `hexa yosys synth` flow + `stdlib/yosys/` modules live there (D15 / D61). demiurge stays pointer-only.
 > **scope**: run the rfc_006 §5 SKY130 area-oracle parity measurement and, on PASS, flip the Yosys absorption to `absorbed=true`.
@@ -32,12 +32,14 @@ $ SKY130 PDK         → not present (no ~/pdk*, /usr/local/share/pdk*,
                         /opt/sky130*, no sky130_fd_sc_hd dir under ~)
 ```
 
-§5 needs, before any measurement can run:
+**UPDATE 2026-05-20** — the 2026-05-20 session re-measured and narrowed the blocker list to exactly one:
 
-- **SKY130 PDK** — the `sky130_fd_sc_hd` Liberty + tech files (multi-GB download, e.g. via `open_pdks` or the `volare` fetcher).
-- **ABC** — the `abc` logic-synthesis binary. rfc_006 D18 mandates the `(7a) bounded-subprocess` pattern: invoke ABC as a documented absorbed-substrate subprocess, fail-loud — NOT a full clean-room ABC re-derivation. So ABC must be built/installed and wired into `stdlib/yosys/abc_map.hexa`.
+- ✅ **ABC — secured.** `/opt/homebrew/bin/yosys-abc` (bundled with yosys 0.65) is a usable ABC binary for the rfc_006 D18 `(7a) bounded-subprocess` pattern. (`brew install abc` has no homebrew-core formula, but the yosys bundle makes a separate build unnecessary.)
+- ✅ **router RTL — present.** `router_d4.v` / `router_d6.v` confirmed.
+- ✅ **yosys synth flow — reachable.** origin/main's 7-module `stdlib/yosys/` + dispatcher pass 8/8.
+- ❌ **SKY130 PDK — the ONE remaining blocker.** The `sky130_fd_sc_hd` Liberty (`.lib`) is absent. Provisioning it means a multi-hundred-MB → multi-GB download (`open_pdks` / `volare`, or a `skywater-pdk-libs-sky130_fd_sc_hd` repo clone).
 
-These are infrastructure-provisioning tasks (download + build), not a single coding session. §5 is a multi-step gate, not a loose end.
+That last item is a **D67 resource-sanction gate**. demiurge `design.md` Decision 67 establishes that a heavy install is "a resource decision, separate from autonomy's no-over-claim discipline — split out for user sanction" (the same principle that Rejected a DEVSIM `pip install` in κ-41). A `/goal` autonomy does NOT override D67 — autonomy removes the deliberation pause, not an established governance gate. So §5 waits on one explicit user OK to download SKY130; everything else is in place.
 
 ## Suggested next action (hexa-lang session, once PDK+ABC are provisioned)
 
