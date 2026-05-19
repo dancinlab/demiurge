@@ -62,16 +62,14 @@ public enum EnergyAnalyzeProducer {
         RecordLoader.exportsRoot
             .appendingPathComponent("energy/pv", isDirectory: true)
 
-    /// Locate `cockpit/scripts/energy_pvlib.py` — same resolution as
-    /// SSCBProducer.locateScript().
+    /// Locate the producer script — SSOT in hexa-lang stdlib per
+    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 κ-54 round
+    /// from `cockpit/scripts/energy_pvlib.py`.
     public static func locateScript() -> String? {
-        let candidate = ArtifactRegistry.projectRoot
-            .appendingPathComponent("cockpit/scripts/energy_pvlib.py")
-            .standardizedFileURL
-        if FileManager.default.fileExists(atPath: candidate.path) {
-            return candidate.path
-        }
-        return nil
+        let path = NSString(
+            string: "~/core/hexa-lang/stdlib/energy/pvlib_clearsky.py"
+        ).expandingTildeInPath
+        return FileManager.default.fileExists(atPath: path) ? path : nil
     }
 
     /// Locate a Python 3 binary that has pvlib installed — prefer

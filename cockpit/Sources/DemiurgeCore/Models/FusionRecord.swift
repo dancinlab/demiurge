@@ -1,4 +1,4 @@
-// FusionRecord — phase κ-42 (P-⑧ 6th cohort producer prototype, D67).
+// FusionRecord — phase κ-45 (P-⑧ 6th cohort producer prototype, D67).
 //
 // Typed sidecar for a `fusion + analyze` producer run — the SIXTH cohort
 // domain (after sscb κ-34, energy κ-38, antimatter κ-43, …) wired to a
@@ -136,7 +136,7 @@ public struct FusionMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// A fusion plasma derived-parameters record (D67 / κ-42). Captures
+/// A fusion plasma derived-parameters record (D67 / κ-45). Captures
 /// the ITER-like core operating point + plasmapy-derived parameters,
 /// plus the producer + library + Python pin so cross-host drift
 /// (different plasmapy versions, different Python) is visible.

@@ -1,0 +1,30 @@
+{
+  "artifacts": {
+    "meta": "lif_brian2_v1.meta.json",
+    "spikes": "lif_brian2_v1.spikes.json"
+  },
+  "brian2_version": "2.6.0",
+  "equation_sha256_16": "2bc81ead73c5eaa4",
+  "error": null,
+  "geometry_id": "lif_brian2_v1",
+  "measurements": {
+    "cv_isi": 2.9555206130040062e-15,
+    "firing_rate_hz": 142.0,
+    "first_spike_s": 0.006900000000000001,
+    "last_spike_s": 0.9939,
+    "mean_isi_s": 0.007,
+    "sim_time_s": 1.0,
+    "spike_count": 142
+  },
+  "model": {
+    "equation": "dv/dt = (I - v) / tau : 1\nI : 1",
+    "i_drive": 2.0,
+    "integrator_method": "exact",
+    "kind": "leaky_integrate_and_fire",
+    "sim_time_s": 1.0,
+    "tau_ms": 10.0,
+    "v_reset": 0.0,
+    "v_threshold": 1.0
+  },
+  "ok": true
+}

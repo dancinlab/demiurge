@@ -1,0 +1,43 @@
+{
+  "artifacts" : {
+    "meta" : "lif_brian2_v1.meta.json",
+    "spikes" : "lif_brian2_v1.spikes.json"
+  },
+  "brian2_version" : "2.6.0",
+  "equation_sha256_16" : "2bc81ead73c5eaa4",
+  "geometry_id" : "lif_brian2_v1",
+  "interface" : "demiurge:brain:analyze-record",
+  "measurements" : {
+    "cv_isi" : 2.9555206130040062e-15,
+    "firing_rate_hz" : 142,
+    "first_spike_s" : 0.006900000000000001,
+    "last_spike_s" : 0.9939,
+    "mean_isi_s" : 0.007,
+    "sim_time_s" : 1,
+    "spike_count" : 142
+  },
+  "model" : {
+    "equation" : "dv/dt = (I - v) / tau : 1\nI : 1",
+    "i_drive" : 2,
+    "integrator_method" : "exact",
+    "kind" : "leaky_integrate_and_fire",
+    "sim_time_s" : 1,
+    "tau_ms" : 10,
+    "v_reset" : 0,
+    "v_threshold" : 1
+  },
+  "produced_at_utc" : "2026-05-19T17:27:40Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "brian2@2.6.0",
+    "scope_caveats" : [
+      "brian2 IS the instrument (IEEE-754 LIF integrator); 측정 숫자 (예: 142 Hz tonic firing, CV_ISI≈0) 는 실제 — but the MODEL is textbook LIF (Dayan & Abbott) with constant DC drive, NOT a measured neuron. plausible-not-fitted, datasheet absorption 아님 (g3).",
+      "single LIF + constant drive 는 *algorithm verification* — does brian2's exact integrator produce the textbook firing rate? — 이지 실제 brain 신호 측정 아님. domains/brain.md §2 의 proprietary gap (Sim4Life MDDT, COMSOL) 는 untouched.",
+      "measurement_gate = GATE_OPEN 영구. closedMeasured 로 flip 하려면 patch-clamp data fit + multi-compartment Hodgkin-Huxley + Allen Brain Atlas absorption + bench-validated implant 가 들어와야 함 — 본 producer 의 scope 를 한참 넘음.",
+      "absorbed=true 절대 금지 — D17 / g_stdlib_ownership: script SSOT 는 hexa-lang (`stdlib/brain/lif_brian2.py`), demiurge 는 consumer-pointer 만. 진짜 흡수는 hexa-lang 측 다음 phase."
+    ]
+  },
+  "record_id" : "brain_lif_20260519T172740Z",
+  "schema_version" : "1.0"
+}

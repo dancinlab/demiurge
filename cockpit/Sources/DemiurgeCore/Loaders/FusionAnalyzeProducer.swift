@@ -1,5 +1,5 @@
 // FusionAnalyzeProducer — θ-2 engine tool for `fusion + analyze`
-// (κ-42 / D67). The SIXTH cohort domain wired to a real measuring
+// (κ-45 / D67). The SIXTH cohort domain wired to a real measuring
 // engine tool (after sscb κ-34, energy κ-38, antimatter κ-43) and the
 // FIRST plasma-physics cell. D61-compliant-from-birth — the Python
 // script SSOT lives in `~/core/hexa-lang/stdlib/fusion/plasma_metrics.py`,

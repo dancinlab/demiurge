@@ -99,16 +99,14 @@ public enum SSCBProducer {
         return nil
     }
 
-    /// Locate `cockpit/scripts/sscb_ngspice.py` — same resolution as
-    /// FreeCADBIPVProducer's locateScript().
+    /// Locate the producer script — SSOT in hexa-lang stdlib per
+    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 κ-54 round
+    /// from `cockpit/scripts/sscb_ngspice.py`.
     public static func locateScript() -> String? {
-        let candidate = ArtifactRegistry.projectRoot
-            .appendingPathComponent("cockpit/scripts/sscb_ngspice.py")
-            .standardizedFileURL
-        if FileManager.default.fileExists(atPath: candidate.path) {
-            return candidate.path
-        }
-        return nil
+        let path = NSString(
+            string: "~/core/hexa-lang/stdlib/sscb/ngspice.py"
+        ).expandingTildeInPath
+        return FileManager.default.fileExists(atPath: path) ? path : nil
     }
 
     /// Run `python3 sscb_ngspice.py <transientRecordsRoot>/<stamp>/` and

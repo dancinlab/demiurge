@@ -1,0 +1,40 @@
+{
+  "aperture": {
+    "effective_area_m2": 25.658957998194637,
+    "effective_diameter_m": 5.715767664977295,
+    "rings": 2,
+    "segment_flat_to_flat_m": 1.32,
+    "segments_requested": 18
+  },
+  "artifacts": {
+    "fits": "scope_psf_v1.fits"
+  },
+  "geometry_id": "scope_psf_v1",
+  "measurements": {
+    "encircled_energy": {
+      "r_1_arcsec": 0.9931075720112233,
+      "r_2_arcsec": 0.997440773092256,
+      "r_5_arcsec": NaN
+    },
+    "fwhm_diffraction_limit_arcsec": 0.024214365086925108,
+    "fwhm_measured_arcsec": 0.020075336932695,
+    "image_shape": [
+      600,
+      600
+    ],
+    "peak_intensity": 0.11823784988243416,
+    "pixscale_arcsec": 0.01,
+    "strehl_proxy": 0.7887421665813903,
+    "total_intensity": 0.9932214272979676
+  },
+  "ok": true,
+  "poppy_version": "1.1.2",
+  "propagation": {
+    "fov_arcsec": 6.0,
+    "oversample": 2,
+    "pixscale_arcsec": 0.02,
+    "wavelength_m": 5.5e-07
+  },
+  "psf_sha256_16": "2f48a3d4016d84fe",
+  "python_version": "3.12.12"
+}

@@ -1,0 +1,37 @@
+{
+  "artifacts": {
+    "lhe": "lhe_zmumu_synth_v1.lhe"
+  },
+  "error": null,
+  "geometry_id": "lhe_zmumu_synth_v1",
+  "measurements": {
+    "final_state_abs_pz_gev_total": 4594.7668,
+    "final_state_energy_gev_total": 9118.76,
+    "multiplicity_max": 5,
+    "multiplicity_mean": 5.0,
+    "multiplicity_min": 5,
+    "n_events": 100,
+    "n_final_state": 200,
+    "pid_counts": {
+      "-11": 100,
+      "-13": 100,
+      "11": 100,
+      "13": 100,
+      "23": 100
+    }
+  },
+  "ok": true,
+  "process": {
+    "channel": "e+e- -> Z -> mu+ mu-",
+    "lhe_version": "3.0",
+    "n_events_requested": 100,
+    "rng_seed": 20260520,
+    "sqrt_s_gev": 91.1876
+  },
+  "pylhe_version": "1.0.4",
+  "python_version": "3.14.4",
+  "sample": {
+    "lhe_artifact": "lhe_zmumu_synth_v1.lhe",
+    "lhe_bytes": 75211
+  }
+}

@@ -126,19 +126,15 @@ public enum FreeCADBIPVProducer {
         return nil
     }
 
-    /// Locate the bundled Python script. We look under
-    /// `<projectRoot>/cockpit/scripts/bipv_freecad.py` — i.e. the
-    /// repo-relative path. Both `swift run` (cwd=cockpit/) and the
-    /// installed app (env var DEMIURGE_REPO) resolve correctly via
-    /// `ArtifactRegistry.projectRoot`.
+    /// Locate the producer script — SSOT in hexa-lang stdlib per
+    /// D61 / g_demiurge_pointer_only. NO `cockpit/scripts/` fallback
+    /// (the directory holds only a tombstone README — see
+    /// `cockpit/scripts/README.md`). Migration: 2026-05-20 κ-54 round.
     public static func locateScript() -> String? {
-        let candidate = ArtifactRegistry.projectRoot
-            .appendingPathComponent("cockpit/scripts/bipv_freecad.py")
-            .standardizedFileURL
-        if FileManager.default.fileExists(atPath: candidate.path) {
-            return candidate.path
-        }
-        return nil
+        let path = NSString(
+            string: "~/core/hexa-lang/stdlib/freecad/bipv.py"
+        ).expandingTildeInPath
+        return FileManager.default.fileExists(atPath: path) ? path : nil
     }
 
     /// Run the FreeCAD producer and write artifacts into `outputDir`.
