@@ -155,8 +155,6 @@ public enum ActionDispatch {
             return runFusionAnalyze()
         case (.verify, "cern"):
             return runCernVerify()
-        case (.verify, "component"):
-            return runComponentVerify()
         case (.analyze, "chip"):
             return runChipAnalyze()
         case (.structure, "grid"):
@@ -193,22 +191,6 @@ public enum ActionDispatch {
     /// verdict — g3).
     private static func runComponentSynthesize() -> ActionResult {
         let r = ComponentEmitter.emitBundled()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `component + verify` engine tool (κ-34 / D55) — drive gmsh
-    /// over the κ-33 BIPV STEP and probe Salome-Meca docker as a
-    /// witness for the next gate. Honest: a mesh is NOT a thermal /
-    /// structural verdict; `absorbed=false` and
-    /// `measurement_gate=GATE_OPEN` are hard-coded in the record
-    /// (g3). The .comm authoring + Code_Aster convergence run is the
-    /// next pickup (κ-35 candidate).
-    private static func runComponentVerify() -> ActionResult {
-        let r = ComponentVerifier.runVerify()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],

@@ -1,0 +1,348 @@
+{
+  "artifacts": {
+    "csv": "cern_g4_stopping_v1.csv",
+    "meta": "cern_g4_stopping_v1.meta.json",
+    "root": "cern_g4_stopping_v1.root"
+  },
+  "constants": {
+    "antiproton_mass_mev": 938.27208816,
+    "electron_mass_mev": 0.51099895,
+    "k_bb_mevcm2_per_g": 0.307075
+  },
+  "fingerprint": "60e34a15cfb4477f",
+  "geometry_id": "cern_g4_stopping_v1",
+  "measurements": {
+    "ke_mev_samples": [
+      1.0,
+      3.0,
+      10.0,
+      30.0,
+      100.0,
+      300.0,
+      1000.0
+    ],
+    "materials": [
+      "Al",
+      "Cu",
+      "W",
+      "Pb"
+    ],
+    "rows": 28,
+    "table": [
+      {
+        "a_target_gpermol": 26.9815,
+        "beta": 0.04613214679139816,
+        "dedx_mevcm2_per_g": 178.82465201402573,
+        "gamma": 1.0010657889247894,
+        "i_ev": 166.0,
+        "ke_mev": 1.0,
+        "material": "Al",
+        "tmax_mev": 0.0021772542667169627,
+        "z_target": 13
+      },
+      {
+        "a_target_gpermol": 26.9815,
+        "beta": 0.07977590058404604,
+        "dedx_mevcm2_per_g": 85.26499263557449,
+        "gamma": 1.0031973667743683,
+        "i_ev": 166.0,
+        "ke_mev": 3.0,
+        "material": "Al",
+        "tmax_mev": 0.006538705407902844,
+        "z_target": 13
+      },
+      {
+        "a_target_gpermol": 26.9815,
+        "beta": 0.14484400412596465,
+        "dedx_mevcm2_per_g": 34.27873521444443,
+        "gamma": 1.0106578892478946,
+        "i_ev": 166.0,
+        "ke_mev": 10.0,
+        "material": "Al",
+        "tmax_mev": 0.021876680938111022,
+        "z_target": 13
+      },
+      {
+        "a_target_gpermol": 26.9815,
+        "beta": 0.2469941406914664,
+        "dedx_mevcm2_per_g": 14.38117159167373,
+        "gamma": 1.0319736677436835,
+        "i_ev": 166.0,
+        "ke_mev": 30.0,
+        "material": "Al",
+        "tmax_mev": 0.06632427460743763,
+        "z_target": 13
+      },
+      {
+        "a_target_gpermol": 26.9815,
+        "beta": 0.42819548497881543,
+        "dedx_mevcm2_per_g": 5.686880593645214,
+        "gamma": 1.1065788924789453,
+        "i_ev": 166.0,
+        "ke_mev": 100.0,
+        "material": "Al",
+        "tmax_mev": 0.22917944107099075,
+        "z_target": 13
+      },
+      {
+        "a_target_gpermol": 26.9815,
+        "beta": 0.6525717766422938,
+        "dedx_mevcm2_per_g": 2.77939488659633,
+        "gamma": 1.3197366774368355,
+        "i_ev": 166.0,
+        "ke_mev": 300.0,
+        "material": "Al",
+        "tmax_mev": 0.7569325313146367,
+        "z_target": 13
+      },
+      {
+        "a_target_gpermol": 26.9815,
+        "beta": 0.8750256466930183,
+        "dedx_mevcm2_per_g": 1.7666297365222143,
+        "gamma": 2.0657889247894516,
+        "i_ev": 166.0,
+        "ke_mev": 1000.0,
+        "material": "Al",
+        "tmax_mev": 3.3318635589810155,
+        "z_target": 13
+      },
+      {
+        "a_target_gpermol": 63.546,
+        "beta": 0.04613214679139816,
+        "dedx_mevcm2_per_g": 125.75020076375814,
+        "gamma": 1.0010657889247894,
+        "i_ev": 322.0,
+        "ke_mev": 1.0,
+        "material": "Cu",
+        "tmax_mev": 0.0021772542667169627,
+        "z_target": 29
+      },
+      {
+        "a_target_gpermol": 63.546,
+        "beta": 0.07977590058404604,
+        "dedx_mevcm2_per_g": 66.17185997124945,
+        "gamma": 1.0031973667743683,
+        "i_ev": 322.0,
+        "ke_mev": 3.0,
+        "material": "Cu",
+        "tmax_mev": 0.006538705407902844,
+        "z_target": 29
+      },
+      {
+        "a_target_gpermol": 63.546,
+        "beta": 0.14484400412596465,
+        "dedx_mevcm2_per_g": 28.04244347783238,
+        "gamma": 1.0106578892478946,
+        "i_ev": 322.0,
+        "ke_mev": 10.0,
+        "material": "Cu",
+        "tmax_mev": 0.021876680938111022,
+        "z_target": 29
+      },
+      {
+        "a_target_gpermol": 63.546,
+        "beta": 0.2469941406914664,
+        "dedx_mevcm2_per_g": 12.099579205848226,
+        "gamma": 1.0319736677436835,
+        "i_ev": 322.0,
+        "ke_mev": 30.0,
+        "material": "Cu",
+        "tmax_mev": 0.06632427460743763,
+        "z_target": 29
+      },
+      {
+        "a_target_gpermol": 63.546,
+        "beta": 0.42819548497881543,
+        "dedx_mevcm2_per_g": 4.880094811330331,
+        "gamma": 1.1065788924789453,
+        "i_ev": 322.0,
+        "ke_mev": 100.0,
+        "material": "Cu",
+        "tmax_mev": 0.22917944107099075,
+        "z_target": 29
+      },
+      {
+        "a_target_gpermol": 63.546,
+        "beta": 0.6525717766422938,
+        "dedx_mevcm2_per_g": 2.41455267422946,
+        "gamma": 1.3197366774368355,
+        "i_ev": 322.0,
+        "ke_mev": 300.0,
+        "material": "Cu",
+        "tmax_mev": 0.7569325313146367,
+        "z_target": 29
+      },
+      {
+        "a_target_gpermol": 63.546,
+        "beta": 0.8750256466930183,
+        "dedx_mevcm2_per_g": 1.5520499833410306,
+        "gamma": 2.0657889247894516,
+        "i_ev": 322.0,
+        "ke_mev": 1000.0,
+        "material": "Cu",
+        "tmax_mev": 3.3318635589810155,
+        "z_target": 29
+      },
+      {
+        "a_target_gpermol": 183.84,
+        "beta": 0.04613214679139816,
+        "dedx_mevcm2_per_g": 63.61594591539478,
+        "gamma": 1.0010657889247894,
+        "i_ev": 727.0,
+        "ke_mev": 1.0,
+        "material": "W",
+        "tmax_mev": 0.0021772542667169627,
+        "z_target": 74
+      },
+      {
+        "a_target_gpermol": 183.84,
+        "beta": 0.07977590058404604,
+        "dedx_mevcm2_per_g": 42.54862796877769,
+        "gamma": 1.0031973667743683,
+        "i_ev": 727.0,
+        "ke_mev": 3.0,
+        "material": "W",
+        "tmax_mev": 0.006538705407902844,
+        "z_target": 74
+      },
+      {
+        "a_target_gpermol": 183.84,
+        "beta": 0.14484400412596465,
+        "dedx_mevcm2_per_g": 19.936203076948136,
+        "gamma": 1.0106578892478946,
+        "i_ev": 727.0,
+        "ke_mev": 10.0,
+        "material": "W",
+        "tmax_mev": 0.021876680938111022,
+        "z_target": 74
+      },
+      {
+        "a_target_gpermol": 183.84,
+        "beta": 0.2469941406914664,
+        "dedx_mevcm2_per_g": 9.022144145696117,
+        "gamma": 1.0319736677436835,
+        "i_ev": 727.0,
+        "ke_mev": 30.0,
+        "material": "W",
+        "tmax_mev": 0.06632427460743763,
+        "z_target": 74
+      },
+      {
+        "a_target_gpermol": 183.84,
+        "beta": 0.42819548497881543,
+        "dedx_mevcm2_per_g": 3.7553707496064814,
+        "gamma": 1.1065788924789453,
+        "i_ev": 727.0,
+        "ke_mev": 100.0,
+        "material": "W",
+        "tmax_mev": 0.22917944107099075,
+        "z_target": 74
+      },
+      {
+        "a_target_gpermol": 183.84,
+        "beta": 0.6525717766422938,
+        "dedx_mevcm2_per_g": 1.8933245595830512,
+        "gamma": 1.3197366774368355,
+        "i_ev": 727.0,
+        "ke_mev": 300.0,
+        "material": "W",
+        "tmax_mev": 0.7569325313146367,
+        "z_target": 74
+      },
+      {
+        "a_target_gpermol": 183.84,
+        "beta": 0.8750256466930183,
+        "dedx_mevcm2_per_g": 1.237482465237115,
+        "gamma": 2.0657889247894516,
+        "i_ev": 727.0,
+        "ke_mev": 1000.0,
+        "material": "W",
+        "tmax_mev": 3.3318635589810155,
+        "z_target": 74
+      },
+      {
+        "a_target_gpermol": 207.2,
+        "beta": 0.04613214679139816,
+        "dedx_mevcm2_per_g": 55.463326277532474,
+        "gamma": 1.0010657889247894,
+        "i_ev": 823.0,
+        "ke_mev": 1.0,
+        "material": "Pb",
+        "tmax_mev": 0.0021772542667169627,
+        "z_target": 82
+      },
+      {
+        "a_target_gpermol": 207.2,
+        "beta": 0.07977590058404604,
+        "dedx_mevcm2_per_g": 39.46452077075262,
+        "gamma": 1.0031973667743683,
+        "i_ev": 823.0,
+        "ke_mev": 3.0,
+        "material": "Pb",
+        "tmax_mev": 0.006538705407902844,
+        "z_target": 82
+      },
+      {
+        "a_target_gpermol": 207.2,
+        "beta": 0.14484400412596465,
+        "dedx_mevcm2_per_g": 18.882402529238757,
+        "gamma": 1.0106578892478946,
+        "i_ev": 823.0,
+        "ke_mev": 10.0,
+        "material": "Pb",
+        "tmax_mev": 0.021876680938111022,
+        "z_target": 82
+      },
+      {
+        "a_target_gpermol": 207.2,
+        "beta": 0.2469941406914664,
+        "dedx_mevcm2_per_g": 8.623307977207238,
+        "gamma": 1.0319736677436835,
+        "i_ev": 823.0,
+        "ke_mev": 30.0,
+        "material": "Pb",
+        "tmax_mev": 0.06632427460743763,
+        "z_target": 82
+      },
+      {
+        "a_target_gpermol": 207.2,
+        "beta": 0.42819548497881543,
+        "dedx_mevcm2_per_g": 3.6099926916530345,
+        "gamma": 1.1065788924789453,
+        "i_ev": 823.0,
+        "ke_mev": 100.0,
+        "material": "Pb",
+        "tmax_mev": 0.22917944107099075,
+        "z_target": 82
+      },
+      {
+        "a_target_gpermol": 207.2,
+        "beta": 0.6525717766422938,
+        "dedx_mevcm2_per_g": 1.826081424922071,
+        "gamma": 1.3197366774368355,
+        "i_ev": 823.0,
+        "ke_mev": 300.0,
+        "material": "Pb",
+        "tmax_mev": 0.7569325313146367,
+        "z_target": 82
+      },
+      {
+        "a_target_gpermol": 207.2,
+        "beta": 0.8750256466930183,
+        "dedx_mevcm2_per_g": 1.1969804235133183,
+        "gamma": 2.0657889247894516,
+        "i_ev": 823.0,
+        "ke_mev": 1000.0,
+        "material": "Pb",
+        "tmax_mev": 3.3318635589810155,
+        "z_target": 82
+      }
+    ]
+  },
+  "ok": true,
+  "particle_version": "0.26.2",
+  "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+  "produced_at_utc": "2026-05-19T17:55:21.011340+00:00",
+  "python_version": "3.14.4",
+  "uproot_version": "5.7.4"
+}
