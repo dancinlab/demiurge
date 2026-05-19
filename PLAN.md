@@ -1584,3 +1584,25 @@
   exports/ gate 교차검증 = canvas mode 연결 후). 그래도 흔한
   거짓 ✅ 는 UI 에서 차단 — g3 를 viewer 너머 *행동*으로.
   다음 = κ-7 (canvas mode 연결 — ② 결과 시각화).
+- 2026-05-19 — **phase κ-7 — canvas mode 연결 빌드 green**
+  (rfc_011 §7 mode registry). ② work zone 하단을 domain-aware
+  결과 시각화로: `ResultTab` enum (result / reference) +
+  segmented picker — "결과 보기" = `domainModeView` (domain
+  분기) · "참고 자료" = 기존 `referenceBrowser` (D47 reference
+  view 유지). `domainModeView` 가 project.domain 으로 분기 —
+  `componentModeView` (component → 기존 ι-phase `ComponentView3D`
+  RealityKit 3D viewer 연결) · `matterPointerView` (matter →
+  D17 포인터 카드 "SSOT=hexa-lang, demiurge=소비자") ·
+  `chipModeView` (chip → 측정 record 없으면 ⏳ 안내) ·
+  `cohortShallowView` (기타 → domains/<key>.md 있으면
+  `MarkdownView`, 없으면 placeholder). 공통 `modePlaceholder`
+  헬퍼. 측정: `swift run CockpitApp` 로컬 빌드 — `Build of
+  product 'CockpitApp' complete!` (35.06s) · 에러 0 · 경고 0.
+  **g3 정직**: chip/cohort mode 는 측정 record 0 이라 ⏳
+  placeholder — 실제 record card/latency 차트는 θ-2 측정 후 ·
+  3D viewer 는 ι-phase 그대로 (procedural placeholder, 실제
+  USDZ = component producer 후). canvas mode 의 *틀*은 완성 —
+  domain 별 분기·reference 분리 동작. rfc_012 workbench 의
+  주요 표면(①②③④ + θ-2 + REJECTED 가드 + canvas mode) 골격
+  완결. 다음 = κ-8 (workbench 마감 디테일 / expert mode 완성도
+  — 미정, 게이트).

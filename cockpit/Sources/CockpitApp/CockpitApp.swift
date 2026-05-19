@@ -46,6 +46,13 @@ struct ChatMessage: Identifiable {
     let text: String
 }
 
+/// ② work-zone result view tab (κ-7) — the domain-aware canvas mode
+/// vs the exports/ reference browser (rfc_012 §7 reference view).
+enum ResultTab: String, CaseIterable, Identifiable {
+    case result, reference
+    var id: String { rawValue }
+}
+
 // MARK: — Workbench (rfc_012 §5)
 
 struct WorkbenchView: View {
@@ -68,6 +75,9 @@ struct WorkbenchView: View {
 
     // θ-2 "▶ 실제로 돌리기" action in flight (D49).
     @State private var isRunningAction = false
+
+    // ② work-zone result view tab (κ-7).
+    @State private var resultTab: ResultTab = .result
 
     // ② reference browser — the original viewer role (rfc_012 §7).
     @State private var artifacts: [ArtifactStub] = []
@@ -681,10 +691,108 @@ struct WorkbenchView: View {
         } else {
             VStack(spacing: 0) {
                 projectResultHeader
+                Picker("result view", selection: $resultTab) {
+                    Text(expertMode ? "Canvas mode" : "결과 보기")
+                        .tag(ResultTab.result)
+                    Text(expertMode ? "exports/ ref" : "참고 자료")
+                        .tag(ResultTab.reference)
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+                .padding(.horizontal, 12)
+                .padding(.bottom, 8)
                 Divider()
-                referenceBrowser
+                switch resultTab {
+                case .result:    domainModeView
+                case .reference: referenceBrowser
+                }
             }
         }
+    }
+
+    /// Domain-aware canvas mode (rfc_011 §7 mode registry) — the ②
+    /// bottom shows a different body per the project's domain.
+    @ViewBuilder private var domainModeView: some View {
+        if let project = activeProject {
+            switch project.domain {
+            case "component": componentModeView
+            case "matter":    matterPointerView
+            case "chip":      chipModeView
+            default:          cohortShallowView(project)
+            }
+        }
+    }
+
+    /// ComponentMode (rfc_011 §7) — the phase-ι RealityKit 3D viewer.
+    @ViewBuilder private var componentModeView: some View {
+        if let stub = artifacts.first(where: {
+            $0.id.kind == .domain && $0.id.key == "component"
+        }) {
+            ComponentView3D(stub: stub)
+        } else {
+            modePlaceholder(
+                icon: "shippingbox",
+                title: expertMode ? "ComponentMode" : "부품 설계 결과",
+                body: "component 도메인 자료를 찾지 못했습니다.")
+        }
+    }
+
+    /// MatterPointer (rfc_011 §7 / D17) — matter computation's SSOT is
+    /// hexa-lang; demiurge is a consumer, so this is a pointer card.
+    @ViewBuilder private var matterPointerView: some View {
+        modePlaceholder(
+            icon: "atom",
+            title: expertMode ? "MatterPointer (D17)" : "물질·재료",
+            body: "물질 계산의 SSOT 는 hexa-lang/stdlib/matter 입니다 — "
+                + "demiurge 는 소비자입니다 (D17). 측정 결과는 "
+                + "typed-interface 로 가져와 표시됩니다.")
+    }
+
+    /// ChipMode (rfc_011 §7) — chip record card. A project carries a
+    /// record only after a measured θ-2 run; until then, honest ⏳.
+    @ViewBuilder private var chipModeView: some View {
+        modePlaceholder(
+            icon: "cpu",
+            title: expertMode ? "ChipMode" : "칩 설계 결과",
+            body: "이 프로젝트는 아직 측정 record 가 없습니다 ⏳ — "
+                + "③ 에서 \"실제로 돌리기\" 로 측정하거나, \"참고 자료\" "
+                + "에서 기존 chip 측정 기록을 볼 수 있어요.")
+    }
+
+    /// CohortShallow (rfc_011 §7) — a shallow domain card. Renders the
+    /// domain's `.md` map if loaded, else a plain placeholder.
+    @ViewBuilder private func cohortShallowView(_ project: Project) -> some View {
+        if let stub = artifacts.first(where: {
+            $0.id.kind == .domain && $0.id.key == project.domain
+        }) {
+            MarkdownView(stub: stub)
+        } else {
+            modePlaceholder(
+                icon: "map",
+                title: expertMode ? "CohortShallow — \(project.domain)"
+                                  : "\(project.domain) 분야",
+                body: "이 분야의 설계는 7단계 대화로 진행합니다. 측정 "
+                    + "결과는 \"실제로 돌리기\" 후 여기에 나타납니다.")
+        }
+    }
+
+    @ViewBuilder private func modePlaceholder(
+        icon: String, title: String, body: String
+    ) -> some View {
+        VStack(spacing: 10) {
+            Image(systemName: icon)
+                .font(.system(size: 40))
+                .foregroundStyle(.tertiary)
+            Text(title)
+                .font(.headline)
+            Text(body)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(40)
     }
 
     private var emptyWorkbench: some View {
