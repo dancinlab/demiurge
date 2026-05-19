@@ -3301,3 +3301,47 @@
     대조 필수. 로컬 feature 브랜치가 upstream 최근 landing 을 포함
     하는지 확인하지 않으면 stale-base 중복 발생 — wilson-pool sync
     caveat 와 동형 (로컬이 SSOT 아님).
+
+- 2026-05-20 — **phase κ-41 addendum — sscb DEVSIM TCAD 브리지 +
+  디스패처 landing (`.stub` 0 화)** (`design.md` D67 의 "남은 거리"
+  항목 ①④ 승격 · 사용자 게이트 "잔여없이 모두 완료" + "hexa-native
+  작성 .hexa" autonomy mode · g3). κ-41 본문의 "다음 pickup ①
+  (DEVSIM install)" 과 "④ (sscb.hexa dispatcher)" 를 같은 세션에서
+  완료 — `stdlib/sscb/` 에 `.hexa.stub` 0개.
+  - **landed artifacts** (전부 `~/core/hexa-lang/stdlib/sscb/`):
+    (a) `devsim.hexa` — DEVSIM 2.10.0 (Apache-2.0, pip wheel) TCAD
+    브리지. `devsim_locate()` (python3 import 프로브) + `devsim_diode_iv()`
+    — hexa 가 DEVSIM Python 스크립트를 *생성* → spawn → `DEVSIM_IV`
+    행 파싱 (ngspice.hexa 의 `.cir` 생성과 동일 패턴; SSOT=.hexa,
+    Python 은 ephemeral). real 1-D Si PN-diode drift-diffusion I-V
+    sweep (Poisson + 전자/정공 연속방정식 solve).
+    (b) `devsim_test.hexa` — 7/7 physics assertion PASS:
+    rectification (I(0V)=-2.16 nA reverse), forward substantial
+    (I(0.6V)=0.799 A), monotonic non-decreasing, exponential
+    growth I(0.6V)/I(0.3V) > 1000×. devsim wheel 부재 시 clean
+    SKIP (exit 0).
+    (c) `sscb.hexa` — 디스패처 full body. `cmd_sscb` routes
+    `parse-lib` (wolfspeed) + `diode-iv` (devsim) + `--help` +
+    `--version`. parse-lib smoke: sample_sic_mosfet.lib → 5 pins ·
+    8 elements · 6 params · 1 VDMOS/15-param GREEN.
+    (d) `devsim.hexa.stub` · `sscb.hexa.stub` 삭제 (rename audit).
+    (e) `README.md` — 전 모듈 bodied 반영.
+  - **demiurge pointer 측**: `ABSORPTION.md` Wolfspeed 행 → "κ-41
+    4모듈 GREEN" + 잔여 명시. (`design.md` D67 불변 — devsim 브리지는
+    D67 결정의 *실행*, 새 결정 아님 · g_ssot_single_source.)
+  - **g3 정직 — 잔여 (외부 자산 필요, 위조 불가)**:
+    - devsim 브리지는 *generic* Si PN-diode — Wolfspeed C3M0021120K
+      2-D SiC-MOSFET 아님. hexa→DEVSIM end-to-end 입증이지 named-device
+      흡수 아님.
+    - `absorbed = false` · `measurement_gate = OPEN` 유지.
+    - Stage 4 (`absorbed=true`) 의 유일 잔여 = **실 Wolfspeed C3M
+      datasheet IDS-VDS 곡선** ingest + ±10% parity. 이건 사용자가
+      `.lib` 경로 / datasheet PDF 를 제공해야 하는 외부 자산 — 합성
+      fixture 로 parity 주장 시 데이터시트 위조 (g3 위반). 따라서
+      "잔여없이 완료" 의 코드-측 잔여는 0 (`.stub` 0 · TBD-body 0),
+      남은 1건은 외부-자산 게이트로 정직 표기.
+  - **다음 pickup**: ① 사용자가 Wolfspeed C3M `.lib` / datasheet 제공
+    시 → `devsim.hexa` 에 2-D SiC-MOSFET 메시 + IDS-VDS parity selftest
+    추가 → Stage 4 `absorbed=true` GATE (별도 D-num + κ-num).
+    ② `sscb.hexa` 를 hexa-lang top-level dispatcher 에 wire (현재
+    `hexa run` 직접 호출만).
