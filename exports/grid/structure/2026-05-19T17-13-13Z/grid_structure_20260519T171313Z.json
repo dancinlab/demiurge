@@ -1,0 +1,152 @@
+{
+  "artifacts" : {
+    "gml" : "grid_ieee14_v1.gml",
+    "meta" : "grid_ieee14_v1.meta.json"
+  },
+  "compute_elapsed_s" : 0.45352037500000003,
+  "edges_sha256_16" : "03f0b497e46795bb",
+  "geometry_id" : "grid_ieee14_v1",
+  "interface" : "demiurge:grid:structure-record",
+  "measurements" : {
+    "average_clustering" : 0.36666666666666664,
+    "avg_shortest_path_hops" : 2.3736263736263736,
+    "bisection_min_cut_edges" : 1,
+    "density" : 0.21978021978021978,
+    "diameter" : 5,
+    "edge_count" : 20,
+    "is_connected" : true,
+    "node_count" : 14,
+    "radius" : 3,
+    "top_betweenness" : [
+      {
+        "node" : 4,
+        "score" : 0.31410256410256404
+      },
+      {
+        "node" : 5,
+        "score" : 0.26923076923076916
+      },
+      {
+        "node" : 9,
+        "score" : 0.26923076923076916
+      }
+    ],
+    "top_degree" : [
+      {
+        "node" : 4,
+        "score" : 0.38461538461538464
+      },
+      {
+        "node" : 2,
+        "score" : 0.3076923076923077
+      },
+      {
+        "node" : 5,
+        "score" : 0.3076923076923077
+      }
+    ]
+  },
+  "networkx_version" : "3.2.1",
+  "produced_at_utc" : "2026-05-19T17:13:13Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_CLOSED_MEASURED",
+    "producer" : "networkx@3.2.1",
+    "scope_caveats" : [
+      "IEEE 14-bus 는 power-grid 표준 reference (Christie 1962 / UW Power Systems Test Case Archive / pglib-opf case14). demiurge `grid` 도메인은 AI 데이터센터 fabric — 본 producer 는 cohort producer #2 의 WIRING 을 canonical graph 위에 증명, 실제 hyperscaler DC fat-tree manifest 아님 (g3).",
+      "bisection_min_cut_edges 는 LINK 수 (정수) — Gbps 아님. SerDes channel 모델·congestion control 가정 없음. 실제 DC bisection bandwidth gate 는 ns-3/SST (domains/grid.md §2 ANALYZE) + HFSS/Sigrity SI (§4 gap) 후속 phase.",
+      "measurement_gate = GATE_CLOSED_MEASURED — graph metrics 는 deterministic 수학적 사실 (NetworkX IEEE-754 솔버). F1F2 chip record 와 동일한 epistemic class — 단 SCOPE 는 POWER-GRID reference (위 caveat #1 참조).",
+      "absorbed=false 영구 — NetworkX 는 외부 Python 라이브러리, hexa-lang stdlib 미흡수. `hexa-graph` stdlib 가 들어와 동일 metric 을 수치 동일 재현하면 그때 absorbed flip (이번 phase 는 scope out, D17 mirror — 외부 도구가 owner, demiurge 는 consumer)."
+    ]
+  },
+  "record_id" : "grid_structure_20260519T171313Z",
+  "schema_version" : "1.0",
+  "topology" : {
+    "edge_count" : 20,
+    "edges" : [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        6,
+        11
+      ],
+      [
+        6,
+        12
+      ],
+      [
+        6,
+        13
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        7,
+        9
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        9,
+        14
+      ],
+      [
+        10,
+        11
+      ],
+      [
+        12,
+        13
+      ],
+      [
+        13,
+        14
+      ]
+    ],
+    "name" : "IEEE 14-bus",
+    "node_count" : 14,
+    "source" : "Christie 1962 / pglib-opf case14"
+  }
+}

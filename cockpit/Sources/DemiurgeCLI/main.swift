@@ -234,7 +234,10 @@ func parseVerbArg(_ s: String) -> Verb? {
 /// κ-29: when a real engine tool exists for (verb, domain), we route
 /// to IT (record-producing); otherwise honest-gap via claude CLI (g3).
 /// Wired engine tools: component+synthesize · chip+verify ·
-/// chip+synthesize (yosys.hexa dispatcher · rfc_006 §5 gate OPEN).
+/// chip+synthesize (yosys.hexa dispatcher · rfc_006 §5 gate OPEN) ·
+/// matter+analyze · sscb+analyze · grid+structure (NetworkX IEEE 14-bus
+/// · κ-36 / D57 — second cohort producer · GATE_CLOSED_MEASURED honest
+/// since graph metrics are mathematical facts, absorbed=false).
 func cliAction(_ verbStr: String, _ domainArg: String?) -> Int32 {
     guard let verb = parseVerbArg(verbStr) else {
         FileHandle.standardError.write(

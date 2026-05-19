@@ -1,0 +1,137 @@
+{
+  "artifacts": {
+    "gml": "grid_ieee14_v1.gml"
+  },
+  "compute_elapsed_s": 0.45352037500000003,
+  "edges_sha256_16": "03f0b497e46795bb",
+  "geometry_id": "grid_ieee14_v1",
+  "measurements": {
+    "average_clustering": 0.36666666666666664,
+    "avg_shortest_path_hops": 2.3736263736263736,
+    "bisection_min_cut_edges": 1,
+    "density": 0.21978021978021978,
+    "diameter": 5,
+    "edge_count": 20,
+    "is_connected": true,
+    "node_count": 14,
+    "radius": 3,
+    "top_betweenness": [
+      {
+        "node": 4,
+        "score": 0.31410256410256404
+      },
+      {
+        "node": 5,
+        "score": 0.26923076923076916
+      },
+      {
+        "node": 9,
+        "score": 0.26923076923076916
+      }
+    ],
+    "top_degree": [
+      {
+        "node": 4,
+        "score": 0.38461538461538464
+      },
+      {
+        "node": 2,
+        "score": 0.3076923076923077
+      },
+      {
+        "node": 5,
+        "score": 0.3076923076923077
+      }
+    ]
+  },
+  "networkx_version": "3.2.1",
+  "ok": true,
+  "topology": {
+    "edge_count": 20,
+    "edges": [
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        4,
+        9
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        6,
+        11
+      ],
+      [
+        6,
+        12
+      ],
+      [
+        6,
+        13
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        7,
+        9
+      ],
+      [
+        9,
+        10
+      ],
+      [
+        9,
+        14
+      ],
+      [
+        10,
+        11
+      ],
+      [
+        12,
+        13
+      ],
+      [
+        13,
+        14
+      ]
+    ],
+    "name": "IEEE 14-bus",
+    "node_count": 14,
+    "source": "Christie 1962 / pglib-opf case14"
+  }
+}
