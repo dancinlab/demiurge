@@ -1,0 +1,32 @@
+{
+  "geometry_id" : "bipv_freecad_v1",
+  "interface" : "hexa-arch:component:verify-record",
+  "mesh_stats" : {
+    "element_count" : 9226,
+    "face_count" : 540,
+    "node_count" : 1944,
+    "quality_histogram" : {
+
+    },
+    "volume_count" : 90
+  },
+  "mesh_stats_file" : "bipv_freecad_v1.mesh.json",
+  "msh_file" : "bipv_freecad_v1.msh",
+  "produced_at_utc" : "2026-05-19T17:15:50Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "gmsh@4.15.2-git",
+    "scope_caveats" : [
+      "gmsh mesh artifact — NOT a measured thermal / structural verdict (g3). A mesh proves downstream FEA *can* run; the verdict needs Salome-Meca Code_Aster on top.",
+      "measurement_gate = GATE_OPEN — single-point or even multi-point mesh is never GATE_B_PINNED_MET (full sweep + multi-load required; D54 cite — same gate discipline as the geometry producer).",
+      "absorbed=true is never set by demiurge's gmsh verifier — a measured component producer lives in hexa-lang/component (P-⑨ owner); demiurge consumes it when it exists.",
+      "MED export unavailable in this gmsh build — Salome / Code_Aster cannot ingest the mesh until MED writing is restored (honest gap; .msh-only fallback).",
+      "Salome-Meca docker probe = ready (as_run invocable) — the .comm authoring + convergence run is the next pickup (κ-35 candidate, D55 gap ②)."
+    ]
+  },
+  "record_id" : "bipv_verify_v1",
+  "salome_docker_ready" : true,
+  "salome_image" : "tefe/salome-meca:latest",
+  "schema_version" : "1.0"
+}

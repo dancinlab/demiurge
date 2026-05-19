@@ -12,9 +12,14 @@
 // fallback.
 //
 // κ-30 (this commit, D53): adds `matter + analyze` → MatterAnalyzer.
+// κ-34 (D55): adds `component + verify` → ComponentVerifier — gmsh
+// mesh of the κ-33 STEP + Salome-Meca docker witness (honest gap:
+// thermal / structural verdict is the next pickup, .comm authoring
+// + as_run convergence required).
 //
 // Currently wired:
 //   • component + synthesize → ComponentEmitter.emitBundled
+//   • component + verify     → ComponentVerifier.runVerify
 //   • chip      + verify     → booksim self-test sniffer
 //                              (honest-gap if hexa not on PATH or
 //                               cmd_measure body not on local branch)
@@ -100,6 +105,8 @@ public enum ActionDispatch {
         switch (verb, domain) {
         case (.synthesize, "component"):
             return runComponentSynthesize()
+        case (.verify, "component"):
+            return runComponentVerify()
         case (.verify, "chip"):
             return runChipVerify()
         case (.synthesize, "chip"):
@@ -124,6 +131,22 @@ public enum ActionDispatch {
     /// verdict — g3).
     private static func runComponentSynthesize() -> ActionResult {
         let r = ComponentEmitter.emitBundled()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `component + verify` engine tool (κ-34 / D55) — drive gmsh
+    /// over the κ-33 BIPV STEP and probe Salome-Meca docker as a
+    /// witness for the next gate. Honest: a mesh is NOT a thermal /
+    /// structural verdict; `absorbed=false` and
+    /// `measurement_gate=GATE_OPEN` are hard-coded in the record
+    /// (g3). The .comm authoring + Code_Aster convergence run is the
+    /// next pickup (κ-35 candidate).
+    private static func runComponentVerify() -> ActionResult {
+        let r = ComponentVerifier.runVerify()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],

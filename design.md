@@ -1701,3 +1701,58 @@ export.)
   버튼 + DemiurgeCLI `emit-component` + DemiurgeCLI `action
   synthesize component` 셋의 단일 진입점 그대로. 셋 다 동일 record
   emit.
+
+### Decision 55 — `component + verify` producer = gmsh CLI mesh + Salome-Meca docker witness (P-⑨ verify, κ-34)
+
+**picked**: `component + verify` 셀의 producer 를 **two-stage gmsh** +
+**Salome-Meca docker availability probe** 로 배선한다. Stage 1:
+`gmsh -3 -format msh4 -o <out>.msh <step>` (CLI) — D54 의 .step 을
+~2초에 1944 node / 9226 element / 90 volume tet 메싱. Stage 2:
+`python3 cockpit/scripts/bipv_verify.py <msh> <outdir>` (gmsh python
+API, PYTHONPATH=`brew --cellar gmsh/<ver>/lib`) — .msh 를 재오픈하여
+typed `mesh.json` sidecar (node/element/volume/face count + jacobian
+quality histogram) 와 .med (Salome-Meca / Code_Aster ingest 포맷)
+출력 + 단일 `BIPV_VERIFY_RESULT <json>` 라인 emit. Stage 3:
+`docker images` 로 `tefe/salome-meca:latest` 존재 여부 witness — 컨테이너
+실행은 안 함 (~30초 시작 대기 너무 무거움; 다음 pickup 의 일). 새 typed
+`ComponentVerifyRecord` 가 `exports/component/verify/bipv_verify_v1.json`
+에 쓰임 — `producer = "gmsh@<version>"`, `measurement_gate = GATE_OPEN`,
+`absorbed = false`, `salome_docker_ready` 가 다음 게이트 (Code_Aster
+.comm + as_run) 가능 여부 honest witness. (Rejected: ① python API 단독
+mesh — 90 sub-solid 를 각자 mesh 하여 ~63k node / ~10분, CLI 보다 ~300×
+느림 (실측); ② Salome 컨테이너 즉시 실행 — .comm authoring 없이 의미
+있는 thermal verdict 불가, 30초 컨테이너 startup 만 비용 — D17 dual-
+stage 와 충돌; ③ FreeCAD 내장 FEM workbench — 보고는 가능하지만 batch
+mode 미성숙 + 결과 형식 비표준; ④ Elmer FEM — 동등하지만 mac binary
+미설치, Salome docker 가 이미 local 에 있음.)
+
+**rationale**:
+- P-⑨ "측정 producer" 의 verify 절반 첫 단계 — 메시까지 라이브화는
+  Code_Aster .comm 다음 phase 의 전제. mesh 가 없으면 thermal/structural
+  verdict 도 없음, 메시까지가 GATE_OPEN 인 honest interface 임을 박제.
+- two-stage (CLI mesh + python stats) 가 정직한 선택 — CLI gmsh 의
+  OCC-fuse 단계는 python API 에 노출 안 됨 (실측: 동일 STEP, 동일
+  옵션, CLI 2초·python 10분). silent over-engineering 회피.
+- absorbed=true 절대 금지 (g3 / @F f6): 메시는 verdict 가 아니다.
+  Salome docker probe = ready 도 verdict 아닌 instrument-availability
+  witness — 게이트 flip 신호 0. scope_caveats 5종 박제 (verdict-vs-mesh
+  / gate-discipline / P-⑨ owner / MED-export-gap / Salome-pending).
+- honest gap ① — brew gmsh 가 MED 미지원으로 빌드됨 (실측:
+  `Gmsh must be compiled with MED support`). .msh 만 emit, MED 는
+  None 으로 표기, 별도 caveat. Salome 측은 .msh → .med 변환 따로
+  필요 (gmsh source build 또는 `meshio` 변환).
+- honest gap ② — Code_Aster .comm 작성 + 수렴 미완료. 90 sub-solid 가
+  FreeCAD 의 단일 layer 5종으로 논리적 grouping 안 됨 — .comm 작성
+  시 material assignment / boundary condition 부착이 명확한 anchor 가
+  없는 상태. Z-bucket heuristic 또는 FreeCAD 측 label propagation 이
+  필요 (κ-35 후보).
+- D53 "measurable-only 셀 매핑" 과 정합 — `(.verify, "component")`
+  셀이 새로 매핑됨. measurable cell 4개 (component+synth/verify,
+  chip+synth/verify) + analyze cell 1개 (matter+analyze) = 5 매핑.
+  D53 의 "5개 넘으면 ActionAdapter 리팩토링" 임계점 도달 — 다음
+  매핑 추가 시 검토 필요.
+- D50 g_ssot_single_source 준수 — ComponentVerifier 가 cockpit GUI
+  버튼 + DemiurgeCLI `action verify component` 둘의 단일 진입점.
+- macOS 의존성 (brew gmsh + docker desktop) — Linux/Windows host
+  에서는 honest gap, record emit 0. wilson-pool 의 host routing 이
+  record 의 producer 필드를 통해 cross-host evidence 제공.

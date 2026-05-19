@@ -2484,3 +2484,74 @@
     하여 단일 SSOT. ④ cockpit GUI Component 탭이 STEP 파일을 직접
     렌더 (현재는 USDA only) — RealityKit STEP 미지원 → Open Cascade
     Cascade.js 같은 web 뷰 또는 STL 폴백.
+- 2026-05-20 — **phase κ-34 — `component + verify` 셀을 gmsh CLI
+  + Salome-Meca docker witness 로 라이브화 (P-⑨ verify 첫 단계)**
+  (rfc_011 §6.3 · D55 · D53 cite · D50 g_ssot_single_source · g3).
+  κ-33 의 `(.synthesize, "component")` 라이브 셀 옆에 verify 짝을
+  추가 — 14 measurable 셀 중 5번째 매핑 (D53 의 "5개 임계점" 도달).
+  - **신규 SSOT**: `cockpit/scripts/bipv_verify.py` — gmsh python
+    API sidecar. CLI gmsh 가 mesh 한 .msh 를 재오픈, node/element/
+    volume/face count + jacobian quality histogram 산출, .med
+    (Salome/Code_Aster ingest) export 시도, `BIPV_VERIFY_RESULT
+    <json>` 라인 emit (mirrors κ-33 의 BIPV_FREECAD_RESULT 컨벤션).
+    `mesh.json` typed sidecar 별도 작성 (Swift ComponentMeshStats
+    decode 가능). honest_gap 4종 박제.
+  - **신규**: `DemiurgeCore/Loaders/ComponentVerifier.swift` — Swift
+    harness. (a) `locateGmshCli()` + `locateGmshPythonLib()` (brew
+    Cellar scan), (b) `locateGeometryStep()` — `exports/component/
+    geometry/bipv_freecad_v1.step` 존재 확인, 없으면 honest gap (κ-33
+    먼저 돌려야 함). (c) **stage 1 mesh**: `gmsh -3 -format msh4 -o
+    <out>.msh <step>` — CLI default, 2초에 1944/9226. (d) **stage 2
+    stats**: `python3 bipv_verify.py <msh> <outdir>` (PYTHONPATH 주입
+    된 brew gmsh lib). (e) **stage 3 witness**: `docker images |
+    grep tefe/salome-meca` — 컨테이너 실행 없이 이미지 존재만 확인
+    (~30초 startup 회피, 다음 pickup 의 영역).
+  - **신규 모델**: `DemiurgeCore/Models/ComponentVerifyRecord.swift` —
+    `ComponentRecord` 의 sibling typed record. 필드: `geometry_id`
+    (κ-33 record cross-link) + `msh_file` / `med_file` / `mesh_stats_
+    file` + 인라인 `mesh_stats: ComponentMeshStats` + `salome_docker_
+    ready: Bool?` + `salome_image: String?` + 공유 `provenance:
+    ComponentProvenance`. `interface = "hexa-arch:component:verify-
+    record"`. 빌더 `ComponentVerifyRecord.gmshMesh(...)` 가 producer
+    = "gmsh@<version>", gate=GATE_OPEN, absorbed=false 보장 + scope_
+    caveats 5종 (verdict-vs-mesh / gate-discipline / P-⑨ owner /
+    MED-export-gap / Salome-pending) 자동 박제.
+  - **확장**: `DemiurgeCore/Loaders/ActionDispatch.swift` — 새 case
+    `(.verify, "component")` 가 `runComponentVerify()` 로 라우팅,
+    `ComponentVerifier.runVerify()` 호출. 헤더 주석에 κ-34/D55 표시.
+    매핑 셀 5개 도달 (component×{synth,verify} + chip×{synth,verify}
+    + matter×analyze) — D53 의 ActionAdapter 리팩토링 임계점.
+  - **g3 정직 갭 (제일 중요)**: ① **mesh ≠ verdict** — gmsh 가
+    1944 node 를 출력했다고 thermal/structural verdict 가 측정된
+    것은 아니다. record 의 `measurement_gate = GATE_OPEN`,
+    `absorbed = false`. ② **MED export 미지원** — brew gmsh 가
+    "Gmsh must be compiled with MED support" 로 실패 (실측). .msh
+    만 emit, `med_file = null`, caveat 자동 추가. Salome ingest 전엔
+    `meshio` 변환 또는 gmsh source build 필요. ③ **Code_Aster
+    .comm authoring 미완** — 90 sub-solid 가 논리적 5-layer 로
+    grouping 안 됨, material/boundary condition anchor 없음.
+    `salome_docker_ready = true` 는 instrument-availability witness
+    이지 verdict 아님. ④ **quality histogram 빈 dict** — gmsh
+    `getElementQualities` 가 어떤 element type 에 대해 quiet-fail —
+    honest 표기, 추후 조사. ⑤ **macOS-only** — brew gmsh + Docker
+    Desktop 의존, Linux/Windows host 는 honest gap path.
+  - **측정 (이 worktree, mac local, gmsh 4.15.2-git, Salome-Meca
+    docker image 17.8GB local)**: `swift run DemiurgeCLI action
+    verify component` →
+    `gmsh -3 -o bipv_freecad_v1.msh — exit 0` · 1944 nodes / 9226
+    elements / 90 volumes · Salome-Meca docker = ready
+    (tefe/salome-meca:latest) · 새 record →
+    `exports/component/verify/bipv_verify_v1.json` (1387 bytes).
+    파일 크기: `.msh` 484491 / `.mesh.json` 916. 빌드 green
+    (pre-existing RealityKit MainActor warning 만, 에러 0, 신규
+    warning 0).
+  - **다음 pickup**: ① **κ-35 후보** — Salome-Meca Code_Aster
+    .comm 작성: top glass 25°C / bottom mount 70°C steady-state
+    thermal, `as_run --containerize` (docker exec) 수렴 확인, max/
+    min temperature + heat flux record (component+verify 의 thermal
+    verdict). ② brew gmsh source build 으로 MED export 복원 —
+    Salome ingest 가능, 또는 `pip install meshio` 로 .msh → .med
+    변환 path. ③ 90 sub-solid → 5 logical layer grouping —
+    FreeCAD producer 측에 OCC Compound 라벨 propagation 추가 or
+    Swift 측 Z-bucket heuristic. ④ ActionAdapter 프로토콜 도입 —
+    매핑 셀 5개 도달, D53 임계점.
