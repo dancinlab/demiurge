@@ -3274,3 +3274,30 @@
     ② **Stage 4 Geant4-MC parity** — ubu-1 에 Geant4 11.x 설치,
     G4hIonisation 출력 vs Bethe-Bloch hexa 비교. ③ **density-effect
     δ** — Sternheimer parameterization, high-γ regime 보강.
+
+- 2026-05-20 — **κ-45 정정 (stale-base 중복 발견 · g3 정직)** — κ-45
+  실행 직후 측정으로 드러난 정정 사실. origin/main 에 hexa-lang commit
+  `4f70ce46` "stdlib(yosys): rfc_006 §4 bodies landed for 7 modules"
+  (2026-05-20 01:04 KST · origin/main ancestor) 로 rfc_006 §4 의 7
+  모듈 body 가 **이미 landed** — `rtlil.hexa` 346줄 (Cell/CellConn 포함,
+  standalone `hexa run` selftest 10/10 PASS) + read_verilog·passes·
+  liberty·abc_map·write_verilog·yosys 전부. 본 세션은 로컬 hexa-lang
+  이 stale `t4-emt-calc` (HEAD `0626febc`, 4f70ce46 미포함) 였던 탓에
+  이를 모른 채 `rtlil.hexa` minimum body (280줄, Wire+Module+Design
+  만) 를 중복 작성 — commit `ec8a51fc`/`06ccb656` 는 origin/main 의
+  4f70ce46 에 의해 superseded. **진짜 열린 blocker (측정됨)** =
+  origin/main `yosys.hexa` dispatcher selftest 가 컴파일 실패
+  (`rtlil_module_add_cell`/`rtlil_cell`/`rtlil_cell_connect`
+  undeclared — yosys.hexa 가 `use "stdlib/yosys/rtlil"` 한 cross-
+  module 심볼이 transpile 시 emit 안 됨, hexa-lang `use` 통합 버그
+  추정). 7 모듈 *파일* 은 land 됐으나 dispatcher 통합은 broken.
+  상세 audit = `design.md` "Decision-gate note on Decision 68".
+  - **본 세션 유효 산출**: D63 (wilson-pool roster = ubu-2 단독,
+    pool.json 갱신 완료 — 유효) + κ-45 의 정정 audit trail (stale-
+    base hazard 기록) + hexa-lang inbox gap note (yosys.hexa `use`
+    통합 컴파일 실패). `rfc006-yosys-rtlil-skeleton` 브랜치의
+    rtlil.hexa 중복 자체는 lasting 산출 아님 — abandon 권고.
+  - **g3 교훈**: cross-repo 작업 시작 전 `git fetch` + `origin/main`
+    대조 필수. 로컬 feature 브랜치가 upstream 최근 landing 을 포함
+    하는지 확인하지 않으면 stale-base 중복 발생 — wilson-pool sync
+    caveat 와 동형 (로컬이 SSOT 아님).

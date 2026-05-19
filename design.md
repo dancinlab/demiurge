@@ -2246,3 +2246,47 @@ demiurge 안에 script — D61 위반; OpenFOAM CFD 즉시 흡수 — ABSORPTION
   relativistic 갭 1–3% bounded).
 - **cross-host parity** (ubu-2, python 3.12.3 vs darwin 3.14.4):
   plasma_metrics.py 출력 ω_pe / λ_D / v_A 15-digit byte-identical.
+
+### Decision-gate note on Decision 68 (2026-05-20 정정 — stale-base 중복 발견)
+
+D68 작성·실행 후 측정으로 드러난 정정 사실 (g3 — 작업 무효화 정직 인정):
+
+- **origin/main 에 rfc_006 §4 7 모듈 body 가 이미 존재**. hexa-lang
+  commit `4f70ce46` "stdlib(yosys): rfc_006 §4 bodies landed for 7
+  modules" (2026-05-20 01:04 KST, `origin/main` ancestor — `git
+  merge-base --is-ancestor` 확인). `rtlil.hexa` 346줄 (Cell/CellConn
+  struct + `rtlil_cell`/`rtlil_cell_connect`/`rtlil_module_add_cell`
+  포함, standalone `hexa run` selftest **10/10 PASS**) +
+  read_verilog·passes·liberty·abc_map·write_verilog·yosys 6개 body
+  전부 (+ gate_record.hexa).
+- **본 세션 `rfc006-yosys-rtlil-skeleton` 작업은 stale-base 중복**.
+  로컬 hexa-lang 이 `t4-emt-calc` (HEAD `0626febc`) 였고 이 브랜치는
+  origin/main 의 4f70ce46 을 포함하지 않음 — 그 stale 트리에는
+  `rtlil.hexa.stub` 만 보여서, upstream 에 이미 완성본이 있음을 모른
+  채 `rtlil.hexa` minimum body (280줄, Wire+Module+Design 만 — Cell
+  없음) 를 새로 작성. commit `ec8a51fc`(rtlil body) + `06ccb656`
+  (handoff/PATCHES) 두 개는 origin/main 의 4f70ce46 에 의해
+  **superseded** — origin 의 rtlil.hexa 가 본 세션 산출의 superset.
+- **진짜 열린 blocker (측정됨)**: origin/main 의 `yosys.hexa`
+  dispatcher selftest 가 **컴파일 실패** — `hexa run stdlib/yosys/
+  yosys.hexa` → clang `use of undeclared identifier
+  'rtlil_module_add_cell' / 'rtlil_cell' / 'rtlil_cell_connect'`
+  (20 errors). rtlil.hexa 가 그 fn 을 정의하고 (line 114/124/144)
+  yosys.hexa 는 `use "stdlib/yosys/rtlil"` (line 46) 하지만,
+  transpile 시 cross-module 심볼이 emit 안 됨 — hexa-lang `use`/
+  import 통합 버그로 추정. rfc_006 §4 module-7 (dispatcher) 의 실제
+  blocker 는 여기 — 7 모듈 *파일* 은 land 됐으나 dispatcher 통합은
+  깨짐.
+- **조치**: ① D68 의 "rtlil body landing 시작" 은 측정상 무효 —
+  origin/main 에 더 완전한 body 가 이미 존재. ② `rfc006-yosys-rtlil-
+  skeleton` 브랜치 abandon 권고 (origin 에 push 된 상태 — 브랜치
+  삭제는 외부-가시 비가역이라 사용자/별도 결정). ③ hexa-lang inbox
+  에 `yosys.hexa` `use` 통합 컴파일 실패 gap note 등재 (hexa-lang
+  세션이 처리할 toolchain 항목). ④ 본 세션의 lasting fruit = D63
+  (wilson-pool ubu-2 단독, 유효) + 본 정정 note (stale-base hazard
+  의 audit trail) + inbox gap note. rtlil.hexa 중복 자체는 산출
+  아님.
+- **g3 교훈**: cross-repo 작업 시작 전 `git fetch` + `origin/main`
+  대조 필수. 로컬 feature 브랜치 (t4-emt-calc) 가 upstream 의 최근
+  landing 을 포함하는지 확인하지 않으면 stale-base 중복이 발생한다.
+  wilson-pool 의 "sync caveat" 와 동형 — 로컬이 SSOT 가 아니다.
