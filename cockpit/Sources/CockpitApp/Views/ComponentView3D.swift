@@ -91,6 +91,7 @@ struct ComponentView3D: View {
     @State private var pitch: Float     = 0.3
     @State private var baseYaw: Float   = 0.6
     @State private var basePitch: Float = 0.3
+    @State private var isDragging       = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -111,20 +112,25 @@ struct ComponentView3D: View {
                 let t = Float(tl.date.timeIntervalSinceReferenceDate)
                 // breathe: assembled ⇄ exploded, period ≈ 7 s.
                 let explode = 0.55 + 0.45 * sin(t * 0.9)
+                // While dragging: pure free rotation (yaw = left/right,
+                // pitch = up/down — both axes, all directions). When
+                // idle: auto-rotate resumes (adds t·0.25 to yaw).
                 ExplodedStackView(
-                    yaw: yaw + t * 0.25,   // auto-rotate + drag offset
+                    yaw: isDragging ? yaw : yaw + t * 0.25,
                     pitch: pitch,
                     explode: explode
                 )
                 .gesture(
                     DragGesture()
                         .onChanged { v in
+                            isDragging = true
                             yaw   = baseYaw   + Float(v.translation.width)  * 0.01
                             pitch = basePitch + Float(v.translation.height) * 0.01
                         }
                         .onEnded { _ in
-                            baseYaw   = yaw
-                            basePitch = pitch
+                            baseYaw    = yaw
+                            basePitch  = pitch
+                            isDragging = false
                         }
                 )
             }

@@ -2037,3 +2037,13 @@
   gate, "component absorbed/measured" 주장 0). banner·헤더
   주석 갱신. 다음 = install 후 사용자가 3D 창 시각 확인 ·
   또는 신규.
+- 2026-05-19 — **phase κ-28 fix — 3D 자유 회전** (사용자 시각
+  피드백: "위아래로만 360 움직이고 모든 방향 막힘"). 원인:
+  `ExplodedStackView(yaw: yaw + t·0.25)` — drag 중에도 auto-
+  rotate(t·0.25)가 yaw 에 계속 더해져 좌우 drag 가 자동회전에
+  묻힘 (pitch 는 auto 무관이라 위아래만 먹힘). fix: `@State
+  isDragging` — `yaw: isDragging ? yaw : yaw + t·0.25` (drag
+  시 순수 자유 회전 — yaw 좌우 + pitch 위아래 양축, idle 시
+  auto-rotate 재개). 측정: `swift run CockpitApp` 빌드 green
+  (11.56s, 에러 0). g3: 빌드=컴파일 measured; 자유회전 시각
+  동작은 GUI 재확인 필요.
