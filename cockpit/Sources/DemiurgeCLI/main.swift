@@ -63,6 +63,12 @@ func usage() {
       demiurge verify <path|id>        provenance / claim-gate check
                                        (exit 0 consistent · 1 not)
       demiurge gate-summary            gate + absorbed totals
+      demiurge emit-component          Emit the procedural BIPV
+                                       artifact (.usda/.usdz + record)
+                                       to exports/component/geometry/
+      demiurge export-component <fmt> [path]
+                                       Export bundled geometry —
+                                       fmt = usda | stl
       demiurge --version | -v          Print version
       demiurge --help    | -h          This help
 
@@ -337,6 +343,97 @@ func verifyRecord(_ arg: String) -> Int32 {
     return ok ? 0 : 1
 }
 
+/// `emit-component` — the demiurge procedural component producer.
+/// Writes the bundled BIPV placeholder geometry to
+/// exports/component/geometry/ as .usda + .usdz + a typed
+/// ComponentRecord. HONEST (g3): producer =
+/// demiurge_procedural_placeholder, GATE_OPEN, absorbed=false.
+func emitComponent() -> Int32 {
+    let geometry = ComponentGeometry.bipv5Layer
+    let dir = RecordLoader.exportsRoot
+        .appendingPathComponent("component/geometry", isDirectory: true)
+    do {
+        try FileManager.default.createDirectory(
+            at: dir, withIntermediateDirectories: true)
+    } catch {
+        FileHandle.standardError.write(
+            Data("emit-component: mkdir failed — \(error)\n".utf8))
+        return 1
+    }
+    let usdaName = "\(geometry.id).usda"
+    let usdzName = "\(geometry.id).usdz"
+    let jsonName = "\(geometry.id).json"
+    let usdaURL = dir.appendingPathComponent(usdaName)
+    let usdzURL = dir.appendingPathComponent(usdzName)
+    let jsonURL = dir.appendingPathComponent(jsonName)
+
+    do {
+        try USDExporter.usda(geometry).write(
+            to: usdaURL, atomically: true, encoding: .utf8)
+    } catch {
+        FileHandle.standardError.write(
+            Data("emit-component: write \(usdaName) failed — \(error)\n".utf8))
+        return 1
+    }
+    print("emit-component: wrote \(usdaName)")
+
+    let usdzOK = USDExporter.packageUSDZ(from: usdaURL, to: usdzURL)
+    print(usdzOK
+        ? "emit-component: wrote \(usdzName)"
+        : "emit-component: usdz packaging unavailable — .usda only "
+          + "(honest gap, g3)")
+
+    let iso = ISO8601DateFormatter().string(from: Date())
+    let record = ComponentRecord.procedural(
+        for: geometry, producedAtUtc: iso,
+        usdaFile: usdaName, usdzFile: usdzOK ? usdzName : nil)
+    let enc = JSONEncoder()
+    enc.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+    do {
+        try enc.encode(record).write(to: jsonURL)
+    } catch {
+        FileHandle.standardError.write(
+            Data("emit-component: write \(jsonName) failed — \(error)\n".utf8))
+        return 1
+    }
+    print("emit-component: wrote \(jsonName)")
+    print("---")
+    print("📦 component artifact → exports/component/geometry/")
+    print("   GATE_OPEN · absorbed=false · procedural placeholder (g3)")
+    return 0
+}
+
+/// `export-component <format> [path]` — write the bundled geometry to
+/// a chosen path/format. Shares the SAME DemiurgeCore exporters the
+/// cockpit export menu uses (@D g_ssot_single_source / D50).
+func exportComponent(_ formatArg: String, _ pathArg: String?) -> Int32 {
+    let geometry = ComponentGeometry.bipv5Layer
+    let fmt = formatArg.lowercased()
+    let body: String
+    let ext: String
+    switch fmt {
+    case "usda", "usd": body = USDExporter.usda(geometry); ext = "usda"
+    case "stl":         body = STLExporter.stl(geometry);   ext = "stl"
+    default:
+        FileHandle.standardError.write(
+            Data(("export-component: unknown format '\(formatArg)' — "
+                  + "use usda | stl  (usdz: emit-component packages it)\n").utf8))
+        return 2
+    }
+    let outURL = URL(fileURLWithPath:
+        pathArg ?? "\(geometry.id).\(ext)")
+    do {
+        try body.write(to: outURL, atomically: true, encoding: .utf8)
+    } catch {
+        FileHandle.standardError.write(
+            Data("export-component: write failed — \(error)\n".utf8))
+        return 1
+    }
+    print("export-component: wrote \(outURL.path) (\(ext))")
+    print("   procedural placeholder geometry — GATE_OPEN (g3)")
+    return 0
+}
+
 let args = CommandLine.arguments
 
 guard args.count >= 2 else {
@@ -403,6 +500,15 @@ case "verify":
         exit(2)
     }
     exitCode = verifyRecord(args[2])
+case "emit-component":
+    exitCode = emitComponent()
+case "export-component":
+    guard args.count >= 3 else {
+        FileHandle.standardError.write(Data("export-component: missing <format> argument (usda|stl)\n".utf8))
+        usage()
+        exit(2)
+    }
+    exitCode = exportComponent(args[2], args.count >= 4 ? args[3] : nil)
 default:
     FileHandle.standardError.write(Data("unknown subcommand: \(args[1])\n".utf8))
     usage()

@@ -1,0 +1,932 @@
+#usda 1.0
+(
+    defaultPrim = "Component"
+    metersPerUnit = 0.001
+    upAxis = "Y"
+    doc = "demiurge ComponentGeometry export — bipv_5layer_v0. PROCEDURAL PLACEHOLDER geometry (g3), not a measured component."
+)
+
+def Xform "Component" (
+    kind = "component"
+)
+{
+    custom string demiurge:geometryId = "bipv_5layer_v0"
+    custom string demiurge:displayName = "BIPV Module (5-layer)"
+    custom double demiurge:explodeFactor = 0
+    custom string demiurge:provenance = "procedural_placeholder · GATE_OPEN · absorbed=false"
+
+    def Scope "Materials"
+    {
+        def Material "mat_Glass_Face"
+        {
+            token outputs:surface.connect = </Component/Materials/mat_Glass_Face/Shader.outputs:surface>
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.6588, 0.8471, 0.9098)
+                float inputs:metallic = 0
+                float inputs:roughness = 0.1200
+                float inputs:opacity = 0.3200
+                token outputs:surface
+            }
+        }
+        def Material "mat_PV_Cells"
+        {
+            token outputs:surface.connect = </Component/Materials/mat_PV_Cells/Shader.outputs:surface>
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.1059, 0.1647, 0.4196)
+                float inputs:metallic = 0
+                float inputs:roughness = 0.1200
+                float inputs:opacity = 1
+                token outputs:surface
+            }
+        }
+        def Material "mat_Corrosion_Proof_Frame"
+        {
+            token outputs:surface.connect = </Component/Materials/mat_Corrosion_Proof_Frame/Shader.outputs:surface>
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.6039, 0.6275, 0.6510)
+                float inputs:metallic = 0.8500
+                float inputs:roughness = 0.3500
+                float inputs:opacity = 1
+                token outputs:surface
+            }
+        }
+        def Material "mat_Thermal_Sink"
+        {
+            token outputs:surface.connect = </Component/Materials/mat_Thermal_Sink/Shader.outputs:surface>
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (1, 0.5843, 0)
+                float inputs:metallic = 0.8500
+                float inputs:roughness = 0.3500
+                float inputs:opacity = 1
+                token outputs:surface
+            }
+        }
+        def Material "mat_Structural_Mount"
+        {
+            token outputs:surface.connect = </Component/Materials/mat_Structural_Mount/Shader.outputs:surface>
+            def Shader "Shader"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                color3f inputs:diffuseColor = (0.3333, 0.3333, 0.3333)
+                float inputs:metallic = 0.8500
+                float inputs:roughness = 0.3500
+                float inputs:opacity = 1
+                token outputs:surface
+            }
+        }
+    }
+
+    def Xform "Layer_Glass_Face"
+    {
+        float3 xformOp:translate = (0, 19.1000, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        custom string demiurge:layerName = "Glass Face"
+        custom double demiurge:thicknessMM = 3.2000
+        def Cube "Slab"
+        {
+            double size = 1
+            float3 xformOp:translate = (0, 0, 0)
+            float3 xformOp:scale = (1000, 3.2000, 1000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Glass_Face>
+            color3f[] primvars:displayColor = [(0.6588, 0.8471, 0.9098)]
+        }
+    }
+    def Xform "Layer_PV_Cells"
+    {
+        float3 xformOp:translate = (0, 17.4000, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        custom string demiurge:layerName = "PV Cells"
+        custom double demiurge:thicknessMM = 0.2000
+        def Cube "Cell_0_0"
+        {
+            double size = 1
+            float3 xformOp:translate = (-402.5000, 0, -402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_0_1"
+        {
+            double size = 1
+            float3 xformOp:translate = (-402.5000, 0, -287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_0_2"
+        {
+            double size = 1
+            float3 xformOp:translate = (-402.5000, 0, -172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_0_3"
+        {
+            double size = 1
+            float3 xformOp:translate = (-402.5000, 0, -57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_0_4"
+        {
+            double size = 1
+            float3 xformOp:translate = (-402.5000, 0, 57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_0_5"
+        {
+            double size = 1
+            float3 xformOp:translate = (-402.5000, 0, 172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_0_6"
+        {
+            double size = 1
+            float3 xformOp:translate = (-402.5000, 0, 287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_0_7"
+        {
+            double size = 1
+            float3 xformOp:translate = (-402.5000, 0, 402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_1_0"
+        {
+            double size = 1
+            float3 xformOp:translate = (-287.5000, 0, -402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_1_1"
+        {
+            double size = 1
+            float3 xformOp:translate = (-287.5000, 0, -287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_1_2"
+        {
+            double size = 1
+            float3 xformOp:translate = (-287.5000, 0, -172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_1_3"
+        {
+            double size = 1
+            float3 xformOp:translate = (-287.5000, 0, -57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_1_4"
+        {
+            double size = 1
+            float3 xformOp:translate = (-287.5000, 0, 57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_1_5"
+        {
+            double size = 1
+            float3 xformOp:translate = (-287.5000, 0, 172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_1_6"
+        {
+            double size = 1
+            float3 xformOp:translate = (-287.5000, 0, 287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_1_7"
+        {
+            double size = 1
+            float3 xformOp:translate = (-287.5000, 0, 402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_2_0"
+        {
+            double size = 1
+            float3 xformOp:translate = (-172.5000, 0, -402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_2_1"
+        {
+            double size = 1
+            float3 xformOp:translate = (-172.5000, 0, -287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_2_2"
+        {
+            double size = 1
+            float3 xformOp:translate = (-172.5000, 0, -172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_2_3"
+        {
+            double size = 1
+            float3 xformOp:translate = (-172.5000, 0, -57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_2_4"
+        {
+            double size = 1
+            float3 xformOp:translate = (-172.5000, 0, 57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_2_5"
+        {
+            double size = 1
+            float3 xformOp:translate = (-172.5000, 0, 172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_2_6"
+        {
+            double size = 1
+            float3 xformOp:translate = (-172.5000, 0, 287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_2_7"
+        {
+            double size = 1
+            float3 xformOp:translate = (-172.5000, 0, 402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_3_0"
+        {
+            double size = 1
+            float3 xformOp:translate = (-57.5000, 0, -402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_3_1"
+        {
+            double size = 1
+            float3 xformOp:translate = (-57.5000, 0, -287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_3_2"
+        {
+            double size = 1
+            float3 xformOp:translate = (-57.5000, 0, -172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_3_3"
+        {
+            double size = 1
+            float3 xformOp:translate = (-57.5000, 0, -57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_3_4"
+        {
+            double size = 1
+            float3 xformOp:translate = (-57.5000, 0, 57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_3_5"
+        {
+            double size = 1
+            float3 xformOp:translate = (-57.5000, 0, 172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_3_6"
+        {
+            double size = 1
+            float3 xformOp:translate = (-57.5000, 0, 287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_3_7"
+        {
+            double size = 1
+            float3 xformOp:translate = (-57.5000, 0, 402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_4_0"
+        {
+            double size = 1
+            float3 xformOp:translate = (57.5000, 0, -402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_4_1"
+        {
+            double size = 1
+            float3 xformOp:translate = (57.5000, 0, -287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_4_2"
+        {
+            double size = 1
+            float3 xformOp:translate = (57.5000, 0, -172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_4_3"
+        {
+            double size = 1
+            float3 xformOp:translate = (57.5000, 0, -57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_4_4"
+        {
+            double size = 1
+            float3 xformOp:translate = (57.5000, 0, 57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_4_5"
+        {
+            double size = 1
+            float3 xformOp:translate = (57.5000, 0, 172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_4_6"
+        {
+            double size = 1
+            float3 xformOp:translate = (57.5000, 0, 287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_4_7"
+        {
+            double size = 1
+            float3 xformOp:translate = (57.5000, 0, 402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_5_0"
+        {
+            double size = 1
+            float3 xformOp:translate = (172.5000, 0, -402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_5_1"
+        {
+            double size = 1
+            float3 xformOp:translate = (172.5000, 0, -287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_5_2"
+        {
+            double size = 1
+            float3 xformOp:translate = (172.5000, 0, -172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_5_3"
+        {
+            double size = 1
+            float3 xformOp:translate = (172.5000, 0, -57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_5_4"
+        {
+            double size = 1
+            float3 xformOp:translate = (172.5000, 0, 57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_5_5"
+        {
+            double size = 1
+            float3 xformOp:translate = (172.5000, 0, 172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_5_6"
+        {
+            double size = 1
+            float3 xformOp:translate = (172.5000, 0, 287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_5_7"
+        {
+            double size = 1
+            float3 xformOp:translate = (172.5000, 0, 402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_6_0"
+        {
+            double size = 1
+            float3 xformOp:translate = (287.5000, 0, -402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_6_1"
+        {
+            double size = 1
+            float3 xformOp:translate = (287.5000, 0, -287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_6_2"
+        {
+            double size = 1
+            float3 xformOp:translate = (287.5000, 0, -172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_6_3"
+        {
+            double size = 1
+            float3 xformOp:translate = (287.5000, 0, -57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_6_4"
+        {
+            double size = 1
+            float3 xformOp:translate = (287.5000, 0, 57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_6_5"
+        {
+            double size = 1
+            float3 xformOp:translate = (287.5000, 0, 172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_6_6"
+        {
+            double size = 1
+            float3 xformOp:translate = (287.5000, 0, 287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_6_7"
+        {
+            double size = 1
+            float3 xformOp:translate = (287.5000, 0, 402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_7_0"
+        {
+            double size = 1
+            float3 xformOp:translate = (402.5000, 0, -402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_7_1"
+        {
+            double size = 1
+            float3 xformOp:translate = (402.5000, 0, -287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_7_2"
+        {
+            double size = 1
+            float3 xformOp:translate = (402.5000, 0, -172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_7_3"
+        {
+            double size = 1
+            float3 xformOp:translate = (402.5000, 0, -57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_7_4"
+        {
+            double size = 1
+            float3 xformOp:translate = (402.5000, 0, 57.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_7_5"
+        {
+            double size = 1
+            float3 xformOp:translate = (402.5000, 0, 172.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_7_6"
+        {
+            double size = 1
+            float3 xformOp:translate = (402.5000, 0, 287.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+        def Cube "Cell_7_7"
+        {
+            double size = 1
+            float3 xformOp:translate = (402.5000, 0, 402.5000)
+            float3 xformOp:scale = (98.9000, 0.2000, 98.9000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_PV_Cells>
+            color3f[] primvars:displayColor = [(0.1059, 0.1647, 0.4196)]
+        }
+    }
+    def Xform "Layer_Corrosion_Proof_Frame"
+    {
+        float3 xformOp:translate = (0, 13.3000, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        custom string demiurge:layerName = "Corrosion-Proof Frame"
+        custom double demiurge:thicknessMM = 8
+        def Cube "Frame_N"
+        {
+            double size = 1
+            float3 xformOp:translate = (0, 0, 455)
+            float3 xformOp:scale = (1000, 8, 90)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Corrosion_Proof_Frame>
+            color3f[] primvars:displayColor = [(0.6039, 0.6275, 0.6510)]
+        }
+        def Cube "Frame_S"
+        {
+            double size = 1
+            float3 xformOp:translate = (0, 0, -455)
+            float3 xformOp:scale = (1000, 8, 90)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Corrosion_Proof_Frame>
+            color3f[] primvars:displayColor = [(0.6039, 0.6275, 0.6510)]
+        }
+        def Cube "Frame_E"
+        {
+            double size = 1
+            float3 xformOp:translate = (455, 0, 0)
+            float3 xformOp:scale = (90, 8, 820)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Corrosion_Proof_Frame>
+            color3f[] primvars:displayColor = [(0.6039, 0.6275, 0.6510)]
+        }
+        def Cube "Frame_W"
+        {
+            double size = 1
+            float3 xformOp:translate = (-455, 0, 0)
+            float3 xformOp:scale = (90, 8, 820)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Corrosion_Proof_Frame>
+            color3f[] primvars:displayColor = [(0.6039, 0.6275, 0.6510)]
+        }
+    }
+    def Xform "Layer_Thermal_Sink"
+    {
+        float3 xformOp:translate = (0, 3.3000, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        custom string demiurge:layerName = "Thermal Sink"
+        custom double demiurge:thicknessMM = 12
+        def Cube "SinkBase"
+        {
+            double size = 1
+            float3 xformOp:translate = (0, -4.3200, 0)
+            float3 xformOp:scale = (1000, 3.3600, 1000)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_0"
+        {
+            double size = 1
+            float3 xformOp:translate = (-438.6667, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_1"
+        {
+            double size = 1
+            float3 xformOp:translate = (-376, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_2"
+        {
+            double size = 1
+            float3 xformOp:translate = (-313.3333, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_3"
+        {
+            double size = 1
+            float3 xformOp:translate = (-250.6667, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_4"
+        {
+            double size = 1
+            float3 xformOp:translate = (-188, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_5"
+        {
+            double size = 1
+            float3 xformOp:translate = (-125.3333, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_6"
+        {
+            double size = 1
+            float3 xformOp:translate = (-62.6667, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_7"
+        {
+            double size = 1
+            float3 xformOp:translate = (0, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_8"
+        {
+            double size = 1
+            float3 xformOp:translate = (62.6667, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_9"
+        {
+            double size = 1
+            float3 xformOp:translate = (125.3333, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_10"
+        {
+            double size = 1
+            float3 xformOp:translate = (188, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_11"
+        {
+            double size = 1
+            float3 xformOp:translate = (250.6667, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_12"
+        {
+            double size = 1
+            float3 xformOp:translate = (313.3333, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_13"
+        {
+            double size = 1
+            float3 xformOp:translate = (376, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+        def Cube "Fin_14"
+        {
+            double size = 1
+            float3 xformOp:translate = (438.6667, 1.6800, 0)
+            float3 xformOp:scale = (31.3333, 8.6400, 900)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Thermal_Sink>
+            color3f[] primvars:displayColor = [(1, 0.5843, 0)]
+        }
+    }
+    def Xform "Layer_Structural_Mount"
+    {
+        float3 xformOp:translate = (0, -11.7000, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        custom string demiurge:layerName = "Structural Mount"
+        custom double demiurge:thicknessMM = 18
+        def Cube "MountBase"
+        {
+            double size = 1
+            float3 xformOp:translate = (0, -4.5000, 0)
+            float3 xformOp:scale = (820, 9, 820)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Structural_Mount>
+            color3f[] primvars:displayColor = [(0.3333, 0.3333, 0.3333)]
+        }
+        def Cube "Bracket_NE"
+        {
+            double size = 1
+            float3 xformOp:translate = (410, 0, 410)
+            float3 xformOp:scale = (160, 18, 160)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Structural_Mount>
+            color3f[] primvars:displayColor = [(0.3333, 0.3333, 0.3333)]
+        }
+        def Cube "Bracket_NW"
+        {
+            double size = 1
+            float3 xformOp:translate = (-410, 0, 410)
+            float3 xformOp:scale = (160, 18, 160)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Structural_Mount>
+            color3f[] primvars:displayColor = [(0.3333, 0.3333, 0.3333)]
+        }
+        def Cube "Bracket_SE"
+        {
+            double size = 1
+            float3 xformOp:translate = (410, 0, -410)
+            float3 xformOp:scale = (160, 18, 160)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Structural_Mount>
+            color3f[] primvars:displayColor = [(0.3333, 0.3333, 0.3333)]
+        }
+        def Cube "Bracket_SW"
+        {
+            double size = 1
+            float3 xformOp:translate = (-410, 0, -410)
+            float3 xformOp:scale = (160, 18, 160)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+            rel material:binding = </Component/Materials/mat_Structural_Mount>
+            color3f[] primvars:displayColor = [(0.3333, 0.3333, 0.3333)]
+        }
+    }
+}

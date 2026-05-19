@@ -1613,3 +1613,22 @@ g_ssot_single_source 위반.)
 - §6 형식 단순 — cockpit ②work zone 과 CLI `list-shelf` 가 동일
   `IngredientShelf` 파서 공유 (CLI↔cockpit 멱등 실증).
 - chip/matter 는 domain 맵이 없어 빈 선반 — 정직 (g3), 위조 0.
+
+### Decision 52 — 3D component export 포맷 = usdz / usda / stl / png 4종 (cockpit phase λ)
+
+**picked**: cockpit ComponentMode 3D viewer 의 export 는 `.usdz` ·
+`.usda` · `.stl` · PNG 스냅샷 4종을 지원한다. 직렬화는 `DemiurgeCore`
+의 순수 함수(`USDExporter` / `STLExporter`)로 두어 cockpit export 메뉴
+와 CLI `export-component` 가 동일 코드를 공유한다 (D50). `.obj` 는
+STL 과 용도가 겹쳐 제외. (Rejected: `.obj` 포함 — STL 과 CAD/프린팅
+용도 중복, 범위만 증가; glTF — RealityKit export 경로 없음.)
+
+**rationale**:
+- 사용자 게이트 2026-05-19 — export 포맷 범위 선택에서 "4종
+  (obj 제외)" 채택.
+- `.usdz`/`.usda` = Apple 생태계 표준 — Quick Look·AR 즉시 동작;
+  `.stl` = CAD·3D프린팅 범용; PNG = 문서 첨부용, 구현비용 ≈ 0.
+- 직렬화를 DemiurgeCore 순수 함수로 두어 cockpit↔CLI export 멱등
+  (g_ssot_single_source / D50) — viewer 와 다른 모델을 내보내는
+  사고 차단.
+- `.obj` 제외로 λ-3 범위 절감; 필요 시 후속 phase 에서 추가 가능.

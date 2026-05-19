@@ -2166,3 +2166,41 @@
   → exports/ 로 cp(`hexa-arch` CLI 진입점 미배선 — `hexa run` 은
   빈 argv). hexa-lang local commit 보류 지속(rfc043 병렬 세션
   미커밋 — git 안전).
+- 2026-05-19 — **phase λ — 3D ComponentMode 완성 + export 지원**
+  (사용자 "3d 먼저 완전히 완성 / 우리 방향 최대 완성도 / 필요한
+  사람한테 export"). design.md **D52** (export 포맷 = usdz/usda/
+  stl/png 4종, obj 제외). 10 sub-phase, 전부 measured-green:
+  - **λ-1** `ComponentGeometry`/`ComponentLayer` SSOT (DemiurgeCore)
+    — 레이어 실치수(mm)·재질·colorHex; BIPV 5겹 preset. viewer 의
+    하드코딩 박스 정의를 코어로 끌어올림 (D50 — viewer·exporter·
+    CLI 가 한 정의 공유).
+  - **λ-2/3** `USDExporter`(.usda) · `STLExporter`(.stl) — 코어
+    순수 함수, 의존성 0. cockpit·CLI 공유.
+  - **λ-4** CLI `emit-component` — 절차 BIPV artifact 를
+    `exports/component/geometry/` 에 .usda + .usdz(usdcat 패키징)
+    + `ComponentRecord` JSON 으로 emit.
+  - **λ-5** viewer USDZ 로드 경로 — `Entity.load` 로 실제 .usdz
+    렌더 (모드 토글: 분해 애니메이션 ⇄ USD 산출물), 없으면
+    procedural fallback.
+  - **λ-6** camera/interaction — pinch-zoom · 카메라 프리셋 4
+    (iso/top/front/side) · 애니메이션 토글 · 수동 explode 슬라이더.
+  - **λ-7** 레이어 라벨 — 선택 가능한 레이어 리스트 + 3D 하이라이트.
+  - **λ-8** viewer export 메뉴 — `.usda`/`.usdz`/`.stl`/PNG
+    스냅샷, `NSSavePanel`.
+  - **λ-9** CLI `export-component <fmt> [path]` — cockpit export 와
+    동일 `USDExporter`/`STLExporter` 공유 (D50).
+  - **λ-10** 마감 — `packageUSDZ` 를 DemiurgeCore 로 단일화
+    (CLI↔cockpit 공유), PLAN 로그, reinstall.
+  측정: `swift run CockpitApp` 빌드 green (CockpitApp 실행 확인);
+  `emit-component` → .usda/.usdz/.json 생성, .usdz `usdcat` 읽기
+  검증; `export-component stl` → 60 facets(5겹×12); `export-component
+  usda` → valid USD. **g3 정직**: BIPV geometry 는 PROCEDURAL
+  PLACEHOLDER — 그럴듯한 치수일 뿐 측정된 부품 아님.
+  `ComponentRecord` = `producer=demiurge_procedural_placeholder` ·
+  `GATE_OPEN` · `absorbed=false`, scope_caveats 3건 명시. exports/
+  component/geometry/ = demiurge 의 첫 component artifact (단 측정
+  record 아님 — geometry 가 well-formed 한 것과 thermal/구조
+  verdict 가 measured 인 것은 별개 게이트). 진짜 측정 component
+  producer = hexa-lang/component (P-⑨ — FreeCAD/gmsh 미설치로 별도
+  세션). viewer 3D 인터랙션(zoom·프리셋·레이어 선택·export 메뉴)은
+  컴파일 measured-green — 시각 동작은 GUI 확인 필요.

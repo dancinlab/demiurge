@@ -1,0 +1,24 @@
+{
+  "depth_mm" : 1000,
+  "display_name" : "BIPV Module (5-layer)",
+  "geometry_id" : "bipv_5layer_v0",
+  "interface" : "hexa-arch:component:geometry-record",
+  "layer_count" : 5,
+  "produced_at_utc" : "2026-05-19T14:21:25Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "demiurge_procedural_placeholder",
+    "scope_caveats" : [
+      "procedural placeholder geometry — plausible dimensions, NOT a measured component (g3)",
+      "geometry being well-formed != thermal / structural / EM verdicts being measured — those are separate gates",
+      "a measured component producer lives in hexa-lang/component (P-⑨); demiurge consumes it when it exists"
+    ]
+  },
+  "record_id" : "bipv_5layer_v0",
+  "schema_version" : "1.0",
+  "total_thickness_mm" : 41.4,
+  "usda_file" : "bipv_5layer_v0.usda",
+  "usdz_file" : "bipv_5layer_v0.usdz",
+  "width_mm" : 1000
+}
