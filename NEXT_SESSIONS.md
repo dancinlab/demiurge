@@ -347,6 +347,29 @@ reinstall, OR an honest "next pickup" note.
 
 ---
 
+## P-⑧ — hexa-* 검증 라이브러리 (workbench 완성 후)
+
+**Use this when:** the workbench + a real engine tool are in place,
+so genuine 7-verb measurements can run.
+
+**User intent (2026-05-19):** once the demiurge workbench is
+complete, take **hexa-rtsc · hexa-antimatter · hexa-cern · hexa-ufo**
+through demiurge for *real verification runs* (producing measured
+records) and turn them into a baseline library.
+
+**OPEN — TBD (awaiting user clarification):**
+- `hexa-ufo` — which domain? `domains/` carries `rtsc` /
+  `antimatter` / `cern` maps, but no `ufo` — is `hexa-ufo` a new
+  domain, an alias, or a sibling repo? TBD.
+- "기본 라이브러리" — the exact form: a set of demiurge-bundled
+  reference/verified projects? a separate deliverable? TBD.
+
+g3: none of the four may be called "verified" until a real 7-verb
+measurement record + gate exists — this depends on an engine tool
+(the same gap as P-②③ / P-④), so P-⑧ is a *post-completion* session.
+
+---
+
 ## Cross-cutting notes (apply to all sessions)
 
 - demiurge decisions are committed (design.md = the decision SSOT;
@@ -376,6 +399,12 @@ reinstall, OR an honest "next pickup" note.
   built SwiftPM package — phases α / α-2 / α-3 / β / γ / δ / η-1 all
   measured-green (`swift run` verified, commits e601e5b → 56f900a).
   The remaining phases were handed off as **P-⑥**.
+- 2026-05-19 — **P-⑧ added** (user intent). Once the workbench is
+  complete, hexa-rtsc / hexa-antimatter / hexa-cern / hexa-ufo are to
+  be run through demiurge for real verification → a baseline library.
+  Recorded as a post-completion handoff; two points (what `hexa-ufo`
+  is, the exact "기본 라이브러리" form) flagged TBD pending user
+  clarification.
 - 2026-05-19 — **cockpit workbench built (κ-1..κ-10) + P-⑦ added.**
   After P-⑥ closed, rfc_012 (project workbench) was discussed,
   locked (design.md D42..D50), and built as cockpit phases
