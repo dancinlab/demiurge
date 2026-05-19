@@ -1957,3 +1957,25 @@
   다음 (각 enum 회피 int/struct · §5 gate 까지 거대). track 1·2
   의 *dispatcher 층* 둘 다 measured-green; 측정(absorbed) 은
   모듈 body 들 + comb oracle 대조가 남음.
+- 2026-05-19 — **phase κ-26 — B1 enum 버그 = upstream inbox patch
+  (우회 아님)** (사용자 "upstream fix / direct fix / inbox 에
+  넣어줘"). 진단: `RegionShape.K_BY_K` 등 enum-variant 접근이
+  hexa codegen 의 generic Field-arm (`codegen_c2.hexa:3845`) 로
+  떨어져 `hexa_map_get_ic(RegionShape,…)` emit → C "undeclared
+  identifier" (올바름 = `RegionShape_K_BY_K`, gen2_enum_decl:5829
+  의 #define). rfc_003 "enum-equality broken" 의 동일 root cause.
+  이게 booksim sweep/leighton/traffic 컴파일 차단 → rfc_001 §8
+  chip §B 측정 진짜 blocker (도구·oracle 문제 아님 — comb oracle
+  이미 측정됨). **처리**: int/struct 우회 대신 hexa-lang
+  `inbox/patches/enum-variant-miscodegen-as-field-codegen-c2.md`
+  에 정밀 진단 + 제안 diff (Field-arm enum-name 가드 / 또는
+  parser EnumPath 분류) 기록 — hexa-lang governance (id002:
+  consumer→inbox patch, never inline; CLAUDE.md: 컴파일러 변경
+  PR-only) 정합. codegen_c2.hexa 는 병렬 hexa-lang 세션이 분당
+  commit 중이라 inline 동시편집 = 충돌·governance 위반 → inbox
+  patch 가 정직한 "direct upstream fix" 형태. **g3 정직**:
+  enum 버그 미해결 — booksim/Yosys 모듈 body 의 enum-bearing
+  부분은 이 patch 적용 전까지 막힘. demiurge 측 코드 0 추가,
+  진단·핸드오프만. 다음 = (hexa-lang 세션이) patch 적용 →
+  sweep/leighton 컴파일 → booksim cmd_sweep/measure (B2) ·
+  rfc_006 §4 모듈 enum 자유.
