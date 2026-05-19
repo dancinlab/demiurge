@@ -139,7 +139,8 @@ struct WorkbenchView: View {
             Button { showNewProject = true } label: {
                 Label("새 프로젝트", systemImage: "plus")
             }
-            .help("새 프로젝트 만들기 (rfc_012 §3)")
+            .keyboardShortcut("n", modifiers: .command)
+            .help("새 프로젝트 만들기 — ⌘N (rfc_012 §3)")
         }
         ToolbarItem(placement: .navigation) {
             projectMenu
@@ -449,7 +450,9 @@ struct WorkbenchView: View {
                 Image(systemName: "chevron.left")
             }
             .buttonStyle(.borderless)
+            .keyboardShortcut(.leftArrow, modifiers: .command)
             .disabled(!project.canRetreat)
+            .help("이전 단계 — ⌘←")
             Spacer()
             Text(expertMode ? project.currentVerb.canonical : project.currentVerb.plain)
                 .font(.caption.weight(.medium))
@@ -458,16 +461,23 @@ struct WorkbenchView: View {
                 Image(systemName: "chevron.right")
             }
             .buttonStyle(.borderless)
+            .keyboardShortcut(.rightArrow, modifiers: .command)
             .disabled(!project.canAdvance)
+            .help("다음 단계 — ⌘→")
         }
     }
 
     @ViewBuilder private func verbRow(_ verb: Verb) -> some View {
         let state = activeProject?.state(of: verb) ?? .upcoming
         HStack(spacing: 8) {
-            Image(systemName: verbRowSymbol(state, verb: verb))
-                .foregroundStyle(progressTint(state))
-                .frame(width: 18)
+            if expertMode {
+                Image(systemName: verbRowSymbol(state, verb: verb))
+                    .foregroundStyle(progressTint(state))
+                    .frame(width: 18)
+            } else {
+                Text(verbStateEmoji(state))
+                    .frame(width: 18)
+            }
             VStack(alignment: .leading, spacing: 1) {
                 Text(expertMode ? verb.canonical : verb.plain)
                     .font(.callout)
@@ -489,6 +499,17 @@ struct WorkbenchView: View {
         case .current:  return "circle.inset.filled"
         case .visited:  return "hourglass"
         case .upcoming: return verb.symbol
+        }
+    }
+
+    /// §4 signal-light glyph for plain mode — honest ⏳ / ✅ wording
+    /// rendered as an emoji (rfc_012 §4).
+    private func verbStateEmoji(_ state: VerbState) -> String {
+        switch state {
+        case .done:     return "✅"
+        case .current:  return "🔵"
+        case .visited:  return "⏳"
+        case .upcoming: return "⚪️"
         }
     }
 

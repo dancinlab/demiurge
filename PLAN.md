@@ -1606,3 +1606,20 @@
   주요 표면(①②③④ + θ-2 + REJECTED 가드 + canvas mode) 골격
   완결. 다음 = κ-8 (workbench 마감 디테일 / expert mode 완성도
   — 미정, 게이트).
+- 2026-05-19 — **phase κ-8 — workbench UX 마감 빌드 green**
+  (rfc_012 §4). 사용자 게이트 — 3택 중 "workbench UX 마감"
+  선택. (1) **키보드 단축키** — `+` 새 프로젝트 = ⌘N · verb
+  stepper 이전/다음 = ⌘← / ⌘→ (help 텍스트에 단축키 표기).
+  (2) **§4 신호등 이모지** — `verbStateEmoji` 추가, plain 모드
+  ① recipe rail 의 verb row leading 을 SF Symbol → 이모지
+  (✅ 측정됨 / 🔵 지금 / ⏳ 지난 단계·미측정 / ⚪️ 아직);
+  expert 모드는 SF Symbol + 색 tint 유지. §4 의 "honesty =
+  signal light" 를 plain 표면에 직접 노출. 측정: `swift run
+  CockpitApp` 로컬 빌드 — `Build of product 'CockpitApp'
+  complete!` (4.40s) · 에러 0 · 경고 0. **g3 정직**: 이모지는
+  verbState (포인터 기반) 매핑일 뿐 — ✅ 는 doneVerbs (측정
+  record) 일 때만, 단계 stepper 로는 ⏳ 까지만 (κ-3 g3 규칙
+  그대로). rfc_012 workbench = ①②③④ + θ-2 + REJECTED 가드 +
+  canvas mode + UX 마감 까지 골격 완결. 다음 = 문서 정합
+  (rfc_012 status / AGENTS.tape @N / GOAL.md 현재위치) 또는
+  CLI ↔ Project 정합 — 미정.
