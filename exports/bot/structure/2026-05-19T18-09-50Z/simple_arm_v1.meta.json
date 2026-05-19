@@ -1,0 +1,48 @@
+{
+  "artifacts": {
+    "urdf": "simple_arm_v1.urdf"
+  },
+  "geometry_id": "simple_arm_v1",
+  "measurements": {
+    "actuated_joint_names": [
+      "joint_1",
+      "joint_2"
+    ],
+    "base_link": "base_link",
+    "bbox_max_m": [
+      0.1,
+      0.1,
+      0.7
+    ],
+    "bbox_min_m": [
+      -0.1,
+      -0.1,
+      0.0
+    ],
+    "bbox_size_m": [
+      0.2,
+      0.2,
+      0.7
+    ],
+    "dof": 2,
+    "joint_count": 3,
+    "joint_types": {
+      "continuous": 0,
+      "fixed": 1,
+      "floating": 0,
+      "planar": 0,
+      "prismatic": 0,
+      "revolute": 2
+    },
+    "link_count": 4,
+    "total_mass_kg": 3.6
+  },
+  "ok": true,
+  "topology": {
+    "kind": "2_link_revolute_arm",
+    "robot_name": "simple_arm_v1",
+    "source": "self_generated_hermetic"
+  },
+  "urdf_sha256_16": "5a585f18e0de1786",
+  "yourdfpy_version": "0.0.60"
+}

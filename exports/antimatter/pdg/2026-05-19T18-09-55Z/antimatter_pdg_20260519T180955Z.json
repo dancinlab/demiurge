@@ -1,0 +1,94 @@
+{
+  "artifacts" : {
+    "csv" : "pdg_antiparticles_v1.csv",
+    "meta" : "pdg_antiparticles_v1.meta.json"
+  },
+  "fingerprint" : "ca99cd63561b3727",
+  "geometry_id" : "pdg_antiparticles_v1",
+  "interface" : "demiurge:antimatter:pdg-lookup-record",
+  "measurements" : {
+    "rows" : 4,
+    "table" : [
+      {
+        "anti_flag" : 2,
+        "charge" : 1,
+        "decay_summary" : "stable (no measured decay width)",
+        "is_self_conjugate" : false,
+        "label" : "positron",
+        "mass_lower_mev" : 1.5e-10,
+        "mass_mev" : 0.51099895,
+        "mass_upper_mev" : 1.5e-10,
+        "name" : "e+",
+        "pdg_id" : -11,
+        "pdg_name" : "e",
+        "spin_type" : "5",
+        "width_pdg_units" : 0
+      },
+      {
+        "anti_flag" : 1,
+        "charge" : -1,
+        "decay_summary" : "stable (no measured decay width)",
+        "is_self_conjugate" : false,
+        "label" : "antiproton",
+        "mass_lower_mev" : 2.9e-07,
+        "mass_mev" : 938.27208816,
+        "mass_upper_mev" : 2.9e-07,
+        "name" : "p~",
+        "pdg_id" : -2212,
+        "pdg_name" : "p",
+        "spin_type" : "5",
+        "width_pdg_units" : 0
+      },
+      {
+        "anti_flag" : 1,
+        "charge" : 0,
+        "ctau_m" : 263348432482.72055,
+        "decay_summary" : "unstable: lifetime=878.4 s, width=7.493e-25 (PDG units)",
+        "is_self_conjugate" : false,
+        "label" : "antineutron",
+        "lifetime_s" : 878.4358160295031,
+        "mass_lower_mev" : 5e-07,
+        "mass_mev" : 939.5654205,
+        "mass_upper_mev" : 5e-07,
+        "name" : "n~",
+        "pdg_id" : -2112,
+        "pdg_name" : "n",
+        "spin_type" : "5",
+        "width_pdg_units" : 7.493e-25
+      },
+      {
+        "anti_flag" : 2,
+        "charge" : 1,
+        "ctau_m" : 658.6383866029925,
+        "decay_summary" : "unstable: lifetime=2.197e-06 s, width=2.996e-16 (PDG units)",
+        "is_self_conjugate" : false,
+        "label" : "antimuon",
+        "lifetime_s" : 2.1969811748999784e-06,
+        "mass_lower_mev" : 2.3e-06,
+        "mass_mev" : 105.6583755,
+        "mass_upper_mev" : 2.3e-06,
+        "name" : "mu+",
+        "pdg_id" : -13,
+        "pdg_name" : "mu",
+        "spin_type" : "5",
+        "width_pdg_units" : 2.9959836e-16
+      }
+    ]
+  },
+  "particle_version" : "0.26.2",
+  "produced_at_utc" : "2026-05-19T18:09:55Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "particle@0.26.2 (PDG live-data lookup)",
+    "scope_caveats" : [
+      "particle@0.26.2 의 PDG 데이터는 *real measured constants* (decades 동안 accelerator-experiment 가 측정·집계한 PDG 공식값) 이지만, **이 record 는 demiurge 의 실험 측정이 아니라 PDG aggregator 의 record 를 복사한 것** (g3 — demiurge 가 가속기를 돌린 적 없음).",
+      "measurement_gate = GATE_OPEN 영구 / absorbed = false 영구 — 흡수에 해당하려면 PDG aggregation pipeline 자체의 clean-room re-derivation 이 필요 (다년 가속기 프로그램). 본 cell 의 scope 는 *citable lookup* 이지 in-house measurement 가 아님.",
+      "decay_summary 필드는 *brief text* — 각 입자의 full PDG decay-mode table (per-mode branching fractions, daughter id) 은 record 10× 비대화를 막기 위해 보류 (andrej-karpathy minimum-new-structure). 후속 record 가 필요시 확장.",
+      "antiparticle short-list = 4 개 (positron · antiproton · antineutron · antimuon) — domains/antimatter.md §2 의 trap + PET 컨텍스트에 등장하는 standard 입자 집합. 다른 antiparticle (anti-tau · anti-quark) 은 본 cell scope 밖 — 별도 record 후속."
+    ]
+  },
+  "python_version" : "3.14.4",
+  "record_id" : "antimatter_pdg_20260519T180955Z",
+  "schema_version" : "1.0"
+}

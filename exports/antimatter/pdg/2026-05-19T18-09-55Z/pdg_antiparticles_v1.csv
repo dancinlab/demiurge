@@ -1,0 +1,5 @@
+label,pdg_id,name,mass_mev,charge,lifetime_s,ctau_m,decay_summary
+positron,-11,e+,0.51099895,1.0,stable,stable,stable (no measured decay width)
+antiproton,-2212,p~,938.27208816,-1.0,stable,stable,stable (no measured decay width)
+antineutron,-2112,n~,939.5654205,0.0,878.4358160295031,263348432482.72055,"unstable: lifetime=878.4 s, width=7.493e-25 (PDG units)"
+antimuon,-13,mu+,105.6583755,1.0,2.1969811748999784e-06,658.6383866029925,"unstable: lifetime=2.197e-06 s, width=2.996e-16 (PDG units)"

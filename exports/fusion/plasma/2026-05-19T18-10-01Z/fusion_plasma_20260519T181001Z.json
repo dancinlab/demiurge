@@ -1,0 +1,49 @@
+{
+  "artifacts" : {
+    "csv" : "plasma_iter_core_v1.csv",
+    "meta" : "plasma_iter_core_v1.meta.json"
+  },
+  "geometry_id" : "plasma_iter_core_v1",
+  "interface" : "demiurge:fusion:plasma-derived-record",
+  "measurements" : {
+    "f_ce_Hz" : 148360196323.3651,
+    "f_ci_Hz" : 40419803.0592038,
+    "f_pe_Hz" : 89786628204.87434,
+    "f_pi_Hz" : 1482006333.0401187,
+    "lambda_D_m" : 7.433941994700464e-05,
+    "omega_ce_rad_s" : 932174605709.2465,
+    "omega_ci_rad_s" : 253965112.70068184,
+    "omega_pe_rad_s" : 564146023118.0627,
+    "omega_pi_rad_s" : 9311720416.90477,
+    "r_Le_m" : 6.490798862141296e-05,
+    "r_Li_m" : 0.00385471565638207,
+    "rows" : 1,
+    "v_A_m_s" : 8175337.380572415,
+    "v_th_e_m_s" : 59309695.84768014,
+    "v_th_i_m_s" : 978958.0766568249
+  },
+  "plasmapy_version" : "2026.2.0",
+  "produced_at_utc" : "2026-05-19T18:10:01Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "plasmapy@2026.2.0 (ITER_core_reference derivation)",
+    "scope_caveats" : [
+      "plasmapy@2026.2.0 의 derived 파라미터 (omega_pe · lambda_D · v_A · gyrofrequencies · thermal speeds) 는 *real* — Bohm·Debye·Lorentz algebra 의 수학적 사실이지만, **이 record 는 demiurge 의 device 측정이 아니라 textbook ITER reference 입력 (n_e=1e20 · T_e=10 keV · B=5.3 T) 을 derived 한 것** (g3 — demiurge 가 가속기/토카막을 돌린 적 없음).",
+      "measurement_gate = GATE_OPEN 영구 / absorbed = false 영구 — 진짜 흡수에 해당하려면 Thomson-scattering / interferometry / magnetic-probe 측정이 producer 에 연결 되어야 함 (JET / TFTR / KSTAR / SPARC / ITER 실측). 본 cell 의 scope 는 *textbook-derived parameters* 이지 in-house plasma 측정이 아님.",
+      "scenario = D+ majority 1종만 (real ITER 는 D-T 50:50; T+ contribution 본 v1 에서 미포함). 다른 ion mix (H · He³ · He⁴ · D-T) 는 별도 record 후속.",
+      "cold-plasma 가정 — 상대론적 보정은 T_e = 10 keV 에서 v_th_e ≈ 0.2c 정도이므로 ~2 % 수준이지만 미적용. equilibrium (G-S solution) · edge/SOL turbulence · neutronics 는 본 record scope 밖 (각각 FreeGS / BOUT++ / OpenMC — domains/fusion.md §2)."
+    ]
+  },
+  "python_version" : "3.14.4",
+  "record_id" : "fusion_plasma_20260519T181001Z",
+  "scenario" : {
+    "B_T" : 5.3,
+    "T_e_keV" : 10,
+    "T_i_keV" : 10,
+    "ion_species" : "D+",
+    "n_e_m3" : 1e+20,
+    "name" : "ITER_core_reference"
+  },
+  "schema_version" : "1.0"
+}

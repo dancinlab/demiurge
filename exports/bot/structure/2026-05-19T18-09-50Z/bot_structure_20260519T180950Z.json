@@ -1,0 +1,64 @@
+{
+  "artifacts" : {
+    "meta" : "simple_arm_v1.meta.json",
+    "urdf" : "simple_arm_v1.urdf"
+  },
+  "geometry_id" : "simple_arm_v1",
+  "interface" : "demiurge:bot:structure-record",
+  "measurements" : {
+    "actuated_joint_names" : [
+      "joint_1",
+      "joint_2"
+    ],
+    "base_link" : "base_link",
+    "bbox_max_m" : [
+      0.1,
+      0.1,
+      0.7
+    ],
+    "bbox_min_m" : [
+      -0.1,
+      -0.1,
+      0
+    ],
+    "bbox_size_m" : [
+      0.2,
+      0.2,
+      0.7
+    ],
+    "dof" : 2,
+    "joint_count" : 3,
+    "joint_types" : {
+      "continuous" : 0,
+      "fixed" : 1,
+      "floating" : 0,
+      "planar" : 0,
+      "prismatic" : 0,
+      "revolute" : 2
+    },
+    "link_count" : 4,
+    "total_mass_kg" : 3.6
+  },
+  "produced_at_utc" : "2026-05-19T18:09:50Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "yourdfpy@0.0.60",
+    "scope_caveats" : [
+      "yourdfpy 의 URDF parse 결과 — 숫자는 실제 (link_count = 4, joint_count = 3, DOF = 2, total_mass = 3.6 kg, bbox = 0.2×0.2×0.7 m) 이지만 *URDF spec metadata* 일 뿐, 실제 로봇 하드웨어 측정 아님 (g3 — 본 producer 는 spec 의 trimesh 시각 bounding box 까지만, 동역학 / 접촉 / 페이로드 / 액추에이터 응답 없음).",
+      "URDF 는 self-generated hermetic 2-link revolute arm — UR5 / Franka 같은 vendor datasheet 흡수 아님. 후속 phase 에서 ros-industrial/universal_robot 의 BSD URDF 를 vendoring 하면 cross-host parity 가능 (cohort-pickup note 참조).",
+      "urdfpy 는 deprecated (2020 마지막 릴리스) — 본 producer 는 그 maintained successor yourdfpy 0.0.60 으로 fallback. 두 lib 모두 미설치 시 honest gap, silent success 금지.",
+      "measurement_gate = GATE_OPEN 영구 — Gazebo regression / Drake verification primitives (Lyapunov, SOS, contact-implicit) / ros2_control HIL / ISO 10218 risk-assessment 이 들어와야 GATE_CLOSED 후보 (domains/bot.md §2 7-verb 맵, ANALYZE / VERIFY / HANDOFF 칸).",
+      "absorbed=true 절대 금지 — domains/bot.md §1 의 bot 결과물 = URDF + actuator/sensor 선정 + controller architecture + safety analysis 의 4중 트리 중 URDF parse 1 leaf 만 본 producer 가 커버 (D17 — hexa-matter / hexa-lang 가 절차 SSOT, demiurge 는 consumer)."
+    ]
+  },
+  "record_id" : "bot_structure_20260519T180950Z",
+  "schema_version" : "1.0",
+  "topology" : {
+    "kind" : "2_link_revolute_arm",
+    "robot_name" : "simple_arm_v1",
+    "source" : "self_generated_hermetic"
+  },
+  "urdf_sha256_16" : "5a585f18e0de1786",
+  "yourdfpy_version" : "0.0.60"
+}
