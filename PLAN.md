@@ -1425,3 +1425,20 @@
   §5 에 명문화. 여전히 DRAFT — design.md decision 0, governance 0,
   코드 0. §8 의 나머지 open question (+버튼 흐름 / 무엇을-설계 /
   expert 모드 / 데이터모델+governance) 미결.
+- 2026-05-19 — **rfc_012 DISCUSSION COMPLETE — §8 의 7 open
+  question 전부 resolved** (step-by-step, 사용자 한 픽씩 gate).
+  resolved 7: (1) `+` 버튼 = ④ 상단 toolbar · (2) "무엇을 설계" =
+  C (자유 텍스트 → AI 도메인 추론 → 유저 [네/바꾸기] 확인) ·
+  (3) ① sidebar = 7-verb 레시피 rail · (4) layout = 3-column
+  (①③ 좁게 · ② 가장 넓게, 상단 재료선반 / 하단 3D·차트·record
+  메인) · (5) 데이터 모델 = C (manifest → `~/Library/Application
+  Support/lab.dancin.demiurge/projects/`, exports/ 밖; records →
+  AI agent producer → exports/) · (6) project↔records = C (자기
+  7-verb 생성분만 소유, 기존 ~50 records 는 참고 열람) · (7) verb
+  별 develop = C (대화로 진행, "실제로 돌리기" → θ-2 도구 실행;
+  un-run = ⏳, θ-2 측정 record 만 ✅). rfc_012 status DRAFT →
+  **DISCUSSION COMPLETE** (§1–§9 갱신). **g3 정직**: rfc_012 는
+  *완전한 종이 설계* 이나 아직 design.md decision 0, governance 0,
+  코드 0 — lock+build 는 별도 go (rfc_009 D22 의 design/build
+  분리 패턴). cockpit 은 여전히 rfc_009–011 read-only viewer
+  (`1a6da4c`). 다음 = design.md D42.. lock + governance.

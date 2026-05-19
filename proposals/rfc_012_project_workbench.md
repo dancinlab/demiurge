@@ -1,10 +1,10 @@
 # rfc_012 — Project workbench (cockpit evolution: viewer → workbench)
 
-> Status: **DRAFT / DISCUSSION** (2026-05-19) — NOT yet locked. No
-> `design.md` decision, no governance, no code derives from this file
-> yet. It is the running record of an in-progress layout/UX discussion
-> so the thread is not lost. Open questions in §8 must be gated
-> (one decision at a time) before any implementation.
+> Status: **DISCUSSION COMPLETE** (2026-05-19) — §8's seven open
+> questions are all resolved through step-by-step discussion. Still
+> NOT locked: no `design.md` decision, no governance change, no code
+> yet — `design.md` decision-lock + implementation are a separate
+> step (the user has been running this in discussion-only mode).
 > Builds-on: `rfc_009` / `rfc_010` / `rfc_011` (the cockpit so far —
 > a read-only record viewer). This RFC is the discussion of turning it
 > into a project workbench.
@@ -49,13 +49,33 @@ sibling repo. One project = one 7-verb run over one design target.
 ## 3. Single screen + in-place `+` button (user-resolved)
 
 The user resolved: **NO separate "pick a project" screen.** There is
-ONE screen (the workbench, "화면 B" below); the `+` button lives
-*inside* it and both creates and switches projects.
+ONE screen (the workbench, §5); the `+` button lives *inside* it and
+both creates and switches projects. `+` location = **④ top toolbar**
+(resolved — §5 ASCII).
 
-`+` flow: click `+` → enter project name → choose what to design →
-the workbench opens on that project's verb 1 (명세 / SPECIFY).
+`+` flow (project creation):
 
-`+` button location = **OPEN QUESTION** (§8).
+```
+④ [+] click
+   → "새 프로젝트 이름은?"        user types a project name
+   → "무엇을 만들고 싶으세요?"    user types FREE TEXT (plain words)
+   → 🍳 LLM infers the domain, e.g. "칩 설계 프로젝트군요 — chip
+        도메인으로 시작할게요 — 맞나요? [네 / 바꾸기]"
+   → user confirms (or corrects) the domain
+   → ② workbench opens on verb 1 (명세 / SPECIFY)
+```
+
+**"무엇을 설계" = option C (user-resolved 2026-05-19): free text →
+AI infers the domain → user confirms.** The user never has to know
+the 15 domain names (`cern` / `rtsc` / …); they describe the goal in
+plain words and the LLM maps it to a domain, which the user then
+ratifies. (Rejected: A — pick from a 15-domain menu, non-experts
+don't know the names; B — free text only, the system can stall when
+it cannot resolve a domain. C keeps A's determinacy via the confirm
+step and B's friendliness via free input.)
+
+g3 note: the AI *infers* but never *finalizes* the domain — the user
+[네/바꾸기] confirm step keeps the human as the authority.
 
 ---
 
@@ -75,8 +95,16 @@ The honesty stays; only the *wording* becomes plain:
 | 7-verb (명세→…→인계)   | "7단계: 무엇을→어떻게→설계→점검→만들기→검증→넘기기" |
 
 → honesty = a **signal light** (⏳ / 🔶 / ✅). Plain on the surface,
-g3-honest underneath. An optional expert toggle could reveal the raw
-terms — §8.
+g3-honest underneath.
+
+**Expert toggle (resolved — option B):** default = plain language; a
+toggle (④ top toolbar) reveals the raw `GATE_*` / `provenance` /
+`F1F2` verbatim. OFF by default — non-experts never encounter it; an
+expert flips it ON to verify provenance directly (g3's public-audit
+principle — verification must stay possible). The §4 mapping above is
+bidirectional; the toggle only picks which side is shown. (Rejected:
+A plain-only — blocks expert verification, weakens g3; C always-both
+— clutter that distracts the non-expert.)
 
 ---
 
@@ -157,47 +185,98 @@ The plain-language layer (§4) MUST NOT weaken `g3`. Rules:
 
 ---
 
-## 7. Data model — where projects live
+## 7. Data model — where projects live (resolved — option C)
 
-Proposed: `exports/projects/<name>/` — project manifest + the records
-that project produced. This **touches `@D g_cockpit_isolation`**:
-invariant (a) is currently read-only on `exports/**`. A workbench that
-CREATES projects writes there. Reconciliation needed — likely the
-D34 pattern (the AI agent is the producer; the cockpit triggers).
-This is an OPEN QUESTION (§8) — NOT resolved.
+**Two data kinds, two homes** (user-resolved 2026-05-19):
+
+- 🗄 **project manifest** — name · what-to-design · 7-verb progress
+  state. This is the **cockpit's own work-state**, NOT an `exports/`
+  record. It lives OUTSIDE `exports/`, at the macOS app-data standard
+  location:
+  `~/Library/Application Support/lab.dancin.demiurge/projects/<name>/`
+
+- 📸 **records the project produces** (F1F2 etc.) — D7
+  producer-owned; written to `exports/` by the **AI agent** (Claude
+  Code CLI, θ) under `@D g_ai_agent_action_surface` (D34). The
+  cockpit *triggers*, the agent *produces* — never the cockpit
+  directly.
+
+→ `@D g_cockpit_isolation` stays intact — it is the *records honesty
+boundary*; the manifest is the cockpit's app-state, *outside* that
+boundary. The rule will get a one-line clarification (same pattern as
+D41's a-records / a-docs split): a new clause permitting the cockpit
+to write its **own app-state** under Application Support — explicitly
+NOT `exports/`.
+
+(Rejected: A — cockpit writes `exports/` directly: kills invariant
+(d) + a g3 risk, the cockpit could mint records without a measurement
+gate. B — agent-mediate even the manifest: a Claude Code subprocess
+per trivial manifest write is overkill.)
+
+**Project ↔ records ownership (resolved — option C):** a project
+OWNS only the records its OWN 7-verb run produces. The ~50 existing
+`exports/` records (rfc_001–003 NoC measurements) are **viewable as
+reference** in the ② work zone — the cockpit's original viewer role
+— but are **never folded into** the project. This keeps provenance
+1:1 (each record traces to exactly one producing project). (Rejected:
+A — own-only with no reference view, discards measured assets; B —
+auto-fold existing records into the project, blurs which record
+belongs to which project and weakens g3 provenance tracing.)
 
 ---
 
-## 8. Open questions (NOT decided — discussion ongoing)
+## 8. Open questions
 
-Each must be gated separately (one decision at a time) before code:
+### Resolved during discussion (2026-05-19)
 
-1. **`+` button location** — ④ toolbar / ① sidebar top / floating?
-2. **"무엇을 설계"** — pick from the 15 domains / free-text goal /
-   both?
-3. **expert mode** — plain-language only, or a toggle that reveals
-   raw `GATE_*` / `provenance` / `F1F2`?
-4. **① sidebar = 7-verb stages?** — replaces the current
-   Chat/Artifacts tabs. Where do Chat (rfc_011 D37) and the Artifact
-   browser go then?
-5. **project data location + governance** — `exports/projects/<name>/`
-   vs elsewhere; how `@D g_cockpit_isolation` (a) read-only is
-   reconciled with project creation (the cockpit writing).
-6. **project ↔ existing records** — does a project consume the 50
-   existing F1F2 records, or only ones it generates?
-7. **what "develop" means per verb** — at verb 5 합성/SYNTHESIZE,
-   does the workbench invoke a real tool (θ-2 / AI agent), or just
-   record intent?
+- **`+` button location** → ④ top toolbar (§3, §5).
+- **"무엇을 설계"** → option C: free text → AI infers domain → user
+  confirms (§3).
+- **① sidebar = 7-verb stages** → yes; ① is the narrow 7-verb recipe
+  rail (§5). Chat became its own narrow centre column ③; the Artifact
+  browser folds into ② work zone (a result-visualization mode).
+- **Layout** → 3-column, ② widest & split (§5).
+- **project data location + governance** → option C: manifest in
+  `~/Library/Application Support/lab.dancin.demiurge/projects/`
+  (outside `exports/`); records via the AI agent into `exports/`;
+  `@D g_cockpit_isolation` gains a cockpit-app-state clause (§7).
+- **expert mode** → option B: plain language by default, a ④-toolbar
+  toggle reveals raw `GATE_*` / `provenance` / `F1F2` (§4).
+- **project ↔ existing records** → option C: a project owns only the
+  records its own 7-verb run produces; the ~50 existing `exports/`
+  records are viewable as reference, never folded in (§7).
+- **what "develop" means per verb** → option C: verb stages advance
+  by conversation/planning by default; a "실제로 돌리기 / run for
+  real" action invokes the real tool via θ-2 (the rfc_011 scoped
+  AI-agent action dispatch). Un-run stages stay ⏳; only a θ-2 run
+  with a measured record turns a stage ✅ (§6 signal light, g3).
+  (Rejected: A design-only — never measures, fails GOAL's "compute &
+  verify the design itself"; B always-auto-run — a Yosys/OpenROAD
+  call on every verb entry, rate-limit blowup, P-④'s lesson.)
+
+### Still open
+
+(none — all seven resolved 2026-05-19.)
 
 ---
 
-## 9. What is NOT decided (g3 — discussion stage)
+## 9. State — discussion complete, not yet locked (g3)
 
-This RFC is a DRAFT. Nothing here is a `design.md` decision; no
-governance changed; no code written. The current cockpit is still the
-rfc_009–011 read-only viewer (commit `1a6da4c`). The project-workbench
-direction is agreed in spirit (user directive) but every concrete
-choice in §8 is open. Implementation begins only after §8 is gated.
+§8's seven questions are all resolved through step-by-step
+discussion. But this is STILL not built:
+- no `design.md` decision is locked (the resolved §8 picks would
+  become a batch of `### Decision N` blocks — D42.. — when the user
+  says go);
+- no governance changed (§7 needs a `@D g_cockpit_isolation`
+  cockpit-app-state clause; the workbench needs the existing
+  `@D g_ai_agent_action_surface` for records);
+- no code written — the cockpit is still the rfc_009–011 read-only
+  viewer (commit `1a6da4c`).
+
+So rfc_012 is a *complete design* awaiting an explicit lock+build
+go-ahead — same DESIGN/build separation as rfc_009 (D22) and the
+phase-α..ι sequence. Honest position: the project-workbench is
+fully designed on paper, zero of it is built.
 
 ---
 
