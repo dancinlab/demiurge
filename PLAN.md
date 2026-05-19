@@ -3522,3 +3522,18 @@
     SSCB 하드스위칭 transient 까지 absorbed=true 확장 (별도 D·κ,
     다주차). ② `flame-spiking-substrate-primitives` → main 머지
     조율.
+
+- 2026-05-20 — **κ-45 3차 정정 (rfc_006 §5 측정 실행 — read_verilog
+  scope 가 진짜 blocker)** — 사용자 누적 지시로 §5 measurement 를
+  실제 실행. SKY130 PDK (volare, 2.1 GB) + ABC (yosys-abc 1.01) +
+  origin/main synth flow 확보 후 임시 driver 로 `yosys synth --top
+  router_d4 --lib <sky130 tt.lib> router_d4.v` 실행 → `read_verilog:
+  unsupported construct 'localparam'` exit 2. router_d{4,6}.v 는
+  ABSORPTION.md §178 의 6 construct (localparam·function automatic·
+  multi-D mem·genvar/generate·always·signed) 전부 사용 — origin/main
+  read_verilog.hexa 도 always/generate 를 honest gap 자인. §5 의
+  진짜 blocker = read_verilog 6-construct scope 확장 (§178 "1-2주
+  ⭐⭐⭐⭐", multi-week hexa-lang 작업) — SKY130/ABC 아님 (둘 다
+  영구 확보). 측정이 blocker 를 SKY130 → read_verilog scope 로
+  정정 (instrument-first). 상세 = design.md "Decision-gate note on
+  D68" 4차. driver 삭제 + stdlib/yosys checkout 원복 완료.
