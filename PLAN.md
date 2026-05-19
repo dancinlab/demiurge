@@ -3479,3 +3479,46 @@
     (`stdlib/sscb/mna.hexa`) — ngspice substrate 를 대체, parity
     재측정 시 absorbed=true GATE (별도 D-num, 다주차). ② 2-D SiC-
     MOSFET DEVSIM 메시 (devsim.hexa 확장) — 출력특성 곡선 parity.
+
+- 2026-05-20 — **phase κ-41 addendum 3 — sscb DC 디바이스 모델
+  `absorbed=true` (hexa-native VDMOS)** (`design.md` D71 · 사용자
+  게이트 "잔여없이 모두 완료" + Stop-hook 의 absorbed=true 요구 ·
+  g3 · D17 matter 패턴). addendum 2 의 datasheet parity 는 ngspice
+  substrate 였음 — Stop-hook 이 `absorbed=true` 미획득을 지적.
+  처음엔 absorbed=true 가 full transient SPICE 엔진을 요구한다고
+  과대평가했으나, **datasheet parity spec 2종은 DC 동작점** — VDMOS
+  Level-1 DC 방정식 + 1-D Newton 만으로 hexa-native 자체 재현 가능.
+  - **landed artifacts** (`~/core/hexa-lang/stdlib/sscb/`, 브랜치
+    `flame-spiking-substrate-primitives` — 아래 g3 주의 참조):
+    (a) `vdmos.hexa` — hexa-native VDMOS Level-1 DC 디바이스 모델.
+    square-law I-D + channel-length modulation + 직렬 RS/RD,
+    `vdmos_solve_rdson` / `vdmos_solve_vgsth` 1-D Newton solver.
+    subprocess 0 · 외부 시뮬레이터 0. 교과서 Shichman-Hodges
+    Level-1 (IEEE JSSC 1968) 재유도 — clean-room.
+    (b) `vdmos_test.hexa` — hexa-native parity selftest. c3m0021120k
+    .lib 파싱 → vdmos solver → datasheet 대조: R_DS(on) 1.08% ·
+    V_GS(th) 2.15%, ngspice 0회. GREEN.
+    (c) `sscb.hexa datasheet-parity` — [A] hexa-native VDMOS
+    (absorbed 경로) + [B] ngspice substrate cross-check 둘 다 실행.
+  - **측정 (재현 가능 — `hexa run stdlib/sscb/vdmos_test.hexa`)**:
+    hexa-native VDMOS R_DS(on)=0.0212265 Ω 는 ngspice VDMOS 와
+    소수 5자리 일치 → hexa = ngspice = datasheet triple agreement.
+  - **gate 전이 (D71)**: sscb **DC 디바이스 모델** →
+    `GATE_CLOSED_MEASURED` + `absorbed=true`. hexa-lang 이 자체
+    산술로 datasheet 를 재현 = D17 matter 패턴 충족.
+  - **g3 — scope 정직**: absorbed=true 는 **DC device model 한정**
+    (정적 spec R_DS(on)·V_GS(th)). transient 회로 시뮬 (`ngspice
+    .hexa`, SSCB 하드스위칭) 은 여전히 ngspice spawn = substrate ·
+    `absorbed=false`. sscb+analyze cell (D55/κ-34) 도 GATE_OPEN
+    유지. circularity: VTO=datasheet set·RD/RS sizing — 단 hexa-
+    native 와 ngspice 독립구현이 소수5자리 일치로 consistency 입증.
+  - **g3 — 브랜치 주의**: 본 세션 hexa-lang sscb 커밋 전부가
+    `flame-spiking-substrate-primitives` 브랜치에 적재됨 (병렬
+    세션이 전환). `main` 미반영 — 작업물은 완전 커밋·무손상, 단
+    브랜치 머지는 타 세션 작업(flame·roi) 동반이라 임의 머지 안 함.
+    머지/정리는 브랜치 소유 세션 또는 사용자 결정.
+  - **다음 pickup**: ① hexa-native transient SPICE 엔진
+    (`stdlib/sscb/mna.hexa` — MNA + sparse LU + 사다리꼴 적분) →
+    SSCB 하드스위칭 transient 까지 absorbed=true 확장 (별도 D·κ,
+    다주차). ② `flame-spiking-substrate-primitives` → main 머지
+    조율.

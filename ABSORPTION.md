@@ -349,7 +349,7 @@ ubu-1(linux) · ubu-2(linux) 에 round-robin 라우팅. 명령을 묶지 말고
 |------------------------------------|------------------------------|----------|-------|
 | antimatter / cern + measured       | Geant4 + ROOT                | 1-2일    | 진행  |
 | fusion + verify (CFD)              | `hexa-lang/stdlib/fusion` 포팅 (clean-room) | 1-2주 |       |
-| Wolfspeed SiC `.lib` 흡수 (sscb)   | 측정 데이터 + DEVSIM TCAD    | 수일     | ✅ κ-40 — `stdlib/sscb/` 5모듈 GREEN (wolfspeed 파서 35/35 · ngspice.hexa Python-parity 9/9 · devsim TCAD 브리지 7/7 · sscb 디스패처 · **datasheet parity**: 실 Wolfspeed C3M0021120K datasheet Rev.4 의 R_DS(on)/V_GS(th) 를 ngspice 가 1.1%/1.4% 재현). 잔여 = `absorbed=true` (hexa-native SPICE MNA solver, 별개 다주차 과제) |
+| Wolfspeed SiC `.lib` 흡수 (sscb)   | 측정 데이터 + DEVSIM TCAD    | 수일     | ✅ κ-41 — `stdlib/sscb/` 7모듈 GREEN. **DC 디바이스 모델 `absorbed=true` (D71)**: hexa-native VDMOS DC solver (`vdmos.hexa`, subprocess 0) 가 실 Wolfspeed C3M0021120K datasheet Rev.4 의 R_DS(on)·V_GS(th) 를 1.08%·2.15% 재현 (ngspice cross-check 0.0212265Ω 소수5자리 일치). transient 회로 시뮬은 별개 scope (substrate). |
 | chip §B full-curve parity          | booksim 9-sweep + parity     | 수일     | ✅ κ-43 (경로결정 κ-37) |
 | Yosys hexa-native absorbed=true    | `stdlib/yosys/read_verilog` scope 확장 (localparam · generate · always · function automatic · multi-D mem · signed arith) → router_d{4,6}.v hexa-native 합성 → ±5% 오라클 매치 | 1-2주 | 진행  |
 
