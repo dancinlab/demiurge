@@ -12,6 +12,8 @@ import DemiurgeCore
 
 struct RecordView: View {
     let result: Result<F1F2Record, RecordLoaderError>
+    /// rfc_012 §4 expert toggle — passed through to ProvenanceBanner.
+    var expertMode: Bool = true
 
     var body: some View {
         switch result {
@@ -32,7 +34,7 @@ struct RecordView: View {
                 Divider()
                 verdict(r)
                 Divider()
-                ProvenanceBanner(provenance: r.provenance)
+                ProvenanceBanner(provenance: r.provenance, expertMode: expertMode)
             }
             .padding(24)
             .frame(maxWidth: .infinity, alignment: .leading)

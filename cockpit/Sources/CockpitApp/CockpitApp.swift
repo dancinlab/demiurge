@@ -486,14 +486,13 @@ struct WorkbenchView: View {
     @ViewBuilder private func verbRow(_ verb: Verb) -> some View {
         let state = activeProject?.state(of: verb) ?? .upcoming
         HStack(spacing: 8) {
-            if expertMode {
-                Image(systemName: verbRowSymbol(state, verb: verb))
-                    .foregroundStyle(progressTint(state))
-                    .frame(width: 18)
-            } else {
-                Text(verbStateEmoji(state))
-                    .frame(width: 18)
-            }
+            // SF Symbol + gate-color tint = the §4 signal light.
+            // (An emoji glyph here renders as an oversized colored
+            // circle on macOS — SF Symbols stay crisp and sized.)
+            Image(systemName: verbRowSymbol(state, verb: verb))
+                .foregroundStyle(progressTint(state))
+                .imageScale(.medium)
+                .frame(width: 18)
             VStack(alignment: .leading, spacing: 1) {
                 Text(expertMode ? verb.canonical : verb.plain)
                     .font(.callout)
@@ -518,18 +517,7 @@ struct WorkbenchView: View {
         }
     }
 
-    /// §4 signal-light glyph for plain mode — honest ⏳ / ✅ wording
-    /// rendered as an emoji (rfc_012 §4).
-    private func verbStateEmoji(_ state: VerbState) -> String {
-        switch state {
-        case .done:     return "✅"
-        case .current:  return "🔵"
-        case .visited:  return "⏳"
-        case .upcoming: return "⚪️"
-        }
-    }
-
-    // MARK: — ③ LLM chat ("cooking teacher", rfc_012 §5)
+// MARK: — ③ LLM chat ("cooking teacher", rfc_012 §5)
 
     @ViewBuilder private var chatColumn: some View {
         VStack(spacing: 0) {
@@ -902,7 +890,7 @@ struct WorkbenchView: View {
     @ViewBuilder private var referenceCanvas: some View {
         Group {
             if let result = recordResult {
-                RecordView(result: result)
+                RecordView(result: result, expertMode: expertMode)
             } else {
                 VStack(spacing: 8) {
                     Image(systemName: "doc.text.magnifyingglass")

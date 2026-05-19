@@ -64,6 +64,27 @@ public struct F1F2Record: Codable, Identifiable {
         case closedMeasured     = "GATE_CLOSED_MEASURED"
         case failed             = "GATE_FAILED"
 
+        /// Raw enum label (expert mode) — e.g. "GATE_CLOSED_MEASURED".
         public var displayLabel: String { rawValue }
+
+        /// rfc_012 §4 plain-language wording (non-expert workbench).
+        public var plainLabel: String {
+            switch self {
+            case .open:           return "아직 측정 안 됨"
+            case .bPinnedMet:     return "일부만 측정됨"
+            case .closedMeasured: return "측정으로 확인됨"
+            case .failed:         return "측정 실패"
+            }
+        }
+
+        /// rfc_012 §4 signal-light glyph.
+        public var plainGlyph: String {
+            switch self {
+            case .open:           return "⏳"
+            case .bPinnedMet:     return "🔶"
+            case .closedMeasured: return "✅"
+            case .failed:         return "❌"
+            }
+        }
     }
 }

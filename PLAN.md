@@ -1729,3 +1729,22 @@
   차단) — 완전 LLM 판정은 후속. 그러나 backing 은 이제 실측
   gate 기반 — '거짓 ✅' 의 핵심 구멍(가짜 record ID)이 막힘.
   다음 추천 = #3 expert mode 깊이 (record/provenance §4 plain↔raw).
+- 2026-05-19 — **phase κ-13 — expert mode 깊이 + 아이콘 버그 fix**
+  (rfc_012 §4 · D46). **(버그 fix)** 사용자 스크린샷 — κ-8 에서 ①
+  recipe rail verb row 의 plain 모드 leading 을 이모지(✅/🔵/⏳/
+  ⚪️)로 했는데, macOS 에서 `⚪️`(WHITE CIRCLE 이모지)가 거대한
+  회색 원으로 깨져 렌더. verbRow leading 을 SF Symbol 단일화
+  (expert/plain 공통, `verbRowSymbol` + `progressTint` 색 =
+  §4 신호등) · `verbStateEmoji` 삭제. **(#3 expert 깊이)** §4
+  plain↔raw 토글을 record/provenance 뷰까지 확장: `MeasurementGate`
+  에 `plainLabel`(아직 측정 안 됨 / 일부만 측정됨 / 측정으로
+  확인됨 / 측정 실패) + `plainGlyph`(⏳🔶✅❌) 추가 (DemiurgeCore
+  — cockpit·CLI 공유) · `ProvenanceBanner` 에 `expertMode` —
+  expert = GATE_* 원문 + engine/commit/atlas verbatim, plain =
+  신호등 문구 + "검증 완료 / 참고용·검증 전" + "이 결과를 믿어도
+  되는 이유" (raw 필드는 plain 에서 숨김) · `RecordView` 가
+  expertMode 를 ProvenanceBanner 로 전달. 측정: `swift run
+  CockpitApp` 빌드 green (5.17s, 에러 0). **g3 정직**: 토글은
+  *표시 면*만 바꿈 — gate 상태 자체는 불변 (plain "✅" 도
+  GATE_CLOSED_MEASURED 일 때만; 정직성 경계 무손상). 다음 추천 =
+  #4 phase ζ (필터 + dependency graph).
