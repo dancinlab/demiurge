@@ -6,6 +6,15 @@
 
 ## 핵심 원칙
 
+> ⚠️ **제1 원칙 — 모든 producer 는 결국 hexa-native (`.hexa`) 로
+> 작성한다.** Python · shell · docker substrate wrapper 는 *임시
+> stepping-stone* 일 뿐 흡수의 종착점이 아니다. `absorbed=true` 는
+> `hexa-lang/stdlib/<domain>/<tool>.hexa` 가 **자체 측정**해 parity
+> 를 통과할 때만 부여된다 (D17 · D61 · 아래 「hexa 포팅 단계」 §).
+> substrate 단계에 영구히 머무는 것은 **흡수 실패**다 — 새 producer
+> 는 substrate 로 시작하되, hexa-native 포팅이 명시적 다음 목표로
+> 기록되어야 한다 (PLAN.md κ entry + design.md D-decision).
+
 - demiurge 는 **메타-컨덕터** — 자체 GUI(cockpit) + 7-verb spine +
   typed record schema 를 가짐.
 - 외부 도구는 **계산 커널 / 도메인 지식** 만 제공한다. 그들의
@@ -210,6 +219,66 @@ producer 가 ① 에 들어오는 순서대로 매핑 추가.)
 - gmsh CLI 만 (이미 가볍, 83 MB)
 - yosys CLI 만 (waveform viewer 무시)
 
+## 흡수 후보 우선순위 (deep research 2026-05-20)
+
+> 두 deep-research 라운드 (web + arxiv) 의 통합 우선순위. "필요한
+> 부분만" 골라 흡수하도록 ROI 순 — `inbox/notes/absorption-empty-
+> cells-research-2026-05-20.md` (18 빈 measurable 셀) +
+> `inbox/notes/hexa-8domain-measurement-stack-2026-05-20.md`
+> (rtsc·cern·antimatter·ufo·space·fusion·mobility·aura 실측 stack).
+
+### 즉시 가능 — 도구 이미 설치 / pure-pip macOS quick win
+
+| 셀                  | producer 후보              | ROI       | 비고 |
+|--------------------|---------------------------|-----------|------|
+| sscb + synthesize  | FEMMT (이미 설치)          | ⭐⭐⭐⭐⭐ | Swift wrapper 만 |
+| sscb + verify      | ngspice / OpenFOAM (설치)  | ⭐⭐⭐⭐⭐ | Swift wrapper 만 |
+| scope + verify     | POPPY / WebbPSF (pip)      | ⭐⭐⭐⭐⭐ | scope+analyze 확장 |
+| cern + synthesize  | Xsuite + cpymad (pip)      | ⭐⭐⭐⭐  | cern 3/4 완성 |
+| component + analyze| CalculiX                   | ⭐⭐⭐⭐  | κ-44 gmsh+scikit-fem 확장 |
+| space / energy + synthesize | poliastro · PyPSA (pip) | ⭐⭐⭐ | |
+
+### substrate 업그레이드 — 1점 → full stack (GOAL P-⑧ fast path)
+
+| 도메인  | 현재 substrate | 업그레이드      | ROI   |
+|--------|---------------|----------------|-------|
+| aura   | MNE 1점       | + mne-connectivity | ⭐ |
+| space  | skyfield      | + poliastro     | ⭐⭐  |
+| fusion | plasmapy      | + FreeGS (평형) | ⭐⭐  |
+| cern   | Bethe-Bloch   | + Xsuite tracking | ⭐⭐ |
+| mobility | osmnx       | + SUMO traffic  | ⭐⭐  |
+
+### 중간 — 설치 의존성 있음
+
+| 셀             | producer            | ROI    | 비고 |
+|---------------|---------------------|--------|------|
+| rtsc + analyze | FiQuS (CERN STEAM)  | ⭐⭐⭐ | pip + Gmsh + GetDP 필요. rtsc 는 producer 0 — 최고 레버리지 빈 도메인. arxiv 2311.09177 |
+
+### 무거움 / blocked (honest)
+
+- **Geant4** — antimatter · cern · fusion 공유 transport producer 1개로
+  8/13 도메인 레버리지 가능하나 multi-hour C++ 빌드 (⭐⭐⭐⭐⭐).
+- **antimatter 진짜 측정** — packaged OSS non-neutral-plasma / trap
+  simulator **없음** (honest gap). 연구실은 bespoke PIC/MD. WarpX-PIC
+  / LAMMPS-MD 가 adaptable proxy.
+- **CARLA** (mobility+verify) — macOS 빌드 없음, Linux pool 전용.
+- **proprietary gap** — space reentry (SCARAB/DRAMA) · fusion edge
+  (SOLPS-ITER) · mobility SOTIF · aura Sim4Life — domain-map §4 와 일치.
+- **ufo** — domain map 자체가 없음. 측정 라이브러리 없음 →
+  `domains/ufo.md` 를 먼저 작성해야 producer 작업 가능.
+
+### 종합 ROI 우선순위
+
+```
+즉시:   sscb(synth·verify) → scope(verify) → cern(synth) → component(analyze)
+fast:   aura → space → fusion → cern → mobility (substrate 업그레이드)
+중간:   rtsc(FiQuS)
+보류:   antimatter 실측 · Geant4 공유 transport · ufo (domain map 먼저)
+```
+
+모든 후보는 substrate 로 시작하되 **제1 원칙** — hexa-native 포팅이
+명시적 다음 목표 (위 「핵심 원칙」 + 「hexa 포팅 단계」).
+
 ## See also
 
 - D15 — stdlib 은 hexa-lang 단독 소유
@@ -327,6 +396,13 @@ local mac │ -       │ pool 호스트 다운시 fallback (swift run)
   + 현재 흡수된 producer 5건 표 + 가벼운 distrib 선호. substrate vs
   absorbed 구분 (Yosys §5 사례) 명시. 새 D-decision 없음 — 기존
   D15/D17/D50/D53~D55 + rfc_001~005 cite.
+- 2026-05-20 — **제1 원칙 추가** (사용자 지시): 모든 producer 의
+  최종 형태 = hexa-native (`.hexa`), substrate wrapper 는 임시
+  stepping-stone. 핵심 원칙 최상단에 박제. + 두 deep-research
+  라운드 통합 「흡수 후보 우선순위」 섹션 추가 — 18 빈 measurable
+  셀 + 8 도메인 (rtsc·cern·antimatter·ufo·space·fusion·mobility·
+  aura) 실측 stack, ROI 순, arxiv reference 동반, macOS-blocked
+  honest 명시. 새 D-decision 없음 — research 정리.
 - 2026-05-20 — κ-39 (D66) — `component + verify` 행이 "현재까지
   흡수된 producer" 표에 추가됨 (gmsh 4.15.2 + scikit-fem 12.0.1,
   GATE_OPEN, absorbed=false). 동시에 "무거운 후보 — 별도 세션 권장"
