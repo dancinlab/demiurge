@@ -65,6 +65,9 @@ struct WorkbenchView: View {
     // ② ingredient-shelf picks (group title → chosen option).
     @State private var shelfPicks: [String: String] = [:]
 
+    // θ-2 "▶ 실제로 돌리기" action in flight (D49).
+    @State private var isRunningAction = false
+
     // ② reference browser — the original viewer role (rfc_012 §7).
     @State private var artifacts: [ArtifactStub] = []
     @State private var refSelection: ArtifactID?
@@ -232,6 +235,77 @@ struct WorkbenchView: View {
         case .verify:     return "측정으로 맞는지 확인해요."
         case .handoff:    return "결과를 다음 단계로 넘길 수 있게 정리해요."
         }
+    }
+
+    // MARK: — θ-2 action dispatch (rfc_011 §6 / D48 / D49)
+
+    /// "▶ 실제로 돌리기" — dispatch the current verb as an action to the
+    /// Claude Code CLI (rfc_011 §6.3). κ-5 is the mechanism skeleton:
+    /// demiurge has no engine tool yet (D49), so the agent reports "no
+    /// tool" honestly and no measured record is produced (g3). When a
+    /// real engine tool lands, the same path drives the measurement.
+    private func runAction() {
+        guard let project = activeProject else { return }
+        let verb = project.currentVerb
+        chatMessages.append(ChatMessage(
+            role: .user,
+            text: "▶ \(verb.plain)(\(verb.canonical)) 단계 실제로 돌리기"))
+        let thinkingIndex = chatMessages.count
+        chatMessages.append(ChatMessage(role: .assistant, text: "🍳 … 실행 경로 확인 중 …"))
+        let context = chatContext()
+        let prompt = Self.actionPrompt(verb: verb)
+        isRunningAction = true
+        Task {
+            let reply = await Self.runClaude(prompt: prompt, context: context)
+            await MainActor.run {
+                if thinkingIndex < chatMessages.count {
+                    chatMessages[thinkingIndex] = ChatMessage(role: .assistant, text: reply)
+                }
+                let ids = Self.parseRecordIDs(reply)
+                if ids.isEmpty {
+                    chatMessages.append(ChatMessage(
+                        role: .assistant,
+                        text: "⏳ 새 측정 record 없음 — 이 단계는 아직 측정되지 "
+                            + "않았습니다 (g3 — 측정 없이는 ✅ 로 바뀌지 않습니다)."))
+                } else {
+                    chatMessages.append(ChatMessage(
+                        role: .assistant,
+                        text: "📸 새 측정 record: \(ids.joined(separator: ", ")) "
+                            + "— ② 참고 자료에서 확인하세요."))
+                    artifacts = ArtifactRegistry.loadAll()
+                }
+                isRunningAction = false
+            }
+        }
+    }
+
+    /// Action prompt for a verb run — instructs the agent to look for a
+    /// real engine tool and report honestly, never claiming a
+    /// measurement without a backing exports/ record (g3 / @F f6).
+    private static func actionPrompt(verb: Verb) -> String {
+        return "The user clicked '실제로 돌리기' (run for real) on the "
+            + "\(verb.canonical) stage of a demiurge project. Check "
+            + "whether demiurge has a real engine tool for this stage "
+            + "and whether any measured record exists under exports/**. "
+            + "If a tool is available, describe how it would run. If "
+            + "NOT, state plainly in Korean that there is no engine "
+            + "tool yet — do NOT claim anything was measured or "
+            + "verified (g3 — no over-claim). Never assert ✅ / 측정완료 "
+            + "without a backing exports/ record ID."
+    }
+
+    /// Best-effort extraction of F1F2 record IDs from agent output —
+    /// rfc_011 §6.3 "output piped + parsed for new record IDs".
+    private static func parseRecordIDs(_ text: String) -> [String] {
+        let pattern = "F1F2[-_][A-Za-z0-9._-]+"
+        guard let regex = try? NSRegularExpression(pattern: pattern) else {
+            return []
+        }
+        let range = NSRange(text.startIndex..., in: text)
+        let ids = regex.matches(in: text, range: range).compactMap {
+            Range($0.range, in: text).map { String(text[$0]) }
+        }
+        return Array(Set(ids)).sorted()
     }
 
     /// Project context handed to the chat agent so the "cooking
@@ -410,6 +484,21 @@ struct WorkbenchView: View {
             }
 
             Divider()
+            if let project = activeProject {
+                Button { runAction() } label: {
+                    Label(isRunningAction
+                          ? "실행 경로 확인 중…"
+                          : "\(project.currentVerb.plain)(\(project.currentVerb.canonical)) 단계 실제로 돌리기",
+                          systemImage: "play.fill")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .tint(.orange)
+                .disabled(isRunningAction)
+                .padding(.horizontal, 12)
+                .padding(.top, 8)
+                .help("θ-2 — 이 단계의 실제 도구를 돌려 측정 record 를 만듭니다 (D48 / D49)")
+            }
             HStack(spacing: 8) {
                 TextField("입력…", text: $chatInput)
                     .textFieldStyle(.roundedBorder)

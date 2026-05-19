@@ -1548,3 +1548,25 @@ GOAL 의 "설계 자체를 계산·검증" 미충족; B 항상 자동 실행 —
   트리거.
 - rfc_011 θ-2 (scoped-tool action dispatch) 와 정확히 정합 —
   θ-2 가 "실제로 돌리기" 의 backend.
+
+### Decision 49 — θ-2 구현 = 메커니즘 골격 우선, 실제 engine tool 은 후속 (cockpit phase κ-5, rfc_011 §6)
+
+**picked**: κ-5 = θ-2 (실제 실행 경로) 의 **메커니즘 골격만** —
+"▶ 실제로 돌리기" 액션 버튼 + claude CLI dispatch 경로 + 출력
+record-ID 파싱. demiurge 에 실행할 engine tool 이 현재 0개 (Yosys §4
+미구현 = hexa-lang 세션 소관; booksim = hexa-lang/stdlib 이전) 이므로,
+누르면 agent 가 "실행할 도구 없음" 을 정직 보고하고 측정 record 0 을
+유지 — g3 상 ✅ 불가. 도구가 attach 되면 동일 경로로 즉시 측정 가능.
+(Rejected: 실제 tool-permission claude 호출 — 돌릴 도구가 없어 무의미
++ GUI subprocess 는 permission prompt 응답 불가; §4.2 REJECTED 배너
+우선 — 별도 후속 phase 로.)
+
+**rationale**:
+- g3 — 측정 도구 없이 θ-2 를 "완성" 주장 불가; 골격은 골격으로
+  정직 표기 (누르면 "도구 없음" 보고, 측정 record 0).
+- 메커니즘(UI + dispatch + 파싱)은 engine tool 과 독립 — 미리
+  완성해두면 도구 attach 시 코드 변경 없이 측정 경로 가동.
+- rfc_011 §6.3 θ phase 정의 (CLI subprocess + 출력 파싱으로 새
+  record ID 추출) 를 그대로 구현.
+- 사용자 게이트 2026-05-19 — 3택(메커니즘 골격 / §4.2 REJECTED
+  가드 / workbench 마감) 중 "θ-2 메커니즘 골격" 선택.

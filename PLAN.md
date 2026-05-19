@@ -1543,3 +1543,25 @@
   backend 는 여전히 `claude -p` read-only stub · θ-2 실제
   도구 실행 미착수. 다음 = κ-5 (θ-2 실제 실행 경로 — 측정
   record → ✅; rfc_011 scoped action dispatch).
+- 2026-05-19 — **phase κ-5 — θ-2 메커니즘 골격 빌드 green**
+  (rfc_011 §6 · D48 · 신규 **D49**). 사용자 게이트 — 3택 중
+  "θ-2 메커니즘 골격" 선택 (design.md D49 lock). θ-2 (실제
+  실행 경로) 의 골격: ③ chat 하단에 "▶ <verb> 단계 실제로
+  돌리기" 액션 버튼 (orange) · `runAction()` 이 현재 verb 를
+  action prompt 로 claude CLI 에 dispatch · `actionPrompt`
+  (verb) = engine tool / 측정 record 존재 확인 지시 + g3 가드
+  ("도구 없으면 정직 보고, backing record 없이 ✅/측정완료
+  주장 금지") · `parseRecordIDs` = 출력에서 F1F2 record ID
+  best-effort 추출 (rfc_011 §6.3 "output piped + parsed").
+  결과 정직 표기: record ID 0 → "⏳ 새 측정 record 없음 —
+  측정 없이는 ✅ 안 됨", record 발견 → "📸 새 측정 record …"
+  + `ArtifactRegistry` reload. 측정: `swift run CockpitApp`
+  로컬 빌드 — `Build of product 'CockpitApp' complete!`
+  (1.50s) · 에러 0 · 경고 0. **g3 정직**: demiurge 에 실행할
+  engine tool 0개 (Yosys §4 미구현 = hexa-lang; booksim =
+  hexa-lang/stdlib) — 누르면 agent 가 "도구 없음" 보고, 측정
+  record 0, ✅ 불가. 메커니즘(UI+dispatch+파싱)은 완성 — 도구
+  attach 시 코드 변경 없이 측정 가동. claude 는 read-only
+  print mode 유지 (scoped tool-permission = 도구 준비 후).
+  §4.2 REJECTED 배너는 별도 후속. 다음 = κ-6 (§4.2 REJECTED
+  가드 / canvas mode 연결 — 미정, 게이트 필요).
