@@ -1463,3 +1463,25 @@
   결정-감사추적(D42–D48)+거버넌스로 lock — 그러나 cockpit
   코드는 여전히 viewer (`1a6da4c`), workbench build 0. 다음 =
   rfc_012 workbench 의 실제 Swift 구현 (별도 go).
+- 2026-05-19 — **phase κ-1 — workbench scaffold 빌드 green**
+  (rfc_012 → 코드 첫 착수, D42–D48 구현 시작). cockpit 이
+  viewer → **project workbench** 로 전환: ① 7-verb recipe rail
+  (narrow) · ③ LLM chat "요리 선생님" (narrow) · ② work zone
+  (widest, VSplit — 상단 재료선반 / 하단 결과+참고browser) ·
+  ④ 상단 toolbar (`+` 프로젝트 생성 · 프로젝트 전환 menu ·
+  7단계 progress bar · 전문가 모드 toggle · light/dark). 신규
+  파일 3: `DemiurgeCore/Models/Project.swift` (Verb 7-verb
+  enum canonical/plain/symbol · VerbState · Project Codable ·
+  DomainInference κ-1 키워드 stub) · `CockpitApp/Views/
+  NewProjectSheet.swift` (rfc_012 §3 3-step `+` flow — 이름 →
+  자유텍스트 → 🍳 도메인 추론 → [네/바꾸기] 확인) · CockpitApp.swift
+  전면 재작성 (TabView viewer → NavigationSplitView 3-column
+  workbench). 측정: `swift run CockpitApp` 로컬 빌드 — Compiling
+  15/15 · `Build of product 'CockpitApp' complete!` (24.74s) ·
+  에러 0 · 경고 0. **g3 정직**: scaffold 만 — Project 는 in-memory
+  (manifest persistence = κ-2, D45) · 재료선반 = placeholder
+  (κ-2) · verb stage 는 state enum 만 (signal-light ↔
+  measurement_gate 바인딩 = θ-2) · ② 하단 = 기존 exports/
+  records 참고열람 (D47 reference view) · chat backend = 기존
+  `claude -p` read-only stub. 다음 = κ-2 (manifest persistence
+  + 재료선반 동작).
