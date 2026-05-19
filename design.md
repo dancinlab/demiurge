@@ -1701,3 +1701,61 @@ export.)
   버튼 + DemiurgeCLI `emit-component` + DemiurgeCLI `action
   synthesize component` 셋의 단일 진입점 그대로. 셋 다 동일 record
   emit.
+
+### Decision 55 — cohort producer 발굴 정책 + 첫 producer = `sscb + analyze` (ngspice, κ-34)
+
+**picked**: 13 cohort 도메인 (`domains/{antimatter,aura,bot,brain,cern,
+energy,fusion,grid,mobility,rtsc,scope,space,sscb}.md`) 중 producer
+매핑 우선순위는 **(a) macOS 에 이미 설치된 OSS 도구 우선 · (b) CLI
+한 줄 → record emit 가능성 우선 · (c) D53 measurable-only 두 verb
+(합성·해석) 중 어느 쪽이든 OK** 로 정한다. 본 결정의 첫 실현은
+**`sscb + analyze` = ngspice 46 transient producer** —
+`cockpit/scripts/sscb_ngspice.py` 가 600 V / 100 A DC 하드스위칭
+netlist (HEXA-SSCB mk1 plausible topology, domains/sscb.md §1) 를
+spawn, `ngspice -b` 로 transient 측정, `rise_time_s` /
+`interrupt_ratio` 등 헤드라인 측정값을 typed `SSCBRecord` 로
+`exports/sscb/transient/<stamp>/` 에 영구화. producer 는
+`ngspice@<version>` 으로 핀, **measurement_gate = GATE_OPEN 영구 /
+absorbed = false 영구** — ngspice 의 IEEE-754 솔버 출력은 실제
+측정이지만 회로 자체가 plausible-not-datasheet 이므로 (SiC 스위치 =
+generic Ron/Roff 모델, no Wolfspeed C3M0021120K .lib) 흡수 주장은
+금지. (Rejected: ① grid+structure (NetworkX) — 도구 접근성 동일하지만
+verb 가 D53 의 "측정 가능 2 verb (합성·해석)" 밖; pickup note 로
+이월. ② bot+design (Pinocchio) — pip install 200 MB 친화도 낮음;
+pickup note 로 이월. ③ scope+design (POPPY) — pip install + 우주
+망원경 PSF 가 cohort 다양성 입증에 sscb 보다 약함. ④ uniform
+"모든 cohort 강제 매핑" — D53 위반, fallback 본 정신 무시.)
+
+**rationale**:
+- P-⑧ "cohort 도메인이 demiurge 의 '분야 무관' 주장을 입증" 의 첫
+  실제 단계 — chip/component/matter 세 "deep / hexa-lang-owner 기둥"
+  외, breadth-survey cohort 도 producer 임계점을 넘을 수 있다는
+  증거. honest scope = 13 중 1 (sscb), 과대주장 금지 (g3).
+- 도구 접근성 점수표 (κ-34 분석):
+  - ngspice 46 (sscb) — brew install, 한 줄 batch mode, **10/10**
+  - networkx (grid) — python3 stdlib-like, **9/10** → pickup #1
+  - URDF + pinocchio (bot) — conda 필요, **7/10** → pickup #2
+  - POPPY (scope) / PyBaMM (energy) — pip 가능하지만 cohort 다양성
+    입증에 sscb 보다 약함, **6/10**
+  - FEMM (rtsc) — macOS Wine 필요, **2/10**
+  - CARLA (mobility) / Geant4 (antimatter) — 무거운 install,
+    **1-2/10**
+- ngspice 의 transient 시뮬레이션 결과는 **실제 숫자**: pre-trip
+  99.7 A / post-trip 35.1 A (interrupt_ratio = 0.35), v_sw_pre =
+  1.99 V → v_sw_post = 428.2 V, rise_time = 1.53 µs. **이 숫자들이
+  HEXA-SSCB mk1 ≤ 1 µs 목표를 만족하지 않는 것이야말로 honest gap**
+  — generic 100 nF · 5 Ω 스너버의 한계가 실제로 드러남, buggy 가
+  아님. record 의 scope_caveats 가 이 격차를 박제.
+- absorbed=true 절대 금지 (g3 / @F f6) — Wolfspeed C3M0021120K
+  class `.lib` + bench-validated load + DEVSIM TCAD coupling 이
+  들어와야 흡수, 그 전엔 GATE_OPEN 영구. 본 결정은 cohort producer
+  의 임계점만 입증; 후속 phase 가 device-model 흡수.
+- D53 "measurable-only" 와 정합 — `(.analyze, "sscb")` 셀이 5번째
+  매핑 셀 (기존: component+synthesize, chip+verify, chip+synthesize,
+  matter+analyze). D53 의 "5+ 시점 ActionAdapter 리팩토링" 임계점에
+  도달했으나, 본 phase 는 wiring 만 — 리팩토링은 다음 라운드.
+- pickup 우회 — grid (NetworkX, 무료 install) 와 bot (URDF +
+  Pinocchio, ~200 MB conda) 은 `inbox/notes/cohort-pickup-grid-…`
+  / `cohort-pickup-bot-…` 로 다음 세션 위임. 한 라운드 한 셀이
+  D53 의 "premature abstraction 회피" 와 g3 의 "honest scope"
+  정신과 정합.

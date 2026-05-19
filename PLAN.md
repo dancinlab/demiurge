@@ -2484,3 +2484,88 @@
     하여 단일 SSOT. ④ cockpit GUI Component 탭이 STEP 파일을 직접
     렌더 (현재는 USDA only) — RealityKit STEP 미지원 → Open Cascade
     Cascade.js 같은 web 뷰 또는 STL 폴백.
+
+- 2026-05-20 — **phase κ-34 — P-⑧ 첫 cohort producer = `sscb + analyze`
+  (ngspice)** (D55 · D53 measurable-only mapping · g3). 13 cohort 도메인
+  (`domains/{antimatter,aura,bot,brain,cern,energy,fusion,grid,mobility,
+  rtsc,scope,space,sscb}.md`) 의 §2 도구 맵을 빠르게 스캔하여 **이미
+  설치된 OSS 도구 + CLI 한 줄 → record emit** 기준으로 점수표 작성,
+  최상위 1개 (sscb + ngspice) prototype 완성 + 차상위 2개 (grid +
+  NetworkX, bot + URDF+Pinocchio) pickup note 로 이월. chip/component/
+  matter 세 "deep" 기둥 외, breadth-survey cohort 도 producer 임계점을
+  넘을 수 있다는 첫 증거.
+  - **점수표** (κ-34 분석, 자세한 근거는 D55 rationale):
+    | 후보 | 도구 | 설치 | 점수 | 결과 |
+    |---|---|---|---|---|
+    | **sscb + analyze** | ngspice 46 | brew, 이미 설치 | 10/10 | **picked** |
+    | grid + structure | NetworkX 3.2.1 | python3 stdlib-like | 9/10 | pickup #1 |
+    | bot + design | Pinocchio | conda ~200 MB | 7/10 | pickup #2 |
+    | scope / energy | POPPY / PyBaMM | pip 가능 | 6/10 | 후순위 |
+    | rtsc / mobility / antimatter | FEMM / CARLA / Geant4 | 무겁거나 macOS 부적합 | 1-2/10 | drop |
+  - **신규 SSOT**: `cockpit/scripts/sscb_ngspice.py` — Python sidecar
+    (~280 lines). `NETLIST` 상수가 600 V / 100 A DC 하드스위칭 회로
+    SSOT — `Vdc 600 V` · `Rload 6 Ω` (100 A) · `Lbus 1 µH` · `SW`
+    (Ron=20 mΩ, Roff=1 GΩ, Vt=7 V, Vh=1 V) · 100 nF · 5 Ω RC 스너버 ·
+    `Vgate` PWL (15 V → 0 V at t=1 µs, 50 ns fall). `T_TRIP = 1 µs`
+    (HEXA-SSCB mk1 ≤ 1 µs 목표, domains/sscb.md §1). 측정값 추출:
+    `v_sw_pre_trip_V` (Ron·I 강하), `v_sw_peak_V`, `v_sw_post_trip_V`
+    (트립 후 정상), `i_load_pre/peak/post_trip_A`, `rise_time_s`
+    (10→90 % on v_sw, IS the "속도" 지표), `interrupt_ratio`
+    (= i_post / i_pre, 0=완전 차단, 1=차단 실패). 산출물 4종:
+    `.cir` (netlist) + `.log` (ngspice console + transient 표) +
+    `.raw` (ngspice 바이너리, 외부 도구 read 용) + `.meta.json`
+    (sha256·version·topology·measurements).
+  - **신규**: `DemiurgeCore/Models/SSCBRecord.swift` — typed sidecar
+    (interface `"demiurge:sscb:transient-record"`, schema 1.0).
+    `SSCBProvenance` + `SSCBTopology` + `SSCBMeasurements` 분리,
+    `MatterRecord` / `ComponentRecord` 의 sibling 패턴.
+  - **신규**: `DemiurgeCore/Loaders/SSCBProducer.swift` — Swift
+    spawner (~280 lines). `transientRecordsRoot =
+    exports/sscb/transient/`. `locateNgspice()` 가 `/opt/homebrew/bin
+    /ngspice` + PATH 후보 탐색. 매 호출마다 timestamped subdir
+    `<ISO>/` 를 만들어 consecutive run 의 `.raw` 가 stomp 안 되도록.
+    `python3 cockpit/scripts/sscb_ngspice.py <runDir>` spawn,
+    merged stdout/stderr 에서 `SSCB_NGSPICE_RESULT <json>` 라인 파싱
+    + meta.json 재독해서 typed record 작성 (산출물 4종 + record
+    .json 5번째 파일). 4종 모두 디스크 존재 + non-zero size 검증
+    (defence-in-depth, @F f6).
+  - **확장**: `DemiurgeCore/Loaders/ActionDispatch.swift` —
+    `runEngineTool` 의 switch 에 `case (.analyze, "sscb"):` 추가
+    (5번째 측정 가능 셀). 새 private `runSSCBAnalyze()` 가
+    SSCBProducer 호출. 헤더 doc-comment 갱신 (κ-34 라인 + sscb 셀
+    설명).
+  - **g3 정직 갭 (제일 중요)**: ① numbers ARE real (ngspice 의 IEEE-
+    754 transient solver 출력) — pre-trip 99.7 A · post-trip 35.1 A ·
+    interrupt_ratio 0.35 · rise_time 1.53 µs. ② BUT 회로 자체는
+    plausible-not-datasheet — SiC 스위치 = generic R_on/R_off 모델
+    (no Wolfspeed C3M0021120K `.lib`). 스너버도 generic 100 nF · 5 Ω.
+    `measurement_gate = GATE_OPEN 영구 / absorbed = false 영구`. ③
+    **interrupt_ratio 0.35 가 HEXA-SSCB mk1 ≤ 1 µs 목표를 만족하지
+    않는 것이 honest gap** — generic 스너버의 한계가 실제로 드러남.
+    record 의 4종 scope_caveats 가 이 격차를 박제. ④ UL 489I 인증은
+    별도 게이트 (accredited lab type-test, domains/sscb.md §4) —
+    ngspice ≠ 인증. ⑤ Linux/Windows host 에서 ngspice 가 PATH 에 있
+    으면 동작; 없으면 honest gap (조용한 fallback 없음 — silent
+    success 금지 g3).
+  - **측정 (이 worktree, mac local, swift 6.3.1)**: `swift run
+    DemiurgeCLI action analyze sscb` →
+    `ngspice = /opt/homebrew/bin/ngspice` · `python3 sscb_ngspice.py
+    — exit 0, rows=1223` · `ngspice version: 46` · `artifacts: log,
+    meta, netlist, raw` · `📸 sscb transient record →
+    exports/sscb/transient/<stamp>/sscb_transient_<stamp>.json` ·
+    `rise_time = 1.53 µs · interrupt_ratio = 0.352 · producer =
+    ngspice@46` · `⏳ GATE_OPEN · absorbed=false`. 파일 크기:
+    `.cir` 581 B · `.log` 116 KB · `.raw` 88 KB · `.meta.json` 692 B
+    · record `.json` 2.2 KB. 빌드 green (pre-existing RealityKit
+    MainActor warning 만, 새 warning 0 · 새 error 0).
+  - **다음 pickup**: ① **grid + structure (NetworkX)** —
+    `inbox/notes/cohort-pickup-grid-networkx-producer.md` 참조. P-⑧
+    cohort 다양성 입증의 다음 단계 (가장 가까운 follow-up). ② **bot
+    + design (Pinocchio)** — `inbox/notes/cohort-pickup-bot-urdf-
+    producer.md` 참조 (URDF + 분석 동역학). ③ **ActionAdapter 프로
+    토콜 리팩토링** — D53 의 "5+ 셀 임계점" 도달, switch/case 5번째
+    셀 (sscb) 까지는 견딜 만하지만 #6 (grid) 가 들어오면 protocol +
+    registry 패턴이 자연. ④ **SSCB device-model 업그레이드** —
+    Wolfspeed C3M0021120K class `.lib` 흡수 + DEVSIM TCAD coupling
+    이 들어가야 GATE_CLOSED_MEASURED 후보 (별도 phase, 본 κ-34 의
+    scope 밖).
