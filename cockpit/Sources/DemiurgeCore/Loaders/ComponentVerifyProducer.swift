@@ -1,8 +1,9 @@
 // ComponentVerifyProducer — θ-2 engine tool for `component + verify`
-// (κ-44 / D66). The SIXTH measurable-only cell crossing the engine-tool
+// (κ-39 / D66). The SIXTH measurable-only cell crossing the engine-tool
 // threshold (after component+synthesize, chip+verify, chip+synthesize,
 // matter+analyze, sscb+analyze, energy+analyze, antimatter+analyze) and
-// the SECOND D61-compliant-from-birth producer (after antimatter κ-43)
+// the SECOND D61-compliant-from-birth producer (after the antimatter
+// producer — cohort round, no standalone PLAN κ entry)
 // — the Python script SSOT lives in `~/core/hexa-lang/stdlib/component/
 // gmsh_skfem.py`, NEVER in demiurge (g_demiurge_pointer_only).
 //
@@ -263,7 +264,7 @@ public enum ComponentVerifyProducer {
             + "Code_Aster level). 본 record 는 *first honest witness*, 즉 "
             + "엔지니어링 verdict 의 lower bound.",
             "structural solve = scikit-fem 의 built-in linear_elasticity "
-            + "model + lame_parameters (κ-44 디버깅에서 hand-rolled form "
+            + "model + lame_parameters (κ-39 디버깅에서 hand-rolled form "
             + "이 closed-form 단축 검증 u=T·L/E 대비 ~44× 너무 무름 + "
             + "ElementVector DOF 를 component-major 로 잘못 가정한 두 "
             + "버그를 발견·정정함 — 정정 후 σ_vM_max ≈ 38 Pa 가 1D "

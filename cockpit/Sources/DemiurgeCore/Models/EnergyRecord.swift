@@ -1,4 +1,4 @@
-// EnergyRecord — phase κ-38 (P-⑧ 4th cohort producer prototype, D59).
+// EnergyRecord — phase κ-35 (P-⑧ 4th cohort producer prototype, D59).
 //
 // Typed sidecar for an `energy + analyze` producer run — the FOURTH
 // cohort domain (after sscb κ-34) wired to a real measuring engine
@@ -134,7 +134,7 @@ public struct EnergyMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// An energy clear-sky PV analysis record (D59 / κ-38). Captures the
+/// An energy clear-sky PV analysis record (D59 / κ-35). Captures the
 /// headline annual_energy_kwh from `pvlib ModelChain` plus the site +
 /// system spec so cross-host drift (different pvlib versions, different
 /// module databases) is visible.

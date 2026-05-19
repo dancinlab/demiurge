@@ -1,4 +1,5 @@
-// ScopeRecord — phase κ-35 (D67-track cohort producer · third after D55).
+// ScopeRecord — phase: cohort producer (no standalone PLAN κ / D-block
+// — post-merge reconstructed; third cohort producer after D55).
 //
 // Typed sidecar for a `scope + analyze` producer run — POPPY (BSD, STScI)
 // computes deterministic diffraction PSF + Strehl + encircled-energy
@@ -105,7 +106,8 @@ public struct ScopeMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// A scope PSF-analyze record (D67 / κ-35). Captures the POPPY PSF +
+/// A scope PSF-analyze record (cohort round, no standalone PLAN
+/// κ / D-block — post-merge reconstructed). Captures the POPPY PSF +
 /// Strehl + encircled-energy measurements of the parametric segmented
 /// primary plus the image SHA + aperture/propagation params so cross-
 /// host drift is visible.

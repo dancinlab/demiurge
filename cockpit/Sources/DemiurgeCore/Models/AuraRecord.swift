@@ -1,4 +1,5 @@
-// AuraRecord — phase κ-35 (D67-track cohort producer · second after D55).
+// AuraRecord — phase: cohort producer (no standalone PLAN κ / D-block
+// — post-merge reconstructed; second cohort producer after D55).
 //
 // Typed sidecar for an `aura + analyze` producer run — MNE-Python (BSD,
 // stsci) computes deterministic band-power + mains-rejection metrics
@@ -105,7 +106,8 @@ public struct AuraMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// An aura EEG-analyze record (D67 / κ-35). Captures the MNE-Python
+/// An aura EEG-analyze record (cohort round, no standalone PLAN
+/// κ / D-block — post-merge reconstructed). Captures the MNE-Python
 /// Welch PSD measurements of the synthesized EEG epoch plus the signal
 /// hash + stimulus params so cross-host drift is visible.
 public struct AuraRecord: Codable, Equatable, Sendable {

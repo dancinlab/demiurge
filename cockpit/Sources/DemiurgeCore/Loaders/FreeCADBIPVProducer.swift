@@ -129,7 +129,8 @@ public enum FreeCADBIPVProducer {
     /// Locate the producer script — SSOT in hexa-lang stdlib per
     /// D61 / g_demiurge_pointer_only. NO `cockpit/scripts/` fallback
     /// (the directory holds only a tombstone README — see
-    /// `cockpit/scripts/README.md`). Migration: 2026-05-20 κ-54 round.
+    /// `cockpit/scripts/README.md`). Migration: 2026-05-20 D61
+    /// batch-migration round.
     public static func locateScript() -> String? {
         let path = NSString(
             string: "~/core/hexa-lang/stdlib/freecad/bipv.py"

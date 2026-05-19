@@ -1,4 +1,5 @@
-// AuraAnalyzeProducer — θ-2 engine tool for `aura + analyze` (κ-35 / D67).
+// AuraAnalyzeProducer — θ-2 engine tool for `aura + analyze`
+// (cohort round, no standalone PLAN κ / D-block — post-merge reconstructed).
 //
 // Second cohort domain (after sscb κ-34 / D55) wired to a real measuring
 // engine tool. Wraps MNE-Python (`pip install mne`, BSD, stsci) — the

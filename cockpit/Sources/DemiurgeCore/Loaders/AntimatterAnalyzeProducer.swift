@@ -1,6 +1,7 @@
 // AntimatterAnalyzeProducer — θ-2 engine tool for `antimatter + analyze`
-// (κ-43 / D65). The FIFTH cohort domain wired to a real measuring
-// engine tool (after sscb κ-34, energy κ-38) and the FIRST particle-
+// (cohort round, no standalone PLAN κ / D-block — post-merge reconstructed).
+// A cohort domain wired to a real measuring
+// engine tool (after sscb κ-34, energy κ-35) and the FIRST particle-
 // physics cell. Also the FIRST D61-compliant-from-birth producer —
 // the Python script SSOT lives in `~/core/hexa-lang/stdlib/antimatter/
 // pdg_lookup.py`, NEVER in demiurge (g_demiurge_pointer_only).

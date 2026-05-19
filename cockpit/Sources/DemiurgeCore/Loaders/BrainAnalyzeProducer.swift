@@ -1,4 +1,5 @@
-// BrainAnalyzeProducer — θ-2 engine tool for `brain + analyze` (κ-40 / D62).
+// BrainAnalyzeProducer — θ-2 engine tool for `brain + analyze`
+// (cohort round, no standalone PLAN κ / D-block — post-merge reconstructed).
 //
 // The SECOND cohort domain (after sscb / D55) wired to a real measuring
 // engine tool. Producer = brian2 2.6.0 single LIF spike-rate (the lowest-

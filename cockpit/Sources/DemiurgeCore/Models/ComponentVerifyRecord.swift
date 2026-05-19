@@ -1,10 +1,11 @@
-// ComponentVerifyRecord — phase κ-44 (P-⑨ component-verify producer, D66).
+// ComponentVerifyRecord — phase κ-39 (P-⑨ component-verify producer, D66).
 //
 // Typed sidecar for a `component + verify` producer run — the SIXTH
 // measurable-only cell crossing the engine-tool threshold (after
 // component+synthesize, chip+verify, chip+synthesize, matter+analyze,
 // sscb+analyze, energy+analyze, antimatter+analyze), and the SECOND
-// D61-compliant-from-birth producer (after antimatter κ-43).
+// D61-compliant-from-birth producer (after the antimatter producer —
+// cohort round, no standalone PLAN κ entry).
 //
 // The producer = `~/core/hexa-lang/stdlib/component/gmsh_skfem.py`,
 // which builds a 10×10×2 mm silicon die proxy box via gmsh, meshes it
@@ -238,7 +239,7 @@ public struct ComponentVerifyMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// A component-verify record (D66 / κ-44). Captures the toy
+/// A component-verify record (D66 / κ-39). Captures the toy
 /// die-proxy thermal + structural verdict with the gmsh / scikit-fem
 /// library pin so cross-host drift (different versions) is visible.
 public struct ComponentVerifyRecord: Codable, Equatable, Sendable {

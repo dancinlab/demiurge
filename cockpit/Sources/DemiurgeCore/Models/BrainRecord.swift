@@ -1,4 +1,5 @@
-// BrainRecord — phase κ-40 (P-⑧ cohort producer #2, D62).
+// BrainRecord — phase: cohort producer #2 (no standalone PLAN κ /
+// D-block — post-merge reconstructed).
 //
 // Typed sidecar for a `brain + analyze` producer run — the SECOND cohort
 // domain wired to a real measuring engine tool (after sscb / ngspice
@@ -108,7 +109,8 @@ public struct BrainMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// A brain analyze record (D62 / κ-40). Captures the headline measurements
+/// A brain analyze record (cohort round, no standalone PLAN κ /
+/// D-block — post-merge reconstructed). Captures the headline measurements
 /// from `python3 lif_brian2.py` plus the equation hash and model so
 /// cross-host drift is visible.
 public struct BrainRecord: Codable, Equatable, Sendable {

@@ -1,4 +1,5 @@
-// ChipAnalyzeRecord — phase κ-35 (θ-2 / chip + analyze · D56).
+// ChipAnalyzeRecord — phase: θ-2 / chip + analyze (D56; cohort-round
+// producer, no standalone PLAN κ entry — post-merge reconstructed).
 //
 // Typed sidecar for a `chip + analyze` producer run — captures the
 // Leighton analytic lower bounds (bisection · diameter) that
@@ -73,7 +74,7 @@ public struct ChipLeightonBounds: Codable, Equatable, Sendable {
     }
 }
 
-/// A chip-analyze record (D56 / κ-35). Captures `booksim oracle`
+/// A chip-analyze record (D56). Captures `booksim oracle`
 /// Leighton analytic bounds for the d4 mesh + d6 hex 8×8 reference.
 /// `gate_closed_measured` IS legitimate here (analytic verification),
 /// but the scope_caveats clarify the bound is mathematical — NOT a

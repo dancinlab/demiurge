@@ -1,4 +1,6 @@
-// SpaceAnalyzeProducer — θ-2 engine tool for `space + analyze` (κ-39 / D60).
+// SpaceAnalyzeProducer — θ-2 engine tool for `space + analyze`
+// (D60; cohort-round producer, no standalone PLAN κ entry — post-merge
+// reconstructed).
 //
 // The FIFTH cohort domain (after sscb / grid / bot / brain) wired to a
 // real measuring engine tool — Skyfield SGP4 orbit propagation over
@@ -115,7 +117,8 @@ public enum SpaceAnalyzeProducer {
     }
 
     /// Locate the producer script — SSOT in hexa-lang stdlib per
-    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 κ-54 round
+    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 in the D61
+    /// batch-migration round
     /// from `cockpit/scripts/space_skyfield.py` (born in worktree
     /// pre-D61; lifted to hexa-lang stdlib at consolidation).
     public static func locateScript() -> String? {

@@ -1,6 +1,7 @@
 // CernAnalyzeProducer — θ-2 engine tool for `cern + analyze`
-// (κ-44 / D66). The FIFTH cohort domain wired to a real measuring
-// engine tool (after sscb κ-34, energy κ-38) and the FIRST particle-
+// (cohort round, no standalone PLAN κ / D-block — post-merge
+// reconstructed). A cohort domain wired to a real measuring
+// engine tool (after sscb κ-34, energy κ-35) and the FIRST particle-
 // accelerator-physics cell.
 //
 // D61 compliance (NEW — first producer landed already-correct):

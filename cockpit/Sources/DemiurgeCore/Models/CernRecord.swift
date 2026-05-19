@@ -1,4 +1,4 @@
-// CernRecord — phase κ-42 (`cern + verify` producer, D65).
+// CernRecord — phase κ-38 (`cern + verify` producer, D65).
 //
 // Typed sidecar for the cern-domain stopping-power producer — Stage 1
 // substrate (per ABSORPTION.md §"hexa 포팅 단계"): Bethe-Bloch mean
@@ -6,7 +6,8 @@
 // Pb) over a coarse KE grid (1 MeV — 1 GeV).
 //
 // Why this is "cern + verify" and NOT "cern + analyze":
-//   • cern + analyze (κ-44 / D66) is `lhe_stats.py` (pylhe LHE event
+//   • cern + analyze (cohort round, no standalone PLAN κ / D-block)
+//     is `lhe_stats.py` (pylhe LHE event
 //     stats) — generator round-trip, not shielding numbers.
 //   • cern + verify is the verb that domains/cern.md §2 + domains/
 //     antimatter.md §2 both map to Geant4 — the shielding / antiproton-
@@ -159,7 +160,7 @@ public struct CernConstants: Codable, Equatable, Sendable {
     }
 }
 
-/// A cern-domain verify record (D62 / κ-39). Captures the Bethe-Bloch
+/// A cern-domain verify record (D65 / κ-38). Captures the Bethe-Bloch
 /// dE/dx table for antiprotons in (Al, Cu, W, Pb) at a fixed KE grid
 /// (1 MeV … 1 GeV), plus the producer + library + Python pin so a
 /// cross-host run is auditable.

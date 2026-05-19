@@ -1,5 +1,5 @@
 // EnergyAnalyzeProducer — θ-2 engine tool for `energy + analyze`
-// (κ-38 / D59). The FOURTH cohort domain wired to a real measuring
+// (κ-35 / D59). The FOURTH cohort domain wired to a real measuring
 // engine tool (after sscb κ-34) and the FIRST renewable-energy cell.
 //
 // Architecture (mirrors SSCBProducer + FreeCADBIPVProducer):
@@ -63,7 +63,8 @@ public enum EnergyAnalyzeProducer {
             .appendingPathComponent("energy/pv", isDirectory: true)
 
     /// Locate the producer script — SSOT in hexa-lang stdlib per
-    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 κ-54 round
+    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 in the D61
+    /// batch-migration round
     /// from `cockpit/scripts/energy_pvlib.py`.
     public static func locateScript() -> String? {
         let path = NSString(

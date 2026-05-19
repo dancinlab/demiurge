@@ -1,7 +1,8 @@
-// MobilityRecord — phase κ-41 (P-⑧ 5th cohort producer prototype, D63).
+// MobilityRecord — phase: cohort producer prototype (no standalone
+// PLAN κ / D-block — post-merge reconstructed).
 //
-// Typed sidecar for a `mobility + analyze` producer run — the FIFTH
-// cohort domain (after sscb κ-34, energy κ-38, …) wired to a real
+// Typed sidecar for a `mobility + analyze` producer run — a cohort
+// domain (after sscb κ-34, energy κ-35, …) wired to a real
 // measuring engine tool, and the FIRST mobility / autonomous-driving
 // cell. osmnx (MIT, OpenStreetMap road-network analysis) is the
 // producer; demiurge spawns it and persists the topology measurements
@@ -68,7 +69,7 @@ public struct MobilityPlace: Codable, Equatable, Sendable {
     public let label: String
     public let originLat: Double
     public let originLon: Double
-    /// True for the κ-41 synthetic fixture; reserved for future
+    /// True for the cohort-round synthetic fixture; reserved for future
     /// "real OSM fetch" producer runs that flip it to false.
     public let isSynthetic: Bool
 
@@ -129,7 +130,8 @@ public struct MobilityMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// A mobility road-network analyze record (D63 / κ-41). Captures the
+/// A mobility road-network analyze record (cohort round, no standalone
+/// PLAN κ / D-block — post-merge reconstructed). Captures the
 /// road-graph topology stats from `osmnx.basic_stats()` plus the
 /// place + topology parameters so cross-host drift (different osmnx
 /// versions, different synthesis recipes) is visible.

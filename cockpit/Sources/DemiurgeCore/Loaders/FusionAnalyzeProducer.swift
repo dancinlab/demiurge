@@ -1,7 +1,7 @@
 // FusionAnalyzeProducer — θ-2 engine tool for `fusion + analyze`
-// (κ-46 / D69). The SIXTH cohort domain wired to a real measuring
-// engine tool (after sscb κ-34, energy κ-38, antimatter κ-43) and the
-// FIRST plasma-physics cell. D61-compliant-from-birth — the Python
+// (κ-41 / D69). The SIXTH cohort domain wired to a real measuring
+// engine tool (after sscb κ-34, energy κ-35, the antimatter producer)
+// and the FIRST plasma-physics cell. D61-compliant-from-birth — the Python
 // script SSOT lives in `~/core/hexa-lang/stdlib/fusion/plasma_metrics.py`,
 // NEVER in cockpit/scripts/ (g_demiurge_pointer_only).
 //

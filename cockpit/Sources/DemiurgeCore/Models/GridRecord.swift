@@ -1,4 +1,5 @@
-// GridRecord — phase κ-36 (P-⑧ cohort producer prototype, D57).
+// GridRecord — phase: cohort producer prototype (D57; no standalone
+// PLAN κ entry — post-merge reconstructed).
 //
 // Typed sidecar for a `grid + structure` producer run — the SECOND
 // cohort domain (after κ-34 / D55's `sscb + analyze` ngspice producer)
@@ -145,7 +146,7 @@ public struct GridMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// A grid topology-structure record (D57 / κ-36). Captures the
+/// A grid topology-structure record (D57). Captures the
 /// canonical edge list + the graph-theoretic measurements computed by
 /// NetworkX, plus the edge-list hash so cross-host drift is visible.
 public struct GridRecord: Codable, Equatable, Sendable {

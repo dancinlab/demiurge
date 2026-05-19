@@ -1,7 +1,8 @@
-// CernAnalyzeRecord — phase κ-44 (P-⑧ 5th cohort producer prototype, D66).
+// CernAnalyzeRecord — phase: cohort producer prototype (no standalone
+// PLAN κ / D-block — post-merge reconstructed).
 //
-// Typed sidecar for a `cern + analyze` producer run — the FIFTH cohort
-// domain (after sscb κ-34 / energy κ-38) wired to a real measuring
+// Typed sidecar for a `cern + analyze` producer run — a cohort
+// domain (after sscb κ-34 / energy κ-35) wired to a real measuring
 // engine tool, and the FIRST particle-accelerator-physics producer.
 // pylhe (BSD-3, HEP-Python LHE v1/v3 parser) is the producer;
 // demiurge spawns it and persists the round-trip statistics as a
@@ -121,7 +122,8 @@ public struct CernAnalyzeMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// A CERN LHE-stats record (D66 / κ-44). Captures the headline round-
+/// A CERN LHE-stats record (cohort round, no standalone PLAN κ /
+/// D-block — post-merge reconstructed). Captures the headline round-
 /// trip statistics from a pylhe.LHEFile.fromfile() re-read of a
 /// deterministic synthetic sample, plus the process spec + sample
 /// metadata so cross-host drift (different pylhe versions) is visible.

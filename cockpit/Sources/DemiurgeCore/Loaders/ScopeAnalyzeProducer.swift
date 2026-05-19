@@ -1,6 +1,7 @@
-// ScopeAnalyzeProducer — θ-2 engine tool for `scope + analyze` (κ-35 / D67).
+// ScopeAnalyzeProducer — θ-2 engine tool for `scope + analyze`
+// (cohort round, no standalone PLAN κ / D-block — post-merge reconstructed).
 //
-// Third cohort domain (after sscb D55 + aura κ-35) wired to a real
+// Third cohort domain (after sscb D55 + the aura producer) wired to a real
 // measuring engine tool. Wraps POPPY (`pip install poppy`, BSD, STScI)
 // — the established physical-optics propagation library used to
 // flight-validate JWST — to compute deterministic PSF + Strehl +

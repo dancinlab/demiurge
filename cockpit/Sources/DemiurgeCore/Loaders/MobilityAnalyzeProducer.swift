@@ -1,7 +1,8 @@
 // MobilityAnalyzeProducer — θ-2 engine tool for `mobility + analyze`
-// (κ-41 / D63). The FIFTH cohort domain (out of the 13 surveyed in
+// (cohort round, no standalone PLAN κ / D-block — post-merge reconstructed).
+// A cohort domain (out of the 13 surveyed in
 // domains/*.md) wired to a real measuring engine tool — after sscb
-// (κ-34, ngspice) and energy (κ-38, pvlib). FIRST autonomous-driving
+// (κ-34, ngspice) and energy (κ-35, pvlib). FIRST autonomous-driving
 // cell.
 //
 // Architecture (mirrors EnergyAnalyzeProducer + SSCBProducer):

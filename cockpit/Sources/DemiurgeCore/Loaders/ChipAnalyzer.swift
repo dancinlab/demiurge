@@ -1,4 +1,6 @@
-// ChipAnalyzer — θ-2 engine tool for `chip + analyze` (κ-35 / D56).
+// ChipAnalyzer — θ-2 engine tool for `chip + analyze` (D56;
+// cohort-round producer, no standalone PLAN κ entry — post-merge
+// reconstructed).
 //
 // Spawns the hexa-native booksim oracle dispatch (`hexa run
 // stdlib/booksim/booksim.hexa`) — the dispatcher self-test exercises

@@ -1,4 +1,5 @@
-// SpaceRecord — phase κ-39 (P-⑧ FIFTH cohort producer, D60).
+// SpaceRecord — phase: FIFTH cohort producer (D60; no standalone
+// PLAN κ entry — post-merge reconstructed).
 //
 // Typed sidecar for a `space + analyze` producer run — Skyfield SGP4
 // orbit propagation over standard NORAD TLEs (ISS + HST). 5번째 cohort
@@ -143,7 +144,7 @@ public struct SpaceSatellite: Codable, Equatable, Sendable {
     }
 }
 
-/// A space orbit-analyze record (D60 / κ-39). Captures the SGP4
+/// A space orbit-analyze record (D60). Captures the SGP4
 /// propagation aggregates for one or more standard NORAD TLEs plus
 /// the TLE source hash + library versions so cross-host drift is
 /// visible.

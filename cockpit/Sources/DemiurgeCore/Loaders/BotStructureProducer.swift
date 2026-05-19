@@ -1,4 +1,6 @@
-// BotStructureProducer — θ-2 engine tool for `bot + structure` (κ-37 / D58).
+// BotStructureProducer — θ-2 engine tool for `bot + structure`
+// (D58; cohort-round producer, no standalone PLAN κ entry — post-merge
+// reconstructed).
 //
 // The THIRD cohort domain (out of the 13 surveyed in domains/*.md)
 // wired to a real measuring engine tool — chip / component / matter
@@ -110,7 +112,8 @@ public enum BotStructureProducer {
     }
 
     /// Locate the producer script — SSOT in hexa-lang stdlib per
-    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 κ-54 round
+    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 in the D61
+    /// batch-migration round
     /// from `cockpit/scripts/bot_urdf.py` (born in worktree pre-D61;
     /// lifted to hexa-lang stdlib at consolidation).
     public static func locateScript() -> String? {

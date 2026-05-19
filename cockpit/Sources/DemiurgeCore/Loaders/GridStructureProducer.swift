@@ -1,5 +1,6 @@
 // GridStructureProducer — θ-2 engine tool for `grid + structure`
-// (κ-36 / D57).
+// (D57; cohort-round producer, no standalone PLAN κ entry — post-merge
+// reconstructed).
 //
 // The SECOND cohort domain (after κ-34 / D55's sscb+analyze ngspice
 // producer) wired to a real measuring engine tool. NetworkX 3.2.1 is
@@ -105,7 +106,8 @@ public enum GridStructureProducer {
     }
 
     /// Locate the producer script — SSOT in hexa-lang stdlib per
-    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 κ-54 round
+    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 in the D61
+    /// batch-migration round
     /// from `cockpit/scripts/grid_networkx.py` (born in worktree
     /// pre-D61; lifted to hexa-lang stdlib at consolidation).
     public static func locateScript() -> String? {

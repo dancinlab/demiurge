@@ -1,4 +1,5 @@
-// BotRecord — phase κ-37 (P-⑧ third cohort producer, D58).
+// BotRecord — phase: third cohort producer (D58; no standalone PLAN
+// κ entry — post-merge reconstructed).
 //
 // Typed sidecar for a `bot + structure` producer run — the THIRD cohort
 // domain (out of the 13 surveyed in domains/*.md) wired to a real
@@ -119,7 +120,7 @@ public struct BotMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// A `bot + structure` URDF-meta record (D58 / κ-37). Captures the
+/// A `bot + structure` URDF-meta record (D58). Captures the
 /// headline URDF spec measurements from `yourdfpy.URDF.load(...)` plus
 /// the URDF hash and topology so cross-host drift is visible.
 public struct BotRecord: Codable, Equatable, Sendable {

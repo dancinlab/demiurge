@@ -100,7 +100,8 @@ public enum SSCBProducer {
     }
 
     /// Locate the producer script — SSOT in hexa-lang stdlib per
-    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 κ-54 round
+    /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 in the D61
+    /// batch-migration round
     /// from `cockpit/scripts/sscb_ngspice.py`; ported to hexa-native
     /// `ngspice.hexa` per D67/κ-41 directive ("hexa-native 작성 .hexa"
     /// — every absorbed-substrate driver is `.hexa`, not Python).

@@ -1,7 +1,8 @@
-// AntimatterRecord — phase κ-43 (P-⑧ 5th cohort producer prototype, D65).
+// AntimatterRecord — phase: cohort producer prototype (no standalone
+// PLAN κ / D-block — post-merge reconstructed).
 //
-// Typed sidecar for an `antimatter + analyze` producer run — the FIFTH
-// cohort domain (after sscb κ-34, energy κ-38) wired to a real
+// Typed sidecar for an `antimatter + analyze` producer run — a cohort
+// domain (after sscb κ-34, energy κ-35) wired to a real
 // measuring engine tool, and the FIRST particle-physics cell.
 //
 // The producer = `~/core/hexa-lang/stdlib/antimatter/pdg_lookup.py`,
@@ -143,7 +144,8 @@ public struct AntimatterMeasurements: Codable, Equatable, Sendable {
     }
 }
 
-/// An antimatter PDG-lookup record (D65 / κ-43). Captures the
+/// An antimatter PDG-lookup record (cohort round, no standalone PLAN
+/// κ / D-block — post-merge reconstructed). Captures the
 /// canonical antiparticle short-list (positron · antiproton ·
 /// antineutron · antimuon) with mass · charge · lifetime · decay
 /// summary, plus the producer + library + Python pin so cross-host

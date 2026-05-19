@@ -1,8 +1,9 @@
-// CernVerifyProducer — θ-2 engine tool for `cern + verify` (κ-42 / D65).
+// CernVerifyProducer — θ-2 engine tool for `cern + verify` (κ-38 / D65).
 //
 // SIXTH cohort-domain cell crossing the measuring-producer threshold
-// (after sscb κ-34, energy κ-38, antimatter+analyze κ-43, cern+analyze
-// κ-44, etc.) and the FIRST `verify`-verb cell in the cohort domains
+// (after sscb κ-34, energy κ-35, the antimatter+analyze and cern+analyze
+// cohort-round producers, etc.) and the FIRST `verify`-verb cell in the
+// cohort domains
 // (chip+verify is a separate booksim path). D61-compliant-from-birth —
 // the producer script SSOT lives in ~/core/hexa-lang/stdlib/cern/
 // bethe_bloch_stopping.py, NEVER in cockpit/scripts/.
