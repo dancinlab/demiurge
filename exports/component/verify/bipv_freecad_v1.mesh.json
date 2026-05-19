@@ -1,0 +1,19 @@
+{
+  "element_count": 9226,
+  "face_count": 540,
+  "geometry_id": "bipv_freecad_v1",
+  "honest_gap": [
+    "Mesh is NOT a verdict \u2014 measurement_gate stays GATE_OPEN.",
+    "A successful mesh means downstream FEA *can* run; thermal / structural verdicts are separate gates.",
+    "Salome-Meca Code_Aster .comm authoring + as_run convergence is the next pickup (\u03ba-35 candidate, D55).",
+    "STEP has 90 sub-solids \u2014 logical 5-layer grouping (glass / PV / frame / sink / mount) is the .comm authoring's job, not the mesh's."
+  ],
+  "med_export_error": "Gmsh must be compiled with MED support to write '/Users/ghost/core/demiurge/.claude/worktrees/agent-aaa8f71626610cb92/exports/component/verify/bipv_freecad_v1.med'",
+  "med_file": null,
+  "msh_file": "bipv_freecad_v1.msh",
+  "node_count": 1944,
+  "producer": "gmsh",
+  "producer_version": "4.15.2-git",
+  "quality_histogram": {},
+  "volume_count": 90
+}
