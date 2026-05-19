@@ -113,15 +113,28 @@ struct NewProjectSheet: View {
                 TextField("분야 키", text: $inferredDomain)
                     .textFieldStyle(.roundedBorder)
             } else {
+                let domain = DomainCatalog.domain(for: inferredDomain)
                 HStack(spacing: 6) {
                     Image(systemName: "tag")
                         .foregroundStyle(.tint)
-                    Text("\(DomainCatalog.domain(for: inferredDomain).label) 프로젝트군요")
+                    Text("\(domain.label) 프로젝트군요")
                         .font(.callout.weight(.medium))
                 }
                 Text("이 분야로 시작할게요 — 맞나요?")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                HStack(spacing: 6) {
+                    Image(systemName: domain.siblingRepoExists
+                          ? "checkmark.circle.fill"
+                          : "circle.dashed")
+                        .foregroundStyle(domain.siblingRepoExists ? .green : .secondary)
+                        .imageScale(.small)
+                    Text(domain.siblingRepoExists
+                         ? "sibling repo: \(domain.siblingRepoPath) ✓"
+                         : "sibling repo: \(domain.siblingRepoPath) (없음)")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
             }
             HStack(spacing: 8) {
                 Button(editingDomain ? "이걸로" : "바꾸기") {

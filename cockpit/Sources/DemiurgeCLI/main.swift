@@ -156,6 +156,8 @@ func showProject(_ name: String) -> Int32 {
     print("target:      \(p.target)")
     print("domain:      \(p.domain) (\(domain.label))")
     print("canvas_mode: \(domain.canvasMode.rawValue)")
+    let siblingMark = domain.siblingRepoExists ? "✓ exists" : "(absent)"
+    print("sibling_repo: \(domain.siblingRepoPath)  \(siblingMark)")
     print("created_at:  \(p.createdAt)")
     print("7-verb progress:")
     for verb in Verb.allCases {

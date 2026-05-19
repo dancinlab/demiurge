@@ -32,6 +32,19 @@ public struct Domain: Identifiable, Sendable {
         self.canvasMode = canvasMode
         self.keywords = keywords
     }
+
+    /// Cross-repo sibling — every demiurge domain has a `hexa-<id>`
+    /// sibling repo under `~/core/` (like hexa-lang / hexa-matter).
+    /// rfc_012 §7 (D45) keeps the cockpit isolated; the sibling is
+    /// just a pointer the workbench surfaces, never written to.
+    public var siblingRepoPath: String { "~/core/hexa-\(id)" }
+
+    /// Does the sibling repo exist on disk? FileManager check is pure
+    /// Foundation — OK in DemiurgeCore.
+    public var siblingRepoExists: Bool {
+        let expanded = (siblingRepoPath as NSString).expandingTildeInPath
+        return FileManager.default.fileExists(atPath: expanded)
+    }
 }
 
 /// The domain catalog — the one place domain metadata is defined.

@@ -322,15 +322,22 @@ proposals/rfc_012_project_workbench.md (IMPLEMENTED) + PLAN.md
 κ-phase log first. design.md D42..D50 are committed — cite, do
 not re-litigate.
 
-Open follow-ups (independent; pick any, each measured-green via
-`swift run CockpitApp`):
-  - ingredient shelf real data — κ-3 IngredientShelf is a stub
-    keyword table; source real per-domain options from domains/**.
-  - REJECTED guard hardening — κ-6 overclaims() is a string-match
-    heuristic; tighten (alternate phrasing can slip past it).
-  - expert-mode depth — extend the §4 plain↔raw toggle into the
-    record / provenance views (GATE_* verbatim).
-  - phase ζ — filters + dependency graph (citation cross-ref).
+Open follow-ups — closed (κ-11..κ-16, 2026-05-19):
+  ✅ ingredient shelf real data — κ-11 (domains/*.md §6 SSOT +
+     DomainCatalog 14 + chip + matter)
+  ✅ REJECTED guard hardening — κ-12 (overclaims = mentionsClaim +
+     !hasMeasuredBacking against real exports/ gate)
+  ✅ expert-mode depth — κ-13 (ProvenanceBanner / RecordView expertMode
+     + MeasurementGate plainLabel / plainGlyph in DemiurgeCore)
+  ✅ phase ζ — κ-14 record gate filter (dependency-graph half
+     deferred — workbench value vs UI cost unclear; reopen on a
+     concrete use)
+  ✅ + CLI θ action — κ-15 (ActionDispatch in DemiurgeCore;
+     `demiurge cli action <verb>` byte-identical to cockpit
+     "▶ 실제로 돌리기")
+  ✅ + sibling-repo awareness — κ-16 (Domain.siblingRepoPath /
+     siblingRepoExists; NewProjectSheet + `cli show-project` surface
+     `~/core/hexa-<domain>` existence — P-⑧ groundwork)
 
 Honesty (g3 — non-negotiable):
   - the workbench frame is live but carries ZERO measured records
@@ -365,10 +372,14 @@ domain map yet. So P-⑧ is a CROSS-REPO verification session — run
 each sibling repo's design through demiurge's 7-verb spine and
 record the measured result.
 
-**OPEN — TBD:**
-- "기본 라이브러리" — the exact form: demiurge-bundled
-  reference/verified projects, or a separate deliverable? TBD
-  pending user clarification.
+**Working definition (provisional — confirm or adjust):**
+- "기본 라이브러리" = each `hexa-*` sibling repo's design is run
+  through demiurge workbench's 7-verb spine, producing one baseline
+  F1F2 record per measured stage; the resulting set lives in
+  `exports/<domain>/baseline/` and serves as the demiurge-bundled
+  proof that the workbench measures real engineering designs (not
+  toys). The set itself is the "library". Adjust this definition any
+  time — it is provisional, not locked.
 
 g3: none of the four may be called "verified" until a real 7-verb
 measurement record + gate exists — this depends on an engine tool
@@ -413,6 +424,16 @@ measurement record + gate exists — this depends on an engine tool
   repos under `~/core/hexa-*` (cross-repo, like hexa-lang). `hexa-ufo`
   TBD resolved (sibling repo, no demiurge domain map yet). One TBD
   remains: the exact form of "기본 라이브러리".
+- 2026-05-19 — **P-⑦ all closed** (κ-11..κ-16). Open follow-ups
+  marked ✅; the ζ dependency-graph half stays deferred (workbench
+  value unclear). sibling-repo awareness added as κ-16 —
+  `Domain.siblingRepoPath` / `siblingRepoExists` in DemiurgeCore, and
+  NewProjectSheet + `cli show-project` surface the `~/core/hexa-
+  <domain>` pointer (P-⑧ groundwork). **P-⑧ working definition** for
+  "기본 라이브러리" landed (`hexa-*` × 7-verb → `exports/<domain>/
+  baseline/`) — provisional, awaiting user confirm. D / E / F
+  unchanged: `d5a63a82` still unpushed (hexa-lang session), chip §B
+  still GATE_B_PINNED_MET, exports/ holds zero USDZ.
 - 2026-05-19 — **cockpit workbench built (κ-1..κ-10) + P-⑦ added.**
   After P-⑥ closed, rfc_012 (project workbench) was discussed,
   locked (design.md D42..D50), and built as cockpit phases

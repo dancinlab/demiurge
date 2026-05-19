@@ -1787,3 +1787,26 @@
   agent 가 "도구 없음" 보고 동일 (멱등 실증). 실제 측정 0.
   workbench 후속 (#1~#5) 모두 닫힘 — 다음은 hexa-lang/측정
   세션 (cross-repo, P-②③/P-④) 또는 신규 작업.
+- 2026-05-19 — **phase κ-16 — "all" 묶음: 문서 정합 + sibling-repo
+  인식 + P-⑧ 정의** (사용자 지시 "두 방향 함께 → all" — A+B+C+D
+  +E+F 한 묶음). **(A 문서 정합)** NEXT_SESSIONS P-⑦ Open
+  follow-ups → "closed (κ-11..κ-16)" 마크 (✅ 5개: 재료선반·
+  REJECTED·expert·ζ 필터·CLI θ action) + sibling-repo 인식
+  추가. **(B sibling 인식)** 신규 `Domain.siblingRepoPath`
+  ("~/core/hexa-<id>") + `siblingRepoExists` (FileManager 체크) —
+  DemiurgeCore 의 Domain struct. NewProjectSheet confirm step 에
+  sibling banner ("✓ 존재" 또는 "(없음)"). CLI `show-project`
+  출력에 `sibling_repo:` 줄 추가 — cockpit·CLI 둘 다 노출
+  (g_ssot_single_source). **(C P-⑧ 정의)** NEXT_SESSIONS P-⑧
+  TBD → working definition: "기본 라이브러리 = 각 hexa-* sibling
+  repo 의 설계를 demiurge 7-verb 로 측정 → exports/<domain>/
+  baseline/ 모음". 사용자 확인/조정 가능 (provisional). **(D/E/F)**
+  cross-repo 핸드오프 (P-②③ Yosys+push · P-④ chip §B 측정 ·
+  ι-2 USDZ) — 변동 없음, 다른 세션 필요. NEXT_SESSIONS Log
+  점검만. 측정: `swift run CockpitApp` 빌드 green (13.13s, 에러
+  0). **g3 정직**: sibling-repo "✓" 는 디렉토리 존재만 — 그
+  안 코드의 측정/검증 상태와 무관. workbench 가 sibling 을
+  *알기*만 함, *호출* 0 (호출은 cross-repo 세션 P-⑧). 자동
+  3D 애니메이션 = 여전히 NO (D35 명시); ι-2 (실 USDZ) 미완 —
+  component producer 후. 다음 = cross-repo 세션 (P-②③/P-④/
+  P-⑧) 또는 신규 작업.
