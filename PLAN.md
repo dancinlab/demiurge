@@ -1393,3 +1393,24 @@
     (`g_cockpit_reinstall` 준수). 이제 cockpit 의 모든 UI 컴포넌트
     + 컨테이너 구조 = 100% Apple-canonical (custom 0). 새 RFC 0,
     새 design.md decision 0, 새 governance 0.
+- 2026-05-19 — **`proposals/rfc_012_project_workbench.md` DRAFT 작성**
+  (discussion 기록 — 결정 0). 사용자 directive: cockpit 이 read-only
+  record viewer 에서 **project workbench** 로 진화 — "프로젝트 생성 ·
+  프로젝트명 입력 · + 버튼 · 일반인도 이해·사용 쉬움". rfc_012 가
+  현 discussion 을 잃지 않게 기록: §2 "project" 새 개념 (유저가
+  만드는 7-verb 작업 단위) · §3 단일 화면 + 화면-내 `+` 버튼
+  (사용자가 별도 프로젝트-고르기 화면 불필요로 정정) · §4 일반인용
+  plain-language layer (`GATE_*`/`provenance`/`F1F2` → ⏳/🔶/✅
+  신호등 + 평이 어휘) · §5 1/2/3/4 workbench layout (① 7-verb 단계
+  목록 · ② 현재 단계 작업면 · ③ AI 도우미+정직 신호등 · ④ 상단
+  프로젝트명+진행바) · §6 honesty 보존 규칙 (신호등은 measurement_
+  gate verbatim, UI 가 ⏳→✅ upgrade 금지, `@F f6`) · §7 데이터
+  모델 `exports/projects/<name>/` (단 `@D g_cockpit_isolation` (a)
+  read-only 와 충돌 — reconcile 필요) · §8 **7 open questions**
+  (+버튼 위치 / "무엇을 설계" 선택 방식 / expert 모드 토글 / sidebar
+  =7-verb 여부 / project 데이터 위치+governance / project↔기존
+  records / verb 별 "develop" 의미) — 각각 gate 대상. **status =
+  DRAFT** — design.md decision 0, governance 0, 코드 0. cockpit 은
+  여전히 rfc_009–011 의 read-only viewer (`1a6da4c`). project-
+  workbench 방향은 spirit 합의, 구체 선택은 §8 미결. 새 design.md
+  decision 0, 새 governance 0 (discussion 단계).
