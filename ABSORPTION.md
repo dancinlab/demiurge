@@ -190,8 +190,14 @@ dormant.
    `domains/<new>.md` 생성, §1~§6 cited.
 2. **계산 커널 식별** — 외부 도구의 CLI / Python API 중 *측정 가능한
    부분*. GUI 무시.
-3. **stdlib 배치** — `hexa-lang/stdlib/<topic>/` 에 hexa-native wrapper
-   또는 clean-room absorption 모듈 작성 (rfc_001 §7.2 패턴).
+2.5 **커널 분류 (D72)** — 그 계산 커널이 ①a 의 어느 `kernels/<kernel>/`
+   인지 분류 (fem · mc_transport · circuit · graph · orbital ·
+   wave_optics · cfd · logic_synth · noc_sim · ode_pde). **기존 커널이
+   있으면 재사용** — 새 커널은 정말 새 수학일 때만 추가.
+3. **stdlib 배치 (2-layer)** — ①a 커널 부분은 `hexa-lang/stdlib/
+   kernels/<kernel>/`, ①b 도메인-specific 부분은 `hexa-lang/stdlib/
+   <domain>/` (thin 어댑터 — 커널 호출 + 파라미터·geometry 만).
+   clean-room absorption (rfc_001 §7.2 패턴).
 4. **record schema** — 기존 (F1F2 / Component / Matter) 와 동일 구조의
    새 Record 또는 기존 확장. ③ 에 추가.
 5. **매핑** — ActionDispatch.runEngineTool 에 case 추가 (D53 정합).
@@ -441,6 +447,14 @@ local mac │ -       │ pool 호스트 다운시 fallback (swift run)
   셀 + 8 도메인 (rtsc·cern·antimatter·ufo·space·fusion·mobility·
   aura) 실측 stack, ROI 순, arxiv reference 동반, macOS-blocked
   honest 명시. 새 D-decision 없음 — research 정리.
+- 2026-05-20 — **D72 — ① STDLIB 2-layer** (커널 레이어 + 도메인
+  어댑터). 사용자 통찰 "도메인 엄청 추가될 건데 공용 해야" → ①
+  영역을 ①a `kernels/<kernel>/` (도메인-무관 재사용 엔진) + ①b
+  `<domain>/` (thin 어댑터) 로 재작성. 흡수 절차 체크리스트에
+  단계 2.5 (커널 분류) 추가. 정합 갱신처: design.md D72 (SSOT) ·
+  AGENTS.tape `g_stdlib_ownership.kernel_layer` · 본 파일 ①
+  영역 + 체크리스트. N×M → N+M scaling, hexa-native 제1 원칙과
+  시너지.
 - 2026-05-20 — κ-39 (D66) — `component + verify` 행이 "현재까지
   흡수된 producer" 표에 추가됨 (gmsh 4.15.2 + scikit-fem 12.0.1,
   GATE_OPEN, absorbed=false). 동시에 "무거운 후보 — 별도 세션 권장"
