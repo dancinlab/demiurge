@@ -2257,3 +2257,70 @@
     rfc043 로 머지되면 chip+verify 가 자동 record-producing 으로
     전환 (코드 변경 0); 또는 matter/energy 같은 다른 domain 엔진
     추가.
+- 2026-05-20 — **phase κ-30 — matter + analyze 셀 배선 (hexa-matter
+  closure-invariant aggregator)** (rfc_011 §6.3 · D17 · D50 · D53 ·
+  g_ssot_single_source · g3). κ-29 의 (verb, domain) 라우팅 골격에
+  세 번째 라이브 셀 추가 — `analyze + matter` → hexa-matter SSOT 의
+  `verify/run_all.hexa` aggregator spawn.
+  - **결정 (D53)** — 매핑한 verb = **analyze** (해석⟲, "설계가 잘
+    됐는지 점검하고 따져봐요"), domain = **matter**. 후보 verify 와
+    synthesize 는 둘 다 부적합:
+      • `verify` (검증/측정으로 확인) — hexa-matter run_all 은
+        spec_presence + lattice_arithmetic + real_limits_anchor +
+        closure_consistency 의 documentation/anchor cross-check 이지
+        bench 측정이 아님. spec_presence PASS = "spec 파일 있음" ≠
+        "재료가 측정됨" → verify 의미 침범.
+      • `synthesize` (만들기) — 새 물리적 artifact 생성 아님 (audit).
+      • `analyze` (해석⟲) hint = "설계가 잘 됐는지 점검하고
+        따져봐요" — closure consistency / lattice arithmetic / real
+        limits anchoring 이 정확히 그 의미. Best semantic fit.
+  - **신규**: `DemiurgeCore/Models/MatterRecord.swift` — chip
+    `F1F2Record` / `ComponentRecord` 와 같은 모양의 typed sidecar
+    (interface · schema_version · record_id · entry_script ·
+    per_script[] · exit_code · provenance{absorbed, producer,
+    measurement_gate, scope_caveats}). `F1F2Record.MeasurementGate`
+    enum 재사용 (4-state — OPEN / B_PINNED_MET / CLOSED_MEASURED /
+    FAILED). producer = `"hexa_matter@<commit>"` (절대로
+    `demiurge_…` 아님 — D17).
+  - **신규**: `DemiurgeCore/Loaders/MatterAnalyzer.swift` — engine
+    tool. (a) `locateHexa()` 로 hexa 바이너리 찾기 (없으면 gap),
+    (b) `~/core/hexa-matter/verify/run_all.hexa` 존재 확인 (없으면
+    gap), (c) `git -C ~/core/hexa-matter rev-parse --short HEAD` 로
+    producer commit 캡처, (d) `Process` 로 `hexa run
+    verify/run_all.hexa` spawn (cwd=matterRoot 이라야 run_all 의
+    `_resolve_root` 가 hexa.toml 을 찾음), (e) stdout 에서
+    `→ verify/<name>.hexa PASS|FAIL` 및 `N/M scripts passed` 파싱,
+    (f) `exports/matter/parity/<recordId>.json` 으로 typed record
+    persist.
+  - **확장**: `ActionDispatch.runEngineTool` switch 에
+    `(.analyze, "matter")` → `runMatterAnalyze()` 추가. ActionResult
+    스키마 변경 없음 — usedEngineTool=true, engineToolSucceeded=ok.
+  - **g3 honesty gate** (record-by-record):
+      • measurement_gate = `GATE_CLOSED_MEASURED` ONLY when
+        exit 0 + 모든 subscript PASS + commit hash 캡처 성공
+        (셋 다 동시).
+      • absorbed = true iff gate==CLOSED_MEASURED ("demiurge 가
+        hexa-matter 의 측정 사실을 commit-pinned record 로 흡수"
+        를 의미하는 명시적 정의 — scope_caveats 에 박제).
+      • commit hash 캡처 실패 → producer="hexa_matter@unknown" +
+        gate=OPEN + caveat 명시. **silent fallback 금지.**
+  - **측정 (이 worktree, mini, swift 6.3.1)**:
+    `swift run DemiurgeCLI action analyze matter` →
+    `hexa run verify/run_all.hexa — exit 0` · 4/4 scripts passed
+    (spec_presence · lattice_arithmetic · real_limits_anchor ·
+    closure_consistency) · producer=`hexa_matter@315eebe` · gate=
+    **GATE_CLOSED_MEASURED** · absorbed=**true** · record →
+    `exports/matter/parity/matter_parity_20260519T160833Z.json`.
+    빌드 measured-green (error 0 · 신규 warning 0).
+  - **g3 정직 갭**: ① matter parity = documentation/anchor cross-
+    check 이지 물리적 시료 측정 아님 (scope_caveat 에 명시) —
+    `absorbed=true` 의 의미는 "demiurge 가 hexa-matter 의 SSOT
+    aggregator 출력을 commit-pinned record 로 흡수" 한 사실에 한정.
+    ② commit hash `315eebe` 가 hexa-matter 의 진짜 HEAD 인지는
+    hexa-matter 저장소가 그 시점 main 인지에 달려 있음 (이 record
+    가 캡처한 시점의 .git HEAD 그대로). ③ run_all aggregator 자체가
+    closure-invariant 4 종에 한정 — 추가 selftests (예: 측정 anchor
+    의 수치 회귀) 는 hexa-matter 측 작업. 다음 pickup = energy /
+    chip+analyze / structure 등 다른 (verb, domain) 셀 엔진 추가;
+    matter parity 의 회귀 detection (record diff) UI; cockpit ②
+    참고 자료 패널이 matter parity record 도 카드로 렌더.

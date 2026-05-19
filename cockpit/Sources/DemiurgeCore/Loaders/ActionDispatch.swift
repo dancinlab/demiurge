@@ -6,14 +6,22 @@
 // are byte-identical across both surfaces (@D g_ssot_single_source /
 // D50 — CLI ↔ cockpit 멱등성).
 //
-// κ-29 (this commit): adds `runEngineTool(verb:, domain:)` — when a
-// real demiurge engine tool exists for the (verb, domain) cell, the
-// dispatcher calls IT (record-producing, deterministic) instead of
-// the claude-CLI LLM fallback. Currently wired:
+// κ-29: adds `runEngineTool(verb:, domain:)` — when a real demiurge
+// engine tool exists for the (verb, domain) cell, the dispatcher calls
+// IT (record-producing, deterministic) instead of the claude-CLI LLM
+// fallback.
+//
+// κ-30 (this commit, D53): adds `matter + analyze` → MatterAnalyzer.
+//
+// Currently wired:
 //   • component + synthesize → ComponentEmitter.emitBundled
 //   • chip      + verify     → booksim self-test sniffer
 //                              (honest-gap if hexa not on PATH or
 //                               cmd_measure body not on local branch)
+//   • matter    + analyze    → hexa-matter verify/run_all.hexa sweep
+//                              (honest-gap if hexa-matter SSOT missing
+//                               or commit hash not capturable — D17:
+//                               hexa-matter is owner, demiurge consumer)
 //
 // Honesty (g3, @F f6): the action prompt instructs the agent to
 // report "no engine tool" plainly when none is available, and never
@@ -89,6 +97,8 @@ public enum ActionDispatch {
             return runComponentSynthesize()
         case (.verify, "chip"):
             return runChipVerify()
+        case (.analyze, "matter"):
+            return runMatterAnalyze()
         default:
             let prompt = actionPrompt(verb: verb)
             let reply = askClaude(prompt: prompt, context: context)
@@ -107,6 +117,23 @@ public enum ActionDispatch {
     /// verdict — g3).
     private static func runComponentSynthesize() -> ActionResult {
         let r = ComponentEmitter.emitBundled()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `matter + analyze` engine tool (κ-30 / D53) — spawn hexa-matter's
+    /// `verify/run_all.hexa` aggregator (the closure-invariant SSOT
+    /// sweep) and persist a typed `MatterRecord` under
+    /// `exports/matter/parity/`. Producer = `hexa_matter@<commit>` —
+    /// demiurge witnesses, hexa-matter measures (D17 — hexa-lang /
+    /// hexa-matter own the materials toolkit; Swift never simulates
+    /// the substrate). Even on PASS the gate stays GATE_OPEN unless we
+    /// captured a real commit hash (honest pinning, g3).
+    private static func runMatterAnalyze() -> ActionResult {
+        let r = MatterAnalyzer.runAnalyze()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],

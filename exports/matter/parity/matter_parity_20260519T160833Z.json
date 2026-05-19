@@ -1,0 +1,37 @@
+{
+  "entry_script" : "verify/run_all.hexa",
+  "exit_code" : 0,
+  "interface" : "hexa-matter:verify:closure-aggregator",
+  "passed_scripts" : 4,
+  "per_script" : [
+    {
+      "passed" : true,
+      "script" : "verify/spec_presence.hexa"
+    },
+    {
+      "passed" : true,
+      "script" : "verify/lattice_arithmetic.hexa"
+    },
+    {
+      "passed" : true,
+      "script" : "verify/real_limits_anchor.hexa"
+    },
+    {
+      "passed" : true,
+      "script" : "verify/closure_consistency.hexa"
+    }
+  ],
+  "produced_at_utc" : "2026-05-19T16:08:33Z",
+  "provenance" : {
+    "absorbed" : true,
+    "measurement_gate" : "GATE_CLOSED_MEASURED",
+    "producer" : "hexa_matter@315eebe",
+    "scope_caveats" : [
+      "matter parity = hexa-matter SSOT 의 closure-invariant aggregator (spec_presence · lattice_arithmetic · real_limits_anchor · closure_consistency) — documentation/anchor cross-check 이며 물리적 시료 측정 아님 (rfc_002 §4 spirit, g3).",
+      "absorbed=true 의 의미: 'demiurge 가 hexa-matter 의 측정 사실을 commit-pinned record 로 흡수' (D17 — hexa-matter 가 owner, demiurge 는 consumer)."
+    ]
+  },
+  "record_id" : "matter_parity_20260519T160833Z",
+  "schema_version" : "1.0",
+  "total_scripts" : 4
+}
