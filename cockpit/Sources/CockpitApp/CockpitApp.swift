@@ -32,7 +32,18 @@ import DemiurgeCore
 struct CockpitApp: App {
     var body: some Scene {
         WindowGroup("Demiurge") {
-            WorkbenchView()
+            // κ-28 — standalone 3D-animation test window, gated by an
+            // env var so it needs no separate executable target:
+            //   DEMIURGE_TEST_3D=1 swift run CockpitApp
+            if ProcessInfo.processInfo.environment["DEMIURGE_TEST_3D"] != nil {
+                ComponentView3D(stub: ArtifactStub(
+                    id: ArtifactID(kind: .domain, key: "component"),
+                    title: "test-3d-animation",
+                    path: ""))
+                    .frame(minWidth: 720, minHeight: 600)
+            } else {
+                WorkbenchView()
+            }
         }
     }
 }

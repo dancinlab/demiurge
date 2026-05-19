@@ -2014,3 +2014,26 @@
   "absorbed/chip §B closed" 아님; enum 해제로 *B2(booksim
   sweep/measure body)가 비로소 가능*해진 것. demiurge 코드
   0 추가 — 확인·기록만.
+- 2026-05-19 — **phase κ-28 — 3D animation closure + test 창**
+  (사용자 b: "3D animation closure 가 목표 / test swift 창 필요";
+  demiurge-internal — 이 환경 measured-green 가능, a 와 달리
+  도구·binary 의존 0). **(애니메이션)** `ComponentView3D` —
+  `ExplodedStackView` 에 `explode∈[0,1]` 파라미터 + Coordinator
+  가 layer ModelEntity 추적, `updateNSView` 가 각 layer
+  `position.y = baseY * explode`. `ComponentView3D` body 를
+  `TimelineView(.animation)` 으로 구동 — `explode = 0.55 +
+  0.45·sin(t·0.9)` (분해⇄조립 breathe, ≈7s) + `yaw + t·0.25`
+  (auto-rotate); mouse-drag 는 그 위 manual offset (D35 rotate
+  경로 유지, "NO auto-animation" 절은 본 데모로 supersede).
+  **(test 창)** `CockpitApp @main` 에 env-gate —
+  `DEMIURGE_TEST_3D=1 swift run CockpitApp` → WorkbenchView
+  대신 ComponentView3D 단독 WindowGroup (별도 executable target
+  재구성 0; D26 canonical SwiftUI). 측정: `DEMIURGE_TEST_3D=1
+  swift run CockpitApp` 빌드 green (5.98s, 에러 0) — 컴파일·
+  실행 OK. **g3 정직**: 빌드 green = *컴파일* measured;
+  애니메이션 *시각 동작* 은 GUI 창 확인 필요 (내가 화면 못 봄
+  — UI 는 빌드≠시각검증, 정직 명시). geometry 는 여전히
+  PLACEHOLDER (procedural 5-layer, 실 USDZ 아님 — ι-2 별개
+  gate, "component absorbed/measured" 주장 0). banner·헤더
+  주석 갱신. 다음 = install 후 사용자가 3D 창 시각 확인 ·
+  또는 신규.
