@@ -1915,3 +1915,25 @@
   줄 → push 완료 + Yosys stub). **g3 정직**: 사용자 "완료됨"
   은 *push* 완료 — Yosys impl 은 stub 이라 "absorbed" 주장 불가;
   rfc_006 §5 area-oracle gate 미측정 그대로.
+- 2026-05-19 — **phase κ-24 — booksim dispatcher 구현 (track 2,
+  cross-repo)** (사용자 "여기서 모두 진행 / 1,2 both"; demiurge
+  세션이 hexa-lang 직접 작업 — 사용자 오버라이드). 환경 진단
+  먼저 (g3): yosys✅·hexa✅·내장abc✅ / abc바이너리·freecad·
+  openscad·gmsh·SKY130.lib ❌ / pool 자동 routing 이 yosys 명령
+  엔 안 걸림 (host=Mac). 진짜 막힘 = 측정 도구가 아니라 *측정
+  대상 미구현* (Yosys §4 stub · booksim dispatcher .stub).
+  oracle 은 comb 가 이미 측정 (d4=61,762.99·d6=93,608.53 µm²).
+  **착수: 2 (booksim dispatcher)** — `hexa-lang/stdlib/booksim/
+  booksim.hexa.stub` → `booksim.hexa` (hexa-lang commit
+  `f297978c`, branch rfc043-hexa-torch). CLI surface only (no
+  BookSim2 재도출 — rfc_001 §7.2): 라우팅 + help + version +
+  `topology`→anynet_load wire. sweep/wire-delay/oracle = 정직
+  exit 91 (TBD body, silent-skip 아님 @F f4) · measure = exit
+  90 (rfc_001 §8 gate 미충족 — absorbed 주장 0, g3). hexa enum
+  버그(rfc_003 finding) 회피 — anynet 만 import (sweep/leighton
+  등은 phase 별 wire). 측정: `hexa run stdlib/booksim/
+  booksim.hexa` → **dispatcher selftest 7/7 PASS** exit 0.
+  **g3 정직**: dispatcher *라우팅* measured-green 일 뿐 —
+  "booksim absorbed" 아님, F1F2 record 0, rfc_001 §8 gate
+  미충족 그대로. 다음 = track 1 (rfc_006 §4 Yosys hexa 모듈 —
+  yosys dispatcher 동형 패턴부터, enum 회피 int/struct).
