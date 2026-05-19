@@ -63,7 +63,8 @@ func usage() {
                                        routes to a real engine tool when
                                        one exists (e.g. component+synth
                                        → emit-component; chip+verify →
-                                       booksim self-test).
+                                       booksim self-test; chip+synth →
+                                       yosys.hexa dispatcher selftest).
       demiurge list-gates              F1F2 records grouped by gate
       demiurge verify <path|id>        provenance / claim-gate check
                                        (exit 0 consistent · 1 not)
@@ -232,7 +233,8 @@ func parseVerbArg(_ s: String) -> Verb? {
 /// (@D g_ssot_single_source / D50 — CLI↔cockpit byte-identical).
 /// κ-29: when a real engine tool exists for (verb, domain), we route
 /// to IT (record-producing); otherwise honest-gap via claude CLI (g3).
-/// Wired engine tools: component+synthesize · chip+verify.
+/// Wired engine tools: component+synthesize · chip+verify ·
+/// chip+synthesize (yosys.hexa dispatcher · rfc_006 §5 gate OPEN).
 func cliAction(_ verbStr: String, _ domainArg: String?) -> Int32 {
     guard let verb = parseVerbArg(verbStr) else {
         FileHandle.standardError.write(

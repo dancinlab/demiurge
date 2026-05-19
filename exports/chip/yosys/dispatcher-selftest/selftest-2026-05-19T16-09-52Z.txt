@@ -1,0 +1,33 @@
+# yosys.hexa dispatcher selftest — 2026-05-19T16-09-52Z
+# rfc_006 §5 gate OPEN · absorbed=false · g3
+# exit 0
+---
+0.0.1
+hexa yosys — RTL->netlist flow (rfc_006 §4 module-7)
+
+  yosys                      help (default)
+  yosys --help, -h           this help
+  yosys --version, -v        print version
+  yosys selftest             dispatcher routing self-test
+  yosys read-verilog <file>  Verilog -> RTLIL   (body TBD)
+  yosys synth <opts>         full flow          (gated)
+  yosys write-verilog <out>  RTLIL -> netlist   (body TBD)
+
+exit: 0 ok · 1 user-err · 2 runtime · 90 gate-open · 91 TBD
+hexa yosys — RTL->netlist flow (rfc_006 §4 module-7)
+
+  yosys                      help (default)
+  yosys --help, -h           this help
+  yosys --version, -v        print version
+  yosys selftest             dispatcher routing self-test
+  yosys read-verilog <file>  Verilog -> RTLIL   (body TBD)
+  yosys synth <opts>         full flow          (gated)
+  yosys write-verilog <out>  RTLIL -> netlist   (body TBD)
+
+exit: 0 ok · 1 user-err · 2 runtime · 90 gate-open · 91 TBD
+yosys: unknown subcommand: zzz
+yosys selftest: dispatcher routing only (module bodies skeleton).
+yosys synth: rfc_006 §5 area-oracle gate OPEN (d4 61763 / d6 93609 µm² 1.516x unmeasured by hexa-native flow) — no absorbed claim (g3). gate-open.
+yosys read-verilog: module body TBD (rfc_006 §4 read_verilog.hexa) — unreachable.
+yosys write-verilog: module body TBD (rfc_006 §4 write_verilog.hexa) — unreachable.
+yosys dispatcher selftest: 8/8 PASS

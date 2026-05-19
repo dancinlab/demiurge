@@ -2257,3 +2257,49 @@
     rfc043 로 머지되면 chip+verify 가 자동 record-producing 으로
     전환 (코드 변경 0); 또는 matter/energy 같은 다른 domain 엔진
     추가.
+- 2026-05-20 — **phase κ-31 — chip + synthesize 셀을 Yosys dispatcher 와
+  배선** (rfc_011 §6.3 · design.md D53 cite · rfc_006 §4 module-7 ·
+  g3). κ-29 의 2 셀 (component+synth, chip+verify) 옆에 세 번째 측정
+  가능한 셀을 추가 — D53 의 measurable-only 매핑 정책 (LLM verb 75
+  셀은 fallback 유지, 합성·검증 14 셀만 producer 와 배선) 의 첫
+  적용.
+  - **확장**: `ActionDispatch.runChipSynthesize()` — `~/core/hexa-lang/
+    hexa run stdlib/yosys/yosys.hexa` spawn → stdout 의 "yosys
+    dispatcher selftest: N/N PASS" 라인 검출 → `exports/chip/yosys/
+    dispatcher-selftest/selftest-<ISO8601>.txt` 로 trace mirror.
+    yosys.hexa 가 현재 hexa-lang checkout 에 없으면 (mac 의 working
+    tree branch 가 rfc043-hexa-torch / t4-emt-calc 라 yosys 디렉토리
+    부재 가능) honest "git checkout main 후 재실행" gap. hexa 바이너리
+    부재면 동일 gap path (chip+verify 와 같음).
+  - **D53 cite 만 — 새 D 안 만듦**: chip+synth 매핑은 D53 의 "측정
+    가능 14 셀" 정책 안의 평범한 셀 — 매핑 자체에 새 결정 필요 없음.
+    Yosys gate §5 OPEN 의 책임은 rfc_006 §5 (이미 lock) 가 진다.
+  - **측정 (오늘 wilson-pool 라우팅, ubu-1 hexa)**: `swift run
+    DemiurgeCLI action synthesize chip` → `hexa run yosys.hexa` exit
+    0, "yosys dispatcher selftest: 8/8 PASS", trace mirror 성공
+    (`exports/chip/yosys/dispatcher-selftest/selftest-2026-05-19T16-09-52Z.txt`),
+    CLI exit 0 (engineToolSucceeded=true). `swift build` green (사전
+    RealityKit MainActor warning 만, 에러 0).
+  - **g3 정직 갭 (제일 중요)**: Yosys gate §5 = **OPEN** 유지.
+    3 blocker (SKY130 sky130_fd_sc_hd lib 부재 · `abc` 바이너리 부재 ·
+    read_verilog scope = synth-subset, router_d4/d6 의 `localparam`
+    못 읽음) 때문에 router_d4≈61763 / d6≈93609 µm² 1.516× 의 ±5 %
+    매치는 **측정 불가**. dispatcher selftest GREEN 은 라우팅이 살아
+    있다는 뜻이지 SKY130 area-oracle 충족이 **아니다** — F1F2 record
+    emit 0, `absorbed=false`, `measurement_gate=GATE_OPEN`. "Yosys
+    absorbed" 주장 **절대 금지** (rfc_006 §5 + exports/chip/yosys/
+    2026-05-19-gate-§5-record.md).
+  - **g3 정직 갭 ②**: mac 의 demiurge working hexa-lang checkout 이
+    `rfc043-hexa-torch` 브랜치 — 사용자가 후속으로 `cd ~/core/hexa-lang
+    && git checkout main && git pull` 하여 main 의 yosys.hexa 본체를
+    워크트리에 가져와야 ubu-1 외의 host 에서도 chip+synth 가 산다.
+    이 worktree 빌드는 wilson-pool 이 ubu-1 으로 라우팅했고 ubu-1 의
+    hexa-lang checkout 에 yosys 가 있어서 셀이 PASS. mac local 에는
+    `/Users/ghost/core/hexa-lang/stdlib/yosys/yosys.hexa` 도 이미 존재
+    (parallel agent push 후 sync 됨) — 이 점은 후속 정리 OK.
+  - **g3 정직 갭 ③**: D53 의 측정 가능 14 셀 중 매핑된 것 = 3
+    (component+synth · chip+verify · chip+synth). 나머지 11 셀
+    (합성×6 도메인 + 검증×5 도메인 — 도메인-검증 producer 없는 곳)
+    은 여전히 fallback. 다음 pickup = 다른 매핑 가능 producer (예:
+    materials F1F2 stack 검증) 발굴 또는 cmd_measure body 머지로
+    chip+verify 자동 record-producing 전환.

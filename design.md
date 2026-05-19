@@ -1632,3 +1632,28 @@ STL 과 용도가 겹쳐 제외. (Rejected: `.obj` 포함 — STL 과 CAD/프린
   (g_ssot_single_source / D50) — viewer 와 다른 모델을 내보내는
   사고 차단.
 - `.obj` 제외로 λ-3 범위 절감; 필요 시 후속 phase 에서 추가 가능.
+
+### Decision 53 — 7-verb 셀 매핑 전략 = measurable-only (κ-29 후속)
+
+**picked**: ActionDispatch (rfc_011 §6, θ-2) 의 verb×domain 셀 매핑은
+**측정 가능한 2개 verb (합성·검증) 의 14 셀 (= 2 × 7 — 도메인 수)**
+만 real producer 와 배선한다. LLM verb 5개 (명세·구조·설계·해석·
+인계) × 15 도메인 = 75 셀은 `claude` CLI fallback (askClaude) 영구
+유지. 어댑터 인터페이스 (`ActionAdapter` 프로토콜) 도입은 매핑 셀
+이 **5개를 넘는 시점**에 리팩토링 — 그 전엔 switch/if 로 충분
+(premature abstraction 회피). producer 가 없는 도메인 (cohort×12 등)
+강제 매핑 금지 — fallback 유지. (Rejected: producer-first uniform —
+producer 없는 도메인 매핑 = 빈 어댑터, 의미 0; uniform 어댑터 —
+105 셀 프로토콜은 셀 2개 시점 과한 추상화.)
+
+**rationale**:
+- 사용자 게이트 2026-05-20 — 3택 (measurable-only / producer-first /
+  uniform-adapter) 중 measurable-only 채택.
+- GOAL 갭 ("측정 record 0") 직결 — 측정 가능한 곳만 진짜 도구,
+  나머지 honest fallback (g3).
+- LLM verb 는 본질상 대화 워크플로우 — `claude` CLI 가 자연스런
+  producer. 어댑터 강제할 이유 약함.
+- premature abstraction 회피 (CLAUDE.md / andrej-karpathy-skills) —
+  매핑 셀 5+ 되면 그때 ActionAdapter 프로토콜로 리팩토링.
+- producer 가 없는 도메인 강제 매핑 = 빈 어댑터, 측정 record 0,
+  GOAL 갭 못 메움.
