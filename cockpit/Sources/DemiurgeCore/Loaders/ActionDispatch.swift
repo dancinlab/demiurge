@@ -13,28 +13,37 @@
 //
 // κ-30 (this commit, D53): adds `matter + analyze` → MatterAnalyzer.
 // κ-34 (D55): adds `sscb + analyze` → SSCBProducer (ngspice 46 transient).
-// κ-38 (D59): adds `energy + analyze` → EnergyAnalyzeProducer
+// κ-35 (D59): adds `energy + analyze` → EnergyAnalyzeProducer
 //             (pvlib clear-sky + CEC SAPM, 4th cohort producer).
-// κ-43 (D65): adds `antimatter + analyze` → AntimatterAnalyzeProducer
+// (cohort round, no standalone PLAN κ / D-block — post-merge
+//  reconstructed): adds `antimatter + analyze` → AntimatterAnalyzeProducer
 //             (particle / PDG live-data lookup, 5th cohort producer;
 //             FIRST D61-compliant-from-birth producer — script SSOT in
 //             ~/core/hexa-lang/stdlib/antimatter/pdg_lookup.py, never
 //             in cockpit/scripts/).
-// κ-42 (D65): adds `cern + verify` → CernVerifyProducer (particle +
+// κ-38 (D65): adds `cern + verify` → CernVerifyProducer (particle +
 //             Bethe-Bloch analytic, 6th cohort cell and FIRST verify-
 //             verb cell in the cohort domains; D61-compliant — script
 //             SSOT in ~/core/hexa-lang/stdlib/cern/bethe_bloch_stopping.py).
-// κ-44 (D66): adds `component + verify` → ComponentVerifyProducer
+// κ-39 (D66): adds `component + verify` → ComponentVerifyProducer
 //             (gmsh + scikit-fem FEM on a Si die proxy box, 7th
 //             measurable-only cell; D61-compliant — script SSOT in
 //             ~/core/hexa-lang/stdlib/component/gmsh_skfem.py).
+// κ-43 (D70): rewires `chip + verify` → sweep_oracle_parity.hexa, the
+//             §B+§D oracle-parity orchestrator. `hexa build` → native
+//             binary spawn; 12/12 acceptance rows GREEN flips
+//             measurement_gate to GATE_CLOSED_MEASURED + absorbed=true.
+//             FIRST chip-domain dynamic-measurement absorption (vs
+//             chip+analyze's static Leighton analytic). Compute SSOT
+//             in ~/core/hexa-lang/stdlib/booksim/.
 //
 // Currently wired:
 //   • component + synthesize → ComponentEmitter.emitBundled
 //                              (FreeCAD parametric per κ-33 / D54)
-//   • chip      + verify     → booksim self-test sniffer
-//                              (honest-gap if hexa not on PATH or
-//                               cmd_measure body not on local branch)
+//   • chip      + verify     → sweep_oracle_parity.hexa orchestrator
+//                              (κ-43 / D70 — hexa build + native
+//                               binary spawn; 12/12 §B+§D GREEN →
+//                               GATE_CLOSED_MEASURED, absorbed=true)
 //   • chip      + synthesize → yosys.hexa selftest sniffer
 //                              (κ-31 · D53 measurable-cell mapping ·
 //                               rfc_006 §5 gate OPEN — no absorbed
@@ -50,13 +59,15 @@
 //                              numbers, plausible-not-absorbed circuit,
 //                              GATE_OPEN永구 / absorbed=false ALWAYS)
 //   • energy    + analyze    → pvlib clear-sky + CEC SAPM producer
-//                              (κ-38 / D59 — 4th cohort domain, FIRST
+//                              (κ-35 / D59 — 4th cohort domain, FIRST
 //                              renewable-energy cell; real NREL SAM-
 //                              verified algorithm output but ZERO sky-
 //                              measured data → clear-sky upper bound,
 //                              GATE_OPEN영구 / absorbed=false ALWAYS)
 //   • antimatter+ analyze    → particle (scikit-hep) PDG live-data
-//                              lookup (κ-43 / D65 — 5th cohort domain,
+//                              lookup (cohort round, no standalone PLAN
+//                              κ / D-block — post-merge reconstructed;
+//                              5th cohort domain,
 //                              FIRST particle-physics cell AND FIRST
 //                              D61-compliant-from-birth producer
 //                              (script SSOT in hexa-lang/stdlib/);
@@ -235,7 +246,7 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `energy + analyze` engine tool (κ-38 / D59) — spawn pvlib via
+    /// `energy + analyze` engine tool (κ-35 / D59) — spawn pvlib via
     /// `cockpit/scripts/energy_pvlib.py` to run a 1-year hourly clear-
     /// sky simulation (Phoenix AZ, standard CEC module + inverter),
     /// then persist a typed `EnergyRecord` under
@@ -254,7 +265,8 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `antimatter + analyze` engine tool (κ-43 / D65) — spawn the
+    /// `antimatter + analyze` engine tool (cohort round, no standalone
+    /// PLAN κ / D-block — post-merge reconstructed) — spawn the
     /// `particle` (scikit-hep, BSD-3) PDG live-data lookup via
     /// `~/core/hexa-lang/stdlib/antimatter/pdg_lookup.py` and persist
     /// a typed `AntimatterRecord` under
@@ -276,13 +288,14 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `fusion + analyze` engine tool (κ-46 / D69) — spawn plasmapy
+    /// `fusion + analyze` engine tool (κ-41 / D69) — spawn plasmapy
     /// derived-parameter producer via
     /// `~/core/hexa-lang/stdlib/fusion/plasma_metrics.py` and persist a
     /// typed `FusionRecord` under `exports/fusion/plasma/<stamp>/`.
     /// Producer = `plasmapy@<v> (ITER core reference derivation)`.
     /// SEVENTH cohort cell crossing the measuring-producer threshold
-    /// (after sscb κ-34, energy κ-38, antimatter κ-43, cern κ-42) and
+    /// (after sscb κ-34, energy κ-35, antimatter [cohort round], cern
+    /// κ-38) and
     /// the FIRST plasma-physics cell. D61-compliant-from-birth — the
     /// Python script lives in hexa-lang/stdlib/, NEVER in cockpit/
     /// scripts/ (g_demiurge_pointer_only). Bohm·Debye·Lorentz algebra
@@ -302,7 +315,7 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `cern + verify` engine tool (κ-42 / D65) — spawn the Bethe-Bloch
+    /// `cern + verify` engine tool (κ-38 / D65) — spawn the Bethe-Bloch
     /// antiproton stopping-power producer via
     /// `~/core/hexa-lang/stdlib/cern/bethe_bloch_stopping.py` and persist
     /// a typed `CernRecord` under `exports/cern/stopping/<stamp>/`.
@@ -325,7 +338,7 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `component + verify` engine tool (κ-44 / D66) — spawn the
+    /// `component + verify` engine tool (κ-39 / D66) — spawn the
     /// (gmsh + scikit-fem + meshio + numpy) FEM pipeline via
     /// `~/core/hexa-lang/stdlib/component/gmsh_skfem.py` and persist a
     /// typed `ComponentVerifyRecord` under
@@ -350,7 +363,8 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `chip + analyze` engine tool (κ-45 / D56) — hexa-native Leighton
+    /// `chip + analyze` engine tool (D56; cohort-round producer, no
+    /// standalone PLAN κ entry — post-merge reconstructed) — hexa-native Leighton
     /// booksim oracle (worktree-a8727a55, hexa-lang stdlib). g3 honest:
     /// 측정 결과는 record 로 emit, gate/absorbed flip 은 측정 record 자체에
     /// 인용된 값을 따름 (Producer 코드가 임의로 closure 하지 않음).
@@ -363,7 +377,8 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `grid + structure` engine tool (κ-46 / D57) — NetworkX IEEE 14-bus
+    /// `grid + structure` engine tool (D57; cohort-round producer, no
+    /// standalone PLAN κ entry — post-merge reconstructed) — NetworkX IEEE 14-bus
     /// topology producer. Script SSOT migrated to hexa-lang/stdlib/grid/
     /// (D61, post-merge migration). GATE_OPEN / absorbed=false (toy
     /// topology, not a measured grid).
@@ -376,7 +391,8 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `bot + structure` engine tool (κ-47 / D58) — yourdfpy URDF parser
+    /// `bot + structure` engine tool (D58; cohort-round producer, no
+    /// standalone PLAN κ entry — post-merge reconstructed) — yourdfpy URDF parser
     /// over a hermetic 2-link arm. Script migrated to hexa-lang/stdlib/
     /// bot/ (D61, post-merge migration). GATE_OPEN / absorbed=false
     /// (URDF spec meta, not robot hardware measurement).
@@ -389,7 +405,8 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `space + analyze` engine tool (κ-48 / D60) — Skyfield SGP4
+    /// `space + analyze` engine tool (D60; cohort-round producer, no
+    /// standalone PLAN κ entry — post-merge reconstructed) — Skyfield SGP4
     /// propagator on ISS TLE. Script migrated to hexa-lang/stdlib/space/
     /// (D61). GATE_OPEN / absorbed=false (TLE input not a demiurge
     /// measurement, propagator is upstream).
@@ -402,7 +419,8 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `brain + analyze` engine tool (κ-49 / D62-cohort) — Brian2 single
+    /// `brain + analyze` engine tool (cohort-round producer, no standalone
+    /// PLAN κ / D-block — post-merge reconstructed) — Brian2 single
     /// LIF spike-rate producer. D61-from-birth (script SSOT in hexa-lang
     /// stdlib/brain/lif_brian2.py). GATE_OPEN / absorbed=false (toy
     /// neuron model).
@@ -415,7 +433,8 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `mobility + analyze` engine tool (κ-50 / D63-cohort) — OSMnx
+    /// `mobility + analyze` engine tool (cohort-round producer, no standalone
+    /// PLAN κ / D-block — post-merge reconstructed) — OSMnx
     /// road-network topology. D61-from-birth (hexa-lang stdlib/mobility/
     /// road_network.py). GATE_OPEN / absorbed=false (OSM topology meta).
     private static func runMobilityAnalyze() -> ActionResult {
@@ -427,7 +446,8 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `aura + analyze` engine tool (κ-51 / D67-cohort) — MNE-Python
+    /// `aura + analyze` engine tool (cohort-round producer, no standalone
+    /// PLAN κ / D-block — post-merge reconstructed) — MNE-Python
     /// EEG band-power. D61-from-birth (hexa-lang stdlib/aura/aura_mne.py).
     /// GATE_OPEN / absorbed=false (synthetic input).
     private static func runAuraAnalyze() -> ActionResult {
@@ -439,7 +459,8 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `scope + analyze` engine tool (κ-52 / D67-cohort) — Poppy optical
+    /// `scope + analyze` engine tool (cohort-round producer, no standalone
+    /// PLAN κ / D-block — post-merge reconstructed) — Poppy optical
     /// PSF. D61-from-birth (hexa-lang stdlib/scope/scope_poppy.py).
     /// GATE_OPEN / absorbed=false (textbook configuration).
     private static func runScopeAnalyze() -> ActionResult {
@@ -451,7 +472,8 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `cern + analyze` engine tool (κ-53 / D66-cohort) — pylhe LHE
+    /// `cern + analyze` engine tool (cohort-round producer, no standalone
+    /// PLAN κ / D-block — post-merge reconstructed) — pylhe LHE
     /// round-trip stats. D61-from-birth (hexa-lang stdlib/cern/lhe_stats.py).
     /// GATE_OPEN / absorbed=false (LHE meta, not detector measurement).
     /// Distinct from `cern + verify` (Bethe-Bloch shielding).
@@ -478,124 +500,192 @@ public enum ActionDispatch {
     /// one appears we copy it into `exports/chip/noc/f1f2/records/`.
     /// If hexa is missing OR no record is produced, report engine-tool
     /// gap honestly — never silent success (g3).
+    /// `chip + verify` engine tool (κ-43 / D70; path decided κ-37 / D64)
+    /// — spawn the hexa-native
+    /// `sweep_oracle_parity.hexa` orchestrator (rfc_001 §8 + rfc_003 §4)
+    /// and witness its §B+§D oracle-parity verdict.
+    ///
+    /// D61 / g_demiurge_pointer_only: ALL compute lives in
+    /// `hexa-lang/stdlib/booksim/sweep_oracle_parity.hexa`; this Swift
+    /// path only `Process`-spawns `hexa build` then runs the compiled
+    /// binary, parses the stdout banner + jsonl, and witnesses the
+    /// emitted F1F2Records onto disk. The compiled path is used (not
+    /// `hexa run`) because the orchestrator IS the compute — the hexa
+    /// interpreter is ~1000× slower on this workload; `hexa build`
+    /// transpiles to C → native (κ-43 measurement, 2026-05-20).
+    ///
+    /// g3: the gate flip to GATE_CLOSED_MEASURED + absorbed=true is
+    /// witnessed from the orchestrator's own 12/12 verdict — Swift
+    /// never upgrades the claim. If the orchestrator reports < 12/12,
+    /// the records carry GATE_B_PINNED_MET and engineToolSucceeded
+    /// is false.
     private static func runChipVerify() -> ActionResult {
         let hexaBin = locateHexa()
         guard let hexaPath = hexaBin else {
             return ActionResult(
                 text: "⏳ engine tool gap — `hexa` 실행 파일을 PATH 또는 "
                     + "~/core/hexa-lang/hexa 에서 찾지 못했습니다. chip + "
-                    + "verify (rfc_001 §8) 는 booksim cmd_measure 가 "
-                    + "F1F2 record 를 emit 해야 하지만, 그 본체는 아직 "
-                    + "hexa-lang/rfc043-hexa-torch 브랜치에 없습니다 "
+                    + "verify (rfc_001 §8) 는 hexa-lang 의 "
+                    + "sweep_oracle_parity.hexa 를 컴파일·실행해야 합니다 "
                     + "(g3 — silent success 금지).",
                 newRecordIDs: [],
                 usedEngineTool: true,
                 engineToolSucceeded: false)
         }
-        let booksim = NSString(string: "~/core/hexa-lang/stdlib/booksim/booksim.hexa")
+        let hexaLangRoot = NSString(string: "~/core/hexa-lang")
             .expandingTildeInPath
-        guard FileManager.default.fileExists(atPath: booksim) else {
+        let module = "stdlib/booksim/sweep_oracle_parity.hexa"
+        let modulePath = hexaLangRoot + "/" + module
+        guard FileManager.default.fileExists(atPath: modulePath) else {
             return ActionResult(
-                text: "⏳ engine tool gap — booksim.hexa 를 찾지 못했습니다 "
-                    + "(\(booksim)). chip + verify 는 hexa-lang stdlib 의 "
-                    + "booksim 모듈을 필요로 합니다 (g3).",
+                text: "⏳ engine tool gap — sweep_oracle_parity.hexa 를 "
+                    + "찾지 못했습니다 (\(modulePath)). chip + verify 는 "
+                    + "hexa-lang stdlib 의 booksim 오케스트레이터를 "
+                    + "필요로 합니다 (D61 — SSOT = hexa-lang, g3).",
                 newRecordIDs: [],
                 usedEngineTool: true,
                 engineToolSucceeded: false)
         }
 
-        // Note the existing /tmp record mtime (if any) so we can tell
-        // if the self-test produced a *new* one this run.
-        let tmpRecord = "/tmp/hexa_native_8x8_mesh_d4_uniform_22nm.json"
-        let beforeMtime = mtimeOf(tmpRecord)
-
-        // Spawn `hexa run booksim.hexa` — captures the self-test
-        // output. With cmd_measure body landed, the self-test emits
-        // one F1F2 record to /tmp; with the stub, exit 90 / no emit.
-        let proc = Process()
-        proc.executableURL = URL(fileURLWithPath: hexaPath)
-        proc.arguments = ["run", booksim]
-        let pipe = Pipe()
-        proc.standardOutput = pipe
-        proc.standardError = pipe
-        var stdoutText = ""
-        var ranOK = false
-        var exitCode: Int32 = -1
+        // ── 1. hexa build (transpile → C → native) ──
+        let build = Process()
+        build.executableURL = URL(fileURLWithPath: hexaPath)
+        build.arguments = ["build", module]
+        build.currentDirectoryURL = URL(fileURLWithPath: hexaLangRoot)
+        let buildPipe = Pipe()
+        build.standardOutput = buildPipe
+        build.standardError = buildPipe
+        var buildOut = ""
         do {
-            try proc.run()
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            proc.waitUntilExit()
-            exitCode = proc.terminationStatus
-            stdoutText = String(data: data, encoding: .utf8) ?? ""
-            ranOK = (exitCode == 0)
+            try build.run()
+            let data = buildPipe.fileHandleForReading.readDataToEndOfFile()
+            build.waitUntilExit()
+            buildOut = String(data: data, encoding: .utf8) ?? ""
+            if build.terminationStatus != 0 {
+                return ActionResult(
+                    text: "⏳ engine tool gap — hexa build "
+                        + "sweep_oracle_parity.hexa 실패 (exit "
+                        + "\(build.terminationStatus)). 측정 record 0 (g3).\n"
+                        + lastLinesOf(buildOut, 8),
+                    newRecordIDs: [],
+                    usedEngineTool: true,
+                    engineToolSucceeded: false)
+            }
         } catch {
             return ActionResult(
-                text: "⏳ engine tool gap — hexa 실행 실패: "
+                text: "⏳ engine tool gap — hexa build 실행 실패: "
                     + "\(error.localizedDescription) (g3).",
                 newRecordIDs: [],
                 usedEngineTool: true,
                 engineToolSucceeded: false)
         }
 
-        let afterMtime = mtimeOf(tmpRecord)
-        let producedNew = (afterMtime != nil && afterMtime != beforeMtime)
+        // ── 2. run the compiled orchestrator binary ──
+        let appPath = hexaLangRoot + "/build/artifacts/app"
+        guard FileManager.default.isExecutableFile(atPath: appPath) else {
+            return ActionResult(
+                text: "⏳ engine tool gap — 컴파일 산출물 \(appPath) 이 "
+                    + "없습니다 (hexa build 가 app 을 만들지 못함, g3).",
+                newRecordIDs: [],
+                usedEngineTool: true,
+                engineToolSucceeded: false)
+        }
+        let run = Process()
+        run.executableURL = URL(fileURLWithPath: appPath)
+        run.currentDirectoryURL = URL(fileURLWithPath: hexaLangRoot)
+        let runPipe = Pipe()
+        run.standardOutput = runPipe
+        run.standardError = runPipe
+        var runOut = ""
+        var exitCode: Int32 = -1
+        do {
+            try run.run()
+            let data = runPipe.fileHandleForReading.readDataToEndOfFile()
+            run.waitUntilExit()
+            exitCode = run.terminationStatus
+            runOut = String(data: data, encoding: .utf8) ?? ""
+        } catch {
+            return ActionResult(
+                text: "⏳ engine tool gap — sweep_oracle_parity 바이너리 "
+                    + "실행 실패: \(error.localizedDescription) (g3).",
+                newRecordIDs: [],
+                usedEngineTool: true,
+                engineToolSucceeded: false)
+        }
 
-        var lines: [String] = []
-        lines.append("hexa run booksim.hexa — exit \(exitCode)")
-        lines.append(stdoutText.trimmingCharacters(in: .whitespacesAndNewlines))
+        // exit 91 == Leighton oracle violated — record MUST NOT be
+        // emitted (rfc_001 §7.3). Honest hard stop.
+        if exitCode == 91 {
+            return ActionResult(
+                text: "❌ chip + verify — Leighton 오라클 위반 (exit 91). "
+                    + "rfc_001 §7.3: record emit 금지 — SIM 이 틀린 것이지 "
+                    + "정리(theorem)가 틀린 게 아님 (g3).\n"
+                    + lastLinesOf(runOut, 6),
+                newRecordIDs: [],
+                usedEngineTool: true,
+                engineToolSucceeded: false)
+        }
 
-        if producedNew {
-            // Self-test emitted a fresh record → copy to exports/.
-            let dest = RecordLoader.f1f2RecordsRoot
-                .appendingPathComponent("hexa_native_8x8_mesh_d4_uniform_22nm.json")
-            do {
-                try FileManager.default.createDirectory(
-                    at: RecordLoader.f1f2RecordsRoot,
-                    withIntermediateDirectories: true)
-                if FileManager.default.fileExists(atPath: dest.path) {
-                    try FileManager.default.removeItem(at: dest)
-                }
-                try FileManager.default.copyItem(
-                    at: URL(fileURLWithPath: tmpRecord), to: dest)
-                lines.append("---")
-                lines.append("📸 새 측정 record → exports/chip/noc/f1f2/records/"
-                    + "hexa_native_8x8_mesh_d4_uniform_22nm.json")
-                lines.append("   GATE_OPEN · absorbed=false · single-point "
-                    + "measurement (rfc_001 §8 full-curve parity 아직 미입증 — g3)")
-                return ActionResult(
-                    text: lines.joined(separator: "\n"),
-                    newRecordIDs: ["hexa_native_8x8_mesh_d4_uniform_22nm"],
-                    usedEngineTool: true,
-                    engineToolSucceeded: true)
-            } catch {
-                lines.append("---")
-                lines.append("⏳ /tmp record copy 실패: \(error.localizedDescription)")
-                return ActionResult(
-                    text: lines.joined(separator: "\n"),
-                    newRecordIDs: [],
-                    usedEngineTool: true,
-                    engineToolSucceeded: false)
+        // ── 3. parse banner + jsonl, witness records to disk ──
+        var bannerLines: [String] = []
+        var jsonlLines: [String] = []
+        for raw in runOut.split(separator: "\n", omittingEmptySubsequences: false) {
+            let line = String(raw)
+            if line.hasPrefix("{\"interface\"") {
+                jsonlLines.append(line)
+            } else if !line.trimmingCharacters(in: .whitespaces).isEmpty {
+                bannerLines.append(line)
             }
         }
 
-        // No new record — honest gap. Either cmd_measure is still a
-        // stub (7/7 self-test, no emit) or the run failed outright.
+        var newIDs: [String] = []
+        do {
+            try FileManager.default.createDirectory(
+                at: RecordLoader.f1f2RecordsRoot,
+                withIntermediateDirectories: true)
+        } catch { /* dir may already exist */ }
+        for jl in jsonlLines {
+            guard let data = jl.data(using: .utf8),
+                  let obj = try? JSONSerialization.jsonObject(with: data)
+                      as? [String: Any],
+                  let rid = obj["record_id"] as? String
+            else { continue }
+            let dest = RecordLoader.f1f2RecordsRoot
+                .appendingPathComponent("2026-05-20_\(rid).json")
+            // Re-serialize pretty so the on-disk record matches the
+            // existing exports/chip/noc/f1f2/records/ house style.
+            if let pretty = try? JSONSerialization.data(
+                    withJSONObject: obj,
+                    options: [.prettyPrinted, .sortedKeys]) {
+                if (try? pretty.write(to: dest)) != nil {
+                    newIDs.append(rid)
+                }
+            }
+        }
+
+        let green = runOut.contains("ACCEPTANCE: 12/12")
+            && runOut.contains("gate_state=GATE_CLOSED_MEASURED")
+        var lines: [String] = []
+        lines.append("hexa build + run sweep_oracle_parity — exit \(exitCode)")
+        lines.append(bannerLines.joined(separator: "\n"))
         lines.append("---")
-        if ranOK {
-            lines.append("⏳ engine tool gap — booksim self-test 는 통과했지만 "
-                + "cmd_measure body 가 아직 stub 입니다 (exit 90 / no record emit). "
-                + "F1F2 record producer 본체는 hexa-lang 의 별도 브랜치에 있고 "
-                + "현재 local rfc043-hexa-torch 에는 미머지 (g3 — 측정 record 0).")
+        if green && exitCode == 0 {
+            lines.append("✅ chip + verify — §B+§D oracle parity 12/12 GREEN. "
+                + "GATE_CLOSED_MEASURED · absorbed=true. "
+                + "rfc_001 §8 measurement gate CLOSED — 첫 chip 도메인 "
+                + "measured-parity (rfc_003 §4 §B 4행 + §D 6행 + Leighton 2).")
+            lines.append("📸 F1F2Record \(newIDs.count)건 → "
+                + "exports/chip/noc/f1f2/records/2026-05-20_*.json")
         } else {
-            lines.append("⏳ engine tool gap — hexa 실행 exit \(exitCode) "
-                + "(stale binary / 미컴파일 모듈 가능성). chip + verify "
-                + "측정 record 생성 0 (g3).")
+            lines.append("🔶 chip + verify — 일부 행만 GREEN "
+                + "(< 12/12 또는 gate 미달). records 는 "
+                + "GATE_B_PINNED_MET 로 emit, absorbed=false 유지 (g3).")
         }
         return ActionResult(
             text: lines.joined(separator: "\n"),
-            newRecordIDs: [],
+            newRecordIDs: newIDs,
             usedEngineTool: true,
-            engineToolSucceeded: false)
+            engineToolSucceeded: green && exitCode == 0)
     }
 
     /// `chip + synthesize` engine tool — spawn the local Yosys
@@ -781,6 +871,13 @@ public enum ActionDispatch {
     private static func mtimeOf(_ path: String) -> Date? {
         let attrs = try? FileManager.default.attributesOfItem(atPath: path)
         return attrs?[.modificationDate] as? Date
+    }
+
+    /// Last `n` non-empty lines of a captured stream — for honest
+    /// failure tails (g3 — surface the real error, never a silent OK).
+    private static func lastLinesOf(_ text: String, _ n: Int) -> String {
+        let all = text.split(separator: "\n", omittingEmptySubsequences: true)
+        return all.suffix(n).joined(separator: "\n")
     }
 
     /// Invoke `claude -p <guarded>` as a SYNCHRONOUS subprocess and

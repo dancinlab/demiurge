@@ -220,8 +220,9 @@ producer 가 ① 에 들어오는 순서대로 매핑 추가.)
 - D55 — sscb analyze = ngspice transient (first cohort producer)
 - D61 — producer script SSOT = `~/core/hexa-lang/stdlib/<domain>/<tool>.py`
   (sibling repo; `cockpit/scripts/*.py` 금지 for NEW producers)
-- D67 — aura + scope analyze 동시 cohort sweep (κ-35; MNE-Python +
-  POPPY; D61 producer SSOT 정합 박제)
+- aura + scope analyze 동시 cohort sweep (MNE-Python + POPPY; D61
+  producer SSOT 정합 박제) — cohort 병렬 라운드 producer, standalone
+  PLAN κ / D-block 없음 (post-merge reconstructed)
 - rfc_001 §8 · rfc_002 §3 — F1F2 schema + 측정 gate 규칙
 - `proposals/rfc_001` ~ `rfc_005` — 도메인-별 absorption RFC
 
@@ -279,8 +280,8 @@ ubu-1(linux) · ubu-2(linux) 에 round-robin 라우팅. 명령을 묶지 말고
 |------------------------------------|------------------------------|----------|-------|
 | antimatter / cern + measured       | Geant4 + ROOT                | 1-2일    | 진행  |
 | fusion + verify (CFD)              | `hexa-lang/stdlib/fusion` 포팅 (clean-room) | 1-2주 |       |
-| Wolfspeed SiC `.lib` 흡수 (sscb)   | 측정 데이터 + DEVSIM TCAD    | 수일     | ✅ κ-41 — `stdlib/sscb/` 5모듈 GREEN (wolfspeed 파서 35/35 · ngspice.hexa Python-parity 9/9 · devsim TCAD 브리지 7/7 · sscb 디스패처 · **datasheet parity**: 실 Wolfspeed C3M0021120K datasheet Rev.4 의 R_DS(on)/V_GS(th) 를 ngspice 가 1.1%/1.4% 재현). 잔여 = `absorbed=true` (hexa-native SPICE MNA solver, 별개 다주차 과제) |
-| chip §B full-curve parity          | booksim 9-sweep + parity     | 수일     | ✅ κ-40 |
+| Wolfspeed SiC `.lib` 흡수 (sscb)   | 측정 데이터 + DEVSIM TCAD    | 수일     | ✅ κ-40 — `stdlib/sscb/` 5모듈 GREEN (wolfspeed 파서 35/35 · ngspice.hexa Python-parity 9/9 · devsim TCAD 브리지 7/7 · sscb 디스패처 · **datasheet parity**: 실 Wolfspeed C3M0021120K datasheet Rev.4 의 R_DS(on)/V_GS(th) 를 ngspice 가 1.1%/1.4% 재현). 잔여 = `absorbed=true` (hexa-native SPICE MNA solver, 별개 다주차 과제) |
+| chip §B full-curve parity          | booksim 9-sweep + parity     | 수일     | ✅ κ-43 (경로결정 κ-37) |
 | Yosys hexa-native absorbed=true    | `stdlib/yosys/read_verilog` scope 확장 (localparam · generate · always · function automatic · multi-D mem · signed arith) → router_d{4,6}.v hexa-native 합성 → ±5% 오라클 매치 | 1-2주 | 진행  |
 
 ### 사용법
@@ -326,7 +327,7 @@ local mac │ -       │ pool 호스트 다운시 fallback (swift run)
   + 현재 흡수된 producer 5건 표 + 가벼운 distrib 선호. substrate vs
   absorbed 구분 (Yosys §5 사례) 명시. 새 D-decision 없음 — 기존
   D15/D17/D50/D53~D55 + rfc_001~005 cite.
-- 2026-05-20 — κ-44 (D66) — `component + verify` 행이 "현재까지
+- 2026-05-20 — κ-39 (D66) — `component + verify` 행이 "현재까지
   흡수된 producer" 표에 추가됨 (gmsh 4.15.2 + scikit-fem 12.0.1,
   GATE_OPEN, absorbed=false). 동시에 "무거운 후보 — 별도 세션 권장"
   표에서 같은 행 제거 — docker (Salome-Meca 5 GB+) 가 아니라 pip
