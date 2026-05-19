@@ -1827,3 +1827,19 @@
   κ-16 의 sibling 인식은 *measured 도 cited 도 아닌 가정* 이었음 —
   사용자 정정으로 즉시 철회. workbench 가 "잘못된 위치 표시"보다
   "표시 안 함" 이 정직.
+- 2026-05-19 — **phase κ-18 — P-⑨ 정교화 + README 정합** (G + P-⑨
+  정교화 묶음). **(P-⑨)** NEXT_SESSIONS P-⑨ 의 Tooling step 정정:
+  KiCad StepUp/OpenSCAD → **FreeCAD + gmsh + USDPython** (정확한
+  domains/component.md §5 cited), 흡수 패턴 = **D18 bounded-
+  subprocess** (Yosys/ABC 선례; FreeCAD/gmsh clean-room 재도출은
+  비현실), `hexa-lang/component/` 는 thin hexa-native wrapper +
+  provenance/gate headers. **(G — README)** 갱신: Status 머리줄
+  "design only NOT built" → "workbench live · engine tool 0 이
+  honest gap"; D1–D22 / RFC 9건 등 카운트 제거 (PLAN/design.md
+  SSOT, g_ssot_single_source); Files 섹션에 cockpit/ · rfc_011/012
+  · NEXT_SESSIONS 추가, AGENTS.tape governance 목록 갱신; Related
+  repos 정정 — hexa-lang sole SSOT 명시 + hexa-* sibling NOT
+  SSOT (κ-17 정정 반영); Current state 재구성 — Design-complete /
+  Built / Not done 3 묶음, "engine tool 0" 가 핵심 갭임 명시.
+  코드 무변경 → install 불요. **g3 정직**: 카테고리 서술만; 모든
+  수치 (D-번호, RFC 건수, κ phase) 는 design.md / PLAN.md SSOT 포인터.

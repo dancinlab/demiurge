@@ -455,12 +455,18 @@ demiurge's cockpit ComponentMode shows a measured 3D model and the
 Steps (scope-as-you-can, honest staging):
   1. Pick a concrete target (the BIPV reference module is the
      obvious first one).
-  2. Use the public-surface tooling from domains/component.md §2 —
-     FreeCAD / KiCad StepUp / OpenSCAD — clean-room (D1), public
-     docs only, no proprietary IP.
+  2. Tooling — use the §5 cited OSS via the **D18 bounded-subprocess**
+     pattern (the Yosys / ABC precedent; clean-room re-derivation of
+     FreeCAD / gmsh is unrealistic at their size):
+       - **FreeCAD**   (parametric 3D modeler)   — shape definition
+       - **gmsh**      (mesh + CAD pre / post)   — verification mesh
+       - **USDPython** (Apple USD bindings)      — `.usd` → `.usdz`
+     `hexa-lang/component/` carries **thin hexa-native wrappers +
+     provenance / gate headers**, NOT a clean-room re-derivation of
+     the tools themselves. domains/component.md §5 has the cited URLs.
   3. Emit:
        - the .usdz (or .stl + .usdz pair) under
-         ~/core/demiurge/exports/component/geometry/<id>.usdz
+         `~/core/demiurge/exports/component/geometry/<id>.usdz`
        - a typed record sibling JSON (F1F2-style per rfc_002 §4)
          carrying producer + measurement_gate + provenance.
   4. Verify: open /Applications/demiurge.app, create a component-
