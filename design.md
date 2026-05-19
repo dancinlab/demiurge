@@ -1759,3 +1759,90 @@ pickup note 로 이월. ③ scope+design (POPPY) — pip install + 우주
   / `cohort-pickup-bot-…` 로 다음 세션 위임. 한 라운드 한 셀이
   D53 의 "premature abstraction 회피" 와 g3 의 "honest scope"
   정신과 정합.
+
+### Decision 59 — `energy + analyze` producer = pvlib clear-sky (P-⑧ 4번째 cohort, κ-38)
+
+**picked**: cohort domain producer 발굴 라운드 (D55) 의 4번째 picks =
+**`energy + analyze` = pvlib clear-sky + CEC SAPM 모델**. `cockpit/
+scripts/energy_pvlib.py` (이후 hexa-lang stdlib 으로 마이그레이션 —
+D61 birth-violation 목록 포함) 가 Phoenix AZ (33.45°N · 112.07°W ·
+alt 331 m · America/Phoenix tz) 의 1년 hourly clear-sky GHI/DNI/DHI
+를 pvlib 의 Ineichen 모델로 계산하고, CEC database 의 표준 모듈
+(Canadian_Solar CS5P_220M) + 인버터 (ABB MICRO-0.25) 를 ModelChain
+으로 결합하여 hourly DC/AC power 를 산출, `annual_energy_kwh` 를
+헤드라인 측정값으로 typed `EnergyRecord` 에 영구화 →
+`exports/energy/pv/<stamp>/`. producer 는 `pvlib@<version>` 으로
+핀, **measurement_gate = GATE_OPEN 영구 / absorbed = false 영구**
+— pvlib 의 Ineichen + CEC SAPM 알고리즘 출력은 NREL SAM 검증된
+표준이지만 **sky-measured irradiance 데이터가 0** (no TMY3 / NSRDB),
+즉 *clear-sky upper bound* 이지 TMY yield 예측이 아님 (실제 yield
+는 보통 70-85 % 수준 — 구름·에어로졸·소일링·인버터 클리핑 미적용).
+(Rejected: ① PyBaMM battery 우선 — pip install 무겁고 thermal/
+electrochemical coupling 가 단발 record 로 환원되기 어려움; pickup
+note 로 이월. ② Geant4/OpenMC 원자로 우선 — 무거운 install +
+규제 컨텍스트 너무 좁음. ③ TMY3 즉시 흡수 — NSRDB API key 필요
++ 별도 라운드, 본 phase scope 밖.)
+
+**rationale**:
+- D55 cohort 도구 점수표의 다음 단계 — sscb (κ-34, 10/10) 다음으로
+  pvlib 는 pure-Python pip install (no native deps, ~19 MB wheel),
+  표준 location + 모듈 spec 1 set 만으로 hourly 1년 record emit 가능.
+  도구 접근성 점수 약 8/10 (POPPY 6/10 위, NetworkX 9/10 아래).
+- g3: pvlib 의 clear-sky 계산은 **NREL SAM 검증된 표준 알고리즘**
+  (Ineichen+Perez, CEC SAPM 모듈 모델) → algorithm output 자체는
+  진짜. 그러나 **실제 측정된 sky 데이터 없음**, 표준 모델 출력
+  이므로 → **GATE_OPEN** 영구 / **absorbed=false** 영구. record 의
+  4종 scope_caveats 가 이 격차를 박제 (no-TMY · CEC-database-lookup ·
+  no-system-losses · GATE_OPEN-rationale).
+- 측정값 (이 worktree, mac local, swift 6.3.1, pvlib 0.15.1, python
+  3.14.4): `annual_energy_kwh = 468.393` (AC) · `annual_energy_dc_kwh
+  = 489.583` · `ac_peak_kw = 0.186` · `ghi_annual_mwh_per_m2 = 2207.8`
+  · `rows = 8784` (leap year hourly). 월별 분포: 1월 37.2 kWh ↘ 3월
+  42.3 kWh ↗ (Phoenix 봄철 GHI 피크) ↘ 12월 34.3 kWh. 표준 220 W
+  모듈 → ~2127 kWh/kWp 단위 환산 (사막지대 clear-sky 상한 합리적).
+- D61 (cockpit/scripts/*.py = pointer-only 위반) 자명히 인지 —
+  AGENTS.tape `g_demiurge_pointer_only` 의 birth-violation 목록에
+  `energy_pvlib.py` 이미 포함 (D61 line 34). 본 phase 는 producer
+  존재 증명이 우선, 마이그레이션은 D61 batch round (`hexa-lang/
+  stdlib/energy/`) 에서 일괄 처리.
+- D53 "measurable-only" 와 정합 — `(.analyze, "energy")` 셀이
+  6번째 매핑 셀 (기존: component+synthesize, chip+verify, chip+
+  synthesize, matter+analyze, sscb+analyze). 5+ 임계점 (D53) 은
+  이미 sscb 에서 도달했고 본 셀로 protocol/registry 리팩토링 압박
+  더 커짐 — 다음 라운드 ActionAdapter 작업으로 명시 이월.
+- absorbed=true 절대 금지 (g3 / @F f6) — bench-validated I-V curve
+  + TMY3 / NSRDB site weather data + system loss model (DC wiring,
+  mismatch, soiling, clipping) 이 들어와야 흡수. UL 1703 모듈
+  인증은 별도 게이트 (accredited lab type-test), pvlib ≠ 인증.
+- pickup 우회 — battery (PyBaMM) · grid (NetworkX) · 원자로
+  (OpenMC) 후순위. 본 phase 는 cohort breadth-coverage 4 번째 도장
+  (sscb·grid?·bot?·energy) 단일점.
+
+### Decision 61 — demiurge = pointer / spawn wrapper ONLY (D15 일반화)
+
+**picked**: 모든 producer script (Python / shell / hexa-native) 의
+SSOT 는 `hexa-lang/stdlib/<domain>/` 이고, **demiurge 는 그 script
+를 `Process` 로 spawn 하는 *포인터/래퍼* 만 보유**한다. demiurge
+안에 producer 의 compute 로직 (Python 스크립트, 시뮬 setup 코드)
+을 두지 않는다. AGENTS.tape `@D g_demiurge_pointer_only` 가 INDEX
+최상단에 lock — 모든 새 producer PR 은 script 가 hexa-lang 안에
+있고 demiurge 가 spawn-wrapper 만임을 보여야 머지된다. (Rejected:
+demiurge 안에 Python script 두기 — D15/D17 generalization 위반;
+per-domain sibling repo — D15 폐기 결정과 모순.)
+
+**rationale**:
+- 사용자 게이트 2026-05-20 — "AGENTS.tape 최상단으로 해당내용
+  옮겨서 기록, demiurge 는 포인터(spawn wrapper)". D15 의 generic
+  확장.
+- D15 의 "stdlib ⊂ hexa-lang ONLY" 가 hexa-native 모듈에 한정돼
+  있었으나 κ-33 (FreeCAD bipv_freecad.py) · κ-34 (sscb_ngspice.py)
+  부터 Python producer script 가 demiurge 안에 출현 — 같은 SSOT
+  원칙의 외연 확장 필요.
+- demiurge 의 역할 명확화 — 7-verb spine + typed Record schema +
+  cockpit GUI 만 demiurge 소유. compute kernel 은 전부 hexa-lang.
+- 자동 enforcement — `cockpit/scripts/*.py` 출현 시 AGENTS.tape
+  `g_demiurge_pointer_only` 위반으로 block.
+- migration plan: 기존 위반 6개 (bipv_freecad · sscb_ngspice ·
+  grid_networkx · bot_urdf · energy_pvlib · space_skyfield) →
+  `~/core/hexa-lang/stdlib/<domain>/` 으로 이동, Producer.swift
+  spawn path 갱신.

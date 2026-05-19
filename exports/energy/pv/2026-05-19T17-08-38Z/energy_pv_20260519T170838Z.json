@@ -1,0 +1,68 @@
+{
+  "artifacts" : {
+    "csv" : "pv_clearsky_phoenix_az_v1.csv",
+    "meta" : "pv_clearsky_phoenix_az_v1.meta.json"
+  },
+  "geometry_id" : "pv_clearsky_phoenix_az_v1",
+  "interface" : "demiurge:energy:pv-clearsky-record",
+  "measurements" : {
+    "ac_peak_kw" : 0.186136,
+    "annual_energy_dc_kwh" : 489.583,
+    "annual_energy_kwh" : 468.393,
+    "dc_peak_kw" : 0.193289,
+    "ghi_annual_mwh_per_m2" : 2207.764,
+    "monthly_ac_kwh" : {
+      "1" : 37.199,
+      "10" : 39.416,
+      "11" : 34.765,
+      "12" : 34.326,
+      "2" : 37.902,
+      "3" : 42.336,
+      "4" : 41.091,
+      "5" : 41.078,
+      "6" : 38.912,
+      "7" : 40.361,
+      "8" : 41.03,
+      "9" : 39.976
+    },
+    "rows" : 8784
+  },
+  "produced_at_utc" : "2026-05-19T17:08:38Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "pvlib@0.15.1",
+    "scope_caveats" : [
+      "pvlib 의 clear-sky 시뮬레이션 출력 — 숫자는 실제 (Ineichen + CEC SAPM 알고리즘, NREL SAM 검증) 이지만, *sky-measured irradiance 데이터는 0* (no TMY3 / NSRDB). 이것은 *clear-sky upper bound* 이지 TMY yield 예측이 아니다 (g3 — 실제 yield 는 보통 70-85 % 수준).",
+      "module = CEC database lookup (Canadian_Solar_Inc__CS5P_220M) — bench-validated I-V curves 가 아님. 진짜 흡수는 datasheet flash-test + bench 측정이 들어와야.",
+      "system losses 미적용 — DC wiring (~2 %), 모듈 mismatch (~2 %), soiling (~3-5 %), inverter clipping 등이 빠져 있어 honest 하게 optimistic. 본 record 는 알고리즘 upper bound 단일점.",
+      "measurement_gate = GATE_OPEN 영구 / absorbed=false 영구 — pvlib BSD-3 + 표준 알고리즘은 흡수 충분이지만, *site 의 absorbed weather data* 가 없으므로 yield claim 은 미흡수. NREL SAM 자체 인증 ≠ 본 record (g3)."
+    ]
+  },
+  "pvlib_version" : "0.15.1",
+  "python_version" : "3.14.4",
+  "record_id" : "energy_pv_20260519T170838Z",
+  "schema_version" : "1.0",
+  "simulation" : {
+    "freq" : "1h",
+    "model" : "clearsky_ineichen+cec_sapm",
+    "year" : 2024
+  },
+  "site" : {
+    "altitude_m" : 331,
+    "latitude" : 33.4484,
+    "longitude" : -112.074,
+    "name" : "Phoenix_AZ",
+    "timezone" : "America/Phoenix"
+  },
+  "system" : {
+    "inverter" : "ABB__MICRO_0_25_I_OUTD_US_208__208V_",
+    "module" : "Canadian_Solar_Inc__CS5P_220M",
+    "modules_per_string" : 1,
+    "strings" : 1,
+    "surface_azimuth" : 180,
+    "surface_tilt" : 33.4484,
+    "temp_air_C" : 25,
+    "wind_speed_ms" : 1
+  }
+}

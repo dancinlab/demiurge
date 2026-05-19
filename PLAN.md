@@ -2569,3 +2569,89 @@
     Wolfspeed C3M0021120K class `.lib` 흡수 + DEVSIM TCAD coupling
     이 들어가야 GATE_CLOSED_MEASURED 후보 (별도 phase, 본 κ-34 의
     scope 밖).
+
+- 2026-05-20 — **phase κ-38 — P-⑧ 4번째 cohort producer = `energy + analyze`
+  (pvlib clear-sky)** (D59 · D53 measurable-only mapping · g3). 13 cohort
+  도메인 중 sscb (κ-34, ngspice) 다음 4번째 picks. **`energy + analyze`
+  cell** 이 6번째 측정 가능 매핑 셀로 wired (기존 5: component+synthesize,
+  chip+verify, chip+synthesize, matter+analyze, sscb+analyze) — D53
+  "5+ 셀 임계점" 초과, 다음 라운드 ActionAdapter 프로토콜 리팩토링
+  압박 더 커짐. FIRST renewable-energy cell — 흡수된 광물·소자 외
+  *재생에너지 분야의 demiurge 첫 발자국*.
+  - **점수표 위치** (κ-38, D55 의 cohort 점수표 위에 4번째 칸 추가):
+    | 후보 | 도구 | 설치 | 점수 | 결과 |
+    |---|---|---|---|---|
+    | **energy + analyze** | pvlib 0.15.1 | pip install (~19 MB pure-Python) | 8/10 | **picked (κ-38)** |
+    | (참고) sscb + analyze | ngspice 46 | brew | 10/10 | picked (κ-34) |
+  - **신규 SSOT**: `cockpit/scripts/energy_pvlib.py` — Python sidecar
+    (~250 lines). 표준 site = Phoenix AZ (33.4484°N · 112.074°W ·
+    alt 331 m · America/Phoenix), 표준 PV = CEC database 의
+    `Canadian_Solar_Inc__CS5P_220M` 모듈 + ABB MICRO-0.25 인버터,
+    fixed-tilt 33.4° south. `Location.get_clearsky()` (Ineichen
+    + Linke turbidity) → DataFrame(ghi/dni/dhi) → ModelChain (CEC
+    SAPM 모듈 + Sandia 인버터 + physical AOI + no_loss spectral)
+    → hourly DC/AC power. 산출물 2종: `<id>.csv` (8784 rows ×
+    timestamp/dc_W/ac_W) + `<id>.meta.json` (site·system·simulation·
+    measurements·artifacts·error). NB: D61 의 g_demiurge_pointer_only
+    "birth-violation 목록" 에 `energy_pvlib.py` 이미 포함 — 본 phase
+    의 scope 는 producer 동작 증명, hexa-lang/stdlib/energy/ 마이
+    그레이션은 D61 batch round 에서.
+  - **신규**: `DemiurgeCore/Models/EnergyRecord.swift` — typed sidecar
+    (interface `"demiurge:energy:pv-clearsky-record"`, schema 1.0).
+    `EnergyProvenance` + `EnergySite` + `EnergySystemSpec` +
+    `EnergySimulation` + `EnergyMeasurements` 5개 sub-struct.
+    `SSCBRecord` / `ComponentRecord` 의 sibling 패턴.
+  - **신규**: `DemiurgeCore/Loaders/EnergyAnalyzeProducer.swift` —
+    Swift spawner (~290 lines). `pvRecordsRoot = exports/energy/pv/`.
+    `locateScript()` 가 `cockpit/scripts/energy_pvlib.py` 탐색.
+    `locatePython3()` 가 **`/opt/homebrew/bin/python3`** 우선 (brew
+    python 에 pvlib 설치됨; DemiurgeCLI 의 inherited PATH 가 Xcode-
+    bundled python3 (3.9.6, no pvlib) 를 먼저 잡으므로 explicit
+    resolver 필수 — silent ModuleNotFoundError 방지, g3). 매 호출
+    마다 timestamped subdir `<ISO>/` 를 만들어 consecutive run 의
+    `.csv` 가 stomp 안 되도록. `python3 energy_pvlib.py <runDir>`
+    spawn, merged stdout/stderr 에서 `ENERGY_PVLIB_RESULT <json>`
+    라인 파싱 + meta.json 재독해서 typed record 작성 (산출물 2종 +
+    record .json 3번째 파일). 2종 모두 디스크 존재 + non-zero size
+    검증 (defence-in-depth, @F f6).
+  - **확장**: `DemiurgeCore/Loaders/ActionDispatch.swift` —
+    `runEngineTool` 의 switch 에 `case (.analyze, "energy"):` 추가
+    (6번째 측정 가능 셀). 새 private `runEnergyAnalyze()` 가
+    EnergyAnalyzeProducer 호출. 헤더 doc-comment 갱신 (κ-38 라인 +
+    energy 셀 설명).
+  - **g3 정직 갭 (제일 중요)**: ① numbers ARE real (pvlib 의 Ineichen
+    clear-sky + CEC SAPM ModelChain — NREL SAM 검증된 표준 알고리즘
+    출력) — `annual_energy_kwh = 468.4` AC, `annual_energy_dc_kwh
+    = 489.6`, `ac_peak_kw = 0.186`, `ghi_annual_mwh_per_m2 = 2207.8`
+    (Phoenix 사막 clear-sky). ② BUT **sky-measured irradiance 데이터
+    = 0** (no TMY3, no NSRDB) — 이것은 *clear-sky upper bound* 이지
+    TMY yield 예측이 아님. 실제 yield 는 보통 70-85 % 수준 (구름·
+    에어로졸·소일링·인버터 클리핑 미적용). `measurement_gate =
+    GATE_OPEN 영구 / absorbed = false 영구`. ③ 모듈도 CEC database
+    lookup — bench-validated I-V curves 가 아님. ④ system losses
+    (DC wiring ~2 %, mismatch ~2 %, soiling ~3-5 %, clipping)
+    미적용 — honest optimistic. ⑤ UL 1703 모듈 인증은 별도 게이트
+    (accredited lab type-test), pvlib ≠ 인증. ⑥ Linux/Windows host
+    에서 pvlib + brew-class python3 가 있으면 동작; 없으면 honest
+    gap (조용한 fallback 없음 — silent success 금지 g3).
+  - **측정 (이 worktree, mac local, swift 6.3.1, pvlib 0.15.1, python
+    3.14.4)**: `swift run DemiurgeCLI action analyze energy` →
+    `python3 = /opt/homebrew/bin/python3` · `python3 energy_pvlib.py
+    — exit 0, rows=8784` · `pvlib version: 0.15.1` · `artifacts: csv,
+    meta` · `📸 energy pv record → exports/energy/pv/<stamp>/
+    energy_pv_<stamp>.json` · `annual_energy_kwh = 468.4 · ac_peak_kw
+    = 0.186 · producer = pvlib@0.15.1` · `⏳ GATE_OPEN · absorbed=
+    false`. 파일 크기: `.csv` 439 KB (8784 rows × 3 cols) · `.meta.json`
+    1.3 KB · record `.json` 2.5 KB. 빌드 green (pre-existing
+    RealityKit MainActor warning 만, 새 warning 0 · 새 error 0).
+  - **다음 pickup**: ① **D61 마이그레이션 batch** — `cockpit/scripts/
+    *.py` 6개 (bipv_freecad · sscb_ngspice · grid_networkx · bot_urdf
+    · energy_pvlib · space_skyfield) 일괄 `~/core/hexa-lang/stdlib/
+    <domain>/` 이동, demiurge Producer.swift 의 spawn path 만 갱신.
+    g_demiurge_pointer_only 위반 0 화 (gate-active 상태 정상화).
+    ② **ActionAdapter 프로토콜 리팩토링** — 6 셀 매핑 → switch/case
+    가 한계, protocol + registry 패턴이 자연. ③ **TMY3 / NSRDB
+    흡수 라운드** — NREL NSRDB API key + tutorial pull → 본 record
+    의 GATE_OPEN → CLOSED_MEASURED 후보 (별도 phase). ④ **battery
+    (PyBaMM) 5번째 cohort** — Li-ion DFN 모델, charge/discharge
+    cycle record (energy+design 셀).

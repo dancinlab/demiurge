@@ -13,6 +13,8 @@
 //
 // κ-30 (this commit, D53): adds `matter + analyze` → MatterAnalyzer.
 // κ-34 (D55): adds `sscb + analyze` → SSCBProducer (ngspice 46 transient).
+// κ-38 (D59): adds `energy + analyze` → EnergyAnalyzeProducer
+//             (pvlib clear-sky + CEC SAPM, 4th cohort producer).
 //
 // Currently wired:
 //   • component + synthesize → ComponentEmitter.emitBundled
@@ -34,6 +36,12 @@
 //                              measuring-producer threshold; real
 //                              numbers, plausible-not-absorbed circuit,
 //                              GATE_OPEN永구 / absorbed=false ALWAYS)
+//   • energy    + analyze    → pvlib clear-sky + CEC SAPM producer
+//                              (κ-38 / D59 — 4th cohort domain, FIRST
+//                              renewable-energy cell; real NREL SAM-
+//                              verified algorithm output but ZERO sky-
+//                              measured data → clear-sky upper bound,
+//                              GATE_OPEN영구 / absorbed=false ALWAYS)
 //
 // Honesty (g3, @F f6): the action prompt instructs the agent to
 // report "no engine tool" plainly when none is available, and never
@@ -115,6 +123,8 @@ public enum ActionDispatch {
             return runMatterAnalyze()
         case (.analyze, "sscb"):
             return runSSCBAnalyze()
+        case (.analyze, "energy"):
+            return runEnergyAnalyze()
         default:
             let prompt = actionPrompt(verb: verb)
             let reply = askClaude(prompt: prompt, context: context)
@@ -170,6 +180,25 @@ public enum ActionDispatch {
     /// turn into real producers, narrow scope is honest g3.
     private static func runSSCBAnalyze() -> ActionResult {
         let r = SSCBProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `energy + analyze` engine tool (κ-38 / D59) — spawn pvlib via
+    /// `cockpit/scripts/energy_pvlib.py` to run a 1-year hourly clear-
+    /// sky simulation (Phoenix AZ, standard CEC module + inverter),
+    /// then persist a typed `EnergyRecord` under
+    /// `exports/energy/pv/<stamp>/`. Producer = `pvlib@<v>` — the
+    /// library is the instrument, but no sky-measured data was used
+    /// so measurement_gate stays GATE_OPEN AND absorbed is permanently
+    /// false (g3 — see EnergyAnalyzeProducer scope_caveats). FOURTH
+    /// cohort domain crossing the measuring-producer threshold and
+    /// the FIRST renewable-energy cell.
+    private static func runEnergyAnalyze() -> ActionResult {
+        let r = EnergyAnalyzeProducer.runAnalyze()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],

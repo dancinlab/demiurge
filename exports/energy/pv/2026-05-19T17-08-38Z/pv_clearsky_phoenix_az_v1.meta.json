@@ -1,0 +1,55 @@
+{
+  "artifacts": {
+    "csv": "pv_clearsky_phoenix_az_v1.csv"
+  },
+  "error": null,
+  "geometry_id": "pv_clearsky_phoenix_az_v1",
+  "measurements": {
+    "ac_peak_kw": 0.186136,
+    "annual_energy_dc_kwh": 489.583,
+    "annual_energy_kwh": 468.393,
+    "csv_artifact": "pv_clearsky_phoenix_az_v1.csv",
+    "dc_peak_kw": 0.193289,
+    "ghi_annual_mwh_per_m2": 2207.764,
+    "monthly_ac_kwh": {
+      "1": 37.199,
+      "2": 37.902,
+      "3": 42.336,
+      "4": 41.091,
+      "5": 41.078,
+      "6": 38.912,
+      "7": 40.361,
+      "8": 41.03,
+      "9": 39.976,
+      "10": 39.416,
+      "11": 34.765,
+      "12": 34.326
+    },
+    "rows": 8784
+  },
+  "ok": true,
+  "pvlib_version": "0.15.1",
+  "python_version": "3.14.4",
+  "simulation": {
+    "freq": "1h",
+    "model": "clearsky_ineichen+cec_sapm",
+    "year": 2024
+  },
+  "site": {
+    "altitude_m": 331.0,
+    "latitude": 33.4484,
+    "longitude": -112.074,
+    "name": "Phoenix_AZ",
+    "timezone": "America/Phoenix"
+  },
+  "system": {
+    "inverter": "ABB__MICRO_0_25_I_OUTD_US_208__208V_",
+    "module": "Canadian_Solar_Inc__CS5P_220M",
+    "modules_per_string": 1,
+    "strings": 1,
+    "surface_azimuth": 180.0,
+    "surface_tilt": 33.4484,
+    "temp_air_C": 25.0,
+    "wind_speed_ms": 1.0
+  }
+}
