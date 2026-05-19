@@ -1847,7 +1847,7 @@ per-domain sibling repo — D15 폐기 결정과 모순.)
   `~/core/hexa-lang/stdlib/<domain>/` 으로 이동, Producer.swift
   spawn path 갱신.
 
-### Decision 62 — `cern + verify` producer = particle + Bethe-Bloch analytic (Stage 1 substrate, κ-39)
+### Decision 65 — `cern + verify` producer = particle + Bethe-Bloch analytic (Stage 1 substrate, κ-42)
 
 **picked**: `cern + verify` 셀의 producer 는 `~/core/hexa-lang/stdlib/
 cern/bethe_bloch_stopping.py` (scikit-hep `particle` 0.26.2 + PDG eq.
@@ -2094,3 +2094,89 @@ engineering verdict cell.
 처음 들어오는 결정. absorbed=false 영구 — real STEP geometry + 측정
 material + mesh convergence + signoff tool cross-check 가 모두 record
 안으로 들어오는 별도 다음 phase 까지 (그건 D-? 로 별도 결정).
+
+### Decision 67 — sscb 도메인 첫 hexa-native body = `wolfspeed.hexa` parser (κ-41, Stage 1→Stage 2 진입)
+
+**picked**: κ-39 (D62) 의 stdlib/sscb/ 스켈레톤 직후, 사용자 게이트
+"완료시 까지 진행" + "hexa upstream 필요시도 이 세션에서 진행" 의
+autonomy mode 하에서, `stdlib/sscb/wolfspeed.hexa.stub` 의 모든 body
+를 실제 구현으로 채워 `.hexa` 로 rename (audit-visible single commit
+per booksim README 컨벤션). SPICE `.lib` lexer + `.SUBCKT/.ENDS` +
+`.PARAM` + `.MODEL` + R/L/C/V/I/E/G/M/D/B/X 엘리먼트 파서. 동반된
+`wolfspeed_test.hexa` 35 assertion round-trip selftest `hexa run` 로
+GREEN. ngspice 46 (Berkeley-lineage C 파서) 이 같은 fixture 를 깨끗이
+파싱 + DC OP 계산 (dual-parser parity sanity, `von=3.2 V` ==
+parser-extracted `VTO=3.2`). 그러나 본 D67 는 *parser* 포팅 (Stage 2)
+의 1 모듈 완결일 뿐 — Stage 3-4 (DEVSIM TCAD + 실 datasheet IDS-VDS
+곡선 parity) 는 devsim wheel 부재 (`pip install` 사용자 sanction 필요)
++ 합성 fixture 한계로 미수행 → `absorbed=false` *유지* (ABSORPTION.md
+의 새 4-stage 표 기준 sscb 는 Stage 2 1/3 진입, Stage 4 미도달).
+(Rejected: 같은 세션에서 DEVSIM `pip install` 까지 강행 — heavy
+install 은 autonomy 의 "측정 전엔 과대주장 금지" 와 별개로 *리소스
+결정* 이라 사용자 sanction 분리. 합성 fixture 로 datasheet parity
+주장 — 데이터시트 위조에 해당, g3 위반.)
+
+**rationale**:
+- κ-39 (D62) 의 "다음 pickup ①" 이 wolfspeed parser body 였고,
+  autonomy goal "완료시 까지 진행" 이 이를 본 세션 deliverable 로
+  승격. κ-40~κ-44 는 다른 병렬 세션 점유 → κ-41 사용.
+- 사용자 신설 ABSORPTION.md §"hexa 포팅 단계 (substrate →
+  absorbed=true)" 의 Stage 1 (substrate, ngspice κ-34) → Stage 2
+  (hexa-native port) 전이의 *최초 실측 사례* — D17 matter parity 와
+  동일 패턴 (먼저 module 단위 hexa-native 도착, 그 다음 parity 측정).
+- 측정 fact 2건 모두 *재현 가능*: ① `hexa run
+  stdlib/sscb/wolfspeed_test.hexa` 로 35/35 PASS · ② `ngspice -b` 로
+  fixture DC OP 분석 (id=582 mA, von=VTO=3.2 V 일치) — 둘 다 g3 의
+  "측정 record" 요건 충족, verifier 가 명시.
+- demiurge `.swift` 는 0줄 수정 — D61 절대 준수. SSCBProducer/Record
+  는 κ-34 generic-R_on/R_off ngspice 경로 그대로. wolfspeed parser
+  통합은 별도 κ (devsim·datasheet·SSCBProducer.swift spawn-path
+  변경 포함) 에서 다룸.
+- g3 정직 거리 명시: `absorbed=true` 까지 남은 거리 = ① DEVSIM
+  install (heavy, 사용자 sanction) · ② 실 Wolfspeed `.lib` 또는 공개
+  datasheet IDS-VDS 곡선 ingest (외부 자산) · ③ IDS-VDS ±10% parity
+  체크 PASS. 그 전엔 어떤 게이트도 CLOSED_MEASURED 주장 안 함.
+
+### Decision 68 — Yosys rtlil hexa-native body landing 시작 (κ-45, rfc_006 §4 module-1)
+
+**picked**: 사용자 게이트 2026-05-20 — "hexa 포팅" + "hexa upstream
+필요시도 이 세션에서 진행" + `/goal "완료시까지 진행"` 의 autonomy
+mode 하에서, **rfc_006 §4 의 7 모듈 중 module-1 `rtlil`** body landing
+시작. spec target = `~/core/hexa-lang/stdlib/yosys/rtlil.hexa` (현재
+.stub raw-91). 이번 세션의 안전 fruit = demiurge 측 audit trail (D68
++ κ-45 + 2026-05-20 handoff note) 확정 + hexa-lang 측은 새 브랜치
+`rfc006-yosys-rtlil-skeleton` 컷 (in-flight stdlib/cern·sscb·fusion·
+component·aura·antimatter·scope 7-untracked 와 명확 분리, t4-emt-calc
+HEAD `0626febc` 기반). rfc_006 §5 SKY130 area-oracle (router_d4
+≈61,763 / d6 ≈93,609 µm² 1.516×) parity 는 7 모듈 모두 body 가 들어와야
+측정 가능 — 이번 세션은 그 게이트의 **시작점**일 뿐, absorbed 주장 0.
+ABSORPTION.md 178행 "진행" 마킹 동행. (Rejected: rtlil 의 Cell ·
+SigSpec · Process · Memory 까지 같은 세션에 강행 — 1-2주 ⭐⭐⭐⭐ 작업
+의 토큰 한계 + g3 정직 — 최소 Wire+Module+Design skeleton 만, 나머지는
+다음 세션 인계.)
+
+**rationale**:
+- 사용자 명시 의도 = Yosys 우선 — 옵션 A "Yosys hexa-native 흡수
+  시작" 선택. PLAN.md κ-39 의 "다음 pickup ①" 인 cern Stage 2
+  `bethe_bloch_stopping.hexa` 보다 사용자 의도가 명시적. autonomy `/goal`
+  이라 deliberation pause 제거하고 record-and-proceed.
+- D61 준수: SSOT = hexa-lang. demiurge 측 어떤 `.swift` 도 신규 0
+  — chip+synth 셀은 이미 κ-31/D53 에 wired (`runChipSynthesize()` 가
+  `hexa run yosys.hexa` 를 spawn). 이번 audit trail 만 demiurge 측에
+  남고 본체 body 는 hexa-lang 가 소유.
+- handoff trail 보존: 기존 `~/core/hexa-lang/inbox/notes/2026-05-19-
+  hexa-arch-rfc006-yosys-handoff.md` 의 ②번 항목 ("rfc_006 Yosys §4
+  implementation") 이 open. 새 note `2026-05-20-demiurge-rfc006-yosys-
+  rtlil-handoff.md` 로 progress 명시 — author chain (hexa-arch →
+  demiurge → hexa-lang) audit-가시.
+- 토큰/시간 한계 인지: 1-2주 ⭐⭐⭐⭐ 본체 작업 (ABSORPTION.md §109)
+  을 1 세션 종결 불가. lowest-hanging-fruit = rtlil 의 Wire + Module
+  + Design 최소 데이터 모델 + add_wire/add_module/get_wire roundtrip
+  selftest GREEN. Cell · SigSpec · Process · Memory 등 큰 부분은 후속
+  phase — 다음 세션이 안전 인계 (handoff note 분명화).
+- g3 거리 명시: `absorbed=true` 까지 남은 거리 = ① 6 모듈 body 모두
+  land (rtlil·read_verilog·passes·liberty·abc_map·write_verilog) ·
+  ② SKY130 lib + ABC subprocess 연결 (rfc_006 D18 bounded-subprocess) ·
+  ③ router_d{4,6}.v 합성 후 §5 ±5% area-oracle parity. 본 D68 는 ①
+  중 module-1 의 *시작점* — 어떤 게이트도 CLOSED_MEASURED 주장 안 함.
+- κ-45 사용 — κ-40~κ-44 는 다른 병렬 세션 점유 (D67 의 동일 관찰).

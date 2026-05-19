@@ -154,6 +154,7 @@ dormant.
 | chip      | synthesize | yosys 0.65 substrate           | ①+④   | GATE_CLOSED_MEASURED (substrate)  | false ✱  |
 | matter    | analyze    | hexa-matter closure aggregator | ①+④   | GATE_CLOSED_MEASURED              | **true** |
 | component | synthesize | FreeCAD 1.1.1 parametric       | ④     | GATE_OPEN                         | false    |
+| component | verify     | gmsh 4.15.2 + scikit-fem 12.0.1 FEM | ①+④ | GATE_OPEN                       | false    |
 | sscb      | analyze    | ngspice 46 transient           | ①+④   | GATE_OPEN                         | false    |
 | cern      | verify     | particle + Bethe-Bloch analytic | ①+④  | GATE_OPEN                         | false    |
 
@@ -239,7 +240,6 @@ ubu-1(linux) · ubu-2(linux) 에 round-robin 라우팅. 명령을 묶지 말고
 
 | 후보                                | 도구                         | 비용     | 상태  |
 |------------------------------------|------------------------------|----------|-------|
-| component + verify (열·구조 verdict) | gmsh + Salome-Meca docker    | 1-2일    |       |
 | antimatter / cern + measured       | Geant4 + ROOT                | 1-2일    | 진행  |
 | fusion + verify (CFD)              | `hexa-lang/stdlib/fusion` 포팅 (clean-room) | 1-2주 |       |
 | Wolfspeed SiC `.lib` 흡수 (sscb)   | 측정 데이터 + DEVSIM TCAD    | 수일     | 🚧 κ-39 skeleton (`hexa-lang/stdlib/sscb/`) |
@@ -289,3 +289,11 @@ local mac │ -       │ pool 호스트 다운시 fallback (swift run)
   + 현재 흡수된 producer 5건 표 + 가벼운 distrib 선호. substrate vs
   absorbed 구분 (Yosys §5 사례) 명시. 새 D-decision 없음 — 기존
   D15/D17/D50/D53~D55 + rfc_001~005 cite.
+- 2026-05-20 — κ-44 (D66) — `component + verify` 행이 "현재까지
+  흡수된 producer" 표에 추가됨 (gmsh 4.15.2 + scikit-fem 12.0.1,
+  GATE_OPEN, absorbed=false). 동시에 "무거운 후보 — 별도 세션 권장"
+  표에서 같은 행 제거 — docker (Salome-Meca 5 GB+) 가 아니라 pip
+  라이브러리 4종 (gmsh · scikit-fem · meshio · numpy, ~70 MB) 만으로
+  흡수가 가능했기 때문 (당초 가정 = docker 필수). SECOND
+  D61-compliant-from-birth producer (script SSOT = `~/core/hexa-lang/
+  stdlib/component/gmsh_skfem.py`).

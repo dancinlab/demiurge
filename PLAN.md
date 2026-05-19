@@ -2775,8 +2775,8 @@
     + mini 회복 시 sweep_oracle_parity 가 (topology, traffic) 튜플을
     호스트별 분배 — round-trip 시간 더 단축.
 
-- 2026-05-20 — **phase κ-39 — `cern + verify` cell wiring (Bethe-Bloch
-  substrate)** (D62 · D53 measurable-only mapping · D61 pointer-only ·
+- 2026-05-20 — **phase κ-42 — `cern + verify` cell wiring (Bethe-Bloch
+  substrate)** (D65 · D53 measurable-only mapping · D61 pointer-only ·
   g3 · ABSORPTION.md §"hexa 포팅 단계" Stage 1). 사용자 지시 "해당 라인
   마이그레이션 진행 · hexa-lang stdlib 흡수 · demiurge = 포인터만 ·
   ubu-1/ubu-2/mini 자원활용". ABSORPTION.md 무거운 후보 표의 "antimatter
@@ -2861,3 +2861,180 @@
     parameterization, high-γ regime 보강. ④ **antimatter + verify
     셀** (κ-? · D?) — 동일 substrate 패턴이나 antiproton-nucleus
     annihilation cross section 등 다른 verify 목적, 별도 phase.
+
+- 2026-05-20 — **phase κ-44 — `component + verify` cell wiring
+  (gmsh + scikit-fem FEM, D61-compliant-from-birth)** (D66 ·
+  g_demiurge_pointer_only · g3). The 7번째 measurable-only 셀이고
+  component 도메인의 *FIRST verify-verb cell*. SECOND producer (after
+  antimatter κ-43) to ship D61-compliant from day one — script SSOT
+  at `~/core/hexa-lang/stdlib/component/gmsh_skfem.py`, NEVER in
+  `cockpit/scripts/`. ABSORPTION.md 의 "무거운 후보" 표에서
+  `component + verify` 행이 — docker (Salome-Meca 5 GB+) 가정으로
+  *별도 세션* 권장 후보였으나 — pip 라이브러리 4종 (~70 MB) 만으로
+  *본 세션에서* 흡수 완료. ABSORPTION.md "무거운 후보" 표에서 제거,
+  ④ workflow + ⑤ absorbed-producer 표에 한 행씩 추가.
+  - **신규 SSOT**: `~/core/hexa-lang/stdlib/component/gmsh_skfem.py`
+    (~470 lines, hexa-lang owned). gmsh OpenCascade box 빌더 →
+    Delaunay tet mesh (.msh v2.2) → scikit-fem ElementTetP1 basis →
+    (BilinearForm `conduction` + LinearForm `body_source` →
+    Dirichlet 백페이스 → solve()) 2회 (steady-state heat + linear
+    elasticity). 산출물: `<id>.csv` (8 rows flat table) +
+    `<id>.meta.json` (geometry/material/load/measurements/artifacts)
+    + `<id>.msh` (mesh 재현용). `COMPONENT_GMSH_SKFEM_RESULT <json>`
+    summary line on stderr. `_ensure_deps()` 가 import 실패시 macOS
+    user-site (~/Library/Python/3.14/lib/python/site-packages) 주입
+    + retry — PEP 668 externally-managed 의 explicit handling (silent
+    fallback 금지, g3).
+  - **신규 (demiurge)**: `DemiurgeCore/Models/ComponentVerifyRecord.
+    swift` — typed sidecar (interface `"demiurge:component:gmsh-
+    skfem-verify-record"`, schema 1.0). 8 sub-struct
+    (`ComponentVerifyProvenance` · `ComponentVerifyGeometry` ·
+    `ComponentVerifyMaterial` · `ComponentVerifyLoad` ·
+    `ComponentVerifyThermal` · `ComponentVerifyStructural` ·
+    `ComponentVerifyRow` · `ComponentVerifyMeasurements`). 기존
+    `ComponentRecord` (geometry 변형) sibling — verify 는 별도 record
+    타입으로 (geometry vs verdict 가 다른 셀이므로 byte schema 별도가
+    더 정직).
+  - **신규 (demiurge)**: `DemiurgeCore/Loaders/ComponentVerifyProducer.
+    swift` — Swift spawner (~460 lines). `verifyRecordsRoot = exports/
+    component/verify/`. `locateScript()` 가 `~/core/hexa-lang/stdlib/
+    component/gmsh_skfem.py` 만 탐색 (D61 — cockpit/scripts/ fallback
+    절대 없음). `locatePython3()` 가 `/opt/homebrew/bin/python3` 우선
+    (pip --user --break-system-packages 가 lands 하는 곳). 매 호출
+    timestamped subdir `<ISO>/` 작성. merged stdout/stderr 에서
+    `COMPONENT_GMSH_SKFEM_RESULT <json>` 라인 파싱 + meta.json 재독해서
+    typed record 작성. csv + meta + msh 3종 디스크 존재 + non-zero
+    size 검증 (defence-in-depth, @F f6).
+  - **확장 (demiurge)**: `DemiurgeCore/Loaders/ActionDispatch.swift`
+    의 `runEngineTool` switch 에 `case (.verify, "component"):` 추가
+    + 새 private `runComponentVerify()` 가 ComponentVerifyProducer
+    호출. 헤더 doc-comment 갱신 (κ-44 라인 + component-verify 셀
+    설명). 부수효과: 다른 에이전트가 추가한 미정의 `runFusionAnalyze`
+    참조 (`case (.analyze, "fusion")` → FusionAnalyzeProducer) 도
+    빌드 통과시키기 위해 wrapper 함수 추가 — fusion 의 D-decision /
+    κ-decision 은 별도 에이전트가 마무리.
+  - **g3 정직 갭 (제일 중요)**: ① numbers ARE real PDE solutions
+    on a toy geometry — `ΔT = 0.528 K · T_max = 298.68 K · σ_vM_max
+    = 1.921e+04 Pa · u_max = 5.769e-11 m` (10×10×2 mm Si box at 5 W
+    top heating + 25 °C back face + gravity). 1D thermal-resistance
+    estimate R = L/(k·A) = 2e-3/(148·1e-4) = 0.135 K/W vs measured
+    0.105 K/W (heating top 1 mm 만 → 유효 L ~1.5 mm) — 동일 자릿수,
+    PDE 정합. ② BUT geometry = TOY box (NOT rfc_008 dossier 의 real
+    component STEP), material = textbook Si (NOT measured wafer-lot
+    datasheet), load = single steady-state (NO transient, NO
+    convection coupling, NO TIM), structural BC = full back-face
+    clamp (Poisson lateral contraction 억압 → base-edge corner stress
+    concentration = 알려진 FEM artifact, σ_vM_max 의 19 kPa 은 이론적
+    ρgL ≈ 46 Pa 보다 ~400× 큼; 신뢰할 만한 값은 *interior* stress
+    이지 edge-clamp peak 아님). mesh convergence 미검증. 6종
+    scope_caveats 가 record 안에. `measurement_gate = GATE_OPEN 영구
+    / absorbed = false 영구` — 흡수에 해당하려면 5종 (real STEP +
+    measured material + validated load + mesh convergence + signoff
+    tool cross-check) 이 모두 record 안으로.
+  - **측정 (이 worktree, mac local, swift 6.3.1, gmsh 4.15.2,
+    scikit-fem 12.0.1, python 3.14.4)**: `swift run DemiurgeCLI
+    action verify component` → `script = /Users/ghost/core/hexa-lang/
+    stdlib/component/gmsh_skfem.py` · `python3 = /opt/homebrew/bin/
+    python3` · `python3 gmsh_skfem.py — exit 0, rows=8` · `gmsh
+    4.15.2 · scikit-fem 12.0.1` · `artifacts: csv, meta, msh` ·
+    `📸 component verify record → exports/component/verify/
+    2026-05-19T17-44-29Z/component_verify_20260519T174429Z.json` ·
+    `ΔT = 0.528 K · T_max = 298.68 K · σ_vM_max = 1.921e+04 Pa ·
+    u_max = 5.769e-11 m` · `mesh: 686 nodes · 2232 tetrahedra ·
+    producer = gmsh@4.15.2 + scikit-fem@12.0.1` · `⏳ GATE_OPEN ·
+    absorbed=false`. 파일 크기: `.csv` 245 B (8 rows) · `.meta.json`
+    2.2 KB · `.msh` 128 KB (full mesh) · record `.json` 4.8 KB.
+    빌드 green (mini macOS host DOWN 으로 풀 라우팅 우회 위해 wrapper
+    script `/tmp/build_demiurge.sh` 통해 로컬 빌드, pre-existing
+    RealityKit MainActor warning 만, 새 warning 0 · 새 error 0). ubu-1
+    상에 동일 pip 의존성 (gmsh 4.15.2 · scikit-fem 12.0.1 · numpy
+    2.4.4 · meshio) 설치 완료 — cross-platform parity 후속 phase 에서
+    실행 가능.
+  - **다음 pickup**: ① **Stage 2 hexa-native port** — `~/core/hexa-
+    lang/stdlib/component/heat_conduction.hexa` + `linear_elasticity.
+    hexa` 작성. mesh I/O 는 gmsh 유지 (mesher 자체는 흡수 후순위),
+    FEM 어셈블리·solve 는 hexa-native. Stage 3 parity = scikit-fem
+    출력 vs hexa 출력 ±1 % (PDE 수치는 동일 mesh + 동일 BC 면 byte-
+    identical 까지 가능). ② **real STEP geometry 흡수** — rfc_008
+    chip→component handoff dossier 의 한 cited 부품 (예: BIPV 5-layer
+    panel 의 측정된 frame) 으로 GEOMETRY 교체. ③ **measured material
+    datasheet 흡수** — Cherry / Mitsubishi / Wacker 의 Si wafer
+    datasheet 의 k·ρ·E·ν 측정값으로 MATERIAL 교체, `provenance`
+    필드에 supplier citation. ④ **mesh convergence sweep** —
+    h-refinement 3 단계로 ΔT / σ_vM 변화 <5 % 확인. ⑤ **ANSYS /
+    Code_Aster signoff cross-check** — 동일 geometry+material+load
+    을 ANSYS Workbench (라이센스) 또는 Code_Aster 로 풀고 demiurge
+    출력과 비교 (±2 %). 5종 전부 record 안으로 들어오면 `GATE_OPEN
+    → GATE_CLOSED_MEASURED` flip 가능 (별도 D-num).
+
+- 2026-05-20 — **phase κ-41 — sscb 도메인 첫 hexa-native body =
+  `stdlib/sscb/wolfspeed.hexa` parser 본체 (Stage 1→Stage 2 진입)**
+  (`design.md` D67 · D62/κ-39 의 "다음 pickup ①" · 사용자 게이트
+  "완료시 까지 진행" + "hexa upstream 필요시도 이 세션에서 진행"
+  autonomy mode · g3 · ABSORPTION.md 신설 4-stage 표 기준 sscb 첫
+  Stage 2 전이). κ-39 의 `wolfspeed.hexa.stub` body 0줄 → 실제 SPICE
+  `.lib` 파서 구현 + selftest GREEN. demiurge `.swift` 0줄 수정
+  (D61 절대 준수, hexa-lang 측 single-commit rename `.stub`→`.hexa`).
+  - **landed artifacts** (전부 `~/core/hexa-lang/stdlib/sscb/`):
+    (a) `wolfspeed.hexa` — `.hexa.stub` rename + 모든 body 구현 ·
+    `wolfspeed_parse_lib(path) -> Subckt` + `_lookup_param` +
+    `_model_by_name` + `_is_vdmos`. 내부: `_split_ws` 토크나이저 +
+    `_lower` ASCII case-fold + `_fold_lines` 전처리 (`*` 행-주석
+    삭제 · `;` 인라인-주석 삭제 · `+` continuation fold) +
+    `_parse_element` (R/L/C/V/I/D/B 2-node · M/Q/E/G/H/F 4-node ·
+    X variable-node 휴리스틱) + `_parse_kv_rest` (모델/`.param`
+    공통 key=value 파서, 부착-paren / 공백-주변-`=` 모두 처리). 외부
+    dep 0 (read_file 빌트인만), exit(91) 은 unrecoverable
+    (file-empty · 미종결-`.SUBCKT`) 에만.
+    (b) `wolfspeed_test.hexa` — selftest, 35 structural assertion.
+    `hexa run stdlib/sscb/wolfspeed_test.hexa` → `==
+    wolfspeed_test :: PASS ==`, exit 0. 검증: subckt.name + 5 pins
+    (d/g/s/tj/tc) + 6 .param value verbatim + 8 elements
+    (R×2 · L×3 · C×1 · M×1 · B×1) + 1 .model VDMOS 의 15 param
+    spot-check + lookup-helper 동작.
+    (c) `README.md` 갱신 — module index 의 `wolfspeed.hexa.stub`
+    행을 `wolfspeed.hexa` ⭐ 로 승격 + `wolfspeed_test.hexa` 행 신설
+    + "Measured progress (κ-41 — wolfspeed module Stage 2 GREEN)"
+    섹션 신설 (35/35 + ngspice 패리티 + g3 boundary 명시).
+    (d) `wolfspeed.hexa.stub` 삭제 (rename audit).
+  - **dual-parser parity sanity** (보조 검증, 동일 fixture 다른
+    파서):
+    `/opt/homebrew/bin/ngspice -b /tmp/sscb_parity.cir` (브루
+    ngspice 46) 로 `.include fixtures/sample_sic_mosfet.lib` + X1
+    인스턴스 + DC OP 분석 GREEN. 출력: `id = 582.494 mA` ·
+    `vds = 41.26 V` · `von = 3.2 V` (== hexa parser 가 추출한
+    `VTO = 3.2`). 두 독립 SPICE 파서 (Berkeley-lineage C 코드 +
+    hexa-native 재유도) 가 fixture 의 syntactic interpretation 에
+    일치. **이건 *parser parity* 이지 *device-physics parity* 아님**
+    — 합성 fixture 의 수치는 검증되지 않은 placeholder.
+  - **demiurge pointer 측 갱신** (compute 0줄 — D61):
+    `design.md` D67 — sscb Stage 2 첫 모듈 결정 + rationale 5
+    (κ-39 pickup ① 승격 · ABSORPTION 4-stage 최초 실측 · 측정
+    fact 2건 재현가능 · D61 준수 · g3 거리 명시). `PLAN.md` 본 κ-41
+    entry. `ABSORPTION.md` Wolfspeed 행은 본 PLAN 이후 별도 갱신.
+  - **g3 정직**:
+    - `provenance.absorbed = false` *유지* (parser-only, 디바이스
+      physics 0)
+    - `measurement_gate = OPEN` *유지* (Stage 3-4 미수행)
+    - `scope_caveats`: "Stage 2 parser landed for ONE module
+      (wolfspeed.hexa); devsim.hexa.stub / sscb.hexa.stub still
+      TBD-body skeletons; fixture is synthetic (clean-room from
+      datasheet topology, not a calibrated C3M0021120K model); no
+      DEVSIM run, no real datasheet parity check"
+    - 측정 record `SSCBRecord` 0건 추가 (parser는 device가 아니라
+      *문법* 의 흡수); sscb+analyze 셀의 ngspice generic 출력은
+      κ-34 와 동일.
+  - **다음 pickup** (D67 의 "남은 거리" 항목 cite):
+    ① **DEVSIM Python wheel install** (heavy → 사용자 sanction 후
+    `pip install devsim` on ubu-1/ubu-2, mini 다운) → devsim.hexa.stub
+    의 `devsim_locate()` body 구현 → `examples/mosfet_2d` smoke run.
+    ② **real Wolfspeed `.lib` 또는 공개 datasheet IDS-VDS 곡선
+    ingest** (외부 자산 결정 필요 — 사용자가 `.lib` 경로 또는 PDF
+    제공). ③ **IDS-VDS ±10% parity 체크 selftest** → PASS 시 Stage
+    3 → Stage 4 (`absorbed=true` GATE 후보, 별도 D-num + κ-num).
+    ④ **sscb.hexa dispatcher body** (현재 stub) — wolfspeed +
+    devsim 가 모두 .hexa 로 승격되면 dispatcher 도 .hexa rename.
+    ⑤ **SSCBProducer.swift spawn-path 전환** — `cockpit/scripts/
+    sscb_ngspice.py` (D61 위반 신생아) → `hexa run
+    stdlib/sscb/sscb.hexa <subcmd>` 호출로 마이그레이션 (D61 batch
+    round 와 정합).

@@ -20,7 +20,7 @@
 //             FIRST D61-compliant-from-birth producer — script SSOT in
 //             ~/core/hexa-lang/stdlib/antimatter/pdg_lookup.py, never
 //             in cockpit/scripts/).
-// κ-39 (D62): adds `cern + verify` → CernVerifyProducer (particle +
+// κ-42 (D65): adds `cern + verify` → CernVerifyProducer (particle +
 //             Bethe-Bloch analytic, 6th cohort cell and FIRST verify-
 //             verb cell in the cohort domains; D61-compliant — script
 //             SSOT in ~/core/hexa-lang/stdlib/cern/bethe_bloch_stopping.py).
@@ -155,6 +155,24 @@ public enum ActionDispatch {
             return runCernVerify()
         case (.verify, "component"):
             return runComponentVerify()
+        case (.analyze, "chip"):
+            return runChipAnalyze()
+        case (.structure, "grid"):
+            return runGridStructure()
+        case (.structure, "bot"):
+            return runBotStructure()
+        case (.analyze, "space"):
+            return runSpaceAnalyze()
+        case (.analyze, "brain"):
+            return runBrainAnalyze()
+        case (.analyze, "mobility"):
+            return runMobilityAnalyze()
+        case (.analyze, "aura"):
+            return runAuraAnalyze()
+        case (.analyze, "scope"):
+            return runScopeAnalyze()
+        case (.analyze, "cern"):
+            return runCernAnalyze()
         default:
             let prompt = actionPrompt(verb: verb)
             let reply = askClaude(prompt: prompt, context: context)
@@ -264,7 +282,7 @@ public enum ActionDispatch {
     /// typed `FusionRecord` under `exports/fusion/plasma/<stamp>/`.
     /// Producer = `plasmapy@<v> (ITER core reference derivation)`.
     /// SEVENTH cohort cell crossing the measuring-producer threshold
-    /// (after sscb κ-34, energy κ-38, antimatter κ-43, cern κ-39) and
+    /// (after sscb κ-34, energy κ-38, antimatter κ-43, cern κ-42) and
     /// the FIRST plasma-physics cell. D61-compliant-from-birth — the
     /// Python script lives in hexa-lang/stdlib/, NEVER in cockpit/
     /// scripts/ (g_demiurge_pointer_only). Bohm·Debye·Lorentz algebra
@@ -284,7 +302,7 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `cern + verify` engine tool (κ-39 / D62) — spawn the Bethe-Bloch
+    /// `cern + verify` engine tool (κ-42 / D65) — spawn the Bethe-Bloch
     /// antiproton stopping-power producer via
     /// `~/core/hexa-lang/stdlib/cern/bethe_bloch_stopping.py` and persist
     /// a typed `CernRecord` under `exports/cern/stopping/<stamp>/`.
@@ -298,25 +316,6 @@ public enum ActionDispatch {
     /// false (g3 — see CernVerifyProducer scope_caveats; Stage 4
     /// absorbed=true requires hexa-native re-derivation + Geant4 MC
     /// parity per ABSORPTION.md §"hexa 포팅 단계").
-    /// `fusion + analyze` engine tool (κ-41 / D65) — spawn the
-    /// plasmapy ITER core reference derivation via
-    /// `~/core/hexa-lang/stdlib/fusion/plasma_metrics.py` and persist
-    /// a typed `FusionRecord` under `exports/fusion/plasma/<stamp>/`.
-    /// Producer = `plasmapy@<v> (ITER core reference derivation)`.
-    /// D61-compliant-from-birth — script SSOT in hexa-lang/stdlib/.
-    /// Derived ω_pe / λ_D / v_A / r_Li ARE real Bohm·Debye·Lorentz
-    /// algebra, but inputs are textbook ITER reference values (NOT a
-    /// measured-from-device shot) → measurement_gate stays GATE_OPEN
-    /// AND absorbed is permanently false (g3).
-    private static func runFusionAnalyze() -> ActionResult {
-        let r = FusionAnalyzeProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
     private static func runCernVerify() -> ActionResult {
         let r = CernVerifyProducer.runVerify()
         return ActionResult(
@@ -344,6 +343,120 @@ public enum ActionDispatch {
     /// is permanently false (g3 — see scope_caveats).
     private static func runComponentVerify() -> ActionResult {
         let r = ComponentVerifyProducer.runVerify()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `chip + analyze` engine tool (κ-45 / D56) — hexa-native Leighton
+    /// booksim oracle (worktree-a8727a55, hexa-lang stdlib). g3 honest:
+    /// 측정 결과는 record 로 emit, gate/absorbed flip 은 측정 record 자체에
+    /// 인용된 값을 따름 (Producer 코드가 임의로 closure 하지 않음).
+    private static func runChipAnalyze() -> ActionResult {
+        let r = ChipAnalyzer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `grid + structure` engine tool (κ-46 / D57) — NetworkX IEEE 14-bus
+    /// topology producer. Script SSOT migrated to hexa-lang/stdlib/grid/
+    /// (D61, post-merge migration). GATE_OPEN / absorbed=false (toy
+    /// topology, not a measured grid).
+    private static func runGridStructure() -> ActionResult {
+        let r = GridStructureProducer.runStructure()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `bot + structure` engine tool (κ-47 / D58) — yourdfpy URDF parser
+    /// over a hermetic 2-link arm. Script migrated to hexa-lang/stdlib/
+    /// bot/ (D61, post-merge migration). GATE_OPEN / absorbed=false
+    /// (URDF spec meta, not robot hardware measurement).
+    private static func runBotStructure() -> ActionResult {
+        let r = BotStructureProducer.runStructure()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `space + analyze` engine tool (κ-48 / D60) — Skyfield SGP4
+    /// propagator on ISS TLE. Script migrated to hexa-lang/stdlib/space/
+    /// (D61). GATE_OPEN / absorbed=false (TLE input not a demiurge
+    /// measurement, propagator is upstream).
+    private static func runSpaceAnalyze() -> ActionResult {
+        let r = SpaceAnalyzeProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `brain + analyze` engine tool (κ-49 / D62-cohort) — Brian2 single
+    /// LIF spike-rate producer. D61-from-birth (script SSOT in hexa-lang
+    /// stdlib/brain/lif_brian2.py). GATE_OPEN / absorbed=false (toy
+    /// neuron model).
+    private static func runBrainAnalyze() -> ActionResult {
+        let r = BrainAnalyzeProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `mobility + analyze` engine tool (κ-50 / D63-cohort) — OSMnx
+    /// road-network topology. D61-from-birth (hexa-lang stdlib/mobility/
+    /// road_network.py). GATE_OPEN / absorbed=false (OSM topology meta).
+    private static func runMobilityAnalyze() -> ActionResult {
+        let r = MobilityAnalyzeProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `aura + analyze` engine tool (κ-51 / D67-cohort) — MNE-Python
+    /// EEG band-power. D61-from-birth (hexa-lang stdlib/aura/aura_mne.py).
+    /// GATE_OPEN / absorbed=false (synthetic input).
+    private static func runAuraAnalyze() -> ActionResult {
+        let r = AuraAnalyzeProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `scope + analyze` engine tool (κ-52 / D67-cohort) — Poppy optical
+    /// PSF. D61-from-birth (hexa-lang stdlib/scope/scope_poppy.py).
+    /// GATE_OPEN / absorbed=false (textbook configuration).
+    private static func runScopeAnalyze() -> ActionResult {
+        let r = ScopeAnalyzeProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `cern + analyze` engine tool (κ-53 / D66-cohort) — pylhe LHE
+    /// round-trip stats. D61-from-birth (hexa-lang stdlib/cern/lhe_stats.py).
+    /// GATE_OPEN / absorbed=false (LHE meta, not detector measurement).
+    /// Distinct from `cern + verify` (Bethe-Bloch shielding).
+    private static func runCernAnalyze() -> ActionResult {
+        let r = CernAnalyzeProducer.runAnalyze()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],
