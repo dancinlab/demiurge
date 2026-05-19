@@ -1565,3 +1565,22 @@
   print mode 유지 (scoped tool-permission = 도구 준비 후).
   §4.2 REJECTED 배너는 별도 후속. 다음 = κ-6 (§4.2 REJECTED
   가드 / canvas mode 연결 — 미정, 게이트 필요).
+- 2026-05-19 — **phase κ-6 — §4.2 REJECTED 가드 빌드 green**
+  (rfc_011 §4.2 · @F f6). 사용자 게이트 — 3택 중 "§4.2
+  REJECTED 가드" 선택. chat/action 응답이 측정·parity·흡수를
+  backing record 없이 주장하면 UI 가 빨간 REJECTED 배너로
+  차단: `ChatMessage.Role` 에 `.rejected` 추가 · `overclaims`
+  (static) — claim marker (측정완료/검증됐/parity/29-38/
+  GATE_CLOSED/흡수완료 등) 감지 후 `parseRecordIDs` 가 backing
+  record ID 0 이면 over-claim 판정 · `flagIfOverclaim` 이
+  over-claim reply 직후 `.rejected` 메시지 append (원본 응답은
+  그대로 보이되 not-trustworthy 표시) · `rejectionBanner` =
+  빨간 octagon + "REJECTED" + 사유. sendChat·runAction 양쪽
+  reply 에 적용. 측정: `swift run CockpitApp` 로컬 빌드 —
+  `Build of product 'CockpitApp' complete!` (2.61s) · 에러 0 ·
+  경고 0. **g3 정직**: 가드는 *휴리스틱* — claim marker 문자열
+  매칭이라 표현을 비껴가면 놓칠 수 있음 (LLM-based 판정 = 후속);
+  backing 판정도 reply 텍스트의 record ID 유무 기준 (실제
+  exports/ gate 교차검증 = canvas mode 연결 후). 그래도 흔한
+  거짓 ✅ 는 UI 에서 차단 — g3 를 viewer 너머 *행동*으로.
+  다음 = κ-7 (canvas mode 연결 — ② 결과 시각화).

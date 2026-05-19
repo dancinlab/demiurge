@@ -38,8 +38,9 @@ struct CockpitApp: App {
 }
 
 /// Chat message (phase η-1). Backend = Claude Code CLI subprocess.
+/// `.rejected` = an over-claim REJECTED banner (rfc_011 §4.2 / @F f6).
 struct ChatMessage: Identifiable {
-    enum Role { case user, assistant }
+    enum Role { case user, assistant, rejected }
     let id = UUID()
     let role: Role
     let text: String
@@ -274,6 +275,7 @@ struct WorkbenchView: View {
                             + "— ② 참고 자료에서 확인하세요."))
                     artifacts = ArtifactRegistry.loadAll()
                 }
+                flagIfOverclaim(reply)
                 isRunningAction = false
             }
         }
@@ -306,6 +308,35 @@ struct WorkbenchView: View {
             Range($0.range, in: text).map { String(text[$0]) }
         }
         return Array(Set(ids)).sorted()
+    }
+
+    /// rfc_011 §4.2 / @F f6 — does a reply assert a measurement /
+    /// parity / absorption WITHOUT a backing exports/ record ID?
+    /// Such a reply is an over-claim and must be flagged in the UI.
+    private static func overclaims(_ reply: String) -> Bool {
+        let claimMarkers = [
+            "측정으로 확인", "측정 완료", "측정완료", "측정됐", "측정했",
+            "검증 완료", "검증완료", "검증됐", "흡수 완료", "흡수완료",
+            "parity", "29/29", "38/38", "absorbed: true", "gate_closed",
+            "달성했", "확인됐습니다",
+        ]
+        let lower = reply.lowercased()
+        let claims = claimMarkers.contains { lower.contains($0.lowercased()) }
+        guard claims else { return false }
+        // A claim is honest only if it carries a backing record ID.
+        return parseRecordIDs(reply).isEmpty
+    }
+
+    /// Append a red REJECTED banner right after an over-claiming reply
+    /// (rfc_011 §4.2). The reply itself stays visible — the banner
+    /// marks it as not-trustworthy, it does not hide it.
+    private func flagIfOverclaim(_ reply: String) {
+        guard Self.overclaims(reply) else { return }
+        chatMessages.append(ChatMessage(
+            role: .rejected,
+            text: "이 응답은 측정·parity·흡수를 주장하지만 그것을 뒷받침하는 "
+                + "exports/ record 가 없습니다. 측정 없이는 ✅ 로 인정되지 "
+                + "않습니다 (g3 / @F f6)."))
     }
 
     /// Project context handed to the chat agent so the "cooking
@@ -511,20 +542,52 @@ struct WorkbenchView: View {
     }
 
     @ViewBuilder private func chatBubble(_ msg: ChatMessage) -> some View {
-        HStack(spacing: 0) {
-            if msg.role == .user { Spacer(minLength: 20) }
-            Text(msg.text)
-                .font(.callout)
-                .textSelection(.enabled)
-                .padding(8)
-                .background(
-                    (msg.role == .user ? Color.accentColor : Color.secondary)
-                        .opacity(0.14)
-                )
-                .cornerRadius(8)
-                .fixedSize(horizontal: false, vertical: true)
-            if msg.role == .assistant { Spacer(minLength: 20) }
+        if msg.role == .rejected {
+            rejectionBanner(msg.text)
+        } else {
+            HStack(spacing: 0) {
+                if msg.role == .user { Spacer(minLength: 20) }
+                Text(msg.text)
+                    .font(.callout)
+                    .textSelection(.enabled)
+                    .padding(8)
+                    .background(
+                        (msg.role == .user ? Color.accentColor : Color.secondary)
+                            .opacity(0.14)
+                    )
+                    .cornerRadius(8)
+                    .fixedSize(horizontal: false, vertical: true)
+                if msg.role == .assistant { Spacer(minLength: 20) }
+            }
         }
+    }
+
+    /// rfc_011 §4.2 — the red REJECTED banner for an over-claiming
+    /// reply (a measurement / parity / absorption claim with no
+    /// backing exports/ record). g3's honesty enforced in the UI.
+    @ViewBuilder private func rejectionBanner(_ text: String) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: "exclamationmark.octagon.fill")
+                .foregroundStyle(.red)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("REJECTED")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.red)
+                Text(text)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+                    .textSelection(.enabled)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(8)
+        .background(Color.red.opacity(0.10))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.red.opacity(0.40))
+        )
+        .cornerRadius(8)
     }
 
     /// Greet a freshly created project — the teacher opens verb 1.
@@ -739,6 +802,7 @@ struct WorkbenchView: View {
                 if thinkingIndex < chatMessages.count {
                     chatMessages[thinkingIndex] = ChatMessage(role: .assistant, text: reply)
                 }
+                flagIfOverclaim(reply)
             }
         }
     }
