@@ -1979,3 +1979,16 @@
   진단·핸드오프만. 다음 = (hexa-lang 세션이) patch 적용 →
   sweep/leighton 컴파일 → booksim cmd_sweep/measure (B2) ·
   rfc_006 §4 모듈 enum 자유.
+- 2026-05-19 — **verify (g3): 사용자 "inbox 2건 resolved" ≠ enum
+  patch**. 사용자 소식 후 실측: `hexa run stdlib/booksim/
+  leighton.hexa` → 여전히 `error: use of undeclared identifier
+  'RegionShape'` (C:200 == RegionShape.HEX_AXIAL_R · C:337
+  RegionShape.K_BY_K), clang fail exit 1. sweep 동일. inbox
+  patch `enum-variant-access-miscodegen-as-field-codegen-c2.md`
+  원본 그대로 (resolved 주석 0 — 미적용). resolved 2건은
+  inbox/patches/ 의 60+ 중 *다른* 항목. enum codegen blocker
+  미해결 — track 1/2 enum-bearing 모듈 여전히 blocked,
+  dispatcher 층(booksim 7/7·yosys 8/8)이 정직한 현 위치.
+  ("d5a63a82 완료" 때와 동일 패턴 — 낙관 보고를 실측 정정,
+  거짓 ✅ 금지.) demiurge 측 추가 작업 0; hexa-lang 컴파일러
+  patch 대기 (inbox 큐 등록 완료).
