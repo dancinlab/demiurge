@@ -41,6 +41,11 @@ struct CockpitApp: App {
                     title: "test-3d-animation",
                     path: ""))
                     .frame(minWidth: 720, minHeight: 600)
+            } else if ProcessInfo.processInfo.environment["DEMIURGE_TEST_3D_RTSC"] != nil {
+                // Standalone rtsc HTS solenoid test window.
+                //   DEMIURGE_TEST_3D_RTSC=1 swift run CockpitApp
+                RtscView3D(geometry: .htsSolenoidProxy)
+                    .frame(minWidth: 720, minHeight: 600)
             } else {
                 WorkbenchView()
             }
