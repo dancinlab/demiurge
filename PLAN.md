@@ -1661,3 +1661,22 @@
   에러 0 · 경고 0. **g3 정직**: 중복 제거·governance 만 — 새
   기능 0, 측정 record 0 그대로. CLI 는 아직 viewer 명령만 (domain/
   verb 기능 미착수 — 붙을 때 공용 함수 적용은 governance 가 보장).
+- 2026-05-19 — **phase κ-10 — CLI ↔ Project 정합 빌드 green**
+  (D34 AI-agent surface · g_ssot_single_source 실증). DemiurgeCLI
+  에 project 명령 2개 추가: `list-projects` (ProjectStore.loadAll
+  → 이름·domain label·현재 verb) · `show-project <name>` (manifest
+  상세 + 7-verb 진행 [x]/[>]/[~]/[ ]). **핵심**: CLI 가 cockpit
+  과 **동일한** DemiurgeCore 함수 사용 — `ProjectStore` (같은 App
+  Support manifest, D45) · `DomainCatalog.domain(for:).label/
+  canvasMode` · `Verb` · `Project.state(of:)`. 각자 switch 0 —
+  κ-9 의 g_ssot_single_source 가 코드에서 실증됨. 측정: `swift
+  run DemiurgeCLI` 빌드 green (2.28s, 에러 0) + round-trip 검증 —
+  임시 manifest (chip·currentVerb=2·doneVerbs=[0,1]) 작성 후
+  `list-projects` → "테스트 칩 — 칩 설계 · 3/7 설계", `show-project`
+  → 7-verb 진행 1·2 [x]·3 [>]·4-7 [ ] 정확 출력, 임시 manifest
+  삭제. cockpit·CLI 가 같은 manifest 를 동일 해석 = 멱등성 확인.
+  **g3 정직**: CLI 는 read-only viewer 유지 — project 생성/수정은
+  cockpit 만 (CLI 는 list/show 만); θ 액션 subcommand 는 여전히
+  미착수. cockpit 코드(CockpitApp/DemiurgeCore) 무변경 → .app
+  재설치 불요 (CLI 는 `demiurge cli` shim = repo 에서 swift run).
+  다음 = 신규 작업 — 미정.
