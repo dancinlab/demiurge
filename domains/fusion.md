@@ -54,3 +54,11 @@ maturity).
 - SOLPS-ITER (ITER-Org repo) — <https://github.com/iterorganization/SOLPS-ITER>, <https://www.iter.org/node/20687/new-solps-iter-code-version-launched>
 - FLUKA fusion SDDR (FNG-ITER benchmark) — <https://www.tandfonline.com/doi/full/10.1080/15361055.2024.2448414>
 - IMAS open-source release — <https://www.iter.org/node/20687/release-imas-infrastructure-and-physics-models-open-source>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 노형 = 토카막 / 스텔러레이터
+- 설계: 자석 = 저온초전도 / 고온초전도 ; 블랭킷 = 액체금속 / 고체

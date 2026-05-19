@@ -44,3 +44,11 @@ unified multi-domain energy-system integrator.
 - PyPSA — <https://pypsa.org/>
 - OpenMC vs Serpent benchmark — <https://www.mdpi.com/2673-4362/6/4/44>
 - NREL SAM open source — <https://sam.nrel.gov/sam-open-source.html>, <https://github.com/NREL/SAM>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 에너지원 = 배터리 / 원자로 / 그리드
+- 설계: 배터리 화학 = 리튬이온 / 전고체 / 나트륨이온

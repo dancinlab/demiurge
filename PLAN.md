@@ -1692,3 +1692,22 @@
   (g_ssot_single_source). **g3 정직**: 문서 reconcile 만 — 새
   결정·코드·측정 0. 다음 추천 = #1 재료 선반 실데이터 (κ-3 stub →
   domains/** 소싱).
+- 2026-05-19 — **phase κ-11 — 재료 선반 실데이터** (D51 · 사용자
+  게이트 "domains/ 에 옵션 섹션 신설"). κ-3 의 IngredientShelf
+  하드코딩 stub → domains/*.md §6 파싱. **(domains)** 14 도메인
+  맵 전부에 `## 6. Design options (workbench shelf)` 신설 —
+  verb 별 plain 설계 옵션 (`- <verb>: <group> = a / b / c`,
+  §1 deliverable 기반). **(DemiurgeCore)** `DomainCatalog.all`
+  7 → 16 도메인 (domains/ 14 + chip + matter; label·canvasMode·
+  키워드) — DomainInference 가 14 도메인 전부 추론 가능 ·
+  `IngredientShelf` = §6 파서로 교체 (`section6Lines` +
+  verb-prefix 매칭 + `;`/`=`/`/` 분리). **(CLI)** `list-shelf
+  <domain>` 추가 — cockpit ②work zone 과 동일 `IngredientShelf`
+  공유 (g_ssot_single_source 실증). 측정: `swift run CockpitApp`
+  빌드 green (7.18s, 에러 0) + CLI round-trip 검증 — `list-shelf
+  energy` → 구조(에너지원)·설계(배터리화학), `fusion` → 자석·
+  블랭킷 `;` 다중그룹 정확, `space` → 명세 verb 매칭, `chip` →
+  "no §6" 정직 출력. **g3 정직**: chip/matter 는 domain 맵이
+  없어 빈 선반 (위조 0); §6 옵션은 도메인 deliverable 기반
+  합리적 후보지 측정값 아님. 다음 추천 = #2 REJECTED 가드 강화
+  (κ-6 문자열 휴리스틱 → 정밀화).

@@ -45,3 +45,11 @@ STK-class integration is proprietary).
 - OpenMDAO workshop — <https://openmdao.org/wp-content/uploads/2022/11/1315_Gage_Harris_OpenMDAO_Workshop_Final.pdf>
 - OpenVSP3Plugin — <https://github.com/nasa/OpenVSP3Plugin>
 - awesome-space (Basilisk / Trick refs) — <https://github.com/orbitalindex/awesome-space>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 명세: 임무 = 지구궤도 / 행성간 / 착륙
+- 설계: 추진 = 화학 / 전기 / 핵열

@@ -44,3 +44,11 @@ equivalent).
 - Thin-film implant microfab — <https://www.nature.com/articles/s41378-022-00466-z>
 - COMSOL stimulation confinement — <https://www.mdpi.com/1424-8220/16/6/880>
 - Sim4Life — <https://zmt.swiss/news-and-events/news/sim4life/sim4life-release-v7-0>, <https://sim4life.swiss/mri-modules>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 패키지 = 밀폐형 / 폴리머
+- 설계: 전극 = 표면형 / 침습형 ; 채널 수 = 64 / 256 / 1024

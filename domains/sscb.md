@@ -58,3 +58,11 @@ toolchain. The UL 489I certification path itself is also proprietary
 - UL 489I 1st ed. (Oct 2025) — <https://webstore.ansi.org/standards/ul/ul489ied2025>, <https://www.ul.com/insights/path-safety-and-quality-solid-state-circuit-breakers>
 - IEC 60947-2 vs UL 489 — <https://sinobreaker.com/iec-60947-2-vs-ul-489/>
 - PLECS Standalone / Blockset — <https://www.plexim.com/products/plecs/plecs_standalone>, <https://www.plexim.com/products/plecs/plecs_blockset>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 차단 방식 = 기계식 / 솔리드스테이트 / 하이브리드
+- 설계: 반도체 = SiC / GaN

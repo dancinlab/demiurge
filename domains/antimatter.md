@@ -45,3 +45,11 @@ uncertain by Agent-3).
 - arXiv:2503.22471 (antihydrogen-yield + ARTIQ/Sinara) — <https://arxiv.org/html/2503.22471v2>
 - arXiv:2603.21168 — <https://arxiv.org/abs/2603.21168>
 - Compact H− SC cyclotron — <https://link.springer.com/article/10.1134/S1547477114060132>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 트랩 종류 = Penning / Penning-Malmberg
+- 설계: 자석 = 영구자석 / 초전도 ; 전극 = 원통형 / 분할형

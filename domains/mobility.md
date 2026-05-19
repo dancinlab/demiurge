@@ -58,3 +58,11 @@ demiurge SPECIFY+VERIFY gap that Cohort-1 synthesis flagged as
 - ASAM OpenSCENARIO XML / DSL — <https://www.asam.net/standards/detail/openscenario-xml/>, <https://www.asam.net/standards/detail/openscenario-dsl/>
 - ISO 26262 vs ISO 21448 SOTIF — <https://www.patsnap.com/resources/blog/articles/iso-26262-vs-iso-21448-sotif-for-autonomous-driving/>, <https://www.ptc.com/en/blogs/alm/iso-26262-vs-sotif-iso-pas-21448-whats-the-difference>
 - UN R157 ALKS + dual-standard convergence — <https://www.automotive-iq.com/autonomous-drive/articles/rethinking-autonomous-vehicle-functional-safety-standards-an-analysis-of-sotif-and-iso-26262>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 자율도 = L3 / L4 / L5
+- 설계: 센서 = 카메라 / 라이다 / 레이더 ; ECU = AUTOSAR Classic / Adaptive

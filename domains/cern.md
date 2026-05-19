@@ -50,3 +50,11 @@ workflow leans on CST / OPERA.
 - WarpX / BLAST — <https://blast.lbl.gov/codes/>, <https://warpx.readthedocs.io/en/24.08/theory/intro.html>
 - FLUKA Geant4 interface — <https://www.epj-n.org/articles/epjn/full_html/2024/01/epjn20240018/epjn20240018.html>
 - CST / OPERA refs — arXiv:2308.09792 ; <https://www.adcomsim.co.il/opera/>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 격자 = FODO / TME / DBA
+- 설계: 자석 = 상전도 / 초전도 ; 가속 = 선형 / 원형

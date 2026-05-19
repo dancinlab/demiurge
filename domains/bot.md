@@ -60,3 +60,11 @@ in the cohort.
 - OMPL — <https://ompl.kavrakilab.org/>, <https://github.com/ompl/ompl>
 - PyBullet + ROS 2 bridge — <https://github.com/oscar-lima/pybullet_ros>
 - ISO 10218-1:2025 / -2:2025 — <https://www.iso.org/standard/73933.html>, <https://blog.ansi.org/ansi/iso-10218-1-2025-robots-and-robotic-devices-safety/>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 구동 = 전기모터 / 유압 / 공압
+- 설계: 제어 = PID / MPC / WBC ; 센서 = 카메라 / 라이다 / IMU

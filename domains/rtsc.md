@@ -42,3 +42,11 @@ REBCO / Bi-2212 coils (open tooling is 2-D-limited).
 - FEM Magnetics Toolbox — <https://github.com/upb-lea/FEM_Magnetics_Toolbox>
 - HTS Modelling Workgroup — <https://htsmodelling.com/?page_id=748>, <https://htsmodelling.com/model-files/archive/2024/03>
 - Proprietary EM tools survey — <https://www.researchgate.net/post/Other_than_maxwell_what_are_the_softwares_available_for_electric_motor_design>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 권선 = 팬케이크 / 솔레노이드
+- 설계: 도체 = REBCO / Bi-2212

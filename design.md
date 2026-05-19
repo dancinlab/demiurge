@@ -1593,3 +1593,23 @@ DemiurgeCore (`DomainCatalog` · `Verb.hint` · `CanvasMode`).
 - 중복은 정의상 drift 위험; 단일 SSOT + 포인터가 정합 불변식 보존.
 - DemiurgeCore 는 이미 `ArtifactRegistry`/`RecordLoader` 를 cockpit·
   CLI 가 공유 — `DomainCatalog`/`Verb` 도 같은 패턴으로 정렬.
+
+### Decision 51 — 재료 선반 옵션 SSOT = domains/*.md §6 (cockpit phase κ-11)
+
+**picked**: workbench 재료 선반 (rfc_012 §5) 의 옵션은 각
+`domains/<domain>.md` 의 `## 6. Design options (workbench shelf)`
+섹션에서 소싱한다 — domain 맵이 SSOT. `IngredientShelf` 가 §6 를
+파싱 (verb 별 plain 설계 옵션, `- <verb>: <group> = a / b / c` 형식).
+14 도메인 맵에 §6 신설. `DomainCatalog` 를 domains/ 14 도메인 + chip
+으로 확장. (Rejected: §2 도구맵 파싱 — '도구 선택' 이지 설계
+파라미터 아님; 코드 카탈로그 — domains/ 와 데이터 이중,
+g_ssot_single_source 위반.)
+
+**rationale**:
+- 사용자 게이트 2026-05-19 — 3택(§2 도구맵 / domains §6 신설 /
+  코드 카탈로그) 중 "domains/ 에 옵션 섹션 신설" 선택.
+- domain 맵이 도메인 지식의 SSOT — 설계 옵션도 거기 두는 것이
+  g_ssot_single_source (D50) 정합.
+- §6 형식 단순 — cockpit ②work zone 과 CLI `list-shelf` 가 동일
+  `IngredientShelf` 파서 공유 (CLI↔cockpit 멱등 실증).
+- chip/matter 는 domain 맵이 없어 빈 선반 — 정직 (g3), 위조 0.

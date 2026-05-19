@@ -12,6 +12,7 @@
 //   demiurge show <path>              Show one F1F2 record + provenance
 //   demiurge list-projects            List workbench projects (manifests)
 //   demiurge show-project <name>      Show one project + 7-verb progress
+//   demiurge list-shelf <domain>      Show a domain's §6 shelf options
 //
 // Project subcommands read the SAME manifests the cockpit writes
 // (~/Library/Application Support/lab.dancin.demiurge/projects/, D45)
@@ -47,6 +48,7 @@ func usage() {
       demiurge show <path>             Show one F1F2 record + provenance
       demiurge list-projects           List workbench projects
       demiurge show-project <name>     Show one project + 7-verb progress
+      demiurge list-shelf <domain>     Show a domain's §6 shelf options
       demiurge --version | -v          Print version
       demiurge --help    | -h          This help
 
@@ -162,6 +164,27 @@ func showProject(_ name: String) -> Int32 {
     return 0
 }
 
+/// Show a domain's ingredient-shelf options per verb — parsed from
+/// the §6 section of domains/<domain>.md via the SAME IngredientShelf
+/// the cockpit ② work zone uses (@D g_ssot_single_source).
+func listShelf(_ domain: String) -> Int32 {
+    print("ingredient shelf — domain '\(domain)' (\(DomainCatalog.domain(for: domain).label)):")
+    var any = false
+    for verb in Verb.allCases {
+        let groups = IngredientShelf.groups(domain: domain, verb: verb)
+        guard !groups.isEmpty else { continue }
+        any = true
+        print("  \(verb.rawValue + 1). \(verb.canonical):")
+        for g in groups {
+            print("       \(g.title) = \(g.options.joined(separator: " / "))")
+        }
+    }
+    if !any {
+        print("  (no §6 design-options section — domains/\(domain).md absent or mapless)")
+    }
+    return 0
+}
+
 let args = CommandLine.arguments
 
 guard args.count >= 2 else {
@@ -203,6 +226,13 @@ case "show-project":
         exit(2)
     }
     exitCode = showProject(args[2])
+case "list-shelf":
+    guard args.count >= 3 else {
+        FileHandle.standardError.write(Data("list-shelf: missing <domain> argument\n".utf8))
+        usage()
+        exit(2)
+    }
+    exitCode = listShelf(args[2])
 default:
     FileHandle.standardError.write(Data("unknown subcommand: \(args[1])\n".utf8))
     usage()

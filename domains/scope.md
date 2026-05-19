@@ -54,3 +54,11 @@ production-grade tolerancing.
 - OpenMDAO (NASA Glenn) — <https://software.nasa.gov/software/LEW-18550-1>, <https://openmdao.org/>
 - JWST 18-segment mirror — <https://www.nasa.gov/image-article/honeycomb-mirrors-make-nasas-webb-most-powerful-space-telescope/>, <https://science.nasa.gov/mission/webb/webbs-mirrors/>
 - HWO / LUVOIR / HabEx segmented-vs-monolithic — <https://ntrs.nasa.gov/api/citations/20230014335/downloads/CAA%20Presentation_100923rev2%2010-10.pdf>, <https://www.science.org/content/article/nasa-unveils-initial-plan-multibillion-dollar-telescope-find-life-alien-worlds>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 거울 = 단일 / 분할
+- 설계: 분할 수 = 7 / 18 / 36 ; 소재 = 베릴륨 / 유리세라믹

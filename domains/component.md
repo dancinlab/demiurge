@@ -69,3 +69,11 @@ ParaView, Antmicro) but is bespoke glue, not a turnkey environment.
 - Cadence Sigrity X / Allegro X — <https://www.cadence.com/en_US/home/tools/sigrity-x.html> (SI/PI + PDN; package/PCB platform)
 - Siemens HyperLynx / Simcenter FloTHERM — <https://eda.sw.siemens.com/en-US/pcb/hyperlynx/> (high-speed SI/PI suite; FloTHERM = electronics thermal)
 - OSS electro-thermal chain (corroboration) — <https://antmicro.com/blog/2025/03/open-source-thermal-simulation-analysis-and-visualization> (FreeCAD → gmsh → CalculiX → ParaView PCB thermal pipeline)
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 냉각 = 수동 방열 / 팬 / 수냉
+- 설계: 기판 = 유기 / 세라믹 ; 재질 = 알루미늄 / 구리

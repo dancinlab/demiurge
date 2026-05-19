@@ -58,3 +58,11 @@ MRI-safety labeling.
 - nRF Connect SDK (Nordic / Zephyr) — <https://www.nordicsemi.com/Products/Development-software/nRF-Connect-SDK>, <https://github.com/nrfconnect/sdk-nrf>
 - Sim4Life FDA MDDT — <https://sim4life.swiss/>, <https://www.fda.gov/media/148922/download>, <https://zmt.swiss/news-and-events/news/sim4life/fda-extends-mddt-qualification-to-imanalytics-v3-0-and-mrixvip-v2-1>
 - IEC 60601-1-2 EMC for wearables + EU MDR — <https://www.testinglab.com/iec-60601-1-2-emc-testing-for-medical-wearable-electronics>, <https://blog.johner-institute.com/systems-engineering/iec-60601-1-2/>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 통신 = BLE / 유선
+- 설계: 센서 = 건식 EEG / 습식 EEG ; 전원 = 일회용 배터리 / 충전식

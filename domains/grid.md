@@ -59,3 +59,11 @@ synthesis point 3).
 - ns-3 / OMNeT++ DC fabric usage — <https://ns3simulation.com/how-to-implement-data-center-networking-in-ns3/>, arXiv:2402.05312 (SplitSim)
 - SST (Sandia) — <http://sst-simulator.org/>, <https://github.com/sstsimulator/sst-core>
 - Kubernetes + Slurm (Slinky / SUNK) — <https://developer.nvidia.com/blog/running-large-scale-gpu-workloads-on-kubernetes-with-slurm/>, <https://slurm.schedmd.com/kubernetes.html>
+
+## 6. Design options (workbench shelf)
+
+> rfc_012 §5 ingredient shelf — plain design options per verb.
+> Line form `- <verb>: <group> = a / b / c`; ` ; ` separates groups.
+
+- 구조: 네트워크 = fat-tree / leaf-spine / dragonfly
+- 설계: 냉각 = 공랭 / 액침 / 직수냉
