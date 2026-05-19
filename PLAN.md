@@ -3592,3 +3592,27 @@
   `inbox/notes/kernel-extraction-pickup.md` 갱신 — 대부분 단일
   도메인, 2번째 consumer 등장 전까지 dir-only. hexa-lang 커밋 =
   t4-emt-calc 브랜치 (push 보류).
+- 2026-05-20 — **phase κ-45 — D72 커널 레이어 완성 (12 커널 추가 +
+  aura/bot/energy 복구, hexa-lang origin/main `7332e162` 도달)**.
+  GOAL "추천순 진행 잔여 없이 완료" 자율 라운드. demiurge 측 변경
+  0 (제1 원칙·D61 — stdlib 소유 = hexa-lang, demiurge = 소비
+  포인터). hexa-lang origin/main 에 D72 ①a kernels/ 12개 추가
+  (`graph`·`fem` 외): `mc_transport`·`orbital`·`wave_optics`·
+  `noc_sim`·`logic_synth`·`circuit`·`plasma`·`neural`·
+  `signal_proc`·`urdf`·`solar` — 각 thin ①b 도메인 어댑터 1줄
+  import, byte-identical record 검증 통과. 동시에 aura/bot/energy
+  3 도메인 모듈(`aura_mne.py`·`urdfpy_basics.py`·
+  `pvlib_clearsky.py`) 을 동시 세션 live 트리에서 origin/main 으로
+  복구 (커밋 누락분 — read-only pickup, live 트리 미수정).
+  결과: hexa-lang origin/main `370d05f3` → `7332e162`, **13 커널 +
+  15 도메인** 모두 2-layer 구조. demiurge Swift producer 무변경
+  (script 파일명·위치 불변, `__file__` 상대경로). g3 — 구조 재배치,
+  측정/gate/absorbed 변경 0; N×M → N+M 재사용 가능성이 origin/main
+  에 실현됨 (새 도메인 추가 시 13 커널 재사용). **잔여 차단 (자율
+  해소 불가)**: `~/core/hexa-lang` live working tree 가 동시 세션
+  branch 위에 있어 origin/main `7332e162` 와 불일치 — demiurge
+  spawn 이 보는 stdlib 는 아직 동시 세션 작업 상태. cross-session
+  정렬(동시 세션이 push 후 한 세션이 `~/core/hexa-lang` 를
+  origin/main 으로 checkout) 까지 demiurge 측 빈-셀 producer
+  (sscb·scope·cern·component 측정 라운드) 대기. demiurge 세션이
+  강제로 정렬하지 않음 (동시 세션 uncommitted 작업 보존, 요약 #5).
