@@ -1,0 +1,73 @@
+{
+  "avg_hops" : 8.5,
+  "interface" : "demiurge:chip:noc:F1F2-record",
+  "leighton_oracle" : {
+    "bisection_bound" : 8,
+    "bisection_observed" : 8,
+    "diameter_bound" : 14,
+    "diameter_observed" : 14,
+    "source_citation" : "@x_leighton_1992",
+    "status" : "PASS"
+  },
+  "produced_at_utc" : "2026-05-20T00:00:00Z",
+  "provenance" : {
+    "absorbed" : true,
+    "atlas_cite_block" : "@cite demiurge:rfc_001 §5+§8 + rfc_003 §4; design.md D1+D9+D64",
+    "consumer_target" : "hexa-lang:comb:RFC_057:F1F2",
+    "gate_failures" : [
+
+    ],
+    "measurement_gate" : "GATE_CLOSED_MEASURED",
+    "scope_caveats" : [
+      "closed-form zero-load latency model ZLL = H*t_r + extra_wire + (L-1) (PPIN §16); t_r calibrated on the §B cardinal mesh and cross-applied to §D — not a full per-flit iSLIP DES",
+      "§B is full-curve parity (4 rows incl knee + monotonicity via sweep.hexa mean-field DES); §D is headline-number parity (ZLL@0.05 + hops@0.05 + d6<d4 directional ordering) per rfc_003 §4 §D acceptance",
+      "mean hop count H is the exact unweighted BFS shortest-path on the parsed topology graph; extra_wire is the cost-2 d6 diagonal channel surplus",
+      "22nm SMART wire-delay; single (node, clock) point — not a regime claim"
+    ],
+    "sim_commit_hash" : "local",
+    "sim_engine" : "hexa-lang:stdlib\/booksim\/sweep_oracle_parity"
+  },
+  "record_id" : "sD_mesh_d4_tornado_22nm",
+  "router_cost" : {
+    "iq_pipeline" : {
+      "credit_delay" : 2,
+      "routing_delay" : 0,
+      "sw_alloc_delay" : 1,
+      "vc_alloc_delay" : 1
+    },
+    "per_hop_critical_path_cycles" : 5,
+    "source_citations" : [
+      "@x_dally_towles_2004"
+    ]
+  },
+  "saturation_throughput" : {
+    "injection_rate_at_knee" : 0,
+    "knee_definition" : "3x_zero_load_latency"
+  },
+  "schema_version" : "1.0",
+  "topology" : {
+    "boundary" : "open",
+    "coord_kind" : "xy",
+    "degree" : 4,
+    "kind" : "mesh_2d",
+    "node_count" : 64,
+    "region_shape" : "k_by_k",
+    "routing" : "dor_min"
+  },
+  "traffic" : "tornado",
+  "verdict" : {
+    "f1" : "INCONCLUSIVE",
+    "f2" : "INCONCLUSIVE",
+    "rationale" : "single-(topology,traffic) record; the d4-vs-d6 directional F1 signal is checked by the sweep_oracle_parity orchestrator rows D3\/D4 — a pair-verdict aggregator record is a separate interface"
+  },
+  "wire_delay_model" : {
+    "cycle_period_ps" : 500,
+    "node" : "22nm",
+    "ps_per_mm" : 500,
+    "rc_exponent" : 2,
+    "source_citations" : [
+      "@x_smart_ispass17"
+    ]
+  },
+  "zero_load_latency_cycles" : 61.5
+}

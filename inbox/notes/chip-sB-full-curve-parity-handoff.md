@@ -1,6 +1,8 @@
 # incoming note: chip-sB-full-curve-parity-handoff — re-open D10's execution gate via 3-host pool parallelism
 
-> **id**: `chip-sB-full-curve-parity-handoff` · **opened**: 2026-05-20 KST · **status**: `handoff-open — awaits hexa-lang session`
+> **id**: `chip-sB-full-curve-parity-handoff` · **opened**: 2026-05-20 KST · **status**: `CLOSED 2026-05-20 — completed in-session (κ-43 / D70), not delegated`
+>
+> **closure**: the handoff was self-fulfilled in the same session rather than delegated to a separate hexa-lang session. `stdlib/booksim/sweep_oracle_parity.hexa` landed; rfc_003 §4 acceptance 12/12 GREEN; `chip + verify` flipped to `GATE_CLOSED_MEASURED` + `absorbed=true`. The `hexa build` native-compile path made the pool-distribution plan moot — the full §B+§D run is ~1 s as a compiled binary. See design.md D70 / PLAN.md κ-43.
 > **source**: user directive 2026-05-20 — `ABSORPTION.md §"무거운 후보"` chip §B row marked `진행` + `ubu-1/ubu-2/mini 자원활용` directive.
 > **destination repo**: `~/core/hexa-lang/` (where `stdlib/booksim/` lives — D15 / D61 / g_stdlib_ownership)
 > **scope**: extend `stdlib/booksim/sweep.hexa` (or new `stdlib/booksim/sweep_oracle_parity.hexa`) to run the full 9-config matrix vs the rfc_003 §4 reference numbers, emit F1F2Record rows, and flip `chip §B` from `GATE_B_PINNED_MET` → `GATE_CLOSED_MEASURED`. demiurge stays pointer-only per D61.

@@ -77,16 +77,16 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   §4.2 REJECTED 가드 + domain-aware canvas mode + UX 마감. 매
   phase `swift run` 빌드 green · `/Applications/demiurge.app`
   설치. 단 *틀* 완결이지 측정 0 (아래 🕳️).
-- 🟡 **chip §B = `GATE_B_PINNED_MET`** — pinned PASS(모델 단순화),
-  full-curve parity·§D 미입증; `absorbed=false` 유지.
-- 🕳️ **engine tool 0** — θ-2 가 돌릴 실제 측정 도구 0개 (Yosys §4
-  미구현 = hexa-lang 세션·D19; booksim = hexa-lang/stdlib) → 어떤
-  프로젝트도 측정 record 0 · 어떤 verb 도 ✅ 아님 (workbench 는
-  *틀*만 live) · **seam records 0** (rfc_007/008 v0, `records/`
-  의도적 빈칸 = g3 위조 0) · **`d5a63a82` pushed**
-  (origin/rfc043-hexa-torch, 2026-05-19) — 단 Yosys §4 모듈은
-  여전히 `.hexa.stub` (미구현, hexa-lang 세션) · 어떤 도메인도
-  `absorbed=true` 아님.
+- ✅ **chip §B+§D = `GATE_CLOSED_MEASURED` · `absorbed=true`** (κ-43·
+  D70) — hexa-native `sweep_oracle_parity.hexa` 가 rfc_003 §4 의
+  acceptance 12행 (§B 4 full-curve + §D 6 headline + Leighton 2) 을
+  12/12 GREEN 으로 측정. D9 의 `GATE_B_PINNED_MET` 해소. §D 는
+  headline-number parity (full per-flit DES 곡선형상은 후속 phase).
+- 🟡 **engine tool — chip / cohort 다수 라이브, 측정 도구 점증** —
+  θ-2 가 돌릴 실제 producer 가 κ-34~47 로 다수 wired (chip+verify
+  sweep_oracle_parity 가 첫 *동역학* 측정; matter·chip-analyze 는
+  static absorbed). seam records 0 (rfc_007/008 v0 의도적 빈칸 =
+  g3 위조 0) 는 유지. Yosys §4 모듈은 여전히 hexa-lang 세션 항목.
 
 > GOAL 한 줄(north-star)은 불변 — 달성 주장 아님, 측정 거리 명시.
 
@@ -130,3 +130,12 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   design.md/PLAN.md 로 위임 — 본 파일은 *카테고리* 서술만. 사용자
   지시 'update 마다 양쪽 업데이트 하지 않게'. 새 측정 fact 없음 —
   중복 제거만.
+- 2026-05-20 — chip §B+§D measured-parity 종결 (κ-43·D70) 을 "현재
+  위치" 에 반영 (north-star 불변, category-section 갱신). 새 측정
+  fact: hexa-native `sweep_oracle_parity.hexa` 가 rfc_003 §4 의 12행
+  (§B 4 + §D 6 + Leighton 2) 12/12 GREEN — chip §B 가
+  `GATE_B_PINNED_MET` → `GATE_CLOSED_MEASURED`·`absorbed=true`. 첫
+  chip 도메인 *동역학* 측정 흡수 (matter·chip-analyze 의 static 흡수
+  에 이은). `hexa build` native-컴파일 경로가 D10 의 interpreter
+  throughput 차단을 우회. g3 거리: §D 는 headline-number parity (full
+  per-flit DES 곡선형상은 후속 phase) — record scope_caveats 명시.
