@@ -7,10 +7,10 @@
 //
 // Architecture (mirrors FreeCADBIPVProducer + MatterAnalyzer):
 //   1. locate `ngspice` (brew → /opt/homebrew/bin, then PATH)
-//   2. locate `cockpit/scripts/sscb_ngspice.py`
-//   3. spawn `python3 sscb_ngspice.py <output_dir>` — Python wraps the
-//      ngspice invocation so the netlist + log + meta.json all live in
-//      <output_dir> with no shell quoting hazards
+//   2. locate `~/core/hexa-lang/stdlib/sscb/ngspice.hexa` (D61 SSOT)
+//   3. spawn `hexa run ngspice.hexa <output_dir>` — the hexa-native
+//      driver wraps the ngspice invocation so the netlist + log +
+//      meta.json all live in <output_dir> with no shell quoting hazards
 //   4. parse the `SSCB_NGSPICE_RESULT <json>` summary line from stderr
 //   5. verify the .cir / .log / .raw / .meta.json artifacts exist on
 //      disk (defence-in-depth — @F f6 evidence-over-assertion)
@@ -101,15 +101,17 @@ public enum SSCBProducer {
 
     /// Locate the producer script — SSOT in hexa-lang stdlib per
     /// D61 / g_demiurge_pointer_only. Migrated 2026-05-20 κ-54 round
-    /// from `cockpit/scripts/sscb_ngspice.py`.
+    /// from `cockpit/scripts/sscb_ngspice.py`; ported to hexa-native
+    /// `ngspice.hexa` per D67/κ-41 directive ("hexa-native 작성 .hexa"
+    /// — every absorbed-substrate driver is `.hexa`, not Python).
     public static func locateScript() -> String? {
         let path = NSString(
-            string: "~/core/hexa-lang/stdlib/sscb/ngspice.py"
+            string: "~/core/hexa-lang/stdlib/sscb/ngspice.hexa"
         ).expandingTildeInPath
         return FileManager.default.fileExists(atPath: path) ? path : nil
     }
 
-    /// Run `python3 sscb_ngspice.py <transientRecordsRoot>/<stamp>/` and
+    /// Run `hexa run ngspice.hexa <transientRecordsRoot>/<stamp>/` and
     /// persist one `SSCBRecord` per call. Each call writes into its
     /// own timestamped subdirectory so consecutive runs do not stomp
     /// each other's .raw / .log artifacts.
@@ -124,9 +126,9 @@ public enum SSCBProducer {
             return SSCBAnalyzeResult(ok: false, lines: lines, newRecordID: nil)
         }
         guard let script = locateScript() else {
-            lines.append("⏳ engine tool gap — sscb_ngspice.py 를 찾지 못했습니다 "
-                + "(cockpit/scripts/). 절차 fallback 없음 — 본 셀은 producer "
-                + "필수 (g3).")
+            lines.append("⏳ engine tool gap — ngspice.hexa 를 찾지 못했습니다 "
+                + "(~/core/hexa-lang/stdlib/sscb/). 절차 fallback 없음 — "
+                + "본 셀은 producer 필수 (g3).")
             return SSCBAnalyzeResult(ok: false, lines: lines, newRecordID: nil)
         }
 
@@ -143,17 +145,17 @@ public enum SSCBProducer {
             return SSCBAnalyzeResult(ok: false, lines: lines, newRecordID: nil)
         }
 
-        // Spawn python3 with the script. ngspice resolution is the
+        // Spawn `hexa run ngspice.hexa <dir>`. ngspice resolution is the
         // script's job (it has its own candidate path list), but the
         // Swift side resolved it already so we surface that to the
         // user as part of the engine-tool banner.
         let proc = Process()
         proc.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-        proc.arguments = ["python3", script, runDir.path]
+        proc.arguments = ["hexa", "run", script, runDir.path]
         let pipe = Pipe()
         proc.standardOutput = pipe
         proc.standardError = pipe   // merge — script writes the
-                                    // SSCB_NGSPICE_RESULT line on stderr
+                                    // SSCB_NGSPICE_RESULT line on stdout
 
         var captured = ""
         var exitCode: Int32 = -1
@@ -164,7 +166,7 @@ public enum SSCBProducer {
             exitCode = proc.terminationStatus
             captured = String(data: data, encoding: .utf8) ?? ""
         } catch {
-            lines.append("⏳ engine tool gap — python3 sscb_ngspice.py 실행 "
+            lines.append("⏳ engine tool gap — hexa run ngspice.hexa 실행 "
                 + "실패: \(error.localizedDescription) (g3).")
             return SSCBAnalyzeResult(ok: false, lines: lines, newRecordID: nil)
         }
@@ -184,7 +186,7 @@ public enum SSCBProducer {
         }
 
         lines.append("ngspice = \(ngs)")
-        lines.append("python3 sscb_ngspice.py — exit \(exitCode), rows=\(summary.rows ?? 0)")
+        lines.append("hexa run ngspice.hexa — exit \(exitCode), rows=\(summary.rows ?? 0)")
         if let v = summary.ngspiceVersion {
             lines.append("ngspice version: \(v)")
         }
@@ -288,7 +290,7 @@ public enum SSCBProducer {
     // MARK: - Parsing helpers (private)
 
     /// The shape we parse out of the producer's `meta.json`. Kept in
-    /// step with `cockpit/scripts/sscb_ngspice.py::main`'s write_meta().
+    /// step with `hexa-lang/stdlib/sscb/ngspice.hexa`'s `_build_meta_json`.
     private struct SSCBProducerMeta: Decodable {
         let ok: Bool
         let geometryId: String

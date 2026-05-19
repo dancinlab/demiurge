@@ -266,7 +266,7 @@ ubu-1(linux) · ubu-2(linux) 에 round-robin 라우팅. 명령을 묶지 말고
 |------------------------------------|------------------------------|----------|-------|
 | antimatter / cern + measured       | Geant4 + ROOT                | 1-2일    | 진행  |
 | fusion + verify (CFD)              | `hexa-lang/stdlib/fusion` 포팅 (clean-room) | 1-2주 |       |
-| Wolfspeed SiC `.lib` 흡수 (sscb)   | 측정 데이터 + DEVSIM TCAD    | 수일     | 🚧 κ-39 skeleton (`hexa-lang/stdlib/sscb/`) |
+| Wolfspeed SiC `.lib` 흡수 (sscb)   | 측정 데이터 + DEVSIM TCAD    | 수일     | 🚧 κ-41 parser GREEN (Stage 2 1/3 — `wolfspeed.hexa` 35/35 selftest + ngspice 패리티 · `ngspice.hexa` Python-parity 9/9; DEVSIM/datasheet 대기) |
 | chip §B full-curve parity          | booksim 9-sweep + parity     | 수일     | 진행  |
 | Yosys hexa-native absorbed=true    | `stdlib/yosys/read_verilog` scope 확장 (localparam · generate · always · function automatic · multi-D mem · signed arith) → router_d{4,6}.v hexa-native 합성 → ±5% 오라클 매치 | 1-2주 | 진행  |
 
