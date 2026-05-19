@@ -3561,3 +3561,34 @@
   에 점진 계획 — 다음 우선순위 = `fem` (design.md 가 이미 4 도메인
   consumer 명시, 최대 N×M 축소). hexa-lang 커밋 = t4-emt-calc 브랜치
   계열 (push 보류).
+
+- 2026-05-20 — **κ-47 STDLIB ①a 커널 추출 2차 (design.md D72
+  2-layer — fem 커널)** — κ-46 의 graph 패턴을 미러. 두 번째 추출 =
+  `fem` 커널. design.md 가 component+verify·rtsc+analyze·fusion+
+  analyze·sscb+verify 4 도메인을 fem consumer 로 명시 — 최대 N×M
+  붕괴. 신규 `hexa-lang/stdlib/kernels/fem/skfem_kernel.py` —
+  도메인-무관 API: `mesh_box`·`mesh_from_step` (gmsh meshing)·
+  `solve_thermal(mesh, k, body_source, dirichlet_select, t_dir)`
+  (정상상태 열전도)·`solve_elastic(mesh, E, ν, body_force,
+  dirichlet_select)` (선형탄성)·`von_mises_max_p1`·`gmsh_version`/
+  `skfem_version`. 결과 = field min/max·mesh stats·solver meta —
+  실리콘 다이/BIPV/플라즈마 chamber 어느 도메인도 모름. 라이브
+  producer `component+verify` (κ-44) 의 `stdlib/component/
+  gmsh_skfem.py` 를 thin ①b 어댑터로 축소: die-proxy geometry
+  (10×10×2 mm box)·실리콘 재료상수·load case (5 W top slab·중력)·
+  honesty caveat 6종만 보유, FEM 수학은 전부 커널 위임. 어댑터는
+  `__file__` 상대경로로 커널 탐색 (`../kernels/fem/`) → demiurge
+  spawn 의 임의 cwd 대응, `ComponentVerifyProducer.swift` 무변경
+  (script 파일명·위치 불변). **검증**: `swift run DemiurgeCLI action
+  verify component` → record byte-동일 — geometry/material/load/
+  measurements 모두 IDENTICAL, fingerprint `6fbb071a873b1784` 불변,
+  686 nodes/2232 tetrahedra·ΔT 0.528 K·σ_vM 38.37 Pa·u_max
+  2.796e-13 m, GATE_OPEN·absorbed=false 불변. 리팩토 전후 CSV
+  byte-동일·meta.json 동일 (timestamp 제외). g3 — 구조 재배치,
+  측정/gate/absorbed 변경 0. Stage-2 hexa 포팅 (`heat_conduction.
+  hexa`·`linear_elasticity.hexa`) 은 어댑터 옆에 동반 — parity
+  도달 시 absorbed flip 지점 = 커널 1곳. 잔여 11 producer (circuit·
+  mc_transport·orbital·wave_optics·cfd·logic_synth·noc_sim) 는
+  `inbox/notes/kernel-extraction-pickup.md` 갱신 — 대부분 단일
+  도메인, 2번째 consumer 등장 전까지 dir-only. hexa-lang 커밋 =
+  t4-emt-calc 브랜치 (push 보류).
