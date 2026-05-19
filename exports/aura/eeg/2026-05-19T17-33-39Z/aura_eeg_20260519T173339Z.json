@@ -1,0 +1,60 @@
+{
+  "artifacts" : {
+    "fif" : "aura_eeg_v1_eeg.fif",
+    "meta" : "aura_eeg_v1.meta.json"
+  },
+  "geometry_id" : "aura_eeg_v1",
+  "interface" : "demiurge:aura:eeg-record",
+  "measurements" : {
+    "band_power_grand_avg_v2" : {
+      "alpha" : 3.1611270426109043e-10,
+      "beta" : 1.2101874388587657e-11,
+      "delta" : 1.8739428114319227e-11,
+      "gamma" : 6.442639742843315e-12,
+      "theta" : 9.878592701333605e-12
+    },
+    "freq_max_hz" : 80,
+    "freq_min_hz" : 0.5,
+    "mains_60_hz_db" : 11.173456053727097,
+    "mains_60_hz_ratio" : 13.10224166002272,
+    "n_channels" : 8,
+    "n_freqs" : 160
+  },
+  "mne_version" : "1.12.1",
+  "produced_at_utc" : "2026-05-19T17:33:39Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "mne@1.12.1",
+    "scope_caveats" : [
+      "MNE-Python 의 Welch PSD 결과 — 숫자는 실제 (deterministic, fixed-seed) 이지만 신호 자체는 합성 (alpha 사인 + pink 잡음 + 60 Hz mains). 실제 피험자/전극 없음 (g3 — substrate = synthesized, NOT recorded).",
+      "post-aural 8-채널 montage (F3/F4/C3/C4/P3/P4/T7/T8) 는 라벨일 뿐 — 공간 물리 시뮬레이션 0 (no leadfield, no head model, no electrode impedance).",
+      "measurement_gate = GATE_OPEN 영구 (synthesized stimulus). closedMeasured 로 전환하려면 (a) PhysioNet 같은 공개 데이터셋을 commit-hash 로 고정 + spectrum 일치 ±X dB 검증, 또는 (b) IRB-승인 실제 acquisition + 벤치 검증 필요.",
+      "absorbed=true 절대 금지 — domains/aura.md §4 의 Sim4Life MRI-safety gap 은 별도 (MNE 는 signal processing, EM simulation 아님). MNE 흡수는 EEG-DSP 한 verb 한 셀에 한정."
+    ]
+  },
+  "record_id" : "aura_eeg_20260519T173339Z",
+  "schema_version" : "1.0",
+  "signal_sha256_16" : "dfc5f237c84b56c9",
+  "stimulus" : {
+    "alpha_amp_uV" : 25,
+    "alpha_hz" : 10,
+    "channel_names" : [
+      "F3",
+      "F4",
+      "C3",
+      "C4",
+      "P3",
+      "P4",
+      "T7",
+      "T8"
+    ],
+    "duration_s" : 4,
+    "mains_amp_uV" : 3,
+    "mains_hz" : 60,
+    "n_channels" : 8,
+    "pink_amp_uV" : 10,
+    "rng_seed" : 314159,
+    "sfreq_hz" : 256
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "aperture" : {
+    "effective_area_m2" : 25.658957998194637,
+    "effective_diameter_m" : 5.715767664977295,
+    "rings" : 2,
+    "segment_flat_to_flat_m" : 1.32,
+    "segments_requested" : 18
+  },
+  "artifacts" : {
+    "fits" : "scope_psf_v1.fits",
+    "meta" : "scope_psf_v1.meta.json"
+  },
+  "geometry_id" : "scope_psf_v1",
+  "interface" : "demiurge:scope:psf-record",
+  "measurements" : {
+    "encircled_energy" : {
+      "r_1_arcsec" : 0.9931075720112233,
+      "r_2_arcsec" : 0.997440773092256,
+      "r_5_arcsec" : null
+    },
+    "fwhm_diffraction_limit_arcsec" : 0.024214365086925108,
+    "fwhm_measured_arcsec" : 0.020075336932695,
+    "image_shape" : [
+      600,
+      600
+    ],
+    "peak_intensity" : 0.11823784988243416,
+    "pixscale_arcsec" : 0.01,
+    "strehl_proxy" : 0.7887421665813903,
+    "total_intensity" : 0.9932214272979676
+  },
+  "poppy_version" : "1.1.2",
+  "produced_at_utc" : "2026-05-19T17:33:52Z",
+  "propagation" : {
+    "fov_arcsec" : 6,
+    "oversample" : 2,
+    "pixscale_arcsec" : 0.02,
+    "wavelength_m" : 5.5e-07
+  },
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "poppy@1.1.2",
+    "scope_caveats" : [
+      "POPPY 의 Fraunhofer/Fresnel diffraction 결과 — 숫자는 실제 (deterministic, ndarray IEEE-754) 이지만 aperture 는 parametric (POPPY MultiHexagonAperture, n-segment 헥스). polished mirror 의 wavefront map 흡수 아님 (g3).",
+      "JWST 1.32 m flat-to-flat 헥스 세그먼트 (domains/scope.md §6 shelf 옵션) — JWST 본체와 1:1 비교 0 (no NIRCam commissioning data, no Zernike polynomial fit, no segment-co-phasing model).",
+      "measurement_gate = GATE_OPEN 영구. closedMeasured 로 전환하려면 (a) JWST commissioning hash 로 PSF/Strehl 재현 ±X%, 또는 (b) 실제 polished primary 의 wavefront map 흡수 필요.",
+      "absorbed=true 절대 금지 — Code V / Zemax 의 tolerancing gap (domains/scope.md §4) 은 별도 (POPPY 는 PSF, ray-trace tolerancing 아님). POPPY 흡수는 PSF/Strehl 한 셀에 한정."
+    ]
+  },
+  "psf_sha256_16" : "2f48a3d4016d84fe",
+  "record_id" : "scope_psf_20260519T173352Z",
+  "schema_version" : "1.0"
+}

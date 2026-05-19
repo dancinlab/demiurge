@@ -13,6 +13,13 @@
 //
 // κ-30 (this commit, D53): adds `matter + analyze` → MatterAnalyzer.
 // κ-34 (D55): adds `sscb + analyze` → SSCBProducer (ngspice 46 transient).
+// κ-35 (D67): adds `aura + analyze` → AuraAnalyzeProducer (MNE-Python
+//             Welch PSD on a synthesized EEG epoch) AND
+//             `scope + analyze` → ScopeAnalyzeProducer (POPPY PSF for
+//             a parametric segmented-mirror primary). Both producers
+//             live at ~/core/hexa-lang/stdlib/<domain>/<tool>.py per
+//             D61 SSOT relocation (NEW producers under hexa-lang;
+//             legacy sscb/component scripts predate the rule).
 //
 // Currently wired:
 //   • component + synthesize → ComponentEmitter.emitBundled
@@ -34,6 +41,12 @@
 //                              measuring-producer threshold; real
 //                              numbers, plausible-not-absorbed circuit,
 //                              GATE_OPEN永구 / absorbed=false ALWAYS)
+//   • aura      + analyze    → MNE-Python Welch PSD producer (κ-35 /
+//                              D67 — synthesized EEG epoch, deterministic
+//                              fixed-seed, GATE_OPEN / absorbed=false)
+//   • scope     + analyze    → POPPY PSF producer (κ-35 / D67 —
+//                              parametric n-segment hex primary,
+//                              GATE_OPEN / absorbed=false)
 //
 // Honesty (g3, @F f6): the action prompt instructs the agent to
 // report "no engine tool" plainly when none is available, and never
@@ -115,6 +128,10 @@ public enum ActionDispatch {
             return runMatterAnalyze()
         case (.analyze, "sscb"):
             return runSSCBAnalyze()
+        case (.analyze, "aura"):
+            return runAuraAnalyze()
+        case (.analyze, "scope"):
+            return runScopeAnalyze()
         default:
             let prompt = actionPrompt(verb: verb)
             let reply = askClaude(prompt: prompt, context: context)
@@ -170,6 +187,44 @@ public enum ActionDispatch {
     /// turn into real producers, narrow scope is honest g3.
     private static func runSSCBAnalyze() -> ActionResult {
         let r = SSCBProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `aura + analyze` engine tool (κ-35 / D67) — spawn MNE-Python via
+    /// `~/core/hexa-lang/stdlib/aura/aura_mne.py` (D61 SSOT relocation)
+    /// to compute Welch PSD band-power + 60 Hz mains rejection from a
+    /// *synthesized* 8-channel EEG epoch (fixed RNG seed), then persist
+    /// a typed `AuraRecord` under `exports/aura/eeg/<stamp>/`. Producer
+    /// = `mne@<v>` — MNE's Welch implementation IS the instrument, the
+    /// numbers are real, but the signal is plausible-not-recorded
+    /// (no subject, no electrode). measurement_gate stays GATE_OPEN +
+    /// absorbed=false ALWAYS (g3 — see AuraAnalyzeProducer caveats).
+    /// SECOND cohort producer after sscb κ-34.
+    private static func runAuraAnalyze() -> ActionResult {
+        let r = AuraAnalyzeProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `scope + analyze` engine tool (κ-35 / D67) — spawn POPPY via
+    /// `~/core/hexa-lang/stdlib/scope/scope_poppy.py` (D61 SSOT) to
+    /// compute diffractive PSF + Strehl + encircled-energy for a
+    /// parametric n-segment hexagonal primary (default 18 = JWST per
+    /// `domains/scope.md` §6 shelf option). Producer = `poppy@<v>` —
+    /// POPPY's Fraunhofer/Fresnel propagation IS the instrument, the
+    /// numbers are real, but the aperture is plausible-not-polished
+    /// (no JWST commissioning wavefront map). measurement_gate stays
+    /// GATE_OPEN + absorbed=false ALWAYS (g3 — see ScopeAnalyzeProducer
+    /// caveats). THIRD cohort producer after sscb + aura.
+    private static func runScopeAnalyze() -> ActionResult {
+        let r = ScopeAnalyzeProducer.runAnalyze()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],

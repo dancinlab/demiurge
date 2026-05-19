@@ -2484,3 +2484,109 @@
     하여 단일 SSOT. ④ cockpit GUI Component 탭이 STEP 파일을 직접
     렌더 (현재는 USDA only) — RealityKit STEP 미지원 → Open Cascade
     Cascade.js 같은 web 뷰 또는 STL 폴백.
+- 2026-05-20 — **phase κ-35 — cohort sweep #2~#3: `aura + analyze`
+  (MNE-Python) + `scope + analyze` (POPPY)** (rfc_011 §6.3 · D67 ·
+  D61 producer SSOT 정합 · D55 cite · D53 measurable-only · g3).
+  P-⑧ "cohort 가 측정 record 를 만들 수 있는가?" 의 두 번째·세 번째
+  positive answer (첫 번째 = sscb κ-34 / D55). 두 producer 를 한
+  phase 에 묶음 — 스캐폴드 동일 (record + producer + dispatch 3-파일
+  패턴 SSCB κ-34 그대로) + 둘 다 `pip install` 한 줄 + macOS Apple
+  Silicon native.
+  - **D61 producer SSOT 절대 정합**: NEW producer script 의 SSOT 는
+    `~/core/hexa-lang/stdlib/<domain>/<tool>.py` (sibling repo
+    hexa-lang). `cockpit/scripts/*.py` 금지 — sscb 의
+    `cockpit/scripts/sscb_ngspice.py` + component 의
+    `cockpit/scripts/bipv_freecad.py` 는 D61 이전 산물이라 그
+    자리 유지 (후속 마이그레이션 sweep κ-3X pickup). 본 phase 의
+    두 새 producer 는 처음부터 hexa-lang 에 lands:
+    `~/core/hexa-lang/stdlib/aura/aura_mne.py` (15 KB) +
+    `~/core/hexa-lang/stdlib/scope/scope_poppy.py` (13 KB). hexa-lang
+    측 working tree 상태 = `t4-emt-calc` 브랜치 HEAD `52b9ed92`;
+    두 새 디렉토리 = untracked (`stdlib/aura/`, `stdlib/scope/` —
+    `stdlib/antimatter/` + `stdlib/brain/` 와 동일 untracked 패턴).
+  - **신규 (demiurge 측 — 본 worktree commit)**:
+    - `cockpit/Sources/DemiurgeCore/Models/AuraRecord.swift` (4.7 KB)
+      — typed sidecar (`AuraRecord` + `AuraProvenance` +
+      `AuraStimulus` + `AuraMeasurements`). schema 1.0, interface =
+      `"demiurge:aura:eeg-record"`. `MeasurementGate` enum 재사용
+      (F1F2Record 에서 import).
+    - `cockpit/Sources/DemiurgeCore/Loaders/AuraAnalyzeProducer.swift`
+      (12 KB) — Swift spawn-and-witness harness. (a) `locatePython()`
+      = `/opt/homebrew/bin/python3.{12,13}` → `/usr/bin/python3` →
+      PATH, (b) `locateScript()` = `~/core/hexa-lang/stdlib/aura/
+      aura_mne.py` (D61), (c) `Process` spawn `python script <runDir>`,
+      (d) merged stdout/stderr 에서 `AURA_MNE_RESULT <json>` 파싱,
+      (e) defence-in-depth: `.fif` + `.meta.json` on-disk + size>0
+      verify, (f) `exports/aura/eeg/<stamp>/<recordId>.json` emit.
+    - `cockpit/Sources/DemiurgeCore/Models/ScopeRecord.swift` (5.2 KB)
+      — typed sidecar (`ScopeRecord` + `ScopeProvenance` +
+      `ScopeAperture` + `ScopePropagation` + `ScopeMeasurements`).
+      schema 1.0, interface = `"demiurge:scope:psf-record"`.
+    - `cockpit/Sources/DemiurgeCore/Loaders/ScopeAnalyzeProducer.swift`
+      (14 KB) — Swift spawn-and-witness harness. 동일 4-step 패턴 +
+      `segments` argv (default 18 = JWST per scope.md §6 shelf 옵션).
+      `SCOPE_POPPY_RESULT <json>` 파싱, `.fits` + `.meta.json` verify.
+  - **확장**: `ActionDispatch.runEngineTool` switch 에 2 case 추가
+    — `(.analyze, "aura")` → `runAuraAnalyze()`,
+    `(.analyze, "scope")` → `runScopeAnalyze()`. ActionResult 스키마
+    변경 없음 — usedEngineTool=true, engineToolSucceeded=ok.
+  - **신규 (hexa-lang 측 — sibling repo, 본 commit 에는 안 들어감)**:
+    - `~/core/hexa-lang/stdlib/aura/aura_mne.py` (15 KB) — 8 채널
+      4 초 @ 256 Hz EEG 합성 (alpha 10 Hz · pink 1/√f · mains 60 Hz),
+      seed=314159 deterministic. MNE `RawArray` + Welch PSD via
+      `psd_array_welch` (n_fft=512, no random tapers) → 5-band power
+      (delta/theta/alpha/beta/gamma) + 60 Hz mains rejection (dB).
+      Writes `aura_eeg_v1_eeg.fif` + `aura_eeg_v1.meta.json`, prints
+      `AURA_MNE_RESULT <json>` on stderr. signal SHA-256 = drift
+      sentinel.
+    - `~/core/hexa-lang/stdlib/scope/scope_poppy.py` (13 KB) — POPPY
+      `MultiHexagonAperture` (rings=2 = 19 hex ≈ JWST n=18 + center;
+      1.32 m flat-to-flat hex segment, 7 mm gap). `OpticalSystem`
+      mono propagate @ 550 nm, FOV 6 arcsec, pixscale 0.02 arcsec,
+      oversample 2 → `calc_psf` → Strehl proxy (peak / (total / N_diff_pix))
+      + measured FWHM (`poppy.measure_fwhm`) + encircled energy
+      (`poppy.measure_ee` at r=1/2/5 arcsec, NaN→null 변환 — JSON
+      decoder cleanness). Writes `scope_psf_v1.fits` + `.meta.json`,
+      prints `SCOPE_POPPY_RESULT <json>` on stderr. PSF SHA-256 =
+      drift sentinel.
+  - **rtsc deferred (g3 정직 갭 보고)**: 같은 cohort 가지지만 rtsc 는
+    FEMM 이 Windows-native (Wine 의존 = clean-room + Apple Silicon
+    native 둘 다 위반) + GetDP 가 `.pro`/`.geo` 수작업 필요 → 한 줄
+    pip 매핑 불가. 강제 매핑 금지 — `inbox/notes/cohort-pickup-rtsc-
+    femm-producer.md` 로 honest pickup note (다음 라운드: scipy 클로즈드
+    -폼 솔레노이드 또는 GetDP `.pro` 템플릿 둘 중 택일).
+  - **g3 정직 갭 (제일 중요)**: 두 producer 모두 measurement_gate =
+    GATE_OPEN, absorbed = false **영구**. 흡수가 아니라 producer:
+    ① aura signal 합성 (no subject/electrode/IRB) — 흡수에는
+    PhysioNet 공개 데이터셋 commit-hash 고정 + spectrum match 필요.
+    ② scope aperture parametric (no JWST commissioning data) —
+    흡수에는 NIRCam wavefront 재현 ±X% 필요. Sim4Life (aura.md §4)
+    / Code V (scope.md §4) 갭은 별도 — 본 producer 는 EEG-DSP /
+    회절 PSF 한 verb 한 셀에 한정. scope_caveats 각 4종 박제.
+  - **g3 정직 갭 ②** (working-tree 경로): cwd ≠ cockpit/ 으로 swift
+    run 시 `exportsRoot = <cwd>/../exports` 이 worktree 밖으로 새는
+    pre-existing 이슈 (RecordLoader.swift L54-56). 본 phase 에서 두
+    record 의 측정은 cwd=cockpit/ 으로 재실행해 worktree
+    `exports/` 안에 박제. 후속 hardening 후보 — `DEMIURGE_REPO` env
+    var 또는 git rev-parse fallback.
+  - **g3 정직 갭 ③** (D61 ↔ legacy migration): sscb_ngspice.py +
+    bipv_freecad.py 는 여전히 `cockpit/scripts/` (D61 이전 산물).
+    본 phase 의 D67 정합 절은 그 사실을 명시 — drift 라기보다 점진
+    migration. 따로 phase κ-3X 에서 두 legacy script 를 hexa-lang
+    으로 옮기는 sweep (Swift 측 `locateScript()` 경로만 변경; 동작
+    동일). pickup priority = 다음 cohort producer landing 후.
+  - **다음 pickup**:
+    ① **rtsc** (BLOCKED — pickup note 참조; scipy 클로즈드폼 또는
+       GetDP 둘 중 택일).
+    ② **energy + analyze = PyBaMM** (`pip install pybamm` 한 줄,
+       Doyle-Fuller-Newman SPM 시뮬, 배터리 셀 voltage curve) — 다음
+       라운드 가장 매끄러운 후보.
+    ③ **fusion + analyze = OpenMC** (`pip install openmc` 가능하나
+       cross-section data download 추가 = 첫 실행 ~500 MB; brew 의
+       `openmc` formula 활용 검토).
+    ④ legacy migration sweep — sscb_ngspice.py + bipv_freecad.py 를
+       `~/core/hexa-lang/stdlib/{sscb,component}/` 으로 옮기고 Swift
+       측 경로만 업데이트 (κ-3X · D61 정합 완성).
+    ⑤ ActionAdapter 프로토콜 리팩토링 검토 — 매핑 셀 = 7 (5 producer-
+       mapped + 2 hexa-lang-substrate), D53 의 "5+ 시점 리팩토링"
+       게이트가 본 phase 에서 닫힘.

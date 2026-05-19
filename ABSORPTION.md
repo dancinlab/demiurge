@@ -94,6 +94,8 @@ dormant.
 | matter    | analyze    | hexa-matter closure aggregator | ①+④   | GATE_CLOSED_MEASURED              | **true** |
 | component | synthesize | FreeCAD 1.1.1 parametric       | ④     | GATE_OPEN                         | false    |
 | sscb      | analyze    | ngspice 46 transient           | ①+④   | GATE_OPEN                         | false    |
+| aura      | analyze    | MNE-Python 1.12.1 Welch PSD    | ①+④   | GATE_OPEN                         | false    |
+| scope     | analyze    | POPPY 1.1.2 segmented-mirror PSF | ①+④ | GATE_OPEN                         | false    |
 
 ✱ **substrate vs absorbed 구분 (g3)** — Yosys §5 는 *외부 yosys
 binary + SKY130* 로 측정해서 cited oracle ±5 % 안에 들었으나, hexa-
@@ -122,6 +124,10 @@ producer 가 ① 에 들어오는 순서대로 매핑 추가.)
 - D53 — 7-verb 셀 매핑 = measurable-only
 - D54 — component synthesize = FreeCAD parametric
 - D55 — sscb analyze = ngspice transient (first cohort producer)
+- D61 — producer script SSOT = `~/core/hexa-lang/stdlib/<domain>/<tool>.py`
+  (sibling repo; `cockpit/scripts/*.py` 금지 for NEW producers)
+- D67 — aura + scope analyze 동시 cohort sweep (κ-35; MNE-Python +
+  POPPY; D61 producer SSOT 정합 박제)
 - rfc_001 §8 · rfc_002 §3 — F1F2 schema + 측정 gate 규칙
 - `proposals/rfc_001` ~ `rfc_005` — 도메인-별 absorption RFC
 
@@ -134,3 +140,10 @@ producer 가 ① 에 들어오는 순서대로 매핑 추가.)
   + 현재 흡수된 producer 5건 표 + 가벼운 distrib 선호. substrate vs
   absorbed 구분 (Yosys §5 사례) 명시. 새 D-decision 없음 — 기존
   D15/D17/D50/D53~D55 + rfc_001~005 cite.
+- 2026-05-20 — **κ-35 cohort sweep #2~#3**: producer 표에 2 행 추가
+  (aura + analyze = MNE-Python 1.12.1; scope + analyze = POPPY 1.1.2).
+  See also 섹션에 D61 (producer SSOT = hexa-lang/stdlib/<domain>/) +
+  D67 (κ-35 결정) 추가. rtsc 는 honest deferred — Wine 의존 + GetDP
+  수작업으로 한 줄 pip 매핑 불가 (inbox/notes/cohort-pickup-rtsc-femm-
+  producer.md). 흡수 producer 총 7 종 (chip 2 + matter 1 + component 1
+  + sscb 1 + **aura 1** + **scope 1**).

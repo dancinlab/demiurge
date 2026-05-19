@@ -1701,3 +1701,83 @@ export.)
   버튼 + DemiurgeCLI `emit-component` + DemiurgeCLI `action
   synthesize component` 셋의 단일 진입점 그대로. 셋 다 동일 record
   emit.
+
+### Decision 67 — `aura + analyze` + `scope + analyze` 동시 cohort sweep (κ-35, P-⑧ #2~#3)
+
+**picked**: 두 cohort 도메인을 한 phase 에 묶어 wiring — **aura +
+analyze = MNE-Python Welch PSD** + **scope + analyze = POPPY 분할-거울
+PSF**. 두 producer 모두 `pip install` 한 줄 (`mne` · `poppy` · BSD,
+STScI 계열), macOS Apple Silicon native, 결정적 (deterministic; fixed
+RNG seed / parametric aperture). D55 (sscb ngspice — 첫 cohort
+producer) 옆에 두 번째·세 번째 cohort producer 배치 — `domains/*.md`
+13 cohort 도메인 중 측정-가능 verb 매핑이 1 → 3 으로 확장. 셋 다
+GATE_OPEN / absorbed=false ALWAYS (g3 — 흡수가 아니라 measurement
+record producer; substrate 는 synthesized signal / parametric aperture).
+(Rejected: ① rtsc 우선 — FEMM 이 Windows-native (Wine 의존) +
+GetDP 는 `.pro`/`.geo` 수작업 필요로 한 줄 pip 비매핑 (cohort-pickup-
+rtsc-femm-producer.md 참조); ② 셋 다 따로 phase — 두 wiring 의
+스캐폴드가 사실상 동일 (record + producer + dispatch 3-파일 패턴
+SSCB κ-34 그대로), 같은 phase 가 자연스러움; ③ aura 만 또는 scope
+만 — 둘 다 즉시 가능한데 굳이 나눌 이유 약함.)
+
+**rationale**:
+
+- **D61 정합 (절대 — 본 결정에 박제)**: 새 producer script 의 SSOT 는
+  `~/core/hexa-lang/stdlib/<domain>/<tool>.py` (sibling repo hexa-lang).
+  `cockpit/scripts/*.py` 금지 — sscb (`sscb_ngspice.py`) + component
+  (`bipv_freecad.py`) 는 D61 이전 산물이라 그 자리에 유지하되, NEW
+  producer 는 모두 hexa-lang stdlib 으로. demiurge 측 = thin Swift
+  spawn-and-witness harness (`<Domain>AnalyzeProducer.swift`) + typed
+  `<Domain>Record` + ActionDispatch case. 본 결정으로 hexa-lang
+  소유권 (D17 — hexa-lang = 측정 substrate 의 SSOT) 가 cohort
+  producer 로 자연 확장.
+- **P-⑧ "cohort 가 측정 record 를 만들 수 있는가?"** 의 두 번째
+  positive answer (첫 번째 = sscb / D55). aura 의 alpha band-power
+  + 60 Hz mains rejection, scope 의 Strehl + FWHM + encircled
+  energy 모두 deterministic 숫자 — 같은 host 에서 같은 seed/params
+  로 재실행하면 byte-identical record. cross-host drift sentinel =
+  signal/PSF SHA-256.
+- **shelf 옵션 정합**: scope producer 의 segments param 은
+  `domains/scope.md` §6 `분할 수 = 7 / 18 / 36` 셸프와 1:1 매핑
+  (default 18 = JWST 1.32 m hex segment 참조). aura 는 8-채널
+  post-aural montage (F3/F4/C3/C4/P3/P4/T7/T8) — label 일 뿐 spatial
+  physics 0 (no leadfield, scope_caveats 명시).
+- **g3 정직 갭 (제일 중요)**: 두 producer 모두 measurement_gate =
+  GATE_OPEN, absorbed = false **영구**. 흡수가 아니라 producer:
+  ① aura = synthesized signal (no subject, no electrode) — 흡수
+  로 가려면 PhysioNet 같은 공개 데이터셋 commit-hash + spectrum
+  match ±X dB 필요, 또는 IRB 승인 실제 acquisition. ② scope =
+  parametric aperture (no JWST commissioning wavefront map) — 흡수
+  로 가려면 NIRCam commissioning data 의 PSF/Strehl 재현 ±X%
+  필요. Sim4Life MRI-safety (aura.md §4) / Code V tolerancing
+  (scope.md §4) 갭은 별도 — 본 producer 는 EEG-DSP / 회절 PSF 한
+  verb 한 셀에 한정 (scope_caveats 각 4종 박제).
+- **D53 measurable-only 셀 매핑 정합**: 측정 verb (analyze) 셀만
+  매핑 — 두 셀 모두 D53 정책 안의 평범한 추가. LLM verb (specify/
+  structure/design/synthesize/verify/handoff 등) × 도메인 셀은 여전히
+  fallback. ActionDispatch.runEngineTool switch 의 매핑 셀 = 3 → 5
+  (component+synth, chip+verify, chip+synth, matter+analyze,
+  sscb+analyze, aura+analyze, scope+analyze 총 7 — 그 중 5 셀이
+  D53 measurable-only set 안의 producer-mapped, 2 셀 chip 은 hexa-
+  lang substrate 의존). 5+ 시점 ActionAdapter 프로토콜 리팩토링
+  검토 (premature abstraction 회피 게이트가 본 phase 에서 닫힘 —
+  다음 cohort producer landing 시 어댑터 검토).
+- **rtsc deferred (honest g3 gap)**: 같은 cohort 가지만 rtsc 는
+  FEMM Windows-binary + GetDP `.pro`/`.geo` 수작업 둘 다 매핑
+  드래그가 큼 → `inbox/notes/cohort-pickup-rtsc-femm-producer.md`
+  로 다음 라운드 pickup. 강제 매핑 금지 (사용자 prompt g3 정합).
+
+**측정 (이 worktree, swift 6.3.1 · python3.12.12)**:
+- `swift run DemiurgeCLI action analyze aura` (cwd=cockpit/) →
+  `python = /opt/homebrew/bin/python3.12` · `aura_mne.py — exit 0` ·
+  `MNE version: 1.12.1` · artifacts `fif + meta` · `alpha = 3.161e-10
+  V² · mains 60 Hz = +11.17 dB · producer = mne@1.12.1` ·
+  record `exports/aura/eeg/<stamp>/aura_eeg_<stamp>.json`.
+- `swift run DemiurgeCLI action analyze scope` → `python =
+  /opt/homebrew/bin/python3.12` · `scope_poppy.py — exit 0` · `POPPY
+  version: 1.1.2` · artifacts `fits + meta` · `diameter = 5.72 m · fwhm
+  = 0.0201 arcsec · strehl ≈ 0.789 · producer = poppy@1.1.2` · record
+  `exports/scope/psf/<stamp>/scope_psf_<stamp>.json`.
+- `swift build` green (pre-existing RealityKit MainActor warning 만,
+  에러 0 · 신규 warning 0).
+
