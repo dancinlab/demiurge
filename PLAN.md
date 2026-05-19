@@ -2137,3 +2137,32 @@
   tree 병렬 세션 미커밋 — git 안전). 다음 = ①-step2c
   cmd_measure (anynet→wire_delay→sweep→leighton oracle →
   F1F2 JSON → exports/ write — chip §B 측정 본체).
+- 2026-05-19 — **phase ①-step2c — booksim cmd_measure body =
+  F1F2 producer** (cross-repo, hexa-lang). `cmd_measure` 의
+  exit-90 stub → 전체 §B 파이프라인: `anynet_parse` →
+  `wire_delay_apply`/`into_anynet`(22nm) → `SweepConfig`(uniform)
+  → `sweep_curve` → `anynet_mesh_bisection`/`diameter_hops` →
+  `leighton_check` → rfc_002 §3 schema-1.0 F1F2-record JSON 조립
+  (`_f1f2_json`/`_latency_curve_json`) → `write_file`. `--emit
+  <dir>` 없으면 fast dry gate-status(no write), 있으면 record
+  emit; leighton oracle 위반 시 exit 91(record 금지, rfc_001
+  §7.3). 부수: `self/std_time.time_format` 이 이 codegen 경로에서
+  사용 불가(`string_replace` 미intercept — 별개 버그) → epoch→ISO
+  변환 `_iso_utc` 인라인. **측정**: `hexa run booksim.hexa`
+  selftest **8/8 PASS**(measure dry-90 + measure-emit-90 추가);
+  생성 record = valid JSON, `latency_curve` 8 unsaturated points
+  (saturated 0.0 행 제외 — g3 거짓-데이터 금지), oracle PASS
+  (bisection 8≥8 · diameter 14≥14). demiurge `cli verify` →
+  전 항목 [OK], verdict-claim↔gate consistent. **g3 정직**:
+  record = `measurement_gate=GATE_OPEN` · `absorbed=false` ·
+  `sim_engine=hexa_native_booksim_stdlib` — sweep.hexa 의
+  *analytic zero-load+queueing 모델* 산출이지 BookSim2
+  cycle-accurate parity 아님(scope_caveats 4건 명시). exports/
+  = 48 placeholder + **hexa-native 측정 record 1** = 49, 전부
+  GATE_OPEN/absorbed=false (gate-summary 확인). 진전 = "측정
+  record 0" → demiurge exports/ **첫 hexa-native 측정 record 1**;
+  남는 갭 = full-curve rfc_001 §8 parity·외부 booksim2 대조
+  미입증 → GATE_OPEN 유지. record 는 self-test 경로가 /tmp 생성
+  → exports/ 로 cp(`hexa-arch` CLI 진입점 미배선 — `hexa run` 은
+  빈 argv). hexa-lang local commit 보류 지속(rfc043 병렬 세션
+  미커밋 — git 안전).

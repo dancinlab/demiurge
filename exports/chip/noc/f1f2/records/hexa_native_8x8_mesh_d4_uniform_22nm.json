@@ -1,0 +1,94 @@
+{
+  "interface": "hexa-arch:chip:noc:F1F2-record",
+  "schema_version": "1.0",
+  "record_id": "hexa_native_8x8_mesh_d4_uniform_22nm",
+  "produced_at_utc": "2026-05-19T13:35:18Z",
+  "topology": {
+    "kind": "mesh_2d",
+    "degree": 4,
+    "node_count": 64,
+    "region_shape": "k_by_k",
+    "routing": "min",
+    "boundary": "open",
+    "coord_kind": "xy"
+  },
+  "wire_delay_model": {
+    "node": "22nm",
+    "ps_per_mm": 90.0,
+    "cycle_period_ps": 1000.0,
+    "rc_exponent": 1
+  },
+  "router_cost": {
+    "vc_count": 8,
+    "buffer_per_vc_flits": 8,
+    "packet_size_flits": 20,
+    "input_speedup": 2
+  },
+  "traffic": "uniform",
+  "latency_curve": [
+    {
+      "injection_rate": 0.05,
+      "avg_latency_cycles": 50.0044
+    },
+    {
+      "injection_rate": 0.1,
+      "avg_latency_cycles": 57.8204
+    },
+    {
+      "injection_rate": 0.15,
+      "avg_latency_cycles": 68.5273
+    },
+    {
+      "injection_rate": 0.2,
+      "avg_latency_cycles": 84.1025
+    },
+    {
+      "injection_rate": 0.25,
+      "avg_latency_cycles": 108.817
+    },
+    {
+      "injection_rate": 0.3,
+      "avg_latency_cycles": 154.194
+    },
+    {
+      "injection_rate": 0.35,
+      "avg_latency_cycles": 264.514
+    },
+    {
+      "injection_rate": 0.4,
+      "avg_latency_cycles": 923.177
+    }
+  ],
+  "saturation_throughput": {
+    "injection_rate_at_knee": 0.3,
+    "knee_definition": "first_unstable_injection_rate"
+  },
+  "leighton_oracle": {
+    "status": "PASS",
+    "bisection_bound": 8,
+    "bisection_observed": 8,
+    "diameter_bound": 14,
+    "diameter_observed": 14,
+    "source_citation": "@x_leighton_1992_doi_10.1007_BF01744433"
+  },
+  "verdict": {
+    "f1": "INCONCLUSIVE",
+    "f2": "INCONCLUSIVE",
+    "rationale": "single-topology record; F1/F2 verdict requires the pair-verdict aggregator over this + a degree-paired mate at identical (traffic, node, clock, wire_delay_model)"
+  },
+  "provenance": {
+    "absorbed": false,
+    "sim_engine": "hexa_native_booksim_stdlib",
+    "sim_commit_hash": "UNPINNED_hexa_lang_stdlib_booksim",
+    "measurement_gate": "GATE_OPEN",
+    "gate_failures": [],
+    "consumer_target": "hexa-lang:comb:RFC_057:F1F2",
+    "atlas_cite_block": "@cite hexa-arch:rfc_001 4 + 5 + 8 + 9; rfc_002 3; rfc_003 7",
+    "scope_caveats": [
+      "hexa-native booksim/sweep.hexa analytic-pipeline measurement -- NOT a BookSim2 cycle-accurate parity run; full-curve rfc_001 8 parity NOT done",
+      "sweep.hexa is an analytic zero-load + queueing latency model, not an event-driven flit simulator",
+      "router_cost is the iq_router_default_config analytic estimate, NOT measured silicon area/energy",
+      "single (22nm, 1 GHz, d4 mesh, uniform) point -- one cell of the rfc_001 9-sweep, not a standalone regime claim"
+    ]
+  }
+}
