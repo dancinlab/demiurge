@@ -18,6 +18,11 @@
 //   • chip      + verify     → booksim self-test sniffer
 //                              (honest-gap if hexa not on PATH or
 //                               cmd_measure body not on local branch)
+//   • chip      + synthesize → yosys.hexa selftest sniffer
+//                              (κ-31 · D53 measurable-cell mapping ·
+//                               rfc_006 §5 gate OPEN — no absorbed
+//                               claim, gate stays open until SKY130
+//                               area-oracle is met within ±5 %)
 //   • matter    + analyze    → hexa-matter verify/run_all.hexa sweep
 //                              (honest-gap if hexa-matter SSOT missing
 //                               or commit hash not capturable — D17:
@@ -97,6 +102,8 @@ public enum ActionDispatch {
             return runComponentSynthesize()
         case (.verify, "chip"):
             return runChipVerify()
+        case (.synthesize, "chip"):
+            return runChipSynthesize()
         case (.analyze, "matter"):
             return runMatterAnalyze()
         default:
@@ -268,6 +275,150 @@ public enum ActionDispatch {
                 + "(stale binary / 미컴파일 모듈 가능성). chip + verify "
                 + "측정 record 생성 0 (g3).")
         }
+        return ActionResult(
+            text: lines.joined(separator: "\n"),
+            newRecordIDs: [],
+            usedEngineTool: true,
+            engineToolSucceeded: false)
+    }
+
+    /// `chip + synthesize` engine tool — spawn the local Yosys
+    /// dispatcher self-test (rfc_006 §4 module-7) via `hexa run
+    /// stdlib/yosys/yosys.hexa`. D53 (measurable-only cell mapping):
+    /// Yosys IS the producer for chip-synth, so this cell maps even
+    /// though rfc_006 §5 SKY130 area-oracle gate is OPEN — the
+    /// dispatcher is live, the SKY130 absorption claim is not.
+    ///
+    /// Honest path (g3, rfc_006 §5 — three blockers: no SKY130 lib,
+    /// no `abc` binary, read_verilog scope limited to synth-subset):
+    ///   1. If `yosys.hexa` is missing from the local hexa-lang
+    ///      checkout (demiurge's hexa-lang working tree may be on a
+    ///      branch without the rfc_006 land — observed during this
+    ///      κ-31 cycle), report "yosys not in current hexa-lang
+    ///      checkout" gap.
+    ///   2. If `hexa` binary itself is missing, same gap path as
+    ///      chip+verify.
+    ///   3. If hexa run succeeds — parse "yosys dispatcher selftest:
+    ///      N/N PASS" line. `cmd_synth` returns exit 90 (gate-open)
+    ///      and emits no F1F2 record — that is the BANNED-absorbed
+    ///      stance, NOT a failure to report as success (g3).
+    ///   4. Never set `absorbed=true` here. measurement_gate stays
+    ///      GATE_OPEN (or GATE_FAILED on blocker). When/if SKY130
+    ///      area-oracle is met within ±5 %, the gate flips elsewhere
+    ///      — not in Swift.
+    private static func runChipSynthesize() -> ActionResult {
+        let hexaLangRoot = NSString(string: "~/core/hexa-lang")
+            .expandingTildeInPath
+        let yosys = NSString(string: "~/core/hexa-lang/stdlib/yosys/yosys.hexa")
+            .expandingTildeInPath
+        let fm = FileManager.default
+        guard fm.fileExists(atPath: yosys) else {
+            return ActionResult(
+                text: "⏳ engine tool gap — yosys.hexa 가 현재 "
+                    + "hexa-lang checkout 에 없습니다 (\(yosys)). "
+                    + "rfc_006 §4 module-7 dispatcher 본체는 origin/main "
+                    + "에 머지되었지만 demiurge 의 ~/core/hexa-lang "
+                    + "working tree 가 다른 브랜치 (예: rfc043-hexa-torch "
+                    + "/ t4-emt-calc) 일 가능성 — `cd ~/core/hexa-lang "
+                    + "&& git checkout main && git pull` 후 재실행 "
+                    + "필요 (g3 — silent success 금지).",
+                newRecordIDs: [],
+                usedEngineTool: true,
+                engineToolSucceeded: false)
+        }
+        guard let hexaPath = locateHexa() else {
+            return ActionResult(
+                text: "⏳ engine tool gap — `hexa` 실행 파일을 PATH 또는 "
+                    + "~/core/hexa-lang/hexa 에서 찾지 못했습니다. chip + "
+                    + "synthesize (rfc_006 §4) 는 yosys.hexa dispatcher 를 "
+                    + "spawn 하려면 hexa 바이너리가 필요합니다 (g3).",
+                newRecordIDs: [],
+                usedEngineTool: true,
+                engineToolSucceeded: false)
+        }
+
+        // Spawn `hexa run yosys.hexa` — runs the dispatcher selftest
+        // (8 routing checks). cwd = hexa-lang root so any relative
+        // `use` paths in module bodies resolve.
+        let proc = Process()
+        proc.executableURL = URL(fileURLWithPath: hexaPath)
+        proc.arguments = ["run", yosys]
+        proc.currentDirectoryURL = URL(fileURLWithPath: hexaLangRoot)
+        let pipe = Pipe()
+        proc.standardOutput = pipe
+        proc.standardError = pipe
+        var stdoutText = ""
+        var exitCode: Int32 = -1
+        do {
+            try proc.run()
+            let data = pipe.fileHandleForReading.readDataToEndOfFile()
+            proc.waitUntilExit()
+            exitCode = proc.terminationStatus
+            stdoutText = String(data: data, encoding: .utf8) ?? ""
+        } catch {
+            return ActionResult(
+                text: "⏳ engine tool gap — hexa 실행 실패: "
+                    + "\(error.localizedDescription) (g3).",
+                newRecordIDs: [],
+                usedEngineTool: true,
+                engineToolSucceeded: false)
+        }
+
+        let trimmed = stdoutText.trimmingCharacters(in: .whitespacesAndNewlines)
+        var lines: [String] = []
+        lines.append("hexa run yosys.hexa — exit \(exitCode)")
+        lines.append(trimmed)
+        lines.append("---")
+
+        // Parse "yosys dispatcher selftest: N/N PASS" (cmd_selftest /
+        // dispatcher self-test in yosys.hexa main()). A PASS line is
+        // a green dispatcher — NOT a green SKY130 area measurement.
+        let passOK = (exitCode == 0)
+            && (trimmed.contains(" PASS") || trimmed.contains("/PASS"))
+
+        if passOK {
+            lines.append("📸 yosys dispatcher selftest GREEN — rfc_006 §4 "
+                + "module-7 라우팅 동작 확인.")
+            lines.append("   GATE_OPEN · absorbed=false — rfc_006 §5 "
+                + "SKY130 area-oracle (router_d4≈61763 / d6≈93609 µm² "
+                + "1.516×) 는 측정 불가 (blocker 3종: SKY130 lib 없음, "
+                + "abc 바이너리 없음, read_verilog scope=synth-subset). "
+                + "dispatcher 자체는 live — `Yosys absorbed` 주장 금지 (g3).")
+            // Mirror dispatcher selftest log into exports/chip/yosys/
+            // as a non-F1F2 trace (gate is OPEN, no measured record).
+            let exportsDir = RecordLoader.exportsRoot
+                .appendingPathComponent("chip/yosys/dispatcher-selftest")
+            do {
+                try fm.createDirectory(at: exportsDir,
+                                       withIntermediateDirectories: true)
+                let stamp = ISO8601DateFormatter().string(from: Date())
+                    .replacingOccurrences(of: ":", with: "-")
+                let logURL = exportsDir.appendingPathComponent(
+                    "selftest-\(stamp).txt")
+                let header = "# yosys.hexa dispatcher selftest — \(stamp)\n"
+                    + "# rfc_006 §5 gate OPEN · absorbed=false · g3\n"
+                    + "# exit \(exitCode)\n---\n"
+                try (header + trimmed + "\n").write(to: logURL,
+                                                    atomically: true,
+                                                    encoding: .utf8)
+                lines.append("   trace → \(logURL.path)")
+            } catch {
+                lines.append("   (trace mirror 실패: \(error.localizedDescription))")
+            }
+            return ActionResult(
+                text: lines.joined(separator: "\n"),
+                newRecordIDs: [],
+                usedEngineTool: true,
+                engineToolSucceeded: true)
+        }
+
+        // exit != 0 OR no PASS line — honest gap. Either dispatcher
+        // FAIL or hexa run blew up before reaching main().
+        lines.append("⏳ engine tool gap — yosys.hexa selftest 미통과 "
+            + "(exit \(exitCode)). dispatcher 라우팅 자체가 실패했거나 "
+            + "stale binary / 미컴파일 모듈 가능성. chip + synthesize "
+            + "측정 record 생성 0 (g3). rfc_006 §5 gate 는 어차피 OPEN — "
+            + "absorbed 주장 절대 금지.")
         return ActionResult(
             text: lines.joined(separator: "\n"),
             newRecordIDs: [],
