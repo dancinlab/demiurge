@@ -83,8 +83,10 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   미구현 = hexa-lang 세션·D19; booksim = hexa-lang/stdlib) → 어떤
   프로젝트도 측정 record 0 · 어떤 verb 도 ✅ 아님 (workbench 는
   *틀*만 live) · **seam records 0** (rfc_007/008 v0, `records/`
-  의도적 빈칸 = g3 위조 0) · **`d5a63a82` 미push** (hexa-lang
-  세션) · 어떤 도메인도 `absorbed=true` 아님.
+  의도적 빈칸 = g3 위조 0) · **`d5a63a82` pushed**
+  (origin/rfc043-hexa-torch, 2026-05-19) — 단 Yosys §4 모듈은
+  여전히 `.hexa.stub` (미구현, hexa-lang 세션) · 어떤 도메인도
+  `absorbed=true` 아님.
 
 > GOAL 한 줄(north-star)은 불변 — 달성 주장 아님, 측정 거리 명시.
 

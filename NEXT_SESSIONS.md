@@ -42,9 +42,11 @@ identified, kept here so none are lost.
   > cross-repo work collapses to **two prompts**: one hexa-lang
   > session (D + E), one hexa-component session (F).
 
-  - **D + E.** hexa-lang single SSOT session — P-②③ (Yosys modules +
-    `d5a63a82` push) **and** P-④ (chip §B full-curve measurement).
-    Repo: `~/core/hexa-lang`. *open*.
+  - **D + E.** hexa-lang single SSOT session — P-②③ (① `d5a63a82`
+    booksim push ✅ **done** 2026-05-19, origin/rfc043-hexa-torch ·
+    ② Yosys §4 modules still `.hexa.stub` only — *open*) **and**
+    P-④ (chip §B full-curve measurement — *open*).
+    Repo: `~/core/hexa-lang`.
   - **F.** P-⑨ — component producer (real USDZ). Location:
     `~/core/hexa-lang/component/` (per user 2026-05-19 — hexa-lang
     sole SSOT, no separate sibling repo). *open*.

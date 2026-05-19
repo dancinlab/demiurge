@@ -1900,3 +1900,18 @@
   실측 정직 노출) · `verify <record>` → 6 checks [OK] exit 0.
   P-⑦ #1..#5 + I + J + L + K 모두 closed. 다음 = cross-repo
   세션 (D+E hexa-lang / F component) 또는 신규.
+- 2026-05-19 — **D handoff 부분 완료 확인** (사용자: "origin/
+  rfc043-hexa-torch 에 handoff 요청한거 완료됨"; g3 — 측정 확인
+  후 갱신). 실측: ① **`d5a63a82` (booksim absorb) = origin/
+  rfc043-hexa-torch 에 PUSHED** — `git branch -r --contains
+  d5a63a82` 확인. "미push" 갭 **해소**. ② **Yosys §4 모듈 =
+  여전히 stub** — `~/core/hexa-lang/stdlib/yosys/` 에
+  `*.hexa.stub` 7개만, 실제 `.hexa` 구현 0. rfc_006 §4 미구현
+  유지. ③ chip §B 측정 (E) = 별개, 변동 없음 (미측정,
+  GATE_OPEN). booksim 은 `.hexa` 실재 (anynet/iq_router/leighton
+  등). 갱신 대상: AGENTS.tape `g_stdlib_ownership.violation_
+  resolved` (unpushed→pushed) · NEXT_SESSIONS Tracks D / P-②③
+  (① done 마크, ② stub→impl 잔여) · HANDOFF §9 + GOAL 🕳️ (미push
+  줄 → push 완료 + Yosys stub). **g3 정직**: 사용자 "완료됨"
+  은 *push* 완료 — Yosys impl 은 stub 이라 "absorbed" 주장 불가;
+  rfc_006 §5 area-oracle gate 미측정 그대로.

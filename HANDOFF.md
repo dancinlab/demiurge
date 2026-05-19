@@ -227,8 +227,10 @@ actual progress** — preserved in `design.md` and the audit trail.
   (hexa-lang session, D19); booksim now in `hexa-lang/stdlib`. So
   every workbench project carries **0 measured records** and **no
   verb is ✅**.
-- `d5a63a82` (booksim absorb) committed locally in hexa-lang
-  (`rfc043-hexa-torch` ahead 18), **unpushed** — hexa-lang session.
+- `d5a63a82` (booksim absorb) — **PUSHED** to
+  `origin/rfc043-hexa-torch` (2026-05-19, verified). Yosys §4
+  modules are still `.hexa.stub` only in `hexa-lang/stdlib/yosys/`
+  — impl pending a hexa-lang session (`NEXT_SESSIONS.md` P-②③).
   inbox handoff filed: `~/core/hexa-lang/inbox/notes/2026-05-19-
   demiurge-rfc006-yosys-handoff.md` + `inbox/PATCHES.yaml` +2.
 - chip §B full-curve / §D — not measured; `absorbed=false`.
