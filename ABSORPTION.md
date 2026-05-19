@@ -185,6 +185,10 @@ producer 가 ① 에 들어오는 순서대로 매핑 추가.)
 - D53 — 7-verb 셀 매핑 = measurable-only
 - D54 — component synthesize = FreeCAD parametric
 - D55 — sscb analyze = ngspice transient (first cohort producer)
+- D61 — producer script SSOT = `~/core/hexa-lang/stdlib/<domain>/<tool>.py`
+  (sibling repo; `cockpit/scripts/*.py` 금지 for NEW producers)
+- D67 — aura + scope analyze 동시 cohort sweep (κ-35; MNE-Python +
+  POPPY; D61 producer SSOT 정합 박제)
 - rfc_001 §8 · rfc_002 §3 — F1F2 schema + 측정 gate 규칙
 - `proposals/rfc_001` ~ `rfc_005` — 도메인-별 absorption RFC
 
