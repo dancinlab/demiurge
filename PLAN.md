@@ -1680,3 +1680,15 @@
   미착수. cockpit 코드(CockpitApp/DemiurgeCore) 무변경 → .app
   재설치 불요 (CLI 는 `demiurge cli` shim = repo 에서 swift run).
   다음 = 신규 작업 — 미정.
+- 2026-05-19 — **NEXT_SESSIONS.md 갱신 — κ-1~κ-10 반영** (코드 0,
+  핸드오프 문서 reconcile). NEXT_SESSIONS.md 가 viewer cockpit
+  시절(P-⑤/⑥)에 멈춰 workbench 10 phase 미반영이었음 → 갱신:
+  헤더 커밋/상태 `c1805fe`+ · P-⑤ "✅ DONE" 마크 (viewer +
+  workbench κ-1~κ-10 빌드 완료, 원본 프롬프트는 history 로 보존) ·
+  P-⑥ NET 에 workbench 전환 + θ-2 골격(κ-5) 반영 · **P-⑦ 신설**
+  — demiurge 단독 workbench 후속 핸드오프 (재료선반 실데이터 ·
+  REJECTED 가드 강화 · expert mode 깊이 · phase ζ; cold-readable
+  프롬프트 포함) · Cross-cutting 의 D-range 박힘 → 포인터화
+  (g_ssot_single_source). **g3 정직**: 문서 reconcile 만 — 새
+  결정·코드·측정 0. 다음 추천 = #1 재료 선반 실데이터 (κ-3 stub →
+  domains/** 소싱).

@@ -1,9 +1,12 @@
 # NEXT_SESSIONS — copy-paste session-pickup prompts
 
-> 2026-05-19 · demiurge repo at `d4c22bf`+ (4-Phase design-complete).
-> Three forward-handoff prompts, one per session — each is
-> **0-context cold-readable** (a fresh Claude Code session reads it
-> and has enough). Pick whichever to start; they are independent.
+> 2026-05-19 · demiurge repo at `c1805fe`+ — 4-Phase design-complete
+> AND the macOS cockpit workbench built (rfc_012 IMPLEMENTED, cockpit
+> phases κ-1..κ-10; live progress = PLAN.md, decisions = design.md).
+> Forward-handoff prompts below — each **0-context cold-readable**.
+> Pick whichever; they are independent. P-⑤ is ✅ DONE; P-②③ / P-④
+> are cross-repo / heavy sessions; P-⑥ closed; P-⑦ is the open
+> demiurge-only workbench follow-ups.
 >
 > g3 discipline carried into each prompt: every gate is named; every
 > "absorbed/parity/resolved" claim is explicitly forbidden until a
@@ -150,11 +153,17 @@ Exit criterion (any one ends the session honestly):
 
 ---
 
-## P-⑤ — macOS Swift cockpit build session (rfc_009 implementation)
+## P-⑤ — macOS Swift cockpit build session (rfc_009) — ✅ DONE
 
-**Use this when:** you start building the macOS Swift app. Per D22
-the build is OUT of scope of demiurge's design session — this is
-the dedicated downstream build session that works against
+**Status:** executed. `cockpit/` is a built SwiftPM package — the
+rfc_009 viewer AND the rfc_012 workbench (phases κ-1..κ-10) are
+measured-green and installed as `/Applications/demiurge.app`. Live
+progress = PLAN.md κ-phase log. The original build prompt is kept
+below for history.
+
+**Original prompt (history — rfc_009 viewer build):** Per D22 the
+build was OUT of scope of demiurge's design session — this was the
+dedicated downstream build session against
 `proposals/rfc_009_product_surface_macos_cockpit.md` §2–§6.
 
 ```
@@ -288,19 +297,63 @@ the five P-⑥ items, each now in a definite state:
    remains genuinely unbuilt — folded into phase ζ (rfc_010
    filters/deps), not a δ-2 of its own.
 
-NET: P-⑥ is closed — θ measured-green, η-2 merged, γ-2/δ-2
-resolved, ι handed off on a downstream-data gate (DEPENDENCIES →
-phase ζ). The only genuinely-open cockpit work is θ-2 (real action
-dispatch) + ι (awaiting 3D data) + ζ (filters + dep graph) — all
-with definite gates, none silently unfinished.
+NET: P-⑥ (viewer phases) is closed. SINCE THEN the cockpit became a
+project workbench — rfc_012 IMPLEMENTED, phases κ-1..κ-10 (3-column
+workbench · manifest persistence · ingredient shelf · verb progress ·
+chat↔verb · θ-2 action skeleton · §4.2 REJECTED guard · canvas mode ·
+UX polish · SSOT single-source · CLI↔Project parity). θ-2's mechanism
+skeleton landed (κ-5, D49) — it reports "no engine tool" honestly
+(g3). Genuinely-open cockpit work now = P-⑦ below (demiurge-only
+workbench follow-ups) + ι (3D data gate) + the engine-tool gap
+(P-②③). See PLAN.md for the live κ-phase log.
+
+---
+
+## P-⑦ — workbench follow-ups (demiurge-only, no external dependency)
+
+**Use this when:** you continue the cockpit workbench. These are the
+demiurge-only follow-ups left after κ-1..κ-10 — each builds in this
+repo; no cross-repo, no engine tool needed.
+
+```
+demiurge cockpit workbench follow-up session.
+Repo: ~/core/demiurge · cockpit/ SwiftPM package. Read
+proposals/rfc_012_project_workbench.md (IMPLEMENTED) + PLAN.md
+κ-phase log first. design.md D42..D50 are committed — cite, do
+not re-litigate.
+
+Open follow-ups (independent; pick any, each measured-green via
+`swift run CockpitApp`):
+  - ingredient shelf real data — κ-3 IngredientShelf is a stub
+    keyword table; source real per-domain options from domains/**.
+  - REJECTED guard hardening — κ-6 overclaims() is a string-match
+    heuristic; tighten (alternate phrasing can slip past it).
+  - expert-mode depth — extend the §4 plain↔raw toggle into the
+    record / provenance views (GATE_* verbatim).
+  - phase ζ — filters + dependency graph (citation cross-ref).
+
+Honesty (g3 — non-negotiable):
+  - the workbench frame is live but carries ZERO measured records
+    (no engine tool); do NOT add UI that implies measurement.
+  - every cockpit edit: `swift run CockpitApp` measured-green
+    before commit; reinstall via `demiurge install`
+    (@D g_cockpit_reinstall).
+  - cockpit and CLI share DemiurgeCore functions — no duplicated
+    switch (@D g_ssot_single_source / D50).
+
+Exit criterion: a follow-up landed measured-green + PLAN.md log +
+reinstall, OR an honest "next pickup" note.
+```
 
 ---
 
 ## Cross-cutting notes (apply to all sessions)
 
-- demiurge decisions D1–D41 are committed; do not re-litigate them
-  in a session. Cite them. New session-specific decisions go into
-  that session's repo's design.md / decision SSOT.
+- demiurge decisions are committed (design.md = the decision SSOT;
+  do NOT copy the D-range into a session prompt — @D
+  g_ssot_single_source / D50). Cite them; do not re-litigate. New
+  session-specific decisions go into that session's repo's
+  design.md / decision SSOT.
 - The repo's append-only PLAN.md / `## 진행 로그` is the progress
   SSOT — every meaningful step gets a dated entry.
 - `AGENTS.tape` carries the enforced governance — `g3_no_over_claim`
@@ -323,6 +376,14 @@ with definite gates, none silently unfinished.
   built SwiftPM package — phases α / α-2 / α-3 / β / γ / δ / η-1 all
   measured-green (`swift run` verified, commits e601e5b → 56f900a).
   The remaining phases were handed off as **P-⑥**.
+- 2026-05-19 — **cockpit workbench built (κ-1..κ-10) + P-⑦ added.**
+  After P-⑥ closed, rfc_012 (project workbench) was discussed,
+  locked (design.md D42..D50), and built as cockpit phases
+  κ-1..κ-10 — all measured-green, `/Applications/demiurge.app`
+  installed. Header / P-⑤ / P-⑥ NET updated to reflect this; P-⑦
+  added for the demiurge-only workbench follow-ups (ingredient-shelf
+  real data, REJECTED-guard hardening, expert-mode depth, phase ζ).
+  Cross-cutting D-range note pointer-ized per @D g_ssot_single_source.
 - 2026-05-19 — **P-⑥ CLOSED** (goal "NEXT_SESSIONS.md 100% closure").
   θ landed measured-green (commit `50e9a41` — chat → `claude -p`
   subprocess dispatch). The other four P-⑥ items reached a definite
