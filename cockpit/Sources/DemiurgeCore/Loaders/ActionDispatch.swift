@@ -198,6 +198,12 @@ public enum ActionDispatch {
             return runScopeVerify()
         case (.synthesize, "space"):
             return runSpaceSynthesize()
+        case (.analyze, "component"):
+            return runComponentAnalyze()
+        case (.synthesize, "cern"):
+            return runCernSynthesize()
+        case (.analyze, "rtsc"):
+            return runRtscAnalyze()
         default:
             let prompt = actionPrompt(verb: verb)
             let reply = askClaude(prompt: prompt, context: context)
@@ -1043,6 +1049,55 @@ public enum ActionDispatch {
     /// inputs, no GMAT coupling). Citation NASA GSC-17177-1.
     private static func runSpaceSynthesize() -> ActionResult {
         let r = SpaceSynthProducer.runSynthesize()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `component + analyze` engine tool (ROI rank 6 — CalculiX FEA,
+    /// independent cited measurement vs component+verify gmsh+skfem).
+    /// SSOT = `~/core/hexa-lang/stdlib/component/calculix.py` (D61).
+    /// D72: shares mesh primitive with `kernels/fem/skfem_kernel.py`;
+    /// `kernels/fem/calculix_kernel.py` extraction at 2nd consumer.
+    /// GATE_OPEN / absorbed=false (placeholder die, honest install-
+    /// gated skip when ccx missing).
+    private static func runComponentAnalyze() -> ActionResult {
+        let r = ComponentAnalyzeProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `cern + synthesize` engine tool (ROI rank 7 — Xsuite FODO twiss
+    /// + tune fit). SSOT = `~/core/hexa-lang/stdlib/cern/xsuite_optics.py`
+    /// (D61). D72: accelerator-optics single-domain; promote to
+    /// `kernels/accelerator_optics/` at 2nd consumer. Citations:
+    /// arxiv:2310.00317, arxiv:2412.16006. GATE_OPEN / absorbed=false
+    /// (textbook FODO, honest skip on Xsuite ImportError).
+    private static func runCernSynthesize() -> ActionResult {
+        let r = CernSynthProducer.runSynthesize()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `rtsc + analyze` engine tool (ROI rank 10 — pyfemm 2-D HTS
+    /// magnetics, FIRST producer in rtsc domain). SSOT = `~/core/hexa-
+    /// lang/stdlib/rtsc/pyfemm_magnetics.py` (D61). Cohort pickup:
+    /// `inbox/notes/cohort-pickup-rtsc-femm-producer.md`. D72: FEMM
+    /// own ecosystem (NOT skfem); `kernels/em_2d/` at 2nd consumer.
+    /// Citations: arxiv:0811.2883, FEMM manual, HTS Modelling Workgroup.
+    /// GATE_OPEN / absorbed=false (placeholder HTS-tape proxy; macOS
+    /// honest-skip — FEMM Windows binary, Wine-only on macOS; Linux
+    /// pool only).
+    private static func runRtscAnalyze() -> ActionResult {
+        let r = RtscAnalyzeProducer.runAnalyze()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],

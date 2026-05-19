@@ -3660,3 +3660,29 @@
   absorbed=false 유지; hexa-native port 는 후속 라운드. 통합 작업 =
   main session 의 직접 cp + Edit (rate-limited 5 agent 의 ephemeral
   worktree 결과물 회수 — 작업 손실 0).
+- 2026-05-20 — **phase κ-48 — 잔여 3 cell 직접 흡수 (component+analyze
+  · cern+synthesize · rtsc+analyze)**. Stop hook 가 κ-47 후 "추천순
+  잔여 없이" 미충족 지적 — main session 이 rate-limited 3 agent 가
+  못한 substrate 를 직접 작성. hexa-lang origin/main `96510020` 에
+  3 substrate landed:
+  - `stdlib/component/calculix.py` (ROI 6 — CalculiX 3-D
+    thermomechanical FEA; PMC PMC12608665 cited; mesh primitive shares
+    `kernels/fem/skfem_kernel.py` — calculix_kernel 분리는 2nd
+    consumer 시 κ-49).
+  - `stdlib/cern/xsuite_optics.py` (ROI 7 — Xsuite FODO twiss + tune;
+    arxiv:2310.00317 + arxiv:2412.16006 cited).
+  - `stdlib/rtsc/pyfemm_magnetics.py` (ROI 10 — pyfemm 2-D
+    axisymmetric HTS coil B-field; FIRST producer in rtsc domain;
+    cohort handoff `inbox/notes/cohort-pickup-rtsc-femm-producer.md`
+    소진).
+  3 모두 **honest install-gated / platform-gated** — ccx · xsuite ·
+  pyfemm 부재 시 GATE_OPEN / absorbed=false 명시적 skip record (silent
+  pass 금지, g3). rtsc 는 macOS Wine-only 라 honest skip + Linux pool
+  routing 명시. demiurge 측 3 새 Record (ComponentAnalyzeRecord ·
+  CernSynthRecord · RtscAnalyzeRecord) + 3 새 Producer (Loaders/) +
+  ActionDispatch 3 case + 3 private func wiring. D72: 새 kernel 추가
+  0 — 모두 adapter-only 또는 기존 fem kernel 재사용. g3: 측정 record
+  gate=OPEN / absorbed=false; CalculiX/Xsuite/pyfemm parity는 후속
+  라운드 (install + 측정 + 비교). **잔여 = 0** — 추천순 ROI rank 1
+  → 10 모든 cell 흡수 완료 (Geant4/CARLA 등 rank 11+ heavy 는 별
+  세션, ABSORPTION.md ⏳ planned 명시).
