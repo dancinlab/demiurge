@@ -31,20 +31,26 @@ N×M 폭발을 막기 위해 **2-layer** — 같은 FEM·MC·graph 커널을 도
 
 **①a 커널 레이어** — `hexa-lang/stdlib/kernels/<kernel>/`
 - 도메인-무관 재사용 수학·물리 엔진. 외부 도구는 흡수 시 *어느
-  커널* 인지 먼저 분류:
+  커널* 인지 먼저 분류. **현황 (2026-05-20 κ-45)**: 13개 landed
+  on hexa-lang `origin/main` `7332e162`.
 
-  | 커널          | 흡수하는 외부 도구                          |
-  |---------------|--------------------------------------------|
-  | `fem`         | CalculiX · Code_Aster · Elmer · gmsh · FiQuS · GetDP · scikit-fem |
-  | `mc_transport`| Geant4 · OpenMC                            |
-  | `circuit`     | ngspice · FEMMT                            |
-  | `graph`       | networkx                                   |
-  | `orbital`     | skyfield · poliastro                       |
-  | `wave_optics` | POPPY · WebbPSF                            |
-  | `cfd`         | OpenFOAM                                   |
-  | `logic_synth` | yosys                                      |
-  | `noc_sim`     | booksim                                    |
-  | `ode_pde`     | (일반 적분기 — 공통 substrate)             |
+  | 커널          | 흡수하는 외부 도구                          | 상태 |
+  |---------------|--------------------------------------------|------|
+  | `fem`         | CalculiX · Code_Aster · Elmer · gmsh · FiQuS · GetDP · scikit-fem | ✅ landed (skfem substrate) |
+  | `mc_transport`| Geant4 · OpenMC                            | ✅ landed (substrate) |
+  | `circuit`     | ngspice · FEMMT                            | ✅ landed |
+  | `graph`       | networkx                                   | ✅ landed |
+  | `orbital`     | skyfield · poliastro                       | ✅ landed |
+  | `wave_optics` | POPPY · WebbPSF                            | ✅ landed |
+  | `noc_sim`     | booksim                                    | ✅ landed |
+  | `logic_synth` | yosys                                      | ✅ landed |
+  | `plasma`      | (fusion substrate)                         | ✅ landed |
+  | `neural`      | (brain — LIF substrate, hexa-native port flagged) | ✅ landed |
+  | `signal_proc` | mne (aura PSD)                             | ✅ landed |
+  | `urdf`        | urdfpy (bot kinematics)                    | ✅ landed |
+  | `solar`       | pvlib (energy clearsky)                    | ✅ landed |
+  | `cfd`         | OpenFOAM (heavy candidate)                 | ⏳ planned (별 세션) |
+  | `ode_pde`     | (일반 적분기 — 공통 substrate)             | ⏳ planned (2번째 consumer 등장 시) |
 
 - 새 커널은 **정말 새 수학** 일 때만 추가.
 

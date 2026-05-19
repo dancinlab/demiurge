@@ -82,11 +82,22 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   acceptance 12행 (§B 4 full-curve + §D 6 headline + Leighton 2) 을
   12/12 GREEN 으로 측정. D9 의 `GATE_B_PINNED_MET` 해소. §D 는
   headline-number parity (full per-flit DES 곡선형상은 후속 phase).
+- ✅ **STDLIB 2-layer 구조 완성 (D72 — hexa-lang 소유)** — κ-45.
+  hexa-lang `origin/main` `7332e162` 에 ①a `kernels/` 13개 (graph·
+  fem·mc_transport·orbital·wave_optics·noc_sim·logic_synth·circuit·
+  plasma·neural·signal_proc·urdf·solar) + ①b 도메인 어댑터 15개
+  (전부 thin). N×M → N+M 재사용 구조 성립 — 새 도메인은 어댑터 한
+  줄 import. demiurge 측 producer 무변경 (D61 pointer-only). g3 —
+  구조 재배치, 측정/gate/absorbed 변경 0; absorbed=true flip 은
+  여전히 측정 후 (제1 원칙 — 모든 커널 ultimate form 은 hexa-native).
 - 🟡 **engine tool — chip / cohort 다수 라이브, 측정 도구 점증** —
   θ-2 가 돌릴 실제 producer 가 κ-34~47 로 다수 wired (chip+verify
   sweep_oracle_parity 가 첫 *동역학* 측정; matter·chip-analyze 는
   static absorbed). seam records 0 (rfc_007/008 v0 의도적 빈칸 =
   g3 위조 0) 는 유지. Yosys §4 모듈은 여전히 hexa-lang 세션 항목.
+  빈-셀 measurement 라운드 (sscb·scope·cern·component synth/verify
+  per `inbox/notes/absorption-empty-cells-research-2026-05-20.md`)
+  는 hexa-lang live-tree cross-session 정렬 후 진행.
 
 > GOAL 한 줄(north-star)은 불변 — 달성 주장 아님, 측정 거리 명시.
 
@@ -139,3 +150,13 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   에 이은). `hexa build` native-컴파일 경로가 D10 의 interpreter
   throughput 차단을 우회. g3 거리: §D 는 headline-number parity (full
   per-flit DES 곡선형상은 후속 phase) — record scope_caveats 명시.
+- 2026-05-20 — STDLIB 2-layer 구조 완성 (D72 · κ-45) 을 "현재 위치"
+  에 반영 (north-star 불변, category-section 갱신). 새 측정 fact:
+  hexa-lang `origin/main` `7332e162` 에 ①a `kernels/` 13개 + ①b
+  도메인 어댑터 15개 (전부 thin) — N×M → N+M 재사용 구조 성립.
+  demiurge 측 Swift producer 무변경 (D61 pointer-only 준수 — stdlib
+  소유 = hexa-lang). 새 결정 없음 — 카테고리 서술. 빈-셀 measurement
+  라운드 (sscb·scope·cern·component synth/verify, highest ROI per
+  `inbox/notes/absorption-empty-cells-research-2026-05-20.md`) 는
+  hexa-lang live-tree cross-session 정렬 후로 미룸 (demiurge 세션
+  자율 해소 불가 — concurrent session uncommitted 보존).

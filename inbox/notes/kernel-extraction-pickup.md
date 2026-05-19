@@ -1,6 +1,18 @@
 # Pickup — STDLIB ①a kernel extraction (design.md D72 2-layer)
 
-date: 2026-05-20 · status: graph + fem kernels DONE, remainder staged
+date: 2026-05-20 · status: **DONE — 13 kernels landed on hexa-lang
+`origin/main` `7332e162`** (graph·fem·mc_transport·orbital·
+wave_optics·noc_sim·logic_synth·circuit·plasma·neural·signal_proc·
+urdf·solar). Every ①b adapter is now thin. Round closed by demiurge
+session 2026-05-20 (κ-45). Next item = empty-cell producer
+measurement (sscb·scope·cern·component synth/verify per
+`absorption-empty-cells-research-2026-05-20.md`), gated by
+`~/core/hexa-lang` live-tree cross-session alignment to `7332e162`
+— outside this note's scope.
+
+> Sections below preserved as the in-flight record for the first 2
+> extractions (graph + fem). The remaining 11 followed the same
+> pattern; summary lives in `PLAN.md` κ-45.
 
 ## What D72 mandates
 
