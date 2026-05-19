@@ -1,0 +1,81 @@
+{
+  "depth_mm": 1000.0,
+  "exports": {
+    "brep": "bipv_freecad_v1.brep",
+    "step": "bipv_freecad_v1.step",
+    "stl": "bipv_freecad_v1.stl"
+  },
+  "freecad_version": [
+    "1",
+    "1",
+    "1",
+    "20260414 (Git shallow)",
+    "Unknown",
+    "2026/04/14 22:09:59",
+    "(HEAD detached at 0108fd4b4)",
+    "0108fd4b4850cc46e625b60e53cea7a7bbe69f8d"
+  ],
+  "geometry_id": "bipv_freecad_v1",
+  "honest_gap": [
+    "Parametric (OpenCascade B-Rep) geometry \u2014 NOT a measured BIPV module. measurement_gate = GATE_OPEN (g3).",
+    "Layer dimensions are plausible (mirror Swift ComponentGeometry.bipv5Layer SSOT) \u2014 not pulled from a datasheet, not validated against a physical part.",
+    "Thermal / structural / optical verdicts are NOT included \u2014 those are downstream gates (gmsh + Elmer / Code_Aster)."
+  ],
+  "layer_count": 5,
+  "layers": [
+    {
+      "center_y_mm": 19.099999999999998,
+      "color_hex": "#A8D8E8",
+      "material": "tempered glass",
+      "name": "Glass Face",
+      "opacity": 0.32,
+      "plain_name": "\uc720\ub9ac \ud45c\uba74",
+      "render": "slab",
+      "thickness_mm": 3.2
+    },
+    {
+      "center_y_mm": 17.4,
+      "color_hex": "#1B2A6B",
+      "material": "monocrystalline silicon",
+      "name": "PV Cells",
+      "opacity": 1.0,
+      "plain_name": "\ud0dc\uc591\uc804\uc9c0 \uc140",
+      "render": "cell_grid",
+      "thickness_mm": 0.2
+    },
+    {
+      "center_y_mm": 13.3,
+      "color_hex": "#9AA0A6",
+      "material": "anodized aluminium",
+      "name": "Corrosion-Proof Frame",
+      "opacity": 1.0,
+      "plain_name": "\ubd80\uc2dd \ubc29\uc9c0 \ud504\ub808\uc784",
+      "render": "frame_border",
+      "thickness_mm": 8.0
+    },
+    {
+      "center_y_mm": 3.3000000000000007,
+      "color_hex": "#FF9500",
+      "material": "finned aluminium plate",
+      "name": "Thermal Sink",
+      "opacity": 1.0,
+      "plain_name": "\ubc29\uc5f4\ud310",
+      "render": "finned_sink",
+      "thickness_mm": 12.0
+    },
+    {
+      "center_y_mm": -11.7,
+      "color_hex": "#555555",
+      "material": "galvanised steel",
+      "name": "Structural Mount",
+      "opacity": 1.0,
+      "plain_name": "\uad6c\uc870 \ub9c8\uc6b4\ud2b8",
+      "render": "mount_base",
+      "thickness_mm": 18.0
+    }
+  ],
+  "producer": "freecad",
+  "total_thickness_mm": 41.4,
+  "units": "millimetres",
+  "width_mm": 1000.0
+}

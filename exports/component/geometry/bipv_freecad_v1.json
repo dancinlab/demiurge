@@ -1,0 +1,27 @@
+{
+  "brep_file" : "bipv_freecad_v1.brep",
+  "depth_mm" : 1000,
+  "display_name" : "BIPV Module (5-layer)",
+  "geometry_id" : "bipv_5layer_v0",
+  "interface" : "hexa-arch:component:geometry-record",
+  "layer_count" : 5,
+  "meta_file" : "bipv_freecad_v1.meta.json",
+  "produced_at_utc" : "2026-05-19T16:34:25Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "freecad@1.1.1",
+    "scope_caveats" : [
+      "FreeCAD parametric geometry (OpenCascade B-Rep) — more precise than the procedural placeholder, but still NOT a measured BIPV module (g3).",
+      "thermal / structural / optical verdicts are separate gates (gmsh + Elmer / Code_Aster) — measurement_gate stays GATE_OPEN until those land.",
+      "absorbed=true is never set by demiurge's FreeCAD producer — a measured component producer lives in hexa-lang/component (P-⑨); demiurge consumes it when it exists.",
+      "layer dimensions mirror ComponentGeometry.bipv5Layer (Swift SSOT) — plausible, not pulled from a datasheet."
+    ]
+  },
+  "record_id" : "bipv_freecad_v1",
+  "schema_version" : "1.1",
+  "step_file" : "bipv_freecad_v1.step",
+  "stl_file" : "bipv_freecad_v1.stl",
+  "total_thickness_mm" : 41.4,
+  "width_mm" : 1000
+}
