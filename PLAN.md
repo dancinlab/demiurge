@@ -3537,3 +3537,27 @@
   영구 확보). 측정이 blocker 를 SKY130 → read_verilog scope 로
   정정 (instrument-first). 상세 = design.md "Decision-gate note on
   D68" 4차. driver 삭제 + stdlib/yosys checkout 원복 완료.
+
+- 2026-05-20 — **κ-46 STDLIB ①a 커널 추출 1차 (design.md D72
+  2-layer — graph 커널)** — D72 가 ① STDLIB 을 2-layer 로 정의
+  (①a `kernels/<kernel>/` 도메인-무관 커널 · ①b `<domain>/` thin
+  어댑터). 첫 추출 = `graph` 커널 (grid·mobility 가 공통으로
+  networkx 사용). 신규 `hexa-lang/stdlib/kernels/graph/
+  networkx_kernel.py` — `topology_metrics(graph, top_n)`
+  (connectivity·diameter·radius·density·clustering·edge-connectivity
+  bisection surrogate·top-N betweenness/degree centrality)·
+  `edges_sha256_16`·`networkx_version`. 두 producer 가 thin ①b
+  어댑터로 축소: `grid/networkx_basics.py` (IEEE 14-bus 토폴로지만
+  보유) · `mobility/road_network.py` (synthetic Manhattan grid +
+  osmnx.basic_stats 만 — osmnx-specific 통계는 어댑터 잔류, generic
+  graph 사실만 커널 위임). 어댑터는 `__file__` 상대경로로 커널
+  탐색 (demiurge spawn 의 임의 cwd 대응) → `<Domain>Producer.swift`
+  무변경. **검증**: `swift run DemiurgeCLI action structure grid`
+  + `action analyze mobility` 둘 다 record emit, 값 byte-동일
+  (grid 14/20/diam5/bisection1 · mobility 100/360/k_avg7.2/
+  diam18). g3 — 구조 재배치, 측정/gate/absorbed 변경 0. 잔여 12
+  producer (fem·circuit·mc_transport·orbital·wave_optics·cfd·
+  logic_synth·noc_sim) 는 `inbox/notes/kernel-extraction-pickup.md`
+  에 점진 계획 — 다음 우선순위 = `fem` (design.md 가 이미 4 도메인
+  consumer 명시, 최대 N×M 축소). hexa-lang 커밋 = t4-emt-calc 브랜치
+  계열 (push 보류).
