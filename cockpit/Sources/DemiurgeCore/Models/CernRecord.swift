@@ -1,4 +1,4 @@
-// CernRecord — phase κ-39 (`cern + verify` producer, D62).
+// CernRecord — phase κ-42 (`cern + verify` producer, D65).
 //
 // Typed sidecar for the cern-domain stopping-power producer — Stage 1
 // substrate (per ABSORPTION.md §"hexa 포팅 단계"): Bethe-Bloch mean

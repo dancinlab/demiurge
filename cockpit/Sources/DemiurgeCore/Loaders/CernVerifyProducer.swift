@@ -1,4 +1,4 @@
-// CernVerifyProducer — θ-2 engine tool for `cern + verify` (κ-39 / D62).
+// CernVerifyProducer — θ-2 engine tool for `cern + verify` (κ-42 / D65).
 //
 // SIXTH cohort-domain cell crossing the measuring-producer threshold
 // (after sscb κ-34, energy κ-38, antimatter+analyze κ-43, cern+analyze
