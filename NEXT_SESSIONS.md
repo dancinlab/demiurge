@@ -32,13 +32,19 @@ identified, kept here so none are lost.
     / adjust*.
 
 🟡 **cross-repo** (separate repo session required)
-  - **D.** P-②③ — hexa-lang Yosys modules + `d5a63a82` push.
+
+  > **hexa-lang = sole SSOT** (user directive 2026-05-19; AGENTS.tape
+  > `@D g_stdlib_ownership`). D + E both belong in the SAME
+  > `~/core/hexa-lang` session — engine tools + measurement record
+  > producers all live there; demiurge consumes only. So the
+  > cross-repo work collapses to **two prompts**: one hexa-lang
+  > session (D + E), one hexa-component session (F).
+
+  - **D + E.** hexa-lang single SSOT session — P-②③ (Yosys modules +
+    `d5a63a82` push) **and** P-④ (chip §B full-curve measurement).
     Repo: `~/core/hexa-lang`. *open*.
-  - **E.** P-④ — chip §B full-curve measurement. Needs engine tool
-    + ubu pool + rate-limit discipline. *open*.
-  - **F.** ι-2 — 3D real USDZ. A component-domain producer must
-    emit one first (`exports/**` holds zero geometry today). *open*
-    — handoff prompt: **P-⑨** below.
+  - **F.** P-⑨ — hexa-component session (real USDZ producer). Repo:
+    `~/core/hexa-component`. *open*.
 
 The ζ dependency-graph half is **deferred** (not in this matrix —
 workbench value vs UI cost unclear; reopen on a concrete use).
@@ -517,6 +523,12 @@ Exit criterion (any one ends honestly):
   repos under `~/core/hexa-*` (cross-repo, like hexa-lang). `hexa-ufo`
   TBD resolved (sibling repo, no demiurge domain map yet). One TBD
   remains: the exact form of "기본 라이브러리".
+- 2026-05-19 — **hexa-lang = sole SSOT (user directive)** + **two-
+  prompt collapse**. AGENTS.tape `g_stdlib_ownership.user_directive`
+  gains the 2026-05-19 강화 line. The cross-repo tracks collapse to
+  two prompts: D + E live in the SAME `~/core/hexa-lang` session
+  (engine tools + measurement producers all there), F is the
+  `~/core/hexa-component` session (P-⑨). Tracks matrix updated.
 - 2026-05-19 — **P-⑨ added** (user "각각 프롬프트줘"). The F track
   (ι-2 component USDZ) now has its own cold-readable handoff prompt
   at P-⑨. D track is P-②③, E track is P-④ (both already present).

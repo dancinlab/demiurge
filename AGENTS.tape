@@ -9,7 +9,7 @@
 @D g_stdlib_ownership := "stdlib ⊂ hexa-lang ONLY" :: governance [required d=2026-05-18 active]
   rule = "The `stdlib/` namespace belongs EXCLUSIVELY to hexa-lang. demiurge is a *consumer* of hexa-lang stdlib — it MUST NOT own or carry a `stdlib/` tree."
   demiurge_role = "가져다 쓰는 쪽 (consumer). Absorbed/re-derived reusable hexa-native modules belong in hexa-lang/stdlib/ (rfc_047/048 precedent), referenced from demiurge."
-  user_directive = "2026-05-18 — 'stdlib 은 오로지 hexa-lang 이 보유 · demiurge 는 가져다쓸분' · 2026-05-19 REAFFIRMED — 'hexa-lang = SSOT, demiurge = pointer; 모든 stdlib 는 hexa-lang 소유'"
+  user_directive = "2026-05-18 — 'stdlib 은 오로지 hexa-lang 이 보유 · demiurge 는 가져다쓸분' · 2026-05-19 REAFFIRMED — 'hexa-lang = SSOT, demiurge = pointer; 모든 stdlib 는 hexa-lang 소유' · 2026-05-19 강화 — 'hexa-lang 이 유일 SSOT: 재사용 가능한 stdlib · 도구 · 흡수는 전부 hexa-lang 소유; demiurge 는 도메인 설계 기획 · 소비만'"
   general_principle = "hexa-lang is the SSOT of ALL stdlib AND every reusable absorbed module. demiurge is a consumer / pointer ONLY — it references the SSOT, never owns it. This generalizes beyond `stdlib/`: any reusable hexa-native module re-derived during an absorption (rfc_003/006 pattern) lands in hexa-lang, and demiurge carries a typed-interface pointer (the D17 hexa-matter precedent — SSOT=hexa-lang, demiurge=consumer-pointer)."
   violation_resolved = "design.md D15 applied 2026-05-18: the 6 modules + .stubs migrated to hexa-lang/stdlib/booksim/ (committed hexa-lang d5a63a82, self-tests re-verified GREEN there, unpushed pending hexa-lang review); demiurge/stdlib/ git-rm'd. demiurge now carries NO stdlib/ tree — rule satisfied. rfc_003 references the hexa-lang location."
 
