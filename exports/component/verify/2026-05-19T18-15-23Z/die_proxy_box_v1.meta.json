@@ -35,8 +35,8 @@
     "rows": 8,
     "structural": {
       "dof_count": 2058,
-      "sigma_vm_max_pa": 19211.274974632757,
-      "u_max_m": 5.7692111040994277e-11
+      "sigma_vm_max_pa": 38.36904544615274,
+      "u_max_m": 2.795983787908182e-13
     },
     "table": [
       {
@@ -72,12 +72,12 @@
       {
         "measurement_key": "u_max_m",
         "unit": "m",
-        "value": 5.7692111040994277e-11
+        "value": 2.795983787908182e-13
       },
       {
         "measurement_key": "sigma_vm_max_pa",
         "unit": "Pa",
-        "value": 19211.274974632757
+        "value": 38.36904544615274
       }
     ],
     "thermal": {
@@ -89,7 +89,7 @@
     }
   },
   "ok": true,
-  "produced_at_utc": "2026-05-19T17:44:32.574494+00:00",
+  "produced_at_utc": "2026-05-19T18:15:26.784532+00:00",
   "python_version": "3.14.4",
   "skfem_version": "12.0.1"
 }

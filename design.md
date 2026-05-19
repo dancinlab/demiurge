@@ -2058,22 +2058,28 @@ engineering verdict cell.
   still need the migration batch (their scripts live in cockpit/
   scripts/).
 - **g3 honest scope (GATE_OPEN 영구 / absorbed=false 영구)** — the
-  PDE solutions ARE real numbers (ΔT = 0.528 K, σ_vM_max = 19.2 kPa,
-  u_max = 58 pm on the toy box at 5 W / 25 °C ambient / gravity-only
-  load), and the thermal value matches a closed-form 1D thermal-
-  resistance estimate (R = 0.105 K/W vs 1D approx 0.135 K/W, same
-  order). BUT the geometry is a 10×10×2 mm Si proxy box (NOT a real
+  PDE solutions ARE real numbers (ΔT = 0.528 K, σ_vM_max = 38.4 Pa,
+  u_max = 0.28 pm on the toy box at 5 W / 25 °C ambient / gravity-
+  only load), and both verdicts cross-check against closed-form 1D
+  analytics: thermal R = 0.105 K/W vs 1D approx 0.135 K/W (same
+  order); structural u_max 2.80e-13 m vs 1D ρgL²/2E = 2.70e-13 m
+  (3.3 %) and σ_vM_max 38.4 Pa vs 1D ρgL = 45.7 Pa (16 %, the FEM
+  value is centroid-evaluated). NB — the FIRST κ-44 record (commit
+  dde9640) reported σ_vM_max ≈ 19 kPa / u_max ≈ 58 pm; those were a
+  STRUCTURAL-SOLVE BUG (a hand-rolled elasticity form ~44× too soft
+  + a component-major DOF mapping where scikit-fem's ElementVector
+  is node-major-interleaved). Both were found + fixed during the
+  κ-44 Stage-2 work and the substrate now uses scikit-fem's audited
+  built-in `linear_elasticity` model (g3 — corrected, not hidden).
+  BUT the geometry is a 10×10×2 mm Si proxy box (NOT a real
   component STEP file from the rfc_008 chip→component handoff
   dossier), the material constants are textbook silicon (NOT a
   measured wafer-lot datasheet), the load case is single steady-state
-  (no transient / convection coupling / TIM), and the structural BC
-  is full back-face clamp (induces a known edge stress concentration
-  artifact, so σ_vM_max is the *clamped-edge corner* peak not the
-  bulk stress). Mesh convergence is not validated. Six scope_caveats
-  embed those gaps into the record. The full-curve absorbed=true gate
-  requires (real STEP + measured material + validated load + mesh
-  convergence + 3rd-party signoff tool cross-check) — a separate
-  multi-phase program.
+  (no transient / convection coupling / TIM), and mesh convergence is
+  not validated. Six scope_caveats embed those gaps into the record.
+  The full-curve absorbed=true gate requires (real STEP + measured
+  material + validated load + mesh convergence + 3rd-party signoff
+  tool cross-check) — a separate multi-phase program.
 - **ABSORPTION.md ④/⑤ alignment** — adds one row to the workflow
   table (the SEVENTH measurable-only cell wired) + one row to the
   "currently absorbed producer" table, and removes `component +

@@ -262,13 +262,16 @@ public enum ComponentVerifyProducer {
             + "mesh convergence study 가 필수 (Elmer / ANSYS Icepak / "
             + "Code_Aster level). 본 record 는 *first honest witness*, 즉 "
             + "엔지니어링 verdict 의 lower bound.",
-            "structural boundary = entire back face Dirichlet u=0 (3-axis "
-            + "clamp). 이 clamp 는 Poisson lateral contraction 을 base 에서 "
-            + "억압해 base-edge corner 에 stress concentration 을 만든다 "
-            + "(σ_vM_max 가 이론적 ρgL ≈ 46 Pa 보다 수백× 큰 이유 = 알려진 "
-            + "FEM artifact). 신뢰할 만한 값은 *interior* stress 이지 "
-            + "edge-clamp 의 peak 가 아님 — 후속 record 에서 partial-fix "
-            + "BC + mesh refinement.",
+            "structural solve = scikit-fem 의 built-in linear_elasticity "
+            + "model + lame_parameters (κ-44 디버깅에서 hand-rolled form "
+            + "이 closed-form 단축 검증 u=T·L/E 대비 ~44× 너무 무름 + "
+            + "ElementVector DOF 를 component-major 로 잘못 가정한 두 "
+            + "버그를 발견·정정함 — 정정 후 σ_vM_max ≈ 38 Pa 가 1D "
+            + "self-weight 추정 ρgL ≈ 46 Pa 와 ~16 % 안에서 일치, u_max "
+            + "≈ 2.8e-13 m 가 1D ρgL²/2E ≈ 2.7e-13 m 와 ~3 % 안에서 "
+            + "일치). load = gravity body force 단독 (외력 traction 0, "
+            + "thermal-structural coupling 0) — back face 전체 Dirichlet "
+            + "u=0 clamp 는 standard 이지만 단일 load case 임.",
             "mesh convergence 미검증 — 본 record 는 단일 element size "
             + "(0.8 mm target → ~2200 tets) 에서 단일 점 측정. h-refinement "
             + "sweep 으로 ΔT / σ_vM 변화가 5 % 이내인지 확인되지 않은 한 "

@@ -2915,22 +2915,28 @@
     κ-decision 은 별도 에이전트가 마무리.
   - **g3 정직 갭 (제일 중요)**: ① numbers ARE real PDE solutions
     on a toy geometry — `ΔT = 0.528 K · T_max = 298.68 K · σ_vM_max
-    = 1.921e+04 Pa · u_max = 5.769e-11 m` (10×10×2 mm Si box at 5 W
-    top heating + 25 °C back face + gravity). 1D thermal-resistance
-    estimate R = L/(k·A) = 2e-3/(148·1e-4) = 0.135 K/W vs measured
-    0.105 K/W (heating top 1 mm 만 → 유효 L ~1.5 mm) — 동일 자릿수,
-    PDE 정합. ② BUT geometry = TOY box (NOT rfc_008 dossier 의 real
-    component STEP), material = textbook Si (NOT measured wafer-lot
-    datasheet), load = single steady-state (NO transient, NO
-    convection coupling, NO TIM), structural BC = full back-face
-    clamp (Poisson lateral contraction 억압 → base-edge corner stress
-    concentration = 알려진 FEM artifact, σ_vM_max 의 19 kPa 은 이론적
-    ρgL ≈ 46 Pa 보다 ~400× 큼; 신뢰할 만한 값은 *interior* stress
-    이지 edge-clamp peak 아님). mesh convergence 미검증. 6종
-    scope_caveats 가 record 안에. `measurement_gate = GATE_OPEN 영구
-    / absorbed = false 영구` — 흡수에 해당하려면 5종 (real STEP +
-    measured material + validated load + mesh convergence + signoff
-    tool cross-check) 이 모두 record 안으로.
+    = 38.4 Pa · u_max = 2.796e-13 m` (10×10×2 mm Si box at 5 W top
+    heating + 25 °C back face + gravity). 두 verdict 모두 1D
+    closed-form 과 교차검증: thermal R = L/(k·A) = 0.135 K/W vs
+    measured 0.105 K/W (heating top 1 mm 만 → 유효 L ~1.5 mm, 동일
+    자릿수); structural u_max 2.80e-13 m vs 1D ρgL²/2E = 2.70e-13 m
+    (3.3 %), σ_vM_max 38.4 Pa vs 1D ρgL = 45.7 Pa (16 %, centroid-
+    평가). **κ-44 STRUCTURAL FIX (g3)**: 첫 record (commit dde9640)
+    의 `σ_vM_max ≈ 19 kPa / u_max ≈ 58 pm` 는 *구조 solve 버그값*
+    이었음 — (a) hand-rolled elasticity bilinear form 이 closed-form
+    단축검증 u=T·L/E 대비 ~44× 너무 무름, (b) ElementVector 의 DOF
+    를 component-major 로 잘못 가정 (실제는 node-major-interleaved,
+    `3·node+comp`). κ-44 Stage-2 작업 중 두 버그 모두 발견·정정,
+    substrate 가 이제 scikit-fem 의 audited built-in
+    `linear_elasticity` model 사용. 버그를 숨기지 않고 정정+기록 (g3).
+    ② BUT geometry = TOY box (NOT rfc_008 dossier 의 real component
+    STEP), material = textbook Si (NOT measured wafer-lot datasheet),
+    load = single steady-state (NO transient, NO convection coupling,
+    NO TIM), mesh convergence 미검증. 6종 scope_caveats 가 record
+    안에. `measurement_gate = GATE_OPEN 영구 / absorbed = false 영구`
+    — 흡수에 해당하려면 5종 (real STEP + measured material +
+    validated load + mesh convergence + signoff tool cross-check) 이
+    모두 record 안으로.
   - **측정 (이 worktree, mac local, swift 6.3.1, gmsh 4.15.2,
     scikit-fem 12.0.1, python 3.14.4)**: `swift run DemiurgeCLI
     action verify component` → `script = /Users/ghost/core/hexa-lang/
@@ -2938,12 +2944,14 @@
     python3` · `python3 gmsh_skfem.py — exit 0, rows=8` · `gmsh
     4.15.2 · scikit-fem 12.0.1` · `artifacts: csv, meta, msh` ·
     `📸 component verify record → exports/component/verify/
-    2026-05-19T17-44-29Z/component_verify_20260519T174429Z.json` ·
-    `ΔT = 0.528 K · T_max = 298.68 K · σ_vM_max = 1.921e+04 Pa ·
-    u_max = 5.769e-11 m` · `mesh: 686 nodes · 2232 tetrahedra ·
+    2026-05-19T18-15-23Z/component_verify_20260519T181523Z.json` ·
+    `ΔT = 0.528 K · T_max = 298.68 K · σ_vM_max = 38.37 Pa ·
+    u_max = 2.796e-13 m` · `mesh: 686 nodes · 2232 tetrahedra ·
     producer = gmsh@4.15.2 + scikit-fem@12.0.1` · `⏳ GATE_OPEN ·
-    absorbed=false`. 파일 크기: `.csv` 245 B (8 rows) · `.meta.json`
-    2.2 KB · `.msh` 128 KB (full mesh) · record `.json` 4.8 KB.
+    absorbed=false` (post structural-fix run; the first run's
+    σ_vM/u_max were buggy — see g3 정직 갭 above). 파일 크기:
+    `.csv` 245 B (8 rows) · `.meta.json` 2.2 KB · `.msh` 128 KB
+    (full mesh) · record `.json` 4.8 KB.
     빌드 green (mini macOS host DOWN 으로 풀 라우팅 우회 위해 wrapper
     script `/tmp/build_demiurge.sh` 통해 로컬 빌드, pre-existing
     RealityKit MainActor warning 만, 새 warning 0 · 새 error 0). ubu-1
@@ -3040,44 +3048,59 @@
     round 와 정합).
 
 - 2026-05-20 — **phase κ-44 addendum — component Stage 2 hexa-native
-  port (thermal) landed** (D66 의 "다음 pickup ①" 승격 · 사용자
-  게이트 "hexa-native 작성 .hexa" + "hexa upstream 필요시 이 세션에서
-  진행" autonomy mode · g3 · ABSORPTION.md 4-stage 표 기준 component
+  port (thermal + structural) landed + structural-solve bug fix**
+  (D66 의 "다음 pickup ①" 승격 · 사용자 게이트 "hexa-native 작성
+  .hexa" + "hexa upstream 필요시 이 세션에서 진행" + "잔여없이 모두
+  완료" autonomy mode · g3 · ABSORPTION.md 4-stage 표 기준 component
   의 첫 Stage 2 전이). κ-44 의 "다음 pickup ① Stage 2 hexa-native
-  port" 가 — 본 세션에서 — thermal 부분 한정 완료. demiurge `.swift`
-  0줄 수정 (D61 절대 준수, hexa-lang 측 single-commit).
-  - **landed artifact** (`~/core/hexa-lang/stdlib/component/`):
-    `heat_conduction.hexa` (213 lines) — closed-form 1D steady-state
-    heat conduction 의 clean-room 재유도. gmsh_skfem.py 의 thermal
-    FEM solve 와 *동일 입력* (P=5 W · L_z=2 mm · Δh=1 mm · A=10×10 mm
-    · k=148 W/m·K · T_amb=298.15 K) 으로 closed-form ΔT 계산. Python
-    spawn 0 · mesh 0 · linear solver 0 — 순수 hexa Fourier 적분.
-    `fn lower_region_rise` + `within_slab_rise` + `delta_t_max_1d` +
-    `main()` selftest. commit `993b80cf`, push origin/rfc006-yosys-
-    rtlil-skeleton.
-  - **Stage 3 parity 측정** (`hexa run stdlib/component/
-    heat_conduction.hexa`): hexa-native 1D `ΔT = 0.506757 K · T_max
-    = 298.657 K` vs Stage-1 FEM substrate `ΔT = 0.528 K · T_max =
-    298.68 K` (scikit-fem 12.0.1, mesh 686 nodes / 2232 tets). parity
-    diff ΔT = **4.02 %** (< 5 % tolerance) · diff T_max = 0.008 %.
-    selftest: `__COMPONENT_HEAT_1D_STAGE2__ PASS (2/2)`. 남은 4 % 는
-    3D lateral spreading (analytic 1D 는 column-direction 만 — adiabatic
-    side faces 의 mesh discretization 이 살짝 옆으로 새는 양).
+  port" 가 — 본 세션에서 — thermal + structural 둘 다 완료. demiurge
+  `.swift` 는 scope_caveats #4 정정 1줄만 (D61 — pointer 외 compute
+  0줄).
+  - **landed artifacts** (`~/core/hexa-lang/stdlib/component/`):
+    (a) `heat_conduction.hexa` (213 lines, commit `993b80cf`) —
+    closed-form 1D steady-state heat conduction 의 clean-room 재유도.
+    `lower_region_rise` + `within_slab_rise` + `delta_t_max_1d` +
+    selftest. (b) `linear_elasticity.hexa` (~200 lines) — closed-form
+    1D self-weight elasticity (`sigma_zz_base` = ρgL · `tip_
+    displacement` = ρgL²/2E) + selftest. 둘 다 Python spawn 0 · mesh
+    0 · linear solver 0 — 순수 hexa 적분.
+  - **Stage 1 substrate 버그 발견·정정 (g3 — 제일 중요)**: structural
+    Stage 2 작성 중 1D closed-form (u_max ≈ 2.7e-13 m) 이 substrate
+    FEM (당시 5.77e-11 m) 과 200× 차이남을 발견 → `gmsh_skfem.py`
+    구조 solve 의 두 버그 추적: (a) hand-rolled elasticity bilinear
+    form 이 단축검증 u=T·L/E 대비 ~44× 너무 무름, (b) ElementVector
+    DOF 를 component-major 로 잘못 가정 (실제 node-major-interleaved,
+    `basis.nodal_dofs[:,:3]==[[0,3,6],[1,4,7],[2,5,8]]`). 정정:
+    scikit-fem 의 audited built-in `linear_elasticity` model +
+    `lame_parameters` 사용 (hexa-first — 검증된 stdlib > hand-roll),
+    Dirichlet 은 `basis.get_dofs()`, displacement 추출은
+    `x[basis.nodal_dofs]`. 정정 후 σ_vM_max 19 kPa→**38.4 Pa**,
+    u_max 5.77e-11→**2.796e-13 m**. 버그 숨기지 않고 정정+전체
+    cascade 기록 (design.md D66 · 본 entry · Swift caveat).
+  - **Stage 3 parity 측정** (`hexa run`):
+    · thermal (`heat_conduction.hexa`): hexa 1D `ΔT=0.506757 K ·
+    T_max=298.657 K` vs FEM `ΔT=0.528 K · T_max=298.68 K` → diff ΔT
+    **4.02 %** (<5 %) · diff T_max 0.008 %. `__COMPONENT_HEAT_1D_
+    STAGE2__ PASS (2/2)`.
+    · structural (`linear_elasticity.hexa`): hexa 1D `u_max=
+    2.70292e-13 m · σ_zz_base=45.6794 Pa` vs (post-fix) FEM `u_max=
+    2.796e-13 m · σ_vM_max=38.37 Pa` → diff u **3.33 %** (<5 %,
+    apples-to-apples) · diff σ **16.0 %** (<25 %, centroid-vs-base +
+    vM-vs-axial 이라 25 % gate). `__COMPONENT_ELAST_1D_STAGE2__ PASS
+    (2/2)`.
   - **g3 정직 (Stage 4 미부여)**: Stage 3 parity ✓ 는 *substrate FEM
     ↔ 1D analytic* 사이의 일치이지 *둘 중 하나 ↔ 측정된 부품* 의
     일치가 아니다. `measurement_gate = GATE_OPEN 영구 · absorbed =
     false 영구` 그대로 — real STEP geometry + measured material +
-    구조 FEM + mesh convergence + 3rd-party signoff cross-check 5종이
-    모두 record 안으로 들어와야 absorbed=true. **thermal 만** 포팅된
-    이유: 1D analytic 은 구조 verdict 의 σ_vM_max (substrate FEM 의
-    ~19 kPa) 를 재현 불가 — 그 peak 은 back-face clamp 의 Poisson-
-    induced edge stress concentration, 본질적으로 3D Poisson 효과.
-    구조 parity 는 3D FEM 포팅 (sparse solver stdlib 대기) 까지 정직
-    하게 보류.
+    3D FEM (sparse-solver stdlib 대기) + mesh convergence + 3rd-party
+    signoff cross-check 5종이 모두 record 안으로 들어와야
+    absorbed=true. 1D analytic 은 3D Poisson stress field 를 생략
+    하므로 (clamp 근처 lateral stress) — full 3D parity 는 hexa-
+    native sparse-solver 포팅 후.
   - **다음 pickup**: ① **3D FEM hexa-native** — hexa-lang sparse-
     matrix + Krylov / 직접 solver stdlib 가 들어오면 `stdlib/
     component/fem3d.hexa` (mesh assembly + condense + solve) 작성 →
-    구조 verdict 까지 Stage 2 확장. ② **real STEP geometry** —
+    1D analytic 의 3D-Poisson 갭 제거. ② **real STEP geometry** —
     rfc_008 chip→component handoff dossier 의 cited 부품으로 toy box
     교체. ③ **measured material datasheet** — Si wafer supplier
     측정값으로 textbook 상수 교체. ④~⑤ (mesh convergence sweep +
