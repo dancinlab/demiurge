@@ -2484,3 +2484,77 @@
     하여 단일 SSOT. ④ cockpit GUI Component 탭이 STEP 파일을 직접
     렌더 (현재는 USDA only) — RealityKit STEP 미지원 → Open Cascade
     Cascade.js 같은 web 뷰 또는 STL 폴백.
+- 2026-05-20 — **phase κ-40 — `brain + analyze` producer = brian2 LIF
+  (P-⑧ second cohort crossing · D62 · D61 first mover · g3)** (rfc_011
+  §6.3 · D53 cite · D50 g_ssot_single_source · D15 g_stdlib_ownership ·
+  D17 hexa-lang=SSOT 일반화). SSCB (D55 / κ-34) 다음 두 번째 cohort
+  domain 의 measurable-producer 임계 통과. brian2 2.6.0 (pip 한 줄,
+  `/usr/bin/python3 -m pip install --user brian2` 설치) + single LIF
+  + constant DC drive — Dayan & Abbott 교과서 baseline → exact analytic
+  integrator → 142 Hz tonic firing.
+  - **D61 first mover (제일 중요)**: producer script SSOT 는
+    `~/core/hexa-lang/stdlib/brain/lif_brian2.py` (hexa-lang 소유)
+    — demiurge 의 `cockpit/scripts/` 에 **없음**. AGENTS.tape
+    `g_demiurge_pointer_only` (D15 / D17 일반화) 정합. D55 sscb 가
+    `cockpit/scripts/sscb_ngspice.py` 에 있는 것은 legacy 패턴 — 본
+    phase 부터 새 producer 는 hexa-lang/stdlib/<domain>/ 에 landing.
+    BrainAnalyzeProducer.locateScript() 가 `~/core/hexa-lang/stdlib/
+    brain/lif_brian2.py` 한 경로만 본다 (없으면 honest-gap, fallback
+    안 만듦).
+  - **신규 SSOT (hexa-lang)**: `~/core/hexa-lang/stdlib/brain/
+    lif_brian2.py` — Python sidecar, `EQS` 문자열 + 6개 파라미터
+    (TAU_MS=10 / V_THR=1 / V_RESET=0 / I_DRIVE=2 / SIM_TIME_S=1 /
+    METHOD=exact). 출력: `lif_brian2_v1.meta.json` (model + measurements
+    + equation_sha256_16 + brian2_version) + `lif_brian2_v1.spikes.json`
+    (200개 truncated spike time vector). stderr summary 라인:
+    `BRAIN_LIF_RESULT <json>`.
+  - **신규 (demiurge)**: `cockpit/Sources/DemiurgeCore/Loaders/
+    BrainAnalyzeProducer.swift` — Process spawn wrapper. (a)
+    `locatePython()` 가 `/usr/bin/python3` 우선 (brian2 가 거기 깔림
+    — brew python3 는 PEP-668 lockout), (b) `locateScript()` 가
+    `~/core/hexa-lang/stdlib/brain/lif_brian2.py` 만 확인, (c)
+    `python3 lif_brian2.py <output_dir>` spawn, (d) merged stdout/
+    stderr 에서 `BRAIN_LIF_RESULT <json>` 파싱 + meta.json 재읽기,
+    (e) defence-in-depth: 두 artifact (meta + spikes) 디스크 존재 +
+    non-zero size 검증. 실패 시 silent success 금지 (g3).
+  - **신규 (demiurge)**: `cockpit/Sources/DemiurgeCore/Models/
+    BrainRecord.swift` — typed sidecar. BrainProvenance (absorbed:
+    Bool · producer · measurementGate · scopeCaveats) + BrainModel
+    (kind · tau · v_thr · v_reset · i · sim_time · method · equation) +
+    BrainMeasurements (spike_count · firing_rate_hz · mean_isi_s ·
+    cv_isi · first/last_spike_s). interface =
+    `demiurge:brain:analyze-record`, schema_version 1.0.
+  - **확장**: `cockpit/Sources/DemiurgeCore/Loaders/ActionDispatch
+    .swift` — `case (.analyze, "brain"): return runBrainAnalyze()` +
+    private `runBrainAnalyze()` 한 줄 위임. 머리말 코멘트에 κ-40 /
+    D62 / D61 추가.
+  - **g3 정직 갭 (제일 중요)**: ① brian2 IS the instrument — 측정
+    숫자 (142 Hz, CV_ISI ≈ 3e-15 ≈ 0) 는 real, IEEE-754 integrator
+    output. ② 하지만 MODEL 은 textbook (Dayan & Abbott LIF) +
+    constant DC drive, NOT a measured neuron. plausible-not-fitted.
+    `measurement_gate = GATE_OPEN` 永구. `absorbed = false` 永구.
+    ③ scope = ALGORITHM VERIFICATION ("brian2 의 exact integrator 가
+    textbook firing rate 를 만들어내는가?") 이지 brain SIGNAL 측정
+    아님. domains/brain.md §2 proprietary gap (Sim4Life MDDT, COMSOL)
+    는 untouched — 본 producer 가 건드리지 않음. ④ closedMeasured
+    로 flip 하려면 patch-clamp data fit + multi-compartment HH +
+    Allen Brain Atlas absorption + bench-validated implant — 본
+    producer scope 를 한참 넘음. scope_caveats 4종 record 에 박제.
+  - **측정 (이 worktree, mac local, swift 6.3.1, brian2 2.6.0,
+    python /usr/bin/python3 3.9.6)**: `swift run DemiurgeCLI action
+    analyze brain` → `python3 = /usr/bin/python3` · `python3
+    lif_brian2.py — exit 0, spikes=142` · `brian2 version: 2.6.0` ·
+    `artifacts: meta, spikes` · `📸 brain analyze record →
+    exports/brain/2026-05-19T17-27-40Z/brain_lif_20260519T172740Z.json`
+    · `spike_count=142 · firing_rate=142.0 Hz · producer = brian2@2.6.0`
+    · `CV_ISI=2.956e-15` · `⏳ GATE_OPEN · absorbed=false`. JSON
+    record 1.0 schema · 4종 scope_caveats · provenance 정합. 빌드
+    green (pre-existing RealityKit MainActor warning 만, 에러 0 ·
+    신규 warning 0).
+  - **다음 pickup**: ① sscb_ngspice.py 를 cockpit/scripts/ →
+    `~/core/hexa-lang/stdlib/sscb/` migrate (D55 → D61 정합 갭
+    closure). ② brain producer 확장 — 단일 LIF → 1000-neuron LIF
+    network (PoissonInput 추가) 면 ISI 분포 + cross-correlation 측정
+    가능, 여전히 algorithm verification scope. ③ 나머지 11 cohort
+    domain 의 lowest-hanging-fruit producer 발굴 (cohort-pickup notes
+    참조: bot URDF · grid networkx + 새로 add 가능).

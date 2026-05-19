@@ -1701,3 +1701,53 @@ export.)
   버튼 + DemiurgeCLI `emit-component` + DemiurgeCLI `action
   synthesize component` 셋의 단일 진입점 그대로. 셋 다 동일 record
   emit.
+
+### Decision 62 — `brain + analyze` producer = brian2 LIF, script SSOT 는 hexa-lang/stdlib/brain/ (κ-40, D61 first mover)
+
+**picked**: `brain + analyze` 의 producer 를 **brian2 2.6.0 single LIF
+spike-rate** 로 배선한다. producer script SSOT =
+`~/core/hexa-lang/stdlib/brain/lif_brian2.py` (D61 / D17 generalized
+— hexa-lang 가 모든 reusable producer 의 SSOT, demiurge 는 pointer
+consumer 만). demiurge 측 = `BrainAnalyzeProducer.swift` (Process
+spawn wrapper 만) + `BrainRecord.swift` (typed). `cockpit/scripts/*.py`
+는 AGENTS.tape `g_demiurge_pointer_only` 위반이므로 **절대 만들지
+않음** (D55 sscb 가 cockpit/scripts/sscb_ngspice.py 에 남아 있는
+것은 legacy, 후속에서 migrate). (Rejected: ① NEURON / NEST — 무거운
+native deps, pip-only 단일 라인 안 됨; ② 더 정교한 multi-compartment
+Hodgkin-Huxley — algorithm verification scope 초과, 본 phase 는
+"lowest-hanging-fruit producer 발굴" 이지 모델 정밀도 아님; ③
+cockpit/scripts/ 에 두는 D55 패턴 미러 — g_demiurge_pointer_only
+직격 위반.)
+
+**rationale**:
+- P-⑧ 두 번째 cohort crossing (sscb / D55 다음) — domains/brain.md
+  의 7-verb 매핑에서 "analyze" 셀이 measurable-only (D53) 로 살아
+  남는 첫 경로. brian2 는 pip 한 줄 (`/usr/bin/python3 -m pip install
+  --user brian2` → 2.6.0 설치 완료), single LIF + constant DC drive
+  는 Dayan & Abbott 교과서 baseline → exact analytic integrator
+  → 142 Hz tonic firing (CV_ISI ≈ 3e-15 ≈ 0, deterministic sanity OK).
+- D61 first mover (g_demiurge_pointer_only): script 가 hexa-lang/
+  stdlib/brain/ 에 있으니 BrainAnalyzeProducer 의 locateScript()
+  는 `~/core/hexa-lang/stdlib/brain/lif_brian2.py` 만 본다. D55
+  sscb 가 cockpit/scripts/ 에 있는 것은 D55 시점의 legacy 패턴 —
+  본 결정은 새 producer 부터 D61 정합 시작. sscb migrate 는 후속
+  phase (별도 결정).
+- absorbed=true 절대 금지 (g3 / @F f6): brian2 IS the instrument
+  (IEEE-754 LIF integrator), 측정 숫자는 real, **but 모델은
+  textbook**. closedMeasured 로 flip 하려면 patch-clamp data fit +
+  multi-compartment HH + Allen Brain Atlas absorption + bench-
+  validated implant 가 들어와야 함 — 본 producer 의 scope 를
+  한참 넘음. scope_caveats 4종 박제 (instrument-vs-model /
+  algorithm-verification-not-brain-signal / gate-flip-prerequisites /
+  hexa-lang-script-SSOT).
+- 알고리즘 검증 (not brain measurement) — domains/brain.md §2 의
+  proprietary gap (Sim4Life MDDT, COMSOL) 는 본 producer 가
+  건드리지 않는다. "단일 LIF spike rate 가 textbook 과 일치하는가"
+  를 묻는 것이지 실제 신경 신호 측정이 아님.
+- D50 g_ssot_single_source 준수 — `BrainAnalyzeProducer.runAnalyze()`
+  가 ActionDispatch `(.analyze, "brain")` + (장차) cockpit GUI 버튼
+  의 단일 진입점. CLI ↔ cockpit byte-identical.
+- D15 g_stdlib_ownership 강화 — script 가 hexa-lang/stdlib/brain/
+  에 들어가면서 demiurge 는 *진짜 pointer* 만 carry (locateScript()
+  가 `~/core/hexa-lang/stdlib/brain/` 한 경로만 본다). 이 패턴이
+  fan out 되면 sscb_ngspice.py 도 migrate 후보.

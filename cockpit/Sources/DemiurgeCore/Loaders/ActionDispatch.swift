@@ -13,6 +13,8 @@
 //
 // κ-30 (this commit, D53): adds `matter + analyze` → MatterAnalyzer.
 // κ-34 (D55): adds `sscb + analyze` → SSCBProducer (ngspice 46 transient).
+// κ-40 (D62): adds `brain + analyze` → BrainAnalyzeProducer (brian2 LIF
+// — D61 hexa-lang stdlib SSOT, demiurge pointer-only).
 //
 // Currently wired:
 //   • component + synthesize → ComponentEmitter.emitBundled
@@ -34,6 +36,12 @@
 //                              measuring-producer threshold; real
 //                              numbers, plausible-not-absorbed circuit,
 //                              GATE_OPEN永구 / absorbed=false ALWAYS)
+//   • brain     + analyze    → brian2 2.6.0 single LIF spike-rate (κ-40
+//                              / D62 — SECOND cohort domain; D61 first
+//                              mover: producer script lives in
+//                              `~/core/hexa-lang/stdlib/brain/`, demiurge
+//                              is a pure pointer-consumer; algorithm
+//                              verification only, GATE_OPEN永구)
 //
 // Honesty (g3, @F f6): the action prompt instructs the agent to
 // report "no engine tool" plainly when none is available, and never
@@ -115,6 +123,8 @@ public enum ActionDispatch {
             return runMatterAnalyze()
         case (.analyze, "sscb"):
             return runSSCBAnalyze()
+        case (.analyze, "brain"):
+            return runBrainAnalyze()
         default:
             let prompt = actionPrompt(verb: verb)
             let reply = askClaude(prompt: prompt, context: context)
@@ -170,6 +180,26 @@ public enum ActionDispatch {
     /// turn into real producers, narrow scope is honest g3.
     private static func runSSCBAnalyze() -> ActionResult {
         let r = SSCBProducer.runAnalyze()
+        return ActionResult(
+            text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true,
+            engineToolSucceeded: r.ok)
+    }
+
+    /// `brain + analyze` engine tool (κ-40 / D62) — spawn brian2 2.6.0
+    /// via `~/core/hexa-lang/stdlib/brain/lif_brian2.py` to run a single
+    /// LIF (leaky integrate-and-fire) neuron for 1 s of biological time,
+    /// then persist a typed `BrainRecord` under `exports/brain/<stamp>/`.
+    /// Producer = `brian2@<v>` — the simulator IS the instrument, but
+    /// the LIF model is textbook (Dayan & Abbott) with constant DC drive,
+    /// NOT a measured neuron. measurement_gate stays GATE_OPEN AND
+    /// absorbed is permanently false (g3 — see BrainAnalyzeProducer
+    /// scope_caveats). SECOND cohort domain crossing the measuring-
+    /// producer threshold (after sscb / D55); FIRST mover for the D61
+    /// hexa-lang-stdlib-SSOT / demiurge-pointer-only pattern.
+    private static func runBrainAnalyze() -> ActionResult {
+        let r = BrainAnalyzeProducer.runAnalyze()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],
