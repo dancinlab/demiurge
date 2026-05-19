@@ -1364,3 +1364,32 @@
     Liquid Glass 렌더 / icon rail UX / light↔dark 전환은 사용자
     macOS 26 GUI 검증. 새 RFC 0, 새 design.md decision 0, 새
     governance @D 1개 (`g_cockpit_reinstall`, 사용자 directive).
+- 2026-05-19 — **icon rail → `TabView(.sidebarAdaptable)` 재구성
+  (100% canonical)**. 사용자 질문 "전부 native·canonical 맞아?" 에
+  honest 검증: SF Symbols / Button / glassEffect / onHover / help /
+  NavigationSplitView 는 canonical 이나 *custom HStack 으로 narrow
+  icon rail 을 3-pane 옆에 부착* 한 것은 macOS 단일 canonical API
+  부재 (Apple Mail/Music 도 동일 영역 custom). 사용자가 gate 에서
+  "A — 100% canonical 우선" pick → `TabView(.sidebarAdaptable)`
+  (macOS 15+/26 의 canonical adaptive sidebar API) 로 재구성:
+  · body = `TabView { Tab("Chat", systemImage:) {splitView{chatTab}};
+    Tab("Artifacts", systemImage:) {splitView{artifactsTab}} }
+    .tabViewStyle(.sidebarAdaptable)`. `splitView(_:)` 헬퍼가
+    공통 3-pane NavigationSplitView (leading 만 tab 별 다름, CENTER
+    canvas + RIGHT rightPane 공유, selection @State 공유).
+  · 제거: custom `iconRail` / `railButton` / `railToggleButton` /
+    `railTooltip` / `LeftTab` enum / `@State leftTab` / `hoveredRail`
+    — `.sidebarAdaptable` 의 native sidebar 가 대체.
+  · light/dark 토글 — icon rail 하단에서 TOP `.toolbar` 의
+    ToolbarItem (moon/sun.max) 으로 이동.
+  · **trade-off (g3 honest)**: 100% canonical 달성 = `.sidebarAdaptable`
+    sidebar 가 아이콘+텍스트 label (항상-narrow-icon-only 아님),
+    5-zone → 4-zone (sidebar 가 LEFT pane 흡수). 사용자가 gate 에서
+    이 trade-off 알고 A pick — Electron 스크린샷의 narrow rail 패턴
+    대신 macOS 26 native sidebar. **빌드 measured-green**:
+    `bash cockpit/install.sh` PASS — release build 8.21s · 0
+    warnings · `Tab(...)` + `.tabViewStyle(.sidebarAdaptable)` macOS
+    26 SDK 컴파일 · `/Applications/demiurge.app` 재설치
+    (`g_cockpit_reinstall` 준수). 이제 cockpit 의 모든 UI 컴포넌트
+    + 컨테이너 구조 = 100% Apple-canonical (custom 0). 새 RFC 0,
+    새 design.md decision 0, 새 governance 0.

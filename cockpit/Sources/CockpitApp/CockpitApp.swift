@@ -36,12 +36,6 @@ struct CockpitApp: App {
 
 // MARK: — Tab enums
 
-enum LeftTab: String, CaseIterable, Identifiable {
-    case chat       = "Chat"
-    case artifacts  = "Artifacts"
-    var id: String { rawValue }
-}
-
 enum RightTab: String, CaseIterable, Identifiable {
     case inspector  = "Inspector"
     case actions    = "Actions"
@@ -70,27 +64,23 @@ struct ContentView: View {
     @State private var selection: ArtifactID?
     @State private var recordResult: Result<F1F2Record, RecordLoaderError>?
     @State private var rawRecordJSON: String = ""        // phase δ — Raw JSON sub-tab
-    @State private var leftTab:  LeftTab  = .artifacts   // β: default to Artifacts so the populated tree is visible immediately
     @State private var rightTab: RightTab = .inspector   // D39
     @State private var inspectorSubTab: InspectorSubTab = .provenance  // δ — Provenance first (rfc_009 §4)
     @State private var chatMessages: [ChatMessage] = []                // η-1
     @State private var chatInput: String = ""                         // η-1
-    @State private var colorScheme: ColorScheme = .light               // light default, rail toggles
-    @State private var hoveredRail: String?                            // icon-rail hover tooltip
+    @State private var colorScheme: ColorScheme = .light               // light default, toolbar toggles
 
     var body: some View {
-        HStack(spacing: 0) {
-            iconRail
-            Divider()
-            NavigationSplitView {
-                leftPane
-            } content: {
-                canvas
-            } detail: {
-                rightPane
+        TabView {
+            Tab("Chat", systemImage: "bubble.left.and.bubble.right") {
+                splitView { chatTab }
+            }
+            Tab("Artifacts", systemImage: "list.bullet.rectangle") {
+                splitView { artifactsTab }
             }
         }
-        .frame(minWidth: 1232, minHeight: 660)
+        .tabViewStyle(.sidebarAdaptable)
+        .frame(minWidth: 1180, minHeight: 660)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button("+ Synthesize") {}
@@ -106,6 +96,14 @@ struct ContentView: View {
                 Button("Open Record…") { presentPicker() }
                     .help("Open an F1F2 JSON record from ../exports/** (D30 picker, @D g_cockpit_isolation a)")
             }
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    colorScheme = (colorScheme == .light) ? .dark : .light
+                } label: {
+                    Image(systemName: colorScheme == .light ? "moon" : "sun.max")
+                }
+                .help("Toggle light / dark")
+            }
         }
         .preferredColorScheme(colorScheme)
         .onAppear(perform: bootstrap)
@@ -114,76 +112,17 @@ struct ContentView: View {
         }
     }
 
-    // MARK: — icon rail (leftmost, icon-only column)
-
-    /// Leftmost icon-only rail — top-level LEFT-pane mode switch (Chat /
-    /// Artifacts) + a light/dark toggle at the bottom. Icon-only, ~52pt.
-    /// Each icon shows its menu name as a Liquid-Glass hover tooltip.
-    @ViewBuilder private var iconRail: some View {
-        VStack(spacing: 6) {
-            railButton(.chat,      symbol: "bubble.left.and.bubble.right", help: "Chat")
-            railButton(.artifacts, symbol: "list.bullet.rectangle",        help: "Artifacts")
-            Spacer()
-            railToggleButton
+    /// The 3-pane SplitView shared by both sidebar tabs — the leading
+    /// column differs (Chat vs Artifacts), CENTER + RIGHT are common.
+    @ViewBuilder private func splitView(@ViewBuilder _ leading: () -> some View) -> some View {
+        NavigationSplitView {
+            leading()
+                .frame(minWidth: 280)
+        } content: {
+            canvas
+        } detail: {
+            rightPane
         }
-        .padding(.vertical, 10)
-        .frame(width: 52)
-    }
-
-    @ViewBuilder private func railButton(_ tab: LeftTab,
-                                         symbol: String,
-                                         help: String) -> some View {
-        Button {
-            leftTab = tab
-        } label: {
-            Image(systemName: symbol)
-                .font(.system(size: 16))
-                .frame(width: 38, height: 38)
-                .background(leftTab == tab ? Color.accentColor.opacity(0.18)
-                                           : Color.clear)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-        }
-        .buttonStyle(.plain)
-        .help(help)                                  // macOS system tooltip (canonical fallback)
-        .onHover { hovering in
-            hoveredRail = hovering ? help : (hoveredRail == help ? nil : hoveredRail)
-        }
-        .overlay(alignment: .leading) {
-            if hoveredRail == help { railTooltip(help) }
-        }
-    }
-
-    private var railToggleButton: some View {
-        let label = "Toggle light / dark"
-        return Button {
-            colorScheme = (colorScheme == .light) ? .dark : .light
-        } label: {
-            Image(systemName: colorScheme == .light ? "moon" : "sun.max")
-                .font(.system(size: 16))
-                .frame(width: 38, height: 38)
-        }
-        .buttonStyle(.plain)
-        .help(label)
-        .onHover { hovering in
-            hoveredRail = hovering ? label : (hoveredRail == label ? nil : hoveredRail)
-        }
-        .overlay(alignment: .leading) {
-            if hoveredRail == label { railTooltip(label) }
-        }
-    }
-
-    /// Liquid-Glass hover tooltip (macOS 26) — the icon's menu name,
-    /// floating to the right of the rail. Non-interactive.
-    @ViewBuilder private func railTooltip(_ text: String) -> some View {
-        Text(text)
-            .font(.caption.weight(.medium))
-            .fixedSize()
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .glassEffect(.regular, in: Capsule())
-            .offset(x: 48)
-            .allowsHitTesting(false)
-            .zIndex(100)
     }
 
     // MARK: — bootstrap
@@ -206,18 +145,6 @@ struct ContentView: View {
     }
 
     // MARK: — LEFT pane
-
-    /// LEFT pane content — the icon rail picks the mode (no segmented
-    /// picker here anymore; the leftmost rail replaced it).
-    @ViewBuilder private var leftPane: some View {
-        Group {
-            switch leftTab {
-            case .chat:      chatTab
-            case .artifacts: artifactsTab
-            }
-        }
-        .frame(minWidth: 280)
-    }
 
     /// LEFT 1st (D37) — Chat tab. Phase η-1: real message-bubble UI +
     /// working input; backend is a local stub. Phase η-2 wires Claude Code
