@@ -204,6 +204,20 @@ public enum ActionDispatch {
             return runCernSynthesize()
         case (.analyze, "rtsc"):
             return runRtscAnalyze()
+        case (.verify, "fusion"):
+            return runFusionVerify()
+        case (.verify, "energy"):
+            return runEnergyVerify()
+        case (.verify, "bot"):
+            return runBotVerify()
+        case (.verify, "space"):
+            return runSpaceVerify()
+        case (.verify, "rtsc"):
+            return runRtscVerify()
+        case (.verify, "mobility"):
+            return runMobilityVerify()
+        case (.verify, "antimatter"):
+            return runAntimatterVerify()
         default:
             let prompt = actionPrompt(verb: verb)
             let reply = askClaude(prompt: prompt, context: context)
@@ -1103,5 +1117,72 @@ public enum ActionDispatch {
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],
             usedEngineTool: true,
             engineToolSucceeded: r.ok)
+    }
+
+    /// `fusion + verify` engine tool (ROI 11 — OpenMC TBR neutronics).
+    /// SSOT = `~/core/hexa-lang/stdlib/fusion/openmc_tbr.py` (D61).
+    /// D72: `kernels/mc_transport/` 2nd consumer.
+    private static func runFusionVerify() -> ActionResult {
+        let r = FusionVerifyProducer.runVerify()
+        return ActionResult(text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true, engineToolSucceeded: r.ok)
+    }
+
+    /// `energy + verify` engine tool (ROI 12 — OpenMC k-eff criticality).
+    /// SSOT = `~/core/hexa-lang/stdlib/energy/openmc_keff.py` (D61).
+    /// D72: `kernels/mc_transport/` 3rd consumer.
+    private static func runEnergyVerify() -> ActionResult {
+        let r = EnergyVerifyProducer.runVerify()
+        return ActionResult(text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true, engineToolSucceeded: r.ok)
+    }
+
+    /// `bot + verify` engine tool (ROI 13 — Drake Lyapunov / SOS).
+    /// SSOT = `~/core/hexa-lang/stdlib/bot/drake_verify.py` (D61).
+    private static func runBotVerify() -> ActionResult {
+        let r = BotVerifyProducer.runVerify()
+        return ActionResult(text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true, engineToolSucceeded: r.ok)
+    }
+
+    /// `space + verify` engine tool (ROI 15 — GMAT trajectory + Basilisk
+    /// ADCS). SSOT = `~/core/hexa-lang/stdlib/space/gmat_basilisk.py` (D61).
+    private static func runSpaceVerify() -> ActionResult {
+        let r = SpaceVerifyProducer.runVerify()
+        return ActionResult(text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true, engineToolSucceeded: r.ok)
+    }
+
+    /// `rtsc + verify` engine tool (ROI 16 — GetDP HTS H-/A-phi 3-D EM).
+    /// SSOT = `~/core/hexa-lang/stdlib/rtsc/getdp_hts.py` (D61).
+    private static func runRtscVerify() -> ActionResult {
+        let r = RtscVerifyProducer.runVerify()
+        return ActionResult(text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true, engineToolSucceeded: r.ok)
+    }
+
+    /// `mobility + verify` engine tool (ROI 17 — CARLA / ScenarioRunner).
+    /// SSOT = `~/core/hexa-lang/stdlib/mobility/carla_scenario.py` (D61).
+    /// macOS hard-block — Linux pool only.
+    private static func runMobilityVerify() -> ActionResult {
+        let r = MobilityVerifyProducer.runVerify()
+        return ActionResult(text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true, engineToolSucceeded: r.ok)
+    }
+
+    /// `antimatter + verify` engine tool (ROI 18 — Geant4 antiproton).
+    /// SSOT = `~/core/hexa-lang/stdlib/antimatter/geant4_verify.py` (D61).
+    /// D72: `kernels/mc_transport/` 4th consumer — clearest N+M payoff.
+    private static func runAntimatterVerify() -> ActionResult {
+        let r = AntimatterVerifyProducer.runVerify()
+        return ActionResult(text: r.text,
+            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true, engineToolSucceeded: r.ok)
     }
 }

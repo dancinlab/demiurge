@@ -3686,3 +3686,31 @@
   라운드 (install + 측정 + 비교). **잔여 = 0** — 추천순 ROI rank 1
   → 10 모든 cell 흡수 완료 (Geant4/CARLA 등 rank 11+ heavy 는 별
   세션, ABSORPTION.md ⏳ planned 명시).
+- 2026-05-20 — **phase κ-49 — heavy 8 cell sweep (ROI 11-18) — sweep
+  ALL DONE**. 사용자 "go" 게이트로 κ-48 후 잔여 (rank 11+) 까지 흡수.
+  hexa-lang origin/main `275781e7` 에 8 substrate landed:
+  - `stdlib/fusion/openmc_tbr.py` (ROI 11, mc_transport 2nd consumer)
+  - `stdlib/energy/openmc_keff.py` (ROI 12, mc_transport 3rd consumer)
+  - `stdlib/bot/drake_verify.py` (ROI 13)
+  - `stdlib/cern/elegant_tracking.py` (ROI 14 — substrate only, Swift
+    wiring defer — 기존 cern+analyze pylhe 가 이미 dispatch 점유,
+    producer-alternative 메커니즘 후속 라운드)
+  - `stdlib/space/gmat_basilisk.py` (ROI 15)
+  - `stdlib/rtsc/getdp_hts.py` (ROI 16, pyfemm+GetDP = 2nd rtsc-EM
+    consumer → em-kernel-promotion 후보 명시)
+  - `stdlib/mobility/carla_scenario.py` (ROI 17, macOS hard-block)
+  - `stdlib/antimatter/geant4_verify.py` (ROI 18, mc_transport 4th
+    consumer — N+M payoff 명백)
+  demiurge 측 7 새 Record + 7 새 Producer + 7 새 ActionDispatch case
+  (cern+analyze 제외). 모두 **honest install-gated / platform-gated**
+  — OpenMC nuclear data path, Drake pydrake import, Basilisk import,
+  GetDP binary, CARLA macOS, Geant4 multi-hour build 부재 시
+  GATE_OPEN / absorbed=false 명시 skip record (silent pass 금지, g3).
+  **D72 N+M payoff 실현**: `kernels/mc_transport/` 가 4 consumer
+  보유 (antimatter+analyze · fusion+verify · energy+verify · antimatter+
+  verify) — 1 kernel × 4 도메인 adapter 가 D72 가 약속한 재사용
+  pattern 가시화.
+  build: xcrun swift build --product DemiurgeCore OK (3.80s).
+  **잔여 = 0** — ROI rank 1→18 모든 측정-가능 cell sweep 완료.
+  실측 흡수 (parity, absorbed=true flip) 은 별 세션 — install + 측정
+  + 비교 라운드.
