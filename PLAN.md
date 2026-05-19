@@ -1859,3 +1859,21 @@
   κ-phase SSOT, NEXT_SESSIONS = 핸드오프 SSOT. **g3 정직**: 카테고리
   서술만 — D-범위·RFC건수·phase 수치는 design.md/PLAN.md SSOT 포인터.
   코드 무변경 → install 불요.
+- 2026-05-19 — **phase κ-20/κ-21 — parallel sub-agents (L + K)**
+  (사용자 "all sub agent go" — 4 worktree-isolated agent). 결과:
+  **κ-20 (L · ✅)** — `track-L-kappa-20-agents-index` commit
+  `e4fc7a9`: AGENTS.tape 머리에 `## INDEX` 큐레이션 포인터 테이블
+  (16 entries — @D 13 file-order + @F + @N 2, 각 1줄 gloss +
+  decision ref). 룰 본문 복제 0 (g_ssot_single_source 정합 — 파생
+  포인터 테이블 명시). **κ-21 (K · ✅)** — ingredient shelf
+  multi-pick: §6 `[multi]` 마커 (group title 내, `=` 앞) 파싱 →
+  `IngredientGroup.multiSelect` (default false, 백워드 호환) ·
+  cockpit `shelfPicks` `[String:String]` → `[String:Set<String>]`
+  (single ≤1, multi toggle) · `addToPotFromShelf` multi 그룹 ` · `
+  join · CLI `list-shelf` multi 태그. 측정: `swift run CockpitApp`
+  빌드 green (17.97s, 에러 0) · `list-shelf energy` 백워드 호환
+  확인 (§6 에 `[multi]` 미추가 — g3, syntax 만 enable). **(I,
+  J · ⏳ 보류)** — I (chat history 영속화) · J (CLI list-gates/
+  verify/gate-summary) 는 sub-agent usage limit (10pm KST reset)
+  으로 0 tool_use 미착수. 다음 세션 pickup. **g3 정직**: L/K
+  measured-green, I/J 는 *시작 안 함* (부분작업 0 — 위조 0).

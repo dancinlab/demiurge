@@ -183,7 +183,8 @@ func listShelf(_ domain: String) -> Int32 {
         any = true
         print("  \(verb.rawValue + 1). \(verb.canonical):")
         for g in groups {
-            print("       \(g.title) = \(g.options.joined(separator: " / "))")
+            let tag = g.multiSelect ? " (multi)" : ""
+            print("       \(g.title)\(tag) = \(g.options.joined(separator: " / "))")
         }
     }
     if !any {

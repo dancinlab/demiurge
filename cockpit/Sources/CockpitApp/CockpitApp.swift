@@ -70,8 +70,10 @@ struct WorkbenchView: View {
     @State private var chatMessages: [ChatMessage] = []
     @State private var chatInput = ""
 
-    // ② ingredient-shelf picks (group title → chosen option).
-    @State private var shelfPicks: [String: String] = [:]
+    // ② ingredient-shelf picks (group title → chosen option(s)).
+    // Single-pick groups hold ≤1 element; multi-pick groups (§6
+    // `[multi]` marker) hold the toggled set.
+    @State private var shelfPicks: [String: Set<String>] = [:]
 
     // θ-2 "▶ 실제로 돌리기" action in flight (D49).
     @State private var isRunningAction = false
@@ -379,8 +381,15 @@ struct WorkbenchView: View {
     /// next turn's draft (rfc_012 §5 — the user still presses 보내기).
     private func addToPotFromShelf(_ groups: [IngredientGroup]) {
         let picked = groups.compactMap { group -> String? in
-            guard let option = shelfPicks[group.title] else { return nil }
-            return "\(group.title): \(option)"
+            guard let chosen = shelfPicks[group.title], !chosen.isEmpty else {
+                return nil
+            }
+            // Multi-pick: join the group's options with ` · ` in the
+            // domain map's declared order. Single-pick: the lone value.
+            let value = group.options
+                .filter { chosen.contains($0) }
+                .joined(separator: " · ")
+            return "\(group.title): \(value)"
         }
         guard !picked.isEmpty else { return }
         chatInput = "[재료 선반] " + picked.joined(separator: " · ")
@@ -677,14 +686,24 @@ struct WorkbenchView: View {
 
     @ViewBuilder private func shelfGroup(_ group: IngredientGroup) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(group.title)
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.secondary)
+            HStack(spacing: 4) {
+                Text(group.title)
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.secondary)
+                if group.multiSelect {
+                    Image(systemName: "checklist")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                    Text(expertMode ? "(multi)" : "(여러 개)")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            }
             HStack(spacing: 6) {
                 ForEach(group.options, id: \.self) { option in
-                    let picked = shelfPicks[group.title] == option
+                    let picked = shelfPicks[group.title]?.contains(option) ?? false
                     Button {
-                        shelfPicks[group.title] = picked ? nil : option
+                        toggleShelfPick(group: group, option: option, picked: picked)
                     } label: {
                         Text(option).font(.caption)
                     }
@@ -692,6 +711,21 @@ struct WorkbenchView: View {
                     .tint(picked ? .accentColor : .secondary)
                 }
             }
+        }
+    }
+
+    /// Toggle one option in a shelf group. Multi-pick groups add/remove
+    /// the option from the set; single-pick groups keep ≤1 element
+    /// (tapping a new option replaces the prior choice).
+    private func toggleShelfPick(
+        group: IngredientGroup, option: String, picked: Bool
+    ) {
+        if group.multiSelect {
+            var set = shelfPicks[group.title] ?? []
+            if picked { set.remove(option) } else { set.insert(option) }
+            shelfPicks[group.title] = set.isEmpty ? nil : set
+        } else {
+            shelfPicks[group.title] = picked ? nil : [option]
         }
     }
 

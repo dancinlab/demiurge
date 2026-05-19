@@ -13,16 +13,23 @@
 
 import Foundation
 
-/// One group of mutually-exclusive options on the shelf (pick one).
+/// One group of options on the shelf. Single-pick by default
+/// (mutually-exclusive — pick one); a `[multi]` marker in the §6
+/// group title flips it to multi-pick (toggle several, joined with
+/// ` · ` when added to the pot).
 public struct IngredientGroup: Identifiable, Sendable {
     /// Stable across re-renders — the title is unique within a verb.
     public var id: String { title }
     public let title: String
     public let options: [String]
+    /// `true` when the §6 group title carried a `[multi]` marker.
+    /// Default `false` keeps every existing group single-pick.
+    public let multiSelect: Bool
 
-    public init(title: String, options: [String]) {
+    public init(title: String, options: [String], multiSelect: Bool = false) {
         self.title = title
         self.options = options
+        self.multiSelect = multiSelect
     }
 }
 
@@ -45,13 +52,30 @@ public enum IngredientShelf {
             for groupStr in rest.components(separatedBy: ";") {
                 let parts = groupStr.components(separatedBy: "=")
                 guard parts.count == 2 else { continue }
-                let title = parts[0].trimmingCharacters(in: .whitespaces)
+                var title = parts[0].trimmingCharacters(in: .whitespaces)
+                // `[multi]` marker (conservatively: `\s*\[multi\]\s*`
+                // right before `=`) flips the group to multi-pick and
+                // is stripped from the displayed title. Absence keeps
+                // today's single-pick behavior (backwards compatible).
+                var multiSelect = false
+                if let r = title.range(
+                    of: #"\s*\[multi\]\s*$"#,
+                    options: .regularExpression
+                ) {
+                    multiSelect = true
+                    title.removeSubrange(r)
+                    title = title.trimmingCharacters(in: .whitespaces)
+                }
                 let options = parts[1]
                     .components(separatedBy: "/")
                     .map { $0.trimmingCharacters(in: .whitespaces) }
                     .filter { !$0.isEmpty }
                 if !title.isEmpty, !options.isEmpty {
-                    result.append(IngredientGroup(title: title, options: options))
+                    result.append(IngredientGroup(
+                        title: title,
+                        options: options,
+                        multiSelect: multiSelect
+                    ))
                 }
             }
         }
