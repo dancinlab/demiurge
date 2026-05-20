@@ -115,3 +115,103 @@ Reverted. PR #247 ships pure `read_verilog.hexa` changes only.
 3. After fix, re-run `hexa run stdlib/yosys/gate_record.hexa` and
    confirm `router_d4 area > 0` (the rfc_006 §5 measurement-gate
    signal).
+
+## UPDATE 2026-05-21 — root cause narrowed: popen path broken, spawn fast path works
+
+Further diagnosis with the probe script after rebuilding hexa_v2
+from the current origin/main runtime.c (binary mtime May 20 19:18,
+runtime.c mtime May 21 00:07 — binary was stale but rebuild does
+NOT fix the broken pipe).
+
+### Two paths in `hexa_exec` (`self/runtime_core.c:4593`)
+
+```c
+fflush(NULL);
+FILE* spawn_fp = NULL;
+pid_t spawn_pid = hexa_spawn_no_shell(HX_STR(cmd), &spawn_fp);
+FILE* fp;
+if (spawn_pid > 0) {
+    fp = spawn_fp;                  // FAST path: posix_spawnp
+} else {
+    fp = popen(HX_STR(cmd), "r");   // SLOW path: popen + sh -c
+}
+```
+
+- **Spawn fast path** (`hexa_spawn_no_shell` at L4527) is opt-in via
+  `HEXA_EXEC_NO_SHELL=1` env var (L4460-4466). When env unset,
+  fast path returns 0 immediately, falls into popen.
+- **Spawn path additionally** requires the command to be free of
+  shell metacharacters (`|&;<>*?$()\`\\\"'` newline tab `~{}[]#=`)
+  per `hexa_cmd_has_shell_meta` (L4473-4486). Meta-bearing cmds
+  fall to popen even with env set.
+
+### Empirical results with the probe
+
+```sh
+$ HEXA_EXEC_NO_SHELL=1 hexa run /tmp/probe.hexa
+r1='hello'                                          # echo hello — SPAWN path, works
+r2=''                                                # command -v abc 2>/dev/null || true — meta-bearing, POPEN path, broken
+```
+
+→ **popen path is broken; spawn fast path works.**
+
+### Workaround applied (hexa-lang PR #247 second commit f4c3c493)
+
+`stdlib/kernels/logic_synth/abc_map.hexa::abc_binary_path()` rewritten
+to use `which abc` (two tokens, no shell metas) instead of `command
+-v abc 2>/dev/null || true` (shell-meta-bearing). With
+`HEXA_EXEC_NO_SHELL=1`, the new form takes the spawn fast path and
+resolves `/opt/homebrew/bin/abc` correctly:
+
+```
+[abc_map] binary=/opt/homebrew/bin/abc
+[abc_map] script-size=27537
+[abc_map] exit=0
+[OK] d4:abc_map — abc_map: ok
+[OK] d6:abc_map — abc_map: ok
+```
+
+### Underlying popen bug still open
+
+popen path remains broken for any meta-bearing command — that is a
+separate `self/runtime.c` (or `runtime_core.c`'s popen pre/post-
+processing) defect, NOT addressed in PR #247. The probe + rebuild
+sequence narrows the search:
+
+- `hexa_exec` popen branch (`runtime_core.c:4607-4626`) — fread
+  loop + pclose, standard pattern, no obvious bug.
+- `hexa_pipe_buf_enlarge_kernel` (`runtime_core.c:93`) — macOS
+  noop, not the culprit.
+- `hexa_exec_capture` (`runtime.c:7607`) — separate function with
+  its own fork/pipe/dup2, not on this call path.
+
+The broken behavior surfaces in `to_string(exec_result).trim()`
+returning empty string + `sh: echo: write error: Broken pipe`
+emitted to the parent's stderr. The child sh's stderr being on the
+parent terminal (not piped) means the broken-pipe message is the
+child seeing its stdout pipe already closed — i.e. parent's
+fread/pclose closed the read end before child's first write
+completes. Likely a timing/race in the popen + fread loop OR a
+stdio-layer state corruption between fork and exec.
+
+Diagnostic next step: instrument the popen path with `perror` after
+each fread and before pclose; run the probe under `dtrace -n
+'syscall:::entry /pid == $target/ ...'` to capture the close
+sequence.
+
+### Bonus discovery — `str(float)` also broken
+
+When the abc_map chain completed and gate_record reached the area
+verdict line, the printed output was:
+
+```
+[gate] router_d4 area=(float) µm² oracle=(float) µm² Δ=(float)% FAIL (±5%)
+[gate] router_d6 area=(float) µm² oracle=(float) µm² Δ=(float)% FAIL (±5%)
+```
+
+→ `str(float)` (or the float interpolation path used by gate_record)
+emits the literal token `(float)` instead of the numeric value.
+Filed separately — gates the FINAL g3 acceptance signal (±5 % area
+oracle parity), but does NOT gate confirming that the SSA fix made
+ABC's chain complete (which is now confirmed via `exit=0` +
+`abc_map: ok`).

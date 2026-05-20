@@ -24,7 +24,9 @@
   - prior #4h-a/b/g + write_verilog wire/cell/$dff stack: all merged via earlier PRs
 
 **closure path (per g3) — re-scoped after Phase 3e + PR #247**:
-- ~~ABC comb-loop blocker~~ ← **SSA fix shipped in PR #247** (selftest 76/76 + SSA chain emit evidence in clean_multidriver log: `idx__ssa1..7`, `grant_out__ssa7`, `any_grant__ssa7` chains). End-to-end area > 0 measurement blocked by **separate runtime bug**: hexa's `exec` subprocess returns empty stdout + "broken pipe" — `abc_binary_path()` 가 `/opt/homebrew/bin/abc` 못 찾음 (binary 는 PATH 에 정상 존재함을 shell `command -v abc` 로 확인)
+- ~~ABC comb-loop blocker~~ ← **SSA fix shipped in PR #247** (selftest 76/76 + SSA chain emit evidence in clean_multidriver log: `idx__ssa1..7`, `grant_out__ssa7`, `any_grant__ssa7` chains)
+- ~~ABC binary detection blocker~~ ← **abc_map fix shipped in PR #247 second commit** (`f4c3c493`): `abc_binary_path()` 가 `which abc` (shell-meta-free) 사용으로 spawn fast path reachable. `HEXA_EXEC_NO_SHELL=1 hexa run stdlib/yosys/gate_record.hexa` → `[abc_map] binary=/opt/homebrew/bin/abc · exit=0 · abc_map: ok` for both d4/d6. chain end-to-end functional
+- **새 blocker (별개 issue)**: `str(float)` 가 literal `(float)` 출력 → gate_record 의 area verdict line 이 `area=(float) µm²` 으로 emit. 실제 area numeric 값을 print 로 확인 불가 (in-process numeric comparison 은 여전히 가능). 별도 runtime/codegen fix 필요
 - ~~comb-side share/freduce parity~~ ← **deferred** : meaningless while area=0.0
 - closure 100% 까지: (a) PR #247 review/merge + (b) **exec runtime bug fix** ← new blocker, separate scope + (c) area > 0 측정 확인 + (d) ±5 % gate 진입 + (e) (가능하면) share/freduce comb-gap closure + (f) g3-conditional gate flip
 
@@ -82,10 +84,13 @@
   - selftest 75 → 76/76 PASS (T73 `F-RFC-RV-COMB-LOOP-SSA-ARBITER`), zero regression
   - IR-level evidence: `pass_proc_mux lowered 44 cond-tagged LHS-group(s)` for d6 (vs 3 pre-fix), `clean_multidriver` collapsing `idx__ssa1..7`, `grant_out__ssa7`, `any_grant__ssa7` chains last-wins
   - end-to-end area measurement blocked by separate `exec` runtime bug (see Status)
-- [ ] **exec runtime bug fix** (new blocker — separate scope)
-  - 증상: hexa 의 `exec("...")` subprocess 가 모든 command 에 빈 stdout + `broken pipe` warning. `command -v abc`, `echo $PATH`, `echo hello` 다 빈 string. shell `bash -c` / `/bin/sh -c` 는 정상
-  - 의심: `self/runtime.c` 의 popen 동작이 sibling work 의 modified 상태에서 build 됐을 가능성 · 또는 bootstrap 의 hexa_v2 binary 가 broken state 에서 cached
-  - scope: 별도 file (이 도메인 아님). 진단 + fix 후 area measurement 재개
+- [~] **exec runtime bug** — root cause narrowed (별개 scope, popen path 만 broken)
+  - 진단 결과: `hexa_exec` 의 *popen* path 가 모든 cmd 에 빈 stdout 반환. *spawn* fast path (`HEXA_EXEC_NO_SHELL=1` 환경 + shell-meta-free cmd) 는 정상. 즉 `command -v abc 2>/dev/null || true` (meta 포함) 는 popen → broken; `which abc` (meta-free) + env set 은 spawn → works
+  - **workaround landed in PR #247 second commit** (`f4c3c493`): `abc_map.hexa::abc_binary_path()` 가 `which abc` 사용. ABC chain end-to-end 통과 가능
+  - **underlying popen bug 자체는 여전히 open** — `self/runtime_core.c:4607-4626` 의 popen + fread + pclose path 의 child→parent pipe 가 EOF early 또는 stdio state corruption. 별도 dtrace/perror instrumentation 필요. `inbox/notes/2026-05-21-hexa-exec-broken-pipe.md` 진단 (UPDATE entry) 참조
+- [ ] **str(float) runtime bug** (new blocker, str(float) emits literal `(float)`)
+  - 증상: gate_record 의 area verdict line 이 `area=(float) µm² oracle=(float) µm² Δ=(float)%` 으로 emit. numeric 값 print 자체가 broken
+  - in-process numeric comparison 은 여전히 동작 가능 → workaround 또는 fix 둘 다 가능. 별도 runtime/codegen fix scope
 - [ ] **share/freduce parity** (comb-side oracle gap, **deferred — area > 0 이후만 의미 있음**)
 - [ ] **share/freduce parity** (comb-side oracle gap, **deferred — area > 0 이후만 의미 있음**)
   - oracle 의 12k 차이 = `synth` macro 의 logic-sharing optimizations
@@ -176,7 +181,8 @@ FLOW pattern: 풀기 (84+ items generated) → 자르기 (delete 75 off-scope it
 
 (append-only, latest 위에)
 
-- 2026-05-21 KST — **ABC comb-loop SSA fix landed in PR #247** (hexa-lang `8dd1e677`, OPEN). +393/-1 in `read_verilog.hexa`. 3 clean-room helpers (`_rv_signal_is_read_in_body` · `_rv_collect_blocking_lhs` · `_rv_ssa_rename_toks`) plumbed into `_rv_parse_always` for-handler at L4124. Per-iteration SSA versioning (`s__ssa0..ssaP`) of read-then-write blocking-LHS only — write-only filter preserves T58~T65 legacy path. T73 `F-RFC-RV-COMB-LOOP-SSA-ARBITER` selftest added (P=4 priority arbiter); 75/75 → 76/76 PASS, zero regression. IR-level evidence in `clean_multidriver` log: d6 의 `idx__ssa1..ssa7` + `grant_out__ssa7` + `any_grant__ssa7` chains collapsed last-wins, `pass_proc_mux` lowered 44 cond-tagged LHS-groups (vs 3 pre-fix). **end-to-end area measurement blocked by separate runtime bug** (`exec` subprocess returns empty stdout + broken pipe — `abc_binary_path()` 가 `/opt/homebrew/bin/abc` 못 찾음; shell 들에서는 정상). 별도 진단 + fix 필요
+- 2026-05-21 KST — **PR #247 second commit `f4c3c493`** : `abc_map.hexa::abc_binary_path()` 가 `command -v abc 2>/dev/null || true` → `which abc` 으로 변경 (shell-meta-free → spawn fast path 진입 가능). root cause 진단 결과: `hexa_exec` 의 popen path 가 broken, spawn path (HEXA_EXEC_NO_SHELL=1 + meta-free cmd) 는 정상. ABC chain end-to-end 통과 확인 — `[abc_map] binary=/opt/homebrew/bin/abc · exit=0 · [OK] d4/d6 abc_map: ok`. 또 다른 별개 runtime bug 발견: `str(float)` 가 literal `(float)` 출력 → area verdict numeric 값 print 안 됨 (in-process comparison 은 가능)
+- 2026-05-21 KST — **ABC comb-loop SSA fix landed in PR #247** (hexa-lang `8dd1e677`, OPEN). +393/-1 in `read_verilog.hexa`. 3 clean-room helpers (`_rv_signal_is_read_in_body` · `_rv_collect_blocking_lhs` · `_rv_ssa_rename_toks`) plumbed into `_rv_parse_always` for-handler at L4124. Per-iteration SSA versioning (`s__ssa0..ssaP`) of read-then-write blocking-LHS only — write-only filter preserves T58~T65 legacy path. T73 `F-RFC-RV-COMB-LOOP-SSA-ARBITER` selftest added (P=4 priority arbiter); 75/75 → 76/76 PASS, zero regression. IR-level evidence in `clean_multidriver` log: d6 의 `idx__ssa1..ssa7` + `grant_out__ssa7` + `any_grant__ssa7` chains collapsed last-wins, `pass_proc_mux` lowered 44 cond-tagged LHS-groups (vs 3 pre-fix)
 - 2026-05-21 KST — PR #242 (#4i `cee28986`) **CLOSED** with "superseded by #245 Phase 3e" comment via `gh pr close --comment`. branch `rfc006-yosys-4i-with-else-mixed-block` 보존 (재검토 필요시)
 - 2026-05-20 23:30 KST — **status g3-honest correction (audit)**: 이전 entry 들의 wrong claim 3건 정정:
   1. "PR #242 cee28986 admin-merge" → **PR #242 still OPEN**, `gh pr view 242 --json state` = `OPEN`. branch `rfc006-yosys-4i-with-else-mixed-block` 에만 존재. close 예정 ("superseded by #245")
