@@ -12,7 +12,7 @@
 - **pickup-blocked** — toolchain / cross-session dependency
 - **archive** — reference / methodology, no further action
 
-## Index (31 entries)
+## Index (32 entries)
 
 | filename | status | reference | one-liner |
 |---|---|---|---|
@@ -33,7 +33,8 @@
 | `k68-cell-pick-2026-05-21.md` | pickup-open | κ-68 / G27 / RFC 013 §6.11 | κ-68 첫 measured-oracle absorbed flip 의 cell pick — Energy (solar) + NREL MIDC pyranometer GHI direction. 5 open sub-decisions (station / window / bridge trust / PASS criterion / D-number) queued for G27 D-block (D109 후보). 회피 후보: Fusion (D106 illustrative) · ChipAnalyze (YOSYS 별 세션) · Aura (heavy oracle infra) · Ufo (closed-form only). |
 | `k68-d109-draft-2026-05-21.md` | pickup-open | κ-68 / G27 / D109 후보 | design.md D109 entry 초안 — Energy/solar + NREL MIDC SRRL Golden CO + single clear-sky day 1-min cadence + pvlib clearsky trusted bridge + mean rel_err ≤ 5% PASS criterion 의 5 default 를 baked-in 한 decision-only D-block. 사용자 승인 후 design.md 에 land. code 0 · scope 박제만. |
 | `k68-g28-measured-oracle-ref-sketch-2026-05-21.md` | pickup-open | κ-68 / G28 / Swift schema | `MeasuredOracleRef` typed struct sketch (Codable Sendable · 8 field · isMeasuredOraclePASS computed) + `EnergyVerifyRecord` additive field (`measuredOracle: MeasuredOracleRef?`). 6 open design questions (time-series carrier · unit field · PASS evaluation · type 재사용성 · derived computed property · intermediate state UI). 사용자 review 후 Swift land. |
-| `k68-g30-governance-row-sketch-2026-05-21.md` | pickup-open | κ-68 / G30 / AGENTS.tape | `@D g_absorbed_needs_measured_oracle` row 초안 (.tape v1.3 do/dont form · 8deeb7d 후 style mirror) + INDEX one-liner + XCTest invariant sketch (3 test method) + D106 illustrative-physics exclusion clause. 5 open design questions (enforcement scope · required flag · @> link target · name final · D109 timing ordering). G28 land *후* 에만 land 가능 (dependency staging). |
+| `k68-g30-governance-row-sketch-2026-05-21.md` | superseded | κ-68 / G30 / AGENTS.tape (archived) | **SUPERSEDED 2026-05-21** by `k68-g30-revised-2026-05-21.md` — post-1a620ad/.tape archive + bd28631 redirect. body content 는 audit trail 로 보존 (XCTest sketch §6 는 revised 안에서도 load-bearing). |
+| `k68-g30-revised-2026-05-21.md` | pickup-open | κ-68 / G30 / Stage 1 XCTest + Stage 2 constitution | post-archive revised G30 plan. **Stage 1** (MANDATORY · load-bearing) = `AbsorbedNeedsMeasuredOracleTests.swift` XCTest invariant 3 method (testAbsorbedRequiresMeasuredOraclePASS · testAbsorbedNotAutoflippedByD95Computed · testD106IllustrativeCellExemptFromMeasuredOracle). **Stage 2** (DEFERRED) = `.specify/memory/constitution.md` row · constitution.md template-only 인 동안 land 보류. 5 open Q (κ-68 closure stage boundary · scan scope · D106 detection · commit boundary · test 갯수). |
 | `openmc-install-blocker-2026-05-20.md` | pickup-blocked | (Track D / H-3) | OpenMC + ENDF/B-VIII.0 install fails on osx-arm64 + Linux pool unreachable — k-eff measurement deferred |
 | `openmdao-kernel-promotion-pickup.md` | pickup-open | (2nd consumer) | OpenMDAO 2 consumers (scope+space) — promote to kernels/mdo/ |
 | `parity_attempt_bot_synth_2026-05-20.md` | resolved | κ-50 | Pinocchio rel err 0.04% / 0.0003% vs Spong; flip NO (URDF hermetic) |
@@ -50,7 +51,7 @@
 
 ## Open pickup count
 
-- **pickup-open**: 7 (`openmdao-kernel-promotion-pickup.md` 2nd MDO consumer · `rfc006-s5-area-oracle-parity-handoff.md` next-session entry = §5 gate refined to [58,675, 64,851] µm² with oracle 61,762.99 reproducible; sub-steps #4g/#4h/#4i + hexa-cc strlit-init PR + sv2v pre-step · `hexa-native-port-pattern-pilot-mc-transport.md` D80 hexa-native mc_transport 1-D pilot · `k68-cell-pick-2026-05-21.md` κ-68 cell pick anchor — Energy/solar + NREL MIDC direction, 5 sub-decisions queued · `k68-d109-draft-2026-05-21.md` G27 D-block 초안 awaits user review · `k68-g28-measured-oracle-ref-sketch-2026-05-21.md` G28 Swift schema 초안 awaits review · `k68-g30-governance-row-sketch-2026-05-21.md` G30 @D + XCTest 초안 awaits review · staged G28→G29→G30)
+- **pickup-open**: 7 (`openmdao-kernel-promotion-pickup.md` 2nd MDO consumer · `rfc006-s5-area-oracle-parity-handoff.md` next-session entry = §5 gate refined to [58,675, 64,851] µm² with oracle 61,762.99 reproducible; sub-steps #4g/#4h/#4i + hexa-cc strlit-init PR + sv2v pre-step · `hexa-native-port-pattern-pilot-mc-transport.md` D80 hexa-native mc_transport 1-D pilot · `k68-cell-pick-2026-05-21.md` κ-68 cell pick anchor — Energy/solar + NREL MIDC direction, 5 sub-decisions queued · `k68-d109-draft-2026-05-21.md` G27 D-block 초안 (D109 land 후 audit trail) · `k68-g28-measured-oracle-ref-sketch-2026-05-21.md` G28 Swift schema 초안 (G28a 4a1a087 land 후 audit trail) · `k68-g30-revised-2026-05-21.md` G30 revised plan Stage 1 XCTest mandatory + Stage 2 constitution deferred)
 - **pickup-blocked**: 2 (`hexa-lang-branch-consolidation-2026-05-20.md` cross-session live-tree alignment · `openmc-install-blocker-2026-05-20.md` osx-arm64 + Linux pool unreachable)
 
 ## Cross-references

@@ -1,6 +1,37 @@
-# DRAFT — AGENTS.tape `@D g_absorbed_needs_measured_oracle` row (G30 land 후보)
+# SUPERSEDED — AGENTS.tape `@D g_absorbed_needs_measured_oracle` row (G30 land 후보)
 
-> **status**: draft · 2026-05-21
+> **status**: **SUPERSEDED · 2026-05-21**
+>
+> **이유**: 본 sketch 작성 후 같은 일자에 다른 세션이 governance
+> 인프라를 전환:
+> - `1a620ad` (2026-05-21) — `AGENTS.tape` + `ARCH.tape` 가
+>   `archive/` 로 이동. .tape format active enforcement 없음 ·
+>   dormant carry.
+> - `ca61a6c` (2026-05-21) — GitHub Spec Kit Phase 2 채택 ·
+>   `.specify/memory/constitution.md` 가 새 governance SSOT (현재
+>   template-only · 미populate).
+> - `bd28631` (2026-05-21) — ARCH §11.4 G30 exit criterion 의
+>   `AGENTS.tape @D 1 row land` → `.specify/memory/constitution.md
+>   governance row land` 로 redirect.
+> - 사용자 메모 ".tape 안쓰여 현재 (참고)" — XCTest 가 real
+>   enforcement vehicle, .tape entries 는 doc-shaped audit.
+>
+> 본 sketch 의 .tape v1.3 do/dont form 은 dormant carry — *future
+> tape-runtime* 위한 audit trail 로만 가치. land 의 실 target 은
+> 변경: XCTest invariant (load-bearing) + constitution.md row
+> (deferred until populate).
+>
+> **대체 sketch**: `k68-g30-revised-2026-05-21.md` (post-archive
+> revised governance plan · Stage 1 XCTest mandatory + Stage 2
+> constitution row deferred).
+>
+> 본 body 의 do/dont content + XCTest sketch 부분은 *내용 자체* 는
+> 여전히 유효 — XCTest sketch (§6) 는 revised 안에서도 load-bearing.
+> 아래 원본 body 보존 (audit trail · do not edit).
+>
+> ---
+>
+> **(원래 draft body 이하)**
 >
 > **목적**: ARCH.md §11.4 Round 7 G30 (governance gate — absorbed-vs-
 > measured invariant typed enforcement) 의 .tape v1.3 do/dont form
