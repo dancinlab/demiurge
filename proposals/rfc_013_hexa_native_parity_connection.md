@@ -1,22 +1,36 @@
 # RFC 013 — Hexa-native parity connection (D80 substrate ↔ demiurge cell-record wiring)
 
-> Status: **PARTIAL-LAND** (schema half landed κ-66 by demiurge
-> `5e9f6dea`; producer-side emit + live-mirror queued) · Created:
-> 2026-05-20 · **κ phase: κ-67** (promotion of κ-65 connection-plan
-> note to formal RFC).
+> Status: **MOSTLY-LANDED** (schema half κ-66 `5e9f6dea` · producer
+> wire T7 `efa4afe` · D95 computed cell-flip `a5d12d2` · D99 chip UI
+> `f036f6f` · D96+D100 19/19 narrative `47bf504` + `e451037` · D97
+> 3-tier link-integrity `74a1b92` · D98 cross-ref CI `384101b` ·
+> D101 env-fallback deprecation `8fc0862` · D103 dimension-separation
+> docstring `105315e` · D102 chem first PILOTS row `a033def`; 13/15
+> D80 pilots in `domains/PILOTS.demi` — only the per-cell measured-
+> oracle parity round remains as P-⑩ ① queued follow-on) · Created:
+> 2026-05-20 · Last status refresh: 2026-05-20 (D105 sweep) ·
+> **κ phase: κ-67** (promotion of κ-65 connection-plan note to formal
+> RFC; PARTIAL-LAND → MOSTLY-LANDED via D94..D103 sweep).
 > Promotes: `inbox/notes/hexa-native-connection-plan-2026-05-20.md`
 > (the κ-65 audit-round SHAPE note). The note remains in place as
 > audit trail; this RFC supersedes its `κ-? RFC` placeholder.
 > Source decisions: `design.md` D61 (substrate in hexa-lang only),
 > D72 (2-layer stdlib extraction), D80 (`g_hexa_only` ultimate-form),
-> D86 (`g_no_hardcoded_data` declarative SSOT), D85 (PRODUCERS.demi).
+> D86 (`g_no_hardcoded_data` declarative SSOT), D85 (PRODUCERS.demi),
+> D94 (Producer T7 wire), D95 (cell absorbed = computed over PILOTS),
+> D96 / D100 (19/19 domain narrative), D97 (3-tier link-integrity),
+> D98 (DEPENDENCIES↔PILOTS cross-ref CI), D99 (HexaNativeParityChip),
+> D101 (`DEMIURGE_HEXA_LANG` env-var deprecation), D102 (chem first
+> PILOTS row), D103 (2-orthogonal-dimension docstring).
 > Earlier κ-history: κ-60 (`hexaNativeParity` field planned),
 > κ-62 (sibling-repo variant pattern), κ-65 (44-row dependency audit
 > + 4 D80 pilot landings + connection-plan note).
 > Pattern mirror: hexa-lang's pilot rolling table at
-> `inbox/notes/hexa-native-port-pattern-pilot.md` (9 pilot rows
-> #1..#7 across `solar / mc_transport / neural / graph / urdf /
-> plasma / orbital / signal_proc / noc_sim`).
+> `inbox/notes/hexa-native-port-pattern-pilot.md` (15 pilot rows
+> #1..#12 across `solar / mc_transport / neural / graph / urdf /
+> plasma / orbital / signal_proc / noc_sim / transport_kinematics /
+> breaker_trace_reduce / fem_bar1d / autodiff_dual / bio_align_nw /
+> chem_arrhenius`; 375 cumulative assertions).
 
 ---
 
@@ -268,34 +282,100 @@ substrate change.
 
 ---
 
-## 6. Follow-ons (queued, NOT in this RFC)
+## 6. Follow-ons — sweep progress (κ-67 PARTIAL-LAND → MOSTLY-LANDED)
 
-This RFC lands the **schema half**. Three follow-on rounds remain:
+This RFC originally landed the **schema half** at κ-66 (`5e9f6dea`)
+and listed three follow-on rounds. The post-`cea3c66` sweep
+(2026-05-20) collapsed most of §6.1 and §6.2 into landed state.
+Current status:
 
-### 6.1 Producer-side emit
+### 6.1 Producer-side emit — LANDED (T7 wire)
 
-Today no producer writes the `hexaNativeParity` field on its emitted
-record — the field is optional and starts nil. Each pilot consumer
-gets a 1-PR change to the substrate adapter (`stdlib/<domain>/
-<adapter>.py`) that records the kernel+test SHA + PASS-N/M from the
-parity test output. Estimate: 5 PRs (#1 / #2 / #6 / #7 first;
-#3 / #4 / #5 / #5b ride a second round when their cell carriers
-land).
+**Landed**: demiurge `efa4afe` (D94 — `feat(cockpit/T7): Producer ↦
+PilotLoader.find(id:) auto-lookup wire`). 4 producer cells now emit
+`hexaNativeParity` automatically by `PilotLoader.find(id:)` lookup
+against `domains/PILOTS.demi` — no hardcoded SHA mirrors in Swift
+(D86 honesty floor preserved). The optional field defaults to nil
+for cells with no PILOTS row.
 
-### 6.2 Live `DEPENDENCIES.demi` mirror in cockpit
+### 6.2 Cell-flip = computed property — LANDED (D95)
 
-`SkippedCellsDashboard` currently colors chips from the static
-`GateType` enum. Wiring `DependenciesLoader` into the cockpit's
-warm-start path makes `hexaNativeAbsent` / `hexaNativeFuture`
-buckets *derived* from the 44-row audit at load time (per D86 — no
-hardcoded mirror). One PR.
+**Landed**: demiurge `a5d12d2` (D95 — cell `isHexaNativeAbsorbed`
+computed property over `PILOTS.demi parity_status`). NOT a stored
+flip — the substrate-parity dimension is *projected* from the
+declarative SSOT, so the cell-record honesty floor (g3 — stored
+`absorbed: Bool` requires a measured oracle) is preserved while
+substrate-side PASS is visible to the cockpit.
 
-### 6.3 `gate_type = "illustrative-physics"` first-class
+### 6.3 Cockpit chip UI — LANDED (D99)
 
-Pilot #2 (`mc_slab_demo`) needs a separate gate distinct from the
-two hexa-native buckets. Adding the enum case + dashboard color is
-trivial; the audit work is identifying which other cells (if any)
-need this gate. Queued as a small follow-up.
+**Landed**: demiurge `f036f6f` (D99 — `HexaNativeParityChip`
+3-case visualize cell parity ref). The chip renders Stage-1 / Stage-2
+/ Stage-3 hexa-native parity state from the computed property; no
+static `GateType` colors duplicated.
+
+### 6.4 19/19 substrate narrative — LANDED (D96 + D100)
+
+**Landed**: demiurge `47bf504` (D96 — 5 sibling-bearing domains'
+`domains/<id>.md` carry a substrate narrative line) +
+`e451037` (D100 — 14 non-sibling domains close the Q2 reverse loop;
+every demiurge domain now states where its substrate lives).
+
+### 6.5 3-tier link-integrity verifier — LANDED (D97 / Q3=A)
+
+**Landed**: demiurge `74a1b92` (D97 — 3-tier substrate link-
+integrity verifier covers Tier ① sibling repo presence / Tier ②
+`SUBSTRATE_LINKS.demi` ↔ filesystem agreement / Tier ③
+`DEPENDENCIES.demi` ↔ `PILOTS.demi` cross-ref).
+
+### 6.6 DEPENDENCIES ↔ PILOTS cross-ref CI — LANDED (D98)
+
+**Landed**: demiurge `384101b` (D98 — `DependenciesPilotsCrossRef
+Tests` 3 XCTest method · Phase F · cross-ref CI test). Single-source
+discrepancy between the 44-row audit and the rolling pilot table is
+now a CI gate.
+
+### 6.7 `DEMIURGE_HEXA_LANG` env-var deprecation — LANDED (D101)
+
+**Landed**: demiurge `8fc0862` (D101 — `DependenciesLoader` and
+`PilotLoader` no longer fall back to `$DEMIURGE_HEXA_LANG` for
+cross-repo path; D88 already relocated `DEPENDENCIES.demi` into
+demiurge so the env-var is redundant). §2.4 resolver order updated.
+
+### 6.8 Dimension-separation docstring — LANDED (D103)
+
+**Landed**: demiurge `105315e` (D103 — 5 cell records' stored
+`absorbed: Bool` and computed `isHexaNativeAbsorbed: Bool` are
+documented as 2 orthogonal dimensions; producer-emit author cannot
+auto-conflate measured-oracle PASS with substrate-parity PASS).
+
+### 6.9 Chem domain seed + first PILOTS row — LANDED (D102)
+
+**Landed**: demiurge `3215cea` (chem `domains/chem.md` substrate
+line: NOT YET → `stdlib/kernels/chem/` seed) + `a033def` (D102 —
+`[pilot-chem_arrhenius]` 14th PILOTS row · Stage-0 scaffolding · no
+external oracle yet — formula IS the algorithm).
+
+### 6.10 D80 pilot #12 = `bio_align_nw` — LANDED
+
+**Landed**: demiurge `a2fcb1b` (`domains/bio.md` — D80 pilot #12
+`needleman_wunsch_kernel` landed at hexa-lang `d73a2cbf`). Cumulative
+`domains/PILOTS.demi` = 15 rows (13 D80 pilots + `pilot-chem_arrhenius`
+Stage-0 seed + `pilot-mc_transport` illustrative-physics gate; 375
+cumulative assertions across rows that carry parity tests).
+
+### 6.11 Remaining queued — P-⑩ ① measured-oracle per-cell parity
+
+The single remaining follow-on from the original §6 is the per-cell
+*measured-oracle* parity round: producer authors wire substrate
+adapter PASS-N/M into cell-side measurement records that flip the
+stored `absorbed: Bool` legitimately (NOT via D95 computed
+projection). NEXT_SESSIONS P-⑩ ① queues this; D103 docstring guards
+against accidental auto-flip during that round.
+
+### 6.12 `gate_type = "illustrative-physics"` first-class — STILL QUEUED
+
+Pilot #2 (`mc_slab_demo`) gate; no change since RFC publication.
 
 ---
 
@@ -319,17 +399,53 @@ need this gate. Queued as a small follow-up.
 
 - Source note: `inbox/notes/hexa-native-connection-plan-2026-05-20.md`
   (κ-65 audit-round SHAPE note — kept in place as audit trail).
-- demiurge implementation: **`5e9f6dea`** (this RFC's §2 schema half).
+- demiurge κ-66 schema half: **`5e9f6dea`** (this RFC's §2).
+- demiurge κ-67 RFC publication: **`cea3c66`** (PARTIAL-LAND).
+- demiurge post-κ-67 sweep (PARTIAL-LAND → MOSTLY-LANDED · 2026-05-20):
+  - **`efa4afe`** — D94 · Producer T7 wire (4 cells emit `hexaNativeParity`).
+  - **`a5d12d2`** — D95 · cell absorbed flip = computed property over `PILOTS.demi`.
+  - **`f036f6f`** — D99 · `HexaNativeParityChip` 3-case visualize cell parity ref.
+  - **`47bf504`** — D96 · sibling sub-domain narrative on 5 `domains/<id>.md`.
+  - **`e451037`** — D100 · substrate narrative line on 14 non-sibling `domains/<id>.md` (Q2 reverse).
+  - **`74a1b92`** — D97 · 3-tier substrate link-integrity verifier (Q3 = A).
+  - **`384101b`** — D98 · `DEPENDENCIES.demi` ↔ `PILOTS.demi` cross-ref CI test.
+  - **`8fc0862`** — D101 · `DEMIURGE_HEXA_LANG` env fallback deprecation.
+  - **`105315e`** — D103 · cell `absorbed` vs `isHexaNativeAbsorbed` = 2 orthogonal dimensions (docstring).
+  - **`3215cea`** — chem domain substrate narrative (NOT YET → `stdlib/kernels/chem/` seed).
+  - **`a033def`** — D102 · chem first `PILOTS.demi` row `[pilot-chem_arrhenius]`.
+  - **`a2fcb1b`** — D80 pilot #12 · `needleman_wunsch_kernel` landed (hexa-lang `d73a2cbf`).
 - hexa-lang codegen fix: **`a272c9c4`** (this RFC's §5.1 + §5.2).
 - hexa-lang reconcile: **`4389da0c`** (this RFC's §5.3).
 - hexa-lang pilot pattern rolling table:
   `hexa-lang/inbox/notes/hexa-native-port-pattern-pilot.md`.
 - audit SSOT: `demiurge/domains/DEPENDENCIES.demi`
   (44 sections — relocated from `hexa-lang/` to `demiurge/` by D88).
+- pilot SSOT: `demiurge/domains/PILOTS.demi` (15 rows · 13 D80 pilots
+  + 1 Stage-0 chem seed + 1 illustrative-physics gate · D90 8-field
+  schema · 375 cumulative assertions).
 - demiurge governance: `AGENTS.tape @D g_hexa_only` (D80),
   `@D g_no_hardcoded_data` (D86),
   `@D substrate_in_hexa_lang_only` (D61),
   `@D producers_demi_ssot` (D85).
 - Prior κ history: κ-60 (`hexaNativeParity` field originally planned),
   κ-62 (`siblingRepoVariant` pattern this RFC extends),
-  κ-65 (44-row audit + 4 D80 pilot landings + this RFC's source note).
+  κ-65 (44-row audit + 4 D80 pilot landings + this RFC's source note),
+  κ-66 (schema half landed `5e9f6dea`),
+  κ-67 (PARTIAL-LAND `cea3c66` → MOSTLY-LANDED via D94..D103 sweep).
+
+---
+
+## 9. Log
+
+- **2026-05-20** — RFC published (κ-67 PARTIAL-LAND, `cea3c66`).
+- **2026-05-20** — Post-κ-67 sweep land (D94..D103 · 12 commits):
+  Producer T7 wire (`efa4afe`), D95 cell-flip computed (`a5d12d2`),
+  D99 chip UI (`f036f6f`), D96+D100 19/19 narrative
+  (`47bf504` + `e451037`), D97 3-tier link-integrity (`74a1b92`),
+  D98 cross-ref CI (`384101b`), D101 env-deprecation (`8fc0862`),
+  D103 dimension docstring (`105315e`), chem seed (`3215cea`) +
+  D102 chem first PILOTS row (`a033def`), D80 pilot #12 bio_align
+  (`a2fcb1b`). Status: PARTIAL-LAND → MOSTLY-LANDED. Only remaining
+  follow-on = per-cell measured-oracle parity round (P-⑩ ①).
+- **2026-05-20** — D105 status refresh (this entry · header / §6 /
+  §8 cross-references / §9 log reconciled to current sweep state).

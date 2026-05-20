@@ -4045,3 +4045,68 @@ JSON wire shape / `CodingKeys` / `init` signature 모두 byte-unchanged.
 struct API 표면은 1글자도 안 바뀜). κ-67 PARTIAL-LAND → LAND 경로의
 P-⑩ ① 직전 가드 — producer-emit 작성자가 두 dimension 을 자동으로
 conflate 할 risk 가 docstring 으로 차단됨.
+
+### Decision 105 — RFC 013 status refresh: PARTIAL-LAND → MOSTLY-LANDED (κ-67 sweep reconciliation)
+
+**picked**: `proposals/rfc_013_hexa_native_parity_connection.md` 의
+status header / §6 follow-ons / §8 cross-references / §9 log 을
+post-κ-67 sweep (D94..D103 · 12 commits · 2026-05-20) 의 실제 상태로
+갱신. status string `PARTIAL-LAND` → `MOSTLY-LANDED`. 새 RFC / 새
+SSOT / 새 code 0; RFC 본문 단일 파일의 status / 표 / cross-link / log
+정합화만.
+
+**rationale**:
+- κ-67 PARTIAL-LAND 시점 (`cea3c66`, 2026-05-20 ~ 오전) 의 RFC 본문은
+  §6.1 (producer-side emit) / §6.2 (live `DEPENDENCIES.demi` mirror) /
+  §6.3 (illustrative-physics gate) 3개를 "queued, NOT in this RFC"
+  로 표시. 같은 날 sweep 으로 §6.1 (T7 wire · `efa4afe` · D94) / §6.2
+  cockpit 측 visualize (`f036f6f` · D99) + cell-flip computed
+  (`a5d12d2` · D95) 가 LAND 했고, §6.2 와 별개로 19/19 substrate
+  narrative (D96 + D100 · `47bf504` + `e451037`), 3-tier link-
+  integrity verifier (D97 · `74a1b92`), DEPENDENCIES↔PILOTS cross-ref
+  CI (D98 · `384101b`), env-fallback deprecation (D101 · `8fc0862`),
+  dimension-separation docstring (D103 · `105315e`) 까지 같은
+  RFC 013 scope 안에서 LAND. PILOTS.demi 가 9 row → 15 row (D80 pilot
+  #12 `a2fcb1b` + chem seed `a033def` 포함). RFC 본문의 status string
+  은 그대로 `PARTIAL-LAND` 라서 reader 가 본문만 읽고 design.md 의
+  D94..D103 cross-link 을 거치지 않으면 sweep 진행을 놓침 —
+  SSOT-single-source (Demiurge 원칙) 위반의 mildest form.
+- "MOSTLY-LANDED" 선택 (LAND 가 아닌): per-cell *측정-oracle* parity
+  round (P-⑩ ①) 가 아직 안 끝났고, 이건 g3 honesty floor — substrate-
+  parity ≠ measurement-parity 의 진짜 closure. RFC 의 honest status
+  는 "schema + producer + visualize 다 land 했지만 cell-level
+  measured oracle 은 queued" 이고, 그걸 한 단어로 표현하는 라벨이
+  MOSTLY-LANDED.
+- D105 entry 자체가 RFC 본문의 §9 Log 와 한 줄씩 mirror 한다 — RFC
+  본문이 SSOT (status 의 사실), design.md D105 가 *결정 기록*
+  (왜 status string 을 갱신했는지). 두 곳이 한 줄씩 보존되어
+  cross-link 가 양방향.
+
+**적용**:
+1. `proposals/rfc_013_hexa_native_parity_connection.md`:
+   - status header (line 3) `PARTIAL-LAND` → `MOSTLY-LANDED` +
+     12 commit SHA cross-link inline 으로 추가.
+   - "Source decisions" 줄에 D94..D103 enumerate.
+   - "Pattern mirror" 라인 9 pilot → 15 pilot 으로 갱신
+     (375 cumulative assertions 포함).
+   - §6 (Follow-ons) 전면 재작성 — 3개 queued 가 §6.1..§6.10 의
+     LANDED 항목으로 분기 (각 항목당 SHA + D-decision cross-link),
+     §6.11 만 P-⑩ ① 로 remaining queued, §6.12 illustrative-physics
+     gate 는 STILL QUEUED.
+   - §8 (Cross-references) 에 sweep 12 SHA bulleted list 로 추가.
+   - 새 §9 (Log) — 3 entry (publication / sweep / D105 refresh).
+2. `design.md` D105 entry (본 entry).
+3. **NOT** 적용 (scope 밖):
+   - 새 PILOTS.demi row · 새 DEPENDENCIES.demi row · 새 cell record
+     schema · 새 cockpit code 0.
+   - hexa-lang 측 작업 0 (15th pilot 은 sweep 안에서 이미 land).
+   - 다른 RFC (RFC 004 / 005 / ...) status 갱신 0 — 본 결정은 RFC 013
+     단일 본문 status 정합만.
+
+**g3** — RFC 본문 1개 파일 갱신 + design.md 1 entry. 새 code 0, 새
+stored field 0, 새 typed enum 0, 새 `.demi` row 0. 변경된 surface =
+`proposals/rfc_013_hexa_native_parity_connection.md` 의 status string
++ §6 / §8 / §9. 다른 SSOT (PILOTS.demi · DEPENDENCIES.demi ·
+SUBSTRATE_LINKS.demi · 5 cell record · 19 domains/<id>.md) byte-
+unchanged. RFC 가 reader 에게 자기 sweep 을 정직히 노출 — Demiurge
+SSOT-single-source 원칙의 자기-적용.
