@@ -1,5 +1,7 @@
 # hexa-lang branch consolidation — 2026-05-20
 
+> status: **pickup-blocked** (cross-session) — concurrent session occupies the `~/core/hexa-lang` live tree on a non-origin/main branch. demiurge-session-autonomous resolution would lose concurrent uncommitted work — see NEXT_SESSIONS H-1.
+
 Cross-session consolidation of divergent `~/core/hexa-lang` branches so demiurge's
 16 producers spawn stdlib scripts that work on any branch. g3-safe: no force, no
 rewrite, no uncommitted-change loss.

@@ -1,5 +1,7 @@
 # cern + analyze — producer-alternative mechanism decision (2026-05-20)
 
+> status: **resolved** (κ-51 / D74) — Option C ProducerRegistry adopted; default = xsuite-tracking, override = pylhe via `--producer pylhe`. AGENTS.tape `@N n_cern_producer_alternatives` carries the governance note.
+
 ## Context
 
 The `cern + analyze` cell in `ActionDispatch.swift` currently routes to

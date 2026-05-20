@@ -1,5 +1,7 @@
 # hexa-lang stdlib — domain module consolidation into origin/main
 
+> status: **resolved** (κ-45) — all 15 domain modules + 13 D72 kernels landed on hexa-lang `origin/main` `7332e162`. Note kept as audit-trail of the multi-branch consolidation walk.
+
 date: 2026-05-20
 goal: origin/main = canonical base for all demiurge producers.
 

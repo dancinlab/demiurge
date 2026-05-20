@@ -1,5 +1,7 @@
 # 8-domain real-measurement library stack survey (deep research)
 
+> status: **resolved** (κ-47..κ-49 empty-cell sweep consumed every recommendation in this stack; substrates landed on hexa-lang origin/main + Swift dispatch wired in demiurge origin/main). Note kept as research audit-trail.
+
 > Date: 2026-05-20. Source: web + arxiv deep research (WebSearch/WebFetch).
 > Scope: GOAL P-⑧ — turn the 8 demiurge domains from "1 substrate
 > producer" into a **real-measurement full stack** verifiable by the

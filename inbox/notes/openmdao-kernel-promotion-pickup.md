@@ -1,5 +1,7 @@
 # OpenMDAO kernel-promotion pickup — 2026-05-20
 
+> status: **pickup-open** (2-consumer condition met: `space+synthesize` κ-47 + `scope+synthesize` κ-47). Awaits a kernel-extraction round to `hexa-lang/stdlib/kernels/mdo/` — same pattern as the D72 13-kernel sweep (κ-45). Not blocked, just queued.
+
 > D72 classify-FIRST trigger note. **space+synthesize** has now landed
 > as the FIRST consumer of OpenMDAO (substrate at
 > `~/core/hexa-lang/stdlib/space/openmdao_mission.py`, demiurge consumer

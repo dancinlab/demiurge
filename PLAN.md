@@ -3789,3 +3789,47 @@
   build: xcrun swift build --product DemiurgeCLI OK (1.71s).
   worktree clean · origin in sync. g3 — 측정 / gate / absorbed
   변경 0; documentation reconcile + cleanliness 작업.
+- 2026-05-20 — **phase κ-53 — 5 parallel agent 라운드 (firmware
+  dispatch · scope+synth fix · scope+verify v2 · inbox cleanup ·
+  NEXT_SESSIONS handoffs)**. 사용자 게이트 "all 병렬 go". 5 agent:
+  **A. firmware dispatch wiring** ✅ main push. hexa-lang origin/main
+  `350ffd92` (7 substrate: specify/structure/design/analyze/synthesize/
+  verify/handoff) · demiurge origin/main `73bfcddc` (7 Models + 7
+  Producers + 7 ActionDispatch case + 7 func). synthesize 실제 gcc
+  build (612-byte ELF) 외 6 은 honest install-gated skip. D73
+  16번째 도메인 7-cell 모두 dispatch 가능. `xcrun swift build`
+  green 7.18s.
+  **B. scope+synth metric fix (parity-FAIL 복구)** ✅ main push +
+  PASS 100%. hexa-lang `76cce52a` (kernel `wave_optics`:
+  hex_collecting_area_m2 + hex_ring_segment_count) · demiurge
+  `8a930e8` (v2 parity note). 3 shelves 모두 100.0000% (trivial
+  agreement by construction — substrate 와 oracle 둘 다
+  N·(3√3/2)·a² 사용). 권고: **NO auto-flip** — area sub-criterion
+  PASS 만, 다른 3 caveats (FEM mass, scalarisation weights, 2nd MDO
+  consumer) 잔존, 2/3 shelves 가 floor 로 corner solution. P1
+  out-of-scope: ftf_m vs POPPY side 명칭 혼동 발견 (~15% FWHM
+  shift 위험).
+  **C. scope+verify WebbPSF v2** ⚠️ worktree only — 4/5 PASS (v1 와
+  count 동일, 다른 이유). WebbPSF data 128 MB STPSF 다운로드 성공,
+  check #4 가 이제 실행되지만 substrate design flaw 발견: 550 nm
+  kernel FWHM vs NIRCam F480M 4.8μm FWHM = λ ratio 8.7× → ±50% tol
+  불가능. NIRCam λ<600nm 거부. v2 노트 `parity_attempt_scope_verify_
+  2026-05-20-v2.md` 회수 (main push) — 4 substrate-fix option (A
+  파장 align · B 두 check 분할 · C 같은 instrument · D widen
+  tolerance) main session decision 대기.
+  **D. inbox 20 entries cleanup** ✅ main session fallback (agent
+  rate-limited @ 115s). `inbox/INDEX.md` 신규 — 20 entries 분류표
+  (15 resolved · 1 pickup-open OpenMDAO mdo · 2 pickup-blocked
+  cross-session · 2 superseded κ-53 B/C v2). 5 entries 에 status
+  header 추가 (cern_analyze · 8domain · branch-consolidation ·
+  stdlib-consolidation · openmdao-promotion). 매번 system reminder
+  의 "12 entries" 카운트 stale 해소.
+  **E. NEXT_SESSIONS handoffs** ✅ worktree + main 회수. 7 self-
+  contained H-N prompts: H-1 hexa-lang live-tree align (모든 H-N
+  차단 해소) · H-2 Geant4 multi-hour → mc_transport 3 cell · H-3
+  OpenMC + 3GB ENDF/B-VIII.0 → k-eff/TBR · H-4 CARLA Unreal Linux
+  → mobility · H-5 Drake multi-GB → bot Lyapunov/SOS · H-6
+  CalculiX/GetDP → component analyze + rtsc HTS · H-7 firmware
+  QEMU + Zephyr west 첫 measurement.
+  g3 — auto-flip 0 (B 100% PASS 도 권고 NO 까지만). D74 ProducerRegistry
+  의 cells-with-alternatives 패턴 외에 새 governance 추가 없음.

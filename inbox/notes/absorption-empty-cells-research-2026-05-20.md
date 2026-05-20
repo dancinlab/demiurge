@@ -1,5 +1,7 @@
 # ABSORPTION empty-cells deep research — 2026-05-20
 
+> status: **resolved** (2026-05-20 — consumed by PLAN κ-47..κ-49 빈-셀 sweep; all 10 empty-cell research targets landed as producers / parity attempts). Note kept as audit-trail of the original research methodology; no further action needed.
+
 > Deep research (web + arxiv) for ABSORPTION.md measurable cells that have
 > **no producer yet**. D53 measurable-only — only verb ∈ {synthesize ·
 > verify · structure · analyze} cells are in scope (LLM 5-verb cells stay
