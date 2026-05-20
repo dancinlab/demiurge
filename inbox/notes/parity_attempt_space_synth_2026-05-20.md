@@ -1,5 +1,7 @@
 # Parity attempt — `space + synthesize` (OpenMDAO substrate)
 
+> status: **resolved** (κ-50) — Tsiolkovsky rel err ≤ 1e-4 (all 3 samples). Flip NO (SLSQP walked to lower bound, MDO machinery not meaningfully exercised, parity algebraically trivial).
+
 **Date**: 2026-05-20
 **ROI rank**: 8 (⭐⭐⭐⭐)
 **Substrate**: `~/core/hexa-lang/stdlib/space/openmdao_mission.py`

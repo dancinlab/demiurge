@@ -1,5 +1,7 @@
 # Parity attempt — `energy + synthesize` (PyPSA capacity-expansion LP)
 
+> status: **resolved** (κ-50) — PyPSA rel err 6e-6 vs independent scipy.linprog LP (machine ε). Flip NO (data-honesty gate — NOT sourced NREL ATB capital costs, NOT real demand, NOT real CFs, NOT multi-bus AC power-flow).
+
 - date: 2026-05-20
 - ROI rank: 5 ⭐⭐⭐⭐⭐
 - substrate: `~/core/hexa-lang/stdlib/energy/pypsa_capacity.py`

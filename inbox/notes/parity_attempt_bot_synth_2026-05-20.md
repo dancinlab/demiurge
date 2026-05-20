@@ -1,5 +1,7 @@
 # Parity attempt — bot + synthesize (Pinocchio RNEA vs analytic Lagrangian)
 
+> status: **resolved** (κ-50) — Pinocchio rel err 0.04% / 0.0003% vs Spong / Featherstone closed-form. Flip NO (URDF hermetic, not bench-validated).
+
 - date: 2026-05-20
 - ROI rank: 9 (⭐⭐⭐⭐)
 - substrate: `~/core/hexa-lang/stdlib/bot/pinocchio_rbd.py` (extracted from

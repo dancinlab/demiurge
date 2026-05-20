@@ -1,5 +1,7 @@
 # parity_attempt — cern + synthesize (xsuite FODO twiss)
 
+> status: **resolved → flip executed** (κ-50 parity 100% / κ-51 substrate _analytic_fodo_twiss flips GATE to CLOSED_MEASURED + absorbed=true on rel err ≤ 1e-6). Second-ever dynamic absorbed=true (after chip §B+§D, κ-43).
+
 - date: 2026-05-20
 - substrate: `~/core/hexa-lang/stdlib/cern/xsuite_optics.py` (hexa-lang origin/main @ a05eecb2)
 - producer: `xsuite@0.51.1` (cpymad 1.19.0, xtrack 0.104.1) on python3.12

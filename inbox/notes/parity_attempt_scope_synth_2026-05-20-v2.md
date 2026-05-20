@@ -1,5 +1,7 @@
 # parity attempt — `scope + synthesize` v2 (post hex-pack-area fix)
 
+> status: **resolved** (κ-53 B-track) — area sub-criterion 100% (all 3 shelves, trivial agreement by construction). Flip NO — 3 other v1 caveats unchanged (FEM mass, scalarisation weights, 2nd MDO consumer); 2/3 shelves still at ftf floor.
+
 > **id**: `parity_attempt_scope_synth_2026-05-20-v2` · **opened**: 2026-05-20 KST · **status**: `attempted — PASS · recommendation: flip absorbed=true gated by main-session reconciliation (see §Recommendation)`
 > **substrate**: `~/core/hexa-lang/stdlib/scope/openmdao_sizing.py` (hexa-lang origin commit `76cce52a` — *this* fix; ①a kernel `stdlib/kernels/wave_optics/poppy_kernel.py` same commit)
 > **versions**: `openmdao 3.43.0` · `poppy 1.1.2` · `numpy 2.3.5` · `astropy 7.2.0` · `python 3.12.12`

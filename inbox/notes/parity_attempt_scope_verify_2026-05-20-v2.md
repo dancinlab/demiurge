@@ -1,5 +1,7 @@
 # Parity attempt v2 — `scope + verify` (POPPY PSF verify producer, WebbPSF data installed)
 
+> status: **superseded** (v3 / D75 Option B) — v2 surfaced the 550 nm ⇄ 4.8 μm λ-mismatch design flaw + 4 substrate-fix options. v3 applies Option B and reaches 5/5 PASS.
+
 **Date**: 2026-05-20
 **Substrate SSOT**: `~/core/hexa-lang/stdlib/scope/poppy_psf_verify.py` (origin/main @ `08ad8983`)
 **Kernel** (①a wave-optics): `~/core/hexa-lang/stdlib/kernels/wave_optics/poppy_kernel.py`

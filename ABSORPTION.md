@@ -495,3 +495,22 @@ local mac │ -       │ pool 호스트 다운시 fallback (swift run)
   의미가 좁음을 정직히 박음). ProducerRegistry (D74) — cells with
   alternatives, `(cern, analyze)` = xsuite-tracking (default) | pylhe
   (legacy). 다른 cell 은 hardcoded switch 그대로 — additive.
+- 2026-05-20 — **κ-53 — 5 parallel agent round (firmware dispatch +
+  scope+synth metric fix + scope+verify WebbPSF v2 + inbox cleanup +
+  NEXT_SESSIONS handoffs)**. firmware (D73) 16번째 도메인 7-cell
+  dispatch wired (hexa-lang `350ffd92` + demiurge `73bfcddc`); scope+
+  synth area parity 100% PASS (substrate fix 76cce52a, hex-pack
+  collecting area + 7/19/37 ring labels); scope+verify WebbPSF v2
+  surfaced λ-mismatch design flaw (550 nm vs 4.8 μm, 4 fix options
+  surveyed); inbox/INDEX.md SSOT 신규 (20 entries 분류); NEXT_SESSIONS.md
+  7 handoff prompts (H-1..H-7) for cross-session heavy installs.
+  flip 0 (auto-flip 안 함, g3 honest).
+- 2026-05-20 — **κ-54 — D75 scope+verify substrate fix (Option B,
+  same-wavelength split)**. 사용자 게이트 "완성도 기준 진행" → 4
+  options 중 Option B 채택 (둘 다 살림: 가시광 Airy + JWST cross-
+  check at same λ). hexa-lang `03470762` — `check_webbpsf_cross_
+  same_wavelength`: NIRCam F480M @ 4.8μm vs kernel propagation
+  @ 4.8μm (같은 λ, ±50% tol 의미 있음). 로컬 실행 5/5 PASS (rel_err
+  12.78%, tol 50%). absorbed=true flip 권고 NO — D75 가 풀어준
+  honesty blocker 1개, 나머지 2 caveats 잔존 (measured optics deck,
+  hexa-native FFT IEEE-754).

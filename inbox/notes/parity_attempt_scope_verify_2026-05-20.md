@@ -1,5 +1,7 @@
 # Parity attempt — `scope + verify` (POPPY PSF verify producer)
 
+> status: **superseded** (v2 surfaced design flaw, v3 / D75 closed it at 5/5 PASS). v1 result: 4/5 PASS (WebbPSF env data missing).
+
 **Date**: 2026-05-20
 **Substrate SSOT**: `~/core/hexa-lang/stdlib/scope/poppy_psf_verify.py` (origin/main @ `08ad8983`)
 **Kernel** (①a wave-optics): `~/core/hexa-lang/stdlib/kernels/wave_optics/poppy_kernel.py`
