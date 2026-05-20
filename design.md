@@ -4249,3 +4249,111 @@ JSON wire shape 무변경. 변경된 surface = (a) `SiblingRepoSpawner`
 absorbed=true flip 도 없음 — pointer-only spawn pattern (D61) 이
 hexa-aura / hexa-ufo 의 실제 파일명을 정직히 인식하도록 한 좁은
 보정.
+
+### Decision 108 — κ-67 closure 박제 (RFC 013 MOSTLY-LANDED · D87..D107 누적 SSOT 정합)
+
+**picked**: κ-67 sweep (D87..D107 · D104 reserved · 20 결정 · 13+
+commit) 의 **누적 closure** 를 PLAN.md κ-67 entry · GOAL.md "현재
+위치" + Log · 본 D108 entry 3-지점에 한 사이클로 박제. 새 code 0,
+새 stored field 0, 새 `.demi` row 0, 새 RFC 0 — *문서 SSOT 3개*
+의 결정-감사추적 (decision audit trail) 정합화만. κ-67 sweep 의
+사실은 이미 D87..D107 + RFC 013 §6 + ARCH §11.4 + commit 본문에
+존재; 본 entry 는 그것이 한 phase 의 closure 였다는 사실을
+*PLAN.md κ-진행로그* 와 *GOAL.md 현재위치* 에서 동일하게
+가리키도록 cross-link.
+
+**rationale**:
+- D80 honesty floor — RFC 013 의 status 가 `PARTIAL-LAND` 에서
+  `MOSTLY-LANDED` 로 (D105) flip 되고 §6.12 까지 LANDED (D106) 한
+  순간이 단일-phase closure 의 자연 boundary. 그 위에 D107
+  (SiblingRepoSpawner 5th fallback) 까지 같은 phase 안에서 land
+  되며 sibling-repo dispatch 의 priority-preserving 확장이 합류.
+  다음 자연 후속은 §6.11 (per-cell measured-oracle parity round ·
+  P-⑩ ①) 인데 *그건 RFC scope 안의 다른 axis* — substrate-parity ≠
+  measurement-parity (D103 dimension · D106 typed enforcement). 한
+  phase 가 끝났음을 PLAN.md 에 박지 않으면 next-pickup 이 boundary
+  를 못 봄.
+- g_ssot_single_source (D50) — κ-67 의 사실 SSOT 는
+  `proposals/rfc_013_hexa_native_parity_connection.md` (RFC scope) +
+  `domains/PILOTS.demi` / `DEPENDENCIES.demi` 외 3 `.demi` (데이터
+  SSOT) + ARCH §11.4 G13..G18 (architectural checklist) + design.md
+  D87..D107 (결정 SSOT). 본 D108 는 *결정 SSOT* 안에서 "이 20개의
+  결정이 한 phase 였다" 를 한 줄로 기록 — 새 사실 안 만들고
+  포인터만 모음.
+- κ-66 ↔ κ-67 boundary — κ-66 은 hexa-lang 측 8 pilot land 의
+  *upstream* fact 박제 (PLAN.md), κ-67 은 그것이 demiurge 측에서
+  데이터 SSOT + producer wire + UI + governance + sibling-spawner
+  fallback 으로 *완전 정합* 된 상태의 closure. D108 가 그
+  transition 을 명시.
+- D104 reserved — sweep numbering 의 single-slot 예약 (P-⑩ ① 안의
+  in-flight 후속 결정용 자유도). D108 자체는 phase boundary 의
+  meta-decision 이므로 D107 *직후* 에 두는 게 정렬.
+
+**누적 fact** (κ-67 closure 시점):
+- **13 pilots · 375 cumulative assertions** — κ-66 8 pilot (solar 21
+  · mc_transport 8 · neural LIF · graph 10 · urdf 28 · plasma 41 ·
+  orbital 27 · dft 17 · event_queue 36) + Round-5 신설 6 pilot
+  (transport_kinematics · breaker_trace_reduce · fem_bar1d_subset ·
+  autodiff_dual_forward · bio_align_nw · chem_arrhenius). PILOTS.demi
+  row = 15 (chem 1 + bio_align_nw + 13 distinct kernel-bound pilot —
+  D91 row-per-kernel SSOT).
+- **14 kernel folders** in hexa-lang stdlib — 기존 10 + chem ·
+  autodiff · fem · bio_align (κ-67 신설). D72 2-layer N+M 누적.
+- **5 `.demi` SSOTs** — `INDEX.demi` (19 도메인) · `DEPENDENCIES.
+  demi` (44 audit row · D88 위치) · `PILOTS.demi` (15 row · D87/D90/
+  D91/D92 schema+위치) · `SUBSTRATE_LINKS.demi` (D97 3-tier) ·
+  `PRODUCERS.demi` (D85 sibling-repo dispatch · κ-64 land). D83
+  declarative-data 규격으로 code-vs-data 정합 (D86 g_no_hardcoded_
+  data 일관).
+- **HexaNativeParityRef × 5 cell carriers** — Ufo + Fusion + Aura +
+  ChipAnalyze + Energy verify record (D90 8-field schema · D94
+  PilotLoader emit · D95 cell-flip computed). 단일 carrier 가
+  HexaNativeParityRef? optional 을 들고, isHexaNativeAbsorbed
+  computed predicate 가 substrate-parity dimension 을 표면화.
+- **4-case chip UI** — `HexaNativeParityChip` (D99) 의 3-case
+  (absorbed / future-port / blocked) 에서 D106 `.illustrative
+  Physics` 가 4번째 tone (cyan) 으로 first-class. SkippedCells
+  Dashboard 의 `color(for:)` switch 가 4-case exhaustive (RFC 013
+  §6.3 / §6.12 anti-conflation).
+- **D87..D107 — 20 결정 (D104 reserved)** — D87/D88 데이터 위치 ·
+  D89 fallback 제거 · D90/D91 PILOTS schema/row · D92 디렉토리
+  flat · D93 pattern↔.demi dual · D94 parity_ref lookup · D95
+  cell-flip computed · D96/D100 sibling/substrate narrative ·
+  D97 3-tier verifier · D98 cross-ref CI · D99 chip UI · D101 env
+  deprecation · D102 chem seed · D103 dimension docstring · D105
+  RFC status · D106 illustrative-physics gate · D107 spawner 5th
+  fallback.
+- **RFC 013** `PARTIAL-LAND` → `MOSTLY-LANDED` (D105 · 943a5b8) —
+  §6.1..§6.10 + §6.12 LANDED (D106 · f9a9a90), §6.11 (per-cell
+  measured-oracle parity) 만 queued.
+- **ARCH §11.4 G1..G18** Round 1-5 — G13..G18 라운드 5 (`D80 SSOT
+  통합 + 후속`) [x] 전부 완료 (G13 PILOTS.demi 8-field + 15 row,
+  G14 19/19 narrative, G15 3-tier verifier + SUBSTRATE_LINKS,
+  G16 chip UI 3+1 case, G17 cross-ref CI 3 XCTest, G18 env
+  deprecation).
+
+**적용**:
+1. `PLAN.md` — `## 진행 로그` 끝에 `phase κ-67 — RFC 013 PARTIAL
+   → MOSTLY-LANDED sweep 종결` 한 entry 추가 (위 누적 fact 종합 +
+   κ-68 reserved = §6.11 per-cell measured-oracle round).
+2. `GOAL.md` — "현재 정직한 위치" 의 🟡 hexa-native ultimate-form
+   bullet 을 κ-66 형식에서 κ-67 형식으로 갱신 (north-star 불변,
+   category-section 만). `## Log` 끝에 κ-67 closure entry 추가.
+3. `design.md` D108 entry (본 entry). D104 reserved 명시.
+4. **NOT** 적용 (scope 밖):
+   - 새 PILOTS.demi row · 새 DEPENDENCIES.demi row · 새 cell record
+     schema · 새 cockpit code · 새 test 0.
+   - hexa-lang 측 변경 0 (κ-67 sweep 안에서 이미 land 한 SHA 만
+     인용).
+   - RFC 013 본문 갱신 0 (D105/D106 가 이미 RFC 본문 갱신을 수반
+     했음; 본 D108 은 *외부* SSOT 3개의 정합만).
+
+**g3** — RFC 013 의 status 가 `MOSTLY-LANDED` 인 이유는 §6.11
+per-cell *측정-oracle* parity round 가 여전히 queued. 13 pilot 의
+algorithm-level closure 와 demiurge cell 의 `absorbed=true` flip
+은 여전히 별 axis (D103 dimension · D106 typed enforcement). κ-67
+closure 박제는 새 측정 0, 새 cell flip 0, 새 SSOT 0 — *결정-감사
+추적의 phase boundary* 만 명시. 다음 κ-68 reserved = §6.11
+per-cell measured-oracle parity round (P-⑩ ① — pilot 의 hexa-
+native value 가 cell record 의 measured oracle 과 bit-equal /
+rel_err 게이트 통과해 첫 cell `absorbed=true` flip).

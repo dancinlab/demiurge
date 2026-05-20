@@ -4141,3 +4141,51 @@
   tail 가 8 pilot 만큼 단축). 다음 κ-67 reserved = pilot-driven
   demiurge cell absorbed flip round (cell-level parity record
   fill-in, HexaNativeParityRef 첫 실 use).
+- 2026-05-20 — **phase κ-67 — RFC 013 PARTIAL → MOSTLY-LANDED sweep
+  종결 (D87..D106 · 943a5b8/f9a9a90)**. 사용자 게이트 "go" — D80
+  hexa-native parity surface 의 데이터 SSOT · producer · cockpit
+  surface · governance 가 한 사이클로 박제. 측정 fact (demiurge
+  origin/main):
+  - **13 pilots · 375 cumulative assertions** — solar 21 ·
+    mc_transport 8 · neural LIF · graph 10 · urdf 28 · plasma 41 ·
+    orbital 27 · dft 17 · event_queue 36 + Round-5 신설 (transport_
+    kinematics · breaker_trace_reduce · fem_bar1d_subset · autodiff_
+    dual_forward · bio_align_nw · chem_arrhenius) — `PILOTS.demi`
+    seed.
+  - **14 kernel folders** in hexa-lang stdlib (기존 10 + chem ·
+    autodiff · fem · bio_align 신설) — D72 2-layer N+M payoff 가
+    그대로 누적.
+  - **5 `.demi` SSOTs** — `INDEX.demi` (19 도메인) · `DEPENDENCIES.
+    demi` (44 audit row) · `PILOTS.demi` (15 row · 13 distinct
+    pilot) · `SUBSTRATE_LINKS.demi` (D97 3-tier) · `PRODUCERS.demi`
+    (D85 sibling-repo dispatch) — D83 declarative-data 규격으로
+    code-vs-data 정합.
+  - **`HexaNativeParityRef` × 5 cell carriers** — Ufo + Fusion +
+    Aura + ChipAnalyze + Energy 의 verify record 에 8-field
+    parity-ref 가 land (D90/D91 schema · D95 computed flip).
+  - **4-case chip UI** — `HexaNativeParityChip` 가 D99 의 3-case
+    (absorbed / future-port / blocked) 에서 D106 `.illustrative
+    Physics` 가 4번째 tone (cyan) 으로 first-class 추가 — substrate-
+    parity ≠ measurement-parity 의 typed enforcement.
+  - **D87..D106 20 결정** (D104 reserved) — 데이터 위치 (D87/D88) ·
+    fallback 제거 (D89) · PILOTS schema/row (D90/D91) ·
+    디렉토리 flat (D92) · pattern↔.demi dual (D93) · parity_ref
+    lookup (D94) · cell-flip computed (D95) · sibling narrative
+    (D96/D100) · 3-tier verifier (D97) · cross-ref CI (D98) ·
+    chip UI (D99) · env deprecation (D101) · chem seed (D102) ·
+    dimension docstring (D103) · RFC status (D105) · illustrative
+    -physics gate (D106).
+  - **RFC 013** `PARTIAL-LAND` → `MOSTLY-LANDED` (D105) — §6.1..§6.10
+    + §6.12 LANDED, §6.11 (per-cell measured-oracle) 만 queued.
+  - **ARCH §11.4 G1..G18** Round 1-5 — G13..G18 라운드 5 (`D80 SSOT
+    통합 + 후속`) [x] 완료 (PILOTS.demi seed · 19/19 narrative
+    coverage · 3-tier verifier · cross-ref CI · chip UI · env
+    deprecation).
+  g3 — RFC 013 의 status 가 `MOSTLY-LANDED` 인 이유는 §6.11
+  per-cell *측정-oracle* parity round 가 여전히 queued (substrate-
+  parity ≠ measurement-parity 의 honest floor). 13 pilot 의
+  algorithm-level closure 와 demiurge cell 의 absorbed=true flip
+  은 여전히 별 axis (D103 명시 · D106 typed enforcement). 다음
+  κ-68 reserved = §6.11 per-cell measured-oracle round (P-⑩ ① —
+  pilot 의 hexa-native value 가 cell record 의 measured oracle 과
+  bit-equal / rel_err 게이트 통과해 첫 cell absorbed flip).

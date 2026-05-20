@@ -134,20 +134,28 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   session 차단점: `~/core/hexa-lang` live tree 가 concurrent session
   branch → demiurge spawn 이 default xsuite-tracking substrate 못
   봄 (origin/main 에는 있음).
-- 🟡 **hexa-native ultimate-form 잔여 (D80)** — chip §B+§D 이외
-  모든 cell 은 Python 기반 substrate (transitional pointers). κ-66
-  에서 hexa-lang `origin/main` `a272c9c4` 의 **8 pilot · 173
-  cumulative assertions** (solar 21 + mc_transport 8 + neural LIF +
-  graph 10 + urdf 28 + plasma 41 + orbital 27 + dft 17 + event_queue
-  36) + **44 audit rows** in `domains/DEPENDENCIES.demi` (13 kernel
-  + 31 producer; weight + portable_status 5-grade ladder) +
-  **demiurge schema land** (`5e9f6dea` — HexaNativeParityRef 8-field
-  + 5 cell carriers + DependenciesLoader + GateType.hexaNativeFuture)
-  + **2 hexa-lang language fixes** (codegen param shadow autowrap +
-  wrap_pi.hexa new primitive 12/12 PASS) 박제. provisional=true 가
-  algorithm-level closure 와 hexa-native closure 를 계속 구분 — 8
-  pilot 은 hexa-lang 측 measured-parity, demiurge cell 단위
-  absorbed flip 은 후속 κ. long-tail = 12→4 kernel + 18 도메인
+- 🟡 **hexa-native ultimate-form — RFC 013 MOSTLY-LANDED (D80 ·
+  κ-67)** — chip §B+§D 이외 모든 cell 은 여전히 Python 기반
+  substrate, 단 D80 parity surface 자체가 데이터·producer·UI·
+  governance 한 사이클로 박제됨. κ-66 8 pilot 위에 κ-67 sweep
+  (D87..D106 · D104 reserved · 20 결정) 으로:
+  **13 pilots · 375 cumulative assertions** (κ-66 8 + Round-5
+  신설 transport_kinematics · breaker_trace_reduce · fem_bar1d_
+  subset · autodiff_dual_forward · bio_align_nw · chem_arrhenius) ·
+  **14 kernel folders** (기존 10 + chem · autodiff · fem ·
+  bio_align) · **5 `.demi` SSOTs** (INDEX · DEPENDENCIES · PILOTS ·
+  SUBSTRATE_LINKS · PRODUCERS) · **HexaNativeParityRef × 5 cell
+  carriers** (Ufo + Fusion + Aura + ChipAnalyze + Energy) ·
+  **4-case chip UI** (D99 3-case + D106 `.illustrativePhysics`
+  cyan tone) · **ARCH §11.4 G1..G18 Round 1-5** [x] 전부 완료.
+  RFC 013 status `PARTIAL-LAND` → `MOSTLY-LANDED` (D105) — §6.1..
+  §6.10 + §6.12 LANDED, §6.11 (per-cell measured-oracle) 만 queued.
+  honest gap: substrate-parity ≠ measurement-parity 의 typed
+  enforcement (D103 dimension + D106 illustrativePhysics) 가
+  착륙했지만, 어떤 demiurge cell 도 아직 `absorbed=true` 로 flip
+  안 함 — 13 pilot 의 algorithm-level closure 는 hexa-lang 측
+  사실, demiurge cell 단위 measured-oracle parity round 는 후속
+  (P-⑩ ① · κ-68 reserved). long-tail = 12→4 kernel + 18 도메인
   adapter 잔여.
 
 > GOAL 한 줄(north-star)은 불변 — 달성 주장 아님, 측정 거리 명시.
@@ -245,3 +253,18 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   demiurge cell 단위 absorbed flip 은 후속 κ — provisional=true 가
   algorithm-level vs hexa-native closure 를 계속 구분. PLAN κ-66
   cross-link.
+- 2026-05-20 — RFC 013 PARTIAL → MOSTLY-LANDED sweep 종결 (κ-67 ·
+  D87..D106 · D104 reserved) 을 "현재 위치" 에 반영 (north-star
+  불변, category-section 갱신). 새 측정 fact: **13 pilots · 375
+  cumulative assertions** (κ-66 8 + Round-5 신설 6 pilot —
+  transport_kinematics · breaker_trace_reduce · fem_bar1d_subset ·
+  autodiff_dual_forward · bio_align_nw · chem_arrhenius) · **14
+  kernel folders** (chem · autodiff · fem · bio_align 신설) ·
+  **5 `.demi` SSOTs** · **HexaNativeParityRef × 5 cell carriers** ·
+  **4-case chip UI** (D106 `.illustrativePhysics` cyan tone) ·
+  **ARCH §11.4 G1..G18 Round 1-5** [x] 완료 · **RFC 013 MOSTLY-
+  LANDED** (D105 — §6.11 per-cell measured-oracle 만 queued).
+  여전히 어떤 cell 도 absorbed=true flip 안 함 — substrate-parity
+  ≠ measurement-parity 의 typed enforcement (D103 + D106) 가
+  착륙. 다음 κ-68 reserved = §6.11 per-cell measured-oracle
+  round (P-⑩ ①). PLAN κ-67 + design.md D108 cross-link.
