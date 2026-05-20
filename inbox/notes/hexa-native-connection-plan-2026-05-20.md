@@ -1,6 +1,11 @@
 # hexa-native connection plan — 2026-05-20
 
-> **status**: open · proposed by κ-65 D80 g_hexa_only audit round
+> **status**: PROMOTED to **RFC 013** (κ-67) on 2026-05-20 — the
+> `κ-? RFC` placeholder below resolves to
+> `proposals/rfc_013_hexa_native_parity_connection.md`. This note
+> remains in place as the audit-trail SHAPE-pass; the RFC pins
+> decisions, SHAs, and the 8-pilot rolling table.
+> **original status**: open · proposed by κ-65 D80 g_hexa_only audit round
 > **scope**: how each hexa-native kernel pilot wires INTO the demiurge
 > record / registry layer once `HexaNativeParityRef` (or equivalent)
 > lands. NO demiurge edits are proposed here — this is a SHAPE-only
@@ -324,3 +329,8 @@ producer-dispatch time.
   (pilot #2 pattern detail)
 - κ-60 `hexaNativeParity` field (planned schema follow-on)
 - κ-62 `siblingRepoVariant` pattern (the κ-? above extends it)
+- **PROMOTED-TO**: `proposals/rfc_013_hexa_native_parity_connection.md`
+  (κ-67 — the `κ-? RFC` placeholder above resolves here; this RFC
+  pins SHAs `5e9f6dea` (demiurge schema land), `a272c9c4` (hexa-lang
+  codegen + wrap_pi), `4389da0c` (hexa-lang pilot reconcile), plus
+  the 9-row pilot table).
