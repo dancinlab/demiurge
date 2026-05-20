@@ -174,6 +174,15 @@ weight           = "heavy"
 portable_status  = "heavy-port"
 notes            = "Sparse linear-algebra solver + meshing — a full FEM port is multi-month. D80 pilot #10 landed 2026-05-20 (hexa-lang c9ca39e7) — bar1d_kernel.hexa ports the SMALLEST FEM subset (< 5% of skfem surface): 2-node linear bar element stiffness (Hughes §1.6) + direct-stiffness global assembly (Cook §2.3) + Thomas tridiagonal solve for fixed-free axial-load case (Burden & Faires §6.6 Alg. 6.7). 53/53 PASS at rel_err = 0.0 against (a) Python math libm transliteration + (b) closed-form mechanics-of-materials oracle u(x)=P*x/(E*A) independent of discretisation. portable_status STAYS heavy-port — the full 2-D/3-D element families + sparse linalg + gmsh-replacement meshing + thermal coupling + nonlinear elasticity remain unported (multi-round / multi-month / multi-year scope)."
 
+[kernel-autodiff]
+path             = "stdlib/kernels/autodiff/dual_forward_kernel.hexa"
+kind             = "kernel"
+domain           = "autodiff"
+external_imports = []
+weight           = "trivial"
+portable_status  = "already-ported"
+notes            = "Born hexa-native — D80 pilot #11 landed 2026-05-20 (hexa-lang 170f74af; chronological #11; demiurge:PILOTS.demi[pilot-autodiff_dual_forward]). Forward-mode automatic differentiation via dual numbers, the smallest cited slice of the (multi-month) autodiff stack scope_openmdao_sizing needs. Surface: 5 arithmetic primitives (d_add/d_sub/d_mul/d_div/d_neg) + 6 transcendental/power primitives (d_sin/d_cos/d_exp/d_log/d_sqrt/d_pow_int). Provenance: Griewank & Walther 2008 §3.1 + Rall 1981 (LNCS 120) + Wengert 1964 (Comm. ACM 7(8)) — clean-room, no JAX/PyTorch/Autograd/OpenMDAO/Tapenade/ADOL-C source-code inspection. 48/48 PASS at the D80 1e-10 ceiling: analytic-derivative tier abs <=7e-16 across 9 elementary functions + Python math libm companion tier (dual_oracle.py) rel_err = 0.0 bit-exact. PARTIAL PORT — forward mode only (no reverse/adjoint), scalar-in / scalar-out (no vector seeds, no Jacobians/Hessians), no control-flow capture, integer pow only — real-exponent pow as caller-composed d_exp(d_mul(p, d_log(u))). MDAO ①b adapter (scope_openmdao_sizing) stays heavy-port until a gradient-based optimiser wires this kernel into a real design loop."
+
 ## ── domain producers (stdlib/<domain>/*.py) — ①b adapter layer ────────
 
 [domain-aura_mne]
@@ -372,7 +381,7 @@ domain           = "scope"
 external_imports = ["openmdao", "astropy", "numpy", "poppy"]
 weight           = "heavy"
 portable_status  = "heavy-port"
-notes            = "MDAO + wave-optics sizing. Needs poppy port + an autodiff/gradient framework — multi-round."
+notes            = "MDAO + wave-optics sizing. Needs poppy port + an autodiff/gradient framework — multi-round. D80 pilot #11 landed 2026-05-20 (hexa-lang 170f74af) — kernels/autodiff/dual_forward_kernel.hexa ports the substrate floor of the autodiff side (forward mode, scalar I/O, dual numbers, Griewank & Walther 2008 §3.1; 48/48 PASS at analytic abs <=7e-16 + Python math libm companion rel_err = 0.0). MDAO ①b adapter still heavy-port — needs reverse-mode AD + vector seeds + gradient-based optimiser to consume this kernel."
 
 [domain-scope_poppy_psf_verify]
 path             = "stdlib/scope/poppy_psf_verify.py"
