@@ -4104,3 +4104,40 @@
   잔여 새 🟡 entry. north-star 불변, category-section 갱신.
   g3 — 5 sub-agent 알림 대기 + main session doc reconcile. 알림 받는
   대로 main session 통합 라운드 (κ-66 consolidation).
+- 2026-05-20 — **phase κ-66 — D80 g_hexa_only pilot sweep 종결**.
+  사용자 게이트 "go" — hexa-lang `origin/main` tip `a272c9c4` 까지
+  의 8 hexa-native pilot + 44 audit row + demiurge schema land + 2
+  language fix 를 통째로 박제. 측정 fact (hexa-lang `origin/main`):
+  - **8 pilots · 173 cumulative assertions** —
+    #1 solar `122620de` 21/21 PASS rel_err≤1e-13 ·
+    #2 mc_transport `dd3dad19` 8/8 PASS @ N=100k ·
+    #3 neural LIF `299db935` · #3b graph BFS+Kahn `57ae7a54` 10/10
+    PASS bit-equal vs networkx ·
+    #4 urdf 2-link FK `fc270b6c` 28/28 PASS rel_err≤1.4e-16 SE(3) ·
+    #5 plasma_metrics `c668702b` 41/41 PASS rel_err=0.0 ·
+    #5b orbital Kepler `2ffe3620` 27/27 PASS rel_err=0.0 ·
+    #6 dft_naive (audit-burst) 17/17 PASS rel≤1e-12 ·
+    #7 event_queue (audit-burst) 36/36 PASS exact heap+FIFO.
+  - **44 audit rows in hexa-lang `domains/DEPENDENCIES.demi`** — 13
+    kernel + 31 producer entries; weight ladder = trivial / small /
+    medium / heavy / nonportable; portable_status ladder = already-
+    ported / in-flight / portable-next / heavy-port / nonportable.
+  - **demiurge schema land (`5e9f6dea`)** — HexaNativeParityRef
+    8-field + 5 cell record carriers (Ufo + Energy + Fusion + Aura
+    + ChipAnalyze) + `DependenciesLoader.swift` (DemiParser-driven)
+    + 3 tests; GateType `hexaNativeFuture` 추가
+    (`hexaNativeAbsent` 이미 존재); SkippedCellsDashboard exhaustive
+    switch 갱신.
+  - **hexa-lang language fixes (`a272c9c4`)** — (1) codegen param-
+    name shadow stdlib fn autowrap fix; (2) `stdlib/core/math/
+    wrap_pi.hexa` new primitive (12/12 PASS, both ±π boundaries
+    preserved) + kepler_2body_kernel migration (10-line inline 삭제,
+    27/27 regression PASS).
+  g3 — pilot port + audit row + schema 모두 hexa-lang 측 측정 사실;
+  demiurge 측은 `HexaNativeParityRef` 가 future-port 측정 record
+  carrier 로 land (gate=hexaNativeFuture, absorbed=false 유지 — 8
+  pilot 의 absorbed flip 은 demiurge cell 단위 측정 round 후속).
+  D80 ultimate-form 잔여 = 12→4 kernel + 18 도메인 adapter (long-
+  tail 가 8 pilot 만큼 단축). 다음 κ-67 reserved = pilot-driven
+  demiurge cell absorbed flip round (cell-level parity record
+  fill-in, HexaNativeParityRef 첫 실 use).

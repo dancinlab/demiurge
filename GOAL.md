@@ -135,12 +135,20 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   branch → demiurge spawn 이 default xsuite-tracking substrate 못
   봄 (origin/main 에는 있음).
 - 🟡 **hexa-native ultimate-form 잔여 (D80)** — chip §B+§D 이외
-  모든 cell 은 Python 기반 substrate (transitional pointers). κ-65
-  Track B 가 solar kernel 첫 hexa-native port pilot 발사. 다른 12
-  kernel + 18 도메인 adapter 의 hexa-native port 는 long-tail —
-  `g_hexa_only` (D80) governance 가 향후 모든 substrate 의 종착지로
-  명시. provisional=true marker 가 cern+synth (κ-51) 같은 algorithm-
-  level closure 와 hexa-native closure 를 구분.
+  모든 cell 은 Python 기반 substrate (transitional pointers). κ-66
+  에서 hexa-lang `origin/main` `a272c9c4` 의 **8 pilot · 173
+  cumulative assertions** (solar 21 + mc_transport 8 + neural LIF +
+  graph 10 + urdf 28 + plasma 41 + orbital 27 + dft 17 + event_queue
+  36) + **44 audit rows** in `domains/DEPENDENCIES.demi` (13 kernel
+  + 31 producer; weight + portable_status 5-grade ladder) +
+  **demiurge schema land** (`5e9f6dea` — HexaNativeParityRef 8-field
+  + 5 cell carriers + DependenciesLoader + GateType.hexaNativeFuture)
+  + **2 hexa-lang language fixes** (codegen param shadow autowrap +
+  wrap_pi.hexa new primitive 12/12 PASS) 박제. provisional=true 가
+  algorithm-level closure 와 hexa-native closure 를 계속 구분 — 8
+  pilot 은 hexa-lang 측 measured-parity, demiurge cell 단위
+  absorbed flip 은 후속 κ. long-tail = 12→4 kernel + 18 도메인
+  adapter 잔여.
 
 > GOAL 한 줄(north-star)은 불변 — 달성 주장 아님, 측정 거리 명시.
 
@@ -221,3 +229,19 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   tail port. κ-65 5 sub-agent 발사 (gate_type adoption / hexa-
   native solar pilot / Geant4 / OpenMC / pyfemm Linux pool) — mini/
   ubu-1/ubu-2 pool 자원 활용 시작.
+- 2026-05-20 — D80 g_hexa_only pilot sweep 종결 (κ-66) 을 "현재
+  위치" 에 반영 (north-star 불변, category-section 갱신). 새 측정
+  fact: hexa-lang `origin/main` `a272c9c4` 에 **8 hexa-native
+  pilot · 173 cumulative assertions** (solar 21/21 ·
+  mc_transport 8/8 · neural LIF · graph 10/10 · urdf 28/28 ·
+  plasma 41/41 · orbital 27/27 · dft 17/17 · event_queue 36/36) +
+  **44 audit rows** in `domains/DEPENDENCIES.demi` (13 kernel + 31
+  producer · weight + portable_status 5-grade ladder) + demiurge
+  측 **HexaNativeParityRef schema land** (`5e9f6dea` — 8-field
+  + 5 cell carriers + DependenciesLoader + GateType.hexaNativeFuture)
+  + **2 hexa-lang language fixes** (codegen param shadow stdlib fn
+  autowrap + `wrap_pi.hexa` new primitive 12/12 PASS, kepler_2body
+  27/27 regression). 8 pilot 은 hexa-lang 측 measured-parity;
+  demiurge cell 단위 absorbed flip 은 후속 κ — provisional=true 가
+  algorithm-level vs hexa-native closure 를 계속 구분. PLAN κ-66
+  cross-link.
