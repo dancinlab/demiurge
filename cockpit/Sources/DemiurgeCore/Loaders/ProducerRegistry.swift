@@ -58,79 +58,52 @@ public enum ProducerRegistry {
 
     /// Cells that carry alternative producers. Keyed by (verb, domain);
     /// missing keys fall through to ActionDispatch's switch.
-    public static let entries: [ProducerCellKey: ProducerEntry] = [
-        // cern + analyze — pylhe LHE round-trip (legacy) vs Xsuite
-        // 100-turn tracking (real physics, ROI 14 substrate κ-49).
-        // Default = xsuite-tracking per user gate 2026-05-20.
-        ProducerCellKey(verb: .analyze, domain: "cern"): ProducerEntry(
-            defaultID: "xsuite-tracking",
-            variants: [
-                "xsuite-tracking": ProducerVariant(
-                    id: "xsuite-tracking",
-                    displayName: "Xsuite 100-turn FODO tracking (real physics)"
-                ) {
-                    let r = CernAnalyzeXsuiteProducer.runAnalyze()
-                    return ActionResult(
-                        text: r.text,
-                        newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-                        usedEngineTool: true,
-                        engineToolSucceeded: r.ok)
-                },
-                "pylhe": ProducerVariant(
-                    id: "pylhe",
-                    displayName: "pylhe LHE round-trip (legacy, synthetic)"
-                ) {
-                    let r = CernAnalyzeProducer.runAnalyze()
-                    return ActionResult(
-                        text: r.text,
-                        newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-                        usedEngineTool: true,
-                        engineToolSucceeded: r.ok)
-                },
-            ]),
-
-        // G4 sibling-repo cells (κ-62) — ProducerRegistry now hosts
-        // sibling-repo dispatch as a first-class variant pattern via
-        // siblingRepoVariant. Adding a new sibling-cell is a single
-        // dict line. D80 — these are TRANSITIONAL POINTERS, never an
-        // ultimate endpoint; absorbed=true non-provisional still
-        // requires the hexa-native parity port.
-
-        // ufo + synthesize — hexa-ufo selftest dispatch (HEXA-Disc
-        // 7-stage propulsion atlas).
-        ProducerCellKey(verb: .synthesize, domain: "ufo"): ProducerEntry(
-            defaultID: "hexa-ufo",
-            variants: [
-                "hexa-ufo": ProducerRegistry.siblingRepoVariant(
-                    id: "hexa-ufo",
-                    domainID: "ufo",
-                    verb: "synthesize",
-                    displayName: "hexa-ufo selftest (sibling repo)"),
-            ]),
-
-        // ufo + verify — 13 falsifier preregister state check.
-        ProducerCellKey(verb: .verify, domain: "ufo"): ProducerEntry(
-            defaultID: "hexa-ufo",
-            variants: [
-                "hexa-ufo": ProducerRegistry.siblingRepoVariant(
-                    id: "hexa-ufo",
-                    domainID: "ufo",
-                    verb: "verify",
-                    displayName: "hexa-ufo verify (13 falsifier state)"),
-            ]),
-
-        // aura + verify — F-AURA-{1..4} 15 sub-IDs state check
-        // + G6 cascade if hexa-rtsc demoted.
-        ProducerCellKey(verb: .verify, domain: "aura"): ProducerEntry(
-            defaultID: "hexa-aura",
-            variants: [
-                "hexa-aura": ProducerRegistry.siblingRepoVariant(
-                    id: "hexa-aura",
-                    domainID: "aura",
-                    verb: "verify",
-                    displayName: "hexa-aura verify (F-AURA-{1..4} state)"),
-            ]),
-    ]
+    ///
+    /// D85 + D86 — sibling-repo variants live in `domains/PRODUCERS.
+    /// demi` (declarative SSOT), loaded at runtime by `ProducerLoader`
+    /// and merged with the Swift-class variants below. Swift function
+    /// references (e.g., the cern+analyze Xsuite / pylhe pair) are the
+    /// documented `@D g_no_hardcoded_data` exception — they cannot be
+    /// reflected from a `.demi` file at runtime, so they remain coded.
+    public static let entries: [ProducerCellKey: ProducerEntry] = {
+        // Tier 1 — Swift-class variants (D86 exception: Swift function
+        // reference cannot be declarative).
+        var swiftClassEntries: [ProducerCellKey: ProducerEntry] = [
+            ProducerCellKey(verb: .analyze, domain: "cern"): ProducerEntry(
+                defaultID: "xsuite-tracking",
+                variants: [
+                    "xsuite-tracking": ProducerVariant(
+                        id: "xsuite-tracking",
+                        displayName: "Xsuite 100-turn FODO tracking (real physics)"
+                    ) {
+                        let r = CernAnalyzeXsuiteProducer.runAnalyze()
+                        return ActionResult(
+                            text: r.text,
+                            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+                            usedEngineTool: true,
+                            engineToolSucceeded: r.ok)
+                    },
+                    "pylhe": ProducerVariant(
+                        id: "pylhe",
+                        displayName: "pylhe LHE round-trip (legacy, synthetic)"
+                    ) {
+                        let r = CernAnalyzeProducer.runAnalyze()
+                        return ActionResult(
+                            text: r.text,
+                            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+                            usedEngineTool: true,
+                            engineToolSucceeded: r.ok)
+                    },
+                ]),
+        ]
+        // Tier 2 — sibling-repo variants loaded from PRODUCERS.demi
+        // (D85). One section per cell; ProducerLoader.project builds
+        // the siblingRepoVariant.
+        for (key, entry) in ProducerLoader.loadAll() {
+            swiftClassEntries[key] = entry
+        }
+        return swiftClassEntries
+    }()
 
     /// Convenience predicate for CLI / cockpit — has this cell got
     /// alternative producers?

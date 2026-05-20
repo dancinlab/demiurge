@@ -4064,3 +4064,25 @@
   g3 — governance 등록만, 측정 record / gate / absorbed 변경 0.
   다음 phase = D85 implementation (PRODUCERS.demi 신규 + Producer
   Loader + ProducerRegistry refactor).
+- 2026-05-20 — **phase κ-64 — D85 implementation: PRODUCERS.demi
+  SSOT + ProducerLoader runtime-load**. 사용자 게이트 "go" — D85 + D86
+  governance 를 즉시 적용. 변경:
+  - **`domains/PRODUCERS.demi` 신규** — sibling-repo dispatch SSOT.
+    3 section: `[ufo-synthesize]` / `[ufo-verify]` / `[aura-verify]`.
+    single-variant schema (verb / domain / kind=sibling / id / display).
+    multi-variant 는 후속 (queued).
+  - **`cockpit/Sources/DemiurgeCore/Loaders/ProducerLoader.swift`
+    신규** — `producersPath()` resolver (DEMIURGE_REPO env / cwd /
+    ~/core/demiurge fallback), `loadAll()` DemiParser → `[(Producer
+    CellKey, ProducerEntry)]` projection, `project(section)` 가
+    siblingRepoVariant 생성. 단일 variant 만 지원, kind != "sibling"
+    이면 stderr warn + skip.
+  - **`ProducerRegistry.entries` refactor** — static computed property
+    가 (1) Swift-class hardcoded `swiftClassEntries` 만 직접 코드 보유
+    (cern+analyze pylhe / xsuite — D86 function-reference 예외) (2)
+    `ProducerLoader.loadAll()` 결과 merge (ufo/aura sibling cells).
+    이전 κ-62 의 hardcoded ufo/aura entries 제거 — D86 위반 해소.
+  - build: xcrun swift build --product DemiurgeCLI OK (2.18s).
+  - g3 — 데이터 SSOT 분리만, 측정 record / gate / absorbed 변경 0.
+  D86 g_no_hardcoded_data 의 첫 실 application. 새 sibling-repo
+  cell 추가 = PRODUCERS.demi 한 section (Swift 코드 변경 0).

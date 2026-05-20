@@ -1,0 +1,49 @@
+# domains/PRODUCERS.demi — sibling-repo dispatch SSOT (D85, D86).
+#
+# Per `@D g_no_hardcoded_data` (D86), ProducerRegistry.entries' sibling-
+# repo variants live here as a declarative file, NOT in Swift literal
+# arrays. Swift-class variants (e.g., cern/analyze pylhe / xsuite-
+# tracking) stay coded because Swift function references are not
+# reflectable from .demi at runtime — that exception is documented in
+# AGENTS.tape `@D g_no_hardcoded_data` body.
+#
+# Schema (single-variant per cell — the common case for sibling-repo
+# dispatch; multi-variant `[variant.<id>.kind = "..."]` will land when
+# a cell needs more than one external substrate, queued per D86):
+#
+#   [<domain>-<verb>]
+#   verb    = "<one of: specify | structure | design | analyze |
+#               synthesize | verify | handoff>"
+#   domain  = "<domain id from domains/INDEX.demi>"
+#   kind    = "sibling"     # only `sibling` is implemented today
+#   id      = "<variant id, also used as the default>"
+#   display = "<human-facing label>"
+#
+# Each section becomes one `ProducerEntry` keyed by `(verb, domain)`
+# with `defaultID = id` and a single `siblingRepoVariant` whose run
+# closure calls `SiblingRepoSpawner.spawn(domain:verb:outDir:)` against
+# the domain's `substrate_ssot` (resolved from domains/INDEX.demi).
+#
+# Adding a new sibling-repo cell = append one section here. No Swift
+# code change.
+
+[ufo-synthesize]
+verb    = "synthesize"
+domain  = "ufo"
+kind    = "sibling"
+id      = "hexa-ufo"
+display = "hexa-ufo selftest (sibling repo)"
+
+[ufo-verify]
+verb    = "verify"
+domain  = "ufo"
+kind    = "sibling"
+id      = "hexa-ufo"
+display = "hexa-ufo verify (13 falsifier state)"
+
+[aura-verify]
+verb    = "verify"
+domain  = "aura"
+kind    = "sibling"
+id      = "hexa-aura"
+display = "hexa-aura verify (F-AURA-{1..4} state)"
