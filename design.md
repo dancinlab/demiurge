@@ -4357,3 +4357,111 @@ closure 박제는 새 측정 0, 새 cell flip 0, 새 SSOT 0 — *결정-감사
 per-cell measured-oracle parity round (P-⑩ ① — pilot 의 hexa-
 native value 가 cell record 의 measured oracle 과 bit-equal /
 rel_err 게이트 통과해 첫 cell `absorbed=true` flip).
+
+### Decision 109 — Energy/solar cell + NREL MIDC pyranometer GHI = κ-68 첫 measured-oracle absorbed flip target
+
+**picked**: κ-68 (RFC 013 §6.11 per-cell measured-oracle parity
+round) 의 첫 cell flip target = **Energy/solar** (cockpit
+`EnergyVerifyRecord` carrier + hexa-lang `stdlib/kernels/solar/
+solar_kernel.hexa` substrate). 외부 measured oracle = **NREL MIDC
+(Measurement and Instrumentation Data Center) pyranometer GHI** —
+station **SRRL Golden CO**, dataset window **단일 clear-sky day ·
+1-min cadence**, bridge stack = **pvlib clearsky/transposition
+trusted (substrate-parity 이미 증명)**, hexa-native scope =
+**`solar_position_kernel` (sun position 만)**, PASS criterion =
+**mean rel_err ≤ 5% over clear-sky daylight hours** (clear-sky
+filter applied). 본 D-block 은 **decision-only · code 0** — G28..G30
+가 본 결정 위에서 build.
+
+**rationale**:
+- **cell 선정 (Energy/solar)** — 5 `HexaNativeParityRef` carrier
+  (Ufo + Fusion + Aura + ChipAnalyze + Energy · D90/D91/D95) 중
+  Energy 가 외부 measured oracle 의 자격 (실 측정 ground-truth
+  접근) 과 D103 dimension-separation 의 명확성 (sun-position 은
+  계산 가능, GHI 는 측정 obligatory) 을 동시에 만족하는 유일 후보.
+  4 회피 후보의 reject reason: Fusion (D106 illustrative-physics
+  gate · cyan tone — substrate-parity PASS 이지만 measurement-parity
+  의 honest floor 가 illustrative · anti-conflation 으로 본 round
+  flip 대상 제외) · ChipAnalyze (YOSYS.md 다른 세션 작업 중 ·
+  충돌 회피) · Aura (external oracle 후보 Allen Brain / DREAM spike-
+  train 이 heavy · 데이터 fetch/preprocess 인프라 필요) · Ufo
+  (external measured oracle 부재 · closed-form theory 만 존재).
+- **station (SRRL Golden CO)** — NREL MIDC 의 정직 reference
+  station, pyranometer cadence 1-min, 공공 open-data. PSEL Phoenix
+  / BMS Boulder 등 alternative 도 honest 동등하나 SRRL 이 hexa-lang
+  + pvlib + NREL ecosystem 의 canonical anchor. 다른 station 사용은
+  후속 land 에서 horizontal extension.
+- **window (single clear-sky day · 1-min cadence)** — 첫 land 의
+  honest floor. clear-sky filter 적용 가능 (data quality 명시) +
+  sample size 합리적 (1440 samples) + 단일 day 의 atmospheric state
+  단순. multi-day / 비-clear-sky / variable-cadence 는 후속 round
+  (G29 land 이후) 의 확장 axis.
+- **bridge stack trust (pvlib clearsky/transposition)** — 본 round
+  의 측정 axis 는 *sun-position* (declination · hour angle · azimuth
+  · elevation) 단일 segment. clearsky GHI (Haurwitz / Ineichen 등)
+  와 transposition (Hay-Davies 등) 은 pvlib 의 검증된 closed-form
+  으로 trusted bridge — substrate-parity 가 별 axis. D103 separation
+  유지 — bridge 의 trust 는 substrate-parity dimension, measured-
+  oracle 은 *전체 chain 의 끝값* 인 GHI 와 pyranometer GHI 의 차이.
+- **PASS criterion (mean rel_err ≤ 5%, clear-sky filter)** — clear-
+  sky daylight hours 중 sun-position-driven modeled GHI 와 pyranometer
+  실 측정의 mean relative error 5% 이하면 PASS. 후보 (b) MAE ≤ X W/m²
+  는 unit 명확하나 magnitude bias (high-noon vs low-elevation) 가
+  nontrivial · 후보 (c) hourly all ≤ 10% worst-case 는 첫 land 의
+  honest floor 로 가혹. (a) mean 이 첫 land 의 representative summary
+  로 적정.
+- **D-number (D109)** — D108 직후 자연 순서. D104 는 reserved
+  (D108 에서 명시 · sweep numbering in-flight slot 보존).
+- **D95 computed projection 격리** — `EnergyVerifyRecord.
+  isHexaNativeAbsorbed` (computed) 는 *substrate-parity* dimension
+  의 표면. 본 round 의 `absorbed: Bool` (stored) flip 은 G29 단계
+  에서 cell-record writer 가 *명시적* set — D95 computed 의
+  부산물로 일어나지 않음 (D103 가 docstring 으로, G30 governance 가
+  typed enforcement 로 가드).
+- **D106 illustrative-physics 제외** — Fusion (mc_transport 의
+  cyan tone · `mc_slab_demo.hexa` pattern-proof) 은 본 round 의
+  flip 대상이 *결코* 아님. anti-conflation (RFC 013 §6.12) 유지.
+
+**효과**:
+- ARCH.md §11.4 Round 7 G27 `[ ]` → `[x]` flip 의 evidence base.
+- G28..G30 의 deps 가 G27 D-block 이므로, 본 D-block 박제로
+  downstream 4 unblock — G28 (producer wire + cell record schema
+  확장 · `MeasuredOracleRef` typed field) · G29 (첫 cell absorbed=
+  true legitimate flip) · G30 (governance invariant typed enforcement
+  + `@D g_absorbed_needs_measured_oracle` 후보).
+- RFC 013 §6.11 의 status 는 `queued` 인 채로 유지 — 본 D-block
+  은 decision gate 만, 실 land (G29) 까지 §6.11 status 갱신 0.
+
+**적용**:
+1. `design.md` — 본 D109 entry 추가 (decision SSOT 의 결정 audit-
+   trail 누적).
+2. `ARCH.md` §11.4 Round 7 G27 의 `[ ]` 를 `[x]` 로 flip + D109
+   reference + audit trail (cell-pick note + D109 draft note) 인용.
+   §11.3 의 G1–G8 priority recommendation 에 Round 7 refresh 한
+   single 단락 추가 (initial-round historical 표면 vs 현 ground
+   truth 의 honest distinction).
+3. `PLAN.md` — `## 진행 로그` 끝에 phase κ-68 *opening* entry 추가
+   (G27 land 박제 · G28..G30 queued). RFC 013 §6.11 status 는
+   `queued` 유지.
+4. **NOT** 적용 (scope 밖 · code 0 단계):
+   - cell record schema / `MeasuredOracleRef` 타입 새 stored field 0
+     (G28 의 scope).
+   - producer adapter 변경 0 (G28 의 scope).
+   - AGENTS.tape `@D` 새 row 0 (G30 의 scope).
+   - PILOTS.demi / DEPENDENCIES.demi / SUBSTRATE_LINKS.demi row
+     변경 0.
+   - hexa-lang 측 변경 0 (G28 producer wire 단계에서 필요).
+   - cell record 의 stored `absorbed: Bool` flip 0 — Energy/solar
+     의 `EnergyVerifyRecord.absorbed` 는 여전히 false (G29 까지
+     legitimate-flip gate 닫혀 있음).
+
+**g3** — 본 D-block 의 박제로 어떤 cell 의 `absorbed=true` 도
+flip 되지 않음. RFC 013 §6.11 의 status 는 여전히 `queued`. 새
+측정 0, 새 stored field 0, 새 `.demi` row 0 — *결정-감사추적 SSOT*
+의 single block 만. cell flip 의 실 honest land 는 G29 (substrate
+adapter measured-oracle PASS 의 cell record write path) 에서 이뤄짐.
+D80 honesty floor (`g_hexa_only`) + D86 (`g_no_hardcoded_data`) +
+D103 (dimension-separation) + D106 (illustrative-physics 제외) 모두
+preserved. audit trail = 4 inbox note (k68-cell-pick · k68-d109-draft ·
+k68-g28-measured-oracle-ref-sketch · k68-g30-governance-row-sketch) +
+ARCH §11.4 Round 7 scaffold + NEXT_SESSIONS P-⑩ refresh.

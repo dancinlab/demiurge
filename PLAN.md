@@ -4189,3 +4189,40 @@
   κ-68 reserved = §6.11 per-cell measured-oracle round (P-⑩ ① —
   pilot 의 hexa-native value 가 cell record 의 measured oracle 과
   bit-equal / rel_err 게이트 통과해 첫 cell absorbed flip).
+- 2026-05-21 — **phase κ-68 — RFC 013 §6.11 per-cell measured-oracle
+  parity round opening (G27 land · D109 · 사용자 게이트 "all bg
+  go")**. cell pick + decision gate 박제: **Energy/solar** (cockpit
+  `EnergyVerifyRecord` carrier + hexa-lang `stdlib/kernels/solar/`
+  substrate) + **NREL MIDC SRRL Golden CO pyranometer GHI** (single
+  clear-sky day · 1-min cadence) + **pvlib clearsky trusted bridge**
+  + **mean rel_err ≤ 5% PASS criterion** (clear-sky daylight hours
+  filter). 5 default 가 D109 (cell + oracle dataset + 기준 + 회피
+  후보 rationale) 로 lock-in.
+  - 회피 후보 4개 — Fusion (D106 illustrative-physics gate · cyan
+    tone · anti-conflation) · ChipAnalyge (YOSYS.md 다른 세션 작업
+    중 · 충돌 회피) · Aura (heavy oracle infra — Allen Brain /
+    DREAM spike-train) · Ufo (closed-form only · external measured
+    oracle 부재) — design.md D109 안에 명시.
+  - ARCH.md §11.4 G27 `[ ]` → `[x]` flip (D109 reference + audit
+    trail 4 inbox note). §11.3 cross-sim gap list 의 G1–G8 historical
+    표면과 §11.4 G1–G30 Round 1-7 현 ground truth 분리 refresh.
+  - 4 inbox audit note land (b160593 묶음 A + 후속 묶음 B):
+    `k68-cell-pick-2026-05-21.md` (cell pick anchor · 5 open sub-
+    decision queue) · `k68-d109-draft-2026-05-21.md` (D109 pre-land
+    draft) · `k68-g28-measured-oracle-ref-sketch-2026-05-21.md`
+    (G28 `MeasuredOracleRef` Swift sketch · 6 open Q) ·
+    `k68-g30-governance-row-sketch-2026-05-21.md` (G30 `@D`
+    governance row + XCTest · 5 open Q).
+  - NEXT_SESSIONS.md P-⑩ section body 전면 refresh (κ-67 producer-
+    emit LANDED → κ-68 per-cell measured-oracle round · 4 jobs
+    G27..G30 · Gate/NOT/Exit measured-oracle axis 재정렬).
+  g3 — 본 phase opening 은 **decision-only · code 0** (G27 D-block
+  박제 + audit narrative). 어떤 cell 의 stored `absorbed: Bool` 도
+  flip 되지 않음 (Energy/solar 의 `absorbed` 는 여전히 false ·
+  G29 legitimate-flip gate 닫혀 있음). RFC 013 §6.11 status 는
+  여전히 `queued`. 새 측정 0 · 새 stored field 0 · 새 `.demi`
+  row 0 · cell record schema 변경 0 · hexa-lang 측 변경 0. 다음
+  axis (G28 producer wire + `MeasuredOracleRef` typed field 확장)
+  는 후속 phase. G28 의 6 open Q · G30 의 5 open Q 는 그 round 가
+  land 시 결정될 자연 axis — 본 phase 에서 lock-in 한 default 는
+  D109 의 5 default 뿐.

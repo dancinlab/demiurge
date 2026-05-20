@@ -963,6 +963,21 @@ demiurge = domain-shared (도메인 1개 + 프로젝트 N 개 포인터). 시뮬
 rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkeeping 정직성
 표면.
 
+**Refresh (2026-05-21 · κ-68 opening · D109 land)** — 위 G1–G8 는
+κ-62 시점의 *initial gap surface* (cross-sim two-project 비교가
+처음 표면화한 gap, alien-disc-mk1 ↔ aura-clip-mk1 cross-cohort 의
+교집합). §11.4 의 implementation checklist 는 그 후 7 round 로 확장:
+Round 1-3 (G1–G8 fundamental / honesty surface / cross-domain audit ·
+κ-62) · Round 4 (G9–G12 hexa-native parity surface · D80 sweep · κ-65) ·
+Round 5 (G13–G18 D80 SSOT 통합 + 후속 · D87..D101 sweep) · Round 6
+(G19–G26 κ-67 closure + post-closure pilot #13 · D102..D108 + geodesy) ·
+Round 7 (G27–G30 *in-progress* · κ-68 per-cell measured-oracle parity
+round · RFC 013 §6.11 · G27 [x] D109 land 2026-05-21 · G28–G30
+queued). 본 §11.3 의 G1–G8 priority 는 *initial-round historical*
+표면 — 현 ground truth 는 §11.4 의 G1–G30 Round 1-7 가 carry. §11.3
+는 cross-sim *origin gap* 의 audit trail 로 보존 (g_ssot_single_source
+D50 — phase boundary 별 한 snapshot 유지).
+
 ### 11.4 G1–G30 implementation checklist
 
 > G1–G8 라운드 1–3 (`fundamental` / `honesty surface` / `cross-domain
@@ -1693,22 +1708,29 @@ in-progress)**
 > physics gate (D106) 가 적용된 cell 은 본 round 의 absorbed flip
 > 대상 아님 — RFC 013 §6.12 anti-conflation 유지.
 
-- [ ] **G27.** Cell + measured-oracle source 선정 (κ-68 R7 pre-code
-    decision gate)
-  - 18 cell × 7 verb 중 첫 measured-oracle flip 후보 1개 선정 + 외부
-    oracle 출처 (NIST / pyranometer / Geant4 stopping-power / … ) +
-    PASS 기준 (`rel_err ≤ ?`) 사전 선언. 조건: (a) 기존 hexa-native
-    pilot 보유 (PILOTS.demi row 존재), (b) 외부 oracle 실 데이터
-    접근 가능 (URL / archive / 측정 record), (c) D103 dimension-
-    separation 명확 (substrate-parity 와 measurement-parity 가 독립
-    측정 가능), (d) D106 illustrative-physics 가 적용된 cell 제외.
+- [x] **G27.** Cell + measured-oracle source 선정 (κ-68 R7 pre-code
+    decision gate · D109 land 2026-05-21)
+  - **D109** (κ-68 G27 land): cell = **Energy/solar** (cockpit
+    `EnergyVerifyRecord` carrier + hexa-lang `stdlib/kernels/solar/
+    solar_kernel.hexa` substrate). 외부 measured oracle = **NREL MIDC
+    SRRL Golden CO pyranometer GHI** (single clear-sky day · 1-min
+    cadence). bridge stack = **pvlib clearsky/transposition trusted**
+    (substrate-parity 이미 증명), hexa-native scope = **solar_position
+    _kernel (sun position only)**. PASS criterion = **mean rel_err ≤
+    5% over clear-sky daylight hours**. 회피 후보 4개 (Fusion D106
+    illustrative · ChipAnalyze YOSYS 별 세션 · Aura heavy infra · Ufo
+    closed-form only) — rationale 명시. code 0 (decision-only).
+  - **audit trail**: inbox/notes/k68-cell-pick-2026-05-21.md (cell
+    pick anchor · 5 sub-decision 정렬) + k68-d109-draft-2026-05-21.md
+    (D109 pre-land 검토 draft).
   - deps: G19..G26 누적 · RFC 013 §6.11 · D80 (honesty floor) ·
     D95 (computed projection 격리) · D103 (dimension-separation
     docstring) · D106 (illustrative-physics 제외)
   - exit:
-    - design.md 단일 D-block (cell + oracle 출처 + 기준 + 회피
-      후보 rationale)
-    - 새 code 0 (decision-only 단계 — D-block 박제까지)
+    - design.md `### Decision 109` 박제 · 5 sub-decision default
+      baked-in
+    - 새 code 0 · 새 stored field 0 · 새 `.demi` row 0
+    - PLAN.md κ-68 opening entry · ARCH §11.4 G27 `[ ]` → `[x]`
 
 - [ ] **G28.** Producer wire — substrate adapter 가 measured-oracle
     field 를 cell record 에 emit (`absorbed` 미flip)
