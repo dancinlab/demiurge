@@ -1781,21 +1781,54 @@ in-progress)**
     - design.md D-block + PLAN.md κ-68 entry
     - swift build/test PASS
 
-- [ ] **G30.** Governance gate — absorbed-vs-measured invariant typed
-    enforcement (D103 docstring → compiler-checkable)
-  - AGENTS.tape `@D` 후보 1 row (이름 G27 단계에서 결정 — 예:
-    `g_absorbed_needs_measured_oracle`) + cockpit XCTest 가
-    "measured field 부재 시 stored `absorbed: Bool` true 면 FAIL"
-    invariant enforcement. D103 docstring 의 semantic gate 를
-    test-level guard 로 격상. D106 illustrative-physics case 는
-    invariant 에서 제외 (anti-conflation 유지).
-  - deps: G29 (첫 land 사례 존재) · D103 (docstring gate) · D106
-    (illustrative-physics 제외)
+- [x] **G30.** Governance gate — absorbed-vs-measured invariant typed
+    enforcement · **Stage 1 (XCTest) LANDED 2026-05-21 `fee34cc` ·
+    Stage 2 (constitution.md row) DEFERRED**
+  - **Stage 1 (load-bearing) — LANDED `fee34cc`**: `cockpit/Tests/
+    DemiurgeCoreTests/AbsorbedNeedsMeasuredOracleTests.swift` 신규
+    · 3 test method:
+    - `testAbsorbedRequiresMeasuredOraclePASS` — invariant 의 (a)
+      measured PASS OR (b) D106 illustrative-physics exempt 양
+      branch 검증 + boundary (meanRelErr == threshold inclusive PASS)
+      + 3 counterexample.
+    - `testAbsorbedNotAutoflippedByD95Computed` — synth Energy record
+      의 substrate-parity PASS (`isHexaNativeAbsorbed=true`) +
+      `measuredOracle=nil` + `absorbed=true` conflation 을 invariant
+      가 FAIL 분류. D103 dimension-separation enforcement 을 typed
+      test-level guard 로 격상.
+    - `testD106IllustrativeCellExemptFromMeasuredOracle` — D106
+      illustrative cell 의 3 branch 모두 invariant PASS · RFC 013
+      §6.12 anti-conflation 유지.
+    - swift build PASS · swift test **63/63 PASS** (60 기존 + 3
+      신규 · 1 XCTSkip baseline · 회귀 0).
+  - **Stage 2 (doc-shaped audit) — DEFERRED**: `.specify/memory/
+    constitution.md` governance row land 은 constitution.md 가
+    template-only (line 1 `# [PROJECT_NAME] Constitution`) 인 동안
+    보류. constitution.md populate timing 은 별도 사용자 결정 ·
+    κ-68 G30 scope 밖. land 후보 row 의 안은 `inbox/notes/k68-g30-
+    revised-2026-05-21.md` §Stage 2 안에 박힘.
+  - **scope rationale (post-archive)**: 1a620ad (AGENTS.tape `archive/`
+    이동) + ca61a6c (Spec Kit Phase 2 채택 · constitution.md 가 새
+    SSOT) + bd28631 (G30 exit criterion `AGENTS.tape @D` →
+    `constitution.md row` redirect) chain 후 .tape format dormant.
+    사용자 메모 ".tape 안쓰여 현재 (참고)" — XCTest 가 real
+    enforcement vehicle. G30 의 load-bearing enforcement 는 Stage 1
+    단독으로 충족.
+  - **audit trail**: `inbox/notes/k68-g30-governance-row-sketch-
+    2026-05-21.md` (SUPERSEDED · 옛 AGENTS.tape sketch · body 보존)
+    + `inbox/notes/k68-g30-revised-2026-05-21.md` (post-archive
+    revised plan · Stage 1 mandatory + Stage 2 deferred).
+  - deps: G28 (`MeasuredOracleRef` schema · `4a1a087`) · D103
+    (dimension-separation) · D106 (illustrative-physics 제외)
   - exit:
-    - XCTest invariant PASS
-    - `.specify/memory/constitution.md` governance row land
-    - 기존 cell record (illustrative-physics 등) 회귀 0
-    - swift build/test PASS
+    - XCTest invariant PASS [x] (3 method · 0 failure)
+    - 기존 cell record 회귀 0 [x] (60 기존 test PASS)
+    - swift build/test PASS [x] (63 total · 1 XCTSkip)
+    - **DEFERRED** (Stage 2 · κ-68 closure block):
+      - `.specify/memory/constitution.md` row land (constitution.md
+        populate 후 별 commit)
+      - G29 real measurement 위 build 된 real-data branch invariant
+        (G29 land 시 fixture 확장)
 
 ---
 

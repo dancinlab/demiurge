@@ -4262,3 +4262,43 @@
   redirect 후) — XCTest 가 load-bearing enforcement, constitution
   row 는 doc-shaped audit (현재 constitution.md template-only ·
   populate 시점 별도 결정 · .tape format 1a620ad 로 dormant).
+
+- 2026-05-21 — **phase κ-68 — G30 Stage 1 XCTest invariant LANDED
+  (`AbsorbedNeedsMeasuredOracleTests.swift` · 3 method · commit
+  `fee34cc`)**. 사용자 게이트 "all go" (4 mechanical items batch).
+  G30 의 load-bearing enforcement = XCTest invariant land. Stage 2
+  (constitution.md row) 는 constitution.md template-only 인 동안
+  DEFERRED.
+  - **3 test method**:
+    - `testAbsorbedRequiresMeasuredOraclePASS` — invariant 의 (a)
+      measured PASS OR (b) D106 illustrative-physics exempt 양
+      branch + boundary (meanRelErr == threshold inclusive PASS) +
+      3 counterexample.
+    - `testAbsorbedNotAutoflippedByD95Computed` — synth Energy record
+      의 substrate-parity PASS (isHexaNativeAbsorbed=true) +
+      measuredOracle=nil + absorbed=true conflation 을 invariant 가
+      FAIL 분류. D103 dimension-separation 의 enforcement 을 typed
+      test-level guard 로 격상.
+    - `testD106IllustrativeCellExemptFromMeasuredOracle` — D106
+      illustrative cell (Fusion mc_transport · mc_slab_demo) 의 3
+      branch 모두 invariant PASS — RFC 013 §6.12 anti-conflation 유지.
+  - swift build PASS · swift test **63/63 PASS** (60 기존 + 3 신규
+    · 1 XCTSkip baseline · 회귀 0).
+  - **post-archive context**: 같은 일자 1a620ad (.tape archive) +
+    ca61a6c (Spec Kit Phase 2) + bd28631 (G30 exit criterion →
+    constitution.md redirect) chain 후 .tape format dormant. 사용자
+    메모 ".tape 안쓰여 현재 (참고)" — XCTest 가 real enforcement
+    vehicle.
+  - **PR #248 MERGED** (hexa-lang main) — G28b STUB producer 합류 ·
+    60-sample synthetic clear-sky · branch deleted.
+  - **inbox INDEX drift fix** — 다른 세션의 `2026-05-21-hexa-exec-
+    broken-pipe.md` (hexa runtime exec broken · `self/runtime.c`
+    popen handling) row 추가. 32 → 33 entries · pickup-open 7 → 8.
+  g3 — G30 Stage 1 만 LANDED. G29 (real measurement · 첫 cell
+  legitimate `absorbed=true` flip) 는 여전히 queued (heavy · 별
+  세션). RFC 013 §6.11 status 도 여전히 `queued` — G29 land 전까지
+  closure 불가. 어떤 cell 의 stored `absorbed: Bool` 도 flip 안 됨
+  (Energy/solar 의 `absorbed` 는 여전히 false). 새 stored data 0 ·
+  새 PILOTS row 0 · `.demi` 변경 0. 다음 axis (κ-69) = G29 real
+  measurement + G30 Stage 2 (constitution.md populate 후) + κ-68
+  closure 박제 (RFC 013 §6.11 status `queued` → `LANDED` flip).
