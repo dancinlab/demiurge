@@ -102,6 +102,17 @@ public enum SkippedCellsAggregator {
                 if r.contains("proprietary") || r.contains("commercial") {
                     return .proprietaryOnly
                 }
+                // D106 — illustrative-physics heuristic: cells whose
+                // skipped_reason mentions an illustrative / pattern-
+                // proof kernel (mc_slab_demo etc.) classify here so
+                // the dashboard surfaces the 4th tone instead of
+                // collapsing to `.unspecified`. Only fires when the
+                // record did NOT set `gate_type` explicitly.
+                if r.contains("illustrative")
+                    || r.contains("pattern-proof")
+                    || r.contains("mc_slab_demo") {
+                    return .illustrativePhysics
+                }
                 return .unspecified
             }()
             result.append(SkippedCellEntry(

@@ -5,7 +5,8 @@
 > `f036f6f` · D96+D100 19/19 narrative `47bf504` + `e451037` · D97
 > 3-tier link-integrity `74a1b92` · D98 cross-ref CI `384101b` ·
 > D101 env-fallback deprecation `8fc0862` · D103 dimension-separation
-> docstring `105315e` · D102 chem first PILOTS row `a033def`; 13/15
+> docstring `105315e` · D102 chem first PILOTS row `a033def` · D106
+> illustrative-physics gate first-class; 13/15
 > D80 pilots in `domains/PILOTS.demi` — only the per-cell measured-
 > oracle parity round remains as P-⑩ ① queued follow-on) · Created:
 > 2026-05-20 · Last status refresh: 2026-05-20 (D105 sweep) ·
@@ -373,9 +374,24 @@ stored `absorbed: Bool` legitimately (NOT via D95 computed
 projection). NEXT_SESSIONS P-⑩ ① queues this; D103 docstring guards
 against accidental auto-flip during that round.
 
-### 6.12 `gate_type = "illustrative-physics"` first-class — STILL QUEUED
+### 6.12 `gate_type = "illustrative-physics"` first-class — LANDED (D106)
 
-Pilot #2 (`mc_slab_demo`) gate; no change since RFC publication.
+`GateType.illustrativePhysics` (raw value `"illustrative-physics"`)
+added as a peer enum case alongside `.hexaNativeAbsent` /
+`.hexaNativeFuture`. Anti-conflation predicates: the new case is
+INTENTIONALLY excluded from `hexaNativeBlocked` (the port is landed
+and parity-passing; only the cell-level measured oracle is gated)
+and surfaces via a dedicated `isIllustrativePhysics` predicate. The
+`SkippedCellsAggregator` heuristic fallback also classifies records
+whose `skipped_reason` mentions `illustrative` / `pattern-proof` /
+`mc_slab_demo` tokens, so the dashboard surfaces the 4th tone even
+before producers explicitly emit the typed `gate_type`. Cockpit
+`SkippedCellsDashboard` paints `.cyan` (NOT green absorbed, NOT
+yellow heavy-port) — RFC §6.3 anti-conflation enforced at the UI
+layer. 8 new XCTest cases cover rawValue round-trip, allCases
+membership, `hexaNativeBlocked` exclusion, predicate, label, and
+both aggregator branches. D86 g_no_hardcoded_data preserved (typed
+enum extension, no new stored data).
 
 ---
 
@@ -449,3 +465,7 @@ Pilot #2 (`mc_slab_demo`) gate; no change since RFC publication.
   follow-on = per-cell measured-oracle parity round (P-⑩ ①).
 - **2026-05-20** — D105 status refresh (this entry · header / §6 /
   §8 cross-references / §9 log reconciled to current sweep state).
+- **2026-05-20** — D106 §6.12 illustrative-physics gate first-class
+  LANDED (`GateType.illustrativePhysics` peer case + 8 new XCTest +
+  `SkippedCellsDashboard` 4th-tone color · P-⑩ ③ exit criterion met).
+  Remaining queued follow-on = §6.11 only (per-cell measured-oracle).

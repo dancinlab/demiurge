@@ -143,6 +143,10 @@ struct SkippedCellsDashboard: View {
         case .proprietaryOnly:   return .pink
         case .hexaNativeAbsent:  return .orange
         case .hexaNativeFuture:  return .yellow
+        // D106 — illustrative-physics paints `.cyan` (distinct from the
+        // green absorbed chip + the yellow heavy-port chip): substrate
+        // parity PASS but cell-level measured oracle absent.
+        case .illustrativePhysics: return .cyan
         case .producerAbsent:    return .gray
         case .unspecified:       return .secondary
         }

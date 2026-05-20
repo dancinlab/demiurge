@@ -16,6 +16,20 @@
 // because even an `installGated` substrate that passes its own
 // parity check is *still* hexa-native-absent until the kernel
 // lands.
+//
+// D106 (P-⑩ ③ · RFC 013 §6.3) — `illustrativePhysics` is the
+// third hexa-native dimension and is structurally distinct from
+// the two port-blocked buckets (`hexaNativeAbsent` /
+// `hexaNativeFuture`): a hexa-native kernel EXISTS and its
+// substrate parity has PASSED, but the kernel is a *pattern-
+// proof* (illustrative MC, single-energy-group, closed-form
+// oracle), NOT a cell-level measured-oracle replacement. The
+// canonical occupant is `mc_slab_demo` (FusionVerifyRecord, RFC
+// 013 §4.2 pilot #2): even with substrate-parity PASS, the cell
+// can NEVER flip `absorbed=true` from this kernel alone — it
+// stays measurement-gated on OpenMC. The chip MUST paint a
+// 4th tone (illustrative-physics), NOT the green absorbed tone
+// (RFC 013 §6.3 anti-conflation).
 
 import Foundation
 
@@ -68,6 +82,26 @@ public enum GateType: String, Codable, Sendable, CaseIterable {
     /// `portable_status = "heavy-port"`. See `DependenciesLoader`.
     case hexaNativeFuture = "hexa-native-future"
 
+    /// D106 (P-⑩ ③ · RFC 013 §6.3) — substrate-parity PASS *exists*
+    /// for the linked hexa-native kernel, but the kernel itself is
+    /// illustrative-physics (pattern-proof / single-energy-group /
+    /// closed-form analytic oracle), NOT a cell-level measured-oracle
+    /// replacement. Distinct from the two port-blocked buckets:
+    /// `hexaNativeAbsent` (no port will land) and `hexaNativeFuture`
+    /// (port queued but not landed); here the port is LANDED and
+    /// PASSING, yet measurement parity still rides the external
+    /// oracle (e.g. OpenMC for `mc_slab_demo`). The cockpit chip
+    /// paints a 4th tone for this case — it MUST NOT collapse to
+    /// the green absorbed tone (RFC 013 §6.3 anti-conflation).
+    ///
+    /// Canonical occupant: `FusionVerifyRecord` with
+    /// `hexaNativeParity` pointing at
+    /// `stdlib/kernels/mc_transport/mc_slab_demo.hexa` (RFC 013
+    /// §4.2 pilot #2). Cell-level `absorbed=true` requires a
+    /// measured oracle for the cell's own outputs — substrate
+    /// parity PASS on an illustrative kernel does NOT meet that bar.
+    case illustrativePhysics = "illustrative-physics"
+
     /// Substrate spec exists but no producer has been wired yet
     /// (cell is "honest-gap LLM fallback path"). Counts under "still
     /// to build" rather than "still to install".
@@ -87,6 +121,7 @@ public extension GateType {
         case .installGated, .platformGated, .dataGated: return true
         case .regulatoryGated, .proprietaryOnly,
              .hexaNativeAbsent, .hexaNativeFuture,
+             .illustrativePhysics,
              .producerAbsent, .unspecified: return false
         }
     }
@@ -95,8 +130,23 @@ public extension GateType {
     /// to flip from provisional → non-provisional absorbed=true.
     /// Covers both the permanent (`hexaNativeAbsent`) and the
     /// future-portable (`hexaNativeFuture`) buckets.
+    ///
+    /// D106 — `illustrativePhysics` is INTENTIONALLY excluded: the
+    /// port is landed and parity-passing; the blocker is the
+    /// cell-level measured oracle, NOT the port. Conflating the
+    /// two would mask the honest gap (RFC 013 §6.3 anti-conflation).
     var hexaNativeBlocked: Bool {
         self == .hexaNativeAbsent || self == .hexaNativeFuture
+    }
+
+    /// D106 (P-⑩ ③ · RFC 013 §6.3) — True when the gate signals that
+    /// substrate parity has PASSED on an illustrative-physics kernel,
+    /// so the cell's measurement parity still rides an external
+    /// oracle. UI MUST NOT paint this as the green absorbed tone;
+    /// callers (chip / dashboard) branch on this predicate to render
+    /// the 4th tone.
+    var isIllustrativePhysics: Bool {
+        self == .illustrativePhysics
     }
 
     /// Korean label for the cockpit ProvenanceBanner and G2 dashboard.
@@ -109,6 +159,8 @@ public extension GateType {
         case .proprietaryOnly:   return "상용 전용 (오픈 부재)"
         case .hexaNativeAbsent:  return "hexa-native 포트 부재 (영구)"
         case .hexaNativeFuture:  return "hexa-native 포트 예정 (heavy-port)"
+        case .illustrativePhysics:
+            return "illustrative-physics (substrate parity PASS · 측정 oracle 부재)"
         case .producerAbsent:    return "producer 미작성"
         case .unspecified:       return "분류 안 됨"
         }

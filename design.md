@@ -4110,3 +4110,88 @@ stored field 0, 새 typed enum 0, 새 `.demi` row 0. 변경된 surface =
 SUBSTRATE_LINKS.demi · 5 cell record · 19 domains/<id>.md) byte-
 unchanged. RFC 가 reader 에게 자기 sweep 을 정직히 노출 — Demiurge
 SSOT-single-source 원칙의 자기-적용.
+
+### Decision 106 — `.illustrativePhysics` GateType case = first-class (P-⑩ ③ · RFC 013 §6.3)
+
+**picked**: `GateType` enum 에 새 case `illustrativePhysics`
+(raw value `"illustrative-physics"`) 를 추가. substrate-parity PASS
+는 됐지만 hexa-native kernel 자체가 illustrative (pattern-proof /
+single-energy-group / closed-form analytic oracle) 라 cell-level
+측정 oracle 이 여전히 외부 (e.g. OpenMC) 에 있는 dimension. 두
+port-blocked bucket (`hexaNativeAbsent` / `hexaNativeFuture`) 과
+**구조적으로 distinct** — 여기는 port LANDED + PASSING 이지만
+measurement parity 가 substrate parity 와 다른 axis 이기 때문.
+
+위치 선택 = **GateType enum case** (cell record 의 새 stored
+field 아님). 이유:
+- cell record 의 `absorbed: Bool` (측정 dimension) +
+  `isHexaNativeAbsorbed` (substrate dimension) 는 D103 에서 이미
+  명시화된 2-axis. 새 stored field 추가는 D86 `g_no_hardcoded_data`
+  위반 (duplicate truth).
+- `illustrativePhysics` 는 cell-level 데이터 dimension 이 아니라
+  **gate 분류 dimension** — "이 cell 이 왜 absorbed=false 인가" 의
+  G7 taxonomy (ARCH.md §11.4) 의 한 갈래. 따라서 GateType enum
+  case 가 정확한 위치.
+- `SkippedCellsAggregator` 의 heuristic fallback 에도 illustrative
+  / pattern-proof / mc_slab_demo 토큰 인식 룰 추가 — producer 가
+  G7 adopt 하기 전 (P-⑩ ① 이전) record 도 dashboard 에서 정직
+  하게 4번째 tone 으로 surfaced.
+
+**rationale**:
+- RFC 013 §6.3 anti-conflation: mc_slab_demo (pilot #2) 는 pattern-
+  proof이지 OpenMC 대체가 아니다. `.hexaNativeFuture` 로 묶으면
+  "substrate-parity = measurement-parity" conflation 이 dashboard 에
+  발생 — D80 honesty floor 정면 위반.
+- NEXT_SESSIONS P-⑩ ③ 명시: "Add `.illustrativePhysics` as a peer
+  case ... DO NOT reuse the green 'absorbed' tone." 위치는 enum
+  (peer to `.hexaNativeFuture` etc.) 으로 못박혀 있음.
+- D80 honesty: `hexaNativeBlocked` predicate 에서 의도적으로 제외
+  — port 가 막힌 게 아니라 oracle dimension 이 다름. 새 predicate
+  `isIllustrativePhysics` 로 chip / dashboard 가 4번째 tone 으로
+  branch.
+- D86 정합: GateType enum case 추가는 typed taxonomy 의 확장 (이미
+  9-case enum), 새 데이터 SSOT 가 아님. record JSON 의 `gate_type`
+  field 는 producer 가 set 하고 PILOTS.demi 가 SSOT 인 hexa-lang
+  SHA 와 별도 dimension.
+
+**적용**:
+1. `cockpit/Sources/DemiurgeCore/Models/GateType.swift` — 새 case
+   `.illustrativePhysics` 추가 (raw value `"illustrative-physics"`).
+   `userResolvable = false`. `hexaNativeBlocked` predicate 에서
+   **의도적으로 제외** (port 가 막힌 게 아니라 oracle dimension 이
+   다름). 새 predicate `isIllustrativePhysics: Bool` 추가 (chip /
+   dashboard 의 4번째 tone branch 용). Korean label = "illustrative-
+   physics (substrate parity PASS · 측정 oracle 부재)" — 두 axis 를
+   동시에 표면화.
+2. `cockpit/Sources/DemiurgeCore/Loaders/SkippedCellsAggregator.swift`
+   — heuristic fallback 에 illustrative / pattern-proof / mc_slab_demo
+   토큰 인식 룰 추가. explicit `gate_type` 이 record JSON 에
+   있으면 그게 win (변동 없음); 없을 때만 새 룰이 작동.
+3. `cockpit/Sources/CockpitApp/Views/SkippedCellsDashboard.swift`
+   — `color(for:)` switch 에 `.illustrativePhysics → .cyan` 추가
+   (green 도 yellow 도 아닌 4번째 tone — RFC 013 §6.3 anti-
+   conflation).
+4. `cockpit/Tests/DemiurgeCoreTests/IllustrativePhysicsGateTests.swift`
+   — 새 8 test (rawValue / allCases / `hexaNativeBlocked` 제외 /
+   `isIllustrativePhysics` predicate / `userResolvable=false` /
+   label / aggregator explicit decode / aggregator heuristic
+   fallback).
+5. `proposals/rfc_013_hexa_native_parity_connection.md` —
+   §6.12 `STILL QUEUED` → `LANDED (D106)` 본문 갱신 + §9 Log 새 entry
+   + status header 의 LANDED enumeration 에 D106 추가.
+6. swift build PASS (52s · 새 warning 0). swift test PASS — 43
+   tests, 1 XCTSkip (이전 baseline 35+3 에서 illustrative-physics
+   8 tests 추가, baseline skip 일부는 위치/이름 재조정).
+
+**g3**: `.demi` 데이터 SSOT 무변경. 새 stored field 0. 새 producer
+trigger API 0. PILOTS.demi 의 hexa-lang SHA / parity_status 0줄
+변경. cell record schema / JSON wire shape / `CodingKeys` / `init`
+signature 모두 byte-unchanged. 변경된 surface = (a) GateType enum
+의 9-case → 10-case 확장, (b) SkippedCellsAggregator heuristic 의 한
+브랜치 추가, (c) SkippedCellsDashboard 의 color switch 한 case
+추가, (d) 새 test 1 파일. 어떤 cell 의 `absorbed=true` flip 도
+없음 — P-⑩ ③ exit criterion 정확히 충족 (substrate-parity ≠
+measurement-parity 의 typed enforcement). 본 entry 는 RFC 013 §6.12
+("illustrative-physics gate, STILL QUEUED" per D105) 를 LANDED 로
+flip 시킴 — RFC 013 §6.12 status 갱신은 별도 doc-only 후속이 아니라
+이 결정의 일부 (RFC 본문 1줄 patch + 이 entry 의 cross-link).
