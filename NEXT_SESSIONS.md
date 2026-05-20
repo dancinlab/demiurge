@@ -1,12 +1,22 @@
 # NEXT_SESSIONS — copy-paste session-pickup prompts
 
-> 2026-05-19 · demiurge repo at `c1805fe`+ — 4-Phase design-complete
-> AND the macOS cockpit workbench built (rfc_012 IMPLEMENTED, cockpit
-> phases κ-1..κ-10; live progress = PLAN.md, decisions = design.md).
-> Forward-handoff prompts below — each **0-context cold-readable**.
-> Pick whichever; they are independent. P-⑤ is ✅ DONE; P-②③ / P-④
-> are cross-repo / heavy sessions; P-⑥ closed; P-⑦ is the open
-> demiurge-only workbench follow-ups.
+> 2026-05-20 · demiurge origin/main `63c98c1` (κ-52) · hexa-lang
+> origin/main `79a8f6f8` (cern+synth flip). 4-Phase design-complete,
+> macOS cockpit workbench built (rfc_012 IMPLEMENTED), κ-47..κ-49
+> swept ROI 1→18 (17 cell dispatch · 잔여=0 substrate side), κ-51
+> cern+synth absorbed=true (second dynamic-absorption after chip §B+
+> §D). Forward-handoff prompts below — each **0-context cold-
+> readable**. Pick whichever; they are independent.
+>
+> **P-* (design / build sessions)** — P-⑤ ✅ DONE; P-②③ / P-④ cross-
+> repo / heavy; P-⑥ closed; P-⑦ workbench follow-ups; P-⑧ /
+> P-⑨ post-completion / producer.
+>
+> **H-* (heavy-substrate measurement sessions, new 2026-05-20)** —
+> H-1 unblocks all (hexa-lang live-tree re-align); H-2..H-7 each
+> install one heavy substrate (Geant4 / OpenMC / CARLA / Drake /
+> CalculiX+GetDP / firmware-QEMU) and run the parity round κ-49
+> honest-skipped.
 >
 > g3 discipline carried into each prompt: every gate is named; every
 > "absorbed/parity/resolved" claim is explicitly forbidden until a
@@ -497,6 +507,391 @@ Exit criterion (any one ends honestly):
 
 ---
 
+## H-* — heavy-substrate cross-session handoffs (2026-05-20)
+
+> Star-session (별 세션) prompts spun out of κ-49's "ROI 1→18 sweep
+> all-done · 잔여=0" finding. Every cell now has a substrate +
+> dispatch wiring, but **실측 흡수** (substrate-vs-hexa parity →
+> `absorbed=true` flip) still requires multi-hour / multi-GB
+> installs that the κ-47..κ-52 round honest-skipped. Each H-N below
+> is one such measurement round.
+>
+> g3 discipline carried in: each handoff names its gate, its
+> citation, its end-state. None of these may flip `absorbed=true`
+> from a partial run; the "Verification" block is the only path.
+
+State summary at branch-out (2026-05-20):
+- demiurge origin/main = `63c98c1` (κ-52 reconcile)
+- hexa-lang origin/main = `79a8f6f8` (cern+synth flip)
+- 17 cells dispatch-able (ROI 1→18); cern+synth + chip §B+§D are
+  the only `absorbed=true` cells. Everything else = substrate stage
+  (Stage 1 in ABSORPTION.md §"hexa 포팅 단계") with `GATE_OPEN +
+  absorbed=false` install-gated skip records.
+- Live blocker for *all* H-*: `~/core/hexa-lang` live tree is
+  checked out on `s1-step2-codegen-perf` (a concurrent session's
+  branch), tip `5c8b972e`. demiurge's `ActionDispatch.runEngineTool`
+  spawns python from the live tree, not from origin/main — so any
+  H-N that wants to drive substrate measurement must first land
+  H-1's tree-realign or accept that its substrate spawns will hit
+  the concurrent-session view of stdlib/.
+
+---
+
+## H-1 — hexa-lang live-tree cross-session re-align (unblocks all H-2..H-7)
+
+**What.** Land `~/core/hexa-lang` on `origin/main` (`79a8f6f8` at
+branch-out time, or whichever SHA is current `origin/main` when you
+pick this up) so demiurge's spawn-from-live-tree path sees the
+default xsuite-tracking substrate + the κ-49 ROI-1→18 stdlib
+landings. The current live-tree branch (`s1-step2-codegen-perf`,
+tip `5c8b972e`) belongs to a concurrent compiler-perf session and
+does NOT include the κ-47..κ-51 stdlib substrate files.
+
+**Why.** demiurge's `ActionDispatch.runEngineTool` resolves
+substrate paths against `~/core/hexa-lang` *as checked out on disk*,
+not against origin/main. So even though origin/main carries the
+cern+synth absorbed=true substrate + 8 ROI-11..18 substrates,
+running `demiurge cli action verify fusion` against the live tree
+today will hit a `stdlib/fusion/openmc_tbr.py: not found` honest
+skip — because that path lives on origin/main, not on
+s1-step2-codegen-perf. Every downstream H-N depends on this.
+
+**Where.** `~/core/hexa-lang` (live tree). The concurrent session
+is on branch `s1-step2-codegen-perf` (RFC-055 / RFC-065 compiler
+work). The two branches are not currently merged into each other
+on disk.
+
+**How to do it safely** (do NOT force-checkout if the concurrent
+session is mid-flight):
+  1. Coordinate with the concurrent session — confirm
+     `s1-step2-codegen-perf` is safe to leave on its own branch
+     (e.g. push to its own remote branch, or fast-forward into
+     main).
+  2. From `~/core/hexa-lang`, `git fetch origin && git status`.
+     If the working tree is clean, `git checkout main && git pull
+     --ff-only`. If dirty (concurrent session has un-committed
+     work), STOP — file a coordination note in
+     `~/core/demiurge/inbox/notes/` and exit.
+  3. Verify: `ls ~/core/hexa-lang/stdlib/cern/xsuite_optics.py
+     ~/core/hexa-lang/stdlib/fusion/openmc_tbr.py
+     ~/core/hexa-lang/stdlib/bot/drake_verify.py
+     ~/core/hexa-lang/stdlib/antimatter/geant4_verify.py` — all
+     four MUST exist (they're κ-47..κ-51 landings).
+  4. Smoke-test from demiurge: `demiurge cli action analyze cern`
+     should pick up the default `xsuite-tracking` ProducerRegistry
+     variant (D74) and either emit a record or honest-skip on
+     install gate — NOT crash with `path not found`.
+
+**Verification.** (a) `git -C ~/core/hexa-lang rev-parse HEAD` =
+the same SHA as `git -C ~/core/hexa-lang rev-parse origin/main`,
+AND (b) the 4 stdlib substrate files listed above exist on disk,
+AND (c) one demiurge cell dispatch (e.g. `action verify fusion`)
+runs without `not found` and instead hits its honest install-gate
+skip (e.g. `OpenMC nuclear data path missing`).
+
+**Touches.** `~/core/hexa-lang` (HEAD move only — no commit in
+either repo unless the user requests a sync-handoff note). No
+demiurge commit.
+
+---
+
+## H-2 — Geant4 multi-hour build + 3 cells' mc_transport parity
+
+**What.** Install Geant4 11.x (Linux pool, multi-hour build) +
+ROOT, then run the substrate-vs-hexa-native parity round for the 3
+demiurge cells that share the `kernels/mc_transport` adapter via
+Geant4:
+  - `antimatter + verify`  (substrate: `stdlib/antimatter/
+    geant4_verify.py`, κ-49 ROI 18)
+  - `cern + verify`  (Bethe-Bloch hexa-native already in
+    `stdlib/cern/bethe_bloch_stopping.hexa` per κ-38; parity vs
+    Geant4 `G4hIonisation` is the gate)
+  - `fusion + verify`  (substrate path TBD — confirm with
+    `domains/fusion.md` §2 + ABSORPTION.md §"무거운 후보")
+
+**Why.** ABSORPTION.md (line ~290 + §"무거운 후보" 표) marks
+Geant4 as a ⭐⭐⭐⭐⭐ shared transport substrate across 3 domains —
+N+M payoff = 1 install pays back 3 cells. PLAN.md κ-38 already
+recorded the Bethe-Bloch hexa port + 4-class scope_caveats
+(shell / density-effect / nuclear / hadronic); the missing piece
+is the Stage 3 Geant4-MC parity. cern+verify currently sits at
+Stage 1 substrate (`absorbed=false`).
+
+**Where.**
+  - Substrate side: `~/core/hexa-lang/stdlib/{antimatter,cern,
+    fusion}/...` (consumes `kernels/mc_transport/` adapter,
+    D72-N+M).
+  - hexa-native side: `~/core/hexa-lang/stdlib/cern/
+    bethe_bloch_stopping.hexa` (already landed κ-38) + the
+    fusion/antimatter analogs (need landing).
+  - Citations: Geant4 11.x docs (`G4hIonisation`,
+    `G4EmStandardPhysics_option4`); PDG stopping-power tables for
+    cross-check; `domains/{antimatter,cern,fusion}.md` §5 (cited
+    OSS URLs).
+  - Resources: ubu-1 / ubu-2 (Linux pool). macOS is NOT viable —
+    Geant4 multi-hour build expected.
+
+**Verification.** Per-cell: a measured F1F2-style record lands
+under `exports/<domain>/<cell>/parity/<id>.json` with
+  `provenance.absorbed = true`,
+  `measurement_gate = GATE_CLOSED_MEASURED`,
+  `parity_block = { substrate_value, hexa_value, rel_err,
+                    tolerance }`,
+  full citation block.
+Tolerance MUST be cited (PLAN.md κ-51 precedent = `1e-6` for
+algorithmic closure; Geant4 MC vs closed-form Bethe-Bloch has
+documented systematic offsets — state the tolerance you picked
+and why). If tolerance fails for any sub-physics regime (low-E
+shell, high-γ density effect, hadronic): record FAIL — do NOT
+silent-skip. A parity-FAIL record IS a valid finding (g3).
+
+**Touches.** Substrate adds → `~/core/hexa-lang/stdlib/{antimatter,
+cern,fusion}/`. demiurge: new records under `exports/<domain>/`,
+`design.md` D-num for each cell's flip (if any), PLAN.md κ-entry,
+ABSORPTION.md §"흡수 진행 상황" 표 행 update. Do NOT edit
+PLAN.md (per task — main session handles κ entries).
+
+---
+
+## H-3 — OpenMC + ENDF/B-VIII.0 nuclear data (~3 GB) parity round
+
+**What.** Download ENDF/B-VIII.0 cross-section library (~3 GB
+HDF5), install OpenMC, then run the substrate-vs-hexa parity for:
+  - `energy + verify`  (k-eff, substrate:
+    `stdlib/energy/openmc_keff.py`, κ-49 ROI 12)
+  - `fusion + verify`  (TBR — Tritium Breeding Ratio,
+    substrate: `stdlib/fusion/openmc_tbr.py`, κ-49 ROI 11)
+
+**Why.** Both cells landed substrate at κ-49 but recorded honest
+install-gated skip because the OpenMC nuclear-data path was
+missing (~3 GB ENDF/B-VIII.0 download). `kernels/mc_transport`
+(ABSORPTION.md L40) already has 4 consumers — these are the 2nd
+and 3rd. The cited benchmark targets (Springer 2025 + ANL 2025)
+give measured oracles for k-eff and TBR vs MCNP / Serpent.
+
+**Where.**
+  - Substrate: `~/core/hexa-lang/stdlib/{fusion/openmc_tbr.py,
+    energy/openmc_keff.py}`.
+  - Data: `~/.openmc/endf-b-viii.0/` (or wherever the OpenMC env
+    var `OPENMC_CROSS_SECTIONS` points). Download:
+    <https://anl.app.box.com/s/...> via the OpenMC data tool
+    (`openmc-data` package) — pin the exact ENDF release; record
+    the SHA256 of the cross-section HDF5 bundle.
+  - Citations:
+    `domains/fusion.md` L52-L53 (OpenMC ANL 2025 workshop +
+    Springer 2025 TBR benchmark);
+    `domains/energy.md` L42-L45 (OpenMC docs + Serpent
+    benchmark).
+  - Resources: ubu-pool preferred (3 GB download + multi-GB run
+    intermediates). macOS viable for OpenMC itself but data
+    transfer is the bottleneck.
+
+**Verification.** Two records:
+  - `exports/fusion/verify/tbr_<id>.json` with measured TBR vs
+    Springer-2025 oracle, rel err < cited benchmark spread (state
+    the spread).
+  - `exports/energy/verify/keff_<id>.json` with measured k-eff vs
+    OpenMC-vs-Serpent benchmark oracle.
+Each: `absorbed = true`, `measurement_gate =
+GATE_CLOSED_MEASURED`, ENDF release SHA256 in
+`provenance.data_pin`. If either fails: record FAIL with diff,
+do NOT flip.
+
+**Touches.** `exports/{fusion,energy}/verify/`, ABSORPTION.md
+parity table row update. design.md = new D-num per flip. Hexa
+port (Stage 2) optional — substrate parity alone keeps
+`absorbed=false` per ABSORPTION.md §"hexa 포팅 단계" (Stage 1 →
+Stage 4 requires hexa-native re-derivation). State the stage
+honestly.
+
+---
+
+## H-4 — CARLA + Unreal Engine install + mobility+verify scenario round
+
+**What.** Install CARLA 0.9.15+ + Unreal Engine 4.26 / 5.x on a
+Linux box; run ScenarioRunner with at least one OpenSCENARIO
+file; emit an F1F2-style record for `mobility + verify`
+(substrate `stdlib/mobility/carla_scenario.py`, κ-49 ROI 17).
+
+**Why.** mobility+verify substrate landed at κ-49 as a
+*platform-gated skip* — CARLA has no macOS build, ABSORPTION.md
+L316 explicitly flags it Linux-only. The cited regression target
+is `OpenSCENARIO scenario regression in CARLA` per
+`domains/mobility.md` §2 (검증 row). Until a Linux-pool session
+runs the actual scenario, mobility+verify cannot leave
+`GATE_OPEN / absorbed=false`.
+
+**Where.**
+  - Substrate: `~/core/hexa-lang/stdlib/mobility/
+    carla_scenario.py`.
+  - Citations: `domains/mobility.md` L56 (CARLA repo +
+    carla.org), L26 (CARLA — MIT code + CC-BY assets + Unreal
+    Engine + ASAM OpenDRIVE), L28 (OpenSCENARIO ScenarioRunner).
+  - Resources: ubu-2 (Linux, GPU helpful but headless CPU mode
+    documented). Unreal Engine is the multi-GB / multi-hour part
+    — budget similarly to H-2 (Geant4).
+  - macOS = HARD BLOCK. Do NOT attempt; record the platform-gate
+    citation in `provenance.platform_gate` instead.
+
+**Verification.** Record at `exports/mobility/verify/
+scenario_<id>.json` with:
+  - measured pass/fail per OpenSCENARIO assertion,
+  - scenario SHA256 + CARLA version + Unreal version pinned in
+    `provenance.tool_pins`,
+  - `absorbed = false` (CARLA substrate measurement ≠ hexa-native
+    absorbed — ABSORPTION.md §"substrate vs absorbed 구분"),
+  - `measurement_gate = GATE_CLOSED_MEASURED (substrate)` —
+    matches the Yosys §5 precedent (chip-synth row in
+    ABSORPTION.md table).
+
+**Touches.** `exports/mobility/verify/`, ABSORPTION.md table row
+("mobility+verify substrate-measured"), design.md new D-num.
+
+---
+
+## H-5 — Drake multi-GB install + bot+verify Lyapunov / SOS
+
+**What.** Install Drake (pip `pydrake` or build-from-source) on a
+multi-GB-budget machine, then run Drake's verification primitives
+(Lyapunov certificates + SOS optimization + contact-implicit
+verification) against at least one canonical bot example
+(double-pendulum balance or cart-pole LQR + ROA estimate). Emit
+an F1F2-style record for `bot + verify` (substrate
+`stdlib/bot/drake_verify.py`, κ-49 ROI 13).
+
+**Why.** bot+verify substrate landed at κ-49 as a honest
+install-gated skip (Drake pydrake import unavailable). The cited
+verification primitives (Lyapunov, SOS, contact-implicit) per
+`domains/bot.md` L29 are Drake's distinguishing capability over
+Gazebo. Until a session actually runs one, bot+verify cannot
+leave `GATE_OPEN`.
+
+**Where.**
+  - Substrate: `~/core/hexa-lang/stdlib/bot/drake_verify.py`.
+  - Citations: `domains/bot.md` L29 (Drake's verification
+    primitives row), L57 (Drake MIT / TRI URL).
+  - Resources: ubu-pool (Drake pip wheel is multi-GB; from-source
+    build is hours). macOS is feasible per Drake docs but pip
+    wheel is large — confirm version pins.
+  - Cross-cell: bot+synth (κ-49) used a different substrate;
+    coordinate if a shared `kernels/control` adapter emerges as
+    a D72-N+M candidate.
+
+**Verification.** Record at `exports/bot/verify/<id>.json` with:
+  - canonical example name (e.g. `cart_pole_lqr_roa`),
+  - Drake-reported certificate (Lyapunov V(x) coefficients, SOS
+    cert dual, or contact-implicit success flag),
+  - cited textbook oracle (e.g. Tedrake's underactuated.csail.mit.
+    edu notes give analytic ROA bounds for simple cases) — state
+    the oracle, state the rel err, state the tolerance.
+  - `absorbed = false` (Drake substrate; hexa-native control-
+    theory port not in scope this session).
+
+**Touches.** `exports/bot/verify/`, ABSORPTION.md table row,
+design.md new D-num.
+
+---
+
+## H-6 — CalculiX + GetDP install + 2 component-stack parity rounds
+
+**What.** Install CalculiX (3D structural FEA) + GetDP (open
+EM FEM solver), then run two parity rounds:
+  - `component + analyze`  (CalculiX 3D structural — extends the
+    κ-43 gmsh+skfem 2-D thermal substrate to 3-D structural;
+    cited in domains/component.md §2 ANALYZE row + ABSORPTION.md
+    L290 "CalculiX ⭐⭐⭐⭐ component-analyze 후속")
+  - `rtsc + verify`  (GetDP HTS solver — H-formulation or
+    A-φ formulation for REBCO tape-stack magnetization;
+    substrate `stdlib/rtsc/getdp_hts.py`, κ-49 ROI 16)
+
+**Why.** Both cells landed substrate but recorded honest
+install-gated skip (CalculiX/GetDP binaries missing). rtsc+verify
+is *especially* high-leverage: rtsc had ZERO producer before κ-49
+(ABSORPTION.md L307 "rtsc 는 producer 0 — 최고 레버리지 빈
+도메인"), and pyfemm+GetDP = the 2nd rtsc-EM consumer →
+em-kernel-promotion D72-N+M candidate.
+
+**Where.**
+  - Substrate: `~/core/hexa-lang/stdlib/component/calculix.py`
+    (TBD — confirm path via ROI 6 κ-49 entry) +
+    `~/core/hexa-lang/stdlib/rtsc/getdp_hts.py` (κ-49 ROI 16).
+  - Citations:
+    `domains/component.md` L63 (CalculiX URL), L52 (FreeCAD →
+    gmsh → CalculiX → ParaView open chain), L71 (Antmicro 2025
+    PCB-thermal precedent);
+    `domains/rtsc.md` L22 (GetDP / Elmer EM FEM row); arxiv
+    2311.09177 (FiQuS / GetDP HTS reference) cited in
+    ABSORPTION.md L307.
+  - Resources: ubu-pool. Both tools are <1 GB build but require
+    a working CGAL / PETSc toolchain; budget hours not days.
+
+**Verification.** Two records:
+  - `exports/component/analyze/calculix_<id>.json` with
+    structural-stress eigenvalues vs textbook plate-bending
+    closed-form (cite Timoshenko or NAFEMS benchmark),
+    `absorbed = false` (substrate-stage only).
+  - `exports/rtsc/verify/getdp_<id>.json` with HTS magnetization
+    loss vs cited FiQuS reference, `absorbed = false`.
+If GetDP H-/A-φ formulation parity passes, this also unlocks the
+em-kernel-promotion D72-N+M candidate (2nd consumer rule per
+ABSORPTION.md `kernels/em`).
+
+**Touches.** `exports/{component,rtsc}/`, ABSORPTION.md kernels
+table (em promotion candidate row), design.md new D-num per
+flip.
+
+---
+
+## H-7 — firmware (D73) QEMU mps2-an385 + Zephyr west install + 7-verb measurement
+
+**What.** Install QEMU 9.x with `qemu-system-arm -machine
+mps2-an385` (Cortex-M3 reference target) + Zephyr SDK + `west`
+toolchain, then run the 7-verb spine end-to-end against a
+canonical Zephyr sample (e.g. `samples/hello_world` or
+`samples/synchronization`). Emit one record per verb:
+  명세→구조→설계→합성→해석→검증→인계 (firmware.md §2 table).
+
+**Why.** firmware (D73, κ-46, 16th domain) was added explicitly
+as the *end-to-end exemplar* of demiurge's 7-verb spine
+(design.md D73: "firmware 에서 가장 명확"). κ-49 wired dispatch
+for all 7 cells but ZERO real measurement landed — every cell
+honest-skips on install gate. Until one Zephyr+QEMU round runs
+end-to-end, the D73 spine-exemplar claim is unmeasured.
+
+**Where.**
+  - Substrate: `~/core/hexa-lang/stdlib/firmware/...` (TBD per
+    κ-46 landing).
+  - Citations: `domains/firmware.md` §2 (7-verb 1:1 OSS table —
+    명세 IETF/AUTOSAR · 구조 Zephyr/FreeRTOS · 설계 GCC/west ·
+    합성 signed firmware image · 해석 static analysis (clang-
+    tidy / sparse / coverity-community) · 검증 QEMU/Renode/Unity
+    · 인계 TUF/SBOM/IEC 61508).
+  - Reference target: `qemu-system-arm -machine mps2-an385`
+    (Cortex-M3, hardware 의존 0) — design.md D73 explicitly
+    picks this as the spine-measurement target.
+  - Resources: ubu-pool preferred; macOS also fine (QEMU + Zephyr
+    SDK both have macOS builds). Budget: hours not days.
+
+**Verification.** 7 records under `exports/firmware/<verb>/
+<id>.json` covering the full chain for ONE Zephyr sample. The
+key gate is `firmware + verify` measuring QEMU pass-list +
+coverage against the Zephyr sample's `prj.conf` expectations.
+Each verb's record carries the same `sample_id` in
+`provenance.chain_id` so the cockpit chain-canvas can render
+the full 7-verb arc end-to-end (rfc_004 §4 / rfc_011 spine).
+
+Scope-bound (g3): this session is **Track A dispatch wiring**
++ first end-to-end *measurement* — it is NOT the "firmware
+substrate Stage 2 hexa-native port" round. `absorbed = false`
+on all 7 records (substrate-stage). Hexa-native port = follow-up.
+
+**Touches.** `exports/firmware/*/`, ABSORPTION.md (new firmware
+row under §"흡수 진행 상황"), design.md new D-num (D75+ for
+firmware first end-to-end). PLAN.md κ-entry handled by main
+session per task.
+
+---
+
 ## Cross-cutting notes (apply to all sessions)
 
 - demiurge decisions are committed (design.md = the decision SSOT;
@@ -575,6 +970,21 @@ Exit criterion (any one ends honestly):
   added for the demiurge-only workbench follow-ups (ingredient-shelf
   real data, REJECTED-guard hardening, expert-mode depth, phase ζ).
   Cross-cutting D-range note pointer-ized per @D g_ssot_single_source.
+- 2026-05-20 — **H-1..H-7 added** (Track E: cross-session star-
+  session handoffs). After κ-49 swept ROI 1→18 (잔여=0 substrate
+  side) + κ-51 cern+synth absorbed=true flip + κ-52 SSOT reconcile,
+  the *next* gating step is the heavy install + measurement parity
+  rounds that κ-47..κ-49 honest-skipped. 7 cold-readable handoffs
+  filed: H-1 hexa-lang live-tree re-align (unblocks all others) ·
+  H-2 Geant4 (3-cell mc_transport parity) · H-3 OpenMC + ENDF/B-
+  VIII.0 (energy+verify / fusion+verify) · H-4 CARLA + Unreal
+  (mobility+verify, Linux-only) · H-5 Drake (bot+verify Lyapunov/
+  SOS) · H-6 CalculiX + GetDP (component+analyze / rtsc+verify) ·
+  H-7 firmware D73 7-verb QEMU mps2-an385 first end-to-end. Each
+  carries Verification + Touches; none may flip `absorbed=true`
+  without a cited parity record. Companion to existing P-* (which
+  remain unchanged — design / build sessions, not measurement
+  sessions).
 - 2026-05-19 — **P-⑥ CLOSED** (goal "NEXT_SESSIONS.md 100% closure").
   θ landed measured-green (commit `50e9a41` — chat → `claude -p`
   subprocess dispatch). The other four P-⑥ items reached a definite
