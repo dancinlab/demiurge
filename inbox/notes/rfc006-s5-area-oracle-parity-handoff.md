@@ -563,3 +563,153 @@ selftest).
 
 `rfc_006 §5 measurement_gate = OPEN` continues — now with an extra
 named blocker (#4j driver-link init) ahead of the primitive sub-steps.
+
+## UPDATE 2026-05-20 (o) — #4j root-caused + fixed; driver path reaches read_verilog_file(router_d4.v) ok=yes
+
+Followup debug after (n). The (n) hypothesis ("`hexa_runtime_init` /
+static-init never runs from driver main") was **partially disproved by
+direct measurement** — ubu-2 `/tmp/router_drv.c` from the prior session
+already calls `hexa_set_args(argc, argv)` (`router_drv.c:108`), which
+itself runs `_hexa_init_fn_shims()` via runtime. The SEGFAULT therefore
+was NOT a missing-runtime-init.
+
+Measured the real prologue of `main_rv_unused_` (rv.c:5359):
+
+```c
+static int main_rv_unused_(int argc, char** argv) {
+    hexa_set_args(argc, argv);
+    __hexa_strlit_init();   // ← the missed call
+    u_main_rv_unused();
+    ...
+}
+```
+
+`__hexa_strlit_init()` is what initialises the `__hexa_sl_*` string
+literal table that `read_verilog` (and all other hexa-emitted code in
+rv.c) dereferences. Skipping it leaves every `__hexa_sl_N` pointing at
+invalid memory → first deref inside `read_verilog` SEGFAULTs.
+
+**Fundamental obstacle (measured):** hexa-cc emits `__hexa_strlit_init`
+as **`static void __hexa_strlit_init(void)`** in *every* translation
+unit. Both `/tmp/rv.c:860` and `/tmp/rtlil.c:95` carry their own static
+copy. A driver `main` in a third file therefore *cannot* call either
+copy via `extern` — they're not visible. The `static` qualifier is the
+exact mechanic that made handoff (n)'s minimal-input SEGFAULT
+reproducible even after the driver started calling `hexa_set_args`.
+
+**In-tree fix (sed workaround, this session)** — rename per file + drop
+`static`, then driver calls both:
+
+```bash
+sed -i 's/^static void __hexa_strlit_init(/void __hexa_strlit_init_rv(/g
+        s/^    __hexa_strlit_init();/    __hexa_strlit_init_rv();/g' /tmp/rv.c
+sed -i 's/^static void __hexa_strlit_init(/void __hexa_strlit_init_rtlil(/g
+        s/^    __hexa_strlit_init();/    __hexa_strlit_init_rtlil();/g' /tmp/rtlil.c
+```
+
+Driver:
+
+```c
+extern void __hexa_strlit_init_rv(void);
+extern void __hexa_strlit_init_rtlil(void);
+int main(int argc, char** argv) {
+    hexa_set_args(argc, argv);
+    __hexa_strlit_init_rtlil();
+    __hexa_strlit_init_rv();
+    HexaVal r = read_verilog_file(hexa_str(argv[1]));
+    ...
+}
+```
+
+**Measured results (ubu-2, 2026-05-20):**
+
+| input | path reached | exit | SEGFAULT |
+|-------|--------------|------|----------|
+| `"module x ; endmodule"` (inline) | `[A]→[B]→[C]→[D]→[E]→[F]` | 0 | gone |
+| `/tmp/router_d4.v` (126 lines) | `[A]→[B]→[C]→[D]` ok-truthy=yes | 0 | gone |
+
+`read_verilog_file(router_d4.v)` returns `ok=true` with empty message
+from the driver path. Update (e)'s "router_d4.v parses end-to-end
+through read_verilog" claim is now measured through the **file +
+driver-link path**, not just the selftest string path. The driver
+build chain is permanently usable for downstream proc-pass measurement.
+
+**Hexa-lang PR candidate (proper fix, separate session):** make
+hexa-cc emit `__hexa_strlit_init` with a module-unique suffix
+(`__hexa_strlit_init__<module_name>`) and *non-static* so multi-file
+drivers can link against each TU's init without sed workarounds.
+Single-file `main`-as-entry binaries unaffected. This is the
+"factor `hexa_runtime_init` out of `main` in hexa-cc" candidate from
+(n), refined to the actual missing symbol.
+
+**Chain after (o):**
+
+- #4g function-body preceding-stmts (`route_xy` local-reg + assigns)
+- #4h multi-LHS body dyn-idx (router L109/L116)
+- #4i with-else dyn-idx (if reached)
+- ABC tech-map → SKY130 area ±5 % vs oracle (d4 ≈ 61,762.99 µm²,
+  d6 ≈ 93,608.53 µm², 1.5156×)
+
+`rfc_006 §5 measurement_gate = OPEN` continues — #4j blocker cleared
+by in-tree fix; primitive sub-steps and the proper hexa-cc PR remain.
+`absorbed = false` (g3 — no flip until ABC area-oracle parity).
+
+## UPDATE 2026-05-20 (p) — router_d4 RTLIL: first real measurement (35 comb cells, 0 sequential)
+
+With #4j unlocked, the cell-tally driver dumped router_d4.v's RTLIL
+content for the first time (no more predict-first; this is read directly
+out of the design returned by `read_verilog_file`):
+
+```
+router_d4.v → read_verilog → RTLIL:
+  modules=1, wires=119, cells=35, processes=0
+
+  cell-type distribution:
+    10 × $eq          5 × $logic_and     5 × $add
+     5 × $ne          5 × $logic_not     5 × $mod
+```
+
+This pins down the gap precisely. 35 cells are emitted (not 0 as
+handoff (e)/(m) predicted), but they are *all combinational binop /
+compare* — products of generate-for unroll + simple expression
+elaboration (e.g. `(grant_in + 1) % P` rotation, FIFO empty/full
+compares). **Zero sequential cells**: no `$mux`, no `$dff`, no
+`$adff`. The always-block bodies (router L80-94 `always @*` multi-
+stmt, L98-123 `always @(posedge clk)` with-else multi-LHS dyn-idx)
+contribute *nothing* to the elaborated design. processes=0 confirms
+the RTLIL Process path is not taken either.
+
+Implication: the cond-mux primitive family (T31-T46) is correctly
+landed on origin/main and exercised by selftest, but the router_d4
+always-bodies don't hit any of those single-stmt LHS shapes — they
+need the #4g/#4h/#4i sub-steps to reach an emit path:
+
+- **#4g** function-body preceding-stmts — `route_xy` has local-reg
+  decls + 2 blocking assigns before its cascaded-if. Currently the
+  inline preprocessor (PR #162) only handles single-stmt `return
+  expr` bodies (PR #172 helps but only for cascaded-if shapes).
+- **#4h** multi-LHS body dyn-idx — `if (en) name[wire_idx] <= rhs`
+  inside multi-LHS bodies (router L99-100 reset block).
+- **#4i** with-else dyn-idx — `if (rst) … else … name[wire_idx]
+  <= rhs` (router L98-123).
+
+**ABC tech-map is now reachable** for measurement of the comb-only
+subset (35 cells → SKY130 area), but the cited oracle (61,762.99 µm²)
+is for the full design, so partial-area would not be a §5 parity
+signal — it's diagnostic only.
+
+The driver-link build chain (drv.c + sed-renamed rv.c/rtlil.c +
+runtime.c link) is the verified surface for future cell-tally
+measurements; rebuild after any read_verilog.hexa change and re-run
+to track sequential-cell emergence.
+
+**Cross-session resumption point (refreshed):**
+- demiurge `main` HEAD `1e10ee8`; this handoff + inbox/INDEX dirty
+  (uncommitted) — capture the (o)+(p) updates with `git add inbox/`
+  + commit when picking up.
+- hexa-lang `origin/main` HEAD `c0ec08a1` (unchanged this session).
+- ubu-2 `/tmp/drv_exec` is the cell-tally binary; `/tmp/drv.c`,
+  `/tmp/rv.c`, `/tmp/rtlil.c` carry the sed-fix in place.
+- Next chain: #4g (read_verilog.hexa preceding-stmt inline) →
+  #4h (multi-LHS dyn-idx) → #4i (with-else dyn-idx) → rebuild +
+  re-run cell-tally → ABC tech-map area vs oracle ±5 %.

@@ -40,12 +40,12 @@
 | `parity_attempt_scope_verify_2026-05-20-v2.md` | superseded | v3 / D75 | v2 — 4/5 PASS (WebbPSF env installed, λ-mismatch design flaw surfaced + 4 options) |
 | `parity_attempt_scope_verify_2026-05-20-v3.md` | resolved | κ-54 / D75 | 5/5 PASS after same-wavelength split; flip still NO (other caveats) |
 | `parity_attempt_space_synth_2026-05-20.md` | resolved | κ-50 | Tsiolkovsky rel err ≤1e-4; flip NO (SLSQP bound) |
-| `rfc006-s5-area-oracle-parity-handoff.md` | pickup-open | (next session) | 15 PR landed on hexa-lang `origin/main` `c0ec08a1` (cond-mux + ternary + cascaded-if + dyn-idx primitive family · T31-T46 net · selftest 54/54); next: SEGFAULT regression debug + sub-steps #4g/#4h/#4i + ABC tech-map area parity |
+| `rfc006-s5-area-oracle-parity-handoff.md` | pickup-open | (next session) | 15 PR landed on hexa-lang `origin/main` `c0ec08a1` (cond-mux + ternary + cascaded-if + dyn-idx primitive family · T31-T46 net · selftest 54/54); #4j driver-link SEGFAULT root-caused + fixed (hexa-cc emits `__hexa_strlit_init` as static — per-file rename + drop-static workaround); router_d4 RTLIL first-measured: wires=119, cells=35 (10×$eq, 5×$ne, 5×$logic_and, 5×$logic_not, 5×$add, 5×$mod) all combinational, 0 sequential — gap precisely #4g/#4h/#4i; next: sub-steps + hexa-cc unique-emit PR + ABC area parity |
 | `yosys-dispatcher-use-integration-compile-fail.md` | resolved | (mis-diagnosis) | No action needed, kept as resolution audit |
 
 ## Open pickup count
 
-- **pickup-open**: 3 (`openmdao-kernel-promotion-pickup.md` 2nd MDO consumer · `rfc006-s5-area-oracle-parity-handoff.md` next-session entry = router_d4 read_verilog_file SEGFAULT debug + sub-steps #4g/#4h/#4i + ABC tech-map · `hexa-native-port-pattern-pilot-mc-transport.md` D80 hexa-native mc_transport 1-D pilot)
+- **pickup-open**: 3 (`openmdao-kernel-promotion-pickup.md` 2nd MDO consumer · `rfc006-s5-area-oracle-parity-handoff.md` next-session entry = sub-steps #4g/#4h/#4i (router_d4 has 35 comb / 0 sequential cells — measured) + hexa-cc strlit-init unique-emit PR + ABC tech-map [#4j SEGFAULT fixed by in-tree sed workaround] · `hexa-native-port-pattern-pilot-mc-transport.md` D80 hexa-native mc_transport 1-D pilot)
 - **pickup-blocked**: 2 (`hexa-lang-branch-consolidation-2026-05-20.md` cross-session live-tree alignment · `openmc-install-blocker-2026-05-20.md` osx-arm64 + Linux pool unreachable)
 
 ## Cross-references
