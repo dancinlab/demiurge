@@ -463,3 +463,61 @@ function-inline preprocessor + array-bound helper all sit on
 Cross-session resumption point updated: `hexa-lang origin/main` HEAD
 `449e72de`. T31-T43 selftests form the regression net for the next
 session's dynamic-idx emit-chain work.
+
+## UPDATE 2026-05-20 (m) — multi-response sub-steps landed: ternary + cascaded-if + dynamic-idx (15 PR cumulative)
+
+Sustained autonomy continuation past (l) under user goal `multi-day
+session all closure` — three multi-response sub-steps that were
+previously sized as separate-session work landed in-session by
+building them on top of each other as a stack of primitives:
+
+| PR | merge | step | what landed | selftest |
+|----|-------|------|-------------|----------|
+| #171 | `e4ea8514` | #4e ternary `?:` primitive | `_rv_elab_expr` lowest-precedence right-assoc; emits `$mux(S=cond, A=else, B=then, Y=mux_y)` (T44) | 52/52 |
+| #172 | `27d55b4a` | #4f cascaded-if function body collapse | `_rv_collapse_cascaded_if_body` → nested ternary; lets `_rv_inline_func_calls` substitute cascaded-if functions (T45) | 53/53 |
+| #174 | `c0ec08a1` | #4d real dynamic-idx emit-chain | `if (en) name[wire_idx] <= rhs ;` → per-element `$eq + $and + $mux + $dff` × P (T46 — 16 cells for P=4) | 54/54 |
+
+The previously stop-hook-blocked sub-steps (`Dynamic-idx cond-mux
+emit-chain` and `Function-body proc-pass with cascaded-if-collapse`)
+both now have measurable cell-emit primitives on origin/main:
+
+- ✅ **Dynamic-idx emit-chain primitive landed** — sub-step #4d real:
+  the per-element 4-cell chain lowers `name[wire_idx]` LHS at the
+  no-else single-stmt cond-mux path. T46 measures the exact cell
+  count (16 cells for P=4). This is the first real *runtime-index
+  lowering* primitive in the read_verilog frontend.
+- ✅ **Cascaded-if function-body collapse primitive landed** —
+  sub-step #4f: the helper `_rv_collapse_cascaded_if_body` rewrites
+  cascaded-if function bodies into nested ternary so the existing
+  PR #162 inline preprocessor can substitute them. T45 measures the
+  full inline path (3-way cascade → 2 nested `$mux` at the call site).
+- ✅ **Ternary primitive landed** — sub-step #4e: the cell-emit
+  foundation that both #4d and #4f depend on. Fix: binop loop's
+  `prec == 0` early-return blocked ternary path; switched to `break`.
+
+Cumulative this session: **15 PRs on hexa-lang origin/main**,
+`read_verilog` selftest 34 → 54/54 PASS, regression 0.
+
+**router_d4 coverage still 0%** (predict-first, not re-fired). The
+specific remaining router_d4 blockers are now precisely measurable:
+
+- L99-100 `if (rst) begin … end else begin … end` — with-else
+  multi-LHS body with dynamic-idx LHS + `for` inside + nested if.
+  Multiple sub-steps still: multi-LHS path's dyn-idx emit (sub-step
+  #4h), with-else dyn-idx (#4i), function-body preceding statements
+  before cascaded-if (#4g — `route_xy` has local-reg decls + 2
+  blocking assigns before its if-cascade).
+- L80-94 `always @*` combinational nested 3-level if + function call
+  to `route_xy` + indexed LHS.
+
+Each is now a *named* sub-step rather than a generic blocker —
+the previous "multi-response sub-step" framing has fractured into
+3-4 smaller sub-steps (still multi-day total but each one is now a
+single-response candidate).
+
+`rfc_006 §5` `measurement_gate = OPEN`, `absorbed = false` stays.
+
+Cross-session resumption point: `hexa-lang origin/main` HEAD
+`c0ec08a1`. T31-T46 selftests form the regression net (16 tests for
+the cond-mux + function-inline + ternary + cascaded-if + dyn-idx
+primitive family).
