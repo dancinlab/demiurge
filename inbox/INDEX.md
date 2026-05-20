@@ -12,10 +12,11 @@
 - **pickup-blocked** — toolchain / cross-session dependency
 - **archive** — reference / methodology, no further action
 
-## Index (32 entries)
+## Index (33 entries)
 
 | filename | status | reference | one-liner |
 |---|---|---|---|
+| `2026-05-21-hexa-exec-broken-pipe.md` | pickup-open | hexa runtime / self/runtime.c popen | hexa `exec` subprocess broken — empty stdout + "broken pipe" on all commands. Scope: `self/runtime.c` popen / pipe handling — NOT a stdlib bug. Filed by other session (rfc_006 §5 work). Bonus discovery: `str(float)` emits literal `(float)` token (filed separately). Blocks `stdlib/yosys/gate_record.hexa` end-to-end measurement. Pickup = hexa runtime debug session. |
 | `absorption-empty-cells-research-2026-05-20.md` | resolved | κ-47..κ-49 | Deep-research source for ROI 1→18 sweep; all 10 targets dispatched |
 | `brand-name-demiurge-pair-with-phanes.md` | resolved | D23/D24/D25 | Brand-rename approved + executed 2026-05-19 |
 | `cern_analyze_producer_alternative_decision_2026-05-20.md` | resolved | D74 / κ-51 | ProducerRegistry Option C picked, default = xsuite-tracking |
@@ -51,7 +52,7 @@
 
 ## Open pickup count
 
-- **pickup-open**: 7 (`openmdao-kernel-promotion-pickup.md` 2nd MDO consumer · `rfc006-s5-area-oracle-parity-handoff.md` next-session entry = §5 gate refined to [58,675, 64,851] µm² with oracle 61,762.99 reproducible; sub-steps #4g/#4h/#4i + hexa-cc strlit-init PR + sv2v pre-step · `hexa-native-port-pattern-pilot-mc-transport.md` D80 hexa-native mc_transport 1-D pilot · `k68-cell-pick-2026-05-21.md` κ-68 cell pick anchor — Energy/solar + NREL MIDC direction, 5 sub-decisions queued · `k68-d109-draft-2026-05-21.md` G27 D-block 초안 (D109 land 후 audit trail) · `k68-g28-measured-oracle-ref-sketch-2026-05-21.md` G28 Swift schema 초안 (G28a 4a1a087 land 후 audit trail) · `k68-g30-revised-2026-05-21.md` G30 revised plan Stage 1 XCTest mandatory + Stage 2 constitution deferred)
+- **pickup-open**: 8 (`2026-05-21-hexa-exec-broken-pipe.md` hexa runtime `exec` subprocess broken — popen/pipe handling, blocks stdlib/yosys/gate_record.hexa measurement · `openmdao-kernel-promotion-pickup.md` 2nd MDO consumer · `rfc006-s5-area-oracle-parity-handoff.md` next-session entry = §5 gate refined to [58,675, 64,851] µm² with oracle 61,762.99 reproducible; sub-steps #4g/#4h/#4i + hexa-cc strlit-init PR + sv2v pre-step · `hexa-native-port-pattern-pilot-mc-transport.md` D80 hexa-native mc_transport 1-D pilot · `k68-cell-pick-2026-05-21.md` κ-68 cell pick anchor — Energy/solar + NREL MIDC direction, 5 sub-decisions queued · `k68-d109-draft-2026-05-21.md` G27 D-block 초안 (D109 land 후 audit trail) · `k68-g28-measured-oracle-ref-sketch-2026-05-21.md` G28 Swift schema 초안 (G28a 4a1a087 land 후 audit trail) · `k68-g30-revised-2026-05-21.md` G30 revised plan Stage 1 XCTest mandatory + Stage 2 constitution deferred)
 - **pickup-blocked**: 2 (`hexa-lang-branch-consolidation-2026-05-20.md` cross-session live-tree alignment · `openmc-install-blocker-2026-05-20.md` osx-arm64 + Linux pool unreachable)
 
 ## Cross-references
