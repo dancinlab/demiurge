@@ -7,6 +7,7 @@
   version = "1.2"
 
 ## INDEX (curated pointer table — keep in sync if you add or remove a top-level entry)
+# @D g_hexa_only              — ULTIMATE FORM = hexa-native; Python/Swift/external CLI/sibling-repo binary are TRANSITIONAL POINTERS, not endpoints; absorbed=true requires hexa-native parity port (D80)
 # @D g_demiurge_pointer_only  — demiurge = pointer / spawn wrapper ONLY; every producer script lives in hexa-lang/stdlib/  (D61)
 # @D g_stdlib_ownership       — stdlib/ namespace belongs EXCLUSIVELY to hexa-lang; demiurge is consumer only   (D15)
 # @D g3_no_over_claim         — never assert unmeasured/unproven results; SKIP-mode regression banned           (D12)
@@ -25,6 +26,16 @@
 # @N ssot                     — pointer map: where governance + decisions + arch + progress live
 # @N n_cockpit_ar_target      — cockpit 3D viewer uses RealityKit to port to AR / visionOS spatial rendering    (D35)
 # the entries themselves are SSOT; this index is a derived pointer table per @D g_ssot_single_source / D50.
+
+@D g_hexa_only := "ultimate form = hexa-native" :: governance [required d=2026-05-20 active]
+  rule = "every producer / kernel / record schema / verify oracle's ULTIMATE destination is hexa-native (hexa-lang). Python adapters, Swift cockpit, external CLI, sibling-repo binaries are TRANSITIONAL POINTERS — bridges, not endpoints. absorbed=true on a measured cell requires the substrate's hexa-native parity port to exist AND match the transitional implementation to a cited tolerance; otherwise GATE caps at GATE_OPEN regardless of how many intermediate checks pass."
+  user_directive = "2026-05-20 — 'hexa only · hexa-native' 최상단 기록"
+  general_principle = "transitional substrates are the bridge. Every cell's ultimate honest state is `hexa-native producer ⇄ analytic oracle, parity-closed`. Until that lands, GATE_OPEN / absorbed=false stays as a hard cap. This RAISES `g_hexa_native` (D14+D18, absorption-time intrinsics preference) into an absolute endpoint rule — not just preference, requirement-for-absorbed."
+  examples_compliant = "chip §B sweep_oracle_parity.hexa (κ-43 / D70) — first DYNAMIC absorbed=true BECAUSE hexa-native. matter+analyze (D17) — hexa-lang/hexa-matter substrate is the ultimate form, demiurge consumes as pointer. rfc_006 yosys hexa-native port (in progress) — the path."
+  examples_pointer_only = "cern+synth κ-51 flipped on Xsuite ⇄ Wiedemann/Lee analytic match — scope_caveats explicitly spell out this is ALGORITHM-level closure on a PYTHON SUBSTRATE, not hexa-native closure. The flip is honest at the algorithm layer; the hexa-native FODO twiss kernel does not yet exist. By g_hexa_only this is a PROVISIONAL absorbed=true (subject to demotion if the hexa-native port diverges)."
+  enforcement = "Record schema MUST carry `hexa_native_parity: { ref: <kernel path>, rel_err: <number>, tolerance: <number> }` when emitted with absorbed=true. Records without this field cap at GATE_OPEN even if every intermediate check passes. The transitional flip pattern (cern+synth κ-51) is allowed under scope_caveats but flagged with `hexa_native_parity = null` and `provisional = true`."
+  see_also = "g_hexa_native (D14+D18, absorption-preference RAISED to endpoint by this rule); g3_no_over_claim (D12); D72 kernel layer (the path); D80 (this decision in design.md audit)"
+  decision_ref = "design.md D80"
 
 @D g_demiurge_pointer_only := "demiurge = pointer / spawn wrapper ONLY" :: governance [required d=2026-05-20 active]
   rule = "demiurge is a pointer / spawn-wrapper ONLY for every external-tool producer script (Python / shell / hexa-native). The script SSOT lives in `hexa-lang/stdlib/<domain>/`, NEVER in `demiurge/`. demiurge's Swift `*Producer.swift` files only `Process`-spawn the hexa-lang-owned script; they hold no compute logic."

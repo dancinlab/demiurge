@@ -3104,3 +3104,42 @@ F480M 4.8μm 비교). `n_checks_required = 6`. hexa-lang push origin/main,
 demiurge worktree v3 note 작성 + push. PLAN κ-54 entry. g3 — substrate
 수정 자체는 GATE/absorbed 변경 0; 6/6 PASS 시에도 flip 권고는 main
 session 가 따로 검토.
+
+### Decision 80 — hexa-only ultimate-form rule (RAISES g_hexa_native to endpoint)
+
+**picked**: 모든 producer / kernel / record / verify oracle 의
+**ULTIMATE 상태 = hexa-native** (hexa-lang). Python adapter · Swift
+cockpit · external CLI · sibling-repo binary 는 **transitional
+pointer (bridge)** 이지 endpoint 가 아님. `absorbed=true` 는 측정-
+cell 에서 substrate 의 hexa-native parity port 가 *존재 + 매치* 할
+때만 허용. 그 전 단계의 flip 은 *provisional* 로 표기 (현재 cern+
+synth κ-51 패턴). 기존 `g_hexa_native` (D14+D18, absorption-time
+preference) 가 absolute endpoint 로 격상.
+
+**rationale**:
+- 사용자 게이트 2026-05-20 — "hexa only · hexa-native 최상단 기록".
+  단순한 absorption preference 가 아니라 **모든 정직성 표면의 종착지**
+  로 박는 의도.
+- D72 kernel layer + D78 graph + D17 sibling-repo precedent 가 이미
+  hexa-native 를 시사 — 명시적 endpoint rule 로 굳혀 모든 미래 결정의
+  reference 가 되게.
+- chip §B+§D (κ-43 / D70) 가 첫 *dynamic* absorbed=true 인 이유 =
+  hexa-native sweep_oracle_parity.hexa 가 *실재*했기 때문. cern+synth
+  (κ-51) 가 두 번째 dynamic 이지만 Python 기반 — 이번 rule 에 의해
+  *provisional* 로 재분류 (scope_caveats 이미 명시).
+- g3 강화: 측정-honesty + 종착-honesty 분리. 측정은 PASS 라도 종착이
+  Python 이면 ultimate-form 아님 → record schema 가 두 axis 모두 표기.
+- AGENTS.tape `@D g_hexa_only` 가 INDEX 최상단에 박혀 모든 거버넌스
+  결정의 first principle 로 작동.
+
+**적용**:
+1. AGENTS.tape — INDEX 1번째 entry + `@D g_hexa_only` body.
+2. ARCH.md §0 "hexa-only ultimate form" 박스 추가.
+3. Record schema (점진) — `hexa_native_parity` 옵셔널 필드 추가.
+   absorbed=true 일 때 비어있으면 `provisional=true` 자동 마크.
+4. cern+synth Record 갱신 (점진) — provisional=true + hexa_native_
+   parity=null typed 화 (현 scope_caveats 의 형식 typed 화).
+5. design.md D80 audit-trail (이 entry) + PLAN κ-N entry.
+
+g3 — 측정 record 변경 0 (D80 자체는 governance 추가). cern+synth
+의 provisional flag 화는 후속 phase (record schema 변경 + 점진 적용).

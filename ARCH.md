@@ -20,6 +20,34 @@
 
 ---
 
+## 0. First principle — hexa-only (ultimate form)
+
+> Every producer, kernel, record schema, and verify oracle's
+> **ultimate destination** is **hexa-native** (hexa-lang). Python
+> adapters, Swift cockpit, external CLI, and sibling-repo binaries
+> are **transitional pointers (bridges)** — not endpoints. A cell
+> can only be flipped to `absorbed=true` non-provisionally when
+> its hexa-native parity port exists AND matches the transitional
+> implementation to a cited tolerance. Otherwise: GATE_OPEN /
+> `provisional=true`, regardless of how many intermediate checks
+> pass.
+>
+> Authority: AGENTS.tape `@D g_hexa_only` (INDEX top, body block,
+> 2026-05-20) · design.md D80 · raises `g_hexa_native` (D14+D18)
+> from absorption-time preference to absolute endpoint rule.
+>
+> Examples:
+> - **endpoint-compliant**: chip §B sweep_oracle_parity.hexa
+>   (κ-43 / D70) — first dynamic `absorbed=true`, BECAUSE the
+>   hexa-native oracle exists.
+> - **provisional**: cern+synth (κ-51) — Xsuite ⇄ Wiedemann/Lee
+>   match on a Python substrate. honest flip at the algorithm
+>   layer, but hexa-native FODO twiss kernel does not yet exist
+>   → `provisional=true`, subject to demotion if the hexa-native
+>   port diverges.
+
+---
+
 ## 1. One-line shape
 
 `demiurge` is a graph of **domains** with **prerequisite edges**
@@ -1092,3 +1120,11 @@ rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkee
   targets / exit criteria per item. Round grouping: G1+G3+G5
   fundamental, G2+G7 honesty surface, G4+G6+G8 cross-domain
   audit. No code changed yet — these are design tests.
+- 2026-05-20 — §0 hexa-only first-principle added (D80, AGENTS.tape
+  `@D g_hexa_only` INDEX top). User gate "hexa only / hexa-native
+  최상단 기록". Raises `g_hexa_native` (D14+D18, absorption-time
+  preference) to absolute endpoint rule. Python/Swift/external CLI
+  are transitional pointers, not endpoints. `absorbed=true` non-
+  provisionally requires the hexa-native parity port. cern+synth
+  (κ-51) reclassified as *provisional* (scope_caveats 이미 명시 한
+  형식의 typed 화는 후속 phase).

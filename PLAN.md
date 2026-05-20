@@ -3849,3 +3849,26 @@
   scope_verify_2026-05-20-v3.md` + design.md D75 audit-trail.
   inbox/INDEX.md 의 scope+verify row 갱신 (superseded → resolved-v3-5/5).
   g3 — substrate-design fix only, GATE/absorbed 변경 0.
+- 2026-05-20 — **phase κ-55 — D80 hexa-only first-principle 박제 +
+  ARCH.md §0 + ARCH.md §11 worked simulations**. 사용자 게이트 "hexa
+  only · hexa-native 최상단 기록" + 두 시뮬레이션 (alien-disc-mk1 /
+  aura-clip-mk1) 캐논화. 변경:
+  (1) AGENTS.tape — INDEX 최상단에 `@D g_hexa_only` (D80) line +
+      본문 block (rule / user_directive / general_principle /
+      examples_compliant / examples_pointer_only / enforcement /
+      see_also). 기존 g_hexa_native (D14+D18, absorption-time
+      preference) 가 absolute endpoint rule 로 격상.
+  (2) design.md D80 audit-trail — picked / rationale (5 bullets) /
+      적용 (5 steps). cern+synth (κ-51) 가 *provisional* 로 재분류
+      (scope_caveats 이미 명시).
+  (3) ARCH.md §0 — "First principle — hexa-only (ultimate form)"
+      박스 추가 (architecture 첫 페이지). endpoint-compliant /
+      provisional 예시 명시.
+  (4) ARCH.md §11 worked simulations 두 개 (alien-disc-mk1 ufo +
+      aura-clip-mk1 aura) 통째 박힘. G1-G8 implementation checklist
+      (라운드 1: G1+G3+G5 / 라운드 2: G2+G7 / 라운드 3: G4+G6+G8)
+      with deps / new files / edit targets / exit criteria per item.
+  (5) ARCH.md Log 2 entries (§11 + §0 D80).
+  g3 — governance 추가, 측정 record 0 변경. cern+synth typed
+  provisional flag 화 + Record schema `hexa_native_parity` 필드 추가
+  는 후속 phase.
