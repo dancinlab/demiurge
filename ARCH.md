@@ -963,13 +963,16 @@ demiurge = domain-shared (도메인 1개 + 프로젝트 N 개 포인터). 시뮬
 rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkeeping 정직성
 표면.
 
-### 11.4 G1–G12 implementation checklist
+### 11.4 G1–G18 implementation checklist
 
 > G1–G8 라운드 1–3 (`fundamental` / `honesty surface` / `cross-domain
 > audit`) 는 κ-62 (3322523) 에서 전부 `[x]` 완료. G9–G12 라운드 4
 > (`hexa-native parity surface` — D80 sweep) 는 κ-65 (5e9f6dea) 에서
-> 진행. 각 항목 진행하면 `[x]` 로 박고 PLAN κ-entry + design.md
-> D-block + 영향 파일 commit 으로 묶을 것.
+> 진행. G13–G18 라운드 5 (`D80 SSOT 통합 + 후속` — D87..D101 sweep)
+> 는 2026-05-20 cycle 에서 PILOTS.demi seed + 19/19 도메인 narrative
+> coverage + 3-tier link-integrity + cross-ref CI + chip UI + env
+> deprecation 으로 land. 각 항목 진행하면 `[x]` 로 박고 PLAN κ-entry
+> + design.md D-block + 영향 파일 commit 으로 묶을 것.
 
 **라운드 1 — fundamental (D78 + sibling + falsifier schema)**
 
@@ -1258,6 +1261,196 @@ rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkee
     - hexa-lang `hexa_v2` byte-stable fixpoint regen PASS
     - `wrap_pi` 12-case unit test 12/12 PASS
 
+**라운드 5 — D80 SSOT 통합 + 후속 (D87..D101 sweep, 2026-05-20)**
+
+- [x] **G13.** `PILOTS.demi` 8-field SSOT + 12-row coverage (D87..D91 + D94 + D95)
+  - **2d07fd8** (D87..D94 foundation): `domains/PILOTS.demi` seed
+    (10 row, kernel-per-row · 8 fields = `kernel_path` /
+    `parity_test` / `parity_method` / `parity_tolerance` /
+    `parity_status` / `hexa_lang_sha` / `algorithm_ref` /
+    `scope_notes`) + DEPENDENCIES.demi 를 `hexa-lang/domains/`
+    에서 `demiurge/domains/` 로 verbatim 이동 (D87+D88, .demi 는
+    demiurge family own). `DomainCatalog.allHardcoded` 19-도메인
+    Swift literal 폐기 (D89, D86 `g_no_hardcoded_data` 강제).
+    `PilotLoader.swift` 신규 — `PilotEntry` 8-field struct +
+    `loadAll()` / `find(id:)` / `find(kernelPath:)` API +
+    SSOT-missing → 빈 array + stderr warn (D80 honesty).
+  - **efa4afe** (D94 phase T7): `<domain>+analyze` Producer 의
+    cell-emit path 가 `PilotLoader.find(id:)` auto-lookup —
+    hardcoded parity_status string 박지 않고 loader 가 SSOT.
+  - **a5d12d2** (D95): `HexaNativeParityRef.isHexaNativeAbsorbed`
+    computed property + 5 cell record (Ufo/Energy/Fusion/Aura/
+    ChipAnalyze) 같은 이름 computed delegate — stored boolean 0,
+    parity_status projection 만 (D86 정합). 10/10 row PASS
+    표현 → true 판정 (HexaNativeAbsorbedTests 8 case).
+  - **87cb765 / c63f406 / f28c1b0 / a2fcb1b** (D80 pilots #9..#12):
+    `breaker_trace_reduce_kernel` (b1745c3a, 24/24 PASS) +
+    `bar1d_kernel` (c9ca39e7, partial fem-port) + `dual_forward_
+    kernel` (170f74af, autodiff dual numbers) + `needleman_wunsch_
+    kernel` (d73a2cbf, bio domain entry) — PILOTS.demi 12 row
+    누적. bio + autodiff 두 도메인 entry.
+  - **3215cea** (chem seed): `domains/chem.md` 의 substrate line —
+    chem 도메인 `stdlib/kernels/chem/` 시드 (NOT YET → seed 표기,
+    honest record).
+  - deps: G7 (`GateType`) + G9 (`HexaNativeParityRef` 8-field) +
+    G10 (`DependenciesLoader` 패턴) + D85 (`ProducerLoader` 패턴
+    mirror) + D86 (`g_no_hardcoded_data`)
+  - new files (demiurge):
+    - `domains/PILOTS.demi` (12 row, 8-field schema head comment)
+    - `cockpit/Sources/DemiurgeCore/Loaders/PilotLoader.swift`
+    - `cockpit/Tests/DemiurgeCoreTests/PilotLoaderTests.swift`
+    - `cockpit/Tests/DemiurgeCoreTests/HexaNativeAbsorbedTests.swift`
+  - move: `hexa-lang/domains/DEPENDENCIES.demi` →
+    `demiurge/domains/DEPENDENCIES.demi` (verbatim)
+  - exit:
+    - PILOTS.demi 12 row 모두 D90 8-field 보유
+    - `swift test` PASS (PilotLoaderTests + HexaNativeAbsorbedTests
+      포함), `swift build` PASS
+    - `allHardcoded` 19-도메인 literal trace 0
+
+- [x] **G14.** 19/19 domain narrative coverage (D96 + D100 + chem seed)
+  - **47bf504** (D96): 5 sibling-bearing `domains/<id>.md` (rtsc /
+    cern / antimatter / fusion / ufo) head 블록 바로 아래
+    `**Sibling sub-domains** (hexa-<id> repo): a · b · c` 한 줄
+    추가. sibling §3 REQUIRES + 서브폴더 구조에서 추출. SSOT
+    변경 0 — `.demi` 4종 미수정.
+  - **e451037** (D100): 14 non-sibling 도메인 (firmware / sscb /
+    brain / aura / component / bot / chem / bio / energy / grid /
+    mobility / scope / space + chip skeleton + matter pointer
+    갱신) `domains/<id>.md` 에 `**Substrate** (where the .hexa
+    kernels live): <location>` 한 줄 추가 — D96 의 역방향.
+    `domains/chip.md` 신규 minimal skeleton (deep-domain pointer,
+    canonical map 은 `HANDOFF.md` §5 + `rfc_001`),
+    `domains/matter/README.md` (D17 pointer-only) 한 줄 추가.
+  - **3215cea** (chem narrative): D100 분기 (a/b/c) 중 (c) full
+    sibling + no stdlib subtree yet 의 honest 기록 — `stdlib/
+    kernels/chem/` 시드 NOT YET 표기.
+  - deps: G1 (DomainCatalog/INDEX.demi 19 row) + D82 (DAG) + D86
+    (narrative-only, SSOT 데이터 무변경)
+  - edit:
+    - 5 sibling `domains/<id>.md` + 13 non-sibling `domains/<id>.
+      md` (D96+D100, sub-domain / substrate 한 줄)
+    - 1 신규 skeleton `domains/chip.md` + 1 pointer 갱신
+      `domains/matter/README.md`
+  - exit:
+    - 19/19 도메인 narrative coverage (D96 5 + D100 14)
+    - `.demi` SSOT 4종 (INDEX/PILOTS/DEPENDENCIES/PRODUCERS) 무변경
+
+- [x] **G15.** 3-tier substrate link-integrity verifier (D97)
+  - **74a1b92** (D97 Q3=A): `domains/SUBSTRATE_LINKS.demi` 신규
+    SSOT (5 row, 4 field — `sibling_path` / `identity_key` /
+    `advisory_prereqs` / `notes`) + `SubstrateLinksLoader.swift`
+    (`PilotLoader` / `DependenciesLoader` 패턴 1:1 mirror,
+    SSOT-missing → 빈 array + stderr warn). `SubstrateLink
+    IntegrityTests.swift` 3 XCTest: Tier ① `sibling_path` 가
+    directory FileManager.isDirectory (FAIL on miss), Tier ②
+    `<sibling_path>/AGENTS.tape` 가 `@I id001 := "<identity_key>"`
+    선언 보유 (FAIL on miss), Tier ③ `advisory_prereqs` 가
+    `DomainGraph.transitiveClosure` 안 존재 (**warn-only** —
+    XCTFail 안 함, Q1 two-SSOT independent 보존).
+  - deps: G1 (`DomainGraph.transitiveClosure`) + D82 (sibling DAG)
+    + D86 (declarative .demi, Swift = type + loader 만) + D80
+    (honesty floor)
+  - new files:
+    - `domains/SUBSTRATE_LINKS.demi` (신규 SSOT, 5 row)
+    - `cockpit/Sources/DemiurgeCore/Loaders/SubstrateLinksLoader.swift`
+    - `cockpit/Tests/DemiurgeCoreTests/SubstrateLinkIntegrityTests.swift`
+  - exit:
+    - swift test 28/28 PASS (SubstrateLinkIntegrity 3/3 —
+      `DEMIURGE_REPO` 설정 시 5 sibling 실 walk 통과,
+      미설정 degenerate case 는 D80 honesty trivially pass)
+    - Tier ③ advisory drift 0 (`SUBSTRATE_LINKS.demi.advisory_
+      prereqs` 가 `INDEX.demi` transitive closure 와 정확 일치)
+    - sibling 5 repo 100% READ-ONLY (write/edit 0)
+
+- [x] **G16.** cockpit `HexaNativeParityChip` 3-case 시각화 (D99)
+  - **f036f6f** (D99 render-only): `HexaNativeParityChipModel.swift`
+    신규 pure-data render-model (`Tone.absent` (회색 "no hexa-
+    native") / `.absorbed` (녹색 "hexa-native ✓ <SHA>") /
+    `.provisional` (노랑 "hexa-native (provisional)"), label /
+    tooltip / accessibilityID 의 3-case 분기) — SwiftUI 의존성 0,
+    test target 에서 branch-test 가능. `HexaNativeParityChip.swift`
+    SwiftUI view 가 `model.tone` → `Color.gray / .green / .yellow`
+    매핑. `SkippedCellEntry` 에 optional `hexaNativeParity:
+    HexaNativeParityRef?` 1 field + `SkippedCellStub` decode 라인 1
+    추가 (lax — legacy record = nil = 회색). `SkippedCellsDashboard`
+    `SkippedCellRow` HStack 안에 chip 1 줄 통합.
+  - **D80 honesty floor**: ref 첨부 ≠ 흡수. PASS 토큰이 없으면
+    반드시 노랑 (provisional), 절대 녹색 아님 — 분석가가 흡수
+    오인 방지 색 강제.
+  - deps: G2 (`SkippedCellsDashboard`) + G11 (`GateType` cascade)
+    + D80/D86/D95 (chip 은 render-only, SSOT 무변경)
+  - new files:
+    - `cockpit/Sources/DemiurgeCore/Models/HexaNativeParityChipModel.swift`
+    - `cockpit/Sources/CockpitApp/Views/HexaNativeParityChip.swift`
+    - `cockpit/Tests/DemiurgeCoreTests/HexaNativeParityChipTests.swift`
+      (4 XCTest — absent/absorbed/provisional + accessibility-ID
+      distinctness)
+  - edit:
+    - `Loaders/SkippedCellsAggregator.swift` (`hexaNativeParity`
+      field 1개 추가)
+    - `Views/SkippedCellsDashboard.swift` (chip 1 줄 통합)
+  - exit:
+    - swift build PASS · swift test 32/32 PASS (+4 신규 chip test)
+    - 새 SSOT 0, 새 stored data 0, schema 변경 0 (chip 데이터 흐름
+      = PILOTS.demi → record JSON → SkippedCellEntry → model →
+      view 100% 일방향)
+
+- [x] **G17.** `DEPENDENCIES.demi ↔ PILOTS.demi` cross-ref CI (D98)
+  - **384101b** (D98 Phase F): `DependenciesPilotsCrossRefTests.
+    swift` 신규 test class — 3 XCTest method 가 양 SSOT cross-ref
+    drift 자동 alert: (a) already-ported deps 가 pilot row 보유,
+    (b) pilot `kernel_path` 가 hexa-lang 디스크에 실존, (c) pilot
+    8-field 무누락. D80 honesty floor: file 부재 / non-main
+    hexa-lang branch / clone 부재 시 **XCTSkip** 으로 명시적
+    surface (XCTFail false-positive 0, silent pass 0). 기존
+    `DependenciesLoaderTests` / `PilotLoaderTests` 의 `setenv`
+    defer 가 부모-shell `DEMIURGE_REPO` 를 unset 하던 hygiene bug
+    동일 PR 에서 save+restore 교정.
+  - deps: G10 (`DependenciesLoader`) + G13 (`PilotLoader`) + D88
+    (DEPENDENCIES.demi 위치) + D90 (PILOTS.demi 8-field) + D93
+    (pattern-pilot.md ↔ PILOTS.demi cross-link)
+  - new file:
+    - `cockpit/Tests/DemiurgeCoreTests/DependenciesPilotsCrossRefTests.swift`
+      (3 XCTest method)
+  - edit (hygiene):
+    - 기존 두 Loader test 의 setenv defer save+restore 교정
+  - exit:
+    - swift test 양 SSOT cross-ref CI 3/3 (clone 미설정 시 XCTSkip)
+    - 새 SSOT 0, 새 Swift type 0 — pure 검증 logic
+
+- [x] **G18.** `DEMIURGE_HEXA_LANG` env-var deprecation (D101)
+  - **8fc0862** (D101 D3/D88 후속): `DependenciesPilotsCrossRefTests.
+    swift` 의 `hexaLangRepoPath()` resolver 에서 `$DEMIURGE_HEXA_
+    LANG` env-var fallback 1줄 제거 — sibling hexa-lang clone
+    발견은 이제 canonical `$HEXA_LANG_REPO` (non-prefixed) +
+    `~/core/hexa-lang` dev-default 2단계. `DependenciesLoader.
+    swift` 자체는 이미 D88 시점에 demiurge-local resolver
+    (`$DEMIURGE_REPO/domains` → `$PWD/domains` → `~/core/
+    demiurge/domains`) 로 전환되어 있어 변경 0. rfc_013 §2.4 +
+    `GateType.swift` doc 주석 + `EnergyVerifyRecord.swift` stale
+    path 3종 정정 (DEPENDENCIES.demi 의 demiurge SSOT 경로 반영).
+  - **rationale**: D3 정신 — demiurge `.demi` 는 demiurge own,
+    demiurge-prefixed env-var 가 cross-repo path lookup 에 쓰일
+    이유 사라짐. 외부 clone 은 외부 이름 (`HEXA_LANG_REPO`) 으로.
+  - deps: D3 + D88 (DEPENDENCIES.demi 이동) + D86 (env-var surface
+    축소 → hardcoded fallback 가짓수 감소)
+  - edit:
+    - `cockpit/Tests/DemiurgeCoreTests/DependenciesPilotsCrossRefTests.
+      swift` (env-var 분기 2줄 제거 + XCTSkip 메시지 동기화)
+    - `proposals/rfc_013_hexa_native_parity_connection.md` §2.4 +
+      §8 cross-ref 정정
+    - `cockpit/Sources/DemiurgeCore/Models/GateType.swift` doc
+      주석 2종 정정
+    - `cockpit/Sources/DemiurgeCore/Models/EnergyVerifyRecord.swift`
+      stale `~/core/hexa-lang/domains/DEPENDENCIES.demi` 한 줄
+      → `~/core/demiurge/domains/DEPENDENCIES.demi`
+  - exit:
+    - swift build PASS · swift test 35/35 PASS (Cross-RefTests 3/3
+      — dev-box non-main branch 로 인한 XCTSkip 1, 변경 무관)
+    - `.demi` 데이터 SSOT 무변경, `DependenciesLoader.swift` 무변경
+    - 새 SSOT 0, 새 stored data 0, schema 변경 0
+
 ---
 
 ## Log
@@ -1294,3 +1487,17 @@ rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkee
   switch 갱신), G12 hexa-lang sibling-repo fix (a272c9c4 codegen
   param-shadow + `stdlib/core/math/wrap_pi.hexa` primitive · 4389da0c
   pilot-pattern reconcile).
+- 2026-05-20 — §11.4 G1–G12 → G1–G18 확장. 2026-05-20 cycle 의
+  D80 SSOT 통합 + 후속 sweep (D87..D101) 산출물 cover 를 위한
+  Round 5 (G13–G18) 추가: G13 `PILOTS.demi` 8-field SSOT + 12-row
+  coverage (2d07fd8 foundation · efa4afe T7 · a5d12d2 D95 computed
+  absorbed · 87cb765 / c63f406 / f28c1b0 / a2fcb1b D80 pilots
+  #9..#12 · 3215cea chem seed), G14 19/19 도메인 narrative coverage
+  (47bf504 D96 5 sibling rows + e451037 D100 14 non-sibling rows),
+  G15 3-tier substrate link-integrity verifier (74a1b92 D97 Q3=A,
+  `SUBSTRATE_LINKS.demi` + 3 XCTest tier), G16 cockpit
+  `HexaNativeParityChip` 3-case 시각화 (f036f6f D99 render-only,
+  pure-data model + SwiftUI view), G17 `DEPENDENCIES.demi ↔ PILOTS.
+  demi` cross-ref CI (384101b D98 Phase F, 3 XCTest method), G18
+  `DEMIURGE_HEXA_LANG` env-var deprecation (8fc0862 D101 D3/D88
+  후속). 헤딩 노트 G1–G18 로 갱신.
