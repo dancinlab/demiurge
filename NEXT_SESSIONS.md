@@ -1,22 +1,34 @@
 # NEXT_SESSIONS — copy-paste session-pickup prompts
 
-> 2026-05-20 · demiurge origin/main `63c98c1` (κ-52) · hexa-lang
-> origin/main `79a8f6f8` (cern+synth flip). 4-Phase design-complete,
+> 2026-05-20 · demiurge origin/main `3215cea` (κ-66/κ-67 close +
+> D80 pilot #11 land + chem substrate seed land) · hexa-lang
+> origin/main `170f74af` (autodiff/dual_forward_kernel pilot #11) +
+> `78aee88d` (chem arrhenius_kernel seed). 4-Phase design-complete,
 > macOS cockpit workbench built (rfc_012 IMPLEMENTED), κ-47..κ-49
 > swept ROI 1→18 (17 cell dispatch · 잔여=0 substrate side), κ-51
-> cern+synth absorbed=true (second dynamic-absorption after chip §B+
-> §D). Forward-handoff prompts below — each **0-context cold-
-> readable**. Pick whichever; they are independent.
+> cern+synth absorbed=true, **κ-66 D80 sweep closed at 13 hexa-native
+> pilots / 339 cumulative parity assertions** + 5 `.demi` SSOTs
+> (`domains/INDEX · DEPENDENCIES · PRODUCERS · PILOTS · SUBSTRATE_
+> LINKS`) DemiParser-loaded, **κ-67 RFC 013 PARTIAL-LAND** (schema
+> half 5e9f6dea · producer-emit + live-mirror queued). Forward-handoff
+> prompts below — each **0-context cold-readable**. Pick whichever;
+> they are independent.
 >
 > **P-* (design / build sessions)** — P-⑤ ✅ DONE; P-②③ / P-④ cross-
-> repo / heavy; P-⑥ closed; P-⑦ workbench follow-ups; P-⑧ /
-> P-⑨ post-completion / producer.
+> repo / heavy; P-⑥ closed; P-⑦ workbench follow-ups; P-⑧ / P-⑨
+> post-completion / producer; **P-⑩ (κ-67 producer-emit / live
+> mirror, RFC 013 §6)**, **P-⑪ (bio D80 pilot full sweep · T3
+> in-progress)**, **P-⑫ (Q3 advisory cross-cohort follow-up + chem
+> substrate seed watch)** — new 2026-05-20.
 >
 > **H-* (heavy-substrate measurement sessions, new 2026-05-20)** —
 > H-1 unblocks all (hexa-lang live-tree re-align); H-2..H-7 each
 > install one heavy substrate (Geant4 / OpenMC / CARLA / Drake /
 > CalculiX+GetDP / firmware-QEMU) and run the parity round κ-49
-> honest-skipped.
+> honest-skipped. H-2 first Geant4 substrate record landed
+> (`exports/antimatter/verify/20260520T083856Z/`, κ-50); H-6 rtsc
+> substrate landed (κ-48); H-3 OpenMC blocked (osx-arm64 + Linux
+> pool unreachable, `inbox/notes/openmc-install-blocker-2026-05-20.md`).
 >
 > g3 discipline carried into each prompt: every gate is named; every
 > "absorbed/parity/resolved" claim is explicitly forbidden until a
@@ -507,6 +519,299 @@ Exit criterion (any one ends honestly):
 
 ---
 
+## P-⑩ — κ-67 producer-emit + live-mirror round (RFC 013 §6 follow-on)
+
+**Use this when:** you continue the κ-67 RFC 013 (PARTIAL-LAND) work
+— the schema half landed at demiurge `5e9f6dea` (κ-66) plus the
+RFC promotion at `cea3c66` (κ-67), but no producer actually writes
+`hexa_native_parity` into a record yet, and `SkippedCellsDashboard`
+still colors chips from the static `GateType` enum (not the live
+44-row `DEPENDENCIES.demi` audit).
+
+```
+demiurge κ-67 producer-emit + live-mirror session.
+Repo: ~/core/demiurge · branch from origin/main (currently
+`f28c1b0`). Read first:
+  - proposals/rfc_013_hexa_native_parity_connection.md (RFC 013;
+    §2 schema landed, §4 8-pilot wiring, §6 follow-on triage)
+  - inbox/notes/hexa-native-connection-plan-2026-05-20.md (the
+    κ-65 SHAPE note RFC 013 superseded — kept as audit trail)
+  - design.md D80 (g_hexa_only), D86 (g_no_hardcoded_data), D87..
+    D100 (`.demi` SSOT consolidation — DO NOT re-litigate these)
+  - domains/PILOTS.demi (13 rows · hexa-lang origin/main SHAs)
+  - domains/DEPENDENCIES.demi (44-row audit · portable_status
+    ladder)
+  - PLAN.md κ-66 / κ-67 entries (sweep close + RFC promotion)
+
+Three jobs (do them in order; each is independently shippable):
+
+① Producer-side emit (RFC 013 §6.1) — 5 PR first wave.
+   For each of pilot #1 (solar) / #6 (dft_naive) / #7 (event_queue)
+   — the cell-direct consumers per RFC §4.2 — make the substrate
+   adapter actually inject the `hexa_native_parity` 8-field block
+   into the emitted record JSON. The kernel + test SHA + PASS-N/M
+   come from PILOTS.demi (PilotLoader.find(id:) per D94). Producer
+   = the existing Python adapter under `~/core/hexa-lang/stdlib/
+   <domain>/<adapter>.py`. The adapter MUST NOT hardcode the SHA
+   — re-read it from PILOTS.demi at emit time (D86 floor).
+   Pilots #2 (mc_transport) and #5 / #5b ride the
+   `gate_type = "illustrative-physics"` track (RFC §4.2 / §6.3) —
+   do NOT wire mc_transport to `.hexaNativeFuture` (that would
+   conflate substrate pattern-proof with measurement parity).
+
+② Live DEPENDENCIES.demi mirror in cockpit (RFC 013 §6.2) — 1 PR.
+   Wire `DependenciesLoader` into the cockpit warm-start path so
+   `SkippedCellsDashboard` derives `hexaNativeAbsent` /
+   `hexaNativeFuture` buckets from the 44-row audit at load time.
+   Today the chip color is static enum-driven; per D86 it should
+   project the live row's `portable_status` instead. No new SSOT;
+   one PR + ≥2 XCTest covering both `nonportable` and `heavy-port`
+   row classification.
+
+③ illustrative-physics gate first-class (RFC 013 §6.3) — 1 PR.
+   `GateType` currently has `.absorbed / .hexaNativeAbsent /
+   .hexaNativeFuture / .openGate …`. Add `.illustrativePhysics` as
+   a peer case; mc_transport-driven verify records pin it. Update
+   `HexaNativeParityChipModel` (D99) to render a 4th tone (e.g.
+   blue) for this case — DO NOT reuse the green "absorbed" tone.
+
+Gate (g3 — REQUIRED):
+   ① is "producer-emit landed" only when at least one cell's
+   `exports/<domain>/verify/<id>.json` carries a NON-nil
+   `hexa_native_parity` block, parsed back by the cockpit, and
+   rendered by HexaNativeParityChip as `.provisional` (yellow) —
+   NOT `.absorbed` (green). Substrate-parity ≠ measurement-parity
+   (RFC 013 §4.3 + D80). Until a measured oracle wires in, the
+   cell record carries `provisional = true`.
+   ② is "live mirror" only when removing a row from PILOTS.demi
+   (revert a pilot) demonstrably flips the cockpit chip color
+   without code edit. Verify with an XCTest that scripts the
+   removal.
+   ③ landed when a single mc_transport-driven record renders the
+   new tone and an XCTest covers the 4-case branch (RFC 013 §6.3
+   anti-conflation).
+
+NOT (g3 — non-negotiable):
+   - Do NOT flip any cell-record `absorbed = true` from
+     substrate-parity alone. The 13 pilots are substrate-side
+     measured fact; cell-level absorbed flip requires a measured
+     oracle (per-cell parity round, NOT this session).
+   - Do NOT hardcode the SHA / parity_status in the producer
+     adapter — re-read from PILOTS.demi every emit (D86 floor).
+   - Do NOT add UI that implies hexa-native cells are absorbed —
+     the chip MUST stay `.provisional` (yellow) until the measured
+     round runs.
+   - Do NOT touch `~/core/hexa-lang` stdlib (this is a demiurge-
+     only session; hexa-lang substrate work goes in P-⑪ or its own
+     hexa-lang session).
+
+Exit criterion (any one ends honestly):
+   (a) ① landed + ② landed + ③ landed + RFC 013 status updated
+       from PARTIAL-LAND to LANDED + κ-68 PLAN.md entry, OR
+   (b) ① landed alone with ② / ③ deferred + honest "next pickup"
+       note appended + RFC 013 status updated to reflect partial
+       progress (the schema half + first producer-emit PR), OR
+   (c) Scope-bounded sub-progress + RFC 013 unchanged + honest
+       next-pickup note in this P-⑩ section.
+```
+
+---
+
+## P-⑪ — bio domain D80 pilot full sweep (T3 in-progress · sibling-only)
+
+**Use this when:** you continue the bio D80 pilot work. As of
+`f28c1b0`, bio is the ONE demiurge domain still mid-port —
+`domains/bio.md` records substrate at `~/core/hexa-bio/` sibling
+(T3 `.py → .hexa` port in progress per `hexa-lang/stdlib/PLAN.md`),
+with no `stdlib/bio/` subtree yet. D100 (`14 non-sibling narrative`
+sweep) explicitly carved bio as "D80 pilot WEAVE" — meaning bio is
+neither a born-hexa-native subtree (firmware/component pattern) nor
+a substrate-fully-extracted sibling (5-sibling pattern), it sits in
+the WEAVE state until the T3 port finishes.
+
+```
+demiurge bio D80 pilot full-sweep session.
+Repo: ~/core/demiurge (record + audit only) + ~/core/hexa-bio
+(producer) + ~/core/hexa-lang (port destination). Read first:
+  - domains/bio.md (substrate narrative · `hexa-bio` sibling)
+  - domains/SUBSTRATE_LINKS.demi (bio NOT YET in this SSOT — gate
+    on T3 completion; opens the row when sibling is link-ready)
+  - hexa-lang/stdlib/PLAN.md (the T3 .py→.hexa port roadmap —
+    canonical source of which bio kernels are next)
+  - proposals/rfc_013 §4 (the pilot-port pattern: pick the
+    substrate not the adapter; capture parity from Python at
+    ≥12 digits; mirror the API surface line-by-line)
+  - design.md D17 (sibling-repo precedent) + D80 (g_hexa_only)
+  - existing 13-pilot rolling table in PILOTS.demi (the pattern
+    every new bio pilot must mirror)
+
+Two jobs (do them in order; ① may be partial-shippable):
+
+① Continue T3 .py → .hexa port for one bounded bio kernel.
+   Pick ONE kernel from hexa-bio T3 roadmap (smallest first —
+   sequence-alignment Needleman-Wunsch / simple FASTA parse /
+   exact bp-pair count are good candidates; molecular-dynamics is
+   NOT — defer until matter/chem cluster pilots first). The kernel
+   lives in `~/core/hexa-lang/stdlib/kernels/bio/<id>_kernel.hexa`
+   with companion `<id>_kernel_test.hexa`. Mirror the established
+   13-pilot pattern: pure hexa-native (no FFI), parity test against
+   Python substrate (biopython / scikit-bio) at ≥12 digits or
+   bit-exact for combinatorial cases.
+
+② File the demiurge-side audit + pilot row.
+   When ① lands on hexa-lang origin/main: append a row to
+   `domains/PILOTS.demi` (8-field schema per D90) — kernel_path /
+   parity_test / parity_method / parity_tolerance / parity_status /
+   hexa_lang_sha / algorithm_ref / scope_notes — and a matching row
+   to `domains/DEPENDENCIES.demi` with `portable_status` flipped to
+   `already-ported` for the kernel. If this is the FIRST bio kernel
+   landed, also add bio to `domains/SUBSTRATE_LINKS.demi` (sibling_
+   path / identity_key / advisory_prereqs / notes — Tier ①/②/③
+   verifier per D97) and add a `**Sibling sub-domains**` narrative
+   line to `domains/bio.md` (D96 pattern).
+
+Gate (g3 — REQUIRED):
+   Pilot lands ONLY when the parity test PASSes at the documented
+   tolerance and the row in PILOTS.demi cites the hexa-lang
+   origin/main SHA. Partial port (e.g. forward-pass only, no
+   reverse) is acceptable — record it honestly in scope_notes per
+   the pilot-#11 `autodiff_dual_forward` precedent (forward-mode
+   only, scalar I/O, no Jacobians).
+
+NOT (g3 — non-negotiable):
+   - Do NOT add bio to SUBSTRATE_LINKS.demi until the sibling repo
+     has at least one substrate file `~/core/hexa-bio/` actually
+     references — empty sibling = Tier ① fail.
+   - Do NOT claim "bio domain absorbed" — even after the first
+     pilot lands, this is one substrate kernel of N. bio stays in
+     "D80 pilot WEAVE" status in D100 narrative until ALL T3
+     kernels port (this is multi-round / multi-month).
+   - Do NOT skip the test scaffolding — every pilot MUST carry the
+     `pass_count / total_count / check / rel_err` pattern from
+     RFC 013 §4.
+   - Do NOT touch `domains/chem.md` substrate narrative — chem is
+     separately gated (P-⑫).
+
+Exit criterion (any one ends honestly):
+   (a) One bio pilot kernel + test PASS + PILOTS.demi row +
+       DEPENDENCIES.demi flip + κ-N PLAN.md entry, OR
+   (b) Bounded port progress + honest "next pickup" note in
+       hexa-lang `inbox/notes/hexa-native-port-pattern-pilot.md`,
+       no demiurge-side commit (the SSOT only updates when the
+       hexa-lang side lands).
+```
+
+---
+
+## P-⑫ — Q3 advisory cross-cohort follow-up + chem substrate growth
+
+**Use this when:** D97 Tier ③ (`advisory_prereqs` cross-cohort
+coverage) becomes load-bearing — currently it is warn-only with
+zero drift, but the `advisory_prereqs` arrays in `SUBSTRATE_LINKS.
+demi` (5 rows · rtsc/cern/antimatter/fusion/ufo) declare cross-
+cohort claims that have NO automatic enforcement beyond Tier ③ warn.
+Also use this when the chem substrate gate transitions from seed
+to D80 pilot (chem `stdlib/kernels/chem/arrhenius_kernel` seed
+landed 2026-05-20 hexa-lang `78aee88d` / demiurge `3215cea`; the
+sibling `~/core/hexa-chem/` repo per D17 precedent is still planned,
+and PILOTS.demi has NO chem row yet — pilot row + Tier ① link-
+integrity entry will follow when chem substrate grows beyond the
+arrhenius seed).
+
+```
+demiurge Q3 advisory + chem substrate seed watch session.
+Repo: ~/core/demiurge. Read first:
+  - design.md D97 (3-tier substrate link-integrity verifier;
+    Q3 = A picked — Tier ③ advisory cross-cohort = warn-only)
+  - domains/SUBSTRATE_LINKS.demi (5 row · advisory_prereqs arrays)
+  - cockpit/Tests/DemiurgeCoreTests/SubstrateLinkIntegrityTests
+    .swift (the warn-only Tier ③ test — `testTier3Advisory
+    PrereqCoverage`)
+  - domains/chem.md (NOT YET substrate narrative · D100; planned
+    via D17 sibling-repo precedent, reuses matter/{mol,crystal})
+  - design.md D77 (chem + bio domains added) + D17 (sibling-repo
+    precedent) + ABSORPTION.md `kernels/<id>` 2nd-consumer rule
+
+Two independent jobs — both gate-watching, neither forces a flip:
+
+① Q3 advisory cross-cohort follow-up.
+   Today Tier ③ advisory drift = 0 (per design.md D97 §적용 ④ —
+   `SUBSTRATE_LINKS.demi` advisory_prereqs perfectly match
+   `INDEX.demi` transitive closure). If a future PR introduces
+   drift (e.g. a new sibling cohort claims a prereq not in the
+   INDEX DAG, OR INDEX gets reshaped and SUBSTRATE_LINKS goes
+   stale), Tier ③ warn fires but XCTest still passes. THIS session
+   reviews each warn and decides per-row:
+     (a) drift is real → patch SUBSTRATE_LINKS.demi advisory_
+         prereqs to re-align with INDEX (D86 — declarative SSOT),
+     (b) drift is intentional (sibling-side captures cross-cluster
+         dependency invisible to demiurge's DAG) → keep + document
+         in `notes` field with the rationale,
+     (c) INDEX DAG itself needs editing (rare — D78 lock applies).
+   The session does NOT auto-resolve; it produces a decision +
+   record per drift row, and (if any (a) applies) a single PR
+   restoring drift=0.
+
+② chem substrate growth — first pilot row.
+   `domains/chem.md` records substrate as `stdlib/kernels/chem/`
+   seed (arrhenius_kernel landed hexa-lang `78aee88d` 2026-05-20,
+   6/6 test PASS) but NO chem row in PILOTS.demi yet. THIS session
+   adds the first pilot row + matching DEPENDENCIES.demi audit row
+   when arrhenius_kernel is verified against a Python substrate
+   (e.g. SciPy / cantera / openchem closed-form Arrhenius) at the
+   D80 pilot pattern (≥12 digits parity OR exact for closed-form).
+   Also inspects:
+     (a) the 2nd-consumer rule (ABSORPTION.md `kernels/<id>`) —
+         arrhenius_kernel currently has 1 consumer (chem domain);
+         if a 2nd appears (bio reaction-rate / matter phase-
+         transition), promote to `kernels/<id>` proper (D72-N+M).
+     (b) Whether `~/core/hexa-chem/` sibling needs seeding for the
+         larger molecular-scale substrate (RDKit-parity QM,
+         AiZynthFinder retrosynthesis) — IF yes, file a seed-
+         proposal note in `inbox/notes/` proposing the chem sibling
+         creation path (D17 precedent).
+     (c) If sibling seeds: add chem to `SUBSTRATE_LINKS.demi`
+         (Tier ①/②/③ verifier per D97) + `**Sibling sub-domains**`
+         narrative line on `domains/chem.md` (D96 pattern).
+
+Gate (g3 — REQUIRED):
+   ① touches only `SUBSTRATE_LINKS.demi` `advisory_prereqs` /
+   `notes` fields. SSOT change MUST be one declarative `.demi`
+   diff — Swift type / loader unchanged.
+   ② adds at most ONE pilot row to `PILOTS.demi` + matching
+   DEPENDENCIES.demi audit + (if sibling seeds) SUBSTRATE_LINKS.
+   demi row. Each `.demi` edit follows the 8-field schema (D90) —
+   no Swift type / loader changes.
+
+NOT (g3 — non-negotiable):
+   - Do NOT flip Tier ③ from warn-only to XCTFail without a Q1
+     re-decision (Q1 = 'two SSOTs independent', design.md D97).
+     If drift becomes systematic, propose a new Q via design.md,
+     do NOT silently tighten.
+   - Do NOT seed `~/core/hexa-chem/` sibling from this session
+     unilaterally — it's an upstream-substrate decision (D17
+     precedent). File a seed-proposal note + wait for the
+     hexa-chem session.
+   - Do NOT add chem to `SUBSTRATE_LINKS.demi` until the sibling
+     repo exists AND has at least one substrate file (empty
+     sibling = Tier ① fail; identical floor as bio in P-⑪).
+   - Do NOT widen Tier ① / Tier ② scope here — those are
+     fail-loud already; this session is the advisory/warn band
+     only.
+
+Exit criterion (any one ends honestly):
+   (a) Tier ③ drift survey complete + per-row decision recorded +
+       (if needed) SUBSTRATE_LINKS.demi patch landed; AND/OR
+   (b) chem arrhenius_kernel pilot row landed in PILOTS.demi +
+       DEPENDENCIES.demi audit row + κ-N PLAN.md entry; AND/OR
+   (c) chem 2nd-consumer survey complete + (if 2nd found OR
+       sibling needed) seed-proposal note filed in `inbox/notes/`,
+       OR honest "no drift / no 2nd consumer / sibling not needed
+       — re-watch at next sweep" note if all gates stay closed.
+```
+
+---
+
 ## H-* — heavy-substrate cross-session handoffs (2026-05-20)
 
 > Star-session (별 세션) prompts spun out of κ-49's "ROI 1→18 sweep
@@ -520,20 +825,33 @@ Exit criterion (any one ends honestly):
 > citation, its end-state. None of these may flip `absorbed=true`
 > from a partial run; the "Verification" block is the only path.
 
-State summary at branch-out (2026-05-20):
-- demiurge origin/main = `63c98c1` (κ-52 reconcile)
-- hexa-lang origin/main = `79a8f6f8` (cern+synth flip)
+State summary at branch-out (2026-05-20 — refreshed post-κ-66/κ-67):
+- demiurge origin/main = `3215cea` (κ-66 D80 sweep close + κ-67
+  RFC 013 promotion + D80 pilot #11 land + chem substrate seed
+  narrative)
+- hexa-lang origin/main = `170f74af` (D80 pilot #11
+  `autodiff/dual_forward_kernel.hexa` land — extends the 13-pilot
+  rolling table) + `78aee88d` (chem `arrhenius_kernel` seed,
+  6/6 PASS — chem substrate now `stdlib/kernels/chem/`)
 - 17 cells dispatch-able (ROI 1→18); cern+synth + chip §B+§D are
   the only `absorbed=true` cells. Everything else = substrate stage
   (Stage 1 in ABSORPTION.md §"hexa 포팅 단계") with `GATE_OPEN +
   absorbed=false` install-gated skip records.
-- Live blocker for *all* H-*: `~/core/hexa-lang` live tree is
-  checked out on `s1-step2-codegen-perf` (a concurrent session's
-  branch), tip `5c8b972e`. demiurge's `ActionDispatch.runEngineTool`
-  spawns python from the live tree, not from origin/main — so any
-  H-N that wants to drive substrate measurement must first land
-  H-1's tree-realign or accept that its substrate spawns will hit
-  the concurrent-session view of stdlib/.
+- **H-2 first measured substrate record landed** —
+  `exports/antimatter/verify/20260520T083856Z/antimatter_verify
+  _20260520T083856Z.json` (Geant4 substrate-stage, κ-50). H-6 rtsc
+  substrate landed (`exports/rtsc/analyze/2026-05-20T08-26-07Z/`,
+  pyfemm + xvfb on Linux pool, κ-48). H-3 BLOCKED (osx-arm64 +
+  Linux pool unreachable — see `inbox/notes/openmc-install-
+  blocker-2026-05-20.md`).
+- Live blocker for the remaining H-*: `~/core/hexa-lang` live tree
+  is still owned by concurrent compiler-perf sessions
+  (`s1-step2-codegen-perf` family). demiurge's
+  `ActionDispatch.runEngineTool` spawns python from the live tree,
+  not from origin/main — so any H-N that wants to drive substrate
+  measurement must first land H-1's tree-realign or accept that
+  its substrate spawns will hit the concurrent-session view of
+  stdlib/.
 
 ---
 
@@ -1001,3 +1319,56 @@ session per task.
   P-⑥ closed. Genuinely-open cockpit work = θ-2 (scoped-tool action
   dispatch) + ι (3D data) + ζ (filters/dep-graph), each with a
   definite gate. Nothing silently unfinished.
+- 2026-05-20 — **κ-66/κ-67 close + P-⑩/P-⑪/P-⑫ added**. D80
+  `g_hexa_only` ultimate-form sweep closed at **13 hexa-native
+  pilots / 339 cumulative parity assertions** (PILOTS.demi 13 rows
+  · #1..#11 + concurrent-branch entries) across `solar · mc_
+  transport · neural_lif · graph_bfs · urdf_fk_2link · plasma_
+  metrics · orbital_kepler · dft_naive · event_queue · transport_
+  kinematics · breaker_trace_reduce · fem_bar1d_subset · autodiff_
+  dual_forward`. Five `.demi` SSOTs consolidated under `domains/`
+  (`INDEX · DEPENDENCIES · PRODUCERS · PILOTS · SUBSTRATE_LINKS`)
+  — every kernel / producer / dependency / pilot / cross-substrate
+  link reads from declarative SSOT via DemiParser loaders (D86
+  `g_no_hardcoded_data` 정합). Decision sweep D87..D100 audited the
+  consolidation: `.demi` location (D87) · DEPENDENCIES.demi move
+  (D88) · `allHardcoded` fallback removal (D89) · PILOTS.demi
+  8-field schema (D90) · row=kernel granularity (D91) · flat dir
+  layout (D92) · pattern-pilot ↔ PILOTS dual-source (D93) ·
+  parity_ref = PilotLoader.find (D94) · `isHexaNativeAbsorbed`
+  computed (D95) · sibling sub-domain narrative (D96) · 3-tier
+  link-integrity verifier (D97 / Q3 = A) · DEPENDENCIES ↔ PILOTS
+  dual-source CI (D98) · cockpit HexaNativeParityChip (D99) ·
+  non-sibling narrative reverse (D100). **RFC 013 PARTIAL-LAND**
+  (`proposals/rfc_013_hexa_native_parity_connection.md`, κ-67) —
+  schema half (demiurge `5e9f6dea`) wires `HexaNativeParityRef` +
+  5 cell-record carriers + `GateType.hexaNativeFuture` + Dependencies
+  Loader; producer-side emit + live `DEPENDENCIES.demi` mirror +
+  `illustrative-physics` gate first-class are queued as §6
+  follow-on (covered by P-⑩ below). Header refreshed (origin/main
+  `f28c1b0` · hexa-lang `170f74af`). State summary at H-* branch-
+  out refreshed — H-2 / H-6 first substrate records cited, H-3
+  blocked note added. Three new prompts:
+  * **P-⑩** — κ-67 producer-emit + live mirror (RFC 013 §6) — three
+    sub-jobs: producer adapter writes `hexa_native_parity` for #1/
+    #6/#7 (1st wave), live DependenciesLoader cockpit wire, and
+    `.illustrativePhysics` gate first-class. g3 floor: chip stays
+    `.provisional` (yellow) — no `absorbed=true` from substrate-
+    parity alone.
+  * **P-⑪** — bio domain D80 pilot full sweep. bio is the ONE
+    demiurge domain still mid-port (D100 "D80 pilot WEAVE"
+    narrative) — T3 `.py → .hexa` per `hexa-lang/stdlib/PLAN.md`;
+    sibling `~/core/hexa-bio/` only, no `stdlib/bio/` subtree yet.
+    Session ports one bounded kernel (Needleman-Wunsch / FASTA
+    parse — molecular-dynamics NOT) + files PILOTS.demi row +
+    optionally seeds bio into SUBSTRATE_LINKS.demi once link-ready.
+  * **P-⑫** — Q3 advisory cross-cohort follow-up + chem substrate
+    growth. D97 Tier ③ (`advisory_prereqs` cross-cohort) is
+    currently warn-only with drift=0; session inspects future
+    drift + decides per-row (patch / document / re-design). chem
+    substrate seed (`stdlib/kernels/chem/arrhenius_kernel`,
+    hexa-lang `78aee88d` 6/6 PASS · demiurge `3215cea` narrative
+    update) landed but PILOTS.demi has no chem row yet — session
+    files the first chem pilot row + watches 2nd-consumer rule +
+    sibling-seed gate. Both sub-jobs are gate-watching — neither
+    flips `absorbed=true` from substrate-parity alone.
