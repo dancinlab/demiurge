@@ -1148,7 +1148,7 @@ f. Re-measure router_d4 + router_d6 areas via hexa-native end-to-end;
 
 `rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3).
 
-## UPDATE 2026-05-20 (w) — #4g landed on hexa-lang origin/main (PR #202)
+## UPDATE 2026-05-20 (w) — #4g landed on hexa-lang origin/main (PR #202) — superseded by (x) re-measurement
 
 Implementation: new `_rv_collapse_func_body_with_prefix(body, fname)`
 helper (~50 lines) added before the existing `_rv_collapse_cascaded
@@ -1219,5 +1219,81 @@ d. Cell-tally driver re-run on flat_v2k/router_d4.v — expect step-
    show $mux from inlined ternary + $dff for the sequential LHS.
 e. share/freduce parity, comb-side oracle (handoff (s)).
 f. End-to-end area measurement vs oracle ±5 % gate.
+
+`rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3).
+
+## UPDATE 2026-05-20 (x) — cell-tally re-measure post-(w): 35 → 55 cells (+57 %, all combinational), (w)'s "no-change" prediction was wrong
+
+Re-ran the cell-tally driver after the #4g PR-merge + sibling updates
+sync'd to ubu-2 worktree. **Measured fact contradicts (w)'s prediction**:
+
+```
+flat_v2k/router_d4.v via hexa-native (post #4g + sibling updates):
+  modules=1, wires=116, cells=55, processes=0  ← was 35 / 96
+  
+                old (35)  now (55)   delta
+  $eq                10        10       —
+  $ne                 5         5       —
+  $logic_and          5        10      +5
+  $logic_not          5        15     +10
+  $and                0         5      +5
+  $add                5         5       —
+  $mod                5         5       —
+  $mux                0         0       —
+  $dff / $adff        0         0       —
+```
+
+20 new cells all combinational; **sequential cells still 0**.
+
+The (w) "no change until #4h lands" reasoning was correct *at the
+emit-chain level* — the LHS-write portion of router's always-bodies
+still doesn't fire, no `$mux`/`$dff`/`$adff` show up. But the
+*expression-elaboration* portion *does* fire: the conditions used in
+the always-bodies (e.g. `in_valid[pp] && !fifo_full[pp]` and
+similar 5-fold for-unrolled tests at L108-L115) lower to `$logic_and
++ $logic_not + $and` cell trees and *retain their result wires*
+even though no LHS consumes them. P=5 unroll pattern still visible
+(5× $and, 10× $logic_not = 2 per round, 5× extra $logic_and).
+
+This is **dangling-cell emit** — the cells are correct synthesis-wise
+but disconnected from any LHS. yosys substrate would `opt_clean` them
+out; hexa-native passes need similar dead-cell elimination *or* the
+LHS-write paths need to come online so the cells get consumed. The
+former is fine in isolation; the latter is the real §5 goal anyway.
+
+**Refined gap (with measurement):**
+
+- combinational expression cells: ~~0%~~ ~55% of generate-for size
+  is reached (35 from generate-for + 20 from always-body condition
+  expressions). The always-body fragments that have `condition
+  expression → no LHS connect` are roughly 20-cell deep.
+- sequential cells: still 0 / substrate 1647 (0% — #4h/#4i gap).
+- `$mux` cells: still 0 / substrate 7379 (0% — same gap).
+
+Gap to oracle on flat_v2k:
+- substrate post-elab: 12,105 cells
+- hexa-native post-elab: 55 cells (was 35)
+- gap: 12,050 cells (99.5 %, down 0.2 % from pre-(w) 99.7 %)
+
+Tiny absolute change but the *qualitative* finding matters: #4g +
+sibling work pushed always-body *expression-elab* into the cell-emit
+path. The remaining structural gap is now precisely the LHS-write
+half of always-body lowering (sequential proc-pass + dyn-idx multi-
+LHS), exactly the #4h/#4i scope. The next session's cell-tally diff
+will pin down which of those primitives fires which cells.
+
+**Chain post-(x):**
+
+a. ~~#4g~~ ✓ landed.
+b. #4h multi-LHS body dyn-idx (router L99-100, L116-121 — always@
+   posedge reset cascade + multi-LHS no-else with-indexed-LHS in the
+   `if (any_grant) begin … end` block). **Now confirmed as the next
+   measurable cell-emit step** (any sequential cells appearing here
+   would be directly attributable to #4h).
+c. #4i with-else dyn-idx (the reset-vs-else top-level structure that
+   wraps everything in L99-122).
+d. Cell-tally re-measure after each.
+e. share/freduce parity.
+f. End-to-end area measurement.
 
 `rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3).
