@@ -33,12 +33,11 @@
 
 ### Next (priority-ordered)
 
-- [ ] **PR-A: 2-line read_verilog dispatch + T48/T49 selftest → hexa-lang origin/main**
+- [x] **PR-A: 2-line read_verilog dispatch + T48/T49 selftest → hexa-lang origin/main** ✓ LANDED
+  - PR #196 merged at `929e9ca2` (admin-merge, bootstrap CI still infra-failing)
   - branch: `rfc006-yosys-param-initial-dispatch`
-  - file: `stdlib/kernels/logic_synth/read_verilog.hexa` L580 + L1604 + L620
-  - blocker: working tree에 self/native/hexa_v2 dirty (sibling-session binary rebuild)
-    → stash 또는 sibling 정리 후 진행
-  - signal: selftest 54/54 → 56/56 PASS, regression 0
+  - measured: selftest **58/58 PASS** (base 56 + T48 + T49), regression 0
+  - flat_v2k/router_d4.v now parses via hexa-native → §5 measurement chain unblocked on input side
 - [ ] **PR-B: hexa-cc `__hexa_strlit_init` unique-emit (`__hexa_strlit_init__<TU>`)**
   - file: `self/codegen_c2.hexa` L1278 + L1338 + L7899 + L7935
   - effect: sed workaround 제거, multi-file driver pattern 기본 지원
@@ -81,6 +80,7 @@
 
 (append-only, latest 위에)
 
+- 2026-05-20 — PR-A landed: hexa-lang PR #196 `929e9ca2` (2-line dispatch + T48/T49, selftest 58/58)
 - 2026-05-20 — 루트 YOSYS.md 생성, 체크리스트 + 일정 적재 (이번 세션 누적 측정-fact 기반)
 - 2026-05-20 — 자세한 측정-fact 는 `inbox/notes/rfc006-s5-area-oracle-parity-handoff.md` (o)-(u)
 - 이전 — rfc_006 §4 (7 yosys modules) absorbed, §5 measurement gate OPEN
