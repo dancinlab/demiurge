@@ -170,7 +170,8 @@ final class HexaNativeAbsorbedTests: XCTestCase {
             scopeCaveats: [], citations: [],
             skippedReason: nil,
             kernelReuse: nil,
-            hexaNativeParity: passRef())
+            hexaNativeParity: passRef(),
+            measuredOracle: nil)
         XCTAssertTrue(pass.isHexaNativeAbsorbed)
 
         let nilParity = EnergyVerifyRecord(
@@ -183,7 +184,8 @@ final class HexaNativeAbsorbedTests: XCTestCase {
             scopeCaveats: [], citations: [],
             skippedReason: nil,
             kernelReuse: nil,
-            hexaNativeParity: nil)
+            hexaNativeParity: nil,
+            measuredOracle: nil)
         XCTAssertFalse(nilParity.isHexaNativeAbsorbed)
     }
 

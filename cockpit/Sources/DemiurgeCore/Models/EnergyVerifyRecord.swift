@@ -39,6 +39,16 @@ public struct EnergyVerifyRecord: Codable, Equatable, Sendable {
     /// `~/core/demiurge/domains/DEPENDENCIES.demi`
     /// `[domain-energy_openmc_keff]` portable_status = "heavy-port").
     public let hexaNativeParity: HexaNativeParityRef?
+    /// D109 (κ-68 G27 land) · RFC 013 §6.11 — external measured-oracle
+    /// reference. Energy/solar is the κ-68 first measured-oracle target
+    /// (NREL MIDC pyranometer GHI vs hexa-native sun-position-driven
+    /// modeled GHI). Independent axis from `hexaNativeParity` above
+    /// (D103 dimension-separation). `nil` until the per-cell measured-
+    /// oracle round runs; populated by the producer adapter at emit
+    /// time. The cell's stored `absorbed` flip remains a SEPARATE
+    /// explicit writer action — emitting `measuredOracle` non-nil
+    /// does NOT by itself trigger `absorbed = true` (G29 land scope).
+    public let measuredOracle: MeasuredOracleRef?
 
     enum CodingKeys: String, CodingKey {
         case domain, verb, kind, stamp, producer
@@ -49,6 +59,7 @@ public struct EnergyVerifyRecord: Codable, Equatable, Sendable {
         case skippedReason = "skipped_reason"
         case kernelReuse = "kernel_reuse"
         case hexaNativeParity = "hexa_native_parity"
+        case measuredOracle = "measured_oracle"
     }
 
     /// D95 — derived absorbed flag (computed, NOT stored).
