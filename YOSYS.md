@@ -17,16 +17,13 @@
 - hexa-native sequential emit primitives 모두 landed (#4h-a static-idx, #4h-b dyn-idx, write_verilog $dff behavioural)
 - substrate handoff full functional (comb + $dff round-trip verified)
 
-**closure path (per g3) — multi-day work**:
-- router_d4 outer always-body 는 `if (rst) … else …` 구조 (#4i with-else) — outer wrapper 가 land 해야 inner multi-LHS dyn-idx (#4h-b 이미 land) 가 fire
-- #4h-c (for-in-always multi-stmt body), #4h-d (nested-if in always)
-  도 추가 필요 — router L101-115 의 for-loop body 가 다중-statement
-- ubu-2 측정 chain 가 sibling 들의 새 RTLIL passes (pass_clean_multidriver,
-  pass_proc_mux) 와 incompatible (hexa-cc binary rebuild 필요)
-  — measurement infra 도 multi-day rebuild
-- 100 % closure 는 (a) #4h-c/d + #4i land + (b) ubu-2 측정 chain rebuild
-  + (c) router_d4 area ±5 % 측정 + (d) g3-conditional gate flip
-  → multi-session work
+**closure path (per g3) — refined after code-review discovery**:
+- #4h sub-steps a/b/c/d ALL landed (a/b in our PRs, c/d in sibling work)
+- **single critical blocker = #4i** (outer with-else top-level wrapper)
+- ubu-2 측정 chain rebuild (hexa-cc binary outdated by sibling
+  codegen feature) — separate infra fix
+- closure 100% 까지: (a) #4i land + (b) ubu-2 chain rebuild +
+  (c) router_d4 area ±5 % 측정 + (d) g3-conditional gate flip
 
 ## Checklist
 
@@ -59,13 +56,15 @@
   - T50 selftest: route_xy-shaped body inlines to `$mux(S=$gt(h,0), A=0, B=1, Y=r)` — exact-count 1 × $gt + 1 × $mux
   - selftest 60/60 → 61/61 PASS, regression 0
   - call-site `grant_out = route_xy(...)` now inlines; emit unblocks once #4h bridges the LHS-indexing gap
-- [x] **#4h sub-steps a + b** ✓ LANDED (PR #216 #4h-a static-idx, PR #220 #4h-b dyn-idx)
-  - sub-steps remaining:
-    - **#4h-c**: for-in-always multi-stmt body unroll (router L101+L108+L115 의 `for (pp=0; pp<P; pp=pp+1)` 처리; single-stmt body 만 sibling 처리됨, multi-stmt 가 #4h-c scope)
-    - **#4h-d**: nested-if inside always-body multi-stmt (router L109 `if (in_valid[pp] && !fifo_full[pp])`)
-- [ ] **#4i with-else dyn-idx emit** (L98-123 with-else reset structure)
-  - signal: sequential cells ≈ N × P (P-fold sequential emit)
-  - dependency: #4h sub-steps all landed first
+- [x] **#4h sub-steps a + b + c + d** ✓ LANDED via combined work (PR #216, PR #220 + sibling RFC 073 Phase 2)
+  - #4h-a: multi-LHS static-idx (PR #216 `2bcb8b72`)
+  - #4h-b: multi-LHS dyn-idx (PR #220 `85bea9a5`)
+  - #4h-c: for-in-always multi-stmt body — **discovered already in tree** at read_verilog.hexa L3576-3607 (sibling work; const-fold indexed-LHS handler in for-body inner-loop plain-assign path)
+  - #4h-d: nested-if inside always-body — **discovered already in tree** at L3476+ (sibling RFC 073 Phase 2 implementation)
+- [ ] **#4i with-else top-level outer wrapper** — **the single critical blocker** for router_d4 always-body emit
+  - router_d4 L98-123: outer `if (rst) begin ... end else begin ... end` — top-level with-else wraps ALL inner sub-steps. #4h-a/b/c/d 가 inner 처리 가능하지만 outer entry 없으면 fire 안 함
+  - signal: sequential cells > 0 in router_d4 cell-tally
+  - implementation: always-parser 의 top-level with-else `if (rst) ... else ...` 처리 → 각 branch 의 body 를 inner 분기 emit chain 으로 dispatch
 - [x] **write_verilog chain via driver link** ✓ LANDED (PR #210 wire-emit + PR #212 cell-emit behavioural)
   - PR #210 `116d6799`: width prefix + escaped-identifier — substrate parse OK (wires=134, cells=55)
   - PR #212 `b0a800f3`: behavioural-form dispatch (16 binop + 3 unary + $mux) — substrate `synth` macro 가 hexa-native output 처리 가능
