@@ -2864,6 +2864,44 @@ the-box 로 `router_d4.v` 에 reachable. §5 gate state 변경 없음 — 여전
 expansion 일부 정착이지 §5 measurement parity 가 아님. demiurge 측
 Yosys 흡수 absorbed 는 SKY130 area ±5 % 측정 후에야 가능.
 
+### Decision-gate note on Decision 68 — 7차 (cond-mux primitive family 완성 — 5 PR 누적)
+
+6차 note 의 §5 OPEN 상태에서 proc-pass core 의 첫 sub-step 들을
+incremental 하게 진행 — `cond-mux primitive` 의 simple-name-LHS family
+가 hexa-lang `origin/main` 에 정착 (5 PR 추가 merge, admin-merge,
+bootstrap CI infra-fail 선례 일치):
+
+| PR | merge | sub-step | selftest |
+|----|-------|----------|----------|
+| #115 | `19ea268e` | #1 with-else sequential (T31) | 35/35 |
+| #116 | `116f0163` | #2a with-else combinational (T32) | 36/36 |
+| #119 | `66fe08a2` | #2b no-else sequential (T33) | 37/37 |
+| #120 | `a8de65e0` | measurement T34/T35 (multi-stmt body 작동 확인) | 39/39 |
+| #122 | `4e210d85` | #2c multi-LHS no-else (T36) | 40/40 |
+
+핵심 측정 사실:
+
+- ✅ **cond-mux cell-emit primitive** (cond expression elab → `$mux`
+  cell → `$dff` D-port 또는 direct connect) 가 simple-name-LHS family
+  의 4 변종 × multi-LHS-in-body 로 완성. selftest 34 → 40/40 PASS,
+  regression 0.
+- 🟡 **router_d4 cover 는 여전히 0%** — primitive 가 simple-name LHS
+  shape (`q`, `q1`, `q2`) 만 cover, router_d4 의 no-else 본체는 전부
+  **indexed LHS** (`fifo_mem[pp][…]`, `fifo_head[grant_in]`,
+  `out_data[grant_out]`). 측정으로 다음 blocker 3개 pinpoint:
+  1. **Indexed LHS** — `LHS[idx] <= rhs` 의 cond-body 안 처리.
+  2. **`$dff` set/reset port** — `if (rst) q <= rst_val …` 의 `$adff`
+     lowering.
+  3. **Function-call inlining at expression site** — `route_xy(…)`
+     식 expression elab 안의 function inline.
+- 🟡 `rfc_006 §5` `measurement_gate = OPEN`, `absorbed = false`. 이번
+  세션 내 flip 없음 (g3 — primitive 정착이지 area parity 가 아님).
+
+**Effect on demiurge consumer**: 다음 proc-pass session 은 `hexa-lang
+origin/main` HEAD `4e210d85` 에서 직접 시작 — 5 sub-step 의 cell-emit
+primitive 를 base 로 indexed LHS / `$adff` / function inline 의 3 추가
+sub-step 진행. 각 sub-step 별 selftest 가 separated regression guard.
+
 ### Decision 73 — firmware 새 도메인 + 7-verb 합성→검증 seam 정의
 
 **picked**: 16 번째 도메인 `domains/firmware.md` 추가. **펌웨어

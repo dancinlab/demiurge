@@ -237,3 +237,44 @@ tracking + nested-if collapse + for-in-always integration + `$dff`
 set/reset port hookup). §5 gate stays OPEN until that lands and ABC
 emits a non-empty mapped BLIF whose SKY130 area is within ±5 % of
 the cited oracle.
+
+## UPDATE 2026-05-20 (h) — cond-mux primitive family landed on hexa-lang origin/main (5 PRs)
+
+Continued the proc-pass core work in-session and landed 5 incremental
+PRs on `hexa-lang origin/main` (admin-merge — bootstrap CI still
+infra-failing on all recent main commits, per PR #107 thread):
+
+| PR | merge | what landed | selftest |
+|----|-------|-------------|----------|
+| #115 | `19ea268e` | cond-mux #1 with-else sequential (T31) | 35/35 |
+| #116 | `116f0163` | cond-mux #2a with-else combinational (T32) | 36/36 |
+| #119 | `66fe08a2` | cond-mux #2b no-else sequential (T33) | 37/37 |
+| #120 | `a8de65e0` | T34/T35 measurement — multi-stmt body cond-mux already works | 39/39 |
+| #122 | `4e210d85` | cond-mux #2c multi-LHS no-else (T36) | 40/40 |
+
+What this measures (g3):
+
+- ✅ The **cond-mux cell-emit primitive** (cond expression elab → `$mux`
+  cell → `$dff` D-port wiring or direct connect) is now landed for the
+  full **single-name-LHS family**: with-else / no-else × sequential /
+  combinational × single-LHS / multi-LHS-in-body. Selftest 34 → 40/40
+  PASS, regression 0.
+- 🟡 `router_d4.v` coverage is **still 0%**. The cond-mux primitive
+  works only on simple-name LHS shapes (`q`, `q1`, `q2`), but
+  router_d4's no-else bodies all write to **indexed LHS**
+  (`fifo_mem[pp][…]`, `fifo_head[grant_in]`, `out_data[grant_out]`,
+  `out_valid[grant_out]`). The remaining blockers are pinpointed:
+  1. **Indexed LHS** — `LHS[idx] <= rhs` shape in the cond-body.
+  2. **`$dff` set/reset port** — `if (rst) q <= rst_val` lowering to
+     `$adff` rather than a plain mux feedback.
+  3. **Function-call inlining at expression site** — `route_xy(…)`
+     in `grant_out = route_xy(fifo_peek[idx])`.
+- 🟡 `rfc_006 §5` `measurement_gate = OPEN`, `absorbed = false`. No
+  flip in this session.
+
+Cross-session resumption point: `hexa-lang origin/main` HEAD
+`4e210d85`. The 5 PRs each have a measurable selftest case (T31-T36)
+so a future session can verify regressions without re-deriving the
+cell-emit primitive. The Linux native hexa toolchain on ubu-2
+(`/tmp/hexa_native_linux` + clang link chain) remains the verified
+build/test surface.
