@@ -7,21 +7,26 @@
 > (entries (o)-(u) 누적, 측정-fact 적재 SSOT)
 > **governance**: g3 — 측정 전엔 `CLOSED_MEASURED` flip 금지
 
-## Status (snapshot 2026-05-20, post-(x))
+## Status (snapshot 2026-05-20, post-PR #220 + PR #219)
 
 - `measurement_gate = OPEN`
 - `absorbed = false`
 - gate target area ∈ [58,675, 64,851] µm² (±5 % of oracle 61,762.99)
 - both oracles bit-exact reproducible (d4 61,762.99 / d6 93,608.53 / ratio 1.5156×)
-- hexa-native cell-tally on flat_v2k/router_d4.v:
-  - post-#4g landing: **55 cells (was 35), all combinational, 0 sequential**
-  - gap to substrate: **12,050 cells (99.5 %)**, 100 % of sequential gap remains
+- **9 PRs landed cumulative** this session sequence
+- hexa-native sequential emit primitives 모두 landed (#4h-a static-idx, #4h-b dyn-idx, write_verilog $dff behavioural)
+- substrate handoff full functional (comb + $dff round-trip verified)
 
-**closure path (per g3):** measurement_gate 는 hexa-native end-to-end
-synth → area 가 [58,675, 64,851] µm² 안에 들어와야 close. 현재
-hexa-native 는 sequential cells = 0, 즉 cell-emit 의 ~21 % 만 도달
-(comb-only 부분 일부). 100 % closure 까지 multi-day work — 다음
-sub-steps 가 incremental gap 축소.
+**closure path (per g3) — multi-day work**:
+- router_d4 outer always-body 는 `if (rst) … else …` 구조 (#4i with-else) — outer wrapper 가 land 해야 inner multi-LHS dyn-idx (#4h-b 이미 land) 가 fire
+- #4h-c (for-in-always multi-stmt body), #4h-d (nested-if in always)
+  도 추가 필요 — router L101-115 의 for-loop body 가 다중-statement
+- ubu-2 측정 chain 가 sibling 들의 새 RTLIL passes (pass_clean_multidriver,
+  pass_proc_mux) 와 incompatible (hexa-cc binary rebuild 필요)
+  — measurement infra 도 multi-day rebuild
+- 100 % closure 는 (a) #4h-c/d + #4i land + (b) ubu-2 측정 chain rebuild
+  + (c) router_d4 area ±5 % 측정 + (d) g3-conditional gate flip
+  → multi-session work
 
 ## Checklist
 
