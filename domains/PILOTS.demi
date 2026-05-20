@@ -35,8 +35,8 @@
 # sub-test = update `parity_status`, NOT a new row.
 #
 # id convention (D91): `pilot-<kernel-short-name>`, lowercase, dash-
-# separated. The 10 rows below match the 9 pilots in `hexa-native-port-
-# pattern-pilot.md` (pilot #1..#8 + the #3b/#5b parallel-pair seeds).
+# separated. The 11 rows below match the 10 pilots in `hexa-native-port-
+# pattern-pilot.md` (pilot #1..#9 + the #3b/#5b parallel-pair seeds).
 
 ## ── landed pilots (origin/main, hexa-lang) ──────────────────────────
 
@@ -139,3 +139,13 @@ parity_status     = "41/41 PASS at rel_err = 0.0"
 hexa_lang_sha     = "2139dbd1"
 algorithm_ref     = "PDG 2024 (Workman et al., Phys. Rev. D 110 030001) §34 — eq. 34.4 T_max + eq. 34.5 Bethe-Bloch (delta=0) + 256-step trapezoidal CSDA range"
 scope_notes       = "absorbed=true NOT flipped — particle-library PDG-data lookup still .py; CSDA omits straggling + nuclear stop tail; Geant4-MC parity multi-month"
+
+[pilot-breaker_trace_reduce]
+kernel_path       = "stdlib/kernels/circuit/breaker_trace_reduce_kernel.hexa"
+parity_test       = "stdlib/kernels/circuit/breaker_trace_reduce_kernel_test.hexa"
+parity_method     = "Python math libm closed-form, 3 synthetic analytic traces (RC-discharge non-cleared / RC-discharge cleared / triangular-pulse-on-50A-pedestal on non-uniform grid) x 7-output breaker_metrics + 3 invariants"
+parity_tolerance  = "rel_err = 0.0 (literal IEEE-754 bit-exact; ceiling 1e-10)"
+parity_status     = "24/24 PASS at rel_err = 0.0"
+hexa_lang_sha     = "b1745c3a"
+algorithm_ref     = "Burden & Faires, Numerical Analysis 10th ed. §4.3 — Composite Trapezoidal Rule (non-uniform partition); UL 489I + IEC 60947-2 §4.3 — breaker figures-of-merit (I_peak, I²t, t_clear at 1% threshold, clearing energy)"
+scope_notes       = "absorbed=true NOT flipped — ngspice CLI orchestration + netlist generator + wrdata CSV parser still .py; real-ngspice-trace parity round + accredited-lab UL 489I type-test for the SSCB cell are multi-month"

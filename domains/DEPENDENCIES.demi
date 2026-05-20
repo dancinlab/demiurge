@@ -91,7 +91,7 @@ domain           = "circuit"
 external_imports = []
 weight           = "trivial"
 portable_status  = "already-ported"
-notes            = "Born hexa-native — devsim / vdmos / wolfspeed `.hexa` derivations. No .py substrate."
+notes            = "Born hexa-native — devsim / vdmos / wolfspeed `.hexa` derivations. D80 pilot #9 landed 2026-05-20 — breaker_trace_reduce_kernel.hexa adds composite-trapezoidal I²t / clearing-energy + |·|-threshold-crossing primitives, the ①a slice extracted from `stdlib/sscb/ngspice_breaking.py`'s inline `_measure` reducer (24/24 PASS at rel_err = 0.0)."
 
 [kernel-logic_synth]
 path             = "stdlib/kernels/logic_synth/"
@@ -434,8 +434,8 @@ kind             = "domain_producer"
 domain           = "sscb"
 external_imports = []
 weight           = "trivial"
-portable_status  = "portable-next"
-notes            = "Subprocess-only ngspice driver + log parser. Hexa-native re-implementation = parse ngspice text output → metrics. Straightforward small port; queued."
+portable_status  = "already-ported"
+notes            = "Subprocess-only ngspice driver + log parser. D80 pilot #9 landed 2026-05-20 — breaker_trace_reduce_kernel.hexa ports the ①a numeric primitives (composite trapezoidal I²t + clearing-energy on a NON-uniform timestep grid + |·|-threshold-crossing search at the UL 489I 1 % clearing point) bit-exact vs Python `math` libm (24/24 PASS, rel_err = 0.0). Only the ngspice CLI / netlist generator / wrdata CSV parser orchestration half of ngspice_breaking.py remains on the .py side."
 
 [domain-antimatter_geant4_verify]
 path             = "stdlib/antimatter/geant4_verify.py"
