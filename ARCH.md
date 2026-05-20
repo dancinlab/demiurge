@@ -1111,7 +1111,15 @@ rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkee
 
 **라운드 3 — cross-domain audit**
 
-- [ ] **G4.** `ProducerRegistry` 가 sibling-repo binary spawn
+- [x] **G4.** `ProducerRegistry` 가 sibling-repo binary spawn
+  - **κ-62**: `ProducerRegistry+Sibling.swift` 신규 — extension on
+    `ProducerRegistry` with `siblingRepoVariant(id:domainID:verb:
+    displayName:)` factory. variant.run closure 가 `SiblingRepoSpawner.
+    spawn` 호출 + `exports/<domain>/<verb>/<stamp>/` 디렉토리 자동
+    생성 + emitted JSON 으로부터 recordID 추출. cern+analyze 의
+    pylhe / xsuite-tracking 패턴이 일반화됨 — 새 (verb, domain) cell
+    이 sibling-repo binary 인계 받을 때 entries dict 한 줄 추가
+    (`"hexa-ufo": ProducerRegistry.siblingRepoVariant(...)`).
   - deps: G3 (`SiblingRepoSpawner` 헬퍼 먼저)
   - edit:
     - `ProducerRegistry.swift` 확장 — variant.run closure 안에서
@@ -1121,7 +1129,14 @@ rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkee
   - exit:
     - 새 도메인이 sibling-repo CLI 인계 받을 때 entries dict 1 줄
 
-- [ ] **G6.** Cascade falsifier (cross-domain DEMOTE rule)
+- [x] **G6.** Cascade falsifier (cross-domain DEMOTE rule)
+  - **κ-62**: `FalsifierCascade.swift` 신규 — BFS over `demotedIf`
+    edges. `apply(_ entries:)` 가 monotone fixpoint (OPEN entry 가
+    upstream DEMOTED 면 본인도 DEMOTED, CONFIRMED/DEMOTED 는 freeze).
+    `FalsifierCascadeResult` = updated entries + diagnostic
+    `[FalsifierCascadeHop]` (target / cause / reason) — cockpit
+    dashboard 에서 "demoted because of …" 표시 가능. hexa-aura README
+    의 "if hexa-rtsc falls → F-AURA-2 DEMOTED" 정확 매핑.
   - deps: G5 (`FalsifierEntry.demotedIf`) + G1 (DomainGraph)
   - edit:
     - `DomainGraph.swift` 에 `falsifierCascade(start: FalsifierID) -> [FalsifierID]`
@@ -1132,7 +1147,14 @@ rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkee
     - `DemiurgeCLI falsifier-audit aura-clip-mk1` 가 cross-domain
       cascade 매트릭스 출력
 
-- [ ] **G8.** n=6 lattice invariant cross-check 엔진
+- [x] **G8.** n=6 lattice invariant cross-check 엔진
+  - **κ-62**: `LatticeInvariant.swift` 신규 — `canonicalN = 6`,
+    `canonicalProduct = 24`, `audit(n:sigma:phi:tau:jTwo:)` +
+    `audit(_ result:)` (LatticeInvariantResult overload). 두 변형
+    모두 nil 반환 = pass, `InvariantViolation` 반환 = fail 의
+    failures list 보유. hexa-ufo / hexa-aura / hexa-cern / hexa-rtsc
+    / hexa-bio / hexa-chip 의 `σ·φ = n·τ = J₂ = 24` invariant 자동
+    검증.
   - deps: G3 (sibling-repo 메타데이터 표준화)
   - new file:
     - `cockpit/Sources/DemiurgeCore/LatticeInvariant.swift` (new, ~60 LOC)

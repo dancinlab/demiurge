@@ -4015,3 +4015,32 @@
   absorbed 변경 0. **Round 2 종료**. 다음 Round 3 = G4 (sibling-repo
   dispatch in ProducerRegistry) + G6 (cascade falsifier) + G8 (n=6
   lattice invariant audit engine).
+- 2026-05-20 — **phase κ-62 — Round 3 (final): G4 + G6 + G8 land**.
+  사용자 게이트 "go". cross-domain audit 묶음.
+  - **G4 [x] full**: `ProducerRegistry+Sibling.swift` 신규 — extension
+    `siblingRepoVariant(id:domainID:verb:displayName:)` factory.
+    variant.run 이 `SiblingRepoSpawner.spawn` 호출 + exports 자동 디렉토리
+    생성 + JSON record id 추출. cern+analyze (pylhe / xsuite) 패턴
+    일반화 — 새 sibling-cell entry 추가 = entries dict 한 줄.
+  - **G6 [x] full**: `FalsifierCascade.swift` 신규 — BFS over
+    `demotedIf` edges. `apply()` 가 monotone fixpoint 계산:
+    upstream DEMOTED → 본인 DEMOTED auto-cascade. CONFIRMED /
+    DEMOTED 는 freeze. `FalsifierCascadeResult` = updated entries +
+    `[FalsifierCascadeHop]` diagnostic (target / cause / reason).
+    hexa-aura README "if hexa-rtsc falls → F-AURA-2 DEMOTED" 정확
+    매핑.
+  - **G8 [x] full**: `LatticeInvariant.swift` 신규 — `canonicalN=6`,
+    `canonicalProduct=24`. `audit(n:sigma:phi:tau:jTwo:)` +
+    `audit(_ LatticeInvariantResult)` overload. nil = pass,
+    `InvariantViolation { n, sigma, phi, tau, jTwo, failures: [String] }`
+    = fail. HEXA-family 6 sibling repo (ufo/aura/cern/rtsc/bio/chip)
+    의 `σ·φ = n·τ = J₂ = 24` invariant 자동 검증 (AuraVerifyRecord.
+    latticeInvariant 필드 가 G8 surface).
+  - ARCH.md §11.4 G4 [x] / G6 [x] / G8 [x] (Round 3 종료).
+  build: xcrun swift build --product DemiurgeCLI OK (3.27s).
+  g3 — audit engines 추가만, 측정 record / gate / absorbed 변경 0.
+  **G1–G8 all [x] full** — Round 1+2+3 종료, ufo/aura 시뮬레이션이
+  발견한 8 gap 모두 land. 다음 단계는 cell-level integration —
+  실제 substrate 들이 GateType typed emit, UfoVerifyRecord/
+  AuraVerifyRecord 실 사용, ProducerRegistry siblingRepoVariant
+  점진 등록.
