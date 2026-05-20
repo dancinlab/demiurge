@@ -172,3 +172,40 @@ ABSORPTION.md §178 sized as the heart of the 1-2-week work. SKY130
 PDK + ABC remain provisioned; the next session resumes from
 `rfc006-yosys-rv-scope` HEAD with the synth-driver measurement
 log as the immediate signal of progress.
+
+## UPDATE 2026-05-20 (f) — router if-structure measurement + scope honesty
+
+Measured the actual if-statement shape of `router_d4.v` to decide
+whether a narrow cond-mux scope (single-statement `if (cond) lhs <= a;
+else lhs <= b;`) could cover any of router's always-bodies. Result:
+
+- L63-67 (inside the `route_xy` function body): cascaded `if … else if
+  … else if … else` chain. Reachable only after function-inline at the
+  call site (`grant_out = route_xy(fifo_peek[idx]);`) — by itself it
+  is a function-body simplification, not a free-standing always
+  cond-mux.
+- L80-94 (`always @*`): three-level nested if + `begin … end` multi-
+  statement body (e.g. `if (!any_grant && !fifo_empty[idx]) begin …
+  if (out_ready[grant_out]) begin … end end`).
+- L98-123 (`always @(posedge clk)`): `if (rst) begin … end else begin
+  … if (in_valid[pp] && !fifo_full[pp]) begin … end … if (any_grant)
+  begin … end end` — all multi-statement bodies with nested if and
+  for-in-always coupling.
+
+Coverage of a narrow single-statement cond-mux against router_d4 =
+**0%** (measured by the if shapes above). The proc-pass core that
+actually matters for §5 is: (i) per-variable LHS signal tracking
+across multi-statement bodies, (ii) nested-if collapse into chained
+`$mux` cells, (iii) for-in-always integration with the existing
+generate-for unroll, (iv) `$dff` set/reset port hookup driven by the
+posedge edge type. None of these is a 1-session change; ABSORPTION.md
+§178 multi-week scope is confirmed by direct measurement, not
+estimation.
+
+g3 closeout for this session — no `CLOSED_MEASURED` flip on
+rfc_006 §5; the gate stays OPEN until the proc-pass core lands and
+ABC produces a non-empty mapped BLIF whose SKY130 area is within
+±5 % of the cited oracle (d4 ≈ 61,762.99 µm², d6 ≈ 93,608.53 µm²,
+ratio 1.5156×). Branch ref `rfc006-yosys-rv-scope` is restored to
+`389a6d92` (had been pruned by a sibling-session reset) so the 13
+landed commits remain reachable for the proc-pass session resumption.

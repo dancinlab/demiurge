@@ -2784,6 +2784,56 @@ hexa-lang 작업). `inbox/notes/rfc006-s5-area-oracle-parity-handoff.md`
 scoped handoff 됨. 임시 측정 driver 삭제 · 메인 repo stdlib/yosys/
 checkout 원복 완료 — 측정 흔적 0.
 
+### Decision-gate note on Decision 68 — 5차 (read_verilog scope 13 component 진행 + router if-구조 측정으로 cond-mux 좁은 scope 0% coverage 확정)
+
+4차 note 의 진짜 blocker (`read_verilog` 6-construct scope) 를 1-2주
+hexa-lang 작업으로 진행 — `rfc006-yosys-rv-scope` branch (HEAD
+`389a6d92`) 에 13 component 적재 (모두 34/34 selftest GREEN):
+
+- constant-expression evaluator · param/localparam · width elab + ANSI
+  ports · function automatic decl · expression elaboration → RTLIL
+  cell tree · SymTab + array indexing · generate-for static unroll ·
+  always-block parser (simple `$dff`) · body wire/reg width + 1-D
+  unpacked · multi-statement always body · 2-level index + integer
+  body decl · `for` inside always (static unroll) · `if/else` skip
+  inside always.
+
+router_d4.v 가 `read_verilog` stage 1 을 end-to-end 통과 — 4차 의
+"localparam unsupported" 즉시-실패 가 해소. 그러나 synth driver 측정
+결과: stage 1-4 (read_verilog → passes → abc_map → area) 모두 exit 0
+이지만 **abc_map 이 empty mapped BLIF 를 emit** — `if/else` 가 body
+없이 skip 되어 ABC 가 매핑할 cell 이 없음 (honest gap).
+
+이 시점에서 좁은 cond-mux scope (single-statement `if (cond) lhs <= a;
+else lhs <= b;`) 가 router 의 어떤 if 라도 cover 하는지 측정:
+
+- L63-67 (`route_xy` function body): cascaded `if … else if …` chain
+  — function-inline 후의 simplification 단계, free-standing always
+  cond-mux 가 아님.
+- L80-94 (`always @*`): 3-level nested if + `begin … end` multi-stmt.
+- L98-123 (`always @(posedge clk)`): `if (rst) begin … end else begin
+  … if (in_valid && !fifo_full) begin … end … if (any_grant) begin …
+  end end` — 전부 multi-stmt body + nested if + for-in-always 결합.
+
+→ **좁은 cond-mux 의 router_d4 cover = 0%** (측정 사실, if 형태 측정
+으로 결정). 진짜 proc-pass core 가 요구하는 4 sub-step:
+(i) per-variable LHS signal tracking across multi-stmt bodies,
+(ii) nested-if collapse into chained `$mux` cells,
+(iii) for-in-always 가 generate-for 와 통합,
+(iv) `$dff` set/reset port hookup driven by edge type.
+어느 하나도 1-session change 가 아니며 — ABSORPTION.md §178 multi-week
+는 *추정* 이 아니라 직접 측정으로 재확인됨.
+
+**§5 최종 상태 (5차 시점)**: GATE_OPEN 유지, `absorbed=false`. 측정
+gate flip 없음 — `CLOSED_MEASURED` 의 기준 (`router_d{4,6}` SKY130 area
+가 cited oracle ±5%, ratio 1.5156×) 은 proc-pass core 의 4 sub-step
+이 모두 lands → ABC non-empty mapped BLIF → area 비교 검증 후에야
+충족 가능. branch ref `rfc006-yosys-rv-scope` 가 sibling-session reset
+으로 잠시 unreachable 됐었으나 `389a6d92` 위로 복원 — 13 commit 의
+proc-pass session resumption 가능. macOS 의 SIGKILL/exit-137 환경
+하에서 ubu-2 Linux native hexa toolchain (`/tmp/hexa_native_linux` +
+clang 링크 chain) 이 검증된 build/test 표면.
+
 ### Decision 73 — firmware 새 도메인 + 7-verb 합성→검증 seam 정의
 
 **picked**: 16 번째 도메인 `domains/firmware.md` 추가. **펌웨어
