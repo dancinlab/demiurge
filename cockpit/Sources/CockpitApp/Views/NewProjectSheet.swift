@@ -41,7 +41,7 @@ struct NewProjectSheet: View {
             footer
         }
         .padding(20)
-        .frame(width: 460, height: 340)
+        .frame(width: 520, height: 420)
     }
 
     // MARK: — header
@@ -100,7 +100,15 @@ struct NewProjectSheet: View {
         }
     }
 
-    // MARK: — step 3: domain confirm
+    // MARK: — step 3: domain confirm (+ D78/D82 DAG closure preview)
+
+    /// D78/D82 — direct + transitive prerequisites for the picked
+    /// domain, topologically sorted (foundation → integration apex).
+    private var closureWalk: [String] {
+        let closure = DomainGraph.transitiveClosure(
+            of: inferredDomain.trimmingCharacters(in: .whitespaces))
+        return DomainGraph.topologicalSort(closure.map { $0.id })
+    }
 
     private var confirmStep: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -110,19 +118,59 @@ struct NewProjectSheet: View {
                     .font(.callout)
             }
             if editingDomain {
-                TextField("분야 키", text: $inferredDomain)
+                TextField("분야 키 (`u/<id>` 가능 — 사용자 도메인)",
+                          text: $inferredDomain)
                     .textFieldStyle(.roundedBorder)
             } else {
                 HStack(spacing: 6) {
-                    Image(systemName: "tag")
+                    Image(systemName: inferredDomain.hasPrefix("u/")
+                          ? "person.crop.square" : "tag")
                         .foregroundStyle(.tint)
                     Text("\(DomainCatalog.domain(for: inferredDomain).label) 프로젝트군요")
                         .font(.callout.weight(.medium))
+                    if inferredDomain.hasPrefix("u/") {
+                        Text("내 도메인")
+                            .font(.caption2)
+                            .padding(.horizontal, 6).padding(.vertical, 2)
+                            .background(Color.purple.opacity(0.18))
+                            .cornerRadius(4)
+                    }
                 }
+            }
+
+            // D78/D82 — closure preview (chip stack of prereq chain)
+            if !editingDomain && closureWalk.count > 1 {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("필요한 분야들 (자동 인계 — \(closureWalk.count)개)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    HStack(spacing: 5) {
+                        ForEach(Array(closureWalk.enumerated()), id: \.offset) { idx, did in
+                            let isStart = did == inferredDomain
+                            Text(DomainCatalog.domain(for: did).label)
+                                .font(.caption2)
+                                .padding(.horizontal, 7).padding(.vertical, 3)
+                                .background(isStart
+                                            ? Color.accentColor.opacity(0.25)
+                                            : Color.secondary.opacity(0.13))
+                                .cornerRadius(4)
+                            if idx < closureWalk.count - 1 {
+                                Image(systemName: "arrow.right")
+                                    .font(.caption2)
+                                    .foregroundStyle(.tertiary)
+                            }
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(.top, 4)
+            } else if !editingDomain {
                 Text("이 분야로 시작할게요 — 맞나요?")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
             HStack(spacing: 8) {
                 Button(editingDomain ? "이걸로" : "바꾸기") {
                     editingDomain.toggle()
@@ -167,10 +215,12 @@ struct NewProjectSheet: View {
             inferredDomain = DomainCatalog.infer(from: target)
             step = .confirm
         case .confirm:
+            let d = inferredDomain.trimmingCharacters(in: .whitespaces)
             onCreate(Project(
                 name: name.trimmingCharacters(in: .whitespaces),
                 target: target.trimmingCharacters(in: .whitespaces),
-                domain: inferredDomain.trimmingCharacters(in: .whitespaces)
+                domain: d,
+                walk: closureWalk
             ))
             dismiss()
         }

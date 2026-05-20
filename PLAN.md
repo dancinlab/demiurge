@@ -3952,3 +3952,22 @@
   build: xcrun swift build OK (2.11s).
   g3 — data 분리만, 측정 record 변경 0. UI 분리 표시 (built-in /
   내 도메인) 는 phase D (NewProjectSheet 갱신).
+- 2026-05-20 — **phase κ-59 — Round 1 phase D: NewProjectSheet
+  DAG closure preview + 내 도메인 badge**. 사용자 게이트 "go" =
+  G1 마지막 UI 부분 완주. 변경:
+  - `NewProjectSheet.swift` step 3 confirm 에 `closureWalk` computed
+    property — `DomainGraph.transitiveClosure(of:inferredDomain)`
+    + `topologicalSort` 호출, foundation → integration apex 순서.
+  - chip stack UI — start 도메인은 accent 색, prereq chain 은
+    secondary chip 으로 ─ 사이 화살표 `→`.
+  - `u/<id>` user 도메인은 `person.crop.square` 아이콘 + "내 도메인"
+    purple badge.
+  - sheet frame 460×340 → 520×420 (chip stack 자리).
+  - `onCreate` 가 `Project.walk = closureWalk` 박아서 호출 — 프로젝트
+    가 graph walk pointer 로 영속화.
+  - ARCH.md §11.4 G1 [~] → **[x] full check** (κ-56 type + κ-57
+    .demi parser + κ-58 2-tier + κ-59 UI).
+  build: xcrun swift build --product CockpitApp OK (2.94s).
+  g3 — UI 갱신만 (graph 데이터는 D82/D84 SSOT 그대로), 측정 record
+  변경 0. Round 1 G1 종료 — fundamental + .demi + 2-tier + UI 모두
+  완주.
