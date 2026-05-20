@@ -856,3 +856,80 @@ each new emit primitive can be verified by re-running `/tmp/drv_exec
 proc-pass-complete (sequential cells appear).
 
 `rfc_006 §5 measurement_gate = OPEN`, `absorbed = false`.
+
+## UPDATE 2026-05-20 (s) — oracle reproduced bit-exact + measurement procedure pinned
+
+Independently verified the cited oracle on macOS substrate yosys 0.65
++ SKY130 tt-corner Liberty. Two-pass attempt:
+
+**Attempt 1** — manual pass list (`proc; opt; fsm; opt; memory; opt;
+techmap; opt`):
+```
+Chip area: 72,797.32 µm²  (sequential 49,227.21 / 67.62%)
+vs oracle 61,762.99       (Δ +17.9% — outside ±5% gate)
+```
+
+Substrate yosys *itself* misses the oracle by 18% with the obvious
+manual flow. Sequential area matches within 0.55% (49,227 vs 48,957)
+but comb area is 84% larger (23,570 vs 12,806) — i.e. the gap is
+*combinational logic sharing*, not DFF mapping.
+
+**Attempt 2** — built-in `synth` macro (which adds `share / freduce /
+abc -dff` and other logic-reduction passes invisible to a manual
+sequence):
+```
+yosys -p "
+  read_verilog archive/comb/rtl/flat_v2k/router_d4.v
+  synth -top router_d4
+  dfflibmap -liberty <sky130_fd_sc_hd__tt_025C_1v80.lib>
+  abc        -liberty <sky130_fd_sc_hd__tt_025C_1v80.lib>
+  opt_clean
+  stat       -liberty <sky130_fd_sc_hd__tt_025C_1v80.lib>
+"
+
+Chip area: 61,762.985600 µm² ← BIT-EXACT MATCH to cited oracle
+  sequential: 48,956.953600 µm² (79.27%) ← same
+  pre-techmap cells: 12,105 (1530 $_AND_, 1624 $_DFFE_PP_, 7379 $_MUX_,
+                              222 $_NOT_, 1129 $_OR_, 198 $_XOR_,
+                              18 $_SDFFE_PP0P_, 5 $_SDFF_PP0_)
+```
+
+**Implications for the §5 gate:**
+
+- Oracle is reproducible end-to-end on the same toolchain (yosys 0.65
+  + SKY130 tt corner), removing prior uncertainty about whether the
+  cited number was an artifact of a now-lost build.
+- The required input form is **flat_v2k/router_d4.v** (sv2v-converted,
+  packed-array module ports) — yosys 0.65 cannot parse the
+  unpacked-array module ports in the canonical `archive/comb/rtl/
+  router_d4.v` even with `-sv -formal`.
+- 79.27% of the oracle area is sequential. The hexa-native flow's
+  cell-tally (35 cells, 0 sequential — handoff (p)) is therefore
+  ~21% short of the structure that *dominates* the area. Reaching
+  oracle parity requires landing the always-body sequential emit
+  paths (#4g/#4h/#4i + the proc-pass core).
+- The `synth` macro internals — `share`, `freduce`, `abc -dff`,
+  plus the muxtree / sat-based redundancy elims — are what got the
+  comb portion down from 23k to 13k µm². The hexa-native side will
+  need either the same `synth`-macro behaviour out of `stdlib/yosys/
+  passes.hexa` or to defer this to substrate-yosys for the final
+  area pass; both are valid §5 paths.
+
+**§5 gate (refined):** target area ∈ [58,675, 64,851] µm² (±5% of
+61,762.99); target sequential-comb split ≈ 79/21 %. Re-measure with
+the macro flow once #4g/#4h/#4i land and the cell-tally driver
+reports non-zero sequential cells.
+
+**Cross-session resumption (refreshed):**
+- demiurge `main` HEAD now `1b3bfa5` + handoff (s) appended (not yet
+  committed at this snapshot's writing).
+- Substrate oracle reproduction command above is the new §5 reference
+  measurement; bind it to any future hexa-native parity attempt.
+- input file: `archive/comb/rtl/flat_v2k/router_d4.v` (sv2v variant);
+  hexa-native flow currently parses the unpacked-port form, so a
+  sv2v-equivalent flattening pass (or accepting sv2v as a pre-step)
+  is implicit prerequisite to area comparison.
+
+`rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3 — no
+flip; this turn pinned the oracle's measurement procedure and
+exposed the comb-side `synth`-macro dependency).
