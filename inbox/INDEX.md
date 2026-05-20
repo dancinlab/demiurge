@@ -23,7 +23,7 @@
 | `cohort-pickup-bot-urdf-producer.md` | resolved | κ-37 / D58 | bot+structure URDF producer landed |
 | `cohort-pickup-grid-networkx-producer.md` | resolved | κ-36 | grid+structure networkx producer landed |
 | `cohort-pickup-rtsc-femm-producer.md` | resolved | κ-48 + κ-49 | pyfemm rtsc+analyze (κ-48) + GetDP rtsc+verify (κ-49) substrates landed |
-| `d80-sweep-close-2026-05-20.md` | archive | D87..D106 / κ-67 / RFC 013 | D80 sweep close — 2026-05-20 single-session digest (15 PILOTS rows · 14 kernel folders · 5 .demi SSOT · 5 cockpit Loader · 4-case chip · 19/19 도메인 narrative · D104 reserved · RFC 013 MOSTLY-LANDED); self-contained cold-start anchor for next session / external reviewer |
+| `d80-sweep-close-2026-05-20.md` | archive | D87..D108 / κ-67 / RFC 013 | D80 sweep close — 2026-05-20 single-session digest (15 PILOTS rows · 14 kernel folders · 5 .demi SSOT · 5 cockpit Loader · 4-case chip · 19/19 도메인 narrative · D104 reserved · RFC 013 MOSTLY-LANDED · D108 closure); self-contained cold-start anchor for next session / external reviewer. NOTE — pre-geodesy snapshot; post-D108 origin/main has 16 PILOTS rows / 15 kernel folders / 445 cumulative assertions (geodesy pilot #13 via acac78c added the geodesy bridge substrate, 4 consumer ①b adapters queued) |
 | `hexa-8domain-measurement-stack-2026-05-20.md` | resolved | κ-47..κ-49 | 8-domain stack survey consumed by empty-cell sweep |
 | `hexa-lang-branch-consolidation-2026-05-20.md` | pickup-blocked | (cross-session) | hexa-lang live tree alignment to origin/main — concurrent session blocker |
 | `hexa-native-connection-plan-2026-05-20.md` | resolved | RFC 013 / κ-67 | SHAPE note promoted to `proposals/rfc_013_hexa_native_parity_connection.md` — wiring from hexa-lang substrate parity to demiurge `absorbed` flag |
@@ -52,9 +52,10 @@
 ## Cross-references
 
 - PLAN.md κ-1..κ-67 (progress log SSOT)
-- design.md D1..D100 (decision audit-trail SSOT)
+- design.md D1..D108 (decision audit-trail SSOT · D104 reserved)
 - NEXT_SESSIONS.md (handoff prompts for cross-session work)
-- proposals/rfc_013_hexa_native_parity_connection.md (κ-67 promotion target)
+- proposals/rfc_013_hexa_native_parity_connection.md (κ-67 promotion target · MOSTLY-LANDED per D105)
+- ARCH.md §11.4 G1..G24 Round 1-6 (+ G25/G26 post-closure bracket)
 
 ## Maintenance
 

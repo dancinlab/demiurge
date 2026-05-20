@@ -963,7 +963,7 @@ demiurge = domain-shared (도메인 1개 + 프로젝트 N 개 포인터). 시뮬
 rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkeeping 정직성
 표면.
 
-### 11.4 G1–G18 implementation checklist
+### 11.4 G1–G24 implementation checklist
 
 > G1–G8 라운드 1–3 (`fundamental` / `honesty surface` / `cross-domain
 > audit`) 는 κ-62 (3322523) 에서 전부 `[x]` 완료. G9–G12 라운드 4
@@ -971,8 +971,13 @@ rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkee
 > 진행. G13–G18 라운드 5 (`D80 SSOT 통합 + 후속` — D87..D101 sweep)
 > 는 2026-05-20 cycle 에서 PILOTS.demi seed + 19/19 도메인 narrative
 > coverage + 3-tier link-integrity + cross-ref CI + chip UI + env
-> deprecation 으로 land. 각 항목 진행하면 `[x]` 로 박고 PLAN κ-entry
-> + design.md D-block + 영향 파일 commit 으로 묶을 것.
+> deprecation 으로 land. G19–G24 라운드 6 (`κ-67 closure + post-
+> closure pilot #13` — D102..D108 + geodesy) 는 같은 2026-05-20 cycle
+> 후반에 chem 첫 PILOTS row + dimension docstring + RFC 013 MOSTLY-
+> LANDED + illustrative-physics gate + spawner 5th fallback + κ-67
+> closure + geodesy WGS84 14th pilot 로 마감. 각 항목 진행하면 `[x]`
+> 로 박고 PLAN κ-entry + design.md D-block + 영향 파일 commit 으로
+> 묶을 것.
 
 **라운드 1 — fundamental (D78 + sibling + falsifier schema)**
 
@@ -1451,6 +1456,227 @@ rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkee
     - `.demi` 데이터 SSOT 무변경, `DependenciesLoader.swift` 무변경
     - 새 SSOT 0, 새 stored data 0, schema 변경 0
 
+**라운드 6 — κ-67 closure + post-closure pilot #13 (D102..D108 +
+geodesy WGS84, 2026-05-20)**
+
+- [x] **G19.** chem 첫 `PILOTS.demi` row (D102 · Stage-0 scaffolding)
+  - **a033def** (D102): `domains/PILOTS.demi` 에 `[pilot-chem_
+    arrhenius]` row 1 (Stage-0 — internal-invariant 6/6 PASS, no
+    external oracle yet) 추가. PILOTS row count 13 → 14 (이후
+    bio_align_nw 이 D80 #12 로 row 15). `kernel_path` =
+    `stdlib/kernels/chem/arrhenius_kernel.hexa` (hexa-lang SHA
+    `78aee88d`). `parity_status` 가 PASS 토큰 보유 → D95 computed
+    `isHexaNativeAbsorbed` true 판정에 자동 합류.
+  - **3215cea** (chem narrative seed · D100 분기 c): `domains/chem.
+    md` substrate line — `stdlib/kernels/chem/` seed 의 NOT YET
+    표기 (full sibling repo `~/core/hexa-chem/` 미존재 honest
+    record).
+  - **scope floor** (D102 명시): `DEPENDENCIES.demi` `kernel-chem`
+    row · `SUBSTRATE_LINKS.demi` chem row · sibling `hexa-chem`
+    repo seed 는 P-⑫ ②a/②b/②c 별도 세션. 2nd consumer 도착 시 N+M
+    promotion 트리거 (D72 정신).
+  - deps: G13 (`PILOTS.demi` 8-field) + G14 (chem narrative) + D86
+    + D90 + D91 + D102
+  - edit:
+    - `domains/PILOTS.demi` (chem row 1 추가)
+    - `domains/chem.md` (substrate line seed)
+  - exit:
+    - PILOTS.demi 14 row · cross-ref CI 3/3 PASS (단방향 의무
+      미발동 — chem 은 PILOTS-only entry, DEPENDENCIES 반대편 없음)
+    - swift build/test PASS · 새 Swift code 0 · 새 stored field 0
+
+- [x] **G20.** cell `absorbed` vs `isHexaNativeAbsorbed` dimension
+  separation docstring (D103 · 코드 변경 0)
+  - **105315e** (D103): 5 cell record (`UfoVerifyRecord` /
+    `EnergyVerifyRecord` / `FusionVerifyRecord` / `AuraVerifyRecord`
+    / `ChipAnalyzeRecord`) 의 stored `absorbed: Bool` 에 dimension-
+    separation docstring 추가. 두 dimension (측정-oracle vs
+    substrate-parity) 가 별도 SSOT 임을 명시 — 컴파일러가 잡을 수
+    없는 semantic gate 를 docstring 으로 enforce. `HexaNativeParity
+    Ref` doc 의 "Honesty (D80 g_hexa_only)" 블록 바로 아래에 "D103
+    dimension separation" 단락 (2-axis 정책 명시 · producer 가 두
+    axis 를 INDEPENDENTLY set 해야 함을 못박음). `FusionVerifyRecord`
+    는 mc_transport pilot 의 illustrative-physics 성격 때문에 doubly-
+    true (측정 dimension 뿐 아니라 substrate-parity dimension 까지
+    provisional).
+  - deps: D80 honesty floor + D86 (`g_no_hardcoded_data`) + D95
+    (computed `isHexaNativeAbsorbed`) + RFC 013 §4.3
+  - edit:
+    - 5 cell record docstring (`absorbed: Bool` + computed
+      `isHexaNativeAbsorbed` 양쪽)
+  - exit:
+    - swift build PASS · swift test 35/35 PASS · 새 warning 0
+    - `.demi` 데이터 SSOT 무변경 · schema / wire shape / CodingKeys /
+      init signature 모두 byte-unchanged · 새 stored field 0
+    - 변경 surface = 5 파일의 docstring + header comment 만
+
+- [x] **G21.** RFC 013 status `PARTIAL-LAND` → `MOSTLY-LANDED`
+  refresh (D105 · κ-67 sweep reconciliation)
+  - **943a5b8** (D105): `proposals/rfc_013_hexa_native_parity_
+    connection.md` 의 status header / §6 follow-ons / §8 cross-
+    references / §9 log 를 post-κ-67 sweep (D94..D103 · 12 commits)
+    의 실제 상태로 갱신. status string `PARTIAL-LAND` → `MOSTLY-
+    LANDED`. §6.1..§6.10 LANDED with SHA cross-link, §6.11 (per-cell
+    measured-oracle) queued, §6.12 reserved for D106 (illustrative-
+    physics gate) 직전 갱신.
+  - deps: D80 + D86 + D87..D103 누적 + RFC 013 publication (cea3c66)
+  - edit: `proposals/rfc_013_hexa_native_parity_connection.md` 단일
+    파일의 status / 표 / cross-link / log 정합화만
+  - exit:
+    - RFC 013 status header 가 실 land 상태 반영
+    - 새 RFC / 새 SSOT / 새 code 0
+    - swift build/test PASS (RFC text-only change)
+
+- [x] **G22.** `.illustrativePhysics` `GateType` 4번째 case (D106 ·
+    P-⑩ ③ · RFC 013 §6.12 LANDED)
+  - **f9a9a90** (D106): `cockpit/Sources/DemiurgeCore/Models/Gate
+    Type.swift` 에 `.illustrativePhysics` enum case (cyan tone) 추가.
+    `HexaNativeParityChipModel` 의 3-case (`absent` 회색 /
+    `absorbed` 녹색 / `provisional` 노랑) 가 D106 4번째 case (cyan)
+    로 확장 — substrate-parity PASS 인데 kernel 자체가 illustrative
+    (mc_slab_demo 같은 single-energy-group / closed-form analytic /
+    pattern-proof). cell-level absorbed flip 은 여전히 외부 measured
+    oracle 필요. `FusionVerifyRecord` 가 canonical occupant (mc_
+    transport pilot 의 illustrative gating). `SkippedCellsDashboard`
+    의 `color(for:)` switch 가 4-case exhaustive.
+  - **anti-conflation gate**: substrate-parity 가 PASS 인 illustrative
+    kernel 을 녹색 (absorbed) 로 표시하면 reviewer 가 "측정 oracle
+    까지 통과" 로 오인. cyan tone 이 그 conflation 을 차단 — RFC
+    013 §6.12 의 가장 미묘한 typed enforcement.
+  - deps: G7 (`GateType`) + G11 (heavyport bucket) + G16 (chip
+    3-case) + D80 + D103 + RFC 013 §6.12
+  - edit:
+    - `cockpit/Sources/DemiurgeCore/Models/GateType.swift` (case 1)
+    - `HexaNativeParityChipModel.swift` (4번째 tone)
+    - `SkippedCellsDashboard.swift` `color(for:)` 4-case exhaustive
+    - `proposals/rfc_013_hexa_native_parity_connection.md` §6.12
+      LANDED
+  - exit:
+    - swift build PASS · swift test PASS (chip 4-case + dashboard
+      switch exhaustive)
+    - 새 SSOT 0 · 새 stored data 0 · 새 `.demi` row 0
+
+- [x] **G23.** `SiblingRepoSpawner.resolveEntrypoint()` 5th fallback
+    `cli/hexa-<id>.hexa` (D107)
+  - **e66e4c0** (D107): `cockpit/Sources/DemiurgeCore/Loaders/
+    SiblingRepoSpawner.swift` 의 entrypoint resolver 에 5th
+    fallback `<repo>/cli/hexa-<id>.hexa` 추가 — 기존 4 후보
+    (`cli/hexa-<id>` binary · `verify/run_all.hexa` · root
+    `<id>.hexa` · `main.hexa`) priority 보존, 5번째 슬롯에 hexa-
+    aura / hexa-ufo 의 실제 파일명 (`cli/hexa-aura.hexa` /
+    `cli/hexa-ufo.hexa`) 인식. priority-preserving 확장 — 기존 4
+    sibling (matter / chip / cern / fusion) 의 resolve 경로 byte-
+    unchanged.
+  - deps: G3 (SiblingRepoSpawner) + D17 (sibling-repo dispatch) +
+    D85 (PRODUCERS.demi)
+  - edit:
+    - `SiblingRepoSpawner.swift` (5th fallback 1 case 추가)
+    - `SiblingRepoSpawnerTests.swift` (10 XCTest — slot priority +
+      identity drift)
+  - exit:
+    - swift test 10/10 PASS (`SiblingRepoSpawnerTests` 신규)
+    - 기존 sibling resolve 경로 회귀 0 (priority preserve)
+
+- [x] **G24.** κ-67 closure 박제 (D108 · RFC 013 MOSTLY-LANDED ·
+    D87..D107 누적 SSOT 정합)
+  - **eea2804** (D108): κ-67 sweep (D87..D107 · D104 reserved · 20
+    결정 · 13+ commit) 의 **누적 closure** 를 PLAN.md κ-67 entry ·
+    GOAL.md "현재 위치" + Log · design.md D108 entry 3-지점에 한
+    사이클로 박제. 새 code 0, 새 stored field 0, 새 `.demi` row 0,
+    새 RFC 0 — *문서 SSOT 3개* 의 결정-감사추적 정합화만. κ-67
+    sweep 의 사실은 이미 D87..D107 + RFC 013 §6 + ARCH §11.4 +
+    commit 본문에 존재; 본 entry 는 그것이 한 phase 의 closure 였다
+    는 사실을 *PLAN.md κ-진행로그* 와 *GOAL.md 현재위치* 에서 동일
+    하게 가리키도록 cross-link.
+  - **κ-66 ↔ κ-67 boundary**: κ-66 은 hexa-lang 측 8 pilot land 의
+    *upstream* fact 박제 (PLAN.md), κ-67 은 그것이 demiurge 측에서
+    데이터 SSOT + producer wire + UI + governance + sibling-spawner
+    fallback 으로 *완전 정합* 된 상태의 closure. 다음 κ-68 reserved
+    = §6.11 per-cell measured-oracle round (P-⑩ ①).
+  - deps: D87..D107 누적 + RFC 013 publication + ARCH §11.4 Round 5
+  - edit:
+    - `PLAN.md` `## 진행 로그` 끝에 phase κ-67 closure entry
+    - `GOAL.md` "현재 정직한 위치" + `## Log` κ-67 entry
+    - `design.md` D108 entry (κ-67 closure 박제)
+  - exit:
+    - 3 doc SSOT cross-link 정합 (PLAN κ-67 ↔ GOAL position+Log ↔
+      design D108)
+    - 새 code · stored field · `.demi` row · RFC 0
+    - swift build/test PASS (doc-only change)
+
+- [x] **G25.** geodesy WGS84 14번째 D80 pilot (post-D108 · 15th
+    kernel folder · bridge substrate)
+  - **acac78c** (pilot #13 chronological; 14th D80 pilot row when
+    chem seed is counted; hexa-lang SHA `b7a43493`): `domains/
+    PILOTS.demi` 에 `[pilot-geodesy_wgs84]` row 1 추가 — PILOTS
+    row count 15 → **16** (D80 pilot 14 + chem seed 1 + transport_
+    kinematics 가 mc_transport 2nd kernel = D91 row-per-kernel
+    cumulative). `kernel_path` = `stdlib/kernels/geodesy/wgs84_
+    kernel.hexa`. `parity_status` = `70/70 PASS at rel_err ≤ 1e-10`
+    (6 WGS84 constants + 3 deg/rad + 18 forward geodetic→ECEF + 18
+    round-trip ECEF→geodetic + 8 haversine + 14 Vincenty + 2 cross-
+    algorithm invariants). **NEW DOMAIN FAMILY** — geodesy 가 15th
+    kernel folder, FIRST kernel in the geodesy family (autodiff /
+    bio_align / chem / circuit / fem / graph / logic_synth / mc_
+    transport / neural / noc_sim / orbital / plasma / signal_proc /
+    solar / urdf / wave_optics 중 14 prior pilot 의 폴더가 아닌
+    독립 가족). **BRIDGE substrate** — 4 already-listed demiurge
+    consumers (mobility/road_network.py via osmnx, space/skyfield_
+    sgp4.py via skyfield, solar/* via pvlib, grid/networkx_basics.
+    py via networkx) 가 각각 4 다른 lib 로 private 좌표수학을 재구현
+    중. 한 hexa-native substrate 가 4 private copy 를 대체.
+  - **DEPENDENCIES.demi** `kernel-geodesy` row 동반 (`already-
+    ported` · 4 advisory consumer pointer). `domains/geodesy.md`
+    신규 narrative (D100 reverse 패턴 — substrate line + bridge
+    consumer table). **absorbed=true NOT flipped** — geodesy ①b
+    adapter `stdlib/geodesy/wgs84.hexa` 아직 부재, 4 consumer ①b
+    adapter 가 land 하기 전까지 heavy-port 상태 유지 (D80 honesty).
+  - **post-closure significance**: D108 는 κ-67 phase boundary 박제
+    였고, geodesy 는 그 직후의 첫 추가 D80 pilot — κ-68 reserved
+    (P-⑩ ① per-cell measured-oracle round) 와는 별도 axis 의 추가
+    substrate growth. 누적 fact: **14 D80 pilots · 445 cumulative
+    assertions** (375 + 70 geodesy) · **15 kernel folders** (14 +
+    geodesy) · **16 PILOTS.demi rows** (15 + geodesy).
+  - deps: G13 (PILOTS.demi 8-field) + G14 (narrative coverage) +
+    G19 (chem seed precedent) + D72 (2-layer N+M) + D80 + D88
+    (DEPENDENCIES.demi 위치)
+  - new files (demiurge):
+    - `domains/geodesy.md` (substrate narrative · 4 consumer table)
+  - edit:
+    - `domains/PILOTS.demi` (geodesy row 1 · row 15 → 16)
+    - `domains/DEPENDENCIES.demi` (kernel-geodesy row · already-
+      ported · 4 advisory consumer note)
+  - exit:
+    - swift build/test PASS (16 PILOTS · 15 kernel · 5 SSOT 가
+      cross-ref CI 3/3 모두 PASS — pilot row 가 DEPENDENCIES
+      already-ported deps 와 bi-directional 일치)
+    - cell `absorbed` flip 0 (D80 honesty — bridge substrate
+      floor 만 land, consumer adapter 별도)
+
+- [x] **G26.** D80 sweep close breakthrough note (1f9f934 · cold-
+    start anchor)
+  - **1f9f934**: `inbox/notes/d80-sweep-close-2026-05-20.md` 신규 —
+    D80 sweep 의 single-session digest (15 PILOTS.demi rows ·
+    14 kernel folders · 5 .demi SSOTs · 5 cockpit Loaders · 4-case
+    chip · 19/19 도메인 narrative · D104 reserved · RFC 013 MOSTLY-
+    LANDED). 새 session 또는 외부 reviewer 가 standalone 으로 읽고
+    모든 artifact location 을 1-pass 추적 가능한 cold-start anchor.
+    `inbox/INDEX.md` 에 row 추가 (status = archive · 27 entries 도달).
+  - **note**: 본 note 의 PILOTS row count "15" 는 geodesy (acac78c)
+    land 직전 시점 스냅숏 — 현 origin/main 16 row 와 1 row 차이는
+    G25 post-closure pilot 때문이고, note 가 superseded 되지 않고
+    audit 로 잔존 (D50 g_ssot_single_source — phase boundary 별 한
+    note).
+  - deps: D108 closure + D87..D107 누적 · 7 Findings · §3 SHA cite
+    table · §5 topology (15 PILOTS · 14 kernel · 5 SSOT · 5 Loader)
+  - new files:
+    - `inbox/notes/d80-sweep-close-2026-05-20.md`
+  - edit:
+    - `inbox/INDEX.md` (row · status archive · 27 entries)
+  - exit:
+    - inbox/INDEX.md 27 entries 도달
+    - swift build/test 무관 (doc-only)
+
 ---
 
 ## Log
@@ -1501,3 +1727,22 @@ rtsc 공유로 직접 입증. monolithic CAD 가 못 하는 cross-domain bookkee
   demi` cross-ref CI (384101b D98 Phase F, 3 XCTest method), G18
   `DEMIURGE_HEXA_LANG` env-var deprecation (8fc0862 D101 D3/D88
   후속). 헤딩 노트 G1–G18 로 갱신.
+- 2026-05-20 — §11.4 G1–G18 → G1–G24 확장 (+ G25/G26 post-closure
+  pilot + breakthrough note 박제). 같은 2026-05-20 cycle 의 κ-67
+  closure 및 그 직후 추가 pilot 산출물 cover 를 위한 Round 6 (G19–
+  G26) 추가: G19 chem 첫 `PILOTS.demi` row (a033def D102 Stage-0
+  scaffolding), G20 cell `absorbed` vs `isHexaNativeAbsorbed`
+  dimension separation docstring (105315e D103 코드 변경 0), G21
+  RFC 013 status `PARTIAL-LAND` → `MOSTLY-LANDED` refresh (943a5b8
+  D105 κ-67 sweep reconciliation), G22 `.illustrativePhysics`
+  `GateType` 4번째 case (f9a9a90 D106 RFC 013 §6.12 LANDED · anti-
+  conflation cyan tone), G23 `SiblingRepoSpawner.resolveEntrypoint
+  ()` 5th fallback `cli/hexa-<id>.hexa` (e66e4c0 D107 priority-
+  preserving), G24 κ-67 closure 박제 (eea2804 D108 D87..D107 누적
+  · 3 doc SSOT cross-link), G25 geodesy WGS84 14번째 D80 pilot
+  (acac78c · hexa-lang `b7a43493` · 15th kernel folder · bridge
+  substrate · 70/70 PASS @ 1e-10 · 누적 14 D80 pilots / 445
+  assertions / 16 PILOTS rows), G26 D80 sweep close breakthrough
+  note (1f9f934 · cold-start anchor · inbox/INDEX 27 entries).
+  헤딩 노트 G1–G24 로 갱신 (G25/G26 는 Round 6 안 post-closure
+  bracket).

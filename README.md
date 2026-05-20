@@ -118,6 +118,13 @@ PLAN.md / design.md SSOT)
   manifest persistence · ingredient shelf · θ-2 action skeleton ·
   §4.2 REJECTED guard · domain-aware canvas mode · CLI ↔ cockpit
   parity (ActionDispatch shared). κ-phase log in PLAN.md.
+- hexa-native substrate parity surface (D80 · κ-67 · RFC 013
+  MOSTLY-LANDED) — declarative `.demi` SSOTs (5) · cockpit Loaders
+  (5) · `HexaNativeParityRef` 8-field × 5 cell carriers · 4-case
+  chip UI · ARCH §11.4 G1..G24 Round 1-6 + G25/G26 post-closure
+  bracket. 측정 수치 (pilot 수 · assertion 수 · kernel folder 수 ·
+  PILOTS row 수) SSOT = `PLAN.md` κ-history + `domains/PILOTS.demi`
+  (g_ssot_single_source · D50).
 
 **Not done (정직한 갭, g3 — engine tool 0 이 핵심):**
 

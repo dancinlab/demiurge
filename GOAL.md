@@ -135,28 +135,33 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   branch → demiurge spawn 이 default xsuite-tracking substrate 못
   봄 (origin/main 에는 있음).
 - 🟡 **hexa-native ultimate-form — RFC 013 MOSTLY-LANDED (D80 ·
-  κ-67)** — chip §B+§D 이외 모든 cell 은 여전히 Python 기반
-  substrate, 단 D80 parity surface 자체가 데이터·producer·UI·
-  governance 한 사이클로 박제됨. κ-66 8 pilot 위에 κ-67 sweep
-  (D87..D106 · D104 reserved · 20 결정) 으로:
-  **13 pilots · 375 cumulative assertions** (κ-66 8 + Round-5
+  κ-67) + post-closure geodesy bridge** — chip §B+§D 이외 모든
+  cell 은 여전히 Python 기반 substrate, 단 D80 parity surface
+  자체가 데이터·producer·UI·governance 한 사이클로 박제됨. κ-66
+  8 pilot 위에 κ-67 sweep (D87..D108 · D104 reserved · 21 결정)
+  + 후속 geodesy pilot (acac78c · post-D108) 으로:
+  **14 D80 pilots · 445 cumulative assertions** (κ-66 8 + Round-5
   신설 transport_kinematics · breaker_trace_reduce · fem_bar1d_
-  subset · autodiff_dual_forward · bio_align_nw · chem_arrhenius) ·
-  **14 kernel folders** (기존 10 + chem · autodiff · fem ·
-  bio_align) · **5 `.demi` SSOTs** (INDEX · DEPENDENCIES · PILOTS ·
+  subset · autodiff_dual_forward · bio_align_nw · chem_arrhenius +
+  post-closure geodesy_wgs84 70/70) · **15 kernel folders** (기존
+  10 + chem · autodiff · fem · bio_align + geodesy 신설) ·
+  **16 PILOTS.demi rows** (15 + geodesy bridge substrate) ·
+  **5 `.demi` SSOTs** (INDEX · DEPENDENCIES · PILOTS ·
   SUBSTRATE_LINKS · PRODUCERS) · **HexaNativeParityRef × 5 cell
   carriers** (Ufo + Fusion + Aura + ChipAnalyze + Energy) ·
   **4-case chip UI** (D99 3-case + D106 `.illustrativePhysics`
-  cyan tone) · **ARCH §11.4 G1..G18 Round 1-5** [x] 전부 완료.
-  RFC 013 status `PARTIAL-LAND` → `MOSTLY-LANDED` (D105) — §6.1..
-  §6.10 + §6.12 LANDED, §6.11 (per-cell measured-oracle) 만 queued.
-  honest gap: substrate-parity ≠ measurement-parity 의 typed
-  enforcement (D103 dimension + D106 illustrativePhysics) 가
-  착륙했지만, 어떤 demiurge cell 도 아직 `absorbed=true` 로 flip
-  안 함 — 13 pilot 의 algorithm-level closure 는 hexa-lang 측
-  사실, demiurge cell 단위 measured-oracle parity round 는 후속
-  (P-⑩ ① · κ-68 reserved). long-tail = 12→4 kernel + 18 도메인
-  adapter 잔여.
+  cyan tone) · **ARCH §11.4 G1..G24 Round 1-6** [x] 전부 완료 +
+  G25/G26 post-closure bracket. RFC 013 status `PARTIAL-LAND`
+  → `MOSTLY-LANDED` (D105) — §6.1..§6.10 + §6.12 LANDED, §6.11
+  (per-cell measured-oracle) 만 queued. honest gap: substrate-
+  parity ≠ measurement-parity 의 typed enforcement (D103
+  dimension + D106 illustrativePhysics) 가 착륙했지만, 어떤
+  demiurge cell 도 아직 `absorbed=true` 로 flip 안 함 — 14 pilot
+  의 algorithm-level closure 는 hexa-lang 측 사실, demiurge cell
+  단위 measured-oracle parity round 는 후속 (P-⑩ ① · κ-68
+  reserved). geodesy 는 4 consumer (mobility·space·solar·grid)
+  bridge substrate 로, ①b adapter port 가 long-tail 의 다음
+  단위. long-tail = 12→3 kernel + 18 도메인 adapter 잔여.
 
 > GOAL 한 줄(north-star)은 불변 — 달성 주장 아님, 측정 거리 명시.
 
@@ -268,3 +273,16 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   ≠ measurement-parity 의 typed enforcement (D103 + D106) 가
   착륙. 다음 κ-68 reserved = §6.11 per-cell measured-oracle
   round (P-⑩ ①). PLAN κ-67 + design.md D108 cross-link.
+- 2026-05-20 — post-κ-67 geodesy WGS84 14번째 D80 pilot 추가 land
+  (acac78c · hexa-lang `b7a43493`) 를 "현재 위치" 에 반영 (north-
+  star 불변, category-section 갱신). 새 측정 fact: **14 D80
+  pilots · 445 cumulative assertions** (375 + 70 geodesy) ·
+  **15 kernel folders** (14 + geodesy 신설) · **16 PILOTS.demi
+  rows** (15 + geodesy bridge substrate). geodesy 는 FIRST kernel
+  in geodesy family — 4 already-listed demiurge consumers
+  (mobility / space / solar / grid) 가 각각 4 다른 lib 로 private
+  좌표수학을 재구현, 한 hexa-native substrate 가 4 private copy
+  를 대체하는 bridge pattern. absorbed=true flip 0 — ①b adapter
+  (`stdlib/geodesy/wgs84.hexa`) 미존재, 4 consumer 도 heavy-port
+  유지 (D80 honesty). ARCH §11.4 Round 6 G19..G26 (D102..D108 +
+  geodesy + breakthrough note) 박제. 새 결정 없음 — fact 반영만.
