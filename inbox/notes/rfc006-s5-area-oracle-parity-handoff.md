@@ -521,3 +521,45 @@ Cross-session resumption point: `hexa-lang origin/main` HEAD
 `c0ec08a1`. T31-T46 selftests form the regression net (16 tests for
 the cond-mux + function-inline + ternary + cascaded-if + dyn-idx
 primitive family).
+
+## UPDATE 2026-05-20 (n) — SEGFAULT root-cause narrowed to driver-link init issue
+
+Follow-up debug attempt with phased-println driver after `/goal clear`:
+
+- `[A] before read_file` ✅ reached
+- `[B] after read_file, len=4919` ✅ reached (file I/O OK)
+- `[D] before read_verilog` ✅ reached
+- `[E] after read_verilog` ❌ **never reached** — SEGFAULT inside read_verilog
+- Reproduces even with minimal input `module x ; endmodule` (21 bytes)
+- selftest binary `/tmp/rv_exec` (same code, but rv.c's main is the
+  entry — selftest passes 54/54 GREEN)
+
+The crash is **driver-link-specific**, not a read_verilog bug:
+
+```
+selftest path:  rv.c main → hexa runtime static-init → read_verilog OK
+driver path:    drv.c main (entry) + rv.c main_rv_unused_ (renamed via sed)
+                → rv.c's static-init never runs → read_verilog hits uninit
+                state → SEGFAULT
+```
+
+**Hypothesis**: hexa-cc emits per-module `hexa_runtime_init` / file-scope
+static-init calls inside each module's `main`. The sed-rename
+(`main` → `main_rv_unused_` for multi-file link) prevents rv.c's init
+chain from running because driver's `main` doesn't call it.
+
+**Fix candidates** (separate-session sub-step #4j):
+1. Identify the init fn(s) in `self/runtime.c` + `rv.c`'s `main_rv_unused_`
+   prologue; call them from driver's main first.
+2. Switch driver pattern to wrap rv.c's main as the entry (drv code as
+   library), or factor `hexa_runtime_init` out of `main` in hexa-cc.
+
+**Implication for §5**: this regression *blocks* the planned router_d4
+end-to-end measurement path even after sub-steps #4g/#4h/#4i land. The
+fix has to come first — it's an infrastructure issue, not a primitive
+gap. Multi-file driver pattern is needed because read_verilog selftest
+can't measure the *file-based* router_d4 path (string-based only inside
+selftest).
+
+`rfc_006 §5 measurement_gate = OPEN` continues — now with an extra
+named blocker (#4j driver-link init) ahead of the primitive sub-steps.
