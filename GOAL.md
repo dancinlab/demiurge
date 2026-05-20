@@ -105,16 +105,42 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   보류 · 2 fail; D73 firmware reference target QEMU mps2-an385 은
   dispatch wiring 후속; ProducerRegistry typed Codable Record 후속
   phase.
+- ✅ **D77~D86 governance + G1-G8 architectural sweep land**
+  (κ-56..κ-64). 두 시뮬레이션 (alien-disc-mk1 + aura-clip-mk1, ARCH
+  §11) 가 발견한 8 gap 모두 [x] full · 9 audit-trail decisions:
+  - D77 chem+bio+ufo 도메인 추가 (16→19, 짧은-id naming)
+  - D78 graph DAG + multi-facet tag (Option 3, direct prereq only)
+  - D79 reserved (.demi naming pick; superseded into D83/D85)
+  - D80 g_hexa_only first-principle (AGENTS.tape INDEX top, ARCH §0)
+  - D81 chem/bio/ufo specifics (skeleton domain markdown)
+  - D82 graph DAG impl (Domain.swift prereq+facets + DomainGraph)
+  - D83 .demi format (TOML-풍 declarative, DemiParser, INDEX.demi)
+  - D84 2-tier (built-in + user `u/` prefix, per-machine `.demi`)
+  - D85 PRODUCERS.demi (sibling-repo dispatch declarative SSOT)
+  - D86 g_no_hardcoded_data (AGENTS.tape #2, code-vs-data 강화)
+  G-checklist: G1 facet→DAG UI · G2 skipped-cell dashboard · G3
+  SiblingRepoSpawner · G4 ProducerRegistry+Sibling · G5
+  FalsifierEntry+HexaNativeParityRef · G6 FalsifierCascade · G7
+  GateType taxonomy · G8 LatticeInvariant 모두 [x] full.
 - 🟡 **engine tool — chip / cohort 다수 라이브, 측정 도구 점증** —
-  θ-2 가 돌릴 실제 producer 가 κ-34~49 로 다수 wired (chip+verify
+  θ-2 가 돌릴 실제 producer 가 κ-34~64 로 다수 wired (chip+verify
   sweep_oracle_parity 가 첫 *동역학* 측정; cern+synth κ-51 이 두
   번째; matter·chip-analyze 는 static absorbed). seam records 0
   (rfc_007/008 v0 의도적 빈칸 = g3 위조 0) 는 유지. Yosys §4 모듈은
   여전히 hexa-lang 세션 항목. heavy candidates (Geant4/CARLA/Drake/
-  OpenMC nuclear data) 별 세션 install + 측정 라운드 대기. cross-
+  OpenMC nuclear data) 별 세션 install + 측정 라운드 대기 — κ-65
+  에서 5 sub-agent (mini/ubu-1/ubu-2 pool) 발사 (gate_type adoption /
+  hexa-native solar 시범 / Geant4 / OpenMC / pyfemm Linux). cross-
   session 차단점: `~/core/hexa-lang` live tree 가 concurrent session
   branch → demiurge spawn 이 default xsuite-tracking substrate 못
   봄 (origin/main 에는 있음).
+- 🟡 **hexa-native ultimate-form 잔여 (D80)** — chip §B+§D 이외
+  모든 cell 은 Python 기반 substrate (transitional pointers). κ-65
+  Track B 가 solar kernel 첫 hexa-native port pilot 발사. 다른 12
+  kernel + 18 도메인 adapter 의 hexa-native port 는 long-tail —
+  `g_hexa_only` (D80) governance 가 향후 모든 substrate 의 종착지로
+  명시. provisional=true marker 가 cern+synth (κ-51) 같은 algorithm-
+  level closure 와 hexa-native closure 를 구분.
 
 > GOAL 한 줄(north-star)은 불변 — 달성 주장 아님, 측정 거리 명시.
 
@@ -187,3 +213,11 @@ phase 같은 수치의 SSOT 는 `design.md` / `PLAN.md` (g_ssot_single_source):
   4 consumer 보유 (antimatter+analyze · fusion+verify · energy+verify
   · antimatter+verify). 카테고리 서술 갱신만 — north-star 불변,
   진행 SSOT = PLAN κ-47..κ-51 (g_ssot_single_source).
+- 2026-05-20 — D77~D86 governance + G1-G8 architectural sweep land
+  (κ-56..κ-64) 를 "현재 위치" 에 반영 (north-star 불변, category-
+  section 갱신). 새 측정 fact 없음 — architectural infrastructure
+  + governance + dashboard 추가만. honest 갭 갱신: hexa-native
+  ultimate-form (D80) 잔여 = 12 kernel + 18 도메인 adapter 의 long-
+  tail port. κ-65 5 sub-agent 발사 (gate_type adoption / hexa-
+  native solar pilot / Geant4 / OpenMC / pyfemm Linux pool) — mini/
+  ubu-1/ubu-2 pool 자원 활용 시작.

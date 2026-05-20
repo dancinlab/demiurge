@@ -4086,3 +4086,21 @@
   - g3 — 데이터 SSOT 분리만, 측정 record / gate / absorbed 변경 0.
   D86 g_no_hardcoded_data 의 첫 실 application. 새 sibling-repo
   cell 추가 = PRODUCERS.demi 한 section (Swift 코드 변경 0).
+- 2026-05-20 — **phase κ-65 — pool 자원 활용 라운드 + GOAL position
+  reconcile**. 사용자 게이트 "mini,ubu-1,ubu-2 자원사용". 5 sub-agent
+  worktree-isolated 병렬 발사 (background):
+  - Track A (acfca2b4) — substrate gate_type adoption (κ-61 G7 의
+    typed emission, 17+ Python substrate)
+  - Track B (a120eb08) — D80 hexa-native pilot (solar kernel,
+    Python → .hexa 첫 port 시범 + parity test)
+  - Track C (a0e1ebc5) — H-2 Geant4 install + antimatter+verify
+    (Linux pool, multi-hour C++ build)
+  - Track D (a9584a42) — H-3 OpenMC + ENDF/B-VIII.0 (~3GB) +
+    energy+verify k-eff measurement (Linux pool)
+  - Track E (a4e86ab6) — H-6 pyfemm + Wine + FEMM (Linux pool +
+    xvfb) + rtsc+analyze |B| measurement
+  GOAL.md "현재 정직한 위치" 갱신 — D77~D86 governance + G1-G8
+  architectural sweep land 새 ✅ entry + hexa-native ultimate-form
+  잔여 새 🟡 entry. north-star 불변, category-section 갱신.
+  g3 — 5 sub-agent 알림 대기 + main session doc reconcile. 알림 받는
+  대로 main session 통합 라운드 (κ-66 consolidation).
