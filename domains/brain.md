@@ -6,6 +6,8 @@
 > **Note**: proprietary gap is the **largest of the 6** — regulatory-
 > grade implant safety sim has no open equivalent.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/brain/` + sibling `~/core/hexa-brain/` (born hexa-native + sibling extension)
+
 ## 1. "Design blueprint" deliverable
 
 Electrode-array layout (site geometry / pitch, shank dimensions),

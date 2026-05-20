@@ -3,6 +3,8 @@
 > design.md Decision 17 (supersedes D12 / D13 / D14 / rfc_005
 > tombstone for hexa-matter). 2026-05-18.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/mol/` + `stdlib/crystal/` + `stdlib/mlff/` (D17 — fully absorbed into hexa-lang; demiurge holds only this pointer; sibling `~/core/hexa-matter/` original intact but no longer authoritative)
+
 The materials toolkit is **already absorbed into hexa-lang** — its
 SSOT is `hexa-lang/stdlib/` (hexa-lang's own `stdlib/PLAN.md`:
 "hexa-matter stdlib-only 6모듈 | 완료 | 완전 이관, .py 제거,

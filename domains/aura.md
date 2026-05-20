@@ -8,6 +8,8 @@
 > likely Class II (not Class III implant), 21 CFR 820.30 design controls
 > + general controls rather than PMA.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/aura/` + sibling `~/core/hexa-aura/` (born hexa-native + sibling extension)
+
 ## 1. "Design blueprint" deliverable
 
 A post-aural / temporal-bone clip device spec — multi-electrode dry / wet

@@ -9,6 +9,8 @@
 > QEMU / Renode / HIL — the prior verbs are the design path that gets us
 > there.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/firmware/` (born hexa-native; no sibling repo)
+
 ## 1. "Design blueprint" deliverable
 
 A complete embedded firmware artifact: target-specific signed binary

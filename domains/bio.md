@@ -9,6 +9,8 @@
 > Graph (D82): prereq = `[chem, matter]`. facets = `{scale: molecular,
 > cluster: [bio, chem, life], hostility: macos-clean}`.
 
+**Substrate** (where the .hexa kernels live): sibling `~/core/hexa-bio/` (D17 sibling-repo; T3 .py→.hexa port in progress per `hexa-lang/stdlib/PLAN.md` — D80 pilot WEAVE); no `stdlib/bio/` subtree yet
+
 ## 1. Deliverable
 
 A molecular-biology design package — target (protein / DNA / RNA /

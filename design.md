@@ -3745,3 +3745,44 @@ PILOTS.demi → producer 가 record 에 inject 한 `hexa_native_parity` →
 SkippedCellEntry decode → HexaNativeParityChipModel.from → SwiftUI
 view 로 100% 일방향, 어디서도 boolean 을 새로 저장하지 않음.
 
+### Decision 100 — substrate narrative line on 14 non-sibling `domains/<id>.md` (Phase G · Q2 reverse)
+
+**picked**: narrative-only single-line marker (`**Substrate** (where
+the .hexa kernels live): <location>`) on the 14 non-sibling demiurge
+domain files — the inverse of D96 (which placed `**Sibling
+sub-domains**` on the 5 substrate-bearing sibling rows). 13 files
+gained the line in place; `domains/chip.md` was created as a minimal
+D100-skeleton (chip is the deep domain — canonical map lives in
+`HANDOFF.md` §5 + `rfc_001`, this skeleton only carries the substrate
+line + D82 graph record + a pointer back). `domains/matter/README.md`
+(D17 pointer-only directory) carries the line in the existing pointer
+file. SSOT 변경 0 — `INDEX.demi` / `PILOTS.demi` / `DEPENDENCIES.demi`
+/ `PRODUCERS.demi` / `SUBSTRATE_LINKS.demi` 미수정.
+
+**rationale**:
+- D96 covered only the 5 sibling-bearing domains (rtsc · cern ·
+  antimatter · fusion · ufo). The other 14 demiurge domains have
+  substrate in one of three shapes — (a) hexa-lang stdlib subtree
+  (born hexa-native: firmware · component), (b) hexa-lang stdlib +
+  matching sibling (the 9 "extension" pattern: sscb · brain · aura ·
+  bot · energy · grid · mobility · scope · space), (c) full sibling +
+  no stdlib subtree yet (D80 pilot in flight: bio). matter (D17
+  absorbed-into-hexa-lang) and chem (no substrate yet — planned)
+  honestly recorded as such. One narrative line per file = reader
+  hint without duplicating the prereq DAG.
+- narrative 만 — `.demi` 데이터 SSOT 무변경. D86 (`g_no_hardcoded_data`)
+  과 정합: substrate location 은 hexa-lang/sibling repo 가 SSOT 이고
+  demiurge 는 pointer 한 줄만 들고 있는 형태.
+- D100 closes the "every demiurge domain says where its substrate
+  lives" loop: D96 (5 sibling rows) + D100 (14 non-sibling rows) =
+  19/19 domain narrative coverage. The 5 sibling rows already get
+  Tier ①/②/③ link-integrity verification (D97); the 14 non-sibling
+  rows are narrative-only (no verifier — born-hexa-native paths live
+  inside the hexa-lang SSOT and are not a demiurge-side link to rot).
+
+**적용**: 13 `domains/<id>.md` 각각 head 블록 (head + `> Status: …`
+블록쿼트) 바로 아래 한 줄 추가 (firmware · sscb · brain · aura ·
+component · bot · chem · bio · energy · grid · mobility · scope ·
+space). 1 신규 skeleton (`domains/chip.md` — deep-domain pointer).
+1 pointer-file 갱신 (`domains/matter/README.md`). 그 외 변경 0.
+branch `14-domain-audit`, FF push to `origin/main`.

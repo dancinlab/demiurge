@@ -4,6 +4,8 @@
 > Boundary: public-surface clean-room (`design.md` Decision 1). Source:
 > Agent-3 (cited). Pipeline = 7-verb spine (`HANDOFF.md` §4 · D5).
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/energy/` + `stdlib/kernels/solar/` + sibling `~/core/hexa-energy/` (born hexa-native + sibling extension)
+
 ## 1. "Design blueprint" deliverable
 
 A sized energy-system spec — cell/pack electrochemical model +

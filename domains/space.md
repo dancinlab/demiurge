@@ -6,6 +6,8 @@
 > **Note**: proprietary gap is the **smallest of the 6** — NASA's open
 > stack covers end-to-end.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/space/` + `stdlib/kernels/orbital/` + sibling `~/core/hexa-space/` (born hexa-native + sibling extension)
+
 ## 1. "Design blueprint" deliverable
 
 A mission trajectory + ΔV / maneuver plan, spacecraft bus sizing, and

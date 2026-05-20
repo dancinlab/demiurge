@@ -8,6 +8,8 @@
 > both load-bearing for SAE L4 / L5 type-approval (UN R157 for ALKS).
 > This is the cohort's hardest SPECIFY / VERIFY stress-test.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/mobility/` + sibling `~/core/hexa-mobility/` (born hexa-native + sibling extension)
+
 ## 1. "Design blueprint" deliverable
 
 A stage-5 (SAE L5) AV platform spec — perception + localization +

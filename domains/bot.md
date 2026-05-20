@@ -8,6 +8,8 @@
 > OMPL + PyBullet covers every verb credibly). Documented honestly per
 > Decision 1 no-over-claim.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/bot/` + `stdlib/kernels/urdf/` + sibling `~/core/hexa-bot/` (born hexa-native + sibling extension)
+
 ## 1. "Design blueprint" deliverable
 
 A robot platform spec — URDF / SDF model (kinematics + inertias +

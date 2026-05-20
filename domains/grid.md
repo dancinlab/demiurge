@@ -7,6 +7,8 @@
 > SPECIFY / ARCHITECT remarkably well (rare among the cohort), while
 > proprietary advantage lives in EDA-class signal-integrity tools.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/grid/` + sibling `~/core/hexa-grid/` (born hexa-native + sibling extension)
+
 ## 1. "Design blueprint" deliverable
 
 An AI-DC fabric spec — rack + power + cooling layout (Open Rack v3 +

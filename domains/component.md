@@ -9,6 +9,8 @@
 > **Provenance**: cited public-surface web research (this session) —
 > parity with the Agent-cited Cohort maps.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/component/` + `stdlib/kernels/fem/` (born hexa-native; no sibling repo)
+
 ## 1. "Design blueprint" deliverable
 
 A package + board + enclosure definition for a given die: substrate /

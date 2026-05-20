@@ -9,6 +9,8 @@
 > Graph (D82): prereq = `[matter]`. facets = `{scale: molecular,
 > cluster: [chem, matter], hostility: macos-clean}`.
 
+**Substrate** (where the .hexa kernels live): NOT YET — no `stdlib/chem/` subtree and no sibling `~/core/hexa-chem/` repo; substrate SSOT planned via D17 sibling-repo precedent (will reuse `stdlib/{mol,crystal}/` from matter at chain-stage)
+
 ## 1. Deliverable
 
 A reaction-route + catalysis design — feedstock → target molecule

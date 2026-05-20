@@ -7,6 +7,8 @@
 > proprietary gap* property at the system-engineering level — but optics
 > design itself is dominated by Code V / Zemax.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/scope/` + `stdlib/kernels/wave_optics/` + sibling `~/core/hexa-scope/` (born hexa-native + sibling extension)
+
 ## 1. "Design blueprint" deliverable
 
 Segmented primary-mirror prescription + active-optics control plan,

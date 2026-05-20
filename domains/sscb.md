@@ -8,6 +8,8 @@
 > pattern analogous to `brain.md` but with mature open lab tooling at
 > earlier verbs.
 
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/sscb/` + sibling `~/core/hexa-sscb/` (born hexa-native + sibling extension)
+
 ## 1. "Design blueprint" deliverable
 
 A SiC / GaN-based solid-state interrupter spec — power semiconductor
