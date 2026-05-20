@@ -102,6 +102,64 @@
 
 총 estimate: **6-12 sessions** until gate close
 
+## Future Roadmap (brainstorm-pruned 2026-05-20)
+
+FLOW pattern: 풀기 (84+ items generated) → 자르기 (delete 75 off-scope items, 89% prune) → 잡기 (each survivor with measurement protocol).
+
+### Tier-1: §5 closure path (immediate, multi-session)
+
+- [ ] **#4i with-else outer wrapper** (mixed-statement begin-block in both branches of `if (rst) ... else ...`)
+  - signal: router_d4 cell-tally 첫 sequential cells (≥1 × `$dff` emit from hexa-native always-body)
+  - scope: ~200 line always-parser if-handler extension at read_verilog.hexa L2256-2268
+  - dependency: none (purely hexa-lang code)
+- [ ] **ubu-2 hexa-cc binary rebuild** (resolve sibling struct-constructor codegen mismatch)
+  - signal: `clang -o /tmp/rv_X /tmp/rv.c /tmp/passes.c ... ` link 성공 (no undefined `Module`/`Design` references)
+  - scope: bootstrap chain — self/main.hexa compile → new binary → re-link
+  - dependency: external (offline, multi-hour)
+- [ ] **end-to-end router_d4 area measurement** (hexa-native → write_verilog → substrate yosys synth → stat)
+  - signal: `yosys -p "synth -top router_d4; ... stat -liberty ..."` 결과 reports non-zero Chip area
+  - dependency: #4i landed + ubu-2 chain rebuilt
+- [ ] **router_d4 gate flip** (`measurement_gate = CLOSED_MEASURED`, `absorbed = true`)
+  - signal: measured area ∈ [58,675, 64,851] µm² (±5 % of oracle 61,762.99)
+  - dependency: end-to-end measurement passing; **g3-conditional only** (no flip without measurement)
+- [ ] **router_d6 parity** (oracle 93,608.53 µm²)
+  - signal: measured area ∈ [88,928, 98,289] µm² (±5 %)
+  - dependency: router_d4 gate close (same pipeline)
+- [ ] **ratio 1.5156× verification** (d6/d4 from hexa-native chain)
+  - signal: measured d6/d4 ratio ∈ [1.4399, 1.5914] (±5 %)
+  - dependency: both d4 + d6 measured
+
+### Tier-2: §5 post-closure expansion (week+ scope)
+
+- [ ] **$adff / $sdff / $dffe write_verilog behavioural emit**
+  - signal: T14/T15/T16 selftest covers `always @(posedge clk, posedge rst) if (rst) q <= 0; else q <= d;` round-trip
+  - need: router-class designs with reset/enable variants
+- [ ] **RTLIL Memory cell emission** ($memrd / $memwr for `fifo_mem[p][addr]` patterns)
+  - signal: router_d4's `fifo_mem[pp][fifo_tail[pp][...]] <= in_data[pp]` lowers to actual memory cells
+  - need: read_verilog packed-array 2-D LHS handler + write_verilog Memory emit + substrate `memory_dff` pass round-trip
+- [ ] **share/freduce parity** (comb-side oracle gap closure — handoff (s) finding)
+  - signal: hexa-native synth comb area within ±10 % of `synth` macro's 12,806 µm² comb portion (after share/freduce)
+  - need: stdlib/kernels/logic_synth/passes.hexa 의 share + freduce 알고리즘 implementations
+  - alt: substrate-yosys-as-tail-pass (hexa-native frontend → substrate `synth` tail)
+- [ ] **formal equivalence check** (yosys `eq` command)
+  - signal: `yosys -p "read_verilog hexa_native_out.v; read_verilog -lib oracle.v; equiv_make oracle hexa_native eq; equiv_simple; equiv_status"` reports `0 unproven`
+  - need: §5 cross-verification — hexa-native RTLIL semantically equivalent to substrate's oracle RTLIL
+
+### Tier-3: announcement + governance close
+
+- [ ] **ABSORPTION.md final update**
+  - signal: §178 Yosys absorption row flipped to `absorbed=true · measured area passes ±5 %`
+  - dependency: Tier-1 all ✓
+- [ ] **rfc_006 §5 closure announcement** (the goal of this multi-session work)
+  - signal: `rfc_006/§5 measurement_gate = CLOSED_MEASURED · absorbed=true · 2026-MM-DD measured` adopted in ROADMAP + commit message
+  - dependency: ABSORPTION.md updated
+
+### Cycle exhaustion log
+
+- generated 84 candidate items across 11 categories (synth-subset, sequential variants, multi-bit & RTLIL, read scope, opt parity, mapping, verification, reporting, infra, tool ecosystem, RFC absorption, docs, lattice/gov)
+- pruned to 12 keepers (89 % delete rate, satisfies delete ≥ add)
+- each keeper has 1-line measurement signal (FLOW 잡기 단계)
+
 ## Log
 
 (append-only, latest 위에)
