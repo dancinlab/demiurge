@@ -12,6 +12,8 @@
 > facets = `{scale: system, cluster: [physical, propulsion],
 > hostility: macos-clean}`.
 
+**Sibling sub-domains** (hexa-ufo repo): cloak · hover · teleport · HEXA-UFO · EXPERIMENTS · HYPOTHESES
+
 ## 1. Deliverable
 
 A 7-stage propulsion-ladder package — discoid airframe + 3 cross-linked

@@ -6,6 +6,8 @@
 > **Note**: shares MC-transport + FEM stack with `cern.md` / `antimatter.md` /
 > `energy.md` — strongest cross-cohort tool-class overlap candidate.
 
+**Sibling sub-domains** (hexa-fusion repo): fusion-powerplant · plasma-physics · n6-core · superconductor · KSTAR-N6 · tabletop-fusion
+
 ## 1. "Design blueprint" deliverable
 
 A reactor concept package — plasma equilibrium + scenario (Grad-Shafranov

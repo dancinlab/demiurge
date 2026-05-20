@@ -3608,3 +3608,30 @@ pilot-transport_kinematics — 10/10 absorbed=true 판정 (예상대로).
 만 expose). dashboard chip 추가는 차회 round 의 옵션. 8 unit
 test (HexaNativeAbsorbedTests) — 10 PASS 표현 전부 + 7 negative
 case + 5 record reflection. swift build / swift test 22/22 PASS.
+
+### Decision 96 — sibling sub-domain narrative line on 5 `domains/<id>.md`
+
+**picked**: narrative-only single-line marker (`**Sibling sub-domains**
+(hexa-<id> repo): a · b · c`) on 5 `domains/<id>.md` (rtsc · cern ·
+antimatter · fusion · ufo), placed just below the head blockquote.
+**SSOT 변경 0** — `INDEX.demi` / `PILOTS.demi` / `DEPENDENCIES.demi`
+/ `PRODUCERS.demi` 미수정. 5 파일 모두 D82 약속대로 이미 존재 (skeleton
+신설 0).
+
+**rationale**:
+- D82 (도메인 graph DAG) 가 demiurge ↔ sibling 의 거친 1:1 mapping 만
+  표현했고, sibling 내부의 세분 sub-domain 분기는 narrative 어디에도
+  비치지 않았다. 5 sibling repo (hexa-rtsc/cern/antimatter/fusion/ufo)
+  의 §3 REQUIRES + 서브폴더 구조에서 추출한 sub-domain list 를 reader
+  hint 한 줄로 노출 = "어느 sibling 의 어느 sub-domain 이 이 demiurge
+  도메인 의 substrate 인지" 1-pass 확인 가능.
+- narrative 만 — `.demi` 데이터 SSOT 무변경. D86 (`g_no_hardcoded_data`)
+  과 정합: sub-domain list 는 sibling repo 가 SSOT 이고 demiurge 는
+  pointer 만 들고 있는 형태 (D82 graph + 이 한 줄 marker).
+- skeleton 신설 0 으로 acceptance 두 분기 (있으면 line 추가 / 없으면
+  skeleton + line) 중 첫 번째만 발동. D82 약속한 `domains/<id>.md` SSOT
+  존재 — 다 확인됨.
+
+**적용**: 5 `domains/<id>.md` 각각 head 블록 (head + `> Status: …` 블
+록쿼트) 바로 아래 한 줄 추가. 그 외 변경 0. branch `sibling-sub-
+narrative`, FF push to `origin/main`.

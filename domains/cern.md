@@ -5,6 +5,8 @@
 > (`design.md` Decision 1). Source: Agent-3 (cited). Pipeline = 7-verb
 > spine (`HANDOFF.md` §4 · `design.md` Decision 5).
 
+**Sibling sub-domains** (hexa-cern repo): particle-accelerator
+
 ## 1. "Design blueprint" deliverable
 
 A lattice/optics file (MAD-X sequence is the de-facto standard format)

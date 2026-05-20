@@ -4,6 +4,8 @@
 > Boundary: public-surface clean-room (`design.md` Decision 1). Source:
 > Agent-3 (cited). Pipeline = 7-verb spine (`HANDOFF.md` §4 · D5).
 
+**Sibling sub-domains** (hexa-antimatter repo): antimatter-factory
+
 ## 1. "Design blueprint" deliverable
 
 A Penning / Penning-Malmberg trap electrode + magnet geometry with
