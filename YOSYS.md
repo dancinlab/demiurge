@@ -7,28 +7,47 @@
 > (entries (o)-(u) 누적, 측정-fact 적재 SSOT)
 > **governance**: g3 — 측정 전엔 `CLOSED_MEASURED` flip 금지
 
-## Status (snapshot 2026-05-21 KST, post-PR #247 SSA fix · selftest closed)
+## Status (snapshot 2026-05-21 KST · post-audit correction)
 
 - `measurement_gate = OPEN`
 - `absorbed = false`
 - gate target area ∈ [58,675, 64,851] µm² (±5 % of oracle 61,762.99)
 - both oracles bit-exact reproducible (d4 61,762.99 / d6 93,608.53 / ratio 1.5156×)
-- **live mac-side measurement** (`hexa run stdlib/yosys/gate_record.hexa`):
-  - `router_d4 area=0.0 µm² oracle=61763 µm² Δ=100.0% FAIL (±5%)`
-  - `router_d6 area=0.0 µm² oracle=93608.5 µm² Δ=100.0% FAIL (±5%)`
-  - measurement chain alive: proc → flatten → opt → proc_mux → clean_multidriver → techmap → dfflibmap → abc_map all `[OK]`
-- **PR landing reality** (corrected after audit):
+- **live mac-side measurement** (`HEXA_EXEC_NO_SHELL=1 hexa run stdlib/yosys/gate_record.hexa` + cleared `/tmp/_hexa_yosys_gate_*_out.blif`):
+  - `router_d4 area=0.0 µm² oracle=61763 µm² Δ=100.0% FAIL (±5%)` — but verdict-derived
+  - `router_d6 area=0.0 µm² oracle=93608.5 µm² Δ=100.0% FAIL (±5%)` — but verdict-derived
+  - chain reports `[OK] abc_map` but this is a **false positive** — see audit below
+- **PR landing reality**:
   - PR #242 (`cee28986`, our #4i mixed-block fallback) = **CLOSED** as superseded-by-#245 (2026-05-20 session)
   - PR #245 (`66a39a31`, sibling RFC 073 Phase 3e) = MERGED 2026-05-20T14:37:37Z
-  - **PR #247** (`8dd1e677`, ABC comb-loop SSA fix) = **OPEN** — selftest 76/76 PASS (T73 added), pre-merge review
-  - prior #4h-a/b/g + write_verilog wire/cell/$dff stack: all merged via earlier PRs
+  - **PR #247** (`8dd1e677` SSA fix + `f4c3c493` abc_map binary fix) = **OPEN** — selftest 76/76 PASS, mergeStateStatus=UNSTABLE (bootstrap CI pre-existing infra-fail), no reviewer assigned
 
-**closure path (per g3) — re-scoped after Phase 3e + PR #247**:
-- ~~ABC comb-loop blocker~~ ← **SSA fix shipped in PR #247** (selftest 76/76 + SSA chain emit evidence in clean_multidriver log: `idx__ssa1..7`, `grant_out__ssa7`, `any_grant__ssa7` chains)
-- ~~ABC binary detection blocker~~ ← **abc_map fix shipped in PR #247 second commit** (`f4c3c493`): `abc_binary_path()` 가 `which abc` (shell-meta-free) 사용으로 spawn fast path reachable. `HEXA_EXEC_NO_SHELL=1 hexa run stdlib/yosys/gate_record.hexa` → `[abc_map] binary=/opt/homebrew/bin/abc · exit=0 · abc_map: ok` for both d4/d6. chain end-to-end functional
-- **새 blocker (별개 issue)**: `str(float)` 가 literal `(float)` 출력 → gate_record 의 area verdict line 이 `area=(float) µm²` 으로 emit. 실제 area numeric 값을 print 로 확인 불가 (in-process numeric comparison 은 여전히 가능). 별도 runtime/codegen fix 필요
-- ~~comb-side share/freduce parity~~ ← **deferred** : meaningless while area=0.0
-- closure 100% 까지: (a) PR #247 review/merge + (b) **exec runtime bug fix** ← new blocker, separate scope + (c) area > 0 측정 확인 + (d) ±5 % gate 진입 + (e) (가능하면) share/freduce comb-gap closure + (f) g3-conditional gate flip
+**post-audit closure path (per g3, honest)** — 2026-05-21 measurement-verified:
+
+0. **#0 underlying blocker (NEW, supersedes everything below)**: `exec()` runtime broken in current `origin/main` (`9f2da3f6`). `exec("echo hello")` returns "" — both popen and posix_spawnp paths. Bisect points at libc-unhook cycles 61-65 (`f1487c14` … `54970996`). All subprocess-dependent stdlib is gated by this. inbox patch filed at `hexa-lang/inbox/patches/yosys-exec-runtime-regression-cycles-61-64.md`. **Until this is fixed, NO yosys measurement is real** — every gate_record run reports stale-file false positives or empty-binary fail-loud.
+1. ~~ABC binary detection blocker~~ ← **fixed in PR #247 `f4c3c493`** (`which abc` instead of meta-bearing `command -v abc 2>/dev/null || true`). Workaround was correct for the cycle 60 era, but cycles 61-65 broke even the meta-free `which abc` path
+2. ~~ABC comb-loop SSA blocker (idx / grant_out / any_grant)~~ ← **fixed in PR #247 `8dd1e677`** (per-iter SSA renaming). IR-level evidence in clean_multidriver log
+3. **measured-but-currently-unreachable blocker** (manually verified with substrate `abc -c`): ABC `read_blif` rejects both d4 and d6 with `Network "router_d{4,6}" contains combinational loop!` — cycle terminating at CO `rr_ptr__d`. Path traverses `n272..n608..n272` (d4) and `n372..n830..n372` (d6). Confirmed by manual invocation:
+   ```
+   abc -c "read_lib <sky130.lib> ; read_blif <hexa-emit.blif>"
+   → Constant-0 drivers added to 40 (d4) / 52 (d6) non-driven nets: fifo_mem[0..3], …
+   → Network contains a combinational loop · Reading network from file has failed
+   ```
+   Two distinct sub-issues identified:
+   - **3a · `fifo_mem[*]` undriven**: 2-D packed-array memory writes (`fifo_mem[pp][...] <= in_data[pp]`) emit no .gate/.latch — ABC ties them to const-0 as a recovery hack. These are stale carryover from "RTLIL Memory cell emission" item (Tier-2 list)
+   - **3b · `rr_ptr__d` comb cycle**: round-robin pointer next-state logic forms a feedback loop through combinational gates without being broken by a flop. SSA fix renamed the *blocking-assign* chain (already-fixed in #247) but the *cross-iteration arbiter state* still loops back through unrolled mux/and gates
+4. ~~`exec` runtime bug~~ — **reframed**: popen path still broken (`HEXA_EXEC_NO_SHELL=1` + meta-free required), but this is NOT what was blocking gate measurement. The chain reports `[OK] abc_map` even when ABC fails because `abc_emit_blif()` write succeeds + stale `_out.blif` from prior runs satisfies `read_file(blif_out)` non-empty check
+5. ~~`str(float)` runtime bug~~ — **NOT reproducible** in current build. `area=0.0` / `oracle=61763` / `Δ=100.0%` all print fine. Reframe: anima `train_s185_psicouple.hexa` blocker filed at `hexa-lang/inbox/patches/stdlib-print-float-emits-type-tag-not-value.md` may be build-state-specific (not yosys-blocker)
+6. ~~comb-side share/freduce parity~~ ← **deferred** : meaningless while area=0.0
+
+**closure 100% needs** (revised after deeper audit):
+- (0) **`exec()` runtime restore** (hexa-lang RUNTIME.md cycle 61-65 regression) — gates everything else. Targeted revert (option 1 in inbox patch) is the smallest path
+- (a) ~~PR #247 review/merge~~ ✓ merged 2026-05-21 as `cdfa8d46`
+- (b) abc_map.hexa: detect stale `_out.blif` → fail-loud (currently false-positive)
+- (c) ~~abc_map.hexa: reorder script to `read_lib` BEFORE `read_blif`~~ ✓ already in PR #247 (logic_synth/abc_map.hexa L478-486)
+- (d) fix `rr_ptr__d` comb-loop OR detect ABC's "combinational loop" error in stdout (latter is a 1-line addition)
+- (e) emit `fifo_mem[*]` as RTLIL Memory cells (was Tier-2, now reframed as Tier-1 blocker for area > 0 on these designs)
+- (f) re-measure: area > 0 → ±5 % gate → g3-conditional flip
 
 **infra side-note (measurement 와 무관)**:
 - `tool/ubu_bootstrap.sh` 는 `ecd4d042` (RFC 065 cycle) 에서 `archive_legacy_glue/` 로 옮겨짐. mac-side measurement 는 `hexa run stdlib/yosys/gate_record.hexa` 가 standalone 동작 (substrate ABC + SKY130 만 있으면) — bootstrap script 부재는 ssh-to-ubu2 remote rebuild 자동화의 부재일 뿐 measurement chain 차단 아님
@@ -83,23 +102,37 @@
   - 3 helpers + branch in `_rv_parse_always` for-handler (L4124): `_rv_signal_is_read_in_body` · `_rv_collect_blocking_lhs` · `_rv_ssa_rename_toks`. Token-level rewriting (no signature changes), filter to read-then-write LHS only (T58~T65 write-only path preserved)
   - selftest 75 → 76/76 PASS (T73 `F-RFC-RV-COMB-LOOP-SSA-ARBITER`), zero regression
   - IR-level evidence: `pass_proc_mux lowered 44 cond-tagged LHS-group(s)` for d6 (vs 3 pre-fix), `clean_multidriver` collapsing `idx__ssa1..7`, `grant_out__ssa7`, `any_grant__ssa7` chains last-wins
-  - end-to-end area measurement blocked by separate `exec` runtime bug (see Status)
-- [~] **exec runtime bug** — root cause narrowed (별개 scope, popen path 만 broken)
-  - 진단 결과: `hexa_exec` 의 *popen* path 가 모든 cmd 에 빈 stdout 반환. *spawn* fast path (`HEXA_EXEC_NO_SHELL=1` 환경 + shell-meta-free cmd) 는 정상. 즉 `command -v abc 2>/dev/null || true` (meta 포함) 는 popen → broken; `which abc` (meta-free) + env set 은 spawn → works
-  - **workaround landed in PR #247 second commit** (`f4c3c493`): `abc_map.hexa::abc_binary_path()` 가 `which abc` 사용. ABC chain end-to-end 통과 가능
-  - **underlying popen bug 자체는 여전히 open** — `self/runtime_core.c:4607-4626` 의 popen + fread + pclose path 의 child→parent pipe 가 EOF early 또는 stdio state corruption. 별도 dtrace/perror instrumentation 필요. `inbox/notes/2026-05-21-hexa-exec-broken-pipe.md` 진단 (UPDATE entry) 참조
-- [ ] **str(float) runtime bug** (new blocker, str(float) emits literal `(float)`)
-  - 증상: gate_record 의 area verdict line 이 `area=(float) µm² oracle=(float) µm² Δ=(float)%` 으로 emit. numeric 값 print 자체가 broken
-  - in-process numeric comparison 은 여전히 동작 가능 → workaround 또는 fix 둘 다 가능. 별도 runtime/codegen fix scope
-- [ ] **share/freduce parity** (comb-side oracle gap, **deferred — area > 0 이후만 의미 있음**)
+  - **note (2026-05-21 audit)**: fixes the *intra-iteration* blocking-LHS comb-loop class, but a *cross-iteration arbiter-state* comb-loop terminating at `rr_ptr__d` remains — see new blocker below
+- [ ] **abc_map false-positive (stale `_out.blif`)** ← NEW (audit 2026-05-21)
+  - `abc_map.hexa::abc_map()` checks `read_file(blif_out) != ""` as success heuristic. If `exec(abc_cmd)` silently fails (popen broken or ABC errors), the stale `_out.blif` from a prior run is read → false `abc_map: ok` + `area=0.0` (stale BLIF cells don't match current oracle target)
+  - fix: `exec` 호출 직전 `write_file(blif_out, "")` (truncate) 또는 `delete_file(blif_out)` (if available) + post-exec mtime/size check + parse ABC stdout for "combinational loop" / "Error:" / "failed"
+- [ ] **abc_map script order: read_lib BEFORE read_blif** ← NEW (audit 2026-05-21)
+  - emitted BLIF has `.gate sky130_fd_sc_hd__buf_1 ...` at line 4. ABC's `read_blif` rejects `.gate` references when no library is loaded ("The current library is not available")
+  - current script: `read_blif … ; strash ; read_lib … ; map ; write_blif …` → fails at line 4 (= first .gate line of BLIF)
+  - fix: reorder to `read_lib … ; read_blif … ; strash ; map ; write_blif …`. Manual verify (2026-05-21): with reorder, lib loads (334 cells) and read_blif proceeds until comb-loop check
+- [ ] **`rr_ptr__d` cross-iteration comb-loop** ← NEW critical (audit 2026-05-21)
+  - manual ABC re-run with corrected script order: `Network "router_d{4,6}" contains combinational loop · Node "n272" (d4) / "n372" (d6) encountered twice on path to CO "rr_ptr__d"` (~15 hop d4 / ~30 hop d6)
+  - root: round-robin arbiter's *next-state* logic uses unrolled mux/and cascade that re-reads `rr_ptr` value combinationally without breaking at the flop boundary. PR #247 SSA fix did intra-iteration blocking-assign chain (`idx__ssa*`, `grant_out__ssa*`, `any_grant__ssa*`); this is a different comb feedback layer
+  - investigation needed: emit signature inspection of `rr_ptr` and its mux-cascade fan-in; possibly per-iteration `rr_ptr__ssa*` chain or proper $dff-D wire isolation
+- [ ] **`fifo_mem[*]` undriven (RTLIL Memory cells)** ← reframed Tier-1 (was Tier-2)
+  - manual ABC re-run: `Constant-0 drivers added to 40 (d4) / 52 (d6) non-driven nets: fifo_mem[0], fifo_mem[1], ...`. 2-D packed-array `fifo_mem[pp][...] <= in_data[pp]` writes silently dropped at frontend
+  - dependency: read_verilog 2-D packed-array LHS handler + write_verilog `$memrd`/`$memwr` emit + substrate `memory_dff` parity
+- [~] **exec runtime bug** — reframed (was claimed gate blocker, isn't)
+  - popen path still broken (`hexa_exec` 모든 cmd 에 빈 stdout). spawn fast path (`HEXA_EXEC_NO_SHELL=1` + meta-free) 정상
+  - **2026-05-21 audit**: not the gate blocker. `[abc_map] exit=0` 는 stdout 미캡쳐로 인한 false positive (Error: 패턴 매치 실패). 진짜 gate 막힘은 above 3 items (script order + comb-loop + memory cells)
+  - underlying popen bug 자체는 여전히 open — `self/runtime_core.c:4607-4626` 의 popen + fread + pclose path. 별도 dtrace/perror instrumentation 필요. `inbox/notes/2026-05-21-hexa-exec-broken-pipe.md` 진단 참조
+- [~] **`str(float)` runtime bug** — NOT reproducible 2026-05-21
+  - 현 build 에서 `area=0.0`, `oracle=61763`, `Δ=100.0%` 모두 정상 print. 이전 claim 은 다른 build-state 였을 가능성
+  - anima `train_s185_psicouple.hexa` 의 동일 증상은 별개 inbox patch: `hexa-lang/inbox/patches/stdlib-print-float-emits-type-tag-not-value.md` (anima 가 보는 build 만 broken 가능성)
+  - YOSYS gate measurement 와 무관 — 이전 우선순위 격하
 - [ ] **share/freduce parity** (comb-side oracle gap, **deferred — area > 0 이후만 의미 있음**)
   - oracle 의 12k 차이 = `synth` macro 의 logic-sharing optimizations
   - 옵션: hexa-native passes 가 자체 share/freduce 구현 · 또는 substrate yosys 에 defer
-  - dependency: ABC comb-loop fix (✓ PR #247) + exec runtime fix → area > 0 → 측정-driven impl
-- [ ] **re-measure router_d4 area** (chain runs, area still 0.0 due to exec runtime bug)
+  - dependency: ABC comb-loop fix + memory cell emit → area > 0 → 측정-driven impl
+- [ ] **re-measure router_d4 area** (chain reports OK but doesn't actually measure)
   - target: ∈ [58,675, 64,851] µm² (±5 % of 61,762.99) · current 0.0 µm² Δ=100%
-  - dependency: exec runtime bug fix (ABC binary detection works) + PR #247 merged
-  - alt: substrate-yosys-as-tail-pass (hexa-native frontend → substrate `synth` macro tail) — bridges share/freduce parity 자동
+  - dependency: above 3 new blockers (script order + rr_ptr loop + fifo_mem cells)
+  - alt: substrate-yosys-as-tail-pass (hexa-native frontend → substrate `synth` macro tail) — bridges share/freduce parity AND fifo_mem auto, but defeats the purpose of hexa-native absorption
 - [x] **router_d6 oracle bit-exact 재현** ✓: 93,608.528000 µm² · ratio 1.5156× (oracle 일치) — substrate measurement reference 완전 fixed
 - [x] **cell-tally re-measure post-#4g** ✓ (handoff (x)): 35 → 55 cells (+20 comb), sequential still 0, gap 99.5%
 - [x] **#4h-a multi-LHS body static-idx LHS** ✓ LANDED (PR #216 `2bcb8b72`, selftest 65/65 PASS) — first sequential emit primitive
@@ -108,34 +141,46 @@
 - [x] **write_verilog $dff behavioural emit** ✓ LANDED (PR #219 `c20b30b4`, selftest 13/13, conflict resolved + admin-merge) — substrate handoff complete for $dff sequential cells
 - [ ] **§5 measurement_gate = CLOSED_MEASURED · absorbed=true** (g3 — only after measurement passes)
 
-## Schedule (rough, post-Phase 3e re-scope)
+## Schedule (rough, post-2026-05-21 audit re-scope)
 
-| step                     | scope                                       | session-cost | dependency      |
-|--------------------------|---------------------------------------------|--------------|-----------------|
-| close PR #242            | comment + close + branch cleanup            | 10 min       | none            |
-| ABC comb-loop SSA design | trace `any_grant` flow + design renaming    | 0.5-1        | Phase 3e read   |
-| ABC comb-loop SSA impl   | `_rv_emit_body_v2` extension + selftest     | 1-2          | design          |
-| re-measure (area > 0?)   | `hexa run stdlib/yosys/gate_record.hexa`    | 5 min        | impl            |
-| share/freduce design     | substrate-tail vs hexa-native impl 결정      | 0.5-1        | area > 0        |
-| share/freduce impl       | passes.hexa 확장 또는 tail wiring            | 1-3          | design          |
-| gate flip                | g3-conditional ±5 % achieved → flip         | 10 min       | measurement     |
+| step                          | scope                                                                | session-cost | dependency             |
+|-------------------------------|----------------------------------------------------------------------|--------------|------------------------|
+| abc_map script reorder        | `read_lib` 먼저, `read_blif` 뒤로 + T74 selftest                       | 0.3-0.5      | none                   |
+| abc_map false-positive guard  | `_out.blif` truncate-before-exec + stdout `combinational loop`/`Error:`/`failed` 매칭 | 0.3-0.5      | none                   |
+| re-measure (true area > 0?)   | `HEXA_EXEC_NO_SHELL=1 hexa run …gate_record.hexa` after both fixes   | 5 min        | above two              |
+| rr_ptr__d comb-loop trace     | emit-side dump · 어디서 unrolled mux 가 self-feedback 인지 식별        | 1-2          | re-measure (loop 확인) |
+| rr_ptr cross-iter SSA / D-iso | per-iteration rr_ptr renaming OR D-wire isolation (PR #245 패턴 응용) | 2-4          | trace                  |
+| fifo_mem RTLIL Memory emit    | 2-D packed-array LHS + `$memrd`/`$memwr` write_verilog + memory_dff round-trip | 3-5          | rr_ptr fix             |
+| share/freduce design          | substrate-tail vs hexa-native impl 결정                                | 0.5-1        | area > 0               |
+| share/freduce impl            | passes.hexa 확장 또는 tail wiring                                      | 1-3          | design                 |
+| gate flip                     | g3-conditional ±5 % achieved → flip                                  | 10 min       | measurement            |
 
-총 estimate (이전 6-12 → post-Phase 3e): **3-7 sessions** until gate close (ABC fix 가 single-session 안 풀리면 +2-3)
+총 estimate (이전 3-7 → post-2026-05-21 audit): **8-16 sessions** until gate close. Audit 결과: abc_map false-positive 이 measurement 진척의 실제 진실을 가렸었음 — 실제 closure 까지 fifo_mem (RTLIL Memory) emit + rr_ptr cross-iter loop 2개의 큰 work 남아있음
 
 ## Future Roadmap (brainstorm-pruned 2026-05-20)
 
 FLOW pattern: 풀기 (84+ items generated) → 자르기 (delete 75 off-scope items, 89% prune) → 잡기 (each survivor with measurement protocol).
 
-### Tier-1: §5 closure path (immediate, multi-session) — post-Phase 3e
+### Tier-1: §5 closure path (immediate, multi-session) — post-audit 2026-05-21
 
-- [~] ~~**#4i with-else outer wrapper**~~ — SUPERSEDED by PR #245 (Phase 3e). PR #242 close pending
-- [ ] **ABC comb-loop SSA fix** ← real critical blocker (Phase 3e 가 명명)
-  - signal: ABC stops reporting 'Network contains combinational loop' · first non-zero $dff cells in mapped BLIF · router_d4 area > 0
-  - scope: per-iteration SSA renaming in `_rv_emit_for_if_stmts` (L1947) + `_rv_emit_body_v2` — `any_grant_i0/i1/...` per unroll index, fed to anti-dependency tree downstream
-  - dependency: read of Phase 3e impl + understanding of unroll loop var binding
-- [ ] **end-to-end router_d4 area measurement** (already runs, currently 0.0)
-  - signal: `hexa run stdlib/yosys/gate_record.hexa` reports area > 0
-  - dependency: ABC comb-loop SSA fix
+- [x] ~~**#4i with-else outer wrapper**~~ — SUPERSEDED by PR #245 (Phase 3e), PR #242 closed
+- [x] ~~**ABC comb-loop SSA fix (intra-iteration blocking-LHS)**~~ — SHIPPED PR #247 `8dd1e677`
+- [ ] **abc_map script reorder (`read_lib` → `read_blif`)** ← new Tier-1 (audit)
+  - signal: ABC stops reporting 'The current library is not available' on first `.gate` line of emit-BLIF
+  - scope: `stdlib/yosys/abc_map.hexa` L282 — script string concat 순서 변경
+- [ ] **abc_map false-positive guard** ← new Tier-1 (audit)
+  - signal: stale `_out.blif` 환경에서 `abc_map` 가 fail-loud, 또는 ABC stdout 의 'combinational loop'/'failed' 패턴 매칭
+  - scope: `abc_map.hexa::abc_map()` — `exec` 전 truncate + stdout error pattern 확장
+- [ ] **`rr_ptr__d` cross-iteration comb-loop** ← new Tier-1 critical (audit)
+  - signal: ABC stops reporting `Network contains a combinational loop · Node "n_XXX" encountered twice on path to CO "rr_ptr__d"`
+  - scope: rr_ptr 의 next-state mux-cascade 가 unrolled iteration 간 self-feedback 형성. 후보 fix: per-iteration `rr_ptr__ssa*` 또는 D-wire isolation (PR #245 패턴 응용)
+  - dependency: script reorder + false-positive guard (정확한 측정 보장)
+- [ ] **`fifo_mem[*]` RTLIL Memory emit** ← reframed Tier-1 (was Tier-2)
+  - signal: ABC stops adding 'Constant-0 drivers to 40 (d4) / 52 (d6) non-driven nets'
+  - scope: read_verilog 2-D packed-array LHS handler + write_verilog `$memrd`/`$memwr` + substrate `memory_dff` round-trip
+- [ ] **end-to-end router_d4 area > 0 (real measurement)**
+  - signal: `HEXA_EXEC_NO_SHELL=1 hexa run stdlib/yosys/gate_record.hexa` reports area > 0 with fresh `_out.blif`
+  - dependency: 위 4개 Tier-1 blocker 클리어
 - [ ] **router_d4 gate flip** (`measurement_gate = CLOSED_MEASURED`, `absorbed = true`)
   - signal: measured area ∈ [58,675, 64,851] µm² (±5 % of oracle 61,762.99)
   - dependency: end-to-end measurement passing; **g3-conditional only**
@@ -151,9 +196,6 @@ FLOW pattern: 풀기 (84+ items generated) → 자르기 (delete 75 off-scope it
 - [ ] **$adff / $sdff / $dffe write_verilog behavioural emit**
   - signal: T14/T15/T16 selftest covers `always @(posedge clk, posedge rst) if (rst) q <= 0; else q <= d;` round-trip
   - need: router-class designs with reset/enable variants
-- [ ] **RTLIL Memory cell emission** ($memrd / $memwr for `fifo_mem[p][addr]` patterns)
-  - signal: router_d4's `fifo_mem[pp][fifo_tail[pp][...]] <= in_data[pp]` lowers to actual memory cells
-  - need: read_verilog packed-array 2-D LHS handler + write_verilog Memory emit + substrate `memory_dff` pass round-trip
 - [ ] **share/freduce parity** (comb-side oracle gap closure — handoff (s) finding)
   - signal: hexa-native synth comb area within ±10 % of `synth` macro's 12,806 µm² comb portion (after share/freduce)
   - need: stdlib/kernels/logic_synth/passes.hexa 의 share + freduce 알고리즘 implementations
@@ -181,6 +223,24 @@ FLOW pattern: 풀기 (84+ items generated) → 자르기 (delete 75 off-scope it
 
 (append-only, latest 위에)
 
+- 2026-05-21 KST — **deeper audit · `exec()` runtime regression 이 진짜 #1 blocker**. PR #247 (`cdfa8d46`) 가 main 에 squash-merged. 새 branch (`rfc006-yosys-abc-map-script-order`) 에서 `gate_record.hexa` 재측정 시도:
+  1. `[abc_map] binary=` empty — `abc_binary_path()` 의 `exec("which abc")` 가 "" 반환
+  2. 격리 테스트 `exec("echo hi")` 도 "" 반환 — popen 뿐 아니라 spawn 도 broken
+  3. `HEXA_EXEC_NO_SHELL=1` + meta-free cmd 도 같은 증상 — earlier session 의 "spawn fast path works" claim 도 더 이상 유효 안 함
+  4. Bisect: `f1487c14` (RUNTIME.md cycle 61, "net+exec+pty 17 stubs") 가 popen/execve/posix_spawn 을 aprime_cc 용 noop stub 으로 바꿈 — 의도는 compile-time 용 이었으나 `hexa run` runtime 까지 영향. 이후 `f7dbd931` (cycles 63+64, "Darwin syscall via svc 0x80") + `54970996` (cycle 65, ACCEPTANCE 137→5) 가 _read/_write/_pipe/_dup2 를 svc 0x80 syscall 로 교체 — pipe stdio 부정합 가능성
+  5. earlier session 의 `[abc_map] binary=/opt/homebrew/bin/abc · exit=0` 성공 로그는 cycle 61 직후 + cycles 63-65 직전 의 narrow window 였을 가능성
+  6. inbox patch 정식 제출: `hexa-lang/inbox/patches/yosys-exec-runtime-regression-cycles-61-64.md` (수정 후보 3 path: 타깃 revert · 직접 svc 0x80 popen 구현 · per-binary unhook)
+  - 결론: PR #247 SSA fix 는 unchanged-correct, 그러나 `exec` runtime 자체가 broken 인 한 어떤 측정도 honest 하지 않음. **#1 blocker = exec runtime revert/restore** (yosys 코드 변경이 아닌 hexa-lang runtime 작업)
+  - earlier audit 의 "script order 가 blocker" / "stale _out.blif 가 blocker" 는 **2-3순위 issue** — exec 가 작동하지 않으면 그 어느 것도 reachable 하지 않음
+- 2026-05-21 KST — **g3-honest audit · gate measurement chain false-positive 발각**. 측정 절차:
+  1. `/tmp/_hexa_yosys_gate_d{4,6}_out.blif` 가 어제 (2026-05-20 23:48) 의 stale 파일임을 확인
+  2. 제거 후 `HEXA_EXEC_NO_SHELL=1 hexa run stdlib/yosys/gate_record.hexa` 재실행 → `[FAIL] d6:abc_map — ABC produced no mapped BLIF (output file empty)` · `_out.blif` 생성 안 됨
+  3. 즉 어제까지의 "abc_map: ok · area=0.0" 는 **stale BLIF 재읽기**로 인한 false positive 였음 (실제로 ABC 가 그동안 한 번도 실행 성공한 적 없음)
+  4. 수동 진단: `abc -c "read_lib SKY130 ; read_blif d4_in.blif"` 시도 → `Library has 334 cells … Network "router_d4" contains combinational loop! · Node "n272" encountered twice on path to CO "rr_ptr__d"`
+  5. 두 가지 새 blocker 확인: **(A)** abc_map.hexa script 가 `read_blif` 를 `read_lib` 보다 먼저 호출 (BLIF 의 `.gate sky130_*` 라인이 lib 미로드 상태에서 거부됨) **(B)** script 순서 고쳐도 d4 의 `rr_ptr__d` 종단 comb-loop 가 잔존 (PR #247 SSA fix 는 *intra-iteration* blocking-LHS chain 만 끊음 — *cross-iteration* arbiter-state feedback 은 별개)
+  6. 부가 발견: **(C)** `fifo_mem[0..3]` 등이 undriven (ABC 가 const-0 으로 tie) — 2-D packed-array LHS 가 frontend 에서 drop. Tier-2 의 RTLIL Memory cell emit 가 실제로는 Tier-1 area>0 의 전제조건
+  7. 기존 claim 정정: ~~`str(float)` 가 yosys blocker~~ → 현 build 에서 재현 안 됨 (`area=0.0`, `Δ=100.0%` 모두 정상 print). anima trainer 의 동일 증상은 별개 inbox patch.
+  - 결론: §5 closure 까지의 실제 work 가 이전 estimate 보다 2-3x 큼 (8-16 sessions). 그러나 honest baseline 확보 — 다음 PR 가 진짜 측정 가능
 - 2026-05-21 KST — **PR #247 second commit `f4c3c493`** : `abc_map.hexa::abc_binary_path()` 가 `command -v abc 2>/dev/null || true` → `which abc` 으로 변경 (shell-meta-free → spawn fast path 진입 가능). root cause 진단 결과: `hexa_exec` 의 popen path 가 broken, spawn path (HEXA_EXEC_NO_SHELL=1 + meta-free cmd) 는 정상. ABC chain end-to-end 통과 확인 — `[abc_map] binary=/opt/homebrew/bin/abc · exit=0 · [OK] d4/d6 abc_map: ok`. 또 다른 별개 runtime bug 발견: `str(float)` 가 literal `(float)` 출력 → area verdict numeric 값 print 안 됨 (in-process comparison 은 가능)
 - 2026-05-21 KST — **ABC comb-loop SSA fix landed in PR #247** (hexa-lang `8dd1e677`, OPEN). +393/-1 in `read_verilog.hexa`. 3 clean-room helpers (`_rv_signal_is_read_in_body` · `_rv_collect_blocking_lhs` · `_rv_ssa_rename_toks`) plumbed into `_rv_parse_always` for-handler at L4124. Per-iteration SSA versioning (`s__ssa0..ssaP`) of read-then-write blocking-LHS only — write-only filter preserves T58~T65 legacy path. T73 `F-RFC-RV-COMB-LOOP-SSA-ARBITER` selftest added (P=4 priority arbiter); 75/75 → 76/76 PASS, zero regression. IR-level evidence in `clean_multidriver` log: d6 의 `idx__ssa1..ssa7` + `grant_out__ssa7` + `any_grant__ssa7` chains collapsed last-wins, `pass_proc_mux` lowered 44 cond-tagged LHS-groups (vs 3 pre-fix)
 - 2026-05-21 KST — PR #242 (#4i `cee28986`) **CLOSED** with "superseded by #245 Phase 3e" comment via `gh pr close --comment`. branch `rfc006-yosys-4i-with-else-mixed-block` 보존 (재검토 필요시)

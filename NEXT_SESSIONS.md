@@ -591,7 +591,7 @@ Gate (g3 — REQUIRED):
      `absorbed: Bool` 은 여전히 false 유지.
    - G29 land = 단일 cell 의 stored `absorbed: Bool` true · measured
      oracle PASS 근거 record 안에 cite · 다른 cell 회귀 0.
-   - G30 land = invariant XCTest PASS + AGENTS.tape `@D` 1 row;
+   - G30 land = invariant XCTest PASS + `.specify/memory/constitution.md` governance row;
      기존 illustrative-physics cell (Fusion 등) 회귀 0.
 
 NOT (g3 — non-negotiable):

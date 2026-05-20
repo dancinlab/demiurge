@@ -1775,7 +1775,7 @@ in-progress)**
     (illustrative-physics 제외)
   - exit:
     - XCTest invariant PASS
-    - `AGENTS.tape` `@D` 1 row land
+    - `.specify/memory/constitution.md` governance row land
     - 기존 cell record (illustrative-physics 등) 회귀 0
     - swift build/test PASS
 

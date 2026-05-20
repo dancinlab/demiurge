@@ -1,0 +1,54 @@
+{
+  "artifacts" : {
+    "edges_csv" : "road_network_manhattan_grid_10x10_v1.edges.csv",
+    "meta" : "road_network_manhattan_grid_10x10_v1.meta.json"
+  },
+  "geometry_id" : "road_network_manhattan_grid_10x10_v1",
+  "interface" : "demiurge:mobility:road-network-record",
+  "measurements" : {
+    "connected_components" : 1,
+    "diameter_undirected" : 18,
+    "edge_count" : 360,
+    "edge_length_avg_m" : 100,
+    "edge_length_total_m" : 36000,
+    "intersection_count" : 100,
+    "k_avg" : 7.2,
+    "node_count" : 100,
+    "streets_per_node_avg" : 3.6,
+    "streets_per_node_counts" : {
+      "0" : 0,
+      "1" : 0,
+      "2" : 4,
+      "3" : 32,
+      "4" : 64
+    }
+  },
+  "networkx_version" : "3.6.1",
+  "osmnx_version" : "2.1.0",
+  "place" : {
+    "is_synthetic" : true,
+    "label" : "Synthetic_Manhattan_Grid_10x10",
+    "origin_lat" : 40.7549,
+    "origin_lon" : -73.984
+  },
+  "produced_at_utc" : "2026-05-19T19:03:02Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "osmnx@2.1.0",
+    "scope_caveats" : [
+      "osmnx 의 road-network 분석 출력 — 숫자는 실제 (osmnx.basic_stats + networkx.diameter 표준 알고리즘 출력) 이지만, 분석 대상 그래프는 *합성 10x10 Manhattan grid topology fixture* (실제 OSM extract 가 아님, Overpass 네트워크 호출 없음). 결정론적 · 오프라인 · cross-host 재현 가능 — g3 입장에서 record SSOT 로 안전하지만, *실제 도시 도로망* 이라고 주장하지 않음.",
+      "본 셀은 *graph topology only* — traffic flow / travel time / vehicle simulation / SUMO micro-sim / CARLA scenario regression 전혀 없음. domains/mobility.md §2 의 SPECIFY/ARCHITECT/DESIGN/SYNTHESIZE/VERIFY/HANDOFF verb 들은 본 record 의 scope 밖.",
+      "measurement_gate = GATE_OPEN 영구 / absorbed=false 영구 — osmnx MIT + 표준 그래프 알고리즘은 흡수 충분이지만, *real-place 의 absorbed road-network data + 검증된 traffic 모델* 이 없으므로 mobility claim 은 미흡수. ISO 26262 / ISO 21448 SOTIF / UN R157 ALKS 안전 게이트는 별도 (domains/mobility.md §1).",
+      "real-OSM extract 흡수 (osmnx.graph_from_place, graph_from_bbox via Overpass) 는 의도적으로 우회 — (a) 도달 가능한 Overpass 서버 필요, (b) 시간 변동 결과 (같은 query 도 다른 시각엔 다른 graph) 가 demiurge 의 cross-host record drift 원칙을 깨므로. 후속 phase 가 snapshot-pinned OSM extract + traffic demand calibration 을 들이면 흡수 후보 — 본 phase 의 scope 밖."
+    ]
+  },
+  "python_version" : "3.14.4",
+  "record_id" : "mobility_road_20260519T190302Z",
+  "schema_version" : "1.0",
+  "topology" : {
+    "block_length_m" : 100,
+    "grid_n" : 10,
+    "model" : "manhattan_grid_synthetic"
+  }
+}

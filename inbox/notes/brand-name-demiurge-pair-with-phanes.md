@@ -82,8 +82,8 @@ If accepted:
    (picked + rationale 3+ bullets, can quote this note).
 2. Update README header (`📐` → consider sun-disc-with-compass or a
    geometric mark; emoji choice = sub-decision).
-3. Update `@I id001` in `AGENTS.tape` (`kind` / `signature` /
-   `brief`) with the Demiurge lore.
+3. Update the identity block in `.specify/memory/constitution.md`
+   (kind / signature / brief) with the Demiurge lore.
 4. Update `GOAL.md` first line to weave the name in (the "한 문장" stays;
    the brand-token comes alongside).
 5. Cross-link `~/core/phanes/README.md` "## Naming" section once locked
