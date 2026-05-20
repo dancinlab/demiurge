@@ -44,7 +44,47 @@ public enum DomainLoader {
         return nil
     }
 
+    /// D84 — per-machine user-custom domains live here. Every `.demi`
+    /// file inside this directory is parsed; each id must carry the
+    /// `u/` prefix (otherwise warn + skip, no silent built-in override).
+    public static func userDomainsPath() -> String {
+        let home = FileManager.default.homeDirectoryForCurrentUser.path
+        return "\(home)/.config/demiurge/user-domains"
+    }
+
+    /// Scan `userDomainsPath()` for `*.demi` files, parse each, project
+    /// into Domain, and gather. Missing dir = empty list (not an error
+    /// — user just hasn't added any custom domain yet).
+    public static func loadUserDomains() -> [Domain] {
+        let dir = userDomainsPath()
+        let fm = FileManager.default
+        guard let entries = try? fm.contentsOfDirectory(atPath: dir) else {
+            return []
+        }
+        var result: [Domain] = []
+        for entry in entries where entry.hasSuffix(".demi") {
+            let path = "\(dir)/\(entry)"
+            guard let src = try? String(contentsOfFile: path,
+                                        encoding: .utf8) else { continue }
+            let sections = DemiParser.parse(src)
+            for s in sections {
+                // D84 — user domain ids MUST carry `u/` prefix.
+                guard s.id.hasPrefix("u/") else {
+                    FileHandle.standardError.write(
+                        Data(("DomainLoader: user domain "
+                              + "'\(s.id)' in \(entry) missing 'u/' "
+                              + "prefix — skipped (D84)\n").utf8))
+                    continue
+                }
+                if let d = project(s) { result.append(d) }
+            }
+        }
+        return result
+    }
+
     /// Load + parse + project into a `[Domain]` array, or throw.
+    /// D84 — also loads user-custom domains and merges (user entries
+    /// appended after built-in; `u/` prefix prevents id collision).
     public static func loadAll() throws -> [Domain] {
         guard let path = indexPath() else {
             throw DomainLoaderError.fileNotFound(
@@ -56,12 +96,24 @@ public enum DomainLoader {
             "read \(path): \(error.localizedDescription)") }
 
         let sections = DemiParser.parse(src)
-        let domains: [Domain] = sections.compactMap { project($0) }
-        if domains.isEmpty {
-            throw DomainLoaderError.parseFailed(
-                "no domains parsed from \(path) (\(sections.count) sections)")
+        let builtIn: [Domain] = sections.compactMap { s in
+            // D84 — built-in domains MUST NOT carry `u/` prefix.
+            if s.id.hasPrefix("u/") {
+                FileHandle.standardError.write(
+                    Data(("DomainLoader: built-in INDEX.demi has "
+                          + "id '\(s.id)' with reserved 'u/' "
+                          + "prefix — skipped (D84)\n").utf8))
+                return nil
+            }
+            return project(s)
         }
-        return domains
+        if builtIn.isEmpty {
+            throw DomainLoaderError.parseFailed(
+                "no built-in domains parsed from \(path) "
+                + "(\(sections.count) sections)")
+        }
+        let user = loadUserDomains()
+        return builtIn + user
     }
 
     /// Project one `DemiSection` into a `Domain`. Tolerant — returns

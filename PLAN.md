@@ -3929,3 +3929,26 @@
   g3 — data format 분리만, 측정 record / gate / absorbed 변경 0.
   다음 phase C = NewProjectSheet UI 갱신 (facet filter → DAG
   closure preview).
+- 2026-05-20 — **phase κ-58 — D84 2-tier 도메인 모델 (built-in +
+  user, prefix `u/`)**. 사용자 게이트 "사용자 개인 도메인 분리 +
+  (B) prefix u/". 변경:
+  - **D84 design** — built-in (demiurge repo SSOT, `domains/INDEX.
+    demi`) + user (per-machine, `~/.config/demiurge/user-domains/
+    *.demi`). namespace 충돌은 prefix `u/<id>` 강제. user 도메인이
+    built-in 도메인 prereq 로 사용 가능 (DAG 자연 확장).
+  - `DomainLoader.swift` 확장:
+    - `userDomainsPath()` 헬퍼 — `~/.config/demiurge/user-domains/`
+    - `loadUserDomains()` — 디렉토리 scan + per-file parse + `u/`
+      prefix 검사 (위반 시 stderr warn + skip, silent override 금지)
+    - `loadAll()` — built-in + user merge. built-in 가 `u/` 가지면
+      warn + skip (역방향 충돌 방지).
+  - design.md D84 audit-trail (picked + rationale 5 bullets +
+    Rejected A user-override / C warn-skip).
+  - Project.walk 필드 추가 — D78 transitive closure topological
+    sort 저장. backward-compat (default `[]`).
+  - smoke test: `~/.config/demiurge/user-domains/u-test.demi`
+    sample 작성, `DemiurgeCLI action specify "u/test-domain"` 가
+    dispatch 인식 + LLM honest-gap path 정상 작동.
+  build: xcrun swift build OK (2.11s).
+  g3 — data 분리만, 측정 record 변경 0. UI 분리 표시 (built-in /
+  내 도메인) 는 phase D (NewProjectSheet 갱신).

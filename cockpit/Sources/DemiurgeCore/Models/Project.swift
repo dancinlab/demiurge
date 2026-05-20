@@ -93,7 +93,15 @@ public struct Project: Codable, Identifiable, Sendable {
     /// Free-text "무엇을 만들고 싶으세요" answer (rfc_012 §3, D44).
     public var target: String
     /// Domain inferred from `target`, then user-confirmed (D44).
+    /// D78/D82 — also the *start node* of the project's DAG walk.
     public var domain: String
+    /// D78 — transitive-closure walk over the domain graph, topologically
+    /// sorted (foundation first, integration apex last). Computed at
+    /// project creation from `domain` via `DomainGraph`. The project is
+    /// a *pointer* over this walk; domains themselves stay in
+    /// `DomainCatalog`. Optional + default `[]` for backward-compat
+    /// with manifests created before D78.
+    public var walk: [String]
     /// The verb the project is currently working on.
     public var currentVerb: Verb
     /// Raw values of verbs already completed (a measured ✅, g3).
@@ -105,6 +113,7 @@ public struct Project: Codable, Identifiable, Sendable {
         name: String,
         target: String,
         domain: String,
+        walk: [String] = [],
         currentVerb: Verb = .specify,
         doneVerbs: Set<Int> = [],
         createdAt: Date = Date()
@@ -113,6 +122,7 @@ public struct Project: Codable, Identifiable, Sendable {
         self.name = name
         self.target = target
         self.domain = domain
+        self.walk = walk
         self.currentVerb = currentVerb
         self.doneVerbs = doneVerbs
         self.createdAt = createdAt

@@ -3253,3 +3253,45 @@ agent-execution scope 와 책임 혼합.)
 
 g3 — data format 분리, 측정 record 변경 0. UI 갱신 (NewProjectSheet
 facet filter → DAG closure preview) 은 별도 phase C.
+
+### Decision 84 — 2-tier 도메인 모델 (built-in + user, prefix `u/`)
+
+**picked**: 도메인은 두 layer — (1) **built-in** (demiurge repo SSOT,
+`domains/INDEX.demi`, 19 + 계속 업데이트) + (2) **user-custom**
+(per-machine, `~/.config/demiurge/user-domains/*.demi`). namespace
+충돌은 **prefix `u/<id>`** 강제 — user 도메인 id 는 반드시 `u/`
+시작. built-in id 와 충돌 0, 명시적 (사용자가 자기 도메인 보면 즉시
+구분). (Rejected: (A) user override built-in — 갱신된 built-in 가
+가려질 위험; (C) 충돌 시 user warn + skip — 사용자에게 id 변경
+요구하는 추가 step, prefix 와 같지만 덜 명시적.)
+
+**rationale**:
+- 사용자 게이트 2026-05-20 — "기본 제공 도메인 + 사용자 개인 도메인,
+  기본은 계속 업데이트". 두 layer 명확 분리 필요.
+- prefix `u/` = D78 graph 의 정확한 친구 — user 도메인이 built-in
+  도메인을 prereq 로 가질 수 있음 (예: `u/aura-cassette` prereq =
+  `[aura, firmware]`). namespace 갈래가 graph edge 위에서 작동.
+- D50 g_ssot_single_source — 두 SSOT location (repo INDEX.demi vs
+  ~/.config user-domains/) 책임 분리 깔끔. 사용자가 자기 도메인을
+  자유롭게 편집해도 repo 갱신은 fast-forward.
+- Path resolver 자연 확장 — `DomainLoader.indexPath()` 가 이미
+  DEMIURGE_REPO env / cwd / ~/core/demiurge fallback. user-domains
+  path 는 별도 함수 `userDomainsPath()`.
+- AGENTS.tape 의 `g_demiurge_pointer_only` (D61) 와 호환 — user 가
+  자기 substrate 를 어딘가 두면 demiurge 는 그 포인터만 stores.
+
+**적용**:
+1. `DomainLoader.swift` 확장 — `userDomainsPath()` 헬퍼 (`~/.config/
+   demiurge/user-domains/`), `loadUserDomains()` (디렉토리 scan +
+   per-file parse), `loadAll()` 가 builtIn + user merge.
+2. user id validation — `Domain.id` 가 `u/` prefix 면 user-source,
+   아니면 built-in. `loadUserDomains` 가 prefix 검사하고 위반 시
+   warn + skip (g3 — silent override 금지).
+3. README 또는 `domains/INDEX.demi` 상단 comment — "user 도메인은
+   여기 X, `~/.config/demiurge/user-domains/u-<id>.demi` 에 만드세요".
+4. NewProjectSheet UI (phase D, 후속) — built-in / 내 도메인 두 그룹
+   분리 표시.
+5. design.md D84 (이 entry) + PLAN κ-58.
+
+g3 — data 분리만, 측정 record / gate / absorbed 변경 0. UI 분리
+표시 (built-in vs u/) 는 phase D.
