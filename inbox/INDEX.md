@@ -1,6 +1,6 @@
 # inbox/INDEX.md — cross-session pickup SSOT
 
-> Updated 2026-05-20 (post κ-54 + 15-PR rfc_006 §5 primitive landing).
+> Updated 2026-05-20 (post κ-67 RFC 013 promotion of hexa-native connection plan).
 > Status SSOT for every `inbox/notes/*.md` entry. Each entry keeps
 > its own body intact; this file is the at-a-glance index.
 
@@ -12,7 +12,7 @@
 - **pickup-blocked** — toolchain / cross-session dependency
 - **archive** — reference / methodology, no further action
 
-## Index (25 entries)
+## Index (26 entries)
 
 | filename | status | reference | one-liner |
 |---|---|---|---|
@@ -25,6 +25,7 @@
 | `cohort-pickup-rtsc-femm-producer.md` | resolved | κ-48 + κ-49 | pyfemm rtsc+analyze (κ-48) + GetDP rtsc+verify (κ-49) substrates landed |
 | `hexa-8domain-measurement-stack-2026-05-20.md` | resolved | κ-47..κ-49 | 8-domain stack survey consumed by empty-cell sweep |
 | `hexa-lang-branch-consolidation-2026-05-20.md` | pickup-blocked | (cross-session) | hexa-lang live tree alignment to origin/main — concurrent session blocker |
+| `hexa-native-connection-plan-2026-05-20.md` | resolved | RFC 013 / κ-67 | SHAPE note promoted to `proposals/rfc_013_hexa_native_parity_connection.md` — wiring from hexa-lang substrate parity to demiurge `absorbed` flag |
 | `hexa-native-port-pattern-pilot-mc-transport.md` | pickup-open | (D80 g_hexa_only pilot) | Minimum-viable hexa-native mc_transport 1-D slab pilot — port without OpenMC / Geant4 / nuclear-data |
 | `hexa-lang-stdlib-full-consolidation-2026-05-20.md` | resolved | κ-45 | 15 domain modules consolidated to hexa-lang origin/main |
 | `kernel-extraction-pickup.md` | resolved | κ-45 | All 13 D72 kernels landed on hexa-lang origin/main |
@@ -49,9 +50,10 @@
 
 ## Cross-references
 
-- PLAN.md κ-1..κ-52 (progress log SSOT)
-- design.md D1..D74 (decision audit-trail SSOT)
+- PLAN.md κ-1..κ-67 (progress log SSOT)
+- design.md D1..D100 (decision audit-trail SSOT)
 - NEXT_SESSIONS.md (handoff prompts for cross-session work)
+- proposals/rfc_013_hexa_native_parity_connection.md (κ-67 promotion target)
 
 ## Maintenance
 
