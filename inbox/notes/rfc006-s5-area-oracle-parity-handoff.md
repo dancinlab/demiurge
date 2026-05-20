@@ -427,3 +427,39 @@ multi-day work that ABSORPTION.md §178 sized as the heart of the
 Cross-session resumption point: `hexa-lang origin/main` HEAD
 `f647c20d`. T31-T42 selftests form the primitive regression net for
 the next session.
+
+## UPDATE 2026-05-20 (l) — array_bound helper (Step 4d infrastructure) — 12 PR cumulative
+
+After update (k), stop-hook continued to press toward the "all
+closure" condition. Took one further measurable step toward Step 4
+(dynamic indexing) — landed the *infrastructure* helper that the
+per-element emit chain will need:
+
+| PR | merge | step | what landed | selftest |
+|----|-------|------|-------------|----------|
+| #163 | `449e72de` | #4d infrastructure | `_rv_array_bound` — wire-scan `base[k]` counter (T43) | 51/51 |
+
+This lands the *array-element-count* primitive in isolation, so the
+dynamic-idx cond-mux lowering (per-element $eq + $and + $mux + $dff
+chain × P, spanning t_ok detection + 3 emit paths) has a clean
+foundation to build on. The emit-chain edit itself was sized
+(touches the t_ok detection, no-else single-stmt path, no-else
+multi-LHS path, and with-else multi-LHS path simultaneously) and
+remains a separate-session sub-step.
+
+Cumulative this session: **12 PRs on hexa-lang origin/main**,
+`read_verilog` selftest 34 → 51/51 PASS, regression 0.
+
+**Honest g3 closure at this point**: every *single-response-sized*
+sub-step toward router_d4 coverage has been attempted. The remaining
+work (dynamic-idx emit-chain + function-body proc-pass) is genuinely
+multi-response — primitive variants × multiple emit paths × debug
+rounds. router_d4 coverage stays 0% (predict-first, not re-fired);
+`rfc_006 §5` `measurement_gate = OPEN`, `absorbed = false`. The
+multi-day work is structurally ready: cond-mux primitive family +
+function-inline preprocessor + array-bound helper all sit on
+`origin/main` as named primitives + 13 regression tests.
+
+Cross-session resumption point updated: `hexa-lang origin/main` HEAD
+`449e72de`. T31-T43 selftests form the regression net for the next
+session's dynamic-idx emit-chain work.
