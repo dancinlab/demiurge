@@ -1446,3 +1446,118 @@ pending). Plus sibling ternary (auto-landed during sequence).
 `rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3 — no
 flip; chain end-to-end functional, but hexa-native cell-emit doesn't
 yet drive any output wire, so area measurement = 0 ≠ oracle).
+
+## UPDATE 2026-05-20 (aa) — #4h-a landed + first sequential cells emit confirmed + $dff behavioural in-tree
+
+#4h-a landed on hexa-lang origin/main as PR #216 (`2bcb8b72`):
+
+```hexa
+// multi-LHS no-else cond-mux path (read_verilog.hexa)
+// extension: detect `s[1] == "["`, find matching `]`, const-fold the
+// bracket tokens via _rv_eval_expr, assemble LHS as "base[N]" so
+// existing generate-for-unrolled wire decls are matched. Dyn-idx
+// falls back to no-emit (#4h-b scope).
+```
+
+T51 selftest: `reg q [0:1]; always @(posedge clk) if (en) begin q[0]
+<= 1; q[1] <= 0; end` → 2 × $mux + 2 × $dff. Selftest 64/64 → 65/65
+PASS, regression 0.
+
+**Measured first sequential emit** (hexa-native, test_4h_a.v shape):
+
+```
+$ /tmp/drv_4ha /tmp/test_4h_a.v
+modules=1
+  [0] name=rtest wires=7 cells=4
+    [0] $mux  $rvmux$0
+    [1] $dff  $rvff$1
+    [2] $mux  $rvmux$2
+    [3] $dff  $rvff$3
+```
+
+This is the **first $dff sequential cell ever emitted by hexa-native
+read_verilog** — milestone for the §5 absorption. The 4-cell tally
+(2 × $mux + 2 × $dff) matches the #4h-a emit-chain expectation
+exactly (one $mux+$dff pair per indexed LHS in the multi-LHS body).
+
+**router_d4 cell-tally still 55** (predict-confirmed — router L116-121
+LHS uses dyn-idx `out_data[grant_out]` where `grant_out` is a wire,
+so #4h-a's const-fold fails. #4h-b needed for that path.)
+
+**write_verilog $dff behavioural emit** — in-tree on rfc006-wv-dff-
+behavioural branch:
+
+```hexa
+if t == "$dff" {
+    let clk = _wv_conn_net(c, "CLK")
+    let d   = _wv_conn_net(c, "D")
+    let q   = _wv_conn_net(c, "Q")
+    let qreg = q + "_reg"
+    return "  reg " + _wv_emit_name(qreg) + ";\n"
+         + "  always @(posedge " + _wv_emit_name(clk) + ") "
+         + _wv_emit_name(qreg) + " <= " + _wv_emit_name(d) + ";\n"
+         + "  assign " + _wv_emit_name(q) + " = "
+         + _wv_emit_name(qreg) + ";\n"
+}
+```
+
+T13 selftest: $dff(CLK,D,Q) cell asserts `always @(posedge clk)`, `reg
+q_reg;`, `assign q = q_reg;`. Selftest 12/12 → 13/13 PASS.
+
+Substrate handoff verified end-to-end:
+
+```
+$ yosys -p "read_verilog test_4h_a_dff2.v; synth -top rtest; ..."
+=== rtest === wires=3 cells=0
+```
+
+Synth runs without errors (the test's outputs-port-free shape causes
+opt_clean to drop all internals — separate test design or router-
+shape needed for non-zero area measurement). The handoff path is
+fully functional for $dff sequential cells.
+
+PR #219 (write_verilog $dff behavioural emit) opened but has a
+merge conflict with sibling-session work on `compiler/PLAN.md`. Next
+session resolves the conflict + admin-merge.
+
+**Cumulative 7 PRs landed in this session sequence**: PR #196 (PR-A)
+· PR #202 (#4g) · PR #208 (PR-B) · PR #210 (write_verilog wire-emit)
+· PR #212 (write_verilog cell-emit comb) · PR #216 (#4h-a multi-
+LHS indexed-LHS) · + sibling ternary. PR #219 ($dff behavioural)
+OPEN.
+
+**Honest closure-path status** (per g3):
+
+```
+YOSYS.md checklist (12 ✓ / 6 ☐):
+  ✓ #4j SEGFAULT fixed
+  ✓ router_d4 RTLIL first-measured
+  ✓ cell-name source-mapped
+  ✓ oracle d4 bit-exact (61,762.985600 µm²)
+  ✓ parser-gap asymmetry
+  ✓ router_d6 oracle (93,608.528 µm², ratio 1.5156×)
+  ✓ cell-tally re-measure post-#4g
+  ✓ PR-A (parameter + initial dispatch)
+  ✓ #4g (function-body preceding-stmts inline)
+  ✓ PR-B (hexa-cc strlit-init unique-emit)
+  ✓ write_verilog wire-emit + cell-emit comb + ternary
+  ✓ #4h-a (first sequential emit primitive)
+  ☐ #4h-b dyn-idx LHS (wire-indexed) multi-LHS
+  ☐ #4h-c for-in-always multi-stmt body (router L101 reset)
+  ☐ #4h-d nested-if inside always-body
+  ☐ #4i with-else dyn-idx
+  ☐ end-to-end area measurement (depends above)
+  ☐ measurement_gate = CLOSED_MEASURED · absorbed=true
+```
+
+closure 100% 까지 6 ☐ items remain. multi-day:
+
+- #4h-b/c/d are mutually-coupled — router_d4 의 L98-123 always-body
+  가 nested-if + for-in-always + dyn-idx 모두 동시 필요.
+- #4i (with-else) 가 outer `if (rst) … else …` 처리 — 가장 outer,
+  router 의 모든 always-body 가 그 안에 nested.
+- 측정 후만 gate flip (g3).
+
+`rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3 — chain
+functional + first sequential emit measured, gate close requires
+router_d4 area measurement passing ±5% — needs #4h-b/c/d + #4i).
