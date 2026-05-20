@@ -61,10 +61,11 @@
   - #4h-b: multi-LHS dyn-idx (PR #220 `85bea9a5`)
   - #4h-c: for-in-always multi-stmt body — **discovered already in tree** at read_verilog.hexa L3576-3607 (sibling work; const-fold indexed-LHS handler in for-body inner-loop plain-assign path)
   - #4h-d: nested-if inside always-body — **discovered already in tree** at L3476+ (sibling RFC 073 Phase 2 implementation)
-- [ ] **#4i with-else top-level outer wrapper** — **the single critical blocker** for router_d4 always-body emit
-  - router_d4 L98-123: outer `if (rst) begin ... end else begin ... end` — top-level with-else wraps ALL inner sub-steps. #4h-a/b/c/d 가 inner 처리 가능하지만 outer entry 없으면 fire 안 함
-  - signal: sequential cells > 0 in router_d4 cell-tally
-  - implementation: always-parser 의 top-level with-else `if (rst) ... else ...` 처리 → 각 branch 의 body 를 inner 분기 emit chain 으로 dispatch
+- [ ] **#4i with-else top-level outer wrapper (begin-block mixed-stmt body)** — **the single critical blocker** for router_d4 always-body emit
+  - router_d4 L98-123: outer `if (rst) begin scalar; for(...) ...; end else begin for(...) ...; for(...) ...; if(any_grant) begin ...; end; end`
+  - **scope refinement (code-review)**: with-else cond-mux (PR #115) 와 multi-LHS with-else (sibling) 가 *single-statement* 또는 *uniform-statement-sequence* both-branch 만 처리. router_d4 의 outer 는 **mixed-statement begin-block** (scalar + for-loop + nested-if 섞임) in both branches — 별도 처리 필요
+  - implementation: always-parser 의 if-handler 가 begin-block body 를 statement-by-statement walk + 각 statement 의 individual emit (scalar/indexed assign / for-loop / nested-if) dispatch. ~150-200 line scope (always-parser 의 outer entry extension)
+  - signal: router_d4 cell-tally 첫 sequential cells (predicted ~64 cells: 4 scalar $dff + bound×3 indexed $mux+$dff for reset branch + similar for else branch)
 - [x] **write_verilog chain via driver link** ✓ LANDED (PR #210 wire-emit + PR #212 cell-emit behavioural)
   - PR #210 `116d6799`: width prefix + escaped-identifier — substrate parse OK (wires=134, cells=55)
   - PR #212 `b0a800f3`: behavioural-form dispatch (16 binop + 3 unary + $mux) — substrate `synth` macro 가 hexa-native output 처리 가능
