@@ -17,18 +17,16 @@ final class DependenciesLoaderTests: XCTestCase {
     // MARK: empty environment — no .demi anywhere
 
     func testEmptyEnvironmentReturnsEmptyArray() {
-        // Point all three resolver env-vars at a guaranteed-absent
+        // Point the resolver env-vars at a guaranteed-absent
         // directory. Use setenv so this test is self-contained.
         let scratch = NSTemporaryDirectory()
             + "deps-loader-empty-\(UUID().uuidString)"
-        setenv("DEMIURGE_HEXA_LANG", scratch, 1)
         setenv("DEMIURGE_REPO", scratch, 1)
         defer {
-            unsetenv("DEMIURGE_HEXA_LANG")
             unsetenv("DEMIURGE_REPO")
         }
 
-        // dependenciesPath() may still find ~/core/hexa-lang/... on
+        // dependenciesPath() may still find ~/core/demiurge/... on
         // a dev box. The honest assertion is "either nil OR a path
         // that points outside our scratch dir"; if it returns a
         // real path we just check loadAll doesn't crash.
@@ -92,8 +90,8 @@ final class DependenciesLoaderTests: XCTestCase {
     """
 
     func testFixtureParsesFourRowsWithEnumsAndKindSplit() throws {
-        // Write fixture to a temp file, point DEMIURGE_HEXA_LANG at
-        // its parent dir's parent (so `<env>/domains/DEPENDENCIES.demi`
+        // Write fixture to a temp file, point DEMIURGE_REPO at
+        // its parent dir (so `<env>/domains/DEPENDENCIES.demi`
         // resolves), then loadAll().
         let tmp = NSTemporaryDirectory()
             + "deps-loader-fix-\(UUID().uuidString)"
@@ -107,9 +105,9 @@ final class DependenciesLoaderTests: XCTestCase {
                                encoding: .utf8)
         defer {
             try? FileManager.default.removeItem(atPath: tmp)
-            unsetenv("DEMIURGE_HEXA_LANG")
+            unsetenv("DEMIURGE_REPO")
         }
-        setenv("DEMIURGE_HEXA_LANG", tmp, 1)
+        setenv("DEMIURGE_REPO", tmp, 1)
 
         let rows = DependenciesLoader.loadAll()
         XCTAssertEqual(rows.count, 4,

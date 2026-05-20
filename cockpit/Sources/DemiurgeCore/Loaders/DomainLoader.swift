@@ -2,12 +2,13 @@
 //
 // Resolves the `.demi` SSOT path (env DEMIURGE_REPO → cwd → bundle
 // fallback), parses via `DemiParser`, projects each `DemiSection` into
-// a typed `Domain`. If the load fails for any reason, the caller can
-// fall back to `DomainCatalog.allHardcoded` (phase A polyfill).
+// a typed `Domain`. D89 — when the load fails the caller gets an
+// empty array + stderr warning (D80 honesty path); the previous
+// `loadAllOrFallback(_:)` + `DomainCatalog.allHardcoded` polyfill was
+// removed per D86 `g_no_hardcoded_data`.
 //
-// D50 g_ssot_single_source — INDEX.demi is THE SSOT; the Swift
-// hardcoded `DomainCatalog.all` array (post-D83) becomes a dev-only
-// polyfill kept in sync with INDEX.demi.
+// D50 g_ssot_single_source — INDEX.demi is THE SSOT; no Swift literal
+// mirror.
 
 import Foundation
 
@@ -147,12 +148,4 @@ public enum DomainLoader {
             substrateSSOT: substrateSSOT)
     }
 
-    /// Load + fall back to hardcoded list on any failure.
-    /// `DomainCatalog.all` uses this so callers never crash.
-    public static func loadAllOrFallback(_ fallback: [Domain]) -> [Domain] {
-        if let loaded = try? loadAll(), !loaded.isEmpty {
-            return loaded
-        }
-        return fallback
-    }
 }

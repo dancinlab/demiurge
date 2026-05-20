@@ -1,22 +1,25 @@
-// DependenciesLoader — load `hexa-lang/domains/DEPENDENCIES.demi`
-// (D80 + D86) into typed `DependencyEntry` rows.
+// DependenciesLoader — load `demiurge/domains/DEPENDENCIES.demi`
+// (D80 + D86 + D87 + D88) into typed `DependencyEntry` rows.
 //
-// SSOT: `~/core/hexa-lang/domains/DEPENDENCIES.demi`. The κ-65 audit
-// landed this file with 44 rows (13 kernels + 31 domain producers).
-// Each row classifies a substrate by `weight` (trivial → nonportable)
-// and `portable_status` (already-ported → nonportable), so demiurge
-// can choose the right `GateType` at cell-emit time without copying
-// the table into Swift (D86 g_no_hardcoded_data).
+// SSOT: `~/core/demiurge/domains/DEPENDENCIES.demi`. The κ-65 audit
+// originally landed this file in hexa-lang; D88 relocated it to
+// demiurge (`.demi` is a demiurge family format per D87 — all .demi
+// SSOTs live in demiurge/domains/). The file carries 44 rows (13
+// kernels + 31 domain producers). Each row classifies a substrate
+// by `weight` (trivial → nonportable) and `portable_status`
+// (already-ported → nonportable), so demiurge can choose the right
+// `GateType` at cell-emit time without copying the table into Swift
+// (D86 g_no_hardcoded_data).
 //
 // HONESTY (D80 / per-`ProducerLoader` pattern): when the file is
-// absent (the hexa-lang sibling clone isn't on disk yet) this loader
-// emits a stderr warning and returns an empty array — it does NOT
-// crash and it does NOT silently fall back to a hardcoded Swift
-// mirror. Caller-side dispatch keeps the cell at `GateType =
-// unspecified` until the SSOT is readable.
+// absent (the demiurge repo isn't on disk yet, or the env vars are
+// misconfigured) this loader emits a stderr warning and returns an
+// empty array — it does NOT crash and it does NOT silently fall back
+// to a hardcoded Swift mirror. Caller-side dispatch keeps the cell
+// at `GateType = unspecified` until the SSOT is readable.
 //
 // SCHEMA: see the head-of-file comment in
-// `hexa-lang/domains/DEPENDENCIES.demi`. The fields below mirror the
+// `demiurge/domains/DEPENDENCIES.demi`. The fields below mirror the
 // .demi keys (path / kind / domain / external_imports / weight /
 // portable_status / notes).
 
@@ -110,24 +113,23 @@ public struct DependencyEntry: Sendable, Equatable {
 
 public enum DependenciesLoader {
 
-    /// Resolve the canonical path for hexa-lang's
-    /// `domains/DEPENDENCIES.demi`. Priority:
-    /// 1. `$DEMIURGE_HEXA_LANG/domains/DEPENDENCIES.demi`
-    /// 2. `$DEMIURGE_REPO/../hexa-lang/domains/DEPENDENCIES.demi`
-    /// 3. `~/core/hexa-lang/domains/DEPENDENCIES.demi` (sibling-repo
-    ///    default — see `D61` / `ProducerLoader.producersPath()`).
+    /// Resolve the canonical path for demiurge's
+    /// `domains/DEPENDENCIES.demi` (D87 + D88 — `.demi` lives in
+    /// demiurge, NOT hexa-lang). Priority:
+    /// 1. `$DEMIURGE_REPO/domains/DEPENDENCIES.demi`
+    /// 2. `$PWD/domains/DEPENDENCIES.demi`
+    /// 3. `~/core/demiurge/domains/DEPENDENCIES.demi` (last resort)
     public static func dependenciesPath() -> String? {
         let env = ProcessInfo.processInfo.environment
-        if let hl = env["DEMIURGE_HEXA_LANG"] {
-            let p = "\(hl)/domains/DEPENDENCIES.demi"
-            if FileManager.default.fileExists(atPath: p) { return p }
-        }
         if let repo = env["DEMIURGE_REPO"] {
-            let p = "\(repo)/../hexa-lang/domains/DEPENDENCIES.demi"
+            let p = "\(repo)/domains/DEPENDENCIES.demi"
             if FileManager.default.fileExists(atPath: p) { return p }
         }
+        let cwd = FileManager.default.currentDirectoryPath
+        let pwdPath = "\(cwd)/domains/DEPENDENCIES.demi"
+        if FileManager.default.fileExists(atPath: pwdPath) { return pwdPath }
         let home = FileManager.default.homeDirectoryForCurrentUser.path
-        let homePath = "\(home)/core/hexa-lang/domains/DEPENDENCIES.demi"
+        let homePath = "\(home)/core/demiurge/domains/DEPENDENCIES.demi"
         if FileManager.default.fileExists(atPath: homePath) { return homePath }
         return nil
     }
@@ -140,9 +142,9 @@ public enum DependenciesLoader {
         guard let path = dependenciesPath() else {
             FileHandle.standardError.write(
                 Data(("DependenciesLoader: DEPENDENCIES.demi not "
-                      + "found (tried $DEMIURGE_HEXA_LANG, "
-                      + "$DEMIURGE_REPO/../hexa-lang, "
-                      + "~/core/hexa-lang) — returning [] (D80)\n"
+                      + "found (tried $DEMIURGE_REPO/domains, "
+                      + "$PWD/domains, ~/core/demiurge/domains) — "
+                      + "returning [] (D80)\n"
                 ).utf8))
             return []
         }

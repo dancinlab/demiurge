@@ -3387,3 +3387,182 @@ g_ssot_single_source ('한 사실 한 곳') 의 code-vs-data 측 강화 —
 **적용**: AGENTS.tape INDEX 2번째 entry + `@D g_no_hardcoded_data`
 body. PLAN κ-63 entry. Implementation 은 D85 PRODUCERS.demi 작업
 때 자연 따라옴.
+
+### Decision 87 — `.demi` 보관 위치 = `demiurge/domains/`
+
+**picked**: hexa-native parity SSOT (`PILOTS.demi`) + cross-repo
+dependency SSOT (`DEPENDENCIES.demi`) 둘 다 **demiurge 측
+`domains/`** 에만 보관. hexa-lang `domains/` 디렉토리는 폐기 (이미
+DEPENDENCIES.demi 단 하나만 살던 곳). 양쪽에 sharded 보관 X,
+hexa-lang 측 stash 도 X.
+
+**rationale**:
+- D83 `.demi` SSOT 형식은 demiurge family 의 declarative-loader
+  contract. 그 contract 를 소비하는 cockpit / dispatcher 는 demiurge
+  Swift. 데이터를 소비처 옆에 두는 게 D50 g_ssot_single_source 의
+  자연한 모양.
+- hexa-lang 은 .hexa kernel + parity test 의 SSOT 일 뿐, "어느
+  kernel 이 parity 됐고 어느 commit SHA 에 land 됐는지" 를 알 필요가
+  없음. 그 메타 정보는 demiurge 가 소비한다.
+- hexa-lang 측 `domains/` 디렉토리 자체가 single-file (DEPENDENCIES.
+  demi) 였고, 더 추가될 .demi 도 없음. 단일 파일 디렉토리 폐기.
+
+**적용**: D88 (DEPENDENCIES.demi 이동) + D91 (PILOTS.demi seed) 의
+모든 .demi paths 가 `demiurge/domains/` 아래. hexa-lang 측
+`domains/DEPENDENCIES.demi` 는 `git rm`.
+
+### Decision 88 — `DEPENDENCIES.demi` 위치 = `demiurge/domains/` 로 이동
+
+**picked**: hexa-lang `domains/DEPENDENCIES.demi` (κ-65 audit 의
+44-row substrate audit) 를 `demiurge/domains/DEPENDENCIES.demi`
+로 이동. 내용은 그대로 verbatim copy. hexa-lang 측 파일은 `git rm`.
+
+**rationale**:
+- D87 의 적용 — `.demi` 는 demiurge 측에 모인다.
+- DependenciesLoader.swift (이미 존재) 의 path resolver 가 새 위치
+  를 우선 검색하도록 갱신 (D90). hexa-lang fallback 폐기.
+- 단일 commit 으로 양쪽 동시 갱신 (FF push + retry ≤3) — 임시
+  dual-presence 기간 없음, drift 0.
+
+**적용**: T2 cross-repo move (이 task). demiurge commit + hexa-lang
+commit 둘 다 같은 PR 사이클에 land. `DependenciesLoader.swift` 의
+resolver priority 갱신 (D90).
+
+### Decision 89 — `allHardcoded` fallback 완전 제거 (D86 정합)
+
+**picked**: `DomainCatalog.allHardcoded: [Domain] = [...]` 19-도메인
+Swift literal + `DomainLoader.loadAllOrFallback(fallback:)` 시그너처
+**전체 삭제**. `DomainCatalog.all` 은 `DomainLoader.loadAll()` 직접
+호출. INDEX.demi 못 찾으면 **빈 array + stderr 경고** (D80 honesty
+path).
+
+**rationale**:
+- D86 `g_no_hardcoded_data` 의 직접 적용. 19-도메인 list 가 Swift
+  literal 로 hardcoded 된 것 자체가 governance violation.
+  "SSOT-missing polyfill" 라는 변명은 dev box 에서만 의미 있고,
+  prod path 의 INDEX.demi 가 missing 인 것 자체가 환경 깨짐 신호여서
+  silent fallback 이 더 위험함.
+- D80 honesty — "데이터 못 찾으면 빈 array + stderr". 같은
+  DependenciesLoader / ProducerLoader 의 honesty path 와 정확히
+  동형. 한 코드베이스에 같은 contract.
+- 향후 도메인 추가 = INDEX.demi 한 section. Swift 코드 변경 0.
+  Hardcoded literal 이 있으면 두 곳 sync 필요 — 이게 D86 가 막는
+  것.
+
+**적용**: T5 (이 task) — `Domain.swift` L121-262 (allHardcoded
+literal) 삭제 + L114-115 (`DomainCatalog.all` 정의) 갱신.
+`DomainLoader.swift` L150-157 (`loadAllOrFallback`) 삭제. tests/
+usages 영향 = 없음 (`DomainCatalog.all` API 자체는 유지).
+
+### Decision 90 — `PILOTS.demi` 8-field schema (HexaNativeParityRef 1:1)
+
+**picked**: `[pilot-<id>]` section per kernel · 8 fields per
+section: `kernel_path` · `parity_test` · `parity_method` ·
+`parity_tolerance` · `parity_status` · `hexa_lang_sha` ·
+`algorithm_ref` · `scope_notes`. Swift `HexaNativeParityRef`
+struct 와 1:1 mapping (PilotLoader.swift L# 의 `PilotEntry`
+fields).
+
+**rationale**:
+- pilot row 의 의미적 fields = (어떤 kernel 인가) + (parity 어떻게
+  쟀나) + (어디까지 갔나) + (hexa-lang 어느 commit) + (출처) +
+  (caveat). 정확히 8 axis. 더 줄이면 정보 손실, 더 늘리면 free-
+  form 으로 미끄러짐.
+- 8-field 가 demiurge 측 cell-record 에 inject 될 `HexaNativeParityRef`
+  Swift struct (D87 후속 phase, T7 이후) 와 1:1 — schema 한 군데서
+  정의되고 양쪽이 같은 모양으로 소비.
+- 새 pilot 추가 = .demi 한 section. PilotLoader / record schema /
+  consumer code 변경 0.
+
+**적용**: T1 (이 task) — `domains/PILOTS.demi` head-of-file
+comment 에 schema spec 명시 + per-row 8 fields 채움. T3 (이 task)
+— `PilotLoader.swift` 의 `PilotEntry` struct 8 fields.
+
+### Decision 91 — `PILOTS.demi` row 단위 = kernel 별 1 row
+
+**picked**: pilot 한 row 는 **kernel 파일 하나**. 같은 kernel 안의
+여러 assertion (e.g. 21 vs 41) 는 한 row 안의 `parity_status`
+field 에 summary string 으로 들어간다. Kernel 하나 안의 sub-test
+별 row split X.
+
+**rationale**:
+- pattern-pilot.md 의 rolling table 도 kernel-per-row. 같은
+  granularity 로 demiurge 측이 보유 → 양쪽 cross-link 이 1:1.
+- assertion-per-row 로 가면 N 100 rows 빠르게 폭발 + per-pilot
+  summary 가 흩어짐. consumer (Producer / dispatcher) 가 원하는
+  granularity = "이 kernel 의 parity 가 ⓐ 어디까지 갔나" — kernel
+  단위로 묶인 한 줄이 필요한 정보.
+- 새 sub-test 추가 = `parity_status` string 갱신만. 새 row 추가
+  X.
+
+**적용**: T1 — `PILOTS.demi` 10 rows 채움 (9 kernels = #1..#8 +
+#3b + #5b; transport_kinematics 도 mc_transport family 의 별도
+kernel 이라 row #10).
+
+### Decision 92 — `demiurge/domains/` 디렉토리 구조 = flat (4 files)
+
+**picked**: `demiurge/domains/` 직속 4 files (INDEX.demi · PRODUCERS.
+demi · DEPENDENCIES.demi · PILOTS.demi) — sub-directory split X.
+
+**rationale**:
+- 4 파일은 flat 으로 한 눈에 잡힘. 디렉토리 split (e.g.
+  `domains/audit/`, `domains/registry/`) 는 ≥ 7-8 files 일 때 의미
+  있음.
+- 모든 loader (DomainLoader / ProducerLoader / DependenciesLoader
+  / PilotLoader) 의 path resolver 가 동일한 base dir 검색 — flat
+  이 그 contract 와 매치.
+- 향후 `RECORDS.demi` 같은 추가가 와도 5 files 까지는 flat 유지.
+
+**적용**: T1 (PILOTS.demi seed) + T2 (DEPENDENCIES.demi 이동) 둘
+다 `demiurge/domains/` 직속에 land. T3 (PilotLoader) 의 path
+resolver 가 base dir = `<demiurge>/domains/`.
+
+### Decision 93 — pattern-pilot.md ↔ PILOTS.demi 양쪽 유지 + cross-link
+
+**picked**: `hexa-lang/inbox/notes/hexa-native-port-pattern-pilot.md`
+(rolling pilot diary + 패턴 체크리스트) 와 `demiurge/domains/PILOTS.
+demi` (declarative SSOT) **양쪽 유지**. dimension 이 다른 SSOT:
+- pattern-pilot.md = **prose + 알고리즘 선택 이유 + 발견된 hexa-
+  lang gotchas** (인간이 읽는 rolling diary)
+- PILOTS.demi = **machine-readable 8-field rows** (Swift loader 가
+  소비)
+
+cross-link 추가 — pattern-pilot.md 헤더 한 줄 + 각 pilot row 에
+`SSOT: demiurge:domains/PILOTS.demi [pilot-<id>]`.
+
+**rationale**:
+- 정보 dimension 이 다름. pattern-pilot.md 의 "왜 SPA 가 아니라
+  Hughes" / "wrap_pi sign flip 발견" 같은 prose 는 .demi 의 8-field
+  schema 로 표현 안 됨 — 그 자체가 g3 honest narrative.
+- PILOTS.demi 의 8-field row 는 prose 안에 흩어져 있으면 loader 가
+  parse 못 함 — declarative SSOT 는 별도 필요.
+- 양쪽 cross-link 으로 drift 위험 차단. "어느 한 쪽이 사실"
+  명시 — pattern-pilot.md = prose 권위 / PILOTS.demi = field 권위.
+
+**적용**: T6 (이 task) — pattern-pilot.md 헤더에 cross-link 추가.
+PILOTS.demi 의 head comment 도 양쪽 cross-link 명시. 양쪽이
+서로의 SSOT 를 가리키는 모양.
+
+### Decision 94 — emit 시 parity_ref = `PilotLoader.find(...)` (T7 phase)
+
+**picked**: `<domain>+analyze` Producer (e.g. EnergyAnalyzeProducer)
+가 cell-emit 시 `PilotLoader.find(kernelPath: ...)` 또는
+`find(id: ...)` 로 PilotEntry 한 row 를 lookup → record 의
+`HexaNativeParityRef` field 에 inject. Producer 안에 hardcoded
+parity_status string X — loader 가 SSOT.
+
+**rationale**:
+- D86 (`g_no_hardcoded_data`) 의 연쇄 — parity 값은 Swift literal
+  이면 안 되고 .demi 에서 와야 함.
+- Producer 가 "이 kernel 의 parity 가 어디까지 갔나" 를 알 필요가
+  있는 이유 = cell-record 가 그 정보를 가지고 dispatcher 가 gate
+  decision 을 내리기 때문. 그 정보가 record 옆에 안 붙으면
+  dispatcher 는 매번 .demi 재조회 → cost.
+- T1 (PILOTS.demi seed) + T3 (PilotLoader.swift) 가 lookup
+  infrastructure 를 깔아두면 T7 의 record-schema 갱신은
+  mechanical.
+
+**적용**: T7 (this task 이후 phase) — `HexaNativeParityRef` Swift
+struct 신규 + 각 Producer 의 record-emit path 에 `PilotLoader.
+find` 호출 inject. 이 task 의 T1+T3 가 그 phase 의 입력 데이터
+구조 + loader API 를 완성한다.

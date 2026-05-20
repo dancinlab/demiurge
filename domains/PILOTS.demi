@@ -1,0 +1,141 @@
+# domains/PILOTS.demi — hexa-native parity SSOT for `stdlib/kernels/<X>/`
+# .hexa pilots (D80 g_hexa_only foundation, demiurge AGENTS.tape).
+#
+# Authority (per D87 + D90 + D91):
+#   * This file is the declarative SSOT for "which kernel files have a
+#     hexa-native port + how it was parity-tested + which hexa-lang
+#     commit SHA the port landed at." (D87 — `.demi` lives in
+#     demiurge/domains/.)
+#   * Companion SSOT: `hexa-lang:inbox/notes/hexa-native-port-pattern-
+#     pilot.md` — same kernels, prose dimension (algorithm-choice
+#     rationale, hexa-lang gotchas found, follow-up queue). (D93 —
+#     양쪽 유지, dimension different, mutual cross-link.)
+#   * No hardcoded Swift mirror is allowed (D86 g_no_hardcoded_data).
+#     Producers / dispatchers that emit `HexaNativeParityRef` on cell
+#     records MUST read FROM here via `PilotLoader.find(kernelPath:)`
+#     or `find(id:)` (D94, T7 phase).
+#   * Adding a new pilot = append one [pilot-<id>] section. No code
+#     change.
+#
+# Schema (D90 — 8 fields per section, 1:1 with the Swift
+# `HexaNativeParityRef` struct that T7 will inject into cell records):
+#
+#   [pilot-<id>]
+#   kernel_path       = "<repo-relative path to the .hexa kernel>"
+#   parity_test       = "<repo-relative path to the parity test>"
+#   parity_method     = "<one-line method — what was compared>"
+#   parity_tolerance  = "<tolerance string — D80 ceiling or actual>"
+#   parity_status     = "<NN/NN PASS at rel_err=…>"
+#   hexa_lang_sha     = "<short commit SHA on hexa-lang origin/main>"
+#   algorithm_ref     = "<textbook / paper reference>"
+#   scope_notes       = "<one-line caveat — what this does NOT prove>"
+#
+# D91 — row granularity = kernel file. Multiple assertions inside one
+# kernel collapse to one row's `parity_status` summary string. New
+# sub-test = update `parity_status`, NOT a new row.
+#
+# id convention (D91): `pilot-<kernel-short-name>`, lowercase, dash-
+# separated. The 10 rows below match the 9 pilots in `hexa-native-port-
+# pattern-pilot.md` (pilot #1..#8 + the #3b/#5b parallel-pair seeds).
+
+## ── landed pilots (origin/main, hexa-lang) ──────────────────────────
+
+[pilot-solar]
+kernel_path       = "stdlib/kernels/solar/solar_kernel.hexa"
+parity_test       = "stdlib/kernels/solar/solar_kernel_test.hexa"
+parity_method     = "pvlib 0.13.0 substrate parity at 6 Phoenix-AZ timestamps × 4 outputs"
+parity_tolerance  = "<=1e-13 rel (D80 ceiling 1e-3; ~5e6x tighter)"
+parity_status     = "21/21 PASS at rel_err <=1e-13"
+hexa_lang_sha     = "122620de"
+algorithm_ref     = "Grover Hughes / Sandia 1985 ephemeris + Haurwitz 1945 clear-sky GHI"
+scope_notes       = "absorbed=true NOT flipped — pattern proof only; ModelChain (CEC-SAPM + AC inverter) untouched"
+
+[pilot-mc_transport]
+kernel_path       = "stdlib/kernels/mc_transport/mc_slab_demo.hexa"
+parity_test       = "stdlib/kernels/mc_transport/mc_slab_demo_test.hexa"
+parity_method     = "python-companion (same LCG seed) bit-identical + analytic sqrt(N) envelope vs Beer-Lambert oracle"
+parity_tolerance  = "~1e-3 rel @ N=1e5 (matches analytic envelope)"
+parity_status     = "8/8 PASS at ~1e-3 rel @ N=1e5"
+hexa_lang_sha     = "dd3dad19"
+algorithm_ref     = "1-D slab Monte Carlo transport, Beer-Lambert closed-form oracle"
+scope_notes       = "absorbed=true NOT flipped — multi-region MGXS port + ENDF nuclear data still .py-only"
+
+[pilot-neural_lif]
+kernel_path       = "stdlib/kernels/neural/lif_kernel.hexa"
+parity_test       = "stdlib/kernels/neural/lif_kernel_test.hexa"
+parity_method     = "numpy 2.x substrate reference, analytic per-timestep exact integrator"
+parity_tolerance  = "<=2e-15 rel (machine epsilon)"
+parity_status     = "23/23 PASS at rel_err <=2e-15"
+hexa_lang_sha     = "299db935"
+algorithm_ref     = "LIF (Leaky Integrate-and-Fire) closed-form analytic per-timestep exact integrator"
+scope_notes       = "absorbed=true NOT flipped — Brian2 (HH / plasticity / multi-compartment) is multi-year future port"
+
+[pilot-graph_bfs]
+kernel_path       = "stdlib/kernels/graph/bfs_topo_kernel.hexa"
+parity_test       = "stdlib/kernels/graph/bfs_topo_kernel_test.hexa"
+parity_method     = "networkx companion parity (BFS traversal order + Kahn topological sort)"
+parity_tolerance  = "exact (discrete algorithm — node-order match)"
+parity_status     = "PASS (concurrent branch, networkx companion parity)"
+hexa_lang_sha     = "57ae7a54"
+algorithm_ref     = "BFS + Kahn topological sort (Kahn 1962, CLRS §22)"
+scope_notes       = "absorbed=true NOT flipped — broader networkx surface (centrality / community / SP) still .py"
+
+[pilot-urdf_fk_2link]
+kernel_path       = "stdlib/kernels/urdf/fk_2link_kernel.hexa"
+parity_test       = "stdlib/kernels/urdf/fk_2link_kernel_test.hexa"
+parity_method     = "yourdfpy companion parity, 2-link planar manipulator forward kinematics"
+parity_tolerance  = "<=1e-13 rel (machine epsilon order)"
+parity_status     = "PASS (concurrent branch, yourdfpy companion parity)"
+hexa_lang_sha     = "fc270b6c"
+algorithm_ref     = "Forward kinematics for 2-link planar manipulator (Spong-Hutchinson-Vidyasagar §3)"
+scope_notes       = "absorbed=true NOT flipped — Pinocchio full RBD (Featherstone CRBA / RNEA / Jacobian) multi-year"
+
+[pilot-plasma_metrics]
+kernel_path       = "stdlib/kernels/plasma/plasma_metrics_kernel.hexa"
+parity_test       = "stdlib/kernels/plasma/plasma_metrics_kernel_test.hexa"
+parity_method     = "hand-mirrored Python math closed-form, 8 sample points (ITER/SPARC/JET/NSTX/Z-pinch/corona/magnetosphere/ionosphere)"
+parity_tolerance  = "rel_err = 0.0 (literal IEEE-754 bit-exact)"
+parity_status     = "41/41 PASS at rel_err = 0.0"
+hexa_lang_sha     = "c668702b"
+algorithm_ref     = "NRL Plasma Formulary p.34 — lambda_D, omega_p (e/i), Larmor radius (e/D+), high-T Coulomb log"
+scope_notes       = "absorbed=true NOT flipped — broader plasma_metrics.hexa surface + lnLambda low-T regime queued"
+
+[pilot-orbital_kepler]
+kernel_path       = "stdlib/kernels/orbital/kepler_2body_kernel.hexa"
+parity_test       = "stdlib/kernels/orbital/kepler_2body_kernel_test.hexa"
+parity_method     = "Python math libm closed-form, 5 (e, t/T) picks x 4 ecc + 2 invariants (e in {0, 0.1, 0.3, 0.7})"
+parity_tolerance  = "rel_err = 0.0 (literal IEEE-754 bit-exact; ceiling 1e-10)"
+parity_status     = "27/27 PASS at rel_err = 0.0"
+hexa_lang_sha     = "2ffe3620"
+algorithm_ref     = "Vallado §2.2 / Curtis §3.6 — Kepler 2-body NR-5 on M = E - e*sin(E), perifocal cartesian"
+scope_notes       = "absorbed=true NOT flipped — elliptical only (0<=e<1); parabolic/hyperbolic + SGP4 perturbations multi-month"
+
+[pilot-dft_naive]
+kernel_path       = "stdlib/kernels/signal_proc/dft_naive.hexa"
+parity_test       = "stdlib/kernels/signal_proc/dft_naive_test.hexa"
+parity_method     = "analytic spectra (impulse / DC / cosine-at-bin-k0) + Parseval energy conservation + idft(dft(x)) round-trip"
+parity_tolerance  = "<=1e-12 rel (off-bin leakage ~3e-15; Parseval ~1e-15 abs; round-trip ~4e-15 abs)"
+parity_status     = "17/17 PASS at rel_err <=1e-12"
+hexa_lang_sha     = "f8cd27c8"
+algorithm_ref     = "Naive O(N^2) DFT + IDFT (numpy.fft convention; exp(-2*pi*i*k*n/N) forward)"
+scope_notes       = "absorbed=true NOT flipped — Welch PSD (windowed + averaged periodograms) + radix-2 FFT next rounds"
+
+[pilot-event_queue]
+kernel_path       = "stdlib/kernels/noc_sim/event_queue.hexa"
+parity_test       = "stdlib/kernels/noc_sim/event_queue_test.hexa"
+parity_method     = "python-companion heapq parity + FIFO-at-equal-times via (time, seq) tiebreaker, 5/8/32-event traces"
+parity_tolerance  = "exact (discrete data structure — pop-order match)"
+parity_status     = "36/36 PASS exact"
+hexa_lang_sha     = "f8cd27c8"
+algorithm_ref     = "Binary min-heap discrete-event scheduler (Knuth TAOCP §5.2.3 / Python heapq semantics)"
+scope_notes       = "absorbed=true NOT flipped — actual event-driven NoC sim (BookSim2 oracle parity) is multi-round future"
+
+[pilot-transport_kinematics]
+kernel_path       = "stdlib/kernels/mc_transport/transport_kinematics_kernel.hexa"
+parity_test       = "stdlib/kernels/mc_transport/transport_kinematics_kernel_test.hexa"
+parity_method     = "Python math libm closed-form, 4 KE x 4 materials (Al/Cu/W/Pb) x 4-6 outputs + 7 CSDA ranges + 2 invariants"
+parity_tolerance  = "rel_err = 0.0 (literal IEEE-754 bit-exact; ceiling 1e-10)"
+parity_status     = "41/41 PASS at rel_err = 0.0"
+hexa_lang_sha     = "2139dbd1"
+algorithm_ref     = "PDG 2024 (Workman et al., Phys. Rev. D 110 030001) §34 — eq. 34.4 T_max + eq. 34.5 Bethe-Bloch (delta=0) + 256-step trapezoidal CSDA range"
+scope_notes       = "absorbed=true NOT flipped — particle-library PDG-data lookup still .py; CSDA omits straggling + nuclear stop tail; Geant4-MC parity multi-month"
