@@ -1147,3 +1147,77 @@ f. Re-measure router_d4 + router_d6 areas via hexa-native end-to-end;
    verify both within ±5 % of their oracles.
 
 `rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3).
+
+## UPDATE 2026-05-20 (w) — #4g landed on hexa-lang origin/main (PR #202)
+
+Implementation: new `_rv_collapse_func_body_with_prefix(body, fname)`
+helper (~50 lines) added before the existing `_rv_collapse_cascaded
+_if_body`. Handles the router_d4 `route_xy` body shape:
+
+```
+function automatic [W-1:0] f(input args);
+    reg [W-1:0] localvars ;       ← skipped (function-body locals
+                                    don't need wires since the body
+                                    inlines as one expression)
+    begin                         ← optional `begin … end` wrap
+        localvar1 = expr1 ;       ← blocking-assign — recorded SSA
+        localvar2 = expr2 ;
+        if (c1) f = e1 ;          ← cascaded-if tail collapsed by
+        else if (c2) f = e2 ;       _rv_collapse_cascaded_if_body
+        …
+        else f = eN ;
+    end
+endfunction
+```
+
+After cascaded-if collapse runs on the tail, each blocking-assign LHS
+is substituted token-wise with `( <rhs> )` across the collapsed
+ternary stream. `_rv_inline_func_calls` tries this helper first, then
+falls back to bare cascaded-if collapse (#4f), then to vf.body
+unchanged.
+
+T50 selftest:
+```
+module rg ( input wire [3:0] h , output wire [1:0] r ) ;
+    function automatic [1:0] f ( input [3:0] x ) ;
+        reg [3:0] dx ;
+        begin dx = x ; if ( dx > 0 ) f = 1 ; else f = 0 ; end
+    endfunction
+    assign r = f ( h ) ;
+endmodule
+```
+
+Inlines: `dx ↦ x` (subst), `x ↦ h` (arg-subst), `(h > 0) ? 1 : 0`,
+ternary lowers to `$mux(S=$gt(h, 0), A=0, B=1, Y=r)`. T50 asserts
+exact-count 1 × $gt + 1 × $mux. Selftest 60/60 → **61/61 PASS**
+on ubu-2 worktree (full logic_synth sync), regression 0.
+
+Merge: PR #202 admin-merged at `41c7b1fc4f20253bb3a8dc93a58929de15ae9f7a`
+on hexa-lang origin/main.
+
+**Effect on §5 chain:**
+
+route_xy now inlines at every call site in router_d4 (notably
+`grant_out = route_xy(fifo_peek[idx])` in the `always @*` body).
+BUT the call site is inside an always-body whose LHS (`grant_out`)
+is part of a multi-LHS dyn-idx structure, AND the argument
+`fifo_peek[idx]` itself uses dyn-idx wire reference — both gated by
+sub-steps #4h/#4i which haven't landed. So the cell-tally on
+flat_v2k/router_d4.v won't show the new $mux/$gt cells immediately
+— the always-body has to *enter* the cell-emit path first.
+
+**Refined chain post-(w):**
+
+a. ~~#4g~~ ✓ landed at `41c7b1fc`
+b. #4h multi-LHS body dyn-idx (router L99-100 — always@posedge reset
+   cascade with `name[wire_idx] <= rhs`). Once landed, the `grant_out
+   = route_xy(...)` inline produced by #4g actually fires into cell
+   emit.
+c. #4i with-else dyn-idx (always@posedge with-else reset structure).
+d. Cell-tally driver re-run on flat_v2k/router_d4.v — expect step-
+   change in sequential cells; previously 0, post-#4h-and-#4g should
+   show $mux from inlined ternary + $dff for the sequential LHS.
+e. share/freduce parity, comb-side oracle (handoff (s)).
+f. End-to-end area measurement vs oracle ±5 % gate.
+
+`rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3).

@@ -42,10 +42,11 @@
   - file: `self/codegen_c2.hexa` L1278 + L1338 + L7899 + L7935
   - effect: sed workaround 제거, multi-file driver pattern 기본 지원
   - signal: 기존 1500+ selftest 영향 0 (within-TU rename), 새 multi-file link 가 sed 없이 동작
-- [ ] **#4g function-body preceding-stmts inline** (route_xy 의 local-decl + 2 blocking assigns)
-  - file: `stdlib/kernels/logic_synth/read_verilog.hexa` — `_rv_collapse_cascaded_if_body` 확장
-  - signal: T-test 가 router-shaped function body 가 nested-ternary 로 inline
-  - gap-reduction: 측정 후 알 수 있음 (router L80-94 always@\* 가 fire 시작)
+- [x] **#4g function-body preceding-stmts inline** ✓ LANDED (hexa-lang PR #202 `41c7b1fc`)
+  - new helper `_rv_collapse_func_body_with_prefix` (~50 lines) — handles reg/integer/wire decls + begin/end wrap + blocking-assigns + SSA-style substitution into existing cascaded-if collapse
+  - T50 selftest: route_xy-shaped body inlines to `$mux(S=$gt(h,0), A=0, B=1, Y=r)` — exact-count 1 × $gt + 1 × $mux
+  - selftest 60/60 → 61/61 PASS, regression 0
+  - call-site `grant_out = route_xy(...)` now inlines; emit unblocks once #4h bridges the LHS-indexing gap
 - [ ] **#4h multi-LHS body dyn-idx emit** (router L99-100 reset-cascade의 indexed LHS)
   - signal: sequential cells > 0 (always@posedge body 시작)
 - [ ] **#4i with-else dyn-idx emit** (L98-123 with-else reset structure)
@@ -80,6 +81,7 @@
 
 (append-only, latest 위에)
 
+- 2026-05-20 — #4g landed: hexa-lang PR #202 `41c7b1fc` (function-body preceding-stmt prefix + T50, selftest 61/61). route_xy inline 가능
 - 2026-05-20 — router_d6 oracle 재현: 93,608.528 µm² (cited 일치, ratio 1.5156×) — d4+d6 양쪽 oracle reproducible
 - 2026-05-20 — ternary `?:` support 가 sibling 으로 origin/main 에 land (43e1dcc0) — #4g 의 prerequisite 충족
 - 2026-05-20 — PR-A landed: hexa-lang PR #196 `929e9ca2` (2-line dispatch + T48/T49, selftest 58/58)
