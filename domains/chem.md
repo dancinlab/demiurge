@@ -9,7 +9,7 @@
 > Graph (D82): prereq = `[matter]`. facets = `{scale: molecular,
 > cluster: [chem, matter], hostility: macos-clean}`.
 
-**Substrate** (where the .hexa kernels live): NOT YET — no `stdlib/chem/` subtree and no sibling `~/core/hexa-chem/` repo; substrate SSOT planned via D17 sibling-repo precedent (will reuse `stdlib/{mol,crystal}/` from matter at chain-stage)
+**Substrate** (where the .hexa kernels live): hexa-lang `stdlib/kernels/chem/` (scaffolding seed — `arrhenius_kernel` 1 kernel · 6/6 test PASS as of 2026-05-20); sibling `~/core/hexa-chem/` repo still planned per D17 precedent for the larger molecular-scale substrate; reuses `stdlib/{mol,crystal}/` from matter at the reaction-environment chain-stage
 
 ## 1. Deliverable
 
