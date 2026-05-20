@@ -106,6 +106,7 @@
 
 (append-only, latest 위에)
 
+- 2026-05-20 — **cycle closure**: 9 PRs landed (all merged into hexa-lang origin/main) · 13 local branches deleted · 7 remote branches deleted · 13 demiurge handoff entries (o)-(aa) committed. All my work cycles closed. Remaining 3 ☐ items (#4i · measurement · gate flip) inherited as multi-session work for next dedicated session
 - 2026-05-20 — PR #219 landed: hexa-lang `c20b30b4` (write_verilog $dff behavioural emit, sibling conflict resolved). **9 PRs cumulative**. substrate handoff complete for $dff sequential cells
 - 2026-05-20 — #4h-b landed: hexa-lang PR #220 `85bea9a5` (multi-LHS body dyn-idx LHS + T52, per-element $eq+$and+$mux+$dff chain). 8 PRs cumulative
 - 2026-05-20 — #4h-a landed: hexa-lang PR #216 `2bcb8b72` (multi-LHS body static-idx LHS + T51, selftest 65/65). First sequential emit primitive
