@@ -2982,6 +2982,55 @@ multi-day). 10 PR 의 measurable progress 정착이 honest closure point
 `24422976`. T31-T41 11 selftest 가 regression net. 두 real blocker
 (dynamic indexing + function-call inline) 각 multi-day 작업.
 
+### Decision-gate note on Decision 68 — 10차 (function-call inline 의 token-level preprocessor partial 정착 — 11 PR 누적 / 최종 closure)
+
+9차 note 의 honest abandon (function-call inline) 를 다시 시도 — 이번엔
+`_rv_elab_*` signature cascade refactor 우회를 위해 *token-level
+preprocessor* 패턴 사용. 진행:
+
+| PR | merge | step | selftest |
+|----|-------|------|----------|
+| #162 | `f647c20d` | #4c partial — `_rv_inline_func_calls` (single-stmt body shape) | 50/50 |
+
+preprocessor 가 `_rv_parse_module` 의 entry-loop 에서 첫 non-function
+토큰 시점에 1번 호출, 남은 토큰 stream 의 `name ( args )` 패턴을
+function body 의 single return-expr `func_name = expr ;` 에서
+substitution 한 `( ( arg_subst_expr ) )` 로 교체. operator precedence
+보존을 위한 paren wrap. multi-stmt body / nested call / arity mismatch
+는 fallback (토큰 원본 유지).
+
+**이 세션 최종 누적 측정 사실** (11 PR · selftest 50/50 PASS):
+- ✅ cond-mux primitive *static-shape* family (sequential / combinational
+  × with-else / no-else × single / multi-LHS × simple-name / static-
+  indexed) — PR #115/#116/#119/#120/#122/#126/#128/#133/#135
+- ✅ function-call inline partial (single-stmt return-expr body) —
+  PR #162
+- ✅ 11 PR landed on `hexa-lang origin/main` (HEAD `f647c20d`)
+- ✅ `read_verilog` selftest 34 → 50/50 PASS, regression 0
+- 🟡 **router_d4 coverage 여전히 0%** — predict-first, re-fire 없음
+  - router 의 `route_xy` function body 가 cascaded if-else chain
+    (single return-expr 아님) → preprocessor fallback (no inline)
+  - router 의 always 본체 if-body 가 dynamic-idx LHS → cond-mux
+    primitive 의 static-shape family 외부
+- 🟡 진짜 router blocker 2개 — 각 multi-day, 별도 session:
+  1. **Dynamic indexing** — array size lookup 인프라 + P-way enable-
+     mux chain 또는 yosys `$shiftx` / Memory cell
+  2. **Function-body proc-pass** — cascaded-if-collapse inside
+     function bodies (`route_xy` 같은 case 의 inline 활용을 위해)
+- 🟡 `rfc_006 §5` `measurement_gate = OPEN`, `absorbed = false` 유지
+
+**사용자 goal "multi-day session all closure" 의 g3 거리**: 추천순 +
+multi-day sanction 하에 시도 진행한 결과 — 가장 작은 partial step 까지
+모두 도달. 단 *router_d4 synth-end-to-end* 가 요구하는 multi-stmt /
+dynamic-array family 는 한 세션 안 도달 불가 (측정-사실, fraudulent
+flip 금지 — g3).
+
+**Honest closure**: 11 PR 의 cond-mux primitive + function-inline
+partial 정착이 이 세션의 measurable progress. ABSORPTION.md §178 의
+multi-day 작업이 multi-step 으로 분해 + measurable selftest (T31-T42)
+regression net 완성. 다음 session 의 base 명확 (`origin/main`
+`f647c20d`).
+
 ### Decision 73 — firmware 새 도메인 + 7-verb 합성→검증 seam 정의
 
 **picked**: 16 번째 도메인 `domains/firmware.md` 추가. **펌웨어

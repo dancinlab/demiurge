@@ -379,3 +379,51 @@ Cross-session resumption point: `hexa-lang origin/main` HEAD
 regression net. Next session's two real blockers are
 **dynamic indexing** and **function-call inline** — both multi-day
 work for a dedicated future session.
+
+## UPDATE 2026-05-20 (k) — function-call inline partial landed (Step 4c) — 11 PR cumulative
+
+Sub-step #4c (function-call inline at expression site) tried again
+in-session after the (j) honest-abandon, this time via a token-level
+preprocessor that avoids the `_rv_elab_*` signature cascade refactor.
+The minimal shape lands:
+
+| PR | merge | step | what landed | selftest |
+|----|-------|------|-------------|----------|
+| #162 | `f647c20d` | #4c partial | `_rv_inline_func_calls` token-level preprocessor — `name(args)` → `( (arg_subst_body_expr) )` for single-stmt `func_name = expr ;` body shape | 50/50 |
+
+The preprocessor runs once at module-parse entry, at the first
+non-`function` token after ≥1 function decl is collected. It rewrites
+the remaining token stream by substituting each `name ( args )` whose
+function has a single return-expr body. Anything else (multi-stmt
+function bodies, nested calls, mismatched arity) falls back to leaving
+the call site untouched.
+
+Cumulative this session: **11 PRs on hexa-lang origin/main**,
+`read_verilog` selftest 34 → 50/50 PASS, regression 0. (The selftest
+count jumped past T42 because sibling PRs landed their own selftests
+in main between PR #135 and PR #162.)
+
+**router_d4 coverage still 0%** — router's `route_xy` function body
+is a cascaded `if … else if …` chain (not a single return-expr), so
+it falls back to no-inline. Lifting that needs proc-pass core
+*inside* function bodies (cascaded-if-collapse → single-expr → then
+inline). Multi-day, separate session.
+
+**Step 4 (dynamic indexing) — primary blocker remains.** Attempted
+sizing this in-session: the implementation needs array-size lookup
+(currently no infrastructure for it in read_verilog — wire name
+pattern scan + SymTab metadata + multi-LHS detection cascade) plus
+P-way enable-mux chains per array. Multi-day, separate session.
+
+`rfc_006 §5` `measurement_gate = OPEN`, `absorbed = false` stays.
+
+This is the session's final closure point — the cond-mux primitive
+family + function-call inline (partial) cover all the *single-stmt
+LHS-shape* cases. The remaining gap to router_d4 synthesis is the
+*multi-statement / dynamic-array* family, which is the genuinely
+multi-day work that ABSORPTION.md §178 sized as the heart of the
+1-2-week absorption.
+
+Cross-session resumption point: `hexa-lang origin/main` HEAD
+`f647c20d`. T31-T42 selftests form the primitive regression net for
+the next session.
