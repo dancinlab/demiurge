@@ -54,12 +54,9 @@ sub-steps 가 incremental gap 축소.
   - T50 selftest: route_xy-shaped body inlines to `$mux(S=$gt(h,0), A=0, B=1, Y=r)` — exact-count 1 × $gt + 1 × $mux
   - selftest 60/60 → 61/61 PASS, regression 0
   - call-site `grant_out = route_xy(...)` now inlines; emit unblocks once #4h bridges the LHS-indexing gap
-- [ ] **#4h multi-LHS body dyn-idx emit** (router L99-100 reset-cascade의 indexed LHS)
-  - signal: sequential cells > 0 (always@posedge body 시작)
-  - sub-steps:
-    - **#4h-a**: multi-LHS path 에 indexed-LHS (static const idx) 인식 (~50 line, L3074 honest gap 메우기)
-    - **#4h-b**: dyn-idx LHS (wire-indexed) multi-LHS — PR #174 single-stmt 의 multi-LHS context 확장
-    - **#4h-c**: for-in-always static unroll (router L101+L108+L115 의 `for (pp=0; pp<P; pp=pp+1)` 처리)
+- [x] **#4h sub-steps a + b** ✓ LANDED (PR #216 #4h-a static-idx, PR #220 #4h-b dyn-idx)
+  - sub-steps remaining:
+    - **#4h-c**: for-in-always multi-stmt body unroll (router L101+L108+L115 의 `for (pp=0; pp<P; pp=pp+1)` 처리; single-stmt body 만 sibling 처리됨, multi-stmt 가 #4h-c scope)
     - **#4h-d**: nested-if inside always-body multi-stmt (router L109 `if (in_valid[pp] && !fifo_full[pp])`)
 - [ ] **#4i with-else dyn-idx emit** (L98-123 with-else reset structure)
   - signal: sequential cells ≈ N × P (P-fold sequential emit)
@@ -81,6 +78,7 @@ sub-steps 가 incremental gap 축소.
 - [x] **cell-tally re-measure post-#4g** ✓ (handoff (x)): 35 → 55 cells (+20 comb), sequential still 0, gap 99.5%
 - [x] **#4h-a multi-LHS body static-idx LHS** ✓ LANDED (PR #216 `2bcb8b72`, selftest 65/65 PASS) — first sequential emit primitive
 - [x] **첫 sequential cells emit 확인** ✓: `test_4h_a.v` (multi-LHS no-else indexed-LHS) → 4 cells: 2×$mux + 2×$dff (handoff (aa) measurement)
+- [x] **#4h-b multi-LHS body dyn-idx LHS** ✓ LANDED (PR #220 `85bea9a5`) — per-element ($eq+$and+$mux+$dff)×bound chain in multi-LHS context. T52 selftest: 4×$eq + 4×$and + 4×$mux + 4×$dff for 2 statements × bound=2
 - [~] **write_verilog $dff behavioural emit** — in-tree verified (selftest 13/13 PASS), PR #219 OPEN with conflict — 다음 session resolve
 - [ ] **§5 measurement_gate = CLOSED_MEASURED · absorbed=true** (g3 — only after measurement passes)
 
@@ -103,6 +101,7 @@ sub-steps 가 incremental gap 축소.
 
 (append-only, latest 위에)
 
+- 2026-05-20 — #4h-b landed: hexa-lang PR #220 `85bea9a5` (multi-LHS body dyn-idx LHS + T52, per-element $eq+$and+$mux+$dff chain). 8 PRs cumulative
 - 2026-05-20 — #4h-a landed: hexa-lang PR #216 `2bcb8b72` (multi-LHS body static-idx LHS + T51, selftest 65/65). First sequential emit primitive
 - 2026-05-20 — sequential emit confirmed: test_4h_a.v (multi-LHS indexed-LHS) → 2×$mux + 2×$dff cells. milestone
 - 2026-05-20 — PR #219 OPEN (write_verilog $dff behavioural emit, in-tree verified 13/13, merge conflict with sibling work on compiler/PLAN.md)
