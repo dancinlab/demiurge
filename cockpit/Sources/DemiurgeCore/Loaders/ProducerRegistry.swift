@@ -88,6 +88,48 @@ public enum ProducerRegistry {
                         engineToolSucceeded: r.ok)
                 },
             ]),
+
+        // G4 sibling-repo cells (κ-62) — ProducerRegistry now hosts
+        // sibling-repo dispatch as a first-class variant pattern via
+        // siblingRepoVariant. Adding a new sibling-cell is a single
+        // dict line. D80 — these are TRANSITIONAL POINTERS, never an
+        // ultimate endpoint; absorbed=true non-provisional still
+        // requires the hexa-native parity port.
+
+        // ufo + synthesize — hexa-ufo selftest dispatch (HEXA-Disc
+        // 7-stage propulsion atlas).
+        ProducerCellKey(verb: .synthesize, domain: "ufo"): ProducerEntry(
+            defaultID: "hexa-ufo",
+            variants: [
+                "hexa-ufo": ProducerRegistry.siblingRepoVariant(
+                    id: "hexa-ufo",
+                    domainID: "ufo",
+                    verb: "synthesize",
+                    displayName: "hexa-ufo selftest (sibling repo)"),
+            ]),
+
+        // ufo + verify — 13 falsifier preregister state check.
+        ProducerCellKey(verb: .verify, domain: "ufo"): ProducerEntry(
+            defaultID: "hexa-ufo",
+            variants: [
+                "hexa-ufo": ProducerRegistry.siblingRepoVariant(
+                    id: "hexa-ufo",
+                    domainID: "ufo",
+                    verb: "verify",
+                    displayName: "hexa-ufo verify (13 falsifier state)"),
+            ]),
+
+        // aura + verify — F-AURA-{1..4} 15 sub-IDs state check
+        // + G6 cascade if hexa-rtsc demoted.
+        ProducerCellKey(verb: .verify, domain: "aura"): ProducerEntry(
+            defaultID: "hexa-aura",
+            variants: [
+                "hexa-aura": ProducerRegistry.siblingRepoVariant(
+                    id: "hexa-aura",
+                    domainID: "aura",
+                    verb: "verify",
+                    displayName: "hexa-aura verify (F-AURA-{1..4} state)"),
+            ]),
     ]
 
     /// Convenience predicate for CLI / cockpit — has this cell got

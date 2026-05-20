@@ -3344,3 +3344,46 @@ facet filter → DAG closure preview) 은 별도 phase C.
 
 g3 — data 분리만, 측정 record / gate / absorbed 변경 0. UI 분리
 표시 (built-in vs u/) 는 phase D.
+
+### Decision 85 — PRODUCERS.demi (sibling-repo dispatch declarative SSOT)
+
+**picked**: `ProducerRegistry.entries` 의 **sibling-repo variants** 를
+`domains/PRODUCERS.demi` declarative SSOT 로 분리. `ProducerLoader.
+swift` 가 DemiParser 재사용 (D83) 해서 section 별 `siblingRepoVariant`
+자동 생성. `ProducerRegistry.entries` = `<loaded sibling cells>` +
+`<hardcoded Swift-class cells>` (additive merge — cern/analyze 의
+pylhe / xsuite 같은 Swift function reference 는 declarative 불가능
+→ Swift hardcoded 유지). 새 sibling cell 추가 = `.demi` 한 section.
+(Rejected: 모든 variant 를 .demi — Swift function reference 표현
+불가능; 모든 variant Swift hardcoded — D86 위반.)
+
+**rationale**: 사용자 게이트 "전부 데이터로 보관" + D83 .demi format
+재사용 + N+M 패턴 (도메인 cohort 와 동형). 새 sibling cell PR diff
+= .demi 한 줄, Swift 코드 변경 0.
+
+**적용**: domains/PRODUCERS.demi 신규 + ProducerLoader.swift 신규
++ ProducerRegistry.entries runtime-load + Swift hardcoded merge.
+
+### Decision 86 — `g_no_hardcoded_data` governance (코드 vs 데이터 강화)
+
+**picked**: AGENTS.tape `@D g_no_hardcoded_data` 추가 — **데이터는
+declarative SSOT (.demi / .tape / .md / INDEX.*), 코드는 type +
+loader**. Hardcoded list/dict in Swift = governance violation. D50
+g_ssot_single_source ('한 사실 한 곳') 의 code-vs-data 측 강화 —
+'그 한 곳은 코드 아닌 데이터' 명시. (Rejected: Swift hardcoded
+허용 + 'sync 하면 OK' — D50 위반 누적 사례 너무 많음, drift 보장.)
+
+**rationale**:
+- 사용자 게이트 2026-05-20 "하드코딩 금지" (D85 맥락에서).
+- D85 PRODUCERS.demi 가 첫 application. future PR 들이 governance
+  로 자동 적용.
+- Swift function reference exception 명시: Swift-class variant 코드
+  유지, external dispatchable substrate (sibling binary / hexa script
+  / Python adapter) 는 무조건 .demi.
+- 기존 hardcoded fallback (DomainCatalog.allHardcoded) 는 SSOT-
+  missing-only polyfill 로 명시 (prod path 는 INDEX.demi 우선).
+- D80 g_hexa_only 와 동형 — first-principle, future reference.
+
+**적용**: AGENTS.tape INDEX 2번째 entry + `@D g_no_hardcoded_data`
+body. PLAN κ-63 entry. Implementation 은 D85 PRODUCERS.demi 작업
+때 자연 따라옴.

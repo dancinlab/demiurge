@@ -4044,3 +4044,23 @@
   실제 substrate 들이 GateType typed emit, UfoVerifyRecord/
   AuraVerifyRecord 실 사용, ProducerRegistry siblingRepoVariant
   점진 등록.
+- 2026-05-20 — **phase κ-63 — D85 + D86 governance 박제 (전부 데이터로
+  보관)**. 사용자 게이트 "하드코딩 금지 + AGENTS.tape update".
+  변경:
+  - **D86 g_no_hardcoded_data governance**: AGENTS.tape INDEX 2번째
+    entry (g_hexa_only D80 다음) + body block. 'Any list / dict /
+    table representing *data* MUST live in a declarative SSOT
+    (.demi / .tape / .md / INDEX.*), NOT hardcoded Swift literal.'
+    D50 g_ssot_single_source 의 code-vs-data 측 강화. exception:
+    Swift function reference (declarative 불가능) 만 코드 유지.
+  - **D85 PRODUCERS.demi design** — sibling-repo dispatch 의
+    declarative SSOT. ProducerLoader.swift 가 DemiParser 재사용
+    해서 section → siblingRepoVariant. ProducerRegistry.entries =
+    loaded sibling cells + hardcoded Swift-class cells (additive
+    merge; cern/analyze 의 pylhe / xsuite 같은 function reference
+    는 코드 유지). Implementation 은 후속 commit.
+  - design.md D85 + D86 audit-trail (rationale 각 4-5 bullets).
+  - PLAN κ-63 entry (이 항목).
+  g3 — governance 등록만, 측정 record / gate / absorbed 변경 0.
+  다음 phase = D85 implementation (PRODUCERS.demi 신규 + Producer
+  Loader + ProducerRegistry refactor).

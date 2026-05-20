@@ -8,6 +8,7 @@
 
 ## INDEX (curated pointer table — keep in sync if you add or remove a top-level entry)
 # @D g_hexa_only              — ULTIMATE FORM = hexa-native; Python/Swift/external CLI/sibling-repo binary are TRANSITIONAL POINTERS, not endpoints; absorbed=true requires hexa-native parity port (D80)
+# @D g_no_hardcoded_data      — 데이터는 declarative SSOT (.demi/.tape/.md/INDEX.*), 코드는 type + loader; hardcoded list/dict in Swift = violation (D86)
 # @D g_demiurge_pointer_only  — demiurge = pointer / spawn wrapper ONLY; every producer script lives in hexa-lang/stdlib/  (D61)
 # @D g_stdlib_ownership       — stdlib/ namespace belongs EXCLUSIVELY to hexa-lang; demiurge is consumer only   (D15)
 # @D g3_no_over_claim         — never assert unmeasured/unproven results; SKIP-mode regression banned           (D12)
@@ -36,6 +37,17 @@
   enforcement = "Record schema MUST carry `hexa_native_parity: { ref: <kernel path>, rel_err: <number>, tolerance: <number> }` when emitted with absorbed=true. Records without this field cap at GATE_OPEN even if every intermediate check passes. The transitional flip pattern (cern+synth κ-51) is allowed under scope_caveats but flagged with `hexa_native_parity = null` and `provisional = true`."
   see_also = "g_hexa_native (D14+D18, absorption-preference RAISED to endpoint by this rule); g3_no_over_claim (D12); D72 kernel layer (the path); D80 (this decision in design.md audit)"
   decision_ref = "design.md D80"
+
+@D g_no_hardcoded_data := "데이터는 declarative SSOT, 코드는 type + loader" :: governance [required d=2026-05-20 active]
+  rule = "Any list, dict, table, or record that represents *data* MUST live in a declarative SSOT file (`.demi`, `.tape`, `.md` body, `INDEX.*`) — NOT in Swift hardcoded literal arrays / dicts / case lookup tables. The Swift side carries (a) the *type* schema, (b) the *loader* parsing the SSOT, and (c) a thin polyfill / dev-fallback only when the SSOT file is genuinely missing (first launch, embedded test rig). Hardcoded data in Swift code is a governance violation."
+  user_directive = "2026-05-20 — '하드코딩 금지' (after D85 PRODUCERS.demi 제안 시점)"
+  general_principle = "모든 데이터는 SSOT 한 곳, 코드는 그 SSOT 를 parse 하는 framework. 새 도메인 / 새 producer / 새 falsifier / 새 cell 추가는 declarative file 한 줄 (.demi 또는 비슷). Swift 코드 변경 0. 이건 D50 g_ssot_single_source 의 *code-vs-data* 측 강화 — D50 이 '한 사실 한 곳' 이고 g_no_hardcoded_data 가 '그 한 곳은 코드 아닌 데이터' 임을 명시."
+  examples_compliant = "domains/INDEX.demi (D83) — DomainCatalog.all 가 runtime-load + dev-fallback (allHardcoded 는 polyfill). domains/PRODUCERS.demi (D85, in-progress) — ProducerRegistry sibling-cells declarative SSOT. AGENTS.tape 자체 — governance 데이터가 .tape declarative."
+  examples_violation = "ProducerRegistry.entries 에 hardcoded `[ProducerCellKey: ProducerEntry]` literal 의 sibling-repo cells (cern/analyze 의 pylhe / xsuite-tracking 은 *예외* — Swift function reference 라 declarative 불가능). DomainCatalog.allHardcoded 의 19 entries — INDEX.demi 의 polyfill 로만 유지, prod path 는 SSOT 우선."
+  enforcement = "PR review checklist: any new `static let` Swift array / dict that represents *data* (not config / not constants) = block. Refactor into .demi + Loader pattern. Hardcoded fallback 은 SSOT-missing-only path 로 명시 (`loadAllOrFallback`)."
+  exception = "Swift function references (e.g., `CernAnalyzeXsuiteProducer.runAnalyze`) — Swift cannot reflect function bodies from .demi at runtime, so Swift-class variants stay coded. The .demi side only handles *external* dispatchable substrates (sibling-repo binaries, hexa scripts, Python adapters). When a Swift function reference is genuinely needed, the registry merges hardcoded Swift entries + loaded .demi entries (additive, not replacement)."
+  see_also = "g_hexa_only (D80) · g_ssot_single_source (D50) · D83 .demi format · D85 PRODUCERS.demi"
+  decision_ref = "design.md D86"
 
 @D g_demiurge_pointer_only := "demiurge = pointer / spawn wrapper ONLY" :: governance [required d=2026-05-20 active]
   rule = "demiurge is a pointer / spawn-wrapper ONLY for every external-tool producer script (Python / shell / hexa-native). The script SSOT lives in `hexa-lang/stdlib/<domain>/`, NEVER in `demiurge/`. demiurge's Swift `*Producer.swift` files only `Process`-spawn the hexa-lang-owned script; they hold no compute logic."
