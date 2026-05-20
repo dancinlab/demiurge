@@ -1093,3 +1093,57 @@ d. Re-measure area when sequential cells appear.
 flip; this turn landed an in-tree fix on ubu-2 worktree, measured
 54/54 selftest preservation, and quantified the absolute gap to
 oracle).
+
+## UPDATE 2026-05-20 (v) — PR-A landed on origin/main + router_d6 oracle bit-exact reproduced + ternary already in tree
+
+Three independent things this turn:
+
+**1. PR-A landed.** The (u) 2-line dispatch fix opened as PR #196 and
+admin-merged at `929e9ca2`. Sibling sessions then advanced origin/main
+further to `43e1dcc0`, including a parallel ternary `?:` addition.
+
+**2. router_d6 oracle reproduced bit-exact** — same procedure as (s)
+on `archive/comb/rtl/flat_v2k/router_d6.v`:
+
+```
+yosys -p "synth -top router_d6; dfflibmap ...; abc ...; opt_clean; stat ..."
+
+Chip area: 93,608.528000 µm² ← cited oracle 93,608.53 µm² (0.0 % Δ)
+  sequential: 68,485.683200 µm² (73.16 %)
+ratio d6/d4 = 93,608.528 / 61,762.986 = 1.5156×
+            ← cited ratio 1.5156× (matches to 4 decimal places)
+```
+
+Both §5 oracles (d4 ≈ 61,763 µm² / d6 ≈ 93,609 µm² / ratio 1.5156×)
+are now independently reproducible from this machine's substrate. The
+§5 measurement reference is fully fixed — every future hexa-native
+parity attempt has two-point ground truth.
+
+**3. Ternary `?:` already landed on origin/main** (sibling work,
+discovered while attempting #4g). Implementation lives at
+`stdlib/kernels/logic_synth/read_verilog.hexa` L939-965 — emits
+`$mux(S=cond, A=else, B=then, Y=tn)` at min_prec ≤ 1 in
+`_rv_elab_expr` (matches the design sketched in handoff (m)). This
+removes #4g's first prerequisite; the remaining work is the cascaded-
+if → nested-ternary collapse for the `route_xy` function body shape
+(local-reg + 2 blocking assigns + cascaded-if-via-funcname).
+
+**Refined chain (next session, ordered post-(v)):**
+
+a. #4g `_rv_collapse_cascaded_if_body` (cascaded-if → nested ternary
+   inside _rv_inline_func_calls path; the body shape from PR #172 in
+   handoff (m), now usable since ternary already lowers to $mux).
+   T50 selftest: router_d4-shaped `function automatic` cascaded body
+   inlines to a single $mux-tree at the call site.
+b. #4h multi-LHS dyn-idx (always-body single-stmt with dyn-idx LHS).
+c. #4i with-else dyn-idx (reset-cascade in always @(posedge clk)).
+d. Re-run cell-tally driver — sequential cells should appear
+   incrementally. Target: 1647 $_DFF_/$_SDFF_/$_DFFE_ + 7379 $_MUX_
+   from the substrate baseline.
+e. Comb-side share/freduce parity (handoff (s)) — the `synth`-macro
+   logic-sharing passes that bridge from manual-pass 23k µm² to
+   oracle 13k µm² of comb area.
+f. Re-measure router_d4 + router_d6 areas via hexa-native end-to-end;
+   verify both within ±5 % of their oracles.
+
+`rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3).
