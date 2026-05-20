@@ -3833,3 +3833,19 @@
   QEMU + Zephyr west 첫 measurement.
   g3 — auto-flip 0 (B 100% PASS 도 권고 NO 까지만). D74 ProducerRegistry
   의 cells-with-alternatives 패턴 외에 새 governance 추가 없음.
+- 2026-05-20 — **phase κ-54 — D75 scope+verify substrate fix
+  (Option B, same-wavelength split)**. 사용자 게이트 "완성도 기준
+  진행" → 4 options 중 Option B (둘 다 살림) 선택. hexa-lang
+  origin/main `03470762` — `check_webbpsf_cross_same_wavelength`:
+  NIRCam F480M @ 4.8 μm vs kernel propagation at SAME 4.8 μm (기존
+  550 nm vs 4.8 μm λ-mismatch 해소). check #2 (550 nm Airy) 변경
+  없음 — 두 파장 모두 exercised. 로컬 실행 (poppy 1.1.2, webbpsf
+  2.2.0, stpsf-data 128 MB): **all_required_passed: true · n_passed
+  = 5 / n_required = 5 · n_skipped = 0** — same-wavelength check
+  rel_err = 12.78% (tol 50%) PASS. **absorbed=true flip 권고는
+  여전히 NO** — D75 가 풀어준 honesty blocker 는 wavelength 미스
+  매치 1개; substrate header 의 다른 2 caveats (measured optics
+  deck, hexa-native FFT IEEE-754) 잔존. v3 note `parity_attempt_
+  scope_verify_2026-05-20-v3.md` + design.md D75 audit-trail.
+  inbox/INDEX.md 의 scope+verify row 갱신 (superseded → resolved-v3-5/5).
+  g3 — substrate-design fix only, GATE/absorbed 변경 0.

@@ -32,7 +32,9 @@
 | `parity_attempt_cern_synth_2026-05-20.md` | resolved | κ-51 | xsuite FODO rel err 1e-10; **absorbed=true flip executed** |
 | `parity_attempt_energy_synth_2026-05-20.md` | resolved | κ-50 | PyPSA rel err 6e-6 vs scipy LP; flip NO (data-honesty gate) |
 | `parity_attempt_scope_synth_2026-05-20.md` | superseded | κ-53 B-track | FAIL @ 87-94% — see v2 note from κ-53 metric fix |
-| `parity_attempt_scope_verify_2026-05-20.md` | superseded | κ-53 C-track | 4/5 PASS; WebbPSF retry pending κ-53 C-track |
+| `parity_attempt_scope_verify_2026-05-20.md` | superseded | v3 / D75 | v1 — 4/5 PASS (WebbPSF env missing) |
+| `parity_attempt_scope_verify_2026-05-20-v2.md` | superseded | v3 / D75 | v2 — 4/5 PASS (WebbPSF env installed, λ-mismatch design flaw surfaced + 4 options) |
+| `parity_attempt_scope_verify_2026-05-20-v3.md` | resolved | κ-54 / D75 | 5/5 PASS after same-wavelength split; flip still NO (other caveats) |
 | `parity_attempt_space_synth_2026-05-20.md` | resolved | κ-50 | Tsiolkovsky rel err ≤1e-4; flip NO (SLSQP bound) |
 | `rfc006-s5-area-oracle-parity-handoff.md` | pickup-blocked | (hexa-lang session) | Yosys read_verilog 6-construct multi-week expansion |
 | `yosys-dispatcher-use-integration-compile-fail.md` | resolved | (mis-diagnosis) | No action needed, kept as resolution audit |

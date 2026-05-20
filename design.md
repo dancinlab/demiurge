@@ -2949,3 +2949,40 @@ CernAnalyzeRecord Swift type 은 pylhe shape 유지 (xsuite record 는
 raw json — Codable 추가는 후속 phase). g3 — registry 자체는 측정
 없음, 두 variant 다 기존 GATE_OPEN 유지 (cern+synthesize 의 absorbed=
 true flip 과 별개 cell).
+
+### Decision 75 — scope+verify substrate fix: split into two checks (Option B)
+
+**picked**: `~/core/hexa-lang/stdlib/scope/poppy_psf_verify.py` 의 check
+`webbpsf_cross_check` 가 instrument-mismatch (kernel 550 nm vs NIRCam
+4.8μm, λ ratio 8.7×) 로 ±50% tol 안에 들어오지 못함. **Option B — 두
+check 분할**: (i) check #4a = WebbPSF NIRCam @ 4.8μm vs kernel *추가*
+propagation @ 4.8μm (같은 λ → 의미 있는 ±50% parity), (ii) check #4b
+= 기존 analytic diffraction limit @ 550 nm (check #2 와 동일, 변경
+없음). 결과 5 check → 6 check. (Rejected: (A) align wavelengths —
+kernel default 550nm 잃음, visible-light scope 좁아짐; (C) drop WebbPSF
+cross-check — cohort cell JWST signal 잃음; (D) tolerance widen 0.9 —
+g3 위반 silent pass.)
+
+**rationale**:
+- 사용자 게이트 2026-05-20 "완성도 기준 진행" — Option B 가 **둘 다
+  살리는** 유일한 옵션: visible-light Airy oracle + JWST-instrument
+  cross-check. A/C 는 한 쪽 포기, D 는 g3 위반.
+- B 가 약속하는 측정 격차: ±50% tol 이 같은 λ 비교에서 진짜 의미 —
+  kernel 4.8μm rerun vs NIRCam F480M 4.8μm FWHM 가 ±50% 안이면 honest
+  parity 신호. 다른 λ 비교는 trivially wrong.
+- substrate complexity 증가는 작음 — kernel propagation 1 회 추가
+  (런타임 ~2 배), check 수 5→6, Record schema `n_checks_required=6`,
+  새 field `webbpsf_kernel_4_8um_fwhm_arcsec` + `webbpsf_nircam_fwhm_
+  arcsec`.
+- κ-50/κ-53 의 v1/v2 parity walk 가 이 결정의 직접 입력. v3 note 가
+  6/6 PASS 후 작성됨.
+- absorbed=true flip 결정은 별도 — D75 는 substrate 설계 수정 만,
+  flip 은 substrate 의 다른 caveats (parametric aperture vs flight
+  data, hexa-native FFT IEEE-754) 도 풀려야.
+
+**적용**: hexa-lang `stdlib/scope/poppy_psf_verify.py` 수정 — 새 check
+`webbpsf_cross_check_same_wavelength` (kernel 4.8μm rerun + NIRCam
+F480M 4.8μm 비교). `n_checks_required = 6`. hexa-lang push origin/main,
+demiurge worktree v3 note 작성 + push. PLAN κ-54 entry. g3 — substrate
+수정 자체는 GATE/absorbed 변경 0; 6/6 PASS 시에도 flip 권고는 main
+session 가 따로 검토.
