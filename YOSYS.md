@@ -64,11 +64,11 @@ sub-steps 가 incremental gap 축소.
 - [ ] **#4i with-else dyn-idx emit** (L98-123 with-else reset structure)
   - signal: sequential cells ≈ N × P (P-fold sequential emit)
   - dependency: #4h sub-steps all landed first
-- [~] **write_verilog chain via driver link** — partial (callable + output 생성 OK, substrate-compat 아님)
-  - 4-file link 검증: drv + rv + rtlil + wv + runtime → exit=0
-  - 출력 router_d4_hexa_out.v 219 lines 생성
-  - **블로커**: width range 처리 안 됨 (`wire [;`, `wire :;`, `wire 0;` 등 invalid tokens) — substrate yosys 가 read 못 함
-  - 별도 fix 필요: stdlib/kernels/logic_synth/write_verilog.hexa 의 wire-emit 가 width [hi:lo] 정확히 emit + name escape
+- [~] **write_verilog chain via driver link** — wire-emit ✓ landed (PR #210), cell-emit ✗ blocker
+  - PR #210 (admin-merge `116d6799`): width prefix `[W-1:0]` + IEEE 1364 escaped-ident `\name<ws>` emit
+  - substrate yosys 0.65 가 hexa-native 출력 **parse 완전 동작** (wires=134, cells=55, type distribution 완전 일치)
+  - **다음 blocker**: yosys `synth` macro 가 RTLIL-internal cell types (`$and`, `$mux`, `$eq` 등) 를 unknown module 로 봄 — write_verilog 가 cell instance form (`$and name(.A,.B,.Y)`) 대신 **behavioral Verilog (`assign y = a + b;` 등)** 로 emit 해야 함
+  - multi-day fix: stdlib/kernels/logic_synth/write_verilog.hexa 의 `_wv_emit_cell` 를 cell-type-dispatch (각 RTLIL primitive 의 behavioral 표현) 으로 rewrite
 - [ ] **share/freduce 또는 ABC -dff 옵션 통합** (comb-side oracle parity)
   - oracle 의 12k 차이 = `synth` macro 의 logic-sharing optimizations
   - 옵션: hexa-native passes 가 자체 share/freduce 구현 · 또는 substrate yosys 에 defer
@@ -100,6 +100,8 @@ sub-steps 가 incremental gap 축소.
 
 (append-only, latest 위에)
 
+- 2026-05-20 — substrate handoff parse 동작 확인: yosys read_verilog(hexa-native output) → wires=134, cells=55, type 완전 일치. 다만 synth macro fail (cell-emit 가 behavioral 아닌 instance form)
+- 2026-05-20 — PR #210 landed: hexa-lang `116d6799` (write_verilog wire-emit width prefix + escaped-identifier, selftest 9/9)
 - 2026-05-20 — PR-B landed: hexa-lang PR #208 `adbb9e3b` (codegen_c2.hexa strlit-init unique-emit, 4-site within-TU rename). 효과는 bootstrap chain 후
 - 2026-05-20 — cell-tally re-measure post-#4g: 35 → 55 cells (+57%), 20 new all-combinational (5×$and, 10×$logic_not, 5×$logic_and = always-body condition expressions). Sequential still 0. Gap to oracle 99.5%
 - 2026-05-20 — #4g landed: hexa-lang PR #202 `41c7b1fc` (function-body preceding-stmt prefix + T50, selftest 61/61). route_xy inline 가능

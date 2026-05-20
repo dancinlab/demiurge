@@ -1297,3 +1297,78 @@ e. share/freduce parity.
 f. End-to-end area measurement.
 
 `rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3).
+
+## UPDATE 2026-05-20 (y) — PR-B + write_verilog wire-emit landed; substrate handoff parse-OK but synth-NG (cell form mismatch)
+
+Two more PRs landed on hexa-lang origin/main this session sequence:
+
+| PR | merge | sub-step | what landed | selftest |
+|----|-------|----------|-------------|----------|
+| #208 | `adbb9e3b` | PR-B | codegen_c2.hexa: `__hexa_strlit_init` per-TU unique-emit (4 sites, within-TU caller+def rename, drop static on aggregator) — sed workaround 제거 (binary rebuild 후 효과) | code-review only |
+| #210 | `116d6799` | write_verilog wire-emit | width prefix `[W-1:0]` + IEEE 1364 §3.7.1 escaped-ident (`\name<ws>`) at all wire-name references in `_wv_emit_*` helpers + T8/T9 | 9/9 PASS |
+
+After PR #210, hexa-native `write_verilog_file(router_d4 design)`
+produces output that **substrate yosys 0.65 successfully parses**:
+
+```
+$ yosys -p "read_verilog hexa_native_output.v; stat" router_d4
+  wires=134, cells=55
+  cell distribution: 10×$eq, 5×$ne, 10×$logic_and, 15×$logic_not,
+                     5×$and, 5×$add, 5×$mod
+```
+
+The cell counts match hexa-native's own tally (55 cells / handoff (x))
+exactly — read-side handoff is functioning end-to-end. The wires
+delta (116 → 134) = the 18 broken-token wires from read_verilog's
+wire-decl tokenization (separate bug — RTLIL accepts non-identifier
+names so the broken tokens leak through but don't break anything
+material).
+
+**But substrate `synth` macro fails next:**
+
+```
+ERROR: Module `\$and' referenced in module `\router_d4' in cell
+`\$rvexpr$54$and' is not part of the design.
+```
+
+yosys's `synth` macro interprets cell instances (`$and name(.A(),
+.B(), .Y());`) as references to user-defined modules named `$and`,
+not as internal RTLIL primitives. The hexa-native cell-instance
+form is correct for RTLIL/ilang round-trip but not for behavioral-
+Verilog round-trip — yosys's read_verilog only knows behavioral
+operator forms (`assign y = a + b;` for `$add`, `assign y = a == b;`
+for `$eq`, etc.).
+
+**Implication for §5 chain:**
+
+The hexa-native → substrate `synth` handoff needs `write_verilog`
+to emit *behavioral* operator forms for the RTLIL primitive cells,
+not cell-instance forms. That's a `_wv_emit_cell` rewrite — multi-
+day work: cell-type dispatch (~16 RTLIL primitives × behavioral
+form mapping). Separate PR after #4h/#4i.
+
+**Refined chain post-(y):**
+
+- ~~#4g~~ ✓ landed (PR #202)
+- ~~PR-A~~ ✓ landed (PR #196)
+- ~~PR-B~~ ✓ landed (PR #208) — bootstrap effect pending
+- ~~write_verilog wire-emit~~ ✓ landed (PR #210) — parse OK
+- [next] write_verilog cell-emit behavioral form (~16 ops dispatch)
+- [next] #4h multi-LHS body dyn-idx (sub-steps a/b/c/d)
+- [next] #4i with-else dyn-idx
+- [next] share/freduce parity (or substrate-yosys-tail-pass via the
+  fixed write_verilog cell-emit when that lands)
+- [next] end-to-end area measurement vs ±5 % gate
+
+**Status snapshot:**
+
+- 5 PRs landed on hexa-lang origin/main this session sequence (#196,
+  #202, #208, #210 + sibling ternary)
+- 9 ☐ items remain (cell-emit behavioral · #4h-a/b/c/d · #4i · share/
+  freduce · end-to-end measurement · gate flip)
+- multi-day work to closure 100% (6-12 sessions estimated in
+  YOSYS.md schedule)
+
+`rfc_006 §5 measurement_gate = OPEN`, `absorbed = false` (g3 — no
+flip; turn landed infrastructure + measurement of substrate parse
+handoff working).
