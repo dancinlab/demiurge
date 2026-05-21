@@ -68,4 +68,21 @@ A cell-record's stored `absorbed: Bool` flips legitimately only when an attached
 - **Load-bearing enforcement** — *Stage 1 (typed)*: `cockpit/Tests/DemiurgeCoreTests/AbsorbedNeedsMeasuredOracleTests.swift` (commit `fee34cc` · 3 test methods covering invariant + D95 conflation + D106 exempt branch · 63/63 PASS · 0 regression). The XCTest invariant is the real enforcement vehicle; this row is the narrative pointer.
 - **Cross-links**: ARCH §11.4 G30 (Stage 1 LANDED) · ARCH §11.4 G34 (Stage 2 = 본 row LANDED) · design.md D109 (cell+oracle pick) · D110 (first flip record) · D103 (dimension-separation) · D106 (illustrative carve-out) · RFC 013 §6.11 (LANDED · κ-68 closure) · §6.12 (illustrative anti-conflation).
 
-**Version**: 1.1.0 | **Ratified**: 2026-05-21 | **Last Amended**: 2026-05-21
+### R2. Generic Verb-Cell Dispatch — `cellrun.hexa` + per-domain `.demi` manifest
+
+Verb-cell dispatch (the 18-domain × 7-verb = 126-cell grid) flows through a **hexa-native generic dispatcher** (`~/core/hexa-lang/stdlib/cockpit/cellrun.hexa`) that reads a per-domain `.demi` manifest (`domains/<id>.demi` with `[cell.<verb>]` sections). New domains and new cells wire by editing the manifest — **never by adding new Swift code**. The 46 `cockpit/Sources/DemiurgeCore/Loaders/*Producer.swift` classes + 40+ hardcoded `(.verb, "domain")` switch cases in `ActionDispatch.swift` are **transitional bridges** (Principle I 'hexa-lang Pointer' + D14 / D18 / ARCH §0 hexa-only ultimate form 의 후속 적용 axis).
+
+- **Manifest format** (8 keys per `[cell.<verb>]` section):
+  - Required: `substrate` (python3 | hexa | curl | ngspice | bash | scan_only) · `script` (path under hexa-lang) · `record_kind` (Swift symbol pointer — typed-record schema reference) · `output_dir` (relative `exports/<domain>/<verb>/`)
+  - Optional: `required_deps` · `gate_default` (OPEN | CLOSED) · `absorbed_default` (false | true) · `scope_caveats[]` · `fallback` (variant chain) · `unwired = true` (honest-skip with scaffold-pending message)
+- **Carve-outs**:
+  - **`record_kind` Swift-side anchor**: typed-record construction stays in Swift (compile-time safety on consumer side). Manifest declares the schema name; cellrun.hexa emits the JSON envelope; cockpit Swift decodes via the named Codable struct. The generic dispatcher does NOT absorb per-domain Codable schemas.
+  - **`substrate = scan_only`**: 5 witness producers (Aura/Bio/Brain/Chem/Grid verify · foreign-drop scans) need a distinct code path with no spawn — cellrun.hexa handles via dedicated branch.
+  - **Unwired cells**: manifest section absence (or `unwired = true`) → automatic g3 honest-skip · typed-by-config · no ad-hoc text fallthrough.
+- **First land (Phase A · 2026-05-21)**: `~/core/hexa-lang-cellrun` isolated worktree · branch `cellrun-generic-dispatcher-scaffold` commit `cc1ad85` · 684-line `cellrun.hexa` + 192-line selftest (15/15 PASS) + end-to-end smoke (manifest-missing rc=2 honest-skip verified). Phase B (`domains/sscb.demi` PoC + sscb cells migrate · 1-2 session) pending review-then-merge of cellrun PR.
+- **Load-bearing enforcement** — *Phase A scaffold*: `~/core/hexa-lang-cellrun/stdlib/cockpit/cellrun_test.hexa` (15-subtest invariants covering manifest-missing rc=2 · deps-missing rc=3 · success rc=0 · envelope shape `{record_kind, record_id, produced_at_utc, payload{substrate, provenance{measurement_gate, absorbed, scope_caveats}}}`). The hexa selftest is the real enforcement vehicle; this row is the narrative pointer.
+- **Migration cost** (per audit `inbox/notes/2026-05-21-generic-cellrun-migration-design.md` · 412 line · untracked): **6-8 focused sessions** for full 46-producer migration (median 12 min/producer · max 60 min for idiosyncratic) + sscb.demi PoC 121 line covering 7/7 verbs (3 wired + 4 honest-skip with `unwired = true`).
+- **Axis distinction**: R2 is dispatch-mechanism axis (plumbing) · cell `absorbed` 자체 무관 (R1 measurement axis · D103 dimension separation 보존). D74 ProducerRegistry alternatives 패턴 자연 흡수 (`[cell.<verb>.<variant>]` 섹션 multiple).
+- **Cross-links**: ARCH §4.5 (target shape diagram + cost reduction table + migration path) · design.md D111 (full rationale + rejected alternatives + Phase A..E exit criterion + axis distinction) · D14 / D18 / D74 / D80 / D83 (`.demi` precedent) · Principles I (hexa-lang pointer) · II (7-verb spine) · ARCH §0 first principle.
+
+**Version**: 1.2.0 | **Ratified**: 2026-05-21 | **Last Amended**: 2026-05-21
