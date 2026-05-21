@@ -111,3 +111,13 @@ The following *looked* like microkernels but were rejected — porting them woul
 - RTSC.md §9.9.1 Phase 4 (Path A microkernel port — destination for the P1/P2 ports listed above)
 - `stdlib/material/sim.hexa` (precedent — extend with consensus kernel as first non-Tc helper)
 - N4 `_compute_consensus` matches the Nb attestation inverse-variance pattern already used elsewhere in this codebase (per `cross_code_dft.py:476` comment "Formula (matches Nb attestation in mp_query / sim_adapter)").
+
+---
+
+## Closure (2026-05-22)
+
+**P1 LANDED** — `_compute_consensus` + `sigma_from_spread` ported to hexa-lang `stdlib/material/sim.hexa` v0.2.0 (commit `701bfe1b`).
+
+Parity verify: **22/22 PASS** (10 cases · ≤1e-9 rel tolerance · max rel_err 3.93e-16 IEEE 754 floor). Evidence: [`2026-05-22-rtsc-9-phase4-1-parity-verify.md`](2026-05-22-rtsc-9-phase4-1-parity-verify.md).
+
+P2 (C3+C4 ASKCOS parser+classifier) **DEFERRED** — hexa-lang regex stdlib API ✅ but runtime backend ❌ (broken stub, `hexa_regex_match` undeclared in `self/runtime.h`). Hand-rolled tokenizer alternative = ~280 LOC (P1 의 5.6×) → 외부 consumer 출현 시 재opens. Audit: [`2026-05-22-rtsc-9-phase4-2-prep.md`](2026-05-22-rtsc-9-phase4-2-prep.md).

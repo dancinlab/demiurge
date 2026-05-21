@@ -693,6 +693,20 @@ deep-research session 에서 surfaced 된 모든 arxiv ID — 각각 §9.x sub-s
 | **Phase 3 — microkernel identification** | 각 wrap 안의 *hot closed-form 후처리* 식별. 후보: phase-diagram convex-hull stability (N1), Allen-Dynes post-process from α²F (N2 — 이미 sim.hexa 에 있음), retrosynthesis score aggregation (N3), cross-code inverse-variance consensus (N4 — Nb attestation pattern). | per-cohort microkernel 후보 list (RTSC.md §9.9.1 update) | 1 세션 audit |
 | **Phase 4 — Path A microkernel port** | 식별된 microkernel 만 `sim.hexa` 옆 hexa-native (개별 1 함수 단위 ~50-100 lines). wrap 은 그대로 유지 — *후처리만* hexa-native 화. | `stdlib/material/sim.hexa` 확장 (BCS 4-formula 위에 phase-stability · cross-code parity · etc.) | cohort 당 1-2 세션 (4 cohort = 4-8 세션) |
 
+#### Phase progress (2026-05-22 갱신 · D116 demiurge=pointer)
+
+| Phase | 상태 | hexa-lang SSOT | demiurge pointer |
+|---|---|---|---|
+| Phase 1 (N1-N4 wrap-as-is) | ✅ **LANDED** | `701bfe1b` · `stdlib/material/{csp,beenet,askcos,cross_code_dft}_adapter.py` | — |
+| Phase 1+ (N5 funnel · §9.10) | ✅ **LANDED** | `701bfe1b` · `stdlib/material/novel_material_funnel.py` | — |
+| Phase 2 (16-cell stabilization audit) | ✅ **LANDED** · 15/16 PASS · 1 DEVIATION (YBCO × cross_code_dft · AFLOW gap, honest) | (audit only) | `inbox/notes/2026-05-21-rtsc-9-phase2-stabilization.md` |
+| Phase 3 (microkernel identification) | ✅ **LANDED** · 4 candidates (P1 bundle of 2 · P2 bundle of 2) · 6 anti-pattern rejects | (audit only) | `inbox/notes/2026-05-21-rtsc-9-phase3-microkernel-audit.md` |
+| Phase 4 #1 (C1+C2 consensus port) | ✅ **LANDED** · **22/22 parity PASS** (≤1e-9 rel · max 3.93e-16) | `701bfe1b` · `stdlib/material/sim.hexa` v0.2.0 (`inverse_variance_consensus` + `sigma_from_spread`) | `inbox/notes/2026-05-22-rtsc-9-phase4-1-parity-verify.md` |
+| Phase 4 #2 (C3+C4 ASKCOS parser+classifier) | ⏳ **DEFERRED** · regex runtime backend 미land (broken stub) · hand-rolled tokenizer 가능하지만 ~280 LOC (P1 의 5.6×) → 외부 consumer 출현 시 재opens | — | `inbox/notes/2026-05-22-rtsc-9-phase4-2-prep.md` |
+| Phase 2 ext (16→20 cell) | ⏳ **PENDING** · 5th baseline (H₃S / LaH₁₀) · AFLOW gap blocker 재현 audit | — | (별도 session) |
+
+Honest 한계 — 본 LANDED 들 모두 *Tier 1 prediction · `gate_type=simulation-only-prediction` · `absorbed=false 영구`* (R4 invariant 무영향). measurement 가 아닌 *closed-form 산술* 의 hexa-native 재현.
+
 #### 진행 원칙
 
 - **Phase 1 의 4 cohort 는 *지금 동시* 발사** (병렬 agent · worktree isolation · 외부 lib install 은 honest skip 으로 우회 가능)
@@ -749,9 +763,9 @@ novel_material_funnel.py <element_pool> <stoichiometry_constraints> <out_dir>
 
 #### 발사 일정
 
-- **이 세션 (Phase 4 microkernel #1 와 평행)**: N5 cohort agent (B path · wrap-as-is) 발사
-- Phase 2 stabilization (16-cell sanity 그대로) 의 5번째 row 로 N5 추가 (다음 세션 audit)
-- Phase 3 audit 재실행 (N1-N5 5 cohort 통합) — N5 microkernel 후보 식별 (compositional enumerator? scoring formula?)
+- ~~이 세션 (Phase 4 microkernel #1 와 평행): N5 cohort agent (B path · wrap-as-is) 발사~~ → ✅ **LANDED** hexa-lang `701bfe1b` (`stdlib/material/novel_material_funnel.py`) · Phase 4 #1 도 같은 commit 에서 land · §9.9.1 Phase progress table 참조
+- Phase 2 stabilization (16-cell sanity 그대로) 의 5번째 row 로 N5 추가 (다음 세션 audit) — 16-cell audit 자체는 ✅ LANDED (`inbox/notes/2026-05-21-rtsc-9-phase2-stabilization.md`) · 16→20 ext (5th baseline 추가) ⏳ PENDING
+- Phase 3 audit 재실행 (N1-N5 5 cohort 통합) — N5 microkernel 후보 식별 (compositional enumerator? scoring formula?) ⏳ PENDING (`inbox/notes/2026-05-21-rtsc-9-phase3-microkernel-audit.md` 는 N1-N4 cover, N5 까지 확장 audit 별도 session)
 
 ### 9.9 Web non-arxiv 참고 URL
 
