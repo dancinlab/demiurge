@@ -602,6 +602,8 @@ Cross-refs:
 
 본 §9 는 deep-research (2026-05-21) 결과의 영구 보관 — 각 gate 별 open-source 라이브러리 + 최신 arxiv 인덱스.
 
+> **Sibling stack — atom discovery**: §9 (이 stack) 은 *compositional* discovery (새 SC material). *Elemental* discovery (새 nuclide — superheavy / drip-line atom) 의 5-gate 시뮬레이션 stack 은 `NUCLEAR.md` 에 분리 박제 — 같은 R4 invariant family (`absorbed=false 영구` · `gate_type=nuclear-novel-discovery-simulation`) · 다른 discovery axis (compositional vs elemental). 2 stack 은 *parallel funnels* — 통합 아님, 각각 독립 honest scope (NUCLEAR §3.4 cross-stack caveat 참조). 2026-05-22 launch (cohort N6-N10, RTSC §9 의 N1-N5 numbering continues).
+
 ### 9.1 (a) 합성 가능성 시뮬레이션
 
 | 도구 | 알고리즘 / 영역 | 라이선스 | 라이브러리 / arxiv |
