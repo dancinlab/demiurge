@@ -175,13 +175,11 @@ public enum ActionDispatch {
             return runChipSynthesize()
         case (.analyze, "matter"):
             return runMatterAnalyze()
-        case (.analyze, "sscb"):
-            // D111 Phase B (this commit): route sscb cells through the
-            // generic cellrun.hexa dispatcher backed by
-            // `domains/sscb.demi`. The legacy `runSSCBAnalyze()` Swift
-            // producer is kept under cockpit/Sources/.../SSCBProducer.swift
-            // as a Phase C backup until roundtrip verify lands.
-            return CellrunDispatch.run(verb: verb, domain: domain)
+        // sscb cells (D111 Phase B · all 7 verbs) — removed in D111 Phase
+        // C generalization (2026-05-22). All sscb (verb) routes through
+        // the generic `default → CellrunDispatch.run(...)` arm below;
+        // explicit cases were behaviorally identical (same call) and only
+        // added per-domain hardcoding noise. Manifest: domains/sscb.demi.
         case (.analyze, "energy"):
             return runEnergyAnalyze()
         case (.synthesize, "energy"):
@@ -213,35 +211,6 @@ public enum ActionDispatch {
         // still readable; the early-return above means this case is
         // unreachable. runCernAnalyze (pylhe) is still invoked via
         // the `pylhe` variant entry in the registry.
-        case (.structure, "sscb"):
-            // SSCB walkthrough Step 2 — BOM tree (networkx DiGraph)
-            // producer routes through cellrun.hexa generic dispatcher
-            // backed by `domains/sscb.demi [cell.structure]`. SSOT:
-            // `~/core/hexa-lang/stdlib/sscb/structure.py` (D116). Typed
-            // mirror: `SscbStructureRecord` (this commit).
-            return CellrunDispatch.run(verb: verb, domain: domain)
-        case (.synthesize, "sscb"):
-            // D111 Phase B — see (.analyze, "sscb") above.
-            return CellrunDispatch.run(verb: verb, domain: domain)
-        case (.verify, "sscb"):
-            // D111 Phase B — see (.analyze, "sscb") above.
-            return CellrunDispatch.run(verb: verb, domain: domain)
-        case (.specify, "sscb"):
-            // SSCB 7-verb walkthrough Step 1 — 4th wired SSCB cell.
-            // Producer: ~/core/hexa-lang/stdlib/sscb/specify.py
-            // (template emit transcribing domains/sscb.md §1 HEXA-SSCB
-            // mk1 spec). g3: absorbed=false permanently — spec without
-            // measurement is illustrative, not absorption.
-            return CellrunDispatch.run(verb: verb, domain: domain)
-        case (.design, "sscb"):
-            // SSCB 7-verb walkthrough Step 3 — 6th wired SSCB cell.
-            // Producer: ~/core/hexa-lang/stdlib/sscb/design.py (ngspice
-            // netlist + KiCad PCB stub + dossier template emit · sscb.md
-            // §2 DESIGN row open-source col · KiCad + ngspice substrate).
-            // Typed mirror: `SscbDesignRecord`. g3: absorbed=false
-            // permanently — datasheet bindings = placeholder vendor
-            // parts (NOT absorbed .lib).
-            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.synthesize, "bot"):
             return runBotSynthesize()
         case (.synthesize, "scope"):
@@ -280,33 +249,27 @@ public enum ActionDispatch {
             return runChemVerify()
         case (.verify, "grid"):
             return runGridVerify()
-        // D111 Phase C — firmware domain migrated to cellrun route
-        // (first reference legacy-domain migration after SSCB walkthrough).
-        // Manifest: domains/firmware.demi · 7 cells WIRED · all python3
-        // substrate · scripts in ~/core/hexa-lang/stdlib/firmware/. Legacy
-        // runFirmware*() statics removed below (no in-tree callers remain).
-        case (.specify, "firmware"):
-            return CellrunDispatch.run(verb: verb, domain: domain)
-        case (.structure, "firmware"):
-            return CellrunDispatch.run(verb: verb, domain: domain)
-        case (.design, "firmware"):
-            return CellrunDispatch.run(verb: verb, domain: domain)
-        case (.analyze, "firmware"):
-            return CellrunDispatch.run(verb: verb, domain: domain)
-        case (.synthesize, "firmware"):
-            return CellrunDispatch.run(verb: verb, domain: domain)
-        case (.verify, "firmware"):
-            return CellrunDispatch.run(verb: verb, domain: domain)
-        case (.handoff, "firmware"):
-            return CellrunDispatch.run(verb: verb, domain: domain)
+        // firmware cells (D111 Phase C reference legacy-domain migration ·
+        // all 7 verbs) — removed in D111 Phase C generalization
+        // (2026-05-22). All firmware (verb) routes through the generic
+        // `default → CellrunDispatch.run(...)` arm below; explicit cases
+        // were behaviorally identical. Manifest: domains/firmware.demi.
+        // Substrate SSOT: ~/core/hexa-lang/stdlib/firmware/<verb>.py.
         default:
-            let prompt = actionPrompt(verb: verb)
-            let reply = askClaude(prompt: prompt, context: context)
-            return ActionResult(
-                text: reply,
-                newRecordIDs: parseRecordIDs(reply),
-                usedEngineTool: false,
-                engineToolSucceeded: nil)
+            // D111 Phase C generalization (2026-05-22) — 사용자 directive
+            // "던지는 도메인마다 모든 과정에 특정 도메인에 맞춘 하드코딩이
+            // 없어야 된다" 박제. Any (verb, domain) not in the per-domain
+            // hardcoded switch above (which is being retired domain-by-
+            // domain via D111 Phase C migrations — sscb · firmware
+            // already migrated, ~16 more domains pending) routes through
+            // the generic cellrun.hexa dispatcher backed by
+            // `domains/<domain>.demi`. Manifest absent → honest-skip
+            // rc=2 with explicit gap message. Manifest present → spawn
+            // substrate command for the matching cell. NEVER an LLM
+            // placeholder reply — that was a silent dishonesty path
+            // because the user could not tell whether the response was
+            // measured or hallucinated (g3 / @F f6).
+            return CellrunDispatch.run(verb: verb, domain: domain)
         }
     }
 
@@ -341,25 +304,12 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `sscb + analyze` engine tool (κ-34 / D55) — spawn ngspice 46 via
-    /// `cockpit/scripts/sscb_ngspice.py` to run a 600 V / 100 A DC
-    /// hard-switching transient (HEXA-SSCB mk1 plausible topology),
-    /// then persist a typed `SSCBRecord` under
-    /// `exports/sscb/transient/<stamp>/`. Producer = `ngspice@<v>` —
-    /// the simulator is the instrument, but the circuit is plausible-
-    /// not-absorbed so measurement_gate stays GATE_OPEN AND absorbed
-    /// is permanently false (g3 — see SSCBProducer scope_caveats).
-    /// FIRST cohort domain (out of 13 in domains/*.md) crossing the
-    /// measuring-producer threshold — proves the breadth survey can
-    /// turn into real producers, narrow scope is honest g3.
-    private static func runSSCBAnalyze() -> ActionResult {
-        let r = SSCBProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
+    // `runSSCBAnalyze()` — removed in D111 Phase C generalization
+    // (2026-05-22). Was dead code even before sscb case removal because
+    // (.analyze, "sscb") already routed via CellrunDispatch directly,
+    // not via this static. SSCBProducer.swift (and the κ-34/D55 ngspice
+    // legacy path) remains in tree as historical reference until
+    // exports-roundtrip parity gate lands.
 
     /// `energy + analyze` engine tool (κ-35 / D59) — spawn pvlib via
     /// `cockpit/scripts/energy_pvlib.py` to run a 1-year hourly clear-
@@ -1057,35 +1007,12 @@ public enum ActionDispatch {
         }
     }
 
-    /// `sscb + synthesize` engine tool (ROI rank 1 — FEMMT + analytic
-    /// fallback magnetics sizing). SSOT = `~/core/hexa-lang/stdlib/sscb/
-    /// femmt_sweep.py` (D61). D72 ①b thin adapter — magnetics math stays
-    /// adapter-local until 2nd consumer. GATE_OPEN / absorbed=false (g3
-    /// — parametric EE-class ferrite catalogue, not measured datasheets;
-    /// see SSCBSynthProducer scope_caveats).
-    private static func runSSCBSynth() -> ActionResult {
-        let r = SSCBSynthProducer.runSynth()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `sscb + verify` engine tool (ROI rank 2 — ngspice bolted-fault
-    /// breaking-capacity, UL 489I-style figures-of-merit: I_peak / I²t /
-    /// t_clear). SSOT = `~/core/hexa-lang/stdlib/sscb/ngspice_breaking.py`
-    /// (D61). Distinct from sscb+analyze (interrupt_ratio transient).
-    /// OpenFOAM thermal-margin skipped (heavy, separate session).
-    /// GATE_OPEN / absorbed=false (g3 — generic device model).
-    private static func runSSCBVerify() -> ActionResult {
-        let r = SSCBVerifyProducer.runVerify()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
+    // `runSSCBSynth()` + `runSSCBVerify()` — removed in D111 Phase C
+    // generalization (2026-05-22). Dead code even before case removal;
+    // sscb cells already routed via CellrunDispatch directly. The
+    // corresponding SSCBSynthProducer.swift / SSCBVerifyProducer.swift
+    // Swift wrappers remain in tree as historical reference until
+    // exports-roundtrip parity gate lands.
 
     /// `bot + synthesize` engine tool (ROI rank 9 — Pinocchio FK / Jacobian
     /// / RNEA on the bot+structure URDF). SSOT = `~/core/hexa-lang/stdlib/

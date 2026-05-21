@@ -77,8 +77,11 @@ public enum ComponentVerifyProducer {
 
     /// scan-foreign: foreign record prefixes the consumer auto-cites
     /// alongside canonical `component_verify_*` records. Add new bridge
-    /// substrates here — single point of extension. Mirrors the same
-    /// pattern in FirmwareVerifyProducer (B1+B2 cohort, 2026-05-21).
+    /// substrates here — single point of extension. Originally mirrored
+    /// the same pattern in `FirmwareVerifyProducer` (B1+B2 cohort,
+    /// 2026-05-21); that Swift producer was removed during the D111
+    /// Phase C firmware migration (2026-05-22) once firmware moved fully
+    /// to the generic cellrun route (domains/firmware.demi).
     public static let foreignRecordPrefixes: [String] = [
         "anima_",       // anima-side bridge records (HEXAD physics, etc.)
         "upduino_",     // upduino_enclosure_thermal_* (real-PCB enclosure
