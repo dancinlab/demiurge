@@ -2414,6 +2414,54 @@ landing 시각만 ARCH `## Log` 에 박제.
 
 ## Log
 
+- 2026-05-22 — **🎉 SSCB 7-verb walkthrough Step 4 LANDED · `(.handoff,
+  "sscb")` cell wired · 7/7 wired · 0/7 unwired · 100% closure 달성 ·
+  첫 도메인 cellrun 전체 wire** (specify + structure + design +
+  analyze + synthesize + verify + handoff 모두 D111 generic dispatch
+  route).
+  - **hexa-lang PR #277** `79ccff44` MERGED — `stdlib/sscb/handoff.
+    py` (**708 LOC**) · **7 artifacts**: `ul489i_checklist.md` (18
+    items 4 sections) · `iec60947_2_typetest_dossier.md` (21 items
+    6 §7.2.x sections) · `ieee_c37_x_xref.md` (7 items + 8-row
+    table) · `tier2_fanout.md` (13 items · 5 cert-blocking) ·
+    `bundle_manifest.md` (8 sections · sign-off blocks) ·
+    `sscb_v1.meta.json` (D113 sibling 7-key measurements) ·
+    `sscb_handoff_<stamp>.json` (record JSON).
+  - **demiurge PR #8** `cb5de742` MERGED — `ActionDispatch.swift`
+    `(.handoff, "sscb")` cellrun route + `Models/SscbHandoffRecord.
+    swift` 124 LOC (Codable typed record · 7 measurement fields).
+  - **end-to-end CLI verified**: `swift run DemiurgeCLI action
+    handoff sscb` → gate=OPEN absorbed=false · payload.measurements
+    7-key roll-up (ul489i_checklist_item_count=18 ·
+    iec60947_2_checklist_item_count=21 · ieee_c37_x_reference_count
+    =7 · tier2_fanout_item_count=13 · cert_blocking_count=5 ·
+    bundle_artifact_count=5 · cert_bundle_ready=true).
+  - **regression 0**: swift test 74/74 PASS.
+  - **R3 compliance**: substrate (handoff.py 708 LOC algorithm +
+    cert dossier template + standards cross-ref) = hexa-lang only
+    · cockpit = typed record + 1 dispatch case · D114/D116 유지.
+  - **🏆 milestone**: **SSCB = 첫 도메인 7/7 cellrun-wired closure**
+    under D111/D114/D116 doctrine. 누적 walkthrough PRs **10**:
+    - hexa-lang 6: #271 (specify) · #272 (cellrun restore) · #273
+      (structure) · #274 (design) · #275 (structure 2차 restore
+      · 2 inadvertent wipes 패턴) · #277 (handoff)
+    - demiurge 4: #5 · #6 · #7 · #8 (cockpit dispatch cases)
+  - **post-walkthrough next**:
+    1. **ARCH §11 worked simulation `sscb-mk1` 추가** (§11.1 alien-
+       disc-mk1 · §11.2 aura-clip-mk1 패턴 mirror) — 첫 7/7
+       cellrun-wired domain 의 end-to-end script demonstration.
+    2. **다른 도메인 동일 pattern 적용** (brain · aura 등 · 현재
+       `.analyze` 만 wired in ActionDispatch · Step 1-4 mirror
+       으로 점진 closure).
+    3. **D111 Phase C: legacy SSCB*Producer.swift deprecation/
+       removal** (cellrun route 와 dual-existence · roundtrip
+       verify 후 legacy 제거).
+  - **walkthrough 안 발견된 2 inadvertent wipes** (repo-wide audit
+    필요): cellrun.hexa (`88c00246` RFC067 N74) + structure.py
+    (`3a4282ec` runtime restore) · 둘 다 hexa-lang sibling-agent
+    restore commits 의 silent mass-delete · 별 cycle 에 audit +
+    commit-hook tighten ratify 권장.
+
 - 2026-05-22 — **SSCB 7-verb walkthrough Step 3 LANDED · `(.design,
   "sscb")` cell wired · 6 wired / 1 unwired** (design 마감 · 다음
   Step 4 = handoff verb · LAST). 같은 cycle 안 2번째 inadvertent
