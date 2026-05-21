@@ -233,6 +233,15 @@ public enum ActionDispatch {
             // mk1 spec). g3: absorbed=false permanently — spec without
             // measurement is illustrative, not absorption.
             return CellrunDispatch.run(verb: verb, domain: domain)
+        case (.design, "sscb"):
+            // SSCB 7-verb walkthrough Step 3 — 6th wired SSCB cell.
+            // Producer: ~/core/hexa-lang/stdlib/sscb/design.py (ngspice
+            // netlist + KiCad PCB stub + dossier template emit · sscb.md
+            // §2 DESIGN row open-source col · KiCad + ngspice substrate).
+            // Typed mirror: `SscbDesignRecord`. g3: absorbed=false
+            // permanently — datasheet bindings = placeholder vendor
+            // parts (NOT absorbed .lib).
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.synthesize, "bot"):
             return runBotSynthesize()
         case (.synthesize, "scope"):
