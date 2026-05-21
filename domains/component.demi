@@ -1,0 +1,148 @@
+# component.demi — verb-cell manifest for the component (package / board / system) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/component/ + ~/core/hexa-lang/stdlib/kernels/fem/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("component", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+# Required keys per cell: substrate, script, record_kind, output_dir,
+# gate_default, absorbed_default.
+#
+# Script paths are RELATIVE to ~/core/hexa-lang/ (the hexa_lang_root
+# tunable, env-overridable via HEXA_CELLRUN_HEXA_LANG_ROOT).
+#
+# Citations (anchored, not repeated per-cell — see domains/component.md §5):
+#   - KiCad — kicad.org · FreeCAD — freecad.org · gmsh — gmsh.info
+#   - Elmer FEM — github.com/ElmerCSC/elmerfem
+#   - openEMS — openems.de · FEMM — femm.info
+#   - CalculiX — calculix.de · Code_Aster — code-aster.org
+#   - OpenFOAM — openfoam.org · OpenMDAO — openmdao.org
+#   - scikit-fem (Gustafsson · McBain) — github.com/kinnala/scikit-fem
+#   - OpenAM-SimCCX — PMC PMC12608665 (2025; CalculiX additive-manufacturing pipeline)
+#   - Antmicro electro-thermal chain — antmicro.com/blog/2025/03/open-source-thermal-simulation
+#
+# Domain caveat (applies to every cell):
+# component domain D61-violator closure history (rfc_008 chip→component
+# typed seam, D54 component+synthesize hexa-native promotion, D66
+# component+verify gmsh+skfem birth, D116 BIPV substrate closure). All
+# cells are TOY geometries (Si die proxy box, 5-layer BIPV stack) — NOT
+# measured production parts. Real component certification = ANSYS /
+# COMSOL / Cadence Sigrity signoff territory, separate from this scoping
+# manifest. (.synthesize, "component") routes via ComponentEmitter +
+# FreeCADBIPVProducer (D114 Phase C BIPV bundle) NOT through this cellrun
+# manifest — preserved as legacy bridge per task safety constraint.
+
+# --- WIRED: verify (κ-39 / D66 — gmsh + skfem FEM on Si die proxy) ----------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/component/gmsh_skfem.py
+record_kind       = component_verify_record
+output_dir        = exports/component/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "gmsh@<v> + scikit-fem@<v> — real PDE solutions (steady-state heat conduction + linear elasticity) on a 10×10×2 mm Si die proxy box mesh.",
+  "geometry = TOY box (NOT a real component STEP from rfc_008 chip→component handoff dossier); material = Si defaults (k=148 W/m·K, E=169 GPa, ν=0.22, ρ=2329 kg/m³).",
+  "load = single steady-state (uniform body heat source on top half + gravity); NOT a multi-load case, NOT a mesh convergence study, NOT a sourced datasheet.",
+  "①b DOMAIN ADAPTER (D72) — all FEM math lives in ①a kernel stdlib/kernels/fem/skfem_kernel.py; the day a hexa-native FEM kernel lands, absorbed flips in the kernel, NOT here.",
+  "measurement_gate = GATE_OPEN ALWAYS — toy geometry + textbook constants ≠ measured component verdict. Wiring against measured STEP + datasheet + load + convergence = separate phase.",
+]
+
+# --- WIRED: analyze (ROI rank 6 — CalculiX FEA independent cross-check) -----
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/component/calculix.py
+record_kind       = component_analyze_record
+output_dir        = exports/component/analyze
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CalculiX ccx — 3-D structural / thermomechanical FEA on a die-proxy 10×10×2 mm Si box (geometry parity with component+verify so the two cells cross-check at the field level once both records are GATE_CLOSED_MEASURED).",
+  "INDEPENDENT cited measurement vs component+verify (gmsh+skfem) — different FEM backend so the two cells cross-check rather than duplicate (OpenAM-SimCCX framework — PMC PMC12608665, 2025).",
+  "single C3D8 hex element — minimal mesh; a real run uses gmsh → 2nd-order tets (future kernels/fem/calculix_kernel.py extraction at 2nd CalculiX consumer or hexa-native FEM kernel parity, per PLAN κ-48).",
+  "Honest install-gated skip if ccx not on PATH — macOS: brew tap erickaa/CalculiX OR /Applications/FreeCAD.app bundled; Ubuntu: apt install calculix-ccx. Never silently fakes a verdict.",
+  "measurement_gate = GATE_OPEN ALWAYS — toy die proxy ≠ measured package.",
+]
+
+# --- UNWIRED: synthesize (D114 Phase C — handled by ComponentEmitter / FreeCADBIPVProducer) ---
+# IMPORTANT: ActionDispatch keeps (.synthesize, "component") on the
+# legacy ComponentEmitter / FreeCADBIPVProducer path — bipv.py FreeCAD
+# parametric model + procedural BIPV fallback. This [cell.synthesize]
+# section is documentary ONLY — cellrun.hexa never executes it because
+# the explicit ActionDispatch case wins BEFORE the default arm. See
+# CockpitApp emit-component CLI subcommand + ComponentEmitter.emitBundled
+# for the active path.
+[cell.synthesize]
+substrate         = python3
+script            = stdlib/freecad/bipv.py
+record_kind       = component_synthesize_record
+output_dir        = exports/component/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "DOCUMENTARY cell — actual dispatch routes through ActionDispatch (.synthesize, 'component') → ComponentEmitter.emitBundled → FreeCADBIPVProducer (D114 Phase C BIPV substrate). cellrun.hexa never reaches this cell at runtime.",
+  "Substrate script stdlib/freecad/bipv.py is referenced by FreeCADBIPVProducer.swift but currently MISSING from hexa-lang stdlib (Phase A audit, 2026-05-22) — ComponentEmitter falls back to procedural BIPV 5-layer emitter when freecadcmd OR bipv.py is missing.",
+  "Parametric CAD geometry is STILL a placeholder for absorbed-component sense — absorbed=true NEVER allowed (D54 / g3). The artifact is a precise model, not a measured part with thermal / structural / optical verdicts.",
+  "measurement_gate = GATE_OPEN ALWAYS — geometry, not measured verdict.",
+]
+
+# --- UNWIRED: specify (package/system requirements from rfc_008 dossier) ----
+[cell.specify]
+substrate         = python3
+script            = stdlib/component/specify.py
+record_kind       = component_specify_record
+output_dir        = exports/component/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "component + specify pending — package/system requirements producer not authored.",
+  "Natural input: rfc_008 chip→component handoff dossier (die spec, power envelope, Tjmax, IO rates, pin count). Output: requirements.json template (firmware/specify.py pattern reuse).",
+]
+
+# --- UNWIRED: structure (package class & stackup choice) --------------------
+[cell.structure]
+substrate         = python3
+script            = stdlib/component/structure.py
+record_kind       = component_structure_record
+output_dir        = exports/component/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "component + structure pending — package class (wirebond / flip-chip / fan-out) + board layer plan producer not authored.",
+  "domains/component.md §2 — natural shape: BOM tree (die · substrate · interposer · mold · enclosure) emitted as record_kind=component_structure_record.",
+]
+
+# --- UNWIRED: design (KiCad / FreeCAD / gmsh template scaffold) -------------
+[cell.design]
+substrate         = python3
+script            = stdlib/component/design.py
+record_kind       = component_design_record
+output_dir        = exports/component/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "component + design pending — KiCad PCB layout / FreeCAD enclosure / gmsh meshable-geometry producer not authored.",
+  "domains/component.md §2 — KiCad cross-platform OSS PCB suite + FreeCAD parametric 3D + gmsh CAD-meshing form the open design stack; integration glue is the unfilled niche.",
+]
+
+# --- UNWIRED: handoff (system BOM + thermal/EM dossier) ---------------------
+[cell.handoff]
+substrate         = python3
+script            = stdlib/component/handoff.py
+record_kind       = component_handoff_record
+output_dir        = exports/component/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "component + handoff pending — system BOM + thermal / EM dossier bundle producer not authored.",
+  "domains/component.md §2 — rfc_004 §4 wording: manufacturing handoff bundle. firmware/handoff.py CycloneDX SBOM + release tarball pattern reuse.",
+]
