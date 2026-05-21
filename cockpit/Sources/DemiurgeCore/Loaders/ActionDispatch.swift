@@ -176,7 +176,12 @@ public enum ActionDispatch {
         case (.analyze, "matter"):
             return runMatterAnalyze()
         case (.analyze, "sscb"):
-            return runSSCBAnalyze()
+            // D111 Phase B (this commit): route sscb cells through the
+            // generic cellrun.hexa dispatcher backed by
+            // `domains/sscb.demi`. The legacy `runSSCBAnalyze()` Swift
+            // producer is kept under cockpit/Sources/.../SSCBProducer.swift
+            // as a Phase C backup until roundtrip verify lands.
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.analyze, "energy"):
             return runEnergyAnalyze()
         case (.synthesize, "energy"):
@@ -209,9 +214,11 @@ public enum ActionDispatch {
         // unreachable. runCernAnalyze (pylhe) is still invoked via
         // the `pylhe` variant entry in the registry.
         case (.synthesize, "sscb"):
-            return runSSCBSynth()
+            // D111 Phase B — see (.analyze, "sscb") above.
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.verify, "sscb"):
-            return runSSCBVerify()
+            // D111 Phase B — see (.analyze, "sscb") above.
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.synthesize, "bot"):
             return runBotSynthesize()
         case (.synthesize, "scope"):
