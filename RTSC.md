@@ -678,6 +678,35 @@ deep-research session 에서 surfaced 된 모든 arxiv ID — 각각 §9.x sub-s
 - `arxiv:1908.02176` — H-formulation AC loss review (§4.2.1.c 의 root reference)
   · https://arxiv.org/abs/1908.02176 · https://arxiv.org/pdf/1908.02176
 
+### 9.9.1 B → A migration 일정 (wrap-first, port microkernels later)
+
+본 §9 의 4-cohort (N1-N4) 는 **Path B (wrap-as-is)** 로 첫 land — Path A (hexa-native port) 는 *hot 한 closed-form 후처리* 에 한정. 본 프로젝트의 기존 패턴 (D72 thin adapter — getdp_hts.py · pyfemm_magnetics.py · mp_query.py · cube_producer.py · hexa_rtsc_crosslink.py · h_formulation_adapter.py — 전부 B) 과 정합. 유일한 successful Path A case 는 M5 `sim.hexa` (BCS/McMillan/AD/WHH 4 closed-form, ~200 lines, libm 0 K parity).
+
+#### B→A migration 4-phase 일정
+
+| Phase | 작업 | 산출물 | 추정 |
+|---|---|---|---|
+| **Phase 1 — wrap land (B)** | N1-N4 4 producer 병렬 발사. install-gated honest skip + subprocess wrap. `gate_type=simulation-only-prediction · absorbed=false` 영구. | `stdlib/material/{csp,beenet,askcos,cross_code_dft}_adapter.py` 4 신규 | **이 세션 (병렬)** · cohort 당 ~10-15 min agent |
+| **Phase 2 — stabilization** | 각 wrap 의 honest skip 3-path 검증 (install-gated · weights-missing · network-fail). 작은 candidate (Nb / MgB₂ / YBCO baseline) 입력으로 sanity run. | 검증 record + scope_caveat refinement | 다음 세션 1건 |
+| **Phase 3 — microkernel identification** | 각 wrap 안의 *hot closed-form 후처리* 식별. 후보: phase-diagram convex-hull stability (N1), Allen-Dynes post-process from α²F (N2 — 이미 sim.hexa 에 있음), retrosynthesis score aggregation (N3), cross-code inverse-variance consensus (N4 — Nb attestation pattern). | per-cohort microkernel 후보 list (RTSC.md §9.9.1 update) | 1 세션 audit |
+| **Phase 4 — Path A microkernel port** | 식별된 microkernel 만 `sim.hexa` 옆 hexa-native (개별 1 함수 단위 ~50-100 lines). wrap 은 그대로 유지 — *후처리만* hexa-native 화. | `stdlib/material/sim.hexa` 확장 (BCS 4-formula 위에 phase-stability · cross-code parity · etc.) | cohort 당 1-2 세션 (4 cohort = 4-8 세션) |
+
+#### 진행 원칙
+
+- **Phase 1 의 4 cohort 는 *지금 동시* 발사** (병렬 agent · worktree isolation · 외부 lib install 은 honest skip 으로 우회 가능)
+- Phase 2 후에야 Phase 3 시작 — wrap 이 안정화돼야 hot section 식별 가능
+- Phase 3-4 는 microkernel 한정 — *wrap 자체 port 금지* (anti-pattern: BEE-NET 학습 / USPEX fork / QE port 등 비합리적 비용)
+- 모든 단계에서 `gate_type=simulation-only-prediction` + `absorbed=false 영구` — R4 invariant 보호
+
+#### Anti-pattern (port 금지 영역)
+
+- ❌ Graph NN 모델 (BEE-NET) hexa-native 재학습 — ~10⁵ GPU-hour
+- ❌ Evolutionary GA framework (USPEX) hexa-native fork — 100K LOC + 수십년 연구 자산
+- ❌ DFT core (Quantum ESPRESSO · ABINIT) hexa-native port — Fortran ecosystem 전체 substitute, 박사학위 수십 개 필요
+- ❌ Retrosynthesis template DB (ASKCOS) hexa-native 재구축 — 수백만 reaction 학습 데이터
+
+→ wrap 으로 *얻은* 외부 결과만 hexa-native closed-form 으로 후처리 — *hexa-first* (wilson principle 2) 의 honest 해석.
+
 ### 9.9 Web non-arxiv 참고 URL
 
 - Nature `s41524-026-01964-8` — Complete AI-accelerated SC discovery workflow (2026 best SOTA)
