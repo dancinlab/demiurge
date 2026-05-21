@@ -1,6 +1,6 @@
 # Demiurge — HANDOFF (self-contained · cold-readable · 0-context)
 
-> 2026-05-19 · This single file is everything needed to continue demiurge
+> 2026-05-21 · This single file is everything needed to continue demiurge
 > anywhere (new machine / new agent / new repo) with **zero prior context**.
 > Read top to bottom; the RESUME block at the end is copy-paste ready.
 > Reconciled to **workbench-live** state — `design.md` and `PLAN.md` are
@@ -222,23 +222,32 @@ actual progress** — preserved in `design.md` and the audit trail.
   mode · CLI ↔ cockpit parity (ActionDispatch). Installed as
   `/Applications/demiurge.app`. κ-phase log = `PLAN.md`.
 
-**Honest core gap (g3) — "engine tool 0":**
-- θ-2 has NO real measurement tool yet — Yosys §4 unimplemented
-  (hexa-lang session, D19); booksim now in `hexa-lang/stdlib`. So
-  every workbench project carries **0 measured records** and **no
-  verb is ✅**.
-- `d5a63a82` (booksim absorb) — **PUSHED** to
-  `origin/rfc043-hexa-torch` (2026-05-19, verified). Yosys §4
-  modules are still `.hexa.stub` only in `hexa-lang/stdlib/yosys/`
-  — impl pending a hexa-lang session (`NEXT_SESSIONS.md` P-②③).
-  inbox handoff filed: `~/core/hexa-lang/inbox/notes/2026-05-19-
-  demiurge-rfc006-yosys-handoff.md` + `inbox/PATCHES.yaml` +2.
-- chip §B full-curve / §D — not measured; `absorbed=false`.
+**Honest core gap (g3) — "engine tool 0" (post-κ-68 closure refresh):**
+- κ-68 closure (2026-05-21) landed RFC 013 §6.11 per-cell measured-
+  oracle parity round — **first cell `absorbed=true` legitimate flip**
+  (Energy/solar · D110 · hexa-lang `b8d35920` PR #259 MERGED · mean
+  rel_err 0.0499 vs 0.05 PASS · 480 clear-sky samples NREL MIDC SRRL
+  Golden CO). 직전의 "어떤 도메인도 absorbed=true 아님" narrative 는
+  Energy 도메인 의 첫 cell 에 한해 honest update — 다른 cell / 다른
+  도메인 의 `absorbed=true` 는 여전히 없음 (G33/G34 axis · κ-69).
+- κ-69 opening (2026-05-21 같은 사이클): ARCH §11.4 Round 8 scaffold
+  G31..G34 pre-code 박힘 + ARCH §12 신설 (chip §B substrate-axis
+  잔여 로드맵 이관 from rm'd YOSYS.md). G31a wrapper half landed
+  (hexa-lang PR #263 OPEN · partial-land · κ-69 의 first cross-repo
+  partial). 자세한 현재 진행 axis = `NEXT_SESSIONS.md` P-⑬.
+- chip §B full-curve — substrate-side `measurement_gate` 여전히 OPEN.
+  ARCH §12.1 (Tier-1 (0..i) / Tier-2 / Tier-3 · 8-16 session est) 가
+  잔여 axis 의 narrative anchor. **§12.1 (e) fifo_mem RTLIL Memory
+  emit** 은 hexa-lang sibling repo 측에 별 agent 가 활성 작업 중
+  (`inbox/PATCHES.yaml` 504-line WIP) — demiurge 세션은 이 axis
+  미접촉. chip §B / §D = `absorbed=false`.
 - Seam records — 0 (both rfc_007/008 v0, `records/` intentionally
   empty — no fabrication).
 - 3D real USDZ — 0 (`exports/` holds zero geometry; component
   producer awaited per `NEXT_SESSIONS.md` P-⑨).
-- Nothing flips `absorbed=true` without a cited measurement.
+- Nothing flips `absorbed=true` without a cited measurement — D103
+  dimension-separation + D106 illustrative-physics gate typed
+  enforcement (κ-68 G30 Stage 1 XCTest invariant LANDED).
 
 ## 10. RESUME (copy-paste anywhere)
 
@@ -261,11 +270,16 @@ SSOT** (재사용 stdlib · 도구 · 흡수 전부 — 2026-05-19 user directiv
 + g5 + g_clean_room + bounded-subprocess 예외(rfc_048 선례, D18).
 현 상태 (g3 — category only, 수치는 PLAN.md/design.md):
 **4-Phase 설계 design-complete · workbench live (rfc_012 IMPLEMENTED)
-· engine tool 0 (핵심 갭) · 측정 record 0 · ✅ verb 0 · `d5a63a82`
-미push (hexa-lang) · chip §B GATE_B_PINNED_MET · 어떤 도메인도
-absorbed=true 아님**. 다음 = `NEXT_SESSIONS.md` Tracks matrix 참조 —
-hexa-lang 세션 (D + E: Yosys + push + chip §B 측정) · component
-producer 세션 (F: USDZ via D18 bounded-subprocess).
+· κ-68 closure (2026-05-21) RFC 013 §6.11 LANDED · Energy/solar 첫
+cell `absorbed=true` legitimate flip (D110 · hexa-lang `b8d35920`
+PR #259 MERGED) · κ-69 opening (같은 cycle) ARCH §11.4 Round 8 scaffold
+(G31..G34) + §12 신설 + G31a wrapper half landed (hexa-lang PR #263
+OPEN · partial-land) · chip §B 잔여 axis (§12.1 Tier-1/2/3) measurement
+_gate 여전히 OPEN**. 다음 = `NEXT_SESSIONS.md` P-⑬ (κ-69 horizon ·
+G31b producer integration + G32 cell-pick decision + G33 flip + G34
+constitution.md row) + P-⑩ (κ-68 historical · 본 closure 박제 후
+참조용) · chip §B substrate-axis 는 ARCH §12.1 + sibling repo 측
+별 agent active (§12.1 (e) fifo_mem · 본 세션 미접촉).
 ```
 
 > SSOT note: this HANDOFF + CHARTER are the architecture/why SSOT; PLAN.md

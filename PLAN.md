@@ -4396,3 +4396,97 @@
   κ-69 reserved = G29-β (hexa-native sun-position runtime port) +
   다른 cell measured-oracle round (Aura / Ufo / ChipAnalyge 등 ·
   D106 illustrative 제외).
+- 2026-05-21 — **phase κ-69 OPENING · ARCH §11.4 Round 8 scaffold
+  (G31..G34 pre-code 박힘) + §12 신설 (chip §B substrate-axis 잔여
+  로드맵 이관) — 사용자 게이트 "all go"**. κ-68 closure 직후 같은
+  사이클 안에 κ-69 의 두 axis 가 동시에 entry point 를 박았다 —
+  (a) per-cell measured-oracle round 의 ultimate-form parity 후속
+  (G29-β · 다른 cell · G30 Stage 2), (b) substrate-axis 잔여
+  로드맵 ARCH 이관. 한 commit 묶음으로 land:
+  - **§12 신설 (`e7371be`)** — chip §B substrate-axis 잔여 로드맵 이관.
+    구 root `YOSYS.md` (`06a8428` 에서 rm) 의 Tier-1/2/3 (0..i 등)
+    잔여 로드맵을 ARCH §12.1 로 옮김 — `## 12. Open axes (substrate-
+    side · post-cell-flip)` head + `### 12.1 chip §B — rfc_006 §5
+    area-oracle parity (yosys absorption)` 본문 + landing-axis
+    distinction note (D80 §0 endpoint · `absorbed=true` axis vs
+    substrate-axis `measurement_gate` axis 의 분리 narrative 명시).
+    Tier-1 (0..i · 0 PR #260→#261 first area>0 + a..i 잔여) ·
+    Tier-2 (3 item) · Tier-3 (2 item) · est 8-16 session. detail
+    SSOT (1754-line entry-by-entry fact + 사이클별 log) 는
+    `inbox/notes/rfc006-s5-area-oracle-parity-handoff.md` 에 유지
+    — ARCH §12.1 가 narrative anchor.
+  - **κ-69 opening · §11.4 Round 8 scaffold (`5897572`)** — G31..G34
+    pre-code 4 placeholder G-item 박음 (code 변경 0). G31 = G29-β
+    Energy/solar `solar_position_kernel` hexa-native runtime call
+    site port (D80 ultimate-form endpoint compliance · pvlib bridge
+    dependency 제거 axis · sun-position only · Ineichen clearsky 는
+    G31β 별 scope). G32 = 다음 cell pick + measured-oracle source
+    5-fold decision (Aura · Ufo propulsion non-illustrative stage ·
+    Energy `wind` sub-cell 후보 · D106 illustrative-physics cell 회피).
+    G33 = G32 cell 첫 `absorbed=true` legitimate flip (κ-68 G29
+    mirror · `MeasuredOracleRef` schema 재사용 · 새 record type
+    e.g. `AuraVerifyRecord` 에 field 박는 작업). G34 = G30 Stage 2
+    constitution.md governance row (`.specify/memory/constitution.md`
+    populate 후 별 cycle). **§11.4 title** G1–G30 → G1–G34 · intro
+    Round 7 'in-progress' → 'LANDED' · Round 8 'scaffold pre-code'
+    문구 추가. **§11.3 head note** 도 G1–G30 → G1–G34 표면 refresh.
+  - **§12.1 PR state drift 정정 (`984c2d4`)** — cross-repo audit
+    triggered 한 점검에서 §12.1 + 직전 Log entry 의 PR# / merge
+    state 3건 drift 발견 → in-place 정정:
+    - (b) PR #255 abc_map honesty — ARCH `[x] MERGED` 표기 였으나
+      `gh pr view 255` 결과 OPEN (DRAFT) · `[~] OPEN/DRAFT` 로 정정.
+    - (d) `rr_ptr__d` comb-loop — "hexa-lang PR #260 MERGE GATE"
+      narrative 였으나 실제 PR #260 closure 아님 · PR #261 (`0ca0994f`)
+      first area>0 narrative 정정.
+    - 잔여 §12.1 (e) fifo_mem RTLIL Memory emit 항목 narrative 의
+      "PR #256" 참조 → "PR #256 inbox patch · sibling repo 작업 중"
+      으로 정정. detail SSOT (rfc006-s5-area-oracle-parity-handoff.md)
+      는 sibling repo 측 SSOT 라 본 정정 cycle 의 cross-repo write
+      대상 아님 — 정정 narrative 는 ARCH §12.1 in-place + Log entry
+      bracket 만.
+  - **G31a wrapper half landed (`8b46c95` · κ-69 first partial-land)**
+    — hexa-lang PR #263 OPEN (`https://github.com/dancinlab/hexa-lang/
+    pull/263` · branch `g31-solar-position-hexa-native-port` ·
+    commit `740964a0`): `stdlib/energy/_solar_position_cli.hexa`
+    64-line CLI wrapper · `solar_kernel::apparent_zenith` 를
+    per-timestamp CLI 로 노출. parity verified Δ≈0.002° vs pvlib
+    0.13.0 noon Phoenix (solar_kernel_test.hexa <1e-9 claim 일치 —
+    pvlib 와의 작은 차이는 atmospheric refraction model 미세 차).
+    `use "stdlib/sys"` 회피 (upstream `read_line` symbol 별 axis
+    `inbox/PATCHES.yaml` 504-line WIP 와 충돌 — 본 PR 은 그 axis
+    상 결합 0 으로 separation). **isolated worktree pattern**:
+    `~/core/hexa-lang-g31` 신규 worktree (`git worktree add origin/
+    main`) — shared `~/core/hexa-lang` 의 다른 axis (§12.1 (e)
+    fifo_mem RTLIL Memory emit 가 다른 agent 의 활성 작업 중)
+    회피 (`feedback_hexa_lang_concurrent_agents.md` memory note
+    pattern 적용). ARCH §11.4 G31 `[ ]` → `[~]` partial flip
+    (G31a ✓ wrapper / G31b pending producer integration).
+  - **G31b follow-on (다음 cycle · 1-2 session est)** — demiurge
+    sibling repo `~/core/hexa-lang-g31` (격리 worktree · 본 update
+    중 background 작업 진행) 측 `stdlib/energy/nrel_midc_pyranometer.
+    py` 의 `_compute_modeled()` 에서 `loc.get_solarposition(times)`
+    → subprocess `hexa run _solar_position_cli.hexa` swap + 480-sample
+    mean rel_err 유지 verify + `bridgeStack` 표기 갱신 (`"hexa_native_
+    solar_position + pvlib Ineichen"`). hexa-lang PR #263 merge 가
+    G31b 의 dependency.
+  - **누적 commits** (κ-69 opening 묶음 · demiurge 측):
+    `e7371be` (§12 신설) · `5897572` (Round 8 scaffold) · `984c2d4`
+    (§12.1 PR state drift 정정) · `8b46c95` (G31a wrapper half).
+    hexa-lang 측: PR #263 (`740964a0`) OPEN. 새 측정 = G31a parity
+    Δ≈0.002° (smoke verified). 새 cell flip = 0. 새 stored field
+    = 0. 새 `.demi` row = 0.
+  g3 — κ-69 opening 묶음은 **scaffold + 1-axis partial-land**. ARCH
+  §11.4 Round 8 의 4 G-item 중 G31 만 `[~]` partial — G31b producer
+  integration 까지 land 되어야 G31 `[x]`. G32..G34 는 `[ ]` placeholder
+  (κ-68 G27..G30 가 G27 decision-only opening 으로 시작했던 패턴과
+  동형). RFC 013 §6.11 status 는 여전히 `LANDED` (κ-68 closure 의
+  상태 · κ-69 Round 8 은 RFC 013 의 ultimate-form parity follow-on
+  axis 라 RFC status 자체는 미flip). κ-68 ↔ κ-69 boundary: κ-68 =
+  per-cell measured-oracle parity 의 *first land*, κ-69 = (a) 그
+  land 의 ultimate-form parity 완성 (G31 G29-β · bridge dependency
+  제거) + (b) 두번째 cell 의 mirror land (G32..G33) + (c) governance
+  Stage 2 (G34). 본 κ-69 opening 의 *cross-repo partial-land* 패턴은
+  κ-68 G28 (G28a demiurge + G28b hexa-lang STUB) 의 multi-repo
+  discipline 의 직접 evolution — isolated worktree (`~/core/hexa-
+  lang-g31`) 가 같은 sibling repo 에 다른 agent 가 활성 작업 중일
+  때의 honest concurrent-agent pattern.
