@@ -2018,7 +2018,7 @@ area (router_d4 = 61,762.99 µm² · router_d6 = 93,608.53 µm² · ratio
 1.5156× bit-exact) 를 ±5 % 안에서 재현 → rfc_006 §5
 `measurement_gate = CLOSED_MEASURED` flip.
 
-**current gate state** (2026-05-21 KST · post hexa-lang PR #260):
+**current gate state** (2026-05-21 KST · post hexa-lang PR #261):
 - `measurement_gate = OPEN` · substrate-axis `absorbed = false`
   (cell-side κ-43 flip 별 axis · unchanged `absorbed=true`)
 - 첫 **area > 0** measured (mac-side `HEXA_EXEC_NO_SHELL=1 hexa run
@@ -2028,7 +2028,7 @@ area (router_d4 = 61,762.99 µm² · router_d6 = 93,608.53 µm² · ratio
     `abc_map: ok exit=0`
   - router_d6 = **771.99 µm²** (Δ=99.18% vs oracle 93,608.5) ·
     `abc_map: ok exit=0`
-  - PR #260 이전의 stale-BLIF false positive 였던 chain 이 honest
+  - PR #261 이전의 stale-BLIF false positive 였던 chain 이 honest
     measurement 로 전환됨
 - gate target window: area ∈ [58,675, 64,851] µm² (d4 ±5 %) +
   [88,928, 98,289] µm² (d6 ±5 %)
@@ -2042,20 +2042,24 @@ area (router_d4 = 61,762.99 µm² · router_d6 = 93,608.53 µm² · ratio
   parse_always` for-handler 의 intra-iteration blocking-LHS chain
   per-iter SSA renaming (3 helper + read-then-write filter · T73
   selftest)
-- [x] (b) **PR #255 abc_map honesty** MERGED — `abc_map.hexa` truncate-
+- [~] (b) **PR #255 abc_map honesty** OPEN — `abc_map.hexa` truncate-
   before-exec + `combinational loop` stdout pattern + T8 selftest;
-  stale `_out.blif` false-positive 차단
+  stale `_out.blif` false-positive 차단. submitted 2026-05-20 ·
+  selftest PASS · zero regression · merge pending review
 - [x] (c) **abc_map script reorder** (`read_lib` → `read_blif`) —
   already in PR #247 `logic_synth/abc_map.hexa` L478-486
-- [x] (d) **`rr_ptr__d` cross-iter comb-loop** — hexa-lang PR #260
-  (`c10699c2`) MERGED; `_rv_parse_always` for-handler 의 SSA chain
-  pre-loop alias (`connect(s__ssa0, s)`) + post-loop publish
+- [x] (d) **`rr_ptr__d` cross-iter comb-loop** — hexa-lang PR #261
+  (`0ca0994f`) MERGED 2026-05-20T19:26:33Z (RFC 073 Phase 3g · SSA
+  pre-loop init redirect); `_rv_parse_always` for-handler 의 SSA
+  chain pre-loop alias (`connect(s__ssa0, s)`) + post-loop publish
   (`connect(s, s__ssaP)`) 결합으로 발생한 `s__ssa0 = s = s__ssaP`
   comb cycle 을 `connect_lhs[]` 역방향 scan + pre-loop driver rhs
   직접 seed 로 해체. cycle 해체 + 외부 readers 는 post-loop publish
   통해 정확한 값 read. T74c rewrite + T74d regression guard 추가.
   read_verilog selftest 77/77 · round_trip 12/12 · abc_map 7/7
-  (zero regression)
+  (zero regression). **note**: PR #260 (`rfc006-yosys-ssa-seed-fix`
+  branch) 는 같은 (d) target 의 parallel attempt — superseded by
+  PR #261 · still OPEN
 - [ ] (e) **`fifo_mem[*]` 2-D LHS RTLIL Memory emit** — 40 d4 / 52 d6
   const-tied nets · ~60k µm² oracle gap · ABC 가 `Constant-0 drivers`
   recovery hack 으로 tie. 2-D packed-array `fifo_mem[pp][...] <=
@@ -2108,6 +2112,32 @@ landing 시각만 ARCH `## Log` 에 박제.
 
 ## Log
 
+- 2026-05-21 — **§12.1 PR state drift 정정** (post-cross-repo-audit ·
+  ARCH 사실 honesty). hexa-lang `gh pr view` 로 실제 PR state 점검
+  결과 §12.1 + 이전 Log entry 의 PR# / merge state 에 3건 drift
+  발견 → §12.1 in-place 정정 + 본 Log entry 박제:
+  - **§12.1 (b) PR #255 abc_map honesty**: ARCH 가 `[x] MERGED` 로
+    기록 → 실제 **OPEN** (submitted 2026-05-20 · selftest PASS ·
+    merge pending review). `[~] OPEN` 으로 정정.
+  - **§12.1 (d) `rr_ptr__d` comb-loop**: ARCH 가 "hexa-lang PR #260
+    (`c10699c2`) MERGED" 로 기록 → 실제 PR #260 은 OPEN (branch
+    `rfc006-yosys-ssa-seed-fix` · parallel attempt at same target).
+    동일 (d) target 의 실제 land 는 **PR #261 (`0ca0994f`)** MERGED
+    2026-05-20T19:26:33Z (RFC 073 Phase 3g — SSA pre-loop init
+    redirect). PR #260 → PR #261 로 정정, PR #260 은 superseded
+    note 박음.
+  - **PR #259 (G29 first flip)**: confirmed MERGED ✓ — drift 없음
+    (merge commit `b8d35920cc24fefafad555bf254c2a3576b8840f` ·
+    2026-05-20T19:08:59Z).
+  - **이전 Log entries** (2026-05-21 chip §B substrate-axis cycle
+    bracket entry · 2026-05-21 κ-68 closure narrative) 의 PR#
+    references 는 historical record 로 보존 — drift 가 그 시점의
+    write-time 정보 한계 때문. SSOT 정정은 §12.1 in-place + 본
+    correction entry 가 carry.
+  - **cross-repo audit trigger**: 이세션의 cross-repo prep (hexa-lang
+    `gh pr view` · PR #256 inbox patch · §12.1 (e) collision
+    확인) 가 부산물로 표면화. 다음 cross-repo audit 주기 (예: §12.1
+    (e) land cycle · G31 land cycle) 에 같은 패턴으로 점검할 것.
 - 2026-05-21 — **κ-69 opening · §11.4 Round 8 scaffold (G31..G34)
   pre-code 박음** (RFC 013 §6.11 LANDED 이후의 next phase boundary).
   κ-68 closure entry 의 'κ-69 reserved scope' 약속 (G29-β · 다른
