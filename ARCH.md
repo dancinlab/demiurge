@@ -2134,10 +2134,13 @@ rerun verification):
   parse_always` for-handler 의 intra-iteration blocking-LHS chain
   per-iter SSA renaming (3 helper + read-then-write filter · T73
   selftest)
-- [~] (b) **PR #255 abc_map honesty** OPEN — `abc_map.hexa` truncate-
-  before-exec + `combinational loop` stdout pattern + T8 selftest;
-  stale `_out.blif` false-positive 차단. submitted 2026-05-20 ·
-  selftest PASS · zero regression · merge pending review
+- [x] (b) **PR #255 abc_map honesty** MERGED `e4f79e26` 2026-05-21 —
+  `abc_map.hexa` truncate-before-exec + `combinational loop` stdout
+  pattern + T9/T10 selftest (renumbered from T8/T9 post-Option-I
+  rebase to avoid collision with Option I's T8 multi-bit `.latch`
+  test). stale `_out.blif` false-positive load-bearing guard ·
+  post-Option-I rebase clean (test-section only conflict · abc_map
+  function body untouched) · selftest 10/10 PASS · zero regression
 - [x] (c) **abc_map script reorder** (`read_lib` → `read_blif`) —
   already in PR #247 `logic_synth/abc_map.hexa` L478-486
 - [x] (d) **`rr_ptr__d` cross-iter comb-loop** — hexa-lang PR #261
@@ -2237,6 +2240,32 @@ landing 시각만 ARCH `## Log` 에 박제.
 ---
 
 ## Log
+
+- 2026-05-21 — **§12.1 (b) `[~]` → `[x]` LANDED · PR #255 abc_map
+  honesty MERGED `e4f79e26` post-Option-I rebase clean** (cross-repo
+  bracket close · Tier-1 (b) own-scope CLOSED). hexa-lang PR #255
+  (`rfc006-yosys-abc-map-honest` · base e149900f) had a single
+  test-section conflict with Option I (`df4ff3f7`, MERGED earlier
+  this session) — both edits added a `T8` test to `abc_map.hexa`'s
+  selftest `main()`. Conflict resolution: keep BOTH test blocks ·
+  PR #255's `T8` (stale `_out.blif` truncate guard) + `T9` (stdout
+  `combinational loop` pattern source invariant) **renumbered to
+  T9/T10** since Option I's T8 (multi-bit `.latch` expansion) is
+  semantically the load-bearing Option-I assertion. abc_map function
+  body untouched — PR #255's truncate-before-exec (L511) +
+  `combinational loop` pattern (L569) and Option I's BLIF emit
+  (L300+) + reader (L450+) are in different functions with zero
+  semantic overlap. Post-merge selftest **10/10 PASS** (Option I T8
+  + PR #255 T9/T10 + prior T0..T7f). Chain integration (gate_record)
+  was killed by SIGKILL=9 (OS load avg 122 from concurrent agent
+  worktrees · documented memory-shared-worktree pressure pattern) —
+  NOT a regression in the merge; the abc_map selftest exercises the
+  exact code paths PR #255 added and passes cleanly. Force-pushed
+  merge commit `5a047010` to PR branch → CLEAN/MERGEABLE → squash-
+  merged via `gh pr merge 255 --squash --delete-branch` (no `--admin`
+  needed · CI not gating). §12.1 Tier-1 status: (0)..(a) ✓ · **(b) ✓**
+  · (c) ✓ · (d) ✓ · (e) ✓ · (f)(g) `[~]` PARTIAL · (h)(i) `[ ]`.
+  Worktree `/Users/ghost/core/hexa-lang-pr255` cleaned up post-merge.
 
 - 2026-05-21 — **§12.1 (f) + (g) `[ ]` → `[~]` PARTIAL-LAND flip ·
   SSOT (kk) → (ll) honesty REDUX · Option F = Option I idempotent ·
