@@ -219,6 +219,13 @@ public enum ActionDispatch {
         case (.verify, "sscb"):
             // D111 Phase B — see (.analyze, "sscb") above.
             return CellrunDispatch.run(verb: verb, domain: domain)
+        case (.specify, "sscb"):
+            // SSCB 7-verb walkthrough Step 1 — 4th wired SSCB cell.
+            // Producer: ~/core/hexa-lang/stdlib/sscb/specify.py
+            // (template emit transcribing domains/sscb.md §1 HEXA-SSCB
+            // mk1 spec). g3: absorbed=false permanently — spec without
+            // measurement is illustrative, not absorption.
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.synthesize, "bot"):
             return runBotSynthesize()
         case (.synthesize, "scope"):
