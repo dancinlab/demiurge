@@ -1,0 +1,129 @@
+{
+  "domain": "material",
+  "verb": "discover",
+  "kind": "rtsc_novel_discovery_funnel",
+  "stamp": "20260521T180059Z",
+  "producer": "rtsc_discovery_run.py@v1",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": true,
+  "query": {
+    "cohort": "manually-built multi-atom RTSC candidates",
+    "tc_threshold_K": 270.0
+  },
+  "candidate_count_total": 7,
+  "candidate_count_above_threshold": 0,
+  "top_k_ranked": [
+    {
+      "label": "MgB2",
+      "structure_descriptor": "AlB2 P6/mmm",
+      "n_atoms": 3,
+      "measured_tc_K": 39.0,
+      "predicted_tc_K": 32.53144780996212,
+      "lambda": 0.7582967803598577,
+      "lambda_sigma": 1.2671402629453234,
+      "lambda_relative_sigma": 1.6710347396490182,
+      "omega_log_K": 751.8511690697121,
+      "rel_err_percent": 16.58603125650739,
+      "wall_s": 25.2157781124115,
+      "record_path": "/tmp/rtsc_discovery_2026-05-22/MgB2/material_verify_beenet_notebook_20260521T175738Z.json"
+    },
+    {
+      "label": "Nb3Ge",
+      "structure_descriptor": "A15 cubic Pm-3n",
+      "n_atoms": 8,
+      "measured_tc_K": 23.0,
+      "predicted_tc_K": 16.385140297689496,
+      "lambda": 0.6173795755025066,
+      "lambda_sigma": 0.68856741579784,
+      "lambda_relative_sigma": 1.1153064388911655,
+      "omega_log_K": 642.0644924442079,
+      "rel_err_percent": 28.76025957526306,
+      "wall_s": 24.706547021865845,
+      "record_path": "/tmp/rtsc_discovery_2026-05-22/Nb3Ge/material_verify_beenet_notebook_20260521T175804Z.json"
+    },
+    {
+      "label": "H3S",
+      "structure_descriptor": "Im-3m R-3m",
+      "n_atoms": 4,
+      "measured_tc_K": 203.0,
+      "predicted_tc_K": 15.871705540504694,
+      "lambda": 0.9521332001005396,
+      "lambda_sigma": 1.9570133970177375,
+      "lambda_relative_sigma": 2.055398758084571,
+      "omega_log_K": 235.22590319380097,
+      "rel_err_percent": 92.1814258421159,
+      "wall_s": 43.38207697868347,
+      "record_path": "/tmp/rtsc_discovery_2026-05-22/H3S/material_verify_beenet_notebook_20260521T180016Z.json"
+    },
+    {
+      "label": "CaH6",
+      "structure_descriptor": "Im-3m sodalite",
+      "n_atoms": 7,
+      "measured_tc_K": 215.0,
+      "predicted_tc_K": 7.136503746966147,
+      "lambda": 0.49836254867096585,
+      "lambda_sigma": 0.7662238543333961,
+      "lambda_relative_sigma": 1.5374828152251072,
+      "omega_log_K": 584.0476905471553,
+      "rel_err_percent": 96.68069593164364,
+      "wall_s": 33.6957790851593,
+      "record_path": "/tmp/rtsc_discovery_2026-05-22/CaH6/material_verify_beenet_notebook_20260521T175942Z.json"
+    },
+    {
+      "label": "LaH10",
+      "structure_descriptor": "Fm-3m clathrate (simplified)",
+      "n_atoms": 11,
+      "measured_tc_K": 250.0,
+      "predicted_tc_K": 7.119654637423905,
+      "lambda": 0.760080303149272,
+      "lambda_sigma": 1.4573228705950534,
+      "lambda_relative_sigma": 1.9173275041556366,
+      "omega_log_K": 163.6842870248069,
+      "rel_err_percent": 97.15213814503045,
+      "wall_s": 24.69178295135498,
+      "record_path": "/tmp/rtsc_discovery_2026-05-22/LaH10/material_verify_beenet_notebook_20260521T175918Z.json"
+    },
+    {
+      "label": "NbTi",
+      "structure_descriptor": "BCC random alloy approx",
+      "n_atoms": 2,
+      "measured_tc_K": 9.5,
+      "predicted_tc_K": 4.773575006088057,
+      "lambda": 0.43681593758975784,
+      "lambda_sigma": 0.5152516159344959,
+      "lambda_relative_sigma": 1.1795623089613594,
+      "omega_log_K": 702.6169139858764,
+      "rel_err_percent": 49.75184204117834,
+      "wall_s": 24.634872913360596,
+      "record_path": "/tmp/rtsc_discovery_2026-05-22/NbTi/material_verify_beenet_notebook_20260521T175853Z.json"
+    },
+    {
+      "label": "NbN",
+      "structure_descriptor": "B1 rocksalt Fm-3m",
+      "n_atoms": 8,
+      "measured_tc_K": 16.0,
+      "predicted_tc_K": 4.757974844996258,
+      "lambda": 0.4393846535440762,
+      "lambda_sigma": 0.5985439746404466,
+      "lambda_relative_sigma": 1.3622323169746406,
+      "omega_log_K": 680.4312642427893,
+      "rel_err_percent": 70.26265721877338,
+      "wall_s": 24.607472896575928,
+      "record_path": "/tmp/rtsc_discovery_2026-05-22/NbN/material_verify_beenet_notebook_20260521T175828Z.json"
+    }
+  ],
+  "scope_caveats": [
+    "(s1) BETE-NET CSO prediction is ML inference, NOT measurement. R4 invariant: absorbed=false 영구.",
+    "(s2) Multi-atom strong-coupling SC = BETE-NET trusted region; 1-atom bulks = OOD edge.",
+    "(s3) Hydrides (LaH10, CaH6, H3S) require GPa pressure — RTSC.md §8.9 (c) gate FAIL by design even if predicted Tc > 270 K.",
+    "(s4) Predicted Tc > 270 K from BETE-NET ≠ actual room-temperature SC. Requires wet-lab (a)(b)(c)(d) gate satisfaction.",
+    "(s5) σ/λ surfaced as OOD signal — high σ/λ means low ML confidence.",
+    "(s6) honest empirical: best rel_err 16.6% (MgB2) · worst 1424% (V) per inbox/notes/2026-05-22-bete-net-7-candidate-benchmark.md"
+  ],
+  "citations": [
+    "arxiv:2401.16611 (BETE-NET primary · Gibson et al. npj Comput. Mater. 2025)",
+    "RTSC.md §8.9 (5-gate) · §9.2 (BETE-NET row) · §9.10 (N5 funnel)"
+  ]
+}
