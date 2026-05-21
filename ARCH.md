@@ -333,6 +333,106 @@ spec + cited sources, and its substrate scripts spawn into the
 sibling repo. `hexa-lang/stdlib/<domain>/` for these three points
 to the sibling repo's entry script rather than holding the math.
 
+### 4.5 D111 — Generic verb-cell dispatch (`cellrun.hexa` + `.demi` manifest)
+
+> **D111 (2026-05-21)** ratifies the architectural shift away from
+> hardcoded per-cell `*Producer.swift` classes toward a hexa-native
+> generic dispatcher. This subsection describes the *target shape*;
+> §4.3's ProducerRegistry + ActionDispatch switch is the
+> **transitional bridge** (D14 / D18 / §0 hexa-only ultimate form).
+
+**Pain that triggered D111** (2026-05-21 sscb 7-verb walkthrough ·
+실 측정 ground truth):
+
+- 46 `cockpit/Sources/DemiurgeCore/Loaders/*Producer.swift` classes
+  (50-150 line each · spawn substrate + parse stdout + emit typed
+  record · `(domain × verb)` axes scatter pattern)
+- 40+ hardcoded `(.verb, "domain")` switch cases in
+  `ActionDispatch.swift` · each new cell wiring = +1 Swift class
+  + +1 switch case
+- Adding a new domain requires writing 4-7 Swift producer classes
+  (200-400 line each) + matching dispatch cases — Swift code per
+  domain is essentially **prose** (`ai-native` 위반)
+- ARCH §0 first principle says producer's ultimate destination is
+  hexa-native — Swift producer classes are §0 endpoint targets too
+
+**Target shape**:
+
+```
+ActionDispatch.dispatch(verb, domain)                                    [Swift · thin]
+    │ spawn
+    └─ hexa run stdlib/cockpit/cellrun.hexa <domain> <verb>               [hexa-native]
+         │
+         ├─ load_manifest(domain)                                          [domains/<id>.demi]
+         │      [cell.<verb>]
+         │      substrate     = python3 | hexa | curl | ...
+         │      script        = stdlib/<domain>/<verb>.{py,hexa}
+         │      record_kind   = <DomainVerbRecord>
+         │      output_dir    = exports/<domain>/<verb>
+         │      required_deps = [<binary>, <python-module>, ...]
+         │      gate_default  = OPEN | CLOSED_DOC | CLOSED_MEASURED
+         │      absorbed_default = false | true
+         │      scope_caveats = [<caveat>, ...]
+         │      fallback      = <variant>?       # D74 alternatives 흡수
+         │
+         ├─ dep_check(required_deps)
+         │      └─ missing → honest-skip emit · g3 typed-by-config
+         │
+         ├─ spawn_substrate(substrate, script, ...)
+         │      └─ capture stdout · exit · artifacts list
+         │
+         ├─ emit_record(record_kind, content, output_dir)
+         │      └─ write JSON · timestamped id · gate/absorbed/caveats
+         │         from manifest
+         │
+         └─ return result to Swift (record path · stdout · exit)
+```
+
+**Cost reduction** (new domain or new cell):
+
+| step | pre-D111 (hardcoded) | post-D111 (manifest) |
+|---|---|---|
+| domain doc | `domains/<id>.md` | 동일 |
+| **producer Swift** | **7 new class · 700-1400 line** | **0** |
+| **dispatch switch** | **7 new case · 7-14 line** | **0** |
+| hexa-native script | 도메인 작업 | 동일 |
+| **manifest** | — | **신규 `<id>.demi` ~80-120 line** |
+| record schema | 7 new Codable struct | 1 generic `CellRecord` OR 재사용 |
+| g3 honest-skip | ad-hoc text 응답 | **typed-by-config 자동** |
+
+**Migration path (Phase A..E · 10-17 session est)**:
+
+- **Phase A**: `stdlib/cockpit/cellrun.hexa` Phase A scaffold (hexa-
+  lang isolated worktree `hexa-lang-cellrun` · concurrent agent
+  2026-05-21 작업 중) — manifest loader + g3 gate + selftest. PR
+  open 안 함 (review 대기).
+- **Phase B**: `domains/sscb.demi` proof-of-concept (7 verb · 3
+  wired + 4 honest-skip) · existing record byte-equal regression
+  verify. 1-2 session.
+- **Phase C**: 46 producer 점진 migration (1 도메인 / commit ·
+  `.demi` add + Swift producer + switch case 제거 + regression
+  test PASS). 5-10 session.
+- **Phase D**: `ActionDispatch.swift` 가 switch 0 case · 5-line
+  thin spawner 로 축소. 1 session.
+- **Phase E** (optional): Swift-side record schema 도 manifest-
+  declared fields 로 generalize (per-domain CodingKey 폐기 검토).
+  2-3 session.
+
+**Axis distinction**:
+
+- D111 = dispatch-mechanism axis (plumbing) · cell 의 `absorbed`
+  자체와 무관 (D103 dimension separation 유지)
+- D80 endpoint rule 의 *cockpit-dispatch axis* 적용 — kernel/
+  producer-content/record-schema axes 와 별 axis
+- D74 ProducerRegistry alternatives 패턴은 `[cell.<verb>.<variant>]`
+  manifest 섹션으로 자연 흡수 (Swift ProducerRegistry class 도
+  cellrun.hexa 안 selection logic 으로 흡수)
+
+**Cross-link**: design.md D112 (full rationale + rejected
+alternatives) · D14 / D18 / D74 / D80 / D83 (.demi precedent) ·
+CLAUDE.md Principles 1 + 2 + 4 + 5 (ai-native · hexa-first ·
+domain-meta-domain · lattice-as-tool) · ARCH §0 first principle.
+
 ---
 
 ## 5. Projects — pointers over the graph
@@ -2010,7 +2110,7 @@ measurement round (scaffold · pre-code)**
       에는 적용 불가)
     - D95 computed-projection 만으로 만족하는 cell (substrate-
       parity 가 아닌 measurement-parity 가 본 round 의 점)
-  - **exit criterion**: design.md D111 (κ-69 G32 land) record ·
+  - **exit criterion**: design.md D112 (κ-69 G32 land) record ·
     5-fold sub-decision 명시 (cell · external oracle · bridge
     stack · hexa-native scope · PASS criterion) · code 변경 0
   - **deps**: G31 (G29-β 가 우선 land 되어 endpoint pattern 정착)
@@ -2646,6 +2746,47 @@ landing 시각만 ARCH `## Log` 에 박제.
     `[x]` (first full-land) · G32/G33/G34 still `[ ]`. 다음 lowest-
     friction step = G32 decision gate (5-fold lock-in cell pick · code
     0) 또는 G31β (Ineichen clearsky hexa-native port).
+- 2026-05-21 — **D111 ratified · §4.5 신설 · generic verb-cell
+  dispatch (`cellrun.hexa` + `.demi` manifest) 가 cockpit dispatch
+  의 ultimate-form target 으로 명문화**. 2026-05-21 cycle 의 sscb
+  7-verb walkthrough 실 측정 (3/7 wired · 4/7 honest-skip) 이
+  trigger — 사용자 직접 관찰 "SSCB · RTSC 이렇게 전용함수가 아니라
+  시스템 그 자체를 구축해야돼" 가 D111 의 motivation. cellrun.hexa
+  가 그 "시스템" 의 정확한 shape:
+  - **현 상태 명시화**: 46 `*Producer.swift` + 40+ hardcoded
+    `(.verb, "domain")` switch case = **transitional bridge**
+    (D14 / D18 / §0 hexa-only ultimate form). 새 도메인 추가 =
+    7 Swift class + 7 switch case = ai-native 원칙 위반 (prose-
+    shaped code).
+  - **target shape**: ActionDispatch.swift = thin spawner ·
+    실제 dispatch logic = `stdlib/cockpit/cellrun.hexa` 안 ·
+    per-domain `.demi` manifest 가 [cell.<verb>] 섹션 별 wiring
+    (substrate · script · record_kind · output_dir · required_
+    deps · gate_default · absorbed_default · scope_caveats ·
+    fallback variants).
+  - **새 도메인 추가 cost**: 7 Swift class + switch (700-1400
+    line) → `<id>.demi` manifest 1 file (80-120 line). g3 honest-
+    skip 도 manifest 부재 자동 처리 (typed-by-config).
+  - **Phase A 진행 중** (concurrent agent · 2026-05-21 cycle 안):
+    `~/core/hexa-lang-cellrun` isolated worktree 에서 `stdlib/
+    cockpit/cellrun.hexa` scaffold 작성 중 + demiurge 측
+    migration inventory + sscb.demi proof-of-concept 동시 진행.
+    PR open 은 review 대기.
+  - **Phase B..E migration**: B = sscb.demi PoC (1-2 session) ·
+    C = 46 producer 점진 migration (5-10 session) · D =
+    ActionDispatch 5-line thin spawner 축소 (1 session) · E =
+    record schema generalization optional (2-3 session). 누적
+    10-17 session · multi-cycle work.
+  - **axis distinction**: D111 = dispatch-mechanism axis ·
+    cell `absorbed` 와 무관 (D103 dimension separation 보존) ·
+    D74 ProducerRegistry alternatives 패턴 자연 흡수 (`[cell.
+    <verb>.<variant>]` 섹션 multiple).
+  - **§11.4 G32 → D112 shift**: 본 D111 land 직전 G32 plan 이
+    "design.md D111" 를 cite 했지만 cellrun 이 먼저 land 하여
+    D111 차지 · G32 = D112 로 references 갱신 (2건 in §11.4).
+  - **provenance**: 사용자가 SSCB walkthrough 후 직접 "시스템
+    자체를 구축해야돼" 라고 지시 · D111 = 그 지시의 doctrinal
+    ratification.
 - 2026-05-21 — **G31b producer integration landed · same-cycle full
   G31 partial → branch-complete** (hexa-lang PR #263 OPEN with 2
   commits — `740964a0` G31a + `47c2378e` G31b). κ-69 opening 같은
@@ -2781,7 +2922,7 @@ landing 시각만 ARCH `## Log` 에 박제.
     decision (G27 mirror · D106 illustrative gate 제외 · D95
     computed-projection 만족 cell 제외). 후보 cluster = Aura
     soft-biology (PhysioNet) · Ufo non-illustrative stage ·
-    Mobility / Grid / Energy wind sub-cell. design.md D111 land
+    Mobility / Grid / Energy wind sub-cell. design.md D112 land
     예정. 0.3-0.5 session est. code 0.
   - **G33 [ ]** G32 cell 첫 `absorbed=true` legitimate flip
     (G29 mirror · κ-68 G29 와 다른 점: schema half 재사용 · 다른

@@ -4568,3 +4568,129 @@ D80 ultimate-form 의 runtime port (G29-β) 는 잔여 · 본 D110 은
 *substrate-parity reuse* 의 honest middle ground (κ-65 21/21 PASS
 의 parity-of-implementation 을 trust + measured-oracle dimension
 의 first PASS 가 별 axis 로 land).
+
+
+### Decision 111 — Generic verb-cell dispatch via hexa-native `cellrun` + per-domain `.demi` manifest (cockpit-side `*Producer.swift` migration target)
+
+**picked**: 7-verb cell dispatch logic 를 **hexa-native generic dispatcher**
+(`~/core/hexa-lang/stdlib/cockpit/cellrun.hexa`) + **per-domain `.demi`
+manifest** (`domains/<name>.demi` 의 `[cell.<verb>]` 섹션) 패턴으로
+이행. 새 도메인 추가 = `.demi` manifest 1 file edit · Swift code
+변경 0. 현재의 46 `*Producer.swift` + 40+ hardcoded
+`ActionDispatch.swift` switch case = **transitional bridge** (D14 /
+D18 / ARCH §0 hexa-only ultimate form 의 후속 적용 axis).
+
+**rationale**:
+
+- **Wilson hexa-first 원칙** (CLAUDE.md `## Identity` Principle 2):
+  "hexa-native path over external CLI · absorbed intrinsics over
+  forking a shell · absorbed stdlib / atlas over hand-rolling". 현재
+  Swift dispatch 는 명백한 reverse — hexa kernel 을 호출하기 위해
+  Swift 46-class hierarchy + 40+ switch case 가 **각 cell 마다**
+  존재. dispatch 자체가 hexa-native 가 되어야 자연스럽다.
+
+- **ARCH §0 hexa-only ultimate form 의 자연 귀결**: §0 는 "Every
+  producer, kernel, record schema, and verify oracle's ultimate
+  destination is hexa-native". `producer` 자체가 §0 의 endpoint
+  대상이므로 cockpit 의 `*Producer.swift` 46 class 도 transitional
+  pointer. D80 endpoint rule § 의 "hexa-native parity port AND
+  matches the transitional implementation to a cited tolerance"
+  적용 → cellrun.hexa 가 정착하면 Swift producer 들은 transitional
+  bridge 로 demote.
+
+- **새 도메인 추가의 dramatic cost reduction**:
+  | step | 현재 (hardcoded) | post-D111 (manifest) |
+  |---|---|---|
+  | domain doc | `domains/<name>.md` | 동일 |
+  | producer Swift | **7 신규 class · 700-1400 line** | **0** |
+  | dispatch switch | **7 신규 case** | **0** |
+  | hexa-native script | 도메인 작업 | 동일 |
+  | manifest | — | **신규 `.demi` ~80-120 line (7 verb wiring)** |
+  | record schema | 7 신규 Codable struct | 1 generic `CellRecord` + per-cell field dict (manifest-declared schema) OR 재사용 |
+
+- **g3 honest-skip 자동화**: 현재는 unwired cell 이 fallthrough
+  → ad-hoc text 응답. post-D111: manifest 에 `[cell.<verb>]`
+  섹션 부재 = 자동 honest-skip 반환 (`no manifest section · g3
+  no measurement claim`). g3 enforcement 가 typed-by-config.
+
+- **ai-native 원칙** (Wilson Principle 1): "Structured / machine-
+  readable over prose · deterministic dispatch over LLM guesswork".
+  46 hardcoded class = 코드로 박힌 데이터 (= prose-shaped). `.demi`
+  manifest = structured · machine-readable · deterministic.
+
+- **domain-meta-domain 원칙** (Wilson Principle 4): "Per-topic
+  roadmaps as root `UPPERCASE.md` (one domain = one file)". 현재
+  도메인 = `<name>.md` 1 file + 7 Swift class scattered in
+  `cockpit/Sources/.../Loaders/`. post-D111: 도메인 = `<name>.md`
+  + `<name>.demi` (2 file · co-located · self-contained). 진정한
+  one-domain-one-place.
+
+- **lattice-as-tool**: 7-verb 격자 자체는 도구 · cellrun.hexa 가
+  manifest 의 verb 키를 1-to-1 으로 dispatch · 격자 변화 발생 시
+  (e.g. 8th verb 도입) cellrun.hexa 한 file 갱신으로 끝. Swift
+  cascade 갱신 없음.
+
+**axis distinction (D80 / D103 와의 관계)**:
+
+- D80 (hexa-native ultimate form): 본 D111 은 D80 의 cockpit-
+  dispatch axis 적용. 기존 D80 은 kernel/producer/record schema
+  axis 위주.
+- D103 (`absorbed` vs `isHexaNativeAbsorbed` dimension separation):
+  D111 은 dispatch-mechanism axis · cell 의 `absorbed` 자체와
+  무관. cellrun.hexa land 가 어떤 cell 의 absorbed=true 를 trigger
+  하지 않음 (dispatch refactor 는 measurement-axis 아닌 plumbing-
+  axis).
+- D74 (ProducerRegistry): D74 의 "cells with alternatives" 패턴은
+  manifest 에 자연 흡수 — `[cell.<verb>.<variant>]` 섹션 multiple
+  가능. ProducerRegistry Swift class 도 cellrun.hexa 안 alternatives
+  selection logic 으로 흡수.
+
+**exit criterion**:
+
+- Phase A — `stdlib/cockpit/cellrun.hexa` 생성 (generic dispatcher
+  · manifest loader · g3 gate · selftest) · isolated worktree
+  `hexa-lang-cellrun` 에 branch-only land · concurrent agent task
+  진행 중 (본 결정 작성 시점)
+- Phase B — `domains/sscb.demi` proof-of-concept · 7 verb (3 wired
+  + 4 honest-skip) · sscb 의 기존 record + 새 cellrun-path record
+  byte-equal verify
+- Phase C — 46 producer 점진 migration · 도메인 1개씩 · 각
+  migration commit = (a) `<name>.demi` 신규 + (b) 해당 Swift
+  producer + dispatch case 제거 + (c) record regression test PASS
+- Phase D — `ActionDispatch.swift` switch 가 0 case 로 축소 · 모든
+  dispatch 가 cellrun.hexa 경유 · Swift producer class 0 잔존 ·
+  `ActionDispatch` 가 5-line thin spawner 로 축소
+- Phase E — cockpit Swift side 의 record schema 도 manifest-declared
+  fields 로 generalize (optional · per-domain CodingKey 폐기 검토)
+
+**est total**: Phase A 1 session · Phase B 1-2 session · Phase C
+5-10 session (46 producer × 5-15 min per migration) · Phase D 1
+session · Phase E 2-3 session (optional). **누적 10-17 session ·
+multi-cycle work**.
+
+**rejected**:
+
+- **Status quo** (Swift producer 추가 유지): 새 도메인 추가 cost
+  가 매 cell 마다 200-400 line Swift code · 18 domains × 7 verb
+  = 126 cells 의 fully-wired state 도달까지 80+ producer 더 필요.
+  ai-native 원칙 정면 위반 (prose-shaped code).
+- **Hybrid permanent** (generic dispatch fallback · hardcoded
+  우선): migration debt 만 누적 · 절대 정리 안 됨 · D80 endpoint
+  rule § 의 spirit (ultimate-form) 위반.
+- **Swift-side generic Producer** (`GenericProducer.swift` 만들고
+  Swift 안에서 manifest read): D14 / D18 / ARCH §0 위반 — dispatch
+  logic 도 hexa-native 가 endpoint. Swift generic loader 는 D80
+  의 provisional=true 강등 risk 만 transitional 로 carry · 결국
+  같은 redux 발생.
+
+**provenance**: 본 결정의 motivation = 2026-05-21 KST sscb 7-verb
+walkthrough 실 측정 (3/7 wired · 4/7 honest-skip) · 사용자 직접
+관찰 "SSCB · RTSC 이렇게 전용함수가 아니라 시스템 그 자체를
+구축해야돼". cellrun.hexa 가 그 "시스템" 의 정확한 shape.
+
+**cross-link**: D14 (hexa-lang substrate) · D18 (hexa-native
+preference) · D74 (ProducerRegistry · 자연 흡수) · D80 (endpoint
+rule) · D83 (`.demi` format precedent) · D88 (`DEMIURGE_HEXA_LANG`
+deprecation) · D101 · ARCH §0 first principle · ARCH §4.5 (본
+결정으로 신설) · CLAUDE.md Principle 1+2+4+5 (ai-native ·
+hexa-first · domain-meta-domain · lattice-as-tool).
