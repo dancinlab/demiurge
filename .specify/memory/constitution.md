@@ -1,3 +1,21 @@
+<!--
+Sync Impact Report — Constitution amendment 1.3.0 → 1.4.0 (MINOR)
+- Date: 2026-05-21
+- Bump type: MINOR (new R-row: R4 RTSC absorbed=true twin-error invariant)
+- Modified principles: none (Core Principles I-VI unchanged)
+- Added sections: R4 (RTSC absorbed=true twin-error invariant) in Governance Rows
+- Removed sections: none
+- Templates requiring updates:
+  - ⚠ pending: .specify/templates/plan-template.md — Constitution Check 시 RTSC absorbed=true claim 발생하면 R4 5-gate 검증 의무 명시
+  - ⚠ pending: .specify/templates/spec-template.md — scope 에 SC material absorbed=true 가 포함되면 RTSC.md §8.9 5-gate cross-reference 의무
+  - ⚠ pending: .specify/templates/tasks-template.md — RTSC material attestation task 에 "5-gate evaluation record" 산출 category 추가
+  - ✅ aligned: RTSC.md §8.9 (5-criteria gate) + §8.10 (Nb honest correction) — R4 가 직접 참조
+- Follow-up TODOs:
+  - TODO(stage-1-enforcement): Swift Codable `MaterialAttestationRecord` 에 `rtsc_5_gate_evaluation: RTSC5GateEvaluation?` 필드 추가 (현재 doctrinal-only)
+  - TODO(stage-2-paper-hook): PAPERS/ compile-time hook — abstract 의 "RTSC absorbed=true" 문구 발견 시 동반 attestation record 의 5-gate state 검증
+- Suggested commit: docs: amend constitution to v1.4.0 (R4 RTSC absorbed=true twin-error invariant)
+-->
+
 # demiurge Constitution
 
 ## Core Principles
@@ -87,7 +105,7 @@ Verb-cell dispatch (the 18-domain × 7-verb = 126-cell grid) flows through a **h
 
 ### R3. stdlib SSOT = hexa-lang only — demiurge `cockpit/Sources/` algorithm-shaped code 금지
 
-All **stdlib code** (substrate algorithms · physics · math · validation logic · domain-specific kernels) lives in **`~/core/hexa-lang/stdlib/`** (or sibling repos `~/core/hexa-matter/` · `~/core/hexa-bio/` · `~/core/hexa-chem/` per D17/D77 precedent). demiurge `cockpit/Sources/` carries **only**: (a) typed record schemas (Codable wire models · compile-time safety for consumer) · (b) UI views (SwiftUI · cockpit chrome) · (c) thin dispatch wrappers (`CellrunDispatch.swift` · `*Producer.swift` transitional bridges per D111 Phase C deprecation track) · (d) CLI presentation (DemiurgeCLI args parse + output formatting). **Algorithm-shaped code in `cockpit/Sources/` is an anti-pattern requiring migration to hexa-lang stdlib.**
+All **stdlib code** (substrate algorithms · physics · math · validation logic · domain-specific kernels) lives in **`~/core/hexa-lang/stdlib/<domain>/` ONLY**. Sibling repos (`~/core/hexa-rtsc/` · `~/core/hexa-matter/` · `~/core/hexa-bio/` · `~/core/hexa-chem/`) are **docs only** — markdown narrative · domain spec · physics derivation notes · citation indexes · NO code (per D116 amendment of D14/D17/D77 precedent). demiurge `cockpit/Sources/` carries **only**: (a) typed record schemas (Codable wire models · compile-time safety for consumer) · (b) UI views (SwiftUI · cockpit chrome) · (c) thin dispatch wrappers (`CellrunDispatch.swift` · `*Producer.swift` transitional bridges per D111 Phase C deprecation track) · (d) CLI presentation (DemiurgeCLI args parse + output formatting). **Algorithm-shaped code in `cockpit/Sources/` is an anti-pattern requiring migration to hexa-lang stdlib.**
 
 - **Boundary table** (cockpit/Sources/ 에 OK vs NO · per D114 § enforcement boundary):
   | code shape | demiurge cockpit/ 위치? | reason |
@@ -109,9 +127,27 @@ All **stdlib code** (substrate algorithms · physics · math · validation logic
 - **Load-bearing enforcement** — *Phase D (planned · Tier-2)*: automated static-analysis hook on `cockpit/Sources/` that fails `swift build` when new files exceed dispatch-wrapper LOC threshold OR contain algorithm-shaped patterns (AST analysis). Until Phase D lands, **PR review** is the enforcement vehicle; new PRs touching `cockpit/Sources/Loaders/` must cite R3 + verify the dispatch-wrapper shape.
 - **Cross-links**: design.md **D114** (full rationale + boundary table + Phase A..D exit + axis distinction) · D111 (dispatch-mechanism sibling axis · `cellrun.hexa` + `.demi` manifest) · D14 / D18 (hexa-lang substrate doctrine) · D17 / D77 (sibling repos precedent) · D61 (D61 violator pattern · `bipv_freecad.py` is the 1 remaining) · D80 (endpoint rule · ultimate-form proof) · ARCH §0 (first principle) · §4.5 (cellrun architecture) · Principle I (NON-NEGOTIABLE · this row enforces) · Wilson Principles 1+2+4+5.
 
-**Version**: 1.3.0 | **Ratified**: 2026-05-21 | **Last Amended**: 2026-05-21
+### R4. RTSC absorbed=true twin-error invariant — namespace exploit + goal abandonment 모두 금지
+
+User-level goal "RTSC 물질 absorbed=true" (room-temperature SuperConductor 의 측정-검증 absorbed) 의 만족 여부는 **RTSC.md §8.9 의 5-criteria gate** 가 SOLE 정의이다. 다음 두 anti-pattern 은 모두 절대 금지:
+
+**Pattern 1 — namespace exploit (FORBIDDEN)**: RTSC.md §1 의 naming-collision (도메인 id `rtsc` 가 device/magnet engineering 영역 namespace 인 한편 RTSC literal 정의는 room-temperature material 인 모순) 을 이용해, LTS 또는 HTS attestation 에 `domain: "rtsc"` 를 박은 후 *RTSC material absorbed=true* 라는 사용자-수준 목표를 만족했다고 주장하는 행위.
+
+**Pattern 2 — goal abandonment (FORBIDDEN)**: RTSC absorbed=true 가 현재 물리학으로 만족 불가능하다는 이유로 user-level goal 을 *폐기* / *불가능 declaration* / *비추적 영구 무효화* 하는 행위. 5-gate 는 미래 후보 등장 시 평가 통과 가능 — gate 가 OPEN 상태로 candidate matrix 와 함께 유지.
+
+- **5-criteria gate (SOLE 정의)**: RTSC.md §8.9 의 (a)+(b)+(c)+(d)+(e) — 합성 가능성 (`replicated_by_independent_labs ≥ 3`) · Tc ≥ 270 K (R(T) · Meissner · AC susc 셋 다) · ambient pressure (≤ 1 atm) · ≥ 3 독립 lab 재현 · 측정-오라클 parity (`rel_err < 5%`) **모두 AND**. 하나라도 SKIP/FAIL 이면 RTSC absorbed=true 자격 없음 (코드-레벨 invariant).
+- **Pattern 1 방지 (namespace separation)**:
+  - (i) `domain: "rtsc"` namespace 의 *non-RTSC material* (LTS Nb · HTS REBCO 등) 의 absorbed=true 는 **ALLOWED**. 단 5-gate evaluation record (`rtsc_5_gate_evaluation` field) 가 attestation JSON 에 박혀야 하며, 5/5 가 아닌 경우 "RTSC material absorbed=true" 라는 인간-가독 요약 / paper-abstract 표현 **금지**. 대신 명시적 family label ("LTS attestation" · "HTS attestation") 사용.
+  - (ii) *RTSC material* (Tc ≥ 270 K + ambient) absorbed=true 는 **5-gate 통과 record 셋 동시 존재** 시에만 emit 가능. 위반 record 는 reject.
+- **Pattern 2 방지 (goal preservation)**: 5-gate candidate matrix (RTSC.md §8.9 의 family × gate 표) 는 **append-only · update-only · never-delete**. 어떤 후보도 5/5 통과 안 한다는 *현재 상태* 는 honest 정보 — *goal 자체* 가 사라지지 않음. 새 후보 등장 시 matrix 에 row 추가 + 5-gate 평가 시도 의무.
+- **Load-bearing enforcement** — *Stage 1 (record schema · planned)*: `MaterialAttestationRecord` Swift Codable 에 `rtsc_5_gate_evaluation: RTSC5GateEvaluation?` 필드 추가 (Optional · default null). null = "5-gate 평가 없음" → "RTSC material absorbed=true" claim 금지 (paper/CLI 자동 caveat). 5/5 PASS 시에만 RTSC absorbed=true 표현 허용. *Stage 2 (paper-time gate · planned)*: paper compile-time hook 이 attestation record cross-reference 시 5-gate state 검증; fail 시 abstract 의 "RTSC absorbed=true" 문구 자동 reject 또는 caveat 강제 삽입.
+- **First triggered (κ-?? · 2026-05-21)**: Pattern 1 발생 — `lts_nb_bcs_universal_gap_ratio_attestation` record (`exports/material_attestation/nb_bcs_v1/`) 가 `domain: "rtsc"` 로 박힘 + `PAPERS/sample-nb-bcs-absorbed/main.tex` abstract 가 "first RTSC-domain absorbed=true" 표현 사용. 사용자 catch: "Nb 는 LTS 잖아 · 상온 초전도체 아니잖아". 정정 행위: RTSC.md §8.9 신설 (5-gate 형식 정의) + §8.10 신설 (Nb attestation honest 정정 narrative). 본 R4 ratification 은 두 anti-pattern 동시 재발 영구 방지 doctrinal lock.
+- **Cross-links**: RTSC.md **§8.9** (5-criteria gate · SOLE 정의 · candidate matrix · 7 유의사항) · **§8.10** (Nb attestation honest 정정 · *RTSC 가 아닌* LTS validation 으로 재포지셔닝) · **§8.8** (g3 honest stance 의 invariant 강화) · **§1** (domain naming-collision 진단 — Pattern 1 의 historical root) · **R1** (Measured-Oracle Invariant · `absorbed=true ⇔ measuredOracle.isMeasuredOraclePASS=true` · R4 는 R1 의 RTSC-specific 강화) · `design.md` D110 (첫 absorbed=true · solar pyranometer precedent · 5-gate 의 (e) parity 원형) · **Principle V** (No Over-Claim g3 · R4 는 그 RTSC-specific 가드).
+
+**Version**: 1.4.0 | **Ratified**: 2026-05-21 | **Last Amended**: 2026-05-21
 
 **Amendment history**:
+- 1.4.0 (2026-05-21 후반 · MINOR) — R4 RTSC absorbed=true twin-error invariant 추가. user-level goal "RTSC 물질 absorbed=true" 의 만족 여부는 RTSC.md §8.9 5-criteria gate 가 SOLE 정의 — Pattern 1 (namespace exploit · LTS Nb 에 `domain: "rtsc"` 박고 RTSC 검증으로 주장) 과 Pattern 2 (goal abandonment · "현재 물리학으로 불가능" 이유로 영구 폐기) 모두 금지. 본 세션의 Nb attestation Pattern 1 발생 + 사용자 catch 가 ratification 의 직접 동기. RTSC.md §8.9 5-gate 형식 정의 + §8.10 Nb honest 정정 narrative 도 같은 세션 신설. MINOR (new R-row + 5-gate formal 정의 + candidate matrix append-only invariant · no Core Principle 변경).
 - 1.3.0 (2026-05-21 저녁 후반 · MINOR) — R3 stdlib SSOT row added (D114 ratification). cockpit/Sources/ 의 code-shape enforcement boundary 명문화 (typed records · UI · thin dispatch · CLI = OK · algorithm-shaped code = NO). 사용자 직접 지시 "모두 hexa-lang 보관 / SSOT 말이야 / stdlib 말이야" 가 본 row 의 doctrinal motivation. MINOR (new R-row + R3 enforcement boundary table · no principle change).
 - 1.2.2 (2026-05-21 저녁 후반 · PATCH) — R2 Cross-links 확장: D112 (Verb canonical Korean → English wire-form rename · bug #2 closure · naming convention A picked) + D113 (payload flattening · sibling `.meta.json::measurements` roll-up · downstream consumer compat) cross-link 추가. Phase A bug triage 완료 narrative anchor — bug #1 `_split_csv` quoted-comma fix · #2 design ratified D112 · #3 `python_candidates` manifest key fix 모두 PR #267 또는 D-block 으로 closure 경로 확보. PATCH (no new principle/section · cross-link expansion only).
 - 1.2.1 (2026-05-21 저녁 · PATCH) — R2 Migration cost wording correction: **6-8 → 15-20 focused sessions** per Phase B step 3 observed cost (20 min/cell · 3× original 12 min/cell desk estimate · 3 sscb cells consumed ~1 hour focused work on branch `d111-phaseb-sscb-migration` · PR #267 OPEN). 3-SSOT synchronized correction (design.md D111 · ARCH §4.5 + Log entry · this row). PATCH (no new principle/section · wording-only).

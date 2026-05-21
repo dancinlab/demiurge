@@ -472,9 +472,97 @@ scope_caveats:
 ### 8.8 g3 honest stance (material 축)
 
 - 합성 자체는 demiurge clean-room 의 *바깥*. §8.7 의 4-tier 는 *합성을 둘러싼* typed record / 시뮬레이션 / 검증 만 demiurge 로 들임 — *물리적 합성은 영원히 외부*.
-- RTSC 가설은 **never absorbed=true**. LK-99 / hexa-rtsc n=6 가 *합성+측정으로* 재현되기 전까지 claim-only (Tier 2-3 까지 ✓ 도달 가능, Tier 4 absorbed ✗).
+- **RTSC 가설은 never absorbed=true** (구체적 정의는 §8.9 의 5-criteria gate 참조). LK-99 / hexa-rtsc n=6 가 *합성+측정으로* 재현되기 전까지 claim-only (Tier 2-3 까지 ✓ 도달 가능, Tier 4 absorbed ✗).
 - HTS REBCO 는 `absorbed=true` 가능하지만, 그러려면 *vendor 측정 Jc(B,T,θ)* 테이블이 Tier 3 record 로 박혀야 함. 본 세션은 그것도 없음 → `nu=1/μ₀` 선형 근사 + s1/s3 caveat 으로 GATE_OPEN 유지.
 - 모든 material-side claim 의 source 는 `provenance.source_record_url` 로 추적 가능해야 함. 추적 불가능한 claim 은 ingest 거부.
+
+---
+
+## 8.9 진짜 RTSC absorbed=true 5-criteria gate
+
+§8.8 의 "RTSC 가설 never absorbed=true" 라는 invariant 를 *형식적 정의* 로 강화한다. *진짜 RTSC* (Room-Temperature SuperConductor — Tc ≥ 270 K + ambient pressure) 의 `absorbed=true` 는 다음 5가지 hard gate **전부** 통과해야 한다. 하나라도 SKIP / FAIL 이면 `absorbed=false` 로 강제 lock.
+
+| gate | 조건 | 검증 record 위치 | 현재 상태 (2026-05) |
+|---|---|---|---|
+| **(a) 합성 가능성** | 화합물 자체가 합성 루트로 *재현* 가능. recipe 가 `replicated_by_independent_labs ≥ 3` | `exports/synthesis_recipe/<family>/<id>.json` (Tier 2) | LK-99 = 0 · hexa-rtsc n=6 = 0 · hydride = DAC only · **none qualifies** |
+| **(b) Tc ≥ 270 K** | resistive transition · Meissner · AC susceptibility 셋 다 *상온 (≥ 270 K)* 에서 SC 거동 관측. measured 값이 사양과 일치 (per-test rel_err < 5%) | `exports/measurement/{r_t, meissner_chi_t, ac_susceptibility}/<sample>.json` (Tier 3) | 현재 어떤 후보도 충족 못 함 |
+| **(c) ambient/저압 조건** | 측정 압력 ≤ 1 atm (commercial / device-relevant). DAC GPa 영역의 hydride 는 **자동 FAIL** (device 불가) | measurement record 의 `pressure_GPa` 필드 | H₃S/LaH₁₀ = ~150 GPa → FAIL |
+| **(d) 다중 독립 lab 재현** | 측정 결과가 **≥ 3 독립 lab** 에서 동일 sample 또는 동일 합성 recipe 로 재현됨. `replicated_by_independent_labs ≥ 3` AND **independent** (= 다른 기관 + 별 instrument + 다른 sample batch) | Tier 4 dispatch 의 `replication_count_independent` 필드 | LK-99 = 0 · hexa-rtsc n=6 = 0 |
+| **(e) 측정-오라클 parity** | 모델 (Tier 1) vs 측정 (Tier 3) delta < 사전 등록 임계 (default 5%). 솔라 pyranometer (§4.2.1.b 의 absorbed=true 패턴) 동일 형식. **fit-parameter 없는 first-principles model** 권장 | Tier 4 verdict 의 `oracle_parity` block | 진짜 RTSC 의 first-principles model 부재 (Eliashberg 가 d-wave/unconventional 까지 안 미침) |
+
+### 5-criteria gate 의 *결정적* 의미
+
+위 5 gate 의 **AND** 가 `absorbed=true` 의 *유일한* 정문이다. 게이트 위반 시 동작 (코드-레벨 invariant):
+
+```
+if !(a && b && c && d && e):
+    absorbed = false
+    measurement_gate = GATE_OPEN
+    gate_type = match first_failed:
+      a -> "synthesis-not-replicated"
+      b -> "tc-below-270K"
+      c -> "high-pressure-only"
+      d -> "single-lab-claim"
+      e -> "oracle-parity-failed"
+```
+
+→ 현 시점 (2026-05) 어떤 후보도 (b)+(c)+(d) 셋 다 동시 통과 불가. 즉 **RTSC absorbed=true 는 물리학이 새 물질을 발견할 때까지 도달 불가**.
+
+### 후보 family 매트릭스 (5-gate 별 현재 상태)
+
+| family | (a) 합성 | (b) Tc≥270K | (c) ambient | (d) ≥3 lab 재현 | (e) parity | absorbed? |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **LK-99** | ✓ paper recipe | ✗ unrepl | ✓ ambient | **✗ 0 labs** | ✗ no model | **never** |
+| **H₃S, LaH₁₀** | △ DAC only | ✓ ~200K | **✗ 150 GPa** | ✓ replicated | △ Eliashberg | **never** (c FAIL) |
+| **hexa-rtsc n=6** | ✗ no recipe | — | — | — | — | **never** (a FAIL) |
+| **CSH 가설 2020** | ✓ DAC | ✓ 287K (claim) | **✗ 270 GPa** | ✗ retracted 2022 | ✗ | **never** |
+| **YBCO/REBCO** | ✓ industry | ✗ 92 K only | ✓ ambient | ✓ many labs | △ d-wave model 한계 | (LTS/HTS, **RTSC 아님**) |
+| **Nb** | ✓ industry | ✗ **9.25 K** | ✓ ambient | ✓ many labs | ✓ BCS universal | (LTS, **RTSC 아님**) |
+
+→ Nb · REBCO 는 (a)+(c)+(d)+(e) 통과 가능하지만 **(b) Tc ≥ 270 K 가 본질적 FAIL** — 즉 RTSC 가 아닌 것. 본 세션의 `lts_nb_bcs_universal_gap_ratio_attestation` 은 **LTS attestation 일 뿐 RTSC 가 아님** (§8.10).
+
+### 유의사항 (claim 평가 시 흔한 honest 함정)
+
+1. **DAC-pressure SC ≠ RTSC**. 하이드라이드 superconductivity (H₃S 2015, LaH₁₀ 2019) 는 ~150-170 GPa 압력 하에서만 존재. 압력 풀면 분해 → device 불가. (c) 가드가 이를 *영구* 거부.
+2. **단일 lab 측정 ≠ 검증**. LK-99 Lee 2023 의 R(T) drop 영상 + Meissner 사진 은 *동일 lab single-shot*. 본 §8.9 의 (d) gate 가 "≥ 3 독립 lab" 요구 — 사진 다수 ≠ 독립 재현.
+3. **합성 성공 ≠ SC 성공**. LK-99 화합물 (modified lead apatite Pb₁₀₋ₓCuₓ(PO₄)₆O) 자체는 다수 lab 이 합성. 그러나 SC 특성 (R=0 + Meissner + 비열 도약) 은 *어디서도 재현 안 됨* → (b) 실패.
+4. **claim 의 부분 통과는 통과 아님**. 일부 sample 에서 "diamagnetic response 관측" 이라는 보고가 있어도 *완전 R=0 + 완전 Meissner + Cp jump* 3-test 동시 통과 없으면 (b) FAIL.
+5. **closed-form spec ≠ recipe**. hexa-rtsc 의 n=6 σ·τ=48T 닫힌 형식 spec 은 *합성 루트가 없음* — 어떤 화합물이 그 spec 을 satisfy 하는지 미지정. (a) 영구 FAIL.
+6. **이론 prediction ≠ measurement**. Tier 1 (sim_adapter / sim.hexa) 의 BCS/McMillan/Allen-Dynes/Eliashberg 결과는 모두 *예측*. (e) parity 는 model 측 만 채우며, (b)+(c)+(d) 가 동시에 측정 측을 채워야 통과.
+7. **graphene 류 도 RTSC 아님**. Twisted bilayer graphene (Cao 2018) Tc ~ 1.7 K. fancy 물질이라도 (b) 미달.
+
+→ 향후 어떤 RTSC 후보가 등장하면 본 §8.9 의 5-gate matrix 에 row 추가, 5-gate 각각 결과 명시. 통과 row 가 *발생하면* 그때 absorbed=true 후보 — 그 전까지 §8.8 invariant 그대로.
+
+## 8.10 Nb attestation 은 RTSC 가 아니다 (honest 정정)
+
+본 세션의 `lts_nb_bcs_universal_gap_ratio_attestation` 산출물 (`exports/material_attestation/nb_bcs_v1/`, paper `PAPERS/sample-nb-bcs-absorbed/`) 의 **honest 정정** 기록.
+
+### 무엇이 잘못 표현됐나
+- attestation record 의 `domain` 필드가 `"rtsc"` 로 박혀 있음. 이는 §1 진단의 **naming collision** 결과 (도메인 id `rtsc` 가 실제로는 device/magnet 영역을 가리킴) — 즉 *namespace ID* 일 뿐 *materials category* 가 아님.
+- paper 의 abstract 가 "first RTSC-domain absorbed=true" 라고 표현 — *RTSC 도메인 안의 첫 absorbed=true* 의 의미인데 *RTSC material* 로 오독될 소지.
+
+### 정확한 사실
+- Nb 의 임계 온도는 **9.25 K** (LTS, 액체 헬륨 영역) — RTSC.md §8.9 의 (b) gate 통과 *불가* (절대 9.25 ≪ 270 K).
+- 따라서 Nb attestation 은 §8.9 의 5-criteria 평가 시 **(b) FAIL → absorbed=true 자격 없음** (만약 §8.9 의 5-gate 로 평가했더라면).
+- 본 attestation 이 absorbed=true 를 받은 이유는 *다른 게이트* (BCS 보편 비 parity 5% threshold) 를 통과했기 때문 — 이는 *BCS 이론의 Nb 검증* 이지 *RTSC 검증* 이 아니다.
+
+### 정정 행위 (이미 진행 또는 후속 PR)
+- attestation record 의 `rtsc_md_alignment.section_8_8_rtsc_invariant` 필드는 이미 *"Nb is LTS, not room-temperature"* 명시. honest invariant 위반 없음.
+- paper 의 §s4 caveat 도 *"absorbed=true here means BCS universal vindicated for Nb to <5%, NOT Nb is RTSC"* 명시.
+- **그러나** 도메인 필드를 `"rtsc"` 로 둔 것은 §1 naming-collision 의 직접 결과이고, 후속 도메인 rename PR (rtsc → sc-magnet 또는 lts/hts 분리, §6 plan) 에서 정정 예정.
+
+### 이 정정이 의미하는 것
+- "RTSC 물질 absorbed=true 발견" 이라는 사용자 goal 은 **현재 물리학으로 도달 불가** (§8.9 5-gate 모두 통과 가능한 후보 zero).
+- 본 세션의 absorbed=true (Nb BCS attestation) 는 *honest LTS validation* 으로 재포지셔닝 — RTSC 의미로는 unmet.
+- §8.9 의 5-gate matrix 가 만들어지면서, 향후 어떤 후보가 RTSC absorbed=true 받으려면 *명시적으로 5-gate 통과 record 셋* 이 필요 — Nb 처럼 *대체 게이트* 우회 불가.
+
+### Future-proofing
+RTSC absorbed=true 후보가 미래 발견되면 다음 record 셋 동시 존재 필수:
+- Tier 2 recipe `exports/synthesis_recipe/<family>/<id>.json` with `replicated_by_independent_labs ≥ 3`
+- Tier 3 measurement *복수* records: `exports/measurement/{r_t, meissner_chi_t, c_p, ac_susceptibility}/<sample>.json` — 각각 Tc ≥ 270 K, pressure_GPa ≤ 0.001 (ambient), replication_count_independent ≥ 3
+- Tier 1 model prediction with first-principles inputs (no fit parameters) — Eliashberg 또는 후속 비-BCS model
+- Tier 4 dispatcher 의 `rtsc_5_gate_evaluation` block (신설 필요) 이 5/5 PASS 출력
+- 신 producer `~/core/hexa-lang/stdlib/material/rtsc_5gate_attestation_producer.py` (Nb attestation 의 RTSC-grade equivalent) 가 모든 게이트 verbatim 검증 후 emit
 
 ---
 
