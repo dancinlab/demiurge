@@ -233,6 +233,97 @@ final class AbsorbedNeedsMeasuredOracleTests: XCTestCase {
             "AuraVerifyRecord with absorbed=true + nil measured oracle (and non-illustrative) MUST violate invariant — D103/D109 separation extends to the second carrier")
     }
 
+    // MARK: Test 3b — third carrier (UfoVerifyRecord) auto-extension
+    //
+    // κ-70 G37 audit (D118 third-cell pick · D119 first-flip): the
+    // invariant `invariantHolds(absorbed, measuredOracle,
+    // isIllustrativePhysics)` is record-type-AGNOSTIC by construction —
+    // it consumes the SHAPE (Bool + Optional<MeasuredOracleRef> + Bool)
+    // not a specific Record type. The κ-70 R9 G30-Stage-1 audit
+    // confirms: NO invariant-helper code change was required to extend
+    // the gate to a THIRD carrier; the UfoVerifyRecord whose
+    // `measuredOracle` field landed in this cycle is governed by the
+    // same predicate. This test pins the **3rd record-type instance**
+    // verification — invariant-helper code change 0 across three
+    // distinct cell records (Energy/solar G29 · Aura/EEG G33 · Ufo/
+    // plasma G37) is the strongest evidence that the G30 invariant's
+    // record-type-agnostic design holds. Future regressions that
+    // re-shape the invariant around any specific record type will fail
+    // loudly.
+    //
+    // Cross-link: D118 cross-link gate — when absorbed=true is emitted
+    // on a Ufo Stage-2 record, the producer MUST include a Stage-4..7
+    // (warp/wormhole/dim/use) D106 illustrative-physics carve-out
+    // entry in `scopeCaveats`. This test exercises the invariant's
+    // arithmetic on the absorbed/measuredOracle/isIllustrativePhysics
+    // triple — the carve-out is a separate scope_caveats SHAPE check
+    // (audited at the producer + record-emit layer, not the invariant).
+
+    func testUfoVerifyRecordCoveredByInvariantNoCodeChange() {
+        // Synth UfoVerifyRecord — substrate parity left nil (κ-70 R9
+        // measurement-axis only · Stage-2 sister-substrate fusion
+        // plasma diagnostic), measured-oracle PASS, absorbed=true.
+        let ufoPass = UfoVerifyRecord(
+            domain: "ufo", verb: "verify",
+            kind: "jet_pulse_lambda_d_measured_oracle",
+            stamp: "20260522T000000Z",
+            producer: "synth@k70_g37_invariant_audit",
+            measurementGate: .closedMeasured,
+            absorbed: true,
+            scopeCaveats: [
+                // D118 cross-link gate — Stage-4..7 carve-out entry.
+                "Stage-2 sister-substrate fusion plasma diagnostic axis only — Stage-4..7 (warp/wormhole/dim/use) excluded per D106 illustrative-physics gate · RFC 013 §6.12 anti-conflation",
+            ],
+            citations: [],
+            falsifiers: nil,
+            hexaNativeParity: nil,
+            alienIndex: nil,
+            skippedReason: nil,
+            measuredOracle: Self.passOracle())
+
+        XCTAssertTrue(Self.invariantHolds(
+            absorbed: ufoPass.absorbed,
+            measuredOracle: ufoPass.measuredOracle,
+            isIllustrativePhysics: false),
+            "UfoVerifyRecord with measured PASS must satisfy invariant — third-carrier auto-extension (G30 Stage 1 · κ-70 G37 3rd record-type instance · invariant-helper code change 0)")
+
+        // Conflation guard — Ufo with absorbed=true but measured nil
+        // and non-illustrative MUST fail the invariant.
+        let ufoConflated = UfoVerifyRecord(
+            domain: "ufo", verb: "verify",
+            kind: "synth_conflation_attempt",
+            stamp: "20260522T000000Z",
+            producer: "synth@d95_conflation",
+            measurementGate: .open,
+            absorbed: true, // <- illegitimate (no oracle, not illustrative)
+            scopeCaveats: [],
+            citations: [],
+            falsifiers: nil,
+            hexaNativeParity: nil,
+            alienIndex: nil,
+            skippedReason: nil,
+            measuredOracle: nil)
+
+        XCTAssertFalse(Self.invariantHolds(
+            absorbed: ufoConflated.absorbed,
+            measuredOracle: ufoConflated.measuredOracle,
+            isIllustrativePhysics: false),
+            "UfoVerifyRecord with absorbed=true + nil measured oracle (and non-illustrative) MUST violate invariant — D103/D109 separation extends to the third carrier")
+
+        // D106 illustrative-physics branch — Ufo Stage-4..7 cell with
+        // absorbed=true + measured nil + isIllustrativePhysics=true
+        // satisfies the invariant (D118 carve-out · Stage-4..7
+        // illustrative cells are the exempted set; this branch is
+        // exercised when a future Stage-4 propulsion record is built
+        // without a measured oracle and the producer flags it as
+        // illustrative).
+        XCTAssertTrue(Self.invariantHolds(
+            absorbed: true,
+            measuredOracle: nil,
+            isIllustrativePhysics: true),
+            "UfoVerifyRecord with absorbed=true + nil measured oracle MUST satisfy invariant when isIllustrativePhysics=true — D106 / D118 Stage-4..7 illustrative-physics carve-out")
+    }
+
     // MARK: Test 3 — D106 illustrative cells exempt from measured oracle
 
     func testD106IllustrativeCellExemptFromMeasuredOracle() {

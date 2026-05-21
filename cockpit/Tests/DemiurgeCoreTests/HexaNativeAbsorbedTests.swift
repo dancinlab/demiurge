@@ -133,7 +133,8 @@ final class HexaNativeAbsorbedTests: XCTestCase {
             scopeCaveats: [], citations: [],
             falsifiers: nil,
             hexaNativeParity: passRef(),
-            alienIndex: nil, skippedReason: nil)
+            alienIndex: nil, skippedReason: nil,
+            measuredOracle: nil)
         XCTAssertTrue(ufoPass.isHexaNativeAbsorbed)
 
         let ufoFail = UfoVerifyRecord(
@@ -144,7 +145,8 @@ final class HexaNativeAbsorbedTests: XCTestCase {
             scopeCaveats: [], citations: [],
             falsifiers: nil,
             hexaNativeParity: failRef(),
-            alienIndex: nil, skippedReason: nil)
+            alienIndex: nil, skippedReason: nil,
+            measuredOracle: nil)
         XCTAssertFalse(ufoFail.isHexaNativeAbsorbed)
 
         let ufoNil = UfoVerifyRecord(
@@ -155,7 +157,8 @@ final class HexaNativeAbsorbedTests: XCTestCase {
             scopeCaveats: [], citations: [],
             falsifiers: nil,
             hexaNativeParity: nil,
-            alienIndex: nil, skippedReason: nil)
+            alienIndex: nil, skippedReason: nil,
+            measuredOracle: nil)
         XCTAssertFalse(ufoNil.isHexaNativeAbsorbed)
     }
 

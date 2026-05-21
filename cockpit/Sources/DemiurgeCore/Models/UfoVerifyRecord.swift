@@ -37,6 +37,31 @@ public struct UfoVerifyRecord: Codable, Sendable, Equatable {
     public let hexaNativeParity: HexaNativeParityRef?
     public let alienIndex: String?
     public let skippedReason: String?
+    /// D118 (κ-70 G36 cell-pick · D109 / D115 mirror) · D119 (κ-70
+    /// G37 first-flip · D110 / D117 mirror) · RFC 013 §6.11 —
+    /// external measured-oracle reference.
+    /// Ufo Stage-2 sister-substrate fusion plasma diagnostic is the
+    /// κ-70 third cell measured-oracle target (JET open-pulse
+    /// archive mid-Ohmic single shot · Debye-length λ_D vs hexa-
+    /// native `plasma_metrics_kernel::lambda_d`). Independent axis
+    /// from `hexaNativeParity` above (D103 dimension-separation).
+    /// `nil` until the per-cell measured-oracle round runs;
+    /// populated by the producer adapter at emit time. The cell's
+    /// stored `absorbed` flip remains a SEPARATE explicit writer
+    /// action — emitting `measuredOracle` non-nil does NOT by
+    /// itself trigger `absorbed = true` (D119 mirror of D110 / D117
+    /// first-flip scope).
+    ///
+    /// D106 carve-out (D118 g3 invariant): this `measuredOracle`
+    /// field applies ONLY to the Ufo Stage-2 sister-substrate
+    /// fusion plasma diagnostic axis. Stage-4..7 (warp / wormhole /
+    /// dim / use) cells remain D106 illustrative-physics — producers
+    /// for those axes MUST keep `measuredOracle = nil` and rely on
+    /// the `isIllustrativePhysics` exemption branch of the G30
+    /// invariant. The `scopeCaveats` array carries the carve-out as
+    /// a mandatory entry whenever `absorbed = true` is emitted on a
+    /// Stage-2 record (κ-70 G37 cross-link gate).
+    public let measuredOracle: MeasuredOracleRef?
 
     enum CodingKeys: String, CodingKey {
         case domain, verb, kind, stamp, producer
@@ -48,6 +73,7 @@ public struct UfoVerifyRecord: Codable, Sendable, Equatable {
         case hexaNativeParity = "hexa_native_parity"
         case alienIndex = "alien_index"
         case skippedReason = "skipped_reason"
+        case measuredOracle = "measured_oracle"
     }
 
     /// D95 — derived absorbed flag (computed, NOT stored).
