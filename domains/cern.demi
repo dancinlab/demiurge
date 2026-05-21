@@ -1,0 +1,151 @@
+# cern.demi — verb-cell manifest for the cern (high-energy / accelerator physics) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/cern/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("cern", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+# Required keys per cell: substrate, script, record_kind, output_dir,
+# gate_default, absorbed_default.
+#
+# Script paths are RELATIVE to ~/core/hexa-lang/ (the hexa_lang_root
+# tunable, env-overridable via HEXA_CELLRUN_HEXA_LANG_ROOT).
+#
+# Citations (anchored, not repeated per-cell — see domains/cern.md §5):
+#   - MAD-X — uspas.fnal.gov/materials/18ODU/Fund/using-mad-x.html
+#   - Xsuite — arxiv:2310.00317 (Iadarola et al., IPAC2024)
+#   - elegant — github.com/radiasoft/elegant (RadiaSoft container build)
+#   - Geant4 — github.com/Geant4/geant4
+#   - WarpX / BLAST — blast.lbl.gov/codes, warpx.readthedocs.io
+#   - FLUKA Geant4 interface — EPJ N 2024 epj-n.org
+#   - PDG Review of Particle Physics §34 (Bethe-Bloch eq. 34.5)
+#   - particle (scikit-hep) — github.com/scikit-hep/particle
+#   - uproot — github.com/scikit-hep/uproot5
+#
+# Domain caveat (applies to every cell):
+# CERN domain is shallow public-surface map (domains/cern.md §1) — full
+# Geant4 MC / FLUKA shielding / 3-D RF cavity EM stays accredited-lab /
+# CERN-CMake-build territory. demiurge cells are SCOPING / parity-witness
+# producers — they NEVER replace the upstream library's authority. D74
+# (cern + analyze alternatives pattern) — ProducerRegistry routes
+# xsuite-tracking (default) vs pylhe (legacy) AHEAD of this cellrun
+# manifest; the analyze cell here documents the substrate honestly but
+# is unreachable in normal dispatch (ProducerRegistry wins).
+
+# --- WIRED: verify (κ-38 / D65 — Bethe-Bloch antiproton stopping) -----------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/cern/bethe_bloch_stopping.py
+record_kind       = cern_verify_record
+output_dir        = exports/cern/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "particle@<v> + Bethe-Bloch analytic (PDG RPP §34 eq. 34.5) on antiproton + Al/Cu/W/Pb shielding materials.",
+  "no Geant4 MC — full MC adds shell corrections (Z/β at low E), density-effect (high γ), straggling, nuclear stopping. This slice omits all four.",
+  "uproot ROOT TH1F histograms are OMITTED (not faked) if uproot is missing — meta records uproot_version: null so consumers see the gap (g3).",
+  "measurement_gate = GATE_OPEN ALWAYS — Bethe-Bloch is a slice of G4hIonisation, not the full MC chain. absorbed=true (Stage 4) needs hexa-native re-derivation + Geant4 MC parity per ABSORPTION.md §'hexa 포팅 단계'.",
+]
+
+# --- WIRED: synthesize (ROI rank 7 — Xsuite FODO twiss + tune fit) ----------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/cern/xsuite_optics.py
+record_kind       = cern_synthesize_record
+output_dir        = exports/cern/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Xsuite FODO 2-element thick-quad cell + analytic Wiedemann/Lee oracle parity (β_x_max + Q_x rel-err ≤ 1e-6 → ALGORITHM closure).",
+  "ALGORITHM-level closure (Xsuite ⇄ analytic), NOT measured-lattice closure — flipping on a real measured tune still requires a sourced ring optics deck.",
+  "Citations: arxiv:2310.00317 (Xsuite, Iadarola et al.), arxiv:2412.16006 (MAD-NG, Deniau).",
+  "Honest install-gated skip if xsuite / cpymad ImportError — never silently fakes physics. measurement_gate stays GATE_OPEN absent measured-lattice anchor.",
+]
+
+# --- WIRED: analyze (D74 alternatives — elegant_tracking via ProducerRegistry) -
+# NOTE: ActionDispatch routes (.analyze, "cern") through ProducerRegistry
+# (xsuite-tracking default, pylhe legacy variant) BEFORE the cellrun
+# default arm. This [cell.analyze] section is documentary — declares the
+# substrate honestly for the cellrun.hexa probe pass, but ProducerRegistry
+# wins at runtime. To bypass, dispatch directly via CellrunDispatch.runRaw.
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/cern/elegant_tracking.py
+record_kind       = cern_analyze_record
+output_dir        = exports/cern/analyze
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Xsuite 100-turn single-particle FODO tracking — toy lattice (2 thick quads + 2 drifts), NOT a real DA scan (thousands of particles × tens-of-thousands turns × radiation damping = separate session).",
+  "elegant container backend NOT probed in this cell — heavier (RadiaSoft container), separate cycle.",
+  "D74 alternatives: ProducerRegistry routes xsuite-tracking (this script) as default vs pylhe LHE round-trip (legacy CernAnalyzeProducer.swift, lhe_stats.py SSOT — currently missing per Phase A audit).",
+  "Citations: arxiv:2405.19163 (MAD-X space-charge), arxiv:2408.11677 (Lie-map lattice-error ID).",
+  "measurement_gate = GATE_OPEN ALWAYS — toy FODO single particle is NOT a measurement claim.",
+]
+
+# --- UNWIRED: specify (physics case / CDR template scaffold) ----------------
+# domains/cern.md §2 — "physics case / CDR; OSS spec-format 약함". No
+# substrate script yet. cellrun.hexa honest-skip via rc=2 (script missing).
+[cell.specify]
+substrate         = python3
+script            = stdlib/cern/specify.py
+record_kind       = cern_specify_record
+output_dir        = exports/cern/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "cern + specify pending — physics case / Conceptual Design Report (CDR) template producer not authored.",
+  "domains/cern.md §1 (lattice/optics deliverable) is the SSOT candidate — Python wrapper could convert it to a record JSON (~50 line firmware-stub-style scaffold).",
+]
+
+# --- UNWIRED: structure (ring/lattice topology in-tool) ---------------------
+[cell.structure]
+substrate         = python3
+script            = stdlib/cern/structure.py
+record_kind       = cern_structure_record
+output_dir        = exports/cern/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "cern + structure pending — ring/lattice topology producer (FODO chain or DBA cell counter) not authored.",
+  "Natural fit: networkx component-graph reuse from GridStructureProducer pattern, with lattice elements as nodes.",
+]
+
+# --- UNWIRED: design (MAD-X / Xsuite scaffold) ------------------------------
+# Note: (.design, "cern") IS substrate-covered by xsuite_optics.py via
+# (.synthesize, "cern") but the verbs are different — synthesize emits the
+# matched-optics; design produces the lattice template before matching.
+[cell.design]
+substrate         = python3
+script            = stdlib/cern/design.py
+record_kind       = cern_design_record
+output_dir        = exports/cern/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "cern + design pending — MAD-X lattice deck template producer not authored.",
+  "domains/cern.md §2 — MAD-X is de-facto lattice/optics language; design verb naturally emits the SEQUENCE deck before synth verb does the matching/optimization.",
+]
+
+# --- UNWIRED: handoff (TDR → construction; OSS deliverable format 약함) ------
+[cell.handoff]
+substrate         = python3
+script            = stdlib/cern/handoff.py
+record_kind       = cern_handoff_record
+output_dir        = exports/cern/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "cern + handoff pending — Technical Design Report (TDR) bundle producer not authored.",
+  "Natural shape: tarball of MAD-X deck + Geant4 shielding dossier + DA scan + RF spec + radiation budget — firmware/handoff.py CycloneDX bundle pattern reuse.",
+]

@@ -166,9 +166,15 @@ public enum ActionDispatch {
         }
         switch (verb, domain) {
         case (.synthesize, "component"):
+            // D111 Phase C cern+component migration (2026-05-22) —
+            // (.synthesize, "component") deliberately STAYS on the legacy
+            // ComponentEmitter / FreeCADBIPVProducer path (D54 / D114
+            // Phase C BIPV substrate). cellrun.hexa documents the cell
+            // in domains/component.demi but never executes it because
+            // this explicit case wins. ComponentEmitter is preserved per
+            // task safety constraint + driven by DemiurgeCLI emit-component
+            // subcommand. R3: typed ComponentRecord stays.
             return runComponentSynthesize()
-        case (.verify, "component"):
-            return runComponentVerify()
         case (.verify, "chip"):
             return runChipVerify()
         case (.synthesize, "chip"):
@@ -188,8 +194,11 @@ public enum ActionDispatch {
             return runAntimatterAnalyze()
         case (.analyze, "fusion"):
             return runFusionAnalyze()
-        case (.verify, "cern"):
-            return runCernVerify()
+        // cern verify/synthesize cells — removed in D111 Phase C
+        // cern+component migration (2026-05-22). Both routes go through
+        // the generic `default → CellrunDispatch.run(...)` arm below.
+        // Manifest: domains/cern.demi. Substrate SSOT:
+        // ~/core/hexa-lang/stdlib/cern/{bethe_bloch_stopping,xsuite_optics}.py.
         case (.analyze, "chip"):
             return runChipAnalyze()
         case (.structure, "grid"):
@@ -206,11 +215,13 @@ public enum ActionDispatch {
             return runAuraAnalyze()
         case (.analyze, "scope"):
             return runScopeAnalyze()
-        // (.analyze, "cern") — handled by ProducerRegistry (D74).
-        // Kept here as a comment so the switch's domain coverage is
-        // still readable; the early-return above means this case is
-        // unreachable. runCernAnalyze (pylhe) is still invoked via
-        // the `pylhe` variant entry in the registry.
+        // (.analyze, "cern") — handled by ProducerRegistry (D74)
+        // alternatives pattern (xsuite-tracking default vs pylhe legacy).
+        // ProducerRegistry early-returns BEFORE this switch executes, so
+        // even with no case here the cellrun default arm is never
+        // reached for cern+analyze. The manifest entry in
+        // domains/cern.demi documents the substrate for forward-compat
+        // (CLI bypass via CellrunDispatch.runRaw) only.
         case (.synthesize, "bot"):
             return runBotSynthesize()
         case (.synthesize, "scope"):
@@ -219,10 +230,13 @@ public enum ActionDispatch {
             return runScopeVerify()
         case (.synthesize, "space"):
             return runSpaceSynthesize()
-        case (.analyze, "component"):
-            return runComponentAnalyze()
-        case (.synthesize, "cern"):
-            return runCernSynthesize()
+        // component verify/analyze cells — removed in D111 Phase C
+        // cern+component migration (2026-05-22). Both routes go through
+        // the generic `default → CellrunDispatch.run(...)` arm below.
+        // Manifest: domains/component.demi. Substrate SSOT:
+        // ~/core/hexa-lang/stdlib/component/{gmsh_skfem,calculix}.py.
+        // (.synthesize, "component") STAYS hardcoded above (D54 / D114
+        // Phase C ComponentEmitter / FreeCADBIPVProducer legacy bridge).
         case (.analyze, "rtsc"):
             return runRtscAnalyze()
         case (.verify, "fusion"):
