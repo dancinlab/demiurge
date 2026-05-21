@@ -168,6 +168,38 @@ measurement_gate = GATE_OPEN
 provisional      = true
 ```
 
+### 4.2.1.b Stage 1+2 cohort 결과 (post-FEM cross-check)
+
+세션 후속에서 5축 cell 을 더 확장 + material 트랙도 평행 진행:
+
+| Stage | Cohort | 산출물 | 핵심 결과 |
+|---|---|---|---|
+| 1 | M5 (hexa port) | `stdlib/material/sim.hexa` | hexa-native 4-formula port (BCS · McMillan · AD · WHH) — Python sim_adapter 와 **0.0000 K 차** (libm 정밀도) |
+| 1 | D1 (HTS Workgroup) | `stdlib/rtsc/templates/hts_workgroup/{benchmark1_tape,life_hts_pancakes_ref}/` | 외부 reference benchmark provenance manifests. **license-unclear → 콘텐츠 vendor 거부**, fetch.sh + gitignored `_external/` 캐시. |
+| 1 | M4 (MPRester) | `stdlib/material/mp_query.py` | Materials Project REST API thin adapter. 3-gate path (install · api-key · external-api) 전부 honest skip 검증. |
+| 2 | GetDP 4.0.0 ARM | `~/local/getdp/getdp-4.0.0-MacOSARM/bin/getdp` | Apple Silicon native (Rosetta 불필요). `RhoPowerLaw` 내장 → HTS Workgroup .pro 즉시 실행 가능. |
+| 2 | F (Tier 4 dispatch) | `MaterialVerdictRecord.swift` + `MaterialFalsifierDispatch.swift` + XCTest 2건 | **LK-99 first verdict (HONEST DEMO)** — `exports/material_verdict/lk99_lee2023_v1/2026-05-21T08-58-24Z.json` — aggregate_verdict=FAILS-AT-LEAST-ONE, F-RTSC-3 replication FAIL (Tier 2 replicated=0), 나머지 SKIPPED-MISSING-INPUT. **absorbed=false 불변** (testAbsorbedAlwaysFalseEvenWithReplication 보호). |
+| 2 | G (H-formulation adapter) | `stdlib/rtsc/h_formulation_adapter.py` | 3 skip mode (license-unclear · install-gated · getdp_solve_timeout) — getdp_hts.py 의 gate-landing 상태 유지하면서 별 파일로 H-formulation 진입 경로 확보. |
+
+### 4.2.1.c HTS Workgroup H-formulation 본해 실증 (cube benchmark)
+
+GetDP 4.0.0 + life-hts `cube` benchmark (single SC cube, RhoPowerLaw E-J power law) 로 **진짜 H-formulation transient solve 가 macOS Apple Silicon 에서 동작 확인**:
+
+```
+solver        = GetDP 4.0.0 ARM native
+benchmark     = life-hts/cube/cube.pro (HTS Modelling Workgroup ref)
+formulation   = H-formulation (h-φ MagDyn) · RhoPowerLaw E-J power law
+mesh          = 1937 nodes / 5589 elements (3-D tet)
+DOFs          = 3601
+solver iter   = MUMPS LU (PETSc) · KSP residual ~1.9 → 5e-16 per time-step (수렴)
+post-ops      = MagDyn_energy 8/8 per time-step (정상 진행)
+gate_type     = hexa-native-absent (D80)
+absorbed      = false  (외부 reference benchmark, license-unclear 콘텐츠)
+measurement   = transient solve 정상 — full-cycle 완주는 별 cohort
+```
+
+→ **세션의 진짜 결론**: 4.2.1 의 linear A-φ FEM cross-check (Δ=-1.40%) 위에 **HTS-grade H-formulation 본해 toolchain 이 완전히 동작**한다는 것을 가벼운 cube benchmark 로 확정. §4.3 의 (s1) "linear magnetostatic — HTS critical state 미반영" caveat 의 *해결 경로가 실제로 열려 있음*. 다음 단계는 cube 본해 결과 풀-사이클 수렴 + life-hts/benchmark1_tape 의 EUCAS REBCO tape 실측 비교.
+
 ### 4.2.2 디버그 여정 (참고 — 동일 패턴 재발 시 빠른 진단)
 
 5축 producer를 실제 solve로 확장할 때 부딪힌 4가지 함정 — 둘 다 "FEM이 돌긴 도는데 결과가 이상함" 류:
@@ -438,3 +470,5 @@ scope_caveats:
 - **2026-05-21 KST** — `getdp_hts.py` 의 5-axis 확장이 SSOT 단순화 차원에서 gate-landing 형태(record-only · honest install-gated · `getdp@absent` skip)로 의도적 revert. 5-axis solve 로직은 `templates/solenoid_axisym.{geo,pro}` + `RTSC.md §4.2.2` 에 영구 보존되어 후속 cohort가 thin adapter 1개로 다시 합칠 수 있음. `RtscVerifyRecord` 의 5-axis Optional 필드는 forward-compat 형태로 잔류 (단순 record는 nil 디코드).
 - **2026-05-21 KST** — **§8 (물질합성 material synthesis) 신설**. domain의 device-side 와 직각으로 놓인 material-side 트랙 전체를 RTSC.md 에 박음: 두 트랙 분리 (§8.1) · 8 family matrix (§8.2: LTS · MgB₂ · FeSC · HTS Cuprate · Hydride · TBG · LK-99 · hexa-rtsc n=6) · 합성 루트 7개 (§8.3, 모두 demiurge clean-room 바깥) · falsifier 9-test (§8.4, hexa-rtsc verify scripts 와 매핑) · `exports/conductor/` handoff schema (§8.5) · this-session vs deferred 작업 (§8.6) · g3 honest stance (§8.7: RTSC 가설은 never absorbed=true). §3 state matrix 도 device × verb (§3.1) + material-side (§3.2) 로 분할.
 - **2026-05-21 KST** — **§8.7 (4-tier expansion path) 추가**. §8.3 의 "모든 합성 루트 = demiurge ✗" 를 *현재 상태이지 영구 아님* 으로 재정의: Tier 1 (Computational sim — hexa-rtsc calc_*.hexa thin adapter) · Tier 2 (Recipe-as-record — typed JSON, 외부 lab 실행) · Tier 3 (Measurement ingest — 외부 instrument 결과 typed record) · Tier 4 (Falsifier dispatch — 3-tier triple 통합 verdict). 각 tier 는 독립 PR 가능, 1→4 순서로 가면 매 단계 demiurge 책임 영역 +1 칸. 재분류: **REBCO HTS + PIT wire (LTS/MgB₂) 만 4-tier 전부 ✓ 가능** — vendor Jc datasheet 충실. LK-99/hydride/TBG 는 Tier 1-3 부분만 ✓. g3 stance 는 §8.7 → §8.8 로 밀어내고 4-tier 와 정합 (물리적 합성은 영원히 외부 / RTSC 가설 never absorbed).
+- **2026-05-21 KST** — **Stage 1+2 cohort 6개 안착** (§4.2.1.b). M5 sim.hexa = Python 과 libm 0.0000 K 정밀도 일치. D1 hts_workgroup license-unclear honest stance (콘텐츠 vendor 거부 · provenance manifest 만 안착). M4 MPRester 3-gate path 검증. GetDP 4.0.0 ARM native 다운로드 + `RhoPowerLaw` 내장 확인. **F (Tier 4 dispatch) — LK-99 first verdict = FAILS-AT-LEAST-ONE** (replicated=0), XCTest 가 absorbed=false 불변 코드-레벨 보호. G h_formulation_adapter 3 skip mode 검증. demiurge commit f4defee (concurrent session 이 bundle), hexa-lang commit d06c8ae9 (이 세션).
+- **2026-05-21 KST** — **§4.2.1.c HTS-grade H-formulation 본해 실증**. GetDP 4.0.0 + life-hts/cube/cube.pro (RhoPowerLaw E-J power law) 가 macOS Apple Silicon 에서 **transient solve 정상 동작**: 1937 nodes / 3601 DOFs / KSP residual ~1.9 → 5e-16 수렴 / MagDyn_energy 8/8 PostOp 정상. §4.3 의 (s1) "linear magnetostatic — HTS critical state 미반영" caveat 의 **해결 경로가 실제로 열려 있음** 확정. absorbed=false (외부 reference benchmark, license-unclear). 다음 단계: full-cycle 완주 + benchmark1_tape EUCAS REBCO 실측 비교.
