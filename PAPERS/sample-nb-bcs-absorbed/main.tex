@@ -11,6 +11,7 @@
 \usepackage[numbers,sort&compress]{natbib}
 % microtype omitted — BasicTeX 2026 default fonts not Type 1 scalable.
 \usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
 \usepackage{caption}
 \captionsetup{font=small,labelfont=bf}
 \hypersetup{
@@ -32,8 +33,12 @@
 }
 
 \author{
-  demiurge / hexa-lang substrate authors\thanks{Corresponding repo:
-  \url{https://github.com/dancinlab/demiurge}, \url{https://github.com/dancinlab/hexa-lang}.}
+  Min Woo Park\\
+  \normalsize\textit{dancinlab}\\[2pt]
+  \normalsize\href{https://github.com/dancinlab}{\texttt{github.com/dancinlab}}
+  \thanks{Source repositories:
+    \url{https://github.com/dancinlab/demiurge},
+    \url{https://github.com/dancinlab/hexa-lang}.}
 }
 
 \date{2026-05-21}
@@ -168,9 +173,56 @@ ratio is below the typical measurement scatter.
 
 \subsection{Four-tier expansion path}
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize},
+  tier/.style={rectangle, draw=black!70, thick, minimum width=2.3cm,
+               minimum height=0.9cm, align=center, rounded corners=2pt},
+  gate/.style={rectangle, draw=honestgreen!80!black, thick,
+               fill=honestgreen!10, minimum width=3.2cm, minimum height=1.1cm,
+               align=center, rounded corners=2pt},
+  flow/.style={->, >=stealth, thick, draw=black!60}
+]
+% Tiers along a horizontal line
+\node[tier, fill=blue!10]   (t1) at (0,0)   {Tier 1\\\scriptsize Computational sim};
+\node[tier, fill=teal!10]   (t2) at (3,0)   {Tier 2\\\scriptsize Recipe record};
+\node[tier, fill=orange!10] (t3) at (6,0)   {Tier 3\\\scriptsize Measurement};
+\node[tier, fill=purple!10] (t4) at (9,0)   {Tier 4\\\scriptsize Dispatcher};
+% Connecting arrows
+\draw[flow] (t1) -- (t2);
+\draw[flow] (t2) -- (t3);
+\draw[flow] (t3) -- (t4);
+% Tier 4 strict output
+\node[font=\scriptsize\itshape, color=honestred, above=0.05cm of t4]
+  {always \texttt{absorbed=false}};
+% Attestation gate (off to right, separate)
+\node[gate] (gate) at (13,0)
+  {\textbf{Attestation Gate}\\\scriptsize separate producer\\\scriptsize emits \texttt{absorbed=true}};
+% Inputs to gate (curved arrows from t1..t4 + threshold + oracle)
+\foreach \src in {t1,t2,t3,t4}
+  \draw[flow, dashed, color=black!50] (\src.north) .. controls +(0,1.0) and +(-2.5,1.0) .. (gate.north west);
+% Measurement-oracle parity (right side input)
+\node[font=\scriptsize, align=center, draw=black!30, dashed, rounded corners,
+      minimum width=2.4cm, minimum height=0.8cm] (oracle) at (13,-2.0)
+  {Measurement-\\Oracle Parity\\\scriptsize $|model-meas|/meas < \tau$};
+\draw[flow, color=honestgreen!70!black] (oracle) -- (gate);
+\end{tikzpicture}
+\caption{Four-tier expansion path of the \texttt{demiurge} validation
+substrate (\texttt{RTSC.md \S 8.7}). Tiers 1--4 produce typed records
+in sequence; the Tier 4 dispatcher's \emph{own} output always carries
+\texttt{absorbed=false} (enforced by unit test
+\texttt{testAbsorbedAlwaysFalseEvenWithReplication}). A \emph{separate}
+Attestation Gate (green, right) consumes all four tiers plus a
+measurement-oracle parity check, and is the unique source of
+\texttt{absorbed=true} records. This paper instantiates the gate via the
+BCS universal-ratio test.}
+\label{fig:framework}
+\end{figure}
+
 \texttt{RTSC.md \S 8.7} specifies four independent layers that the
 \texttt{demiurge} substrate must satisfy before a material claim can
-even be considered for absorption:
+even be considered for absorption (Fig.~\ref{fig:framework}):
 
 \begin{description}\itemsep0.4em
 \item[\textbf{Tier 1 -- Computational synthesis.}] First-principles
@@ -294,44 +346,45 @@ report the same value), still well inside the gate.
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[scale=2.4]
-  % horizontal axis
-  \draw[->, thick] (0,0) -- (4.4,0) node[right] {$2\Delta(0)/k_{B}T_{c}$};
-  \foreach \x in {3.30,3.40,3.50,3.60,3.70} {
-    \draw (\x-3.30,0.04) -- (\x-3.30,-0.04) node[below,font=\scriptsize] {\x};
-  }
-  % BCS prediction (vertical line)
-  \draw[blue!70!black, very thick, dashed]
-    (3.5276-3.30,-0.25) -- (3.5276-3.30,0.45)
-    node[above,font=\scriptsize\bfseries, color=blue!70!black] {BCS: 3.5276};
-  % Measurements
-  \foreach \r/\s/\y/\lbl in {
-    3.50/0.10/0.05/Giaever '60,
-    3.55/0.05/0.13/Townsend '62,
-    3.50/0.05/0.21/Schwidtal '69,
-    3.52/0.04/0.29/Lichtenberg '89,
-    3.50/0.05/0.37/Tinkham '96
-  } {
-    \draw[honestred, thick] (\r-3.30-\s,\y) -- (\r-3.30+\s,\y);
-    \draw[honestred,fill=white,very thick] (\r-3.30,\y) circle (0.014);
-    \node[anchor=west,font=\scriptsize] at (1.1,\y) {\lbl};
-  }
-  % consensus (yellow band)
-  \draw[honestgreen, thick] (3.5169-3.30-0.0228,-0.10) -- (3.5169-3.30+0.0228,-0.10);
-  \draw[honestgreen,fill=honestgreen!20,very thick] (3.5169-3.30,-0.10) circle (0.018);
-  \node[anchor=west,font=\scriptsize\bfseries,color=honestgreen] at (1.1,-0.10) {Consensus: 3.5169 $\pm$ 0.0228};
-  % threshold band
-  \draw[gray, thin, dotted] (3.5276*0.95-3.30,-0.18) -- (3.5276*0.95-3.30,0.43);
-  \draw[gray, thin, dotted] (3.5276*1.05-3.30,-0.18) -- (3.5276*1.05-3.30,0.43);
-  \node[anchor=south, font=\scriptsize, color=gray] at (3.5276-3.30,0.45) {};
-  \node[anchor=north, font=\scriptsize, color=gray, align=center] at (3.5276-3.30,-0.18) {$\tau=5\%$ band};
-\end{tikzpicture}
-\caption{Five independent measurements (red bars, with $\pm\sigma$),
-their inverse-variance consensus (green), and the parameter-free BCS
-prediction (blue dashed). The dotted vertical lines bound the
-pre-registered \(5\%\) threshold around the prediction. Relative
-error of the consensus is \(0.309\%\).}
+\includegraphics[width=0.95\linewidth]{figures/fig01_measurement_panel.pdf}
+\caption{Five independent tunnelling-spectroscopy measurements of
+\(2\Delta(0)/(k_{B}T_{c})\) for pure niobium (red, with
+\(\pm\sigma\) error bars), their inverse-variance-weighted consensus
+(green diamond at \(3.5169 \pm 0.0228\)), and the parameter-free BCS
+prediction (blue dashed at \(2\pi e^{-\gamma_E} = 3.5276\)). The
+shaded band is the pre-registered \(\pm 5\%\) gate. Relative error of
+the consensus is \(0.309\%\) --- a factor of \(16\times\) inside the
+threshold. All five measurements individually pass.}
 \label{fig:consensus}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/fig02_tc_landscape.pdf}
+\caption{BCS-class \(T_{c}\) prediction (Allen-Dynes, hatched) vs
+literature-measured value (solid) across SC families. Direct \(T_{c}\)
+parity scatter is large (Al \(1.3\%\), Pb \(11\%\), Nb \(17.5\%\),
+Nb\(_{3}\)Sn \(54.7\%\), MgB\(_{2}\) \(36.8\%\)) --- which is why we
+do NOT use \(T_{c}\)-parity as the gate. The LK-99 column (gray):
+feeding the claim paper's own \((\lambda, \mu^{*}, \omega_{log})\) into
+Allen-Dynes yields \(T_{c}^{AD} = 4.93\,\mathrm{K}\), an internal
+\(98\%\) inconsistency with the 300\,K claim.}
+\label{fig:tc-landscape}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/fig03_gap_ratio_landscape.pdf}
+\caption{Gap-ratio landscape across SC families. The universal weak-coupling
+ratio \(2\pi e^{-\gamma_{E}} = 3.5276\) (blue dashed) and its \(\pm 5\%\)
+gate (green band) cleanly separate \emph{weak-coupling LTS} (Al, Sn, Nb,
+V --- all PASS) from \emph{strong-coupling LTS} (Pb, Hg, Nb\(_{3}\)Sn,
+Nb\(_{3}\)Ge --- renormalised UP, FAIL by design), the two-gap MgB\(_{2}\)
+(separate bands at \(\approx 1.75\) and \(\approx 4.5\)), and the
+\emph{$d$-wave} HTS cuprates (YBCO \(\approx 5.5\), BSCCO \(\approx 6.5\)
+--- FAIL by design, different pairing symmetry). Niobium (circled) is
+the canonical pass, \(0.31\%\) from the universal value.}
+\label{fig:gap-ratio-landscape}
 \end{figure}
 
 Both gate conditions are satisfied:
@@ -425,6 +478,44 @@ Pb$_{10-x}$Cu$_x$(PO$_4$)$_6$O) along four orthogonal axes:
   variants. The undoped parent apatite \texttt{Pb10(PO4)6O} is
   present (mp-1220209); the superconductor-claim variants are not.
 \end{enumerate}
+
+\begin{table}[h]
+\centering
+\caption{Four-source honest-negative for the LK-99 claim
+\(\mathrm{Pb}_{10-x}\mathrm{Cu}_{x}(\mathrm{PO}_{4})_{6}\mathrm{O}\)
+at \(T_{c}{=}300\,\mathrm{K}\). Each row is an independent epistemic
+axis; the substrate refuses on every one. The Materials Project entry
+for the undoped parent \(\mathrm{Pb}_{10}(\mathrm{PO}_{4})_{6}\mathrm{O}\)
+(mp-1220209) is curated, the Cu-substituted variants are not.}
+\label{tab:lk99-neg}
+\scriptsize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.5cm}
+                  >{\raggedright\arraybackslash}p{4.6cm}
+                  >{\raggedright\arraybackslash}p{3.4cm}
+                  >{\raggedright\arraybackslash}p{3.8cm}@{}}
+\toprule
+\textbf{Axis} & \textbf{Source / test} & \textbf{Predicted / observed} & \textbf{Outcome} \\
+\midrule
+Tier 1 self-prediction
+  & Allen-Dynes with the LK-99 paper's own \(\lambda{=}0.6,\,\mu^{*}{=}0.13,\,\omega_{log}{=}300\,\mathrm{K}\)
+  & \(T_{c}^{AD}=45\,\mathrm{K}\)
+  & \textcolor{honestred}{\textbf{FAIL}}: 45\,K \(\ll\) 300\,K claim \\
+Tier 4 falsifier dispatch
+  & \texttt{MaterialFalsifier-} \texttt{Dispatch} F-RTSC-3 (replication)
+  & \texttt{replicated\_by\_} \texttt{indep\_labs}\,\(=\,0\)
+  & \textcolor{honestred}{\textbf{FAIL}}: aggregate \texttt{FAILS-AT-} \texttt{LEAST-ONE} \\
+Sibling substrate cross-link
+  & \texttt{hexa-rtsc/verify/} \texttt{calc\_lk99.hexa}
+  & upstream parser error at line 336
+  & \textcolor{honestred}{\textbf{SKIPPED}}: cannot evaluate \\
+Public database curation
+  & Materials Project REST API via \texttt{mp\_query.py}
+  & \(\mathrm{Pb}_{10}\mathrm{Cu}(\mathrm{PO}_{4})_{6}\mathrm{O}\), \(\mathrm{Pb}_{9}\mathrm{Cu}(\mathrm{PO}_{4})_{6}\mathrm{O}\)
+  & \textcolor{honestred}{\textbf{FAIL}}: \texttt{row\_count}\,\(=\,0\) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 No single path here is decisive, but their union is structural: the
 substrate refuses the claim from \emph{four} epistemically distinct

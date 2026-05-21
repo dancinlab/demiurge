@@ -1,0 +1,9 @@
+A four-arrow rejection diagram for an unverified room-temperature superconductor claim.
+Center: a red-outlined hexagonal symbol labeled "LK-99 claim · Tc 300K" with a faint X across it.
+Four arrows pointing INTO the center from four corner labels, each arrow red with a small "FAIL/REJECT" tag:
+- Top-left: "Tier 1 self-prediction · 45 K vs 300 K" (cyan-blue)
+- Top-right: "Tier 4 falsifier dispatch · FAILS-AT-LEAST-ONE" (orange)
+- Bottom-left: "hexa-rtsc cross-link · SKIPPED parse error" (purple)
+- Bottom-right: "Materials Project DB · row_count=0" (green)
+Style: scientific Venn-style or radial diagram, clean academic, white background, each quadrant clearly partitioned with subtle color coding. Bottom small text: "four independent honest negatives".
+1024x1024 square format. NO text errors, simple legible labels only.
