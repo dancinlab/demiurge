@@ -2414,6 +2414,48 @@ landing 시각만 ARCH `## Log` 에 박제.
 
 ## Log
 
+- 2026-05-22 — **🚨 D111 Phase C generalization directive 박제 ·
+  "던지는 도메인마다 모든 과정에 특정 도메인에 맞춘 하드코딩이
+  없어야 된다"** + firmware D111 Phase C reference closure (single
+  PR · -380 LOC net · domains/firmware.demi 147 line · 7 ActionDispatch
+  cases → cellrun route · 7 runFirmware*() removed · 7
+  FirmwareDomainProducer.swift deleted · 7 Models/Firmware*Record
+  preserved R3).
+  - **target shape**: ActionDispatch.swift = **5-line generic
+    dispatcher** · default → cellrun route · per-domain switch case
+    0 · 모든 (verb, domain) 동일 path 통과 (`cellrun.hexa` +
+    `<domain>.demi` manifest) · 도메인 추가 = manifest 1 file ·
+    cockpit code 변경 0.
+  - **firmware vs SSCB cost comparison** (D111 Phase C ideal proven):
+    | metric | SSCB (from-scratch) | firmware (D111 Phase C) |
+    |---|---|---|
+    | PR count | 10 | **1** |
+    | LOC delta | substantial + | **-380 net** |
+    | session | multi-day cohort | **single** |
+    | hexa-lang PRs | 6 (substrate scaffold) | **0** (already compat) |
+    결론: 도메인이 substrate (`stdlib/<domain>/`) + typed records 이미
+    가진 경우 D111 Phase C = single PR · single session · LOC net
+    negative. SSCB-급 cost 는 from-scratch substrate 신설 시에만.
+  - **next D111 Phase C candidates** (firmware audit recommendation):
+    bot (3 producer) · scope (3) · energy (3 · G29 absorbed=true) ·
+    chip (3 · κ-43 absorbed). 도메인 별 1 session × 16 도메인 =
+    ~16 session 으로 D111 Phase C full closure 추정.
+  - **generalization 본격 단계 (사용자 directive 의 핵심)**:
+    1. ActionDispatch default → cellrun route 변경 (1-line · LLM
+       placeholder 대신 CellrunDispatch.run · manifest 부재 시
+       자동 honest-skip · 모든 도메인 즉시 cellrun route 통과)
+    2. 22+ per-domain switch case 점진 제거 (manifest 있는 도메인
+       부터 · legacy Producer.swift `git rm` 동시)
+    3. runDomain*() static functions 제거
+    4. ProducerRegistry alternatives → cellrun manifest 의
+       `[cell.<verb>.<variant>]` section 흡수
+    5. 결과: ActionDispatch = thin spawn wrapper (5 line) · 도메인
+       별 hardcoded code 0
+  - **5 simple chip walkthrough scaffold 동시 진행** (BG agent
+    `a400949196e9eb016` · counter4 + pwm8 + uart_tx + crc8 +
+    spi_master Verilog 5종 + chip.demi 7-cell manifest) — chip
+    도메인 substrate 첫 land · D111 Phase C 대상.
+
 - 2026-05-22 — **🎉 SSCB 7-verb walkthrough Step 4 LANDED · `(.handoff,
   "sscb")` cell wired · 7/7 wired · 0/7 unwired · 100% closure 달성 ·
   첫 도메인 cellrun 전체 wire** (specify + structure + design +
