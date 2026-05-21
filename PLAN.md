@@ -4567,3 +4567,63 @@
   모두 ✓) · G32..G34 still `[ ]`. κ-69 의 critical-path 가 G31 →
   G32 → G33 으로 deepen — G32 decision 이 다음 lowest-friction
   step.
+
+- 2026-05-21 — **G34 governance row LANDED same-cycle · κ-68 R7
+  DEFERRED Stage 2 closure · ARCH §11.4 G34 `[ ]` → `[x]` flip**
+  (constitution.md v1.0.0 → v1.1.0 · MINOR bump). κ-68 G30 의
+  Stage 2 (`.specify/memory/constitution.md` narrative governance)
+  가 constitution.md populate (`99ccbc1`) 위 같은 session 안에
+  closure. κ-69 R8 의 두번째 full-land (G31 이어 G34 · G32/G33
+  미land):
+  - **artifact**: `.specify/memory/constitution.md` 에 새 section
+    `## Governance Rows` + `R1. Measured-Oracle Invariant` row land.
+    row body 구성:
+    - **invariant 본문**: `absorbed=true ⇔ measuredOracle.is
+      MeasuredOraclePASS=true` (stored `absorbed: Bool` 의 legitimate
+      flip 은 attached `MeasuredOracleRef.isMeasuredOraclePASS=true`
+      를 require)
+    - **2 carve-out**: (a) D106 illustrative-physics cells exempt
+      (no `MeasuredOracleRef` · `.illustrativePhysics` `GateType` ·
+      RFC 013 §6.12 cyan tone), (b) D95/D103 substrate-parity 는
+      DIFFERENT axis (computed `isHexaNativeAbsorbed` 가 ≠ stored
+      `absorbed` · 별 record `HexaNativeParityRef`)
+    - **first-land cite**: κ-68 G29 (D110) · Energy/solar · NREL
+      MIDC SRRL pyranometer GHI · 480 clear-sky samples (2024-06-15) ·
+      `mean_rel_err = 0.04967` ≤ 0.05 threshold · marginal PASS ·
+      commit `80a1664`
+    - **load-bearing enforcement pointer**: `fee34cc` G30 Stage 1
+      XCTest 3-method (`AbsorbedNeedsMeasuredOracleTests.swift` ·
+      invariant + D95 conflation + D106 exempt 3 branch · 63/63 PASS)
+    - **cross-link cluster**: ARCH §11.4 G30/G34 · design.md D109/
+      D110/D103/D106 · RFC 013 §6.11/§6.12 · G31 bridge_stack
+      semantics (PR #263)
+  - **stage separation honesty**: row body 는 narrative governance
+    pointer · XCTest 가 real enforcement vehicle 임을 row 본문 +
+    `## Governance Rows` section docstring 모두 명시. 향후 row 들도
+    같은 pattern (narrative ↔ typed test pointer) 으로 land.
+  - **semver MINOR bump 1.0.0 → 1.1.0**: 새 section (`## Governance
+    Rows`) 추가 = MINOR per constitution.md `## Governance` 의
+    amendment rule. Ratified/Last Amended 2026-05-21 같은 day update.
+  - **G33 미land 위 G34 land 의 정당성**: G34 exit criterion 3번째
+    bullet ("G33 까지 land 된 fixture-driven invariant 일치 audit") 은
+    Stage 2 narrative governance 가 G29 first-land 위 닫히는 구조라
+    G33 가 strict pre-condition 아님 (G29 의 single PASS instance 가
+    invariant 의 first concrete witness · row 는 그 위 narrative
+    anchor). G33 land 시 row body 에 second-cell first-flip 을 추가
+    cycle 로 append.
+  - **수정 파일 3개**: `.specify/memory/constitution.md` (+25 line ·
+    `## Governance Rows` section + R1 row + semver MINOR bump) ·
+    `ARCH.md` (§11.4 G34 block 갱신 + `## Log` 새 entry) · `PLAN.md`
+    (본 entry).
+  - **κ-69 R8 진척**: 4 G-item 중 G31 + G34 `[x]` (G31 = ultimate-form
+    parity origin/main land · G34 = governance Stage 2 row land).
+    G32 + G33 still `[ ]`. κ-69 의 3 axis (ultimate-form parity ·
+    second-cell mirror · governance Stage 2) 중 2 axis closed · 남은
+    1 axis (G32→G33 second-cell mirror) 가 다음 lowest-friction
+    critical-path. G32 decision gate (5-fold lock-in cell pick · code
+    0) = 0.3-0.5 session est.
+  g3 — G34 = doc-only land (code 0 · test 0) · 0.3 session est_actual.
+  Stage 1 (`fee34cc`) 의 typed enforcement 가 이미 load-bearing 이라
+  row 는 narrative anchor 만 박힘. κ-68 R7 DEFERRED 의 honest closure —
+  constitution.md populate (`99ccbc1`) 가 pre-condition 이었고 그 위
+  같은 session 안에 closure 완료.

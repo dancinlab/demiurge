@@ -2015,26 +2015,38 @@ measurement round (scaffold · pre-code)**
   - **est**: 2-4 sessions (G28 schema 재사용 가능 · 새 dataset
     fetch + bridge stack 작업)
 
-- [ ] **G34.** G30 Stage 2 — `.specify/memory/constitution.md`
-    governance row land (κ-68 R7 DEFERRED · κ-69 closure block)
+- [x] **G34.** G30 Stage 2 — `.specify/memory/constitution.md`
+    governance row land (κ-68 R7 DEFERRED · κ-69 R8 LANDED 2026-05-21)
   - **scope**: G30 (κ-68) 의 Stage 2 DEFERRED 항목 이행 — Spec
     Kit `.specify/memory/constitution.md` 가 새 governance SSOT
     (ca61a6c Phase 2 adoption · bd28631 redirect chain). `absorbed
     =true ⇔ measuredOracle.isMeasuredOraclePASS=true` invariant
     의 governance row 박제. XCTest 가 load-bearing enforcement
     (Stage 1) · constitution.md 가 narrative governance (Stage 2)
+  - **artifact**: constitution.md `## Governance Rows` section 신설
+    + `R1. Measured-Oracle Invariant` row land — invariant 본문
+    + D106 illustrative carve-out + D95/D103 substrate-axis 분리
+    명시 + first-land cite (κ-68 G29 / D110 / NREL MIDC SRRL
+    pyranometer GHI / mean_rel_err 0.04967 ≤ 0.05) + load-bearing
+    enforcement pointer (`fee34cc` G30 Stage 1 XCTest 3-method) +
+    G31a+G31b bridge_stack semantics (hexa-lang PR #263 · `740964a0`
+    + `47c2378e`) cross-link. semver MINOR bump 1.0.0 → 1.1.0
+    (new section).
   - **exit criterion**:
-    - `.specify/memory/constitution.md` populate 완료 (별 cycle
-      에 일어남 · G34 의 pre-condition)
+    - `.specify/memory/constitution.md` populate 완료 [x]
+      (`99ccbc1` v1.0.0 · 본 cycle pre-condition)
     - measured-oracle invariant row land · D110 + G30 Stage 1
-      cross-link · D106 illustrative-physics carve-out 명시
+      cross-link · D106 illustrative-physics carve-out 명시 [x]
     - G33 까지 land 된 real-data branch 의 fixture-driven
-      invariant test 가 governance row 와 일치 audit
-  - **deps**: constitution.md populate (별 work) · G30 Stage 1
-    (`fee34cc` XCTest invariant) · G33 (두번째 measured-oracle
-    cell 의 row 갱신)
+      invariant test 가 governance row 와 일치 audit — **G33
+      미land 상태에서 G34 land** (Stage 2 narrative governance 는
+      G33 dependency 없이 G29 first-land 위 닫힘; G33 land 시
+      row body 에 second-cell first-flip 추가 cycle 별도 처리)
+  - **deps**: constitution.md populate (`99ccbc1`) · G30 Stage 1
+    (`fee34cc` XCTest invariant) · G31a+G31b bridge_stack
+    semantics (hexa-lang PR #263 · `740964a0` + `47c2378e`)
   - **est**: 0.3-0.5 sessions (constitution.md populate 후 · 본
-    row 자체는 doc edit)
+    row 자체는 doc edit) — actual ≈ 0.3 session
 
 ---
 
@@ -2160,6 +2172,52 @@ landing 시각만 ARCH `## Log` 에 박제.
 ---
 
 ## Log
+
+- 2026-05-21 — **G34 governance row LANDED · κ-68 R7 DEFERRED Stage 2
+  closure · ARCH §11.4 G34 `[ ]` → `[x]` flip** (constitution.md v1.0.0
+  → v1.1.0 · MINOR bump). κ-68 G30 의 Stage 2 (constitution.md
+  narrative governance) 가 constitution.md populate (`99ccbc1`) 위
+  같은 session 안에 closure. work 요약:
+  - **artifact**: `.specify/memory/constitution.md` 에 새 section
+    `## Governance Rows` + `R1. Measured-Oracle Invariant` row land.
+    row body = invariant 본문 (`absorbed=true ⇔ measuredOracle.is
+    MeasuredOraclePASS=true`) + 2 carve-out (D106 illustrative ·
+    D95/D103 substrate-parity) + first-land cite (κ-68 G29 / D110 /
+    NREL MIDC SRRL pyranometer GHI / mean_rel_err 0.04967 ≤ 0.05 /
+    commit `80a1664`) + load-bearing enforcement pointer (`fee34cc`
+    G30 Stage 1 XCTest 3-method) + cross-link cluster (ARCH §11.4
+    G30/G34 · design.md D109/D110/D103/D106 · RFC 013 §6.11/§6.12).
+  - **stage separation**: Stage 1 (XCTest invariant · `fee34cc`) 가
+    load-bearing enforcement vehicle 임을 row 본문이 명시 — `## Governance
+    Rows` section header 의 docstring 도 "row 자체는 narrative
+    governance pointer, 실제 enforcement 는 test/code" 패턴 명시.
+    이로써 향후 governance row 들도 같은 pattern (narrative ↔ typed
+    test pointer) 으로 land 됨.
+  - **semver MINOR bump 1.0.0 → 1.1.0**: 새 section (`## Governance
+    Rows`) 추가 = MINOR per constitution.md `## Governance` rule
+    (MAJOR = principle removal/redefinition · MINOR = new principle/
+    section · PATCH = wording). Ratified/Last Amended 2026-05-21 같은
+    day update.
+  - **G33 미land 위 G34 land 의 정당성**: G34 exit criterion 의 3번째
+    bullet ("G33 까지 land 된 fixture-driven invariant 일치 audit") 은
+    Stage 2 narrative governance 가 G29 first-land 위 닫히는 구조라 G33
+    가 strict pre-condition 아님 (G29 의 single PASS instance 가
+    invariant 의 first concrete witness · row 는 그 위 narrative
+    anchor). G33 land 시 row body 에 second-cell first-flip 을 추가
+    cycle 로 append.
+  - **§11.4 G34 block 갱신**: heading `[ ]` → `[x]` · `**artifact**`
+    sub-bullet 추가 (constitution.md row body 요약 + semver bump) ·
+    `exit criterion` 3 bullet 모두 `[x]` 표기 + G33 dependency note
+    명시 · `deps` 에 G31a+G31b bridge_stack semantics cross-ref 추가
+    (PR #263 merge cycle 안의 same-day land 라 자연스러운 cross-link) ·
+    `est_actual ≈ 0.3 session` 박제.
+  - **κ-69 R8 critical-path 진척**: §11.4 Round 8 의 4 G-item 중 G31
+    + G34 `[x]` (G31 = G31 G29-β branch-complete + origin/main land ·
+    G34 = governance row land). G32 + G33 still `[ ]` — 다음 lowest-
+    friction step = G32 decision gate (5-fold lock-in cell pick · code
+    0) 또는 G31β (Ineichen clearsky hexa-native port). κ-69 = (a)
+    ultimate-form parity (G31 ✓) + (b) 두번째 cell mirror (G32..G33
+    미land) + (c) governance Stage 2 (G34 ✓) 의 3 axis 중 2 axis closed.
 
 - 2026-05-21 — **G31 fully LANDED origin/main · PR #263 squash-merged
   · ARCH §11.4 G31 `[~]` → `[x]` flip** (hexa-lang merge commit

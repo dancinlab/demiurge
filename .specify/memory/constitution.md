@@ -53,4 +53,19 @@ demiurge/
 - Amendments land via a PR that updates this file, adds a `design.md` decision entry, and bumps semver: MAJOR = principle removal/redefinition · MINOR = new principle/section · PATCH = wording.
 - Complexity must be justified in the corresponding `design.md` entry. Default = simpler.
 
-**Version**: 1.0.0 | **Ratified**: 2026-05-21 | **Last Amended**: 2026-05-21
+## Governance Rows
+
+Narrative anchors for typed enforcement invariants. Each row points at the load-bearing test/code that actually enforces; the row itself is the human-readable governance pointer (not the enforcement). Add rows by appending — never edit existing rows in-place except for PATCH-level wording.
+
+### R1. Measured-Oracle Invariant — `absorbed=true ⇔ measuredOracle.isMeasuredOraclePASS=true`
+
+A cell-record's stored `absorbed: Bool` flips legitimately only when an attached `MeasuredOracleRef` records `isMeasuredOraclePASS=true` against its PASS criterion. Conflation of the measured-oracle axis with substrate-parity (D95 computed projection · `isHexaNativeAbsorbed`) is forbidden — D103 dimension-separation enforces two orthogonal axes (`absorbed` = measurement axis · `hexa_native_parity` = substrate-port axis).
+
+- **Carve-outs**:
+  - **D106 illustrative-physics cells**: `.illustrativePhysics` `GateType` cells (RFC 013 §6.12) are exempt — no `MeasuredOracleRef` can be attached; `absorbed` flips by illustrative gate criteria, not measured-oracle PASS. Anti-conflation cyan tone in cockpit.
+  - **D95 computed projection (substrate-parity)**: A DIFFERENT axis (D103). `isHexaNativeAbsorbed` computed projection PASS is NOT sufficient to flip `absorbed`. Separate stored field carries the substrate-parity record (`HexaNativeParityRef`).
+- **First land (κ-68 G29 · D110 · 2026-05-21)**: Energy/solar cell · oracle = NREL MIDC SRRL pyranometer GHI · 480 clear-sky samples (2024-06-15) · `mean_rel_err = 0.04967` ≤ 0.05 threshold · marginal PASS · commit `80a1664`.
+- **Load-bearing enforcement** — *Stage 1 (typed)*: `cockpit/Tests/DemiurgeCoreTests/AbsorbedNeedsMeasuredOracleTests.swift` (commit `fee34cc` · 3 test methods covering invariant + D95 conflation + D106 exempt branch · 63/63 PASS · 0 regression). The XCTest invariant is the real enforcement vehicle; this row is the narrative pointer.
+- **Cross-links**: ARCH §11.4 G30 (Stage 1 LANDED) · ARCH §11.4 G34 (Stage 2 = 본 row LANDED) · design.md D109 (cell+oracle pick) · D110 (first flip record) · D103 (dimension-separation) · D106 (illustrative carve-out) · RFC 013 §6.11 (LANDED · κ-68 closure) · §6.12 (illustrative anti-conflation).
+
+**Version**: 1.1.0 | **Ratified**: 2026-05-21 | **Last Amended**: 2026-05-21
