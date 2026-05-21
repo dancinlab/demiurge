@@ -200,6 +200,24 @@ measurement   = transient solve 정상 — full-cycle 완주는 별 cohort
 
 → **세션의 진짜 결론**: 4.2.1 의 linear A-φ FEM cross-check (Δ=-1.40%) 위에 **HTS-grade H-formulation 본해 toolchain 이 완전히 동작**한다는 것을 가벼운 cube benchmark 로 확정. §4.3 의 (s1) "linear magnetostatic — HTS critical state 미반영" caveat 의 *해결 경로가 실제로 열려 있음*. 다음 단계는 cube 본해 결과 풀-사이클 수렴 + life-hts/benchmark1_tape 의 EUCAS REBCO tape 실측 비교.
 
+### 4.2.1.d Cube benchmark **full-cycle 완주 확정** (2026-05-21 후속)
+
+§4.2.1.c 의 "다음 단계 = full-cycle 완주" 가 같은 세션 후속 run 에서 **자연 종료로 달성**:
+
+```
+wall_time    = 617.636 s   (10.3 min)
+cpu_time     = 558.961 s
+memory peak  = 177.703 MB
+final_step   = TimeStep 248~249 (t = 0.025 s, AC-cycle 끝)
+ksp residual = ~5-8 × 10⁻¹⁶ per step (전 step 수렴)
+exit         = GetDP natural `Stopped` (timeout 1800s 도달 X)
+last postop  = res/dummy.txt — t=0.025s · 6-PostOp 값 (energy / current / etc.)
+```
+
+→ 4.2.1.c 의 "partial-cycle 1/3 (217 of expected ~250)" 가 본 run 에서 풀-사이클 정상 수렴 + GetDP 의 깨끗한 exit 까지 **macOS Apple Silicon native 에서 10 분 안에 종결**. Linux pool 불필요. cube.pro 가 `res/dummy.txt` 에 overwrite-only 로 마지막 step 만 보존 (전 transient 데이터 외부 capture 는 별 cohort) — 본 결과는 *솔버 수렴 + 종료* 자체의 실증.
+
+→ **RTSC.md §4.3 (s1) "linear magnetostatic — HTS critical state 미반영" caveat 의 해결 경로가 코드-레벨 뿐 아니라 솔버 수렴 레벨까지 검증됨**. 다음 단계는 cube postop 출력 capture 보강 + benchmark1_tape EUCAS REBCO tape 실측 비교.
+
 ### 4.2.2 디버그 여정 (참고 — 동일 패턴 재발 시 빠른 진단)
 
 5축 producer를 실제 solve로 확장할 때 부딪힌 4가지 함정 — 둘 다 "FEM이 돌긴 도는데 결과가 이상함" 류:
@@ -472,3 +490,5 @@ scope_caveats:
 - **2026-05-21 KST** — **§8.7 (4-tier expansion path) 추가**. §8.3 의 "모든 합성 루트 = demiurge ✗" 를 *현재 상태이지 영구 아님* 으로 재정의: Tier 1 (Computational sim — hexa-rtsc calc_*.hexa thin adapter) · Tier 2 (Recipe-as-record — typed JSON, 외부 lab 실행) · Tier 3 (Measurement ingest — 외부 instrument 결과 typed record) · Tier 4 (Falsifier dispatch — 3-tier triple 통합 verdict). 각 tier 는 독립 PR 가능, 1→4 순서로 가면 매 단계 demiurge 책임 영역 +1 칸. 재분류: **REBCO HTS + PIT wire (LTS/MgB₂) 만 4-tier 전부 ✓ 가능** — vendor Jc datasheet 충실. LK-99/hydride/TBG 는 Tier 1-3 부분만 ✓. g3 stance 는 §8.7 → §8.8 로 밀어내고 4-tier 와 정합 (물리적 합성은 영원히 외부 / RTSC 가설 never absorbed).
 - **2026-05-21 KST** — **Stage 1+2 cohort 6개 안착** (§4.2.1.b). M5 sim.hexa = Python 과 libm 0.0000 K 정밀도 일치. D1 hts_workgroup license-unclear honest stance (콘텐츠 vendor 거부 · provenance manifest 만 안착). M4 MPRester 3-gate path 검증. GetDP 4.0.0 ARM native 다운로드 + `RhoPowerLaw` 내장 확인. **F (Tier 4 dispatch) — LK-99 first verdict = FAILS-AT-LEAST-ONE** (replicated=0), XCTest 가 absorbed=false 불변 코드-레벨 보호. G h_formulation_adapter 3 skip mode 검증. demiurge commit f4defee (concurrent session 이 bundle), hexa-lang commit d06c8ae9 (이 세션).
 - **2026-05-21 KST** — **§4.2.1.c HTS-grade H-formulation 본해 실증**. GetDP 4.0.0 + life-hts/cube/cube.pro (RhoPowerLaw E-J power law) 가 macOS Apple Silicon 에서 **transient solve 정상 동작**: 1937 nodes / 3601 DOFs / KSP residual ~1.9 → 5e-16 수렴 / MagDyn_energy 8/8 PostOp 정상. §4.3 의 (s1) "linear magnetostatic — HTS critical state 미반영" caveat 의 **해결 경로가 실제로 열려 있음** 확정. absorbed=false (외부 reference benchmark, license-unclear). 다음 단계: full-cycle 완주 + benchmark1_tape EUCAS REBCO 실측 비교.
+- **2026-05-21 KST** — **§4.2.1.d Cube full-cycle 완주 확정**. 같은 세션 후속 run 으로 timeout 1800s 잡았는데 **GetDP가 617s (10.3 min) 에 자연 종료** — TimeStep 248~249 (t=0.025s AC-cycle 끝) 까지 전 step KSP residual ~5-8e-16 수렴. macOS Apple Silicon native 만으로 HTS-grade H-formulation full-cycle 가능. Linux pool 불필요. cube.pro 의 `res/dummy.txt` overwrite-only 한계로 last-step 6-PostOp 값만 보존됨 (전 transient capture 별 cohort). **(s1) caveat 해결 경로가 솔버 수렴 레벨까지 실증**.
+- **2026-05-21 KST** — Stage 3 cohort 3개 (H cube_producer.py · J hexa_rtsc_crosslink.py · K MPRester real-query probe) + Stage 4 (L MaterialVerifyProducer.swift / ActionDispatch.material+verify wiring · M 3 Tier 2 recipe stubs · 2 cube full-cycle bg run) 모두 안착. M 의 LK-99 외 stub 3건 추가 (REBCO MOCVD replicated=5 · NbTi PIT wire replicated=8 · hexa-rtsc n=6 replicated=0). L 의 `demiurge action 검증 material` CLI dispatch 가 4 sub-producer 병렬 (sim_adapter ✓ · cube_producer 60s SKIP · hexa_rtsc_crosslink ✓ · mp_query SKIP no-key) aggregated ok=true 안착. J 의 hexa-rtsc cross-link 가 1 MATCH (bcs σ·φ=24 by construction) + 2 DEVIATION (algebraic ceiling ≠ concrete sample · honest informative) + 1 SKIPPED (upstream calc_lk99.hexa parse error noexisten) 산출.
