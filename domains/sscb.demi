@@ -39,6 +39,7 @@ scope_caveats     = [
 # --- WIRED: synthesize (κ-N ROI rank 1 / dual-substrate) ---------------------
 [cell.synthesize]
 substrate         = python3
+python_candidates = python3.13, python3.12, python3
 script            = stdlib/sscb/femmt_sweep.py
 record_kind       = sscb_synthesize_record
 output_dir        = exports/sscb/synthesize
@@ -55,6 +56,7 @@ scope_caveats     = [
 # --- WIRED: verify (κ-N ROI rank 2 / breaking-capacity bolted-fault) ---------
 [cell.verify]
 substrate         = python3
+python_candidates = python3.13, python3.12, python3
 script            = stdlib/sscb/ngspice_breaking.py
 record_kind       = sscb_verify_record
 output_dir        = exports/sscb/verify
