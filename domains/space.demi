@@ -1,0 +1,139 @@
+# space.demi — verb-cell manifest for the space (satellite / launcher / deep-
+# space mission · NASA / ESA / KARI class) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/space/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("space", verb)
+#
+# Format: cellrun.hexa Phase A dialect.
+#
+# Citations (anchored, not repeated per-cell — see domains/space.md):
+#   - Skyfield (open · MIT) — space+analyze SGP4 propagator
+#   - OpenMDAO (NASA open · Apache-2.0) — space+synthesize Tsiolkovsky
+#     wet-mass sweep (ROI 8 · 2nd OpenMDAO consumer · NASA GSC-17177-1)
+#   - GMAT (NASA open · Apache-2.0) + Basilisk (open · ISC) —
+#     space+verify trajectory + ADCS (ROI 15)
+#   - CCSDS standards (telemetry / spacecraft monitoring · open)
+#   - SpaceTrack TLE (USSPACECOM open feed)
+#
+# Domain caveat (applies to every cell):
+# space cells reference TLE / textbook-orbit inputs — ALL cells stay
+# GATE_OPEN / absorbed=false (g3): real telemetry + DSN / KARI ground-
+# station tracking = accredited-mission gates outside this map.
+
+# --- WIRED: specify (mission concept skeleton) ------------------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/space/specify.py
+record_kind       = space_specify_record
+output_dir        = exports/space/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Mission concept skeleton (mission class · destination · payload · dry/wet mass envelope · launch window) — TEMPLATE.",
+  "Cross-references CCSDS standards + NASA Systems Engineering Handbook (open chapters).",
+  "measurement_gate = GATE_OPEN permanently — specify skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: structure (bus + payload + propulsion partitioning) ------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/space/structure.py
+record_kind       = space_structure_record
+output_dir        = exports/space/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Spacecraft bus + payload + propulsion + ADCS + comms partitioning skeleton — TEMPLATE.",
+  "Real bus heritage (LM 2100 · A2100 · A4 · KOMPSAT-7 series) = vendor IP, public-surface only.",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: design (ΔV budget + thermal + power dossier) -------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/space/design.py
+record_kind       = space_design_record
+output_dir        = exports/space/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ΔV budget + thermal balance + power profile dossier skeleton — TEMPLATE.",
+  "Real thermal/power validation requires Thermal Desktop / SINDA-FLUINT / spacecraft TCM (proprietary, public-surface only).",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- WIRED (D60 cohort-round Skyfield ISS TLE): analyze --------------------
+# Existing producer: stdlib/space/skyfield_sgp4.py + openmdao_mission.py.
+# D61-from-birth.
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/space/analyze.py
+record_kind       = space_analyze_record
+output_dir        = exports/space/analyze
+required_deps     = python3, skyfield
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Skyfield SGP4 propagator on ISS TLE — D60 cohort cell.",
+  "TLE input is USSPACECOM published meta, NOT a demiurge measurement (propagator is upstream).",
+  "absorbed=true requires DSN / KARI ground-station ranging cross-check (accredited-facility gate, g3).",
+]
+
+# --- WIRED (ROI 8 · OpenMDAO 2nd consumer): synthesize ---------------------
+# Existing producer: stdlib/space/openmdao_mission.py — Tsiolkovsky wet-
+# mass sweep, kernel-promotion candidate.
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/space/synthesize.py
+record_kind       = space_synthesize_record
+output_dir        = exports/space/synthesize
+required_deps     = python3, openmdao
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "OpenMDAO SLSQP wet-mass sweep (single-discipline Tsiolkovsky rollup) — ROI 8 · NASA GSC-17177-1.",
+  "Textbook nominal inputs (Isp / m_dry / ΔV), NO GMAT coupling — scoping-level MDO, NOT a real mission analysis.",
+  "kernels/openmdao/ promotion candidate (2nd consumer after scope+synthesize per pickup note).",
+  "absorbed=true requires real-mission validation (accredited-mission gate, g3).",
+]
+
+# --- WIRED (ROI 15 · GMAT + Basilisk): verify ------------------------------
+# Existing producer: stdlib/space/gmat_basilisk.py (D61 · κ-cohort).
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/space/verify.py
+record_kind       = space_verify_record
+output_dir        = exports/space/verify
+required_deps     = python3, gmat, basilisk
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "GMAT trajectory + Basilisk ADCS — NASA open + ISC open · placeholder mission profile.",
+  "Real trajectory verification = JPL Horizons + DSN tracking + Operations team territory (accredited-mission gate).",
+  "absorbed=true requires on-orbit telemetry parity, not ground-software-only sim (g3).",
+]
+
+# --- WIRED: handoff (mission readiness review dossier skel) ----------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/space/handoff.py
+record_kind       = space_handoff_record
+output_dir        = exports/space/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Mission Readiness Review (MRR) + Flight Readiness Review (FRR) dossier skeleton — TEMPLATE bundle.",
+  "Real launch approval = NASA / ESA / KARI mission-control board territory, accredited-launch gates outside this map.",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]

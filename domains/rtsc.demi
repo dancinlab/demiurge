@@ -1,0 +1,139 @@
+# rtsc.demi — verb-cell manifest for the rtsc (room-temperature superconductor
+# discovery · honest falsification framework) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/rtsc/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("rtsc", verb)
+#
+# Format: cellrun.hexa Phase A dialect.
+#
+# Citations (anchored, not repeated per-cell — see RTSC.md):
+#   - pyfemm (FEMM Windows · Wine-only on macOS · macOS hard-block) —
+#     rtsc+analyze 2-D HTS magnetics (ROI 10 · cohort pickup)
+#   - GetDP (open · GPL-3) — rtsc+verify HTS H-/A-phi 3-D EM (ROI 16)
+#   - BETE-NET (open ML model) — RTSC.md §9.2 7-candidate calibration
+#     (16.6% best · 1-atom OOD 454-1424%)
+#   - Materials Project · OPTIMADE · AFLOW · JARVIS — DFT corpus
+#   - HTS Modelling Workgroup · Hauser arxiv:0811.2883
+#
+# Domain caveat (applies to every cell):
+# rtsc is FALSIFIER-FIRST (R8 4/4 CLOSURE at G33). ALL cells stay
+# GATE_OPEN / absorbed=false (g3): RTSC.md's central claim is that
+# novel-discovery requires falsifier cascade passage + accredited
+# 4-probe transport + Meissner expulsion + measured H_c2 · T_c — none
+# of which this map flips. R4 vindicated: 0 RTSC predicted of 7 funnel
+# candidates (06cfad0).
+
+# --- WIRED: specify (RTSC candidate-class spec skeleton) --------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/rtsc/specify.py
+record_kind       = rtsc_specify_record
+output_dir        = exports/rtsc/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "RTSC candidate-class spec skeleton (target T_c · pressure regime · phonon-mediated vs unconventional) — TEMPLATE.",
+  "LK-99 / hydride-class / copper-oxide reference targets; NO claim that any candidate IS RTSC (R4 axis).",
+  "measurement_gate = GATE_OPEN permanently — specify skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: structure (candidate-screening graph skeleton) ------------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/rtsc/structure.py
+record_kind       = rtsc_structure_record
+output_dir        = exports/rtsc/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Candidate-screening graph skeleton (MP · OPTIMADE · AFLOW · JARVIS DFT corpus union) — TEMPLATE.",
+  "Topology is OPEN MATERIALS DATABASE meta, NOT a real T_c measurement.",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: design (falsifier-cascade pipeline dossier) --------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/rtsc/design.py
+record_kind       = rtsc_design_record
+output_dir        = exports/rtsc/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Falsifier-cascade pipeline dossier (BETE-NET screen → Allen-Dynes → Eliashberg → MaterialFalsifierDispatch RTSC5 gate) skeleton.",
+  "R8 4/4 CLOSURE @ G33; R4 vindicated (06cfad0 · 0 RTSC predicted / 7 candidates).",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- WIRED (ROI 10 · pyfemm cohort pickup · macOS hard-block): analyze ------
+# Existing producer: stdlib/rtsc/pyfemm_magnetics.py. FEMM Windows-only,
+# Wine-only on macOS — Linux pool honest-skip on Darwin.
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/rtsc/analyze.py
+record_kind       = rtsc_analyze_record
+output_dir        = exports/rtsc/analyze
+required_deps     = python3, pyfemm
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "pyfemm 2-D HTS magnetics — placeholder HTS-tape proxy; macOS honest-skip (FEMM Windows binary, Wine-only).",
+  "kernels/em_2d/ promotion candidate at 2nd consumer per D72.",
+  "absorbed=true requires accredited 4-probe transport + Meissner expulsion measurements (g3).",
+]
+
+# --- WIRED: synthesize (synthesis-recipe bundle skeleton) ------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/rtsc/synthesize.py
+record_kind       = rtsc_synthesize_record
+output_dir        = exports/rtsc/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Synthesis-recipe bundle skeleton (stoichiometry · pressure · temperature profile · cool-down rate) — TEMPLATE.",
+  "Real synthesis = wet-lab + DAC + crystal-growth furnace territory, accredited-facility gate outside this map.",
+  "measurement_gate = GATE_OPEN permanently — synthesize bundle is not an absorption claim (g3).",
+]
+
+# --- WIRED (ROI 16 · GetDP HTS H-/A-phi 3-D EM): verify --------------------
+# Existing producer: stdlib/rtsc/getdp_hts.py (D61).
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/rtsc/verify.py
+record_kind       = rtsc_verify_record
+output_dir        = exports/rtsc/verify
+required_deps     = python3, getdp
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "GetDP HTS H-/A-phi 3-D EM — placeholder REBCO tape geometry, NOT a real superconductor measurement.",
+  "RTSC5 gate enforcement (test/RTSC5GateEnforcementTests) is the falsifier-cascade SSOT; this verify is one input slice.",
+  "absorbed=true requires Tier-2/3/4 MaterialFalsifierDispatch passage + accredited 4-probe + Meissner data (g3).",
+]
+
+# --- WIRED: handoff (peer-review publication dossier skeleton) -------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/rtsc/handoff.py
+record_kind       = rtsc_handoff_record
+output_dir        = exports/rtsc/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Peer-review publication dossier (falsifier replay + Tier-1 to Tier-4 trace + accredited-data citation) skeleton — TEMPLATE.",
+  "Real RTSC handoff = Nature / PRL / Science territory + replication by independent labs (LK-99 scrub axis · 06cfad0 narrative).",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]

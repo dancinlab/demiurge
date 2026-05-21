@@ -1,0 +1,142 @@
+# antimatter.demi — verb-cell manifest for the antimatter (particle physics ·
+# CPT-symmetry tests · ALPHA / BASE / AEgIS class experiments) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/antimatter/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("antimatter", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+#
+# Citations (anchored, not repeated per-cell — see domains/antimatter.md):
+#   - particle (scikit-hep, BSD-3) — PDG live-data lookup (κ-cohort first
+#     D61-compliant-from-birth producer, antimatter+analyze)
+#   - PDG aggregator + Particle Data Group review (open) — measured mass /
+#     lifetime / branching constants
+#   - Geant4 (CERN open · BSD-like) — antimatter+verify Monte Carlo
+#   - Bethe-Bloch (rfc-cohort CernVerify) — stopping-power analytic
+#   - ALPHA-g / BASE / AEgIS open experimental notes — antihydrogen
+#     gravity / magnetic-moment / cooling target experiments
+#
+# Domain caveat (applies to every cell):
+# antimatter cells COPY public PDG / experimental measured constants —
+# demiurge NEVER originates the measurement. ALL cells stay GATE_OPEN /
+# absorbed=false (g3): real antiproton/positron measurements live at
+# CERN AD facilities, not here. cellrun adapter = D72 thin shim only.
+
+# --- WIRED: specify (CPT-test experiment spec skeleton) ---------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/antimatter/specify.py
+record_kind       = antimatter_specify_record
+output_dir        = exports/antimatter/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CPT-symmetry experiment spec skeleton (mass / charge-mass ratio / lifetime asymmetry targets) — TEMPLATE.",
+  "ALPHA-g antihydrogen gravity / BASE proton-antiproton magnetic-moment / AEgIS positronium = reference target classes only.",
+  "measurement_gate = GATE_OPEN permanently — specify is illustrative, not an absorption claim (g3).",
+]
+
+# --- WIRED: structure (detector + trap geometry skeleton) -------------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/antimatter/structure.py
+record_kind       = antimatter_structure_record
+output_dir        = exports/antimatter/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Penning trap / mixing trap / detector cascade geometry skeleton — TEMPLATE.",
+  "Real ALPHA-g vertical-trap dimensions + magnetic-shielding stack lives in CERN engineering drawings, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: design (RF cavity + electrode dossier skeleton) -----------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/antimatter/design.py
+record_kind       = antimatter_design_record
+output_dir        = exports/antimatter/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "RF cavity drive + electrode bias dossier skeleton — TEMPLATE.",
+  "antimatter+design absorbed=true requires CST Microwave Studio / COMSOL RF parity (proprietary axis, no open equivalent).",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- WIRED (cohort-round D61-compliant-from-birth): analyze (PDG lookup) ----
+# Existing producer: stdlib/antimatter/pdg_lookup.py — FIRST cohort cell
+# shipping D61-compliant-from-birth (script SSOT in hexa-lang/stdlib/,
+# never in cockpit/scripts/). FIFTH cohort domain crossing measuring-
+# producer threshold and FIRST particle-physics cell.
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/antimatter/analyze.py
+record_kind       = antimatter_analyze_record
+output_dir        = exports/antimatter/analyze
+required_deps     = python3, particle
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "particle (scikit-hep) PDG live-data lookup — antiproton/positron measured constants COPIED from PDG aggregator.",
+  "PDG values ARE real measured constants but THIS run is not a demiurge measurement (g3 — copying ≠ measuring).",
+  "absorbed=true requires hexa-native re-derivation + accredited-detector data, not aggregator passthrough.",
+]
+
+# --- WIRED: synthesize (Penning-trap config bundle skeleton) ----------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/antimatter/synthesize.py
+record_kind       = antimatter_synthesize_record
+output_dir        = exports/antimatter/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Penning-trap config bundle (RF profile + electrode bias schedule + capture window) — TEMPLATE skeleton.",
+  "Real trap-loading sequences live in CERN AD-facility online controllers, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize bundle is not an absorption claim (g3).",
+]
+
+# --- WIRED (ROI 18 · Geant4 antiproton MC): verify --------------------------
+# Existing producer: stdlib/antimatter/geant4_verify.py (D61 · κ-cohort).
+# kernels/mc_transport/ 4th consumer candidate per D72.
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/antimatter/verify.py
+record_kind       = antimatter_verify_record
+output_dir        = exports/antimatter/verify
+required_deps     = python3, geant4
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Geant4 antiproton Monte Carlo (BSD-like license · CERN open) — placeholder beamline geometry, NOT a real ALPHA-g shot.",
+  "Bethe-Bloch slice (cern+verify cohort) omits shell corrections + density effect + straggling + nuclear stopping.",
+  "absorbed=true requires hexa-native re-derivation + Geant4 MC parity per ABSORPTION.md (g3).",
+]
+
+# --- WIRED: handoff (CERN proposal + safety-case skeleton) ------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/antimatter/handoff.py
+record_kind       = antimatter_handoff_record
+output_dir        = exports/antimatter/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CERN AD-facility proposal + radiation-safety case dossier skeleton — TEMPLATE bundle.",
+  "Real beam-time approval = SPSC / INTC committee territory, accredited-lab gates outside this map.",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]

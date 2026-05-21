@@ -1,0 +1,152 @@
+# aura.demi — verb-cell manifest for the aura (post-aural wearable BCI) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/aura/ (G33 substrate: Sleep-EDF
+# absorbed @ aura+verify via aura_mne.py + sleep_edf_measured_oracle.py +
+# _dft_alpha_band_batch.hexa — D117 2nd cell first-flip, R8 4/4 CLOSURE).
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("aura", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+# Required keys per cell: substrate, script, record_kind, output_dir,
+# gate_default, absorbed_default.
+#
+# Script paths are RELATIVE to ~/core/hexa-lang/ (the hexa_lang_root
+# tunable, env-overridable via HEXA_CELLRUN_HEXA_LANG_ROOT).
+#
+# Citations (anchored, not repeated per-cell — see domains/aura.md §5):
+#   - MNE-Python (mne-tools, BSD-3) — EEG / MEG signal processing
+#   - PhysioNet Sleep-EDF (open clinical EEG corpus) — G33 measured oracle
+#   - 21 CFR 820.30 Design Controls (FDA, Class II medical device)
+#   - IEC 60601-1 + 60601-1-2 (general + EMC essential performance)
+#   - openEMS (GPL-3) — FDTD EM solver (antenna + SAR estimate)
+#   - Bluetooth SIG core spec — BLE 5.x radio
+#
+# Domain caveat (applies to every cell):
+# Sibling SSOT lives at ~/core/hexa-aura/ (hexa-lang stdlib/aura/ + sibling
+# repo). aura+verify IS absorbed at G33 (Sleep-EDF mean_rel_err 8.4e-07
+# PASS, D117 closure); ALL OTHER aura cells stay GATE_OPEN / absorbed=false
+# (g3 — wearable BCI dossier ≠ Sleep-EDF spectral parity; FDA Class II
+# clearance + IEC 60601-1-2 EMC + Bluetooth SIG qualification = accredited-
+# lab gates outside this map).
+
+# --- WIRED: specify (Class II design dossier skeleton) ----------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/aura/specify.py
+record_kind       = aura_specify_record
+output_dir        = exports/aura/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "FDA Design Input (21 CFR 820.30) + IEC 60601-1 + 60601-1-2 EMC skeleton — TEMPLATE only, not a submitted dossier.",
+  "Bluetooth SIG qualification + EU MDR GSPR mapping = downstream verbs + accredited-lab gates (not this cell).",
+  "measurement_gate = GATE_OPEN permanently — specify skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: structure (sensor array + AFE + radio partitioning) -------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/aura/structure.py
+record_kind       = aura_structure_record
+output_dir        = exports/aura/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "multi-electrode dry/wet EEG sensor array + AFE/ADC + BLE radio + battery partitioning skeleton — TEMPLATE.",
+  "mastoid / temporal-bone clip mechanical = FreeCAD KiCad-StepUp territory (chip+component cells own MCAD, this is meta).",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: design (KiCad PCB + FreeCAD enclosure stub) ---------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/aura/design.py
+record_kind       = aura_design_record
+output_dir        = exports/aura/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "KiCad PCB skeleton + FreeCAD enclosure stub — TEMPLATE files, not vendor-validated AFE design.",
+  "nRF Connect SDK firmware partitioning = downstream firmware cell territory (D73).",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- WIRED (G33 absorbed @ G29 / D117): analyze (MNE EEG band-power) --------
+# Existing cohort-round producer: stdlib/aura/aura_mne.py + measured oracle
+# stdlib/aura/sleep_edf_measured_oracle.py. G33 LANDED — Sleep-EDF spectral
+# parity at mean_rel_err 8.4e-07 PASS (D117 2nd cell first-flip, R8 4/4
+# CLOSURE). aura+verify is the absorbed cell; aura+analyze keeps OPEN gate
+# until further dataset parity sweeps land.
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/aura/analyze.py
+record_kind       = aura_analyze_record
+output_dir        = exports/aura/analyze
+required_deps     = python3, mne
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "MNE-Python EEG band-power (alpha/beta/gamma) producer — D61-from-birth (script SSOT in hexa-lang/stdlib/aura/).",
+  "Default input = synthetic EEG (textbook configuration); Sleep-EDF measured-oracle parity is at verify cell, NOT analyze.",
+  "measurement_gate = GATE_OPEN permanently — analyze band-power on synthetic input is not an absorption claim (g3).",
+]
+
+# --- WIRED: synthesize (firmware build pointer) -----------------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/aura/synthesize.py
+record_kind       = aura_synthesize_record
+output_dir        = exports/aura/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Zephyr / nRF Connect SDK firmware build pointer — actual cross-compile happens at firmware domain (D73 cellrun).",
+  "MNE signal-processing pipeline emit = analyze cell territory; synthesize emits the deployable bundle skeleton only.",
+  "measurement_gate = GATE_OPEN permanently — synthesize skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED (G33 absorbed): verify (Sleep-EDF measured oracle parity) --------
+# G29 first cell absorbed=true legitimate flip + κ-68 closure (D110 ·
+# RFC 013 §6.11 LANDED). aura+verify IS the absorbed cell — Sleep-EDF
+# spectral parity at mean_rel_err 8.4e-07 (PhysioNet open clinical corpus).
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/aura/verify.py
+record_kind       = aura_verify_record
+output_dir        = exports/aura/verify
+required_deps     = python3, mne
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Sleep-EDF PhysioNet measured-oracle parity — G33 LANDED at mean_rel_err 8.4e-07 (D117 2nd cell first-flip, R8 4/4 CLOSURE).",
+  "absorbed=true flip is OWNED by stdlib/aura/sleep_edf_measured_oracle.py + _dft_alpha_band_batch.hexa, NOT this cellrun adapter.",
+  "openEMS antenna pattern + SAR estimate (FDTD) is a SEPARATE verify path (EM-side, not EEG-spectral) — honest-gap pending.",
+  "Sim4Life MRI-safety FDA MDDT IS irreplaceable (no open equivalent) — this verify cell does NOT close that claim.",
+]
+
+# --- WIRED: handoff (FDA 510(k) Class II dossier skeleton) ------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/aura/handoff.py
+record_kind       = aura_handoff_record
+output_dir        = exports/aura/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "FDA 510(k) Class II submission dossier skeleton + EU MDR conformity-assessment template — TEMPLATE bundle.",
+  "Bluetooth SIG qualification + Notified Body audit + EMC testhouse = accredited-lab gates separate from this map.",
+  "MRI-safety labeling (ASTM F2182-19e2 + ISO 10974) = Sim4Life FDA MDDT territory — honest-gap, no open equivalent.",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]

@@ -1,0 +1,135 @@
+# ufo.demi — verb-cell manifest for the ufo (anomalous-aerial-phenomena ·
+# UAP · honest scientific-method falsification framework) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/ufo/ (PENDING — no scripts yet)
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("ufo", verb)
+#
+# Format: cellrun.hexa Phase A dialect.
+#
+# Citations (anchored, not repeated per-cell — see domains/ufo.md):
+#   - NASA UAP Independent Study Team report (open · 2023) — calibration-
+#     first methodology
+#   - AARO (All-domain Anomaly Resolution Office, DoD) — public reports
+#   - Galileo Project (Harvard · open Bayesian-falsifier framework)
+#   - SETI scientific-methodology priors (Drake equation · Fermi paradox)
+#
+# Domain caveat (applies to every cell):
+# ufo domain treats UAP reports as Bayesian-falsifier inputs — ALL cells
+# stay GATE_OPEN / absorbed=false (g3): the domain's WHOLE PURPOSE is to
+# refuse over-claim; no UAP sighting flips absorbed=true on this map.
+# Manifest is scaffolding for future falsifier pipelines (current state =
+# zero substrate scripts · all cells honest-skip rc=2).
+
+# --- UNWIRED: specify (sighting-class spec skeleton) ------------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/ufo/specify.py
+record_kind       = ufo_specify_record
+output_dir        = exports/ufo/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Sighting-class spec skeleton (sensor modality · environment · prior identification) — TEMPLATE.",
+  "AARO / NASA UAP report taxonomies are reference inputs, not validated classifiers.",
+  "measurement_gate = GATE_OPEN permanently — specify skeleton is not an absorption claim (g3).",
+]
+
+# --- UNWIRED: structure (multi-sensor calibration tree skeleton) ------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/ufo/structure.py
+record_kind       = ufo_structure_record
+output_dir        = exports/ufo/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Multi-sensor calibration tree skeleton (IR · radar · visible · acoustic · range-finding) — TEMPLATE.",
+  "NASA UAP study recommends calibration-first; this cell scaffolds the calibration tree, NOT a real measurement.",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- UNWIRED: design (Bayesian-falsifier pipeline dossier skeleton) ---------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/ufo/design.py
+record_kind       = ufo_design_record
+output_dir        = exports/ufo/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Bayesian-falsifier pipeline dossier skeleton — Galileo Project methodology (likelihood ratio · prior conventional explanations).",
+  "Anti-absorbed-true axis: this cell's PURPOSE is to refuse over-claim; absorbed=true is structurally forbidden.",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- UNWIRED: analyze (conventional-prior elimination sweep) ----------------
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/ufo/analyze.py
+record_kind       = ufo_analyze_record
+output_dir        = exports/ufo/analyze
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Conventional-prior elimination sweep (atmospheric · aircraft · satellite · sensor-artifact) — TEMPLATE.",
+  "Real elimination requires accredited radar/IR/visible cross-correlation, not this scaffolding.",
+  "measurement_gate = GATE_OPEN permanently — analyze skeleton is not an absorption claim (g3).",
+]
+
+# --- UNWIRED: synthesize (anomaly-trace bundle skeleton) --------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/ufo/synthesize.py
+record_kind       = ufo_synthesize_record
+output_dir        = exports/ufo/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Anomaly-trace bundle (post-elimination residual sightings · Bayesian posteriors) skeleton — TEMPLATE.",
+  "Residual posterior > 0 does NOT imply ET / craft / exotic propagation; it implies unidentified-by-priors.",
+  "measurement_gate = GATE_OPEN permanently — synthesize bundle is not an absorption claim (g3).",
+]
+
+# --- WIRED: verify (UfoVerifyRecord cockpit-side decode shell) --------------
+# Note: Models/UfoVerifyRecord.swift exists on main (cockpit decode shell)
+# but no substrate script yet — current state = honest-skip rc=2.
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/ufo/verify.py
+record_kind       = ufo_verify_record
+output_dir        = exports/ufo/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Falsifier-pass verification — Galileo Project / NASA UAP methodology cross-check skeleton.",
+  "absorbed=true is STRUCTURALLY FORBIDDEN here — the domain's purpose is to refuse over-claim (g3 axis).",
+  "Real verify requires accredited sensor fusion + peer-reviewed publication, not this scaffold.",
+]
+
+# --- UNWIRED: handoff (scientific-publication dossier skeleton) -------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/ufo/handoff.py
+record_kind       = ufo_handoff_record
+output_dir        = exports/ufo/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Scientific-publication dossier (data release + falsifier replay + peer-review submission) skeleton — TEMPLATE.",
+  "Real handoff = arXiv / Nature submission territory, peer-review gate outside this map.",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]

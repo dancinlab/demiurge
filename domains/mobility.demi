@@ -1,0 +1,136 @@
+# mobility.demi — verb-cell manifest for the mobility (autonomous-mobility ·
+# AV / ADAS · ISO 26262 / 21448 scope) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/mobility/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("mobility", verb)
+#
+# Format: cellrun.hexa Phase A dialect.
+#
+# Citations (anchored, not repeated per-cell — see domains/mobility.md):
+#   - OSMnx (open · MIT) — mobility+analyze road-network topology
+#   - CARLA / ScenarioRunner (open · MIT) — mobility+verify scenario sim
+#     (Linux-only · macOS hard-block)
+#   - ISO 26262 (Functional Safety road vehicles) · ISO 21448 (SOTIF)
+#   - SAE J3016 (driving-automation levels)
+#   - Apollo · Autoware · openpilot (open AV stacks)
+#
+# Domain caveat (applies to every cell):
+# mobility cells reference TOPOLOGY / SCENARIO meta — ALL cells stay
+# GATE_OPEN / absorbed=false (g3): real road-test data + ISO 26262 / SOTIF
+# accreditation = TÜV / KBA / NHTSA territory outside this map. macOS
+# honest-block for CARLA (Linux pool only).
+
+# --- WIRED: specify (ISO 26262 / SOTIF item-definition skeleton) ------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/mobility/specify.py
+record_kind       = mobility_specify_record
+output_dir        = exports/mobility/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ISO 26262 item-definition + SOTIF ODD (Operational Design Domain) skeleton — TEMPLATE.",
+  "SAE J3016 level (L2 / L3 / L4) + sensor stack (camera · radar · lidar · IMU) declaration skeleton only.",
+  "measurement_gate = GATE_OPEN permanently — specify skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: structure (E/E architecture + sensor partitioning skeleton) -----
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/mobility/structure.py
+record_kind       = mobility_structure_record
+output_dir        = exports/mobility/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "E/E architecture (zonal / centralized / domain) + sensor partitioning topology skeleton — TEMPLATE.",
+  "Real AV stack partitioning lives in OEM proprietary architecture docs (Apollo / Autoware are reference, not vendor).",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: design (perception/planning/control pipeline dossier skel) -----
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/mobility/design.py
+record_kind       = mobility_design_record
+output_dir        = exports/mobility/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Perception (sensor fusion · object detection) + planning (MPC · A*) + control (PID · LQR) pipeline dossier skeleton — TEMPLATE.",
+  "Apollo / Autoware reference architecture is consulted for shape, NOT bit-for-bit reused (no proprietary kernel).",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- WIRED (cohort-round D61): analyze (OSMnx road-network topology) --------
+# Existing producer: stdlib/mobility/road_network.py. D61-from-birth.
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/mobility/analyze.py
+record_kind       = mobility_analyze_record
+output_dir        = exports/mobility/analyze
+required_deps     = python3, osmnx
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "OSMnx road-network topology — OpenStreetMap public-surface graph (nodes · edges · highway tags).",
+  "OSM topology IS meta-structure, NOT a road-condition measurement (g3).",
+  "absorbed=true requires real-vehicle road-test telemetry (GPS · IMU · sensor logs), accredited-facility gate.",
+]
+
+# --- WIRED: synthesize (scenario library bundle skeleton) -------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/mobility/synthesize.py
+record_kind       = mobility_synthesize_record
+output_dir        = exports/mobility/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Scenario library bundle (OpenSCENARIO XML · OpenDRIVE network) skeleton — TEMPLATE bundle.",
+  "Real OEM scenario catalogs (NHTSA pre-crash · Euro NCAP test protocols) are reference, NOT vendor data.",
+  "measurement_gate = GATE_OPEN permanently — synthesize bundle is not an absorption claim (g3).",
+]
+
+# --- WIRED (ROI 17 CARLA · Linux-only): verify ------------------------------
+# Existing producer: stdlib/mobility/carla_scenario.py (D61 · macOS hard-
+# block — Linux pool only).
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/mobility/verify.py
+record_kind       = mobility_verify_record
+output_dir        = exports/mobility/verify
+required_deps     = python3, carla
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CARLA ScenarioRunner closed-loop AV simulation — Linux pool only · macOS honest-block (g3).",
+  "Simulated scenarios are SOTIF-style coverage proxies, NOT real-vehicle road-test data.",
+  "absorbed=true requires accredited proving-ground + NHTSA / Euro NCAP test passage (g3 — TÜV / KBA territory).",
+]
+
+# --- WIRED: handoff (UNECE / NHTSA type-approval dossier skeleton) ----------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/mobility/handoff.py
+record_kind       = mobility_handoff_record
+output_dir        = exports/mobility/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "UNECE WP.29 + NHTSA type-approval + KBA homologation dossier skeleton — TEMPLATE bundle.",
+  "Real AV deployment permit = jurisdiction-specific regulator + insurance underwriter territory outside this map.",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]

@@ -1,0 +1,140 @@
+# fusion.demi — verb-cell manifest for the fusion (plasma physics ·
+# magnetic confinement · ITER / DEMO class reactors) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/fusion/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("fusion", verb)
+#
+# Format: cellrun.hexa Phase A dialect.
+#
+# Citations (anchored, not repeated per-cell — see domains/fusion.md):
+#   - plasmapy (NSF open · BSD-2) — fusion+analyze derived parameters
+#     (Bohm · Debye · Lorentz algebra · κ-41 / D69 7th cohort cell)
+#   - OpenMC (open · MIT/BSD) — fusion+verify TBR neutronics (ROI 11)
+#   - ITER physics basis (open chapters) — n_e=1e20 · T_e=10 keV · B=5.3 T
+#     reference operating point
+#   - Thomson-scattering / interferometry / magnetic-probe diagnostics
+#     (real-tokamak shot data path — accredited-facility gate)
+#
+# Domain caveat (applies to every cell):
+# fusion+analyze IS the 7th cohort cell crossing measuring-producer
+# threshold (D69), but inputs are TEXTBOOK ITER values, NOT device-
+# measured. ALL cells stay GATE_OPEN / absorbed=false (g3): real plasma
+# measurements require Thomson-scattering / interferometry / magnetic-
+# probe readings from a real tokamak shot per ABSORPTION.md §"hexa 포팅
+# 단계".
+
+# --- WIRED: specify (ITER-class operating-point spec skeleton) --------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/fusion/specify.py
+record_kind       = fusion_specify_record
+output_dir        = exports/fusion/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ITER-class operating-point spec skeleton (n_e · T_e · B · Q · burn-time) — TEMPLATE.",
+  "DEMO scaling laws + ARC compact tokamak variants = downstream design/verify (not specify).",
+  "measurement_gate = GATE_OPEN permanently — specify skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: structure (vessel + magnet + blanket topology skeleton) ---------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/fusion/structure.py
+record_kind       = fusion_structure_record
+output_dir        = exports/fusion/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Vacuum vessel + TF/PF coil cage + breeding blanket + divertor topology skeleton — TEMPLATE.",
+  "Real ITER tokamak engineering drawings = ITER Organization IP, public-surface chapters only.",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: design (HTS magnet + first-wall dossier skeleton) ---------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/fusion/design.py
+record_kind       = fusion_design_record
+output_dir        = exports/fusion/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "HTS magnet (REBCO · BSCCO) + first-wall material (W · steel + Li-Pb blanket) dossier skeleton — TEMPLATE.",
+  "Cross-references rtsc domain (REBCO/HTS magnetics · pyfemm) and material domain (RTSC.md §8.7 cohort).",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- WIRED (D69 κ-41 7th cohort cell): analyze (plasmapy ITER core) ---------
+# Existing producer: stdlib/fusion/plasma_metrics.py + .hexa kernel.
+# D61-from-birth · D72 thin shim (plasma-physics single-domain).
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/fusion/analyze.py
+record_kind       = fusion_analyze_record
+output_dir        = exports/fusion/analyze
+required_deps     = python3, plasmapy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "plasmapy ITER core-reference derivation (Bohm · Debye · Lorentz algebra) — D69 κ-41 7th cohort cell.",
+  "Inputs n_e=1e20 · T_e=10 keV · B=5.3 T are TEXTBOOK ITER values, NOT device-measured.",
+  "absorbed=true requires Thomson-scattering / interferometry / magnetic-probe data from a real tokamak shot (g3).",
+]
+
+# --- WIRED: synthesize (operating-point recipe bundle skeleton) -------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/fusion/synthesize.py
+record_kind       = fusion_synthesize_record
+output_dir        = exports/fusion/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Discharge-program recipe bundle (ramp-up / flat-top / ramp-down · ECRH/ICRH/NBI schedule) skeleton — TEMPLATE.",
+  "Real shot programming lives in tokamak control-room CODAC, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize bundle is not an absorption claim (g3).",
+]
+
+# --- WIRED (ROI 11 OpenMC TBR): verify --------------------------------------
+# Existing producer: stdlib/fusion/openmc_tbr.py (D61 · κ-cohort).
+# kernels/mc_transport/ 2nd consumer per D72.
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/fusion/verify.py
+record_kind       = fusion_verify_record
+output_dir        = exports/fusion/verify
+required_deps     = python3, openmc
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "OpenMC Tritium Breeding Ratio (TBR) neutronics — placeholder Li-Pb blanket geometry, NOT a real ITER blanket sector.",
+  "Cross-section evaluation = ENDF/B-VIII.0 open library; honest install-gated skip when openmc-data missing.",
+  "absorbed=true requires shot-day calorimetry + tritium-inventory measurement (FAB-class accredited facility, g3).",
+]
+
+# --- WIRED: handoff (operating-permit dossier skeleton) ---------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/fusion/handoff.py
+record_kind       = fusion_handoff_record
+output_dir        = exports/fusion/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ASN nuclear-operator licensing dossier + IAEA Safety Standards skeleton — TEMPLATE bundle.",
+  "Real fusion operating permit (ITER · DEMO · SPARC) = national nuclear regulator territory, accredited-lab gates outside this map.",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]
