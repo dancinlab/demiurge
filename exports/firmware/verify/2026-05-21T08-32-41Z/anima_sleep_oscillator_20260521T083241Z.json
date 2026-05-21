@@ -1,0 +1,45 @@
+{
+  "interface": "demiurge:firmware:ad9833-dds-record",
+  "measurement": {
+    "backend": "arduino_compile",
+    "falsifier_pass": "5/5",
+    "firmware_path": "/Users/ghost/core/anima/anima-physics/hw/sleep_oscillator_arduino/state/build/sleep_oscillator.ino.hex",
+    "flash_size_bytes": 5038,
+    "ram_size_bytes": 235,
+    "rem_freq_hz": 6.0006,
+    "switch_continuity_delta_rad": 0.0,
+    "sws_freq_hz": 2.0002
+  },
+  "produced_at_utc": "2026-05-21T08:32:42Z",
+  "provenance": {
+    "absorbed": false,
+    "atlas_cite_block": "@cite anima-physics:oscillator/sleep_oscillator.hexa \u00a7188; demiurge_hw_verify_2026_05_21 \u00a72.1 (firmware stub gap)",
+    "backend": "arduino_compile",
+    "consumer_target": "demiurge:firmware:VerifyProducer",
+    "gate_failures": [],
+    "measurement_gate": "GATE_OPEN",
+    "producer": "anima-sleep-oscillator-ad9833-bridge",
+    "scope_caveats": [
+      "Phase 1a Python sim (local_sim) is double-precision phase accumulator, NOT integer-exact AD9833 28-bit silicon",
+      "Phase 1b arduino_compile emits .hex but does NOT flash board or capture oscilloscope (scope_capture is separate cycle)",
+      "firmware producer oracle parity not yet authored (TODO: demiurge rfc \u2014 cf. chip f1f2 12/12 pattern)"
+    ],
+    "sim_commit_hash": "local",
+    "sim_engine": "anima-physics:sleep_oscillator_local_sim"
+  },
+  "record_id": "sleep_oscillator_ad9833_arduino_compile",
+  "schema_version": "0.1",
+  "target": {
+    "dds_chip": "AD9833",
+    "flash_limit_bytes": 32256,
+    "kind": "arduino_uno_r3_ad9833_dds",
+    "mclk_hz": 25000000,
+    "mcu": "ATmega328P",
+    "phase_bits": 28,
+    "ram_limit_bytes": 2048
+  },
+  "verdict": {
+    "gate_state": "GATE_OPEN",
+    "rationale": "skeleton emit \u2014 firmware oracle parity TODO; backend=arduino_compile falsifier=5/5 SWS=2.0002Hz REM=6.0006Hz continuity_\u03b4=0.000e+00rad flash=5038B/32256B ram=235B/2048B"
+  }
+}

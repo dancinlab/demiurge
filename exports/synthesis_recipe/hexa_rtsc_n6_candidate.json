@@ -1,0 +1,51 @@
+{
+  "domain": "synthesis_recipe",
+  "verb": "ingest",
+  "kind": "solid_state_reaction",
+  "stamp": "20260521T000000Z",
+  "family": "hexa_rtsc_n6",
+  "target_compound": "(unspecified — n=6 σ·τ=48T closed-form candidate from hexa-rtsc substrate)",
+  "reagents": [
+    {
+      "compound": "(unspecified)",
+      "mol_ratio": 0.0,
+      "supplier": null,
+      "grade_purity": "No reagent set has been derived from the n=6 closed-form spec. The hexa-rtsc substrate (canon sha c0f1f570, 2026-05-06) provides only algebraic invariants (Tc=300K, Hc2=σ·τ=48T, Cooper φ=2, CN=6 Abrikosov lattice) — not a chemical recipe. This row is a schema-required placeholder."
+    }
+  ],
+  "conditions": {
+    "temperature_profile_c": [
+      { "time_min": 0, "temp_c": 25 }
+    ],
+    "atmosphere_gas": "unspecified — no synthesis route has been demonstrated",
+    "atmosphere_pressure_bar": 0.0,
+    "duration_hours": 0.0
+  },
+  "replicated_by_independent_labs": 0,
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "empirically-unproven",
+  "provisional": true,
+  "provenance": {
+    "source_url": "https://github.com/dancinlab/hexa-rtsc",
+    "source_paper_arxiv_id": null,
+    "source_citation": "hexa-rtsc — Room-temperature superconductor substrate-of-substrates · n=6 invariant lattice · 48T SC coil · v1.1.0 (canon sha c0f1f570, 2026-05-06). The repo ships closed-form spec + falsifier preregister + 43/43 verifier closure, but explicitly: 'v1.0.0 ships spec + falsifier preregister only — no working empirical sandbox. RT-SC is academically unproven (LK-99 et al. unsettled).' DOI: 10.5281/zenodo.20102616."
+  },
+  "scope_caveats": [
+    "No experimental synthesis route has been demonstrated; this record exists ONLY to register the candidate spec for §8.7 Tier 2-4 future ingestion.",
+    "The hexa-rtsc substrate is algebraic-closed-form: it specifies what an n=6 RTSC would have to satisfy (Tc=300K · Hc2=σ·τ=48T · Cooper φ=2 · CN=6 Abrikosov lattice · 43/43 verifier closure between numerics and BCS/Abrikosov/WHH/McMillan/Allen-Dynes algebra). It does NOT specify which compound, which stoichiometry, or which fabrication route realises that closed form.",
+    "target_compound is intentionally 'unspecified' — assigning a compound here would be a fabrication (in both senses). The candidate is a spec-without-material.",
+    "replicated_by_independent_labs=0 is permanent until an empirical sandbox lands. Per RTSC.md §8.8 (g3 honest stance): RTSC-class claims never reach absorbed=true through Tier 4 falsifier dispatch alone. Tier 4 verdict can only ever say 'closed-form consistent' — never 'empirically realised'.",
+    "gate_type=empirically-unproven is the canonical label for this category (RTSC.md §8.6 deferred item: 'LK-99 / hexa-rtsc n=6 후보를 absorbed=false · provisional=true · gate_type=empirically-unproven 로 import'). This record fulfils that deferred line item for the hexa-rtsc n=6 side.",
+    "Sibling LK-99 record (lk99_lee2023.json) uses gate_type=claim-only because Lee/Kim 2023 made an empirical claim that was attempted-and-failed-to-replicate. hexa-rtsc n=6 uses gate_type=empirically-unproven because no empirical claim has been made — only a closed-form spec exists.",
+    "duration_hours=0.0 and a degenerate single-point temperature_profile_c are schema-required placeholders. The schema's Conditions struct has no nullable variant; these zeros encode 'not applicable' and must not be interpreted as a 25°C ambient-pressure room-temperature reaction."
+  ],
+  "citations": [
+    "hexa-rtsc README — github.com/dancinlab/hexa-rtsc (canon sha c0f1f570, v1.1.0, 2026-05-06)",
+    "hexa-rtsc Zenodo DOI: 10.5281/zenodo.20102616",
+    "RTSC.md §8.2 (hexa-rtsc n=6 family row — 'closed-form only' synthesis column)",
+    "RTSC.md §8.6 (deferred: import hexa-rtsc n=6 candidate as gate_type=empirically-unproven)",
+    "RTSC.md §8.7 Tier 2 (recipe-as-record) — Tier 3/Tier 4 path open but never reaches absorbed=true",
+    "RTSC.md §8.8 (g3 honest stance — RTSC class never absorbed)"
+  ]
+}

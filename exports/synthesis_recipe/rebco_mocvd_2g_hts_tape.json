@@ -1,0 +1,101 @@
+{
+  "domain": "synthesis_recipe",
+  "verb": "ingest",
+  "kind": "mocvd",
+  "stamp": "20260521T000000Z",
+  "family": "hts_cuprate",
+  "target_compound": "(Y,Gd)Ba2Cu3O7-δ",
+  "reagents": [
+    {
+      "compound": "Y(thd)3",
+      "mol_ratio": 1.0,
+      "supplier": null,
+      "grade_purity": "yttrium tris(2,2,6,6-tetramethyl-3,5-heptanedionate), organometallic MOCVD precursor (sublimable β-diketonate)"
+    },
+    {
+      "compound": "Gd(thd)3",
+      "mol_ratio": 0.5,
+      "supplier": null,
+      "grade_purity": "gadolinium tris(2,2,6,6-tetramethyl-3,5-heptanedionate) — partial Y substitution for in-field Jc improvement (SuperPower SCS/SF series)"
+    },
+    {
+      "compound": "Ba(thd)2",
+      "mol_ratio": 2.0,
+      "supplier": null,
+      "grade_purity": "barium bis(2,2,6,6-tetramethyl-3,5-heptanedionate), adduct-stabilised for transport-line stability"
+    },
+    {
+      "compound": "Cu(thd)2",
+      "mol_ratio": 3.0,
+      "supplier": null,
+      "grade_purity": "copper bis(2,2,6,6-tetramethyl-3,5-heptanedionate), organometallic MOCVD precursor"
+    },
+    {
+      "compound": "Hastelloy C-276 substrate tape",
+      "mol_ratio": 0.0,
+      "supplier": "Haynes International (typical) / SuperPower-rolled",
+      "grade_purity": "50 μm cold-rolled Ni-Cr-Mo alloy tape, ~4-12 mm wide, mechanically polished + electropolished surface"
+    },
+    {
+      "compound": "MgO (IBAD buffer)",
+      "mol_ratio": 0.0,
+      "supplier": null,
+      "grade_purity": "ion-beam-assisted deposition biaxially-textured MgO, ~10 nm, on Y2O3+Al2O3 amorphous bed"
+    },
+    {
+      "compound": "CeO2 (cap buffer)",
+      "mol_ratio": 0.0,
+      "supplier": null,
+      "grade_purity": "sputtered CeO2 cap layer, ~30-100 nm, lattice-matched to REBCO basal plane"
+    },
+    {
+      "compound": "Ag (protective overlay)",
+      "mol_ratio": 0.0,
+      "supplier": null,
+      "grade_purity": "DC-sputtered silver, ~1-2 μm, post-REBCO O2-anneal interface"
+    },
+    {
+      "compound": "Cu (stabilizer)",
+      "mol_ratio": 0.0,
+      "supplier": null,
+      "grade_purity": "electroplated copper, ~20-40 μm surround, quench-protection stabilizer"
+    }
+  ],
+  "conditions": {
+    "temperature_profile_c": [
+      { "time_min": 0,      "temp_c": 25  },
+      { "time_min": 60,     "temp_c": 800 },
+      { "time_min": 420000, "temp_c": 800 },
+      { "time_min": 420060, "temp_c": 500 },
+      { "time_min": 420180, "temp_c": 25  }
+    ],
+    "atmosphere_gas": "O2 partial pressure in N2/Ar carrier (typical pO2 ~ 1-5 Torr in reactor)",
+    "atmosphere_pressure_bar": 0.005,
+    "duration_hours": 7000.0
+  },
+  "replicated_by_independent_labs": 5,
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "vendor-spec",
+  "provisional": true,
+  "provenance": {
+    "source_url": "https://www.superpower-inc.com/specification.aspx",
+    "source_paper_arxiv_id": null,
+    "source_citation": "SuperPower Inc. (Furukawa group) — 2G HTS Wire Specifications datasheet (public). MOCVD process documented in: Selvamanickam, V. et al. 'Recent progress in second-generation HTS conductor scale-up at SuperPower.' IEEE Trans. Appl. Supercond. 19, 3225 (2009). Multi-vendor variants documented in HTS Modelling Workgroup (htsmodelling.com) and EUCAS / ASC conference proceedings."
+  },
+  "scope_caveats": [
+    "Vendor-spec recipe — process parameters (deposition T≈800°C, O2 pp, ~1 μm REBCO thickness) reflect publicly documented SuperPower 2G HTS tape line; actual proprietary tuning per vendor (AMSC, Bruker, Fujikura, SuperOx) differs in buffer stack, precursor delivery (liquid injection vs bubbler), and tape geometry.",
+    "Duration of 7000 h is a representative coil-length-batch figure (multi-km tape run); single-pass reactor residence per tape segment is minutes — this number is throughput-amortised, not per-segment.",
+    "Reagent mol_ratios reflect the cation stoichiometry target (Y+Gd : Ba : Cu ≈ 1.5 : 2 : 3) in the deposited film. Substrate / buffer / overlay rows carry mol_ratio=0.0 because they are not part of the REBCO molar balance — they are geometric layers (the schema lacks a layer-thickness field; recorded here in grade_purity prose).",
+    "absorbed=false: replicated_by_independent_labs ≥ 5 (industry mature since ~2005) but RTSC.md §8.7 Tier 2 ingest is recipe + citation only. Tier 3 measurement (per-batch Jc(B,T,θ) typed table) and Tier 4 falsifier dispatch within demiurge remain ✗ until vendor datasheet CSV is cross-validated against a measurement record.",
+    "Vendor-spec ≠ lot-tested: production lots vary in Jc(B,T,θ) and in-field n-value; SuperPower SCS vs SF vs AP series differ in Gd doping and BaZrO3 artificial pinning addition — this stub captures the canonical (Y,Gd)Ba2Cu3O7-δ MOCVD route only."
+  ],
+  "citations": [
+    "SuperPower Inc. 2G HTS Wire Specifications (public datasheet, superpower-inc.com)",
+    "Selvamanickam, V. et al. IEEE Trans. Appl. Supercond. 19, 3225 (2009)",
+    "HTS Modelling Workgroup — htsmodelling.com",
+    "RTSC.md §8.2 (HTS Cuprate family row)",
+    "RTSC.md §8.3 (MOCVD synthesis route)",
+    "RTSC.md §8.7 Tier 2 (recipe-as-record) · Tier 3 (measurement ingest, deferred)"
+  ]
+}

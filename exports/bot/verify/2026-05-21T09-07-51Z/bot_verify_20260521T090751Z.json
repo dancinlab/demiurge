@@ -1,0 +1,20 @@
+{
+  "domain": "bot",
+  "verb": "verify",
+  "kind": "drake_lyapunov_demo",
+  "stamp": "20260521T090751Z",
+  "producer": "pydrake@absent",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "scope_caveats": [
+    "pydrake not importable \u2014 honest install-gated skip. ImportError: No module named 'pydrake'. Install: `pip install drake` (Ubuntu) or apt `apt install drake` (multi-GB binary).",
+    "Toy 2-link planar arm Lyapunov stability check \u2014 NOT a contact / payload / actuator-fault verification. Real absorption needs a measured arm + measured payload + signed safety-case dossier."
+  ],
+  "citations": [
+    "Drake SSOT \u2014 drake.mit.edu (Tedrake et al., MIT / TRI).",
+    "Gazebo classic / gz-sim \u2014 gazebosim.org (Open Robotics)."
+  ],
+  "skipped_reason": "pydrake_import_failed",
+  "gate_type": "install-gated",
+  "provisional": false
+}

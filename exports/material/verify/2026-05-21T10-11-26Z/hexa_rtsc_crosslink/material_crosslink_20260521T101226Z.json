@@ -1,0 +1,90 @@
+{
+  "domain": "material",
+  "verb": "verify",
+  "kind": "hexa_rtsc_crosslink",
+  "stamp": "20260521T101226Z",
+  "producer": "hexa_rtsc_crosslink@material-tier1",
+  "axes": {
+    "solver": "multi_source_crosslink"
+  },
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "provisional": true,
+  "gate_type": "hexa-native-absent",
+  "skip_reason": null,
+  "headline": {
+    "cross_link_count": 4,
+    "match_count": 1,
+    "deviation_count": 2,
+    "skipped_count": 1
+  },
+  "cross_link_results": [
+    {
+      "formula": "bcs_master_identity",
+      "hexa_rtsc_value_unit": "dimensionless",
+      "hexa_rtsc_value": 24.0,
+      "sim_adapter_value": 24.0,
+      "delta_abs": 0.0,
+      "delta_pct": 0.0,
+      "status": "MATCH",
+      "note": "n=6 master identity \u03c3\u00b7\u03c6=24 \u2014 structural anchor, both sides identical by construction."
+    },
+    {
+      "formula": "mcmillan_ceiling_tc",
+      "hexa_rtsc_value_unit": "K",
+      "hexa_rtsc_value": 30.0,
+      "sim_adapter_value": 10.866027777275535,
+      "delta_abs": 19.133972222724466,
+      "delta_pct": 63.77990740908156,
+      "status": "DEVIATION",
+      "note": "hexa-rtsc emits the F-RTSC-2 ceiling (30 K); sim_adapter emits Nb Allen-Dynes Tc (~9 K, below ceiling). DEVIATION expected \u2014 different physical claim."
+    },
+    {
+      "formula": "hc2_48T_master_gate",
+      "hexa_rtsc_value_unit": "T",
+      "hexa_rtsc_value": 48.0,
+      "sim_adapter_value": 3.748779583160059,
+      "delta_abs": 44.25122041683994,
+      "delta_pct": 92.19004253508321,
+      "status": "DEVIATION",
+      "note": "hexa-rtsc emits the n=6 \u03c3\u00b7\u03c4=48 T master gate; sim_adapter emits Nb WHH Hc2(0) from (Tc,slope). DEVIATION expected \u2014 algebraic ceiling vs concrete sample."
+    },
+    {
+      "formula": "lk99_claim_tc",
+      "hexa_rtsc_value_unit": "K",
+      "hexa_rtsc_value": null,
+      "sim_adapter_value": 44.91974116644747,
+      "delta_abs": null,
+      "delta_pct": null,
+      "status": "SKIPPED",
+      "note": "hexa-rtsc cites LK-99 claim Tc\u2248400 K (claim-only, replication failed); sim_adapter emits Allen-Dynes Tc for the same claim-only param set. DEVIATION expected.",
+      "skip_reason": "hexa-rtsc script failed: exit=1; tail=45918000 ===\n  [1/2] HEXA_MEM_CAP_MB=4096 /Users/ghost/core/hexa-lang/self/native/hexa_v2 /Users/ghost/core/hexa-rtsc/verify/calc_lk99.hexa build/artifacts/hexa_run.52675245918000.c 2>&1\n    Parse error at 336:1: expected RParen, got RBrace ('}')\nOK: build/artifacts/hexa_run.52675245918000.c\n\nerror: transpile failed (parse error) \u2014 /Users/ghost/core/hexa-rtsc/verify/calc_lk99.hexa\n__HEXA_BRC__=1"
+    }
+  ],
+  "scope_caveats": [
+    "(c1) BOTH SIDES ARE PREDICTIONS. This cross-link is a sanity check between hexa-rtsc's n=6 closed-form bounds and sim_adapter's closed-form Tc/Hc2 predictors. absorbed=false is PERMANENT for this record-kind. Cross-link cannot promote absorbed \u2192 true (RTSC.md \u00a78.7 / \u00a78.8 honest \ud55c\uacc4).",
+    "(c2) DEVIATION IS EXPECTED. hexa-rtsc emits n=6-derived structural anchors (Hc2=48 T ceiling, McMillan 30 K ceiling, master identity 24, LK-99 claim 400 K). sim_adapter emits per-sample predictions with Nb / LK-99 Eliashberg moments. They are NOT the same physical claim \u2014 DEVIATION is informative, not failing.",
+    "(c3) calc_bcs.hexa has no Tc / Hc2 numeric headline (it verifies algebraic structure of n=6 lattice constants); cross-link uses the master identity \u03c3\u00b7\u03c6 = 24 scalar \u2014 both sides identical by construction, so this row registers as MATCH by definition.",
+    "(c4) calc_lk99.hexa is known to fail compile under the current hexa runtime (parse error around line 336 of the source) \u2014 its row registers as SKIPPED with the upstream parse error attached. This is NOT a cross-link failure; it is hexa-rtsc substrate state that must be fixed upstream.",
+    "(c5) Tier 1 cross-link only. Promotion to Tier 3 (measurement) or Tier 4 (falsifier dispatch) requires a separate cohort and lands via its own absorbed=true path, NEVER via this cross-link."
+  ],
+  "citations": [
+    "hexa-rtsc verify pillar \u2014 ~/core/hexa-rtsc/verify/ (35 .hexa scripts; 43/43 falsifier closure per project README).",
+    "sim_adapter.py \u2014 ~/core/hexa-lang/stdlib/material/sim_adapter.py (D72 thin-adapter pattern, BCS / McMillan / Allen-Dynes / WHH closed-forms).",
+    "RTSC.md \u00a78.4 (9-test characterization + hexa-rtsc mapping).",
+    "RTSC.md \u00a78.7 Tier 1 (Computational synthesis cohort).",
+    "RTSC.md \u00a77 (cross-reference: hexa-rtsc as sibling material substrate).",
+    "BCS 1957 PR 108 1175; McMillan 1968 PR 167 331; Allen-Dynes 1975 PRB 12 905; WHH 1966 PR 147 295."
+  ],
+  "provenance": {
+    "hexa_rtsc_root": "/Users/ghost/core/hexa-rtsc",
+    "sim_adapter_path": "/Users/ghost/core/hexa-lang/stdlib/material/sim_adapter.py",
+    "scripts_attempted": [
+      "verify/calc_bcs.hexa",
+      "verify/calc_mcmillan.hexa",
+      "verify/calc_hc2_48t.hexa",
+      "verify/calc_lk99.hexa"
+    ]
+  },
+  "rtsc_anchor": "RTSC.md \u00a78.4 + \u00a78.7 Tier 1 + \u00a77 cross-reference"
+}

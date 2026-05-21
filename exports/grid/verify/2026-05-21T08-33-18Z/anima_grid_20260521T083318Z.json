@@ -1,0 +1,45 @@
+{
+  "interface": "demiurge:grid:resilience-record",
+  "measurement": {
+    "dt": 0.01,
+    "n_islanding_events": 0,
+    "n_steps": 1000,
+    "phase_coherence_r": 0.951,
+    "r_std_tail": 0.0434,
+    "recovery_time_s": 0.0,
+    "seed": 42
+  },
+  "produced_at_utc": "2026-05-21T08:33:19Z",
+  "provenance": {
+    "absorbed": false,
+    "atlas_cite_block": "@cite anima-physics:social/kuramoto_coupling.hexa (PHYS-P9-3 6/6 PASS) + hw/kuramoto_neuromorphic (F-HW-KU-1..5 5/5); Filatrella 2008 Kuramoto-power-grid mapping; demiurge_hw_verify_2026_05_21 \u00a72.2 (grid no-producer gap)",
+    "backend": "local_sim",
+    "consumer_target": "demiurge:grid:verify",
+    "gate_failures": [],
+    "measurement_gate": "GATE_OPEN",
+    "producer": "anima-grid-kuramoto-powergrid-bridge",
+    "scope_caveats": [
+      "Kuramoto N=8 is intersubjective oscillator analog, NOT real PMU/SCADA",
+      "phase_coherence_r at single (N, K) point \u2014 full K-sweep \ubcc4\ub3c4",
+      "n_islanding_events=0 default \u2014 no perturbation injection in skeleton",
+      "Filatrella 2008 Kuramoto-grid mapping = qualitative analog, not IEEE bus equivalent",
+      "grid producer oracle parity not yet authored (TODO: demiurge rfc)"
+    ],
+    "sim_commit_hash": "local",
+    "sim_engine": "anima-physics:social/kuramoto_coupling"
+  },
+  "record_id": "grid_n8_k5.00_r0.951_local_sim",
+  "schema_version": "0.1",
+  "topology": {
+    "coupling_k": 5.0,
+    "critical_coupling_k_c": 2.4,
+    "kind": "kuramoto_powergrid_analog",
+    "n_nodes": 8,
+    "omega_mean": 1.0,
+    "omega_std": 1.5
+  },
+  "verdict": {
+    "gate_state": "GATE_OPEN",
+    "rationale": "skeleton emit \u2014 grid oracle parity TODO; r=0.951 @ K=5.00 K_c=2.40 provisional"
+  }
+}

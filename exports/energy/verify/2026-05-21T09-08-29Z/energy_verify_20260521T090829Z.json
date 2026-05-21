@@ -1,0 +1,32 @@
+{
+  "absorbed" : false,
+  "citations" : [
+    "arxiv:2506.22559 — OpenMC vs MCNP spent-fuel criticality benchmark (2025).",
+    "FNS-SINBAD shielding benchmark — Fusion Sci. Tech., doi:10.1080\/15361055.2024.2323747.",
+    "OpenMC SSOT — openmc.org (Romano et al., MIT\/ANL)."
+  ],
+  "domain" : "energy",
+  "gate_type" : "install-gated",
+  "hexa_native_parity" : {
+    "hexa_lang_sha" : "122620de",
+    "kernel_path" : "stdlib\/kernels\/solar\/solar_kernel.hexa",
+    "parity_method" : "substrate_to_substrate",
+    "parity_status" : "21\/21 PASS at rel_err <=1e-13",
+    "parity_test" : "stdlib\/kernels\/solar\/solar_kernel_test.hexa",
+    "parity_tolerance" : 1e-13,
+    "parity_tolerance_note" : "<=1e-13 rel (D80 ceiling 1e-3; ~5e6x tighter)",
+    "scope_notes" : "absorbed=true NOT flipped — pattern proof only; ModelChain (CEC-SAPM + AC inverter) untouched"
+  },
+  "kernel_reuse" : "kernels\/mc_transport\/ (D72 — 3rd consumer; N+M payoff visible)",
+  "kind" : "openmc_keff_criticality",
+  "measurement_gate" : "GATE_OPEN",
+  "producer" : "openmc@absent",
+  "provisional" : false,
+  "scope_caveats" : [
+    "openmc not importable — honest install-gated skip. ImportError: No module named 'openmc'. Install: `pip install openmc` + ENDF\/B-VIII.0.",
+    "Toy single-pin LWR proxy criticality scope — NOT a sourced VERA \/ CEFR benchmark. Real absorption requires the published benchmark geometry + measured k-eff."
+  ],
+  "skipped_reason" : "openmc_import_failed",
+  "stamp" : "20260521T090829Z",
+  "verb" : "verify"
+}

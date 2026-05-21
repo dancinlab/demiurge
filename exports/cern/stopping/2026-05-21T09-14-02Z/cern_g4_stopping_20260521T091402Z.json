@@ -1,0 +1,360 @@
+{
+  "artifacts" : {
+    "csv" : "cern_g4_stopping_v1.csv",
+    "meta" : "cern_g4_stopping_v1.meta.json",
+    "root" : "cern_g4_stopping_v1.root"
+  },
+  "constants" : {
+    "antiproton_mass_mev" : 938.27208816,
+    "electron_mass_mev" : 0.51099895,
+    "k_bb_mevcm2_per_g" : 0.307075
+  },
+  "fingerprint" : "60e34a15cfb4477f",
+  "geometry_id" : "cern_g4_stopping_v1",
+  "interface" : "demiurge:cern:stopping-power-record",
+  "measurements" : {
+    "ke_mev_samples" : [
+      1,
+      3,
+      10,
+      30,
+      100,
+      300,
+      1000
+    ],
+    "materials" : [
+      "Al",
+      "Cu",
+      "W",
+      "Pb"
+    ],
+    "rows" : 28,
+    "table" : [
+      {
+        "a_target_gpermol" : 26.9815,
+        "beta" : 0.04613214679139816,
+        "dedx_mevcm2_per_g" : 178.82465201402573,
+        "gamma" : 1.0010657889247894,
+        "i_ev" : 166,
+        "ke_mev" : 1,
+        "material" : "Al",
+        "tmax_mev" : 0.0021772542667169627,
+        "z_target" : 13
+      },
+      {
+        "a_target_gpermol" : 26.9815,
+        "beta" : 0.07977590058404604,
+        "dedx_mevcm2_per_g" : 85.26499263557449,
+        "gamma" : 1.0031973667743683,
+        "i_ev" : 166,
+        "ke_mev" : 3,
+        "material" : "Al",
+        "tmax_mev" : 0.006538705407902844,
+        "z_target" : 13
+      },
+      {
+        "a_target_gpermol" : 26.9815,
+        "beta" : 0.14484400412596465,
+        "dedx_mevcm2_per_g" : 34.27873521444443,
+        "gamma" : 1.0106578892478946,
+        "i_ev" : 166,
+        "ke_mev" : 10,
+        "material" : "Al",
+        "tmax_mev" : 0.021876680938111022,
+        "z_target" : 13
+      },
+      {
+        "a_target_gpermol" : 26.9815,
+        "beta" : 0.2469941406914664,
+        "dedx_mevcm2_per_g" : 14.38117159167373,
+        "gamma" : 1.0319736677436835,
+        "i_ev" : 166,
+        "ke_mev" : 30,
+        "material" : "Al",
+        "tmax_mev" : 0.06632427460743763,
+        "z_target" : 13
+      },
+      {
+        "a_target_gpermol" : 26.9815,
+        "beta" : 0.42819548497881543,
+        "dedx_mevcm2_per_g" : 5.686880593645214,
+        "gamma" : 1.1065788924789453,
+        "i_ev" : 166,
+        "ke_mev" : 100,
+        "material" : "Al",
+        "tmax_mev" : 0.22917944107099075,
+        "z_target" : 13
+      },
+      {
+        "a_target_gpermol" : 26.9815,
+        "beta" : 0.6525717766422938,
+        "dedx_mevcm2_per_g" : 2.77939488659633,
+        "gamma" : 1.3197366774368355,
+        "i_ev" : 166,
+        "ke_mev" : 300,
+        "material" : "Al",
+        "tmax_mev" : 0.7569325313146367,
+        "z_target" : 13
+      },
+      {
+        "a_target_gpermol" : 26.9815,
+        "beta" : 0.8750256466930183,
+        "dedx_mevcm2_per_g" : 1.7666297365222143,
+        "gamma" : 2.0657889247894516,
+        "i_ev" : 166,
+        "ke_mev" : 1000,
+        "material" : "Al",
+        "tmax_mev" : 3.3318635589810155,
+        "z_target" : 13
+      },
+      {
+        "a_target_gpermol" : 63.546,
+        "beta" : 0.04613214679139816,
+        "dedx_mevcm2_per_g" : 125.75020076375814,
+        "gamma" : 1.0010657889247894,
+        "i_ev" : 322,
+        "ke_mev" : 1,
+        "material" : "Cu",
+        "tmax_mev" : 0.0021772542667169627,
+        "z_target" : 29
+      },
+      {
+        "a_target_gpermol" : 63.546,
+        "beta" : 0.07977590058404604,
+        "dedx_mevcm2_per_g" : 66.17185997124945,
+        "gamma" : 1.0031973667743683,
+        "i_ev" : 322,
+        "ke_mev" : 3,
+        "material" : "Cu",
+        "tmax_mev" : 0.006538705407902844,
+        "z_target" : 29
+      },
+      {
+        "a_target_gpermol" : 63.546,
+        "beta" : 0.14484400412596465,
+        "dedx_mevcm2_per_g" : 28.04244347783238,
+        "gamma" : 1.0106578892478946,
+        "i_ev" : 322,
+        "ke_mev" : 10,
+        "material" : "Cu",
+        "tmax_mev" : 0.021876680938111022,
+        "z_target" : 29
+      },
+      {
+        "a_target_gpermol" : 63.546,
+        "beta" : 0.2469941406914664,
+        "dedx_mevcm2_per_g" : 12.099579205848226,
+        "gamma" : 1.0319736677436835,
+        "i_ev" : 322,
+        "ke_mev" : 30,
+        "material" : "Cu",
+        "tmax_mev" : 0.06632427460743763,
+        "z_target" : 29
+      },
+      {
+        "a_target_gpermol" : 63.546,
+        "beta" : 0.42819548497881543,
+        "dedx_mevcm2_per_g" : 4.880094811330331,
+        "gamma" : 1.1065788924789453,
+        "i_ev" : 322,
+        "ke_mev" : 100,
+        "material" : "Cu",
+        "tmax_mev" : 0.22917944107099075,
+        "z_target" : 29
+      },
+      {
+        "a_target_gpermol" : 63.546,
+        "beta" : 0.6525717766422938,
+        "dedx_mevcm2_per_g" : 2.41455267422946,
+        "gamma" : 1.3197366774368355,
+        "i_ev" : 322,
+        "ke_mev" : 300,
+        "material" : "Cu",
+        "tmax_mev" : 0.7569325313146367,
+        "z_target" : 29
+      },
+      {
+        "a_target_gpermol" : 63.546,
+        "beta" : 0.8750256466930183,
+        "dedx_mevcm2_per_g" : 1.5520499833410306,
+        "gamma" : 2.0657889247894516,
+        "i_ev" : 322,
+        "ke_mev" : 1000,
+        "material" : "Cu",
+        "tmax_mev" : 3.3318635589810155,
+        "z_target" : 29
+      },
+      {
+        "a_target_gpermol" : 183.84,
+        "beta" : 0.04613214679139816,
+        "dedx_mevcm2_per_g" : 63.61594591539478,
+        "gamma" : 1.0010657889247894,
+        "i_ev" : 727,
+        "ke_mev" : 1,
+        "material" : "W",
+        "tmax_mev" : 0.0021772542667169627,
+        "z_target" : 74
+      },
+      {
+        "a_target_gpermol" : 183.84,
+        "beta" : 0.07977590058404604,
+        "dedx_mevcm2_per_g" : 42.54862796877769,
+        "gamma" : 1.0031973667743683,
+        "i_ev" : 727,
+        "ke_mev" : 3,
+        "material" : "W",
+        "tmax_mev" : 0.006538705407902844,
+        "z_target" : 74
+      },
+      {
+        "a_target_gpermol" : 183.84,
+        "beta" : 0.14484400412596465,
+        "dedx_mevcm2_per_g" : 19.936203076948136,
+        "gamma" : 1.0106578892478946,
+        "i_ev" : 727,
+        "ke_mev" : 10,
+        "material" : "W",
+        "tmax_mev" : 0.021876680938111022,
+        "z_target" : 74
+      },
+      {
+        "a_target_gpermol" : 183.84,
+        "beta" : 0.2469941406914664,
+        "dedx_mevcm2_per_g" : 9.022144145696117,
+        "gamma" : 1.0319736677436835,
+        "i_ev" : 727,
+        "ke_mev" : 30,
+        "material" : "W",
+        "tmax_mev" : 0.06632427460743763,
+        "z_target" : 74
+      },
+      {
+        "a_target_gpermol" : 183.84,
+        "beta" : 0.42819548497881543,
+        "dedx_mevcm2_per_g" : 3.7553707496064814,
+        "gamma" : 1.1065788924789453,
+        "i_ev" : 727,
+        "ke_mev" : 100,
+        "material" : "W",
+        "tmax_mev" : 0.22917944107099075,
+        "z_target" : 74
+      },
+      {
+        "a_target_gpermol" : 183.84,
+        "beta" : 0.6525717766422938,
+        "dedx_mevcm2_per_g" : 1.8933245595830512,
+        "gamma" : 1.3197366774368355,
+        "i_ev" : 727,
+        "ke_mev" : 300,
+        "material" : "W",
+        "tmax_mev" : 0.7569325313146367,
+        "z_target" : 74
+      },
+      {
+        "a_target_gpermol" : 183.84,
+        "beta" : 0.8750256466930183,
+        "dedx_mevcm2_per_g" : 1.237482465237115,
+        "gamma" : 2.0657889247894516,
+        "i_ev" : 727,
+        "ke_mev" : 1000,
+        "material" : "W",
+        "tmax_mev" : 3.3318635589810155,
+        "z_target" : 74
+      },
+      {
+        "a_target_gpermol" : 207.2,
+        "beta" : 0.04613214679139816,
+        "dedx_mevcm2_per_g" : 55.463326277532474,
+        "gamma" : 1.0010657889247894,
+        "i_ev" : 823,
+        "ke_mev" : 1,
+        "material" : "Pb",
+        "tmax_mev" : 0.0021772542667169627,
+        "z_target" : 82
+      },
+      {
+        "a_target_gpermol" : 207.2,
+        "beta" : 0.07977590058404604,
+        "dedx_mevcm2_per_g" : 39.46452077075262,
+        "gamma" : 1.0031973667743683,
+        "i_ev" : 823,
+        "ke_mev" : 3,
+        "material" : "Pb",
+        "tmax_mev" : 0.006538705407902844,
+        "z_target" : 82
+      },
+      {
+        "a_target_gpermol" : 207.2,
+        "beta" : 0.14484400412596465,
+        "dedx_mevcm2_per_g" : 18.882402529238757,
+        "gamma" : 1.0106578892478946,
+        "i_ev" : 823,
+        "ke_mev" : 10,
+        "material" : "Pb",
+        "tmax_mev" : 0.021876680938111022,
+        "z_target" : 82
+      },
+      {
+        "a_target_gpermol" : 207.2,
+        "beta" : 0.2469941406914664,
+        "dedx_mevcm2_per_g" : 8.623307977207238,
+        "gamma" : 1.0319736677436835,
+        "i_ev" : 823,
+        "ke_mev" : 30,
+        "material" : "Pb",
+        "tmax_mev" : 0.06632427460743763,
+        "z_target" : 82
+      },
+      {
+        "a_target_gpermol" : 207.2,
+        "beta" : 0.42819548497881543,
+        "dedx_mevcm2_per_g" : 3.6099926916530345,
+        "gamma" : 1.1065788924789453,
+        "i_ev" : 823,
+        "ke_mev" : 100,
+        "material" : "Pb",
+        "tmax_mev" : 0.22917944107099075,
+        "z_target" : 82
+      },
+      {
+        "a_target_gpermol" : 207.2,
+        "beta" : 0.6525717766422938,
+        "dedx_mevcm2_per_g" : 1.826081424922071,
+        "gamma" : 1.3197366774368355,
+        "i_ev" : 823,
+        "ke_mev" : 300,
+        "material" : "Pb",
+        "tmax_mev" : 0.7569325313146367,
+        "z_target" : 82
+      },
+      {
+        "a_target_gpermol" : 207.2,
+        "beta" : 0.8750256466930183,
+        "dedx_mevcm2_per_g" : 1.1969804235133183,
+        "gamma" : 2.0657889247894516,
+        "i_ev" : 823,
+        "ke_mev" : 1000,
+        "material" : "Pb",
+        "tmax_mev" : 3.3318635589810155,
+        "z_target" : 82
+      }
+    ]
+  },
+  "particle_version" : "0.26.2",
+  "produced_at_utc" : "2026-05-21T09:14:02Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "particle@0.26.2 + Bethe-Bloch analytic (no Geant4 MC)",
+    "scope_caveats" : [
+      "Bethe-Bloch IS the closed-form expression Geant4 의 G4hIonisation 이 non-relativistic 영역에서 stopping-power table 을 채우는 형식이지만, **본 run 은 네 가지를 생략**: (a) shell corrections (low E 에서 Z/β 보정), (b) density-effect δ (high γ Sternheimer), (c) straggling 분포, (d) nuclear stopping channel. 따라서 trap-design scoping 용 — Geant4 MC absorbed-claim 대체 아님 (g3).",
+      "measurement_gate = GATE_OPEN 영구 / absorbed = false 영구. Stage 4 absorbed=true 진입 조건은 hexa-native re-derivation (stdlib/cern/.hexa) 후 Geant4 MC 와 tolerance 내 parity 측정 (ABSORPTION.md §\"hexa 포팅 단계\"). Geant4 hexa 포팅 = ⭐⭐⭐⭐⭐ (Monte-Carlo 입자 시뮬레이터 전체).",
+      "antiproton mass · 전자질량 · K_BB factor · I_eV 는 PDG 2024 aggregator copy — 본 cell 은 **demiurge 가 측정한 것이 아니라 PDG-aggregated 값 + Bethe-Bloch 함수 합성**. absorbed 권한은 PDG aggregation pipeline clean-room 재유도 (다년 가속기 프로그램) 가 별도 필요 (antimatter+analyze scope_caveat 와 동일 구조).",
+      "재료 4종 = (Al, Cu, W, Pb) — CERN-style shielding + antiproton trap 의 표준 short-list (PDG RPP Table 34.1). KE grid = (1, 3, 10, 30, 100, 300, 1000) MeV — ELENA injection 영역부터 fixed-target 까지 7-point 거친 grid, fine sweep 은 후속 record (premature optimization 회피)."
+    ]
+  },
+  "python_version" : "3.14.4",
+  "record_id" : "cern_g4_stopping_20260521T091402Z",
+  "schema_version" : "1.0",
+  "uproot_version" : "5.7.4"
+}

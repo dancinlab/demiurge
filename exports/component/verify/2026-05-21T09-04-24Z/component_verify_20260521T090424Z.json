@@ -1,0 +1,109 @@
+{
+  "artifacts" : {
+    "csv" : "die_proxy_box_v1.csv",
+    "meta" : "die_proxy_box_v1.meta.json",
+    "msh" : "die_proxy_box_v1.msh"
+  },
+  "fingerprint" : "6fbb071a873b1784",
+  "geometry" : {
+    "display_name" : "Silicon die proxy (10×10×2 mm box)",
+    "id" : "die_proxy_box_v1",
+    "length_m" : 0.01,
+    "mesh_size_m" : 0.0008,
+    "n_elements" : 2232,
+    "n_nodes" : 686,
+    "thickness_m" : 0.002,
+    "width_m" : 0.01
+  },
+  "geometry_id" : "die_proxy_box_v1",
+  "gmsh_version" : "4.15.2",
+  "interface" : "demiurge:component:gmsh-skfem-verify-record",
+  "load" : {
+    "die_power_w" : 5,
+    "gravity_m_per_s2" : 9.80665,
+    "heating_region_thickness_m" : 0.001,
+    "t_ambient_k" : 298.15
+  },
+  "material" : {
+    "k_w_per_mk" : 148,
+    "name" : "silicon (textbook 300 K)",
+    "poissons" : 0.22,
+    "rho_kg_per_m3" : 2329,
+    "youngs_pa" : 169000000000
+  },
+  "measurements" : {
+    "rows" : 8,
+    "structural" : {
+      "dof_count" : 2058,
+      "sigma_vm_max_pa" : 38.36904544615274,
+      "u_max_m" : 2.795983787908182e-13
+    },
+    "table" : [
+      {
+        "measurement_key" : "n_nodes",
+        "unit" : "count",
+        "value" : 686
+      },
+      {
+        "measurement_key" : "n_elements",
+        "unit" : "count",
+        "value" : 2232
+      },
+      {
+        "measurement_key" : "t_min_k",
+        "unit" : "K",
+        "value" : 298.15
+      },
+      {
+        "measurement_key" : "t_max_k",
+        "unit" : "K",
+        "value" : 298.67761344346206
+      },
+      {
+        "measurement_key" : "t_mean_k",
+        "unit" : "K",
+        "value" : 298.42513412537306
+      },
+      {
+        "measurement_key" : "delta_t_k",
+        "unit" : "K",
+        "value" : 0.5276134434620872
+      },
+      {
+        "measurement_key" : "u_max_m",
+        "unit" : "m",
+        "value" : 2.795983787908182e-13
+      },
+      {
+        "measurement_key" : "sigma_vm_max_pa",
+        "unit" : "Pa",
+        "value" : 38.36904544615274
+      }
+    ],
+    "thermal" : {
+      "delta_t_k" : 0.5276134434620872,
+      "dof_count" : 686,
+      "t_max_k" : 298.67761344346206,
+      "t_mean_k" : 298.42513412537306,
+      "t_min_k" : 298.15
+    }
+  },
+  "produced_at_utc" : "2026-05-21T09:04:24Z",
+  "provenance" : {
+    "absorbed" : false,
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "gmsh@4.15.2 + scikit-fem@12.0.1",
+    "scope_caveats" : [
+      "geometry = 10×10×2 mm silicon die proxy box — *toy geometry*, NOT a measured component STEP file (rfc_008 chip→component handoff dossier 의 실제 부품이 들어오기 전까지 placeholder). 이 record 의 숫자는 *real PDE solutions on a toy box*, 즉 측정 가능한 신호이지 그 부품의 thermal/structural 인증값이 아니다 (g3).",
+      "material constants = textbook silicon at 300 K (k=148 W/m·K, ρ=2329 kg/m³, E=169 GPa, ν=0.22) — Lide CRC + AZoM 데이터시트 전형값이지 *측정된 wafer-lot constants* 아님. 흡수에 해당하려면 supplier datasheet flash-test + bench measurement (Hot Disk / DMA) 가 record 안으로 들어와야 한다.",
+      "load case = single steady-state (5 W on top 1 mm, ambient on back, gravity body force) — transient / convection coupling / thermal interface material (TIM) / 외력 모두 미적용. 실제 package signoff 은 multi-load-case + sensitivity sweep + mesh convergence study 가 필수 (Elmer / ANSYS Icepak / Code_Aster level). 본 record 는 *first honest witness*, 즉 엔지니어링 verdict 의 lower bound.",
+      "structural solve = scikit-fem 의 built-in linear_elasticity model + lame_parameters (κ-39 디버깅에서 hand-rolled form 이 closed-form 단축 검증 u=T·L/E 대비 ~44× 너무 무름 + ElementVector DOF 를 component-major 로 잘못 가정한 두 버그를 발견·정정함 — 정정 후 σ_vM_max ≈ 38 Pa 가 1D self-weight 추정 ρgL ≈ 46 Pa 와 ~16 % 안에서 일치, u_max ≈ 2.8e-13 m 가 1D ρgL²/2E ≈ 2.7e-13 m 와 ~3 % 안에서 일치). load = gravity body force 단독 (외력 traction 0, thermal-structural coupling 0) — back face 전체 Dirichlet u=0 clamp 는 standard 이지만 단일 load case 임.",
+      "mesh convergence 미검증 — 본 record 는 단일 element size (0.8 mm target → ~2200 tets) 에서 단일 점 측정. h-refinement sweep 으로 ΔT / σ_vM 변화가 5 % 이내인지 확인되지 않은 한 *점 추정* 이지 *수렴된 측정* 이 아님 (g3).",
+      "measurement_gate = GATE_OPEN 영구 / absorbed = false 영구 — 흡수에 해당하려면 (real STEP geometry · measured material · validated load · mesh convergence · 3rd-party signoff tool cross-check) 5 종이 모두 record 안으로 들어와야. 본 phase 의 scope 는 *FEM 스택이 hexa-lang/stdlib 에서 동작함을 측정* 이지 packaging signoff 가 아님."
+    ]
+  },
+  "python_version" : "3.14.4",
+  "record_id" : "component_verify_20260521T090424Z",
+  "schema_version" : "1.0",
+  "skfem_version" : "12.0.1"
+}

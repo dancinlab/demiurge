@@ -1,0 +1,32 @@
+{
+  "absorbed" : false,
+  "citations" : [
+    "OpenMC\/Geant4 fusion-blanket TBR benchmark — J. Fusion Energy, doi:10.1007\/s10894-025-00500-8.",
+    "FNS-SINBAD fusion-neutronics validation — Fusion Sci. Tech., doi:10.1080\/15361055.2024.2323747.",
+    "OpenMC docs — openmc.org (Romano et al., MIT\/ANL SSOT)."
+  ],
+  "domain" : "fusion",
+  "gate_type" : "install-gated",
+  "hexa_native_parity" : {
+    "hexa_lang_sha" : "dd3dad19",
+    "kernel_path" : "stdlib\/kernels\/mc_transport\/mc_slab_demo.hexa",
+    "parity_method" : "python_companion_seed_match",
+    "parity_status" : "8\/8 PASS at ~1e-3 rel @ N=1e5",
+    "parity_test" : "stdlib\/kernels\/mc_transport\/mc_slab_demo_test.hexa",
+    "parity_tolerance" : 0.001,
+    "parity_tolerance_note" : "~1e-3 rel @ N=1e5 (matches analytic envelope)",
+    "scope_notes" : "absorbed=true NOT flipped — multi-region MGXS port + ENDF nuclear data still .py-only"
+  },
+  "kernel_reuse" : "kernels\/mc_transport\/ (D72 — 2nd consumer after antimatter+analyze)",
+  "kind" : "openmc_tbr_neutronics",
+  "measurement_gate" : "GATE_OPEN",
+  "producer" : "openmc@absent",
+  "provisional" : false,
+  "scope_caveats" : [
+    "openmc not importable — honest install-gated skip. ImportError: No module named 'openmc'. Install: `pip install openmc` + download ENDF\/B-VIII.0 (~3 GB) and set OPENMC_CROSS_SECTIONS.",
+    "Reference DEMO breeder-blanket geometry NOT a sourced engineering lattice — TBR will be a textbook witness, not a design-grade number."
+  ],
+  "skipped_reason" : "openmc_import_failed",
+  "stamp" : "20260521T090530Z",
+  "verb" : "verify"
+}

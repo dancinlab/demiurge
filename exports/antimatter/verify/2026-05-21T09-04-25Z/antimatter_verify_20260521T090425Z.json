@@ -1,0 +1,25 @@
+{
+  "domain": "antimatter",
+  "verb": "verify",
+  "kind": "geant4_antiproton_stopping",
+  "stamp": "20260521T090425Z",
+  "producer": "geant4@absent",
+  "measurement_gate": "GATE_OPEN",
+  "gate_type": "install-gated",
+  "absorbed": false,
+  "provisional": true,
+  "skipped_reason": "geant4_not_installed",
+  "scope_caveats": [
+    "Geant4 not installed \u2014 honest install-gated skip. Install path: `pip install geant4-pybind` (PyPI wheel; downloads ~7 GB datasets on first import) OR the multi-hour C++ build from geant4.web.cern.ch.",
+    "Reference antiproton-on-Al benchmark \u2014 NOT a sourced CERN AD / ELENA experimental geometry."
+  ],
+  "citations": [
+    "PDG RPP 2024 \u00a734 (eq. 34.5 Bethe-Bloch mean stopping power) \u2014 oracle of record for the substrate-vs-kernel parity comparison.",
+    "Geant4 v11.x \u2014 geant4.web.cern.ch (CERN / KEK / SLAC).",
+    "geant4_pybind 0.1.3 PyPI wheel \u2014 HaarigerHarald/geant4_pybind.",
+    "scikit-hep `particle` library \u2014 PDG-aggregated measured constants.",
+    "arxiv:2407.06721 \u2014 antiproton annihilation at rest in thin solid targets vs Geant4/FLUKA MC (2024). NOTE: annihilation-at-rest experiment (ASACUSA), NOT an antiproton-on-Al stopping-distance oracle; cited here for substrate pedigree only.",
+    "arxiv:2503.04868 \u2014 low-energy antiproton annihilation on nuclei, Geant4 v11.2.1 FTFP_INCLXX_EMZ (2025). Same pedigree caveat."
+  ],
+  "kernel_reuse": "kernels/mc_transport/ (D72 \u2014 4th consumer; clearest N+M payoff)"
+}

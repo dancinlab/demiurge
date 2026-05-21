@@ -1,0 +1,140 @@
+{
+  "domain": "material",
+  "verb": "verify",
+  "kind": "first_principles_tc_prediction",
+  "stamp": "20260521T101126Z",
+  "producer": "sim_adapter@material-tier1",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "hexa-native-absent",
+  "provisional": true,
+  "scope_caveats": [
+    "(s1) BCS-like effective-coupling assumed throughout \u2014 NOT a full Eliashberg self-consistent Migdal-Eliashberg integral solve. The \u03b1\u00b2F(\u03c9) spectral function is collapsed to scalar moments (\u03bb, \u03c9_log, \u03c9\u2082) per McMillan / Allen-Dynes; off-Fermi-surface vertex corrections and frequency-dependent self-energy are absent.",
+    "(s2) \u03bc* (Coulomb pseudopotential, Morel-Anderson) is empirical, NOT first-principles. Standard value 0.10\u20130.16 is fit to the s/p/d metal family it came from; using \u03bc*=0.13 for a hypothetical novel lattice (LK-99) is itself a claim, not a derivation.",
+    "(s3) Input params for unproven families (LK-99) are CLAIM-ONLY \u2014 the \u0398_D / \u03c9_log / \u03bb values for Cu-doped lead-apatite have no reproduced first-principles consensus and the experimental Tc has not been replicated by independent labs. Marked claim_only=true.",
+    "(s4) Tier 1 is *prediction*, NEVER *measurement*. absorbed=false is permanent for this record-kind per RTSC.md \u00a78.7 / \u00a78.8 honest \ud55c\uacc4. Promotion to absorbed=true requires Tier 3 measurement + Tier 4 falsifier dispatch in a separate cohort."
+  ],
+  "citations": [
+    "BCS \u2014 Bardeen, Cooper, Schrieffer 1957, PR 108 1175 ('Theory of Superconductivity').",
+    "McMillan 1968, PR 167 331 ('Transition Temperature of Strong-Coupled Superconductors').",
+    "Allen & Dynes 1975, PRB 12 905 ('Transition temperature of strong-coupled superconductors reanalyzed') \u2014 arxiv predates web; primary citation is PRB.",
+    "Werthamer, Helfand, Hohenberg 1966, PR 147 295 ('Temperature and Purity Dependence of the Superconducting Critical Field, Hc2. III. Electron Spin and Spin-Orbit Effects').",
+    "hexa-rtsc verify pillar \u2014 calc_bcs.hexa, calc_mcmillan.hexa, calc_hc2_48t.hexa, calc_lk99.hexa (n=6 closed-form anchors).",
+    "RTSC.md \u00a78.7 Tier 1 \u2014 first-principles simulation thin-adapter cohort."
+  ],
+  "provenance": {
+    "source_url": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.108.1175",
+    "arxiv_ids": [
+      "cond-mat/2307.12008"
+    ],
+    "primary_refs": [
+      "PR 108 1175 (BCS 1957)",
+      "PR 167 331 (McMillan 1968)",
+      "PRB 12 905 (Allen-Dynes 1975)",
+      "PR 147 295 (WHH 1966)"
+    ],
+    "substrate_anchors": [
+      "~/core/hexa-rtsc/verify/calc_bcs.hexa",
+      "~/core/hexa-rtsc/verify/calc_mcmillan.hexa",
+      "~/core/hexa-rtsc/verify/calc_hc2_48t.hexa",
+      "~/core/hexa-rtsc/verify/calc_lk99.hexa"
+    ]
+  },
+  "rtsc_anchor": "RTSC.md \u00a78.7 Tier 1 (Computational synthesis)",
+  "rows": [
+    {
+      "family": "Nb",
+      "note": "Elemental Nb \u2014 BCS reference panel. Strong-coupling \u03bb=0.82 from Allen & Dynes 1975 Table I. BCS weak-coupling formula intentionally uses a smaller lambda_bcs=0.32 to stay in its regime \u2014 illustrates the published BCS\u2192McMillan motivation.",
+      "input_param_provenance": "Allen & Dynes 1975 PRB 12 905 Table I",
+      "claim_only": false,
+      "experimental_tc_K_reference": 9.25,
+      "bcs_weak": {
+        "formula": "bcs_weak_coupling",
+        "citation": "BCS 1957 PR 108 1175",
+        "theta_d_K": 275.0,
+        "lambda_eff_N0V": 0.32,
+        "tc_K": 13.653402123473853,
+        "valid_for": "lambda <= 0.5 (weak coupling); larger lambda diverges"
+      },
+      "mcmillan": {
+        "formula": "mcmillan_1968",
+        "citation": "McMillan 1968 PR 167 331",
+        "omega_log_K": 262.0,
+        "lambda": 0.82,
+        "mu_star": 0.13,
+        "denom_lambda_minus_muprime": 0.6239079999999999,
+        "in_regime": true,
+        "tc_K": 10.509108165298727
+      },
+      "allen_dynes": {
+        "formula": "allen_dynes_1975",
+        "citation": "Allen & Dynes 1975 PRB 12 905",
+        "omega_log_K": 262.0,
+        "omega2_K": 262.0,
+        "lambda": 0.82,
+        "mu_star": 0.13,
+        "Lambda1": 3.67524,
+        "Lambda2": 3.31058,
+        "f1": 1.033962883087964,
+        "f2": 1.0,
+        "mcmillan_base_tc_K": 10.509108165298727,
+        "in_regime": true,
+        "tc_K": 10.866027777275535
+      },
+      "whh_hc2_zero": {
+        "formula": "whh_1966_dirty_limit",
+        "citation": "Werthamer-Helfand-Hohenberg 1966 PR 147 295",
+        "tc_K": 10.866027777275535,
+        "slope_dHc2_dT_T_per_K_magnitude": 0.5,
+        "hc2_0_T": 3.748779583160059
+      }
+    },
+    {
+      "family": "LK-99 (hypothetical)",
+      "note": "Cu-doped lead-apatite Tc>RT claim (Lee et al. 2307.12008). Eliashberg coupling params for the alleged flat-band Cu-O channel are NOT MEASURED \u2014 values below are illustrative ranges used in subsequent first-principles papers (Si & Held 2308.13759 etc.), NOT consensus first-principles values. Independent replication failed at multiple labs.",
+      "input_param_provenance": "arxiv:2307.12008 (Lee et al.) \u2014 claim paper. Coupling-strength values illustrative only; replication failed.",
+      "claim_only": true,
+      "experimental_tc_K_reference": null,
+      "bcs_weak": {
+        "formula": "bcs_weak_coupling",
+        "citation": "BCS 1957 PR 108 1175",
+        "theta_d_K": 500.0,
+        "lambda_eff_N0V": 0.4,
+        "tc_K": 46.37802422250282,
+        "valid_for": "lambda <= 0.5 (weak coupling); larger lambda diverges"
+      },
+      "mcmillan": {
+        "formula": "mcmillan_1968",
+        "citation": "McMillan 1968 PR 167 331",
+        "omega_log_K": 400.0,
+        "lambda": 1.5,
+        "mu_star": 0.13,
+        "denom_lambda_minus_muprime": 1.2490999999999999,
+        "in_regime": true,
+        "tc_K": 41.58104071199334
+      },
+      "allen_dynes": {
+        "formula": "allen_dynes_1975",
+        "citation": "Allen & Dynes 1975 PRB 12 905",
+        "omega_log_K": 400.0,
+        "omega2_K": 400.0,
+        "lambda": 1.5,
+        "mu_star": 0.13,
+        "Lambda1": 3.67524,
+        "Lambda2": 3.31058,
+        "f1": 1.0802938165395928,
+        "f2": 1.0,
+        "mcmillan_base_tc_K": 41.58104071199334,
+        "in_regime": true,
+        "tc_K": 44.91974116644747
+      },
+      "whh_hc2_zero": {
+        "formula": "whh_1966_dirty_limit",
+        "citation": "Werthamer-Helfand-Hohenberg 1966 PR 147 295",
+        "tc_K": 44.91974116644747,
+        "slope_dHc2_dT_T_per_K_magnitude": 1.0,
+        "hc2_0_T": 30.994621404848754
+      }
+    }
+  ]
+}

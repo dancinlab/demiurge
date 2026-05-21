@@ -1,0 +1,39 @@
+{
+  "artifacts": {
+    "data": "sscb_breaking_v1.data",
+    "log": "sscb_breaking_v1.log",
+    "netlist": "sscb_breaking_v1.cir"
+  },
+  "gate_type": "hexa-native-absent",
+  "geometry_id": "sscb_breaking_v1",
+  "measurements": {
+    "cleared_in_window": true,
+    "clearing_energy_j": 201.55606451938482,
+    "i_peak_a": 20000.0,
+    "i_post_clear_a": 92.7242547,
+    "let_through_i2t_a2s": 44.654894547422565,
+    "rows": 4023,
+    "t_clear_s": 3.6749999999999945e-07,
+    "v_sw_peak_v": 100323.025
+  },
+  "netlist_sha256_16": "818138fc0bbdfce8",
+  "ngspice_exit": 0,
+  "ngspice_version": "46",
+  "ok": true,
+  "produced_at_utc": "2026-05-21T10:39:12Z",
+  "provisional": true,
+  "python_version": "3.13.13",
+  "topology": {
+    "l_bus_H": 1e-06,
+    "r_fault_ohm": 0.01,
+    "sim_time_s": 2e-05,
+    "snubber_C_F": 1e-07,
+    "snubber_R_ohm": 5.0,
+    "step_s": 5e-09,
+    "switch_roff_ohm": 1000000000.0,
+    "switch_ron_ohm": 0.02,
+    "t_detection_s": 5e-06,
+    "t_open_ramp_s": 5e-08,
+    "v_dc_V": 600.0
+  }
+}

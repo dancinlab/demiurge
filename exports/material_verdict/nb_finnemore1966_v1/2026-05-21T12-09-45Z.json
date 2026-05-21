@@ -1,0 +1,78 @@
+{
+  "absorbed" : false,
+  "aggregate_verdict" : "INCONCLUSIVE-MULTIPLE-MISSING",
+  "citations" : [
+    "RTSC.md §8.4 (9-test characterization matrix)",
+    "RTSC.md §8.5 (handoff schema)",
+    "RTSC.md §8.7 Tier 4 (falsifier dispatch)",
+    "RTSC.md §8.8 (g3 honest stance — RTSC claims never absorbed=true)",
+    "hexa-rtsc verify\/calc_bcs.hexa (F-SC-1)",
+    "hexa-rtsc verify\/calc_mcmillan.hexa (F-SC-2)",
+    "hexa-rtsc verify\/calc_hc2_48t.hexa (F-SC-3)",
+    "hexa-rtsc verify\/falsifier_check.hexa (6-falsifier registry)"
+  ],
+  "domain" : "material_verdict",
+  "falsifier_results" : [
+    {
+      "confidence" : 0,
+      "evidence" : "no tier3 MeasurementRecord with kind=\"isotope_effect\" supplied",
+      "id" : "F-SC-1-bcs-isotope",
+      "name" : "BCS isotope effect (α ≈ 0.5)",
+      "status" : "SKIPPED-MISSING-INPUT"
+    },
+    {
+      "confidence" : 0,
+      "evidence" : "missing inputs: tier1, tier3 r_t",
+      "id" : "F-SC-2-mcmillan-tc",
+      "name" : "McMillan\/Allen-Dynes Tc consistency",
+      "status" : "SKIPPED-MISSING-INPUT"
+    },
+    {
+      "confidence" : 0,
+      "evidence" : "missing inputs: tier1, tier3 hc2_t",
+      "id" : "F-SC-3-hc2-whh",
+      "name" : "Hc2(0) WHH extrapolation",
+      "status" : "SKIPPED-MISSING-INPUT"
+    },
+    {
+      "confidence" : 0.6,
+      "evidence" : "tier3 meissner_chi_t record stamp=20260521T000003Z headline.chi_volumetric=-1.0 < 0",
+      "id" : "F-RTSC-1-meissner",
+      "name" : "Meissner effect (χ < 0)",
+      "status" : "PASS"
+    },
+    {
+      "confidence" : 0,
+      "evidence" : "missing inputs: tier1, tier3 r_t",
+      "id" : "F-RTSC-2-r-of-t",
+      "name" : "R(T) drop within [0.5·Tc_pred, 2.0·Tc_pred]",
+      "status" : "SKIPPED-MISSING-INPUT"
+    },
+    {
+      "confidence" : 0,
+      "evidence" : "no tier2 SynthesisRecipeRecord supplied (replication count unknown)",
+      "id" : "F-RTSC-3-replication",
+      "name" : "Independent-lab replication (≥ 2)",
+      "status" : "SKIPPED-MISSING-INPUT"
+    }
+  ],
+  "gate_type" : "tier4-falsifier-dispatch",
+  "input_records" : {
+    "tier3_measurement_record_ids" : [
+      "measurement:meissner_chi_t:nb_finnemore1966_bulk:20260521T000003Z"
+    ]
+  },
+  "kind" : "tier4_falsifier_dispatch",
+  "measurement_gate" : "GATE_OPEN",
+  "provisional" : true,
+  "replicated_by_independent_labs" : 0,
+  "sample_id" : "nb_finnemore1966_v1",
+  "scope_caveats" : [
+    "RTSC.md §8.7 honest限界: Tier 4 PASS still requires a separate meta-cohort (cross-lab attestation) to flip absorbed=true. This record has absorbed=false unconditionally.",
+    "replicated_by_independent_labs is carried forward from tier2; never auto-incremented by this dispatcher.",
+    "measurement_gate remains GATE_OPEN — a dispatch verdict alone does not close the measurement gate.",
+    "5 of 6 falsifiers SKIPPED-MISSING-INPUT — verdict is informationally incomplete."
+  ],
+  "stamp" : "2026-05-21T12-09-45Z",
+  "verb" : "dispatch"
+}

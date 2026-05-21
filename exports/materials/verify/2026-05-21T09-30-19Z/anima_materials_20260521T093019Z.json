@@ -1,0 +1,73 @@
+{
+  "interface": "demiurge:materials:composite-record",
+  "measurement": {
+    "hexa_matter": {
+      "closure_pass": null,
+      "exit_code": null,
+      "owner_pattern": "D17 typed-interface consumer-pointer",
+      "verify_path": "/Users/ghost/core/hexa-matter/verify/run_all.hexa"
+    },
+    "key_properties": {
+      "bandgap_eV": 3.0,
+      "conductivity_S_m": 0.001,
+      "density_g_cm3": 4.23,
+      "name": "Titanium dioxide (rutile)",
+      "note": "memristor switching layer; conductance bistable",
+      "resistivity_ohm_m": 1000.0,
+      "specific_heat_J_kgK": 690
+    },
+    "memristor": {
+      "non_volatility_pass": true,
+      "source": "anima-physics/memristor/self_reference.hexa \u00a7188 5/5",
+      "w_max": 0.98,
+      "w_min": 0.02
+    },
+    "seed": 42,
+    "superconducting": {
+      "provenance_gate_pass": true,
+      "source": "anima-physics/superconducting/cloud_facade_poc.hexa (deprecated)",
+      "verdict": "PREP_DEPRECATED_RIGETTI_RETIRED"
+    },
+    "thermodynamic": {
+      "arrhenius_d_slope": 7.69,
+      "ergodic_mean_position": -0.187,
+      "source": "anima-physics/thermodynamic/entropy_dissolution.hexa 5/5"
+    }
+  },
+  "produced_at_utc": "2026-05-21T09:30:19Z",
+  "provenance": {
+    "absorbed": false,
+    "atlas_cite_block": "@cite anima-physics:memristor/self_reference.hexa \u00a7188 5/5 + thermodynamic/entropy_dissolution.hexa 5/5 + superconducting/cloud_facade_poc.hexa (deprecated, prov gate 5/5); @cite hexa-matter:verify/run_all.hexa (D17 owner SSOT); demiurge_hw_verify_2026_05_21 \u00a72.1 (materials no-producer gap)",
+    "backend": "composite",
+    "consumer_target": "demiurge:materials:verify",
+    "gate_failures": [],
+    "measurement_gate": "GATE_OPEN",
+    "owner_pointer": "hexa-matter:verify/run_all.hexa",
+    "producer": "anima-materials-hexa-matter-combined-bridge",
+    "scope_caveats": [
+      "D17 consumer-pointer: hexa-matter is owner SSOT, this is composite emitter",
+      "anima substrate measurements are CONSCIOUSNESS-ANALOG, not material spec",
+      "memristor TiO2 = Strukov HP analog (numpy reference, not real ionic drift)",
+      "thermodynamic Langevin = double-well kinetics analog (NOT real chemistry)",
+      "superconducting = DEPRECATED (Rigetti retired 2026-04-27, provenance gate only)",
+      "key_properties = NIST/CRC textbook defaults, not measured per-sample",
+      "hexa-matter exit code skeleton \u2014 set via --hexa-matter-exit (no auto-run)",
+      "materials producer oracle parity not yet authored (TODO: demiurge rfc)"
+    ],
+    "sim_commit_hash": "local",
+    "sim_engine": "anima-physics:{memristor,thermodynamic,superconducting}"
+  },
+  "record_id": "materials_composite_TiO2_hxmNone_seed42",
+  "schema_version": "0.1",
+  "topology": {
+    "backend": "composite",
+    "consumer_role": "anima-physics composite emitter",
+    "kind": "materials_composite",
+    "material_class": "TiO2",
+    "owner_ssot": "hexa-matter (D17 pointer)"
+  },
+  "verdict": {
+    "gate_state": "GATE_OPEN",
+    "rationale": "composite emit \u2014 backend=composite material=TiO2 (memristor PASS \u00b7 thermo monotone \u00b7 supercond deprecated-honest \u00b7 hexa-matter exit=None); D17 consumer-pointer; oracle parity TODO"
+  }
+}

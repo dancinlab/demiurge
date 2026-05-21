@@ -1,0 +1,40 @@
+{
+  "interface": "demiurge:brain:kuramoto-record",
+  "measurement": {
+    "dt": 0.01,
+    "r_std_tail": 0.0434,
+    "r_tail": 0.951,
+    "seed": 42,
+    "steps": 1000
+  },
+  "produced_at_utc": "2026-05-21T08:22:26Z",
+  "provenance": {
+    "absorbed": false,
+    "atlas_cite_block": "@cite anima-physics:social/kuramoto_coupling.hexa \u00a7188; demiurge_hw_verify_2026_05_21 \u00a72.2 (brain no-producer gap)",
+    "backend": "local_sim",
+    "consumer_target": "demiurge:brain:verify",
+    "gate_failures": [],
+    "measurement_gate": "GATE_OPEN",
+    "producer": "anima-kuramoto-loihi-akida-bridge",
+    "scope_caveats": [
+      "kuramoto local sim is reference numpy, NOT silicon spike-event",
+      "r_tail at single (N, K) point \u2014 not a full K-sweep regime claim",
+      "brain producer oracle parity not yet authored (TODO: demiurge rfc)"
+    ],
+    "sim_commit_hash": "local",
+    "sim_engine": "anima-physics:kuramoto_local_sim"
+  },
+  "record_id": "kuramoto_n8_k5.00_local_sim",
+  "schema_version": "0.1",
+  "topology": {
+    "coupling": 5.0,
+    "kind": "all_to_all",
+    "n_oscillators": 8,
+    "omega_mean": 1.0,
+    "omega_std": 1.5
+  },
+  "verdict": {
+    "gate_state": "GATE_OPEN",
+    "rationale": "skeleton emit \u2014 brain oracle parity TODO; r_tail=0.951 at K=5.00 provisional"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "domain": "synthesis_recipe",
+  "verb": "ingest",
+  "kind": "pit_wire",
+  "stamp": "20260521T000000Z",
+  "family": "lts",
+  "target_compound": "Nb-46.5wt%Ti",
+  "reagents": [
+    {
+      "compound": "Nb",
+      "mol_ratio": 0.535,
+      "supplier": null,
+      "grade_purity": "reactor-grade niobium ingot, ~99.9% (RRR > 100); 46.5 wt% Ti corresponds to ~53.5 wt% Nb"
+    },
+    {
+      "compound": "Ti",
+      "mol_ratio": 0.465,
+      "supplier": null,
+      "grade_purity": "grade-1 titanium, ~99.95%; vacuum-arc-remelted (VAR) into NbTi ingot — multiple consumable-electrode remelts for homogeneity"
+    },
+    {
+      "compound": "Cu (matrix billet)",
+      "mol_ratio": 0.0,
+      "supplier": null,
+      "grade_purity": "OFHC oxygen-free high-conductivity copper, RRR>100, billet-machined with bored holes for NbTi rod inserts (mono-filament or multi-filament stack)"
+    },
+    {
+      "compound": "Nb (diffusion barrier)",
+      "mol_ratio": 0.0,
+      "supplier": null,
+      "grade_purity": "thin Nb sheet wrap around each NbTi filament, ~1-5 μm post-draw, prevents Cu-Ti intermetallic formation during heat treatment"
+    }
+  ],
+  "conditions": {
+    "temperature_profile_c": [
+      { "time_min": 0,    "temp_c": 25   },
+      { "time_min": 60,   "temp_c": 650  },
+      { "time_min": 360,  "temp_c": 650  },
+      { "time_min": 420,  "temp_c": 25   },
+      { "time_min": 480,  "temp_c": 400  },
+      { "time_min": 2880, "temp_c": 400  },
+      { "time_min": 2940, "temp_c": 25   }
+    ],
+    "atmosphere_gas": "vacuum / inert (Ar) for hot extrusion; air for intermediate α-Ti precipitation anneals (Cu jacket is sealed)",
+    "atmosphere_pressure_bar": 0.0,
+    "duration_hours": 49.0
+  },
+  "replicated_by_independent_labs": 8,
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "vendor-spec",
+  "provisional": true,
+  "provenance": {
+    "source_url": "https://cds.cern.ch/record/1973682",
+    "source_paper_arxiv_id": null,
+    "source_citation": "Bottura, L. & Godeke, A. 'Superconducting materials and conductors: fabrication and limiting parameters.' Annu. Rev. Mater. Res. 42, 25 (2012). Industrial NbTi process baseline since Berlincourt & Hake (1962) / Kunzler et al. discovery era; current vendors include Bruker EAS, Luvata, Furukawa, Western Superconducting Technologies (WST), supplying MRI / NMR / LHC dipole / ITER PF coils. LHC NbTi specification: CERN LHC Design Report Vol.1 Ch.7 (2004), cds.cern.ch/record/782076."
+  },
+  "scope_caveats": [
+    "Schema mapping note: the closest SynthesisRecipeRecord enum value is `pit_wire`, but NbTi is canonically a `stack & draw` (ductile-alloy-draw) process, not powder-in-tube. The actual process: VAR NbTi ingot → hot extrusion in Cu billet → cold drawing through reduction dies → multi-stage α-Ti precipitation anneals (~400°C, 24-40 h) → final wire diameter ~0.5-1.0 mm with filaments ~5-50 μm. `pit_wire` is used here as the schema's closest ductile-conductor route; RTSC.md §8.3 lists this under '합금 가공 (PIT wire)' as the umbrella label.",
+    "Temperature profile encodes two stages: (1) hot extrusion ~650°C (single representative step — actual extrusion is a single press, not isothermal hold), then (2) α-Ti precipitation anneal ~400°C × 40 h (typical 3-5 cycles interspersed with cold draw passes). The 49 h `duration_hours` is the cumulative anneal time only; total wire production (ingot → finished wire) is weeks to months and is not captured by this single-recipe envelope.",
+    "Composition Nb-46.5wt%Ti is the LHC / MRI workhorse; ITER PF uses similar; NMR uses higher-Ti variants. Jc(B,T) tuning is achieved by α-Ti precipitate size/density control via the anneal schedule, not by stoichiometry change.",
+    "replicated_by_independent_labs ≥ 8 reflects the industrial vendor set (Bruker, Luvata, Furukawa, WST, OST, SuperCon, Hitachi, Kiswire — non-exhaustive). Industry-standard since 1965. absorbed=false anyway because RTSC.md §8.7 Tier 2 ingest is recipe + citation only; Tier 3 measurement record (per-lot Jc(B,T) datasheet) and Tier 4 falsifier dispatch within demiurge remain ✗.",
+    "Vendor-spec ≠ lot-tested: each vendor's exact heat-treatment schedule and filament geometry are proprietary; this stub captures the publicly documented canonical route only.",
+    "Reagent mol_ratios are weight-fraction-derived molar ratios for the NbTi alloy itself; Cu matrix and Nb diffusion barrier carry mol_ratio=0.0 (they are geometric components, not part of the superconducting phase stoichiometry)."
+  ],
+  "citations": [
+    "Bottura, L. & Godeke, A. Annu. Rev. Mater. Res. 42, 25 (2012)",
+    "CERN LHC Design Report Vol.1 Ch.7 (2004) — cds.cern.ch/record/782076",
+    "Berlincourt, T. G. & Hake, R. R. Phys. Rev. 131, 140 (1963) — original NbTi Hc2 measurement",
+    "RTSC.md §8.2 (LTS family row)",
+    "RTSC.md §8.3 ('합금 가공 PIT wire' synthesis route — NbTi listed)",
+    "RTSC.md §8.7 Tier 2 (recipe-as-record) · Tier 3 (measurement ingest, deferred)"
+  ]
+}

@@ -1,0 +1,20 @@
+* sscb_breaking_v1 — demiurge sscb+verify breaking-capacity producer
+* HONEST: bolted-fault scenario on plausible HEXA-SSCB mk1 topology.
+* NOT a Wolfspeed C3M datasheet model, NOT a UL 489I type-test.
+.title sscb_breaking_v1
+Vdc 1 0 600.0
+Lbus 1 2 1e-06
+Rfault 2 3 0.01
+SW 3 0 gate 0 SWMOD
+* RC snubber across the switch
+Csnub 3 4 1e-07
+Rsnub 4 0 5.0
+* Gate drive — high (closed) until t_det, falls in t_open_ramp
+Vgate gate 0 PWL(0 15 5e-06 15 5.050000000000001e-06 0 2e-05 0)
+.model SWMOD SW (Ron=0.02 Roff=1000000000.0 Vt=7.0 Vh=1.0)
+.tran 5e-09 2e-05
+.control
+run
+wrdata /Users/ghost/core/demiurge/exports/sscb/verify/2026-05-21T10-39-12Z/sscb_breaking_v1.data v(3) v(2) i(Vdc)
+.endc
+.end

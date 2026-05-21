@@ -1,0 +1,28 @@
+{
+  "domain": "firmware",
+  "verb": "verify",
+  "kind": "qemu_mps2_an385_boot",
+  "stamp": "20260521T062442Z",
+  "producer": "firmware_verify@absent",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "scope_caveats": [
+    "Verify boots the synthesize cell's firmware.bin on QEMU mps2-an385 (Cortex-M3) \u2014 zero hardware dependency per domains/firmware.md \u00a71.",
+    "Boot is a smoke-test only \u2014 runs \u22642 s then kills QEMU. NOT a passing Unity test suite, NOT a coverage measurement, NOT a HIL verification.",
+    "measurement_gate = GATE_OPEN permanently \u2014 smoke-boot is not an absorption claim (g3).",
+    "qemu-system-arm missing \u2014 install-gated skip: qemu-system-arm not on PATH",
+    "Ceedling/Unity not on PATH \u2014 skipped (smoke-only verify)."
+  ],
+  "citations": [
+    "QEMU \u2014 qemu.org.",
+    "QEMU mps2-an385 board docs \u2014 qemu.org/docs/master/system/arm/mps2.html.",
+    "Renode (Antmicro) \u2014 renode.io.",
+    "Unity + Ceedling \u2014 throwtheswitch.org."
+  ],
+  "skipped_reason": "qemu_or_bin_missing",
+  "gate_type": "install-gated",
+  "provisional": false,
+  "artifacts": {
+    "verify": "verify_20260521T062442Z.json"
+  }
+}

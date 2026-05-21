@@ -1,0 +1,95 @@
+{
+  "artifacts": {
+    "csv": "die_proxy_box_v1.csv",
+    "meta": "die_proxy_box_v1.meta.json",
+    "msh": "die_proxy_box_v1.msh"
+  },
+  "error": null,
+  "fingerprint": "6fbb071a873b1784",
+  "geometry": {
+    "display_name": "Silicon die proxy (10\u00d710\u00d72 mm box)",
+    "id": "die_proxy_box_v1",
+    "length_m": 0.01,
+    "mesh_size_m": 0.0008,
+    "n_elements": 2232,
+    "n_nodes": 686,
+    "thickness_m": 0.002,
+    "width_m": 0.01
+  },
+  "geometry_id": "die_proxy_box_v1",
+  "gmsh_version": "4.15.2",
+  "load": {
+    "die_power_w": 5.0,
+    "gravity_m_per_s2": 9.80665,
+    "heating_region_thickness_m": 0.001,
+    "t_ambient_k": 298.15
+  },
+  "material": {
+    "k_w_per_mk": 148.0,
+    "name": "silicon (textbook 300 K)",
+    "poissons": 0.22,
+    "rho_kg_per_m3": 2329.0,
+    "youngs_pa": 169000000000.0
+  },
+  "measurements": {
+    "rows": 8,
+    "structural": {
+      "dof_count": 2058,
+      "sigma_vm_max_pa": 38.36904544615274,
+      "u_max_m": 2.795983787908182e-13
+    },
+    "table": [
+      {
+        "measurement_key": "n_nodes",
+        "unit": "count",
+        "value": 686
+      },
+      {
+        "measurement_key": "n_elements",
+        "unit": "count",
+        "value": 2232
+      },
+      {
+        "measurement_key": "t_min_k",
+        "unit": "K",
+        "value": 298.15
+      },
+      {
+        "measurement_key": "t_max_k",
+        "unit": "K",
+        "value": 298.67761344346206
+      },
+      {
+        "measurement_key": "t_mean_k",
+        "unit": "K",
+        "value": 298.42513412537306
+      },
+      {
+        "measurement_key": "delta_t_k",
+        "unit": "K",
+        "value": 0.5276134434620872
+      },
+      {
+        "measurement_key": "u_max_m",
+        "unit": "m",
+        "value": 2.795983787908182e-13
+      },
+      {
+        "measurement_key": "sigma_vm_max_pa",
+        "unit": "Pa",
+        "value": 38.36904544615274
+      }
+    ],
+    "thermal": {
+      "delta_t_k": 0.5276134434620872,
+      "dof_count": 686,
+      "t_max_k": 298.67761344346206,
+      "t_mean_k": 298.42513412537306,
+      "t_min_k": 298.15
+    }
+  },
+  "ok": true,
+  "produced_at_utc": "2026-05-21T08:39:49.336788+00:00",
+  "python_version": "3.14.4",
+  "skfem_version": "12.0.1"
+}

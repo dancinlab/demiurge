@@ -1,0 +1,47 @@
+{
+  "interface": "demiurge:brain:kuramoto-record",
+  "latency_us_estimate": 0.3333333333333333,
+  "measurement": {
+    "dt": 0.01,
+    "r_std_tail": 0.0434,
+    "r_tail": 0.951,
+    "seed": 42,
+    "steps": 1000
+  },
+  "npu_count_used": 0,
+  "power_estimate_mW": 50.0,
+  "produced_at_utc": "2026-05-21T11:55:13Z",
+  "provenance": {
+    "absorbed": false,
+    "akida_hw_device_count": 0,
+    "akida_sdk_available": false,
+    "akida_sdk_version": "",
+    "akida_unavailable_reason": "akida SDK ImportError on this host (ModuleNotFoundError(\"No module named 'akida'\")); Mac local or non-Pi5 environment. Mock fallback active.",
+    "atlas_cite_block": "@cite anima-physics:social/kuramoto_coupling.hexa \u00a7188; demiurge_hw_verify_2026_05_21 \u00a72.2 (brain no-producer gap); SUB_ENGINES/AKIDA/doc/metatf_api_model.md (real SDK ref)",
+    "backend": "akida_cloud",
+    "consumer_target": "demiurge:brain:verify",
+    "gate_failures": [],
+    "measurement_gate": "GATE_OPEN",
+    "producer": "anima-kuramoto-loihi-akida-bridge",
+    "scope_caveats": [
+      "akida_cloud backend selected but SDK not importable \u2014 record is skeleton mock (no silicon spike).",
+      "akida SDK not importable on this host \u2014 record is mock fallback, NOT silicon spike-event. import_error: ModuleNotFoundError(\"No module named 'akida'\")"
+    ],
+    "sim_commit_hash": "local",
+    "sim_engine": "anima-physics:kuramoto_local_sim",
+    "spike_train_len": 0
+  },
+  "record_id": "kuramoto_n8_k5.00_akida_cloud_akida_cloud_unavailable",
+  "schema_version": "0.2",
+  "topology": {
+    "coupling": 5.0,
+    "kind": "all_to_all",
+    "n_oscillators": 8,
+    "omega_mean": 1.0,
+    "omega_std": 1.5
+  },
+  "verdict": {
+    "gate_state": "GATE_OPEN",
+    "rationale": "skeleton emit \u2014 brain oracle parity TODO; r_tail=0.951 at K=5.00 provisional"
+  }
+}

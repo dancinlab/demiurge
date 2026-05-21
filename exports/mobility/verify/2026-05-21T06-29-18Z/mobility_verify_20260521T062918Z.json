@@ -1,0 +1,20 @@
+{
+  "domain": "mobility",
+  "verb": "verify",
+  "kind": "carla_scenariorunner",
+  "stamp": "20260521T062918Z",
+  "producer": "carla@macos-blocked",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "scope_caveats": [
+    "macOS host = hard-blocked. CARLA has no maintained macOS build (Unreal Engine + multi-GB GPU). Re-run on a Linux pool host (ubu-1 / ubu-2) with NVIDIA GPU + CARLA installed."
+  ],
+  "citations": [
+    "arxiv:2311.09784 \u2014 VIVAS: System-level V&V of automated driving with CARLA/ScenarioRunner (2023).",
+    "arxiv:2604.16452 \u2014 OpenSCENARIO 2.1 \u2192 CARLA compiler.",
+    "CARLA SSOT \u2014 carla.org (CARLA team, CVC / Intel)."
+  ],
+  "platform": "Darwin",
+  "skipped_reason": "macos_host_hard_blocked",
+  "gate_type": "platform-gated"
+}

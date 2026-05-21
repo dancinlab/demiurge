@@ -1,0 +1,42 @@
+{
+  "interface": "demiurge:bio:synapse-plasticity-record",
+  "measurement": {
+    "hebbian_drift_convergence": 0.94,
+    "phase_amplitude_coupling": 0.71,
+    "replay_compression_ratio": 12.0,
+    "seed": 42
+  },
+  "produced_at_utc": "2026-05-21T08:33:18Z",
+  "provenance": {
+    "absorbed": false,
+    "atlas_cite_block": "@cite anima-physics:hippocampus/episodic_replay.hexa (PHYS-P11-3 5/5 PASS) + theta_gamma.hexa (PHYS-P6-2 5/5) + memristor/self_reference.hexa (PHYS-P5-1 5/5); demiurge_hw_verify_2026_05_21 \u00a72.2 (bio no-producer gap)",
+    "backend": "local_sim",
+    "consumer_target": "demiurge:bio:verify",
+    "gate_failures": [],
+    "measurement_gate": "GATE_OPEN",
+    "producer": "anima-bio-hippocampus-memristor-bridge",
+    "scope_caveats": [
+      "hippocampus + memristor are hexa-lang reference sim, NOT wet-lab",
+      "replay_compression_ratio = synthetic SWR event \ud1b5\uacc4 (5-20\u00d7 normal range)",
+      "hebbian_drift_convergence = 4-cell ring memristor analog (HP-style)",
+      "bio producer oracle parity not yet authored (TODO: demiurge rfc)",
+      "single-substrate composite \u2014 multi-organism scaling \ubbf8\uac80\uc99d"
+    ],
+    "sim_commit_hash": "local",
+    "sim_engine": "anima-physics:hippocampus+memristor"
+  },
+  "record_id": "bio_compr12.0_hebb0.94_pac0.71_local_sim",
+  "schema_version": "0.1",
+  "topology": {
+    "gamma_hz": 40.0,
+    "kind": "hippocampus_memristor_composite",
+    "n_synapses": 4,
+    "specious_present_ms": 150,
+    "swr_event_count": 20,
+    "theta_hz": 6.0
+  },
+  "verdict": {
+    "gate_state": "GATE_OPEN",
+    "rationale": "skeleton emit \u2014 bio oracle parity TODO; replay_compr=12.0\u00d7 hebbian=0.94 pac=0.71 provisional"
+  }
+}

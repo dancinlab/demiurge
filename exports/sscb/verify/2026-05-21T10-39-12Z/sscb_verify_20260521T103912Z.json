@@ -1,0 +1,58 @@
+{
+  "artifacts" : {
+    "data" : "sscb_breaking_v1.data",
+    "log" : "sscb_breaking_v1.log",
+    "meta" : "sscb_breaking_v1.meta.json",
+    "netlist" : "sscb_breaking_v1.cir"
+  },
+  "geometry_id" : "sscb_breaking_v1",
+  "interface" : "demiurge:sscb:verify-record",
+  "measurements" : {
+    "cleared_in_window" : true,
+    "clearing_energy_j" : 201.55606451938482,
+    "i_peak_a" : 20000,
+    "i_post_clear_a" : 92.7242547,
+    "let_through_i2t_a2s" : 44.654894547422565,
+    "rows" : 4023,
+    "t_clear_s" : 3.6749999999999945e-07,
+    "v_sw_peak_v" : 100323.025
+  },
+  "netlist_sha256_16" : "818138fc0bbdfce8",
+  "ngspice_exit" : 0,
+  "ngspice_version" : "46",
+  "produced_at_utc" : "2026-05-21T10:39:12Z",
+  "provenance" : {
+    "absorbed" : false,
+    "citations" : [
+      "DEVSIM JOSS doi:10.21105/joss.03898 (Sanchez 2022) — TCAD anchor",
+      "arxiv:2504.00214 SEMIDV (compact device sim w/ quantum effects)",
+      "ngspice manual §16 .MODEL VDMOS / §11 device cards (Berkeley SPICE3)",
+      "domains/sscb.md §1 HEXA-SSCB mk1 spec · §4 UL 489I breaker test discipline"
+    ],
+    "measurement_gate" : "GATE_OPEN",
+    "producer" : "ngspice@46",
+    "scope_caveats" : [
+      "ngspice transient bolted-fault — 숫자는 실제 (IEEE-754 SPICE solver 출력) 이지만, 회로 자체는 plausible HEXA-SSCB mk1 topology + R_fault = 0.01 Ω generic bolted short 이며 datasheet 흡수 아님 (g3 — SiC 스위치 = generic Ron/Roff).",
+      "snubber (100 nF · 5 Ω) 는 generic-not-engineered — 본 bolted-fault 시나리오에서 v_sw_peak 가 수십 kV 까지 튀는 것은 buggy 가 아니라 honest gap (TVS / clamp / engineered snubber 가 후속). 이 값을 안전 마진 주장으로 쓰지 말 것.",
+      "OpenFOAM 열 마진 체크는 본 phase 에서 INTENTIONAL skip (absorption-empty-cells-research-2026-05-20.md §3 sscb block: \"OpenFOAM thermal margin is heavy → skip with handoff note\"). 실제 thermal envelope 는 measured-package thermal model + coupled CFD 후속 phase. 본 record 는 *electrical* breaking-capacity 만 측정.",
+      "UL 489I 인증은 accredited lab type-test (impulse / arc / endurance 8단계, type-test 통과 record 필요) 이지 SPICE 가 아님 (domains/sscb.md §4). 본 producer 의 verdict 는 *first honest electrical witness*, 인증 substitute 절대 아님.",
+      "measurement_gate = GATE_OPEN 영구 / absorbed = false 영구 — Stage 4 absorbed=true 는 (1) Wolfspeed C3M0021120K-class .lib, (2) bench-validated load + measured stray-inductance, (3) DEVSIM TCAD coupling, (4) measured snubber B-H, (5) OpenFOAM thermal margin, (6) UL 489I type-test, 6종 동시 필요. 본 phase 는 *breaking envelope* 의 first witness (g3)."
+    ]
+  },
+  "python_version" : "3.13.13",
+  "record_id" : "sscb_verify_20260521T103912Z",
+  "schema_version" : "1.0",
+  "topology" : {
+    "l_bus_H" : 1e-06,
+    "r_fault_ohm" : 0.01,
+    "sim_time_s" : 2e-05,
+    "snubber_C_F" : 1e-07,
+    "snubber_R_ohm" : 5,
+    "step_s" : 5e-09,
+    "switch_roff_ohm" : 1000000000,
+    "switch_ron_ohm" : 0.02,
+    "t_detection_s" : 5e-06,
+    "t_open_ramp_s" : 5e-08,
+    "v_dc_V" : 600
+  }
+}

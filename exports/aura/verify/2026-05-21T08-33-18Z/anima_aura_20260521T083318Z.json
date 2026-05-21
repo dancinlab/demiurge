@@ -1,0 +1,41 @@
+{
+  "interface": "demiurge:aura:quality-record",
+  "measurement": {
+    "affect_arousal": 0.0,
+    "affect_valence": 0.0,
+    "quality": 0.0,
+    "seed": 42
+  },
+  "produced_at_utc": "2026-05-21T08:33:18Z",
+  "provenance": {
+    "absorbed": false,
+    "atlas_cite_block": "@cite anima-physics:tool/demiurge_aura_bridge.py (stub \u2014 anima \uce21 aura substrate \ubd80\uc7ac); demiurge_hw_verify_2026_05_21 \u00a72.2 (aura engine gap)",
+    "backend": "local_sim",
+    "consumer_target": "demiurge:aura:verify",
+    "gate_failures": [
+      "anima-physics has no aura substrate (hexa-aura repo is SSOT)"
+    ],
+    "measurement_gate": "GATE_OPEN",
+    "producer": "anima-aura-stub-bridge",
+    "scope_caveats": [
+      "anima-physics has NO aura substrate \u2014 this is a stub-only bridge",
+      "real quality/affect measurement lives in hexa-aura sibling repo",
+      "aura producer oracle parity not yet authored (TODO: demiurge rfc)",
+      "values quality=0 / valence=0 / arousal=0 = placeholder, NOT measurement"
+    ],
+    "sim_commit_hash": "local",
+    "sim_engine": "anima-physics:aura_stub (substrate not present)"
+  },
+  "record_id": "aura_q0.00_v+0.00_a0.00_local_sim",
+  "schema_version": "0.1",
+  "topology": {
+    "duration_s": 0.0,
+    "kind": "eeg_stub",
+    "n_channels": 0,
+    "sample_rate_hz": 0
+  },
+  "verdict": {
+    "gate_state": "GATE_OPEN",
+    "rationale": "stub emit \u2014 anima \uce21 aura substrate \ubd80\uc7ac; engine-gap 1-step \ud574\uc18c\uc6a9 placeholder record"
+  }
+}

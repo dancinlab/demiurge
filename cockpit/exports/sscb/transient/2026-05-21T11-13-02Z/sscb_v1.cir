@@ -1,0 +1,20 @@
+* sscb_v1 — demiurge cohort producer, D55 / κ-34 — hexa-native (D67/κ-41 directive)
+* HONEST: plausible HEXA-SSCB mk1 topology, NOT a measured device model.
+.title sscb_v1
+Vdc 1 0 600.0
+Lbus 1 2 1e-06
+Rload 2 3 6.0
+SW 3 0 gate 0 SWMOD
+* RC snubber across the switch (3 -> 0)
+Csnub 3 4 1e-07
+Rsnub 4 0 5.0
+* Gate drive — high until 1 us trip, falls in 50 ns
+Vgate gate 0 PWL(0 15 1e-06 15 1.05e-06 0 6e-06 0)
+.model SWMOD SW (Ron=0.02 Roff=1000000000.0 Vt=7.0 Vh=1.0)
+.tran 5e-09 6e-06
+.print tran v(3) v(2) i(Vdc) i(Lbus)
+.control
+run
+print v(3) v(2) i(Vdc) i(Lbus)
+.endc
+.end
