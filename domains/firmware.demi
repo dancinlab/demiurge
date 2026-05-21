@@ -1,0 +1,147 @@
+# firmware.demi — verb-cell manifest for the firmware (embedded firmware) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/firmware/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("firmware", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+# Required keys per cell: substrate, script, record_kind, output_dir,
+# gate_default, absorbed_default.
+#
+# Script paths are RELATIVE to ~/core/hexa-lang/ (the hexa_lang_root
+# tunable, env-overridable via HEXA_CELLRUN_HEXA_LANG_ROOT).
+#
+# Citations (anchored, not repeated per-cell — see domains/firmware.md §5):
+#   - IETF / Zephyr public RFCs · AUTOSAR Classic Platform — autosar.org
+#   - IEC 61508 (Functional Safety, public summary) · MISRA-C:2012 (misra.org.uk)
+#   - CERT-C secure coding · Zephyr / FreeRTOS / Apache NuttX
+#   - arm-none-eabi-gcc (developer.arm.com) · CMake · west
+#   - clang-tidy / cppcheck · Frama-C · KLEE (Cadar OSDI '08) · CBMC
+#   - QEMU mps2-an385 (qemu.org/docs/master/system/arm/mps2.html)
+#   - Renode (Antmicro) · Unity + Ceedling (throwtheswitch.org)
+#   - MCUboot (mcu-tools.github.io/mcuboot) · TUF / Uptane · SWUpdate
+#   - CycloneDX SBOM (cyclonedx.org) · SPDX
+#
+# Domain caveat (applies to every cell):
+# Reference target = QEMU mps2-an385 (Cortex-M3, 16 KiB RAM, 256 KiB flash) —
+# zero hardware dependency per domains/firmware.md §1. D72: firmware =
+# adapter-only (no FEM/MC/graph kernel) — never a hexa-native kernel.
+# Every cell defaults GATE_OPEN / absorbed=false (g3): public-surface
+# probe + skeleton emit is not an absorption claim · IEC 61508 SIL +
+# MISRA-C:2012 + bench HIL = accredited-lab gates separate from this map.
+
+# --- WIRED: specify (requirements.json template) ----------------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/firmware/specify.py
+record_kind       = firmware_specify_record
+output_dir        = exports/firmware/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "requirements.json = TEMPLATE skeleton (MCU + RAM/flash + interfaces + SIL slots) — domains/firmware.md §1 reference QEMU mps2-an385.",
+  "no IEC 61508 SIL claim, no MISRA-C deviation log filled — those are downstream verbs (analyze · handoff) + accredited-lab gates.",
+  "measurement_gate = GATE_OPEN permanently — requirements skeleton is not an absorption claim (g3, domains/firmware.md §7).",
+]
+
+# --- WIRED: structure (Zephyr arch.json template + west probe) --------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/firmware/structure.py
+record_kind       = firmware_structure_record
+output_dir        = exports/firmware/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "arch.json = Zephyr-style task tree skeleton (main / idle / log / shell) on mps2-an385 memory map — TEMPLATE, not vendor-validated.",
+  "west probe is version sniff only — no `west init` / `west build` against a real Zephyr tree (full arch validation = downstream).",
+  "measurement_gate = GATE_OPEN permanently — arch skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: design (CMake + arm-none-eabi-gcc probe) ------------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/firmware/design.py
+record_kind       = firmware_design_record
+output_dir        = exports/firmware/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CMake + hello.c = TEMPLATE skeleton — a real design vendors a board-specific linker.ld + startup.s + vendor HAL.",
+  "arm-none-eabi-gcc probe is version sniff only — actual cross-compile happens in firmware+synthesize.",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- WIRED: analyze (clang-tidy + cppcheck probe) ---------------------------
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/firmware/analyze.py
+record_kind       = firmware_analyze_record
+output_dir        = exports/firmware/analyze
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "clang-tidy + cppcheck = PROBE only (version sniff, no findings against source) — real analysis needs compile_commands.json + source tree.",
+  "Frama-C / KLEE / CBMC (deductive · symbolic · bounded-model) NOT probed — heavier per-project, future expansion candidate.",
+  "MISRA-C:2012 + CERT-C profile referenced but rules not enforced — that is the certifying lab / pipeline territory (g3).",
+  "measurement_gate = GATE_OPEN permanently — static-analysis version sniffing is not an absorption claim (g3).",
+]
+
+# --- WIRED: synthesize (Cortex-M3 cross-compile → ELF + bin) ----------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/firmware/synthesize.py
+record_kind       = firmware_synthesize_record
+output_dir        = exports/firmware/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "arm-none-eabi-gcc Cortex-M3 cross-compile of minimal hello.c → firmware.elf + firmware.bin (mps2-an385 reference).",
+  "no signing in this verb — MCUboot imgtool sign happens in firmware+handoff (domains/firmware.md §1).",
+  "hello.c = smallest possible freestanding text, NOT a real product binary. install-gated if arm-none-eabi-{gcc,objcopy} missing.",
+  "measurement_gate = GATE_OPEN permanently — toolchain emit is not an absorption claim (g3).",
+]
+
+# --- WIRED: verify (QEMU mps2-an385 smoke boot) -----------------------------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/firmware/verify.py
+record_kind       = firmware_verify_record
+output_dir        = exports/firmware/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "qemu-system-arm -machine mps2-an385 smoke boot of synthesize cell's firmware.bin (Cortex-M3, zero HW dependency per domains/firmware.md §1).",
+  "boot is ≤2 s smoke-test only — NOT a passing Unity test suite, NOT a coverage measurement, NOT a HIL verification.",
+  "Ceedling/Unity presence-probe only (no actual test suite executed) — install-gated when QEMU or sibling firmware.bin missing.",
+  "measurement_gate = GATE_OPEN permanently — smoke-boot is not an absorption claim (g3).",
+]
+
+# --- WIRED: handoff (CycloneDX SBOM + imgtool probe + release tarball) ------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/firmware/handoff.py
+record_kind       = firmware_handoff_record
+output_dir        = exports/firmware/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "release.tar.gz = TEMPLATE bundle (SBOM skeleton + sign-probe + bin if present) — a real handoff stuffs in image + sign + dossier + OTA manifest + audit evidence.",
+  "SBOM = CycloneDX 1.5 SKELETON (empty components) — real SBOM generated from build's compile-commands.json + dependency manifest.",
+  "imgtool probe ONLY — no key material in SSOT, no actual signing (per-project key management lives outside SSOT).",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]

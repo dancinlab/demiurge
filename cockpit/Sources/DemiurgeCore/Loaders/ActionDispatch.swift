@@ -280,20 +280,25 @@ public enum ActionDispatch {
             return runChemVerify()
         case (.verify, "grid"):
             return runGridVerify()
+        // D111 Phase C — firmware domain migrated to cellrun route
+        // (first reference legacy-domain migration after SSCB walkthrough).
+        // Manifest: domains/firmware.demi · 7 cells WIRED · all python3
+        // substrate · scripts in ~/core/hexa-lang/stdlib/firmware/. Legacy
+        // runFirmware*() statics removed below (no in-tree callers remain).
         case (.specify, "firmware"):
-            return runFirmwareSpecify()
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.structure, "firmware"):
-            return runFirmwareStructure()
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.design, "firmware"):
-            return runFirmwareDesign()
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.analyze, "firmware"):
-            return runFirmwareAnalyze()
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.synthesize, "firmware"):
-            return runFirmwareSynthesize()
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.verify, "firmware"):
-            return runFirmwareVerify()
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.handoff, "firmware"):
-            return runFirmwareHandoff()
+            return CellrunDispatch.run(verb: verb, domain: domain)
         default:
             let prompt = actionPrompt(verb: verb)
             let reply = askClaude(prompt: prompt, context: context)
@@ -1281,78 +1286,14 @@ public enum ActionDispatch {
             usedEngineTool: true, engineToolSucceeded: r.ok)
     }
 
-    // ── firmware domain (D73, 16th domain) — Track A 7-verb dispatch ──
-    // SSOT = ~/core/hexa-lang/stdlib/firmware/<verb>.py per D61.
-    // D72: firmware = adapter-only (build/run/sign orchestration, no
-    // shared math kernel). Reference target = QEMU mps2-an385 (Cortex-M3,
-    // zero hardware dependency per domains/firmware.md §1).
-    // g3: every cell records GATE_OPEN / absorbed=false; QEMU / west /
-    // arm-none-eabi-gcc / clang-tidy / imgtool absence → honest install-
-    // gated skip (never silent success).
-
-    /// `firmware + specify` engine tool — requirements.json template.
-    private static func runFirmwareSpecify() -> ActionResult {
-        let r = FirmwareSpecifyProducer.runSpecify()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `firmware + structure` engine tool — Zephyr/FreeRTOS task tree
-    /// arch.json + west version probe.
-    private static func runFirmwareStructure() -> ActionResult {
-        let r = FirmwareStructureProducer.runStructure()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `firmware + design` engine tool — arm-none-eabi-gcc probe +
-    /// CMake / hello.c scaffolding emit.
-    private static func runFirmwareDesign() -> ActionResult {
-        let r = FirmwareDesignProducer.runDesign()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `firmware + analyze` engine tool — clang-tidy + cppcheck probes,
-    /// analysis.json skeleton.
-    private static func runFirmwareAnalyze() -> ActionResult {
-        let r = FirmwareAnalyzeProducer.runAnalyze()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `firmware + synthesize` engine tool — arm-none-eabi-gcc Cortex-M3
-    /// cross-compile of hello.c → firmware.elf + firmware.bin.
-    private static func runFirmwareSynthesize() -> ActionResult {
-        let r = FirmwareSynthesizeProducer.runSynthesize()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `firmware + verify` engine tool — QEMU mps2-an385 boot smoke of
-    /// the synthesize-cell firmware.bin (Cortex-M3 reference target).
-    private static func runFirmwareVerify() -> ActionResult {
-        let r = FirmwareVerifyProducer.runVerify()
-        // scan-foreign: surface canonical + foreign bridge record IDs
-        // directly (B1+B2 cohort, 2026-05-21).
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordIDs,
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `firmware + handoff` engine tool — CycloneDX SBOM skeleton +
-    /// release.tar.gz bundle + MCUboot imgtool probe.
-    private static func runFirmwareHandoff() -> ActionResult {
-        let r = FirmwareHandoffProducer.runHandoff()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
+    // ── firmware domain (D73 · 16th domain) ──
+    // D111 Phase C migration (2026-05-22 · first reference legacy-domain
+    // migration after SSCB walkthrough): legacy runFirmware*() statics
+    // REMOVED · all 7 verbs route via CellrunDispatch + domains/firmware.demi.
+    // Substrate SSOT: ~/core/hexa-lang/stdlib/firmware/<verb>.py (D61 · D72
+    // adapter-only · reference target QEMU mps2-an385 Cortex-M3 per
+    // domains/firmware.md §1). Typed Codable records preserved at
+    // Models/Firmware*Record.swift (R3 cockpit consumer side).
 
     // ── D74 cohort — anima-physics bridge scan-only verify producers ──
     // Architectural distinction from prior verify-cells:
