@@ -1,0 +1,141 @@
+# bot.demi — verb-cell manifest for the bot (robotics) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/bot/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("bot", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+# Required keys per cell: substrate, script, record_kind, output_dir,
+# gate_default, absorbed_default.
+#
+# Script paths are RELATIVE to ~/core/hexa-lang/ (the hexa_lang_root
+# tunable, env-overridable via HEXA_CELLRUN_HEXA_LANG_ROOT).
+#
+# Citations (anchored, not repeated per-cell — see domains/bot.md):
+#   - URDF spec (ROS REP 105) · yourdfpy (BSD) — kinematics graph parser
+#   - Pinocchio (BSD) — Carpentier et al. RAL 2019, RBD algorithms
+#   - Drake (BSD-3) — Tedrake et al., MIT toolkit; Lyapunov / SOS
+#   - MoveIt!2 / OMPL — motion planning (future)
+#   - Gazebo / Ignition — physics (future verify cells)
+#
+# Domain caveat (applies to every cell):
+# bot = adapter-only D72 (no FEM/MC/graph kernel). URDF loading owned by
+# `kernels/urdf/` (κ-45). Pinocchio stays in bot adapter until 2nd RBD
+# consumer. Open-loop only — contact / payload / actuator dynamics =
+# bot+verify (Drake / Gazebo) deferred per ROI rank 13. Every cell defaults
+# GATE_OPEN / absorbed=false (g3): URDF spec meta + textbook RBD math is
+# not a robot-hardware measurement claim.
+
+# --- UNWIRED: specify -------------------------------------------------------
+# Phase A cellrun.hexa has no explicit `unwired = true` key — honest-skip
+# via "script missing" (rc=2) since stdlib/bot/specify.py does not exist.
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/bot/specify.py
+record_kind       = bot_specify_record
+output_dir        = exports/bot/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "bot + specify scaffold pending — robot-requirements.json (joint count + DOF + payload + reach + safety category) producer 미작성.",
+  "domains/bot.md §1 (2-link arm reference) 가 SSOT 후보 — Python wrapper 가 그것을 record JSON 으로 변환하면 됨.",
+]
+
+# --- WIRED: structure (yourdfpy URDF parser) --------------------------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/bot/urdfpy_basics.py
+record_kind       = bot_structure_record
+output_dir        = exports/bot/structure
+required_deps     = python3, yourdfpy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "yourdfpy IS the parser (URDF spec compliance); 측정 숫자 (link count · joint count · DOF) 는 spec-correct but the URDF itself is a hermetic 2-link arm template, NOT a real robot vendor URDF.",
+  "URDF spec meta != robot hardware measurement — calibration / motor identification / joint friction / encoder offsets are absent (those live in bot+verify with Drake/Gazebo).",
+  "measurement_gate = GATE_OPEN permanently — URDF parser self-check is not an absorption claim (g3).",
+  "absorbed=true 금지 — D17 g_stdlib_ownership: script SSOT 는 hexa-lang stdlib/bot/, demiurge 는 consumer-pointer 만.",
+]
+
+# --- UNWIRED: design --------------------------------------------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/bot/design.py
+record_kind       = bot_design_record
+output_dir        = exports/bot/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "bot + design pending — link-length / motor-torque / gearbox sizing tradeoff producer 미작성.",
+  "MoveIt config-generator 패턴 reuse 후보 (motion-planning 측 surface 와 자연 연동).",
+]
+
+# --- UNWIRED: analyze -------------------------------------------------------
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/bot/analyze.py
+record_kind       = bot_analyze_record
+output_dir        = exports/bot/analyze
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "bot + analyze pending — workspace / singularity / manipulability index producer 미작성.",
+  "Pinocchio Jacobian/manipulability API + matplotlib visualization patterns reuse.",
+]
+
+# --- WIRED: synthesize (Pinocchio FK / Jacobian / RNEA) ---------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/bot/pinocchio_rbd.py
+record_kind       = bot_synthesize_record
+output_dir        = exports/bot/synthesize
+required_deps     = python3, pinocchio
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Pinocchio FK / Jacobian / RNEA IS the instrument (Carpentier et al. RAL 2019) — algorithms are textbook-correct, but the input URDF is a hermetic 2-link arm proxy, NOT a vendor-validated robot.",
+  "open-loop only — no contact dynamics, no payload, no actuator model, no friction (those live in bot+verify with Drake/Gazebo).",
+  "cross-cell parity: urdf_sha256_16 in synthesize record MUST match the sha from bot+structure (κ-37 byte-identical URDF gate).",
+  "kernels/urdf/ (κ-45) owns URDF loading; Pinocchio stays in bot adapter until 2nd RBD consumer per D72.",
+  "measurement_gate = GATE_OPEN permanently — RBD-on-toy-URDF is not an absorption claim (g3).",
+]
+
+# --- WIRED: verify (Drake Lyapunov / SOS) -----------------------------------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/bot/drake_verify.py
+record_kind       = bot_verify_record
+output_dir        = exports/bot/verify
+required_deps     = python3, pydrake
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Drake (MIT, BSD-3) Lyapunov / SOS verification IS the instrument — Tedrake et al. textbook, real semidefinite-programming math.",
+  "system under verification is a toy 2-link arm with idealized dynamics — no friction, no actuator limits, no payload — NOT a vendor robot validation.",
+  "pydrake honest-skip on macOS arm64 if wheels missing (install-gated); Linux pool primary verification venue.",
+  "measurement_gate = GATE_OPEN permanently — proof-of-concept SOS is not a HIL safety-cage absorption claim (g3).",
+]
+
+# --- UNWIRED: handoff -------------------------------------------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/bot/handoff.py
+record_kind       = bot_handoff_record
+output_dir        = exports/bot/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "bot + handoff pending — ROS bag / motion-plan bundle / calibration-checklist tarball producer 미작성.",
+  "firmware/handoff.py 패턴 reuse — SBOM + sign-probe + plan + dossier.",
+]

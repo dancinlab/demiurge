@@ -1,0 +1,138 @@
+# grid.demi — verb-cell manifest for the grid (power transmission) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/grid/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("grid", verb)
+#
+# Format: cellrun.hexa Phase A dialect — see firmware.demi header for the
+# spec. Script paths are RELATIVE to ~/core/hexa-lang/.
+#
+# Citations (anchored, not repeated per-cell — see domains/grid.md):
+#   - NetworkX — Hagberg et al., graph algorithms library (BSD)
+#   - IEEE 14-bus test system — Christie 1993, standard topology benchmark
+#   - PyPSA — Brown et al. JORS 2018 (future synthesis cell, kernels/power_opt/)
+#   - PSS®E / PowerWorld — commercial reference (NOT bundled)
+#   - Anima-physics Kuramoto power-grid bridge — Filatrella 2008 (qualitative
+#     mapping, intersubjective oscillator analog) — anima/anima-physics/
+#     {hw,kuramoto_neuromorphic,tool}/demiurge_grid_bridge.py drops records
+#     under exports/grid/verify/<UTC>Z/anima_*.json
+#
+# Domain caveat (applies to every cell):
+# grid = adapter-only D72. NetworkX 14-bus topology is meta, not measurement.
+# The verify cell scans anima-physics Kuramoto bridge records — record
+# scope_caveats already say "oracle parity TODO", demiurge witnesses,
+# never upgrades. Every cell defaults GATE_OPEN / absorbed=false (g3):
+# textbook topology + qualitative Kuramoto analog is not a PMU/SCADA
+# measured-grid absorption claim. Future: pandapower / PYPSA / pglib-opf
+# integration for AC OPF + N-1 contingency.
+
+# --- UNWIRED: specify -------------------------------------------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/grid/specify.py
+record_kind       = grid_specify_record
+output_dir        = exports/grid/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "grid + specify scaffold pending — grid-requirements.json (voltage levels · bus count · line ratings · N-1 / N-2 criteria) producer 미작성.",
+  "domains/grid.md §1 가 SSOT 후보; IEEE 14-bus / RTE / PEGASE benchmark family reference.",
+]
+
+# --- WIRED: structure (NetworkX IEEE 14-bus topology) -----------------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/grid/networkx_basics.py
+record_kind       = grid_structure_record
+output_dir        = exports/grid/structure
+required_deps     = python3, networkx
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "NetworkX (Hagberg et al., BSD) IS the graph library — IEEE 14-bus topology is a standard textbook benchmark (Christie 1993).",
+  "topology meta only — bus degree / shortest path / centrality metrics; NO power-flow solve, NO line ratings, NO voltage levels modeled.",
+  "this is NOT a measured grid (no PMU / SCADA / phasor / synchrophasor data); IEEE 14-bus is a teaching benchmark, not a real ISO topology.",
+  "future: pandapower / pypsa AC OPF for grid+analyze; networkx kernel promotion at 2nd graph consumer (kernels/graph/).",
+  "measurement_gate = GATE_OPEN permanently — topology meta is not absorption (g3).",
+  "absorbed=true 금지 — D17 g_stdlib_ownership: script SSOT 는 hexa-lang stdlib/grid/, demiurge 는 consumer-pointer 만.",
+]
+
+# --- UNWIRED: design --------------------------------------------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/grid/design.py
+record_kind       = grid_design_record
+output_dir        = exports/grid/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "grid + design pending — line-routing / substation-siting / reinforcement candidate set producer 미작성.",
+  "transmission-expansion planning (TEP) literature; pypsa-eur / PyPSA-Earth dataset reuse 후보.",
+]
+
+# --- UNWIRED: analyze (planned PYPSA AC OPF) --------------------------------
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/grid/analyze.py
+record_kind       = grid_analyze_record
+output_dir        = exports/grid/analyze
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "grid + analyze pending — DC OPF / AC OPF / N-1 contingency screen producer 미작성.",
+  "pypsa.Network.lopf() + HiGHS pattern reuse (kernels/power_opt/ at 2nd consumer per D72).",
+]
+
+# --- UNWIRED: synthesize ----------------------------------------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/grid/synthesize.py
+record_kind       = grid_synthesize_record
+output_dir        = exports/grid/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "grid + synthesize pending — transmission-expansion / generator-siting MILP producer 미작성.",
+  "pyomo / pypsa multi-investment-period optimization pattern; HiGHS LP/MIP solver.",
+]
+
+# --- WIRED: verify (anima-physics Kuramoto power-grid bridge scan, D74) -----
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/grid/verify.py
+record_kind       = grid_verify_record
+output_dir        = exports/grid/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "D74 cohort scan — anima-physics Kuramoto N=8 oscillator bridge drops records under exports/grid/verify/<UTC>Z/anima_*.json; demiurge witnesses + aggregates, never re-measures.",
+  "Filatrella 2008 (Eur. Phys. J. B) maps Kuramoto to swing-equation — qualitative intersubjective analog only, NOT a PMU / SCADA / phasor-measurement-unit reading.",
+  "real grid verification = SCADA archive + IEEE 14-bus reference solve + N-1 contingency screen; this cell is the bridge-witness path, NOT a power-system absorption.",
+  "stdlib/grid/verify.py: cellrun honest-skip rc=2 if shim not yet present (the bridge records ARE under exports/grid/verify/ regardless — scan path is the canonical aggregator surface).",
+  "measurement_gate = GATE_OPEN permanently — Kuramoto analog is intersubjective, NOT physical-grid absorption (g3 / D17 g_stdlib_ownership).",
+]
+
+# --- UNWIRED: handoff -------------------------------------------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/grid/handoff.py
+record_kind       = grid_handoff_record
+output_dir        = exports/grid/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "grid + handoff pending — interconnection-study / RTO-tariff dossier producer 미작성.",
+  "firmware/handoff.py 패턴 reuse.",
+]
