@@ -4552,6 +4552,14 @@
   - **next axis chain**: G31β (Ineichen clearsky 도 hexa-native
     port · κ-69+ scope) 또는 κ-69 R8 의 G32 decision gate (lowest-
     friction · 5-fold lock-in cell pick · code 0)
+  - **G31 MERGED follow-up (2026-05-21 same-cycle)**: PR #263 squash-
+    merged → origin/main `8eec8e734f6db6a9275218dc4e2ebb5a9cf41f15`
+    (mergedAt 2026-05-21T06:08:49Z · mergedBy dancinlife · clean
+    squash-merge · admin 미사용). ARCH §11.4 G31 `[~]` → `[x]` flip
+    완료 · est_actual = 1 session (1-3 session estimate 의 lower-
+    bound 도 밑돔) · `provisional=true` 강등 risk sun-position axis
+    에서 closure (Ineichen 는 G31β 별 scope). κ-69 R8 4 G-item 중
+    G31 = first full-land · G32/G33/G34 still `[ ]`.
   g3 — G31 branch-complete cycle = `all bg go` background-agent
   pattern 의 첫 substantive land. demiurge ARCH narrative + hexa-
   lang PR + smoke verification 모두 honest, ARCH §11.4 Round 8 의

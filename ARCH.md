@@ -1895,10 +1895,10 @@ measurement round (scaffold · pre-code)**
 > 각 항목 진행되면 `[x]` 로 박고 PLAN κ-69 entry + design.md
 > D-block + 영향 파일 commit 으로 묶을 것.
 
-- [~] **G31.** G29-β — Energy/solar cell `solar_position_kernel`
+- [x] **G31.** G29-β — Energy/solar cell `solar_position_kernel`
     hexa-native runtime call site port (D80 ultimate-form parity ·
-    *G31a + G31b both landed on branch 2026-05-21 · PR #263 OPEN
-    with 2 commits · `[~]` until PR merge → `[x]`*)
+    *G31a + G31b landed origin/main 2026-05-21 via PR #263
+    (`8eec8e734f6db6a9275218dc4e2ebb5a9cf41f15`)*)
   - **scope**: G29 (κ-68) 의 first legitimate flip 은 substrate
     bridge stack (pvlib clearsky/transposition trusted) 위에서
     `solar_position_kernel.hexa` 만 hexa-native scope 였음 — D80
@@ -1948,7 +1948,8 @@ measurement round (scaffold · pre-code)**
       Ineichen clearsky 는 G31β 별 scope) [x] G31b
   - **deps**: G29 (κ-68 first flip · D110) · D80 (endpoint rule)
     · hexa-lang `stdlib/kernels/solar/` substrate · hexa-lang
-    PR #263 merge (origin/main land 시 G31 → `[x]`)
+    PR #263 MERGED 2026-05-21 (`8eec8e734f6db6a9275218dc4e2ebb5a9cf41f15`
+    · origin/main) → G31 `[x]`
   - **infra discoveries** (G31b agent · 별 axis tracked):
     - `/tmp` output path 가 `hexa build` panic-trigger guard
       (April 2026 mac kernel-panic mitigation) 에 의해 차단 —
@@ -1962,8 +1963,9 @@ measurement round (scaffold · pre-code)**
       (interp warm path · 1440× = 11min infeasible) → batch
       wrapper 가 single subprocess 로 9s wall · NREL HTTP fetch
       가 producer 총 3m17s 의 dominant cost
-  - **est**: G31a + G31b 모두 same-cycle 2026-05-21 ✓ · PR #263
-    merge 대기만 남음 (review + merge 후 `[~]` → `[x]`)
+  - **est**: G31 fully landed same-cycle · est_actual = 1 session
+    (well under 1-3 session estimate) · PR #263 merged 2026-05-21
+    `8eec8e734f6db6a9275218dc4e2ebb5a9cf41f15`
 
 - [ ] **G32.** 다음 cell pick + measured-oracle source 결정 (κ-69
     R8 pre-code decision gate · D106 illustrative gate 제외)
@@ -2159,6 +2161,41 @@ landing 시각만 ARCH `## Log` 에 박제.
 
 ## Log
 
+- 2026-05-21 — **G31 fully LANDED origin/main · PR #263 squash-merged
+  · ARCH §11.4 G31 `[~]` → `[x]` flip** (hexa-lang merge commit
+  `8eec8e734f6db6a9275218dc4e2ebb5a9cf41f15` · mergedAt
+  2026-05-21T06:08:49Z · mergedBy dancinlife). κ-69 opening cycle
+  안에 G31a + G31b 둘 다 same-day origin/main land — 1 session
+  est_actual (1-3 session estimate 의 lower-bound 도 밑돔). work
+  요약:
+  - **merge path**: clean squash-merge (admin-merge 미사용 · PR
+    #263 가 CI infra-fail (bootstrap × 3 + grace-consent) 의 documented
+    pattern 위에서도 squash-merge gate 통과). `gh pr merge 263
+    --squash --delete-branch` 의 local branch-delete 단계만
+    `worktree '/Users/ghost/core/hexa-lang' uses main` 으로 인해
+    local-side error (remote branch 는 server-side 정상 삭제 ·
+    state=MERGED · merge SHA 확인됨)
+  - **ARCH §11.4 G31 block 갱신**:
+    - heading `[~]` → `[x]` · partial-land annotation 제거 후 merge
+      SHA + origin/main land 표기
+    - `deps` line 의 "PR #263 merge (origin/main land 시 → `[x]`)"
+      → "PR #263 MERGED 2026-05-21 (`<sha>`) → G31 `[x]`"
+    - `est` line 의 "merge 대기만 남음 (review + merge 후 `[~]` →
+      `[x]`)" → "G31 fully landed same-cycle · est_actual = 1
+      session · merge SHA 박제"
+  - **`provisional=true` 강등 risk 제거** (D80 §0 endpoint compliance ·
+    sun-position axis only): G31b smoke verification 시점에 이미
+    smoke PASS (mean_rel_err 0.04967 · 0.05 threshold doubled margin) ·
+    `absorbed=true` `pass=true` 유지 ·  `bridge_stack` =
+    `"hexa_native_solar_position + pvlib Ineichen clearsky"` 으로
+    honest 갱신 완료. PR #263 merge 으로 인해 origin/main 위에서
+    이 honest bridge_stack 표기가 reproducibly 살아남음 → G29 first-
+    flip 의 `provisional=true` 강등 risk 가 sun-position axis 에서
+    완전 closure. Ineichen clearsky port 는 G31β 별 scope (κ-69+).
+  - **κ-69 critical-path 진척**: §11.4 Round 8 의 4 G-item 중 G31
+    `[x]` (first full-land) · G32/G33/G34 still `[ ]`. 다음 lowest-
+    friction step = G32 decision gate (5-fold lock-in cell pick · code
+    0) 또는 G31β (Ineichen clearsky hexa-native port).
 - 2026-05-21 — **G31b producer integration landed · same-cycle full
   G31 partial → branch-complete** (hexa-lang PR #263 OPEN with 2
   commits — `740964a0` G31a + `47c2378e` G31b). κ-69 opening 같은
