@@ -1,0 +1,140 @@
+% BibTeX for cube-fullcycle-617s paper.
+% All entries: DOI / arxiv ID / stable URL (PAPERS/README.md provenance rule).
+
+@article{bcs1957,
+  author       = {Bardeen, J. and Cooper, L. N. and Schrieffer, J. R.},
+  title        = {Theory of Superconductivity},
+  journal      = {Phys. Rev.},
+  volume       = {108},
+  pages        = {1175--1204},
+  year         = {1957},
+  doi          = {10.1103/PhysRev.108.1175}
+}
+
+@article{pecher_sirois,
+  author       = {Pecher, R. and Sirois, F. and {others}},
+  title        = {Three-dimensional finite-element modelling of high-temperature
+                  superconductors using a single-time-step iteration},
+  journal      = {arXiv preprint},
+  year         = {2008},
+  note         = {arxiv:0811.2883. HTS Modelling Workgroup canonical reference
+                  for 3-D HTS magnetization;
+                  \url{https://htsmodelling.com/}},
+  url          = {https://arxiv.org/abs/0811.2883}
+}
+
+@article{h_formulation_review,
+  author       = {Shen, Boyang and Grilli, Francesco and Coombs, Tim},
+  title        = {Overview of {H}-formulation: A versatile tool for modeling
+                  electromagnetics in high-temperature superconductor
+                  applications},
+  journal      = {arXiv preprint},
+  year         = {2019},
+  note         = {arxiv:1908.02176. Comprehensive review of H-formulation
+                  E-J power-law transient FEM for HTS devices.},
+  url          = {https://arxiv.org/abs/1908.02176}
+}
+
+@misc{getdp,
+  author       = {Geuzaine, Christophe and Dular, Patrick},
+  title        = {{GetDP}: a general environment for the treatment of
+                  discrete problems},
+  year         = {2024},
+  note         = {Version 4.0.0 (Apple Silicon native, 2026 release).
+                  Open source GNU GPL.},
+  url          = {https://getdp.info/}
+}
+
+@article{gmsh,
+  author       = {Geuzaine, Christophe and Remacle, Jean-Fran\c{c}ois},
+  title        = {{Gmsh}: A three-dimensional finite element mesh generator
+                  with built-in pre- and post-processing facilities},
+  journal      = {Int. J. Numer. Methods Eng.},
+  volume       = {79},
+  number       = {11},
+  pages        = {1309--1331},
+  year         = {2009},
+  doi          = {10.1002/nme.2579}
+}
+
+@misc{life_hts,
+  author       = {{LIFE-HTS Project}},
+  title        = {{LIFE-HTS}: Lifetime predictions for high-temperature
+                  superconductor devices --- {GetDP} model templates},
+  year         = {2024},
+  note         = {Public model templates including cube/cube.pro
+                  E-J power-law benchmark. License unclear at time of
+                  consumption (2026-05); demiurge integration is
+                  thin-adapter (D1 stance, RTSC.md \S4.2.1.b row D1)
+                  with all source kept under \texttt{stdlib/rtsc/
+                  templates/hts\_workgroup/} in gitignored
+                  \texttt{\_external/} cache.},
+  url          = {https://www.life-hts.uliege.be/}
+}
+
+@article{nrelmidc,
+  author       = {{NREL}},
+  title        = {{NREL MIDC BMS} measured radiometer data},
+  year         = {2024},
+  note         = {Solar Radiation Research Laboratory, Golden CO.
+                  Cross-domain measurement-oracle precedent for
+                  the demiurge absorbed=true gate.},
+  url          = {https://midcdmz.nrel.gov/apps/sitehome.pl?site=BMS}
+}
+
+@article{jain2013materialsproject,
+  author       = {Jain, Anubhav and Ong, Shyue Ping and Hautier, Geoffroy and
+                  {others}},
+  title        = {Commentary: The {Materials Project}: A materials genome
+                  approach to accelerating materials innovation},
+  journal      = {APL Materials},
+  volume       = {1},
+  number       = {1},
+  pages        = {011002},
+  year         = {2013},
+  doi          = {10.1063/1.4812323}
+}
+
+@article{kim1962,
+  author       = {Kim, Y. B. and Hempstead, C. F. and Strnad, A. R.},
+  title        = {Critical persistent currents in hard superconductors},
+  journal      = {Phys. Rev. Lett.},
+  volume       = {9},
+  pages        = {306--309},
+  year         = {1962},
+  doi          = {10.1103/PhysRevLett.9.306}
+}
+
+@article{bean1962,
+  author       = {Bean, C. P.},
+  title        = {Magnetization of hard superconductors},
+  journal      = {Phys. Rev. Lett.},
+  volume       = {8},
+  pages        = {250--253},
+  year         = {1962},
+  doi          = {10.1103/PhysRevLett.8.250}
+}
+
+@article{wheeler1942,
+  author       = {Wheeler, H. A.},
+  title        = {Formulas for the skin effect},
+  journal      = {Proc. IRE},
+  volume       = {30},
+  pages        = {412--424},
+  year         = {1942},
+  note         = {Classic short-coil inductance approximation used
+                  for the solenoid\_axisym cross-check
+                  ($\Delta = -1.40\%$, RTSC.md \S4.2.1.b).}
+}
+
+@misc{rtsc_md,
+  author       = {Park, Min Woo},
+  title        = {{RTSC.md}: room-temperature-superconductor 4-tier
+                  expansion framework},
+  year         = {2026},
+  note         = {Living document. Working revisions on
+                  \texttt{github.com/dancinlab/demiurge}. Section
+                  \S4.2.1.d documents the cube full-cycle run
+                  this paper validates.},
+  url          = {https://github.com/dancinlab/demiurge/blob/main/RTSC.md}
+}

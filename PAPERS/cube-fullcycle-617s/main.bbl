@@ -1,0 +1,85 @@
+\begin{thebibliography}{10}
+
+\bibitem{bcs1957}
+J.~Bardeen, L.~N. Cooper, and J.~R. Schrieffer.
+\newblock Theory of superconductivity.
+\newblock {\em Phys. Rev.}, 108:1175--1204, 1957.
+
+\bibitem{bean1962}
+C.~P. Bean.
+\newblock Magnetization of hard superconductors.
+\newblock {\em Phys. Rev. Lett.}, 8:250--253, 1962.
+
+\bibitem{getdp}
+Christophe Geuzaine and Patrick Dular.
+\newblock {GetDP}: a general environment for the treatment of discrete
+  problems, 2024.
+\newblock Version 4.0.0 (Apple Silicon native, 2026 release). Open source GNU
+  GPL.
+
+\bibitem{gmsh}
+Christophe Geuzaine and Jean-Fran\c{c}ois Remacle.
+\newblock {Gmsh}: A three-dimensional finite element mesh generator with
+  built-in pre- and post-processing facilities.
+\newblock {\em Int. J. Numer. Methods Eng.}, 79(11):1309--1331, 2009.
+
+\bibitem{jain2013materialsproject}
+Anubhav Jain, Shyue~Ping Ong, Geoffroy Hautier, and {others}.
+\newblock Commentary: The {Materials Project}: A materials genome approach to
+  accelerating materials innovation.
+\newblock {\em APL Materials}, 1(1):011002, 2013.
+
+\bibitem{kim1962}
+Y.~B. Kim, C.~F. Hempstead, and A.~R. Strnad.
+\newblock Critical persistent currents in hard superconductors.
+\newblock {\em Phys. Rev. Lett.}, 9:306--309, 1962.
+
+\bibitem{life_hts}
+{LIFE-HTS Project}.
+\newblock {LIFE-HTS}: Lifetime predictions for high-temperature superconductor
+  devices --- {GetDP} model templates, 2024.
+\newblock Public model templates including cube/cube.pro E-J power-law
+  benchmark. License unclear at time of consumption (2026-05); demiurge
+  integration is thin-adapter (D1 stance, RTSC.md \S4.2.1.b row D1) with all
+  source kept under \texttt{stdlib/rtsc/ templates/hts\_workgroup/} in
+  gitignored \texttt{\_external/} cache.
+
+\bibitem{nrelmidc}
+{NREL}.
+\newblock {NREL MIDC BMS} measured radiometer data.
+\newblock 2024.
+\newblock Solar Radiation Research Laboratory, Golden CO. Cross-domain
+  measurement-oracle precedent for the demiurge absorbed=true gate.
+
+\bibitem{rtsc_md}
+Min~Woo Park.
+\newblock {RTSC.md}: room-temperature-superconductor 4-tier expansion
+  framework, 2026.
+\newblock Living document. Working revisions on
+  \texttt{github.com/dancinlab/demiurge}. Section \S4.2.1.d documents the cube
+  full-cycle run this paper validates.
+
+\bibitem{pecher_sirois}
+R.~Pecher, F.~Sirois, and {others}.
+\newblock Three-dimensional finite-element modelling of high-temperature
+  superconductors using a single-time-step iteration.
+\newblock {\em arXiv preprint}, 2008.
+\newblock arxiv:0811.2883. HTS Modelling Workgroup canonical reference for 3-D
+  HTS magnetization; \url{https://htsmodelling.com/}.
+
+\bibitem{h_formulation_review}
+Boyang Shen, Francesco Grilli, and Tim Coombs.
+\newblock Overview of {H}-formulation: A versatile tool for modeling
+  electromagnetics in high-temperature superconductor applications.
+\newblock {\em arXiv preprint}, 2019.
+\newblock arxiv:1908.02176. Comprehensive review of H-formulation E-J power-law
+  transient FEM for HTS devices.
+
+\bibitem{wheeler1942}
+H.~A. Wheeler.
+\newblock Formulas for the skin effect.
+\newblock {\em Proc. IRE}, 30:412--424, 1942.
+\newblock Classic short-coil inductance approximation used for the
+  solenoid\_axisym cross-check ($\Delta = -1.40\%$, RTSC.md \S4.2.1.b).
+
+\end{thebibliography}
