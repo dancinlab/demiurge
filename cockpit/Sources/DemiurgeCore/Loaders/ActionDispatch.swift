@@ -242,6 +242,19 @@ public enum ActionDispatch {
             // permanently — datasheet bindings = placeholder vendor
             // parts (NOT absorbed .lib).
             return CellrunDispatch.run(verb: verb, domain: domain)
+        case (.handoff, "sscb"):
+            // SSCB 7-verb walkthrough Step 4 (LAST) — 7th wired SSCB
+            // cell · **first domain to reach 7/7 cellrun-wired closure**
+            // under D111/D114/D116 doctrine.
+            // Producer: ~/core/hexa-lang/stdlib/sscb/handoff.py
+            // (cert-dossier bundle template emit · 5 markdown artifacts
+            // + sibling meta.json + record JSON · sscb.md §2 HANDOFF row
+            // UL 489I 1st ed. (Oct 2025) + IEC 60947-2:2016 + IEEE C37.x
+            // cross-reference + Tier-2 fan-out + bundle manifest).
+            // Typed mirror: `SscbHandoffRecord`. g3: absorbed=false
+            // permanently — cert dossier without lab partner sign-off +
+            // type-test pass is illustrative scaffold, NOT absorption.
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.synthesize, "bot"):
             return runBotSynthesize()
         case (.synthesize, "scope"):
