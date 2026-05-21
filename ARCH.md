@@ -971,14 +971,16 @@ Round 1-3 (G1–G8 fundamental / honesty surface / cross-domain audit ·
 κ-62) · Round 4 (G9–G12 hexa-native parity surface · D80 sweep · κ-65) ·
 Round 5 (G13–G18 D80 SSOT 통합 + 후속 · D87..D101 sweep) · Round 6
 (G19–G26 κ-67 closure + post-closure pilot #13 · D102..D108 + geodesy) ·
-Round 7 (G27–G30 *in-progress* · κ-68 per-cell measured-oracle parity
-round · RFC 013 §6.11 · G27 [x] D109 land 2026-05-21 · G28–G30
-queued). 본 §11.3 의 G1–G8 priority 는 *initial-round historical*
-표면 — 현 ground truth 는 §11.4 의 G1–G30 Round 1-7 가 carry. §11.3
-는 cross-sim *origin gap* 의 audit trail 로 보존 (g_ssot_single_source
-D50 — phase boundary 별 한 snapshot 유지).
+Round 7 (G27–G30 *LANDED* · κ-68 per-cell measured-oracle parity round ·
+RFC 013 §6.11 · D109/D110 · 4-fold full land 2026-05-21) · Round 8
+(G31–G34 *scaffold pre-code* · κ-69 hexa-native ultimate-form parity +
+next-cell measurement round · scaffold 2026-05-21). 본 §11.3 의 G1–G8
+priority 는 *initial-round historical* 표면 — 현 ground truth 는 §11.4
+의 G1–G34 Round 1-8 가 carry. §11.3 는 cross-sim *origin gap* 의 audit
+trail 로 보존 (g_ssot_single_source D50 — phase boundary 별 한 snapshot
+유지).
 
-### 11.4 G1–G30 implementation checklist
+### 11.4 G1–G34 implementation checklist
 
 > G1–G8 라운드 1–3 (`fundamental` / `honesty surface` / `cross-domain
 > audit`) 는 κ-62 (3322523) 에서 전부 `[x]` 완료. G9–G12 라운드 4
@@ -992,9 +994,15 @@ D50 — phase boundary 별 한 snapshot 유지).
 > LANDED + illustrative-physics gate + spawner 5th fallback + κ-67
 > closure + geodesy WGS84 14th pilot 로 마감. **G27–G30 라운드 7
 > (`κ-68 per-cell measured-oracle parity round` — RFC 013 §6.11 ·
-> in-progress)** 는 stored `absorbed: Bool` 의 첫 legitimate flip 을
-> cell-side measured oracle 로 트리거 (NOT D95 computed projection)
-> 하는 round — pre-code 시점에 4 G-item placeholder 로 scaffold.
+> LANDED 2026-05-21)** 는 stored `absorbed: Bool` 의 첫 legitimate
+> flip 을 cell-side measured oracle 로 트리거 (NOT D95 computed
+> projection · D109/D110 land · marginal PASS 0.0499 vs 0.05) ·
+> Energy/solar + NREL MIDC pyranometer 위 4-fold full land 마감.
+> **G31–G34 라운드 8 (`κ-69 hexa-native ultimate-form parity +
+> next-cell measurement round` — scaffold 2026-05-21 · pre-code)** 는
+> κ-68 closure entry 의 reserved scope (G29-β · 다른 cell measured-
+> oracle round · G30 Stage 2) 를 4 placeholder G-item 으로 박은
+> scaffold — code 변경 0, ARCH narrative 만 확장.
 > 각 항목 진행하면 `[x]` 로 박고 PLAN κ-entry + design.md D-block +
 > 영향 파일 commit 으로 묶을 것.
 
@@ -1872,6 +1880,113 @@ in-progress)**
       - G29 real measurement 위 build 된 real-data branch invariant
         (G29 land 시 fixture 확장)
 
+**라운드 8 — κ-69 hexa-native ultimate-form parity + next-cell
+measurement round (scaffold · pre-code)**
+
+> κ-68 closure entry 의 'κ-69 reserved scope' 약속 이행 — Round 8
+> scaffold 박음. 3 axis 묶음: (a) **G29-β** Energy/solar cell 의
+> hexa-native runtime call site port (D80 ultimate-form parity ·
+> `solar_position_kernel.hexa` substrate → hexa-native bridge 의
+> endpoint compliance) · (b) **다른 cell** measured-oracle round
+> 1회 더 (Aura / Ufo 등 · D106 illustrative gate 적용 cell 제외 ·
+> G27..G29 와 동형 pick→wire→flip 구조) · (c) **G30 Stage 2**
+> constitution.md governance row land (κ-68 R7 에서 DEFERRED).
+> code 변경 0 — ARCH narrative 만 4 placeholder G-item 박는다.
+> 각 항목 진행되면 `[x]` 로 박고 PLAN κ-69 entry + design.md
+> D-block + 영향 파일 commit 으로 묶을 것.
+
+- [ ] **G31.** G29-β — Energy/solar cell `solar_position_kernel`
+    hexa-native runtime call site port (D80 ultimate-form parity)
+  - **scope**: G29 (κ-68) 의 first legitimate flip 은 substrate
+    bridge stack (pvlib clearsky/transposition trusted) 위에서
+    `solar_position_kernel.hexa` 만 hexa-native scope 였음 — D80
+    endpoint rule §0 의 "ultimate-form" 절대 endpoint 는 G29 시점
+    에 미충족 (bridge-on-Python 잔재). G31 = solar_position_kernel
+    runtime call site 자체를 hexa-native 화 · pvlib bridge 의존
+    제거 · 동일 NREL MIDC fixture 위 mean rel_err ≤ 5% 유지
+  - **exit criterion**:
+    - `solar_position_kernel.hexa` runtime call site 가 hexa-lang
+      sibling repo 의 hexa-native binary 위 동작
+    - G29 fixture (480 clear-sky samples · 2024-06-15 SRRL BMS)
+      mean rel_err 유지 (drift ≤ ε · regression 0)
+    - `MeasuredOracleRef.bridgeStack` 표기 변화 audit (pvlib 의존
+      제거 시 `bridgeStack: "hexa_native_solar_position"` 등 갱신)
+    - `EnergyVerifyRecord` `provisional=true` 강등 risk 제거
+      (D80 §0 endpoint compliance 충족)
+  - **deps**: G29 (κ-68 first flip · D110) · D80 (endpoint rule)
+    · hexa-lang `stdlib/kernels/solar/` substrate
+  - **est**: 1-3 sessions (hexa-lang substrate · demiurge code
+    변경 mostly 0 · MeasuredOracleRef field doc update 정도)
+
+- [ ] **G32.** 다음 cell pick + measured-oracle source 결정 (κ-69
+    R8 pre-code decision gate · D106 illustrative gate 제외)
+  - **scope**: G27 (κ-68) 와 동형 — cell 선정 + 외부 measured
+    oracle + bridge stack + hexa-native scope + PASS criterion 의
+    5-fold lock-in decision. 후보 cluster:
+    - **Aura** — soft-biology cell · NIR / brain-EEG measured
+      oracle 후보 (PhysioNet open dataset)
+    - **Ufo** — 7-stage propulsion · D106 illustrative-physics
+      gate 가 일부 stage 에 걸려 있음 (e.g. antimatter propulsion
+      cell 제외) · plasma diagnostic measured oracle 가능 stage
+      만 선택
+    - **Mobility / Grid / Energy `wind` sub-cell** — 또 다른
+      Energy 변종 (G29 의 solar 와 별 cell)
+  - **avoid**:
+    - D106 illustrative-physics gate 적용 cell (RFC 013 §6.12
+      anti-conflation · MeasuredOracleRef 가 illustrative cell
+      에는 적용 불가)
+    - D95 computed-projection 만으로 만족하는 cell (substrate-
+      parity 가 아닌 measurement-parity 가 본 round 의 점)
+  - **exit criterion**: design.md D111 (κ-69 G32 land) record ·
+    5-fold sub-decision 명시 (cell · external oracle · bridge
+    stack · hexa-native scope · PASS criterion) · code 변경 0
+  - **deps**: G31 (G29-β 가 우선 land 되어 endpoint pattern 정착)
+    · D106 (illustrative gate 제외) · D103 (dimension separation)
+  - **est**: 0.3-0.5 sessions (decision-only · code 0)
+
+- [ ] **G33.** G32 cell 의 첫 `absorbed=true` legitimate flip
+    (κ-69 measurement-parity 두번째 land · κ-68 G29 mirror)
+  - **scope**: G28 (schema-half) + G29 (real flip) 묶음의 두번째
+    instance — G32 cell 의 `MeasuredOracleRef` instantiation +
+    producer wire + 외부 dataset 으로 fetch + PASS criterion 측정
+    + g3-honest flip. κ-68 G29 와 다른 점: schema (`MeasuredOracle
+    Ref` · `EnergyVerifyRecord` 패턴) 는 이미 land — 본 round 는
+    re-use, 다른 record type (e.g. `AuraVerifyRecord`) 에 동일
+    field 박는 작업
+  - **exit criterion**:
+    - G32-picked cell `absorbed=true` flip · marginal/comfortable
+      PASS rationale design.md D-block 박제
+    - `MeasuredOracleRef` field 가 두번째 record type 에 land
+      (schema generalization audit)
+    - XCTest invariant (G30 Stage 1 pattern) 가 새 cell 에도
+      적용됨 — `absorbed=true ⇔ measuredOracle.isMeasuredOracle
+      PASS=true` typed enforcement extension
+  - **deps**: G32 (decision) · G28 (schema · 재사용) · G30 Stage 1
+    (invariant pattern)
+  - **est**: 2-4 sessions (G28 schema 재사용 가능 · 새 dataset
+    fetch + bridge stack 작업)
+
+- [ ] **G34.** G30 Stage 2 — `.specify/memory/constitution.md`
+    governance row land (κ-68 R7 DEFERRED · κ-69 closure block)
+  - **scope**: G30 (κ-68) 의 Stage 2 DEFERRED 항목 이행 — Spec
+    Kit `.specify/memory/constitution.md` 가 새 governance SSOT
+    (ca61a6c Phase 2 adoption · bd28631 redirect chain). `absorbed
+    =true ⇔ measuredOracle.isMeasuredOraclePASS=true` invariant
+    의 governance row 박제. XCTest 가 load-bearing enforcement
+    (Stage 1) · constitution.md 가 narrative governance (Stage 2)
+  - **exit criterion**:
+    - `.specify/memory/constitution.md` populate 완료 (별 cycle
+      에 일어남 · G34 의 pre-condition)
+    - measured-oracle invariant row land · D110 + G30 Stage 1
+      cross-link · D106 illustrative-physics carve-out 명시
+    - G33 까지 land 된 real-data branch 의 fixture-driven
+      invariant test 가 governance row 와 일치 audit
+  - **deps**: constitution.md populate (별 work) · G30 Stage 1
+    (`fee34cc` XCTest invariant) · G33 (두번째 measured-oracle
+    cell 의 row 갱신)
+  - **est**: 0.3-0.5 sessions (constitution.md populate 후 · 본
+    row 자체는 doc edit)
+
 ---
 
 ## 12. Open axes (substrate-side · post-cell-flip)
@@ -1993,6 +2108,38 @@ landing 시각만 ARCH `## Log` 에 박제.
 
 ## Log
 
+- 2026-05-21 — **κ-69 opening · §11.4 Round 8 scaffold (G31..G34)
+  pre-code 박음** (RFC 013 §6.11 LANDED 이후의 next phase boundary).
+  κ-68 closure entry 의 'κ-69 reserved scope' 약속 (G29-β · 다른
+  cell measured-oracle round · G30 Stage 2) 을 4 placeholder G-item
+  으로 박음 — code 변경 0, ARCH narrative 만:
+  - **G31 [ ]** Energy/solar `solar_position_kernel` hexa-native
+    runtime call site port (D80 ultimate-form parity · G29-β
+    follow-on · pvlib bridge 의존 제거 · MeasuredOracleRef.bridge
+    Stack 표기 갱신 · provisional=true 강등 risk 제거). 1-3 session
+    est. hexa-lang substrate 작업 · demiurge code mostly 0.
+  - **G32 [ ]** 다음 cell pick + measured-oracle source 5-fold
+    decision (G27 mirror · D106 illustrative gate 제외 · D95
+    computed-projection 만족 cell 제외). 후보 cluster = Aura
+    soft-biology (PhysioNet) · Ufo non-illustrative stage ·
+    Mobility / Grid / Energy wind sub-cell. design.md D111 land
+    예정. 0.3-0.5 session est. code 0.
+  - **G33 [ ]** G32 cell 첫 `absorbed=true` legitimate flip
+    (G29 mirror · κ-68 G29 와 다른 점: schema half 재사용 · 다른
+    record type 에 MeasuredOracleRef field land · XCTest invariant
+    extension). 2-4 session est.
+  - **G34 [ ]** G30 Stage 2 — `.specify/memory/constitution.md`
+    governance row land (κ-68 R7 DEFERRED · constitution.md
+    populate 후 본 row 자체는 doc edit). 0.3-0.5 session est.
+  - **§11.4 title** G1–G30 → G1–G34, intro Round 7 'in-progress'
+    → 'LANDED', Round 8 scaffold 항목 추가. **§11.3 head note**
+    Round 1-7 → Round 1-8 표기 동시 갱신.
+  - **§12.1 chip §B substrate-axis** 와의 관계: §12.1 (e..i) 와
+    §11.4 Round 8 (G31..G34) 은 두 별 axis — substrate-side
+    measurement_gate 와 per-cell measured-oracle 둘 다 독립
+    진행. §12.1 work 는 sibling repo hexa-lang 에서, §11.4 Round
+    8 work 는 mostly demiurge (G31 hexa-lang substrate 제외) ·
+    별도 cycle 로 land.
 - 2026-05-21 — **ARCH §12 신설 · chip §B substrate-axis 잔여 로드맵
   YOSYS.md → ARCH.md 이관**. 06a8428 (κ-68 closure cycle) 에서 git
   rm 된 구 root `YOSYS.md` 의 Tier-1/2/3 잔여 로드맵을 본 파일 §12.1
