@@ -1,121 +1,128 @@
 # sscb.demi — verb-cell manifest for the sscb (Solid-State Circuit Breaker) domain
 # SSOT scripts in ~/core/hexa-lang/stdlib/sscb/
 # Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
-# Demiurge witness: ActionDispatch.runGenericCell("sscb", verb)
-
-domain: sscb
-shared:
-  python_candidates:
-    - /opt/homebrew/bin/python3.13
-    - /opt/homebrew/bin/python3.12
-    - /opt/homebrew/bin/python3
-    - /usr/local/bin/python3
-    - /usr/bin/python3
-  citations:
-    - "DEVSIM JOSS doi:10.21105/joss.03898 (Sanchez 2022) — TCAD anchor"
-    - "FEMMT (upb-lea/FEM_Magnetics_Toolbox, GPL-3) — cited synthesis instrument"
-    - "OpenMagnetics catalogue — analytic A_L fallback reference"
-    - "Hagedorn, Magnetic Components §7.4 (gapped-core reluctance)"
-  domain_caveats:
-    - "HEXA-SSCB mk1 topology only — Wolfspeed-class .lib absorption + bench-validated load + DEVSIM TCAD coupling 不在 (D17/g3)."
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("sscb", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+# Required keys per cell: substrate, script, record_kind, output_dir,
+# gate_default, absorbed_default.
+#
+# Script paths are RELATIVE to ~/core/hexa-lang/ (the hexa_lang_root
+# tunable, env-overridable via HEXA_CELLRUN_HEXA_LANG_ROOT).
+#
+# Citations (anchored, not repeated per-cell):
+#   - DEVSIM JOSS doi:10.21105/joss.03898 (Sanchez 2022) — TCAD anchor
+#   - FEMMT (upb-lea/FEM_Magnetics_Toolbox, GPL-3) — cited synthesis instrument
+#   - OpenMagnetics catalogue — analytic A_L fallback reference
+#   - Hagedorn, Magnetic Components §7.4 (gapped-core reluctance)
+#
+# Domain caveat (applies to every cell): HEXA-SSCB mk1 topology only —
+# Wolfspeed-class .lib absorption + bench-validated load + DEVSIM TCAD
+# coupling 不在 (D17/g3).
 
 # --- WIRED: analyze (κ-34 / D55 first cohort producer) -----------------------
-[analyze]
-substrate     = hexa
-script        = sscb/ngspice.hexa
-record_kind   = SSCBRecord
-output_dir    = sscb/transient        # historically /transient/ not /analyze/
-required_deps = [ngspice]
-artifacts_expected = [netlist, log, raw, meta]
-marker_prefix = SSCB_NGSPICE_RESULT
-summary_stream = merged
-gate_default     = GATE_OPEN
-absorbed_default = false
-scope_caveats:
-  - "ngspice transient — generic Ron/Roff SiC switch, datasheet 흡수 아님 (g3)."
-  - "snubber (100 nF · 5 Ω) generic-not-engineered — interrupt_ratio ~0.35 at 1.5 µs not buggy, honest gap."
-  - "measurement_gate = GATE_OPEN 영구 (단일점 sim, device model 미흡수). UL 489I 별도 게이트."
+[cell.analyze]
+substrate         = hexa
+script            = stdlib/sscb/ngspice.hexa
+record_kind       = sscb_transient_record
+output_dir        = exports/sscb/transient
+required_deps     = ngspice
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ngspice transient — generic Ron/Roff SiC switch, datasheet 흡수 아님 (g3).",
+  "snubber (100 nF · 5 Ω) generic-not-engineered — interrupt_ratio ~0.35 at 1.5 µs not buggy, honest gap.",
+  "measurement_gate = GATE_OPEN 영구 (단일점 sim, device model 미흡수). UL 489I 별도 게이트.",
+]
 
 # --- WIRED: synthesize (κ-N ROI rank 1 / dual-substrate) ---------------------
-[synthesize]
-substrate     = python3
-script        = sscb/femmt_sweep.py
-record_kind   = SSCBSynthRecord
-output_dir    = sscb/synthesize
-required_deps = [python3, numpy]      # femmt OPTIONAL — fallback path
-artifacts_expected = [csv, meta]
-marker_prefix = SSCB_FEMMT_RESULT
-summary_stream = merged
-gate_default     = GATE_OPEN
-absorbed_default = false
-fallback:
-  when           = femmt_unavailable
-  producer_label = "analytic_fallback (femmt unavailable)"
-scope_caveats:
-  - "FEMMT 또는 analytic-fallback (gapped-core reluctance, Hagedorn §7.4)."
-  - "B-H curve = N87 textbook ref. lot-drift / DC-bias permeability 0 종 적용."
-  - "Full GetDP/ONELAB FEM solve NOT invoked — analytic estimate = reproducibility anchor."
-  - "absorbed=true 4종 동시 필요: datasheet B-H + bench winding-loss + thermal coupling + measured stray-inductance."
-citations_ref: shared.citations
+[cell.synthesize]
+substrate         = python3
+script            = stdlib/sscb/femmt_sweep.py
+record_kind       = sscb_synthesize_record
+output_dir        = exports/sscb/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "FEMMT 또는 analytic-fallback (gapped-core reluctance, Hagedorn §7.4).",
+  "B-H curve = N87 textbook ref. lot-drift / DC-bias permeability 0 종 적용.",
+  "Full GetDP/ONELAB FEM solve NOT invoked — analytic estimate = reproducibility anchor.",
+  "absorbed=true 4종 동시 필요: datasheet B-H + bench winding-loss + thermal coupling + measured stray-inductance.",
+]
 
 # --- WIRED: verify (κ-N ROI rank 2 / breaking-capacity bolted-fault) ---------
-[verify]
-substrate     = python3
-script        = sscb/ngspice_breaking.py
-record_kind   = SSCBVerifyRecord
-output_dir    = sscb/verify
-required_deps = [python3]              # script uses only stdlib + ngspice
-artifacts_expected = [netlist, log, data, meta]
-marker_prefix = SSCB_BREAKING_RESULT
-summary_stream = merged
-gate_default     = GATE_OPEN
-absorbed_default = false
-scope_caveats:
-  - "ngspice bolted-fault — generic Ron/Roff SiC, R_fault = 0.01 Ω generic short."
-  - "OpenFOAM thermal-margin INTENTIONALLY skipped (heavy → handoff note); no silent thermal claim."
-  - "UL 489I = accredited-lab type-test, NOT SPICE. Verdict = first honest witness, NOT regulatory verify."
-  - "Stage 4 absorbed=true requires C3M0021120K .lib + bench load + DEVSIM + measured stray-L + OpenFOAM + UL 489I — none here."
+[cell.verify]
+substrate         = python3
+script            = stdlib/sscb/ngspice_breaking.py
+record_kind       = sscb_verify_record
+output_dir        = exports/sscb/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ngspice bolted-fault — generic Ron/Roff SiC, R_fault = 0.01 Ω generic short.",
+  "OpenFOAM thermal-margin INTENTIONALLY skipped (heavy → handoff note); no silent thermal claim.",
+  "UL 489I = accredited-lab type-test, NOT SPICE. Verdict = first honest witness, NOT regulatory verify.",
+  "Stage 4 absorbed=true requires C3M0021120K .lib + bench load + DEVSIM + measured stray-L + OpenFOAM + UL 489I — none here.",
+]
 
 # --- UNWIRED: specify (template scaffold per firmware-stub pattern) ----------
-[specify]
-substrate     = python3
-script        = sscb/specify.py       # NOT YET PRESENT — honest-skip
-record_kind   = SSCBSpecifyRecord
-output_dir    = sscb/specify
-gate_default     = GATE_OPEN
-absorbed_default = false
-unwired       = true                  # tier-2 key — substrate missing OK; emit honest-gap message
-honest_skip_message: "sscb + specify scaffold pending — requirements.json template producer 미작성. domains/sscb.md §1 (HEXA-SSCB mk1 spec) 가 SSOT 후보 — Python wrapper 가 그것을 record JSON 으로 변환하면 됨 (~50 line firmware-stub-style)."
+# Phase A cellrun.hexa has no explicit `unwired = true` key — these
+# cells honest-skip via "script missing" (rc=2) since stdlib/sscb/specify.py
+# does not exist. That IS the honest-gap path until producer lands.
+[cell.specify]
+substrate         = python3
+script            = stdlib/sscb/specify.py
+record_kind       = sscb_specify_record
+output_dir        = exports/sscb/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "sscb + specify scaffold pending — requirements.json template producer 미작성.",
+  "domains/sscb.md §1 (HEXA-SSCB mk1 spec) 가 SSOT 후보 — Python wrapper 가 그것을 record JSON 으로 변환하면 됨 (~50 line firmware-stub-style).",
+]
 
 # --- UNWIRED: structure --------------------------------------------------------
-[structure]
-substrate     = python3
-script        = sscb/structure.py
-record_kind   = SSCBStructureRecord
-output_dir    = sscb/structure
-gate_default     = GATE_OPEN
-absorbed_default = false
-unwired       = true
-honest_skip_message: "sscb + structure pending — BOM tree (SiC switch · gate driver · snubber · busbar · enclosure) producer 미작성. networkx component-graph가 candidate (GridStructure 패턴 reuse)."
+[cell.structure]
+substrate         = python3
+script            = stdlib/sscb/structure.py
+record_kind       = sscb_structure_record
+output_dir        = exports/sscb/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "sscb + structure pending — BOM tree (SiC switch · gate driver · snubber · busbar · enclosure) producer 미작성.",
+  "networkx component-graph가 candidate (GridStructure 패턴 reuse).",
+]
 
 # --- UNWIRED: design ----------------------------------------------------------
-[design]
-substrate     = python3
-script        = sscb/design.py
-record_kind   = SSCBDesignRecord
-output_dir    = sscb/design
-gate_default     = GATE_OPEN
-absorbed_default = false
-unwired       = true
-honest_skip_message: "sscb + design pending — 게이트 드라이버 sizing + busbar layout + thermal margin tradeoff producer 미작성. Synth (femmt magnetics) + Verify (breaking) 사이의 design-space exploration loop가 자연스러운 위치."
+[cell.design]
+substrate         = python3
+script            = stdlib/sscb/design.py
+record_kind       = sscb_design_record
+output_dir        = exports/sscb/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "sscb + design pending — 게이트 드라이버 sizing + busbar layout + thermal margin tradeoff producer 미작성.",
+  "Synth (femmt magnetics) + Verify (breaking) 사이의 design-space exploration loop가 자연스러운 위치.",
+]
 
 # --- UNWIRED: handoff ---------------------------------------------------------
-[handoff]
-substrate     = python3
-script        = sscb/handoff.py
-record_kind   = SSCBHandoffRecord
-output_dir    = sscb/handoff
-gate_default     = GATE_OPEN
-absorbed_default = false
-unwired       = true
-honest_skip_message: "sscb + handoff pending — bench-test plan (bolted-fault rig instrumentation, scope channels, UL 489I lab booking checklist) producer 미작성. firmware/handoff.py 패턴 reuse."
+[cell.handoff]
+substrate         = python3
+script            = stdlib/sscb/handoff.py
+record_kind       = sscb_handoff_record
+output_dir        = exports/sscb/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "sscb + handoff pending — bench-test plan (bolted-fault rig instrumentation, scope channels, UL 489I lab booking checklist) producer 미작성.",
+  "firmware/handoff.py 패턴 reuse.",
+]
