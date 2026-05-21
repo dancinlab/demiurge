@@ -5,9 +5,10 @@
 //
 // The Swift side is a thin spawn-and-witness harness:
 //   1. locate `freecadcmd` (FreeCAD ≥ 1.x bundled with the .app)
-//   2. locate `cockpit/scripts/bipv_freecad.py` (the SSOT for layer
-//      parametrics — kept in lockstep with
-//      `ComponentGeometry.bipv5Layer`)
+//   2. locate `~/core/hexa-lang/stdlib/freecad/bipv.py` (the SSOT
+//      for layer parametrics — kept in lockstep with
+//      `ComponentGeometry.bipv5Layer`; D61 / g_demiurge_pointer_only,
+//      D114 Phase C landed the actual file in hexa-lang)
 //   3. spawn `freecadcmd <script> --pass <output_dir>` and capture the
 //      merged stdout/stderr stream
 //   4. parse the `BIPV_FREECAD_RESULT <json>` summary line (the Python
@@ -156,9 +157,9 @@ public enum FreeCADBIPVProducer {
                 totalThicknessMM: nil, layerCount: nil)
         }
         guard let script = locateScript() else {
-            lines.append("⏳ engine tool gap — bipv_freecad.py 스크립트를 "
-                + "찾지 못했습니다 (cockpit/scripts/). 절차 placeholder 로 "
-                + "fallback (g3).")
+            lines.append("⏳ engine tool gap — bipv.py 스크립트를 "
+                + "찾지 못했습니다 (~/core/hexa-lang/stdlib/freecad/). "
+                + "절차 placeholder 로 fallback (g3).")
             return FreeCADBIPVResult(
                 ok: false, lines: lines, artifacts: [:],
                 freecadVersion: nil, geometryId: nil,
