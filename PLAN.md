@@ -4716,3 +4716,97 @@
   G32 closure 로 critical-path 가 G33 으로 deepen — G32 pre-code decision
   gate 가 다음 first-flip 작업 (Aura/EEG MeasuredOracleRef · 2-4 session
   est) 의 entry point.
+
+- 2026-05-22 — **phase κ-69 — G33 LANDED · D117 2nd cell first-flip
+  (Aura/EEG · PhysioNet Sleep-EDF SC4001E0 · MNE Welch boxcar single-
+  segment ≈ hexa-native `dft_naive.hexa` periodogram · normalisation-
+  removed numeric-equivalence PASS) · κ-69 R8 4/4 CLOSURE**. κ-68 G29
+  / D110 의 동형 mirror — 두번째 cell `absorbed=true` legitimate flip.
+  D115 5-fold lock-in 위 실 measurement land:
+  - **measurement honest disclosure**: `mean_rel_err = 8.40e-07` ·
+    `max_rel_err = 2.79e-06` over N=100 30-s Wake/REM epochs · subject
+    SC4001E0 (Sleep-EDF Cassette · channel EEG Fpz-Cz · sfreq 100 Hz ·
+    hypnogram-stage-filtered) · alpha-band 8-13 Hz integrated PSD ·
+    median_scale 6.67e-06 · PASS threshold 0.05. PASS 는 ~5 orders
+    below threshold — D110 의 marginal 0.04988 와 *근본적으로 다른
+    shape*: MNE `psd_array_welch(n_fft=N, window=boxcar, n_per_seg=N,
+    n_overlap=0)` 가 single-segment boxcar periodogram 으로 reduce
+    되어 hexa-native naive DFT 와 *같은 mathematical operation* (다른
+    정규화) · median-ratio scale-removal 후 residual 은 IEEE-754
+    rounding 수준. 본 PASS = "hexa-native dft_naive 의 numeric
+    fidelity = MNE Welch boxcar-mode 의 numeric fidelity 와 동등"
+    statement (`pilot-dft_naive` 17/17 PASS κ-65 substrate-parity
+    floor 의 *real EEG diverse-epoch 위 확장 evidence*). D117 = honest
+    disclosure 박제 (scope_caveats 3 lines · normalisation 차이 cite ·
+    D110 predict-vs-measure shape 과 분리).
+  - **G33 exit criterion 3 가지 모두 충족**:
+    (1) second cell `absorbed=true` flip + rationale D-block (D117) 박제;
+    (2) `MeasuredOracleRef` field 가 `AuraVerifyRecord` 에 land (schema
+    generalization · 1 줄 + CodingKey 1 줄 · G28 EnergyVerifyRecord 1:1
+    mirror); (3) XCTest invariant 가 새 cell 에 auto-extend — `Absorbed
+    NeedsMeasuredOracleTests.testAuraVerifyRecordCoveredByInvariantNoCode
+    Change` 추가 · invariant helper code 변경 0 · `invariantHolds
+    (absorbed, measuredOracle, isIllustrativePhysics)` shape 이
+    record-type-agnostic 으로 설계되어 second carrier auto-conform
+    confirmed (κ-69 R8 generalization audit).
+  - **cross-repo artifacts**:
+    - **hexa-lang `k69-g33-aura-firstflip`** (worktree): `stdlib/aura/
+      sleep_edf_fetcher.py` (PhysioNet anonymous-HTTPS + EDF parse +
+      Wake/REM hypnogram-stage-filter + 30-s epoch sidecar · D86 floor
+      · CLI/env-var · no hardcoded path) · `stdlib/aura/sleep_edf_
+      measured_oracle.py` (4-stage producer · fetcher → MNE Welch
+      bridge → hexa-native dft batch → JSON emit with absorbed gate) ·
+      `stdlib/aura/_dft_alpha_band_batch.hexa` (sibling of `_solar_
+      position_batch.hexa` · CLI argv ASCII sidecar + epoch geometry ·
+      stdout 1 alpha-band power per epoch).
+    - **demiurge** (이 worktree): `cockpit/Sources/DemiurgeCore/Models/
+      AuraVerifyRecord.swift` (+ `measuredOracle` field) · `cockpit/
+      Tests/DemiurgeCoreTests/HexaNativeAbsorbedTests.swift` (memberwise
+      init 보충) · `cockpit/Tests/DemiurgeCoreTests/AbsorbedNeedsMeasured
+      OracleTests.swift` (+ auto-extension test) · `exports/aura/verify/
+      2026-05-22T01-20-10Z/aura_verify_20260521T162010Z_sleep_edf_
+      measured_oracle.json` (real record · 8 measured_oracle field +
+      absorbed=true + GATE_CLOSED_MEASURED) · `design.md` D117 ·
+      `ARCH.md` §11.4 G33 `[x]` flip · 본 PLAN entry.
+  - **κ-69 R8 closure 박제**: G31 [x] (`84d4f66` G31a ultimate-form
+    parity + G31β producer integration `hexa-lang PR #263 8eec8e7`) ·
+    G32 [x] (`234fb80` D115 2nd cell pick) · G33 [x] (본 cycle D117
+    2nd cell first-flip) · G34 [x] (`3338e2c` governance row · 같은
+    cycle as G31). R8 = 4/4 LANDED (κ-68 = 5/5 LANDED · κ-69 = 4/4
+    LANDED · per-cell measured-oracle round 가 *두번째 cell* 까지
+    schema-half + first-flip + invariant-auto-extension 모두 박제).
+    RFC 013 §6.11 status 변경 0 (`LANDED 2026-05-21` 유지 · κ-69 R8
+    는 same-invariant 의 second-instance generalization audit · RFC
+    status 자체는 미flip · narrative cross-link만 add via D117).
+  - **수정 파일** (이 cycle · demiurge 측): `design.md` (D117 신설 ·
+    180 line) · `ARCH.md` (§11.4 G33 row `[ ]` → `[x]` + 3 exit
+    criterion checkbox · measured numbers cite) · `cockpit/Sources/
+    DemiurgeCore/Models/AuraVerifyRecord.swift` (+ 2 줄: field +
+    CodingKey) · `cockpit/Tests/DemiurgeCoreTests/HexaNativeAbsorbed
+    Tests.swift` (+ `measuredOracle: nil` 2 occurrence · memberwise
+    init 보충) · `cockpit/Tests/DemiurgeCoreTests/AbsorbedNeedsMeasured
+    OracleTests.swift` (+ `testAuraVerifyRecordCoveredByInvariantNoCode
+    Change` ~50 line · second-carrier auto-extension 박제) ·
+    `exports/aura/verify/2026-05-22T01-20-10Z/aura_verify_*_sleep_edf_
+    measured_oracle.json` (real record · 3711 byte · D110 mirror
+    artifact 1.) · `PLAN.md` (본 entry).
+  - **next horizon (κ-70+)**: open · TBD. 후보 axes:
+    - Hann window + Welch averaging hexa-native port (D80 ultimate-
+      form runtime · 본 D117 의 caveat 강화 path · Aura/EEG predict-
+      axis honesty elevate).
+    - Cooley-Tukey radix-2 FFT hexa-native port (dft_naive.hexa header
+      의 next-pilot · O(N²) → O(N log N)).
+    - 다른 cell measured-oracle round (Energy/wind · Ufo/plasma non-
+      illustrative · Chip §B substrate-axis Tier-1/2/3 잔여).
+    - Multi-subject Sleep-EDF aggregate (D115 default = single subject
+      · multi-subject + multi-day variability horizontal extension).
+  g3 — κ-69 closure 박제 (R8 4/4 LANDED) 는 새 cell flip 1 (Aura/EEG
+  · 본 D117) + 새 측정 1 (real Sleep-EDF data N=100 epochs) + 기존
+  invariant code 변경 0 + 기존 cell 회귀 0. D117 의 honest disclosure
+  (numeric-equivalence PASS shape vs D110 predict-vs-measure PASS
+  shape) 는 정직성 floor 의 핵심 — 본 PASS 가 modeled signal-
+  processing chain (Hann · Welch · multi-segment overlap) 의
+  prediction-axis honesty 를 입증하는 것은 *아님*. κ-70+ scope 의
+  Hann/Welch hexa-native port 후 본 record 의 caveat shape 이 강화
+  (현재 scope_caveats 3 lines 가 더 narrow disclosure 로 진화). κ-69
+  R8 의 자연 끝 — 다음 round (κ-70) 은 별 cycle 의 별 decision.

@@ -1,0 +1,35 @@
+{
+  "absorbed": true,
+  "citations": [
+    "demiurge design.md D115 \u2014 \u03ba-69 G32 cell-pick lock-in (Aura/EEG \u00b7 PhysioNet Sleep-EDF \u00b7 5-fold)",
+    "demiurge design.md D117 \u2014 \u03ba-69 G33 first-flip (this record's anchor \u00b7 D110 mirror)",
+    "demiurge proposals/rfc_013_hexa_native_parity_connection.md \u00a76.11 \u2014 per-cell measured-oracle parity round",
+    "PhysioNet Sleep-EDF Expanded v1.0.0 (doi:10.13026/C2X676 \u00b7 CC-BY)",
+    "MNE-Python 1.12.1 \u00b7 `mne.time_frequency.psd_array_welch`"
+  ],
+  "domain": "aura",
+  "falsifiers": null,
+  "hexa_native_parity": null,
+  "kind": "sleep_edf_alpha_band_psd_measured_oracle",
+  "lattice_invariant": null,
+  "measured_oracle": {
+    "dataset_caveats": "N=100 30-s Wake/REM epochs from single subject SC4001E0 (Sleep-EDF Cassette \u00b7 channel EEG Fpz-Cz \u00b7 sfreq=100.0 Hz \u00b7 hypnogram-stage-filtered to Wake+REM where alpha is most prominent). modeled = HEXA-NATIVE `dft_naive.hexa` (naive O(N\u00b2) DFT \u00b7 `pilot-dft_naive` 17/17 PASS @ rel_err \u2264 1e-12 vs math-only Python companion) on 3000-sample full-epoch periodogram; alpha-band integration sums |X[k]|\u00b2 over bins f_k \u2208 [8.0, 13.0] Hz. measured oracle = MNE Welch PSD (1.12.1) on same epoch with n_fft=N, window=boxcar (single-segment periodogram). MNE applies 1/(fs\u00b7N) normalisation that the naive hexa DFT does not; we remove this CONSTANT scale by a single global median-ratio rescale (median_scale=6.66667e-06) and report the residual relative error \u2014 this is the same normalisation-invariant comparison shape used when two PSD estimators differ only in a common scale factor. NO per-epoch tuning.",
+    "dataset_citation": "https://physionet.org/content/sleep-edfx/1.0.0/ (doi:10.13026/C2X676 \u00b7 CC-BY)",
+    "max_rel_err": 2.793309380693124e-06,
+    "mean_rel_err": 8.404909431723721e-07,
+    "oracle_source": "PhysioNet Sleep-EDF Expanded v1.0.0 \u00b7 subject SC4001E0 \u00b7 channel EEG Fpz-Cz \u00b7 100 \u00d7 30-s Wake/REM epochs \u00b7 MNE Welch alpha-band (8-13 Hz) integrated PSD oracle",
+    "sample_count": 100,
+    "threshold": 0.05,
+    "unit": "V^2 (relative \u00b7 scale-normalised)"
+  },
+  "measurement_gate": "GATE_CLOSED_MEASURED",
+  "producer": "sleep_edf_measured_oracle",
+  "scope_caveats": [
+    "single Sleep-EDF Cassette subject (SC4001E0); mean rel_err over 100 Wake/REM 30-s epochs (channel EEG Fpz-Cz \u00b7 sfreq=100.0 Hz \u00b7 alpha 8-13 Hz integrated power) vs MNE-Welch PSD oracle. modeled = HEXA-NATIVE `dft_naive.hexa` naive O(N\u00b2) DFT on full 3000-sample epoch periodogram (no Hann \u00b7 no Welch segment averaging \u2014 substrate-parity 17/17 PASS @ rel_err \u2264 1e-12 vs math-only Python companion at \u03ba-65 pilot-dft_naive).",
+    "MNE Welch PSD applies 1/(fs \u00b7 N \u00b7 \u03a3w\u00b2/N) normalisation that the naive hexa DFT does not. Removed by a SINGLE GLOBAL median-ratio rescale (median_scale=6.66667e-06). Per-epoch rel_err uses the rescaled hexa-side intensity so the comparison is invariant to that common scale; residual differences therefore reflect bin-by-bin alpha-band content differences (Hann window's spectral leakage smoothing in MNE vs naive boxcar in hexa DFT \u2014 both honest periodogram variants).",
+    "Welch averaging + window choice = bridge stack (MNE Welch PSD substrate-parity TRUSTED \u2014 community-validated signal-proc \u00b7 same trust role pvlib Ineichen plays in \u03ba-68 G29 / D109). The hexa-native scope for \u03ba-69 G33 is `dft_naive.hexa` alone (D115 explicit decision); a Hann + Welch averaging hexa-native port is a follow-on axis."
+  ],
+  "skipped_reason": null,
+  "stamp": "20260521T162010Z",
+  "verb": "verify"
+}

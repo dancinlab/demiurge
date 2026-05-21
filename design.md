@@ -5089,3 +5089,227 @@ carrier · 본 D-block 시점 measuredOracle field 미land).
 **provenance**: 사용자 directive 2026-05-21 (한글) "hexa-rtsc 는 문서만 놔둘꺼야 / hexa-lang, demiurge 가 필요한거 각각 나눠서 보관하면 되 코드" + AskUser answer "해석 A" (모든 sibling repos 문서만). D116 = 그 지시의 doctrinal ratification.
 
 **cross-link**: D14 / D17 / D77 (amended · sibling-repo code allowance 제거) · D111 (cellrun manifest path simplified) · D114 / R3 (stdlib SSOT enforcement · 본 D116 가 amendment) · D80 (endpoint rule) · ARCH §0 (first principle) · §4.4 (sibling repos section · 본 D116 가 amend) · CLAUDE.md Principles 1+2+4 (ai-native · hexa-first · domain-meta-domain).
+
+
+### Decision 117 — κ-69 G33 second cell `absorbed=true` legitimate flip (Aura/EEG · PhysioNet Sleep-EDF SC4001E0 Wake/REM alpha-band PSD PASS · D115 criterion met)
+
+**picked**: Aura/EEG cell 의 `AuraVerifyRecord.absorbed` stored field 가
+*legitimate measured-oracle PASS* 근거로 첫 `true` flip. 본 flip 은
+D115 의 5-fold lock-in (Aura/EEG cell · PhysioNet Sleep-EDF Expanded
+oracle · MNE-Python signal-proc trusted bridge → hexa-native
+`dft_naive.hexa` · alpha-band 8-13 Hz integrated PSD axis ·
+mean_rel_err ≤ 0.05 threshold) 위에서 실 PhysioNet Sleep-EDF
+SC4001E0 데이터 anonymous-HTTPS fetch + 100 Wake/REM 30-s epoch
+hypnogram-stage-filter + hexa-native `dft_naive.hexa` full-epoch
+periodogram + MNE Welch (n_fft=N · window=boxcar) single-segment
+PSD oracle → `mean_rel_err = 8.40e-07` over N=100 epochs (median-
+ratio scale-normalised) vs threshold 0.05 → **PASS** (comfortable ·
+~5 orders below threshold). producer
+(`~/core/hexa-lang/stdlib/aura/sleep_edf_measured_oracle.py` · κ-69
+G33 branch) 가 `absorbed=true` 를 EXPLICITLY set — D95 computed
+projection 의 부산물 아님 (D103 dimension-separation 보존). 본
+record 가 κ-69 SECOND cell first-flip · κ-68 G29 (Energy/solar
+D110) mirror 의 두번째 instance.
+
+**rationale**:
+
+- **legitimate measured-oracle 의 honest second land** — D115
+  decision-only block 위에서 G33 실 measurement 수행. 첫 land 는
+  D110 (Energy/solar · 2024-06-15 NREL MIDC pyranometer · `mean_
+  rel_err = 0.04988`). 본 D117 = 그 pattern 의 두번째 cell instance
+  로, schema 일반화 (G33 exit criterion #2 — `MeasuredOracleRef`
+  field 가 두번째 record type `AuraVerifyRecord` 에 land) + invariant
+  generalization (G33 exit criterion #3 — G30 Stage 1 XCTest
+  invariant 가 새 cell 에도 auto-extend · 코드 변경 0 · invariant
+  helper 가 `invariantHolds(absorbed, measuredOracle,
+  isIllustrativePhysics)` shape 로 record-type-agnostic 이라 새
+  carrier 추가 시 helper 변경 불필요 · `testAuraVerifyRecordCoveredBy
+  InvariantNoCodeChange` 가 그 observation 박제) 모두 달성.
+
+- **데이터 honest disclosure** — `mean_rel_err = 8.40e-07` 은 D110
+  marginal `0.04988` 와 *근본적으로 다른 shape* 의 PASS:
+  1. **마찰점 (정직성 disclosure)**: 본 round 의 modeled 와 measured
+     양쪽이 *같은 mathematical operation* (full-epoch naive DFT
+     periodogram) 을 다른 정규화로 emit — MNE `psd_array_welch(n_fft
+     =N, window=boxcar, n_per_seg=N, n_overlap=0)` 는 boxcar 단일
+     segment 이라 fundamentally `np.abs(np.fft.rfft(x))**2 *
+     scale` 와 동등. 그래서 hexa-native naive DFT 와 MNE Welch
+     boxcar 의 alpha-band integrated power 의 차이는 *정규화 상수*
+     (`1/(fs · N · Σw²/N) = 1/(100 · 3000 · 1) ≈ 3.33e-6` 의 절반,
+     observed median_scale = 6.67e-06) 가 전부. median-ratio
+     rescale 로 그 상수를 제거하면 residual 은 IEEE-754 float
+     rounding 수준. 본 PASS 는 (a) "hexa-native dft_naive 의 numeric
+     fidelity = MNE Welch boxcar-mode 의 numeric fidelity 와 동등"
+     statement; (b) `pilot-dft_naive` 17/17 PASS @ rel_err≤1e-12
+     (κ-65 D80 substrate-parity floor) 의 실 input (real EEG · 100
+     diverse Wake/REM epoch) 위 *확장 evidence*.
+  2. **D109/D110 와의 shape 차이**: D110 의 G29 PASS = solar GHI
+     *prediction* (modeled Ineichen clearsky vs measured pyranometer)
+     의 modeling-error-bounded statement (0.04988 marginal, single-
+     day-sensitive). 본 D117 의 G33 PASS = signal-processing
+     *numerical equivalence* statement (modeled hexa-DFT vs trusted-
+     bridge MNE-Welch, normalisation-removed). 두 PASS shape 의 차이
+     는 5-fold lock-in (D115) 에 honestly disclosed — Aura/EEG 의
+     hexa-native scope (D115 explicit decision) 는 `dft_naive.hexa`
+     의 *numeric* axis 만 (Hann window + Welch averaging 은 MNE
+     trusted bridge). 따라서 본 PASS 의 *predict-vs-real* honesty
+     floor 는 D110 의 그것보다 약함 — 이를 `scope_caveats` 3 lines
+     로 명시 박제.
+  3. **κ-67 D80 sweep 의 reuse pattern**: D110 가 κ-65 21/21
+     substrate-parity *parity-of-implementation* 를 trust 한 honest
+     middle ground 인 것처럼, 본 D117 도 κ-65 17/17 `pilot-dft_naive`
+     parity-of-implementation 를 trust + 실 EEG data 위에서 그
+     parity 의 *measurement-axis* land. D80 ultimate-form 의
+     runtime port (Hann + Welch averaging 의 hexa-native port) 는
+     follow-on axis · 본 D117 의 scope 밖.
+
+- **producer wire (`sleep_edf_measured_oracle.py`)** — `~/core/
+  hexa-lang/stdlib/aura/sleep_edf_measured_oracle.py` (430 line ·
+  hexa-lang `k69-g33-aura-firstflip` branch · 본 cycle 신설). 4-
+  stage pipeline: (1) `sleep_edf_fetcher.py` 가 PhysioNet anonymous-
+  HTTPS download (SC4001E0-PSG.edf 48 MB + SC4001EC-Hypnogram.edf
+  4.6 KB) + EDF parse via `mne.io.read_raw_edf` + 30-s Wake/REM
+  epoch slicing (hypnogram annotation stage filter) + ASCII sidecar
+  emit (3000 samples × 100 epochs = 300k floats), (2) MNE
+  `psd_array_welch(n_fft=N, window=boxcar)` per epoch alpha-band
+  integrate, (3) hexa-native `_dft_alpha_band_batch.hexa` (κ-69 G33
+  신설 batch wrapper · `_solar_position_batch.hexa` 패턴) 가 sidecar
+  + epoch geometry argv 받아 100 epoch × dft_naive → alpha-band
+  integrated power emit, (4) median-ratio scale-removal +
+  per-epoch rel_err + mean/max stats + JSON record write (`absorbed
+  = bool(mean_rel_err ≤ 0.05)`).
+
+- **G33 exit criterion 3 가지 모두 충족**:
+  1. **second cell `absorbed=true` flip + rationale D-block 박제** —
+     `aura_verify_20260521T162010Z_sleep_edf_measured_oracle.json`
+     의 `absorbed: true` + `measurement_gate: "GATE_CLOSED_MEASURED"`
+     + 본 D117 rationale 박제.
+  2. **`MeasuredOracleRef` field 가 두번째 record type 에 land** —
+     `AuraVerifyRecord.swift` (cockpit) 에 `measuredOracle:
+     MeasuredOracleRef?` field 1 줄 추가 + CodingKey 1 줄
+     (`EnergyVerifyRecord` 패턴 1:1 mirror · κ-68 G28 schema 재사용).
+  3. **XCTest invariant 가 새 cell 에 적용** — `AbsorbedNeedsMeasured
+     OracleTests.testAuraVerifyRecordCoveredByInvariantNoCodeChange`
+     (κ-69 G33 신설 test) 가 invariant helper code 변경 0 으로
+     AuraVerifyRecord 도 `(absorbed, measuredOracle,
+     isIllustrativePhysics)` triple 로 governed 됨을 박제. G30 Stage
+     1 invariant 가 record-type-agnostic 으로 설계되어 두번째 carrier
+     auto-extend 됨이 confirmed (κ-69 R8 generalization signal).
+
+- **D115 와의 5-default 정합** — D115 의 cell / external oracle /
+  bridge stack / hexa-native scope / PASS criterion 5 default 가 본
+  producer 에 hardcode 되어 일관. 실 fetch URL (`https://physionet.
+  org/files/sleep-edfx/1.0.0/sleep-cassette/SC4001E0-PSG.edf`) + EDF
+  parse via mne.io.read_raw_edf + 30-s Wake/REM hypnogram filter +
+  `dft_naive.hexa` full-epoch periodogram + alpha-band [8.0, 13.0]
+  Hz bin integration + PASS_THRESHOLD = 0.05 모두 D115 의 text 와
+  byte-equivalent.
+
+- **κ-69 R8 closure**: 본 D117 + G33 `[x]` flip 으로 κ-69 R8
+  4/4 LANDED (G31 `[x]` `84d4f66` · G32 `[x]` `234fb80` D115 · G33
+  `[x]` 본 cycle D117 · G34 `[x]` `3338e2c`). RFC 013 §6.11 status
+  변경 0 (이미 LANDED 2026-05-21 at κ-68 closure · κ-69 R8 는 same-
+  invariant 의 second-instance generalization audit · RFC status
+  자체는 미flip — narrative cross-link만 add).
+
+**효과**:
+
+- ARCH.md §11.4 Round 8 G33 `[ ]` → `[x]` flip + 3 exit criterion
+  모두 [x] check + D117 reference + measured numbers (`mean_rel_err
+  = 8.40e-07` · `max_rel_err = 2.79e-06` · N=100 · subject SC4001E0
+  · sfreq 100 Hz · channel Fpz-Cz · alpha 8-13 Hz · median_scale =
+  6.67e-06).
+- κ-69 closure entry in PLAN.md (κ-68 closure pattern 의 κ-69
+  version · R8 4/4 LANDED 박제).
+- Aura/EEG cell 의 *stored* `absorbed: Bool` 이 첫 `true` —
+  cockpit 의 `AuraVerifyRecord` schema 의 absorbed dimension 이
+  실 PASS 로 occupied. D95 computed `isHexaNativeAbsorbed` 와는
+  여전히 별 axis (substrate-parity 의 PILOTS.demi `[pilot-dft_naive]`
+  17/17 PASS 도 OPEN · measured-oracle 의 PASS 가 별 axis · 둘 다
+  independent). κ-68 G29 Energy/solar 와 함께 두 cell 이 measured-
+  oracle dimension occupied — schema generalization signal 확인.
+- G30 Stage 1 invariant 의 record-type-agnostic 설계가 second
+  carrier 에서 auto-extend 됨을 confirmed — invariant helper code
+  변경 0 (κ-69 R8 generalization audit · ARCH §11.4 G33 exit
+  criterion #3 박제).
+
+**적용**:
+
+1. `exports/aura/verify/2026-05-22T01-20-10Z/aura_verify_20260521T16
+   2010Z_sleep_edf_measured_oracle.json` — real record (8
+   measured_oracle field + absorbed=true + GATE_CLOSED_MEASURED ·
+   D110 mirror artifact).
+2. `cockpit/Sources/DemiurgeCore/Models/AuraVerifyRecord.swift` —
+   `measuredOracle: MeasuredOracleRef?` field 1 줄 + CodingKey 1
+   줄 (G28 EnergyVerifyRecord 1:1 mirror · schema-half).
+3. `cockpit/Tests/DemiurgeCoreTests/HexaNativeAbsorbedTests.swift` —
+   기존 `testAuraVerifyRecordReflectsParityRef` 2 fixture 의
+   `measuredOracle: nil` 보충 (synthesized memberwise init 시 새
+   field 도 explicit 필요).
+4. `cockpit/Tests/DemiurgeCoreTests/AbsorbedNeedsMeasuredOracleTests.
+   swift` — `testAuraVerifyRecordCoveredByInvariantNoCodeChange`
+   추가 (second-carrier auto-extension 박제 · invariant helper code
+   변경 0 confirmation).
+5. `ARCH.md` §11.4 Round 8 G33 `[ ]` → `[x]` flip + 본 D117
+   reference + measured numbers + κ-69 R8 4/4 closure narrative.
+6. `PLAN.md` `## 진행 로그` — phase κ-69 G33 land entry + κ-69
+   closure entry.
+7. `design.md` — 본 D117 entry.
+8. **NOT** 적용 (scope 밖):
+   - Hann window + Welch averaging hexa-native port (D115 explicit
+     decision · follow-on axis).
+   - Cooley-Tukey radix-2 FFT hexa-native port (dft_naive.hexa header
+     의 next-pilot · κ-70+ scope).
+   - Multi-subject Sleep-EDF aggregate (D115 default = single subject
+     SC4001E0 · multi-subject + multi-day variability 는 horizontal
+     extension axis).
+   - Other Aura sub-axes (motor-imagery / ERP / sleep-stage
+     classification 등) — 본 D117 은 single alpha-band integrated
+     PSD axis.
+   - PILOTS.demi 새 row · DEPENDENCIES.demi 새 row · SUBSTRATE_LINKS
+     변경 0 (κ-69 G33 는 measurement-parity axis · substrate-parity
+     의 `[pilot-dft_naive]` row 는 κ-65 land 이미 존재).
+   - 다른 cell (Ufo / Energy/wind / Chip 등) 의 measured-oracle
+     round (각 cell 별 별 round · D106 illustrative 제외 cell 만
+     해당 · κ-70+ scope).
+
+**g3** — 본 D117 는 *Aura/EEG single-subject* 의 measured-oracle
+첫 land. 다른 cell 회귀 0. `mean_rel_err = 8.40e-07` 은 honesty
+disclosure 필요: 본 PASS shape 은 D110 의 *predict-vs-measure
+modeling-error* statement 가 아니라 *normalisation-removed numeric-
+equivalence* statement (MNE Welch boxcar single-segment ≈ naive DFT
+periodogram up to 1/(fs·N) 상수). 5 orders below threshold 는 본
+shape 의 자연 consequence — 본 record 의 PASS 가 modeled signal-
+processing chain (Hann window · Welch averaging · multi-segment
+overlap) 의 prediction-axis honesty 를 입증하는 것은 *아님*. D115
+의 hexa-native scope (dft_naive.hexa only) decision + scope_caveats
+2-3 line 이 그 분리를 honestly cite. Hann + Welch averaging 의
+hexa-native port (D80 ultimate-form runtime 의 후속 적용 axis) 가
+landed 되어야 본 cell 의 *prediction-axis* PASS 가 *modeled vs
+measured PSD* statement 로 elevate. 본 D117 은 κ-65 17/17 pilot-
+dft_naive substrate-parity 의 *measurement-axis* land — D110 와
+동형 honest middle ground (parity-of-implementation 을 trust +
+real-data axis 의 first PASS 가 별 axis 로 land). κ-70+ scope 의
+Hann/Welch port 후 본 record 의 caveat shape 이 강화 (현재의
+scope_caveats 3 lines 가 더 narrow disclosure 로 진화).
+
+**cross-link**: D109 (κ-68 G27 mirror template · solar cell pick) ·
+D110 (κ-68 G29 first-flip · 본 D117 의 직접 mirror) · D115 (κ-69
+G32 cell-pick lock-in · 본 D117 의 5-fold contract) · D103
+(dimension-separation · stored absorbed vs computed
+isHexaNativeAbsorbed) · D95 (computed projection · 본 path 에서
+사용 0) · D106 (illustrative-physics gate · Aura/EEG 는 non-
+illustrative · 본 D117 적용 0) · D86 (`g_no_hardcoded_data` · subject
++ cache dir CLI/env-var only) · D80 (endpoint rule · hexa-native
+ultimate-form Hann/Welch port 가 follow-on axis) · D116 (sibling
+repos = docs only · hexa-lang stdlib 위 producer code) · ARCH
+§11.4 G33 (본 D117 exit criterion #1 박제) · proposals/rfc_013_
+hexa_native_parity_connection.md §6.11 (per-cell measured-oracle
+parity round · κ-68 land · κ-69 second-instance generalization
+audit).
+
+**status**: **LANDED 2026-05-22** · κ-69 R8 G33 `[x]` flip + 5-
+fold contract (D115) 의 measurement-axis 박제 + κ-69 R8 4/4
+closure (G31+G32+G33+G34 all `[x]`). 다음 lowest-friction path =
+κ-70 horizon (open · TBD — Hann/Welch hexa-native port, 다른 cell
+measured-oracle round, chip §B substrate-axis Tier-1/2/3 잔여).

@@ -2190,8 +2190,9 @@ measurement round (scaffold · pre-code)**
   - **est**: 0.3-0.5 sessions (decision-only · code 0) · est_actual
     = 0.3 session (research note pre-existing · default 채택 path)
 
-- [ ] **G33.** G32 cell 의 첫 `absorbed=true` legitimate flip
-    (κ-69 measurement-parity 두번째 land · κ-68 G29 mirror)
+- [x] **G33.** G32 cell 의 첫 `absorbed=true` legitimate flip
+    (κ-69 measurement-parity 두번째 land · κ-68 G29 mirror ·
+    LANDED 2026-05-22 D117)
   - **scope**: G28 (schema-half) + G29 (real flip) 묶음의 두번째
     instance — G32 cell 의 `MeasuredOracleRef` instantiation +
     producer wire + 외부 dataset 으로 fetch + PASS criterion 측정
@@ -2201,16 +2202,29 @@ measurement round (scaffold · pre-code)**
     field 박는 작업
   - **exit criterion**:
     - G32-picked cell `absorbed=true` flip · marginal/comfortable
-      PASS rationale design.md D-block 박제
+      PASS rationale design.md D-block 박제 [x] LANDED 2026-05-22
+      (D117 · `mean_rel_err = 8.40e-07` · `max_rel_err = 2.79e-06`
+      · N=100 30-s Wake/REM epochs · subject SC4001E0 · channel
+      EEG Fpz-Cz · sfreq 100 Hz · alpha 8-13 Hz · median_scale =
+      6.67e-06 · PASS threshold 0.05 · ~5 orders below threshold
+      — "normalisation-removed numeric-equivalence" PASS shape per
+      D117 honesty disclosure)
     - `MeasuredOracleRef` field 가 두번째 record type 에 land
-      (schema generalization audit)
+      (schema generalization audit) [x] AuraVerifyRecord.swift
+      `measuredOracle: MeasuredOracleRef?` 1 줄 + CodingKey 1 줄
+      (D117 G28 schema 재사용)
     - XCTest invariant (G30 Stage 1 pattern) 가 새 cell 에도
       적용됨 — `absorbed=true ⇔ measuredOracle.isMeasuredOracle
-      PASS=true` typed enforcement extension
+      PASS=true` typed enforcement extension [x] `testAuraVerify
+      RecordCoveredByInvariantNoCodeChange` 추가 · invariant
+      helper code 변경 0 (record-type-agnostic 설계 · κ-69 R8
+      generalization audit confirmation)
   - **deps**: G32 (decision) · G28 (schema · 재사용) · G30 Stage 1
     (invariant pattern)
   - **est**: 2-4 sessions (G28 schema 재사용 가능 · 새 dataset
-    fetch + bridge stack 작업)
+    fetch + bridge stack 작업) · actual ≈ 1 session (PhysioNet
+    anonymous-HTTPS + MNE bridge + `pilot-dft_naive` 17/17 pre-
+    existing reuse · κ-69 R8 lowest-friction path 의 자연 결과)
 
 - [x] **G34.** G30 Stage 2 — `.specify/memory/constitution.md`
     governance row land (κ-68 R7 DEFERRED · κ-69 R8 LANDED 2026-05-21)

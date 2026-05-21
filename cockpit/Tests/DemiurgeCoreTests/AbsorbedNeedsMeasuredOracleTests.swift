@@ -173,6 +173,66 @@ final class AbsorbedNeedsMeasuredOracleTests: XCTestCase {
             "G30 invariant MUST fail when stored absorbed=true is auto-flipped from D95 computed (measured nil)")
     }
 
+    // MARK: Test 3a — second carrier (AuraVerifyRecord) auto-extension
+    //
+    // κ-69 G33 audit (D115 second-cell pick · D117 first-flip): the
+    // invariant `invariantHolds(absorbed, measuredOracle,
+    // isIllustrativePhysics)` is record-type-AGNOSTIC by construction —
+    // it consumes the SHAPE (Bool + Optional<MeasuredOracleRef> + Bool)
+    // not a specific Record type. The κ-69 R8 G30-Stage-1 audit
+    // confirms: NO invariant-helper code change was required to extend
+    // the gate to a second carrier; the AuraVerifyRecord whose
+    // `measuredOracle` field landed in this cycle is governed by the
+    // same predicate. This test pins that observation so a future
+    // regression that re-shapes the invariant around EnergyVerifyRecord
+    // specifically will fail loudly.
+
+    func testAuraVerifyRecordCoveredByInvariantNoCodeChange() {
+        // Synth AuraVerifyRecord — substrate parity left nil (κ-69 R8
+        // measurement-axis only), measured-oracle PASS, absorbed=true.
+        let auraPass = AuraVerifyRecord(
+            domain: "aura", verb: "verify",
+            kind: "sleep_edf_alpha_band_psd_measured_oracle",
+            stamp: "20260522T000000Z",
+            producer: "synth@k69_g33_invariant_audit",
+            measurementGate: .closedMeasured,
+            absorbed: true,
+            scopeCaveats: [], citations: [],
+            falsifiers: nil,
+            hexaNativeParity: nil,
+            latticeInvariant: nil,
+            skippedReason: nil,
+            measuredOracle: Self.passOracle())
+
+        XCTAssertTrue(Self.invariantHolds(
+            absorbed: auraPass.absorbed,
+            measuredOracle: auraPass.measuredOracle,
+            isIllustrativePhysics: false),
+            "AuraVerifyRecord with measured PASS must satisfy invariant — second-carrier auto-extension (G30 Stage 1)")
+
+        // Conflation guard — Aura with absorbed=true but measured nil
+        // and non-illustrative MUST fail the invariant.
+        let auraConflated = AuraVerifyRecord(
+            domain: "aura", verb: "verify",
+            kind: "synth_conflation_attempt",
+            stamp: "20260522T000000Z",
+            producer: "synth@d95_conflation",
+            measurementGate: .open,
+            absorbed: true, // <- illegitimate (no oracle, not illustrative)
+            scopeCaveats: [], citations: [],
+            falsifiers: nil,
+            hexaNativeParity: nil,
+            latticeInvariant: nil,
+            skippedReason: nil,
+            measuredOracle: nil)
+
+        XCTAssertFalse(Self.invariantHolds(
+            absorbed: auraConflated.absorbed,
+            measuredOracle: auraConflated.measuredOracle,
+            isIllustrativePhysics: false),
+            "AuraVerifyRecord with absorbed=true + nil measured oracle (and non-illustrative) MUST violate invariant — D103/D109 separation extends to the second carrier")
+    }
+
     // MARK: Test 3 — D106 illustrative cells exempt from measured oracle
 
     func testD106IllustrativeCellExemptFromMeasuredOracle() {

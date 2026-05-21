@@ -32,6 +32,18 @@ public struct AuraVerifyRecord: Codable, Sendable, Equatable {
     /// Lattice invariant audit (G8) — σ·φ = n·τ = J₂ = 24 check.
     public let latticeInvariant: LatticeInvariantResult?
     public let skippedReason: String?
+    /// D115 (κ-69 G32 cell-pick · D109 mirror) · D117 (κ-69 G33 first-
+    /// flip) · RFC 013 §6.11 — external measured-oracle reference.
+    /// Aura/EEG is the κ-69 second cell measured-oracle target
+    /// (PhysioNet Sleep-EDF Expanded alpha-band PSD vs hexa-native
+    /// `dft_naive.hexa` alpha-band PSD). Independent axis from
+    /// `hexaNativeParity` above (D103 dimension-separation). `nil`
+    /// until the per-cell measured-oracle round runs; populated by the
+    /// producer adapter at emit time. The cell's stored `absorbed`
+    /// flip remains a SEPARATE explicit writer action — emitting
+    /// `measuredOracle` non-nil does NOT by itself trigger
+    /// `absorbed = true` (D117 mirror of D110 / G29 land scope).
+    public let measuredOracle: MeasuredOracleRef?
 
     enum CodingKeys: String, CodingKey {
         case domain, verb, kind, stamp, producer
@@ -43,6 +55,7 @@ public struct AuraVerifyRecord: Codable, Sendable, Equatable {
         case hexaNativeParity = "hexa_native_parity"
         case latticeInvariant = "lattice_invariant"
         case skippedReason = "skipped_reason"
+        case measuredOracle = "measured_oracle"
     }
 
     /// D95 — derived absorbed flag (computed, NOT stored).

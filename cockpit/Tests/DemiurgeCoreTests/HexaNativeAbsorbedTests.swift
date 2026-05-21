@@ -228,7 +228,8 @@ final class HexaNativeAbsorbedTests: XCTestCase {
             falsifiers: nil,
             hexaNativeParity: passRef(),
             latticeInvariant: nil,
-            skippedReason: nil)
+            skippedReason: nil,
+            measuredOracle: nil)
         XCTAssertTrue(pass.isHexaNativeAbsorbed)
 
         let nilParity = AuraVerifyRecord(
@@ -241,7 +242,8 @@ final class HexaNativeAbsorbedTests: XCTestCase {
             falsifiers: nil,
             hexaNativeParity: nil,
             latticeInvariant: nil,
-            skippedReason: nil)
+            skippedReason: nil,
+            measuredOracle: nil)
         XCTAssertFalse(nilParity.isHexaNativeAbsorbed)
     }
 
