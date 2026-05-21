@@ -40,18 +40,23 @@ error: clang compile failed — binary not produced
   ... passing 'int' to parameter of incompatible type 'HexaVal'
 ```
 
-**stdlib surface 는 `regex_match` / `regex_match_full` / `regex_search` / `regex_findall` / `regex_split` / `regex_replace` builtin 을 호출, runtime backend (`self/runtime.h` + `runtime.c`) 미land — POSIX `regcomp` / `regexec` 의 builtin glue 가 빠짐.**
+**stdlib surface 는 `regex_match` / `regex_match_full` / `regex_search` / `regex_findall` / `regex_split` / `regex_replace` builtin 을 호출, codegen 도 그대로 emit — 그러나 컴파일이 깨짐.**
 
-### 2.3 Status verdict
+### 2.3 Status verdict — 정정 (2026-05-22 오후)
+
+> **초기 가설 (오진)**: "runtime backend 미land · broken stub". 실제 상태는 *header-only gap*.
+>
+> **재조사 결과** (hexa-lang PR #276 작업 중 발견): `self/runtime.c:10202-10374` 에 **6 builtin 모두 완전 구현돼 있음** — POSIX `regcomp`/`regexec` glue + `(?i)` inline flag → `REG_ICASE` strip 포함. 빌드 실패의 원인은 `self/runtime.h` 에 6 builtin 선언이 빠져서 clang 이 implicit-declaration (`int(...)`) 로 처리 → HexaVal 타입 불일치. **22 LOC header-only fix** 로 해결.
 
 | 계층 | LANDED? | 비고 |
 |---|---|---|
 | Spec (POSIX ERE flavor + `(?i)` inline flag + PCRE translator) | ✅ | mod.hexa 헤더 |
 | stdlib surface (6 pub fn) | ✅ | mod.hexa |
-| Runtime builtin (`hexa_regex_*`) | ❌ | runtime.h 미선언 · runtime.c 구현 부재 |
-| Self-test (`stdlib/regex/regex_test.hexa`) | ❌ | compile blocked on (2) |
+| Runtime implementation (`hexa_regex_*` in `self/runtime.c`) | ✅ | **이미 LANDED · runtime.c:10202-10374 · POSIX regcomp/regexec 완전 구현** |
+| Runtime header declaration (`self/runtime.h`) | ⏳ | hexa-lang PR #276 — 22 LOC fix · 24/24 local PASS · CI queued |
+| Self-test (`stdlib/regex/regex_test.hexa`) | ⏳ | PR #276 머지 후 PASS · 24/24 local verified |
 
-**`stdlib/regex/` = broken stub (API surface 만 land, runtime 미land)** — `.roadmap.stdlib G3` 완성 전까지 caller 가 호출하면 compile error.
+**`stdlib/regex/` = ready (PR #276 머지 대기)** — 머지 시 즉시 caller 사용 가능. 본 audit 의 초기 "broken stub" framing 은 오진.
 
 ## 3. Hand-rolled tokenizer alternative — string-iterator API audit
 
@@ -79,14 +84,18 @@ pub fn repeat / pad_left / pad_right / reverse
 
 P1 (consensus port) 의 ROI 비교: 50 LOC · 1 session · 22/22 parity. P2 hand-rolled (B) 는 280 LOC · 2-3 session · P1 보다 5.6× 비용. 외부 consumer 무 (현재 ASKCOS gate 만 사용) 인 상태에서 **ROI ↓ 명확**.
 
-## 5. 권장 — DEFER (Option C)
+## 5. 권장 — READY (PR #276 머지 대기 · DEFER 정정)
 
-**불러옴**: Phase 4 #2 는 다음 두 조건 중 하나 충족 시 재opens:
+> **2026-05-22 오후 정정**: 초기 권장은 "DEFER" 였지만 hexa-lang regex 의 실제 상태가 *implementation LANDED + header gap* 임이 PR #276 작업 중 밝혀짐. 22 LOC header fix 로 해결 가능 — DEFER 사유 (broken stub) 가 사라짐.
 
-1. **`stdlib/regex/` runtime backend land** (별도 `.roadmap.stdlib G3` cohort 작업) — 그 때 Option A 부활, 110 LOC 1-2 session 비용으로 ROI 회복.
-2. **외부 consumer 출현** — bio cohort 의 protein-formula parser 또는 chem cohort 의 IUPAC-formula parser 가 같은 코드 필요 → 280 LOC 가 ≥2 consumer 에 amortize → Option B 가치 회복.
+**현재 권장**: Phase 4 #2 (C3+C4 ASKCOS parser+classifier 의 110 LOC port) 는 **hexa-lang PR #276 머지 후 즉시 진행 가능**. ROI 평가:
 
-본 deferral 은 anti-pattern 아님 — Phase 3 audit 의 "P2 (~110 LOC, 1-2 sessions, **regex-blocked** — defer if hexa-lang regex absent)" caveat 가 명시한 path 그대로.
+| Option | LOC | session est | unblock |
+|---|---|---|---|
+| A — regex route | ~110 | 1-2 | ⏳ hexa-lang PR #276 머지 (CI queued · 본 세션 OPEN) |
+| B — hand-rolled tokenizer | ~280 | 2-3 | (불필요 — A 가 unblock 임박) |
+
+PR #276 머지 후의 Phase 4 #2 진행 우선순위는 다른 트랙 (κ-69 G33 first-flip · Phase 2 ext 후속 등) 과 비교하여 별도 평가. 즉 *기술적 blocker* 는 해소, *priority decision* 만 남음.
 
 ## 6. R4 invariant 영향
 
@@ -94,14 +103,15 @@ P1 (consensus port) 의 ROI 비교: 50 LOC · 1 session · 22/22 parity. P2 hand
 - N1-N4 의 `absorbed=false 영구` invariant 보존.
 - Phase 4 #1 의 22/22 PASS 와 독립 — 본 deferral 은 *추가* port 의 scope 결정일 뿐.
 
-## 7. Phase progress table update
+## 7. Phase progress table update — 정정 (2026-05-22 오후)
 
-RTSC.md §9.9.1 Phase progress table 의 "Phase 4 #2" row 는 ⏳ PENDING 상태 유지, **prerequisite = `.roadmap.stdlib G3` (regex runtime backend) OR 외부 consumer 출현** 으로 명시 (본 commit 에서 갱신).
+RTSC.md §9.9.1 Phase progress table 의 "Phase 4 #2" row 갱신: ⏳ DEFERRED → ⏳ READY (PR #276 머지 대기). 머지 land 시 즉시 110 LOC port 가능.
 
 ## Anchors
 
 - RTSC.md §9.9.1 Phase 4 (B→A microkernel transition)
 - `inbox/notes/2026-05-21-rtsc-9-phase3-microkernel-audit.md` §C3+C4 (P2 candidate spec)
-- hexa-lang `stdlib/regex/mod.hexa` (surface ✅) + `self/runtime.c` (backend ❌)
+- hexa-lang `stdlib/regex/mod.hexa` (surface ✅) + `self/runtime.c:10202-10374` (impl ✅ 이미 LANDED) + `self/runtime.h` (header gap → PR #276)
+- hexa-lang PR #276 (`regex-runtime-backend` branch · `f90ba2f5` · 22 LOC header fix · 24/24 local PASS · CI queued)
 - hexa-lang `.roadmap.stdlib G3` (regex runtime backend cohort · 2026-05-06)
 - D116 (sibling repos = 문서만 · demiurge=pointer)
