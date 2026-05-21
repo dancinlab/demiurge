@@ -1,0 +1,151 @@
+# matter.demi — verb-cell manifest for the matter (materials) domain
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("matter", verb)
+#
+# UNUSUAL CASE: matter has NO stdlib/matter/ directory in hexa-lang —
+# the real SSOT for materials lives in the sibling repo `~/core/hexa-matter/`
+# (D17 — hexa-matter owns the materials toolkit, demiurge is consumer
+# only). Until a `stdlib/cockpit/cellrun.hexa`-compatible adapter script
+# is dropped under `stdlib/matter/<verb>.py` (or a sibling-repo dispatch
+# path is generalised into the manifest dialect — see ProducerRegistry+
+# Sibling.swift G3+G4 helper for ufo-style sibling cells), every cell in
+# this manifest honest-skips via cellrun rc=2 (script missing).
+#
+# Format: cellrun.hexa Phase A dialect — see firmware.demi header for the
+# spec. Script paths are RELATIVE to ~/core/hexa-lang/.
+#
+# Citations (anchored, not repeated per-cell — see domains/matter/README.md):
+#   - hexa-matter sibling repo SSOT (~/core/hexa-matter/) — closure-invariant
+#     materials sweep aggregator (verify/run_all.hexa)
+#   - D17 g_stdlib_ownership — hexa-matter is OWNER, demiurge is consumer-
+#     pointer only
+#   - κ-30 / D53 historical precedent: MatterAnalyzer.swift was the FIRST
+#     sibling-repo dispatcher in demiurge (commit-pin + per-script gate
+#     decisioning); G3+G4 generalised the pattern to siblingRepoVariant
+#     in ProducerRegistry
+#
+# Domain caveat (applies to every cell):
+# matter = consumer-pointer only (D17). NO Swift simulation of substrate
+# is permitted. Stage 4 absorbed=true gating belongs to hexa-matter's own
+# verify/run_all.hexa aggregator + closure-invariants; demiurge witnesses
+# the PASS, never upgrades the claim. Every cell defaults GATE_OPEN /
+# absorbed=false (g3) until hexa-matter's emitted records carry their
+# own absorption verdict + commit pin.
+
+# --- UNWIRED: specify (hexa-matter sibling-only) ----------------------------
+# Phase A cellrun.hexa: no stdlib/matter/<verb>.py exists → rc=2 honest-skip.
+# Future port: either (a) cellrun.hexa learns a sibling-repo substrate kind
+# (current ProducerRegistry+Sibling.swift G3+G4 helper but at hexa-lang
+# dispatcher level), or (b) thin Python shims under stdlib/matter/<verb>.py
+# that forward to `~/core/hexa-matter/verify/run_all.hexa`.
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/matter/specify.py
+record_kind       = matter_specify_record
+output_dir        = exports/matter/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "matter + specify pending — material-requirements.json (mech / thermal / chemical / electronic targets) producer 미작성.",
+  "hexa-matter sibling repo IS the SSOT (D17); cellrun rc=2 honest-skip until adapter script lands.",
+]
+
+# --- UNWIRED: structure -----------------------------------------------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/matter/structure.py
+record_kind       = matter_structure_record
+output_dir        = exports/matter/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "matter + structure pending — crystal-structure / phase-composition / microstructure topology producer 미작성.",
+  "Materials Project / OQMD database query patterns reuse 후보; pymatgen Structure parser.",
+]
+
+# --- UNWIRED: design --------------------------------------------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/matter/design.py
+record_kind       = matter_design_record
+output_dir        = exports/matter/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "matter + design pending — alloy / composite / heterostructure design-space exploration producer 미작성.",
+  "hexa-matter sibling 의 design surface (ALDS / inverse-design) 가 SSOT 일 가능성.",
+]
+
+# --- UNWIRED: analyze (legacy MatterAnalyzer.swift sibling-repo dispatch) ---
+# Legacy κ-30 / D53 MatterAnalyzer.swift was a sibling-repo dispatcher
+# (~/core/hexa-matter/verify/run_all.hexa spawn). D111 Phase C migration
+# routes (.analyze, "matter") via CellrunDispatch instead — manifest has
+# no stdlib/matter/analyze.py, so honest-skip rc=2. Until either (a) a
+# stdlib/matter/analyze.py shim is added that spawns hexa-matter's
+# run_all.hexa, or (b) cellrun.hexa is taught a sibling-repo substrate
+# kind, this cell is a clear gap (g3 — NEVER silently mark absorbed).
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/matter/analyze.py
+record_kind       = matter_analyze_record
+output_dir        = exports/matter/analyze
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "matter + analyze: legacy MatterAnalyzer.swift κ-30/D53 spawned ~/core/hexa-matter/verify/run_all.hexa (sibling-repo SSOT, D17 owner).",
+  "D111 Phase C: legacy bridge removed → cellrun route via stdlib/matter/analyze.py. Adapter script 미작성 → honest-skip rc=2 (g3).",
+  "Models/MatterRecord.swift preserved for the day the adapter lands (R3 compliance, typed records stay).",
+  "Stage 4 absorbed=true gating belongs to hexa-matter's own aggregator; demiurge witnesses, never upgrades.",
+]
+
+# --- UNWIRED: synthesize ----------------------------------------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/matter/synthesize.py
+record_kind       = matter_synthesize_record
+output_dir        = exports/matter/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "matter + synthesize pending — process recipe (CVD / ALD / MBE / casting) parameter producer 미작성.",
+  "hexa-matter sibling 의 synthesis-route surface (synthesizability scoring) 가 SSOT 후보.",
+]
+
+# --- UNWIRED: verify --------------------------------------------------------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/matter/verify.py
+record_kind       = matter_verify_record
+output_dir        = exports/matter/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "matter + verify pending — measured-property roundtrip (XRD / SEM / DSC / tensile) record producer 미작성.",
+  "wet-lab measurement = hardware-bench cell (future); demiurge witness path needs sibling-repo verify aggregator scaffold.",
+]
+
+# --- UNWIRED: handoff -------------------------------------------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/matter/handoff.py
+record_kind       = matter_handoff_record
+output_dir        = exports/matter/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "matter + handoff pending — material-spec dossier (data-sheet skeleton + supplier list + qualification protocol) producer 미작성.",
+  "firmware/handoff.py 패턴 reuse — SBOM + sign-probe + dossier + audit evidence.",
+]

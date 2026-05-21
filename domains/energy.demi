@@ -1,0 +1,146 @@
+# energy.demi — verb-cell manifest for the energy (renewable + nuclear) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/energy/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("energy", verb)
+#
+# Format: cellrun.hexa Phase A dialect — see firmware.demi header for the
+# spec. Script paths are RELATIVE to ~/core/hexa-lang/.
+#
+# Citations (anchored, not repeated per-cell — see domains/energy.md):
+#   - pvlib-python — Holmgren et al., JOSS doi:10.21105/joss.00884
+#   - PyPSA — Brown · Hörsch · Schlachtberger, JORS 2018 doi:10.5334/jors.188
+#   - HiGHS — Huangfu & Hall, MPC 2018 (open-source LP/MIP solver)
+#   - OpenMC — Romano et al., Annals of Nuclear Energy 2015 (MC k-eff)
+#   - NREL SAM (System Advisor Model) — pvlib CEC SAPM verified
+#   - G29 (hexa-lang) — solar-position + Ineichen clearsky absorbed kernel
+#     (G29 G31 G31β — hexa-lang stdlib/energy/_solar_position_*.hexa +
+#      _ineichen_clearsky_batch.hexa, first cell flipped absorbed=true
+#      LANDED κ-68; pvlib pyranometer parity at rel_err ≤ 1e-13 from
+#      pilot-solar PILOTS.demi row)
+#
+# Domain caveat (applies to every cell):
+# energy = adapter-only D72 for renewable + nuclear paths; PyPSA promotes
+# to `kernels/power_opt/` at 2nd power-system consumer (currently solo).
+# OpenMC shares `kernels/mc_transport/` with fusion+verify (D72 2nd consumer)
+# and antimatter+verify (4th consumer; clearest N+M payoff).
+# Most cells default GATE_OPEN / absorbed=false (g3): clear-sky upper-bound +
+# textbook LP inputs + textbook MC inputs are not measured-grid / measured-
+# plant / measured-reactor claims. EXCEPTION: G29 solar-position +
+# Ineichen-clearsky kernel HAS flipped absorbed=true at PILOTS.demi
+# pilot-solar row (κ-68 first-cell flip LANDED) — that is the hexa-lang
+# stdlib's own absorption claim, demiurge witnesses via pvlib parity.
+
+# --- UNWIRED: specify -------------------------------------------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/energy/specify.py
+record_kind       = energy_specify_record
+output_dir        = exports/energy/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "energy + specify scaffold pending — energy-system-requirements.json (load profile · capacity targets · resource availability · regulatory band) producer 미작성.",
+  "domains/energy.md §1 가 SSOT 후보 — Python wrapper 가 record JSON 으로 변환.",
+]
+
+# --- UNWIRED: structure -----------------------------------------------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/energy/structure.py
+record_kind       = energy_structure_record
+output_dir        = exports/energy/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "energy + structure pending — generator-fleet topology / storage-fleet BoM producer 미작성.",
+  "grid+structure (NetworkX IEEE 14-bus) 와 다름 — energy 는 generation portfolio, grid 는 transmission backbone.",
+]
+
+# --- UNWIRED: design --------------------------------------------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/energy/design.py
+record_kind       = energy_design_record
+output_dir        = exports/energy/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "energy + design pending — site-layout / CAPEX-OPEX tradeoff / LCOE design-space exploration producer 미작성.",
+  "PyPSA-Earth dataset patterns reuse 후보 (open data, GeoJSON).",
+]
+
+# --- WIRED: analyze (pvlib clear-sky + CEC SAPM) ----------------------------
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/energy/pvlib_clearsky.py
+record_kind       = energy_analyze_record
+output_dir        = exports/energy/analyze
+required_deps     = python3, pvlib
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "pvlib (Holmgren et al. JOSS 2018) IS the instrument — NREL SAM-verified algorithms; 1-year hourly clear-sky Phoenix AZ standard CEC module + inverter.",
+  "clear-sky == UPPER BOUND — zero atmospheric attenuation by clouds / aerosols / smoke / soiling; real plant yield 60–85 % of this depending on site / season.",
+  "ZERO sky-measured irradiance data was used — input is the Ineichen clear-sky model, not pyranometer measurements (those would belong to a hardware-bench cell).",
+  "G29 hexa-lang substrate (_solar_position_batch.hexa + _ineichen_clearsky_batch.hexa) parity at rel_err ≤ 1e-13 vs pvlib (PILOTS.demi pilot-solar row, κ-68 absorbed=true flip LANDED) — but absorbed=true is the kernel's claim, not this Python adapter's.",
+  "measurement_gate = GATE_OPEN permanently — clear-sky upper bound is not a measured-yield absorption claim (g3).",
+]
+
+# --- WIRED: synthesize (PyPSA + HiGHS capacity expansion LP) ----------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/energy/pypsa_capacity.py
+record_kind       = energy_synthesize_record
+output_dir        = exports/energy/synthesize
+required_deps     = python3, pypsa, highspy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PyPSA + HiGHS IS solved to optimality (HiGHS reports termination = optimal) — LP solve is real, the math is correct (Brown · Hörsch · Schlachtberger JORS 2018).",
+  "inputs (capital_cost · demand · CF · topology) are textbook / synthetic — NOT a real ISO market dataset / utility resource plan / national IRP.",
+  "single-node 단순화 — no transmission flow constraints, no unit-commitment, no security-constrained dispatch.",
+  "PyPSA promotes to kernels/power_opt/ at 2nd power-system consumer per D72 (currently solo); HiGHS upstreamed solver.",
+  "measurement_gate = GATE_OPEN permanently — textbook LP is not a market-cleared absorption claim (g3).",
+]
+
+# --- WIRED: verify (OpenMC k-eff criticality) -------------------------------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/energy/openmc_keff.py
+record_kind       = energy_verify_record
+output_dir        = exports/energy/verify
+required_deps     = python3, openmc
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "OpenMC (Romano et al. ANE 2015) IS the instrument — continuous-energy Monte Carlo neutron transport with ENDF/B nuclear data, real physics simulation.",
+  "criticality benchmark setup is textbook — sphere of HEU with reflector, NOT a vendor-licensed reactor core / fuel assembly / cycle-aware model.",
+  "openmc + nuclear-data wheels honest-skip on macOS arm64 if missing (install-gated); Linux pool primary verification venue.",
+  "shares kernels/mc_transport/ with fusion+verify (D72 2nd consumer) + antimatter+verify (4th consumer, clearest N+M payoff).",
+  "PilotProducerWireTests consumes EnergyVerifyProducer.injectHexaNativeParity → PILOTS.demi pilot-solar hexa-native parity injection; cellrun does NOT replace that path, only the runVerify() Process spawn (g3).",
+  "measurement_gate = GATE_OPEN permanently — textbook MC k-eff is not a licensed-reactor absorption claim (g3).",
+]
+
+# --- UNWIRED: handoff -------------------------------------------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/energy/handoff.py
+record_kind       = energy_handoff_record
+output_dir        = exports/energy/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "energy + handoff pending — IRP / interconnection-study / PPA-dossier / NEPA-equivalent bundle producer 미작성.",
+  "firmware/handoff.py 패턴 reuse — SBOM + sign-probe + dossier + audit evidence.",
+]

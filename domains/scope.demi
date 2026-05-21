@@ -1,0 +1,136 @@
+# scope.demi — verb-cell manifest for the scope (telescope / metrology) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/scope/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("scope", verb)
+#
+# Format: cellrun.hexa Phase A dialect — see firmware.demi header for the
+# spec. Script paths are RELATIVE to ~/core/hexa-lang/.
+#
+# Citations (anchored, not repeated per-cell — see domains/scope.md):
+#   - POPPY — Perrin et al., wave-optics PSF library (BSD)
+#   - WebbPSF — STScI JWST PSF tool (companion to POPPY)
+#   - synphot — STScI synthetic photometry
+#   - OpenMDAO — NASA MDO framework (Apache-2)
+#   - astropy / numpy / scipy
+#   - PyVISA — VISA instrument bus (metrology cells, future)
+#
+# Domain caveat (applies to every cell):
+# scope = adapter-only D72 (wave-optics math delegated to kernels/wave_
+# optics/). OpenMDAO kernel promotion candidate at 2nd MDO consumer (note:
+# space+synthesize is 2nd — `inbox/notes/openmdao-kernel-promotion-pickup.md`).
+# Every cell defaults GATE_OPEN / absorbed=false (g3): parametric aperture
+# scaffolding / textbook PSF math is not a flight-data absorption claim,
+# and the PyVISA metrology surface is entirely PROBE-only (no real
+# instrument bus is opened in this manifest).
+
+# --- UNWIRED: specify -------------------------------------------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/scope/specify.py
+record_kind       = scope_specify_record
+output_dir        = exports/scope/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "scope + specify scaffold pending — telescope-requirements.json (aperture · f/# · FoV · wavelength band · Strehl target) producer 미작성.",
+  "domains/scope.md §1 (segmented-primary baseline) 가 SSOT 후보 — Python wrapper 가 record JSON 으로 변환하면 됨.",
+]
+
+# --- UNWIRED: structure -----------------------------------------------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/scope/structure.py
+record_kind       = scope_structure_record
+output_dir        = exports/scope/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "scope + structure pending — segmented-primary tiling / support-structure topology producer 미작성.",
+  "hexagonal-tile generator (n=6 lattice as tool, not constraint) candidate; output = mirror.json template.",
+]
+
+# --- UNWIRED: design --------------------------------------------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/scope/design.py
+record_kind       = scope_design_record
+output_dir        = exports/scope/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "scope + design pending — segment-curvature / coating-spec / structural-FOM tradeoff producer 미작성.",
+  "OpenMDAO sizing 과 별개 — design 은 multi-discipline architectural sketch, scope+synthesize 가 specific sizing run.",
+]
+
+# --- WIRED: analyze (POPPY optical PSF) -------------------------------------
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/scope/scope_poppy.py
+record_kind       = scope_analyze_record
+output_dir        = exports/scope/analyze
+required_deps     = python3, poppy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "POPPY IS the instrument (Perrin et al. wave-optics) — Fraunhofer PSF math is textbook-correct, but the configuration is a textbook circular-aperture proxy NOT a segmented-primary calibrated optical model.",
+  "no real CCD photons, no atmospheric seeing, no thermal flexure — PSF is computed from an ideal pupil, not measured at a focal plane.",
+  "measurement_gate = GATE_OPEN permanently — textbook PSF is not a flight-data absorption claim (g3).",
+  "absorbed=true 금지 — D17 g_stdlib_ownership: script SSOT 는 hexa-lang stdlib/scope/, demiurge 는 consumer-pointer 만.",
+]
+
+# --- WIRED: synthesize (OpenMDAO segmented-primary aperture sizing) ---------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/scope/openmdao_sizing.py
+record_kind       = scope_synthesize_record
+output_dir        = exports/scope/synthesize
+required_deps     = python3, openmdao
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "OpenMDAO (NASA, Apache-2) IS the MDO instrument — converges to a Karush-Kuhn-Tucker point on the parametric aperture sizing problem (real optimization math).",
+  "parametric aperture + areal-density placeholder mass — NOT a vendor mirror substrate / coating / cell design; the optimum is mathematical, not manufacturable.",
+  "wave-optics math delegated to kernels/wave_optics/ (D72 adapter ①b); OpenMDAO kernel promotion candidate at 2nd MDO consumer (space+synthesize, inbox/notes/openmdao-kernel-promotion-pickup.md).",
+  "measurement_gate = GATE_OPEN permanently — scoping-level MDO is not a flight-data absorption claim (g3).",
+]
+
+# --- WIRED: verify (POPPY PSF + optional WebbPSF + synphot signoff) ---------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/scope/poppy_psf_verify.py
+record_kind       = scope_verify_record
+output_dir        = exports/scope/verify
+required_deps     = python3, poppy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "5 checks: repro, diffraction-limit closure (1.22 λ/D ±20%), encircled-energy monotonicity, WebbPSF cross-check (skipped if missing), synphot round-trip (skipped if missing).",
+  "WebbPSF / synphot are STScI tools — honest-skip with explicit `skipped_*` flags when not installed (Linux pool primary verification venue).",
+  "PSF predicted, NOT measured — flight data verification belongs to bench / commissioning surface, NOT this cell.",
+  "PyVISA metrology surface (oscilloscope / spectrum-analyzer probe) DEFERRED — domains/scope.md mentions it as future hardware bench, manifest does not wire it.",
+  "measurement_gate = GATE_OPEN permanently — predicted PSF is not absorption (g3).",
+]
+
+# --- UNWIRED: handoff -------------------------------------------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/scope/handoff.py
+record_kind       = scope_handoff_record
+output_dir        = exports/scope/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "scope + handoff pending — optical-design release tarball (Zemax/CodeV export + PSF dossier + WFE budget + bench-test plan) producer 미작성.",
+  "firmware/handoff.py 패턴 reuse — SBOM + sign-probe + dossier + audit evidence.",
+]

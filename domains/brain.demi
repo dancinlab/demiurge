@@ -1,0 +1,137 @@
+# brain.demi — verb-cell manifest for the brain (neuroscience) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/brain/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("brain", verb)
+#
+# Format: cellrun.hexa Phase A dialect — see firmware.demi header for the
+# spec. Script paths are RELATIVE to ~/core/hexa-lang/.
+#
+# Citations (anchored, not repeated per-cell — see domains/brain.md):
+#   - Brian2 — Stimberg et al. eLife 2019 (LIF / Hodgkin-Huxley spiking)
+#   - Dayan & Abbott, Theoretical Neuroscience (textbook reference)
+#   - Allen Brain Atlas — measured datasets (future absorption target)
+#   - Sim4Life MDDT — IEC 60601-1-2 EMC (proprietary, REGULATORY GAP)
+#   - COMSOL Multiphysics — head-model EM coupling (proprietary)
+#   - Anima-physics Kuramoto neuromorphic bridge — anima/anima-physics/
+#     {hw,kuramoto_neuromorphic,tool}/demiurge_brain_bridge.py drops
+#     records under exports/brain/verify/<UTC>Z/anima_*.json
+#
+# Domain caveat (applies to every cell):
+# brain = adapter-only D72. Sim4Life MDDT + COMSOL absorption is REGULATORY-
+# GATED proprietary territory (FDA implant clearance pathway) — this manifest
+# does NOT cross that gate. Every cell defaults GATE_OPEN / absorbed=false
+# (g3): textbook LIF / qualitative Kuramoto neuromorphic analog is NOT a
+# measured neuron / electrophysiology / patch-clamp / Allen Brain Atlas
+# absorption. The brain+verify Kuramoto bridge is intersubjective oscillator
+# analog, NOT silicon spike-event hardware.
+
+# --- UNWIRED: specify -------------------------------------------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/brain/specify.py
+record_kind       = brain_specify_record
+output_dir        = exports/brain/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "brain + specify scaffold pending — brain-task-requirements.json (region · cell type · stimulus protocol · readout modality) producer 미작성.",
+  "domains/brain.md §1 가 SSOT 후보; Allen Brain Atlas modality vocabulary reuse.",
+]
+
+# --- UNWIRED: structure -----------------------------------------------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/brain/structure.py
+record_kind       = brain_structure_record
+output_dir        = exports/brain/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "brain + structure pending — connectome / morphology / cortical-area topology producer 미작성.",
+  "neuromorpho.org / Allen connectivity dataset patterns; NEURON Hoc / NeuroML2 import.",
+]
+
+# --- UNWIRED: design --------------------------------------------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/brain/design.py
+record_kind       = brain_design_record
+output_dir        = exports/brain/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "brain + design pending — implant geometry / electrode array / stimulation waveform tradeoff producer 미작성.",
+  "Sim4Life MDDT + COMSOL crossing = REGULATORY-GATED (FDA implant clearance) — design surface 은 pre-regulatory placeholder 으로만.",
+]
+
+# --- WIRED: analyze (Brian2 LIF spike-rate) ---------------------------------
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/brain/lif_brian2.py
+record_kind       = brain_analyze_record
+output_dir        = exports/brain/analyze
+required_deps     = python3, brian2
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Brian2 (Stimberg et al. eLife 2019) IS the instrument — IEEE-754 LIF integrator; 측정 숫자 (e.g. 142 Hz tonic firing · CV_ISI≈0) ARE real but the MODEL is textbook LIF (Dayan & Abbott) with constant DC drive, NOT a measured neuron.",
+  "single LIF + constant drive 는 ALGORITHM verification — does Brian2's exact integrator produce the textbook firing rate? — 이지 real brain signal measurement 아님.",
+  "domains/brain.md §2 proprietary gap (Sim4Life MDDT · COMSOL) untouched; Stage 4 absorbed=true requires patch-clamp data fit + multi-compartment Hodgkin-Huxley + Allen Brain Atlas absorption + bench-validated implant.",
+  "measurement_gate = GATE_OPEN permanently — textbook LIF is not absorption (g3).",
+  "absorbed=true 금지 — D17 g_stdlib_ownership: script SSOT 는 hexa-lang stdlib/brain/, demiurge 는 consumer-pointer 만.",
+]
+
+# --- UNWIRED: synthesize ----------------------------------------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/brain/synthesize.py
+record_kind       = brain_synthesize_record
+output_dir        = exports/brain/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "brain + synthesize pending — network-of-networks / cortical-column generator producer 미작성.",
+  "Brian2 Network + NEURON / NetPyNE 패턴 reuse; multi-compartment HH future expansion.",
+]
+
+# --- WIRED: verify (D74 anima-physics Kuramoto neuromorphic bridge scan) ----
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/brain/verify.py
+record_kind       = brain_verify_record
+output_dir        = exports/brain/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "D74 cohort scan — anima-physics Kuramoto neuromorphic bridge drops records under exports/brain/verify/<UTC>Z/anima_*.json; demiurge witnesses + aggregates, never re-measures.",
+  "substrate is reference numpy Kuramoto oscillator NETWORK, NOT silicon spike-event neuromorphic hardware; the dropped records' own scope_caveats already say 'oracle parity TODO'.",
+  "Sim4Life MDDT + COMSOL absorption pathway untouched (proprietary, REGULATORY-GATED — FDA implant clearance separate from this map).",
+  "stdlib/brain/verify.py: cellrun honest-skip rc=2 if shim not yet present (the bridge records ARE under exports/brain/verify/ regardless — scan path is the canonical aggregator surface).",
+  "measurement_gate = GATE_OPEN permanently — reference numpy network is NOT silicon-neuromorphic-hardware absorption (g3 / D17 g_stdlib_ownership).",
+]
+
+# --- UNWIRED: handoff -------------------------------------------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/brain/handoff.py
+record_kind       = brain_handoff_record
+output_dir        = exports/brain/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "brain + handoff pending — implant-design dossier (electrode layout · MDDT artifacts · clinical-trial protocol skeleton) producer 미작성.",
+  "Sim4Life MDDT artifact bundle = FDA-submission territory, NOT inside this scaffold; firmware/handoff.py 패턴 reuse for SBOM + dossier.",
+]

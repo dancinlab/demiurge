@@ -179,17 +179,29 @@ public enum ActionDispatch {
             return runChipVerify()
         case (.synthesize, "chip"):
             return runChipSynthesize()
-        case (.analyze, "matter"):
-            return runMatterAnalyze()
         // sscb cells (D111 Phase B · all 7 verbs) — removed in D111 Phase
         // C generalization (2026-05-22). All sscb (verb) routes through
         // the generic `default → CellrunDispatch.run(...)` arm below;
         // explicit cases were behaviorally identical (same call) and only
         // added per-domain hardcoding noise. Manifest: domains/sscb.demi.
-        case (.analyze, "energy"):
-            return runEnergyAnalyze()
-        case (.synthesize, "energy"):
-            return runEnergySynthesize()
+        //
+        // bot / scope / energy / matter / grid / brain (6-domain bundle ·
+        // D111 Phase C · 2026-05-22) — removed in this commit alongside
+        // firmware reference pattern (PR #9). All (verb) tuples for these
+        // 6 domains route via the generic `default → CellrunDispatch.run`
+        // arm below. Manifests: domains/{bot,scope,energy,matter,grid,
+        // brain}.demi. Substrate SSOT: ~/core/hexa-lang/stdlib/<domain>/
+        // (where present — see manifest scope_caveats for unwired cells).
+        // matter is the special case: NO stdlib/matter/ dir exists in
+        // hexa-lang (sibling-repo D17 — ~/core/hexa-matter owns the
+        // materials toolkit); all 7 matter cells honest-skip rc=2 until
+        // either a shim adapter lands under stdlib/matter/<verb>.py or
+        // cellrun.hexa learns a sibling-repo substrate kind.
+        // Typed records preserved at Models/<Domain>*Record.swift (R3).
+        // EnergyVerifyProducer.swift preserved — PilotProducerWireTests
+        // consumes its `injectHexaNativeParity` static (PILOTS.demi pilot-
+        // solar wire, not legacy-bridge). All other producers in this
+        // 6-domain set deleted in this commit.
         case (.analyze, "antimatter"):
             return runAntimatterAnalyze()
         case (.analyze, "fusion"):
@@ -201,33 +213,20 @@ public enum ActionDispatch {
         // ~/core/hexa-lang/stdlib/cern/{bethe_bloch_stopping,xsuite_optics}.py.
         case (.analyze, "chip"):
             return runChipAnalyze()
-        case (.structure, "grid"):
-            return runGridStructure()
-        case (.structure, "bot"):
-            return runBotStructure()
         case (.analyze, "space"):
             return runSpaceAnalyze()
-        case (.analyze, "brain"):
-            return runBrainAnalyze()
         case (.analyze, "mobility"):
             return runMobilityAnalyze()
         case (.analyze, "aura"):
             return runAuraAnalyze()
-        case (.analyze, "scope"):
-            return runScopeAnalyze()
         // (.analyze, "cern") — handled by ProducerRegistry (D74)
-        // alternatives pattern (xsuite-tracking default vs pylhe legacy).
-        // ProducerRegistry early-returns BEFORE this switch executes, so
-        // even with no case here the cellrun default arm is never
-        // reached for cern+analyze. The manifest entry in
-        // domains/cern.demi documents the substrate for forward-compat
-        // (CLI bypass via CellrunDispatch.runRaw) only.
-        case (.synthesize, "bot"):
-            return runBotSynthesize()
-        case (.synthesize, "scope"):
-            return runScopeSynthesize()
-        case (.verify, "scope"):
-            return runScopeVerify()
+        // alternatives pattern. ProducerRegistry early-returns BEFORE
+        // this switch executes, so cellrun default arm not reached for
+        // cern+analyze. domains/cern.demi documents the substrate for
+        // forward-compat (CLI bypass via CellrunDispatch.runRaw) only.
+        // scope (analyze/synthesize/verify) · bot (synthesize) · cases
+        // removed in D111 Phase C 6-domain bundle migration · cellrun
+        // default arm handles them via domains/{scope,bot}.demi.
         case (.synthesize, "space"):
             return runSpaceSynthesize()
         // component verify/analyze cells — removed in D111 Phase C
@@ -241,10 +240,6 @@ public enum ActionDispatch {
             return runRtscAnalyze()
         case (.verify, "fusion"):
             return runFusionVerify()
-        case (.verify, "energy"):
-            return runEnergyVerify()
-        case (.verify, "bot"):
-            return runBotVerify()
         case (.verify, "space"):
             return runSpaceVerify()
         case (.verify, "rtsc"):
@@ -255,14 +250,10 @@ public enum ActionDispatch {
             return runMobilityVerify()
         case (.verify, "antimatter"):
             return runAntimatterVerify()
-        case (.verify, "brain"):
-            return runBrainVerify()
         case (.verify, "bio"):
             return runBioVerify()
         case (.verify, "chem"):
             return runChemVerify()
-        case (.verify, "grid"):
-            return runGridVerify()
         // firmware cells (D111 Phase C reference legacy-domain migration ·
         // all 7 verbs) — removed in D111 Phase C generalization
         // (2026-05-22). All firmware (verb) routes through the generic
@@ -301,22 +292,18 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `matter + analyze` engine tool (κ-30 / D53) — spawn hexa-matter's
-    /// `verify/run_all.hexa` aggregator (the closure-invariant SSOT
-    /// sweep) and persist a typed `MatterRecord` under
-    /// `exports/matter/parity/`. Producer = `hexa_matter@<commit>` —
-    /// demiurge witnesses, hexa-matter measures (D17 — hexa-lang /
-    /// hexa-matter own the materials toolkit; Swift never simulates
-    /// the substrate). Even on PASS the gate stays GATE_OPEN unless we
-    /// captured a real commit hash (honest pinning, g3).
-    private static func runMatterAnalyze() -> ActionResult {
-        let r = MatterAnalyzer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
+    // `runMatterAnalyze()` (κ-30/D53), `runEnergyAnalyze()` (κ-35/D59),
+    // `runEnergySynthesize()` — removed in D111 Phase C 6-domain bundle
+    // migration (2026-05-22). All matter / energy cells route via the
+    // generic `default → CellrunDispatch.run(...)` arm. Manifests:
+    // domains/matter.demi (sibling-repo SSOT ~/core/hexa-matter — all 7
+    // cells honest-skip rc=2 until adapter shim lands under stdlib/matter/),
+    // domains/energy.demi (stdlib/energy/pvlib_clearsky.py · pypsa_capacity.py
+    // · openmc_keff.py — analyze · synthesize · verify wired). MatterAnalyzer.swift
+    // + EnergyAnalyzeProducer.swift + EnergySynthProducer.swift deleted.
+    // EnergyVerifyProducer.swift PRESERVED — PilotProducerWireTests consumes
+    // its `injectHexaNativeParity` static (PILOTS.demi pilot-solar wire,
+    // not legacy bridge). Models/<Domain>Record.swift preserved (R3).
 
     // `runSSCBAnalyze()` — removed in D111 Phase C generalization
     // (2026-05-22). Was dead code even before sscb case removal because
@@ -324,53 +311,6 @@ public enum ActionDispatch {
     // not via this static. SSCBProducer.swift (and the κ-34/D55 ngspice
     // legacy path) remains in tree as historical reference until
     // exports-roundtrip parity gate lands.
-
-    /// `energy + analyze` engine tool (κ-35 / D59) — spawn pvlib via
-    /// `cockpit/scripts/energy_pvlib.py` to run a 1-year hourly clear-
-    /// sky simulation (Phoenix AZ, standard CEC module + inverter),
-    /// then persist a typed `EnergyRecord` under
-    /// `exports/energy/pv/<stamp>/`. Producer = `pvlib@<v>` — the
-    /// library is the instrument, but no sky-measured data was used
-    /// so measurement_gate stays GATE_OPEN AND absorbed is permanently
-    /// false (g3 — see EnergyAnalyzeProducer scope_caveats). FOURTH
-    /// cohort domain crossing the measuring-producer threshold and
-    /// the FIRST renewable-energy cell.
-    private static func runEnergyAnalyze() -> ActionResult {
-        let r = EnergyAnalyzeProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `energy + synthesize` engine tool — spawn the PyPSA + HiGHS
-    /// capacity-expansion producer via
-    /// `~/core/hexa-lang/stdlib/energy/pypsa_capacity.py` and persist a
-    /// typed `EnergySynthRecord` under `exports/energy/synth/<stamp>/`.
-    /// Producer = `pypsa@<v> + HiGHS@<v>`. The SECOND energy-domain
-    /// producer after `energy + analyze` (pvlib clear-sky), and the
-    /// FIRST `synthesize`-verb cell in the energy domain — ROI rank 5
-    /// from `inbox/notes/absorption-empty-cells-research-2026-05-20.md`
-    /// (⭐⭐⭐⭐⭐ pure pip).
-    /// D61-compliant from birth (script SSOT in hexa-lang/stdlib/,
-    /// never in cockpit/scripts/). D72 thin domain adapter — PyPSA is
-    /// power-system optimization, not FEM/MC/graph; promotes to
-    /// `kernels/power_opt/` only if 2nd consumer appears.
-    /// LP IS solved to optimality (HiGHS reports termination optimal)
-    /// but inputs (capital_cost · demand · CF · topology) are textbook
-    /// / synthetic, so measurement_gate stays GATE_OPEN AND absorbed
-    /// is permanently false (g3 — see EnergySynthProducer
-    /// scope_caveats; citation: PyPSA — Brown·Hörsch·Schlachtberger,
-    /// JORS 2018, doi:10.5334/jors.188).
-    private static func runEnergySynthesize() -> ActionResult {
-        let r = EnergySynthProducer.runSynthesize()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
 
     /// `antimatter + analyze` engine tool (cohort round, no standalone
     /// PLAN κ / D-block — post-merge reconstructed) — spawn the
@@ -486,33 +426,17 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `grid + structure` engine tool (D57; cohort-round producer, no
-    /// standalone PLAN κ entry — post-merge reconstructed) — NetworkX IEEE 14-bus
-    /// topology producer. Script SSOT migrated to hexa-lang/stdlib/grid/
-    /// (D61, post-merge migration). GATE_OPEN / absorbed=false (toy
-    /// topology, not a measured grid).
-    private static func runGridStructure() -> ActionResult {
-        let r = GridStructureProducer.runStructure()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `bot + structure` engine tool (D58; cohort-round producer, no
-    /// standalone PLAN κ entry — post-merge reconstructed) — yourdfpy URDF parser
-    /// over a hermetic 2-link arm. Script migrated to hexa-lang/stdlib/
-    /// bot/ (D61, post-merge migration). GATE_OPEN / absorbed=false
-    /// (URDF spec meta, not robot hardware measurement).
-    private static func runBotStructure() -> ActionResult {
-        let r = BotStructureProducer.runStructure()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
+    // `runGridStructure()` (D57), `runBotStructure()` (D58),
+    // `runBrainAnalyze()` (cohort), `runScopeAnalyze()` (cohort) —
+    // removed in D111 Phase C 6-domain bundle migration (2026-05-22).
+    // All grid / bot / brain / scope cells route via the generic
+    // `default → CellrunDispatch.run(...)` arm. Manifests: domains/
+    // {grid,bot,brain,scope}.demi. Substrate SSOT: hexa-lang stdlib/
+    // {grid/networkx_basics.py, bot/urdfpy_basics.py · pinocchio_rbd.py
+    // · drake_verify.py, brain/lif_brian2.py, scope/scope_poppy.py ·
+    // openmdao_sizing.py · poppy_psf_verify.py}. GridStructureProducer.swift +
+    // BotStructureProducer.swift + BrainAnalyzeProducer.swift +
+    // ScopeAnalyzeProducer.swift deleted.
 
     /// `space + analyze` engine tool (D60; cohort-round producer, no
     /// standalone PLAN κ entry — post-merge reconstructed) — Skyfield SGP4
@@ -521,20 +445,6 @@ public enum ActionDispatch {
     /// measurement, propagator is upstream).
     private static func runSpaceAnalyze() -> ActionResult {
         let r = SpaceAnalyzeProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `brain + analyze` engine tool (cohort-round producer, no standalone
-    /// PLAN κ / D-block — post-merge reconstructed) — Brian2 single
-    /// LIF spike-rate producer. D61-from-birth (script SSOT in hexa-lang
-    /// stdlib/brain/lif_brian2.py). GATE_OPEN / absorbed=false (toy
-    /// neuron model).
-    private static func runBrainAnalyze() -> ActionResult {
-        let r = BrainAnalyzeProducer.runAnalyze()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],
@@ -561,19 +471,6 @@ public enum ActionDispatch {
     /// GATE_OPEN / absorbed=false (synthetic input).
     private static func runAuraAnalyze() -> ActionResult {
         let r = AuraAnalyzeProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `scope + analyze` engine tool (cohort-round producer, no standalone
-    /// PLAN κ / D-block — post-merge reconstructed) — Poppy optical
-    /// PSF. D61-from-birth (hexa-lang stdlib/scope/scope_poppy.py).
-    /// GATE_OPEN / absorbed=false (textbook configuration).
-    private static func runScopeAnalyze() -> ActionResult {
-        let r = ScopeAnalyzeProducer.runAnalyze()
         return ActionResult(
             text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],
@@ -1028,55 +925,11 @@ public enum ActionDispatch {
     // Swift wrappers remain in tree as historical reference until
     // exports-roundtrip parity gate lands.
 
-    /// `bot + synthesize` engine tool (ROI rank 9 — Pinocchio FK / Jacobian
-    /// / RNEA on the bot+structure URDF). SSOT = `~/core/hexa-lang/stdlib/
-    /// bot/pinocchio_rbd.py` (D61). D72: `kernels/urdf/` (κ-45) owns URDF
-    /// loading; Pinocchio stays in bot adapter until 2nd RBD consumer.
-    /// Cross-cell parity via byte-identical URDF (urdf_sha256_16 matches
-    /// bot+structure κ-37). GATE_OPEN / absorbed=false (open-loop, no
-    /// contact/payload/actuator dynamics — bot+verify Drake/Gazebo
-    /// deferred per ROI rank 13).
-    private static func runBotSynthesize() -> ActionResult {
-        let r = BotSynthProducer.runSynthesize()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `scope + synthesize` engine tool (ROI rank 4 — OpenMDAO segmented-
-    /// primary aperture sizing). SSOT = `~/core/hexa-lang/stdlib/scope/
-    /// openmdao_sizing.py` (D61). D72 ①b adapter; wave-optics math
-    /// delegated to `kernels/wave_optics/`. OpenMDAO kernel promotion
-    /// candidate at 2nd MDO consumer (note: space+synthesize is 2nd —
-    /// `inbox/notes/openmdao-kernel-promotion-pickup.md`). GATE_OPEN /
-    /// absorbed=false (parametric aperture + areal-density placeholder
-    /// mass).
-    private static func runScopeSynthesize() -> ActionResult {
-        let r = ScopeSynthProducer.runSynthesize()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `scope + verify` engine tool (ROI rank 3 — POPPY + optional WebbPSF
-    /// + synphot signoff via `kernels/wave_optics/`). SSOT = `~/core/hexa-
-    /// lang/stdlib/scope/poppy_psf_verify.py` (D61). 5 checks: repro,
-    /// diffraction-limit closure (1.22 λ/D ±20%), encircled-energy
-    /// monotonicity, WebbPSF cross-check (skipped if missing), synphot
-    /// round-trip (skipped if missing). GATE_OPEN / absorbed=false
-    /// (parametric aperture, not flight data).
-    private static func runScopeVerify() -> ActionResult {
-        let r = ScopeVerifyProducer.runVerify()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
+    // `runBotSynthesize()` (ROI 9 Pinocchio), `runScopeSynthesize()` (ROI 4
+    // OpenMDAO aperture), `runScopeVerify()` (ROI 3 POPPY+WebbPSF) — removed
+    // in D111 Phase C 6-domain bundle migration (2026-05-22). Routes via
+    // generic `default → CellrunDispatch.run(...)`. BotSynthProducer.swift +
+    // ScopeSynthProducer.swift + ScopeVerifyProducer.swift deleted.
 
     /// `space + synthesize` engine tool (ROI rank 8 — OpenMDAO SLSQP wet-
     /// mass sweep via single-discipline Tsiolkovsky rollup). SSOT =
@@ -1153,24 +1006,13 @@ public enum ActionDispatch {
             usedEngineTool: true, engineToolSucceeded: r.ok)
     }
 
-    /// `energy + verify` engine tool (ROI 12 — OpenMC k-eff criticality).
-    /// SSOT = `~/core/hexa-lang/stdlib/energy/openmc_keff.py` (D61).
-    /// D72: `kernels/mc_transport/` 3rd consumer.
-    private static func runEnergyVerify() -> ActionResult {
-        let r = EnergyVerifyProducer.runVerify()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `bot + verify` engine tool (ROI 13 — Drake Lyapunov / SOS).
-    /// SSOT = `~/core/hexa-lang/stdlib/bot/drake_verify.py` (D61).
-    private static func runBotVerify() -> ActionResult {
-        let r = BotVerifyProducer.runVerify()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
+    // `runEnergyVerify()` (ROI 12 OpenMC k-eff) + `runBotVerify()` (ROI 13
+    // Drake Lyapunov) — static functions removed in D111 Phase C 6-domain
+    // bundle migration (2026-05-22). Routes via generic `default →
+    // CellrunDispatch.run(...)`. EnergyVerifyProducer.swift PRESERVED —
+    // PilotProducerWireTests consumes its `injectHexaNativeParity` static
+    // (PILOTS.demi pilot-solar wire, not legacy-bridge runVerify path).
+    // BotVerifyProducer.swift deleted.
 
     /// `space + verify` engine tool (ROI 15 — GMAT trajectory + Basilisk
     /// ADCS). SSOT = `~/core/hexa-lang/stdlib/space/gmat_basilisk.py` (D61).
@@ -1244,20 +1086,15 @@ public enum ActionDispatch {
     //      demiurge_<domain>_bridge.py) has ALREADY dropped from
     //     hexa-native substrate runs. Demiurge witnesses + aggregates;
     //     never re-measures (g3 / D17 g_stdlib_ownership).
-    //   • This closes the brain/bio/chem/grid ❌ → ⏳ GATE_OPEN cells in
-    //     the cohort gap-table; the dropped records carry the honest
-    //     scope_caveats ("oracle parity TODO") from the bridge side.
-
-    /// `brain + verify` engine tool (D74) — scan anima-physics kuramoto
-    /// neuromorphic bridge records under exports/brain/verify/<UTC>Z/.
-    /// GATE_OPEN / absorbed=false ALWAYS (g3 — substrate is reference
-    /// numpy not silicon spike-event; demiurge witness only).
-    private static func runBrainVerify() -> ActionResult {
-        let r = BrainVerifyProducer.runVerify()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
+    //   • brain + verify, grid + verify — D111 Phase C 6-domain bundle
+    //     migration (2026-05-22) routes these via generic `default →
+    //     CellrunDispatch.run(...)`. Manifests domains/brain.demi +
+    //     domains/grid.demi mark them WIRED at stdlib/<domain>/verify.py
+    //     (anima-bridge records remain the canonical aggregator surface;
+    //     cellrun honest-skip rc=2 until the verify.py shim lands).
+    //     BrainVerifyProducer.swift + GridVerifyProducer.swift deleted.
+    //   • bio + verify, chem + verify — D116 bio/chem domain migrations
+    //     pending (parallel A2 background agent); leave intact for now.
 
     /// `bio + verify` engine tool (D74) — scan anima-physics hippocampus
     /// + memristor composite bridge records under exports/bio/verify/
@@ -1277,19 +1114,6 @@ public enum ActionDispatch {
     /// U(x)=(x²-1)² potential; demiurge witness only).
     private static func runChemVerify() -> ActionResult {
         let r = ChemVerifyProducer.runVerify()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `grid + verify` engine tool (D74) — scan anima-physics Kuramoto
-    /// power-grid analog bridge records under exports/grid/verify/
-    /// <UTC>Z/. Distinct from `grid + structure` (NetworkX IEEE 14-bus,
-    /// cohort D57). GATE_OPEN / absorbed=false ALWAYS (g3 — Kuramoto N=8
-    /// is intersubjective oscillator analog NOT real PMU/SCADA; Filatrella
-    /// 2008 mapping is qualitative; demiurge witness only).
-    private static func runGridVerify() -> ActionResult {
-        let r = GridVerifyProducer.runVerify()
         return ActionResult(text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],
             usedEngineTool: true, engineToolSucceeded: r.ok)
