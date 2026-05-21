@@ -5,6 +5,12 @@
 // F-RTSC-* flips to DEMOTED, F-AURA-2 auto-DEMOTED (hexa-aura
 // README §[!NOTE]). FalsifierEntry.demotedIf field carries that
 // dependency.
+//
+// G33 schema generalization · κ-69 R8 · measured-oracle invariant
+// carrier (mirrors EnergyVerifyRecord pattern · κ-68 G28 land).
+// `measuredOracle: MeasuredOracleRef?` is the D109/RFC 013 §6.11
+// external-oracle reference; the predicate `isMeasuredOraclePASS`
+// delegates to the optional ref (mirror of EnergyVerifyRecord).
 
 import Foundation
 
@@ -29,6 +35,16 @@ public struct AuraVerifyRecord: Codable, Sendable, Equatable {
     public let falsifiers: [FalsifierEntry]?
     /// D80 — hexa-native parity port pointer (nil = provisional).
     public let hexaNativeParity: HexaNativeParityRef?
+    /// D109 (κ-68 G27 land) · RFC 013 §6.11 — external measured-oracle
+    /// reference. G33 schema generalization (κ-69 R8) lands the same
+    /// carrier the Energy first-flip uses (EnergyVerifyRecord
+    /// `measuredOracle`). Independent axis from `hexaNativeParity`
+    /// above (D103 dimension-separation). `nil` until the per-cell
+    /// measured-oracle round runs; populated by the producer adapter
+    /// at emit time. The cell's stored `absorbed` flip remains a
+    /// SEPARATE explicit writer action — emitting `measuredOracle`
+    /// non-nil does NOT by itself trigger `absorbed = true`.
+    public let measuredOracle: MeasuredOracleRef?
     /// Lattice invariant audit (G8) — σ·φ = n·τ = J₂ = 24 check.
     public let latticeInvariant: LatticeInvariantResult?
     public let skippedReason: String?
@@ -41,6 +57,7 @@ public struct AuraVerifyRecord: Codable, Sendable, Equatable {
         case citations
         case falsifiers
         case hexaNativeParity = "hexa_native_parity"
+        case measuredOracle = "measured_oracle"
         case latticeInvariant = "lattice_invariant"
         case skippedReason = "skipped_reason"
     }

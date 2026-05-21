@@ -155,4 +155,76 @@ final class MeasuredOracleRefTests: XCTestCase {
         XCTAssertFalse(rec.absorbed,
             "stored absorbed must NOT auto-flip from measured PASS (D103 / G29 scope)")
     }
+
+    // MARK: (5) AuraVerifyRecord.measuredOracle decode (G33 · κ-69 R8)
+
+    func testAuraVerifyRecordDecodesNilMeasuredOracle() throws {
+        // Pre-G33 record shape (no measured_oracle key): MUST still
+        // decode (backwards compat with all prior exports/aura
+        // verify records emitted before the G33 schema generalization).
+        let json = """
+        {
+          "domain": "aura",
+          "verb": "verify",
+          "kind": "aura_verify",
+          "stamp": "20260520T120000Z",
+          "producer": "aura_mne",
+          "measurement_gate": "GATE_OPEN",
+          "absorbed": false,
+          "scope_caveats": ["MNE install-gated"],
+          "citations": [],
+          "falsifiers": null,
+          "hexa_native_parity": null,
+          "lattice_invariant": null,
+          "skipped_reason": "MNE not installed"
+        }
+        """.data(using: .utf8)!
+        let rec = try JSONDecoder().decode(AuraVerifyRecord.self, from: json)
+        XCTAssertNil(rec.measuredOracle)
+        XCTAssertFalse(rec.absorbed)
+    }
+
+    func testAuraVerifyRecordDecodesNonNilMeasuredOracle() throws {
+        // G33 record shape: measured_oracle non-nil + absorbed
+        // still false (G33 schema half land; producer-side
+        // explicit-writer gate has NOT run yet). 1:1 mirror of the
+        // Energy decode test for the κ-69 R8 generalization.
+        let json = """
+        {
+          "domain": "aura",
+          "verb": "verify",
+          "kind": "aura_verify",
+          "stamp": "20260521T120000Z",
+          "producer": "aura_physionet_eeg_verify",
+          "measurement_gate": "GATE_OPEN",
+          "absorbed": false,
+          "scope_caveats": [],
+          "citations": ["PhysioNet Sleep-EDF Expanded · SC4001E0"],
+          "falsifiers": null,
+          "hexa_native_parity": null,
+          "lattice_invariant": null,
+          "skipped_reason": null,
+          "measured_oracle": {
+            "oracle_source": "PhysioNet Sleep-EDF Expanded · SC4001E0 · Fpz-Cz · 30-s Wake epoch · 100 Hz",
+            "unit": "V^2",
+            "sample_count": 5,
+            "mean_rel_err": 0.038,
+            "max_rel_err": 0.072,
+            "threshold": 0.05,
+            "dataset_caveats": "single-subject; 50 Hz line-noise filter applied",
+            "dataset_citation": "https://physionet.org/content/sleep-edfx/1.0.0/"
+          }
+        }
+        """.data(using: .utf8)!
+        let rec = try JSONDecoder().decode(AuraVerifyRecord.self, from: json)
+        XCTAssertNotNil(rec.measuredOracle)
+        XCTAssertEqual(rec.measuredOracle?.sampleCount, 5)
+        XCTAssertTrue(rec.measuredOracle?.isMeasuredOraclePASS ?? false,
+            "0.038 <= 0.05 should be PASS")
+        // D103 separation invariant — even though measured PASS,
+        // stored absorbed remains false (producer-side explicit-writer
+        // not run; mirror of Energy G28 scope discipline).
+        XCTAssertFalse(rec.absorbed,
+            "Aura stored absorbed must NOT auto-flip from measured PASS (D103 / G33 schema half scope)")
+    }
 }

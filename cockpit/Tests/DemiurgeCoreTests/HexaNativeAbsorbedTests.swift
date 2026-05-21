@@ -227,6 +227,7 @@ final class HexaNativeAbsorbedTests: XCTestCase {
             scopeCaveats: [], citations: [],
             falsifiers: nil,
             hexaNativeParity: passRef(),
+            measuredOracle: nil,
             latticeInvariant: nil,
             skippedReason: nil)
         XCTAssertTrue(pass.isHexaNativeAbsorbed)
@@ -240,6 +241,7 @@ final class HexaNativeAbsorbedTests: XCTestCase {
             scopeCaveats: [], citations: [],
             falsifiers: nil,
             hexaNativeParity: nil,
+            measuredOracle: nil,
             latticeInvariant: nil,
             skippedReason: nil)
         XCTAssertFalse(nilParity.isHexaNativeAbsorbed)

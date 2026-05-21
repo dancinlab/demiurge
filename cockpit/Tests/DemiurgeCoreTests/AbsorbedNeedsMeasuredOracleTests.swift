@@ -173,6 +173,45 @@ final class AbsorbedNeedsMeasuredOracleTests: XCTestCase {
             "G30 invariant MUST fail when stored absorbed=true is auto-flipped from D95 computed (measured nil)")
     }
 
+    // MARK: Test 2-bis — Aura mirror (G33 · κ-69 R8) — D95 computed
+    // projection MUST NOT flip stored absorbed on AuraVerifyRecord either.
+
+    func testAbsorbedNotAutoflippedByD95ComputedAura() {
+        // Synth AuraVerifyRecord — substrate parity PASS (D95 →
+        // isHexaNativeAbsorbed=true), but measuredOracle=nil AND
+        // absorbed=true (the violation the invariant must catch).
+        // 1:1 mirror of testAbsorbedNotAutoflippedByD95Computed for
+        // the κ-69 R8 schema generalization (G33 Aura/EEG cell).
+        let bad = AuraVerifyRecord(
+            domain: "aura", verb: "verify",
+            kind: "synth_d95_conflation_attempt_aura",
+            stamp: "20260521T000000Z",
+            producer: "synth@d95",
+            measurementGate: .open,
+            absorbed: true, // <- conflated from D95
+            scopeCaveats: [], citations: [],
+            falsifiers: nil,
+            hexaNativeParity: Self.passParityRef(),
+            measuredOracle: nil,
+            latticeInvariant: nil,
+            skippedReason: nil)
+
+        // D95 computed projection sees substrate PASS as
+        // isHexaNativeAbsorbed=true (this is correct behavior — the
+        // SUBSTRATE dimension is honest). But the G30 invariant
+        // protects the *stored* (measurement) dimension.
+        XCTAssertTrue(bad.isHexaNativeAbsorbed,
+            "Aura D95 computed projection should report substrate PASS as true (substrate dimension)")
+
+        // The G30 invariant MUST detect the conflation — record has
+        // stored absorbed=true with no measured-oracle backing.
+        XCTAssertFalse(Self.invariantHolds(
+            absorbed: bad.absorbed,
+            measuredOracle: bad.measuredOracle,
+            isIllustrativePhysics: false),
+            "G30 invariant MUST fail when Aura stored absorbed=true is auto-flipped from D95 computed (measured nil)")
+    }
+
     // MARK: Test 3 — D106 illustrative cells exempt from measured oracle
 
     func testD106IllustrativeCellExemptFromMeasuredOracle() {
