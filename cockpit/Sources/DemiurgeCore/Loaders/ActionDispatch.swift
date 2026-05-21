@@ -213,6 +213,13 @@ public enum ActionDispatch {
         // still readable; the early-return above means this case is
         // unreachable. runCernAnalyze (pylhe) is still invoked via
         // the `pylhe` variant entry in the registry.
+        case (.structure, "sscb"):
+            // SSCB walkthrough Step 2 — BOM tree (networkx DiGraph)
+            // producer routes through cellrun.hexa generic dispatcher
+            // backed by `domains/sscb.demi [cell.structure]`. SSOT:
+            // `~/core/hexa-lang/stdlib/sscb/structure.py` (D116). Typed
+            // mirror: `SscbStructureRecord` (this commit).
+            return CellrunDispatch.run(verb: verb, domain: domain)
         case (.synthesize, "sscb"):
             // D111 Phase B — see (.analyze, "sscb") above.
             return CellrunDispatch.run(verb: verb, domain: domain)
