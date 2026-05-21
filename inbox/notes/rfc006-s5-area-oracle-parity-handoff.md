@@ -1,6 +1,6 @@
 # incoming note: rfc006-s5-area-oracle-parity-handoff — the genuine remaining Yosys-absorption work
 
-> **id**: `rfc006-s5-area-oracle-parity` · **opened**: 2026-05-20 KST · **status**: `in-progress — read_verilog scope expansion underway, 3/6 components landed on branch rfc006-yosys-rv-scope; ABC + SKY130 PDK secured`
+> **id**: `rfc006-s5-area-oracle-parity` · **opened**: 2026-05-20 KST · **status**: `in-progress — Tier-1 (0)..(e) CLOSED · (f)..(i) OPEN · §5 measurement_gate still OPEN · substrate-axis absorbed=false · cell-side absorbed=true (κ-43 dynamic flip) unchanged · area d4=1207.41 / d6=1677.86 µm² (~98% absolute gap vs oracle remains) · 2026-05-21 KST snapshot post c4b35b13 + 0b82880b`
 > **source**: demiurge session 2026-05-20 — after confirming origin/main's rfc_006 §4 (7 yosys modules) is complete (dispatcher selftest 8/8 PASS), §5 is the one genuine open item of the Yosys absorption.
 > **destination repo**: `~/core/hexa-lang/` — the `hexa yosys synth` flow + `stdlib/yosys/` modules live there (D15 / D61). demiurge stays pointer-only.
 > **scope**: run the rfc_006 §5 SKY130 area-oracle parity measurement and, on PASS, flip the Yosys absorption to `absorbed=true`.
@@ -1752,3 +1752,380 @@ landed, (4) ±5 % gate check, (5) g3-conditional flip.
 - share/freduce: 1-3 sessions if needed (or substrate-tail-pass alt)
 
 Total: **2-6 sessions** depending on runtime bug depth.
+
+## UPDATE 2026-05-21 (cc) — PR #251 cycle 66 MERGED · exec/popen/env stubs restored · Tier-1 (0) CLOSED
+
+hexa-lang PR #251 (`8ea4b75e1846` · "fix(runtime): RUNTIME.md cycle
+66 — restore exec/popen/env stubs") MERGED 2026-05-20T18:37:44Z on
+origin/main. Absolute precondition for any subsequent §5
+measurement — without it, `exec()` returned `""` silently,
+`exec_capture()` segfaulted, and the 24h false-positive on
+`[OK] abc_map: ok` (while ABC never ran) was downstream noise.
+
+### Fix surface (self/runtime.c)
+
+- `hxlcl_getenv` walks `extern char **environ` directly (was noop
+  stub returning NULL → cycle 61 `f1487c14` drop).
+- `hxlcl_execve/execvp/execl` pass-through to libc (was svc 0x80
+  inline asm — cycle 63/64 `f7dbd931` lost the BSD carry-flag
+  success-vs-errno disambiguation + the pair-return convention of
+  `pipe(2)`).
+- `hxlcl_popen` rewritten as manual `pipe + fork + dup2 + execl
+  /bin/sh -c cmd`, returns `hxlcl_fdopen(pfd[0], "r")` shim FILE*
+  the `hxlcl_fread` macro can decode. 64-slot linear pid table for
+  `pclose`'s `waitpid`.
+- `hxlcl_pipe/close/dup2/read/write/fork/waitpid` all libc
+  pass-through.
+
+### Verification (Mac arm64)
+
+```
+$ /tmp/test_exec
+len=5 result='hello'
+which: '/opt/homebrew/bin/abc'
+$ HEXA_ABC_TEST_KEY=zebra /tmp/test_env_capture
+HOME=[/Users/ghost]
+PATH_len=462
+MISSING_KEY=[zebra]
+capture: [hello\n, , 0]
+```
+
+### Effect on Tier-1
+
+- closes **Tier-1 (0)** `exec runtime restore` — `hexa exec` chain
+  now testable end-to-end.
+- unblocks the measurement chain testability that all subsequent
+  (a)..(e) closures depend on (`gate_record.hexa` measurement
+  driver, `abc_map` subprocess invocation, `which abc` resolution).
+- closes the family of inbox patches `yosys-exec-runtime-
+  regression-cycles-61-64.md` + `runtime-env-and-exec-capture-
+  stubs-block-cli-tools.md` (both flipped to `resolved-ssot
+  2026-05-21`).
+
+### Cross-reference
+
+- ARCH §12.1 (0) `[x]` (line ~2100)
+- inbox/notes/2026-05-21-hexa-exec-broken-pipe.md (original RCA)
+
+## UPDATE 2026-05-21 (dd) — PR #247 MERGED · ABC comb-loop SSA fix · Tier-1 (a) + (c) CLOSED
+
+hexa-lang PR #247 (`cdfa8d461847` · "feat(read_verilog): RFC 006
+§5 ABC comb-loop SSA fix — per-iter SSA renaming") MERGED
+2026-05-20T16:58:38Z on origin/main. (Note: PR was `8dd1e677` at
+review time, squash-merge produced `cdfa8d46` on main — entry
+(bb) cited the pre-squash SHA.)
+
+### Scope landed (vs entry (bb) audit)
+
+1. **Per-iter SSA renaming** in `_rv_parse_always` for-handler —
+   3 clean-room helpers (~120 LoC):
+   - `_rv_signal_is_read_in_body(toks, name) -> int` (read-then-
+     write filter)
+   - `_rv_collect_blocking_lhs(toks) -> [str]`
+   - `_rv_ssa_rename_toks(toks, tracked, k_read, k_write) -> [str]`
+2. **Companion fix** (same PR body) — `abc_binary_path()` switched
+   from `command -v abc 2>/dev/null || true` (shell-meta bearing)
+   to `which abc` (two tokens, no metas) so `hexa_spawn_no_shell`
+   tokenizes + `posix_spawnp` directly under `HEXA_EXEC_NO_SHELL=1`.
+3. **abc_map script reorder** (`read_lib` → `read_blif` ordering)
+   at `logic_synth/abc_map.hexa` L478-486 — landed in the same PR.
+
+### Selftest delta
+
+`75/75 → 76/76 PASS` (+T73 `F-RFC-RV-COMB-LOOP-SSA-ARBITER`
+P=4 priority arbiter falsifier · zero regression after the
+`_rv_signal_is_read_in_body` filter restored T58..T65).
+
+### IR-level evidence (`hexa run stdlib/yosys/gate_record.hexa`)
+
+- d6 `pass_proc_mux`: 44 cond-tagged LHS-groups lowered (vs 3
+  pre-fix · 14× increase from SSA chain emit).
+- d6 `pass_clean_multidriver` collapsed `idx__ssa1..ssa7`,
+  `grant_out__ssa7`, `any_grant__ssa7` last-wins per Verilog
+  §10.4.2.
+- d4: 32 cond-tagged groups (P=4 vs d6 P=8).
+
+### Effect on Tier-1
+
+- closes **Tier-1 (a)** `PR #247 SSA fix` (ARCH §12.1 line ~2103)
+- closes **Tier-1 (c)** `abc_map script reorder` (ARCH §12.1 line
+  ~2111 — same PR body landed `logic_synth/abc_map.hexa` L478-486)
+- with PR #251 (cc) landed first, the abc binary now actually
+  resolves on the spawn fast path — measurement chain ran end-to-
+  end for the first time post-merge.
+
+### Cross-reference
+
+- ARCH §12.1 (a) + (c) `[x]` (lines ~2103, ~2111)
+- entry (bb) `### Real next blocker — ABC comb-loop` is the
+  precursor (predicted the fix · this entry records the landing)
+
+## UPDATE 2026-05-21 (ee) — PR #255 OPEN · abc_map stale-BLIF + comb-loop stdout detection · Tier-1 (b) PENDING merge
+
+hexa-lang PR #255 (`e149900f` · branch `rfc006-yosys-abc-map-
+honest` · "feat(abc_map): stale _out.blif truncate + `combinational
+loop` stdout detection (rfc_006 §5 honesty)") SUBMITTED but
+**STILL OPEN** at 2026-05-21 KST (verified
+`gh pr view 255 --json state` → `OPEN` · `mergedAt: null`).
+
+### Scope (claimed by PR body · awaiting merge)
+
+1. **truncate-before-exec** for `_out.blif` so stale fixture from
+   prior run cannot mask the current exec failure as "success"
+   (the cycle that filed the falsifier for `[stale temp-file
+   false positives]` user-memory entry — same anti-pattern).
+2. **`combinational loop` stdout pattern detection** — ABC writes
+   `Network contains combinational loop` to stdout (not stderr +
+   not exit-code), so the prior abc_map error path missed it
+   entirely. PR teaches the parser to flag the line + escalate
+   to fail-loud rather than swallow.
+3. **T8 selftest** added — falsifier asserts both behaviours.
+
+### Effect on Tier-1
+
+- target = **Tier-1 (b)** `PR #255 abc_map honesty` (ARCH §12.1
+  line ~2107) — marker currently `[~]` (in-flight) · flips to
+  `[x]` only on merge.
+- ARCH §12.1 already carries the in-flight status; no flip
+  required on demiurge side until `gh pr view 255 --json state`
+  reports MERGED.
+- **No-op-on-demiurge-side**: this entry documents the SUBMITTED
+  state for the ledger continuity; landing event will be a
+  separate entry when it merges.
+
+### Cross-reference
+
+- ARCH §12.1 (b) `[~]` (line ~2107)
+- (dd) PR #247 landed the abc_binary_path / spawn fast-path fix
+  that exposed the stale-BLIF false-positive surface PR #255
+  closes.
+
+## UPDATE 2026-05-21 (ff) — PR #261 MERGED · RFC 073 Phase 3g SSA pre-loop init redirect · Tier-1 (d) CLOSED
+
+hexa-lang PR #261 (`0ca0994fb751` · "feat(read_verilog): RFC 073
+Phase 3g — SSA pre-loop init redirect (rfc_006 §5 Tier-1 (d)
+rr_ptr__d comb-loop CLOSED)") MERGED 2026-05-20T19:26:33Z on
+origin/main. **Note**: PR #260 (`rfc006-yosys-ssa-seed-fix`
+branch · still OPEN) was a parallel attempt at the same (d)
+target — superseded by #261.
+
+### Root cause
+
+PR #247 (Phase 3f) introduced a pre-loop alias `connect(s__ssa0,
+s)` + post-publish `connect(s, s__ssa<P>)`. Combined with the
+pre-loop direct init `connect(s, $const_0)`, `s` was multi-
+driven → `clean_multidriver` collapsed to `s__ssa<P>` last-wins
+→ alias chained `s__ssa0 ← s ← s__ssa<P>` → ABC `NetworkCheck`
+flagged a self-loop terminating at `rr_ptr__d` (downstream
+`$dff` CO consuming `grant_in`).
+
+### Fix (read_verilog.hexa · +243 / -10)
+
+1. New helper `_rv_ssa_rewrite_preloop_for(m, s, snapshot)` at
+   L2429+ — walks `m.connect_lhs[0:snapshot]` and rewrites
+   unconditional `connect(s, X)` → `connect(s__ssa0, X)` when
+   `s ∈ _ssa_tracked`.
+2. SSA fire site snapshots `len(m.connect_lhs)` BEFORE the alias
+   loop · calls rewrite per tracked `s` · SUPPRESSES the legacy
+   `connect(s__ssa0, s)` alias when ≥1 rewrite occurred.
+3. T74 (Phase 3f) updated — old T74c replaced with T74c
+   (entry-driver on `v__ssa0` from rewritten init) + T74d
+   (legacy alias absent regression guard).
+4. T75 (Phase 3g falsifier) added — `rr = rr_q ; for ... rr =
+   rr + 1'b1` minimum shape · asserts SSA wires exist · legacy
+   alias absent · redirected init present · post-publish
+   present · exactly 1 unconditional driver of `rr`.
+
+### Selftest delta
+
+- read_verilog: `77/77 → 78/78 PASS` (+T75)
+- passes: 35/35 PASS (no regression)
+- abc_map: 7/7 PASS (no regression)
+- rtlil: 11/11 PASS · liberty: 8/8 PASS (no regression)
+
+### §5 oracle measurement (sky130_fd_sc_hd · ABC 2026-05-21)
+
+```
+d4 abc_map: ok   (was: ABC NetworkCheck FAIL on n272 → CO rr_ptr__d)
+d6 abc_map: ok   (was: ABC NetworkCheck FAIL on n372 → CO rr_ptr__d)
+d4 area = 559.286 µm²  (oracle 61762.99 · Δ ≈ 99.1 % UNDER)
+d6 area = 771.99  µm²  (oracle 93608.53 · Δ ≈ 99.2 % UNDER)
+ratio = 1.380×  vs oracle 1.5156×
+```
+
+### Effect on Tier-1
+
+- closes **Tier-1 (d)** `rr_ptr__d cross-iter comb-loop` (ARCH
+  §12.1 line ~2113) — first time §5 measurement chain produces
+  `area > 0` for both designs · honest-skip on `fifo_mem` still
+  active at this point (became (e) target).
+- **comb-loop CLASS closed** entirely — both Phase 3f intra-iter
+  (PR #247) + Phase 3g cross-iter (PR #261) variants resolved.
+- §5 verdict (g3 honest): area-oracle still OPEN · new blocker
+  named in PR body = Tier-1 (e) `fifo_mem` 2-D packed-array
+  memwr (40 non-driven nets in d4, ~80 in d6 per ABC's
+  `Constant-0 drivers added` warning).
+
+### Cross-reference
+
+- ARCH §12.1 (d) `[x]` (line ~2113) + the "PR #260 parallel
+  attempt superseded by #261" note inline
+- hexa-lang `inbox/notes/2026-05-21-rfc006-§5-phase3g-rrptr-
+  closed.md` (full RCA + measurement)
+- hexa-lang `inbox/patches/yosys-rr-ptr-cross-iteration-comb-
+  loop.md` (status → `resolved-ssot`)
+
+## UPDATE 2026-05-21 (gg) — `c4b35b13` direct push · `fifo_mem` 2-D LHS Option A · Tier-1 (e) own-scope CLOSED
+
+hexa-lang `c4b35b13d3d1` direct-pushed to origin/main
+2026-05-21T14:32:02 +0900 (NOT via PR · direct push) ·
+"feat(read_verilog): RFC 006 §5 Tier-1 (e) Option A — 2-D LHS
+flat $dff demux (T76 PASS · router_d{4,6} area > 0 unblocked)".
+
+### Scope landed
+
+1. `_rv_parse_port_decl` (L688-720) — second unpacked range
+   parsed · P*D wires named `base[i][j]` of width W each.
+2. `_rv_array_bound2(m, base) -> RvBound2 { outer, inner }`
+   NEW helper · walks wires named `base[*][*]` to recover (P, D).
+   `_rv_array_bound` updated to filter 2-D entries (so 1-D
+   callers don't over-count P*D when base is 2-D).
+3. `_rv_emit_body_v2` 2-D branch (L2920+) — captures `idx2_toks`
+   parallel to existing idx1 · emits per-slot
+   `connect_cond(slot__d, rhs, guard)` + tracked `$dff` ·
+   four sub-cases (const-const / const-dyn / dyn-const /
+   dyn-dyn) with `$eq + $and + $mux + $dff` per slot.
+4. `_rv_parse_always` bare-path 2-D branch (L5060+) — same four
+   sub-cases · `$mux` feedback-hold + `$dff`.
+5. T76 falsifier (`sm76` minimum-shape `m[i][j] <= d`, N=M=2):
+   4 slot wires · 8 `$eq` · 4 `$and` · 4 `$mux` · 4 `$dff` ·
+   `_rv_array_bound2 = (2, 2)`.
+
+### Selftest delta
+
+- read_verilog: `78/78 → 79/79 PASS` (+T76)
+- passes / abc_map / rtlil / liberty: 35/35 · 7/7 · 11/11 · 8/8
+  unchanged (zero regression).
+
+### §5 measurement delta (sky130_fd_sc_hd · ABC 2026-05-21)
+
+```
+router_d4 area = 559.286 → 1207.41 µm²  (+2.16× · oracle gap 99.09% → 98.05%)
+router_d6 area = 771.99  → 1677.86 µm²  (+2.17× · oracle gap 99.18% → 98.21%)
+both abc_map: ok · no NetworkCheck failure · no honest-skip
+```
+
+### Effect on Tier-1
+
+- closes **Tier-1 (e) own-scope** `fifo_mem 2-D LHS flat $dff
+  demux` (ARCH §12.1 line ~2125) — area > 0 · ABC accepts ·
+  honest-skip at `_rv_emit_body_v2` L2828
+  (`if has_idx2 == 1 { continue }`) removed · `_rv_parse_always`
+  bare-path L5040 (`expected `<=` or `=` got `[`) removed.
+- **DOES NOT close §5** — absolute area gap ~98 % remains.
+  Option A flat per-element `$dff` is correct but ~10×
+  substrate's `synth_memory_dff`-consolidated count.
+- ±5 % closure needs either Option B (RTLIL `$memrd`/`$memwr`
+  cells + module-level `$mem`) OR Tier-1 (f) crossbar output
+  array writes. NO `Yosys absorbed` claim made.
+- hexa-lang `inbox/patches/yosys-fifo-mem-2d-array-memwr-emit.md`
+  status flipped to "Option A landed".
+
+### Cross-reference
+
+- ARCH §12.1 (e) `[x]` (line ~2125) + Log entry
+  `2026-05-21 — §12.1 (e) `fifo_mem` 2-D LHS Option A LANDED`
+  (line ~2195) — captured the cross-repo direct-push discovery
+  during post-G31-merge audit.
+- ARCH §12.1 "current gate state" snapshot anchors `c4b35b13`.
+
+## UPDATE 2026-05-21 (hh) — `a4a032af` / `0b82880b` direct push · 2-D LHS D-wire width-aware follow-up · area numbers UNCHANGED (BLIF emitter still collapses)
+
+hexa-lang `a4a032afa65c` (briefed SHA · on `fix/codegen-c2-nested-
+lhs-recursive-unwrap-2026-05-21` worktree branch) rebased onto
+main as `0b82880b7082` 2026-05-21T15:27:02 +0900 — same author /
+same message / same diff. Direct push to origin/main (NOT via
+PR). "fix(read_verilog): 2-D LHS D-wire width-aware — match slot
+width via `_rv_v2_wire_width`".
+
+### Fix (read_verilog.hexa)
+
+Option A's two 2-D LHS emit sites in `_rv_emit_body_v2` (L2977
+const-const, L3074 dyn) hardcoded the D-wire width to 1 when
+the slot wire itself is multi-bit (declared by
+`_rv_parse_port_decl` with the packed range `[W-1:0]`). 1-bit
+slot was correct · multi-bit slot had `$dff(D=width-1, Q=width-W)`
+latent RTLIL width mismatch downstream passes had to
+compensate for.
+
+Fix introduces `_rv_v2_wire_width(m, name)` (returns 1 when
+absent · preserves existing 1-bit slot semantics) · called at
+the two D-wire creation sites in the 2-D branch to mirror the
+slot's declared packed width on its D-wire.
+
+### Selftest delta
+
+`79/79 PASS preserved` (T76's slot is 1-bit so the change is a
+no-op for the falsifier · zero regression).
+
+### §5 measurement delta — NONE
+
+```
+router_d4 area = 1207.41 µm²  (unchanged · oracle 61762.99 · Δ 98.05%)
+router_d6 area = 1677.86 µm²  (unchanged · oracle 93608.53 · Δ 98.21%)
+```
+
+Reason: the downstream BLIF emitter still collapses multi-bit
+cells to single `.latch` lines. Width-correct RTLIL no longer
+propagates through the BLIF write surface — filed as separate
+inbox note `2026-05-21-rfc006-§5-multibit-width-truncation.md`
+(hexa-lang sibling repo `39e84435`).
+
+### Effect on Tier-1
+
+- **No new Tier-1 marker closed** — purely a latent-correctness
+  follow-up on (e) own-scope. ARCH §12.1 (e) `[x]` flip already
+  recorded by (gg).
+- Quoted in ARCH §12.1 Log entry (line ~2219) as the same-cycle
+  follow-up:
+  ```
+  follow-up (same-cycle): hexa-lang `a4a032af`
+  fix(read_verilog): 2-D LHS D-wire width-aware — match slot
+  width via _rv_v2_wire_width (15:27 KST · post-G34 land time).
+  ```
+- §5 absolute area gap remains ~98 % · ±5 % closure unblocked
+  at frontend layer · BLIF emitter is the next narrowing
+  (separate handoff note).
+
+### Cross-reference
+
+- ARCH §12.1 Log (line ~2219) `follow-up` callout
+- hexa-lang `inbox/notes/2026-05-21-rfc006-§5-multibit-width-
+  truncation.md` (BLIF emitter is the dominant remaining
+  truncation surface)
+- (gg) `c4b35b13` is the predecessor — (hh) is its width-correct
+  refinement.
+
+---
+
+### Status snapshot (post (cc)..(hh) · 2026-05-21 KST)
+
+```
+Tier-1 closure path (ARCH §12.1 line ~2098):
+  [x] (0) exec runtime restore         — PR #251 cdfa-pred MERGED (cc)
+  [x] (a) PR #247 SSA fix              — PR #247 cdfa8d46 MERGED (dd)
+  [~] (b) PR #255 abc_map honesty      — PR #255 e149900f OPEN   (ee)
+  [x] (c) abc_map script reorder       — in PR #247 body         (dd)
+  [x] (d) rr_ptr__d cross-iter loop    — PR #261 0ca0994f MERGED (ff)
+  [x] (e) fifo_mem 2-D LHS Option A    — c4b35b13 direct LANDED  (gg)
+  [ ] (f) router_d4 area > 0 → ±5 %    — OPEN (~98 % gap)
+  [ ] (g) router_d6 ±5 % parity        — OPEN (~98 % gap)
+  [ ] (h) ratio 1.5156× verification   — OPEN
+  [ ] (i) measurement_gate = CLOSED_MEASURED — OPEN
+
+§5 measurement_gate = OPEN · substrate-axis absorbed = false ·
+cell-side `absorbed=true` (κ-43 dynamic flip) UNCHANGED (별 axis).
+Cluster cost dominant residual = ~98 % absolute area gap; Option B
+($memrd/$memwr cells + module-level $mem) OR Tier-1 (f) crossbar
+output array writes territory.
+```
