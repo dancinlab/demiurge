@@ -1,11 +1,19 @@
 # Demiurge — universal hexa-native technical-design architecture program
 
 > Standalone repo · `~/core/demiurge` · created 2026-05-18 ·
-> Status: **4-Phase design-complete · macOS Swift cockpit workbench
-> live (`/Applications/demiurge.app`) · wired / absorbed / measured
-> records still 0** (g3 — engine tool 0 is the honest core gap; see
-> `PLAN.md` for measured distance, `design.md` for the decision
-> audit trail).
+> Status (2026-05-22): **4-Phase design-complete · macOS Swift cockpit
+> workbench live (`/Applications/demiurge.app`) · 3 cells with stored
+> `absorbed=true` legitimate flip via measured-oracle PASS**
+> (Energy/solar D110 · Aura/EEG D117 · Ufo/plasma D119 · κ-68/69/70
+> closure narrative). G30 invariant `invariantHolds(...)` record-type-
+> agnostic generalization confirmed across 3 record types with
+> 0-code-change auto-extension. RTSC §9 5-gate stack LANDED (N1-N5 ·
+> Phase 1-4 #1 + #2 unblock pending CI infra · 20/20 cell matrix
+> PASS post-JARVIS-OPTIMADE 3rd corpus) · Nuclear discovery stack
+> LANDED (NUCLEAR.md spec + N6 HFBTHO + N7 WKB α-decay + Phase 4 #1
+> microkernel port 31/31 parity bit-exact). g3 honest — see `PLAN.md`
+> for measured distance, `HANDOFF.md` for session-stamp summary,
+> `design.md` for the decision audit trail.
 > Family: **typed-interface consumer** (not absorber) of `hexa-lang`,
 > the **sole SSOT** for reusable stdlib / tools / absorbed modules
 > (D15 / D17 + 2026-05-19 user directive); demiurge is the consumer-

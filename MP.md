@@ -7,6 +7,14 @@
 > opened: 2026-05-21 KST · status: **roadmap draft (Phase 1-5 + 선택 enhancement)**
 > parent: RTSC.md (§8.5 handoff schema · §8.7 Tier 1)
 
+## ⚡ Session update (2026-05-22)
+
+- **JARVIS-OPTIMADE LANDED as 3rd DFT corpus** (hexa-lang PR #287 MERGED · cross_code_dft._poll_jarvis ~85 LOC). 4-source consensus 이제 mp_cache + AFLOW + OQMD + **JARVIS** (anonymous OPTIMADE REST · NIST US-government public domain).
+- **20-cell Phase 2 ext matrix: 18/20 → 20/20 PASS** post-JARVIS land. YBa₂Cu₃O₇ + H₃S DEVIATION cells resolved (n=1 → n=3 multi-corpus consensus).
+- **OptB88vdW caveat (s5)** added — JARVIS uses non-PBE functional family · same s2 systematic-error correlation as MP/AFLOW/OQMD. NOT conflate into "PBE consensus".
+- **NOMAD honestly rejected** as 4th corpus (formation_energy not in `available_properties` index · ~150-200 LOC archive-level total-energy queries required · B-path 이탈). Future expansion candidates: MaterialsCloud · OPTIMADE federation.
+- See `inbox/notes/2026-05-22-rtsc-9-phase2-multicorpus-decision.md` + `2026-05-22-rtsc-9-phase2-jarvis-rerun.md` for full audit.
+
 ---
 
 ## 0. TL;DR
