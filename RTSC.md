@@ -703,7 +703,7 @@ deep-research session 에서 surfaced 된 모든 arxiv ID — 각각 §9.x sub-s
 | Phase 3 (microkernel identification) | ✅ **LANDED** · 4 candidates (P1 bundle of 2 · P2 bundle of 2) · 6 anti-pattern rejects | (audit only) | `inbox/notes/2026-05-21-rtsc-9-phase3-microkernel-audit.md` |
 | Phase 4 #1 (C1+C2 consensus port) | ✅ **LANDED** · **22/22 parity PASS** (≤1e-9 rel · max 3.93e-16) | `701bfe1b` · `stdlib/material/sim.hexa` v0.2.0 (`inverse_variance_consensus` + `sigma_from_spread`) | `inbox/notes/2026-05-22-rtsc-9-phase4-1-parity-verify.md` |
 | Phase 4 #2 (C3+C4 ASKCOS parser+classifier) | ⏳ **DEFERRED** · regex runtime backend 미land (broken stub) · hand-rolled tokenizer 가능하지만 ~280 LOC (P1 의 5.6×) → 외부 consumer 출현 시 재opens | — | `inbox/notes/2026-05-22-rtsc-9-phase4-2-prep.md` |
-| Phase 2 ext (16→20 cell) | ⏳ **PENDING** · 5th baseline (H₃S / LaH₁₀) · AFLOW gap blocker 재현 audit | — | (별도 session) |
+| Phase 2 ext (16→20 cell) | ✅ **LANDED** · 5th baseline = H₃S · 18/20 PASS · 2 DEVIATION (YBCO + H₃S, both `insufficient-sources`) · **AFLOW gap NOT cuprate-specific** (H₃S control falsified hypothesis · OQMD also drops out → Phase 2 blocker #1 severity ↑ medium → medium-high) | (audit only) | `inbox/notes/2026-05-22-rtsc-9-phase2-ext-20cell.md` |
 
 Honest 한계 — 본 LANDED 들 모두 *Tier 1 prediction · `gate_type=simulation-only-prediction` · `absorbed=false 영구`* (R4 invariant 무영향). measurement 가 아닌 *closed-form 산술* 의 hexa-native 재현.
 
