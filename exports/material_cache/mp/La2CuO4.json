@@ -1,0 +1,170 @@
+{
+  "_attribution": "Cached from Materials Project (materialsproject.org). Licensed CC-BY-4.0. Cite: Jain et al. APL Materials 1, 011002 (2013).",
+  "_batch_family": "hts_cuprate",
+  "_batch_formula": "La2CuO4",
+  "_batch_status": "hit",
+  "domain": "material",
+  "verb": "query",
+  "kind": "materials_project_lookup",
+  "stamp": "20260521T110615Z",
+  "producer": "mp_query@material-tier1-sibling",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "external-api",
+  "provisional": true,
+  "skipped_reason": null,
+  "query": {
+    "formula": "La2CuO4",
+    "mp_id_filter": null,
+    "family_classification": "unclassified (not in RTSC \u00a78.2 candidate matrix)"
+  },
+  "backend": "MP_API_KEY_NEW (new API \u00b7 api.materialsproject.org)",
+  "row_count": 6,
+  "rows": [
+    {
+      "mp_id": "mp-1077929",
+      "formula_pretty": "La2CuO4",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "I4/mmm",
+          "number": 139
+        },
+        "nsites": 7,
+        "density_g_cm3": 6.721571458851243,
+        "volume_A3": 100.14132165586027
+      },
+      "formation_energy_per_atom_eV": -3.042022152857141,
+      "energy_above_hull_eV": null,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 6e-07,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-19735",
+      "formula_pretty": "La2CuO4",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "I4/mmm",
+          "number": 139
+        },
+        "nsites": 7,
+        "density_g_cm3": 6.998499442412323,
+        "volume_A3": 96.17876732467924
+      },
+      "formation_energy_per_atom_eV": -2.971538255714286,
+      "energy_above_hull_eV": 0.07048389714285501,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 3.21e-05,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-673846",
+      "formula_pretty": "La2CuO4",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmc2_1",
+          "number": 36
+        },
+        "nsites": 42,
+        "density_g_cm3": 6.983206971022394,
+        "volume_A3": 578.3363308177511
+      },
+      "formation_energy_per_atom_eV": -2.9646158373809532,
+      "energy_above_hull_eV": 0.07740631547618801,
+      "band_gap_eV": 0.055200000000000006,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.1086432,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1223234",
+      "formula_pretty": "La2CuO4",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Fmm2",
+          "number": 42
+        },
+        "nsites": 7,
+        "density_g_cm3": 7.00764725441898,
+        "volume_A3": 96.05321515994046
+      },
+      "formation_energy_per_atom_eV": -2.97168242,
+      "energy_above_hull_eV": 0.07033973285714,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 3.15e-05,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1180676",
+      "formula_pretty": "La2CuO4",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmce",
+          "number": 64
+        },
+        "nsites": 14,
+        "density_g_cm3": 7.030224892885752,
+        "volume_A3": 191.48947857267672
+      },
+      "formation_energy_per_atom_eV": -2.97224272,
+      "energy_above_hull_eV": 0.06977943285714,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0007234,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-36480",
+      "formula_pretty": "La2CuO4",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmce",
+          "number": 64
+        },
+        "nsites": 14,
+        "density_g_cm3": 6.919921389386846,
+        "volume_A3": 194.54181965882543
+      },
+      "formation_energy_per_atom_eV": -2.9840769700000003,
+      "energy_above_hull_eV": 0.057945182857141,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.001746,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    }
+  ],
+  "scope_caveats": [
+    "(s1) Materials Project values are DFT-computed (PBE-GGA), NOT experimentally measured. Band gaps are systematically underestimated by 30-50% (DFT gap problem); formation energies have \u00b10.1 eV/atom error bars; lattice constants are typically +1-3% overestimated.",
+    "(s2) Debye temperature and electron-phonon coupling (\u03bb, \u03c9_log, \u03bc*) are NOT exposed in standard MP summary endpoints \u2014 Tier 1 sim_adapter must ingest these from a separate source (phonon DB / Allen-Dynes Table I / first-principles paper). MP rows have debye_temp_K=null by design.",
+    "(s3) Tc prediction is NOT in MP. This adapter ingests *structural and electronic* data only. Tc inference requires \u03bb + \u03c9_log + \u03bc* fed into McMillan/Allen-Dynes via sim_adapter, or a full Eliashberg solve (hexa-native-absent).",
+    "(s4) absorbed=false for all MP-derived rows \u2014 DFT \u2260 measurement. RTSC.md \u00a78.7 honest \ud55c\uacc4 + \u00a78.8 g3 stance. LK-99-family rows are additionally claim-only (formula entries exist in MP as theoretical structures with no replicated Tc)."
+  ],
+  "citations": [
+    "Jain et al. 2013, APL Materials 1, 011002 \u2014 'Commentary: The Materials Project: A materials genome approach to accelerating materials innovation' (MP DB primary citation).",
+    "Ong et al. 2013, Computational Materials Science 68, 314 \u2014 'Python Materials Genomics (pymatgen): A robust, open-source Python library for materials analysis'.",
+    "MP API docs \u2014 https://docs.materialsproject.org.",
+    "RTSC.md \u00a78.7 Tier 1 sibling \u2014 structural/electronic data ingest feeds sim_adapter (Tc prediction) + synthesis_recipe (Tier 2)."
+  ],
+  "provenance": {
+    "source_url": "https://materialsproject.org/materials/mp-1077929",
+    "source_citation": "Jain et al. APL Materials 1, 011002 (2013)",
+    "primary_refs": [
+      "APL Materials 1 011002 (Jain 2013) \u2014 MP DB.",
+      "Comput Mater Sci 68 314 (Ong 2013) \u2014 pymatgen lib."
+    ],
+    "api_endpoints": [
+      "https://api.materialsproject.org/  (new 32-char key)",
+      "https://legacy.materialsproject.org/rest/v2/  (legacy key)"
+    ]
+  },
+  "rtsc_anchor": "RTSC.md \u00a78.2 (family matrix) + \u00a78.5 (handoff schema) + \u00a78.7 Tier 1 sibling (structural/electronic data)"
+}

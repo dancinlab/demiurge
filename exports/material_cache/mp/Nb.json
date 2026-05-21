@@ -1,0 +1,170 @@
+{
+  "_attribution": "Cached from Materials Project (materialsproject.org). Licensed CC-BY-4.0. Cite: Jain et al. APL Materials 1, 011002 (2013).",
+  "_batch_family": "lts",
+  "_batch_formula": "Nb",
+  "_batch_status": "hit",
+  "domain": "material",
+  "verb": "query",
+  "kind": "materials_project_lookup",
+  "stamp": "20260521T110442Z",
+  "producer": "mp_query@material-tier1-sibling",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "external-api",
+  "provisional": true,
+  "skipped_reason": null,
+  "query": {
+    "formula": "Nb",
+    "mp_id_filter": null,
+    "family_classification": "unclassified (not in RTSC \u00a78.2 candidate matrix)"
+  },
+  "backend": "MP_API_KEY_NEW (new API \u00b7 api.materialsproject.org)",
+  "row_count": 6,
+  "rows": [
+    {
+      "mp_id": "mp-1094120",
+      "formula_pretty": "Nb",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P1",
+          "number": 1
+        },
+        "nsites": 12,
+        "density_g_cm3": 8.161255619756384,
+        "volume_A3": 226.83961495276392
+      },
+      "formation_energy_per_atom_eV": 0.18974828500000201,
+      "energy_above_hull_eV": 0.18974828500000002,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0001198,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1104341",
+      "formula_pretty": "Nb",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "C2/m",
+          "number": 12
+        },
+        "nsites": 7,
+        "density_g_cm3": 8.537345194804299,
+        "volume_A3": 126.49397324848934
+      },
+      "formation_energy_per_atom_eV": 0.023213351428572,
+      "energy_above_hull_eV": 0.023213351428573,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0433282,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-2739273",
+      "formula_pretty": "Nb",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "R-3m",
+          "number": 166
+        },
+        "nsites": 7,
+        "density_g_cm3": 8.415095961417682,
+        "volume_A3": 128.3315983128445
+      },
+      "formation_energy_per_atom_eV": 0.011771527142859001,
+      "energy_above_hull_eV": 0.011771527142858,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 7.699999999999999e-06,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-2647103",
+      "formula_pretty": "Nb",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6_3/mmc",
+          "number": 194
+        },
+        "nsites": 2,
+        "density_g_cm3": 8.147014648509508,
+        "volume_A3": 37.87268838521344
+      },
+      "formation_energy_per_atom_eV": 0.30251795999999903,
+      "energy_above_hull_eV": 0.30251795999999903,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 2.1000000000000002e-05,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-8636",
+      "formula_pretty": "Nb",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Fm-3m",
+          "number": 225
+        },
+        "nsites": 1,
+        "density_g_cm3": 8.191931935937479,
+        "volume_A3": 18.83251408005379
+      },
+      "formation_energy_per_atom_eV": 0.32016416000000003,
+      "energy_above_hull_eV": 0.32016416000000003,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 1e-07,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-75",
+      "formula_pretty": "Nb",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Im-3m",
+          "number": 229
+        },
+        "nsites": 1,
+        "density_g_cm3": 8.449671959986281,
+        "volume_A3": 18.258066615716924
+      },
+      "formation_energy_per_atom_eV": 0.0,
+      "energy_above_hull_eV": null,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 4e-06,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    }
+  ],
+  "scope_caveats": [
+    "(s1) Materials Project values are DFT-computed (PBE-GGA), NOT experimentally measured. Band gaps are systematically underestimated by 30-50% (DFT gap problem); formation energies have \u00b10.1 eV/atom error bars; lattice constants are typically +1-3% overestimated.",
+    "(s2) Debye temperature and electron-phonon coupling (\u03bb, \u03c9_log, \u03bc*) are NOT exposed in standard MP summary endpoints \u2014 Tier 1 sim_adapter must ingest these from a separate source (phonon DB / Allen-Dynes Table I / first-principles paper). MP rows have debye_temp_K=null by design.",
+    "(s3) Tc prediction is NOT in MP. This adapter ingests *structural and electronic* data only. Tc inference requires \u03bb + \u03c9_log + \u03bc* fed into McMillan/Allen-Dynes via sim_adapter, or a full Eliashberg solve (hexa-native-absent).",
+    "(s4) absorbed=false for all MP-derived rows \u2014 DFT \u2260 measurement. RTSC.md \u00a78.7 honest \ud55c\uacc4 + \u00a78.8 g3 stance. LK-99-family rows are additionally claim-only (formula entries exist in MP as theoretical structures with no replicated Tc)."
+  ],
+  "citations": [
+    "Jain et al. 2013, APL Materials 1, 011002 \u2014 'Commentary: The Materials Project: A materials genome approach to accelerating materials innovation' (MP DB primary citation).",
+    "Ong et al. 2013, Computational Materials Science 68, 314 \u2014 'Python Materials Genomics (pymatgen): A robust, open-source Python library for materials analysis'.",
+    "MP API docs \u2014 https://docs.materialsproject.org.",
+    "RTSC.md \u00a78.7 Tier 1 sibling \u2014 structural/electronic data ingest feeds sim_adapter (Tc prediction) + synthesis_recipe (Tier 2)."
+  ],
+  "provenance": {
+    "source_url": "https://materialsproject.org/materials/mp-1094120",
+    "source_citation": "Jain et al. APL Materials 1, 011002 (2013)",
+    "primary_refs": [
+      "APL Materials 1 011002 (Jain 2013) \u2014 MP DB.",
+      "Comput Mater Sci 68 314 (Ong 2013) \u2014 pymatgen lib."
+    ],
+    "api_endpoints": [
+      "https://api.materialsproject.org/  (new 32-char key)",
+      "https://legacy.materialsproject.org/rest/v2/  (legacy key)"
+    ]
+  },
+  "rtsc_anchor": "RTSC.md \u00a78.2 (family matrix) + \u00a78.5 (handoff schema) + \u00a78.7 Tier 1 sibling (structural/electronic data)"
+}

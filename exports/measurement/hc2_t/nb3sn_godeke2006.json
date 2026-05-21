@@ -1,0 +1,107 @@
+{
+  "domain": "measurement",
+  "verb": "ingest",
+  "kind": "hc2_t",
+  "stamp": "20260521T000005Z",
+  "sample_id": "nb3sn_godeke2006_review",
+  "test_family": "lts",
+  "test_compound": "Nb3Sn",
+  "instrument": {
+    "model": "Resistive Hc2(T) transition + WHH extrapolation (review-paper compilation across multiple instruments)",
+    "vendor": "literature",
+    "calibration_date": null
+  },
+  "operator": null,
+  "sample_provenance": {
+    "synthesis_recipe_record_id": null,
+    "vendor": null,
+    "batch_lot": "Godeke 2006 review compilation of A15 Nb3Sn polycrystalline wires from multiple manufacturers (OST/IGC/EAS/Furukawa) and single crystals; representative binary composition near stoichiometric Nb3Sn."
+  },
+  "raw_data_hash": null,
+  "data_points": [
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 18.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Hc2",
+      "dependent_var_value": 0.0,
+      "dependent_var_unit": "T"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 15.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Hc2",
+      "dependent_var_value": 6.0,
+      "dependent_var_unit": "T"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 10.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Hc2",
+      "dependent_var_value": 17.0,
+      "dependent_var_unit": "T"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 8.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Hc2",
+      "dependent_var_value": 21.0,
+      "dependent_var_unit": "T"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 4.2,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Hc2",
+      "dependent_var_value": 27.0,
+      "dependent_var_unit": "T"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 1.5,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Hc2",
+      "dependent_var_value": 29.0,
+      "dependent_var_unit": "T"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 0.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Hc2_WHH_extrap",
+      "dependent_var_value": 30.0,
+      "dependent_var_unit": "T"
+    }
+  ],
+  "headline": {
+    "tc_k": 18.0,
+    "hc2_t": 27.0,
+    "temp_k": 4.2
+  },
+  "measurement_gate": "GATE_OPEN",
+  "replication_count": 100,
+  "absorbed": false,
+  "gate_type": "literature-extracted",
+  "provisional": true,
+  "provenance": {
+    "source_url": "https://arxiv.org/abs/cond-mat/0606303",
+    "source_citation": "A. Godeke, 'A Review of the Properties of Nb3Sn and Their Variation with A15 Composition, Morphology and Strain State', Superconductor Science and Technology 19, R68 (2006), arXiv:cond-mat/0606303. Reports Tc up to 18.3 K and Hc2(4.2 K) ~ 27-30 T for stoichiometric binary Nb3Sn (higher for ternary Ta- or Ti-doped variants).",
+    "vendor_datasheet_url": null
+  },
+  "scope_caveats": [
+    "Digitized from published Hc2(T) compilation figure (Godeke 2006 SuST 19 R68 Fig. 16 / Fig. 18 family); values ±5%.",
+    "Hc2(0) = 30 T is the WHH extrapolation; the directly-measured Hc2(4.2 K) = 27 T is the headline value (less extrapolation-dependent).",
+    "Composition matters: binary Nb3Sn near stoichiometry yields the cited values; off-stoichiometric (Sn-deficient) bronze-route wires read Hc2(4.2 K) ~ 22-24 T. Ta- or Ti-doped ternary alloys reach 28-29 T at 4.2 K.",
+    "Strain state matters: zero-strain values cited; intrinsic Nb3Sn loses ~30% of Hc2 at 0.7% applied compressive strain (relevant for high-field magnet conductors).",
+    "Review-paper compilation across multiple wire vendors (OST/IGC/EAS/Furukawa); not a single-sample lot-test. replication_count reflects multi-decade A15 reproduction across labs."
+  ],
+  "citations": [
+    "A. Godeke, SuST 19, R68 (2006), arXiv:cond-mat/0606303, doi:10.1088/0953-2048/19/8/R02",
+    "T. P. Orlando, E. J. McNiff, S. Foner, M. R. Beasley, PRB 19, 4545 (1979) — original Hc2(T) WHH analysis of Nb3Sn (Tinkham §4.10 reference)",
+    "RTSC.md §8.2 (LTS family) + §8.4 (Hc2 ladder falsifier row)",
+    "hexa-rtsc verify/calc_hc2_48t.hexa + verify/numerics_whh_full.hexa (F-SC-3 verifier track)"
+  ]
+}

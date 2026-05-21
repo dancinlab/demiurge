@@ -1,0 +1,1330 @@
+{
+  "_attribution": "Cached from Materials Project (materialsproject.org). Licensed CC-BY-4.0. Cite: Jain et al. APL Materials 1, 011002 (2013).",
+  "_batch_family": "tbg",
+  "_batch_formula": "C",
+  "_batch_status": "hit",
+  "domain": "material",
+  "verb": "query",
+  "kind": "materials_project_lookup",
+  "stamp": "20260521T110642Z",
+  "producer": "mp_query@material-tier1-sibling",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "external-api",
+  "provisional": true,
+  "skipped_reason": null,
+  "query": {
+    "formula": "C",
+    "mp_id_filter": null,
+    "family_classification": "unclassified (not in RTSC \u00a78.2 candidate matrix)"
+  },
+  "backend": "MP_API_KEY_NEW (new API \u00b7 api.materialsproject.org)",
+  "row_count": 64,
+  "rows": [
+    {
+      "mp_id": "mp-1197903",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P1",
+          "number": 1
+        },
+        "nsites": 80,
+        "density_g_cm3": 1.030996672490697,
+        "volume_A3": 1547.5694249833693
+      },
+      "formation_energy_per_atom_eV": 1.4104997176249991,
+      "energy_above_hull_eV": 1.4104997176249991,
+      "band_gap_eV": 0.07970000000000001,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0054643,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1244913",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P1",
+          "number": 1
+        },
+        "nsites": 100,
+        "density_g_cm3": 1.6754889834737798,
+        "volume_A3": 1190.3531919217505
+      },
+      "formation_energy_per_atom_eV": 0.9942529476999991,
+      "energy_above_hull_eV": 0.9942529476999981,
+      "band_gap_eV": 0.10600000000000001,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 2.0000505,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1244964",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P1",
+          "number": 1
+        },
+        "nsites": 100,
+        "density_g_cm3": 1.769792839947614,
+        "volume_A3": 1126.924922787448
+      },
+      "formation_energy_per_atom_eV": 0.9345966746000001,
+      "energy_above_hull_eV": 0.9345966745999991,
+      "band_gap_eV": 0.0724,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 2.0008597,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1245190",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P1",
+          "number": 1
+        },
+        "nsites": 100,
+        "density_g_cm3": 1.783633538371421,
+        "volume_A3": 1118.1801735623271
+      },
+      "formation_energy_per_atom_eV": 1.014946403599999,
+      "energy_above_hull_eV": 1.014946403599999,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 4.1176063,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1182029",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P2/m",
+          "number": 10
+        },
+        "nsites": 8,
+        "density_g_cm3": 1.377342416990445,
+        "volume_A3": 115.84184934146725
+      },
+      "formation_energy_per_atom_eV": 1.002409142499999,
+      "energy_above_hull_eV": 1.002409142499999,
+      "band_gap_eV": 0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-2647017",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P2_1/m",
+          "number": 11
+        },
+        "nsites": 20,
+        "density_g_cm3": 1.672314531438791,
+        "volume_A3": 238.52255326536243
+      },
+      "formation_energy_per_atom_eV": 0.177572003999999,
+      "energy_above_hull_eV": 0.177572003999999,
+      "band_gap_eV": 0.244099999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1080826",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "C2/m",
+          "number": 12
+        },
+        "nsites": 8,
+        "density_g_cm3": 3.397925313187996,
+        "volume_A3": 46.956268326840615
+      },
+      "formation_energy_per_atom_eV": 0.300915499999998,
+      "energy_above_hull_eV": 0.300915499999998,
+      "band_gap_eV": 3.4876,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-3347313",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "C2/m",
+          "number": 12
+        },
+        "nsites": 2,
+        "density_g_cm3": 2.1761568056275022,
+        "volume_A3": 18.32977894194205
+      },
+      "formation_energy_per_atom_eV": 0.0,
+      "energy_above_hull_eV": null,
+      "band_gap_eV": 1.376199999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-632329",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "C2/m",
+          "number": 12
+        },
+        "nsites": 2,
+        "density_g_cm3": 2.028127120496463,
+        "volume_A3": 19.66763956116844
+      },
+      "formation_energy_per_atom_eV": 0.0141120575,
+      "energy_above_hull_eV": 0.0141120575,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 7.9e-06,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1008395",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "I4/mmm",
+          "number": 139
+        },
+        "nsites": 4,
+        "density_g_cm3": 3.372810115535493,
+        "volume_A3": 23.652961076240057
+      },
+      "formation_energy_per_atom_eV": 0.335081674999999,
+      "energy_above_hull_eV": 0.335081674999999,
+      "band_gap_eV": 2.243399999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1095534",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "I4/mmm",
+          "number": 139
+        },
+        "nsites": 12,
+        "density_g_cm3": 1.9189284082140832,
+        "volume_A3": 124.72108814297599
+      },
+      "formation_energy_per_atom_eV": 1.123357330833332,
+      "energy_above_hull_eV": 1.123357330833332,
+      "band_gap_eV": 0.371799999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1095633",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "I4/mmm",
+          "number": 139
+        },
+        "nsites": 12,
+        "density_g_cm3": 1.6689761282700162,
+        "volume_A3": 143.39979768854366
+      },
+      "formation_energy_per_atom_eV": 0.998754169166666,
+      "energy_above_hull_eV": 0.998754169166666,
+      "band_gap_eV": 2.5933,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1181996",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "I4/mmm",
+          "number": 139
+        },
+        "nsites": 2,
+        "density_g_cm3": 2.325402658115325,
+        "volume_A3": 17.15336182787517
+      },
+      "formation_energy_per_atom_eV": 2.636820752499999,
+      "energy_above_hull_eV": 2.636820752499999,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 1e-07,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1205417",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "I4/mmm",
+          "number": 139
+        },
+        "nsites": 20,
+        "density_g_cm3": 0.874051366476088,
+        "volume_A3": 456.3630321976748
+      },
+      "formation_energy_per_atom_eV": 1.168639081999999,
+      "energy_above_hull_eV": 1.168639082,
+      "band_gap_eV": 4.1977,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 1.899999999999999e-06,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-723638",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P2_1/c",
+          "number": 14
+        },
+        "nsites": 48,
+        "density_g_cm3": 1.330194290992207,
+        "volume_A3": 719.6868630744448
+      },
+      "formation_energy_per_atom_eV": 1.041364663541666,
+      "energy_above_hull_eV": 1.041364663541665,
+      "band_gap_eV": 1.876599999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0002899,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-990424",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P-3m1",
+          "number": 164
+        },
+        "nsites": 4,
+        "density_g_cm3": 0.632674547562438,
+        "volume_A3": 126.09476181343716
+      },
+      "formation_energy_per_atom_eV": 0.008908770000001,
+      "energy_above_hull_eV": 0.008908770000001,
+      "band_gap_eV": 0.012399999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-169",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "R-3m",
+          "number": 166
+        },
+        "nsites": 2,
+        "density_g_cm3": 2.179050113817426,
+        "volume_A3": 18.305440952101463
+      },
+      "formation_energy_per_atom_eV": 0.0007906250000000001,
+      "energy_above_hull_eV": 0.0007906250000000001,
+      "band_gap_eV": 0.094599999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-2516584",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "R-3m",
+          "number": 166
+        },
+        "nsites": 4,
+        "density_g_cm3": 2.128419486070265,
+        "volume_A3": 37.48177786494673
+      },
+      "formation_energy_per_atom_eV": 0.0023171524999990004,
+      "energy_above_hull_eV": 0.0023171524999990004,
+      "band_gap_eV": 1.4276,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-569304",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "R-3m",
+          "number": 166
+        },
+        "nsites": 4,
+        "density_g_cm3": 1.380072508121142,
+        "volume_A3": 57.80634416732178
+      },
+      "formation_energy_per_atom_eV": 0.009060210000001,
+      "energy_above_hull_eV": 0.009060210000001,
+      "band_gap_eV": 0.0148,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-569416",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "R-3m",
+          "number": 166
+        },
+        "nsites": 8,
+        "density_g_cm3": 1.6747532544832562,
+        "volume_A3": 95.27008968843575
+      },
+      "formation_energy_per_atom_eV": 0.00210089125,
+      "energy_above_hull_eV": 0.00210089125,
+      "band_gap_eV": 0.10560000000000001,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-569517",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "R-3m",
+          "number": 166
+        },
+        "nsites": 10,
+        "density_g_cm3": 3.531876126844723,
+        "volume_A3": 56.46924149883774
+      },
+      "formation_energy_per_atom_eV": 0.12029307100000002,
+      "energy_above_hull_eV": 0.12029307100000002,
+      "band_gap_eV": 4.5686,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-569567",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "R-3m",
+          "number": 166
+        },
+        "nsites": 14,
+        "density_g_cm3": 3.532553594355206,
+        "volume_A3": 79.04177668450909
+      },
+      "formation_energy_per_atom_eV": 0.117805412142857,
+      "energy_above_hull_eV": 0.117805412142857,
+      "band_gap_eV": 4.4229,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-680372",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "R-3m",
+          "number": 166
+        },
+        "nsites": 60,
+        "density_g_cm3": 1.98798322695879,
+        "volume_A3": 601.9438089199996
+      },
+      "formation_energy_per_atom_eV": 0.40914998149999804,
+      "energy_above_hull_eV": 0.40914998149999804,
+      "band_gap_eV": 0.7159,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-1182684",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P2_12_12_1",
+          "number": 19
+        },
+        "nsites": 80,
+        "density_g_cm3": 1.079545092869862,
+        "volume_A3": 1477.9733965207647
+      },
+      "formation_energy_per_atom_eV": 1.529662770124999,
+      "energy_above_hull_eV": 1.529662770124998,
+      "band_gap_eV": 0.26069999999999904,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0002231,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1040425",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6/mmm",
+          "number": 191
+        },
+        "nsites": 2,
+        "density_g_cm3": 0.426169585419898,
+        "volume_A3": 93.59765350418738
+      },
+      "formation_energy_per_atom_eV": 0.01760497,
+      "energy_above_hull_eV": 0.01760497,
+      "band_gap_eV": 0.0001,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-2049878",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6/mmm",
+          "number": 191
+        },
+        "nsites": 2,
+        "density_g_cm3": 1.046524702953852,
+        "volume_A3": 38.11517595100074
+      },
+      "formation_energy_per_atom_eV": 0.012914430000000001,
+      "energy_above_hull_eV": 0.012914430000000001,
+      "band_gap_eV": 1.621,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-568806",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6/mmm",
+          "number": 191
+        },
+        "nsites": 8,
+        "density_g_cm3": 2.086495368405856,
+        "volume_A3": 76.46980442737497
+      },
+      "formation_energy_per_atom_eV": 0.011936282499998,
+      "energy_above_hull_eV": 0.011936282499998,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-990448",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6/mmm",
+          "number": 191
+        },
+        "nsites": 2,
+        "density_g_cm3": 0.895820634542786,
+        "volume_A3": 44.527298939160254
+      },
+      "formation_energy_per_atom_eV": 0.013120765000000001,
+      "energy_above_hull_eV": 0.013120765000000001,
+      "band_gap_eV": 9.999999999998901e-05,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-47",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6_3/mmc",
+          "number": 194
+        },
+        "nsites": 4,
+        "density_g_cm3": 3.526073970466666,
+        "volume_A3": 22.62486466492122
+      },
+      "formation_energy_per_atom_eV": 0.139477217500001,
+      "energy_above_hull_eV": 0.139477217500001,
+      "band_gap_eV": 3.3394999999999992,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-48",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6_3/mmc",
+          "number": 194
+        },
+        "nsites": 4,
+        "density_g_cm3": 1.9392789972830462,
+        "volume_A3": 41.13742607024477
+      },
+      "formation_energy_per_atom_eV": 0.003121854999999,
+      "energy_above_hull_eV": 0.003121854999999,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-606949",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6_3/mmc",
+          "number": 194
+        },
+        "nsites": 12,
+        "density_g_cm3": 1.55316642985502,
+        "volume_A3": 154.09220450590703
+      },
+      "formation_energy_per_atom_eV": 0.006065369166667001,
+      "energy_above_hull_eV": 0.006065369166668001,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-611426",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6_3/mmc",
+          "number": 194
+        },
+        "nsites": 8,
+        "density_g_cm3": 3.531622024925885,
+        "volume_A3": 45.17864359053767
+      },
+      "formation_energy_per_atom_eV": 0.12258669875000001,
+      "energy_above_hull_eV": 0.12258669875000001,
+      "band_gap_eV": 4.521799999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-611448",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6_3/mmc",
+          "number": 194
+        },
+        "nsites": 12,
+        "density_g_cm3": 3.53247894895872,
+        "volume_A3": 67.75152593944757
+      },
+      "formation_energy_per_atom_eV": 0.11882863916666701,
+      "energy_above_hull_eV": 0.11882863916666601,
+      "band_gap_eV": 4.399799999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-616440",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6_3/mmc",
+          "number": 194
+        },
+        "nsites": 16,
+        "density_g_cm3": 3.53308291800795,
+        "volume_A3": 90.31992538153075
+      },
+      "formation_energy_per_atom_eV": 0.11723812312500001,
+      "energy_above_hull_eV": 0.11723812312500001,
+      "band_gap_eV": 4.3668,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-997182",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6_3/mmc",
+          "number": 194
+        },
+        "nsites": 4,
+        "density_g_cm3": 1.268129757175706,
+        "volume_A3": 62.909135227599734
+      },
+      "formation_energy_per_atom_eV": 0.014401535000001001,
+      "energy_above_hull_eV": 0.014401535000001001,
+      "band_gap_eV": 9.999999999998901e-05,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-667273",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Fm-3",
+          "number": 202
+        },
+        "nsites": 60,
+        "density_g_cm3": 1.652287906512648,
+        "volume_A3": 724.2407276528025
+      },
+      "formation_energy_per_atom_eV": 0.39067633833333204,
+      "energy_above_hull_eV": 0.39067633833333304,
+      "band_gap_eV": 1.0093,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 2e-07,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-1196583",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pa-3",
+          "number": 205
+        },
+        "nsites": 240,
+        "density_g_cm3": 1.638371379382439,
+        "volume_A3": 2921.5700683338546
+      },
+      "formation_energy_per_atom_eV": 0.3850360855,
+      "energy_above_hull_eV": 0.385036085500001,
+      "band_gap_eV": 1.3517000000000001,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-24",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Ia-3",
+          "number": 206
+        },
+        "nsites": 8,
+        "density_g_cm3": 3.600264802416577,
+        "volume_A3": 44.317265955971735
+      },
+      "formation_energy_per_atom_eV": 0.8349742562499991,
+      "energy_above_hull_eV": 0.8349742562499991,
+      "band_gap_eV": 2.407,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1018088",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "I4_132",
+          "number": 214
+        },
+        "nsites": 4,
+        "density_g_cm3": 2.301601561462735,
+        "volume_A3": 34.66149298647901
+      },
+      "formation_energy_per_atom_eV": 1.306076984999999,
+      "energy_above_hull_eV": 1.306076984999999,
+      "band_gap_eV": 0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0014552,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1192619",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "I-43m",
+          "number": 217
+        },
+        "nsites": 29,
+        "density_g_cm3": 1.606209081679817,
+        "volume_A3": 360.09188831902077
+      },
+      "formation_energy_per_atom_eV": 1.920290190431034,
+      "energy_above_hull_eV": 1.920290190431034,
+      "band_gap_eV": 0.066799999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 2.0228029,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1188817",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pm-3m",
+          "number": 221
+        },
+        "nsites": 20,
+        "density_g_cm3": 2.86385185912906,
+        "volume_A3": 139.28259963239
+      },
+      "formation_energy_per_atom_eV": 0.765223488999998,
+      "energy_above_hull_eV": 0.765223488999998,
+      "band_gap_eV": 0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 5.8e-05,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-998866",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pm-3m",
+          "number": 221
+        },
+        "nsites": 1,
+        "density_g_cm3": 3.554951767280407,
+        "volume_A3": 5.610269252776693
+      },
+      "formation_energy_per_atom_eV": 2.756672782499999,
+      "energy_above_hull_eV": 2.756672782499999,
+      "band_gap_eV": 0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-66",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Fd-3m",
+          "number": 227
+        },
+        "nsites": 2,
+        "density_g_cm3": 3.534148102771878,
+        "volume_A3": 11.286587893379405
+      },
+      "formation_energy_per_atom_eV": 0.11226490000000101,
+      "energy_above_hull_eV": 0.11226490000000101,
+      "band_gap_eV": 4.1145,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-570002",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Im-3m",
+          "number": 229
+        },
+        "nsites": 8,
+        "density_g_cm3": 2.8085082877991843,
+        "volume_A3": 56.81090330185562
+      },
+      "formation_energy_per_atom_eV": 0.765540527499998,
+      "energy_above_hull_eV": 0.765540527499998,
+      "band_gap_eV": 3.0059,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-731594",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P2_1",
+          "number": 4
+        },
+        "nsites": 28,
+        "density_g_cm3": 1.15170657466459,
+        "volume_A3": 484.87925392351025
+      },
+      "formation_energy_per_atom_eV": 1.5011551592857142,
+      "energy_above_hull_eV": 1.5011551592857142,
+      "band_gap_eV": 1.6358000000000001,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0002781,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-2646980",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pmmm",
+          "number": 47
+        },
+        "nsites": 6,
+        "density_g_cm3": 2.562894817937748,
+        "volume_A3": 46.69150631267586
+      },
+      "formation_energy_per_atom_eV": 0.642655674166666,
+      "energy_above_hull_eV": 0.642655674166666,
+      "band_gap_eV": 0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 1.8e-06,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1147718",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pnnm",
+          "number": 58
+        },
+        "nsites": 120,
+        "density_g_cm3": 1.743225115813743,
+        "volume_A3": 1372.9198654254635
+      },
+      "formation_energy_per_atom_eV": 0.388692925583332,
+      "energy_above_hull_eV": 0.388692925583333,
+      "band_gap_eV": 0.9669000000000001,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1205283",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pnnm",
+          "number": 58
+        },
+        "nsites": 120,
+        "density_g_cm3": 2.114171738704126,
+        "volume_A3": 1132.0312099509297
+      },
+      "formation_energy_per_atom_eV": 0.6993028923333321,
+      "energy_above_hull_eV": 0.6993028923333331,
+      "band_gap_eV": 0.10600000000000001,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 2e-07,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-568028",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pnnm",
+          "number": 58
+        },
+        "nsites": 120,
+        "density_g_cm3": 2.182033170475266,
+        "volume_A3": 1096.8249354742893
+      },
+      "formation_energy_per_atom_eV": 0.5308612086666661,
+      "energy_above_hull_eV": 0.5308612086666671,
+      "band_gap_eV": 0.304199999999999,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-1190171",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pnma",
+          "number": 62
+        },
+        "nsites": 16,
+        "density_g_cm3": 3.407679442955229,
+        "volume_A3": 93.64372173589788
+      },
+      "formation_energy_per_atom_eV": 0.292670106874998,
+      "energy_above_hull_eV": 0.292670106874998,
+      "band_gap_eV": 4.3294999999999995,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1196857",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pnma",
+          "number": 62
+        },
+        "nsites": 52,
+        "density_g_cm3": 1.01614965158914,
+        "volume_A3": 1020.61768295853
+      },
+      "formation_energy_per_atom_eV": 1.601080180192307,
+      "energy_above_hull_eV": 1.601080180192307,
+      "band_gap_eV": 0.5989,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 8.0250677,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-1056957",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmcm",
+          "number": 63
+        },
+        "nsites": 2,
+        "density_g_cm3": 2.322366427920791,
+        "volume_A3": 17.175787899184765
+      },
+      "formation_energy_per_atom_eV": 2.6181942174999993,
+      "energy_above_hull_eV": 2.6181942174999993,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 1e-06,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1097832",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmcm",
+          "number": 63
+        },
+        "nsites": 2,
+        "density_g_cm3": 1.516728175303045,
+        "volume_A3": 26.299025652493786
+      },
+      "formation_energy_per_atom_eV": 2.607661687499999,
+      "energy_above_hull_eV": 2.607661687499999,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0073409,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-683919",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmcm",
+          "number": 63
+        },
+        "nsites": 140,
+        "density_g_cm3": 1.762578723586691,
+        "volume_A3": 1584.1522911549594
+      },
+      "formation_energy_per_atom_eV": 0.35041286907142705,
+      "energy_above_hull_eV": 0.35041286907142805,
+      "band_gap_eV": 1.1035,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0024288,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-1008374",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmmm",
+          "number": 65
+        },
+        "nsites": 4,
+        "density_g_cm3": 3.063062968693546,
+        "volume_A3": 26.04482741480699
+      },
+      "formation_energy_per_atom_eV": 0.43841150499999904,
+      "energy_above_hull_eV": 0.43841150499999904,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1078845",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmmm",
+          "number": 65
+        },
+        "nsites": 8,
+        "density_g_cm3": 3.461273443244769,
+        "volume_A3": 46.09687601307967
+      },
+      "formation_energy_per_atom_eV": 0.267769908749999,
+      "energy_above_hull_eV": 0.267769908749999,
+      "band_gap_eV": 3.3272999999999993,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-568410",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmmm",
+          "number": 65
+        },
+        "nsites": 8,
+        "density_g_cm3": 2.8011652272677363,
+        "volume_A3": 56.95982914804663
+      },
+      "formation_energy_per_atom_eV": 0.508887008749999,
+      "energy_above_hull_eV": 0.508887008749999,
+      "band_gap_eV": 0.028100000000000003,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 2e-07,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-579909",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmmm",
+          "number": 65
+        },
+        "nsites": 8,
+        "density_g_cm3": 1.915054772343011,
+        "volume_A3": 83.31557669518253
+      },
+      "formation_energy_per_atom_eV": 0.9450012137499981,
+      "energy_above_hull_eV": 0.9450012137499981,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 1e-07,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-568286",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmme",
+          "number": 67
+        },
+        "nsites": 16,
+        "density_g_cm3": 2.179232832486199,
+        "volume_A3": 146.4312489993012
+      },
+      "formation_energy_per_atom_eV": 0.008188829999999,
+      "energy_above_hull_eV": 0.008188829999999,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-568363",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmme",
+          "number": 67
+        },
+        "nsites": 4,
+        "density_g_cm3": 1.855603932846249,
+        "volume_A3": 42.992443036021456
+      },
+      "formation_energy_per_atom_eV": 0.008253912499998,
+      "energy_above_hull_eV": 0.008253912499998,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 1e-07,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-624889",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmme",
+          "number": 67
+        },
+        "nsites": 8,
+        "density_g_cm3": 2.333812574022664,
+        "volume_A3": 68.36619809859249
+      },
+      "formation_energy_per_atom_eV": 1.256077986249998,
+      "energy_above_hull_eV": 1.256077986249998,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.000264099999999,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-937760",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Fmmm",
+          "number": 69
+        },
+        "nsites": 4,
+        "density_g_cm3": 2.179840590962765,
+        "volume_A3": 36.59760567403456
+      },
+      "formation_energy_per_atom_eV": 0.006056227500000001,
+      "energy_above_hull_eV": 0.006056227500000001,
+      "band_gap_eV": 0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-630227",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Immm",
+          "number": 71
+        },
+        "nsites": 60,
+        "density_g_cm3": 1.896712955744873,
+        "volume_A3": 630.9094858450516
+      },
+      "formation_energy_per_atom_eV": 0.39554219849999606,
+      "energy_above_hull_eV": 0.39554219849999706,
+      "band_gap_eV": 0.9121999999999991,
+      "debye_temp_K": null,
+      "is_metal": false,
+      "total_magnetization": 1e-07,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-1096869",
+      "formula_pretty": "C",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cm",
+          "number": 8
+        },
+        "nsites": 71,
+        "density_g_cm3": 0.9956655678956601,
+        "volume_A3": 1422.2052503465602
+      },
+      "formation_energy_per_atom_eV": 0.11787022052816801,
+      "energy_above_hull_eV": 0.117870220528169,
+      "band_gap_eV": 0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 1.889946999999999,
+      "theoretical_or_experimental": "theoretical"
+    }
+  ],
+  "scope_caveats": [
+    "(s1) Materials Project values are DFT-computed (PBE-GGA), NOT experimentally measured. Band gaps are systematically underestimated by 30-50% (DFT gap problem); formation energies have \u00b10.1 eV/atom error bars; lattice constants are typically +1-3% overestimated.",
+    "(s2) Debye temperature and electron-phonon coupling (\u03bb, \u03c9_log, \u03bc*) are NOT exposed in standard MP summary endpoints \u2014 Tier 1 sim_adapter must ingest these from a separate source (phonon DB / Allen-Dynes Table I / first-principles paper). MP rows have debye_temp_K=null by design.",
+    "(s3) Tc prediction is NOT in MP. This adapter ingests *structural and electronic* data only. Tc inference requires \u03bb + \u03c9_log + \u03bc* fed into McMillan/Allen-Dynes via sim_adapter, or a full Eliashberg solve (hexa-native-absent).",
+    "(s4) absorbed=false for all MP-derived rows \u2014 DFT \u2260 measurement. RTSC.md \u00a78.7 honest \ud55c\uacc4 + \u00a78.8 g3 stance. LK-99-family rows are additionally claim-only (formula entries exist in MP as theoretical structures with no replicated Tc)."
+  ],
+  "citations": [
+    "Jain et al. 2013, APL Materials 1, 011002 \u2014 'Commentary: The Materials Project: A materials genome approach to accelerating materials innovation' (MP DB primary citation).",
+    "Ong et al. 2013, Computational Materials Science 68, 314 \u2014 'Python Materials Genomics (pymatgen): A robust, open-source Python library for materials analysis'.",
+    "MP API docs \u2014 https://docs.materialsproject.org.",
+    "RTSC.md \u00a78.7 Tier 1 sibling \u2014 structural/electronic data ingest feeds sim_adapter (Tc prediction) + synthesis_recipe (Tier 2)."
+  ],
+  "provenance": {
+    "source_url": "https://materialsproject.org/materials/mp-1197903",
+    "source_citation": "Jain et al. APL Materials 1, 011002 (2013)",
+    "primary_refs": [
+      "APL Materials 1 011002 (Jain 2013) \u2014 MP DB.",
+      "Comput Mater Sci 68 314 (Ong 2013) \u2014 pymatgen lib."
+    ],
+    "api_endpoints": [
+      "https://api.materialsproject.org/  (new 32-char key)",
+      "https://legacy.materialsproject.org/rest/v2/  (legacy key)"
+    ]
+  },
+  "rtsc_anchor": "RTSC.md \u00a78.2 (family matrix) + \u00a78.5 (handoff schema) + \u00a78.7 Tier 1 sibling (structural/electronic data)"
+}

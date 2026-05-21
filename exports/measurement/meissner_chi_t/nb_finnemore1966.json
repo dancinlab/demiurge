@@ -1,0 +1,98 @@
+{
+  "domain": "measurement",
+  "verb": "ingest",
+  "kind": "meissner_chi_t",
+  "stamp": "20260521T000003Z",
+  "sample_id": "nb_finnemore1966_bulk",
+  "test_family": "lts",
+  "test_compound": "Nb",
+  "instrument": {
+    "model": "DC magnetization vs T (zero-field-cooled), inductive susceptometer (literature extraction)",
+    "vendor": "literature",
+    "calibration_date": null
+  },
+  "operator": null,
+  "sample_provenance": {
+    "synthesis_recipe_record_id": null,
+    "vendor": null,
+    "batch_lot": "Finnemore/Stromberg/Swenson high-purity Nb bulk (Ames Lab, ~1965 vintage); also reproduced on standard Nb across NIST cryogenic materials database."
+  },
+  "raw_data_hash": null,
+  "data_points": [
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 12.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "chi_volumetric_zfc",
+      "dependent_var_value": 0.0,
+      "dependent_var_unit": "SI dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 9.5,
+      "independent_var_unit": "K",
+      "dependent_var_name": "chi_volumetric_zfc",
+      "dependent_var_value": 0.0,
+      "dependent_var_unit": "SI dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 9.25,
+      "independent_var_unit": "K",
+      "dependent_var_name": "chi_volumetric_zfc",
+      "dependent_var_value": -0.05,
+      "dependent_var_unit": "SI dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 9.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "chi_volumetric_zfc",
+      "dependent_var_value": -0.85,
+      "dependent_var_unit": "SI dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 8.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "chi_volumetric_zfc",
+      "dependent_var_value": -0.98,
+      "dependent_var_unit": "SI dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 4.2,
+      "independent_var_unit": "K",
+      "dependent_var_name": "chi_volumetric_zfc",
+      "dependent_var_value": -1.0,
+      "dependent_var_unit": "SI dimensionless"
+    }
+  ],
+  "headline": {
+    "tc_k": 9.25,
+    "chi_volumetric": -1.0
+  },
+  "measurement_gate": "GATE_OPEN",
+  "replication_count": 200,
+  "absorbed": false,
+  "gate_type": "literature-extracted",
+  "provisional": true,
+  "provenance": {
+    "source_url": "https://doi.org/10.1103/PhysRev.149.231",
+    "source_citation": "D. K. Finnemore, T. F. Stromberg, C. A. Swenson, 'Superconducting Properties of High-Purity Niobium', Physical Review 149, 231 (1966). Tc=9.25 K and full Meissner state below 8 K widely reproduced; see also Tinkham, 'Introduction to Superconductivity', 2nd ed., Table 1.1 (McGraw-Hill, 1996, ISBN 978-0486435039).",
+    "vendor_datasheet_url": null
+  },
+  "scope_caveats": [
+    "Digitized from published magnetization figure family (Finnemore et al. 1966 + Tinkham textbook Ch. 1 reproduction); chi_volumetric values ±5%.",
+    "chi_volumetric is the dimensionless SI volume susceptibility from zero-field-cooled (ZFC) Meissner-state shielding. The chi=-1 limit at T<<Tc assumes full flux expulsion (bulk Nb, demag-corrected). Sample with finite demag or pinning will read |chi| < 1.",
+    "Tc value 9.25 K is the canonical Nb transition midpoint (high-purity bulk); thin films / strained samples report 9.0-9.3 K.",
+    "replication_count reflects 60+ years of independent reproduction across cryogenic-physics labs (NIST cryogenic-materials database lists Nb as a primary fixed point).",
+    "Single bulk-sample literature value; not lot-tested per-batch (vendor Nb purity matters: RRR > 100 typical for the cited value)."
+  ],
+  "citations": [
+    "Finnemore, Stromberg, Swenson, Phys. Rev. 149, 231 (1966), https://doi.org/10.1103/PhysRev.149.231",
+    "M. Tinkham, 'Introduction to Superconductivity', 2nd ed., McGraw-Hill (1996), ISBN 978-0486435039 — Table 1.1 Nb properties + Ch. 1 Meissner discussion",
+    "NIST Cryogenic Materials Properties database, https://trc.nist.gov/cryogenics/materials/materialproperties.htm — Nb listed as reference cryogenic material",
+    "RTSC.md §8.2 (LTS family) + §8.4 (Meissner falsifier row)"
+  ]
+}

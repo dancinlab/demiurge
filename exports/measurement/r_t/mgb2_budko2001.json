@@ -1,0 +1,105 @@
+{
+  "domain": "measurement",
+  "verb": "ingest",
+  "kind": "r_t",
+  "stamp": "20260521T000002Z",
+  "sample_id": "mgb2_budko2001_polycrystal",
+  "test_family": "mgb2",
+  "test_compound": "MgB2",
+  "instrument": {
+    "model": "4-probe DC resistance + magnetoresistance (literature extraction)",
+    "vendor": "literature",
+    "calibration_date": null
+  },
+  "operator": null,
+  "sample_provenance": {
+    "synthesis_recipe_record_id": null,
+    "vendor": null,
+    "batch_lot": "Bud'ko/Canfield (Ames Lab) 2001 polycrystalline MgB2 — sealed Ta tube reaction of Mg+B at 950 C"
+  },
+  "raw_data_hash": null,
+  "data_points": [
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 300.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 1.0,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 100.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.18,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 50.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.06,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 40.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.045,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 39.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.020,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 38.5,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.001,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 30.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.0,
+      "dependent_var_unit": "dimensionless"
+    }
+  ],
+  "headline": {
+    "tc_k": 39.0
+  },
+  "measurement_gate": "GATE_OPEN",
+  "replication_count": 500,
+  "absorbed": false,
+  "gate_type": "literature-extracted",
+  "provisional": true,
+  "provenance": {
+    "source_url": "https://arxiv.org/abs/cond-mat/0102413",
+    "source_citation": "S. L. Bud'ko, C. Petrovic, G. Lapertot, C. E. Cunningham, P. C. Canfield, M.-H. Jung, A. H. Lacerda, 'Magnetoresistivity and Hc2(T) in MgB2', Physical Review B 63, 220503(R) (2001), arXiv:cond-mat/0102413. Discovery paper: Nagamatsu et al., Nature 410, 63 (2001), https://www.nature.com/articles/35065039.",
+    "vendor_datasheet_url": null
+  },
+  "scope_caveats": [
+    "Digitized from published R(T) figure (Bud'ko et al. arXiv:cond-mat/0102413 Fig. 1); values ±5%.",
+    "R_over_R_300K dimensionless ratio used (residual resistivity ratio context); absolute resistivity ~10 microOhm-cm at 300 K depends on packing density.",
+    "Order-of-magnitude estimates from a single representative polycrystalline pellet; not lot-tested across reproduction labs (within-paper-only).",
+    "Tc value 39 K is the midpoint of the resistive transition (onset ~39.5 K, zero ~38.5 K) consistent with Nagamatsu 2001 discovery.",
+    "replication_count reflects extensive literature reproduction of MgB2 Tc=39 K since 2001 (Nagamatsu/Bud'ko/Canfield/Finnemore independent labs)."
+  ],
+  "citations": [
+    "Bud'ko et al., PRB 63, 220503(R) (2001), arXiv:cond-mat/0102413",
+    "Nagamatsu, Nakagawa, Muranaka, Zenitani, Akimitsu, Nature 410, 63 (2001), https://doi.org/10.1038/35065039 — MgB2 discovery",
+    "Finnemore et al., PRL 86, 2420 (2001), arXiv:cond-mat/0102114 — independent thermodynamic/transport confirmation",
+    "RTSC.md §8.2 (MgB2 family) + §8.4 (R(T) drop falsifier row)"
+  ]
+}

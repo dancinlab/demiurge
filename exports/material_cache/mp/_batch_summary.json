@@ -1,0 +1,113 @@
+{
+  "batch_stamp": "20260521T110703Z",
+  "total_queried": 31,
+  "total_hit": 25,
+  "total_miss": 6,
+  "api_calls_made": 0,
+  "cached_skips": 31,
+  "per_family_stats": {
+    "lts": {
+      "queried": 7,
+      "hit": 7,
+      "miss": 0,
+      "cached_skip": 7
+    },
+    "mgb2": {
+      "queried": 1,
+      "hit": 1,
+      "miss": 0,
+      "cached_skip": 1
+    },
+    "fesc": {
+      "queried": 8,
+      "hit": 7,
+      "miss": 1,
+      "cached_skip": 8
+    },
+    "hts_cuprate": {
+      "queried": 7,
+      "hit": 7,
+      "miss": 0,
+      "cached_skip": 7
+    },
+    "heavy_hydride": {
+      "queried": 4,
+      "hit": 1,
+      "miss": 3,
+      "cached_skip": 4
+    },
+    "tbg": {
+      "queried": 1,
+      "hit": 1,
+      "miss": 0,
+      "cached_skip": 1
+    },
+    "lk99_family": {
+      "queried": 3,
+      "hit": 1,
+      "miss": 2,
+      "cached_skip": 3
+    }
+  },
+  "duration_s": 0.0,
+  "license": "CC-BY-4.0",
+  "attribution": "Cached from Materials Project (materialsproject.org). Licensed CC-BY-4.0. Cite: Jain et al. APL Materials 1, 011002 (2013).",
+  "rtsc_anchor": "RTSC.md \u00a78.2 (8 family matrix) + MP.md Phase 1.2",
+  "absorbed": false,
+  "gate_type": "external-api",
+  "provisional": true,
+  "top_hits_sample": [
+    {
+      "formula": "Nb",
+      "family": "lts",
+      "mp_id": "mp-1094120"
+    },
+    {
+      "formula": "NbTi",
+      "family": "lts",
+      "mp_id": "mp-1216634"
+    },
+    {
+      "formula": "Nb3Sn",
+      "family": "lts",
+      "mp_id": "mp-1326"
+    },
+    {
+      "formula": "Nb3Ge",
+      "family": "lts",
+      "mp_id": "mp-1189187"
+    },
+    {
+      "formula": "V3Si",
+      "family": "lts",
+      "mp_id": "mp-2567"
+    }
+  ],
+  "top_misses_sample": [
+    {
+      "formula": "BaKFe2As2",
+      "family": "fesc",
+      "reason": "row_count=0"
+    },
+    {
+      "formula": "LaH10",
+      "family": "heavy_hydride",
+      "reason": "row_count=0"
+    },
+    {
+      "formula": "CaH6",
+      "family": "heavy_hydride",
+      "reason": "row_count=0"
+    },
+    {
+      "formula": "YH6",
+      "family": "heavy_hydride",
+      "reason": "row_count=0"
+    },
+    {
+      "formula": "Pb10Cu(PO4)6O",
+      "family": "lk99_family",
+      "reason": "row_count=0"
+    }
+  ]
+}

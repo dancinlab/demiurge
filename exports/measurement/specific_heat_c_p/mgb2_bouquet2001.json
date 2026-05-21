@@ -1,0 +1,106 @@
+{
+  "domain": "measurement",
+  "verb": "ingest",
+  "kind": "specific_heat_c_p",
+  "stamp": "20260521T000004Z",
+  "sample_id": "mgb2_bouquet2001_isotope11B",
+  "test_family": "mgb2",
+  "test_compound": "Mg11B2",
+  "instrument": {
+    "model": "Adiabatic-calorimeter Cp(T) measurement (1-50 K, B up to 9 T) (literature extraction)",
+    "vendor": "literature",
+    "calibration_date": null
+  },
+  "operator": null,
+  "sample_provenance": {
+    "synthesis_recipe_record_id": null,
+    "vendor": null,
+    "batch_lot": "Bouquet/Fisher/Phillips/Hinks/Jorgensen (LBNL+Argonne 2001) isotopically-enriched Mg-11B2 polycrystal — sealed Ta tube reaction"
+  },
+  "raw_data_hash": null,
+  "data_points": [
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 5.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Cp_per_mol",
+      "dependent_var_value": 1.5,
+      "dependent_var_unit": "mJ/mol/K"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 20.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Cp_per_mol",
+      "dependent_var_value": 90.0,
+      "dependent_var_unit": "mJ/mol/K"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 35.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Cp_per_mol",
+      "dependent_var_value": 420.0,
+      "dependent_var_unit": "mJ/mol/K"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 38.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Cp_per_mol",
+      "dependent_var_value": 520.0,
+      "dependent_var_unit": "mJ/mol/K"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 38.7,
+      "independent_var_unit": "K",
+      "dependent_var_name": "delta_Cp_at_Tc",
+      "dependent_var_value": 133.0,
+      "dependent_var_unit": "mJ/mol/K"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 40.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Cp_per_mol",
+      "dependent_var_value": 460.0,
+      "dependent_var_unit": "mJ/mol/K"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 45.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "Cp_per_mol",
+      "dependent_var_value": 580.0,
+      "dependent_var_unit": "mJ/mol/K"
+    }
+  ],
+  "headline": {
+    "tc_k": 38.7,
+    "delta_cp_over_gamma_tc": 1.32
+  },
+  "measurement_gate": "GATE_OPEN",
+  "replication_count": 50,
+  "absorbed": false,
+  "gate_type": "literature-extracted",
+  "provisional": true,
+  "provenance": {
+    "source_url": "https://arxiv.org/abs/cond-mat/0104206",
+    "source_citation": "F. Bouquet, R. A. Fisher, N. E. Phillips, D. G. Hinks, J. D. Jorgensen, 'Specific Heat of Mg-11B2: Evidence for a Second Energy Gap', Physical Review Letters 87, 047001 (2001), arXiv:cond-mat/0104206. Reports gamma_n = 2.6 mJ/mol/K^2, Theta_Debye = 1050 K, deltaCp(Tc) = 133 mJ/mol/K at Tc = 38.7 K.",
+    "vendor_datasheet_url": null
+  },
+  "scope_caveats": [
+    "Digitized from published Cp(T) figure (Bouquet et al. arXiv:cond-mat/0104206 Fig. 1, 2); values ±5%.",
+    "deltaCp/(gamma * Tc) = 133/(2.6 * 38.7) = 1.32 — slightly BELOW the BCS weak-coupling prediction 1.43 (Bouquet attributes this to a second small gap; consistent with MgB2 two-band SC).",
+    "Sample is isotopically-enriched Mg-11B2 (not natural-abundance MgB2); Tc = 38.7 K is slightly shifted vs natural-MgB2 Tc=39.0 K via the boron isotope effect.",
+    "Single-sample literature value; replication count reflects independent MgB2 Cp reproductions (Wang/Plackowski/Junod 2001 etc.), not within-lot repeats.",
+    "Cp values are order-of-magnitude estimates from digitized figure traces; the deltaCp(Tc)=133 mJ/mol/K is the quoted paper value (not digitized)."
+  ],
+  "citations": [
+    "Bouquet, Fisher, Phillips, Hinks, Jorgensen, PRL 87, 047001 (2001), arXiv:cond-mat/0104206",
+    "Finnemore, Ostenson, Bud'ko, Lapertot, Canfield, PRL 86, 2420 (2001), arXiv:cond-mat/0102114 — independent thermo confirmation",
+    "RTSC.md §8.2 (MgB2 family) + §8.4 (BCS specific-heat jump falsifier row)",
+    "Tinkham, 'Introduction to Superconductivity', 2nd ed., §3.4 (BCS weak-coupling deltaCp/gamma*Tc = 1.43)"
+  ]
+}

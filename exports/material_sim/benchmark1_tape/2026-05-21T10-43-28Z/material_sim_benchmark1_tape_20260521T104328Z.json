@@ -1,0 +1,76 @@
+{
+  "domain": "material_sim",
+  "verb": "verify",
+  "kind": "hts_workgroup_benchmark1_single_rebco_tape",
+  "stamp": "20260521T104328Z",
+  "access_date": "2026-05-21",
+  "axes": {
+    "formulation": "h_formulation_e_j_power_law",
+    "conductor": "rebco_hts_2g_tape",
+    "dim": "2d_cartesian",
+    "solver": "skipped"
+  },
+  "geometry_summary": {
+    "tape_width_mm": 12,
+    "tape_thickness_um": 1,
+    "ic_amperes": 300,
+    "frequency_hz": 50,
+    "background_field": "zero (transport-current-only variant per upstream B1 statement)"
+  },
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "provisional": true,
+  "producer": "agent-a9d9437bb4521bdf6/benchmark1_tape_license_verify",
+  "gate_type": "license-unclear",
+  "skipped_reason": "hts_workgroup_benchmark1_license_unclear_no_explicit_declaration",
+  "license_evidence": {
+    "source_urls": [
+      "https://htsmodelling.com/benchmark-1/",
+      "https://htsmodelling.com/model-files/",
+      "https://htsmodelling.com/?page_id=748"
+    ],
+    "verbatim_block": "© 2026 HTS MODELLING WORKGROUP",
+    "explicit_license": null,
+    "verdict": "no explicit license declared on the benchmark-1 page, the model-files index, or the workgroup landing; only a bare copyright footer is present. No Apache / MIT / CC-BY / GPL / public-domain statement. No 'all rights reserved' or restrictive language either. Status = license-unclear (= unsafe to redistribute under demiurge g3).",
+    "decision": "SKIP — provenance manifest only; no .pro / .geo / .dat / .msh vendored to ~/local/hts_workgroup_cache/ or to the repo. Matches D1 cohort honest stance (RTSC.md §4.2 Axis E)."
+  },
+  "comparable_cube_benchmark": {
+    "anchor": "RTSC.md §4.2.1.d",
+    "nodes": 1937,
+    "dofs": 3601,
+    "wall_time_s": 617.636,
+    "cpu_time_s": 558.961,
+    "memory_peak_mb": 177.703,
+    "final_timestep": "TimeStep 248~249 (t=0.025 s, AC-cycle 끝)",
+    "ksp_residual_per_step": "~5-8e-16",
+    "note": "Cube benchmark (life-hts/cube/cube.pro on GetDP 4.0.0 ARM native) ran full-cycle in 10.3 min on macOS Apple Silicon. benchmark1_tape was anticipated to be similar magnitude or smaller (2-D cartesian vs 3-D cube) but is NOT executed here — license-block forbids vendoring upstream .pro content."
+  },
+  "getdp_environment": {
+    "binary": "~/local/getdp/getdp-4.0.0-MacOSARM/bin/getdp",
+    "version": "4.0.0",
+    "platform": "Darwin-arm64",
+    "available": true,
+    "note": "GetDP 4.0.0 ARM native is installed and operational (per RTSC.md §4.2.1.c/d cube run). Skip is purely license-driven, not toolchain-driven."
+  },
+  "scope_caveats": [
+    "(s1) Linear magnetostatic baseline NOT replaced by HTS-grade H-formulation in this record — provenance-only.",
+    "(s2) 2-D Cartesian benchmark — leads / support / 3-D return path not modelled even if it ran.",
+    "(s4) External-benchmark geometry, not an absorbed RTSC design; absorbed=false enforced.",
+    "(s6) References HTS Modelling Workgroup benchmark; ≠ measured REBCO tape Jc(B,T,θ).",
+    "(license) htsmodelling.com hosts the benchmark statement under a bare copyright footer with no permissive license. Default copyright law applies: redistribution unsafe. SKIP per demiurge g3."
+  ],
+  "re_enable_hint": "If htsmodelling.com later publishes an explicit permissive license (CC-BY / Apache / MIT / public-domain), flip benchmark1_tape/README.md status, vendor the .pro / .geo into ~/local/hts_workgroup_cache/benchmark1_tape/ (gitignored cache), and rerun via h_formulation_adapter.py. The user MAY personally accept the redistribution risk with DEMIURGE_RTSC_USE_LICENSE_UNCLEAR=1; this record honors the default-OFF stance.",
+  "citations": [
+    "HTS Modelling Workgroup landing — https://htsmodelling.com/?page_id=748",
+    "Benchmark #1 page — https://htsmodelling.com/benchmark-1/",
+    "Benchmark index — https://htsmodelling.com/model-files/",
+    "arxiv:1908.02176 — Shen, Grilli, Coombs (2020). Review of the AC Loss Computation for HTS using the H-formulation. SuST 33 033002.",
+    "arxiv:0811.2883 — Pecher, Sirois (2008). 3-D FEM HTS magnetization, single-time-step iteration.",
+    "Dular, Geuzaine, Vanderheyden (2019). Finite Element Formulations for Systems with High-Temperature Superconductors. IEEE TASC. DOI 10.1109/TASC.2019.2935429"
+  ],
+  "anchors": {
+    "rtsc_md": "RTSC.md §4.2.1.d (cube full-cycle comparable)",
+    "readme": "stdlib/rtsc/templates/hts_workgroup/benchmark1_tape/README.md",
+    "index": "stdlib/rtsc/templates/hts_workgroup/INDEX.md"
+  }
+}

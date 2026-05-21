@@ -1,0 +1,104 @@
+{
+  "domain": "measurement",
+  "verb": "ingest",
+  "kind": "r_t",
+  "stamp": "20260521T000001Z",
+  "sample_id": "ybco_wu1987_polycrystal",
+  "test_family": "hts_cuprate",
+  "test_compound": "YBa2Cu3O7-delta",
+  "instrument": {
+    "model": "4-probe DC resistance (literature extraction)",
+    "vendor": "literature",
+    "calibration_date": null
+  },
+  "operator": null,
+  "sample_provenance": {
+    "synthesis_recipe_record_id": null,
+    "vendor": null,
+    "batch_lot": "Wu et al. 1987 polycrystalline pellet — solid-state reaction of Y2O3+BaCO3+CuO"
+  },
+  "raw_data_hash": null,
+  "data_points": [
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 300.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 1.0,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 200.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.62,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 120.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.30,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 95.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.20,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 92.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.10,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 90.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.001,
+      "dependent_var_unit": "dimensionless"
+    },
+    {
+      "independent_var_name": "T",
+      "independent_var_value": 80.0,
+      "independent_var_unit": "K",
+      "dependent_var_name": "R_over_R_300K",
+      "dependent_var_value": 0.0,
+      "dependent_var_unit": "dimensionless"
+    }
+  ],
+  "headline": {
+    "tc_k": 92.0
+  },
+  "measurement_gate": "GATE_OPEN",
+  "replication_count": 1000,
+  "absorbed": false,
+  "gate_type": "literature-extracted",
+  "provisional": true,
+  "provenance": {
+    "source_url": "https://doi.org/10.1103/PhysRevLett.58.908",
+    "source_citation": "M. K. Wu, J. R. Ashburn, C. J. Torng, P. H. Hor, R. L. Meng, L. Gao, Z. J. Huang, Y. Q. Wang, C. W. Chu, 'Superconductivity at 93 K in a New Mixed-Phase Y-Ba-Cu-O Compound System at Ambient Pressure', Physical Review Letters 58, 908 (1987).",
+    "vendor_datasheet_url": null
+  },
+  "scope_caveats": [
+    "Digitized from published R(T) figure (Wu et al. PRL 58, 908, 1987 Fig. 2 family); values ±5%.",
+    "Original sample was multi-phase polycrystalline Y-Ba-Cu-O; the 93 K transition is attributed to the YBa2Cu3O7-delta phase (refined in subsequent single-crystal work).",
+    "R_over_R_300K dimensionless ratio used because the absolute resistance varies with bar geometry across reproductions; ratio is the figure-canonical quantity.",
+    "Order-of-magnitude estimates; not lot-tested. Reproduction across labs has been extensive (replication_count reflects literature reproduction, not within-sample repeats).",
+    "Tc value 92 K is the midpoint of the resistive transition reported in the original paper (onset ~93 K, zero ~91 K)."
+  ],
+  "citations": [
+    "Wu et al., PRL 58, 908 (1987), https://doi.org/10.1103/PhysRevLett.58.908",
+    "RTSC.md §8.2 (HTS Cuprate family) + §8.4 (R(T) drop falsifier row)",
+    "Tinkham, 'Introduction to Superconductivity', 2nd ed., McGraw-Hill (1996) — YBCO Tc reproduction discussion (Ch. 9)"
+  ]
+}

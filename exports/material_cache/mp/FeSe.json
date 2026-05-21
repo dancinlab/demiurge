@@ -1,0 +1,230 @@
+{
+  "_attribution": "Cached from Materials Project (materialsproject.org). Licensed CC-BY-4.0. Cite: Jain et al. APL Materials 1, 011002 (2013).",
+  "_batch_family": "fesc",
+  "_batch_formula": "FeSe",
+  "_batch_status": "hit",
+  "domain": "material",
+  "verb": "query",
+  "kind": "materials_project_lookup",
+  "stamp": "20260521T110522Z",
+  "producer": "mp_query@material-tier1-sibling",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "external-api",
+  "provisional": true,
+  "skipped_reason": null,
+  "query": {
+    "formula": "FeSe",
+    "mp_id_filter": null,
+    "family_classification": "iron-based-sc (FeSC \u00b7 replicated 2008~)"
+  },
+  "backend": "MP_API_KEY_NEW (new API \u00b7 api.materialsproject.org)",
+  "row_count": 9,
+  "rows": [
+    {
+      "mp_id": "mp-1018075",
+      "formula_pretty": "FeSe",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P4/nmm",
+          "number": 129
+        },
+        "nsites": 4,
+        "density_g_cm3": 7.876250344874473,
+        "volume_A3": 56.84150682657881
+      },
+      "formation_energy_per_atom_eV": 0.016266548828125,
+      "energy_above_hull_eV": 0.52418531,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 3.7722959,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-20311",
+      "formula_pretty": "FeSe",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P4/nmm",
+          "number": 129
+        },
+        "nsites": 4,
+        "density_g_cm3": 4.941151906868024,
+        "volume_A3": 90.60598544313967
+      },
+      "formation_energy_per_atom_eV": -0.5079187611718751,
+      "energy_above_hull_eV": null,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 7.7262373,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-1090",
+      "formula_pretty": "FeSe",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "P6_3/mmc",
+          "number": 194
+        },
+        "nsites": 4,
+        "density_g_cm3": 7.0951377019599,
+        "volume_A3": 63.09925988079946
+      },
+      "formation_energy_per_atom_eV": -0.31715429367187403,
+      "energy_above_hull_eV": 0.1907644675,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 4.368478599999999,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-20120",
+      "formula_pretty": "FeSe",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pm-3m",
+          "number": 221
+        },
+        "nsites": 2,
+        "density_g_cm3": 7.9363405988061455,
+        "volume_A3": 28.205564779652523
+      },
+      "formation_energy_per_atom_eV": 0.014458228828125001,
+      "energy_above_hull_eV": 0.52237699,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 1.8647357,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1078538",
+      "formula_pretty": "FeSe",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pnma",
+          "number": 62
+        },
+        "nsites": 8,
+        "density_g_cm3": 6.971178270222315,
+        "volume_A3": 128.44254454326233
+      },
+      "formation_energy_per_atom_eV": -0.14298179867187402,
+      "energy_above_hull_eV": 0.3649369625,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 0.0039799,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-1078945",
+      "formula_pretty": "FeSe",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pnma",
+          "number": 62
+        },
+        "nsites": 8,
+        "density_g_cm3": 7.130692897135742,
+        "volume_A3": 125.5692663263783
+      },
+      "formation_energy_per_atom_eV": -0.300615422421874,
+      "energy_above_hull_eV": 0.207303338749999,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 9.3285975,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-1080120",
+      "formula_pretty": "FeSe",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Pnma",
+          "number": 62
+        },
+        "nsites": 8,
+        "density_g_cm3": 6.583729394534151,
+        "volume_A3": 136.00131807291694
+      },
+      "formation_energy_per_atom_eV": -0.25463598992187403,
+      "energy_above_hull_eV": 0.25328277125000004,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 8.8357879,
+      "theoretical_or_experimental": "experimental (ICSD-anchored)"
+    },
+    {
+      "mp_id": "mp-1978272",
+      "formula_pretty": "FeSe",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmcm",
+          "number": 63
+        },
+        "nsites": 4,
+        "density_g_cm3": 6.583729001533996,
+        "volume_A3": 68.00066309559723
+      },
+      "formation_energy_per_atom_eV": -0.257364481171874,
+      "energy_above_hull_eV": 0.25055428,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 4.5327843,
+      "theoretical_or_experimental": "theoretical"
+    },
+    {
+      "mp_id": "mp-1066497",
+      "formula_pretty": "FeSe",
+      "structure_summary": {
+        "spacegroup": {
+          "symbol": "Cmme",
+          "number": 67
+        },
+        "nsites": 4,
+        "density_g_cm3": 5.247557691677904,
+        "volume_A3": 85.31548656549879
+      },
+      "formation_energy_per_atom_eV": 0.11392064632812501,
+      "energy_above_hull_eV": 0.6218394075,
+      "band_gap_eV": 0.0,
+      "debye_temp_K": null,
+      "is_metal": true,
+      "total_magnetization": 5.8194976,
+      "theoretical_or_experimental": "theoretical"
+    }
+  ],
+  "scope_caveats": [
+    "(s1) Materials Project values are DFT-computed (PBE-GGA), NOT experimentally measured. Band gaps are systematically underestimated by 30-50% (DFT gap problem); formation energies have \u00b10.1 eV/atom error bars; lattice constants are typically +1-3% overestimated.",
+    "(s2) Debye temperature and electron-phonon coupling (\u03bb, \u03c9_log, \u03bc*) are NOT exposed in standard MP summary endpoints \u2014 Tier 1 sim_adapter must ingest these from a separate source (phonon DB / Allen-Dynes Table I / first-principles paper). MP rows have debye_temp_K=null by design.",
+    "(s3) Tc prediction is NOT in MP. This adapter ingests *structural and electronic* data only. Tc inference requires \u03bb + \u03c9_log + \u03bc* fed into McMillan/Allen-Dynes via sim_adapter, or a full Eliashberg solve (hexa-native-absent).",
+    "(s4) absorbed=false for all MP-derived rows \u2014 DFT \u2260 measurement. RTSC.md \u00a78.7 honest \ud55c\uacc4 + \u00a78.8 g3 stance. LK-99-family rows are additionally claim-only (formula entries exist in MP as theoretical structures with no replicated Tc)."
+  ],
+  "citations": [
+    "Jain et al. 2013, APL Materials 1, 011002 \u2014 'Commentary: The Materials Project: A materials genome approach to accelerating materials innovation' (MP DB primary citation).",
+    "Ong et al. 2013, Computational Materials Science 68, 314 \u2014 'Python Materials Genomics (pymatgen): A robust, open-source Python library for materials analysis'.",
+    "MP API docs \u2014 https://docs.materialsproject.org.",
+    "RTSC.md \u00a78.7 Tier 1 sibling \u2014 structural/electronic data ingest feeds sim_adapter (Tc prediction) + synthesis_recipe (Tier 2)."
+  ],
+  "provenance": {
+    "source_url": "https://materialsproject.org/materials/mp-1018075",
+    "source_citation": "Jain et al. APL Materials 1, 011002 (2013)",
+    "primary_refs": [
+      "APL Materials 1 011002 (Jain 2013) \u2014 MP DB.",
+      "Comput Mater Sci 68 314 (Ong 2013) \u2014 pymatgen lib."
+    ],
+    "api_endpoints": [
+      "https://api.materialsproject.org/  (new 32-char key)",
+      "https://legacy.materialsproject.org/rest/v2/  (legacy key)"
+    ]
+  },
+  "rtsc_anchor": "RTSC.md \u00a78.2 (family matrix) + \u00a78.5 (handoff schema) + \u00a78.7 Tier 1 sibling (structural/electronic data)"
+}

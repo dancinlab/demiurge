@@ -236,6 +236,8 @@ public enum ActionDispatch {
             return runSpaceVerify()
         case (.verify, "rtsc"):
             return runRtscVerify()
+        case (.verify, "material"):
+            return runMaterialVerify()
         case (.verify, "mobility"):
             return runMobilityVerify()
         case (.verify, "antimatter"):
@@ -1209,6 +1211,23 @@ public enum ActionDispatch {
         let r = RtscVerifyProducer.runVerify()
         return ActionResult(text: r.text,
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],
+            usedEngineTool: true, engineToolSucceeded: r.ok)
+    }
+
+    /// `material + verify` Tier 1 aggregator (RTSC.md §8.7 — first-
+    /// principles synthesis cohort). Spawns the four Tier 1 sub-
+    /// producers under `exports/material/verify/<stamp>/{sim_adapter,
+    /// cube_producer,hexa_rtsc_crosslink,mp_query}/` and returns the
+    /// concatenated record IDs. SSOT scripts under `~/core/hexa-lang/
+    /// stdlib/material/*.py` (D61). g3 honest: this dispatcher does
+    /// NOT compute a combined absorbed verdict; each sub-producer keeps
+    /// its own GATE_OPEN / absorbed=false. Tier 4 falsifier dispatch
+    /// (MaterialFalsifierDispatch) is the only path that synthesizes a
+    /// verdict.
+    private static func runMaterialVerify() -> ActionResult {
+        let r = MaterialVerifyProducer.runVerify()
+        return ActionResult(text: r.text,
+            newRecordIDs: r.newRecordIDs,
             usedEngineTool: true, engineToolSucceeded: r.ok)
     }
 
