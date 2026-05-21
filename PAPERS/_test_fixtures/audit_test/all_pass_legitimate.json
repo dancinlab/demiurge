@@ -1,0 +1,24 @@
+{
+  "_audit_fixture": "legitimate RTSC absorbed=true (5-gate ALL_PASS)",
+  "expected_verdict": "ok",
+  "domain": "rtsc",
+  "verb": "verify",
+  "kind": "synthetic_rtsc_with_all_gates",
+  "stamp": "20270101T000000Z",
+  "producer": "test_fixture@v1",
+  "measurement_gate": "GATE_CLOSED_MEASURED",
+  "absorbed": true,
+  "gate_type": "rtsc-5-gate-attestation",
+  "provisional": false,
+  "rtsc_5_gate_evaluation": {
+    "a_synthesis_replicated": "PASS",
+    "b_tc_above_270K": "PASS",
+    "c_ambient_pressure": "PASS",
+    "d_independent_lab_replication": "PASS",
+    "e_measurement_oracle_parity": "PASS",
+    "aggregate": "ALL_PASS",
+    "evidence": ["synthetic test fixture — no actual evidence"],
+    "rtsc_absorbed_eligible": true
+  },
+  "headline": "synthetic legitimate: 5/5 PASS → ALL_PASS → eligible. domain=rtsc OK because 5-gate satisfied."
+}

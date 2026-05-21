@@ -1,0 +1,14 @@
+{
+  "_audit_fixture": "synthetic R4 Pattern 1 violation (NEW · post-2026-05-22)",
+  "expected_verdict": "violation",
+  "domain": "rtsc",
+  "verb": "verify",
+  "kind": "synthetic_rtsc_attestation",
+  "stamp": "20260601T000000Z",
+  "producer": "test_fixture@v1",
+  "measurement_gate": "GATE_CLOSED_MEASURED",
+  "absorbed": true,
+  "gate_type": "synthetic-test",
+  "provisional": false,
+  "headline": "violation: domain=rtsc + absorbed=true + no rtsc_5_gate_evaluation + stamp_ymd >= 20260522. R4 Pattern 1 trigger."
+}

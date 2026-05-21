@@ -1,0 +1,14 @@
+{
+  "_audit_fixture": "historical Pattern 1 record (pre-R4 Nb attestation, stamp < 20260522)",
+  "expected_verdict": "historical",
+  "domain": "rtsc",
+  "verb": "verify",
+  "kind": "lts_nb_bcs_universal_gap_ratio_attestation",
+  "stamp": "20260521T111656Z",
+  "producer": "nb_bcs_absorbed_attestation_producer.py@v1",
+  "measurement_gate": "GATE_CLOSED_MEASURED",
+  "absorbed": true,
+  "gate_type": "bcs-universal-ratio-attestation",
+  "provisional": false,
+  "headline": "Pre-R4 historical: domain=rtsc + absorbed=true + no 5-gate field. Detected via stamp_ymd < 20260522."
+}

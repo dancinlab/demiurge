@@ -1,0 +1,14 @@
+{
+  "_audit_fixture": "legitimate LTS Nb attestation (Path B migration applied)",
+  "expected_verdict": "ok",
+  "domain": "lts",
+  "verb": "verify",
+  "kind": "nb_bcs_universal_gap_ratio_attestation",
+  "stamp": "20260522T010000Z",
+  "producer": "nb_bcs_absorbed_attestation_producer.py@v2",
+  "measurement_gate": "GATE_CLOSED_MEASURED",
+  "absorbed": true,
+  "gate_type": "bcs-universal-ratio-attestation",
+  "provisional": false,
+  "headline": "Post-R4: domain=lts (not rtsc) — R4 invariant 비적용. legitimate absorbed=true."
+}

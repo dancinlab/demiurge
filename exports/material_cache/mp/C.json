@@ -16,9 +16,9 @@
   "query": {
     "formula": "C",
     "mp_id_filter": null,
-    "family_classification": "unclassified (not in RTSC \u00a78.2 candidate matrix)"
+    "family_classification": "unclassified (not in RTSC §8.2 candidate matrix)"
   },
-  "backend": "MP_API_KEY_NEW (new API \u00b7 api.materialsproject.org)",
+  "backend": "MP_API_KEY_NEW (new API · api.materialsproject.org)",
   "row_count": 64,
   "rows": [
     {
@@ -1303,28 +1303,31 @@
     }
   ],
   "scope_caveats": [
-    "(s1) Materials Project values are DFT-computed (PBE-GGA), NOT experimentally measured. Band gaps are systematically underestimated by 30-50% (DFT gap problem); formation energies have \u00b10.1 eV/atom error bars; lattice constants are typically +1-3% overestimated.",
-    "(s2) Debye temperature and electron-phonon coupling (\u03bb, \u03c9_log, \u03bc*) are NOT exposed in standard MP summary endpoints \u2014 Tier 1 sim_adapter must ingest these from a separate source (phonon DB / Allen-Dynes Table I / first-principles paper). MP rows have debye_temp_K=null by design.",
-    "(s3) Tc prediction is NOT in MP. This adapter ingests *structural and electronic* data only. Tc inference requires \u03bb + \u03c9_log + \u03bc* fed into McMillan/Allen-Dynes via sim_adapter, or a full Eliashberg solve (hexa-native-absent).",
-    "(s4) absorbed=false for all MP-derived rows \u2014 DFT \u2260 measurement. RTSC.md \u00a78.7 honest \ud55c\uacc4 + \u00a78.8 g3 stance. Claim-only family rows (RTSC.md \u00a78.9 5-criteria gate) carry additional gate_type=claim-only."
+    "(s1) Materials Project values are DFT-computed (PBE-GGA), NOT experimentally measured. Band gaps are systematically underestimated by 30-50% (DFT gap problem); formation energies have ±0.1 eV/atom error bars; lattice constants are typically +1-3% overestimated.",
+    "(s2) Debye temperature and electron-phonon coupling (λ, ω_log, μ*) are NOT exposed in standard MP summary endpoints — Tier 1 sim_adapter must ingest these from a separate source (phonon DB / Allen-Dynes Table I / first-principles paper). MP rows have debye_temp_K=null by design.",
+    "(s3) Tc prediction is NOT in MP. This adapter ingests *structural and electronic* data only. Tc inference requires λ + ω_log + μ* fed into McMillan/Allen-Dynes via sim_adapter, or a full Eliashberg solve (hexa-native-absent).",
+    "(s4) absorbed=false for all MP-derived rows — DFT ≠ measurement. RTSC.md §8.7 honest 한계 + §8.8 g3 stance. Claim-only family rows (RTSC.md §8.9 5-criteria gate) carry additional gate_type=claim-only."
   ],
   "citations": [
-    "Jain et al. 2013, APL Materials 1, 011002 \u2014 'Commentary: The Materials Project: A materials genome approach to accelerating materials innovation' (MP DB primary citation).",
-    "Ong et al. 2013, Computational Materials Science 68, 314 \u2014 'Python Materials Genomics (pymatgen): A robust, open-source Python library for materials analysis'.",
-    "MP API docs \u2014 https://docs.materialsproject.org.",
-    "RTSC.md \u00a78.7 Tier 1 sibling \u2014 structural/electronic data ingest feeds sim_adapter (Tc prediction) + synthesis_recipe (Tier 2)."
+    "Jain et al. 2013, APL Materials 1, 011002 — 'Commentary: The Materials Project: A materials genome approach to accelerating materials innovation' (MP DB primary citation).",
+    "Ong et al. 2013, Computational Materials Science 68, 314 — 'Python Materials Genomics (pymatgen): A robust, open-source Python library for materials analysis'.",
+    "MP API docs — https://docs.materialsproject.org.",
+    "RTSC.md §8.7 Tier 1 sibling — structural/electronic data ingest feeds sim_adapter (Tc prediction) + synthesis_recipe (Tier 2)."
   ],
   "provenance": {
     "source_url": "https://materialsproject.org/materials/mp-1197903",
     "source_citation": "Jain et al. APL Materials 1, 011002 (2013)",
     "primary_refs": [
-      "APL Materials 1 011002 (Jain 2013) \u2014 MP DB.",
-      "Comput Mater Sci 68 314 (Ong 2013) \u2014 pymatgen lib."
+      "APL Materials 1 011002 (Jain 2013) — MP DB.",
+      "Comput Mater Sci 68 314 (Ong 2013) — pymatgen lib."
     ],
     "api_endpoints": [
       "https://api.materialsproject.org/  (new 32-char key)",
       "https://legacy.materialsproject.org/rest/v2/  (legacy key)"
     ]
   },
-  "rtsc_anchor": "RTSC.md \u00a78.2 (family matrix) + \u00a78.5 (handoff schema) + \u00a78.7 Tier 1 sibling (structural/electronic data)"
+  "rtsc_anchor": "RTSC.md §8.2 (family matrix) + §8.5 (handoff schema) + §8.7 Tier 1 sibling (structural/electronic data)",
+  "cached_at": "20260521T110642Z",
+  "mp_id": "mp-1197903",
+  "source_dump_version": "hit"
 }
