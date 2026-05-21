@@ -1,6 +1,6 @@
 # incoming note: rfc006-s5-area-oracle-parity-handoff — the genuine remaining Yosys-absorption work
 
-> **id**: `rfc006-s5-area-oracle-parity` · **opened**: 2026-05-20 KST · **status**: `in-progress — Tier-1 (0)..(e) CLOSED · (f)..(i) OPEN · §5 measurement_gate still OPEN · substrate-axis absorbed=false · cell-side absorbed=true (κ-43 dynamic flip) unchanged · area d4=1207.41 / d6=1677.86 µm² (~98% absolute gap vs oracle remains) · 2026-05-21 KST snapshot post c4b35b13 + 0b82880b`
+> **id**: `rfc006-s5-area-oracle-parity` · **opened**: 2026-05-20 KST · **status**: `in-progress — Tier-1 (0)..(e) CLOSED · (f) partial-advance (area > 0 → ~50% of oracle via Option I BLIF .latch per-bit expand) · (g)..(i) OPEN · §5 measurement_gate still OPEN · substrate-axis absorbed=false · cell-side absorbed=true (κ-43 dynamic flip) unchanged · area d4=32829 / d6=45936.6 µm² (~47-51% absolute gap vs oracle remains · Source 2 combinational $xor/$and/$mux 1-bit-tolerance is next narrowing) · 2026-05-21 KST snapshot post df4ff3f7 + dea9279a`
 > **source**: demiurge session 2026-05-20 — after confirming origin/main's rfc_006 §4 (7 yosys modules) is complete (dispatcher selftest 8/8 PASS), §5 is the one genuine open item of the Yosys absorption.
 > **destination repo**: `~/core/hexa-lang/` — the `hexa yosys synth` flow + `stdlib/yosys/` modules live there (D15 / D61). demiurge stays pointer-only.
 > **scope**: run the rfc_006 §5 SKY130 area-oracle parity measurement and, on PASS, flip the Yosys absorption to `absorbed=true`.
@@ -2106,26 +2106,159 @@ inbox note `2026-05-21-rfc006-§5-multibit-width-truncation.md`
 - (gg) `c4b35b13` is the predecessor — (hh) is its width-correct
   refinement.
 
+## UPDATE 2026-05-21 (ii) — `df4ff3f7` direct push · RFC 006 §5 Option I · BLIF `.latch` per-bit expansion · Tier-1 (f) area-axis partial advance (27× jump to ~50% of oracle)
+
+hexa-lang `df4ff3f7beb5` direct-pushed to origin/main
+2026-05-21T15:50:17 +0900 (NOT via PR · direct push) ·
+"feat(stdlib/logic_synth): RFC 006 §5 Option I — BLIF .latch
+per-bit expansion". Touches `stdlib/kernels/logic_synth/
+abc_map.hexa` (+139 / -1). NOTE: this is the same file PR #255
+(entry (ee)) edits — PR #255 now has a merge conflict against
+main and will need rebase before it can land its abc_map honesty
+(stale-BLIF + comb-loop stdout detection) work.
+
+### Scope landed
+
+1. `abc_emit_blif` (L287-348) — when a `sky130_fd_sc_hd__dfxtp_1`
+   cell's Q-wire has registered width W > 1, emit W parallel
+   `.latch` lines with per-bit names `<base>__b<k>` instead of
+   a single 1-bit line. BLIF spec §3.4 restricts `.latch` to
+   1-bit nets, so this is the only honest encoding for multi-bit
+   registers. 1-bit fallback preserved when Q-wire absent or W==1.
+2. `abc_parse_mapped_blif` (L412-485) — does NOT coalesce: emits
+   one `sky130_fd_sc_hd__dfxtp_1` cell per `.latch` line, so the
+   area oracle histogram counts N FFs × area(dfxtp_1), which is
+   exactly the desired multiplier.
+3. T8 selftest (`abc_map.hexa` main) — 6 sub-assertions:
+   T8a count==W==4 lines · T8b/c per-bit naming b0/b3 · T8d
+   collapsed-emit leak guard · T8e round-trip produces 4 dfxtp_1
+   cells · T8f single-bit fallback no `__b0` suffix.
+
+### Selftest delta
+
+- abc_map: `7/7 → 8/8 PASS` (+T8 multi-bit expansion + 1-bit
+  fallback)
+- read_verilog: `79/79 PASS` (no regression · upstream RTLIL
+  shape unchanged)
+- passes / rtlil / liberty: 35/35 · 11/11 · 8/8 unchanged.
+
+### §5 measurement delta (sky130_fd_sc_hd · ABC 2026-05-21)
+
+```
+router_d4 area = 1207.41 → 32829   µm²  (27.2× · oracle gap 98.05% → 46.84%)
+router_d6 area = 1677.86 → 45936.6 µm²  (27.4× · oracle gap 98.21% → 50.93%)
+BLIF `.latch` count (router_d4): 41 → 1638  (vs 1645 expected · 99.6%)
+both abc_map: ok · no NetworkCheck failure · no honest-skip
+```
+
+### Effect on Tier-1
+
+- **partial advance on Tier-1 (f)** `router_d4 area > 0 → ±5 %`
+  — area now >> 0 and within 2× of oracle (not yet ±5 %).
+  `[ ]` stays unflipped (the gate is ±5 % not "non-zero").
+  ARCH §12.1 (f) checkbox UNCHANGED.
+- **partial advance on Tier-1 (g)** `router_d6 ±5 % parity` —
+  same scaling on d6, same ~49-53 % of oracle band. Ratio
+  d6/d4 = 45936.6 / 32829 = 1.3994 (oracle ratio 93608.5 /
+  61763 = 1.5156 · gap 7.7 % — still below (h) ±5 % strictness).
+- **DOES NOT close §5** — residual ~47-51 % gap is Source 2
+  (combinational `$xor`/`$and`/`$mux` 1-bit-tolerance in
+  read_verilog `_rv_elab_expr`). Option II (per-bit elaboration
+  ~300-500 LOC) OR Option III (RTLIL `$mem` substrate cells
+  ~400-700 LOC) needed for ±5 %. NO `Yosys absorbed=true` claim.
+- Closes **Source 1** of the two width-truncation bisections
+  documented in hexa-lang `inbox/notes/2026-05-21-rfc006-§5-
+  multibit-width-truncation.md` (the (hh)-filed sibling note).
+
+### Cross-reference
+
+- hexa-lang `inbox/notes/2026-05-21-rfc006-§5-multibit-width-
+  truncation.md` — Source 1 "BLIF emitter collapses multi-bit
+  cells" identified by (hh); Option I is its closure.
+- (hh) `0b82880b` upstream (RTLIL width-correct) + (ii) `df4ff3f7`
+  downstream (BLIF emitter width-aware) form the 2-step
+  width-truncation fix-pair — (hh) made RTLIL truthful · (ii)
+  carried truth through to the area histogram.
+- PR #255 (entry (ee)) merge conflict: `stdlib/kernels/logic_synth/
+  abc_map.hexa` overlap zone is L287-348 (Option I) vs PR #255's
+  stale-BLIF + comb-loop stdout detection (script setup region).
+  Rebase strategy left to PR #255 author; both can coexist.
+
+## UPDATE 2026-05-21 (jj) — `dea9279a` direct push · doc-only sync · two hexa-lang inbox notes flipped to reflect (ii) landing
+
+hexa-lang `dea9279add35` direct-pushed to origin/main
+2026-05-21T15:56:10 +0900 (NOT via PR · direct push · current
+origin/main HEAD post-(ii)) · "docs(inbox): RFC 006 §5 Option I
+landed — fifo_mem patch + multi-bit-truncation note status
+updates". Touches 2 markdown files (+35 / -24 lines · zero code).
+
+### Scope landed
+
+1. `inbox/patches/yosys-fifo-mem-2d-array-memwr-emit.md` —
+   status flipped from "Option A landed" (set by (gg)) to
+   "Option A + Option I landed". Measured router_d{4,6}
+   1207 → 32829 µm² · 1678 → 45937 µm² = 27.2-27.4× area
+   increase · 49-53 % of oracle vs 2 % pre-Option-A. BLIF
+   latch count 41 → 1638 (~99.6 % of projected 1645 bits).
+2. `inbox/notes/2026-05-21-rfc006-§5-multibit-width-
+   truncation.md` — status flipped from "filed" to
+   "Source 1 CLOSED 2026-05-21 (Option I landed, commit
+   df4ff3f7). Source 2 OPEN."
+
+### Selftest delta
+
+NONE — doc-only commit · zero code touched · no run required.
+
+### §5 measurement delta — NONE
+
+```
+router_d4 area = 32829   µm²  (unchanged from (ii) · oracle 61762.99 · Δ 46.84%)
+router_d6 area = 45936.6 µm²  (unchanged from (ii) · oracle 93608.53 · Δ 50.93%)
+```
+
+Doc-sync only; (ii) is the measurement-bearing event.
+
+### Effect on Tier-1
+
+- **No Tier-1 marker movement** — pure SSOT propagation of
+  (ii)'s landing into the two hexa-lang sibling notes that
+  track the §5 substrate / width-truncation surface. ARCH
+  §12.1 unchanged from post-(ii) state.
+- Closes the doc-half of the (ii) land: hexa-lang's own audit
+  trail now reflects "Source 1 CLOSED · Source 2 OPEN · ±5 %
+  gate still OPEN", matching the demiurge-side handoff snapshot.
+
+### Cross-reference
+
+- (ii) `df4ff3f7` is the code event this commit documents.
+- hexa-lang `inbox/notes/2026-05-21-rfc006-§5-multibit-width-
+  truncation.md` (Source 2 = next-layer blocker — combinational
+  `_rv_elab_expr` 1-bit elaboration · Option II or III territory).
+- hexa-lang `inbox/patches/yosys-fifo-mem-2d-array-memwr-emit.md`
+  (now states both Option A · gg and Option I · ii landed).
+
 ---
 
-### Status snapshot (post (cc)..(hh) · 2026-05-21 KST)
+### Status snapshot (post (cc)..(jj) · 2026-05-21 KST)
 
 ```
 Tier-1 closure path (ARCH §12.1 line ~2098):
   [x] (0) exec runtime restore         — PR #251 cdfa-pred MERGED (cc)
   [x] (a) PR #247 SSA fix              — PR #247 cdfa8d46 MERGED (dd)
-  [~] (b) PR #255 abc_map honesty      — PR #255 e149900f OPEN   (ee)
+  [~] (b) PR #255 abc_map honesty      — PR #255 e149900f OPEN   (ee) · NOW CONFLICTS w/ (ii)
   [x] (c) abc_map script reorder       — in PR #247 body         (dd)
   [x] (d) rr_ptr__d cross-iter loop    — PR #261 0ca0994f MERGED (ff)
   [x] (e) fifo_mem 2-D LHS Option A    — c4b35b13 direct LANDED  (gg)
-  [ ] (f) router_d4 area > 0 → ±5 %    — OPEN (~98 % gap)
-  [ ] (g) router_d6 ±5 % parity        — OPEN (~98 % gap)
-  [ ] (h) ratio 1.5156× verification   — OPEN
+  [~] (f) router_d4 area > 0 → ±5 %    — area > 0 ACHIEVED (~47% gap remains) (ii)
+  [~] (g) router_d6 ±5 % parity        — area > 0 ACHIEVED (~51% gap remains) (ii)
+  [ ] (h) ratio 1.5156× verification   — OPEN (measured 1.3994 · 7.7% off oracle)
   [ ] (i) measurement_gate = CLOSED_MEASURED — OPEN
 
 §5 measurement_gate = OPEN · substrate-axis absorbed = false ·
 cell-side `absorbed=true` (κ-43 dynamic flip) UNCHANGED (별 axis).
-Cluster cost dominant residual = ~98 % absolute area gap; Option B
-($memrd/$memwr cells + module-level $mem) OR Tier-1 (f) crossbar
-output array writes territory.
+Cluster cost dominant residual = ~47-51 % absolute area gap;
+Source 2 (read_verilog `_rv_elab_expr` 1-bit combinational
+elaboration of `$xor`/`$and`/`$mux`) is the next narrowing.
+Option II (per-bit elaboration ~300-500 LOC) OR Option III
+(RTLIL `$mem` substrate cells ~400-700 LOC) territory.
 ```
