@@ -853,6 +853,35 @@ publication-grade CIF (Drozdov 2015 · Somayazulu 2019 · Troyan 2021 · Ma 2022
 3. **미탐색 A15 family sweep (E1, 진행 중)** — Nb₃Pd · Ta₃Sn · V₃Pt 등 · BETE-NET 신뢰권 안 novel ranking
 4. **direct EPW 후처리 loop** — pool QE+EPW build → top BETE-NET candidates 의 *direct first-principles* re-verification
 
+#### H. ALIGNN cross-model 검증 결과 (2026-05-22 · pool:ubu-1) — §E 가설 정정
+
+§E 의 "ALIGNN-FF + JARVIS 가 hydride 해소" 가설을 **pool:ubu-1 에서 직접 테스트** (alignn 2026.4.2 · dgl 2.4.0 · torch 2.4.0+cpu · DGL torch-2.12 block 은 torch 2.4 별 venv `~/local/alignn_v2` 로 해소). D1 publication-grade CIF 동일 입력. record: `exports/material_discovery/rtsc_alignn_vs_betenet_crossmodel_20260522.json`.
+
+**핵심 정정**: `jv_supercon_tc_alignn` 은 **arxiv:2312.12694 의 high-P hydride 모델이 아니라** ambient JARVIS-DFT supercon 모델 (Choudhary-Garrity ~1058 conventional). hydride 에서 **BETE-NET 보다 더 나쁨** (전부 1.5-2.6 K 로 cap):
+
+| material | ALIGNN rel_err | BETE-NET rel_err | measured | family |
+|---|---:|---:|---:|---|
+| H₃S | **98.9%** | 92.3% | 203 K | hydride |
+| LaH₁₀ | 98.9% | 97.1% | 250 K | hydride |
+| CaH₆ | 99.3% | 91.1% | 215 K | hydride |
+| YH₆ | 99.0% | 94.3% | 224 K | hydride |
+| FeSe | **47.5%** | 97.0% | 8 K | Fe-chalc (ALIGNN 우세) |
+| BaPbO₃ | **72%** | 2978% | 0.5 K | bismuthate (ALIGNN blowup 없음) |
+| Nb₃Sn | 49.6% | 50.0% | 18.3 K | A15 (2-model 일치) |
+| V₃Si | 69.7% | 71.3% | 17.1 K | A15 (2-model 일치) |
+
+**3 finding**:
+1. **Cross-model 한계 confirmation** — 2개 독립 architecture (BETE-NET ensemble graph-NN + ALIGNN line-graph) 가 *둘 다* high-P hydride 에서 ≥98.9% under-predict. ambient-trained ML 이 high-P 전자-포논 결합을 extrapolate 못 한다는 한계를 **강화** (honest confirmation, 돌파 아님).
+2. **A15 family 2-model 일치** — Nb₃Sn 49.6% vs 50.0% · V₃Si 69.7% vs 71.3% → BETE-NET 신뢰권 family 에 대해 *2-model consensus funnel* 가능.
+3. **속도** — ALIGNN 0.17s vs BETE-NET 100-ensemble 25-35s (~150×). broad fast screening 은 ALIGNN, uncertainty 는 BETE-NET ensemble σ.
+
+**돌파 path 재정밀화** (§E 대체):
+- `jv_supercon_tc_alignn` 으로는 hydride 해소 **불가 확정** — pip 모델 zoo 의 supercon 4종 (`tc·edos·debye·a2F`) 전부 ambient.
+- 진짜 pressure-aware path 2가지: **(1) arxiv:2312.12694 의 별도 figshare hydride 모델** (900+ hydride 0-500 GPa, pip 미포함) 획득 · **(2) direct EPW** (pool QE+W90+EPW · 구조에서 직접 전자-포논 계산 · ML 훈련분포 무관 · MP.md Phase 3) — physics-grounded 가장 robust.
+- `jv_supercon_a2F_alignn → Allen-Dynes (sim.hexa)` 대안도 cheap 하게 테스트 가능 (단 ambient-trained 라 동일 ceiling 예상).
+
+**R4 보호**: 모든 record `absorbed=false` · `gate_type=simulation-only-prediction` · `domain=material`. Pattern 1+2 무손상 — null result 가 *돌파 path refine* (goal 폐기 아님).
+
 ### 9.10 N5 cohort 신설 — novel-discovery funnel (compositional space exploration)
 
 §9.7 의 N1-N4 는 *KNOWN candidate* (특정 화학식이 주어진 경우) 의 시뮬레이션. **N5 cohort 는 *unknown novel composition* 을 *compositional space 에서 탐색* 하여 RTSC 후보 funnel 을 emit** — Nature `s41524-026-01964-8` 의 1.3M cand → 741 stable funnel 패턴 + arxiv:2511.03865 의 Materials Genome HTS discovery 워크플로 본받음.
