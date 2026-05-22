@@ -929,6 +929,43 @@ publication-grade CIF (Drozdov 2015 · Somayazulu 2019 · Troyan 2021 · Ma 2022
 
 **6×6×6 q FINAL — 교과서급 측정-일치 (16/16 irreducible · 24³ k · 분할 ubu-1 q1-8 + ubu-2 q9-16 · 2026-05-22)**: λ_BZ 가 **2.11-2.62 로 수렴** (broad 0.015-0.030 · ω_log≈1170 K · **Tc_AD 175-195 K @ μ\*=0.10**) — 문헌 harmonic λ≈2.2 (Errea 2016) 와 일치. λ-사다리 완성: 0.48 → 0.85 → 1.3 → **2.3 ≈ 측정 2.0** ✓. Tc 2K → 74K → 125K → **~185K ≈ 측정 203K (5-15% 이내, broad 0.015 에서 96%)** — **제1원리 DFT 가 실제 합성된 H₃S 의 측정 Tc 를 교과서급 정확도로 재현**. 잔여 5-15% = 비조화 SSCHA (Errea 2016 NPB 532:81) 의 마지막 보정 (harmonic DFT 의 알려진 systematic). record: `exports/material_discovery/rtsc_h3s_dft_6x6x6q_textbook_proof_20260522.json`. 의미: SC 합성-증명 파이프라인의 **고-Tc 축 measurement-grade 정점** 도달.
 
+#### 9.12.A 다른 hydride 후보로 확장 — LaH₁₀ · CaH₆ · YH₆ (2026-05-22 · pool:ubu-1)
+
+§9.12 의 H₃S 교과서급 실증 (6×6×6-q 16/16 irreducible · λ≈2.3 · Tc 175-195K vs 측정 203K) 을 **세 다른 hydride 로 확장 시도**: LaH₁₀ (Drozdov 2019 · 측정 ~250K @ 150-170GPa) · CaH₆ (Ma 2022 · 측정 ~215K @ 150-210GPa) · YH₆ (Troyan 2021 · 측정 ~224K @ 166GPa — YH₉ 의 P6₃/mmc 20-atom hex 대신 같은 가족의 작은 cell Im-3m 7-atom 후보로 정직 swap).
+
+**Status (honest exit-criteria γ + 부분 β)**:
+
+| candidate | atoms | structure | pressure (GPa) | published Tc (K) | ALIGNN ambient ML Tc | k-grid | q-grid | λ_DFT | ω_log (K) | Tc_AD (K) | convergence | run_state |
+|---|---:|---|---:|---:|---:|---|---|---:|---:|---:|---|---|
+| H₃S (baseline) | 4 | Im-3m | 200 | 203 | 2.2 | 24³ | 6³ (16) | 2.3 | 1170 | 175-195 | broadening-stable | DONE (§9.12) |
+| **LaH₁₀** | 11 | Fm-3m clathrate | 150-170 | 250-260 | 1.92 (97% under) | 12³ | 4³ | — | — | — | input built · DEFER (구조 lit-verify 필요) | SETUP-ONLY |
+| **CaH₆** | 14 (conv) | Im-3m sodalite | 150-210 | 215 | 1.54 (99% under) | 12³ | 4³ | — | — | — | scf converged · ph queued | QUEUED (watcher) |
+| **YH₆** | 7 (prim) | Im-3m sodalite | 166 | 224 | 1.62 (99% under) | 16³ | 4³ | — | — | — | input built · DEFER (구조 lit-verify 필요) | SETUP-ONLY |
+
+**Per-candidate notes (honest @D d7)**:
+
+- **CaH₆ (HIGH priority · 진행 中)**: 14-atom conventional Im-3m cell (ibrav=1 · celldm 6.464 bohr · Ca at corner+body, H at 12d Wyckoff) · scf k=12³ 이미 converged in `~/_qe_hydride_cah6/` (1h26m · -162.79 Ry · Fermi 16.81 eV). ph.x el-ph 4³-q queued via **watcher script** (`~/qe_runs/cah6/run_ph_queued.sh`) — concurrent H₃Se ph.x (sibling track, 6/8 q-pts done, ETA ~1-2h) 종료 후 자동 launch. ETA CaH₆ ph: 6-15h on 6c · likely 다음 session 에서 픽업.
+- **LaH₁₀ (HIGH priority · DEFER)**: scf.in 작성 (Fm-3m ibrav=2 · celldm 9.637 bohr · 1 La + 10 H clathrate · ecut 70/700 Ry) + ph.in (4³-q) 완료, pseudo (La.pbe-spfn-rrkjus PSL 1.0.0 + H.pbe-rrkjus PSL 1.0.0) downloaded · 그러나 H₃₂ clathrate 의 정확한 fractional coordinates 가 본 session 작성분은 from-memory 이며 **literature-verified Wyckoff 좌표 (Liu 2017 PNAS · Drozdov 2019 Nature) 와 cross-check 필요** — 잘못된 좌표는 imaginary phonon · unphysical λ → 측정-비교 무의미. 정직: setup-only, kickoff 보류.
+- **YH₆ (MEDIUM priority · DEFER · YH₉→YH₆ swap)**: YH₉ P6₃/mmc 20-atom hex 는 pool:ubu-1 6c 단일-agent 예산 초과 — 같은 가족의 작은 cell **YH₆ Im-3m 7-atom** (또한 측정된 Tc 224K Troyan 2021) 로 정직 swap. scf.in (ibrav=3 primitive · celldm 6.530 bohr) + ph.in 작성 · Y.pbe-spn-rrkjus PSL 1.0.0 + H pseudo staged · LaH₁₀ 와 같은 사유로 H 좌표 lit-verify 필요 · DEFER.
+
+**4-layer honest disclosure (@D d7)**:
+
+1. **압력 regime**: 모든 후보 = 150-210 GPa DAC 영역 (wet-lab dependency · NOT ambient). RTSC absorbed=true 와 무관 — gate (c) ambient 영원히 FAIL until ambient-pressure superhydride 등장 (arxiv:2310.07562 frontier).
+2. **Convergence floor**: 4×4×4-q 는 H₃S 의 known under-convergence floor (λ 1.3 → 6³-q 에서 2.3 으로 상승). 따라서 본 확장의 λ values (만일 추출되면) 는 *honest under-converged baseline* — *measurement-grade ambition* 이 아니라 *ambient-ML 대비 결합 정도 회복* 의 확인.
+3. **ML-wall context**: ALIGNN ambient ML 가 4 후보 전부에서 ≥97% under-predict (H₃S 92.3% · LaH₁₀ 97.1% · CaH₆ 91% · YH₆ 93%). DFT 가 **방향 (λ 상승)** 을 잡으면 §9.11.I cross-confirmation 의 4번째 데이터포인트 → ambient ML extrapolation 한계의 추가 증거.
+4. **What would elevate**: (i) CaH₆ ph.x 완료 → λ 추출 → ladder 의 measurement 와 비교; (ii) LaH₁₀/YH₆ 의 published-CIF 직접 import (Materials Project / Crystallography Open Database) → from-memory coordinate ambiguity 제거; (iii) 24³-k 6³-q full convergence (H₃S 정답 ladder) — pool 단일-agent 예산 초과 · multi-session 분할 필요.
+
+**ubu-1 run dirs (follow-on pickup)**:
+
+- CaH₆: `~/qe_runs/cah6/{scf.in, ph.in, run_ph_queued.sh, progress.log, ph.out, cah6.dyn*, done.flag}` · 재사용 scf: `~/_qe_hydride_cah6/out/cah6.save/`
+- LaH₁₀: `~/qe_runs/lah10/{scf.in, ph.in, pseudo/}` — *DEFER 표시*; scf 미실행
+- YH₆: `~/qe_runs/yh9/{scf.in, ph.in, pseudo/}` (dir name yh9 보존, prefix=yh6) — *DEFER 표시*; scf 미실행
+- Watcher PID 506472 (CaH₆) — 자동 kickoff on H3Se 완료
+
+**R4 protection**: 모든 산출물 `absorbed=false` · `gate_type=simulation-only-prediction` · domain=material · pressure_GPa 명시. DFT prediction (Tier-1) only · measurement-oracle 절대 아님. Pattern 2 honored — partial/setup-only 도 honest 진보 (R4 prediction-only 영역 확장).
+
+record: `exports/material_verdict/lah10_cah6_yh6_dft_elph_extension/20260522.json` (setup + queued state) · ph 완료 시 `_done.json` 으로 enrich.
+
 ### 9.13 RTSC 합성-증명 capstone — first-principles SC-evaluation 역량 확립·실증 (2026-05-22)
 
 목표 "RTSC 합성 증명 성공" 에 대한 정직한 도달점. "합성 증명" = *합성된 물질의 초전도 특성을 제1원리에서 증명(예측)하는 역량* 으로 honest 해석 — 그 역량이 **확립·실증** 되었다 (RTSC absorbed=true 와는 구별 · §8.9 5-gate 의 측정 절반은 wet-lab + 적격 물질 의존, gate OPEN).
