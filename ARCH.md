@@ -1192,16 +1192,23 @@ historical* 표면 — 현 ground truth 는 §11.4 + §11.5 의 G1–G38 Round 1
 > 제거 `ab0724c` 이후 · G34 의 constitution R1 → `@D d6` migration
 > `e458d3c` 의 successor] 의 3-carrier audit COMPLETE PATCH update ·
 > code 0). **G39–G42 라운드 10 (`κ-71 fourth-cell measurement round`
-> — scaffold 2026-05-22 · G39..G42 모두 `[ ]` pre-code)** 는 κ-70 R9
-> closure entry 의 'next horizon (κ-71+)' scope 를 4 placeholder
+> — R10 2/4 LANDED 2026-05-22 · G39 + G40 `[x]` · G41/G42 `[ ]`)** 는
+> κ-70 R9 closure entry 의 'next horizon (κ-71+)' scope 를 4 placeholder
 > G-item + G39 candidate-research note (`inbox/notes/2026-05-22-k71-
 > horizon-candidate-research.md` · 3 finalist Energy/wind · Bio/ECG ·
 > Chem/Arrhenius · ranking advisory #1 Energy/wind) 동시 박은 scaffold
-> 로 시작 → G40 cell-pick decision 은 다음 cycle 별 session. **κ-71
-> structural inflection**: lowest-friction 1-field-extension carrier
-> 가 κ-70 으로 소진 (`FusionVerifyRecord` 만 잔여 `[HP][✗]` 이나 D106
-> illustrative 영구-잠김) — 모든 κ-71 후보가 새 VerifyRecord 신설 또는
-> producer-side 새 sub-cell 경로 신설 cost 를 짐 (§11.6).
+> 로 시작 → **G40 cell-pick decision LANDED (design.md D120 · Energy/
+> wind sub-cell #1 picked · 새 `EnergyWindVerifyRecord` · NREL WTK
+> HSDS IEC 61400-12 power curve · 새 `power_curve_kernel.hexa`
+> [substrate floor ZERO] + 새 `wtk_fetcher.py` · prediction-shape
+> PASS [D110 G29 mirror · numeric-equivalence 후퇴 회복] · code 0)**.
+> **κ-71 structural inflection**: lowest-friction 1-field-extension
+> carrier 가 κ-70 으로 소진 (`FusionVerifyRecord` 만 잔여 `[HP][✗]`
+> 이나 D106 illustrative 영구-잠김) — 모든 κ-71 후보가 새 VerifyRecord
+> 신설 또는 producer-side 새 sub-cell 경로 신설 cost 를 짐 · Energy/
+> wind 는 그 위 brand-new substrate kernel (substrate floor ZERO)
+> 까지 신설 = G41 first-flip 이 κ-68..κ-70 어느 것보다 substrate-side
+> 1-step 더 무거움 (§11.6).
 > 각 항목 진행하면 `[x]` 로 박고 PLAN κ-entry + design.md D-block +
 > 영향 파일 commit 으로 묶을 것.
 
@@ -2550,8 +2557,17 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
 
 ### 11.6 G39–G42 implementation checklist (κ-71 R10 · 4th cell measurement round · scaffold)
 
-**라운드 10 — κ-71 fourth-cell measured-oracle round (scaffold · pre-code)**
+**라운드 10 — κ-71 fourth-cell measured-oracle round (R10 2/4 LANDED · G40 cell picked)**
 
+> **R10 status (2026-05-22)**: G39 candidate-research note LANDED
+> (`cdc418e` scaffold) · **G40 cell pick LANDED · design.md D120**
+> (Energy/wind sub-cell #1 ranked · 새 `EnergyWindVerifyRecord` ·
+> NREL WTK HSDS IEC 61400-12 power curve · 새 `power_curve_kernel.
+> hexa` [substrate floor ZERO] + 새 `wtk_fetcher.py` · prediction-
+> shape PASS [D110 G29 mirror] · code 0). G41 first-flip + G42
+> closure still `[ ]` (R10 = 2/4 LANDED · G41 은 substrate kernel
+> 신설 dependency 로 κ-68..κ-70 보다 substrate-side 1-step 더 무거움).
+>
 > κ-70 R9 closure entry (`e818218`) 의 'next horizon (κ-71+)' 약속
 > 이행 — Round 10 scaffold 박음. 4 axis 묶음: (a) **G39** 4th cell
 > candidate research 박제 (이번 cycle 동시 land · `inbox/notes/
@@ -2618,9 +2634,26 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
   - **est**: 0.3 session (research note + ARCH scaffold + NEXT_SESSIONS
     + PLAN entry · 본 cycle land = 1 commit)
 
-- [ ] **G40.** 4th cell pick + measured-oracle source 결정 (κ-71 R10
+- [x] **G40.** 4th cell pick + measured-oracle source 결정 (κ-71 R10
     pre-code decision gate · κ-68 G27 / κ-69 G32 / κ-70 G36 동형 ·
-    D106 illustrative gate 제외)
+    D106 illustrative gate 제외) — **LANDED 2026-05-22 · design.md
+    D120** (Energy/wind sub-cell #1 ranked default · 새 `EnergyWind
+    VerifyRecord` carrier · NREL Wind Toolkit HSDS IEC 61400-12
+    power curve · 새 `stdlib/kernels/wind/power_curve_kernel.hexa`
+    [substrate floor ZERO · `pilot-power_curve` 부재 confirmed] +
+    새 `stdlib/energy/wtk_fetcher.py` bridge · `mean_rel_err ≤ 0.05`
+    over wind_speed ∈ [4,25] m/s **prediction-shape** [D110 G29 mirror ·
+    κ-69/κ-70 numeric-equivalence 후퇴 회복] · code 0). **structural-
+    weight disclosed**: Energy/wind 는 record-side (새 record) + bridge
+    + brand-new substrate kernel (substrate floor ZERO) 모두 신설 필요 —
+    κ-68 (solar 21/21) · κ-69 (dft 17/17) · κ-70 (plasma 41/41) 3 round
+    이 모두 *기존* substrate-parity floor 위 build 한 것과 대조 · G41
+    first-flip 이 prior 어느 round 보다 substrate-side 1-step 더 무거움
+    (G40→`power_curve_kernel.hexa` 별 cycle land→G41). Bio/ECG (#2 ·
+    NEW DOMAIN signal · `pilot-bio_align_nw` 36/36 substrate 견고 ·
+    그러나 prediction-axis re-elevate 우선) + Chem/Arrhenius (#3 ·
+    substrate floor weakest · Stage-0 self-test only) reject — 둘 다
+    κ-72+ 잔여 candidate carry.
   - **scope**: G27 (κ-68 · D109) + G32 (κ-69 · D115) + G36 (κ-70 ·
     D118) 와 동형 — cell 선정 + 외부 measured oracle + bridge stack +
     hexa-native scope + PASS criterion 의 5-fold lock-in decision.
@@ -2651,16 +2684,22 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     - ChipAnalyze (chip §B substrate-axis · §12.1 active · 다른 agent
       활성 작업 중 · cross-axis 충돌 회피)
     - hardcoded oracle dataset path — D86 floor 위반
-  - **exit criterion** (G27 / G32 / G36 동형):
-    - design.md `### Decision 120` 박제 · 5-fold lock-in default
-      baked-in (cell · external oracle · bridge stack · hexa-native
-      scope · PASS criterion)
-    - candidate-research note (G39 artifact) cite + 회피 후보 reject
-      rationale 명시
-    - `MeasuredOracleRef` schema 재사용 audit (G28 `4a1a087` · κ-68
-      land · κ-69 G33 + κ-70 G37 reuse confirmed)
-    - 새 code 0 · 새 stored field 0 · 새 `.demi` row 0
-    - PLAN.md κ-71 G40 LANDED entry + ARCH §11.6 G40 `[ ]` → `[x]` flip
+  - **exit criterion** (G27 / G32 / G36 동형 · 모두 [x]):
+    - [x] design.md `### Decision 120` 박제 · 5-fold lock-in default
+      baked-in (cell = 새 `EnergyWindVerifyRecord` · external oracle =
+      NREL WTK HSDS · bridge = 새 `wtk_fetcher.py` → 새 `power_curve_
+      kernel.hexa` · hexa-native scope = `power_curve_kernel.hexa`
+      [floor ZERO] · PASS criterion = `mean_rel_err ≤ 0.05` over
+      wind_speed ∈ [4,25] m/s prediction-shape)
+    - [x] candidate-research note (G39 artifact) cite + 회피 후보
+      (Bio #2 · Chem #3) reject rationale 명시 + structural-weight
+      disclosure (κ-71 inflection · brand-new substrate kernel)
+    - [x] `MeasuredOracleRef` schema 재사용 audit (G28 `4a1a087` · κ-68
+      land · κ-69 G33 + κ-70 G37 reuse confirmed · G41 4th record-type
+      reuse)
+    - [x] 새 code 0 · 새 stored field 0 · 새 `.demi` row 0
+    - [x] PLAN.md κ-71 G40 LANDED entry + ARCH §11.6 G40 `[ ]` → `[x]`
+      flip
   - **deps**: G39 (research note 박제) · `inbox/notes/2026-05-22-k71-
     horizon-candidate-research.md` (3 finalist analysis) · G28 schema
     (`MeasuredOracleRef.swift` · `4a1a087`) · D80 / D86 / D103 / D106 /

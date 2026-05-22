@@ -5932,3 +5932,328 @@ contract (D118) 의 measurement-axis 박제 + κ-70 R9 3/4 LANDED
 (G35 + G36 + G37 all `[x]` · G38 closure pre-code). 다음 lowest-
 friction path = G38 κ-70 R9 closure 박제 (`next horizon (κ-71+)` 4
 후보 line · κ-69 R8 closure entry mirror).
+
+
+### Decision 120 — κ-71 R10 G40 — 4th cell pick (Energy/wind sub-cell · NREL Wind Toolkit IEC 61400-12 power curve) 5-fold lock-in (D109 / D115 / D118 mirror)
+
+**picked**: κ-71 R10 G40 (4th cell pick · pre-code decision gate ·
+κ-68 G27 (D109) / κ-69 G32 (D115) / κ-70 G36 (D118) 의 동형 mirror)
+의 네번째 cell = **Energy / wind sub-cell** · cockpit 새
+`EnergyWindVerifyRecord` carrier (default · `EnergyVerifyRecord`
+1:1 mirror · solar/wind sub-cell separation · 4th-record-type audit)
++ hexa-lang **(신설) `stdlib/kernels/wind/power_curve_kernel.hexa`**
+substrate. 외부 measured oracle = **NREL Wind Toolkit (WTK)** ·
+100 m hub-height · 5-min cadence · CONUS 2-km grid · HSDS REST API
+single turbine site (IEC 61400-12 power curve vs measured turbine
+power output · solar G29 single clear-sky day / Sleep-EDF G33
+single subject / JET G37 single shot mirror). bridge stack =
+**(신설) `stdlib/energy/wtk_fetcher.py` (HSDS REST adapter · auth
+header pass-through · D86 floor CLI/env-var only)** → bridge-trusted
+`windpowerlib`-equivalent (community-validated · pvlib sibling)
+IEC 61400-12 reference power curve adapter → hexa-native **(신설)
+`power_curve_kernel.hexa`** (substrate floor ZERO · `pilot-power_
+curve` 부재 confirmed). hexa-native scope = **`stdlib/kernels/wind/
+power_curve_kernel.hexa` (IEC 61400-12 reference power curve +
+air-density correction + cut-in/cut-out + Betz limit)** · 측정 axis =
+**modeled wind→power (hexa kernel) vs measured turbine output** ·
+**prediction-shape** (D110 G29 의 predict-vs-measure modeling-error
+axis 와 동형 · D117 G33 / D119 G37 의 numeric-equivalence shape 보다
+강함 — κ-69/κ-70 2 round 후퇴 회복). PASS criterion = **`mean_rel_
+err ≤ 0.05` over wind_speed ∈ [4, 25] m/s** (cut-in to cut-out
+operational regime filter · solar daylight filter mirror · D110/
+D115/D118 의 5% threshold mirror). 본 D-block 은 **decision-only ·
+code 0** — G41 (4th cell first-flip) 이 본 결정 위에서 build.
+
+**5-fold lock-in (G27/D109 + G32/D115 + G36/D118 pattern · κ-68 / κ-69 / κ-70 mirror)**:
+
+| dimension | G40 lock-in (Energy/wind sub-cell) | κ-70 G36 reference (Ufo/plasma · D118) | κ-68 G27 reference (Energy/solar · D109) |
+|---|---|---|---|
+| cell | 새 `EnergyWindVerifyRecord` (cockpit · `EnergyVerifyRecord` 1:1 mirror · solar/wind sub-cell separation · 4th-record-type schema-generalization audit · default per research note open-question 1.i) + `domains/energy.md` wind sub-cell narrative 강화 | `UfoVerifyRecord` (이미 존재 · 1-field 확장 · 3rd carrier) + `domains/ufo.md` Stage-2 | `EnergyVerifyRecord` + `domains/energy.md` solar 경로 |
+| external oracle | **NREL Wind Toolkit (WTK)** · 100 m hub-height · 5-min cadence · CONUS 2-km grid · HSDS REST API single turbine site (IEC 61400-12 power curve vs measured turbine output) · **HSDS token 필요 = anonymous 아님** → `datasetCaveats` disclosure + token-gating 시 synthetic fallback (Ufo G37 `data_source` honesty mirror) | JET open-pulse archive mid-Ohmic single shot (n_e + T_e timeseries · anonymous access) | NREL MIDC SRRL Golden CO pyranometer GHI · 2024-06-15 · 1-min · clear-sky day |
+| bridge stack | **(신설) `stdlib/energy/wtk_fetcher.py` (HSDS REST adapter · auth header pass-through · D86 CLI/env-var)** → `windpowerlib`-equivalent IEC 61400-12 reference adapter (community-validated · pvlib sibling) → hexa-native **(신설) `power_curve_kernel.hexa`** | (신설) `stdlib/fusion/jet_pulse_fetcher.py` (HTTP + parse) → hexa-native `plasma_metrics_kernel.hexa` (41/41 PASS bit-exact substrate floor 이미 존재) | `stdlib/energy/_solar_position_batch.hexa` (G31) → `pvlib_clearsky.py` Ineichen → `nrel_midc_pyranometer.py` |
+| hexa-native scope | **(신설) `stdlib/kernels/wind/power_curve_kernel.hexa`** (IEC 61400-12 reference power curve + air-density correction + cut-in/cut-out + Betz limit) · **substrate-parity floor ZERO** (`pilot-power_curve` 부재 confirmed · `pilot-power_curve` row PILOTS.demi 신설 + substrate kernel land 가 G41 dependency · G31 mirror 1-3 session) · 측정 axis = modeled wind→power | `stdlib/kernels/plasma/plasma_metrics_kernel.hexa` (41/41 PASS bit-exact 이미 존재 · λ_D Debye length) | `stdlib/kernels/solar/solar_kernel.hexa` (21/21 PASS · sun-position axis) |
+| PASS criterion | `mean_rel_err ≤ 0.05` over `wind_speed ∈ [4, 25] m/s` (cut-in to cut-out operational regime filter · solar daylight filter mirror) · **prediction-shape** (modeled wind→power vs measured turbine output · D110 G29 predict-vs-measure mirror) | `mean_rel_err ≤ 0.05` over N=50 JET mid-Ohmic stationary timesteps (numeric-equivalence shape · D119 = 2.21e-06) | `mean_rel_err ≤ 0.05` (clear-sky daylight filter · D110 = 0.04967 PASS · prediction shape) |
+
+**rationale**:
+
+- **cell 선정 (Energy/wind sub-cell)** — `inbox/notes/2026-05-22-k71-
+  horizon-candidate-research.md` (350 line · 3 finalist 분석 · 본
+  D120 의 load-bearing audit trail) 의 **#1 ranked pick** (advisory
+  default 채택 path). κ-71 의 structural inflection (아래 별 항목)
+  으로 인해 모든 후보가 record-side 또는 substrate-side 신설 cost 를
+  지므로 — κ-70 에서 Energy/wind 를 #2 로 막던 유일 요인 (substrate
+  kernel 신설 cost vs Ufo 의 zero-cost 1-field 확장) 이 소진됨 —
+  남은 differentiator 는 **prediction-shape honesty** 이고 그 축에서
+  Energy/wind 가 가장 강함:
+  - D106 clean — real wind data (NREL WTK) · IEC 61400-12 reference
+    power curve · illustrative-physics gate 미적용 · falsifier OPEN.
+  - prediction-shape honesty 가 가장 강함 — modeled wind→power vs
+    measured turbine output 는 D110 (G29 solar) 의 *predict-vs-
+    measure modeling-error-bounded statement* axis 와 동형 ·
+    D117 (G33 Aura) / D119 (G37 Ufo) 의 *numeric-equivalence*
+    (closed-form formula evaluation on measured inputs) shape 약점
+    보완. κ-69/κ-70 2 round 동안 numeric-equivalence 로 후퇴한
+    honesty floor 를 prediction-axis 로 **두번째 land** (solar 이후).
+  - κ-70 R9 closure entry (`e818218`) 의 'next horizon (κ-71+)'
+    4-item list 첫 line item ("다른 cell measured-oracle round —
+    Energy/wind NREL Wind Toolkit") 와 직접 alignment.
+  - 4th-record-type schema-generalization audit — 새 `EnergyWind
+    VerifyRecord` 채택 시 `invariantHolds(absorbed, measuredOracle,
+    isIllustrativePhysics)` record-type-agnostic 설계의 **4th
+    instance** (Energy/solar 1st · Aura/EEG 2nd · Ufo/plasma 3rd ·
+    Energy/wind 4th). 3rd 가 이미 strongest evidence — 4th 는
+    redundant confirmation (prediction re-elevate + sub-cell
+    separation 이 4th instance 의 주 motivation).
+- **schema 결정 (새 `EnergyWindVerifyRecord` vs `EnergyVerify
+  Record` 재사용)** — research note open-question 1.i 의 default
+  채택: **새 `EnergyWindVerifyRecord`** (~30 줄 · `EnergyVerify
+  Record` 1:1 mirror + CodingKeys + memberwise init). 근거: (a)
+  solar/wind sub-cell separation 이 깔끔 (단일 record 에 2 sub-cell
+  mixing 회피) · (b) `invariantHolds` record-type-agnostic 의
+  4th-record-type audit payoff (재사용 시 0) · (c) `domains/
+  energy.md` solar/wind 분리 narrative 강화. 재사용도 honest 했으나
+  schema-generalization audit 의 4th instance 가치 + sub-cell
+  separation 가독성이 새 record 를 default 로 만듦 (G41 schema cost
+  ~30 줄 mirror + XCTest invariant auto-extension test 는 G41 scope).
+- **회피 후보 reject reason** (research note Candidate B/C 분석
+  인용 · 본 D120 body 박제):
+  - **Candidate B (Bio/ECG · PhysioNet MIT-BIH 또는 Durbin §2.3)**:
+    "first NEW DOMAIN cell" signal 강함 (4-domain progression) +
+    trivial anonymous dataset access (PhysioNet wget · solar MIDC /
+    sleep-edf 동형 floor) + substrate-parity floor 견고 (`pilot-
+    bio_align_nw` **36/36 @ rel_err=0** · option b · κ-70 note 가정
+    7-pair 보다 성장) — 모두 *advantage*. **그러나 cockpit
+    `BioVerifyRecord.swift` 신설 (~40 줄) = κ-71 schema 작업 가장
+    무거움** + option (a) ECG QRS (`qrs_detector.hexa` 신설) /
+    option (b) Durbin §2.3 alignment (`pilot-bio_align_nw` 36/36
+    reuse) axis-match honest split 부담. **arguably substrate-side
+    가 더 가벼움** (option b reuse 시 substrate 신설 0) 이나
+    Energy/wind 의 prediction-shape honesty 가 더 valuable —
+    judgment call: prediction-axis re-elevate 가 κ-71 의 명시
+    목표 (research note RANK + κ-70 closure follow-on)이므로
+    Energy/wind 채택. Bio 는 #2 carry (κ-72+ 잔여 candidate).
+  - **Candidate C (Chem/Arrhenius · NIST/Cantera)**: `arrhenius_
+    kernel` 6/6 self-test 이미 존재 (kernel 신설 0) + NIST WebBook
+    open access — *advantage*. **그러나 substrate-parity floor 가장
+    약함** — `pilot-chem_arrhenius` 는 PILOTS.demi scope_notes 가
+    명시한 **Stage-0 scaffolding · no external oracle · "formula
+    IS the algorithm"** (D80 pilot parity-oracle sense 아님 · Ufo
+    λ_D 41/41 bit-exact + multi-order sweep 보다 약함) + measurement
+    axis 가 closed-form *numeric-equivalence* (D119 mirror ·
+    prediction shape 약함) + chem domain prereq=matter · sibling
+    repo planned 단계 (substrate maturity 가장 낮음). chem Stage-0 →
+    Stage-2 promotion 자체가 명시 목표일 때만 #1 — 본 round 의
+    목표 아니므로 비채택. Chem 은 #3 carry.
+- **CRITICAL structural-weight disclosure (κ-71 inflection · 본
+  D120 의 honest core)** — research note 의 핵심 finding 박제:
+  cockpit VerifyRecord inventory 를 `hexaNativeParity` carrier ×
+  `measuredOracle` field 로 audit 한 결과, **κ-71 은 lowest-friction
+  1-field-extension carrier 가 소진됨**. κ-70 의 Ufo 가 `[HP][✗]`
+  (parity carrier · measuredOracle 없음) 의 *마지막* 1-field-확장
+  후보였고 (Aura G33 mirror · 최저 friction), 남은 유일 `[HP][✗]`
+  carrier (`FusionVerifyRecord`) 는 D106 illustrative-physics 로
+  영구-잠김 (mc_transport · `MeasuredOracleRef` 부착 불가 · RFC 013
+  §6.12). 따라서 **κ-71 의 어떤 후보도 κ-69/κ-70 의 "1-field 확장 =
+  최저 friction" 패턴을 재현 불가** — 모든 후보가 (a) 새 VerifyRecord
+  신설 (Bio/Chem) 또는 (b) 기존 record 재사용 + producer-side 새
+  sub-cell 경로 신설 (Energy/wind) 중 하나. **Energy/wind 는 그 위에
+  brand-new substrate kernel (`power_curve_kernel.hexa` · substrate
+  floor ZERO · `pilot-power_curve` 부재 confirmed) 까지 신설 필요** —
+  이는 κ-68 (solar `solar_kernel` 21/21 reuse) · κ-69 (Aura
+  `dft_naive` 17/17 reuse) · κ-70 (Ufo `plasma_metrics` 41/41 reuse)
+  3 round 이 모두 *기존* substrate-parity floor 위에서 build 한 것과
+  대조적. 즉 **κ-71 G41 first-flip 은 prior 어느 round 보다
+  structurally HEAVIER**: G40 cell pick → 별 cycle 의 `power_curve_
+  kernel.hexa` substrate land (G31 G29-β port mirror · 1-3 session ·
+  `pilot-power_curve` row PILOTS.demi 신설 포함) → G41 first-flip =
+  κ-68..κ-70 보다 substrate-side 1-step 더 길어진 critical-path.
+  bridge stack (`wtk_fetcher.py`) + hexa-native kernel (`power_
+  curve_kernel.hexa`) **둘 다 신설** 필요 (κ-70 Ufo 는 kernel 이미
+  존재 · fetcher 만 신설 보다 무거움). round est 가 κ-71 에서
+  본질적으로 가장 큼 — 이 weight 는 honest signal 로 박제하며 reject
+  사유가 아님 ([[feedback-no-impossibility-framing]] — 무거움은
+  명시하되 불가능 framing 금지).
+- **HSDS token honesty floor (anonymous 아님 · disclosure 의무)** —
+  NREL WTK HSDS REST API 는 NREL token 필요 = solar MIDC anonymous
+  wget / PhysioNet anonymous wget 보다 한 단계 약함. G41 단계의
+  `EnergyWindVerifyRecord.measuredOracle.datasetCaveats` (or 동등
+  field) array 에 `"requires NREL WTK HSDS API token (not anonymous
+  access)"` entry 박제 필요 + token-gating 시 synthetic fallback
+  (Ufo G37 의 `data_source = synthetic_*` honesty disclosure mirror ·
+  D118 exit-criterion-δ 동형 permitted). 이 disclosure 는 본 D120 의
+  cross-link gate (G41 의 scope obligation).
+- **PASS criterion (mean_rel_err ≤ 0.05 · prediction-shape)** —
+  solar G29 의 5% threshold (D110 `0.04967` marginal PASS · predict-
+  vs-measure shape) 와 **동형 임계 + 동형 shape**. κ-69 (D117) /
+  κ-70 (D119) 의 numeric-equivalence shape 와 달리, 본 PASS 는
+  modeled wind→power (hexa `power_curve_kernel`) vs measured turbine
+  output 의 *prediction* axis — D110 G29 의 modeling-error-bounded
+  statement mirror. wind_speed ∈ [4, 25] m/s operational regime
+  filter (cut-in to cut-out) 는 solar daylight filter 와 동형 ·
+  power curve 의 nonlinear regime (cut-in transient · rated
+  plateau · cut-out) 을 honest 하게 포함. 이 prediction-shape 채택은
+  research note 가 명시한 **deliberate honesty-floor re-elevation** —
+  κ-69/κ-70 2 round 의 numeric-equivalence 후퇴를 prediction-axis
+  로 회복.
+- **bridge-stack trust (D103 dimension-separation)** — D103 유지:
+  bridge 의 trust 는 *substrate-parity* dimension (`power_curve_
+  kernel.hexa` 가 `windpowerlib`-equivalent IEC 61400-12 reference
+  와 substrate-parity PASS — G41 선행 land), measured-oracle 은
+  *measured turbine output (NREL WTK) → modeled power (hexa kernel)
+  vs reference power* 의 mean-rel-err. substrate-parity (`pilot-
+  power_curve` 신설 시 PASS) 와 measurement-parity 는 별 dimension.
+- **D-number (D120)** — D119 (κ-70 G37 first-flip) 직후 자연 순서.
+  ARCH §11.6 G40 exit criterion (`### Decision 120` pre-reserved)
+  일치 (`grep -nE '^### Decision' design.md | tail -1` = D119 확인 →
+  다음 D120). D-numbering trail = D118 (κ-70 G36) → D119 (κ-70 G37) →
+  **D120 (κ-71 G40 본 D-block)** → D121 reserved (κ-71 G41 first-flip ·
+  D120 G40 mirror · prediction-shape PASS).
+- **D95 computed projection 격리** — `EnergyWindVerifyRecord.
+  isHexaNativeAbsorbed` (computed projection · 만약 있다면) 는
+  *substrate-parity* dimension 의 표면. G41 단계의 `absorbed: Bool`
+  (stored) flip 은 producer 가 *명시적* set — D95 computed 의 부산물로
+  일어나지 않음 (D103 docstring + G30 typed enforcement 가드).
+- **D106 illustrative-physics 제외** — Energy/wind sub-cell 은 D106
+  illustrative-physics gate 가 적용되지 *않음* (real wind data ·
+  IEC 61400-12 reference power curve · falsifier OPEN — power curve
+  위반 evidence 발견 시 reject). 본 round 의 absorbed flip 후보에서
+  D106 illustrative cell (Fusion `mc_transport` · Ufo Stage-4..7
+  propulsion · `FusionVerifyRecord` 유일 잔여 `[HP][✗]` 이나 영구-
+  잠김) 은 **명시 제외**.
+
+**효과**:
+
+- ARCH.md §11.6 Round 10 G40 row → `[x]` LANDED (D120 reference + 본
+  audit-trail 인용 · research note cite). G41 의 deps 가 G40
+  decision 이므로 본 D-block 박제로 downstream 1 unblock — G41 (4th
+  cell `absorbed=true` legitimate flip · κ-68 G29 / κ-69 G33 / κ-70
+  G37 mirror · `MeasuredOracleRef` field 가 새 `EnergyWindVerify
+  Record` 에 land = schema generalization audit 의 4th record-type
+  instance · 단 `power_curve_kernel.hexa` substrate 선행 land 가
+  G40↔G41 사이 별 cycle).
+- κ-71 R10 ledger 갱신: G39 `[ ]` (candidate-research note landed ·
+  scaffold) + **G40 `[x]`** (본 D-block) · G41/G42 still `[ ]`. R10 =
+  2/4 LANDED. 남은 2 axis (G41 first-flip · G42 closure) 가 다음
+  critical-path — 단 G41 은 substrate kernel 신설 dependency 로
+  prior round 보다 무거움.
+- RFC 013 §6.11 status 변경 0 (`LANDED` 유지 · κ-68 closure 상태 ·
+  κ-71 R10 = same-invariant 의 fourth-instance generalization audit ·
+  narrative cross-link만 add via G41 D121).
+
+**적용**:
+
+1. `design.md` — 본 D120 entry 추가 (D119 직후 자연 순서 · decision
+   SSOT 의 결정 audit-trail 누적 · 본 cycle).
+2. `ARCH.md` §11.6 Round 10 G40 row — `[ ]` → `[x]` flip + D120
+   reference + research note (`inbox/notes/2026-05-22-k71-horizon-
+   candidate-research.md`) cite + 5-fold lock-in 요약 + structural-
+   weight disclosure.
+3. `PLAN.md` `## 진행 로그` — phase κ-71 G40 LANDED entry 박제 +
+   D120 cite + R10 2/4 LANDED 진척 + next pickup = G41 first-flip
+   (4th cell measured-oracle PASS · `MeasuredOracleRef` 가 새
+   `EnergyWindVerifyRecord` 에 land = 4th record-type instance ·
+   `power_curve_kernel.hexa` substrate 선행 land) 명시.
+4. `NEXT_SESSIONS.md` P-⑯ — G40 closure marker 추가 (R10 2/4 LANDED ·
+   G41 first-flip + new-kernel weight 가 다음 critical-path). head
+   refresh: R10 1/4 → 2/4 LANDED.
+5. **NOT** 적용 (scope 밖 · code 0 단계):
+   - 새 `EnergyWindVerifyRecord.swift` schema 신설 (~30 줄 mirror +
+     CodingKeys + memberwise init · G41 scope).
+   - `EnergyWindVerifyRecord.measuredOracle.datasetCaveats` HSDS
+     token disclosure entry 박제 (G41 scope · 본 D120 의 cross-link
+     gate).
+   - `stdlib/kernels/wind/power_curve_kernel.hexa` 신설 (G40↔G41
+     사이 별 cycle 의 substrate land · `pilot-power_curve` 부재 ·
+     G31 G29-β port mirror · 1-3 session).
+   - `stdlib/energy/wtk_fetcher.py` 신설 (G41 의 bridge · HSDS REST
+     adapter · D86 floor CLI/env-var only).
+   - `domains/PILOTS.demi` `[pilot-power_curve]` row 신설 (substrate
+     kernel land cycle scope).
+   - `absorbed=true` flip (G41 의 legitimate-flip gate).
+   - XCTest `testEnergyWindVerifyRecordCoveredByInvariantNoCodeChange`
+     추가 (G41 의 4th record-type audit · invariant helper code
+     변경 0).
+
+**avoid** (D109 / D115 / D118 mirror invariants):
+
+- D106 illustrative-physics gate 적용 cell — Fusion `mc_transport`
+  (substrate-parity PASS 이나 measurement-parity illustrative ·
+  RFC 013 §6.12 anti-conflation) · Ufo Stage-4..7 propulsion
+  (warp/wormhole/dim/use) · `FusionVerifyRecord` (유일 잔여
+  `[HP][✗]` 1-field 후보지만 D106 영구-잠김). 모두 `MeasuredOracle
+  Ref` 적용 불가.
+- D95 computed-projection 만으로 만족하는 cell — substrate-parity
+  가 아닌 measurement-parity 가 본 round 의 점 (`power_curve_kernel.
+  hexa` substrate-parity PASS [G41 선행 land] 는 floor · 본 D120 의
+  PASS criterion 은 그 위 *measured NREL WTK turbine output* axis
+  prediction).
+- hardcoded NREL WTK dataset path / HSDS token — D86 floor 위반
+  (G41 단계의 `wtk_fetcher.py` 가 env var 또는 CLI arg only · auth
+  header pass-through · 본 D120 single-site default 의 dataset
+  identifier 만 narrative cite).
+- ChipAnalyze (chip §B substrate-axis · `~/core/hexa-lang` worktree
+  의 다른 agent 활성 작업 중 · §12.1 RTLIL/Yosys 등 · cross-axis
+  충돌 회피 · [[feedback-parallel-agent-cap]]).
+
+**g3** — 본 D-block 의 박제로 어떤 cell 의 `absorbed=true` 도 flip
+되지 않음. RFC 013 §6.11 의 status 는 여전히 `LANDED` (κ-68 closure
+상태 유지 · κ-71 R10 은 same-invariant 의 fourth-instance
+generalization audit). 새 측정 0, 새 stored field 0, 새 `.demi`
+row 0, 새 hexa-lang artifact 0 — *결정-감사추적 SSOT* 의 single
+block 만. cell flip 의 실 honest land 는 G41 (Energy/wind producer
+measured-oracle PASS 의 cell record write path · `power_curve_
+kernel.hexa` substrate 선행 land) 에서 이뤄짐. **structural-weight
+honestly disclosed**: κ-71 은 1-field-extension 패턴 소진으로
+모든 후보가 record-side 또는 substrate-side 신설 cost 를 짐 ·
+Energy/wind 는 그 위 brand-new substrate kernel (substrate floor
+ZERO) 까지 신설 필요 = G41 first-flip 이 κ-68..κ-70 어느 것보다
+structurally HEAVIER (substrate-side 1-step 더 길어진 critical-
+path). 이 weight 는 honest signal (불가능 framing 아님 — picked
+cell · prediction-shape honesty 가 무게 정당화). PASS criterion 은
+**prediction-shape** (D110 G29 mirror · NOT numeric-equivalence) =
+deliberate honesty-floor re-elevation (κ-69/κ-70 2 round 후퇴 회복).
+HSDS token honesty floor (anonymous 아님) 는 G41 `datasetCaveats`
+disclosure 의무. D80 honesty floor (`g_hexa_only`) + D86
+(`g_no_hardcoded_data`) + D103 (dimension-separation) + D106
+(illustrative-physics 제외 · Fusion/Ufo Stage-4..7 carve-out) +
+D114 (stdlib SSOT · hexa-lang only · `power_curve_kernel.hexa` +
+`wtk_fetcher.py` 위치) + D116 (sibling repos = docs only) 모두
+preserved. audit trail = `inbox/notes/2026-05-22-k71-horizon-
+candidate-research.md` (3 finalist analysis · Energy/wind #1
+ranked · 350 line) + ARCH §11.6 Round 10 scaffold (G39 research
+note landed `cdc418e`) + NEXT_SESSIONS P-⑯ refresh.
+
+**status**: **LANDED 2026-05-22** · κ-71 R10 G40 `[x]` flip + 5-fold
+lock-in committed · R10 = 2/4 LANDED (G39 research note + G40) ·
+G41 first-flip (κ-68 G29 / κ-69 G33 / κ-70 G37 mirror · 4th record-
+type instance · prediction-shape PASS · `power_curve_kernel.hexa`
+substrate 선행 land = κ-68..κ-70 보다 substrate-side 1-step 더 무거운
+critical-path) 가 다음 critical-path.
+
+**cross-link**: ARCH §11.6 G40 block · `inbox/notes/2026-05-22-k71-
+horizon-candidate-research.md` (3 finalist analysis · Energy/wind
+#1 ranked · 본 D120 의 load-bearing audit trail · 350 line) · D109
+(κ-68 G27 land · solar · 본 D120 의 grandparent mirror template) ·
+D110 (κ-68 G29 first-flip · **prediction shape** · 본 D120 PASS
+criterion 의 직접 mirror · `0.04967` marginal predict-vs-measure) ·
+D115 (κ-69 G32 land · Aura · mirror template) · D117 (κ-69 G33
+first-flip · numeric-equivalence shape · 본 D120 이 보완하는 shape
+약점) · D118 (κ-70 G36 land · Ufo · 본 D120 의 직접 parent mirror
+template) · D119 (κ-70 G37 first-flip · numeric-equivalence shape ·
+D121 reserved 가 본 D120 의 first-flip mirror) · D103 (dimension-
+separation · substrate-parity vs measurement-parity) · D106
+(illustrative-physics carve-out · Fusion mc_transport + Ufo Stage-
+4..7 · `FusionVerifyRecord` 영구-잠김 · 본 D120 candidate 제외) ·
+D86 (`g_no_hardcoded_data` · G41 `wtk_fetcher.py` HSDS auth header
+CLI/env-var only) · D80 (endpoint rule · `power_curve_kernel.hexa`
+substrate-parity floor G41 선행 land) · D114 (stdlib SSOT · hexa-
+lang only · `stdlib/kernels/wind/power_curve_kernel.hexa` +
+`stdlib/energy/wtk_fetcher.py` G41 신설 위치) · D116 (sibling repos
+= docs only · `domains/energy.md` wind sub-cell narrative 위 hexa-
+lang 측 producer code) · `PILOTS.demi` (`[pilot-power_curve]`
+**부재** confirmed · substrate floor ZERO · 신설 G41-선행 cycle) ·
+`cockpit/Sources/DemiurgeCore/Models/MeasuredOracleRef.swift` (G28
+schema · `4a1a087` · G41 4th record-type reuse) · `cockpit/Sources/
+DemiurgeCore/Models/EnergyVerifyRecord.swift` (`EnergyWindVerify
+Record` 의 1:1 mirror source · G41 신설 carrier) · `domains/
+energy.md` (solar/wind sub-cell narrative).
