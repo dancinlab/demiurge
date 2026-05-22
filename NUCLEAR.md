@@ -20,6 +20,22 @@ Mirror of RTSC §9 (compositional) for elemental:
 | RTSC §9        | new SC composition (a)(b)(c) | impossible from sim alone (§8.9)       |
 | NUCLEAR (this) | new nuclide (a)(b)(c) → (d)(e) wet-lab | impossible from sim alone (§3 below)   |
 
+### §1.1 Relation to RTSC §9.12 hydride DFT (separate scope · shared formalism class)
+
+NUCLEAR and RTSC.md §9.12 both invoke "DFT" but at **different physics scales** — keep them in distinct homes:
+
+| dimension | NUCLEAR (this doc · §4 N6) | RTSC.md §9.12 hydride el-ph |
+|---|---|---|
+| physics | strong nuclear force · proton/neutron wavefunctions in the nucleus | electromagnetic · electron wavefunctions in a periodic lattice |
+| DFT-class | **nuclear HFB-DFT** (Skyrme / Gogny / RMF functionals · HFBTHO · HFODD · BSk family) | **solid-state Kohn-Sham DFT** (QE pw.x · plane-wave + PAW pseudopotentials) |
+| observable | mass · binding energy · deformation · α/β/SF half-life | electronic band structure · electron-phonon coupling λ · Allen-Dynes Tc |
+| convergence axis | functional family spread (BSk22/24/27 · UNEDF) · single-particle basis (HO Nmax / harmonic-oscillator truncation) | k-grid (24³ for H3S baseline) · q-grid (6³ baseline · q-grid + anharmonicity = dominant remaining under-convergence) |
+| compute (@D d8) | small/medium nuclei (A < 200) → **pool ubu-1** · batch SHE sweep → **Vast.ai** | small unit cells (4-14 atoms) → **pool ubu-1** · same routing |
+| record-side | `gate_type = nuclear-novel-discovery-simulation` (NUCLEAR.md §3.1) | `gate_type = simulation-only-prediction` (RTSC.md §8.7 Tier 1) |
+| R4 verdict | absorbed=false 영구 (needs accelerator beam-time) | absorbed=false 영구 (needs lab synthesis + Tc measurement) |
+
+Both share `@D d6` (measured-oracle invariant) · `@D d7` (first-principles ML-wall breakthrough · grid-converged values) · `@D d8` (compute sizing). The governance is **single SSOT in `project.tape`** — no separate "DFT.md" needed (would be doc bloat). Each stack is the *application instance* of the shared governance, not a sub-doc.
+
 ---
 
 ## §2. 5-gate nuclear taxonomy
@@ -49,6 +65,13 @@ Mirror of RTSC §9.7 (a–e). Honest verdict per gate identical in shape: (a)(b)
 ---
 
 ## §3. Honest invariants (g3 — non-negotiable)
+
+### §3.0 Cross-cutting governance (project.tape — apply to nuclear stack too)
+
+- **`@D d6`** (measured-oracle invariant · **4-carrier audit COMPLETE** as of κ-71 G41 D122) — `absorbed=true ⇔ measuredOracle.isMeasuredOraclePASS=true`. For nuclear records this is *permanent absorbed=false* (§3.1 below · no measured-oracle path exists without accelerator beam-time). The invariant is record-type-agnostic by construction (4 record types audited: Energy/solar · Aura/EEG · Ufo/plasma · Energy/wind · 0 invariant-helper code change) — when a `NuclearVerifyRecord` is ever added it auto-extends.
+- **`@D d7`** (first-principles physics breaks ML-wall · grid-converged values only) — drive HFB-DFT mass / decay predictions to converged values; label under-converged regions honestly (e.g., AME2020-fit BSk-family vs UNEDF cross-functional spread is the equivalent of RTSC §9.12 H3S 16³-k 1.15 → 24³-k 0.85 broadening-stable correction); **never force a target number** (the "Z=126 island of stability" claim is a *prediction with cited uncertainty*, never "Z=126 found").
+- **`@D d8`** (compute sizing) — N6 HFBTHO on small/medium nuclei (A < 200) routes to **pool ubu-1:aiden** (auth restored 2026-05-22 · QE 7.5 confirmed; HFBTHO install path is `_INSTALL_HINTS["hfbtho"]` per `hfbtho_adapter.py` · install pending). Batch screening of (Z, N) sweeps (N11 funnel · §6 deferred Phase 6) routes to **Vast.ai CPU spot market** (per d8 spec). GPU pod considered only for SHE multi-cluster relativistic calculations (≥ 20 cluster atoms with relativistic corrections, e.g., DD-RHB). HFB SCF on a single nuclide remains anti-pattern carve-out (don't port to hexa-native).
+- **`@D d2`** (Pattern 2 invariant verbal form) — never say "Z=126 발견 불가능" / "drip-line 도달 불가능"; the stack is *prediction-only* but breakthrough paths (next-generation accelerators · neutron-rich beam factories · ab-initio reach extending into heavy nuclei) stay surfaced. Out-of-scope ≠ impossible.
 
 ### §3.1 R4 carry over from RTSC
 
@@ -201,7 +224,7 @@ Mirror of RTSC §9.9.1 Phase 1 wrap-as-is — single-cohort first-land, then swe
 
 **Rationale**: HFBTHO is the most-mature open-source HFB binary · BSk22/24/27 cross-validation reference table is openly cited · matches RTSC §9 N4 cross-code DFT pattern (sim_adapter → mp_query → csp_adapter shape) closest.
 
-> **Infrastructure cross-link (2026-05-22)**: HFBTHO is a Fortran 95 binary — install-gated on macOS arm64 historically; Linux pool hosts (`ubu-1` / `ubu-2`) more tractable. Promotion to first-class `pool` routing (mirror of RTSC §9.9.1 N4 `_pool_cli_present` precedent) is a follow-on cohort — see `POOL.md` §4.2 (HFBTHO routing potential · install-gated currently). Current Phase 1 honest skip path (`install-gated` / `weights-missing` / `network-fail`) does NOT yet route through pool; that wiring is `NEXT_SESSIONS.md` P-⑮ scope.
+> **Infrastructure cross-link (2026-05-22 update)**: HFBTHO is a Fortran 95 binary — install-gated on macOS arm64 historically; Linux pool hosts (`ubu-1` / `ubu-2`) more tractable. **pool ubu-1 (aiden user · 6c Ryzen 9600X · 27GB RAM · QE 7.5 conda env confirmed) auth RESTORED 2026-05-22** ([[reference-qe-dft-pool-setup]] · `~/core/pool/inbox/troubleshooting/2026-05-22-ubu-1-publickey-denied.md` RESOLVED footer) — HFBTHO install on ubu-1 unblocked. The RTSC §9.12 hydride DFT extension is using the same ubu-1 baseline RIGHT NOW (QE pw.x/ph.x · `~/qe_runs/cah6/` etc. · per @D d8 small-cell pool routing). HFBTHO install on ubu-1 is the natural N6 phase-2 substrate (different software · same compute host · share queue discipline). Promotion to first-class `pool` routing (mirror of RTSC §9.9.1 N4 `_pool_cli_present` precedent) tracked in `POOL.md` §4.2 + `~/core/pool/inbox/requests/2026-05-22-session-feature-requests.md` #1 (per-host user+key config · landing this resolves `pool on ubu-1` ad-hoc to `aiden` automatically). Current Phase 1 honest skip path (`install-gated` / `weights-missing` / `network-fail`) holds until HFBTHO+BSk install on ubu-1 actually happens (separate session).
 
 **Adapter**: `hexa-lang/stdlib/nuclear/hfbtho_adapter.py`
 
