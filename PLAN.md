@@ -5229,3 +5229,104 @@
   `~/core/pool/bin/pool` Python source verified. 모든 invariant
   (R4 absorbed=false 영구 · D80 hexa-native endpoint · D106
   illustrative gate · D116 sibling repos docs only) preserved.
+
+- 2026-05-22 — **phase κ-70 R9 G38 LANDED — governance row ·
+  κ-70 R9 4/4 CLOSURE** (κ-69 R8 4/4 CLOSURE entry 의 동형 mirror ·
+  ARCH §11.5 G38 `[ ]` → `[x]` flip · code 0 · doc edit). κ-68
+  G27..G30 (5/5) → κ-69 G31..G34 (4/4) → κ-70 G35..G38 (4/4) 의
+  third-cell measurement-parity round progression 이 닫힘. R9 의
+  자연 끝 — 다음 round (κ-71+) 은 별 cycle 의 별 decision.
+  - **G35..G38 누적 LANDED 박제** (R9 = 4/4):
+    - **G35** [x] candidate-research note 박제 (`inbox/notes/2026-05-22-
+      k70-horizon-candidate-research.md` · 3 finalist Ufo/plasma Stage-2
+      · Energy/wind · Bio/ECG · ranking advisory · code 0).
+    - **G36** [x] D118 3rd cell pick (`40408dc` · Ufo/plasma Stage-2
+      #1 ranked default · JET open-pulse archive mid-Ohmic single shot ·
+      λ_D Debye length axis · `pilot-plasma_metrics` 41/41 bit-exact
+      substrate-parity floor · 5-fold lock-in · `UfoVerifyRecord` 1-field
+      확장 = κ-69 G33 mirror · Stage-4..7 D106 illustrative carve-out
+      명시 · code 0).
+    - **G37** [x] D119 3rd cell first-flip (`5e61efb` doc + `bea00e8`
+      cockpit · hexa-lang PR #291 `6187d499` MERGED · JET-like mid-Ohmic
+      single shot · `mean_rel_err = 2.21e-06` · `max_rel_err = 4.44e-06` ·
+      N=50 · threshold=0.05 · 4 orders below = numeric-equivalence PASS).
+    - **G38** [x] 본 entry — κ-70 R9 4/4 CLOSURE governance row.
+  - **governance row 의 SSOT migration note (G34 mirror 의 핵심)**:
+    κ-69 G34 (`3338e2c`) 는 Spec Kit `.specify/memory/constitution.md`
+    의 `## Governance Rows` R1 (measured-oracle invariant) row 였다.
+    그러나 `ab0724c` (Spec Kit removal · project.tape SSOT 채택) 에서
+    그 file 전체가 제거 + R1 governance row 가 `project.tape @D d6` 로
+    migrate (`e458d3c`). 따라서 G38 의 governance contribution = 새
+    constitution row 가 아니라 **`@D d6` 의 3rd-carrier audit framing
+    PATCH update** (κ-70 UfoVerifyRecord G37/D119 "pre-committed 3rd
+    carrier per D118" → "LANDED 3rd carrier per D118 · κ-70 R9 4/4
+    CLOSURE G38" · "3rd carrier audit pending G37 land" → "audit
+    COMPLETE: 3 record type × 동일 predicate × invariant-helper edit 0
+    = strongest cross-cell evidence record-type-agnostic by
+    construction"). `@D d6` self-rule ("edit this row in-place except
+    for PATCH wording") 준수 — append-only governance event 아닌
+    landed-fact 반영 PATCH wording.
+  - **PASS shape honest disclosure (3-cell spectrum 박제)**: D110 G29
+    (Energy/solar · NREL pyranometer GHI · `mean_rel_err = 0.04967` ·
+    marginal PASS · predict-vs-measure modeling-error shape) → D117 G33
+    (Aura/EEG · Sleep-EDF alpha-band PSD · `8.40e-07` · comfortable ·
+    numeric-equivalence shape · MNE Welch boxcar = naive DFT same
+    operation) → D119 G37 (Ufo/plasma · JET-like λ_D · `2.21e-06` ·
+    comfortable · numeric-equivalence shape · CODATA-2022 closed-form
+    both sides · IEEE-754 + str() roundtrip residual). G37/D119 의 PASS
+    는 numeric-equivalence (D117 G33 mirror · NOT D110 G29 predict-vs-
+    measure) — 정직성 floor: 본 PASS 가 modeling-axis honesty 의
+    evidence 가 아니라 substrate-parity 41/41 bit-exact 의 measurement-
+    axis 확장.
+  - **XCTest invariant 3rd carrier auto-extension audit COMPLETE**:
+    `testUfoVerifyRecordCoveredByInvariantNoCodeChange` (`bea00e8`) ·
+    invariant helper code 변경 0 · 3 record type (EnergyVerifyRecord
+    κ-68 1st · AuraVerifyRecord κ-69 2nd · UfoVerifyRecord κ-70 3rd) ×
+    동일 `invariantHolds(absorbed, measuredOracle, isIllustrativePhysics)`
+    predicate × helper edit 0 = **strongest cross-cell evidence** that
+    G30 invariant is record-type-agnostic by construction. cockpit
+    77 tests · 1 skipped · 0 failures.
+  - **Stage-4..7 D106 illustrative carve-out governance-affirmed OUT**:
+    `@D d6` dont= line 에 "Ufo Stage-4..7 warp/wormhole/dim/use
+    excluded — measured-oracle scope OUT, governance-affirmed" 명시 ·
+    RFC 013 §6.12 anti-conflation 유지. Stage-2 plasma diagnostic axis
+    만 `absorbed` flip 대상 · Stage-4..7 propulsion 은 `.illustrative
+    Physics` GateType 로 `MeasuredOracleRef` 부착 불가.
+  - **next horizon (κ-71+)** (κ-69 R8 closure entry의 4-item list 동형 ·
+    Ufo/plasma follow-on axis 의 evolved cluster · honestly placeholder):
+    - **G37-β** real JET raw timeseries fetch (EUROfusion SSO portal +
+      IMAS UDA REST token · 현 synthetic_jet_like_mid_ohmic fallback
+      을 real-archive 로 elevate · numeric-equivalence → measured-data
+      shape).
+    - **plasmapy bridge default-path** (현 env 의 numpy ABI mismatch
+      → `math`-CODATA-2022 fallback 을 plasmapy.formulary primary 로
+      복원 · `bridge_id` honesty elevate).
+    - **ω_p / Larmor radius / ln Λ hexa-native port** (λ_D 1-axis →
+      multi-metric plasma diagnostic · `plasma_metrics_kernel.hexa`
+      확장).
+    - **다른 cell measured-oracle round** (Energy/wind NREL Wind Toolkit ·
+      Bio/ECG PhysioNet MIT-BIH · Chip §B substrate-axis Tier-1/2/3
+      잔여 · 4th cell first-flip = 별 round).
+  - **RFC 013 §6.11 status `LANDED` 유지** (κ-68 closure 상태 · κ-70 R9
+    는 same-invariant 의 third-instance generalization audit · RFC
+    status 자체는 미flip · narrative cross-link만 add via D119).
+  - **D-number stale 의도**: G38 = governance-level closure (G34 가
+    별 D-block 없이 constitution row 였던 것의 mirror) · 새 D-block
+    필須 아님. 다음 D 자연 발생은 D120 (e.g. POOL.md governance rule
+    또는 κ-71 cell pick). design.md 변경 0.
+  - **수정 파일 4개** (모두 demiurge · doc edit · code 0): `project.tape`
+    (`@D d6` 3-carrier audit COMPLETE PATCH update) · `ARCH.md` (§11.5
+    G38 row `[ ]` → `[x]` flip + 6 exit criterion [x] + landed artifacts
+    + §11.4 intro Round 9 4/4 CLOSURE 표면 갱신 2곳) · `PLAN.md` (본
+    entry) · `NEXT_SESSIONS.md` (P-⑭ R9 4/4 CLOSURE marker + κ-71
+    horizon pointer).
+  g3 — 본 land 는 closure-attestation doc edit (code 0 · Swift/Python/
+  hexa 변경 0 · D-block 0). G37 IS landed (ARCH §11.5 G37 `[x]` ·
+  `bea00e8` cockpit + PR #291 MERGED verified) 이므로 R9 4/4 closure
+  는 legitimate. governance SSOT 가 constitution.md → project.tape 로
+  migrate 된 reality 를 honest 하게 박제 (G34 의 constitution row 가
+  더 이상 file 로 존재 안 함 — `@D d6` 이 그 successor). Stage-4..7
+  D106 carve-out 가 governance 에서 measured-oracle scope OUT 으로
+  명시 affirmed (anti-conflation). 다른 cell 회귀 0 · invariant 변경
+  0 · 모든 floor (D80/D86/D103/D106/D116) preserved. κ-70 R9 의 자연
+  끝 — 다음 round (κ-71+) 은 별 cycle.

@@ -1133,11 +1133,12 @@ D87..D101 sweep) · Round 6 (G19–G26 κ-67 closure + post-closure pilot
 measured-oracle parity round · RFC 013 §6.11 · D109/D110 · 4-fold full
 land 2026-05-21) · Round 8 (G31–G34 *LANDED* · κ-69 hexa-native
 ultimate-form parity + 2nd cell measurement round · D115/D117 · 4-fold
-full land 2026-05-22) · Round 9 (G35–G38 · κ-70 3rd cell measurement
-round · G35 + G36 + G37 *LANDED* 2026-05-22 · G35 candidate-research +
+full land 2026-05-22) · Round 9 (G35–G38 *LANDED* · κ-70 3rd cell
+measurement round · 4-fold full land 2026-05-22 · G35 candidate-research +
 G36 D118 Ufo/plasma Stage-2 5-fold lock-in + G37 D119 first-flip
-(`mean_rel_err = 2.21e-06` numeric-equivalence PASS) · G38 closure
-pre-code). 본 §11.3 의 G1–G8 priority 는 *initial-round
+(`mean_rel_err = 2.21e-06` numeric-equivalence PASS) + G38 R9 4/4
+CLOSURE governance row [`project.tape @D d6` 3-carrier audit COMPLETE]).
+본 §11.3 의 G1–G8 priority 는 *initial-round
 historical* 표면 — 현 ground truth 는 §11.4 + §11.5 의 G1–G38 Round 1-9
 가 carry. §11.3 는 cross-sim *origin gap* 의 audit trail 로 보존
 (g_ssot_single_source D50 — phase boundary 별 한 snapshot 유지).
@@ -1169,8 +1170,8 @@ historical* 표면 — 현 ground truth 는 §11.4 + §11.5 의 G1–G38 Round 1
 > Aura/EEG · PhysioNet Sleep-EDF · mean_rel_err 8.40e-07 PASS) + G34
 > (governance row · constitution.md v1.0.0 → v1.1.0 MINOR bump · measured-
 > oracle invariant narrative). **G35–G38 라운드 9 (`κ-70 third-cell
-> measurement round` — scaffold 2026-05-22 · G35 + G36 + G37 LANDED
-> 2026-05-22 · G38 pre-code · 3/4)** 는 κ-69 R8 closure entry 의 reserved
+> measurement round` — scaffold 2026-05-22 · G35 + G36 + G37 + G38
+> LANDED 2026-05-22 · R9 4/4 CLOSURE)** 는 κ-69 R8 closure entry 의 reserved
 > 'κ-70+ next horizon' scope (3rd cell measurement-parity ·
 > `invariantHolds` record-type-agnostic audit 의 3rd instance) 를 4
 > placeholder G-item + G35 candidate-research note 동시 박은
@@ -1185,8 +1186,12 @@ historical* 표면 — 현 ground truth 는 §11.4 + §11.5 의 G1–G38 Round 1
 > 2.21e-06` numeric-equivalence PASS · D117 G33 mirror · 3rd record-
 > type `testUfoVerifyRecordCoveredByInvariantNoCodeChange` 박제 ·
 > invariant helper code 변경 0 = strongest evidence cycle · hexa-lang
-> PR #291 `6187d499` MERGED). G38 = pre-code (κ-70 R9 closure 박제 ·
-> κ-69 R8 closure entry mirror).
+> PR #291 `6187d499` MERGED). G38 = LANDED 2026-05-22 (κ-70 R9 4/4
+> CLOSURE governance row · κ-69 R8 closure entry mirror · governance
+> SSOT = `project.tape @D d6` [Spec Kit `.specify/memory/constitution.md`
+> 제거 `ab0724c` 이후 · G34 의 constitution R1 → `@D d6` migration
+> `e458d3c` 의 successor] 의 3-carrier audit COMPLETE PATCH update ·
+> code 0).
 > 각 항목 진행하면 `[x]` 로 박고 PLAN κ-entry + design.md D-block +
 > 영향 파일 commit 으로 묶을 것.
 
@@ -2478,32 +2483,58 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
   - **est (revised)**: ~1 session actual (predicted 1-3) — Ufo
     schema 재사용 = 최저 friction track 가 estimate 의 하단 land
 
-- [ ] **G38.** κ-70 R9 closure 박제 (4/4 LANDED · κ-69 R8 closure
-    entry mirror · 또는 partial-land cycle boundary)
+- [x] **G38.** κ-70 R9 closure 박제 (4/4 LANDED · κ-69 R8 closure
+    entry mirror) **— LANDED 2026-05-22 · κ-70 R9 4/4 CLOSURE ·
+    governance row = `project.tape @D d6` PATCH update (3-carrier
+    audit COMPLETE framing · Spec Kit `.specify/memory/constitution.md`
+    제거 `ab0724c` 이후 governance SSOT = `project.tape` · G34 의
+    constitution `## Governance Rows` R1 → `@D d6` migration `e458d3c`
+    의 successor) · code 0 · doc edit**
   - **scope**: κ-69 R8 4/4 CLOSURE entry (PLAN.md 2026-05-22 ·
     `## 진행 로그`) 의 동형 mirror — κ-70 R9 closure 박제. G35..G37
-    누적 LANDED 시 closure entry · partial-land 시 cycle boundary
-    상태 박제. R8 의 "next horizon (κ-70+)" 4 후보 line 의 evolved
-    successor = "next horizon (κ-71+)" 4 후보 (G37 picked cell +
-    follow-on axis 의 evolved cluster · honestly placeholder)
-  - **exit criterion** (G34 closure entry mirror):
-    - κ-70 R8 4 G-item 누적 LANDED 박제 (G35 [x] G35-LAND-SHA · G36 [x]
-      D118 · G37 [x] D119 · G38 [x] 본 entry)
-    - PASS shape honest disclosure (G36 picked cell + oracle 의
-      prediction-shape vs numeric-equivalence shape · D110/D117 의
-      shape 차이 disclosure 패턴 evolved 적용)
-    - XCTest invariant 3rd carrier auto-extension audit confirmed
-      (G37 exit criterion #3 의 cross-link · record-type-agnostic
-      설계의 strongest evidence)
-    - `next horizon (κ-71+)` placeholder 박제 (G37 picked cell의
-      follow-on axis cluster · κ-69 closure entry의 4-item list 동형)
-    - design.md / PLAN.md / ARCH §11.5 의 cross-consistent state
+    누적 LANDED → closure entry. R8 의 "next horizon (κ-70+)" 4 후보
+    line 의 evolved successor = "next horizon (κ-71+)" 4 후보 (Ufo/plasma
+    follow-on axis 의 evolved cluster · honestly placeholder). **G34
+    governance-row mirror 의 SSOT migration note**: κ-69 G34 는 Spec
+    Kit `.specify/memory/constitution.md` 의 `## Governance Rows` R1
+    measured-oracle invariant row 였으나, `ab0724c` (Spec Kit removal ·
+    project.tape SSOT 채택) 에서 그 file 이 제거 + governance row 가
+    `project.tape @D d6` 로 migrate (`e458d3c`). 따라서 G38 의
+    governance contribution = `@D d6` 의 3rd-carrier audit framing
+    PATCH update (pre-committed/pending → LANDED/COMPLETE) — `@D d6`
+    self-rule ("edit this row in-place except for PATCH wording") 준수.
+  - **exit criterion** (G34 closure entry mirror · 모두 [x]):
+    - [x] κ-70 R9 4 G-item 누적 LANDED 박제 (G35 [x] `inbox/notes/
+      2026-05-22-k70-horizon-candidate-research.md` · G36 [x] D118
+      `40408dc` · G37 [x] D119 `5e61efb`+`bea00e8` · G38 [x] 본 entry)
+    - [x] PASS shape honest disclosure (Ufo/plasma + JET-like oracle 의
+      numeric-equivalence shape `mean_rel_err = 2.21e-06` · D117 G33
+      mirror NOT D110 G29 predict-vs-measure · D110 marginal 0.04967 /
+      D117 8.4e-07 / D119 2.21e-06 의 3-cell shape spectrum 박제)
+    - [x] XCTest invariant 3rd carrier auto-extension audit confirmed
+      (G37 exit criterion #3 cross-link · `testUfoVerifyRecordCoveredBy
+      InvariantNoCodeChange` · invariant helper edit 0 · 3 record type
+      [EnergyVerifyRecord · AuraVerifyRecord · UfoVerifyRecord] ×
+      동일 predicate = record-type-agnostic 설계의 strongest evidence)
+    - [x] Stage-4..7 D106 illustrative carve-out governance-affirmed
+      OUT of measured-oracle scope (`@D d6` dont= line 명시 · RFC 013
+      §6.12 anti-conflation · Ufo warp/wormhole/dim/use 제외)
+    - [x] `next horizon (κ-71+)` placeholder 박제 (Ufo/plasma follow-on
+      axis cluster · κ-69 closure entry의 4-item list 동형 · PLAN.md
+      κ-70 R9 closure entry body)
+    - [x] design.md / PLAN.md / ARCH §11.5 / project.tape / NEXT_SESSIONS
+      의 cross-consistent state
   - **deps**: G35 + G36 + G37 누적 LANDED · κ-69 R8 closure entry
-    pattern · RFC 013 §6.11 LANDED status 유지 (κ-70 R9 = same-
-    invariant 의 third-instance generalization audit · RFC status
-    미flip · narrative cross-link만 add via D119)
+    pattern (PLAN.md) · `project.tape @D d6` (governance row · `e458d3c`) ·
+    RFC 013 §6.11 LANDED status 유지 (κ-70 R9 = same-invariant 의
+    third-instance generalization audit · RFC status 미flip · narrative
+    cross-link만 add via D119)
+  - **landed artifacts**: `project.tape @D d6` (3-carrier audit COMPLETE
+    PATCH update) · PLAN.md κ-70 R9 4/4 CLOSURE entry · NEXT_SESSIONS.md
+    P-⑭ closure marker + κ-71 horizon pointer · ARCH §11.5 G38 `[x]`
+    flip (본 row) · 단일 commit.
   - **est**: 0.3-0.5 session (κ-69 R8 closure entry mirror · doc
-    edit · code 0)
+    edit · code 0) — actual ≈ 0.3 session
 
 ---
 

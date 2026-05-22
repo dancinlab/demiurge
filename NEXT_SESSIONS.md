@@ -1,11 +1,14 @@
 # NEXT_SESSIONS — copy-paste session-pickup prompts
 
 > 2026-05-22 · demiurge origin/main (κ-69 R8 4/4 CLOSURE +
-> κ-70 R9 3/4 LANDED · ARCH §11.5 신설 · G35 candidate-research +
+> κ-70 R9 4/4 CLOSURE · ARCH §11.5 신설 · G35 candidate-research +
 > G36 D118 3rd cell pick (Ufo/plasma Stage-2) +
 > G37 D119 3rd cell first-flip (`mean_rel_err = 2.21e-06` numeric-
 > equivalence PASS · JET-like mid-Ohmic single shot · λ_D · 3rd
-> record-type invariant auto-extension) LANDED same-cycle) ·
+> record-type invariant auto-extension) + G38 governance row
+> (κ-70 R9 4/4 CLOSURE · `project.tape @D d6` 3-carrier audit
+> COMPLETE PATCH · governance SSOT = project.tape post Spec Kit
+> removal `ab0724c`) LANDED same-cycle) ·
 > 직전 cycle: κ-68 closure + κ-69 opening + ARCH §12
 > 신설 + R8 2/4 LANDED (G31 full + G34 governance row) +
 > hexa-lang PR #263 MERGED `8eec8e7` (G31a wrapper + G31b producer
@@ -34,8 +37,8 @@
 > CLOSED 2026-05-22** (G31..G34 4/4 full land · D115 G32 cell pick +
 > D117 G33 second cell `absorbed=true` legitimate flip · Aura/EEG ·
 > historical reference); **P-⑭ (κ-70 third-cell measured-oracle
-> round, ARCH §11.5 Round 9 G35..G38)** ← κ-70 opening 2026-05-22 ·
-> **R9 3/4 LANDED** (G35 candidate-research note `inbox/notes/
+> round, ARCH §11.5 Round 9 G35..G38) — CLOSED 2026-05-22** ·
+> **R9 4/4 CLOSURE** (G35 candidate-research note `inbox/notes/
 > 2026-05-22-k70-horizon-candidate-research.md` · 3 finalist: Ufo/
 > plasma Stage-2 · Energy/wind · Bio/ECG · #1 ranked default 채택 ·
 > G36 D118 3rd cell pick LANDED 2026-05-22 same-cycle · Ufo/plasma
@@ -49,8 +52,11 @@
 > PASS · D117 G33 mirror shape · 3rd record-type invariant
 > `testUfoVerifyRecordCoveredByInvariantNoCodeChange` 박제 ·
 > invariant helper code 변경 0 · hexa-lang PR #291 `6187d499`
-> MERGED) · **G38 still open** (G38 = κ-70 R9 closure 박제 · κ-69
-> R8 closure entry mirror · 0.3-0.5 session est · doc edit · code 0).
+> MERGED · G38 governance row LANDED 2026-05-22 same-cycle =
+> κ-70 R9 4/4 CLOSURE · governance row = `project.tape @D d6`
+> 3-carrier audit COMPLETE PATCH · G34 constitution R1 → `@D d6`
+> migration `e458d3c` 의 successor · code 0 · 다음 horizon = κ-71+
+> Ufo/plasma follow-on cluster).
 >
 > **P-⑮ (pool CLI first-class infrastructure follow-on)** — 2026-05-22
 > POOL.md landed (~517 line · 7 § · canonical wrapper + 5-row routing
@@ -813,9 +819,15 @@ Change` 3rd record-type invariant auto-extension audit PASS ·
 invariant helper code 변경 0 = strongest evidence cycle · hexa-lang
 PR #291 `6187d499` MERGED · 942-line producer trio
 `jet_pulse_fetcher.py` + `jet_plasma_measured_oracle.py` + `_plasma_
-lambda_d_batch.hexa`). Remaining open: **G38 closure** (R9 4/4
-박제 · κ-69 R8 closure entry mirror · 0.3-0.5 session est · doc
-edit · code 0).
+lambda_d_batch.hexa`). **G38 R9 closure LANDED 2026-05-22 same-cycle**
+(R9 4/4 박제 · κ-69 R8 closure entry mirror · governance row =
+`project.tape @D d6` 3-carrier audit COMPLETE PATCH update · Spec Kit
+`.specify/memory/constitution.md` 제거 `ab0724c` 이후 governance SSOT =
+project.tape · G34 constitution R1 → `@D d6` migration `e458d3c` 의
+successor · code 0). **κ-70 R9 = 4/4 CLOSED** — 다음 horizon 은
+κ-71+ (Ufo/plasma follow-on axis cluster: G37-β real JET raw timeseries +
+plasmapy bridge default-path + ω_p/Larmor/ln Λ port + 4th cell
+measured-oracle round). 본 P-⑭ 는 historical reference 로 박제.
 
 **Use this when:** you continue κ-70 R9 work. ARCH.md §11.5 Round 9 는
 G35..G38 의 full scope (scope · deps · est · exit criterion · avoid) 를
@@ -943,8 +955,7 @@ NOT (g3 — non-negotiable):
   - Do NOT skip G35 research note cite in D118 body — decision
     rationale 가 G35 ranking 위 build.
 
-Exit criterion (any one ends honestly · G36 + G37 CLOSED 2026-05-22
-same-cycle · remaining exits below):
+Exit criterion (all CLOSED — κ-70 R9 4/4 LANDED 2026-05-22):
   (α) ~~G36 LANDED (D118 박제 · code 0) + scope-bounded next-pickup
       note + ARCH §11.5 G36 `[x]` flip~~ — **CLOSED 2026-05-22 same-
       cycle · historical reference**, OR
@@ -954,9 +965,14 @@ same-cycle · remaining exits below):
       2.21e-06` PASS · historical reference**, OR
       (`testUfoVerifyRecordCoveredByInvariantNoCodeChange`) +
       `UfoVerifyRecord.scopeCaveats` Stage-4..7 carve-out 박제, OR
-  (γ) G37 + G38 묶음 land + κ-70 closure (R9 4/4 LANDED via G38), OR
-  (δ) Scope-bounded sub-progress + honest next-pickup note in this
-      P-⑭ section + ARCH §11.5 partial flag (`[~]`) update.
+  (γ) ~~G37 + G38 묶음 land + κ-70 closure (R9 4/4 LANDED via G38)~~ —
+      **CLOSED 2026-05-22 · G38 governance row LANDED · κ-70 R9 4/4
+      CLOSURE · governance row = `project.tape @D d6` 3-carrier audit
+      COMPLETE PATCH (Spec Kit constitution.md 제거 `ab0724c` 이후
+      governance SSOT = project.tape · G34 constitution R1 → `@D d6`
+      migration `e458d3c` 의 successor)**, OR
+  (δ) ~~Scope-bounded sub-progress + honest next-pickup note~~ — N/A
+      (full closure reached via γ).
 ```
 
 > **Pattern note (κ-68 → κ-69 → κ-70 progression)**: κ-68 = 1st cell
