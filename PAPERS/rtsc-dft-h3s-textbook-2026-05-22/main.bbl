@@ -1,0 +1,108 @@
+\begin{thebibliography}{14}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allen and Dynes(1975)]{allendynes1975}
+P.~B. Allen and R.~C. Dynes.
+\newblock Transition temperature of strong-coupled superconductors reanalyzed.
+\newblock \emph{Phys. Rev. B}, 12:\penalty0 905--922, 1975.
+\newblock \doi{10.1103/PhysRevB.12.905}.
+
+\bibitem[Bardeen et~al.(1957)Bardeen, Cooper, and Schrieffer]{bcs1957}
+J.~Bardeen, L.~N. Cooper, and J.~R. Schrieffer.
+\newblock Theory of superconductivity.
+\newblock \emph{Phys. Rev.}, 108:\penalty0 1175--1204, 1957.
+\newblock \doi{10.1103/PhysRev.108.1175}.
+
+\bibitem[Belli and Errea(2024)]{ambient_hydride_2024_1}
+F.~Belli and I.~Errea.
+\newblock Feasible route to high-temperature ambient-pressure hydride
+  superconductivity.
+\newblock \url{https://arxiv.org/abs/2310.07562}, 2024.
+\newblock arxiv:2310.07562.
+
+\bibitem[Belli et~al.(2024)Belli, Bhattacharya, Tristant, Schoen, Mukherjee,
+  et~al.]{ambient_hydride_2024_2}
+F.~Belli, S.~Bhattacharya, D.~Tristant, J.~R. Schoen, M.~Mukherjee, et~al.
+\newblock Searching materials space for hydride superconductors at ambient
+  pressure.
+\newblock \url{https://arxiv.org/abs/2403.13496}, 2024.
+\newblock arxiv:2403.13496.
+
+\bibitem[Choudhary and Garrity(2022{\natexlab{a}})]{jarvis_supercon_db}
+K.~Choudhary and K.~Garrity.
+\newblock {JARVIS-SuperconDB}: dataset of superconducting properties.
+\newblock
+  \url{https://figshare.com/articles/dataset/JARVIS-SuperconDB/21370572},
+  2022{\natexlab{a}}.
+
+\bibitem[Choudhary and Garrity(2022{\natexlab{b}})]{choudhary2022alignn}
+Kamal Choudhary and Kevin Garrity.
+\newblock Designing high-{Tc} superconductors with {BCS}-inspired screening,
+  density functional theory, and deep-learning.
+\newblock \emph{npj Comput. Mater.}, 8:\penalty0 244, 2022{\natexlab{b}}.
+\newblock \doi{10.1038/s41524-022-00933-1}.
+
+\bibitem[Drozdov et~al.(2015)Drozdov, Eremets, Troyan, Ksenofontov, and
+  Shylin]{drozdov2015h3s}
+A.~P. Drozdov, M.~I. Eremets, I.~A. Troyan, V.~Ksenofontov, and S.~I. Shylin.
+\newblock Conventional superconductivity at 203 kelvin at high pressures in the
+  sulfur hydride system.
+\newblock \emph{Nature}, 525:\penalty0 73--76, 2015.
+\newblock \doi{10.1038/nature14964}.
+
+\bibitem[Eliashberg(1960)]{eliashberg1960}
+G.~M. Eliashberg.
+\newblock Interactions between electrons and lattice vibrations in a
+  superconductor.
+\newblock \emph{Sov. Phys. JETP}, 11:\penalty0 696--702, 1960.
+\newblock transl. of Zh.\ Eksp.\ Teor.\ Fiz.\ 38, 966 (1960).
+
+\bibitem[Errea et~al.(2016)Errea, Calandra, Pickard, Nelson, Needs, Li, Liu,
+  Zhang, Ma, and Mauri]{errea2016h3s}
+Ion Errea, Matteo Calandra, Chris~J. Pickard, Joseph~R. Nelson, Richard~J.
+  Needs, Yinwei Li, Hanyu Liu, Yunwei Zhang, Yanming Ma, and Francesco Mauri.
+\newblock Quantum hydrogen-bond symmetrization in the superconducting hydrogen
+  sulfide system.
+\newblock \emph{Nature}, 532:\penalty0 81--84, 2016.
+\newblock \doi{10.1038/nature17175}.
+
+\bibitem[Giannozzi et~al.(2009)]{giannozzi2009qe}
+P.~Giannozzi et~al.
+\newblock {QUANTUM ESPRESSO}: a modular and open-source software project for
+  quantum simulations of materials.
+\newblock \emph{J. Phys.: Condens. Matter}, 21:\penalty0 395502, 2009.
+\newblock \doi{10.1088/0953-8984/21/39/395502}.
+
+\bibitem[Giannozzi et~al.(2017)]{giannozzi2017qe}
+P.~Giannozzi et~al.
+\newblock Advanced capabilities for materials modelling with {Quantum
+  ESPRESSO}.
+\newblock \emph{J. Phys.: Condens. Matter}, 29:\penalty0 465901, 2017.
+\newblock \doi{10.1088/1361-648X/aa8f79}.
+
+\bibitem[Gibson et~al.(2025)Gibson, Hire, and Hennig]{gibson2025betenet}
+Jason Gibson, Ajinkya Hire, and Richard~G. Hennig.
+\newblock Bootstrapped tempered equivariant neural networks for screening
+  superconductors.
+\newblock \emph{npj Comput. Mater.}, 11:\penalty0 11, 2025.
+\newblock \doi{10.1038/s41524-024-01473-6}.
+\newblock arxiv:2401.16611; github henniggroup/BETE-NET.
+
+\bibitem[McMillan(1968)]{mcmillan1968}
+W.~L. McMillan.
+\newblock Transition temperature of strong-coupled superconductors.
+\newblock \emph{Phys. Rev.}, 167:\penalty0 331--344, 1968.
+\newblock \doi{10.1103/PhysRev.167.331}.
+
+\bibitem[Morel and Anderson(1962)]{morelanderson1962}
+P.~Morel and P.~W. Anderson.
+\newblock Calculation of the superconducting state parameters with retarded
+  electron-phonon interaction.
+\newblock \emph{Phys. Rev.}, 125:\penalty0 1263--1271, 1962.
+\newblock \doi{10.1103/PhysRev.125.1263}.
+
+\end{thebibliography}
