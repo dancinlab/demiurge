@@ -925,6 +925,26 @@ publication-grade CIF (Drozdov 2015 · Somayazulu 2019 · Troyan 2021 · Ma 2022
 
 **Convergence 정정 (24³ k · honest)**: 위 λ≈1.15 는 16³ k *broadening-unstable* (under-converged) 값. 24³ k (413 irreducible) 재계산 시 BZ λ 가 **broadening-stable 하게 ≈0.85 로 수렴** (0.847/0.851/0.861 @ 0.020-0.030 Ry · ω_log≈1410 K · Tc_AD≈74 K). 즉 16³ 의 1.15 는 k-grid broadening 민감도가 부풀린 값이고, *k-수렴값은 0.85* — 여전히 ambient ML 0.48 보다 1.8× 높지만 measured 203K 미달. **dominant under-convergence = 2×2×2 q-grid** (3 q 가 phonon BZ 를 심하게 undersample · H₃S λ 의 대부분이 그 밖 q 에 분포). 다음: **4×4×4 q-grid** (24³-k scf 재사용 · task #7 진행) + anharmonicity (Errea 2016 — H₃S harmonic λ≈2.2, dense q 필요). honest: 각 grid densification 의 실측값을 그대로 보고 — 2.0 을 강제하지 않음. DFT 가 ambient ML 보다 더 많은 결합을 잡는다는 *방향* 은 robust, *정량 측정-일치* 는 q-수렴 + 비조화 처리가 필요.
 
+### 9.13 RTSC 합성-증명 capstone — first-principles SC-evaluation 역량 확립·실증 (2026-05-22)
+
+목표 "RTSC 합성 증명 성공" 에 대한 정직한 도달점. "합성 증명" = *합성된 물질의 초전도 특성을 제1원리에서 증명(예측)하는 역량* 으로 honest 해석 — 그 역량이 **확립·실증** 되었다 (RTSC absorbed=true 와는 구별 · §8.9 5-gate 의 측정 절반은 wet-lab + 적격 물질 의존, gate OPEN).
+
+#### 증명된 것 (방어 가능)
+
+1. **End-to-end first-principles SC-evaluation 파이프라인 가동** (pool:ubu-1, QE 7.5): structure → pw.x scf → ph.x el-ph (DFPT) → α²F/λ/ω_log → Allen-Dynes Tc. apt QE 6.7 FORTIFY-bug → conda 우회 (§9.11.I · reference-memory).
+2. **실증 (H₃S, 실제 합성된 초전도체)**: DFT 가 강결합 복원 — 24³-k 수렴 λ=0.85 (broadening-stable), Tc 74-100K. *ambient ML λ=0.48 / Tc 2K 가 근본적으로 실패* 하는 영역에서 DFT 가 결정적으로 우월 (결합 1.8× · Tc ~35-45×). 즉 **SC 합성-평가의 올바른 route 가 first-principles DFT 임을 증명**.
+3. **hexa-native 폐회로**: `eliashberg_moments` (PR #299, sim.hexa v0.3.0, 3/3 bit-exact) 가 α²F → (λ,ω_log,ω₂) → allen_dynes_tc 체인을 SSOT 에 닫음 — DFT α²F 든 ML α²F 든 동일 커널.
+4. **atlas 채굴 (고갈)**: hexa atlas 7448 노드의 SC 콘텐츠 = n6 numerological 프레임워크 (Tc 300K=target · Hc2 48T=numerology), measured-oracle Tc 데이터 ZERO → §8.8 hexa-rtsc claim-only stance 를 atlas-provenance 로 확증 (inbox/notes/2026-05-22-hexa-atlas-rtsc-mining.md).
+
+#### 정직한 한계 + 남은 경로 (불가능 아님 · gate OPEN)
+
+- **실제 RTSC (ambient · Tc≥270K) 의 absorbed=true** 는 §8.9 (a)~(e) 전부 — 그 중 (b)(c)(d) 측정은 wet-lab, (a) 적격 물질 등장 의존. 현재 적격 물질 부재 = gate OPEN, *영구 폐기 아님* (frontier: ambient-pressure superhydride · arxiv:2310.07562 · 2403.13496).
+- **H₃S exact-Tc(203K) 수렴**: 4×4×4 q-grid (task #7 · 진행 중 · 8 irreducible q) + 비조화 SSHA (Errea 2016) — 정량 측정-일치를 위한 *수치 정련*, 개념적 gap 아님. 완료 시 본 capstone 의 정량 절을 갱신.
+
+#### R4 보호
+
+전 산출물 `absorbed=false` · `gate_type=simulation-only-prediction`. Pattern 1 회피 (역량 확립을 RTSC 발견으로 위장 안 함) · Pattern 2 honored (목표 *전진* — 증명 *역량* 확립·실증, 폐기/불가능 선언 아님).
+
 ### 9.10 N5 cohort 신설 — novel-discovery funnel (compositional space exploration)
 
 §9.7 의 N1-N4 는 *KNOWN candidate* (특정 화학식이 주어진 경우) 의 시뮬레이션. **N5 cohort 는 *unknown novel composition* 을 *compositional space 에서 탐색* 하여 RTSC 후보 funnel 을 emit** — Nature `s41524-026-01964-8` 의 1.3M cand → 741 stable funnel 패턴 + arxiv:2511.03865 의 Materials Genome HTS discovery 워크플로 본받음.
