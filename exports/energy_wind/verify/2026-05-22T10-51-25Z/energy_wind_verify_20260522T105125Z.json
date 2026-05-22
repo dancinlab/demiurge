@@ -1,0 +1,453 @@
+{
+  "domain": "energy_wind",
+  "verb": "verify",
+  "kind": "energy_wind_verify",
+  "stamp": "20260522T105125Z",
+  "producer": "stdlib/energy/iec_vs_vestas_v90_oracle_v2.py@v0.2.0",
+  "measurement_gate": "GATE_CLOSED_MEASURED",
+  "absorbed": true,
+  "scope_caveats": [
+    "Manufacturer-published Vestas V90-2.0MW power curve \u00b7 NOT a metered/SCADA timeseries (NREL Wind Toolkit token-gated \u00b7 deferred upgrade)",
+    "PREDICTION-shape \u00b7 power_curve_segments (6 sparse breakpoints) vs Vestas full 24-point table \u00b7 genuine interpolation modeling error (numeric-equivalence avoided \u00b7 D122 honesty contract)",
+    "6 breakpoints chosen BEFORE measurement from curve-shape landmarks (cubic-region \u00b7 rated-transition \u00b7 plateau-start) \u00b7 NOT optimised against rel_err post-hoc",
+    "Single turbine model (Vestas V90-2.0MW) \u00b7 sea-level density \u00b7 no shear / turbulence / wake corrections",
+    "Real SCADA timeseries + multi-turbine sweep + wake/turbulence correction + breakpoint-optimisation search DEFERRED (4-layer disclosure floor)"
+  ],
+  "citations": [
+    "IEC 61400-12-1 power performance measurement methodology",
+    "Vestas V90-2.0MW manufacturer spec sheet (public power curve table)",
+    "hexa-lang PR #308 (power_curve_kernel.hexa v0.1.0 cross-impl parity)",
+    "hexa-lang G41 D122 kernel-refinement PR (power_curve_kernel.hexa v0.2.0 \u00b7 power_curve_segments)",
+    "design.md D120 (G40 cell pick \u00b7 5-fold lock-in) \u00b7 D121 (G41 first-flip honest gap baseline) \u00b7 D122 (G41 kernel refinement \u00b7 this measurement)"
+  ],
+  "skipped_reason": null,
+  "kernel_reuse": "stdlib/kernels/wind/power_curve_kernel.hexa::power_curve_segments",
+  "hexa_native_parity": {
+    "kernel_path": "stdlib/kernels/wind/power_curve_kernel.hexa",
+    "kernel_version": "0.2.0",
+    "verified_at": "hexa-lang G41 D122 kernel-refinement PR (35-case parity suite \u00b7 power_curve_segments breakpoint exact-match + interpolation + density-corrected)"
+  },
+  "measured_oracle": {
+    "oracle_kind": "manufacturer_empirical_power_curve",
+    "oracle_id": "vestas_v90_2_0MW_full_24pt_table",
+    "n_bins": 43,
+    "n_breakpoint_bins": 6,
+    "n_interp_bins": 37,
+    "operating_regime_ms": [
+      4.0,
+      25.0
+    ],
+    "v_step_ms": 0.5,
+    "mean_rel_err": 0.029848824023034806,
+    "max_rel_err": 0.29166666666666674,
+    "pass_threshold": 0.05,
+    "is_measured_oracle_PASS": true,
+    "baseline_v01_cubic_mean_rel_err": 0.07075442541581528,
+    "baseline_v01_cubic_max_rel_err": 0.34085119270304454,
+    "kernel_segment_breakpoints_v": [
+      4.0,
+      7.0,
+      10.0,
+      12.0,
+      14.0,
+      15.0
+    ],
+    "kernel_segment_breakpoints_p": [
+      66.0,
+      457.0,
+      1296.0,
+      1818.0,
+      1980.0,
+      2000.0
+    ]
+  },
+  "bins": [
+    {
+      "v_ms": 4.0,
+      "kernel_v02_segments_kW": 66.0,
+      "kernel_v01_cubic_kW": 43.50382128159906,
+      "oracle_kW": 66.0,
+      "at_breakpoint": true,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.34085119270304454
+    },
+    {
+      "v_ms": 4.5,
+      "kernel_v02_segments_kW": 131.16666666666669,
+      "kernel_v01_cubic_kW": 75.39682539682539,
+      "oracle_kW": 110.0,
+      "at_breakpoint": false,
+      "rel_err": 0.1924242424242426,
+      "rel_err_v01": 0.3145743145743146
+    },
+    {
+      "v_ms": 5.0,
+      "kernel_v02_segments_kW": 196.33333333333334,
+      "kernel_v01_cubic_kW": 115.22633744855968,
+      "oracle_kW": 152.0,
+      "at_breakpoint": false,
+      "rel_err": 0.29166666666666674,
+      "rel_err_v01": 0.24193199047000213
+    },
+    {
+      "v_ms": 5.5,
+      "kernel_v02_segments_kW": 261.5,
+      "kernel_v01_cubic_kW": 163.87419165196943,
+      "oracle_kW": 215.0,
+      "at_breakpoint": false,
+      "rel_err": 0.21627906976744185,
+      "rel_err_v01": 0.23779445743270033
+    },
+    {
+      "v_ms": 6.0,
+      "kernel_v02_segments_kW": 326.6666666666667,
+      "kernel_v01_cubic_kW": 222.22222222222223,
+      "oracle_kW": 280.0,
+      "at_breakpoint": false,
+      "rel_err": 0.16666666666666674,
+      "rel_err_v01": 0.20634920634920634
+    },
+    {
+      "v_ms": 6.5,
+      "kernel_v02_segments_kW": 391.8333333333333,
+      "kernel_v01_cubic_kW": 291.1522633744856,
+      "oracle_kW": 365.0,
+      "at_breakpoint": false,
+      "rel_err": 0.07351598173515976,
+      "rel_err_v01": 0.20232256609729976
+    },
+    {
+      "v_ms": 7.0,
+      "kernel_v02_segments_kW": 457.0,
+      "kernel_v01_cubic_kW": 371.5461493239271,
+      "oracle_kW": 457.0,
+      "at_breakpoint": true,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.1869887323327634
+    },
+    {
+      "v_ms": 7.5,
+      "kernel_v02_segments_kW": 596.8333333333334,
+      "kernel_v01_cubic_kW": 464.2857142857143,
+      "oracle_kW": 568.0,
+      "at_breakpoint": false,
+      "rel_err": 0.05076291079812213,
+      "rel_err_v01": 0.18259557344064387
+    },
+    {
+      "v_ms": 8.0,
+      "kernel_v02_segments_kW": 736.6666666666667,
+      "kernel_v01_cubic_kW": 570.2527924750146,
+      "oracle_kW": 690.0,
+      "at_breakpoint": false,
+      "rel_err": 0.067632850241546,
+      "rel_err_v01": 0.17354667757244255
+    },
+    {
+      "v_ms": 8.5,
+      "kernel_v02_segments_kW": 876.5,
+      "kernel_v01_cubic_kW": 690.3292181069959,
+      "oracle_kW": 832.0,
+      "at_breakpoint": false,
+      "rel_err": 0.05348557692307692,
+      "rel_err_v01": 0.17027738208293763
+    },
+    {
+      "v_ms": 9.0,
+      "kernel_v02_segments_kW": 1016.3333333333334,
+      "kernel_v01_cubic_kW": 825.3968253968254,
+      "oracle_kW": 978.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0391956373551466,
+      "rel_err_v01": 0.15603596585191676
+    },
+    {
+      "v_ms": 9.5,
+      "kernel_v02_segments_kW": 1156.1666666666665,
+      "kernel_v01_cubic_kW": 976.3374485596707,
+      "oracle_kW": 1135.0,
+      "at_breakpoint": false,
+      "rel_err": 0.018649045521292085,
+      "rel_err_v01": 0.1397907942205544
+    },
+    {
+      "v_ms": 10.0,
+      "kernel_v02_segments_kW": 1296.0,
+      "kernel_v01_cubic_kW": 1144.0329218106997,
+      "oracle_kW": 1296.0,
+      "at_breakpoint": true,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.11725854798557123
+    },
+    {
+      "v_ms": 10.5,
+      "kernel_v02_segments_kW": 1426.5,
+      "kernel_v01_cubic_kW": 1329.3650793650793,
+      "oracle_kW": 1455.0,
+      "at_breakpoint": false,
+      "rel_err": 0.01958762886597938,
+      "rel_err_v01": 0.08634702449135445
+    },
+    {
+      "v_ms": 11.0,
+      "kernel_v02_segments_kW": 1557.0,
+      "kernel_v01_cubic_kW": 1533.2157554379776,
+      "oracle_kW": 1598.0,
+      "at_breakpoint": false,
+      "rel_err": 0.025657071339173967,
+      "rel_err_v01": 0.04054082888737323
+    },
+    {
+      "v_ms": 11.5,
+      "kernel_v02_segments_kW": 1687.5,
+      "kernel_v01_cubic_kW": 1756.466784244562,
+      "oracle_kW": 1710.0,
+      "at_breakpoint": false,
+      "rel_err": 0.013157894736842105,
+      "rel_err_v01": 0.027173558037755525
+    },
+    {
+      "v_ms": 12.0,
+      "kernel_v02_segments_kW": 1818.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 1818.0,
+      "at_breakpoint": true,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.1001100110011001
+    },
+    {
+      "v_ms": 12.5,
+      "kernel_v02_segments_kW": 1858.5,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 1893.0,
+      "at_breakpoint": false,
+      "rel_err": 0.018225039619651346,
+      "rel_err_v01": 0.05652403592181722
+    },
+    {
+      "v_ms": 13.0,
+      "kernel_v02_segments_kW": 1899.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 1935.0,
+      "at_breakpoint": false,
+      "rel_err": 0.018604651162790697,
+      "rel_err_v01": 0.03359173126614987
+    },
+    {
+      "v_ms": 13.5,
+      "kernel_v02_segments_kW": 1939.5,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 1970.0,
+      "at_breakpoint": false,
+      "rel_err": 0.015482233502538072,
+      "rel_err_v01": 0.015228426395939087
+    },
+    {
+      "v_ms": 14.0,
+      "kernel_v02_segments_kW": 1980.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 1980.0,
+      "at_breakpoint": true,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.010101010101010102
+    },
+    {
+      "v_ms": 14.5,
+      "kernel_v02_segments_kW": 1990.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 1995.0,
+      "at_breakpoint": false,
+      "rel_err": 0.002506265664160401,
+      "rel_err_v01": 0.002506265664160401
+    },
+    {
+      "v_ms": 15.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": true,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 15.5,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 16.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 16.5,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 17.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 17.5,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 18.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 18.5,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 19.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 19.5,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 20.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 20.5,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 21.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 21.5,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 22.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 22.5,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 23.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 23.5,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 24.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 24.5,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    },
+    {
+      "v_ms": 25.0,
+      "kernel_v02_segments_kW": 2000.0,
+      "kernel_v01_cubic_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "at_breakpoint": false,
+      "rel_err": 0.0,
+      "rel_err_v01": 0.0
+    }
+  ]
+}

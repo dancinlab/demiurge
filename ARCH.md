@@ -1192,7 +1192,7 @@ historical* 표면 — 현 ground truth 는 §11.4 + §11.5 의 G1–G38 Round 1
 > 제거 `ab0724c` 이후 · G34 의 constitution R1 → `@D d6` migration
 > `e458d3c` 의 successor] 의 3-carrier audit COMPLETE PATCH update ·
 > code 0). **G39–G42 라운드 10 (`κ-71 fourth-cell measurement round`
-> — R10 2/4 LANDED 2026-05-22 · G39 + G40 `[x]` · G41/G42 `[ ]`)** 는
+> — R10 4/4 LANDED 2026-05-22 · G39 + G40 `[x]` · G41 D121→D122 same-day kernel-refinement flip · G42 4/4 proper closure)** 는
 > κ-70 R9 closure entry 의 'next horizon (κ-71+)' scope 를 4 placeholder
 > G-item + G39 candidate-research note (`inbox/notes/2026-05-22-k71-
 > horizon-candidate-research.md` · 3 finalist Energy/wind · Bio/ECG ·
@@ -1208,10 +1208,13 @@ historical* 표면 — 현 ground truth 는 §11.4 + §11.5 의 G1–G38 Round 1
 > 신설 또는 producer-side 새 sub-cell 경로 신설 cost 를 짐 · Energy/
 > wind 는 그 위 brand-new substrate kernel (substrate floor ZERO)
 > 까지 신설 = G41 first-flip 이 κ-68..κ-70 어느 것보다 substrate-side
-> 1-step 더 무거움 (§11.6). **κ-71 R10 closed honest 3/4 + G41 `[~]`
-> PARTIAL** (D121 · mean_rel_err=0.0708 over [4,25] m/s 43-bin grid >
-> D120 ≤0.05 PASS · 5 of 6 components LANDED · `absorbed=true` flip
-> DEFERRED · R4 invariant respected · NOT a 4/4 closure). **G43–G46
+> 1-step 더 무거움 (§11.6). **κ-71 R10 closed 4/4 LANDED via same-day
+> D121→D122 kernel refinement** (D121 honest gap baseline ·
+> mean_rel_err=0.0708 v0.1.0 cubic-interp · D122 kernel refinement v0.2.0
+> `power_curve_segments` 6-pt sparse-fit · mean_rel_err=0.0298 PASS ·
+> 58% mean-error reduction · D120 ≤0.05 criterion unchanged ·
+> PREDICTION-shape preserved · R4 invariant respected · all 6 of 6 G41
+> components LANDED · 4/4 proper closure). **G43–G46
 > 라운드 11 (`κ-72 R11 horizon · scaffold 2026-05-22 · all `[ ]`)** 는
 > κ-71 R10 closure entry 의 "next horizon (κ-72+)" 약속 이행 — 3
 > framing 후보 (A=G41 resumption · B=5th cell · C=hybrid) 의 candidate-
@@ -2571,7 +2574,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
 
 ### 11.6 G39–G42 implementation checklist (κ-71 R10 · 4th cell measurement round · scaffold)
 
-**라운드 10 — κ-71 fourth-cell measured-oracle round (R10 2/4 LANDED · G40 cell picked)**
+**라운드 10 — κ-71 fourth-cell measured-oracle round (R10 4/4 LANDED · G41 D121→D122 same-day flip)**
 
 > **R10 status (2026-05-22)**: G39 candidate-research note LANDED
 > (`cdc418e` scaffold) · **G40 cell pick LANDED · design.md D120**
@@ -2764,30 +2767,35 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     (D119) 의 직접 mirror — schema cost (새 record type · κ-71 은
     1-field 확장 후보 없음) + substrate-side cost (Energy/wind 채택
     시 `power_curve_kernel.hexa` 선행 land) 는 G40 picked cell 에 의존.
-  - **exit criterion** (G29 / G33 / G37 동형 · 5 가지 · 모두 [ ]):
-    1. [ ] 4th cell `absorbed=true` flip + rationale D-block (D121
-       자연 순서 · D120 G40 mirror) 박제 · `mean_rel_err` honestly
-       disclosed (D110 G29 marginal 0.04988 prediction · D117 G33
-       comfortable 8.4e-07 numeric-equivalence · D119 G37 2.21e-06
-       numeric-equivalence · 본 D121 의 PASS shape = G40 picked cell +
-       oracle 선택에 의존 [Energy/wind = prediction shape D110 mirror ·
-       Bio option-b = discrete-integer-exact rel_err=0 새 shape ·
-       Chem = numeric-equivalence D119 mirror])
-    2. [ ] `MeasuredOracleRef` field 가 picked record type에 land
-       (schema generalization audit · **4th record type** · κ-70 G37
-       D119 의 3rd record-type 위 확장)
-    3. [ ] **XCTest invariant 가 새 cell 에 auto-extend** — invariant
+  - **exit criterion** (G29 / G33 / G37 동형 · 5 가지 · **모두 [x] · D122 same-day flip**):
+    1. [x] 4th cell `absorbed=true` flip + rationale D-block (D121 honest
+       gap baseline + **D122 kernel-refinement flip** · D120 G40 mirror
+       contract preserved) 박제 · `mean_rel_err` honestly disclosed
+       (D110 G29 marginal 0.04988 prediction · D117 G33 comfortable
+       8.4e-07 numeric-equivalence · D119 G37 2.21e-06 numeric-
+       equivalence · **D122 0.0298 prediction** PASS via
+       `power_curve_segments` v0.2.0 sparse-fit · PREDICTION-shape D110
+       mirror preserved · κ-69/70 numeric-equivalence trap avoided)
+    2. [x] `MeasuredOracleRef` field 가 picked record type에 land
+       (schema generalization audit · **4th record type
+       EnergyWindVerifyRecord** · κ-70 G37 D119 의 3rd record-type
+       위 확장)
+    3. [x] **XCTest invariant 가 새 cell 에 auto-extend** — invariant
        helper code 변경 0 · `invariantHolds(absorbed, measuredOracle,
        isIllustrativePhysics)` shape 의 record-type-agnostic 설계의
        **4th instance verification** (Energy/solar 1st · Aura/EEG 2nd ·
-       Ufo/plasma 3rd · κ-71 cell 4th · 동일 predicate · helper edit
-       0). 3rd 가 이미 strongest evidence — 4th 는 redundant
-       confirmation (NEW DOMAIN 또는 prediction re-elevate 가 주 가치)
-    4. [ ] 다른 cell record 회귀 0 — full cockpit test suite PASS
+       Ufo/plasma 3rd · κ-71 Energy/wind 4th · 동일 predicate · helper
+       edit 0 · D122 후 absorbed=true boundary 에서도 재확인). 3rd 가
+       이미 strongest evidence — **4th 는 BOTH absorbed=false (D121)
+       AND absorbed=true (D122) boundary 에서 confirmation = strongest
+       across-boundary evidence yet**
+    4. [x] 다른 cell record 회귀 0 — full cockpit test suite PASS
        (Energy/solar G29 · Aura/EEG G33 · Ufo/plasma G37 fixture
-       path 영향 0)
-    5. [ ] design.md D121 + PLAN.md κ-71 G41 entry + ARCH §11.6 G41
-       `[x]` flip + NEXT_SESSIONS pickup closure marker
+       path 영향 0 · D121 absorbed=false fixture + D122 absorbed=true
+       fixture coexist)
+    5. [x] design.md D121 + **D122** + PLAN.md κ-71 G41 entry + ARCH
+       §11.6 G41 `[~]` → `[x]` flip + κ-71 R10 4/4 proper closure
+       (G42 row PATCH 3/4 → 4/4)
   - **deps**: G40 (decision · D120) · G28 (schema 재사용) · G30 Stage 1
     (invariant pattern) · D80 / D86 / D103 / D106 / D116 floors ·
     (#1 Energy/wind 채택 시) `power_curve_kernel.hexa` substrate land
@@ -2796,20 +2804,22 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     friction] 보다 큼 · Energy/wind 채택 시 substrate kernel 선행
     cycle 포함)
 
-- [x] **G42.** κ-71 R10 closure 박제 (**3/4 LANDED + G41 `[~]` PARTIAL** ·
-    κ-70 R9 closure entry mirror with honest partial closure)
-    — **LANDED 2026-05-22**: governance row update `project.tape @D d6`
-    PATCH (3-carrier → **4-carrier audit COMPLETE** · EnergyWindVerify
-    Record G41/D121 added as 4th carrier · invariant audit LANDED ·
-    flip DEFERRED on honest D120 gap mean_rel_err=0.0708). κ-71 R10
-    closure narrative: G39 ✅ + G40 ✅ + G41 `[~]` (5 of 6 components
-    LANDED · absorbed flip DEFERRED awaiting kernel refinement OR new
-    oracle-criterion D-block) + G42 ✅ governance. **Honest 3/4 + G41
-    PARTIAL · NOT 4/4** — `project.tape @D d6` "edit-in-place except
-    for PATCH wording" self-rule respected. hexa-lang side PR #320
-    (producer) OPEN pending hexa-lang bootstrap CI re-stabilization
-    (chronic 11-silent-wipe pattern · orthogonal to G41/G42 governance
-    surface).
+- [x] **G42.** κ-71 R10 closure 박제 (initial PATCH **3/4 LANDED + G41
+    `[~]` PARTIAL** · κ-70 R9 closure entry mirror · **then upgraded
+    same-day to 4/4 LANDED via D122 kernel refinement**)
+    — **LANDED 2026-05-22 (initial 3/4) → 4/4 PROPER CLOSURE same-day**:
+    governance row update `project.tape @D d6` PATCH (3-carrier →
+    **4-carrier audit COMPLETE** · EnergyWindVerifyRecord G41 added
+    as 4th carrier). κ-71 R10 closure narrative (final): G39 ✅ + G40 ✅
+    + **G41 [x] LANDED** (6 of 6 components · D122 kernel-refinement
+    flip · mean_rel_err 0.0708 → 0.0298 PASS) + G42 ✅ governance.
+    **4/4 LANDED** — initial 3/4 honest-PARTIAL framing superseded by
+    same-day D122 Path (i) execution. hexa-lang side PR #320
+    (v0.1.0 producer · D121 audit-trail) + PR #325 (v0.2.0 kernel
+    refinement + producer · D122 flip) — both OPEN pending hexa-lang
+    bootstrap CI re-stabilization (chronic 11-silent-wipe pattern ·
+    orthogonal to G41/G42 governance surface). `project.tape @D d6`
+    "edit-in-place except for PATCH wording" self-rule respected.
   - **scope**: κ-70 R9 4/4 CLOSURE entry (PLAN.md 2026-05-22 ·
     `## 진행 로그`) 의 동형 mirror — κ-71 R10 closure 박제. G39..G41
     누적 LANDED → closure entry. R9 의 "next horizon (κ-71+)" 4 후보
