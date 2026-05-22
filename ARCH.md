@@ -2773,8 +2773,20 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     friction] 보다 큼 · Energy/wind 채택 시 substrate kernel 선행
     cycle 포함)
 
-- [ ] **G42.** κ-71 R10 closure 박제 (4/4 LANDED · κ-70 R9 closure
-    entry mirror)
+- [x] **G42.** κ-71 R10 closure 박제 (**3/4 LANDED + G41 `[~]` PARTIAL** ·
+    κ-70 R9 closure entry mirror with honest partial closure)
+    — **LANDED 2026-05-22**: governance row update `project.tape @D d6`
+    PATCH (3-carrier → **4-carrier audit COMPLETE** · EnergyWindVerify
+    Record G41/D121 added as 4th carrier · invariant audit LANDED ·
+    flip DEFERRED on honest D120 gap mean_rel_err=0.0708). κ-71 R10
+    closure narrative: G39 ✅ + G40 ✅ + G41 `[~]` (5 of 6 components
+    LANDED · absorbed flip DEFERRED awaiting kernel refinement OR new
+    oracle-criterion D-block) + G42 ✅ governance. **Honest 3/4 + G41
+    PARTIAL · NOT 4/4** — `project.tape @D d6` "edit-in-place except
+    for PATCH wording" self-rule respected. hexa-lang side PR #320
+    (producer) OPEN pending hexa-lang bootstrap CI re-stabilization
+    (chronic 11-silent-wipe pattern · orthogonal to G41/G42 governance
+    surface).
   - **scope**: κ-70 R9 4/4 CLOSURE entry (PLAN.md 2026-05-22 ·
     `## 진행 로그`) 의 동형 mirror — κ-71 R10 closure 박제. G39..G41
     누적 LANDED → closure entry. R9 의 "next horizon (κ-71+)" 4 후보
