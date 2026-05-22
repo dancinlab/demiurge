@@ -1064,7 +1064,8 @@ novel_material_funnel.py <element_pool> <stoichiometry_constraints> <out_dir>
 
 ## Log
 
-- **2026-05-22 KST** — **노벨 후보 3-트랙 발사 + 외부 클라우드 sizing 교훈** (§9.14 신설 보류, project.tape d8 v1.4). 그룹-16 H₃X 시리즈 동시 발사:
+- **2026-05-22 KST** — **H₃X 13-후보 Group 14-17 Vast.ai 병렬 screen 발사**. Tier A 직접 확장 — 그룹별 H₃X 전체 sweep: H₃O/F/N/C (light X) · H₃P/Si/Cl/As/Ge/Br (medium) · H₃Sb/I/Bi (heavy). 각자 별도 Vast 인스턴스 (RTX 3090 80 vCPU $0.135/h, 13개 × 1.5h ≈ **$2.6 total**). Pipeline 동일: 4-atom Im-3m + 24³-k + 6×6×6-q (H₃S 96% 검증 baseline). orchestrator `/tmp/h3x_orchestrator.py` 병렬 임대→SSH→QE 설치→inputs scp→detached launch. SSH key `demiurge-rtsc-2026-05-22` (Vast key id 862004). Vast.ai 운영 교훈: ① `verified=true` server-side filter 0 matches → 제거 필요; ② `cpu_ram>=N` 서버-side filter 작동 안함 → client-side filter; ③ `--allow-run-as-root` + `OMP_NUM_THREADS=1` MPI×OMP fork-limit 회피 필수; ④ 실제 key 이름 `vast.ssh_private` (오타 `vast.ssh_priv` 빈 출력); ⑤ `/Users/ghost/.ssh/id_vast_anima` 디스크 priv도 가용. 13 candidates 결과 ~50min 후 일괄 수집. R4: 전 산출 absorbed=false · gate_type=simulation-only-prediction.
+- **2026-05-22 KST** — **노벨 후보 3-트랙 발사 (pool) + 외부 클라우드 sizing 교훈** (§9.14 신설 보류, project.tape d8 v1.4). 그룹-16 H₃X 시리즈 동시 발사:
   - **H₃Se** (ubu-1, Se+3H Im-3m 4-atom, a≈2.95Å) — measured zero (novel for experiment) · 6×6×6 q DFT 진행 중
   - **H₃Te** (ubu-2, Te+3H, a≈3.1Å · Te pseudo dn → n 변형으로 정상화) — 진행 중
   - **H₃Po** (ubu-1 chained · Po dn USPP scalar-relativistic, ecut 70/700) — H₃Se 완료 후 자동 발사 (group-16 시리즈 완성, 미발표 prediction)
