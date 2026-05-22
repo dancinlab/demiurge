@@ -350,7 +350,6 @@ If any future record (NUCLEAR or hexa-lang stdlib/nuclear adapter) ever surfaces
 
 ---
 
-## Log
+---
 
-- **2026-05-22 KST** — **NUCLEAR.md neu**. 5-gate nuclear discovery sim stack — sibling of RTSC.md §9 (elemental discovery vs compositional discovery, same R4 invariant family). Sections: §1 goal · §2 5-gate taxonomy (a)(b)(c) sim · (d)(e) wet-lab · §3 honest invariants (R4 carry over · wet-lab dependency permanent · half-life cross-stack caveat · citation rigor) · §4 cohort spec N6-N10 · §5 external library survey (HFBTHO · UNEDF · BSk · FRDM · KSHELL / BIGSTICK / NuShellX · NCSM/CCSD/IM-SRG) · §6 Phase 1 land target (N6 HFBTHO wrap-as-is first) · §7 R4 invariant block (5-step promotion path · all five out-of-scope) · §8 citations + URLs (9 arxiv IDs + 11 library / data corpora). Honest: every record carries `gate_type=nuclear-novel-discovery-simulation` + `absorbed=false 영구`. Sim PASS = wet-lab accelerator priority hint, NEVER discovery claim.
-- **2026-05-22 KST** — **§6.3 Phase progress 신설** + **Phase 2 stabilization audit LANDED**. 5-baseline (²³⁸U · ²⁰⁸Pb · ²⁹⁴Og · ²⁹⁹Uue · ⁸B) × 2-cohort (N6 · N7) = 10-cell matrix. 10/10 PASS · 0 absorbed=true · 8 install-gated + 2 simulation (²³⁸U log T=17.45±0.21 dex vs obs 17.15 = +0.30 deviation honest at low-Q_α calibration edge · ²⁹⁴Og log T=-2.93±0.22 dex vs obs -3.15 = anchor reproduced from Phase 1). R4 invariant intact. Brown 1992 / SemFIS-2 third-formula re-derivation status: **honest-skipped** per §3.3 "Don't invent" rule — Phase 3+ may substitute Denisov-Khudenko 2009 with verbatim coefficients. Phase 3 microkernel candidates identified (preliminary): NC1 (`_viola_seaborg_log10_t`) · NC2 (`_royer_log10_t`) · NC3 (`_consensus`) all in N7; N6 = 0 candidates (HFB SCF anti-pattern carve-out per §3.3). Audit note: `inbox/notes/2026-05-22-nuclear-9-phase2-stabilization.md`.
+Historical log entries are in [`./NUCLEAR.log.md`](./NUCLEAR.log.md).
