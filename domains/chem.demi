@@ -1,0 +1,182 @@
+# chem.demi — verb-cell manifest for the chem (chemistry / reactions /
+# catalysis) domain (D81 신규 도메인 · 2026-05-20).
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("chem", verb)
+# (except chem+verify → runChemVerify() anima-physics Langevin scan, D74).
+#
+# UNUSUAL CASE (mirrors matter.demi): chem has NO stdlib/chem/ directory
+# in hexa-lang yet — the molecular-scale substrate SSOT is PLANNED at the
+# sibling repo `~/core/hexa-chem/` (D17 g_stdlib_ownership · molecular-
+# scale substrate too large for one stdlib subtree). As of this manifest
+# `~/core/hexa-chem/` does NOT exist on disk (empty / un-scaffolded per
+# audit), and `stdlib/chem/<verb>.py` is 미작성, so every cell honest-skips
+# via cellrun rc=2 (script missing). A seed kernel DOES exist —
+# `stdlib/kernels/chem/arrhenius_kernel.hexa` (6/6 test PASS, 2026-05-20) —
+# but it is not yet a cellrun-compatible `<verb>.py` adapter.
+#
+# Format: cellrun.hexa Phase A dialect — see firmware.demi / matter.demi
+# header for the spec. Required keys per cell: substrate, script,
+# record_kind, output_dir, gate_default, absorbed_default. Script paths
+# are RELATIVE to ~/core/hexa-lang/ (the hexa_lang_root tunable,
+# env-overridable via HEXA_CELLRUN_HEXA_LANG_ROOT).
+#
+# In-silico / wet-lab HYBRID (option C · mirrors the molecular-tier
+# pattern): the in-silico cells (specify · structure · design · analyze)
+# target open cheminformatics + ab-initio QM tooling; the wet-lab cells
+# (synthesize · verify · handoff) cross the project.tape @D d1 wet-lab
+# boundary — the lab-bench experiment itself is the legitimate `not yet`,
+# so these stay honest-skip until an accredited-facility record path lands.
+#
+# Citations (anchored, not repeated per-cell — see domains/chem.md):
+#   - RDKit (BSD-3) — cheminformatics · retrosynthesis dendrogram
+#   - AiZynthFinder (MIT) — retrosynthesis route search
+#   - Psi4 (LGPL) — ab-initio QM thermodynamics · xTB (LGPL) semiempirical
+#   - Cantera (BSD) — reaction kinetics · OpenMM — energetics confirmation
+#   - ASE (LGPL) — atomistic simulation environment (calculator glue)
+#   - hexa-chem sibling repo SSOT (~/core/hexa-chem/, PLANNED · D17)
+#
+# Domain caveat (applies to every cell):
+# chem = consumer-pointer only (D17) once hexa-chem lands; until then a
+# stdlib/chem/<verb>.py shim (forwarding to RDKit / Psi4 / xTB / Cantera /
+# ASE) is the migration path. NO Swift simulation of the substrate is
+# permitted. Every cell defaults GATE_OPEN / absorbed=false (g3): open QM
+# + cheminformatics on hermetic SMILES templates is NOT a bench-validated
+# turnover / yield measurement. Stage 4 absorbed=true gating belongs to a
+# future hexa-chem aggregator + accredited wet-lab record; demiurge
+# witnesses the PASS, never upgrades the claim.
+
+# --- UNWIRED (in-silico · RDKit / IUPAC spec skeleton): specify -------------
+# Phase A cellrun.hexa: no stdlib/chem/specify.py exists → rc=2 honest-skip.
+# Future port: thin Python shim under stdlib/chem/specify.py forwarding to
+# RDKit SMILES/IUPAC validation + REACH/GHS safety-datasheet skeleton, OR a
+# sibling-repo dispatch into ~/core/hexa-chem/ once that repo is scaffolded.
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/chem/specify.py
+record_kind       = chem_specify_record
+output_dir        = exports/chem/specify
+required_deps     = python3, rdkit
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "chem + specify pending — target-molecule spec skeleton (SMILES · IUPAC nomenclature · REACH / GHS safety datasheet) producer 미작성.",
+  "RDKit (BSD-3) IS the validator candidate; spec meta != a measured reaction outcome.",
+  "hexa-chem sibling repo IS the planned SSOT (D17); ~/core/hexa-chem/ empty per audit → cellrun rc=2 honest-skip until adapter script lands.",
+  "measurement_gate = GATE_OPEN permanently — spec skeleton is not an absorption claim (g3).",
+]
+
+# --- UNWIRED (in-silico · RDKit / AiZynthFinder retrosynthesis): structure --
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/chem/structure.py
+record_kind       = chem_structure_record
+output_dir        = exports/chem/structure
+required_deps     = python3, rdkit, aizynthfinder
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "chem + structure pending — reaction-tree / retrosynthesis dendrogram producer 미작성.",
+  "RDKit + AiZynthFinder (MIT) route search candidate; retrosynthesis graph is open-database meta, NOT a real synthesized-yield measurement.",
+  "reuses stdlib/{mol,crystal}/ from matter at the reaction-environment chain-stage (chem.md §0).",
+  "measurement_gate = GATE_OPEN permanently — retrosynthesis graph is not an absorption claim (g3).",
+]
+
+# --- UNWIRED (in-silico · RDKit / AiZynthFinder design surface): design ------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/chem/design.py
+record_kind       = chem_design_record
+output_dir        = exports/chem/design
+required_deps     = python3, rdkit
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "chem + design pending — synthesis-route + catalyst active-site design producer 미작성.",
+  "RDKit / OpenBabel file-format glue + AiZynthFinder route diff candidate; catalyst design-space exploration is open-tool meta, NOT a bench-validated active-site.",
+  "biggest open gap (chem.md §4): experimentally-validated turnover prediction lives in commercial pipelines — open path reaches mid-fidelity only.",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- UNWIRED (in-silico · Psi4 / xTB / Cantera / ASE QM + kinetics): analyze -
+# In-silico ab-initio QM + kinetics is the heaviest in-silico cell. Future
+# port: stdlib/chem/analyze.py shim forwarding to Psi4 (thermodynamics) /
+# xTB (semiempirical screen) / Cantera (kinetics) / ASE (calculator glue).
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/chem/analyze.py
+record_kind       = chem_analyze_record
+output_dir        = exports/chem/analyze
+required_deps     = python3, psi4, xtb, cantera, ase
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "chem + analyze pending — ab-initio QM (Psi4 LGPL · thermo) + xTB (semiempirical screen) + Cantera (BSD · kinetics) + ASE (calculator glue) producer 미작성.",
+  "QM energetics on hermetic SMILES geometry is open-tool computed-projection, NOT a measured reaction rate / selectivity.",
+  "kernels/chem_qm/ promotion candidate at 2nd consumer per D72 (e.g. bio molecular dynamics); seed stdlib/kernels/chem/arrhenius_kernel.hexa already exists (6/6 PASS).",
+  "absorbed=true requires accredited wet-lab kinetics / selectivity measurement — not in-silico QM (g3 · D106 illustrative-vs-measured).",
+]
+
+# --- UNWIRED (WET-LAB BOUNDARY · @D d1): synthesize -------------------------
+# Synthesis = physical lab-bench reaction. project.tape @D d1: the wet-lab
+# experiment itself is the legitimate `not yet` boundary. The in-silico
+# protocol-authoring scaffold (lab protocol .md emit) MAY land under
+# stdlib/chem/synthesize.py, but the absorption claim stays GATE_OPEN until
+# an accredited-facility synthesis record exists.
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/chem/synthesize.py
+record_kind       = chem_synthesize_record
+output_dir        = exports/chem/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "chem + synthesize pending — lab-protocol authoring + reaction-monitoring skeleton producer 미작성.",
+  "WET-LAB BOUNDARY (project.tape @D d1): real synthesis = bench reactor + reagent handling + accredited facility — the physical experiment is the legitimate `not yet`.",
+  "in-silico protocol .md emit may land as scaffold, but absorbed=true requires an accredited-facility synthesis record, not an authored protocol (g3).",
+  "measurement_gate = GATE_OPEN permanently — protocol skeleton is not an absorption claim (g3).",
+]
+
+# --- UNWIRED (WET-LAB BOUNDARY · @D d1): verify -----------------------------
+# NOTE: chem+verify also has a dedicated runChemVerify() route in
+# ActionDispatch (D74 · anima-physics Langevin consciousness-analog scan,
+# GATE_OPEN / absorbed=false always — NOT real chemistry). The CLI verb
+# `verify chem` reaches THAT route, not this cellrun cell. This cell
+# documents the substrate for forward-compat (CLI bypass via
+# CellrunDispatch.runRaw) only.
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/chem/verify.py
+record_kind       = chem_verify_record
+output_dir        = exports/chem/verify
+required_deps     = python3, openmm, rdkit
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "chem + verify pending — OpenMM energy-convergence + RDKit structure confirmation producer 미작성 (in-silico confirmation slice).",
+  "WET-LAB BOUNDARY (project.tape @D d1): real verify = measured yield / selectivity / turnover from an accredited GMP/GLP bench — the physical assay is the legitimate `not yet`.",
+  "CLI `verify chem` routes to runChemVerify() (D74 anima-physics Langevin, consciousness-analog · NOT real chemistry · GATE_OPEN always) — this cellrun cell is forward-compat only.",
+  "absorbed=true requires accredited wet-lab measurement, not in-silico energetics (g3 · D106 illustrative-vs-measured).",
+]
+
+# --- UNWIRED (WET-LAB BOUNDARY · @D d1): handoff ----------------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/chem/handoff.py
+record_kind       = chem_handoff_record
+output_dir        = exports/chem/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "chem + handoff pending — regulatory dossier (REACH / TSCA) + patent-filing bundle producer 미작성.",
+  "WET-LAB BOUNDARY (project.tape @D d1): real handoff = regulatory submission backed by accredited bench data — the experiment-of-record is the legitimate `not yet`.",
+  "firmware/handoff.py 패턴 reuse — SBOM + sign-probe + dossier + audit evidence.",
+  "measurement_gate = GATE_OPEN permanently — dossier skeleton is not an absorption claim (g3).",
+]
