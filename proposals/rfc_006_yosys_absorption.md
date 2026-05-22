@@ -191,15 +191,36 @@ output `sky130_fd_sc_hd__fa_1` cell — substrate ABC version drift
 (ubu-2 yosys-abc 0.65 stricter than mini standalone abc).
 
 ### Outstanding work to flip §5 gate
-1. T79c measurement on mini (bg-dispatched 2026-05-22 21:18) — does
-   it close the 3.2 k µm² `out_valid` cone collapse?
-2. If not — read_verilog comb-always SSA for-body dyn-idx READ
-   lowering (out_ready[grant_out] mux explicit fire)
-3. Optional follow-on (cross-host parity): ABC `fa_1` multi-output
-   `.gate` emit split for yosys-abc 0.65 compat
-4. On §5 d4 + d6 ±5 % PASS: gate_record.hexa verdict → `Yosys
-   absorbed=true` + this doc §10 flip + hexa-lang/compiler/PLAN.md
-   §5 status
+1. **Measurement-host regression after T79c (2026-05-22)**:
+   `gate_record` process on mini (16 GB physical) jetsam-killed at
+   ~50 GB compressed VM, before reaching `:techmap`. Kernel evidence
+   from 5 kills in 10 min (`memorystatus: killing largest compressed
+   process … 49,818 MB`). Selftest 87/87 PASS — frontend integrity
+   intact; the route_xy inline (`80839dd7`) + T79c post-paren
+   bracket-select (`7f2d897e`) expanded the SSA / multi-driver graph
+   beyond mini's headroom. Suspected OOM site:
+   `pass_clean_multidriver` accumulation (`pass_proc_mux` →
+   `pass_clean_multidriver` window). **mini cannot remeasure the
+   integration branch HEAD until this is profiled/fixed.**
+2. **ubu-2 Linux x86_64 host** (30 GB + 39 GB swap): self-host
+   substrate landed (§10 Substrate above) but the build/ tree still
+   holds **arm64 Mach-O** `hexa_cli_driver`. A Linux ELF
+   `hexa_cli_driver` must be cross-built on ubu-2 (separate cycle)
+   to make ubu-2 a usable §5 measurement host post-T79c. Pipeline
+   reaches `dfflibmap` on ubu-2 today; ABC `fa_1` multi-output
+   strict-parse remains the residual cross-host blocker.
+3. **Post-host-recovery work**:
+   - Profile `pass_clean_multidriver` (O(n²) → O(n) accumulation
+     candidate, mirroring `pass_cut_and_remap` `7691133b` fix)
+   - Re-measure §5 d4 + d6 on a working host
+   - read_verilog comb-always SSA for-body dyn-idx READ lowering
+     (out_ready[grant_out] mux explicit fire) **if** T79c +
+     post-paren didn't close it
+   - ABC `fa_1` multi-output `.gate` emit split (yosys-abc 0.65
+     compat, ubu-2 cross-host parity)
+4. **On §5 d4 + d6 ±5 % PASS** (gate flip):
+   `gate_record.hexa` verdict → `Yosys absorbed=true`, this doc §10
+   flip, `hexa-lang/compiler/PLAN.md` §5 status flip.
 
 > **g3 honesty (per HANDOFF §4 + AGENTS.tape D15):** Δ 10.07 % is
 > measured-pass-fail, NOT "almost there" hand-waving. The remaining
