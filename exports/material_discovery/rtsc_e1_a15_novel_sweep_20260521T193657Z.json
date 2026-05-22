@@ -1,0 +1,143 @@
+{
+  "domain": "material",
+  "verb": "discover",
+  "kind": "e1_a15_novel_sweep",
+  "stamp": "20260521T193414Z",
+  "producer": "e1_a15_sweep@v1",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": true,
+  "candidate_count_total": 10,
+  "candidate_count_run_ok": 10,
+  "candidate_count_above_RTSC_threshold": 0,
+  "candidate_count_above_HTS_threshold": 0,
+  "candidate_count_above_LTS_threshold": 5,
+  "top_k_ranked": [
+    {
+      "label": "V3Pt",
+      "A": "V",
+      "B": "Pt",
+      "lattice_a": 4.86,
+      "pred_tc_K": 35.99707059982478,
+      "lambda": 0.7208803781959252,
+      "lambda_sigma": 0.4402539169737086,
+      "sigma_over_lambda": 0.6107170208675783,
+      "wall": 115.5575852394104,
+      "record": "/tmp/rtsc_e1_a15_2026-05-22/V3Pt/material_verify_beenet_notebook_20260521T192403Z.json"
+    },
+    {
+      "label": "V3Os",
+      "A": "V",
+      "B": "Os",
+      "lattice_a": 4.74,
+      "pred_tc_K": 16.889763999625586,
+      "lambda": 0.5674109061413727,
+      "lambda_sigma": 0.5338647061148794,
+      "sigma_over_lambda": 0.940878471556669,
+      "wall": 176.43804597854614,
+      "record": "/tmp/rtsc_e1_a15_2026-05-22/V3Os/material_verify_beenet_notebook_20260521T192559Z.json"
+    },
+    {
+      "label": "Cr3Si",
+      "A": "Cr",
+      "B": "Si",
+      "lattice_a": 4.555,
+      "pred_tc_K": 15.479546893975856,
+      "lambda": 0.5296912419202012,
+      "lambda_sigma": 0.6515264734900166,
+      "sigma_over_lambda": 1.2300117916394964,
+      "wall": 104.57942605018616,
+      "record": "/tmp/rtsc_e1_a15_2026-05-22/Cr3Si/material_verify_beenet_notebook_20260521T192855Z.json"
+    },
+    {
+      "label": "Nb3Pd",
+      "A": "Nb",
+      "B": "Pd",
+      "lattice_a": 5.06,
+      "pred_tc_K": 14.474101351614708,
+      "lambda": 0.6057885474325347,
+      "lambda_sigma": 0.6048425172079753,
+      "sigma_over_lambda": 0.9984383491094889,
+      "wall": 56.63306283950806,
+      "record": "/tmp/rtsc_e1_a15_2026-05-22/Nb3Pd/material_verify_beenet_notebook_20260521T191747Z.json"
+    },
+    {
+      "label": "Nb3Ga",
+      "A": "Nb",
+      "B": "Ga",
+      "lattice_a": 5.18,
+      "pred_tc_K": 14.066040110876083,
+      "lambda": 0.5869761953318704,
+      "lambda_sigma": 0.5777574548913943,
+      "sigma_over_lambda": 0.9842945241837893,
+      "wall": 151.79671907424927,
+      "record": "/tmp/rtsc_e1_a15_2026-05-22/Nb3Ga/material_verify_beenet_notebook_20260521T192131Z.json"
+    },
+    {
+      "label": "Nb3Bi",
+      "A": "Nb",
+      "B": "Bi",
+      "lattice_a": 5.32,
+      "pred_tc_K": 5.40871504064551,
+      "lambda": 0.48039774221313203,
+      "lambda_sigma": 0.6322829648444623,
+      "sigma_over_lambda": 1.316165563001221,
+      "wall": 89.39540600776672,
+      "record": "/tmp/rtsc_e1_a15_2026-05-22/Nb3Bi/material_verify_beenet_notebook_20260521T192001Z.json"
+    },
+    {
+      "label": "Ta3Sn",
+      "A": "Ta",
+      "B": "Sn",
+      "lattice_a": 5.279,
+      "pred_tc_K": 3.9923212584986647,
+      "lambda": 0.551162773600893,
+      "lambda_sigma": 0.8285094165098975,
+      "sigma_over_lambda": 1.5032027854439898,
+      "wall": 77.3865180015564,
+      "record": "/tmp/rtsc_e1_a15_2026-05-22/Ta3Sn/material_verify_beenet_notebook_20260521T191844Z.json"
+    },
+    {
+      "label": "Ti3Sn",
+      "A": "Ti",
+      "B": "Sn",
+      "lattice_a": 5.93,
+      "pred_tc_K": 2.655880519980753,
+      "lambda": 0.4661514234305356,
+      "lambda_sigma": 0.5072883781983227,
+      "sigma_over_lambda": 1.0882480513843529,
+      "wall": 68.03248071670532,
+      "record": "/tmp/rtsc_e1_a15_2026-05-22/Ti3Sn/material_verify_beenet_notebook_20260521T193039Z.json"
+    },
+    {
+      "label": "Mo3Sn",
+      "A": "Mo",
+      "B": "Sn",
+      "lattice_a": 4.97,
+      "pred_tc_K": 2.036011302600539,
+      "lambda": 0.36205183902952875,
+      "lambda_sigma": 0.37900585745626275,
+      "sigma_over_lambda": 1.0468275992525788,
+      "wall": 77.62622904777527,
+      "record": "/tmp/rtsc_e1_a15_2026-05-22/Mo3Sn/material_verify_beenet_notebook_20260521T193147Z.json"
+    },
+    {
+      "label": "W3Sn",
+      "A": "W",
+      "B": "Sn",
+      "lattice_a": 5.1,
+      "pred_tc_K": 0.4236021931136038,
+      "lambda": 0.33098656825609923,
+      "lambda_sigma": 0.49215841482528533,
+      "sigma_over_lambda": 1.486943767592648,
+      "wall": 68.08565497398376,
+      "record": "/tmp/rtsc_e1_a15_2026-05-22/W3Sn/material_verify_beenet_notebook_20260521T193306Z.json"
+    }
+  ],
+  "scope_caveats": [
+    "(s1) BETE-NET CSO trusted region = multi-atom strong-coupling (A15 confirmed)",
+    "(s2) absorbed=false 영구 (R4)",
+    "(s3) novel A15 후보 = wet-lab priority signal"
+  ]
+}

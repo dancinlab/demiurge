@@ -1,0 +1,47 @@
+{
+  "domain": "material",
+  "verb": "verify",
+  "kind": "alignn_vs_betenet_crossmodel_tc_comparison",
+  "stamp": "20260522T030000Z",
+  "producer": "run_alignn_compare.py@ubu-1 (alignn 2026.4.2 · dgl 2.4.0 · torch 2.4.0+cpu)",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": false,
+  "host": "pool:ubu-1 (Linux x86_64) — heavy ML moved off macOS per disk-pressure lesson",
+  "hypothesis_tested": "ALIGNN jv_supercon_tc_alignn (claimed pressure-aware per D2 survey) predicts high-P hydride Tc better than BETE-NET's 91-97% miss",
+  "verdict": "FALSIFIED for the generic model — jv_supercon_tc_alignn is the AMBIENT JARVIS-DFT supercon model (Choudhary-Garrity ~1058 conventional materials), NOT the arxiv:2312.12694 high-P hydride model. It is even worse on hydrides (caps all at 1.5-2.6 K).",
+  "structures_source": "D1 publication-grade CIFs (Drozdov 2015 H3S · Somayazulu 2019 LaH10 · Troyan 2021 YH6 · Ma 2022 CaH6) — same inputs BETE-NET used in D1",
+  "model_zoo_note": "alignn.pretrained has exactly 4 supercon models, all ambient: jv_supercon_{tc,edos,debye,a2F}_alignn. No hydride/pressure-specific model in pip distribution.",
+  "comparison": [
+    {"name": "Nb3Sn",  "fam": "A15",                "alignn_tc": 9.23, "measured": 18.3, "alignn_rel_err": 49.6, "bete_rel_err": 50.0,   "natoms": 8,  "wall_s": 0.17},
+    {"name": "V3Si",   "fam": "A15",                "alignn_tc": 5.19, "measured": 17.1, "alignn_rel_err": 69.7, "bete_rel_err": 71.3,   "natoms": 8,  "wall_s": 0.17},
+    {"name": "FeSe",   "fam": "Fe-chalcogenide",    "alignn_tc": 4.2,  "measured": 8.0,  "alignn_rel_err": 47.5, "bete_rel_err": 97.0,   "natoms": 4,  "wall_s": 0.18},
+    {"name": "LaFeAsO","fam": "Fe-pnictide doped",  "alignn_tc": 2.72, "measured": 26.0, "alignn_rel_err": 89.5, "bete_rel_err": 79.0,   "natoms": 8,  "wall_s": 0.17},
+    {"name": "LaH10",  "fam": "hydride high-P",     "alignn_tc": 2.64, "measured": 250,  "alignn_rel_err": 98.9, "bete_rel_err": 97.1,   "natoms": 11, "wall_s": 0.18},
+    {"name": "YH6",    "fam": "hydride high-P",     "alignn_tc": 2.3,  "measured": 224,  "alignn_rel_err": 99.0, "bete_rel_err": 94.3,   "natoms": 7,  "wall_s": 0.17},
+    {"name": "H3S",    "fam": "hydride high-P",     "alignn_tc": 2.2,  "measured": 203,  "alignn_rel_err": 98.9, "bete_rel_err": 92.3,   "natoms": 4,  "wall_s": 0.18},
+    {"name": "MgH6",   "fam": "hydride theory-only","alignn_tc": 1.95, "measured": 260,  "alignn_rel_err": 99.3, "bete_rel_err": 80.0,   "natoms": 7,  "wall_s": 0.17},
+    {"name": "CaH6",   "fam": "hydride high-P",     "alignn_tc": 1.51, "measured": 215,  "alignn_rel_err": 99.3, "bete_rel_err": 91.1,   "natoms": 7,  "wall_s": 0.19},
+    {"name": "BaKBiO3","fam": "bismuthate",         "alignn_tc": 1.22, "measured": 30.0, "alignn_rel_err": 95.9, "bete_rel_err": null,   "natoms": 5,  "wall_s": 0.2},
+    {"name": "BaPbO3", "fam": "bismuthate",         "alignn_tc": 0.86, "measured": 0.5,  "alignn_rel_err": 72.0, "bete_rel_err": 2978.0, "natoms": 5,  "wall_s": 0.27}
+  ],
+  "findings": [
+    "CROSS-MODEL CONFIRMATION: two independent architectures (BETE-NET bootstrapped graph-NN ensemble + ALIGNN line-graph NN) BOTH collapse on high-P hydrides (>=98.9% under-prediction). This hardens the limit — ambient-trained ML cannot extrapolate to high-P electron-phonon coupling. Honest confirmation, not the breakthrough.",
+    "ALIGNN is better-behaved than BETE-NET on some OOD: FeSe 47.5% vs 97% · BaPbO3 72% vs 2978% (no extreme blowup). Deterministic, no ensemble sigma.",
+    "A15 family cross-validates between models: Nb3Sn 49.6% vs 50.0% · V3Si 69.7% vs 71.3% — a 2-model consensus funnel for the BETE-NET-trusted family is now possible.",
+    "Speed: ALIGNN 0.17s vs BETE-NET 100-ensemble 25-35s (~150x faster) — enables broad fast screening with BETE-NET reserved for uncertainty quantification."
+  ],
+  "breakthrough_path_refined": [
+    "(1) Obtain the SPECIFIC arxiv:2312.12694 hydride model (figshare/supplementary deposit, 900+ hydrides 0-500 GPa) — NOT jv_supercon_tc_alignn.",
+    "(2) Direct first-principles EPW on pool (ubu-1/ubu-2): QE + Wannier90 + EPW — pressure-aware by construction, no ML training-distribution dependence (MP.md Phase 3). Physics-grounded breakthrough path.",
+    "(3) jv_supercon_a2F_alignn -> Allen-Dynes (sim.hexa) as an alternative Tc route — still ambient-trained, likely same ceiling; test cheaply."
+  ],
+  "r4_invariant": "absorbed=false · gate_type=simulation-only-prediction · domain=material (not rtsc). Pattern 1 avoided (no RTSC absorbed=true claim). Pattern 2 avoided (null result REFINES breakthrough path; goal not abandoned, candidate matrix append-only).",
+  "citations": [
+    "arxiv:2312.12694 — Data-driven Design of High Pressure Hydride Superconductors using DFT and Deep Learning (the ACTUAL pressure-aware model; separate from jv_supercon_tc_alignn)",
+    "Choudhary & Garrity 2022 — JARVIS-DFT supercon Tc (jv_supercon_tc_alignn training set, ambient)",
+    "arxiv:2401.16611 — BETE-NET (Gibson et al., npj Comput. Mater. 11:11, 2025)",
+    "inbox/notes/2026-05-22-d1-d2-breakthrough-finding-pressure-aware-needed.md"
+  ]
+}
