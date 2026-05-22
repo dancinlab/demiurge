@@ -923,6 +923,8 @@ publication-grade CIF (Drozdov 2015 · Somayazulu 2019 · Troyan 2021 · Ma 2022
 
 **R4 보호**: `absorbed=false` · `gate_type=simulation-only-prediction` · `domain=material`. DFT 는 Tier-1 *prediction* (measured oracle 아님) — 돌파 *방향* 실증이지 RTSC absorbed=true 아님. H₃S 자체는 §8.9 gate (b) Tc≥270K + (c) ambient 둘 다 FAIL (203K @ 150 GPa). Pattern 2 honored — goal *전진*, 폐기 아님.
 
+**Convergence 정정 (24³ k · honest)**: 위 λ≈1.15 는 16³ k *broadening-unstable* (under-converged) 값. 24³ k (413 irreducible) 재계산 시 BZ λ 가 **broadening-stable 하게 ≈0.85 로 수렴** (0.847/0.851/0.861 @ 0.020-0.030 Ry · ω_log≈1410 K · Tc_AD≈74 K). 즉 16³ 의 1.15 는 k-grid broadening 민감도가 부풀린 값이고, *k-수렴값은 0.85* — 여전히 ambient ML 0.48 보다 1.8× 높지만 measured 203K 미달. **dominant under-convergence = 2×2×2 q-grid** (3 q 가 phonon BZ 를 심하게 undersample · H₃S λ 의 대부분이 그 밖 q 에 분포). 다음: **4×4×4 q-grid** (24³-k scf 재사용 · task #7 진행) + anharmonicity (Errea 2016 — H₃S harmonic λ≈2.2, dense q 필요). honest: 각 grid densification 의 실측값을 그대로 보고 — 2.0 을 강제하지 않음. DFT 가 ambient ML 보다 더 많은 결합을 잡는다는 *방향* 은 robust, *정량 측정-일치* 는 q-수렴 + 비조화 처리가 필요.
+
 ### 9.10 N5 cohort 신설 — novel-discovery funnel (compositional space exploration)
 
 §9.7 의 N1-N4 는 *KNOWN candidate* (특정 화학식이 주어진 경우) 의 시뮬레이션. **N5 cohort 는 *unknown novel composition* 을 *compositional space 에서 탐색* 하여 RTSC 후보 funnel 을 emit** — Nature `s41524-026-01964-8` 의 1.3M cand → 741 stable funnel 패턴 + arxiv:2511.03865 의 Materials Genome HTS discovery 워크플로 본받음.
