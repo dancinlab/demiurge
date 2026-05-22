@@ -175,10 +175,6 @@ public enum ActionDispatch {
             // task safety constraint + driven by DemiurgeCLI emit-component
             // subcommand. R3: typed ComponentRecord stays.
             return runComponentSynthesize()
-        case (.verify, "chip"):
-            return runChipVerify()
-        case (.synthesize, "chip"):
-            return runChipSynthesize()
         // sscb cells (D111 Phase B · all 7 verbs) — removed in D111 Phase
         // C generalization (2026-05-22). All sscb (verb) routes through
         // the generic `default → CellrunDispatch.run(...)` arm below;
@@ -202,23 +198,11 @@ public enum ActionDispatch {
         // consumes its `injectHexaNativeParity` static (PILOTS.demi pilot-
         // solar wire, not legacy-bridge). All other producers in this
         // 6-domain set deleted in this commit.
-        case (.analyze, "antimatter"):
-            return runAntimatterAnalyze()
-        case (.analyze, "fusion"):
-            return runFusionAnalyze()
         // cern verify/synthesize cells — removed in D111 Phase C
         // cern+component migration (2026-05-22). Both routes go through
         // the generic `default → CellrunDispatch.run(...)` arm below.
         // Manifest: domains/cern.demi. Substrate SSOT:
         // ~/core/hexa-lang/stdlib/cern/{bethe_bloch_stopping,xsuite_optics}.py.
-        case (.analyze, "chip"):
-            return runChipAnalyze()
-        case (.analyze, "space"):
-            return runSpaceAnalyze()
-        case (.analyze, "mobility"):
-            return runMobilityAnalyze()
-        case (.analyze, "aura"):
-            return runAuraAnalyze()
         // (.analyze, "cern") — handled by ProducerRegistry (D74)
         // alternatives pattern. ProducerRegistry early-returns BEFORE
         // this switch executes, so cellrun default arm not reached for
@@ -227,8 +211,6 @@ public enum ActionDispatch {
         // scope (analyze/synthesize/verify) · bot (synthesize) · cases
         // removed in D111 Phase C 6-domain bundle migration · cellrun
         // default arm handles them via domains/{scope,bot}.demi.
-        case (.synthesize, "space"):
-            return runSpaceSynthesize()
         // component verify/analyze cells — removed in D111 Phase C
         // cern+component migration (2026-05-22). Both routes go through
         // the generic `default → CellrunDispatch.run(...)` arm below.
@@ -236,20 +218,8 @@ public enum ActionDispatch {
         // ~/core/hexa-lang/stdlib/component/{gmsh_skfem,calculix}.py.
         // (.synthesize, "component") STAYS hardcoded above (D54 / D114
         // Phase C ComponentEmitter / FreeCADBIPVProducer legacy bridge).
-        case (.analyze, "rtsc"):
-            return runRtscAnalyze()
-        case (.verify, "fusion"):
-            return runFusionVerify()
-        case (.verify, "space"):
-            return runSpaceVerify()
-        case (.verify, "rtsc"):
-            return runRtscVerify()
         case (.verify, "material"):
             return runMaterialVerify()
-        case (.verify, "mobility"):
-            return runMobilityVerify()
-        case (.verify, "antimatter"):
-            return runAntimatterVerify()
         case (.verify, "bio"):
             return runBioVerify()
         case (.verify, "chem"):
@@ -312,56 +282,6 @@ public enum ActionDispatch {
     // legacy path) remains in tree as historical reference until
     // exports-roundtrip parity gate lands.
 
-    /// `antimatter + analyze` engine tool (cohort round, no standalone
-    /// PLAN κ / D-block — post-merge reconstructed) — spawn the
-    /// `particle` (scikit-hep, BSD-3) PDG live-data lookup via
-    /// `~/core/hexa-lang/stdlib/antimatter/pdg_lookup.py` and persist
-    /// a typed `AntimatterRecord` under
-    /// `exports/antimatter/pdg/<stamp>/`. Producer = `particle@<v> (PDG
-    /// live-data lookup)`. FIRST cohort domain that ships D61-compliant-
-    /// from-birth — the Python script lives in hexa-lang/stdlib/, NEVER
-    /// in cockpit/scripts/ (g_demiurge_pointer_only). FIFTH cohort
-    /// domain crossing the measuring-producer threshold and the FIRST
-    /// particle-physics cell. PDG values ARE real measured constants
-    /// but THIS run is not a demiurge measurement — it copies the PDG
-    /// aggregator's record, so measurement_gate stays GATE_OPEN AND
-    /// absorbed is permanently false (g3 — see scope_caveats).
-    private static func runAntimatterAnalyze() -> ActionResult {
-        let r = AntimatterAnalyzeProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `fusion + analyze` engine tool (κ-41 / D69) — spawn plasmapy
-    /// derived-parameter producer via
-    /// `~/core/hexa-lang/stdlib/fusion/plasma_metrics.py` and persist a
-    /// typed `FusionRecord` under `exports/fusion/plasma/<stamp>/`.
-    /// Producer = `plasmapy@<v> (ITER core reference derivation)`.
-    /// SEVENTH cohort cell crossing the measuring-producer threshold
-    /// (after sscb κ-34, energy κ-35, antimatter [cohort round], cern
-    /// κ-38) and
-    /// the FIRST plasma-physics cell. D61-compliant-from-birth — the
-    /// Python script lives in hexa-lang/stdlib/, NEVER in cockpit/
-    /// scripts/ (g_demiurge_pointer_only). Bohm·Debye·Lorentz algebra
-    /// IS real but the inputs (n_e=1e20 · T_e=10 keV · B=5.3 T) are
-    /// textbook ITER values, NOT device-measured — so measurement_gate
-    /// stays GATE_OPEN AND absorbed is permanently false (g3 — see
-    /// FusionAnalyzeProducer scope_caveats; Stage 4 absorbed=true
-    /// requires Thomson-scattering / interferometry / magnetic-probe
-    /// readings from a real tokamak shot per ABSORPTION.md §"hexa
-    /// 포팅 단계").
-    private static func runFusionAnalyze() -> ActionResult {
-        let r = FusionAnalyzeProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
     /// `cern + verify` engine tool (κ-38 / D65) — spawn the Bethe-Bloch
     /// antiproton stopping-power producer via
     /// `~/core/hexa-lang/stdlib/cern/bethe_bloch_stopping.py` and persist
@@ -412,20 +332,6 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `chip + analyze` engine tool (D56; cohort-round producer, no
-    /// standalone PLAN κ entry — post-merge reconstructed) — hexa-native Leighton
-    /// booksim oracle (worktree-a8727a55, hexa-lang stdlib). g3 honest:
-    /// 측정 결과는 record 로 emit, gate/absorbed flip 은 측정 record 자체에
-    /// 인용된 값을 따름 (Producer 코드가 임의로 closure 하지 않음).
-    private static func runChipAnalyze() -> ActionResult {
-        let r = ChipAnalyzer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
     // `runGridStructure()` (D57), `runBotStructure()` (D58),
     // `runBrainAnalyze()` (cohort), `runScopeAnalyze()` (cohort) —
     // removed in D111 Phase C 6-domain bundle migration (2026-05-22).
@@ -437,46 +343,6 @@ public enum ActionDispatch {
     // openmdao_sizing.py · poppy_psf_verify.py}. GridStructureProducer.swift +
     // BotStructureProducer.swift + BrainAnalyzeProducer.swift +
     // ScopeAnalyzeProducer.swift deleted.
-
-    /// `space + analyze` engine tool (D60; cohort-round producer, no
-    /// standalone PLAN κ entry — post-merge reconstructed) — Skyfield SGP4
-    /// propagator on ISS TLE. Script migrated to hexa-lang/stdlib/space/
-    /// (D61). GATE_OPEN / absorbed=false (TLE input not a demiurge
-    /// measurement, propagator is upstream).
-    private static func runSpaceAnalyze() -> ActionResult {
-        let r = SpaceAnalyzeProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `mobility + analyze` engine tool (cohort-round producer, no standalone
-    /// PLAN κ / D-block — post-merge reconstructed) — OSMnx
-    /// road-network topology. D61-from-birth (hexa-lang stdlib/mobility/
-    /// road_network.py). GATE_OPEN / absorbed=false (OSM topology meta).
-    private static func runMobilityAnalyze() -> ActionResult {
-        let r = MobilityAnalyzeProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `aura + analyze` engine tool (cohort-round producer, no standalone
-    /// PLAN κ / D-block — post-merge reconstructed) — MNE-Python
-    /// EEG band-power. D61-from-birth (hexa-lang stdlib/aura/aura_mne.py).
-    /// GATE_OPEN / absorbed=false (synthetic input).
-    private static func runAuraAnalyze() -> ActionResult {
-        let r = AuraAnalyzeProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
 
     /// `cern + analyze` engine tool (cohort-round producer, no standalone
     /// PLAN κ / D-block — post-merge reconstructed) — pylhe LHE
@@ -490,400 +356,6 @@ public enum ActionDispatch {
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],
             usedEngineTool: true,
             engineToolSucceeded: r.ok)
-    }
-
-    /// `chip + verify` engine tool — try to spawn the local booksim
-    /// self-test (rfc_001 §8 / rfc_003 Phase B). On THIS branch, the
-    /// local `~/core/hexa-lang/stdlib/booksim/booksim.hexa` ships with
-    /// the cmd_measure body as a gate-90 stub (the F1F2-producer body
-    /// has not merged into the rfc043 branch yet — see PLAN logs
-    /// ①-step2c). The hexa-lang `hexa-arch` CLI entry-point is also
-    /// not wired, so `hexa run` cannot pass `--emit <dir>` argv.
-    ///
-    /// Honest path (g3, D17 — Swift never simulates the chip; that
-    /// belongs to hexa-lang): we spawn the self-test, inspect any
-    /// newly-written `/tmp/hexa_native_*.json` (mtime check), and if
-    /// one appears we copy it into `exports/chip/noc/f1f2/records/`.
-    /// If hexa is missing OR no record is produced, report engine-tool
-    /// gap honestly — never silent success (g3).
-    /// `chip + verify` engine tool (κ-43 / D70; path decided κ-37 / D64)
-    /// — spawn the hexa-native
-    /// `sweep_oracle_parity.hexa` orchestrator (rfc_001 §8 + rfc_003 §4)
-    /// and witness its §B+§D oracle-parity verdict.
-    ///
-    /// D61 / g_demiurge_pointer_only: ALL compute lives in
-    /// `hexa-lang/stdlib/booksim/sweep_oracle_parity.hexa`; this Swift
-    /// path only `Process`-spawns `hexa build` then runs the compiled
-    /// binary, parses the stdout banner + jsonl, and witnesses the
-    /// emitted F1F2Records onto disk. The compiled path is used (not
-    /// `hexa run`) because the orchestrator IS the compute — the hexa
-    /// interpreter is ~1000× slower on this workload; `hexa build`
-    /// transpiles to C → native (κ-43 measurement, 2026-05-20).
-    ///
-    /// g3: the gate flip to GATE_CLOSED_MEASURED + absorbed=true is
-    /// witnessed from the orchestrator's own 12/12 verdict — Swift
-    /// never upgrades the claim. If the orchestrator reports < 12/12,
-    /// the records carry GATE_B_PINNED_MET and engineToolSucceeded
-    /// is false.
-    private static func runChipVerify() -> ActionResult {
-        let hexaBin = locateHexa()
-        guard let hexaPath = hexaBin else {
-            return ActionResult(
-                text: "⏳ engine tool gap — `hexa` 실행 파일을 PATH 또는 "
-                    + "~/core/hexa-lang/hexa 에서 찾지 못했습니다. chip + "
-                    + "verify (rfc_001 §8) 는 hexa-lang 의 "
-                    + "sweep_oracle_parity.hexa 를 컴파일·실행해야 합니다 "
-                    + "(g3 — silent success 금지).",
-                newRecordIDs: [],
-                usedEngineTool: true,
-                engineToolSucceeded: false)
-        }
-        let hexaLangRoot = NSString(string: "~/core/hexa-lang")
-            .expandingTildeInPath
-        let module = "stdlib/booksim/sweep_oracle_parity.hexa"
-        let modulePath = hexaLangRoot + "/" + module
-        guard FileManager.default.fileExists(atPath: modulePath) else {
-            return ActionResult(
-                text: "⏳ engine tool gap — sweep_oracle_parity.hexa 를 "
-                    + "찾지 못했습니다 (\(modulePath)). chip + verify 는 "
-                    + "hexa-lang stdlib 의 booksim 오케스트레이터를 "
-                    + "필요로 합니다 (D61 — SSOT = hexa-lang, g3).",
-                newRecordIDs: [],
-                usedEngineTool: true,
-                engineToolSucceeded: false)
-        }
-
-        // ── 1. hexa build (transpile → C → native) ──
-        let build = Process()
-        build.executableURL = URL(fileURLWithPath: hexaPath)
-        build.arguments = ["build", module]
-        build.currentDirectoryURL = URL(fileURLWithPath: hexaLangRoot)
-        let buildPipe = Pipe()
-        build.standardOutput = buildPipe
-        build.standardError = buildPipe
-        var buildOut = ""
-        do {
-            try build.run()
-            let data = buildPipe.fileHandleForReading.readDataToEndOfFile()
-            build.waitUntilExit()
-            buildOut = String(data: data, encoding: .utf8) ?? ""
-            if build.terminationStatus != 0 {
-                return ActionResult(
-                    text: "⏳ engine tool gap — hexa build "
-                        + "sweep_oracle_parity.hexa 실패 (exit "
-                        + "\(build.terminationStatus)). 측정 record 0 (g3).\n"
-                        + lastLinesOf(buildOut, 8),
-                    newRecordIDs: [],
-                    usedEngineTool: true,
-                    engineToolSucceeded: false)
-            }
-        } catch {
-            return ActionResult(
-                text: "⏳ engine tool gap — hexa build 실행 실패: "
-                    + "\(error.localizedDescription) (g3).",
-                newRecordIDs: [],
-                usedEngineTool: true,
-                engineToolSucceeded: false)
-        }
-
-        // ── 2. run the compiled orchestrator binary ──
-        let appPath = hexaLangRoot + "/build/artifacts/app"
-        guard FileManager.default.isExecutableFile(atPath: appPath) else {
-            return ActionResult(
-                text: "⏳ engine tool gap — 컴파일 산출물 \(appPath) 이 "
-                    + "없습니다 (hexa build 가 app 을 만들지 못함, g3).",
-                newRecordIDs: [],
-                usedEngineTool: true,
-                engineToolSucceeded: false)
-        }
-        let run = Process()
-        run.executableURL = URL(fileURLWithPath: appPath)
-        run.currentDirectoryURL = URL(fileURLWithPath: hexaLangRoot)
-        let runPipe = Pipe()
-        run.standardOutput = runPipe
-        run.standardError = runPipe
-        var runOut = ""
-        var exitCode: Int32 = -1
-        do {
-            try run.run()
-            let data = runPipe.fileHandleForReading.readDataToEndOfFile()
-            run.waitUntilExit()
-            exitCode = run.terminationStatus
-            runOut = String(data: data, encoding: .utf8) ?? ""
-        } catch {
-            return ActionResult(
-                text: "⏳ engine tool gap — sweep_oracle_parity 바이너리 "
-                    + "실행 실패: \(error.localizedDescription) (g3).",
-                newRecordIDs: [],
-                usedEngineTool: true,
-                engineToolSucceeded: false)
-        }
-
-        // exit 91 == Leighton oracle violated — record MUST NOT be
-        // emitted (rfc_001 §7.3). Honest hard stop.
-        if exitCode == 91 {
-            return ActionResult(
-                text: "❌ chip + verify — Leighton 오라클 위반 (exit 91). "
-                    + "rfc_001 §7.3: record emit 금지 — SIM 이 틀린 것이지 "
-                    + "정리(theorem)가 틀린 게 아님 (g3).\n"
-                    + lastLinesOf(runOut, 6),
-                newRecordIDs: [],
-                usedEngineTool: true,
-                engineToolSucceeded: false)
-        }
-
-        // ── 3. parse banner + jsonl, witness records to disk ──
-        var bannerLines: [String] = []
-        var jsonlLines: [String] = []
-        for raw in runOut.split(separator: "\n", omittingEmptySubsequences: false) {
-            let line = String(raw)
-            if line.hasPrefix("{\"interface\"") {
-                jsonlLines.append(line)
-            } else if !line.trimmingCharacters(in: .whitespaces).isEmpty {
-                bannerLines.append(line)
-            }
-        }
-
-        var newIDs: [String] = []
-        do {
-            try FileManager.default.createDirectory(
-                at: RecordLoader.f1f2RecordsRoot,
-                withIntermediateDirectories: true)
-        } catch { /* dir may already exist */ }
-        for jl in jsonlLines {
-            guard let data = jl.data(using: .utf8),
-                  let obj = try? JSONSerialization.jsonObject(with: data)
-                      as? [String: Any],
-                  let rid = obj["record_id"] as? String
-            else { continue }
-            let dest = RecordLoader.f1f2RecordsRoot
-                .appendingPathComponent("2026-05-20_\(rid).json")
-            // Re-serialize pretty so the on-disk record matches the
-            // existing exports/chip/noc/f1f2/records/ house style.
-            if let pretty = try? JSONSerialization.data(
-                    withJSONObject: obj,
-                    options: [.prettyPrinted, .sortedKeys]) {
-                if (try? pretty.write(to: dest)) != nil {
-                    newIDs.append(rid)
-                }
-            }
-        }
-
-        let green = runOut.contains("ACCEPTANCE: 12/12")
-            && runOut.contains("gate_state=GATE_CLOSED_MEASURED")
-        var lines: [String] = []
-        lines.append("hexa build + run sweep_oracle_parity — exit \(exitCode)")
-        lines.append(bannerLines.joined(separator: "\n"))
-        lines.append("---")
-        if green && exitCode == 0 {
-            lines.append("✅ chip + verify — §B+§D oracle parity 12/12 GREEN. "
-                + "GATE_CLOSED_MEASURED · absorbed=true. "
-                + "rfc_001 §8 measurement gate CLOSED — 첫 chip 도메인 "
-                + "measured-parity (rfc_003 §4 §B 4행 + §D 6행 + Leighton 2).")
-            lines.append("📸 F1F2Record \(newIDs.count)건 → "
-                + "exports/chip/noc/f1f2/records/2026-05-20_*.json")
-        } else {
-            lines.append("🔶 chip + verify — 일부 행만 GREEN "
-                + "(< 12/12 또는 gate 미달). records 는 "
-                + "GATE_B_PINNED_MET 로 emit, absorbed=false 유지 (g3).")
-        }
-        return ActionResult(
-            text: lines.joined(separator: "\n"),
-            newRecordIDs: newIDs,
-            usedEngineTool: true,
-            engineToolSucceeded: green && exitCode == 0)
-    }
-
-    /// `chip + synthesize` engine tool — spawn the local Yosys
-    /// dispatcher self-test (rfc_006 §4 module-7) via `hexa run
-    /// stdlib/yosys/yosys.hexa`. D53 (measurable-only cell mapping):
-    /// Yosys IS the producer for chip-synth, so this cell maps even
-    /// though rfc_006 §5 SKY130 area-oracle gate is OPEN — the
-    /// dispatcher is live, the SKY130 absorption claim is not.
-    ///
-    /// Honest path (g3, rfc_006 §5 — three blockers: no SKY130 lib,
-    /// no `abc` binary, read_verilog scope limited to synth-subset):
-    ///   1. If `yosys.hexa` is missing from the local hexa-lang
-    ///      checkout (demiurge's hexa-lang working tree may be on a
-    ///      branch without the rfc_006 land — observed during this
-    ///      κ-31 cycle), report "yosys not in current hexa-lang
-    ///      checkout" gap.
-    ///   2. If `hexa` binary itself is missing, same gap path as
-    ///      chip+verify.
-    ///   3. If hexa run succeeds — parse "yosys dispatcher selftest:
-    ///      N/N PASS" line. `cmd_synth` returns exit 90 (gate-open)
-    ///      and emits no F1F2 record — that is the BANNED-absorbed
-    ///      stance, NOT a failure to report as success (g3).
-    ///   4. Never set `absorbed=true` here. measurement_gate stays
-    ///      GATE_OPEN (or GATE_FAILED on blocker). When/if SKY130
-    ///      area-oracle is met within ±5 %, the gate flips elsewhere
-    ///      — not in Swift.
-    private static func runChipSynthesize() -> ActionResult {
-        let hexaLangRoot = NSString(string: "~/core/hexa-lang")
-            .expandingTildeInPath
-        let yosys = NSString(string: "~/core/hexa-lang/stdlib/yosys/yosys.hexa")
-            .expandingTildeInPath
-        let fm = FileManager.default
-        guard fm.fileExists(atPath: yosys) else {
-            return ActionResult(
-                text: "⏳ engine tool gap — yosys.hexa 가 현재 "
-                    + "hexa-lang checkout 에 없습니다 (\(yosys)). "
-                    + "rfc_006 §4 module-7 dispatcher 본체는 origin/main "
-                    + "에 머지되었지만 demiurge 의 ~/core/hexa-lang "
-                    + "working tree 가 다른 브랜치 (예: rfc043-hexa-torch "
-                    + "/ t4-emt-calc) 일 가능성 — `cd ~/core/hexa-lang "
-                    + "&& git checkout main && git pull` 후 재실행 "
-                    + "필요 (g3 — silent success 금지).",
-                newRecordIDs: [],
-                usedEngineTool: true,
-                engineToolSucceeded: false)
-        }
-        guard let hexaPath = locateHexa() else {
-            return ActionResult(
-                text: "⏳ engine tool gap — `hexa` 실행 파일을 PATH 또는 "
-                    + "~/core/hexa-lang/hexa 에서 찾지 못했습니다. chip + "
-                    + "synthesize (rfc_006 §4) 는 yosys.hexa dispatcher 를 "
-                    + "spawn 하려면 hexa 바이너리가 필요합니다 (g3).",
-                newRecordIDs: [],
-                usedEngineTool: true,
-                engineToolSucceeded: false)
-        }
-
-        // Spawn `hexa run yosys.hexa` — runs the dispatcher selftest
-        // (8 routing checks). cwd = hexa-lang root so any relative
-        // `use` paths in module bodies resolve.
-        let proc = Process()
-        proc.executableURL = URL(fileURLWithPath: hexaPath)
-        proc.arguments = ["run", yosys]
-        proc.currentDirectoryURL = URL(fileURLWithPath: hexaLangRoot)
-        let pipe = Pipe()
-        proc.standardOutput = pipe
-        proc.standardError = pipe
-        var stdoutText = ""
-        var exitCode: Int32 = -1
-        do {
-            try proc.run()
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            proc.waitUntilExit()
-            exitCode = proc.terminationStatus
-            stdoutText = String(data: data, encoding: .utf8) ?? ""
-        } catch {
-            return ActionResult(
-                text: "⏳ engine tool gap — hexa 실행 실패: "
-                    + "\(error.localizedDescription) (g3).",
-                newRecordIDs: [],
-                usedEngineTool: true,
-                engineToolSucceeded: false)
-        }
-
-        let trimmed = stdoutText.trimmingCharacters(in: .whitespacesAndNewlines)
-        var lines: [String] = []
-        lines.append("hexa run yosys.hexa — exit \(exitCode)")
-        lines.append(trimmed)
-        lines.append("---")
-
-        // Parse "yosys dispatcher selftest: N/N PASS" (cmd_selftest /
-        // dispatcher self-test in yosys.hexa main()). A PASS line is
-        // a green dispatcher — NOT a green SKY130 area measurement.
-        let passOK = (exitCode == 0)
-            && (trimmed.contains(" PASS") || trimmed.contains("/PASS"))
-
-        if passOK {
-            lines.append("📸 yosys dispatcher selftest GREEN — rfc_006 §4 "
-                + "module-7 라우팅 동작 확인.")
-            lines.append("   GATE_OPEN · absorbed=false — rfc_006 §5 "
-                + "SKY130 area-oracle (router_d4≈61763 / d6≈93609 µm² "
-                + "1.516×) 는 측정 불가 (blocker 3종: SKY130 lib 없음, "
-                + "abc 바이너리 없음, read_verilog scope=synth-subset). "
-                + "dispatcher 자체는 live — `Yosys absorbed` 주장 금지 (g3).")
-            // Mirror dispatcher selftest log into exports/chip/yosys/
-            // as a non-F1F2 trace (gate is OPEN, no measured record).
-            let exportsDir = RecordLoader.exportsRoot
-                .appendingPathComponent("chip/yosys/dispatcher-selftest")
-            do {
-                try fm.createDirectory(at: exportsDir,
-                                       withIntermediateDirectories: true)
-                let stamp = ISO8601DateFormatter().string(from: Date())
-                    .replacingOccurrences(of: ":", with: "-")
-                let logURL = exportsDir.appendingPathComponent(
-                    "selftest-\(stamp).txt")
-                let header = "# yosys.hexa dispatcher selftest — \(stamp)\n"
-                    + "# rfc_006 §5 gate OPEN · absorbed=false · g3\n"
-                    + "# exit \(exitCode)\n---\n"
-                try (header + trimmed + "\n").write(to: logURL,
-                                                    atomically: true,
-                                                    encoding: .utf8)
-                lines.append("   trace → \(logURL.path)")
-            } catch {
-                lines.append("   (trace mirror 실패: \(error.localizedDescription))")
-            }
-            return ActionResult(
-                text: lines.joined(separator: "\n"),
-                newRecordIDs: [],
-                usedEngineTool: true,
-                engineToolSucceeded: true)
-        }
-
-        // exit != 0 OR no PASS line — honest gap. Either dispatcher
-        // FAIL or hexa run blew up before reaching main().
-        lines.append("⏳ engine tool gap — yosys.hexa selftest 미통과 "
-            + "(exit \(exitCode)). dispatcher 라우팅 자체가 실패했거나 "
-            + "stale binary / 미컴파일 모듈 가능성. chip + synthesize "
-            + "측정 record 생성 0 (g3). rfc_006 §5 gate 는 어차피 OPEN — "
-            + "absorbed 주장 절대 금지.")
-        return ActionResult(
-            text: lines.joined(separator: "\n"),
-            newRecordIDs: [],
-            usedEngineTool: true,
-            engineToolSucceeded: false)
-    }
-
-    /// Find a hexa binary — prefer local `~/core/hexa-lang/hexa`
-    /// wrapper (D17 SSOT), then `$HOME/.hx/bin/hexa`, then PATH.
-    /// Returns nil if none is executable.
-    private static func locateHexa() -> String? {
-        let fm = FileManager.default
-        let home = NSString(string: "~").expandingTildeInPath
-        let candidates = [
-            "\(home)/core/hexa-lang/hexa",
-            "\(home)/.hx/bin/hexa",
-            "/usr/local/bin/hexa",
-            "/opt/homebrew/bin/hexa",
-        ]
-        for c in candidates where fm.isExecutableFile(atPath: c) {
-            return c
-        }
-        // Fallback — `which hexa` via /usr/bin/env (synchronous).
-        let proc = Process()
-        proc.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-        proc.arguments = ["which", "hexa"]
-        let pipe = Pipe()
-        proc.standardOutput = pipe
-        do {
-            try proc.run()
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            proc.waitUntilExit()
-            let out = (String(data: data, encoding: .utf8) ?? "")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            if !out.isEmpty, fm.isExecutableFile(atPath: out) {
-                return out
-            }
-        } catch {
-            return nil
-        }
-        return nil
-    }
-
-    private static func mtimeOf(_ path: String) -> Date? {
-        let attrs = try? FileManager.default.attributesOfItem(atPath: path)
-        return attrs?[.modificationDate] as? Date
-    }
-
-    /// Last `n` non-empty lines of a captured stream — for honest
-    /// failure tails (g3 — surface the real error, never a silent OK).
-    private static func lastLinesOf(_ text: String, _ n: Int) -> String {
-        let all = text.split(separator: "\n", omittingEmptySubsequences: true)
-        return all.suffix(n).joined(separator: "\n")
     }
 
     /// Invoke `claude -p <guarded>` as a SYNCHRONOUS subprocess and
@@ -931,22 +403,6 @@ public enum ActionDispatch {
     // generic `default → CellrunDispatch.run(...)`. BotSynthProducer.swift +
     // ScopeSynthProducer.swift + ScopeVerifyProducer.swift deleted.
 
-    /// `space + synthesize` engine tool (ROI rank 8 — OpenMDAO SLSQP wet-
-    /// mass sweep via single-discipline Tsiolkovsky rollup). SSOT =
-    /// `~/core/hexa-lang/stdlib/space/openmdao_mission.py` (D61). 2nd
-    /// OpenMDAO consumer after scope+synthesize → kernel-promotion
-    /// candidate (see `inbox/notes/openmdao-kernel-promotion-pickup.md`).
-    /// GATE_OPEN / absorbed=false (scoping-level MDO, textbook nominal
-    /// inputs, no GMAT coupling). Citation NASA GSC-17177-1.
-    private static func runSpaceSynthesize() -> ActionResult {
-        let r = SpaceSynthProducer.runSynthesize()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
     /// `component + analyze` engine tool (ROI rank 6 — CalculiX FEA,
     /// independent cited measurement vs component+verify gmsh+skfem).
     /// SSOT = `~/core/hexa-lang/stdlib/component/calculix.py` (D61).
@@ -978,34 +434,6 @@ public enum ActionDispatch {
             engineToolSucceeded: r.ok)
     }
 
-    /// `rtsc + analyze` engine tool (ROI rank 10 — pyfemm 2-D HTS
-    /// magnetics, FIRST producer in rtsc domain). SSOT = `~/core/hexa-
-    /// lang/stdlib/rtsc/pyfemm_magnetics.py` (D61). Cohort pickup:
-    /// `inbox/notes/cohort-pickup-rtsc-femm-producer.md`. D72: FEMM
-    /// own ecosystem (NOT skfem); `kernels/em_2d/` at 2nd consumer.
-    /// Citations: arxiv:0811.2883, FEMM manual, HTS Modelling Workgroup.
-    /// GATE_OPEN / absorbed=false (placeholder HTS-tape proxy; macOS
-    /// honest-skip — FEMM Windows binary, Wine-only on macOS; Linux
-    /// pool only).
-    private static func runRtscAnalyze() -> ActionResult {
-        let r = RtscAnalyzeProducer.runAnalyze()
-        return ActionResult(
-            text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true,
-            engineToolSucceeded: r.ok)
-    }
-
-    /// `fusion + verify` engine tool (ROI 11 — OpenMC TBR neutronics).
-    /// SSOT = `~/core/hexa-lang/stdlib/fusion/openmc_tbr.py` (D61).
-    /// D72: `kernels/mc_transport/` 2nd consumer.
-    private static func runFusionVerify() -> ActionResult {
-        let r = FusionVerifyProducer.runVerify()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
     // `runEnergyVerify()` (ROI 12 OpenMC k-eff) + `runBotVerify()` (ROI 13
     // Drake Lyapunov) — static functions removed in D111 Phase C 6-domain
     // bundle migration (2026-05-22). Routes via generic `default →
@@ -1013,24 +441,6 @@ public enum ActionDispatch {
     // PilotProducerWireTests consumes its `injectHexaNativeParity` static
     // (PILOTS.demi pilot-solar wire, not legacy-bridge runVerify path).
     // BotVerifyProducer.swift deleted.
-
-    /// `space + verify` engine tool (ROI 15 — GMAT trajectory + Basilisk
-    /// ADCS). SSOT = `~/core/hexa-lang/stdlib/space/gmat_basilisk.py` (D61).
-    private static func runSpaceVerify() -> ActionResult {
-        let r = SpaceVerifyProducer.runVerify()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `rtsc + verify` engine tool (ROI 16 — GetDP HTS H-/A-phi 3-D EM).
-    /// SSOT = `~/core/hexa-lang/stdlib/rtsc/getdp_hts.py` (D61).
-    private static func runRtscVerify() -> ActionResult {
-        let r = RtscVerifyProducer.runVerify()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
 
     /// `material + verify` Tier 1 aggregator (RTSC.md §8.7 — first-
     /// principles synthesis cohort). Spawns the four Tier 1 sub-
@@ -1046,26 +456,6 @@ public enum ActionDispatch {
         let r = MaterialVerifyProducer.runVerify()
         return ActionResult(text: r.text,
             newRecordIDs: r.newRecordIDs,
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `mobility + verify` engine tool (ROI 17 — CARLA / ScenarioRunner).
-    /// SSOT = `~/core/hexa-lang/stdlib/mobility/carla_scenario.py` (D61).
-    /// macOS hard-block — Linux pool only.
-    private static func runMobilityVerify() -> ActionResult {
-        let r = MobilityVerifyProducer.runVerify()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
-            usedEngineTool: true, engineToolSucceeded: r.ok)
-    }
-
-    /// `antimatter + verify` engine tool (ROI 18 — Geant4 antiproton).
-    /// SSOT = `~/core/hexa-lang/stdlib/antimatter/geant4_verify.py` (D61).
-    /// D72: `kernels/mc_transport/` 4th consumer — clearest N+M payoff.
-    private static func runAntimatterVerify() -> ActionResult {
-        let r = AntimatterVerifyProducer.runVerify()
-        return ActionResult(text: r.text,
-            newRecordIDs: r.newRecordID.map { [$0] } ?? [],
             usedEngineTool: true, engineToolSucceeded: r.ok)
     }
 
