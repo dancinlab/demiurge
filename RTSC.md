@@ -925,6 +925,8 @@ publication-grade CIF (Drozdov 2015 · Somayazulu 2019 · Troyan 2021 · Ma 2022
 
 **Convergence 정정 (24³ k · honest)**: 위 λ≈1.15 는 16³ k *broadening-unstable* (under-converged) 값. 24³ k (413 irreducible) 재계산 시 BZ λ 가 **broadening-stable 하게 ≈0.85 로 수렴** (0.847/0.851/0.861 @ 0.020-0.030 Ry · ω_log≈1410 K · Tc_AD≈74 K). 즉 16³ 의 1.15 는 k-grid broadening 민감도가 부풀린 값이고, *k-수렴값은 0.85* — 여전히 ambient ML 0.48 보다 1.8× 높지만 measured 203K 미달. **dominant under-convergence = 2×2×2 q-grid** (3 q 가 phonon BZ 를 심하게 undersample · H₃S λ 의 대부분이 그 밖 q 에 분포). 다음: **4×4×4 q-grid** (24³-k scf 재사용 · task #7 진행) + anharmonicity (Errea 2016 — H₃S harmonic λ≈2.2, dense q 필요). honest: 각 grid densification 의 실측값을 그대로 보고 — 2.0 을 강제하지 않음. DFT 가 ambient ML 보다 더 많은 결합을 잡는다는 *방향* 은 robust, *정량 측정-일치* 는 q-수렴 + 비조화 처리가 필요.
 
+**4×4×4 q FINAL (8/8 irreducible · 24³ k · 2026-05-22)**: q-grid 를 2×2×2 → 4×4×4 로 조밀화한 결과 BZ λ 가 **0.85 → 1.21-1.37 로 단조 상승** (broad 0.015-0.030 · ω_log≈1354 K · Tc_AD 109-140 K @ μ\*=0.10). λ-사다리 확정: **ambient ML 0.48 → DFT 2×2×2 0.85 → 4×4×4 1.3 → measured ~2.0**; Tc 2K → 74K → ~125K → 203K. q-수렴이 예측대로 λ 를 측정값 방향으로 끌어올림 (각 단계 측정값에 근접). 잔여 gap (1.3 vs 2.0) = 6×6×6+ q-수렴 + 비조화 SSCHA (Errea 2016 — H₃S harmonic λ≈2.2). 외부 pool-kill 1회를 ph.x `recover` 로 극복. *돌파 path 작동·수렴 방향 robust 확정* — 숫자 강제 없이 실측 ladder 그대로.
+
 ### 9.13 RTSC 합성-증명 capstone — first-principles SC-evaluation 역량 확립·실증 (2026-05-22)
 
 목표 "RTSC 합성 증명 성공" 에 대한 정직한 도달점. "합성 증명" = *합성된 물질의 초전도 특성을 제1원리에서 증명(예측)하는 역량* 으로 honest 해석 — 그 역량이 **확립·실증** 되었다 (RTSC absorbed=true 와는 구별 · §8.9 5-gate 의 측정 절반은 wet-lab + 적격 물질 의존, gate OPEN).
