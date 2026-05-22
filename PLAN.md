@@ -5399,3 +5399,33 @@
   advisory only · G40 가 decision gate). 모든 floor (D80/D86/D103/D106/
   D116) preserved. κ-68 G27 / κ-69 G32 / κ-70 G36 의 cell-pick-from-
   scaffold split 패턴 1:1 mirror — pre-pick 금지.
+
+### 2026-05-22 — κ-71 R10 G40/G41/G42 LANDED (honest 3/4 + G41 [~] PARTIAL closure)
+
+**G40 cell pick (D120)** — Energy/wind sub-cell 5-fold lock-in (`4e600c5` · code 0 · κ-69 G32 / κ-70 G36 mirror).
+
+**G41 first-flip (D121 · PARTIAL · 5 of 6 LANDED)** — 4th cell measured-oracle round:
+
+1. ✅ **substrate** — hexa-lang PR #308 `2b4fc695` MERGED · `stdlib/kernels/wind/power_curve_kernel.hexa` v0.1.0 (IEC 61400-12 cubic-interp + air-density · cross-impl parity vs Python ref · exact match on pool:ubu-2).
+2. ✅ **schema** — `cockpit/Sources/DemiurgeCore/Models/EnergyWindVerifyRecord.swift` NEW (sub-cell separation from κ-68 G29 EnergyVerifyRecord per D120 · 4th record-type · enables G30 invariant audit).
+3. ✅ **producer** — hexa-lang PR #320 OPEN · `stdlib/energy/iec_vs_vestas_v90_oracle.py` (Vestas V90-2.0MW empirical curve as **PREDICTION-shape asymmetric oracle** vs IEC cubic kernel · κ-69/70 numeric-equivalence trap avoided · bootstrap-safe standalone Python). PR CI failing because hexa-lang main bootstrap regressed (chronic 11-silent-wipe pattern · orthogonal to producer · awaits hexa-lang bootstrap re-stabilization).
+4. ✅ **invariant audit** — `testEnergyWindVerifyRecordCoveredByInvariantNoCodeChange` PASS (6/6 suite) · **4-record-type record-type-agnostic generalization CONFIRMED** with **0 invariant-helper code change** across Energy/solar · Aura/EEG · Ufo/plasma · Energy/wind. Strongest cross-cell evidence to date.
+5. ✅ **record emit** — `exports/energy_wind/verify/2026-05-22T10-08-52Z/energy_wind_verify_*.json` (absorbed=false · GATE_OPEN · 43-bin payload · 4-layer disclosure).
+6. ❌ **`absorbed=true` flip DEFERRED** — mean_rel_err=0.0708 over [4,25] m/s 43-bin grid > D120 ≤0.05 PASS criterion. IEC cubic-interp UNDERPREDICTS Vestas empirical 10-34% in cubic region (4-12 m/s) · slight OVERPREDICT at v=12 rated transition · plateau ≥15 perfect. **R4 invariant respected** (absorbed stays false · D121 records honest gap).
+
+Resumption (DEFERRED · 별 cycle): (i) kernel refinement multi-segment quadratic / sigmoidal-on-rated · principled · (ii) oracle-criterion new D-block · (iii) different turbine class (anti-pattern).
+
+**G42 closure (`2ac28b4` · code 0)** — honest 3/4 + G41 `[~]` PARTIAL closure (NOT 4/4):
+- ARCH §11.6 G42 `[ ]` → `[x]` with explicit partial-closure framing.
+- `project.tape @D d6` PATCH per self-rule "edit-in-place except for PATCH wording": 3-carrier audited → **4-carrier audited**. EnergyWindVerifyRecord G41/D121 added as 4th carrier; invariant audit LANDED & confirms record-type-agnostic by construction; flip DEFERRED noted explicitly.
+- κ-71 R10 state: **3/4 LANDED + G41 [~] PARTIAL** (G39 ✅ · G40 ✅ · G41 `[~]` · G42 ✅). NOT 4/4.
+
+**Honest delta from κ-70 R9 4/4 CLOSURE**: κ-71 was structurally heavier (substrate floor ZERO + new record type + asymmetric oracle requirement) and the PASS criterion was deliberately stricter (PREDICTION-shape vs κ-69/70 numeric-equivalence shape · honesty-floor re-elevation per D120). Honest 3/4 + G41 PARTIAL is the correct landing — pretending 4/4 with absorbed=true would violate R4 invariant.
+
+**Companion infra notes (this session, foreground)**:
+- bootstrap CI 0/9 → 9/9 restored via PR #306 (iter-2b+2e regate · wipe-reverted PR #295+#300) · then PR #307 grace-consent compiled-checker (4/4 CI clean ALL).
+- Subsequent chronic regression — 11-silent-wipe pattern hit hexa-lang main (b5b91426 + 27370792 "10th/11th silent-wipe re-restore"). Re-fix is whack-a-mole at this density · wipe-guard #305 hardening not holding · separate cohort concern (NOT pursued in this session beyond filing observability via PR #320 status note + pool inbox feature requests · `~/core/pool/inbox/requests/2026-05-22-session-feature-requests.md`).
+- pool ubu-1 auth: troubleshooting + 4-feature-request bundle filed in pool inbox (`d1ebf4d` + `6d1951b`).
+- session-side memory entries added: `[[reference-hexa-is-compiled]]` (user correction "인터프리터 안쓰는데 컴파일 언어잖아" · grace-consent compiled-checker fix premise) · others incremental.
+
+g3 — 본 land 는 honest partial closure (R4 invariant respected via DEFER · not via fake success). κ-72 horizon = G41 absorbed flip resumption (kernel refinement Path i) + 5th cell measured-oracle round + Bio/Chem candidates · honestly placeholder.
