@@ -1,0 +1,302 @@
+{
+  "domain": "energy_wind",
+  "verb": "verify",
+  "kind": "energy_wind_verify",
+  "stamp": "20260522T100852Z",
+  "producer": "stdlib/energy/iec_vs_vestas_v90_oracle.py@v0.1.0",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "scope_caveats": [
+    "Manufacturer-published Vestas V90-2.0MW power curve \u00b7 NOT a metered/SCADA timeseries (NREL Wind Toolkit token-gated \u00b7 deferred upgrade)",
+    "PREDICTION-shape \u00b7 IEC cubic-interp vs empirical curve \u00b7 genuine modeling error (numeric-equivalence avoided)",
+    "Single turbine model (Vestas V90-2.0MW) \u00b7 sea-level density \u00b7 no shear / turbulence / wake corrections",
+    "Real SCADA timeseries + multi-turbine sweep + wake/turbulence correction DEFERRED (4-layer disclosure floor)"
+  ],
+  "citations": [
+    "IEC 61400-12-1 power performance measurement methodology",
+    "Vestas V90-2.0MW manufacturer spec sheet (public power curve table)",
+    "hexa-lang PR #308 (power_curve_kernel.hexa cross-impl parity)",
+    "design.md D120 (G40 cell pick \u00b7 5-fold lock-in) \u00b7 D121 (G41 first-flip honest gap)"
+  ],
+  "skipped_reason": null,
+  "kernel_reuse": "stdlib/kernels/wind/power_curve_kernel.hexa::power_curve",
+  "hexa_native_parity": {
+    "kernel_path": "stdlib/kernels/wind/power_curve_kernel.hexa",
+    "kernel_version": "0.1.0",
+    "verified_at": "hexa-lang PR #308 merge commit (cross-impl parity vs Python ref \u00b7 pool:ubu-2 \u00b7 exact match)"
+  },
+  "measured_oracle": {
+    "oracle_kind": "manufacturer_empirical_power_curve",
+    "oracle_id": "vestas_v90_2_0MW",
+    "n_bins": 43,
+    "operating_regime_ms": [
+      4.0,
+      25.0
+    ],
+    "v_step_ms": 0.5,
+    "mean_rel_err": 0.07075442541581528,
+    "max_rel_err": 0.34085119270304454,
+    "pass_threshold": 0.05,
+    "is_measured_oracle_PASS": false
+  },
+  "bins": [
+    {
+      "v_ms": 4.0,
+      "kernel_kW": 43.50382128159906,
+      "oracle_kW": 66.0,
+      "rel_err": 0.34085119270304454
+    },
+    {
+      "v_ms": 4.5,
+      "kernel_kW": 75.39682539682539,
+      "oracle_kW": 110.0,
+      "rel_err": 0.3145743145743146
+    },
+    {
+      "v_ms": 5.0,
+      "kernel_kW": 115.22633744855968,
+      "oracle_kW": 152.0,
+      "rel_err": 0.24193199047000213
+    },
+    {
+      "v_ms": 5.5,
+      "kernel_kW": 163.87419165196943,
+      "oracle_kW": 215.0,
+      "rel_err": 0.23779445743270033
+    },
+    {
+      "v_ms": 6.0,
+      "kernel_kW": 222.22222222222223,
+      "oracle_kW": 280.0,
+      "rel_err": 0.20634920634920634
+    },
+    {
+      "v_ms": 6.5,
+      "kernel_kW": 291.1522633744856,
+      "oracle_kW": 365.0,
+      "rel_err": 0.20232256609729976
+    },
+    {
+      "v_ms": 7.0,
+      "kernel_kW": 371.5461493239271,
+      "oracle_kW": 457.0,
+      "rel_err": 0.1869887323327634
+    },
+    {
+      "v_ms": 7.5,
+      "kernel_kW": 464.2857142857143,
+      "oracle_kW": 568.0,
+      "rel_err": 0.18259557344064387
+    },
+    {
+      "v_ms": 8.0,
+      "kernel_kW": 570.2527924750146,
+      "oracle_kW": 690.0,
+      "rel_err": 0.17354667757244255
+    },
+    {
+      "v_ms": 8.5,
+      "kernel_kW": 690.3292181069959,
+      "oracle_kW": 832.0,
+      "rel_err": 0.17027738208293763
+    },
+    {
+      "v_ms": 9.0,
+      "kernel_kW": 825.3968253968254,
+      "oracle_kW": 978.0,
+      "rel_err": 0.15603596585191676
+    },
+    {
+      "v_ms": 9.5,
+      "kernel_kW": 976.3374485596707,
+      "oracle_kW": 1135.0,
+      "rel_err": 0.1397907942205544
+    },
+    {
+      "v_ms": 10.0,
+      "kernel_kW": 1144.0329218106997,
+      "oracle_kW": 1296.0,
+      "rel_err": 0.11725854798557123
+    },
+    {
+      "v_ms": 10.5,
+      "kernel_kW": 1329.3650793650793,
+      "oracle_kW": 1455.0,
+      "rel_err": 0.08634702449135445
+    },
+    {
+      "v_ms": 11.0,
+      "kernel_kW": 1533.2157554379776,
+      "oracle_kW": 1598.0,
+      "rel_err": 0.04054082888737323
+    },
+    {
+      "v_ms": 11.5,
+      "kernel_kW": 1756.466784244562,
+      "oracle_kW": 1710.0,
+      "rel_err": 0.027173558037755525
+    },
+    {
+      "v_ms": 12.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 1818.0,
+      "rel_err": 0.1001100110011001
+    },
+    {
+      "v_ms": 12.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 1893.0,
+      "rel_err": 0.05652403592181722
+    },
+    {
+      "v_ms": 13.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 1935.0,
+      "rel_err": 0.03359173126614987
+    },
+    {
+      "v_ms": 13.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 1970.0,
+      "rel_err": 0.015228426395939087
+    },
+    {
+      "v_ms": 14.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 1980.0,
+      "rel_err": 0.010101010101010102
+    },
+    {
+      "v_ms": 14.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 1995.0,
+      "rel_err": 0.002506265664160401
+    },
+    {
+      "v_ms": 15.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 15.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 16.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 16.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 17.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 17.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 18.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 18.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 19.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 19.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 20.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 20.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 21.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 21.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 22.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 22.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 23.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 23.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 24.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 24.5,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    },
+    {
+      "v_ms": 25.0,
+      "kernel_kW": 2000.0,
+      "oracle_kW": 2000.0,
+      "rel_err": 0.0
+    }
+  ]
+}

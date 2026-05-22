@@ -324,6 +324,54 @@ final class AbsorbedNeedsMeasuredOracleTests: XCTestCase {
             "UfoVerifyRecord with absorbed=true + nil measured oracle MUST satisfy invariant when isIllustrativePhysics=true — D106 / D118 Stage-4..7 illustrative-physics carve-out")
     }
 
+    // MARK: κ-71 G41 — fourth record-type invariant generalization (Energy/wind)
+
+    /// G30 record-type-agnostic invariant audit — fourth carrier (D121).
+    /// EnergyWindVerifyRecord is a NEW record type (κ-71 R10 G41 first-
+    /// flip target · D120 cell pick · sub-cell separation from κ-68
+    /// EnergyVerifyRecord). 0-code-change auto-extension across 4 cells
+    /// (Energy/solar · Aura/EEG · Ufo/plasma · Energy/wind) is the
+    /// strongest cross-cell evidence yet that `invariantHolds(absorbed,
+    /// measuredOracle, isIllustrativePhysics)` is record-type-agnostic
+    /// by construction. Wind is NOT D106 illustrative (real prediction
+    /// axis · power_curve_kernel.hexa vs empirical turbine curve), so
+    /// the illustrative branch test is intentionally omitted — the 2
+    /// cases below (PASS + conflation guard) suffice.
+    func testEnergyWindVerifyRecordCoveredByInvariantNoCodeChange() {
+        // Synth EnergyWindVerifyRecord — measured-oracle PASS, absorbed=true.
+        let windPass = EnergyWindVerifyRecord(
+            stamp: "20260522T000000Z",
+            producer: "synth@k71_g41_invariant_audit",
+            measurementGate: .closedMeasured,
+            absorbed: true,
+            scopeCaveats: [],
+            citations: [],
+            measuredOracle: Self.passOracle())
+
+        XCTAssertTrue(Self.invariantHolds(
+            absorbed: windPass.absorbed,
+            measuredOracle: windPass.measuredOracle,
+            isIllustrativePhysics: false),
+            "EnergyWindVerifyRecord with measured PASS must satisfy invariant — fourth-carrier auto-extension (G30 record-type-agnostic · κ-71 G41 4th record-type instance · invariant-helper code change 0)")
+
+        // Conflation guard — Wind with absorbed=true but measured nil and
+        // non-illustrative MUST fail the invariant.
+        let windConflated = EnergyWindVerifyRecord(
+            stamp: "20260522T000000Z",
+            producer: "synth@d95_conflation",
+            measurementGate: .open,
+            absorbed: true, // <- illegitimate (no oracle, not illustrative)
+            scopeCaveats: [],
+            citations: [],
+            measuredOracle: nil)
+
+        XCTAssertFalse(Self.invariantHolds(
+            absorbed: windConflated.absorbed,
+            measuredOracle: windConflated.measuredOracle,
+            isIllustrativePhysics: false),
+            "EnergyWindVerifyRecord with absorbed=true + nil measured oracle (and non-illustrative) MUST violate invariant — D103/D109 separation extends to the fourth carrier")
+    }
+
     // MARK: Test 3 — D106 illustrative cells exempt from measured oracle
 
     func testD106IllustrativeCellExemptFromMeasuredOracle() {

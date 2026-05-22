@@ -2713,12 +2713,27 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
 - [~] **G41.** 4th cell 첫 `absorbed=true` legitimate flip (NOT D95
     computed projection · κ-68 G29 / κ-69 G33 / κ-70 G37 mirror ·
     네번째 cell measurement-parity land)
-    — **PARTIAL 2026-05-22**: substrate floor LANDED (hexa-lang PR #308
-    `power_curve_kernel.hexa` · IEC 61400-12 cubic-interp + air-density ·
-    cross-impl parity vs Python ref verified on pool:ubu-2 · exact match).
-    measured-oracle flip DEFERRED (server 529 Overloaded blocked the heavy
-    multi-repo agent · NREL WTK token dependency) — schema/fetcher/producer/
-    flip remain. See `inbox/notes/2026-05-22-k71-g41-substrate-LANDED.md`.
+    — **PARTIAL 2026-05-22**: 5 of 6 components LANDED + design.md D121
+    박제. (1) substrate (hexa-lang PR #308 `power_curve_kernel.hexa`
+    IEC 61400-12 cubic-interp · cross-impl parity vs Python ref verified
+    pool:ubu-2 · exact match) · (2) schema (cockpit `EnergyWindVerifyRecord`
+    NEW · 4th record-type sub-cell separation per D120) · (3) producer
+    (hexa-lang PR #320 `iec_vs_vestas_v90_oracle.py` · Vestas V90-2.0MW
+    empirical curve as asymmetric oracle · PREDICTION-shape genuine
+    modeling error · κ-69/70 numeric-equivalence trap avoided) ·
+    (4) invariant audit (`testEnergyWindVerifyRecordCoveredByInvariant
+    NoCodeChange` PASS · **4-record-type record-type-agnostic
+    generalization confirmed · 0 invariant-helper code change** ·
+    strongest cross-cell evidence yet) · (5) record emit (`exports/
+    energy_wind/verify/<stamp>/`).
+    **The 6th — `absorbed=true` flip — DEFERRED on honest gap**:
+    mean_rel_err=0.0708 over 43-bin [4,25] m/s grid · D120 ≤0.05
+    NOT met (IEC cubic-interp underpredicts Vestas empirical in
+    cubic region 10-34% · over-predicts at v=12 rated transition).
+    R4 invariant respected. Resumption: (i) kernel refinement
+    (multi-segment quadratic / sigmoidal-on-rated) · (ii) oracle-
+    criterion new D-block · (iii) different turbine class
+    (anti-pattern). See design.md D121.
   - **scope**: G28 (schema-half · 재사용) + G29 / G33 / G37 (real
     flip) 묶음의 네번째 instance — G40 cell 의 `MeasuredOracleRef`
     instantiation + producer wire (external oracle fetch + measured-

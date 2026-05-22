@@ -6257,3 +6257,72 @@ schema · `4a1a087` · G41 4th record-type reuse) · `cockpit/Sources/
 DemiurgeCore/Models/EnergyVerifyRecord.swift` (`EnergyWindVerify
 Record` 의 1:1 mirror source · G41 신설 carrier) · `domains/
 energy.md` (solar/wind sub-cell narrative).
+
+### Decision 121 — κ-71 R10 G41 first-flip — Energy/wind PREDICTION-shape measured-oracle measurement (PARTIAL · honest gap · absorbed stays false)
+
+**Cell**: `EnergyWindVerifyRecord` (NEW · 4th cell · sub-cell separation from κ-68 G29 `EnergyVerifyRecord` per D120). **Status**: ARCH §11.6 G41 stays `[~]` PARTIAL — substrate + invariant audit + measurement landed, `absorbed=true` flip DEFERRED on honest gap.
+
+#### What landed (5 of 6 components)
+
+1. **Substrate** (hexa-lang `2b4fc695` · PR #308): `stdlib/kernels/wind/power_curve_kernel.hexa` v0.1.0 (IEC 61400-12-1 cubic-interp + air-density correction · libm pow only · cross-impl parity vs Python ref verified on pool:ubu-2 · exact match). G31-mirror established (substrate floor ZERO → kernel-parity-verified).
+
+2. **Schema** (demiurge cockpit): `cockpit/Sources/DemiurgeCore/Models/EnergyWindVerifyRecord.swift` NEW — distinct Codable from `EnergyVerifyRecord` (κ-68 G29 solar) so the 4-record-type invariant audit exercises a NEW type. Same field set as `EnergyVerifyRecord` (`absorbed` · `measuredOracle` · `hexaNativeParity` · `scopeCaveats` · `citations` etc.) + default `domain="energy_wind"` · `kind="energy_wind_verify"`.
+
+3. **Producer / oracle** (hexa-lang PR #320): `stdlib/energy/iec_vs_vestas_v90_oracle.py` — PREDICTION-shape measured-oracle producer. Vestas V90-2.0MW manufacturer-published power curve (24-point bin table) as asymmetric empirical oracle vs the IEC cubic-interp kernel (Python equivalent · cross-impl parity verified). 43-bin grid over [4, 25] m/s · 0.5 m/s step · linear interp on Vestas table · cubic-interp on kernel side. Emits `EnergyWindVerifyRecord`-shaped JSON.
+
+4. **Invariant audit** (demiurge cockpit): `cockpit/Tests/DemiurgeCoreTests/AbsorbedNeedsMeasuredOracleTests.swift::testEnergyWindVerifyRecordCoveredByInvariantNoCodeChange` — 2 assertions (PASS-case + conflation-guard). **4-record-type record-type-agnostic generalization CONFIRMED** with **0 invariant-helper code change** across Energy/solar · Aura/EEG · Ufo/plasma · Energy/wind. Strongest cross-cell evidence yet that `invariantHolds(absorbed, measuredOracle, isIllustrativePhysics)` is record-type-agnostic by construction. Full suite: 6/6 PASS.
+
+5. **Record fixture** (demiurge `exports/energy_wind/verify/<stamp>/`): emitted JSON record with `absorbed: false` · `measurement_gate: "GATE_OPEN"` · full 43-bin payload · 4-layer disclosure in `scope_caveats` · `hexa_native_parity` + `measured_oracle` blocks populated.
+
+#### What did NOT land (the 6th component — `absorbed=true` flip)
+
+**Measurement result**: `mean_rel_err = 0.0708` · `max_rel_err = 0.3409` over the 43-bin valid window. D120 PASS criterion is `mean_rel_err ≤ 0.05` — **NOT met** (0.0708 > 0.05). Per g3, `absorbed` stays `false` (R4 invariant respected). Per-bin breakdown of the gap:
+
+| v (m/s) | kernel (IEC cubic) | oracle (Vestas) | rel_err |
+|---|---|---|---|
+| 4 | 43.50 | 66.00 | 0.341 |
+| 5 | 115.23 | 152.00 | 0.242 |
+| 6 | 222.22 | 280.00 | 0.206 |
+| 8 | 570.25 | 690.00 | 0.174 |
+| 10 | 1144.03 | 1296.00 | 0.117 |
+| 12 | 2000.00 | 1818.00 | 0.100 |
+| 14 | 2000.00 | 1980.00 | 0.010 |
+| 15–25 (plateau) | 2000.00 | 2000.00 | 0.000 |
+
+#### g3 honest disclosure (D119 G37 mirror · 4-layer)
+
+- **Layer 1 — oracle nature**: manufacturer-published Vestas V90-2.0MW power curve · NOT a metered/SCADA timeseries. NREL Wind Toolkit (token-gated) is the deferred upgrade path.
+- **Layer 2 — shape**: **PREDICTION** (genuine modeling error · κ-69/70 numeric-equivalence trap successfully avoided · this is the deliberate honesty-floor re-elevation after κ-69 D117 + κ-70 D119 numeric-equivalence rounds).
+- **Layer 3 — scope**: single turbine model (Vestas V90-2.0MW) · sea-level air density assumed · no shear / turbulence / wake corrections · single operating regime.
+- **Layer 4 — what would elevate**: (a) real SCADA timeseries via NREL WTK once auth available · (b) multi-turbine class sweep (Enercon E-126 · Siemens · GE) · (c) wake + turbulence + density-altitude correction · (d) higher-order kernel form (multi-segment quadratic OR sigmoidal-on-rated) that fits empirical · these are the resumption paths.
+
+#### Path forward — kernel refinement OR oracle relaxation (DEFERRED)
+
+The IEC cubic-interp kernel is a simplified reference (P ∝ v³ between cut-in and rated). The Vestas empirical curve includes drivetrain efficiency curves + rated-transition smoothing that the cubic-interp does not model. Three resumption paths (not exclusive):
+
+- (i) **Kernel refinement**: extend `power_curve_kernel.hexa` with a multi-segment power-curve API (piecewise quadratic OR sigmoidal-on-rated) that can fit the manufacturer table; same parity-verify pattern + new mean_rel_err measurement.
+- (ii) **Oracle relaxation**: D120 contract specifies "wind speed ∈ [4,25] m/s" but per-bin weighting could be reconsidered (operating-regime weight by energy yield · Weibull · etc.). This is a *redefinition* of PASS criterion and requires its own D-block — NOT done unilaterally here.
+- (iii) **Different turbine class**: pick a turbine model whose empirical curve happens to fit IEC cubic-interp better. Less honest (the IEC reference is the canonical reference · cherry-picking turbines is a tell).
+
+(i) is the principled path; (ii) needs a new D-block; (iii) is anti-pattern.
+
+#### 4-record-type invariant audit (the strongest evidence yet)
+
+| round | cell | record type | invariant-helper code change |
+|---|---|---|---|
+| κ-68 G29 | Energy/solar | EnergyVerifyRecord | (defining round · helper landed) |
+| κ-69 G33 | Aura/EEG | AuraVerifyRecord | 0 |
+| κ-70 G37 | Ufo/plasma | UfoVerifyRecord | 0 |
+| **κ-71 G41 (this)** | **Energy/wind** | **EnergyWindVerifyRecord (NEW)** | **0** |
+
+Record-type-agnostic by construction confirmed across 4 cells. `invariantHolds(absorbed, measuredOracle, isIllustrativePhysics)` is the load-bearing predicate; its 0-code-change auto-extension across 4 record types (including 2 NEW types · UfoVerifyRecord κ-70 + EnergyWindVerifyRecord κ-71) is the strongest cross-cell evidence to date that the design is correctly typed/parameterized at the predicate level rather than the record-type level.
+
+#### Anchors
+
+- hexa-lang PR #308 (substrate · `power_curve_kernel.hexa` · `2b4fc695` MERGED) + PR #320 (producer · `iec_vs_vestas_v90_oracle.py` · pending CI).
+- demiurge: `cockpit/Sources/DemiurgeCore/Models/EnergyWindVerifyRecord.swift` (NEW · this commit) · `cockpit/Tests/DemiurgeCoreTests/AbsorbedNeedsMeasuredOracleTests.swift` (4-record-type test addition) · `exports/energy_wind/verify/<stamp>/energy_wind_verify_*.json` (this measurement's record).
+- D120 (G40 cell-pick · 5-fold contract) · D119 (κ-70 G37 first-flip · mirror) · D110 (κ-68 G29 PREDICTION-shape model) · D103 (dimension-separation: substrate-parity ≠ measurement-parity).
+- ARCH §11.6 G41 row — stays `[~]` PARTIAL with this D121 cite + gap details.
+- `inbox/notes/2026-05-22-k71-g41-substrate-LANDED.md` (substrate sub-phase) · superseded-merged into this D121.
+
+Status: **[~] PARTIAL · 2026-05-22**. Substrate · schema · producer · invariant audit · record-emit LANDED. `absorbed=true` flip awaits (i) kernel refinement OR (ii) oracle-criterion D-block.
