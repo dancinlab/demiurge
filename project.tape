@@ -3,38 +3,38 @@
 
 @I := "demiurge" :: identity [active]
   kind   = "Universal hexa-native technical-design architecture (7-verb pipeline · domain-plugin macOS cockpit)"
-  brief  = "spec → structure → design → analyze ⟲ → synthesize → verify → handoff. Materials → chip → component meta-conductor."
+  brief  = "spec → structure → design → analyze ⟲ → synthesize → verify → handoff · materials → chip → component"
   parent = "dancinlab"
   ssot   = "github.com/dancinlab/demiurge (`hx install demiurge`)"
 
 @D d1 := "non-wet-lab verification → completed-form" :: governance [required active]
-  do   = "drive every non-wet-lab verification step (simulation · in-silico analysis · proof · synthesis · cockpit gate · handoff) to completed-form / done state — the entire pre-experiment pipeline reaches `verified` BEFORE the wet-lab boundary"
-  dont = "leave non-wet-lab verification in `partial` / `in-progress` / `pending` / `tbd` when the path to completion is clear — only the physical wet-lab experiment itself is the legitimate `not yet` boundary"
+  do   = "drive every non-wet-lab step (sim · analysis · proof · synthesis · cockpit gate · handoff) to completed-form before the wet-lab boundary"
+  dont = "leave non-wet-lab verification `partial` / `pending` when the path to completion is clear"
 
-@D d2 := "wall encountered: surface breakthrough paths, never concede" :: governance [required active]
-  do   = "when current methods + current understanding hit an empirically-demonstrated wall (any domain — materials · biology · chemical), propose 2-3 concrete breakthrough hypotheses to test (new lens · new dataset · new method · feedback loop · domain extension · re-framing) — use `/gap full` for systematic 40-lens axis sweep + `hexa kick` for engine-driven gap traversal"
-  dont = "concede `impossible with current methods` as terminal without naming concrete breakthrough paths to try"
+@D d2 := "wall encountered — surface breakthrough paths, never concede" :: governance [required active]
+  do   = "on an empirically-demonstrated wall, propose 2-3 concrete breakthrough hypotheses — `/gap full` 40-lens sweep · `hexa kick`"
+  dont = "concede `impossible with current methods` without naming concrete breakthrough paths to try"
 
 @D d3 := "implementation code lives in one canonical home" :: governance [required active]
-  do   = "algorithm / implementation code lives in the canonical stdlib home (per-language root) — topical sister folders / per-domain repos hold docs · manifests · examples only"
-  dont = "duplicate implementation across topical sister folders · maintain the same code in N places · treat topical / per-domain repos as code homes"
+  do   = "algorithm / implementation code lives in the canonical stdlib home — topical folders hold docs / manifests / examples only"
+  dont = "duplicate implementation across topical folders · treat per-domain repos as code homes"
 
 @D d4 := "single generic dispatch — new instance = manifest only" :: governance [required active]
-  do   = "dispatch all variants / domains / tenants through one generic code path — adding an instance = drop a manifest file, nothing else"
-  dont = "per-instance dispatcher / producer class (the `FooProducer` / `BarProducer` family) · hard-coded instance branches in the router"
+  do   = "dispatch all variants / domains / tenants through one generic path — new instance = drop a manifest"
+  dont = "per-instance dispatcher / producer class · hard-coded instance branches in the router"
 
 @D d5 := "universal generic path — no instance-name hardcoding" :: governance [required active]
-  do   = "every instance / variant / domain traverses the same generic path — rename / add / remove is a manifest-only change"
-  dont = "branch on instance name in the generic layer · add per-instance hardcoded checks (1 universal socket, not N shapes)"
+  do   = "every instance / variant traverses the same generic path — add / rename / remove is manifest-only"
+  dont = "branch on instance name in the generic layer · per-instance hardcoded checks"
 
-@D d6 := "absorbed=true ⇔ measuredOracle.isMeasuredOraclePASS=true (measured-oracle invariant · 4-carrier audited · κ-71 G41 PARTIAL)" :: governance [required active]
-  do   = "flip stored `absorbed: Bool` to true only when an attached `MeasuredOracleRef` records `isMeasuredOraclePASS=true` against its PASS criterion — keep `absorbed` (measurement axis) orthogonal to D95/D103 `hexa_native_parity` (substrate-port axis); load-bearing enforcement = `cockpit/Tests/DemiurgeCoreTests/AbsorbedNeedsMeasuredOracleTests.swift` (`fee34cc` G30 Stage 1 · invariant helper record-type-agnostic — κ-68 EnergyVerifyRecord G29/D110 · κ-69 AuraVerifyRecord G33/D117 · κ-70 UfoVerifyRecord G37/D119 LANDED 3rd carrier per D118 · κ-70 R9 4/4 CLOSURE G38 · κ-71 EnergyWindVerifyRecord G41/D121 NEW 4th carrier · invariant-test PASS · κ-71 R10 G41 [~] PARTIAL — absorbed flip DEFERRED on honest gap mean_rel_err=0.0708 > 0.05 D120 criterion · invariant audit nonetheless LANDED & confirms record-type-agnostic generalization) — **4-carrier audit COMPLETE**: 4 record types × identical `invariantHolds(absorbed, measuredOracle, isIllustrativePhysics)` predicate × invariant-helper edit 0 = strongest cross-cell evidence to date that the invariant is record-type-agnostic by construction"
-  dont = "flip `absorbed=true` from D95 computed-projection alone (substrate-parity ≠ measurement-parity · D103 dimension-separation) · attach `MeasuredOracleRef` to `.illustrativePhysics` cells (D106 carve-out · RFC 013 §6.12 anti-conflation · Ufo Stage-4..7 warp/wormhole/dim/use excluded — measured-oracle scope OUT, governance-affirmed) · branch the invariant on record type (auto-extend per record-type-agnostic design · 3rd carrier audit landed at κ-70 G37/D119) · edit this row in-place except for PATCH wording (append new rows · semver = MINOR for new governance event)"
+@D d6 := "absorbed=true ⇔ measured-oracle PASS" :: governance [required active]
+  do   = "flip `absorbed=true` only when an attached `MeasuredOracleRef` records `isMeasuredOraclePASS=true` · keep it orthogonal to substrate-parity"
+  dont = "flip `absorbed` from a computed projection · attach a MeasuredOracleRef to illustrative-physics cells · branch the invariant on record type"
 
-@D d7 := "first-principles physics breaks the ML training-distribution wall · report only converged values, never force a target under goal pressure" :: governance [required active]
-  do   = "when an empirically-demonstrated wall is a *model's training-distribution limit* (ambient-trained ML under-predicts out-of-distribution physics — BETE-NET & ALIGNN both gave hydride electron-phonon λ≈0.34-0.48 vs literature ~2.0, cross-confirmed, RTSC.md §9.11.H/I), the breakthrough path is *first-principles physics* (DFT electron-phonon on pool:ubu-1/2 conda QE), NOT more ML (d2 instance); drive that prediction to completed-form (d1); report ONLY grid-converged values — label under-converged / broadening-unstable numbers as such (H3S 16³-k λ=1.15 broadening-unstable → 24³-k λ=0.85 broadening-stable; §9.12) and name the dominant remaining under-convergence (q-grid + anharmonicity)"
-  dont = "force a target number under goal / Stop-hook pressure · present an under-converged or broadening-sensitive value as *the* result (the stale-temp-file failure mode applied to convergence) · concede `impossible` for RTSC (d2 — §8.9 5-gate stays OPEN; frontier = ambient-pressure superhydride · arxiv:2310.07562 · 2403.13496) · flip `absorbed=true` from a simulation-only-prediction (d6 — DFT & ML are Tier-1 *prediction* · `gate_type=simulation-only-prediction` · NEVER a measured-oracle · hexa atlas n6 'Tc 300K' is a *target* not a measurement, §8.8/§9 atlas-witnessed)"
+@D d7 := "first-principles physics breaks the ML training-distribution wall" :: governance [required active]
+  do   = "when a wall is a model's training-distribution limit, the breakthrough path is first-principles physics, not more ML · report only grid-converged values"
+  dont = "force a target number under goal pressure · present an under-converged value as the result · flip `absorbed` from a simulation-only prediction"
 
-@D d8 := "compute sizing for DFT el-ph — pool for small cells · Vast.ai for batch + big cells · GPU only for ≥20 atoms" :: governance [required active]
-  do   = "for QE pw.x+ph.x electron-phonon on small Im-3m cells (4-7 atoms · current H3X family · 24³-k 6³-q ~3h on 6c Ryzen 9600X): **pool ubu-1/2 = free baseline, sufficient** for single-track runs; for **batch screening (10+ candidates) or one-off acceleration**, use **Vast.ai spot CPU market** (32-384 vCPU bare-metal at *sub-cent/hr* — listed via `vastai search offers 'cpu_cores>=32 num_gpus=0 verified=true rentable=true'` after `vastai set api-key $(secret get vast.api_key)`; SSH keys at `vast.ssh_{priv,pub}`; CLI = `pip install vastai` ≥1.0.13 via Python ≥3.11 — Python 3.9 Mac default produces SyntaxError) which scales 5-10× per run AND parallelizes the batch; for **medium-large cells (≥20 atoms, e.g. LaH10/CaH6/multi-element ternaries) OR dense k-grids (32³+)**, GPU pod (NVIDIA A100/H100 with QE-GPU cuda branch) becomes cost-effective only when GPU memory saturates with wavefunctions; memory bandwidth (DDR5/HBM) > raw FLOPS for QE (FFT/BLAS streaming bottleneck — same-core-count system with slower memory loses)"
-  dont = "use RunPod CPU pods for our workload (per docs.runpod.io/flash/configuration/cpu-types, RunPod CPU SKUs *max out at 8 vCPU* — `cpu5c-8-16` / `cpu3g-8-32` ceiling — only 1.3× over pool 6c; sweet-spot CPU absent on the platform; GPU pods bill GPU-rate for vCPU we don't need) · attempt Vast.ai *CPU-only* (num_gpus=0) rentals — empirical 2026-05-22: 15+ CPU-only offers all returned `no_such_ask` even at $257 credit + email_verified=true + has_rented=true (root cause unclear; possibly platform-level CPU-only block, not balance/verification), while **Vast.ai GPU offers with 24-56 vCPU host** rent fine (succeeded on offer 36440479 Titan Xp 56vCPU 10GB $0.048/h at first attempt) → use GPU offers + ignore the GPU + run on the host CPU only; **prerequisite**: registered SSH public key's *private counterpart must be on disk OR in an active keychain* (this account's `vast.ssh_priv` lives in a `dancinlab.keychain-db` that may be unset on a given host — `secret get vast.ssh_priv > file` then silently emits empty bytes and `ssh -i file` fails with `invalid format`; verify the registered pubkey on `vastai show ssh-keys` matches a disk private key BEFORE renting) · pay for GPU on small cells (≤6 atom Im-3m · receipts: H3S 4-atom 24³-k 6³-q saturates at ~30-45 min on 32-core CPU, GPU host↔device transfer overhead not amortized) · scale beyond ~32 MPI ranks for small systems (diminishing return) · race for the cheapest verified-rentable Vast offer without idempotent retry loop (listings stale faster than CLI poll cadence; iterate via `python -c` over a fresh `vastai search ... --raw` list each attempt)"
+@D d8 := "compute sizing for DFT electron-phonon" :: governance [required active]
+  do   = "small cells (4-7 atoms) → pool ubu-1/2 free baseline · batch / acceleration → Vast.ai CPU market · ≥20 atoms or dense k-grids → GPU pod"
+  dont = "RunPod CPU pods (8-vCPU ceiling) · Vast.ai CPU-only rentals (no_such_ask — use GPU offers, run on host CPU) · pay for GPU on small cells"
