@@ -4,15 +4,6 @@
 > 의 분류 + 절차. rfc_001~005 의 "absorption" 용어와 직접 일관 — 모든
 > 새 도구는 ①~⑤ 영역 중 적절한 곳으로 배치된다.
 
-## ⚡ Recent absorptions (2026-05-22 session)
-
-- **JARVIS-OPTIMADE** → ① STDLIB · `hexa-lang/stdlib/material/cross_code_dft.py::_poll_jarvis` (Path B wrap · OPTIMADE REST · anonymous · OptB88vdW functional · ~85 LOC). RTSC §9.9.1 Phase 2 ext follow-on 3rd corpus. License: US-government public domain.
-- **HFBTHO + BSk22/24/27 + FRDM2012** → ① STDLIB · `hexa-lang/stdlib/nuclear/hfbtho_adapter.py` (N6 wrap-as-is · install-gated honest skip 영구). Nuclear discovery §4 N6. Anti-pattern: HFBTHO Fortran ecosystem hexa-native port 금지 (~50K LOC + 수십 년 검증 자산).
-- **WKB α-decay (Viola-Seaborg + Royer + ConsensusAlpha)** → ① STDLIB · `hexa-lang/stdlib/nuclear/wkb_alpha_decay.py` (Path B wrap) + `hexa-lang/stdlib/nuclear/sim.hexa` v0.1.0 (Phase 4 #1 microkernel port · 31/31 parity bit-exact · NUCLEAR.md §6 NP1 bundle).
-- **JET open-pulse archive (synthetic fallback)** → ① STDLIB · `hexa-lang/stdlib/fusion/jet_pulse_fetcher.py` + `jet_plasma_measured_oracle.py` (Ufo/plasma G37 measured-oracle bridge stack · 4-layer honest disclosure for synthetic fallback usage).
-- **PhysioNet Sleep-EDF** → ① STDLIB · `hexa-lang/stdlib/aura/sleep_edf_fetcher.py` (κ-69 G33 measured-oracle bridge stack · anonymous wget · CC-BY).
-- **CSH (Snider 2020 Nature retracted)** → ② DOC · F-RTSC-1 falsifier preregister canonical anchor (hexa-rtsc) · replaces LK-99 historical anchor per 2026-05-22 aggressive scrub (50e3d13 demiurge + 1cb673b hexa-rtsc + 8ca06d5c hexa-lang).
-
 ## 핵심 원칙
 
 > ⚠️ **제1 원칙 — 모든 producer 는 결국 hexa-native (`.hexa`) 로

@@ -1,24 +1,12 @@
 # Demiurge — HANDOFF (self-contained · cold-readable · 0-context)
 
-> 2026-05-22 · This single file is everything needed to continue demiurge
-> anywhere (new machine / new agent / new repo) with **zero prior context**.
+> This single file is everything needed to continue demiurge anywhere
+> (new machine / new agent / new repo) with **zero prior context**.
 > Read top to bottom; the RESUME block at the end is copy-paste ready.
 > Reconciled to **workbench-live** state — `design.md` and `PLAN.md` are
 > the SSOTs for decision numbers and phase counts (g_ssot_single_source);
-> this file describes *categories* only.
-
-## ⚡ Recent session (2026-05-22 stamp)
-
-- **κ-rounds**: κ-68 R7 + κ-69 R8 LANDED 4/4 each · **κ-70 R9 = 3/4 LANDED** (G35 horizon · G36 cell pick D118 Ufo/plasma · G37 first-flip D119 mean_rel_err 2.21e-06 PASS · G38 governance row PENDING).
-- **3 cells with stored `absorbed=true` legitimate flip** (record-type-agnostic invariant generalization complete): Energy/solar (D110) · Aura/EEG (D117) · Ufo/plasma (D119). G30 `invariantHolds(...)` confirmed 0-code-change auto-extension across all 3 record types.
-- **RTSC §9 cohort**: N1-N5 LANDED · Phase 1-4 #1 + Phase 4 #2 (PR #276 unblock pending CI infra fix) · 20-cell matrix 20/20 PASS post-JARVIS-OPTIMADE 3rd corpus.
-- **Nuclear discovery stack LANDED** (NUCLEAR.md spec + N6 HFBTHO wrap + N7 WKB α-decay + Phase 2 stabilization 10/10 PASS + Phase 4 #1 microkernel port 31/31 parity bit-exact). ²⁹⁴Og oganesson anchor reproduced honest.
-- **LK-99 aggressive scrub** complete across 3 repos (demiurge + hexa-rtsc + hexa-lang · 212 → 6 files demiurge · 30 → 0 files hexa-rtsc) · CSH (Snider 2020 Nature retracted) substituted at load-bearing F-RTSC-1 anchor sites.
-- **hexa-lang PRs**: #287 JARVIS adapter MERGED · #288 bootstrap.yml Option A MERGED · #289 Nuclear NP1 bundle MERGED · #290 stdarg.h iter-2a OPEN · #291 G37 fusion producer MERGED.
-- **New memory entries** (4): demiurge=pointer · D-number stale · impl-vs-header audit · parallel-agent cap 2-3 · hexa-lang main land via PR mandatory · no-impossibility framing.
-- **Live snapshot**: PLAN.md / NEXT_SESSIONS.md / ARCH.md §11.4-§11.5 / RTSC.md §9.9.1 / NUCLEAR.md §6 = SSOTs for current state; this HANDOFF block is summary only.
-
----
+> this file describes *categories* only. Session-by-session snapshots =
+> [`./HANDOFF.log.md`](./HANDOFF.log.md).
 
 ## 1. TL;DR (3 lines)
 
@@ -303,7 +291,10 @@ P-⑬ (κ-69 horizon · G32 cell-pick decision + G33 flip) + P-⑩
 > SSOT note: this HANDOFF + CHARTER are the architecture/why SSOT; PLAN.md
 > is the progress / measured-distance / κ-phase SSOT; `design.md` is the
 > decision audit trail SSOT (numbers + summaries live there, not here);
-> `NEXT_SESSIONS.md` is the cross-repo / post-completion handoff SSOT;
 > `AGENTS.tape` is the enforced governance. No over-claim (g3): workbench
 > built ≠ wired / absorbed / measured — the engine-tool-0 gap is honest,
 > and the measured distance lives in PLAN.md, never asserted here.
+
+---
+
+Historical log entries are in [`./HANDOFF.log.md`](./HANDOFF.log.md).
