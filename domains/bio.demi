@@ -1,0 +1,192 @@
+# bio.demi — verb-cell manifest for the bio (molecular biology / proteins /
+# DNA / RNA / drugs) domain.
+# SSOT scripts in ~/core/hexa-lang/stdlib/bio/ (D116 substrate migration —
+# PRs #278..#296 merged: foundation bio.hexa root dispatcher · cli · install ·
+# 5 core + 4 expansion-main + 15 sub = 24 in-silico axes · selftest/tests ·
+# _hexa_bridge / _python_bridge).
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → default arm → CellrunDispatch.run("bio", verb)
+#   EXCEPT (.verify, "bio") which keeps its legacy explicit case →
+#   BioVerifyProducer.runVerify() (anima-physics bridge scan-consumer · D74).
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+# Required keys per cell: substrate, script, record_kind, output_dir,
+# gate_default, absorbed_default.
+#
+# Script paths are RELATIVE to ~/core/hexa-lang/ (the hexa_lang_root
+# tunable, env-overridable via HEXA_CELLRUN_HEXA_LANG_ROOT).
+#
+# ── OPTION C HYBRID (in-silico / wet-lab split) ─────────────────────────────
+# bio is an IN-SILICO domain at the software boundary (D1 clean-room).
+# Open in-silico tools: AlphaFold 3 / ESMFold / Boltz-1 (structure) ·
+# GROMACS / OpenMM (MD) · RDKit / Biopython (cheminformatics + parsers) ·
+# Foldseek / DSSP (structure search + secondary-structure) — see bio.md §2.
+#
+#   • IN-SILICO cells (WIRED): specify · structure · design · analyze.
+#     Wired via substrate=hexa → stdlib/bio/bio.hexa (the 24-axis in-silico
+#     status surface · root dispatcher · runs read-only, exits 0). The
+#     surface is the bio substrate's own in-silico simulator+metadata
+#     consistency layer (hexa-bio AGENTS.tape g8 / f2). The bio domain has
+#     NO per-verb producer (.py/.hexa) — the substrate is AXIS-organized
+#     (24 axes each a <axis>/module/<axis>.hexa simulator), not VERB-
+#     organized. Until a thin per-verb argv shim lands under stdlib/bio/
+#     (specify.py / structure.py / design.py / analyze.py — see FOLLOW-UP
+#     below), the in-silico cells run the root axis-surface dispatcher and
+#     emit a generic cellrun envelope record (GATE_OPEN · absorbed=false).
+#
+#   • WET-LAB cells (HONEST-SKIP): synthesize · verify · handoff.
+#     project.tape @D d1: every NON-wet-lab verification step must reach
+#     completed-form; the physical wet-lab experiment is the ONE legitimate
+#     `not yet` boundary. synthesize (gene-synthesis order · protein design
+#     wet expression) · verify (binding assay · in-vivo PK/PD · clinical)
+#     · handoff (Genbank/PDB deposit · FDA IND / EMA CTA) all CROSS the
+#     wet-lab boundary → honest-skip (rc=2 "script missing") with explicit
+#     wet-lab caveats. No silent in-silico result is ever dressed as a
+#     wet-lab claim.
+#     NOTE: (.verify, "bio") is intercepted UPSTREAM by ActionDispatch's
+#     explicit `case (.verify, "bio")` → BioVerifyProducer (anima-physics
+#     bridge scan-consumer · D74) and never reaches this cellrun default
+#     arm. The [cell.verify] section below is present for completeness +
+#     CLI-bypass honesty (CellrunDispatch.runRaw direct callers) only.
+#
+# ── HONESTY (g3 / D106 illustrative carve-out · non-negotiable) ─────────────
+# Every cell defaults GATE_OPEN / absorbed=false. An in-silico PASS at any
+# bio cell is ILLUSTRATIVE PHYSICS (D106 · g3 · RFC 013 §6.12) — NEVER a
+# wet-lab, clinical, therapeutic, immunogenic, efficacy, binding-affinity,
+# ADMET, or regulatory claim. absorbed=true is UNREACHABLE for bio in
+# software: it requires a measured wet-lab oracle (binding Kd · expression
+# yield · in-vivo PK · assay readout) which lives past project.tape @D d1's
+# legitimate not-yet boundary. No MeasuredOracleRef attaches to these
+# illustrative-physics cells (D6 / D106 carve-out · RFC 013 §6.12 anti-
+# conflation).
+#
+# Citations (anchored, not repeated per-cell — see domains/bio.md §5):
+#   - AlphaFold 3 — Abramson et al. Nature 630, 493 (2024)
+#   - ESMFold — Lin et al. Science 379, 1123 (2023) · Boltz-1 — arXiv:2411.16107
+#   - RFdiffusion — Watson et al. Nature 620, 1089 (2023)
+#   - ProteinMPNN — Dauparas et al. Science 378, 49 (2022)
+#   - GROMACS (gromacs.org) · OpenMM (openmm.org) · RDKit (rdkit.org)
+#   - Foldseek — van Kempen et al. Nat. Biotechnol. 42, 243 (2024)
+#   - Biopython (BSD) · BLAST+ (NCBI) · PyMOL · DSSP
+
+# === IN-SILICO CELLS (WIRED · substrate=hexa → bio.hexa axis surface) ========
+
+# --- WIRED: specify (target spec · in-silico) -------------------------------
+[cell.specify]
+substrate         = hexa
+script            = stdlib/bio/bio.hexa
+record_kind       = bio_specify_record
+output_dir        = exports/bio/specify
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "specify = target spec (gene of interest · FASTA · UniProt id · clinical-indication if drug) — bio.md §2 SPECIFY row. IN-SILICO metadata, not a wet-lab claim.",
+  "wired via bio.hexa root dispatcher (24-axis in-silico status surface) — bio substrate is AXIS-organized, no per-verb producer yet (thin specify.py argv shim = FOLLOW-UP).",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false UNREACHABLE in software (D106 illustrative-physics · g3) — a target spec is aspiration, never a measured wet-lab oracle.",
+]
+
+# --- WIRED: structure (functional decomposition · in-silico) ----------------
+[cell.structure]
+substrate         = hexa
+script            = stdlib/bio/bio.hexa
+record_kind       = bio_structure_record
+output_dir        = exports/bio/structure
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "structure = functional decomposition (domain → motif → residue) — bio.md §2 ARCHITECT row. IN-SILICO decomposition, not an experimentally-resolved structure.",
+  "wired via bio.hexa root dispatcher (24-axis surface) — per-verb structure.py argv shim = FOLLOW-UP (substrate is axis-organized).",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false (D106 illustrative-physics · g3) — predicted decomposition ≠ X-ray/cryo-EM/NMR resolved structure.",
+]
+
+# --- WIRED: design (structure prediction + ligand design · in-silico) -------
+[cell.design]
+substrate         = hexa
+script            = stdlib/bio/bio.hexa
+record_kind       = bio_design_record
+output_dir        = exports/bio/design
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "design = structure prediction + de-novo design (AlphaFold 3 · ESMFold · Boltz-1 · RFdiffusion · ProteinMPNN — all open) — bio.md §2 DESIGN row. IN-SILICO prediction.",
+  "wired via bio.hexa root dispatcher (24-axis surface) — per-verb design.py argv shim wrapping AlphaFold/ESMFold/Boltz = FOLLOW-UP (substrate is axis-organized).",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false (D106 illustrative-physics · g3) — a predicted fold / designed sequence is illustrative until wet-lab expression + structure-resolution confirms it.",
+]
+
+# --- WIRED: analyze (MD + structure-search · in-silico, the ⟲ loop) ---------
+[cell.analyze]
+substrate         = hexa
+script            = stdlib/bio/bio.hexa
+record_kind       = bio_analyze_record
+output_dir        = exports/bio/analyze
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "analyze ⟲ = MD (GROMACS · OpenMM) + structure search (Foldseek) + secondary structure (DSSP) + parsers (Biopython · BLAST+) — bio.md §2 ANALYZE row. IN-SILICO trajectory/search.",
+  "wired via bio.hexa root dispatcher (24-axis surface) — per-verb analyze.py argv shim wrapping GROMACS/OpenMM/Foldseek = FOLLOW-UP (substrate is axis-organized · GROMACS/RDKit deps absent → honest-skip in shim).",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false (D106 illustrative-physics · g3) — an in-silico MD trajectory / docking score is NOT a measured binding affinity or in-vivo readout.",
+]
+
+# === WET-LAB CELLS (HONEST-SKIP · project.tape @D d1 boundary) ===============
+
+# --- WET-LAB: synthesize (gene synthesis + wet protein expression) ----------
+# Honest-skip via "script missing" (rc=2) — stdlib/bio/synthesize.py does
+# NOT exist. Gene-synthesis ordering + wet protein expression CROSS the
+# wet-lab boundary (project.tape @D d1) → no in-silico producer is honest
+# here. The honest gap IS the contract until a wet-lab handoff producer
+# (order-form template emit, not a wet result) optionally lands.
+[cell.synthesize]
+substrate         = python3
+script            = stdlib/bio/synthesize.py
+record_kind       = bio_synthesize_record
+output_dir        = exports/bio/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "synthesize = gene-synthesis order + expression construct (IDT / Twist vendors) + wet protein design via RFdiffusion/ProteinMPNN sequences — bio.md §2 SYNTHESIZE. WET-LAB boundary (project.tape @D d1).",
+  "honest-skip (rc=2 script-missing) — no in-silico producer dresses a wet synthesis as done; a future template-emit (order-form skeleton · NOT a wet result) is the only honest software artifact here.",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false — synthesized construct is unverified until wet expression yield + sequence-confirmation; that measurement is past the @D d1 not-yet boundary.",
+]
+
+# --- WET-LAB: verify (binding assay · in-vivo PK/PD · clinical) -------------
+# SUPERSEDED by ActionDispatch explicit `case (.verify, "bio")` →
+# BioVerifyProducer.runVerify() (anima-physics hippocampus + memristor
+# composite bridge scan-consumer · D74). This cellrun cell is NEVER reached
+# by the default arm; present for completeness + CLI-bypass honesty only.
+# Wet-lab assay readout is the @D d1 legitimate not-yet boundary.
+[cell.verify]
+substrate         = python3
+script            = stdlib/bio/verify.py
+record_kind       = bio_verify_record
+output_dir        = exports/bio/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "verify = wet-lab assay (binding Kd · in-vivo PK/PD · clinical) + in-silico MD-trajectory validation (Foldseek · DSSP · GROMACS) — bio.md §2 VERIFY. WET-LAB readout = @D d1 not-yet boundary.",
+  "SUPERSEDED: ActionDispatch routes (.verify, bio) → BioVerifyProducer (anima-physics bridge scan-consumer · D74) BEFORE this cellrun default arm; this section is CLI-bypass / completeness only.",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false — a measured binding/assay oracle is required for absorbed=true and lives past the wet-lab boundary (D6 / D106 · no MeasuredOracleRef on illustrative cells).",
+]
+
+# --- WET-LAB: handoff (Genbank/PDB deposit · patent · FDA IND / EMA CTA) -----
+# Honest-skip via "script missing" (rc=2). Regulatory + deposit handoff
+# crosses the wet-lab/clinical boundary (project.tape @D d1).
+[cell.handoff]
+substrate         = python3
+script            = stdlib/bio/handoff.py
+record_kind       = bio_handoff_record
+output_dir        = exports/bio/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "handoff = Genbank/PDB deposit · patent filing · FDA IND / EMA CTA dossier — bio.md §2 HANDOFF. Regulatory + clinical handoff is past the @D d1 wet-lab boundary.",
+  "honest-skip (rc=2 script-missing) — a future template-emit (deposit checklist / IND skeleton · NOT a filed submission) is the only honest software artifact; the actual deposit/filing requires wet + clinical evidence.",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false — handoff dossier scaffolding is not an absorption claim; clinical/regulatory verdict lives entirely past the wet-lab boundary (g3 · D106).",
+]
