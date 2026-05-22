@@ -166,13 +166,29 @@ trained on JARVIS-SuperconDB \cite{jarvis_supercon_db} (Choudhary--Garrity
 dataset, with the latter outputting a $100$-bin discretisation of $\alpha^2 F(\omega)$
 on $0$--$100$\,meV.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/fig03_ml_hydride_failure.pdf}
+\caption{Ambient-ML wall on hydride $\lambda$. Two independent
+graph-neural-network architectures (BETE-NET \cite{gibson2025betenet} and
+ALIGNN's $\alpha^2 F$ head \cite{choudhary2022alignn}, both trained on the
+ambient-pressure JARVIS-SuperconDB \cite{jarvis_supercon_db}) predict
+$\lambda \approx 0.3$--$0.5$ for five high-pressure hydride superconductors
+where the literature / first-principles values are $\sim 2$--$2.5$. The two
+ML routes agree exactly because they share the training distribution; both
+fall below $0.55$, well outside the strong-coupling regime needed to recover
+the measured $T_c$ values shown above each group.}
+\label{fig:ml-wall}
+\end{figure}
+
 \begin{table}[h]
 \centering
-\caption{Hydride $\lambda$: ambient ML vs.\ measurement. Both architectures predict
-the H sublattice frequency scale ($\omega_{\log}$) roughly correctly but
-under-estimate $\lambda$ by a factor of $4$--$5$. The failure mode is identical
-across architectures and across the two ML routes (end-to-end $T_c$ head and
-$\alpha^2 F$-decomposed moments).}
+\caption{Hydride $\lambda$: ambient ML vs.\ measurement (companion to
+Fig.~\ref{fig:ml-wall}). Both architectures predict the H sublattice frequency
+scale ($\omega_{\log}$) roughly correctly but under-estimate $\lambda$ by a
+factor of $4$--$5$. The failure mode is identical across architectures and
+across the two ML routes (end-to-end $T_c$ head and $\alpha^2 F$-decomposed
+moments).}
 \label{tab:ml-vs-meas}
 \small
 \begin{tabular}{l c c c c}
@@ -189,6 +205,42 @@ YH\textsubscript{6}   & $0.34$ & $0.34$ & $\sim 2.5$ & $224$ \\
 
 \section{Method}
 \label{sec:method}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize},
+  block/.style={rectangle, draw=black!70, thick, minimum width=2.3cm,
+               minimum height=0.9cm, align=center, rounded corners=2pt},
+  flow/.style={->, >=stealth, thick, draw=black!60}
+]
+\node[block, fill=blue!8]   (struct) at (0,0)    {H$_3$S structure\\\scriptsize Im-3-m, $a{=}2.984$\,\AA};
+\node[block, fill=blue!12]  (scf)    at (3.0,0)  {pw.x SCF\\\scriptsize $24^3$ $k$, $E_{\text{cut}}{=}60/600$};
+\node[block, fill=teal!12]  (ph)     at (6.0,0)  {ph.x DFPT\\\scriptsize $6^3$ $q$, 16 irred.};
+\node[block, fill=teal!20]  (a2f)    at (9.0,0)  {$\alpha^2 F(\omega)$\\\scriptsize $e\text{--}ph$ moments};
+\node[block, fill=honestgreen!15] (ad) at (12.0,0) {Allen--Dynes\\\scriptsize $T_c \in [175, 195]\,$K};
+\draw[flow] (struct) -- (scf);
+\draw[flow] (scf)    -- (ph);
+\draw[flow] (ph)     -- (a2f);
+\draw[flow] (a2f)    -- (ad);
+% pool-host split annotation
+\node[font=\scriptsize\itshape, below=0.05cm of ph, align=center]
+  {ubu-1: $q_1\!\dots\!q_8$\\ubu-2: $q_9\!\dots\!q_{16}$};
+% measured target
+\node[font=\scriptsize, right=0.3cm of ad, align=left]
+  {vs.\ meas.\\$203$\,K \cite{drozdov2015h3s}};
+% moments equation hint
+\node[font=\scriptsize\itshape, below=0.05cm of a2f, align=center]
+  {Eqs.\,(1)--(3)};
+\end{tikzpicture}
+\caption{First-principles electron--phonon pipeline. Structure $\to$ self-consistent
+field ($24^3$ $k$, Methfessel--Paxton) $\to$ DFPT phonons \& el--ph at $6^3$ $q$
+(16 irreducible $q$, split across two pool hosts via \texttt{start\_q / last\_q})
+$\to$ Eliashberg spectral function $\alpha^2 F(\omega)$ collapsed to scalar moments
+(Eqs.\,\ref{eq:lambda}--\ref{eq:w2}) $\to$ Allen--Dynes $T_c$
+(Eq.\,\ref{eq:ad}) compared against measurement.}
+\label{fig:pipeline}
+\end{figure}
 
 \paragraph{System.}
 Cubic Im--3--m H\textsubscript{3}S, primitive BCC cell (1\,S + 3\,H, four atoms),
@@ -250,7 +302,23 @@ post hoc. We report all four converged broadenings and both $\mu^*$ values.
 \subsection{$q$-Grid convergence ladder}
 
 The headline result is the monotonic climb of $\lambda$ with the $q$-grid, against
-a flat ML baseline and against the literature harmonic plateau (Table~\ref{tab:ladder}).
+a flat ML baseline and against the literature harmonic plateau
+(Fig.~\ref{fig:lambda-ladder}, Table~\ref{tab:ladder}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/fig01_lambda_ladder.pdf}
+\caption{H\textsubscript{3}S electron--phonon coupling $\lambda$ ladder. Ambient
+ML \cite{gibson2025betenet,choudhary2022alignn} sits at $0.48$, far below the
+strong-coupling regime. Harmonic DFT lifts $\lambda$ monotonically with the
+phonon $q$-grid: $0.85 \to 1.3 \to \mathbf{2.37}$ as $q$ increases through
+$2^3 \to 4^3 \to 6^3$. The $6{\times}6{\times}6$ value (this work) matches the
+literature harmonic plateau \cite{errea2016h3s} at $\sim 2.2$ and the measured
+target $\sim 2.0$ (dashed line). Errors bars at $6^3$ and lit/measured are
+broadening-induced spreads (Table~\ref{tab:6x6x6}). No anharmonic correction
+applied; SSCHA would refine downward by $\sim 5$--$15\%$.}
+\label{fig:lambda-ladder}
+\end{figure}
 
 \begin{table}[h]
 \centering
@@ -278,6 +346,30 @@ measured \cite{drozdov2015h3s}                           & ---               & $
 The $\lambda$ value increases by a factor of $\sim 2.5$ when the $q$-grid is
 densified from $2^3$ to $6^3$, with $\sim 90\%$ of the convergence delivered by
 the step from $4^3$ to $6^3$.
+
+\subsection{$T_c$ convergence}
+
+The Allen--Dynes $T_c$ obtained from these $\lambda$ values
+(Fig.~\ref{fig:tc-conv}) climbs monotonically from $\sim 2$\,K (ambient ML) to
+$74$\,K ($2^3$-$q$) to $109$--$140$\,K ($4^3$-$q$) and reaches
+$\mathbf{175\text{--}195}$\,K at $6{\times}6{\times}6$-$q$, against the
+measured $203$\,K from \cite{drozdov2015h3s}. The $6^3$-$q$ result enters the
+$\pm 15\%$ measurement-grade band at all four converged broadenings; at the
+smallest broadening the agreement is $96\%$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/fig02_tc_q_convergence.pdf}
+\caption{H\textsubscript{3}S Allen--Dynes $T_c$ ($\mu^*=0.10$) versus phonon
+$q$-grid. The shaded band marks the $\pm 15\%$ measurement-grade window
+around $T_c^{\text{meas}} = 203$\,K. The $6{\times}6{\times}6$-$q$ result
+(this work) enters the band; at the smallest converged broadening
+$\sigma = 0.015$\,Ry the value $T_c^{\text{AD}} = 195$\,K is at $96\%$ of
+measurement. Error bars on the DFT $4^3$ and $6^3$ rows are the spread
+over four converged Gaussian broadenings $\sigma = 0.015$--$0.030$\,Ry
+(Table~\ref{tab:6x6x6}).}
+\label{fig:tc-conv}
+\end{figure}
 
 \subsection{Broadening dependence at $6^3$ $q$}
 

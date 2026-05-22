@@ -28,6 +28,13 @@
 \citation{jarvis_supercon_db}
 \citation{choudhary2022alignn}
 \citation{choudhary2022alignn}
+\citation{gibson2025betenet}
+\citation{choudhary2022alignn}
+\citation{jarvis_supercon_db}
+\citation{gibson2025betenet}
+\citation{choudhary2022alignn}
+\citation{jarvis_supercon_db}
+\citation{drozdov2015h3s}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Background}{2}{section.2}\protected@file@percent }
 \newlabel{sec:bg}{{2}{2}{Background}{section.2}{}}
 \@writefile{toc}{\contentsline {paragraph}{Allen--Dynes critical temperature.}{2}{section*.1}\protected@file@percent }
@@ -37,47 +44,61 @@
 \newlabel{eq:ad}{{4}{2}{Allen--Dynes critical temperature}{equation.4}{}}
 \@writefile{toc}{\contentsline {paragraph}{H\textsubscript  {3}S.}{2}{section*.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Ambient-trained ML predictors.}{2}{section*.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Ambient-ML wall on hydride $\lambda $. Two independent graph-neural-network architectures (BETE-NET \cite  {gibson2025betenet} and ALIGNN's $\alpha ^2 F$ head \cite  {choudhary2022alignn}, both trained on the ambient-pressure JARVIS-SuperconDB \cite  {jarvis_supercon_db}) predict $\lambda \approx 0.3$--$0.5$ for five high-pressure hydride superconductors where the literature / first-principles values are $\sim 2$--$2.5$. The two ML routes agree exactly because they share the training distribution; both fall below $0.55$, well outside the strong-coupling regime needed to recover the measured $T_c$ values shown above each group.}}{3}{figure.caption.4}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:ml-wall}{{1}{3}{Ambient-ML wall on hydride $\lambda $. Two independent graph-neural-network architectures (BETE-NET \cite {gibson2025betenet} and ALIGNN's $\alpha ^2 F$ head \cite {choudhary2022alignn}, both trained on the ambient-pressure JARVIS-SuperconDB \cite {jarvis_supercon_db}) predict $\lambda \approx 0.3$--$0.5$ for five high-pressure hydride superconductors where the literature / first-principles values are $\sim 2$--$2.5$. The two ML routes agree exactly because they share the training distribution; both fall below $0.55$, well outside the strong-coupling regime needed to recover the measured $T_c$ values shown above each group}{figure.caption.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Hydride $\lambda $: ambient ML vs.\ measurement (companion to Fig.~\ref {fig:ml-wall}). Both architectures predict the H sublattice frequency scale ($\omega _{\log }$) roughly correctly but under-estimate $\lambda $ by a factor of $4$--$5$. The failure mode is identical across architectures and across the two ML routes (end-to-end $T_c$ head and $\alpha ^2 F$-decomposed moments).}}{3}{table.caption.5}\protected@file@percent }
+\newlabel{tab:ml-vs-meas}{{1}{3}{Hydride $\lambda $: ambient ML vs.\ measurement (companion to Fig.~\ref {fig:ml-wall}). Both architectures predict the H sublattice frequency scale ($\omega _{\log }$) roughly correctly but under-estimate $\lambda $ by a factor of $4$--$5$. The failure mode is identical across architectures and across the two ML routes (end-to-end $T_c$ head and $\alpha ^2 F$-decomposed moments)}{table.caption.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{3}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{3}{Method}{section.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{System.}{3}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Pseudopotentials.}{3}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Self-consistent field.}{3}{section*.9}\protected@file@percent }
+\citation{errea2016h3s}
+\citation{gibson2025betenet,choudhary2022alignn}
+\citation{errea2016h3s}
+\citation{gibson2025betenet,choudhary2022alignn}
 \citation{errea2016h3s}
 \citation{errea2016h3s}
 \citation{drozdov2015h3s}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Hydride $\lambda $: ambient ML vs.\ measurement. Both architectures predict the H sublattice frequency scale ($\omega _{\log }$) roughly correctly but under-estimate $\lambda $ by a factor of $4$--$5$. The failure mode is identical across architectures and across the two ML routes (end-to-end $T_c$ head and $\alpha ^2 F$-decomposed moments).}}{3}{table.caption.4}\protected@file@percent }
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{tab:ml-vs-meas}{{1}{3}{Hydride $\lambda $: ambient ML vs.\ measurement. Both architectures predict the H sublattice frequency scale ($\omega _{\log }$) roughly correctly but under-estimate $\lambda $ by a factor of $4$--$5$. The failure mode is identical across architectures and across the two ML routes (end-to-end $T_c$ head and $\alpha ^2 F$-decomposed moments)}{table.caption.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{3}{section.3}\protected@file@percent }
-\newlabel{sec:method}{{3}{3}{Method}{section.3}{}}
-\@writefile{toc}{\contentsline {paragraph}{System.}{3}{section*.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Pseudopotentials.}{3}{section*.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Self-consistent field.}{3}{section*.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Phonon and electron--phonon.}{3}{section*.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Pool-host split.}{3}{section*.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Moments and $T_c$.}{3}{section*.10}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Honest pre-registration.}{3}{section*.11}\protected@file@percent }
-\citation{allendynes1975}
-\citation{bcs1957}
-\citation{errea2016h3s}
+\citation{drozdov2015h3s}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces First-principles electron--phonon pipeline. Structure $\to $ self-consistent field ($24^3$ $k$, Methfessel--Paxton) $\to $ DFPT phonons \& el--ph at $6^3$ $q$ (16 irreducible $q$, split across two pool hosts via \texttt  {start\_q / last\_q}) $\to $ Eliashberg spectral function $\alpha ^2 F(\omega )$ collapsed to scalar moments (Eqs.\,\ref {eq:lambda}--\ref {eq:w2}) $\to $ Allen--Dynes $T_c$ (Eq.\,\ref {eq:ad}) compared against measurement.}}{4}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:pipeline}{{2}{4}{First-principles electron--phonon pipeline. Structure $\to $ self-consistent field ($24^3$ $k$, Methfessel--Paxton) $\to $ DFPT phonons \& el--ph at $6^3$ $q$ (16 irreducible $q$, split across two pool hosts via \texttt {start\_q / last\_q}) $\to $ Eliashberg spectral function $\alpha ^2 F(\omega )$ collapsed to scalar moments (Eqs.\,\ref {eq:lambda}--\ref {eq:w2}) $\to $ Allen--Dynes $T_c$ (Eq.\,\ref {eq:ad}) compared against measurement}{figure.caption.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Phonon and electron--phonon.}{4}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Pool-host split.}{4}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Moments and $T_c$.}{4}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Honest pre-registration.}{4}{section*.13}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4}Results}{4}{section.4}\protected@file@percent }
 \newlabel{sec:results}{{4}{4}{Results}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}$q$-Grid convergence ladder}{4}{subsection.4.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces $\lambda $ and $T_c$ ladder for H\textsubscript  {3}S. At each row except the first the $24^3$-$k$ SCF is reused. The Allen--Dynes $T_c$ is reported at the converged Gaussian broadening $0.020$\,Ry with $\mu ^* = 0.10$ (a higher $\mu ^* = 0.13$ shifts $T_c$ down by $\sim 5\%$).}}{4}{table.caption.12}\protected@file@percent }
-\newlabel{tab:ladder}{{2}{4}{$\lambda $ and $T_c$ ladder for H\textsubscript {3}S. At each row except the first the $24^3$-$k$ SCF is reused. The Allen--Dynes $T_c$ is reported at the converged Gaussian broadening $0.020$\,Ry with $\mu ^* = 0.10$ (a higher $\mu ^* = 0.13$ shifts $T_c$ down by $\sim 5\%$)}{table.caption.12}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Broadening dependence at $6^3$ $q$}{4}{subsection.4.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces H\textsubscript  {3}S DFPT $6{\times }6{\times }6$-$q$ result by Gaussian broadening. $\omega _{\log }$ is stable across broadenings at $\approx 1170$\,K (an order of magnitude above the BCC sulfur scale and consistent with the H-derived optical branches). The $T_c^{\text  {AD}}$ at $\mu ^* = 0.10$ ranges from $175$\,K to $195$\,K; at $\mu ^* = 0.13$ the spread is $164$--$184$\,K. The measured value is $T_c = 203$\,K.}}{4}{table.caption.13}\protected@file@percent }
-\newlabel{tab:6x6x6}{{3}{4}{H\textsubscript {3}S DFPT $6{\times }6{\times }6$-$q$ result by Gaussian broadening. $\omega _{\log }$ is stable across broadenings at $\approx 1170$\,K (an order of magnitude above the BCC sulfur scale and consistent with the H-derived optical branches). The $T_c^{\text {AD}}$ at $\mu ^* = 0.10$ ranges from $175$\,K to $195$\,K; at $\mu ^* = 0.13$ the spread is $164$--$184$\,K. The measured value is $T_c = 203$\,K}{table.caption.13}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Companion ambient proof: niobium}{4}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}$T_c$ convergence}{4}{subsection.4.2}\protected@file@percent }
+\citation{allendynes1975}
+\citation{bcs1957}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces H\textsubscript  {3}S electron--phonon coupling $\lambda $ ladder. Ambient ML \cite  {gibson2025betenet,choudhary2022alignn} sits at $0.48$, far below the strong-coupling regime. Harmonic DFT lifts $\lambda $ monotonically with the phonon $q$-grid: $0.85 \to 1.3 \to \mathbf  {2.37}$ as $q$ increases through $2^3 \to 4^3 \to 6^3$. The $6{\times }6{\times }6$ value (this work) matches the literature harmonic plateau \cite  {errea2016h3s} at $\sim 2.2$ and the measured target $\sim 2.0$ (dashed line). Errors bars at $6^3$ and lit/measured are broadening-induced spreads (Table~\ref {tab:6x6x6}). No anharmonic correction applied; SSCHA would refine downward by $\sim 5$--$15\%$.}}{5}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:lambda-ladder}{{3}{5}{H\textsubscript {3}S electron--phonon coupling $\lambda $ ladder. Ambient ML \cite {gibson2025betenet,choudhary2022alignn} sits at $0.48$, far below the strong-coupling regime. Harmonic DFT lifts $\lambda $ monotonically with the phonon $q$-grid: $0.85 \to 1.3 \to \mathbf {2.37}$ as $q$ increases through $2^3 \to 4^3 \to 6^3$. The $6{\times }6{\times }6$ value (this work) matches the literature harmonic plateau \cite {errea2016h3s} at $\sim 2.2$ and the measured target $\sim 2.0$ (dashed line). Errors bars at $6^3$ and lit/measured are broadening-induced spreads (Table~\ref {tab:6x6x6}). No anharmonic correction applied; SSCHA would refine downward by $\sim 5$--$15\%$}{figure.caption.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces $\lambda $ and $T_c$ ladder for H\textsubscript  {3}S. At each row except the first the $24^3$-$k$ SCF is reused. The Allen--Dynes $T_c$ is reported at the converged Gaussian broadening $0.020$\,Ry with $\mu ^* = 0.10$ (a higher $\mu ^* = 0.13$ shifts $T_c$ down by $\sim 5\%$).}}{5}{table.caption.15}\protected@file@percent }
+\newlabel{tab:ladder}{{2}{5}{$\lambda $ and $T_c$ ladder for H\textsubscript {3}S. At each row except the first the $24^3$-$k$ SCF is reused. The Allen--Dynes $T_c$ is reported at the converged Gaussian broadening $0.020$\,Ry with $\mu ^* = 0.10$ (a higher $\mu ^* = 0.13$ shifts $T_c$ down by $\sim 5\%$)}{table.caption.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Broadening dependence at $6^3$ $q$}{5}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Companion ambient proof: niobium}{5}{subsection.4.4}\protected@file@percent }
+\citation{errea2016h3s}
 \citation{morelanderson1962}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces H\textsubscript  {3}S Allen--Dynes $T_c$ ($\mu ^*=0.10$) versus phonon $q$-grid. The shaded band marks the $\pm 15\%$ measurement-grade window around $T_c^{\text  {meas}} = 203$\,K. The $6{\times }6{\times }6$-$q$ result (this work) enters the band; at the smallest converged broadening $\sigma = 0.015$\,Ry the value $T_c^{\text  {AD}} = 195$\,K is at $96\%$ of measurement. Error bars on the DFT $4^3$ and $6^3$ rows are the spread over four converged Gaussian broadenings $\sigma = 0.015$--$0.030$\,Ry (Table~\ref {tab:6x6x6}).}}{6}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:tc-conv}{{4}{6}{H\textsubscript {3}S Allen--Dynes $T_c$ ($\mu ^*=0.10$) versus phonon $q$-grid. The shaded band marks the $\pm 15\%$ measurement-grade window around $T_c^{\text {meas}} = 203$\,K. The $6{\times }6{\times }6$-$q$ result (this work) enters the band; at the smallest converged broadening $\sigma = 0.015$\,Ry the value $T_c^{\text {AD}} = 195$\,K is at $96\%$ of measurement. Error bars on the DFT $4^3$ and $6^3$ rows are the spread over four converged Gaussian broadenings $\sigma = 0.015$--$0.030$\,Ry (Table~\ref {tab:6x6x6})}{figure.caption.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces H\textsubscript  {3}S DFPT $6{\times }6{\times }6$-$q$ result by Gaussian broadening. $\omega _{\log }$ is stable across broadenings at $\approx 1170$\,K (an order of magnitude above the BCC sulfur scale and consistent with the H-derived optical branches). The $T_c^{\text  {AD}}$ at $\mu ^* = 0.10$ ranges from $175$\,K to $195$\,K; at $\mu ^* = 0.13$ the spread is $164$--$184$\,K. The measured value is $T_c = 203$\,K.}}{6}{table.caption.17}\protected@file@percent }
+\newlabel{tab:6x6x6}{{3}{6}{H\textsubscript {3}S DFPT $6{\times }6{\times }6$-$q$ result by Gaussian broadening. $\omega _{\log }$ is stable across broadenings at $\approx 1170$\,K (an order of magnitude above the BCC sulfur scale and consistent with the H-derived optical branches). The $T_c^{\text {AD}}$ at $\mu ^* = 0.10$ ranges from $175$\,K to $195$\,K; at $\mu ^* = 0.13$ the spread is $164$--$184$\,K. The measured value is $T_c = 203$\,K}{table.caption.17}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Limitations and honest caveats}{6}{section.5}\protected@file@percent }
+\newlabel{sec:limits}{{5}{6}{Limitations and honest caveats}{section.5}{}}
 \citation{errea2016h3s}
 \citation{ambient_hydride_2024_1,ambient_hydride_2024_2}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Limitations and honest caveats}{5}{section.5}\protected@file@percent }
-\newlabel{sec:limits}{{5}{5}{Limitations and honest caveats}{section.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion and outlook}{5}{section.6}\protected@file@percent }
-\newlabel{sec:discussion}{{6}{5}{Discussion and outlook}{section.6}{}}
-\@writefile{toc}{\contentsline {section}{Reproducibility}{5}{section*.14}\protected@file@percent }
 \bibstyle{plainnat}
 \bibdata{references}
 \bibcite{allendynes1975}{{1}{1975}{{Allen and Dynes}}{{}}}
 \bibcite{bcs1957}{{2}{1957}{{Bardeen et~al.}}{{Bardeen, Cooper, and Schrieffer}}}
 \bibcite{ambient_hydride_2024_1}{{3}{2024}{{Belli and Errea}}{{}}}
 \bibcite{ambient_hydride_2024_2}{{4}{2024}{{Belli et~al.}}{{Belli, Bhattacharya, Tristant, Schoen, Mukherjee, et~al.}}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion and outlook}{7}{section.6}\protected@file@percent }
+\newlabel{sec:discussion}{{6}{7}{Discussion and outlook}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{Reproducibility}{7}{section*.18}\protected@file@percent }
 \bibcite{jarvis_supercon_db}{{5}{2022{}}{{Choudhary and Garrity}}{{}}}
 \bibcite{choudhary2022alignn}{{6}{2022{}}{{Choudhary and Garrity}}{{}}}
 \bibcite{drozdov2015h3s}{{7}{2015}{{Drozdov et~al.}}{{Drozdov, Eremets, Troyan, Ksenofontov, and Shylin}}}
@@ -88,4 +109,4 @@
 \bibcite{gibson2025betenet}{{12}{2025}{{Gibson et~al.}}{{Gibson, Hire, and Hennig}}}
 \bibcite{mcmillan1968}{{13}{1968}{{McMillan}}{{}}}
 \bibcite{morelanderson1962}{{14}{1962}{{Morel and Anderson}}{{}}}
-\gdef \@abspage@last{6}
+\gdef \@abspage@last{8}
