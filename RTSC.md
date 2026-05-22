@@ -903,6 +903,26 @@ publication-grade CIF (Drozdov 2015 · Somayazulu 2019 · Troyan 2021 · Ma 2022
 
 **돌파 path 가동 — direct DFT electron-phonon (QE)**: pool:ubu-1 에 `apt quantum-espresso 6.7` 설치 → **pw.x · ph.x · q2r.x · matdyn.x · epw.x · lambda.x** 전부 land (source build 불필요 · OpenMPI+ScaLAPACK 동반). ph.x DFPT 는 실제 high-P lattice 에서 λ·α²F 를 *first-principles* 로 계산 — **pressure-aware by construction · ML 훈련분포 무관**. hydride λ~2 를 복원할 수 있는 유일한 route. H₃S (Im-3m · 4 atom/cell · ~150 GPa) = tractable validation case (§9.12 · task #1-5 진행).
 
+### 9.12 H₃S DFT el-ph 검증 — 돌파 path 실증 (2026-05-22 · pool:ubu-1)
+
+§9.11.I 의 돌파 가설 ("first-principles DFT 가 ambient-ML 이 놓치는 hydride 강결합 λ≈2 를 복원하는가?") 을 **pool:ubu-1 에서 직접 실증**. record: `exports/material_discovery/rtsc_h3s_dft_elph_validation_20260522.json`.
+
+**Setup**: QE 7.5 (conda-forge — Ubuntu apt 6.7 는 glibc `_FORTIFY_SOURCE` buffer-overflow packaging bug 로 사용 불가, conda 로 우회). H₃S Im-3m BCC primitive (1 S + 3 H = 4 atom, a=2.984 Å). pw.x scf (16³ k, ecut 60/600 Ry, Fermi 17.61 eV) → ph.x DFPT (2×2×2 q, 3 irreducible, weights [4,12,4], `electron_phonon='simple'`). Γ phonon = 19·499·1166·**1655 cm⁻¹** (H-derived 고주파, literature 일치 · 구조 dynamically sound).
+
+**핵심 결과 — DFT 가 강결합 복원**:
+
+| | λ | ω_log (K) | Tc Allen-Dynes (K) | measured 203K 대비 |
+|---|---:|---:|---:|---:|
+| ALIGNN ambient ML | 0.48 | 216 | **2.2** | ~1% |
+| **DFT first-principles (본 demo)** | **1.15** | **1227** | **~100** (μ*=0.10–0.13) | **~50%** |
+| literature converged | ~2.0 | ~1300 | ~203 | — |
+
+→ DFT 가 λ≈1.15 (Tc≈100K) 복원 — ambient ML 의 λ=0.48 (Tc≈2K) 대비 **결합 2.4× · Tc ~45× 회복**, coarse 2×2×2-q/16³-k grid 에서도. §9.11.I 가설 **검증**: first-principles DFT 는 ambient-trained ML 이 근본적으로 못 잡는 hydride 강결합을 포착. 잔여 gap (λ 1.15 vs 2.0) 은 H₃S 의 잘 알려진 grid-convergence 민감도 (denser k/q + anharmonicity → λ→2.0) — *돌파 path 자체는 작동 확정*.
+
+**hexa-native 연결**: ω_log moment-weighting 은 `stdlib/material/sim.hexa eliashberg_moments` (PR #299, v0.3.0, 3/3 parity bit-exact) 와 동일 — α²F → (λ, ω_log, ω₂) → allen_dynes_tc 체인이 hexa-native 로 닫힘. DFT α²F 든 ML α²F 든 같은 커널.
+
+**R4 보호**: `absorbed=false` · `gate_type=simulation-only-prediction` · `domain=material`. DFT 는 Tier-1 *prediction* (measured oracle 아님) — 돌파 *방향* 실증이지 RTSC absorbed=true 아님. H₃S 자체는 §8.9 gate (b) Tc≥270K + (c) ambient 둘 다 FAIL (203K @ 150 GPa). Pattern 2 honored — goal *전진*, 폐기 아님.
+
 ### 9.10 N5 cohort 신설 — novel-discovery funnel (compositional space exploration)
 
 §9.7 의 N1-N4 는 *KNOWN candidate* (특정 화학식이 주어진 경우) 의 시뮬레이션. **N5 cohort 는 *unknown novel composition* 을 *compositional space 에서 탐색* 하여 RTSC 후보 funnel 을 emit** — Nature `s41524-026-01964-8` 의 1.3M cand → 741 stable funnel 패턴 + arxiv:2511.03865 의 Materials Genome HTS discovery 워크플로 본받음.
