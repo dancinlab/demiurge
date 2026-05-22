@@ -1025,6 +1025,14 @@ novel_material_funnel.py <element_pool> <stoichiometry_constraints> <out_dir>
 
 ## Log
 
+- **2026-05-22 KST** — **DFT 돌파 + 합성-증명 capstone** (§9.11.H/I · §9.12 · §9.13). 종합:
+  - **ambient-ML 한계 cross-confirm** (§9.11.H/I): BETE-NET + ALIGNN 둘 다 hydride λ 0.34-0.48 (vs 측정 ~2.0) 로 실패 — 실패가 *λ(전자-포논 결합)* 에 국한 (ω_log 는 맞음). figshare 21370572 = dataset (별도 hydride 모델 없음). ambient-ML path 소진.
+  - **DFT el-ph 파이프라인 가동** (pool:ubu-1/2 · conda QE 7.5 · apt 6.7 FORTIFY-broken 우회 · `electron_phonon='simple'`): structure → pw.x → ph.x → α²F/λ/ω_log → Allen-Dynes Tc.
+  - **H₃S 고-Tc 트랙** (§9.12): k-수렴 24³ λ=0.85 (16³ 1.15 는 broadening-unstable 정정) → q-수렴 4×4×4 (8 irreducible) **λ=1.3 · Tc 125K**. λ-ladder 0.48→0.85→1.3→측정 2.0 단조 상승. 잔여=6×6×6 q + 비조화 SSCHA.
+  - **Nb ambient 트랙** (§9.13 2b): DFT el-ph 4×4×4 q 가 **측정 Tc 9.25K 를 9.9K (λ≈1.0) 로 재현** — 상압 SC measurement-MATCH · PR #299 BCS-비 attestation 과 이중 first-principles 검증.
+  - **hexa-native** `eliashberg_moments` (PR #299 · sim.hexa v0.3.0 · 3/3 bit-exact) — α²F→Tc 폐회로 SSOT.
+  - **hexa atlas 채굴(고갈)**: 7448 노드 SC 콘텐츠 = n6 numerological 프레임워크 (Tc 300K=*target*), measured-oracle Tc ZERO → §8.8 hexa-rtsc claim-only 를 atlas-provenance 로 확증.
+  - **capstone** (§9.13): SC 합성을 제1원리로 *증명하는 역량* = ambient(Nb 측정일치) + 고-Tc(H₃S 수렴) 두 축 measurement-grade 확립. 실제 RTSC 물질 absorbed=true 는 적격물질+wet-lab 의존 (§8.9 gate OPEN · 불가능 아님). 교훈 → **project.tape d7** (v1.3 거버넌스). 전 산출물 absorbed=false · simulation-only-prediction (R4 보존).
 - **2026-05-21 KST** — **§9 신설** (5-gate 시뮬레이션 stack · 외부 라이브러리 deep-research 영구 보관). §8.9 의 5-gate 별 open-source 라이브러리 + 2024-2026 arxiv reference 인덱스. 5 sub-section (9.1 합성가능성 sim · 9.2 Tc sim · 9.3 압력-의존 sim · 9.4 cross-code "독립" analog · 9.5 oracle parity) + 9.6 시뮬레이션 limit table + 9.7 4-cohort 발사 후보 (N1 CSP adapter · N2 BEE-NET adapter · N3 ASKCOS adapter · N4 cross-code DFT) + 9.8 arxiv 인덱스 (10 papers, full URL) + 9.9 non-arxiv URL 인덱스 (13 sources). honest: 시뮬레이션 PASS 라도 `gate_type=simulation-only-prediction` · `absorbed=false 영구` (R4 invariant 보호). 의미는 candidate funnel — wet-lab 우선순위 정렬용.
 - **2026-05-21 KST** — opened. 5축 분리 + 본 세션 cell(solenoid·HTS·getdp·verify·linear-A-φ) 진행 시작. domain rename 은 후속 PR 로 보류.
 - **2026-05-21 KST** — V1 closed-form (Lorenz + Wheeler) producer landing. `exports/rtsc/verify/2026-05-21T05-27-14Z/rtsc_verify_20260521T052714Z.json` — B_center=69.4 mT, L=431 μH, W=2.155 J. CLI dispatch (`demiurge action 검증 rtsc`) 정상 동작. V2 getdp FEM stage 는 install-gated skip (getdp.info 다운로드 connection-flaky).
