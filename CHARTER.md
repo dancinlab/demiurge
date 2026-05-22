@@ -1,7 +1,9 @@
 # Demiurge CHARTER
 
 > Standalone repo `~/core/demiurge`. Authoritative scope/governance.
-> Kept self-contained with `HANDOFF.md` (continuable anywhere).
+> Self-contained — no `HANDOFF.md` or `PLAN.md` needed (both
+> absorbed into this file 2026-05-22; their historical logs remain at
+> `HANDOFF.log.md` / `PLAN.log.md`).
 
 ## Mission
 
@@ -33,7 +35,8 @@ Decision 11 · `proposals/rfc_004_e2e_design_program.md`).
 terminal). Spine grounded in 9 cited lifecycles (ISO/IEC/IEEE 15288 ·
 V-model · NASA SE · FDA design controls · EDA RTL→GDSII · MBSE/OOSEM ·
 PLM · accelerator · spacecraft) — see `design.md` Decision 5. Full
-per-stage chip-domain external map: `HANDOFF.md` §5.
+per-stage chip-domain external map: `ARCH.md` §5 (absorbed from
+former `HANDOFF.md` §5, 2026-05-22).
 
 ## Domain plugin model
 
@@ -75,7 +78,7 @@ Python-0 · measured · no fake progress. See `design.md` Decisions 1, 15.
 - **Not comb** — comb (hexa-lang, n=6 fabric) is a *consumer* of the chip
   domain, not the EDA absorber. Decoupled by design.
 
-## Current state (snapshot, g3 — *category* only; numbers in PLAN.md)
+## Current state (snapshot, g3 — *category* only; numbers in `PLAN.log.md`)
 
 4-Phase forward roadmap is **design-complete at the contract/spec
 level** AND the macOS Swift cockpit **workbench is live**
@@ -94,16 +97,56 @@ measured-records-zero, per the honest core gap below.
 - macOS cockpit workbench built — rfc_009 / 010 / 011 / 012 spec →
   `cockpit/` SwiftPM package: 3-column 7-verb workbench, θ-2 action
   skeleton, §4.2 REJECTED guard, domain-aware canvas mode, CLI ↔
-  cockpit parity. Live progress = `PLAN.md` κ-phase log.
+  cockpit parity. Live progress = `PLAN.log.md` κ-phase log.
 
 **Honest core gap (g3):** **engine tool 0** — θ-2 has no real
-measurement tool yet (Yosys §4 unimplemented · booksim now in
-`hexa-lang/stdlib`), so every workbench project carries **0 measured
-records** and **no verb is ✅**. Seam records 0. No domain
-`absorbed=true`.
+measurement tool yet (Yosys §4 land-CLOSED but §5 measurement gate
+OPEN at Δ 10.07 % — see `YOSYS.md` · booksim now in `hexa-lang/stdlib`),
+so every workbench project carries **0 measured records** at the chip
+seam level and **no verb is ✅** beyond chip §B pinned baseline.
 
-Progress / measured distance = `PLAN.md`; decision audit = `design.md`
-(SSOT); cross-repo / post-completion handoffs = `NEXT_SESSIONS.md`.
+Progress / measured distance / κ-phase build log = `PLAN.log.md`;
+decision audit = `design.md` (SSOT); per-domain spec/history pairs =
+`<DOMAIN>.md` + `<DOMAIN>.log.md` (RTSC / ARCH / YOSYS / ABSORPTION /
+NUCLEAR / POOL / MP / GOAL — established 2026-05-22).
+
+## Roadmap (forward — Phase 0 ➜ 4 until GUI complete)
+
+> End-state = D16 macOS Swift cockpit shipped + each phase respecting
+> g3·D1·D2·g5·D15·no-big-bang. Design lands immediately;
+> build/irreversible/cross-repo steps gated explicitly.
+
+- **Phase 0 — DONE** ✅ : 7-verb spine (cited) · rfc_001..005 · 14
+  domain maps · AGENTS.tape · D1–D16 · comb archive · D15
+  stdlib→hexa-lang · hexa-matter measured-parity absorbed (rfc_005 §4
+  gate MET).
+- **Phase 1 — hexa-matter tombstone close**: ④ dependents inventory
+  (HEXA family README · sibling badges · Zenodo DOI · refs) → ⑤
+  GitHub `hexa-matter → archive_hexa-matter` (GATED · explicit go ·
+  external/irreversible) → ⑥ `~/core/hexa-matter` removal (GATED ·
+  post ④⑤ explicit go · destructive). + hexa-lang `d5a63a82`
+  (booksim) push (hexa-lang session, user-reviewed).
+- **Phase 2 — comb-stack absorption** (rfc_004 §5): `rfc_006..012`
+  — Yosys (see `YOSYS.md`) · OpenROAD · Verilator · SymbiYosys ·
+  OpenSTA · ngspice · Chisel/Amaranth · PDK. Each clean-room
+  hexa-native → `hexa-lang/stdlib/` (D15), g3 measurement gate. +
+  D14 hybrid follow-on: hexa-matter Python → incremental hexa-native
+  re-derivation (per verb).
+- **Phase 3 — chain seams** (rfc_004 §4): materials (`domains/matter`)
+  → chip → component direct typed contract (rfc_002 homomorphic per
+  seam); `domains/component/` domain definition; hexa-matter → chip
+  HANDOFF → SPECIFY wiring.
+- **Phase 4 — GUI complete (D16, end-state)**: native macOS Swift app.
+  · 4a read-model: `Codable` ⟵ rfc_002 schema /
+    `exports/**.{json,hxc}`
+  · 4b views: 7-verb pipeline canvas · meta-conductor chain graph ·
+    domain browser · provenance/GATE-state inspector · FSEvents live
+  · 4c build: Xcode project, locally-signed app, ops 0
+  · 4d **acceptance = the app honestly (over-claim 0) renders live
+    SSOT (D1–D16 · records · GATE · chain)** → **"GUI complete"**.
+- **Cross-cutting**: g3 gates only cited measurement · irreversible
+  / tombstone / cross-repo = explicit per-step go · core hexa-native
+  (Swift = boundary consumer).
 
 ## Related repos
 
