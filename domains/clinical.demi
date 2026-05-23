@@ -1,0 +1,126 @@
+# clinical.demi — verb-cell manifest for the clinical (drug development /
+# trials / pharmacogenomics / dermatology / virology / cardiology) domain.
+#
+# Demiurge로 진행 중인 인간 임상 도메인의 상위 그룹화. 멤버 (UPPERCASE.md
+# at repo root, managed by domain skill):
+#   NOREFLOW · ISR · DAPTPGX · LPA · TTR (CREAM · MN) · HERPES.
+#
+# clinical 도메인은 fundamentally wet-lab-dependent — V-cycle (V1 inventory
+# → V2 🔵 push → V3 🟢 push → V4 ledger) 가 in-silico verify 의 ceiling.
+# 모든 임상 outcome (RCT TLR · HR · TLF · MACE · ST · 사망률) 은 wet-lab
+# /clinical-trial 으로만 producible — bio.md §honesty 정신 그대로 적용.
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+#
+# ── HONESTY (g3 / D106 정신 적용 · non-negotiable) ───────────────────────
+# 모든 cell 은 GATE_OPEN / absorbed=false default. 임상 in-silico PASS 는
+# ILLUSTRATIVE 만 — RCT/registry/regulatory readout 이 진짜 outcome producer.
+# absorbed=true 는 software 로 도달 불가능 — measured human-trial oracle
+# (FDA IND PASS · IDE PMA · ESC class IA · KCSC concord) 필요.
+#
+# ── SUBSTRATE 정책 ────────────────────────────────────────────────────────
+# clinical 도메인은 별도 hexa-clinical sibling repo 없이 demiurge 도메인
+# UPPERCASE.md (<DOMAIN>.md + <DOMAIN>/Mx.md) 가 SSOT. cellrun 은 honest-
+# skip 으로 분기.
+
+# --- HONEST-SKIP: specify (도메인 spec 캡처 — UPPERCASE.md 가 SSOT) -----------
+[cell.specify]
+substrate         = hexa
+script            = stdlib/cockpit/cellrun.hexa
+record_kind       = clinical_specify_record
+output_dir        = exports/clinical/specify
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "specify = UPPERCASE.md @goal capture — domain skill의 /domain init/set/goal/milestone surface 가 1차 spec. 본 cell 은 cockpit dispatch surface.",
+  "멤버 도메인 (NOREFLOW · ISR · DAPTPGX · LPA · TTR · HERPES) 의 .md SSOT 가 spec 산출물.",
+]
+
+# --- HONEST-SKIP: structure (V1 claim inventory + tier triage) --------------
+[cell.structure]
+substrate         = hexa
+script            = stdlib/cockpit/cellrun.hexa
+record_kind       = clinical_structure_record
+output_dir        = exports/clinical/structure
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "structure = V1 claim inventory (모든 quantitative / mechanistic / structural / classification claim 추출 + tier triage 🔵/🟢/🟡/🟠).",
+  "산출 패턴 = <DOMAIN>/verify/V1_claim_inventory.md (NOREFLOW · ISR · DAPTPGX · LPA · TTR · HERPES 6 도메인 검증된 schema).",
+]
+
+# --- HONEST-SKIP: design (M3/M4 표적 + 후보 inventory) ----------------------
+[cell.design]
+substrate         = hexa
+script            = stdlib/cockpit/cellrun.hexa
+record_kind       = clinical_design_record
+output_dir        = exports/clinical/design
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "design = M3 표적 + M4 후보 short-list (mTOR/비-mTOR family · 분자 · DCB carrier · BRS substrate · CRISPR design · ASO/siRNA · mRNA).",
+  "IN-SILICO design (구조/MoA/PK/safety prediction) — wet-lab 검증 없음 → absorbed=false. ESC/AHA/ACC/MFDS guideline cross-check 필수.",
+]
+
+# --- HONEST-SKIP: analyze (R1 arxiv · R2 regulatory · R3 libraries · /gap) --
+[cell.analyze]
+substrate         = hexa
+script            = stdlib/cockpit/cellrun.hexa
+record_kind       = clinical_analyze_record
+output_dir        = exports/clinical/analyze
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "analyze ⟲ = R1 arxiv deep · R2 regulatory pipeline · R3 external libraries + patent landscape + /gap multi-axis sweep.",
+  "iteration 수렴 판정 = open `- [ ]` 소진 + /gap fixpoint (no families hot).",
+]
+
+# --- HONEST-SKIP: synthesize (V3 numerical via demiurge 자산) ---------------
+[cell.synthesize]
+substrate         = hexa
+script            = stdlib/cockpit/cellrun.hexa
+record_kind       = clinical_synthesize_record
+output_dir        = exports/clinical/synthesize
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "synthesize = V3 numerical recompute via demiurge 자산 (pool ubu-1/2 · cloud RunPod/Vast per @D d7) — DFT/MD/CFD/FEA/PK-PD ODE.",
+  "ad-hoc python local 금지 (feedback_demiurge_assets_simulation_mandatory) — `hexa cloud run <alias>` + `hexa atlas append-witness` flow.",
+  "in-silico ceiling — 임상 outcome (TLR/HR/TLF/MACE) 은 producible 아님.",
+]
+
+# --- HONEST-SKIP: verify (V2 🔵 closed-form via hexa verify) ----------------
+[cell.verify]
+substrate         = hexa
+script            = stdlib/cockpit/cellrun.hexa
+record_kind       = clinical_verify_record
+output_dir        = exports/clinical/verify
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "verify = V2 🔵 SUPPORTED-FORMAL push via `hexa verify --expr` (closed-form bio identity recompute) + V4 final tier ledger.",
+  "현재 wall: hexa-lang/tool/verify_cli.hexa::_recompute 가 number-theoretic only — bio kernel 부재 → ≥6 도메인 V2 동시 🟠 INSUFFICIENT. inbox patch bio-verify-kernel-extension 으로 unlock 예정.",
+  "PR-only landing per @D g_atlas_binary_builtin — `hexa atlas register --from-verify <fn> <n> <v> --auto-pr` 가 🔵 verdict 시만 PR.",
+]
+
+# --- HONEST-SKIP: handoff (IIT protocol · regulatory submission) -----------
+[cell.handoff]
+substrate         = hexa
+script            = stdlib/cockpit/cellrun.hexa
+record_kind       = clinical_handoff_record
+output_dir        = exports/clinical/handoff
+required_deps     =
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "handoff = 한국 발 IIT protocol design (KCSC sites · MFDS+PMDA cross-recognition · GRAND-DES registry-embedded RCT · NHIS reimbursement) + 다음 도메인 cross-feed.",
+  "absorbed=true unreachable in-silico — FDA IND/IDE PMA · MFDS approval · 측정-oracle PASS 필수.",
+  "예시 handoff packet (ISR M8): top-10 ranking · IIT-1 fasudil-DCB FIH (n=60 · 15-25억 KRW · KCSC 6-8 sites) · IIT-3 PCSK9/GLP-1R registry-RCT.",
+]
