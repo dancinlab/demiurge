@@ -2,6 +2,24 @@
 
 Append-only history sister of `ISR.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T02:00:00Z — V1 claim inventory + tier triage 완료
+
+- [x] §1 Inventory methodology
+- [x] §2 🔵 후보 (28 closed-form identities · ≥20 요구 충족)
+- [x] §3 🟢 후보 (10 numerical pipelines · ≥6 요구 충족)
+- [x] §4 🟡 (50+ RCT inevitable · 대표 50 inline · 전수 V4 ledger)
+- [x] §5 🟠 deferred (15+) + breakthrough paths (A/B/C 각각, per @D d2)
+- [x] §6 hexa verify 실행 plan (V2 입력) — tier 1~8 batch
+- [x] §7 atlas register plan (--from-verify --auto-pr · F/S/X/R kind 매핑)
+- [x] §8 V3 numerical pipeline plan (pool ubu-1/2 · RunPod GPU · local CPU per @D d7)
+- [x] §9 V4 ledger 미리 보기 (🔵 28 · 🟢 10 · 🟡 150+ · 🟠 15+)
+- [x] 산출물 `ISR/verify/V1_claim_inventory.md` (~417 lines)
+
+🔑 핵심: 🔵 28 · 🟢 10 · 🟡 150+ · 🟠 15+ 분포 (200+ total claim) · ISR domain 의 **75% citation-locked** (인체 RCT/registry/guideline 본질).
+🥇 V2 첫 push 권고 top 5 🔵 (변수 ≤3 · 즉시 atlas PR): (1) Hill 방정식 · (2) Cheng-Prusoff · (3) Beer-Lambert · (4) first-order exp release · (5) LDL Δ% identity.
+🌱 V3 첫 push 권고 top 3 🟢: (1) PK/PD ODE local CPU · (2) Mg Tafel ODE local · (3) drug-polymer DFT pool ubu-1 (RTSC 전례).
+🛡 🟠 15 모두 breakthrough path A/B/C 명시 (concede 금지 per @D d2).
+
 ## 2026-05-25T01:00:00Z — R3 external libraries inventory + patent + hexa-lang inbox 완료
 
 - [x] §1 stent/balloon suppliers (16 vendor — Big 4 + Mid 4 + DCB 4 + 한국 4)
