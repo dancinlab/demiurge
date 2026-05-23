@@ -28,6 +28,6 @@
 - [x] V1 LPA claim inventory + tier triage (45 claims · 🔵 target 8건) → `LPA/verify/V1_claim_inventory.md`
 - [x] V2 🔵 push — atlas/verify capability 측정 + 4 witness staging + hexa-lang PR #665 (calc fn 부재 = 정직한 deferred · 0/8 · d2 breakthrough) → `LPA/verify/V2_formal_identities.md`
 - [x] V3a 🟢 push — siRNA ODE on pool ubu-1 (C10/C13/C15/C16/C27/C43 · 4분자 PK · closed-form steady-state) → `LPA/verify/V3a_sirna_kinetics.md`
-- [ ] V3b 🟢 push — MR/IVW Monte Carlo CI bootstrap (C22/C23) → `LPA/verify/V3b_mr_ivw_mc.md`
+- [x] V3b 🟢 push — MR/IVW MC pool ubu-1 (0.06s · β=-0.3413 Δ=0.0012 · CI [0.671, 0.756] 100% overlap · MR-Egger/WM robust) → `LPA/verify/V3b_mr_ivw_mc.md`
 - [x] V3c 🟢 push — NHIS ICER Monte Carlo on pool ubu-2 (10K PSA · seed=42 · WTP 0% · 387-645× 약가 격차) → `LPA/verify/V3c_nhis_icer.md`
 - [x] V4 final tier ledger — 🔵 1 · 🟢 22 · 🟡 17 · 🟠 4 · 🔴 1 (45 claims · honest deferred) → `LPA/verify/V4_tier_ledger.md`

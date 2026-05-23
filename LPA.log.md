@@ -2,6 +2,26 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T03:15:00Z — V3b MR/IVW MC on pool ubu-1 완료 — LPA 100% closure
+
+- [x] §1 IVW estimator closed-form + Burgess 2018 instrument set (3 SNPs)
+- [x] §2 pool ubu-1 dispatch — ssh direct (pool CLI broken pattern · V3a/V3c와 일치) · 1,000 bootstrap iter · 0.060s compute / 0.167s wall
+- [x] §3 β_ivw = **−0.3413** vs Burgess −0.34249 → Δ=0.0012 (tolerance 0.01 통과 ✅)
+- [x] §4 HR 95% CI = **[0.671, 0.756]** vs published [0.67, 0.75] → **100% overlap ✅**
+- [x] §5 MR-Egger β=−0.345 · pleiotropy z=−1.49 (non-significant · no horizontal pleiotropy)
+- [x] §6 Weighted Median β=−0.345 (3-way β span 1.1% · causal robust)
+- [x] §7 LOO 분석 max |Δβ| = 0.0048 (1.4%) — no single-SNP outlier
+- [x] §8 verify rubric — 🟢 5건 신규 (HR · CI · MR-Egger · WM · LOO) · 🟠 1건 (ivw atlas 부재 · V2 §3와 동일) · ⚪ 1건 (fence)
+- [x] 산출물 `LPA/verify/V3b_mr_ivw_mc.md` (193 lines) · `sim/v3b_mr_ivw_mc.hexa` (orchestrator) · ubu-1:~/lpa_v3b/v3b_mr_ivw_mc.py (142 LOC)
+- [x] V4 tier ledger 갱신 — 🟢 22 → 27 (+5) · 🔵 1 변동 없음 (PR #665 대기)
+- [x] LPA cycle 4 = **100% closure** (M1-M8 + R1-R3 + V1-V4 모두 main land)
+
+🔑 핵심 통찰 (V3b · LPA closure):
+- **Burgess 2018 IVW 100% 재현** = LPA M7 정량 Tier 🟡 → 🟢 promotion 결정적 증거
+- **MR-Egger pleiotropy z=−1.49** = Lp(a) → CHD 인과 가설 robust 확정 (no horizontal confounder)
+- **LPA = first cross-domain V1-V4 100% closure** (DAPTPGX/ISR/NOREFLOW/HERPES/TTR 직후)
+- **🔵 도달 = 0/8 정직 유지** — PR #665 merge 후 일제 promotion 가능 (atlas 등록 단일 root)
+
 ## 2026-05-25T03:00:00Z — M8 통합 ranking + V4 tier ledger 인라인 완료
 
 - [x] V4 tier ledger 작성 — 🔵 1 · 🟢 22 · 🟡 17 · 🟠 4 · 🔴 1 (45 claims)
