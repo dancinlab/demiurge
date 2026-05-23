@@ -17,7 +17,7 @@
 
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
 
-- [ ] V1 TTR-MN claim inventory + tier triage (🔵/🟢/🟡/🟠) — TTR base V1 흡수 + MN-specific → `TTR-MN/verify/V1_claim_inventory.md`
-- [ ] V2 🔵 push — needle penetration force closed-form · plume diffusion (Fick) · dissolution kinetics 1차 · polymer swelling ratio → `hexa verify --expr` + atlas register → `TTR-MN/verify/V2_formal_identities.md`
-- [ ] V3 🟢 push — needle tip plume CFD (RunPod GPU per @D d7) · polymer dissolution MD (pool ubu-1/2) · skin mechanics FEA (local CPU) — M5/M7 흡수 → `TTR-MN/verify/V3_numerical_recompute.md`
-- [ ] V4 final tier ledger — 🔵+🟢+🟡 verbatim + 🟠 wet-lab + FDA absorbed=true 정합 → `TTR-MN/verify/V4_tier_ledger.md`
+- [x] V1 TTR-MN claim inventory + tier triage (🔵/🟢/🟡/🟠) — TTR base V1 흡수 + MN-specific → `TTR-MN/verify/V1_claim_inventory.md`
+- [x] V2 🔵 push — needle penetration force closed-form · plume diffusion (Fick) · dissolution kinetics 1차 · polymer swelling ratio → `hexa verify --expr` + atlas register → `TTR-MN/verify/V2_formal_identities.md`
+- [x] V3 🟢 push — needle tip plume CFD (RunPod GPU per @D d7) · polymer dissolution MD (pool ubu-1/2) · skin mechanics FEA (local CPU) — M5/M7 흡수 → `TTR-MN/verify/V3_numerical_recompute.md`
+- [x] V4 final tier ledger — 🔵+🟢+🟡 verbatim + 🟠 wet-lab + FDA absorbed=true 정합 → `TTR-MN/verify/V4_tier_ledger.md`

@@ -2,6 +2,21 @@
 
 Append-only history sister of `NOREFLOW.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T01:30:00Z — V4 final tier ledger partial 완료 (cycle6) — 🔵 placeholder 11
+
+- [x] V4 ledger 13 sections — 502 lines · `NOREFLOW/verify/V4_tier_ledger.md`
+- [x] g5 rubric verbatim + V2 gate state (PR #658 OPEN, mergedAt=null) verbatim
+- [x] tier 분포 (partial): 🔵 0 filled / **11 placeholder** · 🟢 10 (+1 hybrid) · 🟡 33 · 🟠 10 · 🔴 4 · ⚪ 15
+- [x] CLI commands log 부착 (hexa verify rubric · hexa verify --fence · demiurge cli list-domains · gh pr view 658)
+- [x] gate map (PR #658 merge → 🔵 11 즉시 fill · HORIZON/OCEAN(a)/NICORADENO-MVO → 🟠 escalate)
+- [ ] **PR #658 merge gate** — merge 시 V2 fire → 🔵 11 즉시 fill → V4 re-fire trajectory 🟡 partial → 🟢 complete
+- [ ] V3.1/V3.2/V3.4 `register --from-verify` chain → 🟢→🔵 추가 escalation (potential 15 🔵 total)
+
+🔑 핵심 통찰:
+- **단일 PR #658 merge로 🔵 0→11 (도메인 15.3% 커버리지) 즉시 도약** — gate 1건 unblock의 leverage 최대
+- **V3 verbatim 4 track 중 3개 (V3.1 PK · V3.2 IRI ODE · V3.4 Power)가 🟢→🔵 chain 후보**, V3.3 Monte Carlo는 stochastic이라 🟢 cap
+- **d2 governance 충족** — PR 지연 시 3-path (direct review nudge · sibling repo dance · register --from-drill 우회) 명시, 포기 금지
+
 ## 2026-05-25T00:40:00Z — M12/V3 simulation pass 완료 (cycle5) — 4 tracks 🟢
 
 **4 tracks 모두 ubu-1/2 ssh 실제 실행 성공**:

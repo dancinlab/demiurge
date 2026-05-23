@@ -24,4 +24,4 @@
 - [x] V1 ISR claim inventory + tier triage (🔵/🟢/🟡/🟠) → `ISR/verify/V1_claim_inventory.md`
 - [x] V2 🔵 push — bio-physical closed-form identities → `hexa verify --expr` + atlas register → `ISR/verify/V2_formal_identities.md`
 - [x] V3 🟢 push — DFT/MD/CFD/FEA numerical recompute (drug release · Mg corrosion · stent biomech) → `ISR/verify/V3_numerical_recompute.md`
-- [ ] V4 final tier ledger — 🔵 + 🟢 + 🟡 verbatim verdict 통합 + 🟠 honest deferred → `ISR/verify/V4_tier_ledger.md`
+- [x] V4 final tier ledger — 🔵 + 🟢 + 🟡 verbatim verdict 통합 + 🟠 honest deferred → `ISR/verify/V4_tier_ledger.md`

@@ -1,5 +1,16 @@
 # TTR — log
 
+## 2026-05-24T08:45Z — sub-domain delegation closure snapshot
+
+- TTR base own (M1·M2·M4·M6 + V1·V2·V3·V4): **8/8 ✅** (base 자체 작업 모두 closed)
+- 6 delegated milestone (M3·M5·M7·M8·M9·M10) — sub-domain own:
+  - **TTR-MN** 11/11 ✅ (M4·M3·M5·M7·M8·M9·M10-MN + V1·V2·V3·V4-MN · multi-cycle finding 60×4.7%=94.2%)
+  - **TTR-CREAM** 1/12 (M1-CREAM 만 · M2/M3/M5/M7/M8/M9/MeasOracle-CREAM + V1-V4 open)
+- TTR base.md milestone 6 inline "→sub" 표시 추가 (정직 표시 · base 자체 작업 아닌 위임)
+
+⇒ TTR family 전체 23/33 (~70%) · TTR-MN side 완전 closed · TTR-CREAM side 계속 작업
+⇒ base 자체 cycle next-list: 0 open (delegated 제외 시) — TTR-CREAM active switch 또는 GPU pod V3.5 dispatch 추천
+
 ## 2026-05-24T05:34Z — M6 off-target safety landed + M2/M6 reconcile
 
 - [x] M6 — 6 off-target × 4 chemistry = 24-cell first-principles risk matrix (`TTR/research/off_target_safety.md`, ~700 lines)

@@ -1,5 +1,14 @@
 # TTR-MN — log
 
+## 2026-05-24T08:30Z — V1-V4 verify track 4/4 closed · TTR-MN 11/11 ★
+
+- [x] V1 — 18 MN-specific claim (base 49 inherit + needle mech/HA diss/plume/MD/FDA · `TTR-MN/verify/V1_claim_inventory.md`)
+- [x] V2 — 7 closed-form 🔵 manual ledger (Euler buckling F_crit 0.67 N safety 13× · Fick plume 63-200 μm · spacing 577 μm · @D d5 4-AND invariant)
+- [x] V3 — 6 numerical recompute on ubu-1 ttr conda env: 4 PASS + 2 model-difference (HA dissolution Noyes-Whitney 1825 min vs literature 10-30 min · enzymatic hydrolysis 미반영)
+- [x] V4 — 67-claim final ledger: 🔵 29 · 🟢 18 (9 PASS + 4 caveat + 3 defer + 2 lit) · 🟡 14 · 🟠 6 · 38/67 PASS = 57%
+- 🌟 **multi-cycle 누적 finding**: 4.7%/cycle × 60 cycle (5 yr) → **94.2% cumulative** — @goal 90% 달성 path 정량
+- ⚠ @goal 정확화 권장: "5 yr × 12 cycle/yr 누적으로 90%+ 제거" 명시 (단일 cycle 90% 불가능)
+
 ## 2026-05-24T07:50Z — M10-MN measured-oracle endpoint + IND 패키지 design landed · TTR-MN 7/7 ★
 
 - [x] M10-MN — 4-component measured-oracle PASS gate + IND 패키지 design (`TTR/research/m10_mn_measured_oracle.md`)

@@ -2,6 +2,27 @@
 
 Append-only history sister of `ISR.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T05:00:00Z — V4 final tier ledger + ISR verify-phase closure
+
+- [x] §0 methodology + ISR @goal 달성도 framework
+- [x] §1 🔵 0 current · 28 potential post-unlock (verbatim list)
+- [x] §2 🟢 0 current · 10 potential post-unlock
+- [x] §3 🟡 150+ citation-locked (RCT · registry · guideline · regulatory · anatomic)
+- [x] §4 🟠 V2 7 + V1 15 deferred verbatim
+- [x] §5 ⚪ V3 3 + V2 7 fence verbatim
+- [x] §6 🔴 0
+- [x] §7 atlas register status (16066 nodes · 0 PR)
+- [x] §8 dependency map (4 inbox patches + 10 absorbable libs)
+- [x] §9 @goal 정량 달성도
+- [x] §10 ISR domain 종합 verdict
+- [x] §11 다음 단계 (post-closure)
+- [x] 산출물 `ISR/verify/V4_tier_ledger.md` (681 lines)
+
+🔑 verdict 분포: 🔵 0/28 (kernel block) · 🟢 0/10 (kernel block) · 🟡 150+ · 🟠 22 · ⚪ 10 · 🔴 0 — LLM self-judge 0건, V2/V3 의 `hexa verify` verbatim verdict 100% paste.
+🌱 post-unlock: hexa-lang `bio-verify-kernel-extension-2026-05-25` PR merge (4-5 stacked PR · ~400-600 LOC) 시 7-28 🔵 + 3-10 🟢 escalation 예상 (single hexa-lang PR · cross-domain 50-90 🔵).
+🛡 per @D d2 — 32 🟠/⚪ 모두 breakthrough path A/B/C 명시 · concede 0건.
+🚪 ISR domain ▓▓▓▓▓▓▓▓▓▓ 100% (15/15) — verify-phase honest closure. 정성 closure 100% · 정량 verified ratio = post-PR-merge 의존.
+
 ## 2026-05-25T04:00:00Z — V3 🟢 numerical push first-pass (3 pipelines) 완료
 
 - [x] §0 demiurge 자산 매트릭스 (`hexa cloud` + ubu-1 = aiden-B650M-K · python 3.12.3 · numpy 2.4.4 · scipy 1.17.1; `pool list` 는 compile error → `hexa cloud run ubu-1` 우회)
