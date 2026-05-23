@@ -13,6 +13,11 @@
 - [x] 잔여 위험 정량 — Lp(a) 감소 mg/dL × MACE 위험 감소 → `LPA/M7_quant.md`
 - [x] 통합 후보 ranking + 한국인 임상 적용 전략 (5-Tier · NHIS RSA+narrow+bridge 돌파) → `LPA/M8_rank.md`
 
+## cycle 5 — scope extension (post-100%-closure)
+- [ ] M9 한국 first-in-class IIT 설계 (Investigator-Initiated Trial blueprint · KSoLA consortium · NCT scaffold) → `LPA/M9_kr_iit.md`
+- [ ] M10 KSoLA + HIRA 실태 monitoring (분기별 fact sheet · 약가 협상 update · 가이드라인 revision watch) → `LPA/M10_monitoring.md`
+- [ ] M11 HORIZON 2026 H1 readout action trigger (양성/null/음성 시나리오별 즉시 대응 playbook) → `LPA/M11_readout_playbook.md`
+
 ## research deepening (cycle 3)
 - [x] R1 arxiv deep research → `LPA/R1_arxiv.md`
 - [x] R2 web/regulatory (FDA/EMA/MFDS/KSoLA/NHIS + Schoenfeld 🟢) → `LPA/R2_regulatory.md`

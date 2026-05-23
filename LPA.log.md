@@ -2,6 +2,24 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T03:30:00Z — cycle 5 scope 확장 + 상류 inbox 기여
+
+- [x] LPA M9/M10/M11 milestone scaffolding (post-100%-closure 확장)
+  - M9 한국 first-in-class IIT (Investigator-Initiated Trial blueprint)
+  - M10 KSoLA + HIRA monitoring (분기별 fact sheet · 약가 협상 update)
+  - M11 HORIZON 2026 H1 readout action trigger playbook
+- [x] hexa-lang inbox patch — `pool-hexa-compile-error-2026-05-25.md`
+  - P1 severity · cross-domain wall (LPA · ISR · NOREFLOW · DAPTPGX · HERPES)
+  - 3-of-3 LPA V3 agents independent reproduction
+  - P0/P1/P2 fix path 제시 (`${...}` template fix → ks/i undecl → CI smoke test)
+- [x] 진행도 ▓▓▓▓▓▓▓▓▓▓ 100% (20/20) → ▓▓▓▓▓▓▓▓░░ 87% (20/23) — scope 확장
+
+🔑 핵심 통찰 (cycle 5 scope 확장):
+- **LPA core scope = closed** (M1-M8 + R1-R3 + V1-V4 all main land)
+- **확장 축 = 한국 임상 적용 실전** (M9 IIT · M10 monitoring · M11 readout playbook)
+- **upstream 기여 = pool.hexa P1 patch** (cross-domain leverage · 4 도메인 동시 unblock)
+- 다음 cycle 5 fan-out 후보: M9 단독 agent (IIT design 무거운 research)
+
 ## 2026-05-25T03:15:00Z — V3b MR/IVW MC on pool ubu-1 완료 — LPA 100% closure
 
 - [x] §1 IVW estimator closed-form + Burgess 2018 instrument set (3 SNPs)
