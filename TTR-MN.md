@@ -11,6 +11,6 @@
 - [x] M3-MN 활성성분 — TTR base M2 F5/F3/F2 우선순위 (payload-agnostic 활용) ∩ M6 molecule X 제약 (MW > 60 kDa or ink-surface affinity)
 - [x] M5-MN 잉크-활성분자 반응 MD/QM — needle tip plume (반경 30-100 μm, 확산시간 10-100 s) 정합
 - [x] M7-MN MN array engineering — needle 재료 (PVP · PVA · HA · CMC) · payload encapsulation · 분해성 polymer 호환성
-- [ ] M8-MN ex-vivo 돼지 피부 PoC — MN patch 도포 → 잉크 제거율 측정 (제거율 ≥ 50% goal)
+- [x] M8-MN ex-vivo 돼지 피부 PoC — MN patch 도포 → 잉크 제거율 측정 (제거율 ≥ 50% goal)
 - [ ] M9-MN in-vivo (rat / mini-pig 14-90일) — 제거율 ≥ 80%, 흉터 없음, 전신 독성 없음
 - [ ] MN measured-oracle PASS → absorbed=true (FDA combination product · IND 패키지 · GMP MN array lock)

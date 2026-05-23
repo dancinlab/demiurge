@@ -1,5 +1,15 @@
 # TTR-MN — log
 
+## 2026-05-24T07:20Z — M8-MN ex-vivo 돼지 피부 PoC protocol design landed
+
+- [x] M8-MN — porcine ear skin ex-vivo · 9 cell experimental matrix (3 payload × 3 ink) + 1 negative (`TTR/research/m8_mn_ex_vivo_protocol.md`)
+  - 모델: 돼지 귀 (가장 인간 유사 · ≤ 4h postmortem)
+  - 잉크 3종: carbon black (시장 60-70%) · azo · Fe₂O₃ (Cu-Pc/Cr₂O₃ wall은 phase 2)
+  - 3 axis endpoint: digital photo RGB delta · histology Masson trichrome+IHC · LC-MS 부산물
+  - success gate: removal ≥ 50% (Azo/DFO) · collagen 손상 minimal · aromatic amine < 100 ng/cm²
+  - 비용 ~$5.9k · 외주 lab (porcine source + histology + LC-MS)
+  - M9 handoff: pass cell list · 부작용 신호 · GMP precursor · dose 외삽
+
 ## 2026-05-24T07:05Z — M7-MN MN array engineering design landed
 
 - [x] M7-MN — needle 재료 5종 비교 + payload encapsulation 3 strategy + array geometry + 제조/보관/FDA path (`TTR/research/m7_mn_array_engineering.md`)
