@@ -7,7 +7,7 @@
 
 ## Milestones (progress)
 
-- [ ] SC barrier 돌파 메커니즘 short-list — chemical permeation enhancer · CPP · SC lipid 분해 효소 · iontophoresis 보조 (first-principles depth-gap 분석)
+- [x] SC barrier 돌파 메커니즘 short-list — chemical permeation enhancer · CPP · SC lipid 분해 효소 · iontophoresis 보조 (first-principles depth-gap 분석)
 - [ ] 진피 도달 wall 정량화 — cream-only 도달 깊이 (50-150 μm) vs 잉크 거주 (500-2000 μm) 의 first-principles gap, breakthrough path ≥ 3
 - [ ] M3-CREAM 활성성분 — TTR base M2 F5/F3/F2 ∩ cream-friendly constraint (MW · logP · ionization · SC-permeable)
 - [ ] M5-CREAM 잉크-활성분자 MD/QM — cream concentration profile (SC 통과 후 진피 농도) 정합
