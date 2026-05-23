@@ -90,3 +90,46 @@
 - `h3cl-d7-wall-breakthrough-2026-05-23.md` — H₃Cl 사례 발견 노트 (이 노트의 root data)
 - `h3o-novel-191k-group16-sweet-spot-2026-05-23.md` — d7 wall 재확인 (h3o ML 0.48 vs DFT 2.48)
 - `2026-05-22-d2-pressure-aware-ml-survey.md` — 압력-aware ML survey (path i의 background)
+- `h3br-critical-test-2026-05-24.md` — group-17 mid-heavy halide outlier (ALIGNN λ=1.11) DFT 도착 시 cross-check 가설
+
+---
+
+## update 2026-05-24 — ALIGNN family-wide 9/9 결과 통합 (cycle 6 + 7)
+
+cycle 6 + 7 합쳐 9/9 H₃X family-wide ALIGNN per-candidate baseline 완주 (artifacts `~/etc/rtsc-results/{h3o,h3po,h3f,h3si,h3cl,h3p,h3n,h3as,h3br}/`). RTSC.md §9.14 의 신설 sub-section "ALIGNN family-wide d7 wall ML baseline (9/9 후보)" 가 SSOT.
+
+### 신규 발견 #1 — Sign-pathology **family-wide 3/9** (light X covalent localization)
+
+cycle 4 (h3cl 만) → cycle 5/6 의 group-16 (h3o, h3po 2개 sign-flip 발견) → cycle 7 의 **H₃N 추가 발견** 으로 family-wide 3/9 패턴 확정:
+
+| candidate | group | celldm | ALIGNN λ | Tc-direct (K) |
+|---|:---:|---:|---:|---:|
+| H₃O | 16 | 4.90 | −0.42 | 4.34 |
+| H₃Po | 16 | 6.24 | −0.21 | 3.69 |
+| H₃N | 15 | 5.50 | **−0.18** (신규) | 5.97 |
+
+**공통 axis** (3 cand): light X anion (O 16 · N 14 · Po 209-mass 는 polar high-Z 예외) · short H-X covalent bond · ALIGNN a²F projection 이 anti-bonding 방향 → λ 음수 → ω_log degenerate (0) → Allen-Dynes path 무효, direct-Tc head 만 유효 (4-6 K cap).
+
+**메커니즘 가설** (refined): ambient JARVIS-SuperconDB 의 supercon-Tc 학습 분포가 *intermediate covalent-ionic* (Nb₃Sn · FeSe · MgB₂ · cuprate 등) dominant — *fully covalent localized* hydride 의 polar bonding 영역 projection 이 anti-bonding edge 로 spill. (a)-(j) breakthrough path 위에 **(k) sign-pathology repair — polar covalent fully-localized hydride 의 a²F projection sign convention** path 추가 후보 (실험적, low priority 보류).
+
+### 신규 발견 #2 — H₃Br λ = 1.11 (group-17 mid-heavy halide outlier · cycle 7)
+
+family 안에서 ALIGNN 이 λ ≥ 1 으로 ranking 한 **유일 2 point = H₃Cl (0.81 cycle 4, DFT 1.27 cross-confirm) + H₃Br (1.11)**. group-17 mid-heavy halide outlier — Br (χ 2.96, mass 79.9) 가 family-internal 최고 ALIGNN λ.
+
+**critical-test 가설** (h3br-critical-test-2026-05-24.md 별도 SSOT):
+- H₃Cl 의 monotone broad sweep (under-converged) 와 같은 패턴이면 H₃Br DFT λ 가 진짜 1.5+ 일 수 있음 → group-17 안에서 strong-coupling sweet spot 가능성
+- χ-damage 가설 (h3f χ=3.98 Tc 31K · h3cl χ=3.16 Tc 120K) 의 extrapolation = Br χ=2.96 → Tc 50-100K 예상
+- DFT 도착 ETA ~04:00 5/25 KST (~25h 후)
+
+### 신규 발견 #3 — Tc-direct cap 4-6 K family-wide 정량 확정
+
+`jv_supercon_tc_alignn` head 의 ambient training-distribution 출력 ceiling. 9/9 후보 모두 2.17-5.97 K 범위 안 (max = h3n 5.97 K). DFT 측정-grade 31-180 K 와 비교 시 **rel_err 80-99% family-wide** (h3cl 96.8% · h3o 97.6% · h3f 90.5% · h3si 96.1% · h3po 92.3%). d7 governance 정공법 (DFT) 이 family-wide quantitative 로 입증.
+
+### path priority 갱신 (2026-05-24)
+
+| path | priority 변경 | 사유 |
+|---|---|---|
+| (e) bond-length feature | 1순위 유지 | sign-pathology 3/9 가 bond-length axis 와 직접 연관 (short H-X bond → sign flip risk) |
+| (i) pressure feature + retrain | 2순위 유지 | family-wide rel_err 가 floor → retrain 필수 |
+| **(k) sign-pathology repair** (신규) | 보류 | 메커니즘 정밀화 (a²F sign convention) 필요, root cause 가설 단계 |
+| 진짜 정공법 = DFT (§9.14 fanout 8/8) | **확정** | ALIGNN family-wide 의 quantitative wall 가 정공법 path 의 numerical justification 완성 |

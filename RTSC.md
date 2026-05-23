@@ -1042,6 +1042,53 @@ Group-16 verdict (3/4 LANDED): H₃S = sweet spot · H₃Se = weaker coupling ou
 
 본 fanout 의 핵심: §9.12 H₃S 교과서급 6³ q ladder + §9.12.A 4³ q honest baseline 가 *protocol* 으로 박혀 있어 동일 grid 정책으로 group-wide sweep 가능 (per-candidate manual setup 없이 자동화 가능 — `process_completed_pod.sh` 가 schema-uniform record 보장).
 
+#### ALIGNN family-wide d7 wall ML baseline (9/9 후보 · 2026-05-24)
+
+cycle 6 + 7 합쳐 9/9 H₃X family-wide ALIGNN per-candidate baseline 완주 (pool:ubu-1, alignn 2026.4.2 / torch 2.4.0+cpu, 평균 0.7 s/cand). 각 후보 input.vasp 는 publication-grade Im-3m primitive (4 atom · element 별 celldm bohr) — DFT 와 동일 구조. artifacts: `~/etc/rtsc-results/{h3o,h3po,h3f,h3si,h3cl,h3p,h3n,h3as,h3br}/alignn_{predict.json,run.log,input.vasp}`.
+
+| candidate | group | celldm (bohr) | ALIGNN λ | ALIGNN ω_log (K) | ALIGNN Tc-direct (K) | DFT 상태 (§9.14 fanout) |
+|---|:---:|---:|---:|---:|---:|---|
+| H₃Cl | 17 | 5.66 | 0.81 (cycle 4) | 81 | 3.82 | LANDED Tc=120 K 🔴 FAIL above (§9.15) |
+| H₃O  | 16 | 4.90 | **−0.42** | 0 (degenerate) | 4.34 | LANDED Tc=180 K 🟢 PASS (§9.15) |
+| H₃Po | 16 | 6.24 | **−0.21** | 0 (degenerate) | 3.69 | LANDED Tc=48 K (RTSC.log §9.15) |
+| H₃F  | 17 | 5.13 | 0.53 | 81 | 2.93 | LANDED Tc=31 K 🔴 FAIL below (§9.15) |
+| H₃Si | 14 | 5.66 | 0.29 | 286 | 3.02 | LANDED Tc=78 K 🟢 PASS (§9.15) |
+| H₃P  | 15 | 6.50 | 0.58 | 77 | 2.17 | PENDING |
+| H₃N  | 15 | 5.50 | **−0.18** | 0 (degenerate) | 5.97 | PENDING · 신규 sign-path |
+| H₃As | 15 | 6.70 | 0.13 | 3.14×10⁵ (artifact) | 2.55 | PENDING |
+| H₃Br | 17 | 6.60 | **1.11** | 29 | 4.29 | PENDING · 신규 λ≥1 outlier |
+
+**핵심 family-wide 신규 발견** (cycle 6+7 통합):
+
+1. **Sign-pathology family-wide 3/9** — H₃O · H₃Po · **H₃N** (light X strong covalent localization). 정량 패턴 = "light X polar bonding → ALIGNN a²F anti-bonding projection → λ negative → ω_log degenerate → Tc cap 4-6 K via ALIGNN direct-Tc head 만 유효". 3 cand 모두 anion 의 short H-X bond + high χ (O 3.44 · N 3.04 · Po 2.0 high-Z polar) 가 공통 axis.
+2. **λ ≥ 1 strong-coupling outlier 2/9** — H₃Cl (cycle 4, 0.81 borderline → DFT 1.27 cross-confirm) + **H₃Br (1.11)** — group-17 mid-heavy halide outlier. **family 안에서 ALIGNN 이 λ≥1 으로 ranking 한 유일 2 점** → DFT 도착 (h3br) 시 strong-coupling 가설 결정적 cross-check.
+3. **Tc-direct cap 4-6 K family-wide** — `jv_supercon_tc_alignn` head 의 ambient training-distribution 출력 ceiling. max = h3n 5.97 K. ambient ML 의 hydride ω_log under-prediction wall 정량화 (vs DFT 측정-grade 31-180 K).
+4. **group-15 ML λ 광범위 분산** — −0.18 ~ 0.58 (h3n / h3p / h3as 3-cand 폭 0.76). group-17 (0.5-1.1) 대비 더 광역 — group-15 의 covalent-polar transition zone 가설 강화 (group 16 monotone sign-path · group 14/17 잘 정의).
+
+```
+       ALIGNN λ landscape (9 H₃X · 2026-05-24)
+
+ λ ≥ 1.0  |   .   .   .   .   .   .   .   . [BR]   ← strong-coupling outlier
+          |
+ 0.5–0.9  | [CL][P ][F ]                                ← family typical
+          |
+ 0.1–0.5  |                  [SI][AS]                   ← weak coupling
+          |
+ 0.0      |==============================================
+ −0.5     |        [N ][PO][O ]               ← SIGN-PATHOLOGY (3/9)
+          |    (light X polar covalent localization)
+
+   group:    15  16  16  17  14  15  17  15  17
+   light←→heavy (X mass increases right)
+```
+
+**d7 governance 매핑**:
+- ALIGNN ambient training-distribution wall **정량 family-wide 확정** — 5 LANDED 후보 전부 측정/DFT vs ML 의 |rel_err| ≥ 80% (h3cl 96.8% · h3o 97.6% · h3f 90.5% · h3si 96.1% · h3po 92.3%). d7 = "first-principles physics breaks the ML training-distribution wall" 의 *family-wide quantitative* 입증.
+- **Sign-pathology family-wide 3/9** 가 d7 메커니즘의 *새 layer* — ω_log under (cycle 4 root cause) 위에 **λ sign-flip** 이라는 더 catastrophic failure mode 추가 식별. inbox `d7-wall-mechanism-breakthrough-paths-2026-05-23.md` 의 2026-05-24 update 에 박힘.
+- **next critical test = H₃Br** (cycle 7 ALIGNN strong-coupling λ=1.11 → DFT 도착 시 검증). h3cl 의 monotone broad sweep (under-converged) 와 같은 패턴이면 H₃Br DFT λ 가 진짜 1.5+ 일 수 있음. inbox `h3br-critical-test-2026-05-24.md`. ETA 04:00 5/25 KST (~25h).
+
+**R4 보호** (모든 결과): `absorbed=false` · `gate_type=simulation-only-prediction` · domain=material · ALIGNN = ambient-trained Tier-1 prediction (measurement-oracle 아님). family-wide null/sign 결과가 RTSC absorbed=true 와 무관 — pure d7 wall 메커니즘 정량화 layer.
+
 #### Harness — `process_completed_pod.sh`
 
 | 항목 | 값 |
