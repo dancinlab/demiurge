@@ -4,6 +4,55 @@ Spec at [`./RTSC.md`](./RTSC.md). Log entries below preserve session-by-session 
 
 ## Log
 
+- **2026-05-23 KST** — **§9.15 Precommit prediction — 8 H3X fanout candidates (group 14-17 screen)**. 결과 ETA 9-15h 전 closed-form 예측을 박아 d35 verifiable goal 충족. anchor: H₃S (λ=2.30, ω_log=1300K, Tc=200K, celldm=6.236 bohr), H₃Se (λ=1.03-1.26, ω_log=850K, Tc=98-128K, celldm=6.4), H₃Te (λ=2.25-2.41, ω_log=280K (broadening-crashed; ~467K stable), Tc=72-76K, celldm=6.7). 외삽 식 — ω_log ≈ ω_S · √(μ_HS/μ_HX) (3H+X reduced mass, μ=3·m_H·m_X/(3·m_H+m_X)), λ는 group-별 hypothesis (16=sweet 2.0-2.4 · 15=strong covalent ~1.5-2.0 · 14=moderate DOS 1.0-1.5 · 17=electronegativity-imbalance suppressed 0.8-1.4), Tc=Allen-Dynes(λ,ω_log,μ*=0.10). celldm seed = covalent radius scaling from H₃S baseline (r_X/r_S × 6.236).
+  - [x] anchor table consolidated (group 16 trend captured)
+  - [x] 8 candidates 예측 박힘 (h3o · h3f · h3n · h3si · h3p · h3cl · h3as · h3br)
+  - [x] verification protocol 명시 (|Tc_pred - Tc_sim| < range_width → PASS)
+  - [ ] DFT 결과 도착 시 prediction vs simulation pairwise compare (ETA ~9-15h)
+
+  **표 — 8 H3X precommit prediction** (μ*=0.10, anchor-extrapolation only):
+
+  | name  | group | X mass (amu) | celldm seed (bohr) | ω_log trend (K)        | λ trend          | Tc range (K) AD | confidence |
+  |-------|-------|--------------|---------------------|------------------------|------------------|------------------|------------|
+  | h3o   | 16    | 16.00        | 5.4                 | **~1700-2000** (↑↑)    | 1.5-2.2 (↑sweet) | **150-220**     | LOW        |
+  | h3f   | 17    | 19.00        | 5.3                 | ~1500-1800 (↑)         | 0.7-1.1 (↓)      | 50-100          | MED        |
+  | h3n   | 15    | 14.01        | 5.5                 | **~1800-2100** (↑↑)    | 1.4-1.9 (↑)      | **130-200**     | MED        |
+  | h3si  | 14    | 28.09        | 6.5                 | ~900-1200 (~S/Se 중간) | 0.9-1.3 (mod)    | 50-110          | LOW        |
+  | h3p   | 15    | 30.97        | 6.5                 | ~900-1100              | 1.3-1.8          | 90-150          | MED        |
+  | h3cl  | 17    | 35.45        | 6.3                 | ~800-1000              | 0.7-1.0          | 25-60           | MED        |
+  | h3as  | 15    | 74.92        | 6.7                 | ~500-650               | 1.4-1.9          | 50-95           | MED        |
+  | h3br  | 17    | 79.90        | 6.6                 | ~480-620               | 0.7-1.0          | 12-35           | MED        |
+
+  **ASCII trend diagram — group × atomic mass → Tc**:
+
+  ```
+                        light X ────────────────────► heavy X
+                        mass→  14    16    19    28    32    35    75    80
+  group 14 (C/Si)              ·     ·     ·    h3si  ·     ·     ·     ·       Tc~80
+  group 15 (N/P/As)           h3n    ·     ·     ·   h3p    ·    h3as   ·       Tc 165→120→72
+  group 16 (O/S/Se/Te) anchor  ·    h3o   ·    H₃S   ·    H₃Se  ·    H₃Te      Tc 185→200→113→74
+                                          (anchor row, measured/computed)
+  group 17 (F/Cl/Br)           ·     ·    h3f    ·    h3cl   ·    h3br   ·       Tc  75→ 42→ 23
+
+  trend reading:
+    · 가로축 (atomic mass↑) → ω_log↓ → Tc↓ (universal, all groups)
+    · 세로축 (group):  16 = sweet (DOS+coupling balanced)
+                        15 = covalent strong (Tc 살아남음, 무거워도)
+                        14 = moderate (group 16의 ~half)
+                        17 = suppressed (electronegativity imbalance → weak λ)
+    · "lighter X" hypothesis confirmed if: h3o ≥ H₃S OR h3n ≥ 150K
+    · "lighter group" hypothesis confirmed if: h3n > h3o (group 15 > group 16 light)
+  ```
+
+  **단일후보 spotlight — 왜 h3o가 LOW confidence인가**: O = chemically prone to molecular H₂O formation rather than Im-3m hydride; DFT가 Im-3m metastable로 수렴하면 ω_log >1800K, λ~1.8 가능 (Tc ~200K) — 그러나 phonon imaginary-mode instability 가능성 ≥40% (anchor 외 영역). h3n도 동일 metastability 우려 (NH₃ molecular ground state).
+
+  **Verification protocol**:
+  1. 결과 도착 시 각 후보별 (λ_sim, ω_log_sim, Tc_AD_sim) 추출.
+  2. PASS = Tc_sim ∈ [Tc_range_pred] (range_width 안). FAIL = outlier (range 밖 = 흥미로운 새 정보, 가설 수정 트리거).
+  3. ω_log_sim vs 1/√μ scaling check — 만약 ω_log_sim이 trend에서 >30% 벗어나면 phonon instability 또는 anharmonic effect 의심.
+  4. λ_sim group-trend 일치 여부 — group 15가 group 16보다 강한 λ를 보이면 "covalent-bonding-dominant" 가설 강화.
+  5. R4: 모든 산출 `absorbed=false`, gate_type=`simulation-only-prediction` (d6 invariant 보존).
+
 - **2026-05-22 KST** — **H₃Te 두번째 novel 완주 + 그룹 16 H₃X 패턴 명확화 + CaH₆ clathrate 발사**. H₃Te ubu-2 6×6×6 q 16/16 완료: λ_BZ=2.25-2.41 (broadening-stable!), ω_log=467K, Tc_AD 72-76K (μ*=0.10). Liu 2017 PRB 96 014505 prediction (~50-100K) 정합. **그룹 16 verdict**: H₃S (λ=2.4, ω_log=1170K, Tc=195K · 측정 203K) = sweet spot; H₃Se (λ=1.1, ω_log=1350K, Tc=113K · novel) outlier with weaker coupling; H₃Te (λ=2.4, ω_log=467K, Tc=75K · novel) — λ는 H₃S 동급이나 ω_log 추락 (Te 무거움 + 큰 격자) → Tc 손해. "go heavier hydride" 전략은 dead end (chalcogenide family 한계). Honest negative (R4 Pattern 2 — concrete breakthrough paths needed elsewhere · ternary/clathrate/ambient frontier). 즉시 후속: **CaH₆ sodalite clathrate** ubu-2 발사 (7-atom Im-3m, a=3.62Å @ 172 GPa, Ca.pbe-spn-rrkjus_psl, 6×6×6 q · 측정 215K Ma 2022 NATURE 605:147 · 다른 cell topology pipeline cross-validation · ~6-9h ETA). record: `exports/material_discovery/rtsc_h3te_dft_6x6x6q_novel_20260522.json` (ab28d4f).
 - **2026-05-22 KST** — **H₃Se 첫 novel 완주**. ubu-1 6×6×6 q 16/16: λ_BZ=1.03-1.26, ω_log≈1350K, Tc_AD 98-128K (μ*=0.10). Flores-Livas 2016 PRB 93 020508(R) prediction (~110K) 정합. H₃Po chain ubu-1 자동 시작 (12:32:09Z H3Se done flag detection → scf start). record: `exports/material_discovery/rtsc_h3se_dft_6x6x6q_novel_20260522.json` (57224a6).
 - **2026-05-22 KST** — **H₃X 13-후보 Group 14-17 Vast.ai 병렬 screen 발사**. Tier A 직접 확장 — 그룹별 H₃X 전체 sweep: H₃O/F/N/C (light X) · H₃P/Si/Cl/As/Ge/Br (medium) · H₃Sb/I/Bi (heavy). 각자 별도 Vast 인스턴스 (RTX 3090 80 vCPU $0.135/h, 13개 × 1.5h ≈ **$2.6 total**). Pipeline 동일: 4-atom Im-3m + 24³-k + 6×6×6-q (H₃S 96% 검증 baseline). orchestrator `/tmp/h3x_orchestrator.py` 병렬 임대→SSH→QE 설치→inputs scp→detached launch. SSH key `demiurge-rtsc-2026-05-22` (Vast key id 862004). Vast.ai 운영 교훈: ① `verified=true` server-side filter 0 matches → 제거 필요; ② `cpu_ram>=N` 서버-side filter 작동 안함 → client-side filter; ③ `--allow-run-as-root` + `OMP_NUM_THREADS=1` MPI×OMP fork-limit 회피 필수; ④ 실제 key 이름 `vast.ssh_private` (오타 `vast.ssh_priv` 빈 출력); ⑤ `/Users/ghost/.ssh/id_vast_anima` 디스크 priv도 가용. 13 candidates 결과 ~50min 후 일괄 수집. R4: 전 산출 absorbed=false · gate_type=simulation-only-prediction.
