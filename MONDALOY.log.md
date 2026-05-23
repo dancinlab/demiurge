@@ -6,6 +6,35 @@ confirmed state.
 
 ## Log
 
+- **2026-05-23 KST** — **§9.8 c2 fallback envelope EXECUTED — proactive
+  d2 breakthrough on the printability wall, BEFORE c1 wet-lab returns.**
+  Re-ran the §9.6 forward funnel with the (Al=4.0, Ti=1.0) wt% delta
+  specified verbatim in the §9.7 handoff JSON's
+  `next_steps_after_this_handoff` item #4. c2 composition (wt%): Ni bal
+  59.095 · Cr 20 · **Al 4.0** · Co 12 · Mo 3.5 · **Ti 1.0** · Hf 0.3 ·
+  Y 0.05 · C 0.05 · B 0.005 — only Al/Ti/Ni shift, all other elements
+  held from c1. Property re-projection: γ′ fraction **27-32 %** (vs c1
+  35-40 %, ~21 % at%-driven reduction); Giggins-Pettit position **Al
+  8.20 at% at Cr 21.28 at% — region II/III boundary line, threshold-
+  grazing** (vs c1 10.13 at% comfortable margin); HCS index **−20 to
+  −30 %** vs c1 (Kou cracking criterion |dT/dfs^½|, lower γ′-former
+  narrows γ-γ′ eutectic freezing range — the c2 PURPOSE); creep
+  qualitatively −10 to −20 %; PHACOMP TCP unchanged (Cr/Mo held). c2 is
+  the FALLBACK — c1 stays primary; c2 trades strengthening-phase for
+  printability margin (d7: trade reported, not glossed). d2 forward
+  paths named for c2 walls: **c3a** (region-III recovery — Al 4.5,
+  Hf 0.4 if c2 oxidation shows Cr₂O₃ break-in) and **c3b** (Co-driven
+  strength recovery — Co 14, +1 W if c2 creep deficits) — named not
+  pre-computed, on-the-shelf for the next funnel pass. `absorbed=false`
+  · `provisional=true` · `simulation-only-prediction` — computed
+  projection, never measurement (d6); SX500's `absorbed` stays `false`
+  permanently regardless of c-candidate count. d1 satisfied: when c1
+  wet-lab returns "hot-cracked", c2 funnel pass is ALREADY DONE — non-
+  wet-lab verification driven to completed-form this round, not
+  deferred. Record:
+  `exports/material_discovery/sx500_mondaloy_candidate_c2_envelope_20260523.json`.
+  D1 clean-room satisfied (composition delta from public c1-handoff
+  next_steps; no SX500 process disclosed).
 - **2026-05-23 KST** — **§9.7 Wet-lab handoff prep EXECUTED — cockpit
   gate-product for `demiurge-SX500-RE-c1`.** The non-wet-lab pipeline's
   final manifest: c1 composition table (wt% target + tolerance + at%

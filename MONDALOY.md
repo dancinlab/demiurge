@@ -507,6 +507,113 @@ lower γ′ loading is the d2 breakthrough path on the printability wall
 
 Record: `exports/material_discovery/sx500_mondaloy_candidate_c1_wetlab_handoff_20260523.json`.
 
+## §9.8 c2 fallback envelope — EXECUTED (proactive d2 breakthrough, this session)
+
+Proactive d2 execution of the §9.7 `next_steps_after_this_handoff`
+fallback path: if route B (LPBF) of c1 hot-cracks, the §9.6 funnel must
+be re-run with lower (Al+Ti) γ′-former loading. Rather than wait for
+the cast/print attempt to fail, the c2 envelope is precomputed *now*
+so the next funnel pass is already on the shelf when the wet-lab
+partner reports back. `provisional=true` · `absorbed=false` ·
+`gate_type=simulation-only-prediction` — c2 is also a computed
+projection, never a measurement (d6).
+
+### §9.8.1 c1 → c2 composition delta
+
+| element | c1 (wt%) | c2 (wt%) | Δ | at% c1 → c2 | rationale |
+|---|---|---|---|---|---|
+| Ni | 57.595 | 59.095 | +1.5 (rebalance) | 53.64 → 55.70 | balance absorbs γ′-former cut |
+| Cr | 20.0 | 20.0 | 0 | 21.02 → 21.28 | unchanged — chromia underlayer + 3rd-element-effect held |
+| **Al** | **5.0** | **4.0** | **−1.0** | **10.13 → 8.20** | **γ′-former cut to lower hot-crack susceptibility; trade γ′ fraction vs printability** |
+| Co | 12.0 | 12.0 | 0 | 11.13 → 11.27 | unchanged — γ′ solvus + SFE hold |
+| Mo | 3.5 | 3.5 | 0 | 1.99 → 2.02 | unchanged — below PHACOMP σ-line |
+| **Ti** | **1.5** | **1.0** | **−0.5** | **1.71 → 1.16** | **γ′-former cut — same lever as Al** |
+| Hf | 0.3 | 0.3 | 0 | 0.09 | unchanged — reactive element scale adhesion |
+| Y | 0.05 | 0.05 | 0 | 0.03 | unchanged |
+| C | 0.05 | 0.05 | 0 | 0.23 | unchanged |
+| B | 0.005 | 0.005 | 0 | 0.03 | unchanged |
+
+c2 follows the handoff JSON's `next_steps_after_this_handoff` item #4
+verbatim: `(Al=4.0, Ti=1.0)`. Total γ′-former (Al+Ti) drops from
+6.5 → 5.0 wt% (−23 %) and from 11.84 → 9.36 at% (−21 %).
+
+### §9.8.2 Property re-projection (analytical, public correlations)
+
+| property | c1 | c2 | trade |
+|---|---|---|---|
+| (Al+Ti) wt% | 6.5 | 5.0 | −23 % γ′-former loading |
+| γ′ volume fraction | 35-40 % | **27-32 %** | −20 to −25 % strengthening phase |
+| Al at% | 10.13 | **8.20** | drops to **region-III boundary** |
+| Giggins-Pettit position (Cr ~21 at%) | region III, comfortable margin | **region III, threshold-grazing** | α-Al₂O₃ scale still expected but margin thin |
+| HCS index (qualitative, Kou |dT/dfs^½|) | baseline | **−20 to −30 %** | LPBF printability window widens |
+| density | ~8.30 g/cm³ | ~8.32 g/cm³ | negligible (Ni rebalance dominates) |
+| oxidation k_p @1100 °C (α-Al₂O₃) | ~1e-13 to 1e-12 g²·cm⁻⁴·s⁻¹ | same order, **higher within band** | thinner Al reserve, faster scale Al consumption |
+
+ASCII Giggins-Pettit (1971) map locator (Ni-Cr-Al, at%) — c1 vs c2:
+
+```
+   Al at%
+    ^
+ 16 |          region III (continuous α-Al2O3)
+    |       /
+ 12 |     /   * c1 (Cr 21.0, Al 10.13)   <-- comfortable margin
+    |   /
+  8 |- - - -* c2 (Cr 21.28, Al 8.20) - - - <-- region-III threshold
+    | /     ||  (boundary line ~ Al 8-9 at% at Cr 22 at%)
+  4 | region II (Cr2O3 + internal Al2O3)
+    |/
+  0 +-------+-------+-------+-------+----> Cr at%
+    0      10      20      30      40
+                      ^ c1/c2 ~21 at%
+```
+
+c2 sits **on the region II/III boundary line** (8-9 at% Al threshold at
+Cr ~22 at%). Region III is *probable* but not as well-bracketed as c1.
+This is the central honest trade — γ′ reduction buys printability but
+narrows the α-Al₂O₃ margin (d7: report the trade, do not gloss).
+
+### §9.8.3 d2 fallback path for c2 — c3 envelope (named, not pre-computed)
+
+If c2 *also* hits a wall, two breakthrough paths exist (d2 — name
+forward, never concede):
+
+1. **c3a (region-III recovery)** — if c2 oxidation kinetics show
+   region-II Cr₂O₃ break-in rather than continuous α-Al₂O₃ (the
+   threshold-grazing failure mode), push Al back up to 4.5 wt% *and*
+   raise Hf to 0.4 wt% (extra reactive-element ballast to compensate
+   for thinner Al reserve). γ′ fraction stays in the lower window
+   ~30 %.
+2. **c3b (Co-driven SFE / strength recovery)** — if c2 prints fine but
+   creep/strength drops too far (γ′ 27-32 % vs c1 35-40 %), push Co
+   to 14 wt% (lower SFE → planar slip → strengthening contribution
+   independent of γ′), and add 1 wt% **W** (solid-solution) to recover
+   high-T strength without touching the γ′ former pool.
+
+Both c3 paths stay strictly inside the §9.4 reverse-engineered
+envelope. Neither is pre-computed here — they are named so the c2
+wet-lab report has a forward path on the shelf the moment it lands.
+
+### §9.8.4 Honest verdict (d6 + d7 + d2)
+
+c2 is **not** "better than c1" — it trades strengthening-phase content
+for printability margin. The honest framing:
+
+- **c1 is the primary candidate** — α-Al₂O₃ margin solid, γ′ fraction
+  in the SX500 public-spec window, *bets on the LPBF parameter sweep
+  closing the hot-crack gap*.
+- **c2 is the fallback** — printability margin solid, *bets that
+  region-III holds at the 8.20 at% Al boundary and that the
+  reduced γ′ fraction still meets the creep envelope*.
+
+d6 absolute: c2 also stays `absorbed=false` permanently. SX500's
+`absorbed` stays `false` permanently in demiurge regardless of how
+many c-candidates the funnel emits. d7: no target-forcing — c2's
+γ′ fraction is *reported as it falls out of the correlation*
+(27-32 %), not pushed to match c1.
+
+Record:
+`exports/material_discovery/sx500_mondaloy_candidate_c2_envelope_20260523.json`.
+
 ## §10. Cross-references
 
 - `hexa-space/mondaloy/mondaloy.md` — upstream n=6 structural-pattern

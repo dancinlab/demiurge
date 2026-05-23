@@ -1,0 +1,131 @@
+{
+  "domain": "material",
+  "verb": "design",
+  "kind": "sx500_mondaloy_class_c2_fallback_envelope_lower_gamma_prime_loading",
+  "stamp": "20260523T140000Z",
+  "producer": "demiurge MONDALOY.md §9.8 — proactive d2 breakthrough execution of the §9.7 handoff next_steps_after_this_handoff item #4 (re-run §9.6 funnel with lower Al+Ti loading for printability-wall fallback). Computed BEFORE any c1 wet-lab attempt so the next candidate is on the shelf when route B reports back.",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": true,
+  "candidate_id": "demiurge-SX500-RE-c2",
+  "parent_records": [
+    "exports/material_discovery/sx500_mondaloy_candidate_c1_wetlab_handoff_20260523.json",
+    "exports/material_discovery/sx500_mondaloy_candidate_c1_20260522.json",
+    "exports/material_discovery/sx500_mondaloy_reverse_engineered_envelope_20260522.json"
+  ],
+  "purpose": "Pre-computed fallback envelope for the c1 LPBF hot-cracking failure mode (route B in the §9.7 handoff). Re-runs the §9.6 forward funnel with the (Al=4.0, Ti=1.0) wt% delta specified verbatim in the c1 handoff JSON's next_steps_after_this_handoff item #4. Goal: have c2 ready BEFORE c1 wet-lab returns, satisfying d1 (non-wet-lab verification driven to completed-form for the next round) and d2 (proactive surfacing of the breakthrough path on the printability wall, not waiting for the wall to manifest).",
+  "boundary": {
+    "what_this_record_is": "A computed-projection envelope for the c2 candidate. Composition delta from c1 is fixed (handoff JSON next_steps); property re-projections use public correlations (γ′-fraction vs Al+Ti at%, Giggins-Pettit region-III gate, Kou hot-cracking susceptibility).",
+    "what_this_record_is_NOT": "Not a measured-oracle record. Not a wet-lab attempt. absorbed=false permanently. provisional=true reflects that even the c2 design needs an LPBF parameter sweep + TGA confirmation before any property claim is hardened.",
+    "wet_lab_boundary": "c2 will need its own wet-lab handoff packet (a future §9.x record analogous to §9.7) IF a c2 cast/print is ever commissioned. d6 absolute: any future absorbed=true flip is permitted only on an analog reference (Haynes-214 / René-N5 class), never on SX500 itself or on a c-candidate's design record."
+  },
+  "delta_from_c1": {
+    "Al_wt_pct": {"c1": 5.0, "c2": 4.0, "delta": -1.0, "rationale": "γ′-former cut to lower hot-crack susceptibility per §9.7 handoff JSON next_steps #4 (verbatim)"},
+    "Ti_wt_pct": {"c1": 1.5, "c2": 1.0, "delta": -0.5, "rationale": "γ′-former cut, same lever as Al"},
+    "Ni_wt_pct": {"c1": 57.595, "c2": 59.095, "delta": 1.5, "rationale": "rebalance absorbs the Al+Ti cut"},
+    "all_other_elements": "unchanged from c1 (Cr 20.0, Co 12.0, Mo 3.5, Hf 0.3, Y 0.05, C 0.05, B 0.005)",
+    "total_gamma_prime_former_loading_wt_pct": {"c1": 6.5, "c2": 5.0, "delta_pct": -23.1},
+    "total_gamma_prime_former_loading_at_pct": {"c1": 11.84, "c2": 9.36, "delta_pct": -20.9}
+  },
+  "composition_wt_pct": {
+    "Ni": 59.095,
+    "Cr": 20.0,
+    "Al": 4.0,
+    "Co": 12.0,
+    "Mo": 3.5,
+    "Ti": 1.0,
+    "Hf": 0.3,
+    "Y": 0.05,
+    "C": 0.05,
+    "B": 0.005
+  },
+  "composition_at_pct_derived": {
+    "note": "atomic-percent re-expression for melt-shop charge calc and DFT/CALPHAD downstream input (atomic masses g/mol: Ni 58.69, Cr 52.00, Al 26.98, Co 58.93, Mo 95.96, Ti 47.87, Hf 178.49, Y 88.91, C 12.01, B 10.81). Values rounded to 0.01 at%.",
+    "Ni": 55.70,
+    "Cr": 21.28,
+    "Al": 8.20,
+    "Co": 11.27,
+    "Mo": 2.02,
+    "Ti": 1.16,
+    "Hf": 0.09,
+    "Y": 0.03,
+    "C": 0.23,
+    "B": 0.03,
+    "sum_check_at_pct": 100.01,
+    "rounding_note": "Sum closes to 100 within rounding. DFT/CALPHAD downstream should use full-precision moles, not rounded at%."
+  },
+  "design_rules_re_applied": {
+    "alumina_former_gate": "Giggins-Pettit Ni-Cr-Al oxidation map (1971): Cr ~21.28 at% places the region-III (continuous α-Al2O3) Al threshold at ~8-9 at%. c2 Al = 8.20 at% sits ON the region II/III boundary — region III is probable but margin is thin (vs c1 at 10.13 at% with comfortable margin). Reactive-element ballast (Hf 0.3 + Y 0.05) held to compensate.",
+    "gamma_prime_printability": "(Al+Ti) drops 6.5 → 5.0 wt% (9.36 at%) — γ′ volume fraction estimated 27-32 % (vs c1 35-40 %). Closer to Haynes 282 (~19 %, weldable) than to c1 — printability window OPENS, hot-crack susceptibility DROPS by an estimated 20-30 %.",
+    "tcp_avoidance": "PHACOMP / Nv electron-vacancy: Cr 20.0 wt%, Mo 3.5 wt% UNCHANGED from c1 — still below σ-phase line. The Al/Ti cut does not affect TCP risk (Al/Ti are γ′-formers, not σ-promoters).",
+    "reactive_element": "Hf 0.3 wt% + Y 0.05 wt% held — reactive-element-effect coverage critical given the thinner Al reserve. c3a fallback path would raise Hf to 0.4 if region III fails to hold.",
+    "co_solvus": "Co 12.0 wt% held — γ′ solvus retention is the lever that prevents service-temperature loss despite reduced γ′ fraction."
+  },
+  "estimated_properties": {
+    "gamma_prime_vol_fraction": "27-32 % (vs c1 35-40 %; ~21 % at%-driven reduction)",
+    "oxidation_regime": "α-Al2O3 expected (region III, threshold-grazing) — k_p estimated SAME ORDER as c1 ~1e-13 to 1e-12 g^2 cm^-4 s^-1 at ~1100 C BUT skewing to the HIGH END of the band (thinner Al reserve consumed faster). If region III does NOT hold, c2 reverts to region II (Cr2O3 + internal Al2O3) → CrO3 volatilisation risk in ox-rich service → c3a fallback path activates.",
+    "density": "~8.32 g/cm^3 (negligible change from c1 ~8.30; Ni rebalance dominates)",
+    "hot_cracking_susceptibility_qualitative": "estimated -20 to -30 % vs c1 (Kou |dT/dfs^0.5| scales with γ′-former content; lower Al+Ti narrows the γ-γ′ eutectic freezing range). This is the c2 PURPOSE — buy printability margin.",
+    "creep_strength_qualitative": "estimated -10 to -20 % vs c1 (γ′ Orowan strengthening scales with fraction). Trade is explicit and accepted.",
+    "n6_principal_elements": "Ni · Cr · Al · Co · Mo · Ti (unchanged from c1 — element set identical, only loadings shifted)"
+  },
+  "ascii_giggins_pettit_locator": [
+    "   Al at%",
+    "    ^",
+    " 16 |          region III (continuous α-Al2O3)",
+    "    |       /",
+    " 12 |     /   * c1 (Cr 21.0, Al 10.13)   <-- comfortable margin",
+    "    |   /",
+    "  8 |- - - -* c2 (Cr 21.28, Al 8.20) - - - <-- region-III threshold",
+    "    | /     ||  (boundary line ~ Al 8-9 at% at Cr 22 at%)",
+    "  4 | region II (Cr2O3 + internal Al2O3)",
+    "    |/",
+    "  0 +-------+-------+-------+-------+----> Cr at%",
+    "    0      10      20      30      40",
+    "                      ^ c1/c2 ~21 at%"
+  ],
+  "d2_fallback_paths_for_c2": {
+    "name": "c3 envelopes (named, not pre-computed) — d2 forward path if c2 also hits a wall",
+    "c3a_region_III_recovery": {
+      "trigger": "c2 oxidation kinetics show region-II Cr2O3 break-in rather than continuous α-Al2O3 (the threshold-grazing failure mode)",
+      "delta_from_c2": "Al 4.0 → 4.5 wt%, Hf 0.3 → 0.4 wt% (extra reactive-element ballast to compensate for thinner Al reserve)",
+      "γ′_window": "~30 % (lower end of c1's window, upper end of c2's)",
+      "tradeoff": "halfway between c1 and c2 on the printability axis"
+    },
+    "c3b_co_driven_strength_recovery": {
+      "trigger": "c2 prints fine but creep/strength drops too far (γ′ 27-32 % vs c1 35-40 %)",
+      "delta_from_c2": "Co 12 → 14 wt% (lower SFE → planar slip → strengthening independent of γ′), add 1 wt% W (solid-solution)",
+      "γ′_window": "unchanged from c2 (27-32 %)",
+      "tradeoff": "recovers high-T strength without touching γ′-former pool — orthogonal lever"
+    },
+    "boundary": "Both c3 paths stay strictly inside the §9.4 reverse-engineered envelope. Neither pre-computed here — named so the c2 wet-lab report has a forward path on the shelf the moment it lands."
+  },
+  "honest_observations": [
+    "c2 is NOT 'better than c1' — it trades strengthening-phase content (γ′ -20 to -25 %) for printability margin (HCS -20 to -30 %). d7 invariant: no target-forcing, the trade is reported as it falls out of public correlations.",
+    "c1 remains the PRIMARY candidate; c2 is the FALLBACK staged for the LPBF hot-cracking failure mode of c1 route B.",
+    "Giggins-Pettit margin is the c2 risk: Al 8.20 at% sits ON the region II/III boundary line at Cr ~22 at% — region III is probable, not guaranteed. If wet-lab measurement (TGA + SEM-EDS cross-section) shows Cr2O3-dominant scale instead of α-Al2O3, c3a is the named recovery path (not concession — d2 invariant).",
+    "Both routes A and B from the §9.7 handoff remain applicable to c2 with no protocol-stub modification (same VIM melt, same investment cast OR LPBF, same heat-treatment cycle — only the charge wt% changes).",
+    "absorbed=false / provisional=true / simulation-only-prediction — this is a fallback envelope, not a measurement. No d6 violation; no SX500 claim. SX500's absorbed stays false permanently in demiurge regardless of how many c-candidates the funnel emits.",
+    "d1 is satisfied: the proactive c2 execution means when c1 wet-lab returns 'hot-cracked', the next funnel pass is ALREADY DONE — non-wet-lab verification driven to completed-form for this round, not deferred to the post-failure session."
+  ],
+  "next_steps_after_this_envelope": [
+    "If c1 wet-lab succeeds (route A or B): c2 stays on the shelf as a documented alternative — no immediate action needed.",
+    "If c1 route B hot-cracks: this c2 envelope is the input to a new §9.x wet-lab handoff packet (analogous to §9.7 but with c2 composition). Same VIM/LPBF protocols apply.",
+    "If c1 route A succeeds but route B cracks: c2 specifically targets the LPBF wall — promote c2 to a §9.x LPBF-only handoff, keep c1 as the cast-route reference.",
+    "Non-wet-lab follow-ups (applicable to BOTH c1 and c2): pycalphad + open Ni-Cr-Al-Co TDB phase-equilibrium run (numerical γ′ fraction confirmation — would distinguish c1 35-40 % from c2 27-32 % rigorously); DFT α-Al2O3 / Ni-substrate adhesion-energy check (region-III margin numerical, critical for c2's boundary position); physics-descriptor ML creep estimate (arxiv:2212.06755) on both candidates side-by-side.",
+    "If c2 also hits a wall (region II break-in OR creep deficit), execute c3a or c3b (named above) — d2 forward path, never concede."
+  ],
+  "r4_invariant": "absorbed=false · gate_type=simulation-only-prediction · provisional=true · domain=material · verb=design. d6 absolute (SX500 absorbed=false permanent; c2 also computed-projection, absorbed=false; analog measurements would be filed as SEPARATE records and only those records could ever flip absorbed=true). d7 preserved (no target-forcing — c2's γ′ fraction reported as the correlation gives it, NOT pushed to match c1; trade-offs surfaced explicitly: γ′ -20 to -25 %, HCS -20 to -30 %). d2 preserved (proactive breakthrough EXECUTION of the c1 handoff fallback path, not waiting for wet-lab failure; c3a/c3b further breakthrough paths named for c2 walls, no concession). d1 preserved (non-wet-lab verification driven to completed-form for this round — c2 ready before c1 returns). D1 clean-room satisfied (composition delta from the c1 handoff JSON public next_steps; no proprietary SX500 process).",
+  "citations": [
+    "MONDALOY.md §9.6 (forward funnel design rules) + §9.7 (c1 handoff, next_steps_after_this_handoff item #4 — c2 composition delta source) + §9.8 (this envelope's spec home)",
+    "Giggins, C.S. & Pettit, F.S. 1971 J. Electrochem. Soc. 118:1782 — Ni-Cr-Al oxidation map (region II/III boundary)",
+    "Reed, R.C. 'The Superalloys: Fundamentals and Applications' Cambridge UP 2006 — γ′ fraction vs Al+Ti correlation, PHACOMP, reactive-element-effect",
+    "Kou, S. 2015 Welding J. 94:374s — hot-cracking susceptibility criterion |dT/dfs^0.5| (Kou cracking index)",
+    "Haynes 282 datasheet — γ′ ~19 % weldable reference (lower-γ′ end of the printable Ni-superalloy bracket)",
+    "René N5 datasheet — γ′ ~70 % single-crystal reference (upper-γ′ end, NOT printable)",
+    "parent: sx500_mondaloy_candidate_c1_wetlab_handoff_20260523.json",
+    "parent: sx500_mondaloy_candidate_c1_20260522.json",
+    "parent: sx500_mondaloy_reverse_engineered_envelope_20260522.json"
+  ]
+}
