@@ -2,6 +2,24 @@
 
 Append-only history sister of `DAPTPGX.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T22:05:00Z — M7 · M8 cycle3 병렬 완료 · DOMAIN COMPLETE 8/8 🎯
+
+- [x] **M7 통합 결정맵** (531 lines) — 3-axis cube (phenotype × HBR × 시술복잡도) · 27-cell + 9-cell 요약 · 5 critical cells deep dive · 시간축 trigger (acute → 12mo) · POC genotyping (Spartan RX · Cube · 1h TAT) + EMR CDS workflow · vicagrel/selatogrel 미래 cell
+- [x] **M8 cost-effectiveness** (325 lines) — 4-strategy 비교 (S1 universal clopi · S2 ticag · S3 prasug · S4 targeted PGx) · NHIS 약가 input · Markov 1y/5y/lifetime · ICER 계산 · TICAKOREA bleed 2.8% 결정 변수 · 5y NHIS 888억 절감 + QALY +3,200
+
+🔑 결정맵 완성형 통찰:
+- **S4 targeted PGx-guided가 한국에서 유일한 cost-effective frontier** — S1 대비 ICER 34M KRW/QALY (WTP 30M borderline), S3 dominant, S2 압도. CYP2C19 PCR 50,000원이 5년 ST/MACE 비용 회피로 정당화
+- **S2 universal ticagrelor는 한국에서 명확히 dominated** — TICAKOREA bleeding 2.8% (PLATO 1.4% 2배)가 결정타. 5y NHIS 추가 부담 +850억 + ICER ~9억/QALY → 가이드라인 import 비합리
+- **3-axis cube의 "PM × HBR-HIGH × complex" = 결정맵 가치 최대 cell (~3-5명/100)** — PFT + de-escalation + 신약 전부 활용. 단일 cell에 RCT-level 의사결정 강도 집중
+- **HOST-EXAM clopi 단독이 chronic phase 한국적 표준** — 서양 aspirin 단독과 분기. 한국 evidence-leading 영역의 정점
+- **시간축 4-trigger로 27-cell 압축 가능** — acute LD · Day 14 PFT · Month 1 de-esc · Month 3-12 HOST-EXAM. EMR CDS 통합 용이 → implementability 핵심
+- **vicagrel KFDA 진입 시 결정맵 단순화** — CES1 1-step 활성화로 PM 60% 1:1 대체. 5y NHIS -218억 추가 절감 가능 (가정). 2026-2028 게임체인저
+
+🎯 **DAPTPGX 도메인 완성** — 한국인 PCI DAPT PGx 결정맵 8/8 milestone landed.
+- 총 ~2,000 lines 의 8-milestone 통합 문서
+- M1 epidemiology → M2 mechanism → M3 switch tree → M4 bleed → M5 PFT → M6 next-gen → M7 통합 cube → M8 cost-effectiveness
+- d2 wall 없음 — 모든 milestone 완료-form 도달 (d1 충족)
+
 ## 2026-05-24T21:50:00Z — M3 · M6 cycle2 병렬 완료 (2 milestone)
 
 - [x] **M3 switch tree** (388 lines) — 3제 비교 표 · escalation/de-escalation ASCII · TRITON/PLATO/TICAKOREA/TROPICAL-ACS/TOPIC/HOST-REDUCE 결과 · switch 프로토콜 vulnerable window · 4-quadrant 한국인 100명 분포 · KSC/ESC/ACC/CPIC 가이드라인 비교

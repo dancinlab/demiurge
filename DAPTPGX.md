@@ -10,5 +10,5 @@
 - [x] 출혈 risk score — PRECISE-DAPT · ARC-HBR · 한국인 calibration → `DAPTPGX/M4_bleed.md`
 - [x] platelet function test 통합 — VerifyNow · LTA · MEA cut-off → `DAPTPGX/M5_pft.md`
 - [x] 신규 P2Y12 후보 — selatogrel · revacept · 향후 → `DAPTPGX/M6_next.md`
-- [ ] 한국인 통합 결정맵 (유전형 × 출혈위험 × 시술복잡도) → `DAPTPGX/M7_map.md`
-- [ ] cost-effectiveness + universal vs targeted PGx 전략 → `DAPTPGX/M8_econ.md`
+- [x] 한국인 통합 결정맵 (유전형 × 출혈위험 × 시술복잡도) → `DAPTPGX/M7_map.md`
+- [x] cost-effectiveness + universal vs targeted PGx 전략 → `DAPTPGX/M8_econ.md`
