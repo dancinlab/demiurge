@@ -2,6 +2,27 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T00:30:00Z — V1 claim inventory + tier triage 완료
+
+- [x] §1 분류 규칙 (🔵/🟢/🟡/🟠/🔴 per @D g5 · TECS-L)
+- [x] §2 45 claims inventory (M1-M7 + R1-R3 전체 cover)
+- [x] §3 tier 분포 — 현재 🔵 1 (sanity) · 🟢 14 · 🟡 24 · 🟠 5 · 🔴 1
+- [x] §4 V2 PRIMARY target — C22/C23/C44 IVW estimator (🔵 첫 LPA atom)
+- [x] §5 V3a/V3b/V3c 작업 입력 매핑
+- [x] §6 신규 규칙 (memory feedback_demiurge_assets_simulation_mandatory) 반영 — V3 pool/cloud 필수
+- [x] S1/S2/S3 in-flight agent TaskStop (신규 규칙 사전 위반 회피)
+- [x] 산출물 `LPA/verify/V1_claim_inventory.md`
+- [ ] V2 atlas push (배치 1)
+- [ ] V3a siRNA ODE on pool ubu-1 (배치 1)
+- [ ] V3c NHIS ICER MC on pool ubu-2 (배치 1)
+- [ ] V3b MR/IVW Monte Carlo CI on pool (배치 2)
+- [ ] V4 final tier ledger (인라인 종료)
+
+🔑 핵심 통찰 (V1):
+- **🔵 target 8건** (C01/04/07/08/12/22/23/44) — IVW estimator + Schoenfeld + 산술 공식
+- **C41 GalNAc 도구 gap = 유일 🔴** (사내 IP wall · closed negative)
+- **C27 50% 감쇠 = heuristic→rule 승격 위험** → V3a sensitivity 필수
+
 ## 2026-05-25T00:00:00Z — R2 regulatory deep research 완료
 
 - [x] §1 FDA/EMA/MFDS designation status — pelacarsen/olpasiran/lepodisiran 모두 명시 designation 미공시 → 🟡

@@ -25,7 +25,7 @@
 
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
 
-- [ ] V1 LPA claim inventory + tier triage (🔵/🟢/🟡/🟠) → `LPA/verify/V1_claim_inventory.md`
+- [x] V1 LPA claim inventory + tier triage (45 claims · 🔵 target 8건) → `LPA/verify/V1_claim_inventory.md`
 - [ ] V2 🔵 push — Burgess MR closed-form · KIV-2 log · Schoenfeld 🟢 · Lp(a) Δ% identity · IVW estimator → `hexa verify --expr` + atlas register → `LPA/verify/V2_formal_identities.md`
 - [ ] V3 🟢 push — S1/S2/S3 numerical (siRNA ODE local · MR/IVW Monte Carlo pool ubu-1/2 · ICER) + apo(a) ribosome MD (RunPod GPU per @D d7) → `LPA/verify/V3_numerical_recompute.md`
 - [ ] V4 final tier ledger — 🔵+🟢+🟡 verbatim + 🟠 honest deferred → `LPA/verify/V4_tier_ledger.md`
