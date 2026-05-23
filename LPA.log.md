@@ -2,6 +2,47 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T22:40:00Z — M7 잔여 위험 정량 완료
+
+- [x] §1 정량 프레임워크 (MACE = CV death + MI + stroke + revasc) + dose-response 변수
+- [x] §2 Mendelian randomization — Burgess 2018 JAMA Cardiol: Lp(a) 1-SD ↓ (~25 mg/dL) → CHD HR 0.71
+- [x] §3 statin/PCSK9 era 잔여 30% + FOURIER Lp(a) subset ~17% RRR
+- [x] §4 HORIZON / OCEAN(a) 사전 power — -80% reduction × ~20% RRR target
+- [x] §5 ARR 한국인 — ASCVD 2차 5y MACE 15-20% baseline · 5y NNT ~25-35
+- [x] §6 외삽 5가지 caveat (ABS/REL · lifelong/late · confounding · 측정 · heterogeneity)
+- [x] §7 정량 격자 — 8 시나리오 × {↓%, mg/dL, RRR, NNT, evidence}
+- [x] §8 M8 ranking 입력 = ARR/NNT × evidence-weight
+- [x] §9 verify rubric — Burgess MR 🟡 · Ph3 RRR 🟠 · 한국 NNT 🟠
+- [x] 산출물 `LPA/M7_quant.md` (168 lines)
+- [ ] 🟠 Ph3 outcome RRR (HORIZON 2026 · OCEAN(a) 2027) 후 🟢/🔴 확정
+- [ ] 🟠 한국인 시판 후 NNT 후향 분석
+
+🔑 핵심 통찰:
+- **Best reduction = olpasiran (-98% · 5y NNT ~20-25)** · **best evidence = pelacarsen (HORIZON 2026 H1 first readout)**
+- **Burgess MR HR 0.71/SD** = lifelong 인과 황금 표준 — 약물 외삽 ~50% 감쇠 가정
+- **한국인 520만 명 ≥50 mg/dL** × ASCVD 2차 → siRNA 도입 시 5y NNT **~25-35**
+
+## 2026-05-24T22:30:00Z — M6 안전성 완료
+
+- [x] §1 우려 2축 매트릭스 — A (target Lp(a) ↓ 자체) vs B (platform ASO/siRNA toxicity)
+- [x] §2 Lp(a) 진화적 역할 + KIV-2 high copy null carrier ~10% Mendelian 안전 보증
+- [x] §3 ASO 클래스 (flu-like 30% · platelet inotersen 사례 · ALT 5% · 항-약물 항체)
+- [x] §4 siRNA 클래스 — inclisiran ORION-9/10/11 marketed analog 외삽 + lepodisiran reversal 우려
+- [x] §5 immune sensitization + 누적 10-30년 미관찰
+- [x] §6 임신 / 가임 여성 제외군 + Q24W washout 1년+ 제약
+- [x] §7 한국인 ethnicity-specific — KSoLA inclisiran registry
+- [x] §8 reversal & rescue 비교 (ASO Q4W high · lepodisiran Q24-48W low)
+- [x] §9 안전성 종합 격자 (4분자 × acute/chronic/회수/Mendelian)
+- [x] §10 verify rubric — Mendelian 🟡 · Ph2 🟡 · long-term 🟠 · 한국인 🟠
+- [x] 산출물 `LPA/M6_safety.md` (~174 lines)
+- [ ] 🟠 long-term (10년+) 안전성 — 시판 후 KSoLA registry 필요
+- [ ] 🟠 한국인 sub-population 안전 — pelacarsen/olpasiran 한국 site sub-analysis 대기
+
+🔑 핵심 통찰:
+- **Lp(a) ↓ 자체 안전 = KIV-2 high copy lifelong null carrier ~10% 인구 Mendelian 자연실험** (Kronenberg 2022)
+- **lepodisiran Q24-48W → 1년+ washout = idiosyncratic AE reversal 불가능** = 가장 큰 platform 우려
+- **inclisiran ORION 데이터가 GalNAc-siRNA 플랫폼 안전 패러다임 확립** → Lp(a) siRNA 외삽
+
 ## 2026-05-24T22:10:00Z — M5 CETP/PCSK9 보조 완료
 
 - [x] §1 보조 약제 위치 — 5축 (PCSK9i · obicetrapib · niacin · mipomersen · apheresis)

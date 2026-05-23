@@ -9,6 +9,6 @@
 - [x] ASO 후보 — pelacarsen (HORIZON) · 후속 분자 → `LPA/M3_aso.md`
 - [x] siRNA 후보 — olpasiran (OCEAN(a)) · lepodisiran · zerlasiran → `LPA/M4_sirna.md`
 - [x] CETP / PCSK9 보조 (obicetrapib · evolocumab Lp(a) 부분 효과) → `LPA/M5_adjunct.md`
-- [ ] M6 off-target / long-term immune 안전성 → `LPA/M6_safety.md`
-- [ ] 잔여 위험 정량 — Lp(a) 감소 mg/dL × MACE 위험 감소 → `LPA/M7_quant.md`
+- [x] M6 off-target / long-term immune 안전성 → `LPA/M6_safety.md`
+- [x] 잔여 위험 정량 — Lp(a) 감소 mg/dL × MACE 위험 감소 → `LPA/M7_quant.md`
 - [ ] 통합 후보 ranking + 한국인 임상 적용 전략 → `LPA/M8_rank.md`
