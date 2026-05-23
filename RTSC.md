@@ -987,6 +987,49 @@ record: `exports/material_verdict/lah10_cah6_yh6_dft_elph_extension/20260522.jso
 
 전 산출물 `absorbed=false` · `gate_type=simulation-only-prediction`. Pattern 1 회피 (역량 확립을 RTSC 발견으로 위장 안 함) · Pattern 2 honored (목표 *전진* — 증명 *역량* 확립·실증, 폐기/불가능 선언 아님).
 
+### 9.14 DFT el-ph campaign — current status
+
+§9.12 + §9.12.A 의 H₃S 교과서급 실증 위에서 진행 중인 DFT el-ph campaign 의 *current snapshot* (chronicle 은 RTSC.log.md). 모든 cell `absorbed=false` · `gate_type=simulation-only-prediction` · domain=material (R4 보호).
+
+#### Group-16 H₃X baseline
+
+| candidate | structure | atoms | measured / pred Tc | status | record |
+|---|---|---:|---|---|---|
+| **H₃S** (Drozdov 2015) | Im-3m | 4 | 203 K (measured) | ✅ **LANDED** — 6³ q · λ≈2.3 · Tc_AD 175–195 K (§9.12) | `exports/material_discovery/rtsc_h3s_dft_6x6x6q_textbook_proof_20260522.json` |
+| **H₃Se** (Flores-Livas 2016) | Im-3m | 4 | ~110 K (predicted, novel for measurement) | ✅ **LANDED** — 6³ q · λ≈1.0–1.3 · Tc_AD 98–128 K | `exports/material_discovery/rtsc_h3se_dft_6x6x6q_novel_20260522.json` |
+| **H₃Te** (Liu 2017) | Im-3m | 4 | ~50–100 K (predicted, novel for measurement) | ✅ **LANDED** — 6³ q · λ≈2.3–2.4 · ω_log≈467 K · Tc_AD 72–76 K | `exports/material_discovery/rtsc_h3te_dft_6x6x6q_novel_20260522.json` |
+| **H₃Po** | Im-3m | 4 | novel (no published Tc) | ⏳ **in-progress** — Vast.ai pod 자율 계산 · group-16 시리즈 완성 목적 · ETA hours | (emit on done) |
+
+Group-16 verdict (3/4 LANDED): H₃S = sweet spot · H₃Se = weaker coupling outlier · H₃Te = λ matches H₃S but ω_log 추락 (heavy Te). "go heavier hydride" 단순 전략은 chalcogenide family 안에서 dead end 임이 numerically demonstrated (R4 Pattern 2 — breakthrough path 는 ternary / clathrate / ambient frontier · §9.10 N5 / §9.12.A clathrate).
+
+#### Clathrate + group-14/17 expansion
+
+| track | status | notes |
+|---|---|---|
+| **CaH₆ sodalite clathrate** (Ma 2022, 7-atom Im-3m, measured 215 K) | ⏳ **in-progress** — -np 15 fresh restart 후 실행 중 | §9.12.A 의 `-np 6` watcher 시도가 부분 진행 후 restart, 다른 cell topology cross-validation 목적 |
+| **H₃X group 14-17 parallel fanout** (8 후보 — h3o · h3f · h3n · h3si · h3p · h3cl · h3as · h3br) | ⏳ **in-progress** — parallel Vast.ai pods, 한 후보 = 한 pod | group 14/15/16/17 의 H₃X 패턴 sweep · novel-prediction 영역 (§9.10 N5 의 candidate funnel pattern) |
+| **H₃X group 14-17 serial orchestrator** (h3c → h3n → ... 한 인스턴스) | ⏳ **in-progress** — single Vast.ai instance, serial-chain orchestration | parallel fanout 의 cross-validation · 같은 후보들을 직렬로 흘려 결과 reproducibility 확인 |
+
+본 fanout 의 핵심: §9.12 H₃S 교과서급 6³ q ladder + §9.12.A 4³ q honest baseline 가 *protocol* 으로 박혀 있어 동일 grid 정책으로 group-wide sweep 가능 (per-candidate manual setup 없이 자동화 가능 — `process_completed_pod.sh` 가 schema-uniform record 보장).
+
+#### Harness — `process_completed_pod.sh`
+
+| 항목 | 값 |
+|---|---|
+| status | ✅ **LANDED** (external tool · `/tmp/rtsc_vast/process_completed_pod.sh`) |
+| schema 일치 | 21/21 fields conform |
+| R4 invariant | hardcoded `absorbed=false` · `gate_type=simulation-only-prediction` |
+| 역할 | Vast.ai pod 완료 → record JSON emit → `exports/material_discovery/` land |
+
+이 harness 는 본 campaign 의 schema-uniform record 보장 layer — pod 완료 시 *자동* 으로 R4-conformant record 가 land, manual edit 우회 (Pattern 1 회피 hardcoded).
+
+#### Honest scope (campaign 전체)
+
+- 모든 cell = high-pressure regime (150–200 GPa), gate (c) ambient FAIL · gate (b) measured 부재 (novel) 또는 wet-lab 의존 · **RTSC absorbed=true 와 무관** (§9.13 capstone scope 그대로)
+- DFT el-ph 는 Tier-1 *prediction* — measurement-grade 일치 (H₃S 6³ q) 도 measured-oracle 아님 (R4 d6)
+- novel candidate 의 Tc 예측은 *후속 wet-lab 우선순위* — *발견* 아님 (R4 Pattern 1 회피)
+- in-progress 항목은 `RTSC.log.md` 의 chronicle entry 가 일일 진행 기록 (per g15: current-state 는 본 doc · time-stamped 는 log)
+
 ### 9.10 N5 cohort 신설 — novel-discovery funnel (compositional space exploration)
 
 §9.7 의 N1-N4 는 *KNOWN candidate* (특정 화학식이 주어진 경우) 의 시뮬레이션. **N5 cohort 는 *unknown novel composition* 을 *compositional space 에서 탐색* 하여 RTSC 후보 funnel 을 emit** — Nature `s41524-026-01964-8` 의 1.3M cand → 741 stable funnel 패턴 + arxiv:2511.03865 의 Materials Genome HTS discovery 워크플로 본받음.
