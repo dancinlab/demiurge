@@ -17,3 +17,8 @@
 - [x] R1 arxiv deep research → `LPA/R1_arxiv.md`
 - [x] R2 web/regulatory (FDA/EMA/MFDS/KSoLA/NHIS + Schoenfeld 🟢) → `LPA/R2_regulatory.md`
 - [x] R3 libraries (MR · cohort · PK/PD · ASO/siRNA · ctgov · 28 도구 · inbox 3건) → `LPA/R3_libraries.md`
+
+## simulation (cycle 4 · demiurge 자산)
+- [ ] S1 siRNA mRNA 분해 ODE — hexa/python ODE 적분 · pool dispatch · 4분자 PK/PD → `LPA/S1_sirna_kinetics.md`
+- [ ] S2 MR/IVW Burgess 재계산 — closed-form + atlas 등록 시도 + Monte Carlo CI → `LPA/S2_mr_ivw.md`
+- [ ] S3 NHIS ICER Monte Carlo — Lp(a) ↓ × MACE × QALY × 약가 sensitivity → `LPA/S3_nhis_icer.md`
