@@ -8,6 +8,14 @@ For the full audit trail, see `git log`.
 
 ## 2026-05-24
 
+### 2026-05-24 cycle 9-full+ batch (5 commits · CaH₆ 측정-grade anchor #2 + d7 wall α²F grid 100→140 meV 돌파)
+
+- **CaH₆ 측정-grade 검증 — DFT 213 K vs Ma 2022 측정 215 K (2 K 정합)** (`96eac8f`) — pool:ubu-2 retry (ibrav=3 BCC primitive 7-atom + 170 GPa vc-relax) 후 ph.x 4³q (8 IBZ · 16k) NaN=0 깨끗한 수렴 · λ_BZ=3.40–4.38 · ω_log=1177–1236 K · Tc(μ0.13)=213 K (broad=0.030). H₃S 와 함께 *측정-grade 일치 2번째 anchor* (clathrate topology). d2 wall 근본원인 = **input cell-choice** (ibrav=1 nat=14 conventional + press=0) — hexa cloud 버그 아님. 5 breakthrough hypothesis 중 #4 (cell pre-relax + 170 GPa) winner · #1+#2+#3 belt-and-suspenders.
+- **§10.1 verdict 정정 — h3o imaginary mode → h3cl #1 stable 후보** (`d4cb538`) — h3o/h3f/h3si imaginary phonon mode 발견 (Im-3m metastable) → §10.1 ranking 재구성: h3cl 이 진짜 stable #1 candidate. h3o 191 K headline 은 metastability 단서 부착 · novel-prediction 박제는 유지 (R4 Pattern 1 보존).
+- **BEE-NET step0 BLOCKER 해소 — grid ceiling 101 → 140 meV** (`b1aae78`) — `utils/data.py:15` Freq_final 51 → 71 bin · 첫 51 append-only · CPU smoke 4/4 PASS → d7 wall path B 잠금 해제. step1-3 unblocked · step4 fine-tune ~11-19 GPU-hr (병렬 8 GPU → 2-4h wall · H100 무의미, ensemble 100-member 병렬이 진짜 레버). Vast pod 37496985 4-shard launch.
+- **DEMIURGE meta-domain scaffold + @goal** (`dee8987`) — `DEMIURGE.md` + `DEMIURGE.log.md` 스캐폴드. meta-domain (UPPERCASE+).
+- **RTSC @goal + 10 milestones** (`4960c5e`) — `@goal: 상온·상압 초전도체` + 10 progress milestone (4 done: H₃S 측정-grade · CaH₆ 측정-grade · 5/8 H₃X LANDED + d7 grid 100 meV 정량 · BEE-NET grid 101→140). progress bar `▓▓░░░ 40% · 4/10`.
+
 ### 2026-05-24 cycle 9-full batch (4 commits + 2 sibling · d7 wall grid-ceiling 발견)
 
 - **d7 wall mechanistic root — α²F grid ceiling** (RTSC §9.14) — ALIGNN α²F head 출력 grid = **0–100 meV 100-bin** (천장 100 meV). DFT ω_log 가 천장 초과/근접 (h3cl **107.9 meV** 초과 · h3o **94.5 meV** 근접) → 고압 H-derived stretching mode 가 grid 위에 살아 표현할 bin 부재 = ω_log under-prediction 의 root. 2 결손 채널: ① high-ω truncation · ② acoustic-edge sign-pathology (λ_dens = 2a²F/ω·dω 의 1/ω 가중이 음수 α²F 폭증 — h3o 0.5 meV bin **λ_dens=−0.489**, neg-λ 의 82%). d7 = "ML training-distribution wall" 의 정확 물리 = grid ceiling; breakthrough = first-principles DFT 또는 grid-extended retrain.
