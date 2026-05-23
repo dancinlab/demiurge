@@ -8,9 +8,9 @@
 - [x] M2 structure — 구조 분해 뷰 (계층/의존 ASCII or table, 양 surface)
 - [ ] M3 design — design.md SSOT (D-number reserve) cockpit 통합
 - [ ] M4 analyze — analyze ⟲ loop runner (수렴 판정 포함)
-- [ ] M5 synthesize — synth dispatcher (pool/cloud 라우팅, per @D d7)
+- [x] M5 synthesize — synth dispatcher (pool/cloud 라우팅, per @D d7)
 - [x] M6 verify — `hexa verify` 결과 cockpit verbatim (per @D g5)
-- [ ] M7 handoff — handoff packet emitter (next-stage 입력 패킷)
+- [x] M7 handoff — handoff packet emitter (next-stage 입력 패킷)
 
 ---
 
