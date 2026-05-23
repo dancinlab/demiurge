@@ -2,6 +2,35 @@
 
 Append-only history sister of `ISR.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T01:00:00Z — R3 external libraries inventory + patent + hexa-lang inbox 완료
+
+- [x] §1 stent/balloon suppliers (16 vendor — Big 4 + Mid 4 + DCB 4 + 한국 4)
+- [x] §2 drug DBs (7 — DrugBank · ChEMBL · PubChem · BindingDB · STITCH · IUPHAR · Probes & Drugs)
+- [x] §3 coronary biomechanics simulators (8 — Abaqus · ANSYS · FEBio · OpenFOAM · CRIMSON · SimVascular · 3D Slicer · CardioFAN)
+- [x] §4 OCT/IVUS analysis tools (8 — LightLab · ILUMIEN · Volcano · HD-IVUS · StentOptics · OCTopus · ISIDORA · LCA-OCT)
+- [x] §5 PK/pharmacology (5 — Simcyp · PK-Sim/MoBi · GastroPlus · NONMEM · SimBiology)
+- [x] §6 AI/ML libraries (8 — MONAI · CardioMRI · DLCA · CorNet · PyRadiomics · TorchIO · MMSeg · OCT-Net)
+- [x] §7 registry platforms (5 — REDCap · OpenClinica · K-DES · IMPULSE · Castor)
+- [x] §8 patent landscape (top 20 + FTO 🔴 7건 / 🟠 6건 / 🟢 7건)
+- [x] §9 hexa-lang absorbable findings — 10 entries filed to `hexa-lang/inbox/notes/2026-05-25-*.md`
+- [x] 산출물 `ISR/research/external_libraries.md` (~274 lines)
+
+🔑 핵심: 16 vendors · 20 patents · **10 hexa-lang absorb candidates**.
+🔴 FTO red-zone 3: #17 ROCK-CV Markush (Asahi/UTokyo) · #5 dual-DCB (Concept Medical) · #3/#4 sirolimus carrier.
+🌱 hexa-lang stdlib namespace 제안: `bio.chem.* · bio.sim.* · bio.pk.pbpk · bio.imaging.med · bio.registry.edc`.
+🆕 추가 hook: M3 신규 표적 3종 (JAK/STAT · MK2 · HMGB1) · M4 추가 2종 (GS-4997 ASK1 · CCX140 CCR2) · M6 full FOSS biomech pipeline.
+
+## 2026-05-25T01:00:00Z — R1 arxiv/PubMed deep research sweep 완료
+
+- [x] §0 sweep methodology (10 + 5 novel queries, 2023-01 ~ 2026-05)
+- [x] §1-§10 per-query findings (top 3-7 hits each)
+- [x] §11-§15 novel angle queries (SGLT2i · ZEUS/BROADWAY · 2024 ESC · VPES · CLEAR SYNERGY)
+- [x] §ΣΣ Top 5 insights — (a) M3 top 3 강화 · (b) colchicine/ESC 감속 · (c) M4 12→17 분자 · (d) Freesolve leader 확정 · (e) 5 novel angles
+- [x] §Σ M2-M8 갱신 권고 (per-milestone block)
+- [x] 산출물 `ISR/research/arxiv_deep_research.md` (~410 lines)
+
+🔑 핵심: (1) M4 short-list 12→17 분자 — SirPlux Duo (dual PTX+SRL 검증 prototype) · empagliflozin (PDGF anti-ISR 직접 MoA) · ziltivekimab (IL-6) · obicetrapib (CETP) · icosapent ethyl 진입, colchicine Tier A→C 격하 (CLEAR SYNERGY null). (2) M3 top 3 (ROCK·PCSK9·GLP-1R) 모두 2023-2025 신증거 강화 — Yang 2025 post-PCI fasudil RCT · HUYGENS fibrous cap +39µm · SELECT/SURPASS non-DM. (3) M5 DCB 적응증 narrowing — 2024 ESC DES>DCB Class I LoE A + AGENT IDE FDA approval (paclitaxel 미국 ISR 진입). (4) M6 Mg-BRS leader = Freesolve (CE 2024 + BIOMAG-I 24m TLF 3.5% + vasomotion 회복) 확정. (5) novel angle: SGLT2i 직접 anti-ISR · IL-6 ZEUS · CETP 부활 (obicetrapib BROADWAY) · physics-informed DL OCT (한국 IIT hook) · VPES carotid 동물 진척.
+
 ## 2026-05-25T01:00:00Z — R2 web/regulatory research 완료
 
 - [x] §1 regulatory state matrix (FDA · EMA · MFDS · PMDA)
