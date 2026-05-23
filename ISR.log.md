@@ -2,6 +2,20 @@
 
 Append-only history sister of `ISR.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T00:00:00Z — M8 통합 ranking + ISR domain closure
+
+- [x] §1 한국인 registry 매핑 (K-DES · EXCELLENT · HOST · GRAND-DES · K-DCB · K-iDES)
+- [x] §2 ranking criteria 7축 (NH 15% · NA 25% · re-endo 15% · safety 20% · maturity 10% · delivery 10% · 한국 evidence 5%)
+- [x] §3 최종 top 10 ranking (#1 biolimus+fasudil dual-DCB 80.5 · #2 3G bio-polymer DES 78.0 · #3 PCSK9/GLP-1R systemic 72.0)
+- [x] §4 한국 발 IIT 3 후보 설계 (IIT-1 fasudil-DCB FIH · IIT-2 dual-DCB pilot · IIT-3 PCSK9/GLP-1R registry-RCT)
+- [x] §5 잔여 wall + d2 breakthrough 3-path (hexa kick · GRAND-DES embedded · 한·일 Asian DCB consortium)
+- [x] §6 ISR domain closure + 다음 도메인 hook (DAPTPGX · LPA · NOREFLOW · HERPES)
+- [x] 산출물 `ISR/M8_rank.md` (~298 lines)
+
+🏆 차세대 우승 후보: **biolimus + fasudil dual-DCB** (80.5/100)
+🎯 한국 발 IIT 우선: **IIT-1 fasudil-DCB first-in-human** (n=60, 15-25억 KRW, KCSC 6-8 sites)
+🚪 ISR domain ▓▓▓▓▓▓▓▓▓▓ 100% closure (정성). @goal 달성도 90% (wet-lab IIT 진입 시 100% 정량).
+
 ## 2026-05-24T23:00:00Z — M4 후보 분자 short-list 완료
 
 - [x] §1 short-list overview 표 (12 분자 — ROCK 3 + PCSK9 3 + GLP-1R 2 + anti-inflammatory 2 + SGLT2i 2 + biolimus DCB 1)

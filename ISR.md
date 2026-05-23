@@ -11,4 +11,4 @@
 - [x] 약물코팅풍선 (DCB) — paclitaxel vs sirolimus 비교 + carrier → `ISR/M5_dcb.md`
 - [x] 차세대 BRS (bioresorbable scaffold) 재시도 — PLLA · Mg · Zn 합금 → `ISR/M6_brs.md`
 - [x] M7 off-target / 안전성 — late stent thrombosis · delayed healing → `ISR/M7_safety.md`
-- [ ] 한국인 ISR registry 매핑 + 통합 ranking → `ISR/M8_rank.md`
+- [x] 한국인 ISR registry 매핑 + 통합 ranking → `ISR/M8_rank.md`
