@@ -11,9 +11,10 @@
 > Phase 1-4 #1 + #2 unblock pending CI infra · 20/20 cell matrix
 > PASS post-JARVIS-OPTIMADE 3rd corpus) · Nuclear discovery stack
 > LANDED (NUCLEAR.md spec + N6 HFBTHO + N7 WKB α-decay + Phase 4 #1
-> microkernel port 31/31 parity bit-exact). g3 honest — see `PLAN.md`
-> for measured distance, `HANDOFF.md` for session-stamp summary,
-> `DESIGN.md` for the decision audit trail.
+> microkernel port 31/31 parity bit-exact). g3 honest — see
+> `PLAN.log.md` for measured distance (κ-phase archive, PLAN.md 2026-05-22
+> 흡수), `CHARTER.md` for mission/scope (HANDOFF.md 2026-05-22 흡수 —
+> historical at `HANDOFF.log.md`), `DESIGN.md` for the decision audit trail.
 > Family: **typed-interface consumer** (not absorber) of `hexa-lang`,
 > the **sole SSOT** for reusable stdlib / tools / absorbed modules
 > (D15 / D17 + 2026-05-19 user directive); demiurge is the consumer-
@@ -21,8 +22,8 @@
 > This one = **모든 기술설계의 아키텍쳐** — chip is one domain,
 > `component` (FEM/EM/thermal, D21) the chain's 3rd-pass domain,
 > plus 13 shallow public-surface maps.
-> Single self-contained handoff for picking this up anywhere:
-> `HANDOFF.md`.
+> Self-contained pickup entry point: `CHARTER.md` (HANDOFF.md 2026-05-22
+> 흡수 — historical at `HANDOFF.log.md`).
 
 ---
 
@@ -58,7 +59,7 @@
 
    Product surface (D16 / rfc_009·010·011·012): macOS Swift cockpit
    **workbench live** — `/Applications/demiurge.app` (cockpit/ ·
-   SwiftPM). κ-phase build log in `PLAN.md`.
+   SwiftPM). κ-phase build log in `PLAN.log.md` (archive).
 ```
 
 vs 기존: hexa-matter = 물질을 계산, hexa-bio = 분자를 계산, **demiurge =
@@ -67,14 +68,15 @@ vs 기존: hexa-matter = 물질을 계산, hexa-bio = 분자를 계산, **demiur
 
 ## Files (SSOTs)
 
-- `HANDOFF.md` — **완전 자기완결 인수인계** (cold-readable, §10
-  RESUME). 0-context 로 이어가기 위한 단일 문서. 먼저 읽을 것.
-- `CHARTER.md` — mission · scope · 비목표 · 도메인 모델
+- `CHARTER.md` — **자기완결 인수인계** + mission · scope · 비목표 ·
+  도메인 모델 (HANDOFF.md 2026-05-22 흡수 — historical at
+  `HANDOFF.log.md`). 0-context pickup 진입점, 먼저 읽을 것.
 - `GOAL.md` — 한 문장 north-star + 무엇이 아닌가/무엇인가 + 정직한
   현 위치(g3)
 - `DESIGN.md` — **결정 감사추적** (gated picks SSOT — D-번호 SSOT)
-- `PLAN.md` — 진행 / 측정 거리, append-only `## 진행 로그` ·
-  cockpit κ-phase build log (수치·phase SSOT)
+- `PLAN.log.md` — 진행 / 측정 거리, append-only `## 진행 로그` ·
+  cockpit κ-phase build log archive (수치·phase SSOT, PLAN.md 2026-05-22
+  흡수 — forward Roadmap → CHARTER.md)
 - `AGENTS.tape` — 강제 거버넌스 (`g_stdlib_ownership` ·
   `g_ssot_single_source` · `g_cockpit_isolation` ·
   `g_swift_native` · `g_cockpit_reinstall` · `g_ai_agent_*` · g3 · `@F`)
@@ -102,7 +104,7 @@ vs 기존: hexa-matter = 물질을 계산, hexa-bio = 분자를 계산, **demiur
   stdlib home is `hexa-lang/<domain>` (booksim / matter pattern).
 
 ## Current state (snapshot, g3 — *카테고리* only; 수치·phase 는
-PLAN.md / DESIGN.md SSOT)
+PLAN.log.md / DESIGN.md SSOT)
 
 **Design-complete (4-Phase 로드맵):**
 
@@ -125,13 +127,13 @@ PLAN.md / DESIGN.md SSOT)
   3-column workbench (recipe rail · LLM chat · work zone) · project
   manifest persistence · ingredient shelf · θ-2 action skeleton ·
   §4.2 REJECTED guard · domain-aware canvas mode · CLI ↔ cockpit
-  parity (ActionDispatch shared). κ-phase log in PLAN.md.
+  parity (ActionDispatch shared). κ-phase log in PLAN.log.md (archive).
 - hexa-native substrate parity surface (D80 · κ-67 · RFC 013
   MOSTLY-LANDED) — declarative `.demi` SSOTs (5) · cockpit Loaders
   (5) · `HexaNativeParityRef` 8-field × 5 cell carriers · 4-case
   chip UI · ARCH §11.4 G1..G24 Round 1-6 + G25/G26 post-closure
   bracket. 측정 수치 (pilot 수 · assertion 수 · kernel folder 수 ·
-  PILOTS row 수) SSOT = `PLAN.md` κ-history + `domains/PILOTS.demi`
+  PILOTS row 수) SSOT = `PLAN.log.md` κ-history archive + `domains/PILOTS.demi`
   (g_ssot_single_source · D50).
 
 **Not done (정직한 갭, g3 — engine tool 0 이 핵심):**
@@ -145,5 +147,6 @@ PLAN.md / DESIGN.md SSOT)
 - 3D real USDZ 0 (component producer 부재; NEXT_SESSIONS P-⑨).
 - 어떤 도메인도 `absorbed=true` 아님.
 
-외부 매핑 = `HANDOFF.md` §5; 측정 거리 = `PLAN.md`; 결정 =
-`DESIGN.md`; cross-repo / post-completion 핸드오프 = `NEXT_SESSIONS.md`.
+외부 매핑 = `ARCH.md` §5 (HANDOFF.md §5 흡수); 측정 거리 = `PLAN.log.md`
+(archive); 결정 = `DESIGN.md`; cross-repo / post-completion 핸드오프 =
+`NEXT_SESSIONS.md`.

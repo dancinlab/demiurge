@@ -162,4 +162,4 @@ NUCLEAR / POOL / MP / GOAL — established 2026-05-22).
 - **macOS Swift cockpit** (D16 / rfc_009·010·011·012) — `cockpit/`
   SwiftPM package, **built and installed** as
   `/Applications/demiurge.app`. The product surface is now live;
-  the κ-phase build log lives in `PLAN.md`.
+  the κ-phase build log lives in `PLAN.log.md` (archive).

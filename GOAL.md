@@ -51,7 +51,7 @@
 **4-Phase 설계 design-complete · macOS cockpit workbench 골격 live ·
 wired·absorbed·측정 record 모두 0.**
 north-star 불변. 아래는 *카테고리* 서술 — D-번호·RFC건수·cockpit
-phase 같은 수치의 SSOT 는 `DESIGN.md` / `PLAN.md` (g_ssot_single_source):
+phase 같은 수치의 SSOT 는 `DESIGN.md` / `PLAN.log.md` (PLAN.md 2026-05-22 흡수 — κ-log archive 유지) (g_ssot_single_source):
 
 - ✅ **설계 골격 완결**: 7-verb spine cited (9 라이프사이클·D5) ·
   **15 도메인 공개면 맵** (13 Cohort cited + `component.md` +
@@ -169,8 +169,8 @@ phase 같은 수치의 SSOT 는 `DESIGN.md` / `PLAN.md` (g_ssot_single_source):
 
 - `DESIGN.md` — 결정 감사추적 (gated picks SSOT — D-번호 SSOT)
 - `AGENTS.tape` — 강제 거버넌스 (`g_stdlib_ownership`·g3·`@F`)
-- `CHARTER.md` + `HANDOFF.md` — mission / arch / why
-- `PLAN.md` — `## 계획`(GUI 완성까지 forward) + `## 진행 로그`(append-only)
+- `CHARTER.md` — mission / arch / why (HANDOFF.md 2026-05-22 흡수 — historical at `HANDOFF.log.md`)
+- `PLAN.log.md` — append-only κ-phase 진행 로그 archive (PLAN.md 2026-05-22 흡수 — forward Roadmap → CHARTER.md)
 - `proposals/rfc_*` · `cockpit/` (Swift workbench) ·
   `domains/`(14 + `matter/`) · `archive/comb/`
 - `README.md` — 콜드 엔트리 7-verb 가족

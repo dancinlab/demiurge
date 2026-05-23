@@ -414,7 +414,7 @@ pool boundary.
 ### §6.6 Don't assume pool host availability
 
 `pool status` is the live reachability probe; hosts go up and down
-(see PLAN.md 2026-05-18 OpenROAD build timeline — ubu-2 unreachable
+(see PLAN.log.md 2026-05-18 OpenROAD build timeline — ubu-2 unreachable
 under load, ubu-1 recovered after multiple session sweeps + agent
 rate-limits). A cohort that *requires* pool to make progress must
 either (a) accept honest skip when the host is down, or (b) carry
@@ -459,7 +459,7 @@ canonical) is the correct shape for case (a).
   session) — "ubu pool: summer@ubu-2 (linux). Heavy bash auto-routes
   there. Pool does NOT sync filesystems — local file edits are not
   visible on ubu until the user syncs."
-- **OpenROAD on ubu-1**: PLAN.md 2026-05-18 — OpenROAD build timeline
+- **OpenROAD on ubu-1**: PLAN.log.md 2026-05-18 — OpenROAD build timeline
   on ubu-2 → recovery on ubu-1 → Part E (routed GDS) COMPLETE on
   ubu-1 · 5.2 GB OpenROAD-flow-scripts checkout.
 - **heavy-substrate handoffs**: NEXT_SESSIONS.md H-* (H-1

@@ -62,7 +62,7 @@
 
 ## Cross-references
 
-- PLAN.md κ-1..κ-67 (progress log SSOT)
+- PLAN.log.md κ-1..κ-67 (progress log archive · PLAN.md 2026-05-22 흡수)
 - design.md D1..D108 (decision audit-trail SSOT · D104 reserved)
 - NEXT_SESSIONS.md (handoff prompts for cross-session work)
 - proposals/rfc_013_hexa_native_parity_connection.md (κ-67 promotion target · MOSTLY-LANDED per D105)

@@ -1,6 +1,6 @@
 # DESIGN — decision audit trail (live pointer)
 
-> Architecture/why SSOT = [`./CHARTER.md`](./CHARTER.md) + [`./HANDOFF.md`](./HANDOFF.md) · progress SSOT = [`./PLAN.md`](./PLAN.md). This file is the live spec — the chronological decision log (every gated D-number with `picked` / `rationale` / `anchors`) lives in [`./DESIGN.log.md`](./DESIGN.log.md). D-numbers are referenced across CHARTER / HANDOFF / GOAL / ARCH / PLAN / RTSC / NUCLEAR / RFC files; the log is the SSOT for those numbers.
+> Architecture/why SSOT = [`./CHARTER.md`](./CHARTER.md) (HANDOFF.md absorbed 2026-05-22 → [`./HANDOFF.log.md`](./HANDOFF.log.md) historical) · progress SSOT = [`./PLAN.log.md`](./PLAN.log.md) (PLAN.md absorbed 2026-05-22 — forward Roadmap into CHARTER.md, κ-phase log retained in PLAN.log.md archive). This file is the live spec — the chronological decision log (every gated D-number with `picked` / `rationale` / `anchors`) lives in [`./DESIGN.log.md`](./DESIGN.log.md). D-numbers are referenced across CHARTER / GOAL / ARCH / RTSC / NUCLEAR / RFC files; the log is the SSOT for those numbers.
 
 ## How new decisions land
 
@@ -11,9 +11,9 @@
 
 ## Domain pointers (where the live state lives, not the audit trail)
 
-- Architecture / why → [`./CHARTER.md`](./CHARTER.md) + [`./HANDOFF.md`](./HANDOFF.md)
+- Architecture / why → [`./CHARTER.md`](./CHARTER.md) (HANDOFF.md absorbed 2026-05-22 — historical at [`./HANDOFF.log.md`](./HANDOFF.log.md))
 - Goal (one-sentence north-star + IS/NOT) → [`./GOAL.md`](./GOAL.md)
-- Progress / measured distance / cockpit κ-phase log → [`./PLAN.md`](./PLAN.md)
+- Progress / measured distance / cockpit κ-phase log → [`./PLAN.log.md`](./PLAN.log.md) (PLAN.md absorbed 2026-05-22 — Roadmap → CHARTER.md, κ-log retained in archive)
 - Domain spec heads (ABSORPTION / ARCH / MP / NUCLEAR / POOL / RTSC) → corresponding `<DOMAIN>.md`
 - Enforced governance → `AGENTS.tape`
 - RFC tree → `proposals/rfc_001..0NN_*.md`
