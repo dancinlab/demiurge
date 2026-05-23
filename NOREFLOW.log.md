@@ -2,6 +2,24 @@
 
 Append-only history sister of `NOREFLOW.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T23:05:00Z — M8 한국 KAMIR registry 매핑 완료 (cycle2)
+
+- [x] §1 한국 STEMI/PCI registry 4대 (KAMIR/KAMIR-NIH · K-ACTION · KAMIR-V · HOST 시리즈)
+- [x] §2 한국 no-reflow 빈도 + 인구학적 특성 (12-18% angiographic · 30-50% cMRI MVO)
+- [x] §3 한국 약제/디바이스 가용 매트릭스 (nicorandil 보험 우위 · mPTP 약물 import gap)
+- [x] §4 한국 IMR/CMR capacity (~10개 IMR · ~15-20개 CMR · 다기관 consortium 부재)
+- [x] §5 한국 임상시험 gap 표 (mPTP/adenosine/nicorandil/thrombectomy/IMR-guided RCT)
+- [x] §6 한국 우위 + 돌파 3-path (NAD+/NMN supplement · IMR-stratified RCT · nicorandil pre-PCI)
+- [x] §7 한국 다기관 consortium 구상 (8개 대학병원 + central core lab)
+- [x] 산출물 `NOREFLOW/M8_korea.md` (173 lines · 출처 12)
+- [ ] M7 통합 ranking (cycle 3) — 한국 적용성 축 합산
+
+🔑 핵심 통찰:
+- **nicorandil 보험 등재 + familiarity = 한국 글로벌 우위** — J-WIND positive 후 즉시 진행 가능한 유일 약제 (Path C)
+- **IMR-guided cause-stratified RCT = first-in-class 기회** — 글로벌 trial들이 cause-mixed enrollment로 neutral 양산, 한국 ~10개 IMR-capable 기관 consortium으로 power 향상 (Path B)
+- **mPTP 직접 약물 한국 미수입** → NAD+/NMN supplement IRB-light pilot이 현실적 우회로 (Path A)
+- 최대 capacity gap: **다기관 CMR consortium 부재** (M5 결론 재확인) — KHIDI/보건복지부 R&D 트랙으로 2-3년 빌드 가능
+
 ## 2026-05-24T23:00:00Z — M6 off-target / 안전성 완료 (cycle2)
 
 - [x] §1 safety 5-domain (부정맥 · 저혈압 · 출혈 · 면역억제/신독성 · 기타)
