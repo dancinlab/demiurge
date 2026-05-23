@@ -1175,14 +1175,14 @@ d7 wall = α²F grid ceiling 100 meV (§9.14)
 
 | step | 내용 | 상태 |
 |---|---|---|
-| 0 | grid ceiling 101→140 meV 확장 | 🔴 **BLOCKER** (미착수) |
-| 1 | pretrained BEE-NET load (henniggroup/BETE-NET) | deferred |
-| 2 | DFT→α²F target 형식화 (ph.out 파싱, a2F.dos 덤프 필요) | deferred |
-| 3 | μ_HX (path e) + pressure (path i) l=0 주입 | deferred |
-| 4 | fine-tune (LOO-CV · 5점 → 50-100점 augment) | deferred |
+| 0 | grid ceiling 101→140 meV 확장 | ✅ **해소** (2026-05-24 · `utils/data.py:15` `Freq_final` 51→71 bin · CPU smoke 4/4 PASS) |
+| 1 | pretrained BEE-NET load (henniggroup/BETE-NET) | unblocked · ensemble .pt full-clone 필요 |
+| 2 | DFT→α²F target 형식화 (ph.out 파싱, a2F.dos 덤프 필요) | unblocked |
+| 3 | μ_HX (path e) + pressure (path i) l=0 주입 | unblocked |
+| 4 | fine-tune (LOO-CV · 5점 → 50-100점 augment) | GPU ~11-19 GPU-hr (A100 ~1d) · 사용자 결정 |
 | 5 | sanity gate (sign-pathology 0 · ω_log MAE) | deferred |
 
-설계 상세: `inbox/notes/d7-wall-beenet-poc-design-2026-05-24.md` · arxiv 비교: `inbox/notes/post-alignn-ml-sc-predictors-survey-2026-05-24.md`
+**step0 해소 상세**: grid SSOT 단 1곳 (`utils/data.py:15` `Freq_final = np.arange(0.25,101,2)` 51-bin) → `arange(0.25,141,2)` 71-bin 으로 확장 (첫 51 bin append-only 동일 → backbone 전이 안전). h3cl 107.9 meV mode 가 신규 20 bin 에 표현됨. pretrained 호환: `{em, layers.2}` re-init + backbone freeze transfer (CPU smoke: grid 71bin ✅ · a²F≥0 clamp ✅ · forward (1,71) all≥0 ✅). 설계 상세: `inbox/notes/d7-wall-beenet-poc-design-2026-05-24.md` + `inbox/notes/beenet-grid-extension-step0-2026-05-24.md` · arxiv 비교: `inbox/notes/post-alignn-ml-sc-predictors-survey-2026-05-24.md`
 
 ### 9.10 N5 cohort 신설 — novel-discovery funnel (compositional space exploration)
 
