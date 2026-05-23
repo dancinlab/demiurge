@@ -15,6 +15,15 @@
 - [ ] wet-lab handoff (Tier 2 recipe-as-record · §8 4-tier 경유)
 - [ ] measured-oracle PASS → RTSC absorbed=true (최종 d5 invariant 충족)
 
+## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
+
+> RTSC 는 가장 verify-native 한 도메인 — §4 in-flight · §9 5-gate sim stack · §10 d7 wall roadmap 이 native 구현. 아래 V1-V4 는 cross-domain 통일 schema 매핑.
+
+- [ ] V1 RTSC claim inventory + tier triage (🔵/🟢/🟡/🟠) — §3 state matrix + §5 per-axis ledger 흡수 → `RTSC/verify/V1_claim_inventory.md`
+- [ ] V2 🔵 push — Eliashberg λ closed-form · McMillan Tc identity · BCS gap ratio 2Δ/kT_c · BEE-NET grid invariant · DFT 충격 boundary → `hexa verify --expr` + atlas register → `RTSC/verify/V2_formal_identities.md`
+- [ ] V3 🟢 push — §9 5-gate sim stack 흡수: QE 7.5 el-ph (pool ubu-1 per `reference_qe_dft_pool_setup`) · BEE-NET fine-tune (Vast.ai GPU) · SSCHA anharmonic (RunPod GPU) · per @D d7 compute matrix → `RTSC/verify/V3_numerical_recompute.md`
+- [ ] V4 final tier ledger — §10 d7 roadmap 결과 + §3.2 verify candidate 통합 → 🔵+🟢+🟡 verbatim + 🟠 wet-lab deferred (M9 handoff) → `RTSC/verify/V4_tier_ledger.md`
+
 
 > Root-level domain expansion. SSOT for "the rtsc work" until each axis
 > moves to its own UPPERCASE.md (ai-native principle 4 — domain-meta-domain).

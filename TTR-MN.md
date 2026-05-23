@@ -14,3 +14,10 @@
 - [x] M8-MN ex-vivo 돼지 피부 PoC — MN patch 도포 → 잉크 제거율 측정 (제거율 ≥ 50% goal)
 - [x] M9-MN in-vivo (rat / mini-pig 14-90일) — 제거율 ≥ 80%, 흉터 없음, 전신 독성 없음
 - [x] MN measured-oracle PASS → absorbed=true (FDA combination product · IND 패키지 · GMP MN array lock)
+
+## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
+
+- [ ] V1 TTR-MN claim inventory + tier triage (🔵/🟢/🟡/🟠) — TTR base V1 흡수 + MN-specific → `TTR-MN/verify/V1_claim_inventory.md`
+- [ ] V2 🔵 push — needle penetration force closed-form · plume diffusion (Fick) · dissolution kinetics 1차 · polymer swelling ratio → `hexa verify --expr` + atlas register → `TTR-MN/verify/V2_formal_identities.md`
+- [ ] V3 🟢 push — needle tip plume CFD (RunPod GPU per @D d7) · polymer dissolution MD (pool ubu-1/2) · skin mechanics FEA (local CPU) — M5/M7 흡수 → `TTR-MN/verify/V3_numerical_recompute.md`
+- [ ] V4 final tier ledger — 🔵+🟢+🟡 verbatim + 🟠 wet-lab + FDA absorbed=true 정합 → `TTR-MN/verify/V4_tier_ledger.md`

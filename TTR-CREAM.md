@@ -15,3 +15,10 @@
 - [ ] M8-CREAM ex-vivo 돼지 피부 PoC — cream 도포 → 잉크 제거율 측정 (제거율 ≥ 30% goal, 정직)
 - [ ] M9-CREAM in-vivo (rat / mini-pig) — cream-only 효능 (낮은 제거율 가능성 명시) + 안전성
 - [ ] CREAM measured-oracle PASS → absorbed=true (OTC 또는 cosmetic-grade 등록)
+
+## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
+
+- [ ] V1 TTR-CREAM claim inventory + tier triage (🔵/🟢/🟡/🟠) — TTR base V1 흡수 + CREAM-specific → `TTR-CREAM/verify/V1_claim_inventory.md`
+- [ ] V2 🔵 push — SC partition log K_p · permeation enhancer ratio · CPP Henderson-Hasselbalch · cream-only depth gap closed-form → `hexa verify --expr` + atlas register → `TTR-CREAM/verify/V2_formal_identities.md`
+- [ ] V3 🟢 push — SC bilayer MD with enhancer (RunPod GPU per @D d7) · cream vehicle DFT (pool ubu-1/2) · 진피 농도 PBPK (local CPU) → `TTR-CREAM/verify/V3_numerical_recompute.md`
+- [ ] V4 final tier ledger — 🔵+🟢+🟡 verbatim + 🟠 wet-lab deferred (M8/M9 ex-vivo/in-vivo) → `TTR-CREAM/verify/V4_tier_ledger.md`
