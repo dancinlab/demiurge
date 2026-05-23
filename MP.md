@@ -55,7 +55,7 @@ API key 가 필요한 건 *실시간 REST 쿼리* 만; **bulk dump (S3 mirror / 
 
 ### Phase 2 — 보완 source (key-free)
 
-- [ ] **P2.1** — **COD** (Crystallography Open Database) CIF parser thin adapter — `~/core/hexa-lang/stdlib/material/cod_query.py`. pymatgen 으로 CIF → Structure → 결정 격자 + atomic positions. public domain → 완전 자유.
+- [x] **P2.1** — **COD** (Crystallography Open Database) CIF parser thin adapter — `~/core/hexa-lang/stdlib/material/cod_query.py` (397 LOC, pure python · stdlib + pymatgen). LANDED 2026-05-23. `result?text=<comp>&format=csv` 으로 COD ID 인덱스 추출 → `/cod/<id>.cif` 다운로드 → `pymatgen.Structure.from_str(fmt="cif")` 으로 lattice/spacegroup/density 추출. record schema 는 MP cache 와 mirror (`domain=material` · `verb=query` · `absorbed=false` 영구 · `gate_type` ∈ {external-api, external-api-failed, install-gated} · `provenance` · `citations`). MgB2 live test 6 COD ID → 3 CIF parse PASS. public domain → 완전 자유 (no API key · no attribution 필수). install-gated path: pymatgen 미설치시 id-only row.
 - [ ] **P2.2** — **AFLOW** REST thin adapter — `~/core/hexa-lang/stdlib/material/aflow_query.py`. 일부 endpoint 는 key-free; 어떤 게 그런지 첫 시도에서 확인.
 - [ ] **P2.3** — **NIMS SuperCon** CSV mirror check. register-only 이라 자동화 안 됨 → 안 되면 honest skip + setup-note (mp-api-setup-needed.md 패턴).
 - [ ] **P2.4** — Source priority chain: measured > DFT-computed-cached > MP-cached > COD > AFLOW > literature-text > default-hard-code. record 의 provenance.source_chain 에 어디서 왔는지 기록.

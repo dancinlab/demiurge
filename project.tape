@@ -2,10 +2,11 @@
   version = "1.4"
 
 @I := "demiurge" :: identity [active]
-  kind   = "Universal hexa-native technical-design architecture (7-verb pipeline · domain-plugin macOS cockpit)"
-  brief  = "spec → structure → design → analyze ⟲ → synthesize → verify → handoff · materials → chip → component"
-  parent = "dancinlab"
-  ssot   = "github.com/dancinlab/demiurge (`hx install demiurge`)"
+  kind     = "Universal hexa-native technical-design architecture (7-verb pipeline · domain-plugin macOS cockpit)"
+  brief    = "spec → structure → design → analyze ⟲ → synthesize → verify → handoff · materials → chip → component"
+  parent   = "dancinlab"
+  ssot     = "github.com/dancinlab/demiurge (`hx install demiurge`)"
+  siblings = "hexa-lang"
 
 @D d1 := "non-wet-lab verification → completed-form" :: governance [required active]
   do   = "drive every non-wet-lab step (sim · analysis · proof · synthesis · cockpit gate · handoff) to completed-form before the wet-lab boundary"
