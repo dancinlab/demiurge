@@ -405,6 +405,108 @@ collapse the envelope to one candidate. `simulation-only-prediction`,
 > fraction and the scale-adhesion margin numerically. Record:
 > `exports/material_discovery/sx500_mondaloy_candidate_c1_20260522.json`.
 
+## §9.7 Wet-lab handoff prep — cockpit gate (this session, 2026-05-23)
+
+The non-wet-lab pipeline's final cockpit-gate product: the packet a
+melter / single-crystal grower / AM operator would consume to attempt a
+c1 cast or print. Composition table + raw-material purity minima + two
+synthesis protocol stubs (investment-cast polycrystalline + LPBF
+additive) + characterisation protocol stubs + reproducibility
+checklist. `provisional=true` · `absorbed=false` ·
+`gate_type=simulation-only-prediction` — this is the *manifest*, not
+the measurement.
+
+### §9.7.1 c1 composition — handoff form
+
+| element | wt% target | tolerance | at% (derived) | role |
+|---|---|---|---|---|
+| Ni | 57.595 | balance | 53.64 | γ + γ′ matrix base |
+| Cr | 20.0 | ±0.5 | 21.02 | chromia underlayer + 3rd-element O getterer |
+| Al | 5.0 | ±0.2 | **10.13** | **α-Al₂O₃ former (Giggins-Pettit region III, ≥ ~8-9 at% threshold at Cr ~22 at%)** |
+| Co | 12.0 | ±0.5 | 11.13 | γ′ solvus ↑, SFE ↓ |
+| Mo | 3.5 | ±0.3 | 1.99 | solid-solution strengthening (below σ-line) |
+| Ti | 1.5 | ±0.2 | 1.71 | γ′ former (with Al) |
+| Hf | 0.3 | ±0.05 | 0.09 | reactive element — α-Al₂O₃ scale adhesion |
+| Y | 0.05 | ±0.02 | 0.03 | secondary reactive element |
+| C | 0.05 | ±0.01 | 0.23 | grain-boundary carbide (castability) |
+| B | 0.005 | ±0.002 | 0.03 | grain-boundary segregant (creep ductility) |
+
+Impurity ceilings: **S ≤ 5 wppm · P ≤ 10 wppm · O ≤ 30 wppm** (S/O
+poison the reactive-element effect — Reed 2006 ch.4).
+
+### §9.7.2 Pipeline flow
+
+```
+  +--------------------------+
+  | demiurge non-wet-lab     |
+  | §9.6 → c1 (this packet)  |
+  +-----------+--------------+
+              |
+              v
+  +--------------------------+        +---------------------+
+  | route A: investment-cast |   OR   | route B: LPBF AM    |
+  | VIM melt → cast → SHT    |        | atomise → print →   |
+  | + 2-step age → coupon    |        | HIP → SHT + age     |
+  +-----------+--------------+        +----------+----------+
+              |                                  |
+              +----------------+-----------------+
+                               v
+              [WET-LAB BOUNDARY — d1 frontier]
+                               v
+  +--------------------------------------------------+
+  | TGA oxidation @1100C · SEM γ′ vol-frac · thermal |
+  | cycling · XRD/EBSD phase ID  → measured oracle    |
+  +--------------------------+-----------------------+
+                             v
+              (only on ANALOG reference — d6:
+               SX500 absorbed=false PERMANENT)
+```
+
+### §9.7.3 Reproducibility checklist (10-point)
+
+The third-party-lab gate that must be cleared for any future
+`measured-oracle PASS` on a c1-derived coupon to be credible. Full
+checklist in
+`exports/material_discovery/sx500_mondaloy_candidate_c1_wetlab_handoff_20260523.json`;
+headline items:
+
+1. ICP-OES chemistry-of-record within wt%-tolerance band (all 10
+   elements + S/P/O impurities)
+2. Heat-treatment time-temperature trace archived (csv)
+3. ≥6 coupons per condition (statistics)
+4. TGA: sapphire-blank calibration + atmosphere flow/dew-point logged
+5. All raw data + scripts on Zenodo/OSF tagged
+   `candidate_id="demiurge-SX500-RE-c1"`
+6. Independent re-melt by a second lab before any "verified" claim
+7. If route B hot-cracks → re-run §9.6 with lower (Al+Ti) loading
+   → candidate **c2** (d2 breakthrough on the printability wall)
+8. Any `absorbed=true` flip permitted only on the **analog reference**
+   (Haynes-214 / René-N5 class), as a *separate* exports/ record
+9. SX500 itself stays `absorbed=false` permanently in demiurge — c1 is
+   the open functionally-equivalent candidate, not SX500 (d6 absolute)
+10. Wet-lab partner candidates: Cambridge Rolls-Royce UTC · Ohio State
+    CHTM · MPIE Düsseldorf · ORNL MDF (LPBF) · Haynes International
+
+### §9.7.4 Honest verdict (d6 + d2)
+
+This packet does not measure c1. It is the *cockpit gate-product* that
+makes a future measurement possible. demiurge cannot commission a wet
+lab — the packet is the open-source artefact a partner can pick up. If
+no partner picks it up, demiurge can still drive the non-wet-lab side
+further: pycalphad phase-equilibrium, DFT α-Al₂O₃ adhesion, ML creep
+estimate (next non-wet-lab batch). If route B hot-cracks, c2 with
+lower γ′ loading is the d2 breakthrough path on the printability wall
+— surfaced *now*, before any cast is attempted.
+
+> **d6 absolute**: even a fully-successful c1 cast + measured k_p in
+> line with §9.6 prediction lets `absorbed=true` flip *only* on that
+> analog measurement record. **SX500's `absorbed` stays `false`
+> permanently in demiurge** — no measured oracle against the actual
+> SpaceX alloy is accessible, and c1 is independently-derived open
+> alloy, not SX500.
+
+Record: `exports/material_discovery/sx500_mondaloy_candidate_c1_wetlab_handoff_20260523.json`.
+
 ## §10. Cross-references
 
 - `hexa-space/mondaloy/mondaloy.md` — upstream n=6 structural-pattern

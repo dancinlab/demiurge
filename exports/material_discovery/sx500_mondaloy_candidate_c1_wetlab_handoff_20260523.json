@@ -1,0 +1,153 @@
+{
+  "domain": "material",
+  "verb": "handoff",
+  "kind": "sx500_mondaloy_class_c1_wetlab_handoff_cockpit_gate",
+  "stamp": "20260523T120000Z",
+  "producer": "demiurge MONDALOY.md §9.7 — wet-lab handoff prep for demiurge-SX500-RE-c1 (cockpit gate-product: composition table + single-crystal/cast growth protocol stub + reproducibility checklist)",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": true,
+  "candidate_id": "demiurge-SX500-RE-c1",
+  "parent_records": [
+    "exports/material_discovery/sx500_mondaloy_candidate_c1_20260522.json",
+    "exports/material_discovery/sx500_mondaloy_reverse_engineered_envelope_20260522.json"
+  ],
+  "purpose": "Cockpit-gate handoff packet — the non-wet-lab deliverable immediately preceding the wet-lab boundary (d1). Bundles (a) the c1 composition table in the form a melter / single-crystal grower / AM operator consumes, (b) two synthesis protocol stubs (investment-cast polycrystalline coupon AND LPBF additive-manufactured coupon — c1 is alumina-forming + printability-capped, both routes are in scope), (c) a reproducibility checklist a third-party lab must complete to make a measured-oracle PASS possible later. Nothing here measures c1; this is the manifest a wet-lab partner uses to attempt the cast/print.",
+  "boundary": {
+    "what_this_record_is": "A pre-wet-lab handoff packet. simulation-only-prediction holds — the composition is from §9.6 analytical funnel, the protocols are stubs derived from public Ni-superalloy practice.",
+    "what_this_record_is_NOT": "Not a measured-oracle record. Not a fabrication report. Not a property measurement. absorbed stays false. provisional=true reflects that the protocol stubs need a melter/printer-shop review before any actual heat is melted.",
+    "wet_lab_boundary": "Any subsequent measured-oracle record (oxidation k_p, γ′ vol fraction by SEM/SAXS, creep life) must be filed as a SEPARATE exports/ record and only THEN may absorbed flip — and only on the analog reference (Haynes-214 / René-N5 class), never on SX500 itself (d6 — SX500 has no measured oracle accessible to demiurge)."
+  },
+  "composition_table_target_wt_pct": {
+    "Ni": {"target": 57.595, "tolerance": "balance", "role": "γ + γ′ matrix base"},
+    "Cr": {"target": 20.0, "tolerance": "±0.5", "role": "chromia underlayer + third-element-effect O getterer"},
+    "Al": {"target": 5.0, "tolerance": "±0.2", "role": "α-Al2O3 former — THE ox-rich lever (Giggins-Pettit region III)"},
+    "Co": {"target": 12.0, "tolerance": "±0.5", "role": "γ′ solvus ↑, SFE ↓"},
+    "Mo": {"target": 3.5, "tolerance": "±0.3", "role": "solid-solution strengthening (below σ-phase line, PHACOMP)"},
+    "Ti": {"target": 1.5, "tolerance": "±0.2", "role": "γ′ former (with Al)"},
+    "Hf": {"target": 0.3, "tolerance": "±0.05", "role": "reactive element — α-Al2O3 scale adhesion (René N5 precedent 0.2)"},
+    "Y": {"target": 0.05, "tolerance": "±0.02", "role": "secondary reactive element"},
+    "C": {"target": 0.05, "tolerance": "±0.01", "role": "grain-boundary carbide former (castability)"},
+    "B": {"target": 0.005, "tolerance": "±0.002", "role": "grain-boundary segregant (creep ductility)"}
+  },
+  "composition_table_target_at_pct_derived": {
+    "note": "atomic-percent re-expression of the wt% table for melt-shop charge calc and DFT/CALPHAD downstream input (atomic masses g/mol: Ni 58.69, Cr 52.00, Al 26.98, Co 58.93, Mo 95.96, Ti 47.87, Hf 178.49, Y 88.91, C 12.01, B 10.81). Values rounded to 0.01 at%.",
+    "Ni": 53.64,
+    "Cr": 21.02,
+    "Al": 10.13,
+    "Co": 11.13,
+    "Mo": 1.99,
+    "Ti": 1.71,
+    "Hf": 0.09,
+    "Y": 0.03,
+    "C": 0.23,
+    "B": 0.03,
+    "sum_check_at_pct": 100.00,
+    "rounding_note": "Sum closes to 100.00 within rounding (computed via n_i = wt_i / M_i, normalised). DFT/CALPHAD downstream should use full-precision moles, not rounded at%."
+  },
+  "raw_material_purity_minima": {
+    "Ni": "99.95 % (electrolytic or Ni-200 grade)",
+    "Cr": "99.9 % (aluminothermic or electrolytic)",
+    "Al": "99.99 % (4N — reactive-element-effect requires low S, P, O)",
+    "Co": "99.9 %",
+    "Mo": "99.95 %",
+    "Ti": "Grade-2 sponge or higher, low O (<0.1 wt%)",
+    "Hf": "99.9 % (Zr-stripped; Hf/Zr separation must be done — bulk Hf often Zr-contaminated)",
+    "Y": "99.9 % (rare-earth grade)",
+    "C": "spec-graphite (battery / spec-pure grade)",
+    "B": "amorphous B 99.9 % or B4C master alloy",
+    "S_max_total_wppm": 5,
+    "P_max_total_wppm": 10,
+    "O_max_total_wppm": 30,
+    "rationale": "S poisons the reactive-element effect (Hf/Y getter S; if S is high the α-Al2O3 scale spalls). O above 30 wppm pre-oxidises Al during melt. Both are well-known alumina-forming-superalloy lessons (Reed 2006 ch.4)."
+  },
+  "synthesis_protocol_stubs": {
+    "route_A_investment_cast_polycrystalline_coupon": {
+      "purpose": "First-screen route — fastest path to an oxidation-test coupon. Polycrystalline equiaxed; lower mechanical-property bar but valid for scale-formation studies.",
+      "steps": [
+        "1. Vacuum induction melting (VIM) — argon/vacuum atmosphere <1e-3 mbar, melt all elements except Y, Hf, B at 1550-1600 C.",
+        "2. Add Hf, Y, B as last addition (reactive elements oxidise fastest — minimise dissolved time).",
+        "3. Pour at ~1500 C into a preheated investment-cast shell (mullite/zircon face coat); coupon geometry: 20 mm × 20 mm × 3 mm oxidation-test discs (≥6 per heat for statistics).",
+        "4. Solution heat treat 1250 C / 4 h / Ar, gas-fan-cool to room T.",
+        "5. Two-step aging: 1080 C / 4 h / Ar fan-cool + 870 C / 16 h / Ar fan-cool — standard alumina-former γ′-precipitation cycle (Reed 2006).",
+        "6. Surface prep: grind to 600-grit SiC, then 1-μm diamond polish; ultrasonic-clean in acetone + ethanol.",
+        "7. Heat-tint visual check before oxidation: bright metallic, no surface oxide islands."
+      ],
+      "deliverables_to_lab": "≥6 coupons + chemistry-of-record (ICP-OES on a sacrificial slug from the heat) + heat-treatment trace.",
+      "estimated_first_heat_time": "2-3 weeks at a university melt-shop (e.g. Cambridge Rolls-Royce UTC, Ohio State CHTM)"
+    },
+    "route_B_LPBF_additive_manufactured_coupon": {
+      "purpose": "Second route — exercises the SX500 'castable AND printable' public spec; confirms the c1 γ′ window stays inside the LPBF printability envelope (the §9.6 Al+Ti=6.5 wt% / 35-40 % γ′ rule).",
+      "steps": [
+        "1. Gas-atomise the c1 charge to 15-45 μm powder (EIGA or VIGA, Ar-protected); sieve, dry, store under Ar.",
+        "2. LPBF on EOS M290 / Concept-Laser M2 / equivalent — preheat plate 200 C, Ar atmosphere O2 <50 ppm.",
+        "3. Parameter sweep (Vd × P matrix) — laser power 200-350 W, scan speed 800-1400 mm/s, layer 30 μm, hatch 110 μm; build 4 coupons per (P, v) cell, 5 cells = 20 coupons.",
+        "4. CT-scan all 20 builds for cracks/porosity; downselect to the parameter cell with porosity <0.05 % and zero hot-cracks.",
+        "5. HIP at 1180 C / 100 MPa / 4 h to close residual porosity.",
+        "6. Solution + age per route A steps 4-5.",
+        "7. Same surface prep as route A."
+      ],
+      "deliverables_to_lab": "Downselected parameter set + ≥6 HIPed/heat-treated coupons + powder-batch chemistry + CT report.",
+      "estimated_first_heat_time": "4-6 weeks (atomisation 2 wk + parameter sweep 2 wk + post-process 1-2 wk)",
+      "risk_note": "Hot-cracking probability is the c1 unknown — if the (Al+Ti) loading drives cracks, the §9.6 funnel must be re-run with a lower γ′ target (Al 4.0, Ti 1.0)."
+    }
+  },
+  "characterisation_protocol_stubs_post_synthesis": {
+    "oxidation_kinetics_isothermal_TGA": {
+      "purpose": "Measure parabolic k_p in the α-Al2O3 regime to compare against the §9.6 estimate k_p ~1e-13 to 1e-12 g^2 cm^-4 s^-1.",
+      "protocol": "Thermogravimetric analysis, 1100 C, dry air (and separately wet air with 10 % H2O for the OH-volatility check), 200 h, continuous Δm logging; post-test SEM-EDS cross-section for scale identification (α-Al2O3 vs Cr2O3 vs mixed)."
+    },
+    "gamma_prime_volume_fraction": {
+      "purpose": "Confirm the §9.6 prediction γ′ = 35-40 %.",
+      "protocol": "Aqua-regia + HCl electrolytic etch + SEM image analysis on ≥10 fields; cross-check via small-angle X-ray scattering (SAXS) if available."
+    },
+    "scale_adhesion_thermal_cycling": {
+      "purpose": "Test the reactive-element effect (Hf+Y) under thermal cycling — the historical alumina-former failure mode is scale spallation, not scale growth.",
+      "protocol": "1100 C ↔ 100 C cycling, 1-h holds, 100 cycles; mass-change logging + post-test SEM for spallation fraction."
+    },
+    "phase_identification": {
+      "purpose": "Rule out σ / μ TCP phases (PHACOMP gate confirmation).",
+      "protocol": "XRD + SEM-EBSD on aged coupon after 200 h / 900 C exposure (TCP precipitation temperature window)."
+    }
+  },
+  "reproducibility_checklist": [
+    "[ ] Chemistry-of-record: ICP-OES on sacrificial heat slug, all 10 elements + S/P/O impurities, within tolerance band above.",
+    "[ ] Heat-treatment trace: time-temperature log archived (csv) for solution + 2-step age.",
+    "[ ] Coupon geometry + count documented; ≥6 coupons per condition for statistics.",
+    "[ ] Surface-prep procedure pinned (grit sequence, final polish, cleaning solvent, time-before-test).",
+    "[ ] TGA: instrument calibration with sapphire blank, repeat baseline before each run.",
+    "[ ] Oxidation atmosphere flow rate + dew-point recorded for every TGA run.",
+    "[ ] All raw data + analysis scripts deposited in an open repo (Zenodo / OSF) with the candidate_id 'demiurge-SX500-RE-c1' in metadata.",
+    "[ ] Independent re-melt by a second lab from the same composition spec before any 'verified' claim (analog precedent: H3S superconductivity took 3 independent groups before community accepted).",
+    "[ ] If absorbed=true is to be claimed on the ANALOG reference (Haynes-214 or René-N5-class) — a separate analog-validation record must be filed first, citing the same protocol.",
+    "[ ] SX500 itself remains absorbed=false PERMANENTLY in demiurge (d6) — no SX500-direct measured oracle is accessible; c1 is the open functionally-equivalent candidate, not SX500."
+  ],
+  "wet_lab_partner_options": {
+    "academic_first_choice": "alumina-forming-superalloy groups: Cambridge (Rolls-Royce UTC), Ohio State (CHTM), Imperial College, MPIE Düsseldorf — all have alumina-formers as active programs.",
+    "industrial_handoff": "Haynes International / Special Metals / Cannon-Muskegon — commercial melt-shops that routinely cast alumina-forming Ni superalloys.",
+    "additive_specialist": "Oak Ridge MDF or Fraunhofer ILT for the LPBF parameter sweep.",
+    "honest_caveat": "demiurge does not commission wet-lab work — this handoff packet is the open-source artefact a partner can pick up. No demiurge guarantee of fabrication, only of the design rules."
+  },
+  "honest_observations": [
+    "Protocol stubs are pinned to public alumina-forming-superalloy practice (Reed 2006, Pollock review 2006, Haynes 214 datasheet). They are NOT proprietary SX500 protocols — c1 is open, the cast/print routes are open.",
+    "First wet-lab failure mode prediction: LPBF hot-cracking (route B) is the most likely first hurdle — if it cracks, the §9.6 funnel can be re-run with lower (Al+Ti) loading. This is the d2-style breakthrough path on the printability wall.",
+    "absorbed=false / provisional=true / simulation-only-prediction — this is a handoff packet, not a measurement. No d6 violation; no SX500 claim.",
+    "The d6 absolute boundary: even a successful c1 cast + measured k_p in line with prediction would only let demiurge flip absorbed=true on the ANALOG c1 measurement record — never on SX500. SX500's absorbed stays false permanently in demiurge."
+  ],
+  "next_steps_after_this_handoff": [
+    "Find a wet-lab partner (academic alumina-forming-superalloy group preferred) willing to cast/print a c1 coupon set.",
+    "In parallel, demiurge can still drive the non-wet-lab pipeline further: pycalphad + open Ni-Cr-Al-Co TDB phase-equilibrium run (numerical γ′ fraction confirmation); DFT α-Al2O3 / Ni-substrate adhesion-energy check; physics-descriptor ML creep estimate (arxiv:2212.06755).",
+    "If a partner runs route A, file the measurement as a new exports/ record (kind = 'analog_oxidation_measured_oracle'); only THEN consider an absorbed=true flip on that analog record (NOT on c1's design record, NOT on SX500).",
+    "If hot-cracking blocks route B, re-execute §9.6 with (Al=4.0, Ti=1.0) → candidate c2 — d2 breakthrough path on the printability wall."
+  ],
+  "r4_invariant": "absorbed=false · gate_type=simulation-only-prediction · provisional=true · domain=material · verb=handoff. D1 clean-room satisfied (all protocol stubs derived from public superalloy practice; no proprietary SX500 process disclosed). d6 boundary held (SX500 absorbed=false permanent; analog measurements would be filed as separate records). d2 preserved (printability/hot-cracking risk surfaced with concrete c2-fallback breakthrough path, not concession).",
+  "citations": [
+    "Reed, R.C. 'The Superalloys: Fundamentals and Applications' Cambridge UP 2006 — heat-treatment + reactive-element + alumina-former protocols",
+    "Pollock, T.M. & Tin, S. 2006 J. Propul. Power 22:361 — Ni-base single-crystal superalloys review (impurity limits, casting practice)",
+    "Haynes 214 datasheet (Haynes International) — public alumina-forming Ni superalloy analog reference",
+    "Giggins & Pettit 1971 J. Electrochem. Soc. 118:1782 — Ni-Cr-Al oxidation map (the §9.6 region-III gate)",
+    "MONDALOY.md §9.6 + §9.7 (demiurge domain doc)",
+    "parent record: exports/material_discovery/sx500_mondaloy_candidate_c1_20260522.json"
+  ]
+}

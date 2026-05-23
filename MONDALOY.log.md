@@ -6,6 +6,29 @@ confirmed state.
 
 ## Log
 
+- **2026-05-23 KST** — **§9.7 Wet-lab handoff prep EXECUTED — cockpit
+  gate-product for `demiurge-SX500-RE-c1`.** The non-wet-lab pipeline's
+  final manifest: c1 composition table (wt% target + tolerance + at%
+  derived: Al 5.0 wt% = **10.13 at%** confirms Giggins-Pettit region-III
+  with margin), raw-material purity minima (S ≤ 5 / P ≤ 10 / O ≤ 30
+  wppm — reactive-element-effect ceilings), two synthesis protocol stubs
+  (route A: VIM + investment-cast polycrystalline coupon, 2-3 wk; route
+  B: gas-atomise + LPBF + HIP, 4-6 wk), four characterisation stubs
+  (TGA k_p @1100C · γ′ vol frac SEM/SAXS · thermal-cycle scale adhesion
+  · XRD/EBSD TCP screen), 10-point reproducibility checklist, and
+  wet-lab partner shortlist (Cambridge UTC · Ohio State CHTM · MPIE ·
+  ORNL MDF · Haynes Intl). `provisional=true` · `absorbed=false` ·
+  `simulation-only-prediction` — this is the *manifest*, not a
+  measurement. d6 absolute: SX500 itself stays `absorbed=false`
+  permanently in demiurge; any future `absorbed=true` flip permitted
+  only on the analog reference (Haynes-214 / René-N5 class) as a
+  separate exports/ record. d2 breakthrough on the printability wall
+  surfaced *now*: if route B hot-cracks, re-run §9.6 with lower (Al+Ti)
+  loading → candidate **c2** (concrete path, not concession). Record:
+  `exports/material_discovery/sx500_mondaloy_candidate_c1_wetlab_handoff_20260523.json`.
+  D1 clean-room satisfied (protocols pinned to Reed 2006 + Pollock 2006
+  + Haynes 214 datasheet — public alumina-former practice, no SX500
+  process disclosure).
 - **2026-05-22 KST** — **§9.6 §7 forward funnel EXECUTED → single
   candidate `demiurge-SX500-RE-c1`.** Collapsed the §9.4 envelope to one
   composition via public superalloy-design rules (no proprietary
