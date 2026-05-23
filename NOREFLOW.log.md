@@ -2,6 +2,23 @@
 
 Append-only history sister of `NOREFLOW.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T22:32:00Z — M3 미세혈관 보호 약물 완료 (cycle1)
+
+- [x] §1 5-family overview (adenosine · K-ATP · NO donor · CCB · IIb/IIIa)
+- [x] §2 약제별 deep-dive 6종 (AMISTAD-II · REOPEN-AMI · J-WIND · VAPOR · INFUSE-AMI · CHAMPION)
+- [x] §3 cause × drug 매트릭스 (DE/VS/ED — IR은 M2)
+- [x] §4 임상 결과 positive vs neutral 분포 (small Ph2 IC bolus 양성 vs large Ph3 systemic 음성)
+- [x] §5 d2 wall 돌파 3-path (IMR-stratified RCT · multi-drug cocktail · individualized)
+- [x] §6 신규 후보 (endothelin · DPP-4 · SGLT2i EMMY · GLP-1 FAVOR · 콜키친)
+- [x] §7 한국 hooks (KAMIR-V · K-ACTION · 한국 nicorandil 보험우위)
+- [x] 산출물 `NOREFLOW/M3_microvasc.md` (206 lines · 출처 12)
+- [ ] M4 delivery 경로 + M6 safety + M7 ranking 입력
+
+🔑 핵심 통찰:
+- **small Ph2 IC bolus positive vs large Ph3 systemic neutral** 패턴 = d2 wall (single-cause × multi-cause heterogeneity × timing 부정합)
+- 돌파 3-path: IMR>40 cause-stratified RCT · multi-drug cocktail (verapamil+nicorandil+adenosine) · OCT/IMR individualized
+- ED 직접 약물 갭 → **SGLT2i (empagliflozin EMMY)** 신규 후보 · 한국 nicorandil 보험우위 = M8 자산
+
 ## 2026-05-24T22:30:00Z — M2 mPTP 차단 후보 inventory 완료 (cycle1)
 
 - [x] §1 mPTP 구조 (F-ATPase c-ring vs ANT 학파 + CypD 합의) + ASCII 닫힘/개방
