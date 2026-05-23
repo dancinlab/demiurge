@@ -5,7 +5,7 @@
 ## Milestones
 
 - [x] M1 spec — domain spec capture surface (CLI 명령 + cockpit 입력 패널)
-- [ ] M2 structure — 구조 분해 뷰 (계층/의존 ASCII or table, 양 surface)
+- [x] M2 structure — 구조 분해 뷰 (계층/의존 ASCII or table, 양 surface)
 - [ ] M3 design — design.md SSOT (D-number reserve) cockpit 통합
 - [ ] M4 analyze — analyze ⟲ loop runner (수렴 판정 포함)
 - [ ] M5 synthesize — synth dispatcher (pool/cloud 라우팅, per @D d7)
