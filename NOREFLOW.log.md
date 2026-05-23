@@ -2,6 +2,24 @@
 
 Append-only history sister of `NOREFLOW.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T22:55:00Z — M4 delivery 경로 완료 (cycle2)
+
+- [x] §1 전달 경로 5-tier (IC bolus · IV systemic · thrombectomy · DPD · drug-eluting catheter)
+- [x] §2 IC bolus PK 우위 정량 (Cmax ratio · arm-to-heart lag)
+- [x] §3 IC vs IV 임상 비교 (REOPEN-AMI · AMISTAD-II · INFUSE-AMI · AIDA · CIRCUS)
+- [x] §4 Mechanical 검토 (TASTE · TOTAL · EMERALD — 모두 routine 권고 down)
+- [x] §5 drug-eluting catheter/guidewire frontier
+- [x] §6 d2 wall 돌파 매트릭스 (M2/M3 + M4 종합)
+- [x] §7 한국 capacity (microcatheter · aspiration · DPD · drug-eluting gap)
+- [x] 산출물 `NOREFLOW/M4_delivery.md` (256 lines · 출처 16)
+- [ ] M6 safety · M8 한국 (cycle2 병렬)
+- [ ] M7 통합 ranking (cycle3)
+
+🔑 핵심 통찰:
+- **IC PK 우위 정량** — arm-to-heart lag IV 30-120s vs IC ~0-3s · short-t1/2 vasodilator (adenosine/NTP) Cmax 30-100× · t1/2 큰 약물 (abciximab) 3-10×
+- **CIRCUS neutral의 진짜 원인 = PK 미달** — CsA 2.5mg/kg IV 1.5h infusion으로는 lethal window (재관류 첫 5분, M2 d2 wall) 도달 부족 → IC + reperfusion-synced 재시도 (M2 Path B)가 미시도 path
+- **Mechanical = DE 한 cause만 커버** — TASTE/TOTAL neutral + stroke↑로 routine 철회, EMERALD native coronary DPD도 neutral → **M7 ranking은 IC bolus 약물 중심**
+
 ## 2026-05-24T22:35:00Z — M5 임상 측정 endpoint 완료 (cycle1)
 
 - [x] §1 endpoint 5-layer 피라미드 (epicardial → MBG → IMR → CMR → MACE)
