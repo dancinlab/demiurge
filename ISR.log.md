@@ -2,6 +2,18 @@
 
 Append-only history sister of `ISR.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T22:00:00Z — M2 4종 DES 약물 한계 매핑 완료
+
+- [x] §1 4종 약물 개요 표 (sirolimus · everolimus · zotarolimus · biolimus A9)
+- [x] §2 mTORC1 공통 표적 + PI3K→AKT→mTORC1→S6K1/4E-BP1 pathway ASCII
+- [x] §3 PK / 약물학 차이 표 (logP · IC50 · release t½ · burst · polymer)
+- [x] §4 임상 효능 (LLL + TLR @12mo) — SIRIUS · SPIRIT · ENDEAVOR · RESOLUTE · LEADERS · NOBORI · BIOFLOW-V + Korean (EXCELLENT · HOST-REDUCE · RESET · GRAND-DES)
+- [x] §5 5가지 미해결 wall — (a) 단일 표적 escape · (b) NA 미해결 · (c) delayed healing → late ST · (d) HBR DAPT 부담 · (e) DES-in-DES 효과 ↓
+- [x] §6 M3 hook — 비-mTOR 표적 5축 (lipid·염증 · healing-selective · DAPT-free · 직교내성)
+- [x] 산출물 `ISR/M2_current.md` (188 lines)
+
+🔑 핵심: 4종 모두 FKBP12 → mTORC1 단일 경로 의존 → escape · NA 미해결 → M3 비-mTOR 표적 inventory 필수.
+
 ## 2026-05-24T22:00:00Z — M3 비-mTOR 신규 표적 inventory 완료
 
 - [x] §1 5 family overview 표
