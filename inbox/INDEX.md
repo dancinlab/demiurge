@@ -1,6 +1,6 @@
 # inbox/INDEX.md — cross-session pickup SSOT
 
-> Updated 2026-05-21 (κ-67 closure + ARCH §11.4 Round 7 scaffold + κ-68 cell pick).
+> Updated 2026-05-23 (h3o 191K novel headline + d7 wall breakthrough paths + RTSC §9.x light-X sweep batch).
 > Status SSOT for every `inbox/notes/*.md` entry. Each entry keeps
 > its own body intact; this file is the at-a-glance index.
 
@@ -12,10 +12,14 @@
 - **pickup-blocked** — toolchain / cross-session dependency
 - **archive** — reference / methodology, no further action
 
-## Index (38 entries)
+## Index (42 entries)
 
 | filename | status | reference | one-liner |
 |---|---|---|---|
+| `h3o-novel-191k-group16-sweet-spot-2026-05-23.md` | archive | RTSC §9.x light-X hydride sweep | **h3o = 171–191 K novel first-principles Tc prediction** (broad sweep 4-pt all real-mode, no imaginary phonon — O metastability 우려 해소). group-16 sweet-spot ladder 정량 확정: H₃S 203K (measured) > h3o 191K (novel) > H₃Se 113K > H₃Te 75K > H₃Po 48K. celldm_final=4.899 (light-X shortest). cross-cand 표 (h3o · h3f · h3si · h3cl · h3po @ broad=0.020): ω_log axis dominant (h3o 1097K · h3cl 1252K · h3po 265K) — light-X = short bond = 고진동. ambient ML 0.48 vs DFT λ_BZ 2.48 → d7 wall 재확인. next critical test: h3p ETA 02:00 KST (group-15 P vs group-16 sweet axis 비교). |
+| `d7-wall-mechanism-breakthrough-paths-2026-05-23.md` | archive | d7 governance · ALIGNN ω_log under | ambient-ML (ALIGNN) 고압 H-derived 고진동 모드 missing → ω_log 15× under wall. cycle 4-5 H₃Cl per-cand audit: ALIGNN λ=0.81 vs DFT 1.27 (+57% on λ) BUT ω_log 81K vs 1252K — **ω_log axis dominant failure mode**. breakthrough paths brainstorm 10: (a) hydride-extended retrain · (b) physics-informed loss high-ω weight · (c) BETE-NET ensemble · (d) dual-head λ + ω_log · (e) H-X bond / μ_HX feature · (f) graph transformer · (g) ALIGNN-FF phonon direct · (h) ML screen + DFT 정밀 · (i) pressure variable embedding · (j) DFT feedback loop. 추천 1순위 = (e) bond-length feature (1-2일 low-hanging, root cause 직접) · 2순위 = (i) pressure feature retrain. d7 governance: DFT 정공법 + ML path 병렬. |
+| `h3cl-d7-wall-breakthrough-2026-05-23.md` | archive | RTSC §9.x · d7 wall finding (h3cl) | H₃Cl per-candidate audit — ALIGNN λ=0.81 vs DFT λ=1.27 / ω_log 81K vs 1252K. d7 wall ML training-distribution miss 의 raw data source — `d7-wall-mechanism-breakthrough-paths-2026-05-23.md` 의 root note. |
+| `rtsc-9.15-precommit-outlier-analysis-2026-05-23.md` | archive | RTSC §9.15 · pre-commit outlier | §9.15 outlier audit — pre-commit 단계 anomaly 분석 노트. 정정 / framing 트레일. |
 | `2026-05-21-hexa-exec-broken-pipe.md` | pickup-open | hexa runtime / self/runtime.c popen | hexa `exec` subprocess broken — empty stdout + "broken pipe" on all commands. Scope: `self/runtime.c` popen / pipe handling — NOT a stdlib bug. Filed by other session (rfc_006 §5 work). Bonus discovery: `str(float)` emits literal `(float)` token (filed separately). Blocks `stdlib/yosys/gate_record.hexa` end-to-end measurement. Pickup = hexa runtime debug session. |
 | `2026-05-21-pool-gate_v3-abc-diagnosis.md` | archive | κ-69 / chip §B / rfc006 §5 substrate-axis | pool cross-platform (Mac arm64 vs ubu-2 Linux x86_64) re-execution of `/tmp/gate_v3` ABC mapping reproduced **identical** failure mode — confirms two `gate_v3` BLIF-emitter bugs (multi-output sky130 cells like `fa_1` fanin serialization · net-node fanin invariant) + wrapper honest-violation (`[abc_map] exit=0` masking Abort trap 6 / Linux assertion as `[OK]`). Platform-invariant ⇒ NOT a macOS abc build issue. Two honest conclusions: (1) wrapper must propagate abc non-zero exit · (2) fix lives in `~/core/hexa-lang/build/artifacts/gate_v3.c` RTLIL→BLIF converter. Pool value reframed: cross-platform falsification of platform-hypothesis, not raw parallelization. Cited from ARCH §12 / rfc006 §5 trail. |
 | `absorption-empty-cells-research-2026-05-20.md` | resolved | κ-47..κ-49 | Deep-research source for ROI 1→18 sweep; all 10 targets dispatched |
