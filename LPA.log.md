@@ -39,6 +39,25 @@ Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestam
 - **2026 H1 readout · 2026 H2 규제 제출** → 2027 출시 가능 분기점
 - siRNA(-95% · Q12-24W)가 효능/편의 양쪽에서 ASO(-80% · Q4W) 압박 — 시장 선점만 ASO 우위
 
+## 2026-05-24T22:00:00Z — M2 한국인 분포 매핑 완료
+
+- [x] §1 글로벌 인종별 분포 (백인 ~20% · 흑인 ~35-40% · 한국 ~12-13% ≥50 mg/dL)
+- [x] §2 한국 코호트 종합 (KoGES Ansan-Ansung · KARE · HEXA-G · KSoLA)
+- [x] §3 절대수 추산 — 성인 4,300만 × 12-13% = **~520만 명 ≥ 50 mg/dL** (≥180 ≈ 52만)
+- [x] §4 KIV-2 copy + rs10455872 한국인 minor allele freq ~4% (vs 백인 ~7%)
+- [x] §5 한국 허가 현실 — pelacarsen/olpasiran 미허가, PCSK9i -20-30%만 가용
+- [x] §6 데이터 공백 — KoGES Lp(a) primary lit open-access 부족 · nmol/L 표준화 부재
+- [x] §7 verify rubric — 절대수 🟢 SUPPORTED-NUMERICAL · 분포 🟡 · KIV-2 분포 🟠
+- [x] 산출물 `LPA/M2_korea.md` (155 lines)
+- [ ] 🟠 KoGES Lp(a) re-analysis (nmol/L 환산 + small-isoform stratify) 권고
+- [ ] M3 ASO 후보 — pelacarsen HORIZON Ph3 결과 (2026-27)
+
+🔑 핵심 통찰:
+- **한국인 ≥ 50 mg/dL ~12-13% → 약 520만 명** (≥180 mg/dL ≈ 52만 — FH 25만의 2배)
+- 현재 한국에서 강력 Lp(a) 저감제 = **없음** (PCSK9i 부분 효과만 급여)
+- siRNA/ASO Ph3 outcome (2026-28) → 한국 허가·급여 시 잠재 시장 **~500만 명**
+- §2 1차 코호트 primary literature open-access 부족 → review-derived 의존 (Tsimikas · Kronenberg · KSoLA fact sheet)
+
 ## 2026-05-24T21:30:00Z — M1 구조 + apo(a) isoform 완료
 
 - [x] §1 Lp(a) = LDL + apo(a) disulfide ASCII (Berg 1963)
