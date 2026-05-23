@@ -12,3 +12,9 @@
 - [x] 차세대 BRS (bioresorbable scaffold) 재시도 — PLLA · Mg · Zn 합금 → `ISR/M6_brs.md`
 - [x] M7 off-target / 안전성 — late stent thrombosis · delayed healing → `ISR/M7_safety.md`
 - [x] 한국인 ISR registry 매핑 + 통합 ranking → `ISR/M8_rank.md`
+
+## research (deep)
+
+- [ ] R1 arxiv/PubMed deep research sweep — 2023-2026 ISR/Mg-BRS/dual-DCB/ROCK coronary/NA OCT → `ISR/research/arxiv_deep_research.md`
+- [ ] R2 web/regulatory research — FDA letter · ESC 2024 · ACC/AHA 2024 · ClinicalTrials.gov pipeline → `ISR/research/regulatory_pipeline.md`
+- [ ] R3 external libraries inventory — stent/balloon suppliers · drug DBs · biomechanics · patent landscape → `ISR/research/external_libraries.md`
