@@ -2,6 +2,18 @@
 
 Append-only history sister of `NOREFLOW.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T23:25:00Z — scaffold 확장: M9/M10/M11 추가 (🔵 도달 trajectory)
+
+- [x] M9 web/arxiv deep evidence milestone 신설
+- [x] M10 ⚪ honest fence milestone 신설 (bio/clinical closed-form 미가능 영역)
+- [x] M11 formal grade-up pass milestone 신설 (atlas 확장 의존)
+- [x] hexa-lang inbox patch 2건 fan-out 트리거 (clinical calc + external libs)
+- [ ] hexa-lang `noreflow-clinical-calc-extension` reviewer-merge 대기 → M11 unblock
+
+🎯 새 north star: **모든 영역 🔵 SUPPORTED-FORMAL 도달**
+🚧 d2 wall: hexa verify atlas = number theory only → bio/clinical 직접 🔵 미가능
+🛠 돌파 path: (A) atlas 확장 (Hill · exp_decay · pk_2comp · cox_h · fick_law) → reviewer-merge → 🔵 unblock · (C) ⚪ honest fence (정직한 본질 한계 인정)
+
 ## 2026-05-24T23:15:00Z — M7 통합 ranking 완료 (cycle3) — NOREFLOW 8/8 ✅
 
 - [x] §1 5-axis scoring (efficacy 30% · delivery 20% · safety 25% · 한국 15% · 단계 10%)
