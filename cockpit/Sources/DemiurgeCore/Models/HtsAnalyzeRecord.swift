@@ -1,4 +1,8 @@
-// RtscAnalyzeRecord — rtsc + analyze producer (pyfemm 2-D magnetics).
+// HtsAnalyzeRecord — rtsc + analyze producer (pyfemm 2-D magnetics).
+//
+// Stage 2a rename (de45c44 follow-up): Hts prefix reflects the actual
+// substrate (77 K REBCO HTS coil B-field via FEMM). The wire `domain:
+// "rtsc"` JSON key stays unchanged — domain-key rewire is Stage 3.
 //
 // Typed sidecar for `rtsc + analyze` (ROI rank 10, ⭐⭐⭐⭐) — the FIRST
 // producer in the rtsc domain (whole domain 0-producer before this).
@@ -16,7 +20,7 @@
 
 import Foundation
 
-public struct RtscAnalyzeHeadline: Codable, Equatable, Sendable {
+public struct HtsAnalyzeHeadline: Codable, Equatable, Sendable {
     public let bMagnitudeTAtCentreOfProxyTape: Double?
 
     enum CodingKeys: String, CodingKey {
@@ -24,7 +28,7 @@ public struct RtscAnalyzeHeadline: Codable, Equatable, Sendable {
     }
 }
 
-public struct RtscAnalyzeRecord: Codable, Equatable, Sendable {
+public struct HtsAnalyzeRecord: Codable, Equatable, Sendable {
     public let domain: String
     public let verb: String
     public let kind: String
@@ -36,7 +40,7 @@ public struct RtscAnalyzeRecord: Codable, Equatable, Sendable {
     public let citations: [String]
     public let platform: String?
     public let skippedReason: String?
-    public let headline: RtscAnalyzeHeadline?
+    public let headline: HtsAnalyzeHeadline?
 
     enum CodingKeys: String, CodingKey {
         case domain

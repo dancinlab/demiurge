@@ -21,7 +21,7 @@
 //   • measurementGate stays GATE_OPEN — a dispatch verdict alone does
 //     NOT close the measurement gate.
 //
-// Codable pattern mirrors RtscVerifyRecord / MeasurementRecord /
+// Codable pattern mirrors HtsVerifyRecord / MeasurementRecord /
 // SynthesisRecipeRecord — camelCase Swift surface + explicit
 // CodingKeys → snake_case JSON wire form. Reuses F1F2Record.MeasurementGate
 // (the SSOT for gate state across the cockpit).

@@ -15,7 +15,7 @@
 //     never reach absorbed=true even if the recipe ingests cleanly.
 //     Tier 4 falsifier dispatch decides that.
 //
-// Style: mirrors RtscVerifyRecord.swift — camelCase properties + explicit
+// Style: mirrors HtsVerifyRecord.swift — camelCase properties + explicit
 // CodingKeys mapping to snake_case JSON. Sub-structs are nested for tight
 // coupling to the parent record. All members `public` so DemiurgeCLI and
 // CockpitApp can both decode.

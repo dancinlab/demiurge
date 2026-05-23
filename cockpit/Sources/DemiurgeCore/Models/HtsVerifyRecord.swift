@@ -1,13 +1,17 @@
-// RtscVerifyRecord — rtsc + verify (5-axis cell: solenoid · HTS REBCO ·
+// HtsVerifyRecord — rtsc + verify (5-axis cell: solenoid · HTS REBCO ·
 // GetDP/scipy · verify · magstat_a_axisym_linear). SSOT:
 // ~/core/hexa-lang/stdlib/rtsc/getdp_hts.py. RTSC.md §4 documents the
 // axis taxonomy this schema embeds. g3: GATE_OPEN / absorbed=false;
 // FEM stage may be install-gated when getdp is missing — the
 // closed-form (Lorenz/Wheeler) verifier always runs.
+//
+// Stage 2a rename (de45c44 follow-up): Hts prefix mirrors the actual
+// substrate (77 K REBCO HTS coil). Wire `domain: "rtsc"` JSON key
+// stays unchanged — domain-key rewire is Stage 3.
 
 import Foundation
 
-public struct RtscVerifyRecord: Codable, Equatable, Sendable {
+public struct HtsVerifyRecord: Codable, Equatable, Sendable {
     public let domain: String
     public let verb: String
     public let kind: String

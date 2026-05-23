@@ -12,7 +12,7 @@
 //     by independent measurement (replicationCount ≥ 2 across labs).
 //   - citations + provenance.sourceUrl are mandatory; missing → REJECTED.
 //
-// Codable pattern mirrors F1F2Record / RtscVerifyRecord — camelCase Swift
+// Codable pattern mirrors F1F2Record / HtsVerifyRecord — camelCase Swift
 // surface + explicit CodingKeys → snake_case JSON wire form. Reuses the
 // F1F2Record.MeasurementGate enum (the SSOT for gate state across the cockpit).
 
