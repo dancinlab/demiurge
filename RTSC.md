@@ -1147,13 +1147,21 @@ ranked by Tc(μ=0.10) — LANDED 5 + baseline 3:
 | 4 | h3po | 47–48 | 2.75–3.31 | novel | group-16 heaviest · 10/16 q provisional |
 | 5 | h3f | 31–33 | 0.81 | novel | group-17 light |
 
-**verdict — `h3o` = #1 유망 novel 후보** (h3cl 8³q 결과 대기):
-- (+) 최고 novel Tc 191 K · group-16 sweet spot ladder 최정점 (H₃S 다음)
-- (+) O metastability 우려 해소 — 4 broad sweep 전부 real mode (imaginary 0), Im-3m 안정 영역
-- (−) O 가 molecular H₂O ground state 강선호 — 150–200 GPa 합성 가능성 미확정 (wet-lab 우선순위)
-- (−) celldm 4.9 매우 조밀 — 압력 민감
+**verdict 정정 (2026-05-24 ph.out raw-mode 재분석) — `h3cl` = #1 stable 후보, `h3o` 강등**:
 
-**dark horse — `h3cl`** (4³q 검증 완료 2026-05-24): λ_4³ (1.235–1.417) ≳ λ_6³ (1.135–1.406) 단조 수렴 → **under-converged 확정** (6³ over-est 기각). 8³q 재계산 시 true λ 1.6+ → Tc 150–180 K 가능 → **h3o 추월 가능 후보 유지**. 8³q 우선순위 상승.
+이전 "h3o #1 (191 K, imaginary 0)" 판정은 **틀림** — result.txt 요약만 보고 raw phonon mode 미확인. self-DFT augment agent 의 ph.out 직접 파싱 결과:
+- **h3o · h3f · h3si = imaginary phonon modes** (ω 최저 −140 meV) = **동역학적 불안정** (Im-3m metastable, 뒤틀림 선호). h3o 191 K 는 *unstable mode drop* convention 값 = upper-bound, 구조 신뢰 낮음. O metastability 우려가 **실재** (이전 "해소" 판정 철회).
+- **h3cl · h3po = real modes only (동역학적 안정)**.
+
+→ **새 verdict**:
+- **#1 `h3cl`** — 동역학적 안정 (real mode) + under-conv 확정 (8³q 시 Tc 상향 가능) = 가장 신뢰할 stable novel 후보. Tc 105–134 K (6³), 8³q 결과 대기.
+- #2 `h3po` — 안정 (real) · 47–48 K · 10/16 q provisional (16/16 rerun 권장).
+- ~~h3o 191 K~~ — imaginary mode 로 강등 (unstable-mode-drop upper-bound · 구조 안정화 필요).
+- h3f/h3si — imaginary mode (unstable).
+
+**`h3cl` 상세** (4³q 검증 완료 2026-05-24): λ_4³ (1.235–1.417) ≳ λ_6³ (1.135–1.406) 단조 수렴 → **under-converged 확정** (6³ over-est 기각). 8³q 재계산 시 true λ 1.6+ → Tc 150–180 K 가능. **동역학적 안정 (imaginary mode 無)** 이므로 h3o (unstable) 대비 물리적 신뢰 우위 — 8³q 완주 시 stable high-Tc 후보 확정.
+
+**imaginary-mode 정정 메모**: h3o/h3f/h3si 의 imaginary phonon mode 는 Im-3m 구조의 dynamical instability — λ 계산은 positive-frequency BZ sum (unstable mode drop) convention 으로 result.txt 와 일치하나, 구조 자체가 metastable 이라 *합성 가능성 더 불확실*. 안정화 path: anharmonic SSCHA (quantum nuclear effect 로 imaginary mode 가 stabilize 될 수 있음 — H₃S/LaH₁₀ 선례) 또는 distorted lower-symmetry 구조 재탐색.
 
 **파이프라인 검증 anchor — `CaH₆`** (2026-05-24): cell-choice 근본원인 수정 (ibrav=3 BCC primitive + 170 GPa) 후 6³q-equiv DFT 가 **Tc 213 K (μ0.13, broad=0.030) — Ma 2022 측정 215 K 와 2 K 정합**. NaN=0 끝까지 healthy. H₃S textbook proof 와 함께 *측정-grade 일치* 두 번째 anchor (clathrate topology) — DFT el-ph 파이프라인 + d2 wall 돌파 (Sternheimer NaN = input error) 검증. R4: known material 이라 *발견* 아님 · 측정-grade 도 measured-oracle 아님 (d6).
 
