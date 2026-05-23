@@ -1041,7 +1041,7 @@ Group-16 verdict (3/4 LANDED): H₃S = sweet spot · H₃Se = weaker coupling ou
 
 | track | status | notes |
 |---|---|---|
-| **CaH₆ sodalite clathrate** (Ma 2022, 7-atom Im-3m, measured 215 K) | ⏳ **in-progress** — -np 15 fresh restart 후 실행 중 | §9.12.A 의 `-np 6` watcher 시도가 부분 진행 후 restart, 다른 cell topology cross-validation 목적 |
+| **CaH₆ sodalite clathrate** (Ma 2022, 7-atom Im-3m, measured 215 K) | ✅ **LANDED 측정-grade 검증** (2026-05-24, pool:ubu-2) — Tc(μ0.13)=213 K vs measured 215 K (**2 K 정합**) · λ_BZ=3.40–4.38 · ω_log=1177–1236 K · NaN=0. **근본원인 = input cell-choice** (이전 Vast/pool NaN 폭주는 ibrav=1 nat=14 conventional + press=0 의 user-side error · 수정 = ibrav=3 nat=7 BCC primitive + 170 GPa). H₃S 와 함께 측정-grade anchor 2개 (clathrate topology). artifacts `~/etc/rtsc-results/cah6/` |
 | **H₃X group 14-17 parallel fanout** (8 후보 — h3o · h3f · h3n · h3si · h3p · h3cl · h3as · h3br) | ⏳ **in-progress 4/8 LANDED** — **h3o 완주** (6³q · λ_BZ=2.31–2.73 · ω_log=1089–1111 K · Tc(μ=0.10)=171–191 K · celldm=4.899 · 🟢 §9.15 PASS pred 150-220 · novel high-Tc) · **h3cl 완주** (λ=1.14–1.41 · ω_log=1252 K · Tc=105–134 K · celldm=5.659 · 🔴 FAIL above pred 25-60) · **h3f 완주** (λ=0.81–0.82 · ω_log=652–670 K · Tc=31–33 K · celldm=5.127 · 🔴 FAIL below pred 50-100) · **h3si 완주** (λ=1.72–1.82 · ω_log=572–624 K · Tc=77–80 K · celldm=5.656 · 🟢 PASS pred 50-110) · artifacts `~/etc/rtsc-results/{h3o,h3cl,h3f,h3si}/` · 나머지 4개 pod 진행 중 (h3n/h3p/h3as/h3br) · h3c (serial orchestrator) · cah6 (clathrate, Vast 37378728 라이브 — pool:ubu-1 CaH₆ 는 OOM dead) | group 14/15/16/17 의 H₃X 패턴 sweep · novel-prediction 영역 (§9.10 N5 의 candidate funnel pattern) · **h3o = 191 K novel high-Tc 후보** (group-16 light O, celldm=4.9 최소) — group-16 sweet spot 가설 강화 · **d7 wall 메커니즘 정확 식별**: ALIGNN per-cand H₃Cl λ=0.81 vs DFT 1.27 (+57% 차) — λ-magnitude 가 아니라 **ω_log 15× under (81 K vs 1252 K)** 가 dominant ML failure mode (고압 H-derived 고진동 모드 ambient-ML training 부재). family-wide 미분화 가설 부분 falsify, wall 강화. |
 | **H₃X group 14-17 serial orchestrator** (h3c → h3n → ... 한 인스턴스) | ⏳ **in-progress** — single Vast.ai instance, serial-chain orchestration | parallel fanout 의 cross-validation · 같은 후보들을 직렬로 흘려 결과 reproducibility 확인 |
 
@@ -1138,21 +1138,24 @@ ranked by Tc(μ=0.10) — LANDED 5 + baseline 3:
 | rank | candidate | Tc (K) | λ_BZ | class | 비고 |
 |---|---|---:|---:|---|---|
 | — | H₃S | 203 (measured) | 2.4 | known | Drozdov 2015 anchor |
+| — | **CaH₆** | **213 (DFT) vs 215 (measured)** | 3.40–4.38 | **known · 검증** | **Ma 2022 측정 215K 와 2K 정합 — cell-choice 근본원인 수정 + 측정-grade 파이프라인 검증** |
 | **1** | **h3o** | **171–191** | 2.31–2.73 | **novel** | **top novel · group-16 sweet · O metastability 해소 (4 broad real mode)** |
-| 2 | h3cl | 105–134 | 1.14–1.41 | novel | broadening monotone = under-conv · true λ 1.6+ 가능 → q-grid spike 검증 중 |
+| 2 | h3cl | 105–134 (6³) | 1.14–1.41 | novel | **4³q 검증: under-conv 확정 (λ_4³≳λ_6³ 단조) → 8³q 시 λ 1.6+ · Tc 150–180K 가능 → h3o 추월 후보** |
 | — | H₃Se | 113 | 1.0–1.3 | novel | group-16 |
 | 3 | h3si | 77–80 | 1.72–1.82 | novel | group-14 · §9.15 PASS |
 | — | H₃Te | 75 | 2.4 | novel | group-16 heavy |
 | 4 | h3po | 47–48 | 2.75–3.31 | novel | group-16 heaviest · 10/16 q provisional |
 | 5 | h3f | 31–33 | 0.81 | novel | group-17 light |
 
-**verdict — `h3o` = #1 유망 novel 후보**:
+**verdict — `h3o` = #1 유망 novel 후보** (h3cl 8³q 결과 대기):
 - (+) 최고 novel Tc 191 K · group-16 sweet spot ladder 최정점 (H₃S 다음)
 - (+) O metastability 우려 해소 — 4 broad sweep 전부 real mode (imaginary 0), Im-3m 안정 영역
 - (−) O 가 molecular H₂O ground state 강선호 — 150–200 GPa 합성 가능성 미확정 (wet-lab 우선순위)
 - (−) celldm 4.9 매우 조밀 — 압력 민감
 
-**dark horse — `h3cl`**: broadening sweep 단조 증가 (under-converged) → true λ 1.6+ · true Tc 150–180 K 가능. q-grid 4³ vs 6³ spike (pool:ubu-1 진행 중) 결과로 settle — 만약 4³≈6³ 면 8³q 재계산 시 h3cl 이 h3o 추월 가능.
+**dark horse — `h3cl`** (4³q 검증 완료 2026-05-24): λ_4³ (1.235–1.417) ≳ λ_6³ (1.135–1.406) 단조 수렴 → **under-converged 확정** (6³ over-est 기각). 8³q 재계산 시 true λ 1.6+ → Tc 150–180 K 가능 → **h3o 추월 가능 후보 유지**. 8³q 우선순위 상승.
+
+**파이프라인 검증 anchor — `CaH₆`** (2026-05-24): cell-choice 근본원인 수정 (ibrav=3 BCC primitive + 170 GPa) 후 6³q-equiv DFT 가 **Tc 213 K (μ0.13, broad=0.030) — Ma 2022 측정 215 K 와 2 K 정합**. NaN=0 끝까지 healthy. H₃S textbook proof 와 함께 *측정-grade 일치* 두 번째 anchor (clathrate topology) — DFT el-ph 파이프라인 + d2 wall 돌파 (Sternheimer NaN = input error) 검증. R4: known material 이라 *발견* 아님 · 측정-grade 도 measured-oracle 아님 (d6).
 
 R4 보호: 전부 `absorbed=false` · `gate_type=simulation-only-prediction` · novel 은 *wet-lab 우선순위* 이지 *발견* 아님.
 
