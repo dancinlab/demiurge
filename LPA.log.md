@@ -2,6 +2,27 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T03:45:00Z — M10 + M11 인라인 완료 + PR #700 merged
+
+- [x] M10 monitoring schema 작성 — 5축 (KSoLA/HIRA/HORIZON/OCEAN/신약 NDA) × 분기 cadence × SLA
+  - 자동화 후보: pytrials (R3 §3) · ClinicalTrials.gov XML polling 5 NCT IDs
+  - 분기 체크리스트 템플릿 (Q1-Q4 매년)
+  - 핵심 URL 12건 registry · 응답 SLA 5-tier
+- [x] M11 HORIZON readout playbook — 3-시나리오 (양성 ≥15% RRR / modest 5-15% / null <5%)
+  - 시나리오 A (양성 ~40%): pelacarsen Tier-2 → Tier-1 + M9 IIT fast-track
+  - 시나리오 B (modest ~30%): OCEAN(a) 대기 + obicetrapib 가속화
+  - 시나리오 C (null ~30%): pelacarsen 퇴출 + PCSK9 mAb 유지 + obicetrapib 부상
+  - T+0 → T+24w 응답 액션 + 한국 KOL stakeholder map
+- [x] hexa-lang PR #700 **MERGED** — pool.hexa compile error patch land
+  - cross-domain wall unblock 시작 (LPA · ISR · NOREFLOW · DAPTPGX · HERPES)
+- [ ] M9 in-flight (한국 IIT design agent)
+
+🔑 핵심 통찰 (M10+M11 + 상류):
+- **HORIZON readout = Lp(a) field 단일 분기점** — 3-tier 확률 (40/30/30) playbook 완비
+- **자동화 trigger = pytrials + scenario classifier** (cycle 6 implementation 후보)
+- **pool.hexa patch merged** → 다음 cycle 사용 시 정식 `pool on <host>` 복귀 가능
+- **LPA cycle 5 진행도** = 22/23 (M9만 in-flight)
+
 ## 2026-05-25T03:30:00Z — cycle 5 scope 확장 + 상류 inbox 기여
 
 - [x] LPA M9/M10/M11 milestone scaffolding (post-100%-closure 확장)

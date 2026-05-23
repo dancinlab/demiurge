@@ -15,8 +15,8 @@
 
 ## cycle 5 — scope extension (post-100%-closure)
 - [ ] M9 한국 first-in-class IIT 설계 (Investigator-Initiated Trial blueprint · KSoLA consortium · NCT scaffold) → `LPA/M9_kr_iit.md`
-- [ ] M10 KSoLA + HIRA 실태 monitoring (분기별 fact sheet · 약가 협상 update · 가이드라인 revision watch) → `LPA/M10_monitoring.md`
-- [ ] M11 HORIZON 2026 H1 readout action trigger (양성/null/음성 시나리오별 즉시 대응 playbook) → `LPA/M11_readout_playbook.md`
+- [x] M10 KSoLA + HIRA 실태 monitoring (5축 · 분기 cadence · SLA · pytrials 자동화 후보) → `LPA/M10_monitoring.md`
+- [x] M11 HORIZON 2026 H1 readout action trigger (3-시나리오 양성/modest/null · T+0~T+24w 액션 + 한국 KOL stakeholder map) → `LPA/M11_readout_playbook.md`
 
 ## research deepening (cycle 3)
 - [x] R1 arxiv deep research → `LPA/R1_arxiv.md`
