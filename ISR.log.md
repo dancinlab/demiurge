@@ -2,6 +2,19 @@
 
 Append-only history sister of `ISR.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T22:00:00Z — M5 DCB 비교 완료
+
+- [x] §1 DCB 원리 + ASCII
+- [x] §2 paclitaxel vs sirolimus 표
+- [x] §3 carrier 기술 inventory (iopromide · urea · BTHC · PEG-NP · sugar microreservoir)
+- [x] §4 Mehran pattern 별 효과 (I★★★★★ · II★★★★ · III★★ · IV★)
+- [x] §5 한국인/아시안 evidence (TIS · RESTORE-ISR · ChineseDCB)
+- [x] §6 한계 + M7 hook (Katsanos PMA 신호 · re-do DCB · sirolimus retention)
+- [x] §7 차세대 DCB (biolimus · 비-mTOR — YAP/TAZ · ROCK · BET combo)
+- [x] 산출물 `ISR/M5_dcb.md` (~220 lines)
+
+🔑 핵심: paclitaxel-DCB ESC IA 표준 / sirolimus-DCB carrier 진화중 / **M3 신규 표적 × DCB combo** 차세대 hook.
+
 ## 2026-05-24T22:00:00Z — M2 4종 DES 약물 한계 매핑 완료
 
 - [x] §1 4종 약물 개요 표 (sirolimus · everolimus · zotarolimus · biolimus A9)
