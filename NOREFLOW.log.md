@@ -2,6 +2,23 @@
 
 Append-only history sister of `NOREFLOW.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T23:00:00Z — M6 off-target / 안전성 완료 (cycle2)
+
+- [x] §1 safety 5-domain (부정맥 · 저혈압 · 출혈 · 면역억제/신독성 · 기타)
+- [x] §2 M2 mPTP 약물 safety profile (CsA · NIM811 · sanglifehrin · debio-025 · MTP-131 · TRO40303 · SIRT3 · NAD+)
+- [x] §3 M3 미세혈관 약물 safety profile (adenosine · nicorandil · NTP · CCB · IIb/IIIa)
+- [x] §4 safety × 환자군 매트릭스 (bradycardia · bleeding · LV dysfunction · renal failure)
+- [x] §5 trial safety 신호 (CIRCUS · AMISTAD-II · INFUSE-AMI · TASTE · TOTAL · MITOCARE)
+- [x] §6 M2/M3 통합 safety ranking (Tier-A/B/C)
+- [x] §7 한국인 safety 고려 (TICAKOREA bleeding · nicorandil 보험 · supplement gray zone)
+- [x] 산출물 `NOREFLOW/M6_safety.md` (221 lines · 출처 12)
+- [ ] M7 통합 ranking (cycle 3) — efficacy × safety 결합
+
+🔑 핵심 통찰:
+- **Tier-A 3약물 (adenosine IC · nicorandil · MTP-131)** = 효능 + safety 균형 우위. debio-025 (pancreatitis hold) · abciximab (bleeding · 글로벌 생산 중단) · TRO40303 (GI) 대비 명확한 grade 차이
+- **단회 IV가 safety window의 결정 요소** — CIRCUS CsA 단회 2.5mg/kg = 위약과 동등 / 반복은 calcineurin/cyclophilin 누적 독성 → 약물 자체보다 **schedule 설계**가 안전성 지표
+- **한국인 출혈 baseline ↑ (TICAKOREA HR~1.5)** + nicorandil 보험 우위 + supplement gray zone → M8 한국 pilot: IIb/IIIa 회피 + nicorandil arm 우선 + supplement vs 의약품 분리 IRB
+
 ## 2026-05-24T22:55:00Z — M4 delivery 경로 완료 (cycle2)
 
 - [x] §1 전달 경로 5-tier (IC bolus · IV systemic · thrombectomy · DPD · drug-eluting catheter)
