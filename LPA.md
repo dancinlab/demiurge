@@ -20,7 +20,7 @@
 
 ## simulation (cycle 4 · demiurge 자산)
 - [x] S1 siRNA mRNA 분해 ODE — pool ubu-1 dispatch · 4분자 PK/PD → `LPA/verify/V3a_sirna_kinetics.md` (V3a 흡수)
-- [ ] S2 MR/IVW Burgess 재계산 — closed-form + atlas 등록 시도 + Monte Carlo CI → `LPA/S2_mr_ivw.md`
+- [x] S2 MR/IVW Burgess 재계산 — closed-form + atlas 등록 시도 + Monte Carlo CI → `LPA/verify/V3b_mr_ivw_mc.md` (V3b 흡수)
 - [x] S3 NHIS ICER Monte Carlo — pool ubu-2 dispatch · 10K PSA · break-even $17.8/yr · WTP25M 0% → `LPA/verify/V3c_nhis_icer.md` (V3c 흡수)
 
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
