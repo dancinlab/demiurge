@@ -11,7 +11,7 @@
 - [x] CETP / PCSK9 보조 (obicetrapib · evolocumab Lp(a) 부분 효과) → `LPA/M5_adjunct.md`
 - [x] M6 off-target / long-term immune 안전성 → `LPA/M6_safety.md`
 - [x] 잔여 위험 정량 — Lp(a) 감소 mg/dL × MACE 위험 감소 → `LPA/M7_quant.md`
-- [ ] 통합 후보 ranking + 한국인 임상 적용 전략 → `LPA/M8_rank.md`
+- [x] 통합 후보 ranking + 한국인 임상 적용 전략 (5-Tier · NHIS RSA+narrow+bridge 돌파) → `LPA/M8_rank.md`
 
 ## research deepening (cycle 3)
 - [x] R1 arxiv deep research → `LPA/R1_arxiv.md`
@@ -30,4 +30,4 @@
 - [x] V3a 🟢 push — siRNA ODE on pool ubu-1 (C10/C13/C15/C16/C27/C43 · 4분자 PK · closed-form steady-state) → `LPA/verify/V3a_sirna_kinetics.md`
 - [ ] V3b 🟢 push — MR/IVW Monte Carlo CI bootstrap (C22/C23) → `LPA/verify/V3b_mr_ivw_mc.md`
 - [x] V3c 🟢 push — NHIS ICER Monte Carlo on pool ubu-2 (10K PSA · seed=42 · WTP 0% · 387-645× 약가 격차) → `LPA/verify/V3c_nhis_icer.md`
-- [ ] V4 final tier ledger — 🔵+🟢+🟡 verbatim + 🟠 honest deferred → `LPA/verify/V4_tier_ledger.md`
+- [x] V4 final tier ledger — 🔵 1 · 🟢 22 · 🟡 17 · 🟠 4 · 🔴 1 (45 claims · honest deferred) → `LPA/verify/V4_tier_ledger.md`

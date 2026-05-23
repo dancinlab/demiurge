@@ -2,6 +2,24 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T03:00:00Z — M8 통합 ranking + V4 tier ledger 인라인 완료
+
+- [x] V4 tier ledger 작성 — 🔵 1 · 🟢 22 · 🟡 17 · 🟠 4 · 🔴 1 (45 claims)
+- [x] verbatim verdict 모음 — 🔵 sigma sanity + 🟢 22건 도메인별 분류
+- [x] honest deferred 명시 — Ph3 outcome 4건 (HORIZON 2026 · OCEAN 2027 · ACCLAIM 2029 · obicetrapib PREVAIL)
+- [x] M8 5-Tier ranking — Tier-1 PCSK9 mAb (즉시) · Tier-2 pelacarsen+olpasiran (2027-28) · Tier-3 obicetrapib+muvalaplin (분기) · Tier-4 lepodisiran (2029+) · Tier-5 VERVE-301 (2030+ moonshot)
+- [x] 한국 NHIS 진입 단계 전략 — 2026/2027-28/2029/2030+ timeline
+- [x] d2 breakthrough 5축 — RSA + narrow + 한국 sub-group + KOQUSS utility + bridge therapy (3-축 동시 = viable path)
+- [x] 산출물 `LPA/verify/V4_tier_ledger.md` + `LPA/M8_rank.md`
+- [ ] V3b in-flight (pool ssh MR/IVW MC) — 완료 시 🟢 +4 → V4 갱신
+
+🔑 핵심 통찰 (M8+V4 통합):
+- **Lp(a) field 분기점 = HORIZON 2026 H1** — 양성/null/음성 시나리오로 전체 4축 재정렬
+- **한국 Tier-1 즉시 = PCSK9 mAb** (잔여 22-23% 미해결)
+- **NHIS wall 돌파 = RSA + narrow staging + bridge therapy 3-축 동시** (V3c 시뮬 직접 인용)
+- **🔵 도달 = 0/8** — PR #665 merge 후 일제 promotion 가능 (calc fn 부재 정직한 deferred)
+- **🚨 Tier-X (apheresis 한국 시설 부재) + 🔴 (GalNAc 자유도구 IP wall) = 정직한 closed**
+
 ## 2026-05-25T01:45:00Z — V3c NHIS ICER MC on pool ubu-2 완료
 
 - [x] §1 PSA 모델 (10,000 iter · seed=42 · stdlib random/math/json · numpy/scipy 미필요)
