@@ -1127,6 +1127,63 @@ ALIGNN per-candidate α²F(ω) head 의 출력 grid 는 **0–100 meV · 100-bin
 - novel candidate 의 Tc 예측은 *후속 wet-lab 우선순위* — *발견* 아님 (R4 Pattern 1 회피)
 - in-progress 항목은 `RTSC.log.md` 의 chronicle entry 가 일일 진행 기록 (per g15: current-state 는 본 doc · time-stamped 는 log)
 
+## 10. d7 wall 돌파 로드맵 + 후보 verdict
+
+§9 캠페인의 *방법론 레이어* — 물질 발견(§9)과 직각인 "ambient-ML training-distribution wall 을 어떻게 깨느냐" 트랙. RTSC 우산 유지 (별도 도메인 없이 §10). 숫자 SSOT 는 `exports/material_discovery/` (canonical record · §9.14), 본 §10 은 *forward 로드맵*.
+
+### 10.1 가장 유망 후보 verdict (2026-05-24)
+
+ranked by Tc(μ=0.10) — LANDED 5 + baseline 3:
+
+| rank | candidate | Tc (K) | λ_BZ | class | 비고 |
+|---|---|---:|---:|---|---|
+| — | H₃S | 203 (measured) | 2.4 | known | Drozdov 2015 anchor |
+| **1** | **h3o** | **171–191** | 2.31–2.73 | **novel** | **top novel · group-16 sweet · O metastability 해소 (4 broad real mode)** |
+| 2 | h3cl | 105–134 | 1.14–1.41 | novel | broadening monotone = under-conv · true λ 1.6+ 가능 → q-grid spike 검증 중 |
+| — | H₃Se | 113 | 1.0–1.3 | novel | group-16 |
+| 3 | h3si | 77–80 | 1.72–1.82 | novel | group-14 · §9.15 PASS |
+| — | H₃Te | 75 | 2.4 | novel | group-16 heavy |
+| 4 | h3po | 47–48 | 2.75–3.31 | novel | group-16 heaviest · 10/16 q provisional |
+| 5 | h3f | 31–33 | 0.81 | novel | group-17 light |
+
+**verdict — `h3o` = #1 유망 novel 후보**:
+- (+) 최고 novel Tc 191 K · group-16 sweet spot ladder 최정점 (H₃S 다음)
+- (+) O metastability 우려 해소 — 4 broad sweep 전부 real mode (imaginary 0), Im-3m 안정 영역
+- (−) O 가 molecular H₂O ground state 강선호 — 150–200 GPa 합성 가능성 미확정 (wet-lab 우선순위)
+- (−) celldm 4.9 매우 조밀 — 압력 민감
+
+**dark horse — `h3cl`**: broadening sweep 단조 증가 (under-converged) → true λ 1.6+ · true Tc 150–180 K 가능. q-grid 4³ vs 6³ spike (pool:ubu-1 진행 중) 결과로 settle — 만약 4³≈6³ 면 8³q 재계산 시 h3cl 이 h3o 추월 가능.
+
+R4 보호: 전부 `absorbed=false` · `gate_type=simulation-only-prediction` · novel 은 *wet-lab 우선순위* 이지 *발견* 아님.
+
+### 10.2 두 돌파 path
+
+```
+d7 wall = α²F grid ceiling 100 meV (§9.14)
+   │
+   ├─ path A: first-principles DFT (substrate · 천장 무제한)
+   │    H₃S 6³q measurement-grade 입증 · el-ph 직접 계산
+   │    cost: pool/Vast CPU · small cell 4-7 atom 무료 baseline (d8)
+   │
+   └─ path B: grid-extended ML retrain (BEE-NET)
+        a²F≥0 clamp → sign-pathology 봉합 + EMDLoss high-ω mass 보존
+        BLOCKER: grid 천장 101→140 meV 확장 필요 (안 하면 path A·B 둘 다 무효)
+        cost: ~12-20 GPU-hr (A100 ~1일) · 5점 smoke + 50-100점 augment
+```
+
+### 10.3 BEE-NET POC 5-step (path B 실행 시)
+
+| step | 내용 | 상태 |
+|---|---|---|
+| 0 | grid ceiling 101→140 meV 확장 | 🔴 **BLOCKER** (미착수) |
+| 1 | pretrained BEE-NET load (henniggroup/BETE-NET) | deferred |
+| 2 | DFT→α²F target 형식화 (ph.out 파싱, a2F.dos 덤프 필요) | deferred |
+| 3 | μ_HX (path e) + pressure (path i) l=0 주입 | deferred |
+| 4 | fine-tune (LOO-CV · 5점 → 50-100점 augment) | deferred |
+| 5 | sanity gate (sign-pathology 0 · ω_log MAE) | deferred |
+
+설계 상세: `inbox/notes/d7-wall-beenet-poc-design-2026-05-24.md` · arxiv 비교: `inbox/notes/post-alignn-ml-sc-predictors-survey-2026-05-24.md`
+
 ### 9.10 N5 cohort 신설 — novel-discovery funnel (compositional space exploration)
 
 §9.7 의 N1-N4 는 *KNOWN candidate* (특정 화학식이 주어진 경우) 의 시뮬레이션. **N5 cohort 는 *unknown novel composition* 을 *compositional space 에서 탐색* 하여 RTSC 후보 funnel 을 emit** — Nature `s41524-026-01964-8` 의 1.3M cand → 741 stable funnel 패턴 + arxiv:2511.03865 의 Materials Genome HTS discovery 워크플로 본받음.
