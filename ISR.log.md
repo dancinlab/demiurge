@@ -2,6 +2,20 @@
 
 Append-only history sister of `ISR.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T01:00:00Z — R2 web/regulatory research 완료
+
+- [x] §1 regulatory state matrix (FDA · EMA · MFDS · PMDA)
+- [x] §2 guideline ladder (ESC · ACC/AHA · KCSC · NICE)
+- [x] §3 ongoing trials inventory (≥10 NCT)
+- [x] §4 한국 regulatory + reimbursement
+- [x] §5 FDA paclitaxel letter timeline
+- [x] §6 breakthrough designations
+- [x] §7 M8 IIT 3 후보 정렬
+- [x] §8 한국 IIT 우선순위 갱신
+- [x] 산출물 `ISR/research/regulatory_pipeline.md` (~302 lines)
+
+🔑 핵심: regulatory window 3 (AGENT MFDS Asia-first · fasudil-DCB MFDS+PMDA cross · Freesolve Korean sites) · ongoing trials white space = ROCK/YAP/GLP-1R local DCB (IIT-1 선점 우위) · IIT-1+IIT-3 동급 1순위 격상 + IIT-1.5 (AGENT 한국 post-approval registry) · IIT-4 (Freesolve Korean sites) 신규 권고.
+
 ## 2026-05-25T00:00:00Z — M8 통합 ranking + ISR domain closure
 
 - [x] §1 한국인 registry 매핑 (K-DES · EXCELLENT · HOST · GRAND-DES · K-DCB · K-iDES)
