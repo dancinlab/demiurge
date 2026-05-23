@@ -133,3 +133,15 @@ family 안에서 ALIGNN 이 λ ≥ 1 으로 ranking 한 **유일 2 point = H₃C
 | (i) pressure feature + retrain | 2순위 유지 | family-wide rel_err 가 floor → retrain 필수 |
 | **(k) sign-pathology repair** (신규) | 보류 | 메커니즘 정밀화 (a²F sign convention) 필요, root cause 가설 단계 |
 | 진짜 정공법 = DFT (§9.14 fanout 8/8) | **확정** | ALIGNN family-wide 의 quantitative wall 가 정공법 path 의 numerical justification 완성 |
+
+---
+
+## update 2026-05-24 b — grid-ceiling mechanism 확정
+
+d7 wall 의 mechanistic root cause = ALIGNN α²F head 의 **0–100 meV grid ceiling** (100-bin, bin center 0.5…99.5 meV, dw=1 meV).
+
+- **high-ω 결손**: DFT ω_log h3cl=**107.9 meV** (천장 초과) · h3o=**94.5 meV** (천장 근접) → H-stretch mode 가 grid 위에 살아 표현할 bin 자체가 없음. h3cl·h3si 의 60–100 meV 밴드 a²F 합은 음수 수렴 (−0.34, −0.37) = 가장 심한 결손.
+- **sign-pathology = 별개 채널**: 음수 λ 의 출처는 high-ω 가 아니라 acoustic edge **0.5–2.5 meV** soft bin — λ_dens = 2·a²F/ω·dw 의 1/ω 가중이 ω→0 음수 a²F 를 폭증 (h3o 0.5 meV a²F=−0.122, λ_dens=−0.489). high-ω 누락과 독립.
+- **BEE-NET 구조적 이점**: ① a²F target ≥0 clamp → sign-pathology 를 구조적으로 못 만듦 (3/9 음수-λ 자동 치유) · ② EMDLoss high-ω mass 보존. **but grid 천장은 ALIGNN 과 동일 (~101 meV)** → step 0 grid 확장 (~140 meV) 이 진짜 BLOCKER, 없으면 (e)·(i) 둘 다 무효.
+
+cross-ref → `d7-wall-beenet-poc-design-2026-05-24.md` (BEE-NET fine-tune POC 5-step 설계 + α²F 결손 정량).
