@@ -1,5 +1,15 @@
 # TTR-MN — log
 
+## 2026-05-24T06:40Z — M5-MN MD/QM simulation design landed
+
+- [x] M5-MN — 12-cell simulation matrix · force field stack · compute budget (`TTR/research/m5_mn_md_qm_design.md`)
+  - **12 cell**: Top-3 candidate (CeO₂ · DyP+DFO · AzoR+ascorbate) × pigment target × pH (4.5 vs 7.4)
+  - **stack**: Vina/GNINA docking + GROMACS+CHARMM36m (효소) + LAMMPS+ReaxFF (NP) + ωB97X-D/def2-TZVP (TS/TD-DFT)
+  - **compute**: ~$400 (laptop CPU docking + A100 GPU pod 368 hr) per @D d7
+  - **source IDs**: PDB 1V4B (AzoR) · 4G2C/2D3Q (DyP) · 1KYA (laccase) · ICSD 9450 (Cr₂O₃) · mp-20194 (CeO₂)
+  - **wall-region 정량**: TD-DFT Cu-Pc Q-band · Cr₂O₃ band-gap excited state (arxiv:2405.11122 정합)
+  - simulation 실제 실행은 hexa cloud (별 작업) — design completed-form per @D d1
+
 ## 2026-05-24T06:15Z — M3-MN 활성성분 ranking landed
 
 - [x] M3-MN — 5 family × top 5 candidate ranking (`TTR/research/m3_mn_candidates.md`)
