@@ -2,6 +2,21 @@
 
 Append-only history sister of `DAPTPGX.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T21:50:00Z — M3 · M6 cycle2 병렬 완료 (2 milestone)
+
+- [x] **M3 switch tree** (388 lines) — 3제 비교 표 · escalation/de-escalation ASCII · TRITON/PLATO/TICAKOREA/TROPICAL-ACS/TOPIC/HOST-REDUCE 결과 · switch 프로토콜 vulnerable window · 4-quadrant 한국인 100명 분포 · KSC/ESC/ACC/CPIC 가이드라인 비교
+- [x] **M6 next-gen P2Y12** (251 lines) — selatogrel SC · revacept GPVI-Fc · vicagrel CES1 · zalunfiban αIIbβ3 · PAR-4 rs773902 동양인 GoF · CYP-independence 매트릭스 · 한국 진입 timeline
+- [ ] M7 통합 결정맵 (M1-M6 종합 ready)
+- [ ] M8 cost-effectiveness (M7 의존)
+
+🔑 핵심 통찰 (cross-cutting):
+- **한국 가이드라인이 evidence-leading** — KSC 2024 clopi-first + 단기 DAPT는 TICAKOREA + HOST-EXAM + HOST-REDUCE 한국인 RCT 트라이앵글 근거. ESC/ACC ticag-first와 분기점, 글로벌 PGx 결정맵의 unique한 한국형 axis 확립.
+- **De-escalation > escalation evidence weight** — TROPICAL-ACS · TOPIC · HOST-REDUCE 비열등 + 출혈 ↓. 반면 routine PFT-guided escalation은 GRAVITAS/ARCTIC/ANTARCTIC 모두 음성. M3 결정 트리의 primary movement 방향이 escalation이 아닌 de-escalation으로 정렬.
+- **Switch vulnerable window** — ticag→clopi acute 6-24h "양쪽 IPA <50%" 위험. LD 600mg + 12h overlap + stable phase (>30d) 시행 안전. M5 PFT의 두 번째 가치 cell.
+- **vicagrel = 한국 진입 임팩트 1위 신약 후보** — CES1 1-step 활성화로 CYP2C19 LoF 영향 zero, 동양인 데이터 풍부 (중국 NMPA). 라이센스 deal만 성사되면 2026-2028 KFDA. PM 60%에 즉시 적용 가능 → 결정맵 단순화.
+- **selatogrel = STEMI prehospital 골든타임 공백** 표적 유일 후보 (SC 자가, 30분 peak). SOS-AMI readout (~2027)이 한국 결정맵 재편 트리거.
+- **PAR-4 rs773902 동양인 GoF** — M1 allele 인벤토리 확장 후보 (BMS-986120/141 class 임상 진입 시 한국인 별도 layer).
+
 ## 2026-05-24T21:35:00Z — M2 · M4 · M5 cycle1 병렬 완료 (3 milestone)
 
 - [x] **M2 pathway** (202 lines) — clopidogrel 2-step bioactivation · P2Y12 Cys17/Cys270 covalent · phenotype별 active AUC + PRU 정량 · 한국인 baseline · ABCB1/CES1/PON1 modifier
