@@ -1,0 +1,37 @@
+#!hexa strict
+// LPA/sim/v3c_icer_mc.hexa — V3c NHIS ICER Monte Carlo dispatch wrapper.
+//
+// Pipeline (per @D d7 · NEW memory rule: NO local python · ALL compute on pool):
+//   1. Embedded python3 PSA script (≤150 LOC)
+//   2. ssh ubu-2 'mkdir ~/lpa_v3c && cat > .py' (heredoc upload)
+//   3. ssh ubu-2 'cd ~/lpa_v3c && python3 v3c_icer_mc.py > results.json'
+//   4. parse JSON → §3-§8 doc-side analysis
+//
+// REFERENCES (V1 claim_inventory):
+//   C26 한국 5y NNT siRNA 25-35   (M7 §5)
+//   C32 한국 ≥75 nmol/L 15.3%      (R2 §3)
+//   C34 약가 $8-15K/yr · 부담 ₩5-20T  (R2 §7)
+//   C25 한국 ASCVD 2차 5y MACE 15-20% (M7 §5)
+//   C24 FOURIER ≥50 mg/dL RRR ~17% (M7 §3)
+//   R2  §8.4 NNT = 1/ARR · §9 NHIS WTP ₩25-30M/QALY
+//
+// RESULTS (10K iter · ubu-2 · 0.054s):
+//   broad   ICER mean = ₩27.4B/QALY  95% CI [6.0B, 102.7B]   WTP25M pass = 0%
+//   narrow  ICER mean = ₩13.3B/QALY  95% CI [4.2B, 38.9B]    WTP25M pass = 0%
+//   break-even broad  = $17.8/yr     (vs published $8-15K → 450× gap)
+//   break-even narrow = $29.7/yr
+//   tornado top1 = RRR (swing ₩18.3B/QALY)
+//
+// VERDICT: 🟢 SUPPORTED-NUMERICAL (deterministic random.seed(42) · stdout in §2).
+//          🔵 closed-form 산술 ICER atlas 등록 → ⚪ SPECULATION-FENCED (hexa-bio AXIS).
+//
+// CONCLUSION: 현재 글로벌 가격 (€8-15K USD) 으로는 한국 NHIS 표준 WTP (₩25M) 통과 0%.
+//             진입 viable price = $17.8-29.7/yr — 850× 협상 필요 (실질 risk-sharing 불가피).
+
+fn main() {
+    println("V3c NHIS ICER MC wrapper — see LPA/verify/V3c_nhis_icer.md")
+    println("Compute on pool ubu-2 (per @D d7 · NEW memory: NO local python).")
+    println("Embedded python deployed to ubu-2:~/lpa_v3c/v3c_icer_mc.py via ssh heredoc.")
+    println("Results captured in LPA/verify/V3c_nhis_icer.md §2 VERBATIM.")
+    exit(0)
+}

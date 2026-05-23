@@ -21,7 +21,7 @@
 ## simulation (cycle 4 · demiurge 자산)
 - [x] S1 siRNA mRNA 분해 ODE — pool ubu-1 dispatch · 4분자 PK/PD → `LPA/verify/V3a_sirna_kinetics.md` (V3a 흡수)
 - [ ] S2 MR/IVW Burgess 재계산 — closed-form + atlas 등록 시도 + Monte Carlo CI → `LPA/S2_mr_ivw.md`
-- [ ] S3 NHIS ICER Monte Carlo — Lp(a) ↓ × MACE × QALY × 약가 sensitivity → `LPA/S3_nhis_icer.md`
+- [x] S3 NHIS ICER Monte Carlo — pool ubu-2 dispatch · 10K PSA · break-even $17.8/yr · WTP25M 0% → `LPA/verify/V3c_nhis_icer.md` (V3c 흡수)
 
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
 
@@ -29,5 +29,5 @@
 - [ ] V2 🔵 push — Burgess MR closed-form · KIV-2 log · Schoenfeld 🟢 · Lp(a) Δ% identity · IVW estimator → `hexa verify --expr` + atlas register → `LPA/verify/V2_formal_identities.md`
 - [x] V3a 🟢 push — siRNA ODE on pool ubu-1 (C10/C13/C15/C16/C27/C43 · 4분자 PK · closed-form steady-state) → `LPA/verify/V3a_sirna_kinetics.md`
 - [ ] V3b 🟢 push — MR/IVW Monte Carlo CI bootstrap (C22/C23) → `LPA/verify/V3b_mr_ivw_mc.md`
-- [ ] V3c 🟢 push — NHIS ICER Monte Carlo (C26/C34) → `LPA/verify/V3c_icer_mc.md`
+- [x] V3c 🟢 push — NHIS ICER Monte Carlo on pool ubu-2 (10K PSA · seed=42 · WTP 0% · 387-645× 약가 격차) → `LPA/verify/V3c_nhis_icer.md`
 - [ ] V4 final tier ledger — 🔵+🟢+🟡 verbatim + 🟠 honest deferred → `LPA/verify/V4_tier_ledger.md`
