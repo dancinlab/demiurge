@@ -1,6 +1,11 @@
 # TTR — current state
 
-@goal: 바르는 타투제거 — 한 튜브(30일 1회 용법)로 잉크 90%+ 제거, 흉터 없음, FDA-grade 안전성 · measured-oracle PASS 까지 absorbed=false
+@goal: 타투제거 약물 설계 base inventory (cream + MN 두 track 공유) — 잉크 90%+ 제거, 흉터 없음, FDA-grade 안전성 · measured-oracle PASS 까지 absorbed=false
+
+> **split note (2026-05-24)**: M4 first-principles 결과 microneedle 우승이 원래 "바르는" 정의 위반.
+> 두 sub-domain 으로 분기 — `TTR-CREAM.md` (진짜 rub-on cream/gel) · `TTR-MN.md` (self-applied MN patch).
+> 공유 base: M1 잉크 inventory · M2 MoA 5 family · M4 4-mechanism 비교 · M6 off-target safety.
+> Sub-domain own @goal + milestones (M3 활성성분 · M5 MD/QM · M7 제형 · M8-M10 ex-vivo→in-vivo→측정-oracle).
 
 ## Milestones (progress)
 
