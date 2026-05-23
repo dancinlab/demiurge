@@ -2,6 +2,22 @@
 
 Append-only history sister of `DAPTPGX.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T22:45:00Z — M9 · M10 · M11 심화 라운드 완료 (deep research 3-axis)
+
+- [x] **M9 arxiv/PubMed 2024-2026** (446 lines) — 45 PMID · 13 sections · HIGH priority 12편 · TALOS-AMI substudies 6편 (M3·M7 cells 🟠→🟡 upgrade) · CELEBRATE zalunfiban Phase 3 · Galli 2024 EHJCVP meta · Gragnano 2025 PRECISE-HBR · Cavallari 2026 "Missing the Boat" editorial · DT-678 신규 class (Liu 2025 BJP FIH) · 한국인 `*35` allele 2.02% (Youn 2024) · 5 NEW axes (AI/ML · P2Y12 occupancy biomarker · DT-678 · sex-modifier · Lp-PLA2)
+- [x] **M10 web 임상 readout** (237 lines) — 2024-2026 readout 12건 · HOST-EXAM 10y (Lancet 2026 HR 0.86) + SMART-CHOICE 3 (Lancet 2025 HR 0.71) 한국 chronic clopi 단독 evidence-leading 확정 · ACC/AHA 2025 ticag monotherapy ≥1mo Class IIa 격상 · vicagrel FDA NDA 2023-12 filing (M6 timeline 1-2y 단축) · 음성 readout 2건 (ACTISAVE · BMS-986141 stroke arm 중단)
+- [x] **M11 PGx 라이브러리 → inbox handoff** (6 files 980 lines) — demiurge/inbox/notes/daptpgx-* (library-inventory + ssot-databases + cyp-callers + cds-tools + poc-devices + ngs-pipelines) — hexa-lang stdlib wrapper + hexa atlas SSOT 등록 후보 명시 · 한국 환경 적용 매트릭스
+- [ ] M12 verify-push (🔵 SUPPORTED-FORMAL 도달) — M9·M10 propagation + canonical-ssot 통합
+
+🔑 심화 통찰:
+- **한국 evidence-leading 정점** — HOST-EXAM 10y + SMART-CHOICE 3 동시 출판 → chronic clopi 단독 KSC Class I 격상 가능성 (M10 §8 ⚪)
+- **vicagrel timeline 단축** — FDA NDA filing 확인 → 2026-2028 → 2025-2026 (M6 update 필요)
+- **결정맵 5D 진화 evidence** — M9 5 NEW axes (sex · AI/ML · biomarker · DT-678 · Lp-PLA2) → M7 cube 확장 후보 (M12·M13 candidate)
+- **caller cross-tool consistency 미검증** (gap F8) — PyPGx vs PharmCAT vs Stargazer head-to-head 없음 — M11 inbox callers note에 audit hook
+- **M9·M10 findings → M1-M8 propagation 미완** (gap F5 fixpoint priority #1) — M12 audit이 동시 해결 대상
+
+📊 도메인 통계 (M1-M11 landed): ~5,200 lines + 6 inbox notes 980 lines = 총 ~6,180 lines / 11 milestone files + 1 audit 큐.
+
 ## 2026-05-24T22:05:00Z — M7 · M8 cycle3 병렬 완료 · DOMAIN COMPLETE 8/8 🎯
 
 - [x] **M7 통합 결정맵** (531 lines) — 3-axis cube (phenotype × HBR × 시술복잡도) · 27-cell + 9-cell 요약 · 5 critical cells deep dive · 시간축 trigger (acute → 12mo) · POC genotyping (Spartan RX · Cube · 1h TAT) + EMR CDS workflow · vicagrel/selatogrel 미래 cell

@@ -2,6 +2,26 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T00:00:00Z — R2 regulatory deep research 완료
+
+- [x] §1 FDA/EMA/MFDS designation status — pelacarsen/olpasiran/lepodisiran 모두 명시 designation 미공시 → 🟡
+- [x] §2 KSoLA 2026 Position Paper (e-JLA 15(1):2) — 3-tier cutoff (Normal <30 · Borderline 30-49 · High **≥50 mg/dL**) + 모든 성인 1회 측정 + family cascade
+- [x] §3 한국인 prevalence — ≥75 nmol/L = 15.3% · ≥120 nmol/L = 7.9% (14,158명 멀티센터)
+- [x] §4 HORIZON 한국 site 확정 (KBR 2021-07) · readout 2026 H1 · 규제 제출 2026 H2
+- [x] §5 OCEAN(a)-Outcomes Active/not-recruiting (n=7,297) · primary completion 2026-12 · readout 2027 H1
+- [x] §6 한국 PCSK9i 급여 (HIRA 2020-01) — 초고위험 ASCVD + LDL≥70 또는 HeFH + LDL≥100 add-on (Lp(a) 자체 미 trigger)
+- [x] §7 ASO/siRNA 잠재 약가 시나리오 — ICER ₩25-30M/QALY = NHIS gate, $8-15K/yr 협상 + 좁은 적응증 현실적
+- [x] §8 🟢 SUPPORTED-NUMERICAL × 4 신규 — Schoenfeld 1,187 events · binary n≈8,717 · NNT 25-33 · NHIS ₩5-15T 시뮬
+- [x] 산출물 `LPA/R2_regulatory.md` (220 lines)
+- [ ] 🟠 FDA/EMA designation 공식 공시 (outcome trial 후)
+- [ ] 🟠 KSoLA 신약 권고 update (HORIZON readout 후)
+
+🔑 핵심 통찰 (R2):
+- **NHIS economic gate (ICER ₩25-30M/QALY) = 진짜 한국 wall** — 임상 효능 자체가 아닌 약가-적응증 협상이 진입 path
+- **KSoLA 2026 paper = 정책적 사전 단단** — ≥50 mg/dL cutoff + 일괄 측정 권고가 향후 약물 적응증 fast-tracking
+- **🟢 4건 신규** (Schoenfeld · binary n · NNT · NHIS 시뮬) → M3/M7 verification tier 추가 상승
+- **🔵 도달 0건** — hexa atlas biostat 미등재 지속 (R1 + R2 합쳐 🔵 0/8건)
+
 ## 2026-05-24T23:45:00Z — R3 라이브러리 inventory 완료
 
 - [x] §1 MR libraries 6건 (MendelianRandomization v0.9.0 · TwoSampleMR v0.7.4 · MR-Base · MR-PRESSO · GSMR + gap = Apolipoprotein R BioC 부재)
