@@ -2,6 +2,24 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T23:45:00Z — R3 라이브러리 inventory 완료
+
+- [x] §1 MR libraries 6건 (MendelianRandomization v0.9.0 · TwoSampleMR v0.7.4 · MR-Base · MR-PRESSO · GSMR + gap = Apolipoprotein R BioC 부재)
+- [x] §2 한국 cohort stack 8건 (PLINK · BOLT-LMM · SAIGE · REGENIE · hail · gnomAD · KRGDB · KOVA)
+- [x] §3 ctgov parser 4건 (pytrials 0.3.0 · v2 API · clinical_trials_python legacy · AACT)
+- [x] §4 PK/PD 5건 (nlmixr2 v5.0.0 · rxode2 · mrgsolve v1.7.2 · OSP · Pumas.jl)
+- [x] §5 siRNA design 5 free + 2 gap (siDirect 2.0 · Whitehead · siSPOTR · RNAxs · DSIR · GalNAc gap · ASO gap)
+- [x] §6 hexa-lang inbox draft 3건 — `lpa-ivw-mr-formula` · `lpa-sirna-tm-calc` · `lpa-ctgov-v2-fetch`
+- [x] §7 verify rubric — URL 🟢 · 버전 🟢 · MR 재현 🟡 · GalNAc free tool 부재 🔴 (gap)
+- [x] 산출물 `LPA/R3_libraries.md` (189 lines)
+- [ ] 🟠 hexa-lang inbox 실제 등록 (worktree 분리 turn 필요)
+- [ ] 🔴 GalNAc-siRNA in-silico 종합 free tool gap (Alnylam/Arrowhead 사내 IP)
+
+🔑 핵심 통찰 (R3):
+- **28 도구 inventory** = MR + 한국 cohort stack + ctgov + PK/PD + siRNA design 5축 확립
+- **GalNAc-siRNA 자유도구 gap = 🔴 FALSIFIED** (closed negative — 사내 IP)
+- **inbox 3건**: IVW formula 흡수 · siRNA Tm 계산 · ctgov v2 polling — hexa-lang stdlib 후보
+
 ## 2026-05-24T23:30:00Z — R1 arxiv deep research 완료
 
 - [x] §1 arxiv/medRxiv/bioRxiv 25건 (MR 5 · KIV-2 5 · siRNA/ASO 5 · GWAS 5 · meta+신규 5)

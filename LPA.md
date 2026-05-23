@@ -16,4 +16,4 @@
 ## research deepening (cycle 3)
 - [x] R1 arxiv deep research → `LPA/R1_arxiv.md`
 - [ ] R2 web/regulatory → `LPA/R2_regulatory.md`
-- [ ] R3 libraries → `LPA/R3_libraries.md`
+- [x] R3 libraries (MR · cohort · PK/PD · ASO/siRNA · ctgov · 28 도구 · inbox 3건) → `LPA/R3_libraries.md`
