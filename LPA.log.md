@@ -2,6 +2,23 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T01:30:00Z — V3a siRNA ODE on pool ubu-1 완료
+
+- [x] §1 1-compartment ODE 모델 + 가정 (k_syn · k_deg · k_drug · k_clr 파라미터화)
+- [x] §2 ubu-1 dispatch — numpy 2.4.4 · scipy 1.17.1 · 0.58s real (script ~/lpa_v3a/v3a_sirna_ode.py)
+- [x] §3 4분자 published vs simulated 비교 — pelacarsen ±5pp · zerlasiran ±5pp · olpasiran peak ±3pp · lepodisiran -43pp (k_drug underfit 명시)
+- [x] §4 C43 steady-state closed-form M_ss = k_syn / (k_deg + k_drug·S_avg) — sim vs cf |Δ| ≤ 5pp self-consistent
+- [x] §5 C27 lifelong→late 정량 — 30-40% effective (보수 30% · 낙관 40% · heuristic 50% 상한 일치)
+- [x] §5.1 k_drug ±30% sensitivity — robust ≤9pp (lepodisiran 제외)
+- [x] §6 verify rubric — C10 🟢 · C13 🟠 · C15 🟢 · C16 🟢 · C27 🟢 · C43 🟠 DEFERRED
+- [x] §7 V3 ledger 입력 — V3b/V3c next · lepodisiran k_clr refit · inbox draft 제안
+- [x] C16 catalytic vs stoich AUC ratio 2.14× 정량 (siRNA-RISC 9.9d vs ASO 4.62d)
+- [x] 산출물 `LPA/verify/V3a_sirna_kinetics.md`
+- [x] NEW memory rule 준수 — ALL compute on pool ubu-1 (no local python)
+- [x] d9 isolation 준수 — worktree branch · explicit add · no main touch
+- [ ] atlas F-kind register 우회 — hexa verify `--expr` calc fn 카탈로그 확장 PR (breakthrough d2)
+- [ ] V3a' refresh — lepodisiran k_clr refit (Ph2 ALPACA 60wk profile)
+
 ## 2026-05-25T00:30:00Z — V1 claim inventory + tier triage 완료
 
 - [x] §1 분류 규칙 (🔵/🟢/🟡/🟠/🔴 per @D g5 · TECS-L)
