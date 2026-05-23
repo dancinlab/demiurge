@@ -42,6 +42,27 @@ Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestam
 - [ ] atlas F-kind register 우회 — hexa verify `--expr` calc fn 카탈로그 확장 PR (breakthrough d2)
 - [ ] V3a' refresh — lepodisiran k_clr refit (Ph2 ALPACA 60wk profile)
 
+## 2026-05-25T01:00:00Z — V2 🔵 push 시도 — 0/8 도달 · upstream PR #665 가동
+
+- [x] §1 hexa atlas capability 측정 — 16,062 nodes / 0 biostat formula
+- [x] §2 IVW Burgess 2018 closed-form 정의 (3 instruments, β=-0.342490, HR 0.71)
+- [x] §3 `hexa atlas register --from-verify ivw 3 1` → 🟠 INSUFFICIENT (calc fn 부재)
+- [x] §3.2 `hexa atlas append-witness` 4건 staging 성공 (ivw_burgess · schoenfeld · binary_sample · nnt)
+- [x] §3.3 `hexa atlas pr --staging` → daily-aggregate 요구 (개별 shard 직접 PR 불가)
+- [x] §4 `hexa verify --expr` 5건 VERBATIM (sigma 🔵 baseline · ivw/schoenfeld/binary_sample/nnt/arr_to_nnt 모두 🟠)
+- [x] §5 hexa-lang PR #665 OPEN — `inbox/notes/2026-05-24-lpa-ivw-mr-formula.md` (105 lines · calculator 확장 요청)
+- [x] §6 🔵 도달 = **0/8** (목표 8건, 모두 calc fn 부재 = 정직한 deferred · d6 준수)
+- [x] §7 V3 입력 — 5 atom IDs (4 self + 1 parallel agent @L law-reference)
+- [x] §8 d2 breakthrough 3축 — calculator extension(PR #665) / daily-aggregate manual fold / own atlas root
+- [x] 산출물 `LPA/verify/V2_formal_identities.md` (199 lines)
+- [ ] V3 numerical (pool ubu-1/2) — PR #665 머지 후 재시도 시 🟢→🔵 promotion 가능
+- [ ] V4 final tier ledger
+
+🔑 V2 핵심 verdict:
+- atlas 16,062 nodes 중 biostat formula = **0개** → LPA 단독 문제 아닌 cross-domain wall (4도메인 누적)
+- 🔵 강제 통과 회피 (d6) — calc fn 부재를 🔵로 위장 NO
+- breakthrough = **PR #665** (calculator upstream extension) 단일 root 해결
+
 ## 2026-05-25T00:30:00Z — V1 claim inventory + tier triage 완료
 
 - [x] §1 분류 규칙 (🔵/🟢/🟡/🟠/🔴 per @D g5 · TECS-L)
