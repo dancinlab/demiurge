@@ -2,6 +2,22 @@
 
 Append-only history sister of `NOREFLOW.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T22:35:00Z — M5 임상 측정 endpoint 완료 (cycle1)
+
+- [x] §1 endpoint 5-layer 피라미드 (epicardial → MBG → IMR → CMR → MACE)
+- [x] §2 각 endpoint 정량 cutoff (TIMI · cTFC>23 · MBG≤1 · IMR>40 · CMR MVO≥1.5% · LGE≥30%)
+- [x] §3 endpoint × outcome HR 표 (TIMI HR 2-3 / IMR·CMR HR 4-6)
+- [x] §4 surrogate 등급 (CMR infarct size = 유일 validated · Stone 2016)
+- [x] §5 trial endpoint 선택 가이드 (Ph2 CMR n~200-400 · Ph3 MACE n>2000)
+- [x] §6 한국 표준 endpoint + gap (KAMIR-NIH CMR 미포함 · 다기관 CMR 부재)
+- [x] 산출물 `NOREFLOW/M5_endpoint.md` (176 lines · 출처 13)
+- [ ] M2/M3 임상 설계 gating: 한국 다기관 CMR consortium 결성 필요
+
+🔑 핵심 통찰:
+- IMR/CMR HR ~ 4-6 vs TIMI HR ~ 2-3 → **아래층(microcirc/infarct) 예측력 약 2배 강함**
+- **CMR infarct size = 유일한 validated surrogate** (Stone 2016 n=2,632) → Ph2 PoC n~200-400으로 효과 detect, Ph3 MACE confirm 하는 2-tier 표준
+- 한국 gap = IMR-guided RCT 부재 + 다기관 CMR consortium 부재 → M2/M3 임상 설계의 gating 조건
+
 ## 2026-05-24T22:32:00Z — M3 미세혈관 보호 약물 완료 (cycle1)
 
 - [x] §1 5-family overview (adenosine · K-ATP · NO donor · CCB · IIb/IIIa)
