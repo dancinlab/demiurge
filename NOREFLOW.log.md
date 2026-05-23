@@ -2,6 +2,24 @@
 
 Append-only history sister of `NOREFLOW.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T23:45:00Z — M9 web/arxiv deep research 완료 (cycle4)
+
+- [x] §1 search 방법 (PubMed · CT.gov · arxiv · 2021-2026 · 9 키워드)
+- [x] §2 최신 임상 trial 12건 (OASIS-9 · CLEAR SYNERGY · 외)
+- [x] §3 mechanism 12 논문 (Bonora 2021 · Carraro 2023 · STING-GPX4 · CypD Ser191)
+- [x] §4 arxiv ML 8 논문 (CMR auto-segmentation · GNN drug repurposing · multi-omics)
+- [x] §5 한국/동아시아 8 evidence (ALDH2*2 stratification)
+- [x] §6 evidence × M? 보강 매핑 (M2 +12 · M3 +10 · M4 +5 · M5 +6 · M6 +4 · M8 +8)
+- [x] §7 d2 후속 6 시도 + §8 신규 endpoint + §9-10 ref + g5
+- [x] 산출물 `NOREFLOW/M9_deep_research.md` (267 lines · refs 46)
+- [ ] 🔴 **콜키친 M3/M7 demote 필요** (CLEAR SYNERGY + OASIS-9 acute MI null)
+- [ ] M7 ranking update (콜키친 demote + 다축 cell-death 신규 path 반영)
+
+🔑 새 evidence 3 핵심:
+- **CLEAR SYNERGY + OASIS-9 (TCT 2024, n=7,062) null** — 콜키친 + spironolactone 모두 acute MI 무효. M3/M7에서 **콜키친 demote** 정당화
+- **STING-GPX4 ferroptosis + CypD Ser191 phospho + mtRNA leak** (Nature 2025) — M2 단일 mPTP 표적 한계 명시 → **다축 cell-death 차단** 신규 d2 path
+- **ALDH2*2 East Asian 40% stratification** (JAHA 2024) — 한국 nicorandil null 정당화 + ALDH2*2 sub-group **BH4 등 alternative NO donor** 가설 → M8 한국 우위 새 기회
+
 ## 2026-05-24T23:25:00Z — scaffold 확장: M9/M10/M11 추가 (🔵 도달 trajectory)
 
 - [x] M9 web/arxiv deep evidence milestone 신설

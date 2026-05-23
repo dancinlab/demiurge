@@ -12,6 +12,6 @@
 - [x] M6 off-target / 안전성 — 부정맥 · 저혈압 · 출혈 → `NOREFLOW/M6_safety.md`
 - [x] 후보 통합 ranking + d2 wall breakthrough → `NOREFLOW/M7_rank.md`
 - [x] 한국인 KAMIR / K-ACTION registry 매핑 → `NOREFLOW/M8_korea.md`
-- [ ] M9 web/arxiv deep evidence — 최신 5년 임상/preclinical + arxiv ML 논문 inventory → `NOREFLOW/M9_deep_research.md`
+- [x] M9 web/arxiv deep evidence — 최신 5년 임상/preclinical + arxiv ML 논문 inventory → `NOREFLOW/M9_deep_research.md`
 - [ ] M10 honest fence — ⚪ SPECULATION-FENCED 분류 (bio/clinical closed-form 미가능 영역) → `NOREFLOW/M10_fence.md`
 - [ ] M11 formal grade-up pass — atlas 확장 후 🔵 도달 검증 (hexa-lang inbox `noreflow-clinical-calc-extension` merge 후) → `NOREFLOW/M11_formal.md`
