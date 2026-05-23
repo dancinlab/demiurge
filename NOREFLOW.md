@@ -24,4 +24,4 @@
 - [x] V1 NOREFLOW claim inventory + tier triage (🔵/🟢/🟡/🟠) — M10 ⚪ fence 결과 흡수 → `NOREFLOW/verify/V1_claim_inventory.md`
 - [ ] V2 🔵 push — mPTP Δψ_m identity · adenosine Hill · IMR closed-form · TIMI flow ratio · M11 atlas 확장 → `hexa verify --expr` + atlas register → `NOREFLOW/verify/V2_formal_identities.md`
 - [x] V3 🟢 push — M12 PK/IRI ODE (local CPU) · cyclosporin-A binding MD (pool ubu-1/2) · adenosine receptor docking (RunPod GPU per @D d7) → `NOREFLOW/verify/V3_numerical_recompute.md`
-- [ ] V4 final tier ledger — 🔵+🟢+🟡 verbatim + 🟠 honest deferred + M10 ⚪ fence 통합 → `NOREFLOW/verify/V4_tier_ledger.md`
+- [x] V4 final tier ledger (partial · PR #658 gate) — 🔵+🟢+🟡 verbatim + 🟠 honest deferred + M10 ⚪ fence 통합 → `NOREFLOW/verify/V4_tier_ledger.md`
