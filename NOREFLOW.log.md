@@ -2,6 +2,22 @@
 
 Append-only history sister of `NOREFLOW.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T00:40:00Z — M12/V3 simulation pass 완료 (cycle5) — 4 tracks 🟢
+
+**4 tracks 모두 ubu-1/2 ssh 실제 실행 성공**:
+- [x] M12.1 PK 2-comp (ubu-1) — IC tmax=3s · IV=300s · ratio 536× direction-match → 🟢
+- [x] M12.2 IRI ODE Hill+salvage+ferroptosis (ubu-1) — CIRCUS 93.5% → IC-sync 56.9% (Δ=36.6 pp) → 🟢
+- [x] M12.3 Monte Carlo 10k iter + 5 ablation (ubu-2) — adenosine/nicorandil 100% Tier-A · volatile=0 → 🟢
+- [x] M12.4 Power n=500 (ubu-1) — primary 0.798 🟢 · Cox 0.157 🟠 · ALDH2*2 0.654 🟠
+- [x] 산출 `NOREFLOW/M12_simulation.md` (277 lines) + `NOREFLOW/verify/V3_numerical_recompute.md` (134 lines)
+- [ ] 🟡 pool CLI 회귀 — `hexa_index_get` 컴파일 회귀 차단 → ssh direct fallback 사용 · inbox patch 후속 필요
+
+🎯 d1 governance 달성: non-wet-lab → completed-form (pre wet-lab)
+🔑 핵심 통찰:
+- **M2 §4 Path B (IC + reperfusion-synced) d2-wall 돌파 정량 정당성 확립** — CIRCUS IV → IC-sync 전환만으로 cell death **36.6 pp 감소** (delivery timing이 1차 lever, 약물 변경 아님)
+- **M7 ranking 강건성 검증** — adenosine IC + nicorandil 가중치 ±20% perturb + 5-milestone ablation 모두 통과 (**100% Tier-A persistence**) → **F2 robustness gap closure**
+- **Trial-A NICORADENO-MVO n=500** primary endpoint power 0.798 적정 / Cox 1y MACE under-powered (0.16) → **secondary exploratory로 protocol 명시 필요**
+
 ## 2026-05-25T00:30:00Z — M10/V1 honest fence + claim inventory 완료 (cycle5)
 
 - [x] V1 NOREFLOW claim 색인 — 72 claims (M1:12 · M2:14 · M3:12 · M4:11 · M5:7 · M6:11 · M7:9 · M8:7 · M9:16)

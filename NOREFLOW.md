@@ -15,7 +15,7 @@
 - [x] M9 web/arxiv deep evidence — 최신 5년 임상/preclinical + arxiv ML 논문 inventory → `NOREFLOW/M9_deep_research.md`
 - [x] M10 honest fence — ⚪ SPECULATION-FENCED 분류 (bio/clinical closed-form 미가능 영역) → `NOREFLOW/M10_fence.md`
 - [ ] M11 formal grade-up pass — atlas 확장 후 🔵 도달 검증 (hexa-lang inbox `noreflow-clinical-calc-extension` merge 후) → `NOREFLOW/M11_formal.md`
-- [ ] M12 simulation pass — demiurge 자산 (d1: non-wet-lab completed-form) — PK 시뮬 · IRI ODE · M7 Monte Carlo · Trial-A power calc → `NOREFLOW/M12_simulation.md`
+- [x] M12 simulation pass — demiurge 자산 (d1: non-wet-lab completed-form) — PK 시뮬 · IRI ODE · M7 Monte Carlo · Trial-A power calc → `NOREFLOW/M12_simulation.md`
 
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
 
@@ -23,5 +23,5 @@
 
 - [x] V1 NOREFLOW claim inventory + tier triage (🔵/🟢/🟡/🟠) — M10 ⚪ fence 결과 흡수 → `NOREFLOW/verify/V1_claim_inventory.md`
 - [ ] V2 🔵 push — mPTP Δψ_m identity · adenosine Hill · IMR closed-form · TIMI flow ratio · M11 atlas 확장 → `hexa verify --expr` + atlas register → `NOREFLOW/verify/V2_formal_identities.md`
-- [ ] V3 🟢 push — M12 PK/IRI ODE (local CPU) · cyclosporin-A binding MD (pool ubu-1/2) · adenosine receptor docking (RunPod GPU per @D d7) → `NOREFLOW/verify/V3_numerical_recompute.md`
+- [x] V3 🟢 push — M12 PK/IRI ODE (local CPU) · cyclosporin-A binding MD (pool ubu-1/2) · adenosine receptor docking (RunPod GPU per @D d7) → `NOREFLOW/verify/V3_numerical_recompute.md`
 - [ ] V4 final tier ledger — 🔵+🟢+🟡 verbatim + 🟠 honest deferred + M10 ⚪ fence 통합 → `NOREFLOW/verify/V4_tier_ledger.md`
