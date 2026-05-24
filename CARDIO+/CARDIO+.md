@@ -44,6 +44,9 @@
 - [x] X26 living-doc 자동화 spec — X8 grade ledger=단일 SSOT → DOCTOR/X7 derived 9개 auto-regen · drift lint(H8/H10 🟢% 불일치 적발) → `CARDIO+/X26_living_doc.md`
 - [x] X27 불확실성 UQ 집계 — CI 있는 🟢 5(LPA bootstrap) vs 없는 ~38(robustness gap 정직) · 민감도 최대=v8 ICER(horizon) · bootstrap 1순위=NOREFLOW Δ36.6pp → `CARDIO+/X27_uncertainty.md`
 - [x] X28 index-patient 10y microsim — illustrative 환자(65yo·IM·Lp(a)high·ALDH2*2) 10년 Markov · 3-axis 층화 vs 표준 Δ+0.066 QALY·사망−1.28pp (mini 실측 · projection ⚪) → `CARDIO+/X28_patient_microsim.md`
+- [x] X29 EMR-CDS 배포 설계 — X22 spec→BPA 9 trigger(핵심=ticag Month-1 모니터) · fatigue=관련성 게이팅 · POCT 90분 "처방 전 결정" · SaaS scale-out → `CARDIO+/X29_emr_cds_deploy.md`
+- [x] X30 채택 lever — default-nudge(최강이자 최대 역효과) · P4P/적정성평가 · audit-feedback · champion/약사 · 책임장벽은 ①+②⑤ stack 필요 → `CARDIO+/X30_adoption_levers.md`
+- [x] X31 배포 roadmap/playbook — 즉시/6m/1y/3y phasing · 배포=증거 LHS 루프 · 실패모드(alert fatigue 최대) · DOCTOR H11 deployment playbook feed → `CARDIO+/X31_deploy_roadmap.md`
 
 ## d2 governance (meta)
 
