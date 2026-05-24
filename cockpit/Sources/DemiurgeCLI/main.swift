@@ -436,13 +436,22 @@ func gateSummary() -> Int32 {
 func compose(_ domainArg: String) -> Int32 {
     let c = DomainComposer.resolve(domainArg)
     let start = DomainCatalog.domain(for: domainArg)
-    let combinedTag = c.crossesDiscipline ? " · 결합(cross-discipline)" : ""
-    print("compose \(c.start) — \(start.label) · \(c.kind.rawValue)\(combinedTag)")
-    print("  구성 도메인 (topo foundation→apex · \(c.stack.count)):")
+    // M19 — plain default hides internal jargon (kind in Korean, no
+    // substrate SSOT host paths); expert reveals the raw detail.
+    let expert = DemiurgeMode.expert
+    let kindLabel: String = {
+        switch c.kind {
+        case .atomic:    return expert ? "atomic" : "단일"
+        case .composite: return expert ? "composite" : "구성형"
+        case .meta:      return expert ? "meta" : "메타(통합)"
+        }
+    }()
+    let combinedTag = c.crossesDiscipline ? (expert ? " · 결합(cross-discipline)" : " · 결합") : ""
+    print("compose \(c.start) — \(start.label) · \(kindLabel)\(combinedTag)")
+    print("  구성 도메인 (\(c.stack.count)):")
     print("    " + (c.ids.isEmpty ? "(none)" : c.ids.joined(separator: " → ")))
-    print("  cluster union: "
-          + c.clusterUnion.map { $0.rawValue }.joined(separator: " · "))
-    if !c.substrateSSOTs.isEmpty {
+    print("  성격: " + c.clusterUnion.map { $0.rawValue }.joined(separator: " · "))
+    if expert, !c.substrateSSOTs.isEmpty {
         print("  substrate SSOT: " + c.substrateSSOTs.joined(separator: " · "))
     }
     return 0
@@ -521,7 +530,12 @@ func backend(_ args: [String]) -> Int32 {
         for b in BackendResolver.available(ownerMode: owner) {
             let mark = b.id == active.id ? "▶" : " "
             let gate = b.owner ? " 🔒" : ""
-            print("\(mark) \(b.id)\(gate)  [\(b.kind.rawValue)]  \(b.label) — \(b.host)")
+            // M19 — plain shows the friendly label; expert adds id/kind/host.
+            if DemiurgeMode.expert {
+                print("\(mark) \(b.id)\(gate)  [\(b.kind.rawValue)]  \(b.label) — \(b.host)")
+            } else {
+                print("\(mark) \(b.label)\(gate)")
+            }
         }
         if !owner {
             print("(🔒 owner pool hosts hidden — DEMIURGE_OWNER + ~/.pool/pool.json)")
@@ -555,8 +569,14 @@ func operate(_ args: [String]) -> Int32 {
             let label = tier == .product ? "🛒 진열대 (external)" : "🔒 사장실 (owner)"
             print("\(label) — \(rows.count):")
             for o in rows {
-                let verb = o.verb?.canonical ?? "—"
-                print("  \(o.reach.glyph) \(o.id)  [\(o.target.rawValue) · \(verb) · \(o.milestone)]  \(o.title)")
+                // M19 — plain hides op id / target / milestone (internal);
+                // expert shows the full bracket.
+                if DemiurgeMode.expert {
+                    let verb = o.verb?.canonical ?? "—"
+                    print("  \(o.reach.glyph) \(o.id)  [\(o.target.rawValue) · \(verb) · \(o.milestone)]  \(o.title)")
+                } else {
+                    print("  \(o.reach.glyph) \(o.title)")
+                }
             }
             print("")
         }
