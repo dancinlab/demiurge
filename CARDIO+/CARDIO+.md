@@ -29,6 +29,11 @@
 - [x] X11 통합 layered-care 프로토콜 — 4축을 채혈 1회 3-axis 패널서 분기하는 단일 침상 결정흐름 (1 패널 → 6 wall 동시 stratify) → `CARDIO+/X11_layered_care.md`
 - [x] X12 4-trial MCDA 우선순위 — B DAPT-PGx-K 1위(4.60, 5/5 민감도 robust) ▸ A ▸ D ▸ C · 가중치 ⚪ proposal → `CARDIO+/X12_trial_mcda.md`
 - [x] X13 red-team falsification — 8 claim 적대검정 (survives 2·weakened 4·🔴-flip 후보 1) · thesis "mis-delivered" hedge 권고 · numerical→causal over-read 최대 취약 · gradedown 0 → `CARDIO+/X13_redteam.md`
+- [x] X14 known-unknowns 레지스트리 — VoI 카탈로그 21건 · top=IC-sync delivery IIT (thesis 전체 gate) · 즉시7/readout5/IIT6/장기3 → `CARDIO+/X14_known_unknowns.md`
+- [x] X15 환자 본인 self-case 운영화 — 다음 외래 액션 카드 (채혈 1회 3-axis 주문 + 주치의 질문 스크립트 + timeline) → `CARDIO+/X15_self_action.md`
+- [x] X16 안전성/harm profile 통합 — 4-track 중재별 부작용·모니터링·중단규칙 · 최대 출혈위험=ticagrelor (TICAKOREA 2.8%) → `CARDIO+/X16_safety.md`
+- [x] X17 5번째 sub-domain 후보 스캔 — 추천=AF 항응고 PGx (VKORC1 East Asian ~90% · CYP2C9) → 3-axis→4-axis 패널 확장 · TAVR 명시 제외 → `CARDIO+/X17_fifth_domain.md`
+- [x] X18 국제 transportability — 3-axis 생물학 한·일·중 일반화 (백인 ALDH2*2 ~0% 비적용) · 적용만 한국 특이 · 공동 trial=NICORADENO ALDH2*2 → `CARDIO+/X18_transportability.md`
 
 ## d2 governance (meta)
 

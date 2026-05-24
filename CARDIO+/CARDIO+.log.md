@@ -2,6 +2,22 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T08:30:00Z — deferred 골화 라운드 3: X16·X17·X18 (worktree 격리 → PR)
+
+> ⚠ 지난 라운드 공유 체크아웃 branch-churn wipe-위험 교훈 → 이번 라운드부터 **origin/main 기반 worktree(`/tmp/cardio-work`)에 격리 작업 + PR land** (공유 체크아웃 직접 commit 안 함).
+
+- [x] **X16 안전성/harm profile** → `CARDIO+/X16_safety.md` (213줄) — 4-track 중재별 부작용·모니터링·중단규칙
+  - 최대 출혈위험 = **ticagrelor** (TICAKOREA 2.8% = PLATO 1.4%의 2배) · 가드레일=PM×HBR-low cell만·monthly 모니터·dyspnea/BARC≥2 시 clopi switch
+  - 🔑 X11 D축에 stopping rule 1줄 삽입 권고 — 후속 X11 패치 후보
+- [x] **X17 5번째 sub-domain 스캔** → `CARDIO+/X17_fifth_domain.md` (199줄)
+  - 추천 = **AF 항응고 PGx (VKORC1 -1639 East Asian ~90% + CYP2C9)** ⚪4.8 · DAPT와 직교(cannibalization 0) · 3-axis→4-axis 패널(동일 PCR lab 한계비용≈0) · TAVR 명시 제외
+- [x] **X18 국제 transportability** → `CARDIO+/X18_transportability.md` (179줄)
+  - 생물학 한·일·중 일반화(백인 ALDH2*2 ~0% 비적용) · 적용(NHIS·520만)만 한국 특이 · 공동 trial=NICORADENO ALDH2*2 (단독 power 0.654 🟠→3국 회복)
+- [x] worktree 격리 read+write · g5 verbatim · LLM self-judge 0 · 공유 체크아웃 무접촉
+- [ ] ⏳ deferred 잔여: #2 불확실성 MC(sim) · #16 budget-neutral · #17 AI-PGx · #18 access-equity · #20 wet-lab · #22 microsim · #23 biomarker VoI · #24 grant · #28 subtraction · #29 living-doc · #31 anti-portfolio · #32 환자-facing
+
+🔑 라운드 성과: CARDIO+ cross-cutting **X1-X18** · 안전성/5th-domain/국제일반화 3축 추가 · worktree 격리로 wipe-안전 PR land.
+
 ## 2026-05-25T07:30:00Z — /cycle-full 라운드: X11·X12·X13 (브레인스토밍 고갈 32→top3 fan-out)
 
 - [x] **X11 통합 layered-care 프로토콜** → `CARDIO+/X11_layered_care.md` (304줄 · commit `456ea43`)
