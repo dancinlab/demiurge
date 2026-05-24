@@ -496,6 +496,10 @@ struct WorkbenchView: View {
                 }
             }
         }
+        // ④ 7-step bar sits in the toolbar principal slot — give it
+        // left/right breathing room so the 무엇을›어떻게›… capsules
+        // aren't flush against the toolbar edges (user UI feedback).
+        .padding(.horizontal, 20)
     }
 
     private func progressTint(_ state: VerbState) -> Color {

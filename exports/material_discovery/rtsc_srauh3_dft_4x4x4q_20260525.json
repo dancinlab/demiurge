@@ -1,0 +1,70 @@
+{
+  "domain": "material",
+  "verb": "verify",
+  "kind": "srauh3_dft_electron_phonon_result",
+  "stamp": "20260525T040000Z",
+  "producer": "QE 7.5 (conda-forge) pw.x+ph.x electron_phonon='simple' @ vast.ai GPU pod + BZ-sum reconstruction (star-weighted lambda + lambda-weighted log-avg omega) + hexa verify allen_dynes_tc",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": false,
+  "host": "vast.ai GPU pod (harvested to ~/rtsc_srauh3_vast_result/srauh3_vast.tgz)",
+  "candidate": "SrAuH3",
+  "purpose": "Parse the harvested SrAuH3 4x4x4-q electron-phonon DFT run; persist BZ-summed lambda, omega_log, Allen-Dynes Tc (mu*=0.10 and 0.13), dynamical stability, and the M7/M8 funnel evaluation.",
+  "system": "SrAuH3 cubic Pm-3m perovskite-type, bravais index 1 (simple cubic), alat=7.234 bohr (3.828 Angstrom), 5 atoms/cell (1 Sr + 1 Au + 3 H), 24 valence electrons, unit-cell volume 378.56 (a.u.)^3",
+  "method": {
+    "pseudopotentials": "PBE ultrasoft pslibrary (Sr.pbe-spn-rrkjus_psl.1.0.0, Au.pbe-n-rrkjus_psl.1.0.0, H.pbe-rrkjus_psl.1.0.0)",
+    "scf": "ecutwfc=80 Ry, ecutrho=640 Ry, 84 k-points, Methfessel-Paxton smearing degauss=0.02 Ry; Fermi energy 12.107 eV",
+    "phonon": "ph.x DFPT, 4x4x4 q-grid (10 irreducible q-points), star multiplicities [1,6,3,12,12,3,8,12,6,1] (sum=64)",
+    "elph": "electron_phonon='simple', el_ph_sigma=0.005, el_ph_nsigma=10 (double-delta Gaussian widths 0.005-0.050 Ry)",
+    "moments": "BZ-weighted lambda = sum_q w_q sum_nu lambda_q,nu / sum_q w_q; omega_log via lambda-weighted log-average of phonon freqs (lambda_q,nu taken verbatim from QE-printed lambda(nu), freqs from dyn files cm-1)",
+    "job_status": "ph.out contains 'JOB DONE.' (1 match) — run completed"
+  },
+  "phonon_frequencies_cm-1": {
+    "min": 10.539617,
+    "max": 1175.525006,
+    "note": "150 mode entries across 10 q-points (15 modes each); Gamma-point acoustic ~10.5 cm-1, high-frequency H-derived modes up to ~1176 cm-1 (~146 meV)"
+  },
+  "stability": {
+    "min_freq_cm": 10.539617,
+    "n_imaginary_modes": 0,
+    "verdict": "STABLE",
+    "note": "no negative/imaginary phonon frequencies in any dyn file across the full 4x4x4 q-grid — dynamically stable"
+  },
+  "results_by_broadening": [
+    { "broad_Ry": 0.005, "lambda_BZ": 1.4864, "omega_log_K": 648.95, "Tc_AD_mu010_K": 73.34, "Tc_AD_mu013_K": 66.81, "note": "small-broadening artifact (double-delta unconverged), NOT the converged value" },
+    { "broad_Ry": 0.020, "lambda_BZ": 0.6964, "omega_log_K": 611.08, "Tc_AD_mu010_K": 20.98, "Tc_AD_mu013_K": 16.04 },
+    { "broad_Ry": 0.025, "lambda_BZ": 0.6305, "omega_log_K": 600.12, "Tc_AD_mu010_K": 15.87, "Tc_AD_mu013_K": 11.52 },
+    { "broad_Ry": 0.030, "lambda_BZ": 0.6150, "omega_log_K": 591.18, "Tc_AD_mu010_K": 14.55, "Tc_AD_mu013_K": 10.41, "selected": true, "note": "plateau minimum — converged value used as headline" },
+    { "broad_Ry": 0.035, "lambda_BZ": 0.6369, "omega_log_K": 583.32, "Tc_AD_mu010_K": 15.86, "Tc_AD_mu013_K": 11.58 }
+  ],
+  "result": {
+    "broadening_selected_Ry": 0.030,
+    "lambda_BZ": 0.6150,
+    "omega_log_K": 591.18,
+    "Tc_AD_mu010_K": 14.55,
+    "Tc_AD_mu013_K": 10.41,
+    "convergence_note": "lambda is broadening-dependent; the 0.005 Ry value (1.49) is the standard double-delta artifact. The 0.020-0.035 Ry plateau bottoms at broad=0.030 Ry (lambda=0.615), the converged headline."
+  },
+  "hexa_verify": {
+    "command_mu010": "POOL_DISABLE=1 ./hexa verify --expr allen_dynes_tc 0.6150 591.18 0.10 14.551077820220709",
+    "verdict_mu010": "verify --expr allen_dynes_tc(0.615,591.18,0.1)=14.5511\n  calc   = 14.5511  ≈ expected 14.5511  (|Δ|=7.10543e-15 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)",
+    "command_mu013": "POOL_DISABLE=1 ./hexa verify --expr allen_dynes_tc 0.6150 591.18 0.13 10.40692464020969",
+    "verdict_mu013": "verify --expr allen_dynes_tc(0.615,591.18,0.13)=10.4069\n  calc   = 10.4069  ≈ expected 10.4069  (|Δ|=5.32907e-15 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+  },
+  "m8_evaluation": {
+    "criterion": "pressure < 50 GPa AND stable AND Tc > 200K (RTSC.md M8 / N5 ambient-stable funnel)",
+    "axis_pressure_lt_50GPa": "N/A — this run carries no EOS/pressure record (fixed-cell elph only). Pressure axis CANNOT be evaluated from this run; flagged for a separate EOS run.",
+    "axis_stable": "PASS — 0 imaginary modes, min freq +10.54 cm-1 across the full 4x4x4 q-grid",
+    "axis_Tc_gt_200K": "FAIL — Tc(mu0.10)=14.55 K, Tc(mu0.13)=10.41 K, far below the 200K threshold",
+    "verdict": "M8 NOT MET. 1 of 3 axes PASS (stability); Tc axis FAILs hard (~14 K << 200 K); pressure axis N/A (flag for EOS). SrAuH3 is dynamically stable but a weak-coupling (lambda~0.6) low-Tc conventional superconductor at this geometry — does not advance the ambient-stable RTSC funnel."
+  },
+  "honest_caveats": [
+    "lambda_BZ and omega_log were RECONSTRUCTED from the per-mode lambda(nu)/gamma and dyn-file frequencies with the standard star-weighted BZ sum (no lambda.x output was present in the tgz; QE electron_phonon='simple' prints only per-q per-mode lambda, not the BZ total). Method matches the prior rtsc_h3s elph-validation convention.",
+    "lambda is broadening-dependent: the 0.005 Ry value (1.49) is a double-delta artifact; the converged headline lambda=0.615 is read off the 0.020-0.035 Ry plateau minimum (broad=0.030 Ry), per the prior h3s convention.",
+    "DFT is Tier-1 PREDICTION, not Tier-3 measurement: gate_type=simulation-only-prediction, absorbed=false (R4 invariant).",
+    "Anharmonicity (significant for H-bearing systems) was not included; SSCHA-level treatment could shift both phonons and lambda.",
+    "Coarse 4x4x4 q-grid; denser k/q could shift lambda, but the qualitative weak-coupling result (lambda~0.6, Tc~14 K) is unambiguous."
+  ],
+  "r4_invariant": "absorbed=false · gate_type=simulation-only-prediction · domain=material. DFT prediction record; does NOT claim RTSC absorbed=true (M8 not met — Tc~14 K << 200 K)."
+}
