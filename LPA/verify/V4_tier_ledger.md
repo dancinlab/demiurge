@@ -17,7 +17,7 @@
 | tier | 건수 | 변화 (V1 baseline → V4) | 비고 |
 |---|---|---|---|
 | 🔵 SUPPORTED-FORMAL | **1** | 1 → 1 (변동 없음) | sigma sanity (C30) — atlas biostat 부재로 LPA 본 target 8건 모두 deferred |
-| 🟢 SUPPORTED-NUMERICAL | **27** | 14 → 27 (**+13**) | R1 4 + R2 4 + V3a 5 + V3c 5 + V3b 5 |
+| 🟢 SUPPORTED-NUMERICAL | **28** | 14 → 28 (**+14**) | R1 4 + R2 4 + V3a 5 + V3c 5 + V3b 5 + M12 +3 (nnt · arr · ln_hr_to_hr 실측 land · -1 FALSIFIED 보정) |
 | 🟡 SUPPORTED-BY-CITATION | **17** | 24 → 17 (-7) | citation-only 잔여 (분자 효능 · 안전성 · 임상 가이드라인) |
 | 🟠 INSUFFICIENT/DEFERRED | **4** | 5 → 4 (-1) | Ph3 outcome 대기 (HORIZON 2026 · OCEAN 2027 · ACCLAIM 2029 · 한국 sub-group) |
 | 🔴 FALSIFIED | **1** | 1 → 1 (변동 없음) | C41 GalNAc 자유도구 부재 (closed negative) |
