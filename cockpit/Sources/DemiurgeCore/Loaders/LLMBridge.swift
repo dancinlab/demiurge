@@ -25,6 +25,30 @@ public struct LLMReply: Sendable {
 
 public enum LLMBridge {
 
+    /// The user's login-shell PATH — captured ONCE (lazy + thread-safe).
+    /// Lets the bridge see whatever .zshrc / .bashrc / npm-prefix / nvm /
+    /// homebrew shellenv put on PATH for an interactive terminal, which a
+    /// GUI .app would otherwise NOT inherit.
+    private static let loginShellPath: String = {
+        let shell = ProcessInfo.processInfo.environment["SHELL"] ?? "/bin/zsh"
+        guard FileManager.default.isExecutableFile(atPath: shell) else { return "" }
+        let proc = Process()
+        proc.executableURL = URL(fileURLWithPath: shell)
+        proc.arguments = ["-lc", "printf %s \"$PATH\""]
+        let pipe = Pipe()
+        proc.standardOutput = pipe
+        proc.standardError = Pipe()
+        do {
+            try proc.run()
+            let data = pipe.fileHandleForReading.readDataToEndOfFile()
+            proc.waitUntilExit()
+            return String(data: data, encoding: .utf8)?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        } catch {
+            return ""
+        }
+    }()
+
     /// Wrap the user turn with the cockpit's read-only guard (mirrors the
     /// former askClaude prelude) so every provider gets the same framing.
     private static func guarded(_ prompt: String, context: String) -> String {
@@ -71,6 +95,35 @@ public enum LLMBridge {
         let proc = Process()
         proc.executableURL = URL(fileURLWithPath: "/usr/bin/env")
         proc.arguments = [exe] + args
+        // macOS GUI .app processes inherit a MINIMAL PATH (no .zshrc /
+        // .bashrc). Three-layer augmentation so claude / codex / gemini
+        // are found wherever the user installed them:
+        //   1) the user's login-shell PATH (covers brew · npm-global ·
+        //      pipx · hexa · nvm · cargo · pyenv · custom — whatever
+        //      their shell rc sets up).
+        //   2) a static safety net of well-known dev bin paths.
+        //   3) the .app's existing minimal PATH.
+        // Highest precedence first.
+        let home = FileManager.default.homeDirectoryForCurrentUser.path
+        let staticPaths = [
+            "/opt/homebrew/bin", "/opt/homebrew/sbin",
+            "/usr/local/bin", "/usr/local/sbin",
+            "/opt/local/bin",
+            "\(home)/.hx/bin", "\(home)/.local/bin",
+            "\(home)/.cargo/bin", "\(home)/.npm-global/bin",
+            "\(home)/.deno/bin", "\(home)/.bun/bin", "\(home)/.volta/bin",
+        ].joined(separator: ":")
+        var env = ProcessInfo.processInfo.environment
+        let appPath = env["PATH"] ?? "/usr/bin:/bin"
+        env["PATH"] = [Self.loginShellPath, staticPaths, appPath]
+            .filter { !$0.isEmpty }.joined(separator: ":")
+        proc.environment = env
+        // Close stdin — codex / claude / gemini print "Reading additional
+        // input from stdin..." and block reading when stdin isn't closed.
+        // In a GUI .app launch the parent's stdin is a launchd descriptor
+        // the child can't drain, so the CLI hangs / errors. /dev/null →
+        // immediate EOF so the providers proceed with the prompt argv only.
+        proc.standardInput = FileHandle.nullDevice
         let pipe = Pipe()
         proc.standardOutput = pipe
         proc.standardError = pipe
