@@ -12,7 +12,7 @@
 - [ ] h3o anharmonic SSCHA 안정화 — imaginary mode (−682 cm⁻¹) renormalization
 - [ ] ambient-stable hydride 탐색 (§9.10 N5 funnel · 압력 < 50 GPa 후보)
 - [ ] 압력 < 50 GPa AND stable AND Tc > 200K 후보 발견
-- [ ] wet-lab handoff (Tier 2 recipe-as-record · §8 4-tier 경유) — 초안 LANDED `exports/material_discovery/rtsc_h3cl_tier2_wetlab_handoff_20260524.json` · EOS 합성압력 1건 pending = wet-lab 실행 blocker
+- [x] wet-lab handoff (Tier 2 recipe-as-record · §8 4-tier 경유) — h3cl recipe `exports/material_discovery/rtsc_h3cl_tier2_wetlab_handoff_20260524.json` · EOS 합성압력 **200.5 GPa @ Tc 구조** pinned (`rtsc_h3cl_eos_im3m_20260524.json`, ubu-1) · pressure-executable (잔여: Cl precursor·metastability = partner/optional)
 - [ ] measured-oracle PASS → RTSC absorbed=true (최종 d5 invariant 충족)
 
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)

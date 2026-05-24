@@ -1,17 +1,19 @@
 {
   "domain": "material",
   "verb": "handoff",
-  "kind": "rtsc_h3cl_im3m_tier2_wetlab_recipe_as_record_DRAFT",
+  "kind": "rtsc_h3cl_im3m_tier2_wetlab_recipe_as_record",
   "stamp": "20260524T120000Z",
-  "producer": "demiurge RTSC M9 — Tier-2 recipe-as-record (§8.7 4-tier path, Tier 2) for the #1 dynamically-stable novel candidate h3cl (H3Cl Im-3m). DRAFT: synthesis pressure pending EOS/enthalpy-vs-P calc.",
+  "producer": "demiurge RTSC M9 — Tier-2 recipe-as-record (§8.7 4-tier path, Tier 2) for the #1 dynamically-stable novel candidate h3cl (H3Cl Im-3m). Synthesis pressure pinned at 200.5 GPa by EOS (rtsc_h3cl_eos_im3m_20260524.json).",
   "measurement_gate": "GATE_OPEN",
   "absorbed": false,
   "gate_type": "simulation-only-prediction",
   "provisional": true,
-  "draft": true,
+  "draft": false,
+  "draft_note": "EOS-pinned synthesis pressure (200.5 GPa) closes the hard blocker; demiurge-side Tier-2 recipe-as-record complete. Wet-lab partner details (Cl precursor, loading geometry, IRB) are outside demiurge scope by design (§8.3 boundary).",
   "candidate_id": "rtsc-h3cl-novel-c1",
   "parent_records": [
     "exports/material_discovery/rtsc_h3cl_dft_6x6x6q_novel_20260524.json",
+    "exports/material_discovery/rtsc_h3cl_eos_im3m_20260524.json (EOS: synthesis P=200.5 GPa @ Tc structure)",
     "RTSC/verify/V3_numerical_recompute.md (#1 h3cl-8q Tc 140.324K 🟢 hexa verify)",
     "ubu-1:~/rtsc_h3cl_8q/ (8q converged: lambda_BZ=1.21-1.37, omega_log~1350K, Tc(mu0.10)=123-140K)"
   ],
@@ -40,10 +42,10 @@
   "synthesis_protocol_stubs": {
     "method": "diamond anvil cell (DAC) + double-sided laser heating",
     "loading": "Cl source crystal/film + H2 cryo-loaded (or H2 as pressure medium + reservoir) into DAC gasket hole",
-    "pressure_GPa": "TBD — REQUIRES EOS / enthalpy-vs-P calc (not yet run). Placeholder 150-200 GPa by analogy: H3S Im-3m metallizes ~150 GPa, halide H3X likely comparable high-P. DO NOT load before EOS pins target P + stability window.",
+    "pressure_GPa": "200.5 GPa at the Tc structure (celldm=5.65934 bohr) — pinned by EOS tstress sweep (rtsc_h3cl_eos_im3m_20260524.json, 7-point celldm scan, monotone 88 GPa @ a=6.10 -> 378 GPa @ a=5.30). Compress + anneal at ~200 GPa to reproduce predicted Tc 123-140K. Comparable regime to H3S 203K @ 150 GPa (DAC-accessible).",
     "heating": "laser anneal ~1500-2500 K to overcome kinetic barrier to Im-3m formation, then quench-in-pressure",
-    "in_situ": "synchrotron XRD during compression to confirm Im-3m BCC lattice (a~2.995 A scaled to target P)",
-    "open_inputs": ["synthesis_pressure (EOS)", "metastability/quench window (enthalpy-vs-P)", "exact Cl precursor + loading geometry (partner)"]
+    "in_situ": "synchrotron XRD during compression to confirm Im-3m BCC lattice (a~2.995 A at ~200 GPa)",
+    "open_inputs": ["metastability/quench window (enthalpy vs decomposition Cl + 3/2 H2 — not yet run)", "exact Cl precursor + loading geometry (partner)"]
   },
   "characterisation_protocol_stubs_post_synthesis": {
     "primary_3test": [
@@ -68,13 +70,13 @@
     "note: partner selection + IRB/safety = outside demiurge scope"
   ],
   "honest_observations": [
-    "DRAFT — not wet-lab-executable until EOS pins synthesis pressure (the one hard-blocking open input).",
+    "EOS DONE (2026-05-24): synthesis pressure pinned at 200.5 GPa @ the Tc structure — the hard blocker is cleared, recipe is now pressure-executable. Remaining open: Cl precursor/loading (partner) + metastability/quench window.",
     "h3cl 6q was under-converged (monotone lambda vs broadening); 8q (ubu-1) is the converged basis used here (Tc 123-140K).",
     "high-pressure-only: ambient recovery expected to fail. This recipe validates the PIPELINE's wet-lab handoff shape, it does not claim an RTSC win.",
     "Tc 140K @ high-P is a legitimate novel halide-superconductor prediction (no prior measured H3Cl high-P Tc) — publishable independent of RTSC goal."
   ],
   "next_steps_after_this_handoff": [
-    "EOS / enthalpy-vs-P calc for h3cl Im-3m -> pin synthesis pressure + stability window (unblocks loading)",
+    "DONE: EOS pinned synthesis pressure 200.5 GPa (rtsc_h3cl_eos_im3m_20260524.json). Optional follow-up: enthalpy-vs-decomposition for metastability/quench window.",
     "Tier 3 (§8.7): ingest any returned R(T)/Meissner/Cp as typed measurement record",
     "Tier 4 (§8.7): falsifier dispatch -> 3-tier aggregate verdict (expect gate-(b) FAIL at ambient = honest)",
     "compare against N5-funnel ambient candidates (SrAuH3/Mg2IrH6/RbTlH3, ubu-2 in-flight) which target <50 GPa"

@@ -1,0 +1,56 @@
+{
+  "domain": "material",
+  "verb": "verify",
+  "kind": "h3cl_im3m_equation_of_state_pressure_pinning",
+  "stamp": "20260524T115230Z",
+  "producer": "demiurge RTSC M9 — h3cl Im-3m EOS sweep (uniform celldm scan, pw.x tstress) on pool:ubu-1 (conda QE 7.5, np=6). Pins synthesis pressure for the Tc-characterized structure.",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": false,
+  "purpose": "Resolve the M9 wet-lab-handoff blocker: at what pressure does the h3cl Im-3m structure (celldm=5.65934 bohr, where Tc 123-140K was computed) sit? tstress P(V) over a 7-point celldm scan.",
+  "system": "H3Cl cubic Im-3m BCC primitive (ibrav=3, 1 Cl + 3 H = 4 atoms), PBE rrkjus PAW. Positions alat (Cl 0,0,0; H 1/2,0,0; 0,1/2,0; 0,0,1/2) — uniform volume scan (alat-fixed positions).",
+  "method": {
+    "code": "Quantum ESPRESSO 7.5 pw.x, tstress=.true.",
+    "scf": "ecutwfc=60 Ry, ecutrho=600 Ry, 24x24x24 k-grid, MP smearing degauss=0.02 Ry, conv_thr=1e-10",
+    "pseudopotentials": "Cl.pbe-n-rrkjus_psl.1.0.0.UPF, H.pbe-rrkjus_psl.1.0.0.UPF",
+    "scan": "celldm(1) in {5.30, 5.45, 5.55, 5.65934, 5.80, 5.95, 6.10} bohr; V = a^3/2 (BCC primitive)",
+    "host": "pool:ubu-1 (aiden-B650M-K), np=6, wall ~38s total (7 SCF, 4-atom cell)"
+  },
+  "eos_sweep": [
+    { "celldm_bohr": 5.30,    "V_bohr3": 74.4385,  "E_Ry": -37.12531174, "P_kbar": 3781.95, "P_GPa": 378.19 },
+    { "celldm_bohr": 5.45,    "V_bohr3": 80.9393,  "E_Ry": -37.27245524, "P_kbar": 2913.81, "P_GPa": 291.38 },
+    { "celldm_bohr": 5.55,    "V_bohr3": 85.4769,  "E_Ry": -37.35485132, "P_kbar": 2440.74, "P_GPa": 244.07 },
+    { "celldm_bohr": 5.65934, "V_bohr3": 90.6290,  "E_Ry": -37.43248157, "P_kbar": 2005.11, "P_GPa": 200.51, "is_Tc_structure": true },
+    { "celldm_bohr": 5.80,    "V_bohr3": 97.5560,  "E_Ry": -37.51570335, "P_kbar": 1548.37, "P_GPa": 154.84 },
+    { "celldm_bohr": 5.95,    "V_bohr3": 105.3224, "E_Ry": -37.58698749, "P_kbar": 1170.63, "P_GPa": 117.06 },
+    { "celldm_bohr": 6.10,    "V_bohr3": 113.4905, "E_Ry": -37.64357583, "P_kbar": 881.46,  "P_GPa": 88.15 }
+  ],
+  "results": {
+    "synthesis_pressure_GPa": 200.5,
+    "synthesis_pressure_basis": "P (tstress) at celldm=5.65934 bohr — the exact structure where lambda_BZ=1.21-1.37, omega_log~1350K, Tc(mu0.10)=123-140K were computed (8q converged on ubu-1).",
+    "eos_monotonic": true,
+    "bulk_modulus_approx_GPa": "~670 (finite-difference B=-V dP/dV around 200 GPa point; rough, not BM-fitted)",
+    "ambient_recovery": "P=0 volume lies beyond celldm=6.10 (E still decreasing, P=88 GPa there) — equilibrium V0 not bracketed by this scan. h3cl Im-3m is a high-pressure phase; ambient recovery NOT expected (consistent with high-P-only recipe framing)."
+  },
+  "honest_observations": [
+    "Synthesis pressure for the Tc-characterized h3cl Im-3m structure = 200.5 GPa. Comparable regime to H3S (203K @ 150 GPa) — DAC-accessible.",
+    "EOS is smooth and monotone over 88-378 GPa; no anomaly/transition in this window.",
+    "Bulk modulus ~670 GPa (rough) — stiff, typical of compressed superhydrides.",
+    "This pins the M9 recipe's synthesis pressure (the hard blocker). Metastability/quench window (enthalpy vs decomposition Cl + 3/2 H2) is a separate, not-yet-run calc.",
+    "Tc was computed at the 200 GPa structure; Tc(P) dependence not mapped — predicted 123-140K applies at ~200 GPa."
+  ],
+  "r4_invariant": "absorbed=false · gate_type=simulation-only-prediction · domain=material. R4 Pattern 1+2 preserved. High-P-only finding framed as scientific characterization (not impossibility, @D d2).",
+  "provenance": {
+    "dft_run_host": "pool:ubu-1 (conda QE 7.5, miniforge3 env qe)",
+    "raw": "ubu-1:~/rtsc_h3cl_eos/ (eos.dat, scf_*.in, progress.log)",
+    "eos_pid": 2635720,
+    "capture_date": "2026-05-24"
+  },
+  "citations": [
+    "Quantum ESPRESSO 7.5 (pw.x tstress)",
+    "RTSC.md §8.7 Tier 2 (recipe-as-record) · §9.15 (h3cl)",
+    "exports/material_discovery/rtsc_h3cl_dft_6x6x6q_novel_20260524.json (Tc source)",
+    "Drozdov 2015 Nature 525:73 (H3S 203K @ 150 GPa — high-P hydride analog)"
+  ]
+}
