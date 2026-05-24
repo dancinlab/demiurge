@@ -12,7 +12,7 @@
 | **DAPTPGX** | 한국인 CYP2C19 DAPT 약물유전체 | (other session) | `CARDIO+/DAPTPGX.md` |
 | **ISR** | in-stent restenosis 비-mTOR | (other session) | `CARDIO+/ISR.md` |
 | **LPA** | Lp(a) 잔여 위험 침묵화 | (other session) | `CARDIO+/LPA.md` |
-| **DOCTOR** | 교수님 handoff 패키지 | 0/10 (scaffold) | `CARDIO+/DOCTOR.md` |
+| **DOCTOR** | 교수님 handoff 패키지 | 10/10 (H1-H10 ✅) | `CARDIO+/DOCTOR.md` |
 
 ## milestones (cross-cutting · 4-domain 동시 진행)
 

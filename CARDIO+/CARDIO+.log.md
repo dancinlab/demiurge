@@ -2,6 +2,17 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T06:20:00Z — DOCTOR H1-H10 완성 → 교수님 최종 전달물 골화 (세션 cap)
+
+- [x] DOCTOR H1-H10 10개 파일 (951줄 · commit `6a57d2a`) + milestone flip (`dc163b6`) → DOCTOR 10/10
+- [x] CARDIO+ 메타표 DOCTOR row 0/10 → 10/10 갱신
+- [x] 세션 종합: CARDIO+ cross-cutting **10/10** + DOCTOR **10/10** 동시 골화
+  - 라운드1 X4·X5·X9 · 라운드2 X8·X6 · 라운드3 X7 · 심화 X3·X2 · DOCTOR H1-H10
+  - commit 9건 전부 격리 (d9 · staged-leak 0): d4ad8cc·9932505·b52888b·b44b32e·5a87058·b412cfd·c7edd23·ebdeda1·6a57d2a (+ SSOT 갱신들)
+- [ ] ⏳ hexa-lang lane 후속 (이 세션 무관): ubu-2 segfault · ubu-1 hexa.real 누락 inbox patch · atlas F-namespace 등록 PR (#658/#665/#711) → 🔵 escalation · DAPTPGX v7 ICER ΔQALY 출혈회피 보정
+
+🔑 세션 최종: 교수님 전달 1줄 = "CYP2C19 PCR(C5946 선별급여) 다음 PCI 환자부터 — IM/PM 한국 ~60% 약제 재배치, 신규 IND 불요". 모든 grade X8 verbatim · 억지 등급 0 (d6) · sub-domain V-파일 미수정 (lane 존중).
+
 ## 2026-05-25T05:50:00Z — 심화 골화: X3 🟢 + X2 🔵 push 실측 완료 → CARDIO+ 10/10
 
 - [x] **X3 cross-domain 🟢 push** → `CARDIO+/X3_green_push.md` (123줄 · commit `c7edd23`)
