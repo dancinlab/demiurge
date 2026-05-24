@@ -117,6 +117,17 @@ mini 실측 (VERBATIM):
 - 🟠 **양적 gap 잔존** — +161 M KRW/QALY 는 Korea WTP 30 초과 + M8 cited +34 의 ~5배. 원인 = IM+PM 전원(62.8%)을 ticagrelor(4,600원/일)로 escalate 하는 약가. **남은 lever = 결정맵 first-line `prasugrel 5mg`(한국 저가)** — d6 준수로 +34 억지로 안 쫓음 · DAPTPGX 세션이 drug-cost 재모델 시 reconcile (cross-cutting handoff).
 - grade: ICER 방향성 = **🟢 (S4 net-beneficial 확정)** · cost-effectiveness 절대값 vs M8 = **🟠 (drug-cost 재모델 대기)**.
 
+### §3.2 v8 — M8 actual strategy 재현 (ICER 🟠 → 해소)
+
+v7 의 +161 은 **strategy 오류 아티팩트**(IM+PM 전원 ticagrelor 4,600원/일)였음을 v8 이 검정 — M8 §4 실제 전략(NM=clopi · IM/PM·HBR(-)=**prasugrel 5mg 1,500원/일** · select ticag · allocation 57/34/8/1) + M8 grounded 사건율/단가(NHIS 2025·PRASFIT·KAMIR·TICAKOREA)로 재현. `CARDIO+/DAPTPGX/sims/v8_recompute.hexa` mini 실측 (VERBATIM):
+```
+3_delta_cost_1y_M  = 27.40   (M8 +29.5M · cost side reproduce ✓)
+4B_ICER_M_5y       = 30.74   (M8 cited ~34 · WTP 30 · 표준 CEA multiyr-death crediting)
+4A_ICER_M_1yr_only = 96.13   (death 1yr-only disutility · 보수적 · >WTP)
+```
+
+**결론 (d6)**: cost side = **🟢 reproduce** (+27~29.5M, M8 grounded 모델 일치) · 5y ICER = **+30.7M ≈ WTP 30 ≈ M8 +34** → **borderline cost-effective 재현**. v6(-1205)/v7(+161)의 음수/폭증은 strategy+QALY 오류 아티팩트였음 확정. **honest 민감도**: cost-effectiveness 는 사망 QALY 의 다년 life-year crediting(표준 CEA)에 의존 — 1yr-only disutility 면 +96M(>WTP) · 표준 multiyr 면 +31M(≈WTP). → §2.2 ICER 🟠 **해소** (방향성+magnitude 모두 M8 grounded 모델로 재현 · 잔여 honest 단서 = QALY horizon 가정 명시).
+
 ---
 
 ## §4. unified 🟢 집계 + X8 reconcile
