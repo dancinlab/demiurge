@@ -68,6 +68,10 @@ func usage() {
       demiurge list-gates              F1F2 records grouped by gate
       demiurge verify <path|id>        provenance / claim-gate check
                                        (exit 0 consistent · 1 not)
+      demiurge verify --expr <fn> <n> <v> | --fence "<claim>" | rubric
+                                       hexa stdlib verify kernel (5-tier,
+                                       M16) — verdict printed VERBATIM
+                                       (@D g5; hexa = hx dependency)
       demiurge gate-summary            gate + absorbed totals
       demiurge operate [list|audit]    operation manifest (M14) — list
                                        all ops + reachability, or audit
@@ -398,6 +402,16 @@ func operate(_ args: [String]) -> Int32 {
     }
 }
 
+/// `verify --expr|--fence|rubric ...` — forward to the hexa stdlib
+/// verify kernel (CLI+COCKPIT M16) and print the verdict VERBATIM
+/// (@D g5 — demiurge never re-judges; the stdlib SSOT owns the verdict,
+/// demiurge owns only the dispatch). `hexa` = hx dependency (M18).
+func verifyHexa(_ passthrough: [String]) -> Int32 {
+    let r = HexaBridge.verify(passthrough)
+    print(r.text, terminator: r.text.hasSuffix("\n") ? "" : "\n")
+    return r.ran ? r.exitCode : 127
+}
+
 /// `verify <path|id>` — provenance completeness + claim/gate
 /// consistency (rfc_002 §4 + rfc_011 §4.2). exit 0 = consistent.
 func verifyRecord(_ arg: String) -> Int32 {
@@ -567,7 +581,15 @@ case "verify":
         usage()
         exit(2)
     }
-    exitCode = verifyRecord(args[2])
+    // M16 — hexa stdlib verify kernel (5-tier). `--expr` / `--fence` /
+    // `rubric` forward to `hexa verify` (verdict VERBATIM, @D g5); a
+    // bare <path|id> stays the local record-consistency check.
+    switch args[2] {
+    case "--expr", "--fence", "rubric":
+        exitCode = verifyHexa(Array(args.dropFirst(2)))
+    default:
+        exitCode = verifyRecord(args[2])
+    }
 case "emit-component":
     exitCode = emitComponent()
 case "export-component":
