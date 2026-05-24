@@ -1,0 +1,54 @@
+{
+  "schema": "rtsc-microexp-elph/0.1.0",
+  "batch_id": "rtsc-n5funnel-sweep-2026-05-25",
+  "candidate_id": "h3po",
+  "stamp": "2026-05-25T07:59Z",
+  "kind": "dft-elph",
+  "group": 16,
+  "structure_hint": "Im-3m",
+  "mode": "parse-only (local result.txt — DONE-already · no pod rent)",
+  "dft": {
+    "method": "QE ph.x electron_phonon='simple'",
+    "nq": 16,
+    "qblocks_parsed": 10,
+    "celldm_final": 6.236,
+    "broadening_sweep": [
+      {"broad": 0.015, "lam_BZ": 3.313, "omega_log_K": 258.2, "Tc_mu0.10_K": 48.4, "Tc_mu0.13_K": 46.2},
+      {"broad": 0.020, "lam_BZ": 3.052, "omega_log_K": 265.2, "Tc_mu0.10_K": 48.1, "Tc_mu0.13_K": 45.8},
+      {"broad": 0.025, "lam_BZ": 2.862, "omega_log_K": 270.1, "Tc_mu0.10_K": 47.6, "Tc_mu0.13_K": 45.2},
+      {"broad": 0.030, "lam_BZ": 2.751, "omega_log_K": 273.5, "Tc_mu0.10_K": 47.3, "Tc_mu0.13_K": 44.8}
+    ]
+  },
+  "canonical": {
+    "broad": 0.020,
+    "lam_BZ": 3.052,
+    "omega_log_K": 265.2,
+    "mustar": 0.10,
+    "Tc_AD_K": 48.08
+  },
+  "verify": {
+    "fn": "allen_dynes_tc",
+    "args": [3.052, 265.2, 0.10],
+    "hexa_calc_K": 48.0795,
+    "result_txt_K": 48.1,
+    "abs_delta_K": 0.0205,
+    "tier_verbatim": "🔴 FALSIFIED (calc=48.0795 ≠ expected 48.1, |Δ|=0.0204817 > ε=1e-9)",
+    "interpretation": "expected = result.txt 1-decimal round; |Δ|=0.020K < round-tolerance; hexa full-precision 48.08K = canonical; cross-tool-consistent",
+    "effective_tier": "🟢 SUPPORTED-NUMERICAL (round-tolerance)"
+  },
+  "stability": {
+    "qblocks_parsed": 10,
+    "total_q": 16,
+    "imaginary_mode_known": true,
+    "note": "10/16 q parsed — 6 q-blocks missing = imaginary modes 의심 (soft phonon) · 초강 λ(3.05) but ω_log 낮음(265K) · UNSTABLE 추정"
+  },
+  "M8_gate": {
+    "pressure_lt_50GPa": null,
+    "stable": false,
+    "Tc_gt_200K": false,
+    "score": "0/3",
+    "note": "초강 λ 3.05 but soft phonon (ω_log 265K) → Tc 48K only · 6/16 q missing = unstable · wall pattern: strong-λ→soft-phonon→low-Tc"
+  },
+  "absorbed": false,
+  "provisional": true
+}
