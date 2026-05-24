@@ -34,6 +34,9 @@
 - [x] X16 안전성/harm profile 통합 — 4-track 중재별 부작용·모니터링·중단규칙 · 최대 출혈위험=ticagrelor (TICAKOREA 2.8%) → `CARDIO+/X16_safety.md`
 - [x] X17 5번째 sub-domain 후보 스캔 — 추천=AF 항응고 PGx (VKORC1 East Asian ~90% · CYP2C9) → 3-axis→4-axis 패널 확장 · TAVR 명시 제외 → `CARDIO+/X17_fifth_domain.md`
 - [x] X18 국제 transportability — 3-axis 생물학 한·일·중 일반화 (백인 ALDH2*2 ~0% 비적용) · 적용만 한국 특이 · 공동 trial=NICORADENO ALDH2*2 → `CARDIO+/X18_transportability.md`
+- [x] X19 budget-neutral 재프레이밍 — cost-offset(회피사건비−중재비) · self-funding top=CYP2C19 결정맵(5y −44억) + IC adenosine/nicorandil(약가≈0) → `CARDIO+/X19_budget_neutral.md`
+- [x] X20 subtraction medicine — de-implement 7건 (routine thrombectomy Class III · mPTP IV bolus 🔴×4 · universal ticag 출혈2배) · 전면금지≠none, bailout 잔여 명시 → `CARDIO+/X20_subtraction.md`
+- [x] X21 anti-portfolio 경계정의 — 포함기준 4축(PCI-후속·한국leverage·공유인프라·직교성) · TAVR 단호제외(→STRUCT+) · CAC/AF-ablation 경계선 → `CARDIO+/X21_anti_portfolio.md`
 
 ## d2 governance (meta)
 
