@@ -1,0 +1,93 @@
+{
+  "domain": "material",
+  "verb": "handoff",
+  "kind": "rtsc_h3cl_im3m_tier2_wetlab_recipe_as_record",
+  "stamp": "20260524T120000Z",
+  "producer": "demiurge RTSC M9 — Tier-2 recipe-as-record (§8.7 4-tier path, Tier 2) for the #1 dynamically-stable novel candidate h3cl (H3Cl Im-3m). Synthesis pressure pinned at 200.5 GPa by EOS (rtsc_h3cl_eos_im3m_20260524.json).",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": true,
+  "draft": false,
+  "draft_note": "EOS-pinned synthesis pressure (200.5 GPa) closes the hard blocker; demiurge-side Tier-2 recipe-as-record complete. Wet-lab partner details (Cl precursor, loading geometry, IRB) are outside demiurge scope by design (§8.3 boundary).",
+  "candidate_id": "rtsc-h3cl-novel-c1",
+  "parent_records": [
+    "exports/material_discovery/rtsc_h3cl_dft_6x6x6q_novel_20260524.json",
+    "exports/material_discovery/rtsc_h3cl_eos_im3m_20260524.json (EOS: synthesis P=200.5 GPa @ Tc structure)",
+    "RTSC/verify/V3_numerical_recompute.md (#1 h3cl-8q Tc 140.324K 🟢 hexa verify)",
+    "ubu-1:~/rtsc_h3cl_8q/ (8q converged: lambda_BZ=1.21-1.37, omega_log~1350K, Tc(mu0.10)=123-140K)"
+  ],
+  "purpose": "Cockpit-gate Tier-2 product: a typed, machine-readable synthesis+characterisation recipe for h3cl, handed to an external high-pressure (DAC) lab. demiurge clean-room emits the RECORD only; physical synthesis stays outside (§8.3 boundary). h3cl is the sole dynamically-stable (real-mode) novel candidate from the H3X group sweep.",
+  "boundary": "demiurge clean-room (DESIGN.md D1): typed record + simulation + measurement-ingest allowed; physical DAC loading / laser heating / R(T) measurement = wet-lab partner. This file is the handoff artifact, NOT a synthesis run.",
+  "honest_scope_flag": "h3cl is NOT an RTSC winner. Predicted Tc 123-140K is at HIGH PRESSURE (not ambient) and below the 270K target — it FAILS §8.9 gate-(b) (Tc>=270K ambient) by prediction alone. Value = (1) pipeline/measurement-grade validation, (2) publishable novel halide (group-17) superconductor DFT prediction, (3) first wet-lab-shaped RTSC handoff template.",
+  "structure_target": {
+    "formula": "H3Cl",
+    "space_group": "Im-3m (229), BCC",
+    "primitive_cell": "1 Cl + 3 H = 4 atoms",
+    "celldm_bohr": 5.65934,
+    "a_angstrom": 2.995,
+    "functional": "PBE PAW",
+    "stability": "dynamically stable — all real phonon modes at 6x6x6 q (contrast h3o/h3f/h3si imaginary modes). Confirms Im-3m is the synthesis target, not a metastable distortion."
+  },
+  "composition_table_target": {
+    "at_pct": { "H": 75.0, "Cl": 25.0 },
+    "wt_pct_derived": { "H": 7.86, "Cl": 92.14 },
+    "note": "stoichiometric H3Cl. wt% from H=1.008, Cl=35.45 g/mol."
+  },
+  "raw_material_purity_minima": {
+    "H2_gas": ">=99.999% (5N), O2/H2O < 1 ppm",
+    "Cl_source": "NaCl 5N or HCl(anhydrous) 4N or Cl2 4N — partner choice; halogen handling per DAC lab SOP",
+    "note": "in-situ H3Cl formation from Cl source + excess H2 under pressure + laser heating is the expected route (direct H3Cl precursor is unstable at ambient)."
+  },
+  "synthesis_protocol_stubs": {
+    "method": "diamond anvil cell (DAC) + double-sided laser heating",
+    "loading": "Cl source crystal/film + H2 cryo-loaded (or H2 as pressure medium + reservoir) into DAC gasket hole",
+    "pressure_GPa": "200.5 GPa at the Tc structure (celldm=5.65934 bohr) — pinned by EOS tstress sweep (rtsc_h3cl_eos_im3m_20260524.json, 7-point celldm scan, monotone 88 GPa @ a=6.10 -> 378 GPa @ a=5.30). Compress + anneal at ~200 GPa to reproduce predicted Tc 123-140K. Comparable regime to H3S 203K @ 150 GPa (DAC-accessible).",
+    "heating": "laser anneal ~1500-2500 K to overcome kinetic barrier to Im-3m formation, then quench-in-pressure",
+    "in_situ": "synchrotron XRD during compression to confirm Im-3m BCC lattice (a~2.995 A at ~200 GPa)",
+    "open_inputs": ["metastability/quench window (enthalpy vs decomposition Cl + 3/2 H2 — not yet run)", "exact Cl precursor + loading geometry (partner)"]
+  },
+  "characterisation_protocol_stubs_post_synthesis": {
+    "primary_3test": [
+      "R(T) -> 0: 4-probe resistance, expect onset Tc ~123-140K AT SYNTHESIS PRESSURE (mu*=0.10) / ~109-127K (mu*=0.13)",
+      "Meissner: AC magnetic susceptibility chi(T,B), diamagnetic onset at Tc",
+      "Cp jump: specific-heat anomaly at Tc (DAC-compatible calorimetry, hard)"
+    ],
+    "structure": "in-situ XRD Im-3m confirmation + Raman/IR for H-stretch modes (omega_log~1350K = ~94 meV)",
+    "isotope": "H->D substitution: expect Tc * sqrt(m_H/m_D) ~ Tc/1.41 shift (BCS isotope effect) — phonon-mediated confirmation"
+  },
+  "reproducibility_checklist": [
+    "EOS-pinned target pressure documented before loading",
+    ">=3 independent DAC loadings at target P",
+    "Tc onset within +-15% across loadings",
+    "Im-3m XRD confirmed each run",
+    "isotope shift consistent with phonon-mediated SC",
+    "pressure release -> Tc/structure tracking (ambient-recovery test — expected to fail = high-P-only, documents the gate-(b) limit)"
+  ],
+  "wet_lab_partner_options": [
+    "high-pressure DAC groups (e.g. Carnegie/Hemley-lineage, Mainz/Eremets-lineage, HPSTAR) — RTSC hydride DAC standard",
+    "synchrotron beamtime for in-situ XRD (APS/ESRF/SPring-8)",
+    "note: partner selection + IRB/safety = outside demiurge scope"
+  ],
+  "honest_observations": [
+    "EOS DONE (2026-05-24): synthesis pressure pinned at 200.5 GPa @ the Tc structure — the hard blocker is cleared, recipe is now pressure-executable. Remaining open: Cl precursor/loading (partner) + metastability/quench window.",
+    "h3cl 6q was under-converged (monotone lambda vs broadening); 8q (ubu-1) is the converged basis used here (Tc 123-140K).",
+    "high-pressure-only: ambient recovery expected to fail. This recipe validates the PIPELINE's wet-lab handoff shape, it does not claim an RTSC win.",
+    "Tc 140K @ high-P is a legitimate novel halide-superconductor prediction (no prior measured H3Cl high-P Tc) — publishable independent of RTSC goal."
+  ],
+  "next_steps_after_this_handoff": [
+    "DONE: EOS pinned synthesis pressure 200.5 GPa (rtsc_h3cl_eos_im3m_20260524.json). Optional follow-up: enthalpy-vs-decomposition for metastability/quench window.",
+    "Tier 3 (§8.7): ingest any returned R(T)/Meissner/Cp as typed measurement record",
+    "Tier 4 (§8.7): falsifier dispatch -> 3-tier aggregate verdict (expect gate-(b) FAIL at ambient = honest)",
+    "compare against N5-funnel ambient candidates (SrAuH3/Mg2IrH6/RbTlH3, ubu-2 in-flight) which target <50 GPa"
+  ],
+  "r4_invariant": "absorbed=false · gate_type=simulation-only-prediction · domain=material. R4 Pattern 1+2 preserved. Tc<270K + high-P framed as scientific finding (pipeline-validation candidate), not impossibility (@D d2). absorbed stays false: non-wet-lab gate-(b) (Tc>=270K ambient) not met by prediction.",
+  "citations": [
+    "Allen & Dynes 1975 PRB 12 905",
+    "Quantum ESPRESSO 7.5",
+    "RTSC.md §8.7 (4-tier expansion path · Tier 2 recipe-as-record)",
+    "RTSC.md §9.15 (H3X group sweep — Cl FAIL above band)",
+    "RTSC/verify/V3_numerical_recompute.md (h3cl Tc 🟢 hexa verify)",
+    "Drozdov 2015 Nature 525:73 (H3S 203K @ 150 GPa — high-P hydride DAC precedent)"
+  ]
+}

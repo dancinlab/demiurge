@@ -8,6 +8,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-05-24
 
+- **루트 INBOX 도메인 생성 — cross-repo handoff 수신용** (sidecar commons g11/g36/g48/g59 정합). demiurge 자체 inbox/(cross-session notes + INDEX.md, 108 entries)는 별개 내부 시스템으로 그대로 유지.
+
 ### 2026-05-24 cycle 9-full+ batch (5 commits · CaH₆ 측정-grade anchor #2 + d7 wall α²F grid 100→140 meV 돌파)
 
 - **CaH₆ 측정-grade 검증 — DFT 213 K vs Ma 2022 측정 215 K (2 K 정합)** (`96eac8f`) — pool:ubu-2 retry (ibrav=3 BCC primitive 7-atom + 170 GPa vc-relax) 후 ph.x 4³q (8 IBZ · 16k) NaN=0 깨끗한 수렴 · λ_BZ=3.40–4.38 · ω_log=1177–1236 K · Tc(μ0.13)=213 K (broad=0.030). H₃S 와 함께 *측정-grade 일치 2번째 anchor* (clathrate topology). d2 wall 근본원인 = **input cell-choice** (ibrav=1 nat=14 conventional + press=0) — hexa cloud 버그 아님. 5 breakthrough hypothesis 중 #4 (cell pre-relax + 170 GPa) winner · #1+#2+#3 belt-and-suspenders.

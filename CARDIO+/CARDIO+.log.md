@@ -1,0 +1,201 @@
+# CARDIO+ — log
+
+Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
+
+## 2026-05-25T07:30:00Z — /cycle-full 라운드: X11·X12·X13 (브레인스토밍 고갈 32→top3 fan-out)
+
+- [x] **X11 통합 layered-care 프로토콜** → `CARDIO+/X11_layered_care.md` (304줄 · commit `456ea43`)
+  - 4축을 채혈 1회 3-axis 패널서 분기하는 단일 침상 결정흐름 · 1 패널 → 6 wall 동시 stratify · grade X8 verbatim
+- [x] **X12 4-trial MCDA** → `CARDIO+/X12_trial_mcda.md` (222줄 · commit `71b2e6a`)
+  - B DAPT-PGx-K 1위 (4.60 · 5/5 민감도 robust) ▸ A(4.05) ▸ D(3.40) ▸ C(2.45) · X5 정성판단 독립 재현 · 가중치 ⚪ proposal(d6)
+- [x] **X13 red-team falsification** → `CARDIO+/X13_redteam.md` (256줄 · commit `fa9c608`)
+  - 8 claim 적대검정: survives 2 · weakened 4 · 🔴-flip 후보 1 (R5 IC-delivery 인과)
+  - 🔑 정직성 발견: thesis "mPTP=mis-delivered"는 **over-claim** → "일 수 있음" hedge 권고 · numerical(🟢)→causal over-read가 최대 취약점 · IC-sync RCT가 유일 ground-truth gate
+  - gradedown 0건 (산술층 무손상 · 취약성은 해석층만 · g5/d5 정합)
+- [x] phase 0 브레인스토밍 32개 고갈(R7) → top3 fan-out (agent cap 3) · 격리 commit (d9)
+- [ ] ⏳ deferred (다음 /cycle): #1 ICER v8(prasugrel·orchestrator sim) · #2 불확실성 MC · #9 self-case ops · #19 safety · #26 known-unknowns · #6 5번째 sub-domain 등
+
+🔑 라운드 성과: CARDIO+ X11-X13 추가 (cross-cutting 13개) · X13이 thesis over-claim을 정직하게 잡아냄 (hedge 권고는 DOCTOR H1/X7 후속 반영 후보).
+
+## 2026-05-25T06:50:00Z — 후속 심화: sidecar INBOX 핸드오프 + ICER v7 sign 반전 실측
+
+- [x] **sidecar INBOX 핸드오프** (g36/g59) — `/domain` folder-nested domain 미지원 gap → sidecar PR #120 MERGED
+  - `/domain set <NAME>` 이 root `<NAME>.md` 만 resolve → 폴더-중첩 SSOT(`CARDIO+/CARDIO+.md`)면 빈 스캐폴드 재생성 + `/cycle`(g58) milestone 0개 열거 → 루프 구동 불가 (이번 세션 2회 재발)
+  - fix 후보: resolve 순서 root → fallback `<NAME>/<NAME>.md`
+  - (별건) hexa-lang PR #760 MERGED — verify 호스트 매트릭스 (ubu-1 hexa.real 누락 + mini-bypass)
+- [x] **X3 심화: ICER v7 strategy-mismatch fix** → `CARDIO+/DAPTPGX/sims/v7_recompute.hexa` + X3 §3.1 (commit `ce5a5a2`)
+  - v6 의 ICER ΔQALY 음수(-0.0072)가 **strategy-mismatch 아티팩트**임을 mini 실측으로 입증
+  - FIX-A: S4가 결정맵(NM=clopi·IM+PM=potent)대로 IM+PM 둘 다 escalate (v6은 PM만) · FIX-B: S1 IM clopi ST = LoF gradient 0.010 (v6은 NM rate로 과소계상)
+  - 결과: ΔQALY **-0.0072 → +0.0448** · ICER **-1205 → +161** (sign 반전 ✅) · ST 0.89→0.44
+  - 정직(d6): ✅ 질적 오류 해소(S4 net-beneficial = 🟢) · 🟠 양적 +161>WTP30 잔존 (약가 lever=prasugrel 5mg → DAPTPGX 세션, +34 억지 안 쫓음)
+- [x] commit 격리 (d9): ce5a5a2 단일 + sidecar/hexa-lang PR worktree 격리 · staged-leak 0
+- [x] `/domain set` 재발 잔재(빈 root 스캐폴드) 제거 (POOL_DISABLE=1 local)
+
+🔑 후속 성과: X3 의 최대 미해결(ICER sign)을 실측으로 질적 해소 — v6 "S4 해롭다"는 모델 버그(IM 거꾸로 취급)였고, 결정맵대로 고치니 S4는 net-beneficial. 양적 magnitude(prasugrel 약가)는 DAPTPGX 세션 lane으로 정직 handoff.
+🔑 인프라 gap 2건 upstream 정리 (sidecar PR #120 · hexa-lang PR #760 모두 MERGED).
+
+## 2026-05-25T06:20:00Z — DOCTOR H1-H10 완성 → 교수님 최종 전달물 골화 (세션 cap)
+
+- [x] DOCTOR H1-H10 10개 파일 (951줄 · commit `6a57d2a`) + milestone flip (`dc163b6`) → DOCTOR 10/10
+- [x] CARDIO+ 메타표 DOCTOR row 0/10 → 10/10 갱신
+- [x] 세션 종합: CARDIO+ cross-cutting **10/10** + DOCTOR **10/10** 동시 골화
+  - 라운드1 X4·X5·X9 · 라운드2 X8·X6 · 라운드3 X7 · 심화 X3·X2 · DOCTOR H1-H10
+  - commit 9건 전부 격리 (d9 · staged-leak 0): d4ad8cc·9932505·b52888b·b44b32e·5a87058·b412cfd·c7edd23·ebdeda1·6a57d2a (+ SSOT 갱신들)
+- [ ] ⏳ hexa-lang lane 후속 (이 세션 무관): ubu-2 segfault · ubu-1 hexa.real 누락 inbox patch · atlas F-namespace 등록 PR (#658/#665/#711) → 🔵 escalation · DAPTPGX v7 ICER ΔQALY 출혈회피 보정
+
+🔑 세션 최종: 교수님 전달 1줄 = "CYP2C19 PCR(C5946 선별급여) 다음 PCI 환자부터 — IM/PM 한국 ~60% 약제 재배치, 신규 IND 불요". 모든 grade X8 verbatim · 억지 등급 0 (d6) · sub-domain V-파일 미수정 (lane 존중).
+
+## 2026-05-25T05:50:00Z — 심화 골화: X3 🟢 + X2 🔵 push 실측 완료 → CARDIO+ 10/10
+
+- [x] **X3 cross-domain 🟢 push** → `CARDIO+/X3_green_push.md` (123줄 · commit `c7edd23`)
+  - DAPTPGX `v3/v5/v6_recompute.hexa` mini 재실행 (verbatim stdout 수집)
+  - 🟢 43 집계 (X8 정합): NOREFLOW 12 · DAPTPGX HW/Markov/PM×HBR · LPA 28 · ISR 0
+  - 신규 실측: PM×HBR cell V3 3.80 → V5/V6 **6.84 🟢 reconcile** (M4 cited 7-8 일치)
+  - 신규 실측: ICER sign V3 -3221 → V5 -503 → V6 **-1205 (미반전) → 🟠 DEFERRED 유지** (ΔQALY 음수 = S4 출혈회피 QALY 과소반영 · d6 정직, 🔴 아님) · v7 path는 DAPTPGX 세션 lane
+- [x] **X2 cross-domain 🔵 push** → `CARDIO+/X2_blue_push.md` (107줄 · commit `ebdeda1`)
+  - mini 실측 천장: `sigma_k(6)=12` 🔵 (number-theory) · `ivw(3)` 🟠 (no path) · `hill` 🟢 (libm)
+  - 결론(d6): bio claim auto-🔵 불가 → 천장 🟢 · 현재 🔵=1 (LPA C30) 억지 inflation 0
+  - **X2 blocker 돌파(d2)**: `hexa verify --expr` ubu-2 segfault → **mini(local) 우회 입증** (🔵까지 도달)
+  - 🔵 escalation = 이제 "호스트 문제" 아닌 "atlas F-namespace 등록 PR" 문제로 환원 (PR #658/#665/#711 merge 후 🔵 1→~8-15, mini --expr 등록 가능)
+- [x] commit 격리 (d9): X3 `c7edd23` · X2 `ebdeda1` 각 단일 add+commit -o · staged-leak 0
+- [x] **인프라 사실 확정**: hexa verify 호스트 = mini ✅ 단일 working · ubu-1 `hexa.real` 누락 · ubu-2 segfault (둘 다 hexa-lang inbox handoff 후보 d8)
+- [ ] ⏳ 진행 중: DOCTOR H1-H10 채우기 (background agent) — 완료 시 격리 commit + DOCTOR.md flip
+
+🔑 심화 성과: CARDIO+ **10/10 완주** (X1-X10 전부 ✅). blocker였던 X2/X3 를 mini 실측으로 골화 — sub-domain V-파일 미수정(다른 세션 lane 존중) · 모든 verdict mini stdout/sub-V verbatim · 억지 등급 0 (d6).
+🔑 X2 핵심: segfault blocker 가 호스트 우회로 해소되어, 🔵 천장 문제가 atlas 등록 PR(hexa-lang lane)로 깔끔히 환원됨.
+🔑 X3 핵심 신규 발견: DAPTPGX ICER 의 ΔQALY 음수 = 단순 모델의 출혈회피 QALY 과소반영 (Trial-B 임상 적용성은 불변, economic case만 pending).
+
+## 2026-05-25T05:10:00Z — /cycle 라운드 3: X7 DOCTOR feed 완료 + 인프라 돌파 발견
+
+- [x] **X7 교수님 handoff 1-page** → `CARDIO+/X7_doctor_feed.md` (148줄 · commit `b412cfd`)
+  - 5 cross-cutting (X4·X5·X6·X8·X9) → 교수님 5분 read 압축 · grade X8 VERBATIM
+  - thesis: mPTP=mis-delivered (전달 falsify ≠ 약물 falsify) · 4-track coupled → 한국 3축 단일 leverage
+  - DOCTOR H1(exec)/H7(timeline)/H8(limits+g5)/H10(ASCII fig) 즉시 채움 · H2-H6/H9 부분 feed
+- [x] **인프라 돌파 발견 (d2)**: `hexa verify` 호스트 매트릭스 점검 — mini(local) ✅ 동작 · ubu-1 ❌ (hexa.real 없음) · ubu-2 ❌ (segfault)
+  - X2 blocker "ubu-2 segfault"는 **mini local 우회 가능** (아무도 mini 미테스트였음)
+  - ⚠ 정직성: bio kernel(hill·exp_release·fick1 등) verdict = 🟢 SUPPORTED-NUMERICAL (libm) — 🔵 아님. 🔵=number-theory closed-form 전용 → bio claim 천장은 🟢 (d6: 목표숫자 강제 금지)
+  - 따라서 mini로 푸는 건 **X3 🟢 push** (실질 lever) · X2 🔵는 genuine closed-form claim 한정
+- [x] commit 격리 (d9): X7 `b412cfd` 단일 add+commit -o · staged-leak 0
+- [ ] ⏳ 다음 (사용자 지시): DOCTOR H1-H10 채우기 + 완성도 심화 골화 (mini verify 🟢 push + pool sim · 실측 진행)
+
+🔑 라운드 3 성과: CARDIO+ **8/10** (X1·X4·X5·X6·X7·X8·X9·X10). cross-cutting 8종 전부 골화 — blocker였던 X2/X3 도 mini 우회로 🟢 push 경로 확보.
+
+## 2026-05-25T04:40:00Z — /cycle 라운드 2: X8 · X6 동시 완료 (X7 입력 모음)
+
+- [x] **X8 g5 grade ledger** → `CARDIO+/X8_grade_ledger.md` (230줄 · commit `b44b32e`)
+  - 4 sub V4 + X1/X4/X9 verdict VERBATIM 합산 · **X8 새 판정 0건** (g5)
+  - 6-tier: 🔵 1 · 🟢 43 · 🟡 ~215 · 🟠 45 · 🔴 5 · ⚪ 31 (분모 ~347)
+  - 강한 근거 🔵+🟢 = 44 (12.7%) → bio-verify-kernel phase2 PR merge 후 ~67-97
+  - reconcile: 🟢 X1 추정 14 → 확정 43 (+29, V3 land 시점차 · X1 † 각주 예고대로) · honest count note (DAPTPGX 🟡 13-18 · PON1 🔴 분모외 분리)
+- [x] **X6 환자 본인 self-case** → `CARDIO+/X6_self_case.md` (229줄 · commit `5a87058`)
+  - 4-axis (mPTP/IRI · CYP2C19 · ISR risk · Lp(a)) PCI 후속 1인칭 retroactive
+  - 책임 프레이밍: 의학적 조언 아님 · "주치의와 논의할 옵션" · 상하단 disclaimer · g5 verbatim
+  - 즉시 가능(한국 급여): CYP2C19 PCR(C5946 선별급여) + Lp(a) 1회 → 단일 채혈 동시 확보 (X9 3-axis 패널 개인 적용)
+  - 최강 axis=CYP2C19 (PM 0.1521 🟢) · 최대 wall=Lp(a) siRNA 미허가 → PCSK9 mAb 대안 path (d2)
+- [x] commit 격리 (d9): X8 `b44b32e` · X6 `5a87058` 각각 단일 add+commit -o · staged-leak 0
+- [ ] ⏳ 라운드 3 (마지막): X7 DOCTOR feed — X4·X5·X6·X8·X9 5개 입력 → 교수님 1-page executive + 즉시/6m/3y timeline
+
+🔑 라운드 2 성과: CARDIO+ **7/10** (X1·X4·X5·X6·X8·X9·X10). X7 입력 5종 전부 골화 완료 — grade 진실 소스(X8) + 환자 사례(X6) 확보.
+🔑 X7 메시지 골격: ① 강근거 44→~97 (단일 PR leverage) · ② 채혈 1회 3-axis 패널 → 6 wall 동시 · NHIS 급여 안 · ③ 즉시 시작 trial=B DAPT-PGx-K (신규 IND 불요).
+
+## 2026-05-25T04:10:00Z — /cycle 라운드 1: X4 · X5 · X9 동시 완료 (의존 없는 READY 3종)
+
+- [x] **X4 ⚪ honest fence 통합** → `CARDIO+/X4_unified_fence.md` (245줄 · commit `d4ad8cc`)
+  - 4 sub V4 ledger + NOREFLOW M10_fence 의 `hexa verify --fence` verdict VERBATIM 흡수 (g5)
+  - raw 31 · cross-domain dedup ~25 (NOREFLOW 15 · ISR 13 · DAPTPGX 3 · LPA 0)
+  - 정직성: 일시 fence 55% (recompute 경로 존재) · 영구 45% (가치판단/metaphor/enum)
+  - ⚠ X1 추정(~12) ↔ X4 정량(31) 차이 정직 기록 — ISR V4 13 + NOREFLOW metaphor 6 가 X1 작성 후 확정
+- [x] **X5 한국 4-trial portfolio** → `CARDIO+/X5_korea_trials.md` (286줄 · commit `b52888b`)
+  - A NICORADENO-MVO · B DAPT-PGx-K · C ISR-non-mTOR(ROCK-DCB) · D LPA-siRNA-K
+  - 공유 인프라 시너지 2축 (카테터 국소전달 A·C / 비-IND 분자전달 B·D) + 3-axis stratification
+  - 즉시 시작 = **B DAPT-PGx-K** (CYP2C19 PCR C5946 선별급여 + 기존 약제 → 신규 IND 불요)
+  - g5: power(A 0.798)·genotype(B PM 0.1521)·MR β(D -0.3413) verify verdict verbatim · 추정 n/효과크기 ⚪ proposal
+- [x] **X9 d2 wall map + 시너지** → `CARDIO+/X9_wall_map.md` (270줄 · commit `9932505`)
+  - 18 wall (NOREFLOW 5 · DAPTPGX 5 · ISR 4 · LPA 4) · wall마다 돌파 path 2-3개 (d2 · 불가능 0회)
+  - 최고 leverage: bio-verify-kernel phase2 PR 1건 → N2+D3+I2 proof wall 동시 (50-90 🔵 escalation)
+  - 임상 leverage: 채혈 1회 3-axis 패널 → 6 wall 동시 · NHIS 급여 안 배포 가능
+  - 🔴 FALSIFIED 5종(PON1·darapladib·GalNAc free·SGLT2i/colchicine acute·한중 nicorandil)은 wall 아닌 closed negative 분리
+- [x] commit 격리 (d9): 3 파일 각각 `git add <single> && git commit -o <single>` · staged-leak 0 확인
+- [ ] ⏳ 라운드 2 후보: X8 grade ledger (READY) → X6 self-case (READY) → X7 DOCTOR feed (X4-X9 입력 모임 → 마지막)
+- [ ] ⚠ X2 🔵push / X3 🟢push 는 hexa-lang blocker (verify --expr ubu-2 segfault · PR #750 handoff) 대기로 보류 유지
+
+🔑 라운드 1 성과: CARDIO+ **5/10 완료** (X1·X4·X5·X9·X10). 의존 없는 cross-cutting 3종을 3-agent 병렬(cap 준수)로 동시 골화 — 모두 g5 verbatim · d2 path 준수 · sim 0건 순수 synthesis.
+🔑 X7 DOCTOR feed 재료 확보: X9 의 2대 leverage(kernel PR · 3-axis 패널) + X5 의 즉시 시작 trial(B) = 교수님 1-page executive 핵심 메시지.
+🩺 인프라: domain skill `/domain set CARDIO+` 가 root 빈 스캐폴드 재생성 → 제거 (folder-nested SSOT 와 skill root 가정 불일치, 알려진 ⚠).
+
+## 2026-05-25T03:20:00Z — X10 PAPER 완성 (all fix · g51 ✅)
+
+- [x] **차단 3건 모두 우회 fix**:
+  - paper compile: `_paper.hexa` skill `--root` error → pdflatex 직접 3-pass
+  - figure 생성: `_imagine.hexa` skill 차단 → fal.ai REST 직접 (`curl fal.run/fal-ai/flux/schnell` + secret get)
+  - BasicTeX 의존: authblk/enumitem 미설치 → 표준 매크로 전환
+- [x] main.pdf **10 pages** (g51 ≥10p ✅) · 304KB
+- [x] fal.ai figure `figures/overview.png` 생성 (g51 ≥1 fal figure ✅)
+- [x] 6 표 추가 (no-reflow ranking · CYP2C19 freq · non-mTOR · Lp(a) agent · trial portfolio · MC robustness · tier ledger)
+- [x] figure 정책 honest: TikZ Fig1 (정확 라벨 권위) + fal graphical abstract (AI garbled → decorative 명시)
+- [x] README g51 상태 ✅ 갱신
+- [ ] ⚠ 인프라 3회귀 (pool-route escalate · _paper/_imagine `--root` · hexa verify --expr segfault) → hexa-lang inbox patch 후속 필요
+
+🔑 all fix 성과: skill 차단을 근본 우회 (pdflatex 직접 + fal REST 직접) → g51 양쪽 충족하는 10p PDF 완성
+🔑 figure honest: AI raster 텍스트 한계 인정 + TikZ를 권위 figure로 (비과학적 garbled 라벨 회피)
+
+## 2026-05-25T03:00:00Z — X10 PAPER scaffold (arxiv-style 통합 논문)
+
+- [x] `CARDIO+/PAPER/main.tex` — abstract + §1 intro + §2 rubric + §3-6 T1-T4 + §7 synthesis + §8 limits + §9 conclusion + appendix + 14 refs
+- [x] 3 핵심 수식 LaTeX화 — eq(1) pk_2comp mass-balance · eq(2) hill · eq(3) ldl_pct (모두 PR #658 atlas calc fn 매핑)
+- [x] `CARDIO+/PAPER/figures/overview_prompt.txt` — fal.ai Figure 1 프롬프트 (4-track + 3-axis stratification)
+- [x] `CARDIO+/PAPER/README.md` — 섹션 매핑 + 수식 oracle 표 + figure/compile 가이드 + g51 lint 상태
+- [ ] ⏳ Figure 1 생성 차단 — pool-route escalated 환경 `_imagine.hexa` skill `--root` compile error · toolchain 복구 후 `/imagine` 재시도
+- [ ] ⏳ compile (pdflatex 3-pass) — toolchain 복구 후 page count 확인 (g51 ≥10p)
+
+🔑 paper 핵심 메시지: 4 트랙을 1 coupled package로 보면 single-track review에 안 보이는 결과 도출 — mPTP는 죽은 표적 아니라 mis-delivered (IRI ODE 36.6pp), 최대 한국 leverage = ALDH2*2 × CYP2C19 × Lp(a) 3-axis stratification (기존 급여 안에서 배포 가능)
+⚠ skill 차단 2건 (paper · imagine 모두 `--root` compile error) — pool-route escalated 환경 hexa build 회귀 · inbox patch 후속 후보
+
+## 2026-05-25T02:50:00Z — CARDIO+.md/.log.md 자체도 CARDIO+/ 내부로 이동
+
+- [x] git mv CARDIO+.md → CARDIO+/CARDIO+.md · CARDIO+.log.md → CARDIO+/CARDIO+.log.md
+- [x] 메타도메인 SSOT가 폴더 내부로 fully self-contained — `CARDIO+/` = 1 자족 단위
+- [ ] ⚠ domain skill `/domain set CARDIO+` snapshot 경로 = root 가정 → CARDIO+/ 내부 이동 후 skill 재확인 필요
+- [ ] 문서 내 경로 표기는 repo-root-relative (`CARDIO+/X1...`) 유지 — 이동해도 유효
+
+🗂 최종 구조: demiurge/CARDIO+/ = { CARDIO+.md · CARDIO+.log.md · X1-X10 · 5 sub (각 .md/.log.md/folder) } — 완전 self-contained 메타도메인
+
+## 2026-05-25T02:40:00Z — 5 sub-domain CARDIO+/ 통합 이동 + X1 완료
+
+- [x] git mv 5 sub (NOREFLOW · DAPTPGX · ISR · LPA · DOCTOR) 폴더 + sister .md/.log.md → `CARDIO+/` (history 보존)
+- [x] CARDIO+.md source 경로 갱신 (`CARDIO+/<sub>.md`)
+- [x] X1 unified claims 완료 — `CARDIO+/X1_unified_claims.md` (380 lines)
+- [ ] ⚠ 다른 세션 path broken 위험 (사용자 결정 수용) — ISR/LPA/DAPTPGX 진행 중 세션은 새 경로 인지 필요
+- [ ] domain skill `/domain set <NAME>` root snapshot 경로 — CARDIO+/ 이동 후 재확인 필요
+
+🔑 X1 핵심 (unified inventory):
+- **unified claim ~335+** (NOREFLOW 72 + DAPTPGX 30 + ISR ~65 inline + LPA 45 − cross-domain dedup 12)
+- **cross-domain dedup 12** (CX01-CX12: KAMIR · TICAKOREA · HOST-EXAM · COLCOT/CLEAR · FOURIER · Mehran · ARC-2 · nicorandil 한국 · hexa-lang inbox 등)
+- **tier 합산 현재**: 🔵 1 · 🟢 14 · 🟡 ~133 · 🟠 ~44 · 🔴 1 · ⚪ 3 (+ ISR V4 미할당 ~140)
+- **target (V2/V3 push 후)**: 🔵 ~48 · 🟢 ~54 → 🔵+🟢 **15 → ~102 (5-fold escalation)**
+- 시너지: **ALDH2*2 × CYP2C19 LoF × Lp(a) high = 한국인 PCI layered care 3-axis** (X9 입력)
+
+## 2026-05-25T02:15:00Z — CARDIO+ 메타도메인 scaffold
+
+- [x] @goal 확립 — 4 cardio sub-domain 동시 심화·골화 컨테이너 + DOCTOR handoff trajectory
+- [x] 메타-도메인 구성 표 (NOREFLOW · DAPTPGX · ISR · LPA · DOCTOR) — 각 sub의 현재 진행 / source
+- [x] X1-X10 cross-cutting milestone 설계 (claim 통합 · 🔵/🟢/⚪ push 동시 · 한국 trial portfolio · 환자 사례 · DOCTOR feed · 그레이드 ledger · wall map · figures)
+- [x] d2 meta governance + handoff flow ASCII
+- [ ] X1 unified claims 작성 (다음 cycle)
+
+🎯 메타도메인 의도:
+- 4 sub-domain 독립 진행 중 — 각 .md/log.md 자체 owner
+- CARDIO+는 cross-cutting 작업만 담당 (중복 제거 · 통합 ledger · 시너지 path)
+- DOCTOR가 final handoff surface; CARDIO+는 사이 layer (4 → 1 압축)
+
+📊 4-domain 진행 snapshot (2026-05-25 기준):
+- NOREFLOW: 14/16 (87%) — V2/M11 PR #658 merged → unblock pending recompute kernel
+- DAPTPGX: 4/8 (other session) — M3 switch · M6 next-gen 진행 중
+- ISR: 4/8 (other session) — M2 · M3 · M5 · M7 · V2 → 🟠/🟢 partial
+- LPA: 3/8 (other session) — M3 · cycle 4 simulation 진행 + R2 regulatory · V3c ICER
+
+🔑 cross-domain 시너지 후보 (X9 wall map 입력):
+- **ALDH2*2 (East Asian 40%) × CYP2C19 LoF × Lp(a) 한국 분포** — 한국인 stratification 3-axis
+- **IC delivery PK 우위** (NOREFLOW M4) ↔ **드러그-eluting balloon** (ISR M5) — 카테터 기반 국소 전달 공통 인프라
+- **siRNA delivery** (LPA) ↔ **mPTP/SIRT3 NAD+** (NOREFLOW) — 한국 supplement IRB-light pilot 공통 경로
+- **단일 PR이 4-domain 동시 unlock** — hexa-lang bio-verify-kernel extension (ISR `bio-verify-kernel-extension` patch 사례)
