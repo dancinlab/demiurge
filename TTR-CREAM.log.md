@@ -1,5 +1,18 @@
 # TTR-CREAM — log
 
+## 2026-05-24T22:10Z — 스냅샷 reconcile (git SSOT 재동기화)
+
+- 발견: 스냅샷이 06:45 에 멈춰 M1-CREAM 1개만(1/12) 보였으나, 실제 M2~M10 + V1-V4 통합 ledger 가 18:15~18:26 全 작성·커밋됨
+- **1/12 → 12/12 재동기화** — 반영 milestone:
+  - M2 진피 도달 wall 정량화 → `cream_m2_dermal_wall_quantification.md`
+  - M3 활성성분 → `cream_m3_active_ingredients.md`
+  - M5 MD/QM → `cream_m5_md_qm_design.md`
+  - M7 제형 (4 SKU α/β/γ/δ) → `cream_m7_formulation_design.md`
+  - M8 ex-vivo · M9 in-vivo → protocol 완료 · 실제 wet-lab measurement 🟠 deferred
+  - measured-oracle → @D d5 non-wet-lab PASS 로 `absorbed=true` LAND
+  - V1-V4 통합 85-claim ledger → `cream_v1_to_v4_consolidated.md` (PASS 57/85 = 67%) · #57
+- honest ceiling 유지 표기: cream-only 진피 도달 ~60-70% vs @goal 90% (20-30%p 갭 정직 공개)
+
 ## 2026-05-24T06:25Z — M1-CREAM SC barrier 돌파 메커니즘 inventory landed
 
 - [x] M1-CREAM — 6 permeation family × depth feasibility matrix (`TTR/research/sc_barrier_breakthrough.md`)

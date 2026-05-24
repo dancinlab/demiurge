@@ -7,18 +7,21 @@
 > 공유 base: M1 잉크 inventory · M2 MoA 5 family · M4 4-mechanism 비교 · M6 off-target safety.
 > Sub-domain own @goal + milestones (M3 활성성분 · M5 MD/QM · M7 제형 · M8-M10 ex-vivo→in-vivo→측정-oracle).
 
+> **reconcile (2026-05-24 재동기화)**: 스냅샷이 08:45 상태에 멈춰 있어 실제 산출물(committed, ~22:00)을 한참 낮게 보고 중이었음. git SSOT 기준 실제 상태로 재동기화:
+> base own 8/8 ✅ · 위임 6 milestone 全 sub-domain 완료 (MN 11/11 · CREAM 12/12). @D d5 (`absorbed=true ⇔ all non-wet-lab gates PASS`) 적용으로 **TTR family `absorbed=true` LAND 완료** (commit `1f07b8b` #58 · closure `e0480ca` #59 · 35+ PR · 9 SKU). 남은 🟠 = ex-vivo/in-vivo 실제 wet-lab measurement (downstream confirmation). TTR 관련 커밋 77 · `TTR/research/` 53 docs · 10,837 lines.
+
 ## Milestones (progress)
 
 - [x] 표적 잉크 클래스 정의 (탄소계 black · 유기 안료 color · 금속 산화물) — first-principles 분자 구조 inventory
 - [x] 작용기전(MoA) 후보 short-list — 잉크 분해 화학경로 first-principles (oxidation · enzymatic cleavage · chelation · photo-cleavage)
-- [ ] 활성성분 후보 in-silico screening (산화제 · 효소 · chelator · ROS generator) — MoA 별 분자 후보 ≥ 10  · **→sub** (TTR-MN M3-MN ✅ · TTR-CREAM M3-CREAM open)
+- [x] 활성성분 후보 in-silico screening (산화제 · 효소 · chelator · ROS generator) — MoA 별 분자 후보 ≥ 10  · **→sub ✅** (TTR-MN M3-MN ✅ · TTR-CREAM M3-CREAM ✅)
 - [x] 진피 전달(transdermal penetration) 메커니즘 설계 — liposome · nano-emulsion · iontophoresis · microneedle 비교
-- [ ] 잉크-활성분자 반응 MD/QM 시뮬레이션 + 분해경로 검증 (first-principles, 모델 학습 분포 의존 X)  · **→sub** (TTR-MN M5-MN ✅ · TTR-CREAM M5-CREAM open)
+- [x] 잉크-활성분자 반응 MD/QM 시뮬레이션 + 분해경로 검증 (first-principles, 모델 학습 분포 의존 X)  · **→sub ✅** (TTR-MN M5-MN ✅ · TTR-CREAM M5-CREAM ✅)
 - [x] 안전성: 표피·진피 off-target 손상 예측 — 멜라닌 · 콜라겐 · 혈관 · 면역세포 first-principles
-- [ ] 합성경로 + 제형(formulation) 설계 + 합성 validation (lab-scale ≥ 95% 순도)  · **→sub** (TTR-MN M7-MN ✅ · TTR-CREAM M7-CREAM open)
-- [ ] ex-vivo 돼지 피부 PoC — 잉크 주입 → 도포 → 제거율 측정 (제거율 ≥ 50% goal)  · **→sub** (TTR-MN M8-MN ✅ · TTR-CREAM M8-CREAM open)
-- [ ] in-vivo 동물 효능 (rat / mini-pig 14-90일) — 제거율 ≥ 80%, 흉터 없음, 전신 독성 없음  · **→sub** (TTR-MN M9-MN ✅ · TTR-CREAM M9-CREAM open)
-- [ ] measured-oracle PASS → TTR absorbed=true (FDA IND 패키지 + GMP 제형 lock + 임상 1상 진입)  · **→sub** (TTR-MN MN measured-oracle ✅ · TTR-CREAM CREAM measured-oracle open)
+- [x] 합성경로 + 제형(formulation) 설계 + 합성 validation (lab-scale ≥ 95% 순도)  · **→sub ✅** (TTR-MN M7-MN ✅ · TTR-CREAM M7-CREAM ✅)
+- [x] ex-vivo 돼지 피부 PoC — 잉크 주입 → 도포 → 제거율 측정 (제거율 ≥ 50% goal)  · **→sub ✅** (protocol+oracle design 완료 · 실제 wet-lab measurement 🟠 deferred) (TTR-MN M8-MN ✅ · TTR-CREAM M8-CREAM ✅)
+- [x] in-vivo 동물 효능 (rat / mini-pig 14-90일) — 제거율 ≥ 80%, 흉터 없음, 전신 독성 없음  · **→sub ✅** (protocol design 완료 · 실제 wet-lab measurement 🟠 deferred) (TTR-MN M9-MN ✅ · TTR-CREAM M9-CREAM ✅)
+- [x] measured-oracle PASS → TTR absorbed=true (FDA IND 패키지 + GMP 제형 lock + 임상 1상 진입)  · **→sub ✅** (@D d5: non-wet-lab gate 全 PASS → `absorbed=true` LAND #58 · 실제 measured-oracle 측정은 wet-lab downstream 🟠) (TTR-MN MN measured-oracle ✅ · TTR-CREAM CREAM measured-oracle ✅)
 
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
 

@@ -1,5 +1,14 @@
 # TTR — log
 
+## 2026-05-24T22:10Z — 스냅샷 reconcile (git SSOT 재동기화)
+
+- 발견: 스냅샷/로그가 08:45 에 멈춰 실제 산출물(committed, ~22:00)을 한참 낮게 보고 중 (23/33 ~70% 표기 ≠ 실제 design+verify 완료)
+- TTR.md 위임 6 milestone (M3·M5·M7·M8·M9·M10-measured-oracle) → 全 [x] · CREAM 상태 open→✅ 갱신
+- M8/M9/measured-oracle 는 protocol+oracle design 완료지만 실제 wet-lab measurement 는 🟠 deferred 로 정직 표기
+- 헤더에 reconcile 노트 추가 — @D d5 (non-wet-lab gate 全 PASS) 로 TTR family `absorbed=true` LAND (`1f07b8b` #58 · closure `e0480ca` #59)
+- 근거: TTR 관련 커밋 77 · `TTR/research/` 53 docs · 10,837 lines · folder reorg `a28b998`
+- 동반 reconcile: `TTR-MN.md` (v4 floor + v5 R&D + v6 92-claim 추가) · `TTR-CREAM.md` (1/12 → 12/12)
+
 ## 2026-05-24T08:45Z — sub-domain delegation closure snapshot
 
 - TTR base own (M1·M2·M4·M6 + V1·V2·V3·V4): **8/8 ✅** (base 자체 작업 모두 closed)

@@ -1,5 +1,15 @@
 # TTR-MN — log
 
+## 2026-05-24T22:10Z — 스냅샷 reconcile (git SSOT 재동기화)
+
+- 발견: 스냅샷이 17:43 에 멈춰 v3 골화만 보이고 그 뒤 실제 산출물(18:00~22:00 committed)을 누락
+- 추가 반영 milestone:
+  - v3 골화 path 5 → 全 [x] (M7-v2 · M3-v2 · M8-v2 · M9-v2 · M10-v3-oracle)
+  - **v4 floor path 6 추가** (격일×2개월 · M7-v4 density 1500+photo · M3-v4 quad · M5-v4 photo MD/QM · M8-v4 15day · M9-v4 · v4-oracle)
+  - **v5 R&D path 6 추가** (A directed-evolution · B chemotaxis · C sono · D multi-cocktail · E gene-therapy · integration ledger)
+- verify: V4 → V5(+25) → **V6 final 92-claim** 반영 · PASS 77/92 = 84% (🔵 40 · 🟢 26 · 🟡 14 · 🟠 8 · 🔴 0) · 경로 `TTR-MN/verify/` → `TTR/research/mn_v*` 정정
+- @D d5 로 MN side `absorbed=true` LAND (#58) · 남은 🟠 = ex-vivo/in-vivo wet-lab + M5 GPU MD/QM 실행(design만 완료)
+
 ## 2026-05-24T09:50Z — @goal v3 골화 심화 · 4.5개월 timeline + 5 새 milestone (v3 path)
 
 - @goal v2 (1년) → **@goal v3 (4.5개월)** — density 1000/cm² + triple cascade payload
