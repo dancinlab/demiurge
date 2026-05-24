@@ -67,14 +67,62 @@ getdp solenoid_axisym.pro -msh pancake.msh \
 검증 참고: 본 템플릿 기본 솔레노이드는 z=0 on-axis `|B| ≈ 0.0684 T` 로,
 RTSC.md §4.2.1 cross-check record 의 FEM 값(0.06842 T)과 일치.
 
-## 별도 milestone — scipy Wheeler 교차검증
+## Wheeler closed-form 병렬 검증 — `wheeler_axis_b.hexa`
 
-축상(on-axis) B 의 **scipy closed-form Wheeler 공식 교차검증**은 이 디렉토리
-범위 밖의 **별도 milestone** 이다 (RTSC.md §5 Axis C: "scipy closed-form
-parallel verifier · Wheeler formula on-axis B"). FEM 결과를 해석해(analytic)와
-대조하는 cross-check 는 `getdp_hts.py` (hexa-lang stdlib) 의 V1 closed-form ⨯
-V2 getdp 경로에서 수행한다.
+축상(on-axis) `B_z` 의 **유한 솔레노이드 Wheeler 폐형식(closed-form) 병렬
+검증기**. M318 (RTSC.md §5 Axis C: "scipy closed-form parallel verifier ·
+Wheeler formula on-axis B") 의 `.hexa` 구현이다. `.hexa-only` 제약
+(`reference_demiurge_sim_hexa_only.md`) 하에서 M318 의 "scipy" 는 폐형식
+재계산의 약칭으로 해석된다 — Wheeler 식은 외부 의존(`scipy`) 없이
+`self/runtime/math_pure` (`sqrt_pure`) 만으로 닫힌다.
 
-> 구현 코드 SSOT (@D d3): 실제 producer/solver 코드는 hexa-lang stdlib
-> (`stdlib/rtsc/getdp_hts.py`) 에 산다. 이 폴더는 형상/문제정의 **템플릿**(문서격)
-> 만 보관한다.
+**식** (μ_r=1, 축상, 박판 이상화):
+
+```
+B_z(z) = (μ₀·N·I / 2L) · [ (z+L/2)/√((z+L/2)²+R²)
+                         − (z−L/2)/√((z−L/2)²+R²) ]
+```
+
+**범위/한계**: μ_r=1 · 축상(on-axis)만 · 박판(thin-shell) 이상화. 따라서 단일
+유효반경 `R_eff = (R_IN + R_OUTC)/2` 에서의 값을 보고하며, 두꺼운 권선의 FEM
+적분값과는 본질적으로 ~수 % 의 thin-shell 갭이 생긴다. End-effect 자체는
+finite-length 항이 잡지만, ramp loss · 퀀치 · Jc(B,T,θ) 같은 HTS 임계상태
+효과는 미반영 (RTSC.md §4.3 caveats 동일).
+
+**실행**:
+
+```sh
+hexa run RTSC/magnet/getdp/wheeler_axis_b.hexa
+```
+
+**무엇을 cross-check 하는가**: `solenoid_axisym.{pro,geo}` 의 §4.2.1 기준 형상
+(N=120, I=100 A, L=0.200 m, R_IN=0.030 m, R_OUTC=0.055 m) 의 GetDP FEM
+출력 `bmag_axis.txt` 의 `z=0` 샘플 (≈ 0.06842 T) 과 Wheeler 폐형식
+`B_z(R_eff, z=0)` 값을 |Δ| · rel% 로 대조한다. 동시에 z ∈ {0, L/4, L/2}
+스윕과 `{B(R_IN), B(R_eff), B(R_OUTC)}` 두꺼운-권선 envelope 도 출력하여
+FEM 값이 envelope `(B(R_OUTC), B(R_IN))` 안에 들어가는지 확인한다.
+
+**해석적 한계 sanity** (회귀-잠금용):
+
+- 장(長) 솔레노이드 극한 `L/R=50` → `B_z(0) → μ₀·n·I` (0.5 % 이내)
+- 원거리 감쇠 `|z|=50·L` → `B_z` ≲ 1 µT
+- 축대칭 `B_z(+z) = B_z(-z)`
+
+**`getdp` 부재 시 정직 강등(honest-degrade)**: 본 검증기는 hexa 안에서 `getdp`
+를 직접 호출하지 않는다 (`.hexa-only` · 본 디렉토리의 GetDP 파이프라인은
+README 상단 절차로 별도 실행). FEM 기준값은 §4.2.1 기록의 `0.06842 T` 를
+파일 내 상수로 고정해두며, getdp 가 PATH 에 없어도 Wheeler 폐형식 단독으로
+유효하다 — 폐형식이 **독립** 병렬 검증기이고 FEM 은 선택적 교차참조다.
+
+**구현 위치 결정 (@D d3)**: `hexa-lang/stdlib/rtsc/` 에 Wheeler 원자(atom)는
+선재(先在)하지 않으며, 본 식은 magnet getdp 템플릿의 **국소 폐형식
+교차검증기** 성격이므로 토픽 폴더 (`RTSC/magnet/getdp/`) 에 둔다. 후속으로
+일반화된 Wheeler stdlib 가 생기면 이 파일은 얇은 wrapper 로 축소된다.
+
+---
+
+## 구현 코드 SSOT (@D d3)
+
+실제 일반 producer/solver 코드는 hexa-lang stdlib (`stdlib/rtsc/getdp_hts.py`)
+에 산다. 이 폴더는 형상/문제정의 **템플릿**(문서격) + 위 Wheeler 폐형식
+국소 검증기만 보관한다.
