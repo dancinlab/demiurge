@@ -60,7 +60,10 @@ public extension LLMProvider {
             defaultModel: "claude-opus-4-7"),
         LLMProvider(
             id: "codex", displayName: "Codex (OpenAI)",
-            cliCommand: ["codex", "exec", "{prompt}"],
+            // `--skip-git-repo-check` lets codex run from cwd=/ (GUI .app
+            // launch) — without it codex refuses with "Not inside a trusted
+            // directory" since the .app's cwd isn't in its allowlist.
+            cliCommand: ["codex", "exec", "--skip-git-repo-check", "{prompt}"],
             apiBaseURL: "https://api.openai.com", apiPath: "/v1/chat/completions",
             keyEnv: "OPENAI_API_KEY", wireFormat: .openai,
             defaultModel: "gpt-5-codex"),
