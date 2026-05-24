@@ -53,6 +53,9 @@ func usage() {
       demiurge show <path>             Show one F1F2 record + provenance
       demiurge list-projects           List workbench projects
       demiurge show-project <name>     Show one project + 7-verb progress
+      demiurge project advance|retreat <name>
+                                       Move a project's 7-verb pointer
+                                       (M15 verb-nav · CLI side)
       demiurge list-shelf <domain>     Show a domain's §6 shelf options
       demiurge action <verb> [domain]  θ-2 action — dispatch a verb
                                        (specify/structure/design/analyze/
@@ -363,6 +366,44 @@ func compose(_ domainArg: String) -> Int32 {
     return 0
 }
 
+/// `project advance|retreat <name>` — move a project's 7-verb pointer
+/// (CLI+COCKPIT M15 verb-nav · CLI side, mirrors the cockpit stepper).
+/// Conversation-default progress (D48): the pointer moves, but a stage
+/// turns ✅ only via a measured run (g3). Writes the SAME ProjectStore
+/// manifest the cockpit reads (D50 byte-identical).
+func projectStep(_ direction: String, _ name: String) -> Int32 {
+    let projects = ProjectStore.loadAll()
+    guard var p = projects.first(where: { $0.name == name }) else {
+        FileHandle.standardError.write(Data("project: no project named '\(name)'\n".utf8))
+        return 2
+    }
+    switch direction {
+    case "advance":
+        guard p.canAdvance else {
+            print("project '\(name)' 이미 마지막 단계 (\(p.currentVerb.koreanLabel))")
+            return 0
+        }
+        p.advance()
+    case "retreat":
+        guard p.canRetreat else {
+            print("project '\(name)' 이미 첫 단계 (\(p.currentVerb.koreanLabel))")
+            return 0
+        }
+        p.retreat()
+    default:
+        FileHandle.standardError.write(
+            Data("project: unknown direction '\(direction)' — use advance | retreat\n".utf8))
+        return 2
+    }
+    do { try ProjectStore.save(p) } catch {
+        FileHandle.standardError.write(Data("project: save failed — \(error)\n".utf8))
+        return 1
+    }
+    print("project '\(name)' → \(p.currentVerb.rawValue + 1)/7 "
+          + "\(p.currentVerb.koreanLabel)(\(p.currentVerb.plain))")
+    return 0
+}
+
 /// `backend [list|current]` — the compute-backend surface (CLI+COCKPIT
 /// M17). Local default + `DEMIURGE_BACKEND` user remote; owner pool
 /// hosts (from ~/.pool/pool.json, NOT hardcoded) only in owner mode.
@@ -630,6 +671,13 @@ case "operate":
     exitCode = operate(Array(args.dropFirst(2)))
 case "backend":
     exitCode = backend(Array(args.dropFirst(2)))
+case "project":
+    guard args.count >= 4 else {
+        FileHandle.standardError.write(Data("project: usage — project <advance|retreat> <name>\n".utf8))
+        usage()
+        exit(2)
+    }
+    exitCode = projectStep(args[2], args[3])
 case "compose":
     guard args.count >= 3 else {
         FileHandle.standardError.write(Data("compose: missing <domain> argument\n".utf8))

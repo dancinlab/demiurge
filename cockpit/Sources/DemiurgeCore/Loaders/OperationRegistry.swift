@@ -76,7 +76,7 @@ public enum OperationRegistry {
     public static let all: [Operation] = [
         // ── 진열대 (product · external) — 12 ──
         Operation(id: "project",         title: "프로젝트 생성·목록·전환·삭제", tier: .product, verb: .specify,    target: .swift,     reach: .ok,      milestone: "M15"),
-        Operation(id: "verb-nav",        title: "7단계 앞/뒤 이동",          tier: .product, verb: nil,         target: .swift,     reach: .partial, milestone: "M15"),
+        Operation(id: "verb-nav",        title: "7단계 앞/뒤 이동",          tier: .product, verb: nil,         target: .swift,     reach: .ok,      milestone: "M15"),
         Operation(id: "spec-capture",    title: "spec 입력 (재료 선반)",      tier: .product, verb: .specify,    target: .swift,     reach: .ok,      milestone: "M15"),
         Operation(id: "structure-view",  title: "structure 구조 분해 뷰",     tier: .product, verb: .structure,  target: .swift,     reach: .ok,      milestone: "M15"),
         Operation(id: "design-pick",     title: "design 옵션 선택",          tier: .product, verb: .design,     target: .swift,     reach: .ok,      milestone: "M15"),
