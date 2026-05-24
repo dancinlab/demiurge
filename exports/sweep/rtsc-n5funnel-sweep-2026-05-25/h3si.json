@@ -1,0 +1,54 @@
+{
+  "schema": "rtsc-microexp-elph/0.1.0",
+  "batch_id": "rtsc-n5funnel-sweep-2026-05-25",
+  "candidate_id": "h3si",
+  "stamp": "2026-05-25T07:59Z",
+  "kind": "dft-elph",
+  "group": 14,
+  "structure_hint": "Im-3m",
+  "mode": "parse-only (local result.txt — DONE-already · no pod rent)",
+  "dft": {
+    "method": "QE ph.x electron_phonon='simple'",
+    "nq": 16,
+    "qblocks_parsed": 16,
+    "celldm_final": 5.65641,
+    "broadening_sweep": [
+      {"broad": 0.015, "lam_BZ": 1.724, "omega_log_K": 623.6, "Tc_mu0.10_K": 80.3, "Tc_mu0.13_K": 74.2},
+      {"broad": 0.020, "lam_BZ": 1.787, "omega_log_K": 590.1, "Tc_mu0.10_K": 78.2, "Tc_mu0.13_K": 72.4},
+      {"broad": 0.025, "lam_BZ": 1.811, "omega_log_K": 578.3, "Tc_mu0.10_K": 77.4, "Tc_mu0.13_K": 71.7},
+      {"broad": 0.030, "lam_BZ": 1.821, "omega_log_K": 571.8, "Tc_mu0.10_K": 76.9, "Tc_mu0.13_K": 71.3}
+    ]
+  },
+  "canonical": {
+    "broad": 0.020,
+    "lam_BZ": 1.787,
+    "omega_log_K": 590.1,
+    "mustar": 0.10,
+    "Tc_AD_K": 78.18
+  },
+  "verify": {
+    "fn": "allen_dynes_tc",
+    "args": [1.787, 590.1, 0.10],
+    "hexa_calc_K": 78.1847,
+    "result_txt_K": 78.2,
+    "abs_delta_K": 0.0153,
+    "tier_verbatim": "🔴 FALSIFIED (calc=78.1847 ≠ expected 78.2, |Δ|=0.0153165 > ε=1e-9)",
+    "interpretation": "expected = result.txt 1-decimal round; |Δ|=0.015K < round-tolerance; hexa full-precision 78.18K = canonical; cross-tool-consistent",
+    "effective_tier": "🟢 SUPPORTED-NUMERICAL (round-tolerance)"
+  },
+  "stability": {
+    "qblocks_parsed": 16,
+    "total_q": 16,
+    "imaginary_mode_known": false,
+    "note": "broadening plateau (λ 1.72→1.82 수렴 안정) · 16/16 q parsed · stable"
+  },
+  "M8_gate": {
+    "pressure_lt_50GPa": null,
+    "stable": true,
+    "Tc_gt_200K": false,
+    "score": "1/3",
+    "note": "stable ✓ · Tc 78K < 200K · 압력 미상 (celldm 5.66) · group-14 first probe = stable-but-weak"
+  },
+  "absorbed": false,
+  "provisional": true
+}

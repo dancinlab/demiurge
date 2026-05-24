@@ -1,0 +1,54 @@
+{
+  "schema": "rtsc-microexp-elph/0.1.0",
+  "batch_id": "rtsc-n5funnel-sweep-2026-05-25",
+  "candidate_id": "h3o",
+  "stamp": "2026-05-25T07:59Z",
+  "kind": "dft-elph",
+  "group": 16,
+  "structure_hint": "Im-3m",
+  "mode": "parse-only (local result.txt — DONE-already · no pod rent)",
+  "dft": {
+    "method": "QE ph.x electron_phonon='simple'",
+    "nq": 16,
+    "qblocks_parsed": 16,
+    "celldm_final": 4.89945,
+    "broadening_sweep": [
+      {"broad": 0.015, "lam_BZ": 2.729, "omega_log_K": 1110.8, "Tc_mu0.10_K": 191.3, "Tc_mu0.13_K": 181.4},
+      {"broad": 0.020, "lam_BZ": 2.479, "omega_log_K": 1096.6, "Tc_mu0.10_K": 179.8, "Tc_mu0.13_K": 169.7},
+      {"broad": 0.025, "lam_BZ": 2.364, "omega_log_K": 1090.9, "Tc_mu0.10_K": 174.2, "Tc_mu0.13_K": 164.1},
+      {"broad": 0.030, "lam_BZ": 2.305, "omega_log_K": 1089.4, "Tc_mu0.10_K": 171.4, "Tc_mu0.13_K": 161.3}
+    ]
+  },
+  "canonical": {
+    "broad": 0.020,
+    "lam_BZ": 2.479,
+    "omega_log_K": 1096.6,
+    "mustar": 0.10,
+    "Tc_AD_K": 179.78
+  },
+  "verify": {
+    "fn": "allen_dynes_tc",
+    "args": [2.479, 1096.6, 0.10],
+    "hexa_calc_K": 179.779,
+    "result_txt_K": 179.8,
+    "abs_delta_K": 0.0208,
+    "tier_verbatim": "🔴 FALSIFIED (calc=179.779 ≠ expected 179.8, |Δ|=0.0207756 > ε=1e-9)",
+    "interpretation": "expected = result.txt 1-decimal round; |Δ|=0.021K < round-tolerance; hexa full-precision 179.78K = canonical; cross-tool-consistent (동일 Allen-Dynes 공식)",
+    "effective_tier": "🟢 SUPPORTED-NUMERICAL (round-tolerance)"
+  },
+  "stability": {
+    "qblocks_parsed": 16,
+    "total_q": 16,
+    "imaginary_mode_known": true,
+    "note": "RTSC.md: h3o imaginary mode −682 cm⁻¹ · harmonic Tc valid only pre-SSCHA · UNSTABLE until anharmonic renormalization"
+  },
+  "M8_gate": {
+    "pressure_lt_50GPa": null,
+    "stable": false,
+    "Tc_gt_200K": false,
+    "score": "0/3",
+    "note": "Tc 180K < 200K (최고근접) · imaginary mode unstable · 압력 미상 (celldm 4.9 = 고압 추정)"
+  },
+  "absorbed": false,
+  "provisional": true
+}
