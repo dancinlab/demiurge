@@ -1,0 +1,115 @@
+// lpa_readout_watch.hexa — M10/M11 NCT polling orchestrator
+//
+// Pool-dispatch wrapper. The Python implementation lives on ubu-1
+// (per memory rule `feedback_demiurge_assets_simulation_mandatory` —
+// V3 / monitoring compute is pool-only).
+//
+// Deployment recipe (one-time setup):
+//
+//   ssh ubu-1 'mkdir -p ~/lpa_watch'
+//   ssh ubu-1 'cat > ~/lpa_watch/lpa_readout_watch.py' <<'PYEOF'
+//   ...                                                  (Python body embedded below)
+//   PYEOF
+//   ssh ubu-1 'crontab -l 2>/dev/null; echo "0 9 * * MON  cd ~/lpa_watch && python3 lpa_readout_watch.py >> last_run.log 2>&1" | crontab -'
+//
+// Manual invocation:
+//
+//   ssh ubu-1 'cd ~/lpa_watch && python3 lpa_readout_watch.py'
+//   ssh ubu-1 'tail -50 ~/lpa_watch/last_run.log'
+//
+// Cadence: weekly (Mon 09:00 UTC) per M10 §A3-A4 cadence spec.
+
+@F lpa_readout_watch := "M10/M11 5-trial polling + scenario classifier" :: formula [active]
+  do = "poll 5 NCT IDs · diff against last run · classify scenario · log triggers"
+  cadence = "weekly (Mon 09:00 UTC) via cron on ubu-1"
+  fallback = "pool ubu-1 unavailable → ssh ubu-2 (V3a/V3c pattern)"
+
+// ────────────────────────────────────────────────────────────────────────
+// Embedded Python (canonical reference — deploy verbatim to ubu-1)
+// ────────────────────────────────────────────────────────────────────────
+//
+// #!/usr/bin/env python3
+// from __future__ import annotations
+// import json, sys, urllib.request
+// from dataclasses import dataclass
+// from datetime import datetime
+// from pathlib import Path
+//
+// WATCHLIST = {
+//     "NCT04023552": ("HORIZON",        "pelacarsen",   2026.5),
+//     "NCT05581303": ("OCEAN(a)",       "olpasiran",    2027.0),
+//     "NCT06292013": ("ACCLAIM-Lp(a)",  "lepodisiran",  2029.0),
+//     "NCT07136012": ("OCEAN(a)-PreEvent", "olpasiran-1차", 2028.0),
+//     "NCT05262543": ("PREVAIL",        "obicetrapib",  2026.75),
+// }
+// CTGOV = "https://clinicaltrials.gov/api/v2/studies"
+// STATE = Path.home() / ".lpa_watch_state.json"
+//
+// @dataclass
+// class TrialState:
+//     nct: str; trial: str; drug: str
+//     status: str; primary_completion: str | None
+//     results_posted: bool; last_seen: str
+//
+// def fetch(nct):
+//     req = urllib.request.Request(f"{CTGOV}/{nct}?format=json",
+//                                  headers={"User-Agent": "lpa-watch/0.1"})
+//     with urllib.request.urlopen(req, timeout=30) as r:
+//         return json.loads(r.read())
+//
+// def extract(nct, raw):
+//     s = raw.get("protocolSection", {}).get("statusModule", {})
+//     return TrialState(
+//         nct=nct, trial=WATCHLIST[nct][0], drug=WATCHLIST[nct][1],
+//         status=s.get("overallStatus", "UNKNOWN"),
+//         primary_completion=s.get("primaryCompletionDateStruct", {}).get("date"),
+//         results_posted=bool(raw.get("hasResults", False)),
+//         last_seen=datetime.utcnow().isoformat() + "Z",
+//     )
+//
+// def classify_scenario(rrr):
+//     # M11 playbook trigger
+//     if rrr >= 0.15: return "A_POSITIVE"
+//     if rrr >= 0.05: return "B_MODEST"
+//     return "C_NULL"
+//
+// def diff(prev, now):
+//     triggers = []
+//     p = prev.get(now.nct, {})
+//     if p.get("status") != now.status:
+//         triggers.append(f"{now.trial}: status {p.get('status')!r} → {now.status!r}")
+//     if not p.get("results_posted") and now.results_posted:
+//         triggers.append(f"{now.trial}: RESULTS POSTED — M11 trigger!")
+//     if p.get("primary_completion") != now.primary_completion:
+//         triggers.append(f"{now.trial}: completion {p.get('primary_completion')} → {now.primary_completion}")
+//     return triggers
+//
+// def main():
+//     prev = json.loads(STATE.read_text()) if STATE.exists() else {}
+//     now = {}; triggers = []; errors = []
+//     for nct in WATCHLIST:
+//         try:
+//             state = extract(nct, fetch(nct))
+//             now[nct] = state
+//             triggers.extend(diff(prev, state))
+//         except Exception as e:
+//             errors.append(f"{nct}: {e}")
+//     STATE.write_text(json.dumps({k: v.__dict__ for k, v in now.items()}, indent=2))
+//     print(f"=== LPA readout watch — {datetime.utcnow().isoformat()}Z ===")
+//     print(f"polled {len(now)}/{len(WATCHLIST)} trials")
+//     for nct, s in now.items():
+//         ready = "📊 RESULTS" if s.results_posted else "  "
+//         print(f"  {ready} {nct}  {s.trial:18s} {s.drug:25s}  {s.status:20s}")
+//     if triggers:
+//         print("\n🚨 M10/M11 trigger:")
+//         for t in triggers: print(f"  - {t}")
+//     if errors:
+//         print("\n⚠ errors:")
+//         for e in errors: print(f"  - {e}")
+//     return 1 if len(errors) > len(WATCHLIST) // 2 else 0
+//
+// if __name__ == "__main__": sys.exit(main())
+//
+// ────────────────────────────────────────────────────────────────────────
+// End embedded Python
+// ────────────────────────────────────────────────────────────────────────
