@@ -69,6 +69,10 @@ func usage() {
       demiurge verify <path|id>        provenance / claim-gate check
                                        (exit 0 consistent · 1 not)
       demiurge gate-summary            gate + absorbed totals
+      demiurge operate [list|audit]    operation manifest (M14) — list
+                                       all ops + reachability, or audit
+                                       external operability. `--owner`
+                                       reveals owner-only (사장실) ops.
       demiurge emit-component          Emit the procedural BIPV
                                        artifact (.usda/.usdz + record)
                                        to exports/component/geometry/
@@ -323,6 +327,53 @@ func gateSummary() -> Int32 {
     return 0
 }
 
+/// `operate [list|audit]` — the operability surface (CLI+COCKPIT M14).
+/// Reads the SAME `OperationRegistry` manifest the cockpit will render
+/// (D50 byte-identical). Owner 사장실 ops show only with `--owner` or
+/// `DEMIURGE_OWNER` set — external users never see them (M0 §1 / M20).
+func operate(_ args: [String]) -> Int32 {
+    let sub = args.first(where: { !$0.hasPrefix("--") }) ?? "list"
+    let owner = args.contains("--owner") || OperationRegistry.ownerModeEnabled
+    switch sub {
+    case "list":
+        for tier in OperationTier.allCases {
+            let rows = OperationRegistry.visible(ownerMode: owner)
+                .filter { $0.tier == tier }
+            guard !rows.isEmpty else { continue }
+            let label = tier == .product ? "🛒 진열대 (external)" : "🔒 사장실 (owner)"
+            print("\(label) — \(rows.count):")
+            for o in rows {
+                let verb = o.verb?.canonical ?? "—"
+                print("  \(o.reach.glyph) \(o.id)  [\(o.target.rawValue) · \(verb) · \(o.milestone)]  \(o.title)")
+            }
+            print("")
+        }
+        if !owner {
+            print("(🔒 owner ops hidden — set DEMIURGE_OWNER or pass --owner)")
+        }
+        return 0
+    case "audit":
+        let a = OperabilityAudit.run()
+        print("operability audit (CLI+COCKPIT M21):")
+        print("  product: \(a.productOK) ✅ · \(a.productPartial) 🔶 · \(a.productBlocked) ❌  (of \(a.productTotal))")
+        print("  owner:   \(a.ownerTotal) 🔒 (env-gated)")
+        if a.productComplete {
+            print("  verdict: ✅ external operability COMPLETE — @goal met")
+            return 0
+        }
+        let pend = OperationRegistry.all
+            .filter { $0.tier == .product && $0.reach != .ok }
+            .map { "\($0.id)(\($0.milestone))" }
+            .joined(separator: ", ")
+        print("  verdict: ⏳ pending — \(pend)")
+        return 1
+    default:
+        FileHandle.standardError.write(
+            Data("operate: unknown subcommand '\(sub)' — use list | audit\n".utf8))
+        return 2
+    }
+}
+
 /// `verify <path|id>` — provenance completeness + claim/gate
 /// consistency (rfc_002 §4 + rfc_011 §4.2). exit 0 = consistent.
 func verifyRecord(_ arg: String) -> Int32 {
@@ -477,6 +528,8 @@ case "list-gates":
     exitCode = listGates()
 case "gate-summary":
     exitCode = gateSummary()
+case "operate":
+    exitCode = operate(Array(args.dropFirst(2)))
 case "verify":
     guard args.count >= 3 else {
         FileHandle.standardError.write(Data("verify: missing <path|id> argument\n".utf8))
