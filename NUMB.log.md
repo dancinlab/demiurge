@@ -1,5 +1,25 @@
 # NUMB — log
 
+## 2026-05-25T20:15Z — G4 SKU split — DUAL (OTC-A + Rx-V1) 권고 · V2 trigger 게이트 deferred
+
+round-3 G4 milestone CLOSED. 격리 worktree `/tmp/numb-g4-13d09607` (branch `numb-g4-sku-13d09607`, base origin/main d686334).
+
+- [x] **G4** (`G4_sku_split.md` + `g4_sku_split.hexa`) — 🟢 numerical + 🟡 cite + 🟠 V2 wet-lab gate honest
+  - **결정 트리 verdict = DUAL** (OTC-A + Rx-V1) — single (Rx-V1 only) 대비 +29pp TAM / +$3.5M / 0yr critical-path 추가, triple (V2 추가) 는 +9pp TAM 에 +$40M·+2yr·+10pp cannib 으로 incremental NPV 음수
+  - **OTC-A spec**: lidocaine 4% 단독 · no eutectic · no epi · onset 55.6min (LMX-class) · margin 179× @ 400 cm² · indication = minor cuts/burns/sunburn/scrapes/irritation/insect bites (21 CFR 348.50 fixed wording) · 면적 cap 200 cm² (성인) · 100 cm² (소아 ≥2y) · cost $2-5M / 1-2 yr
+  - **Rx-V1 spec**: hexa-LAC v1 (lid 7+tet 7+epi+peel-film) · onset 2.78min · depth ~95% MEC · duration 105min · margin 68× · Pliaglis-class indications (laser hair removal/IPL/filler/dermal proc) · cost $15-50M / 5-7yr (505(b)(2))
+  - **Rx-V2 spec (deferred)**: V1 + capric 10-15% ternary · onset = V1 (N6 honest: a/K_sc != t_lag) · depth C/MEC 12 · duration 195min · 안와 contra · 소아 contra · cost $20-60M / 6-8yr
+  - **V2 trigger 가드레일** (3 조건 동시): N6 DSC+Franz PASS + tattoo-sleeve TAM ≥$200M 측정 + V1 yr2 trailing revenue ≥$50M
+  - **indication × SKU 매트릭스**: OTC-A primary = I2 needle + I5 biopsy + I6 pediatric · V1 primary = I1 hair (face/leg) + I3 vasc + I4 typ + I7 filler · V2 primary = I1-back + I4-max sleeve
+  - **소아 SKU 매핑** (G3 prilocaine-free): OTC-A primary (monograph ≥2y, MetHb 경로 자체 부재) · V1 secondary (clinic, +epi 면적 cap 50 cm²) · V2 contra (capric pH-sting)
+  - **안와 / G6 사전 정의**: V2 CONTRA (BLT corneal class wall, JCAD 2016) · V1/OTC-A "avoid contact with eyes" (FDA 표준)
+  - **TAM 추정**: single ~62% / dual 91% / triple 100% — cannib-adjusted dual 85.9% · triple 85.0% (triple 가 dual 에 패배)
+  - **deep research** (d18 정합 round-3): 21 CFR 348.10/348.50 lid/tet 한도 + Drug Facts fixed wording verbatim · LMX-4 (Ferndale) drugs.com/SingleCare 가격 ~$42/30g · Pliaglis 2008 voluntary withdrawal + Galderma reapproval (PracticalDermatology) · Lidocaine HCl market $701M→$964M CAGR 5.53% (Mordor Intelligence)
+  - **honest framing**: V2 정량 (a-boost · K_sc shift · J_ss 6×) 은 Schröder-VL 예측 only → wet-lab gate 까지 🟠. cannibalization 5%/15% 는 추정 (가격/면적 분리 가정). market capture 5-15% addressable conversion 도 추정
+  - **재현**: `cd /tmp/numb-g4-13d09607 && hexa run NUMB/sim/g4_sku_split.hexa`
+
+남은 게이트: G5 (포장/안정성) · G6 (인접토픽 양립성) · G7 (사용자 가이드) · NUMB-oracle (multi-indication wet-lab PASS).
+
 ## 2026-05-25T17:30Z — /cycle round-2 완결 (d18 정합): G2 regulatory + G3 pediatric + N6 ion-pair eutectic — 3개 milestone CLOSED
 
 round-2 fan-out 결과 통합 entry. 3 agent 모두 d18 정합 (NOVEL + arxiv + web deep research 내장).

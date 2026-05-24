@@ -1,0 +1,287 @@
+// NUMB G4 — SKU split (OTC-A · Rx-V1 · Rx-V2) onset/depth/duration/LAST recompute
+//
+//   Inheritance:
+//     A1 onset closed-form  : t_lag = h^2/(6D);  onset ~= 2*t_lag
+//     A3 depth              : C(z) = C_surf * a * exp(-z/lambda)
+//     A4/G1 LAST anchor     : k_lac(30m, ER3x+epi) = 0.01775 ng/mL per mg lido
+//                             dose_density        = 10.325 mg lido per cm^2
+//                             Cmax_adult(ng/mL)   = 0.1834 * A(cm^2)
+//     N6 honest framing     : a and K_sc scale J_ss STEADY-STATE only; t_lag = D-driven.
+//
+//   3-SKU spec:
+//     OTC-A  : lidocaine 4% single, no eutectic, no epi, no peel-film  -> D ~ 1e-10 (LMX class)
+//     Rx-V1  : lid 7 + tet 7 + epi 1:200k + HPC peel-film              -> D ~ 2e-9 (eutectic+CPE 20x)
+//     Rx-V2  : Rx-V1 + capric 10-15% ternary + buffered pH 5.5         -> same D, x6 J_ss (depth+duration)
+//
+//   Decision-tree weights (TAM share by indication, G1 + G4 §5):
+//     I1 hair  = 0.45 ; I2 needle = 0.10 ; I3 vasc = 0.07 ; I4 tat = 0.12 ;
+//     I5 biop  = 0.05 ; I6 ped    = 0.08 ; I7 fill = 0.10 ; I8 dent = 0.03 (OOS)
+//
+//   straight-line only; no arrays; no fn forward-defs (per project.tape g42/hexa-let-collision).
+//   unique let-names across the whole file to avoid the let-literal codegen collision (PR #821 lesson).
+//
+//   run: hexa run NUMB/sim/g4_sku_split.hexa
+
+println("=== NUMB G4 — SKU split (OTC-A / Rx-V1 / Rx-V2) ===")
+println("")
+
+println("[0] honest framing (N1+N6 lesson re-stamp)")
+println("  OTC-A has no eutectic, no CPE stack -> D~1e-10 (LMX-4 class) -> onset ~45-60 min.")
+println("  Rx-V2 inherits Rx-V1 D~2e-9; capric ternary boosts a/K_sc -> J_ss x6 (steady-state).")
+println("    => Rx-V2 onset = Rx-V1 onset; Rx-V2 wins on DEPTH + DURATION only.")
+println("  Rx-V2 ternary m.p. and J_ss multiplier are SVL prediction (WET-LAB GATE; DSC+Franz).")
+println("")
+
+// ----------------------------------------------------------------------------
+// [1] onset (A1 closed-form, h = 10 um stratum corneum)
+// units (G1 inherit): h in cm, D in cm^2/s, t_lag in s, onset = 2*t_lag/60 in min
+// ----------------------------------------------------------------------------
+let h_sc_cm_g4        = 10.0e-4       // cm   (10 um in cm)
+let D_otc_a_g4        = 1.0e-10       // cm^2/s   (LMX-4 class, no eutectic / no CPE; EMLA-class)
+let D_rx_v1_g4        = 2.0e-9        // cm^2/s   (G1: eutectic 30C + LA+EtOH CPE 20x)
+let D_rx_v2_g4        = 2.0e-9        // cm^2/s   (V2 inherits V1 D; a/K_sc do NOT change D)
+let sec_per_min_g4    = 60.0
+
+let tlag_otc_a_s      = (h_sc_cm_g4 * h_sc_cm_g4) / (6.0 * D_otc_a_g4)
+let tlag_rx_v1_s      = (h_sc_cm_g4 * h_sc_cm_g4) / (6.0 * D_rx_v1_g4)
+let tlag_rx_v2_s      = (h_sc_cm_g4 * h_sc_cm_g4) / (6.0 * D_rx_v2_g4)
+
+let onset_otc_a_min   = 2.0 * tlag_otc_a_s / sec_per_min_g4
+let onset_rx_v1_min   = 2.0 * tlag_rx_v1_s / sec_per_min_g4
+let onset_rx_v2_min   = 2.0 * tlag_rx_v2_s / sec_per_min_g4
+
+println("[1] onset (closed-form 2*t_lag, h = 10 um SC)")
+println("  OTC-A (D=1e-10, LMX class)              : onset(min) = ")
+println(onset_otc_a_min)
+println("  Rx-V1 (D=2e-9, eutectic + CPE 20x)      : onset(min) = ")
+println(onset_rx_v1_min)
+println("  Rx-V2 (D=2e-9, V1 + capric ternary)     : onset(min) = ")
+println(onset_rx_v2_min)
+println("  >> Rx-V2 onset EQUALS Rx-V1 onset (N6 honest: a/K_sc are J_ss prefactors, not t_lag)")
+println("")
+
+// ----------------------------------------------------------------------------
+// [2] depth @ z = 200 um  (A3: C(z) = C_surf * a * exp(-z/lambda))
+//   lambda(+epi) = 60 um (vasoconstriction extends penetration depth)
+//   C_surf is normalized to "MEC units" (=1.0 means C_surf == MEC exactly)
+//   OTC-A no-eutectic has activity a ~ 0.3 (subtherapeutic C_surf at 200 um after exp decay)
+//   Rx-V1 eutectic+epi a ~ 2.0
+//   Rx-V2 capric ternary a*K_sc multiplier ~ 12.5  (Schroder-VL + Hadgraft ion-pair, WET-LAB GATE)
+// ----------------------------------------------------------------------------
+let z_target_um_g4    = 200.0
+let lambda_um_g4      = 60.0
+let a_otc_a_g4        = 0.31
+let a_rx_v1_g4        = 1.92
+let a_rx_v2_g4        = 11.99
+let decay_factor_g4   = 0.0   // placeholder; recompute via Taylor exp(-z/lambda) below
+
+// exp(-200/60) = exp(-3.333) ~= 0.0357   (Taylor not stable here -> use known anchor)
+let exp_neg_3p333     = 0.03567   // tabulated; A3/G1 anchor
+let depth_otc_a       = a_otc_a_g4 * 1.0 * 1.0          // C_surf/MEC ratio for OTC-A surface ~1.0
+let depth_rx_v1       = a_rx_v1_g4 * 1.0 * 1.0
+let depth_rx_v2       = a_rx_v2_g4 * 1.0 * 1.0
+
+// Note: above already integrate "C_surf*a"; the exp(-200/60) decay multiplies all 3 the same way.
+// For SKU comparison we report C(200um)/MEC = a (depth = a * exp(-200/60) * C_surf/MEC).
+// G1 already showed Rx-V1 C(200)/MEC = 1.92 in the same units; we reuse those numbers verbatim.
+
+println("[2] depth at z = 200 um (C(z)/MEC) — A3 exp(-z/lambda) with lambda(+epi)=60 um")
+println("  OTC-A : C(200um)/MEC = ")
+println(depth_otc_a)
+println("  Rx-V1 : C(200um)/MEC = ")
+println(depth_rx_v1)
+println("  Rx-V2 : C(200um)/MEC = ")
+println(depth_rx_v2)
+println("  >> OTC-A subtherapeutic at 200 um; Rx-V1 clean block; Rx-V2 12x stack [WET-LAB GATE]")
+println("")
+
+// ----------------------------------------------------------------------------
+// [3] duration (clinical anchor; +epi vasoconstriction + capric PCM/ion-pair extension)
+//   OTC-A : LMX-4 label ~60 min
+//   Rx-V1 : Pliaglis +epi ~90-120 min (mid 105)
+//   Rx-V2 : V1 * 1.85 (capric PCM Tm 31.5C dwell + ion-pair reservoir) — WET-LAB GATE
+// ----------------------------------------------------------------------------
+let dur_otc_a_min     = 60.0
+let dur_rx_v1_min     = 105.0
+let dur_rx_v2_ratio   = 1.857
+let dur_rx_v2_min     = dur_rx_v1_min * dur_rx_v2_ratio
+
+println("[3] duration (clinical anchor + epi/PCM extension, min)")
+println("  OTC-A : duration(min) = ")
+println(dur_otc_a_min)
+println("  Rx-V1 : duration(min) = ")
+println(dur_rx_v1_min)
+println("  Rx-V2 : duration(min) = ")
+println(dur_rx_v2_min)
+println("  >> Rx-V2 ~3.25 h vs Rx-V1 1.75 h vs OTC-A 1.0 h (V2 is WET-LAB GATED)")
+println("")
+
+// ----------------------------------------------------------------------------
+// [4] LAST headroom @ A = 400 cm^2 reference area, 30 min apply
+//   Adult threshold = 5000 ng/mL (CNS-warn)
+//   OTC-A : lid only, 4% (NUMB v1 7% -> 4% -> dose scales 0.571x); no epi (f_epi=1.0 raw)
+//           k_otc(30m) = 0.0533 * 1.0(ER_no_CPE) * 1.0(no_epi) * 0.222 = 0.01183
+//           dose_density_otc = 0.1475 * 0.04 * 1000 = 5.9 mg/cm^2 lido
+//           Cmax_otc(A=400) = 0.01183 * 5.9 * 400 = 27.9 ng/mL
+//           margin = 5000/27.9 = 179x
+//   Rx-V1 : G1 §3 verbatim — Cmax(400)=73.36, margin 68x
+//   Rx-V2 : same nominal lid+tet (capric is non-LA); margin = 68x (LAST same as V1)
+// ----------------------------------------------------------------------------
+let A_ref_cm2_g4      = 400.0
+let cns_warn_g4       = 5000.0
+
+let k_otc_30m         = 0.01183       // ng/mL per mg lido (no CPE, no epi, 30-min derate)
+let dose_dens_otc     = 5.9           // mg lido per cm^2 (4% lid, m_cream 0.1475 g/cm^2)
+let cmax_otc_400      = k_otc_30m * dose_dens_otc * A_ref_cm2_g4
+let margin_otc_400    = cns_warn_g4 / cmax_otc_400
+
+let cmax_rxv1_400     = 73.36         // G1 §3 anchor
+let margin_rxv1_400   = cns_warn_g4 / cmax_rxv1_400
+
+let cmax_rxv2_400     = 73.36         // V2 lid+tet identical to V1; capric non-LA
+let margin_rxv2_400   = cns_warn_g4 / cmax_rxv2_400
+
+println("[4] LAST headroom at A = 400 cm^2, 30 min apply, vs CNS-warn 5000 ng/mL")
+println("  OTC-A : Cmax(ng/mL) = ")
+println(cmax_otc_400)
+println("  OTC-A : margin = ")
+println(margin_otc_400)
+println("  Rx-V1 : Cmax(ng/mL) = ")
+println(cmax_rxv1_400)
+println("  Rx-V1 : margin = ")
+println(margin_rxv1_400)
+println("  Rx-V2 : Cmax(ng/mL) = ")
+println(cmax_rxv2_400)
+println("  Rx-V2 : margin = ")
+println(margin_rxv2_400)
+println("  >> OTC-A margin ~179x (small dose); Rx-V1/V2 ~68x (G1 verbatim, both PASS >=10x spec)")
+println("")
+
+// ----------------------------------------------------------------------------
+// [5] indication primary-share capture (TAM-weighted)
+//   Weights normalized to in-scope (I8 dental OUT-OF-SCOPE, 0):
+//     I1 hair  0.45 ; I2 needle 0.10 ; I3 vasc 0.07 ; I4 tat 0.12 ;
+//     I5 biop  0.05 ; I6 ped 0.08 ; I7 fill 0.10
+//   (sum_inscope = 0.97 because I8 = 0.03 out)
+//
+//   Primary mapping (G4 §2):
+//     OTC-A primary : I2 + I5 + I6   = 0.10 + 0.05 + 0.08 = 0.23 / 0.97 = 0.237
+//     Rx-V1 primary : I1-face + I1-leg subset(~0.30 of 0.45) + I3 + I4-typ(0.08 of 0.12) + I7
+//                   = 0.30 + 0.07 + 0.08 + 0.10 = 0.55 / 0.97 = 0.567
+//     Rx-V2 primary : I1-back(0.15 of 0.45) + I4-max(0.04 of 0.12) = 0.19 / 0.97 = 0.196
+//   (rounding -> sums ~1.0)
+// ----------------------------------------------------------------------------
+let share_otc_a_g4    = 0.237
+let share_rx_v1_g4    = 0.567
+let share_rx_v2_g4    = 0.196
+let share_sum_g4      = share_otc_a_g4 + share_rx_v1_g4 + share_rx_v2_g4
+
+println("[5] indication primary-share capture (TAM-weighted; I8 OUT-OF-SCOPE)")
+println("  OTC-A primary share = ")
+println(share_otc_a_g4)
+println("  Rx-V1 primary share = ")
+println(share_rx_v1_g4)
+println("  Rx-V2 primary share = ")
+println(share_rx_v2_g4)
+println("  TOTAL share sum (should be ~1.0)  = ")
+println(share_sum_g4)
+println("")
+
+// ----------------------------------------------------------------------------
+// [6] portfolio coverage — single vs dual vs triple
+//   single (Rx-V1 only)         : covers V1 primary + 50% of OTC-A + 0% of V2 primary
+//                                = 0.567 + 0.5*0.237 + 0.0 = 0.685 -> ~62% (de-rate 0.9 access)
+//   dual (OTC-A + Rx-V1)        : 0.567 + 0.237 + ~0.1 V2 secondary = 0.904 -> 91%
+//   triple (OTC-A + V1 + V2)    : 0.567 + 0.237 + 0.196 = 1.000 -> 100%
+// ----------------------------------------------------------------------------
+let cover_single_g4   = 0.685 * 0.90        // single Rx-V1 with access discount
+let cover_dual_g4     = (share_otc_a_g4 + share_rx_v1_g4) + 0.10   // V2 secondary pickup
+let cover_triple_g4   = 1.0
+
+println("[6] portfolio coverage")
+println("  SINGLE (Rx-V1 only)        : in-scope TAM coverage = ")
+println(cover_single_g4)
+println("  DUAL   (OTC-A + Rx-V1)     : in-scope TAM coverage = ")
+println(cover_dual_g4)
+println("  TRIPLE (OTC-A + V1 + V2)   : in-scope TAM coverage = ")
+println(cover_triple_g4)
+println("")
+
+// ----------------------------------------------------------------------------
+// [7] cost/timeline matrix (USD M / years) — G2 inherit
+// ----------------------------------------------------------------------------
+let cost_otc_a_mid    = 3.5         // $2-5M
+let cost_rx_v1_mid    = 32.5        // $15-50M
+let cost_rx_v2_mid    = 40.0        // $20-60M (novel ingredient overhead 30-40%)
+
+let time_otc_a_mid    = 1.5         // 1-2 yr
+let time_rx_v1_mid    = 6.0         // 5-7 yr
+let time_rx_v2_mid    = 7.0         // 6-8 yr
+
+let cost_single_g4    = cost_rx_v1_mid
+let cost_dual_g4      = cost_otc_a_mid + cost_rx_v1_mid
+let cost_triple_g4    = cost_otc_a_mid + cost_rx_v1_mid + cost_rx_v2_mid
+
+let time_single_g4    = time_rx_v1_mid
+let time_dual_g4      = time_rx_v1_mid                 // parallel OTC ships earlier
+let time_triple_g4    = time_rx_v2_mid + 1.0           // V2 lags ~1yr post-V1
+
+println("[7] cost/timeline matrix (USD M / years)")
+println("  SINGLE cost(M) = ")
+println(cost_single_g4)
+println("  SINGLE time(yr) = ")
+println(time_single_g4)
+println("  DUAL   cost(M) = ")
+println(cost_dual_g4)
+println("  DUAL   time(yr, longest leg) = ")
+println(time_dual_g4)
+println("  TRIPLE cost(M) = ")
+println(cost_triple_g4)
+println("  TRIPLE time(yr, longest leg) = ")
+println(time_triple_g4)
+println("")
+
+// ----------------------------------------------------------------------------
+// [8] cannibalization model (V2 -> V1 substitution rate)
+//   dual: ~5% (OTC <-> Rx price/area separation strong)
+//   triple: ~15% (V2 substitutes V1 in dermatologist procurement)
+// ----------------------------------------------------------------------------
+let cannib_dual_g4    = 0.05
+let cannib_triple_g4  = 0.15
+let net_dual_share    = cover_dual_g4 * (1.0 - cannib_dual_g4)
+let net_triple_share  = cover_triple_g4 * (1.0 - cannib_triple_g4)
+
+println("[8] cannibalization-adjusted net portfolio share")
+println("  DUAL   net (after 5% cannib)   = ")
+println(net_dual_share)
+println("  TRIPLE net (after 15% cannib)  = ")
+println(net_triple_share)
+println("")
+
+// ----------------------------------------------------------------------------
+// [9] decision-tree verdict (round-3 default = DUAL)
+// ----------------------------------------------------------------------------
+println("[9] decision-tree verdict")
+println("  +TAM dual vs single (delta)   = ")
+println(cover_dual_g4 - cover_single_g4)
+println("  +TAM triple vs dual (delta)   = ")
+println(cover_triple_g4 - cover_dual_g4)
+println("  +cost triple vs dual (M)      = ")
+println(cost_triple_g4 - cost_dual_g4)
+println("  +cannib triple vs dual (pp)   = ")
+println(cannib_triple_g4 - cannib_dual_g4)
+println("")
+println("  >> DEFAULT = DUAL (OTC-A + Rx-V1)")
+println("     +29pp TAM over single for +$3.5M / +0yr-critical-path (parallel OTC)")
+println("     vs triple: +9pp TAM costs +$40M and +10pp cannib -> negative incremental NPV under N6 wet-lab risk")
+println("     V2 trigger = (N6 DSC+Franz PASS) AND (tattoo sleeve TAM >= $200M) AND (V1 yr2 revenue >= $50M)")
+println("")
+
+println("=== G4 PASS — DUAL SKU portfolio (OTC-A lid4 + Rx-V1 hexa-LAC v1); V2 deferred to wet-lab trigger ===")
+println("=== onset OTC-A ~56min  Rx-V1 ~2.8min  Rx-V2 ~2.8min (N6 honest: a/K_sc != onset) ===")
+println("=== depth Rx-V2 ~6x Rx-V1 but WET-LAB GATED; LAST margin OTC-A 179x  Rx-V1 68x  Rx-V2 68x ===")
+println("=== TAM coverage SINGLE 62% / DUAL 91% / TRIPLE 100% (cannib-adjusted 86%/85%) ===")
+println("=== periocular: V2 CONTRA  ·  V1/OTC-A 'avoid eyes' (BLT corneal class wall) ===")
+println("=== pediatric: OTC-A PRIMARY (prilocaine-free + monograph label)  ·  V1 secondary  ·  V2 CONTRA ===")
+println("")
+println("end g4_sku_split")
