@@ -2,6 +2,36 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T04:00:00Z — M9 한국 IIT blueprint 완료 — LPA cycle 5 100% closure
+
+- [x] §1 IIT scope — Investigator-Initiated · KSoLA consortium · 한국 sub-pop RRR 정밀 측정 목표
+- [x] §2 KSoLA consortium 구성 — **8 hub center** (Asan · Samsung · Severance · SNUH · KU · CMC · Inje · Chonnam)
+  - 134K ASCVD 환자 풀 (unique 94K) · KSoLA executive committee 주축
+- [x] §3 trial design — **K-LpA-OUTCOMES** (Korea Lipoprotein(a) Outcomes Trial)
+  - n=**3,000** · 5y follow-up · HR=0.80 · 90% power · D≈842 events (🟢 Schoenfeld closed-form)
+  - 한국 baseline 28.6% (V3c narrow 적용)
+  - Adaptive PROBE design · arm A (PCSK9 mAb 표준) vs arm B (siRNA 분자)
+  - inclusion: ASCVD 2차 · Lp(a) ≥ 100 mg/dL (narrow staging)
+  - primary: MACE at 24m · secondary: Lp(a) % · LDL · safety
+- [x] §4 NCT 등록 — KCTRN + ClinicalTrials.gov dual · KMA central IRB
+- [x] §5 RSA framework — outcome-based reimbursement (≥85% RRR 미달 시 ≥50% refund)
+- [x] §6 budget — **₩32-35B net cash** (sponsor donation ₩119B in-kind 제외) · 다축 funding (HIRA·KSoLA·Novartis-Amgen·KOFIH·NRF)
+- [x] §7 KIV-2 copy protocol — PCR-based · 100/200/500 stratification · KRGDB 1,722 WGS cross-ref
+- [x] §8 IRB · §9 한국 의료시스템 통합 (KAMIR linkage) · §10 시나리오 분기 (HORIZON 결과 따라)
+- [x] §11 d2 breakthrough 5축 — 한국 sub-group RRR · RSA leverage · KIV-2 stratified · KOQUSS utility · bridge therapy
+- [x] §12 verify rubric — n estimate 🟢 · 예산 🟢 · design 🟡 · RSA 🟠 · KIV-2 hypothesis 🟠
+- [x] 산출물 `LPA/M9_kr_iit.md` (298 lines, cap 약간 초과 · 13 섹션 모두 필수)
+- [x] **글로벌 미시도 differentiator** = KIV-2 copy stratified efficacy primary analysis
+- [x] **base case 시나리오 B** (olpasiran 단독, OCEAN(a) 2027 양성 가정)
+- [x] LPA cycle 5 = **100% closure** (M1-M11 + R1-R3 + V1-V4 모두 main land)
+
+🔑 핵심 통찰 (M9 + cycle 5 closure):
+- **K-LpA-OUTCOMES n=3,000 · 2027 enroll → 2032 readout** = 한국 first-in-class Lp(a) RCT 청사진
+- **₩32-35B net cash** = HIRA + KSoLA + 회사 sponsor + KOFIH/NRF 다축 funding 필수
+- **KIV-2 copy stratified primary** = 글로벌 시도 안 한 한국 특화 differentiator
+- **IIT 자체 = ICER WTP 통과 불가** — HIRA 협상 leverage 도구 (필요조건)
+- 5축 동시 가동 시 ICER ₩2-4B/QALY (V3c §11 시뮬 인용)
+
 ## 2026-05-25T03:45:00Z — M10 + M11 인라인 완료 + PR #700 merged
 
 - [x] M10 monitoring schema 작성 — 5축 (KSoLA/HIRA/HORIZON/OCEAN/신약 NDA) × 분기 cadence × SLA

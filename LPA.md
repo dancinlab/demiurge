@@ -14,7 +14,7 @@
 - [x] 통합 후보 ranking + 한국인 임상 적용 전략 (5-Tier · NHIS RSA+narrow+bridge 돌파) → `LPA/M8_rank.md`
 
 ## cycle 5 — scope extension (post-100%-closure)
-- [ ] M9 한국 first-in-class IIT 설계 (Investigator-Initiated Trial blueprint · KSoLA consortium · NCT scaffold) → `LPA/M9_kr_iit.md`
+- [x] M9 한국 first-in-class IIT — **K-LpA-OUTCOMES** (n=3,000 · 5y · 2032 readout · ₩32-35B · 8 hub · KIV-2 stratified primary) → `LPA/M9_kr_iit.md`
 - [x] M10 KSoLA + HIRA 실태 monitoring (5축 · 분기 cadence · SLA · pytrials 자동화 후보) → `LPA/M10_monitoring.md`
 - [x] M11 HORIZON 2026 H1 readout action trigger (3-시나리오 양성/modest/null · T+0~T+24w 액션 + 한국 KOL stakeholder map) → `LPA/M11_readout_playbook.md`
 
