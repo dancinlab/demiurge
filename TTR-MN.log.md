@@ -1,5 +1,20 @@
 # TTR-MN — log
 
+## 2026-05-24T09:10Z — @goal v2 · 5 yr → 1 yr 단축 (주 1회 cycle frequency)
+
+- **변경**: @goal "30일 1회 × 5년 누적 94.2%" → "**주 1회 × 1년 누적 91.4%**"
+- **수학**: (1-x)^N = 0.1 closed-form
+  - N=12 (월 1회) → x=17.5%/cycle 필요 (현재 4.7% 부족)
+  - N=24 (격주) → x=9.2%/cycle 필요 (부족)
+  - **N=52 (주 1회) → x=4.3%/cycle 필요** ★ 현재 design 4.7% 정합 → **91.4% in 1 yr**
+- **per-cycle 화학/물리 변경 없음** — 단순 cycle frequency 증가 (월→주) 로 timeline 5× 단축
+- **누적 표 재계산** (per-cycle 4.7%):
+  - 1주 (1 cycle) 4.7% · 4주 (4) 17.6% · 13주 (13) 47.0% · 26주 (26) 71.8% · ★ 52주 (52) 91.4% ★
+- **비용 영향**: $20×52 = **$1,040/yr** (5 yr 총 $1,200-2,400 → 1 yr $1,040 · 비슷)
+- **사용자 부담**: 월 1회 → 주 1회 (적용 시간 5-10분 × 52회 vs × 60회 비슷)
+- 영향 받는 docs: TTR-MN.md @goal · summary_layperson.md (다음 commit)
+- V3/V4 multi-cycle finding 유지 (수학 동일 · timeline만 단축)
+
 ## 2026-05-24T08:30Z — V1-V4 verify track 4/4 closed · TTR-MN 11/11 ★
 
 - [x] V1 — 18 MN-specific claim (base 49 inherit + needle mech/HA diss/plume/MD/FDA · `TTR-MN/verify/V1_claim_inventory.md`)
