@@ -39,3 +39,6 @@ arxiv_ref:   <DOI or null>
 - [x] elliptic_K_E AGM stdlib 신규 — hexa-lang/stdlib/math/special/elliptic.hexa · pre-req unblocks mutual_M and loop_offaxis and A_phi cascade · arithmetic-geometric mean iteration
 - [x] NOVEL-VERIFIER schema 명문화 — NOVEL-TOOL.md goal 아래에 pre-falsifier 둘 명시 + brainstorm output triad claim·proof·severity·as_of_date·scipy_grep·stdlib_grep·arxiv_ref 강제
 - [x] solenoid_endleakage_calibrator libm-only — hexa-lang/stdlib/material/magnet/solenoid_endleakage.hexa · ratio = atan-only closed-form · Wheeler 보정 calibrator · atlas ⚪→🟢 빠른 승급
+- [x] M2.1 mutual_M_coaxial_loops — hexa-lang/stdlib/material/magnet/mutual_M_coaxial.hexa · Maxwell elliptic K,E form · Wheeler self-L 의 mutual 자매 · elliptic 의존 unblocked
+- [x] M2.4 current_loop_offaxis_B — hexa-lang/stdlib/material/magnet/current_loop_offaxis.hexa · 임의점 elliptic K,E full form · 모든 coil family Green fn building block
+- [x] m3e-ks2 KS two-sample — hexa-lang/stdlib/stats/ks_two_sample.hexa · sorted CDF sup-Δ + Kolmogorov tail p-value · distribution-free 비교 primitive

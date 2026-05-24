@@ -57,3 +57,41 @@ Append-only history sister of `NOVEL-TOOL.md`. Each entry starts with `## <ISO t
 
 - m3e-ks2 KS two-sample · M2.1 mutual_M_coaxial (elliptic 의존, unblocked) · M2.4 current_loop_offaxis (elliptic 의존, unblocked) · M2.5 halbach_remanent_envelope
 - governance: 3-wave 정책 · stdlib SemVer+CHANGELOG · hexa-lang CI stdlib lint guard · domain spec owner field
+
+## 2026-05-25T07:50Z — cycle round 3 batch land (3/3 milestones · 9/9 total)
+
+### round 3 · /cycle · 3 milestones (deferred → unblocked → DONE)
+
+- [x] M2.1 mutual_M_coaxial_loops
+  - hexa-lang PR #902 (`stdlib/material/magnet/mutual_M_coaxial.hexa` · 254 LOC)
+  - 공식: `M(R1,R2,d) = μ₀·sqrt(R1·R2)·[(2/k − k)·K(k) − (2/k)·E(k)]`, `k² = 4·R1·R2/[(R1+R2)² + d²]`
+  - 5 FALSIFIERS ✓: dipole asymptote rel<5e-4 · k=1 sentinel · Maxwell-Lyle anchor rel<1e-10 · R₁↔R₂ symmetry rel<1e-14 · α-scale rel<1e-12
+  - elliptic_K_E (PR #897) 활용 — cascade 의 첫 응용
+  - triad: severity=high (coil-pair coupling 의 ground truth · NMR·HTS pancake·RTSC·EMI 적용)
+
+- [x] M2.4 current_loop_offaxis_B
+  - hexa-lang PR #900 (`stdlib/material/magnet/current_loop_offaxis.hexa` · 342 LOC)
+  - 공식: `B_z = (μ₀I/(2π·α²·β))·[(a²-r²-z²)·E + α²·K]`, `B_ρ = (μ₀·I·z/(2π·r·α²·β))·[(a²+r²+z²)·E - α²·K]`
+  - 7/7 PASS: center exact · on-axis 2.14e-16 · far-field dipole rel 6e-6 · on-loop K-divergence sentinel · scale invariance exact · I-linearity · z-parity
+  - elliptic_K_E joint API (Bz·Brho 한 번 호출, 일관성)
+  - triad: severity=high (모든 coil family Green's fn building block · Helmholtz·Maxwell·thick-coil·saddle 진입 해제)
+
+- [x] m3e-ks2 KS two-sample
+  - hexa-lang PR #903 (`stdlib/stats/ks_two_sample.hexa` · 342 LOC, `stdlib/stats/` 신규 dir)
+  - 공식: D = sorted-merge sup-Δ, p = Stephens-corrected Kolmogorov series
+  - 5 FALSIFIERS ✓: identical D=0 p=1 · disjoint D=1 p=0.0038 · textbook D=0.6 p=0.209 (hand-derive 4-dec match) · H0 n=m=200 D=0 p=1 · symmetry
+  - 부수 발견: C-keyword collision (`signed` → `contrib` rename), worktree wrong-repo trap fixed
+  - triad: severity=medium (scipy.stats.ks_2samp cover most cases · stdlib 의 atlas-foldable 분리 가치는 Stephens correction + stable series-termination)
+
+### 부수 발견
+
+- hexa-lang PR #898 concurrent (M2.1/M2.4 작업 중 rebase 필요) — explicit `git add` + 격리 worktree 패턴 안전 작동 확인
+- d8 후속 INBOX handoff 후보: `hexa cloud preflight worktree-path missing fallback` (PR #897 agent 가 surfaced) — 미해소
+- d8 후속 #2: `sidecar skill family context-awareness audit` — INBOX 던지기 진행 중 (user feedback "맥락따라 작동하게" 2026-05-25T07:30Z 직후)
+
+### deferred (round 4 후보)
+
+- M2.2 demag_factor_ellipsoid · M2.5 halbach_remanent_envelope (M2 top-5 잔여)
+- m3a-welford · m3b-logsumexp · m3c-kahan · m3d-lambert_w (M3 top-5 round 2 deferred)
+- governance: hexa-lang CI stdlib lint guard (별 repo INBOX) · domain spec owner field (sidecar PR · sign-gated)
+- atlas tier 진입: 모든 round 1-3 primitive (8개) ⚪ → 🟢 승급 (pool 실행 self-test)
