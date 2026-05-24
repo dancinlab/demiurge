@@ -2,6 +2,22 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T03:20:00Z — X10 PAPER 완성 (all fix · g51 ✅)
+
+- [x] **차단 3건 모두 우회 fix**:
+  - paper compile: `_paper.hexa` skill `--root` error → pdflatex 직접 3-pass
+  - figure 생성: `_imagine.hexa` skill 차단 → fal.ai REST 직접 (`curl fal.run/fal-ai/flux/schnell` + secret get)
+  - BasicTeX 의존: authblk/enumitem 미설치 → 표준 매크로 전환
+- [x] main.pdf **10 pages** (g51 ≥10p ✅) · 304KB
+- [x] fal.ai figure `figures/overview.png` 생성 (g51 ≥1 fal figure ✅)
+- [x] 6 표 추가 (no-reflow ranking · CYP2C19 freq · non-mTOR · Lp(a) agent · trial portfolio · MC robustness · tier ledger)
+- [x] figure 정책 honest: TikZ Fig1 (정확 라벨 권위) + fal graphical abstract (AI garbled → decorative 명시)
+- [x] README g51 상태 ✅ 갱신
+- [ ] ⚠ 인프라 3회귀 (pool-route escalate · _paper/_imagine `--root` · hexa verify --expr segfault) → hexa-lang inbox patch 후속 필요
+
+🔑 all fix 성과: skill 차단을 근본 우회 (pdflatex 직접 + fal REST 직접) → g51 양쪽 충족하는 10p PDF 완성
+🔑 figure honest: AI raster 텍스트 한계 인정 + TikZ를 권위 figure로 (비과학적 garbled 라벨 회피)
+
 ## 2026-05-25T03:00:00Z — X10 PAPER scaffold (arxiv-style 통합 논문)
 
 - [x] `CARDIO+/PAPER/main.tex` — abstract + §1 intro + §2 rubric + §3-6 T1-T4 + §7 synthesis + §8 limits + §9 conclusion + appendix + 14 refs

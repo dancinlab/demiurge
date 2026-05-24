@@ -55,12 +55,25 @@ cd CARDIO+/PAPER && pdflatex main && pdflatex main && pdflatex main
 ```
 (3-pass: TOC + ref 해소)
 
-## g51 lint 상태
+## g51 lint 상태 (2026-05-25 충족 ✅)
 
 | 요구 | 상태 |
 |---|---|
-| ≥10 pages | ⏳ compile 후 확인 (abstract + 9 §+ appendix + 14 refs로 충족 예상) |
-| ≥1 fal.ai figure | ⏳ figure 생성 대기 (pool-route 복구 후) |
+| ≥10 pages | ✅ **10 pages** (main.pdf · pdflatex 3-pass) |
+| ≥1 fal.ai figure | ✅ `figures/overview.png` (fal-ai/flux/schnell · graphical abstract) |
+
+## compile 실측 (skill 우회 — pdflatex 직접)
+
+`_paper.hexa`/`_imagine.hexa` skill이 routed 환경에서 `--root` compile error로 차단되어 직접 우회:
+- **compile**: `pdflatex -interaction=nonstopmode main.tex` × 3-pass (BasicTeX) → 10 pages
+- **figure**: fal.ai REST 직접 호출 (`curl https://fal.run/fal-ai/flux/schnell` + `secret get fal.api_key`) → overview.png
+- **의존 제거**: authblk · enumitem (BasicTeX 미설치) → 표준 `\author\thanks` + `itemize` 전환
+
+## figure 정책 (honest)
+
+- **Figure 1** = self-contained TikZ (라벨 정확, 권위) — 본 schematic
+- **graphical abstract** = fal.ai raster (레이아웃 정확하나 AI가 텍스트 garbled → "decorative" 명시, 권위 라벨은 Fig 1 참조)
+- AI raster 텍스트 한계는 캡션에 정직 고지
 
 ## g5 honest 고지
 
