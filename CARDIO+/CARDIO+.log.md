@@ -2,6 +2,24 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T04:40:00Z — /cycle 라운드 2: X8 · X6 동시 완료 (X7 입력 모음)
+
+- [x] **X8 g5 grade ledger** → `CARDIO+/X8_grade_ledger.md` (230줄 · commit `b44b32e`)
+  - 4 sub V4 + X1/X4/X9 verdict VERBATIM 합산 · **X8 새 판정 0건** (g5)
+  - 6-tier: 🔵 1 · 🟢 43 · 🟡 ~215 · 🟠 45 · 🔴 5 · ⚪ 31 (분모 ~347)
+  - 강한 근거 🔵+🟢 = 44 (12.7%) → bio-verify-kernel phase2 PR merge 후 ~67-97
+  - reconcile: 🟢 X1 추정 14 → 확정 43 (+29, V3 land 시점차 · X1 † 각주 예고대로) · honest count note (DAPTPGX 🟡 13-18 · PON1 🔴 분모외 분리)
+- [x] **X6 환자 본인 self-case** → `CARDIO+/X6_self_case.md` (229줄 · commit `5a87058`)
+  - 4-axis (mPTP/IRI · CYP2C19 · ISR risk · Lp(a)) PCI 후속 1인칭 retroactive
+  - 책임 프레이밍: 의학적 조언 아님 · "주치의와 논의할 옵션" · 상하단 disclaimer · g5 verbatim
+  - 즉시 가능(한국 급여): CYP2C19 PCR(C5946 선별급여) + Lp(a) 1회 → 단일 채혈 동시 확보 (X9 3-axis 패널 개인 적용)
+  - 최강 axis=CYP2C19 (PM 0.1521 🟢) · 최대 wall=Lp(a) siRNA 미허가 → PCSK9 mAb 대안 path (d2)
+- [x] commit 격리 (d9): X8 `b44b32e` · X6 `5a87058` 각각 단일 add+commit -o · staged-leak 0
+- [ ] ⏳ 라운드 3 (마지막): X7 DOCTOR feed — X4·X5·X6·X8·X9 5개 입력 → 교수님 1-page executive + 즉시/6m/3y timeline
+
+🔑 라운드 2 성과: CARDIO+ **7/10** (X1·X4·X5·X6·X8·X9·X10). X7 입력 5종 전부 골화 완료 — grade 진실 소스(X8) + 환자 사례(X6) 확보.
+🔑 X7 메시지 골격: ① 강근거 44→~97 (단일 PR leverage) · ② 채혈 1회 3-axis 패널 → 6 wall 동시 · NHIS 급여 안 · ③ 즉시 시작 trial=B DAPT-PGx-K (신규 IND 불요).
+
 ## 2026-05-25T04:10:00Z — /cycle 라운드 1: X4 · X5 · X9 동시 완료 (의존 없는 READY 3종)
 
 - [x] **X4 ⚪ honest fence 통합** → `CARDIO+/X4_unified_fence.md` (245줄 · commit `d4ad8cc`)
