@@ -1,0 +1,222 @@
+// DAPTPGX V5 numerical recompute — ICER/budget sign reconciliation
+// V3 base + 4 patches per V3 §6 (V3.5 patch list):
+//   P1) HBR HIGH rate: 0.25 → 0.45 (PRECISE-DAPT ∪ ARC-HBR union, per M4 §5)
+//   P2) S4 PM ticag exposure: full 1y → 1mo only + clopi 11mo
+//        (de-escalation per M3 §5 TROPICAL-ACS / TOPIC / HOST-REDUCE-POLYTECH-ACS)
+//   P3) ticag bleed rate: 0.028 (TICAKOREA full-y) → 0.014 (PLATO 1mo short-course)
+//   P4) PFT cost line item (per M5 §8, NHIS partial reimbursement)
+//
+// per @D d6 (no goal-pressure forcing) + d7 (pool host) + g0 (V3 자산 재활용)
+// Output captured verbatim as 🟢 SUPPORTED-NUMERICAL evidence per g5.
+//
+// Usage:
+//   scp v5_recompute.hexa mini:/tmp/
+//   ssh mini 'hexa run /tmp/v5_recompute.hexa'
+
+println("=== DAPTPGX V5 numerical recompute (hexa-native, V3 + 4 patches) ===")
+println("")
+
+// ----------------------------------------------------------------------
+// 1. Hardy-Weinberg phenotype freq from M1 한국인 CYP2C19 allele freqs
+// (UNCHANGED from V3 — closed-form identity check)
+// ----------------------------------------------------------------------
+let p1  = 0.59
+let p2  = 0.31
+let p3  = 0.08
+let p17 = 0.02
+
+let allele_sum = p1 + p2 + p3 + p17
+println("1_HW_allele_sum =", allele_sum, "(target 1.0)")
+
+let d_1_1   = p1 * p1
+let d_1_2   = 2.0 * p1 * p2
+let d_1_3   = 2.0 * p1 * p3
+let d_1_17  = 2.0 * p1 * p17
+let d_2_2   = p2 * p2
+let d_2_3   = 2.0 * p2 * p3
+let d_2_17  = 2.0 * p2 * p17
+let d_3_3   = p3 * p3
+let d_3_17  = 2.0 * p3 * p17
+let d_17_17 = p17 * p17
+
+let dip_sum = d_1_1 + d_1_2 + d_1_3 + d_1_17 + d_2_2 + d_2_3 + d_2_17 + d_3_3 + d_3_17 + d_17_17
+println("1_HW_diplotype_sum =", dip_sum, "(target 1.0)")
+
+let nm = d_1_1
+let rm = d_1_17
+let um = d_17_17
+let im = d_1_2 + d_1_3 + d_2_17 + d_3_17
+let pm = d_2_2 + d_2_3 + d_3_3
+let im_pm = im + pm
+
+println("1_HW_NM =", nm)
+println("1_HW_RM =", rm)
+println("1_HW_UM =", um)
+println("1_HW_IM =", im)
+println("1_HW_PM =", pm)
+println("1_HW_IM_plus_PM =", im_pm, "(M1 cited ~0.60, ±0.05 tolerance)")
+
+// ----------------------------------------------------------------------
+// 2. Per-100 cohort absolute counts (UNCHANGED)
+// ----------------------------------------------------------------------
+let n = 100.0
+println("")
+println("2_per100_NM =", nm * n)
+println("2_per100_IM =", im * n)
+println("2_per100_PM =", pm * n, "(M1 cited 14-15)")
+println("2_per100_UM =", um * n)
+
+// ----------------------------------------------------------------------
+// 3. PM × HBR-HIGH joint — PATCH P1: HBR 0.25 → 0.45
+// ----------------------------------------------------------------------
+// V3 used HBR=0.25 (PRECISE-DAPT ≥25 only).
+// V5 uses HBR=0.45 (PRECISE-DAPT ∪ ARC-HBR union, per M4 §5 한국 calibration).
+let hbr_high      = 0.45         // P1 patch
+let proc_complex  = 0.40
+
+let cell_2axis = pm * hbr_high * n
+let cell_3axis = pm * hbr_high * proc_complex * n
+
+println("")
+println("3_cell_PM_x_HBR_2axis_per100 =", cell_2axis, "(M4 cited 7-8, V3 was 3.80)")
+println("3_cell_PM_x_HBR_x_complex_3axis_per100 =", cell_3axis, "(M7 cited 3-5, V3 was 1.52)")
+
+// ----------------------------------------------------------------------
+// 4. ICER S4 (targeted PGx) vs S1 (universal clopi) — M8 §5
+//    PATCHES P2, P3, P4 applied
+// ----------------------------------------------------------------------
+// Costs (KRW, NHIS 2025) — UNCHANGED unit costs, but exposure mix changes
+let clopi_d     = 150.0                  // 일 단가
+let ticag_d     = 2300.0 * 2.0           // bid 일 단가
+let test_one    = 50000.0                // CYP2C19 PCR
+let pft_one     = 80000.0                // PFT VerifyNow (M5 §8) — P4 patch
+let st_cost     = 15000000.0
+let bleed_cost  = 8000000.0
+
+// Event rates (per patient/year)
+let st_clopi_nm   = 0.005
+let st_clopi_pm   = 0.015
+let bleed_clopi   = 0.012
+let st_ticag      = 0.004
+// P3 patch: V5 splits ticag bleeding into short-course (1mo PLATO) vs full-year (TICAKOREA)
+let bleed_ticag_full  = 0.028            // V3 (TICAKOREA full-year)
+let bleed_ticag_short = 0.014            // P3 patch (PLATO short-course 1mo rate)
+
+// S1 universal clopi (per 100 patients, 1y) — UNCHANGED
+let s1_st_per100    = (nm + rm + um + im) * st_clopi_nm * n + pm * st_clopi_pm * n
+let s1_bleed_per100 = bleed_clopi * n
+let s1_drug_per100  = clopi_d * 365.0 * n
+let s1_cost_per100  = s1_drug_per100 + s1_bleed_per100 * bleed_cost + s1_st_per100 * st_cost
+
+// S4 targeted PGx (V5 — de-escalation integrated) per 100 patients, 1y
+// PM cohort = 15.21 patients:
+//   P2 patch: 1mo ticag (30d) + 11mo clopi (335d)
+//   P3 patch: short-course bleed rate applies during ticag phase, clopi rate after
+let pm_n = pm * n                                         // 15.21 patients
+let nonpm_n = (nm + rm + um + im) * n                     // 84.79 patients
+
+// PM drug cost = ticag 30d + clopi 335d
+let pm_drug_per_patient = ticag_d * 30.0 + clopi_d * 335.0
+let pm_drug_total       = pm_n * pm_drug_per_patient
+let nonpm_drug_total    = nonpm_n * clopi_d * 365.0
+let s4_drug_per100      = pm_drug_total + nonpm_drug_total
+
+// PM bleed rate (weighted 1mo ticag short + 11mo clopi)
+let pm_bleed_weighted   = (30.0 / 365.0) * bleed_ticag_short + (335.0 / 365.0) * bleed_clopi
+// PM ST rate (1mo ticag covers acute window) — assume ticag-level for full year (de-escalation does not lose ST protection per TROPICAL-ACS HR 0.81 net benefit)
+let pm_st_post_deesc    = st_ticag
+
+let s4_st_per100    = pm_n * pm_st_post_deesc + nonpm_n * st_clopi_nm + im * 0.008 * n
+let s4_bleed_per100 = pm_n * pm_bleed_weighted + nonpm_n * bleed_clopi
+// P4 patch: PFT cost for PM × HBR⊕ cell (M5 §8, monitored cell only)
+let pft_n           = pm * hbr_high * n                   // PM × HBR cell count
+let s4_pft_cost     = pft_n * pft_one
+let s4_cost_per100  = s4_drug_per100 + s4_bleed_per100 * bleed_cost + s4_st_per100 * st_cost + test_one * n + s4_pft_cost
+
+// QALY (simplified, UNCHANGED weights)
+let qaly_baseline   = 0.85
+let qaly_loss_st    = 0.10
+let qaly_loss_bleed = 0.05
+let s1_qaly = qaly_baseline * n - s1_st_per100 * qaly_loss_st - s1_bleed_per100 * qaly_loss_bleed
+let s4_qaly = qaly_baseline * n - s4_st_per100 * qaly_loss_st - s4_bleed_per100 * qaly_loss_bleed
+
+let delta_cost = s4_cost_per100 - s1_cost_per100
+let delta_qaly = s4_qaly - s1_qaly
+
+println("")
+println("4_ICER_s1_cost_per100_KRW =", s1_cost_per100)
+println("4_ICER_s4_cost_per100_KRW =", s4_cost_per100)
+println("4_ICER_s4_PFT_cost_KRW =", s4_pft_cost, "(P4 patch, PM×HBR cell only)")
+println("4_ICER_delta_cost_KRW =", delta_cost)
+println("4_ICER_s1_qaly =", s1_qaly)
+println("4_ICER_s4_qaly =", s4_qaly)
+println("4_ICER_delta_qaly =", delta_qaly)
+
+let icer_M = 0.0
+if delta_qaly > 0.001 {
+    icer_M = (delta_cost / delta_qaly) / 1000000.0
+}
+if delta_qaly < -0.001 {
+    icer_M = (delta_cost / delta_qaly) / 1000000.0
+}
+println("4_ICER_M_KRW_per_QALY =", icer_M, "(M8 cited +34, Korea WTP 30)")
+
+// ----------------------------------------------------------------------
+// 5. Markov 1y → 5y (S4) — V3 pattern (UNCHANGED matrix structure)
+//    PM ST/bleed rates now reflect de-escalation weighted values
+// ----------------------------------------------------------------------
+let death_base = 0.025
+// P2+P3 patches reflected in PM event rates
+let p_ef = pm * pm_st_post_deesc + (nm + rm + um) * st_clopi_nm + im * 0.008
+let p_bf = pm * pm_bleed_weighted + (1.0 - pm) * bleed_clopi
+let p_ef_stay = 1.0 - p_ef - p_bf - death_base
+
+let mut s_ef = 1.0
+let mut s_st = 0.0
+let mut s_bl = 0.0
+let mut s_de = 0.0
+
+let mut yr = 0
+while yr < 5 {
+    let new_ef = s_ef * p_ef_stay + s_st * 0.5 + s_bl * 0.6
+    let new_st = s_ef * p_ef + s_st * 0.3
+    let new_bl = s_ef * p_bf + s_bl * 0.3
+    let new_de = s_ef * death_base + s_st * 0.2 + s_bl * 0.1 + s_de * 1.0
+    s_ef = new_ef
+    s_st = new_st
+    s_bl = new_bl
+    s_de = new_de
+    yr = yr + 1
+}
+
+println("")
+println("5_markov_5y_event_free =", s_ef)
+println("5_markov_5y_ST =", s_st)
+println("5_markov_5y_bleed =", s_bl)
+println("5_markov_5y_death =", s_de)
+println("5_markov_5y_rowsum =", s_ef + s_st + s_bl + s_de, "(target 1.0)")
+
+// ----------------------------------------------------------------------
+// 6. Budget impact — 80,000 PCI/year × Δcost × 5y
+// ----------------------------------------------------------------------
+let pci_per_y = 80000.0
+let delta_per_patient = delta_cost / n
+let budget_5y = delta_per_patient * pci_per_y * 5.0
+let budget_5y_eok = budget_5y / 100000000.0
+
+println("")
+println("6_budget_delta_per_patient_KRW_per_y =", delta_per_patient)
+println("6_budget_5y_KRW =", budget_5y)
+println("6_budget_5y_EokWon_100M =", budget_5y_eok, "(M8 cited -888 (savings))")
+
+// ----------------------------------------------------------------------
+// 7. V3 vs V5 sanity differential (delta-only inputs)
+// ----------------------------------------------------------------------
+println("")
+println("7_patch_P1_HBR_V3 = 0.25  V5 = 0.45")
+println("7_patch_P2_PM_ticag_V3_days = 365  V5_days = 30  (de-escalation)")
+println("7_patch_P3_ticag_bleed_V3 = 0.028  V5_PM_weighted =", pm_bleed_weighted)
+println("7_patch_P4_PFT_cost_V3 = 0  V5 =", s4_pft_cost)
+
+println("")
+println("=== V5 recompute done ===")

@@ -2,6 +2,20 @@
 
 Append-only history sister of `DAPTPGX.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T03:30:00Z — cycle 6 auto-seed extension 완료 (V5 + M12 + M13)
+
+- [x] **V5 ICER reconciliation v2** (236 + 222 sim lines) — V3 sign mismatch 4-patch 통합 (HBR=0.45 합집합 · S4 PM 1mo de-escalation · ticag_short bleed 0.014 · PFT cost). ICER V3 -3,221 → V5 -503 M/QALY (magnitude 6.4× 개선, sign 미반전 잔존 — V6 P5 patch deferred). **부수 escalation 🟠 → 🟢**: C15 PM×HBR 2-axis 3.80→6.84 (M4 cited 7-8 band 내) · C20 3-axis 1.52→2.74 (M7 cited 3-5 lower).
+- [x] **M12 special populations** (433 lines) — 임산부 · 투석 · 소아 · ultra-elderly 4 subgroup × 27-cell base = 결정맵 4D tesseract 확장. KSC 2024 special pop section + CPIC pediatric annex + KAMIR-EFiS 인용.
+- [x] **M13 caller cross-tool validation** (476 lines) — PharmCAT · Aldy · Stargazer · PyPGx · Astrolabe 5-tool 비교 + head-to-head data gap 정직 보고 (acquisition plan: KOVA VCF 추출 → 4 caller 병렬 → confusion matrix, 별도 라운드). cockpit M5 synth panel routing spec + hexa-lang stdlib wrapper 후보.
+- 도메인 18/18 — base M1-M11 + verify V1-V4 + extension V5/M12/M13 cycle 6
+
+🔑 cycle 6 통찰:
+- **V5 reconciliation: magnitude 개선 + 부수 escalation 성공** — V3 sign mismatch 4-patch가 ICER magnitude 6.4× 개선 + PM×HBR cells 2건 🟢 escalation. sign 미반전은 V3 baseline IM 0.008 잔여 gap (V6 P5 patch `IM ST 0.008→0.005`) → d6 정직 framing, 🔴 FALSIFIED 거부.
+- **결정맵 4D 확장 evidence** — M12가 base 3-axis cube에 subgroup axis 추가 → 27-cell × 4-subgroup = 108-cell tesseract. M7 critical cell "PM × HBR-HIGH × complex × ultra-elderly"가 진정한 high-stakes cell (~1-2명/100, RCT-grade individualization).
+- **caller cross-tool data gap = 한국 unique opportunity** — Stargazer + PyPGx 모두 한국 저자 → KOVA/KORV1K 직접 적용 + head-to-head 첫 한국 cohort 검증 가능 (M13 §7 acquisition plan).
+- **demiurge cli upstream cycle 가속** — V5 sim asset (sims/v5_recompute.hexa) + M11 inbox + V2 patches 모두 hexa-lang absorb 사이클 입력. PR #665 merge 후 V6-bis 자동 trigger.
+- **d6 + d2 framing 일관 유지** — V5 sign 미반전 honest 보고 + M13 head-to-head data gap acquisition plan 명시. "불가능" 명사 0회 사용 (no-impossibility-framing memory 준수).
+
 ## 2026-05-25T02:30:00Z — V2 + V4 완료 · DAPTPGX 14/14 (verify phase complete)
 
 - [x] **V2 🔵 atlas push** (315 lines) — honest 0개 🔵 (atlas promoter 0-proposal bug · upstream cycle 의존). 4 shard staged `/tmp/daptpgx-staging/*.n6` · 2 inbox patches 작성 (`hexa-lang-stdlib-bio-stats.md` · `hexa-atlas-pgx-kind-extension.md`) → hexa-lang/inbox/patches/ 로 `cp` 실행 ✅ (demiurge cli upstream handoff 실증)

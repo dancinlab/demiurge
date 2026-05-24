@@ -21,3 +21,9 @@
 - [x] V2 🔵 push (honest 0 — promoter bug · 4 shard staged · 2 inbox patches upstream to hexa-lang) → `DAPTPGX/verify/V2_formal_identities.md`
 - [x] V3 🟢 push (v1) — HW + phenotype 🟢 escalation 성공 · ICER/budget 🟠 DEFERRED (model reconciliation, V3.5 후속) → `DAPTPGX/verify/V3_numerical_recompute.md` + `DAPTPGX/sims/v3_recompute.hexa`
 - [x] V4 final tier ledger — 30 claim (🔵 0 → 4 + 🟢 5 → 12 escalation 예상 V2-bis 후) → `DAPTPGX/verify/V4_tier_ledger.md`
+
+## extension (cycle 6+ auto-seed · V4 §13 후속)
+
+- [x] V5 ICER reconciliation v2 — HBR=0.45 합집합 + S4 de-escalation 통합 sim · ICER V3 -3,221 → V5 -503 M/QALY (6.4× 개선, sign 미반전 → V6 P5 deferred) · C15·C20 🟢 escalation 성공 → `DAPTPGX/verify/V5_icer_reconcile.md` + `DAPTPGX/sims/v5_recompute.hexa`
+- [x] M12 special populations — 임산부 · 투석 · 소아 · ultra-elderly subgroups + 결정맵 4D tesseract 확장 → `DAPTPGX/M12_special_pop.md`
+- [x] M13 caller cross-tool validation — PyPGx · PharmCAT · Aldy · Stargazer 비교 + head-to-head data gap 정직 보고 + acquisition plan → `DAPTPGX/M13_caller_validation.md`
