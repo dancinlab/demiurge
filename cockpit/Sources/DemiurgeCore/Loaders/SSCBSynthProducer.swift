@@ -1,5 +1,5 @@
 // SSCBSynthProducer — θ-2 engine tool for `sscb + synthesize`
-// (D72 / κ-N · ROI rank 1 of inbox/notes/absorption-empty-cells-research-
+// (D72 / κ-N · ROI rank 1 of archive/session-notes/absorption-empty-cells-research-
 // 2026-05-20.md). D61-compliant-from-birth — substrate script SSOT
 // `~/core/hexa-lang/stdlib/sscb/femmt_sweep.py`, NEVER in cockpit/
 // scripts/.

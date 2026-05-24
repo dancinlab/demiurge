@@ -589,7 +589,7 @@ V1 §6.1 의 tier 1-8 batch 전체 (21 fn) 를 `hexa-lang/tool/verify_cli.hexa::
 | tier 6 ADMET | logp · ldl_pct · pct_change | ~30 | 동상 |
 | tier 7 statistics | cox_ci · fisher_2x2 · logrank · proportion_ci · log_or · weighted_sum | ~120 | 동상 |
 
-→ 총 ~385 LOC 추가 + float-arg 파싱 enable (현재 int-only) — hexa-lang inbox/patches/`verify_cli_bio_kernel.md` issue + PR.
+→ 총 ~385 LOC 추가 + float-arg 파싱 enable (현재 int-only) — hexa-lang archive/session-notes/patches/`verify_cli_bio_kernel.md` issue + PR.
 
 추가 발견 — V1 §6.1 의 reference value (`<v>` 가 float) 는 **현재 CLI 에서 작동 불가**. float-arg 파싱 enable 도 동시 추가 필요.
 

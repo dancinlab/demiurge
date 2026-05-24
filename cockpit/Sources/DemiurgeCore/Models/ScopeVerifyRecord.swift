@@ -1,5 +1,5 @@
 // ScopeVerifyRecord — cohort-round producer (absorption empty-cell
-// fill, 2026-05-20 — no standalone PLAN κ / D-block, per inbox/notes/
+// fill, 2026-05-20 — no standalone PLAN κ / D-block, per archive/session-notes/
 // absorption-empty-cells-research-2026-05-20.md §3 ROI rank 3).
 //
 // Typed sidecar for a `scope + verify` producer run — POPPY (+ optional

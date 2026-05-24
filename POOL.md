@@ -40,7 +40,7 @@ run it there") to a **first-class infrastructure layer** that:
 Why first-class (not ad-hoc): the same dispatch pattern recurs in
 RTSC §9.4 (cross-code DFT) · RTSC §9.9.1 Phase 1 wrap precedent ·
 NUCLEAR §6.1 (HFBTHO wrap) · ARCH §11.4 H-* heavy-substrate sessions ·
-chip §B substrate-axis cross-platform reproducibility (`inbox/notes/
+chip §B substrate-axis cross-platform reproducibility (`archive/session-notes/
 2026-05-21-pool-gate_v3-abc-diagnosis.md`). Naming it as infrastructure
 lets every cohort cite a single spec instead of re-deriving the
 "how do I get this off the Mac" recipe ad hoc per session.
@@ -131,7 +131,7 @@ loose provenance falsifies the gate).
 
 ### §3.4 Records that emitted via pool must be re-verified locally before commit
 
-The chip rfc006 §5 pool-gate_v3 audit (`inbox/notes/2026-05-21-pool-
+The chip rfc006 §5 pool-gate_v3 audit (`archive/session-notes/2026-05-21-pool-
 gate_v3-abc-diagnosis.md`) used pool to *invalidate a local "OK"*
 claim — Mac arm64 Abort trap 6 + Linux x86_64 assertion failure both
 in the same BLIF emitter bug → "macOS abc build issue" hypothesis
@@ -443,12 +443,12 @@ canonical) is the correct shape for case (a).
 - **canonical precedent**: `~/core/hexa-lang/stdlib/material/
   cross_code_dft.py` — `_pool_cli_present()` helper + four honest
   gate_type outputs (RTSC §9.7 N4 cohort).
-- **cross-platform audit precedent**: `~/core/demiurge/inbox/notes/
+- **cross-platform audit precedent**: `~/core/demiurge/archive/session-notes/
   2026-05-21-pool-gate_v3-abc-diagnosis.md` — chip rfc006 §5
   gate_v3 BLIF emitter bug confirmed Linux-side via ubu-2 (Mac arm64
   Abort trap 6 + Linux x86_64 assertion failure both at same
   invariant violation).
-- **bootstrap pool verify precedent**: `~/core/demiurge/inbox/notes/
+- **bootstrap pool verify precedent**: `~/core/demiurge/archive/session-notes/
   2026-05-22-pool-bootstrap-verify.md` — hexa-lang bootstrap CI
   Linux Stage 0 RED root-causing via pool (`pool list` confirms 3
   hosts · isolated clone at `~/_hexa_pool_verify/hexa-lang` ·

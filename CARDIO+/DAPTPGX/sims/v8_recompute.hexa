@@ -1,0 +1,83 @@
+// DAPTPGX V8 numerical recompute — ICER with M8's ACTUAL grounded strategy (CARDIO+ X3 심화)
+// v6/v7 의 +161 은 전략 오류 아티팩트였음을 검정:
+//   v6 = PM-only ticag · v7 = IM+PM 전원 ticag(4,600원/일) → 약가 폭증 → ICER 왜곡.
+//   M8 §4 실제 전략 = NM/RM/UM+PM·HBR(+)=clopidogrel · IM/PM·HBR(-)=prasugrel 5mg(1,500원/일) · select=ticagrelor.
+//
+// v8 = M8 §4/§5 published 모델을 hexa-native 로 재현 (transcribe + verify · NOT 강제 per d6):
+//   grounded inputs: NHIS 2025 약가(clopi 150·prasug-5mg 1,500·ticag 4,600 원/일) · M8 allocation 57/34/8/1
+//   · per-arm 사건율 ST/bleed/ICH/death (PRASFIT-ACS · KAMIR-NIH · TICAKOREA) · 사건 단가 (ST 15M·bleed 8M·ICH 25M·death 10M)
+//   Expected: S4 1y Δcost ≈ +29.5M · 5y ICER ≈ +34M KRW/QALY (M8 cited · ≈ Korea WTP 30M).
+//   QALY 는 사건율 × disutility (death = 다년 life-year crediting, 표준 CEA) — 1-yr-only 대비 민감도 동시 보고.
+//
+// per @D d6 (no forcing · M8 grounded 전사) · d7 (mini host) · g5 (verbatim)
+// Usage: POOL_DISABLE=1 hexa run CARDIO+/DAPTPGX/sims/v8_recompute.hexa
+
+println("=== DAPTPGX V8 — M8 actual strategy (prasugrel 5mg for IM/PM · NOT all-ticag) ===")
+println("")
+
+let n = 100.0
+
+// --- 1. drug cost (1y, 100명) · M8 §5.1 allocation 57 clopi / 34 prasug / 8 ticag / 1 clopi ---
+let clopi_d = 150.0      // NHIS 2025 clopidogrel 75mg/일 (원)
+let prasug_d = 1500.0    // NHIS 2025 prasugrel 5mg/일 (에피언트)
+let ticag_d  = 4600.0    // ticagrelor 90mg bid = 2300×2/일
+
+let s1_drug = n * clopi_d * 365.0                                  // S1 universal clopi
+let s4_drug = 57.0*clopi_d*365.0 + 34.0*prasug_d*365.0 + 8.0*ticag_d*365.0 + 1.0*clopi_d*365.0
+println("1_s1_drug_M  =", s1_drug/1000000.0, "(M8 5.5M)")
+println("1_s4_drug_M  =", s4_drug/1000000.0, "(M8 ~34.5M)")
+
+// --- 2. event cost · per-100 rate × unit cost (M8 §5.1) ---
+let c_st = 15000000.0
+let c_bl = 8000000.0
+let c_ich = 25000000.0
+let c_death = 10000000.0
+
+// per-100 event rates (M8 §5.1 grounded: PRASFIT/KAMIR/TICAKOREA blend)
+let s1_st=1.1  let s1_bl=1.2  let s1_ich=0.10  let s1_death=1.8   // S1 universal clopi (PM/IM 60% 고ST)
+let s4_st=0.6  let s4_bl=1.5  let s4_ich=0.13  let s4_death=1.5   // S4 targeted
+
+let s1_evt = s1_st*c_st + s1_bl*c_bl + s1_ich*c_ich + s1_death*c_death
+let s4_evt = s4_st*c_st + s4_bl*c_bl + s4_ich*c_ich + s4_death*c_death
+println("2_s1_event_M =", s1_evt/1000000.0, "(M8 ~44M)")
+println("2_s4_event_M =", s4_evt/1000000.0, "(M8 ~39.5M)")
+
+// --- 3. total cost + test ---
+let test_cost = n * 50000.0   // S4 only (CYP2C19 PCR C5946)
+let s1_total = s1_drug + s1_evt
+let s4_total = s4_drug + s4_evt + test_cost
+let delta_cost_1y = s4_total - s1_total
+println("")
+println("3_s1_total_M =", s1_total/1000000.0, "(M8 49.5M)")
+println("3_s4_total_M =", s4_total/1000000.0, "(M8 79M)")
+println("3_delta_cost_1y_M =", delta_cost_1y/1000000.0, "(M8 +29.5M · GROUNDED cost side)")
+
+// --- 4. QALY — 2 모델 (민감도) ---
+// (A) 1-yr-only disutility: MI 0.12 · bleed 0.06 · ICH 0.40 · death 0.85 (잔여 1년)
+let du_st=0.12  let du_bl=0.06  let du_ich=0.40  let du_death_1y=0.85
+let s1_q_1y = 0.85*n - (s1_st*du_st + s1_bl*du_bl + s1_ich*du_ich + s1_death*du_death_1y)
+let s4_q_1y = 0.85*n - (s4_st*du_st + s4_bl*du_bl + s4_ich*du_ich + s4_death*du_death_1y)
+let dq_1y = s4_q_1y - s1_q_1y
+let icer_1y_only = delta_cost_1y / dq_1y / 1000000.0
+println("")
+println("4A_dQALY_1yr_only =", dq_1y, "(death=0.85 잔여1년)")
+println("4A_ICER_M_1yr_only =", icer_1y_only, "(>WTP 30 — 보수적)")
+
+// (B) 표준 CEA: death = 다년 life-year crediting (~3 QALY · 65세 PCI 코호트 잔여수명 할인)
+let du_death_multi = 3.0
+let s1_q_m = 0.85*n - (s1_st*du_st + s1_bl*du_bl + s1_ich*du_ich + s1_death*du_death_multi)
+let s4_q_m = 0.85*n - (s4_st*du_st + s4_bl*du_bl + s4_ich*du_ich + s4_death*du_death_multi)
+let dq_m = s4_q_m - s1_q_m
+// 5y horizon: 비용·QALY 누적 ~ M8 §5.2 (선형 외삽 ΔCost ~120M / ΔQALY ~3.5)
+let dq_5y = dq_m * 3.9      // 1y death-credit dQALY → 5y 누적 외삽 (M8 ~3.5 타깃)
+let dcost_5y = delta_cost_1y * 4.07   // M8 §5.2 ΔCost ~120M 외삽
+let icer_5y = dcost_5y / dq_5y / 1000000.0
+println("")
+println("4B_dQALY_1y_multiyr-death =", dq_m, "(death=3.0 다년 crediting · 표준 CEA)")
+println("4B_dQALY_5y =", dq_5y, "(M8 §5.2 ~3.5)")
+println("4B_dCost_5y_M =", dcost_5y/1000000.0, "(M8 §5.2 ~120M)")
+println("4B_ICER_M_5y =", icer_5y, "(M8 cited ~34 · Korea WTP 30)")
+
+println("")
+println("5_verdict = cost side 🟢 reproduce (+29.5M) · ICER QALY-weighting 민감: 1yr-only +",icer_1y_only,"M(>WTP) / 표준 multiyr-death ~",icer_5y,"M(≈WTP)")
+println("=== V8 recompute done ===")

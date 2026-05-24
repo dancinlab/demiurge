@@ -2,7 +2,7 @@
 
 > milestone: TTR.md verify track "V4 final tier ledger"
 > source: V1 inventory · V2 closed-form arithmetic ledger (🔵 22 PASS) · V3 ubu-1 numerical recompute (🟢 5 PASS · 2 discrepancy · 3 GPU-defer · 4 lit) · 🟠 4 wet-lab
-> per @D g5 honest: 일부 🔵 는 hexa CLI verdict 부재 (manual derivation 우회) · `hexa inbox/notes/2026-05-24-hexa-verify-chemistry-fn-gap.md` 에 stdlib science extension 제안
+> per @D g5 honest: 일부 🔵 는 hexa CLI verdict 부재 (manual derivation 우회) · `hexa archive/session-notes/2026-05-24-hexa-verify-chemistry-fn-gap.md` 에 stdlib science extension 제안
 
 ## TL;DR
 

@@ -19,7 +19,7 @@ import Foundation
 /// `koreanLabel` is the **Korean display label** used in cockpit chrome,
 /// CLI human output, and chat banners. `plain` is the rfc_012 §4
 /// non-expert Korean wording. Convention: English = wire, Korean =
-/// display, plain = non-expert chat. See `inbox/notes/2026-05-21-d111-
+/// display, plain = non-expert chat. See `archive/session-notes/2026-05-21-d111-
 /// phaseb-bug2-verb-naming-options.md` for the option-α rationale.
 public enum Verb: Int, CaseIterable, Codable, Identifiable, Sendable {
     case specify, structure, design, analyze, synthesize, verify, handoff

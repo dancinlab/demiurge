@@ -141,7 +141,7 @@ Updated 2026-05-18 — status by step (rfc_005 §6):
   repo-URL dangles (DOI archive itself immutable, persists). CRITICAL:
   hexa-lang already absorbed hexa-matter — its own stdlib/PLAN.md
   ("hexa-matter stdlib-only 6모듈 | 완료 | ✅ 완전 이관, .py 제거,
-  selftest 38/38") + inbox/notes/2026-05-14-hexa-matter-absorption-
+  selftest 38/38") + archive/session-notes/2026-05-14-hexa-matter-absorption-
   plan.md. Our D12 (demiurge absorb) conflicts with the pre-existing
   hexa-lang absorption AND with the user's own D15 (stdlib ⊂
   hexa-lang; demiurge = consumer). ⑤⑥ HELD pending D17.

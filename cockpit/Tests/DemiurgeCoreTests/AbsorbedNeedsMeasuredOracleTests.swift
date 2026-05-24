@@ -18,7 +18,7 @@
 // constitution.md is populated (κ-68 G30 scope 밖).
 //
 // Cross-refs:
-//   - inbox/notes/k68-g30-revised-2026-05-21.md (Stage 1 plan)
+//   - archive/session-notes/k68-g30-revised-2026-05-21.md (Stage 1 plan)
 //   - design.md D103 (dimension-separation) · D106 (illustrative-physics
 //     gate) · D109 (cell pick · κ-68 G27 land)
 //   - proposals/rfc_013_hexa_native_parity_connection.md §6.11/§6.12

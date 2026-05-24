@@ -120,7 +120,7 @@
     "(s3) Hydrides (LaH10, CaH6, H3S) require GPa pressure — RTSC.md §8.9 (c) gate FAIL by design even if predicted Tc > 270 K.",
     "(s4) Predicted Tc > 270 K from BETE-NET ≠ actual room-temperature SC. Requires wet-lab (a)(b)(c)(d) gate satisfaction.",
     "(s5) σ/λ surfaced as OOD signal — high σ/λ means low ML confidence.",
-    "(s6) honest empirical: best rel_err 16.6% (MgB2) · worst 1424% (V) per inbox/notes/2026-05-22-bete-net-7-candidate-benchmark.md"
+    "(s6) honest empirical: best rel_err 16.6% (MgB2) · worst 1424% (V) per archive/session-notes/2026-05-22-bete-net-7-candidate-benchmark.md"
   ],
   "citations": [
     "arxiv:2401.16611 (BETE-NET primary · Gibson et al. npj Comput. Mater. 2025)",

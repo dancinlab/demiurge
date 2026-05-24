@@ -22,7 +22,7 @@ Append-only history sister of `CLI+COCKPIT.md`. Each entry starts with `## <ISO 
 - [x] V3 = 🟢 SUPPORTED-NUMERICAL × 2 (HW 0.6279 vs cited 0.60 within 5pp · PM per100 15.21 vs cited 14-15 exact)
 - [x] V3 sign mismatch 정직 보고 (ICER -3,221 M/QALY vs cited +34) — d6 framing 준수, 🔴 FALSIFIED 거부, 🟠 reconciliation pending
 - [x] V2 promoter 0-proposal bug 만남 → 4 shard staged `/tmp/daptpgx-staging/` + 2 inbox patches
-- [x] `cp inbox/patches/{stdlib-bio-stats,atlas-pgx-kind}.md ~/core/hexa-lang/inbox/patches/daptpgx-*-2026-05-25.md` ✅ — demiurge cli upstream handoff (M7 surface)
+- [x] `cp archive/session-notes/patches/{stdlib-bio-stats,atlas-pgx-kind}.md ~/core/hexa-lang/inbox/patches/daptpgx-*-2026-05-25.md` ✅ — demiurge cli upstream handoff (M7 surface)
 - [x] V4 final ledger — 30 claim 분포 (현 🔵 0 + 🟢 5 → V2-bis 후 🔵 4 + 🟢 12 escalation 예상)
 - [x] **3 spec docs induce 완료** — `CLI+COCKPIT/M5_synthesize.md` · `M6_verify.md` · `M7_handoff.md` (cross-domain learning을 surface spec으로 결정화)
 - [x] CLI+COCKPIT.md DAPTPGX evidence section 추가 (NOREFLOW · ISR · LPA 표 패턴 4번째 확장)
@@ -36,7 +36,7 @@ Append-only history sister of `CLI+COCKPIT.md`. Each entry starts with `## <ISO 
 - [x] `hexa atlas stats` = 16,066 nodes · F=1,313 · ATLAS_HASH `6fae9277...` (NOREFLOW + ISR과 hash 동일)
 - [x] `pool list` 실행 → compile error 재현 (V3a · V3c agent 보고와 일치)
 - [x] LPA V3a/V3c agent 우회 = ssh direct (ubu-1 0.58s · ubu-2 0.054s) — 3rd cross-domain reproduction
-- [x] LPA V2 agent → hexa-lang **PR #665 OPEN** (`inbox/notes/2026-05-24-lpa-ivw-mr-formula.md`) — biostat 5 fn 요청
+- [x] LPA V2 agent → hexa-lang **PR #665 OPEN** (`archive/session-notes/2026-05-24-lpa-ivw-mr-formula.md`) — biostat 5 fn 요청
 - [x] CLI+COCKPIT.md LPA evidence section 추가 (NOREFLOW + ISR 표 패턴 확장)
 - [x] cross-domain wall 누적 통계 — 17+ identity × 4 도메인 (LPA + ISR + DAPTPGX + HERPES) 동시 unblock 대기
 - [ ] V2 atlas push agent 완료 대기 (in-flight)

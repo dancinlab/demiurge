@@ -1,5 +1,5 @@
 // ScopeSynthRecord — cohort-round producer (absorption empty-cell fill,
-// 2026-05-20 — no standalone PLAN κ / D-block, per inbox/notes/
+// 2026-05-20 — no standalone PLAN κ / D-block, per archive/session-notes/
 // absorption-empty-cells-research-2026-05-20.md §3 ROI rank 4).
 //
 // Typed sidecar for a `scope + synthesize` producer run — OpenMDAO

@@ -18,7 +18,7 @@
 //   - constitution.md R4
 //   - RTSC.md §8.9 (5-criteria gate) · §8.10 (Nb correction + Path B
 //     migration completed 2026-05-22)
-//   - inbox/notes/2026-05-21-r4-stage1-enforcement.md (migration plan,
+//   - archive/session-notes/2026-05-21-r4-stage1-enforcement.md (migration plan,
 //     Path B recommended + implemented)
 
 import XCTest

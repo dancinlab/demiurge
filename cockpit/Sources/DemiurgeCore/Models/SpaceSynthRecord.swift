@@ -1,6 +1,6 @@
 // SpaceSynthRecord — typed sidecar for the `space + synthesize`
 // producer (OpenMDAO multidisciplinary opt — NASA GSC-17177-1; ROI
-// rank 8 ⭐⭐⭐⭐ per inbox/notes/absorption-empty-cells-research-
+// rank 8 ⭐⭐⭐⭐ per archive/session-notes/absorption-empty-cells-research-
 // 2026-05-20.md §3 space block).
 //
 // EIGHTH cohort cell crossing the measuring-producer threshold (after
@@ -14,7 +14,7 @@
 // (generic MDO solver). At this commit, NO kernels/mdo/ promotion
 // exists in hexa-lang — so the substrate stays as a domain-local
 // adapter at `~/core/hexa-lang/stdlib/space/openmdao_mission.py`.
-// A promotion-pickup note in `inbox/notes/openmdao-kernel-promotion-
+// A promotion-pickup note in `archive/session-notes/openmdao-kernel-promotion-
 // pickup.md` flags that the second consumer (scope+synthesize) will
 // trigger the kernels/mdo/ promotion (2 consumers = promotion
 // candidate per D72).

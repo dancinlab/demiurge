@@ -193,7 +193,7 @@ public enum DependenciesLoader {
 
     /// D80 — inference helper: map a `portable_status` to the cell
     /// record's `GateType`. The mapping is the contract documented
-    /// in `inbox/notes/hexa-native-connection-plan-2026-05-20.md`
+    /// in `archive/session-notes/hexa-native-connection-plan-2026-05-20.md`
     /// §3.1 (permanent → `hexaNativeAbsent`) and §3.2 (heavy-port
     /// → `hexaNativeFuture`). All other statuses return nil — the
     /// cell-side dispatcher decides (likely keeps its current type).

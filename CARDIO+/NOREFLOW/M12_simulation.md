@@ -46,7 +46,7 @@ ssh ubu-2 'python3 /tmp/m12_mc.py'      # 10k iter · ~1-2 s
 ssh ubu-1 'python3 /tmp/m12_power.py'
 ```
 
-(pool CLI는 `hexa-lang` 컴파일 회귀 — `hexa_index_get` 미선언 — 로 일시 차단. ssh direct fallback 적용. 메모 → `inbox/patches/pool-hexa-build-regression.md` 후속 신호.)
+(pool CLI는 `hexa-lang` 컴파일 회귀 — `hexa_index_get` 미선언 — 로 일시 차단. ssh direct fallback 적용. 메모 → `archive/session-notes/patches/pool-hexa-build-regression.md` 후속 신호.)
 
 ---
 
@@ -270,7 +270,7 @@ IMR > 40 stratification:
 ## 10. 참고 + 후속
 
 - 실행 스크립트: `/tmp/m12_pk.py · /tmp/m12_iri.py · /tmp/m12_mc.py · /tmp/m12_power.py` (ubu-1 / ubu-2 캐시).
-- pool CLI 회귀 inbox 메모: `inbox/patches/pool-hexa-build-regression.md` (후속).
+- pool CLI 회귀 inbox 메모: `archive/session-notes/patches/pool-hexa-build-regression.md` (후속).
 - atlas extension (hexa-lang PR #658) merge 후 M12.1-M12.3 수식을 `hexa verify --expr` 등록 시 🟢 → 🔵 trajectory 가능 — V3 §4 참조.
 - 후속 단계: M10 honest fence + M11 atlas formal grade-up 완료 후 V4 tier ledger 통합.
 

@@ -2,7 +2,7 @@
 
 > 마일스톤 M13 산출물 · current-state · no history.
 > 목적 = M7 cube의 입력단 (CYP2C19 diplotype) 을 산출하는 5개 caller 의 head-to-head 정확도 · 한국인 cohort 검증 · cockpit (M5 synthesize panel) routing spec.
-> 의존 = M11 (caller 인벤토리: inbox/notes/daptpgx-cyp-callers.md) · M1 (한국 allele 빈도) · M7 (POC genotyping + EMR CDS workflow §6-8).
+> 의존 = M11 (caller 인벤토리: archive/session-notes/daptpgx-cyp-callers.md) · M1 (한국 allele 빈도) · M7 (POC genotyping + EMR CDS workflow §6-8).
 > 등급 = 🟡 SUPPORTED-BY-CITATION (literature audit) — head-to-head 한국 cohort 실측은 부재 (§7 acquisition plan).
 > 원칙 = d6 정직 (literature spec만) · d2 paths (실측 cohort 부재 → KOVA2/KRGDB acquisition path 제시, concede 아님) · g5 verbatim 인용 · g0 Occam.
 
@@ -467,7 +467,7 @@ atlas append-witness --kind X --id Astrolabe.USC.proprietary \
 
 ## §13. cross-reference
 
-- M11 (caller 인벤토리, 5-tool 비교 표): `/Users/ghost/core/demiurge/inbox/notes/daptpgx-cyp-callers.md`
+- M11 (caller 인벤토리, 5-tool 비교 표): `/Users/ghost/core/demiurge/archive/session-notes/daptpgx-cyp-callers.md`
 - M7 (POC genotyping + EMR CDS workflow): `/Users/ghost/core/demiurge/DAPTPGX/M7_map.md` §6, §8
 - M1 (한국 allele 빈도 — caller 검증의 ground truth): `/Users/ghost/core/demiurge/DAPTPGX/M1_allele.md` §3
 - M5 (POC PFT + genotyping panel): `/Users/ghost/core/demiurge/DAPTPGX/M5_pft.md` §8

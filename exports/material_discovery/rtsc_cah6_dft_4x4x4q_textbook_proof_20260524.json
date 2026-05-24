@@ -82,6 +82,6 @@
     "Quantum ESPRESSO 7.5 (conda-forge)",
     "RTSC.md §9.12 (H3S baseline) · §9.14 (d7 wall α2F grid ceiling) · §10.1 (verdict) · §10.3 (BEE-NET grid extension)",
     "project.tape @D d2 (wall breakthrough — never concede) · @D d6 (absorbed=true requires measured-oracle PASS) · @D d7 (first-principles physics over ML wall) · @D d8 (small-cell pool free baseline)",
-    "hexa-lang inbox/patches/cah6-dft-phonon-sternheimer-nan-wall-2026-05-24.md (d9 upstream surface — superseded by cell-choice root-cause finding, not hexa cloud bug)"
+    "hexa-lang archive/session-notes/patches/cah6-dft-phonon-sternheimer-nan-wall-2026-05-24.md (d9 upstream surface — superseded by cell-choice root-cause finding, not hexa cloud bug)"
   ]
 }

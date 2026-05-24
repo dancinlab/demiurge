@@ -644,7 +644,7 @@ over-claim, closed-binary RE, silent skip, premature tombstone.
 - machine index:    `ARCH.tape`
 - north-star:       `GOAL.md`
 - absorption recipe:`ABSORPTION.md`
-- inbox index:      `inbox/INDEX.md`
+- inbox index:      `archive/session-notes/INDEX.md`
 - per-domain spec:  `domains/<name>.md`
 
 ---
@@ -1193,7 +1193,7 @@ historical* 표면 — 현 ground truth 는 §11.4 + §11.5 의 G1–G38 Round 1
 > code 0). **G39–G42 라운드 10 (`κ-71 fourth-cell measurement round`
 > — R10 4/4 LANDED 2026-05-22 · G39 + G40 `[x]` · G41 D121→D122 same-day kernel-refinement flip · G42 4/4 proper closure)** 는
 > κ-70 R9 closure entry 의 'next horizon (κ-71+)' scope 를 4 placeholder
-> G-item + G39 candidate-research note (`inbox/notes/2026-05-22-k71-
+> G-item + G39 candidate-research note (`archive/session-notes/2026-05-22-k71-
 > horizon-candidate-research.md` · 3 finalist Energy/wind · Bio/ECG ·
 > Chem/Arrhenius · ranking advisory #1 Energy/wind) 동시 박은 scaffold
 > 로 시작 → **G40 cell-pick decision LANDED (DESIGN.md D120 · Energy/
@@ -1217,7 +1217,7 @@ historical* 표면 — 현 ground truth 는 §11.4 + §11.5 의 G1–G38 Round 1
 > 라운드 11 (`κ-72 R11 horizon · scaffold 2026-05-22 · all `[ ]`)** 는
 > κ-71 R10 closure entry 의 "next horizon (κ-72+)" 약속 이행 — 3
 > framing 후보 (A=G41 resumption · B=5th cell · C=hybrid) 의 candidate-
-> research 동시 land (`inbox/notes/2026-05-22-k72-horizon-framing-
+> research 동시 land (`archive/session-notes/2026-05-22-k72-horizon-framing-
 > research.md` · ranking advisory: Framing A · pick belongs to G43/G44).
 > Framing A 채택 시 G43 = resumption-track decision (D122) · G44 =
 > substrate refinement OR D-block-only oracle relaxation · G45 = G41
@@ -1499,7 +1499,7 @@ historical* 표면 — 현 ground truth 는 §11.4 + §11.5 의 G1–G38 Round 1
     `_gen2_should_autowrap_fnref(name)` 헬퍼가 current-fn params/lets
     체크. Sibling: `stdlib/core/math/wrap_pi.hexa` 신규 primitive
     (Python `math.fmod` parity, ±π 보존) + 12-case unit test PASS.
-    Orbital Kepler pilot (#5b inbox/notes) 의 workaround `e → ecc`
+    Orbital Kepler pilot (#5b archive/session-notes) 의 workaround `e → ecc`
     rename 회수 가능.
   - **4389da0c** (hexa-lang): inbox pilot-pattern 표가 codegen-gotcha-A
     discovery 통합 — cross-repo pilot 패턴 SSOT 갱신.
@@ -1507,7 +1507,7 @@ historical* 표면 — 현 ground truth 는 §11.4 + §11.5 의 G1–G38 Round 1
   - new files (hexa-lang):
     - `stdlib/core/math/wrap_pi.hexa` (primitive)
     - `stdlib/core/math/wrap_pi_test.hexa` (12 falsifiers)
-    - `inbox/notes/2026-05-20-codegen-gotcha-A-…` (post-mortem)
+    - `archive/session-notes/2026-05-20-codegen-gotcha-A-…` (post-mortem)
   - edit (hexa-lang):
     - `self/codegen_c2.hexa` (helper + 5 wrap-site replacement)
     - `stdlib/kernels/orbital/kepler_2body_kernel.hexa` (use stdlib wrap_pi)
@@ -1904,13 +1904,13 @@ geodesy WGS84, 2026-05-20)**
 
 - [x] **G26.** D80 sweep close breakthrough note (1f9f934 · cold-
     start anchor)
-  - **1f9f934**: `inbox/notes/d80-sweep-close-2026-05-20.md` 신규 —
+  - **1f9f934**: `archive/session-notes/d80-sweep-close-2026-05-20.md` 신규 —
     D80 sweep 의 single-session digest (15 PILOTS.demi rows ·
     14 kernel folders · 5 .demi SSOTs · 5 cockpit Loaders · 4-case
     chip · 19/19 도메인 narrative · D104 reserved · RFC 013 MOSTLY-
     LANDED). 새 session 또는 외부 reviewer 가 standalone 으로 읽고
     모든 artifact location 을 1-pass 추적 가능한 cold-start anchor.
-    `inbox/INDEX.md` 에 row 추가 (status = archive · 27 entries 도달).
+    `archive/session-notes/INDEX.md` 에 row 추가 (status = archive · 27 entries 도달).
   - **note**: 본 note 의 PILOTS row count "15" 는 geodesy (acac78c)
     land 직전 시점 스냅숏 — 현 origin/main 16 row 와 1 row 차이는
     G25 post-closure pilot 때문이고, note 가 superseded 되지 않고
@@ -1919,11 +1919,11 @@ geodesy WGS84, 2026-05-20)**
   - deps: D108 closure + D87..D107 누적 · 7 Findings · §3 SHA cite
     table · §5 topology (15 PILOTS · 14 kernel · 5 SSOT · 5 Loader)
   - new files:
-    - `inbox/notes/d80-sweep-close-2026-05-20.md`
+    - `archive/session-notes/d80-sweep-close-2026-05-20.md`
   - edit:
-    - `inbox/INDEX.md` (row · status archive · 27 entries)
+    - `archive/session-notes/INDEX.md` (row · status archive · 27 entries)
   - exit:
-    - inbox/INDEX.md 27 entries 도달
+    - archive/session-notes/INDEX.md 27 entries 도달
     - swift build/test 무관 (doc-only)
 
 **라운드 7 — κ-68 per-cell measured-oracle parity round (RFC 013 §6.11 ·
@@ -1950,7 +1950,7 @@ in-progress)**
     5% over clear-sky daylight hours**. 회피 후보 4개 (Fusion D106
     illustrative · ChipAnalyze YOSYS 별 세션 · Aura heavy infra · Ufo
     closed-form only) — rationale 명시. code 0 (decision-only).
-  - **audit trail**: inbox/notes/k68-cell-pick-2026-05-21.md (cell
+  - **audit trail**: archive/session-notes/k68-cell-pick-2026-05-21.md (cell
     pick anchor · 5 sub-decision 정렬) + k68-d109-draft-2026-05-21.md
     (D109 pre-land 검토 draft).
   - deps: G19..G26 누적 · RFC 013 §6.11 · D80 (honesty floor) ·
@@ -2077,7 +2077,7 @@ in-progress)**
     constitution.md` governance row land 은 constitution.md 가
     template-only (line 1 `# [PROJECT_NAME] Constitution`) 인 동안
     보류. constitution.md populate timing 은 별도 사용자 결정 ·
-    κ-68 G30 scope 밖. land 후보 row 의 안은 `inbox/notes/k68-g30-
+    κ-68 G30 scope 밖. land 후보 row 의 안은 `archive/session-notes/k68-g30-
     revised-2026-05-21.md` §Stage 2 안에 박힘.
   - **scope rationale (post-archive)**: 1a620ad (AGENTS.tape `archive/`
     이동) + ca61a6c (Spec Kit Phase 2 채택 · constitution.md 가 새
@@ -2086,9 +2086,9 @@ in-progress)**
     사용자 메모 ".tape 안쓰여 현재 (참고)" — XCTest 가 real
     enforcement vehicle. G30 의 load-bearing enforcement 는 Stage 1
     단독으로 충족.
-  - **audit trail**: `inbox/notes/k68-g30-governance-row-sketch-
+  - **audit trail**: `archive/session-notes/k68-g30-governance-row-sketch-
     2026-05-21.md` (SUPERSEDED · 옛 AGENTS.tape sketch · body 보존)
-    + `inbox/notes/k68-g30-revised-2026-05-21.md` (post-archive
+    + `archive/session-notes/k68-g30-revised-2026-05-21.md` (post-archive
     revised plan · Stage 1 mandatory + Stage 2 deferred).
   - deps: G28 (`MeasuredOracleRef` schema · `4a1a087`) · D103
     (dimension-separation) · D106 (illustrative-physics 제외)
@@ -2245,7 +2245,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     C Ufo/plasma = formula-evaluation honesty floor 약함 · IMAS
     access 불확실 · Stage-4..7 D106 carve-out 필요) — rationale
     명시. code 0 (decision-only).
-  - **audit trail**: `inbox/notes/k69-g32-candidate-research-2026-05-
+  - **audit trail**: `archive/session-notes/k69-g32-candidate-research-2026-05-
     21.md` (144 line · 3 finalist analysis · Aura/EEG #1 ranked ·
     Candidate A 5-fold lock-in articulated + Candidate B/C trade-
     off 분석).
@@ -2341,7 +2341,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
 
 > κ-69 R8 closure entry 의 'κ-70+ next horizon' 약속 이행 — Round 9
 > scaffold 박음. 4 axis 묶음: (a) **G35** 3rd cell candidate research
-> 박제 (이번 cycle 동시 land · `inbox/notes/2026-05-22-k70-horizon-
+> 박제 (이번 cycle 동시 land · `archive/session-notes/2026-05-22-k70-horizon-
 > candidate-research.md` cite) · (b) **G36** 3rd cell pick + measured-
 > oracle source 5-fold lock-in decision (κ-68 G27 / κ-69 G32 의 동형 ·
 > pre-code decision gate) · (c) **G37** 3rd cell 첫 `absorbed=true`
@@ -2362,7 +2362,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     lock-in articulation. κ-69 G32 note 의 Candidate B (Energy/wind) +
     C (Ufo/plasma) 는 κ-70 carry · 새 finalist 1 (Bio/seq-alignment
     또는 ECG) 추가. 본 G35 = decision 가이드 only, user pick 은 G36.
-  - **artifact**: `inbox/notes/2026-05-22-k70-horizon-candidate-
+  - **artifact**: `archive/session-notes/2026-05-22-k70-horizon-candidate-
     research.md` — 3 finalist (Ufo/plasma Stage-2 · Energy/wind ·
     Bio/ECG) 의 5-fold lock-in 비교표 + ranking + open question
     + cross-reference. RANK 제안 (advisory only):
@@ -2376,13 +2376,13 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     - #3 Bio/ECG (PhysioNet MIT-BIH · NEW DOMAIN signal · trivial
       anonymous wget · 그러나 `BioVerifyRecord` 신설 cost 가장 무거움)
   - **exit criterion**:
-    - candidate-research note 박제 [x] (`inbox/notes/2026-05-22-k70-
+    - candidate-research note 박제 [x] (`archive/session-notes/2026-05-22-k70-
       horizon-candidate-research.md` · 본 cycle land)
     - 3 finalist 의 5-fold lock-in dimension articulated [x]
     - ranking 제안 + open question 명시 [x]
     - D-block 미land [x] (G36 시점 land · D118 자연 순서)
     - 새 code 0 · 새 stored field 0 · 새 `.demi` row 0
-  - **deps**: κ-69 R8 4/4 closure (G31..G34) · `inbox/notes/k69-g32-
+  - **deps**: κ-69 R8 4/4 closure (G31..G34) · `archive/session-notes/k69-g32-
     candidate-research-2026-05-21.md` (template + B/C carry) ·
     `domains/PILOTS.demi` (substrate-parity floor inventory · Ufo /
     Wind / Bio 후보 axis)
@@ -2395,7 +2395,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     Ufo/plasma Stage-2 (#1 ranked default) · JET open-pulse archive
     mid-Ohmic single shot · λ_D Debye length axis · `pilot-plasma_
     metrics` 41/41 bit-exact substrate-parity floor · 5-fold lock-in
-    decision · code 0 · research note `inbox/notes/2026-05-22-k70-
+    decision · code 0 · research note `archive/session-notes/2026-05-22-k70-
     horizon-candidate-research.md` cite · Stage-4..7 D106 illustrative
     carve-out 명시 박제 (G37 의 `scopeCaveats` array obligation) ·
     회피 후보 reject rationale (Energy/wind = substrate kernel 신설
@@ -2441,7 +2441,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
       land · κ-69 G33 reuse confirmed)
     - 새 code 0 · 새 stored field 0 · 새 `.demi` row 0
     - PLAN.md κ-70 G36 LANDED entry + ARCH §11.5 G36 `[ ]` → `[x]` flip
-  - **deps**: G35 (research note 박제) · `inbox/notes/2026-05-22-k70-
+  - **deps**: G35 (research note 박제) · `archive/session-notes/2026-05-22-k70-
     horizon-candidate-research.md` (3 finalist analysis) · G28
     schema (`MeasuredOracleRef.swift` · `4a1a087`) · D80 honesty
     floor · D86 (no hardcoded data) · D103 (dimension-separation) ·
@@ -2537,7 +2537,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     PATCH update (pre-committed/pending → LANDED/COMPLETE) — `@D d6`
     self-rule ("edit this row in-place except for PATCH wording") 준수.
   - **exit criterion** (G34 closure entry mirror · 모두 [x]):
-    - [x] κ-70 R9 4 G-item 누적 LANDED 박제 (G35 [x] `inbox/notes/
+    - [x] κ-70 R9 4 G-item 누적 LANDED 박제 (G35 [x] `archive/session-notes/
       2026-05-22-k70-horizon-candidate-research.md` · G36 [x] D118
       `40408dc` · G37 [x] D119 `5e61efb`+`bea00e8` · G38 [x] 본 entry)
     - [x] PASS shape honest disclosure (Ufo/plasma + JET-like oracle 의
@@ -2586,7 +2586,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
 >
 > κ-70 R9 closure entry (`e818218`) 의 'next horizon (κ-71+)' 약속
 > 이행 — Round 10 scaffold 박음. 4 axis 묶음: (a) **G39** 4th cell
-> candidate research 박제 (이번 cycle 동시 land · `inbox/notes/
+> candidate research 박제 (이번 cycle 동시 land · `archive/session-notes/
 > 2026-05-22-k71-horizon-candidate-research.md` cite) · (b) **G40**
 > 4th cell pick + measured-oracle source 5-fold lock-in decision
 > (κ-68 G27 / κ-69 G32 / κ-70 G36 동형 · pre-code decision gate ·
@@ -2619,7 +2619,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     5-fold lock-in articulation. κ-70 G36 note 의 Candidate B (Energy/
     wind) + C (Bio/ECG) 는 κ-71 carry · 새 finalist 1 (Chem/Arrhenius)
     추가. 본 G39 = decision 가이드 only, user pick 은 G40.
-  - **artifact**: `inbox/notes/2026-05-22-k71-horizon-candidate-
+  - **artifact**: `archive/session-notes/2026-05-22-k71-horizon-candidate-
     research.md` — 3 finalist (Energy/wind · Bio/ECG · Chem/Arrhenius)
     의 5-fold lock-in 비교표 + ranking + open question + cross-
     reference + κ-71 structural-inflection 박제. RANK 제안 (advisory
@@ -2636,13 +2636,13 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
       그러나 substrate floor 가장 약함 = `pilot-chem_arrhenius`
       Stage-0 *self-test only* · no external oracle yet)
   - **exit criterion**:
-    - candidate-research note 박제 [ ] (`inbox/notes/2026-05-22-k71-
+    - candidate-research note 박제 [ ] (`archive/session-notes/2026-05-22-k71-
       horizon-candidate-research.md` · 본 cycle land)
     - 3 finalist 의 5-fold lock-in dimension articulated [ ]
     - ranking 제안 + open question + structural-inflection 명시 [ ]
     - D-block 미land [ ] (G40 시점 land · D120 자연 순서)
     - 새 code 0 · 새 stored field 0 · 새 `.demi` row 0
-  - **deps**: κ-70 R9 4/4 closure (G35..G38 · `e818218`) · `inbox/
+  - **deps**: κ-70 R9 4/4 closure (G35..G38 · `e818218`) · `archive/session-notes/
     notes/2026-05-22-k70-horizon-candidate-research.md` (template +
     B/C carry) · `domains/PILOTS.demi` (substrate-parity floor
     inventory · `pilot-bio_align_nw` 36/36 · `pilot-chem_arrhenius`
@@ -2716,7 +2716,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     - [x] 새 code 0 · 새 stored field 0 · 새 `.demi` row 0
     - [x] PLAN.md κ-71 G40 LANDED entry + ARCH §11.6 G40 `[ ]` → `[x]`
       flip
-  - **deps**: G39 (research note 박제) · `inbox/notes/2026-05-22-k71-
+  - **deps**: G39 (research note 박제) · `archive/session-notes/2026-05-22-k71-
     horizon-candidate-research.md` (3 finalist analysis) · G28 schema
     (`MeasuredOracleRef.swift` · `4a1a087`) · D80 / D86 / D103 / D106 /
     D116 floors
@@ -2938,7 +2938,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
     - [ ] 새 code 0 · 새 stored field 0 · 새 `.demi` row 0
     - [ ] PLAN.md κ-72 G43 LANDED entry + ARCH §11.7 G43 `[ ]` → `[x]`
       flip
-  - **deps**: 본 §11.7 scaffold land · `inbox/notes/2026-05-22-k72-
+  - **deps**: 본 §11.7 scaffold land · `archive/session-notes/2026-05-22-k72-
     horizon-framing-research.md` (3-framing 5-fold lock-in · ranking
     advisory · 본 commit 동시 land) · D121 (κ-71 G41 PARTIAL · the
     precedent · resumption paths (i)/(ii)/(iii) baked-in) · D120
@@ -2957,7 +2957,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
       form · 다음 중 1: multi-segment quadratic · sigmoidal-on-rated ·
       piecewise-cubic with rated smoothing) · cross-impl parity vs
       Python ref · hexa-lang PR mirror PR #308 pattern · κ-71 G41
-      substrate sub-phase mirror (`inbox/notes/2026-05-22-k71-g41-
+      substrate sub-phase mirror (`archive/session-notes/2026-05-22-k71-g41-
       substrate-LANDED.md` 동형)
     - **Framing A · Path (ii)**: `DESIGN.md ### Decision 122` body
       가 새 PASS criterion 정의 (operating-regime weight by energy
@@ -3173,7 +3173,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
 >    (group-16 light · 6³q · λ_BZ=2.31–2.73 · ω_log=1089–1111 K ·
 >    Tc(μ=0.10)=171–191 K · celldm=4.899) · CaH₆ pool:ubu-1 DEAD
 >    (OOM SIGKILL · Vast live).
-> 2. `006819b` — `inbox/notes/h3o-novel-191k-group16-sweet-spot-2026-05-23.md`
+> 2. `006819b` — `archive/session-notes/h3o-novel-191k-group16-sweet-spot-2026-05-23.md`
 >    + d7 wall breakthrough paths 7개 + INDEX 갱신.
 > 3. `d2060a3` — RTSC.log §9.15 closed-loop bayesian update · actual Tc
 >    + verdict + axis_violated 3 컬럼 · 4 LANDED PASS/FAIL/PENDING 4-zone
@@ -3186,7 +3186,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
 > **2 sibling-repo cross-impact**:
 >
 > - **sidecar `8029c18`** — `commons @D g47` atomic-merge
->   `inbox/patches/**` PR exemption (maintainer review 보존) · 후속
+>   `archive/session-notes/patches/**` PR exemption (maintainer review 보존) · 후속
 >   `4e64f0b` pr-automerge 0.3.0 lockstep + `affc689` + `13afebd`.
 > - **hexa-lang PR #541 MERGED + PR #548 OPEN** — Vast.ai upstream
 >   흡수 (d9 경로 · `hexa cloud` argv-guard + dft-runner nproc fix
@@ -3208,7 +3208,7 @@ measurement round (LANDED 2026-05-22 · 4/4 CLOSURE)**
 > sizing 위반). 진짜 live = Vast pod 37378728. 학습: pool ubu-1/2
 > baseline 은 4-7 atom 만 · ≥20 atoms 는 GPU pod (d8 재확인).
 >
-> **h3p a priori prediction 박제** — `inbox/notes/h3p-priori-
+> **h3p a priori prediction 박제** — `archive/session-notes/h3p-priori-
 > prediction-2026-05-24.md` · group-15 P · ETA ~05:38 KST · pred
 > Tc(μ=0.10) 90–150 K · ALIGNN per-cand λ=0.585 (정상 mid-range ·
 > sign-path 없음). group-15 covalent vs group-16 light-X sweet 가설
@@ -3243,7 +3243,7 @@ running parallel to the per-cell measured-oracle round structure of
 §11.4. Each axis owns its own gate (g3 substrate · `measurement_gate`
 flip) and lands independently of the §11.4 G-rounds. ARCH §12 carries
 the narrative anchor + Tier-1/2/3 shape; detail SSOTs live in
-`inbox/notes/`.
+`archive/session-notes/`.
 
 > **landing-axis distinction** — D80 endpoint rule (§0): per-cell
 > `absorbed=true` (e.g. chip §B+§D κ-43 dynamic flip) is a separate
@@ -3256,7 +3256,7 @@ the narrative anchor + Tier-1/2/3 shape; detail SSOTs live in
 > **infrastructure-axis distinction** — Many §12 substrate-axis measurements
 > can route their heavy compute through the `pool` CLI infrastructure
 > layer (e.g. chip §B substrate-axis ABC cross-platform reproducibility
-> audit ran on ubu-2 per `inbox/notes/2026-05-21-pool-gate_v3-abc-
+> audit ran on ubu-2 per `archive/session-notes/2026-05-21-pool-gate_v3-abc-
 > diagnosis.md`). Pool is a *venue, not an endpoint* — closing a §12
 > substrate-axis via pool dispatch still requires the hexa-native parity
 > port to satisfy §0. Cross-link: `POOL.md` for the routing taxonomy +
@@ -3270,7 +3270,7 @@ the narrative anchor + Tier-1/2/3 shape; detail SSOTs live in
 > log was promoted to top-level **[`./YOSYS.md`](./YOSYS.md)** (spec) +
 > **[`./YOSYS.log.md`](./YOSYS.log.md)** (campaign history). See those
 > two files for the canonical Yosys absorption status. Detail SSOT
-> remains `inbox/notes/rfc006-s5-area-oracle-parity-handoff.md`.
+> remains `archive/session-notes/rfc006-s5-area-oracle-parity-handoff.md`.
 
 
 ---

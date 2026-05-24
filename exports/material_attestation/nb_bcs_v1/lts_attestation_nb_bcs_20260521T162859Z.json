@@ -65,7 +65,7 @@
     "BCS weak-coupling assumption: applies to clean conventional phonon-mediated s-wave SC. Nb is the canonical example; for Nb3Sn (strong coupling) the ratio renormalizes to ~3.9-4.5 and would require Eliashberg-level treatment.",
     "Tunneling-derived 2\u0394 measurements assume clean planar NIS junctions at T<<Tc and depend on barrier transparency / self-energy corrections. The ~1.5% scatter across labs reflects this systematic uncertainty.",
     "The prediction is *universal* (parameter-free), not derived from Nb-specific inputs. So this is a stringent test of BCS theory itself \u2014 but NOT a falsification of any other SC family. d-wave cuprates (REBCO) have 2\u0394/k_B\u00b7Tc \u2248 4-8 \u2014 they would FAIL this parity by design.",
-    "absorbed=true here means: 'BCS universal ratio is experimentally vindicated for Nb to <5%' \u2014 NOT 'Nb is a RTSC' (it is decisively LTS). The record's `domain` field was migrated from 'rtsc' (namespace, ambiguous) to 'lts' (material-class, unambiguous) on 2026-05-22 per constitution R4 invariant (inbox/notes/2026-05-21-r4-stage1-enforcement.md Path B)."
+    "absorbed=true here means: 'BCS universal ratio is experimentally vindicated for Nb to <5%' \u2014 NOT 'Nb is a RTSC' (it is decisively LTS). The record's `domain` field was migrated from 'rtsc' (namespace, ambiguous) to 'lts' (material-class, unambiguous) on 2026-05-22 per constitution R4 invariant (archive/session-notes/2026-05-21-r4-stage1-enforcement.md Path B)."
   ],
   "citations": [
     "Bardeen-Cooper-Schrieffer 1957 PR 108, 1175 \u2014 BCS theory; universal ratio derivation.",
@@ -74,7 +74,7 @@
     "Schwidtal-Finnegan 1969 PSS 31, 71 \u2014 high-precision repeat.",
     "Tinkham 1996 'Introduction to Superconductivity' 2nd ed. \u2014 Ch. 3.",
     "RTSC.md \u00a78.2 LTS family \u00b7 \u00a78.7 4-tier expansion \u00b7 \u00a78.8 g3 honest stance \u00b7 \u00a78.9 5-criteria gate \u00b7 \u00a78.10 Nb honest correction (Path B migration target).",
-    "constitution.md v1.4.0 \u00a7R4 (RTSC absorbed=true twin-error invariant) \u00b7 inbox/notes/2026-05-21-r4-stage1-enforcement.md (Path B = recommended).",
+    "constitution.md v1.4.0 \u00a7R4 (RTSC absorbed=true twin-error invariant) \u00b7 archive/session-notes/2026-05-21-r4-stage1-enforcement.md (Path B = recommended).",
     "Companion: exports/energy/verify/2026-05-21T03-07-39Z/ \u2014 solar pyranometer absorbed=true precedent (same shape)."
   ],
   "skipped_reason": null

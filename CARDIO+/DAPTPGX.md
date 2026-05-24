@@ -14,7 +14,7 @@
 - [x] cost-effectiveness + universal vs targeted PGx 전략 → `DAPTPGX/M8_econ.md`
 - [x] arxiv/PubMed deep dive 2024-2026 — M1-M8 cite 보강 + new findings → `DAPTPGX/M9_arxiv.md`
 - [x] web 임상 readout · 가이드라인 update — SOS-AMI · VICTORY · POPular II · KSC 2025 → `DAPTPGX/M10_readouts.md`
-- [x] PGx 라이브러리/도구 인벤토리 — hexa-lang/atlas SSOT handoff → `demiurge/inbox/notes/daptpgx-pgx-library-inventory.md` (+ 카테고리별 분할)
+- [x] PGx 라이브러리/도구 인벤토리 — hexa-lang/atlas SSOT handoff → `demiurge/archive/session-notes/daptpgx-pgx-library-inventory.md` (+ 카테고리별 분할)
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
 
 - [x] V1 DAPTPGX claim inventory + tier triage (🔵/🟢/🟡/🟠) → `DAPTPGX/verify/V1_claim_inventory.md`

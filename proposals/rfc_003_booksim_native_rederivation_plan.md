@@ -134,7 +134,7 @@ Two reasons:
   refused for the export artifact, on weaker grounds (no second
   consumer);
 - it would force the entire absorption through hexa-lang's
-  `inbox/patches/` pipeline (`hexa-lang/AGENTS.tape` g7), adding a
+  `archive/session-notes/patches/` pipeline (`hexa-lang/AGENTS.tape` g7), adding a
   multi-PR ceremony for code that exactly one consumer (comb) will
   exercise — andrej-karpathy simplicity violation.
 

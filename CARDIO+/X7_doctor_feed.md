@@ -7,7 +7,7 @@
 
 ## ◆ Thesis (1-sentence)
 
-> **mPTP 는 "죽은 표적" 이 아니라 mis-delivered (IV bolus 4 RCT null 은 약물 falsify 가 아니라 전달 falsify — IC-sync ODE Δ36.6pp) 이고, single-track review 로는 안 보이지만 4-track coupled (no-reflow · DAPT-PGx · ISR · Lp(a)) 로 보면 한국인 ethnicity 3축 (ALDH2\*2 40% × CYP2C19 LoF 60% × Lp(a) high 12-13%) 이 단일 leverage 로 수렴 — 최대 한국 leverage = 신규 IND 불요·기존 NHIS 급여 안의 "채혈 1회 3-axis stratification".**
+> **mPTP 는 "죽은 표적" 이 아니라 mis-delivered **일 수 있고** (IV bolus 4 RCT null + IC-sync ODE Δ36.6pp 가 "약물 falsify 가 아니라 전달 falsify" 의 정량적 그럴듯함을 제시 · 인과 확정은 IC-sync delivery RCT downstream — X13), single-track review 로는 안 보이지만 4-track coupled (no-reflow · DAPT-PGx · ISR · Lp(a)) 로 보면 한국인 ethnicity 3축 (ALDH2\*2 40% × CYP2C19 LoF 60% × Lp(a) high 12-13%) 이 단일 leverage 로 수렴 — 최대 한국 leverage = 신규 IND 불요·기존 NHIS 급여 안의 "채혈 1회 3-axis stratification".**
 
 ---
 
@@ -111,6 +111,8 @@ gate: 2026 H1 HORIZON readout · 2027 Q4 NMN-PRECON · 2028 Q2 CMR primary · 20
 │          7~28 동시) = 4-track 최고 코드 leverage (X9 §7 순위 1)          [X9 §8]│
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
+
+> ⚠ numerical(🟢 산술 재현)은 인과 확정이 아님 — Δ36.6pp·β 등은 산술 견고 · 인과 라벨은 RCT/실측 downstream (X13 red-team).
 
 ---
 

@@ -9,7 +9,7 @@
 // Producer = `~/core/hexa-lang/stdlib/rtsc/pyfemm_magnetics.py` — pyfemm
 // drives FEMM (D. Meeker) for 2-D axisymmetric HTS coil B-field maps.
 // Citations: arxiv:0811.2883, FEMM 4.2 manual, HTS Modelling Workgroup.
-// Existing handoff: `inbox/notes/cohort-pickup-rtsc-femm-producer.md`.
+// Existing handoff: `archive/session-notes/cohort-pickup-rtsc-femm-producer.md`.
 //
 // D61: substrate SSOT in hexa-lang/stdlib/, demiurge witnesses only.
 // D72: FEMM has its own ecosystem (NOT skfem); stays in rtsc adapter.

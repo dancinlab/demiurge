@@ -63,7 +63,7 @@ Spec at [`./ABSORPTION.md`](./ABSORPTION.md). Log entries below preserve session
   synth area parity 100% PASS (substrate fix 76cce52a, hex-pack
   collecting area + 7/19/37 ring labels); scope+verify WebbPSF v2
   surfaced λ-mismatch design flaw (550 nm vs 4.8 μm, 4 fix options
-  surveyed); inbox/INDEX.md SSOT 신규 (20 entries 분류); NEXT_SESSIONS.md
+  surveyed); archive/session-notes/INDEX.md SSOT 신규 (20 entries 분류); NEXT_SESSIONS.md
   7 handoff prompts (H-1..H-7) for cross-session heavy installs.
   flip 0 (auto-flip 안 함, g3 honest).
 - 2026-05-20 — **κ-54 — D75 scope+verify substrate fix (Option B,

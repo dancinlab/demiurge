@@ -8,7 +8,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-05-24
 
-- **루트 INBOX 도메인 생성 — cross-repo handoff 수신용** (sidecar commons g11/g36/g48/g59 정합). demiurge 자체 inbox/(cross-session notes + INDEX.md, 108 entries)는 별개 내부 시스템으로 그대로 유지.
+- **`inbox/` 폴더 폐기 — open handoff INBOX 이관, 세션 노트 archive/ 이동** — 구 `inbox/`(notes 108 + INDEX.md + patches 2) 를 `git mv` 로 `archive/session-notes/` 이관 (data loss 0). 열린 handoff 15건(pickup-open 11 + pickup-blocked 2 + cross-repo patch 2) 은 `INBOX.md` `- [ ]` 로 이관, 나머지 ~93 historical 노트는 archive 보존(INBOX.log 범람 방지). repo 전역 `inbox/` 경로 인용 72개 파일 일괄 갱신(타 repo 인용 보존). INBOX scope = cross-repo + demiurge cross-session pickup 통합 수신함.
+- **루트 INBOX 도메인 생성 — cross-repo handoff 수신용** (sidecar commons g11/g36/g48/g59 정합). demiurge 자체 archive/session-notes/(cross-session notes + INDEX.md, 108 entries)는 별개 내부 시스템으로 그대로 유지.
 
 ### 2026-05-24 cycle 9-full+ batch (5 commits · CaH₆ 측정-grade anchor #2 + d7 wall α²F grid 100→140 meV 돌파)
 
@@ -33,7 +34,7 @@ For the full audit trail, see `git log`.
 - **§9.15 closed-loop Bayesian update** (`d2060a3`) — 4 LANDED actual Tc · verdict · axis_violated 3 컬럼 추가; PASS(h3si·h3o) → FAIL above(h3cl) → FAIL below(h3f) → PENDING(h3n·h3p·h3as·h3br) 4-zone 정렬. light-X covalent-radius mass-scaling 가설 **falsified** (h3f χ=3.98 가 group-17 최저 Tc); electronegativity-damage axis dominant (4/5 evidence); group-16 sweet 강화. next critical = h3br (χ-damage 단독 분리).
 - **§9 ALIGNN family-wide 통합 · h3br critical-test 가설** (`7eda05e`) — cycle 6+7 통합 9/9 H₃X family-wide ALIGNN per-candidate baseline 완주 (pool:ubu-1, alignn 2026.4.2 / torch 2.4.0+cpu, 평균 0.7 s/cand). 핵심 신규 발견: ① sign-pathology family-wide **3/9** (h3o·h3po·h3n — light X covalent localization), ② λ≥1 strong-coupling outlier 2/9 (h3cl·h3br 신규), ③ Tc-direct cap **4–6 K** family-wide (ambient ML training-distribution ceiling 정량), ④ group-15 ML λ 광범위 분산 −0.18~0.58.
 - **inbox h3o headline + d7 wall breakthrough paths** (`006819b`) — h3o 191 K novel headline 노트 + d7 wall mechanism 돌파 paths 7개 + INDEX 갱신.
-- **sibling: sidecar `8029c18`** — `commons @D g47` atomic-merge `inbox/patches/**` PR exemption (maintainer review 보존); `4e64f0b` pr-automerge 0.3.0 lockstep + `affc689` worktree disk fill-up trouble 노트 + `13afebd` 2 cross-project inbox/patches.
+- **sibling: sidecar `8029c18`** — `commons @D g47` atomic-merge `archive/session-notes/patches/**` PR exemption (maintainer review 보존); `4e64f0b` pr-automerge 0.3.0 lockstep + `affc689` worktree disk fill-up trouble 노트 + `13afebd` 2 cross-project archive/session-notes/patches.
 - **sibling: hexa-lang PR #541 MERGED + PR #548 OPEN** — Vast.ai upstream 흡수 (d9 경로 · `hexa cloud` argv-guard + dft-runner nproc fix 후속).
 - **h3p a priori prediction 박제** — group-15 P · ETA ~05:38 KST 5/24 · pred Tc(μ=0.10) 90–150 K · ALIGNN per-cand λ=0.585 (정상 mid-range, sign-path 없음). group-15 covalent-bonding-dominant vs group-16 light-X sweet 가설의 첫 분리 datapoint.
 
@@ -49,7 +50,7 @@ For the full audit trail, see `git log`.
 ### 2026-05-23 cycle 0-5 batch (9 commits · κ-73 out-of-band audit)
 
 - **RTSC §9 H3X 8-fanout 3/8 LANDED** — `H₃Po`(group 16) + `H₃Cl`(group 17) + `H₃F`(group 17) + `H₃Si`(group 14) Vast.ai 회수 완주; `H₃S`/`H₃Se`/`H₃Te` baseline 위 d7 wall 본격 가시화 (commits `fe16791` · `63d9065`).
-- **d7 wall ALIGNN per-cand 정량화** — ALIGNN ω_log 가 measured 대비 **15× under-predict** (per-candidate · group 17 funnel 가설 + DFT/ML 2.9× 비율 확정); RTSC §9 narrative 에 d7 mechanism 박힘 (`inbox/notes/` h3cl 2건 + `adc0852` + `0c1b864`).
+- **d7 wall ALIGNN per-cand 정량화** — ALIGNN ω_log 가 measured 대비 **15× under-predict** (per-candidate · group 17 funnel 가설 + DFT/ML 2.9× 비율 확정); RTSC §9 narrative 에 d7 mechanism 박힘 (`archive/session-notes/` h3cl 2건 + `adc0852` + `0c1b864`).
 - **cockpit Stage 1+2a Swift rename** — `Rtsc*` → `Hts*` (View3D · CoilGeometry · Records/Analyze/Verify · 5+5 = 10 파일); `swift build` PASS · `RTSC5GateEnforcementTests` 6/6 PASS; Stage 2b Loaders 는 후속 stacked PR (`de45c44` · `019dcbb`).
 - **PLAN/HANDOFF absorption follow-up** — 7 files 의 dangling live-pointer references → `.log.md` archive redirect (`26c4bfb`).
 - **§9.15 precommit outlier 분석** — h3f / h3cl / h3si vs prediction 양방향 fail 원인 5-가설 사이즈 박제 (`4bbe58b`).

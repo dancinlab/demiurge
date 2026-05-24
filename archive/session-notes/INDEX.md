@@ -1,11 +1,13 @@
-# inbox/INDEX.md — cross-session pickup SSOT
+# archive/session-notes/INDEX.md — cross-session pickup SSOT (archived)
 
+> **이관됨 2026-05-24**: 구 `inbox/` 폴더 폐기 → 이 디렉터리(`archive/session-notes/`)로 `git mv`. 열린 handoff 는 루트 `INBOX.md` 로 이관됨. 이 INDEX 는 historical 상태 SSOT 로 보존 — 신규 작업은 `INBOX.md` / `INBOX.log.md` 에 기록.
+>
 > Updated 2026-05-24 (cycle 7-full archival — 4 analysis notes: post-ALIGNN ML survey · 5 LANDED atlas audit · vast credential redundancy · BEE-NET POC design + d7-wall-mechanism grid-ceiling update).
-> Status SSOT for every `inbox/notes/*.md` entry. Each entry keeps
+> Status SSOT for every `archive/session-notes/*.md` entry. Each entry keeps
 > its own body intact; this file is the at-a-glance index.
 >
 > **Numerical canonical SSOT**: H₃X DFT 의 λ · ω_log · Tc 등 numerical value 는
-> `exports/material_discovery/rtsc_h3<X>_dft_6x6x6q_*.json` 이 authority. 본 inbox/notes/ 는
+> `exports/material_discovery/rtsc_h3<X>_dft_6x6x6q_*.json` 이 authority. 본 archive/session-notes/ 는
 > analysis snapshot — 값 불일치 시 JSON 이 우선.
 
 ## Legend

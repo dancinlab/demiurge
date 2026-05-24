@@ -1,5 +1,5 @@
 // ProducerRegistry — minimal alternative-producer mechanism for cells
-// that carry more than one substrate (decision: inbox/notes/
+// that carry more than one substrate (decision: archive/session-notes/
 // cern_analyze_producer_alternative_decision_2026-05-20.md, Option C).
 //
 // Most cells map (verb, domain) → exactly one Producer via the

@@ -68,7 +68,7 @@ Append-only history sister of `DAPTPGX.md`. Each entry starts with `## <ISO time
 
 - [x] **M9 arxiv/PubMed 2024-2026** (446 lines) — 45 PMID · 13 sections · HIGH priority 12편 · TALOS-AMI substudies 6편 (M3·M7 cells 🟠→🟡 upgrade) · CELEBRATE zalunfiban Phase 3 · Galli 2024 EHJCVP meta · Gragnano 2025 PRECISE-HBR · Cavallari 2026 "Missing the Boat" editorial · DT-678 신규 class (Liu 2025 BJP FIH) · 한국인 `*35` allele 2.02% (Youn 2024) · 5 NEW axes (AI/ML · P2Y12 occupancy biomarker · DT-678 · sex-modifier · Lp-PLA2)
 - [x] **M10 web 임상 readout** (237 lines) — 2024-2026 readout 12건 · HOST-EXAM 10y (Lancet 2026 HR 0.86) + SMART-CHOICE 3 (Lancet 2025 HR 0.71) 한국 chronic clopi 단독 evidence-leading 확정 · ACC/AHA 2025 ticag monotherapy ≥1mo Class IIa 격상 · vicagrel FDA NDA 2023-12 filing (M6 timeline 1-2y 단축) · 음성 readout 2건 (ACTISAVE · BMS-986141 stroke arm 중단)
-- [x] **M11 PGx 라이브러리 → inbox handoff** (6 files 980 lines) — demiurge/inbox/notes/daptpgx-* (library-inventory + ssot-databases + cyp-callers + cds-tools + poc-devices + ngs-pipelines) — hexa-lang stdlib wrapper + hexa atlas SSOT 등록 후보 명시 · 한국 환경 적용 매트릭스
+- [x] **M11 PGx 라이브러리 → inbox handoff** (6 files 980 lines) — demiurge/archive/session-notes/daptpgx-* (library-inventory + ssot-databases + cyp-callers + cds-tools + poc-devices + ngs-pipelines) — hexa-lang stdlib wrapper + hexa atlas SSOT 등록 후보 명시 · 한국 환경 적용 매트릭스
 - [ ] M12 verify-push (🔵 SUPPORTED-FORMAL 도달) — M9·M10 propagation + canonical-ssot 통합
 
 🔑 심화 통찰:
