@@ -57,6 +57,10 @@ func usage() {
                                        Move a project's 7-verb pointer
                                        (M15 verb-nav · CLI side)
       demiurge list-shelf <domain>     Show a domain's §6 shelf options
+      demiurge action <verb> <domain> [--compose]
+                                       --compose (M15): run the verb
+                                       across the domain's constituent
+                                       stack, topo foundation→apex.
       demiurge action <verb> [domain]  θ-2 action — dispatch a verb
                                        (specify/structure/design/analyze/
                                         synthesize/synth/verify/measure/
@@ -290,6 +294,41 @@ func cliAction(_ verbStr: String, _ domainArg: String?,
         print("📸 new record ID(s): \(result.newRecordIDs.joined(separator: ", "))")
     }
     return result.engineToolSucceeded == false ? 1 : 0
+}
+
+/// `action <verb> <domain> --compose` — run the verb across `domain`'s
+/// constituent (prerequisite) stack, topo-ordered foundation→apex
+/// (CLI+COCKPIT M15 synthesize-run · 도메인 합성 실행). Renders each
+/// constituent's result IN ORDER; never collapses verdicts (g3). Shares
+/// ActionDispatch.runComposite + DomainComposer with the cockpit (D50).
+func cliActionComposite(_ verbStr: String, _ domainArg: String?) -> Int32 {
+    guard let verb = parseVerbArg(verbStr) else {
+        FileHandle.standardError.write(
+            Data("action --compose: unknown verb '\(verbStr)'\n".utf8))
+        return 2
+    }
+    guard let domain = domainArg else {
+        FileHandle.standardError.write(
+            Data("action --compose: missing <domain>\n".utf8))
+        return 2
+    }
+    let comp = DomainComposer.resolve(domain)
+    print("action \(verb.koreanLabel)(\(verb.plain)) · domain=\(domain) · "
+          + "COMPOSE \(comp.kind.rawValue) (구성 \(comp.stack.count) · topo):")
+    print("  " + (comp.ids.isEmpty ? "(none)" : comp.ids.joined(separator: " → ")))
+    let context = "CLI composite action — start=\(domain), kind=\(comp.kind.rawValue)."
+    let result = ActionDispatch.runComposite(verb: verb, domain: domain, context: context)
+    for step in result.steps {
+        print("── [\(step.domain)] ──")
+        print(step.result.text)
+    }
+    print("---")
+    if result.newRecordIDs.isEmpty {
+        print("⏳ 합성 실행 — 새 측정 record 없음 (구성 \(result.steps.count) 단계 · g3).")
+    } else {
+        print("📸 합성 records: \(result.newRecordIDs.joined(separator: ", "))")
+    }
+    return 0
 }
 
 /// Resolve a CLI arg to a record — try it as a relative exports/ path
@@ -660,9 +699,19 @@ case "action":
         actionArgs.remove(at: pIdx + 1)
         actionArgs.remove(at: pIdx)
     }
-    let cliVerb = actionArgs.first ?? ""
-    let cliDomain = actionArgs.count >= 2 ? actionArgs[1] : nil
-    exitCode = cliAction(cliVerb, cliDomain, producerArg)
+    // `--compose` (M15) — run the verb across the domain's constituent
+    // (prerequisite) stack, topo-ordered foundation→apex, instead of the
+    // single (verb, domain) cell.
+    if let cIdx = actionArgs.firstIndex(of: "--compose") {
+        actionArgs.remove(at: cIdx)
+        let cVerb = actionArgs.first ?? ""
+        let cDomain = actionArgs.count >= 2 ? actionArgs[1] : nil
+        exitCode = cliActionComposite(cVerb, cDomain)
+    } else {
+        let cliVerb = actionArgs.first ?? ""
+        let cliDomain = actionArgs.count >= 2 ? actionArgs[1] : nil
+        exitCode = cliAction(cliVerb, cliDomain, producerArg)
+    }
 case "list-gates":
     exitCode = listGates()
 case "gate-summary":

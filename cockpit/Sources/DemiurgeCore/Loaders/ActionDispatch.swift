@@ -508,4 +508,47 @@ public enum ActionDispatch {
             newRecordIDs: r.newRecordID.map { [$0] } ?? [],
             usedEngineTool: true, engineToolSucceeded: r.ok)
     }
+
+    /// runComposite — run `verb` across the constituent (prerequisite)
+    /// domain stack of `domain`, topo-ordered foundation→apex
+    /// (CLI+COCKPIT M15 synthesize-run · 도메인 합성 실행 · M0_operate.md
+    /// §8). Each step reuses `runEngineTool(verb:domain:)`, so a
+    /// composite (aura) runs chip→…→bio→aura cluster-aware and an atomic
+    /// domain runs exactly once. Per-step results are returned IN ORDER
+    /// — no silent merge of verdicts (g3); the caller renders each.
+    public static func runComposite(verb: Verb, domain: String,
+                                    context: String) -> CompositeResult {
+        let stack = DomainComposer.resolve(domain).stack
+        let steps = stack.map { d in
+            CompositeStepResult(
+                domain: d.id,
+                result: runEngineTool(verb: verb, domain: d.id, context: context))
+        }
+        return CompositeResult(verb: verb, startDomain: domain, steps: steps)
+    }
+}
+
+/// One step of a composite run — a constituent domain + its result.
+public struct CompositeStepResult: Sendable {
+    public let domain: String
+    public let result: ActionResult
+    public init(domain: String, result: ActionResult) {
+        self.domain = domain
+        self.result = result
+    }
+}
+
+/// The outcome of running one verb across a domain's constituent stack
+/// (CLI+COCKPIT M15). `steps` are topo-ordered foundation→apex; the
+/// composition does NOT collapse them into one verdict (g3 honesty).
+public struct CompositeResult: Sendable {
+    public let verb: Verb
+    public let startDomain: String
+    public let steps: [CompositeStepResult]
+    public var newRecordIDs: [String] { steps.flatMap { $0.result.newRecordIDs } }
+    public init(verb: Verb, startDomain: String, steps: [CompositeStepResult]) {
+        self.verb = verb
+        self.startDomain = startDomain
+        self.steps = steps
+    }
 }

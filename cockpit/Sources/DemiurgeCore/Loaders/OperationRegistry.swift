@@ -81,7 +81,7 @@ public enum OperationRegistry {
         Operation(id: "structure-view",  title: "structure 구조 분해 뷰",     tier: .product, verb: .structure,  target: .swift,     reach: .ok,      milestone: "M15"),
         Operation(id: "design-pick",     title: "design 옵션 선택",          tier: .product, verb: .design,     target: .swift,     reach: .ok,      milestone: "M15"),
         Operation(id: "analyze-loop",    title: "analyze ⟲ 수렴 runner",     tier: .product, verb: .analyze,    target: .swift,     reach: .partial, milestone: "M15"),
-        Operation(id: "synthesize-run",  title: "synthesize 실행 (engine)",   tier: .product, verb: .synthesize, target: .swift,     reach: .partial, milestone: "M15"),
+        Operation(id: "synthesize-run",  title: "synthesize 실행 (engine)",   tier: .product, verb: .synthesize, target: .swift,     reach: .ok,      milestone: "M15"),
         Operation(id: "verify",          title: "verify (5-tier 검증)",       tier: .product, verb: .verify,     target: .hexa,      reach: .ok,      milestone: "M16"),
         Operation(id: "record-view",     title: "record·gate 열람",          tier: .product, verb: .verify,     target: .swift,     reach: .ok,      milestone: "M15"),
         Operation(id: "export",          title: "결과 export (usd/stl/record)", tier: .product, verb: .handoff,  target: .swift,     reach: .ok,      milestone: "M15"),
