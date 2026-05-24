@@ -2,6 +2,18 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T13:30:00Z — /cycle-full 차세대 well: X36·X37·X38 (next-gen/long-horizon · 전부 ⚪ 전망)
+
+> 3번째 brainstorm well = 차세대·장기 (evidence·배포 직교). 23 아이디어 R5 고갈 → top3. ⚠ 미래 축이라 전부 ⚪ SPECULATION-FENCED (g5 — verify 불가).
+
+- [x] **X36 disruption 타임라인** → `CARDIO+/X36_disruption_timeline.md` — 최임박=HORIZON 2026 H1→muvalaplin 경구(~5y)·VERVE-301 base-edit(~10y)·edit-at-birth(~15y+) · 살아남는 것=**3-axis 패널**(modality 무관 의사결정 입력) · 최대 진부화=만성복약 패러다임 · 6 disruption 전부 실패 시나리오 동반
+- [x] **X37 genotype-at-birth 선제예방** → `CARDIO+/X37_primary_prevention.md` — 사후(post-PCI)→사전 flip · 🔑 **측정 앞당김(Lp(a) 유전결정 90%·가치↑) vs 개입 앞당김(무증상 근거 약함) 명시 분리** · 무증상 약물개입 권고 안 함(임상 trigger에 묶음) · 신생아 동의/낙인/과잉의료화 장벽
+- [x] **X38 환자 30년 시나리오** → `CARDIO+/X38_patient_30y.md` — X28 10y(Δ+0.066) 유일 grounded 닻 + arm A<B≤C 차세대 · "단순 ×3 외삽=오독(competing-risk 희석)" · 10y+/차세대 전부 ⚪ · 상하단 disclaimer
+- [x] worktree 격리 · g5 verbatim · **신규 🟢/🔵 0건** (미래는 전부 ⚪) · gh api --input
+- [ ] ⏳ 차세대 well도 작고 ⚪ 본질 → depletion 근접 (잔여 recombinant)
+
+🔑 라운드 성과: CARDIO+ cross-cutting **X1-X38** (38개) · 3 well(evidence·배포·차세대) 전부 가동 · 미래 축은 정직하게 ⚪ 전망 fence (단정 0).
+
 ## 2026-05-25T12:50:00Z — 배포 well capstone: X35 inaction cost (사용자 A · orchestrator mini 실측)
 
 - [x] **X35 inaction cost** → `CARDIO+/X35_inaction_cost.md` + `CARDIO+/DAPTPGX/sims/x35_inaction_cost.hexa` (mini 실측)

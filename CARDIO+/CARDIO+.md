@@ -51,6 +51,9 @@
 - [x] X33 수가·재정·지속가능 — HIRA 청구(C5946+prasugrel 코드·삭감방지) · 지속주체=병원(self-funding 정렬) · VBC metric=ST↓+출혈균형 → `CARDIO+/X33_reimbursement_sustainability.md`
 - [x] X34 거버넌스·동의·형평 — 7-직역 PGx 위원회(권고강도=근거강도) · 3-계층 동의(법령 ⚪/🟡) · 채혈-only 3-axis 지역 형평 + POCT/telegenetics/SaaS 3-bridge → `CARDIO+/X34_governance_consent_equity.md`
 - [x] X35 inaction cost (배포 capstone) — 비채택 연 toll: 사망 +240명·ST +400·QALY ~3,316 vs 약가 1y −167억 절약 = devil's bargain (mini 실측 · X19와 정합) → `CARDIO+/X35_inaction_cost.md`
+- [x] X36 차세대 disruption 타임라인 (⚪ 전망) — 최임박 HORIZON 2026 H1→muvalaplin 경구(~5y)·VERVE edit(~10y) · 살아남는 것=3-axis 패널 · 최대 진부화=만성복약 → `CARDIO+/X36_disruption_timeline.md`
+- [x] X37 genotype-at-birth 선제예방 (⚪ 전망) — 사후→사전 flip · 측정 앞당김(가치↑) vs 개입 앞당김(근거 약함) 분리 · 무증상 개입 근거=현재 약함 · 신생아 동의/과잉의료화 장벽 → `CARDIO+/X37_primary_prevention.md`
+- [x] X38 환자 30년 + 차세대 시나리오 (⚪ 전망) — X28 10y 닻(Δ+0.066) + 차세대 arm A<B≤C · 단순 ×3 외삽=오독(competing-risk) · grounded/⚪ 경계 명시 → `CARDIO+/X38_patient_30y.md`
 
 ## d2 governance (meta)
 
