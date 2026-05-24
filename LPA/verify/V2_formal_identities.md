@@ -168,6 +168,34 @@ per memory `feedback_hexa_lang_main_land_via_pr.md` + d8 (Vast-style inbox absor
 
 ### breakthrough paths (per d2) — 3 axes: (1) **calculator extension** (PR #665 머지, root) (2) **daily-aggregate manual fold** (`n6/atlas.append.YYYY-MM-DD.n6` 합치기 → `hexa atlas pr` 통과) (3) **own atlas root** (`--atlas-root <repo>` 옵션, demiurge 내부 mirror)
 
+## §5.5 ldl_pct (PR #707/#711 absorption · 2026-05-25)
+
+hexa-lang PR #707 (bio kernel phase 1) merged 2026-05-25 — `ldl_pct(baseline, final)` 가 `_recompute_float` 에 dispatch 됨. LPA V1 목표 중 **Lp(a) Δ%** identity (HORIZON pelacarsen -80% · OCEAN(a) olpasiran -98% · 등 trial endpoint) 가 본 fn 으로 closed-form 재현 가능.
+
+### VERBATIM verdicts (2026-05-25 local · SIDECAR_NO_POOL_ROUTE=1)
+
+```
+$ hexa verify --expr ldl_pct 100 70 -30
+verify --expr ldl_pct(100.0,70.0)=-30.0
+  calc   = -30.0  ≈ expected -30.0  (|Δ|=0.0 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+
+$ hexa verify --expr ldl_pct 100 20 -80
+verify --expr ldl_pct(100.0,20.0)=-80.0
+  calc   = -80.0  ≈ expected -80.0  (|Δ|=0.0 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+```
+
+### LPA trial endpoint 매핑
+
+| trial | drug | baseline (nmol/L) | final | observed Δ% | hexa verify | tier |
+|---|---|---|---|---|---|---|
+| HORIZON | pelacarsen 80 mg | 100 | 20 | -80% | ldl_pct 100 20 -80 | 🟢 |
+| OCEAN(a) Ph2 | olpasiran 225 mg | 100 | 2 | -98% (illustrative ratio) | ldl_pct 100 2 -98 | 🟢 (verbatim 추가 시) |
+| FOURIER (LDL) | evolocumab | 100 | 30 | -70% (LDL surrogate) | ldl_pct 100 30 -70 | 🟢 (verbatim 추가 시) |
+
+note: 본 identity 는 **baseline-relative % 변화** 의 closed-form. 환자 individual outcome (HR · MACE) 는 V3 numerical (S2 IVW MC) 의존 — 본 V2 는 *identity-grade* 만 escalate.
+
 ## §6. 🔵 도달 결과 — 0/8 (atlas extension 필수)
 
 | target | claim | 결과 |
