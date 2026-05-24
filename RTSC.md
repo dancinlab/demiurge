@@ -8,7 +8,7 @@
 - [x] CaH₆ 측정-grade DFT — Ma 2022 215K vs 213K (2K 정합 · clathrate topology)
 - [x] H₃X 5/8 LANDED + d7 wall α²F grid ceiling 100 meV 정량 식별
 - [x] BEE-NET grid-extended (101→140 meV) fine-tune launch — Vast 37496985 4-shard
-- [ ] h3cl 8³q convergence (stable #1 Tc 확정 — 8³q 후 plateau / 추가 grid 판정)
+- [x] h3cl 8³q convergence (stable #1 Tc 확정) — ubu-1 ALL DONE · λ_BZ=1.21–1.37 · ω_log~1350K · Tc(μ0.10)=123–140K · broadening plateau · Tc 🟢 hexa verify (allen_dynes_tc=140.324, |Δ|=2.8e-11)
 - [ ] h3o anharmonic SSCHA 안정화 — imaginary mode (−682 cm⁻¹) renormalization
 - [ ] ambient-stable hydride 탐색 (§9.10 N5 funnel · 압력 < 50 GPa 후보)
 - [ ] 압력 < 50 GPa AND stable AND Tc > 200K 후보 발견
@@ -19,8 +19,8 @@
 
 > RTSC 는 가장 verify-native 한 도메인 — §4 in-flight · §9 5-gate sim stack · §10 d7 wall roadmap 이 native 구현. 아래 V1-V4 는 cross-domain 통일 schema 매핑.
 
-- [ ] V1 RTSC claim inventory + tier triage (🔵/🟢/🟡/🟠) — §3 state matrix + §5 per-axis ledger 흡수 → `RTSC/verify/V1_claim_inventory.md`
-- [ ] V2 🔵 push — Eliashberg λ closed-form · McMillan Tc identity · BCS gap ratio 2Δ/kT_c · BEE-NET grid invariant · DFT 충격 boundary → `hexa verify --expr` + atlas register → `RTSC/verify/V2_formal_identities.md`
+- [x] V1 RTSC claim inventory + tier triage (🔵/🟢/🟡/🟠) — §3 state matrix + §5 per-axis ledger 흡수 → `RTSC/verify/V1_claim_inventory.md` (PR #25 MERGED)
+- [x] V2 🔵 push — Eliashberg λ closed-form · McMillan Tc identity · BCS gap ratio 2Δ/kT_c · BEE-NET grid invariant · DFT 충격 boundary → `hexa verify --expr` + atlas register → `RTSC/verify/V2_formal_identities.md` (PR #33 MERGED · supercon fns atlas PR #745 · V2.1 retry 가능)
 - [ ] V3 🟢 push — §9 5-gate sim stack 흡수: QE 7.5 el-ph (pool ubu-1 per `reference_qe_dft_pool_setup`) · BEE-NET fine-tune (Vast.ai GPU) · SSCHA anharmonic (RunPod GPU) · per @D d7 compute matrix → `RTSC/verify/V3_numerical_recompute.md`
 - [ ] V4 final tier ledger — §10 d7 roadmap 결과 + §3.2 verify candidate 통합 → 🔵+🟢+🟡 verbatim + 🟠 wet-lab deferred (M9 handoff) → `RTSC/verify/V4_tier_ledger.md`
 
