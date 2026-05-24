@@ -1,0 +1,105 @@
+{
+  "domain": "material",
+  "verb": "verify",
+  "kind": "h3as_dft_electron_phonon_6x6x6q_unstable",
+  "stamp": "20260525T060000Z",
+  "producer": "QE 7.5 (conda) pw.x+ph.x electron_phonon='simple' @ vast.ai GPU pod + star-weighted BZ-sum reconstruction (lambda_BZ + lambda-weighted log-avg omega_log) + hexa verify allen_dynes_tc",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": false,
+  "R4_protection": true,
+  "novelty": "H3X family pnictide (Group-15) heavy-As substitution — 5th in H3X sweep alongside h3o/h3cl/h3f/h3si/h3p; tests V1 §B8 mass-trend Tc ∝ 1/sqrt(m_X) for heavy pnictide",
+  "host": "vast.ai GPU pod (harvested to ~/rtsc_h3as_vast_result/h3as_vast.tgz)",
+  "candidate": "H3As",
+  "purpose": "Parse the harvested H3As 6x6x6-q electron-phonon DFT run; persist BZ-summed lambda, omega_log, Allen-Dynes Tc (mu*=0.10 and 0.13), dynamical stability, and the M8 funnel evaluation. Tests heavy-pnictide H3X variant per RTSC H3X mass-trend prediction (V1 §B8).",
+  "system": "H3As cubic Im-3m BCC primitive (1 As + 3 H = 4 atoms), ibrav=3, celldm(1)=6.700 bohr (a~3.545 Angstrom), unit-cell volume 150.38 (a.u.)^3, 8 valence electrons, Fermi energy 9.5376 eV",
+  "method": {
+    "pseudopotentials": "PBE ultrasoft pslibrary (As.pbe-rrkjus_psl.1.0.0, H.pbe-rrkjus_psl.1.0.0) — atomic-code v6.3",
+    "scf": "ecutwfc/ecutrho per pslibrary RRKJUS recommendations, 413 k-points, Methfessel-Paxton smearing degauss=0.02 Ry; Fermi energy 9.5376 eV",
+    "phonon": "ph.x DFPT, 6x6x6 q-grid (16 irreducible q-points), star multiplicities [4,12,12,12,12,12,8,8,12,12,12,8,12,8,12,4] sum=160 (same Im-3m convention as h3cl/h3f/h3si)",
+    "elph": "electron_phonon='simple', el_ph_sigma=0.005, el_ph_nsigma=10 (10 Gaussian broadenings 0.005-0.050 Ry)",
+    "moments": "BZ-weighted lambda_BZ = sum_q w_q sum_nu lambda(q,nu) / sum_q w_q (negative QE-printed lambda from imaginary modes RETAINED in numerator for honest BZ sum); omega_log via lambda-weighted log-average over positive-omega modes only (imaginary modes excluded from log-average, ln(neg) undefined)",
+    "job_status": "ph.out contains 'JOB DONE.' (1 match) — run completed; PHONON wall 3h35m on vast GPU pod",
+    "qblocks_parsed": "16/16 (complete IBZ coverage)"
+  },
+  "phonon_frequencies_cm-1": {
+    "min": -1266.837353,
+    "max": 1172.374683,
+    "n_total_modes": 192,
+    "note": "192 mode entries across 16 q-points (12 modes each = 4 atoms x 3). Imaginary modes spread across 12 of 16 q-points (only q=7, q=12, q=13 are fully real). Largest imaginary at q=16 (-1267 cm-1) — soft H-derived mode signaling a structural instability of the Im-3m H3As phase at this geometry."
+  },
+  "stability": {
+    "min_freq_cm": -1266.837353,
+    "n_imaginary_modes": 25,
+    "n_total_modes": 192,
+    "q_points_with_imaginary": "12 of 16 (q=1,2,3,4,5,6,8,9,10,11,14,15,16) — only q=7, q=12, q=13 are fully real",
+    "verdict": "UNSTABLE",
+    "note": "Severe dynamical instability — Im-3m H3As is NOT a local minimum at the parsed geometry. 25/192 modes imaginary including the entire Gamma triplet (-1244 cm-1) and most zone-boundary modes (-1267 cm-1 at q=16). Phase relaxation / lower-symmetry distortion (e.g. Pnma, R-3m, or Im-3) is needed before any Tc claim is meaningful."
+  },
+  "results_by_broadening": [
+    { "broad_Ry": 0.005, "lambda_BZ": 0.7652, "omega_log_K": 457.82, "Tc_AD_mu010_K": 19.542, "Tc_AD_mu013_K": 15.539, "note": "small-broadening artifact (double-delta unconverged), NOT the converged value" },
+    { "broad_Ry": 0.010, "lambda_BZ": 0.5356, "omega_log_K": 456.84, "Tc_AD_mu010_K":  7.193, "Tc_AD_mu013_K":  4.643 },
+    { "broad_Ry": 0.015, "lambda_BZ": 0.6121, "omega_log_K": 465.48, "Tc_AD_mu010_K": 11.301, "Tc_AD_mu013_K":  8.059 },
+    { "broad_Ry": 0.020, "lambda_BZ": 0.7348, "omega_log_K": 458.88, "Tc_AD_mu010_K": 17.894, "Tc_AD_mu013_K": 14.004 },
+    { "broad_Ry": 0.025, "lambda_BZ": 0.8545, "omega_log_K": 450.49, "Tc_AD_mu010_K": 24.014, "Tc_AD_mu013_K": 19.810 },
+    { "broad_Ry": 0.030, "lambda_BZ": 0.9706, "omega_log_K": 444.06, "Tc_AD_mu010_K": 29.512, "Tc_AD_mu013_K": 25.164, "selected": true, "note": "headline broadening per SrAuH3/h3X convention; lambda monotone-increasing across the full 0.010-0.050 sweep — UNDER-CONVERGED (no true plateau)" },
+    { "broad_Ry": 0.035, "lambda_BZ": 1.0659, "omega_log_K": 439.96, "Tc_AD_mu010_K": 33.671, "Tc_AD_mu013_K": 29.273 },
+    { "broad_Ry": 0.040, "lambda_BZ": 1.1343, "omega_log_K": 437.53, "Tc_AD_mu010_K": 36.462, "Tc_AD_mu013_K": 32.053 },
+    { "broad_Ry": 0.045, "lambda_BZ": 1.1817, "omega_log_K": 436.01, "Tc_AD_mu010_K": 38.295, "Tc_AD_mu013_K": 33.887 },
+    { "broad_Ry": 0.050, "lambda_BZ": 1.2152, "omega_log_K": 434.89, "Tc_AD_mu010_K": 39.536, "Tc_AD_mu013_K": 35.134 }
+  ],
+  "result": {
+    "broadening_selected_Ry": 0.030,
+    "lambda_BZ": 0.9706,
+    "omega_log_K": 444.06,
+    "Tc_AD_mu010_K": 29.512,
+    "Tc_AD_mu013_K": 25.164,
+    "convergence_note": "lambda is monotone-increasing across the entire broadening sweep (0.010-0.050 Ry: 0.54 -> 1.22) — no true plateau, UNDER-CONVERGED. Headline 0.030 Ry chosen to mirror SrAuH3/h3o convention. True converged lambda likely lies between 0.6-1.2 with the structure-instability caveat dominating. STABILITY is the gating axis here — Tc number is moot until the phase relaxes to a dynamically-stable variant."
+  },
+  "hexa_verify": {
+    "command_mu010": "POOL_DISABLE=1 ./hexa verify --expr allen_dynes_tc 0.9706 444.06 0.10 29.51223826214424",
+    "verdict_mu010": "verify --expr allen_dynes_tc(0.9706,444.06,0.1)=29.5122\n  calc   = 29.5122  ≈ expected 29.5122  (|Δ|=0.0 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)",
+    "command_mu013": "POOL_DISABLE=1 ./hexa verify --expr allen_dynes_tc 0.9706 444.06 0.13 25.163873159682463",
+    "verdict_mu013": "verify --expr allen_dynes_tc(0.9706,444.06,0.13)=25.1639\n  calc   = 25.1639  ≈ expected 25.1639  (|Δ|=0.0 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+  },
+  "m8_evaluation": {
+    "criterion": "pressure < 50 GPa AND stable AND Tc > 200K (RTSC.md M8 / N5 ambient-stable funnel)",
+    "axis_pressure_lt_50GPa": "N/A — this run carries no EOS/pressure record (fixed-cell elph only at celldm(1)=6.7 bohr). Pressure axis CANNOT be evaluated from this run; flagged for a separate EOS run if the phase is ever stabilized.",
+    "axis_stable": "FAIL — 25 of 192 modes imaginary (min freq -1266.84 cm-1 at q=16; entire Gamma triplet imaginary at -1244 cm-1); 12 of 16 q-points carry at least one imaginary mode. Im-3m H3As is NOT dynamically stable at this geometry.",
+    "axis_Tc_gt_200K": "FAIL — headline Tc(mu0.10)=29.51 K, Tc(mu0.13)=25.16 K; even the broadest 0.050 Ry value (Tc~39.5 K) is far below the 200K threshold. Tc number is moot anyway given the instability.",
+    "verdict": "M8 NOT MET. 0 of 3 axes PASS (stability FAIL hard, Tc FAIL hard, pressure N/A). H3As Im-3m is a dynamically-unstable phase with weak-coupling Tc; does NOT advance the ambient-stable RTSC funnel. Heavy-pnictide V1 §B8 mass-trend prediction is irrelevant for the unstable phase — the dominant signal is structural, not electronic."
+  },
+  "h3x_family_context": {
+    "predicted_band_per_V1_B8": "Tc ~ 1/sqrt(m_X) heavy-X trend would place H3As Tc between H3P (lighter) and H3Sb (heavier)",
+    "DFT_result_K": "~25-30K headline at 0.030 Ry broadening, but the phase is dynamically unstable so the number is moot",
+    "verdict_vs_prediction": "INSTABILITY DOMINATES. The mass-trend prediction implicitly assumes a stable Im-3m phase; H3As at this geometry is not stable. A relaxed lower-symmetry phase (e.g. Pnma, R-3m) would be needed to test the trend honestly. Honest finding: heavy-pnictide H3X stoichiometry is not phase-stable in Im-3m at ambient — consistent with the chemical intuition that As is too large for the 4-atom Im-3m cell at this lattice parameter.",
+    "next_step": "(a) EOS scan vs pressure to test pressure-stabilization, or (b) variable-cell relaxation to find a lower-symmetry ground state, before any new elph run is warranted."
+  },
+  "honest_caveats": [
+    "DOMINANT: dynamical instability — 25/192 imaginary modes including Gamma. Tc value is reported for completeness but is physically meaningless until the phase is stabilized.",
+    "lambda_BZ and omega_log were RECONSTRUCTED from per-mode lambda(nu)/gamma in ph.out + dyn-file frequencies via star-weighted BZ sum (lambda.x output absent from tgz; QE electron_phonon='simple' prints only per-q per-mode lambda). Method matches the SrAuH3 / h3X convention.",
+    "lambda is monotone-increasing across the full broadening sweep — strictly UNDER-CONVERGED. There is no plateau in 0.010-0.050 Ry; the 0.030 Ry headline is a convention pick, not a converged value.",
+    "DFT is Tier-1 PREDICTION, not Tier-3 measurement: gate_type=simulation-only-prediction, absorbed=false (R4 invariant).",
+    "Anharmonicity (often crucial for H-bearing systems with soft modes) was not included. SSCHA-level treatment could stabilize some imaginary modes via quantum-anharmonic corrections — common pattern for hydride high-Tc phases.",
+    "Coarse 6x6x6 q-grid; denser k/q would shift lambda and could partly soften/harden the imaginary modes, but it cannot rescue the Gamma instability (already on the grid)."
+  ],
+  "provenance": {
+    "dft_run_host": "vast.ai GPU pod (provisioned via hexa cloud)",
+    "harvested_to": "~/rtsc_h3as_vast_result/h3as_vast.tgz",
+    "ph_out": "/tmp/h3as/ph.out",
+    "scf_out": "/tmp/h3as/scf.out",
+    "dyn_files": "/tmp/h3as/h3as.dyn[0-16]",
+    "parser": "/tmp/h3as/parse.py (linear ph.out scan + dyn freq extraction + star-weighted BZ sum)",
+    "parsed_output": "/tmp/h3as/parsed.json",
+    "capture_date": "2026-05-24",
+    "verify_date": "2026-05-25"
+  },
+  "citations": [
+    "Allen & Dynes 1975 PRB 12 905",
+    "Quantum ESPRESSO 7.5 (ph.x electron_phonon='simple')",
+    "RTSC.md §9.15 / V1 §B8 (H3X mass-trend prediction)",
+    "PR #91 (SrAuH3 4x4x4q DFT — reference flow / schema)"
+  ],
+  "r4_invariant": "absorbed=false · gate_type=simulation-only-prediction · domain=material. DFT prediction record; H3As Im-3m is dynamically unstable + weak-coupling Tc → does NOT claim RTSC absorbed=true (M8 not met — stability FAIL, Tc FAIL, pressure N/A). No impossibility framing: the stable phase (lower-symmetry distortion or pressure-stabilized variant) remains an open breakthrough path for the heavy-pnictide H3X branch."
+}
