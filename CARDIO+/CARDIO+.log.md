@@ -2,6 +2,21 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T05:10:00Z — /cycle 라운드 3: X7 DOCTOR feed 완료 + 인프라 돌파 발견
+
+- [x] **X7 교수님 handoff 1-page** → `CARDIO+/X7_doctor_feed.md` (148줄 · commit `b412cfd`)
+  - 5 cross-cutting (X4·X5·X6·X8·X9) → 교수님 5분 read 압축 · grade X8 VERBATIM
+  - thesis: mPTP=mis-delivered (전달 falsify ≠ 약물 falsify) · 4-track coupled → 한국 3축 단일 leverage
+  - DOCTOR H1(exec)/H7(timeline)/H8(limits+g5)/H10(ASCII fig) 즉시 채움 · H2-H6/H9 부분 feed
+- [x] **인프라 돌파 발견 (d2)**: `hexa verify` 호스트 매트릭스 점검 — mini(local) ✅ 동작 · ubu-1 ❌ (hexa.real 없음) · ubu-2 ❌ (segfault)
+  - X2 blocker "ubu-2 segfault"는 **mini local 우회 가능** (아무도 mini 미테스트였음)
+  - ⚠ 정직성: bio kernel(hill·exp_release·fick1 등) verdict = 🟢 SUPPORTED-NUMERICAL (libm) — 🔵 아님. 🔵=number-theory closed-form 전용 → bio claim 천장은 🟢 (d6: 목표숫자 강제 금지)
+  - 따라서 mini로 푸는 건 **X3 🟢 push** (실질 lever) · X2 🔵는 genuine closed-form claim 한정
+- [x] commit 격리 (d9): X7 `b412cfd` 단일 add+commit -o · staged-leak 0
+- [ ] ⏳ 다음 (사용자 지시): DOCTOR H1-H10 채우기 + 완성도 심화 골화 (mini verify 🟢 push + pool sim · 실측 진행)
+
+🔑 라운드 3 성과: CARDIO+ **8/10** (X1·X4·X5·X6·X7·X8·X9·X10). cross-cutting 8종 전부 골화 — blocker였던 X2/X3 도 mini 우회로 🟢 push 경로 확보.
+
 ## 2026-05-25T04:40:00Z — /cycle 라운드 2: X8 · X6 동시 완료 (X7 입력 모음)
 
 - [x] **X8 g5 grade ledger** → `CARDIO+/X8_grade_ledger.md` (230줄 · commit `b44b32e`)

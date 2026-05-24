@@ -22,7 +22,7 @@
 - [x] X4 cross-domain ⚪ fence 통합 — 4 sub-domain × subjective/prognostic claim 합산 honest fence → `CARDIO+/X4_unified_fence.md` (raw 31 · dedup ~25 · 일시 55%/영구 45%)
 - [x] X5 한국 first-in-class 4-trial portfolio 통합 — Trial-A NICORADENO-MVO + DAPT-PGx-K + ISR-non-mTOR + LPA-siRNA-K → `CARDIO+/X5_korea_trials.md` (즉시 시작=B DAPT-PGx-K · 신규 IND 불요)
 - [x] X6 환자 본인 사례 retroactive — PCI 후속 4-axis 적용 (mPTP retroactive · CYP2C19 검사 · ISR risk · Lp(a) 검사) → `CARDIO+/X6_self_case.md` (즉시=CYP2C19 PCR C5946 + Lp(a) 단일 채혈 · disclaimer)
-- [ ] X7 교수님 handoff package (DOCTOR feed) — 4 트랙 통합 1-page executive + 즉시/6m/3y timeline → `CARDIO+/X7_doctor_feed.md`
+- [x] X7 교수님 handoff package (DOCTOR feed) — 4 트랙 통합 1-page executive + 즉시/6m/3y timeline → `CARDIO+/X7_doctor_feed.md` (thesis: mPTP=mis-delivered · H1/H7/H8/H10 즉시 채움)
 - [x] X8 cross-domain g5 grade ledger — 모든 영역 🔵 trajectory + 🟢 NUMERICAL 합산 + ⚪ fence + 🔴 falsified 통합 → `CARDIO+/X8_grade_ledger.md` (🔵1·🟢43·🟡~215·🟠45·🔴5·⚪31 · 강근거 44→~67-97)
 - [x] X9 cross-domain d2 wall map — 4 sub-domain 각 wall + 돌파 path 시너지 (예: ALDH2*2 × Lp(a) × CYP2C19 stratification 통합) → `CARDIO+/X9_wall_map.md` (18 wall · 최고 leverage=bio-verify-kernel phase2 PR + 3-axis 패널)
 - [x] X10 paper-ready — arxiv-style 통합 논문 `CARDIO+/PAPER/main.pdf` (10 pages · TikZ Fig1 + fal graphical abstract · 6 표 · 14 refs · g51 ✅) + `CARDIO+/PAPER/{main.tex,README.md}`
