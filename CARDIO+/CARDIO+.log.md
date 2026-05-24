@@ -2,6 +2,17 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T10:30:00Z — /cycle 라운드 6 (deferred 거의 소진): X25·X26·X27 (worktree4 격리 → PR)
+
+- [x] **X25 wet-lab readiness** → `CARDIO+/X25_wetlab_readiness.md` — d5 non-wet-lab→wet-lab 확증 다리 · 최소 실험 14건 · 최우선=**IC-sync delivery IIT**(thesis 전체 gate · X13 R5/X14 top VoI) · 외부 readout 의존 4(HORIZON 2026 H1 등) · 거의 전부 인과층(산술층 already absorbed, VoI≈0)
+- [x] **X26 living-doc 자동화 spec** → `CARDIO+/X26_living_doc.md` — X8 grade ledger=단일 SSOT → derived 9개(X7 + DOCTOR H1-H10) auto-regen 파이프 · X8 commit=1차 trigger · drift lint
+  - 🔑 latent drift 적발: H8/H10 🟢% 표기(43=12.4% vs 44=12.7%) X8과 흔들림 + thesis hedge 2곳 byte-중복 → 수동 동기화 실패 시작 증거 (CLI+COCKPIT M6/M10 연계)
+- [x] **X27 불확실성 UQ 집계** → `CARDIO+/X27_uncertainty.md` — 기존 CI verbatim 집계(새 sim 0) · CI 있는 🟢 5(전부 LPA V3b bootstrap) vs 없는 ~38(robustness gap 정직) · 민감도 최대=v8 ICER(horizon 가정에 WTP30 경계 넘나듦) · bootstrap 1순위=NOREFLOW Δ36.6pp full sweep
+- [x] worktree4 격리 · g5 verbatim · LLM self-judge 0 · gh api --input
+- [x] **brainstorm 32 deferred doc 계열 소진** — 잔여는 순수 sim 계열(#22 microsim · #23 biomarker VoI)뿐 (orchestrator mini-lane · 별도 라운드)
+
+🔑 라운드 성과: CARDIO+ cross-cutting **X1-X27** (27개) · wet-lab 다리/living-doc 자동화/UQ 집계 추가 · brainstorm depletion 근접 (doc 계열 完).
+
 ## 2026-05-25T09:50:00Z — /cycle 라운드 5 (auto-seed): X22·X23·X24 (worktree3 격리 → PR)
 
 > Stage 1 enumerate: CARDIO+.md open milestone 0 (X1-X21 done) → auto-seed (source: deferred inventory + user directive). cap 3.
