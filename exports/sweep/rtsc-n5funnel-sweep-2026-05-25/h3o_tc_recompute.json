@@ -1,0 +1,74 @@
+{
+  "schema": "rtsc-tc-recompute/0.1.0",
+  "batch_id": "rtsc-n5funnel-sweep-2026-05-25",
+  "candidate_id": "h3o",
+  "stamp": "2026-05-25T08:30Z",
+  "brainstorm_ref": "RTSC brainstorm #10 — Allen-Dynes f₁·f₂ strong-coupling 보정 (λ=2.479 는 strong-coupling 영역 λ>1.5 → simple form Tc 과소평가)",
+  "kind": "local-parse + hexa verify (no pod rent · ph.out DONE-already · pod 0)",
+  "input": {
+    "ph_out": "~/etc/rtsc-results/h3o/ph.out (QE ph.x electron_phonon='simple', 466KB, 16/16 q parsed)",
+    "result_txt": "~/etc/rtsc-results/h3o/result.txt (broad=0.020 SSOT: lam_BZ=2.479, omega_log=1096.6K, Tc(mu0.10)=179.8K, Tc(mu0.13)=169.7K)",
+    "a2F_raw": "없음 — a2F.dos / *.a2F / elph_dir 파일 부재. ω₂ 는 ph.out 의 per-mode (q,ν) λ + freq 직접 적분으로 재구성 (아래).",
+    "weights": [4, 12, 12, 12, 12, 12, 8, 8, 12, 12, 12, 8, 12, 8, 12, 4],
+    "Wsum": 160,
+    "broad_Ry": 0.020,
+    "nq": 16
+  },
+  "omega2_reconstruction": {
+    "method_kr": "a2F raw 부재 → ph.out 의 16 q × 12 mode λ_qν + freq_qν (broad=0.020) 직접 적분. 표준 QE λ-가중 2차 모멘트: ω₂ = sqrt[ Σ_qν w_q·λ_qν·ω_qν² / Σ_qν w_q·λ_qν ] (양의 mode 만, imaginary mode 의 λ≈0).",
+    "parser_validation_kr": "동일 파서로 λ_BZ=2.4791 (SSOT 2.479 와 정확히 일치) 재현 — 파싱·가중 무결성 확인. 내부 일관 ω_log=999.1K vs SSOT 1096.6K 는 in-house post-proc 의 모멘트 가중 컨벤션 차이 → 컨벤션-불변 비율만 사용.",
+    "omega2_over_omegalog_ratio": 1.38929,
+    "ratio_note_kr": "ω₂/ω_log 비율은 두 모멘트를 동일 파서·동일 가중으로 계산 → 컨벤션-불변(robust). 이 비율을 SSOT ω_log=1096.6K 에 적용해 ω₂ 산출.",
+    "omega_log_K_SSOT": 1096.6,
+    "omega_2_K": 1523.5,
+    "caveat_kr": "ω₂ 는 직접 a2F.dos 적분이 아니라 mode-resolved 재구성 + 비율 스케일링. SSOT 절대 ω_log 와 정합. f₂ shape factor 의 ω₂/ω_log=1.389 입력으로 사용."
+  },
+  "allen_dynes_full": {
+    "formula_kr": "Tc_full = f₁·f₂·(ω_log/1.2)·exp[−1.04(1+λ)/(λ−μ*(1+0.62λ))]",
+    "f1": "[1+(λ/Λ₁)^1.5]^(1/3),  Λ₁=2.46(1+3.8μ*)",
+    "f2": "1 + [(ω₂/ω_log−1)·λ²]/[λ²+Λ₂²],  Λ₂=1.82(1+6.3μ*)(ω₂/ω_log)",
+    "inputs": {"lambda": 2.479, "omega_log_K": 1096.6, "omega_2_K": 1523.5}
+  },
+  "results": {
+    "mu_star_0.10": {
+      "simple_Tc_K_SSOT": 179.8,
+      "full_Tc_K": 233.17,
+      "f1": 1.175429,
+      "f2": 1.103423,
+      "f1f2_enhancement_factor": 1.2968,
+      "enhancement_pct": 29.7,
+      "Lambda1": 3.39480,
+      "Lambda2": 4.12148
+    },
+    "mu_star_0.13": {
+      "simple_Tc_K_SSOT": 169.7,
+      "full_Tc_K": 213.81,
+      "f1": 1.158282,
+      "f2": 1.087634,
+      "f1f2_enhancement_factor": 1.2599,
+      "enhancement_pct": 26.0,
+      "Lambda1": 3.67524,
+      "Lambda2": 4.59937
+    },
+    "simple_form_self_check_kr": "full 공식의 ad_base (=f₁f₂ 제외 항) = μ0.10→179.78K, μ0.13→169.72K → SSOT simple Tc (179.8K, 169.7K) 와 정확히 일치 ⇒ 공식·입력 정합 교차검증 통과."
+  },
+  "hexa_verify": {
+    "host": "mini (POOL_DISABLE=1, per reference_hexa_verify_host_mini)",
+    "build_root": "~/core/hexa-lang",
+    "mu_star_0.10": {
+      "cmd": "POOL_DISABLE=1 hexa verify --expr allen_dynes_full 2.479 1096.6 1523.5 0.10 233.172865205",
+      "verdict_verbatim": "verify --expr allen_dynes_full(2.479,1096.6,1523.5,0.1)=233.173\n  calc   = 233.173  ≈ expected 233.173  (|Δ|=1.01608e-10 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+    },
+    "mu_star_0.13": {
+      "cmd": "POOL_DISABLE=1 hexa verify --expr allen_dynes_full 2.479 1096.6 1523.5 0.13 213.811220106",
+      "verdict_verbatim": "verify --expr allen_dynes_full(2.479,1096.6,1523.5,0.13)=213.811\n  calc   = 213.811  ≈ expected 213.811  (|Δ|=9.21716e-11 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+    }
+  },
+  "stable_conditional_caveat_kr": "⚠ STABLE-CONDITIONAL — 이 Tc 상향(233K/214K)은 h3o 가 동역학적으로 stable 일 때만 유효한 잠재 상한이다. 현 ph.out 은 16/16 q-point 전부 imaginary mode (3~6개씩, 최저 −1133cm⁻¹) 를 보유 → harmonic Im-3m 은 saddle point. imaginary mode 미해결 시 λ=2.479·ω_log=1096.6K 자체가 artifact (gap #1) 이며, 그 위에 f₁f₂ 를 곱한 233K 도 똑같이 artifact 다. f₁f₂ 보정은 추가계산 0 으로 '안정화 성공 시 회수 가능한 Tc 잠재 상한' 을 정량화할 뿐, 안정성을 입증하지 않는다.",
+  "headline_kr": "simple Allen-Dynes 180K(μ0.10)/170K(μ0.13) → full f₁f₂ 233K/214K, +29.7%/+26.0% 상향 (f₁f₂≈1.30/1.26). 단 stable-conditional 잠재 상한.",
+  "concurrent_siblings": {
+    "h3o_stableq_lambda.json": "a4d99535 — stable-q-only λ 재계산 (gap #2, Tc 하한)",
+    "h3o_imaginary_mode_origin.md": "ab2addf — imaginary origin (RTSC/N5)",
+    "this": "h3o_tc_recompute.json — f₁f₂ strong-coupling Tc 상한 (brainstorm #10)"
+  }
+}
