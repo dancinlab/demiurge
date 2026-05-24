@@ -69,7 +69,10 @@ public extension LLMProvider {
             defaultModel: "gpt-5-codex"),
         LLMProvider(
             id: "gemini", displayName: "Gemini",
-            cliCommand: ["gemini", "-p", "{prompt}"],
+            // `--skip-trust` lets gemini run from cwd=/ (GUI .app launch) —
+            // same gotcha as codex (#104). Without it gemini refuses with
+            // "Gemini CLI is not running in a trusted directory".
+            cliCommand: ["gemini", "--skip-trust", "-p", "{prompt}"],
             apiBaseURL: "https://generativelanguage.googleapis.com",
             apiPath: "/v1beta/models/{model}:generateContent",
             keyEnv: "GEMINI_API_KEY", wireFormat: .gemini,
