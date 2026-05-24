@@ -86,8 +86,11 @@ func usage() {
                                        (@D g5; hexa = hx dependency)
       demiurge atlas <lookup|stats|hash|dump> [args]
                                        read the hexa atlas SSOT (M16,
-                                       read-only). Write verbs = owner
-                                       op (사장실 · M20).
+                                       read-only). Write verbs (register/
+                                       append-witness/pr) = owner op
+                                       (사장실 · M20 · DEMIURGE_OWNER).
+      demiurge owner                   owner-mode (사장실) status + the
+                                       owner-only ops it gates (M20).
       demiurge gate-summary            gate + absorbed totals
       demiurge operate [list|audit]    operation manifest (M14) — list
                                        all ops + reachability, or audit
@@ -436,13 +439,22 @@ func gateSummary() -> Int32 {
 func compose(_ domainArg: String) -> Int32 {
     let c = DomainComposer.resolve(domainArg)
     let start = DomainCatalog.domain(for: domainArg)
-    let combinedTag = c.crossesDiscipline ? " · 결합(cross-discipline)" : ""
-    print("compose \(c.start) — \(start.label) · \(c.kind.rawValue)\(combinedTag)")
-    print("  구성 도메인 (topo foundation→apex · \(c.stack.count)):")
+    // M19 — plain default hides internal jargon (kind in Korean, no
+    // substrate SSOT host paths); expert reveals the raw detail.
+    let expert = DemiurgeMode.expert
+    let kindLabel: String = {
+        switch c.kind {
+        case .atomic:    return expert ? "atomic" : "단일"
+        case .composite: return expert ? "composite" : "구성형"
+        case .meta:      return expert ? "meta" : "메타(통합)"
+        }
+    }()
+    let combinedTag = c.crossesDiscipline ? (expert ? " · 결합(cross-discipline)" : " · 결합") : ""
+    print("compose \(c.start) — \(start.label) · \(kindLabel)\(combinedTag)")
+    print("  구성 도메인 (\(c.stack.count)):")
     print("    " + (c.ids.isEmpty ? "(none)" : c.ids.joined(separator: " → ")))
-    print("  cluster union: "
-          + c.clusterUnion.map { $0.rawValue }.joined(separator: " · "))
-    if !c.substrateSSOTs.isEmpty {
+    print("  성격: " + c.clusterUnion.map { $0.rawValue }.joined(separator: " · "))
+    if expert, !c.substrateSSOTs.isEmpty {
         print("  substrate SSOT: " + c.substrateSSOTs.joined(separator: " · "))
     }
     return 0
@@ -521,7 +533,12 @@ func backend(_ args: [String]) -> Int32 {
         for b in BackendResolver.available(ownerMode: owner) {
             let mark = b.id == active.id ? "▶" : " "
             let gate = b.owner ? " 🔒" : ""
-            print("\(mark) \(b.id)\(gate)  [\(b.kind.rawValue)]  \(b.label) — \(b.host)")
+            // M19 — plain shows the friendly label; expert adds id/kind/host.
+            if DemiurgeMode.expert {
+                print("\(mark) \(b.id)\(gate)  [\(b.kind.rawValue)]  \(b.label) — \(b.host)")
+            } else {
+                print("\(mark) \(b.label)\(gate)")
+            }
         }
         if !owner {
             print("(🔒 owner pool hosts hidden — DEMIURGE_OWNER + ~/.pool/pool.json)")
@@ -555,8 +572,14 @@ func operate(_ args: [String]) -> Int32 {
             let label = tier == .product ? "🛒 진열대 (external)" : "🔒 사장실 (owner)"
             print("\(label) — \(rows.count):")
             for o in rows {
-                let verb = o.verb?.canonical ?? "—"
-                print("  \(o.reach.glyph) \(o.id)  [\(o.target.rawValue) · \(verb) · \(o.milestone)]  \(o.title)")
+                // M19 — plain hides op id / target / milestone (internal);
+                // expert shows the full bracket.
+                if DemiurgeMode.expert {
+                    let verb = o.verb?.canonical ?? "—"
+                    print("  \(o.reach.glyph) \(o.id)  [\(o.target.rawValue) · \(verb) · \(o.milestone)]  \(o.title)")
+                } else {
+                    print("  \(o.reach.glyph) \(o.title)")
+                }
             }
             print("")
         }
@@ -603,18 +626,45 @@ func verifyHexa(_ passthrough: [String]) -> Int32 {
 /// refused here so external users get read-only atlas (M0_operate.md §1).
 func atlasCmd(_ args: [String]) -> Int32 {
     let readVerbs: Set<String> = ["lookup", "stats", "hash", "dump"]
+    let writeVerbs: Set<String> = ["register", "append-witness", "pr"]
     let verb = args.first ?? "stats"
-    guard readVerbs.contains(verb) else {
+    if writeVerbs.contains(verb) {
+        // M20 — atlas write is an owner op (사장실). Unlocked ONLY with
+        // DEMIURGE_OWNER, then forwarded to `hexa atlas` (which enforces
+        // PR-only landing). External users get read-only (M16).
+        guard DemiurgeMode.owner else {
+            FileHandle.standardError.write(Data(
+                ("atlas: '\(verb)' = owner op (사장실 · M20). Set DEMIURGE_OWNER "
+                 + "to unlock. External read-only: lookup/stats/hash/dump.\n").utf8))
+            return 2
+        }
+    } else if !readVerbs.contains(verb) {
         FileHandle.standardError.write(Data(
-            ("atlas: '\(verb)' is not a read verb. External read = "
-             + "lookup / stats / hash / dump (M16). Write "
-             + "(register/append-witness/pr) = owner op 사장실 · M20 "
-             + "(아직 미노출).\n").utf8))
+            ("atlas: unknown verb '\(verb)' — read: lookup/stats/hash/dump · "
+             + "owner write: register/append-witness/pr\n").utf8))
         return 2
     }
     let r = HexaBridge.run(["atlas"] + args)
     print(r.text, terminator: r.text.hasSuffix("\n") ? "" : "\n")
     return r.ran ? r.exitCode : 127
+}
+
+/// `owner` — the 사장실 status surface (CLI+COCKPIT M20). Shows whether
+/// owner-mode is unlocked (DEMIURGE_OWNER) + the owner-only ops it gates
+/// (pool routing · atlas register · inbox handoff · governance). To an
+/// external user it reads "locked"; the owner sees the gated set.
+func ownerStatus() -> Int32 {
+    let on = DemiurgeMode.owner
+    print("owner-mode (사장실): \(on ? "✅ unlocked (DEMIURGE_OWNER)" : "🔒 locked")")
+    let ownerOps = OperationRegistry.all.filter { $0.tier == .owner }
+    print("  owner-only ops (\(ownerOps.count)):")
+    for o in ownerOps {
+        print("    \(on ? "✅" : "🔒") \(o.title)")
+    }
+    if !on {
+        print("  → unlock: DEMIURGE_OWNER=1 demiurge <cmd>  (외부 사용자에겐 비노출)")
+    }
+    return 0
 }
 
 /// `verify <path|id>` — provenance completeness + claim/gate
@@ -837,6 +887,8 @@ case "verify":
     }
 case "atlas":
     exitCode = atlasCmd(Array(args.dropFirst(2)))
+case "owner":
+    exitCode = ownerStatus()
 case "emit-component":
     exitCode = emitComponent()
 case "export-component":
