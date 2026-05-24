@@ -1,5 +1,15 @@
 # TTR-MN — log
 
+## 2026-05-25T01:10Z — timeline 수학 hexa-native 정식 검증 + atlas 등록
+
+- @goal timeline 의 `(1-x)^N` 복리누적 수학을 **hexa verify 정식 verdict** 로 못박음 (@D g5)
+- hexa-lang stdlib 에 `cycles_to_target(x,tgt)` + `compound_coverage(x,N)` float 함수 추가 (PR #803 merged · verify_cli.hexa)
+- `hexa verify --expr cycles_to_target` → 5/5 **🟢 SUPPORTED-NUMERICAL** (|Δ|=0.0 ≤ ε=1e-9):
+  - x=0.047→N=48 · 0.08→28 · **0.12→19 (v3 주1회 ≈ 4.5개월)** · 0.15→15 (v4 floor) · 0.20→11 · 대조 18→🔴 FALSIFIED
+- atlas SSOT 등록: `@F verified-cycles_to_target-num = cycles_to_target(0.12,0.1)=19.0 :: 🟢` (PR #811 merged · atlas_cli.hexa recompute mirror 동반)
+- ⚠ 못박힌 것 = **x→N 수학만** (결정론적). 입력 x(회당 제거율)는 여전히 시뮬 추정 · ex-vivo 실측 🟠 deferred (실측 x 낮으면 N 증가)
+- 교훈: hexa verify 빌드는 정식 루트 `~/core/hexa-lang` 에서 (worktree 는 use-확장 생략 → 빌드 실패)
+
 ## 2026-05-24T22:10Z — 스냅샷 reconcile (git SSOT 재동기화)
 
 - 발견: 스냅샷이 17:43 에 멈춰 v3 골화만 보이고 그 뒤 실제 산출물(18:00~22:00 committed)을 누락
