@@ -7,6 +7,7 @@
   parent   = "dancinlab"
   ssot     = "github.com/dancinlab/demiurge (`hx install demiurge`)"
   siblings = "hexa-lang"
+  run      = "dev GUI (test): `cd ~/core/demiurge/cockpit && swift run CockpitApp` · installed app: `demiurge install` → `demiurge run` · CLI (AI surface): `demiurge cli <verb>` / `demiurge operate|compose|verify|backend`"
 
 @D d1 := "non-wet-lab verification → completed-form" :: governance [required active]
   do   = "drive each non-wet-lab step (sim · proof · synthesis · gate · handoff) to completed-form pre wet-lab"
@@ -43,3 +44,7 @@
 @D d9 := "worktree concurrent agent index isolation" :: governance [required active]
   do   = "sequential commit on main · stage+commit one agent at a time · `git add <explicit-files>` only"
   dont = "parallel worktree agents staged at once → index leak · stage absorbed into another agent's commit"
+
+@D d10 := "every domain wears an easy-style identity head — icon · name · alias" :: governance [required active]
+  do   = "head each <DOMAIN>.md with: 1 emoji icon · canonical NAME · short user-language alias"
+  dont = "leave a domain id bare · coin a different alias per file within one domain"
