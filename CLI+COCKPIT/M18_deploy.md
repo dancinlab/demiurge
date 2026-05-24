@@ -1,9 +1,8 @@
 # M18 — 외부 배포 runbook (deploy 골격)
 
 > CLI+COCKPIT M18. 외부 사용자에게 **app(.app) + CLI(바이너리)** 를 배포하는 절차.
-> ⚠ 이 프로젝트는 hexa-native 가드로 새 `.sh` 작성이 막혀 실행 스크립트는 후속
-> (`release.hexa` 또는 Swift `demiurge release` 서브커맨드). 본 문서는 **명령이 그대로
-> 실행 가능한 runbook 골격** — 테스트(자체서명)는 지금, 배포(Developer ID)는 cert 확보 후.
+> 실행 스크립트 = `cockpit/scripts/release.hexa` (hexa-native · `.sh`는 가드 차단). 본 문서는
+> 그 runbook 근거 — 테스트(자체서명)는 지금 동작, 배포(Developer ID)는 cert 확보 후.
 
 ## 서명 2-경로
 
@@ -52,10 +51,16 @@ build·bundle│  ad-hoc self-sign         │   │  Developer ID sign + notari
 | demiurge CLI | `demiurge-cli-<ver>.zip` → PATH에 `demiurge` |
 | owner-infra | **불필요** (pool·내 호스트·dancinlab repo 의존 0 · @goal) |
 
-## 실행 스크립트 형태 (후속 결정)
+## 실행 스크립트 — `cockpit/scripts/release.hexa`
 
-`.sh`는 hexa-native 가드로 차단됨. 두 후보:
-- **`cockpit/scripts/release.hexa`** — 가드 권장 hexa-native. stdlib의 spawn 패턴(cellrun.hexa·sweep_oracle_parity.hexa가 `hexa build`+native spawn) 적용
-- **`demiurge release` Swift 서브커맨드** — on-theme(배포도 2-surface op화) · `Process`로 swift build·codesign·ditto spawn · `OperationRegistry`에 release op 등재 가능
+hexa-native (`.sh`는 가드 차단). `hexa run cockpit/scripts/release.hexa [version]`:
 
-> 본 runbook의 명령은 그대로 복붙 실행 가능 (테스트 경로). 실행 스크립트화는 위 2후보 중 택일.
+| `DEVELOPER_ID` | 경로 | 시점 |
+|---|---|---|
+| unset | ad-hoc 자체서명 (`codesign -s -`) | 테스트, 지금 동작 |
+| set | Developer ID 서명 + notarytool TODO 출력 | cert 확보 후 |
+
+ad-hoc 경로 검증됨: `demiurge-<ver>.app.zip` + `demiurge-cli-<ver>.zip` 생성, `Signature=adhoc`,
+배포 `.app`에 `DEMIURGE_REPO` 미주입 (install.sh와의 핵심 차이).
+
+> 대안: `demiurge release` Swift 서브커맨드(배포도 2-surface op화) — 현재는 release.hexa로 충분.
