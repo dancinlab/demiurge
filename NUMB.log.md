@@ -1,5 +1,29 @@
 # NUMB — log
 
+## 2026-05-25T09:30Z — V1-V4 통합 verify ledger CLOSED (87 claim · non-wet-lab 95.8% PASS · hexa-native 🟢)
+
+NUMB verify track V1-V4 전체 완수. 격리 worktree `/tmp/numb-v-2a3f317b` (branch `numb-v-ledger-2a3f317b`, base origin/main per @D d9). G5 land 확인 (origin/main NUMB.md G5 row=[x] · 커밋 edfc058 #127) → G5 claim 포함. 11 research + 11 sim 전수 읽기 후 claim 추출.
+
+- [x] **V1** (`NUMB/research/V_verify_ledger.md`) — claim inventory + tier triage
+  - **87 정량 claim** 추출 + ID 부여 (`C-<milestone>-NN`): TTR-LAC 상속 6 (C-INH-*) + G1-G7 + N1·N5·N6·N7.
+  - tier triage: 🔵12 closed-form · 🟢20 numerical · 🟡36 citation · 🟠15 wet-lab deferred · 🔴3 falsified · ⚪1 speculation-fenced.
+- [x] **V2 🔵** — 5 load-bearing closed-form 손-검산 재현:
+  - LAST 체중 스케일 `Cmax=0.1834×A` · age-adj threshold `5000×(f_AAG)×(CL)` (neonate 2500 · school 5000).
+  - onset 곡선 `2×h²/(6D)`: EMLA(D=1e-10) 55.6min · LAC v1(D=2e-9) 2.78min · OTC-A(LMX class) 55.6min. **onset=D-driven only → 농도/a/K_sc 무관** (N1/N6/N7 onset 가속 주장 falsify 축).
+  - Henderson-Hasselbalch `f_free=1/(1+10^(pKa-pH))` lid 0.40%→80% @pH5.5→8.5 · tet 0.10%→50%.
+  - Schröder-Van Laar eutectic (Yuan 2015 measured 29.95°C anchor).
+  - Arrhenius shelf-life (epi AF 4.29 · lid AF 15.39 · epi 25.7mo gate · lid t90 17.6k yr).
+- [x] **V3 🟢** (`NUMB/sim/v3_verify_ledger.hexa`) — hexa-native recompute
+  - **pool-route refused** (heavy-classified · ubu-1/2/192.168.50.155 모두 preflight fail) → main repo path `hexa_real run` 로컬 GREEN (이전 agent 학습 적용).
+  - 5종 전부 doc 값 cross-check PASS: slope 0.183257≈0.1834 · margin(400) 68.21x≈68.16x · onset 55.56/2.78 정확 · HH 0.00397/0.799 일치 · epi AF 4.286≈4.289 · lid t90 17,613 yr≈17,723. **SVL libm exp 값(0.4703)이 doc Taylor-4 근사(0.4587)보다 정밀** (Δ<2.5%, 둘 다 Yuan 29.95°C anchor 가 truth).
+  - **@D g5 verbatim 준수**: `hexa verify --expr welch_t_crit(10.0)=2.228 → 🟢 SUPPORTED-NUMERICAL` (verify CLI rubric 동작 증명) · `hexa verify --fence "NUMB onset 3min in vivo" → ⚪ SPECULATION-FENCED` (미측정 honest 분리). LLM self-judge 금지.
+- [x] **V4** — final tier ledger
+  - 87 claim 표 (ID·tier·evidence·PASS/FAIL).
+  - **non-wet-lab PASS rate = (🔵+🟢+🟡)/(전체−🟠−⚪) = 68/71 = 95.8%**. 🔴 closed negative 포함 시 **71/71 = 100% verified-closed**.
+  - 🟠 wet-lab 15-claim = oracle handoff 목록 (cheapest = N6 DSC $700-1500 → 🟠→🟡 1-cycle 승격 가능).
+  - honest framing (@D d5/d6): 🟠 wet-lab claim → 🟢 승격 금지. "onset 가속" 주장 3건 (C-G6-07·C-N1-05·C-N7-08) 일관 🔴 FALSIFIED (a·K_sc·f_free = J_ss prefactor · t_lag 무관) — 도메인 전체가 정직 negative 명시.
+- **absorbed=false 유지** — NUMB measured-oracle (multi-indication PASS · LAST 임상 0 incident · OTC/Rx 듀얼 승인) = wet-lab 천장. V-track 은 non-wet-lab verify-closed 만 담당.
+
 ## 2026-05-25T08:10Z — G6 closed: 인접 토픽 양립성 매트릭스 (co-application · hexa-native 🟢)
 
 round G6 milestone CLOSED. 격리 worktree `/tmp/numb-g6b-a68ebcad` (branch `numb-g6-compat-a68ebcad`, base origin/main · 첫 worktree `/tmp/numb-g6-3b5a6936` 가 concurrent prune 으로 displaced → fresh worktree 재생성 후 deliverable 복사). N6(corneal wall) · N7(epi pH 8.5 분해 · HH f_free) 자산 통합.

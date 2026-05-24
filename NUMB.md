@@ -39,7 +39,7 @@
 - [ ] NUMB measured-oracle — multi-indication PASS (onset 95% ≤target · LAST < threshold · pediatric envelope · OTC/Rx 듀얼 승인) → absorbed=true
 
 ## verify (per @D g5 · hexa-native)
-- [ ] V1 claim inventory + tier triage (🔵/🟢/🟡/🟠) — TTR-LAC V1 38 claim 흡수 + NUMB G-track 신규
-- [ ] V2 🔵 — LAST 체중 스케일 closed-form · indication 매핑 정합 · OTC/Rx 농도-onset 곡선
-- [ ] V3 🟢 — hexa-native recompute (체중별 dose · 농도-onset · indication PASS rate)
-- [ ] V4 final tier ledger
+- [x] V1 → `NUMB/research/V_verify_ledger.md` · **87 정량 claim 추출 + ID 부여** (G1-G7 + N1·N5·N6·N7 + TTR-LAC 상속 6) · tier triage 🔵12 · 🟢20 · 🟡36 · 🟠15 · 🔴3 · ⚪1
+- [x] V2 🔵 → 5 load-bearing closed-form 손-검산 재현: **LAST 체중 스케일** (Cmax=0.1834×A · age-adj threshold=5000×f_AAG×CL) · **onset 곡선** (2×h²/6D: EMLA 55.6min · LAC v1 2.78min · OTC-A 55.6min LMX class) · **Henderson-Hasselbalch** (lid f_free 0.40%→80% @pH5.5→8.5) · **Schröder-Van Laar** (Yuan 29.95°C anchor) · **Arrhenius** (epi 25.7mo gate · lid t90 17.6k yr)
+- [x] V3 🟢 → `NUMB/sim/v3_verify_ledger.hexa` (`hexa_real run` 로컬 GREEN · pool-route refused 우회 = main repo path) — 5종 전부 doc 값 cross-check PASS (Δ<2.5%) · **hexa verify CLI rubric verbatim** (welch_t_crit 🟢 SUPPORTED-NUMERICAL sanity · in-vivo onset ⚪ SPECULATION-FENCED) · @D g5 LLM self-judge 금지 준수
+- [x] V4 → final tier ledger 표 (87 claim · ID·tier·evidence·PASS/FAIL) · 분포 집계 · **non-wet-lab PASS rate = 68/71 = 95.8%** (🔴 closed negative 포함 시 71/71 = 100% verified-closed) · 🟠 wet-lab 15-claim = oracle handoff 목록 (cheapest N6 DSC $700-1500) · honest: 🟠→🟢 금지 · "onset 가속" 3건 일관 🔴 FALSIFIED (prefactor≠t_lag) · absorbed=false 유지 (measured-oracle = wet-lab 천장)
