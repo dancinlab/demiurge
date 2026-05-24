@@ -25,7 +25,7 @@
 - [ ] X7 교수님 handoff package (DOCTOR feed) — 4 트랙 통합 1-page executive + 즉시/6m/3y timeline → `CARDIO+/X7_doctor_feed.md`
 - [ ] X8 cross-domain g5 grade ledger — 모든 영역 🔵 trajectory + 🟢 NUMERICAL 합산 + ⚪ fence + 🔴 falsified 통합 → `CARDIO+/X8_grade_ledger.md`
 - [ ] X9 cross-domain d2 wall map — 4 sub-domain 각 wall + 돌파 path 시너지 (예: ALDH2*2 × Lp(a) × CYP2C19 stratification 통합) → `CARDIO+/X9_wall_map.md`
-- [ ] X10 paper-ready figures — 4 sub-domain ASCII + 통합 1 figure (4-axis ranking radar · timeline · korean trial portfolio) → `CARDIO+/X10_figures.md`
+- [~] X10 paper-ready — arxiv-style 통합 논문 `CARDIO+/PAPER/main.tex` (본문 abstract+§1-9+appendix+14 refs 완성 · figure ⏳ pool-route 복구 대기) + `CARDIO+/PAPER/README.md`
 
 ## d2 governance (meta)
 

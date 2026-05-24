@@ -2,6 +2,18 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T03:00:00Z — X10 PAPER scaffold (arxiv-style 통합 논문)
+
+- [x] `CARDIO+/PAPER/main.tex` — abstract + §1 intro + §2 rubric + §3-6 T1-T4 + §7 synthesis + §8 limits + §9 conclusion + appendix + 14 refs
+- [x] 3 핵심 수식 LaTeX화 — eq(1) pk_2comp mass-balance · eq(2) hill · eq(3) ldl_pct (모두 PR #658 atlas calc fn 매핑)
+- [x] `CARDIO+/PAPER/figures/overview_prompt.txt` — fal.ai Figure 1 프롬프트 (4-track + 3-axis stratification)
+- [x] `CARDIO+/PAPER/README.md` — 섹션 매핑 + 수식 oracle 표 + figure/compile 가이드 + g51 lint 상태
+- [ ] ⏳ Figure 1 생성 차단 — pool-route escalated 환경 `_imagine.hexa` skill `--root` compile error · toolchain 복구 후 `/imagine` 재시도
+- [ ] ⏳ compile (pdflatex 3-pass) — toolchain 복구 후 page count 확인 (g51 ≥10p)
+
+🔑 paper 핵심 메시지: 4 트랙을 1 coupled package로 보면 single-track review에 안 보이는 결과 도출 — mPTP는 죽은 표적 아니라 mis-delivered (IRI ODE 36.6pp), 최대 한국 leverage = ALDH2*2 × CYP2C19 × Lp(a) 3-axis stratification (기존 급여 안에서 배포 가능)
+⚠ skill 차단 2건 (paper · imagine 모두 `--root` compile error) — pool-route escalated 환경 hexa build 회귀 · inbox patch 후속 후보
+
 ## 2026-05-25T02:50:00Z — CARDIO+.md/.log.md 자체도 CARDIO+/ 내부로 이동
 
 - [x] git mv CARDIO+.md → CARDIO+/CARDIO+.md · CARDIO+.log.md → CARDIO+/CARDIO+.log.md
