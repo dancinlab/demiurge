@@ -103,3 +103,19 @@ method → 명령 매핑:
 - [ ] 최신 hexa-cloud(rent) 빌드 완료
 - [ ] §7 offer 재조회 → 실가 확정
 - [ ] **사용자 최종 rent 승인** (실비 ~$203, irreversible)
+
+## 9. 준비 진행 상황 (2026-05-25 · "all" 무료 prep 라운드)
+
+**완료 ✅**
+- 공개 구조 fetch (staged → `ubu-1:~/ttr-m5/inputs`):
+  - PDB ×5: 1V4B(173KB) · 4G2C(734KB) · 2D3Q(606KB) · 1KYA(1.45MB) · 1ATJ(1.63MB)
+  - ligand ×5: cid_2169·14570·54670067 (3D SDF) · cid_2973(DFO)·643975(FMN) (2D → RDKit embed 필요)
+- hexa-cloud 빌드 (정식 루트) — `preflight`(LLM축) + dispatch(run/exec/copy/poll/watchdog) verb 확보
+
+**막힘 ⛔ (사용자/입력 필요 — 자동화 불가)**
+- ⚠ **MP API key 없음** (`secret list` 무) → 산화물 CIF(CeO₂ mp-20194·Fe₂O₃·Cr₂O₃·TiO₂) 자동 다운로드 불가 → **NP 기반 8 cell(c01-c04·c09-c12) 입력 블록**. 해소: MP 키 등록 또는 수동 CIF 다운로드.
+- ⚠ **ubu-1 conda/mamba 없음** → ASE/Vina/docking 전 micromamba 설치 필요 (무료, 가능).
+- ⚠ **rent verb 부재** — hexa-cloud 에 provision(rent/up) 없음 → vast 렌트는 `vastai` CLI 직접 (설치됨 · `secret get vast.api_key`). dispatch 만 `hexa cloud run/copy-to` (@D g8).
+- 🔧 수동 comp-chem (전문 판단): CeO₂ NP carve · DyP Compound-I · FMN→FMNH⁻ · azo CHARMM36m 파라미터(CGenFF 로그인).
+
+⇒ 자동화 가능한 무료 prep 은 입력 수집·툴빌드까지 도달. **다음 진척의 게이트 = (1) MP 키, (2) 수동 cofactor 큐레이션** — 둘 다 사용자 입력 의존.
