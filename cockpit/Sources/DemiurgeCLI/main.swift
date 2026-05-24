@@ -73,6 +73,10 @@ func usage() {
                                        all ops + reachability, or audit
                                        external operability. `--owner`
                                        reveals owner-only (사장실) ops.
+      demiurge compose <domain>        resolve a domain into its
+                                       constituent (prerequisite) domain
+                                       stack + cluster union + kind
+                                       (atomic/composite/meta) — M15.
       demiurge emit-component          Emit the procedural BIPV
                                        artifact (.usda/.usdz + record)
                                        to exports/component/geometry/
@@ -327,6 +331,26 @@ func gateSummary() -> Int32 {
     return 0
 }
 
+/// `compose <domain>` — resolve a domain into its constituent
+/// (prerequisite) domain stack + cluster union + kind (CLI+COCKPIT
+/// M15). 선행도메인 = 구성도메인 (M0_operate.md §8). Shares the SAME
+/// `DomainComposer` the cockpit NewProject wizard + 7-verb dispatch
+/// use (D50). Read-only.
+func compose(_ domainArg: String) -> Int32 {
+    let c = DomainComposer.resolve(domainArg)
+    let start = DomainCatalog.domain(for: domainArg)
+    let combinedTag = c.crossesDiscipline ? " · 결합(cross-discipline)" : ""
+    print("compose \(c.start) — \(start.label) · \(c.kind.rawValue)\(combinedTag)")
+    print("  구성 도메인 (topo foundation→apex · \(c.stack.count)):")
+    print("    " + (c.ids.isEmpty ? "(none)" : c.ids.joined(separator: " → ")))
+    print("  cluster union: "
+          + c.clusterUnion.map { $0.rawValue }.joined(separator: " · "))
+    if !c.substrateSSOTs.isEmpty {
+        print("  substrate SSOT: " + c.substrateSSOTs.joined(separator: " · "))
+    }
+    return 0
+}
+
 /// `operate [list|audit]` — the operability surface (CLI+COCKPIT M14).
 /// Reads the SAME `OperationRegistry` manifest the cockpit will render
 /// (D50 byte-identical). Owner 사장실 ops show only with `--owner` or
@@ -530,6 +554,13 @@ case "gate-summary":
     exitCode = gateSummary()
 case "operate":
     exitCode = operate(Array(args.dropFirst(2)))
+case "compose":
+    guard args.count >= 3 else {
+        FileHandle.standardError.write(Data("compose: missing <domain> argument\n".utf8))
+        usage()
+        exit(2)
+    }
+    exitCode = compose(args[2])
 case "verify":
     guard args.count >= 3 else {
         FileHandle.standardError.write(Data("verify: missing <path|id> argument\n".utf8))
