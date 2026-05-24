@@ -1,5 +1,5 @@
 @V := "tape" :: spec [active]
-  version = "1.5"
+  version = "1.6"
 
 @I := "demiurge" :: identity [active]
   kind     = "Universal hexa-native technical-design architecture (7-verb pipeline · domain-plugin macOS cockpit)"
@@ -48,3 +48,31 @@
 @D d10 := "every domain wears an easy-style identity head — icon · name · alias" :: governance [required active]
   do   = "head each <DOMAIN>.md with: 1 emoji icon · canonical NAME · short user-language alias"
   dont = "leave a domain id bare · coin a different alias per file within one domain"
+
+@D d11 := "pre-rent feasibility-size — atoms · basis-fn · method scaling first" :: governance [required active]
+  do   = "before paid GPU rent, size the job (atoms · basis-fn · method scaling) → single-pod-feasible?"
+  dont = "rent before sizing confirms feasibility (4676-bf hybrid DFT single-pod = days/$$$)"
+
+@D d12 := "metal-oxide hybrid DFT — cluster model, not full NP" :: governance [required active]
+  do   = "metal-oxide DFT → carve neutral charge-balanced cluster (e.g., Ce₆O₁₂ singlet), not full NP"
+  dont = "hybrid DFT on full metal-oxide NP single-pod — convergence + cost both fail"
+
+@D d13 := "basis/ECP element coverage check before run" :: governance [required active]
+  do   = "grep target lib for element entries before run (lanthanides → CRENBL/SARC in NWChem)"
+  dont = "assume def2-TZVP covers Ce/lanthanides — NWChem's bundled def2 has no lanthanide entries"
+
+@D d14 := "DFT method tractability — PBE first for metal-oxide" :: governance [required active]
+  do   = "metal-oxide first run → pure PBE (xpbe96 cpbe96), not hybrid (PBE0/ωB97X-D) — 5-10× faster"
+  dont = "default to hybrid DFT on large metal-oxide — exact exchange CPU-bound + harder SCF"
+
+@D d15 := "small-gap SCF aids — smear + damp + convergence lshift" :: governance [required active]
+  do   = "metal/small-gap SCF → `smear 0.01` + `convergence damp 70 lshift 0.5` + `maxiter 400`"
+  dont = "expect default SCF to converge on metal-oxide clusters — f/d-electron near-degeneracy"
+
+@D d16 := "deck syntax-validate FREE on pool before rent" :: governance [required active]
+  do   = "build deck + 1-iter dry-run on pool free → catch directive/basis errors before paid rent"
+  dont = "discover NWChem syntax errors on a billing pod — every iteration is wasted $"
+
+@D d17 := "bound paid compute — 1 validation cell → then scale" :: governance [required active]
+  do   = "first rent run = 1 priority cell ($1-15) → validate → only then scale to full campaign"
+  dont = "blind full-campaign rent — risk-multiplied spend on unvalidated setup"
