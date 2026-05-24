@@ -2,6 +2,17 @@
 
 Append-only history sister of `CLI+COCKPIT.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T16:00:00Z — origin/main 안착 (PR #79·#80) + P3 cockpit 운영 탭 · 시퀀스 4→1→2→3 완료
+
+- [x] **PR #79 MERGED** (origin/main 7034a5d) — M14-M17 코드(operate·compose·verify·atlas·backend·project) 격리 worktree에서 origin/main 위로 cherry-pick(충돌 0)·클린 빌드·squash-merge. main divergence(16/45) 안전 우회
+- [x] **#3 P3 cockpit "운영" 탭 ✅ PR #80 MERGED** (origin/main bee61bc) — `OperationsView`: 운영 준비도(audit) · 계산 위치(backend) · 구성 도메인(compose 트리+결합 flag) · 할 수 있는 일(op 목록). plain 기본 + expert id/target. owner gated(M19). WorkbenchView 3rd ResultTab. 빌드 green
+- [x] **사용자 4→1→2→3 시퀀스 완료** — 4 push(PR #79) · 1 synthesize-run · 2 project-create · 3 GUI(PR #80)
+- [x] PR 패턴 확립 — 로컬 main이 origin/main과 diverged + 동시 세션 라이브 → 격리 worktree(origin/main 기준)에서 코드 커밋만 cherry-pick → PR → squash-merge. docs(milestone·M0)는 동시 세션 co-edit이라 로컬 트랙 유지
+- [ ] ⏳ 남은 단일 미완 = analyze-loop ⟲ 수렴 루프(fixpoint 반복) · M18 외부 배포(notarized .app + standalone CLI) · M19 plain격리 정밀화 · M20 owner-mode env-gate 명문화 · M21 audit flip(productComplete)
+- [ ] ⏳ docs(CLI+COCKPIT.md milestone·M0_operate.md)는 origin/main에 미반영 — 동시 세션 CLI+COCKPIT.md 점유 잦아들면 catchup
+
+🔑 핵심: 외부 사용자 운영 surface 6종(operate·compose·verify·atlas·backend·project)이 CLI+cockpit 양쪽에서 동작하고 **origin/main에 머지**됨(PR #79·#80). audit 11✅·1🔶·0❌ — 단일 op 전부 reachable. 남은 큰 미완은 analyze ⟲ 수렴 + 배포(M18). docs는 로컬 트랙(동시 세션 충돌 회피).
+
 ## 2026-05-25T15:40:00Z — M15 synthesize-run 합성 실행 + CLI project-create · audit 11✅·1🔶·0❌
 
 - [x] **synthesize-run ✅ commit 9faccc8** — `ActionDispatch.runComposite` + `demiurge action <verb> <domain> --compose` — 구성 stack을 topo(foundation→apex) 실행, runEngineTool 재사용, verdict 안 뭉갬(g3)
