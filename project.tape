@@ -24,9 +24,9 @@
   do   = "every variant / domain / tenant traverses one generic path — add / rename / remove is manifest-only"
   dont = "per-instance dispatcher / producer class · branch on instance name in the generic layer"
 
-@D d5 := "absorbed=true ⇔ measured-oracle PASS" :: governance [required active]
-  do   = "flip `absorbed=true` only when an attached `MeasuredOracleRef` records `isMeasuredOraclePASS=true`"
-  dont = "flip `absorbed` from a projection · attach a MeasuredOracleRef to illustrative-physics cells"
+@D d5 := "absorbed=true ⇔ all non-wet-lab gates PASS" :: governance [required active]
+  do   = "flip `absorbed=true` when all non-wet-lab gates pass — wet-lab is downstream confirmation"
+  dont = "block `absorbed` on wet-lab measurement · flip from a projection · skip a non-wet-lab gate"
 
 @D d6 := "first-principles physics breaks the ML training-distribution wall" :: governance [required active]
   do   = "when a wall is a model's training-distribution limit, break it with first-principles physics, not ML"
