@@ -2,6 +2,18 @@
 
 Append-only history sister of `CLI+COCKPIT.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T15:00:00Z — M17 compute-backend ✅ (호스트 하드코딩 0) · audit 0❌ 달성
+
+- [x] **M17 ✅ commit 72fb19e** — `ComputeBackend`+`BackendResolver`+`demiurge backend list/current` · local 기본 + `DEMIURGE_BACKEND` 사용자 remote
+- [x] **호스트 하드코딩 0 (@goal)** — 내 ubu/mini를 demiurge 코드에 안 박음. owner pool은 런타임에 owner 자신의 `~/.pool/pool.json`에서 읽고 DEMIURGE_OWNER 일 때만 노출
+- [x] **실증** — 외부 `backend list`=local만(pool 숨김) · `--owner`=pool.json 4 호스트(mini·ubu-1·ubu-2·pi5-akida) · `DEMIURGE_BACKEND=ssh:myhost`→remote:myhost
+- [x] **audit 0❌ 달성** — product 9✅·3🔶·0❌ — 모든 blocked op 해소. single op 전부 2-surface reachable
+- [x] M0_operate.md §3 compute-backend row + audit-count 갱신 · M17 milestone [x]
+- [ ] ⏳ 남은 🔶 3개 = M15 7-verb 합성 실행 (verb-nav·analyze-loop·synthesize-run) — single op은 다 되고, 구성 stack을 topo 순서로 합성 실행하는 부분만 잔여
+- [ ] ⏳ P3 cockpit GUI mirror (OperationRegistry·DomainComposer·BackendResolver) · M18 배포 · M19 plain격리 · M20 owner-mode · M21 audit flip
+
+🔑 핵심: M17로 **audit ❌ 0** 달성 — verify·atlas·backend 모든 single 운영 op가 외부 2-surface에서 reachable (owner-infra 의존 0). compute-backend가 내 호스트를 코드에 안 박고 owner 설정파일에서 읽어 "외부 제품" 경계 준수. 외부 완전운영까지 남은 건 M15 7-verb 합성 실행(3🔶)뿐.
+
 ## 2026-05-25T14:40:00Z — M16 ✅ 완료 (atlas-lookup 추가 · read-only owner-gated)
 
 - [x] **atlas-lookup ✅ commit 786bd18** — `demiurge atlas lookup/stats/hash/dump`→`hexa atlas` VERBATIM (HexaBridge 재사용) · write(register/append-witness/pr)=owner op 사장실 M20 거부
