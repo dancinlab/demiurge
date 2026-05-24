@@ -1,0 +1,66 @@
+// CARDIO+ X35 — inaction cost (비채택 비용) population quantification
+// 질문: 3-axis 층화 케어를 배포하지 *않고* 표준(S1 universal clopidogrel)에 머무는
+//       매년 한국 PCI 인구의 초과 부담(events·death·cost·QALY)은?  = 채택 동인의 거울상.
+// grounded: M8 §5.1 per-100 event rate (S1 vs S4) VERBATIM · Korea PCI ~80,000/yr (M8 budget pci_per_y) · 사건 단가 M8 §2
+// ⚠ illustrative population projection ⚪ — 실측 인구 결과 아님 (d6). 효과 가정 의존.
+// Usage: POOL_DISABLE=1 hexa run CARDIO+/DAPTPGX/sims/x35_inaction_cost.hexa
+
+println("=== CARDIO+ X35 — inaction cost (비채택 비용 · Korea PCI ~80k/yr) ===")
+println("")
+
+let pci_yr = 80000.0          // M8 budget pci_per_y
+let cohort = pci_yr / 100.0   // per-100 units
+
+// M8 §5.1 per-100 event rate (VERBATIM): S1 universal clopi vs S4 targeted
+let s1_st=1.1   let s1_bl=1.2   let s1_death=1.8
+let s4_st=0.6   let s4_bl=1.5   let s4_death=1.5
+// 사건 단가 (M8 §2 · KRW)
+let c_st=15000000.0   let c_bl=8000000.0   let c_death=10000000.0
+// 약가 (S1 universal clopi vs S4 targeted · M8 §5.1 per-100 drug)
+let s1_drug100 = 5500000.0    // 100 × 150 × 365
+let s4_drug100 = 34500000.0   // targeted (clopi+prasug+ticag mix)
+
+// --- 비채택(S1 유지)의 per-100 vs 채택(S4) 차이 ---
+let d_st   = s1_st - s4_st       // +0.5/100 초과 ST (비채택)
+let d_bl   = s1_bl - s4_bl       // -0.3/100 (비채택이 출혈은 오히려 적음 · potent trade-off)
+let d_death= s1_death - s4_death // +0.3/100 초과 사망 (비채택)
+
+println("--- per-100 (비채택 S1 − 채택 S4) ---")
+println("excess_ST_per100    =", d_st)
+println("excess_bleed_per100 =", d_bl, "(음수=비채택이 출혈 적음·potent trade-off)")
+println("excess_death_per100 =", d_death)
+
+// --- 연간 한국 인구 환산 ---
+let annual_excess_st    = d_st * cohort
+let annual_excess_bleed = d_bl * cohort
+let annual_excess_death = d_death * cohort
+println("")
+println("--- 연간 Korea PCI ", pci_yr, "명 (비채택 초과) ---")
+println("annual_excess_ST    =", annual_excess_st, "건/yr")
+println("annual_excess_bleed =", annual_excess_bleed, "건/yr (음수=회피)")
+println("annual_excess_death =", annual_excess_death, "명/yr")
+
+// --- 건강 toll: 초과 사건비 (비채택의 사건 비용 − 회피 출혈 비용) ---
+let annual_event_cost = annual_excess_st*c_st + annual_excess_death*c_death + annual_excess_bleed*c_bl
+println("")
+println("annual_excess_event_cost_M =", annual_event_cost/1000000.0, "(ST+death 초과 − 출혈 회피)")
+println("annual_excess_event_cost_Eok =", annual_event_cost/100000000.0)
+
+// --- 경제: 약가 차이 (비채택은 targeted 약가 안 씀 → 단기 절약) ---
+let drug_save_per100 = s4_drug100 - s1_drug100   // 비채택이 아끼는 약가/100
+let annual_drug_save = drug_save_per100 * cohort
+println("")
+println("annual_drug_save_by_inaction_Eok =", annual_drug_save/100000000.0, "(비채택 1y 약가 절약)")
+
+// --- 1y net inaction balance (사건비 − 약가절약) ---
+let net_1y = annual_event_cost - annual_drug_save
+println("net_1y_inaction_Eok =", net_1y/100000000.0, "(양수=비채택이 1y 순손실 · 음수=1y 순절약 but 생명 손실)")
+
+// --- QALY toll (X28 per-patient ΔQALY +0.066 · IM/PM 0.628 가중) ---
+let dqaly_patient = 0.066
+let im_pm_frac = 0.628
+let annual_qaly_toll = dqaly_patient * im_pm_frac * pci_yr
+println("")
+println("annual_QALY_toll =", annual_qaly_toll, "QALY/yr (X28 Δ × IM/PM 0.628 × 인구)")
+println("")
+println("=== X35 done (illustrative population projection ⚪ · 효과 가정 의존 · d6) ===")

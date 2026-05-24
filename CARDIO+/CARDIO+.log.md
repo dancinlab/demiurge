@@ -2,6 +2,18 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T12:50:00Z — 배포 well capstone: X35 inaction cost (사용자 A · orchestrator mini 실측)
+
+- [x] **X35 inaction cost** → `CARDIO+/X35_inaction_cost.md` + `CARDIO+/DAPTPGX/sims/x35_inaction_cost.hexa` (mini 실측)
+  - 비채택(표준 유지) 연 toll (Korea PCI 8만): **초과 사망 +240명/yr · 초과 ST +400건/yr · QALY ~3,316/yr** · 출혈 −240(회피·potent trade-off)
+  - 경제: 사건비 +64.8억 but 약가 절약 +232억 → **net 1y −167.2억 (비채택이 1y 돈은 아낌)**
+  - 🔑 devil's bargain: 1y 167억 아끼고 매년 240명 사망 지불 — 채택 동인의 거울상 · X19(5y −44억) 1y절약→5y손실 반전과 정합 · net_1y 음수는 억지 없는 정직한 불편한 진실(d6)
+  - adoption lever(X30/P4P·정책): "미채택 = 연 240명" 이 격상 명분 정량
+- [x] event rate M8 §5.1 VERBATIM · population projection ⚪ · 인과는 wet-lab/RCT gate(X25/X13)
+- [ ] ⏳ 배포 well **depletion 확정** (잔여 covered) · 3rd well(차세대/장기) brainstorm 재개 (사용자 C)
+
+🔑 capstone: CARDIO+ cross-cutting **X1-X35** (35개) · 배포 well 완주(EMR→교육→수가→거버넌스→inaction-cost) · evidence+배포 두 well 소진.
+
 ## 2026-05-25T12:20:00Z — /cycle 배포 라운드 2: X32·X33·X34 (worktree2 격리 → PR)
 
 - [x] **X32 교육·인력** → `CARDIO+/X32_workforce_training.md` — 4대상 PGx-DAPT 커리큘럼/CME · 공통 1순위=ticagrelor Month-1 stopping rule · genetic counselor 부족(⚪) → CDS 자동해석+약사 클리닉+counselor 집중 3-경로 분산(d2) · 역할분담(의사 결정·약사 해석·CDS 자동·counselor 복잡case·간호 모니터)

@@ -50,6 +50,7 @@
 - [x] X32 교육·인력 — 4대상(전공의·전문의·약사·간호) PGx-DAPT 커리큘럼·CME · genetic counselor 부족→CDS+약사+counselor 3-경로 분산(d2) · 역할분담 → `CARDIO+/X32_workforce_training.md`
 - [x] X33 수가·재정·지속가능 — HIRA 청구(C5946+prasugrel 코드·삭감방지) · 지속주체=병원(self-funding 정렬) · VBC metric=ST↓+출혈균형 → `CARDIO+/X33_reimbursement_sustainability.md`
 - [x] X34 거버넌스·동의·형평 — 7-직역 PGx 위원회(권고강도=근거강도) · 3-계층 동의(법령 ⚪/🟡) · 채혈-only 3-axis 지역 형평 + POCT/telegenetics/SaaS 3-bridge → `CARDIO+/X34_governance_consent_equity.md`
+- [x] X35 inaction cost (배포 capstone) — 비채택 연 toll: 사망 +240명·ST +400·QALY ~3,316 vs 약가 1y −167억 절약 = devil's bargain (mini 실측 · X19와 정합) → `CARDIO+/X35_inaction_cost.md`
 
 ## d2 governance (meta)
 
