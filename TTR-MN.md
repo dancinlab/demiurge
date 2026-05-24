@@ -1,6 +1,8 @@
 # TTR-MN — current state
 
-@goal: 자가 적용 microneedle patch (집에서 도장처럼 누르는 self-applied dissolving MN) 로 잉크 90%+ 제거 — 흉터 없음 · FDA combination product · measured-oracle PASS 까지 absorbed=false
+@goal: 자가 적용 microneedle patch (집에서 도장처럼 누르는 self-applied dissolving MN) 로 **주 1회 × 1년 누적 잉크 90%+ 제거** — 흉터 없음 · FDA combination product · measured-oracle PASS 까지 absorbed=false
+
+> **@goal v2 (2026-05-24)**: 5 yr → **1 yr** 단축. (1-x)^N = 0.1 closed-form 으로 N=52 cycle (주 1회) × x=4.7%/cycle (현재 design 그대로) → **91.4% in 1 yr**. cycle frequency 증가 (월 → 주) 가 가장 단순 path · per-cycle 화학/물리 변경 불필요.
 
 > **parent**: `TTR.md` (공유 base inventory)
 > **track**: microneedle patch (M4 결과 = 출발점, dissolving MN L=1000-1500 μm)
