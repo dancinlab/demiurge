@@ -104,6 +104,13 @@ func usage() {
                                        default + DEMIURGE_BACKEND remote.
                                        owner pool hosts (from ~/.pool/
                                        pool.json) only with --owner.
+      demiurge llm [list [--json] | use <id> | mode <cli|api> | model <id> <m> |
+                    key <id> <key> | key-rm <id> | test [<id>] | ask <prompt>]
+                                       AI 연결 (D38) — Claude · Codex ·
+                                       Gemini × CLI / API. 설정 SSOT =
+                                       ~/.demiurge/llm.json + Keychain
+                                       (env KEY_ENV 읽기 우선). cockpit
+                                       설정 모달과 같은 SSOT.
       demiurge emit-component          Emit the procedural BIPV
                                        artifact (.usda/.usdz + record)
                                        to exports/component/geometry/
