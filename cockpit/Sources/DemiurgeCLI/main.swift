@@ -85,6 +85,10 @@ func usage() {
                                        constituent (prerequisite) domain
                                        stack + cluster union + kind
                                        (atomic/composite/meta) — M15.
+      demiurge backend [list|current]  compute backend (M17) — local
+                                       default + DEMIURGE_BACKEND remote.
+                                       owner pool hosts (from ~/.pool/
+                                       pool.json) only with --owner.
       demiurge emit-component          Emit the procedural BIPV
                                        artifact (.usda/.usdz + record)
                                        to exports/component/geometry/
@@ -359,6 +363,37 @@ func compose(_ domainArg: String) -> Int32 {
     return 0
 }
 
+/// `backend [list|current]` — the compute-backend surface (CLI+COCKPIT
+/// M17). Local default + `DEMIURGE_BACKEND` user remote; owner pool
+/// hosts (from ~/.pool/pool.json, NOT hardcoded) only in owner mode.
+/// Shares `BackendResolver` with the cockpit (D50). Read-only.
+func backend(_ args: [String]) -> Int32 {
+    let sub = args.first(where: { !$0.hasPrefix("--") }) ?? "list"
+    let owner = args.contains("--owner") || OperationRegistry.ownerModeEnabled
+    switch sub {
+    case "list":
+        let active = BackendResolver.active
+        for b in BackendResolver.available(ownerMode: owner) {
+            let mark = b.id == active.id ? "▶" : " "
+            let gate = b.owner ? " 🔒" : ""
+            print("\(mark) \(b.id)\(gate)  [\(b.kind.rawValue)]  \(b.label) — \(b.host)")
+        }
+        if !owner {
+            print("(🔒 owner pool hosts hidden — DEMIURGE_OWNER + ~/.pool/pool.json)")
+        }
+        print("active: \(active.id)  (change via DEMIURGE_BACKEND env)")
+        return 0
+    case "current":
+        let b = BackendResolver.active
+        print("active backend: \(b.id) · \(b.label) — \(b.host)")
+        return 0
+    default:
+        FileHandle.standardError.write(
+            Data("backend: unknown subcommand '\(sub)' — use list | current\n".utf8))
+        return 2
+    }
+}
+
 /// `operate [list|audit]` — the operability surface (CLI+COCKPIT M14).
 /// Reads the SAME `OperationRegistry` manifest the cockpit will render
 /// (D50 byte-identical). Owner 사장실 ops show only with `--owner` or
@@ -593,6 +628,8 @@ case "gate-summary":
     exitCode = gateSummary()
 case "operate":
     exitCode = operate(Array(args.dropFirst(2)))
+case "backend":
+    exitCode = backend(Array(args.dropFirst(2)))
 case "compose":
     guard args.count >= 3 else {
         FileHandle.standardError.write(Data("compose: missing <domain> argument\n".utf8))

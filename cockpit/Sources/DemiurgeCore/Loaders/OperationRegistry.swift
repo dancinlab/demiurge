@@ -86,7 +86,7 @@ public enum OperationRegistry {
         Operation(id: "record-view",     title: "record·gate 열람",          tier: .product, verb: .verify,     target: .swift,     reach: .ok,      milestone: "M15"),
         Operation(id: "export",          title: "결과 export (usd/stl/record)", tier: .product, verb: .handoff,  target: .swift,     reach: .ok,      milestone: "M15"),
         Operation(id: "atlas-lookup",    title: "atlas 조회 (읽기)",          tier: .product, verb: .verify,     target: .hexa,      reach: .ok,      milestone: "M16"),
-        Operation(id: "compute-backend", title: "compute 백엔드 선택 (로컬/원격)", tier: .product, verb: .synthesize, target: .substrate, reach: .blocked, milestone: "M17"),
+        Operation(id: "compute-backend", title: "compute 백엔드 선택 (로컬/원격)", tier: .product, verb: .synthesize, target: .substrate, reach: .ok,      milestone: "M17"),
         // ── 사장실 (owner · env-gated DEMIURGE_OWNER) — 5 ──
         Operation(id: "pool-route",      title: "pool → 내 호스트 라우팅",     tier: .owner,   verb: .synthesize, target: .substrate, reach: .partial, milestone: "M20"),
         Operation(id: "inbox-handoff",   title: "inbox/patches → hexa-lang 핸드오프", tier: .owner, verb: .handoff, target: .substrate, reach: .partial, milestone: "M20"),
