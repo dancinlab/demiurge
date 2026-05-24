@@ -749,6 +749,95 @@ func exportComponent(_ formatArg: String, _ pathArg: String?) -> Int32 {
     return 0
 }
 
+/// `llm [list|use|mode|model|key|ask]` — the AI-connection surface (D38).
+/// Reads/writes the SAME ~/.demiurge/llm.json + Keychain the cockpit
+/// settings modal uses. Provider list is the LLMProvider manifest (no id
+/// hardcoding · @D d4).
+func llmCmd(_ args: [String]) -> Int32 {
+    let sub = args.first ?? "list"
+    var cfg = LLMSettings.load()
+    let providers = LLMSettings.providers(cfg)
+
+    func findProvider(_ id: String) -> LLMProvider? {
+        providers.first { $0.id == id }
+    }
+
+    switch sub {
+    case "list":
+        let active = LLMSettings.active(cfg)
+        print("AI 제공자 (활성 모드: \(cfg.mode.rawValue) · \(cfg.mode.label)):")
+        for p in providers {
+            let mark = p.id == active.id ? "▶" : " "
+            let src = LLMKeyStore.keySource(for: p)
+            if DemiurgeMode.expert {
+                print("\(mark) \(p.id)  [\(p.wireFormat.rawValue)]  \(p.displayName) · 모델 \(p.defaultModel) · 키 \(src) · cli \(p.cliCommand.joined(separator: " "))")
+            } else {
+                print("\(mark) \(p.displayName) · 모델 \(p.defaultModel) · 키 \(src)")
+            }
+        }
+        print("바꾸기: llm use <id> · llm mode <cli|api> · llm key <id> <key> · llm model <id> <model>")
+        return 0
+
+    case "use":
+        guard args.count >= 2, let p = findProvider(args[1]) else {
+            FileHandle.standardError.write(Data("llm use: 알 수 없는 provider — \(providers.map{$0.id}.joined(separator: " · "))\n".utf8))
+            return 2
+        }
+        cfg.selectedProvider = p.id
+        try? LLMSettings.save(cfg)
+        print("활성 provider → \(p.displayName) (\(p.id))")
+        return 0
+
+    case "mode":
+        guard args.count >= 2, let m = LLMMode(rawValue: args[1].lowercased()) else {
+            FileHandle.standardError.write(Data("llm mode: cli | api 중 하나\n".utf8))
+            return 2
+        }
+        cfg.mode = m
+        try? LLMSettings.save(cfg)
+        print("연결 방식 → \(m.rawValue) (\(m.label))")
+        return 0
+
+    case "model":
+        guard args.count >= 3, let p = findProvider(args[1]) else {
+            FileHandle.standardError.write(Data("llm model: usage — llm model <id> <model>\n".utf8))
+            return 2
+        }
+        cfg.models[p.id] = args[2]
+        try? LLMSettings.save(cfg)
+        print("\(p.displayName) 모델 → \(args[2])")
+        return 0
+
+    case "key":
+        guard args.count >= 3, let p = findProvider(args[1]) else {
+            FileHandle.standardError.write(Data("llm key: usage — llm key <id> <key>\n".utf8))
+            return 2
+        }
+        if LLMKeyStore.setKey(args[2], for: p) {
+            print("\(p.displayName) 키 저장됨 (키체인) — 읽기는 env(\(p.keyEnv)) 우선")
+            return 0
+        }
+        FileHandle.standardError.write(Data("llm key: 키체인 저장 실패\n".utf8))
+        return 1
+
+    case "ask":
+        guard args.count >= 2 else {
+            FileHandle.standardError.write(Data("llm ask: usage — llm ask <prompt>\n".utf8))
+            return 2
+        }
+        let prompt = args.dropFirst().joined(separator: " ")
+        let reply = LLMBridge.ask(prompt, context: "CLI 직접 호출 (프로젝트 컨텍스트 없음).")
+        print(reply.text.isEmpty ? "⚠️ \(reply.detail)" : reply.text)
+        if DemiurgeMode.expert { print("— \(reply.detail)") }
+        return reply.ok ? 0 : 1
+
+    default:
+        FileHandle.standardError.write(
+            Data("llm: unknown subcommand '\(sub)' — use list | use | mode | model | key | ask\n".utf8))
+        return 2
+    }
+}
+
 let args = CommandLine.arguments
 
 guard args.count >= 2 else {
@@ -840,6 +929,8 @@ case "operate":
     exitCode = operate(Array(args.dropFirst(2)))
 case "backend":
     exitCode = backend(Array(args.dropFirst(2)))
+case "llm":
+    exitCode = llmCmd(Array(args.dropFirst(2)))
 case "project":
     guard args.count >= 3 else {
         FileHandle.standardError.write(Data("project: usage — project new <name> <target> [domain] | project <advance|retreat> <name>\n".utf8))
