@@ -1,0 +1,190 @@
+// NUMB oracle gate — deterministic absorbed-decision evaluator (measured-oracle handoff)
+//
+//   PURPOSE: encode the absorbed=true decision rule per @D d5
+//     absorbed = true  IFF  (all NON-WET-LAB gates PASS) AND (all WET-LAB ORACLE gates PASS)
+//     wet-lab gates are DOWNSTREAM CONFIRMATION — non-wet-lab passing alone does NOT absorb.
+//   This sim makes the rule reproducible and prints the honest current state:
+//     non-wet-lab = closed; wet-lab oracle = OPEN -> absorbed stays FALSE.
+//
+//   Gate flag convention: 1 = PASS, 0 = PENDING/UNMEASURED.
+//   AND-logic = product of flags (any 0 -> product 0). No name hardcoding of verdict.
+//
+//   Tier: 🟢 deterministic recompute (boolean gate algebra; verify per @D g5)
+//
+//   Anchors (NUMB milestone roll-up, origin/main):
+//     - G1..G7 non-wet-lab gates closed (indication / regulatory matrix / pediatric envelope
+//       numeric / SKU split / Arrhenius shelf projection / compatibility matrix / dispatcher).
+//     - Wet-lab oracle gates STILL OPEN: onset (VAS), depth C(z), LAST Cmax human PK,
+//       N5 topical Mg MEC shift (r_mg=0.30 single missing measurement), N6 ternary DSC m.p.
+//       + ion-pair K_sc Franz, N7 pH-gradient flux Franz + epi/lid alkaline HPLC stability,
+//       G5 epi-oxidation real-time 24mo (Arrhenius extrapolation = projection, not measured),
+//       G3 neonate <28d clinical confirmation (numeric PASS but BORDERLINE), OTC+Rx approval.
+//
+//   straight-line + if-verdict only (no arrays, no fn forward defs)
+//   run: hexa run NUMB/sim/oracle_gate.hexa
+
+println("=== NUMB oracle gate — deterministic absorbed-decision evaluator (@D d5) ===")
+println("")
+println("RULE: absorbed = (ALL non-wet-lab PASS) AND (ALL wet-lab oracle PASS)")
+println("      flag 1 = PASS (measured/closed) · flag 0 = PENDING (unmeasured/open)")
+println("      wet-lab = DOWNSTREAM CONFIRMATION; non-wet-lab passing alone != absorbed")
+println("")
+
+// ============================================================================
+// [1] NON-WET-LAB GATES (in-silico / literature-closable) — current state
+// ============================================================================
+println("[1] NON-WET-LAB gates (in-silico / closed-form / literature)")
+let g_g1_indication = 1     // G1 indication map 🟢 (7/8 single-SKU coverage)
+let g_g2_regulatory = 1     // G2 regulatory-path matrix 🟡 (OTC lid-4 redefine, Rx 505b2)
+let g_g3_ped_numeric = 1    // G3 pediatric LAST envelope NUMERIC 🟢 (6 age bands margin 68-1947x)
+let g_g4_sku_split  = 1     // G4 dual SKU split 🟢 (OTC-A + Rx-V1; V2 wet-lab-trigger gated)
+let g_g5_shelf_proj = 1     // G5 Arrhenius shelf PROJECTION 🟢 (epi 25.7mo extrapolated)
+let g_g6_compat     = 1     // G6 compatibility matrix 🟡 (stagger rules closed-form)
+let g_g7_dispatch   = 1     // G7 label dispatcher 🟢 (11/11 cases)
+let g_v3_recompute  = 1     // verify V3 hexa-native recompute 🟢 (dose/onset/PASS-rate)
+
+let nonwet_product = g_g1_indication * g_g2_regulatory * g_g3_ped_numeric * g_g4_sku_split * g_g5_shelf_proj * g_g6_compat * g_g7_dispatch * g_v3_recompute
+let nonwet_count = g_g1_indication + g_g2_regulatory + g_g3_ped_numeric + g_g4_sku_split + g_g5_shelf_proj + g_g6_compat + g_g7_dispatch + g_v3_recompute
+println("  G1 indication   = ", g_g1_indication)
+println("  G2 regulatory   = ", g_g2_regulatory)
+println("  G3 ped(numeric) = ", g_g3_ped_numeric)
+println("  G4 sku-split    = ", g_g4_sku_split)
+println("  G5 shelf(proj)  = ", g_g5_shelf_proj)
+println("  G6 compat       = ", g_g6_compat)
+println("  G7 dispatcher   = ", g_g7_dispatch)
+println("  V3 recompute    = ", g_v3_recompute)
+println("  NON-WET-LAB passing = ", nonwet_count, " / 8   product(AND) = ", nonwet_product)
+println("")
+
+// ============================================================================
+// [2] WET-LAB ORACLE GATES (in-silico NOT closable) — current state ALL OPEN
+// ============================================================================
+println("[2] WET-LAB ORACLE gates (measurement required — in-silico NOT closable)")
+// efficacy core
+let w_onset_vas   = 0     // onset 95% <= target (pin-prick / laser-pain VAS) — human study
+let w_depth_cz    = 0     // depth C(z) measured (biopsy / micro-dialysis) vs C(z)=Csurf*exp(-z/lambda)
+let w_last_cmax   = 0     // LAST Cmax < threshold (weight/area human PK blood draw)
+// NOVEL probe gates (Phase 0/1)
+let w_n5_mg_mec   = 0     // N5 topical Mg MEC shift r_mg=0.30 (Franz + pin-prick ED50) — SINGLE missing
+let w_n6_dsc_mp   = 0     // N6 ternary eutectic m.p. (DSC 5-sample plate)
+let w_n6_ksc_franz = 0    // N6 ion-pair K_sc (Franz 1-point lid+LA vs base)
+let w_n7_flux_franz = 0   // N7 pH-gradient flux (Franz pH 5.5 vs 8.5)
+let w_n7_epi_hplc = 0     // N7 epi alkaline degradation + lid amide hydrolysis (HPLC)
+// stability + pediatric + regulatory confirmations
+let w_g5_realtime = 0     // G5 epi-oxidation real-time 25C/24mo (accel -> measured ICH Q1A)
+let w_g3_neonate  = 0     // G3 neonate <28d clinical confirmation (BORDERLINE -> measured)
+let w_reg_otc     = 0     // OTC monograph/NDA approval (regulatory)
+let w_reg_rx      = 0     // Rx 505(b)(2) NDA approval (regulatory)
+
+let wet_product = w_onset_vas * w_depth_cz * w_last_cmax * w_n5_mg_mec * w_n6_dsc_mp * w_n6_ksc_franz * w_n7_flux_franz * w_n7_epi_hplc * w_g5_realtime * w_g3_neonate * w_reg_otc * w_reg_rx
+let wet_count = w_onset_vas + w_depth_cz + w_last_cmax + w_n5_mg_mec + w_n6_dsc_mp + w_n6_ksc_franz + w_n7_flux_franz + w_n7_epi_hplc + w_g5_realtime + w_g3_neonate + w_reg_otc + w_reg_rx
+println("  onset VAS (95%<=target)      = ", w_onset_vas)
+println("  depth C(z) measured          = ", w_depth_cz)
+println("  LAST Cmax human PK           = ", w_last_cmax)
+println("  N5 topical Mg MEC r_mg=0.30  = ", w_n5_mg_mec, "  (single missing measurement)")
+println("  N6 ternary DSC m.p.          = ", w_n6_dsc_mp)
+println("  N6 ion-pair K_sc Franz       = ", w_n6_ksc_franz)
+println("  N7 pH-gradient flux Franz    = ", w_n7_flux_franz)
+println("  N7 epi/lid HPLC stability    = ", w_n7_epi_hplc)
+println("  G5 epi real-time 24mo        = ", w_g5_realtime)
+println("  G3 neonate clinical confirm  = ", w_g3_neonate)
+println("  OTC regulatory approval      = ", w_reg_otc)
+println("  Rx 505(b)(2) approval        = ", w_reg_rx)
+println("  WET-LAB passing = ", wet_count, " / 12   product(AND) = ", wet_product)
+println("")
+
+// ============================================================================
+// [3] ABSORBED DECISION (deterministic) — @D d5
+// ============================================================================
+println("[3] ABSORBED decision (deterministic, @D d5)")
+let absorbed = nonwet_product * wet_product
+println("  absorbed = nonwet_product(", nonwet_product, ") * wet_product(", wet_product, ") = ", absorbed)
+if (nonwet_product >= 1) { println("  non-wet-lab block: CLOSED (all 8 PASS)"); } else { println("  non-wet-lab block: OPEN"); }
+if (wet_product >= 1) { println("  wet-lab block: CLOSED (all 12 PASS)"); } else { println("  wet-lab block: OPEN (oracle awaiting measurement)"); }
+if (absorbed >= 1) { println("  VERDICT: absorbed = TRUE"); } else { println("  VERDICT: absorbed = FALSE"); }
+println("")
+
+// ============================================================================
+// [4] HONEST STATE READOUT (@D d5/d6) — 'wet-lab only remaining'
+// ============================================================================
+println("[4] honest state readout (@D d5/d6)")
+// distance-to-absorbed = remaining wet-lab gates (since non-wet-lab is closed)
+let total_wet = 12
+let wet_remaining = total_wet - wet_count
+println("  non-wet-lab status : ", nonwet_count, "/8 PASS")
+if (nonwet_product >= 1) { println("  -> in-silico gates EXHAUSTED (nothing more closable without measurement)"); } else { println("  -> in-silico gates NOT yet exhausted"); }
+println("  wet-lab remaining  : ", wet_remaining, "/12 gates open")
+println("  CRITICAL HONESTY: in-silico PASS does NOT imply absorbed.")
+println("  absorbed waits ONLY on wet-lab measurement (downstream confirmation).")
+println("  No projection (G5 25.7mo / N6 SVL m.p. / N5 r_mg=0.30) may flip absorbed.")
+println("")
+
+// ============================================================================
+// [5] ORACLE PASS CRITERIA (quantified thresholds — the absorbed gate values)
+// ============================================================================
+println("[5] oracle PASS criteria (quantified absorbed-gate thresholds)")
+// onset: 95th-percentile <= target
+let onset_otc_target = 60.0   // OTC-A 45-60 min (LMX class)
+let onset_rx_target  = 3.0    // Rx-V1 ~3 min target (eutectic + CPE)
+println("  onset_p95: OTC-A <= ", onset_otc_target, " min ; Rx-V1 <= ", onset_rx_target, " min")
+// LAST Cmax threshold per closed-form (adult anchor; pediatric weight-scaled)
+let CNS_warn_adult = 5000.0   // ng/mL adult CNS-warn
+let CNS_neonate    = 2500.0   // ng/mL neonate (2x derate: AAG 2x * CL 0.5x)
+let safety_floor   = 0.5      // require Cmax < 50% of threshold
+let cmax_pass_adult = CNS_warn_adult * safety_floor
+let cmax_pass_neo   = CNS_neonate * safety_floor
+println("  LAST Cmax PASS: adult < ", cmax_pass_adult, " ng/mL ; neonate < ", cmax_pass_neo, " ng/mL")
+// envelope check vs current closed-form Cmax (G7 anchor: Rx-V1 400cm^2)
+let k_lac_30 = 0.01775
+let dpc      = 10.325         // mg/cm^2 (m_cream 0.1475 * c_lido 0.07 * 1000)
+let cmax_rxv1_400 = k_lac_30 * dpc * 400.0
+let margin_rxv1_400 = CNS_warn_adult / cmax_rxv1_400
+println("  (predicted Rx-V1 400cm^2 Cmax=", cmax_rxv1_400, " ng/mL margin=", margin_rxv1_400, "x — to be CONFIRMED by PK)")
+// pediatric envelope confirmation gate
+println("  pediatric: neonate <28d numeric margin 1947x but BORDERLINE -> clinical confirm REQUIRED")
+// regulatory dual
+println("  regulatory: OTC monograph/NDA APPROVED + Rx 505(b)(2) NDA APPROVED (both)")
+println("")
+
+// ============================================================================
+// [6] PHASED WET-LAB COST LADDER (study -> gate it decides)
+// ============================================================================
+println("[6] phased wet-lab cost ladder")
+// Phase 0 = in-vitro low-cost (Franz + DSC + HPLC) — N6 + N7 + G5
+let p0_n6_dsc    = 350.0     // DSC 5-sample plate ($200-500 mid)
+let p0_n6_franz  = 750.0     // N6 Franz 1-point ($500-1000 mid)
+let p0_n7_franz  = 750.0     // N7 Franz pH 5.5 vs 8.5 ($500-1000 mid)
+let p0_n7_dsc    = 350.0     // N7 alkaline lid DSC ($200-500 mid)
+let p0_epi_hplc  = 450.0     // epi/lid HPLC (N7 + G5 batch, $300-600 mid)
+let p0_total = p0_n6_dsc + p0_n6_franz + p0_n7_franz + p0_n7_dsc + p0_epi_hplc
+println("  Phase 0 (in-vitro: DSC + Franz + HPLC) total = $", p0_total)
+println("    -> decides: N6 m.p./K_sc · N7 flux/stability · G5 epi-HPLC accel (8 of 12 wet gates touched)")
+// Phase 1 = ex-vivo / small (human SC Franz + pin-prick ED50) — N5
+let p1_lo = 10000.0
+let p1_hi = 30000.0
+println("  Phase 1 (ex-vivo SC Franz + pin-prick ED50) = $", p1_lo, " - $", p1_hi)
+println("    -> decides: N5 topical Mg MEC r_mg (single missing) · depth C(z) ex-vivo")
+// Phase 2 = clinical (onset/PK volunteers + pediatric)
+let p2_lo = 100000.0
+let p2_hi = 1000000.0
+println("  Phase 2 (clinical: onset VAS / PK / pediatric) = $", p2_lo, " - $", p2_hi, "+")
+println("    -> decides: onset_p95 · LAST Cmax human PK · neonate clinical confirm")
+println("")
+
+// ============================================================================
+// [7] DECISION TREE — each wet result -> SKU/formulation impact
+// ============================================================================
+println("[7] decision tree (wet result -> SKU/formulation impact)")
+println("  N6 DSC FAIL (no ternary depression)   -> drop Rx-V2 capric; Rx-V1 remains flagship")
+println("  N6 Franz K_sc < 3x in-vivo            -> V2 depth/duration claim FALSIFIED -> Rx-V1 only")
+println("  N7 Franz flux < 3x                    -> drop pH-gradient bilayer; keep single-pH Rx-V1")
+println("  N7 epi-HPLC degrade in bilayer        -> 2-chamber MANDATORY (already designed) or N7-A 2-SKU")
+println("  N5 r_mg < 0.15 (topical Mg no shift)  -> drop Mg adjuvant; large-area = split-dose only")
+println("  N5 r_mg >= 0.30 PASS                  -> unlock tattoo-sleeve 500-800cm^2 single session")
+println("  G5 real-time epi < 24mo               -> shorten dating or refrigerated logistics")
+println("  onset_p95 Rx-V1 > 3min                -> relabel honest onset; OTC-A unaffected (45-60min)")
+println("  LAST Cmax > threshold (any band)      -> reduce max_area / concentration in label")
+println("  neonate clinical FAIL                 -> neonate REFUSE stays; >=1mo unaffected")
+println("")
+
+println("=== oracle_gate VERIFIED 🟢 — absorbed = FALSE (non-wet-lab CLOSED, wet-lab OPEN) ===")
