@@ -1,5 +1,36 @@
 # TTR-MN — log
 
+## 2026-05-24T09:50Z — @goal v3 골화 심화 · 4.5개월 timeline + 5 새 milestone (v3 path)
+
+- @goal v2 (1년) → **@goal v3 (4.5개월)** — density 1000/cm² + triple cascade payload
+- 새 milestone 5개 (v3 골화 path):
+  - M7-MN v2 — density 1000/cm² array re-engineering
+  - M3-MN v2 — triple cascade (AzoR+DyP+CeO₂) synergy
+  - M8-MN v2 — ex-vivo 4.5개월 timeline 검증
+  - M9-MN v2 — in-vivo 격일 cohort (physical floor v4 검증)
+  - TTR-MN v3 measured-oracle PASS (4.5개월 absorbed=true endpoint)
+- TTR-MN milestone 갯수 11 → 16 (5 추가)
+- 진척: design 7/7 + verify 4/4 + v3 0/5 = 11/16 (69%)
+- next round: cycle skill — M7-MN v2 + M3-MN v2 병렬 fan-out
+
+## 2026-05-24T09:30Z — timeline 압축 path 탐색 (1yr 미만 단축 가능성)
+
+- 새 research doc: `TTR-MN/research/timeline_compression_paths.md`
+- 4축 sweep (frequency · density · concurrent · payload) — (1-x)^N ≤ 0.1 closed-form
+- **3-tier path scenarios**:
+  - **v2 (현재)**: 주 1회 × 1년 → 91.4% · per-cycle 4.7% · 비용 $1,040
+  - **v3**: 주 1회 × **4.5개월** → 90% · density 1000/cm² + triple cascade (AzoR+DyP+CeO₂) · x≈12% · 비용 $570
+  - **v4 (physical floor)**: **격일 × 2개월** → 90% · density 1000 + triple + photo · x≈15% · 비용 $600
+- physical floor: 격일 (3-4일) = SC recovery + macrophage cycle + aromatic amine clearance 정합
+- 일일 cycle = SC barrier 누적 손상 + 면역 누적 risk (M6 critical · 권장 X)
+- 벤치마킹: 레이저 1-2년 · v3 4.5개월 · v4 2개월 = **10-20× 빠름**
+- 추가 R&D paths (physical floor 돌파 가능성):
+  - macrophage re-engagement (TLR7/8 agonist) → x boost 2-3×
+  - photo-Fenton on-demand (UV-A patch)
+  - enzyme directed evolution (K_cat 10×)
+  - chemotaxis ↑ (체감 timeline 단축)
+- next: M7-MN v2 (density 1000) · M3-MN v2 (triple cascade) · @goal v3 정확화
+
 ## 2026-05-24T09:10Z — @goal v2 · 5 yr → 1 yr 단축 (주 1회 cycle frequency)
 
 - **변경**: @goal "30일 1회 × 5년 누적 94.2%" → "**주 1회 × 1년 누적 91.4%**"
