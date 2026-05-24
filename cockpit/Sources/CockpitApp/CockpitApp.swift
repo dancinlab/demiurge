@@ -180,6 +180,10 @@ struct WorkbenchView: View {
         ToolbarItem(placement: .principal) {
             progressBar
         }
+        // macOS 26 wraps the centered .principal item in a rounded glass
+        // capsule; opt this item out of the shared toolbar glass so the
+        // 7-step bar shows without the box (keeps toolbar layout · user UI).
+        .sharedBackgroundVisibility(.hidden)
         ToolbarItem(placement: .primaryAction) {
             Toggle(isOn: $expertMode) {
                 Label("전문가 모드", systemImage: "wrench.and.screwdriver")
@@ -482,10 +486,6 @@ struct WorkbenchView: View {
                 }
             }
         }
-        // ④ 7-step bar sits in the toolbar principal slot — give it
-        // left/right breathing room so the 무엇을›어떻게›… capsules
-        // aren't flush against the toolbar edges (user UI feedback).
-        .padding(.horizontal, 20)
     }
 
     private func progressTint(_ state: VerbState) -> Color {
