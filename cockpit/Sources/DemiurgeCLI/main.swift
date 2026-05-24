@@ -764,6 +764,20 @@ func llmCmd(_ args: [String]) -> Int32 {
 
     switch sub {
     case "list":
+        if args.contains("--json") {       // machine-readable (CI / AI surface)
+            let active = LLMSettings.active(cfg)
+            let items: [[String: Any]] = providers.map { p in
+                ["id": p.id, "displayName": p.displayName, "model": p.defaultModel,
+                 "wireFormat": p.wireFormat.rawValue,
+                 "keySource": LLMKeyStore.keySource(for: p),
+                 "selected": p.id == active.id]
+            }
+            let root: [String: Any] = ["mode": cfg.mode.rawValue, "providers": items]
+            if let data = try? JSONSerialization.data(
+                    withJSONObject: root, options: [.prettyPrinted, .sortedKeys]),
+               let s = String(data: data, encoding: .utf8) { print(s) }
+            return 0
+        }
         let active = LLMSettings.active(cfg)
         print("AI 제공자 (활성 모드: \(cfg.mode.rawValue) · \(cfg.mode.label)):")
         for p in providers {
@@ -820,6 +834,15 @@ func llmCmd(_ args: [String]) -> Int32 {
         FileHandle.standardError.write(Data("llm key: 키체인 저장 실패\n".utf8))
         return 1
 
+    case "key-rm", "key-del":
+        guard args.count >= 2, let p = findProvider(args[1]) else {
+            FileHandle.standardError.write(Data("llm key-rm: usage — llm key-rm <id>\n".utf8))
+            return 2
+        }
+        LLMKeyStore.deleteKey(for: p)
+        print("\(p.displayName) 키 삭제됨 (키체인). env \(p.keyEnv) 가 설정돼 있으면 그건 유지.")
+        return 0
+
     case "test":
         // Mirror the settings modal's "연결 테스트" — fixed probe through
         // the active (or named) provider + current mode.
@@ -846,7 +869,7 @@ func llmCmd(_ args: [String]) -> Int32 {
 
     default:
         FileHandle.standardError.write(
-            Data("llm: unknown subcommand '\(sub)' — use list | use | mode | model | key | ask\n".utf8))
+            Data("llm: unknown subcommand '\(sub)' — use list [--json] | use | mode | model | key | key-rm | test | ask\n".utf8))
         return 2
     }
 }
