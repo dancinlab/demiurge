@@ -1,5 +1,5 @@
 @V := "tape" :: spec [active]
-  version = "1.6"
+  version = "1.5"
 
 @I := "demiurge" :: identity [active]
   kind     = "Universal hexa-native technical-design architecture (7-verb pipeline · domain-plugin macOS cockpit)"
@@ -48,15 +48,3 @@
 @D d10 := "every domain wears an easy-style identity head — icon · name · alias" :: governance [required active]
   do   = "head each <DOMAIN>.md with: 1 emoji icon · canonical NAME · short user-language alias"
   dont = "leave a domain id bare · coin a different alias per file within one domain"
-
-@D d11 := "on a wall — present a NEW dominant lever AND a NOVEL approach together" :: governance [required active]
-  do   = "on a stalled lever, give the new rate-dominant lever AND a novel non-incremental mechanism together"
-  dont = "repeat the stalled lever · only incremental tweaks · give the lever or the novel idea alone"
-
-@D d12 := "paid-compute rent gate — feasibility-size + deck-validate FREE + 1-cell bound" :: governance [required active]
-  do   = "pre-rent: feasibility-size · syntax-validate deck FREE on pool · 1 val-cell → then scale"
-  dont = "rent before push-button · blind full-scale spend · skip syntax/basis coverage check"
-
-@D d13 := "DFT campaign defaults — cluster · PBE · smear + lanthanide basis check" :: governance [required active]
-  do   = "metal-oxide → cluster (not full NP) · PBE first not hybrid · SCF smear+damp+`convergence lshift`"
-  dont = "hybrid DFT full NP single-pod · def2 for lanthanides (use CRENBL/SARC) · `levelshift` directive"

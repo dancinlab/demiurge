@@ -104,6 +104,13 @@ func usage() {
                                        default + DEMIURGE_BACKEND remote.
                                        owner pool hosts (from ~/.pool/
                                        pool.json) only with --owner.
+      demiurge llm [list [--json] | use <id> | mode <cli|api> | model <id> <m> |
+                    key <id> <key> | key-rm <id> | test [<id>] | ask <prompt>]
+                                       AI 연결 (D38) — Claude · Codex ·
+                                       Gemini × CLI / API. 설정 SSOT =
+                                       ~/.demiurge/llm.json + Keychain
+                                       (env KEY_ENV 읽기 우선). cockpit
+                                       설정 모달과 같은 SSOT.
       demiurge emit-component          Emit the procedural BIPV
                                        artifact (.usda/.usdz + record)
                                        to exports/component/geometry/
@@ -749,6 +756,131 @@ func exportComponent(_ formatArg: String, _ pathArg: String?) -> Int32 {
     return 0
 }
 
+/// `llm [list|use|mode|model|key|ask]` — the AI-connection surface (D38).
+/// Reads/writes the SAME ~/.demiurge/llm.json + Keychain the cockpit
+/// settings modal uses. Provider list is the LLMProvider manifest (no id
+/// hardcoding · @D d4).
+func llmCmd(_ args: [String]) -> Int32 {
+    let sub = args.first ?? "list"
+    var cfg = LLMSettings.load()
+    let providers = LLMSettings.providers(cfg)
+
+    func findProvider(_ id: String) -> LLMProvider? {
+        providers.first { $0.id == id }
+    }
+
+    switch sub {
+    case "list":
+        if args.contains("--json") {       // machine-readable (CI / AI surface)
+            let active = LLMSettings.active(cfg)
+            let items: [[String: Any]] = providers.map { p in
+                ["id": p.id, "displayName": p.displayName, "model": p.defaultModel,
+                 "wireFormat": p.wireFormat.rawValue,
+                 "keySource": LLMKeyStore.keySource(for: p),
+                 "selected": p.id == active.id]
+            }
+            let root: [String: Any] = ["mode": cfg.mode.rawValue, "providers": items]
+            if let data = try? JSONSerialization.data(
+                    withJSONObject: root, options: [.prettyPrinted, .sortedKeys]),
+               let s = String(data: data, encoding: .utf8) { print(s) }
+            return 0
+        }
+        let active = LLMSettings.active(cfg)
+        print("AI 제공자 (활성 모드: \(cfg.mode.rawValue) · \(cfg.mode.label)):")
+        for p in providers {
+            let mark = p.id == active.id ? "▶" : " "
+            let src = LLMKeyStore.keySource(for: p)
+            if DemiurgeMode.expert {
+                print("\(mark) \(p.id)  [\(p.wireFormat.rawValue)]  \(p.displayName) · 모델 \(p.defaultModel) · 키 \(src) · cli \(p.cliCommand.joined(separator: " "))")
+            } else {
+                print("\(mark) \(p.displayName) · 모델 \(p.defaultModel) · 키 \(src)")
+            }
+        }
+        print("바꾸기: llm use <id> · llm mode <cli|api> · llm key <id> <key> · llm model <id> <model>")
+        return 0
+
+    case "use":
+        guard args.count >= 2, let p = findProvider(args[1]) else {
+            FileHandle.standardError.write(Data("llm use: 알 수 없는 provider — \(providers.map{$0.id}.joined(separator: " · "))\n".utf8))
+            return 2
+        }
+        cfg.selectedProvider = p.id
+        try? LLMSettings.save(cfg)
+        print("활성 provider → \(p.displayName) (\(p.id))")
+        return 0
+
+    case "mode":
+        guard args.count >= 2, let m = LLMMode(rawValue: args[1].lowercased()) else {
+            FileHandle.standardError.write(Data("llm mode: cli | api 중 하나\n".utf8))
+            return 2
+        }
+        cfg.mode = m
+        try? LLMSettings.save(cfg)
+        print("연결 방식 → \(m.rawValue) (\(m.label))")
+        return 0
+
+    case "model":
+        guard args.count >= 3, let p = findProvider(args[1]) else {
+            FileHandle.standardError.write(Data("llm model: usage — llm model <id> <model>\n".utf8))
+            return 2
+        }
+        cfg.models[p.id] = args[2]
+        try? LLMSettings.save(cfg)
+        print("\(p.displayName) 모델 → \(args[2])")
+        return 0
+
+    case "key":
+        guard args.count >= 3, let p = findProvider(args[1]) else {
+            FileHandle.standardError.write(Data("llm key: usage — llm key <id> <key>\n".utf8))
+            return 2
+        }
+        if LLMKeyStore.setKey(args[2], for: p) {
+            print("\(p.displayName) 키 저장됨 (키체인) — 읽기는 env(\(p.keyEnv)) 우선")
+            return 0
+        }
+        FileHandle.standardError.write(Data("llm key: 키체인 저장 실패\n".utf8))
+        return 1
+
+    case "key-rm", "key-del":
+        guard args.count >= 2, let p = findProvider(args[1]) else {
+            FileHandle.standardError.write(Data("llm key-rm: usage — llm key-rm <id>\n".utf8))
+            return 2
+        }
+        LLMKeyStore.deleteKey(for: p)
+        print("\(p.displayName) 키 삭제됨 (키체인). env \(p.keyEnv) 가 설정돼 있으면 그건 유지.")
+        return 0
+
+    case "test":
+        // Mirror the settings modal's "연결 테스트" — fixed probe through
+        // the active (or named) provider + current mode.
+        let p = (args.count >= 2 ? findProvider(args[1]) : nil) ?? LLMSettings.active(cfg)
+        let reply = LLMBridge.test(p, mode: cfg.mode)
+        if reply.ok {
+            print("✅ \(p.displayName) · \(reply.detail)")
+            print("   \(reply.text.prefix(120))")
+        } else {
+            print("❌ \(p.displayName) · \(reply.detail)")
+        }
+        return reply.ok ? 0 : 1
+
+    case "ask":
+        guard args.count >= 2 else {
+            FileHandle.standardError.write(Data("llm ask: usage — llm ask <prompt>\n".utf8))
+            return 2
+        }
+        let prompt = args.dropFirst().joined(separator: " ")
+        let reply = LLMBridge.ask(prompt, context: "CLI 직접 호출 (프로젝트 컨텍스트 없음).")
+        print(reply.text.isEmpty ? "⚠️ \(reply.detail)" : reply.text)
+        if DemiurgeMode.expert { print("— \(reply.detail)") }
+        return reply.ok ? 0 : 1
+
+    default:
+        FileHandle.standardError.write(
+            Data("llm: unknown subcommand '\(sub)' — use list [--json] | use | mode | model | key | key-rm | test | ask\n".utf8))
+        return 2
+    }
+}
+
 let args = CommandLine.arguments
 
 guard args.count >= 2 else {
@@ -840,6 +972,8 @@ case "operate":
     exitCode = operate(Array(args.dropFirst(2)))
 case "backend":
     exitCode = backend(Array(args.dropFirst(2)))
+case "llm":
+    exitCode = llmCmd(Array(args.dropFirst(2)))
 case "project":
     guard args.count >= 3 else {
         FileHandle.standardError.write(Data("project: usage — project new <name> <target> [domain] | project <advance|retreat> <name>\n".utf8))

@@ -1,0 +1,66 @@
+{
+  "schema_version": "conductor-handoff/0.1.0",
+  "domain": "conductor",
+  "verb": "ingest",
+  "kind": "rebco_2g_hts_tape",
+  "stamp": "20260525T000000Z",
+  "producer": "demiurge RTSC §8.5 — material-side -> device-side conductor handoff schema exemplar. HTS REBCO baseline, hexa-rtsc-derived (NOT vendor lot data). This is the schema STUB the Swift cockpit ConductorRecord/ConductorLoader will ingest (deferred, RTSC.md §8.6), not real characterization data.",
+  "stub": true,
+  "stub_note": "Schema exemplar only. spec.jc_b_t_theta and the scalar property values are PLACEHOLDER/null with documented units — a real conductor record lands either from a vendor datasheet ingest (gate_type=vendor-datasheet) or from a hexa-rtsc Tier-1 simulation export (this record's gate_type=hexa-rtsc-derived). Sibling vendor-datasheet exemplar: exports/conductor/rebco_hts_baseline.json.",
+  "vendor": null,
+  "source": "hexa-rtsc-derived",
+  "spec": {
+    "family": "rebco",
+    "family_enum_note": "ConductorMaterial = cu | nbti | nb3sn | rebco | bi2212 | rtsc_hypothetical (RTSC.md §5 Axis B / §8.6). This record = rebco. spec.family maps 1:1 to the ConductorMaterial enum case (RTSC.md §8.6 deferred item).",
+    "compound": "REBa2Cu3O7-delta (RE = Y, Gd, ...; '2G HTS' coated conductor)",
+    "tc_k": null,
+    "tc_k_units": "kelvin",
+    "tc_k_typical_note": "REBCO bulk Tc ~ 90-93 K at ambient pressure; left null in this stub — populated on ingest.",
+    "hc2_t_at_4k": null,
+    "hc2_t_at_4k_units": "tesla",
+    "hc2_t_at_77k": null,
+    "hc2_t_at_77k_units": "tesla",
+    "anisotropy_gamma": null,
+    "anisotropy_gamma_units": "dimensionless (Hc2_ab / Hc2_c effective-mass anisotropy)",
+    "jc_b_t_theta": {
+      "stub": true,
+      "description": "Critical current density as a function of applied field B, temperature T, and field-to-tape-plane angle theta. The device producer (getdp_hts.py) reads this to fill Jc_limit / Hc2_limit / nu[Coil]. Left as a stub here — a real Jc(B,T,theta) table lands as a separate Tier-3 measurement/datasheet record and is referenced by jc_data_table_ref_record_id.",
+      "axes": {
+        "B": { "units": "tesla", "description": "magnitude of applied magnetic flux density" },
+        "T": { "units": "kelvin", "description": "operating temperature" },
+        "theta": { "units": "degree", "description": "angle of B relative to the tape ab-plane (0 deg = B parallel to tape face / ab-plane peak, 90 deg = B perpendicular / c-axis minimum)" }
+      },
+      "value": {
+        "jc": null,
+        "jc_units": "A/m^2 (engineering Je often reported in A/mm^2 or Ic in A/cm-width; converted on ingest)",
+        "model_note": "Empirical fits (e.g. Kim-like or percolation/pinning models) populate this; E-J power-law index n=20-30 for REBCO (RTSC.md §2 Axis B). Null in this stub."
+      },
+      "jc_data_table_ref_record_id": null
+    }
+  },
+  "provenance": {
+    "source_substrate": "hexa-rtsc",
+    "source_record_url": null,
+    "source_citation": "hexa-rtsc derived baseline (closed-form / Tier-1 simulation lineage). Stub — no concrete derive record wired yet; the thin adapter that ingests hexa-rtsc numerics_*_solver.hexa results into exports/conductor/hexa-rtsc-baseline/ is deferred (RTSC.md §8.6 deferred list).",
+    "derive_chain": "hexa-rtsc numerics_*_solver.hexa -> (deferred thin adapter, RTSC.md §8.6) -> this conductor record -> device producer (getdp_hts.py) reads nu[Coil]/Jc_limit/Hc2_limit"
+  },
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "hexa-rtsc-derived",
+  "gate_type_enum_note": "gate_type in { vendor-datasheet | hexa-rtsc-derived | external-paper } per RTSC.md §8.5. Claim-only / unproven families (rtsc_hypothetical) use gate_type=empirically-unproven (RTSC.md §8.6). This REBCO baseline is derived, not measured -> absorbed stays false.",
+  "provisional": true,
+  "scope_caveats": [
+    "STUB record — schema exemplar, not real conductor characterization. All spec property values are null placeholders with documented units.",
+    "hexa-rtsc-derived means closed-form / simulation lineage, NOT a measurement and NOT a vendor lot. absorbed=false is therefore permanent for the derived values until an independent measurement record supersedes them (RTSC.md §8.7 Tier-3).",
+    "jc_b_t_theta is the load-bearing field the device producer needs (getdp_hts.py fills Jc_limit/Hc2_limit from it); it is a stub here. A real Jc(B,T,theta) table lands as a separate record referenced via jc_data_table_ref_record_id.",
+    "absorbed (device-side absorption) is tracked separately from this material-side handoff; flipping it requires the full non-wet-lab gate set, not this record alone.",
+    "Sibling vendor-path exemplar exists at exports/conductor/rebco_hts_baseline.json (gate_type=vendor-datasheet, vendor=SuperPower). This file is the complementary hexa-rtsc-derived / vendor=null exemplar requested by RTSC.md §8.6."
+  ],
+  "r4_invariant": "absorbed=false · provisional=true · gate_type=hexa-rtsc-derived · domain=conductor. R4 preserved — a derived/stub baseline is not a measurement; device-side absorption is downstream.",
+  "citations": [
+    "RTSC.md §8.5 (demiurge <-> material-side handoff schema)",
+    "RTSC.md §8.6 (exports/conductor/ + HTS REBCO baseline handoff schema stub milestone)",
+    "RTSC.md §5 Axis B / §2 (ConductorMaterial enum: cu | nbti | nb3sn | rebco | bi2212 | rtsc_hypothetical; REBCO E-J power-law n=20-30, Jc(B,T,theta) anisotropy)",
+    "RTSC.md §8.7 (4-tier expansion path — Tier-1 computational / Tier-3 measurement-ingest)"
+  ]
+}

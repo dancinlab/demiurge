@@ -75,6 +75,7 @@ struct WorkbenchView: View {
     // ④ display toggles.
     @State private var colorScheme: ColorScheme = .light   // light default
     @State private var expertMode = false                  // §4 — plain by default
+    @State private var showSettings = false                // ⚙ AI 연결 모달 (D38)
 
     // ③ chat.
     @State private var chatMessages: [ChatMessage] = []
@@ -124,6 +125,9 @@ struct WorkbenchView: View {
                 activeProjectID = project.id
                 seedChat(for: project)
             }
+        }
+        .sheet(isPresented: $showSettings) {
+            LLMSettingsView()                            // ⚙ AI 연결 (D38)
         }
         .confirmationDialog(
             "이 프로젝트를 삭제할까요?",
@@ -180,6 +184,10 @@ struct WorkbenchView: View {
         ToolbarItem(placement: .principal) {
             progressBar
         }
+        // macOS 26 wraps the centered .principal item in a rounded glass
+        // capsule; opt this item out of the shared toolbar glass so the
+        // 7-step bar shows without the box (keeps toolbar layout · user UI).
+        .sharedBackgroundVisibility(.hidden)
         ToolbarItem(placement: .primaryAction) {
             Toggle(isOn: $expertMode) {
                 Label("전문가 모드", systemImage: "wrench.and.screwdriver")
@@ -196,6 +204,12 @@ struct WorkbenchView: View {
                 Image(systemName: colorScheme == .light ? "moon" : "sun.max")
             }
             .help("밝게 / 어둡게")
+        }
+        ToolbarItem(placement: .primaryAction) {
+            Button { showSettings = true } label: {
+                Image(systemName: "gearshape")
+            }
+            .help("설정 · AI 연결 (Claude / Codex / Gemini · CLI/API)")
         }
     }
 

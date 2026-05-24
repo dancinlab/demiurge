@@ -6,6 +6,14 @@ For the full audit trail, see `git log`.
 
 ---
 
+## 2026-05-25
+
+### CLI+COCKPIT — LLM 연결 모듈 (D38) + 진행바 정리 + 7-verb 전 도메인 캠페인
+
+- **LLM 연결 모듈** (#88·#89·#93·#95) — Claude · Codex · Gemini 멀티 provider × CLI/API 선택, 설정 모달(⚙), CLI `llm` 서브커맨드(`list[--json] · use · mode · model · key · key-rm · test · ask`). 키 저장 = Keychain + env(`ANTHROPIC_API_KEY`/`OPENAI_API_KEY`/`GEMINI_API_KEY`) 폴백. provider = manifest 데이터, dispatch는 `wireFormat` trait로만 분기(@D d4 generic dispatch, 이름 하드코딩 X). 채팅 `askClaude`는 `LLMBridge.ask`로 위임(호출부 안정, 더는 claude 전용 아님). 모달 ↔ CLI 1:1 패리티(🗑 키 삭제 ⇔ `key-rm`).
+- **진행바 macOS 26 glass 박스 제거** (#87) — `.principal` toolbar 아이템에 `.sharedBackgroundVisibility(.hidden)` 적용. 7-step 캡슐만 보이고 라운딩+그림자 박스 사라짐. layout 유지.
+- **7-verb 전 도메인 캠페인 — surface @goal 달성 확정** — 21 도메인 × 7-verb 실측: dispatch 21/21 보편 작동(0 crash), production 9 도메인(chip·firmware full 7/7 + sscb·bio·matter·component·cern·aura·chem partial), 미배선 12 (antimatter 등 10 honest-skip + clinical/ufo gap). 미배선 stdlib per-verb 스크립트 = hexa-lang INBOX PR #852 핸드오프(thin per-verb shim 또는 cellrun.hexa auto-discover fallback). @D d3 impl home=hexa-lang.
+
 ## 2026-05-24
 
 - **`inbox/` 폴더 폐기 — open handoff INBOX 이관, 세션 노트 archive/ 이동** — 구 `inbox/`(notes 108 + INDEX.md + patches 2) 를 `git mv` 로 `archive/session-notes/` 이관 (data loss 0). 열린 handoff 15건(pickup-open 11 + pickup-blocked 2 + cross-repo patch 2) 은 `INBOX.md` `- [ ]` 로 이관, 나머지 ~93 historical 노트는 archive 보존(INBOX.log 범람 방지). repo 전역 `inbox/` 경로 인용 72개 파일 일괄 갱신(타 repo 인용 보존). INBOX scope = cross-repo + demiurge cross-session pickup 통합 수신함.
