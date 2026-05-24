@@ -53,7 +53,17 @@ func usage() {
       demiurge show <path>             Show one F1F2 record + provenance
       demiurge list-projects           List workbench projects
       demiurge show-project <name>     Show one project + 7-verb progress
+      demiurge project new <name> <target> [domain]
+                                       Create a project (M15 · domain
+                                       inferred from target if omitted)
+      demiurge project advance|retreat <name>
+                                       Move a project's 7-verb pointer
+                                       (M15 verb-nav · CLI side)
       demiurge list-shelf <domain>     Show a domain's §6 shelf options
+      demiurge action <verb> <domain> [--compose]
+                                       --compose (M15): run the verb
+                                       across the domain's constituent
+                                       stack, topo foundation→apex.
       demiurge action <verb> [domain]  θ-2 action — dispatch a verb
                                        (specify/structure/design/analyze/
                                         synthesize/synth/verify/measure/
@@ -68,7 +78,27 @@ func usage() {
       demiurge list-gates              F1F2 records grouped by gate
       demiurge verify <path|id>        provenance / claim-gate check
                                        (exit 0 consistent · 1 not)
+      demiurge verify --expr <fn> <n> <v> | --fence "<claim>" | rubric
+                                       hexa stdlib verify kernel (5-tier,
+                                       M16) — verdict printed VERBATIM
+                                       (@D g5; hexa = hx dependency)
+      demiurge atlas <lookup|stats|hash|dump> [args]
+                                       read the hexa atlas SSOT (M16,
+                                       read-only). Write verbs = owner
+                                       op (사장실 · M20).
       demiurge gate-summary            gate + absorbed totals
+      demiurge operate [list|audit]    operation manifest (M14) — list
+                                       all ops + reachability, or audit
+                                       external operability. `--owner`
+                                       reveals owner-only (사장실) ops.
+      demiurge compose <domain>        resolve a domain into its
+                                       constituent (prerequisite) domain
+                                       stack + cluster union + kind
+                                       (atomic/composite/meta) — M15.
+      demiurge backend [list|current]  compute backend (M17) — local
+                                       default + DEMIURGE_BACKEND remote.
+                                       owner pool hosts (from ~/.pool/
+                                       pool.json) only with --owner.
       demiurge emit-component          Emit the procedural BIPV
                                        artifact (.usda/.usdz + record)
                                        to exports/component/geometry/
@@ -269,6 +299,41 @@ func cliAction(_ verbStr: String, _ domainArg: String?,
     return result.engineToolSucceeded == false ? 1 : 0
 }
 
+/// `action <verb> <domain> --compose` — run the verb across `domain`'s
+/// constituent (prerequisite) stack, topo-ordered foundation→apex
+/// (CLI+COCKPIT M15 synthesize-run · 도메인 합성 실행). Renders each
+/// constituent's result IN ORDER; never collapses verdicts (g3). Shares
+/// ActionDispatch.runComposite + DomainComposer with the cockpit (D50).
+func cliActionComposite(_ verbStr: String, _ domainArg: String?) -> Int32 {
+    guard let verb = parseVerbArg(verbStr) else {
+        FileHandle.standardError.write(
+            Data("action --compose: unknown verb '\(verbStr)'\n".utf8))
+        return 2
+    }
+    guard let domain = domainArg else {
+        FileHandle.standardError.write(
+            Data("action --compose: missing <domain>\n".utf8))
+        return 2
+    }
+    let comp = DomainComposer.resolve(domain)
+    print("action \(verb.koreanLabel)(\(verb.plain)) · domain=\(domain) · "
+          + "COMPOSE \(comp.kind.rawValue) (구성 \(comp.stack.count) · topo):")
+    print("  " + (comp.ids.isEmpty ? "(none)" : comp.ids.joined(separator: " → ")))
+    let context = "CLI composite action — start=\(domain), kind=\(comp.kind.rawValue)."
+    let result = ActionDispatch.runComposite(verb: verb, domain: domain, context: context)
+    for step in result.steps {
+        print("── [\(step.domain)] ──")
+        print(step.result.text)
+    }
+    print("---")
+    if result.newRecordIDs.isEmpty {
+        print("⏳ 합성 실행 — 새 측정 record 없음 (구성 \(result.steps.count) 단계 · g3).")
+    } else {
+        print("📸 합성 records: \(result.newRecordIDs.joined(separator: ", "))")
+    }
+    return 0
+}
+
 /// Resolve a CLI arg to a record — try it as a relative exports/ path
 /// first, then as a recordId via ArtifactRegistry (same DemiurgeCore
 /// loaders the cockpit uses — @D g_ssot_single_source).
@@ -321,6 +386,195 @@ func gateSummary() -> Int32 {
     print("absorbed=true:  \(absorbedTrue)")
     print("absorbed=false: \(absorbedFalse)")
     return 0
+}
+
+/// `compose <domain>` — resolve a domain into its constituent
+/// (prerequisite) domain stack + cluster union + kind (CLI+COCKPIT
+/// M15). 선행도메인 = 구성도메인 (M0_operate.md §8). Shares the SAME
+/// `DomainComposer` the cockpit NewProject wizard + 7-verb dispatch
+/// use (D50). Read-only.
+func compose(_ domainArg: String) -> Int32 {
+    let c = DomainComposer.resolve(domainArg)
+    let start = DomainCatalog.domain(for: domainArg)
+    let combinedTag = c.crossesDiscipline ? " · 결합(cross-discipline)" : ""
+    print("compose \(c.start) — \(start.label) · \(c.kind.rawValue)\(combinedTag)")
+    print("  구성 도메인 (topo foundation→apex · \(c.stack.count)):")
+    print("    " + (c.ids.isEmpty ? "(none)" : c.ids.joined(separator: " → ")))
+    print("  cluster union: "
+          + c.clusterUnion.map { $0.rawValue }.joined(separator: " · "))
+    if !c.substrateSSOTs.isEmpty {
+        print("  substrate SSOT: " + c.substrateSSOTs.joined(separator: " · "))
+    }
+    return 0
+}
+
+/// `project advance|retreat <name>` — move a project's 7-verb pointer
+/// (CLI+COCKPIT M15 verb-nav · CLI side, mirrors the cockpit stepper).
+/// Conversation-default progress (D48): the pointer moves, but a stage
+/// turns ✅ only via a measured run (g3). Writes the SAME ProjectStore
+/// manifest the cockpit reads (D50 byte-identical).
+func projectStep(_ direction: String, _ name: String) -> Int32 {
+    let projects = ProjectStore.loadAll()
+    guard var p = projects.first(where: { $0.name == name }) else {
+        FileHandle.standardError.write(Data("project: no project named '\(name)'\n".utf8))
+        return 2
+    }
+    switch direction {
+    case "advance":
+        guard p.canAdvance else {
+            print("project '\(name)' 이미 마지막 단계 (\(p.currentVerb.koreanLabel))")
+            return 0
+        }
+        p.advance()
+    case "retreat":
+        guard p.canRetreat else {
+            print("project '\(name)' 이미 첫 단계 (\(p.currentVerb.koreanLabel))")
+            return 0
+        }
+        p.retreat()
+    default:
+        FileHandle.standardError.write(
+            Data("project: unknown direction '\(direction)' — use advance | retreat\n".utf8))
+        return 2
+    }
+    do { try ProjectStore.save(p) } catch {
+        FileHandle.standardError.write(Data("project: save failed — \(error)\n".utf8))
+        return 1
+    }
+    print("project '\(name)' → \(p.currentVerb.rawValue + 1)/7 "
+          + "\(p.currentVerb.koreanLabel)(\(p.currentVerb.plain))")
+    return 0
+}
+
+/// `project new <name> <target> [domain]` — create a project from the
+/// CLI (CLI+COCKPIT M15 · closes the CLI project-create gap; previously
+/// GUI-only). Domain is inferred from `target` when omitted (D44), and
+/// the constituent `walk` is computed via DomainComposer (선행=구성도메인,
+/// topo foundation→apex). Writes the SAME ProjectStore manifest the
+/// cockpit reads (D50). Starts at verb 1/7 명세 (g3 — no ✅ yet).
+func projectNew(_ name: String, _ target: String, _ domainArg: String?) -> Int32 {
+    let domain = domainArg ?? DomainCatalog.infer(from: target)
+    let comp = DomainComposer.resolve(domain)
+    let project = Project(name: name, target: target, domain: domain, walk: comp.ids)
+    do { try ProjectStore.save(project) } catch {
+        FileHandle.standardError.write(Data("project new: save failed — \(error)\n".utf8))
+        return 1
+    }
+    let inferTag = domainArg == nil ? " (target에서 추론)" : ""
+    print("project '\(name)' 생성 — domain=\(domain)\(inferTag) · "
+          + "\(comp.kind.rawValue) · 구성 \(comp.stack.count)")
+    print("  walk (topo): " + (comp.ids.isEmpty ? domain : comp.ids.joined(separator: " → ")))
+    print("  현재 단계: 1/7 \(Verb.specify.koreanLabel)(\(Verb.specify.plain))")
+    return 0
+}
+
+/// `backend [list|current]` — the compute-backend surface (CLI+COCKPIT
+/// M17). Local default + `DEMIURGE_BACKEND` user remote; owner pool
+/// hosts (from ~/.pool/pool.json, NOT hardcoded) only in owner mode.
+/// Shares `BackendResolver` with the cockpit (D50). Read-only.
+func backend(_ args: [String]) -> Int32 {
+    let sub = args.first(where: { !$0.hasPrefix("--") }) ?? "list"
+    let owner = args.contains("--owner") || OperationRegistry.ownerModeEnabled
+    switch sub {
+    case "list":
+        let active = BackendResolver.active
+        for b in BackendResolver.available(ownerMode: owner) {
+            let mark = b.id == active.id ? "▶" : " "
+            let gate = b.owner ? " 🔒" : ""
+            print("\(mark) \(b.id)\(gate)  [\(b.kind.rawValue)]  \(b.label) — \(b.host)")
+        }
+        if !owner {
+            print("(🔒 owner pool hosts hidden — DEMIURGE_OWNER + ~/.pool/pool.json)")
+        }
+        print("active: \(active.id)  (change via DEMIURGE_BACKEND env)")
+        return 0
+    case "current":
+        let b = BackendResolver.active
+        print("active backend: \(b.id) · \(b.label) — \(b.host)")
+        return 0
+    default:
+        FileHandle.standardError.write(
+            Data("backend: unknown subcommand '\(sub)' — use list | current\n".utf8))
+        return 2
+    }
+}
+
+/// `operate [list|audit]` — the operability surface (CLI+COCKPIT M14).
+/// Reads the SAME `OperationRegistry` manifest the cockpit will render
+/// (D50 byte-identical). Owner 사장실 ops show only with `--owner` or
+/// `DEMIURGE_OWNER` set — external users never see them (M0 §1 / M20).
+func operate(_ args: [String]) -> Int32 {
+    let sub = args.first(where: { !$0.hasPrefix("--") }) ?? "list"
+    let owner = args.contains("--owner") || OperationRegistry.ownerModeEnabled
+    switch sub {
+    case "list":
+        for tier in OperationTier.allCases {
+            let rows = OperationRegistry.visible(ownerMode: owner)
+                .filter { $0.tier == tier }
+            guard !rows.isEmpty else { continue }
+            let label = tier == .product ? "🛒 진열대 (external)" : "🔒 사장실 (owner)"
+            print("\(label) — \(rows.count):")
+            for o in rows {
+                let verb = o.verb?.canonical ?? "—"
+                print("  \(o.reach.glyph) \(o.id)  [\(o.target.rawValue) · \(verb) · \(o.milestone)]  \(o.title)")
+            }
+            print("")
+        }
+        if !owner {
+            print("(🔒 owner ops hidden — set DEMIURGE_OWNER or pass --owner)")
+        }
+        return 0
+    case "audit":
+        let a = OperabilityAudit.run()
+        print("operability audit (CLI+COCKPIT M21):")
+        print("  product: \(a.productOK) ✅ · \(a.productPartial) 🔶 · \(a.productBlocked) ❌  (of \(a.productTotal))")
+        print("  owner:   \(a.ownerTotal) 🔒 (env-gated)")
+        if a.productComplete {
+            print("  verdict: ✅ external operability COMPLETE — @goal met")
+            return 0
+        }
+        let pend = OperationRegistry.all
+            .filter { $0.tier == .product && $0.reach != .ok }
+            .map { "\($0.id)(\($0.milestone))" }
+            .joined(separator: ", ")
+        print("  verdict: ⏳ pending — \(pend)")
+        return 1
+    default:
+        FileHandle.standardError.write(
+            Data("operate: unknown subcommand '\(sub)' — use list | audit\n".utf8))
+        return 2
+    }
+}
+
+/// `verify --expr|--fence|rubric ...` — forward to the hexa stdlib
+/// verify kernel (CLI+COCKPIT M16) and print the verdict VERBATIM
+/// (@D g5 — demiurge never re-judges; the stdlib SSOT owns the verdict,
+/// demiurge owns only the dispatch). `hexa` = hx dependency (M18).
+func verifyHexa(_ passthrough: [String]) -> Int32 {
+    let r = HexaBridge.verify(passthrough)
+    print(r.text, terminator: r.text.hasSuffix("\n") ? "" : "\n")
+    return r.ran ? r.exitCode : 127
+}
+
+/// `atlas <verb> [args]` — read the hexa atlas SSOT (CLI+COCKPIT M16,
+/// atlas-lookup op). READ verbs (lookup/stats/hash/dump) forward to
+/// `hexa atlas` VERBATIM via HexaBridge. WRITE verbs (register/
+/// append-witness/pr) are the OWNER atlas-register op (사장실 · M20) —
+/// refused here so external users get read-only atlas (M0_operate.md §1).
+func atlasCmd(_ args: [String]) -> Int32 {
+    let readVerbs: Set<String> = ["lookup", "stats", "hash", "dump"]
+    let verb = args.first ?? "stats"
+    guard readVerbs.contains(verb) else {
+        FileHandle.standardError.write(Data(
+            ("atlas: '\(verb)' is not a read verb. External read = "
+             + "lookup / stats / hash / dump (M16). Write "
+             + "(register/append-witness/pr) = owner op 사장실 · M20 "
+             + "(아직 미노출).\n").utf8))
+        return 2
+    }
+    let r = HexaBridge.run(["atlas"] + args)
+    print(r.text, terminator: r.text.hasSuffix("\n") ? "" : "\n")
+    return r.ran ? r.exitCode : 127
 }
 
 /// `verify <path|id>` — provenance completeness + claim/gate
@@ -470,20 +724,74 @@ case "action":
         actionArgs.remove(at: pIdx + 1)
         actionArgs.remove(at: pIdx)
     }
-    let cliVerb = actionArgs.first ?? ""
-    let cliDomain = actionArgs.count >= 2 ? actionArgs[1] : nil
-    exitCode = cliAction(cliVerb, cliDomain, producerArg)
+    // `--compose` (M15) — run the verb across the domain's constituent
+    // (prerequisite) stack, topo-ordered foundation→apex, instead of the
+    // single (verb, domain) cell.
+    if let cIdx = actionArgs.firstIndex(of: "--compose") {
+        actionArgs.remove(at: cIdx)
+        let cVerb = actionArgs.first ?? ""
+        let cDomain = actionArgs.count >= 2 ? actionArgs[1] : nil
+        exitCode = cliActionComposite(cVerb, cDomain)
+    } else {
+        let cliVerb = actionArgs.first ?? ""
+        let cliDomain = actionArgs.count >= 2 ? actionArgs[1] : nil
+        exitCode = cliAction(cliVerb, cliDomain, producerArg)
+    }
 case "list-gates":
     exitCode = listGates()
 case "gate-summary":
     exitCode = gateSummary()
+case "operate":
+    exitCode = operate(Array(args.dropFirst(2)))
+case "backend":
+    exitCode = backend(Array(args.dropFirst(2)))
+case "project":
+    guard args.count >= 3 else {
+        FileHandle.standardError.write(Data("project: usage — project new <name> <target> [domain] | project <advance|retreat> <name>\n".utf8))
+        usage()
+        exit(2)
+    }
+    switch args[2] {
+    case "new":
+        guard args.count >= 5 else {
+            FileHandle.standardError.write(Data("project new: usage — project new <name> <target> [domain]\n".utf8))
+            exit(2)
+        }
+        exitCode = projectNew(args[3], args[4], args.count >= 6 ? args[5] : nil)
+    case "advance", "retreat":
+        guard args.count >= 4 else {
+            FileHandle.standardError.write(Data("project: usage — project <advance|retreat> <name>\n".utf8))
+            exit(2)
+        }
+        exitCode = projectStep(args[2], args[3])
+    default:
+        FileHandle.standardError.write(Data("project: unknown subcommand '\(args[2])' — use new | advance | retreat\n".utf8))
+        exit(2)
+    }
+case "compose":
+    guard args.count >= 3 else {
+        FileHandle.standardError.write(Data("compose: missing <domain> argument\n".utf8))
+        usage()
+        exit(2)
+    }
+    exitCode = compose(args[2])
 case "verify":
     guard args.count >= 3 else {
         FileHandle.standardError.write(Data("verify: missing <path|id> argument\n".utf8))
         usage()
         exit(2)
     }
-    exitCode = verifyRecord(args[2])
+    // M16 — hexa stdlib verify kernel (5-tier). `--expr` / `--fence` /
+    // `rubric` forward to `hexa verify` (verdict VERBATIM, @D g5); a
+    // bare <path|id> stays the local record-consistency check.
+    switch args[2] {
+    case "--expr", "--fence", "rubric":
+        exitCode = verifyHexa(Array(args.dropFirst(2)))
+    default:
+        exitCode = verifyRecord(args[2])
+    }
+case "atlas":
+    exitCode = atlasCmd(Array(args.dropFirst(2)))
 case "emit-component":
     exitCode = emitComponent()
 case "export-component":
