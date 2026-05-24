@@ -2,6 +2,16 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T12:20:00Z — /cycle 배포 라운드 2: X32·X33·X34 (worktree2 격리 → PR)
+
+- [x] **X32 교육·인력** → `CARDIO+/X32_workforce_training.md` — 4대상 PGx-DAPT 커리큘럼/CME · 공통 1순위=ticagrelor Month-1 stopping rule · genetic counselor 부족(⚪) → CDS 자동해석+약사 클리닉+counselor 집중 3-경로 분산(d2) · 역할분담(의사 결정·약사 해석·CDS 자동·counselor 복잡case·간호 모니터)
+- [x] **X33 수가·재정·지속가능** → `CARDIO+/X33_reimbursement_sustainability.md` — HIRA 청구 워크플로우(C5946 선별급여+prasugrel 5mg·삭감방지) · 최대 삭감위험=prasugrel(≥75세/<60kg dual jeopardy → EMR default가 삭감방어) · 지속주체=**병원**(self-funding 정렬·단 1y +29.5M 적자 정직) · VBC metric=ST↓+출혈균형
+- [x] **X34 거버넌스·동의·형평** → `CARDIO+/X34_governance_consent_equity.md` — 7-직역 PGx 위원회(권고강도=근거강도) · 3-계층 동의(specific+broad+IRB+dynamic · 법령 ⚪/🟡) · 채혈-only 3-axis 지역 형평 최대 이점 + POCT/telegenetics/SaaS 3-bridge
+- [x] worktree2 격리 · g5 verbatim · LLM self-judge 0 · gh api --input
+- [ ] ⏳ 배포 deferred 잔여(~5): barrier-first(X30 흡수) · 환자demand · 환자앱(X24) · 국제배포(X18) · inaction-cost — 다수 기흡수 → 배포 well depletion 근접
+
+🔑 라운드 성과: CARDIO+ cross-cutting **X1-X34** (34개) · 배포 well 인적/재정/제도 3축 추가 (EMR→교육→수가→거버넌스 풀스택).
+
 ## 2026-05-25T11:40:00Z — /cycle-full 배포 well: X29·X30·X31 (deployment/adoption · worktree 격리 → PR)
 
 > 새 brainstorm well = "evidence 완성도(고갈)" 아닌 **배포/채택 (implementation science)**. 32 아이디어 R7 고갈 → 3 클러스터.

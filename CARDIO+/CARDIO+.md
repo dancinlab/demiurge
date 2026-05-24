@@ -47,6 +47,9 @@
 - [x] X29 EMR-CDS 배포 설계 — X22 spec→BPA 9 trigger(핵심=ticag Month-1 모니터) · fatigue=관련성 게이팅 · POCT 90분 "처방 전 결정" · SaaS scale-out → `CARDIO+/X29_emr_cds_deploy.md`
 - [x] X30 채택 lever — default-nudge(최강이자 최대 역효과) · P4P/적정성평가 · audit-feedback · champion/약사 · 책임장벽은 ①+②⑤ stack 필요 → `CARDIO+/X30_adoption_levers.md`
 - [x] X31 배포 roadmap/playbook — 즉시/6m/1y/3y phasing · 배포=증거 LHS 루프 · 실패모드(alert fatigue 최대) · DOCTOR H11 deployment playbook feed → `CARDIO+/X31_deploy_roadmap.md`
+- [x] X32 교육·인력 — 4대상(전공의·전문의·약사·간호) PGx-DAPT 커리큘럼·CME · genetic counselor 부족→CDS+약사+counselor 3-경로 분산(d2) · 역할분담 → `CARDIO+/X32_workforce_training.md`
+- [x] X33 수가·재정·지속가능 — HIRA 청구(C5946+prasugrel 코드·삭감방지) · 지속주체=병원(self-funding 정렬) · VBC metric=ST↓+출혈균형 → `CARDIO+/X33_reimbursement_sustainability.md`
+- [x] X34 거버넌스·동의·형평 — 7-직역 PGx 위원회(권고강도=근거강도) · 3-계층 동의(법령 ⚪/🟡) · 채혈-only 3-axis 지역 형평 + POCT/telegenetics/SaaS 3-bridge → `CARDIO+/X34_governance_consent_equity.md`
 
 ## d2 governance (meta)
 
