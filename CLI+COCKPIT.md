@@ -25,8 +25,8 @@
 - [x] M16 verify+atlas hx-dependency call — `HexaBridge`(hexa leaf-call 단일 통로) + `demiurge verify --expr/--fence/rubric`→`hexa verify` VERBATIM (@D g5) + `demiurge atlas lookup/stats/hash/dump`→`hexa atlas` (read-only · write=owner M20) · commit ca81e73·786bd18 · audit ❌ 3→1 · M8 host-health 라우팅은 후속(M17 흡수)
 - [x] M17 compute backend 추상화 — `ComputeBackend`+`BackendResolver`+`demiurge backend list/current` · local 기본 + `DEMIURGE_BACKEND` 사용자 remote · 내 ubu/mini 하드코딩 0 (런타임에 owner `~/.pool/pool.json`에서 읽고 owner-gated) · commit 72fb19e · audit ❌ 1→0 · M9 macOS 예외 라우팅은 후속
 - [ ] M18 외부 배포 — notarized `.app` + standalone CLI + hexa hx 의존성 선언 (`swift run`/`hx install <my-path>` owner-only 탈피)
-- [ ] M19 plain-mode 격리 — 기본 모드에서 내부 jargon/host/atlas/rfc/거버넌스(@D) 누출 0 (외부 안전 UX)
-- [ ] M20 owner-mode 사장실 (env-gated) — pool 라우팅·inbox/patches handoff·atlas register-PR·거버넌스 enforcement를 flag/env gate (기존 M10·M11·M12 흡수)
+- [x] M19 plain-mode 격리 — `DemiurgeMode`(expert/owner env-gate, 둘 다 OFF 기본) + CLI 스크럽: plain은 op id/target/milestone·substrate SSOT host 경로·영문 jargon 누출 0, `DEMIURGE_EXPERT=1`만 전체 노출 · PR #82 (6028888)
+- [x] M20 owner-mode 사장실 (env-gated) — `DEMIURGE_OWNER` 게이트 명문화 + atlas write(register/append-witness/pr) owner unlock→hexa forward + `demiurge owner` 상태 surface(5 owner ops) · PR #82 · 비고: M10/M11/M12(commit격리·fan-out cap·INBOX reflex)는 세션-에이전트 convention 거버넌스(CLAUDE.md d9 등)로 운영 — CLI op 아님
 - [x] M21 operability audit — `demiurge operate audit` = **12✅·0🔶·0❌** → "external operability COMPLETE — @goal met". 단일 운영 op 12종 전부 외부 2-surface reachable (owner-infra 0). owner-mode env-gate 명문화는 M20 잔여
 
 ---

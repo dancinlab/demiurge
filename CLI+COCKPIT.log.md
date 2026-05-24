@@ -2,6 +2,16 @@
 
 Append-only history sister of `CLI+COCKPIT.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T16:40:00Z — M19 plain격리 + M20 owner 사장실 env-gate ✅ · PR #82
+
+- [x] **M19 ✅** — `DemiurgeMode`(expert/owner env-gate, 둘 다 OFF 기본 · external-safe) + CLI 스크럽: plain(기본)은 op id/target/milestone(operate list)·substrate SSOT host 경로(compose `~/core/hexa-*`)·영문 kind 누출 0, `DEMIURGE_EXPERT=1`만 전체. 실증 `compose aura` plain → 성격 태그만
+- [x] **M20 ✅** — `DEMIURGE_OWNER` 게이트 명문화: atlas write(register/append-witness/pr) owner-only unlock→`hexa atlas` forward(PR-only), else 거부 + `demiurge owner` 상태 surface(🔒/✅ + 5 owner ops). 실증 owner locked/unlocked + atlas register 거부
+- [x] **PR #82 MERGED** (origin/main 6028888) — M19 + M20 코드. 격리 worktree cherry-pick·클린 빌드·squash
+- [x] M8/M9는 M16/M17(local-default)이 external 측면 흡수 · M10/M11/M12(commit격리·fan-out·INBOX)는 세션-에이전트 convention(CLAUDE.md d9·commons g60) 거버넌스 — CLI op 아님(외부 제품 비대상)
+- [ ] ⏳ M18 외부 배포만 잔여 — notarized .app + standalone CLI (Apple Developer cert/notarization 외부 인프라 필요 · 코드만으론 불가) · docs origin catchup
+
+🔑 핵심: M19(plain 누출 0)+M20(owner 사장실 게이트) 완료 → 외부 안전성 + 소유자 격리 명문화. 마일스톤 15/21 done. 남은 단 하나의 외부-제품 미완 = M18 배포(Apple cert 의존). M8-M12는 convention 거버넌스(비-op). operability @goal은 이미 met(audit 12✅·0🔶·0❌).
+
 ## 2026-05-25T16:20:00Z — M15 analyze-loop ⟲ 수렴 ✅ · audit @goal met (12✅·0🔶·0❌) · PR #81
 
 - [x] **analyze-loop ✅ commit 339f25f · PR #81 MERGED** (origin/main efcd9a5) — `ActionDispatch.runConvergent` + `demiurge action <verb> <domain> --converge` ⟲. outcome 패턴(ok/skip/gap) fixpoint까지 재실행, record-id 무관(g3). 결정적 stack은 iter 2 수렴
