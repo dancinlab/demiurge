@@ -43,6 +43,7 @@
 - [x] X25 wet-lab readiness — d5 non-wet→wet 다리 · 최소 실험 14건 · 최우선=IC-sync delivery IIT(thesis gate) · 외부 readout 의존 4(HORIZON 등) → `CARDIO+/X25_wetlab_readiness.md`
 - [x] X26 living-doc 자동화 spec — X8 grade ledger=단일 SSOT → DOCTOR/X7 derived 9개 auto-regen · drift lint(H8/H10 🟢% 불일치 적발) → `CARDIO+/X26_living_doc.md`
 - [x] X27 불확실성 UQ 집계 — CI 있는 🟢 5(LPA bootstrap) vs 없는 ~38(robustness gap 정직) · 민감도 최대=v8 ICER(horizon) · bootstrap 1순위=NOREFLOW Δ36.6pp → `CARDIO+/X27_uncertainty.md`
+- [x] X28 index-patient 10y microsim — illustrative 환자(65yo·IM·Lp(a)high·ALDH2*2) 10년 Markov · 3-axis 층화 vs 표준 Δ+0.066 QALY·사망−1.28pp (mini 실측 · projection ⚪) → `CARDIO+/X28_patient_microsim.md`
 
 ## d2 governance (meta)
 

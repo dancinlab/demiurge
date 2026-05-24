@@ -2,6 +2,18 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T11:00:00Z — capstone: X28 index-patient 10y microsim (사용자 선택 B · orchestrator mini 실측)
+
+- [x] **X28 index-patient 10y Markov microsim** → `CARDIO+/X28_patient_microsim.md` + `CARDIO+/DAPTPGX/sims/x28_patient_microsim.hexa` (mini 실측)
+  - illustrative 대표 환자(65yo·CYP2C19 IM·Lp(a)≥50 high·ALDH2*2 — **사용자 실제 데이터 아님 · d6**) · 2 arm(표준 vs 3-axis 층화) · 4-state Markov(ef/st/bl/de) · v5 §5 구조 · 10 annual cycle
+  - 실측 Δ(B−A·10년): **QALY +0.066 · life-years +0.067 · 사망 −1.28pp · event-free +2.06pp** (A 생존 74.7%/QALY 7.27 → B 76.0%/7.33)
+  - 정직: modest 양성 · transition rate는 v5/v7 VERBATIM grounding · Lp(a) modifier·utility는 ⚪ illustrative · 개인 관점(microsim) ↔ 인구 관점(X3 ICER·X19 budget) 정합
+  - 핵심 동인 = IM clopidogrel ST(0.010)→potent(0.0042) 강하 + 사망 cascade 감소 (bleed는 B 약간↑이나 ST 이득 상회)
+- [x] X6/X11/X15 self-case의 정량 microsim 마감 · X27 UQ(modifier-민감) 연계
+- [ ] ⏳ brainstorm 32 deferred 잔여 = #23 biomarker VoI (X14+X27 흡수 · 중복) — depletion 확정
+
+🔑 capstone 성과: CARDIO+ cross-cutting **X1-X28** (28개) · 개인 환자 10년 정량 투사로 self-case 닫음 · brainstorm well **depletion 도달** (잔여는 중복/외부-readout 의존).
+
 ## 2026-05-25T10:30:00Z — /cycle 라운드 6 (deferred 거의 소진): X25·X26·X27 (worktree4 격리 → PR)
 
 - [x] **X25 wet-lab readiness** → `CARDIO+/X25_wetlab_readiness.md` — d5 non-wet-lab→wet-lab 확증 다리 · 최소 실험 14건 · 최우선=**IC-sync delivery IIT**(thesis 전체 gate · X13 R5/X14 top VoI) · 외부 readout 의존 4(HORIZON 2026 H1 등) · 거의 전부 인과층(산술층 already absorbed, VoI≈0)

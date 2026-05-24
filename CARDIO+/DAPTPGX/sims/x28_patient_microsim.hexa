@@ -1,0 +1,96 @@
+// CARDIO+ X28 — index-patient 10y Markov microsim (illustrative representative patient)
+// ⚠ 환자 프로파일 = ILLUSTRATIVE 대표 환자 (사용자 실제 데이터 아님 · d6):
+//      65세 · post-PCI · CYP2C19 IM(중간대사) · Lp(a) ≥50 high · ALDH2*2 carrier
+// 두 arm 비교 — A: 표준(universal clopidogrel · Lp(a) 미관리 · IV-only) · B: 3-axis 층화(IM→prasugrel · Lp(a)→PCSK9 · no-reflow IC)
+// transition rate 는 전부 기존 sub-V/M8 VERBATIM grounding (아래 라벨). 새 가정은 illustrative 명시.
+// 4-state Markov (ef event-free · st post-MI · bl post-bleed · de death) · v5 §5 matrix 구조 그대로 · 10 annual cycle.
+// Usage: POOL_DISABLE=1 hexa run CARDIO+/DAPTPGX/sims/x28_patient_microsim.hexa
+
+println("=== CARDIO+ X28 — index-patient 10y microsim (illustrative: 65yo IM·Lp(a)high·ALDH2*2) ===")
+println("")
+
+// --- grounded params (출처 라벨) ---
+let death_base   = 0.025     // v5 §5 annual baseline death (post-PCI 65yo cohort)
+let im_clopi_st  = 0.010     // v7 FIX-B: IM clopidogrel LoF-gradient ST/yr (NM 0.005 < IM 0.010 < PM 0.015)
+let potent_st    = 0.004     // v5 st_ticag (IM→potent therapy ST/yr)
+let bleed_clopi  = 0.012     // v5 bleed_clopi
+let bleed_potent = 0.0122    // v5 pm_bleed_weighted (de-escalation 30d potent + 335d clopi)
+// illustrative modifiers (라벨: representative · not verbatim)
+let lpa_high_mult = 1.20     // illustrative: high Lp(a) 미관리 시 MACE 상대증가 (LPA 인과 β 방향 기반)
+let lpa_mgd_mult  = 1.05     // illustrative: PCSK9 관리 후 잔여 (Lp(a) 부분강하)
+// utilities (illustrative standard CEA)
+let u_ef = 0.85
+let u_st = 0.75
+let u_bl = 0.80
+
+// --- Arm A: 표준 (universal clopidogrel · Lp(a) 미관리) ---
+let pA_st = im_clopi_st * lpa_high_mult     // IM clopi ST × high-Lp(a)
+let pA_bl = bleed_clopi
+let pA_stay = 1.0 - pA_st - pA_bl - death_base
+let mut a_ef = 1.0
+let mut a_st = 0.0
+let mut a_bl = 0.0
+let mut a_de = 0.0
+let mut a_qaly = 0.0
+let mut a_ly = 0.0
+let mut ya = 0
+while ya < 10 {
+    let n_ef = a_ef * pA_stay + a_st * 0.5 + a_bl * 0.6
+    let n_st = a_ef * pA_st + a_st * 0.3
+    let n_bl = a_ef * pA_bl + a_bl * 0.3
+    let n_de = a_ef * death_base + a_st * 0.2 + a_bl * 0.1 + a_de * 1.0
+    a_ef = n_ef
+    a_st = n_st
+    a_bl = n_bl
+    a_de = n_de
+    a_qaly = a_qaly + a_ef * u_ef + a_st * u_st + a_bl * u_bl
+    a_ly = a_ly + a_ef + a_st + a_bl
+    ya = ya + 1
+}
+
+// --- Arm B: 3-axis 층화 (IM→prasugrel · Lp(a)→PCSK9 · no-reflow IC) ---
+let pB_st = potent_st * lpa_mgd_mult        // potent ST × managed-Lp(a)
+let pB_bl = bleed_potent
+let pB_stay = 1.0 - pB_st - pB_bl - death_base
+let mut b_ef = 1.0
+let mut b_st = 0.0
+let mut b_bl = 0.0
+let mut b_de = 0.0
+let mut b_qaly = 0.0
+let mut b_ly = 0.0
+let mut yb = 0
+while yb < 10 {
+    let m_ef = b_ef * pB_stay + b_st * 0.5 + b_bl * 0.6
+    let m_st = b_ef * pB_st + b_st * 0.3
+    let m_bl = b_ef * pB_bl + b_bl * 0.3
+    let m_de = b_ef * death_base + b_st * 0.2 + b_bl * 0.1 + b_de * 1.0
+    b_ef = m_ef
+    b_st = m_st
+    b_bl = m_bl
+    b_de = m_de
+    b_qaly = b_qaly + b_ef * u_ef + b_st * u_st + b_bl * u_bl
+    b_ly = b_ly + b_ef + b_st + b_bl
+    yb = yb + 1
+}
+
+println("--- Arm A (표준 universal clopidogrel · Lp(a) 미관리) ---")
+println("A_10y_alive       =", 1.0 - a_de)
+println("A_10y_event_free  =", a_ef)
+println("A_10y_death       =", a_de)
+println("A_10y_QALY        =", a_qaly)
+println("A_10y_life_years  =", a_ly)
+println("")
+println("--- Arm B (3-axis 층화: IM→prasugrel · Lp(a)→PCSK9 · no-reflow IC) ---")
+println("B_10y_alive       =", 1.0 - b_de)
+println("B_10y_event_free  =", b_ef)
+println("B_10y_death       =", b_de)
+println("B_10y_QALY        =", b_qaly)
+println("B_10y_life_years  =", b_ly)
+println("")
+println("--- Δ (B − A · 이 illustrative 환자 1명 · 10년) ---")
+println("dQALY_10y         =", b_qaly - a_qaly)
+println("dLifeYears_10y    =", b_ly - a_ly)
+println("dDeath_10y        =", b_de - a_de, "(음수=B 사망 감소)")
+println("dEventFree_10y    =", b_ef - a_ef)
+println("")
+println("=== X28 microsim done (illustrative · projection ⚪ · 실제 환자 결과 아님) ===")
