@@ -99,10 +99,21 @@ struct LLMSettingsView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 } else {
                     LabeledContent("API 키") {
-                        SecureField(LLMKeyStore.keySource(for: p) == "없음"
-                                    ? "키 입력 (\(p.keyEnv))" : "현재: \(LLMKeyStore.keySource(for: p))",
-                                    text: bindingFor($keyInput, p.id, default: ""))
-                        .textFieldStyle(.roundedBorder)
+                        HStack {
+                            SecureField(LLMKeyStore.keySource(for: p) == "없음"
+                                        ? "키 입력 (\(p.keyEnv))" : "현재: \(LLMKeyStore.keySource(for: p))",
+                                        text: bindingFor($keyInput, p.id, default: ""))
+                            .textFieldStyle(.roundedBorder)
+                            // 🗑 — only when a Keychain key is stored (env source
+                            // isn't ours to clear). Mirrors CLI `llm key-rm`.
+                            if LLMKeyStore.keySource(for: p) == "키체인" {
+                                Button {
+                                    LLMKeyStore.deleteKey(for: p)
+                                    keyInput[p.id] = ""
+                                } label: { Image(systemName: "trash") }
+                                .help("저장된 키 삭제 (키체인) — env는 그대로")
+                            }
+                        }
                     }
                 }
                 LabeledContent("모델") {
