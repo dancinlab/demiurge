@@ -2,6 +2,18 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T11:40:00Z — /cycle-full 배포 well: X29·X30·X31 (deployment/adoption · worktree 격리 → PR)
+
+> 새 brainstorm well = "evidence 완성도(고갈)" 아닌 **배포/채택 (implementation science)**. 32 아이디어 R7 고갈 → 3 클러스터.
+
+- [x] **X29 EMR-CDS 배포 설계** → `CARDIO+/X29_emr_cds_deploy.md` — X22 spec→병원 BPA 9 trigger(핵심=ticagrelor Month-1 모니터→clopi switch) · fatigue 방지=관련성 게이팅(cell-specific) · POCT 90분→"처방 후 교정→처방 전 결정" · 클라우드 SaaS scale-out · 배포효과 전부 ⚪/🟠 (미실증)
+- [x] **X30 채택 lever** → `CARDIO+/X30_adoption_levers.md` — default-nudge=최강 채택 lever **이자 최대 역효과**(potent 일괄 시 한국 출혈 dual jeopardy 조장→X16 안전맵 default 필수) · P4P/적정성평가·audit-feedback·champion·약사클리닉 · **책임(liability) 장벽은 default로 안 풀림 → ②적정성평가+⑤가이드라인 stack 필요**
+- [x] **X31 배포 roadmap/playbook** → `CARDIO+/X31_deploy_roadmap.md` — 즉시(단일센터 B pilot)/6m/1y/3y phasing · **배포=증거 LHS 루프**(registry-embedded 배포가 X5 trial 겸함·공진화) · 실패모드 5(최대=alert fatigue) 예방 path · DOCTOR H11 deployment playbook feed
+- [x] worktree6 격리 · g5 verbatim · LLM self-judge 0 · gh api --input
+- [ ] ⏳ 배포 deferred 잔여(~13): barrier-first · 환자demand · 교육 · 수가실무 · 형평 · 지속/재정 · 동의 · 환자앱 · 인력 · 국제배포 · inaction cost · 거버넌스위원회
+
+🔑 라운드 성과: CARDIO+ cross-cutting **X1-X31** (31개) · evidence→**배포** 축 신설 (3 deployment 산출물) · "배포=증거 공진화" 전략 통찰.
+
 ## 2026-05-25T11:00:00Z — capstone: X28 index-patient 10y microsim (사용자 선택 B · orchestrator mini 실측)
 
 - [x] **X28 index-patient 10y Markov microsim** → `CARDIO+/X28_patient_microsim.md` + `CARDIO+/DAPTPGX/sims/x28_patient_microsim.hexa` (mini 실측)
