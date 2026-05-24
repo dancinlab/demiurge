@@ -1,0 +1,113 @@
+// NUMB G2 — regulatory pathway cost/timeline matrix (cite-only envelope estimator)
+//
+// Not a physical sim — regulatory cost/timeline IS cite-based (🟡 tier).
+// This file emits a deterministic numeric matrix for the G2 doc tables
+// using mid-point envelopes from cited sources, so the table is recomputable.
+//
+// Sources fixed in g2_regulatory_matrix.md §9.
+// USD/KRW mid-2026 = 1340 (approximate; provenance: BoK average).
+
+fn main() {
+    // --- Rx variant (hexa-LAC v1) cost mid-point (USD M) ---
+    let rx_us_cost_min  = 15.0;   // 505(b)(2) low envelope
+    let rx_us_cost_max  = 50.0;   // 505(b)(2) topical-derm typical ceiling
+    let rx_us_cost_mid  = (rx_us_cost_min + rx_us_cost_max) / 2.0;
+
+    let rx_eu_cost_min  = 0.5;
+    let rx_eu_cost_max  = 1.5;
+    let rx_eu_cost_mid  = (rx_eu_cost_min + rx_eu_cost_max) / 2.0;
+
+    // KR cost: ₩2-10B in USD using 1340 rate
+    let krw_per_usd     = 1340.0;
+    let rx_kr_cost_min  = 2000.0 / krw_per_usd;   // ~$1.49M
+    let rx_kr_cost_max  = 10000.0 / krw_per_usd;  // ~$7.46M
+    let rx_kr_cost_mid  = (rx_kr_cost_min + rx_kr_cost_max) / 2.0;
+
+    // --- timeline (years) mid-point ---
+    let rx_us_time_min  = 5.0;
+    let rx_us_time_max  = 7.0;
+    let rx_us_time_mid  = (rx_us_time_min + rx_us_time_max) / 2.0;
+
+    let rx_eu_time_mid  = 2.25;   // 1.5-3 yr
+    let rx_kr_time_mid  = 4.0;    // 3-5 yr
+
+    // --- OTC variant (lid 4% standalone, fastest path) ---
+    let otc_us_cost_mid = 3.5;    // $2-5M lid-only Aspercreme-class
+    let otc_kr_cost_mid = 2.25;   // ₩1-5B mid = ~$2.24M
+    let otc_eu_cost_mid = 1.0;    // $0.5-1.5M
+
+    let otc_us_time_mid = 1.5;
+    let otc_kr_time_mid = 3.0;
+    let otc_eu_time_mid = 2.25;
+
+    // --- emit ---
+    println("=== NUMB G2 regulatory envelope matrix ===");
+    println("");
+    println("Rx variant (hexa-LAC v1, lid7+tet7+epi):");
+    println("  US 505(b)(2):  cost mid (USD M) = ");
+    println(rx_us_cost_mid);
+    println("  US 505(b)(2):  timeline mid (yr) = ");
+    println(rx_us_time_mid);
+    println("  EU national+MRP: cost mid (USD M) = ");
+    println(rx_eu_cost_mid);
+    println("  EU national+MRP: timeline mid (yr) = ");
+    println(rx_eu_time_mid);
+    println("  KR 자료제출의약품: cost mid (USD M) = ");
+    println(rx_kr_cost_mid);
+    println("  KR 자료제출의약품: timeline mid (yr) = ");
+    println(rx_kr_time_mid);
+
+    println("");
+    println("OTC variant (lid 4% flagship):");
+    println("  US Part 348 (lid-only 4%): cost mid (USD M) = ");
+    println(otc_us_cost_mid);
+    println("  US Part 348: timeline mid (yr) = ");
+    println(otc_us_time_mid);
+    println("  KR 일반의약품 (자료제출): cost mid (USD M) = ");
+    println(otc_kr_cost_mid);
+    println("  KR 일반의약품: timeline mid (yr) = ");
+    println(otc_kr_time_mid);
+    println("  EU national OTC: cost mid (USD M) = ");
+    println(otc_eu_cost_mid);
+    println("  EU national OTC: timeline mid (yr) = ");
+    println(otc_eu_time_mid);
+
+    println("");
+    println("=== SHORTEST commercial path (OTC) ===");
+    let shortest_cost = otc_kr_cost_mid;
+    let shortest_time = otc_kr_time_mid;
+    println("  KR 일반의약품 OTC (리도카겔 5% precedent):");
+    println("    cost mid (USD M) =");
+    println(shortest_cost);
+    println("    timeline mid (yr) =");
+    println(shortest_time);
+
+    println("");
+    println("=== LONGEST / max-TAM (Rx) ===");
+    let longest_cost = rx_us_cost_mid;
+    let longest_time = rx_us_time_mid;
+    println("  US 505(b)(2) (Pliaglis RLD direct):");
+    println("    cost mid (USD M) =");
+    println(longest_cost);
+    println("    timeline mid (yr) =");
+    println(longest_time);
+
+    println("");
+    println("=== OTC monograph WALL (US 21 CFR 348.10) ===");
+    let lid_otc_max = 4.0;   // percent
+    let tet_otc_max = 2.0;   // percent
+    let numb_otc_lid = 2.5;
+    let numb_otc_tet = 2.5;
+    println("  lidocaine OTC max (%) =");
+    println(lid_otc_max);
+    println("  tetracaine OTC max (%) =");
+    println(tet_otc_max);
+    println("  NUMB OTC 2.5+2.5 lidocaine OK? (1=yes 0=no)");
+    if (numb_otc_lid <= lid_otc_max) { println(1.0); } else { println(0.0); }
+    println("  NUMB OTC 2.5+2.5 tetracaine OK? (1=yes 0=no)");
+    if (numb_otc_tet <= tet_otc_max) { println(1.0); } else { println(0.0); }
+    // expected: lid=1, tet=0  → WALL confirmed.
+
+    println("");
+    println("end g2_regulatory_matrix");
+}

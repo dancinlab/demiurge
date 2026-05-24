@@ -1,0 +1,152 @@
+// NUMB N1 — phase-change peel-film with body-heat-triggered supersaturation release
+// Question: does a body-T phase-change carrier (Tm ~32-35C) add a NEW flux multiplier on top of
+//           the Pliaglis (lid7+tet7 eutectic) + CPE (A2+A3) baseline?
+// Model: Fick steady-state flux  J = D_eff * K * C_donor / h
+//        thermodynamic-activity form  J = D_eff * a   (a = drug activity in donor; a=1 saturated)
+//        onset surrogate  t_lag = h^2/(6*D_eff)   (A1 lag-time)
+//        N1 ADDS one factor: a_supersat triggered at skin T (PCM carrier melts -> drug oversaturates)
+// Numbers grounded in:
+//   - Pliaglis lid+tet eutectic Tm ~18C (Carstensen 2002 / FDA 21717)
+//   - Pliaglis peel mechanism = water evap film, NOT body-heat phase change of the active
+//   - capric+palmitic eutectic Tm 32.17C (RG 257008451)
+//   - lauric+myristic 66:34 Tm 34.28C (PMC 9096936)
+//   - PEG-1500 Tm ~44-48C (high) / PEG-1000 Tm ~37-40C (borderline)
+//   - PNIPAM LCST ~32C (Schild 1992 / Liang 2016)
+//   - supersat flux gain linear in degree-of-sat, cap ~5x (Davis 2002, Pellanda 2025)
+// run: hexa run NUMB/sim/n1_phase_change_peelfilm.hexa
+
+println("=== NUMB N1 — phase-change peel-film: body-heat-triggered supersaturation ===")
+println("")
+
+println("[0] HONEST WALL CHECK FIRST — what does Pliaglis actually do?")
+println("  Pliaglis peel mechanism      : water EVAPORATES from cream -> HPC film hardens (room T)")
+println("  Pliaglis active phase change : lid+tet eutectic Tm ~18C -> already LIQUID at room T")
+println("  Pliaglis activity            : oil-phase active is at SATURATION (a=1) once eutectic")
+println("  -> Pliaglis is NOT body-heat triggered; its 'phase change' is solvent-loss at room T")
+println("  -> NUMB N1 niche = ADD a body-T (32-35C) carrier phase change that, on melt,")
+println("     releases active INTO a co-solvent pool where it becomes SUPERSATURATED (a>1)")
+println("")
+
+println("[1] phase-change carrier candidate landscape (Tm vs skin window 32-34C surface, 37C deep):")
+println("  long-chain fatty alcohols")
+println("    cetyl alcohol         Tm  49.3C   -> OUTSIDE window (too high)")
+println("    stearyl alcohol       Tm  59.8C   -> OUTSIDE window (too high)")
+println("    cetostearyl           Tm  50.0C   -> OUTSIDE window (too high)")
+println("  PEGs")
+println("    PEG-1000              Tm  37-40C  -> EDGE (might melt only deep skin, not surface)")
+println("    PEG-1500              Tm  44-48C  -> OUTSIDE")
+println("    PEG-4000              Tm  53C     -> OUTSIDE")
+println("  fatty acid eutectics (engineered to Tm window)")
+println("    capric+palmitic       Tm  32.17C  -> ON-WINDOW (surface trigger 32-34C)")
+println("    lauric+myristic 66:34 Tm  34.28C  -> ON-WINDOW (warm-skin trigger)")
+println("    myristic+stearic 70:30 Tm 35.0C   -> ON-WINDOW (deep-tissue trigger)")
+println("    lauric+stearic 4:1    Tm  39.0C   -> JUST-OUTSIDE")
+println("  thermoresponsive polymer")
+println("    PNIPAM (LCST)         32.0C       -> ON-WINDOW (phase-coil-globule, not melt)")
+println("    pNIPAM-coNIPAM copoly tunable 32-39C -> tunable (Tg/LCST engineering)")
+println("  -> viable PCM carriers: capric+palmitic, lauric+myristic, PNIPAM")
+println("")
+
+println("[2] thermodynamic-activity model: J = D_eff * K * a; baseline a=1 (saturated)")
+println("  Pliaglis baseline   a_pl = 1.0   (lid+tet eutectic liquid; saturated in oil)")
+println("  hexa-LAC v1 (TTR-LAC) a_hl = 2.0 (peel-film supersat per A2+A3 Sec 5 estimate)")
+println("  N1 design target    a_n1 = 3.0-5.0  (Davis 2002 cap: degree-of-sat linear 2-5x)")
+println("")
+println("  IMPORTANT: 'supersat ON TOP OF existing peel-film supersat' = product of activity factors")
+println("    a_total(N1) = a_film(2.0) * a_pcm_release(?)")
+println("  But thermodynamic-activity has hard upper bound = critical sat ratio for nucleation")
+println("    practical SUSTAINED supersat = 3-5x (else crystals nucleate within minutes)")
+println("    -> a_total(N1) realistic ceiling = 5.0 (Davis 2002, Pellanda 2025 review)")
+println("    -> NEW factor N1 adds OVER hexa-LAC v1 = 5.0/2.0 = 2.5x activity multiplier")
+println("")
+
+println("[3] flux + onset recompute — Pliaglis vs hexa-LAC v1 vs N1 (h=10um, D_base=1e-10 cm^2/s)")
+let Dbase = 1.0e-10
+let h_cm = 1.0e-3
+let tlag_base = (h_cm*h_cm)/(6.0*Dbase)
+let onset_base = 2.0*tlag_base/60.0
+println("  baseline (no boost, a=1)  t_lag=", tlag_base/60.0, " min  onset=", onset_base, " min")
+println("")
+
+// Pliaglis: a=1, D-boost ~3x (occlusion of film) per A2+A3
+let D_pl = Dbase*3.0
+let a_pl = 1.0
+let onset_pl = 2.0*(h_cm*h_cm)/(6.0*D_pl)/60.0
+let flux_pl = D_pl*a_pl
+println("  Pliaglis        D_eff=", D_pl, "  a=", a_pl, "  onset(min)=", onset_pl, "  flux~", flux_pl)
+
+// hexa-LAC v1: A2+A3 stack — D-boost 20x (CPE+supersat), a=2 (peel film)
+let D_hl = Dbase*20.0
+let a_hl = 2.0
+let onset_hl = 2.0*(h_cm*h_cm)/(6.0*D_hl)/60.0
+let flux_hl = D_hl*a_hl
+println("  hexa-LAC v1     D_eff=", D_hl, "  a=", a_hl, "  onset(min)=", onset_hl, "  flux~", flux_hl)
+
+// N1: hexa-LAC v1 base + body-T PCM carrier releases drug into supersat pool -> a=5 (Davis 2002 cap)
+//     D_eff unchanged (PCM does NOT enhance D directly; it changes thermodynamic driving force)
+let D_n1 = Dbase*20.0
+let a_n1 = 5.0
+let onset_n1 = 2.0*(h_cm*h_cm)/(6.0*D_n1)/60.0   // onset (t_lag) is D-driven, NOT a-driven
+let flux_n1 = D_n1*a_n1
+println("  N1 (proposed)   D_eff=", D_n1, "  a=", a_n1, "  onset(min)=", onset_n1, "  flux~", flux_n1)
+println("")
+println("  KEY: a (supersat) multiplies STEADY-STATE flux, NOT t_lag.")
+println("       => N1 does NOT shorten onset further once D is already boosted.")
+println("       => N1 IS  amplifies steady-state amount delivered per unit time")
+println("       =>        which raises DEPTH penetration (C(z) profile) + DURATION margin.")
+println("")
+
+println("[4] depth gain at 200um (free nerve endings) — Pliaglis vs hexa-LAC vs N1")
+println("    C(z) = C_surf * a_effective * exp(-z/lambda)")
+println("    assume same lambda=60um (epi 1:200k) for all three, C_surf=14% lido-eq")
+let lambda = 60.0
+let z = 200.0
+let decay = 2.71828
+// exp(-200/60) = exp(-3.333) ~= 0.0357
+let exp_z = 0.0357
+let C_pl_200 = 14.0 * 1.0 * exp_z
+let C_hl_200 = 14.0 * 2.0 * exp_z
+let C_n1_200 = 14.0 * 5.0 * exp_z
+println("  Pliaglis(a=1)   C(200um)=", C_pl_200, " %lido    C/MEC(0.5%) = ", C_pl_200/0.5)
+println("  hexa-LAC(a=2)   C(200um)=", C_hl_200, " %lido    C/MEC(0.5%) = ", C_hl_200/0.5)
+println("  N1(a=5)         C(200um)=", C_n1_200, " %lido    C/MEC(0.5%) = ", C_n1_200/0.5)
+println("")
+println("  -> dermal block margin: Pliaglis 1.0x MEC (marginal), hexa-LAC 2.0x (safe), N1 5.0x (deep margin)")
+println("  -> N1 'wins' on DEPTH RELIABILITY, not on onset time")
+println("")
+
+println("[5] release kinetics gate — does PCM melt FAST enough at skin contact?")
+println("  skin-contact thermal equilibration time (1mm film) ~ tau = L^2 / (pi^2 * alpha_thermal)")
+println("    L = 1mm = 0.1cm, alpha (cream ~ water) ~ 1.4e-3 cm^2/s")
+println("    tau_thermal ~ 0.01 / (9.87 * 1.4e-3) = 0.72 s")
+println("  PCM melt latent heat: lauric+myristic ~166 J/g, film mass density ~1 g/cm^3, 1mm = 0.1 g/cm^2")
+println("    Q_needed = 0.1g * 166J/g = 16.6 J/cm^2   (only for ON-WINDOW pcm; PEG/cetyl too cold)")
+println("  body-heat flux (skin surface) ~ 50-100 W/m^2 = 5-10 mW/cm^2 = 5-10 mJ/s/cm^2")
+println("    -> 16600 mJ / 10 mJ/s = 1660 s = 28 min  (LATENT-HEAT BOTTLENECK)")
+println("  -> CRITICAL FINDING: full melt of 1mm PCM film takes ~28min from body heat alone")
+println("     => N1 must use THIN PCM-only sub-layer (~100um, 2.8min melt) OR sparse-PCM dispersion")
+println("     => OR melt cascade pre-warms during initial CPE penetration (mass-action coupled)")
+println("")
+
+println("[6] honest novelty check vs Pliaglis (Sec [0] elaboration)")
+println("  Pliaglis  : a=1 (lid+tet eutectic saturated), peel via water EVAP at room T, no body-T trigger")
+println("  hexa-LAC  : a=2 (HPC peel-film supersat), peel via water evap, no body-T trigger")
+println("  N1        : a=2 (film) * 2.5 = 5 PROVIDED body-T PCM melt releases drug into supersat pool")
+println("              body-T (32-35C) IS the trigger; this distinguishes N1 from Pliaglis/hexa-LAC")
+println("  -> N1 NOVELTY = body-T-triggered SECONDARY supersat (2.5x on top of film supersat)")
+println("              + secondary carrier = capric+palmitic (32.17C) or lauric+myristic (34.28C)")
+println("              + NOT incremental tweak of Pliaglis: orthogonal mechanism layer")
+println("  -> N1 GENUINE GAIN over hexa-LAC v1 = 2.5x DEPTH-PROFILE amplification (NOT onset)")
+println("")
+
+println("[7] residual walls (honest):")
+println("  W1 28-min latent-heat melt bottleneck (Sec [5]) -> requires THIN PCM sub-layer or dispersion")
+println("  W2 sustained supersat a>3 nucleates crystals in minutes -> needs antinucleant (PVP-K30, HPC)")
+println("  W3 PCM carrier + lid/tet eutectic + epi MISCIBILITY = unverified (Franz cell needed)")
+println("  W4 onset is NOT improved (a does not multiply 1/t_lag); only depth + duration improved")
+println("  W5 LAST/safety: 2.5x dermal flux -> 2.5x systemic absorption -> A4 envelope re-gate needed")
+println("")
+
+println("=== verdict: N1 is GENUINELY NOVEL vs Pliaglis on mechanism (body-T trigger vs water-evap) ===")
+println("=== N1 adds 2.5x activity multiplier (5/2) over hexa-LAC v1 -> DEPTH+DURATION, NOT onset ===")
+println("=== latent-heat melt time (28min @ 1mm) is the new internal wall; thin sub-layer fixes ===")

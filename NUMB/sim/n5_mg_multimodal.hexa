@@ -1,0 +1,152 @@
+// NUMB N5 — Mg2+ augmented multi-modal nerve block
+//   Quantify MEC reduction from Mg2+ co-delivery and recompute LAST envelope
+//   for the LARGE-area indication (tattoo creation 500-1000 cm^2).
+//   straight-line only.  run: hexa run NUMB/sim/n5_mg_multimodal.hexa
+
+println("=== NUMB N5 — Mg2+ multimodal envelope expansion ===")
+println("")
+println("model: MEC_combo = MEC_alone * (1 - r_mg)")
+println("       lid_conc_new = MEC_combo / depth_factor   (keep C(200um)/MEC ratio = 1.0)")
+println("       k_LAST       = k0 * (lid_conc_new / lid_conc_old)")
+println("       Cmax(A)      = k_LAST * m_cream * A * lid_conc_new * 1000")
+println("       A_max        = C* / (k_LAST * m_cream * lid_conc_new * 1000)")
+println("")
+
+// ============================================================
+// [0] anchors — TTR-LAC A2/A3/A4 inherited
+// ============================================================
+let mec_lid_alone   = 0.5         // % (Yi 2017 MEAC90 0.93 / Lyles 2016 ED50 0.57)
+let lid_conc_v1     = 7.0         // % hexa-LAC v1 backbone
+let c_at_200um_v1   = 0.499       // % (Pliaglis 14% + epi lambda=60um)
+let depth_factor_v1 = c_at_200um_v1 / lid_conc_v1   // fraction reaching 200um at lambda=60
+let pliaglis_kCmax  = 0.0533      // ng/mL per mg lido applied (FDA anchor)
+let m_cream         = 0.1475      // g/cm^2 cream load
+let f_epi           = 0.5         // epi 1:200k systemic absorption multiplier
+let er_central      = 3.0         // CPE extra-ER central
+let cns_warn        = 5000.0      // ng/mL CNS-warn threshold (5 ug/mL)
+
+let k_lac_v1        = pliaglis_kCmax * er_central * f_epi  // = 0.0533 * 3 * 0.5 = 0.07995
+println("[0] anchors:")
+println("  MEC lid alone (dermal nerve block) : ", mec_lid_alone, " %")
+println("  hexa-LAC v1 lid concentration      : ", lid_conc_v1, " %")
+println("  C(200um) v1 (lambda=60um, epi)     : ", c_at_200um_v1, " %  (= MEC alone)")
+println("  depth_factor (C(200um)/lid_conc)   : ", depth_factor_v1)
+println("  k_LAC v1 (ER3x + epi)              : ", k_lac_v1, " ng/mL per mg")
+println("")
+
+// ============================================================
+// [1] Mg-induced MEC shift scenarios (literature-bounded)
+// ============================================================
+// Evidence summary:
+//   - IV Mg + lidocaine perioperative: opioid demand ~10x lower (mastectomy 2020)
+//     Brill 2002 IV-Mg neuropathic pain; Wadhwa 2020 IV Mg+lido 6.7% vs 70% morphine rescue
+//   - Mg blocks N-type Ca2+ at presynaptic terminals (Hypertension 2004, PMID 15477382)
+//   - Mg blocks NMDA Ca2+ flux (voltage-dependent; PMC7468697)
+//   - Peripheral nerve block adjuvant: duration +114.6 min (PMID 34128482 meta-analysis 21 RCTs)
+//   - Perineural caveat: locally CAN attenuate Na-channel block (route-dependent paradox)
+//     -> for TOPICAL co-delivery the relevant mode is RECEPTOR-LEVEL synergy (NMDA + Ca2+)
+//        NOT perineural Na competition. Effect direction = MEC reduction.
+//   - Direct dermal-MEC-shift data: ABSENT (gap)
+//   - 30% conservative estimate from: dose-sparing observed in surgical models ~25-40%
+//
+// r_mg = fractional MEC reduction; scenarios:
+let r_mg_lo  = 0.15    // pessimistic: poor topical Mg penetration, weak NMDA contribution
+let r_mg_mid = 0.30    // central: aligned with surgical opioid-sparing 25-40% range
+let r_mg_hi  = 0.45    // optimistic: full multi-modal (NMDA central + Ca2+ peripheral)
+
+println("[1] Mg-induced MEC shift scenarios:")
+println("  r_mg = 0.15 (pessimistic)  -> MEC_combo = ", mec_lid_alone*(1.0-r_mg_lo),  " %")
+println("  r_mg = 0.30 (central)      -> MEC_combo = ", mec_lid_alone*(1.0-r_mg_mid), " %")
+println("  r_mg = 0.45 (optimistic)   -> MEC_combo = ", mec_lid_alone*(1.0-r_mg_hi),  " %")
+println("")
+
+// ============================================================
+// [2] new required lid concentration (depth-matched)
+// ============================================================
+// Keep C(200um) >= MEC_combo  (full block); depth_factor unchanged (same lambda=60, epi).
+// lid_conc_new = MEC_combo / depth_factor_v1
+let lid_new_lo  = (mec_lid_alone * (1.0 - r_mg_lo))  / depth_factor_v1
+let lid_new_mid = (mec_lid_alone * (1.0 - r_mg_mid)) / depth_factor_v1
+let lid_new_hi  = (mec_lid_alone * (1.0 - r_mg_hi))  / depth_factor_v1
+
+println("[2] required lidocaine concentration (depth-matched, lambda=60, +epi):")
+println("  v1 baseline                : ", lid_conc_v1, " %")
+println("  r_mg 0.15 -> lid required  : ", lid_new_lo,  " %  (drop ", 100.0*(1.0-lid_new_lo/lid_conc_v1),  " %)")
+println("  r_mg 0.30 -> lid required  : ", lid_new_mid, " %  (drop ", 100.0*(1.0-lid_new_mid/lid_conc_v1), " %)")
+println("  r_mg 0.45 -> lid required  : ", lid_new_hi,  " %  (drop ", 100.0*(1.0-lid_new_hi/lid_conc_v1),  " %)")
+println("")
+
+// ============================================================
+// [3] Cmax recompute @ A=100 cm^2 (default workflow)
+// ============================================================
+// Dose_mg(A) = m_cream * A * (lid_conc/100) * 1000
+// Cmax       = k_LAC_v1 * Dose_mg                (k_LAC scales linearly with lid_conc; absorbed pool shrinks)
+// Use 30-min real workflow factor (Cmax_30/Cmax_120 = 49/220 = 0.2227 per FDA Pliaglis)
+let t_factor_30   = 0.2227
+let a_default     = 100.0
+let dose_v1       = m_cream * a_default * (lid_conc_v1/100.0) * 1000.0
+let cmax_v1_30    = k_lac_v1 * dose_v1 * t_factor_30
+let dose_lo       = m_cream * a_default * (lid_new_lo/100.0)  * 1000.0
+let cmax_lo_30    = k_lac_v1 * dose_lo * t_factor_30
+let dose_mid      = m_cream * a_default * (lid_new_mid/100.0) * 1000.0
+let cmax_mid_30   = k_lac_v1 * dose_mid * t_factor_30
+let dose_hi       = m_cream * a_default * (lid_new_hi/100.0)  * 1000.0
+let cmax_hi_30    = k_lac_v1 * dose_hi * t_factor_30
+
+println("[3] Cmax @ A=100 cm^2, 30-min apply, +epi:")
+println("  hexa-LAC v1 (7% lid)       : ", cmax_v1_30,  " ng/mL  (margin ", cns_warn/cmax_v1_30,  "x)")
+println("  N5 r_mg 0.15 (", lid_new_lo,  "% lid): ", cmax_lo_30,  " ng/mL  (margin ", cns_warn/cmax_lo_30,  "x)")
+println("  N5 r_mg 0.30 (", lid_new_mid, "% lid): ", cmax_mid_30, " ng/mL  (margin ", cns_warn/cmax_mid_30, "x)")
+println("  N5 r_mg 0.45 (", lid_new_hi,  "% lid): ", cmax_hi_30,  " ng/mL  (margin ", cns_warn/cmax_hi_30,  "x)")
+println("")
+
+// ============================================================
+// [4] A_max — large-area indication ceiling
+// ============================================================
+// A_max = C* / (k_LAC * m_cream * (lid_conc/100) * 1000 * t_factor_30)
+let amax_v1   = cns_warn / (k_lac_v1 * m_cream * (lid_conc_v1/100.0) * 1000.0 * t_factor_30)
+let amax_lo   = cns_warn / (k_lac_v1 * m_cream * (lid_new_lo/100.0)  * 1000.0 * t_factor_30)
+let amax_mid  = cns_warn / (k_lac_v1 * m_cream * (lid_new_mid/100.0) * 1000.0 * t_factor_30)
+let amax_hi   = cns_warn / (k_lac_v1 * m_cream * (lid_new_hi/100.0)  * 1000.0 * t_factor_30)
+
+println("[4] A_max (CNS-warn 5000 ng/mL, 30-min apply, +epi):")
+println("  hexa-LAC v1 (7% lid)       : ", amax_v1,  " cm^2")
+println("  N5 r_mg 0.15 (5.95% lid)   : ", amax_lo,  " cm^2  (+", 100.0*(amax_lo/amax_v1-1.0),  " %)")
+println("  N5 r_mg 0.30 (4.90% lid)   : ", amax_mid, " cm^2  (+", 100.0*(amax_mid/amax_v1-1.0), " %)")
+println("  N5 r_mg 0.45 (3.85% lid)   : ", amax_hi,  " cm^2  (+", 100.0*(amax_hi/amax_v1-1.0),  " %)")
+println("")
+
+// ============================================================
+// [5] LARGE-area indication test: tattoo creation 500 cm^2
+// ============================================================
+let a_big = 500.0
+let dose_v1_big   = m_cream * a_big * (lid_conc_v1/100.0) * 1000.0
+let cmax_v1_big   = k_lac_v1 * dose_v1_big * t_factor_30
+let dose_mid_big  = m_cream * a_big * (lid_new_mid/100.0) * 1000.0
+let cmax_mid_big  = k_lac_v1 * dose_mid_big * t_factor_30
+
+println("[5] tattoo-creation @ A=500 cm^2 (full arm sleeve / back panel):")
+println("  hexa-LAC v1 (7%)           : ", cmax_v1_big,  " ng/mL (margin ", cns_warn/cmax_v1_big, "x)")
+println("  N5 r_mg 0.30 (4.90%)       : ", cmax_mid_big, " ng/mL (margin ", cns_warn/cmax_mid_big, "x)")
+println("  --> N5 central removes the 400 cm^2 Pliaglis-eq cap by ~40% headroom")
+println("")
+
+// ============================================================
+// [6] practical OTC downscale (safer SKU)
+// ============================================================
+// OTC variant goal: replace high-conc lido (Rx) with 2.5% lido + Mg.
+// With r_mg=0.30, MEC_combo=0.35%; depth-needed-lid 0.35/0.0713 = 4.91%
+// 2.5% lido + Mg cannot hit full block at 200um, but reaches analgesia (still useful pre-procedure)
+let lid_otc  = 2.5
+let c200_otc = lid_otc * depth_factor_v1
+let mec_combo_mid = mec_lid_alone * (1.0 - r_mg_mid)
+println("[6] OTC downscale check (2.5% lid + Mg, r_mg=0.30):")
+println("  C(200um) OTC     : ", c200_otc, " %")
+println("  MEC_combo target : ", mec_combo_mid, " %")
+println("  ratio C/MEC      : ", c200_otc/mec_combo_mid, " x")
+println("  --> ", c200_otc/mec_combo_mid, "x of MEC -- analgesia / weak block (vaccine, blood-draw OK; tattoo NO)")
+println("")
+
+println("=== verdict: N5 central (r_mg=0.30) expands A_max by ~43% ===")
+println("=== honest gap: r_mg directly measured for topical Mg+lido in human SC = ABSENT ===")
+println("=== gap-closure path: Phase 1 small Franz-cell or volunteer ED50 shift study ===")
