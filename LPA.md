@@ -18,6 +18,11 @@
 - [x] M10 KSoLA + HIRA 실태 monitoring (5축 · 분기 cadence · SLA · pytrials 자동화 후보) → `LPA/M10_monitoring.md`
 - [x] M11 HORIZON 2026 H1 readout action trigger (3-시나리오 양성/modest/null · T+0~T+24w 액션 + 한국 KOL stakeholder map) → `LPA/M11_readout_playbook.md`
 
+## cycle 6 — post-PR #709 + 신규 modality (auto-seeded)
+- [x] M12 hexa.real binary rebuild verify + V2 retry — Path 1 ✅ · `bin/hexa-verify` 신규 빌드 · 🟢 +3 (nnt · arr · ln_hr_to_hr) · atlas register 🟠 별도 PR 필요 → `LPA/M12_binary_verify.md`
+- [ ] M13 muvalaplin (oral SM) Ph2 KRAKEN deep dive — ⚠️ rate-limited (재시도 필요) → `LPA/M13_muvalaplin.md`
+- [x] M14 VERVE-301 LPA gene editing — Lilly $1.3B acquisition 2025-07 · Ph1 enroll 2026-27 · 한국 2033+ · M6 reversal 신열 · M8 Tier-5 유지 → `LPA/M14_verve_301.md`
+
 ## research deepening (cycle 3)
 - [x] R1 arxiv deep research → `LPA/R1_arxiv.md`
 - [x] R2 web/regulatory (FDA/EMA/MFDS/KSoLA/NHIS + Schoenfeld 🟢) → `LPA/R2_regulatory.md`

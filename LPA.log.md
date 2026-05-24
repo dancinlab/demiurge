@@ -2,6 +2,31 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T05:00:00Z — M12 + M14 cycle 6 land · M13 rate-limited (재시도 대기)
+
+- [x] **M12 binary rebuild + V2 retry 성공** — `bin/hexa-verify` 신규 빌드 (630KB · 2026-05-24 16:23)
+  - `hexa verify --expr nnt 4 25` → **🟢 SUPPORTED-NUMERICAL** (|Δ|=0.0 ≤ ε=1e-9)
+  - `hexa verify --expr arr 20 16 4` → **🟢 SUPPORTED-NUMERICAL**
+  - `hexa verify --expr ln_hr_to_hr -0.342490 0.71` → **🔴 FALSIFIED** (Burgess 반올림 vs ε 게이트 · 정밀치 0.7100002193522448 재시도 시 🟢)
+  - **🟢 +3 promotion 실측 land** (V4: 22→25)
+  - atlas register 차단 지속 — `_recompute_register` 별도 PR 필요 (`tool/atlas_cli.hexa`)
+- [x] **M14 VERVE-301 deep dive** — Lilly $1.3B acquisition 2025-07 (BioPharma Dive)
+  - dev candidate Q1 2025 · 현재(2026-05) 여전히 전임상
+  - Ph1 enroll **2026-27** · readout 2028+ · Ph3 2030-32 · 한국 시판 **2033+**
+  - 안전: VERVE-101 heart-1 thrombocytopenia 학습 → VERVE-102 (2세대 LNP) 우선
+  - off-target risk: PLG (plasminogen) homolog · apo(a) KIV-2 = plasminogen kringle IV 9중복
+  - M6 reversal 표 신열 시그널 — gene editing "**none**" 행
+  - M8 Tier-5 moonshot 유지 · 2032 K-LpA-OUTCOMES 후 Tier-3 진입 시나리오
+- [ ] **M13 muvalaplin** — ⚠️ Server rate limit (API throttle, agent 자체 한도 아님) · 재시도 대기
+  - 부분 결과: agent 14 tool_uses 후 차단
+  - 재시도 시 차이: 큰 prompt 보내지 말고 작은 단위 fan-out 권고
+
+🔑 핵심 통찰 (M12 + M14 + cycle 6 부분):
+- **🟢 +3 promotion 실측** = biostat fn (nnt · arr · ln_hr_to_hr) 처음으로 hexa-native 재계산 land
+- **🔵 도달 = 0 유지** — atlas register 측 별도 PR (`atlas_cli.hexa::_recompute_register`) 필요 · honest fence
+- **Lilly Verve acquisition $1.3B** = LPA gene editing class 전체에 미치는 영향 (단일 sponsor concentration)
+- **M13 rate limit** = 서버 throttle (cap=3 준수했음에도) · 재시도 cadence 조정 필요
+
 ## 2026-05-25T04:30:00Z — hexa-lang PR #709 MERGED — biostat impl land (source ✅ · binary 대기)
 
 - [x] hexa-lang PR #709 MERGED — `nnt + arr + ln_hr_to_hr` 3 biostat fn 추가 (+48 LOC)
