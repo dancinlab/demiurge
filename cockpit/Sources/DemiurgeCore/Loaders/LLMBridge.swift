@@ -135,9 +135,15 @@ public enum LLMBridge {
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             let dt = String(format: "%.1fs", Date().timeIntervalSince(start))
             if proc.terminationStatus != 0 {
+                // Surface the CLI's actual stderr/stdout snippet so the user
+                // sees WHY it failed (auth · network · syntax — not just exit
+                // code). Truncated to keep the modal's status line readable.
+                let snippet = out.isEmpty
+                    ? "(no output)"
+                    : String(out.prefix(240)).replacingOccurrences(of: "\n", with: " ⏎ ")
                 return LLMReply(
                     text: out, ok: false,
-                    detail: "\(provider.id) · cli · exit \(proc.terminationStatus) — `\(exe)` 설치/PATH 확인")
+                    detail: "\(provider.id) · cli · exit \(proc.terminationStatus) — \(snippet)")
             }
             if out.isEmpty {
                 return LLMReply(text: "", ok: false,
