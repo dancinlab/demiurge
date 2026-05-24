@@ -97,15 +97,33 @@ verify --expr sigma(6)=12
 ```
 현재 🔵 = 1 (sanity)
            ↓
-    hexa-lang PR #665 merge
-    (calculator 확장: ivw · schoenfeld · binary_sample · nnt · arr_to_nnt)
+    [✅ DONE] hexa-lang PR #665 merge (note · 2026-05-23)
+    [✅ DONE] hexa-lang PR #709 merge (impl · 2026-05-25 · +48 LOC)
+              nnt · arr · ln_hr_to_hr → _is_float_fn + _recompute_float dispatch
            ↓
-🔵 = 1 → 6+ (LPA 단독, IVW + Schoenfeld + sample size + NNT 직접 등록)
+    [⏳ PENDING] hexa.real binary rebuild via CI
+              source = ✅ landed (origin/main + local install · merge conflict 해소)
+              binary = pre-built 2026-05-23, PR #709 미포함 — CI rebuild 대기
+           ↓
+🔵 = 1 → 6+ (binary rebuild 후 즉시 promotion 가능)
            ↓
     cross-domain unblock (ISR + DAPTPGX + HERPES + NOREFLOW 동시)
            ↓
 🔵 cross-domain 누적 50-90건 (각 도메인 5-15건)
 ```
+
+### Source vs Binary 분리 (2026-05-25 현재)
+
+| 컴포넌트 | 상태 | 위치 |
+|---|---|---|
+| 🟢 source `_nnt` / `_arr` / `_ln_hr_to_hr` fn def | ✅ landed | `tool/verify_cli.hexa` L838-857 |
+| 🟢 source `_is_float_fn` 등록 | ✅ landed | `tool/verify_cli.hexa` L1108 |
+| 🟢 source `_recompute_float` dispatch | ✅ landed | `tool/verify_cli.hexa` L1050+ |
+| ⏳ install file (`~/.hx/bin/tool/verify_cli.hexa`) | ✅ sync · merge conflict 해소 | 동일 layout |
+| ⏳ `hexa.real` binary | ⚠️ pre-built 2026-05-23 19:10 (PR #709 이전) | `~/.hx/bin/hxv2` or `hexa.real` |
+| **실측 verdict (M)** | 🟠 INSUFFICIENT (binary 구식) | `hexa verify --expr nnt 4 25` |
+
+→ **honest fence**: source 완전, binary rebuild 시점만 남음.
 
 ## verify rubric (V4 본 ledger)
 
