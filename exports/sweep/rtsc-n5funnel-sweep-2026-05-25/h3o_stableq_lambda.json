@@ -1,0 +1,113 @@
+{
+  "schema": "rtsc-stableq-lambda/0.1.0",
+  "batch_id": "rtsc-n5funnel-sweep-2026-05-25",
+  "candidate_id": "h3o",
+  "stamp": "2026-05-25T08:20Z",
+  "gap_ref": "/gap h3o priority #2 — imaginary q 의 λ_BZ 오염 측정",
+  "kind": "local-parse + verify (no pod rent · ph.out DONE-already)",
+  "input": {
+    "ph_out": "~/etc/rtsc-results/h3o/ph.out (QE ph.x electron_phonon='simple', 466KB)",
+    "result_txt": "~/etc/rtsc-results/h3o/result.txt (lam_BZ=2.479 @ broad 0.020, 16/16 q parsed)",
+    "weights": [4, 12, 12, 12, 12, 12, 8, 8, 12, 12, 12, 8, 12, 8, 12, 4],
+    "Wsum": 160,
+    "broad_Ry": 0.020,
+    "nq": 16
+  },
+  "imaginary_q_census": {
+    "fully_stable_q_count": 0,
+    "fully_stable_q_total": 16,
+    "note": "전 16 q-point 모두 imaginary mode 보유 (Γ 단독 −682cm⁻¹ 가설보다 훨씬 심각). q별 imaginary mode 개수 + min freq(cm⁻¹):",
+    "per_q": [
+      {"q": 1,  "w": 4,  "nimag": 6, "min_freq_cm": -682.0,  "note": "Γ point (0,0,0)"},
+      {"q": 2,  "w": 12, "nimag": 3, "min_freq_cm": -882.6},
+      {"q": 3,  "w": 12, "nimag": 3, "min_freq_cm": -855.1},
+      {"q": 4,  "w": 12, "nimag": 4, "min_freq_cm": -512.3},
+      {"q": 5,  "w": 12, "nimag": 3, "min_freq_cm": -886.8},
+      {"q": 6,  "w": 12, "nimag": 3, "min_freq_cm": -970.4},
+      {"q": 7,  "w": 8,  "nimag": 3, "min_freq_cm": -1133.1, "note": "가장 깊은 imaginary"},
+      {"q": 8,  "w": 8,  "nimag": 3, "min_freq_cm": -593.7},
+      {"q": 9,  "w": 12, "nimag": 3, "min_freq_cm": -798.2},
+      {"q": 10, "w": 12, "nimag": 3, "min_freq_cm": -1004.6},
+      {"q": 11, "w": 12, "nimag": 3, "min_freq_cm": -943.3},
+      {"q": 12, "w": 8,  "nimag": 3, "min_freq_cm": -1077.0},
+      {"q": 13, "w": 12, "nimag": 4, "min_freq_cm": -1043.1},
+      {"q": 14, "w": 8,  "nimag": 3, "min_freq_cm": -589.7},
+      {"q": 15, "w": 12, "nimag": 3, "min_freq_cm": -873.3},
+      {"q": 16, "w": 4,  "nimag": 3, "min_freq_cm": -630.3}
+    ],
+    "interpretation_kr": "구조가 BZ 전역에서 동역학적 불안정 — Γ 의 −682cm⁻¹ 단일 mode 가 아니라 16/16 q 모두 imaginary mode 보유 (3~6개씩, 최저 −1133cm⁻¹). 이는 harmonic level 에서 h3o Im-3m 가 saddle point 임을 뜻함."
+  },
+  "lambda_reconstruction": {
+    "method_kr": "ph.out 의 q별·mode별 lambda(n) 값(broad 0.020 Ry block)을 직접 파싱하여 weighted BZ 적분 재현. λ_BZ = Σ_q w_q Σ_ν λ(q,ν) / Σ_q w_q.",
+    "key_discovery_kr": "QE electron_phonon='simple' 은 imaginary mode(ω²<0)에 NEGATIVE lambda 를 출력 (unphysical garbage). 두 적분 방식:",
+    "variant_A_stable_mode_only": {
+      "rule": "ω > +1 cm⁻¹ 인 real mode 의 λ 만 합산 (imaginary mode λ 제외)",
+      "lam_BZ": 2.47909,
+      "matches_result_txt": 2.479,
+      "crosscheck_broad_0.015": {"recomputed": 2.72949, "result_txt": 2.729, "match": true},
+      "verdict_kr": "★ result.txt 의 lam_BZ=2.479 가 이미 stable-mode-only 값임 — 원본 parser 가 imaginary-mode λ 를 이미 제외함."
+    },
+    "variant_B_all_mode_full": {
+      "rule": "12 mode 전부(imaginary 포함) λ 합산",
+      "lam_BZ": -0.31771,
+      "interpretation_kr": "imaginary mode 의 음의 λ 포함 시 BZ λ = −0.318 (unphysical). 이것이 '오염된' 값이며, result.txt 는 이를 채택하지 않음."
+    },
+    "variant_C_strict_stable_q_only": {
+      "rule": "imaginary mode 가 하나라도 있는 q-point 를 통째로 제외 (gap 이 가정한 'stable-q-only')",
+      "stable_q_count": 0,
+      "lam_BZ": 0.0,
+      "interpretation_kr": "16/16 q 모두 imaginary mode 보유 → 제외 시 남는 q 0개 → λ=0. harmonic level 에서 stable-q-only 정의로는 superconductivity 0."
+    }
+  },
+  "contamination_measure": {
+    "definition_kr": "오염도 = (full_all_mode − stable_mode) / |reference|",
+    "mode_level_contamination_pct": 0.0,
+    "mode_level_note_kr": "result.txt 2.479 = stable-mode-only 와 동일 → mode-level 오염 = 0%. gap #2 가설(2.479 가 imaginary q 로 오염)은 FALSIFIED — 이미 제외된 상태였음.",
+    "if_naively_summed_all_modes": {
+      "lam_full": -0.31771,
+      "delta_vs_stable": -2.79680,
+      "note_kr": "만약 imaginary mode λ 를 안 뺐다면 λ=−0.318 (무의미). result.txt 는 이 함정을 이미 회피함."
+    },
+    "q_level_contamination_pct": 100.0,
+    "q_level_note_kr": "16/16 q 가 imaginary mode 를 가짐 → strict stable-q 정의로는 100% q 가 오염 → λ=0."
+  },
+  "tc_bounds": {
+    "full_stable_mode": {
+      "lam_BZ": 2.479,
+      "omega_log_K": 1096.6,
+      "mustar": 0.10,
+      "Tc_AD_K": 179.779,
+      "source": "hexa verify --expr allen_dynes_tc 2.479 1096.6 0.10 → calc=179.779"
+    },
+    "strict_stable_q_lower_bound": {
+      "lam_BZ": 0.0,
+      "Tc_AD_K": 0.0,
+      "note_kr": "λ=0 ≤ μ*=0.10 → Allen-Dynes Tc=0K. (hexa verify allen_dynes_tc 0.0 … 는 계산기 시스템에 λ=0 경로 없음 → 🟠 INSUFFICIENT 반환; 해석적으로 λ≤μ* 면 Tc=0 자명)."
+    },
+    "interpretation_kr": "Tc 하한 = 0K (strict stable-q-only, harmonic). full stable-mode Tc = 180K. 하지만 둘 다 harmonic 값이며 imaginary mode 존재로 인해 어느 쪽도 물리적으로 유효한 Tc 가 아님 — anharmonic 재정규화(SSCHA) 필수."
+  },
+  "hexa_verify_verbatim": {
+    "full_lam_2.479": "verify --expr allen_dynes_tc(2.479,1096.6,0.1)=179.78\n  calc   = 179.779  ≠ expected 179.78  (|Δ|=0.000775628 > ε=1e-9)\n  tier   = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)",
+    "full_lam_effective_tier": "🟢 SUPPORTED-NUMERICAL (|Δ|=0.0008K = 1-decimal round artifact; calc=179.779 = canonical)",
+    "strict_lam_0.0": "verify --expr allen_dynes_tc(0.0,1096.6,0.1)=0.0\n  tier   = 🟠 INSUFFICIENT\n  reason = float calculator system has NO path for 'allen_dynes_tc'\n  gap    = extend tool/verify_cli.hexa::_recompute_float (계산기시스템 개선 후보)"
+  },
+  "conclusion_kr": [
+    "gap #2 가설 REVERSED: λ_BZ=2.479 는 imaginary q 로 '오염'된 값이 아니라, 이미 imaginary-mode λ 를 제외한 stable-mode-only 값임 (broad 0.015·0.020 둘 다 재현 확인). mode-level 오염 = 0%.",
+    "더 심각한 발견: 16/16 q-point 전부 imaginary mode 보유 (3~6개씩, 최저 −1133cm⁻¹). Γ 단독 −682cm⁻¹ 가 아님 → BZ 전역 동역학 불안정.",
+    "strict stable-q-only (imaginary q 통째 제외) 정의로는 남는 q 0개 → λ=0 → Tc 하한 0K. q-level 오염 = 100%.",
+    "결론: harmonic Tc 180K(full) 와 0K(strict) 모두 물리적으로 무효 — h3o Im-3m 는 harmonic 안장점. SSCHA anharmonic 재정규화로 imaginary mode 안정화 후에만 진짜 Tc 산출 가능. 저비용 parse 로는 Tc 하한을 0K 로밖에 못 정함(임의의 stable substructure 미확정)."
+  ],
+  "breakthrough_paths": [
+    "h3o SSCHA — anharmonic 자유에너지 최소화로 imaginary mode 재정규화 후 dynamically-stable phonon 에서 λ·Tc 재계산 (gap #1 imaginary origin 과 연계).",
+    "h3o pressure scan — celldm 4.9(고압) 에서 BZ 전역 불안정 → 압력/부피 sweep 으로 동역학 안정 영역 탐색 (harmonic 안정 격자상수 우선 확보).",
+    "structure relaxation 재검토 — 16/16 q imaginary 는 Im-3m 자체가 잘못된 prototype 일 가능성 → 대칭 낮춘 distorted cell 로 재최적화."
+  ],
+  "constraints_honored": {
+    "local_parse_only": true,
+    "pod_rent": 0,
+    "no_hexa_sim_written": true,
+    "git_add_explicit_single_file": true
+  },
+  "absorbed": false,
+  "provisional": true
+}
