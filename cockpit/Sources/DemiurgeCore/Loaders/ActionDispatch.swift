@@ -364,30 +364,15 @@ public enum ActionDispatch {
     /// or run builds (g3 / @F f6). The cockpit wraps this in a
     /// Task.detached so the UI thread does not block; the CLI calls
     /// it directly (its main is already off the UI thread).
+    /// Delegates to the generic `LLMBridge` (D38) — the active provider +
+    /// mode come from the user's settings (claude / codex / gemini · CLI
+    /// or API). Name kept for call-site stability; no longer claude-only.
     public static func askClaude(prompt: String, context: String) -> String {
-        let guarded = "[demiurge — answer concisely in Korean, plain "
-            + "language; do NOT modify files, run builds, or invoke "
-            + "tools. Project context: \(context)] \(prompt)"
-        let proc = Process()
-        proc.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-        proc.arguments = ["claude", "-p", guarded]
-        let pipe = Pipe()
-        proc.standardOutput = pipe
-        proc.standardError = pipe
-        do {
-            try proc.run()
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            proc.waitUntilExit()
-            let out = (String(data: data, encoding: .utf8) ?? "")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            if out.isEmpty {
-                return "(claude returned no output; exit \(proc.terminationStatus))"
-            }
-            return out
-        } catch {
-            return "claude invocation failed: \(error.localizedDescription)\n"
-                + "(`claude` must be on PATH)"
-        }
+        let reply = LLMBridge.ask(prompt, context: context)
+        if reply.ok { return reply.text }
+        // Surface the honest failure reason (provider · mode · cause) so
+        // the user knows to fix the CLI install or API key in 설정.
+        return reply.text.isEmpty ? "⚠️ \(reply.detail)" : reply.text
     }
 
     // `runSSCBSynth()` + `runSSCBVerify()` — removed in D111 Phase C
