@@ -2,6 +2,106 @@
 
 Append-only history sister of `HERPES.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-24T22:35:00Z — V6 CRISPR off-target + bio toolchain 완료 (Path A · pool ubu-1 conda)
+
+- [x] Path A 선택 (Path B Vast.ai 불필요) · conda bio env install + GRCh38 download · wallclock ~110s · $0
+- [x] 5 spacer extraction — HSV-1 NC_001806.2 좌표 기반 first-NGG-rule (M5 §3 needs-check 상태 → coordinate-based 추출)
+- [x] cas-offinder against GRCh38 v44 + UCSC REST annotation
+- [x] ZERO MM≤2 hits across ALL 5 spacers — exceptional specificity baseline
+
+5-spacer 결과:
+| spacer | target | MM=3 hits | verdict |
+|---|---|---|---|
+| g1 | UL30 motif IV | 2 | 🟢 Low |
+| g2 | UL30 exon 1 | 1 | 🟢 Lowest |
+| g3 | UL19 capsid | 4 (BLOC1S3 CDS hit) | 🟡 Medium |
+| g4 | UL27 gB | 2 (**NEUROG2 CDS hit**) | 🔴 High — redesign 권고 |
+| g5 | LAT LAP1 | 4 (chr7 segdup ×3) | 🟡 Medium-Low |
+
+🔑 **권고 dual-guide pair: g1 + g2 (intra-UL30 ~1.5 kb excision)** — 둘 다 🟢 Low risk
+
+tier promotions:
+- V3.3 (off-target deferred) 🟠 → **🟢 RESOLVED**
+- V5.7 (off-target deferred) 🟠 → **🟢 RESOLVED**
+- M5 §7 framework 🟠 INSUFFICIENT → **🟢 SUPPORTED-NUMERICAL**
+
+- [x] 산출물 `HERPES/verify/V6_crispr_offtarget.md` (501 lines)
+
+side findings:
+- ubu-1 bio env **permanently retained** (~/miniforge3/envs/bio + ~/refgenomes/hg38.fa + hsv1.fa) · 다음 cycle 재사용 0 cost (~10s scan)
+- memory `reference_pool_cli_broken` "RESOLVED 2026-05-25" 부정확 — pool CLI **여전히 broken** with `arena_return ks/i undeclared` · `hexa cloud run` workaround used
+- PreToolUse hook "pod fire 감지" false-positive on LAN ubu-1 (not ephemeral pod) · hexa-lang inbox 후보
+- Bash 도구 load-escalated to remote (pool-route) caused local `wc -l` failure mid-session
+- UCSC REST API: returns `data[track_name]` not `data[chrom]` (gotcha)
+
+추가 follow-ups 제안 (defer):
+- V6.1 Doench 2016 on-target scoring via CRISPOR (gRNA 효율 차원)
+- V6.1' g4 UL27 redesign avoiding NEUROG2
+- V6.2 HSV-2 NC_001798.2 cross-strain scan
+- V6.3 GRCh38.p14 ALT contigs
+
+## 2026-05-24T22:18:00Z — M14 u_crit Jacobian bifurcation 완료 — **첫 🔴 FALSIFIED**
+
+- [x] §1 saddle-node 이론 — [f=0, ∂f/∂u=0] 동시 조건 + nondegeneracy
+- [x] §2 Jacobian Newton search on Hill h ∈ {1, 1.5, 2, 2.5, 3, 4, 6, 8}
+- [x] 🔴 **CRITICAL FINDING**: 1-D Hill h=2 에서 saddle-node **존재 X**
+  - max slope of g(u)=u²/(1+u²) at h=2 = 0.6495 < 1 → bistability impossible
+  - h_c ≈ **3.7174** (1-D Hill bistability threshold)
+- [x] §3 cascade gain-Hill model f = u_in - u + G·u^h/(1+u^h)
+  - at h=2: u_crit peaks at **0.1923** (G≈1.540) — M4 §5 spec 0.20 보다 약간 낮음
+  - M4 §5 spec 0.20은 **full 5-variable cascade ODE (§5.5.1) at h_eff ≈ 2.03**과 일치 (cascade composition · D→J→S→H→L serial Hill)
+- [x] **V5.3 proxy 0.31 → 🔴 FALSIFIED** — derivative-like root at u=0.5, not [f=0, df/du=0]
+- [x] §4 M11 cross-check — 5 representative grid points
+  - M11 `(P/P_base)²` scaling은 heuristic, not Jacobian
+  - 3/5 tested M11 points u_crit > 0.1923 ceiling → unreachable at h=2 → 요구 h_eff ∈ [2.03, 2.21]
+- [x] **M11 robustness conclusion 보존** — Arm S cycles ≤ 21.6 결과는 u_crit *ordering* in P_Me3 에 의존 (Jacobian preserves monotone)
+- [x] 산출물 `HERPES/M14_jacobian_bifurcation.md` (339 lines)
+
+🔑 핵심 verdict (HERPES 첫 🔴):
+- **V5.3 proxy method = 🔴 FALSIFIED (closed negative)** · 0.31 값은 결정적으로 틀림
+- **M4 §5 underlying physics 정상** — "simplified Hill" 표현이 부정확 (실제로는 cascade composition)
+- **권고 patch**: M4 §5 "simplified Hill" → "5-variable cascade ODE with effective h ≈ 2.03" 명시
+- M11 robustness 보존 → spine 결론 영향 없음
+
+다음: V6 (CRISPR off-target) — 백그라운드 진행 중. 또한 V4 final ledger에 🔴 1건 (V5.3 proxy) 반영 필요.
+
+dispatch surprise: pool CLI **다시 broken** (compile error) · `hexa cloud` 도 현재 hexa CLI 빌드에 없음 · agent는 `hexa_real cloud` (legacy binary) 사용 — memory `reference_pool_cli_broken` RESOLVED 상태가 실제로는 변동성 있음.
+
+## 2026-05-24T22:05:00Z — M13 M5 §6 heavy-tail 보정 완료 · M15 foreground
+
+### M13 (cycle 4 part 1) — 🔵 closed-form 도출 + 🔵-double-witness
+- [x] 🔵 SUPPORTED-FORMAL closed-form: **R = N · exp(μ + σ²/2) · (1 - εφ)**
+  - N=1250 deep-latent · μ=σ=2.5 · εφ=0.9801
+  - 계산: R = 6897.15 (closed-form) vs MC 6891.38 on ubu-1 seed=2026 — **0.084% match**
+- [x] 🟢 V5.4 MC (seed=42) vs M13 MC (seed=2026) — 0.2% agree (cross-seed reproducible)
+- [x] **root cause 식별** — M5 §6 under-count 원인은 lognormal mean (E[K]=277) vs median (50) 분리 · 2.77× ratio = mean/median 직접 비율
+- [x] (NOT variance correction · 내 prompt의 1+CV²·(εφ)²/(1-εφ)² 형태는 binomial-iid model에 안 맞음)
+- [x] **새 Arm S realistic cycles: 13-18** (vs old 10-15) · 1.7-2.5y (vs 1.2-1.8y)
+  - log₂(6906/1) = 12.75 (Δ +1.46 over 11.29)
+  - p_cycle=0.40 realistic: 17.30 cycles (Δ +1.99)
+  - MC median=12, p95=15 for halving model
+- [x] M12 F-I-4 falsifier (>25 cycles) — 7-12 cycle margin 유지 · falsifier NOT invalidated
+- [x] V5.4 tier promotion: 🟢 → **🔵-double-witness-with-correction**
+- [x] 산출물 `HERPES/M13_heavytail_correction.md` (452 lines)
+- [x] 8 cascading patches identified (M5/M6/M10/M11/M12 · 다음 round deferred):
+  - M5_crispr.md:290-298 + §6.6 (corrected row · additive)
+  - M6_shock.md:303-316 §8.2 (cycle table additive)
+  - M10:153 §3.3 "10-15"→"13-18" · :485-492 §11.4 · :502-515 §11.6 ASCII · §11.9 duration
+  - M11:170-180 §4.3 footnote
+  - M12:115-123 §2.4 F-I-4 add M13 §3 ref
+- [x] dispatch surprise: `hexa cloud` not in this hexa CLI build · fell back to scp+ssh ubu-1 (pool-route hook routed ok · 5s wallclock)
+
+### M15 (foreground) — M10 §5.5 falsifier cross-link 삽입 완료
+- [x] M10_clinical_protocol.md §5.5 추가 (after §5.3 framework · before §6) — 1-paragraph M12 11 falsifier 요약 + Popper "Successfully not-falsified" framing
+- [x] HERPES.md M15 milestone closed
+
+🔑 핵심 verdict (M13):
+- M5 §6 deterministic은 magnitude error · directional 정확 → **M5 alone insufficient strengthened**, NOT falsified
+- closed-form vs MC match 0.084% → spine **🔵 promoted** (not 🟢) via formal identity
+- Arm S 13-18 cycles realistic · M12 falsifier threshold 25 여전히 안전 margin
+
+다음: M14 (u_crit Jacobian) · V6 (CRISPR off-target) — 백그라운드 진행 중.
+
 ## 2026-05-24T21:50:00Z — M12 Pre-declared falsifier protocol 완료
 
 - [x] §1 falsifier vs validator distinction (Popper 표준 primer)

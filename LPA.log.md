@@ -2,6 +2,30 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T06:00:00Z — M13 muvalaplin 재시도 land — LPA cycle 6 100% closure
+
+- [x] M13 muvalaplin Ph2 KRAKEN deep dive 완료 (226 lines · slight over budget 정당)
+  - **KRAKEN Ph2** (Nissen 2025 *JAMA* 333:222-31 · NCT05563246 · n=233 · 5 countries · **NO Korea site**)
+  - 240 mg QD: **-85.8% intact / -68.9% conventional** (assay choice = ~17pp gap)
+  - intact assay primary reason: pre-secretory mechanism → free apo(a) circulating
+  - Safety: GI mild · ALT >3×ULN 4 vs 1 (non-significant)
+- [x] **Ph3 MOVE-Lp(a)** live (NCT07157774 recruiting 2026-02 status · MACE primary · readout 2029-30)
+  - pelacarsen HORIZON (2026 H1) / olpasiran OCEAN (2027 H1) 보다 2-3년 뒤
+- [x] **3-axis lattice unique 발견** — muvalaplin = pre-secretory + stoichiometric (siRNA catalytic-post · ASO stoichiometric-post)
+- [x] M8 ranking 갱신 시그널 — Tier-3 wild-card → Tier-2 후보 (Ph3 양성 시) · HORIZON null fallback graduation
+- [x] 한국 adherence advantage — 경구 QD vs SC Q4W/Q12W/Q24W (65+ population)
+- [x] NHIS gap 개선 — ~$2-4K/yr oral SM est. → V3c $17.8/yr break-even 대비 **100-200× gap** (siRNA 400-650× 대비 2-3× 개선)
+- [x] verify rubric — 7×🟡 (Ph1/2/3-recruiting/assay) · 2×🟠 (Ph3 readout · 한국 site) · 1×🟢 (pricing 산술)
+- [x] rate-limit safety 준수 — 2 WebSearch + 2 Read + 6 Bash/Edit (총 14 tool_uses · 이전 같은 한도 내 완료)
+- [x] LPA cycle 6 = **100% closure** (M12 + M13 + M14 all land · M1-M14 + R1-R3 + V1-V4 모두 main)
+
+🔑 핵심 통찰 (M13 + cycle 6 closure):
+- **muvalaplin = 3-axis lattice 유일점** (pre-secretory stoichiometric) — modality 공간 정리 가능
+- **Ph3 readout 2029-30** = pelacarsen/olpasiran보다 2-3년 뒤 → siRNA 출시 후 modality 확장 후보
+- **HORIZON scenario C (pelacarsen null) → muvalaplin graduate** mainline (정합)
+- **한국 site 부재** = KAREN/MOVE-Lp(a) Ph3 한국 참여 협상 후보 (M9 K-LpA-OUTCOMES와 시너지)
+- LPA 26/26 milestone = M1-M14 (14) + R1-R3 (3) + V1-V4 (6, V3a/b/c 포함) + S1-S3 (2 추가)
+
 ## 2026-05-25T05:30:00Z — PR #736 MERGED + V4 tier-rubric 정정 (🟢 ceiling 명시)
 
 - [x] hexa-lang **PR #732/736 MERGED** — atlas_cli biostat register (L2 wall) 해소

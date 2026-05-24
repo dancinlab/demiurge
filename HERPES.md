@@ -16,6 +16,9 @@
 - [x] sterilizing cure 임상 엔드포인트 정의 + 검증 프로토콜 → `HERPES/M10_clinical_protocol.md`
 - [x] M11 Müller-Ott rate constant 5-fold sensitivity sweep → `HERPES/M11_sensitivity_sweep.md` (25/25 grid · Arm S cycles [18.94, 21.58] · worst 1.09× baseline · F7 weak-link resolved-deferred · dosing 유지)
 - [x] M12 Pre-declared falsifier protocol → `HERPES/M12_falsifier_protocol.md` (11 falsifier · Tier I 5 + II 3 + III 3 · 3 standalone-decisive: F-II-7 post-mortem TG · F-III-10 NHP AAV · F-I-2 LAT-miRNA blood)
+- [x] M13 M5 §6 heavy-tail residual 보정 → `HERPES/M13_heavytail_correction.md` (🔵 closed-form R = N·exp(μ+σ²/2)·(1-εφ) = 6897 · MC 6891 (0.084%) · root cause = lognormal mean-vs-median 분리 · 새 Arm S 13-18 cycles · M12 F-I-4 >25 falsifier 여전히 7-12 cycle margin)
+- [x] M14 u_crit Jacobian-based bifurcation → `HERPES/M14_jacobian_bifurcation.md` (🔴 V5.3 proxy 0.31 FALSIFIED · 1-D Hill h=2 NO saddle-node · h_c ≈ 3.72 · M4 §5 spec 0.20은 cascade h_eff ≈ 2.03와 일치 · M11 robustness 보존)
+- [x] M15 M10 §5.5 falsifier cross-link summary → updated `HERPES/M10_clinical_protocol.md` §5.5 (1-paragraph · M12 11 falsifier 요약 + Popper standard frame)
 
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
 
@@ -24,3 +27,4 @@
 - [x] V3 🟢 push → `HERPES/verify/V3_numerical_recompute.md` (2/4 🟢: LAT Markov on ubu-1 + 3-comp PK on ubu-2 · 2/4 🟠: cas-offinder/GRCh38 + bio toolchain 미설치)
 - [x] V4 final tier ledger → `HERPES/verify/V4_tier_ledger.md` (25🔵 / 44🟢 / 144🟡 / 35🟠 / 0🔴 + 5⚪ · 26 compute-promotable · 9 wet-lab essential)
 - [x] V5 cross-tool 2nd-witness round → `HERPES/verify/V5_cross_tool.md` (5/5 sub-jobs · 4/5 🟢 double-witness · 1/5 🟡 partial V5.3 · 2 deferred V5.6/V5.7 tooling)
+- [x] V6 CRISPR off-target + bio toolchain → `HERPES/verify/V6_crispr_offtarget.md` (5 spacer · ZERO MM≤2 hits 모두 · g1+g2 UL30 dual-guide 권고 🟢 · g4 NEUROG2 redesign 권고 🔴 · M5 §7 framework 🟠→🟢 promoted)

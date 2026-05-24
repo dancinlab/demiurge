@@ -252,6 +252,10 @@ hierarchy: 4/4 PASS → "sterilizing cure" · 3/4 → "deep functional" · ≤2 
                     durability follow-up           Arm F 전환
 ```
 
+### 5.5 Falsifier protocol (Popper 표준) — cross-link
+
+§5의 4-surrogate AND-gate는 "sterilizing cure 달성"의 **SUCCESS condition**이지 H_central ("Arm S가 ≥80% eligible cohort에서 N_residual ≤ 1 달성")의 **REJECT condition**이 아니다. Popper falsifiability 표준 (1934) 충족을 위해 별도의 11 pre-declared falsifier가 `HERPES/M12_falsifier_protocol.md`에 정식화되어 있다 — Tier I 5 empirical (≥6/12 swab POS · ≥3/4 LAT-miRNA POS · triple-positive recurrence · median cycle >25 · shedding rebound ≥2×), Tier II 3 wet-lab (¹⁸F-FIAU PET ≥50% residual · post-mortem TG ImmunoFISH ≥10³ · KDM4 activator chemistry 5-year failure), Tier III 3 systemic (M11 u_crit sweep >10× · NHP AAV transduction <20% · BNT163/mRNA-1608 CTL <5×). OR-gate logic — single falsifier fire (§7 artifact filter PASS 후) = H_central reject. 모든 falsifier non-fire 시 H_central status = "Successfully not-falsified" (Popper corroborated, NOT proved). Stop rule (§8.3 DSMB)와는 orthogonal 축이며 V4 §10 9 wet-lab essential 중 4 항목이 falsifier 역할 dual-mark.
+
 ---
 
 ## 6. Endpoint definitions — functional (Arm F 1차)
