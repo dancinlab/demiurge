@@ -2,6 +2,17 @@
 
 Append-only history sister of `CLI+COCKPIT.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T14:40:00Z — M16 ✅ 완료 (atlas-lookup 추가 · read-only owner-gated)
+
+- [x] **atlas-lookup ✅ commit 786bd18** — `demiurge atlas lookup/stats/hash/dump`→`hexa atlas` VERBATIM (HexaBridge 재사용) · write(register/append-witness/pr)=owner op 사장실 M20 거부
+- [x] **M16 완료** — verify(ca81e73) + atlas-lookup(786bd18) 둘 다 hexa stdlib hx-dependency 호출 · external read-only · 빌드 green
+- [x] **실증** — `atlas hash` → hexa 16082 nodes + hash VERBATIM (exit 0) · `atlas register foo` → owner 거부 (exit 2)
+- [x] **audit ❌ 3→1** — product 8✅·3🔶·1❌ (남은 ❌ = compute-backend M17 · 🔶 = verb-nav·analyze-loop·synthesize-run M15 합성 실행)
+- [x] M0_operate.md §3 atlas-lookup row + audit-count 갱신 · M16 milestone [x]
+- [ ] ⏳ M17 compute-backend (내 호스트 하드코딩 제거 · 로컬 기본 + 사용자 remote) → 마지막 ❌ · M15 7-verb 합성 실행 · P3 cockpit GUI
+
+🔑 핵심: M16 완결 — verify·atlas 둘 다 `HexaBridge` 단일 통로로 hexa SSOT 호출(VERBATIM). external=read-only, write=owner 사장실 격리. audit가 8/12 ✅ — 외부 운영 완결까지 ❌ 1개(compute-backend) + 🔶 3개(M15 합성)만 남음.
+
 ## 2026-05-25T14:20:00Z — M16 verify를 hexa stdlib 커널로 (hx 의존성 호출 · verdict VERBATIM)
 
 - [x] **M16 verify ✅ commit ca81e73** — `HexaBridge.swift`(hexa leaf-call 단일 spawn 지점) + `demiurge verify --expr/--fence/rubric`→`hexa verify` VERBATIM (@D g5) · 빌드 green

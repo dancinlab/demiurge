@@ -64,7 +64,7 @@ demiurge <op>  /  cockpit 패널  ──▶  OperationDispatch.run(op_id, args) 
 | **verify** | 🛒 | verify | **hexa** | ✅ `verify --expr/--fence/rubric`→hexa VERBATIM (M16 ✅) | CLI+GUI | **M16** |
 | record-view | 🛒 | verify | swift | ✅ CLI+GUI | CLI+GUI | M15 |
 | export | 🛒 | handoff | swift | ✅ CLI | CLI+GUI | M15 |
-| atlas-lookup | 🛒 | verify | hexa | ❌ | CLI+GUI | M16 |
+| atlas-lookup | 🛒 | verify | hexa | ✅ `atlas lookup/stats/hash/dump`→hexa (M16 ✅) | CLI+GUI | M16 |
 | compute-backend | 🛒 | synthesize | substrate | ❌ (내 호스트 하드코딩) | CLI+GUI | **M17** |
 | pool-route | 🔒 | synthesize | substrate | CLI(외부도구) | owner-mode | M20 |
 | inbox-handoff | 🔒 | handoff | substrate | raw cp/git | owner-mode | M20 |
@@ -72,7 +72,7 @@ demiurge <op>  /  cockpit 패널  ──▶  OperationDispatch.run(op_id, args) 
 | governance | 🔒 | (all) | swift | 스킬/훅 | owner-mode | M20 |
 | owner-domain | 🔒 | specify | swift | /domain 스킬 | owner-mode | M20 |
 
-현재 audit (`demiurge operate audit`): product **7✅ · 3🔶 · 2❌** (of 12) · owner 5🔒. (M16 verify ✅ → ❌ 3→2; 잔여 atlas-lookup M16 · compute-backend M17)
+현재 audit (`demiurge operate audit`): product **8✅ · 3🔶 · 1❌** (of 12) · owner 5🔒. (M16 verify+atlas-lookup ✅ → ❌ 3→1; 잔여 ❌ = compute-backend M17 · 🔶 = verb-nav·analyze·synthesize M15 합성 실행)
 
 ## 4. 배포 모델 (외부 사용자)
 
