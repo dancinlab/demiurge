@@ -110,12 +110,13 @@ method → 명령 매핑:
 - 공개 구조 fetch (staged → `ubu-1:~/ttr-m5/inputs`):
   - PDB ×5: 1V4B(173KB) · 4G2C(734KB) · 2D3Q(606KB) · 1KYA(1.45MB) · 1ATJ(1.63MB)
   - ligand ×5: cid_2169·14570·54670067 (3D SDF) · cid_2973(DFO)·643975(FMN) (2D → RDKit embed 필요)
-- hexa-cloud 빌드 (정식 루트) — `preflight`(LLM축) + dispatch(run/exec/copy/poll/watchdog) verb 확보
+- **rent 툴체인 이미 준비됨** (정정) — `/Users/ghost/bin/hexa-cloud` v0.2.1 (rent/down/list/status ✅, @D g8 호환) + `/Users/ghost/bin/vastai` (py3.12 venv). **반드시 절대경로 호출** (pool-route 훅이 Bash 를 load-balance → `~/bin` 은 mini 에만 존재). 정식루트 fresh 빌드는 loader gotcha 로 rent 누락 → 기존 prebuilt 사용.
 
 **막힘 ⛔ (사용자/입력 필요 — 자동화 불가)**
 - ⚠ **MP API key 없음** (`secret list` 무) → 산화물 CIF(CeO₂ mp-20194·Fe₂O₃·Cr₂O₃·TiO₂) 자동 다운로드 불가 → **NP 기반 8 cell(c01-c04·c09-c12) 입력 블록**. 해소: MP 키 등록 또는 수동 CIF 다운로드.
 - ⚠ **ubu-1 conda/mamba 없음** → ASE/Vina/docking 전 micromamba 설치 필요 (무료, 가능).
-- ⚠ **rent verb 부재** — hexa-cloud 에 provision(rent/up) 없음 → vast 렌트는 `vastai` CLI 직접 (설치됨 · `secret get vast.api_key`). dispatch 만 `hexa cloud run/copy-to` (@D g8).
 - 🔧 수동 comp-chem (전문 판단): CeO₂ NP carve · DyP Compound-I · FMN→FMNH⁻ · azo CHARMM36m 파라미터(CGenFF 로그인).
 
-⇒ 자동화 가능한 무료 prep 은 입력 수집·툴빌드까지 도달. **다음 진척의 게이트 = (1) MP 키, (2) 수동 cofactor 큐레이션** — 둘 다 사용자 입력 의존.
+**rent 인프라 ✅ (정정)** — `/Users/ghost/bin/hexa-cloud rent vast --gpu ... --image nvidia/cuda:12.4.1-devel-ubuntu22.04 --owner demiurge::m5` 로 즉시 가능 (절대경로). ⚠ 현재 vast 라이브 인스턴스 4개 과금 중 (RTSC 등 **타 작업** · 미접촉). rent 는 image 에 sshd 필수 (`nvidia/cuda:*-devel` 검증됨 · `miniconda3` 는 sshd 미기동).
+
+⇒ 자동화 가능한 무료 prep 은 **입력 수집·rent 인프라까지 완료**. **다음 진척의 게이트 = (1) MP 키 (산화물 8 cell), (2) 수동 cofactor 큐레이션, (3) ubu-1 micromamba (docking)** — infra 아닌 입력/전문판단 의존.
