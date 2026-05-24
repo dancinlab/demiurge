@@ -118,6 +118,12 @@ public enum LLMBridge {
         env["PATH"] = [Self.loginShellPath, staticPaths, appPath]
             .filter { !$0.isEmpty }.joined(separator: ":")
         proc.environment = env
+        // Close stdin — codex / claude / gemini print "Reading additional
+        // input from stdin..." and block reading when stdin isn't closed.
+        // In a GUI .app launch the parent's stdin is a launchd descriptor
+        // the child can't drain, so the CLI hangs / errors. /dev/null →
+        // immediate EOF so the providers proceed with the prompt argv only.
+        proc.standardInput = FileHandle.nullDevice
         let pipe = Pipe()
         proc.standardOutput = pipe
         proc.standardError = pipe
