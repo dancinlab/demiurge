@@ -1,0 +1,69 @@
+// TTR-LAC A1 — diffusional lag time across the stratum corneum (SC), first-principles.
+// Bottleneck of topical anesthesia onset = passive Fick diffusion across the SC barrier.
+//   Fickian lag time (transient solution, finite slab):  t_lag = h^2 / (6 D)
+//     h = SC diffusion-path thickness   [cm]   (SC ~10-20 um; tortuous lipid path can be larger)
+//     D = drug diffusivity in SC        [cm^2/s]  (lidocaine in SC ~1e-10; lipophiles 1e-9..1e-11)
+// Steady-state pseudo-flux only begins after ~t_lag; perceptible block needs several t_lag.
+// Depth falloff (quasi-steady linear gradient across SC, then dermis): C(z)/C_surf ~ 1 - z/L
+//   we report the surface-vehicle->free-nerve concentration drop to show epidermal vs dermal reach.
+// run: hexa run TTR-LAC/sim/a1_lagtime.hexa
+
+println("=== TTR-LAC A1 — SC permeation lag time + depth falloff (first-principles) ===")
+println("")
+println("model: t_lag = h^2/(6 D) ;  onset ~ 1..2 x t_lag (perceptible block)")
+println("")
+
+// ---- [1] lag time t_lag(h,D) over plausible SC thickness x diffusivity grid -----
+// units: h in cm (10 um = 10e-4 cm = 1.0e-3 cm), D in cm^2/s, t_lag -> seconds -> minutes
+println("[1] t_lag = h^2/(6D) in MINUTES (h in um, D in cm^2/s):")
+let h10 = 10.0e-4
+let h15 = 15.0e-4
+let h20 = 20.0e-4
+println("  D=1.0e-9  : h=10um ", h10*h10/(6.0*1.0e-9)/60.0, " h=15um ", h15*h15/(6.0*1.0e-9)/60.0, " h=20um ", h20*h20/(6.0*1.0e-9)/60.0)
+println("  D=1.0e-10 : h=10um ", h10*h10/(6.0*1.0e-10)/60.0, " h=15um ", h15*h15/(6.0*1.0e-10)/60.0, " h=20um ", h20*h20/(6.0*1.0e-10)/60.0)
+println("  D=1.0e-11 : h=10um ", h10*h10/(6.0*1.0e-11)/60.0, " h=15um ", h15*h15/(6.0*1.0e-11)/60.0, " h=20um ", h20*h20/(6.0*1.0e-11)/60.0)
+
+// ---- [2] central estimate: lidocaine-like D=1e-10, SC h=10um (geometric) -----------
+// SC geometric thickness ~10um; t_lag itself is the onset scale (slab fills toward
+// steady state with time-constant ~t_lag; perceptible block at ~1-2 t_lag).
+println("")
+println("[2] central estimate (lidocaine in SC, D=1e-10 cm^2/s, h=10um):")
+let tlag = h10*h10/(6.0*1.0e-10)
+println("  t_lag       = ", tlag/60.0, " min")
+println("  onset 1*tlag= ", 1.0*tlag/60.0, " min")
+println("  onset 2*tlag= ", 2.0*tlag/60.0, " min  <- matches clinical ~60min (EMLA no-occlusion)")
+
+// ---- [3] effect of occlusion / enhancer: hydration raises D (lipid fluidization) ---
+// occlusion hydrates SC ~2-3x effective D; enhancer can add more. onset = 2*t_lag.
+println("")
+println("[3] onset (=2*t_lag, h=10um) vs effective D (occlusion/enhancer raise D):")
+println("  D=0.5e-10 (dry)      : ", 2.0*(h10*h10/(6.0*0.5e-10))/60.0, " min")
+println("  D=1.0e-10 (baseline) : ", 2.0*(h10*h10/(6.0*1.0e-10))/60.0, " min")
+println("  D=3.0e-10 (occluded) : ", 2.0*(h10*h10/(6.0*3.0e-10))/60.0, " min")
+println("  D=1.0e-9  (enhancer) : ", 2.0*(h10*h10/(6.0*1.0e-9))/60.0, " min")
+
+// ---- [4] depth falloff: steady-state linear gradient, surface->target depth ---------
+// Quasi-steady: flux continuity gives ~linear C drop across each layer (D-weighted).
+// Model SC(0..15um) very-low-D barrier then viable epidermis+dermis higher-D.
+// Concentration ratio at depth z relative to vehicle surface (C_surf=1):
+//   across SC: steep drop set by partition K~ and the barrier; we use an effective
+//   exponential attenuation C(z)=C_surf*exp(-z/lambda), lambda = decay length.
+// lambda chosen so SC exit (15um) retains ~partition-limited fraction; report key depths.
+println("")
+println("[4] depth falloff C(z)/C_surf = exp(-z/lambda), lambda=40um (epidermal-weighted):")
+let lam = 40.0
+println("  z=15um  (SC exit)              : ", exp(-15.0/lam))
+println("  z=50um  (mid viable epidermis) : ", exp(-50.0/lam))
+println("  z=100um (dermo-epidermal jx)   : ", exp(-100.0/lam))
+println("  z=150um (upper dermis plexus)  : ", exp(-150.0/lam))
+println("  z=200um (dermal free endings)  : ", exp(-200.0/lam))
+
+// ---- [5] dermal-reach verdict: fraction of surface dose at the laser-pain depth -----
+println("")
+println("[5] dermal reach: C at 150-200um (laser-pain free endings) as % of surface:")
+println("  150um: ", 100.0*exp(-150.0/lam), " %")
+println("  200um: ", 100.0*exp(-200.0/lam), " %  <- <1%: anesthesia is epidermal-weighted, dermal-thin")
+
+println("")
+println("=== onset ~56min (2*t_lag, D=1e-10, h=10um); dermal free-ending reach <1% of surface ===")
+println("=== rate-limiting parameter = SC diffusivity D (t_lag ~ 1/D); occlusion/enhancer raise D ===")

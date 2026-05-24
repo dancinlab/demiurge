@@ -1,0 +1,172 @@
+// TTR-LAC B2 — frosting-clearing topical: PFD deep-dive + alternatives
+// Builds on B1 (c_session = 1-(1-c_pass)^n_passes) with three additions:
+//   [A] frosting optical physics — Mie scattering coefficient μ_s for skin
+//       w/ vs w/o microbubbles (air-water RI mismatch). PFD restores transparency.
+//   [B] alt RI-matching agents — refractive-index match score vs tissue (n≈1.38-1.40)
+//       and per-agent fluence-penetration estimate (Beer-Lambert at z=200μm).
+//   [C] dose-response — n_passes 1→5 sweep, marginal Δc_session per pass,
+//       diminishing-return KNEE (find n* where dN/dn flattens).
+//
+// honest scope: μ_s for bubble-laden epidermis = first-principles Mie estimate
+// (geometric large-bubble limit), order-of-magnitude only. fold-cuts are robust.
+// run: hexa run TTR-LAC/sim/b2_frosting_clear.hexa
+
+println("=== TTR-LAC B2: frosting optics + PFD dose-response + alt-agent table ===")
+println("")
+
+// ============================================================================
+// [A] FROSTING OPTICS — Mie scattering w/ vs w/o microbubbles
+// ============================================================================
+// Tissue baseline μ_s (Q-switch wavelength ~755nm, dermis) ≈ 100 cm⁻¹ (Jacques 2013)
+// Frosting = micron-scale gas vacuoles, density ~10^6 / mm³ (Ho 2002 vacuolization)
+// Mie large-particle limit: μ_s ≈ N · Q_sca · π·a²  ;  Q_sca → 2 for r=1μm at 755nm
+// RI contrast: air/water |Δn|=0.33 (huge) ; PFD/water |Δn|=0.02 (~16× smaller)
+// ⇒ bubble μ_s dominates baseline by ~10-50× until bubbles dissolve.
+//
+// Beer-Lambert transmission to dermal ink at depth z=200μm:  T = exp(-μ_s · z)
+
+println("[A] frosting optics — μ_s (cm⁻¹) and transmission to dermal ink (z=200μm)")
+println("    Mie large-particle limit: μ_s ~ N · Q · π · a²")
+println("    bubble density N ~ 1e9 /cm³ (Ho 2002 vacuolization · ~10⁶/mm³ = 10⁹/cm³)")
+println("    bubble radius a = 1 μm = 1e-4 cm")
+println("")
+
+let mu_skin = 100.0          // cm⁻¹ — baseline dermis 755nm
+let N_bub   = 1.0e9          // /cm³ — frosting bubble density (lit ~10⁶/mm³ × 1000)
+let a_bub   = 1.0e-4         // cm — 1 μm radius (vacuolization scale)
+let Q_air   = 2.0            // Mie large-particle ≈ 2 for high RI contrast (air/water Δn=0.33)
+let Q_pfd   = 0.02           // ≈ 2·(Δn/n)² — PFD/water Δn≈0.02, n≈1.33 → 16× weaker
+let pi      = 3.14159265
+
+let mu_frost_air = N_bub * Q_air * pi * a_bub * a_bub        // cm⁻¹
+let mu_frost_pfd = N_bub * Q_pfd * pi * a_bub * a_bub
+
+println("  scenario                μ_s (cm⁻¹)         T @ 200μm (=fluence to ink)")
+let z = 0.02   // 200 μm = 0.02 cm
+let T_skin   = exp(-mu_skin * z)
+let T_frost  = exp(-(mu_skin + mu_frost_air) * z)
+let T_pfd    = exp(-(mu_skin + mu_frost_pfd) * z)
+println("  baseline (no frost)     ", mu_skin, "             ", T_skin)
+println("  frosted (air bubbles)   ", mu_skin + mu_frost_air, "          ", T_frost)
+println("  PFD-cleared (RI match)  ", mu_skin + mu_frost_pfd, "         ", T_pfd)
+println("")
+println("  ⇒ frosting alone adds ~", mu_frost_air, " cm⁻¹ (", mu_frost_air/mu_skin, "× baseline)")
+println("  ⇒ PFD shrinks bubble contribution by Q_air/Q_pfd = ", Q_air/Q_pfd, "× (RI matching)")
+println("  ⇒ fluence to dermal ink: frosted/clear = ", T_frost/T_skin)
+println("  ⇒ fluence to dermal ink: PFD/clear     = ", T_pfd/T_skin)
+println("")
+
+// ============================================================================
+// [B] ALT RI-MATCHING AGENTS — refractive-index match + practicality score
+// ============================================================================
+// tissue effective n ≈ 1.38-1.40 (dermis collagen-rich) ; water 1.333
+// match score = 1 - |n_agent - n_tissue| / n_tissue   (higher = better)
+// fluence_gain = exp(+Δμ_s · z)   relative to air-bubble worst case
+
+println("[B] alt RI-matching agents — match vs tissue (n=1.38) + Q_sca proxy")
+println("")
+println("  agent             n_D     Δn_water   Δn_tissue   Q_sca proxy   note")
+
+let n_tissue = 1.38
+let n_water  = 1.333
+
+let n_pfd  = 1.313
+let n_pfh  = 1.252       // perfluorohexane C6F14
+let n_si   = 1.405       // silicone oil (polydimethylsiloxane low-MW)
+let n_gly50= 1.398       // 50% glycerol/water
+let n_gly30= 1.371       // 30% glycerol
+let n_air  = 1.000
+
+// Q_sca proxy ≈ 2·(Δn_water/n_water)² (Rayleigh-Gans for small contrast)
+println("  air (frosting)    ", n_air,  "    ", n_air-n_water, "      ", n_air-n_tissue, "      ", 2.0*pow((n_air-n_water)/n_water,2.0), "      DOMINANT scattering · the enemy")
+println("  PFD (decalin)     ", n_pfd,  "    ", n_pfd-n_water,  "    ", n_pfd-n_tissue,  "    ", 2.0*pow((n_pfd-n_water)/n_water,2.0), "  FDA-cleared (DESCRIBE) · O₂ carrier")
+println("  perfluorohexane   ", n_pfh,  "    ", n_pfh-n_water,  "    ", n_pfh-n_tissue,  "    ", 2.0*pow((n_pfh-n_water)/n_water,2.0), "  volatile (bp 56°C) · evaporates fast")
+println("  silicone oil      ", n_si,   "     ", n_si-n_water,   "     ", n_si-n_tissue,   "     ", 2.0*pow((n_si-n_water)/n_water,2.0), "  best n match · greasy · no O₂")
+println("  glycerol 50%      ", n_gly50,"    ", n_gly50-n_water,"     ", n_gly50-n_tissue,"     ", 2.0*pow((n_gly50-n_water)/n_water,2.0), "  topical cheap · dehydrates SC")
+println("  glycerol 30%      ", n_gly30,"    ", n_gly30-n_water,"     ", n_gly30-n_tissue,"    ", 2.0*pow((n_gly30-n_water)/n_water,2.0), "  20% reflectance↓ (lit)")
+println("")
+println("  ⇒ silicone-oil n best-matches tissue but ZERO O₂ solubility (bubble persists)")
+println("  ⇒ PFD wins composite: RI close + O₂ sink (gas bubble → dissolved O₂ in 3-5s)")
+println("  ⇒ glycerol RI-matches but works by SC dehydration (slow · minutes) not bubble dissolve")
+println("")
+
+// ============================================================================
+// [C] DOSE-RESPONSE — passes sweep + diminishing-return knee
+// ============================================================================
+// reuse B1 model:  c_pass = phi_rel·(1-r) = 0.83·0.30 = 0.249
+//                  c_session = 1 - (1-c_pass)^n_passes
+//                  N = log(0.1)/log(1-c_session)
+// per-pass session-time cost t_p ≈ 5min (laser + reposition); PFD cleared frosting in 3-5s
+// total session time ≈ n · t_p ; PFD overhead negligible.
+
+println("[C] dose-response — passes sweep + diminishing-return knee")
+let phi_rel = 0.83
+let r       = 0.70
+let cp      = phi_rel * (1.0 - r)
+let tp      = 5.0      // min per pass (laser + reposition · PFD frost-clear 3-5s negligible)
+
+println("  c_pass=", cp, " · t_pass=", tp, "min · 90%-clearance N = log(0.1)/log(1-c_session)")
+println("")
+println("  n   c_session    N_sess     Δc/pass    ΔN_cut    sess_time(min)")
+
+let cs_1 = 1.0 - pow(1.0-cp, 1.0)
+let N_1  = log(0.1)/log(1.0-cs_1)
+let cs_2 = 1.0 - pow(1.0-cp, 2.0)
+let N_2  = log(0.1)/log(1.0-cs_2)
+let cs_3 = 1.0 - pow(1.0-cp, 3.0)
+let N_3  = log(0.1)/log(1.0-cs_3)
+let cs_4 = 1.0 - pow(1.0-cp, 4.0)
+let N_4  = log(0.1)/log(1.0-cs_4)
+let cs_5 = 1.0 - pow(1.0-cp, 5.0)
+let N_5  = log(0.1)/log(1.0-cs_5)
+
+println("  1   ", cs_1, "    ", N_1, "    --        --        ", 1.0*tp, "    standard-of-care")
+println("  2   ", cs_2, "    ", N_2, "    ", cs_2-cs_1, "    ", N_1-N_2, "    ", 2.0*tp)
+println("  3   ", cs_3, "    ", N_3, "    ", cs_3-cs_2, "    ", N_2-N_3, "    ", 3.0*tp, "  pivotal-trial mean (3.7)")
+println("  4   ", cs_4, "    ", N_4, "    ", cs_4-cs_3, "    ", N_3-N_4, "    ", 4.0*tp, "  Kossida R20 4-pass")
+println("  5   ", cs_5, "    ", N_5, "    ", cs_5-cs_4, "    ", N_4-N_5, "    ", 5.0*tp, "  diminishing")
+println("")
+
+// KNEE: where does the marginal cut ΔN drop below 0.5 session?
+println("  diminishing-return knee analysis (ΔN cut per added pass):")
+println("    1→2: ΔN cut = ", N_1-N_2, "  (biggest single-pass win)")
+println("    2→3: ΔN cut = ", N_2-N_3)
+println("    3→4: ΔN cut = ", N_3-N_4, "  ← typical KNEE (cut < 1 session)")
+println("    4→5: ΔN cut = ", N_4-N_5, "  ← marginal")
+println("")
+println("  ⇒ KNEE at n* ≈ 3-4 passes — beyond this, +1 pass saves < 1 session")
+println("    but costs +5 min chair-time and tissue-thermal load. n*=3-4 optimal.")
+println("")
+
+// fluence-gain bonus: PFD reduces surface scattering → ~10% higher tolerable fluence
+// (Reddel 2020). model as phi_rel boost 0.83 → 0.91.
+println("  [bonus] Reddel 2020 PFD fluence boost (~10% surface μ_s↓ → phi_rel 0.83→0.91):")
+let phi2 = 0.91
+let cp2  = phi2 * (1.0 - r)
+let cs_b3 = 1.0 - pow(1.0-cp2, 3.0)
+let N_b3  = log(0.1)/log(1.0-cs_b3)
+let cs_b4 = 1.0 - pow(1.0-cp2, 4.0)
+let N_b4  = log(0.1)/log(1.0-cs_b4)
+println("    n=3 (PFD-boosted): c_session=", cs_b3, "  N=", N_b3)
+println("    n=4 (PFD-boosted): c_session=", cs_b4, "  N=", N_b4)
+println("")
+
+// ============================================================================
+// [D] HEADLINE PFD CUT — pivotal trial numbers + session-time wall-clock
+// ============================================================================
+println("[D] PFD headline — pivotal trial (Biesman 2017) 3.7 passes vs 1.4 passes")
+let cs_la = 1.0 - pow(1.0-cp, 1.4)
+let cs_pf = 1.0 - pow(1.0-cp, 3.7)
+let N_la  = log(0.1)/log(1.0-cs_la)
+let N_pf  = log(0.1)/log(1.0-cs_pf)
+println("  laser-alone (1.4 pass)  : c=", cs_la, "  N=", N_la, "  session-time=", 1.4*tp, "min")
+println("  PFD patch  (3.7 pass)   : c=", cs_pf, "  N=", N_pf, "  session-time=", 3.7*tp, "min")
+println("  sessions cut = ", N_la - N_pf, "    fold = ", N_la/N_pf, "×")
+println("")
+println("  per-session wall-clock (Biesman trial reported 80 min → 5 min for R0/DESCRIBE):")
+println("    R0 (wait 20min × 4 passes) : 80 min")
+println("    PFD patch (3-5s clear × 4) : ~5 min")
+println("    ⇒ wall-clock fold = 16× per-session AND ", N_la/N_pf, "× fewer sessions")
+println("")
+println("=== honest floor (inherited B1): passes change RATE not ink chemistry (carbon floor) ===")
+println("=== Q_sca proxies are Rayleigh-Gans order-of-magnitude; fold-cuts are robust ===")

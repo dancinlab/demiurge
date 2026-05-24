@@ -1,0 +1,104 @@
+// TTR-LAC B3 — TOPICAL recapture suppression (r-down)
+// Reuses B1 session model: c_pass=phi_rel*(1-r), c_session=1-(1-c_pass)^n_passes, N=log(0.1)/log(1-c_session).
+// Topical r model: r(beta) = (1-beta) * r0   (r0=0.70 B1 baseline).
+// Topical sidesteps oral ADME ~1e-4 wall (in-situ dermal application post-laser).
+// run: hexa run TTR-LAC/sim/b3_topical_r_down.hexa
+
+println("=== TTR-LAC B3: TOPICAL r-down (post-laser recapture suppression) ===")
+println("")
+println("[1] topical vs oral dermal bioavailability:")
+println("  oral systemic AUC at dermis  ~ 1e-4 of dose")
+println("  topical SC->dermis           ~ 1e-1 (post-laser SC permeabilised)")
+println("  ratio: ~10^3   -> beta_topical reaches what oral needs a biologic for")
+
+println("")
+println("[2] beta sweep at n=1 pass (isolate r-lever):  phi_rel=0.83, r0=0.70")
+
+let phi = 0.83
+let r0 = 0.70
+
+// beta=0.00 baseline (no topical r-down)
+let r_a = (1.0-0.00)*r0
+let c_a = phi*(1.0-r_a)
+let n_a = log(0.1)/log(1.0-c_a)
+println("  beta=0.00  r=", r_a, "  c_pass=", c_a, "  N=", n_a, "  (B1 baseline)")
+
+// beta=0.30 cooling+massage+escin-class
+let r_b = (1.0-0.30)*r0
+let c_b = phi*(1.0-r_b)
+let n_b = log(0.1)/log(1.0-c_b)
+println("  beta=0.30  r=", r_b, "  c_pass=", c_b, "  N=", n_b, "  (cooling+massage+lymph)")
+
+// beta=0.50 topical rhein/anthraquinone
+let r_c = (1.0-0.50)*r0
+let c_c = phi*(1.0-r_c)
+let n_c = log(0.1)/log(1.0-c_c)
+println("  beta=0.50  r=", r_c, "  c_pass=", c_c, "  N=", n_c, "  (topical rhein, SR-A)")
+
+// beta=0.70 topical Syk+rhein multi-receptor
+let r_d = (1.0-0.70)*r0
+let c_d = phi*(1.0-r_d)
+let n_d = log(0.1)/log(1.0-c_d)
+println("  beta=0.70  r=", r_d, "  c_pass=", c_d, "  N=", n_d, "  (Syk-topical + rhein)")
+
+// beta=0.85 topical anti-MARCO peptide (research)
+let r_e = (1.0-0.85)*r0
+let c_e = phi*(1.0-r_e)
+let n_e = log(0.1)/log(1.0-c_e)
+println("  beta=0.85  r=", r_e, "  c_pass=", c_e, "  N=", n_e, "  (anti-MARCO peptide, research)")
+
+println("")
+println("[3] JOINT stack with B2 PFD (n_passes=3.7, Biesman pivotal):")
+
+let n_pfd = 3.7
+// realistic: beta=0.50
+let r_r = (1.0-0.50)*r0
+let cp_r = phi*(1.0-r_r)
+let cs_r = 1.0-pow(1.0-cp_r, n_pfd)
+let nn_r = log(0.1)/log(1.0-cs_r)
+println("  realistic    PFD(3.7) + beta=0.50  N=", nn_r)
+
+// aspirational: beta=0.70
+let r_p = (1.0-0.70)*r0
+let cp_p = phi*(1.0-r_p)
+let cs_p = 1.0-pow(1.0-cp_p, n_pfd)
+let nn_p = log(0.1)/log(1.0-cs_p)
+println("  aspirational PFD(3.7) + beta=0.70  N=", nn_p)
+
+// ceiling: beta=0.85
+let r_z = (1.0-0.85)*r0
+let cp_z = phi*(1.0-r_z)
+let cs_z = 1.0-pow(1.0-cp_z, n_pfd)
+let nn_z = log(0.1)/log(1.0-cs_z)
+println("  ceiling      PFD(3.7) + beta=0.85  N=", nn_z)
+
+println("")
+println("[4] head-to-head fold vs SoC (n=1.4 pass, beta=0):")
+
+let cp_soc = phi*(1.0-r0)
+let cs_soc = 1.0-pow(1.0-cp_soc, 1.4)
+let n_soc = log(0.1)/log(1.0-cs_soc)
+println("  SoC                     N=", n_soc, "  (n=1.4, beta=0)")
+
+let cs_pfd_only = 1.0-pow(1.0-cp_soc, n_pfd)
+let n_pfdonly = log(0.1)/log(1.0-cs_pfd_only)
+println("  B2 PFD-only             N=", n_pfdonly, "  fold=", n_soc/n_pfdonly)
+
+let cp_ronly = phi*(1.0-(1.0-0.50)*r0)
+let cs_ronly = 1.0-pow(1.0-cp_ronly, 1.4)
+let n_ronly = log(0.1)/log(1.0-cs_ronly)
+println("  B3 r-only realistic     N=", n_ronly, "  fold=", n_soc/n_ronly, "  (n=1.4, beta=0.50)")
+
+println("  B2+B3 realistic         N=", nn_r, "  fold=", n_soc/nn_r)
+println("  B2+B3 aspirational      N=", nn_p, "  fold=", n_soc/nn_p)
+
+println("")
+println("[5] timeline at 7-week spacing (1.6 mo/session):")
+println("  SoC                ", n_soc*1.6,    " months")
+println("  B2 PFD-only        ", n_pfdonly*1.6," months")
+println("  B2+B3 realistic    ", nn_r*1.6,     " months")
+println("  B2+B3 aspirational ", nn_p*1.6,     " months")
+
+println("")
+println("=== honest: model has no ceiling; carbon-25%+Cu-Pc-10% floor caps absolute clearance ~75% ===")
+println("=== practical floor ~ 1-2 sessions regardless (carbon non-degradable) ; B3 marginal over B2 alone is multiplicative but capped ===")

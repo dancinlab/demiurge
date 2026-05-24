@@ -1,0 +1,87 @@
+// TTR-LAC B1 — per-session erasure rate-limiting step (track B)
+// REUSES the TTR-ORAL BP1d session framing, but TOPICAL (PFD frosting-clear) not oral.
+//
+// Two per-session bottlenecks:
+//   (a) epidermal FROSTING — laser vacuolization/gas bubbles whiten+scatter the beam
+//       => without intervention only ~1 pass/session (frosting blocks deeper passes 20min)
+//   (b) RECAPTURE r — fragmented pigment re-engulfed by macrophages between sessions (Baranska)
+//
+// Per-pass clearance (single pass = the standard-of-care unit):
+//   c_pass = phi_rel * (1 - r)
+//     phi_rel = per-PASS fragmentation/release fraction (laser-set · calibrated 0.83)
+//     (1-r)   = released pigment escaping recapture (drains to lymph)
+// Per-session clearance with n successive passes (PFD lets passes stack same-session):
+//   c_session = 1 - (1 - c_pass)^n_passes        (geometric: each pass hits residual)
+// Sessions-to-90%:
+//   N = log(0.1) / log(1 - c_session)
+//
+// Calibration (honest, @D d6): standard-of-care = 1 pass, r0=0.70 (lit 6-8wk spacing
+//   already drains partially) -> ~8 sessions to match lit 6-10. phi_rel=0.83.
+// run: hexa run TTR-LAC/sim/b1_laser_ratelimit.hexa
+
+println("=== TTR-LAC B1: frosting-limited multipass + recapture -> sessions-to-90% ===")
+println("")
+println("c_pass = phi_rel*(1-r) ; c_session = 1-(1-c_pass)^n ; N = log(0.1)/log(1-c_session)")
+println("calibration: phi_rel=0.83, r0=0.70, n=1 pass -> ~8 sessions (lit standard 6-10)")
+println("")
+
+// ---- LEVER 1: frosting-clear -> more passes per session (PFD), r held at 0.70 -------
+println("[1] PFD multipass lever (frosting cleared 3-5s -> n passes/session · r=0.70 fixed):")
+let pr = 0.83
+let rr = 0.70
+let cpass = pr*(1.0-rr)
+println("  c_pass (single, calibrated) = ", cpass)
+println("")
+println("  n_passes  c_session              N_sessions            note")
+let cs1 = 1.0 - pow(1.0-cpass, 1.0)
+println("    1       ", cs1, "  ", log(0.1)/log(1.0-cs1), "  STANDARD-of-care (frosting forces stop)")
+let cs2 = 1.0 - pow(1.0-cpass, 2.0)
+println("    2       ", cs2, "  ", log(0.1)/log(1.0-cs2), "  PFD 2-pass")
+let cs3 = 1.0 - pow(1.0-cpass, 3.0)
+println("    3       ", cs3, "  ", log(0.1)/log(1.0-cs3), "  PFD ~3-pass (trial mean 3.7)")
+let cs4 = 1.0 - pow(1.0-cpass, 4.0)
+println("    4       ", cs4, "  ", log(0.1)/log(1.0-cs4), "  PFD/R20 4-pass (Kossida)")
+
+// ---- the headline PFD cut: 1 pass -> 3.7 passes (pivotal-trial mean) ----------------
+println("")
+println("[2] PFD pivotal-trial mean: laser-alone 1.4 passes vs PFD 3.7 passes/session")
+let cA = 1.0 - pow(1.0-cpass, 1.4)
+let cB = 1.0 - pow(1.0-cpass, 3.7)
+let nA = log(0.1)/log(1.0-cA)
+let nB = log(0.1)/log(1.0-cB)
+println("  laser-alone (1.4 pass): c_session=", cA, " N=", nA)
+println("  PFD patch  (3.7 pass) : c_session=", cB, " N=", nB)
+println("  absolute cut = ", nA - nB, " sessions")
+println("  fold speedup = ", nA/nB, "x fewer sessions")
+
+// ---- LEVER 2: recapture r-down (B3), n=1 pass fixed (isolate the r lever) -----------
+println("")
+println("[3] recapture r-down lever (B3 · n=1 pass fixed · isolate r):")
+println("  r       c_pass=c_session       N_sessions            note")
+let d70 = pr*(1.0-0.70)
+println("  0.70    ", d70, "  ", log(0.1)/log(1.0-d70), "  baseline recapture")
+let d60 = pr*(1.0-0.60)
+println("  0.60    ", d60, "  ", log(0.1)/log(1.0-d60), "  weak topical drainage")
+let d50 = pr*(1.0-0.50)
+println("  0.50    ", d50, "  ", log(0.1)/log(1.0-d50), "  moderate (Baranska transient-ablation)")
+let d40 = pr*(1.0-0.40)
+println("  0.40    ", d40, "  ", log(0.1)/log(1.0-d40), "  strong topical r-down")
+
+// ---- BOTH levers stacked: PFD 3.7-pass + r-down 0.50 (B4 co-formulation) ------------
+println("")
+println("[4] B4 co-formulation (PFD 3.7 passes + topical r-down to 0.50):")
+let cpass2 = pr*(1.0-0.50)
+let cBoth = 1.0 - pow(1.0-cpass2, 3.7)
+let nBoth = log(0.1)/log(1.0-cBoth)
+println("  c_pass(r=0.50)=", cpass2, " c_session(3.7pass)=", cBoth, " N=", nBoth)
+println("  vs standard-of-care N=", nA, " => fold = ", nA/nBoth, "x fewer sessions")
+
+// ---- timeline at 7-week (1.6 mo) spacing -------------------------------------------
+println("")
+println("[5] timeline @ 7-week spacing (months = N * 1.6):")
+println("  standard-of-care (1.4 pass, r0.70): ", nA*1.6, " months")
+println("  PFD (3.7 pass, r0.70)             : ", nB*1.6, " months")
+println("  B4 co-form (3.7 pass, r0.50)      : ", nBoth*1.6, " months")
+println("")
+println("=== dominant lever: which moves N more — frosting(passes) or recapture(r)? see [1] vs [3] ===")
+println("=== honest floor: passes/r change RATE only; carbon ink chemistry floor unchanged (inherited TTR-ORAL) ===")
