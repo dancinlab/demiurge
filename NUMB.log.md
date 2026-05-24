@@ -24,6 +24,19 @@ NUMB verify track V1-V4 전체 완수. 격리 worktree `/tmp/numb-v-2a3f317b` (b
   - honest framing (@D d5/d6): 🟠 wet-lab claim → 🟢 승격 금지. "onset 가속" 주장 3건 (C-G6-07·C-N1-05·C-N7-08) 일관 🔴 FALSIFIED (a·K_sc·f_free = J_ss prefactor · t_lag 무관) — 도메인 전체가 정직 negative 명시.
 - **absorbed=false 유지** — NUMB measured-oracle (multi-indication PASS · LAST 임상 0 incident · OTC/Rx 듀얼 승인) = wet-lab 천장. V-track 은 non-wet-lab verify-closed 만 담당.
 
+## 2026-05-25T09:30Z — oracle: measured-oracle wet-lab handoff 명세 완료 (absorbed=FALSE 유지 · @D d5)
+
+oracle milestone CLOSED-as-handoff-spec. 격리 worktree `/tmp/numb-oracle-73ecc203` (branch `numb-oracle-73ecc203`, base origin/main). hexa `hexa run` = pool-route (ubu-1) 경유 검증 (Mac sign-gate 우회: build/hexa_interp symlink → 디스패처 native run GREEN).
+
+- [ ] **oracle** (`NUMB/research/oracle_handoff.md` + sim `oracle_gate.hexa`) — deterministic absorbed-decision evaluator (🟢 hexa-native AND-product gate algebra) · **absorbed=FALSE 유지**
+  - **@D d5 정합 핵심**: `absorbed = (ALL non-wet-lab PASS) AND (ALL wet-lab oracle PASS)`. non-wet-lab block **CLOSED 8/8** (G1-G7 + verify V3) · in-silico 게이트 **소진** (더 닫을 게 없음) · wet-lab block **OPEN 0/12** → **absorbed = FALSE**. in-silico PASS 가 absorbed 를 의미하지 **않음** · projection (G5 25.7mo 외삽 · N6 SVL m.p. · N5 r_mg=0.30 추정) 은 flip 불가.
+  - **12 wet-lab gate 인벤토리** (claim · 측정법 · 비용 · 결정 tier): W1 onset VAS · W2 depth C(z) · W3 LAST Cmax human PK · **W4 N5 토픽 Mg MEC r_mg=0.30 (단일 missing measurement)** · W5 N6 ternary DSC m.p. · W6 N6 ion-pair K_sc Franz · W7 N7 pH-gradient flux Franz · W8 N7 epi/lid HPLC 안정성 · W9 G5 epi 산화 real-time 24mo (Arrhenius 외삽=projection) · W10 G3 신생아 임상 confirm (BORDERLINE) · W11 OTC 승인 · W12 Rx 505(b)(2) 승인.
+  - **oracle PASS 기준 (정량)**: onset_p95 OTC-A ≤60min · Rx-V1 ≤3min · LAST Cmax adult <2500 / neonate <1250 ng/mL (CNS-warn × 50% floor) · neonate <28d 임상 confirm · OTC monograph + Rx 505(b)(2) 듀얼 승인. (현재 closed-form Rx-V1 @400cm² Cmax=73.3 ng/mL margin 68.2× = 예측, PK 로 CONFIRM 대기)
+  - **phased study 우선순위 + 비용**: **Phase 0 in-vitro $2,650** (DSC $350 + Franz N6 $750 + Franz N7 $750 + DSC alkaline $350 + epi/lid HPLC $450 · N6+N7+G5 cost-share batch) → **12 wet gate 중 8 개 touch** · 가장 cheap-est NOVEL probe. **Phase 1 ex-vivo $10-30K** (인체 SC Franz + pin-prick ED50 → N5 r_mg 결정). **Phase 2 임상 $100K-1M+** (volunteer onset VAS · human PK · 소아).
+  - **decision tree**: N6 DSC FAIL→Rx-V2 capric 폐기 · N6 Franz K_sc<3×→V2 depth claim FALSIFIED · N7 flux<3×→bilayer 폐기 · N7 epi-HPLC 분해→2-chamber MANDATORY · N5 r_mg<0.15→Mg adjuvant 폐기/split-only · N5 r_mg≥0.30→타투 sleeve 500-800cm² 단일세션 unlock · G5 real-time<24mo→dating 단축/냉장 · onset>3min→honest 재라벨 · Cmax>threshold→max_area/농도 축소 · neonate FAIL→neonate REFUSE 유지.
+  - **honest framing (@D d5/d6)**: non-wet-lab 다 PASS → absorbed 는 **wet-lab measurement (downstream confirmation) 만 대기**. 과대 약속 ✗ · "in-silico PASS=absorbed" ✗. 다음 액션 = Phase 0 batch ($2,650) 부터.
+  - **V-track 정합**: V4 ledger 의 🟠 wet-lab 15-claim 과 본 oracle 의 12 wet-lab gate 는 동일 measurement-set (V4 = claim 단위 · oracle = gate 단위로 그룹화). 둘 다 absorbed=false 유지 · cheapest=N6 DSC 일치.
+
 ## 2026-05-25T08:10Z — G6 closed: 인접 토픽 양립성 매트릭스 (co-application · hexa-native 🟢)
 
 round G6 milestone CLOSED. 격리 worktree `/tmp/numb-g6b-a68ebcad` (branch `numb-g6-compat-a68ebcad`, base origin/main · 첫 worktree `/tmp/numb-g6-3b5a6936` 가 concurrent prune 으로 displaced → fresh worktree 재생성 후 deliverable 복사). N6(corneal wall) · N7(epi pH 8.5 분해 · HH f_free) 자산 통합.
