@@ -7,7 +7,7 @@
   parent   = "dancinlab"
   ssot     = "github.com/dancinlab/demiurge (`hx install demiurge`)"
   siblings = "hexa-lang"
-  run      = "dev GUI (test): `cd ~/core/demiurge/cockpit && swift run CockpitApp` · installed app: `demiurge install` → `demiurge run` · CLI (AI surface): `demiurge cli <verb>` / `demiurge operate|compose|verify|backend`"
+  run      = "release GUI (test): `cd ~/core/demiurge/cockpit && swift run -c release CockpitApp` · installed app: `demiurge install` → `demiurge run` · CLI (AI surface): `demiurge cli <verb>` / `demiurge operate|compose|verify|backend`"
 
 @D d1 := "non-wet-lab verification → completed-form" :: governance [required active]
   do   = "drive each non-wet-lab step (sim · proof · synthesis · gate · handoff) to completed-form pre wet-lab"
