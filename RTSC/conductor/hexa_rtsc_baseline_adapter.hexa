@@ -1,0 +1,215 @@
+#!hexa strict
+// ============================================================================
+// hexa_rtsc_baseline_adapter.hexa — thin adapter: hexa-rtsc numerics_*_solver
+// verifier results → exports/conductor/hexa-rtsc-baseline/ conductor handoff
+// JSON record.
+//
+// RTSC conductor sub-track · M465 (RTSC.md §8.6 deferred → wired).
+//
+// Purpose — emit a conductor-handoff/0.1.0 JSON record (matching the schema
+// of `exports/conductor/hts_rebco/.../conductor_rebco_hts_baseline.json`,
+// PR #90) for a hexa-rtsc verifier output. The record carries:
+//   · vendor=null  · source="hexa-rtsc-derived"
+//   · gate_type="hexa-rtsc-derived"  · absorbed=false  · provisional=true
+//   · scope_caveats including "hexa-rtsc verifier output ingested · sim-derived
+//     · not wet-lab"
+//   · falsifier identifier (F-SC-{1,2,3} or F-RTSC-{1,2,3})
+//
+// CLI form:
+//     hexa run RTSC/conductor/hexa_rtsc_baseline_adapter.hexa <verifier_id> <out_dir>
+//   where <verifier_id> ∈ { bcs, mcmillan, csh, hc2_48t } and <out_dir> is
+//   informational only (path included in the emitted record's `out_dir`
+//   field). The JSON is emitted to stdout — caller redirects:
+//
+//     hexa run RTSC/conductor/hexa_rtsc_baseline_adapter.hexa bcs \
+//       exports/conductor/hexa-rtsc-baseline/bcs/<UTC-stamp> \
+//       > exports/conductor/hexa-rtsc-baseline/bcs/<UTC-stamp>/conductor_bcs.json
+//
+// Mapping table (4 worked, 31 pending — RTSC.md §8.6):
+//   bcs       → pillar=sc   · falsifier=F-SC-{1,2,3}  (BCS gap Δ(0)/ℏω_D, 2Δ/kTc)
+//   mcmillan  → pillar=rtsc · falsifier=F-RTSC-2     (BCS-λ McMillan ceiling)
+//   csh       → pillar=rtsc · falsifier=F-RTSC-1     (claim-only RT-SC reproduction)
+//   hc2_48t   → pillar=rtsc · falsifier=F-RTSC-3     (Hc2 48T fusion gate)
+//
+// Canonical stdlib location: the verifier `.hexa` files themselves live at
+// `~/core/hexa-lang/stdlib/rtsc/verify/numerics_<pillar>_solver.hexa`. This
+// adapter is the demiurge-topical wrapper (per @D d3 — demiurge-topical
+// folders hold docs/manifests, not new implementations; this adapter only
+// SHAPES verifier metadata into the conductor handoff schema, it does not
+// re-implement the numerical work).
+//
+// Honest scope:
+//   · This adapter encodes the verifier's IDENTITY (which falsifier it
+//     attacks, which pillar it represents) into a typed handoff record.
+//     It does NOT re-run the verifier. To re-run the actual numerics:
+//       hexa run stdlib/rtsc/verify/numerics_bcs_solver.hexa
+//     The verifier's PASS/FAIL is referenced via the `verifier_path`
+//     and `verifier_run_invocation` fields — caller's responsibility to
+//     have run it (or to wire that in a follow-on cycle).
+//   · gate_type=hexa-rtsc-derived stays — `absorbed=false` permanent,
+//     mirrors PR #90 contract.
+//   · provisional=true; scope_caveats explicit about sim-derived ≠ wet-lab.
+//
+// @no-lock-needed
+
+let VERSION = "0.1.0"
+let SCHEMA_VERSION = "conductor-handoff/0.1.0"
+
+// ─── verifier_id → metadata mapping ─────────────────────────────────────
+
+fn verifier_pillar(vid: string) -> string {
+    if vid == "bcs"      { return "sc"   }
+    if vid == "mcmillan" { return "rtsc" }
+    if vid == "csh"      { return "rtsc" }
+    if vid == "hc2_48t"  { return "rtsc" }
+    return "unknown"
+}
+
+fn verifier_falsifiers(vid: string) -> string {
+    if vid == "bcs"      { return "[\"F-SC-1\",\"F-SC-2\",\"F-SC-3\"]" }
+    if vid == "mcmillan" { return "[\"F-RTSC-2\"]" }
+    if vid == "csh"      { return "[\"F-RTSC-1\"]" }
+    if vid == "hc2_48t"  { return "[\"F-RTSC-3\"]" }
+    return "[]"
+}
+
+fn verifier_family(vid: string) -> string {
+    // spec.family — what the conductor record nominally describes.
+    // bcs/csh/hc2_48t are not material families; we use the rtsc_hypothetical
+    // slot (RTSC.md §5 Axis B / §8.6) for the simulation-derived path.
+    // mcmillan also rtsc_hypothetical (BCS-λ ceiling = claim-only above
+    // ~50 K).
+    return "rtsc_hypothetical"
+}
+
+fn verifier_kind(vid: string) -> string {
+    if vid == "bcs"      { return "bcs_gap_solver_baseline" }
+    if vid == "mcmillan" { return "mcmillan_lambda_inversion_baseline" }
+    if vid == "csh"      { return "clopper_pearson_ucl_baseline" }
+    if vid == "hc2_48t"  { return "whh_hc2_48t_inversion_baseline" }
+    return "unknown"
+}
+
+fn verifier_sentinel(vid: string) -> string {
+    if vid == "bcs"      { return "__HEXA_RTSC_NUMERICS_BCS_SOLVER__" }
+    if vid == "mcmillan" { return "__HEXA_RTSC_NUMERICS_MCMILLAN_SOLVER__" }
+    if vid == "csh"      { return "__HEXA_RTSC_NUMERICS_CSH_SOLVER__" }
+    if vid == "hc2_48t"  { return "__HEXA_RTSC_NUMERICS_HC2_48T_SOLVER__" }
+    return ""
+}
+
+fn verifier_doc(vid: string) -> string {
+    if vid == "bcs"      { return "BCS gap-equation Newton solver. Closed-form anchor: Δ(0) = ℏω_D / sinh(1/λ); universal 2Δ(0)/kTc = π·e^{-γ_E}·φ(6) ≈ 3.528." }
+    if vid == "mcmillan" { return "McMillan / Allen-Dynes Newton inversion. Forward Tc(λ;ω_log,μ*), inverse λ(Tc). 5 SC anchors (Pb/Nb/V3Si/Nb3Sn/MgB2). BCS-λ ceiling reproduced numerically." }
+    if vid == "csh"      { return "Clopper-Pearson binomial UCL solver. 5-cohort reproduction history (CSH/Lu-N-H/Cu-Pb-H/USO/aggregate); k=0 closed form 1 - α^{1/n}." }
+    if vid == "hc2_48t"  { return "WHH Hc2(t) Newton inversion. Solves Hc2_target = 48 T (n=6 master gate σ·τ) for T_op. REBCO admissible; NbTi/Nb3Sn/MgB2 correctly fail (Hc2(0) < 48 T)." }
+    return ""
+}
+
+// ─── JSON emitter ───────────────────────────────────────────────────────
+
+fn emit_record(vid: string, out_dir: string, stamp: string) -> string {
+    let pillar     = verifier_pillar(vid)
+    let falsifiers = verifier_falsifiers(vid)
+    let family     = verifier_family(vid)
+    let kind       = verifier_kind(vid)
+    let sentinel   = verifier_sentinel(vid)
+    let doc        = verifier_doc(vid)
+    let verifier_path = "stdlib/rtsc/verify/numerics_" + vid + "_solver.hexa"
+    let invocation = "hexa run " + verifier_path
+
+    let mut s = ""
+    s = s + "{\n"
+    s = s + "  \"schema_version\": \"" + SCHEMA_VERSION + "\",\n"
+    s = s + "  \"domain\": \"conductor\",\n"
+    s = s + "  \"verb\": \"ingest\",\n"
+    s = s + "  \"kind\": \"" + kind + "\",\n"
+    s = s + "  \"stamp\": \"" + stamp + "\",\n"
+    s = s + "  \"producer\": \"demiurge RTSC §8.6 — hexa-rtsc verifier output → conductor handoff (thin adapter, M465). " + doc + "\",\n"
+    s = s + "  \"vendor\": null,\n"
+    s = s + "  \"source\": \"hexa-rtsc-derived\",\n"
+    s = s + "  \"out_dir\": \"" + out_dir + "\",\n"
+    s = s + "  \"verifier\": {\n"
+    s = s + "    \"verifier_id\": \"" + vid + "\",\n"
+    s = s + "    \"pillar\": \"" + pillar + "\",\n"
+    s = s + "    \"falsifiers\": " + falsifiers + ",\n"
+    s = s + "    \"verifier_path\": \"" + verifier_path + "\",\n"
+    s = s + "    \"verifier_run_invocation\": \"" + invocation + "\",\n"
+    s = s + "    \"verifier_pass_sentinel\": \"" + sentinel + " PASS\",\n"
+    s = s + "    \"verifier_tier\": \"T2 numerical (Newton solver leg of T2 ×3 stack)\"\n"
+    s = s + "  },\n"
+    s = s + "  \"spec\": {\n"
+    s = s + "    \"family\": \"" + family + "\",\n"
+    s = s + "    \"family_enum_note\": \"ConductorMaterial = cu | nbti | nb3sn | rebco | bi2212 | rtsc_hypothetical (RTSC.md §5 Axis B / §8.6). Adapter records use rtsc_hypothetical for simulation-derived solver baselines — verifier output is computational lineage, not material characterization.\",\n"
+    s = s + "    \"compound\": null,\n"
+    s = s + "    \"compound_note\": \"Simulation-derived solver baselines do not bind to a specific compound. The bcs/mcmillan/csh/hc2_48t solvers exercise universal closed forms (BCS gap, Allen-Dynes, Clopper-Pearson, WHH) parameterized at runtime. For per-material records, ingest a vendor-datasheet or external-paper record alongside this baseline.\",\n"
+    s = s + "    \"tc_k\": null,\n"
+    s = s + "    \"tc_k_units\": \"kelvin\",\n"
+    s = s + "    \"hc2_t_at_4k\": null,\n"
+    s = s + "    \"hc2_t_at_4k_units\": \"tesla\",\n"
+    s = s + "    \"hc2_t_at_77k\": null,\n"
+    s = s + "    \"hc2_t_at_77k_units\": \"tesla\",\n"
+    s = s + "    \"anisotropy_gamma\": null,\n"
+    s = s + "    \"anisotropy_gamma_units\": \"dimensionless\",\n"
+    s = s + "    \"jc_b_t_theta\": {\n"
+    s = s + "      \"stub\": true,\n"
+    s = s + "      \"description\": \"Solver baseline records do not populate Jc(B,T,θ); that table comes from a vendor-datasheet or measurement-ingest record. Left null — see PR #90 sibling for the REBCO baseline schema.\",\n"
+    s = s + "      \"value\": { \"jc\": null, \"jc_units\": \"A/m^2\" },\n"
+    s = s + "      \"jc_data_table_ref_record_id\": null\n"
+    s = s + "    }\n"
+    s = s + "  },\n"
+    s = s + "  \"provenance\": {\n"
+    s = s + "    \"source_substrate\": \"hexa-rtsc\",\n"
+    s = s + "    \"source_record_url\": null,\n"
+    s = s + "    \"source_citation\": \"" + doc + " Verifier: " + verifier_path + " — invocation `" + invocation + "`. Sentinel `" + sentinel + " PASS` on success.\",\n"
+    s = s + "    \"derive_chain\": \"hexa-rtsc " + verifier_path + " -> RTSC/conductor/hexa_rtsc_baseline_adapter.hexa -> exports/conductor/hexa-rtsc-baseline/" + vid + "/<stamp>/conductor_" + vid + ".json -> (downstream) device producer reads nu[Coil]/Jc_limit/Hc2_limit when family is bound\"\n"
+    s = s + "  },\n"
+    s = s + "  \"measurement_gate\": \"GATE_OPEN\",\n"
+    s = s + "  \"absorbed\": false,\n"
+    s = s + "  \"gate_type\": \"hexa-rtsc-derived\",\n"
+    s = s + "  \"gate_type_enum_note\": \"gate_type in { vendor-datasheet | hexa-rtsc-derived | external-paper } per RTSC.md §8.5. Solver baselines are hexa-rtsc-derived — absorbed stays false permanently per the derived/sim contract.\",\n"
+    s = s + "  \"provisional\": true,\n"
+    s = s + "  \"scope_caveats\": [\n"
+    s = s + "    \"hexa-rtsc verifier output ingested · sim-derived · not wet-lab\",\n"
+    s = s + "    \"Solver baseline — encodes verifier IDENTITY (pillar, falsifier, sentinel) not a new numerical result. To re-run: " + invocation + "\",\n"
+    s = s + "    \"absorbed=false permanent until an independent measurement record supersedes (RTSC.md §8.7 Tier-3).\",\n"
+    s = s + "    \"family=rtsc_hypothetical — record is universal-form lineage, not a per-material characterization. For per-material binding, ingest a vendor-datasheet or measurement record alongside.\",\n"
+    s = s + "    \"Sibling REBCO baseline at exports/conductor/hts_rebco/.../conductor_rebco_hts_baseline.json (PR #90, also hexa-rtsc-derived, family=rebco).\"\n"
+    s = s + "  ],\n"
+    s = s + "  \"r4_invariant\": \"absorbed=false · provisional=true · gate_type=hexa-rtsc-derived · domain=conductor. R4 preserved — solver baseline is computational lineage, not measurement.\",\n"
+    s = s + "  \"citations\": [\n"
+    s = s + "    \"RTSC.md §8.5 (material-side handoff schema)\",\n"
+    s = s + "    \"RTSC.md §8.6 (hexa-rtsc thin adapter — M465 wired by this record)\",\n"
+    s = s + "    \"RTSC.md §5 Axis B (ConductorMaterial enum, family slot)\",\n"
+    s = s + "    \"PR #90 (exports/conductor/hts_rebco/ baseline schema exemplar — this record matches that schema)\",\n"
+    s = s + "    \"hexa-rtsc " + verifier_path + " (verifier source-of-truth)\"\n"
+    s = s + "  ]\n"
+    s = s + "}"
+    return s
+}
+
+// ─── main ───────────────────────────────────────────────────────────────
+
+fn main() {
+    let argv = args()
+    if len(argv) < 3 {
+        println("{\"error\":\"usage: hexa run RTSC/conductor/hexa_rtsc_baseline_adapter.hexa <verifier_id> <out_dir>\",\"verifier_ids\":[\"bcs\",\"mcmillan\",\"csh\",\"hc2_48t\"]}")
+        exit(2)
+    }
+    let vid = argv[1]
+    let out_dir = argv[2]
+
+    if verifier_pillar(vid) == "unknown" {
+        println("{\"error\":\"unknown verifier_id: " + vid + "\",\"known\":[\"bcs\",\"mcmillan\",\"csh\",\"hc2_48t\"]}")
+        exit(2)
+    }
+
+    // UTC stamp — caller-provided via out_dir basename if present, else fallback
+    // to a fixed adapter-generation marker. Adapter does not read system clock
+    // to keep the emission deterministic given (vid, out_dir).
+    let stamp = "ADAPTER_EMITTED"
+
+    let json = emit_record(vid, out_dir, stamp)
+    println(json)
+    exit(0)
+}

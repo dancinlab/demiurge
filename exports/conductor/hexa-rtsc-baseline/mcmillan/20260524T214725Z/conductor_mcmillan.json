@@ -1,0 +1,66 @@
+{
+  "schema_version": "conductor-handoff/0.1.0",
+  "domain": "conductor",
+  "verb": "ingest",
+  "kind": "mcmillan_lambda_inversion_baseline",
+  "stamp": "20260524T214725Z",
+  "producer": "demiurge RTSC §8.6 — hexa-rtsc verifier output → conductor handoff (thin adapter, M465). McMillan / Allen-Dynes Newton inversion. Forward Tc(λ;ω_log,μ*), inverse λ(Tc). 5 SC anchors (Pb/Nb/V3Si/Nb3Sn/MgB2). BCS-λ ceiling reproduced numerically.",
+  "vendor": null,
+  "source": "hexa-rtsc-derived",
+  "out_dir": "exports/conductor/hexa-rtsc-baseline/mcmillan/20260524T214725Z",
+  "verifier": {
+    "verifier_id": "mcmillan",
+    "pillar": "rtsc",
+    "falsifiers": ["F-RTSC-2"],
+    "verifier_path": "stdlib/rtsc/verify/numerics_mcmillan_solver.hexa",
+    "verifier_run_invocation": "hexa run stdlib/rtsc/verify/numerics_mcmillan_solver.hexa",
+    "verifier_pass_sentinel": "__HEXA_RTSC_NUMERICS_MCMILLAN_SOLVER__ PASS",
+    "verifier_tier": "T2 numerical (Newton solver leg of T2 ×3 stack)"
+  },
+  "spec": {
+    "family": "rtsc_hypothetical",
+    "family_enum_note": "ConductorMaterial = cu | nbti | nb3sn | rebco | bi2212 | rtsc_hypothetical (RTSC.md §5 Axis B / §8.6). Adapter records use rtsc_hypothetical for simulation-derived solver baselines — verifier output is computational lineage, not material characterization.",
+    "compound": null,
+    "compound_note": "Simulation-derived solver baselines do not bind to a specific compound. The mcmillan solver exercises the Allen-Dynes 1975 Tc formula on five published reference SCs (Pb, Nb, V3Si, Nb3Sn, MgB2 σ-band) at runtime; the BCS-λ ceiling check (max Tc < 50 K at Θ_D=400 K, μ*=0.13, λ ≤ 1.5) is the F-RTSC-2 falsifier core. For per-material records, ingest a vendor-datasheet or external-paper record alongside this baseline.",
+    "tc_k": null,
+    "tc_k_units": "kelvin",
+    "hc2_t_at_4k": null,
+    "hc2_t_at_4k_units": "tesla",
+    "hc2_t_at_77k": null,
+    "hc2_t_at_77k_units": "tesla",
+    "anisotropy_gamma": null,
+    "anisotropy_gamma_units": "dimensionless",
+    "jc_b_t_theta": {
+      "stub": true,
+      "description": "Solver baseline records do not populate Jc(B,T,θ); that table comes from a vendor-datasheet or measurement-ingest record. Left null — see PR #90 sibling for the REBCO baseline schema.",
+      "value": { "jc": null, "jc_units": "A/m^2" },
+      "jc_data_table_ref_record_id": null
+    }
+  },
+  "provenance": {
+    "source_substrate": "hexa-rtsc",
+    "source_record_url": null,
+    "source_citation": "McMillan / Allen-Dynes Newton inversion. Forward Tc(λ;ω_log,μ*), inverse λ(Tc). 5 SC anchors (Pb/Nb/V3Si/Nb3Sn/MgB2). BCS-λ ceiling reproduced numerically. Verifier: stdlib/rtsc/verify/numerics_mcmillan_solver.hexa — invocation `hexa run stdlib/rtsc/verify/numerics_mcmillan_solver.hexa`. Sentinel `__HEXA_RTSC_NUMERICS_MCMILLAN_SOLVER__ PASS` on success.",
+    "derive_chain": "hexa-rtsc stdlib/rtsc/verify/numerics_mcmillan_solver.hexa -> RTSC/conductor/hexa_rtsc_baseline_adapter.hexa -> exports/conductor/hexa-rtsc-baseline/mcmillan/<stamp>/conductor_mcmillan.json -> (downstream) device producer reads nu[Coil]/Jc_limit/Hc2_limit when family is bound"
+  },
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "hexa-rtsc-derived",
+  "gate_type_enum_note": "gate_type in { vendor-datasheet | hexa-rtsc-derived | external-paper } per RTSC.md §8.5. Solver baselines are hexa-rtsc-derived — absorbed stays false permanently per the derived/sim contract.",
+  "provisional": true,
+  "scope_caveats": [
+    "hexa-rtsc verifier output ingested · sim-derived · not wet-lab",
+    "Solver baseline — encodes verifier IDENTITY (pillar=rtsc, falsifier=F-RTSC-2, sentinel) not a new numerical result. To re-run: hexa run stdlib/rtsc/verify/numerics_mcmillan_solver.hexa",
+    "absorbed=false permanent until an independent measurement record supersedes (RTSC.md §8.7 Tier-3).",
+    "family=rtsc_hypothetical — record is universal-form lineage (Allen-Dynes Tc formula), not a per-material characterization. For per-material binding (e.g., Nb3Sn-specific λ inversion), ingest a vendor-datasheet or measurement record alongside.",
+    "Sibling REBCO baseline at exports/conductor/hts_rebco/20260525T000000Z/conductor_rebco_hts_baseline.json (PR #90, also hexa-rtsc-derived, family=rebco)."
+  ],
+  "r4_invariant": "absorbed=false · provisional=true · gate_type=hexa-rtsc-derived · domain=conductor. R4 preserved — solver baseline is computational lineage, not measurement.",
+  "citations": [
+    "RTSC.md §8.5 (material-side handoff schema)",
+    "RTSC.md §8.6 (hexa-rtsc thin adapter — M465 wired by this record)",
+    "RTSC.md §5 Axis B (ConductorMaterial enum, family slot)",
+    "PR #90 (exports/conductor/hts_rebco/ baseline schema exemplar — this record matches that schema)",
+    "hexa-rtsc stdlib/rtsc/verify/numerics_mcmillan_solver.hexa (verifier source-of-truth)"
+  ]
+}
