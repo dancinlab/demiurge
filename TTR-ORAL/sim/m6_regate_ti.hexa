@@ -1,0 +1,47 @@
+// TTR-ORAL M6 re-gate — pulsed therapeutic-index recompute (track B)
+// M6 found B = NO-GO (chronic window absent). M5 showed pulsing gives a window
+// IFF systemic toxicity recovers between pulses. This recomputes TI under pulsing
+// and finds the break-even recovery efficiency that flips B to GO.
+//   TI_pulsed = TI_chronic * (T/on) * eta_recovery
+//   GO if TI >= 1 (break-even) ; comfortable if TI >= 3
+//   break-even eta:  eta* = TI_target / (TI_chronic * (T/on))
+// run: hexa run TTR-ORAL/sim/m6_regate_ti.hexa
+
+println("=== TTR-ORAL M6 re-gate: pulsed TI recompute (track B) ===")
+println("")
+
+// chronic-dosing TI from M6 (both < ~1 -> NO-GO baseline)
+let ti_strong   = 0.5   // CSF1R-heavy (effect=toxicity overlap)
+let ti_balanced = 0.8   // 3-lever balanced
+
+// pulse schedule: period 30d / on 3d  -> duty-inverse T/on = 10
+let ton = 10.0   // 30d / 3d
+
+println("[1] TI_pulsed = TI_chronic * (T/on) * eta_recovery   (T/on = 10, period 30d/on 3d)")
+println("  -- strong lever (TI_chronic = 0.5) --")
+println("  eta=0.0  TI =", ti_strong * ton * 0.0)
+println("  eta=0.2  TI =", ti_strong * ton * 0.2)
+println("  eta=0.5  TI =", ti_strong * ton * 0.5)
+println("  eta=1.0  TI =", ti_strong * ton * 1.0)
+println("  -- balanced 3-lever (TI_chronic = 0.8) --")
+println("  eta=0.2  TI =", ti_balanced * ton * 0.2)
+println("  eta=0.5  TI =", ti_balanced * ton * 0.5)
+println("  eta=1.0  TI =", ti_balanced * ton * 1.0)
+
+println("")
+println("[2] break-even recovery efficiency eta* (eta to reach TI target):")
+// eta* = TI_target / (TI_chronic * T/on)
+println("  strong   TI>=1 : eta* =", 1.0 / (ti_strong * ton))
+println("  strong   TI>=3 : eta* =", 3.0 / (ti_strong * ton))
+println("  balanced TI>=1 : eta* =", 1.0 / (ti_balanced * ton))
+println("  balanced TI>=3 : eta* =", 3.0 / (ti_balanced * ton))
+
+println("")
+println("[3] sensitivity to pulse spacing (balanced, TI>=3 target):")
+println("  period 14d/on 3d (T/on=4.67): eta* =", 3.0 / (ti_balanced * (14.0/3.0)))
+println("  period 30d/on 3d (T/on=10.0): eta* =", 3.0 / (ti_balanced * 10.0))
+println("  period 30d/on 2d (T/on=15.0): eta* =", 3.0 / (ti_balanced * 15.0))
+
+println("")
+println("=== re-gate verdict: B = CONDITIONAL-GO if measured recovery eta >= eta* ===")
+println("=== eta is the wet-lab measurable (M9 in-vivo) ; absorbed=false until then ===")

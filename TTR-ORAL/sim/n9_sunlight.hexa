@@ -1,0 +1,116 @@
+// TTR-ORAL N9 — ambient-sunlight-gated prodrug activation (device-free external trigger)
+// hexa-native recompute per @D g1 + feedback_demiurge_assets_simulation_mandatory.
+// Question: can FREE ambient sunlight (no clinical laser/device) be the external
+// trigger that uncages an inert oral prodrug at dermal ink depth (500-2000 um),
+// and is it SITE-specific to the tattoo?
+// All first-principles (Beer-Lambert depth · solar-vs-laser irradiance ratio ·
+// photothermal steady-state DeltaT · whole-body sun exposure budget).
+// distinct let-names per reference_hexa_let_literal_collision (PR #821).
+// run: hexa run TTR-ORAL/sim/n9_sunlight.hexa
+
+println("=== TTR-ORAL N9 ambient-sunlight-gated activation ===")
+println("")
+
+// ---- [1] solar irradiance at skin & spectral split (Ossila AM1.5) ------------
+// Total ~1000 W/m2 = 100 mW/cm2 (1-sun). Split: UV 3-5%, Vis 42-43%, NIR 52-55%.
+let solar_total = 1000.0          // W/m2 at skin surface (AM1.5, full sun)
+let frac_uv = 0.04                 // UV (the band that uncages oNB/coumarin) ~4%
+let frac_vis = 0.43
+let frac_nir = 0.53
+let solar_uv = solar_total * frac_uv
+let solar_vis = solar_total * frac_vis
+let solar_nir = solar_total * frac_nir
+println("[1] solar irradiance at skin (AM1.5 1-sun, W/m2):")
+println("  total     = ", solar_total, "  (= 100 mW/cm2)")
+println("  UV  (~4%) = ", solar_uv, "  <- the band that drives classic photo-uncage")
+println("  Vis (43%) = ", solar_vis)
+println("  NIR (53%) = ", solar_nir, "  <- penetrates deepest but low-energy photons")
+println("")
+
+// ---- [2] fluence that survives to dermal ink depth (Beer-Lambert) ------------
+// I(z) = I0 * exp(-z/delta), delta = penetration (1/e) depth.
+// UV-A delta ~0.1 mm (barely past epidermis); red ~1.8 mm; NIR-I (~900nm) ~2.5 mm.
+// ink lives 500-2000 um. Evaluate at z=1000 um (1 mm, mid-dermis).
+let z_ink = 1.0                    // mm (mid-dermis ink depth)
+let delta_uv = 0.1                 // mm, UV-A 1/e depth (Finlayson 2022)
+let delta_red = 1.8                // mm, ~633-660 nm
+let delta_nir = 2.5                // mm, ~900 nm
+let surv_uv = exp(-z_ink/delta_uv)
+let surv_red = exp(-z_ink/delta_red)
+let surv_nir = exp(-z_ink/delta_nir)
+println("[2] fraction of surface fluence reaching z=1mm ink (Beer-Lambert exp(-z/delta)):")
+println("  UV-A (delta 0.1mm) : ", surv_uv, "  <- ~", surv_uv*100.0, "% : UV essentially DEAD at depth")
+println("  red  (delta 1.8mm) : ", surv_red, "  <- ~", surv_red*100.0, "% reaches ink")
+println("  NIR  (delta 2.5mm) : ", surv_nir, "  <- ~", surv_nir*100.0, "% reaches ink (best)")
+println("  => the uncaging band MUST be red/NIR; UV photo-uncage cannot reach dermal ink.")
+println("")
+
+// ---- [3] solar vs clinical laser: the irradiance / activation-rate ratio -----
+// Clinical Q-switched tattoo laser: ~100 mJ in ~10 ns over ~3mm spot (~0.07 cm2).
+// peak irradiance = E/(t*A). Sun delivers ~10 mW into the SAME spot, continuously.
+let laser_E = 0.1                  // J per pulse (100 mJ)
+let laser_t = 1.0e-8               // s (10 ns Q-switched)
+let spot_cm2 = 0.07                // cm2 (~3mm dia spot)
+let spot_m2 = spot_cm2 * 1.0e-4    // m2
+let laser_peak = laser_E / (laser_t * spot_m2)            // W/m2 peak
+let sun_into_spot = solar_total                            // W/m2 (irradiance is per-area)
+let irr_ratio = laser_peak / sun_into_spot
+println("[3] peak-irradiance ratio (laser pulse vs ambient sun):")
+println("  laser peak irradiance   = ", laser_peak, " W/m2  (100mJ / 10ns / 0.07cm2)")
+println("  ambient sun irradiance  = ", sun_into_spot, " W/m2")
+println("  laser / sun (peak)      = ", irr_ratio, " x   (~10 orders of magnitude)")
+println("  => single-photon linear activation rate scales with I -> sun is ~1e9-1e10x slower PER INSTANT.")
+println("  (sun is continuous; even integrating a 6h day cannot close a 1e9 peak gap for")
+println("   any rate term that needs INSTANTANEOUS high fluence, e.g. nonlinear/2-photon.)")
+println("")
+
+// ---- [4] photothermal DeltaT: laser ns thermal-confinement vs sun steady-state -
+// Laser ns pulse: thermally CONFINED in ink particle -> adiabatic DeltaT = fluence*mu_a/(rho*c).
+// Sun CW: heat diffuses away; steady-state DeltaT of a buried absorber is tiny because
+// power is spread + perfusion clears it. Estimate sun-driven bulk skin DeltaT:
+// absorbed areal power that reaches 1mm ink ~ solar_nir*surv_nir; skin thermal clearance
+// (perfusion+conduction) ~ h_eff ~ 100-200 W/m2/K for skin. DeltaT = q_abs / h_eff.
+let q_abs_sun = solar_nir * surv_nir * 1.0   // W/m2 reaching+absorbed at ink (NIR, generous abs~1)
+let h_eff_skin = 150.0                        // W/m2/K effective skin heat-clearance coeff
+let dT_sun = q_abs_sun / h_eff_skin
+// laser adiabatic (ns, no diffusion): fluence ~ E/A = 0.1/7e-6 m2 = 1.4e4 J/m2 in the particle
+let laser_fluence = laser_E / spot_m2         // J/m2
+let ink_rho_c = 3.0e6                          // J/m3/K (~tissue/ink heat capacity per vol)
+let ink_mu_a = 5.0e4                           // 1/m absorption coeff of carbon-black ink (strong)
+let dT_laser = laser_fluence * ink_mu_a / ink_rho_c   // K, adiabatic local
+println("[4] photothermal DeltaT — sun steady-state vs laser ns-confined:")
+println("  sun:   absorbed q at ink = ", q_abs_sun, " W/m2 ; DeltaT = q/h_eff = ", dT_sun, " K")
+println("         (~2-3 K bulk rise, the same as 'tattoo feels warm in sun' — far below any")
+println("          thermo-cleavable linker threshold (~bond-breaking needs 100s of K local), perfusion-clamped)")
+println("  laser: adiabatic local DeltaT = ", dT_laser, " K  (ns confinement -> 100s of K, ink vaporizes)")
+println("  => sun cannot reach the DeltaT that ns-laser confinement does, by ~", dT_laser/dT_sun, " x.")
+println("")
+
+// ---- [5] SITE-specificity: whole-body sun + systemic prodrug ------------------
+// Prodrug is systemic (~uniform). If sun-driven activation fires anywhere sun + a
+// chromophore coincide, then ALL sun-exposed skin activates, not just the tattoo.
+// Tattoo helps ONLY via its EXTRA absorption (ink mu_a >> bare-skin mu_a). Contrast:
+let mu_a_ink = 5.0e4               // 1/m carbon-black ink (broadband strong)
+let mu_a_skin = 5.0e2              // 1/m bare dermis at red/NIR (melanin+hemoglobin, light skin)
+let abs_contrast = mu_a_ink / mu_a_skin     // ink vs bare-skin absorption ratio
+// sun-exposed bare skin area (face+arms+neck, casual) ~ 0.3 m2 ; tattoo ~ 50 cm2 = 0.005 m2
+let area_sun_skin = 0.30           // m2 bare sun-exposed skin
+let area_tattoo = 0.005            // m2 (50 cm2 tattoo)
+let activation_share_tattoo = (mu_a_ink*area_tattoo) / (mu_a_ink*area_tattoo + mu_a_skin*area_sun_skin)
+println("[5] site-specificity under whole-body sun + systemic prodrug:")
+println("  ink vs bare-skin absorption contrast = ", abs_contrast, " x  (ink IS a far stronger antenna)")
+println("  but bare sun-exposed skin area (", area_sun_skin, " m2) >> tattoo (", area_tattoo, " m2)")
+println("  tattoo's share of total photo-activation events = ", activation_share_tattoo)
+println("  => even with ~", abs_contrast, "x ink contrast, bare skin's huge area dilutes specificity to ~", activation_share_tattoo)
+println("     (a clinical LASER aims ONLY at the tattoo -> share ~1.0; sun has NO aiming.)")
+println("")
+
+// ---- [6] honest top-line ratios ----------------------------------------------
+println("[6] N9 honest scorecard:")
+println("  depth (UV uncage @1mm)      : ", surv_uv, "  -> UV photo-uncage UNREACHABLE")
+println("  peak-irradiance gap vs laser: ", irr_ratio, " x")
+println("  sun photothermal DeltaT     : ", dT_sun, " K  (sub-K; no thermal uncaging)")
+println("  tattoo activation share     : ", activation_share_tattoo, "  (NOT site-specific)")
+println("  => sun is a weak, unaimed, depth-starved trigger: ~1e9x peak gap + no spatial gating.")
+println("")
+println("=== N9 done ===")

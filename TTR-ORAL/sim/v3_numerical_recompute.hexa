@@ -1,0 +1,64 @@
+// TTR-ORAL V3 — consolidated hexa-native numerical recompute (track B lead)
+// Upgrades V2's hand-arithmetic ledger to hexa-native recompute (🟢) and folds in
+// M5 (pulsed PK/PD) + M6-regate (pulsed TI). GPU-needing claims (TDDFT prodrug,
+// lymphatic MD) stay 🟠 DEFERRED per @D d7 — not on the device-free B path anyway.
+// run: hexa run TTR-ORAL/sim/v3_numerical_recompute.hexa
+
+println("=== TTR-ORAL V3 numerical recompute (hexa-native, track B) ===")
+println("")
+
+// ---- A. ADME site-specificity wall (V2 §1-2 -> 🟢) -------------------------
+println("[A] ADME dermal delivery fraction + amplification:")
+let Fa = 0.8
+let Fg = 0.83
+let fu_CLint = 30.0
+let Qh = 90.0
+let Eh = fu_CLint / (Qh + fu_CLint)
+let Fh = 1.0 - Eh
+let F = Fa * Fg * Fh
+println("  Eh =", Eh, " Fh =", Fh, " F(bioavailability) =", F)
+
+let Kp = 1.0
+let Vtat = 50.0 * 0.15        // cm^2 * cm = 7.5 cm^3 = 0.0075 L
+let Vtat_L = Vtat / 1000.0
+let Vd = 42.0
+let f_target = Kp * F * Vtat_L / Vd
+let amplification = Vd / (Kp * Vtat_L)
+println("  V_tat =", Vtat, "cm^3 =", Vtat_L, "L")
+println("  f_target =", f_target, "(fraction of oral dose at tattoo)")
+println("  amplification = Vd/(Kp*V_tat) =", amplification, "x (systemic/target)")
+
+// ---- B. pulsed clearance timeline (M5 -> 🟢) -------------------------------
+println("")
+println("[B] pulsed clearance (full 3-lever):")
+let tau = 0.25
+let k_eff = 0.50 + (1.0 - 0.70) * 0.50   // emig + (1-r)*death
+let phi = 1.0 - exp(-k_eff * tau)
+let n90 = log(0.1) / log(1.0 - phi)
+println("  k_eff =", k_eff, "/mo  phi =", phi, "  n90 =", n90, "pulses")
+println("  biweekly schedule months =", n90 * 0.5)
+
+// ---- C. recapture-down lever leverage (B roadmap -> 🟢) --------------------
+println("")
+println("[C] recapture-down (r) leverage on the (1-r)*k_death term:")
+let term_r095 = (1.0 - 0.95) * 0.40
+let term_r080 = (1.0 - 0.80) * 0.40
+println("  r=0.95 term =", term_r095, "  r=0.80 term =", term_r080, "  ratio =", term_r080 / term_r095, "x")
+
+// ---- D. pulsed TI re-gate (M6-regate -> 🟢) --------------------------------
+println("")
+println("[D] pulsed TI re-gate (balanced 3-lever TI_chronic=0.8, 30d/3d):")
+let ti_chronic = 0.8
+let ton = 10.0
+println("  TI(eta=1.0) =", ti_chronic * ton * 1.0)
+println("  break-even eta* (TI>=3) =", 3.0 / (ti_chronic * ton))
+
+// ---- E. verify checksums (must match V2 hand-ledger) -----------------------
+println("")
+println("[E] checksums vs V2 hand-ledger:")
+println("  f_target target 8.93e-5 -> got", f_target)
+println("  amplification target 5600 -> got", amplification)
+println("  n90(phi~0.15) target ~14.2 -> got", n90)
+
+println("")
+println("=== V3 done — GPU-needing TDDFT/MD claims remain 🟠 DEFERRED (off B path) ===")

@@ -1,0 +1,88 @@
+// TTR-ORAL N2 deep-dive — monocyte trojan-horse (target the REPLACEMENT cells)
+// Recapture r is performed by FRESH monocyte-derived macrophages arriving from blood.
+// Pre-program those blood monocytes so the resident recapturer pool turns over to a
+// low-r phenotype. r is not blocked instantly; it decays as the dermal pool is
+// replaced by reprogrammed cells.
+//   resident-pool replacement (Baranska renewal): fraction reprogrammed f(t)=1-exp(-t/tau_rep)
+//   tau_rep = dermal macrophage replacement time constant (lower dermis, monocyte-fed)
+//   effective recapture at time t: r_eff(t) = r0*(1-f) + r_prog*f
+//   programmed cells recapture at r_prog (lower); r0=natural 0.95
+//   k_eff(t) = k_emig + (1-r_eff(t))*k_death ; here k_death=natural turnover 0.02 (NO CSF1R pulse:
+//      N2 is device-free, oral-only, no depletion lever) ; tau-integrate phi over a 28d window.
+// run: hexa run TTR-ORAL/sim/n2_monocyte_trojan.hexa
+
+println("=== TTR-ORAL N2: monocyte trojan-horse — reprogram blood recapturers ===")
+println("")
+
+// --- part 1: accessibility advantage (oral->blood->monocyte) vs oral->dermis ---
+println("[1] ADME accessibility: target compartment fraction f_target")
+let f_dermis = 0.0001          // ~1e-4 oral dose fraction reaching dermal interstitium (Path-A wall)
+let F_oral = 0.5               // representative oral bioavailability to systemic blood (0.3-0.9)
+let f_blood = F_oral           // monocytes ARE in blood => same compartment the drug reaches
+let gain = f_blood / f_dermis
+println("  f_dermis(resident target) = ", f_dermis)
+println("  f_blood (monocyte target) = ", f_blood, "   (= oral bioavailability F)")
+println("  accessibility gain        = ", gain, "x")
+println("")
+
+// --- part 2: r decays as resident pool turns over to reprogrammed phenotype ---
+println("[2] r_eff(t) as dermal pool is replaced by reprogrammed monocytes (tau_rep)")
+let r0 = 0.95
+let r_prog = 0.50              // reprogrammed monocytes recapture at r=0.50 (aggressive SR-down target)
+let kemig = 0.02
+let kd_nat = 0.05              // natural per-pulse release (M5b-grounded) — N2 solo, no CSF1R
+let tau = 0.25
+let T = 28.0
+
+// f(t) = 1 - exp(-t/tau_rep) ; report at t = 1,3,6,12 months for tau_rep = 90d (Baranska cycle)
+let tau_rep = 90.0             // days; Baranska capture-release-recapture ~90d renewal cycle
+println("  tau_rep = ", tau_rep, "d (Baranska renewal cycle) ; r0=", r0, " r_prog=", r_prog)
+println("  t(mo)  f_replaced   r_eff      k_eff(natural kd=0.05)")
+// 1 month
+let f1 = 1.0 - exp(-30.4/tau_rep)
+let re1 = r0*(1.0-f1) + r_prog*f1
+println("   1     ", f1, "  ", re1, "  ", kemig+(1.0-re1)*kd_nat)
+// 3 months
+let f3 = 1.0 - exp(-91.2/tau_rep)
+let re3 = r0*(1.0-f3) + r_prog*f3
+println("   3     ", f3, "  ", re3, "  ", kemig+(1.0-re3)*kd_nat)
+// 6 months
+let f6 = 1.0 - exp(-182.4/tau_rep)
+let re6 = r0*(1.0-f6) + r_prog*f6
+println("   6     ", f6, "  ", re6, "  ", kemig+(1.0-re6)*kd_nat)
+// 12 months
+let f12 = 1.0 - exp(-365.0/tau_rep)
+let re12 = r0*(1.0-f12) + r_prog*f12
+println("  12     ", f12, "  ", re12, "  ", kemig+(1.0-re12)*kd_nat)
+println("")
+
+// --- part 3: fade timeline at fully-reprogrammed r_prog, canonical per-pulse machinery ---
+// phi = 1-exp(-k_eff*tau) ; n90 = log(0.1)/log(1-phi) ; months = n90*T/30.4 (T=28d)
+println("[3] fade timeline at fully-reprogrammed r_prog (canonical phi/n90, T=28d)")
+println("  case            k_death  r_prog  k_eff      phi        n90      months")
+// N2 SOLO (natural turnover, no CSF1R pulse):
+let kea = kemig + (1.0-r_prog)*kd_nat
+let pa = 1.0-exp(-kea*tau)
+let na = log(0.1)/log(1.0-pa)
+println("  N2 solo         0.05     0.50    ", kea, "  ", pa, "  ", na, "  ", na*T/30.4)
+// N2 SOLO natural baseline r0 (no reprogramming) for contrast:
+let keb = kemig + (1.0-r0)*kd_nat
+let pb = 1.0-exp(-keb*tau)
+let nb = log(0.1)/log(1.0-pb)
+println("  baseline(r0)    0.05     0.95    ", keb, "  ", pb, "  ", nb, "  ", nb*T/30.4)
+// N2 + CSF1R pulse (k_death=0.50): N2 supplies the low-r recapturers, pulse supplies k_death
+let kd_p = 0.50
+let kec = kemig + (1.0-r_prog)*kd_p
+let pc = 1.0-exp(-kec*tau)
+let nc = log(0.1)/log(1.0-pc)
+println("  N2 + CSF1R-pulse 0.50    0.50    ", kec, "  ", pc, "  ", nc, "  ", nc*T/30.4)
+// N2(aggressive r=0.30) + CSF1R pulse
+let ked = kemig + (1.0-0.30)*kd_p
+let pd = 1.0-exp(-ked*tau)
+let nd = log(0.1)/log(1.0-pd)
+println("  N2(r0.30)+pulse 0.50    0.30    ", ked, "  ", pd, "  ", nd, "  ", nd*T/30.4)
+println("")
+println("[note] N2 SOLO has NO k_death amplifier (no CSF1R pulse) -> phi tiny -> MANY YEARS")
+println("       even at r_prog=0.50. N2's value is NOT speed-solo: it makes r-down ACHIEVABLE")
+println("       via the accessible blood compartment (gain ~", gain, "x vs dermal 1e-4),")
+println("       best as the r-lever SUPPLIER feeding a CSF1R-pulse (k_death) or laser co-therapy.")

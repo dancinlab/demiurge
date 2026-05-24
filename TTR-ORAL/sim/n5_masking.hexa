@@ -1,0 +1,97 @@
+// TTR-ORAL N5 — optical masking: make tattoo invisible WITHOUT removing ink.
+// Concept: do not touch the ink (escapes carbon-floor + ADME walls). Instead change
+//   the OVERLYING/surrounding tissue optics (epidermal melanin via oral tanning, or
+//   dermal collagen scattering) so ink-vs-skin CONTRAST drops below the eye's JND.
+// Physics:
+//   - epidermal melanin sits ABOVE dermal ink -> Beer-Lambert attenuates light TWICE
+//     (down + back up) for BOTH the ink region and the surrounding skin.
+//   - visible contrast ~ Weber contrast  C = |R_ink - R_skin| / R_skin
+//   - eye JND (just-noticeable luminance contrast) ~ 0.01-0.02 (Weber fraction).
+//   - tanning raises melanosome volume fraction f_mel -> raises epidermal OD -> the
+//     SURROUND reflectance R_skin DROPS toward the ink's already-dark R_ink.
+//   honest core: does dimming the layer ABOVE both regions cut their CONTRAST, or
+//   just darken the whole field uniformly (contrast preserved)?  -> see [3]/[4].
+// run: hexa run TTR-ORAL/sim/n5_masking.hexa
+
+println("=== TTR-ORAL N5 optical masking (tissue optics, NOT ink removal) ===")
+println("")
+
+// --- anchors (Jacques skin-optics; OMLC) ---
+// melanosome volume fraction f_mel: light skin ~0.06, dark skin ~0.40
+// epidermal melanin absorption coeff mu_a,mel(500nm) ~ 100 /cm (eumelanin band)
+// epidermis thickness L_epi ~ 0.01 cm (100 um). photon path = 2*L (down+up, diffuse).
+let mua_mel = 100.0
+let Lepi = 0.01
+let path = 2.0 * Lepi
+// intrinsic reflectances at the dermal plane (below epidermis), green ~520nm:
+//   R0_skin = bright dermal background (collagen+blood backscatter) ~ 0.45
+//   R0_ink  = dark dermal ink patch (carbon/dark pigment absorbs) ~ 0.08
+let R0_skin = 0.45
+let R0_ink  = 0.08
+let JND = 0.02   // Weber just-noticeable contrast (~2%)
+
+println("[1] baseline contrast through LIGHT-skin epidermis (f_mel=0.06):")
+let fL = 0.06
+let TL = exp(-mua_mel*fL*path)      // one-way epidermal transmittance
+let RsL = R0_skin*TL*TL             // skin reflectance seen at surface (down+up)
+let RiL = R0_ink*TL*TL
+let CL = (RsL-RiL)/RsL
+println("  T_epi(1-way)=", TL, "  R_skin=", RsL, "  R_ink=", RiL)
+println("  Weber contrast C=", CL, "  (JND=", JND, ") visible? ", CL > JND)
+
+println("")
+println("[2] after ORAL TAN raises f_mel (afamelanotide-like darkening):")
+println("  f_mel : T_epi   R_skin    R_ink     C(Weber)   <JND(invisible)?")
+let i = 0
+// sweep f_mel up to dark-skin ceiling 0.40
+let fA = 0.06
+let TA = exp(-mua_mel*fA*path)
+println("  0.06  : ", TA, "  ", R0_skin*TA*TA, "  ", R0_ink*TA*TA, "  ", (R0_skin*TA*TA-R0_ink*TA*TA)/(R0_skin*TA*TA), "   ", (R0_skin*TA*TA-R0_ink*TA*TA)/(R0_skin*TA*TA) < JND)
+let fB = 0.12
+let TB = exp(-mua_mel*fB*path)
+println("  0.12  : ", TB, "  ", R0_skin*TB*TB, "  ", R0_ink*TB*TB, "  ", (R0_skin*TB*TB-R0_ink*TB*TB)/(R0_skin*TB*TB), "   ", (R0_skin*TB*TB-R0_ink*TB*TB)/(R0_skin*TB*TB) < JND)
+let fC = 0.25
+let TC = exp(-mua_mel*fC*path)
+println("  0.25  : ", TC, "  ", R0_skin*TC*TC, "  ", R0_ink*TC*TC, "  ", (R0_skin*TC*TC-R0_ink*TC*TC)/(R0_skin*TC*TC), "   ", (R0_skin*TC*TC-R0_ink*TC*TC)/(R0_skin*TC*TC) < JND)
+let fD = 0.40
+let TD = exp(-mua_mel*fD*path)
+println("  0.40  : ", TD, "  ", R0_skin*TD*TD, "  ", R0_ink*TD*TD, "  ", (R0_skin*TD*TD-R0_ink*TD*TD)/(R0_skin*TD*TD), "   ", (R0_skin*TD*TD-R0_ink*TD*TD)/(R0_skin*TD*TD) < JND)
+
+println("")
+println("[3] ** WHY masking by an OVERLYING absorber largely FAILS on contrast **")
+println("  Both R_skin and R_ink scale by the SAME factor T_epi^2 (Beer-Lambert).")
+println("  Weber C = (R0_skin - R0_ink)/R0_skin  -> T_epi^2 CANCELS in the ratio.")
+let Ccancel = (R0_skin-R0_ink)/R0_skin
+println("  => contrast is INVARIANT to a uniform overlying veil: C=", Ccancel, " (independent of f_mel)")
+println("  Tanning dims the WHOLE field uniformly; the dark patch stays proportionally dark.")
+println("  (Real masking needs absorber sitting BETWEEN ink & surround in-plane, not above both.)")
+
+println("")
+println("[4] absolute (luminance) gap shrinks, but stays >> JND until field is near-black:")
+println("  f_mel : abs gap dR = R_skin - R_ink")
+println("  0.06  : ", R0_skin*TA*TA - R0_ink*TA*TA)
+println("  0.25  : ", R0_skin*TC*TC - R0_ink*TC*TC)
+println("  0.40  : ", R0_skin*TD*TD - R0_ink*TD*TD)
+println("  (gap only ->0 as TOTAL reflectance ->0, i.e. tan everyone jet-black; cosmetically absurd)")
+
+println("")
+println("[5] dermal-collagen / refractive-index-match lever (optical clearing):")
+println("  reduced scattering mu_s' drop lowers R0_skin (bright surround) TOWARD R0_ink.")
+println("  glycerol/RI-match can cut mu_s' ~30-50%; model R0_skin 0.45 -> ~0.25:")
+let R0_skin2 = 0.25
+let C5 = (R0_skin2*TA*TA - R0_ink*TA*TA)/(R0_skin2*TA*TA)
+println("  R0_skin->0.25: C=", C5, " (vs 0.822) -- contrast WORSENS toward ink? no, surround->ink so |gap| shrinks")
+println("  but optical clearing is TRANSIENT/topical; no oral agent achieves dermal RI-match systemically.")
+
+println("")
+println("[6] specificity wall (the same one the whole program has):")
+println("  an ORAL tan/clearing agent acts WHOLE-BODY. ink-bearing skin fraction of total skin:")
+let A_tattoo = 100.0     // cm^2 typical tattoo
+let A_body   = 18000.0   // cm^2 adult skin
+println("  tattoo/body skin area = ", A_tattoo/A_body)
+println("  -> to mask ~100 cm^2 you must tan ~1.8 m^2 of skin (and face/eyes) -> trades carbon/ADME")
+println("     wall for the SITE-SPECIFICITY wall. and masking != removal: ink persists, contrast returns.")
+
+println("")
+println("=== honest: overlying veil cancels in Weber contrast (T^2 ratio); ===")
+println("=== oral = whole-body tan (site-specificity wall) ; masking != removal (reversible). ===")

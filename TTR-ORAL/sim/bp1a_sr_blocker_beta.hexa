@@ -1,0 +1,52 @@
+// TTR-ORAL BP1a — scavenger-receptor (SR-A/MARCO) blocker realistic-beta -> timeline
+// BP1a target = ORAL small-molecule SR-A antagonist (the device-free "holy grail" r-down lever).
+// Question: if the only credible oral candidates (diacerein->rhein, berberine) deliver only
+// PARTIAL SR-A block, what recapture-down beta band do they buy, and what timeline?
+//   r0 = 0.95  =>  k_phago/k_drain = r0/(1-r0) = 19
+//   r(beta) = 19*(1-beta) / (19*(1-beta) + 1)   (re-engulfment scaled by (1-beta))
+//   k_eff = k_emig + (1-r)*k_death  (k_death=0.50 CSF1R pulse, k_emig=0.02, tau=0.25, T=28d)
+//   phi = 1-exp(-k_eff*tau) ; n90 = log(0.1)/log(1-phi) ; months = n90*T/30.4
+// run: hexa run TTR-ORAL/sim/bp1a_sr_blocker_beta.hexa
+
+println("=== TTR-ORAL BP1a: oral SR-A blocker realistic beta -> timeline (T=28d) ===")
+println("")
+let kemig = 0.02
+let kd = 0.50
+let tau = 0.25
+let T = 28.0
+let ratio = 19.0   // r0/(1-r0) at r0=0.95
+
+println("beta(SR-A차단)  r(recapture)   k_eff    phi      n90     months   credible-oral-modality")
+
+// beta = 0.20 (weak: low-MW fucoidan oral / berberine partial MSR1 endocytosis block)
+let ra = ratio*(1.0-0.20)/(ratio*(1.0-0.20)+1.0)
+let kea = kemig+(1.0-ra)*kd
+let pa = 1.0-exp(-kea*tau)
+println("  0.20        ", ra, "  ", kea, "  ", pa, "  ", log(0.1)/log(1.0-pa), "  ", (log(0.1)/log(1.0-pa))*T/30.4, "  fucoidan/berberine (poor BA)")
+
+// beta = 0.40 (moderate: diacerein->rhein oral, FDA-approved, first SM SR-A inhibitor)
+let rb = ratio*(1.0-0.40)/(ratio*(1.0-0.40)+1.0)
+let keb = kemig+(1.0-rb)*kd
+let pb = 1.0-exp(-keb*tau)
+println("  0.40        ", rb, "  ", keb, "  ", pb, "  ", log(0.1)/log(1.0-pb), "  ", (log(0.1)/log(1.0-pb))*T/30.4, "  diacerein->rhein (FDA oral)")
+
+// beta = 0.60 (optimized oral SR-A SM lead, BP1a discovery target — does NOT exist yet)
+let rc = ratio*(1.0-0.60)/(ratio*(1.0-0.60)+1.0)
+let kec = kemig+(1.0-rc)*kd
+let pc = 1.0-exp(-kec*tau)
+println("  0.60        ", rc, "  ", kec, "  ", pc, "  ", log(0.1)/log(1.0-pc), "  ", (log(0.1)/log(1.0-pc))*T/30.4, "  optimized SM lead (TO DEVELOP)")
+
+// beta = 0.85 (anti-MARCO mAb level block — biologic, NON-oral, device-free violation)
+let rd = ratio*(1.0-0.85)/(ratio*(1.0-0.85)+1.0)
+let ked = kemig+(1.0-rd)*kd
+let pd = 1.0-exp(-ked*tau)
+println("  0.85        ", rd, "  ", ked, "  ", pd, "  ", log(0.1)/log(1.0-pd), "  ", (log(0.1)/log(1.0-pd))*T/30.4, "  anti-MARCO mAb (biologic·non-oral)")
+
+println("")
+println("[note] dominant inert/pigment uptake receptor = MARCO (SR-A6) + SR-A1/MSR1/SCARA1.")
+println("       ALL high-beta blockers today are non-oral (anti-MARCO mAb PY265, polyanion")
+println("       ligand-competitors fucoidan/poly(I)/dextran-sulfate). ONLY oral SM with any")
+println("       SR-A activity = diacerein->rhein (FDA, but anti-SR-A is off-target/unproven for")
+println("       dermal pigment). beta>=0.6 oral SM = BP1a discovery target (does not exist).")
+println("")
+println("=== BP1a verdict: NO proven oral SR-A antagonist; closest = repurpose diacerein/rhein ===")

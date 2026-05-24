@@ -1,0 +1,61 @@
+// TTR-ORAL d11 application — NEW dominant lever + NOVEL mechanism (together)
+// Wall: r-down via phagocytosis-blockade (beta) has NO high-beta oral agent.
+// NEW LEVER: attack r from the COMPETING rate — drainage augmentation k_drain↑
+//   r = k_phago/(k_phago + k_drain) ; natural k_phago/k_drain = 19 (r=0.95)
+//   drainage boost D: r(D) = 19/(19 + D)   — lowers r WITHOUT blocking phagocytosis
+//   (oral lymphagogues / lymphatic-pump augmentation = device-free compatible)
+// NOVEL: synchronized release bolus saturates local re-uptake capacity ->
+//   during the bolus, recapture is CAPPED (zero-order), so an escape fraction
+//   drains regardless of beta. Model as an effective r_eff = r * (1 - s_sat).
+// run: hexa run TTR-ORAL/sim/bp2_drainage_bolus.hexa
+
+println("=== TTR-ORAL d11: drainage-augmentation lever (r via k_drain, no phago block) ===")
+println("")
+let kemig = 0.02
+let kd = 0.50
+let tau = 0.25
+let T = 28.0
+
+println("[1] drainage boost D -> r -> timeline (no phagocytosis blocker needed):")
+println("  D     r=19/(19+D)   k_eff    phi       n90      months")
+// D = 1 (natural)
+let rA = 19.0/(19.0+1.0)
+let keA = kemig+(1.0-rA)*kd
+let pA = 1.0-exp(-keA*tau)
+println("  1     ", rA, "  ", keA, "  ", pA, "  ", log(0.1)/log(1.0-pA), "  ", (log(0.1)/log(1.0-pA))*T/30.4)
+// D = 5
+let rB = 19.0/(19.0+5.0)
+let keB = kemig+(1.0-rB)*kd
+let pB = 1.0-exp(-keB*tau)
+println("  5     ", rB, "  ", keB, "  ", pB, "  ", log(0.1)/log(1.0-pB), "  ", (log(0.1)/log(1.0-pB))*T/30.4)
+// D = 19
+let rC = 19.0/(19.0+19.0)
+let keC = kemig+(1.0-rC)*kd
+let pC = 1.0-exp(-keC*tau)
+println("  19    ", rC, "  ", keC, "  ", pC, "  ", log(0.1)/log(1.0-pC), "  ", (log(0.1)/log(1.0-pC))*T/30.4)
+// D = 40
+let rD = 19.0/(19.0+40.0)
+let keD = kemig+(1.0-rD)*kd
+let pD = 1.0-exp(-keD*tau)
+println("  40    ", rD, "  ", keD, "  ", pD, "  ", log(0.1)/log(1.0-pD), "  ", (log(0.1)/log(1.0-pD))*T/30.4)
+
+println("")
+println("[2] NOVEL: synchronized-release bolus saturates recapture (s_sat escape boost)")
+println("    r_eff = r * (1 - s_sat) ; combine with D=19 (r=0.50):")
+let rbase = 19.0/(19.0+19.0)
+// s_sat = 0.0, 0.4, 0.7
+let re0 = rbase*(1.0-0.0)
+let ke_0 = kemig+(1.0-re0)*kd
+let p_0 = 1.0-exp(-ke_0*tau)
+println("  s_sat=0.0: r_eff=", re0, " months=", (log(0.1)/log(1.0-p_0))*T/30.4)
+let re1 = rbase*(1.0-0.4)
+let ke_1 = kemig+(1.0-re1)*kd
+let p_1 = 1.0-exp(-ke_1*tau)
+println("  s_sat=0.4: r_eff=", re1, " months=", (log(0.1)/log(1.0-p_1))*T/30.4)
+let re2 = rbase*(1.0-0.7)
+let ke_2 = kemig+(1.0-re2)*kd
+let p_2 = 1.0-exp(-ke_2*tau)
+println("  s_sat=0.7: r_eff=", re2, " months=", (log(0.1)/log(1.0-p_2))*T/30.4)
+
+println("")
+println("=== drainage↑ (D) + bolus-saturation together attack r with NO phago-blocker (oral-OK) ===")

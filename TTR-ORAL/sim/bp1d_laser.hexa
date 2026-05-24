@@ -1,0 +1,75 @@
+// TTR-ORAL BP1d — laser + oral-fade-assist synergy quantification
+// Laser provides the high per-session pigment RELEASE event (photoacoustic
+// fragmentation). After fragmentation, freed pigment is either drained (cleared)
+// or RE-PHAGOCYTOSED by macrophages (recapture r) — the SAME r as the oral model.
+// An oral adjunct lowers r (drainage-up / modest phagocytosis blunting), so the
+// fraction that survives recapture and actually clears per session, c, rises.
+//
+//   per-session clearance:  c(r) = phi_rel * (1 - r)
+//       phi_rel = fraction of remaining ink fragmented+released per laser session
+//       (1 - r) = fraction of released pigment that escapes recapture -> drained
+//   sessions to 90% clearance:  N = log(0.1) / log(1 - c)
+//
+// CALIBRATION (honest): standard laser is 6-10 sessions @ 90% clearance (lit).
+// Standard practice already realizes partial drainage over the 6-8wk interval,
+// so the laser-baseline effective recapture is r0_laser ~ 0.70 (NOT the resting
+// 0.95 of oral monotherapy — laser fragments are small + drained between visits).
+// We pick phi_rel so r0_laser=0.70 lands at ~8 sessions, then test r-down.
+// run: hexa run TTR-ORAL/sim/bp1d_laser.hexa
+
+println("=== TTR-ORAL BP1d: laser + oral r-down -> sessions-to-90%-clearance ===")
+println("")
+let phi_rel = 0.83   // per-session fragmentation/release fraction (calibrated to 8-session baseline)
+println("phi_rel (per-session release fraction) =", phi_rel)
+println("c(r) = phi_rel*(1-r) ; N = log(0.1)/log(1-c)")
+println("calibration: r0_laser=0.70 -> ~8 sessions (lit standard 6-10)")
+println("")
+println("r(recapture)   1-r      c(per-session)   N_sessions   note")
+
+// r = 0.70  (STANDARD laser, no adjunct — baseline calibration to lit 6-10)
+let ra = 0.70
+let ca = phi_rel*(1.0-ra)
+let na = log(0.1)/log(1.0-ca)
+println("  0.70        ", 1.0-ra, "  ", ca, "  ", na, "  STANDARD laser (no adjunct, calibrated)")
+
+// r = 0.60  (weak oral assist — modest drainage boost)
+let rb = 0.60
+let cb = phi_rel*(1.0-rb)
+let nb = log(0.1)/log(1.0-cb)
+println("  0.60        ", 1.0-rb, "  ", cb, "  ", nb, "  weak oral assist")
+
+// r = 0.50  (moderate oral assist — drainage-up + mild blunting; Baranska ceiling)
+let rc = 0.50
+let cc = phi_rel*(1.0-rc)
+let nc = log(0.1)/log(1.0-cc)
+println("  0.50        ", 1.0-rc, "  ", cc, "  ", nc, "  moderate (Baranska transient-ablation)")
+
+// r = 0.40  (strong oral assist — aggressive drainage + transient blunting)
+let rd = 0.40
+let cd = phi_rel*(1.0-rd)
+let nd = log(0.1)/log(1.0-cd)
+println("  0.40        ", 1.0-rd, "  ", cd, "  ", nd, "  strong oral assist")
+
+// r = 0.30  (very aggressive r-down)
+let re = 0.30
+let ce = phi_rel*(1.0-re)
+let ne = log(0.1)/log(1.0-ce)
+println("  0.30        ", 1.0-re, "  ", ce, "  ", ne, "  very aggressive r-down")
+
+println("")
+println("[reduction] standard r=0.70 -> N =", na, " sessions")
+println("            oral r=0.50     -> N =", nc, " sessions")
+let cut = na - nc
+println("            absolute cut    =", cut, " sessions")
+let ratio = na / nc
+println("            fold speedup    =", ratio, "x fewer sessions")
+println("")
+
+// time-to-clearance: sessions spaced 7 weeks apart (lit: 6-8wk for lymph cycle)
+let space = 1.6   // months per session interval (7 weeks ~ 1.6 mo)
+println("[timeline @ 7-week spacing] months = N * 1.6")
+println("  standard r=0.70 :", na*space, " months")
+println("  oral r=0.50     :", nc*space, " months")
+println("  oral r=0.40     :", nd*space, " months")
+println("")
+println("=== vs oral monotherapy ~2-6 yr (no laser release): laser+adjunct = a few mo ===")

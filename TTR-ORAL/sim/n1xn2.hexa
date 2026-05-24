@@ -1,0 +1,123 @@
+// TTR-ORAL N1xN2 — monocyte-carried pigment-gated catalyst (emergent combination)
+// N1 = pH x pigment-proximity AND-gate catalyst (pH-alone NOT site-specific: 1.8e-8 overlap)
+// N2 = blood monocytes ARE the recapturers AND are oral-accessible (5000x reach vs dermis 1e-4)
+// EMERGENT: load the N1 catalyst INTO circulating monocytes (N2). The monocyte that captures
+// released pigment then carries the catalyst -> the pigment-laden phagolysosome is exactly where
+// BOTH the acid AND the catalyst co-localize -> the AND-gate is SELF-SATISFIED by carriage.
+// All math first-principles. distinct let-names per reference_hexa_let_literal_collision (PR #821).
+// run: hexa run TTR-ORAL/sim/n1xn2.hexa
+
+println("=== TTR-ORAL N1xN2: monocyte-carried pigment-gated catalyst ===")
+println("")
+
+// ---- [1] AND-gate resolution: carriage replaces volume-budget partition -----
+// N1 pH-ALONE: catalyst sits in EVERY acidic lysosome; ink-laden fraction of acidic volume:
+let vol_lyso_total = 5.55           // mL, total body lysosomal volume (N1 §6 [3])
+let vol_tat = 1.0e-7                // mL, tattoo ink-phagolysosome volume (N1 §6 [3])
+let ph_alone_overlap = vol_tat / vol_lyso_total
+println("[1] AND-gate: pH-alone vs monocyte-carried catalyst localization")
+println("  N1 pH-alone overlap (ink-laden / acidic volume) = ", ph_alone_overlap)
+// N1xN2 CARRIAGE: catalyst is NOT free in interstitium; it rides INSIDE monocytes. The catalyst
+// only meets acid where a monocyte's own phagolysosome acidifies. So the relevant denominator is
+// no longer "all body lysosomes" but "lysosomes of catalyst-carrying monocytes". And the AND-gate
+// fires only when THAT monocyte has ALSO captured pigment (pigment+acid+catalyst co-localize).
+// Off-target = catalyst-carrying monocyte lysosomes that have NO pigment (still acidic, ROS-bufferable).
+let n_carrier_mono = 5.0e7          // circulating catalyst-loaded monocytes (order; ~10% of ~5e8 blood mono)
+let n_pigment_capturing = 1.0e6     // monocytes that actually capture released dermal pigment (N1 laden_mac)
+let frac_carrier_with_pigment = n_pigment_capturing / n_carrier_mono
+println("  N1xN2 carrier monocytes              = ", n_carrier_mono)
+println("  carriers that ALSO captured pigment  = ", n_pigment_capturing)
+println("  AND-gate self-satisfied fraction     = ", frac_carrier_with_pigment, "  (pigment-capturers / carriers)")
+println("")
+// Off-target REDUCTION: pH-alone exposes 5.55 mL of acidic volume; carriage exposes only the
+// lysosomal volume of the CARRIER monocytes. Each monocyte ~300 lyso x 0.5 um^3 = 1.5e2 um^3 = 1.5e-10 mL.
+let vol_lyso_per_mono = 1.5e-10     // mL per monocyte (300 lyso x 0.5 um^3)
+let vol_carrier_acidic = n_carrier_mono * vol_lyso_per_mono   // mL of acidic volume carrying catalyst
+let offtarget_reduction = vol_lyso_total / vol_carrier_acidic
+println("  off-target acidic volume carrying catalyst = ", vol_carrier_acidic, " mL")
+println("  off-target REDUCTION vs pH-alone (5.55 mL) = ", offtarget_reduction, "x")
+// AND-gate enrichment: fraction of catalyst-active (acidic) volume that is ALSO pigment-laden,
+// pH-alone vs carriage.
+let carriage_overlap = vol_tat / vol_carrier_acidic
+let andgate_enrichment = carriage_overlap / ph_alone_overlap
+println("  pigment-laden fraction of catalyst-active volume:")
+println("    pH-alone  = ", ph_alone_overlap)
+println("    carriage  = ", carriage_overlap)
+println("  AND-gate enrichment (carriage / pH-alone)  = ", andgate_enrichment, "x")
+println("")
+
+// ---- [2] oral loading efficiency of circulating monocytes (THE NEW WALL) -----
+// Lit anchors (Sources): IV hitchhiking loads circulating monocytes (T1/2 ~9.2h, retarded exocytosis);
+// loading ceiling ~5% plasma membrane => <1.0 ug / 1e6 cells, or ~100 NPs/cell (thiol). Oral particulate
+// translocation to BLOOD is size-gated and TINY: 50nm 34%, 100nm 26%, >300nm ~0 of an already-small
+// gut-absorbed pool. And oral NPs that DO cross load GUT-RESIDENT mono/DC locally; loading of the
+// SYSTEMIC CIRCULATING pool from an oral dose is NOT established (all trafficking evidence is IV).
+println("[2] oral monocyte-loading efficiency (compose the gates)")
+let f_gut_translocate = 0.01        // fraction of oral particulate dose crossing gut into systemic (generous; size-gated)
+let f_reach_blood_mono = 0.10       // of translocated NP, fraction that associates w/ CIRCULATING (not gut-resident) mono
+let f_loaded_active = 0.50          // of loaded catalyst, fraction surviving exocytosis intact to dermal arrival (T1/2~9.2h)
+let oral_mono_load_eff = f_gut_translocate * f_reach_blood_mono * f_loaded_active
+println("  f_gut_translocate (oral->systemic particulate) = ", f_gut_translocate)
+println("  f_reach_blood_mono (circulating, not gut-res)  = ", f_reach_blood_mono)
+println("  f_loaded_active (survives exocytosis to dermis)= ", f_loaded_active)
+println("  => oral circulating-monocyte loading efficiency = ", oral_mono_load_eff)
+println("  (IV-loading precedent ~0.3-0.9; oral is ~", oral_mono_load_eff, " = THE relocated wall)")
+println("")
+
+// ---- [3] combined timeline: erase fraction (N1) x delivery via turnover (N2) -
+// Carrier monocytes turn over the dermal recapturer pool (N2 tau_rep~90d). Each carrier that
+// captures pigment self-satisfies the AND-gate and degrades the ADDRESSABLE pigment (N1 ~60-70%).
+// Net erase fraction over time = addressable_frac x f_replaced(t) x loading-limited duty.
+println("[3] combined erase timeline (N1 erase-frac x N2 monocyte turnover)")
+let tau_rep = 90.0                  // d, Baranska dermal recapturer renewal cycle (N2)
+let addressable = 0.65              // N1 addressable pigment fraction (azo+Fe-oxide+QA), carbon black excluded
+let carbon_floor = 0.25             // non-erasable carbon-black fraction (BDE 5.37 eV >> .OH)
+// f_replaced(t)=1-exp(-t/tau_rep) ; erase(t)=addressable * f_replaced(t)  (ceiling = addressable)
+println("  tau_rep=", tau_rep, "d ; addressable=", addressable, " ; carbon floor (non-erasable)=", carbon_floor)
+println("  t(mo)  f_replaced   erase_fraction   pigment_remaining")
+let t1 = 30.4
+let fr1 = 1.0 - exp(-t1/tau_rep)
+let er1 = addressable * fr1
+println("   1     ", fr1, "  ", er1, "  ", 1.0-er1)
+let t3 = 91.2
+let fr3 = 1.0 - exp(-t3/tau_rep)
+let er3 = addressable * fr3
+println("   3     ", fr3, "  ", er3, "  ", 1.0-er3)
+let t6 = 182.4
+let fr6 = 1.0 - exp(-t6/tau_rep)
+let er6 = addressable * fr6
+println("   6     ", fr6, "  ", er6, "  ", 1.0-er6)
+let t12 = 365.0
+let fr12 = 1.0 - exp(-t12/tau_rep)
+let er12 = addressable * fr12
+println("  12     ", fr12, "  ", er12, "  ", 1.0-er12)
+println("")
+// erase ceiling: even at full turnover, carbon-black floor caps removal at (1 - carbon_floor)
+let erase_ceiling = 1.0 - carbon_floor
+println("  erase ceiling (t->inf) = addressable ", addressable, " ; absolute cap (1-carbon) = ", erase_ceiling)
+println("")
+
+// ---- [4] loading-limited net effect: the wall relocates, it does not vanish --
+// The combined device-free path multiplies the AND-gate WIN by the oral-loading LOSS. Net dermal
+// catalyst delivered per turnover = oral_mono_load_eff x (carriers that capture pigment).
+// If loading eff is ~5e-4, even with 5e7 carriers only ~2.5e4 carry useful catalyst -> dose-limited.
+println("[4] loading-limited net: AND-gate solved, but loading gates throughput")
+let useful_carriers = n_carrier_mono * oral_mono_load_eff
+println("  carriers x oral_load_eff = effective catalyst-bearing monocytes = ", useful_carriers)
+let ratio_to_laden = useful_carriers / n_pigment_capturing
+println("  effective bearers / pigment-capturing monocytes = ", ratio_to_laden)
+println("  -> if <1, loading (not AND-gate) is rate-limiting; AND-gate win is real but starved.")
+println("")
+// categorical win: catalyst is PHYSICALLY ABSENT from the 3.7e13 non-carrier cells.
+// pH-alone fired in every one; carriage removes that entire class of off-target.
+let cells_body = 3.7e13
+let categorical = cells_body / n_carrier_mono
+println("[5] categorical off-target removal (non-carrier cells never see catalyst)")
+println("  body cells / carrier monocytes = ", categorical, "x cells made catalyst-free")
+println("  (pH-alone: ALL 3.7e13 cells' lysosomes ON; carriage: only ", n_carrier_mono, " carriers)")
+println("")
+println("=== N1xN2 done ===")
+println("verdict: carriage CONVERTS pH-alone 1.8e-8 overlap into a self-satisfied AND-gate")
+println("         (off-target acidic-volume reduction ~740x; ~7.4e5x fewer cells exposed) — N1 gap SOLVED.")
+println("         BUT the wall RELOCATES to oral circulating-monocyte loading (~5e-4 device-free,")
+println("         bearers/laden ~0.025 = dose-starved), and carbon-black ~25% floor caps erase ~65-75%.")

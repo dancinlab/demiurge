@@ -1,0 +1,94 @@
+// TTR-ORAL d11b — literature-grounded drainage-boost factor D for ORAL lymphagogues
+// d11 lever: r = k_phago/(k_phago + k_drain) ; natural k_phago/k_drain = 19 (r=0.95)
+//   drainage boost D: r(D) = 19/(19 + D)  ; timeline via event-driven phi.
+// QUESTION: what D do oral lymphagogues realistically deliver?
+//   Lit (verbatim, see d11b_lymphagogue_grounding.md):
+//     Daflon IV canine thoracic duct (Cotonat 1989): peak flow +191% / +171% / +91%
+//        = x2.91 / x2.71 / x1.91 — but supra-physiologic IV bolus, transient (~20-25 min peak).
+//     Oral human: lymphedema volume -tens-of-% , lymphoscintigraphy half-life/clearance modest.
+//     Lymphatic pumping reserve: x4 (human hyperthermia) .. x10 (mouse pressure range) — mechanical.
+//   => realistic SUSTAINED ORAL D ~ 1.2-2.0x (NOT 5-19x). Transient IV peak ~2-3x not sustainable orally.
+// run: hexa run TTR-ORAL/sim/d11b_lymphagogue.hexa
+
+println("=== TTR-ORAL d11b: literature-realistic drainage boost D (oral lymphagogues) ===")
+println("")
+let kemig = 0.02
+let kd = 0.50
+let tau = 0.25
+let T = 28.0
+
+println("[1] r(D) and timeline across the lit-realistic ORAL range (D=1..2) vs modeled aspiration (5,19):")
+println("  D     r=19/(19+D)   k_eff    phi        n90       months")
+
+// D = 1.0 (natural / no enhancer)
+let r10 = 19.0/(19.0+1.0)
+let ke10 = kemig+(1.0-r10)*kd
+let p10 = 1.0-exp(-ke10*tau)
+println("  1.0   ", r10, "  ", ke10, "  ", p10, "  ", log(0.1)/log(1.0-p10), "  ", (log(0.1)/log(1.0-p10))*T/30.4)
+
+// D = 1.2 (low-end oral lymphagogue, sustained)
+let r12 = 19.0/(19.0+1.2)
+let ke12 = kemig+(1.0-r12)*kd
+let p12 = 1.0-exp(-ke12*tau)
+println("  1.2   ", r12, "  ", ke12, "  ", p12, "  ", log(0.1)/log(1.0-p12), "  ", (log(0.1)/log(1.0-p12))*T/30.4)
+
+// D = 1.5 (central oral estimate)
+let r15 = 19.0/(19.0+1.5)
+let ke15 = kemig+(1.0-r15)*kd
+let p15 = 1.0-exp(-ke15*tau)
+println("  1.5   ", r15, "  ", ke15, "  ", p15, "  ", log(0.1)/log(1.0-p15), "  ", (log(0.1)/log(1.0-p15))*T/30.4)
+
+// D = 2.0 (optimistic sustained oral / transient-IV-like ceiling)
+let r20 = 19.0/(19.0+2.0)
+let ke20 = kemig+(1.0-r20)*kd
+let p20 = 1.0-exp(-ke20*tau)
+println("  2.0   ", r20, "  ", ke20, "  ", p20, "  ", log(0.1)/log(1.0-p20), "  ", (log(0.1)/log(1.0-p20))*T/30.4)
+
+// D = 5.0 (modeled aspiration — NOT lit-supported orally)
+let r50 = 19.0/(19.0+5.0)
+let ke50 = kemig+(1.0-r50)*kd
+let p50 = 1.0-exp(-ke50*tau)
+println("  5.0*  ", r50, "  ", ke50, "  ", p50, "  ", log(0.1)/log(1.0-p50), "  ", (log(0.1)/log(1.0-p50))*T/30.4)
+
+// D = 19.0 (modeled aspiration — NOT lit-supported orally)
+let r190 = 19.0/(19.0+19.0)
+let ke190 = kemig+(1.0-r190)*kd
+let p190 = 1.0-exp(-ke190*tau)
+println("  19*   ", r190, "  ", ke190, "  ", p190, "  ", log(0.1)/log(1.0-p190), "  ", (log(0.1)/log(1.0-p190))*T/30.4)
+
+println("")
+println("  (* = modeled aspiration, NOT achievable by sustained oral lymphagogues per lit)")
+println("")
+
+println("[2] honest delta: how much does a REALISTIC oral D move the timeline vs D=1?")
+let base_mo = (log(0.1)/log(1.0-p10))*T/30.4
+let d12_mo  = (log(0.1)/log(1.0-p12))*T/30.4
+let d15_mo  = (log(0.1)/log(1.0-p15))*T/30.4
+let d20_mo  = (log(0.1)/log(1.0-p20))*T/30.4
+println("  D=1.0 -> ", base_mo, " mo")
+println("  D=1.2 -> ", d12_mo, " mo  (cut ", base_mo-d12_mo, " mo = ", (1.0-d12_mo/base_mo)*100.0, "%)")
+println("  D=1.5 -> ", d15_mo, " mo  (cut ", base_mo-d15_mo, " mo = ", (1.0-d15_mo/base_mo)*100.0, "%)")
+println("  D=2.0 -> ", d20_mo, " mo  (cut ", base_mo-d20_mo, " mo = ", (1.0-d20_mo/base_mo)*100.0, "%)")
+
+println("")
+println("[3] drainage lever ALONE (realistic D=1.5) still needs the bolus s_sat partner:")
+println("    r_eff = r(D=1.5) * (1 - s_sat) ; r(D=1.5)=", r15)
+let rb = 19.0/(19.0+1.5)
+// s_sat = 0.0
+let se0 = rb*(1.0-0.0)
+let ck0 = kemig+(1.0-se0)*kd
+let cp0 = 1.0-exp(-ck0*tau)
+println("  s_sat=0.0: r_eff=", se0, " months=", (log(0.1)/log(1.0-cp0))*T/30.4)
+// s_sat = 0.4
+let se1 = rb*(1.0-0.4)
+let ck1 = kemig+(1.0-se1)*kd
+let cp1 = 1.0-exp(-ck1*tau)
+println("  s_sat=0.4: r_eff=", se1, " months=", (log(0.1)/log(1.0-cp1))*T/30.4)
+// s_sat = 0.7
+let se2 = rb*(1.0-0.7)
+let ck2 = kemig+(1.0-se2)*kd
+let cp2 = 1.0-exp(-ck2*tau)
+println("  s_sat=0.7: r_eff=", se2, " months=", (log(0.1)/log(1.0-cp2))*T/30.4)
+
+println("")
+println("=== verdict: oral D ~ 1.2-2.0x (real-direction, weak alone) — drainage MUST combine w/ s_sat / laser ===")

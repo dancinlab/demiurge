@@ -1,0 +1,114 @@
+// TTR-ORAL N4 — ink-tagging molecular glue for lymphatic export
+// hexa-native recompute per @D g1 + feedback_demiurge_assets_simulation_mandatory.
+// Concept: oral bifunctional small molecule = [ink-binding warhead]-[export tag].
+// Warhead grips the pigment surface (pi-stack / catechol / bisphosphonate); the
+// export tag lowers macrophage re-uptake of the (now-tagged) freed pigment so it
+// drains to lymph instead of being recaptured. We CHANGE THE PIGMENT, not the cell.
+// Honest core: the molecule must reach the dermal pigment (ADME ~1e-4) AND access a
+// pigment buried inside a living macrophage's phagolysosome (intracellular wall).
+// All math first-principles (Boltzmann affinity ratio · k_eff/n90 from cycle1 ·
+// serial-product double wall). distinct let-names per reference_hexa_let_literal_collision.
+// run: hexa run TTR-ORAL/sim/n4_glue.hexa
+
+println("=== TTR-ORAL N4: ink-tagging molecular glue for lymphatic export ===")
+println("")
+
+// ---- [1] warhead affinity contrast (binding free energy -> residence prior) -----
+// Pigment-surface anchors, energies from literature (Sources). Compare on a common
+// kBT scale (RT = 0.593 kcal/mol at 298 K). Boltzmann factor exp(dG/RT) ~ relative
+// bound-state preference (how tightly the warhead grips vs thermal escape).
+let RT_kcal = 0.593
+// pyrene / polyaromatic pi-stack on carbon black (physisorption, multi-ring)
+let dG_pyrene_kcal = 9.0          // ~9 kcal/mol per large PAH on graphitic sp2 (vdW pi-pi, order)
+// catechol/DOPA bidentate coordination to metal oxide (TiO2/Fe oxide), 29 kBT
+let dG_catechol_kcal = 29.0 * RT_kcal   // 29 kBT bidentate (single-molecule force spec)
+// bisphosphonate on metal-oxide / mineral surface (strongest, bone-targeting class)
+let dG_bp_kcal = 22.0             // N-bisphosphonate chemisorption order (zoledronate-class)
+let pref_pyrene = exp(dG_pyrene_kcal / RT_kcal)
+let pref_catechol = exp(dG_catechol_kcal / RT_kcal)
+let pref_bp = exp(dG_bp_kcal / RT_kcal)
+println("[1] warhead grip vs thermal escape (Boltzmann exp(dG/RT), RT=0.593 kcal/mol):")
+println("  pi-stack pyrene  -> carbon black : dG=", dG_pyrene_kcal, " kcal/mol  pref=", pref_pyrene)
+println("  catechol/DOPA    -> metal oxide  : dG=", dG_catechol_kcal, " kcal/mol  pref=", pref_catechol)
+println("  bisphosphonate   -> metal oxide  : dG=", dG_bp_kcal, " kcal/mol  pref=", pref_bp)
+println("  -> all three grip >> thermal; warhead-pigment binding is the EASY part.")
+println("")
+
+// ---- [2] export tag -> recapture reduction -> effective r -----------------------
+// PEG/charge/size export tag lowers macrophage re-uptake of freed pigment. Natural
+// recapture r0=0.95 (cycle1). Tag multiplies re-uptake by a fold-reduction factor
+// rho (PEG stealth ~3-10x lower uptake -> rho 0.1-0.33). r_tag = r0 * rho, floored.
+let r0 = 0.95
+let rho_weak = 0.50      // partial tag (weak stealth, charge only)
+let rho_mid = 0.30       // moderate PEG stealth (~3x uptake reduction)
+let rho_strong = 0.10    // dense PEG stealth (~10x uptake reduction)
+let r_weak = r0 * rho_weak
+let r_mid = r0 * rho_mid
+let r_strong = r0 * rho_strong
+println("[2] export tag lowers macrophage re-uptake (r0=0.95 -> r_tag = r0*rho):")
+println("  weak tag   rho=0.50 -> r=", r_weak)
+println("  mid tag    rho=0.30 -> r=", r_mid)
+println("  strong tag rho=0.10 -> r=", r_strong)
+println("")
+
+// ---- [3] r_tag -> k_eff -> n90 -> timeline (cycle1 device-free oral model) -------
+// k_eff = k_emig + (1-r)*k_death. Device-free oral, NO CSF1R pulse -> k_death is the
+// natural macrophage turnover that frees pigment ~ 0.5/cycle ANNUM-scaled in cycle1;
+// reuse cycle1's k_death=0.50 envelope so timelines map directly onto cycle1 §2.
+// n90 = ln(10)/k_eff (clear 90% = 2.303/k_eff), months via cycle1's 0.913 mo/n unit.
+let k_emig = 0.02        // natural egress (S1P removed per cycle1 / M4b)
+let k_death = 0.50       // freed-pigment generation envelope (cycle1 §2 CSF1R-class; here natural ceiling)
+let mo_per_n = 0.913     // cycle1 calibration: n90 pulses -> months
+let keff_weak = k_emig + (1.0 - r_weak) * k_death
+let keff_mid = k_emig + (1.0 - r_mid) * k_death
+let keff_strong = k_emig + (1.0 - r_strong) * k_death
+let n90_weak = 2.302585 / keff_weak
+let n90_mid = 2.302585 / keff_mid
+let n90_strong = 2.302585 / keff_strong
+println("[3] r_tag -> k_eff -> fade timeline (device-free oral, cycle1 mapping):")
+println("  weak   r=", r_weak, " k_eff=", keff_weak, " n90=", n90_weak, " -> ", n90_weak*mo_per_n, " months")
+println("  mid    r=", r_mid, " k_eff=", keff_mid, " n90=", n90_mid, " -> ", n90_mid*mo_per_n, " months")
+println("  strong r=", r_strong, " k_eff=", keff_strong, " n90=", n90_strong, " -> ", n90_strong*mo_per_n, " months")
+println("  NOTE: these months assume k_death=0.50 (freed-pigment ENVELOPE, cycle1 §2).")
+println("  device-free SOLO with natural k_death~0.02 -> multi-year (cycle1 baseline).")
+println("  N4 only supplies the r-down lever; it does NOT add a freeing lever.")
+println("")
+
+// ---- [4] THE DOUBLE WALL (honest core) ------------------------------------------
+// Wall A: oral ADME reach to dermal interstitium  f_target ~ 8.9e-5 (oral_adme_wall §2e).
+// Wall B: INTRACELLULAR access -- pigment sits inside a LIVING macrophage's
+// phagolysosome. Buried intracellular compartments are largely inaccessible to
+// antibodies + small molecules (Koppensteiner 2012 VCC analog). A neutral cell-
+// permeant small molecule may diffuse in, but the bifunctional glue carries a
+// CHARGED / HYDROPHILIC export tag (needed for stealth in [2]) -> membrane
+// permeability collapses. Estimate intracellular-access fraction f_intra.
+let f_adme = 8.9e-5      // oral dose fraction reaching dermal interstitium
+let f_intra_neutral = 0.10   // a small lipophilic molecule reaching cytosol then phagolysosome (order)
+let f_intra_charged = 0.001  // charged/hydrophilic glue: membrane + phagolysosome wall (order)
+let reach_neutral = f_adme * f_intra_neutral
+let reach_charged = f_adme * f_intra_charged
+println("[4] double wall: ADME reach (Wall A) x intracellular access (Wall B):")
+println("  Wall A  f_adme (oral->dermis)        = ", f_adme)
+println("  Wall B  f_intra neutral small-mol    = ", f_intra_neutral)
+println("  Wall B  f_intra charged stealth glue = ", f_intra_charged)
+println("  reach (neutral)  = f_adme*f_intra = ", reach_neutral)
+println("  reach (charged)  = f_adme*f_intra = ", reach_charged)
+println("  -> design tension: stealth tag ([2]) DEMANDS charge/PEG, which KILLS Wall B.")
+println("")
+
+// ---- [5] in-situ vs ex-situ tagging: when is the pigment reachable? --------------
+// Pigment is reachable to a cell-EXTERNAL glue only during the brief release window
+// (macrophage death -> freed pigment in interstitium BEFORE recapture). cycle1: a
+// freed-pigment fraction phi_release ~ 0.05/cycle is transiently extracellular.
+// THAT extracellular fraction is taggable without crossing a membrane (Wall B
+// bypassed for it). So N4's true addressable target = the transiently-freed pool.
+let phi_release = 0.05   // per-cycle freed (extracellular) pigment fraction (cycle1 M5b central)
+let frac_carbon = 0.25   // carbon black market fraction (non-degradable -> N4's unique advantage)
+println("[5] taggable pool = transiently-FREED (extracellular) pigment, NOT buried:")
+println("  per-cycle freed fraction phi_release = ", phi_release)
+println("  -> N4 retags freed pigment during the release window (no Wall B for that pool)")
+println("  carbon black fraction = ", frac_carbon, " <- N4 works here (tag-and-drain, NOT destroy)")
+println("  -> advantage over N1/degrade levers: carbon black is undegradable but IS draggable.")
+println("")
+
+println("=== N4 done ===")

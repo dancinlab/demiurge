@@ -1,0 +1,51 @@
+// TTR-ORAL /cycle round-1 reconcile — S1P dropped (M4b wrong-sign) + phi grounded (M5b)
+// Revised B model is 2-lever: k_death (CSF1R pulse, M9-grounded) + r-down (recapture block).
+//   S1P/B2 removed: it is an egress ANTAGONIST (k_emig forward boost ~ 1x, even <1x).
+//   k_eff = k_emig + (1-r)*k_death ; k_emig stays ~natural 0.02 (no clinical CCR7 agonist).
+//   phi = 1 - exp(-k_eff*tau) ; n90 = log(0.1)/log(1-phi) ; months = n90*T/30.4 (T=28d safe)
+// run: hexa run TTR-ORAL/sim/cycle1_reconcile.hexa
+
+println("=== TTR-ORAL cycle-1 reconcile: S1P-dropped, r-down-led (T=28d) ===")
+println("")
+let kemig = 0.02
+let tau = 0.25
+let T = 28.0
+
+println("[A] natural baseline (no intervention):")
+let ke_nat = kemig + (1.0-0.95)*0.05
+let phi_nat = 1.0-exp(-ke_nat*tau)
+println("  k_eff=", ke_nat, " phi=", phi_nat, " n90=", log(0.1)/log(1.0-phi_nat), " pulses")
+
+println("")
+println("[B] CSF1R pulse (k_death=0.50) x recapture-down r sweep:")
+let kd = 0.50
+// r = 0.85
+let ke1 = kemig + (1.0-0.85)*kd
+let phi1 = 1.0-exp(-ke1*tau)
+let n1 = log(0.1)/log(1.0-phi1)
+println("  r=0.85: k_eff=", ke1, " phi=", phi1, " n90=", n1, " -> ", n1*T/30.4, " months")
+// r = 0.70
+let ke2 = kemig + (1.0-0.70)*kd
+let phi2 = 1.0-exp(-ke2*tau)
+let n2 = log(0.1)/log(1.0-phi2)
+println("  r=0.70: k_eff=", ke2, " phi=", phi2, " n90=", n2, " -> ", n2*T/30.4, " months")
+// r = 0.50
+let ke3 = kemig + (1.0-0.50)*kd
+let phi3 = 1.0-exp(-ke3*tau)
+let n3 = log(0.1)/log(1.0-phi3)
+println("  r=0.50: k_eff=", ke3, " phi=", phi3, " n90=", n3, " -> ", n3*T/30.4, " months")
+// r = 0.30 (very aggressive)
+let ke4 = kemig + (1.0-0.30)*kd
+let phi4 = 1.0-exp(-ke4*tau)
+let n4 = log(0.1)/log(1.0-phi4)
+println("  r=0.30: k_eff=", ke4, " phi=", phi4, " n90=", n4, " -> ", n4*T/30.4, " months")
+
+println("")
+println("[C] what phi is needed for ~12-month skin clearance (T=28d, n90=13)?")
+// n90=13 -> phi = 1 - 0.1^(1/13)
+let phi_need = 1.0 - pow(0.1, 1.0/13.0)
+println("  need phi=", phi_need, " (=> r ~ ", 1.0-phi_need, ") — far below natural r~0.95")
+
+println("")
+println("=== honest: S1P out + grounded phi -> realistic ~2-6 yr unless r driven < ~0.5 ===")
+println("=== dominant lever = r-down (recapture block) ; k_emig boost is NOT available ===")

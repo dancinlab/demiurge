@@ -1,0 +1,86 @@
+// TTR-ORAL M5b — literature-grounded per-pulse ink-release fraction phi
+// hexa-native recompute per @D g1 + feedback_demiurge_assets_simulation_mandatory.
+// phi = fraction of tattoo pigment that, per ~90-day capture-release cycle,
+//       escapes recapture and drains to lymph (the quantity M5 ASSUMED = 0.15).
+//
+// Literature anchors (see M5b_phi_grounding.md §1):
+//   - 32% of injected pigment translocated by 6 weeks (fast early drainage)
+//   - 60-90% eventually to dLN; red-pigment skin 87-99% lower years later
+//   - natural cycle ~90 days (Baranska); biphasic: fast early, slow steady-state
+// Two phi regimes:
+//   (A) STEADY-STATE phi (the recapture-locked phase M5 actually models)
+//       bounded from the slow tail: ~87-99% loss over a tattoo "lifetime".
+//   (B) EARLY-PHASE phi (healing-window drainage) — much larger, NOT the
+//       steady-state quantity, shown only to bracket the upper end.
+//
+//   n90 = log(0.1)/log(1-phi)   (pulses to 90% skin clearance, base-independent)
+//   total fade time = n90 * T   (T = pulse spacing, M9 sweet spot 3-4 wk)
+// run: hexa run TTR-ORAL/sim/m5b_phi.hexa
+
+println("=== TTR-ORAL M5b phi grounding ===")
+println("")
+
+// ---- [1] derive STEADY-STATE per-cycle phi from lifetime loss ---------------
+// If fraction f is lost over a tattoo lifetime of L years via N = L/(0.25yr) cycles
+// (one 90-day cycle = 0.25 yr), then per-cycle phi solves (1-phi)^N = 1-f.
+// We invert: phi = 1 - (1-f)^(1/N).
+println("[1] STEADY-STATE per-cycle phi from lifetime loss f over L years (90d cycle):")
+
+let f_lo = 0.50    // conservative lifetime loss (well below the 60-90% dLN range)
+let f_mid = 0.87   // red-pigment skin lower bound (Lehner 2011)
+let f_hi = 0.99    // red-pigment skin upper bound / "as much as 99% over life"
+
+// L = 7 yr "natural fade" anchor (path_B §2.1) -> N = 28 cycles
+let N7 = 28.0
+let phi_lo7 = 1.0 - pow(1.0 - f_lo, 1.0/N7)
+let phi_mid7 = 1.0 - pow(1.0 - f_mid, 1.0/N7)
+let phi_hi7 = 1.0 - pow(1.0 - f_hi, 1.0/N7)
+println("  L=7yr  (N=28): f=0.50 phi=", phi_lo7, " f=0.87 phi=", phi_mid7, " f=0.99 phi=", phi_hi7)
+
+// L = 20 yr "decades persistence" anchor -> N = 80 cycles
+let N20 = 80.0
+let phi_lo20 = 1.0 - pow(1.0 - f_lo, 1.0/N20)
+let phi_mid20 = 1.0 - pow(1.0 - f_mid, 1.0/N20)
+let phi_hi20 = 1.0 - pow(1.0 - f_hi, 1.0/N20)
+println("  L=20yr (N=80): f=0.50 phi=", phi_lo20, " f=0.87 phi=", phi_mid20, " f=0.99 phi=", phi_hi20)
+
+// ---- [2] EARLY-PHASE phi (fast drainage) for upper bracket ------------------
+// 32% lost in 6 weeks (~0.67 of a 90d cycle). As a per-cycle equivalent at that
+// fast rate: phi_early = 1 - (1-0.32)^(90/42).
+println("")
+println("[2] EARLY-PHASE phi (fast healing drainage; NOT steady-state):")
+let phi_early = 1.0 - pow(1.0 - 0.32, 90.0/42.0)
+println("  32% in 6wk -> per-90d-equiv phi =", phi_early, " (upper bracket only)")
+
+// ---- [3] grounded phi range -> n90 -> fade timeline -------------------------
+println("")
+println("[3] phi -> n90 -> fade time (T from M9: 21d / 28d sweet spot):")
+
+// representative grounded phi values spanning the honest range
+let phiA = 0.02    // slow steady-state (L=20yr, f=0.50..0.87)
+let phiB = 0.05    // mid steady-state  (L=7yr,  f=0.50..0.87)
+let phiC = 0.10    // brisk steady-state(L=7yr,  f near 0.99)
+let phiD = 0.15    // M5's original ASSUMED value (for comparison)
+
+let n90A = log(0.1)/log(1.0 - phiA)
+let n90B = log(0.1)/log(1.0 - phiB)
+let n90C = log(0.1)/log(1.0 - phiC)
+let n90D = log(0.1)/log(1.0 - phiD)
+
+println("  phi=0.02 n90=", n90A, " -> T=21d ", n90A*21.0/30.4, "mo  T=28d ", n90A*28.0/30.4, "mo")
+println("  phi=0.05 n90=", n90B, " -> T=21d ", n90B*21.0/30.4, "mo  T=28d ", n90B*28.0/30.4, "mo")
+println("  phi=0.10 n90=", n90C, " -> T=21d ", n90C*21.0/30.4, "mo  T=28d ", n90C*28.0/30.4, "mo")
+println("  phi=0.15 n90=", n90D, " -> T=21d ", n90D*21.0/30.4, "mo  T=28d ", n90D*28.0/30.4, "mo (M5 assumed)")
+
+// ---- [4] recapture fraction r implied by the steady-state phi ---------------
+// phi = (1-r) * (release-per-cycle). If essentially all loaded macrophages
+// release once per ~90d cycle (release fraction ~1), then r ~ 1 - phi.
+println("")
+println("[4] implied recapture fraction r (release-per-cycle ~ 1):")
+println("  phi=0.02 -> r~", 1.0 - 0.02)
+println("  phi=0.05 -> r~", 1.0 - 0.05)
+println("  phi=0.10 -> r~", 1.0 - 0.10)
+println("  phi=0.15 -> r~", 1.0 - 0.15)
+
+println("")
+println("=== M5b done ===")

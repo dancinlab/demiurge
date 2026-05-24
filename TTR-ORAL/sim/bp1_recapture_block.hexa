@@ -1,0 +1,50 @@
+// TTR-ORAL BP1 deep-dive — recapture-block (r-down) lever quantification
+// r-down is the new dominant lever (cycle-1 reconcile). How far can phagocytosis
+// blockade efficiency beta push recapture r down, and what timeline results?
+//   natural r0 = 0.95  =>  k_phago/k_drain = r0/(1-r0) = 19
+//   blockade beta reduces re-engulfment:  r(beta) = 19*(1-beta) / (19*(1-beta) + 1)
+//   then k_eff = k_emig + (1-r)*k_death (k_death=0.50 CSF1R pulse, k_emig=0.02)
+//   phi = 1-exp(-k_eff*tau) ; n90 = log(0.1)/log(1-phi) ; months = n90*T/30.4 (T=28d)
+// run: hexa run TTR-ORAL/sim/bp1_recapture_block.hexa
+
+println("=== TTR-ORAL BP1: recapture-block beta -> r -> timeline (T=28d) ===")
+println("")
+let kemig = 0.02
+let kd = 0.50
+let tau = 0.25
+let T = 28.0
+let ratio = 19.0   // r0/(1-r0) at r0=0.95
+
+println("beta(차단)  r(recapture)   k_eff    phi      n90     months   기전-현실성")
+// beta = 0.0 (none)
+let r0 = ratio*(1.0-0.0)/(ratio*(1.0-0.0)+1.0)
+let ke0 = kemig+(1.0-r0)*kd
+let p0 = 1.0-exp(-ke0*tau)
+println("  0.00      ", r0, "  ", ke0, "  ", p0, "  ", log(0.1)/log(1.0-p0), "  ", (log(0.1)/log(1.0-p0))*T/30.4, "  baseline")
+// beta = 0.30 (fostamatinib FcgR partial — but pigment uptake is NOT FcgR-mediated!)
+let r1 = ratio*(1.0-0.30)/(ratio*(1.0-0.30)+1.0)
+let ke1 = kemig+(1.0-r1)*kd
+let p1 = 1.0-exp(-ke1*tau)
+println("  0.30      ", r1, "  ", ke1, "  ", p1, "  ", log(0.1)/log(1.0-p1), "  ", (log(0.1)/log(1.0-p1))*T/30.4, "  oral FcgR (wrong arm?)")
+// beta = 0.60
+let r2 = ratio*(1.0-0.60)/(ratio*(1.0-0.60)+1.0)
+let ke2 = kemig+(1.0-r2)*kd
+let p2 = 1.0-exp(-ke2*tau)
+println("  0.60      ", r2, "  ", ke2, "  ", p2, "  ", log(0.1)/log(1.0-p2), "  ", (log(0.1)/log(1.0-p2))*T/30.4, "  strong FcgR")
+// beta = 0.90 (multi-receptor — likely biologic, non-oral)
+let r3 = ratio*(1.0-0.90)/(ratio*(1.0-0.90)+1.0)
+let ke3 = kemig+(1.0-r3)*kd
+let p3 = 1.0-exp(-ke3*tau)
+println("  0.90      ", r3, "  ", ke3, "  ", p3, "  ", log(0.1)/log(1.0-p3), "  ", (log(0.1)/log(1.0-p3))*T/30.4, "  multi-receptor (biologic)")
+// beta = 0.95
+let r4 = ratio*(1.0-0.95)/(ratio*(1.0-0.95)+1.0)
+let ke4 = kemig+(1.0-r4)*kd
+let p4 = 1.0-exp(-ke4*tau)
+println("  0.95      ", r4, "  ", ke4, "  ", p4, "  ", log(0.1)/log(1.0-p4), "  ", (log(0.1)/log(1.0-p4))*T/30.4, "  near-total block")
+
+println("")
+println("[note] free inert pigment recapture = scavenger-receptor / actin-dependent general")
+println("       phagocytosis, NOT FcgR/antibody-mediated -> fostamatinib (FcgR/Syk) likely LOW beta")
+println("       for pigment. high-beta needs scavenger-receptor block (no oral clinical agent yet).")
+println("")
+println("=== BP1 verdict: right lever, but high-beta oral agent gap -> still multi-year ===")

@@ -1,0 +1,94 @@
+// TTR-ORAL N1 — phagolysosome-pH-gated in-situ pigment degradation
+// hexa-native recompute per @D g1 + feedback_demiurge_assets_simulation_mandatory.
+// Question: does a pH-gated catalyst (OFF at 7.4, ON at 4.5) give the on/off
+// contrast + the SITE-specificity needed for device-free oral tattoo fade?
+// All math first-principles (Nernst · Arrhenius · volume budget). distinct
+// let-names per reference_hexa_let_literal_collision (PR #821).
+// run: hexa run TTR-ORAL/sim/n1_ph_gate.hexa
+
+println("=== TTR-ORAL N1 phagolysosome pH-gate ===")
+println("")
+
+// ---- [1] CeO2 Nernst pH-switch (ties to TTR/verify V2 §7) --------------------
+// E(pH) = E0 - (2.303*R*T/(nF))*pH = E0 - 0.0591*pH  (n=1, 298 K)
+// E0 chosen 1.72 V so that V2 §7 reproduces (pH4.5 -> +1.454, pH7.4 -> +1.283).
+let nernst_e0 = 1.72
+let nernst_slope = 0.0591
+let e_phago = nernst_e0 - nernst_slope * 4.5      // phagolysosome pH 4.5
+let e_dermis = nernst_e0 - nernst_slope * 7.4     // blood/dermis pH 7.4
+let e_delta = e_phago - e_dermis                   // positive = phago more oxidizing
+println("[1] CeO2 Nernst pH-switch (E0=1.72 V, slope 0.0591 V/pH):")
+println("  pH 4.5 phagolysosome  E = ", e_phago, " V  (Fenton-ON / oxidizing)")
+println("  pH 7.4 blood/dermis   E = ", e_dermis, " V  (antioxidant balance)")
+println("  delta E (4.5 vs 7.4)  = ", e_delta, " V  (pH-driven switch, V2 §7 = 0.171)")
+println("")
+
+// ---- [2] acid-catalyzed rate ratio (the kinetic ON/OFF contrast) ------------
+// For an H+-catalyzed step, rate ~ k * [H+]^m. pH 7.4 -> [H+]=10^-7.4,
+// pH 4.5 -> [H+]=10^-4.5. ON/OFF = ([H+]_4.5 / [H+]_7.4)^m = 10^(2.9*m).
+let dpH = 7.4 - 4.5                                 // 2.9 pH units
+let ratio_m1 = pow(10.0, dpH * 1.0)                 // first-order in [H+]
+let ratio_m2 = pow(10.0, dpH * 2.0)                 // second-order (specific-acid + acid-labile)
+println("[2] acid-catalyzed ON/OFF rate ratio = 10^(dpH*m), dpH = ", dpH, ":")
+println("  m=1 (general/specific acid): ", ratio_m1, " x  (~800x)")
+println("  m=2 (acid-labile + H+ cat.): ", ratio_m2, " x  (~6.3e5)")
+println("  -> even m=1 gives ~3 orders OFF->ON; ample to keep 7.4 inert.")
+println("")
+
+// ---- [3] THE site-specificity check (key honest test) -----------------------
+// pH-ALONE gating fires in EVERY acidic lysosome in the body, not just the
+// ink-laden one. Budget: total body lysosomal volume vs the tattoo phagolysosome
+// volume. If catalyst partitions by acidity alone, only V_tat/V_lyso_total of
+// the activated catalyst sits where pigment is.
+// - cells in body ~3.7e13; lysosomes per cell ~300; lysosome vol ~0.5 um^3 -> 0.5e-15 mL
+let cells_body = 3.7e13
+let lyso_per_cell = 300.0
+let vol_lyso_mL = 0.5e-15                            // 0.5 um^3 in mL
+let vol_lyso_total = cells_body * lyso_per_cell * vol_lyso_mL   // mL
+// tattoo ink-laden phagolysosome volume: ~1e6 laden macrophages over a 50 cm^2
+// tattoo, each ~1 phagolysosome of ink ~ 100 um^3 (large ink vacuole) = 1e-13 mL
+let laden_mac = 1.0e6
+let vol_phago_each = 1.0e-13                         // 100 um^3 in mL
+let vol_tat = laden_mac * vol_phago_each             // mL
+let acidic_specificity = vol_tat / (vol_tat + vol_lyso_total)
+println("[3] pH-ALONE site-specificity (acidic-compartment volume budget):")
+println("  total body lysosome volume   = ", vol_lyso_total, " mL")
+println("  tattoo ink-phagolysosome vol = ", vol_tat, " mL")
+println("  fraction of acidic volume that is ink-laden = ", acidic_specificity)
+println("  -> pH-alone is NOT site-specific: ~", vol_tat/vol_lyso_total, " of acidic targets.")
+println("")
+
+// ---- [4] why neutral-pH inertness still rescues this (toxicity decouple) -----
+// Off-target acidic activation is only harmful if the ACTIVATED chemistry harms
+// the host cell. CeO2 at pH4.5 = Fenton-ON (ROS). The saving grace is NOT site-
+// specificity but: (a) catalyst is catalytic (not consumed) so needs a SUBSTRATE
+// (pigment) to do net damage; (b) host lysosomes have catalase/SOD/GSH ROS
+// defenses tuned for endogenous flux. Quantify the off-target ROS load ratio:
+// ROS generated ~ proportional to catalyst present * rate. With no pigment sink,
+// off-target lysosomes see catalyst but host antioxidant capacity buffers it.
+let host_ros_buffer = 1.0e-5     // steady-state [.OH] host can quench (M, moa §9-3)
+let catalyst_ros_at_45 = 5.0e-5  // [.OH] a Fenton-ON nanozyme would drive (order)
+let ros_overload = catalyst_ros_at_45 / host_ros_buffer
+println("[4] off-target ROS overload at pH4.5 lysosomes (no pigment sink):")
+println("  catalyst-driven [.OH] / host buffer = ", ros_overload, " x")
+println("  -> >1 means EVERY acidic lysosome is oxidatively stressed = NOT harmless.")
+println("  (neutral-pH inertness solves 7.4 blood; it does NOT solve 4.5 off-target)")
+println("")
+
+// ---- [5] addressable pigment fraction (what ROS/chelation can actually erase) -
+// Market split (TTR ink_classes §6): azo+Fe-oxide+QA 60-70% (cleavable),
+// carbon black 20-30% (sp2 aromatic C-C BDE 518 kJ/mol = 5.37 eV, .OH +2.80V
+// surface-etch only, NOT bulk-degradable), Cu-Pc+Cr2O3 10-15% (wall).
+let frac_cleavable_lo = 0.60     // azo N=N reductive + Fe oxide chelation
+let frac_cleavable_hi = 0.70
+let frac_carbon = 0.25           // surface etch only -> count ~0 net erase
+let frac_wall = 0.125            // Cu-Pc / Cr2O3 robust
+// addressable by acid-gated ROS/chelation = cleavable organic + Fe oxide chelation
+println("[5] addressable pigment fraction (acid-gated ROS + chelation):")
+println("  azo + Fe-oxide + QA (cleavable) : ", frac_cleavable_lo, " - ", frac_cleavable_hi)
+println("  carbon black (surface etch only): ", frac_carbon, " -> net erase ~0 (BDE 5.37 eV)")
+println("  Cu-Pc + Cr2O3 (wall)           : ", frac_wall)
+println("  => realistic ADDRESSABLE ~ 60-70% IF catalyst reaches + activates in situ")
+println("")
+
+println("=== N1 done ===")

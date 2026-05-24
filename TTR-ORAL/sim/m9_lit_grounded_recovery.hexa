@@ -1,0 +1,56 @@
+// TTR-ORAL M9 deepening — literature-grounded W3 recovery re-gate (track B)
+// Plugs REAL measured kinetics into the verified M5/M6 model:
+//   tau_rec (CSF1R macrophage repopulation) = 7-28 d  [PLX5622/pexidartinib lit]
+//   natural capture-release cycle           = 90 d     [Baranska 2018]
+//   on (pexidartinib pulse)                  = 3 d
+// recovery efficiency by end of off-window:  eta = 1 - exp(-t_off/tau_rec)
+// safety break-even (M6 re-gate, balanced TI_chronic=0.8, TI>=3): eta* = 3/(0.8*(T/on))
+// reveals the speed-vs-safety sweet spot in pulse period T.
+// run: hexa run TTR-ORAL/sim/m9_lit_grounded_recovery.hexa
+
+println("=== TTR-ORAL M9 lit-grounded recovery re-gate (track B) ===")
+println("")
+println("model: eta = 1 - exp(-t_off/tau_rec) ; eta* = 3/(0.8*(T/on)) ; on=3d")
+println("")
+
+// ---- eta(tau_rec, T) for the literature tau_rec range ----------------------
+println("[1] recovery efficiency eta by pulse period T (on=3d):")
+println("  tau_rec=14d : T=21d eta=", 1.0-exp(-18.0/14.0), " T=28d eta=", 1.0-exp(-25.0/14.0), " T=42d eta=", 1.0-exp(-39.0/14.0))
+println("  tau_rec=21d : T=21d eta=", 1.0-exp(-18.0/21.0), " T=28d eta=", 1.0-exp(-25.0/21.0), " T=42d eta=", 1.0-exp(-39.0/21.0))
+println("  tau_rec=28d : T=21d eta=", 1.0-exp(-18.0/28.0), " T=28d eta=", 1.0-exp(-25.0/28.0), " T=42d eta=", 1.0-exp(-39.0/28.0))
+
+// ---- eta* break-even by T --------------------------------------------------
+println("")
+println("[2] safety break-even eta* (balanced, TI>=3) by T:")
+println("  T=14d eta*=", 3.0/(0.8*(14.0/3.0)))
+println("  T=21d eta*=", 3.0/(0.8*(21.0/3.0)))
+println("  T=28d eta*=", 3.0/(0.8*(28.0/3.0)))
+println("  T=42d eta*=", 3.0/(0.8*(42.0/3.0)))
+
+// ---- pass test: eta(tau_rec=21d) vs eta* -----------------------------------
+println("")
+println("[3] PASS test (tau_rec=21d central estimate · eta >= eta* ?):")
+let e14 = 1.0-exp(-11.0/21.0)
+let s14 = 3.0/(0.8*(14.0/3.0))
+println("  T=14d: eta=", e14, " eta*=", s14, " pass=", e14 - s14)
+let e21 = 1.0-exp(-18.0/21.0)
+let s21 = 3.0/(0.8*(21.0/3.0))
+println("  T=21d: eta=", e21, " eta*=", s21, " pass=", e21 - s21)
+let e28 = 1.0-exp(-25.0/21.0)
+let s28 = 3.0/(0.8*(28.0/3.0))
+println("  T=28d: eta=", e28, " eta*=", s28, " pass=", e28 - s28)
+
+// ---- fade timeline at each T (n90=14.17 pulses, full 3-lever phi=0.15) ------
+println("")
+println("[4] fade timeline t_90 = n90 * T  (n90=14.17 · event-driven phi):")
+let n90 = 14.17
+println("  T=14d (biweekly): ", n90*14.0/30.4, " months  (FAST but eta<eta* = unsafe)")
+println("  T=21d (3-week)  : ", n90*21.0/30.4, " months  (safe margin thin)")
+println("  T=28d (4-week)  : ", n90*28.0/30.4, " months  (safe comfortable)")
+println("  T=42d (6-week)  : ", n90*42.0/30.4, " months  (very safe · slow)")
+
+println("")
+println("[5] natural cycle anchor (Baranska): 90d/cycle -> n90*90d = ", n90*90.0/30.4, " months if unpulsed-rate")
+println("")
+println("=== sweet spot: T ~ 3-4 weeks -> ~10-13 mo fade WITH eta>eta* (tau_rec=21d) ===")
+println("=== honest haircut: lit tau_rec = non-dermal macrophages + partial 'perdure' -> eta upper-ish; 🟡 not 🟢 ===")

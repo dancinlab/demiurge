@@ -1,0 +1,51 @@
+// TTR-ORAL — lever benchmark: best-case timeline per approach (consolidation)
+// Pulls each explored lever's representative params into one ranked timeline table.
+// Common model: n90 = log(0.1)/log(1-phi_eff) ; months = n90 * T / 30.4
+//   oral fade: phi_eff = 1-exp(-k_eff*tau), k_eff = k_emig + (1-r_eff)*k_death
+//   laser: per-session clearance c = phi_rel*(1-r), N_sessions = log(0.1)/log(1-c), months = N*interval
+// run: hexa run TTR-ORAL/sim/benchmark_levers.hexa
+
+println("=== TTR-ORAL lever benchmark (best-case timeline) ===")
+println("")
+let kemig = 0.02
+let kd = 0.50
+let tau = 0.25
+let T = 28.0   // 4-week safe pulse
+
+// helper inline: months(r_eff)
+// B-core: CSF1R pulse + r-down to 0.50 (no drainage, no bolus)
+let kB = kemig + (1.0-0.50)*kd
+let pB = 1.0-exp(-kB*tau)
+println("B-core (CSF1R+r↓0.50, oral)        : ", (log(0.1)/log(1.0-pB))*T/30.4, " mo")
+
+// d11 bolus: realistic D=1.5 -> r=0.927, + s_sat=0.7 -> r_eff=0.278
+let rD = 19.0/(19.0+1.5)
+let reff = rD*(1.0-0.7)
+let kBo = kemig + (1.0-reff)*kd
+let pBo = 1.0-exp(-kBo*tau)
+println("d11 bolus (D1.5 + s_sat0.7, oral)  : ", (log(0.1)/log(1.0-pBo))*T/30.4, " mo")
+
+// drainage alone D=1.5 (oral lymphagogue only)
+let rDa = 19.0/(19.0+1.5)
+let kDa = kemig + (1.0-rDa)*kd
+let pDa = 1.0-exp(-kDa*tau)
+println("drainage alone (D1.5, oral)        : ", (log(0.1)/log(1.0-pDa))*T/30.4, " mo")
+
+// laser monotherapy (incumbent): c=phi_rel*(1-r0), phi_rel=0.83, r0=0.70, interval 7wk=1.6mo
+let cL = 0.83*(1.0-0.70)
+let nL = log(0.1)/log(1.0-cL)
+println("laser monotherapy (incumbent)      : ", nL, " sessions = ", nL*1.6, " mo")
+
+// laser + oral r↓0.50 adjunct (BP1d)
+let cLA = 0.83*(1.0-0.50)
+let nLA = log(0.1)/log(1.0-cLA)
+println("laser + oral r↓0.50 (BP1d)         : ", nLA, " sessions = ", nLA*1.6, " mo")
+
+// laser + aggressive r↓0.40
+let cLB = 0.83*(1.0-0.40)
+let nLB = log(0.1)/log(1.0-cLB)
+println("laser + oral r↓0.40 (BP1d aggr)    : ", nLB, " sessions = ", nLB*1.6, " mo")
+
+println("")
+println("[pending agents] N1 phagolysosome-pH-gate (erase, device-free) · N2 monocyte trojan-horse")
+println("=== ranking: laser-adjunct fastest (device) ; device-free oral = multi-year (bolus best) ===")

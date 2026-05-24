@@ -1,0 +1,102 @@
+// TTR-ORAL N3 — oral autophagy / lysosomal-degradation induction
+// hexa-native recompute per @D g1 + feedback_demiurge_assets_simulation_mandatory.
+// Question: if we orally induce autophagy/lysosomal catabolism IN the pigment-laden
+// macrophage so it DIGESTS the engulfed pigment in situ (erase, not relocate),
+// how big is the effective in-cell erase rate, and which pigment fraction yields?
+// Honest core: the rate-limiting step is SUBSTRATE chemistry, not autophagic flux
+// (macrophages already hold pigment in phagolysosomes for life and fail to digest it
+// = anthracosis / Baranska capture-release-recapture). distinct let-names per
+// reference_hexa_let_literal_collision (PR #821).
+// run: hexa run TTR-ORAL/sim/n3_autophagy.hexa
+
+println("=== TTR-ORAL N3 autophagy / lysosomal-degradation induction ===")
+println("")
+
+// ---- [1] effective in-cell digestion rate vs recapture (the model) ----------
+// capture-release-recapture (Baranska): pigment cycles between macrophages with
+// natural cycle ~90 d. Autophagy adds an in-cell digestion rate k_dig that
+// competes with recapture. Net erase per cycle for the DEGRADABLE fraction:
+//   p_erase = k_dig / (k_dig + k_recap)
+// k_recap ~ 1/90 per day (recapture before a laden cell can finish digesting).
+// Autophagic flux upper bound: max ~2-3x basal turnover (rapamycin/spermidine
+// induction magnitude); lysosomal substrate-clearance half-life for a DEGRADABLE
+// cargo ~ days. Take k_dig in 1/day, sweep induction.
+let k_recap = 1.0 / 90.0                    // natural recapture rate (1/day)
+let kdig_basal = 1.0 / 60.0                 // basal lysosomal clearance of a cleavable cargo
+let kdig_rapa = kdig_basal * 2.5            // rapamycin/spermidine ~2.5x autophagic flux
+let kdig_max = kdig_basal * 3.0             // optimistic ceiling
+let p_basal = kdig_basal / (kdig_basal + k_recap)
+let p_rapa = kdig_rapa / (kdig_rapa + k_recap)
+let p_max = kdig_max / (kdig_max + k_recap)
+println("[1] in-cell digestion vs recapture (DEGRADABLE cargo only):")
+println("  k_recap (natural)            = ", k_recap, " /day")
+println("  basal:  k_dig=", kdig_basal, " -> p_erase/cycle = ", p_basal)
+println("  rapa2.5x: k_dig=", kdig_rapa, " -> p_erase/cycle = ", p_rapa)
+println("  max3.0x:  k_dig=", kdig_max, " -> p_erase/cycle = ", p_max)
+println("")
+
+// ---- [2] the HONEST counter: substrate, not flux, is rate-limiting ----------
+// Macrophages ALREADY hold pigment in acidic phagolysosomes (pH ~4.5, full
+// hydrolase + oxidase toolkit) continuously for a lifetime, yet pigment is NOT
+// degraded (Inserm/Baranska: passed intact across macrophage generations;
+// anthracosis: coal/carbon persists in lung macrophages for life). So basal
+// autophagic flux on this cargo is effectively zero for the NON-degradable part.
+// Inducing MORE autophagy multiplies a rate that is ~0 for carbon black:
+//   k_dig(carbon) = 0  ->  p_erase(carbon) = 0 regardless of induction.
+let kdig_carbon = 0.0
+let p_carbon = kdig_carbon / (kdig_carbon + k_recap)
+println("[2] substrate gate (carbon black sp2 C-C, BDE 5.37 eV):")
+println("  k_dig(carbon) = ", kdig_carbon, " /day  (anthracosis floor)")
+println("  p_erase(carbon) = ", p_carbon, "  -> induction x ANY = still 0")
+println("  (lysosome toolkit present for LIFE & fails = flux is not the bottleneck)")
+println("")
+
+// ---- [3] addressable fraction (same market split as N1, gated by k_dig>0) ---
+// azo: lysosomal/hepatic azoreductase CAN reductively cleave N=N (xenobiotic
+// metabolism precedent) -> degradable IF flux reaches it. Fe oxide: not "digested"
+// but dissolved at acidic pH + ferritin handling (partial). quinacridone: H-bonded
+// pigment, poorly enzyme-degradable (counts low). carbon/Cu-Pc/Cr2O3: NO.
+let frac_azo = 0.45                          // azo (azoreductase-cleavable, best case)
+let frac_feoxide = 0.10                      // Fe oxide (acid dissolution / ferritin, partial)
+let frac_qa = 0.10                           // quinacridone (poor enzymatic handle)
+let frac_carbon_mkt = 0.25                   // carbon black (NO)
+let frac_wall = 0.10                         // Cu-Pc / Cr2O3 (wall)
+// realistically digestible = azo (full) + Fe oxide (partial) ; QA mostly resists
+let addr_lo = frac_azo                        // azo only, conservative
+let addr_hi = frac_azo + frac_feoxide         // azo + Fe oxide
+println("[3] addressable pigment fraction (k_dig>0 = enzymatically degradable):")
+println("  azo (azoreductase N=N cleave)  : ", frac_azo)
+println("  Fe oxide (acid dissolve/ferritin, partial): ", frac_feoxide)
+println("  quinacridone (poor handle)     : ", frac_qa, "  (mostly resists)")
+println("  carbon black (NONE)            : ", frac_carbon_mkt)
+println("  Cu-Pc + Cr2O3 (wall)           : ", frac_wall)
+println("  => realistic DIGESTIBLE band ~ ", addr_lo, " - ", addr_hi, " (azo +/- Fe oxide)")
+println("")
+
+// ---- [4] specificity / side-effect cost (oral autophagy = whole body) -------
+// Oral inducers (rapamycin, spermidine, trehalose, metformin) raise autophagy
+// system-wide, not in the ink macrophage selectively. Same lysosome-ubiquity
+// dilution as N1 §3: the ink-laden phagolysosome is ~1.8e-8 of body acidic volume.
+// Benefit lands only where (degradable pigment AND laden macrophage) coincide;
+// cost (immunosuppression for rapamycin, GI for trehalose) is whole-body.
+let ink_specificity = 1.8e-8                  // ink-laden fraction of body acidic compartments (N1 §3)
+println("[4] specificity of an ORAL (systemic) autophagy inducer:")
+println("  ink-laden fraction of body acidic compartments = ", ink_specificity)
+println("  -> benefit is point-source; autophagy induction is whole-body")
+println("  (rapamycin = immunosuppressant; non-specific housekeeping boost)")
+println("")
+
+// ---- [5] timeline contribution if it worked on the degradable band ----------
+// Treat p_rapa as an extra per-cycle erase on the azo band only. Cycles to 90%
+// clearance of THAT band: n90 = ln(0.1)/ln(1 - p_rapa). Cycle ~90 d natural.
+let cycle_days = 90.0
+let n90_azo = log(0.1) / log(1.0 - p_rapa)
+let months_azo = n90_azo * cycle_days / 30.0
+println("[5] timeline IF autophagy digested the azo band (rapa 2.5x):")
+println("  p_erase/cycle (azo) = ", p_rapa)
+println("  n90 cycles          = ", n90_azo)
+println("  -> ~", months_azo, " months to 90% of the AZO fraction only")
+println("  (whole-tattoo color floor still set by carbon/Cu-Pc/Cr2O3 = un-erasable)")
+println("")
+
+println("=== N3 done ===")

@@ -1,0 +1,83 @@
+// TTR-ORAL M5 — pulsed macrophage-emigration PK/PD (track B, device-free)
+// hexa-native sim per @D g1 + feedback_demiurge_assets_simulation_mandatory.
+// Model: ink-laden dermal macrophage pool N cleared by emigration to lymph.
+//   per-pulse cleared fraction  phi = 1 - exp(-k_eff * tau_win)
+//   k_eff = k_emig + (1 - r) * k_death           [1/month]
+//   pulses to 90% skin clearance  n90 = log(0.1)/log(1-phi)  (base-independent)
+// W3 window: pulsing widens the therapeutic window vs chronic ONLY IF systemic
+//   toxicity recovers between pulses (else duty-cycle cancels efficacy gain).
+// run: hexa run TTR-ORAL/sim/m5_pulsed_pkpd.hexa
+
+println("=== TTR-ORAL M5 pulsed PK/PD (track B) ===")
+println("")
+
+// ---- [1] closed-form: per-pulse phi -> pulses to 90% clearance --------------
+println("[1] per-pulse phi -> n90 (pulses to 90% skin clearance):")
+println("  phi=0.05 n90 =", log(0.1)/log(1.0-0.05), "pulses")
+println("  phi=0.10 n90 =", log(0.1)/log(1.0-0.10), "pulses")
+println("  phi=0.15 n90 =", log(0.1)/log(1.0-0.15), "pulses")
+println("  phi=0.20 n90 =", log(0.1)/log(1.0-0.20), "pulses")
+println("  phi=0.25 n90 =", log(0.1)/log(1.0-0.25), "pulses")
+println("  phi=0.30 n90 =", log(0.1)/log(1.0-0.30), "pulses")
+
+// ---- [2] 3-lever -> per-pulse phi  (tau_win = 0.25 active-month/pulse) ------
+println("")
+println("[2] 3-lever k_eff -> per-pulse phi -> n90 (tau_win=0.25):")
+let tau = 0.25
+
+// natural baseline: k_emig=0.02 k_death=0.05 r=0.95
+let keff_nat = 0.02 + (1.0 - 0.95) * 0.05
+let phi_nat  = 1.0 - exp(-keff_nat * tau)
+println("  natural          k_eff =", keff_nat, " phi =", phi_nat, " n90 =", log(0.1)/log(1.0-phi_nat))
+
+// emig only (B2): k_emig=0.30 k_death=0.05 r=0.95
+let keff_e = 0.30 + (1.0 - 0.95) * 0.05
+let phi_e  = 1.0 - exp(-keff_e * tau)
+println("  emig only        k_eff =", keff_e, " phi =", phi_e, " n90 =", log(0.1)/log(1.0-phi_e))
+
+// emig + turnover (B2+B1): k_emig=0.30 k_death=0.40 r=0.95
+let keff_et = 0.30 + (1.0 - 0.95) * 0.40
+let phi_et  = 1.0 - exp(-keff_et * tau)
+println("  emig+turnover    k_eff =", keff_et, " phi =", phi_et, " n90 =", log(0.1)/log(1.0-phi_et))
+
+// + recapture down (r 0.80): k_emig=0.30 k_death=0.40 r=0.80
+let keff_r = 0.30 + (1.0 - 0.80) * 0.40
+let phi_r  = 1.0 - exp(-keff_r * tau)
+println("  +recapture down  k_eff =", keff_r, " phi =", phi_r, " n90 =", log(0.1)/log(1.0-phi_r))
+
+// full 3-lever aggressive: k_emig=0.50 k_death=0.50 r=0.70
+let keff_f = 0.50 + (1.0 - 0.70) * 0.50
+let phi_f  = 1.0 - exp(-keff_f * tau)
+println("  full 3-lever     k_eff =", keff_f, " phi =", phi_f, " n90 =", log(0.1)/log(1.0-phi_f))
+
+// ---- [3] window (TI) gain from pulsing IF toxicity recovers ----------------
+println("")
+println("[3] TI_pulsed/TI_chronic ~ period/on-time (full tox recovery between pulses):")
+println("  period 30d on 3d -> TI gain ~", 30.0/3.0, "x")
+println("  period 30d on 5d -> TI gain ~", 30.0/5.0, "x")
+println("  period 14d on 3d -> TI gain ~", 14.0/3.0, "x")
+
+// ---- [4] numerical ODE confirmation (cycle-by-cycle, exact per phase) ------
+println("")
+println("[4] numerical confirmation vs closed-form (k_hi=0.65 k_lo=0.0225 on=0.25 T=1.0 month):")
+let k_hi = 0.65
+let k_lo = 0.0225
+let on = 0.25
+let off = 0.75
+let mut N = 1.0
+let mut pulses = 0
+let mut months = 0.0
+while N > 0.10 {
+    N = N * exp(-k_hi * on)
+    N = N * exp(-k_lo * off)
+    pulses = pulses + 1
+    months = months + 1.0
+}
+let phi_cycle = 1.0 - exp(-(k_hi * on + k_lo * off))
+println("  per-cycle phi =", phi_cycle)
+println("  closed-form n90 =", log(0.1)/log(1.0-phi_cycle), "pulses")
+println("  numerical: 90% clearance at pulses =", pulses, " months =", months)
+println("  (numerical ceils to whole pulses; closed-form is the exact continuous value)")
+
+println("")
+println("=== M5 done ===")

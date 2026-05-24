@@ -1,0 +1,85 @@
+// TTR-ORAL M4b — literature-grounding of k_emig (dermal cell -> dLN emigration rate)
+// and the FOLD-CHANGE an S1P-axis modulator vs a CCR7-axis lever produces.
+// Model (M5):  k_eff = k_emig + (1-r)*k_death  [1/month]
+//              phi   = 1 - exp(-k_eff*tau_win)   (tau_win=0.25 mo pulse on-time)
+//              n90   = log(0.1)/log(1-phi)       (pulses to 90% skin clearance)
+//
+// LITERATURE ANCHORS (see M4b_kemig_grounding.md §Sources):
+//   natural dermal->dLN emigration (tattoo-laden, sessile RM)  k_emig ~ 0.02 /mo   [Baranska2018]
+//   CCR7-axis ceiling  (CCR7-KO skin-explant DC egress = 3-4x WT)  ->  3-4x boost   [Ohl2004]
+//   S1P modulator (fingolimod/ozanimod/etrasimod): functional S1PR1 ANTAGONIST
+//      -> INHIBITS skin DC->dLN migration (wrong sign)  [Reines2009, Han2015]
+// run: hexa run TTR-ORAL/sim/m4b_kemig.hexa
+
+println("=== TTR-ORAL M4b k_emig grounding (track B2) ===")
+println("")
+println("model: k_eff=k_emig+(1-r)*k_death ; phi=1-exp(-k_eff*0.25) ; n90=log(0.1)/log(1-phi)")
+println("")
+
+// fixed knobs for the comparison (M5 base): r=0.5 recapture, k_death=0.35/mo turnover
+let r = 0.5
+let kdeath = 0.35
+let win = 0.25
+
+// ---- [1] k_emig literature range -> k_eff -> phi -> n90 ---------------------
+println("[1] k_emig scenarios (1/mo) -> k_eff -> per-pulse phi -> n90:")
+
+let knat = 0.02
+let keff_nat = knat + (1.0-r)*kdeath
+let phi_nat  = 1.0 - exp(-keff_nat*win)
+println("  natural k_emig=0.02 (1x)      k_eff=", keff_nat, " phi=", phi_nat, " n90=", log(0.1)/log(1.0-phi_nat))
+
+let kccr3 = 0.02*3.0
+let keff_ccr3 = kccr3 + (1.0-r)*kdeath
+let phi_ccr3  = 1.0 - exp(-keff_ccr3*win)
+println("  CCR7 3x  k_emig=0.06          k_eff=", keff_ccr3, " phi=", phi_ccr3, " n90=", log(0.1)/log(1.0-phi_ccr3))
+
+let kccr4 = 0.02*4.0
+let keff_ccr4 = kccr4 + (1.0-r)*kdeath
+let phi_ccr4  = 1.0 - exp(-keff_ccr4*win)
+println("  CCR7 4x  k_emig=0.08          k_eff=", keff_ccr4, " phi=", phi_ccr4, " n90=", log(0.1)/log(1.0-phi_ccr4))
+
+let k15 = 0.02*15.0
+let keff15 = k15 + (1.0-r)*kdeath
+let phi15  = 1.0 - exp(-keff15*win)
+println("  ASSUMED 15x k_emig=0.30       k_eff=", keff15, " phi=", phi15, " n90=", log(0.1)/log(1.0-phi15))
+
+// ---- [2] S1P modulator = WRONG SIGN for migratory cells --------------------
+// FTY720/S1P reduce skin DC->dLN immigration; model as k_emig scaled DOWN ~0.3-0.5x
+println("")
+println("[2] S1P modulator on MIGRATORY (DC/leukocyte) k_emig — egress INHIBITOR:")
+let ks1p_lo = 0.02*0.3
+let keff_s1plo = ks1p_lo + (1.0-r)*kdeath
+let phi_s1plo  = 1.0 - exp(-keff_s1plo*win)
+println("  S1P 0.3x k_emig=0.006         k_eff=", keff_s1plo, " phi=", phi_s1plo, " n90=", log(0.1)/log(1.0-phi_s1plo))
+let ks1p_hi = 0.02*0.5
+let keff_s1phi = ks1p_hi + (1.0-r)*kdeath
+let phi_s1phi  = 1.0 - exp(-keff_s1phi*win)
+println("  S1P 0.5x k_emig=0.010         k_eff=", keff_s1phi, " phi=", phi_s1phi, " n90=", log(0.1)/log(1.0-phi_s1phi))
+
+// ---- [3] tattoo-laden RM are SESSILE: k_emig ~ 0 regardless of S1P ---------
+// Baranska2018: pigment macrophages "do NOT migrate to LN" — k_emig knob may be ~null
+println("")
+println("[3] sessile pigment-RM scenario (Baranska): k_emig ~ 0 — lever drives k_death/r only:")
+let keff_sessile = 0.0 + (1.0-r)*kdeath
+let phi_sessile  = 1.0 - exp(-keff_sessile*win)
+println("  k_emig=0 (only turnover/r)    k_eff=", keff_sessile, " phi=", phi_sessile, " n90=", log(0.1)/log(1.0-phi_sessile))
+
+// ---- [4] fold-change of k_eff (the metric that actually matters) -----------
+println("")
+println("[4] k_eff fold vs natural (what the 15x k_emig CLAIM buys after other knobs):")
+println("  natural        k_eff=", keff_nat, " fold=1.00")
+println("  CCR7 3-4x      k_eff=", keff_ccr3, "-", keff_ccr4, " fold=", keff_ccr3/keff_nat, "-", keff_ccr4/keff_nat)
+println("  ASSUMED 15x    k_eff=", keff15, " fold=", keff15/keff_nat)
+println("  S1P (0.3-0.5x) k_eff=", keff_s1plo, "-", keff_s1phi, " fold=", keff_s1plo/keff_nat, "-", keff_s1phi/keff_nat)
+
+// ---- [5] fade timeline (monthly pulse T=30.4d) -----------------------------
+println("")
+println("[5] fade t90 = n90 * T  (monthly pulse, T=1 mo):")
+println("  CCR7 4x  : ", log(0.1)/log(1.0-phi_ccr4), " months")
+println("  15x      : ", log(0.1)/log(1.0-phi15), " months")
+println("  S1P 0.5x : ", log(0.1)/log(1.0-phi_s1phi), " months (SLOWER than natural-ish — wrong lever)")
+println("")
+println("=== verdict: 15x k_emig is UNSUPPORTED (lit ceiling 3-4x via CCR7); ===")
+println("=== S1P modulator is WRONG-SIGN for migratory egress; tattoo RM are sessile. ===")
+println("=== real k_emig knob = CCR7/CCL21 agonism OR k_death (CSF1R-pulse repopulation). ===")
