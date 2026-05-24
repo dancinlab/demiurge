@@ -2,6 +2,20 @@
 
 Append-only history sister of `CLI+COCKPIT.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T13:30:00Z — @goal 외부-제품 재정의 + M14 (operation manifest) 착지 + M0 운영 manifest
+
+- [x] **@goal 재정의** — "외부 사용자가 app(Swift macOS) + CLI 2개만으로 7-verb 완전 운영, owner-infra 의존 0" (4-제약: surface 2개 · SSOT=stdlib 커널만 · 작동부=demiurge 소유 · 대상=외부+hexa hx 의존성)
+- [x] **3-층 소유 경계** — 작동부(demiurge) / 진열대(external) / 사장실(owner env-gated) + stdlib 커널(hexa SSOT 가리킴)
+- [x] **M14 ✅ commit 0ec8dc4** — `OperationRegistry.swift`(17-op census · external/owner tier · target swift/hexa/substrate · @D d4) + `demiurge operate list/audit` CLI + `OperabilityAudit`(M21 gate skeleton) · 빌드 green · audit=6✅/3🔶/3❌
+- [x] **P1 산출 `CLI+COCKPIT/M0_operate.md`** — 17-op 전수표 + generic dispatcher(d4) + 배포(hexa hx-dep) + plain/expert 격리 + audit 정의
+- [x] M15-M21 등재 — 진열대(M15-19·21) + 사장실(M20, 기존 M10-12 흡수)
+- [x] memory `project-demiurge-pointer-hexa-lang-ssot` 정정 — 작동부 carve-out (cockpit/CLI Swift = demiurge 소유 · SSOT=stdlib 커널만)
+- [x] ⚠ **동시 세션 wipe 사건** — 다른 세션이 CLI+COCKPIT.md/.log.md 라이브 편집(commit 556515c·6549eea)으로 본 문서 편집 2회 wipe → 코드는 d9 격리 커밋(0ec8dc4)으로 즉시 보호, 문서는 stable window에 재적용
+- [ ] ⏳ P3/M15 — cockpit GUI가 OperationRegistry mirror (D50) + `OperationDispatch.run` per-target 실행 wiring · op별 stacked PR (@D g4)
+- [ ] ⏳ M16 verify hx-call · M17 backend 추상화 · M18 배포 · M19 plain격리 · M20 owner-mode · M21 audit
+
+🔑 핵심: M0 운영 매핑표가 `demiurge operate`로 실행 가능한 surface가 됨 — "완전 운영" 토대(M14) 착지. 동시 세션 충돌은 d9 `git commit -o` 격리로 코드 보호 (memory recurring-wipe 패턴 demiurge 재발).
+
 ## 2026-05-25T07:50:00Z — CARDIO+ 메타도메인 세션 교훈 → CLI/cockpit 개선 milestone M8-M13 등재
 
 - [x] **M8-M13 개선 milestone 등재** (milestone-level only · 구현 후속) — CARDIO+ 메타도메인(X1-X13 + DOCTOR H1-H10 + 인프라 핸드오프 3건) 세션서 induce

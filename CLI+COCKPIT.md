@@ -1,6 +1,6 @@
 # CLI+COCKPIT — current state
 
-@goal: demiurge 7-verb pipeline (spec→structure→design→analyze⟲→synthesize→verify→handoff)을 CLI 명령 + cockpit TUI 두 surface에서 dispatch · 관찰 · handoff 완주 — materials→chip→component 스케일 축 전부 native
+@goal: 외부 사용자가 app(Swift macOS) + CLI 2개만으로 demiurge 7-verb 기술설계 파이프라인(spec→structure→design→analyze⟲→synthesize→verify→handoff)을 완전히 운영 — 프로젝트·verify·결과·export까지 owner-infra 의존 0. 작동부(generic dispatch·7-verb·routing·handoff orchestration)는 demiurge 소유(real Swift, cockpit/Sources), stdlib 계산 커널(verify recompute·atlas·physics)만 hexa-lang SSOT를 hx 의존성으로 호출, 소유자 전용 운영(pool·inbox·atlas register·거버넌스)은 env-gated 사장실로 비노출
 
 ## Milestones
 
@@ -17,6 +17,17 @@
 - [ ] M11 agent fan-out cap guard — cockpit/cycle dispatch가 parallel agent 2-3 auto-cap + overflow defer (4+ rate-limit-kill 방지 · CARDIO+ fan-out induce)
 - [ ] M12 upstream INBOX reflex 패널 — cockpit이 unfiled cross-repo finding 노출 + 1-click 핸드오프 (commons @D g60 enforcement surface · CARDIO+ induce)
 - [x] M13 folder-nested domain resolution — domain picker가 `<NAME>/<NAME>.md` 중첩 SSOT 인지 (✅ domain 0.8.0/0.8.1 해소 · sidecar PR #120→#121 · CARDIO+ 빈-스캐폴드 재발 induce)
+
+### 외부-제품 운영 완결성 milestone (M14-M21 · @goal 재정의 induce · spec = `CLI+COCKPIT/M0_operate.md`)
+
+- [x] M14 operation manifest + operability surface — `OperationRegistry`(17-op · external/owner tier · op→target swift/hexa/substrate · @D d4) + `demiurge operate list/audit` CLI + `OperabilityAudit`(M21 gate skeleton) · 빌드 green · commit 0ec8dc4 · cockpit GUI mirror = P3 · per-target 실행 dispatch = M15-M17
+- [ ] M15 external standalone 7-verb — 프로젝트 생성·진행·실행을 owner-infra 의존 0으로 완주 (no `~/.pool` · no 내 호스트 · no hexa-lang repo 경로 가정)
+- [ ] M16 verify hx-dependency call — `hexa verify` 5-tier를 hx 의존성으로 호출, verdict plain verbatim 렌더 (@D g5) · M8 host-health 흡수
+- [ ] M17 compute backend 추상화 — 로컬 기본 + 사용자 설정 remote (내 ubu/mini 하드코딩 제거) · d7 라우팅을 generic backend 개념으로 · M9 흡수
+- [ ] M18 외부 배포 — notarized `.app` + standalone CLI + hexa hx 의존성 선언 (`swift run`/`hx install <my-path>` owner-only 탈피)
+- [ ] M19 plain-mode 격리 — 기본 모드에서 내부 jargon/host/atlas/rfc/거버넌스(@D) 누출 0 (외부 안전 UX)
+- [ ] M20 owner-mode 사장실 (env-gated) — pool 라우팅·inbox/patches handoff·atlas register-PR·거버넌스 enforcement를 flag/env gate (기존 M10·M11·M12 흡수)
+- [ ] M21 operability audit — 외부 사용자가 owner-infra 0으로 7-verb 완주 증명 + owner-mode 동작 (acceptance gate · `demiurge operate audit`)
 
 ---
 
