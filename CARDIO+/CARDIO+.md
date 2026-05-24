@@ -40,6 +40,9 @@
 - [x] X22 AI-PGx CDS 알고리즘 spec — 입력 12변수 → DAPT 권고+alert · 금기 게이트 우선 · 검증1순위=caller concordance (구현 아닌 spec) → `CARDIO+/X22_ai_pgx_cds.md`
 - [x] X23 grant-readiness — 4-trial 한국 펀딩 5기제 매핑 · 즉시=B DAPT-PGx-K(NRF/IIT ~3-5억) · 최대=D siRNA(IISR+RSA) · 예산순서 B<C≈A<D → `CARDIO+/X23_grant.md`
 - [x] X24 환자-facing 평이언어 — 🔌CYP2C19/🍯Lp(a)/🍺ALDH2 비유 · "검사≠진단·약 임의중단 금지·결정은 의사와" · disclaimer → `CARDIO+/X24_patient_facing.md`
+- [x] X25 wet-lab readiness — d5 non-wet→wet 다리 · 최소 실험 14건 · 최우선=IC-sync delivery IIT(thesis gate) · 외부 readout 의존 4(HORIZON 등) → `CARDIO+/X25_wetlab_readiness.md`
+- [x] X26 living-doc 자동화 spec — X8 grade ledger=단일 SSOT → DOCTOR/X7 derived 9개 auto-regen · drift lint(H8/H10 🟢% 불일치 적발) → `CARDIO+/X26_living_doc.md`
+- [x] X27 불확실성 UQ 집계 — CI 있는 🟢 5(LPA bootstrap) vs 없는 ~38(robustness gap 정직) · 민감도 최대=v8 ICER(horizon) · bootstrap 1순위=NOREFLOW Δ36.6pp → `CARDIO+/X27_uncertainty.md`
 
 ## d2 governance (meta)
 
