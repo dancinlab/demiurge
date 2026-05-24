@@ -1,0 +1,27 @@
+# M5-MN MD/QM compute-chem stack — single conda env (conda-forge, all FOSS).
+# Hosts: docking → pool ubu-1 CPU (free) · MD/DFT → vast GPU pod.
+# Create:  micromamba create -y -f environment.yml  (see setup_pod.sh)
+name: ttr-m5
+channels:
+  - conda-forge
+dependencies:
+  # MD — classical (enzyme, CHARMM36m / OPLS-AA)
+  - gromacs=2024.*=nompi_*       # GPU build pulled by setup_pod.sh on CUDA pods
+  # MD — reactive (NP bond-making, ReaxFF)
+  - lammps=2024.*                # includes REAXFF (Kokkos GPU) pair style
+  # QM — DFT / TD-DFT (wB97X-D / def2-TZVP, transition states, excited states)
+  - nwchem=7.2.*
+  # docking (CPU, pool) + structure tooling
+  - python=3.11
+  - ase>=3.23                    # structure build / cluster carve / xyz<->pdb
+  - pymatgen>=2024.5             # Materials Project structure pull (needs MP_API_KEY)
+  - rdkit>=2024.03               # ligand 3D embed / SMILES->sdf
+  - openbabel>=3.1               # format convert (pdbqt for vina)
+  - mdanalysis>=2.7              # trajectory analysis (ΔG_bind, MM-PBSA prep)
+  - numpy
+  - scipy
+  - pip
+  - pip:
+      - vina>=1.2.5              # AutoDock Vina python API (docking, pool CPU)
+      # NOTE: GNINA (CNN rescore) is a separate static binary — fetched in setup_pod.sh
+      # NOTE: CHARMM36m FF port (charmm36-*.ff) fetched in setup_pod.sh (MacKerell lab)

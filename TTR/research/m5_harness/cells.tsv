@@ -1,0 +1,15 @@
+#id	candidate	target	pH	method	gpu_tier	est_gpu_hr	output	priority
+c01	CeO2_Ce42O80	azo_monomer	4.5	dft_opt+reaxff_md	A100-80+rtx4090	32	dG,Ea,ROS	***
+c02	CeO2_Ce42O80	azo_monomer	7.4	dft_opt+reaxff_md	A100-80+rtx4090	32	dG_lock_check	***
+c03	CeO2_Ce42O80	Fe2O3_surface	4.5	reaxff_md_50ns	rtx4090	24	surface_chem	**
+c04	CeO2_Ce42O80	CuPc	4.5	dft+tddft	A100-80	20	e_transfer,ring_open	**
+c05	DyP_4G2C	azo_cpdI	4.0	vina+md_charmm36m_50ns	pool_cpu+rtx4090	24	bind_mode,kcat	***
+c06	DyP_4G2C	CuPc	4.0	vina+md	pool_cpu+rtx4090	24	enzyme_adjacency	**
+c07	AzoR_1V4B	azo_FMNH	7.0	vina+md_50ns	pool_cpu+rtx4090	24	nadph_cycle	***
+c08	AzoR_1V4B	aromatic_amine	7.0	followup_md	rtx4090	12	dissociation_kinetics	*
+c09	DFO	Fe2O3_surface	7.4	qm_cluster+chelation	A100-80	12	logK	**
+c10	DFO	Cr2O3_surface	7.4	qm_cluster	A100-80	12	logK_Cr3	**
+c11	ascorbate	azo_radical	7.0	dft_electron_transfer	rtx4090	6	dG_quench	*
+c12	TiO2_UVA	Cr2O3_excited	7.0	tddft_both	A100-80	8	bandgap_overlap	**
+# GPU-hr 합계 ≈ 230 (rtx4090) + 84 (A100-80) = 314 paid · docking(c05-c07 dock 단계)=pool CPU 무료
+# method dispatch: dft_opt/qm_cluster/dft*->nwchem · reaxff*->lammps · md*->gromacs+charmm36m · vina->autodock_vina(pool)

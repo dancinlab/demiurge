@@ -21,8 +21,12 @@ fn step(label: string, cmd: string) {
 }
 
 fn main() {
-    let home = exec("echo $HOME").trim()
-    let cockpit = home + "/core/demiurge/cockpit"
+    let repo = exec("git rev-parse --show-toplevel 2>/dev/null").trim()
+    if len(repo) == 0 {
+        println("[release] ERROR: run inside the demiurge git repo")
+        exit(1)
+    }
+    let cockpit = repo + "/cockpit"
     let dist = cockpit + "/dist"
     let ver = "0.0.2"
     let cd = "cd " + cockpit + " && "
