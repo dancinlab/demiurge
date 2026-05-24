@@ -2,6 +2,15 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T02:50:00Z — CARDIO+.md/.log.md 자체도 CARDIO+/ 내부로 이동
+
+- [x] git mv CARDIO+.md → CARDIO+/CARDIO+.md · CARDIO+.log.md → CARDIO+/CARDIO+.log.md
+- [x] 메타도메인 SSOT가 폴더 내부로 fully self-contained — `CARDIO+/` = 1 자족 단위
+- [ ] ⚠ domain skill `/domain set CARDIO+` snapshot 경로 = root 가정 → CARDIO+/ 내부 이동 후 skill 재확인 필요
+- [ ] 문서 내 경로 표기는 repo-root-relative (`CARDIO+/X1...`) 유지 — 이동해도 유효
+
+🗂 최종 구조: demiurge/CARDIO+/ = { CARDIO+.md · CARDIO+.log.md · X1-X10 · 5 sub (각 .md/.log.md/folder) } — 완전 self-contained 메타도메인
+
 ## 2026-05-25T02:40:00Z — 5 sub-domain CARDIO+/ 통합 이동 + X1 완료
 
 - [x] git mv 5 sub (NOREFLOW · DAPTPGX · ISR · LPA · DOCTOR) 폴더 + sister .md/.log.md → `CARDIO+/` (history 보존)
