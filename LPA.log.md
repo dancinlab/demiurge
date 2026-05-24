@@ -2,6 +2,24 @@
 
 Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T04:30:00Z — hexa-lang PR #709 MERGED — biostat impl land (source ✅ · binary 대기)
+
+- [x] hexa-lang PR #709 MERGED — `nnt + arr + ln_hr_to_hr` 3 biostat fn 추가 (+48 LOC)
+  - `_nnt(arr_pp)` Laupacis 1988 · `_arr(p_control, p_treat)` Sackett 1996 · `_ln_hr_to_hr(ln_hr)` Cox 1972
+  - `_is_float_fn` 등록 + `_recompute_float` dispatch (ε=1e-9 byteeq gate)
+- [x] source-side landing 검증 — origin/main `tool/verify_cli.hexa` grep 성공 (L838-857 · L1050+ · L1108)
+- [x] 로컬 install 파일 (~/.hx/bin/tool/verify_cli.hexa) merge conflict 해소 (PR #709 + bio phase 2 동시 land 충돌)
+- [x] 실측 `hexa verify --expr nnt 4 25` → 여전히 🟠 (binary pre-built 2026-05-23 PR #709 이전 · CI rebuild 대기)
+- [x] V4 ledger 갱신 — Source vs Binary 분리 표 추가 (honest fence)
+- [ ] ⏳ hexa.real binary CI rebuild — 완료 시 🟢 → 🔵 즉시 promotion 가능 (4 LPA atom + 4 cross-domain 도메인 동시)
+- [ ] M10 watch script + M9 consortium contact + IRB skeleton 인라인 완료 (LPA cycle 5 부속 자산)
+
+🔑 핵심 통찰 (PR #709 + binary 분리):
+- **source = 완전 land** — atlas calculator 확장 PR #709 origin/main 안착 (`nnt + arr + ln_hr_to_hr` 3 fn)
+- **binary = 시간차** — hexa.real prebuild (2026-05-23) → PR #709 (2026-05-25) 미포함 · CI rebuild 자동 trigger
+- **🔵 promotion = 시간 의존만** — 코드 path 모두 열림, binary 재배포 후 즉시 실현
+- **cross-domain leverage 진행** — ISR · DAPTPGX · HERPES · NOREFLOW 동시 unblock 예약
+
 ## 2026-05-25T04:00:00Z — M9 한국 IIT blueprint 완료 — LPA cycle 5 100% closure
 
 - [x] §1 IIT scope — Investigator-Initiated · KSoLA consortium · 한국 sub-pop RRR 정밀 측정 목표
