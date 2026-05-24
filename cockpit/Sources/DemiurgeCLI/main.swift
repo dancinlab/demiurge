@@ -820,6 +820,19 @@ func llmCmd(_ args: [String]) -> Int32 {
         FileHandle.standardError.write(Data("llm key: 키체인 저장 실패\n".utf8))
         return 1
 
+    case "test":
+        // Mirror the settings modal's "연결 테스트" — fixed probe through
+        // the active (or named) provider + current mode.
+        let p = (args.count >= 2 ? findProvider(args[1]) : nil) ?? LLMSettings.active(cfg)
+        let reply = LLMBridge.test(p, mode: cfg.mode)
+        if reply.ok {
+            print("✅ \(p.displayName) · \(reply.detail)")
+            print("   \(reply.text.prefix(120))")
+        } else {
+            print("❌ \(p.displayName) · \(reply.detail)")
+        }
+        return reply.ok ? 0 : 1
+
     case "ask":
         guard args.count >= 2 else {
             FileHandle.standardError.write(Data("llm ask: usage — llm ask <prompt>\n".utf8))
