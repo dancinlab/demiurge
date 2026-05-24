@@ -4,7 +4,7 @@ Spec at [`./YOSYS.md`](./YOSYS.md). Entries below preserve the
 multi-session §5 area-oracle parity campaign in time order; the spec
 file holds only the current confirmed state. Detail-level
 measurement-by-measurement narrative remains in
-`inbox/notes/rfc006-s5-area-oracle-parity-handoff.md` (1754-line
+`archive/session-notes/rfc006-s5-area-oracle-parity-handoff.md` (1754-line
 entry-by-entry log).
 
 ## Log
@@ -66,7 +66,7 @@ Piece-1 era; integration branch d6 follow-on pending.
 
 κ-69 ChipAnalyze cell-type breakdown via substrate `yosys -p stat`.
 research-only, untracked. Note:
-`inbox/notes/k69-substrate-axis-yosys-stat-measurement-2026-05-21.md`
+`archive/session-notes/k69-substrate-axis-yosys-stat-measurement-2026-05-21.md`
 (276 lines).
 
 ### 2026-05-21 — Tier-1 closure path land sequence
@@ -104,7 +104,7 @@ research-only, untracked. Note:
 
 Reported "yosys.hexa dispatcher compile failure" was a **measurement
 artifact**, not an upstream bug. origin/main's rfc_006 §4 yosys modules
-healthy. Note: `inbox/notes/yosys-dispatcher-use-integration-compile-fail.md`
+healthy. Note: `archive/session-notes/yosys-dispatcher-use-integration-compile-fail.md`
 (47 lines).
 
 ### 2026-05-21 — root YOSYS.md previous removal

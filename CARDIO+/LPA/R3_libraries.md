@@ -128,7 +128,7 @@ scope:
 ### 6.2 draft 본문 (lpa-ivw-mr-formula)
 
 ```markdown
-# inbox/notes/lpa-ivw-mr-formula.md
+# archive/session-notes/lpa-ivw-mr-formula.md
 
 source = MendelianRandomization v0.9.0 (Burgess, CRAN) — function `mr_ivw()`
 license = GPL-2/3 (formula 자체는 1960s Sheehan/Wald 이후 표준, IP-free)

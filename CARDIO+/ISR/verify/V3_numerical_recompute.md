@@ -314,9 +314,9 @@ V1 §3 의 NUM-01/02/04/05 — DFT · MD · CFD · FEA — 모두 본 V3 first-p
 
 본 V3 가 발견한 demiurge 자산 gap 3건 — hexa-lang/inbox/patches/ 에 등록 권고:
 
-1. **`pool.hexa` compile error** (`/Users/ghost/.hx/packages/pool/bin/pool.hexa` 703/710/720 `ks`/`i` 미정의) — `inbox/patches/pool_macro_arg_unbound.md`.
-2. **`hexa verify --expr` float-arg 미지원** — `inbox/patches/verify_expr_float_kernel.md` — bio identity (higuchi · tafel · stokes_einstein · hill · arrhenius) 의 numerical recompute path.
-3. **`hexa cloud run` argv 의 newline 거부** — 본 V3 첫 시도 `bash -lc "..."` 실패 — `inbox/patches/cloud_run_heredoc.md` — `--stdin-script` 옵션 추가 권고.
+1. **`pool.hexa` compile error** (`/Users/ghost/.hx/packages/pool/bin/pool.hexa` 703/710/720 `ks`/`i` 미정의) — `archive/session-notes/patches/pool_macro_arg_unbound.md`.
+2. **`hexa verify --expr` float-arg 미지원** — `archive/session-notes/patches/verify_expr_float_kernel.md` — bio identity (higuchi · tafel · stokes_einstein · hill · arrhenius) 의 numerical recompute path.
+3. **`hexa cloud run` argv 의 newline 거부** — 본 V3 첫 시도 `bash -lc "..."` 실패 — `archive/session-notes/patches/cloud_run_heredoc.md` — `--stdin-script` 옵션 추가 권고.
 
 → 3 patch 모두 본 V3 후속 batch (NUM-01 push 와 병행) 에서 hexa-lang inbox 등록.
 

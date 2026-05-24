@@ -96,7 +96,7 @@ public struct UfoVerifyRecord: Codable, Sendable, Equatable {
 /// the record is `provisional` (D80 g_hexa_only).
 ///
 /// Schema follows the connection-plan §4.1 shape
-/// (`inbox/notes/hexa-native-connection-plan-2026-05-20.md`). The
+/// (`archive/session-notes/hexa-native-connection-plan-2026-05-20.md`). The
 /// fields below preserve the original `(ref / relErr / tolerance)`
 /// trio under new names (kernelPath / relErr / parityTolerance) and
 /// add the parity-method / status / hexa-lang SHA / scope-notes

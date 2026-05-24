@@ -50,7 +50,7 @@
       "GMAT 결합 부재 — flight-validated mission profile 은 별도 ROI rank 15 셀 (binary download, 본 라운드 deliberately skip). closedMeasured 로 게이트 닫으려면 GMAT 또는 AGI STK 의 verified scenario 와 trade point parity 필요.",
       "propellant constraint 가 active 한 sample 에서는 trade 가 propellant budget 의 hard wall 에 pinning — optimiser 가 ΔV upper-bound 쪽으로 밀려가는 corner. 본 record 의 samples[].solver.propellant_constraint_active 로 surface.",
       "OpenMDAO 는 EXTERNAL Python 라이브러리 (pip install) — hexa-lang / hexa-arch 로 absorbed 아님 (D17 — demiurge consumer, upstream tool owner). absorbed=true 절대 금지.",
-      "D72 kernel-promotion 후보 — OpenMDAO 는 generic MDO (도메인 독립). scope+synthesize 가 두 번째 consumer 로 OpenMDAO 를 채택하면 ~/core/hexa-lang/stdlib/kernels/mdo/ 로 promotion 후보. pickup 노트: inbox/notes/openmdao-kernel-promotion-pickup.md."
+      "D72 kernel-promotion 후보 — OpenMDAO 는 generic MDO (도메인 독립). scope+synthesize 가 두 번째 consumer 로 OpenMDAO 를 채택하면 ~/core/hexa-lang/stdlib/kernels/mdo/ 로 promotion 후보. pickup 노트: archive/session-notes/openmdao-kernel-promotion-pickup.md."
     ]
   },
   "record_id" : "space_synth_20260519T205732Z",

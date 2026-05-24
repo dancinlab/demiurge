@@ -494,7 +494,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   matter is ALREADY absorbed into hexa-lang** — hexa-lang's own
   `stdlib/PLAN.md` L1/L37 ("hexa-matter stdlib-only 6모듈 | 완료 |
   ✅ 완전 이관, .py 제거, selftest 38/38") + 21 KB
-  `inbox/notes/2026-05-14-hexa-matter-absorption-plan.md`. Our
+  `archive/session-notes/2026-05-14-hexa-matter-absorption-plan.md`. Our
   session's D12/rfc_005 (absorb into demiurge domains/matter/ +
   tombstone dancinlab/hexa-matter) **conflicts** with (i) that
   pre-existing completed hexa-lang absorption and (ii) the user's
@@ -632,7 +632,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   대기.**
 - 2026-05-19 — **inbox 핸드오프 적재 + g3 정정** (사용자 "inbox
   넣었어?" — 미적재 인정 후 즉시 시정). hexa-lang
-  `inbox/PATCHES.yaml` +2 항목 + `inbox/notes/2026-05-19-demiurge-
+  `archive/session-notes/PATCHES.yaml` +2 항목 + `archive/session-notes/2026-05-19-demiurge-
   rfc006-yosys-handoff.md` + INDEX.md, hexa-lang 로컬 커밋
   `58dbd02b` (`docs(inbox):` 규약, **미push** — booksim/브랜치
   push는 D19상 hexa-lang 세션 몫; ahead 18). `tool/inbox_sync.hexa`
@@ -725,7 +725,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   Demiurge (한글 데미우르지 4음절, 5음절 데미우르고스 거부 —
   파네스 3음절과 리듬 정합); collision-clean per g3 evidence
   (5 web-search rounds, 4 verified-clean / 8+ adjacent burned —
-  proposal frozen at `inbox/notes/brand-name-demiurge-pair-with-
+  proposal frozen at `archive/session-notes/brand-name-demiurge-pair-with-
   phanes.md`). **D24** rename scope = mass text replacement
   (`hexa-arch` → `demiurge`, `HEXA-ARCH` → `DEMIURGE`,
   `hexa_arch_role` → `demiurge_role`) across 22 mutable docs
@@ -733,7 +733,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   D1–D22/ARCH.tape/AGENTS.tape/proposals/rfc_001..009/domains/*.md);
   **excluded** for g3 records-honesty: `.git/` · `exports/` (committed
   provenance records) · `archive/` (historical absorbed-predecessor
-  mirrors) · `inbox/` (cross-repo synced handoffs). One-line Naming
+  mirrors) · `archive/session-notes/` (cross-repo synced handoffs). One-line Naming
   history banner added to design.md as the g3-anchor for the rename
   event. H1 brand-capitalization hand-fixed in 7 files (README /
   HANDOFF / GOAL / CHARTER / PLAN / ARCH.tape / AGENTS.tape) —
@@ -1060,7 +1060,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   등 긴 id 도 정렬 안 잘림. version 0.0.2 = "phase α-3 + β". (4)
   **design.md D41 lock** — Boundary read scope clarification:
   invariant (a) 가 (a-records) strict `../exports/**` + (a-docs)
-  read-only navigation docs (design.md/proposals/domains/inbox/
+  read-only navigation docs (design.md/proposals/domains/archive/session-notes/
   archive/README/CHARTER/HANDOFF/GOAL/PLAN/ARCH.tape/AGENTS.tape/
   cockpit/references/) 로 분리. (a-docs) contents 가 measurement_gate
   /absorbed/parity claim 의 출처가 절대 되지 않음 — g3 safety pin
@@ -1913,7 +1913,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   이게 booksim sweep/leighton/traffic 컴파일 차단 → rfc_001 §8
   chip §B 측정 진짜 blocker (도구·oracle 문제 아님 — comb oracle
   이미 측정됨). **처리**: int/struct 우회 대신 hexa-lang
-  `inbox/patches/enum-variant-miscodegen-as-field-codegen-c2.md`
+  `archive/session-notes/patches/enum-variant-miscodegen-as-field-codegen-c2.md`
   에 정밀 진단 + 제안 diff (Field-arm enum-name 가드 / 또는
   parser EnumPath 분류) 기록 — hexa-lang governance (id002:
   consumer→inbox patch, never inline; CLAUDE.md: 컴파일러 변경
@@ -1932,7 +1932,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   RegionShape.K_BY_K), clang fail exit 1. sweep 동일. inbox
   patch `enum-variant-access-miscodegen-as-field-codegen-c2.md`
   원본 그대로 (resolved 주석 0 — 미적용). resolved 2건은
-  inbox/patches/ 의 60+ 중 *다른* 항목. enum codegen blocker
+  archive/session-notes/patches/ 의 60+ 중 *다른* 항목. enum codegen blocker
   미해결 — track 1/2 enum-bearing 모듈 여전히 blocked,
   dispatcher 층(booksim 7/7·yosys 8/8)이 정직한 현 위치.
   ("d5a63a82 완료" 때와 동일 패턴 — 낙관 보고를 실측 정정,
@@ -2505,9 +2505,9 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
     · record `.json` 2.2 KB. 빌드 green (pre-existing RealityKit
     MainActor warning 만, 새 warning 0 · 새 error 0).
   - **다음 pickup**: ① **grid + structure (NetworkX)** —
-    `inbox/notes/cohort-pickup-grid-networkx-producer.md` 참조. P-⑧
+    `archive/session-notes/cohort-pickup-grid-networkx-producer.md` 참조. P-⑧
     cohort 다양성 입증의 다음 단계 (가장 가까운 follow-up). ② **bot
-    + design (Pinocchio)** — `inbox/notes/cohort-pickup-bot-urdf-
+    + design (Pinocchio)** — `archive/session-notes/cohort-pickup-bot-urdf-
     producer.md` 참조 (URDF + 분석 동역학). ③ **ActionAdapter 프로
     토콜 리팩토링** — D53 의 "5+ 셀 임계점" 도달, switch/case 5번째
     셀 (sscb) 까지는 견딜 만하지만 #6 (grid) 가 들어오면 protocol +
@@ -2665,7 +2665,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   9-sweep record 0건 · §B 게이트 GATE_B_PINNED_MET 그대로 D9 ·
   absorbed=false 유지 · ABSORPTION.md 표는 `진행` 마킹만).
   - **landed artifacts** (demiurge pointer-only, D61):
-    (a) `inbox/notes/chip-sB-full-curve-parity-handoff.md` — hexa-lang
+    (a) `archive/session-notes/chip-sB-full-curve-parity-handoff.md` — hexa-lang
     행 handoff. 9-config 매트릭스 (mesh 8×8 uniform + d4/d6 tornado +
     transpose) · ±5%/±2% acceptance · F1F2Record emit 규약 · 알려진
     실패 (traffic.hexa dispatch transpose 1/12, anynet.hexa runtime
@@ -3503,7 +3503,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   (grid 14/20/diam5/bisection1 · mobility 100/360/k_avg7.2/
   diam18). g3 — 구조 재배치, 측정/gate/absorbed 변경 0. 잔여 12
   producer (fem·circuit·mc_transport·orbital·wave_optics·cfd·
-  logic_synth·noc_sim) 는 `inbox/notes/kernel-extraction-pickup.md`
+  logic_synth·noc_sim) 는 `archive/session-notes/kernel-extraction-pickup.md`
   에 점진 계획 — 다음 우선순위 = `fem` (design.md 가 이미 4 도메인
   consumer 명시, 최대 N×M 축소). hexa-lang 커밋 = t4-emt-calc 브랜치
   계열 (push 보류).
@@ -3535,7 +3535,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   hexa`·`linear_elasticity.hexa`) 은 어댑터 옆에 동반 — parity
   도달 시 absorbed flip 지점 = 커널 1곳. 잔여 11 producer (circuit·
   mc_transport·orbital·wave_optics·cfd·logic_synth·noc_sim) 는
-  `inbox/notes/kernel-extraction-pickup.md` 갱신 — 대부분 단일
+  `archive/session-notes/kernel-extraction-pickup.md` 갱신 — 대부분 단일
   도메인, 2번째 consumer 등장 전까지 dir-only. hexa-lang 커밋 =
   t4-emt-calc 브랜치 (push 보류).
 - 2026-05-20 — **phase κ-45 — D72 커널 레이어 완성 (12 커널 추가 +
@@ -3595,7 +3595,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   cell). exports/sscb/synthesize · exports/space/synthesize · exports/
   energy/synth 에 실측 record landed (모두 GATE_OPEN / absorbed=false
   per g3 — substrate 만 흡수, hexa-native parity 없음).
-  `inbox/notes/openmdao-kernel-promotion-pickup.md` 추가 (scope+synth
+  `archive/session-notes/openmdao-kernel-promotion-pickup.md` 추가 (scope+synth
   + space+synth 2nd consumer 모임 — D72 OpenMDAO kernel 승급 candidate
   flag). **잔여 미흡수 cell** (rate-limit 으로 substrate 미작성):
   component+analyze (CalculiX 별 세션 prep), cern+synth (Xsuite 별
@@ -3619,7 +3619,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
     arxiv:2310.00317 + arxiv:2412.16006 cited).
   - `stdlib/rtsc/pyfemm_magnetics.py` (ROI 10 — pyfemm 2-D
     axisymmetric HTS coil B-field; FIRST producer in rtsc domain;
-    cohort handoff `inbox/notes/cohort-pickup-rtsc-femm-producer.md`
+    cohort handoff `archive/session-notes/cohort-pickup-rtsc-femm-producer.md`
     소진).
   3 모두 **honest install-gated / platform-gated** — ccx · xsuite ·
   pyfemm 부재 시 GATE_OPEN / absorbed=false 명시적 skip record (silent
@@ -3677,7 +3677,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
     flip 보류
   - cern+analyze decision: 4 options → Option C (ProducerRegistry)
     추천 + 4 open questions.
-  모든 노트 demiurge/inbox/notes/parity_attempt_*.md 합쳐서 main 에
+  모든 노트 demiurge/archive/session-notes/parity_attempt_*.md 합쳐서 main 에
   push (a72c2d7).
 - 2026-05-20 — **phase κ-51 — cern+synth absorbed=true flip + Producer
   Registry (cern+analyze pylhe/xsuite alternatives) — D74**. 사용자
@@ -3764,7 +3764,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   파장 align · B 두 check 분할 · C 같은 instrument · D widen
   tolerance) main session decision 대기.
   **D. inbox 20 entries cleanup** ✅ main session fallback (agent
-  rate-limited @ 115s). `inbox/INDEX.md` 신규 — 20 entries 분류표
+  rate-limited @ 115s). `archive/session-notes/INDEX.md` 신규 — 20 entries 분류표
   (15 resolved · 1 pickup-open OpenMDAO mdo · 2 pickup-blocked
   cross-session · 2 superseded κ-53 B/C v2). 5 entries 에 status
   header 추가 (cern_analyze · 8domain · branch-consolidation ·
@@ -3793,7 +3793,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   매치 1개; substrate header 의 다른 2 caveats (measured optics
   deck, hexa-native FFT IEEE-754) 잔존. v3 note `parity_attempt_
   scope_verify_2026-05-20-v3.md` + design.md D75 audit-trail.
-  inbox/INDEX.md 의 scope+verify row 갱신 (superseded → resolved-v3-5/5).
+  archive/session-notes/INDEX.md 의 scope+verify row 갱신 (superseded → resolved-v3-5/5).
   g3 — substrate-design fix only, GATE/absorbed 변경 0.
 - 2026-05-20 — **phase κ-55 — D80 hexa-only first-principle 박제 +
   ARCH.md §0 + ARCH.md §11 worked simulations**. 사용자 게이트 "hexa
@@ -4359,7 +4359,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
     Tier-1 (0..i · 0 PR #260→#261 first area>0 + a..i 잔여) ·
     Tier-2 (3 item) · Tier-3 (2 item) · est 8-16 session. detail
     SSOT (1754-line entry-by-entry fact + 사이클별 log) 는
-    `inbox/notes/rfc006-s5-area-oracle-parity-handoff.md` 에 유지
+    `archive/session-notes/rfc006-s5-area-oracle-parity-handoff.md` 에 유지
     — ARCH §12.1 가 narrative anchor.
   - **κ-69 opening · §11.4 Round 8 scaffold (`5897572`)** — G31..G34
     pre-code 4 placeholder G-item 박음 (code 변경 0). G31 = G29-β
@@ -4399,7 +4399,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
     0.13.0 noon Phoenix (solar_kernel_test.hexa <1e-9 claim 일치 —
     pvlib 와의 작은 차이는 atmospheric refraction model 미세 차).
     `use "stdlib/sys"` 회피 (upstream `read_line` symbol 별 axis
-    `inbox/PATCHES.yaml` 504-line WIP 와 충돌 — 본 PR 은 그 axis
+    `archive/session-notes/PATCHES.yaml` 504-line WIP 와 충돌 — 본 PR 은 그 axis
     상 결합 0 으로 separation). **isolated worktree pattern**:
     `~/core/hexa-lang-g31` 신규 worktree (`git worktree add origin/
     main`) — shared `~/core/hexa-lang` 의 다른 axis (§12.1 (e)
@@ -4591,7 +4591,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
 - 2026-05-22 — **phase κ-69 — G32 LANDED · D115 2nd cell pick (Aura/EEG ·
   PhysioNet Sleep-EDF) 5-fold lock-in 박제 · code 0**. κ-69 R8 의 pre-code
   decision gate (κ-68 G27 / D109 의 동형 mirror) 가 같은 cycle 안에 closure —
-  research note `inbox/notes/k69-g32-candidate-research-2026-05-21.md` (144
+  research note `archive/session-notes/k69-g32-candidate-research-2026-05-21.md` (144
   line · 3 finalist analysis) 의 #1 ranked pick (Aura/EEG) default 채택
   path. design.md D115 stub (reserved D-number) 가 정식 5-fold lock-in
   decision 으로 replace:
@@ -4770,7 +4770,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
     structure mirror. ARCH §11.3 head note refresh: G1-G34 → G1-G38
     Round 1-9 carry. §11.4 R8 intro 'scaffold pre-code' → 'LANDED
     2026-05-22 4/4 CLOSURE' 갱신.
-  - **G35 candidate-research note (`inbox/notes/2026-05-22-k70-horizon-
+  - **G35 candidate-research note (`archive/session-notes/2026-05-22-k70-horizon-
     candidate-research.md`)** — 3 finalist 의 5-fold lock-in (cell ·
     external oracle · bridge stack · hexa-native scope · PASS
     criterion) 비교표 + ranking advisory:
@@ -4813,7 +4813,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   - **누적 commits** (κ-70 opening 묶음 · demiurge 측 · 본 cycle): 
     단일 commit `design(κ-70): Round 9 horizon opened — G35-G38 scaffold
     + 3-candidate research note (code 0)` 안에 `ARCH.md` §11.5 신설 +
-    §11.3 head refresh + §11.4 R8 intro 갱신 + `inbox/notes/2026-05-22-
+    §11.3 head refresh + §11.4 R8 intro 갱신 + `archive/session-notes/2026-05-22-
     k70-horizon-candidate-research.md` 신설 + `NEXT_SESSIONS.md` P-⑭
     신설 + P-⑬ closure marker + head refresh + 본 PLAN entry. hexa-lang
     측 변경 0 (decision 미수행 · substrate kernel 추가 0).
@@ -4849,7 +4849,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   plasma Stage-2 · JET open-pulse archive λ_D Debye length axis) 5-fold
   lock-in 박제 · code 0 · R9 = 2/4 LANDED**. κ-70 R9 의 pre-code
   decision gate (κ-68 G27 / D109 · κ-69 G32 / D115 의 동형 mirror) 가
-  같은 cycle 안에 closure — research note `inbox/notes/2026-05-22-
+  같은 cycle 안에 closure — research note `archive/session-notes/2026-05-22-
   k70-horizon-candidate-research.md` (191 line · 3 finalist analysis)
   의 #1 ranked pick (Ufo/plasma Stage-2) default 채택 path. design.md
   D118 (D117 직후 자연 순서) 정식 5-fold lock-in decision 박제:
@@ -4950,7 +4950,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
     invariant helper code 변경 0 의 record-type-agnostic 설계의
     **strongest evidence cycle**).
   g3 — G36 = doc-only land (code 0 · test 0) · 0.3 session est_actual.
-  Research note pre-existing (`inbox/notes/2026-05-22-k70-horizon-
+  Research note pre-existing (`archive/session-notes/2026-05-22-k70-horizon-
   candidate-research.md` · 191 line · 3 finalist · Ufo/plasma Stage-2
   #1 ranked) 가 본 cycle 의 decision rationale 의 load-bearing audit
   trail — 본 D118 가 그 위 default 채택 path 의 박제. 새 측정 0 ·
@@ -5183,7 +5183,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
   third-cell measurement-parity round progression 이 닫힘. R9 의
   자연 끝 — 다음 round (κ-71+) 은 별 cycle 의 별 decision.
   - **G35..G38 누적 LANDED 박제** (R9 = 4/4):
-    - **G35** [x] candidate-research note 박제 (`inbox/notes/2026-05-22-
+    - **G35** [x] candidate-research note 박제 (`archive/session-notes/2026-05-22-
       k70-horizon-candidate-research.md` · 3 finalist Ufo/plasma Stage-2
       · Energy/wind · Bio/ECG · ranking advisory · code 0).
     - **G36** [x] D118 3rd cell pick (`40408dc` · Ufo/plasma Stage-2
@@ -5294,7 +5294,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
     legitimate flip (κ-70 G37 mirror · D121 · `invariantHolds` 4th
     instance) · G42 = κ-71 R10 closure (κ-70 R9 closure entry mirror ·
     `@D d6` 4th-carrier audit PATCH).
-  - **3-candidate research note** (`inbox/notes/2026-05-22-k71-horizon-
+  - **3-candidate research note** (`archive/session-notes/2026-05-22-k71-horizon-
     candidate-research.md` · κ-70 G36 note 의 successor · Candidate
     B/C carry):
     - **#1 Energy/wind** (NREL Wind Toolkit · IEC 61400-12 power curve ·
@@ -5334,7 +5334,7 @@ Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session 
     md | tail -1` = D119 확인). design.md 변경 0.
   - **RFC 013 §6.11 status `LANDED` 유지** (κ-71 R10 = same-invariant
     의 fourth-instance generalization audit · RFC status 미flip).
-  - **수정 파일 4개** (모두 demiurge · doc edit · code 0): `inbox/notes/
+  - **수정 파일 4개** (모두 demiurge · doc edit · code 0): `archive/session-notes/
     2026-05-22-k71-horizon-candidate-research.md` (NEW · 3 finalist
     5-fold lock-in) · `ARCH.md` (§11.6 신설 G39..G42 scaffold + §11.4
     intro Round 10 surface 갱신) · `PLAN.md` (본 entry) · `NEXT_
@@ -5394,7 +5394,7 @@ g3 — 본 land 는 honest partial closure (R4 invariant respected via DEFER · 
     audit unchanged) 또는 5th cell first-flip (B · 새 record · 5-record
     audit) · G46 = R11 closure (4/4 LANDED 시 첫 "resumed-flip" 라운드 ·
     또는 honest 3/4 + G45 `[~]` PARTIAL closure 시 κ-71 R10 mirror).
-  - **3-framing horizon research note** (`inbox/notes/2026-05-22-k72-
+  - **3-framing horizon research note** (`archive/session-notes/2026-05-22-k72-
     horizon-framing-research.md` · κ-71 G39 candidate-research note
     의 successor with 새 framing-comparison shape · κ-72 의 round-
     shape decision):
@@ -5447,7 +5447,7 @@ g3 — 본 land 는 honest partial closure (R4 invariant respected via DEFER · 
   - **RFC 013 §6.11 status `LANDED` 유지** (κ-72 R11 = Framing A 시
     same-invariant 의 fourth-instance flip-completion 또는 Framing B
     시 fifth-instance generalization audit · RFC status 미flip 둘 다).
-  - **수정 파일 4개** (모두 demiurge · doc edit · code 0): `inbox/
+  - **수정 파일 4개** (모두 demiurge · doc edit · code 0): `archive/session-notes/
     notes/2026-05-22-k72-horizon-framing-research.md` (NEW · 3-framing
     5-fold lock-in + recommended Framing A) · `ARCH.md` (§11.7 신설
     G43..G46 scaffold + §11.4 intro Round 11 surface 갱신 + κ-71

@@ -72,7 +72,7 @@
 
 ## 5. d2 breakthrough paths (concede 금지)
 
-- **🔵 path**: M11 inbox/notes/daptpgx-pgx-ssot-databases.md 흡수 → hexa atlas append-witness `--kind P --id CYP2C19.PM.kor.freq` 등록 → `hexa verify <id>` 🟡→🔵 escalation. hexa-lang stdlib에 Hardy-Weinberg 함수 추가 시 더 많은 atom 🔵 가능.
+- **🔵 path**: M11 archive/session-notes/daptpgx-pgx-ssot-databases.md 흡수 → hexa atlas append-witness `--kind P --id CYP2C19.PM.kor.freq` 등록 → `hexa verify <id>` 🟡→🔵 escalation. hexa-lang stdlib에 Hardy-Weinberg 함수 추가 시 더 많은 atom 🔵 가능.
 - **🟢 path**: V3 numerical recompute (본 라운드) — hexa-native simulation, pool 실행. HW · binomial · ICER · Markov 12+ claim escalation 가능.
 - **🟡 → 🟢 path (RCT HR)**: 개별 환자 데이터 (IPD) 접근 필요 — Cochrane / FDA IPD 신청 또는 author 직접 contact.
 - **🟠 → 🟢 path (model assumption)**: V3 V3-bis 두 번째 패스에서 sensitivity analysis 100-1000 simulation → 신뢰구간 closed-form 만들기.

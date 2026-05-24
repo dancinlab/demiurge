@@ -18,7 +18,7 @@
 > `4a1a087` + STUB PR #248, G29 first legitimate flip D110 + REAL
 > PR #259, G30 Stage 1 invariant `fee34cc`; only G30 Stage 2
 > constitution.md row deferred until populate decision).
-> Promotes: `inbox/notes/hexa-native-connection-plan-2026-05-20.md`
+> Promotes: `archive/session-notes/hexa-native-connection-plan-2026-05-20.md`
 > (the κ-65 audit-round SHAPE note). The note remains in place as
 > audit trail; this RFC supersedes its `κ-? RFC` placeholder.
 > Source decisions: `design.md` D61 (substrate in hexa-lang only),
@@ -33,7 +33,7 @@
 > κ-62 (sibling-repo variant pattern), κ-65 (44-row dependency audit
 > + 4 D80 pilot landings + connection-plan note).
 > Pattern mirror: hexa-lang's pilot rolling table at
-> `inbox/notes/hexa-native-port-pattern-pilot.md` (15 pilot rows
+> `archive/session-notes/hexa-native-port-pattern-pilot.md` (15 pilot rows
 > #1..#12 across `solar / mc_transport / neural / graph / urdf /
 > plasma / orbital / signal_proc / noc_sim / transport_kinematics /
 > breaker_trace_reduce / fem_bar1d / autodiff_dual / bio_align_nw /
@@ -270,7 +270,7 @@ Orbital Kepler pilot (`2ffe3620`) had to rename `e` → `ecc` to land;
 this fix retires the rename workaround. Centralized predicate
 consults current-fn params/lets before treating an identifier as a
 fn-global. Discovery #5b recorded in
-hexa-lang `inbox/notes/hexa-native-port-pattern-pilot.md`.
+hexa-lang `archive/session-notes/hexa-native-port-pattern-pilot.md`.
 
 ### 5.2 hexa-lang `a272c9c4` (same commit) — `stdlib/core/math/wrap_pi.hexa`
 
@@ -281,7 +281,7 @@ fix and reusable by any cell that needs angle wrapping.
 
 ### 5.3 hexa-lang `4389da0c` — orbital pilot reconcile
 
-> `docs(inbox/pilot-pattern): reconcile orbital Kepler #5b into rolling table`
+> `docs(archive/session-notes/pilot-pattern): reconcile orbital Kepler #5b into rolling table`
 
 Adds the #5b row into the rolling table (note §"Pilots landed"),
 sequencing it after #5 (plasma) and before #6 (DFT). Pure doc; no
@@ -431,7 +431,7 @@ enum extension, no new stored data).
 
 ## 8. Cross-references
 
-- Source note: `inbox/notes/hexa-native-connection-plan-2026-05-20.md`
+- Source note: `archive/session-notes/hexa-native-connection-plan-2026-05-20.md`
   (κ-65 audit-round SHAPE note — kept in place as audit trail).
 - demiurge κ-66 schema half: **`5e9f6dea`** (this RFC's §2).
 - demiurge κ-67 RFC publication: **`cea3c66`** (PARTIAL-LAND).

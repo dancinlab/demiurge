@@ -332,7 +332,7 @@ atlas SSOT (16083 nodes, ATLAS_HASH `8724f696cdce090b1fc88abae72b7e963085e62e553
 RTSC 캠페인은 **closed-form 식 7개를 보유 + Python libm sanity check 모두 통과** — Allen-Dynes / McMillan / BCS / Eliashberg λ·ω_log / BEE-NET grid / Migdal 식. 그러나 **`hexa verify` calculator system 에 superconductivity domain 의 closed-form fn 카탈로그가 0개** (현 카탈로그는 BSM/RFC045/medical 위주). 결과: 7 / 7 identity 가 🟠 INSUFFICIENT 로 떨어짐.
 
 ### Path forward (RTSC 도메인 다음 cycle 후보)
-1. **hexa-lang inbox patch** — `inbox/patches/rtsc_verify_cli_supercon.md` 작성, `tool/verify_cli.hexa::_recompute` 에 다음 7 fn 등록:
+1. **hexa-lang inbox patch** — `archive/session-notes/patches/rtsc_verify_cli_supercon.md` 작성, `tool/verify_cli.hexa::_recompute` 에 다음 7 fn 등록:
    - `allen_dynes_tc(lambda_x10, omega_log_K, mu_star_x100)` → Tc(K) 3-op
    - `mcmillan_tc(lambda_x10, theta_D_K, mu_star_x100)` → Tc(K) 3-op
    - `bcs_gap_ratio()` → 3.528 0-op (RFC 045 list 추가)

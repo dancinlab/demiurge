@@ -159,8 +159,8 @@ per memory `feedback_hexa_lang_main_land_via_pr.md` + d8 (Vast-style inbox absor
 
 **PR #665 — OPEN** · https://github.com/dancinlab/hexa-lang/pull/665
 - title: `inbox(notes): LPA IVW MR formula — atlas calculator extension request`
-- head: `inbox/lpa-ivw-mr-formula` · base: `main`
-- file: `inbox/notes/2026-05-24-lpa-ivw-mr-formula.md` (105 lines)
+- head: `archive/session-notes/lpa-ivw-mr-formula` · base: `main`
+- file: `archive/session-notes/2026-05-24-lpa-ivw-mr-formula.md` (105 lines)
 - 요청: `tool/verify_cli.hexa::_recompute` + `tool/atlas_cli.hexa::_recompute_register`에 5종
   biostat 추가 — **ivw · schoenfeld · binary_sample · nnt · ln_HR↔HR**
 - cross-domain demand: LPA + DAPTPGX + NOREFLOW + HERPES (4도메인 막힘)

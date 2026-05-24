@@ -15,7 +15,7 @@
 #                  material-domain).
 #   - historical   record pre-dates R4 Stage 1 migration (2026-05-22) and is
 #                  intentionally kept for audit evidence per
-#                  inbox/notes/2026-05-21-r4-stage1-enforcement.md
+#                  archive/session-notes/2026-05-21-r4-stage1-enforcement.md
 #                  (Path B leaves the original rtsc-namespaced file as
 #                  *historical artifact* alongside the new lts-namespaced
 #                  emission). Detected by filename prefix `rtsc_*` AND/OR

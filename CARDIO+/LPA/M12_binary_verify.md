@@ -131,7 +131,7 @@ $ grep -n "nnt\|arr\|ln_hr" tool/atlas_cli.hexa
 
 **breakthrough paths** (d2 — 3축):
 1. **atlas_cli.hexa PR** — `_recompute_register` 에 nnt/arr/ln_hr_to_hr dispatch 추가 (verify_cli.hexa 패턴 직접 미러). 예상 +6-8 🔵 (4도메인 cross-unblock).
-2. **PR #709 spec 확장 인보이스** — hexa-lang inbox/patches/ 에 PR #665 후속 노트, atlas_cli 측 작업 정의 명시.
+2. **PR #709 spec 확장 인보이스** — hexa-lang archive/session-notes/patches/ 에 PR #665 후속 노트, atlas_cli 측 작업 정의 명시.
 3. **manual atlas append-witness 경로 재활용** — V2 §3.2의 4 shard 가 이미 staging. `n6/atlas.append.YYYY-MM-DD.n6` 일일 집계 fold 후 `hexa atlas pr --staging` 재시도 (V2 §3.3에서 daily-aggregate 요구 확인됨 → daily roll-up 도구 부재가 별도 gap).
 
 → d6 준수: source 완전 land + binary 빌드 SUCCESS 의 **부분 polish 진행** 으로 정직 보고 (force pass NO).

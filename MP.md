@@ -13,7 +13,7 @@
 - **20-cell Phase 2 ext matrix: 18/20 → 20/20 PASS** post-JARVIS land. YBa₂Cu₃O₇ + H₃S DEVIATION cells resolved (n=1 → n=3 multi-corpus consensus).
 - **OptB88vdW caveat (s5)** added — JARVIS uses non-PBE functional family · same s2 systematic-error correlation as MP/AFLOW/OQMD. NOT conflate into "PBE consensus".
 - **NOMAD honestly rejected** as 4th corpus (formation_energy not in `available_properties` index · ~150-200 LOC archive-level total-energy queries required · B-path 이탈). Future expansion candidates: MaterialsCloud · OPTIMADE federation.
-- See `inbox/notes/2026-05-22-rtsc-9-phase2-multicorpus-decision.md` + `2026-05-22-rtsc-9-phase2-jarvis-rerun.md` for full audit.
+- See `archive/session-notes/2026-05-22-rtsc-9-phase2-multicorpus-decision.md` + `2026-05-22-rtsc-9-phase2-jarvis-rerun.md` for full audit.
 
 ---
 
@@ -36,7 +36,7 @@ API key 가 필요한 건 *실시간 REST 쿼리* 만; **bulk dump (S3 mirror / 
 
 - [x] `mp_query.py` thin REST adapter (`~/core/hexa-lang/stdlib/material/mp_query.py`) — key-dependent path
 - [x] Honest skip path (no key → `gate_type=api-key-missing`) — K cohort verified
-- [x] Setup guide 노트 (`inbox/notes/2026-05-21-mp-api-setup-needed.md`)
+- [x] Setup guide 노트 (`archive/session-notes/2026-05-21-mp-api-setup-needed.md`)
 - [x] `sim_adapter.py` / `sim.hexa` 가 Nb 입력 받아 4-formula (BCS · McMillan · Allen-Dynes · WHH) Tc 예측 — params 는 현재 **hard-code**
 
 → 현재 상태의 한계: sim_adapter 의 입력 params (Θ_D · λ · μ* · ω_log · slope) 가 hard-code. MP 가 있어야 실제 candidate 의 params 를 가져옴. **MP 가 없으면 candidate 추가 불가** — 이걸 풀려는 게 본 로드맵.
@@ -114,7 +114,7 @@ API key 가 필요한 건 *실시간 REST 쿼리* 만; **bulk dump (S3 mirror / 
 - `~/core/hexa-lang/stdlib/material/mp_query.py` — 현재 key-dependent adapter
 - `~/core/hexa-lang/stdlib/material/{sim.hexa, sim_adapter.py}` — Tier 1 sim
 - `~/core/hexa-lang/stdlib/material/hexa_rtsc_crosslink.py` — hexa-rtsc cross-link
-- `~/core/demiurge/inbox/notes/2026-05-21-mp-api-setup-needed.md` — K cohort honest skip note
+- `~/core/demiurge/archive/session-notes/2026-05-21-mp-api-setup-needed.md` — K cohort honest skip note
 - pool: `~/.pool/pool.json` (mini · ubu-1 · ubu-2) — DFT 계산 인프라 (P3)
 - 외부 ref URL: https://next-gen.materialsproject.org/api · https://crystallography.net · http://aflowlib.duke.edu · https://supercon.nims.go.jp · https://epw-code.org
 

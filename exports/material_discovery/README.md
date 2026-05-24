@@ -1,7 +1,7 @@
 # exports/material_discovery — H₃X DFT campaign canonical numerical SSOT
 
 이 디렉토리 = RTSC H₃X DFT el-ph campaign 의 **canonical numerical SSOT** (machine-readable).
-`RTSC.md §9` 표 · `RTSC.log.md §9.15` · `inbox/notes/` 는 모두 human-readable snapshot 이며,
+`RTSC.md §9` 표 · `RTSC.log.md §9.15` · `archive/session-notes/` 는 모두 human-readable snapshot 이며,
 numerical value 불일치 시 **본 디렉토리의 JSON 이 authority**.
 
 ## 파일 naming

@@ -72,13 +72,13 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
       ~25k net positive (substrate consolidation)
     - LOC delta demiurge cockpit: -610 ActionDispatch + 4 typed records
       + 4 .demi manifests = net negative (D111 enforcement)
-    - inbox/notes: 5 research artifacts (D114 audit · D116 inventory
+    - archive/session-notes: 5 research artifacts (D114 audit · D116 inventory
       · attestation prep · wipe-governance proposal · 종합)
 
 - 2026-05-22 — **κ-70 R9 G36 LANDED · D118 3rd cell pick (Ufo/plasma
   Stage-2) 5-fold lock-in · code 0 · R9 = 2/4 LANDED**. κ-69 G32 (D115)
   / κ-68 G27 (D109) 의 동형 mirror — pre-code decision gate. Research
-  note `inbox/notes/2026-05-22-k70-horizon-candidate-research.md`
+  note `archive/session-notes/2026-05-22-k70-horizon-candidate-research.md`
   (3 finalist · #1 ranked Ufo/plasma Stage-2 default 채택) 위 build:
   - **5-fold lock-in 박제**: cell = `UfoVerifyRecord` (1-field 확장 ·
     κ-69 G33 AuraVerifyRecord 1:1 mirror) + `domains/ufo.md` Stage-2
@@ -434,7 +434,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
     scope · current 4 algorithm files in hexa-rtsc/verify/ → hexa-
     lang/stdlib/<domain>/ 이전 대상 명시)
   - **ARCH §4.5** cross-link D114 + D116 추가
-  - **audit note correction** (inbox/notes/2026-05-21-d114-phaseb-
+  - **audit note correction** (archive/session-notes/2026-05-21-d114-phaseb-
     material-falsifier-audit.md): MaterialFalsifier 273-LOC algorithm
     destination `~/core/hexa-rtsc/verify/falsifier_dispatch.hexa`
     → `~/core/hexa-lang/stdlib/rtsc/falsifier_dispatch.hexa` 정정
@@ -475,7 +475,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
       cockpit/scripts/ (`bipv_freecad.py` D61 violator 1개 잔존)
   - **D115 stub (G32 reservation)**: D-numbering sequence shift
     (D111 morning → D112+D113 afternoon → D114 R3 → G32 = D115).
-    G32 user decision territory · `inbox/notes/k69-g32-candidate-
+    G32 user decision territory · `archive/session-notes/k69-g32-candidate-
     research-2026-05-21.md` (Aura/EEG #1) ready.
   - **Phase A 완료 (본 commit)**: D114 ratification + R3 row + ARCH
     update · doctrinal land 즉시.
@@ -492,7 +492,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
 - 2026-05-21 — **D112 + D113 ratified · Phase B bug #2 (Verb canonical
   Korean → English wire) + payload flattening 결정 박제 · §11.4 G32
   D-number reference shift (D112 → D114)**. Phase B agent 의 design
-  note (`inbox/notes/2026-05-21-d111-phaseb-bug2-verb-naming-options.
+  note (`archive/session-notes/2026-05-21-d111-phaseb-bug2-verb-naming-options.
   md` 353 line · α 추천) + Phase B post-mortem 의 payload flattening
   open question 둘 다 doctrinal 로 명문화.
   - **D112 = bug #2 closure** (Verb.canonical 의미를 English wire form
@@ -579,7 +579,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
   narrative anchor the rider lacked at push time). The push-titled
   commit `f4defee` (`docs(inbox): yosys-stat measurement note →
   INDEX (37 entries ...)`) intended to commit two files
-  (`inbox/INDEX.md` + the κ-69 substrate-axis yosys-stat note) but
+  (`archive/session-notes/INDEX.md` + the κ-69 substrate-axis yosys-stat note) but
   swept up **13 pre-staged files** from a prior session's work — a
   coherent **RTSC.md §8.7 Tier 4 material-falsifier** feature
   drop. Honest framing: the code was correct, the rider was a
@@ -613,7 +613,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
     baseline · SuperPower-class Tc=92K · `absorbed=false` first
     ingest per §8.5) ·
     [historic seed recipe — deleted 2026-05-22 in aggressive scrub
-    pass; see `inbox/notes/2026-05-22-lk99-final-scrub.md`] ·
+    pass; see `archive/session-notes/2026-05-22-lk99-final-scrub.md`] ·
     `exports/measurement/jc_b_theta/superpower_2g_baseline.json`
     (Jc(B,θ) baseline) ·
     `exports/measurement/2026-05-21T08-58-24Z.json` (stamped
@@ -622,7 +622,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
     seed recipe above; XCTest now uses a synthetic claim-only fixture
     via `makeClaimOnlyRecipe()`].
   - **Inbox note (1 · detail SSOT)**:
-    `inbox/notes/2026-05-21-pool-gate_v3-abc-diagnosis.md` (59
+    `archive/session-notes/2026-05-21-pool-gate_v3-abc-diagnosis.md` (59
     line) — orthogonal `chip` axis · pool cross-platform
     re-execution diagnosed `/tmp/gate_v3` BLIF emitter bug
     (multi-output sky130 cell fanin + net-node fanin invariant)
@@ -661,7 +661,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
   narrative anchor; the rider files have been on
   `origin/main` since `f4defee` push and remain there
   unchanged**. Detail SSOT for pool-gate axis (orthogonal):
-  `inbox/notes/2026-05-21-pool-gate_v3-abc-diagnosis.md` (added
+  `archive/session-notes/2026-05-21-pool-gate_v3-abc-diagnosis.md` (added
   to INDEX in same audit commit).
 
 - 2026-05-21 — **§12.1 (b) `[~]` → `[x]` LANDED · PR #255 abc_map
@@ -713,7 +713,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
     caching — a measurement pipeline artifact, not a code
     regression. (kk) preserved as historical record; (ll)
     supersedes (kk)'s Tier-1 marker correction. yosys-stat
-    measurement note `inbox/notes/k69-substrate-axis-yosys-stat-
+    measurement note `archive/session-notes/k69-substrate-axis-yosys-stat-
     measurement-2026-05-21.md` (untracked · 276 lines) had a
     stale-cache reading at filing time; its algebraic projections
     (79 % sequential / 20 % combinational gap split · 99.3 %
@@ -761,7 +761,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
     1677.86 µm² to 32,829 / 45,936.6 µm² · gate target window text
     appended with residual-gap framing pointing at Option E.
   - **SSOT detail entry (ll)** appended to
-    `inbox/notes/rfc006-s5-area-oracle-parity-handoff.md` (file head
+    `archive/session-notes/rfc006-s5-area-oracle-parity-handoff.md` (file head
     status block + cross-reference note also updated · (kk) NOT
     rewritten · append-only spirit preserved).
   - **worktree cleanup side-effect**: `~/core/hexa-lang-optf`
@@ -1188,7 +1188,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
   side 트랙 임을 명시 (b) Tier-1 (e..i) / Tier-2 (3 item) / Tier-3
   (2 item) 잔여 work 구조적 박음 (c) 8-16 session estimate 박음
   (d) cell-flip vs gate-flip dimension 박음. detail SSOT 는 여전히
-  `inbox/notes/rfc006-s5-area-oracle-parity-handoff.md` (entries
+  `archive/session-notes/rfc006-s5-area-oracle-parity-handoff.md` (entries
   (o)..(bb)+ · 1754 line). 다음 substrate-axis work commit 부터는
   ARCH §12.1 의 해당 `[ ]` 항목을 `[x]` 로 flip + `## Log` 에 narrative
   bracket 박는 패턴 (§11.4 G-item 과 동형) 채택.
@@ -1254,7 +1254,7 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
   (acac78c · hexa-lang `b7a43493` · 15th kernel folder · bridge
   substrate · 70/70 PASS @ 1e-10 · 누적 14 D80 pilots / 445
   assertions / 16 PILOTS rows), G26 D80 sweep close breakthrough
-  note (1f9f934 · cold-start anchor · inbox/INDEX 27 entries).
+  note (1f9f934 · cold-start anchor · archive/session-notes/INDEX 27 entries).
   헤딩 노트 G1–G24 로 갱신 (G25/G26 는 Round 6 안 post-closure
   bracket).
 - 2026-05-20 — §11.4 G1–G24 → G1–G30 확장. **Round 7 scaffold**
@@ -1345,13 +1345,13 @@ Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session 
     rfc_006 §5 `measurement_gate = OPEN` (g3 — `CLOSED_MEASURED`
     flip 은 area > 0 → ±5% 측정 후 g3-conditional) 도 OPEN 유지.
   - **SSOT 분리**: 측정-fact + Tier-1/2/3 roadmap + landing timeline
-    의 detail SSOT 는 `inbox/notes/rfc006-s5-area-oracle-parity-
+    의 detail SSOT 는 `archive/session-notes/rfc006-s5-area-oracle-parity-
     handoff.md` (entries (o)-(u)+ 누적). 본 axis 의 narrative SSOT
     는 ARCH `## Log` (κ-68 closure 와 동일 cycle 2026-05-21 KST 에서
     chip §B substrate-axis 도 measurement breakthrough 가 있었다는
     사실 박제). 별 도메인 SSOT 파일 (구 `YOSYS.md`) 은 본 entry
     박제 시점에 git rm — narrative 는 ARCH 가 carry, detail handoff
-    는 inbox/notes 가 carry, 측정 fact (oracle d4=61,762.99 µm² /
+    는 archive/session-notes 가 carry, 측정 fact (oracle d4=61,762.99 µm² /
     d6=93,608.53 µm² / ratio 1.5156× bit-exact · Tier-1/2/3 89%
     prune · 8-16 session estimate) 는 git history (last commit `338837f`
     + 본 closure cycle) 에서 retrievable.

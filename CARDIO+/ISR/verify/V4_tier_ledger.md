@@ -13,7 +13,7 @@
 
 (a) **V1 inventory 기반** — claim 추출 200+ (quantitative · mechanistic · structural · closed-form identity).
 (b) **V2/V3 verbatim** — `hexa verify` 의 stdout 그대로 paste · LLM 재해석/판정 금지 (per @D g5).
-(c) **외부 dependency 명시** — hexa-lang inbox/patches 의 unlock 조건 + 영향 영역 정량.
+(c) **외부 dependency 명시** — hexa-lang archive/session-notes/patches 의 unlock 조건 + 영향 영역 정량.
 (d) **breakthrough path 의무** — 🟠/⚪ 모두 path A/B/C 표기 (per @D d2).
 (e) **HONEST DEGRADE** — atlas register `--from-verify` 가 🟠 verdict 시 PR 거부한 결과 그대로 기록.
 
@@ -87,7 +87,7 @@ V2 §Σ.2 sanity verbatim — kernel 정상 작동 (`hexa verify --expr sigma 6 
 ### §1.3 unlock 조건
 
 ```
-hexa-lang PR: inbox/patches/bio-verify-kernel-extension-2026-05-25.md
+hexa-lang PR: archive/session-notes/patches/bio-verify-kernel-extension-2026-05-25.md
   A. Float-arg parser (P0 · ~30 LOC)
   B. Bio kernel — 20 identity (P0 phase 1: ~120 LOC · phase 2: ~120 LOC · P1: ~120 LOC)
   C. Atlas register flow (P0 · ~15 LOC)
@@ -493,7 +493,7 @@ hexa atlas register --from-verify hill(3) = 5
 
 ## §8. dependency map (외부 unlock)
 
-### §8.1 hexa-lang inbox/patches (P0 · P1 우선순위)
+### §8.1 hexa-lang archive/session-notes/patches (P0 · P1 우선순위)
 
 | priority | patch | unlock 영향 | status |
 |---|---|---|---|
@@ -502,9 +502,9 @@ hexa atlas register --from-verify hill(3) = 5
 | **P1** | `daptpgx-stdlib-bio-stats-2026-05-25.md` | DAPTPGX bio stats stdlib unlock (Hardy-Weinberg · log-rank · χ²) — cross-domain | open |
 | **P1** | `daptpgx-atlas-pgx-kind-2026-05-25.md` | atlas K kind 확장 (pharmacogenomics atom) | open |
 
-### §8.2 hexa-lang inbox/notes — R3 §9 10 entries (R3 등록 plan 명시, 본 V4 시점 actual file 미실재 — 후속 작업)
+### §8.2 hexa-lang archive/session-notes — R3 §9 10 entries (R3 등록 plan 명시, 본 V4 시점 actual file 미실재 — 후속 작업)
 
-R3 §9 의 stdlib absorb 후보 10 entries (각각 hexa-lang inbox/notes/2026-05-25-<slug>.md 등록 예정):
+R3 §9 의 stdlib absorb 후보 10 entries (각각 hexa-lang archive/session-notes/2026-05-25-<slug>.md 등록 예정):
 1. `chembl-bioactivity-fetch` → `bio.chem.bioactivity`
 2. `pubchem-cid-resolver` → `bio.chem.pubchem`
 3. `drugbank-label-lookup` → `bio.chem.drugbank`
@@ -516,7 +516,7 @@ R3 §9 의 stdlib absorb 후보 10 entries (각각 hexa-lang inbox/notes/2026-05
 9. `redcap-edc-bridge` → `bio.registry.edc`
 10. `monai-cardiac-segmenter` → `bio.imaging.med`
 
-→ **status**: R3 filed-as-design only (실파일은 후속 작업 필요 — V4 시점 inbox/notes/2026-05-25-* 0건 확인).
+→ **status**: R3 filed-as-design only (실파일은 후속 작업 필요 — V4 시점 archive/session-notes/2026-05-25-* 0건 확인).
 
 ### §8.3 dependency-as-blocker 평가
 
@@ -631,7 +631,7 @@ verify-phase 자체는 honest (LLM self-judge 0건 · CLI verbatim verdict 100%)
 |---|---|---|
 | **1** | hexa-lang `bio-verify-kernel-extension-2026-05-25` PR (4-5 stacked PR per @D g4) | 50-90 🔵 cross-domain unlock (ISR + DAPTPGX + LPA + NOREFLOW + TTR + HERPES) |
 | 2 | hexa atlas append-witness batch (~150 🟡 cite) | ISR atlas atom landing — ATLAS_SOURCE_COUNT +1 |
-| 3 | hexa-lang inbox/notes/2026-05-25-* (R3 §9 10 entries 실파일 작성) | stdlib bio.* namespace landing |
+| 3 | hexa-lang archive/session-notes/2026-05-25-* (R3 §9 10 entries 실파일 작성) | stdlib bio.* namespace landing |
 | 4 | pool-cli-compile-errors-2026-05-25 PR | M5 자산 매트릭스 docs cleaner |
 
 ### §11.2 wet-lab IIT 진입
@@ -667,7 +667,7 @@ verify-phase 자체는 honest (LLM self-judge 0건 · CLI verbatim verdict 100%)
 | §5 ⚪ 10 fence verbatim | 🟢 SUPPORTED-NUMERICAL | V2/V3 `hexa verify --fence` verbatim paste |
 | §6 🔴 0 honest | 🔵 SUPPORTED-FORMAL | empty set 자명 |
 | §7 atlas register status | 🟢 SUPPORTED-NUMERICAL | `hexa atlas stats` + `lookup --prefix` verbatim |
-| §8 dependency map | 🟡 SUPPORTED-BY-CITATION | hexa-lang inbox/patches actual file 4건 확인 |
+| §8 dependency map | 🟡 SUPPORTED-BY-CITATION | hexa-lang archive/session-notes/patches actual file 4건 확인 |
 | §9 @goal 달성도 | 🟡 SUPPORTED-BY-CITATION | M1-M8 + R1-R3 + V1-V4 산출 파일 존재 cross-check |
 | §10 종합 verdict | 🟢 SUPPORTED-NUMERICAL | M-file 존재 검증 + verbatim verdict 합 |
 | §11 다음 단계 | 🟠 INSUFFICIENT/DEFERRED | post-closure 실행 의존 (cross-domain PR) |

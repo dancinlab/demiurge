@@ -5,7 +5,7 @@
   "total_miss": 4,
   "api_calls_made": 0,
   "cached_skips": 28,
-  "scrub_note": "2026-05-22 aggressive scrub — claim-only family removed (3 entries, see inbox/notes/2026-05-22-lk99-final-scrub.md).",
+  "scrub_note": "2026-05-22 aggressive scrub — claim-only family removed (3 entries, see archive/session-notes/2026-05-22-lk99-final-scrub.md).",
   "per_family_stats": {
     "lts": {
       "queried": 7,

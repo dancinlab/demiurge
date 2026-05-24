@@ -131,6 +131,6 @@
 ## 9. 후속 작업
 
 - V3.5 patch 적용 + 재실행 → C15/C20 + C25/C27 verdict 확정
-- V2 (🔵 closed-form via hexa atlas) inbox handoff → M11/inbox/notes 흡수 후
+- V2 (🔵 closed-form via hexa atlas) inbox handoff → M11/archive/session-notes 흡수 후
 - d8 inbox: `pool` wrapper hexa-compile bug (hexa-lang/inbox/patches/) — ubu-1/2 routing 복구
 - V4 final ledger — V1+V2+V3+V3.5 합쳐 최종 tier 분포 확정

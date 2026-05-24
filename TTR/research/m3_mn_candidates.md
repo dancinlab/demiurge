@@ -135,4 +135,4 @@
 - ✅ 5 family × top 5 candidate ranking · top-3 overall surfaced
 - ✅ wall-region (Cu-Pc · Cr₂O₃) breakthrough path 각 1+ 후보
 - ✅ M5 input list · external API plan 정리
-- next: M5-MN (MD/QM 시뮬) — Vina · OpenMM 적용 또는 hexa-native 포팅 (per `inbox/notes/2026-05-24-ttr-external-port-candidates.md`)
+- next: M5-MN (MD/QM 시뮬) — Vina · OpenMM 적용 또는 hexa-native 포팅 (per `archive/session-notes/2026-05-24-ttr-external-port-candidates.md`)

@@ -244,7 +244,7 @@ Append-only history sister of `LPA.md`. Each entry starts with `## <ISO timestam
 - [x] §3.2 `hexa atlas append-witness` 4건 staging 성공 (ivw_burgess · schoenfeld · binary_sample · nnt)
 - [x] §3.3 `hexa atlas pr --staging` → daily-aggregate 요구 (개별 shard 직접 PR 불가)
 - [x] §4 `hexa verify --expr` 5건 VERBATIM (sigma 🔵 baseline · ivw/schoenfeld/binary_sample/nnt/arr_to_nnt 모두 🟠)
-- [x] §5 hexa-lang PR #665 OPEN — `inbox/notes/2026-05-24-lpa-ivw-mr-formula.md` (105 lines · calculator 확장 요청)
+- [x] §5 hexa-lang PR #665 OPEN — `archive/session-notes/2026-05-24-lpa-ivw-mr-formula.md` (105 lines · calculator 확장 요청)
 - [x] §6 🔵 도달 = **0/8** (목표 8건, 모두 calc fn 부재 = 정직한 deferred · d6 준수)
 - [x] §7 V3 입력 — 5 atom IDs (4 self + 1 parallel agent @L law-reference)
 - [x] §8 d2 breakthrough 3축 — calculator extension(PR #665) / daily-aggregate manual fold / own atlas root

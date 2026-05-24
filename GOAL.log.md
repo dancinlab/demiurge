@@ -46,7 +46,7 @@ Spec at [`./GOAL.md`](./GOAL.md). Log entries below preserve session-by-session 
   demiurge 측 Swift producer 무변경 (D61 pointer-only 준수 — stdlib
   소유 = hexa-lang). 새 결정 없음 — 카테고리 서술. 빈-셀 measurement
   라운드 (sscb·scope·cern·component synth/verify, highest ROI per
-  `inbox/notes/absorption-empty-cells-research-2026-05-20.md`) 는
+  `archive/session-notes/absorption-empty-cells-research-2026-05-20.md`) 는
   hexa-lang live-tree cross-session 정렬 후로 미룸 (demiurge 세션
   자율 해소 불가 — concurrent session uncommitted 보존).
 - 2026-05-20 — 빈-셀 sweep ROI 1→18 (κ-47..κ-49 17 cell dispatch +

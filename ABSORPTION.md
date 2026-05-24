@@ -276,9 +276,9 @@ producer 가 ① 에 들어오는 순서대로 매핑 추가.)
 ## 흡수 후보 우선순위 (deep research 2026-05-20)
 
 > 두 deep-research 라운드 (web + arxiv) 의 통합 우선순위. "필요한
-> 부분만" 골라 흡수하도록 ROI 순 — `inbox/notes/absorption-empty-
+> 부분만" 골라 흡수하도록 ROI 순 — `archive/session-notes/absorption-empty-
 > cells-research-2026-05-20.md` (18 빈 measurable 셀) +
-> `inbox/notes/hexa-8domain-measurement-stack-2026-05-20.md`
+> `archive/session-notes/hexa-8domain-measurement-stack-2026-05-20.md`
 > (rtsc·cern·antimatter·ufo·space·fusion·mobility·aura 실측 stack).
 
 ### 즉시 가능 — 도구 이미 설치 / pure-pip macOS quick win

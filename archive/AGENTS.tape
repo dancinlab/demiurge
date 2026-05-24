@@ -135,7 +135,7 @@
 @N n_cern_producer_alternatives := "cern + analyze carries alternative producers" :: note [d=2026-05-20 active]
   text = "Cell (cern, analyze) is the FIRST cell to use ProducerRegistry (cockpit/Sources/DemiurgeCore/Loaders/ProducerRegistry.swift). Variants: `xsuite-tracking` (default, Xsuite 100-turn FODO tracking — real physics, κ-49 substrate) and `pylhe` (legacy LHE round-trip — synthetic, kept for parser-coverage). CLI override: `action analyze cern --producer pylhe`. Other cells stay on the hardcoded ActionDispatch switch — registry is additive, joined only when a cell actually carries alternatives. Same-shape Record decode TBD per consumer."
   default_producer = "xsuite-tracking — promotes the κ-49 substrate (real Xsuite particle tracking) over the legacy pylhe round-trip toy, per user gate 2026-05-20."
-  decision_ref = "design.md D74 · inbox/notes/cern_analyze_producer_alternative_decision_2026-05-20.md"
+  decision_ref = "design.md D74 · archive/session-notes/cern_analyze_producer_alternative_decision_2026-05-20.md"
   user_directive = "2026-05-20 — 'Option C — ProducerRegistry; defaults Q2 xsuite-tracking, Q3 CLI-only, Q4 governance line YES'"
 
 @N n_d80_sweep_closure := "D80 g_hexa_only 12-pilot sweep 종결 + 5 .demi SSOT 통합" :: note [d=2026-05-20 active]

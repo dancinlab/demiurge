@@ -4,7 +4,7 @@
 // measurable cell wired to a real measuring engine tool. This is the
 // SECOND `energy`-domain cell after `energy + analyze` (pvlib clear-sky,
 // EnergyRecord) and the FIRST `synthesize`-verb cell in the energy
-// domain. ROI rank 5 from `inbox/notes/absorption-empty-cells-research-
+// domain. ROI rank 5 from `archive/session-notes/absorption-empty-cells-research-
 // 2026-05-20.md` §3 (⭐⭐⭐⭐⭐ — pure pip, NREL/TUB academic OSS).
 //
 // The producer = `~/core/hexa-lang/stdlib/energy/pypsa_capacity.py`,
@@ -29,7 +29,7 @@
 // under `stdlib/energy/pypsa_capacity.py`. Promote to
 // `kernels/power_opt/pypsa_kernel.py` ONLY if a 2nd power-opt
 // consumer (e.g. mobility V2G, grid+verify, energy+verify storage)
-// appears — pickup note: `inbox/notes/pypsa-kernel-promotion-pickup.md`.
+// appears — pickup note: `archive/session-notes/pypsa-kernel-promotion-pickup.md`.
 //
 // HONESTY (g3 — non-negotiable):
 //   • producer = "pypsa@<ver> + HiGHS@<ver>" — pin the libraries,

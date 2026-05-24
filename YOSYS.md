@@ -217,7 +217,7 @@ repository or any downstream until the §5 gate measurement records
 PASS.**
 
 Multi-session campaign work is logged in `hexa-lang/inbox/notes/` +
-demiurge `inbox/notes/` + [`./YOSYS.log.md`](./YOSYS.log.md).
+demiurge `archive/session-notes/` + [`./YOSYS.log.md`](./YOSYS.log.md).
 
 ## §10. Cross-references
 
@@ -230,9 +230,9 @@ demiurge `inbox/notes/` + [`./YOSYS.log.md`](./YOSYS.log.md).
 - `HANDOFF.md` §4/§5 — cohort owner roles, oracle citation
 - `ARCH.md` §12.1 — measurement-host regression log (rfc006-s5-area-
   oracle-parity-handoff inbox note, 1754-line detail SSOT)
-- `inbox/notes/rfc006-s5-area-oracle-parity-handoff.md` — entry-by-entry
+- `archive/session-notes/rfc006-s5-area-oracle-parity-handoff.md` — entry-by-entry
   measurement-fact + cycle log (load-bearing detail SSOT)
-- `inbox/notes/k69-substrate-axis-yosys-stat-measurement-2026-05-21.md`
+- `archive/session-notes/k69-substrate-axis-yosys-stat-measurement-2026-05-21.md`
   — yosys -p stat substrate-axis measurement note
 - `hexa-lang/stdlib/yosys/` — implementation home
 

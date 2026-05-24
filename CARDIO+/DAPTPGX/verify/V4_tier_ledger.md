@@ -91,8 +91,8 @@ V3.5 reconciliation          atlas append-witness round 2
 ```
 
 handoff status (CLI 실제 실행):
-- `cp /Users/ghost/core/demiurge/inbox/patches/hexa-lang-stdlib-bio-stats.md ~/core/hexa-lang/inbox/patches/daptpgx-stdlib-bio-stats-2026-05-25.md` ✅
-- `cp /Users/ghost/core/demiurge/inbox/patches/hexa-atlas-pgx-kind-extension.md ~/core/hexa-lang/inbox/patches/daptpgx-atlas-pgx-kind-2026-05-25.md` ✅
+- `cp /Users/ghost/core/demiurge/archive/session-notes/patches/hexa-lang-stdlib-bio-stats.md ~/core/hexa-lang/inbox/patches/daptpgx-stdlib-bio-stats-2026-05-25.md` ✅
+- `cp /Users/ghost/core/demiurge/archive/session-notes/patches/hexa-atlas-pgx-kind-extension.md ~/core/hexa-lang/inbox/patches/daptpgx-atlas-pgx-kind-2026-05-25.md` ✅
 - hexa-lang absorb 사이클 통과 후 V5 trigger 가능
 
 ## 6. 검증 등급 (g5)

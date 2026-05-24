@@ -339,7 +339,7 @@ sub V1 에서 인용된 명령 (verbatim):
 #   atlas register --kind F --id IMR.pdtmn --raw "IMR=Pd×Tmn"
 #   atlas register --kind F --id cTFC.lad_correct --raw "cTFC_LAD=raw×1.7"
 
-# DAPTPGX V1 §5 (V2 입력 — hexa-lang inbox/notes/daptpgx-pgx-ssot-databases.md 흡수 후)
+# DAPTPGX V1 §5 (V2 입력 — hexa-lang archive/session-notes/daptpgx-pgx-ssot-databases.md 흡수 후)
 #   hexa atlas append-witness --kind P --id CYP2C19.PM.kor.freq --raw "0.14-0.15"
 #   hexa atlas register --from-verify hw_pm_freq <n> <v>
 

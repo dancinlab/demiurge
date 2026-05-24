@@ -345,7 +345,7 @@ last postop  = res/dummy.txt — t=0.025s · 6-PostOp 값 (energy / current / et
 
 - `domains/rtsc.md` — legacy domain doc (rename 대상)
 - `~/core/hexa-rtsc/` — sibling material substrate (n=6 closed-form, falsifier preregister, 43/43 closure). **별개 substrate** — 이쪽은 RTSC 물질 자체의 empirical falsifier 트랙.
-- `inbox/notes/cohort-pickup-rtsc-femm-producer.md` — κ-35 pickup note, 본 세션 Path 4 진행의 출발점
+- `archive/session-notes/cohort-pickup-rtsc-femm-producer.md` — κ-35 pickup note, 본 세션 Path 4 진행의 출발점
 - `~/core/hexa-lang/stdlib/rtsc/{getdp_hts.py, pyfemm_magnetics.py}` — substrate SSOT
 - `~/core/hexa-lang/stdlib/rtsc/templates/` — `.geo`/`.pro` parametric templates (신설)
 - D61 — producer SSOT 위치 정책
@@ -621,7 +621,7 @@ RTSC absorbed=true 후보가 미래 발견되면 다음 record 셋 동시 존재
 
 ### Migration completed 2026-05-22 (R4 Stage 1 Path B)
 
-`inbox/notes/2026-05-21-r4-stage1-enforcement.md` 의 Path B (recommended) 가 본 날짜에 실행 완료. 변경 사항 요약:
+`archive/session-notes/2026-05-21-r4-stage1-enforcement.md` 의 Path B (recommended) 가 본 날짜에 실행 완료. 변경 사항 요약:
 
 - **Producer 업데이트** (`~/core/hexa-lang/stdlib/material/nb_bcs_absorbed_attestation_producer.py@v2`):
   - `"domain": "rtsc"` → `"domain": "lts"` (Pattern 1 namespace exploit 제거 — Nb 는 LTS 이지 RTSC 가 아니므로 *material-class* 도메인이 정확함).
@@ -647,7 +647,7 @@ RTSC absorbed=true 후보가 미래 발견되면 다음 record 셋 동시 존재
 Cross-refs:
 - Producer commit (`hexa-lang/stdlib/material/`): 본 PR (re-introduces producer after the 2026-05-21 `c39afbbe` removal, now with `domain: "lts"` semantics).
 - Paper commit (`demiurge/PAPERS/sample-nb-bcs-absorbed/`): 본 PR (abstract + §3.1 invariant + §s4 caveat + Reproducibility + README).
-- inbox/notes/2026-05-21-r4-stage1-enforcement.md: Path B plan SSOT.
+- archive/session-notes/2026-05-21-r4-stage1-enforcement.md: Path B plan SSOT.
 
 ---
 
@@ -678,7 +678,7 @@ Cross-refs:
 |---|---|---|---|
 | **이미 있음**: `sim.hexa` / `sim_adapter.py` | BCS · McMillan · Allen-Dynes · WHH | weak-coupling SC well, 20% scatter | M5 cohort |
 | **EPW** (Quantum ESPRESSO) | Anisotropic full Eliashberg with Wannier interpolation | DFT-precision (Nb 10.5 vs 9.25 K = 13.6%) | `https://epw-code.org`, MP.md P3 |
-| **BETE-NET** (Gibson et al. 2025) | Bootstrapped **Tempered** Equivariant graph NN, predict α²F + Tc | **MAE 0.87 K** vs DFT-Allen-Dynes (paper claim) · **2026-05-22 empirical calibration** (`beenet_notebook_inference_producer.py` 7-candidate run): MgB₂ 16.6% · Nb₃Sn 50% · Pb 111% · Sn 51% · Nb 454% · Al 810% · V 1424% rel_err vs **measured** Tc — **multi-atom strong-coupling SC 가 가장 신뢰권**; 1-atom bulk = OOD edge case. σ/λ > 0.7 = all-OOD by ensemble σ. | **primary**: `arxiv:2401.16611` https://arxiv.org/abs/2401.16611 (npj Comput. Mater. 11:11, 2025) · github `henniggroup/BETE-NET` (notebook-shaped, no pip) · 별 paper `arxiv:2406.14524` (Lee/Hattrick-Simpers ridge-regression, 다른 모델) · Nature `s41524-026-01964-8` https://www.nature.com/articles/s41524-026-01964-8 — 1.3M cand → 741 stable. honest 정정: §9 first draft 는 "BEE-NET" 오기 + arxiv:2406.14524 가 primary citation 인 척 — N2 cohort 이 catch, 본 row 정정. 2026-05-22 milestone: macOS arm64 venv + 100-ensemble CSO inference + 7-candidate calibration · `inbox/notes/2026-05-22-bete-net-{activation, 7-candidate-benchmark}.md` 참조. |
+| **BETE-NET** (Gibson et al. 2025) | Bootstrapped **Tempered** Equivariant graph NN, predict α²F + Tc | **MAE 0.87 K** vs DFT-Allen-Dynes (paper claim) · **2026-05-22 empirical calibration** (`beenet_notebook_inference_producer.py` 7-candidate run): MgB₂ 16.6% · Nb₃Sn 50% · Pb 111% · Sn 51% · Nb 454% · Al 810% · V 1424% rel_err vs **measured** Tc — **multi-atom strong-coupling SC 가 가장 신뢰권**; 1-atom bulk = OOD edge case. σ/λ > 0.7 = all-OOD by ensemble σ. | **primary**: `arxiv:2401.16611` https://arxiv.org/abs/2401.16611 (npj Comput. Mater. 11:11, 2025) · github `henniggroup/BETE-NET` (notebook-shaped, no pip) · 별 paper `arxiv:2406.14524` (Lee/Hattrick-Simpers ridge-regression, 다른 모델) · Nature `s41524-026-01964-8` https://www.nature.com/articles/s41524-026-01964-8 — 1.3M cand → 741 stable. honest 정정: §9 first draft 는 "BEE-NET" 오기 + arxiv:2406.14524 가 primary citation 인 척 — N2 cohort 이 catch, 본 row 정정. 2026-05-22 milestone: macOS arm64 venv + 100-ensemble CSO inference + 7-candidate calibration · `archive/session-notes/2026-05-22-bete-net-{activation, 7-candidate-benchmark}.md` 참조. |
 | **DOS rescaling** (2025) | High-throughput Tc estimator from DOS at E_F | scaling law | `arxiv:2508.18371` https://arxiv.org/pdf/2508.18371 |
 | **AI-accel SC discovery** (2026) | End-to-end pipeline w/ elemental substitution + MLIP | Best 2026 SOTA | `https://www.nature.com/articles/s41524-026-01964-8` |
 | **First-principles + ML** cuprates | Pairing strength factors from features | qualitative | `arxiv:2305.08038` https://arxiv.org/pdf/2305.08038 |
@@ -788,13 +788,13 @@ deep-research session 에서 surfaced 된 모든 arxiv ID — 각각 §9.x sub-s
 |---|---|---|---|
 | Phase 1 (N1-N4 wrap-as-is) | ✅ **LANDED** | `701bfe1b` · `stdlib/material/{csp,beenet,askcos,cross_code_dft}_adapter.py` | — |
 | Phase 1+ (N5 funnel · §9.10) | ✅ **LANDED** | `701bfe1b` · `stdlib/material/novel_material_funnel.py` | — |
-| Phase 2 (16-cell stabilization audit) | ✅ **LANDED** · 15/16 PASS · 1 DEVIATION (YBCO × cross_code_dft · AFLOW gap, honest) | (audit only) | `inbox/notes/2026-05-21-rtsc-9-phase2-stabilization.md` |
-| Phase 3 (microkernel identification) | ✅ **LANDED** · 4 candidates (P1 bundle of 2 · P2 bundle of 2) · 6 anti-pattern rejects | (audit only) | `inbox/notes/2026-05-21-rtsc-9-phase3-microkernel-audit.md` |
-| Phase 4 #1 (C1+C2 consensus port) | ✅ **LANDED** · **22/22 parity PASS** (≤1e-9 rel · max 3.93e-16) | `701bfe1b` · `stdlib/material/sim.hexa` v0.2.0 (`inverse_variance_consensus` + `sigma_from_spread`) | `inbox/notes/2026-05-22-rtsc-9-phase4-1-parity-verify.md` |
-| Phase 4 #2 (C3+C4 ASKCOS parser+classifier) | ✅ **LANDED** · `hexa-lang stdlib/material/composition.hexa` (hand-rolled tokenizer · `parse_formula_elements` C3 + `classify_composition_domain` C4) · **regex blocker 우회** (PR #276 안 기다리고 hand-rolled char-scan 으로 land · `_is_upper`/`_scan_count`/`_expand_all_parens`) · **32/32 parity PASS** vs Python askcos_adapter.py ground-truth (18 parse element-counts + 14 classify labels · 5/5 rule coverage) · landed via concurrent `9f343d1b` · **regex backend now AVAILABLE (2026-05-22)** — PR #276 rebased+merged (`ae470e02`) post bootstrap-CI fix · `self/runtime.h` 6 `hexa_regex_*` decls + `runtime.c` POSIX ERE impl + 24/24 local test · Phase 4 #2 used hand-roll (no rework needed) BUT future formula-parser / general-string consumers may use `stdlib/regex` directly · see `inbox/notes/2026-05-22-pr276-regex-unblock.md` | — | `inbox/notes/2026-05-22-rtsc-9-phase4-2-parity-verify.md` |
-| Phase 2 ext (16→20 cell) | ✅ **LANDED** · 5th baseline = H₃S · 18/20 PASS · 2 DEVIATION (YBCO + H₃S, both `insufficient-sources`) · **AFLOW gap NOT cuprate-specific** (H₃S control falsified hypothesis · OQMD also drops out → Phase 2 blocker #1 severity ↑ medium → medium-high) | (audit only) | `inbox/notes/2026-05-22-rtsc-9-phase2-ext-20cell.md` |
-| Phase 2 ext follow-on (3rd DFT corpus decision) | ✅ **DECIDED** · **JARVIS-OPTIMADE** picked (anonymous GET · `_jarvis_formation_energy_peratom` is indexed OPTIMADE response field · ~50 LOC drop-in mirror of `_poll_aflow`) · NOMAD honestly rejected (formation_energy NOT a doc-quantity, would need archive-level + reference-energy bookkeeping ~150-200 LOC = anti-pattern for B-path wrap) · live probe confirms YBCO (−2.040 eV/at) + H₃S (+0.108 eV/at) coverage → expected uplift 18/20 → 20/20 PASS · adapter PENDING separate session | (decision only · adapter to land at `stdlib/material/cross_code_dft.py` `_poll_jarvis`) | `inbox/notes/2026-05-22-rtsc-9-phase2-multicorpus-decision.md` |
-| Phase 2 ext follow-on (JARVIS adapter LANDED) | ✅ **LANDED** · `_poll_jarvis` + `_hill_formula` shipped at hexa-lang `phase2-jarvis-adapter-2026-05-22` commit `d3a3f8e8` (+143 LOC · ADDITIVE B-path wrap · OPTIMADE anonymous GET · sentinel `-99999` filter · OptB88vdW scope_caveat s5) · 20-cell rerun = **20/20 PASS** (uplift +2: YBCO + H₃S DEVIATION → `simulation-only-prediction` n=3 via mp_cache + oqmd + jarvis) · claim-only-RT-SC unchanged honest `insufficient-sources` (n=0; hypothetical composition absent from all DFT corpora) · R4 invariant intact (0/20 absorbed=true) · D-max=116 unchanged | hexa-lang `d3a3f8e8` · `stdlib/material/cross_code_dft.py` `_poll_jarvis` + `_hill_formula` | `inbox/notes/2026-05-22-rtsc-9-phase2-jarvis-rerun.md` |
+| Phase 2 (16-cell stabilization audit) | ✅ **LANDED** · 15/16 PASS · 1 DEVIATION (YBCO × cross_code_dft · AFLOW gap, honest) | (audit only) | `archive/session-notes/2026-05-21-rtsc-9-phase2-stabilization.md` |
+| Phase 3 (microkernel identification) | ✅ **LANDED** · 4 candidates (P1 bundle of 2 · P2 bundle of 2) · 6 anti-pattern rejects | (audit only) | `archive/session-notes/2026-05-21-rtsc-9-phase3-microkernel-audit.md` |
+| Phase 4 #1 (C1+C2 consensus port) | ✅ **LANDED** · **22/22 parity PASS** (≤1e-9 rel · max 3.93e-16) | `701bfe1b` · `stdlib/material/sim.hexa` v0.2.0 (`inverse_variance_consensus` + `sigma_from_spread`) | `archive/session-notes/2026-05-22-rtsc-9-phase4-1-parity-verify.md` |
+| Phase 4 #2 (C3+C4 ASKCOS parser+classifier) | ✅ **LANDED** · `hexa-lang stdlib/material/composition.hexa` (hand-rolled tokenizer · `parse_formula_elements` C3 + `classify_composition_domain` C4) · **regex blocker 우회** (PR #276 안 기다리고 hand-rolled char-scan 으로 land · `_is_upper`/`_scan_count`/`_expand_all_parens`) · **32/32 parity PASS** vs Python askcos_adapter.py ground-truth (18 parse element-counts + 14 classify labels · 5/5 rule coverage) · landed via concurrent `9f343d1b` · **regex backend now AVAILABLE (2026-05-22)** — PR #276 rebased+merged (`ae470e02`) post bootstrap-CI fix · `self/runtime.h` 6 `hexa_regex_*` decls + `runtime.c` POSIX ERE impl + 24/24 local test · Phase 4 #2 used hand-roll (no rework needed) BUT future formula-parser / general-string consumers may use `stdlib/regex` directly · see `archive/session-notes/2026-05-22-pr276-regex-unblock.md` | — | `archive/session-notes/2026-05-22-rtsc-9-phase4-2-parity-verify.md` |
+| Phase 2 ext (16→20 cell) | ✅ **LANDED** · 5th baseline = H₃S · 18/20 PASS · 2 DEVIATION (YBCO + H₃S, both `insufficient-sources`) · **AFLOW gap NOT cuprate-specific** (H₃S control falsified hypothesis · OQMD also drops out → Phase 2 blocker #1 severity ↑ medium → medium-high) | (audit only) | `archive/session-notes/2026-05-22-rtsc-9-phase2-ext-20cell.md` |
+| Phase 2 ext follow-on (3rd DFT corpus decision) | ✅ **DECIDED** · **JARVIS-OPTIMADE** picked (anonymous GET · `_jarvis_formation_energy_peratom` is indexed OPTIMADE response field · ~50 LOC drop-in mirror of `_poll_aflow`) · NOMAD honestly rejected (formation_energy NOT a doc-quantity, would need archive-level + reference-energy bookkeeping ~150-200 LOC = anti-pattern for B-path wrap) · live probe confirms YBCO (−2.040 eV/at) + H₃S (+0.108 eV/at) coverage → expected uplift 18/20 → 20/20 PASS · adapter PENDING separate session | (decision only · adapter to land at `stdlib/material/cross_code_dft.py` `_poll_jarvis`) | `archive/session-notes/2026-05-22-rtsc-9-phase2-multicorpus-decision.md` |
+| Phase 2 ext follow-on (JARVIS adapter LANDED) | ✅ **LANDED** · `_poll_jarvis` + `_hill_formula` shipped at hexa-lang `phase2-jarvis-adapter-2026-05-22` commit `d3a3f8e8` (+143 LOC · ADDITIVE B-path wrap · OPTIMADE anonymous GET · sentinel `-99999` filter · OptB88vdW scope_caveat s5) · 20-cell rerun = **20/20 PASS** (uplift +2: YBCO + H₃S DEVIATION → `simulation-only-prediction` n=3 via mp_cache + oqmd + jarvis) · claim-only-RT-SC unchanged honest `insufficient-sources` (n=0; hypothetical composition absent from all DFT corpora) · R4 invariant intact (0/20 absorbed=true) · D-max=116 unchanged | hexa-lang `d3a3f8e8` · `stdlib/material/cross_code_dft.py` `_poll_jarvis` + `_hill_formula` | `archive/session-notes/2026-05-22-rtsc-9-phase2-jarvis-rerun.md` |
 
 Honest 한계 — 본 LANDED 들 모두 *Tier 1 prediction · `gate_type=simulation-only-prediction` · `absorbed=false 영구`* (R4 invariant 무영향). measurement 가 아닌 *closed-form 산술* 의 hexa-native 재현.
 
@@ -887,7 +887,7 @@ publication-grade CIF (Drozdov 2015 · Somayazulu 2019 · Troyan 2021 · Ma 2022
 - **MatterGen** (Microsoft, MIT) — property-conditioned diffusion generator (target Tc 가능)
 - **InvDesFlow-AL** (`arxiv:2505.09203`) — active learning DFT loop · **LiAuH₆ 140K 발견**
 
-**D6 가 식별한 2024-2026 RTSC 후보 13건** (`inbox/notes/2026-05-22-d6-rtsc-literature-2025-2026-mining.md`):
+**D6 가 식별한 2024-2026 RTSC 후보 13건** (`archive/session-notes/2026-05-22-d6-rtsc-literature-2025-2026-mining.md`):
 - **가장 RTSC-close**: Hg1223 pressure-quench (Houston 2026) — Tc 151 K **ambient** · (a)(c) PASS · (b) 151<270 · (d) 1 lab only → replication path
 - La₃Ni₂O₇ thin film · pressurized crystal (nickelate, 2024-2025)
 - PCPOSOS (LK-99 variant claim) · CSH (retracted) · N-doped LuH (retracted)
@@ -1031,7 +1031,7 @@ record: `exports/material_verdict/lah10_cah6_yh6_dft_elph_extension/20260522.jso
 2. **실증 — 고-Tc 축 (H₃S, 실제 합성된 초전도체) · 교과서급 측정-일치**: DFT q-수렴 ladder 완성 — 2×2×2 λ=0.85(Tc 74K) → 4×4×4 λ=1.3(Tc 125K) → **6×6×6 (16 irreducible · 24³-k · 분할) λ=2.1-2.6 · Tc_AD 175-195K** (μ\*=0.10) vs **측정 203K (Drozdov 2015) · 5-15% 이내 일치 (broad 0.015 에서 96%)**. λ 가 문헌 harmonic 2.2 (Errea 2016) 와 일치 · 잔여=비조화 SSCHA 의 알려진 systematic. *ambient ML λ=0.48 / Tc 2K* 가 실패하는 영역에서 DFT 가 **실제 합성된 H₃S 의 측정 Tc 를 교과서급 정확도로 재현** — 고-Tc 축 measurement-grade 도달.
 2b. **실증 — ambient 축 + 측정-일치 (Nb, 실제 합성된 상압 초전도체)**: DFT el-ph 4×4×4-q 가 Nb 측정 Tc **9.25K 를 Tc_AD 9.9-13K (μ\*=0.13) 로 재현** (λ≈1.0 · ω_log≈192K · 문헌 일치 · ~10-40% 일치 = 교과서급 first-principles). **상압 초전도체의 Tc 를 제1원리로 measurement-grade 재현** — gate-(c) 축 증명. PR #299 Nb BCS-비 attestation 과 **이중 first-principles 검증**. record: `exports/material_discovery/rtsc_nb_dft_elph_ambient_proof_20260522.json`. → H₃S(고-Tc) + Nb(ambient·측정일치) 가 RTSC 코너의 두 축을 각각 실증 → 파이프라인이 ambient-Tc 정확도 + 고-Tc 강결합 포착 둘 다 measurement-grade 보유.
 3. **hexa-native 폐회로**: `eliashberg_moments` (PR #299, sim.hexa v0.3.0, 3/3 bit-exact) 가 α²F → (λ,ω_log,ω₂) → allen_dynes_tc 체인을 SSOT 에 닫음 — DFT α²F 든 ML α²F 든 동일 커널.
-4. **atlas 채굴 (고갈)**: hexa atlas 7448 노드의 SC 콘텐츠 = n6 numerological 프레임워크 (Tc 300K=target · Hc2 48T=numerology), measured-oracle Tc 데이터 ZERO → §8.8 hexa-rtsc claim-only stance 를 atlas-provenance 로 확증 (inbox/notes/2026-05-22-hexa-atlas-rtsc-mining.md).
+4. **atlas 채굴 (고갈)**: hexa atlas 7448 노드의 SC 콘텐츠 = n6 numerological 프레임워크 (Tc 300K=target · Hc2 48T=numerology), measured-oracle Tc 데이터 ZERO → §8.8 hexa-rtsc claim-only stance 를 atlas-provenance 로 확증 (archive/session-notes/2026-05-22-hexa-atlas-rtsc-mining.md).
 
 #### 정직한 한계 + 남은 경로 (불가능 아님 · gate OPEN)
 
@@ -1048,7 +1048,7 @@ record: `exports/material_verdict/lah10_cah6_yh6_dft_elph_extension/20260522.jso
 
 > **Canonical record (numerical SSOT)**: 모든 H₃X DFT numerical value (λ · ω_log · Tc · celldm · ALIGNN_per_cand + §9.15 verdict) 의 single source-of-truth 는
 > `exports/material_discovery/rtsc_h3<X>_dft_6x6x6q_*.json` (machine-readable · provenance 포함 · Tier 2 schema · README 는 동 디렉토리).
-> 본 §9 표 + `RTSC.log.md` §9.15 + `inbox/notes/` 는 모두 *human-readable snapshot* — 값 불일치 시 **JSON 이 authority**.
+> 본 §9 표 + `RTSC.log.md` §9.15 + `archive/session-notes/` 는 모두 *human-readable snapshot* — 값 불일치 시 **JSON 이 authority**.
 > derive chain: `result.txt` (raw QE, `~/etc/rtsc-results/<cand>/`) → JSON (curated SSOT) → §9 표 (snapshot).
 
 #### Group-16 H₃X baseline
@@ -1130,7 +1130,7 @@ ALIGNN per-candidate α²F(ω) head 의 출력 grid 는 **0–100 meV · 100-bin
 
 **2 결손 채널** (별개): ① **high-ω truncation** — H-stretch mode (>100 meV) 가 grid 위에 살아 ω_log 를 끌어내림 (정상 λ 후보의 ω_log 15× under 의 root). ② **acoustic-edge sign-pathology** — λ_density = 2·α²F/ω·dω 의 1/ω 가중이 ω→0 에서 음수 α²F 를 폭증시킴 (h3o 0.5 meV bin λ_dens = **−0.489**, neg-λ 의 82%). sign-pathology(음수 λ)는 high-ω truncation 과 독립 채널.
 
-**BEE-NET 구조적 해결 가능성**: a²F≥0 clamp + EMDLoss 로 sign-pathology 채널은 봉합 가능하나, 동일 0–100 meV grid 를 쓰면 high-ω truncation 은 잔존 → **grid 확장 retrain** 이 필수 조건. 설계: `inbox/notes/d7-wall-beenet-poc-design-2026-05-24.md`.
+**BEE-NET 구조적 해결 가능성**: a²F≥0 clamp + EMDLoss 로 sign-pathology 채널은 봉합 가능하나, 동일 0–100 meV grid 를 쓰면 high-ω truncation 은 잔존 → **grid 확장 retrain** 이 필수 조건. 설계: `archive/session-notes/d7-wall-beenet-poc-design-2026-05-24.md`.
 
 **d7 governance 부합**: "ML training-distribution wall" 의 정확한 물리 = **α²F grid ceiling** (고압 H-mode 가 ambient-ML grid 밖). breakthrough = first-principles DFT (천장 무제한 — H₃S 6³q 측정-grade 입증) 또는 grid-extended ALIGNN/BEE-NET retrain. ML 더 돌리기로는 천장 못 넘음 (d7 dont).
 
@@ -1218,7 +1218,7 @@ d7 wall = α²F grid ceiling 100 meV (§9.14)
 | 4 | fine-tune (LOO-CV · 5점 → 50-100점 augment) | GPU ~11-19 GPU-hr (A100 ~1d) · 사용자 결정 |
 | 5 | sanity gate (sign-pathology 0 · ω_log MAE) | deferred |
 
-**step0 해소 상세**: grid SSOT 단 1곳 (`utils/data.py:15` `Freq_final = np.arange(0.25,101,2)` 51-bin) → `arange(0.25,141,2)` 71-bin 으로 확장 (첫 51 bin append-only 동일 → backbone 전이 안전). h3cl 107.9 meV mode 가 신규 20 bin 에 표현됨. pretrained 호환: `{em, layers.2}` re-init + backbone freeze transfer (CPU smoke: grid 71bin ✅ · a²F≥0 clamp ✅ · forward (1,71) all≥0 ✅). 설계 상세: `inbox/notes/d7-wall-beenet-poc-design-2026-05-24.md` + `inbox/notes/beenet-grid-extension-step0-2026-05-24.md` · arxiv 비교: `inbox/notes/post-alignn-ml-sc-predictors-survey-2026-05-24.md`
+**step0 해소 상세**: grid SSOT 단 1곳 (`utils/data.py:15` `Freq_final = np.arange(0.25,101,2)` 51-bin) → `arange(0.25,141,2)` 71-bin 으로 확장 (첫 51 bin append-only 동일 → backbone 전이 안전). h3cl 107.9 meV mode 가 신규 20 bin 에 표현됨. pretrained 호환: `{em, layers.2}` re-init + backbone freeze transfer (CPU smoke: grid 71bin ✅ · a²F≥0 clamp ✅ · forward (1,71) all≥0 ✅). 설계 상세: `archive/session-notes/d7-wall-beenet-poc-design-2026-05-24.md` + `archive/session-notes/beenet-grid-extension-step0-2026-05-24.md` · arxiv 비교: `archive/session-notes/post-alignn-ml-sc-predictors-survey-2026-05-24.md`
 
 ### 9.10 N5 cohort 신설 — novel-discovery funnel (compositional space exploration)
 
@@ -1261,8 +1261,8 @@ novel_material_funnel.py <element_pool> <stoichiometry_constraints> <out_dir>
 #### 발사 일정
 
 - ~~이 세션 (Phase 4 microkernel #1 와 평행): N5 cohort agent (B path · wrap-as-is) 발사~~ → ✅ **LANDED** hexa-lang `701bfe1b` (`stdlib/material/novel_material_funnel.py`) · Phase 4 #1 도 같은 commit 에서 land · §9.9.1 Phase progress table 참조
-- Phase 2 stabilization (16-cell sanity 그대로) 의 5번째 row 로 N5 추가 (다음 세션 audit) — 16-cell audit 자체는 ✅ LANDED (`inbox/notes/2026-05-21-rtsc-9-phase2-stabilization.md`) · 16→20 ext (5th baseline 추가) ⏳ PENDING
-- Phase 3 audit 재실행 (N1-N5 5 cohort 통합) — N5 microkernel 후보 식별 (compositional enumerator? scoring formula?) ⏳ PENDING (`inbox/notes/2026-05-21-rtsc-9-phase3-microkernel-audit.md` 는 N1-N4 cover, N5 까지 확장 audit 별도 session)
+- Phase 2 stabilization (16-cell sanity 그대로) 의 5번째 row 로 N5 추가 (다음 세션 audit) — 16-cell audit 자체는 ✅ LANDED (`archive/session-notes/2026-05-21-rtsc-9-phase2-stabilization.md`) · 16→20 ext (5th baseline 추가) ⏳ PENDING
+- Phase 3 audit 재실행 (N1-N5 5 cohort 통합) — N5 microkernel 후보 식별 (compositional enumerator? scoring formula?) ⏳ PENDING (`archive/session-notes/2026-05-21-rtsc-9-phase3-microkernel-audit.md` 는 N1-N4 cover, N5 까지 확장 audit 별도 session)
 
 ### 9.9 Web non-arxiv 참고 URL
 

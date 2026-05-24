@@ -20,7 +20,7 @@
 // emitted before R4 ratification · 2026-05-21) will FAIL this
 // invariant when decoded by this type — that is by design
 // (see RTSCTSC5GateEnforcementTests · testNbAttestation…). Migration
-// path: see `inbox/notes/2026-05-21-r4-stage1-enforcement.md`.
+// path: see `archive/session-notes/2026-05-21-r4-stage1-enforcement.md`.
 //
 // Cross-refs:
 //   - constitution.md R4 + R1 (Measured-Oracle Invariant precursor)
