@@ -123,5 +123,29 @@ product 전부 ✅ ⇒ `productComplete=true` ⇒ `@goal` 달성 (M21 flip · au
 | M20 owner-mode 사장실 | §3 owner rows | 사장실 (gate) | ⏳ |
 | M21 operability audit | §6 | acceptance | ⏳ (skeleton ✅) |
 
-> 다음 단계(P3/M15): cockpit이 `OperationRegistry`를 GUI 패널로 mirror (D50) +
-> `OperationDispatch.run` 으로 per-target 실행 wiring. 각 op = 작은 stacked PR (@D g4).
+## 8. 도메인 합성 실행 규칙 (선행도메인 = 구성도메인 · M15)
+
+도메인 모델은 **2축** (D82): 가로 `clusters`(성격 결합) × 세로 `prerequisites`(구성).
+한 도메인은 선행(구성) 도메인들로 이루어지고, transitive closure가 전체 구성 stack이다.
+
+`DomainComposer.resolve(start)` (M15 · commit 818fbfe):
+- `stack` = `DomainGraph.transitiveClosure` → `topologicalSort` (foundation→apex)
+- `clusterUnion` = stack 전 cluster 합집합 · `substrateSSOTs` = 구성 stack의 hexa-* SSOT
+- `kind` = atomic(구성 1) / composite(구성>1·non-system) / meta(scale=system apex)
+- `crossesDiscipline` = start 자체 clusters가 life(bio·chem·life) ∩ tech(eng·phys·…) → "기술+바이오 결합"
+
+| kind | 정의 | 예 (구성수) | 7-verb 합성 작동 |
+|---|---|---|---|
+| atomic | 선행 없음 | chip · matter · rtsc · space (1) | 단일 도메인 파이프라인 |
+| composite | 구성>1 | bio(3) · brain(4) · aura(8) | 구성 stack을 topo 순서로 합성 실행 |
+| meta | scale=system | ufo(10) · fusion(9) · grid | apex — 구성 도메인 전체 roll-up |
+| 결합(flag) | life∩tech | aura · brain | cluster별 파이프라인 병합 |
+
+규칙:
+- project 생성 → `resolve(domain)` → 구성 stack + cluster union 확인(사용자 confirm)
+- 7-verb 각 단계 = stack을 topo 순서로, 구성 도메인별 cluster-aware producer 실행 후 합성
+- 메타·결합·단일 모두 **동일 generic 경로**(@D d4) — `kind`는 진행 표시/순서용, 분기 하드코딩 아님
+- CLI `demiurge compose <domain>` 가 이 resolve 결과를 노출 (M15 ✅) · cockpit NewProject mirror = P3
+
+> 다음 단계: M15 7-verb 합성 실행 — stack을 topo 순서로 cluster-aware 실행 (M16 verify hx-call +
+> M17 backend dep). cockpit이 `OperationRegistry`·`DomainComposer`를 GUI로 mirror (D50). 각 = stacked PR (@D g4).

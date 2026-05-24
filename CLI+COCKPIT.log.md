@@ -2,6 +2,17 @@
 
 Append-only history sister of `CLI+COCKPIT.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T14:00:00Z — 도메인 전수조사 + M15 composition resolver (선행=구성도메인) + compose CLI
+
+- [x] **demiurge 도메인 전수조사** — 21 등록 (INDEX.demi 20 + clinical) · canvasMode 4종(chip·component·matter + cohort 17) · clusters 멀티태그 9종 · prerequisites DAG
+- [x] **도메인 모델 2축 확정** — 가로 clusters(성격 결합) × 세로 prerequisites(구성) · `DomainGraph.transitiveClosure`+`topologicalSort` 기존재 (NewProject wizard가 이미 호출)
+- [x] **M15 resolver ✅ commit 818fbfe** — `DomainComposition.swift`(`DomainComposer.resolve`: stack topo + clusterUnion + kind atomic/composite/meta + crossesDiscipline) + `demiurge compose <domain>` CLI · 빌드 green
+- [x] **사용자 3-케이스 실증** — bio=composite(matter→chem→bio·구성3) · aura=결합(tech+bio 7-cluster·구성8) · ufo=meta(구성10 apex) · chip=atomic
+- [x] M0_operate.md §8 도메인 합성 실행 규칙 추가 (kind 표 + 합성 규칙 · @D d4 단일 경로)
+- [ ] ⏳ M15 잔여 — 7-verb가 구성 stack을 topo 순서로 cluster-aware 합성 실행 (M16 verify hx-call + M17 backend dep) · cockpit NewProject가 resolve 결과 노출(P3 GUI)
+
+🔑 핵심: 선행도메인 = 구성도메인. resolve가 closure+topo+clusterUnion+kind 산출 → "메타(ufo)·결합(aura tech+bio)·단일맞춤(cluster)"이 단일 generic 경로(d4)로 표현. `demiurge compose`로 CLI 노출. 다음은 7-verb 합성 실행(M16/M17 dep).
+
 ## 2026-05-25T13:30:00Z — @goal 외부-제품 재정의 + M14 (operation manifest) 착지 + M0 운영 manifest
 
 - [x] **@goal 재정의** — "외부 사용자가 app(Swift macOS) + CLI 2개만으로 7-verb 완전 운영, owner-infra 의존 0" (4-제약: surface 2개 · SSOT=stdlib 커널만 · 작동부=demiurge 소유 · 대상=외부+hexa hx 의존성)
