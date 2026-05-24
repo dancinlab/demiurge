@@ -1,0 +1,62 @@
+#!hexa strict
+// release.hexa — package the Demiurge product (app + CLI) for external
+// distribution (CLI+COCKPIT M18). hexa-native owner build tool (the
+// `.sh` form is blocked by the hexa-native guard). Run:
+//
+//   hexa run cockpit/scripts/release.hexa
+//
+// Two signing paths (g3 — no fake notarization):
+//   • default (TESTING)        ad-hoc self-sign (codesign -s -). No
+//                              Apple account; runs locally.
+//   • DEVELOPER_ID set (LATER) Developer ID sign + a notarytool TODO
+//                              line (needs an Apple Developer account).
+//
+// Output → cockpit/dist/ (gitignored): demiurge.app + bin/demiurge +
+// zips. hexa stays an hx DEPENDENCY (M16) — preflighted, never bundled.
+
+fn step(label: string, cmd: string) {
+    if len(label) > 0 { println("[release] " + label) }
+    let out = exec(cmd).trim()
+    if len(out) > 0 { println(out) }
+}
+
+fn main() {
+    let home = exec("echo $HOME").trim()
+    let cockpit = home + "/core/demiurge/cockpit"
+    let dist = cockpit + "/dist"
+    let ver = "0.0.2"
+    let cd = "cd " + cockpit + " && "
+
+    // (0) hexa dependency preflight (M16) — hx dependency, not bundled.
+    let hp = exec("command -v hexa 2>/dev/null").trim()
+    if len(hp) > 0 { println("[release] hexa = " + hp) }
+    else { println("[release] WARN: hexa not on PATH — verify/atlas need it (hx install · M16)") }
+
+    // (1) release build — app + CLI.
+    step("(1/5) release build", cd + "swift build -c release --product CockpitApp >/dev/null 2>&1 && swift build -c release --product DemiurgeCLI >/dev/null 2>&1 && echo built")
+
+    // (2) app icon (.icns) — same procedural icon as install.sh.
+    step("(2/5) icon", cd + "mkdir -p AppIcon && swift AppIcon/generate-icon.swift AppIcon/icon-1024.png >/dev/null 2>&1 && IS=$(mktemp -d)/AppIcon.iconset && mkdir -p \"$IS\" && for s in 16 32 128 256 512; do d=$((s*2)); sips -z $s $s AppIcon/icon-1024.png --out \"$IS/icon_${s}x${s}.png\" >/dev/null; sips -z $d $d AppIcon/icon-1024.png --out \"$IS/icon_${s}x${s}@2x.png\" >/dev/null; done && iconutil -c icns \"$IS\" -o AppIcon/AppIcon.icns && echo icns")
+
+    // (3) assemble dist/ (.app + CLI). Distributed .app omits the
+    // install.sh DEMIURGE_REPO bake — an external user's app finds its
+    // own state, not this checkout.
+    step("(3/5) bundle dist/", cd + "rm -rf dist && mkdir -p dist/demiurge.app/Contents/MacOS dist/demiurge.app/Contents/Resources dist/bin && cp .build/release/CockpitApp dist/demiurge.app/Contents/MacOS/demiurge && cp AppIcon/AppIcon.icns dist/demiurge.app/Contents/Resources/AppIcon.icns && cp .build/release/DemiurgeCLI dist/bin/demiurge && printf '%s\\n' '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' '<plist version=\"1.0\"><dict><key>CFBundleExecutable</key><string>demiurge</string><key>CFBundleIdentifier</key><string>lab.dancin.demiurge</string><key>CFBundleName</key><string>Demiurge</string><key>CFBundleShortVersionString</key><string>" + ver + "</string><key>CFBundleIconFile</key><string>AppIcon</string><key>NSHighResolutionCapable</key><true/></dict></plist>' > dist/demiurge.app/Contents/Info.plist && echo bundled")
+
+    // (4) sign — Developer ID if set (LATER), else ad-hoc (TESTING).
+    let devid = exec("printenv DEVELOPER_ID 2>/dev/null").trim()
+    if len(devid) > 0 {
+        step("(4/5) sign · Developer ID", cd + "codesign --deep --force --options runtime --timestamp -s '" + devid + "' dist/demiurge.app && codesign --force --options runtime --timestamp -s '" + devid + "' dist/bin/demiurge && echo signed")
+        println("[release] TODO (Apple account): xcrun notarytool submit dist/demiurge-" + ver + ".app.zip --apple-id <id> --team-id <team> --password <app-pw> --wait ; xcrun stapler staple dist/demiurge.app")
+    } else {
+        step("(4/5) sign · ad-hoc (TESTING)", cd + "codesign --deep --force -s - dist/demiurge.app && codesign --force -s - dist/bin/demiurge && echo self-signed")
+        println("[release] ad-hoc self-signed — set DEVELOPER_ID for a distributable build")
+    }
+
+    // (5) zip the distributables.
+    step("(5/5) zip", cd + "ditto -c -k --keepParent dist/demiurge.app dist/demiurge-" + ver + ".app.zip && ditto -c -k dist/bin dist/demiurge-cli-" + ver + ".zip && echo zipped")
+
+    step("verify sign", "codesign -dv --verbose=2 " + dist + "/demiurge.app 2>&1 | grep -E 'Identifier|Signature' | head -2")
+    println("[release] done -> " + dist)
+    exit(0)
+}
