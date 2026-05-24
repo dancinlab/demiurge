@@ -1,0 +1,58 @@
+{
+  "schema": "rtsc-microexp-elph/0.1.0",
+  "batch_id": "rtsc-n5funnel-sweep-2026-05-25",
+  "candidate_id": "h3br",
+  "stamp": "2026-05-25T08:35Z",
+  "kind": "dft-elph",
+  "group": 17,
+  "structure_hint": "Im-3m",
+  "mode": "parse-only (local harvest ~/rtsc_h3br_vast_result/ dyn+elph — post-proc 미실행 → 직접 awk/grep λ 적분 · no pod rent)",
+  "dft": {
+    "method": "QE ph.x electron_phonon='simple' · 6x6x6 q-grid (16 irreducible)",
+    "nq": 16,
+    "qblocks_parsed": 16,
+    "celldm_final": 6.60000,
+    "broadening_sweep": [
+      {"broad": 0.015, "lam_BZ": 4.633, "omega_log_K": 526.5, "Tc_mu0.10_K": 110.4, "Tc_mu0.13_K": 106.2},
+      {"broad": 0.020, "lam_BZ": 4.419, "omega_log_K": 530.7, "Tc_mu0.10_K": 109.8, "Tc_mu0.13_K": 105.5},
+      {"broad": 0.025, "lam_BZ": 4.234, "omega_log_K": 532.8, "Tc_mu0.10_K": 108.8, "Tc_mu0.13_K": 104.5},
+      {"broad": 0.030, "lam_BZ": 4.072, "omega_log_K": 534.1, "Tc_mu0.10_K": 107.8, "Tc_mu0.13_K": 103.4}
+    ]
+  },
+  "canonical": {
+    "broad": 0.020,
+    "lam_BZ": 4.4191,
+    "omega_log_K": 530.7,
+    "mustar": 0.10,
+    "Tc_AD_K": 109.80
+  },
+  "verify": {
+    "fn": "allen_dynes_tc",
+    "args": [4.4191, 530.7, 0.10],
+    "expected_Tc_K": 109.8,
+    "hexa_verify_verbatim": "POOL_DISABLE=1 hexa verify --expr allen_dynes_tc 4.4191 530.7 0.10 109.8",
+    "hexa_recompute_status": "🟠 INSUFFICIENT — 설치 hexa.real 바이너리(2026-05-23)가 allen_dynes_tc calc-path 미포함 (verify_cli.hexa #803 이후 추가 · 미재빌드). `hexa cc --regen` 은 heavy-classified pool-route (ubu-1/2 workdir-missing → refused).",
+    "closed_form_recompute_K": 109.7960,
+    "closed_form_source": "Tc=(ω_log/1.2)·exp(-1.04(1+λ)/(λ-μ*(1+0.62λ))) — verify_cli.hexa::_allen_dynes_tc(L972) verbatim formula, awk 재현",
+    "cross_validation": "동일 awk 공식이 h3f(λ0.807,ω658.6→31.4139K=result.txt 31.4 ✓)·h3o(λ2.479,ω1096.6→179.7792K=result.txt 179.8 ✓) 정확 재현 → 공식 검증됨",
+    "method_validation": "λ_BZ 파서 검증: h3f ph.out 재파싱 → λ_BZ=0.8066 = result.txt 0.807 정확 일치 (clamp neg-acoustic-λ→0 + sibling weights[4,12,...]·sum160)",
+    "effective_tier": "🟢 SUPPORTED-NUMERICAL (closed-form recompute, cross-tool-consistent with sibling result.txt; raw hexa verify deferred on stale-binary/pool-unavailable)"
+  },
+  "stability": {
+    "qblocks_parsed": 16,
+    "total_q": 16,
+    "imaginary_mode_known": false,
+    "min_freq_cm-1_per_q": "4.45(Γ acoustic), 80.7, 135.7, 153.5, 121.2, 128.0, 199.8, 90.9, 9.5, 148.8, 174.8, 119.5, 91.8, 139.5, 157.8, 160.8 — 전부 양수",
+    "note": "16/16 q ALL STABLE — negative/imaginary freq 0개 (전 dyn 스캔). h3o(−682cm⁻¹ imaginary)·h3po(6q missing)와 대조 — group-17 stable 형제(h3cl·h3f)와 일치하나 λ는 훨씬 강함(4.42 vs h3f 0.81)"
+  },
+  "M8_gate": {
+    "pressure_lt_50GPa": null,
+    "stable": true,
+    "Tc_gt_200K": false,
+    "score": "1/3",
+    "note": "stable ✓ (no imaginary) · Tc 110K < 200K · λ=4.42 초강결합이나 ω_log 531K 중간 → Tc 천장 110K · 압력 미상(celldm 6.6 a.u.). stable-strong-λ-but-Tc-ceiling"
+  },
+  "interpretation_ko": "h3br = N5 group-17 stable 후보 완성. 형제 h3f(λ0.81 weak-stable)·h3cl(λ1.2-1.4) 대비 λ=4.42 로 극단적 강결합 + 16/16 stable. 그러나 ω_log 531K 가 moderate 라 Tc 110K 에서 천장 — strong-λ↛high-Tc (Allen-Dynes 에서 Tc∝ω_log·exp(λ)이나 λ 포화 + 낮은 ω_log 가 병목). h3o(unstable·180K)와 정반대 trade: h3br 은 stability 확보했으나 phonon energy scale 부족.",
+  "absorbed": false,
+  "provisional": true
+}

@@ -1,28 +1,30 @@
 {
   "schema": "rtsc-microexp-ledger/0.1.0",
   "batch_id": "rtsc-n5funnel-sweep-2026-05-25",
-  "stamp": "2026-05-25T07:59Z",
+  "stamp": "2026-05-25T08:35Z",
   "domain": "RTSC",
-  "mode": "parse-only — 4 candidates 모두 local result.txt DONE-already · pod rent 0$ (no vast dispatch)",
+  "mode": "parse-only — 5 candidates · h3si·h3f·h3po·h3o local result.txt DONE + h3br local harvest dyn/elph 직접 λ 적분(post-proc 미실행) · pod rent 0$ (no vast dispatch)",
   "manifest_summary": {
     "host_class": "vast-gpu (unused — parse-only)",
     "budget_pod_concurrent_max": 3,
     "parser_template": "rtsc-h3x-elph",
-    "candidates": ["h3si", "h3f", "h3po", "h3o"]
+    "candidates": ["h3si", "h3f", "h3po", "h3o", "h3br"]
   },
   "candidates": [
     {"id": "h3o",  "group": 16, "lam_BZ": 2.479, "omega_log_K": 1096.6, "Tc_AD_K": 179.78, "stable": false, "qblocks": "16/16", "M8": "0/3", "verdict": "🟢 (round-tol) + imaginary mode", "json": "h3o.json"},
     {"id": "h3si", "group": 14, "lam_BZ": 1.787, "omega_log_K": 590.1,  "Tc_AD_K": 78.18,  "stable": true,  "qblocks": "16/16", "M8": "1/3", "verdict": "🟢 (round-tol)", "json": "h3si.json"},
     {"id": "h3po", "group": 16, "lam_BZ": 3.052, "omega_log_K": 265.2,  "Tc_AD_K": 48.08,  "stable": false, "qblocks": "10/16", "M8": "0/3", "verdict": "🟢 (round-tol) + 6q missing", "json": "h3po.json"},
-    {"id": "h3f",  "group": 17, "lam_BZ": 0.807, "omega_log_K": 658.6,  "Tc_AD_K": 31.41,  "stable": true,  "qblocks": "16/16", "M8": "1/3", "verdict": "🟢 (round-tol)", "json": "h3f.json"}
+    {"id": "h3f",  "group": 17, "lam_BZ": 0.807, "omega_log_K": 658.6,  "Tc_AD_K": 31.41,  "stable": true,  "qblocks": "16/16", "M8": "1/3", "verdict": "🟢 (round-tol)", "json": "h3f.json"},
+    {"id": "h3br", "group": 17, "lam_BZ": 4.419, "omega_log_K": 530.7,  "Tc_AD_K": 109.80, "stable": true,  "qblocks": "16/16", "M8": "1/3", "verdict": "🟢 (closed-form recompute) + ALL-q stable", "json": "h3br.json"}
   ],
-  "verify_note": "all 4: hexa allen_dynes_tc recompute = result.txt DFT Tc (|Δ|<0.025K = 1-decimal round artifact). raw verify verdict 🔴 (ε=1e-9 vs 1-dec input) → effective 🟢 SUPPORTED-NUMERICAL. cross-tool-consistent.",
-  "pattern_observation": "WALL CONFIRMED (RTSC §10 d7 재현) — stable(h3si·h3f)→weak Tc(31-78K) · strong-λ/high-Tc(h3o·h3po)→unstable. h3o Tc 180K 최고근접 BUT imaginary mode(−682cm⁻¹). h3po λ=3.05 초강이나 soft phonon(ω_log 265K)+6q missing→Tc 48K. trade-off: stability ↔ coupling strength.",
-  "M8_summary": "0/4 candidates pass M8 (<50GPa AND stable AND Tc>200K). 최고근접 = h3o (Tc 180K, but unstable). FALSIFIED-as-negative (g_micro_exp_honest_sweep): 4 모두 CLOSED — h3si·h3f stable-weak (Tc fail), h3o·h3po strong-unstable.",
+  "verify_note": "h3si·h3f·h3po·h3o(4): hexa allen_dynes_tc recompute = result.txt DFT Tc (|Δ|<0.025K = 1-decimal round artifact, raw 🔴 ε=1e-9 → effective 🟢). h3br(5번째): local harvest 직접 λ 적분 (post-proc 미실행) — λ_BZ 파서가 h3f ph.out 재파싱 0.8066=result.txt 0.807 정확일치로 검증 · Allen-Dynes는 verify_cli::_allen_dynes_tc verbatim 공식 awk 재현(h3f 31.41·h3o 179.78 cross-check ✓). raw hexa verify는 설치 바이너리(05-23) stale + `hexa cc --regen` pool-unavailable로 deferred → effective 🟢 SUPPORTED-NUMERICAL cross-tool-consistent.",
+  "pattern_observation": "WALL CONFIRMED (RTSC §10 d7 재현) — stable(h3si·h3f·h3br)→Tc 천장 · strong-λ/high-Tc(h3o·h3po)→unstable. h3o Tc 180K 최고근접 BUT imaginary mode(−682cm⁻¹). h3po λ=3.05 초강이나 soft phonon(ω_log 265K)+6q missing→Tc 48K. NEW(h3br): group-17 형제로 λ=4.42 극단강결합 + 16/16 ALL-q STABLE(imaginary 0개) — 그러나 ω_log 531K moderate → Tc 110K 천장. 'strong-λ↛high-Tc' 추가 증거: λ 포화 시 ω_log(phonon energy scale)이 Tc 병목. trade-off: stability ↔ phonon-energy-scale (단순 coupling strength 아님).",
+  "M8_summary": "0/5 candidates pass M8 (<50GPa AND stable AND Tc>200K). 최고근접 = h3o (Tc 180K, but unstable). h3br = 유일 stable-strong-λ(λ4.42)이나 Tc 110K<200K. FALSIFIED-as-negative (g_micro_exp_honest_sweep): 5 모두 CLOSED — h3si·h3f stable-weak, h3br stable-strong-λ-but-Tc-ceiling, h3o·h3po strong-unstable.",
   "breakthrough_paths": [
     "h3o anharmonic SSCHA renormalization — imaginary mode 제거 후 stable Tc 재계산 (Tc 180K harmonic → SSCHA 후 ?). RTSC.md 기존 milestone.",
     "h3si group-14 ternary doping — stable base(λ 1.79)에 전자도핑으로 λ↑ Tc↑ (stable 유지하며 coupling 강화).",
-    "h3o pressure scan — celldm 4.9(고압) → 압력 낮춰 ambient 근접 시 stability 회복 가능성 vs Tc 손실 trade curve."
+    "h3o pressure scan — celldm 4.9(고압) → 압력 낮춰 ambient 근접 시 stability 회복 가능성 vs Tc 손실 trade curve.",
+    "h3br ω_log 상승 경로 — stable·λ4.42 확보됨. 압력 ↑ 또는 lighter 치환(Br→Cl→F partial)으로 phonon energy scale(ω_log 531K→?)만 올리면 Tc∝ω_log 선형 상승 가능 (λ 이미 포화 — ω_log 가 유일 자유도). h3br 이 N5 중 stability+strong-λ 동시 만족 첫 후보 → 가장 유망한 base."
   ],
   "absorbed": false,
   "provisional": true
