@@ -1,0 +1,134 @@
+// DAPTPGX V7 numerical recompute — ICER strategy-mismatch fix (CARDIO+ X3 cross-cutting)
+// V6 base + 2 grounded corrections (NOT goal-pressure forcing, per @D d6):
+//
+//   FIX-A) S4 escalates IM+PM (decision map), not PM-only.
+//          v6 S4 switched ONLY pm_n to de-escalation; IM left on clopidogrel + a
+//          `+ im*0.005` excess-ST penalty. But the DAPTPGX decision map (H3/X5) is
+//          NM=clopidogrel · **IM+PM**=prasugrel/ticagrelor. So IM must ALSO escalate.
+//          → potent_n = (im+pm)*n on de-escalation; remove the im excess-ST term.
+//
+//   FIX-B) S1 IM clopidogrel ST = intermediate (LoF gradient), not NM rate.
+//          v6 S1 counted IM at st_clopi_nm (0.005) — but IM are loss-of-function and
+//          do WORSE on clopidogrel. Monotonic CYP2C19 LoF gradient NM<IM<PM
+//          (Mega 2010): st_clopi_im = 0.010 (~2x NM · between NM 0.005 & PM 0.015).
+//          v6 had IM inverted (good on clopi S1, penalized on switch S4) → ΔQALY<0.
+//
+// Hypothesis: FIX-A+B make S4 reduce ST vs S1 (targeted potent therapy works) →
+//             ΔQALY > 0 → ICER sign reverses to POSITIVE (M8 cited +34 direction).
+//             If it does NOT reverse, that is an honest 🟠 result (no forcing).
+//
+// per @D d6 (no forcing) + d7 (mini host) + g0 (v6 자산 재활용 · 2 grounded patches) + g5 (verbatim)
+//
+// Usage:  POOL_DISABLE=1 hexa run CARDIO+/DAPTPGX/sims/v7_recompute.hexa
+
+println("=== DAPTPGX V7 numerical recompute (V6 + FIX-A IM+PM escalate · FIX-B IM clopi LoF gradient) ===")
+println("")
+
+// 1. Hardy-Weinberg phenotype freq (UNCHANGED from V3/V5/V6)
+let p1  = 0.59
+let p2  = 0.31
+let p3  = 0.08
+let p17 = 0.02
+
+let d_1_1   = p1 * p1
+let d_1_2   = 2.0 * p1 * p2
+let d_1_3   = 2.0 * p1 * p3
+let d_1_17  = 2.0 * p1 * p17
+let d_2_2   = p2 * p2
+let d_2_3   = 2.0 * p2 * p3
+let d_2_17  = 2.0 * p2 * p17
+let d_3_3   = p3 * p3
+let d_3_17  = 2.0 * p3 * p17
+let d_17_17 = p17 * p17
+
+let nm = d_1_1
+let rm = d_1_17
+let um = d_17_17
+let im = d_1_2 + d_1_3 + d_2_17 + d_3_17
+let pm = d_2_2 + d_2_3 + d_3_3
+let im_pm = im + pm
+
+println("1_HW_PM =", pm, "(0.1521 expected)")
+println("1_HW_IM =", im, "(0.4758 expected)")
+println("1_HW_IM_plus_PM =", im_pm, "(M1 cited ~0.60)")
+
+let n = 100.0
+
+// 4. ICER S4 vs S1 — V7 FIX-A + FIX-B
+let clopi_d     = 150.0
+let ticag_d     = 2300.0 * 2.0
+let test_one    = 50000.0
+let pft_one     = 80000.0
+let st_cost     = 15000000.0
+let bleed_cost  = 8000000.0
+
+let st_clopi_nm   = 0.005
+let st_clopi_im   = 0.010   // FIX-B: IM LoF intermediate (~2x NM · between NM 0.005 & PM 0.015)
+let st_clopi_pm   = 0.015
+let bleed_clopi   = 0.012
+let st_ticag      = 0.004
+let bleed_ticag_short = 0.014
+
+// group sizes
+let potent_n  = (im + pm) * n        // FIX-A: IM+PM both escalate (decision map)
+let clopi_n   = (nm + rm + um) * n   // only true NM/RM/UM stay on clopidogrel
+
+// S1 universal clopidogrel — FIX-B applied (IM at LoF intermediate rate)
+let s1_st_per100    = (nm + rm + um) * st_clopi_nm * n + im * st_clopi_im * n + pm * st_clopi_pm * n
+let s1_bleed_per100 = bleed_clopi * n
+let s1_drug_per100  = clopi_d * 365.0 * n
+let s1_cost_per100  = s1_drug_per100 + s1_bleed_per100 * bleed_cost + s1_st_per100 * st_cost
+
+// S4 targeted PGx — FIX-A: potent group = IM+PM, de-escalation (30d ticag + 335d clopi)
+let potent_drug_per_patient = ticag_d * 30.0 + clopi_d * 335.0
+let potent_drug_total       = potent_n * potent_drug_per_patient
+let clopi_drug_total        = clopi_n * clopi_d * 365.0
+let s4_drug_per100          = potent_drug_total + clopi_drug_total
+
+let potent_bleed_weighted = (30.0 / 365.0) * bleed_ticag_short + (335.0 / 365.0) * bleed_clopi
+let potent_st_post_deesc  = st_ticag   // managed potent rate (post de-escalation)
+
+let s4_st_per100    = potent_n * potent_st_post_deesc + clopi_n * st_clopi_nm
+let s4_bleed_per100 = potent_n * potent_bleed_weighted + clopi_n * bleed_clopi
+let pft_n           = pm * 0.45 * n    // PFT for PM×HBR (unchanged from V5/V6)
+let s4_pft_cost     = pft_n * pft_one
+let s4_cost_per100  = s4_drug_per100 + s4_bleed_per100 * bleed_cost + s4_st_per100 * st_cost + test_one * n + s4_pft_cost
+
+let qaly_baseline   = 0.85
+let qaly_loss_st    = 0.10
+let qaly_loss_bleed = 0.05
+let s1_qaly = qaly_baseline * n - s1_st_per100 * qaly_loss_st - s1_bleed_per100 * qaly_loss_bleed
+let s4_qaly = qaly_baseline * n - s4_st_per100 * qaly_loss_st - s4_bleed_per100 * qaly_loss_bleed
+
+let delta_cost = s4_cost_per100 - s1_cost_per100
+let delta_qaly = s4_qaly - s1_qaly
+
+println("")
+println("4_ICER_s1_st_per100 =", s1_st_per100, "(V6 0.6521 · V7 raises IM clopi ST)")
+println("4_ICER_s4_st_per100 =", s4_st_per100, "(V6 0.7227 · V7 IM+PM escalated)")
+println("4_ICER_s1_cost_per100 =", s1_cost_per100)
+println("4_ICER_s4_cost_per100 =", s4_cost_per100)
+println("4_ICER_delta_cost_KRW =", delta_cost)
+println("4_ICER_s1_qaly =", s1_qaly)
+println("4_ICER_s4_qaly =", s4_qaly)
+println("4_ICER_delta_qaly =", delta_qaly, "(V6 -0.0072 · target sign > 0)")
+
+let icer_M = 0.0
+if delta_qaly > 0.001 {
+    icer_M = (delta_cost / delta_qaly) / 1000000.0
+}
+if delta_qaly < -0.001 {
+    icer_M = (delta_cost / delta_qaly) / 1000000.0
+}
+println("4_ICER_M_KRW_per_QALY =", icer_M, "(V6 -1205 · M8 cited +34 · Korea WTP 30)")
+
+// 5. Budget impact
+let pci_per_y = 80000.0
+let delta_per_patient = delta_cost / n
+let budget_5y_eok = (delta_per_patient * pci_per_y * 5.0) / 100000000.0
+println("")
+println("5_budget_5y_EokWon =", budget_5y_eok, "(V6 +346 · M8 cited -888)")
+
+println("")
+println("6_V7_fixes = FIX-A(IM+PM escalate, drop im excess) + FIX-B(S1 IM clopi ST 0.010 LoF gradient)")
+println("=== V7 recompute done ===")
