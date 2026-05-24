@@ -2,6 +2,23 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T06:50:00Z — 후속 심화: sidecar INBOX 핸드오프 + ICER v7 sign 반전 실측
+
+- [x] **sidecar INBOX 핸드오프** (g36/g59) — `/domain` folder-nested domain 미지원 gap → sidecar PR #120 MERGED
+  - `/domain set <NAME>` 이 root `<NAME>.md` 만 resolve → 폴더-중첩 SSOT(`CARDIO+/CARDIO+.md`)면 빈 스캐폴드 재생성 + `/cycle`(g58) milestone 0개 열거 → 루프 구동 불가 (이번 세션 2회 재발)
+  - fix 후보: resolve 순서 root → fallback `<NAME>/<NAME>.md`
+  - (별건) hexa-lang PR #760 MERGED — verify 호스트 매트릭스 (ubu-1 hexa.real 누락 + mini-bypass)
+- [x] **X3 심화: ICER v7 strategy-mismatch fix** → `CARDIO+/DAPTPGX/sims/v7_recompute.hexa` + X3 §3.1 (commit `ce5a5a2`)
+  - v6 의 ICER ΔQALY 음수(-0.0072)가 **strategy-mismatch 아티팩트**임을 mini 실측으로 입증
+  - FIX-A: S4가 결정맵(NM=clopi·IM+PM=potent)대로 IM+PM 둘 다 escalate (v6은 PM만) · FIX-B: S1 IM clopi ST = LoF gradient 0.010 (v6은 NM rate로 과소계상)
+  - 결과: ΔQALY **-0.0072 → +0.0448** · ICER **-1205 → +161** (sign 반전 ✅) · ST 0.89→0.44
+  - 정직(d6): ✅ 질적 오류 해소(S4 net-beneficial = 🟢) · 🟠 양적 +161>WTP30 잔존 (약가 lever=prasugrel 5mg → DAPTPGX 세션, +34 억지 안 쫓음)
+- [x] commit 격리 (d9): ce5a5a2 단일 + sidecar/hexa-lang PR worktree 격리 · staged-leak 0
+- [x] `/domain set` 재발 잔재(빈 root 스캐폴드) 제거 (POOL_DISABLE=1 local)
+
+🔑 후속 성과: X3 의 최대 미해결(ICER sign)을 실측으로 질적 해소 — v6 "S4 해롭다"는 모델 버그(IM 거꾸로 취급)였고, 결정맵대로 고치니 S4는 net-beneficial. 양적 magnitude(prasugrel 약가)는 DAPTPGX 세션 lane으로 정직 handoff.
+🔑 인프라 gap 2건 upstream 정리 (sidecar PR #120 · hexa-lang PR #760 모두 MERGED).
+
 ## 2026-05-25T06:20:00Z — DOCTOR H1-H10 완성 → 교수님 최종 전달물 골화 (세션 cap)
 
 - [x] DOCTOR H1-H10 10개 파일 (951줄 · commit `6a57d2a`) + milestone flip (`dc163b6`) → DOCTOR 10/10
