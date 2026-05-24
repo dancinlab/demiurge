@@ -2,6 +2,16 @@
 
 Append-only history sister of `CLI+COCKPIT.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T17:00:00Z — M18 배포 골격 runbook (자체서명 테스트 → Developer ID 이후)
+
+- [x] **M18 deploy runbook** `CLI+COCKPIT/M18_deploy.md` — 외부 배포(app+CLI) 절차 · 서명 2-경로(테스트=ad-hoc `codesign -s -` 지금 / 배포=Developer ID + notarytool 이후 cert) · build→bundle→sign→zip 단계 · 외부 설치 사전조건(hexa hx 의존성·owner-infra 0)
+- [x] `cockpit/.gitignore`에 `dist/` 추가 (release 산출물)
+- [x] ⚠ **hexa-native 가드** — 새 `.sh` 작성 차단(기존 install.sh는 그랜드파더). 실행 스크립트는 `release.hexa`(가드 권장) 또는 Swift `demiurge release` 서브커맨드(on-theme·release op화)로 후속 — runbook 명령은 그대로 복붙 실행 가능
+- [ ] ⏳ self-sign 경로 end-to-end 검증 (release build + bundle + ad-hoc sign · bg 진행) → 결과 반영 예정
+- [ ] ⏳ 실행 스크립트 형태 결정(release.hexa vs Swift) · Developer ID + notarize (Apple 계정 확보 후) · docs origin catchup
+
+🔑 핵심: M18 배포 골격을 실행가능 runbook으로 박음 — 테스트는 자체서명(cert 없이 지금 가능), 배포는 Developer ID(이후). `.sh` 가드로 실행 스크립트는 release.hexa/Swift 후속. 이걸로 외부-제품 미완(M18)도 골격 단계 진입 — 코드 외 잔여는 Apple 자격뿐.
+
 ## 2026-05-25T16:40:00Z — M19 plain격리 + M20 owner 사장실 env-gate ✅ · PR #82
 
 - [x] **M19 ✅** — `DemiurgeMode`(expert/owner env-gate, 둘 다 OFF 기본 · external-safe) + CLI 스크럽: plain(기본)은 op id/target/milestone(operate list)·substrate SSOT host 경로(compose `~/core/hexa-*`)·영문 kind 누출 0, `DEMIURGE_EXPERT=1`만 전체. 실증 `compose aura` plain → 성격 태그만

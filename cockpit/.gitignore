@@ -7,3 +7,5 @@ DerivedData/
 # generated app-icon artifacts — install.sh re-derives from generate-icon.swift
 AppIcon/icon-1024.png
 AppIcon/AppIcon.icns
+# release packaging output (M18 · release runbook → dist/)
+dist/
