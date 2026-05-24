@@ -2,6 +2,18 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T09:50:00Z — /cycle 라운드 5 (auto-seed): X22·X23·X24 (worktree3 격리 → PR)
+
+> Stage 1 enumerate: CARDIO+.md open milestone 0 (X1-X21 done) → auto-seed (source: deferred inventory + user directive). cap 3.
+
+- [x] **X22 AI-PGx CDS spec** → `CARDIO+/X22_ai_pgx_cds.md` — 입력 12변수(genotype 5 + 임상 7) → DAPT 권고+안전 alert · 금기 게이트가 phenotype보다 우선 · 검증 1순위=caller concordance(🟠) · AI는 refinement layer(대체 아님)
+- [x] **X23 grant-readiness** → `CARDIO+/X23_grant.md` — 4-trial × 한국 펀딩 5기제(KHIDI·NRF·복지부·IIT·IISR) · 즉시=B(NRF/IIT ~3-5억 신규IND불요) · 최대=D siRNA(IISR+RSA) · 견고=예산순서 B<C≈A<D (나머지 ⚪)
+- [x] **X24 환자-facing** → `CARDIO+/X24_patient_facing.md` — 평이언어 교육(X15 외래액션과 구분) · 3-axis 비유 🔌/🍯/🍺 · 핵심="검사≠진단·약 임의중단 금지·결정은 의사와" · disclaimer 2회
+- [x] worktree3 격리 · g5 verbatim · LLM self-judge 0 · 공유 체크아웃 무접촉 · gh api --input
+- [ ] ⏳ deferred 잔여: sim 계열 #2 불확실성 MC · #22 microsim · #23 biomarker VoI (orchestrator mini) · doc #20 wet-lab readiness · #29 living-doc
+
+🔑 라운드 성과: CARDIO+ cross-cutting **X1-X24** (24개) · AI-CDS spec/펀딩/환자교육 3축 추가 · /cycle auto-seed 정상 작동(open 0 → context seed → fan-out).
+
 ## 2026-05-25T09:10:00Z — deferred 골화 라운드 4: X19·X20·X21 (worktree2 격리 → PR)
 
 - [x] **X19 budget-neutral** → `CARDIO+/X19_budget_neutral.md` (198줄) — cost-offset(회피사건비−중재비) budget-impact (≠ICER)

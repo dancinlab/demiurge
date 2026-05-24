@@ -37,6 +37,9 @@
 - [x] X19 budget-neutral 재프레이밍 — cost-offset(회피사건비−중재비) · self-funding top=CYP2C19 결정맵(5y −44억) + IC adenosine/nicorandil(약가≈0) → `CARDIO+/X19_budget_neutral.md`
 - [x] X20 subtraction medicine — de-implement 7건 (routine thrombectomy Class III · mPTP IV bolus 🔴×4 · universal ticag 출혈2배) · 전면금지≠none, bailout 잔여 명시 → `CARDIO+/X20_subtraction.md`
 - [x] X21 anti-portfolio 경계정의 — 포함기준 4축(PCI-후속·한국leverage·공유인프라·직교성) · TAVR 단호제외(→STRUCT+) · CAC/AF-ablation 경계선 → `CARDIO+/X21_anti_portfolio.md`
+- [x] X22 AI-PGx CDS 알고리즘 spec — 입력 12변수 → DAPT 권고+alert · 금기 게이트 우선 · 검증1순위=caller concordance (구현 아닌 spec) → `CARDIO+/X22_ai_pgx_cds.md`
+- [x] X23 grant-readiness — 4-trial 한국 펀딩 5기제 매핑 · 즉시=B DAPT-PGx-K(NRF/IIT ~3-5억) · 최대=D siRNA(IISR+RSA) · 예산순서 B<C≈A<D → `CARDIO+/X23_grant.md`
+- [x] X24 환자-facing 평이언어 — 🔌CYP2C19/🍯Lp(a)/🍺ALDH2 비유 · "검사≠진단·약 임의중단 금지·결정은 의사와" · disclaimer → `CARDIO+/X24_patient_facing.md`
 
 ## d2 governance (meta)
 
