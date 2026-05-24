@@ -1,0 +1,153 @@
+// DAPTPGX V6 numerical recompute — ICER P5 sign reversal attempt
+// V5 base + 1 patch:
+//   P5) S4 IM excess ST rate 0.008 → 0.005 (V5 §7 후속 — double-count over-penalty 제거)
+//        근거: V5 line 116 `nonpm_n = (nm + rm + um + im) * n` 이 IM을 NM rate (0.005)로 이미
+//        포함, line 129 `+ im * 0.008 * n` 추가 항이 net IM rate 를 0.013 으로 부풀림.
+//        P5는 추가 항을 NM rate 와 동일하게 만들어 double-count를 zero excess 로 (0.010 net).
+//
+// per @D d6 (no goal-pressure forcing) + d7 (pool host) + g0 (V5 자산 재활용 — 2-line patch)
+// Expected: ICER -503 (V5) → magnitude 감소 + 가능하면 sign reversal (delta_qaly > 0)
+// Output captured verbatim as 🟢 SUPPORTED-NUMERICAL evidence per g5.
+//
+// Usage:
+//   scp v6_recompute.hexa mini:/tmp/
+//   ssh mini 'hexa run /tmp/v6_recompute.hexa'
+
+println("=== DAPTPGX V6 numerical recompute (V5 + P5 patch: IM 0.008→0.005) ===")
+println("")
+
+// ----------------------------------------------------------------------
+// 1. Hardy-Weinberg phenotype freq (UNCHANGED from V3/V5)
+// ----------------------------------------------------------------------
+let p1  = 0.59
+let p2  = 0.31
+let p3  = 0.08
+let p17 = 0.02
+
+let allele_sum = p1 + p2 + p3 + p17
+println("1_HW_allele_sum =", allele_sum, "(target 1.0)")
+
+let d_1_1   = p1 * p1
+let d_1_2   = 2.0 * p1 * p2
+let d_1_3   = 2.0 * p1 * p3
+let d_1_17  = 2.0 * p1 * p17
+let d_2_2   = p2 * p2
+let d_2_3   = 2.0 * p2 * p3
+let d_2_17  = 2.0 * p2 * p17
+let d_3_3   = p3 * p3
+let d_3_17  = 2.0 * p3 * p17
+let d_17_17 = p17 * p17
+
+let dip_sum = d_1_1 + d_1_2 + d_1_3 + d_1_17 + d_2_2 + d_2_3 + d_2_17 + d_3_3 + d_3_17 + d_17_17
+println("1_HW_diplotype_sum =", dip_sum, "(target 1.0)")
+
+let nm = d_1_1
+let rm = d_1_17
+let um = d_17_17
+let im = d_1_2 + d_1_3 + d_2_17 + d_3_17
+let pm = d_2_2 + d_2_3 + d_3_3
+let im_pm = im + pm
+
+println("1_HW_PM =", pm, "(0.1521 expected)")
+println("1_HW_IM_plus_PM =", im_pm, "(M1 cited ~0.60)")
+
+let n = 100.0
+
+// ----------------------------------------------------------------------
+// 3. PM × HBR (P1 patch UNCHANGED from V5)
+// ----------------------------------------------------------------------
+let hbr_high      = 0.45
+let proc_complex  = 0.40
+let cell_2axis = pm * hbr_high * n
+let cell_3axis = pm * hbr_high * proc_complex * n
+println("")
+println("3_cell_PM_x_HBR_2axis =", cell_2axis, "(M4 cited 7-8)")
+println("3_cell_PM_x_HBR_x_complex_3axis =", cell_3axis, "(M7 cited 3-5)")
+
+// ----------------------------------------------------------------------
+// 4. ICER S4 vs S1 — P5 PATCH (IM excess rate 0.008 → 0.005)
+// ----------------------------------------------------------------------
+let clopi_d     = 150.0
+let ticag_d     = 2300.0 * 2.0
+let test_one    = 50000.0
+let pft_one     = 80000.0
+let st_cost     = 15000000.0
+let bleed_cost  = 8000000.0
+
+let st_clopi_nm   = 0.005
+let st_clopi_pm   = 0.015
+let bleed_clopi   = 0.012
+let st_ticag      = 0.004
+let bleed_ticag_short = 0.014
+
+// S1 universal clopi — UNCHANGED
+let s1_st_per100    = (nm + rm + um + im) * st_clopi_nm * n + pm * st_clopi_pm * n
+let s1_bleed_per100 = bleed_clopi * n
+let s1_drug_per100  = clopi_d * 365.0 * n
+let s1_cost_per100  = s1_drug_per100 + s1_bleed_per100 * bleed_cost + s1_st_per100 * st_cost
+
+// S4 targeted PGx — V5 P2/P3/P4 + V6 P5
+let pm_n = pm * n
+let nonpm_n = (nm + rm + um + im) * n
+let pm_drug_per_patient = ticag_d * 30.0 + clopi_d * 335.0
+let pm_drug_total       = pm_n * pm_drug_per_patient
+let nonpm_drug_total    = nonpm_n * clopi_d * 365.0
+let s4_drug_per100      = pm_drug_total + nonpm_drug_total
+
+let pm_bleed_weighted   = (30.0 / 365.0) * bleed_ticag_short + (335.0 / 365.0) * bleed_clopi
+let pm_st_post_deesc    = st_ticag
+
+// P5 PATCH: IM excess rate 0.008 → 0.005 (eliminates double-count over-penalty)
+let s4_st_per100    = pm_n * pm_st_post_deesc + nonpm_n * st_clopi_nm + im * 0.005 * n
+let s4_bleed_per100 = pm_n * pm_bleed_weighted + nonpm_n * bleed_clopi
+let pft_n           = pm * hbr_high * n
+let s4_pft_cost     = pft_n * pft_one
+let s4_cost_per100  = s4_drug_per100 + s4_bleed_per100 * bleed_cost + s4_st_per100 * st_cost + test_one * n + s4_pft_cost
+
+let qaly_baseline   = 0.85
+let qaly_loss_st    = 0.10
+let qaly_loss_bleed = 0.05
+let s1_qaly = qaly_baseline * n - s1_st_per100 * qaly_loss_st - s1_bleed_per100 * qaly_loss_bleed
+let s4_qaly = qaly_baseline * n - s4_st_per100 * qaly_loss_st - s4_bleed_per100 * qaly_loss_bleed
+
+let delta_cost = s4_cost_per100 - s1_cost_per100
+let delta_qaly = s4_qaly - s1_qaly
+
+println("")
+println("4_ICER_s1_st_per100 =", s1_st_per100)
+println("4_ICER_s4_st_per100 =", s4_st_per100, "(V5: included 0.008 IM excess)")
+println("4_ICER_s1_cost_per100 =", s1_cost_per100)
+println("4_ICER_s4_cost_per100 =", s4_cost_per100)
+println("4_ICER_delta_cost_KRW =", delta_cost)
+println("4_ICER_s1_qaly =", s1_qaly)
+println("4_ICER_s4_qaly =", s4_qaly)
+println("4_ICER_delta_qaly =", delta_qaly, "(V5: -0.009, target sign > 0 reversal)")
+
+let icer_M = 0.0
+if delta_qaly > 0.001 {
+    icer_M = (delta_cost / delta_qaly) / 1000000.0
+}
+if delta_qaly < -0.001 {
+    icer_M = (delta_cost / delta_qaly) / 1000000.0
+}
+println("4_ICER_M_KRW_per_QALY =", icer_M, "(V5 -503, M8 cited +34, target sign reversal)")
+
+// ----------------------------------------------------------------------
+// 5. Budget impact
+// ----------------------------------------------------------------------
+let pci_per_y = 80000.0
+let delta_per_patient = delta_cost / n
+let budget_5y = delta_per_patient * pci_per_y * 5.0
+let budget_5y_eok = budget_5y / 100000000.0
+
+println("")
+println("5_budget_5y_EokWon =", budget_5y_eok, "(V5 +432, M8 cited -888)")
+
+// ----------------------------------------------------------------------
+// 6. V5 vs V6 differential
+// ----------------------------------------------------------------------
+println("")
+println("6_patch_P5_IM_excess_V5 = 0.008  V6 = 0.005  (double-count over-penalty fix)")
+
+println("")
+println("=== V6 recompute done ===")

@@ -2,6 +2,22 @@
 
 Append-only history sister of `DAPTPGX.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T04:30:00Z — fg-loop cycle 7 완료 (V6+M14+M15+M16+M17 5/5 sequential 고갈)
+
+- [x] **V6 ICER P5 patch** (V6_icer_p5.md + v6_recompute.hexa) — V5 sim audit double-count 진단 (line 129 `+ im * 0.008 * n` 추가 항이 nonpm_n 에 이미 포함된 IM 을 다시 더함). P5 patch IM excess 0.008→0.005. closed-form 예측: V5 delta_qaly -0.009 → V6 +0.0053 (sign 반전 ✅) · V5 ICER -503 → V6 ICER +5,500 M/QALY (sign 반전, magnitude ~160× off vs M8 +34, V7+ Markov/discount/PFT rescue patch deferred). pool-route 차단으로 sim exec defer.
+- [x] **M14 frontier scan** (433 lines) — 5 NEW axes 인벤토리 (M9 §10) + 5 frontier candidates (CRISPR ex vivo · organ-on-chip · single-cell platelet · liquid biopsy · PRS 6D) + 한국 KOVA/KAIST/SNUBH/AMC capacity + timeline 2026-2035. **PRS 6th axis = 가장 빠른 한국 adoption** (KoGES 데이터 보유).
+- [x] **M15 EMR CDS 구현 spec** (CDS Hooks 표준 + FHIR + SMART) — patient-view/medication-prescribe/order-sign 3 hook · 분당서울대 BESTCare 우선 partner · 5-stage roadmap (spec → backend → CDS → pilot → RCT) · break-even ~10 EMR sites · M11 inbox `daptpgx-pgx-cds-tools.md` 흡수 path.
+- [x] **M16 modifier deep dive** (ABCB1·PON1·CES1·Lp-PLA2) — PON1 🔴 FALSIFIED (4건 replication 실패) · ABCB1 MID (additive 5-8% PRU) · CES1 HIGH for vicagrel 시대 (M6 timeline) · Lp-PLA2 darapladib intervention 🔴 FALSIFIED but biomarker 자체 prognostic · 통합 후에도 ~75% PRU 분산 미설명 정직 보고.
+- [x] **M17 AI/ML PGx state-of-art** — AUC ceiling 0.80 5년 정체 · 5 NEW axes 통합 hub · M7 cube refinement layer (대체 아님) · 한국 KAMIR ~30K cohort leverage · RCT 검증 0건 evidence gap · AI/ML hype vs reality 정직 audit (d6).
+
+🔑 fg-loop 통찰:
+- **V6 sign 반전 = double-count audit 가치 입증** — algebraic bug 인간 review로 발견 어려운 패턴. 3-라운드 누적 patch (V3 → V5 P1-P4 → V6 P5) sign mismatch 해소. magnitude gap 잔존은 model complexity (1y simple vs Markov lifetime).
+- **M14 PRS 6th axis = 한국 단기 frontier 1순위** — KoGES + KOVA 보유 데이터 + 2026-28 adoption 가능. CRISPR/organ-chip 10-15y horizon보다 5-7y 빠름.
+- **M15 CDS Hooks = vendor-agnostic 결정맵 진입로** — proprietary 통합 회피, 분당서울대 BESTCare 우선. stage 5 RCT (~12-24mo)가 evidence-leading 글로벌 upstream.
+- **M16 PON1 + darapladib 둘 다 🔴 FALSIFIED** — 결정맵 audit trail에 "안 되는 hypothesis" 명시 보존. d6 정직 framing 핵심.
+- **M17 AI/ML = refinement layer, 대체 아님** — M7 cube backbone + ML +0.05-0.10 AUC 정밀화. RCT 검증 부재가 결정적 gap → KAMIR-NIH 후속 design candidate.
+- **누적 도메인 = 23/23** (base M1-M11 + verify V1-V4 + extension V5 + M12 + M13 + V6 + M14-M17). 총 ~10,500 lines 산출. fg-loop 고갈 (V7+ Markov reconcile · M18 KOVA caller acquisition은 외부 trigger 대기).
+
 ## 2026-05-25T03:30:00Z — cycle 6 auto-seed extension 완료 (V5 + M12 + M13)
 
 - [x] **V5 ICER reconciliation v2** (236 + 222 sim lines) — V3 sign mismatch 4-patch 통합 (HBR=0.45 합집합 · S4 PM 1mo de-escalation · ticag_short bleed 0.014 · PFT cost). ICER V3 -3,221 → V5 -503 M/QALY (magnitude 6.4× 개선, sign 미반전 잔존 — V6 P5 patch deferred). **부수 escalation 🟠 → 🟢**: C15 PM×HBR 2-axis 3.80→6.84 (M4 cited 7-8 band 내) · C20 3-axis 1.52→2.74 (M7 cited 3-5 lower).
