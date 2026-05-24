@@ -1,5 +1,24 @@
 # NUMB — log
 
+## 2026-05-25T20:30Z — G7 closed: 3-step user guide + OTC/Rx label auto-dispatcher (hexa-native 11/11 🟢)
+
+round-3 G7 milestone CLOSED. 격리 worktree `/tmp/numb-g7-retry-7f0570d3` (branch `numb-g7-retry-7f0570d3`, base origin/main d686334). G4 (DUAL OTC-A + Rx-V1, 20:15Z 직전 entry) 와 의도적 정합 — G7 dispatcher 는 G4 의 OTC-A · Rx-V1 SKU 정의를 그대로 사용 + Rx-V2 (capric ternary) 는 deferred-trigger 게이트 후의 미래 SKU 로 슬롯 예약 (3-SKU dispatcher universe).
+
+- [x] **G7** (`NUMB/research/G7_user_guide.md` + sim `g7_label_dispatcher.hexa`) — 🟢 numerical (11/11 case PASS)
+  - **3-step workflow (도포 → 대기 → procedure)** for 6 indication (hair · vascular · tattoo · injection · biopsy · pediatric) × 3 SKU (OTC-A / Rx-V1 / Rx-V2) — 표 형태 + per-indication 면적 · apply_min · onset_min · procedure 윈도우 명시.
+  - **dispatcher decision tree**: 입력 5 (indication · weight_kg · age_yr · area_cm² · concomitant) → 출력 7 (sku · concentration · apply_min · max_area · onset_min · duration_min · warning bitmask). lex-order priority = safety vetoes > indication primary > OTC fallback > area envelope > concomitant warnings.
+  - **FDA Drug Facts (OTC-A) 1-page skeleton** — 21 CFR 201.66 format + 21 CFR 348 lid 4% monograph mapping (Active / Purpose / Uses / Warnings (Do not use · Ask a doctor · When using · Stop use) / Directions / Other / Inactive / Questions). 100 cm² 한도 (라벨) + 60 min apply + adults ≥12y primary + 1-12y "doctor only".
+  - **Rx-V1 USPI 1-page skeleton** — PLR 21 CFR 201.56-57 + Pliaglis 505(b)(2) RLD anchor. Indications / Dosage / Forms / Contraindications / Warnings (LAST · MetHb · vasoconstrictor · pediatric · class I AA) / Adverse reactions / Specific populations / Overdosage / Clinical pharmacology / Storage.
+  - **ASCII visual guides**: (a) 결정 트리 graphical (full path 6 indication branches + envelope check + warnings) (b) onset timer comparison (Rx-V1/V2 ~3min vs OTC-A 45-60min) (c) 면적 visual (손바닥 = 100 cm² anchor, 10 cm² · 100 cm² · 400 cm² · 1000 cm² 시각 비교).
+  - **hexa-native dispatcher** (`NUMB/sim/g7_label_dispatcher.hexa`) — 11 sanity case (C1-C11): 6 indication × 3 SKU + 2 REFUSE veto (C9 neonate · C11 <12mo+methb) + 2 concomitant warning (C10 class I AA · C11 methb). Cmax LAST sanity per Rx-V1 case: C1 hair 400cm² = 73.3 ng/mL margin 68× · C3 vasc 150cm² = 27.5 margin 182× · C4 tat 300cm² = 55.0 margin 91× · C7 biop 20cm² = 3.67 margin 1364× · C10 hair 100cm² = 18.3 margin 273× · C5 tat split 5+5% per-session 400cm² = 52.3 margin 95×. 전부 G1 spec ≥10× margin PASS.
+  - **honest framing (@D d5/d6)**: OTC-A onset = **45-60 min** (LMX-5 class · lid 4% 단독 · no tet · no epi · 과대 약속 회피 · G4 OTC-A 55.6min 정합); Rx-V1 onset ~3 min (eutectic + CPE ER 3× target · G1 anchor); Rx-V2 onset = Rx-V1 (~3 min) + duration ×3 (N6-C capric a≈5 flux multiplier · onset 무관 · N1 학습 직접 인용 · G4 deferred-trigger 정합).
+  - **safety vetoes (G3 정합)**: 신생아 <28d → REFUSE (clinical-defer · PK 미성숙 · AAG 0.5× · CL 0.5×); <12mo + methb_inducer → REFUSE; >400 cm² → split 권고; +epi → 손가락 · 코 · 귀 · 생식기 금지; class I 항부정맥 병용 → caution.
+  - **codegen note**: hexa let-literal cross-case collision (`cN_area` 변수가 마지막 정의에서 forward-decl 누락) → 인라인 area 상수 (400.0 · 150.0 · 300.0 · 20.0 · 100.0)로 우회 — `reference_hexa_let_literal_collision.md` (PR #821) 정합.
+  - **deep research** (d18 정합 round-3): web FDA 21 CFR 201.66 (Drug Facts format · 1999 final rule · "Drug Facts" 제목 + Active/Purpose/Uses/Warnings/Directions 구조) + 21 CFR 348 (lid 0.5-4% external analgesic monograph · G2 재활용); arxiv 1509.00379 (Barth 2015 boundary-label readability formal user study · ASCII visual leader anchor 정합) + 2309.06961 (Gröger 2023 derm benchmark · peripheral).
+  - **재현**: `cd /Users/ghost/core/hexa-lang && ./hexa run /tmp/numb-g7-retry-7f0570d3/NUMB/sim/g7_label_dispatcher.hexa`
+
+남은 게이트: G5 (포장/안정성) · G6 (인접토픽 양립성) · NUMB-oracle (multi-indication wet-lab PASS).
+
 ## 2026-05-25T20:15Z — G4 SKU split — DUAL (OTC-A + Rx-V1) 권고 · V2 trigger 게이트 deferred
 
 round-3 G4 milestone CLOSED. 격리 worktree `/tmp/numb-g4-13d09607` (branch `numb-g4-sku-13d09607`, base origin/main d686334).
@@ -18,7 +37,7 @@ round-3 G4 milestone CLOSED. 격리 worktree `/tmp/numb-g4-13d09607` (branch `nu
   - **honest framing**: V2 정량 (a-boost · K_sc shift · J_ss 6×) 은 Schröder-VL 예측 only → wet-lab gate 까지 🟠. cannibalization 5%/15% 는 추정 (가격/면적 분리 가정). market capture 5-15% addressable conversion 도 추정
   - **재현**: `cd /tmp/numb-g4-13d09607 && hexa run NUMB/sim/g4_sku_split.hexa`
 
-남은 게이트: G5 (포장/안정성) · G6 (인접토픽 양립성) · G7 (사용자 가이드) · NUMB-oracle (multi-indication wet-lab PASS).
+남은 게이트: G5 (포장/안정성) · G6 (인접토픽 양립성) · NUMB-oracle (multi-indication wet-lab PASS). (G7 = 본 entry 최상단에서 CLOSED)
 
 ## 2026-05-25T17:30Z — /cycle round-2 완결 (d18 정합): G2 regulatory + G3 pediatric + N6 ion-pair eutectic — 3개 milestone CLOSED
 
