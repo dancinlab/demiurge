@@ -2,7 +2,7 @@
 
 # NOVEL-TOOL — current state
 
-@goal: hexa stdlib 에 없고 scipy 단독으로도 trivial 하지 않은 NOVEL primitive 후보를 brainstorm/atlas 로 발굴 + epistemic schema 로 cross-validatable 하게 만들기 (M2/M3 가족 NOVEL-TOOL brainstorm output 전부 schema 강제)
+@goal: NOVEL급 cross-check tool / stdlib-promotable primitive / atlas-foldable verifier 의 지속 발굴·구현·흡수 — Wheeler · n=6 · hexa-rtsc 어댑터 가족 확장 + width-first ideation · 발견→stdlib 캐노니컬화→topical thin wrapper→atlas 등록 파이프라인
 
 ## NOVEL-VERIFIER 스키마 (epistemic foundation)
 
@@ -30,3 +30,12 @@ arxiv_ref:   <DOI or null>
 
 - M2/M3 brainstorm round 2 부터 모든 후보에 triad 부착 강제.
 - 기존 round 1 결과 (M2 6개 + M3 6개 후보) 는 round 1 done 으로 인정하되, round 2 진입 전에 retroactive triad fill-in (별도 cycle).
+
+## Milestones
+
+- [x] Wheeler primitive stdlib promotion — hexa-lang/stdlib/material/magnet/wheeler.hexa 신규 + demiurge/RTSC/magnet/getdp/wheeler_axis_b.hexa thin wrapper refactor · per @D d3 + g61
+- [x] /brainstorm depletion sweep — magnetostatics closed-form primitive 후보 · seed: Wheeler 외 stdlib-promotable 자기학 공식 — Helmholtz coil B, off-axis Bz expansion, Biot-Savart current-loop, finite-wire segment, mutual inductance closed-form, end-leakage correction, thick-coil Snow form, multi-layer envelope
+- [x] /brainstorm depletion sweep — cross-domain general primitive 후보 · seed: signal · stats · info-theory · bitops · numerics — Welford running-stats, Kahan-Babuska summation, log-sum-exp, Newton-Raphson 가족, GCD/LCM, popcount/bit-reverse, Cooley-Tukey radix-N FFT, KL divergence, Jensen-Shannon, Wasserstein 1-D, Welch power-spectrum, autocorr/cross-corr
+- [x] elliptic_K_E AGM stdlib 신규 — hexa-lang/stdlib/math/special/elliptic.hexa · pre-req unblocks mutual_M and loop_offaxis and A_phi cascade · arithmetic-geometric mean iteration
+- [x] NOVEL-VERIFIER schema 명문화 — NOVEL-TOOL.md goal 아래에 pre-falsifier 둘 명시 + brainstorm output triad claim·proof·severity·as_of_date·scipy_grep·stdlib_grep·arxiv_ref 강제
+- [x] solenoid_endleakage_calibrator libm-only — hexa-lang/stdlib/material/magnet/solenoid_endleakage.hexa · ratio = atan-only closed-form · Wheeler 보정 calibrator · atlas ⚪→🟢 빠른 승급
