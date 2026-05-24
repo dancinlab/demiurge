@@ -526,6 +526,44 @@ public enum ActionDispatch {
         }
         return CompositeResult(verb: verb, startDomain: domain, steps: steps)
     }
+
+    /// runConvergent — the analyze ⟲ loop (CLI+COCKPIT M15 analyze-loop).
+    /// Re-runs `runComposite` until the OUTCOME PATTERN stabilizes (a
+    /// fixpoint) or `maxIter` is hit. Convergence is judged on each
+    /// step's outcome tag (ok/skip/gap) — NOT on record IDs, which carry
+    /// fresh timestamps every run and would never converge (g3 honest
+    /// criterion). A deterministic stack converges at iter 2; a stateful
+    /// / iterative producer takes longer. The runner is generic and
+    /// reports the honest iteration count either way.
+    public static func runConvergent(verb: Verb, domain: String,
+                                     context: String,
+                                     maxIter: Int = 3) -> ConvergentResult {
+        var iterations: [CompositeResult] = []
+        var prevSig: String? = nil
+        var convergedAt: Int? = nil
+        for i in 1...max(2, maxIter) {
+            let r = runComposite(verb: verb, domain: domain, context: context)
+            iterations.append(r)
+            let sig = convergenceSignature(r)
+            if sig == prevSig { convergedAt = i; break }
+            prevSig = sig
+        }
+        return ConvergentResult(verb: verb, startDomain: domain,
+                                iterations: iterations,
+                                convergedAt: convergedAt)
+    }
+
+    /// Outcome signature — timestamp/record-id agnostic so the fixpoint
+    /// is over what actually MEANS something (each step's ok/skip/gap),
+    /// not over always-fresh record IDs (g3).
+    private static func convergenceSignature(_ r: CompositeResult) -> String {
+        r.steps.map { step -> String in
+            let s = step.result
+            let tag = s.engineToolSucceeded == true ? "ok"
+                    : (s.engineToolSucceeded == false ? "skip" : "gap")
+            return "\(step.domain):\(tag)"
+        }.sorted().joined(separator: ",")
+    }
 }
 
 /// One step of a composite run — a constituent domain + its result.
@@ -550,5 +588,24 @@ public struct CompositeResult: Sendable {
         self.verb = verb
         self.startDomain = startDomain
         self.steps = steps
+    }
+}
+
+/// The outcome of the analyze ⟲ loop (CLI+COCKPIT M15 analyze-loop) —
+/// one CompositeResult per iteration + the convergence verdict.
+public struct ConvergentResult: Sendable {
+    public let verb: Verb
+    public let startDomain: String
+    public let iterations: [CompositeResult]
+    /// 1-based iteration where the outcome pattern stabilized; nil = hit
+    /// maxIter without a fixpoint.
+    public let convergedAt: Int?
+    public var converged: Bool { convergedAt != nil }
+    public init(verb: Verb, startDomain: String,
+                iterations: [CompositeResult], convergedAt: Int?) {
+        self.verb = verb
+        self.startDomain = startDomain
+        self.iterations = iterations
+        self.convergedAt = convergedAt
     }
 }

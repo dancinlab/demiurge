@@ -60,10 +60,12 @@ func usage() {
                                        Move a project's 7-verb pointer
                                        (M15 verb-nav · CLI side)
       demiurge list-shelf <domain>     Show a domain's §6 shelf options
-      demiurge action <verb> <domain> [--compose]
+      demiurge action <verb> <domain> [--compose | --converge]
                                        --compose (M15): run the verb
                                        across the domain's constituent
                                        stack, topo foundation→apex.
+                                       --converge (M15): analyze ⟲ loop
+                                       — re-run until outcome fixpoint.
       demiurge action <verb> [domain]  θ-2 action — dispatch a verb
                                        (specify/structure/design/analyze/
                                         synthesize/synth/verify/measure/
@@ -332,6 +334,44 @@ func cliActionComposite(_ verbStr: String, _ domainArg: String?) -> Int32 {
         print("📸 합성 records: \(result.newRecordIDs.joined(separator: ", "))")
     }
     return 0
+}
+
+/// `action <verb> <domain> --converge` — the analyze ⟲ loop (CLI+COCKPIT
+/// M15 analyze-loop). Re-runs the composite until the outcome pattern
+/// reaches a fixpoint (or maxIter). Honest: convergence is judged on
+/// step outcomes (ok/skip/gap), not fresh record IDs (g3).
+func cliActionConvergent(_ verbStr: String, _ domainArg: String?) -> Int32 {
+    guard let verb = parseVerbArg(verbStr) else {
+        FileHandle.standardError.write(
+            Data("action --converge: unknown verb '\(verbStr)'\n".utf8))
+        return 2
+    }
+    guard let domain = domainArg else {
+        FileHandle.standardError.write(
+            Data("action --converge: missing <domain>\n".utf8))
+        return 2
+    }
+    let comp = DomainComposer.resolve(domain)
+    print("action \(verb.koreanLabel)(\(verb.plain)) · domain=\(domain) · "
+          + "CONVERGE ⟲ (구성 \(comp.stack.count) · max 3 iter):")
+    let context = "CLI convergent action — start=\(domain)."
+    let r = ActionDispatch.runConvergent(verb: verb, domain: domain, context: context)
+    for (i, iter) in r.iterations.enumerated() {
+        let tags = iter.steps.map { step -> String in
+            let s = step.result
+            let t = s.engineToolSucceeded == true ? "ok"
+                  : (s.engineToolSucceeded == false ? "skip" : "gap")
+            return "\(step.domain):\(t)"
+        }.joined(separator: " · ")
+        print("  iter \(i + 1) [\(iter.newRecordIDs.count) rec]: \(tags)")
+    }
+    print("---")
+    if r.converged {
+        print("✅ 수렴 — iter \(r.convergedAt!)에서 outcome 패턴 fixpoint 도달.")
+    } else {
+        print("🔶 max iter 도달 — 미수렴 (패턴 변동 지속).")
+    }
+    return r.converged ? 0 : 1
 }
 
 /// Resolve a CLI arg to a record — try it as a relative exports/ path
@@ -727,7 +767,12 @@ case "action":
     // `--compose` (M15) — run the verb across the domain's constituent
     // (prerequisite) stack, topo-ordered foundation→apex, instead of the
     // single (verb, domain) cell.
-    if let cIdx = actionArgs.firstIndex(of: "--compose") {
+    if let vIdx = actionArgs.firstIndex(of: "--converge") {
+        actionArgs.remove(at: vIdx)
+        let vVerb = actionArgs.first ?? ""
+        let vDomain = actionArgs.count >= 2 ? actionArgs[1] : nil
+        exitCode = cliActionConvergent(vVerb, vDomain)
+    } else if let cIdx = actionArgs.firstIndex(of: "--compose") {
         actionArgs.remove(at: cIdx)
         let cVerb = actionArgs.first ?? ""
         let cDomain = actionArgs.count >= 2 ? actionArgs[1] : nil
