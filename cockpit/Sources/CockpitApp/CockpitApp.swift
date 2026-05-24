@@ -59,7 +59,7 @@ struct CockpitApp: App {
 /// ② work-zone result view tab (κ-7) — the domain-aware canvas mode
 /// vs the exports/ reference browser (rfc_012 §7 reference view).
 enum ResultTab: String, CaseIterable, Identifiable {
-    case result, reference
+    case result, reference, operations
     var id: String { rawValue }
 }
 
@@ -807,6 +807,8 @@ struct WorkbenchView: View {
                         .tag(ResultTab.result)
                     Text(expertMode ? "exports/ ref" : "참고 자료")
                         .tag(ResultTab.reference)
+                    Text(expertMode ? "operations" : "운영")
+                        .tag(ResultTab.operations)
                 }
                 .pickerStyle(.segmented)
                 .labelsHidden()
@@ -814,8 +816,9 @@ struct WorkbenchView: View {
                 .padding(.bottom, 8)
                 Divider()
                 switch resultTab {
-                case .result:    domainModeView
-                case .reference: referenceBrowser
+                case .result:     domainModeView
+                case .reference:  referenceBrowser
+                case .operations: OperationsView(project: activeProject, expertMode: expertMode)
                 }
             }
         }
