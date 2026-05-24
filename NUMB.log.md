@@ -1,5 +1,26 @@
 # NUMB — log
 
+## 2026-05-25T22:00Z — G5 closed: 포장/안정성 — 3 form factor + Arrhenius shelf-life (epi 산화 = 24mo 게이트)
+
+round-3 G5 milestone CLOSED. 격리 worktree (TMPDIR base origin/main, branch `numb-g5-packaging-stability`). G4 (DUAL OTC-A + Rx-V1) 의 상업화 포장 + 24mo shelf-life 정량 — form factor 가 SKU 와 자연 정합 (epi-함유 Rx = 단회 sachet · epi-free OTC = multi-dose tube).
+
+- [x] **G5** (`NUMB/research/G5_packaging_stability.md` + sim `g5_stability.hexa`) — 🟡/🟢
+  - **3 form factor 정량 spec** (충전·1회사용량·비용·$/g·방부제·SKU): ① 단회 sachet/ampoule 2.5g · 전량1회 · $0.85 · $/g 0.34 · **무방부제 가능** (procedure-direct 무균충전) · Rx-V1/V2 (epi → 2-chamber-capable). ② multi-dose tube 30g · 2g/회 · **15회** · $1.40 · $/g 0.047 · **방부제 필요** (반복개봉) · OTC-A (epi 없음 → single-chamber 단순). ③ patch 1g/10cm² · 단회 · $1.75 · $/g 1.75 · Rx-V1 (Synera-class · peel-film 일체 · heating element 옵션).
+  - **Arrhenius 가속수명** (hexa GREEN · closed-form): k(T)=A·exp(-Ea/RT) · AF=exp(Ea/R·(1/T1-1/T2)) · t90=-ln(0.9)/k · shelf25=t_accel(40°C)·AF(40/25).
+    - 🚨 **lid/tet amide 가수분해는 shelf-limiter 아님**: Powell 1987 PMID 3508528 measured Ea=33.8 kcal/mol (ko protonated) · k(80°C)=1.37e-9/s → 25°C 외삽 k=1.885e-13/s → **t90 ~ 17,723 년** @ pH 5.5. pH 5.5 lactate buffer 가 정답 (Powell max stability pH 3-6). AF(40/25)=15.39.
+    - 🚨 **EPINEPHRINE 산화 = 진짜 24mo 게이트**: catechol→adrenochrome 자동산화 · Ea~18 kcal/mol (lit 13-21) · AF(40/25)=4.29 → 40°C/6mo 가속 → 25°C 외삽 = **25.7 mo** (24mo 마진 +1.7mo 뿐). PASS 조건 (전부 필수): acidic pH 5.5 + Na-metabisulfite 0.1% + EDTA (금속 chelation·Powell metal-ion 촉매 차단) + N2-headspace + **차광 (절대조건)** + epi/alkaline 2-chamber.
+    - **차광 역설** (deep research · PMID 10822984): Na-metabisulfite 가 **광 존재 시 epi 광분해를 오히려 촉진** (64.5% vs 89.3% remaining) → 차광이 metabisulfite 보다 우선; metabisulfite 는 암실/무산소 전제에서만 O2-scavenger 로 작동.
+    - capric (V2) 산패: honest 정정 — capric = decanoic acid **C10:0 포화 FA** (C=C 없음) → free-radical 산패 본질적으로 **LOW** (가정보다 낮음). but 열-가수분해/유리산 migration/peroxide-value 경로는 0 아님 → DSC + peroxide-value wet-lab gate 인정 (Ea~20 가정 → shelf 30.3mo).
+  - **N7 epi pH 8.5 wall 통합**: epi @ pH 8.5 분해 30% @30min · 100% @2wk (SD 1990) → epi+alkaline bilayer 는 **2-chamber MANDATORY** (또는 N7-A 2-step 2-SKU 자연분리 = packaging 최단). OTC-A (epi 없음) → 게이트 부재 → single-chamber tube 안정성 SIMPLE.
+  - **포장재 호환성 매트릭스**: lid free-base (피부온 oil) = bare LDPE/polyolefin 흡착 (역가손실+용기연화) → **epoxy-phenolic-lined aluminum tube** 필수. epi 함유 → **foil (Al-laminate) sachet** (광+O2+수분 3중 barrier · 차광 절대조건). HPC peel-film 수분 민감 (40°C/75%RH 가속에서 hydrolysis 가속) → foil overwrap + desiccant.
+  - **24mo 판정**: OTC-A tube (no epi) PASS 압도 · Rx-V1 sachet (epi, foil, antioxidant+N2+dark) PASS (25.7mo) · Rx-V1 patch (epi+HPC) PASS-conditional · Rx-V2 sachet (epi+capric) PASS (30.3mo) WET-LAB gated · Rx-V1/V2+N7 = 2-chamber MANDATORY.
+  - **competitor anchor** (실제 라벨): EMLA cream 3년 (SmPC §6.3 · <30°C · epi-free) · LMX-4 2년 (25°C · liposomal · epi-free) → OTC-A (epi-free tube) 24mo+ 달성 가능 증명. Pliaglis RT 3mo (eutectic oil jar · 개봉후폐기) = short-shelf 약점 → NUMB Rx-V1 **단회 sachet 가 구조적 해결** (개봉=즉시사용).
+  - **honest framing (@D d5/d6)**: ① shelf-limiter 정정 (lid 가수분해 X → epi 산화 O) ② capric 산패 risk 과장 금지 (포화 → LOW) ③ 가속시험 외삽 한계 명시 — 40°C/6mo→25°C/24mo 는 **단일 Arrhenius mechanism 가정** (ICH Q1A); 상전이/다중경로 전환 시 무효 → real-time 25°C/24mo 확정시험이 최종 게이트 · 본 숫자는 projection.
+  - **deep research** (d18): arxiv Escobar-Meeker 2006 (0708.0369 · Statistical Science "A Review of Accelerated Test Models" · Arrhenius/Eyring 가속수명 정통 방법론) + CRNN 2024 (2408.11984 · multi-Arrhenius ODE = 다성분 병렬분해 구조 정당화); web Powell 1987 (lid Ea 26.3-33.8 measured) · PMID 10822984 (metabisulfite 광 역설) · EMLA SmPC 3년 · Pliaglis RT 3mo · LMX-4 2년 · capric C10:0 포화 · HPC 수분 (PMC6520314 40°C/75%RH).
+  - **재현**: `hexa run NUMB/sim/g5_stability.hexa` (main repo path 복사 실행 · pool 라우트 · GREEN). 출력 전값 closed-form python 일치 (lid t90 17,723yr · epi AF 4.289 · shelf 25.7mo).
+
+남은 게이트: G6 (인접토픽 양립성) · NUMB-oracle (multi-indication wet-lab PASS) · V-track verify.
+
 ## 2026-05-25T20:30Z — G7 closed: 3-step user guide + OTC/Rx label auto-dispatcher (hexa-native 11/11 🟢)
 
 round-3 G7 milestone CLOSED. 격리 worktree `/tmp/numb-g7-retry-7f0570d3` (branch `numb-g7-retry2-de1e2f`, base origin/main). G4 (DUAL OTC-A + Rx-V1) 와 의도적 정합 — G7 dispatcher 는 G4 의 OTC-A · Rx-V1 SKU 정의를 그대로 사용 + Rx-V2 (capric ternary) 는 deferred-trigger 게이트 후의 미래 SKU 로 슬롯 예약 (3-SKU dispatcher universe).

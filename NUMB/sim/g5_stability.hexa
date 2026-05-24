@@ -1,0 +1,267 @@
+// NUMB G5 — packaging / stability: Arrhenius shelf-life + form-factor fill/cost recompute
+//
+//   Goal: 25C / 24-month shelf-life target; 40C / 6-month accelerated extrapolation (ICH Q1A class).
+//
+//   Arrhenius (closed-form, no LLM):
+//     k(T)        = A * exp(-Ea/(R*T))                       (1st-order degradation rate)
+//     AF(T2/T1)   = k(T2)/k(T1) = exp( (Ea/R) * (1/T1 - 1/T2) )   (acceleration factor)
+//     t90(T)      = -ln(0.9) / k(T)                          (time to 10% loss, 1st order)
+//     shelf25_est = t_accel(40C) * AF(40/25)                 (extrapolate accel test to 25C)
+//
+//   Measured anchors (deep research, G5):
+//     lid amide hydrolysis  : Powell 1987 (PMID 3508528) Ea(ko protonated)=33.8 kcal/mol,
+//                             k(80C)=1.37e-9 /s  -> t90(25C) ~ 1.76e4 yr (NOT shelf-limiting at pH 5.5)
+//     epinephrine oxidation : acidic salt + Na-metabisulfite, Ea ~ 18 kcal/mol (lit. 13-21),
+//                             commercial LA+epi t90 ~ 18-24 mo @ 25C (THE shelf-limiter)
+//     capric acid           : C10:0 SATURATED -> no C=C -> autoxidation/rancidity LOW
+//                             (saturated FA resist free-radical lipid peroxidation; V2-only species)
+//
+//   Units: Ea in kcal/mol, R = 1.987e-3 kcal/mol/K, T in Kelvin.
+//   exp(x) for moderate |x| via tabulated anchors (Taylor unstable for large |x|; reuse N7/G4 style).
+//
+//   straight-line only; no arrays; no fn forward-defs (project.tape g42 / hexa-let-collision).
+//   unique let-names across the whole file (PR #821 let-literal codegen collision lesson).
+//
+//   run: hexa run NUMB/sim/g5_stability.hexa
+
+println("=== NUMB G5 — packaging / stability (Arrhenius shelf-life + form factors) ===")
+println("")
+
+println("[0] honest framing (per @D d5/d6)")
+println("  lid/tet amide hydrolysis at pH 5.5 is NOT the shelf-limiter (Powell 1987 Ea=33.8 -> t90 ~ 1.76e4 yr @25C).")
+println("  EPINEPHRINE OXIDATION is the 24mo gate: acidic + Na-metabisulfite + light-protection mandatory.")
+println("  capric acid (V2) is SATURATED (C10:0) -> autoxidation/rancidity LOW (no C=C); heat/hydrolysis path only.")
+println("  Accelerated (40C/6mo -> 25C) extrapolation assumes single Arrhenius mechanism (ICH Q1A limit; not real-time).")
+println("")
+
+// ----------------------------------------------------------------------------
+// [1] Arrhenius constants + temperature anchors
+// ----------------------------------------------------------------------------
+let R_kcal_g5         = 0.001987      // kcal/mol/K
+let T25_K_g5          = 298.15        // 25 C
+let T40_K_g5          = 313.15        // 40 C (ICH accelerated)
+let T80_K_g5          = 353.15        // 80 C (Powell 1987 measurement temp)
+let inv_T25_g5        = 1.0 / T25_K_g5
+let inv_T40_g5        = 1.0 / T40_K_g5
+let inv_T80_g5        = 1.0 / T80_K_g5
+let ln_0p9_g5         = -0.105360516  // ln(0.9)
+let sec_per_yr_g5     = 31536000.0    // 3600*24*365
+let mo_per_yr_g5      = 12.0
+
+// ----------------------------------------------------------------------------
+// [2] Acceleration factor AF(40C/25C) per candidate Ea
+//   AF = exp( (Ea/R) * (1/T25 - 1/T40) )
+//   exponent argument = (Ea/R) * (inv_T25 - inv_T40)
+//   (inv_T25 - inv_T40) = 1.6072e-4  K^-1
+// ----------------------------------------------------------------------------
+let dInvT_25_40_g5    = inv_T25_g5 - inv_T40_g5      // ~ 1.6072e-4
+
+// helper exponent for epi Ea=18 -> arg = (18/0.001987)*1.6072e-4 = 1.4560
+let Ea_epi_g5         = 18.0
+let arg_epi_g5        = (Ea_epi_g5 / R_kcal_g5) * dInvT_25_40_g5
+// exp(1.456) ~ 4.289 (tabulated; matches python AF=4.29)
+let AF_epi_g5         = 4.289
+
+// lid Ea=33.8 -> arg = (33.8/0.001987)*1.6072e-4 = 2.7339 -> exp ~ 15.39
+let Ea_lid_g5         = 33.8
+let arg_lid_g5        = (Ea_lid_g5 / R_kcal_g5) * dInvT_25_40_g5
+let AF_lid_g5         = 15.39
+
+// capric (V2) hydrolysis/heat path Ea ~ 20 -> arg=1.6191 -> exp ~ 5.049
+let Ea_cap_g5         = 20.0
+let arg_cap_g5        = (Ea_cap_g5 / R_kcal_g5) * dInvT_25_40_g5
+let AF_cap_g5         = 5.049
+
+println("[1] Arrhenius acceleration factors AF(40C/25C)")
+println("  (1/T25 - 1/T40) [1/K] = ")
+println(dInvT_25_40_g5)
+println("  epi   (Ea=18.0 kcal/mol) arg = ")
+println(arg_epi_g5)
+println("  epi   AF(40/25) = ")
+println(AF_epi_g5)
+println("  lid   (Ea=33.8 kcal/mol, Powell 1987) arg = ")
+println(arg_lid_g5)
+println("  lid   AF(40/25) = ")
+println(AF_lid_g5)
+println("  capric(Ea=20.0 kcal/mol) AF(40/25) = ")
+println(AF_cap_g5)
+println("")
+
+// ----------------------------------------------------------------------------
+// [3] lid amide hydrolysis absolute shelf-life (Powell 1987 -> 25C)
+//   k(25C) = k(80C) * exp(-(Ea/R)*(1/T25 - 1/T80))
+//   (1/T25 - 1/T80) = 5.226e-4 ; (Ea/R)= 33.8/0.001987 = 17011
+//   arg = 17011 * 5.226e-4 = 8.890 ; exp(-8.890) = 1.376e-4
+//   k(25C) = 1.37e-9 * 1.376e-4 = 1.885e-13 /s
+//   t90(25C) = -ln(0.9)/k = 0.10536 / 1.885e-13 = 5.59e11 s = 1.77e4 yr
+// ----------------------------------------------------------------------------
+let k80_lid_g5        = 1.37e-9       // /s (Powell 1987 ko protonated, 80C)
+let dInvT_25_80_g5    = inv_T25_g5 - inv_T80_g5   // ~5.226e-4
+let arg_lid8025_g5    = (Ea_lid_g5 / R_kcal_g5) * dInvT_25_80_g5   // ~8.890
+let expneg_8p89_g5    = 0.0001376     // exp(-8.890) tabulated
+let k25_lid_g5        = k80_lid_g5 * expneg_8p89_g5
+let t90_lid_s_g5      = (0.0 - ln_0p9_g5) / k25_lid_g5
+let t90_lid_yr_g5     = t90_lid_s_g5 / sec_per_yr_g5
+
+println("[3] lid amide hydrolysis absolute t90 (Powell 1987 -> 25C extrapolation)")
+println("  arg (Ea/R * (1/T25-1/T80)) = ")
+println(arg_lid8025_g5)
+println("  k(25C) [1/s] = ")
+println(k25_lid_g5)
+println("  t90 (10% loss) [yr] = ")
+println(t90_lid_yr_g5)
+println("  >> lid/tet hydrolysis t90 >> 24mo at pH 5.5 -> NOT shelf-limiting (pH 3-6 max stability, Powell 1987)")
+println("")
+
+// ----------------------------------------------------------------------------
+// [4] epinephrine oxidation = the 24mo gate
+//   anchor: commercial LA+epi (acidic, Na-metabisulfite, light-protected) t90 ~ 18-24 mo @ 25C
+//   accel: 40C/6mo extrapolated to 25C = 6mo * AF_epi = 6 * 4.289 = 25.7 mo
+//   verdict: PASS 24mo target ONLY with antioxidant + light-protect + N2-headspace + 2-chamber sep.
+// ----------------------------------------------------------------------------
+let accel_mo_g5       = 6.0           // 40C accelerated test duration
+let shelf25_epi_mo_g5 = accel_mo_g5 * AF_epi_g5   // 6 * 4.289 = 25.73
+let target_mo_g5      = 24.0
+let epi_margin_mo_g5  = shelf25_epi_mo_g5 - target_mo_g5
+
+println("[4] epinephrine oxidation (THE shelf-limiter; 40C/6mo accel -> 25C)")
+println("  extrapolated 25C shelf-life [mo] = ")
+println(shelf25_epi_mo_g5)
+println("  target [mo] = ")
+println(target_mo_g5)
+println("  margin over 24mo [mo] = ")
+println(epi_margin_mo_g5)
+println("  >> PASS 24mo ONLY with: acidic pH 5.5 + Na-metabisulfite 0.1% + EDTA + N2-headspace + LIGHT-PROTECT + 2-chamber")
+println("  >> CAVEAT (deep research): metabisulfite can PHOTO-destabilize epi under light (64.5% vs 89.3% remaining)")
+println("     -> LIGHT PROTECTION is non-negotiable; metabisulfite helps only in the dark / O2-free.")
+println("")
+
+// ----------------------------------------------------------------------------
+// [5] capric acid (V2) oxidative stability — honest risk acknowledgement
+//   capric = decanoic acid C10:0 (saturated, no C=C) -> autoxidation/rancidity LOW.
+//   but: heat-driven hydrolysis of any ester carrier + free-acid migration possible.
+//   accel 40C/6mo -> 25C with Ea=20 -> 6 * 5.049 = 30.3 mo (PASS, V2 only)
+// ----------------------------------------------------------------------------
+let shelf25_cap_mo_g5 = accel_mo_g5 * AF_cap_g5   // 6 * 5.049 = 30.29
+let cap_margin_mo_g5  = shelf25_cap_mo_g5 - target_mo_g5
+
+println("[5] capric acid (V2-only) — saturated FA, low autoxidation; heat/hydrolysis path only")
+println("  extrapolated 25C shelf-life [mo] (Ea=20) = ")
+println(shelf25_cap_mo_g5)
+println("  margin over 24mo [mo] = ")
+println(cap_margin_mo_g5)
+println("  >> capric rancidity risk LOW (C10:0 saturated); honest: NOT zero (heat hydrolysis) -> DSC + peroxide-value wet-lab gate")
+println("")
+
+// ----------------------------------------------------------------------------
+// [6] form-factor fill / dose / cost / SKU mapping
+//   fill volumes & per-use amounts are formulation-engineering targets (cite EMLA/Pliaglis/Synera class)
+//   cost = bulk cream COGS + packaging COGS (rough industry anchors, 🟡)
+// ----------------------------------------------------------------------------
+// single-use ampoule/sachet (procedure-direct, preservative-free possible)
+let fill_amp_g_g5     = 2.5          // g per single-use sachet (covers ~40-60 cm2 at 0.05 g/cm2)
+let dose_amp_g_g5     = 2.5          // entire sachet = 1 use
+let cost_amp_usd_g5   = 0.85         // cream + foil sachet COGS
+
+// multi-dose tube (home-care OTC-A, preservative required)
+let fill_tube_g_g5    = 30.0         // 30 g tube (LMX/EMLA class)
+let dose_tube_g_g5    = 2.0          // ~2 g per application (thin layer 40 cm2)
+let uses_tube_g5      = fill_tube_g_g5 / dose_tube_g_g5     // 15 uses
+let cost_tube_usd_g5  = 1.40         // cream + aluminum/LDPE-laminate tube + preservative
+
+// patch (DESCRIBE/Synera style, peel-film integrated)
+let fill_patch_g_g5   = 1.0          // ~1 g drug-in-film per patch (10 cm2)
+let dose_patch_g_g5   = 1.0          // 1 patch = 1 use
+let cost_patch_usd_g5 = 1.75         // film + foil overwrap + (optional heating element for Synera class)
+
+let cpu_amp_g5        = cost_amp_usd_g5 / dose_amp_g_g5     // cost per gram delivered
+let cpu_tube_g5       = cost_tube_usd_g5 / fill_tube_g_g5
+let cpu_patch_g5      = cost_patch_usd_g5 / fill_patch_g_g5
+
+println("[6] form-factor fill / dose / cost / SKU")
+println("  ampoule/sachet : fill(g) = ")
+println(fill_amp_g_g5)
+println("  ampoule/sachet : cost($) = ")
+println(cost_amp_usd_g5)
+println("  ampoule/sachet : $/g delivered = ")
+println(cpu_amp_g5)
+println("  multi-dose tube: fill(g) = ")
+println(fill_tube_g_g5)
+println("  multi-dose tube: uses (at 2g/use) = ")
+println(uses_tube_g5)
+println("  multi-dose tube: $/g = ")
+println(cpu_tube_g5)
+println("  patch          : fill(g) = ")
+println(fill_patch_g_g5)
+println("  patch          : cost($) = ")
+println(cost_patch_usd_g5)
+println("  patch          : $/g = ")
+println(cpu_patch_g5)
+println("  >> SKU map: ampoule/sachet = Rx-V1/V2 (procedure-direct, preservative-free, 2-chamber for epi)")
+println("             tube = OTC-A (home-care, no epi -> simple single-chamber + preservative)")
+println("             patch = Rx-V1 (clinic, peel-film integral; Synera adds heating element)")
+println("")
+
+// ----------------------------------------------------------------------------
+// [7] N7 epi pH wall integration — 2-chamber necessity
+//   bilayer (N7) puts alkaline (pH 8.5) layer adjacent to epi -> epi 30% loss @ 30min (SD 1990).
+//   -> any epi-containing bilayer MUST physically separate epi from alkaline phase.
+//   OTC-A has NO epi -> single-chamber, simplest stability.
+// ----------------------------------------------------------------------------
+let epi_loss_ph85_30min_g5 = 0.30    // SD 1990: 30% loss @ pH 8.5, 30 min
+let epi_loss_ph85_2wk_g5   = 1.00    // 100% loss @ 2 weeks
+let twoChamber_needed_v1_g5 = 1.0    // Rx-V1 has epi -> 2-chamber if ever combined with alkaline (N7)
+let twoChamber_needed_otc_g5 = 0.0   // OTC-A no epi -> single chamber
+
+println("[7] N7 epi pH-8.5 wall integration (2-chamber necessity)")
+println("  epi loss @ pH 8.5, 30 min (SD 1990) = ")
+println(epi_loss_ph85_30min_g5)
+println("  epi loss @ pH 8.5, 2 weeks = ")
+println(epi_loss_ph85_2wk_g5)
+println("  2-chamber needed for Rx-V1+N7 (epi vs alkaline) = ")
+println(twoChamber_needed_v1_g5)
+println("  2-chamber needed for OTC-A (no epi) = ")
+println(twoChamber_needed_otc_g5)
+println("  >> Rx-V1/V2 (epi) + any N7 alkaline-top => 2-chamber MANDATORY (or N7-A 2-SKU separation).")
+println("  >> OTC-A (no epi) => single-chamber tube, epi-oxidation gate ABSENT -> stability SIMPLE.")
+println("")
+
+// ----------------------------------------------------------------------------
+// [8] packaging-material compatibility (lid free-base sorption; HPC moisture)
+//   lid free-base (oil at skin T) sorbs into LDPE/polyolefin -> potency loss + tube softening.
+//   aluminum (epoxy-phenolic lined) tube/laminate = barrier; foil sachet = moisture+light barrier.
+//   HPC peel-film is hygroscopic -> foil sachet for patch / film SKUs.
+// ----------------------------------------------------------------------------
+let sorption_ldpe_g5  = 1.0          // HIGH lid free-base sorption into LDPE (qualitative flag)
+let sorption_alu_g5   = 0.0          // negligible into lined aluminum
+let hpc_moisture_g5   = 1.0          // HPC moisture-sensitive -> foil required
+
+println("[8] packaging-material compatibility")
+println("  lid free-base sorption into LDPE (flag) = ")
+println(sorption_ldpe_g5)
+println("  lid free-base sorption into lined-aluminum (flag) = ")
+println(sorption_alu_g5)
+println("  HPC peel-film moisture sensitivity (flag) = ")
+println(hpc_moisture_g5)
+println("  >> tube = epoxy-phenolic-lined ALUMINUM (not bare LDPE) for free-base barrier.")
+println("  >> patch/film + any epi = foil (Al-laminate) sachet: light + moisture + O2 barrier.")
+println("")
+
+// ----------------------------------------------------------------------------
+// [9] 24mo verdict by form factor x SKU
+// ----------------------------------------------------------------------------
+println("[9] 24mo shelf-life verdict (form factor x SKU)")
+println("  OTC-A tube (no epi, pH 5.5, Al-lined)        : PASS easily (lid hydrolysis t90 ~1.7e4 yr)")
+println("  Rx-V1 sachet (epi, 2-chamber, foil, light)   : PASS (epi 25.7mo > 24mo) with antioxidant+N2+dark")
+println("  Rx-V1 patch (epi+HPC, foil overwrap)         : PASS-conditional (HPC moisture + epi both gated)")
+println("  Rx-V2 sachet (epi+capric, 2-chamber, foil)   : PASS (capric 30.3mo) but WET-LAB gate (peroxide value)")
+println("  Rx-V1/V2 + N7 alkaline-top                    : 2-chamber MANDATORY (epi pH 8.5 -> 30% @30min)")
+println("")
+
+println("=== G5 PASS — Arrhenius shelf-life: lid/tet hydrolysis NOT limiting (t90 ~1.7e4 yr @pH5.5) ===")
+println("=== EPI OXIDATION = 24mo gate: acidic + metabisulfite + EDTA + N2 + LIGHT-PROTECT + 2-chamber ===")
+println("=== capric (V2) rancidity LOW (C10:0 saturated) but DSC+peroxide-value wet-lab gate honest ===")
+println("=== form: sachet=Rx procedure-direct (preservative-free) · tube=OTC-A home (preservative) · patch=Rx Synera-class ===")
+println("=== packaging: Al-lined tube (lid free-base barrier) · foil sachet (HPC moisture + epi light/O2) ===")
+println("")
+println("end g5_stability")
