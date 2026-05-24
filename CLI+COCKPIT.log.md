@@ -2,6 +2,17 @@
 
 Append-only history sister of `CLI+COCKPIT.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T07:50:00Z — CARDIO+ 메타도메인 세션 교훈 → CLI/cockpit 개선 milestone M8-M13 등재
+
+- [x] **M8-M13 개선 milestone 등재** (milestone-level only · 구현 후속) — CARDIO+ 메타도메인(X1-X13 + DOCTOR H1-H10 + 인프라 핸드오프 3건) 세션서 induce
+  - M8 verify host-health 라우팅 (mini ✅/ubu broken) · M9 macOS-only pool-route 예외 · M10 commit-isolation(d9) 강제 · M11 agent fan-out cap 2-3 · M12 upstream INBOX reflex(g60) 패널 · M13 folder-nested domain (✅ 0.8.x 해소)
+- [x] **CARDIO+ 검증사례 섹션 추가** — NOREFLOW 사례와 병렬 · 6 교훈 표(증거→surface→milestone→status) + generic caveats 4개
+- [x] generic caveats: honest tier 천장(🟢 vs 🔵) · numerical→causal over-read 경계(X13 red-team) · d6 no-forcing 실증(ICER v7) · `+` 메타도메인 roll-up surface 필요
+- [ ] ⏳ M8-M12 구현 (코드/시스템) — 별도 cycle (본 등재는 마일스톤 기준 · 사용자 "matleb 기준만" 지시)
+
+🔑 핵심: CARDIO+ 세션의 실측 마찰(verify 호스트·pool-route·commit 격리·agent cap·INBOX 반사·domain nest)을 CLI+COCKPIT 7-verb surface 개선 milestone으로 전환 — cockpit이 이 교훈들을 embody하면 다음 메타도메인 작업서 재마찰 0.
+⚠ status: M13만 해소(domain 0.8.x) · M8-M12는 open (구현 cycle 대기) · M8/M9/M12는 upstream(hexa-lang/sidecar) 부분 진행.
+
 ## 2026-05-25T02:30:00Z — DAPTPGX cycle 5 CLI 실증 + 3 spec docs induce (4th reproduction)
 
 - [x] DAPTPGX V1-V4 verify-phase 완료 (M1-M11 + V1-V4 = 14/14)

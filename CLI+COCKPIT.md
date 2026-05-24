@@ -11,6 +11,12 @@
 - [x] M5 synthesize — synth dispatcher (pool/cloud 라우팅, per @D d7)
 - [x] M6 verify — `hexa verify` 결과 cockpit verbatim (per @D g5)
 - [x] M7 handoff — handoff packet emitter (next-stage 입력 패킷)
+- [ ] M8 verify host-health 라우팅 — M6 verify surface가 hexa-capable host 자동 감지·라우팅 (mini ✅ / ubu-1 hexa.real 누락 / ubu-2 segfault) + cockpit host-health 패널 (CARDIO+ X2 induce)
+- [ ] M9 macOS-only 자원 pool-route 예외 — M5 synth dispatch가 load-escalate 시 macOS-only(secret·pdflatex·pool CLI·skill wrapper) 라우팅 제외 + `POOL_DISABLE`/`SIDECAR_NO_POOL_ROUTE` hard-honor (CARDIO+ skill --root/pool-route induce · sidecar INBOX 이관)
+- [ ] M10 commit-isolation 강제 — M5/M7 commit step이 동시 worktree 하 `git commit -o <explicit>` 격리(d9) 강제 + staged-leak / `git add -A` 경고 (CARDIO+ 11 commit leak-0 패턴 induce)
+- [ ] M11 agent fan-out cap guard — cockpit/cycle dispatch가 parallel agent 2-3 auto-cap + overflow defer (4+ rate-limit-kill 방지 · CARDIO+ fan-out induce)
+- [ ] M12 upstream INBOX reflex 패널 — cockpit이 unfiled cross-repo finding 노출 + 1-click 핸드오프 (commons @D g60 enforcement surface · CARDIO+ induce)
+- [x] M13 folder-nested domain resolution — domain picker가 `<NAME>/<NAME>.md` 중첩 SSOT 인지 (✅ domain 0.8.0/0.8.1 해소 · sidecar PR #120→#121 · CARDIO+ 빈-스캐폴드 재발 induce)
 
 ---
 
@@ -34,6 +40,28 @@ NOREFLOW 도메인 12 base milestone + V1-V4 verify schema 작업으로 본 CLI+
 - **🔵 도달 dependency** — bio/clinical 도메인은 hexa-lang atlas 확장 (PR #658 style) 선행 필요 (M6 verify surface block)
 - **⚪ fence 정직성** — subjective/prognostic claim 산식 강제 금지 — 절차적 honest fence가 거버넌스 (M6 verify surface 부속)
 - **pool CLI 회귀 fallback** — `hexa_index_get` 컴파일 회귀 발견 → ssh direct fallback patch 후속 필요 (M5 synthesize surface 의 robustness)
+
+---
+
+## Cross-domain 검증 사례 — CARDIO+ 메타도메인 (cycle-full + 심화, leak 0)
+
+CARDIO+ 메타도메인(4 sub-domain + X1-X13 + DOCTOR H1-H10) 작업서 induce된 CLI/cockpit 개선 교훈. 각 교훈은 위 M8-M13 milestone 으로 등재 (구현은 후속 — 본 기록은 milestone-level).
+
+| 교훈 | 증거 (CARDIO+ 세션) | 영향 surface | milestone | status |
+|---|---|---|---|---|
+| **verify host-health** | `hexa verify --expr` mini ✅ · ubu-1 `hexa.real` 누락 · ubu-2 segfault → 아무도 mini 미시도라 "blocked" 오판 | M6 verify | M8 | open · hexa-lang PR #760 (host matrix) |
+| **macOS-only pool-route 예외** | load-escalate가 secret·pdflatex·skill wrapper를 ubu로 라우팅 → 도달 불가 · `POOL_DISABLE=1`로 우회 | M5 synth | M9 | open · sidecar INBOX 이관 (resolved-obsolete) |
+| **commit-isolation (d9)** | 30+ 동시 worktree · `git commit -o <explicit>` 격리로 commit 14건 staged-leak 0 | M5/M7 commit | M10 | open · 패턴 입증됨 |
+| **agent fan-out cap** | parallel agent 2-3 초과 시 rate-limit-kill (~3.5min) → cap 준수로 안정 fan-out | cockpit/cycle dispatch | M11 | open |
+| **upstream INBOX reflex** | cross-repo gap을 chat-only로 남기던 패턴 → commons `@D g60` 신설(자율 same-turn 핸드오프) | cockpit | M12 | open · g60 commons 0.10.2 MERGED |
+| **folder-nested domain** | `CARDIO+/CARDIO+.md` 중첩 SSOT인데 `/domain set`이 root 빈-스캐폴드 재생성 (세션 2회) | domain picker | M13 | ✅ domain 0.8.0/0.8.1 (PR #120→#121) |
+
+### CARDIO+ induce caveats (generic learning)
+
+- **honest tier 천장** — bio/clinical claim 의 verify 천장은 🟢 (libm recompute) · 🔵는 number-theory closed-form 전용 (atlas F-namespace 등록 선행) — M6 verify surface가 bio fn에 auto-🔵 부여 금지 (g5)
+- **numerical → causal over-read 경계** — 🟢(산술 재현)을 인과 확정으로 over-read 금지 (CARDIO+ X13 red-team 적발: Δ36.6pp·β -0.3413 산술 견고하나 인과는 RCT downstream) — handoff(M7) packet은 numerical/causal 층 분리 명시
+- **d6 no-forcing 실증** — ICER v7 sign 반전(질적)은 strategy-mismatch fix로 정직 달성 · 양적 magnitude는 🟠 유지(약가 lever→sub-domain) — 목표숫자 강제 안 함이 M4 analyze 수렴판정의 정직성 기준
+- **메타도메인(`+`) 패턴** — CARDIO+ = 5 sub-domain self-contained 폴더 통합 + cross-cutting X-series — `+` 메타도메인은 cockpit이 sub-domain roll-up(진행도 합산) surface 필요
 
 ---
 
