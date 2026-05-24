@@ -2,6 +2,21 @@
 
 Append-only history sister of `CARDIO+.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T09:10:00Z — deferred 골화 라운드 4: X19·X20·X21 (worktree2 격리 → PR)
+
+- [x] **X19 budget-neutral** → `CARDIO+/X19_budget_neutral.md` (198줄) — cost-offset(회피사건비−중재비) budget-impact (≠ICER)
+  - self-funding top: CYP2C19 결정맵 **5y −44억 절감**(1y +29.5M 순지출 · horizon 민감) · IC adenosine/nicorandil 약가≈0 최소중립 · siRNA 387-645× 순지출 명백
+- [x] **X20 subtraction medicine** → `CARDIO+/X20_subtraction.md` (de-implement 7건)
+  - 제거 1순위: routine aspiration thrombectomy (TASTE+TOTAL null + stroke↑ · Class III) · 효능부재: mPTP IV bolus 🔴×4 · harm 최대: universal ticagrelor (TICAKOREA 2배)
+  - "전면금지 ≠ none-is-best" — bailout 잔여 적응증 전건 명시 (d2)
+- [x] **X21 anti-portfolio** → `CARDIO+/X21_anti_portfolio.md` (경계 정의)
+  - 포함기준 4축: PCI-후속 특이 · 한국 ethnicity leverage · 공유 인프라 결합 · 직교성(비-cannibalization)
+  - TAVR 단호 제외(IC-1 위반 → 별도 STRUCT+) · CAC/AF-ablation 경계선 · `+` 응집성 = 단일 수렴점 + 직교성
+- [x] worktree2 격리 · g5 verbatim · LLM self-judge 0 · 공유 체크아웃 무접촉 · gh api --input(-f guard 회피)
+- [ ] ⏳ deferred 잔여: #2 불확실성 MC(sim) · #17 AI-PGx CDS · #20 wet-lab readiness · #22 microsim · #23 biomarker VoI · #24 grant · #29 living-doc · #32 환자-facing
+
+🔑 라운드 성과: CARDIO+ cross-cutting **X1-X21** · budget/subtraction/boundary 3축 추가 (더하기뿐 아니라 빼기·비용중립·경계까지 골화) · worktree 격리 PR land.
+
 ## 2026-05-25T08:30:00Z — deferred 골화 라운드 3: X16·X17·X18 (worktree 격리 → PR)
 
 > ⚠ 지난 라운드 공유 체크아웃 branch-churn wipe-위험 교훈 → 이번 라운드부터 **origin/main 기반 worktree(`/tmp/cardio-work`)에 격리 작업 + PR land** (공유 체크아웃 직접 commit 안 함).
