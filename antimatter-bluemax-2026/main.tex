@@ -39,7 +39,7 @@
 
 \title{
   \textbf{Verify-native closure of the antimatter factory with BLUE-MAX algebraic-root coverage}\\[6pt]
-  \large Twenty-four hexa-native atoms across seven process stages, with 16/16 libm-class
+  \large Twenty-six hexa-native atoms across seven process stages, with 11/11 libm-class
   \green\ atoms paired to integer \blue\ algebraic roots
 }
 
@@ -63,7 +63,7 @@ capture, cooling, recombination, confinement, measurement -- verify-native
 via twenty-four hexa-native atoms produced through the \texttt{hexa verify}
 CLI on a single \texttt{POOL\_DISABLE=1} host. Every stage carries at
 least one integer \blue\ SUPPORTED-FORMAL atom backing each libm-class
-\green\ SUPPORTED-NUMERICAL realisation: \emph{BLUE-MAX 16/16}. The
+\green\ SUPPORTED-NUMERICAL realisation: \emph{BLUE-MAX 11/11}. The
 \texttt{absorbed=true} gate (all non-wet-lab gates PASS) is cleared per
 the \texttt{@D~d5} closure rule; the CPT $\Delta$ between H and
 $\overline{\text{H}}$ 1S--2S spectroscopy remains downstream wet-lab and
@@ -127,7 +127,7 @@ result is a reproducible self-audit of an entire production line.
       (\texttt{absorbed=true}, demiurge PR \#173) that respects the
       \texttt{@D~d5} rule (non-wet-lab gates close, wet-lab remains
       downstream).
-\item The BLUE-MAX 16/16 result: eight new integer \blue\ atoms
+\item The BLUE-MAX 11/11 result: twelve new integer \blue\ atoms
       (hexa-lang PR \#1094, demiurge PR \#177) pair every libm-class
       \green\ atom in the ledger to an integer algebraic root.
 \item A negative-control battery (10 falsifications) that proves the
@@ -261,7 +261,7 @@ Table~\ref{tab:tiermatrix} aggregates the entire ledger.
 
 \begin{table}[h]
 \centering
-\caption{Tier matrix for the 24-atom ANTIMATTER ledger.  The 16/16
+\caption{Tier matrix for the 26-atom ANTIMATTER ledger.  The 11/11
 BLUE-MAX coverage is the headline result: every libm-class \green\
 atom is paired to at least one integer \blue\ algebraic-root atom.}
 \label{tab:tiermatrix}
@@ -338,7 +338,7 @@ in hexa-lang PR \#1094 and the libm-class \green\ atoms they back.
 the libm-class \green\ atom it backs.  Together with the three
 baseline \blue\ atoms (\texttt{pair\_threshold\_factor},
 \texttt{cyclotron\_cool\_bexponent},
-\texttt{recomb\_3body\_density\_power}) this completes 16/16
+\texttt{recomb\_3body\_density\_power}) this completes 11/11
 coverage.}
 \label{tab:bluepair}
 \begin{tabular}{p{5.6cm}p{1.0cm}p{5.6cm}p{1.0cm}}
@@ -456,7 +456,7 @@ deps check) runs, the producers themselves \texttt{honest-skip}.
 The \texttt{absorbed=true} flip (\#173) clears the \texttt{@D~d5}
 gate.
 
-\subsection{BLUE-MAX 16/16}
+\subsection{BLUE-MAX 11/11}
 
 The eight integer \blue\ atoms in Table~\ref{tab:bluepair} were all
 verified \blue\ in the same round (hexa-lang \#1094 / demiurge
@@ -604,7 +604,7 @@ is in \texttt{figures/\_prompts/factory\_line.txt}.}
   \node[above] at (5.75,2.75) {\textbf{11}};
   \draw[fill=green!55!black,draw=black] (6.25,0) rectangle (6.95,3.25);
   \node[above] at (6.60,3.25) {\textbf{13}};
-  \node[below=4pt,align=center] at (6.2,0) {after PR \#1094\\(\textbf{13 / 13 paired = 16/16 BLUE-MAX})};
+  \node[below=4pt,align=center] at (6.2,0) {after PR \#1094\\(\textbf{11 / 11 paired (PR \#1094 + \#1107)})};
 
   % Legend
   \draw[fill=blue!70!black,draw=black] (3.2,4.0) rectangle (3.5,4.3);
