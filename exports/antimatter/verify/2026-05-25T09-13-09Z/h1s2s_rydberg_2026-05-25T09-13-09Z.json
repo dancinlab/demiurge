@@ -1,0 +1,64 @@
+{
+  "domain": "ANTIMATTER",
+  "process_stage": "⓻측정 (measurement)",
+  "claim": "(anti)hydrogen 1S-2S two-photon transition frequency — leading Bohr/Rydberg closed form",
+  "iso_stamp": "2026-05-25T09-13-09Z",
+  "physics": {
+    "level_energy": "E_n = − R∞·h·c / n²  (point-nucleus, leading order)",
+    "transition_energy": "ΔE = R∞·h·c·(1/1² − 1/2²) = (3/4)·R∞·h·c",
+    "frequency_closed_form": "f_1S2S = ΔE/h = (3/4)·R∞·c",
+    "transition_factor": "1/1² − 1/2² = 3/4 = 0.75",
+    "constants": {
+      "R_inf_per_m": 1.0973731568e7,
+      "R_inf_source": "CODATA / atlas ALPHA-rydberg-constant",
+      "c_m_per_s": 2.99792458e8
+    },
+    "leading_frequency_Hz": 2.4673814701521856e15,
+    "leading_frequency_PHz": 2.4673814701521856,
+    "leading_frequency_approx": "≈ 2.4674 PHz ≈ 2467 THz"
+  },
+  "gap_to_measured": {
+    "measured_Hz": 2466061413187035,
+    "measured_PHz": 2.466061413187035,
+    "measured_source": "CODATA / ALPHA 2018 (anti)hydrogen 1S-2S, precision ≈ 2e-12",
+    "measured_over_leading_ratio": 0.9994649968,
+    "fractional_gap": 0.0005350031,
+    "dominant_correction": "reduced-mass factor m_e/(m_e+m_p) ≈ 0.999456 — accounts for nearly the entire 5.35e-4 gap; residual ~1e-5 is QED/Lamb-shift + finite-nuclear-size",
+    "honesty_note": "The leading (3/4)·R∞·c value does NOT reproduce the 15-digit measured frequency; the gap is the reduced-mass + QED/Lamb-shift correction, characterized above. No overclaim of 15-digit precision."
+  },
+  "cpt_context": {
+    "test": "matter H vs antimatter H̄ 1S-2S must agree to measured precision",
+    "alpha_2018_precision": "≈ 2e-12",
+    "absorbed": false,
+    "absorbed_reason": "The CPT-symmetry Δ (H vs H̄) requires a MEASURED oracle (real (anti)hydrogen spectroscopy) — a non-wet-lab closed form cannot adjudicate it. Per governance @D d5, absorbed stays false; this is downstream wet-lab confirmation. Honestly recorded, not flipped from a projection."
+  },
+  "verify": {
+    "tool": "hexa verify --expr (host=mini, POOL_DISABLE=1)",
+    "binary": "bin/hexa-verify (rebuilt from tool/verify_cli.hexa via tool/build_hexa_verify.sh)",
+    "functions_added": [
+      "transition_factor_1s2s() 0-arg → 1/1² − 1/2² = 0.75",
+      "h1s2s_rydberg(R∞, c) 2-arg → (3/4)·R∞·c·1e-15 [PHz]"
+    ],
+    "runs": [
+      {
+        "form": "hexa verify --expr transition_factor_1s2s 0.75",
+        "verdict_verbatim_label": "verify --expr transition_factor_1s2s()=0.75",
+        "verdict_verbatim_calc": "calc   = 0.75  ≈ expected 0.75  (|Δ|=1.11022e-16 ≤ ε=1e-9)",
+        "verdict_verbatim_tier": "tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+      },
+      {
+        "form": "hexa verify --expr h1s2s_rydberg 1.0973731568e7 2.99792458e8 2.4673814701521856",
+        "verdict_verbatim_label": "verify --expr h1s2s_rydberg(1.09737e+07,2.99792e+08)=2.46738",
+        "verdict_verbatim_calc": "calc   = 2.46738  ≈ expected 2.46738  (|Δ|=8.88178e-16 ≤ ε=1e-9)",
+        "verdict_verbatim_tier": "tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+      }
+    ],
+    "tier": "🟢 SUPPORTED-NUMERICAL (both: factor 3/4 + leading 2.46738 PHz)",
+    "self_judge": false
+  },
+  "governance": {
+    "d5": "absorbed=true ⇔ all non-wet-lab gates PASS — CPT Δ blocked on measured oracle ⇒ ANTIMATTER stays absorbed=false",
+    "d6": "first-principles physics, no fabricated number under goal pressure",
+    "g5": "verify via hexa CLI, verdict pasted verbatim — no LLM self-judgement"
+  }
+}
