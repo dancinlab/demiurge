@@ -9,7 +9,7 @@
 - [x] `cern + analyze` — pylhe LHE event-stats round-trip (synthetic e⁺e⁻→Z→µ⁺µ⁻, 100 events · `absorbed=false` GATE_OPEN)
 - [ ] `cern + verify` Geant4-MC — `particle` 모듈 부재 `engine_tool_gap` 해소 → Geant4 stopping-power 본해
 - [ ] Bethe-Bloch **Stage 4** — Geant4-MC parity (shell corr · density effect · straggling · nuclear stopping) → absorbed 판정
-- [ ] `cern + specify / architect / design / handoff` — 나머지 4-verb stub (lattice/optics deck → TDR handoff schema)
+- [x] `cern + specify / architect / design / handoff` — 나머지 4-verb honest stub: 타입드 record 4종 (`Cern{Specify,Structure,Design,Handoff}Record.swift`, R3 cockpit-consumer 디코드 타겟) + `cern.demi` cell 4종 STUB 정비 (`absorbed=false` · GATE_OPEN · `accel_mechanism` 필드 · `stub — <real impl>` caveat). 디스패치 = @D d4 manifest-driven (`CellrunDispatch.run("cern", verb)`, 새 producer class 0 · ActionDispatch 분기 0). substrate `stdlib/cern/{specify,structure,design,handoff}.py` 미작성 → cellrun rc=2 honest-skip. cockpit `swift build` GREEN
 - [ ] measured-ring optics parity — sourced LHC/FCC-ee/SPS deck + measured tune (현재 textbook FODO 한정)
 - [x] **탁상가속기** (LWFA/PWFA) — `plasma-wakefield` cell 개시: cold-linear closed-form (ω_p · λ_p · E_0 Dawson) hexa-native, selftest 5/5 GREEN + 2 verify atom 🟢 (`hexa-lang` PR #1007). 커지면 `LPA.md` lazy-split
 - [ ] `plasma-wakefield` WarpX/FBPIC PIC 본해 — closed-form scaling 위에 1-D/2-D 비선형(blowout) PIC 해석 (탁상가속기 design-grade)
@@ -39,13 +39,13 @@ CERN (도메인)
 
 | verb | 오픈소스 | 본 도메인 cell 상태 |
 |---|---|---|
-| 명세 SPECIFY | (physics case / CDR) | — stub 미작성 |
-| 구조 ARCHITECT | (ring/lattice topology) | — stub 미작성 |
-| 설계 DESIGN | **MAD-X** · **Xsuite** | — (Xsuite synth 가 사실상 대행) |
+| 명세 SPECIFY | (physics case / CDR) | ◐ honest stub — `CernSpecifyRecord` + `cern.demi` STUB cell (CDR target 필드 슬롯 · GATE_OPEN · substrate 미작성 rc=2) |
+| 구조 ARCHITECT | (ring/lattice topology) | ◐ honest stub — `CernStructureRecord` + STUB cell (FODO/TME/DBA 슬롯 §6 · GATE_OPEN · rc=2) |
+| 설계 DESIGN | **MAD-X** · **Xsuite** | ◐ honest stub — `CernDesignRecord` + STUB cell (MAD-X SEQUENCE deck 슬롯 · GATE_OPEN · rc=2) · synth 가 사실상 대행 |
 | 해석 ANALYZE ⟲ | **elegant** · **Xsuite** · WarpX/BLAST | ✓ pylhe LHE stats · ◐ xsuite analyze |
 | 합성 SYNTHESIZE | MAD-X/Xsuite optics matching | ✓ Xsuite FODO twiss (absorbed=true) |
 | 검증 VERIFY | **Geant4** · elegant · MAD-X survey | ✓ Bethe-Bloch hexa-native · ⏭ Geant4-MC |
-| 인계 HANDOFF | (TDR → construction) | — stub 미작성 |
+| 인계 HANDOFF | (TDR → construction) | ◐ honest stub — `CernHandoffRecord` + STUB cell (TDR deliverable-slot schema · GATE_OPEN · rc=2) |
 
 > 상용 우위 집중 영역 = 3-D RF-cavity + 초전도자석 EM 설계 (CST/OPERA) + 전체
 > FLUKA shielding. 오픈 빔-옵틱스/트래킹 레이어는 성숙·운용 가능 (`domains/cern.md` §3·§4).

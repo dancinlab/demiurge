@@ -2,6 +2,15 @@
 
 Append-only history sister of `CERN.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T10:40Z — 나머지 4-verb honest stub 스캐폴드 (specify · architect · design · handoff)
+
+- [x] 타입드 record 4종 추가 — `Models/Cern{Specify,Structure,Design,Handoff}Record.swift` (R3 cockpit-consumer 디코드 타겟, `CernSynthRecord`/`FirmwareSpecifyRecord` 패턴 동형). 공통 정직 gate 필드: `measurement_gate=GATE_OPEN` · `absorbed=false` · `scope_caveats[0]="stub — <real impl 이 할 일>"` · `accel_mechanism`(CERN.md §1.5 축 선행) · domain-specific headline (specify=target field/energy/luminosity · structure=FODO/TME/DBA+cell count · design=MAD-X/Xsuite deck slot · handoff=TDR deliverable-slot 매니페스트)
+- [x] 디스패치 등록 = **@D d4 manifest-driven** — 새 producer class 0개 · `ActionDispatch` 분기 0개. `domains/cern.demi` 의 `[cell.{specify,structure,design,handoff}]` 4 cell 을 UNWIRED→STUB 로 정비 (`python_candidates` + `accel_mechanism=rf_cavity` + `stub — <real impl>` caveat 3종/cell). 런타임 경로: `(verb,"cern")` 미하드코딩 → `ActionDispatch` default arm → `CellrunDispatch.run("cern", verb)` → `cellrun.hexa cern <verb>` → `cern.demi` cell 읽음
+- [x] honest gap 유지 — substrate `stdlib/cern/{specify,structure,design,handoff}.py` (hexa-lang d3 SSOT) 미작성이라 cellrun rc=2 (script-missing) honest-skip. record 는 substrate 가 채울 디코드 타겟일 뿐, 가짜 physics 0 (g3)
+- [x] cockpit `swift build` GREEN (Build complete! 29.6s · 신규 경고 0 · 기존 RealityKit actor-isolation 경고만)
+- [x] 보드 갱신 — milestone L12 `[x]` · §1 verb 표 4 row (SPECIFY/ARCHITECT/DESIGN/HANDOFF → ◐ honest stub)
+- [ ] substrate 본해 — `stdlib/cern/{specify,structure,design,handoff}.py` 작성 시 STUB→WIRED 승격 (hexa-lang repo, 별 cycle)
+
 ## 2026-05-25T09:25Z — plasma-wakefield cell 착수 (탁상가속기 첫 cell · 🟢 verified · landed)
 
 - [x] `stdlib/cern/plasma_wakefield.hexa` 작성 — clean-room cold-linear wakefield closed-form (ω_p · λ_p · E_0 Dawson 1959 / Esarey RMP 2009), NOT a WarpX re-derivation
