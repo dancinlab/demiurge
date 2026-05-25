@@ -37,7 +37,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 ### Phase B — 부수 5축 흡수 (hexa-ufo sub-axes)
 
 - [x] HEXA-HOVER 축 흡수 — hover-canon Meissner levitation 사양 → UFO/hover 통합 (manifest + README · RTSC 48T 솔레노이드 cross-link · HTS REBCO 1차 도체 · Earnshaw active feedback) LANDED PR pending
-- [ ] HEXA-GRAV 축 흡수 — gravity-wave-canon + quantum-gravity-sensor-canon → UFO/grav 통합
+- [x] HEXA-GRAV 축 흡수 — gravity-wave-canon + quantum-gravity-sensor-canon → UFO/grav 통합 (manifest + README · GW LIGO 미니어처 h~10⁻²³ arm 1-10m · atom-IF Δg~10⁻¹¹g + SQUID σ·τ=48 fT/√Hz · RTSC mu-metal×5 EM/관성 separation · 4 falsifier preregister) LANDED PR pending
 - [ ] HEXA-CLOAK 축 흡수 — cloak-canon EM 가시성 차단 layer → UFO/cloak 통합
 - [ ] HEXA-TELEPORT 축 흡수 — teleport quantum-entangle protocol → UFO/teleport 통합
 - [x] HEXA-SIM 축 흡수 — 디지털트윈 sim 엔진 (CFD + EM + 추진 통합) → UFO/sim 통합 LANDED PR pending
@@ -45,7 +45,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 ### Phase C — demiurge 7-verb pipeline (spec → handoff)
 
 - [x] verb-1 spec — 1인승 통합 비행체 사양 명세 (페이로드/항속/고도/안정성/추진 stage matrix) **LANDED** (PR#187 · `UFO/spec/integrated-vehicle-spec.md` + `.tape` · 7-stage matrix · 1인승 LSS 12h · gyro x3 + jet x6 + EM trim 2x redundancy · RTSC/FUSION/ANTIMATTER record consume contract · hexa-ufo HEXA-Disc 1890-LOC 흡수 ledger)
-- [ ] verb-2 structure — frame + 자석 어셈블리 + stage 모듈 인터페이스 정의
+- [x] verb-2 structure — frame + 자석 어셈블리 + stage 모듈 인터페이스 정의 **LANDED** (PR pending · `UFO/structure/integrated-vehicle-structure.md` + `.tape` · 디스크 lenticular OML D=6.0m H=1.6m · 5 bay layout · RTSC 솔레노이드 x6 등각 array + gyro CMG x3 + flux-pin · 6-slot stage mount 표 · 응력 budget 650kg/SF=2.5 · LC-1~5 카탈로그)
 - [ ] verb-3 design — closed-form 통합 설계 (stages 1-3 실설계 · 4-7 falsifier-only)
 - [ ] verb-4 analyze ⟲ — CFD + EM 자장 + 응력 + 열관리 통합 sim 반복 수렴
 - [ ] verb-5 synthesize — BOM + 도면 + firmware 산출물
