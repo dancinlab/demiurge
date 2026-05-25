@@ -9,9 +9,12 @@
 - [x] H₃X 5/8 LANDED + d7 wall α²F grid ceiling 100 meV 정량 식별
 - [x] BEE-NET grid-extended (101→140 meV) fine-tune launch — Vast 37496985 4-shard
 - [x] h3cl 8³q convergence (stable #1 Tc 확정) — ubu-1 ALL DONE · λ_BZ=1.21–1.37 · ω_log~1350K · Tc(μ0.10)=123–140K · broadening plateau · Tc 🟢 hexa verify (allen_dynes_tc=140.324, |Δ|=2.8e-11)
-- [ ] h3o anharmonic SSCHA 안정화 — imaginary mode (−682 cm⁻¹) renormalization
-- [ ] ambient-stable hydride 탐색 (§9.10 N5 funnel · 압력 < 50 GPa 후보)
-- [ ] 압력 < 50 GPa AND stable AND Tc > 200K 후보 발견
+- [ ] h3o anharmonic SSCHA 안정화 — imaginary mode (−682 cm⁻¹) renormalization · **진행 중** (pop 5 · imaginary→real 확정 조짐 · anharmonic Tc pending — 완료 아님, anharmonic dyn 수렴 + EPC 재계산 남음)
+- [ ] ambient-stable hydride 탐색 (§9.10 N5 funnel · 압력 < 50 GPa 후보) · **부분 진척** (N5 5 candidate parse 완료 — h3o·h3si·h3po·h3f·h3br · 그중 h3br·h3si·h3f stable 발견 · 단 M8 0/5 미달이라 flip 아님)
+- [ ] 압력 < 50 GPa AND stable AND Tc > 200K 후보 발견 · M8 **0/5 (정직)** — Tc > 200K 충족 후보 0건 (N5 stable 후보는 low-Tc / unstable-high-Tc 양분 · d6 honest)
+- [ ] h3o anharmonic λ 재계산 (SSCHA dyn → ph.x EPC → anharmonic Tc · /gap #1) — SSCHA 안정화 후 필수 후속 (harmonic λ 폐기, anharmonic α²F 로 Tc 재산정)
+- [ ] h3br ω_log 향상 probe (stable strong-λ base · 압력/lighter substitution → Tc ∝ ω_log) — N5 breakthrough (stable·강λ 확보, ω_log bottleneck 만 남음)
+- [ ] N5 wall 재정의 — λ-포화 → ω_log bottleneck 축 전환 (h3o unstable↔h3br stable-low-Tc 대조 — λ 는 충분, ω_log·dynamical stability 가 진짜 벽)
 - [x] wet-lab handoff (Tier 2 recipe-as-record · §8 4-tier 경유) — h3cl recipe `exports/material_discovery/rtsc_h3cl_tier2_wetlab_handoff_20260524.json` · EOS 합성압력 **200.5 GPa @ Tc 구조** pinned (`rtsc_h3cl_eos_im3m_20260524.json`, ubu-1) · pressure-executable (잔여: Cl precursor·metastability = partner/optional)
 - [ ] measured-oracle PASS → RTSC absorbed=true (최종 d5 invariant 충족)
 
@@ -24,6 +27,13 @@
 - [x] V3 🟢 push — Allen-Dynes Tc 10/10 🟢 SUPPORTED-NUMERICAL (h3cl·h3o·h3f·h3si·h3se·h3te·h3po·H₃S·CaH₆ · hexa verify libm, |Δ|≤1e-9) → `RTSC/verify/V3_numerical_recompute.md`
 - [x] V4 final tier ledger — V1+V2+V3 통합 (🔵14·🟢30·🟡12·🟠6·🔴3·⚪4) + V2→V3 escalation(PR #745 gap 닫힘) + 🟠 wet-lab→M9 + absorbed=false 정직 명시 → `RTSC/verify/V4_tier_ledger.md`
 
+> **sub-track note — NOVEL-TOOL cross-ref (2026-05-25)**: NOVEL-TOOL 13 stdlib
+> primitive (Wheeler 인덕턴스·elliptic 적분·gauss 구적·welford 누적분산 등) 가
+> atlas tier 승급 + register 진단으로 land (NOVEL-TOOL#135). 이 primitive 들은
+> RTSC 도구 기반 — §5 Axis C 의 "scipy closed-form parallel verifier (Wheeler
+> formula on-axis B)" 및 V2/V3 hexa verify recompute 를 가속 (magnet 검증·numerical
+> Tc recompute 둘 다 stdlib-native 로 흡수). cross-ref only — RTSC 자체 milestone
+> 카운트 변동 없음.
 
 > Root-level domain expansion. SSOT for "the rtsc work" until each axis
 > moves to its own UPPERCASE.md (ai-native principle 4 — domain-meta-domain).
