@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+# ============================================================================
+#  run — mesh + solve the UFO disc frame, LC-1..5 inertial G-load FEA (ccx).
+#  (extension-less per project.tape .hexa marker; invoke: bash run [dry])
+# ----------------------------------------------------------------------------
+#  Pipeline:
+#     1. gmsh  : disc_frame.geo -> .inp  (3-D quadratic tets C3D10, +NSETs)
+#     2. build : strip gmsh inp -> mesh.inc  (NODE + C3D10 + NSET=RIM only)
+#     3. for each LC in {1,3,9,6,12} G:
+#          write load.inc (*DLOAD GRAV N*9.81) -> ccx disc_frame.master
+#          -> extract max von Mises from the .frd stress block.
+#     4. emit RESULTS.txt : LC | G | sigma_vm_max [MPa] | SF vs sigma_allow.
+#
+#  USAGE:
+#     bash run            full solve (all 5 load cases)
+#     bash run dry        @D d16 free dry-run: mesh + 1 LC pre-check only
+#
+#  BINARIES (override via env GMSH_BIN / CCX_BIN):
+#     mini (conda env `fea`): gmsh + ccx on PATH after `conda activate fea`.
+#  CFRP T700 quasi-isotropic allowable: sigma_allow = 600 MPa (rupture
+#  1500 MPa / SF 2.5); structure s5.2.  SF reported = sigma_allow/sigma_vm.
+# ============================================================================
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$HERE"
+
+GMSH_BIN="${GMSH_BIN:-$(command -v gmsh || echo gmsh)}"
+CCX_BIN="${CCX_BIN:-$(command -v ccx  || echo ccx)}"
+MODE="${1:-full}"
+GEO="$HERE/disc_frame.geo"
+MASTER="$HERE/disc_frame.master.inp"
+
+SIGMA_ALLOW_MPA=600.0   # CFRP T700 QI rupture 1500 / SF 2.5  (structure s5.2)
+
+echo "[run] gmsh = $GMSH_BIN"
+echo "[run] ccx  = $CCX_BIN"
+echo "[run] mode = $MODE"
+
+# stale-output guard (MEMORY: truncate before exec or stale masks failure)
+rm -f "$HERE"/RESULTS.txt "$HERE"/disc_frame.frd "$HERE"/disc_frame.dat \
+      "$HERE"/mesh.inc "$HERE"/load.inc "$HERE"/gmsh_raw.inp
+
+# ---- 1. mesh ---------------------------------------------------------------
+echo "[run] meshing 3-D disc (C3D10, +groups-of-nodes) ..."
+"$GMSH_BIN" "$GEO" -3 -order 2 -format inp \
+    -setnumber Mesh.SaveGroupsOfNodes 1 -o "$HERE/gmsh_raw.inp" 2>&1 | tail -3
+
+# ---- 2. build mesh.inc : NODE + C3D10 (ELSET=Volume1) + NSET=RIM ----------
+echo "[run] building mesh.inc (NODE + C3D10 + NSET=RIM) ..."
+awk '
+  BEGIN{ keep=0 }
+  # NODE block: keep verbatim
+  /^\*NODE/                 { keep=1; print; next }
+  # C3D10 element block (gmsh ELSET=Volume1): force ELSET=Volume1, keep
+  /^\*ELEMENT, *type=C3D10/ { keep=1; print "*ELEMENT, type=C3D10, ELSET=Volume1"; next }
+  # NSET=RIM block: keep verbatim
+  /^\*NSET, *NSET=RIM/      { keep=1; print; next }
+  # any other keyword line: stop keeping
+  /^\*/                     { keep=0; next }
+  keep                      { print }
+' "$HERE/gmsh_raw.inp" > "$HERE/mesh.inc"
+
+NNODE=$(awk '/^\*NODE/{f=1;next}/^\*/{f=0}f&&NF{n++}END{print n+0}' "$HERE/mesh.inc")
+NELEM=$(awk '/type=C3D10/{f=1;next}/^\*/{f=0}f&&NF{n++}END{print n+0}' "$HERE/mesh.inc")
+NRIM=$(awk '/^\*NSET, *NSET=RIM/{f=1;next}/^\*/{f=0}f{for(i=1;i<=NF;i++)if($i+0>0)n++}END{print n+0}' "$HERE/mesh.inc")
+echo "[run] mesh.inc: nodes=$NNODE  C3D10=$NELEM  rim_nodes=$NRIM"
+
+# ---- load-case table -------------------------------------------------------
+LC_NAMES=( "LC-1 hover" "LC-2 cruise" "LC-3 orbital" "LC-4 landing" "LC-5 abort" )
+LC_G=(      1            3             9              6             12 )
+
+if [ "$MODE" = "dry" ]; then
+  LC_RANGE=(0)            # @D d16: mesh + 1 LC pre-check only
+  echo "[run] DRY mode: mesh + LC-1 pre-check only."
+else
+  LC_RANGE=(0 1 2 3 4)
+fi
+
+printf "# UFO disc frame — LC-1..5 inertial G-load FEA (CalculiX ccx)\n" >  "$HERE/RESULTS.txt"
+printf "# sigma_allow = %.1f MPa (CFRP T700 QI, structure s5.2) · SF_req = 2.5\n" "$SIGMA_ALLOW_MPA" >> "$HERE/RESULTS.txt"
+printf "# %-13s %4s %14s %10s %8s\n" "case" "G" "sigma_vm[MPa]" "SF" "verdict" >> "$HERE/RESULTS.txt"
+
+# ---- 3. solve each LC ------------------------------------------------------
+for i in "${LC_RANGE[@]}"; do
+  G="${LC_G[$i]}"
+  NAME="${LC_NAMES[$i]}"
+  GRAV=$(awk "BEGIN{printf \"%.4f\", $G*9.81}")
+  echo "[run] ---- $NAME ($G G · GRAV=$GRAV m/s2) ----"
+  cat > "$HERE/load.inc" <<EOF
+*DLOAD
+Volume1, GRAV, $GRAV, 0.0, 0.0, -1.0
+EOF
+  cp "$MASTER" "$HERE/disc_frame.inp"
+  rm -f "$HERE/disc_frame.frd" "$HERE/disc_frame.dat"
+  "$CCX_BIN" -i "$HERE/disc_frame" > "$HERE/ccx_LC${G}G.log" 2>&1 || {
+    echo "[run] ccx FAILED for $NAME — tail of log:"; tail -20 "$HERE/ccx_LC${G}G.log"; exit 1; }
+
+  # ---- extract max von Mises from .frd STRESS block -----------------------
+  # .frd nodal stress record:  -1 <node> SXX SYY SZZ SXY SYZ SZX
+  # (CalculiX writes 6 components per node in the STRESS block).
+  VM=$(awk '
+    /STRESS/ { instr=1 }
+    instr && /^ -1/ {
+      sxx=$3; syy=$4; szz=$5; sxy=$6; syz=$7; szx=$8;
+      vm=sqrt(0.5*((sxx-syy)^2+(syy-szz)^2+(szz-sxx)^2)+3*(sxy^2+syz^2+szx^2));
+      if(vm>max)max=vm;
+    }
+    /^ -3/ { if(instr)instr=0 }
+    END{ printf "%.6e", max+0 }
+  ' "$HERE/disc_frame.frd")
+
+  VM_MPA=$(awk "BEGIN{printf \"%.3f\", $VM/1e6}")
+  SF=$(awk "BEGIN{ if($VM>0) printf \"%.2f\", $SIGMA_ALLOW_MPA*1e6/$VM; else print \"inf\" }")
+  VERD=$(awk "BEGIN{ sf=($VM>0)?$SIGMA_ALLOW_MPA*1e6/$VM:1e9; print (sf>=2.5)?\"PASS\":\"FAIL\" }")
+  printf "  %-13s %3dG  sigma_vm=%9.3f MPa  SF=%6s  -> %s\n" "$NAME" "$G" "$VM_MPA" "$SF" "$VERD"
+  printf "  %-13s %3dG %14.3f %10s %8s\n" "$NAME" "$G" "$VM_MPA" "$SF" "$VERD" >> "$HERE/RESULTS.txt"
+done
+
+echo "[run] ---- RESULTS.txt ----"
+cat "$HERE/RESULTS.txt"
+echo "[run] done."

@@ -1,0 +1,8 @@
+# UFO disc frame — LC-1..5 inertial G-load FEA (CalculiX ccx)
+# sigma_allow = 600.0 MPa (CFRP T700 QI, structure s5.2) · SF_req = 2.5
+# case             G  sigma_vm[MPa]         SF  verdict
+  LC-1 hover      1G          0.771     778.07     PASS
+  LC-2 cruise     3G          2.313     259.36     PASS
+  LC-3 orbital    9G          6.940      86.45     PASS
+  LC-4 landing    6G          4.627     129.68     PASS
+  LC-5 abort     12G          9.254      64.84     PASS

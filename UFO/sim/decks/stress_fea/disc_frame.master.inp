@@ -1,0 +1,53 @@
+** ==========================================================================
+**  disc_frame.master.inp  —  CalculiX (ccx) master deck for the UFO disc frame.
+**
+**  MODEL:  equivalent CFRP circular plate (a=3.0 m, t=0.040 m), full vehicle
+**          inertial G-load applied as a GRAV body load through an effective
+**          density rho_eff = m_total / V_plate (= 650 kg / 1.13097 m^3).
+**          This makes one GRAV body load = the entire 650 kg vehicle inertia
+**          uniformly distributed over the disc -> matches Kirchhoff uniform-
+**          load plate theory for closed-form cross-check (stress-fea.md).
+**
+**  Mesh (NODE + C3D10 + NSET=RIM) is produced by gmsh and injected by the
+**  `run` driver as  mesh.inc  (extension-less run; @D d16 free dry-run first).
+**
+**  BC:  RIM clamped (ENCASTRE) — frame-to-skirt attach ring.
+**  LOAD: *DLOAD GRAV, magnitude = N * 9.81  (N = G-factor of the load case).
+**        The G-factor is injected by `run` via -setnumber-style include
+**        (load.inc holds one *DLOAD line per LC).
+**
+**  MATERIAL: CFRP T700 quasi-isotropic (effective isotropic for the bending
+**            gate): E = 70 GPa, nu = 0.30.  Density carries the FULL vehicle
+**            mass (rho_eff), not just the 180 kg frame skin (see ledger s3).
+**  UNITS: SI  (m, Pa, kg, N).  Stress output in Pa.
+** ==========================================================================
+
+** ---- mesh: NODE, C3D10 elements (ELSET=Volume1), NSET=RIM ----------------
+*INCLUDE, INPUT=mesh.inc
+
+** ---- material : CFRP T700 quasi-isotropic (effective isotropic) -----------
+*MATERIAL, NAME=CFRP_T700
+*ELASTIC
+70.0E9, 0.30
+*DENSITY
+574.73
+
+** ---- section : assign material to the plate body -------------------------
+*SOLID SECTION, ELSET=Volume1, MATERIAL=CFRP_T700
+
+** ---- boundary : clamp the rim ring (all DOFs) ----------------------------
+*BOUNDARY
+RIM, 1, 3, 0.0
+
+** ---- step : static, inertial G-load via GRAV body load -------------------
+*STEP
+*STATIC
+** load.inc supplies:  *DLOAD \n Volume1, GRAV, <N*9.81>, 0, 0, -1
+*INCLUDE, INPUT=load.inc
+*NODE FILE
+U
+*EL FILE
+S
+*NODE PRINT, NSET=RIM
+RF
+*END STEP

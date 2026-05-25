@@ -542,3 +542,21 @@ deferred:
 deferred:
 - [ ] ④ 열 3-D conjugate-heat CFD/FEM body-solve (radiator fin 효율 · cold-mass 내부 gradient · plasma duct hotspot) — pool/cloud micro-exp (@D d7)
 - [ ] stdlib atom 등록 (`stefan_boltzmann_area` · `lumped_capacitance_tau` · `lhe_boiloff_rate`) → hexa-lang 별 PR (🟡→🟢 escalation)
+
+## 2026-05-26 — 응력 LC-1~5 FEA 게이트 🟠→🟢 (absorbed 차단 게이트 #5 · 외부 solver)
+
+- [x] **외부 solver 설치** — mini (macOS arm64) conda env `fea` = `conda create -n fea -c conda-forge calculix=2.23 gmsh` (ccx 2.23 + gmsh 4.15.2). `brew install calculix-ccx` 정식 formula **부재** 확인 → 태스크 지정 conda-forge fallback (free). hexa 포팅은 HEXA-PORT 별도목표.
+- [x] **deck** (@D d16 dry-run 선행) — `UFO/sim/decks/stress_fea/`:
+  - `disc_frame.geo` (gmsh 디스크 등가 원형판 a=3.0m · t=0.040m · C3D10 2차 tet)
+  - `disc_frame.master.inp` (ccx master: CFRP T700 QI E=70GPa·ν=0.30 · clamped rim · `*DLOAD,GRAV` 관성하중 · ρ_eff=574.7 로 전체 650kg 차량 관성 균일분포)
+  - `run` (extensionless driver: gmsh→mesh.inc awk strip→ccx LC loop→RESULTS, .frd STRESS 블록 von Mises 추출)
+- [x] **dry-run** (@D d16 free mini) — mesh 13886 node · 7038 C3D10 · 630 rim node clamped · LC-1 사전검증 PASS
+- [x] **full solve** (ccx 본해 5/5 LC) — σ_vm,max [MPa] = **0.771(1G) / 2.313(3G) / 6.940(9G) / 4.627(6G) / 9.254(12G)** → 全 PASS (σ_allow=600MPa CFRP T700 QI · **SF ≥ 64.8 ≫ 2.5**)
+- [x] **closed-form 교차검증** `UFO/sim/decks/stress_fea/stress_xcheck.hexa` — `hexa run` **17/17 PASS**: ① 선형성 σ_N/σ_1=G (rel<3e-4 · linear static) ② Kirchhoff bracket clamp≲FEA≲ss (fea/clamp=0.81 · 3-D solid vs thin-plate 정합) ③ SF ratio ≥2.5 ④ 정확 closed-form ratio σ(12)/σ(1)=12 · σ(9)/σ(3)=3. **대형 응력값 abs-ε 함정 회피 — 전부 무차원 ratio verify** (memory).
+- [x] `UFO/sim/decks/stress-fea.md` 한국어 ledger — solver/버전 · mesh · CFRP 물성 · LC-1~5 σ_max 표 · SF 충족 · cross-check verdict · HEXA-PORT 후보(ccx FEM 커널 hexa-native 포팅)
+- [x] `UFO/verify/V4_tier_ledger.md` §3 갱신 — 응력 게이트 🟠→🟢 · tier 🟢 12→13 · 🟠 3→2 (잔여 CFD·⟲) · absorbed=FALSE 유지
+- [x] @D d1 (본해 closed-form 닫힘) · d6 (SF 강제 금지 — 가벼운 디스크 하중의 자연 PASS · laminate/honeycomb/buckling/dynamic defer 정직) · d7 (mini free small-job) · d16 (dry-run 선행) · g5 (verdict verbatim) 준수
+
+deferred:
+- [ ] 응력 3-D laminate ply-by-ply / honeycomb-core sandwich / buckling(좌굴) / dynamic(impact transient) 본해 — pool/cloud (@D d7)
+- [ ] HEXA-PORT: CalculiX FEM 커널 hexa-native 포팅 (C3D10 강성행렬 조립 + 선형 정적 solve + von Mises 후처리) — 별도 도메인 목표
