@@ -29,10 +29,10 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 - [x] Stage-1 hover (Meissner / RT-SC 48T · 0~20km) — RTSC 자석 자산 흡수 + closed-form 부상력 verify 🟢 (3건 `ioffe_loop_bz` 🟢 SUPPORTED-NUMERICAL · atlas hash `663698a0` · `UFO/verify/stage1-hover-fields.md`) LANDED PR pending
 - [x] Stage-2 cruise (MHD + D-T/p-11B fusion · 20~200km) — FUSION 자산 흡수 + MHD 추진 verify 🟢 (3건 `triple_product` `F_MHD=J·B·V` 🟢 SUPPORTED-NUMERICAL |Δ|=0.0 저/중/고고도 · atlas hash `663698a0` folded @F verified-triple_product-num · `UFO/verify/stage2-cruise-mhd.md`) LANDED PR pending 🟢
 - [x] Stage-3 orbital (antimatter γ-rocket anti-H+H · 200km~1AU) — ANTIMATTER 자산 흡수 + I_sp verify 🟢 (3건 `pair_threshold_total`+`rel_kinetic_from_p`×2 🟢 SUPPORTED-NUMERICAL |Δ|=0.0 · annihilation E=2·m_p·c² → relativistic exhaust → I_sp=c/g 광자천장 3.06e7 s · atlas hash `663698a0` · `UFO/verify/stage3-orbital-gamma.md`) LANDED PR pending 🟢
-- [ ] Stage-4 warp (Alcubierre δ=1/σ R=n=6 · 1AU~galactic) — F-WARP-{1,2,3} preregister + lattice 일관성
-- [ ] Stage-5 wormhole (Morris-Thorne b₀=ℓ_Pl·σ throat · intergalactic) — F-WORM-{1,2,3} preregister
-- [ ] Stage-6 dim-jump (KK ladder 4D→6D→10D→11D→24D→26D) — F-DIM-{1,2,3} preregister
-- [ ] Stage-7 dim-use (τ=4 cycle (σ−φ)²=100c composite) — F-USE-{1,2,3,4} preregister
+- [x] Stage-4 warp (Alcubierre δ=1/σ R=n=6 · 1AU~galactic) — F-WARP-{1,2,3} preregister + lattice 일관성 (σ·τ=48 산술 닫힘) · `UFO/verify/stage4-7-falsifier-preregister.md` §1 LANDED PR pending (F-* preregister · UNPROVEN)
+- [x] Stage-5 wormhole (Morris-Thorne b₀=ℓ_Pl·σ throat · intergalactic) — F-WORM-{1,2,3} preregister · §2 LANDED PR pending (F-* preregister · UNPROVEN)
+- [x] Stage-6 dim-jump (KK ladder 4D→6D→10D→11D→24D→26D) — F-DIM-{1,2,3} preregister · §3 LANDED PR pending (F-* preregister · UNPROVEN)
+- [x] Stage-7 dim-use (τ=4 cycle (σ−φ)²=100c composite) — F-USE-{1,2,3,4} preregister · §4 LANDED PR pending (F-* preregister · UNPROVEN)
 
 ### Phase B — 부수 5축 흡수 (hexa-ufo sub-axes)
 
