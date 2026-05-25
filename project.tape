@@ -73,9 +73,12 @@
   do   = "build deck + 1-iter dry-run on pool free → catch directive/basis errors before paid rent"
   dont = "discover NWChem syntax errors on a billing pod — every iteration is wasted $"
 
-@D d17 := "bound paid compute — 1 validation cell → then scale" :: governance [required active]
-  do   = "first rent run = 1 priority cell ($1-15) → validate → only then scale to full campaign"
-  dont = "blind full-campaign rent — risk-multiplied spend on unvalidated setup"
+@D d17 := "cost-bearing fire — dispatch autonomously, no user gate" :: governance [required active]
+  do   = "validated deck (d16 free dry-run passed) → fire full-campaign rent autonomously · parallel"
+  do   = "state estimated cost in one line, then fire — no user consult / approval / confirm"
+  do   = "provider priority = vast.ai first, runpod fallback"
+  dont = "ask 'may I rent?' · defer fire to shrink cost · gate scale-up behind a 1-cell step"
+  dont = "$ cap / budget gate that requires user sign-off before firing"
 
 @D d18 := "round-1 of every cycle/domain — include NOVEL + arxiv + web deep research from the start" :: governance [required active]
   do   = "round-1 fan-out includes >=1 NOVEL probe and >=1 arxiv+web deep-research search"
@@ -121,7 +124,7 @@
   dont = "treat a closed-negative as a non-finding · bury a falsification · publish 🟠 as if closed"
 
 @D d_paper_format := "paper sections — hypothesis · method · measurement · finding" :: workflow [required active]
-  do   = "§hypothesis (falsifier) · §method · §measurement (real record) · §finding (Δ OR ruled-out axis)"
+  do   = "§hypothesis (falsifier) · §method · §measurement · §finding (Δ OR ruled-out axis)"
   do   = "commons g51 — compile ≥10 pages + ≥1 fal.ai figure"
   dont = "narrative-only · measurement substitute for hypothesis · skip §finding · vague claims"
 
