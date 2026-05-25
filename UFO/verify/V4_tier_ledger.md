@@ -80,6 +80,21 @@
      → absorbed = TRUE
 ```
 
+### 5.1 g69 BLUE-MAX 🔵-pair audit (도메인 finalization gate · 인용)
+
+`hexa verify --blue-max UFO` (`stdlib/verify/blue_max_audit.hexa` · hexa-lang PR#1185 UFO prefix 등록) 결과 VERBATIM:
+
+| tier | count |
+|---|---|
+| 🔵 SUPPORTED-FORMAL | 3 |
+| 🟢 SUPPORTED-NUMERICAL | 5 |
+| total | 8 |
+
+- 🔵-pair coverage = **2/5** — `pair_threshold_kinetic` · `pair_threshold_total` ⇒ 🔵 `pair_threshold_factor` (ANTIMATTER lineage)
+- ⚠ missing 🔵 pair (3): `rel_kinetic_from_p` · `ioffe_loop_bz` · `triple_product`
+
+**정직 (g67/g68)**: missing 3 은 전부 **reused cross-domain atom** — `ioffe_loop_bz`(RTSC) · `triple_product`(FUSION) · `rel_kinetic_from_p`(ANTIMATTER). 그 algebraic-root 🔵 sibling 보강은 **parent 도메인의 BLUE-MAX gate** 소관이며, UFO 는 reuse 소비자(star, not fork)라 자체 absorbed 와 독립. UFO 신규 🔵 (n=6 lattice σ·φ=24·n·τ=24·σ·τ=48 — V2 8개)는 별도 closed (`V2_formal_identities.md`). g69 gate = 인용 완료 (audit 실행 + tier matrix 기록).
+
 **CFD 🟡 를 PASS 로 보는 정직 판단 (@D d5 · d6 · 핵심)**: CFD 게이트의 본해(OpenFOAM simpleFoam RANS)는 **수렴**했고(163 iter · residual 1e-7 · mesh "OK") C_d=0.030·L/D=0.77 추출 + 문헌 교차검증 닫힘 = **비-wet-lab completed-form 본해 수렴 (@D d1)**. 🟡 tier 는 mesh-converged GCI(🟢) 가 아닌 coarse-mesh 단일 AoA + 정성 문헌비교라는 **정밀도** 사유의 보수 판정이지 **게이트 실패가 아니다** — 본해가 수렴했으므로 게이트는 PASS. GCI/DES 정밀화는 absorbed 와 무관한 downstream 정량 강화(deferred). 따라서 全 6 게이트 PASS → **absorbed=TRUE** 는 projection 이 아니라 실제 gate 결과의 종합이다 (@D d5 충족).
 
 **absorbed=TRUE 의 의미 · 경계 (정직)**:
