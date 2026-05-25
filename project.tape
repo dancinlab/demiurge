@@ -149,3 +149,11 @@
 @D d_discovery_log := "discoveries persist at .discoveries/<slug>.tape" :: workflow [required active]
   do   = "log every kick/gap discovery to `.discoveries/<slug>.tape` — id · seed · verdict-tier-target"
   dont = "discard discovery output · paraphrase findings · skip linking discovery → next-cycle claim"
+
+@D d19 := "intra-domain reuse lattice — atlas-first + provenance + INDEX.md" :: governance [required active]
+  do   = "before building a domain primitive, grep the atlas + sibling DOMAIN.md for a verified one"
+  do   = "inherit it — e.g. ANTIMATTER trap reuses RTSC current_loop_offaxis"
+  do   = "stamp each record with reused[] / provides[] cross-domain edges"
+  do   = "keep repo-root INDEX.md (cross-domain reuse graph) current"
+  dont = "rebuild a sibling domain's verified primitive · leave a reuse edge off INDEX.md"
+  dont = "link domains across repos — intra-project only"
