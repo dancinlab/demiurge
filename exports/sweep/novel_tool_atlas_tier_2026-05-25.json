@@ -1,0 +1,72 @@
+{
+  "batch": "novel_tool_atlas_tier",
+  "date": "2026-05-25",
+  "domain": "NOVEL-TOOL",
+  "goal": "13 stdlib primitive atlas tier 승급 (⚪ INSUFFICIENT → 🟢 SUPPORTED-NUMERICAL): canonical-root self-test 실행 → atlas register 시도 (가능분) → honest 진단",
+  "host": {
+    "exec_env": "mini canonical root (~/core/hexa-lang)",
+    "binary": "hexa.real (697920 B, May 23 19:10)",
+    "method": "origin/main(bf9f9840) 소스를 canonical root 에 additive-copy → working binary 로 self-test 실행 → 즉시 cleanup. #921 worktree-binary gap 회피 (worktree 의 cached runtime.o 는 _sqrt_pure 미포함 → linker fail; canonical root 의 runtime.o 만 정상).",
+    "note": "canonical root HEAD(9b0a01a1·#900) 는 origin/main(#924) 보다 뒤. 미존재 9개 파일은 origin/main 에서 copy. stdlib 파일 수정 0 (READ+run only, 실행 후 9개 copy 전부 삭제·canonical root 원상복구)."
+  },
+  "self_test": {
+    "summary": "13/13 PASS — 전부 sentinel __HEXA_..._PASS 출력 + N/N checks passed",
+    "sentinel_pattern": "__HEXA_STDLIB_<PATH>__ PASS",
+    "results": [
+      {"name": "wheeler",              "pr": "#892", "file": "stdlib/material/magnet/wheeler.hexa",            "checks": "5/5",  "sentinel": "__HEXA_STDLIB_MATERIAL_MAGNET_WHEELER__ PASS",            "self_test": "PASS"},
+      {"name": "solenoid_endleakage",  "pr": "#896", "file": "stdlib/material/magnet/solenoid_endleakage.hexa","checks": "5/5",  "sentinel": "__HEXA_STDLIB_MATERIAL_MAGNET_SOLENOID_ENDLEAKAGE__ PASS","self_test": "PASS"},
+      {"name": "elliptic_K_E",         "pr": "#897", "file": "stdlib/math/special/elliptic.hexa",              "checks": "8/8",  "sentinel": "__HEXA_STDLIB_MATH_SPECIAL_ELLIPTIC__ PASS",            "self_test": "PASS"},
+      {"name": "current_loop_offaxis", "pr": "#900", "file": "stdlib/material/magnet/current_loop_offaxis.hexa","checks": "7/7", "sentinel": "__HEXA_STDLIB_MATERIAL_MAGNET_CURRENT_LOOP_OFFAXIS__ PASS","self_test": "PASS"},
+      {"name": "mutual_M_coaxial",     "pr": "#902", "file": "stdlib/material/magnet/mutual_M_coaxial.hexa",   "checks": "6/6",  "sentinel": "__HEXA_STDLIB_MATERIAL_MAGNET_MUTUAL_M_COAXIAL__ PASS",  "self_test": "PASS"},
+      {"name": "ks_two_sample",        "pr": "#903", "file": "stdlib/stats/ks_two_sample.hexa",                "checks": "5/5",  "sentinel": "__HEXA_STDLIB_STATS_KS_TWO_SAMPLE__ PASS",              "self_test": "PASS"},
+      {"name": "gauss_legendre_6",     "pr": "#905", "file": "stdlib/math/quadrature/gauss_legendre.hexa",     "checks": "7/7",  "sentinel": "__HEXA_STDLIB_MATH_QUADRATURE_GAUSS_LEGENDRE__ PASS",    "self_test": "PASS"},
+      {"name": "demag_factor",         "pr": "#908", "file": "stdlib/material/magnet/demag_factor.hexa",       "checks": "5/5",  "sentinel": "__HEXA_STDLIB_MATERIAL_MAGNET_DEMAG_FACTOR__ PASS",      "self_test": "PASS"},
+      {"name": "welford",              "pr": "#909", "file": "stdlib/stats/welford.hexa",                      "checks": "5/5",  "sentinel": "__HEXA_STDLIB_STATS_WELFORD__ PASS",                    "self_test": "PASS"},
+      {"name": "halbach_envelope",     "pr": "#915", "file": "stdlib/material/magnet/halbach_envelope.hexa",   "checks": "5/5",  "sentinel": "__HEXA_STDLIB_MATERIAL_MAGNET_HALBACH_ENVELOPE__ PASS",  "self_test": "PASS"},
+      {"name": "logsumexp",            "pr": "#916", "file": "stdlib/math/logsumexp.hexa",                     "checks": "5/5",  "sentinel": "__HEXA_STDLIB_MATH_LOGSUMEXP__ PASS",                   "self_test": "PASS"},
+      {"name": "kahan_sum",            "pr": "#918", "file": "stdlib/math/kahan_sum.hexa",                     "checks": "5/5",  "sentinel": "__HEXA_STDLIB_MATH_KAHAN_SUM__ PASS",                   "self_test": "PASS"},
+      {"name": "lambert_w",            "pr": "#919", "file": "stdlib/math/special/lambert_w.hexa",             "checks": "5/5",  "sentinel": "__HEXA_STDLIB_MATH_SPECIAL_LAMBERT_W__ PASS",           "self_test": "PASS"}
+    ]
+  },
+  "atlas_register": {
+    "attempted": true,
+    "mechanism": "hexa atlas register --from-verify <fn> <args> <v> — recompute IN-PROCESS via tool/verify_cli.hexa::_recompute_float, gated by _is_float_fn whitelist",
+    "outcome": "0/13 registered — 전부 🟠 INSUFFICIENT (honest degrade), atlas 미등록",
+    "empirical_evidence": [
+      "register --from-verify lambert_w 1.0 0.5671432904097838  →  tier=🟠 INSUFFICIENT · reason=`hexa verify --expr lambert_w` has no calculator path · gap=add lambert_w to tool/verify_cli.hexa",
+      "register --from-verify wheeler 1.0 1.0  →  tier=🟠 INSUFFICIENT · reason=`hexa verify --expr wheeler` has no calculator path · gap=add wheeler to tool/verify_cli.hexa"
+    ],
+    "root_cause": "_recompute_float / _is_float_fn 은 ~67개 closed-form physics·stats fn 의 HARDCODED whitelist. 13개 NOVEL-TOOL primitive 중 0개가 whitelist 에 존재. register 의 두 arm (--from-verify, --from-drill) 어느 것도 stdlib primitive 의 self-test sentinel(__HEXA_..._PASS) 을 register 근거로 사용하지 못함 — sentinel-based / --from-selftest arm 부재.",
+    "diagnosis": "stdlib primitive → atlas register PATH 부재. 각 primitive 가 자체 self-test(N/N checks + FALSIFIERS + libm-recompute match) 를 들고 있어도, atlas register 는 verify_cli 의 별도 calculator path 를 요구 → primitive 의 self-test 와 register 의 recompute 가 분리된 두 시스템(@D g20 'single calc home' 위반 직전). 13개 전부 register-blocked.",
+    "honest_tier": "13개 모두 🟢-by-selftest (self-test sentinel PASS = libm-class numerical match, FALSIFIER 게이트 통과) — 그러나 atlas-registered 는 0개. '진짜 atlas-registered' = 0, 'self-test-only 🟢' = 13."
+  },
+  "tier_table": [
+    {"name": "wheeler",              "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "solenoid_endleakage",  "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "elliptic_K_E",         "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "current_loop_offaxis", "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "mutual_M_coaxial",     "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "ks_two_sample",        "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "gauss_legendre_6",     "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "demag_factor",         "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "welford",              "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "halbach_envelope",     "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "logsumexp",            "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "kahan_sum",            "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"},
+    {"name": "lambert_w",            "self_test": "🟢-by-selftest", "atlas_registered": false, "register_status": "🟠 blocked (no calc path)"}
+  ],
+  "counts": {
+    "self_test_pass": 13,
+    "self_test_fail": 0,
+    "atlas_registered": 0,
+    "self_test_only_green": 13,
+    "register_blocked": 13
+  },
+  "inbox_handoff": {
+    "needed": true,
+    "target_repo": "hexa-lang INBOX.log.md (또는 inbox/patches/)",
+    "slug": "stdlib-primitive-atlas-register-path-gap",
+    "summary": "stdlib primitive 의 self-test sentinel(__HEXA_..._PASS · libm-recompute match · FALSIFIER 게이트) 을 atlas register 근거로 사용할 PATH 부재. 현 register 는 verify_cli::_recompute_float whitelist(~67 fn) 만 인정. 제안: (a) `hexa atlas register --from-selftest <hexa-file>` arm 추가 — sentinel PASS 시 🟢 SUPPORTED-NUMERICAL 등록, OR (b) NOVEL-TOOL primitive 13개를 _recompute_float/_is_float_fn 에 일괄 등록 (@D g20 single-calc-home 준수). (a) 가 d4 single-generic-dispatch 정신에 부합 (per-primitive 하드코딩 회피).",
+    "governance_link": "@D g20 single calc home · d4 single generic dispatch"
+  }
+}

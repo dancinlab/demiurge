@@ -2,7 +2,27 @@
 
 Append-only history sister of `NOVEL-TOOL.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
-## 2026-05-25T07:30Z — cycle round 1·2 batch land (6/6 milestones done)
+## 2026-05-25 — 13 stdlib primitive atlas tier 승급: self-test 13/13 PASS · atlas-register 0/13 (path gap, honest)
+
+자료: `exports/sweep/novel_tool_atlas_tier_2026-05-25.json`
+
+### self-test 13/13 PASS (canonical root · mini `~/core/hexa-lang`)
+
+- [x] 13개 primitive 전부 self-test sentinel `__HEXA_STDLIB_<PATH>__ PASS` 출력 (N/N checks passed + FALSIFIERS 게이트 통과)
+  - 실행법: origin/main(bf9f9840·#924) 소스를 canonical root 에 additive-copy → working `hexa.real` 로 실행 → 즉시 cleanup (canonical root 원상복구, stdlib 수정 0). #921 worktree-binary gap 회피 (worktree cached runtime.o 는 `_sqrt_pure` 미포함 → linker fail; canonical root runtime.o 만 정상).
+  - wheeler #892 (5/5) · solenoid_endleakage #896 (5/5) · elliptic_K_E #897 (`special/elliptic.hexa`, 8/8) · current_loop_offaxis #900 (7/7) · mutual_M_coaxial #902 (6/6) · ks_two_sample #903 (5/5) · gauss_legendre_6 #905 (`quadrature/gauss_legendre.hexa`, 7/7) · demag_factor #908 (5/5) · welford #909 (5/5) · halbach_envelope #915 (5/5) · logsumexp #916 (5/5) · kahan_sum #918 (5/5) · lambert_w #919 (`special/lambert_w.hexa`, 5/5)
+
+### atlas register 0/13 — 🟠 INSUFFICIENT (honest: register path gap)
+
+- [x] `hexa atlas register --from-verify <fn> ...` 시도 → 13개 전부 🟠 INSUFFICIENT
+  - 실증: `register --from-verify lambert_w 1.0 0.5671...` → `tier=🟠 INSUFFICIENT · reason=hexa verify --expr lambert_w has no calculator path · gap=add lambert_w to tool/verify_cli.hexa`. wheeler 동일.
+  - root cause: register 의 recompute 는 `tool/verify_cli.hexa::_recompute_float` / `_is_float_fn` HARDCODED whitelist(~67 closed-form fn) 만 인정. NOVEL-TOOL 13개 primitive 중 0개가 whitelist 에 존재. register 두 arm(`--from-verify`·`--from-drill`) 어느 것도 stdlib self-test sentinel 을 register 근거로 못 씀 — `--from-selftest` arm 부재.
+  - 정직한 tier: 13개 모두 **🟢-by-selftest** (sentinel PASS = libm-class numerical match + FALSIFIER 게이트) — 그러나 **atlas-registered = 0**. "진짜 atlas-registered" 0 / "self-test-only 🟢" 13.
+
+### INBOX handoff 후보 (hexa-lang)
+
+- [ ] slug `stdlib-primitive-atlas-register-path-gap` → hexa-lang INBOX.log.md
+  - 제안 (a) `hexa atlas register --from-selftest <hexa-file>` arm: sentinel PASS 시 🟢 SUPPORTED-NUMERICAL 등록 (d4 single-generic-dispatch 부합, per-primitive 하드코딩 회피) · (b) 13개를 `_recompute_float`/`_is_float_fn` 에 일괄 등록 (@D g20 single-calc-home 준수). (a) 선호.
 
 ### round 1 · /cycle (3 milestones)
 
