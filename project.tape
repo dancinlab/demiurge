@@ -76,3 +76,7 @@
 @D d17 := "bound paid compute — 1 validation cell → then scale" :: governance [required active]
   do   = "first rent run = 1 priority cell ($1-15) → validate → only then scale to full campaign"
   dont = "blind full-campaign rent — risk-multiplied spend on unvalidated setup"
+
+@D d18 := "round-1 of every cycle/domain — include NOVEL + arxiv + web deep research from the start" :: governance [required active]
+  do   = "round-1 fan-out includes >=1 NOVEL probe and >=1 arxiv+web deep-research search"
+  dont = "round-1 with only incremental milestones · skip lit grounding · defer NOVEL to later round"
