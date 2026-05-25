@@ -1,20 +1,172 @@
-% TODO (batch 6): fold the 16 (full 15-row) session PRs with diff-stat here.
-% Source: companion/pr-roll.json (repo / number / title / merged_at /
-%   files_changed / lines_added / lines_deleted / gate / role).
 \section{Pull-Request Roll}
 \label{app:pr-roll}
 
-This appendix is the verbatim transcription of the
-\texttt{companion/\allowbreak pr-roll.json} session pull-request roll.
-It will be rendered as a longtable, one row per PR, carrying every
-field from the JSON record:
-the \texttt{repo} (hexa-lang stdlib SSOT vs.\ demiurge paper home), the
-PR \texttt{number}, the \texttt{title}, the \texttt{merged\_at}
-timestamp, the \texttt{gh}-measured diff-stat (\texttt{files\_changed},
-\texttt{lines\_added}, \texttt{lines\_deleted}), the \texttt{gate} it
-serves, and its \texttt{role} in the dependency chain.
+This appendix is the transcription of the
+\texttt{companion/\allowbreak pr-roll.json} session pull-request roll:
+every merged PR that produced this paper, with its \texttt{gh}-measured
+diff-stat. The records carry no synthetic data --- \texttt{merged\_at},
+\texttt{files\_changed}, and the line counts are read back from
+\texttt{gh pr view {-}{-}json}. Fifteen PRs landed: twelve in the
+hexa-lang stdlib SSOT (the kernels and adapters), and three in the
+demiurge paper/domain home (the domain pointers and absorption
+signoffs). They are presented grouped by repository, in dependency
+order matching the Reproducibility landing list (\S\ref{sec:repro}).
 
-The PRs are presented in dependency order, matching the
-Reproducibility section's landing list (\S\ref{sec:repro}): the
-hexa-lang stdlib PRs (\#1012 \ldots \#1102) followed by the demiurge
-paper-home PRs. Data source: \texttt{companion/pr-roll.json}.
+\subsection{hexa-lang stdlib PRs (the implementation home)}
+\label{app:pr-roll:hexalang}
+
+The twelve hexa-lang PRs carry all of the funnel's implementation: the
+closed-form kernels, the F-funnel ranker, the three wrap-and-fix
+adapter promotions, the closed-form parity anchor, the git-LFS infra,
+and the BLUE-MAX audit. Together they add \textbf{3238} lines and remove
+\textbf{29} across \textbf{25} file touches (sum of
+Table~\ref{tab:app:prroll:hexalang}).
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{rlrrl}
+\toprule
+\# & merged (UTC) & files & $\pm$ lines & gate \\
+\midrule
+1012 & 05-25 09:25 & 3 & $+559/-0$  & (a) reactivity + (b) Lawson \\
+1020 & 05-25 10:51 & 2 & $+385/-0$  & F-funnel composite \\
+1027 & 05-25 11:09 & 4 & $+332/-0$  & (d) MHD stability \\
+1032 & 05-25 11:10 & 1 & $+301/-0$  & (c) Grad--Shafranov \\
+1042 & 05-25 11:26 & 1 & $+458/-0$  & (e) HTS TF magnet \\
+1054 & 05-25 11:44 & 3 & $+241/-1$  & (a) reactivity (aneutronic) \\
+1075 & 05-25 12:16 & 1 & $+20/-10$  & (c) Grad--Shafranov \\
+1078 & 05-25 12:31 & 1 & $+419/-0$  & (f) TBR neutronics \\
+1084 & 05-25 12:39 & 2 & $+38/-0$   & (e) HTS TF magnet \\
+1090 & 05-25 12:48 & 2 & $+33/-0$   & infra (HEXA-PORT P4b prep) \\
+1095 & 05-25 13:02 & 4 & $+429/-18$ & (e) HTS TF magnet \\
+1102 & 05-25 13:18 & 1 & $+23/-0$   & BLUE-MAX audit \\
+\bottomrule
+\end{tabular}
+\caption{The twelve hexa-lang stdlib PRs (dancinlab/hexa-lang), in
+dependency order. Diff-stats are \texttt{gh}-measured. The keystone is
+\#1012 (the F1/F2 closed-form kernels); the three wrap-and-fix
+promotions are \#1075 (FreeGS), \#1078 (OpenMC), and \#1095 (GetDP).}
+\label{tab:app:prroll:hexalang}
+\end{table}
+
+\paragraph{\#1012 --- F1/F2 keystone closed-form kernels
+($+559$, 3 files).}
+The Bosch--Hale $\langle\sigma v\rangle(T)$ reactivity (gate~a) and the
+Lawson triple-product / $Q_{\text{plasma}}$ closed-form kernels
+(gate~b). This is the keystone PR: every other closed-form atom and the
+F-funnel ranker depend on it.
+
+\paragraph{\#1020 --- F-funnel composite ranker ($+385$, 2 files).}
+The design-point $(a)\!\times\!(b)$ composite ranker that consumes the
+\#1012 kernels and emits a top-$K$ JSON of operating points.
+
+\paragraph{\#1027 --- ideal-MHD $\beta$-limit ($+332$, 4 files).}
+The gate-(d) Troyon $\beta$-limit, the Wesson cylindrical $q^{*}$, and
+the kink criterion as closed-form kernels --- the source of the
+load-bearing $q^{*}$-constant identity (Appendix~\ref{app:bluemax}).
+
+\paragraph{\#1032 --- FreeGS Grad--Shafranov wrap ($+301$, 1 file).}
+The gate-(c) free-boundary equilibrium wrap, landed initially as an
+install-gated honest-skip stub --- the configuration that PR~\#1075
+later had to fix.
+
+\paragraph{\#1042 --- HTS REBCO TF-coil field-margin gate
+($+458$, 1 file).}
+The gate-(e) \texttt{magnet\_gate} adapter, delegating to the RTSC HTS
+substrate, with a closed-form $1/R$ field baseline (the pre-bridge
+path, before the GetDP FEM bridge of \#1095).
+
+\paragraph{\#1054 --- p--$^{11}$B aneutronic reactivity
+($+241/-1$, 3 files).}
+The aneutronic fuel axis: the p--$^{11}$B $\langle\sigma v\rangle(T)$
+kernel on the Tentori--Belloni 2023 / Nevins--Swain 2000 framework
+(reactivity \emph{shape} only --- see \S\ref{sec:keystone}).
+
+\paragraph{\#1075 --- FreeGS wrap-and-fix ($+20/-10$, 1 file).}
+The first wrap-and-fix: the \#1032 stub's divergent custom coils were
+replaced by the canonical \texttt{TestTokamak} preset with
+\texttt{freeBoundaryHagenow} closure, and a stderr redirect stopped the
+``No O points'' warning from corrupting the JSON output line. Captures
+the P1 parity oracle ($q_{95}\approx10.08$).
+
+\paragraph{\#1078 --- OpenMC TBR real-transport adapter
+($+419$, 1 file).}
+The second wrap-and-fix: a transport-less \texttt{.py} gate-classifier
+stub was superseded by a real \texttt{.hexa} OpenMC adapter that builds
+the breeder geometry and runs a 5M-history transport, validating
+$\text{TBR}=1.3222\pm0.0004$. Captures the P4 parity oracle.
+
+\paragraph{\#1084 --- closed-form solenoid anchor ($+38$, 2 files).}
+The thick-finite-solenoid on-axis $B_z$ closed-form atom
+(\verb|solenoid_axis_bz|), registered as the load-bearing parity anchor
+for the GetDP FEM bridge --- the HEXA-PORT P2 oracle anchor.
+
+\paragraph{\#1090 --- git-LFS infra ($+33$, 2 files).}
+HEXA-PORT P0.5: git-LFS scaffolding (\texttt{.gitattributes} patterns +
+README section) for future data-bound corpora, the storage carrier for
+the deferred ENDF/B-VIII corpus (Appendix~\ref{app:hexaport}).
+
+\paragraph{\#1095 --- GetDP FEM bridge promote ($+429/-18$, 4 files).}
+The third wrap-and-fix: a hexa-native GetDP driver (\texttt{solenoid\_%
+solve}) closes the HEXA-PORT P2 parity oracle at $\Delta=-0.064\%$ (the
+far-field truncation was raised $5\times\!\rightarrow\!10\times$),
+flipping \texttt{magnet\_gate}'s \texttt{field\_path} from the
+closed-form baseline to \texttt{"getdp"}.
+
+\paragraph{\#1102 --- BLUE-MAX 8 integer atoms ($+23$, 1 file).}
+The BLUE-MAX audit: eight \tierBlue\ \textsc{Supported-Formal} integer
+atoms (including \verb|q_star_constant|$=5$) plus eight \tierRed\
+matched negative controls (Appendix~\ref{app:bluemax}).
+
+\subsection{demiurge paper/domain PRs (the pointer home)}
+\label{app:pr-roll:demiurge}
+
+The three demiurge PRs are the domain-pointer and absorption side: they
+register the FUSION and HEXA-PORT domains, sign off the gate-(e) F5
+promote and the HEXA-PORT P2 oracle close-out, and absorb the BLUE-MAX
+audit. They add \textbf{298} lines and remove \textbf{1} across
+\textbf{9} file touches.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{rlrrl}
+\toprule
+\# & merged (UTC) & files & $\pm$ lines & role \\
+\midrule
+176 & 05-25 12:59 & 4 & $+293/-0$ & FUSION + HEXA-PORT domain birth \\
+178 & 05-25 13:05 & 3 & $+3/-1$   & F5 promote + P2 oracle close-out \\
+179 & 05-25 13:21 & 2 & $+2/-0$   & BLUE-MAX \tierBlue\ audit absorption \\
+\bottomrule
+\end{tabular}
+\caption{The three demiurge PRs (dancinlab/demiurge), the
+domain-pointer / absorption side. \#176 births the FUSION and HEXA-PORT
+domain snapshots and logs; \#178 signs off the gate-(e) F5 GetDP promote
+and the HEXA-PORT P2 oracle; \#179 absorbs the BLUE-MAX audit pointer.}
+\label{tab:app:prroll:demiurge}
+\end{table}
+
+\paragraph{\#176 --- FUSION + HEXA-PORT domain birth ($+293$, 4 files).}
+Adds the FUSION (magnetic-confinement fusion design) and HEXA-PORT
+(native-solver port) domain pointers --- snapshots plus append-only
+logs --- as sibling domains.
+
+\paragraph{\#178 --- F5 promote + P2 oracle ($+3/-1$, 3 files).}
+The gate-(e) F5 GetDP promote signoff and the HEXA-PORT P2 oracle
+close-out: the last honest blocker sealed once \#1095 landed.
+
+\paragraph{\#179 --- BLUE-MAX audit absorption ($+2$, 2 files).}
+The BLUE-MAX \tierBlue\ audit (\#1102) absorption pointer, closing the
+12 libm-class atoms plus the 8 integer attestations.
+
+\subsection{Roll totals}
+\label{app:pr-roll:totals}
+
+Across both repositories the session landed \textbf{15} PRs touching
+\textbf{34} files, adding \textbf{3536} lines and removing \textbf{30}.
+The implementation mass (3238 of the 3536 added lines) is in hexa-lang,
+the canonical code home (@D~d3); the demiurge side is pointer and
+absorption metadata only. Three of the twelve hexa-lang PRs (\#1075,
+\#1078, \#1095) are wrap-and-fix promotions --- each one surfaced a real
+adapter defect on first execution (Appendix~\ref{app:adapters}).

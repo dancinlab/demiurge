@@ -1,24 +1,237 @@
-% TODO (batch 6): fold the full reproducibility runbook — every `hexa verify --expr`
-%   invocation, env specs (FreeGS/OpenMC/GetDP versions), and data paths.
-% Source: §Reproducibility (sec:repro) + the Makefile targets + companion/ README.
 \section{Reproducibility Runbook}
 \label{app:repro}
 
-This appendix is the complete reproducibility runbook for the paper.
-It will carry, verbatim, every \texttt{hexa verify --expr <fn> <args>
-<expected>} invocation that produces an atom in the verification
-ledger (Appendix~\ref{app:verify-ledger}), so a reader can re-run any
-single claim in one CLI line. Each invocation will be paired with its
-expected verdict block.
+This appendix is the complete reproducibility runbook. It gives, for
+every atom in the verification ledger
+(Appendix~\ref{app:verify-ledger}), the exact \texttt{hexa verify
+{-}{-}expr <fn> <args> <expected>} CLI line that recomputes it, so a
+reader can re-run any single claim in one command. It then pins the
+build-from-canonical-root procedure, the external-backend environment
+specifications, the canonical data paths, and the \texttt{make} /
+\texttt{/paper lint} targets. The data source is the
+\texttt{verify-ledger.json} record, the \texttt{companion/README.md},
+and the paper Makefile.
 
-The runbook will also pin the external-backend environment
-specifications --- \textsc{FreeGS}\,0.8.2 (numpy $<\!2.0$),
-\textsc{OpenMC}\,0.15.3 with ENDF/B-VIII.0, and GetDP\,3.5.0/4.0.0 ---
-and the canonical data paths: the stdlib kernel home, the GetDP
-\texttt{.pro}/\texttt{.geo} decks under
-\texttt{stdlib/\allowbreak rtsc/\allowbreak decks/},
-the deferred ENDF/B-VIII corpus under \texttt{data/nuclear/endf\_b8\_0/}
-(git-LFS infra from PR \#1090), and the \texttt{companion/} data-record
-axis. Build/lint targets (\texttt{make}, \texttt{make lint},
-\texttt{make pages}) are documented from the Makefile. Data source:
-\S\ref{sec:repro} and \texttt{companion/README.md}.
+\subsection{Build from the canonical root}
+\label{app:repro:build}
+
+Every kernel cited in this paper lives under hexa-lang \texttt{stdlib/}
+at a single canonical home (@D~d3) and is reachable from the top-level
+\texttt{hexa verify} CLI. Two operational notes carry over from the
+sibling domains' build experience:
+\begin{itemize}\itemsep0.2em
+\item \textbf{Build from the canonical hexa-lang root.} The
+\texttt{hexa verify} binary must be built from \texttt{\textasciitilde
+/core/hexa-lang}; a \texttt{/tmp} worktree skips the \texttt{use}-path
+expansion and the atom recompute will not resolve. hexa-lang is
+compiled (\texttt{.hexa} $\rightarrow$ C $\rightarrow$ binary), linked
+with \texttt{-lm -ldl}.
+\item \textbf{Verify host pin.} Atom recompute is routed to the mini
+host (\texttt{POOL\_DISABLE=1}); the ubu pool hosts are not the verify
+host for this runbook.
+\end{itemize}
+
+\subsection{Numerical atoms --- gate (a)/(b)/(d) closed-form}
+\label{app:repro:numerical}
+
+The closed-form numerical atoms (\tierGreen, \textsc{Supported-Numerical})
+recompute libm-class formulae to a discriminating epsilon. Each line is
+\texttt{verify {-}{-}expr <fn> <args> <expected>}; all return
+\textsc{Supported-Numerical} at the $|\Delta|$ recorded in the ledger.
+
+\begin{lstlisting}
+# gate (a) Bosch-Hale reactivity (PR #1012)
+verify --expr sigma_v_dt_e18 10.0  113.617     # |Delta|=0
+verify --expr sigma_v_dt_e18 20.0  433.02      # |Delta|=0
+verify --expr sigma_v_d3he_e21 50.0  21.4      # |Delta|=0
+verify --expr sigma_v_dd_p 15.0  5.781e-18     # |Delta|=0
+verify --expr sigma_v_dd_n 15.0  5.435e-18     # |Delta|=0
+
+# gate (b) Lawson / 0-D gain (PR #1012)
+verify --expr triple_product 1.0e20 15.0 3.0  4.5e21   # |Delta|=0
+verify --expr q_plasma 50.0 10.0  5.0                  # |Delta|=0
+verify --expr ignition_margin 50.0 100.0 3.0 0.2  0.3  # |Delta|=0
+
+# F-funnel composite ranker (PR #1020)
+verify --expr f_reactivity_coverage 4.330e-16 8.94e-16  0.4843  # |Delta|=0
+verify --expr f_margin_coverage 0.3 0.3  1.0                    # |Delta|=0
+verify --expr f_funnel_composite 0.4843 1.0  0.4843             # |Delta|=0
+
+# gate (d) ideal-MHD beta-limit (PR #1027)
+verify --expr troyon_beta_max 2.8 15.0 5.3 1.6  0.0494   # |Delta|=0
+verify --expr q_star_cyl 2.0 5.3 6.2 15.0e6  2.667       # |Delta|=0
+
+# gate (a) aneutronic p-11B (PR #1054)
+verify --expr pb11_gamow_factor 148.0  0.0              # |Delta|=0
+verify --expr pb11_sfactor_resonance 148.0  18400.0     # |Delta|=0
+verify --expr pb11_reactivity_moment_e6 123.0  0.6432   # |Delta|=0
+\end{lstlisting}
+
+\subsection{Numerical atoms --- gate (c)/(e)/(f) wrap-run oracles}
+\label{app:repro:oracles}
+
+These three atoms are the captured parity oracles
+(Appendix~\ref{app:hexaport}, Table~\ref{tab:app:hexaport:oracles}).
+Their arguments are the run configuration rather than scalar inputs,
+and their recompute requires the external backend installed (the
+environment specs of \S\ref{app:repro:env}); without it the adapter
+honest-skips rather than fabricating a value.
+
+\begin{lstlisting}
+# gate (e) closed-form solenoid anchor (PR #1084) -- no backend needed
+verify --expr solenoid_axis_bz 2.0e6 0.50 0.70 1.20  1.48265   # |Delta|=0
+
+# gate (e) GetDP FEM B_peak, Delta = -0.064% vs anchor (PR #1095)
+verify --expr magnet_gate_b_peak "iter-class" "getdp"  1.48168  # |Delta|=0.001
+
+# gate (c) FreeGS free-boundary equilibrium q95 (PR #1075)
+verify --expr freegs_equilibrium_q95 "TestTokamak" "freeBoundaryHagenow" 10.08
+#   |Delta|=0.005 ; Ip=200 kA, q0=1.355, q95~10.08, kappa=1.358
+
+# gate (f) OpenMC TBR, 5M histories (PR #1078)
+verify --expr openmc_tbr_pb157li "Pb-15.7Li" "Li6-90at%" "5M-histories" 1.3222
+#   |Delta|=0.0004 ; W armor / EUROFER FW / SS316 shield ; TBR > 1
+\end{lstlisting}
+
+\subsection{Formal atoms --- BLUE-MAX algebraic roots (PR~\#1102)}
+\label{app:repro:formal}
+
+The eight \tierBlue\ \textsc{Supported-Formal} integer atoms are
+$0$-argument recomputes; each returns the exact integer at
+$|\Delta|=0$ by construction (Appendix~\ref{app:bluemax}).
+
+\begin{lstlisting}
+verify --expr bosch_hale_gamow_factor()              = 3
+verify --expr sigma_v_dt_e18_scale_exponent()        = 18
+verify --expr pb11_gamow_eg_kev()                    = 22589
+verify --expr pb11_resonance_kev_doubled()           = 296
+verify --expr pb11_quadrature_nodes()                = 600
+verify --expr pb11_reactivity_moment_e6_scale_exp()  = 6
+verify --expr solenoid_axis_bz_half_factor()         = 2
+verify --expr q_star_constant()                      = 5
+\end{lstlisting}
+
+\subsection{Negative-control atoms --- BLUE-MAX (PR~\#1102)}
+\label{app:repro:negative}
+
+The eight matched negative controls assert the true integer $\pm1$ and
+\emph{must} return \tierRed\ \textsc{Falsified} at $|\Delta|=1$. A
+runbook that cannot reproduce these falsifications has not reproduced
+the discriminating behaviour of the rubric.
+
+\begin{lstlisting}
+verify --expr bosch_hale_gamow_factor_NEG()              = 4      # FALSIFIED (true 3)
+verify --expr sigma_v_dt_e18_scale_exponent_NEG()        = 17     # FALSIFIED (true 18)
+verify --expr pb11_gamow_eg_kev_NEG()                    = 22590  # FALSIFIED (true 22589)
+verify --expr pb11_resonance_kev_doubled_NEG()           = 297    # FALSIFIED (true 296)
+verify --expr pb11_quadrature_nodes_NEG()                = 601    # FALSIFIED (true 600)
+verify --expr pb11_reactivity_moment_e6_scale_exp_NEG()  = 7      # FALSIFIED (true 6)
+verify --expr solenoid_axis_bz_half_factor_NEG()         = 3      # FALSIFIED (true 2)
+verify --expr q_star_constant_NEG()                      = 6      # FALSIFIED (true 5)
+\end{lstlisting}
+
+This is the full 36-atom ledger: 20 \tierGreen\
+\textsc{Supported-Numerical} + 8 \tierBlue\ \textsc{Supported-Formal} +
+8 \tierRed\ \textsc{Falsified} controls. Each line above corresponds
+1:1 to a \texttt{verify-ledger.json} entry, queryable with a one-line
+\texttt{jq} filter, e.g.\
+\verb#jq '.[] | select(.fn=="q_star_constant")'#.
+
+\subsection{External-backend environment specifications}
+\label{app:repro:env}
+
+The three wrap-run oracle atoms (\S\ref{app:repro:oracles}) require an
+external backend. The pinned environments are:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+backend & version & key dependency / data \\
+\midrule
+FreeGS & 0.8.2 & numpy $<\!2.0$ \\
+OpenMC & 0.15.3 & ENDF/B-VIII.0 (via micromamba) \\
+GetDP  & 3.5.0 / 4.0.0 & gmsh (mesh generation) \\
+\bottomrule
+\end{tabular}
+\caption{External-backend environment specifications for the three
+wrap-run oracle atoms. FreeGS pins numpy below 2.0; OpenMC needs the
+ENDF/B-VIII.0 evaluated-data library installed via micromamba; GetDP
+needs gmsh for axisymmetric mesh generation.}
+\label{tab:app:repro:env}
+\end{table}
+
+\begin{itemize}\itemsep0.2em
+\item \textbf{FreeGS 0.8.2} (\verb|freegs_equilibrium_q95|): a Python
+package; the numpy~$<\!2.0$ constraint avoids the deprecated-API breaks
+in the FreeGS 0.8.2 release. Install into a dedicated environment so the
+numpy pin does not collide with other tools.
+\item \textbf{OpenMC 0.15.3 + ENDF/B-VIII.0}
+(\verb|openmc_tbr_pb157li|): installed via micromamba; the ENDF/B-VIII.0
+cross-section library is the data-bound dependency
+(Appendix~\ref{app:hexaport}, Tier~C). The adapter builds the geometry
+in-process but reads cross sections from the library, so
+\verb|OPENMC_CROSS_SECTIONS| must point at the installed
+\texttt{cross\_sections.xml}.
+\item \textbf{GetDP 3.5.0 / 4.0.0 + gmsh} (\verb|magnet_gate_b_peak|):
+either GetDP point release works; gmsh generates the axisymmetric mesh
+the \texttt{.pro}/\texttt{.geo} decks consume. The far-field truncation
+must be at $\sim$10$\times$ the coil radius (not $5\times$) for the
+$\Delta=-0.064\%$ parity --- see the GetDP defect entry
+(Appendix~\ref{app:adapters}).
+\end{itemize}
+
+Without the relevant backend, the wrap adapter reports an install-gated
+honest-skip; it never fabricates a value. The closed-form anchor
+(\verb|solenoid_axis_bz|) and all formal/negative atoms need no backend
+and recompute on the bare hexa-lang build.
+
+\subsection{Canonical data paths}
+\label{app:repro:data}
+
+\begin{itemize}\itemsep0.2em
+\item \textbf{Kernels.} hexa-lang \texttt{stdlib/} (the single
+canonical home, @D~d3); the FUSION kernels under
+\texttt{stdlib/fusion/}, the magnet bridge under \texttt{stdlib/rtsc/}.
+\item \textbf{GetDP decks.} The \texttt{.pro} / \texttt{.geo} decks
+ship under \texttt{stdlib/rtsc/decks/}; they are kilobyte text and are
+\emph{not} git-LFS gated.
+\item \textbf{Deferred ENDF/B-VIII corpus.} The future hexa-native
+cross-section corpus lands under \texttt{data/nuclear/endf\_b8\_0/} on
+hexa-lang git-LFS (infra in PR~\#1090; the $\sim$475\,MB ingest is a
+separate HEXA-PORT P4b follow-up --- Appendix~\ref{app:hexaport}).
+\item \textbf{Data-record axis.} The paper's \texttt{companion/}
+directory carries \texttt{verify-ledger.json} (the 36-atom ledger),
+\texttt{pr-roll.json} (the 15 PRs, Appendix~\ref{app:pr-roll}),
+\texttt{adapter-defect-catalog.json} (the three wrap-and-fix defects,
+Appendix~\ref{app:adapters}), and \texttt{session-journal.md}.
+\end{itemize}
+
+\subsection{Build and lint targets}
+\label{app:repro:make}
+
+The paper builds with the Makefile in the paper root:
+
+\begin{lstlisting}
+make            # main.pdf : xelatex x3 + bibtex (cross-ref resolution)
+make figures    # regenerate figures/*.pdf from figures/_scripts/*.{py,tex}
+make pages      # report page count via pdfinfo
+make wordcount  # word count (texcount, falls back to wc -w)
+make lint       # /paper lint . (commons @D g51: >=10 pages + >=1 figure)
+make arxiv-tar  # out/<slug>-arxiv.tar.gz : arxiv-ready source bundle
+make clean      # remove intermediates (PDF preserved)
+\end{lstlisting}
+
+Two build notes carry the engine constraint. First, the engine is
+\textbf{xelatex} (\texttt{LATEX = xelatex {-}interaction=nonstopmode
+{-}halt-on-error}): the tier badges are rendered as TikZ colored discs
+(\verb|\tierBlue|\,\dots\verb|\tierRed|) so the build is engine-agnostic,
+but a \texttt{make LATEX=pdflatex} override requires first stripping any
+literal emoji from the source. Second, \texttt{make} runs
+\texttt{xelatex} three times around a single \texttt{bibtex} pass to
+resolve the cross-references and the \texttt{natbib} citations; the
+\texttt{main.bbl} is committed so a single-pass rebuild still resolves
+citations if \texttt{bibtex} is unavailable. The \texttt{make lint}
+target enforces the commons @D~g51 floor ($\geq$10 pages and at least
+one figure).

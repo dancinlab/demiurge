@@ -1,22 +1,437 @@
-% TODO (batch 5): fold the HEXA-PORT native-solver port roadmap — tier A/B/C ladder,
-%   P0–P4 milestones, parity-oracle methodology, git-LFS data axis.
-% Source: §Wider Architectural Context (sec:context) HEXA-PORT paragraph + roadmap notes.
 \section{HEXA-PORT Sibling --- Native Solver Port Roadmap}
 \label{app:hexaport}
 
-This appendix is the full roadmap for HEXA-PORT, the sibling project
-that reimplements the external solvers natively in hexa-lang
-(\S\ref{sec:context}). It will expand the tiered ladder: \textbf{Tier
-A} (closed-form, already native), \textbf{Tier B} (algorithm-defined
-PDE/FEM --- FreeGS and GetDP), and \textbf{Tier C} (data-bound ---
-OpenMC, where the $\sim$GB ENDF/B-VIII library is the irreducible
-part), mapped onto the P0--P4 milestone sequence.
+This appendix is the full roadmap for \textbf{HEXA-PORT}, the sibling
+project that reimplements the external scientific-computing backends
+natively in hexa-lang (\S\ref{sec:context}). The funnel of this paper
+wraps three out-of-process solvers --- FreeGS (gate~c), GetDP (gate~e),
+and OpenMC (gate~f) --- and the central observation of HEXA-PORT is
+that \emph{the wrap-run output of each is simultaneously a parity
+oracle for its eventual native re-implementation}. This appendix sets
+out the tiered portability ladder, the P0--P4 milestone sequence, the
+wrap$\rightarrow$oracle$\rightarrow$Path-A$\rightarrow$parity
+methodology (with its working precedent in the NUCLEAR domain), the
+parity oracles that this paper's gates have already captured, the
+git-LFS data-corpus storage policy, and an honest scoping statement of
+what is and is not deliverable here. The source is the demiurge
+\texttt{HEXA-PORT.md} domain snapshot and its companion log.
 
-The methodological core is the \emph{parity-oracle} pattern: each
-wrap-and-fix result in this paper doubles as a numerical oracle that a
-future native port must reproduce. The appendix will detail the
-Tier-C decomposition (P4a native MC engine, P4b cross-section corpus
-port via git-LFS infra from PR \#1090, P4c first-principles
-cross-section generation) and state honestly that not all of HEXA-PORT
-is in scope for this paper. Data source: \S\ref{sec:context} and the
-roadmap notes.
+\subsection{Goal --- algorithm versus data, and both on the axis}
+\label{app:hexaport:goal}
+
+The domains in the parent stack carry external solvers as
+\emph{wrap-as-is} adapters: thin out-of-process drivers that shell to a
+backend, parse one token of its output, and report a tier verdict.
+HEXA-PORT's goal is to migrate those backends into the hexa-lang
+\texttt{stdlib} as native kernels, and to verify each port by
+\emph{numerical parity} against the wrap-as-is reference it replaces,
+graduating the kernel to \tierGreen/\tierBlue\ only when the parity is
+demonstrated paste-verbatim.
+
+The organising axis is whether a solver is \emph{algorithm-defined} or
+\emph{data-bound}, but this is a difficulty gradient, \emph{not} an
+inclusion boundary:
+\begin{itemize}\itemsep0.2em
+\item \textbf{Algorithm-defined solvers} (closed-form, PDE, FEM) are
+self-contained once the recipe is ported --- the kernel is the whole
+truth. These are Tier~A and Tier~B.
+\item \textbf{Data-bound tools} (Monte-Carlo transport plus a
+$\sim$GB evaluated-data library) have their substance \emph{in the
+data}: porting the engine alone is insufficient, so the data itself
+becomes a separate port sub-axis (an ENDF$\rightarrow$hexa atlas
+corpus, or first-principles cross-section generation). This is
+Tier~C --- harder, but \emph{not excluded} (governance @D~d2).
+\end{itemize}
+
+The precedent for treating a hard data axis as a long-term ambition
+rather than a permanent exclusion is the hexa-lang corpus family
+itself: the \texttt{n6}/\texttt{n12}/\texttt{.tape} artifacts are
+canonical single-source-of-truth corpora that were grown from nothing.
+An ENDF-derived cross-section corpus, or a first-principles
+cross-section generator, is the same class of long-horizon ambition;
+the project's invariant is that ``something might come of it'' is never
+closed off behind a permanent wrap.
+
+\subsection{The portability tier ladder (Tier A / B / C)}
+\label{app:hexaport:ladder}
+
+Table~\ref{tab:app:hexaport:tiers} is the portability triage. The tier
+is the \emph{when/how} ordering, ascending in ROI-to-difficulty; it is
+never a \emph{whether}.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{clll}
+\toprule
+tier & essence & representatives & data dependence \\
+\midrule
+\textbf{A} & closed-form / small numerical
+  & Bosch--Hale $\langle\sigma v\rangle$, Lawson, Troyon,
+    & none \\
+  & & TF peak, WKB $\alpha$-decay & \\
+\textbf{B} & algorithm-defined PDE / FEM
+  & FreeGS (2D elliptic GS), GetDP (FEM & none \\
+  & & magnetostatics) & \\
+\textbf{C} & data-bound (engine + evaluated data)
+  & OpenMC (MC neutron transport
+    & $\sim$GB external \\
+  & & + ENDF/B-VIII) & (sub-axis port) \\
+\bottomrule
+\end{tabular}
+\caption{The HEXA-PORT portability tier ladder. Tier A is already
+native (this paper's closed-form gates plus the NUCLEAR N7 WKB kernel);
+Tier B is algorithm-defined effort (finite-difference / finite-element
+plus a linear solver); Tier C carries an irreducible data corpus that
+is split into its own port sub-axis. The tier encodes ROI and
+difficulty order (A$\rightarrow$B$\rightarrow$C), not scope inclusion.}
+\label{tab:app:hexaport:tiers}
+\end{table}
+
+\paragraph{Tier A --- already native.} The closed-form gates of this
+paper are, by construction, Tier-A native kernels: the Bosch--Hale
+reactivity (gate~a, PR~\#1012), the Lawson triple product and 0-D
+gain (gate~b, PR~\#1012), the Troyon $\beta$-limit and Wesson $q^{*}$
+(gate~d, PR~\#1027), the thick-solenoid on-axis $B_z$ anchor (gate~e,
+PR~\#1084), and the p--$^{11}$B reactivity moment (PR~\#1054). None of
+these wraps an external solver; each is a libm-class or
+algebraic-root recompute, verifiable in one \texttt{hexa verify
+{-}{-}expr} line (Appendix~\ref{app:repro}). Tier A is therefore
+\emph{complete} for the FUSION funnel --- there is no port work
+outstanding, only the BLUE-MAX algebraic-root attestation
+(Appendix~\ref{app:bluemax}).
+
+\paragraph{Tier B --- algorithm-defined PDE/FEM.} Two backends in this
+paper are Tier-B targets. \textsc{FreeGS} solves the 2D elliptic
+Grad--Shafranov equation on a free boundary by a Picard/Newton
+iteration with a Hagenow boundary-integral closure; porting it natively
+requires a 2D finite-difference elliptic solve plus a free-boundary
+outer loop. \textsc{GetDP} solves axisymmetric magnetostatics in an
+$A_\varphi$ (or $H$-) formulation by the finite-element method; porting
+it requires a FEM assembly over a triangulated mesh plus a sparse
+linear solve. Both share a hexa-native linear-algebra substrate
+(arrays, dense/sparse solvers) that is the real feasibility gate, which
+is why milestone P3 (substrate maturity) sits ahead of the two PDE
+ports.
+
+\paragraph{Tier C --- data-bound (OpenMC stays in-axis).} The OpenMC
+TBR adapter (gate~f, PR~\#1078) is the lone Tier-C target. Its Monte
+Carlo transport engine is algorithm-defined (particle random walk,
+collision sampling, tallies) and is portable in the Tier-B sense, but
+the engine is meaningless without the $\sim$GB ENDF/B-VIII evaluated
+cross-section library it consumes. A na\"ive project boundary would
+declare OpenMC ``permanently wrapped'' on the grounds that the data is
+too large to port. HEXA-PORT explicitly \emph{rejects} that boundary
+(@D~d2): the data is recast as its own port sub-axis (P4b), and a
+first-principles cross-section generator (P4c) is held open as the most
+ambitious break of the data dependence altogether. \emph{Out-of-scope
+for this paper is not the same as impossible.}
+
+\subsection{The P0--P4 milestone sequence}
+\label{app:hexaport:milestones}
+
+Table~\ref{tab:app:hexaport:cohorts} is the milestone cohort, ordered by
+the dependency the ladder implies.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{cllc}
+\toprule
+cohort & target & tier & status \\
+\midrule
+P0   & portability triage table & --- & open \\
+P0.5 & git-LFS infra (data corpora) & infra & \textbf{landed} (\#1090) \\
+P3   & hexa linear-algebra substrate & B (shared) & open \\
+P1   & FreeGS Grad--Shafranov native & B & open (oracle captured) \\
+P2   & GetDP FEM magnetostatics native & B & open (oracle captured) \\
+P4a  & OpenMC native MC transport engine & C & open \\
+P4b  & cross-section data corpus port & C & open (oracle captured) \\
+P4c  & first-principles cross-section generator & C & open \\
+\bottomrule
+\end{tabular}
+\caption{The HEXA-PORT P0--P4 milestone cohort. P0.5 (git-LFS infra)
+is the only landed milestone; the three Tier-B/C ports (P1, P2, P4b)
+already have their parity oracles captured by this paper's wrap-run
+gates. P3 (a hexa-native linear-algebra substrate) is the shared
+feasibility gate for P1 and P2 and is sequenced ahead of them.}
+\label{tab:app:hexaport:cohorts}
+\end{table}
+
+\paragraph{P0 --- portability triage.} A single table classifying
+every wrap adapter across all parent-stack domains into Tier A/B/C and
+ranking them by ROI. Table~\ref{tab:app:hexaport:tiers} is the FUSION
+slice of this.
+
+\paragraph{P0.5 --- git-LFS infra (\emph{landed}, PR~\#1090).} The only
+milestone closed to date. It adds git-LFS scaffolding to hexa-lang so
+that future data-bound corpora (the ENDF/B-VIII subset first) have a
+storage carrier inside the ordinary hexa-lang git workflow. Detailed
+in \S\ref{app:hexaport:lfs}.
+
+\paragraph{P3 --- linear-algebra substrate.} The honest gate on P1 and
+P2: native FreeGS and GetDP both need mature hexa array primitives and
+a dense/sparse linear solver. Sequencing P3 first follows the
+``size feasibility before committing'' discipline (@D~d11) --- confirm
+the substrate can carry a 2D elliptic solve and a FEM assembly before
+starting the ports proper.
+
+\paragraph{P1 --- FreeGS Grad--Shafranov.} The highest-ROI Tier-B port:
+a 2D finite-difference elliptic PDE with a free-boundary Picard/Newton
+outer loop. Its parity oracle is captured (\S\ref{app:hexaport:oracles}).
+
+\paragraph{P2 --- GetDP FEM magnetostatics.} An axisymmetric
+$A_\varphi$ finite-element solve, sharing its substrate with the RTSC
+domain's $H$-formulation FEM work (a documented multi-week effort). Its
+parity oracle --- the GetDP-versus-closed-form solenoid anchor at
+$\Delta=-0.064\%$ --- is captured.
+
+\paragraph{P4a/P4b/P4c --- OpenMC, decomposed.} The Tier-C target is
+split into three independent sub-paths, \emph{none} permanently
+excluded:
+\begin{itemize}\itemsep0.2em
+\item \textbf{P4a --- native MC transport engine.} Particle random
+walk, collision sampling, tally accumulation. Pure algorithm
+(Tier-B-grade); useless alone, but the consumer of P4b/P4c.
+\item \textbf{P4b --- cross-section data corpus port.} Ingest /
+repack the ENDF/B-VIII evaluated data into a hexa-native form (an
+atlas \texttt{F}-namespace extension or an \texttt{n6}-style corpus),
+turning ``read the data from an external file'' into ``the SSOT holds
+the data.'' Stored on hexa-lang git-LFS per \S\ref{app:hexaport:lfs};
+the ENDF/B-VIII subset is the first corpus seed.
+\item \textbf{P4c --- first-principles cross-section generation.}
+Generate cross sections from R-matrix / optical-model nuclear-reaction
+theory rather than reading them. The most ambitious sub-path: on
+success the data dependence \emph{disappears} (the @D~d6 principle that
+first-principles physics breaks a data wall). It is directly adjacent to
+the NUCLEAR domain's nuclear physics.
+\end{itemize}
+P4b and P4c are honestly multi-month, research-grade efforts. They are
+sequenced last by ROI, not excluded by it.
+
+\subsection{Methodology --- wrap $\rightarrow$ oracle $\rightarrow$
+Path~A $\rightarrow$ parity}
+\label{app:hexaport:methodology}
+
+The standard port pipeline has four steps and one working precedent:
+
+\begin{enumerate}\itemsep0.3em
+\item \textbf{Wrap-as-is run.} Execute the external solver once on the
+pool/cloud; its real output JSON is the ground truth. (In this paper,
+the FUSION funnel gates supply these.)
+\item \textbf{Oracle capture.} Freeze that output as the parity
+baseline.
+\item \textbf{Path~A re-implementation.} Write the hexa-native kernel
+under \texttt{stdlib/kernels/<solver>/}.
+\item \textbf{Parity verify.} Compare native against oracle with
+\texttt{hexa verify {-}{-}expr} or a dedicated parity harness; graduate
+to \tierGreen/\tierBlue\ only on a demonstrated match.
+\end{enumerate}
+
+The honest invariant: until parity verifies \tierGreen/\tierBlue\
+paste-verbatim, the native kernel is \texttt{provisional}. The
+graduation is evidence-gated (a bit-for-bit or numerical match shown
+verbatim), not LLM self-judgement.
+
+\paragraph{Working precedent --- NUCLEAR N7 WKB.} This is not a
+hypothetical pipeline. The NUCLEAR domain's \texttt{sim.hexa} v0.1.0
+(its N7 WKB $\alpha$-decay kernel) traversed exactly this path: a
+wrap-as-is \texttt{wkb\_alpha\_decay.py} reference was run, its output
+captured as an oracle, a hexa-native kernel was written, and the two
+agreed \textbf{bit-for-bit on all 31/31 parity points}, at which point
+the native kernel became the canonical home. HEXA-PORT is the
+generalisation of that single success to the FUSION funnel's Tier-B/C
+backends.
+
+\subsection{Captured parity oracles}
+\label{app:hexaport:oracles}
+
+The wrap-and-fix promotions of this paper (\S\ref{sec:promote},
+Appendix~\ref{app:adapters}) leave behind three concrete parity oracles
+--- the load-bearing deliverable of the FUSION/HEXA-PORT overlap.
+Table~\ref{tab:app:hexaport:oracles} records them with their verifying
+atoms.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lllc}
+\toprule
+oracle & milestone & verifying atom & captured \\
+\midrule
+FreeGS free-boundary equilibrium & P1 & \verb|freegs_equilibrium_q95| & \#1075 \\
+GetDP solenoid anchor ($\Delta=-0.064\%$) & P2 & \verb|magnet_gate_b_peak| & \#1095 \\
+OpenMC TBR transport & P4 & \verb|openmc_tbr_pb157li| & \#1078 \\
+\bottomrule
+\end{tabular}
+\caption{The three parity oracles captured by this paper's wrap-run
+gates. Each is a wrap-as-is real run frozen as the numerical baseline a
+future native port (P1/P2/P4) must reproduce. The verifying atoms are
+the corresponding \texttt{verify-ledger.json} entries
+(Appendix~\ref{app:verify-ledger}).}
+\label{tab:app:hexaport:oracles}
+\end{table}
+
+\paragraph{P1 oracle --- FreeGS equilibrium.} The free-boundary
+Grad--Shafranov solve on the canonical \texttt{TestTokamak} preset with
+the \texttt{freeBoundaryHagenow} boundary-integral closure (PR~\#1075)
+converged to $I_p = 200$\,kA, $q_0 = 1.355$, $q_{95}\approx10.08$,
+$\kappa = 1.358$, with the magnetic axis at $(R,Z)=(1.280,\,0.038)$\,m.
+The atom \verb|freegs_equilibrium_q95| pins $q_{95}\approx10.08$ as the
+P1 native port's parity target.
+
+\paragraph{P2 oracle --- GetDP solenoid anchor.} The axisymmetric
+$A_\varphi$ FEM solve (PR~\#1095) reproduced the on-axis peak field of
+the closed-form thick-solenoid anchor (atom \verb|solenoid_axis_bz|,
+$1.48265$\,T) to within $\Delta=-0.064\%$ ($B_{\text{peak}}=1.48168$\,T,
+atom \verb|magnet_gate_b_peak|). This is the strongest of the three
+oracles: it pairs a \tierGreen\ FEM result with a \tierBlue\ closed-form
+anchor, so the P2 native port has both a numerical \emph{and} an
+algebraic target. The $-0.064\%$ residual is the far-field-truncation
+floor of the FEM mesh (the defect catalog,
+Appendix~\ref{app:adapters}), not a port error.
+
+\paragraph{P4 oracle --- OpenMC TBR.} The 5-million-history MC transport
+run (PR~\#1078) on the spherical Pb-15.7Li breeder (W armor / EUROFER
+first wall / SS316 shield, $^6$Li at 90\,at\%) produced a tritium
+breeding ratio $\text{TBR}=1.3222\pm0.0004$ --- self-sufficient
+($>1$). The atom \verb|openmc_tbr_pb157li| pins this digit as the P4
+native engine's (P4a) parity target, with the caveat that a faithful
+P4 port also requires the P4b corpus to feed the same cross sections.
+
+\subsection{Git-LFS data-corpus storage policy (\S4.0, PR~\#1090)}
+\label{app:hexaport:lfs}
+
+The data-bound ports (P4b and any future corpus port) carry binary /
+HDF5 / large evaluated-data files. The storage decision (recorded
+2026-05-25) is that these live on \textbf{hexa-lang's git-LFS}: hexa-lang
+is the single-source-of-truth carrier (@D~d3 canonical home), and
+git-LFS operates transparently inside hexa-lang's ordinary
+worktree/PR workflow, so no separate data repository is split out. The
+policy, landed as infra in PR~\#1090, is:
+\begin{itemize}\itemsep0.2em
+\item Data paths are \texttt{data/<domain>/<corpus>/\dots} (e.g.\
+\texttt{data/nuclear/endf\_b8\_0/}) or
+\texttt{stdlib/corpora/<corpus>/\dots}, with the LFS-tracked patterns
+declared in \texttt{.gitattributes}.
+\item Existing \texttt{stdlib} code (\texttt{.hexa}/\texttt{.py}/%
+\texttt{.md}) is \emph{not} LFS-tracked --- it stays text SSOT.
+\item Existing $>$1\,MB files (e.g.\ \texttt{n6/atlas.n6},
+\texttt{compiler/atlas/embedded.gen.hexa}) are \emph{not} migrated ---
+the atlas SSOT stays in its text form, no risk incurred.
+\item With the infra in place, the first corpus seed is the
+P4b ENDF/B-VIII subset ($\sim$475\,MB--2\,GB) ingest.
+\end{itemize}
+PR~\#1090 added the \texttt{.gitattributes} tracking patterns (data
+and corpora paths $\times$ \texttt{hdf5}/\texttt{h5}/\texttt{dat}/%
+\texttt{bin}/\texttt{endf}/\texttt{ace}/\texttt{xml.gz}/\texttt{tar.gz})
+and a README ``Data corpora (git-LFS)'' section; verification confirmed
+that new paths carry the \texttt{filter: lfs} attribute while all seven
+existing $\geq$1\,MB files remain \texttt{unspecified} (LFS sweep of
+zero, \texttt{git lfs ls-files} empty), so no file was migrated.
+
+\subsection{Wrap-and-fix as oracle factory}
+\label{app:hexaport:wrapfix}
+
+The reason this paper captures three parity oracles ``for free'' is the
+\emph{wrap-and-fix} contract of the funnel (\S\ref{sec:context}). A pure
+wrap reports an install-gated PASS without ever running the backend; a
+pure rewrite throws the upstream away. Wrap-and-fix runs the backend
+once, as an integration test, and fixes whatever the run exposes. Every
+one of the three install-gated adapters promoted in this paper turned
+out to be a stub or a divergent configuration that only a real run could
+surface (Appendix~\ref{app:adapters}):
+\begin{itemize}\itemsep0.2em
+\item The OpenMC adapter was a \emph{transport-less} gate-classifier
+stub --- it checked that OpenMC was importable and reported a fake PASS,
+but never built geometry or called \texttt{openmc.run} (defect
+FUSION-DEFECT-001, fixed in \#1078).
+\item The FreeGS adapter \emph{diverged} on a hardcoded coil set (``No O
+points found'') and emitted the warning to stdout, corrupting its own
+JSON output line (defect FUSION-DEFECT-002, fixed in \#1075).
+\item The GetDP adapter was a \texttt{shutil.which} binary-presence
+\emph{checker} that never invoked a solve; when the solve was finally
+run by hand it disagreed with the textbook by $\sim$1.4\%, a residual
+first mis-diagnosed as a $2\pi$/Jacobian units bug before the true cause
+(far-field truncation at only $5\times$ the coil radius) was found
+(defect FUSION-DEFECT-003, fixed in \#1095).
+\end{itemize}
+The fix in each case produced a \emph{validated} real run --- and that
+validated run is precisely the parity oracle a HEXA-PORT native port
+must reproduce. Wrap-and-fix is therefore the oracle factory: the same
+act that hardens the funnel's gate also mints the numerical baseline for
+the future port. An oracle minted from an unrun stub would have been
+worthless; an oracle minted from a divergent or under-truncated run
+would have encoded the defect. The honesty discipline that forced each
+adapter to a genuine run is what makes each oracle a faithful target.
+
+\subsection{Cross-stack --- precedent and shared substrate}
+\label{app:hexaport:crossstack}
+
+HEXA-PORT is a horizontal (infrastructure) domain: its consumers are
+the vertical physics domains that share solver substrate. Three
+cross-stack relationships anchor it.
+
+\paragraph{NUCLEAR --- the methodology precedent.} The NUCLEAR domain's
+N7 WKB $\alpha$-decay port (\S\ref{app:hexaport:methodology}) is the
+\emph{first} instance of the
+wrap$\rightarrow$oracle$\rightarrow$Path-A$\rightarrow$parity pipeline
+to complete: a wrap-as-is \texttt{wkb\_alpha\_decay.py} reference run,
+frozen as an oracle, re-implemented as a hexa-native kernel, and proven
+bit-for-bit on $31/31$ parity points. HEXA-PORT is the generalisation of
+that prototype from a single closed-form kernel to the funnel's Tier-B/C
+PDE/FEM/MC backends.
+
+\paragraph{FUSION --- the oracle source.} This paper's funnel is the
+oracle supplier: gates (c), (e), and (f) provide the wrap-run baselines
+(Table~\ref{tab:app:hexaport:oracles}) that P1, P2, and P4 must match.
+The FUSION$\rightarrow$HEXA-PORT direction is one-way: FUSION wraps and
+runs, HEXA-PORT later re-implements and verifies parity against the
+captured run. No FUSION result depends on a HEXA-PORT port existing ---
+the funnel stands on the wrap adapters as shipped.
+
+\paragraph{RTSC --- the shared P2 substrate.} The GetDP magnetostatics
+port (P2) shares its finite-element substrate with the RTSC domain's
+$H$-formulation FEM work (the Stenvall/Sirois formulation for HTS
+modelling). RTSC documents this as a multi-week effort, which is the
+honest difficulty pre-warning that motivates sequencing the
+linear-algebra substrate milestone (P3) ahead of both PDE ports. The
+two domains share the axisymmetric magnetostatics machinery: a native
+P2 kernel that serves FUSION gate~(e) is the same kernel RTSC needs for
+its coil-field modelling, so the port amortises across both consumers.
+
+The upstream backends are FreeGS
+(\texttt{github.com/freegs-plasma/freegs}), GetDP
+(\texttt{getdp.info}), and OpenMC (\texttt{openmc.org}), with the
+ENDF/B-VIII evaluated data from the NNDC.
+
+\subsection{Scope --- what HEXA-PORT is and is not, in this paper}
+\label{app:hexaport:scope}
+
+This paper does \emph{not} deliver any HEXA-PORT native port. What it
+delivers is the \emph{prerequisite layer}: the three Tier-B/C parity
+oracles (Table~\ref{tab:app:hexaport:oracles}), captured as a free
+by-product of the wrap-and-fix gate promotions, plus the landed
+git-LFS infra (P0.5) that the data corpus port (P4b) will sit on. The
+native re-implementations (P1, P2, P3, P4a/b/c) are explicitly future
+work, tracked in the HEXA-PORT domain, and \emph{not in scope here}.
+
+The honest invariants that bound the project (governance @D):
+\begin{itemize}\itemsep0.2em
+\item \textbf{Parity-gated graduation.} A native port is
+\texttt{provisional} until it matches its oracle \tierGreen/\tierBlue\
+paste-verbatim. No LLM self-judgement (g5).
+\item \textbf{No permanent exclusion (@D~d2).} Even the data-bound
+OpenMC is not declared ``natively impossible''; it is decomposed
+(P4a/b/c) so the breakthrough path is surfaced. Out-of-scope $\neq$
+impossible.
+\item \textbf{Canonical home (@D~d3).} A native kernel has one home,
+\texttt{hexa-lang/stdlib/kernels/<solver>/}; demiurge is a pointer.
+The wrap adapter coexists until parity, then deprecates.
+\item \textbf{Measured-oracle invariant (@D~d6).} A solver port's
+parity oracle is a wrap-run simulation, not a measurement. Even a
+parity-PASS native port does not flip a domain record's
+\texttt{absorbed} bit --- a port changes the \emph{computation path},
+never the \emph{measurement} status. Gate (g) ignition remains the
+sole, permanent wet-lab boundary.
+\end{itemize}
