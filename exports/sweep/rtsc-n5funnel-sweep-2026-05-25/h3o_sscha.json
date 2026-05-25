@@ -1,0 +1,97 @@
+{
+  "schema": "rtsc-sscha-anharmonic/0.1.0",
+  "batch_id": "rtsc-n5funnel-sweep-2026-05-25",
+  "candidate_id": "h3o",
+  "stamp": "2026-05-25T13:50Z",
+  "kind": "sscha-anharmonic-phonon-renormalization",
+  "group": 16,
+  "structure_hint": "Im-3m (bcc, ibrav=3, celldm=4.89945 Bohr, 4 atoms O+3H)",
+  "question": "Do h3o harmonic imaginary modes (16/16 q, deepest -1133 cm^-1 BZ / -882 cm^-1 zone-boundary / -682 cm^-1 Gamma) renormalize to real under SSCHA quantum-anharmonic treatment?",
+
+  "compute": {
+    "engine": "python-sscha 1.6.1 + cellconstructor 1.6.1 (conda-forge prebuilt)",
+    "dft": "Quantum ESPRESSO 7.5 pw.x (PBE ultrasoft, ecutwfc=65 Ry, ecutrho=540 Ry, MP smearing 0.02, 3x3x3 k on supercell)",
+    "host": "pool ubu-1 (Ryzen 5 9600X, 6c/12t) — FREE per @D d7 (small cell)",
+    "vast_used_for_sscha": false,
+    "wall_clock": "10:16 -> 13:50 KST (~3h34m)"
+  },
+
+  "sscha_config": {
+    "method": "Gamma-dyn cold-start -> interpolate to 2x2x2 supercell (96 modes); SSCHA auto-relax derives full supercell force constants from ensemble DFT forces",
+    "supercell": [2, 2, 2],
+    "T_K": 0.0,
+    "N_config_per_population": 100,
+    "populations_run": 6,
+    "max_pop": 6,
+    "minimizer": "SSCHA_Minimizer (Kong-Liu ratio 0.5, min_step_dyn 0.05)",
+    "harmonic_seed_source": "QE scf+ph.x 2x2x2 (Gamma dyn; q2/q3 abandoned under host contention — SSCHA refines supercell FC from ensemble forces regardless, standard cold-start)",
+    "note_zone_boundary": "interpolated supercell harmonic baseline seeds zone-boundary FC from Gamma; the ANHARMONIC supercell FC (and stability verdict) come from the 2x2x2 ensemble DFT forces, which DO sample zone-boundary displacements"
+  },
+
+  "harmonic": {
+    "ph_out_imaginary_modes": "16/16 q unstable; Gamma -682 cm^-1 (T1u), zone-boundary -882 cm^-1, deepest BZ -1133 cm^-1 (per RTSC.md)",
+    "interpolated_supercell_n_imaginary": 27,
+    "interpolated_supercell_min_freq_cm": -676.9,
+    "harmonic_lam_BZ": 2.479,
+    "harmonic_omega_log_K": 1096.6,
+    "harmonic_Tc_AD_K": 179.8,
+    "harmonic_validity": "INVALID for Tc — computed on a dynamically unstable (imaginary-mode) structure; Tc=180K is unphysical pre-anharmonic-renormalization"
+  },
+
+  "anharmonic_sscha": {
+    "auxiliary_frequencies": {
+      "n_imaginary_lt_minus1_cm": 0,
+      "min_freq_cm": 0.0,
+      "lowest_optical_cm": 259.5,
+      "max_freq_cm": 1718.2,
+      "omega_log_aux_unweighted_cm": 969.2,
+      "omega_log_aux_unweighted_K": 1394.5
+    },
+    "free_energy_hessian": {
+      "computed": true,
+      "method": "Ensemble.get_free_energy_hessian (include_v4=False; 4th-order bubble correction beyond auxiliary Phi)",
+      "n_imaginary_lt_minus1_cm": 0,
+      "min_freq_cm": -3.4e-05,
+      "max_freq_cm": 1615.3,
+      "dynamically_stable": true
+    },
+    "structure_relaxation": "centroids stay at Im-3m high-symmetry sites (struct gradient ~0, 48 crystal symmetries preserved across all 6 populations) — NO symmetry-breaking distortion; stabilization is purely vibrational (frequency-channel)",
+    "fc_gradient_trajectory_bohr2": [32090, 31997, 28634, 26040, 24650],
+    "convergence": "free energy stable to ~1 meV across populations; FC gradient decreased monotonically to its statistical-noise floor (error bar +/-23565); ran to max_pop=6"
+  },
+
+  "verdict": {
+    "imaginary_to_real": "ALL — 27/27 imaginary supercell modes (harmonic) -> 0 imaginary (anharmonic). Deepest harmonic -677 cm^-1 (Gamma) renormalized to +260 cm^-1 (lowest optical).",
+    "dynamical_stability": "STABILIZED — both SSCHA auxiliary frequencies AND the free-energy Hessian are positive-definite (0 imaginary modes). h3o Im-3m is dynamically stable when quantum-anharmonic effects are included.",
+    "d2_breakthrough": "h3o is NOT an Im-3m dead-end — anharmonicity rescues the harmonic instability. This flips the h3o.json `stable=false` (harmonic) to dynamically-stable (anharmonic)."
+  },
+
+  "anharmonic_Tc": {
+    "status": "DEFERRED (honest) — dynamical stability is established, but a rigorous anharmonic Tc requires recomputing the electron-phonon coupling lambda with the SSCHA-renormalized dynamical matrix (a follow-up ph.x electron_phonon run on h3o_sscha_final.dyn). The harmonic lambda=2.479/Tc=180K are INVALID (imaginary-mode structure).",
+    "qualitative_expectation": "The deepest soft mode hardened from imaginary to +260 cm^-1 (large stiffening) and omega_log(phonon-spectrum) ~ 969 cm^-1; stiffer phonons typically REDUCE lambda vs a soft-mode-enhanced harmonic estimate, so the true anharmonic Tc is expected BELOW the (invalid) harmonic 180K. Direct number pending the el-ph follow-up.",
+    "next_step": "ph.x electron_phonon='simple' on h3o_sscha_final.dyn -> anharmonic lambda, omega_log -> hexa verify allen_dynes_tc <lam> <wlog> 0.10 <Tc>"
+  },
+
+  "verify": {
+    "note": "hexa verify allen_dynes_tc deferred — requires the anharmonic lambda/omega_log from the el-ph follow-up (not produced by this stability-focused SSCHA run). The harmonic verify (lambda=2.479, wlog=1096.6 -> Tc 179.78K) is recorded in h3o.json but is INVALID (unstable structure)."
+  },
+
+  "cost": {
+    "sscha_run_usd": 0.0,
+    "sscha_run_note": "ran on free pool ubu-1 (no vast rent) per @D d7",
+    "vast_pod_37670312_usd_est": 2.76,
+    "vast_pod_37670312_note": "previous agent's pod, unreachable (ssh transport exit 255, tool-wide vast outage); billed ~9.2h since 2026-05-24T23:17 before THIS agent destroyed it (cloud down, verified gone). Est at ~$0.30/hr GPU.",
+    "vast_pod_DOWN_confirmed": true
+  },
+
+  "provenance": {
+    "driver": "run_sscha_h3o.py (cellconstructor.calculators.Espresso — ASE 3.28 Espresso incompatible with cc 1.6 get_results dispatch)",
+    "final_dyn": "h3o_sscha_final.dyn1-3 (on ubu-1:~/rtsc-h3o-sscha/)",
+    "hessian_dyn": "h3o_hessian.dyn (on ubu-1)",
+    "saved_ensembles": "data/forces_pop1-6.npy + energies/xats (on ubu-1)"
+  },
+
+  "absorbed": false,
+  "provisional": true,
+  "absorbed_note": "Dynamical-stability gate PASS (anharmonic, both aux + Hessian). absorbed deferred until anharmonic Tc gate (el-ph follow-up) per @D d5 — stability alone is not the full M8 gate (needs Tc>200K + pressure)."
+}
