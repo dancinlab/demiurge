@@ -170,6 +170,29 @@ deferred:
 - [ ] V4 final tier ledger — V1+V2+V3 통합 + Phase D 메타 + Phase E absorbed=true 결단
 - [ ] NEXUS.tape reuse edge — RTSC/FUSION/ANTIMATTER verified atom → UFO Stage-1~3 (제공자/소비자 그래프 · @D d19)
 
+## 2026-05-26T01:30:00Z — verb-7 handoff — 외부 제작소 인계 패키지 (7-verb pipeline 완주) 🛸
+
+demiurge 7-verb pipeline 의 **마지막 verb (verb-7 handoff)**. verb-5 synthesize (BOM 7-카테고리 · 도면 tree · firmware DO-178C DAL-A) + verb-6 verify (통합 verdict 🟢10 🟡4 🟠5 ⚪13 · absorbed=false) 를 입력으로, **외부 제작소가 받아 제작 착수 가능한 인계 패키지 명세** 를 manifest 로 봉합. **정직 invariant (@D d5)**: verb-6 `absorbed=false` 이므로 **"제작 준비완료(production-ready)" 거짓 주장 금지** — "비-wet-lab 설계 완료 · 본해 sim (pool/cloud) + wet-lab 측정은 downstream" 으로 정직 고지 · 미충족 게이트를 §5 에 명시. 미충족은 downstream 이지 물리 불가가 아님 (@D d2). 문서 한국어 · 코드 영문. @D d1/d3/d4/d5/d9/d10 준수.
+
+- [x] `UFO/handoff/integrated-vehicle-handoff.md` — 인계 패키지 manifest (§0 TL;DR ASCII 5-구성요소 BOM+도면+firmware+인증+체크리스트 · §1 인계 산출물 매니페스트 7-verb 포인터 표 · §2 제작소 4 핵심 역량 · §3 인증 4 트랙 · §4 인계 체크리스트 완료vs미충족 · §5 미충족 게이트 고지 absorbed=false · §6 cross-link+deferred)
+- [x] `UFO/handoff/integrated-vehicle-handoff.tape` — `@V`1.0 · `@I id001/id002` (🛸 ufo/handoff · alias handoff) · `@C id010-id017` cross-link (spec~verify 7-verb + RTSC + stdlib) · `@D d1-d4` governance · 17-type 알파벳 (@V·@I·@C·@D)
+- [x] §1 인계 산출물 매니페스트 — verb-1 spec (PR#187) · verb-2 structure (PR#190) · verb-3 design (PR#195) · verb-4 analyze (PR#196) · verb-5 synthesize (PR pending) · verb-6 verify (PR pending) · verb-7 handoff (이 PR) 7개 문서 포인터 표 + Stage-1~3 verified ledger (atlas `663698a0`) 검증 근거 동봉
+- [x] §2 제작소 요구 4 역량 — ① CFRP 성형 (autoclave D=6.0m · Tsai-Wu layup) · ② RTSC 솔레노이드 권선 (NI=1.2e6 At · HTS REBCO x6 60° array · quench protection) · ③ cryostat 제작 (LHe 4.2K heat leak ≤10W · UHV 4K · radiator 25m²) · ④ avionics 조립 (28V/400V dual bus · gyro CMG x3 · 2x redundancy) — BOM↔역량 1:1 단일 generic dispatch (@D d4)
+- [x] §3 인증 4 트랙 — ① firmware DO-178C DAL-A · ② 구조 FAA Part 25 base · ③ 압력용기 ASME BPVC/PED (cryostat) · ④ EMC MIL-STD-461/DO-160 — 경로 명세만 (취득 ≠ 본 verb · 게이트 닫힌 후 인증기관)
+- [x] §4 인계 체크리스트 — 완료(비-wet-lab 설계 verb-1~6 [x]) vs 미충족(🟠 5게이트 + F-ANTI-3 + Stage-4~7 ⚪ + wet-lab + 인증 [ ]) 정직 분리
+- [x] §5 미충족 게이트 고지 (absorbed=false 명시) — 🟠 5게이트 (CFD C_d·L/D · EM 6-coil B-map FEM · 응력 LC-1~5 FEA · 열 cryo transient · ⟲ LC-2 coupling → pool/cloud @D d7) + F-ANTI-3 (γ-rocket I_sp 광자 천장 c/g≈3.06e7 s ↔ target 1e9 s 2-자릿수 gap · effective mass-flow closure) + Stage-4~7 ⚪ (F-WARP/WORM/DIM/USE academically-UNPROVEN ≠ 물리 불가 · @D d2) — 각 게이트별 breakthrough path 동봉 (no-impossibility framing)
+- [x] `UFO.md` line 53 verb-7 handoff `[ ]` → `[x] LANDED PR pending` flip — **7-verb pipeline 완주 (spec→structure→design→analyze⟲→synthesize→verify→handoff)** 🛸
+- [x] @D d5 준수 — absorbed=false 정직 명시 · Phase E absorbed=true flip 은 🟠 5게이트 + F-ANTI-3 PASS 후 결단 (deferred)
+
+deferred:
+- [ ] 🟠 5 통합-sim 게이트 본해 (CFD·EM·응력·열·⟲) — pool/cloud micro-exp (@D d7)
+- [ ] F-ANTI-3 effective I_sp mass-flow closure — verb-4/6 의무
+- [ ] Stage-4~7 ⚪ falsifier 측정/실험 monotone {OPEN→CONFIRMED/DEMOTED}
+- [ ] wet-lab 측정 confirmation (Meissner B · MHD 추력 · antimatter trap · cryo heat leak) — 제작 후 (@D d5)
+- [ ] 인증 취득 트랙 진행 (DO-178C DAL-A · FAA Pt.25 · ASME BPVC · MIL-STD-461) — 게이트 닫힌 후
+- [ ] Phase E `absorbed=true` flip 결단 — 🟠 5게이트 + F-ANTI-3 PASS 후 (@D d5 invariant)
+- [ ] 제작소 분할 협력 trade (CFRP·avionics 주 + RTSC·cryostat 협력사) — §2 breakthrough path
+
 ## 2026-05-26T00:30:00Z — Stage-3 orbital antimatter γ-rocket I_sp verify LANDED 🟢
 
 Phase A Stage-3 orbital (antimatter γ-rocket anti-H + H · 고도 200 km ~ 1 AU). ANTIMATTER substrate (γ-rocket · Penning 3-freq + Ioffe trap depth verify 🟢 완료) 위에 γ-rocket I_sp closed-form (annihilation `E = 2·m_p·c²` → relativistic exhaust → `I_sp = c/g` 광자 천장 3.057e7 s) 의 numerical recompute 를 `hexa verify --expr` 3건으로 🟢 SUPPORTED-NUMERICAL 도장. ANTIMATTER verified atom 재사용 (idempotent atlas fold) · @D d3/d4/d6/d9/d10 준수. 문서 한국어 · 코드 영문.
