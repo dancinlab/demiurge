@@ -1,0 +1,17 @@
+[
+  {"repo": "hexa-lang", "number": "#1014", "title": "antimatter: relativistic deceleration ladder (rel_kinetic_from_p / rel_p_from_kinetic)", "process": "2-deceleration", "role": "kernel", "note": "AD/ELENA energy-step recompute; metadata = TODO (gh pr view --json, fill batch)"},
+  {"repo": "hexa-lang", "number": "#1015", "title": "antimatter: cyclotron cooling scaling (bexponent / bratio / massspeedup)", "process": "4-cooling", "role": "kernel", "note": "tau_c prop B^-2 m^3; metadata = TODO (fill batch)"},
+  {"repo": "hexa-lang", "number": "#1018", "title": "antimatter: 3-body recombination scaling (density_power / exponent / tratio)", "process": "5-synthesis", "role": "kernel", "note": "n_e^2 T^-9/2; metadata = TODO (fill batch)"},
+  {"repo": "hexa-lang", "number": "#1094", "title": "antimatter: BLUE-MAX algebraic-root pair coverage (+8 integer atoms)", "process": "bluemax", "role": "audit", "note": "8 integer algebraic-root atoms; metadata = TODO (fill batch)"},
+  {"repo": "hexa-lang", "number": "#1107", "title": "antimatter: BLUE-MAX 11/11 completion + g69 finalization-gate PASS", "process": "bluemax", "role": "audit", "note": "hexa verify --blue-max ANTIMATTER -> PASS; metadata = TODO (fill batch)"},
+
+  {"repo": "demiurge", "number": "#157", "title": "ANTIMATTER domain init + 7-process scaffold", "process": "domain", "role": "scaffold", "note": "metadata = TODO (fill batch)"},
+  {"repo": "demiurge", "number": "#158", "title": "ANTIMATTER: process verify rounds (record exports)", "process": "verify", "role": "record", "note": "metadata = TODO (fill batch)"},
+  {"repo": "demiurge", "number": "#159", "title": "ANTIMATTER: verify ledger V1->V4", "process": "verify", "role": "record", "note": "metadata = TODO (fill batch)"},
+  {"repo": "demiurge", "number": "#162", "title": "ANTIMATTER: capture/cooling/synthesis records", "process": "3-5", "role": "record", "note": "metadata = TODO (fill batch)"},
+  {"repo": "demiurge", "number": "#164", "title": "ANTIMATTER: 1S-2S measurement record", "process": "7-measurement", "role": "record", "note": "metadata = TODO (fill batch)"},
+  {"repo": "demiurge", "number": "#166", "title": "ANTIMATTER: pair-production threshold record", "process": "1-production", "role": "record", "note": "metadata = TODO (fill batch)"},
+  {"repo": "demiurge", "number": "#167", "title": "ANTIMATTER: 7-verb full pipeline + handoff doc", "process": "pipeline", "role": "handoff", "note": "metadata = TODO (fill batch)"},
+  {"repo": "demiurge", "number": "#168", "title": "ANTIMATTER: Ioffe-Pritchard confinement close (RTSC/Wheeler inherited)", "process": "6-confinement", "role": "kernel", "note": "7 green + 1 falsified control; metadata = TODO (fill batch)"},
+  {"repo": "demiurge", "number": "#169", "title": "ANTIMATTER: verify-ledger refresh (6-confinement closed)", "process": "verify", "role": "record", "note": "metadata = TODO (fill batch)"}
+]

@@ -1,0 +1,8 @@
+{
+  "schema": "adapter-defect-catalog v1 (mirror of HEXA-FUSION companion/)",
+  "domain": "ANTIMATTER",
+  "status": "N/A",
+  "reason": "ANTIMATTER FACTORY required no external-solver wrap-and-fix round. The only solver-class kernel — the confinement-stage magnetostatics (process 6) — was INHERITED INTACT from the sibling RTSC magnet toolchain (GetDP 4.0 axisymmetric A-phi + the Wheeler on-axis closed-form anchor), which had already been wrapped, fixed, and FEM-cross-checked in the RTSC domain. No new adapter was wrapped here, so no new adapter defect was surfaced. The closed-form Ioffe-Pritchard verify (PR #168) was landed without invoking the FEM backend; the optional GetDP FEM cross-check was kept out of scope (see main.tex Limitations).",
+  "defects": [],
+  "honesty_note": "Empty defect list is honest, not a gap: the wrap-and-fix integration-test pattern (which surfaced 3 defects in HEXA-FUSION) did not apply because the magnet kernel was reused, not re-wrapped. All ANTIMATTER records carry absorbed=false."
+}

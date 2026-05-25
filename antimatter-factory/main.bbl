@@ -1,0 +1,142 @@
+\begin{thebibliography}{16}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Ahmadi and others (ALPHA~Collaboration)(2018)]{ahmadi2018alpha1s2s}
+M.~Ahmadi and others (ALPHA~Collaboration).
+\newblock Characterization of the {1S--2S} transition in antihydrogen.
+\newblock \emph{Nature}, 557:\penalty0 71--75, 2018.
+\newblock \doi{10.1038/s41586-018-0017-2}.
+\newblock ALPHA collaboration; $\bar H$ 1S--2S to $\approx 2\times10^{-12}$.
+
+\bibitem[Amole and others (ALPHA~Collaboration)(2014)]{amole2014alphatrap}
+C.~Amole and others (ALPHA~Collaboration).
+\newblock An experimental limit on the charge of antihydrogen.
+\newblock \emph{Nature Communications}, 5:\penalty0 3955, 2014.
+\newblock \doi{10.1038/ncomms4955}.
+\newblock Ioffe--Pritchard magnetic-minimum confinement of neutral
+  antihydrogen.
+
+\bibitem[Andresen and others (ALPHA~Collaboration)(2010)]{andresen2010trapped}
+G.~B. Andresen and others (ALPHA~Collaboration).
+\newblock Trapped antihydrogen.
+\newblock \emph{Nature}, 468:\penalty0 673--676, 2010.
+\newblock \doi{10.1038/nature09610}.
+\newblock First trapping of antihydrogen in a magnetic-minimum (Ioffe) trap.
+
+\bibitem[Brown and Gabrielse(1986)]{brown1986geonium}
+L.~S. Brown and G.~Gabrielse.
+\newblock Geonium theory: Physics of a single electron or ion in a {Penning}
+  trap.
+\newblock \emph{Reviews of Modern Physics}, 58\penalty0 (1):\penalty0 233--311,
+  1986.
+\newblock \doi{10.1103/RevModPhys.58.233}.
+\newblock Invariance theorem $\omega_c^2 = \omega_+^2 + \omega_z^2 +
+  \omega_-^2$ (Eq.~58).
+
+\bibitem[Chamberlain et~al.(1955)Chamberlain, Segr{\`e}, Wiegand, and
+  Ypsilantis]{chamberlain1955}
+O.~Chamberlain, E.~Segr{\`e}, C.~Wiegand, and T.~Ypsilantis.
+\newblock Observation of antiprotons.
+\newblock \emph{Physical Review}, 100\penalty0 (3):\penalty0 947--950, 1955.
+\newblock \doi{10.1103/PhysRev.100.947}.
+
+\bibitem[Dehmelt(1990)]{dehmelt1990}
+H.~Dehmelt.
+\newblock Experiments with an isolated subatomic particle at rest ({Nobel}
+  lecture).
+\newblock \emph{Reviews of Modern Physics}, 62\penalty0 (3):\penalty0 525--530,
+  1990.
+\newblock \doi{10.1103/RevModPhys.62.525}.
+
+\bibitem[Dular et~al.(1998)Dular, Geuzaine, Henrotte, and Legros]{getdp}
+P.~Dular, C.~Geuzaine, F.~Henrotte, and W.~Legros.
+\newblock A general environment for the treatment of discrete problems and its
+  application to the finite element method ({GetDP}).
+\newblock IEEE Transactions on Magnetics 34(5):3395--3398;
+  \url{https://getdp.info}, 1998.
+\newblock GetDP 4.0 axisymmetric A--$\phi$ magnetostatics; inherited RTSC
+  toolchain.
+
+\bibitem[Gabrielse and others (ATRAP~Collaboration)(2002)]{gabrielse2002driven}
+G.~Gabrielse and others (ATRAP~Collaboration).
+\newblock Driven production of cold antihydrogen and the first measured
+  distribution of antihydrogen states.
+\newblock \emph{Physical Review Letters}, 89\penalty0 (23):\penalty0 233401,
+  2002.
+\newblock \doi{10.1103/PhysRevLett.89.233401}.
+\newblock Three-body $\bar p + e^+ + e^+ \to \bar H + e^+$ recombination.
+
+\bibitem[Ghost and {Claude Opus 4.7}(2026)]{anthropic2026hexag69}
+D.~Ghost and {Claude Opus 4.7}.
+\newblock Sidecar commons governance {@D} g69: domain finalization gate ---
+  {BLUE-MAX} algebraic-root pair audit at \texttt{absorbed=true}.
+\newblock Sidecar commons.tape (Dancinlab marketplace), 2026.
+\newblock `hexa verify --blue-max <DOMAIN>` audit rule; ANTIMATTER reference
+  implementation \#1094, finalization \#1107.
+
+\bibitem[Glinsky and O'Neil(1991)]{glinsky1991oneil}
+M.~E. Glinsky and T.~M. O'Neil.
+\newblock Guiding center atoms: Three-body recombination in a strongly
+  magnetized plasma.
+\newblock \emph{Physics of Fluids B: Plasma Physics}, 3\penalty0 (5):\penalty0
+  1279--1293, 1991.
+\newblock \doi{10.1063/1.859820}.
+\newblock Three-body recombination rate scaling $\propto n_e^2 T^{-9/2}$.
+
+\bibitem[Hori and others (ASACUSA~Collaboration)(2011)]{hori2013asacusa}
+M.~Hori and others (ASACUSA~Collaboration).
+\newblock Two-photon laser spectroscopy of antiprotonic helium and the
+  antiproton-to-electron mass ratio.
+\newblock \emph{Nature}, 475:\penalty0 484--488, 2011.
+\newblock \doi{10.1038/nature10260}.
+\newblock ASACUSA collaboration; antiprotonic-helium spectroscopy, $\bar p$/$e$
+  mass ratio.
+
+\bibitem[Kosteleck{\'y} and Russell(2011)]{kostelecky2011lorentz}
+V.~A. Kosteleck{\'y} and N.~Russell.
+\newblock Data tables for {Lorentz} and {CPT} violation.
+\newblock \emph{Reviews of Modern Physics}, 83\penalty0 (1):\penalty0 11--31,
+  2011.
+\newblock \doi{10.1103/RevModPhys.83.11}.
+\newblock Standard-Model Extension; CPT / Lorentz-violation framework.
+
+\bibitem[Maury(1997)]{maury1997ad}
+S.~Maury.
+\newblock The antiproton decelerator: {AD}.
+\newblock \emph{Hyperfine Interactions}, 109\penalty0 (1--4):\penalty0 43--52,
+  1997.
+\newblock \doi{10.1023/A:1012632812327}.
+\newblock CERN Antiproton Decelerator design.
+
+\bibitem[Maury et~al.(2014)Maury, Oelert, Bartmann, Belochitskii, Breuker,
+  Butin, Carli, Eriksson, Pasinelli, and Tranquille]{maury2014elena}
+S.~Maury, W.~Oelert, W.~Bartmann, P.~Belochitskii, H.~Breuker, F.~Butin,
+  C.~Carli, T.~Eriksson, S.~Pasinelli, and G.~Tranquille.
+\newblock {ELENA}: the extra low energy antiproton facility at {CERN}.
+\newblock \emph{Hyperfine Interactions}, 229\penalty0 (1--3):\penalty0
+  105--115, 2014.
+\newblock \doi{10.1007/s10751-014-1067-y}.
+\newblock ELENA post-decelerator, GeV$\to$keV down to 100 keV/c.
+
+\bibitem[Smorra and others (BASE~Collaboration)(2017)]{smorra2017base}
+C.~Smorra and others (BASE~Collaboration).
+\newblock A parts-per-billion measurement of the antiproton magnetic moment.
+\newblock \emph{Nature}, 550:\penalty0 371--374, 2017.
+\newblock \doi{10.1038/nature24048}.
+\newblock BASE collaboration; antiproton $g$-factor / magnetic moment.
+
+\bibitem[Tiesinga et~al.(2021)Tiesinga, Mohr, Newell, and
+  Taylor]{mohr2018codata}
+E.~Tiesinga, P.~J. Mohr, D.~B. Newell, and B.~N. Taylor.
+\newblock {CODATA} recommended values of the fundamental physical constants:
+  2018.
+\newblock \emph{Reviews of Modern Physics}, 93\penalty0 (2):\penalty0 025010,
+  2021.
+\newblock \doi{10.1103/RevModPhys.93.025010}.
+\newblock $m_p$, $e$, $\mu_B$, $k_B$, $R_\infty$ used throughout.
+
+\end{thebibliography}

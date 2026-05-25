@@ -1,0 +1,23 @@
+% SKELETON (fill batch): L — reproducibility runbook.
+% TODO (fill batch): fold the exact reproduction runbook — building
+%   bin/hexa-verify from tool/verify_cli.hexa (host=mini, POOL_DISABLE=1 per
+%   the verify-host note), the 22 hexa-native fns, the CODATA-2018 constants,
+%   the inherited magnet decks, and the companion/ rebuild steps.
+\section{Reproducibility Runbook}
+\label{app:repro}
+
+This appendix is the step-by-step reproduction runbook. It will give the
+exact commands to rebuild the verify binary
+(\texttt{tool/build\_hexa\_verify.sh} $\to$ \texttt{bin/hexa-verify}, run on
+host \texttt{mini} with \texttt{POOL\_DISABLE=1} per the verify-host
+constraint), enumerate the 22 hexa-native functions and their canonical
+stdlib home, list the inlined CODATA-2018 constants
+\citep{mohr2018codata} ($m_p$, $e$, $\mu_B$, $k_B$, $R_\infty$; CPT
+$m_{\bar p}=m_p$), point to the inherited magnet decks under
+\texttt{stdlib/rtsc/} and \texttt{stdlib/material/magnet/}, and give the
+paper-build (\texttt{make}), figure (\texttt{make figures}), and lint
+(\texttt{make lint}) targets plus the \texttt{companion/} rebuild steps.
+
+% TODO (fill batch): the verify-binary build commands, the per-process
+% one-line `hexa verify --expr` invocations, the constants table, the
+% paper/figure/companion build steps.

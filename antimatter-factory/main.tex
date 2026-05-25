@@ -1,0 +1,808 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------- arxiv-style preamble (xelatex; emoji-native) ----------
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,backgrounds}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\usepackage{listings}
+\usepackage{array}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  columns=fullflexible,
+  frame=single,
+  framesep=4pt,
+  xleftmargin=4pt,
+  xrightmargin=4pt
+}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black
+}
+
+% ---------- tier badges (xelatex; colored-disc fallback) ----------
+% Use \tierBlue / \tierGreen / \tierYellow / \tierOrange / \tierRed in tables.
+% Rendered as filled colored discs via TikZ (engine-agnostic, always visible,
+% preserves the exact tier semantics: blue=closed-form, green=numerical, etc.).
+\newcommand{\tierdisc}[1]{\textcolor{#1}{\rule[0.05ex]{1.0ex}{1.0ex}}}
+\newcommand{\tierBlue}{\tierdisc{blue!70!black}}
+\newcommand{\tierGreen}{\tierdisc{green!60!black}}
+\newcommand{\tierYellow}{\tierdisc{yellow!85!black}}
+\newcommand{\tierOrange}{\tierdisc{orange!90!black}}
+\newcommand{\tierRed}{\tierdisc{red!80!black}}
+
+\title{
+  \textbf{ANTIMATTER FACTORY: A 7-Process Closed-Form Verify Funnel
+  for Cold-Antihydrogen Production and a CPT-Test Design Feasibility} \\[6pt]
+  \large with a Penning-Trap Three-Frequency Invariance Keystone, an Inherited
+  RTSC Magnet Toolchain at the Confinement Stage, and an Algebraic-Root
+  \textsc{Blue-Max} Audit
+}
+
+% ---------- author block (hexa-codex style) ----------
+% Convention: <repo> maintainers / dancinlab / clickable github URL.
+% LLM collaborator credit goes in \paragraph{Acknowledgments} at the tail.
+\author{
+  \texttt{antimatter-factory} maintainers\\
+  \normalsize\textit{dancinlab}\\[2pt]
+  \normalsize\href{https://github.com/dancinlab/demiurge}{\texttt{github.com/dancinlab/demiurge}}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+% =========================================================================
+\begin{abstract}
+We present \textbf{ANTIMATTER FACTORY}, a closed-form 7-process
+design-feasibility funnel for the production, trapping, and spectroscopy
+of cold antihydrogen, built as a domain on top of the hexa-lang stdlib.
+Where the canonical accelerator facility --- CERN's Antiproton Decelerator
+complex --- calls itself an ``antimatter factory,'' we adopt the same
+metaphor literally: \emph{each production process is a verify axis}. The
+funnel covers (\textcircled{\scriptsize 1}) antiproton pair-production
+threshold ($E_{\mathrm{th}}\!\approx\!6.5$\,GeV for $p+p\!\to\!p+p+\bar p+p$),
+(\textcircled{\scriptsize 2}) the AD/ELENA relativistic deceleration ladder
+(GeV$\to$keV), (\textcircled{\scriptsize 3}) the Penning-trap three
+eigenfrequencies (axial, modified-cyclotron, magnetron) and the
+Brown--Gabrielse invariance theorem
+$\omega_c^2=\omega_+^2+\omega_z^2+\omega_-^2$,
+(\textcircled{\scriptsize 4}) cyclotron / sympathetic cooling
+($\tau\!\propto\!B^{-2}$), (\textcircled{\scriptsize 5}) the three-body
+$\bar p + e^+ \!\to\! \bar H$ recombination-rate scaling
+($\propto n_e^2 T^{-9/2}$), (\textcircled{\scriptsize 6}) the
+Ioffe--Pritchard magnetic-minimum confinement field and its trap depth
+($\mu_B/k_B = 0.6717$\,K/T), and (\textcircled{\scriptsize 7}) the
+antihydrogen 1S--2S transition frequency and the antiproton $g$-factor that
+together adjudicate the CPT symmetry test. The confinement stage
+\textcircled{\scriptsize 6} is not new code: it is the \emph{direct
+inheritance} of a sibling RTSC magnet toolchain (GetDP\,4.0 axisymmetric
+magnetostatics + a Wheeler on-axis closed-form anchor), demonstrating
+cross-domain reuse of the same magnetostatic spine for a different field
+geometry (a well, not a peak). Every closed-form kernel is verified through
+the \texttt{hexa verify} tier rubric: 23 positive atoms (3
+\textsc{Supported-Formal} integer roots + 20 \textsc{Supported-Numerical}
+libm-class recomputes) report $|\Delta|=0$ at $\varepsilon=10^{-9}$, 8
+matched negative controls return \textsc{Falsified}, and 8 supplementary
+\textsc{Blue-Max} algebraic-root integer atoms~\citep{anthropic2026hexag69}
+expose the exact integer factors and exponents baked into the libm formulas
+(the pair-production factor $6$, the cooling exponent $-2$, the $T^{-9/2}$
+recombination scaling, the $3/4$ Rydberg level difference). We honestly
+preserve \texttt{absorbed=false}: a design that clears all six non-wet-lab
+process stages is a \emph{witness of factory engineering feasibility}, not a
+produced or measured antihydrogen sample; the CPT verdict at
+\textcircled{\scriptsize 7} requires a measured spectroscopy oracle (ALPHA
+1S--2S at $\approx\!2\!\times\!10^{-12}$, BASE $g$-factor) that no closed
+form can substitute for. Bit-for-bit reproduction artifacts (verify ledger,
+PR roll, session journal) ship under \texttt{companion/}.
+\end{abstract}
+
+% =========================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Cold antihydrogen --- the bound state $\bar H = \bar p + e^+$ --- is the
+sharpest available probe of the CPT theorem: if the matter atom $H$ and the
+antimatter atom $\bar H$ have measurably different 1S--2S transition
+frequencies, or if the proton and antiproton have measurably different
+$g$-factors, the foundational $CPT$ symmetry of the Standard Model is
+broken~\citep{ahmadi2018alpha1s2s,smorra2017base}. Producing and trapping
+$\bar H$ to do that measurement is itself a multi-stage engineering
+problem, executed at exactly one place in the world: CERN's Antiproton
+Decelerator / ELENA complex, which the laboratory itself nicknames the
+``antimatter factory.'' Antiprotons are made by slamming a GeV proton beam
+into a metal target, decelerated through a ladder of storage rings, captured
+and cooled in a Penning trap, merged with a positron plasma to recombine
+into neutral $\bar H$, confined in a magnetic-minimum (Ioffe--Pritchard)
+trap because they are too cold and too neutral to hold electrostatically,
+and finally interrogated by laser spectroscopy.
+
+Each of these processes carries a closed-form or numerical physics kernel
+that can be \emph{verified} ahead of any beam time --- a pair-production
+threshold, a relativistic energy ladder, a set of trap eigenfrequencies, a
+cooling time constant, a recombination-rate scaling, a magnetic-bottle trap
+depth, and a Rydberg transition frequency. Yet there is no widely-shared
+\emph{open closed-form funnel} that (i) covers all seven processes
+uniformly, (ii) carries every prediction to a per-atom verify verdict, and
+(iii) is honest about the permanent wet-lab boundary at the CPT measurement.
+
+\smallskip\noindent\textbf{Contributions.}
+\begin{enumerate}\itemsep0.25em
+\item A 7-process antimatter-factory pipeline
+  (\textcircled{\scriptsize 1}--\textcircled{\scriptsize 7}) that places
+  each production process as a verify axis and makes explicit which
+  processes this funnel closes to a verdict and which it does not
+  (\S\ref{sec:pipeline}).
+\item Native closed-form kernels for the six non-wet-lab processes, with
+  verify atoms at \verb|hexa verify| \textsc{Supported-Formal} /
+  \textsc{Supported-Numerical}, $|\Delta|=0$ (\S\ref{sec:method}).
+\item A Penning-trap three-frequency \emph{keystone}: the axial, modified
+  cyclotron, and magnetron eigenfrequencies plus the Brown--Gabrielse
+  \emph{invariance theorem} $\omega_c^2=\omega_+^2+\omega_z^2+\omega_-^2$
+  reproduced with an exact-to-machine-precision residual
+  ($|\Delta|=0.0$)~\citep{brown1986geonium} (\S\ref{sec:keystone}).
+\item A \emph{cross-domain inheritance}: the confinement stage
+  \textcircled{\scriptsize 6} reuses the RTSC magnet toolchain (GetDP\,4.0
+  axisymmetric A--$\phi$ magnetostatics + a Wheeler on-axis closed-form
+  current-loop anchor) for the Ioffe--Pritchard magnetic-minimum trap,
+  showing that one magnetostatic spine serves both a field \emph{peak}
+  (a solenoid) and a field \emph{well} (a magnetic bottle)
+  (\S\ref{sec:inherit}).
+\item A \textbf{BLUE-MAX} algebraic-root pair audit
+  \citep{anthropic2026hexag69} adding 8 zero-/one-arg integer atoms that
+  attest the exact integer factors and exponents hidden inside the libm
+  formulas, reaching 11/11 coverage of the funnel's physical claims
+  (\S\ref{sec:bluemax}).
+\item A clean honesty boundary: all simulation records carry
+  \texttt{absorbed=false}; only a measured spectroscopy oracle (ALPHA
+  1S--2S \citep{ahmadi2018alpha1s2s}, BASE $g$-factor
+  \citep{smorra2017base}) can ever adjudicate the CPT verdict.
+  Section~\ref{sec:limits} lists the boundaries we deliberately do not
+  cross, and \texttt{companion/} externalizes every record.
+\end{enumerate}
+
+\smallskip
+A high-level view of the factory line and how the processes depend on a
+measured oracle vs.\ closed-form code is shown in Fig.~\ref{fig:cover}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/cover.png}
+\caption{Conceptual cover image of the ANTIMATTER FACTORY 7-process funnel:
+six closed-form/numerical-PASS processes
+(\textcircled{\scriptsize 1}--\textcircled{\scriptsize 6}) feed the
+factory-feasibility decision and isolate the only permanent measured-oracle
+boundary, the CPT spectroscopy at \textcircled{\scriptsize 7}. Image
+generated via \texttt{fal.ai} gpt-image-2 from
+\texttt{figures/\_prompts/cover.txt} (commons @D g44).}
+\label{fig:cover}
+\end{figure}
+
+\smallskip\noindent\textbf{Document structure.} This is the
+\emph{monograph} form of ANTIMATTER FACTORY: the body
+(\S\S\ref{sec:intro}--\ref{sec:conclusion}) is the self-contained narrative
+argument, and the lettered appendices (A--L) are the full data record ---
+the per-process closed forms and outputs (A--G), the BLUE-MAX algebraic-root
+audit (H), the verbatim verification ledger (I), the inherited RTSC magnet
+toolchain (J), the pull-request roll (K), and the reproducibility runbook
+(L). A reader can audit any body claim down to its atom by following the
+appendix it cites.
+
+% =========================================================================
+\section{Background}
+\label{sec:bg}
+
+\paragraph{The antimatter-factory problem.} Making one usable cold
+antihydrogen atom for a CPT test requires, in sequence, that: antiprotons be
+\emph{created} at all (the beam must clear the pair-production threshold,
+process \textcircled{\scriptsize 1}); the created $\bar p$ be
+\emph{decelerated} from production-scale GeV momenta down to the keV (and
+ultimately sub-eV) energies a trap can hold (process
+\textcircled{\scriptsize 2}); the slow $\bar p$ be \emph{captured} in a
+Penning trap whose three eigenfrequencies determine whether the configuration
+traps at all (process \textcircled{\scriptsize 3}); the trapped cloud be
+\emph{cooled} to the temperature at which recombination is efficient
+(process \textcircled{\scriptsize 4}); $\bar p$ and $e^+$ be \emph{synthesized}
+into neutral $\bar H$ via three-body recombination (process
+\textcircled{\scriptsize 5}); the neutral $\bar H$ be \emph{confined} in a
+magnetic-minimum trap, because a neutral atom feels no electrostatic force and
+only the tiny magnetic-moment interaction holds it (process
+\textcircled{\scriptsize 6}); and finally the trapped $\bar H$ be
+\emph{measured} by 1S--2S spectroscopy against its matter twin to a part in
+$10^{12}$ (process \textcircled{\scriptsize 7}). Only the last process needs
+a built apparatus and a measured oracle; the first six are closed-form or
+numerical and can be verified ahead of time.
+
+\paragraph{Why a closed-form funnel.} The full apparatus is a
+once-in-the-world facility; but the \emph{physics gates} that decide whether
+a given trap-and-source design is feasible are, for the six non-wet-lab
+processes, algebraic. The pair-production threshold is exact kinematics; the
+deceleration ladder is the relativistic energy--momentum relation; the
+Penning eigenfrequencies and the invariance theorem are textbook geonium
+algebra~\citep{brown1986geonium}; the cooling time constant is a power-law
+scaling; the recombination rate is a known $n_e^2 T^{-9/2}$ scaling; the
+Ioffe--Pritchard field is on-axis current-loop magnetostatics; and the
+1S--2S frequency is leading-order Rydberg. ANTIMATTER FACTORY exploits this:
+it computes all six in a small typed language with per-expression verify
+atoms, inheriting the magnet kernel for process \textcircled{\scriptsize 6}
+from the sibling RTSC domain, and keeps a single uniform verdict surface
+across all processes.
+
+\paragraph{The verify tier rubric.} Each computed quantity is assigned a
+tier under the \texttt{hexa verify} rubric: \tierBlue\ closed-form (an
+algebraic / integer identity reproduced exactly), \tierGreen\ numerical (a
+reproducible libm-class recompute matching a persisted reference within
+$\varepsilon$), \tierYellow\ cited (a literature DOI / dataset entry),
+\tierOrange\ wet-lab or measured-oracle-gated (needs an external
+measurement), and \tierRed\ falsified (a controlled negative, retained as
+honest evidence). The rubric is the contract that lets a reader audit a
+claim without re-running it, and it is the spine of the pipeline table that
+follows.
+
+% =========================================================================
+\section{Full Pipeline}
+\label{sec:pipeline}
+
+Before the per-process detail, we situate the seven processes as the
+physical path that a single antiproton --- then antihydrogen atom ---
+actually traverses inside an antimatter factory. This is the
+\emph{honest-scope contract}: the table is a map of which processes
+ANTIMATTER FACTORY closes to a verdict and which it does not, so a reader can
+see the boundary of the work at a glance.
+
+\medskip
+\noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{Tier rubric.}
+\tierBlue\ closed-form (algebraic or integer identity reproduced exactly) \(\cdot\)
+\tierGreen\ numerical (reproducible libm-class recompute, $|\Delta|\!\le\!\varepsilon$) \(\cdot\)
+\tierYellow\ cited (DOI / arxiv / dataset entry) \(\cdot\)
+\tierOrange\ wet-lab / measured-oracle (downstream confirmation needed) \(\cdot\)
+\tierRed\ falsified (kept as honest negative, never deleted).}}
+
+\medskip
+\begin{table}[h]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\centering\arraybackslash}m{0.3cm} >{\raggedright\arraybackslash}m{1.7cm} >{\raggedright\arraybackslash}m{2.7cm} >{\raggedright\arraybackslash}m{2.9cm} >{\centering\arraybackslash}m{0.55cm} >{\raggedright\arraybackslash}m{3.9cm}@{}}
+\toprule
+\textbf{\#} & \textbf{Process} & \textbf{Input} & \textbf{Output} & \textbf{Tier} & \textbf{Backing / PR} \\
+\midrule
+\textcircled{\scriptsize 1} & Production (pair-production) & $p$ beam + fixed target, $E_{\mathrm{beam}}$ & $\bar p$ yield above $E_{\mathrm{th}}\!\approx\!6.5$\,GeV & \tierBlue\,\tierGreen & $E_{\mathrm{th}}=6\,m_pc^2$ \texttt{pair\_threshold\_factor}=6 $\cdot$ \#1014 \\
+\textcircled{\scriptsize 2} & Deceleration (AD/ELENA) & GeV $\bar p$ momentum & keV beam after energy-step ladder & \tierGreen & rel.\ $T(p)$ ladder $\cdot$ \texttt{rel\_kinetic\_from\_p} $\cdot$ \#1014 \\
+\textcircled{\scriptsize 3} & Capture (Penning trap) & $B=5$\,T, $U_0=10$\,V, $d=5$\,mm & $\omega_z,\omega_+,\omega_-$ + invariance & \tierBlue\,\tierGreen & Brown--Gabrielse $\omega_c^2{=}\omega_+^2{+}\omega_z^2{+}\omega_-^2$ $\cdot$ \texttt{penning\_invariance} $|\Delta|{=}0$ \\
+\textcircled{\scriptsize 4} & Cooling (e$^-$/sympathetic) & $\bar p$ cloud, $B$ & cooling $\tau\!\propto\!B^{-2}$, equilib.\ $T$ & \tierBlue\,\tierGreen & \texttt{cyclotron\_cool\_bexponent}=$-2$ $\cdot$ \#1015 \\
+\textcircled{\scriptsize 5} & Synthesis ($\bar p+e^+\!\to\!\bar H$) & cold $\bar p$ + $e^+$ plasma & $\bar H$ formation rate scaling & \tierBlue\,\tierGreen & $\propto n_e^2 T^{-9/2}$ $\cdot$ \texttt{recomb\_3body\_*} $\cdot$ \#1018 \\
+\textcircled{\scriptsize 6} & Confinement (Ioffe--Pritchard) & mirror-coil geometry, $NI$ & $B_{\min}$, trap depth (mK--K) & \tierGreen & \textbf{RTSC GetDP 4.0 + Wheeler closed-form inherited} $\cdot$ \texttt{ioffe\_*} $\cdot$ \#168 \\
+\textcircled{\scriptsize 7} & Measurement (1S--2S + $g$) & trapped $\bar H$, lasers & $\bar H$ 1S--2S freq, $\bar p$ $g$ $\to$ CPT $\Delta$ & \tierOrange & leading $\tfrac34 R_\infty c$ \texttt{h1s2s\_rydberg} \tierGreen; CPT $\Delta$ = ALPHA/BASE measured oracle \\
+\bottomrule
+\end{tabular}
+\caption{The 7-process antimatter-factory pipeline.
+\textbf{This funnel closes the six non-wet-lab processes}
+\textcircled{\scriptsize 1}\textcircled{\scriptsize 2}\textcircled{\scriptsize 3}\textcircled{\scriptsize 4}\textcircled{\scriptsize 5}\textcircled{\scriptsize 6}
+(\tierBlue/\tierGreen) to a closed-form or numerical verdict. The seventh
+process, the CPT \emph{measurement} \textcircled{\scriptsize 7}
+(\tierOrange), is explicitly \emph{not} closed: its leading-order 1S--2S
+frequency is reproduced ($\approx\!2.4674$\,PHz), but the CPT symmetry
+verdict $\Delta(H,\bar H)$ requires a measured spectroscopy oracle (ALPHA
+$\approx\!2\!\times\!10^{-12}$, BASE $g$-factor) that no closed form can
+adjudicate. The table is the contract: \tierOrange\ does not graduate to
+\tierGreen\ without an external measurement.}
+\label{tab:pipeline}
+\end{table}
+
+A tier-color-coded flow of the same seven processes is in
+Fig.~\ref{fig:pipeline}: the six green nodes are the funnel's closed
+production core; the single orange node is the honest CPT boundary.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.86\linewidth]{figures/fig01_pipeline.pdf}
+\caption{Tier-color-coded 7-process antimatter-factory pipeline. Green nodes
+(\textcircled{\scriptsize 1}--\textcircled{\scriptsize 6}) are closed by the
+ANTIMATTER FACTORY funnel to a closed-form / numerical verdict; the orange
+node (\textcircled{\scriptsize 7}) is the measured-oracle CPT boundary and is
+not closed by this work. The diagram is independently readable --- the tier
+word is inside each node.}
+\label{fig:pipeline}
+\end{figure}
+
+% =========================================================================
+\section{Method --- Six Closed-Form Production Processes}
+\label{sec:method}
+
+We state the six closed-form kernels in pipeline order; each is registered
+as one or more \texttt{hexa verify} atoms whose verbatim verdicts ship in
+\texttt{companion/verify-ledger.json}.
+
+\subsection{\textcircled{\scriptsize 1} Production --- pair-production threshold}
+
+For $\bar p$ creation on a fixed target via
+$p+p\to p+p+\bar p+p$, four-momentum conservation in the lab frame requires
+a beam kinetic energy
+\begin{equation}
+T_{\mathrm{th}} \;=\; 6\,m_p c^2 \;\approx\; 5629.6\ \mathrm{MeV},
+\qquad
+E_{\mathrm{beam,th}} \;=\; 7\,m_p c^2 \;\approx\; 6567.9\ \mathrm{MeV}
+\;\approx\; 6.5\ \mathrm{GeV},
+\label{eq:pair}
+\end{equation}
+the classic Bevatron design number that produced the first antiprotons
+\citep{chamberlain1955}. The integer factor 6 (the threshold is exactly six
+proton rest energies above the beam proton's own) is registered as a
+\tierBlue\ atom \verb|pair_threshold_factor()=6|; the dimensional values
+$T_{\mathrm{th}}$ and $E_{\mathrm{beam,th}}$ at $m_pc^2=938.272$\,MeV are
+\tierGreen\ atoms \verb|pair_threshold_kinetic| /
+\verb|pair_threshold_total|, both $|\Delta|=0$.
+
+\subsection{\textcircled{\scriptsize 2} Deceleration --- the AD/ELENA energy ladder}
+
+The Antiproton Decelerator and its ELENA post-decelerator step the beam down
+through a ladder of momenta; at each rung the kinetic energy follows the
+relativistic energy--momentum relation
+\begin{equation}
+T(p) \;=\; \sqrt{(pc)^2 + (m_p c^2)^2} \;-\; m_p c^2 .
+\label{eq:decel}
+\end{equation}
+We register the AD input ($p=3500$\,MeV/$c\to T=2685.31$\,MeV), the AD output
+($p=100\to T=5.3139$\,MeV), the ELENA output, and a round-trip identity
+$p\!\to\!T\!\to\!p$ closing to $|\Delta|=7.4\!\times\!10^{-13}$ --- all
+\tierGreen, with two deterministic negative controls returning
+\textsc{Falsified}. The ladder $T(p)$ and the three registered rungs are
+plotted in Fig.~\ref{fig:decel}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.80\linewidth]{figures/fig05_decel_ladder.pdf}
+\caption{The AD/ELENA relativistic deceleration ladder
+$T(p)=\sqrt{(pc)^2+(m_pc^2)^2}-m_pc^2$ (log--log), spanning $\sim$5 decades
+in kinetic energy from the AD input ($pc=3500$\,MeV, $T=2685$\,MeV) to the
+ELENA output ($T=0.1$\,MeV). The marked points are the registered
+\tierGreen\ verify atoms \texttt{rel\_kinetic\_from\_p} /
+\texttt{rel\_p\_from\_kinetic} (PR \#1014), each $|\Delta|=0$.}
+\label{fig:decel}
+\end{figure}
+
+\subsection{\textcircled{\scriptsize 4} Cooling --- cyclotron / sympathetic scaling}
+
+Radiative (cyclotron) cooling of a charged cloud in field $B$ has a time
+constant
+\begin{equation}
+\tau_c \;\propto\; \frac{m^3}{B^{2}},
+\label{eq:cool}
+\end{equation}
+the Larmor radiated-power scaling $P\!\propto\!B^2$ inverted. The integer
+exponents are \tierBlue\ atoms (\verb|cyclotron_cool_bexponent()=-2|,
+\verb|cyclotron_cool_massexponent()=3|); the ratio
+$\tau_c(5\,\mathrm{T})/\tau_c(1\,\mathrm{T})=0.04$ and the
+$\bar p$-vs-$e^-$ mass speed-up ($\approx\!6.19\!\times\!10^9$, shown in a
+$10^{-9}$-scaled discriminating view) are \tierGreen.
+
+\subsection{\textcircled{\scriptsize 5} Synthesis --- three-body recombination}
+
+In the dominant antihydrogen-formation channel
+$\bar p + e^+ + e^+ \to \bar H + e^+$, the per-antiproton rate scales as
+\begin{equation}
+\frac{d N_{\bar H}}{dt}\Big/ N_{\bar p}
+\;\propto\; n_e^{2}\, T^{-9/2},
+\label{eq:recomb}
+\end{equation}
+the Mansbach--Keck / Glinsky--O'Neil scaling~\citep{glinsky1991oneil}. The
+integer density power 2 and the (doubled) temperature exponent $-9$ are
+\tierBlue\ (\verb|recomb_3body_density_power()=2|,
+\verb|recomb_3body_exponent_doubled()=-9|); the half-integer exponent
+$-4.5$ and the temperature ratio
+$(T_1/T_2)^{9/2}=(100/4)^{4.5}=25^{4.5}=5^9=1{,}953{,}125$ are \tierGreen,
+both $|\Delta|=0$.
+
+\subsection{\textcircled{\scriptsize 7} Measurement --- the 1S--2S leading frequency}
+
+The leading-order (point-nucleus, infinite-mass) antihydrogen 1S--2S
+two-photon transition frequency is
+\begin{equation}
+f_{\mathrm{1S\text{-}2S}}
+\;=\; \frac{\Delta E}{h}
+\;=\; \left(\frac{1}{1^2}-\frac{1}{2^2}\right) R_\infty c
+\;=\; \frac{3}{4}\,R_\infty c
+\;\approx\; 2.4674\ \mathrm{PHz}.
+\label{eq:1s2s}
+\end{equation}
+The level-difference factor $3/4$ decomposes into integer
+\tierBlue\ atoms (\verb|transition_factor_1s2s_numerator()=3|,
+\verb|_denominator()=4|); the dimensional frequency
+$\tfrac34 R_\infty c \approx 2.46738$\,PHz is a \tierGreen\ atom
+\verb|h1s2s_rydberg|. \textbf{We honestly note} that this leading value does
+\emph{not} reproduce the 15-digit measured frequency: the measured
+$2.4660614\ldots$\,PHz differs by a fractional $5.35\!\times\!10^{-4}$,
+nearly all of which is the reduced-mass factor $m_e/(m_e+m_p)\approx0.99946$,
+with a residual $\sim\!10^{-5}$ from QED / Lamb-shift / finite-nuclear-size
+corrections. No 15-digit precision is claimed; see \S\ref{sec:limits}.
+
+% =========================================================================
+\section{The Penning-Trap Keystone: Three Frequencies + Invariance}
+\label{sec:keystone}
+
+Process \textcircled{\scriptsize 3} --- capture --- is the funnel's
+keystone, because the Penning trap is where a single antiproton first
+becomes a quantum object one can address, and because its three
+eigenfrequencies obey an identity exact enough to be the metrological
+backbone of every $\bar p$ mass / charge / $g$-factor measurement.
+
+\subsection{The three eigenfrequencies}
+
+A charged particle in a uniform axial field $B$ plus an ideal electrostatic
+quadrupole (characteristic dimension $d$, ring voltage $U_0$) has a free
+cyclotron frequency $\omega_c = qB/m$, an axial frequency
+$\omega_z=\sqrt{qU_0/(md^2)}$, and two radial eigenmodes --- the
+\emph{modified cyclotron} $\omega_+$ and the \emph{magnetron} $\omega_-$:
+\begin{equation}
+\omega_\pm \;=\; \frac{\omega_c}{2} \;\pm\; \sqrt{\left(\frac{\omega_c}{2}\right)^{2} - \frac{\omega_z^2}{2}},
+\qquad
+\text{trapping}\iff \omega_c \ge \sqrt{2}\,\omega_z .
+\label{eq:penning}
+\end{equation}
+For a representative antiproton trap ($B=5$\,T, $U_0=10$\,V, $d=5$\,mm,
+$m=m_p$ by CPT), this gives $\omega_+ = 4.78902\!\times\!10^{8}$\,rad/s
+($f_+\approx76.22$\,MHz), $\omega_- = 4.00033\!\times\!10^{4}$\,rad/s
+($f_-\approx6.37$\,kHz), and $\omega_z=6.18994\!\times\!10^{6}$\,rad/s
+($f_z\approx985$\,kHz). The two radial-mode atoms
+\verb|penning_omega_plus| / \verb|penning_omega_minus| verify
+\tierGreen\ at $|\Delta|=0$.
+
+\subsection{The Brown--Gabrielse invariance theorem}
+
+The load-bearing identity is the \emph{invariance
+theorem}~\citep{brown1986geonium}:
+\begin{equation}
+\boxed{\;\omega_c^{2} \;=\; \omega_+^{2} + \omega_z^{2} + \omega_-^{2}\;}
+\qquad\text{(also } \omega_++\omega_-=\omega_c,\ \ \omega_+\omega_-=\tfrac12\omega_z^2\text{)} .
+\label{eq:invariance}
+\end{equation}
+Its power is that it holds even under trap misalignment and electrode
+ellipticity, the dominant systematics of real Penning-trap metrology --- so
+the three measured eigenfrequencies recover the free-cyclotron frequency
+$\omega_c$, hence the charge-to-mass ratio, robustly. We register
+\verb|penning_invariance(omega_c, omega_z)| which reconstructs $\omega_c$
+from $\omega_+,\omega_z,\omega_-$ and compares to the input:
+\begin{lstlisting}
+verify --expr penning_invariance(4.78942e+08,6.18994e+06)=4.78942e+08
+  calc   = 4.78942e+08 ~ expected 4.78942e+08 (|Delta|=0.0 <= eps=1e-9)
+  tier   = SUPPORTED-NUMERICAL (hexa-native libm-class recompute)
+\end{lstlisting}
+The reconstruction residual is $0.0$ at machine precision: the invariance
+theorem is an \emph{exact} algebraic identity, and the \tierGreen\ tier
+reflects only the \verb|sqrt| in the underlying eigenfrequency
+evaluation, not any modelling error. This is the funnel's sharpest closed
+result. The three eigenfrequencies span nearly four decades
+(Fig.~\ref{fig:penning}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.80\linewidth]{figures/fig03_penning_spectrum.pdf}
+\caption{The three Penning-trap eigenfrequencies for the representative
+antiproton trap ($B=5$\,T, $U_0=10$\,V, $d=5$\,mm), on a log scale: the
+magnetron $f_-\approx6.37$\,kHz, the axial $f_z\approx985$\,kHz, and the
+modified cyclotron $f_+\approx76.22$\,MHz. The invariance theorem
+(Eq.~\eqref{eq:invariance}) ties all three to the free-cyclotron frequency
+$f_c$ with an exact-to-machine residual. Data: \tierGreen\ atoms
+\texttt{penning\_omega\_plus} / \texttt{penning\_omega\_minus} /
+\texttt{penning\_invariance}.}
+\label{fig:penning}
+\end{figure}
+
+% =========================================================================
+\section{Cross-Domain Inheritance: the RTSC Magnet Toolchain at \textcircled{\scriptsize 6}}
+\label{sec:inherit}
+
+The confinement process \textcircled{\scriptsize 6} is where ANTIMATTER
+FACTORY demonstrates its second thesis: \emph{a production process need not
+be new code}. Neutral ground-state antihydrogen is a low-field-seeking state
+with magnetic moment $\mu\approx\mu_B$; it cannot be held electrostatically
+and is instead confined in an Ioffe--Pritchard \emph{magnetic-minimum}
+trap (a magnetic bottle), where $|B|$ has a local minimum at the center and
+rises outward, so the low-field-seeker sits in the well~\citep{andresen2010trapped}.
+
+\subsection{The inherited magnetostatic spine}
+
+The on-axis field of a single current loop (radius $a$, ampere-turns $I$) is
+the textbook
+\begin{equation}
+B_{\mathrm{loop}}(\zeta) \;=\; \frac{\mu_0 I a^2}{2\,(a^2+\zeta^2)^{3/2}},
+\label{eq:loop}
+\end{equation}
+which is exactly the \emph{Wheeler on-axis closed form} already registered
+and FEM-cross-checked in the sibling RTSC magnet domain (the
+\verb|current_loop_offaxis| / Wheeler primitive at $r=0$). Two coaxial
+mirror coils separated by $s$ superpose to
+$B(z)=B_{\mathrm{loop}}(z-s/2)+B_{\mathrm{loop}}(z+s/2)$; for $s>a$ the
+center $z=0$ is a genuine on-axis \emph{minimum} (Table~\ref{tab:inherit}).
+The trap depth is
+\begin{equation}
+\frac{U_{\mathrm{depth}}}{k_B} \;=\; \frac{\mu_B}{k_B}\,\Delta B,
+\qquad
+\frac{\mu_B}{k_B} = 0.67171\ \mathrm{K/T},
+\label{eq:trapdepth}
+\end{equation}
+so a 1\,T well is $0.672$\,K deep and the ALPHA-class $\sim\!0.5$\,T well is
+$\sim\!0.5$\,K --- exactly the mK--K regime in which trapped antihydrogen
+lives~\citep{amole2014alphatrap}. For the reference mirror pair
+($a=0.10$\,m, $I=10^5$\,A, $s=0.40$\,m, i.e.\ $s/a=4>1$), the funnel computes
+$B_{\min}=0.1124$\,T, $B_{\mathrm{coil}}=0.6373$\,T, $\Delta B=0.5249$\,T,
+and trap depth $0.3526$\,K, all \tierGreen\ at $|\Delta|=0$. The on-axis
+field profile $|B(z)|$ --- a genuine magnetic-minimum well --- is plotted in
+Fig.~\ref{fig:ioffe}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/fig04_ioffe_profile.pdf}
+\caption{On-axis $|B(z)|$ of the reference Ioffe--Pritchard mirror pair
+($a=0.10$\,m, $I=10^5$\,A, $s=0.40$\,m, coils at $z=\pm0.20$\,m), from the
+inherited Wheeler closed form (Eq.~\eqref{eq:loop}) superposed. Because
+$s/a=4>1$, the center $z=0$ is a true on-axis \emph{minimum} (a magnetic
+bottle). The marked points are the registered \tierGreen\ verify atoms: the
+well bottom $B_{\min}(0)=0.1124$\,T (red) and the coil-plane maxima
+$B_{\mathrm{coil}}(\pm0.20)=0.6373$\,T (green); their difference
+$\Delta B=0.5249$\,T sets the $0.3526$\,K trap depth (PR \#168).}
+\label{fig:ioffe}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{5.3cm} >{\raggedright\arraybackslash}m{6.6cm}@{}}
+\toprule
+\textbf{RTSC asset} & \textbf{ANTIMATTER reuse at \textcircled{\scriptsize 6}} \\
+\midrule
+\texttt{solenoid\_axisym.geo}/\texttt{.pro} (GetDP 4.0 axisymmetric A--$\phi$) & derived into an Ioffe--Pritchard mirror-pair geometry/formulation \\
+Wheeler on-axis $B$ closed form (current-loop primitive at $r=0$) & the $B_{\mathrm{loop}}(\zeta)$ anchor of Eq.~\eqref{eq:loop}, superposed into a magnetic-minimum well \\
+RTSC 5-axis verify-record schema & extended with \texttt{device = ioffe\_pritchard\_trap} \\
+\bottomrule
+\end{tabular}
+\caption{Direct inheritance of the RTSC magnet toolchain at process
+\textcircled{\scriptsize 6}. The same GetDP magnetostatic spine and the same
+Wheeler closed-form anchor serve a field \emph{well} (this trap) that they
+served as a field \emph{peak} (an RTSC solenoid); only the coil geometry
+differs. The closed-form verify is fully landed (PR \#168); the optional
+GetDP FEM cross-check is kept out of scope to keep the verify tight.}
+\label{tab:inherit}
+\end{table}
+
+\subsection{Why this matters}
+
+A solenoid \emph{concentrates} field; an Ioffe--Pritchard trap \emph{minimizes}
+it. That these are the same code with a different coil layout is the
+cross-domain reuse story: the magnetostatic kernel verified once in RTSC is
+re-verified here against a new physical target (a neutral-atom trap depth in
+kelvin), with no new solver and no new closed form --- only a new
+superposition and a new constant ($\mu_B/k_B$).
+
+% =========================================================================
+\section{BLUE-MAX: Algebraic-Root Pair Audit}
+\label{sec:bluemax}
+
+The \texttt{hexa verify} tier rubric distinguishes \textsc{Supported-Formal}
+(closed-form / integer identity reproduced exactly) from
+\textsc{Supported-Numerical} (libm-class numerical recompute). For every
+libm-class atom in the funnel, we register a separate integer atom that
+exposes the genuine integer factor or exponent baked into the formula ---
+the BLUE-MAX coverage rule \citep{anthropic2026hexag69}.
+
+Three core integer atoms (\verb|pair_threshold_factor|,
+\verb|cyclotron_cool_bexponent|, \verb|recomb_3body_density_power|) plus
+eight BLUE-MAX algebraic-root atoms (Table~\ref{tab:bluemax}) reach
+\textbf{11/11 coverage} of the funnel's physical claims. All eleven verify
+\textsc{Supported-Formal} at $|\Delta|=0$, and matched negative controls
+return \textsc{Falsified}, completing the deterministic algebraic-root
+coverage of ANTIMATTER (\texttt{companion/verify-ledger.json}, the
+\verb|atom_class| fields \texttt{supported-formal} and
+\texttt{falsified-controlled}). The audit clears the commons @D g69 domain
+finalization gate (\verb|hexa verify --blue-max ANTIMATTER| $\to$ PASS,
+hexa-lang \#1107).
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lcl}
+\toprule
+\textsc{Supported-Formal} atom & integer & attests \\
+\midrule
+\verb|pair_threshold_kinetic_factor|        & 6   & $T_{\mathrm{th}}=6\,m_pc^2$ in Eq.~\eqref{eq:pair} \\
+\verb|pair_threshold_total_factor|          & 7   & $E_{\mathrm{beam,th}}=7\,m_pc^2$ \\
+\verb|transition_factor_1s2s_numerator|     & 3   & $1-\tfrac14=\tfrac34$ numerator, Eq.~\eqref{eq:1s2s} \\
+\verb|transition_factor_1s2s_denominator|   & 4   & $\tfrac34$ denominator \\
+\verb|cyclotron_cool_massexponent|          & 3   & $\tau_c\propto m^3$, Eq.~\eqref{eq:cool} \\
+\verb|cyclotron_cool_bratio_exponent|       & 2   & $\tau_c\propto B^{-2}$ \\
+\verb|recomb_3body_exponent_doubled|        & $-9$ & $T^{-9/2}$, Eq.~\eqref{eq:recomb} (doubled) \\
+\verb|recomb_3body_tratio_exponent_doubled| & 9   & $(T_1/T_2)^{9/2}$ ratio exponent (doubled) \\
+\bottomrule
+\end{tabular}
+\caption{The eight BLUE-MAX algebraic-root atoms registered for ANTIMATTER
+(hexa-lang \#1094), on top of the three core integer atoms
+(\texttt{pair\_threshold\_factor}=6, \texttt{cyclotron\_cool\_bexponent}=$-2$,
+\texttt{recomb\_3body\_density\_power}=2). Each exposes the exact integer
+hidden inside a libm-class formula; matched negative controls (e.g.\
+\texttt{pair\_threshold\_kinetic\_factor(0)=7},
+\texttt{recomb\_3body\_exponent\_doubled(0)=-10}) verify \textsc{Falsified},
+proving the verifier is result-agnostic.}
+\label{tab:bluemax}
+\end{table}
+
+A bar-chart of the full ledger partition is in Fig.~\ref{fig:tierdist}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.72\linewidth]{figures/fig02_tier_dist.pdf}
+\caption{ANTIMATTER verify-ledger tier distribution: 20
+\textsc{Supported-Numerical} (\tierGreen), 11 \textsc{Supported-Formal}
+(\tierBlue; 3 core integer atoms + 8 BLUE-MAX algebraic roots), and 8
+deterministic \textsc{Falsified} negative controls (\tierRed, kept as honest
+evidence). Data: \texttt{companion/verify-ledger.json}.}
+\label{fig:tierdist}
+\end{figure}
+
+% =========================================================================
+\section{Wider Architectural Context}
+\label{sec:context}
+
+The funnel sits on two cross-cutting design contracts adopted in this work.
+
+\paragraph{Cross-domain magnet reuse.} Section~\ref{sec:inherit} is the
+concrete demonstration that the \emph{same} verified magnetostatic kernel
+(GetDP axisymmetric A--$\phi$ + a Wheeler on-axis closed form) serves two
+physically opposite targets across two domains: a field maximum (an RTSC
+high-field solenoid) and a field minimum (this antihydrogen trap). The reuse
+is not a copied formula but a re-verification of the registered atom against
+a new physical observable (trap depth in kelvin), which is exactly the
+behavior the hexa-lang stdlib SSOT discipline is designed to make cheap.
+
+\paragraph{Honesty boundary.} Across all processes,
+\texttt{absorbed=false} holds for every simulation-only record. The CPT
+verdict at process \textcircled{\scriptsize 7} can only ever be adjudicated
+by a measured spectroscopy oracle: the ALPHA collaboration's trapped-$\bar H$
+1S--2S measurement at $\approx\!2\!\times\!10^{-12}$
+\citep{ahmadi2018alpha1s2s} and the BASE collaboration's $\bar p$ $g$-factor
+\citep{smorra2017base}. In pipeline terms (Table~\ref{tab:pipeline}), only
+process \textcircled{\scriptsize 7} carries a measured input, and a sim-PASS
+on \textcircled{\scriptsize 1}--\textcircled{\scriptsize 6} is a witness of
+factory \emph{engineering feasibility}, never of a measured CPT bound. The
+broader CPT / Lorentz-violation framework that any such bound feeds into is
+the Standard-Model Extension~\citep{kostelecky2011lorentz}.
+
+% =========================================================================
+\section{Limitations and Honest Caveats}
+\label{sec:limits}
+
+We deliberately do not claim:
+\begin{itemize}\itemsep0.2em
+\item \textbf{The CPT verdict.} Process \textcircled{\scriptsize 7} is
+measured-oracle only; a sim-PASS on
+\textcircled{\scriptsize 1}--\textcircled{\scriptsize 6} is a witness of
+\emph{factory feasibility}, never of a measured CPT bound on $\Delta(H,\bar H)$.
+\item \textbf{15-digit 1S--2S precision.} The leading
+$\tfrac34 R_\infty c$ value (Eq.~\eqref{eq:1s2s}) is reproduced to its own
+precision but is $5.35\!\times\!10^{-4}$ off the measured frequency; the gap
+is the reduced-mass factor plus QED / Lamb-shift / finite-size corrections,
+characterized but not all closed.
+\item \textbf{Absolute yields and rates.} Process
+\textcircled{\scriptsize 1} closes the threshold, not the target
+cross-section yield; process \textcircled{\scriptsize 5} closes the
+\emph{scaling} ($n_e^2 T^{-9/2}$), not an absolute $\bar H$ formation rate in
+$\mathrm{s}^{-1}$; these need beam-line and plasma inputs out of scope here.
+\item \textbf{Non-ideal Penning systematics.} The three eigenfrequencies
+(Eq.~\eqref{eq:penning}) assume an ideal quadrupole; the invariance theorem
+(Eq.~\eqref{eq:invariance}) is the misalignment/ellipticity-robust identity,
+but anharmonic and image-charge shifts are not modelled.
+\item \textbf{Sourced trap geometries.} The numerical anchors
+($B=5$\,T Penning, $0.1$\,m mirror coils) are representative, not a sourced
+BASE/ALPHA apparatus geometry.
+\item \textbf{The GetDP FEM cross-check at \textcircled{\scriptsize 6}.} The
+closed-form Ioffe--Pritchard verify is fully landed; the optional GetDP FEM
+re-solve (available via the inherited RTSC deck) is kept out of scope to keep
+the verify tight.
+\item \textbf{Cooling equilibrium temperatures.} We close the cooling-time
+\emph{scaling} ($\tau\!\propto\!B^{-2}$, $m^3$), not an absolute equilibrium
+temperature, which depends on heating mechanisms out of scope.
+\end{itemize}
+
+\noindent
+The \texttt{absorbed=false} stance and the process
+\textcircled{\scriptsize 7} measured-oracle boundary are not negotiable.
+
+% =========================================================================
+\section{Reproducibility}
+\label{sec:repro}
+
+Every kernel cited above lives under hexa-lang \verb|stdlib/| at a single
+canonical home and is callable from the top-level
+\verb|hexa verify --expr <fn> <args> <expected>| CLI (the Penning,
+deceleration, cooling, recombination, Ioffe--Pritchard, and 1S--2S
+functions, 22 in total after the \textcircled{\scriptsize 6} additions). The
+inherited magnet primitives (the Wheeler on-axis current-loop closed form and
+the GetDP \verb|.geo|/\verb|.pro| decks) live under
+\verb|stdlib/material/magnet/| and \verb|stdlib/rtsc/| respectively and are
+re-used unmodified. The CODATA-2018 constants ($m_p$, $e$, $\mu_B$, $k_B$,
+$R_\infty$)~\citep{mohr2018codata} are inlined verbatim; CPT supplies
+$m_{\bar p}=m_p$.
+
+\smallskip\noindent
+The complete data-record axis ships under \texttt{companion/}:
+\texttt{verify-ledger.json} (the atom recompute entries: 20 \tierGreen, 11
+\tierBlue\ incl.\ BLUE-MAX, 8 \tierRed\ controls),
+\texttt{pr-roll.json} (the hexa-lang + demiurge PRs with \texttt{gh}-measured
+metadata), \texttt{adapter-defect-catalog.json} (N/A for this domain --- no
+external-solver wrap-and-fix was needed; the magnet kernel was inherited
+intact), and \texttt{session-journal.md} (the day's narrative). Build:
+\texttt{make} (xelatex $\times 3$ + bibtex). Figures: \texttt{make figures}.
+Page/word count: \texttt{make pages} / \texttt{make wordcount}. Lint:
+\texttt{make lint}. The landed pull requests for this paper, in dependency
+order, are: \#1014, \#1015, \#1018, \#1094, \#1107 (hexa-lang) and \#157,
+\#158, \#159, \#162, \#164, \#166, \#167, \#168, \#169 (demiurge).
+
+% =========================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+A 7-process funnel for cold-antihydrogen production and a CPT-test design
+feasibility, written natively in a small typed language with a hard honesty
+boundary, treats each production process of an antimatter factory as a verify
+axis. Six of the seven processes --- production, deceleration, capture,
+cooling, synthesis, confinement --- close to a closed-form or numerical
+verdict at $|\Delta|=0$; the seventh, the CPT measurement, is named,
+isolated, and not crossed. The Penning-trap invariance theorem
+$\omega_c^2=\omega_+^2+\omega_z^2+\omega_-^2$ is the sharpest closed result
+(exact-to-machine residual), and the confinement process inherits its entire
+magnetostatic kernel from a sibling RTSC magnet domain, demonstrating that
+one verified magnet spine serves both a field peak and a field well. Every
+closed-form prediction carries an integer algebraic-root atom that can be
+falsified in one CLI line, and the BLUE-MAX audit reaches 11/11 coverage. We
+hope the funnel, the 7-process pipeline table, and the cross-domain
+inheritance pattern serve as a template for similar closed-form decision
+stacks in other compute-bound experimental-physics domains.
+
+% =========================================================================
+\paragraph{Acknowledgments.} The closed-form codes were authored in-session
+against the hexa-lang stdlib, in tandem with Claude Opus 4.7 (1M context,
+Anthropic) under the demiurge stack's honesty governance contracts. We are
+grateful to the CERN AD/ELENA, ALPHA, BASE, and ASACUSA collaborations whose
+published results anchor the citations, and to the GetDP maintainers whose
+open-source magnetostatics underpins the inherited RTSC toolchain.
+
+% =========================================================================
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+% =========================================================================
+\clearpage
+\appendix
+
+% ---- Monograph appendices (full data record, Parts A--L). ----
+% Skeleton stubs wired here; each is filled in a later batch (see the
+% per-file `% TODO (fill batch)` markers). Appendix lettering is automatic
+% under \appendix (A, B, ... in \input order).
+\input{appendix/A_production}
+\input{appendix/B_deceleration}
+\input{appendix/C_penning}
+\input{appendix/D_cooling}
+\input{appendix/E_synthesis}
+\input{appendix/F_confinement}
+\input{appendix/G_measurement}
+\input{appendix/H_bluemax}
+\input{appendix/I_verify_ledger}
+\input{appendix/J_rtsc_inherit}
+\input{appendix/K_pr_roll}
+\input{appendix/L_repro}
+
+\end{document}

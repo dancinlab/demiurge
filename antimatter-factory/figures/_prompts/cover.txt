@@ -1,0 +1,20 @@
+A clean technical schematic infographic, white background, navy + electric-blue accents, in the style of a Nature Physics or Physical Review Letters cover.
+
+Concept: an "antimatter factory" production line for making and trapping cold antihydrogen, drawn left-to-right as a horizontal process diagram (an isometric beamline). Seven hexagonal process-stage badges flow along the line:
+
+  (1) Production    Pair-production    p+p -> p+p+pbar+p, E_th ~ 6.5 GeV   <- blue, "closed-form"
+  (2) Deceleration  AD / ELENA ladder, GeV -> keV       <- teal, "beam-dynamics"
+  (3) Capture       Penning trap, 3 eigenfrequencies (axial/cyclotron/magnetron)  <- teal, "invariance theorem"
+  (4) Cooling       electron / sympathetic, tau ~ B^-2  <- teal, "numerical"
+  (5) Synthesis     pbar + e+ -> Hbar (3-body)          <- teal, "rate scaling"
+  (6) Confinement   Ioffe-Pritchard magnetic-minimum bottle, mK depth   <- teal, "RTSC magnet inherited"
+  (7) Measurement   antihydrogen 1S-2S + pbar g-factor -> CPT  <- red/orange, "WET-LAB downstream"
+
+Draw the production line as: a proton beam (left) striking a metal target (burst of particle tracks), feeding a large ring-shaped decelerator (AD/ELENA, silver-blue toroid), then a cylindrical Penning trap (stacked electrode rings, a single charged particle orbit drawn inside), then a cooling stage, then a mixing region where a positron cloud (e+) merges with antiprotons to form neutral antihydrogen (Hbar), then a magnetic-bottle Ioffe-Pritchard trap (two coaxial mirror coils with field lines pinching at the center, a cold Hbar atom held at the magnetic minimum), and finally a laser-spectroscopy stage (two counter-propagating UV laser beams probing 1S-2S).
+
+A subtle horizontal divider just before stage (7) labeled "absorbed=false boundary".
+
+In a small corner badge: "23 verified atoms - 3 blue + 20 green - omega_c^2 = omega_+^2 + omega_z^2 + omega_-^2".
+In another small corner badge: "Stage 6 inherits the RTSC GetDP 4.0 + Wheeler magnet toolchain".
+
+Style: minimalist, scientific, no people, no logos, vector-clean lines, large bold stage labels, monospace caption fonts, generous whitespace. Use a deep navy backdrop only behind the central beamline; everything else on white. The overall feel should be that of a verified-by-design engineering schema, not a hype illustration.
