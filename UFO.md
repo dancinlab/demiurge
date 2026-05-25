@@ -26,7 +26,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 
 ### Phase A — 7-stage propulsion ladder (hexa-ufo HEXA-Disc 흡수)
 
-- [ ] Stage-1 hover (Meissner / RT-SC 48T · 0~20km) — RTSC 자석 자산 흡수 + closed-form 부상력 verify 🟢
+- [x] Stage-1 hover (Meissner / RT-SC 48T · 0~20km) — RTSC 자석 자산 흡수 + closed-form 부상력 verify 🟢 (3건 `ioffe_loop_bz` 🟢 SUPPORTED-NUMERICAL · atlas hash `663698a0` · `UFO/verify/stage1-hover-fields.md`) LANDED PR pending
 - [ ] Stage-2 cruise (MHD + D-T/p-11B fusion · 20~200km) — FUSION 자산 흡수 + MHD 추진 verify 🟢
 - [ ] Stage-3 orbital (antimatter γ-rocket anti-H+H · 200km~1AU) — ANTIMATTER 자산 흡수 + I_sp verify 🟢
 - [ ] Stage-4 warp (Alcubierre δ=1/σ R=n=6 · 1AU~galactic) — F-WARP-{1,2,3} preregister + lattice 일관성

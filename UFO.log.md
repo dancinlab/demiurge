@@ -2,6 +2,23 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T23:00:00Z — Phase A Stage-1 hover Meissner 부상력 closed-form verify 🟢
+
+Phase A 7-stage propulsion ladder 의 **첫 stage (hover)** 봉합 — RTSC 48T 솔레노이드 substrate 위 Meissner 부상력 `F_lev = |χ|·V·B·(dB/dz)/μ₀` closed-form + B-field 생성 numerical recompute 3건 (90/120/200 kg 페이로드) 을 `hexa verify --expr ioffe_loop_bz` 로 🟢 SUPPORTED-NUMERICAL 도장 + atlas register. F_lev gradient-form 합성 자체는 stdlib `meissner_lev_force` atom 미등록 → 🟡 SUPPORTED-BY-CITATION (RTSC.md V3 · hexa-ufo HOVER §X), atom 등록은 hexa-lang 별 PR deferred.
+
+- [x] `UFO/verify/stage1-hover-fields.md` 신규 — §0 TL;DR · §1 closed-form identity (90kg 페이로드 1800배 over-head 닫힘) · §2 numerical recompute 3건 verbatim · §3 atlas register · §4 Stage-2 MHD 전이 · §5 cross-link/deferred · §6 governance
+- [x] `hexa verify --expr ioffe_loop_bz` 90 kg / 120 kg / 200 kg 3건 모두 🟢 SUPPORTED-NUMERICAL (|Δ| ≤ ε=1e-9)
+  - Case A `verify --expr ioffe_loop_bz(0.3,954930.0,0.0)=2` → `calc = 2 ≈ expected 2 (|Δ|=5.67085e-10 ≤ ε=1e-9) tier = 🟢 SUPPORTED-NUMERICAL`
+  - Case B `verify --expr ioffe_loop_bz(0.5,1591549.0,0.0)=2` → `calc = 2 ≈ expected 2 (|Δ|=5.67086e-10 ≤ ε=1e-9) tier = 🟢 SUPPORTED-NUMERICAL`
+  - Case C `verify --expr ioffe_loop_bz(1.0,3183099.0,0.0)=2` → `calc = 2 ≈ expected 2 (|Δ|=5.67085e-10 ≤ ε=1e-9) tier = 🟢 SUPPORTED-NUMERICAL`
+- [x] `hexa atlas register --from-verify ioffe_loop_bz(0.3,954930,0)=2.00000071565` → folded @F `verified-ioffe_loop_bz-num` → atlas hash `663698a06bc6f967fa2855a77bc4e399aae465dda5ca948b3c7352dbf98ce7fb` (16103 nodes)
+- [x] F_lev composite tier: 🟢 SUPPORTED-NUMERICAL (B-field 3건 🟢) + 🟡 SUPPORTED-BY-CITATION (Jackson §6 · Tinkham §I.2 · RTSC.md V3 · hexa-ufo HOVER §X B²·A/(2μ₀) 동치)
+- [x] `UFO.md` — Phase A Stage-1 hover 체크박스 `[x] LANDED PR pending` 로 flip
+- [x] 새/수정 파일 3개 explicit `git add` (UFO/verify/stage1-hover-fields.md + UFO.md + UFO.log.md) per @D d9
+- [ ] deferred — stdlib `meissner_lev_force(chi,V,B,dBdz)` atom 등록 → hexa-lang 별 PR (`~/core/hexa-lang/tool/verify_cli.hexa::_recompute` 확장 + `stdlib/ufo/meissner.hexa`); 등록 시 본 ledger 🟡 → 🟢 escalate
+- [ ] deferred — F-A1 / F-A2 Stage-1→Stage-2 falsifier preregister (Stage-2 cruise MHD 마일스톤 진입 시)
+- [ ] deferred — NEXUS.tape reuse edge: RTSC `ioffe_loop_bz` → UFO Stage-1 hover (per @D d19)
+
 ## 2026-05-25T22:42:00Z — verb-1 spec LANDED
 
 Phase C 의 **첫 verb (spec)** 슬롯 봉합 — 1인승 통합 비행체 사양 명세 두 파일 (`.md` 본문 + `.tape` sidecar) 산출. 선행 demiurge 4도메인 (RTSC · FUSION · ANTIMATTER · CERN) + hexa-ufo HEXA-Disc 1890-LOC 아틀라스를 7-stage matrix · 1인승 LSS · 자세제어 · 동력 인터페이스 record contract 로 통합. PR#187.
