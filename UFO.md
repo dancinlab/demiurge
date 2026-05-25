@@ -61,7 +61,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 
 ### Phase E — absorbed 닫기 (@D d5 invariant)
 
-- [ ] 모든 비-wet-lab gate PASS → UFO absorbed=true (wet-lab 측정은 downstream confirmation)
+- [ ] 모든 비-wet-lab gate PASS → UFO absorbed=true (wet-lab 측정은 downstream confirmation) — **현재 absorbed=FALSE** (@D d5 · V4 ledger 판정: 🟠 6 게이트 CFD·EM·응력·열·⟲·F-ANTI-3 pool/cloud 본해 미수렴 → projection flip 금지 · 본해 수렴 시 재판정 · `UFO/verify/V4_tier_ledger.md` §5)
 
 ## verify (🔵/🟢 push · per @D g5 · demiurge 자산 필수)
 
@@ -70,7 +70,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 - [x] V1 UFO claim inventory + tier triage (🔵/🟢/🟡/🟠/⚪) — Phase A 7-stage + Phase B 5축 + Phase C 7-verb 통합 ledger (38 claim · 🟢9·🟡8·🟠4·⚪17 · `UFO/verify/V1_claim_inventory.md` · Stage-1~3 numerical 9건 🟢 · Stage-4~7 13 falsifier ⚪/OPEN UNPROVEN) LANDED PR pending
 - [x] V2 🔵 push — closed-form identity (n=6 σ·φ=24 · n·τ=24 · σ·τ=48 정수 항등식 → `hexa verify --expr` 5 atom 🔵 SUPPORTED-FORMAL · Alcubierre δ=1/σ · Morris-Thorne b₀=ℓ_Pl·σ · KK 4D→26D · (σ−φ)²=100c 는 lattice 산술만 🔵 / 물리 metric ⚪ UNPROVEN 정직 분리 · atlas hash `663698a0` idempotent skip 신규 fold 0 · `UFO/verify/V2_formal_identities.md`) LANDED PR pending
 - [x] V3 🟢 push — numerical recompute (Stage-1 Meissner B-field · Stage-2 MHD 추력 · Stage-3 antimatter I_sp · 디지털트윈 통합 sim) — libm Δ ≤ 1e-9 **LANDED** (PR pending · `UFO/verify/V3_numerical_recompute.md` · 🟢 9 verbatim 재인용 · 디지털트윈 본해 🟠 pool 위임 · throttle-death 회수)
-- [ ] V4 final tier ledger — V1+V2+V3 통합 + Phase D 메타 + Phase E absorbed=true 결단
+- [x] V4 final tier ledger — V1+V2+V3 통합 + Phase D 메타 + Phase E absorbed 판정 **LANDED** (PR pending · `UFO/verify/V4_tier_ledger.md` · 통합 tier 🔵8·🟢10·🟡8·🟠5·⚪17·🔴0 · **absorbed=FALSE** 정직 판정: 🟠 6 게이트(CFD·EM·응력·열·⟲·F-ANTI-3) pool/cloud 위임 미수렴 → @D d5 projection flip 금지 · 돌파 경로 = `hexa cloud`/`micro-exp` 본해 배치)
 
 ## 참고 (cross-reference)
 
