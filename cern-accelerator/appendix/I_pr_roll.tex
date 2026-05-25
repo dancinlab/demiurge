@@ -1,8 +1,3 @@
-% TODO (fill batch): transcribe companion/pr-roll.json — the hexa-lang
-% PRs (#1007 plasma-wakefield cold-linear, #1088 1-D linear PIC parity)
-% plus the demiurge cockpit-record / monograph PRs, with gh-measured
-% merged_at / files_changed / lines_added / lines_deleted metadata.
-% Per-row: repo / number / title / merged_at / files / lines / stage / role.
 \section{Pull-Request Roll}
 \label{app:prroll}
 
@@ -11,9 +6,66 @@ This appendix is the verbatim transcription of the PR roll
 that built this domain and monograph, in dependency order, with
 \texttt{gh}-measured metadata (no fabricated counts). The closed-form /
 parity cells land via hexa-lang \#1007 (plasma-wakefield cold-linear) and
-\#1088 (1-D linear PIC parity); the cockpit records and the per-batch
-monograph fills land on demiurge.
+\#1088 (1-D linear PIC parity); the domain records, milestone flips, and
+the monograph land on demiurge.
 
-% TODO (fill batch): per-PR row table (repo / number / title /
-% merged_at / files_changed / lines_added / lines_deleted / stage /
-% role), measured via `gh pr view --json`.
+% -------------------------------------------------------------------------
+\subsection{The merged-PR roll}
+\label{app:prroll-table}
+
+\begin{table}[h]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l l >{\raggedright\arraybackslash}m{4.4cm} c c c@{}}
+\toprule
+repo & \# & title (abbrev.) & merged & files & $\pm$lines \\
+\midrule
+demiurge  & 156 & CERN domain init (7-verb + accel-mech axis) & 05-25 & --- & --- \\
+hexa-lang & 1007 & plasma-wakefield cold-linear cell + 2 atoms & 05-25 & 1 & $+176/{-}0$ \\
+demiurge  & 160 & docs: cold-linear cell complete (\#1007) & 05-25 & --- & --- \\
+demiurge  & 161 & 4-verb honest stub (records + manifest) & 05-25 & --- & --- \\
+hexa-lang & 1088 & 1-D linear PIC parity (FBPIC) $\Delta\!=\!3.56\%$ & 05-25 & 1 & $+124/{-}4$ \\
+demiurge  & 174 & docs: PIC parity absorbed (\#1088) & 05-25 & --- & --- \\
+demiurge  & 175 & docs: Geant4 engine-tool probe & 05-25 & --- & --- \\
+demiurge  & 180 & docs: tabletop criterion complete + downstream & 05-25 & --- & --- \\
+demiurge  & 220 & monograph SCAFFOLD+BODY + appendix skeleton & 05-25 & 23 & $+1507/{-}0$ \\
+demiurge  & (this) & monograph FILL (appendix A--J + 6 charts) & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\caption{Merged PR roll (all \texttt{2026-05-25}; the FILL PR is this
+release). The \texttt{files}/\texttt{lines} columns are
+\texttt{gh}-measured (\texttt{gh pr view --json
+changedFiles,additions,deletions}); docs-only milestone-flip PRs are left
+unmetered (---). The two hexa-lang PRs are the physics-substrate landings;
+the demiurge PRs carry the domain records, milestone flips, and the
+monograph.}
+\label{tab:app-prroll}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{The two physics-substrate PRs}
+\label{app:prroll-physics}
+
+\begin{lstlisting}
+repo  : dancinlab/hexa-lang   number : 1007
+title : feat(cern): plasma-wakefield cold-linear cell + 2 GREEN verify atoms
+merged: 2026-05-25T09:20:13Z  files : 1   +176 / -0   stage : 2-3
+role  : plasma_wakefield.hexa cold-linear kernel (omega_p, lambda_p, E_0
+        Dawson) + wakefield_e0_gv_m / wakefield_lambda_um atoms; selftest 5/5.
+
+repo  : dancinlab/hexa-lang   number : 1088
+title : feat(stdlib/cern): plasma-wakefield linear-PIC parity (FBPIC) D=3.56%
+merged: 2026-05-25T12:44:34Z  files : 1   +124 / -4   stage : 4
+role  : plasma_wakefield.hexa +124/-4: FBPIC 0.27.0 linear-regime PIC parity
+        layer (pic_parity_1e18, pic_parity_check). Carries the accel-mechanism
+        axis to its hexa-native terminus.
+\end{lstlisting}
+
+\noindent
+The monograph scaffold (demiurge \#220, $+1507$ lines across 23 files)
+established the body, the Full Pipeline table, the appendix A--J skeleton,
+the \texttt{companion/} data files, and the fal.ai cover. This FILL PR
+completes the appendices to the full data record with six pgfplots
+comparison charts and replaces the companion JSON null placeholders with
+the real recompute values transcribed throughout Appendices~A--H.
