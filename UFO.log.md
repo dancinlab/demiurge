@@ -2,6 +2,33 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T23:40:00Z — HEXA-CLOAK 축 흡수 LANDED
+
+Phase B 부수 5축 중 4/5 봉합 — `UFO/HEXA-CLOAK.md` (678 LOC) + `UFO/CLOAK.md` (948 LOC) + `UFO/cloak/hexa-cloak.md` (471 LOC) + `UFO/cloak-canon/cloak.md` (698 LOC) + `UFO/hexa-cloak/hexa-cloak.md` (474 LOC) 5 source 를 `UFO/cloak/` 사양 manifest 로 흡수. 흡수 범위 = (1) transformation-optics cloak (좌표변환 ε-μ tensor metamaterial shell · 음굴절률 n<0 · RT-SC 공명 ε<0 + SRR μ<0 · impedance match Z=1) + (2) radar/optical stealth (RCS 10⁻⁴→10⁻⁶ m² 100× 감소 · 레이더 탐지거리 1/6 · 전대역 σ-τ=8 octave · IR σ-φ=10 dB↓ · φ=2 kg/m² 경량). 비행체 통합 핵심 risk = Stage 추진 EM 누설 (RTSC B Meissner self-shield · MHD/γ-rocket RF EMI Faraday cage+band-stop · IR plume cryo+방사율) vs cloak layer 양립성 — 능동 방출이 stealth 천적이므로 LPI waveform + GW 통신(EM-free) 대체. 4 falsifier preregister (RCS · 대역 octave · IR 억제 · 능동 누설). 코드 SSOT 는 hexa-lang/stdlib + UFO/hexa-cloak 의 canonical home 유지 (@D d3).
+
+- [x] `UFO/cloak/README.md` — §0 TL;DR + ASCII (metamaterial shell 입사파 우회 다이어그램 + Stage 추진 EM 누설 vs cloak) · §1 흡수 source (5 file SHA-1 + LOC 인벤토리) · §2 transformation-optics cloak (좌표변환 → 음굴절률 메타물질 원리 ASCII · Pendry 구형 cloak ε-μ tensor 식 표 · RT-SC ε<0 Meissner 결합 · 3 falsifier) · §3 radar/optical stealth (RCS 10⁻⁶ m² · 탐지거리 1/6 · 전대역 · IR σ-φ=10 dB↓ · 비용 $500/m² · 3 falsifier) · §4 비행체 통합 (Stage 추진 EM 누설 risk 표 · 양립성 budget ASCII · Stage 별 운용 모드) · §5 cross-link 12건
+- [x] `UFO/cloak/manifest.tape` — `@V tape 1.0` · `@I id001 ufo/cloak` (icon 🛸 · alias cloak · siblings hover/sim/grav/teleport) · `@D c1` 흡수 manifest only · `@D c2` 이중 layer (cloak+stealth) 상보 적층 · `@D c3` Stage EM 누설 vs cloak 양립성 · `@D c4` falsifier preregister · `@A absorb_hexa_cloak` source SHA-1 5개 · `@C cross_link` (RTSC/FUSION/ANTIMATTER/structure/grav/UFO/stdlib 7건) · tape grammar 17-type 알파벳만 (PR #184 교훈 — `@absorb` 금지)
+- [x] `UFO.md` flip — `- [ ] HEXA-CLOAK 축 흡수 …` → `- [x] HEXA-CLOAK 축 흡수 … LANDED PR pending` (Phase B 5축 누적 4/5 — hover ✓ · sim ✓ · grav ✓ · **cloak ✓** · teleport)
+- [x] `UFO/cloak/README.md` 와 기존 `UFO/cloak/hexa-cloak.md` 비충돌 확인 (별도 파일명 · 공존)
+- [x] explicit `git add` per @D d9 — UFO/cloak/{README.md,manifest.tape} + UFO.md + UFO.log.md (인접 worktree index 격리)
+- [x] @D d3 준수 — implementation 코드 0줄 (transformation-optics tensor · metamaterial FDTD · RCS 산출은 hexa-lang/stdlib SSOT 또는 UFO/hexa-cloak canonical home 위임 · UFO/cloak/ = docs/manifests only)
+- [x] @D d4 준수 — single generic dispatch · IR heat-sink/cryo 인프라는 UFO/grav 재활용 · stage 추가/변경 = manifest 표 행 수정만
+- [x] @D d10 준수 — 🛸 UFO/cloak · alias `cloak` 헤더 (hover/grav README head 와 일관)
+- [x] tape grammar 준수 — 17-type alphabet (@V @I @D @A @C 만 사용) · @absorb / @verify 등 비표준 directive 금지 (PR#184 lesson)
+- [ ] HEXA-TELEPORT 축 흡수 — teleport quantum-entangle protocol → UFO/teleport 통합 (Phase B 마지막 5/5 슬롯)
+
+### deferred sub-items (Phase B HEXA-CLOAK follow-on)
+- [ ] transformation-optics ε-μ tensor 그라데이션 적층 N=σ·τ=48 layer FDTD 검증 — hexa-lang/stdlib (광대역 dispersion)
+- [ ] metamaterial SRR 셀 협대역 → n=6 다중공진 광대역 확장 verify 🟢 (σ-τ=8 octave cover)
+- [ ] RCS 10⁻⁶ m² anechoic chamber 실측 vs closed-form 산란 (verb-6 verify)
+- [ ] HEXA-CLOAK overlay 적층 spec — verb-3 design (UFO/structure §1 radar caveat 연동)
+- [ ] Stage 능동 송신 LPI waveform vs cloak band-stop 셀 간섭 정량 — verb-4 analyze ⟲
+- [ ] IR plume σ-φ=10 dB 억제 cryo heat-sink sizing (UFO/grav 4 K/77 K 인프라 공유) — verb-3 design
+- [ ] 가시광 cloaking 회절 한계 (동체 크기 ≫ λ) closed-form 경계 — verb-3 design
+- [ ] φ=2 kg/m² metamaterial 필름 무게 budget vs frame (UFO/structure 650kg) — verb-4 analyze ⟲
+
+Phase B 부수 5축 진행 현황: 4/5 (hover · sim · grav · cloak LANDED) — teleport 1 슬롯 미진행.
+
 ## 2026-05-25T23:35:00Z — verb-2 structure LANDED
 
 Phase C 의 **두 번째 verb (structure)** 슬롯 봉합 — verb-1 spec (PR#187) 의 1인승 통합 비행체 사양을 **외형 + 내부 구획 + 자석 어셈블리 + stage 모듈 인터페이스 + 응력 budget** 5축으로 구조화. docs/manifests only · @D d3/d4 준수.
