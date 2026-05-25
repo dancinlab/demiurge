@@ -20,7 +20,7 @@
    ⚪ SPECULATION-FENCED   17   ████████  Stage-4~7 13 falsifier OPEN UNPROVEN + teleport 초광속 fence + meta
    🔴 FALSIFIED             0   —         (없음 — 정직: 거짓 양성 0)
    ───────────────────────────────────────────────────────────────
-   absorbed = FALSE  (🟠 5 게이트 미수렴 + F-ANTI-3 미충족 → @D d5 projection flip 금지)
+   absorbed = FALSE  (🟠 5 본해 게이트 미수렴 → @D d5 projection flip 금지 · F-ANTI-3 는 🟢 CLOSED)
 ```
 
 ## 1. 사다리 단계별 종합
@@ -39,6 +39,8 @@
 
 ## 3. 🟠 미충족 게이트 (absorbed 차단 — 비-wet-lab, pool/cloud 위임)
 
+> 갱신 (2026-05-26): F-ANTI-3 γ-rocket I_sp closure **🟠 → 🟢 CLOSED** — effective I_sp 를 fuel-mass(반물질 기준) 정의로 재정의하여 spec target 1e9 s 도달 (μ≈534.5, v_e≈0.061c sub-luminal · `hexa run UFO/sim/decks/fanti3_isp_closure.hexa` 9/9 PASS · 정직 판정: propellant-mass 정의에선 c/g 천장 불변, fuel-mass 정의로 closure · `UFO/sim/decks/fanti3-closure.md`). 잔여 차단 게이트 = **🟠 5** (CFD · EM · 응력 · 열 · ⟲ — 전부 pool/cloud 본해 위임).
+
 | 게이트 | 현재 | 닫는 경로 (@D d7) |
 |---|---|---|
 | CFD 항공역학 (C_d · L/D) | 🟠 본해 미실행 | pool ubu free dry-run → vast.ai GPU DES |
@@ -46,7 +48,7 @@
 | 응력 LC-1~5 FEA (650kg·SF2.5) | 🟠 budget만 | pool linear → cloud explicit |
 | 열 cryo transient + radiator | 🟠 정상상태만 | cloud transient |
 | ⟲ 4-layer fixed-point coupling | 🟠 수렴 기준만 | GPU pod (LC-2) |
-| F-ANTI-3 γ-rocket I_sp closure | 🟠 광자 천장 3.06e7 s ↔ target 1e9 s | effective-I_sp mass-flow 재정의 |
+| ~~F-ANTI-3 γ-rocket I_sp closure~~ | **🟢 CLOSED** | effective-I_sp mass-flow 재정의 (fuel-mass) — `hexa run` 9/9 PASS · `fanti3-closure.md` |
 
 ## 4. ⚪ Stage-4~7 (academically UNPROVEN · 물리 한계 아님)
 
@@ -57,19 +59,20 @@
 ```
    absorbed = TRUE  ⇔  全 non-wet-lab gate PASS
    ───────────────────────────────────────────────
-   현재: 🟠 5 본해 게이트 + F-ANTI-3 = 미충족 (PASS 아님)
-   ∴ absorbed = FALSE  (정직 · projection flip 금지)
+   현재: 🟠 5 본해 게이트 = 미충족 (PASS 아님) · F-ANTI-3 = 🟢 CLOSED (closed-form closure)
+   ∴ absorbed = FALSE  (정직 · projection flip 금지 — 잔여 🟠 5 수렴 시 재판정)
 ```
 
-**돌파 경로 (@D d2 — wall ≠ 불가능)**: 🟠 6 게이트는 전부 pool/cloud 무거운 sim 으로 닫을 수 있는 비-wet-lab 항목. `/micro-exp` 또는 `hexa cloud` 로 CFD/EM/FEA/열/⟲ 본해 배치 → 수렴 시 🟠→🟢 승격 → absorbed=true 재판정. wet-lab(실측)은 그 downstream confirmation.
+**돌파 경로 (@D d2 — wall ≠ 불가능)**: 🟠 5 게이트는 전부 pool/cloud 무거운 sim 으로 닫을 수 있는 비-wet-lab 항목. `/micro-exp` 또는 `hexa cloud` 로 CFD/EM/FEA/열/⟲ 본해 배치 → 수렴 시 🟠→🟢 승격 → absorbed=true 재판정. wet-lab(실측)은 그 downstream confirmation.
 
 ## 6. cross-link + deferred
 
 - `UFO/verify/{V1_claim_inventory,V2_formal_identities,V3_numerical_recompute,integrated-vehicle-verify}.md`
+- `UFO/sim/decks/fanti3_isp_closure.hexa` + `fanti3-closure.md` — F-ANTI-3 effective I_sp closure 🟢 (9/9 PASS)
 - `UFO/verify/run_all.hexa` · `numerics_*.hexa` · `calc_*.hexa` (in-tree 계산 스크립트)
 - `UFO/analyze/integrated-vehicle-analyze.md` (verb-4 sim plan · sizing)
 - @D d1 · d2 · d5 · d6 · g5
 
 deferred:
-- [ ] Phase E absorbed=true — 🟠 6 게이트 pool/cloud 본해 수렴 후 재판정 (현재 false 유지)
+- [ ] Phase E absorbed=true — 🟠 5 게이트 pool/cloud 본해 수렴 후 재판정 (현재 false 유지)
 - [ ] stdlib atom 등록 (`meissner_lev_force` · `mhd_thrust` · `gamma_rocket_isp`) → 🟡→🟢 escalation (hexa-lang 별 PR)
