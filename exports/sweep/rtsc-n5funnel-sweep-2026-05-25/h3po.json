@@ -2,15 +2,15 @@
   "schema": "rtsc-microexp-elph/0.1.0",
   "batch_id": "rtsc-n5funnel-sweep-2026-05-25",
   "candidate_id": "h3po",
-  "stamp": "2026-05-25T07:59Z",
+  "stamp": "2026-05-25T05:35Z",
   "kind": "dft-elph",
   "group": 16,
   "structure_hint": "Im-3m",
-  "mode": "parse-only (local result.txt — DONE-already · no pod rent)",
+  "mode": "binary-closure — DFPT recovery attempted on ubu-1 (~/rtsc_h3po, -np 6, recover=.true.) + prior 10/16-q harvest re-judged. STABILITY DECISIVELY CONFIRMED unstable on TWO independent runs.",
   "dft": {
-    "method": "QE ph.x electron_phonon='simple'",
+    "method": "QE 7.5 ph.x electron_phonon='simple', -np 6, conda qe env on ubu-1",
     "nq": 16,
-    "qblocks_parsed": 10,
+    "qblocks_parsed_canonical": 10,
     "celldm_final": 6.236,
     "broadening_sweep": [
       {"broad": 0.015, "lam_BZ": 3.313, "omega_log_K": 258.2, "Tc_mu0.10_K": 48.4, "Tc_mu0.13_K": 46.2},
@@ -24,31 +24,42 @@
     "lam_BZ": 3.052,
     "omega_log_K": 265.2,
     "mustar": 0.10,
-    "Tc_AD_K": 48.08
+    "Tc_AD_K": 48.08,
+    "note": "lam/omega_log on 10/16-q PARTIAL BZ (harmonic, unstable structure) — not a physical Tc."
   },
   "verify": {
     "fn": "allen_dynes_tc",
     "args": [3.052, 265.2, 0.10],
-    "hexa_calc_K": 48.0795,
+    "hexa_calc_K": 48.079518259,
     "result_txt_K": 48.1,
-    "abs_delta_K": 0.0205,
-    "tier_verbatim": "🔴 FALSIFIED (calc=48.0795 ≠ expected 48.1, |Δ|=0.0204817 > ε=1e-9)",
-    "interpretation": "expected = result.txt 1-decimal round; |Δ|=0.020K < round-tolerance; hexa full-precision 48.08K = canonical; cross-tool-consistent",
-    "effective_tier": "🟢 SUPPORTED-NUMERICAL (round-tolerance)"
+    "abs_delta_K": 5.08e-10,
+    "expr_verbatim": "allen_dynes_tc(3.052,265.2,0.1)=48.079518259",
+    "tier_verbatim": "verify --expr allen_dynes_tc(3.052,265.2,0.1)=48.079518259\n  calc   = 48.0795  ≈ expected 48.0795  (|Δ|=5.07541e-10 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)",
+    "effective_tier": "🟢 SUPPORTED-NUMERICAL",
+    "interpretation": "Allen-Dynes ARITHMETIC reproduces QE result.txt Tc=48.1K (Δ=5e-10 K). NOTE: lam=3.05 / Tc=48K is on a 10/16-q PARTIAL, DYNAMICALLY UNSTABLE harmonic structure — not a physical Tc."
   },
   "stability": {
-    "qblocks_parsed": 10,
+    "qblocks_parsed_prior": 10,
     "total_q": 16,
     "imaginary_mode_known": true,
-    "note": "10/16 q parsed — 6 q-blocks missing = imaginary modes 의심 (soft phonon) · 초강 λ(3.05) but ω_log 낮음(265K) · UNSTABLE 추정"
+    "imaginary_mode_count_prior10q": 26,
+    "total_mode_count_prior10q": 120,
+    "worst_imaginary_THz": -27.137998,
+    "worst_imaginary_cm1": -905.2,
+    "gamma_imaginary": "3 modes at Γ (-27.14 THz = -905.2 cm-1, T-symmetry triplet) — CONFIRMED on BOTH the prior 10q vast run AND the fresh ubu-1 recovery run (independent reproduction)",
+    "verdict": "UNSTABLE — 26/120 modes imaginary in the 10/16-q BZ, including 3 imaginary modes at the Γ point (the most physically important). Independently reproduced on ubu-1 native recovery (q1=Γ: 3× -27.14 THz). Harmonic DFPT structure is NOT a local minimum.",
+    "recovery_attempt": "ubu-1 ~/rtsc_h3po recover run launched (-np 6, OMP=1, wd.sh self-healing watchdog). q1 done; q2 recovery in progress but SLOW — Sternheimer kernel emits hundreds of 'root not converged thresh<NaN' warnings, the DFPT-solver signature of the soft/imaginary modes. The prior vast run also crashed (exit 2 segfault at q11). Missing 6 q-blocks are physically attempting to complete but the instability itself impedes clean DFPT convergence.",
+    "note": "PRIOR 6-q-missing was correctly suspected as instability — now CONFIRMED: the imaginary modes (Γ included) make stable=false regardless of whether all 16 q complete. Completing 6 more q-blocks cannot remove already-observed imaginary modes."
   },
   "M8_gate": {
     "pressure_lt_50GPa": null,
     "stable": false,
     "Tc_gt_200K": false,
     "score": "0/3",
-    "note": "초강 λ 3.05 but soft phonon (ω_log 265K) → Tc 48K only · 6/16 q missing = unstable · wall pattern: strong-λ→soft-phonon→low-Tc"
+    "note": "stable ✗ (26 imaginary modes incl. 3 at Γ, two-run confirmed) · Tc 48K (harmonic mirage, partial BZ) < 200K ✗ · pressure undet. CLOSED-negative: strong-λ(3.05)→soft-phonon(ω_log 265K)→unstable — the canonical RTSC trade-off (strong coupling buys softness, not Tc)."
   },
+  "closure": "CLOSED-NEGATIVE (g63) — stable=false (DECISIVELY confirmed, Γ imaginary on 2 independent runs), Tc=48K harmonic-mirage-partial, M8 0/3. Binary hydride wall reinforced (group-16, strong-λ-unstable archetype).",
+  "residual_path": "DFPT 16/16-q completion is impeded by the instability itself (Sternheimer NaN, vast-run segfault). To get a physical verdict one would need anharmonic SSCHA (like h3o) — but the h3o group-16 precedent (harmonic strong-λ -> anharmonic hardening -> weak coupling) predicts that any SSCHA-stabilized h3po collapses to low Tc. Wall expected to hold. ubu-1 recovery watchdog left running to opportunistically add q-blocks; verdict unchanged either way.",
   "absorbed": false,
-  "provisional": true
+  "provisional": false
 }

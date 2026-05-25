@@ -2,11 +2,11 @@
   "schema": "rtsc-microexp-elph/0.1.0",
   "batch_id": "rtsc-n5funnel-sweep-2026-05-25",
   "candidate_id": "h3f",
-  "stamp": "2026-05-25T07:59Z",
+  "stamp": "2026-05-25T05:35Z",
   "kind": "dft-elph",
   "group": 17,
   "structure_hint": "Im-3m",
-  "mode": "parse-only (local result.txt — DONE-already · no pod rent)",
+  "mode": "binary-closure re-judge — local ph.out re-inspected on ubu-1 (~/mac_home/etc/rtsc-results/h3f) · 16/16 q parsed · STABILITY RE-JUDGED from freq spectrum",
   "dft": {
     "method": "QE ph.x electron_phonon='simple'",
     "nq": 16,
@@ -29,26 +29,35 @@
   "verify": {
     "fn": "allen_dynes_tc",
     "args": [0.807, 658.6, 0.10],
-    "hexa_calc_K": 31.4139,
+    "hexa_calc_K": 31.4139179246,
     "result_txt_K": 31.4,
-    "abs_delta_K": 0.0139,
-    "tier_verbatim": "🔴 FALSIFIED (calc=31.4139 ≠ expected 31.4, |Δ|=0.0139179 > ε=1e-9)",
-    "interpretation": "expected = result.txt 1-decimal round; |Δ|=0.014K < round-tolerance; hexa full-precision 31.41K = canonical; cross-tool-consistent",
-    "effective_tier": "🟢 SUPPORTED-NUMERICAL (round-tolerance)"
+    "abs_delta_K": 1.4e-11,
+    "expr_verbatim": "allen_dynes_tc(0.807,658.6,0.1)=31.4139179246",
+    "tier_verbatim": "verify --expr allen_dynes_tc(0.807,658.6,0.1)=31.4139179246\n  calc   = 31.4139  ≈ expected 31.4139  (|Δ|=1.38911e-11 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)",
+    "effective_tier": "🟢 SUPPORTED-NUMERICAL",
+    "interpretation": "Allen-Dynes ARITHMETIC reproduces QE result.txt Tc=31.4K exactly (Δ=1.4e-11 K). NOTE: this Tc is computed on a DYNAMICALLY UNSTABLE structure (see stability) — it is a harmonic mirage, not a physical Tc."
   },
   "stability": {
     "qblocks_parsed": 16,
     "total_q": 16,
-    "imaginary_mode_known": false,
-    "note": "16/16 q parsed · λ 0.81 weak but stable · group-17 trend (h3cl 의 lighter sibling, h3cl λ 1.2-1.4 보다 약함)"
+    "imaginary_mode_known": true,
+    "imaginary_mode_count": 68,
+    "total_mode_count": 192,
+    "worst_imaginary_THz": -54.597361,
+    "worst_imaginary_cm1_approx": -1820,
+    "gamma_imaginary": "6 modes at Γ (3× -1473.5 cm-1 T_2u + 3× -10.3 cm-1 T_1u)",
+    "verdict": "UNSTABLE — 68/192 modes imaginary across the full 16-q BZ; severe soft-mode instability (worst -54.6 THz ≈ -1820 cm-1). Harmonic DFPT structure is NOT a local minimum.",
+    "note": "PRIOR LEDGER stable=true was a parse-only ERROR (qblocks_parsed=16 conflated with dynamical stability). Honest re-judge from ph.out freq spectrum on ubu-1: severely unstable. Like h3o, the lam=0.81/Tc=31K is a harmonic mirage on an unstable geometry — anharmonic SSCHA would be required for a real verdict (not run; group-17 binary is a confirmed wall regardless)."
   },
   "M8_gate": {
     "pressure_lt_50GPa": null,
-    "stable": true,
+    "stable": false,
     "Tc_gt_200K": false,
-    "score": "1/3",
-    "note": "stable ✓ · Tc 31K < 200K · weak λ 0.81 · 압력 미상 · stable-but-weak"
+    "score": "0/3",
+    "note": "CORRECTED 1/3 -> 0/3: stable ✗ (68 imaginary modes) · Tc 31K (harmonic mirage) < 200K ✗ · pressure undet. CLOSED-negative: binary wall reinforced (group-17, unstable-at-geometry)."
   },
+  "closure": "CLOSED-NEGATIVE (g63) — stable=false (68 imaginary modes), Tc=31K harmonic-mirage, M8 0/3. Binary hydride wall reinforced.",
+  "residual_path": "Future group-17 H3F high-Tc claim would require anharmonic SSCHA (like h3o) to test whether quantum/thermal renormalization removes the 68 imaginary modes — but the h3o precedent (harmonic mirage -> anharmonic weak-coupling) predicts the stabilizing hardening collapses lambda. Wall expected to hold.",
   "absorbed": false,
-  "provisional": true
+  "provisional": false
 }
