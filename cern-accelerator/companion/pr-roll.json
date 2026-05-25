@@ -1,0 +1,35 @@
+[
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1007,
+    "title": "feat(cern): plasma-wakefield cold-linear closed form (omega_p, lambda_p, E_0 Dawson) + 2 verify atoms",
+    "merged_at": null,
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "2-3",
+    "role": "plasma-wakefield cold-linear kernel + wakefield_e0_gv_m / wakefield_lambda_um atoms. SKELETON — gh-measured metadata filled in a later batch."
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1088,
+    "title": "feat(cern): 1-D linear PIC parity (FBPIC x cold-linear closed form, Delta=3.56%)",
+    "merged_at": null,
+    "files_changed": null,
+    "lines_added": 124,
+    "lines_deleted": 4,
+    "stage": "4",
+    "role": "plasma_wakefield.hexa +124/-4; FBPIC x cold-linear on-axis field parity. SKELETON — gh-measured merged_at / files_changed filled in a later batch."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": null,
+    "title": "feat(cern-monograph): SCAFFOLD+BODY — body §1-9 + §Full Pipeline + appendix skeleton + companion + cover",
+    "merged_at": null,
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "all",
+    "role": "this monograph scaffold (body + Full Pipeline + appendix SKELETON + companion + cover). SKELETON — PR number / metadata filled after merge."
+  }
+]

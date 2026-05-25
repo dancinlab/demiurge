@@ -1,0 +1,62 @@
+\begin{thebibliography}{8}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Agostinelli and others
+  (Geant4~Collaboration)(2003)]{agostinelli2003geant4}
+S.~Agostinelli and others (Geant4~Collaboration).
+\newblock {Geant4}---a simulation toolkit.
+\newblock \emph{Nuclear Instruments and Methods in Physics Research Section A},
+  506\penalty0 (3):\penalty0 250--303, 2003.
+\newblock \doi{10.1016/S0168-9002(03)01368-8}.
+
+\bibitem[Dawson(1959)]{dawson1959}
+John~M. Dawson.
+\newblock Nonlinear electron oscillations in a cold plasma.
+\newblock \emph{Physical Review}, 113\penalty0 (2):\penalty0 383--387, 1959.
+\newblock \doi{10.1103/PhysRev.113.383}.
+
+\bibitem[Esarey et~al.(2009)Esarey, Schroeder, and Leemans]{esarey2009lpa}
+E.~Esarey, C.~B. Schroeder, and W.~P. Leemans.
+\newblock Physics of laser-driven plasma-based electron accelerators.
+\newblock \emph{Reviews of Modern Physics}, 81\penalty0 (3):\penalty0
+  1229--1285, 2009.
+\newblock \doi{10.1103/RevModPhys.81.1229}.
+
+\bibitem[Lee(2004)]{lee2004}
+S.~Y. Lee.
+\newblock \emph{Accelerator Physics}.
+\newblock World Scientific, 2 edition, 2004.
+\newblock \doi{10.1142/5761}.
+
+\bibitem[Lehe et~al.(2016)Lehe, Kirchen, Andriyash, Godfrey, and
+  Vay]{lehe2016fbpic}
+R.~Lehe, M.~Kirchen, I.~A. Andriyash, B.~B. Godfrey, and J.-L. Vay.
+\newblock A spectral, quasi-cylindrical and dispersion-free particle-in-cell
+  algorithm.
+\newblock \emph{Computer Physics Communications}, 203:\penalty0 66--82, 2016.
+\newblock \doi{10.1016/j.cpc.2016.02.007}.
+
+\bibitem[Navas and others (Particle Data~Group)(2024)]{pdg2024}
+S.~Navas and others (Particle Data~Group).
+\newblock Review of particle physics.
+\newblock \emph{Physical Review D}, 110\penalty0 (3):\penalty0 030001, 2024.
+\newblock \doi{10.1103/PhysRevD.110.030001}.
+
+\bibitem[Tajima and Dawson(1979)]{tajima1979}
+T.~Tajima and J.~M. Dawson.
+\newblock Laser electron accelerator.
+\newblock \emph{Physical Review Letters}, 43\penalty0 (4):\penalty0 267--270,
+  1979.
+\newblock \doi{10.1103/PhysRevLett.43.267}.
+
+\bibitem[Wiedemann(2015)]{wiedemann2015}
+Helmut Wiedemann.
+\newblock \emph{Particle Accelerator Physics}.
+\newblock Springer, 4 edition, 2015.
+\newblock \doi{10.1007/978-3-319-18317-6}.
+
+\end{thebibliography}

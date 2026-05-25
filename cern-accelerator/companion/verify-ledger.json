@@ -1,0 +1,110 @@
+[
+  {
+    "fn": "bethe_bloch_stopping",
+    "args": ["Al", 100.0],
+    "expected": null,
+    "observed": null,
+    "delta_abs": null,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": null,
+    "stage": "6",
+    "note": "PDG eq.34.5 dE/dx for Al at KE=100 MeV; hexa<->Python parity, relerr <= 4e-10. SKELETON placeholder — observed/expected/delta_abs filled in a later batch from the cellrun record."
+  },
+  {
+    "fn": "bethe_bloch_stopping",
+    "args": ["Cu", 100.0],
+    "expected": null,
+    "observed": null,
+    "delta_abs": null,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": null,
+    "stage": "6",
+    "note": "PDG eq.34.5 dE/dx for Cu at KE=100 MeV; one of 4 PDG reference points. SKELETON placeholder."
+  },
+  {
+    "fn": "bethe_bloch_stopping",
+    "args": ["W", 100.0],
+    "expected": null,
+    "observed": null,
+    "delta_abs": null,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": null,
+    "stage": "6",
+    "note": "PDG eq.34.5 dE/dx for W at KE=100 MeV; one of 4 PDG reference points. SKELETON placeholder."
+  },
+  {
+    "fn": "bethe_bloch_stopping",
+    "args": ["Pb", 100.0],
+    "expected": null,
+    "observed": null,
+    "delta_abs": null,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": null,
+    "stage": "6",
+    "note": "PDG eq.34.5 dE/dx for Pb at KE=100 MeV; one of 4 PDG reference points. SKELETON placeholder."
+  },
+  {
+    "fn": "wakefield_e0_gv_m",
+    "args": [],
+    "expected": null,
+    "observed": null,
+    "delta_abs": null,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": 1007,
+    "stage": "3",
+    "note": "Cold non-relativistic wave-breaking (Dawson) field E_0 in GV/m. hexa-lang PR #1007. SKELETON placeholder."
+  },
+  {
+    "fn": "wakefield_lambda_um",
+    "args": [],
+    "expected": null,
+    "observed": null,
+    "delta_abs": null,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": 1007,
+    "stage": "2",
+    "note": "Plasma wavelength lambda_p in microns. hexa-lang PR #1007. SKELETON placeholder."
+  },
+  {
+    "fn": "plasma_wakefield_pic_parity",
+    "args": [],
+    "expected": null,
+    "observed": null,
+    "delta_abs": 0.0356,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": 1088,
+    "stage": "4",
+    "note": "FBPIC x cold-linear closed-form on-axis longitudinal field amplitude, Delta=3.56%. hexa-lang PR #1088. SKELETON — exact observed/expected filled in a later batch."
+  },
+  {
+    "fn": "xsuite_fodo_beta_x_max",
+    "args": [],
+    "expected": null,
+    "observed": null,
+    "delta_abs": null,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": null,
+    "stage": "5",
+    "note": "Xsuite FODO twiss beta_x_max vs Wiedemann/Lee thick-quad closed form, rel ~1e-6. absorbed=true ALGORITHM closure (optics-only). SKELETON placeholder."
+  },
+  {
+    "fn": "lhe_event_stats_roundtrip",
+    "args": [],
+    "expected": null,
+    "observed": null,
+    "delta_abs": null,
+    "tier": "INSUFFICIENT",
+    "atom_class": "gate-open",
+    "pr": null,
+    "stage": "7",
+    "note": "pylhe synthetic e+e- -> Z -> mu+mu- @ 91.1876 GeV, 100 events. absorbed=false GATE_OPEN permanent (synthetic, no detector sim). SKELETON placeholder."
+  }
+]

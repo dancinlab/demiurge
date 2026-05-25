@@ -1,0 +1,21 @@
+% TODO (fill batch): fold stdlib/cern/lhe_stats.py — pylhe@1.0.4 LHE
+% event-stats round-trip (synthetic e+e- -> Z -> mu+mu- @ sqrt(s)=
+% 91.1876 GeV, 100 events), the absorbed=false GATE_OPEN (permanent)
+% verdict, and the synthetic-vs-tuned-MC honesty caveat. Source: the
+% export stamp dir + verify-ledger.json.
+\section{pylhe LHE Event-Stats --- Full Data Record}
+\label{app:lhe}
+
+This appendix is the full data record for the LHE event-analysis stage
+(pipeline stage \textcircled{\scriptsize 7}, the \emph{analyze} verb,
+\S\ref{sec:fodo}). It states the synthetic
+$e^+e^-\!\to Z\!\to\mu^+\mu^-$ sample at $\sqrt{s}=\SI{91.1876}{GeV}$
+(100 events), the per-event kinematic statistics the pylhe\,1.0.4 cell
+computes, and the \emph{permanent} \texttt{absorbed=false} /
+\textsc{Gate-Open} verdict: the events are synthetic (not tuned Monte
+Carlo) and there is no detector simulation, so the cell is a
+demonstrated parser surface, not a physics claim.
+
+% TODO (fill batch): the LHE record schema, the per-event kinematic
+% summary table, and the synthetic-vs-tuned-MC / no-detector-sim honesty
+% box that fixes the permanent GATE_OPEN status.

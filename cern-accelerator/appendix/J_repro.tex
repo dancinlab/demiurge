@@ -1,0 +1,23 @@
+% TODO (fill batch): the bit-for-bit reproduction runbook — the
+% stdlib/cern/ canonical home (@D d3), the `hexa verify --expr <fn>
+% <args> <expected>` CLI invocations for each atom, the Xsuite/pylhe
+% adapter environment (xsuite@0.51.1, pylhe@1.0.4, FBPIC), the
+% exports/cern/ artifact layout, and the `make` / `make figures` /
+% `make pages` / `make lint` targets.
+\section{Reproducibility Runbook}
+\label{app:repro}
+
+This appendix is the step-by-step reproduction runbook. Every kernel
+lives at the canonical hexa-lang stdlib home (\verb|stdlib/cern/|, @D d3)
+and is callable from \verb|hexa verify --expr <fn> <args> <expected>|.
+The Bethe--Bloch and plasma-wakefield kernels are hexa-native; the Xsuite
+optics (xsuite\,0.51.1) and pylhe statistics (pylhe\,1.0.4) adapters and
+the FBPIC parity run are Python under the same home. Artifacts land under
+\verb|exports/cern/|. The monograph builds with \texttt{make} (xelatex
+$\times 3$ + bibtex); figures with \texttt{make figures}; page/word count
+with \texttt{make pages} / \texttt{make wordcount}; lint with
+\texttt{make lint}.
+
+% TODO (fill batch): the per-atom `hexa verify` invocation list, the
+% adapter environment pin table, the exports/cern/ artifact tree, and the
+% end-to-end "clone -> verify -> build" walkthrough.

@@ -1,0 +1,26 @@
+% TODO (fill batch): fold the CERN.md `## downstream` table — the three
+% out-of-scope external-dependency items: (1) Geant4-MC stopping-power
+% Stage-4 (source build + geant4_pybind pybind11 segfault), (2)
+% measured-ring optics parity (sourced LHC/FCC-ee/SPS deck, licensing /
+% clean-room risk), (3) 2-D nonlinear blowout PIC (GPU FBPIC/WarpX).
+% Each = external dependency + appropriate hand-off path. This is the
+% domain's signature honesty axis — keep it prominent.
+\section{Downstream / Honest-Scope Catalog}
+\label{app:downstream}
+
+This appendix is the explicit catalog of items that are out of the
+demiurge clean-room scope --- \emph{not} domain incompleteness, but
+external-dependency hand-offs past the tabletop completion criterion
+(\S\ref{sec:limits}). The clean-room scope is orthogonal to wet-lab /
+GPU / sourced-deck dependency; this catalog names each boundary, its
+exact external dependency, and the appropriate hand-off path.
+
+% TODO (fill batch): the 3-row downstream table —
+% (1) Geant4-MC Stage-4 stopping (Geant4 source build + geant4_pybind
+%     trampoline; pybind11 segfault) -> wet-lab-equivalent GPU pod cycle
+%     or /micro-exp sweep;
+% (2) measured-ring optics (sourced LHC/FCC-ee/SPS deck; licensing /
+%     clean-room risk) -> external-data ingest, separate domain;
+% (3) 2-D nonlinear blowout PIC (2-D FBPIC/WarpX GPU; n_p / intensity
+%     sweep) -> /micro-exp GPU sweep, design-grade separate cycle.
+% Frame each as "scope boundary", never "impossible".
