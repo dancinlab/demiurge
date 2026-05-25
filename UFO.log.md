@@ -21,6 +21,30 @@ deferred:
 - [ ] Phase D EXPERIMENTS+HYPOTHESES 흡수 — 13-falsifier 상태 set monotone 카탈로그 통합
 - [ ] F-USE-3/4 composite-specific simulator (v1.1.0) — self-cycle 2법칙 + 동시 안정성 sim (pool/cloud per @D d7 sizing 후 micro-exp)
 
+## 2026-05-26T01:00:00Z — verify-ladder V1 claim inventory + tier triage 통합 ledger LANDED
+
+verify ladder V1-V4 의 **첫 단계 V1** 봉합 — UFO 도메인 전체 (Phase A 7-stage · Phase B 5축 · Phase C 7-verb) claim 38건을 수집하고 g5 tier rubric (🔵/🟢/🟡/🟠/🔴/⚪) 으로 triage 한 통합 ledger. tier 는 LLM self-judge 가 아니라 실제 근거 인용 (PR# · atlas atom `@F` · falsifier ID · verbatim verdict) 만으로 부여 (@D g5). Stage-1~3 = numerical recompute 통과분만 🟢 · 합성식은 🟡 · Stage-4~7 13 falsifier = ⚪/OPEN UNPROVEN (결코 🔵/🟢 금지). 문서 한국어 · 코드 영문 · @D d3/d4/d9/d10 준수.
+
+- [x] `UFO/verify/V1_claim_inventory.md` 신규 — §0 TL;DR tier 분포 표 · §1 Phase A 7-stage ledger (각 claim+tier+근거) · §2 Phase B 5축 흡수 manifest · §3 Phase C 7-verb 산출물 · §4 honest 분류 (🟢 코어 9건 · 🟡 합성식 · ⚪ OPEN falsifier · γ-rocket I_sp 천장 note · atlas SSOT 비동기 note) · §5 V2/V3/V4 escalation 경로
+- [x] tier 분포 = 🔵 0 · 🟢 9 · 🟡 8 · 🟠 4 · 🔴 0 · ⚪ 17 (합계 38 claim)
+- [x] 🟢 9건 = Stage-1 hover B-field 3건 (`ioffe_loop_bz`) · Stage-2 cruise MHD thrust 3건 (`triple_product`) · Stage-3 orbital 3건 (`pair_threshold_total`·`rel_kinetic_from_p`) — 전부 `hexa verify --expr` verbatim verdict + `@F verified-*-num` atlas fold (atlas hash `663698a0…ce7fb`)
+- [x] 🟡 8건 = F_lev gradient-form · Lorentz body force `F=J×B×V` · γ-rocket I_sp 천장 `c/g` (atom 미등록 합성식/상한) + Phase B 5축 흡수 manifest + Phase C verb-1~4 manifest 산출물
+- [x] 🟠 4건 = analyze 본해 (CFD/FEA/EM 미수렴 · pool/cloud 위임 @D d7) · synthesize · verify · handoff 미진행
+- [x] ⚪ 17건 = Stage-4~7 13 falsifier (F-WARP/WORM/DIM/USE) **전부 OPEN UNPROVEN** + teleport 초광속 fence + meta 수론 — formal lattice only · 실설계·측정 없음
+- [x] honest note (@D d6) — γ-rocket 광자 천장 `I_sp=c/g≈3.057e7 s` ↔ spec target `1e9 s` 2-자릿수 불일치 정직 표기 (closure = verb-4 mass-flow + verb-6 falsifier F-ANTI-3 의무 · 목표 수 강제 금지)
+- [x] honest note (@D d2) — ⚪ = "미증명"이지 "불가능" 아님 · breakthrough path 명시 (Casimir σ=12 plate · sub-mm gravity · LHC KK-resonance · wet-lab/관측 downstream)
+- [x] honest note (@D g5) — V1 은 stage-doc 의 인용된 근거 (verbatim verdict + atlas fold)를 집계 · 본인 LLM 재판단 안 함 · atlas atom-fold 는 hexa-lang 별 repo PR 로 비동기 land (현 hexa-lang HEAD 와 atlas hash 비동기 — stage-doc 시점 fold 가 provenance)
+- [x] `UFO.md` line 70 V1 milestone `[ ]` → `[x] … LANDED PR pending` flip (tier 분포 인라인 표기)
+- [x] explicit `git add` per @D d9 — UFO/verify/V1_claim_inventory.md + UFO.md + UFO.log.md (인접 worktree agent index 격리)
+- [x] @D d3 준수 — 구현 코드 0줄 (집계 ledger · stdlib atom 등록은 V3 별 PR deferred)
+- [x] @D d4 준수 — single generic dispatch (tier rubric g5 generic · stage 이름 hardcoding 없음)
+
+deferred:
+- [ ] V2 🔵 push — closed-form / formal lattice identity (n=6 σ·τ=48 · δ=1/σ · b₀=ℓ_Pl·σ · KK 4D→26D · (σ−φ)²=100c) → `hexa verify --expr` + atlas register
+- [ ] V3 🟢 push — 🟡→🟢 escalation (stdlib `meissner_lev_force` · `mhd_thrust` · `gamma_rocket_isp` atom 등록 · hexa-lang 별 PR) + analyze 본해 수렴 (pool/cloud micro-exp)
+- [ ] V4 final tier ledger — V1+V2+V3 통합 + Phase D 메타 + Phase E absorbed=true 결단
+- [ ] NEXUS.tape reuse edge — RTSC/FUSION/ANTIMATTER verified atom → UFO Stage-1~3 (제공자/소비자 그래프 · @D d19)
+
 ## 2026-05-26T00:30:00Z — Stage-3 orbital antimatter γ-rocket I_sp verify LANDED 🟢
 
 Phase A Stage-3 orbital (antimatter γ-rocket anti-H + H · 고도 200 km ~ 1 AU). ANTIMATTER substrate (γ-rocket · Penning 3-freq + Ioffe trap depth verify 🟢 완료) 위에 γ-rocket I_sp closed-form (annihilation `E = 2·m_p·c²` → relativistic exhaust → `I_sp = c/g` 광자 천장 3.057e7 s) 의 numerical recompute 를 `hexa verify --expr` 3건으로 🟢 SUPPORTED-NUMERICAL 도장. ANTIMATTER verified atom 재사용 (idempotent atlas fold) · @D d3/d4/d6/d9/d10 준수. 문서 한국어 · 코드 영문.
