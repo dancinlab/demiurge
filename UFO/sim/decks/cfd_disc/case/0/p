@@ -1,0 +1,15 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+FoamFile { version 2.0; format ascii; class volScalarField; object p; }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// kinematic pressure p = P/rho  [m2/s2]
+dimensions      [0 2 -2 0 0 0 0];
+internalField   uniform 0;
+
+boundaryField
+{
+    inlet   { type freestreamPressure; freestreamValue uniform 0; }
+    outlet  { type freestreamPressure; freestreamValue uniform 0; }
+    disc    { type zeroGradient; }
+    "(top|bottom|sideY0|sideY1)" { type freestreamPressure; freestreamValue uniform 0; }
+}
+// ************************************************************************* //

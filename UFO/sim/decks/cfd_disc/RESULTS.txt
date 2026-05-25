@@ -1,0 +1,15 @@
+# UFO CFD — lenticular disc external aerodynamics (simpleFoam, AoA=0, edge-on)
+# OpenFOAM v1912 · k-omega SST · steady incompressible RANS
+# mesh: snappyHexMesh 19457 cells (18230 hex + 1195 poly), Mesh OK
+# converged: SIMPLE solution converged in 163 iterations (residualControl 1e-5; final ~1e-7)
+# NOTE: native forceCoeffs FO unusable in this Debian openfoam-1912 build (sha1 writer
+#       defect); coefficients integrated from the converged field by force_integrate.py.
+# disc patch faces      = 416
+# total wetted area     = 57.1591 m2  (~2 x planform 28.27 m2)
+# dynamic pressure q    = 43295.02   (0.5*rho*U^2*Aref, Aref=28.2743 m2 planform)
+# pressure force [N]    = (1305.559 -0.233 1000.768)
+RESULT  Cd_pressure (planform Aref=28.27) = 0.03015
+RESULT  Cl_pressure (planform Aref=28.27) = 0.02312
+RESULT  Cside                             = -0.00001
+RESULT  L/D                               = 0.76654
+# cross-check: Cd on frontal-silhouette area (~7.54 m2 ellipse approx) = 0.1131

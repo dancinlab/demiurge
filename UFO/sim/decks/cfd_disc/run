@@ -1,0 +1,143 @@
+#!/usr/bin/env bash
+# ============================================================================
+#  run — mesh + solve the UFO lenticular-disc external aerodynamics, extract
+#        C_d / C_l / L/D at angles of attack {0,5,10} deg.  (verb-4 analyze §1)
+#  (extension-less per project.tape .hexa marker; invoke: bash run [dry|aoa N])
+# ----------------------------------------------------------------------------
+#  Pipeline:
+#     1. gmsh : disc.geo  -> disc.stl              (lenticular OML, OCC revolve)
+#     2. blockMesh                                  (background wind-tunnel hex)
+#     3. snappyHexMesh -overwrite                   (carve disc out of block)
+#     4. simpleFoam                                 (steady incompressible RANS,
+#                                                    k-omega SST, forceCoeffs)
+#     5. extract: postProcessing/forceCoeffs/.../coefficient.dat -> Cd,Cl,L/D
+#
+#  USAGE (pool ubu-1, OpenFOAM v1912 on PATH after sourcing etc/bashrc):
+#     bash run dry            # gmsh + blockMesh + 1 snappy iter (syntax/mesh)
+#     bash run aoa 0          # full solve at AoA = 0 deg
+#     bash run aoa 5          # full solve at AoA = 5 deg
+#     bash run aoa 10         # full solve at AoA = 10 deg
+#     bash run sweep          # AoA 0,5,10 in sequence (each in its own case dir)
+#
+#  ENV: FOAM_BASHRC (default /usr/share/openfoam/etc/bashrc), GMSH_BIN.
+#  Solver = external (OpenFOAM); this driver is the orchestration shim only.
+#  HEXA-PORT candidate: the FVM kernel itself (see cfd-disc.md tail).
+# ============================================================================
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$HERE"
+
+FOAM_BASHRC="${FOAM_BASHRC:-/usr/share/openfoam/etc/bashrc}"
+GMSH_BIN="${GMSH_BIN:-$(command -v gmsh || echo gmsh)}"
+MODE="${1:-dry}"
+AOA="${2:-0}"
+UMAG=50.0          # freestream speed [m/s]  -> Re_D = 50*6/1.48e-5 = 2.03e7
+
+# shellcheck disable=SC1090
+[ -f "$FOAM_BASHRC" ] && source "$FOAM_BASHRC" || echo "[run] WARN: no FOAM bashrc at $FOAM_BASHRC"
+
+echo "[run] gmsh   = $GMSH_BIN"
+echo "[run] foam   = ${WM_PROJECT_VERSION:-?}"
+echo "[run] mode   = $MODE   AoA = ${AOA} deg"
+
+# ---- 1. STL from gmsh ------------------------------------------------------
+build_stl() {
+  echo "[run] gmsh: disc.geo -> disc.stl"
+  rm -f disc.stl
+  "$GMSH_BIN" disc.geo -2 -format stl -o disc.stl
+  # strip multi-solid -> snappy wants a single named solid "disc"
+  if grep -q "^solid" disc.stl && [ "$(grep -c '^solid' disc.stl)" -gt 1 ]; then
+    echo "[run] collapsing multi-solid STL into single solid 'disc'"
+    awk 'BEGIN{print "solid disc"} !/^solid|^endsolid/{print} END{print "endsolid disc"}' disc.stl > disc.stl.tmp && mv disc.stl.tmp disc.stl
+  else
+    sed -i.bak '1s/^solid.*/solid disc/; ${/^endsolid/s/^endsolid.*/endsolid disc/;}' disc.stl 2>/dev/null || true
+    rm -f disc.stl.bak
+  fi
+  echo "[run] STL tris = $(grep -c 'facet normal' disc.stl)"
+}
+
+# ---- prepare a clean case dir for a given AoA ------------------------------
+prep_case() {
+  local a="$1" cdir="$2"
+  local rad ux uz
+  rad=$(awk -v d="$a" 'BEGIN{printf "%.10f", d*3.14159265358979/180}')
+  ux=$(awk -v u="$UMAG" -v r="$rad" 'BEGIN{printf "%.6f", u*cos(r)}')
+  uz=$(awk -v u="$UMAG" -v r="$rad" 'BEGIN{printf "%.6f", u*sin(r)}')
+  echo "[run] AoA=${a} deg -> U=($ux 0 $uz)"
+  rm -rf "$cdir"
+  cp -r case "$cdir"
+  cp disc.stl "$cdir/constant/triSurface/disc.stl"
+  # substitute velocity placeholders
+  sed -i.bak "s/UX_PLACEHOLDER/$ux/g; s/UZ_PLACEHOLDER/$uz/g" "$cdir/0/U"
+  rm -f "$cdir/0/U.bak"
+}
+
+mesh_case() {
+  local cdir="$1"
+  ( cd "$cdir"
+    echo "[run] blockMesh ..."        ; blockMesh        > log.blockMesh 2>&1
+    echo "[run] snappyHexMesh ..."    ; snappyHexMesh -overwrite > log.snappy 2>&1
+    echo "[run] checkMesh ..."        ; checkMesh        > log.checkMesh 2>&1 || true
+    grep -E "cells:|Mesh OK|Failed" log.checkMesh | head -5 || true
+  )
+}
+
+extract_coeffs() {
+  local cdir="$1" a="$2"
+  local f
+  f=$(ls -t "$cdir"/postProcessing/forceCoeffs/*/coefficient*.dat 2>/dev/null | head -1 || true)
+  [ -z "$f" ] && f=$(ls -t "$cdir"/postProcessing/forceCoeffs/*/forceCoeffs.dat 2>/dev/null | head -1 || true)
+  if [ -z "$f" ]; then echo "[run] WARN: no forceCoeffs output in $cdir"; return; fi
+  # last data line; columns include Cd, Cl (header gives order)
+  local last; last=$(grep -v '^#' "$f" | tail -1)
+  echo "[run] [$cdir] last coeff row: $last"
+  # parse header for Cd / Cl column indices
+  awk -v aoa="$a" '
+    /^#/ && /Cd/ { for(i=1;i<=NF;i++){ if($i=="Cd")cd=i-1; if($i=="Cl")cl=i-1 } }
+    !/^#/ { row=$0; n=split(row,c," "); cdv=c[cd]; clv=c[cl] }
+    END{ if(cd&&cl){ ld=(cdv!=0)?clv/cdv:0; printf "RESULT AoA=%s  Cd=%.5f  Cl=%.5f  L/D=%.4f\n", aoa, cdv, clv, ld } }
+  ' "$f" | tee -a "$HERE/RESULTS.txt"
+}
+
+# ============================ dispatch ======================================
+case "$MODE" in
+  dry)
+    build_stl
+    prep_case "$AOA" "dry_aoa${AOA}"
+    ( cd "dry_aoa${AOA}"
+      echo "[run] DRY: blockMesh"   ; blockMesh > log.blockMesh 2>&1 && echo "  blockMesh OK"
+      echo "[run] DRY: snappy (1 iter pre-check)"
+      snappyHexMesh -overwrite > log.snappy 2>&1 && echo "  snappy OK" || { echo "  snappy FAILED — see log.snappy"; tail -20 log.snappy; exit 1; }
+      checkMesh > log.checkMesh 2>&1 || true
+      grep -E "cells:|Mesh OK|\*\*\*" log.checkMesh | head -8 || true
+    )
+    echo "[run] DRY OK — STL + mesh pipeline validated (free pre-check, @D d16)."
+    ;;
+  aoa)
+    build_stl
+    cdir="run_aoa${AOA}"
+    prep_case "$AOA" "$cdir"
+    mesh_case "$cdir"
+    echo "[run] simpleFoam (AoA=${AOA}) ..."
+    ( cd "$cdir"; simpleFoam > log.simpleFoam 2>&1 || { echo "[run] simpleFoam FAILED"; tail -30 log.simpleFoam; exit 1; } )
+    tail -3 "$cdir/log.simpleFoam"
+    extract_coeffs "$cdir" "$AOA"
+    ;;
+  sweep)
+    build_stl
+    : > "$HERE/RESULTS.txt"
+    for a in 0 5 10; do
+      cdir="run_aoa${a}"
+      prep_case "$a" "$cdir"
+      mesh_case "$cdir"
+      echo "[run] simpleFoam (AoA=${a}) ..."
+      ( cd "$cdir"; simpleFoam > log.simpleFoam 2>&1 || { echo "[run] simpleFoam FAILED at AoA=$a"; tail -30 log.simpleFoam; } )
+      extract_coeffs "$cdir" "$a"
+    done
+    echo "[run] ---- sweep complete ----"; cat "$HERE/RESULTS.txt"
+    ;;
+  *)
+    echo "usage: bash run [dry|aoa N|sweep]"; exit 2;;
+esac
+echo "[run] done."

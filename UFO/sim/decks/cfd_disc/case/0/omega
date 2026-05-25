@@ -1,0 +1,16 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+FoamFile { version 2.0; format ascii; class volScalarField; object omega; }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// omega = k^0.5/(Cmu^0.25 * L) ; L=0.1*D=0.6 m, Cmu=0.09
+//   = 0.6124/(0.5477*0.6) = 1.863  ~ 1.9 1/s
+dimensions      [0 0 -1 0 0 0 0];
+internalField   uniform 1.9;
+
+boundaryField
+{
+    inlet   { type fixedValue; value uniform 1.9; }
+    outlet  { type inletOutlet; inletValue uniform 1.9; value uniform 1.9; }
+    disc    { type omegaWallFunction; value uniform 1.9; }
+    "(top|bottom|sideY0|sideY1)" { type fixedValue; value uniform 1.9; }
+}
+// ************************************************************************* //

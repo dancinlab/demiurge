@@ -1,0 +1,15 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+FoamFile { version 2.0; format ascii; class volScalarField; object k; }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// k = 1.5*(U*TI)^2 ; TI=1% external aero -> 1.5*(50*0.01)^2 = 0.375 m2/s2
+dimensions      [0 2 -2 0 0 0 0];
+internalField   uniform 0.375;
+
+boundaryField
+{
+    inlet   { type fixedValue; value uniform 0.375; }
+    outlet  { type inletOutlet; inletValue uniform 0.375; value uniform 0.375; }
+    disc    { type kqRWallFunction; value uniform 0.375; }
+    "(top|bottom|sideY0|sideY1)" { type fixedValue; value uniform 0.375; }
+}
+// ************************************************************************* //

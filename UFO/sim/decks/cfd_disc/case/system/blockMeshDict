@@ -1,0 +1,51 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+FoamFile { version 2.0; format ascii; class dictionary; object blockMeshDict; }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// Background hex mesh — virtual wind tunnel around the disc (D=6 m, centre 0).
+//   x: -30 .. +72 m   (5D up, 12D down)
+//   y: -30 .. +30 m   (10D span)
+//   z: -30 .. +30 m   (10D height)
+// snappyHexMesh then carves the disc STL out of this background block.
+
+scale 1;
+
+xMin -30;  xMax  72;
+yMin -30;  yMax  30;
+zMin -30;  zMax  30;
+
+// ~3 m base cell -> snappy refines toward the body
+nx 34;   // (72+30)/3
+ny 20;
+nz 20;
+
+vertices
+(
+    ($xMin $yMin $zMin)
+    ($xMax $yMin $zMin)
+    ($xMax $yMax $zMin)
+    ($xMin $yMax $zMin)
+    ($xMin $yMin $zMax)
+    ($xMax $yMin $zMax)
+    ($xMax $yMax $zMax)
+    ($xMin $yMax $zMax)
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) ($nx $ny $nz) simpleGrading (1 1 1)
+);
+
+edges ();
+
+boundary
+(
+    inlet  { type patch;  faces ( (0 4 7 3) ); }
+    outlet { type patch;  faces ( (1 2 6 5) ); }
+    top    { type patch;  faces ( (4 5 6 7) ); }
+    bottom { type patch;  faces ( (0 3 2 1) ); }
+    sideY0 { type patch;  faces ( (0 1 5 4) ); }
+    sideY1 { type patch;  faces ( (3 7 6 2) ); }
+);
+
+mergePatchPairs ();
+// ************************************************************************* //

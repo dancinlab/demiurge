@@ -15,12 +15,12 @@
    ───────────────────────────────────────────────────────────────
    🔵 SUPPORTED-FORMAL      8   ████      n=6 lattice 정수 항등식 (V2: σ/φ/τ/μ/σ_k + σ·φ·n·τ·σ·τ)
    🟢 SUPPORTED-NUMERICAL  13   ██████    Stage-1~3 libm (V3) + Penning anchor + ④열 cryo closed-form 9/9 + EM 6-coil B-map (getdp+closed-form) + 응력 LC-1~5 FEA (ccx 본해 5/5 + Kirchhoff 17/17)
-   🟡 SUPPORTED-BY-CITATION 8   ████      합성식 (F_lev gradient · MHD f=J×B · γ I_sp c/g) + Phase B/C manifest
-   🟠 INSUFFICIENT/DEFERRED 2   █         디지털트윈 본해 (CFD·⟲) = pool/cloud 위임 (EM·④열 cryo·F-ANTI-3·응력 모두 CLOSED)
+   🟡 SUPPORTED-BY-CITATION 9   ████      합성식 (F_lev gradient · MHD f=J×B · γ I_sp c/g) + Phase B/C manifest + CFD 디스크 항공역학 (OpenFOAM RANS 수렴 + 문헌 교차검증)
+   🟠 INSUFFICIENT/DEFERRED 1   ▌         디지털트윈 본해 (⟲ 4-layer coupling) = pool/cloud 위임 (CFD·EM·④열 cryo·F-ANTI-3·응력 모두 CLOSED)
    ⚪ SPECULATION-FENCED   17   ████████  Stage-4~7 13 falsifier OPEN UNPROVEN + teleport 초광속 fence + meta
    🔴 FALSIFIED             0   —         (없음 — 정직: 거짓 양성 0)
    ───────────────────────────────────────────────────────────────
-   absorbed = FALSE  (🟠 2 본해 게이트 (CFD·⟲) 미수렴 → @D d5 projection flip 금지 · EM 6-coil + ④열 cryo + F-ANTI-3 + 응력 LC-1~5 FEA = 🟢 CLOSED)
+   absorbed = FALSE  (🟠 1 본해 게이트 (⟲ 4-layer coupling) 미수렴 → @D d5 projection flip 금지 · CFD(🟡) + EM 6-coil + ④열 cryo + F-ANTI-3 + 응력 LC-1~5 FEA = CLOSED)
 ```
 
 ## 1. 사다리 단계별 종합

@@ -1,0 +1,8 @@
+# OpenFOAM / gmsh build artifacts (regenerable via `bash run`)
+disc.stl
+disc.stl.bak
+dry_aoa*/
+run_aoa*/
+processor*/
+log.*
+*.msh

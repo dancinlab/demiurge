@@ -1,0 +1,59 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| UFO CFD — lenticular disc aerodynamics (verb-4 analyze §1, absorbed gate)   |
+|  steady incompressible RANS (simpleFoam) · k-omega SST                      |
+\*---------------------------------------------------------------------------*/
+FoamFile { version 2.0; format ascii; class dictionary; object controlDict; }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     simpleFoam;
+startFrom       startTime;
+startTime       0;
+stopAt          endTime;
+endTime         1500;          // SIMPLE iterations (steady)
+deltaT          1;
+writeControl    timeStep;
+writeInterval   500;
+purgeWrite      2;
+writeFormat     ascii;
+writePrecision  7;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+runTimeModifiable true;
+
+// ---- force / coefficient post-processing (C_d, C_l, L/D) -------------------
+functions
+{
+    forceCoeffs
+    {
+        type            forceCoeffs;
+        libs            ("libforces.so");
+        writeControl    timeStep;
+        writeInterval   50;
+        patches         (disc);
+
+        rhoInf          1.225;          // sea-level air density [kg/m3]
+        rho             rhoInf;          // incompressible: rho from rhoInf
+        liftDir         (0 0 1);         // +z (vertical) — lift
+        dragDir         (1 0 0);         // +x (freestream) — drag
+        CofR            (0 0 0);
+        pitchAxis       (0 1 0);
+
+        magUInf         50.0;            // freestream speed [m/s]
+        lRef            6.0;             // reference length = D [m]
+        Aref            28.2743;         // planform area pi*(D/2)^2 = pi*9 [m2]
+    }
+
+    forces
+    {
+        type            forces;
+        libs            ("libforces.so");
+        writeControl    timeStep;
+        writeInterval   100;
+        patches         (disc);
+        rho             rhoInf;
+        rhoInf          1.225;
+        CofR            (0 0 0);
+    }
+}
+// ************************************************************************* //

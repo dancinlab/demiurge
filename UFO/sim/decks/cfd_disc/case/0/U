@@ -1,0 +1,22 @@
+/*--------------------------------*- C++ -*----------------------------------*/
+FoamFile { version 2.0; format ascii; class volVectorField; object U; }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// Freestream U = (Ux 0 Uz);  AoA alpha set by the `run` driver via sed:
+//   Ux = |U|*cos(alpha),  Uz = |U|*sin(alpha),  |U| = 50 m/s.
+// Default (AoA = 0): (50 0 0).
+dimensions      [0 1 -1 0 0 0 0];
+internalField   uniform (UX_PLACEHOLDER 0 UZ_PLACEHOLDER);
+
+boundaryField
+{
+    inlet   { type fixedValue; value uniform (UX_PLACEHOLDER 0 UZ_PLACEHOLDER); }
+    outlet  { type inletOutlet; inletValue uniform (0 0 0); value uniform (UX_PLACEHOLDER 0 UZ_PLACEHOLDER); }
+    disc    { type noSlip; }
+
+    "(top|bottom|sideY0|sideY1)"
+    {
+        type    freestream;
+        freestreamValue uniform (UX_PLACEHOLDER 0 UZ_PLACEHOLDER);
+    }
+}
+// ************************************************************************* //
