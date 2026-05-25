@@ -140,6 +140,7 @@ Numbering continues from RTSC §9 (N1–N5). Mirror of RTSC §9.7 4-cohort + §9
 - **UNEDF half-life predictors**: density-dependent cluster model (DDCM) by Royer / Ren / Xu — published parameter tables, no install.
 - **Input**: `(Z, N, Q_α)` — Q_α from N6 mass output (chained).
 - **Output**: log T₁/₂ (s) · α-branching ratio prediction · honest spread vs. published Geiger-Nuttall scatter.
+- **C1 SF-competition (2026-05-25 · NOVEL probe pick · hexa-lang #928)**: the (c)-gate is NO LONGER α-only. `sf_log10_t(Z,A)` (Ren-Xu 2005 phenomenological SF systematics — C. Xu & Z. Ren, PRC 71, 014309 (2005); coefficients C1=-548.825021 C2=-5.359139 C3=0.767379 C4=-4.282220, ν seniority 0 even-even / 2 else; reproduced verbatim in Kiren+ 2013 arxiv:1301.1767 Eq.2.4) + `total_halflife(L_α,L_sf)` partial-rate combiner → `DecayTotal { log10_T_total, alpha/sf_branching, sf_dominates }`. For Z≥104 SF often dominates, so the prior α-only T₁/₂ OVERESTIMATED total survival; `c_gate_total_cell` now returns the honest α⊕SF total (Og-294 anchor: α-only log10 T=-2.93 → α⊕SF -3.20, b_α≈0.48 — α-only DID overestimate). Honest limits: SF scatter ±2-3 dex > α; **odd-A hindrance + shape-isomers NOT modeled → odd-A composite unreliable this regime** (Ren-Xu ν=2 over-predicts odd-A SF; real Lv-293/Fl-289 are α-dominant); SF dominance = priority-down-weight PREDICTION, never "this nuclide cannot exist" (@D d2 · §3.4). `sf_log10_t --expr` shows 🔴 at engine float-floor (|Δ|≈6.7e-7 · same as landed VS/Royer atoms · far inside SF physical scatter); combiner atoms 🟢 full f64. absorbed=false 영구.
 
 ### §4.3 N8 — fusion-evaporation cross-section
 
@@ -365,3 +366,5 @@ Historical log entries are in [`./NUCLEAR.log.md`](./NUCLEAR.log.md).
 - [x] Phase 5 — N8/N9/N10 wrap land (fusion-evap sigma · shell-model · ab-initio)
 - [x] Phase 6 — N11 funnel cohort (enumerate Z,N → top-K accelerator priority)
 - [x] NUCLEAR x RTSC bridge — honest-exception bracketing: SHE/isomer → RTSC bulk = NO (벽=생산량 not 반감기; SHE single-atom 화학은 예외). exports/nuclear_discovery/bridge/2026-05-25-nuclear-rtsc-bridge.md
+- [x] C1 — SF-competition closed-form (sf_log10_t + alpha/SF branching -> T_total) in sim.hexa; closes N7 alpha-only flaw for Z>=104 (NOVEL probe top pick) · hexa-lang PR #928 · sim.hexa v0.2.1
+- [x] C2 — shell-gap-aware island-of-stability weighting for N11 composite (magic-number distance Gaussian; consumes C1 T_total) · hexa-lang PR #929 · sim.hexa v0.3.0
