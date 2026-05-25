@@ -1,10 +1,3 @@
-% TODO (fill batch): fold the CERN.md `## downstream` table — the three
-% out-of-scope external-dependency items: (1) Geant4-MC stopping-power
-% Stage-4 (source build + geant4_pybind pybind11 segfault), (2)
-% measured-ring optics parity (sourced LHC/FCC-ee/SPS deck, licensing /
-% clean-room risk), (3) 2-D nonlinear blowout PIC (GPU FBPIC/WarpX).
-% Each = external dependency + appropriate hand-off path. This is the
-% domain's signature honesty axis — keep it prominent.
 \section{Downstream / Honest-Scope Catalog}
 \label{app:downstream}
 
@@ -13,14 +6,85 @@ demiurge clean-room scope --- \emph{not} domain incompleteness, but
 external-dependency hand-offs past the tabletop completion criterion
 (\S\ref{sec:limits}). The clean-room scope is orthogonal to wet-lab /
 GPU / sourced-deck dependency; this catalog names each boundary, its
-exact external dependency, and the appropriate hand-off path.
+exact external dependency, and the appropriate hand-off path. This is the
+signature honesty axis of the CERN domain: the scope boundary is a
+\emph{deliverable}, not an apology.
 
-% TODO (fill batch): the 3-row downstream table —
-% (1) Geant4-MC Stage-4 stopping (Geant4 source build + geant4_pybind
-%     trampoline; pybind11 segfault) -> wet-lab-equivalent GPU pod cycle
-%     or /micro-exp sweep;
-% (2) measured-ring optics (sourced LHC/FCC-ee/SPS deck; licensing /
-%     clean-room risk) -> external-data ingest, separate domain;
-% (3) 2-D nonlinear blowout PIC (2-D FBPIC/WarpX GPU; n_p / intensity
-%     sweep) -> /micro-exp GPU sweep, design-grade separate cycle.
-% Frame each as "scope boundary", never "impossible".
+% -------------------------------------------------------------------------
+\subsection{The three downstream items}
+\label{app:downstream-table}
+
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.2cm} >{\raggedright\arraybackslash}m{5.1cm} >{\raggedright\arraybackslash}m{4.6cm}@{}}
+\toprule
+\textbf{item} & \textbf{external dependency} & \textbf{appropriate hand-off path} \\
+\midrule
+Geant4-MC stopping-power solution (Stage 4)
+  & Geant4 source build $+$ \texttt{geant4\_pybind} trampoline ownership
+    (pybind11 segfault surfaced in an earlier round); the four corrections
+    (shell, density, straggling, nuclear)
+  & wet-lab-equivalent: GPU pod cycle or \texttt{/micro-exp} sweep, against
+    the Bethe--Bloch Stage-3 kernel (Appendix~\ref{app:bethe}) \\[4pt]
+measured-ring optics parity
+  & sourced LHC / FCC-ee / SPS optics deck (licensing $\cdot$ clean-room
+    risk) $+$ a measured tune
+  & external-data ingest as a \emph{separate} domain, on the facility's
+    official release (extends Appendix~\ref{app:fodo}) \\[4pt]
+2-D nonlinear blowout PIC
+  & 2-D / 3-D FBPIC / WarpX GPU run with an $n_p$ / drive-intensity sweep
+  & \texttt{/micro-exp} GPU sweep, a design-grade separate cycle, beyond
+    the 1-D linear parity (Appendix~\ref{app:pic}) \\
+\bottomrule
+\end{tabular}
+\caption{The \texttt{CERN.md ## downstream} catalog. Each row is a
+\emph{scope boundary}, never an impossibility: the closed-form / parity
+work inside the clean room is complete to its tabletop terminus, and each
+downstream item has a named external dependency and a concrete hand-off
+path.}
+\label{tab:app-downstream}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Why each is out of scope (not impossible)}
+\label{app:downstream-why}
+
+\paragraph{Geant4-MC Stage-4 stopping power.} The Bethe--Bloch kernel
+(Appendix~\ref{app:bethe}) is Stage-3 \tierGreen: a
+hexa$\leftrightarrow$Python parity on the PDG closed form. Flipping
+\texttt{absorbed=true} requires a full Geant4-MC \texttt{G4hIonisation}
+parity that adds the four corrections the closed form omits. The blocker
+is \emph{toolchain ownership}, not physics: the Geant4 source build plus
+the \texttt{geant4\_pybind} trampoline surfaced a pybind11 segfault in an
+earlier round. The breakthrough path is concrete --- run Geant4 on a
+dedicated GPU pod or via a \texttt{/micro-exp} sweep where the segfault
+can be owned and debugged in isolation. The \texttt{verify} cell records
+an \texttt{engine\_tool\_gap} on the \texttt{particle} module rather than
+faking a Stage-4 verdict.
+
+\paragraph{Measured-ring optics.} The FODO twiss
+(Appendix~\ref{app:fodo}) is an \emph{algorithm}-level closure on a
+textbook cell. A \emph{measured}-lattice flip needs a sourced ring-optics
+deck (LHC / FCC-ee / SPS) and a measured tune. This is an external-data
+dependency with licensing and clean-room-risk dimensions, so it belongs
+in a separate domain that ingests the facility's official optics release
+--- not in the public-surface clean room.
+
+\paragraph{Nonlinear blowout PIC.} The plasma-wakefield axis
+(Appendix~\ref{app:pic}) closes the cold-linear closed form and a 1-D
+\emph{linear} PIC parity. The 2-D/3-D nonlinear blowout (bubble) regime,
+where the wake departs from the cold-linear shape and $E_0$ is boosted,
+requires a GPU FBPIC/WarpX run with a density / drive-strength sweep ---
+exactly the kind of design-grade campaign a \texttt{/micro-exp} GPU
+sweep is for. It is a next-cycle item, fully named, and explicitly not
+claimed by this work.
+
+\medskip
+\noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{The contract.} None
+of the three is framed as ``impossible with current methods'' (a g3 /
+d2 violation). Each is a wet-lab / external-data / GPU dependency with a
+concrete breakthrough path. The tabletop completion criterion ---
+clean-room scope $\perp$ wet-lab / GPU / sourced-deck dependency --- is
+the line this catalog draws, and the work inside it is complete.}}
