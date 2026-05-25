@@ -1,0 +1,45 @@
+{
+  "record_kind": "antimatter_verify_record",
+  "domain": "ANTIMATTER",
+  "cell": "antihydrogen-trap+source-line",
+  "verb": "6/7 verify (검증 · 증거)",
+  "iso_stamp": "2026-05-25T11-16-10Z",
+  "produced_by": "AUTHORED (manual) — reference-only. producer honest-skip (missing deps: geant4). 본 verb 의 증거는 @D g5 대로 ALREADY-LANDED verdict (재실행 아님).",
+  "dispatch_provenance": {
+    "attempted": "demiurge cli action verify antimatter",
+    "result": "[cellrun] honest-skip — missing deps: geant4 (Geant4 Monte Carlo producer 미설치)"
+  },
+  "rule": "@D g5 — 이 verb 의 증거 = 이미 landed 된 verdict. LLM 자기판정/재실행 금지. 아래는 closed verdict 의 verbatim-by-reference 포인터.",
+  "primary_ledger": "exports/antimatter/verify/V_ledger_2026-05-25T10-58-43Z.md (V1→V4 통합 · PR #167, ⓺가둠 closed reflect 위해 본 round refresh)",
+  "tier_totals": {
+    "blue_SUPPORTED_FORMAL": 3,
+    "green_SUPPORTED_NUMERICAL": 20,
+    "red_FALSIFIED_negative_control": 8,
+    "note": "🔵3 + 🟢20 positive atoms (7공정 전부 verify-native 닫힘) · 🔴8 음성대조 (결정론적 변별력 입증, result-agnostic). ⓺가둠 closed 반영 = 13→20 🟢, 7→8 🔴 (PR #168 ioffe_trap 🟢×7+🔴×1)."
+  },
+  "per_stage_records": {
+    "stage_1_creation": "exports/antimatter/verify/ (pair_threshold_factor=6 🔵 · pair_threshold_kinetic=5629.63 🟢) — atlas @F verified-pair_threshold_factor-1",
+    "stage_2_deceleration": "exports/antimatter/verify/2026-05-25T10-43-31Z/ (rel_kinetic/p_from ×4 🟢 · hexa-lang #1014)",
+    "stage_3_capture": "exports/antimatter/verify/2026-05-25T09-11-36Z/ (penning_omega_plus/minus/invariance 🟢×3)",
+    "stage_4_cooling": "exports/antimatter/verify/2026-05-25T10-46-06Z/ (cyclotron_cool_bexponent=-2 🔵 · bratio=0.04/massspeedup=6.19051 🟢 · #1015)",
+    "stage_5_synthesis": "exports/antimatter/verify/2026-05-25T10-43-31Z/ (recomb density_power=2 🔵 · exponent=-4.5/tratio=1953125.0 🟢 · #1018)",
+    "stage_6_confinement": "exports/antimatter/verify/2026-05-25T11-05-17Z/ioffe_trap_2026-05-25T11-05-17Z.json (ioffe_loop_bz/mirror_bmin/bcoil/deltab/trap_depth_k/mu_b_over_kb 🟢×7 · 음성대조 ΔB=0.9 🔴 · PR #168 · RTSC/Wheeler 상속)",
+    "stage_7_measurement": "exports/antimatter/verify/ (transition_factor_1s2s=0.75 🟢 · h1s2s_rydberg=2.46738 PHz 🟢 · #1005)"
+  },
+  "key_verbatim_verdicts_for_this_cell": [
+    "verify --expr ioffe_mirror_deltab(0.1,100000.0,0.4)=0.524886 | calc=0.524886 ≈ expected 0.524886 (|Δ|=1.11022e-16 ≤ ε=1e-9) | tier = 🟢 SUPPORTED-NUMERICAL",
+    "verify --expr ioffe_trap_depth_k(0.524886)=0.352573 | calc=0.352573 ≈ expected 0.352573 (|Δ|=1.66533e-16 ≤ ε=1e-9) | tier = 🟢 SUPPORTED-NUMERICAL",
+    "verify --expr mu_b_over_kb()=0.671714 | calc=0.671714 ≈ expected 0.671714 (|Δ|=2.22045e-16 ≤ ε=1e-9) | tier = 🟢 SUPPORTED-NUMERICAL",
+    "verify --expr recomb_3body_density_power(1)=2 | calc=2 == expected 2 | tier = 🔵 SUPPORTED-FORMAL",
+    "verify --expr cyclotron_cool_bexponent(0)=-2 | calc=-2 == expected -2 | tier = 🔵 SUPPORTED-FORMAL",
+    "NEGATIVE CONTROL: verify --expr ioffe_mirror_deltab(0.1,100000.0,0.4)=0.9 | calc=0.524886 ≠ expected 0.9 (|Δ|=0.375114 > ε=1e-9) | tier = 🔴 FALSIFIED"
+  ],
+  "hexa_native_basis": "origin/main verify_cli.hexa hexa-native fn (recompute 가능). 본 record 는 verify_cli.hexa 미수정 · 신규 fn 추가 없음 (DOC/REFERENCE task).",
+  "honest_stance": "7공정 verify-native 닫힘 (🔵3·🟢20). 그러나 CPT Δ(1S-2S H vs H̄) 자체는 measured oracle 필요 ⇒ absorbed=false 유지 (@D d5). leading 폐형해는 15자리 재현 X (overclaim 금지).",
+  "scope_caveats": [
+    "verify producer(geant4) 부재로 producer-path verify 는 honest-skip — 본 record 는 ALREADY-LANDED verdict 의 reference (재실행 아님).",
+    "closed-form/수치만 — getdp FEM cross-check deferred · CPT measured oracle downstream wet-lab."
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

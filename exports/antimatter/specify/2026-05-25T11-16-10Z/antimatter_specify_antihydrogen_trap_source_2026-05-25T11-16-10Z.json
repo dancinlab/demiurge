@@ -1,0 +1,36 @@
+{
+  "record_kind": "antimatter_specify_record",
+  "domain": "ANTIMATTER",
+  "cell": "antihydrogen-trap+source-line (반수소 트랩+소스 라인)",
+  "verb": "1/7 specify (명세 · 무엇을)",
+  "iso_stamp": "2026-05-25T11-16-10Z",
+  "produced_by": "AUTHORED (manual) — demiurge 7-verb spine 시연. 실제 producer dispatch는 honest-skip (gating 아래 참조).",
+  "dispatch_provenance": {
+    "attempted": "demiurge cli action specify antimatter",
+    "result": "[cellrun] honest-skip — script missing: ~/core/hexa-lang/stdlib/antimatter/specify.py",
+    "interpretation": "dispatch(manifest load · deps check)는 정상 동작 — producer(stdlib/antimatter/specify.py) 부재로 honest-skip (⏭). 7-verb production stdlib-gated 현실 (project_demiurge_7verb_production_gated · #852). ANTIMATTER 신규 도메인이라 7 producer 전부 부재.",
+    "manifest": "~/.hx/packages/demiurge/domains/antimatter.demi [cell.specify]"
+  },
+  "target_spec": {
+    "objective": "자기최소(magnetic-minimum) 트랩 안에 중성 반수소(H̄)를 < 0.5 K 로 가두기",
+    "antiproton_source": "AD/ELENA (CERN Antiproton Decelerator + Extra Low ENergy Antiproton ring) — 100 keV p̄ delivery",
+    "positron_source": "양전자 축적기(positron accumulator) — ²²Na β⁺ source + buffer-gas Surko trap 축적",
+    "trap_class": "Ioffe-Pritchard 자기최소 트랩 (저자기장추종 ground-state H̄, μ≈μ_B 가둠)",
+    "temperature_target_K": 0.5,
+    "T_th_source_stage": "⓵생성 pair-production threshold T_th = 6·m_p·c² = 5629.632 MeV (≈5.63 GeV) — 빔 충돌로 p̄ 생성",
+    "decel_ladder_source_stage": "⓶감속 AD/ELENA relativistic ladder GeV→keV (T=√((pc)²+(m_p c²)²)−m_p c²)"
+  },
+  "reference_experiment_classes": ["ALPHA / ALPHA-g (antihydrogen gravity·1S-2S)", "BASE (p̄ magnetic moment)", "AEgIS (positronium·gravity)"],
+  "acceptance_gates": [
+    "trap depth ≥ target T (< 0.5 K window)",
+    "p̄ catch + e⁺ accumulation 동시 가용",
+    "1S-2S 분광 probe 광학 경로 확보"
+  ],
+  "scope_caveats": [
+    "CPT-symmetry 실험 spec skeleton — TEMPLATE. 실측 oracle (실제 반수소 생성·측정) 은 CERN AD facility downstream wet-lab.",
+    "measurement_gate = GATE_OPEN 영구 — specify 는 illustrative, absorption claim 아님 (g3).",
+    "demiurge 는 측정을 originate 하지 않음 — public PDG/실험 상수를 COPY (manifest domain caveat)."
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

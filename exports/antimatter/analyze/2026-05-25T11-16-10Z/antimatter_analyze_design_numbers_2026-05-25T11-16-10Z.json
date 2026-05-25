@@ -1,0 +1,67 @@
+{
+  "record_kind": "antimatter_analyze_record",
+  "domain": "ANTIMATTER",
+  "cell": "antihydrogen-trap+source-line",
+  "verb": "4/7 analyze (해석 · 설계가 성립하나)",
+  "iso_stamp": "2026-05-25T11-16-10Z",
+  "produced_by": "AUTHORED (manual) — producer honest-skip (missing deps: particle).",
+  "dispatch_provenance": {
+    "attempted": "demiurge cli action analyze antimatter",
+    "result": "[cellrun] honest-skip — missing deps: particle (scikit-hep PDG producer 미설치)"
+  },
+  "analysis_basis": "@D g5 — design 의 각 물리량을 ALREADY-LANDED verify atom 의 verbatim verdict 로 cross-check (재실행 아님; LLM 자기판정 금지). 출처 = V-ledger + per-stage records.",
+  "trap_field_and_depth": {
+    "claim": "mirror-pair a=0.1m·NI=1e5A·s=0.4m ⇒ B_min=0.1124T · B_coil=0.6373T · ΔB=0.5249T · trap depth=0.3526K",
+    "verify_atoms": [
+      "ioffe_mirror_bmin(0.1,100000.0,0.4)=0.112397 | 🟢 SUPPORTED-NUMERICAL (|Δ|=0.0)",
+      "ioffe_mirror_bcoil(0.1,100000.0,0.4)=0.637283 | 🟢 (|Δ|=0.0)",
+      "ioffe_mirror_deltab(0.1,100000.0,0.4)=0.524886 | 🟢 (|Δ|=1.11e-16)",
+      "ioffe_trap_depth_k(0.524886)=0.352573 | 🟢 (|Δ|=1.67e-16)",
+      "mu_b_over_kb()=0.671714 | 🟢 (|Δ|=2.22e-16)"
+    ],
+    "verdict": "trap depth 0.353 K < 0.5 K target window — design 성립 (ALPHA ~0.5 K 영역)",
+    "source_record": "exports/antimatter/verify/2026-05-25T11-05-17Z/ioffe_trap_2026-05-25T11-05-17Z.json"
+  },
+  "penning_three_freq": {
+    "claim": "p̄ B=5T·U₀=10V·d=5mm Penning 3-freq + Brown–Gabrielse invariance 잔차 0.0",
+    "verify_atoms": [
+      "penning_omega_plus(4.78942e8,6.18994e6)=4.78902e8 | 🟢 (|Δ|=0.0)",
+      "penning_omega_minus(4.78942e8,6.18994e6)=40003.3 | 🟢 (|Δ|=0.0)",
+      "penning_invariance(4.78942e8,6.18994e6)=4.78942e8 | 🟢 (불변량 잔차 0.0)"
+    ],
+    "source_record": "exports/antimatter/verify/2026-05-25T09-11-36Z/"
+  },
+  "recombination": {
+    "claim": "cold trapped plasma 3체 채널 p̄+e⁺+e⁺→H̄+e⁺: rate/p̄ ∝ n_e²·T^(−9/2)",
+    "verify_atoms": [
+      "recomb_3body_density_power(1)=2 | 🔵 SUPPORTED-FORMAL (밀도멱 정확 정수 2)",
+      "recomb_3body_exponent()=-4.5 | 🟢 (T^(−9/2))",
+      "recomb_3body_tratio(100.0,4.0)=1953125.0 | 🟢 (25^4.5=5⁹)"
+    ],
+    "verdict": "냉각이 깊을수록(T↓) 재결합률 급증 — design 의 ~4 K floor 가 H̄ 수율에 결정적",
+    "source_record": "exports/antimatter/verify/2026-05-25T10-43-31Z/"
+  },
+  "cooling": {
+    "claim": "cyclotron(공감/방사) 냉각 τ_c=6πε₀m³c³/(e⁴B²): τ_c∝B^(−2)·m³",
+    "verify_atoms": [
+      "cyclotron_cool_bexponent(0)=-2 | 🔵 SUPPORTED-FORMAL (B^(−2) 정확 지수)",
+      "cyclotron_cool_bratio(5.0,1.0)=0.04 | 🟢 (5T/1T)",
+      "cyclotron_cool_massspeedup(1.67262e-27,9.10938e-31)=6.19051 | 🟢 (Giga-view; e⁺가 p̄보다 (m_p/m_e)³≈6.19e9× 빠름 → p̄ 는 e⁺ 공감냉각)"
+    ],
+    "verdict": "p̄ 는 자기방사 너무 느림 → e⁺/전자 공감냉각 경로 필수 (design 의 냉각부 정당화)",
+    "source_record": "exports/antimatter/verify/2026-05-25T10-46-06Z/"
+  },
+  "source_chain": {
+    "pair_threshold": "pair_threshold_factor(1)=6 | 🔵 (T_th=6 m_p c²) · pair_threshold_kinetic(938.272)=5629.63 | 🟢 (5.63 GeV)",
+    "decel_ladder": "rel_kinetic_from_p(3500.0)=2685.31 (AD-in) · rel_p_from_kinetic(0.1)=13.6991 (ELENA-out) ×4 rungs | 🟢",
+    "spectroscopy": "transition_factor_1s2s()=0.75 | 🟢 (3/4) · h1s2s_rydberg(1.09737e7,2.99792e8)=2.46738 | 🟢 (2.4674 PHz leading)"
+  },
+  "overall_verdict": "7공정 design 물리량 전부 ALREADY-VERIFIED atom 에 대응 — 🔵×3 + 🟢×20 (음성대조 🔴×8 변별력 입증). design 은 verify-native 로 닫힌 atom 위에 성립.",
+  "scope_caveats": [
+    "analyze 는 새 판정 안 내림 — 닫힌 verdict 의 cross-reference 만 (@D g5).",
+    "particle(PDG) producer 부재로 producer-path analyze 는 honest-skip — 본 record 는 authored cross-check.",
+    "CPT Δ(H vs H̄) 자체는 measured oracle 필요 ⇒ downstream."
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

@@ -1,0 +1,76 @@
+{
+  "record_kind": "antimatter_handoff_record",
+  "domain": "ANTIMATTER",
+  "cell": "antihydrogen-trap+source-line",
+  "verb": "7/7 handoff (인계 · 팹 사양)",
+  "iso_stamp": "2026-05-25T11-16-10Z",
+  "title": "반수소 트랩+소스 팹 사양 인계 doc (factory design handoff — milestone 17)",
+  "produced_by": "AUTHORED (manual) — producer honest-skip (stdlib/antimatter/handoff.py 부재).",
+  "dispatch_provenance": {
+    "attempted": "demiurge cli action handoff antimatter",
+    "result": "[cellrun] honest-skip — script missing: ~/core/hexa-lang/stdlib/antimatter/handoff.py",
+    "interpretation": "7-verb production stdlib-gated (project_demiurge_7verb_production_gated · #852) — ANTIMATTER 신규 도메인 7 producer 전부 부재. dispatch 정상, producer absent ⇒ authored record 로 spine 시연."
+  },
+  "fab_spec": {
+    "magnetic_minimum_trap": {
+      "type": "Ioffe-Pritchard mirror-coil pair (magnetic bottle)",
+      "coil_winding": {
+        "loop_radius_a_m": 0.10,
+        "ampere_turns_NI_A": 100000.0,
+        "mirror_separation_s_m": 0.40,
+        "coil_positions_z_m": [-0.20, 0.20],
+        "spacing_rationale": "s/a=4 > Helmholtz (s>a) ⇒ 중심 z=0 참 온축 B 최소",
+        "note": "superconducting winding 권고 (NI=1e5 A·turns; RTSC 자석 toolchain 상속)"
+      },
+      "field_map": {
+        "B_min_center_T": 0.1123970357578378,
+        "B_coil_plane_T": 0.6372826268042674,
+        "delta_B_T": 0.5248855910464296,
+        "trap_depth_K": 0.35257290312882134,
+        "mu_B_over_k_B_K_per_T": 0.6717138156258398,
+        "primitive": "B_loop(ζ)=μ₀Ia²/(2(a²+ζ²)^1.5) = stdlib/material/magnet/current_loop_offaxis.hexa::loop_offaxis_Bz (r=0, NOVEL-TOOL M2.4)",
+        "B_field_map_ref": "exports/antimatter/verify/2026-05-25T11-05-17Z/ioffe_trap_2026-05-25T11-05-17Z.json"
+      }
+    },
+    "penning_trap": {
+      "B_field_T": 5.0,
+      "ring_voltage_U0_V": 10.0,
+      "characteristic_d_mm": 5.0,
+      "field_ref": "exports/antimatter/verify/2026-05-25T09-11-36Z/"
+    },
+    "positron_source": {
+      "isotope": "²²Na (β⁺, t½≈2.6 y)",
+      "accumulator": "Surko buffer-gas trap (N₂ 단계 충돌냉각 → Penning-Malmberg well 축적)"
+    },
+    "cryostat": {
+      "operating_temperature_K": 4.0,
+      "rationale": "재결합률 rate∝T^(−9/2) → 깊은 냉각이 H̄ 수율에 결정적; trap floor ~4 K"
+    },
+    "vacuum": {
+      "level": "UHV (ultra-high vacuum)",
+      "rationale": "잔류가스 충돌로 인한 H̄ 소멸 억제"
+    }
+  },
+  "verified_basis_summary": {
+    "tiers": "🔵3 + 🟢20 positive (7공정 verify-native 닫힘) · 🔴8 음성대조",
+    "ledger": "exports/antimatter/verify/V_ledger_2026-05-25T10-58-43Z.md",
+    "pipeline_records": {
+      "specify": "exports/antimatter/specify/2026-05-25T11-16-10Z/antimatter_specify_antihydrogen_trap_source_2026-05-25T11-16-10Z.json",
+      "structure": "exports/antimatter/structure/2026-05-25T11-16-10Z/antimatter_structure_factory_line_2026-05-25T11-16-10Z.json",
+      "design": "exports/antimatter/design/2026-05-25T11-16-10Z/antimatter_design_trap_source_params_2026-05-25T11-16-10Z.json",
+      "analyze": "exports/antimatter/analyze/2026-05-25T11-16-10Z/antimatter_analyze_design_numbers_2026-05-25T11-16-10Z.json",
+      "synthesize": "exports/antimatter/synthesize/2026-05-25T11-16-10Z/antimatter_synthesize_operation_sequence_2026-05-25T11-16-10Z.json",
+      "verify": "exports/antimatter/verify/2026-05-25T11-16-10Z/antimatter_verify_ledger_reference_2026-05-25T11-16-10Z.json"
+    }
+  },
+  "scope_caveats": [
+    "closed-form/numerical only — trap depth 0.353 K 는 mirror-pair 폐형해 모델값.",
+    "getdp FEM cross-check DEFERRED (strictly-optional; closed-form verify 닫혀 scope-tight 유지).",
+    "CPT Δ(H vs H̄ 1S-2S) 는 measured oracle 필요 — downstream wet-lab confirmation (@D d5 · d1).",
+    "demiurge 는 측정을 originate 하지 않음 — 실제 p̄/e⁺ 측정은 CERN AD facility.",
+    "본 record 는 7-verb production stdlib-gated 현실 아래 AUTHORED — producer(stdlib/antimatter/handoff.py) 실행 아님 (#852)."
+  ],
+  "gate": "OPEN",
+  "absorbed": false,
+  "milestone": "ANTIMATTER milestone 17 (공장 설계 인계 doc) — 이 record = 7th verb(handoff) 산출 = 트랩·소스 팹 사양"
+}
