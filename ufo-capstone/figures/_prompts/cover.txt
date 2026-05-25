@@ -1,0 +1,20 @@
+A clean technical schematic blueprint, deep starfield background (black with scattered white stars and a faint nebula), navy + electric-cyan blueprint line accents, in the style of a Nature Physics or aerospace engineering schematic cover.
+
+Concept: a lenticular (double-convex disc) single-seat vehicle, diameter D = 6 metres, thickness 1.6 metres, drawn as a cutaway blueprint schematic in the centre, rotationally symmetric about the vertical axis. Inside the disc, draw concentric superconducting solenoid coil windings with glowing electric-blue magnetic field lines arcing out from the rim (a Meissner levitation fringe field). Beneath and behind the disc, a bright fusion/antimatter propulsion glow — a focused plume of cyan-white plasma and gamma-ray exhaust streaming downward and aft.
+
+Overlay, as a faint vertical ladder of labels on the right edge, a 7-stage propulsion ladder, lower three rungs glowing solid green/teal and upper four rungs drawn in faint dashed grey/white (open, unproven):
+
+  Stage 1  hover     (Meissner / RTSC 48 T)        ← solid teal
+  Stage 2  cruise    (MHD + fusion)                 ← solid teal
+  Stage 3  orbital   (gamma-rocket / antimatter)    ← solid teal
+  ──────── proven / UNPROVEN wall ────────
+  Stage 4  warp      (Alcubierre)                   ← dashed grey
+  Stage 5  wormhole  (Morris-Thorne)                ← dashed grey
+  Stage 6  dim-jump  (Kaluza-Klein)                 ← dashed grey
+  Stage 7  dim-use   (composite)                    ← dashed grey
+
+A subtle horizontal divider between Stage 3 and Stage 4 labeled "absorbed=false boundary".
+
+In a small corner badge: "4-domain capstone · RTSC · FUSION · ANTIMATTER · CERN".
+
+Style: minimalist, scientific, no people, no logos, vector-clean blueprint lines, large bold stage labels, monospace caption fonts, generous spacing. The overall feel should be a verified-by-design engineering schema over a starfield, not a hype sci-fi illustration. The three lower rungs feel solid and engineered; the four upper rungs feel deliberately faint and provisional.

@@ -1,0 +1,30 @@
+% =========================================================================
+% Appendix A — Stage-1 hover (Meissner / RTSC). SKELETON stub.
+% TODO (fill batch): fold UFO/verify/stage1-hover-fields.md
+%   - the ioffe_loop_bz(a,I,zeta=0) = mu0*I/(2a) on-axis field derivation
+%   - the F_lev = |chi|*V*B*(dB/dz)/mu0 Meissner lift closed form
+%   - the 90/120/200 kg pilot lift table (B=2T, dB/dz=20T/m, V=0.05 m^3)
+%   - the 3 ioffe_loop_bz verify atoms (90/120/200 kg coils) verbatim, |Delta|=0
+%   - atlas hash 663698a0 fold provenance (RTSC parent, idempotent reuse)
+%   - the Earnshaw active-feedback / flux-pin stability note
+%   - pgfplots: hover B-field vs coil radius / lift-margin chart
+% =========================================================================
+\section{Stage-1 Hover --- Meissner Levitation on an RTSC \SI{48}{\tesla} Solenoid}
+\label{app:stage1}
+
+This appendix is the full data record for ladder rung
+\textcircled{\scriptsize 1} (hover). It folds the RTSC-inherited
+Meissner-levitation closed form: the hover-coil on-axis field
+\verb|ioffe_loop_bz|$(a,I,\zeta\!=\!0)=\mu_0 I/(2a)$, the lift
+$F_{\text{lev}}=|\chi|\,V\,B\,(dB/dz)/\mu_0$, and the three \tierGreen\
+\textsc{Supported-Numerical} verify atoms (90/120/200\,kg pilot coils)
+reproduced verbatim from \texttt{UFO/verify/stage1-hover-fields.md},
+each at $|\Delta|=0$ and already folded into the atlas SSOT (hash
+\texttt{663698a0}) by the RTSC parent domain. The honest scope:
+\texttt{absorbed=false} --- a closed-form lift margin is a feasibility
+witness, not a levitating craft, and Earnshaw's theorem
+\citep{earnshaw1842} requires active feedback / flux-pinning for
+stability.
+
+% TODO (fill batch): expand the above into the full per-atom record,
+% the lift-margin table, and a pgfplots hover-field chart.

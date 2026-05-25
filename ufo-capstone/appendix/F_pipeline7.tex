@@ -1,0 +1,51 @@
+% =========================================================================
+% Appendix F — the demiurge 7-verb pipeline (spec -> handoff). SKELETON stub.
+% TODO (fill batch): fold UFO/{spec,structure,design,analyze,synthesize,verify,handoff}/*.md
+%   - verb-1 spec: 1-pilot LSS 12h, 7-stage matrix, gyro x3 + jet x6 + EM trim,
+%     RTSC/FUSION/ANTIMATTER record-consume contract
+%   - verb-2 structure: lenticular OML D=6.0m H=1.6m AR=0.27, 5-bay layout,
+%     RTSC solenoid x6 array + gyro CMG x3 + flux-pin, 6-slot stage mounts,
+%     stress budget 650kg/SF=2.5, LC-1..5 catalog
+%   - verb-3 design: Stage-1~3 closed-form real design (RTSC/FUSION/ANTIMATTER
+%     inherit), Stage-4~7 falsifier-only, weight/power/cooling budget
+%   - verb-4 analyze: 4-layer (CFD NS / EM Maxwell-Meissner / FEA von Mises /
+%     thermal cryo+radiator) governing eqs + Re/mesh/convergence + circle-arrow
+%     fixed-point coupling (max Delta_rel<1e-3), heavy body-solve deferred
+%   - verb-5 synthesize: BOM 7-category, drawing tree L0->L3 + 7 interface drawings,
+%     firmware 3-layer (HAL/RTOS DO-178C DAL-A/app) 5-module, fab seq + QA G0-G7
+%   - verb-6 verify: 4-layer x tier matrix, Stage-1~3 nine green, 4-layer convergence
+%     orange (pool/cloud), stability falsifier
+%   - verb-7 handoff: external-fab manifest, 4 fab competencies, 4 certification
+%     tracks (DO-178C / FAA Pt.25 / ASME BPVC / MIL-STD-461), absorbed=false notice
+%   - pgfplots: weight/power budget bar chart + 7-verb completion timeline
+% =========================================================================
+\section{The demiurge 7-Verb Pipeline --- \texttt{spec} $\to$ \texttt{handoff}}
+\label{app:verbs}
+
+This appendix folds the full demiurge seven-verb design pipeline for the
+integrated vehicle, all landed non-wet-lab (@D~d1). \textbf{verb-1
+\texttt{spec}} defines the single-pilot payload (75\,kg, 12\,h LSS), the
+7-stage matrix, and the attitude stack (gyro $\times3$, jet trim
+$\times6$, EM trim, IMU $\times2$ redundancy). \textbf{verb-2
+\texttt{structure}} defines the lenticular OML ($D\!=\!\SI{6}{\meter}$,
+$H\!=\!\SI{1.6}{\meter}$, AR $=0.27$), the 5-bay layout, the RTSC
+solenoid $\times6$ equiangular array with gyro CMG $\times3$, the 6-slot
+stage mounts, and the stress budget (650\,kg, SF $=2.5$, LC-1..5).
+\textbf{verb-3 \texttt{design}} gives the Stages-1--3 closed-form
+parameter design (inheriting RTSC/FUSION/ANTIMATTER) and the Stages-4--7
+falsifier-only mounts. \textbf{verb-4
+\texttt{analyze}\,$\circlearrowleft$} specifies the 4-layer digital twin
+(CFD Navier--Stokes, EM Maxwell/Meissner, structural FEA von Mises,
+thermal cryo$+$radiator) with the $\circlearrowleft$ fixed-point coupling
+($\max\Delta_{\text{rel}}\!<\!10^{-3}$), heavy body-solves deferred to
+pool/cloud. \textbf{verb-5 \texttt{synthesize}} produces the 7-category
+BOM, the L0$\to$L3 drawing tree with 7 interface drawings, and the
+3-layer firmware stack (HAL / RTOS DO-178C DAL-A / app). \textbf{verb-6
+\texttt{verify}} is the integrated ledger. \textbf{verb-7
+\texttt{handoff}} ships the external-fab package with four certification
+tracks (DO-178C, FAA Pt.25, ASME BPVC, MIL-STD-461) \emph{and the
+\texttt{absorbed=false} ``not build-ready'' notice}.
+
+% TODO (fill batch): expand each verb into its full deliverable fold,
+% the 4-layer governing equations, and a pgfplots weight/power budget
+% bar chart + 7-verb completion timeline.

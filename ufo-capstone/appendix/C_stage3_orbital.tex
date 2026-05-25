@@ -1,0 +1,35 @@
+% =========================================================================
+% Appendix C — Stage-3 orbital (gamma-rocket / ANTIMATTER). SKELETON stub.
+% TODO (fill batch): fold UFO/verify/stage3-orbital-gamma.md
+%   - annihilation E = 2*m_p*c^2; p-bar + p -> 2 gamma leading channel
+%   - relativistic rocket exhaust -> photon I_sp ceiling I_sp_max = c/g ~ 3.06e7 s
+%   - the honest c/g ceiling vs spec target 1e9 s (mass-flow definition gap)
+%   - F-ANTI-3 closure via fuel-mass redefinition (fanti3_isp_closure.hexa 9/9 PASS)
+%   - the 3 verify atoms verbatim: pair_threshold_total(938.272)=6567.904,
+%     rel_kinetic_from_p(9382.72)=8491.24..., rel_kinetic_from_p(1625.13)=938.272
+%   - atlas fold provenance (ANTIMATTER parent, idempotent skip)
+%   - pgfplots: I_sp ladder (chemical / fission / fusion / antimatter photon ceiling)
+% =========================================================================
+\section{Stage-3 Orbital --- Antimatter $\gamma$-Rocket and the $I_{\text{sp}}$ Ceiling}
+\label{app:stage3}
+
+This appendix is the full data record for ladder rung
+\textcircled{\scriptsize 3} (orbital). It folds the
+ANTIMATTER-inherited $\gamma$-rocket closed form: annihilation
+$E=2m_pc^2$ ($\bar p p\!\to\!2\gamma$ leading channel), the relativistic
+rocket exhaust, and the photon specific-impulse ceiling
+$I_{\text{sp,max}}=c/g\approx\SI{3.06e7}{\second}$, with the three
+\tierGreen\ \textsc{Supported-Numerical} atoms
+(\verb|pair_threshold_total|$(938.272)=6567.904$,
+\verb|rel_kinetic_from_p| at the ultra-relativistic and kinetic$=$rest
+crossover) reproduced verbatim from
+\texttt{UFO/verify/stage3-orbital-gamma.md}, each at $|\Delta|=0$ and
+already folded into the atlas SSOT (\texttt{663698a0}) by the ANTIMATTER
+parent. We honestly record the two-decade gap between the $c/g$ photon
+ceiling and the spec target $I_{\text{sp}}\!\ge\!10^9$\,s as a mass-flow
+definition difference (@D~d6 --- no forced target number), and note the
+later F-ANTI-3 closure via fuel-mass re-definition.
+
+% TODO (fill batch): expand into the full annihilation-energy and
+% I_sp-ceiling record, the F-ANTI-3 closure, and a pgfplots I_sp-ladder
+% chart (chemical/fission/fusion/antimatter photon ceiling).

@@ -1,0 +1,663 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------- arxiv-style preamble (xelatex; emoji-native) ----------
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,backgrounds}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\usepackage{listings}
+\usepackage{array}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  columns=fullflexible,
+  frame=single,
+  framesep=4pt,
+  xleftmargin=4pt,
+  xrightmargin=4pt
+}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black
+}
+
+% ---------- tier badges (xelatex; colored-disc fallback) ----------
+% Use \tierBlue / \tierGreen / \tierYellow / \tierOrange / \tierRed / \tierWhite
+% in tables. The template default is literal emoji (lualatex + an emoji font
+% render those natively), but the lmroman text font shipped with this BasicTeX
+% has no emoji glyphs, so we render the tier badges as filled colored discs via
+% TikZ. Engine-agnostic, always visible, preserves the exact tier semantics.
+% \tierWhite is the SPECULATION-FENCED (⚪) tier: an open, unproven claim.
+\newcommand{\tierdisc}[1]{\textcolor{#1}{\rule[0.05ex]{1.0ex}{1.0ex}}}
+\newcommand{\tierdiscopen}{\tikz[baseline=-0.4ex]{\draw[gray!70!black,line width=0.35pt] (0,0) circle (0.45ex);}}
+\newcommand{\tierBlue}{\tierdisc{blue!70!black}}
+\newcommand{\tierGreen}{\tierdisc{green!60!black}}
+\newcommand{\tierYellow}{\tierdisc{yellow!85!black}}
+\newcommand{\tierOrange}{\tierdisc{orange!90!black}}
+\newcommand{\tierRed}{\tierdisc{red!80!black}}
+\newcommand{\tierWhite}{\tierdiscopen}
+% honest proven/UNPROVEN wall glyph
+\newcommand{\wall}{\;\big\Vert\;}
+
+\title{
+  \textbf{🛸 UFO --- Integrated Single-Seat Vehicle:\\
+  a 4-Domain Capstone of Verify-Native Propulsion} \\[6pt]
+  \large RTSC $\cdot$ FUSION $\cdot$ ANTIMATTER $\cdot$ CERN ---
+  a 7-Stage Propulsion Ladder with a Sharp Proven/UNPROVEN Wall,
+  a 4-Domain Integration Map, and the Full demiurge 7-Verb Pipeline
+  (\texttt{spec}$\to$\texttt{handoff})
+}
+
+% ---------- author block (hexa-codex style) ----------
+\author{
+  \texttt{ufo-capstone} maintainers\\
+  \normalsize\textit{dancinlab}\\[2pt]
+  \normalsize\href{https://github.com/dancinlab/demiurge}{\texttt{github.com/dancinlab/demiurge}}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+% =========================================================================
+\begin{abstract}
+We present \textbf{UFO}, the \emph{capstone} (integration) volume of the
+demiurge stack: a single-seat vehicle that ties together four
+independently-verified sibling domains --- \textbf{RTSC}
+(real-temperature superconducting magnets), \textbf{FUSION}
+(magnetic-confinement / MHD propulsion), \textbf{ANTIMATTER}
+($\gamma$-rocket annihilation propulsion), and \textbf{CERN}
+(accelerator field / particle infrastructure) --- into one carrier and
+carries it through the full demiurge seven-verb pipeline
+(\texttt{spec}$\to$\texttt{structure}$\to$\texttt{design}$\to$\texttt{analyze}\,$\circlearrowleft$$\to$\texttt{synthesize}$\to$\texttt{verify}$\to$\texttt{handoff}),
+non-wet-lab, end to end. The physical spine is a \textbf{seven-stage
+propulsion ladder} (\S\ref{sec:pipeline}): Stage~1 hover (Meissner
+levitation on an RTSC \SI{48}{\tesla} solenoid), Stage~2 cruise
+(MHD$+$fusion body-force thrust), Stage~3 orbital ($\gamma$-rocket
+annihilation exhaust), then Stage~4 warp (Alcubierre), Stage~5 wormhole
+(Morris--Thorne), Stage~6 dim-jump (Kaluza--Klein ladder), and Stage~7
+dim-use (a composite $\tau\!=\!4$ cycle). The ladder carries a
+deliberately \emph{sharp honesty wall}: Stages~1--3 are closed-form
+verified (\tierGreen, inherited verbatim from the sibling domains ---
+\texttt{ioffe\_loop\_bz}, \texttt{triple\_product},
+\texttt{pair\_threshold\_total}$+$\texttt{rel\_kinetic\_from\_p}, all
+\textsc{Supported-Numerical} at $|\Delta|\!=\!0$, atlas hash
+\texttt{663698a0}), while Stages~4--7 are a \emph{13-falsifier
+preregister, ALL OPEN} (\tierWhite, academically \textbf{UNPROVEN}).
+We do \emph{not} claim warp, wormhole, dimensional jump, or dimensional
+use is achieved; we register, for each, the precise measurement that
+would falsify it. The capstone's headline verdict is honest:
+\textbf{\texttt{absorbed=false}}. Five non-wet-lab digital-twin gates
+(CFD, EM 3D, structural FEA, the $\circlearrowleft$ fixed-point
+coupling, and one cross-coupled gate) have not converged to a body-solve
+(they are deferred to pool/cloud heavy simulation), and Stages~4--7 are
+all open --- so the integration bit cannot flip. A design that clears
+all non-wet-lab gates is a \emph{witness of integrated-vehicle
+feasibility}, never a built or flown craft. Across the ladder we
+observe a shared lattice constant $B^{*}=\sigma\!\cdot\!\tau=48$ that
+recurs in RTSC ($H_{c2}$), FUSION (Lawson target), and the UFO Meissner
+lift --- but this is an \emph{arithmetic-reuse observation}, not a proof
+of integrated physics. Bit-for-bit reproduction artifacts (verify
+ledger, PR roll, integration map, session journal) ship under
+\texttt{companion/}.
+\end{abstract}
+
+% =========================================================================
+\section{Introduction}
+\label{sec:intro}
+
+The four sibling domains of the demiurge stack each answer a single,
+physically distinct propulsion question to a verified closed form: RTSC
+asks how strong a real-temperature superconducting magnet can be (and
+how much lift its Meissner fringe field provides); FUSION asks whether a
+magnetically-confined plasma can both ignite and exert an MHD body-force
+thrust; ANTIMATTER asks what specific impulse an annihilation
+$\gamma$-rocket can reach; and CERN asks how accelerator-grade fields
+and relativistic-kinematics infrastructure are produced and verified.
+Each domain has its own monograph and its own verify ledger. None of
+them, on its own, answers the \emph{integration} question: \emph{can a
+single carrier consume all four, in sequence, as the rungs of one
+propulsion ladder?}
+
+\textbf{UFO is the capstone that asks exactly that.} It is not a fifth
+physics domain --- it adds essentially no new physics atoms. It is an
+\emph{integration volume}: it consumes the four siblings' verified
+records, places them on a seven-stage propulsion ladder, and runs the
+whole vehicle through the demiurge seven-verb design pipeline
+(\texttt{spec}$\to$\texttt{handoff}) to a non-wet-lab completed form
+(\S\ref{sec:pipeline7}). The contribution is therefore architectural
+honesty under integration pressure: keeping a sharp wall between the
+three rungs that are genuinely closed-form-verified and the four rungs
+that are open, unproven speculation --- even as they sit in one table,
+on one vehicle, under one title.
+
+\smallskip\noindent\textbf{Contributions.}
+\begin{enumerate}\itemsep0.25em
+\item A \textbf{seven-stage propulsion ladder}
+  (\S\ref{sec:pipeline}) that places the four sibling domains in one
+  physical path, with a \emph{sharp proven/UNPROVEN wall}
+  ($\wall$) between Stages~1--3 (\tierGreen, sibling-inherited
+  closed-form) and Stages~4--7 (\tierWhite, 13-falsifier preregister,
+  ALL OPEN).
+\item A \textbf{4-domain integration map} (\S\ref{sec:intmap},
+  Table~\ref{tab:intmap}) keyed stage-by-stage to the sibling domain
+  each rung consumes (hover$\leftarrow$RTSC, cruise$\leftarrow$FUSION,
+  orbital$\leftarrow$ANTIMATTER, fields/particles$\leftarrow$CERN), with
+  the shared $B^{*}=\sigma\!\cdot\!\tau=48$ arithmetic-reuse
+  observation flagged as \emph{observed, not proven}.
+\item The \textbf{full demiurge seven-verb pipeline}
+  (\S\ref{sec:pipeline7}) carried to a non-wet-lab completed form: every
+  verb (\texttt{spec}, \texttt{structure}, \texttt{design},
+  \texttt{analyze}\,$\circlearrowleft$, \texttt{synthesize},
+  \texttt{verify}, \texttt{handoff}) has a landed artifact.
+\item A \textbf{cross-domain reuse lattice}
+  (\S\ref{sec:lattice}) and the honest interpretation of its recurring
+  lattice constants ($\sigma\!\cdot\!\tau=48$, $\sigma\!\cdot\!\varphi
+  = n\!\cdot\!\tau = 24$): arithmetic closure $\ne$ physical closure.
+\item An honest \textbf{\texttt{absorbed=false} gate inventory}
+  (\S\ref{sec:absorbed}): five non-wet-lab $\circlearrowleft$ gates
+  pending body-solve plus the 13 open Stage-4--7 falsifiers, so the
+  integration bit honestly stays \texttt{false}.
+\item A clean \textbf{honesty boundary} (\S\ref{sec:limits}): we never
+  claim the vehicle is build-ready, and we never present a \tierWhite\
+  Stage-4--7 claim as proven. The wall is the contract.
+\end{enumerate}
+
+\smallskip
+A high-level view of the integrated vehicle and the proven/UNPROVEN wall
+is shown in Fig.~\ref{fig:cover}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/cover.png}
+\caption{Conceptual cover image of the UFO integrated single-seat
+vehicle: a lenticular disc ($D=\SI{6}{\meter}$) with superconducting
+solenoid field lines and a fusion/antimatter propulsion glow, in a
+blueprint/schematic style over a starfield. The lower three propulsion
+rungs (hover/cruise/orbital) are closed-form verified; the upper four
+(warp/wormhole/dim-jump/dim-use) are an open falsifier preregister.
+Image generated via \texttt{fal.ai} from
+\texttt{figures/\_prompts/cover.txt} (commons @D g44).}
+\label{fig:cover}
+\end{figure}
+
+\smallskip\noindent\textbf{Document structure.} This is the
+\emph{monograph} (capstone) form of UFO: the body
+(\S\S\ref{sec:intro}--\ref{sec:conclusion}) is the self-contained
+integration argument, and the lettered appendices (A--L) are the full
+data record --- the three closed-form stage folds (A--C), the
+Stage-4--7 falsifier preregister (D), the five sub-axes (E), the
+seven-verb pipeline (F), the cross-domain integration lattice (G), the
+meta lattice/limit-breakthrough policy (H), the verify ledger (I), the
+\texttt{absorbed=false} gate inventory (J), the PR roll (K), and the
+reproducibility runbook (L). A reader can audit any body claim down to
+its sibling-domain atom by following the appendix it cites.
+
+% =========================================================================
+\section{Background --- the Capstone Thesis and the Verify Tier Rubric}
+\label{sec:bg}
+
+\paragraph{The integration thesis.} A magnetic-levitation magnet, a
+fusion-MHD thruster, and an antimatter $\gamma$-rocket each clear a
+different physical regime: hover near the ground, cruise through the
+atmosphere, and accelerate to orbital/escape velocity. The capstone
+thesis is that these are not three separate vehicles but three
+\emph{rungs} of one ladder, mounted on one disc-shaped single-seat
+carrier, switched between by closed-form altitude/velocity/$\Delta v$
+triggers. Stages~4--7 are notionally the upper rungs of the same ladder
+(interstellar and beyond), but --- and this is the load-bearing honesty
+--- they require negative-energy exotic matter, unobserved extra
+dimensions, and synthetic closure loops that are academically
+\textbf{unproven}. The capstone's whole job is to integrate the three
+proven rungs honestly while preregistering the four open ones.
+
+\paragraph{Why a capstone, not a fifth domain.} UFO adds no new physics
+kernels: every numerical atom it cites is \emph{inherited} from a
+sibling domain's verify ledger and is already folded into the hexa-lang
+atlas SSOT (\texttt{compiler/atlas/embedded.gen.hexa}, hash
+\texttt{663698a0}). The capstone's deliverable is the \emph{integration}
+--- the seven-verb design package (BOM, drawings, firmware architecture,
+digital-twin plan) for a single vehicle that consumes all four siblings
+--- not new science. This is what keeps the work honest: the proven
+content is exactly the siblings' proven content, and nothing is upgraded
+in tier by the act of integration.
+
+\paragraph{The verify tier rubric.} Each quantity is assigned a tier
+under the \texttt{hexa verify} rubric: \tierBlue\ \textsc{Supported-Formal}
+(a closed-form / proof-level integer identity reproduced exactly),
+\tierGreen\ \textsc{Supported-Numerical} (a reproducible libm-class
+recompute matching a persisted reference within $\varepsilon=10^{-9}$),
+\tierYellow\ \textsc{Supported-By-Citation} (a composite physics formula
+backed by a literature DOI), \tierOrange\
+\textsc{Insufficient/Deferred} (needs a heavyweight body-solve or
+wet-lab measurement), \tierRed\ \textsc{Falsified} (a controlled
+negative, retained as honest evidence), and \tierWhite\
+\textsc{Speculation-Fenced} (an open, academically unproven claim with a
+preregistered falsifier). The rubric is the contract that lets a reader
+audit any claim without re-running it, and it is the spine of the
+pipeline table that follows. \textbf{Crucially, \tierWhite\ never
+graduates to \tierGreen\ by integration} --- only an empirical
+observation can move a Stage-4--7 falsifier from \texttt{OPEN} to
+\texttt{CONFIRMED} or \texttt{DEMOTED}.
+
+% =========================================================================
+\section{Full Pipeline --- the 7-Stage Propulsion Ladder}
+\label{sec:pipeline}
+
+Before the integration map, we situate the four sibling domains inside
+the physical path a single carrier would actually traverse: a
+seven-stage propulsion ladder. This is the \emph{honest-scope
+contract}: the table is a map of which rungs UFO closes to a verdict and
+which it does not, with a sharp wall ($\wall$) drawn between the two.
+
+\medskip
+\noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{Tier rubric.}
+\tierBlue\ closed-form (algebraic / proof-level identity) \(\cdot\)
+\tierGreen\ numerical (reproducible recompute + persisted output) \(\cdot\)
+\tierYellow\ cited (DOI / dataset composite formula) \(\cdot\)
+\tierOrange\ deferred (heavyweight body-solve or wet-lab needed) \(\cdot\)
+\tierRed\ falsified (kept as honest negative) \(\cdot\)
+\tierWhite\ speculation-fenced (open, \emph{academically UNPROVEN},
+falsifier preregistered).}}
+
+\medskip
+\begin{table}[h]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}>{\centering\arraybackslash}m{0.35cm} >{\raggedright\arraybackslash}m{1.7cm} >{\raggedright\arraybackslash}m{2.3cm} >{\raggedright\arraybackslash}m{2.4cm} >{\centering\arraybackslash}m{0.7cm} >{\raggedright\arraybackslash}m{3.0cm}@{}}
+\toprule
+\textbf{\#} & \textbf{Stage} & \textbf{Input} & \textbf{Output} & \textbf{Tier} & \textbf{Source atom / backing} \\
+\midrule
+\textcircled{\scriptsize 1} & hover (Meissner / RTSC \SI{48}{\tesla}) & \SI{48}{\tesla} solenoid fringe $B$, $dB/dz$, SC volume $V$ & lift $F_{\text{lev}}=|\chi|VB(dB/dz)/\mu_0$ & \tierGreen & \texttt{ioffe\_loop\_bz} (RTSC) $\cdot$ atlas \texttt{663698a0} \\
+\textcircled{\scriptsize 2} & cruise (MHD$+$fusion / FUSION) & plasma $J$, channel $B$, $V_{\text{ch}}$ & thrust $F_{\text{MHD}}=J\!\cdot\!B\!\cdot\!V_{\text{ch}}$ & \tierGreen & \texttt{triple\_product} (FUSION) $\cdot$ \texttt{663698a0} \\
+\textcircled{\scriptsize 3} & orbital ($\gamma$-rocket / ANTIMATTER) & $\bar p p\!\to\!2\gamma$, $E=2m_pc^2$ & $I_{\text{sp}}\!\to\!c/g$ photon ceiling $\approx\!3.06\!\times\!10^7$\,s & \tierGreen & \texttt{pair\_threshold\_total} $+$ \texttt{rel\_kinetic\_from\_p} (ANTIMATTER) \\
+\midrule
+\multicolumn{6}{c}{$\big\Vert$\ \ \textbf{proven/UNPROVEN wall} --- below: closed-form verified \tierGreen\ \ \ $\vert$\ \ \ above: 13-falsifier preregister \tierWhite\ ALL OPEN, UNPROVEN\ \ $\big\Vert$} \\
+\midrule
+\textcircled{\scriptsize 4} & warp (Alcubierre, $\delta\!=\!1/\sigma$, $R\!=\!n\!=\!6$) & negative-energy density $\rho_{\text{Casimir}}$ & warp-bubble translation & \tierWhite & F-WARP-\{1,2,3\} OPEN $\cdot$ UNPROVEN \\
+\textcircled{\scriptsize 5} & wormhole (Morris--Thorne, $b_0\!=\!\ell_{\text{Pl}}\sigma$) & exotic matter at throat $b_0$ & traversable throat & \tierWhite & F-WORM-\{1,2,3\} OPEN $\cdot$ UNPROVEN \\
+\textcircled{\scriptsize 6} & dim-jump (KK ladder 4D$\to$26D) & compactification radius $R_c$ & Kaluza--Klein mode jump & \tierWhite & F-DIM-\{1,2,3\} OPEN $\cdot$ UNPROVEN \\
+\textcircled{\scriptsize 7} & dim-use ($\tau\!=\!4$ cycle, $(\sigma\!-\!\varphi)^2\!=\!100c$) & warp$\times$dim composite & closed $\tau\!=\!4$ propulsion cycle & \tierWhite & F-USE-\{1,2,3,4\} OPEN $\cdot$ UNPROVEN \\
+\bottomrule
+\end{tabular}
+\caption{The 7-stage propulsion ladder. \textbf{This capstone closes
+only the lower three rungs}
+\textcircled{\scriptsize 1}\textcircled{\scriptsize 2}\textcircled{\scriptsize 3}
+(\tierGreen) to a numerical closed-form verdict, each inherited verbatim
+from a sibling domain's verify ledger. The upper four rungs
+\textcircled{\scriptsize 4}\textcircled{\scriptsize 5}\textcircled{\scriptsize 6}\textcircled{\scriptsize 7}
+(\tierWhite) are a 13-falsifier preregister and are \emph{all open and
+academically UNPROVEN}: warp needs NEC/ANEC-violating exotic matter,
+wormhole needs a macroscopic exotic-matter throat, dim-jump needs
+unobserved extra dimensions, and dim-use is the composite of the two
+unproven drives. The double-bar $\wall$ is the honest wall: \tierWhite\
+does not graduate to \tierGreen\ by integration --- only an empirical
+observation can move a falsifier from \texttt{OPEN}. The lattice
+arithmetic ($\delta=1/\sigma$, $b_0=\ell_{\text{Pl}}\sigma$,
+$(\sigma\!-\!\varphi)^2\!=\!100$) is verifiable integer identity; the
+\emph{physics} those integers point to is not.}
+\label{tab:pipeline}
+\end{table}
+
+The 13 Stage-4--7 falsifiers (F-WARP$\times3$, F-WORM$\times3$,
+F-DIM$\times3$, F-USE$\times4$) are preregistered in
+Appendix~\ref{app:stage47}: each names the precise measurement
+($\rho_{\text{Casimir}}$ vs.\ a quantum-interest bound, ANEC integral
+vs.\ its bound, LHC KK-resonance mass, sub-mm torsion-balance gravity,
+etc.) that would move it from \texttt{OPEN} to \texttt{CONFIRMED} or
+\texttt{DEMOTED}. As of v1.0, all 13 are \texttt{OPEN}; \texttt{CONFIRMED}
+$=0$ and \texttt{DEMOTED}$=0$ (a monotone contract). \tierWhite\ means
+\emph{unproven}, not \emph{impossible} (commons @D d2): each falsifier
+names a concrete empirical breakthrough path, so the work is honest
+without conceding.
+
+% =========================================================================
+\section{The 4-Domain Integration Map}
+\label{sec:intmap}
+
+The capstone's defining artifact is the map from each ladder rung to the
+sibling domain it consumes. Table~\ref{tab:intmap} is that map: the
+lower three rungs each stand on a sibling domain's verified atom, and
+the CERN domain supplies the field/particle infrastructure (acceleration
+ladder, relativistic kinematics) on which the ANTIMATTER positron
+source itself depends.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{1.7cm} >{\raggedright\arraybackslash}m{1.6cm} >{\raggedright\arraybackslash}m{3.6cm} >{\raggedright\arraybackslash}m{3.0cm} c@{}}
+\toprule
+\textbf{UFO stage} & \textbf{sibling} & \textbf{role (substrate)} & \textbf{reuse atom / record} & \textbf{tier} \\
+\midrule
+\textcircled{\scriptsize 1} hover & \textbf{RTSC} & \SI{48}{\tesla} solenoid fringe $\to$ Meissner lift $F_{\text{lev}}\!=\!|\chi|VB(dB/dz)/\mu_0$ & \texttt{ioffe\_loop\_bz}, \texttt{current\_loop\_offaxis} (Wheeler $B$) & \tierGreen \\
+\textcircled{\scriptsize 2} cruise & \textbf{FUSION} & D--T Lawson ignition $+$ MHD thrust $F\!=\!J\!\times\!B\!\times\!V_{\text{ch}}$ & \texttt{triple\_product} ($nT\tau_E$) & \tierGreen/\tierYellow \\
+\textcircled{\scriptsize 3} orbital & \textbf{ANTIMATTER} & $\bar p p\!\to\!2\gamma$ $\to$ relativistic exhaust $I_{\text{sp}}\!=\!c/g$ & \texttt{pair\_threshold\_total}, \texttt{rel\_kinetic\_from\_p} & \tierGreen/\tierYellow \\
+(infra) & \textbf{CERN} & acceleration/deceleration ladder, relativistic kinematics ($e^+$ generation/cooling) & \texttt{accelerator} (plasma-wakefield) & candidate \\
+\bottomrule
+\end{tabular}
+\caption{The 4-domain integration map. Each lower rung consumes a
+sibling domain's verified record (\S\ref{sec:pipeline});
+CERN is a candidate infrastructure edge feeding the ANTIMATTER positron
+source. Atom citations are extracted from the
+\texttt{UFO/verify/stage\{1,2,3\}-*.md} ledgers (\tierGreen\ landed)
+and the \texttt{NEXUS.tape} reuse edges (Appendix~\ref{app:integration}).}
+\label{tab:intmap}
+\end{table}
+
+\paragraph{The shared lattice constant $B^{*}=\sigma\!\cdot\!\tau=48$.}
+A single integer recurs across three domains: the RTSC upper critical
+field $H_{c2}=\SI{48}{\tesla}$, the FUSION Lawson design target, and the
+UFO Meissner-lift design field all sit at $48$, which factors as the
+$n\!=\!6$ lattice product $\sigma(6)\!\cdot\!\tau(6)=12\!\cdot\!4=48$
+(Appendix~\ref{app:meta}). This is a striking coincidence in the
+arithmetic. \textbf{We flag it explicitly as an arithmetic-reuse
+\emph{observation}, not a proof of integrated physics}: the integer
+$48$ closes (it is a verifiable integer product, checkable via
+\texttt{lattice\_check.hexa}), but its agreement across domains is a
+NEXUS reuse-edge observation, not evidence that the three fields are the
+\emph{same} field or that the integration is physically real. Bookkeeping
+closure $\ne$ empirical truth --- the same separation we keep for the
+Stage-4--7 lattice integers (\S\ref{sec:bg}).
+
+% =========================================================================
+\section{The Proven-Ladder vs.\ Falsifier-Ladder Split}
+\label{sec:split}
+
+The single most important structural fact about UFO is the split drawn
+in Table~\ref{tab:pipeline}. We restate it here because it is the
+contract a reader must hold onto through the rest of the monograph.
+
+\paragraph{The proven ladder (Stages 1--3).} The lower three rungs are
+genuine closed-form recomputes, each with a \tierGreen\
+\textsc{Supported-Numerical} atom at $|\Delta|=0$:
+\begin{itemize}\itemsep0.2em
+\item \textbf{Stage 1 hover} --- the hover-coil on-axis field is
+  \texttt{ioffe\_loop\_bz}$(a,I,\zeta\!=\!0)=\mu_0 I/(2a)$; for a
+  \SI{90}{\kilogram} pilot the Meissner lift
+  $F_{\text{lev}}=1\!\cdot\!0.05\!\cdot\!2\!\cdot\!20/\mu_0
+  \approx\SI{1.59e6}{\newton}$ is $\sim$1800$\times$ the
+  \SI{882.9}{\newton} weight (closed-form ample margin).
+\item \textbf{Stage 2 cruise} --- the MHD body-force thrust per channel
+  is $F_{\text{MHD}}=J\!\cdot\!B\!\cdot\!V_{\text{ch}}
+  =2\!\times\!10^5\!\cdot\!5\!\cdot\!0.096=\SI{9.6e4}{\newton}$,
+  verified through the \texttt{triple\_product} atom; two diagonal
+  channels give $\sim$30$\times$ over-head for cruise acceleration.
+\item \textbf{Stage 3 orbital} --- annihilation $E=2m_pc^2$ feeds a
+  relativistic exhaust whose photon ceiling is
+  $I_{\text{sp,max}}=c/g\approx\SI{3.06e7}{\second}$, anchored by
+  \texttt{pair\_threshold\_total}$(938.272)=6567.904$ and
+  \texttt{rel\_kinetic\_from\_p} (ultra-relativistic and
+  kinetic$=$rest crossover).
+\end{itemize}
+These three are \emph{inherited}, not re-derived: each atom is already
+folded into the atlas SSOT by its parent domain, and UFO's reuse is an
+idempotent skip (honest --- no new fold).
+
+\paragraph{The falsifier ladder (Stages 4--7).} The upper four rungs do
+\emph{not} stand on the same line. They are speculation-fenced
+(\tierWhite) and carry a 13-falsifier preregister
+(Appendix~\ref{app:stage47}), all \texttt{OPEN}. Warp needs Casimir-array
+negative energy that no measurement has shown at warp scale (F-WARP-1),
+a controllable bubble horizon (F-WARP-2), and back-reaction stability
+(F-WARP-3); wormhole needs a macroscopic exotic-matter throat
+(F-WORM-1), quantum-interest survival (F-WORM-2), and chronology
+protection that does not forbid traversal (F-WORM-3); dim-jump needs an
+LHC KK resonance (F-DIM-1), a sub-mm gravity deviation (F-DIM-2), and a
+vacuum-energy fold transition (F-DIM-3); dim-use is the composite of the
+two unproven drives plus a closed-loop energy balance and a
+$\tau\!=\!4$ cycle stability (F-USE-\{1,2,3,4\}). \textbf{None is
+claimed achieved.} The lattice integers they reference
+($\delta=1/12\,\ell_{\text{Pl}}$, $b_0=12\,\ell_{\text{Pl}}$,
+$(\sigma\!-\!\varphi)^2=100$) are verifiable; the warp bubbles,
+traversable throats, and $100c$ composite speeds the integers point to
+are not.
+
+% =========================================================================
+\section{The demiurge 7-Verb Pipeline (\texttt{spec}$\to$\texttt{handoff})}
+\label{sec:pipeline7}
+
+UFO is carried through every verb of the demiurge design pipeline to a
+non-wet-lab completed form. Table~\ref{tab:verbs} is the seven-verb
+roll; each verb has a landed artifact under \texttt{UFO/<verb>/} and is
+detailed in Appendix~\ref{app:verbs}.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{1.6cm} >{\raggedright\arraybackslash}m{5.0cm} >{\raggedright\arraybackslash}m{4.6cm} c@{}}
+\toprule
+\textbf{verb} & \textbf{deliverable} & \textbf{artifact} & \textbf{state} \\
+\midrule
+1 \texttt{spec}        & single-seat vehicle spec (payload, 7-stage matrix, LSS 12\,h, attitude) & \texttt{spec/integrated-vehicle-spec.md} & landed \\
+2 \texttt{structure}   & frame OML $D\!=\!\SI{6}{\meter}$, 5-bay layout, magnet array, stage mounts & \texttt{structure/integrated-vehicle-structure.md} & landed \\
+3 \texttt{design}      & closed-form integrated design (Stages 1--3 real, 4--7 falsifier-only) & \texttt{design/integrated-vehicle-design.md} & landed \\
+4 \texttt{analyze}\,$\circlearrowleft$ & 4-layer digital twin (CFD, EM, FEA, thermal) $\circlearrowleft$ fixed-point & \texttt{analyze/integrated-vehicle-analyze.md} & landed \\
+5 \texttt{synthesize}  & BOM (7 categories) $+$ drawing tree $+$ firmware stack (DO-178C DAL-A) & \texttt{synthesize/integrated-vehicle-synthesize.md} & landed \\
+6 \texttt{verify}      & integrated verify ledger (Stages 1--3 nine \tierGreen\ $+$ 4-layer convergence) & \texttt{verify/integrated-vehicle-verify.md} & landed \\
+7 \texttt{handoff}     & external-fab package (BOM, drawings, firmware, certification tracks) & \texttt{handoff/integrated-vehicle-handoff.md} & landed \\
+\bottomrule
+\end{tabular}
+\caption{The demiurge 7-verb pipeline for UFO, all landed.
+\texttt{spec}$\to$\texttt{structure}$\to$\texttt{design}$\to$\texttt{analyze}\,$\circlearrowleft$$\to$\texttt{synthesize}$\to$\texttt{verify}$\to$\texttt{handoff}.
+Implementation code is \emph{not} in these artifacts: per @D~d3 all
+code SSOT lives under hexa-lang \texttt{stdlib/}; the
+\texttt{UFO/<verb>/} files are docs/manifests only. ``Landed'' means
+the non-wet-lab artifact is complete (@D~d1), \emph{not} that the
+vehicle is built or flown.}
+\label{tab:verbs}
+\end{table}
+
+The pipeline's \texttt{verify} verb (verb 6) is where the honesty
+boundary is enforced: its ledger records nine \tierGreen\ Stage-1--3
+atoms but pins the heavy 4-layer body-solves (CFD, EM 3D, structural
+FEA, the $\circlearrowleft$ fixed-point coupling) as \tierOrange\
+deferred-to-pool/cloud, and the Stage-4--7 falsifiers as \tierWhite\
+open. The \texttt{handoff} verb (verb 7) ships an external-fab package
+\emph{with the \texttt{absorbed=false} notice attached} --- it is
+explicit that ``build-ready'' would be a false claim
+(\S\ref{sec:absorbed}).
+
+% =========================================================================
+\section{The Cross-Domain Reuse Lattice}
+\label{sec:lattice}
+
+The four sibling domains do not merely sit side by side; they share a
+\emph{reuse lattice} recorded in \texttt{NEXUS.tape}. UFO's lower three
+rungs are reuse edges into RTSC, FUSION, and ANTIMATTER, and the
+ANTIMATTER positron source is itself a candidate reuse edge into CERN's
+acceleration/deceleration infrastructure. The lattice has two cross-cutting
+arithmetic observations:
+\begin{align}
+\sigma(6)\!\cdot\!\varphi(6) \;=\; n\!\cdot\!\tau(6) \;&=\; 24
+  \qquad(\text{the } J_2 \text{ Mathieu/Leech master identity}), \\
+\sigma(6)\!\cdot\!\tau(6) \;&=\; 48 \;=\; B^{*}
+  \qquad(\text{RTSC } H_{c2} = \text{FUSION Lawson target}).
+\end{align}
+Both are exact integer identities, checkable in one CLI line. Both are
+\emph{arithmetic-reuse observations}, not integrated-physics proofs: the
+$n\!=\!6$ lattice (a perfect number with four divisors) makes these
+products fall out of the divisor functions, and their recurrence across
+domains is a property of the bookkeeping, not a demonstrated unification
+of superconductivity, fusion, and antimatter physics
+(Appendix~\ref{app:integration}). UFO absorbs the cross-domain map as a
+\emph{manifest only} --- zero new physics atoms.
+
+% =========================================================================
+\section{The \texttt{absorbed=false} Honest Gate Inventory}
+\label{sec:absorbed}
+
+The capstone's headline verdict is \textbf{\texttt{absorbed=false}}.
+Under the measured-oracle invariant (@D~d5), \texttt{absorbed=true} if
+and only if \emph{every} non-wet-lab gate passes. UFO's do not.
+Table~\ref{tab:absorbed} is the honest inventory of the blocking gates.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{4.3cm} c >{\raggedright\arraybackslash}m{6.2cm}@{}}
+\toprule
+\textbf{gate} & \textbf{tier} & \textbf{closing path (@D d7)} \\
+\midrule
+CFD aerodynamics ($C_d$, $L/D$) & \tierOrange & pool \texttt{ubu} dry-run $\to$ vast.ai GPU DES \\
+EM 6-coil $60^{\circ}$ $B$-map FEM & \tierOrange & GetDP pool$\to$cloud, $\|\Delta B\|\!<\!10^{-4}$\,T \\
+structural FEA (LC-1..5, 650\,kg, SF 2.5) & \tierOrange & pool linear $\to$ cloud explicit \\
+$\circlearrowleft$ 4-layer fixed-point coupling & \tierOrange & GPU pod (LC-2) \\
+F-ANTI-3 $\gamma$-rocket $I_{\text{sp}}$ closure & \tierGreen$^{\dagger}$ & closed-form re-definition (fuel-mass) --- now CLOSED \\
+Stage-4--7 (13 falsifiers) & \tierWhite & all \texttt{OPEN} --- empirical only (not non-wet-lab) \\
+\bottomrule
+\end{tabular}
+\caption{The \texttt{absorbed=false} gate inventory. Four
+\tierOrange\ digital-twin gates (CFD, EM 3D, FEA,
+$\circlearrowleft$) have a closed-form anchor but no body-solve yet ---
+they are deferred to pool/cloud heavy simulation (@D~d7), \emph{not}
+wet-lab. $^{\dagger}$The fifth gate, F-ANTI-3 ($\gamma$-rocket
+$I_{\text{sp}}$ closure), and the thermal-cryo gate were closed in a
+later round via closed-form re-definition/anchoring; we note them for
+completeness but they no longer block. The 13 Stage-4--7 falsifiers are
+\tierWhite\ open (empirical, not non-wet-lab). Because the four
+\tierOrange\ gates have not converged, the integration bit honestly
+stays \texttt{false} (no projection flip, @D~d5). Breakthrough paths are
+named for every blocker (@D~d2).}
+\label{tab:absorbed}
+\end{table}
+
+The integrated tier distribution across the capstone ledger is
+\tierBlue$\,8$, \tierGreen$\,\sim\!11$, \tierYellow$\,8$,
+\tierOrange$\,4$, \tierWhite$\,\sim\!17$, \tierRed$\,0$ ---
+\emph{zero falsified} (no false positives), with the
+\texttt{absorbed=false} verdict driven entirely by the four
+unconverged \tierOrange\ body-solve gates plus the open Stage-4--7
+falsifiers (Appendix~\ref{app:ledger}, \ref{app:gateinv}).
+
+% =========================================================================
+\section{Limitations and Honest Caveats}
+\label{sec:limits}
+
+We deliberately do not claim:
+\begin{itemize}\itemsep0.2em
+\item \textbf{Build-readiness.} The seven-verb pipeline is complete
+  non-wet-lab (@D~d1), but \texttt{absorbed=false}: four digital-twin
+  body-solves are unconverged and the \texttt{handoff} package carries
+  an explicit ``not build-ready'' notice.
+\item \textbf{Warp / wormhole / dim-jump / dim-use.} Stages~4--7 are
+  \tierWhite\ \textbf{UNPROVEN}. We claim only the lattice
+  \emph{arithmetic}; the warp bubble, traversable throat, KK jump, and
+  $100c$ composite are not demonstrated. All 13 falsifiers are
+  \texttt{OPEN}.
+\item \textbf{Integrated physics from the shared constant.} The
+  recurrence of $B^{*}=48$ across RTSC/FUSION/UFO is an
+  arithmetic-reuse \emph{observation}; we do not claim it proves the
+  three fields are unified or the integration is physically real.
+\item \textbf{Convergence of the heavy body-solves.} CFD $C_d$/$L/D$,
+  the EM 3D 6-coil $B$-map, the LC-1..5 structural FEA, and the
+  $\circlearrowleft$ 4-layer fixed point are deferred; only their
+  closed-form anchors are in hand.
+\item \textbf{New physics.} UFO is a capstone, not a fifth domain: it
+  inherits every atom from a sibling and adds none. The proven content
+  is exactly the siblings' proven content.
+\end{itemize}
+
+\noindent
+The \texttt{absorbed=false} stance and the sharp proven/UNPROVEN wall
+($\wall$) are not negotiable. \tierWhite\ does not become \tierGreen\
+because it shares a table with \tierGreen.
+
+% =========================================================================
+\section{Reproducibility}
+\label{sec:repro}
+
+Every Stage-1--3 atom cited above lives under hexa-lang \verb|stdlib/|
+at a single canonical home (@D~d3) and is callable from the top-level
+\verb|hexa verify --expr <fn> <args> <expected>| CLI; all are already
+folded into the atlas SSOT
+(\verb|compiler/atlas/embedded.gen.hexa|, hash \texttt{663698a0}), so
+UFO's reuse is an idempotent skip. The Stage-4--7 lattice identities are
+checkable via \verb|UFO/verify/lattice_check.hexa| and the
+\verb|numerics_*.hexa| scripts. The 4-layer digital-twin closed-form
+anchors (e.g.\ the thermal-cryo deck) ship as \verb|.hexa| under
+\verb|UFO/sim/decks/|.
+
+\smallskip\noindent
+The complete data-record axis ships under \texttt{companion/}:
+\texttt{verify-ledger.json} (the Stage-1--3 \tierGreen\ atoms $+$
+lattice \tierBlue\ identities $+$ the open \tierWhite\ falsifiers),
+\texttt{pr-roll.json} (the landed UFO PRs with role metadata),
+\texttt{integration-map.json} (the stage$\to$sibling-domain map of
+Table~\ref{tab:intmap}), and \texttt{session-journal.md} (the capstone
+narrative). Build: \texttt{make} (xelatex $\times 3$ $+$ bibtex).
+Figures: \texttt{make figures}. Page/word count: \texttt{make pages} /
+\texttt{make wordcount}. Lint: \texttt{make lint}.
+
+% =========================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+UFO is the capstone of the demiurge stack: a single-seat vehicle that
+integrates four independently-verified domains (RTSC, FUSION,
+ANTIMATTER, CERN) into one seven-stage propulsion ladder and carries it
+through the full seven-verb design pipeline to a non-wet-lab completed
+form. The work's discipline is its honesty under integration pressure:
+a sharp wall ($\wall$) separates the three rungs that are genuinely
+closed-form verified (\tierGreen, sibling-inherited) from the four that
+are an open falsifier preregister (\tierWhite, UNPROVEN), and the
+capstone's verdict stays \texttt{absorbed=false} because four
+digital-twin body-solves have not converged. Clearing all non-wet-lab
+gates would make the vehicle a \emph{witness of integrated feasibility},
+never a built or flown craft; warp, wormhole, dimensional jump, and
+dimensional use remain unproven with their falsifiers named, not
+crossed. We hope the 7-stage ladder, the 4-domain integration map, and
+the proven/UNPROVEN wall serve as a template for honest capstone
+integration across other multi-domain engineering stacks.
+
+% =========================================================================
+\paragraph{Acknowledgments.} The integration was carried out
+in-session against the four sibling monographs --- RTSC, FUSION,
+ANTIMATTER, and CERN --- whose verified atoms UFO inherits, in tandem
+with Claude Opus 4.7 (1M context, Anthropic) under the demiurge stack's
+honesty governance contracts. We thank the maintainers of the four
+sibling domains for the verify ledgers this capstone stands on.
+
+% =========================================================================
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+% =========================================================================
+\clearpage
+\appendix
+
+% ---- Monograph appendices (full data record, Parts A--L). ----
+% Skeleton stubs wired here; each is filled in a later batch (see the
+% per-file `% TODO (fill batch)` markers). Appendix lettering is automatic
+% under \appendix (A, B, ... in \input order).
+\input{appendix/A_stage1_hover}
+\input{appendix/B_stage2_cruise}
+\input{appendix/C_stage3_orbital}
+\input{appendix/D_stage47_falsifier}
+\input{appendix/E_subaxes}
+\input{appendix/F_pipeline7}
+\input{appendix/G_integration}
+\input{appendix/H_meta}
+\input{appendix/I_verify_ledger}
+\input{appendix/J_gate_inventory}
+\input{appendix/K_pr_roll}
+\input{appendix/L_repro}
+
+\end{document}

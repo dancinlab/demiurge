@@ -1,0 +1,32 @@
+% =========================================================================
+% Appendix B — Stage-2 cruise (MHD / FUSION). SKELETON stub.
+% TODO (fill batch): fold UFO/verify/stage2-cruise-mhd.md
+%   - Lorentz body force f = J x B; channel thrust F_MHD = J*B*V_ch
+%   - generalized Ohm's law J = sigma*(E - u x B) (MHD accelerator mode)
+%   - the 3 altitude cases (low/mid/high) J,B,V_ch -> F_MHD table
+%   - the 3 triple_product verify atoms verbatim, |Delta|=0
+%   - the 650 kg cruise margin (~30x over-head), S1+S4 diagonal channel pair
+%   - composite-tier honesty: numerical product green, physics form yellow
+%     (FUSION.md, Sutton-Sherman MHD, Jackson sec.5)
+%   - pgfplots: F_MHD vs altitude (J,B) chart
+% =========================================================================
+\section{Stage-2 Cruise --- MHD$+$Fusion Body-Force Thrust}
+\label{app:stage2}
+
+This appendix is the full data record for ladder rung
+\textcircled{\scriptsize 2} (cruise). It folds the FUSION-inherited MHD
+propulsion closed form: the Lorentz body force $f=J\!\times\!B$ and the
+channel-integrated thrust $F_{\text{MHD}}=J\!\cdot\!B\!\cdot\!V_{\text{ch}}$
+(with $J=\sigma(E-u\!\times\!B)$ in MHD-accelerator mode), and the three
+\tierGreen\ \textsc{Supported-Numerical} verify atoms (low/mid/high
+altitude $J,B,V_{\text{ch}}$ cases) reproduced verbatim from
+\texttt{UFO/verify/stage2-cruise-mhd.md}, each at $|\Delta|=0$ via the
+\verb|triple_product| atom and folded into the atlas SSOT
+(\texttt{663698a0}). Honest tier separation: the numerical product
+$J\!\cdot\!B\!\cdot\!V$ is \tierGreen, but the MHD propulsion form
+itself is \tierYellow\ \textsc{Supported-By-Citation}
+(\citep{wesson2011tokamaks,jackson1998}; Sutton--Sherman MHD), since no
+dedicated \verb|mhd_thrust| atom is registered.
+
+% TODO (fill batch): expand into the full altitude table, per-atom
+% records, and a pgfplots F_MHD-vs-altitude chart.
