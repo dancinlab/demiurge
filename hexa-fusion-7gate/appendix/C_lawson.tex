@@ -1,21 +1,152 @@
-% TODO (batch 2): fold gate ⑥ Lawson 0-D power balance derivation here.
-% Source: stdlib/fusion/lawson.* — triple_product / q_plasma / ignition_margin atoms.
+% Filled (batch 2): gate ⑥ Lawson 0-D power balance derivation.
+% Source: stdlib/fusion/lawson.* — triple_product / q_plasma / ignition_margin
+% atoms (verify-ledger.json, PR #1012, gate (b)). Pure rational, no libm.
 \section{Lawson 0-D Power Balance}
 \label{app:lawson}
 
 This appendix is the full data record for pipeline stage
-\textcircled{\scriptsize 6} (gate b). It will carry the complete 0-D
-power-balance derivation: the Lawson triple product
-$nT\tau_{\!E}$ and its D--T ignition threshold, the 0-D plasma gain
-$Q_{\text{plasma}} = P_{\text{fus}}/P_{\text{heat}}$, and the ignition
-margin $f_\alpha P_{\text{fus}}/(W/\tau_{\!E})$, each derived from the
-$\alpha$-heating fraction and the stored-energy / confinement-time
-balance. Every step is a pure rational expression (no libm), so each
-intermediate is shown alongside its \tierGreen\ verify atom at
-$|\Delta|=0$.
+\textcircled{\scriptsize 6} (gate b): the 0-D power-balance derivation of
+the Lawson triple product $nT\tau_{\!E}$ and its D--T ignition threshold,
+the 0-D plasma gain $Q_{\text{plasma}}=P_{\text{fus}}/P_{\text{heat}}$, and
+the ignition margin. Every kernel is a pure rational expression (no libm),
+so each intermediate is exact and carries a \tierGreen\ verify atom at
+$|\Delta|=0$. Data source: the \verb|triple_product|, \verb|q_plasma| and
+\verb|ignition_margin| atoms in \texttt{companion/verify-ledger.json}
+(PR~\#1012, gate~(b)).
 
-The appendix will also make explicit the honest scope line that
-$\tau_{\!E}$ is an \emph{input assumption}, not a transport prediction.
-Data source: the \texttt{triple\_product}, \texttt{q\_plasma} and
-\texttt{ignition\_margin} atoms in
-\texttt{companion/verify-ledger.json}.
+% -------------------------------------------------------------------------
+\subsection{0-D power balance and the ignition criterion}
+\label{app:lawson-balance}
+
+Treat the plasma as a single zone with density $n$, temperature $T$, stored
+thermal energy $W=3nT V$ (volume $V$), and energy-confinement time
+$\tau_{\!E}$, defined operationally by the loss rate $P_{\text{loss}}=W/\tau_{\!E}$.
+The 0-D power balance in steady state is
+\begin{equation}
+\underbrace{P_\alpha}_{\text{$\alpha$ self-heat}}
+  \;+\;
+\underbrace{P_{\text{heat}}}_{\text{external}}
+  \;=\;
+\underbrace{\frac{W}{\tau_{\!E}}}_{\text{transport loss}},
+\qquad
+P_\alpha \;=\; f_\alpha\,P_{\text{fus}}
+  \;=\;
+  \tfrac14\,n^2\langle\sigma v\rangle\,E_\alpha\,V,
+\label{eq:balance}
+\end{equation}
+where for D--T at $50$:$50$ fuel the $\alpha$ carries $f_\alpha=E_\alpha/
+E_{\text{fus}}=3.52/17.6=0.2$ of the fusion power and the neutron carries the
+rest. \emph{Ignition} is the point at which the $\alpha$ self-heat alone
+sustains the balance, i.e. $P_{\text{heat}}\to 0$:
+\begin{equation}
+f_\alpha\,P_{\text{fus}} \;\ge\; \frac{W}{\tau_{\!E}}
+\;\;\Longleftrightarrow\;\;
+\tfrac14 n^2\langle\sigma v\rangle E_\alpha V \;\ge\; \frac{3nTV}{\tau_{\!E}}.
+\label{eq:ignite}
+\end{equation}
+Rearranging \eqref{eq:ignite} and folding the temperature dependence of
+$\langle\sigma v\rangle/T^2$ (which is near-constant over the D--T burn
+window $\sim\!10$--$20$\,keV) gives the canonical Lawson triple-product
+threshold
+\begin{equation}
+n\,T\,\tau_{\!E}
+  \;=\;
+  \frac{12\,T^2}{E_\alpha\,\langle\sigma v\rangle}
+  \;\gtrsim\;
+  3\times10^{21}\ \text{keV}\,\text{s}\,\text{m}^{-3}
+  \qquad(\text{D--T ignition}).
+\label{eq:triple}
+\end{equation}
+
+\paragraph{Kernel and verify atom.}
+The stdlib kernel evaluates the triple product directly as the rational
+product $nT\tau_{\!E}$ (the discriminating value, not the threshold
+inequality). For the reference point $(n,T,\tau_{\!E})=(10^{20}\,\text{m}^{-3},
+15\,\text{keV},3\,\text{s})$:
+\begin{equation}
+nT\tau_{\!E} \;=\; 10^{20}\cdot 15\cdot 3 \;=\; 4.5\times10^{21}\ \text{keV}\,\text{s}\,\text{m}^{-3},
+\end{equation}
+which clears the $3\times10^{21}$ D--T threshold with a $1.5\times$ margin.
+\begin{lstlisting}
+fn: triple_product  args:[1.0e20, 15.0, 3.0]  exp:4.5e21  obs:4.5e21
+                    |delta|:0.0  tier:SUPPORTED-NUMERICAL  gate:(b)  #1012
+                    note: Lawson triple product nTtau; pure rational, no libm
+\end{lstlisting}
+
+% -------------------------------------------------------------------------
+\subsection{0-D plasma gain $Q$}
+\label{app:lawson-q}
+
+The fusion gain is the ratio of fusion power produced to external heating
+power injected,
+\begin{equation}
+Q_{\text{plasma}} \;=\; \frac{P_{\text{fus}}}{P_{\text{heat}}},
+\label{eq:q}
+\end{equation}
+so $Q=1$ is scientific break-even (fusion power equals heating power),
+$Q=5$ is the ITER target, and $Q\to\infty$ is ignition
+($P_{\text{heat}}\to0$ in Eq.~\ref{eq:balance}). The kernel is the bare
+ratio; for $(P_{\text{fus}},P_{\text{heat}})=(50,10)$\,MW:
+\begin{equation}
+Q_{\text{plasma}} \;=\; 50/10 \;=\; 5.0.
+\end{equation}
+\begin{lstlisting}
+fn: q_plasma  args:[50.0, 10.0]  exp:5.0  obs:5.0  |delta|:0.0
+              tier:SUPPORTED-NUMERICAL  gate:(b)  #1012   note: Q = P_fus / P_heat
+\end{lstlisting}
+
+% -------------------------------------------------------------------------
+\subsection{Ignition margin}
+\label{app:lawson-margin}
+
+The ignition margin compares the $\alpha$ self-heating against the transport
+loss directly (the left vs right side of Eq.~\ref{eq:ignite}):
+\begin{equation}
+\text{ignition margin}
+  \;=\;
+  \frac{f_\alpha\,P_{\text{fus}}}{W/\tau_{\!E}}
+  \;=\;
+  \frac{f_\alpha\,P_{\text{fus}}\,\tau_{\!E}}{W},
+\label{eq:margin}
+\end{equation}
+so margin $\ge 1$ is ignited ($\alpha$ heat alone sustains the balance) and
+margin $<1$ requires external drive. For
+$(P_{\text{fus}},W,\tau_{\!E},f_\alpha)=(50\,\text{MW},100\,\text{MJ},
+3\,\text{s},0.2)$:
+\begin{equation}
+\text{margin} \;=\; \frac{0.2\cdot 50\cdot 3}{100} \;=\; \frac{30}{100} \;=\; 0.3,
+\end{equation}
+i.e. the $\alpha$ self-heat supplies $30\%$ of the loss at this point ---
+sub-ignition, as expected for a $Q=5$ operating point.
+\begin{lstlisting}
+fn: ignition_margin  args:[50.0, 100.0, 3.0, 0.2]  exp:0.3  obs:0.3  |delta|:0.0
+                     tier:SUPPORTED-NUMERICAL  gate:(b)  #1012
+                     note: f_alpha*P_fus/(W/tau)
+\end{lstlisting}
+
+This margin is the (b) factor of the F-funnel composite (\S\ref{sec:funnel}):
+the $\mathrm{clamp}_{[0,1]}$ of \eqref{eq:margin} feeds the $\text{(a)}\times
+\text{(b)}$ rank, and the \verb|f_margin_coverage(0.3,0.3)=1.0| /
+\verb|f_funnel_composite| atoms (PR~\#1020) confirm the clamp passes the
+margin through unchanged at the top-ranked $T=20$\,keV point.
+
+% -------------------------------------------------------------------------
+\subsection{Honest scope --- $\tau_{\!E}$ is an input, not a prediction}
+\label{app:lawson-honest}
+
+The three kernels above are \emph{pure rational expressions with no libm
+calls}, so every intermediate is exact and each atom reports
+$|\Delta|=0$ at $\varepsilon=10^{-9}$ --- there is no floating-point
+transcendental to lose precision. That exactness is precisely why the honest
+scope must be stated plainly: \textbf{$\tau_{\!E}$ is an assumed input, not a
+transport prediction}. None of \eqref{eq:triple}, \eqref{eq:q} or
+\eqref{eq:margin} \emph{computes} the confinement time; $\tau_{\!E}=3$\,s is
+supplied as a parameter (it would, on a real device, come from an empirical
+confinement scaling such as IPB98(y,2) or from a turbulent-transport
+solver, neither of which this 0-D balance attempts). The gate therefore
+certifies the \emph{power-balance arithmetic} given $(n,T,\tau_{\!E})$, and
+nothing about whether a given machine \emph{achieves} that $\tau_{\!E}$. The
+records carry \texttt{absorbed=false}: clearing gate~(b) is a witness that a
+self-consistent 0-D energy balance exists at the stated point, downstream of
+which transport-predicted $\tau_{\!E}$ on a built, heated plasma (ultimately
+the gate~(g) burning-plasma measurement) remains the wet-lab confirmation.

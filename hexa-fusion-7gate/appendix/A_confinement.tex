@@ -1,25 +1,231 @@
-% TODO (batch 1): fold gate ④ FreeGS run config + ψ/q/β output (PR #1075) here.
+% Filled (batch 1): gate ④ FreeGS free-boundary equilibrium (PR #1075).
 % Source: stdlib/fusion/f3_grad_shafranov_adapter.hexa + the converged
-% TestTokamak free-boundary equilibrium recorded in the wrap-and-fix run.
+% TestTokamak free-boundary equilibrium recorded in the wrap-and-fix run;
+% companion/session-journal.md 12:16 entry + companion/adapter-defect-catalog.json
+% FUSION-DEFECT-002; verify atom freegs_equilibrium_q95 (verify-ledger.json).
 \section{Confinement --- Grad--Shafranov Free-Boundary Equilibrium}
 \label{app:confinement}
 
 This appendix is the full data record for pipeline stage
-\textcircled{\scriptsize 4} (gates c/d). It will contain the complete
-\textsc{FreeGS}\,0.8.2 run configuration --- the canonical
-\texttt{freegs.machine.TestTokamak()} coil set, the prescribed
-$p(\psi)$ and $ff'(\psi)$ profiles, the \texttt{freeBoundaryHagenow}
-boundary treatment and the raised-X-point single-isoflux constraint
---- together with the converged free-boundary output: plasma current
-$I_p$, poloidal beta $\beta_{\text{pol}}$, magnetic-axis location, the
-$q$-profile ($q_0$, $q_{95}$), the LCFS minor radius and elongation
-$\kappa$. The figures summarized in the body (\S\ref{sec:promote}) are
-expanded here to the per-quantity verify atom and its reproducing
-re-run.
+\textcircled{\scriptsize 4} (gates c/d). It states the Grad--Shafranov
+boundary-value problem the adapter solves, the free-boundary Picard
+loop \textsc{FreeGS}\,0.8.2 \citep{freegs} executes, the converged
+\texttt{TestTokamak} equilibrium output, and the two stacked defects
+(\texttt{FUSION-DEFECT-002}) the wrap-and-fix run surfaced. Every digit
+traces to the PR~\#1075 adapter run and the \tierGreen\ atom
+\texttt{freegs\_equilibrium\_q95} in
+\texttt{companion/verify-ledger.json}.
 
-The numbers reported in the body are headline values only; the data
-source for every digit is the PR \#1075 adapter run and the
-corresponding \tierGreen\ atoms in \texttt{companion/verify-ledger.json}.
-The Picard convergence narrative (the ``No O points'' divergence on the
-original hardcoded coil set, and the \texttt{stdout}-corruption fix) is
-cross-referenced from Appendix~\ref{app:adapters}.
+% -------------------------------------------------------------------------
+\subsection{The Grad--Shafranov equation}
+\label{app:gs-pde}
+
+An axisymmetric ideal-MHD equilibrium $\nabla p = \mathbf{j}\times\mathbf{B}$,
+written in cylindrical $(R,\phi,Z)$ for the poloidal flux
+$\psi(R,Z)$ (the toroidal-symmetry stream function,
+$2\pi\psi$ being the poloidal flux through a circle of radius $R$ at
+height $Z$), reduces to the single elliptic Grad--Shafranov equation
+\citep{grad1958ms,shafranov1966}
+\begin{equation}
+\Delta^{*}\psi
+  \;=\;
+  -\,\mu_0\,R^{2}\,p'(\psi)\;-\;ff'(\psi),
+\label{eq:gs}
+\end{equation}
+where $p(\psi)$ is the plasma pressure, $f(\psi)=R B_\phi$ is the
+poloidal-current function, $'\equiv d/d\psi$, and $\Delta^{*}$ is the
+elliptic Shafranov operator
+\begin{equation}
+\Delta^{*}
+  \;\equiv\;
+  R\,\frac{\partial}{\partial R}\!\left(\frac{1}{R}\frac{\partial}{\partial R}\right)
+  + \frac{\partial^{2}}{\partial Z^{2}}
+  \;=\;
+  \frac{\partial^{2}}{\partial R^{2}}
+  - \frac{1}{R}\frac{\partial}{\partial R}
+  + \frac{\partial^{2}}{\partial Z^{2}} .
+\label{eq:starlap}
+\end{equation}
+The toroidal current density that closes the system is
+\begin{equation}
+j_\phi(R,\psi)
+  \;=\;
+  R\,p'(\psi)\;+\;\frac{ff'(\psi)}{\mu_0 R},
+\label{eq:jphi}
+\end{equation}
+so \eqref{eq:gs} is nonlinear: the right-hand side depends on the
+unknown $\psi$ through the two free \emph{flux functions} $p'(\psi)$ and
+$ff'(\psi)$. The plasma current is the area integral
+$I_p=\iint_{\psi<\psi_b}\!j_\phi\,dR\,dZ$ over the region interior to the
+last closed flux surface (LCFS) $\psi=\psi_b$.
+
+\paragraph{Profile parametrization.}
+\textsc{FreeGS} prescribes the two flux functions through a constrained
+polynomial profile pinned by the plasma current $I_p$ and a poloidal-beta
+or pressure target; the \texttt{TestTokamak} preset uses the
+\texttt{ConstrainPaxisIp} profile family of the form
+\begin{equation}
+p'(\psi)\;\propto\;(1-\hat\psi^{\alpha_m})^{\alpha_n},
+\qquad
+ff'(\psi)\;\propto\;(1-\hat\psi^{\alpha_m})^{\alpha_n},
+\qquad
+\hat\psi=\frac{\psi-\psi_{\text{axis}}}{\psi_b-\psi_{\text{axis}}}\in[0,1],
+\label{eq:profiles}
+\end{equation}
+with the two proportionality constants fixed each Picard iteration by
+the prescribed $I_p$ and the on-axis pressure / $\beta_{\text{pol}}$
+constraint, so the normalized flux $\hat\psi$ runs $0$ on the magnetic
+axis to $1$ on the LCFS.
+
+% -------------------------------------------------------------------------
+\subsection{Free-boundary Picard loop}
+\label{app:picard}
+
+In a \emph{free}-boundary solve the plasma boundary is not prescribed:
+it is the outermost closed contour of $\psi$, and the vacuum field of the
+external poloidal-field (PF) coils must be solved self-consistently with
+the plasma current. \textsc{FreeGS} iterates the fixed-point map
+
+\begin{enumerate}\itemsep0.2em
+\item \textbf{Solve the elliptic PDE.} Given the present
+  $j_\phi^{(k)}(R,Z)$ on the grid, invert
+  $\Delta^{*}\psi_{\text{pl}}^{(k+1)} = -\mu_0 R\,j_\phi^{(k)}$ for the
+  plasma contribution with a fast cyclic-reduction Poisson solver.
+\item \textbf{Apply the free boundary (von Hagenow / Hagenow--Lackner).}
+  The \verb|freeBoundaryHagenow| treatment evaluates the boundary value of
+  $\psi$ from the plasma current via the free-space Green's function
+  $G(R,Z;R',Z')$ as a \emph{boundary-integral}, rather than imposing a
+  fixed Dirichlet/Neumann condition:
+  \begin{equation}
+  \psi_{\text{pl}}(R_b,Z_b)
+    \;=\;
+    \mu_0\!\iint G(R_b,Z_b;R',Z')\,j_\phi(R',Z')\,dR'\,dZ',
+  \label{eq:hagenow}
+  \end{equation}
+  so the plasma flux leaving the grid is treated exactly instead of being
+  truncated --- the equilibrium analogue of the far-field-truncation fix
+  recorded for the magnet gate (Appendix~\ref{app:adapters}).
+\item \textbf{Add the coil field and locate critical points.} Superpose the
+  vacuum field of the \texttt{TestTokamak} PF coils and find the magnetic
+  axis (an O-point, $\nabla\psi=0$, local extremum) and the bounding
+  X-point (a saddle, $\nabla\psi=0$). The LCFS is the isoflux contour
+  through the X-point; a \emph{single raised-X-point isoflux} constraint
+  pins the plasma shape.
+\item \textbf{Recompute the current.} Re-evaluate $j_\phi^{(k+1)}$ from
+  \eqref{eq:jphi} with the rescaled profiles \eqref{eq:profiles}, holding
+  $I_p$ fixed; iterate to $\|\psi^{(k+1)}-\psi^{(k)}\|<\text{tol}$.
+\end{enumerate}
+
+If no O-point exists on a given iterate the locator raises
+``\texttt{No O points found}'' and the Picard map cannot proceed --- the
+exact failure mode of the originally-landed coil set (next subsection).
+
+% -------------------------------------------------------------------------
+\subsection{Two stacked defects (\texttt{FUSION-DEFECT-002})}
+\label{app:gs-defect}
+
+This gate was first landed (PR~\#1032) as an install-gated wrap layer that
+had never actually invoked the solver. The wrap-and-fix run of PR~\#1075
+was the first time the backend was executed end-to-end on a free Linux
+pool host (numpy pinned to $<\!2.0$), and that act turned the wrap into an
+integration test that immediately surfaced \emph{two} stacked defects:
+
+\begin{enumerate}\itemsep0.3em
+\item \textbf{Geometrically inadmissible coil set.} The PR~\#1032 adapter
+  carried a \emph{hardcoded custom} PF coil-current pair for which no
+  admissible equilibrium exists; the Picard locator diverged with ``No O
+  points found'' on the early iterates because there was simply no
+  magnetic axis to lock onto. The fix was to switch to the canonical
+  \verb|freegs.machine.TestTokamak()| preset with the
+  \verb|freeBoundaryHagenow| boundary treatment and a raised X-point
+  single-isoflux constraint, which converges cleanly.
+\item \textbf{\texttt{stdout} corruption of the JSON emit.} Even when the
+  solve later completed, the FreeGS early-Picard diagnostic ``No O points''
+  was written to \emph{stdout}, not stderr. The adapter scrapes stdout for
+  its single machine-readable JSON tail, so the warning line corrupted the
+  emit and the gate had no parseable output. The fix wraps the solve block
+  in a \texttt{stderr}-redirect context so the (now spurious) warning does
+  not pollute stdout.
+\end{enumerate}
+
+Both fixes preserve \texttt{absorbed=false}: a converged equilibrium is the
+\emph{design witness}, not a built machine. The defect is recorded
+machine-readably in \texttt{companion/adapter-defect-catalog.json} so a
+downstream reader does not re-walk the chase.
+
+% -------------------------------------------------------------------------
+\subsection{Converged equilibrium output}
+\label{app:gs-output}
+
+Table~\ref{tab:gs-output} is the complete converged free-boundary output of
+the PR~\#1075 run --- the headline numbers quoted in \S\ref{sec:promote}
+expanded to the per-quantity record.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{4.6cm} l >{\raggedright\arraybackslash}m{5.8cm}@{}}
+\toprule
+\textbf{quantity} & \textbf{value} & \textbf{meaning} \\
+\midrule
+plasma current $I_p$              & $200$\,kA              & held fixed by the \texttt{ConstrainPaxisIp} profile \\
+poloidal beta $\beta_{\text{pol}}$ & $0.0321$              & $\langle p\rangle / (B_{\text{pol}}^2/2\mu_0)$ \\
+magnetic axis $R_{\text{axis}}$   & $1.280$\,m             & O-point major radius \\
+magnetic axis $Z_{\text{axis}}$   & $0.038$\,m             & O-point height (near-midplane) \\
+on-axis safety factor $q_0$       & $1.355$                & $q$ at the magnetic axis \\
+edge safety factor $q_{95}$       & $\approx 10.08$        & $q$ on the $\hat\psi=0.95$ surface (atom value) \\
+LCFS minor radius $a$             & $0.424$\,m             & half-width of the last closed flux surface \\
+elongation $\kappa$               & $1.358$                & LCFS vertical/horizontal aspect \\
+flux range $\psi$                 & $[-0.1051,\,+0.0906]$\,Wb & grid min/max poloidal flux \\
+geometry / boundary               & \multicolumn{2}{l}{\texttt{TestTokamak} + \texttt{freeBoundaryHagenow} + raised-X-point single isoflux} \\
+\bottomrule
+\end{tabular}
+\caption{Converged \textsc{FreeGS}\,0.8.2 free-boundary equilibrium
+(PR~\#1075). The flux range $\psi\in[-0.1051,+0.0906]$\,Wb spans the
+grid; the magnetic axis sits at the maximum and the X-point/LCFS at
+$\psi_b$. Sign convention follows the \textsc{FreeGS} output.}
+\label{tab:gs-output}
+\end{table}
+
+\paragraph{Physical sanity of the $q$ profile.}
+The monotone rise $q_0=1.355 \to q_{95}\approx 10.08$ is the expected
+profile for a low-current ($200$\,kA) test equilibrium: $q\propto B_\phi/
+(R\, j_\phi)$, so as $j_\phi$ falls off toward the edge $q$ climbs. The
+$q_0>1$ value places the axis just outside the $q\!=\!1$ sawtooth-unstable
+core, and the elongation $\kappa=1.358$ with minor radius $0.424$\,m is
+consistent with the \texttt{TestTokamak} aspect ratio
+$R_{\text{axis}}/a\approx 3.0$. These are internal-consistency checks, not
+a validation against measurement.
+
+% -------------------------------------------------------------------------
+\subsection{Verify atom and honest scope}
+\label{app:gs-verify}
+
+The equilibrium is anchored by a single discriminating \tierGreen\ atom on
+the edge safety factor (the quantity most sensitive to the full nonlinear
+solve), reproduced verbatim from \texttt{companion/verify-ledger.json}:
+
+\begin{lstlisting}
+fn       : freegs_equilibrium_q95
+args     : ["TestTokamak", "freeBoundaryHagenow"]
+expected : 10.08      observed : 10.08      |delta| : 0.005
+tier     : SUPPORTED-NUMERICAL              gate : (c)   PR : #1075
+note     : FreeGS 0.8.2 free-boundary GS: Ip=200 kA, q0=1.355,
+           q95~10.08, kappa=1.358
+\end{lstlisting}
+
+\paragraph{Honest note --- \texttt{absorbed=false}.}
+This is a \emph{simulation equilibrium}, not a \emph{measured
+reconstruction}. The flux functions $p'(\psi)$ and $ff'(\psi)$ are
+\emph{prescribed} (Eq.~\ref{eq:profiles}), not inferred from magnetic
+diagnostics, MSE, or kinetic profiles as an EFIT-class reconstruction would
+do on a real shot. The verdict therefore certifies that \emph{a
+self-consistent free-boundary equilibrium with these parameters exists and
+the adapter computes it}, and nothing about a built or operated device. The
+$\Delta=0.005$ tolerance on $q_{95}$ reflects the iterate-to-iterate
+residual of the Picard fixed point, not measurement uncertainty. The gate
+records \texttt{absorbed=false}: clearing it is a witness of MHD-equilibrium
+\emph{feasibility}, downstream of which a measured reconstruction on a built
+machine remains the wet-lab confirmation. The Picard-divergence and
+stdout-corruption fixes are cross-referenced to
+Appendix~\ref{app:adapters}.
