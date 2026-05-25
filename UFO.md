@@ -40,7 +40,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 - [ ] HEXA-GRAV 축 흡수 — gravity-wave-canon + quantum-gravity-sensor-canon → UFO/grav 통합
 - [ ] HEXA-CLOAK 축 흡수 — cloak-canon EM 가시성 차단 layer → UFO/cloak 통합
 - [ ] HEXA-TELEPORT 축 흡수 — teleport quantum-entangle protocol → UFO/teleport 통합
-- [ ] HEXA-SIM 축 흡수 — 디지털트윈 sim 엔진 (CFD + EM + 추진 통합) → UFO/sim 통합
+- [x] HEXA-SIM 축 흡수 — 디지털트윈 sim 엔진 (CFD + EM + 추진 통합) → UFO/sim 통합 LANDED PR pending
 
 ### Phase C — demiurge 7-verb pipeline (spec → handoff)
 
