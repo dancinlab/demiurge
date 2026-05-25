@@ -2,6 +2,16 @@
 
 Append-only history sister of `CERN.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T13:00Z — /cycle 라운드 1 reconcile: PIC 1-D linear parity 흡수 + C orphan worktree 정리
+
+- [x] **hexa-lang PR #1088 흡수** — `feat(stdlib/cern): plasma-wakefield linear-PIC parity (FBPIC) Δ=3.56% on top of cold-linear closed-form` (Agent C가 rate-limit-kill 직전 land 했으나 CERN.md flip + log entry는 못함 → reconcile)
+- [x] FBPIC 1-D linear PIC ⨯ cold-linear closed-form parity Δ=3.56% — `stdlib/cern/plasma_wakefield.hexa` +124-4
+- [x] CERN.md L15 milestone → `[◐]` partial (1-D linear 완료 · 비선형 blowout 잔여)
+- [x] hexa-lang orphan worktree 정리 — `/private/tmp/hexa-wakefield-pic-60521 [feat/cern-wakefield-pic-parity]` (C가 finalize 단계에서 죽어 cleanup 못한 잔재)
+- [x] /cycle 라운드 1 결과: A·C 둘 다 ~130min · 50-67 tool use 후 rate-limit-kill (server-side, `not your usage limit`). B(#161) + C(#1088) 작업 본체는 land 완료, A는 미완 → narrow scope retry 라운드 발사
+- [ ] L10/L11 Geant4-MC + Bethe-Bloch Stage 4 — A2 narrow retry (particle pip install + Geant4 가용성 probe만, parity 시도 X)
+- [ ] L15 비선형 blowout PIC — 별 cycle (GPU heavy, micro-exp 적합)
+
 ## 2026-05-25T10:40Z — 나머지 4-verb honest stub 스캐폴드 (specify · architect · design · handoff)
 
 - [x] 타입드 record 4종 추가 — `Models/Cern{Specify,Structure,Design,Handoff}Record.swift` (R3 cockpit-consumer 디코드 타겟, `CernSynthRecord`/`FirmwareSpecifyRecord` 패턴 동형). 공통 정직 gate 필드: `measurement_gate=GATE_OPEN` · `absorbed=false` · `scope_caveats[0]="stub — <real impl 이 할 일>"` · `accel_mechanism`(CERN.md §1.5 축 선행) · domain-specific headline (specify=target field/energy/luminosity · structure=FODO/TME/DBA+cell count · design=MAD-X/Xsuite deck slot · handoff=TDR deliverable-slot 매니페스트)
