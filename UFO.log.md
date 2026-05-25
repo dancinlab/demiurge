@@ -2,6 +2,24 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T23:30:00Z — HEXA-GRAV 축 흡수 LANDED
+
+Phase B 부수 5축 중 3/5 봉합 — `UFO/HEXA-GRAV.md` (653 LOC) + `UFO/hexa-grav/` (656 LOC) + `UFO/gravity-wave-canon/gravity-wave.md` (855 LOC) + `UFO/quantum-gravity-sensor-canon/quantum-gravity-sensor.md` (861 LOC) 4 source 를 `UFO/grav/` 사양 manifest 로 흡수. 흡수 범위 = (1) GW 검출/통신 (LIGO 4 km → SC 미러 finesse=σ·τ=48 광등가 42 km, h~10⁻²³, BH-병합 매주 n=6건) + (2) QGS 관성 보강 (atom-IF Δg~10⁻¹¹ g · SC gravimeter σ·τ=48 fT/√Hz). 비행체 통합 risk = RTSC 자장 cross-talk → mu-metal×5 layers + 거리 σ-φ=10 m + active null coil. 4 falsifier preregister (h, Δg, fT-floor, cross-talk). 코드 SSOT 는 hexa-lang/stdlib + UFO/hexa-grav 의 canonical home 유지 (@D d3).
+
+- [x] `UFO/grav/README.md` — §0 TL;DR + ASCII (GW arm + QGS bay + EM/관성 separation 다이어그램) · §1 흡수 source (4 file SHA-1 + LOC 인벤토리) · §2 GW 미니어처 (arm 1-10 m · SC 미러 finesse F=σ·τ=48 · h~10⁻²³ · 검출률 σ·τ=48/yr · 3 falsifier) · §3 QGS (atom-IF Mach-Zehnder Δg~10⁻¹¹ g · SC gravimeter σ·τ=48 fT/√Hz · atomic clock 보조 · drift-free IMU · GPS-denied 항법 · 3 falsifier) · §4 비행체 통합 (RTSC mu-metal×5 layers · 거리 σ-φ=10 m · active null coil · Stage 별 운용 모드) · §5 cross-link 9건
+- [x] `UFO/grav/manifest.tape` — `@V tape 1.0` · `@I id001 ufo/grav` (icon 🛸 · alias grav · siblings hover/sim/cloak/teleport) · `@D g1` 흡수 manifest only · `@D g2` EM/관성 separation 필수 · `@D g3` GW 광등가 길이 · `@D g4` falsifier preregister · `@A absorb_hexa_grav` source SHA-1 4개 · `@C cross_link` (RTSC/FUSION/ANTIMATTER/UFO/stdlib 5건) · tape grammar 17-type 알파벳만 (PR #184 교훈 — `@absorb` 금지)
+- [x] `UFO.md` flip — `- [ ] HEXA-GRAV 축 흡수 …` → `- [x] HEXA-GRAV 축 흡수 … LANDED PR pending` (Phase B 5축 누적 3/5 — hover ✓ · sim ✓ · **grav ✓** · cloak · teleport)
+
+### deferred sub-items (Phase B HEXA-GRAV follow-on)
+- [ ] HEXA-CLOAK 축 흡수 (Phase B 5축 중 4/5 · cloak-canon EM 가시성 차단)
+- [ ] HEXA-TELEPORT 축 흡수 (Phase B 5축 중 5/5 · quantum-entangle protocol)
+- [ ] GW arm SC 미러 finesse=48 검증 — `hexa-lang/stdlib/sim/optics_finesse` closed-form (광등가 길이 L_eff = L·2F/π 자동 유도)
+- [ ] atom-IF Mach-Zehnder Δg sensitivity closed-form — h_eff·k_eff·T² scaling · `hexa-lang/stdlib/sim/atom_interferometer`
+- [ ] SQUID gravimeter B-floor σ·τ=48 fT/√Hz 검증 — `hexa-lang/stdlib/sim/squid_gravimeter` closed-form
+- [ ] RTSC 자장 mu-metal×5 차폐 calc — 잔류 B < 10 nT @ atom-IF 위치 (μ_r·d·active null coil 조합)
+- [ ] EM/관성 separation budget end-to-end verify — RTSC 48 T → atom-IF/SQUID floor 미달 확인
+- [ ] GW 통신 가설 (Mk.V) — 인공 변조 GW 송수신 falsifier preregister 코드화
+
 ## 2026-05-25T22:42:00Z — verb-1 spec LANDED
 
 Phase C 의 **첫 verb (spec)** 슬롯 봉합 — 1인승 통합 비행체 사양 명세 두 파일 (`.md` 본문 + `.tape` sidecar) 산출. 선행 demiurge 4도메인 (RTSC · FUSION · ANTIMATTER · CERN) + hexa-ufo HEXA-Disc 1890-LOC 아틀라스를 7-stage matrix · 1인승 LSS · 자세제어 · 동력 인터페이스 record contract 로 통합. PR#187.
