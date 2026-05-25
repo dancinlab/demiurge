@@ -2,6 +2,17 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T02:30:00Z — V3 🟢 push LANDED (throttle-death 회수)
+
+verify ladder V3 — Stage-1~3 numerical recompute 통합 ledger. 원 agent (adee871) 가 산출물 생성 후 push 전 rate-limit 사망 → parent 가 worktree 에서 `V3_numerical_recompute.md` (19.6KB) 회수 후 랜딩.
+
+- [x] `UFO/verify/V3_numerical_recompute.md` — 🟢 9건 (ioffe_loop_bz ×3 · triple_product ×3 · pair_threshold_total · rel_kinetic_from_p ×2) verdict VERBATIM 재인용 + atlas atom hash · 🟠 1 (디지털트윈 4-layer 본해 = pool/cloud 위임 정직)
+- [x] `UFO.md` V3 milestone → [x] flip
+- [x] @D g5 준수 — 기존 verdict VERBATIM 재인용 (재판단 없음) · 본해 미수렴 🟠 정직 (허위 🟢 0)
+
+deferred:
+- [ ] V4 final tier ledger (V1+V2+V3 통합) — V2 머지 후
+
 ## 2026-05-26T02:10:00Z — Phase D 메타 EXPERIMENTS + HYPOTHESES 흡수 LANDED (13-falsifier monotone · 전부 OPEN)
 
 Phase D 메타 4/4. `UFO/EXPERIMENTS.md` (681 LOC · blob `b02edd2…`) + `UFO/HYPOTHESES.md` (2818 LOC · blob `cafa8a9…`) 의 실험/가설 카탈로그를 한국어 흡수 manifest 로 봉합. 핵심 = Stage-4~7 13-falsifier (F-WARP×3 · F-WORM×3 · F-DIM×3 · F-USE×4) 의 상태 set `{OPEN,CONFIRMED,DEMOTED}` monotone 표를 SSOT (`UFO/verify/stage4-7-falsifier-preregister.md`) 와 동기화 — **전부 OPEN · academically UNPROVEN** (CONFIRMED 거짓 도장 금지). 흡수=manifest only. @D d2/d3/d4/d9/d10 준수. 문서 한국어 · 코드 영문.
