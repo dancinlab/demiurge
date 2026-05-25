@@ -9,9 +9,10 @@
 - [x] H₃X 5/8 LANDED + d7 wall α²F grid ceiling 100 meV 정량 식별
 - [x] BEE-NET grid-extended (101→140 meV) fine-tune launch — Vast 37496985 4-shard
 - [x] h3cl 8³q convergence (stable #1 Tc 확정) — ubu-1 ALL DONE · λ_BZ=1.21–1.37 · ω_log~1350K · Tc(μ0.10)=123–140K · broadening plateau · Tc 🟢 hexa verify (allen_dynes_tc=140.324, |Δ|=2.8e-11)
-- [ ] h3o anharmonic SSCHA 안정화 — imaginary mode (−682 cm⁻¹) renormalization · **진행 중** (pop 5 · imaginary→real 확정 조짐 · anharmonic Tc pending — 완료 아님, anharmonic dyn 수렴 + EPC 재계산 남음)
-- [ ] ambient-stable hydride 탐색 (§9.10 N5 funnel · 압력 < 50 GPa 후보) · **부분 진척** (N5 5 candidate parse 완료 — h3o·h3si·h3po·h3f·h3br · 그중 h3br·h3si·h3f stable 발견 · 단 M8 0/5 미달이라 flip 아님)
-- [ ] 압력 < 50 GPa AND stable AND Tc > 200K 후보 발견 · M8 **0/5 (정직)** — Tc > 200K 충족 후보 0건 (N5 stable 후보는 low-Tc / unstable-high-Tc 양분 · d6 honest)
+- [x] h3o anharmonic SSCHA 안정화 — imaginary mode (−682 cm⁻¹) renormalization 완료 · imaginary→real 확정 · anharmonic Tc 9–109K (SSCHA-stabilized, M8 1/3) · SSCHA #141 + anharmonic Tc #144 (harmonic λ=2.479 → anharmonic λ=0.52–1.48 붕괴 = stability↔strong-λ 트레이드오프 직접 증거)
+- [x] N5 binary-hydride sweep **CLOSED as wall** (§9.16 funnel) — h3cl 140K · h3o 9–109K (SSCHA, M8 1/3) · h3br 110K · h3si 78K 전부 stable이나 Tc<200K · h3po unstable → "stability ↔ strong-λ" 트레이드오프 confirmed (binary 는 RTSC 에 대해 고갈)
+- [ ] N6 ternary cation-stuffed DFT — Mg₂IrH₆ (160K 🟡 PRED, ambient) / Li₂CuH₆ (86K 🟡 PRED, ambient) ambient m>0 검증 (§9.16 funnel · X₂MH₆ octahedral family · LaBeH₈ 110K 🟢 MEASURED anchor) — cation-decoupling 이 m-gate 탈출 가능한지 first-principles 확인
+- [ ] 압력 < 50 GPa AND stable(m>0) AND Tc > 200K 후보 발견 · **M8** (refined: stable axis = m>0 anharmonic ESCAPE, not just imaginary-free · `stability_coupling_margin` cf. `RTSC/verify/V5_stability_coupling_wall.md`) — Tc > 200K 충족 후보 0건 (binary N5 stable 후보는 low-Tc / unstable-high-Tc 양분 · d6 honest) → N6 ternary funnel 로 이월
 - [ ] h3o anharmonic λ 재계산 (SSCHA dyn → ph.x EPC → anharmonic Tc · /gap #1) — SSCHA 안정화 후 필수 후속 (harmonic λ 폐기, anharmonic α²F 로 Tc 재산정)
 - [ ] h3br ω_log 향상 probe (stable strong-λ base · 압력/lighter substitution → Tc ∝ ω_log) — N5 breakthrough (stable·강λ 확보, ω_log bottleneck 만 남음)
 - [ ] N5 wall 재정의 — λ-포화 → ω_log bottleneck 축 전환 (h3o unstable↔h3br stable-low-Tc 대조 — λ 는 충분, ω_log·dynamical stability 가 진짜 벽)
@@ -1231,6 +1232,40 @@ d7 wall = α²F grid ceiling 100 meV (§9.14)
 | 5 | sanity gate (sign-pathology 0 · ω_log MAE) | deferred |
 
 **step0 해소 상세**: grid SSOT 단 1곳 (`utils/data.py:15` `Freq_final = np.arange(0.25,101,2)` 51-bin) → `arange(0.25,141,2)` 71-bin 으로 확장 (첫 51 bin append-only 동일 → backbone 전이 안전). h3cl 107.9 meV mode 가 신규 20 bin 에 표현됨. pretrained 호환: `{em, layers.2}` re-init + backbone freeze transfer (CPU smoke: grid 71bin ✅ · a²F≥0 clamp ✅ · forward (1,71) all≥0 ✅). 설계 상세: `archive/session-notes/d7-wall-beenet-poc-design-2026-05-24.md` + `archive/session-notes/beenet-grid-extension-step0-2026-05-24.md` · arxiv 비교: `archive/session-notes/post-alignn-ml-sc-predictors-survey-2026-05-24.md`
+
+### 9.16 discovery funnel — stage 전이 (current-state)
+
+RTSC novel-discovery funnel 의 현재 stage. binary 가 닫혀 cation-stuffed ternary 로 넘어간 상태.
+
+```
+ ┌────────────────────────────────────────────────────────────────────┐
+ │  N5 — binary hydride sweep (H₃X)             [ CLOSED · WALL ]       │
+ │    h3cl 140K · h3o 9–109K(SSCHA, M8 1/3) · h3br 110K · h3si 78K      │
+ │      → 전부 stable 이나 Tc < 200K                                     │
+ │    h3po → unstable                                                    │
+ │    벽: "stability ↔ strong-λ" 트레이드오프 (V5 m<0, h3o m=−1.479)     │
+ │        ⟨ω²⟩ 가 λ 분모(작을수록 좋음) & 안정성 판별식(클수록 좋음)      │
+ │        이중 역할 → binary 단일 손잡이로는 동시 최적화 불가             │
+ └───────────────────────────────┬────────────────────────────────────┘
+                                  │  cation 이 η·⟨ω²⟩ decouple (V5 §2)
+                                  ▼
+ ┌────────────────────────────────────────────────────────────────────┐
+ │  N6 — cation-stuffed ternary                 [ ACTIVE · NEXT ]       │
+ │    트랙 A: X₂MH₆ octahedral (Fm-3m · ambient-stable)                 │
+ │      Mg₂IrH₆ 160K 🟡PRED ambient · Li₂CuH₆ 86K 🟡PRED ambient        │
+ │    트랙 B: MXH₈ alloy-backbone (sub-100 GPa)                         │
+ │      LaBeH₈ 110K 🟢MEASURED @80GPa · LaBH₈ 156K 🟡PRED               │
+ │    가설: cation pre-compression → ⟨ω²⟩↑(안정) & N(Ef) H성격 보존(강λ) │
+ │        → m>0 ESCAPE (V5 CaH₆ anchor m=0.5)                            │
+ │    후보 매트릭스: RTSC/research/ternary_ambient_candidates.md         │
+ └────────────────────────────────────────────────────────────────────┘
+```
+
+**N5 (CLOSED)**: §9.10 의 compositional-space funnel 을 binary H₃X 로 실행 → §10.1 verdict + V5 트레이드오프로 **wall 확정**. binary 는 RTSC 에 대해 고갈 (stable→weak-Tc / strong-λ→unstable 양분). honest: 전부 `absorbed=false` · `gate_type=simulation-only-prediction`.
+
+**N6 (ACTIVE)**: cation-stuffed ternary (X₂MH₆ + MXH₈) 가 active next stage. cation 이 분자 η 와 분모 ⟨ω²⟩ 를 **decouple** (V5 §2) → m>0 ESCAPE 가능성. Tc 값 honest tagging — 🟢 MEASURED (LaBeH₈ 110K) vs 🟡 PREDICTED (나머지 전부 lit-계산값, NOT measured). 후속 = N6 ternary 의 DFT m>0 검증 (milestone 참조).
+
+> **M8 m-gate (refined)**: M8 의 "stable" 축은 단순 imaginary-free 가 아니라 **`m > 0` (anharmonic ESCAPE)** 으로 정련된다. `stability_coupling_margin m = (⟨ω²⟩_anharm − ⟨ω²⟩_λ)/⟨ω²⟩_anharm` (m>0 ESCAPE · m<0 TRAPPED · m=0 정확히 벽) — closed-form 정량자, `RTSC/verify/V5_stability_coupling_wall.md` 에서 🟢 SUPPORTED-NUMERICAL (CaH₆ m=0.5 escape · h3o m=−1.479 trapped). 따라서 **M8 = (압력 < 50 GPa) AND (stable: m>0) AND (Tc > 200K)**. N5 의 stable 후보들은 imaginary-free 였으나 m<0 (trapped) → M8 미달. anharmonic λ-suppression `S = ⟨ω²⟩_harm/(⟨ω²⟩_harm+Δω²)` 도 같은 V5 에서 🟢.
 
 ### 9.10 N5 cohort 신설 — novel-discovery funnel (compositional space exploration)
 
