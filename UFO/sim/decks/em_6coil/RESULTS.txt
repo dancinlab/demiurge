@@ -1,0 +1,14 @@
+# six_coil_array — getdp 4.0.0 (mini, macOS arm64) headline B-map
+# linear A magnetostatic (mu_r=1), 6 solenoids 60deg, R_arr=2.4m
+# mesh: refined (bore Distance/Threshold), 67672 DOFs, MUMPS LU, ~16s
+
+disc_center_bmag_T   = 0   (~0, below far-air mesh resolution ~mT)
+disc_center_bz_T     = 0
+winding_probe_bmag_T = 0.2335451425000951   (inside coil-1 winding, rho=0.25m)
+field_max_bmag_T     = 0.9639   (near coil edges, physical)
+
+# closed-form cross-check (analytic, mu_r=1 exact superposition):
+single_coil_onaxis_thinloop_T  = 3.01593   (ioffe_loop_bz NI@rbar=0.25)
+single_coil_onaxis_thicksol_T  = 1.93192   (thick finite solenoid integral)
+6coil_center_dipole_Bz_T       = -1.0227e-02  (equatorial dipole sum)
+transverse_cancellation_dB_T   = 0.0  (6-fold symmetry exact; FEM Bxy=0)

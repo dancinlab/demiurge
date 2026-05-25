@@ -14,13 +14,13 @@
    🛸 UFO verify ladder — 최종 tier 분포 (V1+V2+V3+verb-6 통합)
    ───────────────────────────────────────────────────────────────
    🔵 SUPPORTED-FORMAL      8   ████      n=6 lattice 정수 항등식 (V2: σ/φ/τ/μ/σ_k + σ·φ·n·τ·σ·τ)
-   🟢 SUPPORTED-NUMERICAL  10   █████     Stage-1~3 libm recompute (V3) + Penning invariance anchor
+   🟢 SUPPORTED-NUMERICAL  11   █████     Stage-1~3 libm recompute (V3) + Penning invariance + EM 6-coil B-map (getdp+closed-form)
    🟡 SUPPORTED-BY-CITATION 8   ████      합성식 (F_lev gradient · MHD f=J×B · γ I_sp c/g) + Phase B/C manifest
-   🟠 INSUFFICIENT/DEFERRED 5   ██        디지털트윈 4-layer 본해 (CFD·EM·응력·열·⟲) = pool/cloud 위임
+   🟠 INSUFFICIENT/DEFERRED 4   ██        디지털트윈 본해 (CFD·응력·열·⟲) = pool/cloud 위임 (EM 닫힘)
    ⚪ SPECULATION-FENCED   17   ████████  Stage-4~7 13 falsifier OPEN UNPROVEN + teleport 초광속 fence + meta
    🔴 FALSIFIED             0   —         (없음 — 정직: 거짓 양성 0)
    ───────────────────────────────────────────────────────────────
-   absorbed = FALSE  (🟠 5 게이트 미수렴 + F-ANTI-3 미충족 → @D d5 projection flip 금지)
+   absorbed = FALSE  (🟠 4 게이트 미수렴 + F-ANTI-3 미충족 → @D d5 projection flip 금지 · EM 6-coil 🟢 닫힘)
 ```
 
 ## 1. 사다리 단계별 종합
@@ -37,12 +37,12 @@
 - **🔵 n=6 lattice** (V2 · `hexa verify --expr`, TECS-L Tier1): σ(6)=12 · φ(6)=2 · τ(6)=4 · μ(6)=1 · σ_k(6,1)=12 · σ·φ=24 · n·τ=24 · σ·τ=48. Π₀¹-arithmetical → Δ₀-absolute.
 - **🟢 Stage-1~3 numerical** (V3 · libm Δ≤1e-9): `ioffe_loop_bz`×3 (Meissner B) · `triple_product`×3 (MHD f=J·B·V) · `pair_threshold_total` + `rel_kinetic_from_p`×2 (γ-rocket). 전부 atlas SSOT 존재 (parent 도메인 fold · idempotent).
 
-## 3. 🟠 미충족 게이트 (absorbed 차단 — 비-wet-lab, pool/cloud 위임)
+## 3. 🟠 미충족 게이트 (absorbed 차단 — 비-wet-lab, pool/cloud 위임) · EM 6-coil 🟢 닫힘 (6→5 잔여)
 
 | 게이트 | 현재 | 닫는 경로 (@D d7) |
 |---|---|---|
 | CFD 항공역학 (C_d · L/D) | 🟠 본해 미실행 | pool ubu free dry-run → vast.ai GPU DES |
-| EM 6-coil 60° B-map FEM | 🟠 single-coil closed-form만 | getdp pool→cloud · ‖ΔB‖<1e-4 T |
+| ~~EM 6-coil 60° B-map FEM~~ | **🟢 CLOSED** | getdp 3D FEM (mini free · 선형 A · 67672 DOFs) + closed-form 교차검증 (`ioffe_loop_bz` 🟢 · 6-coil dipole 중첩) · **‖ΔB‖=0<1e-4 T 충족** · `UFO/sim/decks/em-6coil.md` |
 | 응력 LC-1~5 FEA (650kg·SF2.5) | 🟠 budget만 | pool linear → cloud explicit |
 | 열 cryo transient + radiator | 🟠 정상상태만 | cloud transient |
 | ⟲ 4-layer fixed-point coupling | 🟠 수렴 기준만 | GPU pod (LC-2) |
@@ -57,11 +57,12 @@
 ```
    absorbed = TRUE  ⇔  全 non-wet-lab gate PASS
    ───────────────────────────────────────────────
-   현재: 🟠 5 본해 게이트 + F-ANTI-3 = 미충족 (PASS 아님)
+   현재: 🟠 4 본해 게이트 (CFD·응력·열·⟲) + F-ANTI-3 = 미충족 (PASS 아님)
+        EM 6-coil B-map = 🟢 닫힘 (6→5 게이트 잔여)
    ∴ absorbed = FALSE  (정직 · projection flip 금지)
 ```
 
-**돌파 경로 (@D d2 — wall ≠ 불가능)**: 🟠 6 게이트는 전부 pool/cloud 무거운 sim 으로 닫을 수 있는 비-wet-lab 항목. `/micro-exp` 또는 `hexa cloud` 로 CFD/EM/FEA/열/⟲ 본해 배치 → 수렴 시 🟠→🟢 승격 → absorbed=true 재판정. wet-lab(실측)은 그 downstream confirmation.
+**돌파 경로 (@D d2 — wall ≠ 불가능)**: 잔여 🟠 5 게이트는 전부 pool/cloud 무거운 sim 으로 닫을 수 있는 비-wet-lab 항목. EM 6-coil B-map 은 본 라운드에서 getdp 3D FEM (mini free) + closed-form 교차검증으로 🟢 닫힘 (`UFO/sim/decks/em-6coil.md`). `/micro-exp` 또는 `hexa cloud` 로 CFD/FEA/열/⟲ 본해 배치 → 수렴 시 🟠→🟢 승격 → absorbed=true 재판정. wet-lab(실측)은 그 downstream confirmation.
 
 ## 6. cross-link + deferred
 

@@ -1,0 +1,6 @@
+# getdp / gmsh build artifacts (regenerable via `bash run`)
+*.msh
+*.pre
+*.res
+*.pos
+getdp_*.log

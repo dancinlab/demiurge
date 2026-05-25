@@ -105,6 +105,26 @@ Physical Surface("FAR_BND", 4000) = { box_surf[] };
 MeshSize { PointsOf{ Volume { air_tag };     } } = LC_AIR;
 MeshSize { PointsOf{ Volume { coil_tags[] }; } } = LC_COIL;
 
+// Bore + near-coil refinement: lowest-order Whitney edges need several
+// elements across each 0.4 m bore to resolve the on-axis Bz (a coarse LC_AIR
+// air mesh leaves the bore under-resolved -> on-axis B rounds to ~0). Refine
+// air within LC_NEAR of every coil winding surface.
+LC_NEAR = 0.06;     // fine air size in the bore / near-coil shell [m]
+coil_surf[] = Boundary { Volume { coil_tags[] }; };
+Field[1] = Distance;
+Field[1].SurfacesList = { coil_surf[] };
+Field[1].Sampling = 40;
+Field[2] = Threshold;
+Field[2].InField = 1;
+Field[2].SizeMin = LC_NEAR;
+Field[2].SizeMax = LC_AIR;
+Field[2].DistMin = 0.0;
+Field[2].DistMax = 0.5;   // ramp fine->coarse over 0.5 m around each coil
+Background Field = 2;
+Mesh.MeshSizeExtendFromBoundary = 0;
+Mesh.MeshSizeFromPoints = 0;
+Mesh.MeshSizeFromCurvature = 0;
+
 Mesh.Algorithm    = 1;   // 2-D MeshAdapt
 Mesh.Algorithm3D  = 1;   // 3-D Delaunay — robust with OCC fragments
 Mesh.ElementOrder = 1;

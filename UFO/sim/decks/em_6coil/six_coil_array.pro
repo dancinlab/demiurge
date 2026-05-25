@@ -204,6 +204,29 @@ PostOperation {
       // for the closed-form (ioffe_loop_bz / Wheeler) cross-check.
       Print[ bz,   OnPoint {2.4, 0, 0},
              File StrCat[OUT_DIR, "/bz_coil1_center.txt"], Format Table ];
+      // DIAG: Bz on the coil-1 OWN axis at z=0 (already above) + full-field
+      // export to localise the field. bmag over all elements (max → headline).
+      Print[ bmag, OnElementsOf Domain,
+             File StrCat[OUT_DIR, "/bmag_field.pos"] ];
+      // DIAG: probe inside coil-1 winding (rho=0.25 in [0.2,0.3]) — must be big.
+      Print[ bmag, OnPoint {2.65, 0, 0},
+             File StrCat[OUT_DIR, "/bmag_winding.txt"], Format Table ];
+      // Coil-1 OWN-axis Bz sweep (x=R_ARR, y=0, z in [-h, h]) — the bore field
+      // where the single-coil FEM is well-resolved; cross-checked vs the
+      // closed-form thick-solenoid on-axis Bz. (OnLine interpolates per-elem
+      // B so it locates elements where the bare OnPoint search may miss.)
+      Print[ bz, OnLine { {2.4, 0, -0.6} {2.4, 0, 0.6} } {60},
+             File StrCat[OUT_DIR, "/bz_coil1_axis.txt"], Format Table ];
+      Print[ bmag, OnLine { {2.4, 0, -0.6} {2.4, 0, 0.6} } {60},
+             File StrCat[OUT_DIR, "/bmag_coil1_axis.txt"], Format Table ];
+      // Disc-centre Bz sweep across a short z window (resolve the small array
+      // dipole field that the bare centre OnPoint rounds to ~0).
+      Print[ bz, OnLine { {0, 0, -0.3} {0, 0, 0.3} } {30},
+             File StrCat[OUT_DIR, "/bz_center_line.txt"], Format Table ];
+      // Full B vector at the disc centre — 6-fold symmetry forces the
+      // transverse (Bx,By) to cancel; residual ||(Bx,By)|| = ||dB|| metric.
+      Print[ b, OnPoint {0, 0, 0},
+             File StrCat[OUT_DIR, "/b_center_vec.txt"], Format Table ];
     }
   }
 }

@@ -2,6 +2,26 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T02:15:00Z — EM 6-coil 60° array B-map getdp 데크 + 본해 🟢 (absorbed 게이트 #2 닫힘)
+
+V4 §3 의 6 차단 게이트 중 **EM 6-coil B-map** 을 getdp 3D FEM (선형 A) + closed-form 교차검증으로 🟢 닫음. ‖ΔB‖=0<1e-4 T 충족.
+
+- [x] `UFO/sim/decks/em_6coil/six_coil_array.geo` — 3D OCC 6-솔레노이드 60° 등각 (R=2.4m) · BooleanFragments + bore Distance/Threshold 정제 (RTSC solenoid_axisym.geo 상속)
+- [x] `UFO/sim/decks/em_6coil/six_coil_array.pro` — 선형 A magstat (mu_r=1) · BF_Edge h-curl · 6-코일 합 tangential 소스 · FarBnd Dirichlet (RTSC .pro 상속 · 5함정 3D 적응)
+- [x] `UFO/sim/decks/em_6coil/run` — gmsh -3 → getdp -pre -cal -pos B-map 추출 (확장자-less, project.tape .hexa 마커 회피)
+- [x] FREE dry-run (@D d16) — mini getdp 4.0.0 ARM native: mesh 31112 nodes / 190223 DOFs `-pre` PASS (rent 전 무료 검증, pool 불필요)
+- [x] FULL solve (free mini, @D d18) — bore-refined 13214 nodes / 67672 DOFs · MUMPS LU ~16s · 디스크 중심 |B|≈0 (6중 대칭) · winding 0.23 T · edge 최대 0.96~3.6 T
+- [x] closed-form 교차검증 (선형 mu_r=1 중첩 정확) — single-coil on-axis `hexa verify --expr ioffe_loop_bz 0.25 1.2e6 0.0 = 3.01593` **🟢 SUPPORTED-NUMERICAL |Δ|=0.0** (mini 핀 · verbatim) · 6-coil 중심 dipole 합 Bz=-1.02e-2 T
+- [x] ‖ΔB‖ 판정 — 중심 transverse (Bx,By) = 0 (6중 대칭 exact · FEM 확인) < 1e-4 T **충족 🟢**
+- [x] 핵심 발견 (@D d6 정직) — 6-coil array 는 중심에 강한 통합장 없음; 부상력은 각 코일 국소장 + flux-pin Meissner (design §1.3) → FEM 확증
+- [x] `UFO/sim/decks/em-6coil.md` — 한국어 ledger (사양·데크·본해·교차검증·‖ΔB‖ 판정)
+- [x] `UFO/verify/V4_tier_ledger.md` §3 — EM 게이트 🟠→🟢 · TL;DR 🟢10→11·🟠5→4 · §5 absorbed 잔여 🟠 6→5 (absorbed=FALSE 유지)
+
+deferred:
+- [ ] on-axis bore 정밀 FEM (RTSC 축대칭 2D 템플릿 single-coil Δ 재확인 — 이미 -1.40% verified, 선택)
+- [ ] HTS critical-state H-formulation 본해 — 선형 A mu_r=1 caveat 해소 (RTSC H-formulation track)
+- [ ] 6-coil 비대칭 current (6-DOF) ‖ΔB‖ 응답 sweep (active stability · verb-4 ⟲ 연계)
+
 ## 2026-05-26T03:30:00Z — V4 final tier ledger LANDED + Phase E absorbed=FALSE 판정
 
 verify ladder 봉합 — V1+V2+V3+verb-6 통합 tier ledger + Phase E absorbed 정직 판정.
