@@ -1,0 +1,9 @@
+[
+  {"pr": 25, "repo": "dancinlab/demiurge", "title": "V1 RTSC claim inventory + tier triage", "stage": "verify-ledger", "state": "MERGED"},
+  {"pr": 33, "repo": "dancinlab/demiurge", "title": "V2 formal identities (Eliashberg lambda, McMillan Tc, BCS gap ratio)", "stage": "Tc closed form", "state": "MERGED"},
+  {"pr": 92, "repo": "dancinlab/demiurge", "title": "solenoid_axisym .geo/.pro + pancake stub (GetDP axisymmetric A-phi)", "stage": "magnet FEM", "state": "MERGED"},
+  {"pr": 90, "repo": "dancinlab/demiurge", "title": "conductor handoff schema stub (HTS REBCO baseline)", "stage": "coil design", "state": "MERGED"},
+  {"pr": 91, "repo": "dancinlab/demiurge", "title": "SrAuH3 hydride candidate (stable, lambda=0.62, Tc=14.6 K, absorbed=false)", "stage": "candidate", "state": "MERGED"},
+  {"pr": 97, "repo": "dancinlab/demiurge", "title": "H3As candidate (unstable, lambda->1.0, absorbed=false)", "stage": "candidate", "state": "MERGED"},
+  {"commit": "3b33c26", "repo": "dancinlab/demiurge", "title": "Wheeler on-axis B closed-form verifier (M318 cross-check for solenoid_axisym getdp)", "stage": "Wheeler cross-check", "state": "MERGED"}
+]

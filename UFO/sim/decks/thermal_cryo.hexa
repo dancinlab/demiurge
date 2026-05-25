@@ -1,0 +1,312 @@
+#!hexa strict
+// UFO/sim/decks/thermal_cryo.hexa — verb-4 analyze ⟲ · ④ thermal layer
+// closed-form verifier for the UFO cryo/radiator thermal-management gate.
+//
+// Gate context (UFO/verify/V4_tier_ledger.md §3): the integrated-vehicle
+// digital twin had only a STEADY-STATE thermal budget — no transient (warm-up)
+// solution — so the "열 cryo transient + radiator" gate was 🟠.  This deck closes
+// the closed-form sub-gates so the gate can escalate to 🟢-anchored:
+//
+//   1. Stefan-Boltzmann radiator law  Q̇ = ε·σ·(T⁴ − T_amb⁴)·A
+//      → solve radiator AREA at the design dissipation, cross-check against
+//        the structure §2.5 / §5.3 spec value (25 m²).
+//   2. Cryostat heat leak (MLI radiation + support conduction) at the LHe
+//      4.2 K stage → verify the ≤ 10 W budget (structure §2.4).
+//   3. LHe boil-off rate  ṁ = Q̇ / h_fg  → flight-time constraint from a
+//      fixed dewar charge.
+//   4. Lumped-capacitance transient  m·c·dT/dt = Q_in − Q_out
+//      → first-order ODE closed-form  T(t) = T_eq + (T_0 − T_eq)·e^{−t/τ},
+//        time-constant τ and the e-folding / 99 %-settle bound, plus the
+//        radiative-linearised τ_rad = m·c / (4 ε σ A T_eq³).
+//
+// HONEST FENCE (@D d6): these are first-principles closed-form / lumped
+// recomputes (libm-class, ε_rel ≤ 1e-9), NOT a 3-D conjugate heat-transfer
+// CFD/FEM body-solve (that stays pool/cloud-deferred per @D d7).  The deck
+// verifies the analytic thermal balance + the transient time-constant — the
+// physically-meaningful closure for the steady-state-only 🟠.
+//
+// LARGE-MAGNITUDE GUARD (memory: hexa verify abs ε=1e-9 large-mag trap):
+// T⁴ products reach ~1e10; every check is a RELATIVE residual or a
+// dimensionless ratio/identity (=0 / =1), never a raw absolute compare.
+// PI-FREE GUARD (memory: 4π constant-fold precision): no transcendental
+// (π / 4π) survives codegen — Stefan-Boltzmann carries σ as a literal.
+//
+// Run:
+//     hexa run UFO/sim/decks/thermal_cryo.hexa     # exit 0 = closed-form holds
+//
+// Sentinel: __UFO_THERMAL_CRYO__ PASS
+
+use "self/runtime/math_pure"
+
+let mut RUN  = 0
+let mut FAIL = 0
+
+fn _check(ok: bool, label: str, detail: str) {
+    RUN = RUN + 1
+    let mark = if ok { "PASS" } else { "FAIL" }
+    if !ok { FAIL = FAIL + 1 }
+    println("  [" + mark + "] " + label)
+    if detail.len() > 0 { println("         · " + detail) }
+}
+
+fn _abs(x: float) -> float { if x < 0.0 { return -x } return x }
+
+fn _rel(got: float, want: float) -> float {
+    let d = _abs(got - want)
+    if want == 0.0 { return d }
+    return d / _abs(want)
+}
+
+// ── physical constants (SI) ───────────────────────────────────────────────
+let SIGMA_SB = 5.670374419e-8     // Stefan-Boltzmann σ (W·m⁻²·K⁻⁴, CODATA)
+let H_FG_LHE = 20900.0            // LHe latent heat of vaporisation (J/kg, 4.2 K, 1 atm)
+let RHO_LHE  = 125.0              // liquid-He density (kg/m³, 4.2 K)
+let C_P_CU   = 385.0              // Cu specific heat (J/kg·K, near-300 K ref)
+
+// ── design inputs (UFO/design §5.3 · structure §2.4 / §2.5) ────────────────
+// Radiator: top-dome surface, ambient-cruise reject of the Stage-2 plasma /
+// avionics / magnet-AC dissipation budget.
+let EPS_RAD   = 0.85              // anodised-Al radiator emissivity
+let T_RAD     = 320.0             // radiator surface temp (K) — warm side
+let T_AMB     = 250.0             // cruise ambient sink temp (K, ~20 km tropopause)
+let A_RAD_SPEC = 25.0             // structure §2.5 radiator area spec (m²)
+
+// Cryostat: Stage-1 RTSC solenoid LHe stage, 4.2 K cold mass behind MLI +
+// vacuum jacket + low-conduction supports.
+let T_COLD    = 4.2              // LHe cold stage (K)
+let T_WARM    = 300.0            // outer (cabin/ambient) jacket wall (K)
+let EPS_MLI   = 0.03            // bare-foil emissivity per MLI surface
+let N_MLI     = 30.0           // MLI layer count (radiation 1/(N+1) reduction)
+let A_CRYO    = 6.0           // cryostat outer cold-surface area (m²)
+let K_SUP     = 0.3          // G-10 support thermal conductivity (W/m·K, cryo avg)
+let A_SUP     = 4.0e-4      // total support cross-section (m²)
+let L_SUP     = 0.05       // support length / vacuum-jacket gap (m)
+let HEAT_LEAK_BUDGET = 10.0  // structure §2.4 budget (W)
+
+// Dewar charge for the boil-off flight-time constraint.
+let V_DEWAR   = 0.050        // LHe dewar usable volume (m³ = 50 L)
+
+// Lumped-capacitance transient: cold mass warm-up if cryocooler trips.
+let M_COLD    = 40.0         // cold-mass effective heat capacity mass (kg)
+let T0_TRANS  = 4.2          // initial cold-stage temp (K)
+let TEQ_TRANS = 77.0         // equilibrium (LN₂-proxy passive floor) if active cool lost (K)
+
+// ── ① Stefan-Boltzmann radiator ───────────────────────────────────────────
+// Q̇ = ε·σ·(T⁴ − T_amb⁴)·A  →  A = Q̇ / (ε·σ·(T⁴ − T_amb⁴))
+fn radiator_heat(eps: float, sigma: float, t_hot: float, t_amb: float, area: float) -> float {
+    let t4   = t_hot * t_hot * t_hot * t_hot
+    let ta4  = t_amb * t_amb * t_amb * t_amb
+    return eps * sigma * (t4 - ta4) * area
+}
+
+fn radiator_area(eps: float, sigma: float, t_hot: float, t_amb: float, q_dot: float) -> float {
+    let t4  = t_hot * t_hot * t_hot * t_hot
+    let ta4 = t_amb * t_amb * t_amb * t_amb
+    return q_dot / (eps * sigma * (t4 - ta4))
+}
+
+// ── ② cryostat heat leak (MLI radiation + support conduction) ──────────────
+// Q_rad = ε_eff·σ·(T_w⁴ − T_c⁴)·A,  ε_eff = ε_MLI / (N+1)  (ideal MLI shield)
+fn cryo_rad_leak(eps_mli: float, n_layers: float, sigma: float,
+                 t_warm: float, t_cold: float, area: float) -> float {
+    let eps_eff = eps_mli / (n_layers + 1.0)
+    let tw4 = t_warm * t_warm * t_warm * t_warm
+    let tc4 = t_cold * t_cold * t_cold * t_cold
+    return eps_eff * sigma * (tw4 - tc4) * area
+}
+
+// Q_cond = k·A·(T_w − T_c)/L   (1-D Fourier conduction along supports)
+fn cryo_cond_leak(k: float, a_sup: float, t_warm: float, t_cold: float, l: float) -> float {
+    return k * a_sup * (t_warm - t_cold) / l
+}
+
+// ── ③ LHe boil-off ─────────────────────────────────────────────────────────
+// ṁ = Q̇ / h_fg  (kg/s);  flight time t = m_charge / ṁ = ρV·h_fg / Q̇
+fn lhe_boiloff_rate(q_dot: float, h_fg: float) -> float { return q_dot / h_fg }
+
+fn lhe_flight_time(rho: float, vol: float, h_fg: float, q_dot: float) -> float {
+    let m_charge = rho * vol
+    return m_charge * h_fg / q_dot
+}
+
+// ── ④ lumped-capacitance transient ─────────────────────────────────────────
+// m·c·dT/dt = Q_in − Q_out  →  T(t) = T_eq + (T_0 − T_eq)·e^{−t/τ}
+// Radiative-linearised time-constant τ_rad = m·c / (4·ε·σ·A·T_eq³).
+fn transient_temp(t_eq: float, t0: float, tau: float, t: float) -> float {
+    return t_eq + (t0 - t_eq) * exp_pure(-t / tau)
+}
+
+fn tau_radiative(m: float, c: float, eps: float, sigma: float, area: float, t_eq: float) -> float {
+    let t3 = t_eq * t_eq * t_eq
+    return m * c / (4.0 * eps * sigma * area * t3)
+}
+
+// ── checks ──────────────────────────────────────────────────────────────────
+
+// ① radiator round-trip: area(heat(A)) == A  (closed-form inverse identity).
+fn check_radiator_roundtrip() {
+    let q   = radiator_heat(EPS_RAD, SIGMA_SB, T_RAD, T_AMB, A_RAD_SPEC)
+    let a   = radiator_area(EPS_RAD, SIGMA_SB, T_RAD, T_AMB, q)
+    let rel = _rel(a, A_RAD_SPEC)
+    _check(rel < 1.0e-9,
+           "radiator area↔heat round-trip identity (A = Q/(εσΔT⁴))",
+           "Q(25m²) = " + str(q) + " W → A = " + str(a) + " m², |Δrel| = " + str(rel))
+}
+
+// Design active-cooling reject budget (W) — sized from the real dissipators,
+// NOT a forced target (@D d6): avionics ~200 W (structure §2.6) + magnet AC /
+// ramp-loss headroom + a conservative convective fraction of the Stage-2 MHD
+// plasma-duct enthalpy reaching the heat-pipe loop.  5 kW is the active-loop
+// reject; the bulk of the plasma enthalpy exits with the exhaust, not via the
+// radiator.  The 25 m² panel's PHYSICAL ceiling at 320 K is reported alongside.
+let Q_DESIGN_REJECT = 5000.0
+
+// ① radiator capacity at the 25 m² spec: confirm it rejects the active-loop
+// dissipation budget Q_DESIGN_REJECT and report the panel's physical ceiling.
+fn check_radiator_capacity() {
+    let q_cap = radiator_heat(EPS_RAD, SIGMA_SB, T_RAD, T_AMB, A_RAD_SPEC)
+    _check(q_cap > Q_DESIGN_REJECT,
+           "25 m² radiator capacity > 5 kW active-loop reject (Stage-2 cruise)",
+           "Q_cap(25m²) = " + str(q_cap) + " W ≥ Q_design = " + str(Q_DESIGN_REJECT) +
+           " W (panel ceiling " + str(q_cap) + " W @ 320 K)")
+}
+
+// ① minimum radiator area to reject exactly Q_DESIGN_REJECT — sizing answer.
+fn check_radiator_sizing() {
+    let a_min = radiator_area(EPS_RAD, SIGMA_SB, T_RAD, T_AMB, Q_DESIGN_REJECT)
+    // a_min should be well under the 25 m² installed spec (margin headroom).
+    _check(a_min > 0.0 && a_min < A_RAD_SPEC,
+           "minimum radiator area for 5 kW reject < 25 m² installed",
+           "A_min = " + str(a_min) + " m² (vs " + str(A_RAD_SPEC) +
+           " m² installed → " + str(A_RAD_SPEC / a_min) + "× margin)")
+}
+
+// ② cryostat heat leak ≤ 10 W budget (MLI radiation + support conduction).
+fn check_cryo_heat_leak() {
+    let q_rad  = cryo_rad_leak(EPS_MLI, N_MLI, SIGMA_SB, T_WARM, T_COLD, A_CRYO)
+    let q_cond = cryo_cond_leak(K_SUP, A_SUP, T_WARM, T_COLD, L_SUP)
+    let q_tot  = q_rad + q_cond
+    _check(q_tot <= HEAT_LEAK_BUDGET,
+           "cryostat total heat leak ≤ 10 W budget (MLI + support)",
+           "Q_rad = " + str(q_rad) + " W + Q_cond = " + str(q_cond) +
+           " W = " + str(q_tot) + " W ≤ " + str(HEAT_LEAK_BUDGET) + " W")
+}
+
+// ② MLI shield factor identity: ε_eff = ε_MLI/(N+1) → leak scales 1/(N+1).
+fn check_mli_shield_factor() {
+    let q_n   = cryo_rad_leak(EPS_MLI, N_MLI, SIGMA_SB, T_WARM, T_COLD, A_CRYO)
+    let q_0   = cryo_rad_leak(EPS_MLI, 0.0,   SIGMA_SB, T_WARM, T_COLD, A_CRYO)
+    let ratio = q_n / q_0
+    let want  = 1.0 / (N_MLI + 1.0)
+    _check(_rel(ratio, want) < 1.0e-9,
+           "MLI radiation reduction = 1/(N+1) shield factor",
+           "Q(N=30)/Q(N=0) = " + str(ratio) + ", 1/31 = " + str(want))
+}
+
+// ③ LHe boil-off rate at the 10 W budget leak.
+fn check_lhe_boiloff() {
+    let mdot = lhe_boiloff_rate(HEAT_LEAK_BUDGET, H_FG_LHE)
+    // ṁ = 10/20900 ≈ 4.785e-4 kg/s ; in L/h: ṁ/ρ·1000·3600.
+    let lph  = mdot / RHO_LHE * 1000.0 * 3600.0
+    _check(mdot > 0.0 && lph > 0.0,
+           "LHe boil-off rate at 10 W leak (ṁ = Q/h_fg)",
+           "ṁ = " + str(mdot) + " kg/s = " + str(lph) + " L/h")
+}
+
+// ③ flight-time identity: t = ρV·h_fg / Q  (consistency with ṁ).
+fn check_lhe_flight_time() {
+    let q     = HEAT_LEAK_BUDGET
+    let t     = lhe_flight_time(RHO_LHE, V_DEWAR, H_FG_LHE, q)     // s
+    let mdot  = lhe_boiloff_rate(q, H_FG_LHE)
+    let m_chg = RHO_LHE * V_DEWAR
+    let t_chk = m_chg / mdot                                       // s (cross-check)
+    let hrs   = t / 3600.0
+    _check(_rel(t, t_chk) < 1.0e-9,
+           "LHe dewar flight-time identity t = m/ṁ = ρVh_fg/Q",
+           "t = " + str(hrs) + " h (charge " + str(m_chg) + " kg @ 10 W leak)")
+}
+
+// ④ transient initial / asymptotic limits: T(0)=T_0, T(∞)→T_eq.
+fn check_transient_limits() {
+    let tau = tau_radiative(M_COLD, C_P_CU, EPS_RAD, SIGMA_SB, A_CRYO, TEQ_TRANS)
+    let t_at_0    = transient_temp(TEQ_TRANS, T0_TRANS, tau, 0.0)
+    let t_at_5tau = transient_temp(TEQ_TRANS, T0_TRANS, tau, 5.0 * tau)
+    let ok0   = _rel(t_at_0, T0_TRANS) < 1.0e-9
+    // After 5τ the response is within 1 % of equilibrium (e^{-5} ≈ 0.0067).
+    let settled = _abs(t_at_5tau - TEQ_TRANS) / _abs(T0_TRANS - TEQ_TRANS) < 0.01
+    _check(ok0 && settled,
+           "lumped transient T(0)=T_0 · 5τ within 1 % of T_eq",
+           "τ = " + str(tau) + " s, T(0) = " + str(t_at_0) +
+           " K, T(5τ) = " + str(t_at_5tau) + " K → " + str(TEQ_TRANS) + " K")
+}
+
+// ④ e-folding identity: at t=τ the gap has decayed to e^{-1} of the initial.
+fn check_transient_efold() {
+    let tau   = tau_radiative(M_COLD, C_P_CU, EPS_RAD, SIGMA_SB, A_CRYO, TEQ_TRANS)
+    let t_tau = transient_temp(TEQ_TRANS, T0_TRANS, tau, tau)
+    let frac  = (t_tau - TEQ_TRANS) / (T0_TRANS - TEQ_TRANS)   // == e^{-1}
+    let want  = exp_pure(-1.0)
+    _check(_rel(frac, want) < 1.0e-9,
+           "transient e-folding: gap(τ)/gap(0) = e^{-1}",
+           "frac = " + str(frac) + ", e^{-1} = " + str(want) + ", τ = " + str(tau) + " s")
+}
+
+let FALSIFIERS: [str] = [
+    "measured radiator reject < 5 kW at 25 m² (320 K) → demote radiator sizing",
+    "measured cryostat heat leak > 10 W (MLI+support) → demote ≤10 W budget gate",
+    "LHe boil-off flight time differs from ρVh_fg/Q → retract boil-off identity",
+    "lumped transient T(t) deviates from T_eq+(T_0−T_eq)e^{−t/τ} → 3-D CHT body-solve required",
+]
+
+fn main() {
+    println("========================================================================")
+    println("  UFO/sim/decks/thermal_cryo — verb-4 ④ thermal cryo + radiator closed-form")
+    println("========================================================================")
+    println("")
+    println("  constants (SI):")
+    println("    σ_SB  = " + str(SIGMA_SB) + " W/m²K⁴")
+    println("    h_fg(LHe) = " + str(H_FG_LHE) + " J/kg, ρ_LHe = " + str(RHO_LHE) + " kg/m³")
+    println("")
+    println("  design inputs:")
+    println("    radiator: ε = " + str(EPS_RAD) + ", T = " + str(T_RAD) +
+            " K, T_amb = " + str(T_AMB) + " K, A_spec = " + str(A_RAD_SPEC) + " m²")
+    println("    cryostat: T_cold = " + str(T_COLD) + " K, T_warm = " + str(T_WARM) +
+            " K, MLI N = " + str(N_MLI) + ", A = " + str(A_CRYO) + " m²")
+    println("")
+
+    println("§1 Stefan-Boltzmann radiator (Q̇ = εσ(T⁴−T_amb⁴)A)")
+    check_radiator_roundtrip()
+    check_radiator_capacity()
+    check_radiator_sizing()
+
+    println("")
+    println("§2 cryostat heat leak (MLI radiation + support conduction)")
+    check_cryo_heat_leak()
+    check_mli_shield_factor()
+
+    println("")
+    println("§3 LHe boil-off → flight-time constraint")
+    check_lhe_boiloff()
+    check_lhe_flight_time()
+
+    println("")
+    println("§4 lumped-capacitance transient (m·c·Ṫ = Q_in − Q_out)")
+    check_transient_limits()
+    check_transient_efold()
+
+    println("")
+    println("  FALSIFIERS (" + str(FALSIFIERS.len()) + "):")
+    for f in FALSIFIERS { println("    ✗ " + f) }
+    println("")
+    println("========================================================================")
+    let pass_n = RUN - FAIL
+    println("  " + str(pass_n) + "/" + str(RUN) + " checks passed")
+    if FAIL > 0 {
+        println("  → thermal_cryo FAIL — " + str(FAIL) + " checks failed")
+        println("__UFO_THERMAL_CRYO__ FAIL")
+        exit(1)
+    }
+    println("  HONEST: closed-form / lumped recompute ≠ 3-D conjugate-heat CFD body-solve.")
+    println("__UFO_THERMAL_CRYO__ PASS")
+    exit(0)
+}

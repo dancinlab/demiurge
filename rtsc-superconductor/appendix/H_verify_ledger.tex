@@ -1,0 +1,20 @@
+% Appendix H — verify ledger. \input'd by main.tex.
+\section{Verify Ledger}
+\label{app:verify}
+
+This appendix is the full data record for the \texttt{hexa verify} tier
+ledger backing every numeric claim in the body. It reproduces the V4
+final tier tally (the RTSC domain reports
+\tierBlue\,14 \(\cdot\) \tierGreen\,30 \(\cdot\) \tierYellow\,12 \(\cdot\)
+\tierOrange\,6 \(\cdot\) \tierRed\,3 \(\cdot\) \(\bigcirc\,4\)) and the
+per-atom recompute records (McMillan $T_c$, Allen--Dynes $T_c$, BCS gap
+ratio $2\Delta/k_BT_c$, solenoid on-axis $B_z$, Wheeler envelope), each
+with its expected/observed values and $|\Delta|\!\le\!10^{-9}$ verdict.
+Data source: \texttt{companion/verify-ledger.json} and the V1--V4 ledger
+files (\texttt{RTSC/verify/V\{1,2,3,4\}\_*.md}).
+
+% TODO (fill batch): fold the V4 tier-tally table, the claim->atom->tier
+% audit table (every body numeric claim -> backing atom), and the verbatim
+% hexa verify verdict blocks for the load-bearing atoms.
+% Source: RTSC.md §verify (V1 PR #25 · V2 PR #33 · V3 · V4 tier ledger) ·
+% RTSC/verify/V4_tier_ledger.md · companion/verify-ledger.json.

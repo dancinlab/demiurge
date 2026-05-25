@@ -1,0 +1,13 @@
+A clean engineering blueprint / technical schematic illustration on a deep
+navy background with fine white and cyan line work. Center-left: a cutaway
+superconducting solenoid magnet — a cylindrical multi-layer coil winding
+shown in cross-section — with smooth magnetic field lines threading along its
+axis and looping around the ends, the on-axis field rendered as a glowing
+cyan flux path. Center-right, as an inset call-out panel connected by a thin
+leader line: a crystal lattice of a metal-hydride superconductor — a
+clathrate cage of small hydrogen atoms surrounding a larger metal atom, drawn
+as a ball-and-stick diagram in white and pale gold. Thin dimension lines,
+axis labels, and a subtle grid evoke a CAD / physics-textbook blueprint.
+Minimal, precise, high-contrast, no text, no words, no lettering. Schematic
+style, isometric-leaning, scientific-illustration aesthetic, landscape
+composition.

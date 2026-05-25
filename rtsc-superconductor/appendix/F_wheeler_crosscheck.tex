@@ -1,0 +1,25 @@
+% Appendix F — Wheeler on-axis B closed-form cross-check (M318). \input'd by main.tex.
+\section{Wheeler On-Axis $B$ Closed-Form Cross-Check (M318)}
+\label{app:wheeler}
+
+This appendix is the full data record for pipeline stage
+\textcircled{\scriptsize 7}: the Wheeler finite-solenoid on-axis closed
+form (Eq.~\eqref{eq:wheeler}, \citep{jackson1999}) that cross-checks the
+GetDP FEM of Appendix~\ref{app:getdp}. It states the M318
+\texttt{wheeler\_axis\_b.hexa} verifier (implementing
+\texttt{wheeler\_bz} and \texttt{wheeler\_envelope} on
+\texttt{math\_pure::sqrt\_pure}), its four self-tests (long-solenoid limit
+$\to\!\mu_0 nI$ within 0.5\%; far-field decay $\le\!1\,\mu$T; axial
+symmetry; the \S4.2.1 sweep), and the bridge result:
+$B_{\text{Wheeler}}(R_{\text{eff}},z\!=\!0)\!=\!0.069391$\,T vs.\ FEM
+$0.06842$\,T, $\Delta\!=\!1.42\%$, with the thick-winding envelope
+$0.0661\,\text{T}\!<\!\text{FEM}\!<\!0.0722$\,T as the formal bracket.
+Data source: the \texttt{wheeler\_axis\_b} atom (commit 3b33c26).
+
+% TODO (fill batch): fold the wheeler_bz / wheeler_envelope listing, the
+% 4-self-test result table, the Wheeler-vs-GetDP on-axis B_z(z) overlay
+% pgfplots chart (REQUIRED: comparison -> chart, commons g3) over z in
+% {0, L/4, L/2} with the envelope band shaded, and the inductance comparison
+% (Wheeler 431 uH vs FEM 340 uH, -21% thin-coil gap).
+% Source: RTSC.md §4.2.1 (cross-check headline + envelope) · commit 3b33c26
+% (wheeler_axis_b.hexa M318) · RTSC.md §5 Axis C (scipy closed-form verifier).

@@ -1,0 +1,25 @@
+% Appendix C — material_verdict pipeline + reference calibration. \input'd by main.tex.
+\section{The \texttt{material\_verdict} Pipeline and Reference-Material Calibration}
+\label{app:material}
+
+This appendix is the full data record for pipeline stage
+\textcircled{\scriptsize 4}: the four-tier \texttt{material\_verdict}
+falsifier-dispatch pipeline (tier-1 simulation $\times$ tier-2 recipe
+$\times$ tier-3 measurement $\to$ tier-4 verdict) and its calibration
+against four reference superconductors used as ground truth --- MgB$_2$
+\citep{nagamatsu2001,budko2001}, Nb$_3$Sn \citep{godeke2006}, Nb
+\citep{finnemore1966}, and YBCO \citep{wu1987}. It records the per-material
+falsifier results (F-SC-1..3, F-RTSC-1..3), the
+\texttt{aggregate\_verdict}, and the enforced \texttt{absorbed=false}
+invariant. Data sources:
+\texttt{exports/material\_verdict/\{mgb2\_budko2001\_v1,
+nb3sn\_godeke2006\_v1, nb\_finnemore1966\_v1, ybco\_wu1987\_v1\}/}.
+
+% TODO (fill batch): fold the 4-tier dispatch diagram, the per-reference
+% falsifier-result table (PASS / SKIPPED-MISSING-INPUT per gate, from the
+% exported JSON), the measured-vs-predicted Tc calibration pgfplots chart
+% (REQUIRED: comparison -> chart, commons g3) across the four references +
+% the YBCO d-wave negative-control note, and the absorbed=false code-level
+% invariant (testAbsorbedAlwaysFalseEvenWithReplication).
+% Source: RTSC.md §8.7 (4-tier) + §8.9 (5-criteria gate) ·
+% exports/material_verdict/<ref>/<stamp>.json · MaterialFalsifierDispatch.swift.

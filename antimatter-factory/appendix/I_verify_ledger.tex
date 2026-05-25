@@ -1,0 +1,25 @@
+% SKELETON (fill batch): I — verbatim verify ledger (23 positive + 8 controls).
+% TODO (fill batch): fold the full @D g5 verbatim verdict ledger (the
+%   V1->V4 tier ledger at exports/antimatter/verify/V_ledger_*.md +
+%   companion/verify-ledger.json) — 3 🔵 + 20 🟢 positive atoms across the 7
+%   processes + 8 🔴 deterministic negative controls. NO LLM self-judgement
+%   (@D g5): verbatim verdicts only.
+\section{Verify Ledger --- Verbatim Tier Record}
+\label{app:verify-ledger}
+
+This appendix is the full \texttt{hexa verify} ledger for ANTIMATTER, the
+verbatim-verdict spine of the paper (commons @D g5: every tier verdict is
+quoted as the CLI emitted it, never an LLM self-judgement). It will reproduce
+the per-process tier matrix --- 3 \tierBlue\ \textsc{Supported-Formal} core
+integer atoms + 20 \tierGreen\ \textsc{Supported-Numerical} libm-class
+recomputes (Penning, deceleration, cooling, recombination, Ioffe--Pritchard,
+1S--2S, pair-production) across processes
+\textcircled{\scriptsize 1}--\textcircled{\scriptsize 7}, with 8
+deterministic \tierRed\ negative controls --- each row carrying its source
+record path and the hexa-native function. Every entry mirrors a
+\texttt{companion/verify-ledger.json} object and the V-ledger at
+\texttt{exports/antimatter/verify/}.
+
+% TODO (fill batch): the full longtable of verbatim verdicts (fn, args,
+% expected, observed, |Delta|, tier, record path, PR), the negative-control
+% table, the aggregate tier counts (🔵3 · 🟢20 · 🔴8).

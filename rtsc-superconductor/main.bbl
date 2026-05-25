@@ -1,0 +1,95 @@
+\begin{thebibliography}{12}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allen and Dynes(1975)]{allendynes1975}
+P.~B. Allen and R.~C. Dynes.
+\newblock Transition temperature of strong-coupled superconductors reanalyzed.
+\newblock \emph{Phys. Rev. B}, 12:\penalty0 905--922, 1975.
+\newblock \doi{10.1103/PhysRevB.12.905}.
+
+\bibitem[Bardeen et~al.(1957)Bardeen, Cooper, and Schrieffer]{bcs1957}
+J.~Bardeen, L.~N. Cooper, and J.~R. Schrieffer.
+\newblock Theory of superconductivity.
+\newblock \emph{Phys. Rev.}, 108:\penalty0 1175--1204, 1957.
+\newblock \doi{10.1103/PhysRev.108.1175}.
+
+\bibitem[Bud'ko et~al.(2001)Bud'ko, Lapertot, Petrovic, Cunningham, Anderson,
+  and Canfield]{budko2001}
+S.~L. Bud'ko, G.~Lapertot, C.~Petrovic, C.~E. Cunningham, N.~Anderson, and
+  P.~C. Canfield.
+\newblock Boron isotope effect in superconducting {MgB$_2$}.
+\newblock \emph{Phys. Rev. Lett.}, 86:\penalty0 1877--1880, 2001.
+\newblock \doi{10.1103/PhysRevLett.86.1877}.
+
+\bibitem[Drozdov et~al.(2015)Drozdov, Eremets, Troyan, Ksenofontov, and
+  Shylin]{drozdov2015}
+A.~P. Drozdov, M.~I. Eremets, I.~A. Troyan, V.~Ksenofontov, and S.~I. Shylin.
+\newblock Conventional superconductivity at 203 kelvin at high pressures in the
+  sulfur hydride system.
+\newblock \emph{Nature}, 525:\penalty0 73--76, 2015.
+\newblock \doi{10.1038/nature14964}.
+
+\bibitem[Dular et~al.(1998)Dular, Geuzaine, Henrotte, and Legros]{getdp}
+Patrick Dular, Christophe Geuzaine, Fran{\c{c}}ois Henrotte, and Willy Legros.
+\newblock A general environment for the treatment of discrete problems and its
+  application to the finite element method.
+\newblock \emph{IEEE Trans. Magn.}, 34:\penalty0 3395--3398, 1998.
+\newblock \doi{10.1109/20.717799}.
+
+\bibitem[Finnemore et~al.(1966)Finnemore, Stromberg, and
+  Swenson]{finnemore1966}
+D.~K. Finnemore, T.~F. Stromberg, and C.~A. Swenson.
+\newblock Superconducting properties of high-purity niobium.
+\newblock \emph{Phys. Rev.}, 149:\penalty0 231--243, 1966.
+\newblock \doi{10.1103/PhysRev.149.231}.
+
+\bibitem[Geuzaine and Remacle(2009)]{geuzaine2009}
+Christophe Geuzaine and Jean-Fran{\c{c}}ois Remacle.
+\newblock Gmsh: A 3-d finite element mesh generator with built-in pre- and
+  post-processing facilities.
+\newblock \emph{Int. J. Numer. Methods Eng.}, 79:\penalty0 1309--1331, 2009.
+\newblock \doi{10.1002/nme.2579}.
+
+\bibitem[God{\'e}ke et~al.(2006)God{\'e}ke, ten Haken, ten Kate, and
+  Larbalestier]{godeke2006}
+A.~God{\'e}ke, B.~ten Haken, H.~H.~J. ten Kate, and D.~C. Larbalestier.
+\newblock A general scaling relation for the critical current density in
+  {Nb$_3$Sn}.
+\newblock \emph{Supercond. Sci. Technol.}, 19:\penalty0 R100--R116, 2006.
+\newblock \doi{10.1088/0953-2048/19/10/R02}.
+
+\bibitem[Jackson(1999)]{jackson1999}
+John~David Jackson.
+\newblock \emph{Classical Electrodynamics}.
+\newblock Wiley, 3rd edition, 1999.
+\newblock ISBN 978-0-471-30932-1.
+\newblock On-axis field of a finite solenoid, Ch.~5.
+
+\bibitem[McMillan(1968)]{mcmillan1968}
+W.~L. McMillan.
+\newblock Transition temperature of strong-coupled superconductors.
+\newblock \emph{Phys. Rev.}, 167:\penalty0 331--344, 1968.
+\newblock \doi{10.1103/PhysRev.167.331}.
+
+\bibitem[Nagamatsu et~al.(2001)Nagamatsu, Nakagawa, Muranaka, Zenitani, and
+  Akimitsu]{nagamatsu2001}
+Jun Nagamatsu, Norimasa Nakagawa, Takahiro Muranaka, Yuji Zenitani, and Jun
+  Akimitsu.
+\newblock Superconductivity at 39~k in magnesium diboride.
+\newblock \emph{Nature}, 410:\penalty0 63--64, 2001.
+\newblock \doi{10.1038/35065039}.
+
+\bibitem[Wu et~al.(1987)Wu, Ashburn, Torng, Hor, Meng, Gao, Huang, Wang, and
+  Chu]{wu1987}
+M.~K. Wu, J.~R. Ashburn, C.~J. Torng, P.~H. Hor, R.~L. Meng, L.~Gao, Z.~J.
+  Huang, Y.~Q. Wang, and C.~W. Chu.
+\newblock Superconductivity at 93~k in a new mixed-phase {Y-Ba-Cu-O} compound
+  system at ambient pressure.
+\newblock \emph{Phys. Rev. Lett.}, 58:\penalty0 908--910, 1987.
+\newblock \doi{10.1103/PhysRevLett.58.908}.
+
+\end{thebibliography}

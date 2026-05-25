@@ -1,0 +1,24 @@
+% Appendix G — electron-phonon lambda/mu*/omega_log inputs. \input'd by main.tex.
+\section{Electron--Phonon Inputs: $\lambda$, $\mu^{*}$, $\omega_{\log}$}
+\label{app:elph}
+
+This appendix is the full data record for the sourced inputs to the
+$T_c$ closed forms (Appendices~\ref{app:mcmillan},~\ref{app:allendynes})
+--- pipeline stage \textcircled{\scriptsize 2}. It defines the three
+moments of the Eliashberg spectral function $\alpha^2F(\omega)$ --- the
+coupling $\lambda$, the logarithmic frequency $\omega_{\log}$, and the
+Coulomb pseudopotential $\mu^{*}$ (0.10--0.13) --- and records, per
+candidate, the \emph{sourced} values with their DFT provenance
+($q$-grid, pressure, broadening plateau / under-convergence flag). It
+is explicit that these are citations, not recomputes: the $T_c$ verdict
+is exact \emph{given} these inputs, which carry their own DFT uncertainty.
+Data source: the per-candidate provenance blocks in
+\texttt{exports/material\_discovery/}.
+
+% TODO (fill batch): fold the alpha^2F moment definitions, the per-candidate
+% sourced-input table (lambda_BZ range / omega_log / mu* / q-grid /
+% convergence flag), the alpha^2F(omega) spectral-function figure, and a
+% lambda-vs-omega_log scatter pgfplots chart (REQUIRED: comparison -> chart,
+% commons g3) showing the candidate cloud vs the H3S/CaH6 anchors.
+% Source: RTSC.md §8.4 (McMillan/Allen-Dynes row) · RTSC.log.md (h3cl 8q
+% lambda 1.21-1.37 omega_log~1350K · CaH6 lambda 3.40-4.38) · §9.2 (b) Tc sim.

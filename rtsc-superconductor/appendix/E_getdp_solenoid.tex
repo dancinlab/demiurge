@@ -1,0 +1,24 @@
+% Appendix E — GetDP solenoid_axisym B-field FEM. \input'd by main.tex.
+\section{GetDP \texttt{solenoid\_axisym} On-Axis Field FEM}
+\label{app:getdp}
+
+This appendix is the full data record for the magnet-design axis,
+pipeline stages \textcircled{\scriptsize 5}--\textcircled{\scriptsize 6}:
+the GetDP \citep{getdp} 2-D axisymmetric A--$\phi$ magnetostatic
+finite-element solve (\texttt{magstat\_a\_linear}, $\mu_r\!=\!1$,
+$J_\phi\!=\!NI/A_{\text{coil}}$, \texttt{Form1P} /
+\texttt{BF\_PerpendicularEdge} on a \texttt{VolAxiSqu} Jacobian, gmsh
+\citep{geuzaine2009} OCC mesh) that recomputes the on-axis field
+$B_z(0)\!=\!0.06842$\,T. It records the five recurring axisymmetric-FEM
+defects (placeholder-prefix collision, gmsh edge recovery, scalar-$j_s$
+zero-RHS, unconstrained axis DOF, $2\pi$ azimuthal omission) and the
+mesh-convergence study. Data sources: the \texttt{solenoid\_axisym} deck
+(\texttt{RTSC/magnet/getdp/solenoid\_axisym.\{geo,pro\}}, PR \#92) and
+\texttt{companion/adapter-defect-catalog.json}.
+
+% TODO (fill batch): fold the .geo/.pro deck listing, the 5-defect catalog
+% table (symptom / root cause / fix), the mesh-convergence pgfplots chart
+% (REQUIRED: comparison -> chart, commons g3) of B_z(0) vs element count, and
+% the field-map figure. Cite the solenoid_axisym atom + PR #92.
+% Source: RTSC.md §4.2.1 (cross-check headline) + §4.2.2 (5-defect journey) ·
+% RTSC.log.md M301/M302 PR #92 · stdlib/rtsc/templates/solenoid_axisym.{geo,pro}.

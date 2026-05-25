@@ -525,3 +525,20 @@ deferred:
 - [ ] closed-form 부상력 verify 🟢 (`hexa verify --expr F_lev`) → atlas register
 - [ ] flux pinning Type-II 정량 (pinning force vs Meissner force 비율)
 - [ ] active coil 6-DOF PID 게인 sizing (m=90kg · μ=1ms · ζ=0.7)
+
+## 2026-05-26 — ④ 열 cryo transient + radiator 게이트 🟠→🟢 (absorbed 차단 게이트 #3)
+
+- [x] `UFO/sim/decks/thermal_cryo.hexa` 작성 — closed-form 열평형 4축 verifier (english)
+  - ① Stefan-Boltzmann radiator `Q̇=εσ(T⁴−T_amb⁴)A` → 면적 sizing (round-trip 항등식 + capacity + min-area)
+  - ② cryostat heat leak — MLI 복사 `ε_eff=ε_MLI/(N+1)` + 지지 전도 Fourier → ≤10W 예산
+  - ③ LHe boil-off `ṁ=Q/h_fg` → dewar 비행시간 항등식 `t=ρVh_fg/Q`
+  - ④ lumped-capacitance transient `m·c·Ṫ=Q_in−Q_out` → 1차 ODE closed-form `T(t)=T_eq+(T_0−T_eq)e^{−t/τ}` + τ_rad + e-folding
+- [x] hexa-run **9/9 PASS** (canonical root · sentinel `__UFO_THERMAL_CRYO__ PASS`) — large-mag T⁴~1e10 은 relative residual / 무차원 ratio 로 verify (abs-ε trap 회피) · σ literal carry (π-free, constant-fold trap 회피)
+- [x] 핵심 값 (verdict VERBATIM): heat leak = **3.38 W** (복사 2.67 + 전도 0.71) ≤ 10 W ✅ · radiator 5 kW reject → A_min **15.77 m²** (25 m² 설치 → 1.59× 마진, panel 천장 7928 W @320K) · LHe boil-off **13.78 L/h** (4.78e-4 kg/s) · 50 L dewar → 비행시간 **3.63 h** (10 W 보수 상한; 실제 3.38 W → ≈10.7 h ↔ LSS 12 h) · transient τ_rad **29161 s ≈ 8.1 h**
+- [x] `UFO/sim/decks/thermal-cryo.md` 작성 — 한국어 ledger (열 budget inventory · radiator sizing · heat leak ≤10W · boil-off 비행시간 제약 · transient · 정직 판정 + 3-D CHT fence)
+- [x] `UFO/verify/V4_tier_ledger.md` §3 갱신 — ④ 열 게이트 🟠→🟢 · tier 🟢 10→11 · 🟠 5→4 · absorbed=FALSE 유지(남은 🟠 4 + F-ANTI-3)
+- [x] @D d1 (closed-form 닫힘) · d6 (목표 강제 금지 — 25 m² 천장 7.93 kW 정직 표기, 5 kW sizing) · g5 (verdict verbatim) 준수
+
+deferred:
+- [ ] ④ 열 3-D conjugate-heat CFD/FEM body-solve (radiator fin 효율 · cold-mass 내부 gradient · plasma duct hotspot) — pool/cloud micro-exp (@D d7)
+- [ ] stdlib atom 등록 (`stefan_boltzmann_area` · `lumped_capacitance_tau` · `lhe_boiloff_rate`) → hexa-lang 별 PR (🟡→🟢 escalation)

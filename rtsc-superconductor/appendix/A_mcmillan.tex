@@ -1,0 +1,23 @@
+% Appendix A — McMillan Tc closed form. Filled standalone, \input'd by main.tex.
+\section{McMillan $T_c$ Closed Form}
+\label{app:mcmillan}
+
+This appendix is the full data record for the McMillan
+\citep{mcmillan1968} weak-/intermediate-coupling transition-temperature
+closed form --- pipeline stage \textcircled{\scriptsize 3}, the
+materials-discovery $T_c$ keystone (Eq.~\eqref{eq:mcmillan} of the body).
+It states the equation verbatim, identifies the load-bearing constants
+($1.04$, $1.20$, $0.62$) and their origin in the Eliashberg-kernel fit,
+bounds the domain of validity ($\lambda\!\lesssim\!1.5$, beyond which
+Allen--Dynes is required), and records the \texttt{hexa verify} recompute.
+Data sources: the \texttt{mcmillan\_tc} atom in
+\texttt{companion/verify-ledger.json} and the hexa-lang
+\texttt{stdlib/material/sim.hexa} kernel.
+
+% TODO (fill batch): fold the McMillan derivation (the 1.04 / 1.20 / 0.62
+% constants from the Eliashberg-kernel fit), the lambda<~1.5 validity bound,
+% the per-candidate recompute table, and the McMillan-vs-Allen-Dynes
+% comparison pgfplots chart (REQUIRED: comparison -> chart, commons g3;
+% cross-ref app.~\ref{app:allendynes}).
+% Source: RTSC.md §8.4 (McMillan/Allen-Dynes row) · hexa-lang
+% stdlib/material/sim.hexa (mcmillan_tc) · RTSC/verify/V2_formal_identities.md.

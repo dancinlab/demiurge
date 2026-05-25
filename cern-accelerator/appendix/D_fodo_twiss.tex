@@ -1,0 +1,22 @@
+% TODO (fill batch): fold stdlib/cern/xsuite_optics.py — the FODO cell
+% (L_d=1m, L_q=0.1m, k1=0.25, 7 TeV proton), the Xsuite x Wiedemann
+% §6.2 / Lee §7.4 thick-quad closed-form parity (beta_x_max rel err
+% ~2.7e-14, q_x rel err ~4.1e-14), and the absorbed=true ALGORITHM
+% closure caveat. Source: the export stamp dir + verify-ledger.json.
+\section{Xsuite FODO Twiss --- Full Data Record}
+\label{app:fodo}
+
+This appendix is the full data record for the FODO focusing stage
+(pipeline stage \textcircled{\scriptsize 5}, the \emph{synthesize} verb,
+\S\ref{sec:fodo}). It states the textbook FODO cell parameters
+($L_d\!=\!\SI{1}{m}$, $L_q\!=\!\SI{0.1}{m}$, $k_1\!=\!\SI{0.25}{m^{-2}}$,
+\SI{7}{TeV} proton), the Xsuite\,0.51.1 twiss output, the
+Wiedemann~\S6.2 / Lee~\S7.4 thick-quadrupole closed-form comparison
+(relative error $\sim\!10^{-6}$ on $\beta_{x,\max}$ and $q_x$), and the
+load-bearing \texttt{absorbed=true} \emph{algorithm}-closure caveat
+(optics-only; no measured ring). Every digit traces to
+\texttt{companion/verify-ledger.json}.
+
+% TODO (fill batch): thick-quad transfer-matrix block, the Xsuite-vs-
+% closed-form parity table, the beta/tune comparison, and the algorithm-
+% closure-vs-measured-flip honesty box.

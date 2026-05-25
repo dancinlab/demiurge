@@ -1,0 +1,566 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------- arxiv-style preamble (xelatex; emoji-native) ----------
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,backgrounds}
+% pgfplots — shipped by default (comparison charts in the appendices).
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\usepackage{listings}
+\usepackage{array}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  columns=fullflexible,
+  frame=single,
+  framesep=4pt,
+  xleftmargin=4pt,
+  xrightmargin=4pt
+}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black
+}
+
+% ---------- tier badges (xelatex; colored-disc fallback) ----------
+% Use \tierBlue / \tierGreen / \tierYellow / \tierOrange / \tierRed in tables.
+% Rendered as filled colored discs via TikZ so they are engine-agnostic and
+% always visible even when the text font lacks emoji glyphs; the tier semantics
+% are preserved exactly (cf. the HEXA-FUSION monograph build).
+\newcommand{\tierdisc}[1]{\textcolor{#1}{\rule[0.05ex]{1.0ex}{1.0ex}}}
+\newcommand{\tierBlue}{\tierdisc{blue!70!black}}
+\newcommand{\tierGreen}{\tierdisc{green!60!black}}
+\newcommand{\tierYellow}{\tierdisc{yellow!85!black}}
+\newcommand{\tierOrange}{\tierdisc{orange!90!black}}
+\newcommand{\tierRed}{\tierdisc{red!80!black}}
+
+\title{
+  \textbf{🧲 RTSC --- Room-Temperature Superconductor Materials \& Magnet:
+  a closed-form $T_c$ / FEM-field verification stack} \\[6pt]
+  \large with a Material$\to$Magnet Pipeline, McMillan / Allen--Dynes Critical
+  Temperature, a Reference-Material Calibration (MgB$_2$ / Nb$_3$Sn / Nb / YBCO),
+  a GetDP Axisymmetric Solenoid FEM, and a Wheeler Closed-Form On-Axis Cross-Check
+}
+
+% ---------- author block (hexa-codex style) ----------
+% Convention: <repo> maintainers / dancinlab / clickable github URL.
+% LLM collaborator credit goes in \paragraph{Acknowledgments} at the tail.
+\author{
+  \texttt{demiurge} maintainers\\
+  \normalsize\textit{dancinlab}\\[2pt]
+  \normalsize\href{https://github.com/dancinlab/demiurge}{\texttt{github.com/dancinlab/demiurge}}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+% =========================================================================
+\begin{abstract}
+We present \textbf{RTSC}, a closed-form and finite-element verification
+stack for the two halves of the superconductivity engineering
+problem: \emph{materials discovery} (which compound has the highest
+critical temperature $T_c$) and \emph{magnet design} (what field a
+given coil produces). The materials axis closes the conventional
+electron--phonon $T_c$ to a numerical verdict via the McMillan
+\citep{mcmillan1968} and Allen--Dynes \citep{allendynes1975} formulas,
+evaluated on \emph{sourced} DFT electron--phonon inputs
+($\lambda$, $\omega_{\log}$, $\mu^{*}$); it is calibrated against four
+reference superconductors used as ground truth --- MgB$_2$
+\citep{nagamatsu2001}, Nb$_3$Sn \citep{godeke2006}, Nb, and YBCO
+\citep{wu1987} --- through a four-tier \texttt{material\_verdict}
+falsifier-dispatch pipeline. The magnet axis recomputes the on-axis
+field of a thick finite solenoid two ways: a GetDP\,3.5.0/4.0.0
+\citep{getdp} axisymmetric A--$\phi$ magnetostatic finite-element
+solve, cross-checked against the closed-form Wheeler envelope
+\citep{jackson1999} (PR~\#92 deck, PR \#188-era \texttt{wheeler\_axis\_b.hexa}
+M318 verifier), agreeing to $\Delta\!=\!1.42\%$
+($B_z\!=\!0.069391$\,T closed-form vs.\ $0.06842$\,T FEM at the coil center).
+The single load-bearing honesty axis is that \textbf{the $T_c$ and field
+closed-forms are reproduced exactly / numerically (\tierBlue/\tierGreen),
+but the \emph{material} achieving room-temperature superconductivity is a
+permanent wet-lab claim (\tierOrange)}: the DFT inputs are sourced, not
+re-derived, and high-pressure synthesis plus multi-lab replication are
+downstream. We honestly preserve \texttt{absorbed=false} for every record:
+a candidate that clears the closed-form $T_c$ funnel is a
+\emph{witness of algorithmic closure}, not a synthesized or measured
+superconductor. We do not claim that any room-temperature superconductor
+has been achieved. Bit-for-bit reproduction artifacts (verify ledger,
+PR roll, adapter-defect catalog, session journal) ship under
+\texttt{companion/}.
+\end{abstract}
+
+% =========================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Room-temperature superconductivity (RTSC) is the standing grand
+challenge of condensed-matter physics: a material that carries current
+with exactly zero resistance and expels magnetic flux (the Meissner
+effect) at ambient temperature ($T_c\!\ge\!270$\,K) and ambient
+pressure ($\le\!1$\,atm). No such material is known. The dense-hydride
+family closed much of the gap --- H$_3$S at $\sim$203\,K
+\citep{drozdov2015}, LaH$_{10}$ and CaH$_6$ in the 200--260\,K range
+--- but only under megabar pressures ($\sim$150\,GPa) at which the
+material is not a device, and the most aggressive ambient-pressure
+claims have repeatedly failed independent replication.
+
+The engineering value of a superconductor is realized through a
+\emph{magnet}: a wound coil whose field is set by its geometry and its
+ampere-turns, bounded by the conductor's critical surface. The
+``RTSC'' name therefore spans two orthogonal axes --- a
+\emph{materials-discovery} axis (which compound, at what $T_c$) and a
+\emph{magnet-design} axis (what field, from which coil) --- that this
+monograph treats jointly while keeping them physically separate.
+
+What is \emph{computable} here, and what is not, divides cleanly. The
+conventional (Bardeen--Cooper--Schrieffer, electron--phonon)
+\citep{bcs1957} $T_c$ is a closed form of three numbers ---
+the electron--phonon coupling $\lambda$, the logarithmic phonon
+frequency $\omega_{\log}$, and the Coulomb pseudopotential $\mu^{*}$
+--- through the McMillan \citep{mcmillan1968} and Allen--Dynes
+\citep{allendynes1975} equations; the on-axis field of a solenoid is a
+closed form of its geometry and current \citep{jackson1999}. Both are
+reproducible to machine precision. But the three DFT inputs
+($\lambda$, $\omega_{\log}$, $\mu^{*}$) are themselves the output of a
+density-functional electron--phonon calculation, which we \emph{source}
+rather than re-derive; and whether a candidate compound can actually be
+\emph{synthesized}, stays \emph{stable at ambient pressure}, and
+\emph{superconducts at room temperature} is a wet-lab question no
+closed form answers.
+
+This is the honesty contract of the whole stack, made explicit in the
+pipeline of \S\ref{sec:pipeline}: the algorithm closures are
+\tierBlue/\tierGreen; the material claim is \tierOrange\ forever.
+
+\medskip
+\noindent\textbf{Contributions.}
+\begin{enumerate}\itemsep0.3em
+\item A material$\to$magnet \emph{full pipeline}
+  (\S\ref{sec:pipeline}, Table~\ref{tab:pipeline}) that tier-tags every
+  stage from a DFT-sourced candidate through the closed-form $T_c$, the
+  reference-material calibration, the coil design, the GetDP solenoid
+  FEM, and the Wheeler cross-check --- with a prominent, load-bearing
+  wet-lab boundary row.
+\item A closed-form $T_c$ kernel (McMillan + Allen--Dynes) verified
+  through the \texttt{hexa verify} tier rubric to $|\Delta|\!\le\!10^{-9}$
+  on ten candidates, calibrated against four reference superconductors
+  used as ground truth (Appendices~\ref{app:mcmillan}--\ref{app:material}).
+\item A two-method on-axis field bridge: a GetDP axisymmetric A--$\phi$
+  FEM cross-checked against the closed-form Wheeler envelope to
+  $\Delta\!=\!1.42\%$, with the five recurring axisymmetric-FEM defects
+  catalogued (Appendices~\ref{app:getdp}--\ref{app:wheeler}).
+\end{enumerate}
+
+% =========================================================================
+\section{Background}
+\label{sec:bg}
+
+\paragraph{Conventional superconductivity and the $T_c$ closed form.}
+In BCS theory \citep{bcs1957}, phonon-mediated electron pairing opens a
+gap $\Delta$ with the weak-coupling universal ratio
+$2\Delta/k_BT_c\!\approx\!3.53$. The transition temperature of a
+\emph{conventional} (phonon-coupled) superconductor is governed by the
+Eliashberg spectral function $\alpha^2F(\omega)$, from which three
+scalar moments are extracted: the coupling
+$\lambda\!=\!2\!\int\!\alpha^2F(\omega)/\omega\,d\omega$, the
+logarithmic average frequency
+$\omega_{\log}\!=\!\exp\!\big[(2/\lambda)\!\int\!\ln\omega\,\alpha^2F(\omega)/\omega\,d\omega\big]$,
+and the Coulomb pseudopotential $\mu^{*}$ (typically 0.10--0.13).
+McMillan \citep{mcmillan1968} and the strong-coupling Allen--Dynes
+\citep{allendynes1975} refinement reduce $T_c$ to a closed form of
+these three numbers (Appendices~\ref{app:mcmillan},~\ref{app:allendynes}).
+
+\paragraph{The dense-hydride route and its wall.}
+H$_3$S at 203\,K \citep{drozdov2015} confirmed that high $\lambda$ and
+high $\omega_{\log}$ (light hydrogen $\Rightarrow$ stiff lattice) can
+push $T_c$ toward room temperature, igniting a sweep over binary and
+ternary hydrides. The recurring physical wall is a
+\emph{stability$\leftrightarrow$strong-coupling trade-off}: structures
+with the large $\lambda$ needed for high $T_c$ tend to be dynamically
+unstable (imaginary phonon modes) at accessible pressures, while
+dynamically stable structures tend to have $\lambda$ too small. None
+of the candidates surveyed here clears ambient-pressure stability
+\emph{and} $T_c\!>\!200$\,K simultaneously (Appendix~\ref{app:hydride}).
+
+\paragraph{Reference superconductors as ground truth.}
+To calibrate the closed-form $T_c$ funnel we use four well-measured
+superconductors as oracles: MgB$_2$ ($T_c\!\approx\!39$\,K,
+\citep{nagamatsu2001,budko2001}), Nb$_3$Sn ($\approx$18\,K,
+\citep{godeke2006}), Nb ($\approx$9.25\,K, the BCS textbook element),
+and YBa$_2$Cu$_3$O$_{7-\delta}$ (YBCO, $\approx$92\,K, \citep{wu1987}).
+These anchor the falsifier-dispatch verdicts of Appendix~\ref{app:material}.
+YBCO is included as an honest negative control for the
+\emph{conventional} formula: as a $d$-wave cuprate it is outside the
+McMillan/Allen--Dynes domain of validity.
+
+\paragraph{Magnetostatics of a wound coil.}
+The on-axis field of a finite solenoid is a textbook closed form
+\citep{jackson1999}; for a uniformly-wound coil of inner radius $a$,
+outer radius $b$, axial length $L$, and $NI$ ampere-turns, the field at
+the geometric center follows from a Biot--Savart integral that
+telescopes into surds and a logarithm. A finite-element solve of the
+axisymmetric A--$\phi$ magnetostatic problem (GetDP \citep{getdp})
+recomputes the same field; the two must agree, which is the bridge of
+\S\ref{sec:results} and Appendices~\ref{app:getdp}--\ref{app:wheeler}.
+
+% =========================================================================
+\section{Full Pipeline}
+\label{sec:pipeline}
+
+Before the gate taxonomy, we situate the work inside the physical path
+from a \emph{candidate material} to a \emph{built magnet}. This is the
+honest-scope contract: the table is a map of which stages RTSC closes
+to a verdict and which it does not, so a reader sees the boundary of
+the work at a glance.
+
+\medskip
+\noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{Tier rubric.}
+\tierBlue\ closed-form (algebraic or proof-level identity) \(\cdot\)
+\tierGreen\ numerical (reproducible script + persisted output) \(\cdot\)
+\tierYellow\ cited (DOI / arxiv / dataset entry) \(\cdot\)
+\tierOrange\ wet-lab or out-of-scope (downstream confirmation needed) \(\cdot\)
+\tierRed\ falsified (kept as honest negative, never deleted).}}
+
+\medskip
+\begin{table}[h]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\centering\arraybackslash}m{0.3cm} >{\raggedright\arraybackslash}m{2.0cm} >{\raggedright\arraybackslash}m{2.7cm} >{\raggedright\arraybackslash}m{2.7cm} >{\centering\arraybackslash}m{0.55cm} >{\raggedright\arraybackslash}m{4.0cm}@{}}
+\toprule
+\textbf{\#} & \textbf{Stage} & \textbf{Input} & \textbf{Output} & \textbf{Tier} & \textbf{Backing / PR} \\
+\midrule
+\textcircled{\scriptsize 1} & Candidate material & hydride / conventional compound & crystal structure, composition & \tierYellow & sourced (DFT structure search) \\
+\textcircled{\scriptsize 2} & Electron--phonon DFT & structure, pressure & $\alpha^2F(\omega)\!\to\!\lambda,\omega_{\log},\mu^{*}$ & \tierYellow\,\tierOrange & sourced DFT (pool/cloud el-ph; not re-derived here) \\
+\textcircled{\scriptsize 3} & $T_c$ closed form & $\lambda,\omega_{\log},\mu^{*}$ & McMillan / Allen--Dynes $T_c$ & \tierGreen\,\tierBlue & app.~\ref{app:mcmillan}/\ref{app:allendynes} $\cdot$ V3 $\cdot$ \texttt{allen\_dynes\_tc} $|\Delta|\!\le\!10^{-9}$ \\
+\textcircled{\scriptsize 4} & Material verdict & $T_c$, reference $T_c$ & falsifier dispatch vs MgB$_2$/Nb$_3$Sn/Nb/YBCO & \tierGreen & app.~\ref{app:material} $\cdot$ \texttt{material\_verdict} tier-4 \\
+\textcircled{\scriptsize 5} & Magnet coil design & target field, $J$ limit & solenoid geometry $a,b,L,NI$ & \tierBlue & app.~\ref{app:getdp} $\cdot$ PR \#92 deck \\
+\textcircled{\scriptsize 6} & On-axis $B$ (FEM) & coil geometry, $J_\phi$ & axisymmetric A--$\phi$ field map & \tierGreen & app.~\ref{app:getdp} $\cdot$ \texttt{solenoid\_axisym} $\cdot$ GetDP 3.5.0/4.0.0 \\
+\textcircled{\scriptsize 7} & Wheeler cross-check & coil geometry & closed-form $B_z(0)$ vs FEM, $\Delta\!=\!1.42\%$ & \tierGreen\,\tierBlue & app.~\ref{app:wheeler} $\cdot$ M318 \texttt{wheeler\_axis\_b.hexa} \\
+\textcircled{\scriptsize 8} & Synthesis & recipe, reagents, $P,T$ & physical sample & \tierOrange & wet-lab (DAC / solid-state; out of scope) \\
+\textcircled{\scriptsize 9} & Measurement \& replication & sample & $R(T)\!=\!0$, Meissner, $\ge\!3$ labs & \tierOrange & \textbf{permanent wet-lab}: only this flips \texttt{absorbed=true} \\
+\bottomrule
+\end{tabular}
+\caption{The material$\to$magnet pipeline.
+\textbf{This work closes the algorithm stages}
+\textcircled{\scriptsize 3}\textcircled{\scriptsize 4}\textcircled{\scriptsize 5}\textcircled{\scriptsize 6}\textcircled{\scriptsize 7}
+(\tierGreen/\tierBlue) to a numerical or closed-form verdict. The signature
+honesty axis: the $T_c$ and field closed-forms are reproduced
+exactly/numerically, \textbf{but the \emph{material} achieving
+room-temperature superconductivity is a permanent wet-lab claim}.
+Stage~\textcircled{\scriptsize 2} is \tierYellow/\tierOrange\ because the
+$\lambda,\omega_{\log},\mu^{*}$ inputs are \emph{sourced} from external DFT,
+not re-derived in this monograph; stages
+\textcircled{\scriptsize 8}\textcircled{\scriptsize 9} (\tierOrange) ---
+high-pressure synthesis and multi-lab measurement --- are explicitly
+\emph{not} closed. The table is the contract: \tierOrange\ does not
+graduate to \tierGreen\ without an external measurement, and only
+stage~\textcircled{\scriptsize 9} flips \texttt{absorbed=true}.}
+\label{tab:pipeline}
+\end{table}
+
+A tier-color-coded flow of the same nine stages is in
+Fig.~\ref{fig:cover}: the green/blue nodes
+(\textcircled{\scriptsize 3}--\textcircled{\scriptsize 7}) are the
+funnel's closed algorithm core; the orange nodes
+(\textcircled{\scriptsize 8}\textcircled{\scriptsize 9}) are the honest
+wet-lab boundary. The dual axis --- a materials-discovery half (stages
+1--4) and a magnet-design half (stages 5--7) joined at the
+candidate-to-coil hinge --- is the architecture of the whole stack.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.86\linewidth]{figures/cover.png}
+\caption{RTSC stack cover: a superconducting solenoid magnet with its
+on-axis field lines (the magnet-design axis, pipeline stages
+\textcircled{\scriptsize 5}--\textcircled{\scriptsize 7}) and a
+crystal-lattice hydride inset (the materials-discovery axis, stages
+\textcircled{\scriptsize 1}--\textcircled{\scriptsize 4}), in
+blueprint / schematic style. Image generated via \texttt{fal.ai}
+(prompt: \texttt{figures/\_prompts/cover.txt}; commons @D g44) ---
+illustrative, not a verified data figure.}
+\label{fig:cover}
+\end{figure}
+
+% =========================================================================
+\section{The Dual Axis: Materials Discovery vs.\ Magnet Design}
+\label{sec:dualaxis}
+
+The defining structural fact of RTSC is that ``superconductivity
+engineering'' is two orthogonal problems sharing one name. Table~\ref{tab:dualaxis}
+separates them. The materials axis asks \emph{which compound, at what
+$T_c$}; the magnet axis asks \emph{what field, from which coil}. They
+meet only at the conductor interface --- the magnet axis consumes a
+conductor's \emph{measured} critical surface as input and never
+re-litigates whether that conductor superconducts.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{2.4cm} >{\raggedright\arraybackslash}m{5.4cm} >{\raggedright\arraybackslash}m{5.4cm}@{}}
+\toprule
+ & \textbf{Materials-discovery axis} & \textbf{Magnet-design axis} \\
+\midrule
+question & which compound is superconducting, at what $T_c$ & what field does a given coil produce \\
+input & DFT $\alpha^2F\!\to\!\lambda,\omega_{\log},\mu^{*}$ (sourced) & coil geometry $a,b,L$, ampere-turns $NI$ \\
+closed form & McMillan / Allen--Dynes $T_c$ & solenoid on-axis $B_z(0)$ (Wheeler) \\
+numerical & $T_c$ recompute, $|\Delta|\!\le\!10^{-9}$ & GetDP axisymmetric A--$\phi$ FEM \\
+calibration & MgB$_2$ / Nb$_3$Sn / Nb / YBCO (measured $T_c$) & FEM vs closed form, $\Delta\!=\!1.42\%$ \\
+honest wall & synthesis + ambient stability + $\ge\!3$-lab $R(T)\!=\!0$ & built magnet (winding, cryostat, quench) \\
+\bottomrule
+\end{tabular}
+\caption{The two axes RTSC spans. They are joined only at the
+conductor interface: the magnet axis consumes a \emph{measured}
+critical surface and does not re-derive whether the conductor
+superconducts. Both axes close their closed forms (\tierBlue/\tierGreen);
+both leave a wet-lab wall (\tierOrange).}
+\label{tab:dualaxis}
+\end{table}
+
+% =========================================================================
+\section{Method --- Closed-Form $T_c$ on Sourced DFT Inputs}
+\label{sec:method}
+
+\subsection{The McMillan / Allen--Dynes keystone}
+
+We implement the McMillan equation \citep{mcmillan1968} verbatim,
+\begin{equation}
+T_c \;=\; \frac{\omega_{\log}}{1.20}\,
+  \exp\!\left[-\,\frac{1.04\,(1+\lambda)}{\lambda - \mu^{*}(1+0.62\,\lambda)}\right],
+\label{eq:mcmillan}
+\end{equation}
+and the strong-coupling Allen--Dynes refinement \citep{allendynes1975}
+with the $f_1$ (strong-coupling) and $f_2$ (shape) correction factors,
+\begin{equation}
+T_c \;=\; \frac{f_1 f_2\,\omega_{\log}}{1.20}\,
+  \exp\!\left[-\,\frac{1.04\,(1+\lambda)}{\lambda - \mu^{*}(1+0.62\,\lambda)}\right],
+\label{eq:allendynes}
+\end{equation}
+where $f_1\!=\![1+(\lambda/\Lambda_1)^{3/2}]^{1/3}$,
+$\Lambda_1\!=\!2.46(1+3.8\mu^{*})$, and $f_2$ folds in the spectral
+ratio $\bar\omega_2/\omega_{\log}$ (full forms in
+Appendix~\ref{app:allendynes}). The inputs $\lambda$, $\omega_{\log}$,
+$\mu^{*}$ are the moments of a sourced $\alpha^2F(\omega)$
+(Appendix~\ref{app:elph}); we do \emph{not} re-derive them, and
+\S\ref{sec:limits} is explicit that this makes
+stage~\textcircled{\scriptsize 2} of the pipeline a citation, not a
+recompute.
+
+\subsection{The methodology: verify-on-sourced-input}
+
+The discipline is to recompute every \emph{algorithm} closure to
+machine precision while \emph{sourcing} every physical input. The
+$T_c$ formula is evaluated through the \texttt{hexa verify} surface
+(libm, absolute $\varepsilon\!=\!10^{-9}$): ten candidates ---
+h3cl, h3o, h3f, h3si, h3se, h3te, h3po, plus the H$_3$S and CaH$_6$
+measured anchors --- report $|\Delta|\!\le\!10^{-9}$ against the
+registered atom (V3 ledger, Appendix~\ref{app:verify}). The h3cl
+strong-coupling case verifies with
+$\texttt{allen\_dynes\_tc}\!=\!140.324$\,K, $|\Delta|\!=\!2.8\!\times\!10^{-11}$.
+
+\subsection{Reference-material calibration}
+
+The closed form is only useful if it reproduces \emph{known}
+superconductors. We pin four reference materials with measured $T_c$
+(Appendix~\ref{app:material}): MgB$_2$ (39\,K), Nb$_3$Sn (18\,K), Nb
+(9.25\,K), and YBCO (92\,K). Each is run through the four-tier
+\texttt{material\_verdict} falsifier dispatch, where the McMillan/
+Allen--Dynes $T_c$ consistency check (F-SC-2) and the $R(T)$-window
+check (F-RTSC-2) \texttt{PASS} when the model $T_c$ matches the
+measured anchor, while gates requiring tier-2 recipes or tier-3
+Meissner/$H_{c2}$ data report \texttt{SKIPPED-MISSING-INPUT}. YBCO is
+kept as a deliberate \tierRed-adjacent negative control: a $d$-wave
+cuprate lies outside the conventional formula's domain, and the verdict
+records that honestly rather than forcing a number.
+
+% =========================================================================
+\section{Results --- The GetDP\,$\to$\,Wheeler On-Axis Bridge}
+\label{sec:results}
+
+The magnet axis recomputes the on-axis field of a thick finite
+solenoid ($L\!=\!200$\,mm, $r\!\in\![30,55]$\,mm, $N\!=\!120$ turns,
+$I\!=\!100$\,A) two independent ways.
+
+\subsection{Closed-form anchor (Wheeler)}
+
+For a thin-shell finite solenoid of radius $R$, length $L$, with $N$
+turns at current $I$, the on-axis field is \citep{jackson1999}
+\begin{equation}
+B_z(z) \;=\; \frac{\mu_0 N I}{2L}
+  \left[\frac{z+L/2}{\sqrt{(z+L/2)^2+R^2}}
+      - \frac{z-L/2}{\sqrt{(z-L/2)^2+R^2}}\right].
+\label{eq:wheeler}
+\end{equation}
+Evaluated at the effective mean radius $R_{\text{eff}}\!=\!(a+b)/2\!=\!42.5$\,mm,
+$z\!=\!0$, this gives $B_z(0)\!=\!0.069391$\,T. The thick-winding
+\emph{envelope} brackets the FEM value:
+$B(R_{\text{out}}\!=\!55\,\text{mm})\!=\!0.0661$\,T
+$<$ FEM $0.06842$\,T $<$
+$B(R_{\text{in}}\!=\!30\,\text{mm})\!=\!0.0722$\,T
+(Appendix~\ref{app:wheeler}).
+
+\subsection{Axisymmetric A--$\phi$ FEM}
+
+The GetDP \citep{getdp} 2-D axisymmetric magnetostatic A--$\phi$ solve
+(\texttt{magstat\_a\_linear}, $\mu_r\!=\!1$, $J_\phi\!=\!NI/A_{\text{coil}}$,
+\texttt{Form1P} with \texttt{BF\_PerpendicularEdge} on a \texttt{VolAxiSqu}
+Jacobian) yields $B_z(0)\!=\!0.06842$\,T at the coil center
+(Appendix~\ref{app:getdp}). Five recurring axisymmetric-FEM defects had
+to be fixed first --- placeholder-prefix collision, gmsh edge recovery,
+\texttt{Form1P} scalar-$j_s$ zero-RHS, an unconstrained axis DOF, and
+the $2\pi$ azimuthal-integration omission --- catalogued in
+\texttt{companion/adapter-defect-catalog.json}.
+
+\subsection{The bridge}
+
+The two methods agree:
+\begin{equation}
+\Delta \;=\; \frac{B_{\text{Wheeler}} - B_{\text{FEM}}}{B_{\text{FEM}}}
+  \;=\; \frac{0.069391 - 0.06842}{0.06842} \;=\; 1.42\%,
+\label{eq:bridge}
+\end{equation}
+with the FEM value bracketed by the thick-winding envelope. The
+$\sim$1.4\% residual is the expected thin-shell vs.\ thick-coil
+modelling gap (aspect $b/a\!=\!1.83$), not a solver error; the envelope
+bracket is the formal witness. This closes
+stages~\textcircled{\scriptsize 6}\textcircled{\scriptsize 7} of the
+pipeline. The inductance comparison (Wheeler $431$\,$\mu$H vs.\ FEM
+$340$\,$\mu$H, a $-21\%$ thin-coil-approximation gap) and the full
+mesh-convergence study are in Appendix~\ref{app:getdp}, charted in
+Appendix~\ref{app:wheeler}.
+
+% =========================================================================
+\section{Wider Architectural Context}
+\label{sec:context}
+
+RTSC is the most verify-native domain in the demiurge stack because
+both of its axes reduce to closed forms over sourced inputs. The
+materials axis is a single generic dispatch: a candidate is a manifest
+(structure + sourced DFT moments), the $T_c$ formula is one code path,
+and adding / renaming / removing a candidate is manifest-only
+(governance @D d4). The magnet axis is likewise a parametric template
+(\texttt{solenoid\_axisym.\{geo,pro\}}) plus one closed-form verifier
+(\texttt{wheeler\_axis\_b.hexa}); a second device (pancake, toroid) is
+a new template, not a new dispatcher.
+
+The reference-material calibration (MgB$_2$/Nb$_3$Sn/Nb/YBCO) is the
+ground-truth oracle that keeps the funnel honest: a $T_c$ formula that
+cannot reproduce a 39\,K MgB$_2$ has no business ranking a hydride
+candidate. The four-tier falsifier dispatch
+(sim $\times$ recipe $\times$ measurement $\to$ verdict) is the same
+shape across every material; the \texttt{absorbed=false} invariant is
+enforced in code, not by convention (Appendix~\ref{app:material}).
+
+% =========================================================================
+\section{Limitations and Honest Caveats}
+\label{sec:limits}
+
+\begin{itemize}\itemsep0.3em
+\item \textbf{The material is a permanent wet-lab claim.} No
+  closed-form $T_c$ or FEM field says any compound \emph{is} a
+  room-temperature superconductor. Synthesis, ambient-pressure
+  stability, and $\ge\!3$-lab replicated $R(T)\!=\!0$ + Meissner are
+  stages \textcircled{\scriptsize 8}\textcircled{\scriptsize 9}
+  (\tierOrange) and flip \texttt{absorbed=true}; nothing here does. We
+  do not claim room-temperature superconductivity is achieved.
+\item \textbf{DFT inputs are sourced, not re-derived.} The
+  $\lambda,\omega_{\log},\mu^{*}$ feeding Eqs.~\eqref{eq:mcmillan}--\eqref{eq:allendynes}
+  come from external electron--phonon DFT
+  (Appendix~\ref{app:elph}); the $T_c$ verdict is exact \emph{given}
+  those inputs, and the inputs themselves carry DFT uncertainty
+  ($q$-grid convergence, anharmonicity, $\mu^{*}$ choice).
+\item \textbf{Conventional-formula domain only.} McMillan/Allen--Dynes
+  assume phonon-mediated ($s$-wave) pairing; the YBCO cuprate anchor is
+  outside this domain and is recorded as a negative control, not a fit.
+\item \textbf{Hydride wall.} No surveyed candidate clears ambient
+  stability \emph{and} $T_c\!>\!200$\,K together; high-$T_c$ hydrides
+  need $\sim$150\,GPa and are not devices (Appendix~\ref{app:hydride}).
+\item \textbf{Linear magnetostatics.} The solenoid FEM is
+  $\mu_r\!=\!1$ linear A--$\phi$; HTS critical-state, quench dynamics,
+  and 3-D return paths are excluded. The $1.42\%$ bridge is a
+  field-magnitude parity, not a built-magnet validation.
+\end{itemize}
+
+% =========================================================================
+\section{Reproducibility}
+\label{sec:repro}
+
+Code: \url{https://github.com/dancinlab/demiurge} (templates under
+\texttt{RTSC/magnet/getdp/}, $T_c$ kernel in the hexa-lang
+\texttt{stdlib/material/}). Data: \texttt{companion/}
+(\texttt{verify-ledger.json}, \texttt{pr-roll.json},
+\texttt{session-journal.md}, \texttt{adapter-defect-catalog.json}).
+Reference-material verdicts:
+\texttt{exports/material\_verdict/\{mgb2\_budko2001\_v1,
+nb3sn\_godeke2006\_v1, nb\_finnemore1966\_v1, ybco\_wu1987\_v1\}/}.
+Build: \texttt{make} (xelatex $\times 3$ + bibtex). Page count:
+\texttt{make pages}. Lint: \texttt{make lint} (commons @D g51 ---
+$\ge\!10$ pages + $\ge\!1$ fal.ai figure, monograph tier traverses
+appendices). Arxiv tarball: \texttt{make arxiv-tar}.
+
+% =========================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+A material$\to$magnet verification stack, written against the hexa-lang
+stdlib with a hard honesty boundary, closes the two computable halves
+of superconductivity engineering: the conventional $T_c$ closed form
+over sourced DFT inputs (calibrated against four reference
+superconductors) and the on-axis solenoid field (a GetDP FEM
+cross-checked against the Wheeler closed form to $1.42\%$). Every
+algorithm closure is \tierBlue/\tierGreen\ and falsifiable in one CLI
+line; the single permanent wet-lab gate --- a synthesized,
+ambient-stable, multi-lab-replicated room-temperature superconductor
+--- is named, isolated, and not crossed. \texttt{absorbed=false} holds
+for every record. We hope the dual-axis pipeline table and the
+verify-on-sourced-input discipline serve as a template for honest
+closed-form decision stacks in other materials-and-device domains.
+
+% =========================================================================
+\paragraph{Acknowledgments.} The closed-form $T_c$ and Wheeler codes
+were authored in-session against the hexa-lang stdlib, in tandem with
+\textbf{Claude Opus 4.7} (1M context, Anthropic) under the demiurge
+stack's honesty governance contracts (@D d5 measured-oracle invariant;
+@D g3 honest pages). We are grateful to the GetDP / Gmsh maintainers
+for their open-source backends and to the authors of the reference-material
+measurements (Bud'ko, God\'{e}ke, Wu et al.) used as ground-truth oracles.
+
+% =========================================================================
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+% =========================================================================
+% MONOGRAPH APPENDICES (full data record, Parts A--J).
+% Skeleton stubs wired here; each is filled in a later batch (see the
+% per-file `% TODO (fill batch)` markers). Appendix lettering is automatic
+% under \appendix (A, B, ... in \input order).
+\clearpage
+\appendix
+\input{appendix/A_mcmillan}
+\input{appendix/B_allen_dynes}
+\input{appendix/C_material_verdict}
+\input{appendix/D_hydride_candidates}
+\input{appendix/E_getdp_solenoid}
+\input{appendix/F_wheeler_crosscheck}
+\input{appendix/G_elph_inputs}
+\input{appendix/H_verify_ledger}
+\input{appendix/I_pr_roll}
+\input{appendix/J_reproducibility}
+
+\end{document}

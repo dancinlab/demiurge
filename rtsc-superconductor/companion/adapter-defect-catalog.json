@@ -1,0 +1,7 @@
+[
+  {"tool": "getdp_hts.py template", "symptom": "placeholder prefix collision ($R_OUT eats $R_OUTC -> invalid identifier 0.25C)", "fix": "length-descending substitution in _render_template", "source": "RTSC.md §4.2.2 (1)"},
+  {"tool": "gmsh classical kernel", "symptom": "edge-recovery failure on coil-as-hole curve loop (19 warnings, 'Impossible to recover edge')", "fix": "OpenCASCADE + BooleanFragments to pre-stitch air-around-coil", "source": "RTSC.md §4.2.2 (2)"},
+  {"tool": "GetDP Form1P", "symptom": "scalar js -> 0 RHS (perpendicular-edge vector test fn dots scalar to 0)", "fix": "js[Coil] = Vector[0,0,J_phi] (explicit perpendicular-z vector)", "source": "RTSC.md §4.2.2 (3)"},
+  {"tool": "GetDP VolAxiSqu", "symptom": "axis r=0 DOF unconstrained -> numerical garbage (B_max artifact outside coil)", "fix": "explicit Constraint Axis -> 0", "source": "RTSC.md §4.2.2 (4)"},
+  {"tool": "GetDP VolAxiSqu", "symptom": "2pi azimuthal integration omitted (Jacobian does (r,z) plane only)", "fix": "post-multiply stored energy / inductance by 2pi in producer parse", "source": "RTSC.md §4.2.2 (5)"}
+]

@@ -1,0 +1,19 @@
+% SKELETON (fill batch): process ② Deceleration — AD/ELENA energy ladder.
+% TODO (fill batch): fold stdlib rel_kinetic_from_p / rel_p_from_kinetic
+%   (PR #1014) + the AD-in/AD-out/ELENA-out rungs + the p->T->p roundtrip
+%   identity + the two negative controls, from companion/verify-ledger.json.
+\section{Deceleration --- the AD/ELENA Relativistic Energy Ladder}
+\label{app:deceleration}
+
+This appendix is the full data record for pipeline process
+\textcircled{\scriptsize 2}. It will tabulate the Antiproton Decelerator /
+ELENA momentum ladder \citep{maury1997ad,maury2014elena} and the
+relativistic energy--momentum relation
+$T(p)=\sqrt{(pc)^2+(m_pc^2)^2}-m_pc^2$ evaluated at each rung (AD input
+$p=3500$\,MeV/$c$, AD output $p=100$, ELENA output), the round-trip
+$p\!\to\!T\!\to\!p$ closure to $|\Delta|=7.4\!\times\!10^{-13}$, and the two
+deterministic \tierRed\ negative controls. Every digit traces to PR~\#1014
+and the \tierGreen\ atoms in \texttt{companion/verify-ledger.json}.
+
+% TODO (fill batch): ladder table, relativistic relation derivation, the
+% non-relativistic-limit probe control, verbatim verdicts.

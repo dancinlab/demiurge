@@ -1,0 +1,21 @@
+% Appendix J — reproducibility. \input'd by main.tex.
+\section{Reproducibility}
+\label{app:repro}
+
+This appendix is the bit-for-bit reproduction record for the whole
+stack. It pins the toolchain versions (GetDP 3.5.0 Rosetta / 4.0.0 ARM
+native, gmsh 4.15.2, hexa-lang stdlib, paper v0.9.0 monograph), the
+exact build command (\texttt{make} = xelatex $\times 3$ + bibtex), the
+companion data layout (\texttt{verify-ledger.json}, \texttt{pr-roll.json},
+\texttt{session-journal.md}, \texttt{adapter-defect-catalog.json}), and
+the recompute recipe for each verify atom (\texttt{hexa verify --expr
+<fn> <args> <expected>}). It restates the honesty invariant:
+\texttt{absorbed=false} for every record; only a synthesized,
+ambient-stable, $\ge\!3$-lab-replicated measurement flips it.
+Data source: \texttt{companion/} and the body \S\ref{sec:repro}.
+
+% TODO (fill batch): fold the toolchain-version table, the per-atom
+% `hexa verify` recompute commands, the companion-file schema, and the
+% absorbed=false invariant restatement with the §8.9 5-gate cross-ref.
+% Source: RTSC.md §7 (cross-reference) + §8.9 (5-gate) · RTSC.log.md
+% (getdp 3.5.0/4.0.0 · gmsh 4.15.2) · companion/.

@@ -1,0 +1,23 @@
+% TODO (fill batch): fold the 4 honest-stub verbs — specify / structure
+% / design / handoff. Cern{Specify,Structure,Design,Handoff}Record.swift
+% + cern.demi STUB cells (GATE_OPEN, accel_mechanism field, rc=2 honest-
+% skip because stdlib/cern/{specify,structure,design,handoff}.py unwritten).
+% Dispatch = @D d4 manifest-driven (CellrunDispatch.run("cern", verb), 0
+% new producer classes). Source: cockpit records + cern.demi + _cellrun.log.
+\section{7-Verb Stub Status --- Honest-Skip Record}
+\label{app:stubs}
+
+This appendix records the status of the four \emph{honest-stub} verbs
+(specify, structure, design, handoff; Table~\ref{tab:verbs}). For each,
+the typed cockpit record (\verb|Cern*Record.swift|) and the
+\verb|cern.demi| STUB cell slot exist, but the stdlib substrate
+(\verb|stdlib/cern/{specify,structure,design,handoff}.py|) is unwritten,
+so the manifest-driven generic dispatch
+(\verb|CellrunDispatch.run("cern", verb)|, @D d4 --- zero new producer
+classes) returns \texttt{rc=2} (honest-skip) rather than a fabricated
+verdict. The \verb|accel_mechanism| field is carried in every record to
+make the verb $\times$ mechanism axis split explicit at the data level.
+
+% TODO (fill batch): per-verb record-schema table (field slots), the
+% cern.demi STUB cell listing, the rc=2 _cellrun.log transcript, and the
+% honest-stub-vs-fabricated-verdict design note.

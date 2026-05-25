@@ -1,0 +1,27 @@
+% SKELETON (fill batch): process ⑥ Confinement — Ioffe-Pritchard magnetic
+%   minimum trap (RTSC/Wheeler inherited).
+% TODO (fill batch): fold stdlib ioffe_loop_bz / _mirror_bmin / _bcoil /
+%   _deltab / _trap_depth_k / mu_b_over_kb (PR #168) + the inherited Wheeler
+%   on-axis current-loop closed form + the mirror-pair superposition +
+%   negative control, from companion/verify-ledger.json and
+%   exports/antimatter/verify/2026-05-25T11-05-17Z/.
+\section{Confinement --- the Ioffe--Pritchard Magnetic-Minimum Trap}
+\label{app:confinement}
+
+This appendix is the full data record for pipeline process
+\textcircled{\scriptsize 6}, where the funnel inherits its magnetostatic
+kernel from the sibling RTSC magnet domain (Appendix~\ref{app:rtsc}). It will
+state the on-axis current-loop closed form
+$B_{\mathrm{loop}}(\zeta)=\mu_0 I a^2/[2(a^2+\zeta^2)^{3/2}]$ (the Wheeler
+primitive at $r=0$), the two-coil mirror superposition that produces a
+genuine on-axis $|B|$ minimum for $s>a$ \citep{andresen2010trapped,amole2014alphatrap},
+the trap depth $U_{\mathrm{depth}}/k_B=(\mu_B/k_B)\,\Delta B$ with the
+load-bearing constant $\mu_B/k_B=0.67171$\,K/T, and the reference mirror pair
+($a=0.10$\,m, $I=10^5$\,A, $s=0.40$\,m) giving $B_{\min}=0.1124$\,T and trap
+depth $0.3526$\,K. Every digit traces to PR~\#168 and the seven \tierGreen\
+\texttt{ioffe\_*} atoms (plus one \tierRed\ control) in
+\texttt{companion/verify-ledger.json}.
+
+% TODO (fill batch): current-loop derivation, the magnetic-bottle minimum
+% condition, the mu_B/k_B trap-depth constant, the RTSC/Wheeler inheritance
+% provenance, the deferred GetDP FEM cross-check, verbatim verdicts.

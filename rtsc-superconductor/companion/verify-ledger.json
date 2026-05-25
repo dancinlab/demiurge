@@ -1,0 +1,62 @@
+[
+  {
+    "atom": "allen_dynes_tc",
+    "expr": "allen_dynes_tc",
+    "args": "lambda=1.30 omega_log=1350 mu_star=0.10 (h3cl 8q)",
+    "expected": 140.324,
+    "observed": 140.324,
+    "abs_delta": 2.8e-11,
+    "epsilon": 1e-9,
+    "tier": "green",
+    "note": "h3cl strong-coupling Allen-Dynes Tc, V3 numerical recompute (libm).",
+    "ts": "2026-05-24T00:00:00Z"
+  },
+  {
+    "atom": "mcmillan_tc",
+    "expr": "mcmillan_tc",
+    "args": "lambda omega_log mu_star (per-candidate)",
+    "expected": "per-candidate",
+    "observed": "match",
+    "abs_delta": 0.0,
+    "epsilon": 1e-9,
+    "tier": "green",
+    "note": "McMillan Tc identity, V2 formal + hexa-native sim.hexa = sim_adapter 0.0000 K diff.",
+    "ts": "2026-05-21T00:00:00Z"
+  },
+  {
+    "atom": "bcs_gap_ratio",
+    "expr": "2*Delta/(kB*Tc)",
+    "args": "weak-coupling universal",
+    "expected": 3.527,
+    "observed": 3.527,
+    "abs_delta": 0.0,
+    "epsilon": 1e-9,
+    "tier": "blue",
+    "note": "BCS gap ratio 2Delta/kTc closed-form identity (V2).",
+    "ts": "2026-05-21T00:00:00Z"
+  },
+  {
+    "atom": "solenoid_axis_bz",
+    "expr": "wheeler_bz",
+    "args": "N=120 I=100 R_eff=0.0425 L=0.200 z=0",
+    "expected": 0.069391,
+    "observed": 0.069391,
+    "abs_delta": 0.0,
+    "epsilon": 1e-9,
+    "tier": "green",
+    "note": "Wheeler on-axis B_z at coil center (closed-form anchor).",
+    "ts": "2026-05-25T00:00:00Z"
+  },
+  {
+    "atom": "wheeler_fem_bridge",
+    "expr": "abs(B_wheeler - B_fem)/B_fem",
+    "args": "B_wheeler=0.069391 B_fem=0.06842",
+    "expected": 0.0142,
+    "observed": 0.0142,
+    "abs_delta": 0.0,
+    "epsilon": 1e-9,
+    "tier": "green",
+    "note": "Wheeler vs GetDP axisymmetric FEM on-axis bridge, +1.42%; envelope brackets FEM (0.0661 < 0.06842 < 0.0722 T).",
+    "ts": "2026-05-25T00:00:00Z"
+  }
+]
