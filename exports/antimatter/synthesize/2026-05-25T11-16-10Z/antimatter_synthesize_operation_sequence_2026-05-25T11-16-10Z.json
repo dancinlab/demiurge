@@ -1,0 +1,28 @@
+{
+  "record_kind": "antimatter_synthesize_record",
+  "domain": "ANTIMATTER",
+  "cell": "antihydrogen-trap+source-line",
+  "verb": "5/7 synthesize (합성 · 조립·운전 순서)",
+  "iso_stamp": "2026-05-25T11-16-10Z",
+  "produced_by": "AUTHORED (manual) — producer honest-skip (stdlib/antimatter/synthesize.py 부재).",
+  "dispatch_provenance": {
+    "attempted": "demiurge cli action synthesize antimatter",
+    "result": "[cellrun] honest-skip — script missing: ~/core/hexa-lang/stdlib/antimatter/synthesize.py"
+  },
+  "assembly_and_operation_sequence": [
+    {"step": 1, "name": "CATCH (포획)", "action": "AD/ELENA 100 keV p̄ bunch 를 Penning trap 에 진입시켜 고전압 electrode 로 전기적 포획", "stage": "⓶감속→⓷포획", "verified_basis": "decel ladder rel_p_from_kinetic(0.1)=13.6991 (ELENA-out) · Penning 3-freq"},
+    {"step": 2, "name": "COOL (냉각)", "action": "사전 축적된 e⁺/전자 plasma 와 nested well 겹쳐 p̄ 공감냉각 → ~4 K floor", "stage": "⓸냉각", "verified_basis": "cyclotron_cool_massspeedup 6.19e9× → e⁺ 공감냉각 경로"},
+    {"step": 3, "name": "MIX (혼합·합성)", "action": "p̄ 와 e⁺ plasma 를 mixing trap 에서 겹쳐 3체 재결합 p̄+e⁺+e⁺→H̄+e⁺ 로 H̄ 생성", "stage": "⓹합성", "verified_basis": "recomb rate/p̄ ∝ n_e²·T^(−9/2) (밀도멱 2 🔵 · T-지수 −4.5 🟢)"},
+    {"step": 4, "name": "TRAP (가둠)", "action": "Ioffe-Pritchard mirror coil 통전 (NI=1e5A) → 자기최소 well 형성, 저자기장추종 H̄ 가둠", "stage": "⓺가둠", "verified_basis": "trap depth 0.353 K (ΔB=0.5249T · μ_B/k_B=0.6717 K/T)"},
+    {"step": 5, "name": "HOLD (유지)", "action": "UHV + 4 K cryostat 유지로 H̄ 소멸 억제, 자기장 안정 유지", "stage": "⓺가둠 유지", "verified_basis": "trap floor ~4 K (blackbody/trap floor)"},
+    {"step": 6, "name": "PROBE (측정)", "action": "243 nm 2-photon 1S-2S 분광으로 전이주파수 측정 → CPT Δ probe", "stage": "⓻측정", "verified_basis": "h1s2s_rydberg leading f≈2.4674 PHz (3/4·R∞·c)"}
+  ],
+  "operational_flow": "CATCH → COOL → MIX → TRAP → HOLD → PROBE — 생산라인 7공정의 운전 순서. 각 단계 물리는 ALREADY-VERIFIED atom 위에 성립.",
+  "scope_caveats": [
+    "운전 sequence 는 closed-form/수치 verified atom 의 논리적 조립 — 실제 beam-time 운전은 CERN AD facility downstream.",
+    "H̄ 실제 생성·유지 수율은 measured oracle 필요 (g3 · @D d5).",
+    "measurement_gate = GATE_OPEN 영구."
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

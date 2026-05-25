@@ -1,0 +1,51 @@
+{
+  "record_kind": "antimatter_design_record",
+  "domain": "ANTIMATTER",
+  "cell": "antihydrogen-trap+source-line",
+  "verb": "3/7 design (설계 · 어떤 값으로)",
+  "iso_stamp": "2026-05-25T11-16-10Z",
+  "produced_by": "AUTHORED (manual) — producer honest-skip (stdlib/antimatter/design.py 부재).",
+  "dispatch_provenance": {
+    "attempted": "demiurge cli action design antimatter",
+    "result": "[cellrun] honest-skip — script missing: ~/core/hexa-lang/stdlib/antimatter/design.py"
+  },
+  "magnetic_minimum_trap": {
+    "description": "Ioffe-Pritchard mirror-coil pair — verified ⓺가둠 design (record exports/antimatter/verify/2026-05-25T11-05-17Z/)",
+    "loop_radius_a_m": 0.10,
+    "ampere_turns_NI_A": 100000.0,
+    "mirror_separation_s_m": 0.40,
+    "spacing_note": "s/a = 4 > Helmholtz spacing (s>a) ⇒ 중심 z=0 이 참 온축 B 최소 (magnetic bottle); 코일 z=±0.20m",
+    "B_min_trap_center_T": 0.1123970357578378,
+    "B_coil_plane_T": 0.6372826268042674,
+    "delta_B_T": 0.5248855910464296,
+    "trap_depth_K": 0.35257290312882134,
+    "mu_B_over_k_B_K_per_T": 0.6717138156258398,
+    "target_window": "trap depth 0.353 K < 0.5 K target (ALPHA ~0.5 K 영역)"
+  },
+  "penning_trap": {
+    "description": "p̄ 전하-가둠 (⓷포획 verified, record exports/antimatter/verify/2026-05-25T09-11-36Z/)",
+    "B_field_T": 5.0,
+    "ring_voltage_U0_V": 10.0,
+    "characteristic_d_mm": 5.0,
+    "three_freq": "axial ω_z · cyclotron ω₊ · magnetron ω₋ + Brown–Gabrielse invariance ω_c²=ω₊²+ω_z²+ω₋²"
+  },
+  "positron_source": {
+    "description": "양전자 소스 + 축적기",
+    "isotope": "²²Na (β⁺ emitter, t½≈2.6 y)",
+    "accumulator": "Surko buffer-gas trap (N₂ 단계적 충돌 냉각 → Penning-Malmberg well 축적)",
+    "role": "⓹합성 mixing trap 에 e⁺ plasma 공급 (3체 재결합 p̄+e⁺+e⁺→H̄+e⁺)"
+  },
+  "rtsc_inheritance": "mirror-coil B-field 는 RTSC/Wheeler 온축 전류고리 폐형해 (loop_offaxis_Bz r=0) 직계 상속 — 신규 자기학 fn 없음, trap-superposition+depth wrapper 만 추가.",
+  "constants_CODATA_2018": {
+    "mu0_H_per_m": 1.25663706212e-6,
+    "mu_B_J_per_T": 9.2740100783e-24,
+    "k_B_J_per_K": 1.380649e-23
+  },
+  "scope_caveats": [
+    "RF cavity / electrode dossier + coil geometry skeleton — TEMPLATE (closed-form/수치값만; FEM·실측 아님).",
+    "trap depth 0.353 K 는 폐형해 mirror-pair 모델값 — getdp FEM cross-check 는 strictly-optional 이라 deferred.",
+    "measurement_gate = GATE_OPEN 영구 (g3)."
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

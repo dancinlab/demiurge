@@ -1,0 +1,42 @@
+{
+  "record_kind": "antimatter_structure_record",
+  "domain": "ANTIMATTER",
+  "cell": "antihydrogen-trap+source-line",
+  "verb": "2/7 structure (구조 · 어떻게 짜여)",
+  "iso_stamp": "2026-05-25T11-16-10Z",
+  "produced_by": "AUTHORED (manual) — producer honest-skip (stdlib/antimatter/structure.py 부재).",
+  "dispatch_provenance": {
+    "attempted": "demiurge cli action structure antimatter",
+    "result": "[cellrun] honest-skip — script missing: ~/core/hexa-lang/stdlib/antimatter/structure.py"
+  },
+  "factory_architecture": "7-stage 생산라인 = demiurge 7-verb spine 와 정렬 (공정축 = verb축)",
+  "process_line": [
+    {"stage": "⓵생성", "component": "표적 충돌부 (proton beam → pair production target)", "output": "p̄ 생성"},
+    {"stage": "⓶감속", "component": "AD/ELENA decelerator ring (감속기)", "output": "GeV→keV p̄ ladder"},
+    {"stage": "⓷포획", "component": "Penning trap (페닝트랩 — 전하기반 전자기 가둠)", "output": "p̄ 전하-가둠"},
+    {"stage": "⓸냉각", "component": "전자/양전자 공감냉각부 (sympathetic/cyclotron cooling)", "output": "p̄, e⁺ 냉각 → ~4 K floor"},
+    {"stage": "⓹합성", "component": "mixing trap (혼합 트랩 — p̄+e⁺ nested-well overlap)", "output": "H̄ (반수소) 3체 재결합 생성"},
+    {"stage": "⓺가둠", "component": "Ioffe-Pritchard 자기최소 트랩 (mirror-coil pair magnetic bottle)", "output": "중성 H̄ 가둠 (저자기장추종)"},
+    {"stage": "⓻측정", "component": "1S-2S 분광 레이저 + 검출기 cascade", "output": "전이주파수 → CPT Δ probe"}
+  ],
+  "key_components": [
+    "decelerator (AD/ELENA)",
+    "Penning trap (B=5T·U₀=10V·d=5mm 대표값)",
+    "positron accumulator (²²Na + Surko buffer-gas trap)",
+    "mixing trap (nested Penning well — p̄ 와 e⁺ plasma 겹침)",
+    "Ioffe-Pritchard 자기최소 트랩 (mirror coils a=0.1m·NI=1e5A·s=0.4m)",
+    "1S-2S spectroscopy laser (243 nm 2-photon, f≈2.4674 PHz leading)"
+  ],
+  "rtsc_toolchain_inheritance": {
+    "note": "⓺가둠 자석 구조는 RTSC 자석 toolchain(getdp 4.0 · Wheeler 폐형해) 직계 상속",
+    "primitive": "B_loop(ζ)=μ₀Ia²/(2(a²+ζ²)^1.5) = stdlib/material/magnet/current_loop_offaxis.hexa::loop_offaxis_Bz (r=0, NOVEL-TOOL M2.4)",
+    "geometry": "mirror-pair superposition B(z)=B_loop(z−s/2)+B_loop(z+s/2), s>a ⇒ z=0 참 온축 최소 (magnetic bottle)"
+  },
+  "scope_caveats": [
+    "Penning/mixing/Ioffe-P 트랩 + 검출기 cascade geometry skeleton — TEMPLATE.",
+    "실제 ALPHA-g vertical-trap 치수 + 자기차폐 stack 은 CERN engineering drawing 에 있음 (이 cell 아님).",
+    "measurement_gate = GATE_OPEN 영구 — structure skeleton 은 absorption claim 아님 (g3)."
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

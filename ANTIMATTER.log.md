@@ -2,6 +2,22 @@
 
 Append-only history sister of `ANTIMATTER.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T11:16Z — 7-verb 풀파이프 + 공장 인계 doc (반수소 트랩+소스 라인 cell · milestone 16+17 CLOSE)
+
+**반수소 트랩+소스 라인** 1개 공정 cell 로 demiurge 7-verb 척추(specify→structure→design→analyze→synthesize→verify→handoff)를 end-to-end 1회 관통. 7th verb(handoff) 산출 = 트랩·소스 팹 사양 = milestone 17. **single stamp `2026-05-25T11-16-10Z`** 로 7 record 산출.
+
+**path 정직 (real dispatch vs authored)**: FIRST 실 dispatch 시도 — `demiurge cli action <verb> antimatter` 7회 전부 `[cellrun] honest-skip — script missing: ~/core/hexa-lang/stdlib/antimatter/<verb>.py` (analyze=missing deps `particle` · verify=missing deps `geant4`). 즉 dispatch(manifest `antimatter.demi` load · deps check)는 정상, **producer 가 stdlib-gated 부재** — 7-verb production 은 stdlib/<dom>/<verb>.py 가 있어야 producer 가 돌고, 없으면 ⏭ honest-skip (project_demiurge_7verb_production_gated · #852). ANTIMATTER 신규 도메인이라 7 producer 전부 부재 ⇒ memory note 대로 AUTHORED records (Korean JSON, verified physics 재사용). producer 가 돌았다고 주장하지 않음 (정직).
+
+- [x] **specify** — 트랩 spec: 자기최소 트랩에 중성 H̄ < 0.5 K 가둠, AD/ELENA p̄ (T_th=6 m_p c² · GeV→keV ladder) + e⁺ 축적기 공급. `exports/antimatter/specify/2026-05-25T11-16-10Z/antimatter_specify_antihydrogen_trap_source_2026-05-25T11-16-10Z.json`
+- [x] **structure** — 공장 architecture: 7-stage 라인 + key components(decelerator·Penning trap·positron accumulator·mixing trap·Ioffe-Pritchard 트랩·1S-2S laser). `exports/antimatter/structure/2026-05-25T11-16-10Z/antimatter_structure_factory_line_2026-05-25T11-16-10Z.json`
+- [x] **design** — design params: mirror coil a=0.1m·NI=1e5A·s=0.4m → ΔB=0.5249T→trap depth 0.3526K(<0.5K) · Penning B=5T/U₀=10V/d=5mm · ²²Na+Surko e⁺ source. `exports/antimatter/design/2026-05-25T11-16-10Z/antimatter_design_trap_source_params_2026-05-25T11-16-10Z.json`
+- [x] **analyze** — design 물리량을 verified field/trap-depth/3-freq/recombination/cooling atom 으로 cross-check (재실행 아님 @D g5). `exports/antimatter/analyze/2026-05-25T11-16-10Z/antimatter_analyze_design_numbers_2026-05-25T11-16-10Z.json`
+- [x] **synthesize** — 운전 sequence CATCH→COOL→MIX→TRAP→HOLD→PROBE. `exports/antimatter/synthesize/2026-05-25T11-16-10Z/antimatter_synthesize_operation_sequence_2026-05-25T11-16-10Z.json`
+- [x] **verify** — V1-V4 ledger + per-stage record + verified atom(🔵3·🟢20·🔴8) verbatim-by-reference (재실행 아님 · @D g5; 증거 = 이미 landed 된 verdict). `exports/antimatter/verify/2026-05-25T11-16-10Z/antimatter_verify_ledger_reference_2026-05-25T11-16-10Z.json`
+- [x] **handoff (milestone 17)** — 트랩+소스 팹 사양: coil winding(NI=1e5A·turns, sc 권고)·cryostat 4K·UHV·²²Na+Surko e⁺ source·B-field map ref(`…/verify/2026-05-25T11-05-17Z/`). 정직 caveat: closed-form/numerical only · getdp FEM cross-check DEFERRED · CPT Δ measured-oracle downstream wet-lab. `exports/antimatter/handoff/2026-05-25T11-16-10Z/antimatter_trap_source_handoff_2026-05-25T11-16-10Z.json`
+- [x] **V-ledger refresh** — `exports/antimatter/verify/V_ledger_2026-05-25T10-58-43Z.md` 의 staleness 갱신: ⓺가둠 PR #168 closed 반영 (🟠 PENDING → 🟢×7 CLOSED · 음성대조 +1 · 집계 🔵3·🟢13·🟠1 → 🔵3·🟢20·🟠0 · 공정 닫힘 6/7→7/7 · honest-stance 갱신). 재실행 아님 — #168 verbatim verdict 인용.
+- [x] **absorbed 미변경** — 여전히 `false` (CPT measured-oracle + absorbed 최종 gate 잔존 · @D d5; meta milestone 닫고 ledger refresh 만, flip 은 다음 round).
+
 ## 2026-05-25T11:05Z — ⓺가둠 Ioffe-Pritchard 자기최소 트랩 verify (RTSC 자석 toolchain 상속 · 7공정 마지막 공정축 CLOSE)
 
 마지막으로 열려있던 **⓺가둠**(confinement) 공정축을 verify-native 로 닫음. 중성 반수소는 페닝트랩(전하기반)으로 못 잡으니 **자기최소(magnetic bottle) 트랩** — 동축 거울코일 쌍이 |B| 를 중심에서 최소로 만들고 사방으로 상승시켜, 저자기장추종 자기모멘트(μ≈μ_B)인 ground-state H̄ 를 안쪽으로 되민다. **RTSC 자석 toolchain 직계 상속**: 온축 전류고리 폐형해 `B_loop(ζ)=μ₀Ia²/(2(a²+ζ²)^1.5)` 는 `hexa-lang/stdlib/material/magnet/current_loop_offaxis.hexa::loop_offaxis_Bz` (r=0, NOVEL-TOOL M2.4 PR #900) · Wheeler 가족과 동일 primitive 를 재사용 (신규 자기학 fn 안 만듦; trap-superposition+depth wrapper만 추가). 대표 거울코일 a=0.1m·NI=1e5A·s=0.4m (s>a → 중심이 참 온축 최소 = magnetic bottle).
