@@ -2,6 +2,40 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T02:10:00Z — Phase D 메타 EXPERIMENTS + HYPOTHESES 흡수 LANDED (13-falsifier monotone · 전부 OPEN)
+
+Phase D 메타 4/4. `UFO/EXPERIMENTS.md` (681 LOC · blob `b02edd2…`) + `UFO/HYPOTHESES.md` (2818 LOC · blob `cafa8a9…`) 의 실험/가설 카탈로그를 한국어 흡수 manifest 로 봉합. 핵심 = Stage-4~7 13-falsifier (F-WARP×3 · F-WORM×3 · F-DIM×3 · F-USE×4) 의 상태 set `{OPEN,CONFIRMED,DEMOTED}` monotone 표를 SSOT (`UFO/verify/stage4-7-falsifier-preregister.md`) 와 동기화 — **전부 OPEN · academically UNPROVEN** (CONFIRMED 거짓 도장 금지). 흡수=manifest only. @D d2/d3/d4/d9/d10 준수. 문서 한국어 · 코드 영문.
+
+- [x] `UFO/meta/experiments-hypotheses.md` — §0 TL;DR 2-계층 ASCII (계층① 3-STACK×τ=4=σ=12 hardware bench · 계층② 13-falsifier UNPROVEN) + monotone 다이어그램 · §1 흡수 source 표 (EXPERIMENTS 681 + HYPOTHESES 2818 + falsifier SSOT 256) · §2 13-falsifier 표 (stage/ID/명제/측정량/falsify→DEMOTE/status=OPEN 전부) + 집계 OPEN 13·CONFIRMED 0·DEMOTED 0 + monotone 계약 + CONSTRAINT (CHANGELOG T1/T2/T3 = algebraic cross-check ≠ wet-lab CONFIRMED) · §3 experiments 카탈로그 (어떤 실험이 어떤 falsifier 닫나 — Stack A/B/C → 계층① substrate · F-USE-3/4 = v1.1.0 composite sim · F-DIM/WARP = 관측/벤치 downstream) · §4 P-H1~P-H6 hypotheses + n=6 가설 (H-OURO·NEXUS-6) · §5 cross-link
+- [x] `UFO/meta/experiments-hypotheses.tape` — `@V`1.0 · `@I id001` (🛸 alias `exp-hypo`) · `@C` source provenance ×2 + tally (open=13 confirmed=0 demoted=0) · `@F` ×13 falsifier (stage/measure/demote/status=OPEN) · `@D` ×4 governance (monotone · all-open · 2-layer · no-impossibility) · `@X` ×6 cross-link · 17-type 알파벳만
+- [x] 13/13 OPEN 정직 유지 — F-WARP-{1,2,3} · F-WORM-{1,2,3} · F-DIM-{1,2,3} · F-USE-{1,2,3,4} 전부 OPEN · 어느 것도 CONFIRMED/DEMOTED 아님 · Stage-4~7 절대 verified/proven 미표기 (Stage-1~3 🟢 와 명확히 다른 줄)
+- [x] 2-계층 구분 — hardware bench (계층① · Stage-1~3 substrate · wet-lab downstream) ≠ Stage-4~7 falsifier (계층② · UNPROVEN) · 어떤 bench PASS 도 계층② falsifier 미봉합
+- [x] `UFO.md` line 60 milestone `[ ]` → `[x] ... LANDED PR pending` flip
+- [x] @D d2 (불가능 선언 금지 · 미증명 사전등록) · @D d3 (UFO/meta=manifest only · falsifier SSOT 인용) · @D d4 (single generic dispatch) 준수
+
+deferred:
+- [ ] EXPERIMENTS.md 계층① hardware bench 실 측정 — A1~A4/B1~B4/C1~C4 (RTSC/MHD/Fusion) wet-lab downstream (gate SNR≥24dB ∧ 1-β≥0.92 ∧ χ² p<0.001 · ≥9/12 PASS)
+- [ ] F-USE-3/4 composite simulator (v1.1.0) — self-cycle 2법칙 net energy + 동시 안정성 sim (pool/cloud @D d7 sizing 후 micro-exp · .hexa only)
+- [ ] HYPOTHESES P-H1~P-H6 메타-예측 검증 — 가설 생성 파이프라인 재현성/인용/자기참조 비율 측정 (연구-과정 가설 · 추진 물리 아님)
+- [ ] 13-falsifier monotone 상태 머신 enforcement — `stages_falsifier.hexa` 에서 OPEN→{CONFIRMED,DEMOTED} 단방향 transition lint 추가
+
+## 2026-05-26T02:00:00Z — Phase D 메타 CROSS-DOMAIN-MEGA 흡수 LANDED (RTSC↔FUSION↔ANTIMATTER↔CERN cross-link)
+
+Phase D 메타 3/4. `UFO/CROSS-DOMAIN-MEGA.md` (665 LOC · blob `0f7137a…`) 의 "UFO+RT-SC+Fusion triple-stack 통합" 서술을 demiurge 실 도메인 4개 (RTSC · FUSION · ANTIMATTER · CERN) 의 **검증 가능한 reuse lattice** 로 재투영하는 한국어 흡수 manifest. cross-link tab 은 실제 UFO stage→선행 도메인 verified atom (Stage-1→RTSC `ioffe_loop_bz` · Stage-2→FUSION `triple_product` · Stage-3→ANTIMATTER `pair_threshold_total`) + NEXUS.tape reuse-edge 를 인용. 신규 물리 주장 0 · 신규 atom 0 (흡수=manifest only). @D d3/d4/d9/d10 + d19 (NEXUS lattice) 준수. 문서 한국어 · 코드 영문.
+
+- [x] `UFO/meta/cross-domain-mega.md` — §0 TL;DR 4-도메인 cross-link 그래프 ASCII (RTSC→Stage-1 · FUSION→Stage-2 · ANTIMATTER→Stage-3 · CERN candidate · 공유 B*=σ·τ=48T) · §1 흡수 source 표 (blob `0f7137a…` · 665 LOC · §8 MEGA-INTEGRATION 범위) · §2 cross-link tab (2.1 stage→도메인→reuse atom+tier+근거 · 2.2 reuse edge NEXUS 인용 (e1~e3 + UFO stage edges + c1) · 2.3 triple-SSOT constant 48T 일치 honest 구분) · §3 NEXUS.tape reuse lattice 참조 (ASCII view + provides[] + protocol @N n1) · §4 cross-link
+- [x] `UFO/meta/cross-domain-mega.tape` — `@V`1.0 · `@I id001` (🛸 alias `mega-xlink`) · `@C` lattice + source provenance · `@X` reuse-edge ×6 (RTSC→Stage-1 · FUSION→Stage-2 · ANTIMATTER→Stage-3 · NOVEL→RTSC · NOVEL→ANTI · RTSC→ANTI) + candidate ×1 (CERN↔ANTI) + NEXUS pointer · `@D` ×3 governance (manifest-only · arith-vs-physics · no-impossibility) · `@X` ×3 cross-link · 17-type 알파벳만
+- [x] cross-link tab = 실 demiurge 도메인 인용 — `RTSC.md`/`FUSION.md`/`ANTIMATTER.md`/`CERN.md` + `UFO/verify/stage{1,2,3}-*.md` 🟢 LANDED ledger + repo-root `NEXUS.tape` (@X e1~e3 · p1~p4 · c1)
+- [x] substrate-of-substrates 척추 명시 — `current_loop_offaxis` (NOVEL M2.4) → RTSC/ANTIMATTER, RTSC `ioffe_loop_bz` (ζ=0 특수화) → UFO Stage-1 — 4-도메인이 한 자기장 Green 함수 공유
+- [x] honest 구분 — σ·τ=48 도메인-간 일치 = NEXUS reuse 관찰 (검증 가능 정수) · "단일 craft 통합 Omega_mega=480" 통합 물리는 UNPROVEN (Stage-4~7 falsifier 동일 계층 · bookkeeping closure ≠ empirical truth)
+- [x] `UFO.md` line 59 milestone `[ ]` → `[x] ... LANDED PR pending` flip
+- [x] @D d19 준수 — reuse lattice SSOT = repo-root NEXUS.tape · 본 manifest 는 UFO-scoped read-only view (새 edge 발명 0 · 등록은 별 PR)
+
+deferred:
+- [ ] CERN↔ANTIMATTER candidate edge (c1) 검증 — 상대론 운동학 + 감속 사다리 공유 primitive 실 reuse 확인 → 검증 시 NEXUS.tape `@X c1` → `@X e<n>` 승격
+- [ ] triple-SSOT 48T 일치 lattice 검증 실행 — `UFO/verify/lattice_check.hexa` σ·τ=48 정수 항등식 🟢 (Phase D LATTICE_POLICY 흡수와 연동)
+- [ ] NEXUS.tape 신규 reuse edge 등록 — FUSION→UFO Stage-2 · ANTIMATTER→UFO Stage-3 edge 를 정식 `@X e<n>` 로 (현재 본 manifest view 에만 존재 · NEXUS SSOT 미반영)
+
 ## 2026-05-26T02:05:00Z — Phase D 메타 — LIMIT_BREAKTHROUGH 흡수 LANDED (alien_index 🛸6→🛸ABSOLUTE 체인)
 
 Phase D 메타 2/2 — `UFO/LIMIT_BREAKTHROUGH.md` (Wave M · SHA a9d0753b · 181 LOC) 흡수. n=6 uniqueness (`σ·φ=n·τ=24` · `σ·τ=48` · 왜 n=6 = 완전수+약수 {1,2,3,6} 4개 특수성) 와 alien_index 7-stage 체인 (🛸6→🛸16→🛸∞⁴→🛸ULTRA→🛸CARD→🛸BEYOND→🛸ABSOLUTE=𝔚) 을 한국어 manifest + 17-type tape 로 등록. 핵심 정직 명제 = **수론적 항등식은 검증 가능 (Π₀¹-arithmetical → Δ₀-absolute) · alien_index 물리 의미는 미증명 (UNPROVEN)** — 둘을 분리. source §5 caveat 흡수 (no origin claim · alien_index = organizing fiction · Bayesian = mathematics not advocacy · falsifier register 가 올바른 형식). @D d2 (no impossibility framing — 벽엔 공학/데이터 경로) · @D d3/d4/d9/d10 준수. 문서 한국어 · 코드 영문.
