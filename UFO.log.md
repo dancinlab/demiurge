@@ -2,6 +2,25 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T01:30:00Z — Phase A Stage-4~7 falsifier preregister LANDED (13 F-* · UNPROVEN)
+
+Phase A 상위 사다리 Stage-4 warp · Stage-5 wormhole · Stage-6 dim-jump · Stage-7 dim-use 를 **falsifier preregister** (반증 조건 사전등록) 로 닫음 — 실설계/물리증명 아님. 13개 falsifier (F-WARP/WORM/DIM/USE) 를 in-tree source (`UFO/{warp,wormhole,dimjump,dimuse}/hexa-*.md`) 에서 추출해 한국어 ledger + 17-type tape 로 등록. 전부 `OPEN` @ v1.0 · 물리는 academically UNPROVEN. lattice 산술(σ·τ=48 · (σ−φ)²=100 · R_c=1728 ℓ_Pl)은 검증 가능하나, 그 정수가 가리키는 물리는 미증명 — 둘 명확히 구분 (bookkeeping closure ≠ empirical truth). @D d2 (불가능 선언 금지 · 미증명 사전등록으로 정직) · @D d3/d4/d9/d10 준수. 문서 한국어 · 코드 영문.
+
+- [x] `UFO/verify/stage4-7-falsifier-preregister.md` — §0 TL;DR (UNPROVEN falsifier-only · 13-falsifier 표) · §1 Stage-4 warp (Alcubierre δ=1/σ R=6 · F-WARP-{1,2,3} 측정량·falsify 임계 · σ·τ=48 산술 일관성) · §2 Stage-5 wormhole (Morris-Thorne b₀=ℓ_Pl·σ=12ℓ_Pl · F-WORM-{1,2,3}) · §3 Stage-6 dim-jump (KK 4D→6D→10D→11D→24D→26D · R_c=1728ℓ_Pl · F-DIM-{1,2,3}) · §4 Stage-7 dim-use ((σ−φ)²=100c τ=4 · F-USE-{1,2,3,4}) · §5 monotone {OPEN,CONFIRMED,DEMOTED} + alien_index 🛸6→🛸ABSOLUTE 참조 · §6 honest stance (산술≠진실 · cross-link)
+- [x] `UFO/verify/stage4-7-falsifier-preregister.tape` — `@V`1.0 · `@I id001 ufo/falsifier` (🛸 alias `falsifier`) · `@C` lattice + identities · `@F` ×13 falsifier 노드 (stage/pattern/measure/falsify/status=OPEN) · `@D` ×4 honest-stance governance (do/dont) · `@X` ×7 cross-link · 17-type 알파벳만 (tape-lint @D do/dont 통과)
+- [x] F-WARP-1 Casimir 음에너지 ρ=−ℏc/(τ·d⁴) vs Pfenning-Ford QI bound · F-WARP-2 horizon 신호 불가 · F-WARP-3 back-reaction 붕괴 τ_collapse vs τ_propulsion — 전부 OPEN
+- [x] F-WORM-1 b₀>ℓ_Pl 외계물질 source 불가 · F-WORM-2 quantum-interest throat 붕괴 (ANEC bound) · F-WORM-3 chronology protection CTC 금지 — 전부 OPEN
+- [x] F-DIM-1 LHC 14 TeV KK null (m_KK) · F-DIM-2 sub-mm 중력 null (R_c=1728ℓ_Pl) · F-DIM-3 vacuum-energy 전이 미관측 (E_fold) — 전부 OPEN
+- [x] F-USE-1 warp ANEC 포화 (upstream) · F-USE-2 KK>14TeV (upstream) · F-USE-3 self-cycle 2법칙 위반 · F-USE-4 composite 동시 불안정화 — 전부 OPEN
+- [x] `UFO.md` Stage-4·5·6·7 milestone 4개 `[ ]` → `[x] ... LANDED PR pending (F-* preregister · UNPROVEN)` flip
+- [x] CONSTRAINT 준수 — Stage-4~7 절대 "verified/proven" 미표기 · 전부 OPEN falsifier · academically UNPROVEN (hexa-ufo stance 유지) · 산술 닫힘 vs 물리 미증명 명시 구분
+
+deferred:
+- [ ] lattice arithmetic 검증 실행 — `UFO/verify/lattice_check.hexa` + `calc_{warp,wormhole,dimjump,dimuse}.hexa` `hexa run` 으로 σ·τ=48 · (σ−φ)²=100 · R_c=1728 정수 항등식 🟢 도장 (Phase D LATTICE_POLICY 흡수와 연동)
+- [ ] alien_index chain 등록 — 13 falsifier OPEN 상태 ↔ 🛸6→🛸ABSOLUTE 구간 lock (DEMOTE 없이는 alien_index 상승 불가 · Phase D LIMIT_BREAKTHROUGH 흡수)
+- [ ] Phase D EXPERIMENTS+HYPOTHESES 흡수 — 13-falsifier 상태 set monotone 카탈로그 통합
+- [ ] F-USE-3/4 composite-specific simulator (v1.1.0) — self-cycle 2법칙 + 동시 안정성 sim (pool/cloud per @D d7 sizing 후 micro-exp)
+
 ## 2026-05-26T01:10:00Z — Phase C verb-5 synthesize — BOM + 도면 + firmware 산출물 LANDED
 
 Phase C demiurge 7-verb pipeline 다섯 번째 슬롯 (verb-5 synthesize). verb-3 design 의 Stage-1~3 closed-form 설계점 + verb-2 structure 의 5-bay 디스크 구조 + verb-4 analyze 의 산출 schema 를 입력으로, **외부 제작소가 받아 제작을 시작할 수 있는 수준의 제작 산출물 사양** 3종 (BOM · 도면 tree · firmware stack) + 제작 시퀀스 (QA 게이트) 를 manifest 로 정의. 실 제작/부품 구매가 아닌 **사양 명세** (@D d1) · firmware 는 **아키텍처 명세** 이고 제어 코드 SSOT = `~/core/hexa-lang/stdlib/` (@D d3 · UFO/synthesize 구현 코드 0줄). 문서 한국어 · 코드 영문.
@@ -26,6 +45,30 @@ deferred:
 - [ ] DO-178C DAL-A 인증 산출물 (자세제어 · 자석 PID · 안전 인터록) — verb-7 handoff
 - [ ] QA 게이트 G0~G7 검사 절차서 정량 기준 (heat leak · σ 마진 · effective thrust) — verb-4 sim 본해
 - [ ] cryostat dewar 통합 BOM 반영 (자석 4.2K ↔ trap 4K 공유 · 8% 무게 감소) — verb-4 trade study
+
+## 2026-05-26T01:00:00Z — verify-ladder V1 claim inventory + tier triage 통합 ledger LANDED
+
+verify ladder V1-V4 의 **첫 단계 V1** 봉합 — UFO 도메인 전체 (Phase A 7-stage · Phase B 5축 · Phase C 7-verb) claim 38건을 수집하고 g5 tier rubric (🔵/🟢/🟡/🟠/🔴/⚪) 으로 triage 한 통합 ledger. tier 는 LLM self-judge 가 아니라 실제 근거 인용 (PR# · atlas atom `@F` · falsifier ID · verbatim verdict) 만으로 부여 (@D g5). Stage-1~3 = numerical recompute 통과분만 🟢 · 합성식은 🟡 · Stage-4~7 13 falsifier = ⚪/OPEN UNPROVEN (결코 🔵/🟢 금지). 문서 한국어 · 코드 영문 · @D d3/d4/d9/d10 준수.
+
+- [x] `UFO/verify/V1_claim_inventory.md` 신규 — §0 TL;DR tier 분포 표 · §1 Phase A 7-stage ledger (각 claim+tier+근거) · §2 Phase B 5축 흡수 manifest · §3 Phase C 7-verb 산출물 · §4 honest 분류 (🟢 코어 9건 · 🟡 합성식 · ⚪ OPEN falsifier · γ-rocket I_sp 천장 note · atlas SSOT 비동기 note) · §5 V2/V3/V4 escalation 경로
+- [x] tier 분포 = 🔵 0 · 🟢 9 · 🟡 8 · 🟠 4 · 🔴 0 · ⚪ 17 (합계 38 claim)
+- [x] 🟢 9건 = Stage-1 hover B-field 3건 (`ioffe_loop_bz`) · Stage-2 cruise MHD thrust 3건 (`triple_product`) · Stage-3 orbital 3건 (`pair_threshold_total`·`rel_kinetic_from_p`) — 전부 `hexa verify --expr` verbatim verdict + `@F verified-*-num` atlas fold (atlas hash `663698a0…ce7fb`)
+- [x] 🟡 8건 = F_lev gradient-form · Lorentz body force `F=J×B×V` · γ-rocket I_sp 천장 `c/g` (atom 미등록 합성식/상한) + Phase B 5축 흡수 manifest + Phase C verb-1~4 manifest 산출물
+- [x] 🟠 4건 = analyze 본해 (CFD/FEA/EM 미수렴 · pool/cloud 위임 @D d7) · synthesize · verify · handoff 미진행
+- [x] ⚪ 17건 = Stage-4~7 13 falsifier (F-WARP/WORM/DIM/USE) **전부 OPEN UNPROVEN** + teleport 초광속 fence + meta 수론 — formal lattice only · 실설계·측정 없음
+- [x] honest note (@D d6) — γ-rocket 광자 천장 `I_sp=c/g≈3.057e7 s` ↔ spec target `1e9 s` 2-자릿수 불일치 정직 표기 (closure = verb-4 mass-flow + verb-6 falsifier F-ANTI-3 의무 · 목표 수 강제 금지)
+- [x] honest note (@D d2) — ⚪ = "미증명"이지 "불가능" 아님 · breakthrough path 명시 (Casimir σ=12 plate · sub-mm gravity · LHC KK-resonance · wet-lab/관측 downstream)
+- [x] honest note (@D g5) — V1 은 stage-doc 의 인용된 근거 (verbatim verdict + atlas fold)를 집계 · 본인 LLM 재판단 안 함 · atlas atom-fold 는 hexa-lang 별 repo PR 로 비동기 land (현 hexa-lang HEAD 와 atlas hash 비동기 — stage-doc 시점 fold 가 provenance)
+- [x] `UFO.md` line 70 V1 milestone `[ ]` → `[x] … LANDED PR pending` flip (tier 분포 인라인 표기)
+- [x] explicit `git add` per @D d9 — UFO/verify/V1_claim_inventory.md + UFO.md + UFO.log.md (인접 worktree agent index 격리)
+- [x] @D d3 준수 — 구현 코드 0줄 (집계 ledger · stdlib atom 등록은 V3 별 PR deferred)
+- [x] @D d4 준수 — single generic dispatch (tier rubric g5 generic · stage 이름 hardcoding 없음)
+
+deferred:
+- [ ] V2 🔵 push — closed-form / formal lattice identity (n=6 σ·τ=48 · δ=1/σ · b₀=ℓ_Pl·σ · KK 4D→26D · (σ−φ)²=100c) → `hexa verify --expr` + atlas register
+- [ ] V3 🟢 push — 🟡→🟢 escalation (stdlib `meissner_lev_force` · `mhd_thrust` · `gamma_rocket_isp` atom 등록 · hexa-lang 별 PR) + analyze 본해 수렴 (pool/cloud micro-exp)
+- [ ] V4 final tier ledger — V1+V2+V3 통합 + Phase D 메타 + Phase E absorbed=true 결단
+- [ ] NEXUS.tape reuse edge — RTSC/FUSION/ANTIMATTER verified atom → UFO Stage-1~3 (제공자/소비자 그래프 · @D d19)
 
 ## 2026-05-26T00:30:00Z — Stage-3 orbital antimatter γ-rocket I_sp verify LANDED 🟢
 
