@@ -1,0 +1,56 @@
+{
+  "domain": "ANTIMATTER",
+  "process_stage": "⓸냉각 (cooling)",
+  "milestone": "전자냉각 / 공감냉각 시간상수 + 평형 온도 수치",
+  "iso_stamp": "2026-05-25T10-46-06Z",
+  "physics": {
+    "mechanism": "synchrotron (cyclotron) radiation self-cooling of a gyrating charge in the trap's strong magnetic field B",
+    "transverse_energy_decay": "E_perp(t) = E_perp(0) * exp(-t / tau_c)  (transverse energy decays exponentially)",
+    "closed_form_tau_c_SI": "tau_c = 6*pi*eps0*m^3*c^3 / (e^4*B^2)",
+    "closed_form_tau_c_gaussian": "tau_c = 3*m^3*c^3 / (4*e^4*B^2)",
+    "key_scalings": {
+      "B_field": "tau_c proportional to B^(-2)  (EXACT integer exponent -2)",
+      "mass": "tau_c proportional to m^3"
+    },
+    "physical_consequence": "lighter species self-cools (m_heavy/m_light)^3 faster; e+ cools ~(m_p/m_e)^3 ≈ 6.19e9x faster than p-bar, so antiprotons are cooled sympathetically via electrons/positrons rather than by their own (negligibly slow) cyclotron radiation",
+    "equilibrium_temperature": "cooling floor is set by the trap/blackbody environment (e.g. ~4 K cryostat), not by the cooling rate; the time-constant governs the approach, the cryostat sets the floor",
+    "references": [
+      "J. D. Jackson, Classical Electrodynamics 3e, §14.2 (Larmor / synchrotron radiated power)",
+      "G. Gabrielse et al. (ATRAP) — positron/electron cyclotron cooling in Penning traps"
+    ]
+  },
+  "numeric": {
+    "B_exponent_exact": -2,
+    "tau_c_ratio_5T_over_1T": 0.04,
+    "tau_c_ratio_5T_over_1T_formula": "(B_lo/B_hi)^2 = (1/5)^2 = 1/25 = 0.04",
+    "mass_speedup_mp_over_me_cubed_raw": 6190509123.255137,
+    "mass_speedup_giga_view_scaled_1e-9": 6.190509123255138,
+    "mass_speedup_formula": "(m_p/m_e)^3, with m_p=1.67262192369e-27 kg, m_e=9.1093837015e-31 kg (CODATA 2018), m_p/m_e=1836.1526734400013",
+    "order_of_magnitude_e_plus_tau_c_at_1T_s": "≈ 4 s (e+ cyclotron cooling time at B=1 T, order estimate)"
+  },
+  "verify": {
+    "host": "mini only (POOL_DISABLE=1)",
+    "form": "hexa verify --expr (hexa-native compiled binary, -lm -ldl, clang -O2)",
+    "tool_file": "~/core/hexa-lang/tool/verify_cli.hexa",
+    "build_script": "tool/build_hexa_verify.sh",
+    "hexa_lang_pr": 1015,
+    "hexa_lang_pr_state": "MERGED",
+    "functions_added": [
+      "cyclotron_cool_bexponent(_) -> -2  (integer dispatch, 🔵 SUPPORTED-FORMAL)",
+      "cyclotron_cool_bratio(B_hi,B_lo) -> (B_lo/B_hi)^2  (float dispatch, 🟢 SUPPORTED-NUMERICAL)",
+      "cyclotron_cool_massspeedup(m_h,m_l) -> (m_h/m_l)^3 * 1e-9 Giga-view  (float dispatch, 🟢 SUPPORTED-NUMERICAL)"
+    ],
+    "verdicts_verbatim": [
+      "verify --expr cyclotron_cool_bexponent(0)=-2\n  calc   = -2  == expected -2\n  tier   = 🔵 SUPPORTED-FORMAL  (hexa-native closed-form, g_self_verify · TECS-L Tier1)",
+      "verify --expr cyclotron_cool_bratio(5.0,1.0)=0.04\n  calc   = 0.04  ≈ expected 0.04  (|Δ|=6.93889e-18 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)",
+      "verify --expr cyclotron_cool_massspeedup(1.67262e-27,9.10938e-31)=6.19051\n  calc   = 6.19051  ≈ expected 6.19051  (|Δ|=1.42109e-14 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+    ],
+    "negative_controls_verbatim": [
+      "verify --expr cyclotron_cool_bexponent(0)=-3\n  calc   = -2  != expected -3\n  tier   = 🔴 FALSIFIED  (calc deterministically disagrees — TECS-L result-agnostic closed negative)",
+      "verify --expr cyclotron_cool_bratio(5.0,1.0)=0.1\n  calc   = 0.04  ≠ expected 0.1  (|Δ|=0.06 > ε=1e-9)\n  tier   = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)"
+    ]
+  },
+  "tier_summary": "🔵 B-exponent (exact -2) · 🟢 B-ratio (0.04) · 🟢 mass speedup ((m_p/m_e)^3) · 🔴×2 negative controls",
+  "absorbed": false,
+  "absorbed_note": "ANTIMATTER absorbed=false — only ⓷포획·⓻측정·⓸냉각 of 7 process stages closed; other gates pending (@D d5)"
+}

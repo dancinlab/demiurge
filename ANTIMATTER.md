@@ -9,7 +9,7 @@
 - [x] ⓵생성 — pair-production threshold 폐형해/수치 재현 (p+p→p+p+p̄+p) — **T_th = 6 m_p c² 🔵 SUPPORTED-FORMAL** · 5629.632 MeV ≈ 5.63 GeV 🟢 SUPPORTED-NUMERICAL (`hexa verify --expr`, mini · 2026-05-25) · atlas `@F verified-pair_threshold_factor-1`. (표적 yield 별도 cell 남음)
 - [x] ⓶감속 — AD/ELENA 감속 ladder (GeV→keV) 빔동역학 에너지 단계 수치 검증 — 🟢 SUPPORTED-NUMERICAL ×4 (상대론 정확식 T=√((pc)²+(m_p c²)²)−m_p c², m_p c²=938.272 MeV · 역식 pc=√(T²+2·T·m_p c²)) · AD-in pc=3500→T=2685.311 MeV(≈2.685 GeV) · AD-out pc=100→T=5.3139 MeV · ELENA-out T=100 keV→pc=13.699 MeV/c · 역변환 roundtrip pc=100 |Δ|=7.4e-13 · 비상대론 극한 pc→√(2 m_p c²·T)=13.6987(Δ=3.6e-4 MeV/c, ~3e-5 frac, 환원 확인; 단 ε=1e-9 엄밀 probe는 T²항≠0 ⇒ 🔴 정직) · negative control 🔴 (`rel_kinetic_from_p`/`rel_p_from_kinetic`, hexa verify mini · POOL_DISABLE=1 · hexa-lang PR #1014 merged · `exports/antimatter/verify/2026-05-25T10-43-31Z/`)
 - [x] ⓷포획 — 페닝트랩 전하-입자 3주파수(axial·cyclotron·magnetron) 폐형해 + invariance theorem — 🟢 (p̄ B=5T·U₀=10V·d=5mm: ω_c·ω_z·ω₊·ω₋ + Brown–Gabrielse 불변량 ω_c²=ω₊²+ω_z²+ω₋² · `penning_omega_plus`/`penning_omega_minus`/`penning_invariance` hexa-native recompute |Δ|=0.0 · `exports/antimatter/verify/2026-05-25T09-11-36Z/`)
-- [ ] ⓸냉각 — 전자냉각 / 공감냉각 시간상수 + 평형 온도 수치
+- [x] ⓸냉각 — 전자냉각 / 공감냉각 시간상수 + 평형 온도 수치 — 🔵+🟢 (싸이클로트론(공감/방사)냉각 시간상수 폐형해 τ_c=6πε₀m³c³/(e⁴B²): 횡에너지 E_⊥(t)=E_⊥(0)·e^(−t/τ_c) · **τ_c∝B^(−2) 정확지수 −2** `cyclotron_cool_bexponent`→🔵 · τ_c(5T)/τ_c(1T)=(1/5)²=**0.04** `cyclotron_cool_bratio`→🟢 · **τ_c∝m³** → e⁺ 가 p̄ 보다 (m_p/m_e)³≈**6.19e9× 빠름** `cyclotron_cool_massspeedup`(Giga-view 6.1905)→🟢 [그래서 p̄ 는 자기 방사 아닌 전자/양전자 공감냉각] · 음성대조 2건 🔴 · 평형 T = trap/blackbody floor(~4 K) · hexa-lang #1015 MERGED · `exports/antimatter/verify/2026-05-25T10-46-06Z/`)
 - [ ] ⓹합성 — p̄+e⁺→H̄ 3체 재결합률(스케일링) 폐형해
 - [ ] ⓺가둠 — Ioffe-Pritchard 자기최소 트랩 B장 + trap depth (RTSC getdp 4.0 · Wheeler 폐형해 **상속**) — verify
 - [x] ⓻측정 — 반수소 1S-2S 전이주파수 leading 폐형해 `f = (3/4)·R∞·c ≈ 2.4674 PHz` 🟢 verify (factor 3/4 + 수치, `transition_factor_1s2s`/`h1s2s_rydberg`, mini · hexa-lang PR #1005) · gap-to-measured = 환산질량 m_e/(m_e+m_p)≈0.99946 + QED/Lamb (15자리 재현 X, 정직 명시) · **CPT Δ(H vs H̄)는 실측 oracle 필요 ⇒ absorbed=false 유지** (@D d5)
@@ -21,7 +21,7 @@
 
 - [ ] V1 claim inventory + tier triage (🔵/🟢/🟡/🟠) — 7공정 물리량 목록화
 - [ ] V2 🔵 push — pair-threshold · Penning 3-freq · Rydberg/QED 1S-2S · Ioffe-P trap depth closed-form identity → `hexa verify --expr` + atlas register · **Penning 3-freq DONE → 🟢** (`penning_omega_plus`/`penning_omega_minus`/`penning_invariance` 등록 + `--from-verify` atlas fold; 폐형해이나 sqrt 포함 libm-class라 tier=🟢, 불변량 잔차=0.0 exact) · **pair-threshold DONE → 🔵 factor-6 + 🟢 수치** · **1S-2S Rydberg DONE → 🟢** (`transition_factor_1s2s`=3/4 + `h1s2s_rydberg`=(3/4)R∞c·1e-15 PHz, hexa-lang PR #1005)
-- [ ] V3 🟢 push — libm/Newton 수치 재현 (감속 ladder · 재결합률 · 냉각 시간상수) · **Penning 3-freq 3-atom 🟢 |Δ|=0.0 (2026-05-25)** · **1S-2S leading freq 🟢 2.46738 PHz |Δ|=8.88e-16 (2026-05-25)** · **⓶감속 ladder DONE → 🟢** (`rel_kinetic_from_p`/`rel_p_from_kinetic` ×4 rungs+inverse · 비상대론 극한 환원 확인 · negative control 🔴, hexa-lang PR #1014)
+- [ ] V3 🟢 push — libm/Newton 수치 재현 (감속 ladder · 재결합률 · 냉각 시간상수) · **Penning 3-freq 3-atom 🟢 |Δ|=0.0 (2026-05-25)** · **1S-2S leading freq 🟢 2.46738 PHz |Δ|=8.88e-16 (2026-05-25)** · **⓶감속 ladder DONE → 🟢** (`rel_kinetic_from_p`/`rel_p_from_kinetic` ×4 rungs+inverse · 비상대론 극한 환원 확인 · negative control 🔴, hexa-lang PR #1014) · **⓸냉각 cyclotron τ_c∝B^(−2) 🔵 exact −2 + 5T/1T ratio 0.04 🟢 + (m_p/m_e)³ speedup 6.19e9 🟢 (2026-05-25)**
 - [ ] V4 tier ledger — V1+V2+V3 통합 + CPT Δ + absorbed=false 정직 명시
 
 ---

@@ -2,6 +2,51 @@
 
 Append-only history sister of `ANTIMATTER.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T10:46Z — ⓸냉각 cyclotron cooling verify (🔵 exact B-exponent + 🟢×2 numeric · 음성대조 🔴×2)
+
+**공정단계 ⓸냉각**: 트랩의 강한 자기장 B 속에서 자이로(회전)하는 전하는 라모어/싸이클로트론(synchrotron) 방사로 **횡에너지(transverse energy)** 를 지수적으로 잃는다 — E_⊥(t)=E_⊥(0)·e^(−t/τ_c). 양전자·전자가 먼저 자기 방사로 냉각된 뒤, 반양성자를 **공감냉각(sympathetic)** 으로 식힌다.
+
+- [x] 폐형해 — 냉각 시간상수 **τ_c = 6π ε₀ m³ c³ / (e⁴ B²)** (SI) = 3 m³ c³ / (4 e⁴ B²) (Gaussian). 라모어 방사일률 P ∝ q⁴ B² v_⊥² / m² 에서 τ_c = E_⊥/P̄ ∝ 1/B².
+- [x] **핵심 스케일링** — (i) **τ_c ∝ B^(−2)** 정확 정수지수 −2 (단위계 무관 구조 불변량) · (ii) **τ_c ∝ m³** → 가벼운 종이 (m_heavy/m_light)³ 배 빨리 냉각.
+- [x] 수치 — τ_c(5T)/τ_c(1T)=(1/5)²=**0.04** (1/25) · (m_p/m_e)³=(1836.1527)³≈**6.19e9×** (e⁺ 가 p̄ 보다 ~61억배 빨리 자기냉각 → 그래서 p̄ 는 직접 방사 아닌 전자/양전자 공감냉각). e⁺ τ_c(B=1T)≈4 s (order).
+- [x] 평형온도 — 냉각률(시간상수)이 아니라 **trap/blackbody floor**(예 ~4 K cryostat)가 평형 T 의 바닥. 시간상수는 접근, cryostat 가 floor.
+- [x] hexa-native fn 3종 (`tool/verify_cli.hexa`) — `cyclotron_cool_bexponent(_)`→−2 (정수 dispatch, 🔵) · `cyclotron_cool_bratio(B_hi,B_lo)`=(B_lo/B_hi)² (float, 🟢) · `cyclotron_cool_massspeedup(m_h,m_l)`=(m_h/m_l)³·1e-9 Giga-view (float, 🟢; raw ~6.19e9 은 abs-ε=1e-9 무의미 → ×1e-9 정규화, `sigma_v_dt_e18` 류 discriminating-ε 관행). `bin/hexa-verify` 재빌드 (-lm/-ldl, clang -O2, canonical root).
+- [x] verify 호스트 = mini only (`POOL_DISABLE=1`); 3 atom 🔵/🟢/🟢 + **음성대조 2건 🔴** (B-exponent=−3 · B-ratio=0.10) — verbatim 아래.
+- [x] hexa-lang PR **#1015 MERGED** — throwaway worktree 에서 origin/main 위 rebase(형제 ⓶감속 `rel_kinetic_from_p`/`rel_p_from_kinetic` #1014 가 fork 후 main 진입 → rebase 로 흡수, 순수 +59/−0 additions, 형제 fn·FUSION sigma_v 보존 @D d9).
+- [x] record — `exports/antimatter/verify/2026-05-25T10-46-06Z/cyclotron_cool_2026-05-25T10-46-06Z.json`
+- [x] ANTIMATTER.md ⓸냉각 `- [ ]`→`- [x]` (🔵+🟢) · V3 cyclotron sub-item.
+- [ ] absorbed — 全 게이트 PASS 아님 (⓵생성·⓹합성·⓺가둠 미완) → false 유지 (@D d5).
+
+verbatim hexa verify verdict (`POOL_DISABLE=1 ./bin/hexa-verify --expr …`):
+
+```
+verify --expr cyclotron_cool_bexponent(0)=-2
+  calc   = -2  == expected -2
+  tier   = 🔵 SUPPORTED-FORMAL  (hexa-native closed-form, g_self_verify · TECS-L Tier1)
+
+verify --expr cyclotron_cool_bratio(5.0,1.0)=0.04
+  calc   = 0.04  ≈ expected 0.04  (|Δ|=6.93889e-18 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+
+verify --expr cyclotron_cool_massspeedup(1.67262e-27,9.10938e-31)=6.19051
+  calc   = 6.19051  ≈ expected 6.19051  (|Δ|=1.42109e-14 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+```
+
+음성대조 (negative control) — 결정론적 불일치 → 🔴, calc 시스템이 정답을 강제하지 않음을 입증:
+
+```
+verify --expr cyclotron_cool_bexponent(0)=-3
+  calc   = -2  != expected -3
+  tier   = 🔴 FALSIFIED  (calc deterministically disagrees — TECS-L result-agnostic closed negative)
+
+verify --expr cyclotron_cool_bratio(5.0,1.0)=0.1
+  calc   = 0.04  ≠ expected 0.1  (|Δ|=0.06 > ε=1e-9)
+  tier   = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)
+```
+
+note: B-지수 −2 는 순수 정수 closed-form 이라 🔵(g_self_verify Tier1); ratio/speedup 은 나눗셈·세제곱 포함 libm-class 라 🟢. 질량 speedup 은 raw≈6.19e9 가 절대-ε=1e-9 게이트에서 ULP 무의미 → ×1e-9 Giga-view 로 order-unity 정규화(=6.190509123255138)해 변별력 있는 🟢 확보. hexa-lang verify_cli.hexa 변경은 형제(⓵생성·⓶감속·⓹합성·FUSION) fn 과 같은 파일 공존 → 본 agent 는 origin/main rebase 후 본인 fn 만 +additions 로 커밋(형제 작업 0 삭제, @D d9).
+
 ## 2026-05-25T10:43:31Z — ⓶감속 AD/ELENA ladder verify (상대론 감속 ladder 🟢 · 비상대론 극한 환원)
 
 - [x] 물리 도출 — 상대론 정확식 E=√((pc)²+(m_p c²)²) ⇒ T=√((pc)²+(m_p c²)²)−m_p c² · 역식 pc=√(T²+2·T·m_p c²) · m_p c²=938.272 MeV (CODATA)
