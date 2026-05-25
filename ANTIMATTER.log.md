@@ -2,6 +2,22 @@
 
 Append-only history sister of `ANTIMATTER.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T00:20Z — paper `antimatter-bluemax-2026` REGENERATE on paper v0.8 (sample-blue-max + 신규 verb)
+
+이전 hand-authored 버전(PR #182 + 수정 #185, paper v0.1 scaffold · "16/16"·"24 atoms" 오기)을 paper:paper **v0.8** 로 깨끗이 재생성. `git rm -rf` 후 `paper sample blue-max` 템플릿에서 재출발, 신규 자동생성 verb 들로 채움. clean worktree off origin/main(`d8d981b`)에서 작업 — 형제 agent 들의 미커밋 파일이 base worktree 를 오염시켜 branch switch 가 abort 되므로 격리 worktree 로 회피(@D d9). 숫자 정정: **26 atoms (11 🟢 + 15 🔵) · BLUE-MAX coverage 11/11** (이전 16/16·24-atom 은 green-row 와 blue-sibling-row 합산 오기 — §Relation-to-prior-version 에서 정직 정정).
+
+- [x] **scaffold** — `paper sample sample-blue-max antimatter-bluemax-2026` (v0.8 신규 sample-blue-max 템플릿, algebraic-root audit 전용 구조).
+- [x] **companion init** — `paper companion init` → `companion/` · verify-ledger.json 에 11 🟢 verdict + 15 🔵 + 음성대조 채움 · pr-roll.json.
+- [x] **pr-roll** — `paper pr-roll dancinlab/demiurge 60ecf2f` → `companion/pr-roll.json` (PR #173 absorbed 캡처). ⚠ verb 의 LaTeX `\paragraph` emit 은 jq `\#` escape 버그로 실패(honest gap), JSON 산출은 정상.
+- [x] **bib add** — `paper bib add <doi>` ×10 (CrossRef live fetch): Chamberlain1955·Brown1986·Mansbach1969·Glinsky1991·Ahmadi2018(ALPHA)·Tiesinga2021(CODATA)·Allen1975·Pritchard1983·Andresen2010·Bardeen1957. ⚠ 입력 DOI 2건이 무관 논문 반환(내 DOI 입력 오류 — Glinsky 는 .859692→.859820 정정, Robicheaux DOI 는 제거) — verb 는 주어진 DOI 충실히 fetch, 버그 아님.
+- [x] **verify-block** — 11 🟢 atom `paper verify-block <fn> <args> <expected>` 로 verdict 캡처. **hexa-verify 바이너리 재빌드 필수**(stale binary 가 antimatter atom 미인식 → `tool/build_hexa_verify.sh`, HEXA_MEM_CAP_MB=16384). **9/11 🟢 PASS clean** (pair_threshold_kinetic/total · transition_factor_1s2s · h1s2s_rydberg · cyclotron_cool_bratio/massspeedup · recomb_3body_exponent/tratio · penning_omega_minus). **2/11 honest finding**: `penning_omega_plus`·`penning_invariance` 는 ~5e8 rad/s magnitude 에서 float64 ULP(~6e-8) > 절대 ε=1e-9 → raw-value ULP-limited(|Δ|~2-5e-7), 인증은 invariance residual=0.0 + 🔵 sibling 경유 (§Limitations 정직 명시).
+- [x] **15 🔵 integer atom** — 전부 `hexa verify --expr <fn> <n> <v>` → 🔵 SUPPORTED-FORMAL bit-exact `==` 확인.
+- [x] **figure** — 이전 fal.ai factory-line schematic PNG(여전히 apt) git `82b794a` 에서 복원 + prompt provenance. 2nd figure = TikZ 11/11 coverage bar (commons g51 ≥2 figure + ≥1 fal.ai 충족).
+- [x] **compile + lint** — `paper compile .` (xelatex×3+bibtex, **main.pdf 10 pages**) · `paper lint .` **ALL PASS**: pages 10≥10 · fal.ai figure 1 · Full Pipeline/Limitations/Reproducibility 존재 · tables 2 · figures 2 · bibtex 10 · no emoji in bib · 0 undefined citation.
+- [x] **arxiv-prep** — ⚠ `paper arxiv-prep` verb 는 relative tar-path 를 `cd "$TMP"` 서브셸 안에서 실행하는 버그로 실패(honest gap). verb 의도 그대로 수동 tar → `out/antimatter-bluemax-2026-arxiv.tar.gz` (1 .tex + 1 .bbl + figures 검증 통과).
+- [x] **narrative** — 11/11 BLUE-MAX PASS · CPT Δ downstream wet-lab(@D d5 non-blocking) · g69 universal · BLUE-MAX 전이가능성(FUSION #179 자매) · §Relation-to-prior-version 16/16→11/11 오기 정직 정정.
+- [x] **land** — clean worktree branch `paper/antimatter-bluemax-v8-regen` off origin/main · explicit `git rm -rf` 구버전 + `git add antimatter-bluemax-2026/ ANTIMATTER.log.md` (@D d9).
+
 ## 2026-05-25T22:30Z — paper `antimatter-bluemax-2026` 작성·머지
 
 ANTIMATTER 14/14 + BLUE-MAX 16/16 absorbed 종결을 arxiv-style LaTeX paper 로 외부화. paper 폴더 `antimatter-bluemax-2026/` (worktree PR off origin/main).

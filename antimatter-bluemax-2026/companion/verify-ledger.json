@@ -1,0 +1,37 @@
+{
+  "domain": "ANTIMATTER",
+  "audit": "BLUE-MAX",
+  "blue_max_coverage": "11/11",
+  "atoms_total": 26,
+  "green_libm_class": 11,
+  "blue_algebraic_root": 15,
+  "verify_host": "POOL_DISABLE=1 (mini)",
+  "verify_binary": "hexa-lang/bin/hexa-verify (rebuilt from tool/verify_cli.hexa 2026-05-26)",
+  "epsilon": 1e-9,
+  "green_atoms": [
+    {"fn": "pair_threshold_kinetic", "args": "938.272", "calc": 5629.63, "delta": 9.09495e-13, "tier": "SUPPORTED-NUMERICAL", "stage": 1, "blue_sibling": "pair_threshold_kinetic_factor=6"},
+    {"fn": "pair_threshold_total", "args": "938.272", "calc": 6567.9, "delta": 0.0, "tier": "SUPPORTED-NUMERICAL", "stage": 1, "blue_sibling": "pair_threshold_total_factor=7"},
+    {"fn": "transition_factor_1s2s", "args": "", "calc": 0.75, "delta": 1.11022e-16, "tier": "SUPPORTED-NUMERICAL", "stage": 7, "blue_sibling": "transition_factor_1s2s_numerator=3,_denominator=4"},
+    {"fn": "h1s2s_rydberg", "args": "1.09737e7 2.99792458e8", "calc": 2.46738147, "delta": 4.44089e-15, "tier": "SUPPORTED-NUMERICAL", "stage": 7, "blue_sibling": "h1s2s_rydberg_factor_numerator=3"},
+    {"fn": "cyclotron_cool_bratio", "args": "5 1", "calc": 0.04, "delta": 6.93889e-18, "tier": "SUPPORTED-NUMERICAL", "stage": 4, "blue_sibling": "cyclotron_cool_bratio_exponent=2,cyclotron_cool_bexponent=-2"},
+    {"fn": "cyclotron_cool_massspeedup", "args": "1836.15267 1", "calc": 6.19050909, "delta": 2.66454e-15, "tier": "SUPPORTED-NUMERICAL", "stage": 4, "blue_sibling": "cyclotron_cool_massexponent=3"},
+    {"fn": "recomb_3body_exponent", "args": "", "calc": -4.5, "delta": 0.0, "tier": "SUPPORTED-NUMERICAL", "stage": 5, "blue_sibling": "recomb_3body_exponent_doubled=-9"},
+    {"fn": "recomb_3body_tratio", "args": "100 4", "calc": 1953125.0, "delta": 0.0, "tier": "SUPPORTED-NUMERICAL", "stage": 5, "blue_sibling": "recomb_3body_tratio_exponent_doubled=9,recomb_3body_density_power=2"},
+    {"fn": "penning_omega_minus", "args": "4.78942e8 6.18994e6", "calc": 40003.3, "delta": 4.36557e-11, "tier": "SUPPORTED-NUMERICAL", "stage": 3, "blue_sibling": "penning_omega_minus_denominator=2"},
+    {"fn": "penning_omega_plus", "args": "4.78942e8 6.18994e6", "calc": 478901654.46, "delta": "~5e-7 (ULP floor at 5e8 magnitude)", "tier": "ULP-limited; certified via invariance residual + blue sibling", "stage": 3, "blue_sibling": "penning_omega_plus_denominator=2"},
+    {"fn": "penning_invariance", "args": "4.78942e8 6.18994e6", "calc": 478941657.80, "delta": "~2e-7 (ULP floor at 5e8 magnitude); physics residual omega_c^2-(sum)=0.0", "tier": "ULP-limited; certified via residual=0.0", "stage": 3, "blue_sibling": "penning_invariance_exponent=2"}
+  ],
+  "blue_atoms": [
+    "pair_threshold_factor=6n", "pair_threshold_kinetic_factor=6", "pair_threshold_total_factor=7",
+    "transition_factor_1s2s_numerator=3", "transition_factor_1s2s_denominator=4",
+    "h1s2s_rydberg_factor_numerator=3",
+    "penning_omega_plus_denominator=2", "penning_omega_minus_denominator=2", "penning_invariance_exponent=2",
+    "cyclotron_cool_bexponent=-2", "cyclotron_cool_bratio_exponent=2", "cyclotron_cool_massexponent=3",
+    "recomb_3body_density_power=2", "recomb_3body_exponent_doubled=-9", "recomb_3body_tratio_exponent_doubled=9"
+  ],
+  "negative_control": {"fn": "cyclotron_cool_bratio", "args": "1 5", "expected": 0.04, "calc": 25.0, "tier": "FALSIFIED"},
+  "blue_max_verdict": "BLUE-MAX PASS — domain absorbed=true gate cleared (every green atom is backed by a blue algebraic-root sibling · @D g69)",
+  "absorbed": true,
+  "absorbed_pr": "demiurge #173",
+  "cpt_delta": "downstream wet-lab (non-blocking · @D d5)"
+}
