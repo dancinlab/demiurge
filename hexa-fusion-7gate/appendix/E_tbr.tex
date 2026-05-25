@@ -166,6 +166,26 @@ verify --expr openmc_tbr_pb157li("Pb-15.7Li","Li6-90at%","5M-histories") = 1.322
 Both values clear the gate-(f) criterion $\text{TBR}>1$ with margin and are in
 line with EU-DEMO HCLL self-sufficiency targets~\citep{fischer2019eudemoTBR}.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.74\linewidth]{figures/fig11_tbr_compare.pdf}
+\caption{The two reported TBR values against the self-sufficiency floor and
+the EU-DEMO HCLL target band. The pool run (blue, $1.3197\pm0.0005$, the
+first real transport after promotion from a transport-less stub) and the
+adapter-embed run (green, $1.3222\pm0.0004$, the registered atom
+\texttt{openmc\_tbr\_pb157li}, PR~\#1078) carry their $1\sigma$ Monte-Carlo
+error bars (too small to resolve at this zoom --- relative
+$\sim4\times10^{-4}$). Both clear the self-sufficiency floor
+$\text{TBR}=1.0$ (red dashed, the gate-(f) PASS criterion) with margin and
+both land at the upper edge of the EU-DEMO HCLL target band $\sim1.1$--$1.3$
+(shaded)~\citep{fischer2019eudemoTBR}. The $0.0025$ gap between the two bars
+is the documented effect of dropping the Mn/V/Mo/Si trace nuclides
+(\S\ref{app:tbr:caveats}), itself smaller than the engineering uncertainty
+of a 1-D witness geometry. The $y$-axis is zoomed to $0.95$--$1.40$ to make
+the floor margin and the bar separation visible.}
+\label{fig:tbr-compare}
+\end{figure}
+
 \subsection{Honest scope caveats}
 \label{app:tbr:caveats}
 

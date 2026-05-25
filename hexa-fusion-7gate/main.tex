@@ -531,6 +531,27 @@ record's scope caveats). Both numbers are physically sensible
 \paragraph{(e) HTS TF magnet via GetDP.} The detailed bridge is
 deferred to \S\ref{sec:bridge}.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.94\linewidth]{figures/fig15_gate_promote.pdf}
+\caption{The three wrap-and-fix promotions, before~$\to$~after, one row per
+gate. Each landed adapter began as a too-weak wrap (red, left:
+install-gated / stub / no-solve --- a false PASS that classified the
+\emph{environment}, not the \emph{physics}) and, run end-to-end on free
+pool hardware, surfaced a defect and was replaced by a real-solve
+hexa-native adapter (green, right: \texttt{gate\_type =
+"fusion-design-feasibility"}, a computed witness PASS). Gate~(c)
+Grad--Shafranov / FreeGS: a diverged hardcoded coil set with
+\texttt{stdout}-corrupted JSON $\to$ a converged \texttt{TestTokamak}
+equilibrium ($q_{95}\approx10.08$), PR~\#1075. Gate~(f) TBR / OpenMC: a
+transport-less gate-classifier $\to$ a $5\times10^{6}$-history transport,
+$\text{TBR}=1.3222\pm0.0004$, PR~\#1078. Gate~(e) HTS magnet / GetDP: a
+\texttt{shutil.which} presence-check $\to$ an axisymmetric A--$\phi$ FEM
+bridge, $B_{\mathrm{peak}}=1.48168$\,T, PR~\#1095. All three preserve
+\texttt{absorbed=false} (\S\ref{sec:defects}, Appendix~\ref{app:adapters}).}
+\label{fig:gate-promote}
+\end{figure}
+
 \subsection{Adapter defect catalog}
 \label{sec:defects}
 

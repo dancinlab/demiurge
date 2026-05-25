@@ -225,6 +225,26 @@ safety factor in the form that the engine can fold exactly. This is the
 single most load-bearing BLUE-MAX entry in the funnel: it converts a
 middle-magnitude precision wart into an exact algebraic identity.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.70\linewidth]{figures/fig13_qstar_precision.pdf}
+\caption{The $q^{*}$ constant-folding precision win, log-$y$ recompute
+residual. The literal form Eq.~\eqref{eq:app:qstar:literal} keeps the
+transcendental $\pi$ inside the $2\pi/\mu_0$ cluster; the constant folder
+cannot fold $\pi$ to a finite exact value, so the $2\pi/(4\pi\times10^{-7})$
+cancellation is done in floating point and leaves a middle-magnitude residue
+$|\Delta|\approx5.8\times10^{-6}$ (orange) --- not the float floor, but
+enough to fail a tight formal epsilon. The $\pi$-free form
+Eq.~\eqref{eq:app:qstar:pifree} carries the BLUE-MAX integer $5$ directly:
+no transcendental survives constant folding, so the recompute is
+$|\Delta|=0$ on every input (green; floored to the IEEE-754 double epsilon
+$\varepsilon_{\mathrm{mach}}\approx1.1\times10^{-16}$ for the log axis). The
+$\sim$10-order-of-magnitude collapse is the formal license to write the
+gate-(d) safety factor in the form the engine folds exactly
+(\texttt{q\_star\_constant}, \tierBlue, PR~\#1102).}
+\label{fig:qstar-precision}
+\end{figure}
+
 \subsection{The eight matched negative controls}
 \label{app:bluemax:negative}
 
@@ -256,6 +276,27 @@ the rubric discriminates the exact integer rather than passing any nearby
 value.}
 \label{tab:app:bluemax:neg}
 \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.96\linewidth]{figures/fig12_bluemax_pairs.pdf}
+\caption{The eight BLUE-MAX algebraic-root pairs, log-$y$ (the attested
+integers span $2$ to $22589$). For each atom the correct integer (blue,
+\tierBlue\ \textsc{Supported-Formal} at $|\Delta|=0$) is paired against its
+matched negative control asserting the true integer $\pm1$ (red, \tierRed\
+\textsc{Falsified} at $|\Delta|=1$): \texttt{q\_star\_constant} $5$ vs $6$,
+\texttt{bosch\_hale\_gamow\_factor} $3$ vs $4$,
+\texttt{solenoid\_axis\_bz\_half\_factor} $2$ vs $3$,
+\texttt{pb11\_reactivity\_moment\_e6\_scale\_exp} $6$ vs $7$,
+\texttt{sigma\_v\_dt\_e18\_scale\_exponent} $18$ vs $17$,
+\texttt{pb11\_resonance\_kev\_doubled} $296$ vs $297$,
+\texttt{pb11\_quadrature\_nodes} $600$ vs $601$, and
+\texttt{pb11\_gamow\_eg\_kev} $22589$ vs $22590$. The visible $\pm1$ gap on
+the small-integer atoms is exactly the deterministic distance the rubric
+pins: $8/8$ positives \textsc{Supported-Formal}, $8/8$ controls
+\textsc{Falsified} (PR~\#1102).}
+\label{fig:bluemax-pairs}
+\end{figure}
 
 The verbatim \textsc{Falsified} verdict blocks:
 \begin{lstlisting}

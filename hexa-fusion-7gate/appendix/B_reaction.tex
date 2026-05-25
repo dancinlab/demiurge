@@ -61,6 +61,23 @@ typo. It is recorded here (and in the body \S\ref{sec:taxonomy} aside) but
 \emph{not} in the adapter-defect catalog, since it was an authoring typo,
 not a stdlib defect.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.74\linewidth]{figures/fig14_theta_form.pdf}
+\caption{The $\theta$ division-vs-multiplication pitfall, charted as the
+reactivity ratio to the correct form. Writing the rational correction of
+Eq.~\eqref{eq:theta} as the \emph{divisor} of $T$ (green) reproduces
+\citet{boschhale1992} Table~VIII exactly ($1.0\times$, $|\Delta|=0$); the
+mis-transcription that multiplied instead of divided (red) produced a
+uniform $\approx0.25\times$ --- a $\sim$4$\times$-low reactivity at
+\emph{every} temperature. The suspiciously clean factor of $4$ sent the
+investigation chasing a phantom $4\pi$; the actual cause was the purely
+textual division-vs-multiplication typo ($/$ vs $\times$). The two forms
+share identical symbols, which is exactly why the error is invisible to a
+casual read and visible only in the numbers.}
+\label{fig:theta-form}
+\end{figure}
+
 % -------------------------------------------------------------------------
 \subsection{Coefficient tables --- all four channels}
 \label{app:bh-coeffs}
@@ -144,6 +161,26 @@ Table~VIII in the $\times10^{18}$ discriminating-$\varepsilon$ view
 $\varepsilon=10^{-9}$.}
 \label{tab:bh-tableVIII}
 \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.94\linewidth]{figures/fig10_boschhale_parity.pdf}
+\caption{Per-channel parity of the hexa kernel against the published
+\citet{boschhale1992} values, log-$y$ in each channel's registered scaled
+view so all five anchors are $\mathcal{O}(1)$--$\mathcal{O}(10^2)$. The
+hexa-computed bar (blue) and the Bosch--Hale published bar (green) coincide
+to display precision at every anchor: D--T $113.617$ ($10$\,keV) and
+$433.02$ ($20$\,keV) against Table~VIII (the two anchors of
+Table~\ref{tab:bh-tableVIII}), plus D--$^3$He $21.4$ ($50$\,keV,
+$\times10^{21}$), D(d,p)T $5.781$ and D(d,n)$^3$He $5.435$
+($15$\,keV, $\times10^{18}$). Each bar is annotated $|\Delta|=0$ at
+$\varepsilon=10^{-9}$. Only the five verify-atom anchors of this appendix
+are plotted; no off-anchor literature points are invented
+(commons @D~g3). Verify atoms \texttt{sigma\_v\_dt\_e18},
+\texttt{sigma\_v\_d3he\_e21}, \texttt{sigma\_v\_dd\_p},
+\texttt{sigma\_v\_dd\_n} (\tierGreen, PR~\#1012).}
+\label{fig:bh-parity}
+\end{figure}
 
 \begin{figure}[h]
 \centering
