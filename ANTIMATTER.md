@@ -12,7 +12,7 @@
 - [ ] ⓸냉각 — 전자냉각 / 공감냉각 시간상수 + 평형 온도 수치
 - [ ] ⓹합성 — p̄+e⁺→H̄ 3체 재결합률(스케일링) 폐형해
 - [ ] ⓺가둠 — Ioffe-Pritchard 자기최소 트랩 B장 + trap depth (RTSC getdp 4.0 · Wheeler 폐형해 **상속**) — verify
-- [ ] ⓻측정 — 반수소 1S-2S 전이주파수(QED/Rydberg) + 반양성자 g-factor → CPT 대칭 Δ
+- [x] ⓻측정 — 반수소 1S-2S 전이주파수 leading 폐형해 `f = (3/4)·R∞·c ≈ 2.4674 PHz` 🟢 verify (factor 3/4 + 수치, `transition_factor_1s2s`/`h1s2s_rydberg`, mini · hexa-lang PR #1005) · gap-to-measured = 환산질량 m_e/(m_e+m_p)≈0.99946 + QED/Lamb (15자리 재현 X, 정직 명시) · **CPT Δ(H vs H̄)는 실측 oracle 필요 ⇒ absorbed=false 유지** (@D d5)
 - [ ] 7-verb 풀파이프 1회 관통 (specify→structure→design→analyze→synthesize→verify→handoff) — 1개 공정 cell
 - [ ] 공장 설계 인계 doc — 트랩·소스 사양 record (`exports/antimatter/handoff/...`)
 - [ ] absorbed=true → ANTIMATTER absorbed (全 non-wet-lab gate PASS · @D d5)
@@ -20,8 +20,8 @@
 ## verify (🔵/🟢 push · @D g5 · demiurge 자산 필수)
 
 - [ ] V1 claim inventory + tier triage (🔵/🟢/🟡/🟠) — 7공정 물리량 목록화
-- [ ] V2 🔵 push — pair-threshold · Penning 3-freq · Rydberg/QED 1S-2S · Ioffe-P trap depth closed-form identity → `hexa verify --expr` + atlas register · **Penning 3-freq DONE → 🟢** (`penning_omega_plus`/`penning_omega_minus`/`penning_invariance` 등록 + `--from-verify` atlas fold; 폐형해이나 sqrt 포함 libm-class라 tier=🟢, 불변량 잔차=0.0 exact)
-- [ ] V3 🟢 push — libm/Newton 수치 재현 (감속 ladder · 재결합률 · 냉각 시간상수) · **Penning 3-freq 3-atom 🟢 |Δ|=0.0 (2026-05-25)**
+- [ ] V2 🔵 push — pair-threshold · Penning 3-freq · Rydberg/QED 1S-2S · Ioffe-P trap depth closed-form identity → `hexa verify --expr` + atlas register · **Penning 3-freq DONE → 🟢** (`penning_omega_plus`/`penning_omega_minus`/`penning_invariance` 등록 + `--from-verify` atlas fold; 폐형해이나 sqrt 포함 libm-class라 tier=🟢, 불변량 잔차=0.0 exact) · **pair-threshold DONE → 🔵 factor-6 + 🟢 수치** · **1S-2S Rydberg DONE → 🟢** (`transition_factor_1s2s`=3/4 + `h1s2s_rydberg`=(3/4)R∞c·1e-15 PHz, hexa-lang PR #1005)
+- [ ] V3 🟢 push — libm/Newton 수치 재현 (감속 ladder · 재결합률 · 냉각 시간상수) · **Penning 3-freq 3-atom 🟢 |Δ|=0.0 (2026-05-25)** · **1S-2S leading freq 🟢 2.46738 PHz |Δ|=8.88e-16 (2026-05-25)**
 - [ ] V4 tier ledger — V1+V2+V3 통합 + CPT Δ + absorbed=false 정직 명시
 
 ---
