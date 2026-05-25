@@ -1,0 +1,86 @@
+{
+  "domain": "ANTIMATTER",
+  "process_stage": "⓶감속 (deceleration)",
+  "title": "AD/ELENA deceleration-ladder relativistic kinematics (GeV → keV)",
+  "iso_stamp": "2026-05-25T10-43-31Z",
+  "verify_form": "hexa verify --expr <fn> <n> <v>  (hexa-native, mini host, POOL_DISABLE=1; NOT LLM self-judgement, @D g5)",
+  "host": "mini",
+  "pool_disable": true,
+  "constant": {
+    "m_p_c2_MeV": 938.272,
+    "source": "CODATA proton rest energy m_p c^2 = 938.272 MeV"
+  },
+  "relation": {
+    "kinetic_from_momentum": "T = sqrt((pc)^2 + (m_p c^2)^2) - m_p c^2   [MeV]",
+    "momentum_from_kinetic_inverse": "pc = sqrt(T^2 + 2*T*(m_p c^2))   [MeV/c]",
+    "non_relativistic_limit": "pc -> sqrt(2*(m_p c^2)*T)   (T << m_p c^2)"
+  },
+  "hexa_fns": [
+    {
+      "name": "rel_kinetic_from_p",
+      "args": "pc_MeV (1-arg)",
+      "definition": "sqrt(pc^2 + 938.272^2) - 938.272",
+      "tier_target": "🟢 SUPPORTED-NUMERICAL",
+      "home": "hexa-lang tool/verify_cli.hexa (canonical stdlib home, @D d3)"
+    },
+    {
+      "name": "rel_p_from_kinetic",
+      "args": "T_MeV (1-arg)",
+      "definition": "sqrt(T^2 + 2*T*938.272)",
+      "tier_target": "🟢 SUPPORTED-NUMERICAL",
+      "home": "hexa-lang tool/verify_cli.hexa"
+    }
+  ],
+  "ladder_rungs": [
+    {
+      "rung": "AD-in",
+      "given": "pc = 3500 MeV/c (≈3.5 GeV/c)",
+      "computed": "T = 2685.3110811482716 MeV (≈2.685 GeV)",
+      "verify_cmd": "hexa verify --expr rel_kinetic_from_p 3500 2685.3110811482716",
+      "verdict_verbatim": "verify --expr rel_kinetic_from_p(3500.0)=2685.31\n  calc   = 2685.31  ≈ expected 2685.31  (|Δ|=0.0 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+    },
+    {
+      "rung": "AD-out",
+      "given": "pc = 100 MeV/c",
+      "computed": "T = 5.313897512250946 MeV",
+      "verify_cmd": "hexa verify --expr rel_kinetic_from_p 100 5.313897512250946",
+      "verdict_verbatim": "verify --expr rel_kinetic_from_p(100.0)=5.3139\n  calc   = 5.3139  ≈ expected 5.3139  (|Δ|=0.0 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+    },
+    {
+      "rung": "ELENA-out",
+      "given": "T = 0.1 MeV (100 keV)",
+      "computed": "pc = 13.69906566156977 MeV/c",
+      "verify_cmd": "hexa verify --expr rel_p_from_kinetic 0.1 13.69906566156977",
+      "verdict_verbatim": "verify --expr rel_p_from_kinetic(0.1)=13.6991\n  calc   = 13.6991  ≈ expected 13.6991  (|Δ|=0.0 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+    }
+  ],
+  "inverse_roundtrip": {
+    "given": "T(AD-out) = 5.313897512250946 MeV -> pc",
+    "computed": "pc = 100.0 MeV/c (roundtrip closes)",
+    "verify_cmd": "hexa verify --expr rel_p_from_kinetic 5.313897512250946 100.0",
+    "verdict_verbatim": "verify --expr rel_p_from_kinetic(5.3139)=100.0\n  calc   = 100  ≈ expected 100.0  (|Δ|=7.38964e-13 ≤ ε=1e-9)\n  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+  },
+  "non_relativistic_limit": {
+    "relativistic_pc_at_T_0.1": 13.69906566156977,
+    "non_rel_sqrt_2mT": 13.698700668311576,
+    "abs_diff_MeV_per_c": 0.00036499325819505657,
+    "fractional_diff": 2.66e-05,
+    "physics": "The relativistic formula pc=sqrt(T^2+2*T*m) reduces to the non-rel sqrt(2*m*T) when T<<m_p c^2: the dropped T^2 term is ~T/(2m)~5e-5 of 2mT at T=100 keV. Agreement to ~5 significant figures CONFIRMS the reduction.",
+    "verify_probe_cmd": "hexa verify --expr rel_p_from_kinetic 0.1 13.698700668311576",
+    "verdict_verbatim": "verify --expr rel_p_from_kinetic(0.1)=13.6987\n  calc   = 13.6991  ≠ expected 13.6987  (|Δ|=0.000364993 > ε=1e-9)\n  tier   = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)",
+    "interpretation": "At the machine-precision gate ε=1e-9 the exact relativistic value is NOT bit-identical to the non-rel approximation (the T^2 term is nonzero), so the strict probe is 🔴 — this is the EXPECTED honest result. The physical reduction holds at ~5-sig-fig level (Δ=3.6e-4 MeV/c)."
+  },
+  "negative_control": {
+    "claim": "rel_kinetic_from_p(3500) == 2700 MeV (WRONG; true T = 2685.311 MeV)",
+    "verify_cmd": "hexa verify --expr rel_kinetic_from_p 3500 2700.0",
+    "verdict_verbatim": "verify --expr rel_kinetic_from_p(3500.0)=2700.0\n  calc   = 2685.31  ≠ expected 2700.0  (|Δ|=14.6889 > ε=1e-9)\n  tier   = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)",
+    "purpose": "Confirms the verifier rejects a wrong claim (anti-tautology) — the 🟢 verdicts are discriminating, not vacuous."
+  },
+  "atlas_register": {
+    "form": "hexa verify --expr rel_kinetic_from_p 3500 2685.3110811482716 --absorb",
+    "result": "absorb = → atlas/inbox/verified_equations.tape (@D verified_rel_kinetic_from_p_3500_0__2685_31, g7 inbox; 🟢 inbox-fold, not committed — shared sibling artifact)"
+  },
+  "tier_summary": "🟢 SUPPORTED-NUMERICAL ×4 (3 ladder rungs + inverse roundtrip) · 🔴 FALSIFIED ×2 (negative control + strict non-rel-limit probe — both EXPECTED). All verdicts hexa-native (mini, POOL_DISABLE=1); no LLM self-judgement.",
+  "hexa_lang_pr": "dancinlab/hexa-lang#1014 (MERGED)",
+  "governance": ["@D g5 (verify via hexa CLI, verdict verbatim)", "@D d3 (impl in canonical stdlib home)", "@D d6 (first-principles physics, no fabrication)", "@D d9 (commit only explicit files, no sibling sweep)"]
+}

@@ -2,6 +2,40 @@
 
 Append-only history sister of `ANTIMATTER.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T10:43:31Z — ⓶감속 AD/ELENA ladder verify (상대론 감속 ladder 🟢 · 비상대론 극한 환원)
+
+- [x] 물리 도출 — 상대론 정확식 E=√((pc)²+(m_p c²)²) ⇒ T=√((pc)²+(m_p c²)²)−m_p c² · 역식 pc=√(T²+2·T·m_p c²) · m_p c²=938.272 MeV (CODATA)
+- [x] 수치 — AD-in pc=3500→T=2685.3110811482716 MeV(≈2.685 GeV) · AD-out pc=100→T=5.313897512250946 MeV · ELENA-out T=0.1 MeV(100 keV)→pc=13.69906566156977 MeV/c · 비상대론 극한 √(2·m_p c²·T)=13.698700668311576 MeV/c (Δ=3.6e-4 MeV/c, ~3e-5 frac → 환원 확인)
+- [x] hexa verify CLI (host=mini · POOL_DISABLE=1) — `rel_kinetic_from_p(pc_MeV)`=√(pc²+938.272²)−938.272 · `rel_p_from_kinetic(T_MeV)`=√(T²+2·T·938.272) 함수 추가 (help+dispatch+_is_float_fn) 후 bin/hexa-verify 재빌드 (additive diff 36 insertions, sibling fn 무손실 @D d9)
+- [x] verdict (verbatim, AD-in T(pc)):
+      `verify --expr rel_kinetic_from_p(3500.0)=2685.31`
+      `  calc   = 2685.31  ≈ expected 2685.31  (|Δ|=0.0 ≤ ε=1e-9)`
+      `  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)`
+- [x] verdict (verbatim, AD-out T(pc)):
+      `verify --expr rel_kinetic_from_p(100.0)=5.3139`
+      `  calc   = 5.3139  ≈ expected 5.3139  (|Δ|=0.0 ≤ ε=1e-9)`
+      `  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)`
+- [x] verdict (verbatim, ELENA-out pc(T)):
+      `verify --expr rel_p_from_kinetic(0.1)=13.6991`
+      `  calc   = 13.6991  ≈ expected 13.6991  (|Δ|=0.0 ≤ ε=1e-9)`
+      `  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)`
+- [x] verdict (verbatim, 역변환 roundtrip pc(T_AD-out)→100):
+      `verify --expr rel_p_from_kinetic(5.3139)=100.0`
+      `  calc   = 100  ≈ expected 100.0  (|Δ|=7.38964e-13 ≤ ε=1e-9)`
+      `  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)`
+- [x] 비상대론 극한 엄밀 probe (verbatim) — rel pc(0.1) vs √(2mT): T²항≠0 ⇒ ε=1e-9에서 불일치 (정직 🔴; 물리적 환원은 ~5자리 성립):
+      `verify --expr rel_p_from_kinetic(0.1)=13.6987`
+      `  calc   = 13.6991  ≠ expected 13.6987  (|Δ|=0.000364993 > ε=1e-9)`
+      `  tier   = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)`
+- [x] negative control (verbatim) — `rel_kinetic_from_p(3500)=2700` (오답; 참값 2685.311) → 🔴 (검증기 변별력 확인):
+      `verify --expr rel_kinetic_from_p(3500.0)=2700.0`
+      `  calc   = 2685.31  ≠ expected 2700.0  (|Δ|=14.6889 > ε=1e-9)`
+      `  tier   = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)`
+- [x] atlas — `--absorb` → atlas/inbox/verified_equations.tape (🟢 inbox-fold, @D verified_rel_kinetic_from_p_3500_0__2685_31; shared sibling artifact라 커밋 X)
+- [x] record — `exports/antimatter/verify/2026-05-25T10-43-31Z/decel_ladder_2026-05-25T10-43-31Z.json`
+- [x] hexa-lang PR #1014 MERGED (rel_kinetic_from_p / rel_p_from_kinetic) · demiurge PR 별도
+- [ ] absorbed — ⓶감속 비-wet-lab gate PASS; 全 공정 gate PASS 시 도메인 absorbed (@D d5)
+
 ## 2026-05-25T09:13:09Z — ⓻측정 1S-2S Rydberg verify (leading 폐형해 🟢 · CPT Δ absorbed=false)
 
 - [x] 물리 도출 — E_n = − R∞·h·c/n² → ΔE_1S2S = R∞·h·c·(1/1²−1/2²) = (3/4)·R∞·h·c → f = (3/4)·R∞·c
