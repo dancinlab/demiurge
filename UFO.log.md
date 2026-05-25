@@ -2,6 +2,56 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T00:30:00Z — Phase A Stage-2 cruise MHD 추진 closed-form verify 🟢 LANDED
+
+Phase A Stage-2 cruise (MHD + D-T/p-¹¹B fusion · 고도 20~200 km). FUSION 자산 (BLUE-MAX 🔵 audit PR#1102 · MHD F=J×B substrate) 위에 MHD 추력 `F_MHD = J×B×V_ch` (Lorentz body force `f = J×B` · generalized Ohm `J = σ(E−u×B)`) 의 numerical recompute 를 `hexa verify --expr triple_product` 3건 (저/중/고고도 B·J 가변) 으로 🟢 SUPPORTED-NUMERICAL 도장 + atlas folded. 650 kg 비행체 cruise 채널 (V_ch=0.096 m³ · S1+S4 대각 페어) 설계 SSOT = `UFO/design/integrated-vehicle-design.md` §2 상속.
+
+- [x] `UFO/verify/stage2-cruise-mhd.md` (190줄) — §0 TL;DR · §1 closed-form (`f=J×B` · `F=J·B·V_ch`) · §2 numerical recompute 3건 verbatim · §3 atlas register · §4 Stage 전이 (Stage-1 20km hover→Stage-2 MHD→Stage-3 200km γ-rocket) · §5 cross-link/deferred · §6 governance
+- [x] `triple_product` 우회 (per @D d4 single generic dispatch) — MHD thrust 전용 atom 미등록 → `F=J·B·V` 순수 product 를 FUSION F2 Lawson `triple_product(a,b,c)=a·b·c` 동일 대수 root 로 identical numerical recompute
+- [x] verbatim verdicts (g5 · LLM self-judge 없음):
+
+```
+verify --expr triple_product(200000.0,5.0,0.096)=96000.0
+  calc   = 96000.0  ≈ expected 96000.0  (|Δ|=0.0 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+  absorb = · already in atlas — idempotent skip (default · @D g69)
+
+verify --expr triple_product(150000.0,4.0,0.096)=57600.0
+  calc   = 57600.0  ≈ expected 57600.0  (|Δ|=0.0 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+  absorb = · already in atlas — idempotent skip (default · @D g69)
+
+verify --expr triple_product(100000.0,3.0,0.096)=28800.0
+  calc   = 28800.0  ≈ expected 28800.0  (|Δ|=0.0 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+  absorb = · already in atlas — idempotent skip (default · @D g69)
+```
+
+- [x] atlas register verbatim (folded @F · auto-absorb default @D g69):
+
+```
+@F verified-triple_product-num :: embedded.gen.hexa:30535
+@F verified-triple_product-num = triple_product(200000.0,5.0,0.096) = 96000.0 :: formula [d=2026-05-25 active]
+  tier = "🟢 SUPPORTED-NUMERICAL"
+  verified-by = "hexa verify --expr triple_product 200000.0,5.0,0.096 96000.0"
+  cite = "TECS-L n6-rep Tier2 — hexa-native libm-class numerical recompute (ε=1e-9)"
+  provenance = "tool/atlas_cli.hexa register --from-verify (direct node-gen → embedded.gen.hexa SSOT; 🟢 numerical)"
+```
+
+- [x] atlas hash `663698a06bc6f967fa2855a77bc4e399aae465dda5ca948b3c7352dbf98ce7fb` (16134 nodes) — atom 기등록 idempotent · hexa-lang `embedded.gen.hexa` SSOT 코드 변경 0 (별 repo 동시 점유 안전 · atlas runtime fold-only)
+- [x] 합성 tier — `J·B·V` product 🟢 SUPPORTED-NUMERICAL · `f=σ(E−u×B)×B → F=J×B×V` 물리 합성식 🟡 SUPPORTED-BY-CITATION (Sutton-Sherman · Jackson §5 · FUSION.md §2 (d)(e)) 정직 표기
+- [x] 추력/무게 마진 — F_MHD_total(저고도)=192 kN / m·g(650kg)=6.38 kN ≈ 30배 · 고고도 200 km 28.8 kN/channel = Stage-3 전이 임계 정량
+- [x] `UFO.md` Phase A Stage-2 milestone → [x] flip (LANDED PR pending 🟢)
+- [x] explicit `git add` per @D d9 — UFO/verify/stage2-cruise-mhd.md + UFO.md + UFO.log.md (인접 worktree agent index 격리)
+- [x] @D d2 준수 — MHD sim PASS = "cruise 채널 설계 타당", 결코 "Q>1 달성"; 고도 전이 falsifier (F-FUSION-{1,2,3}) 표면화 (물리 한계 framing 없음)
+- [x] @D d3 준수 — 구현 코드 0줄 (closed-form 값 FUSION verified atom 인용 · stdlib `mhd_thrust` atom 등록은 별 repo deferred)
+
+deferred:
+- [ ] stdlib `mhd_thrust(J,B,V)` (또는 `lorentz_body_force`) atom 등록 → hexa-lang 별 PR · 등록 시 §2.3 `f=σ(E−u×B)×B` 합성 행 🟡 → 🟢 자동 escalation
+- [ ] σ_e(altitude) 프로파일 closed-form (ionosphere/thermosphere IRI-class) → MHD 추력 고도 의존 정량 (verb-4 CFD+MHD coupled · LC-2)
+- [ ] F-FUSION-{1,2,3} falsifier 정식 preregister (Stage-2 verb-4/verb-6 진입 시)
+- [ ] NEXUS.tape reuse edge — FUSION `triple_product` → UFO Stage-2 MHD thrust (제공자/소비자 그래프)
+
 ## 2026-05-26T00:00:00Z — verb-4 analyze ⟲ LANDED (CFD+EM+응력+열 통합 분석 manifest)
 
 Phase C 4/7 — verb-3 design 의 closed-form 인계 set (§6) 을 입력으로 4 물리 도메인 (CFD · EM · 응력 · 열) 통합 sim 의 **분석 계획 + 지배방정식 + Re/격자/수렴 기준 + ⟲ coupling 반복 수렴 기준** manifest 산출. 무거운 본해는 pool/cloud micro-exp 으로 위임 (@D d7 deferred · ad-hoc python 금지 · sim 은 .hexa only). 기존 verified atom (RTSC getdp · UFO Stage-1 PR#191) 만 인용.
