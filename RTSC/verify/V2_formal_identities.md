@@ -348,11 +348,51 @@ g5 verbatim mandate: verdict 변형 금지. 본 task 가 "5+ identity 🔵 atlas
 
 ---
 
+---
+
+## V2.1 갱신 (2026-05-25) — gap CLOSED · supercon fns 이제 live
+
+> V2 본문(2026-05-24)은 `hexa verify` calculator 에 supercon fn 0개 → 7/7 🟠 INSUFFICIENT 의 정직한 gap finding 이었다. 그 "path forward" (verify_cli.hexa::_recompute 에 supercon fn 추가) 가 **이후 실현됨** (hexa-lang PR #745 supercon fns · float calc-path). 2026-05-25 재호출로 확인:
+
+| identity | V2 본문 (05-24) | V2.1 현재 (05-25) | verbatim |
+|---|---|---|---|
+| `allen_dynes_tc` | 🟠 (no path) | **🟢** (calc-path live) | `allen_dynes_tc(2.479,1096.6,0.1)=179.779 · \|Δ\|=2.3e-13 · 🟢 SUPPORTED-NUMERICAL` |
+| `allen_dynes_full` (f₁f₂) | (미존재) | **🟢** (신규 4-op) | `allen_dynes_full(2.479,1096.6,1523.5,0.1)=233.173 · \|Δ\|=1.0e-10 · 🟢 SUPPORTED-NUMERICAL` |
+| `mcmillan_tc` | 🟠 (expected) | **🟢** (calc-path live) | `mcmillan_tc(1.787,590.1,0.1)=64.7046 · \|Δ\|=9.5e-12 · 🟢 SUPPORTED-NUMERICAL` |
+| `bcs_gap_ratio` | 🟠 (verbatim) | **🟢** (0-op constant 2π·e^{−γ}) | `bcs_gap_ratio()=3.52775 · \|Δ\|=9.1e-14 · 🟢 SUPPORTED-NUMERICAL` |
+| `beenet_grid_bins` | 🟠 (verbatim) | (미재확인 — V2.2 후보) | — |
+| `migdal_ratio` | 🟠 (verbatim) | (미재확인 — V2.2 후보) | — |
+| `eliashberg_lambda` | 🟠 (verbatim) | (numerical integral · α²F input 의존 → 🟢 ceiling) | — |
+
+**verbatim (대표 4건 · g5)**:
+```
+verify --expr allen_dynes_tc(2.479,1096.6,0.1)=179.779
+  calc   = 179.779  ≈ expected 179.779  (|Δ|=2.27374e-13 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+
+verify --expr allen_dynes_full(2.479,1096.6,1523.5,0.1)=233.173
+  calc   = 233.173  ≈ expected 233.173  (|Δ|=1.01608e-10 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+
+verify --expr mcmillan_tc(1.787,590.1,0.1)=64.7046
+  calc   = 64.7046  ≈ expected 64.7046  (|Δ|=9.52127e-12 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+
+verify --expr bcs_gap_ratio()=3.52775
+  calc   = 3.52775  ≈ expected 3.52775  (|Δ|=9.10383e-14 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+```
+
+**tier 정정 (정직 note)**: 이 식들은 V2 본문이 "🔵 SUPPORTED-FORMAL 도달 가능"으로 적었으나, 현 calc-path 는 **libm-class numerical** (closed-form 식을 float libm 으로 평가) → 실제 verdict 는 **🟢 SUPPORTED-NUMERICAL** 이다. `bcs_gap_ratio` 의 0-op 상수(2π·e^{−γ}=3.52775)도 verify CLI 가 libm exp 로 평가하므로 🟢 (순수 symbolic 🔵 가 아님). 즉 **gap 은 닫혔으되 도달 tier 는 🟢** — V1 §E 의 "🔵 closed-form" 분류는 식의 *성질* 이고, verify CLI 평가 *결과* 는 🟢 (둘이 다른 축). V3 ledger 가 이 🟢 들을 candidate 별로 종합한다.
+
+**해석**: V2 의 main outcome("calculator gap 의 정량 식별")은 **목적 달성** — 그 gap 이 닫혀 V3 의 15/15 🟢 가 가능해졌다. V2(gap finding) → V3(gap 실현) → V4(통합) 의 escalation 서사가 완결.
+
+---
+
 ## Provenance
 
-- atlas hash at run: `8724f696cdce090b1fc88abae72b7e963085e62e553b143a9ba7b8bb95769d6f` (16083 nodes)
-- worktree: `agent-a719bc9334148ca68` (iso=worktree per d9)
-- branch: `worktree-agent-a719bc9334148ca68`
-- timestamp: 2026-05-24T07:06Z
+- atlas hash at run: `8724f696cdce090b1fc88abae72b7e963085e62e553b143a9ba7b8bb95769d6f` (16083 nodes · V2 본문 시점)
+- worktree: `agent-a719bc9334148ca68` (iso=worktree per d9 · V2 본문) · V2.1 갱신 = `feat/rtsc-verify-v2v4`
+- timestamp: 2026-05-24T07:06Z (본문) · 2026-05-25 (V2.1 갱신)
 - domain: RTSC (room-temperature superconductivity)
-- governance: @D d1 (non-wet-lab → completed-form: V2 = closed-form replay) · @D d2 (wall surface paths, never concede: gap finding 으로 path forward 명시) · g5 (verdict verbatim) · g_atlas_binary_builtin (atlas register PR-only)
+- governance: @D d1 (non-wet-lab → completed-form: V2 = closed-form replay) · @D d2 (wall surface paths, never concede: gap finding 으로 path forward 명시 → V2.1 에서 실현) · g5 (verdict verbatim) · g_atlas_binary_builtin (atlas register PR-only)

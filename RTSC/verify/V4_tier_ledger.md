@@ -5,6 +5,7 @@
 > 본 문서는 재-도출이 아니라 **통합 인덱스**: V1 52-claim 분류 + V2→V3 escalation 서사 + 🟠 wet-lab deferred → M9 handoff. 세부는 sibling 문서가 SSOT.
 >
 > Stamp: 2026-05-24 · §9.14 fanout 4/8 LANDED + h3cl 8³q converged + CaH₆/H₃S anchor.
+> **2026-05-25 갱신**: N5 funnel sweep 5-candidate(h3o·h3si·h3f·h3po·h3br) LANDED + V3.1 15/15 🟢 + h3br(group-17 critical test) CLOSED → §V4.1.
 
 ## V-series 흐름 (escalation 서사)
 
@@ -67,8 +68,58 @@ V1 §I + §C6 의 🟠 항목 중 **M9 wet-lab handoff** 대상 (per @D d5: wet-
 - **absorbed = false 유지**. 새 @D d5("absorbed=true ⇔ all non-wet-lab gates PASS")로 재정의됐어도, RTSC §8.9 의 핵심 게이트(Tc ≥ 270K **ambient**)는 현재 어떤 후보도 **예측조차 통과 못 함** (h3cl 140K @ high-P · h3o 191K = unstable upper-bound). 즉 non-wet-lab gate 자체가 미통과 → absorbed flip 불가. d5 인버트는 "측정 대기"가 아니라 "non-wet-lab 게이트 미충족"이 차단 사유임을 명확히 한다 (R4 invariant intact).
 - V-series(V1–V4)는 **evidence ledger** 이지 absorbed 승급 경로가 아님 — Section A anchor 정합은 *파이프라인의 measurement-grade 능력* 증거일 뿐, 후보의 RTSC status 증거가 아니다.
 
+---
+
+## V4.1 — N5 funnel sweep 통합 (2026-05-25)
+
+> `exports/sweep/rtsc-n5funnel-sweep-2026-05-25/` LANDED. V1 §C6 의 PENDING 4/8 fanout 중 **h3br (group-17 critical test) CLOSED** + N5 funnel 5-candidate verify 완료. V3.1 가 5건 🟢 추가 → numerical 총 15건.
+
+### N5 5-candidate 최종 tier (전부 🟢 SUPPORTED-NUMERICAL · 산술 정합)
+
+| 후보 | group | λ_BZ | ω_log(K) | Tc(μ0.10) | tier | 안정성 | M8 | 비고 |
+|---|---|---|---|---|---|---|---|---|
+| **h3br** | 17 | 4.4191 | 530.7 | 109.8 | 🟢 | ✅ 16/16 stable | 1/3 | **N5 핵심** — strong-λ·stable·Tc-ceiling |
+| h3o | 16 | 2.479 | 1096.6 | 179.8 (simple) / 233 (f₁f₂) | 🟢 | ⚠ 16/16 q imag | 0/3 | 최고 Tc but **unstable** · SSCHA pending |
+| h3si | 14 | 1.787 | 590.1 | 78.2 | 🟢 | ✅ stable | 1/3 | stable·weak-λ |
+| h3f | 17 | 0.807 | 658.6 | 31.4 | 🟢 | ✅ stable | 1/3 | stable·weak-λ |
+| h3po | 16 | 3.052 | 265.2 | 48.1 | 🟢 | ⚠ soft phonon·6q miss | 0/3 | strong-λ·low-Tc |
+
+### V1 §C6 PENDING → 부분 CLOSED
+
+- **h3br CLOSED** (group-17 critical test): λ=4.42 극단 강결합 + 16/16 q ALL stable. V1 §B9/§H1 의 "h3br λ likely > 1.5 if under-conv repeats" 가설 → **CONFIRMED** (λ=4.42 ≫ 1.5, group-17 stable 형제). 단 ω_log 531K moderate → Tc 110K 천장 = **'strong-λ ↛ high-Tc'** 추가 증거 (RTSC §10 d7 wall 강화). 잔여 PENDING: h3n·h3p·h3as (N5 sweep 미포함).
+
+### 갱신된 통합 tier 분포 (V1 52 + N5 15 numerical 통합)
+
+V3.1 의 N5 5건은 V1 §B(novel DFT)와 동일 claim-class (DFT-derived Tc 의 산술 정합) → **🟢 numerical 축에 +5** (30→**35**). 나머지 tier 변동 없음:
+
+| tier | V4 본문(05-24) | V4.1(05-25) | Δ | 비고 |
+|---|---:|---:|---:|---|
+| 🔵 SUPPORTED-FORMAL | 14 | 14 | 0 | symbolic (V2.1 의 supercon fns 는 calc-path 가 libm → 🟢 평가, 🔵 아님) |
+| 🟢 SUPPORTED-NUMERICAL | 30 | **35** | +5 | N5 funnel 5-candidate (h3o·h3si·h3f·h3po·h3br) DFT-Tc 재검증 (15/15 V3.1) |
+| 🟡 SUPPORTED-BY-CITATION | 12 | 12 | 0 | — |
+| 🟠 INSUFFICIENT/DEFERRED | 6 | 6 | 0 | h3br CLOSED 했으나 h3n·h3p·h3as 잔여 + N5 M8(0/5 미통과) → net 0 |
+| 🔴 FALSIFIED | 3 | 3 | 0 | (N5 raw verdict round-artifact 🔴 는 effective 🟢 → 분포 미반영) |
+| ⚪ SPECULATION-FENCED | 4 | 4 | 0 | h3o SSCHA 안정화 가설 (H3, pending afe7b61) |
+| **합** | **~52** | **~57** | +5 | primary tier 기준 |
+
+### M8 게이트 honest 결산 (N5 funnel)
+
+- **M8(<50GPa AND stable AND Tc>200K) = 0/5** — 어떤 N5 후보도 미통과. honest negative sweep (`g_micro_exp_honest_sweep`):
+  - h3si·h3f = stable-weak (Tc 31–78K)
+  - h3br = stable-strong-λ(4.42) **but Tc 110K 천장** (ω_log 병목)
+  - h3o·h3po = strong-λ **but unstable** (imaginary mode / soft phonon)
+- **trade-off 발견**: stability ↔ phonon-energy-scale(ω_log). 단순 coupling-strength(λ)가 아님 — λ 포화 시 ω_log 가 Tc 병목. d2 breakthrough paths (ledger.json): h3o SSCHA · h3si group-14 doping · h3br ω_log 상승(lighter 치환) · h3o pressure scan.
+- **h3br 이 N5 중 가장 유망한 base** — stability + strong-λ 동시 만족 첫 후보. ω_log 만 올리면(λ 이미 포화) Tc∝ω_log 선형 상승 여지.
+
+### h3o anharmonic 정직 한계 (g5 · honest)
+
+- h3o harmonic Tc(180K simple / 233K full-f₁f₂)는 **artifact** — `h3o_stableq_lambda.json` census: **16/16 q 전부 imaginary mode**(3~6개씩, 최저 −1133cm⁻¹). Γ 단독 −682cm⁻¹ 아님. strict stable-q-only → 남는 q 0개 → λ=0 → **Tc 하한 0K**.
+- **anharmonic SSCHA Tc 미확정** — concurrent agent afe7b61(ubu-1)가 SSCHA 재정규화 진행 중. V-series 의 h3o 🟢 는 "(λ,ω_log)→Tc 산술 정합"만 검증한 것이지 h3o 가 180K 초전도체임을 뜻하지 **않는다**. SSCHA 종료 시 V3.1/V4.1 재실행 필요.
+
+---
+
 ## SSOT cross-link
-- [[V1_claim_inventory]] (52-claim · 10-section) · [[V2_formal_identities]] (replay + gap) · [[V3_numerical_recompute]] (10/10 🟢)
-- 수치 권위: `exports/material_discovery/rtsc_*.json` · 현재 상태: `RTSC.md` §3·§9.14·§9.15·§10.1
-- governance: @D d1(완료-형) · d2(wall→path) · d5(absorbed gate) · d6(physics breaks ML wall) · g5(verdict verbatim)
-- 갱신 트리거: §9.14 fanout 종료(h3br) · SrAuH₃ N5 funnel 종료 시 V1→V4 재실행
+- [[V1_claim_inventory]] (52-claim · 10-section) · [[V2_formal_identities]] (replay + gap + V2.1 gap CLOSED) · [[V3_numerical_recompute]] (15/15 🟢 · V3.1 N5)
+- 수치 권위: `exports/material_discovery/rtsc_*.json` · `exports/sweep/rtsc-n5funnel-sweep-2026-05-25/*.json` · 현재 상태: `RTSC.md` §3·§9.14·§9.15·§10.1
+- governance: @D d1(완료-형) · d2(wall→path) · d5(absorbed gate) · d6(physics breaks ML wall) · g5(verdict verbatim) · g_micro_exp_honest_sweep(N5 honest negative)
+- 갱신 트리거: h3o SSCHA(afe7b61) 종료 → h3o anharmonic Tc 확정 시 V3.1/V4.1 재실행 · h3n·h3p·h3as fanout 종료 · SrAuH₃ N5 funnel 종료 시 V1→V4 재실행
