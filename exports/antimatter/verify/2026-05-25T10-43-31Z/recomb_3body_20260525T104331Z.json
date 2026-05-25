@@ -1,0 +1,66 @@
+{
+  "domain": "antimatter",
+  "verb": "verify",
+  "kind": "three_body_recombination_rate_scaling",
+  "milestone": "⓹합성 — p̄+e⁺→H̄ 3체 재결합률(스케일링) 폐형해",
+  "stamp": "20260525T104331Z",
+  "iso_stamp": "2026-05-25T10-43-31Z",
+  "producer": "hexa verify (bin/hexa-verify, compiled from tool/verify_cli.hexa @ origin/main d73b356d)",
+  "verify_host": "mini (POOL_DISABLE=1)",
+  "absorbed": false,
+  "provisional": false,
+  "channel": "p-bar + e+ + e+ -> H-bar + e+  (three-body recombination; the second positron is the third body that carries off the binding energy, dominates radiative recombination in cold trapped plasma)",
+  "physics": {
+    "rate_coefficient_scaling": "alpha_3b proportional to e^10 / ( m_e^(1/2) (k_B T)^(9/2) )  =>  alpha_3b ~ n_e * T^(-9/2)",
+    "rate_per_antiproton_scaling": "rate/p-bar ~ alpha_3b * n_e^2 ~ n_e^2 * T^(-9/2)",
+    "contrast_radiative": "radiative recombination p-bar+e+ -> H-bar + gamma scales ~ T^(-1/2) (Kramers) — far weaker T-dependence",
+    "closed_form_invariants": {
+      "temperature_exponent": "-9/2 = -4.5 (exact rational)",
+      "density_power": "2 (exact integer: one captured e+ x one spectator e+)"
+    }
+  },
+  "numeric_example": {
+    "claim": "alpha_3b(4 K) / alpha_3b(100 K) = (100/4)^4.5 = 25^4.5 = 5^9",
+    "value": 1953125.0,
+    "note": "ALPHA/ATRAP anchor: cooling positron plasma from 100 K to 4 K boosts the 3-body recombination coefficient by ~1.95e6"
+  },
+  "hexa_fns_added": [
+    "recomb_3body_density_power(n) = 2*n  (integer closed-form; n=1 => 2)",
+    "recomb_3body_exponent() = -9/2 = -4.5  (0-arg float constant)",
+    "recomb_3body_tratio(T_hi, T_lo) = (T_hi/T_lo)^4.5  (2-arg float)"
+  ],
+  "verify_forms": [
+    "hexa verify --expr recomb_3body_density_power <n> <v>   (integer, 🔵 FORMAL)",
+    "hexa verify --expr recomb_3body_exponent <v>            (0-arg float, eps=1e-9)",
+    "hexa verify --expr recomb_3body_tratio <T_hi> <T_lo> <v> (2-arg float, eps=1e-9)"
+  ],
+  "verdicts_verbatim": [
+    "verify --expr recomb_3body_density_power(1)=2  |  calc = 2  == expected 2  |  tier = 🔵 SUPPORTED-FORMAL  (hexa-native closed-form, g_self_verify · TECS-L Tier1)",
+    "verify --expr recomb_3body_exponent()=-4.5  |  calc = -4.5  ≈ expected -4.5  (|Δ|=0.0 ≤ ε=1e-9)  |  tier = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)",
+    "verify --expr recomb_3body_tratio(100.0,4.0)=1953125.0  |  calc = 1953125.0  ≈ expected 1953125.0  (|Δ|=0.0 ≤ ε=1e-9)  |  tier = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+  ],
+  "negative_control": {
+    "purpose": "prove deterministic recompute (not LLM self-judgement) — a wrong claimed value must FALSIFY",
+    "cases_verbatim": [
+      "verify --expr recomb_3body_density_power(1)=3  |  calc = 2  != expected 3  |  tier = 🔴 FALSIFIED  (calc deterministically disagrees — TECS-L result-agnostic closed negative)",
+      "verify --expr recomb_3body_exponent()=-4.0  |  calc = -4.5  ≠ expected -4.0  (|Δ|=0.5 > ε=1e-9)  |  tier = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)",
+      "verify --expr recomb_3body_tratio(100.0,4.0)=2000000.0  |  calc = 1953125.0  ≠ expected 2000000.0  (|Δ|=46875.0 > ε=1e-9)  |  tier = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)"
+    ]
+  },
+  "verdict_tier": "🔵 SUPPORTED-FORMAL (density power 2) + 🟢 SUPPORTED-NUMERICAL (exponent -4.5, T-ratio 25^4.5)",
+  "atlas_register": "SKIPPED — `hexa atlas register --from-verify` routes through the INSTALLED hexa binary (~/.hx/bin/hexa) whose verify_cli lacks the new fn until a full hx install; ran 🟠 INSUFFICIENT (no calc path in installed binary). register is optional per task. The fns are now MERGED to hexa-lang origin/main (PR #1018, commit 06b61657); reproducible from origin/main verify_cli.hexa + tool/build_hexa_verify.sh, and registerable after the next `hx install`.",
+  "hexa_lang_pr": "dancinlab/hexa-lang #1018 MERGED (squash, commit 06b61657) — base origin/main; rebased 2x forward-merging sibling fns (#1014 rel_*, #1015 cyclotron_cool_*) per @D d9. #1016 superseded/closed due to concurrent-main conflict.",
+  "citations": [
+    "Mansbach & Keck 1969, Phys. Rev. 181:275 — Monte-Carlo / variational theory of electron-ion three-body recombination in a plasma; T^(-9/2) coefficient scaling.",
+    "Glinsky & O'Neil 1991, Phys. Fluids B 3:1279 — guiding-center three-body recombination in a strongly magnetized cold plasma (positron/antiproton regime).",
+    "Robicheaux 2006, J. Phys. B 39:3303 — simulations of antihydrogen formation (TBR) in ALPHA/ATRAP nested Penning traps.",
+    "Gabrielse et al. 1988 / ATHENA-ATRAP-ALPHA program — cold antihydrogen via three-body recombination of trapped p-bar with cold e+."
+  ],
+  "constraints_honored": [
+    "@D g5 — verdict via hexa CLI, verbatim, never self-judged",
+    "@D d6 — first-principles closed-form, never fabricated; no calc path => honest 🟠 (not hit here, calc path exists)",
+    "@D d9 — committed ONLY explicit own files; siblings' verify_cli.hexa fns (penning_*, pair_threshold_*, transition_factor_1s2s, h1s2s_rydberg) preserved, never swept",
+    "verify host = mini only (POOL_DISABLE=1)",
+    "demiurge sims = .hexa only — fns authored in tool/verify_cli.hexa, compiled via tool/build_hexa_verify.sh (-lm/-ldl via clang)"
+  ]
+}
