@@ -2,6 +2,34 @@
 
 Append-only history sister of `ANTIMATTER.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T09:13Z — ⓵생성 pair-threshold verify (🔵 SUPPORTED-FORMAL + 🟢 SUPPORTED-NUMERICAL)
+
+반양성자 쌍생성(pair-production) 문턱 — **p + p → p + p + p + p̄** (고정표적, 한 양성자 정지) — 을 로런츠 불변 Mandelstam s 로 폐형해 유도 + hexa CLI verify. 바리온수 보존이 여분 양성자를 강제 → 종말상태 4 바리온.
+
+- [x] 폐형해 유도 — 문턱에서 종말 4입자가 CM에서 정지 ⇒ s_min=(4 m_p c²)². 고정표적 s=2 m_p c²·E_beam+2(m_p c²)². 등치 ⇒ **E_beam,th=7 m_p c²** ⇒ **운동에너지 문턱 T_th=E_beam,th−m_p c²=6 m_p c²** (Chamberlain–Segrè 1955 Bevatron)
+- [x] 수치 — m_p c²=938.272 MeV ⇒ T_th=6×938.272=**5629.632 MeV ≈ 5.63 GeV** · 총 빔에너지 E_beam,th=7×938.272=6567.904 MeV ≈ 6.57 GeV
+- [x] hexa-native fn 3종 추가 (tool/verify_cli.hexa) — `pair_threshold_factor(n)=6·n` (정수 폐형해, _recompute) · `pair_threshold_kinetic(m_p_c²)=6·m_p_c²` (float, _recompute_float) · `pair_threshold_total(m_p_c²)=7·m_p_c²` → `bin/hexa-verify` 재빌드
+- [x] verify 호스트 = mini only (`POOL_DISABLE=1`) — factor-6 항등식 **🔵 SUPPORTED-FORMAL** · 운동/총에너지 수치 **🟢 SUPPORTED-NUMERICAL** (verbatim 아래)
+- [x] 음성대조 — `pair_threshold_factor 1 5`→🔴 FALSIFIED, `pair_threshold_kinetic 938.272 5000.0`→🔴 FALSIFIED (결정론적, rubber-stamp 아님 확인)
+- [x] `hexa atlas register --from-verify pair_threshold_factor 1 6` → `@F verified-pair_threshold_factor-1` 을 `compiler/atlas/embedded.gen.hexa` 에 직접 fold (live atlas, no rebuild)
+- [x] record — `exports/antimatter/verify/2026-05-25T09-12-57Z/pair_threshold_2026-05-25T09-12-57Z.json`
+
+verbatim verdicts:
+
+```
+verify --expr pair_threshold_factor(1)=6
+  calc   = 6  == expected 6
+  tier   = 🔵 SUPPORTED-FORMAL  (hexa-native closed-form, g_self_verify · TECS-L Tier1)
+
+verify --expr pair_threshold_kinetic(938.272)=5629.63
+  calc   = 5629.63  ≈ expected 5629.63  (|Δ|=9.09495e-13 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+
+verify --expr pair_threshold_total(938.272)=6567.9
+  calc   = 6567.9  ≈ expected 6567.9  (|Δ|=0.0 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+```
+
 ## 2026-05-25T09:11Z — ⓷포획 Penning 3-freq verify (🟢 SUPPORTED-NUMERICAL)
 
 대표 반양성자(p̄) 페닝트랩 파라미터 — **B=5 T · U₀=10 V · d=5 mm · m=m_p · q=e** (CODATA 2018, CPT로 m_p̄=m_p) — 로 3 고유운동(eigenmotion) 각진동수 폐형해 계산 + Brown–Gabrielse 불변량 정리(invariance theorem) hexa CLI verify.

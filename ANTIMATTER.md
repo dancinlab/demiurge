@@ -6,7 +6,7 @@
 
 ## Milestones (progress)
 
-- [ ] ⓵생성 — pair-production threshold + 표적 yield 폐형해/수치 재현 (p+p→p+p+p̄+p, E_th≈6.5 GeV)
+- [x] ⓵생성 — pair-production threshold 폐형해/수치 재현 (p+p→p+p+p̄+p) — **T_th = 6 m_p c² 🔵 SUPPORTED-FORMAL** · 5629.632 MeV ≈ 5.63 GeV 🟢 SUPPORTED-NUMERICAL (`hexa verify --expr`, mini · 2026-05-25) · atlas `@F verified-pair_threshold_factor-1`. (표적 yield 별도 cell 남음)
 - [ ] ⓶감속 — AD/ELENA 감속 ladder (GeV→keV) 빔동역학 에너지 단계 수치 검증
 - [x] ⓷포획 — 페닝트랩 전하-입자 3주파수(axial·cyclotron·magnetron) 폐형해 + invariance theorem — 🟢 (p̄ B=5T·U₀=10V·d=5mm: ω_c·ω_z·ω₊·ω₋ + Brown–Gabrielse 불변량 ω_c²=ω₊²+ω_z²+ω₋² · `penning_omega_plus`/`penning_omega_minus`/`penning_invariance` hexa-native recompute |Δ|=0.0 · `exports/antimatter/verify/2026-05-25T09-11-36Z/`)
 - [ ] ⓸냉각 — 전자냉각 / 공감냉각 시간상수 + 평형 온도 수치
