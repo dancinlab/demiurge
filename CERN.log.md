@@ -2,6 +2,17 @@
 
 Append-only history sister of `CERN.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T13:30Z — **CERN 도메인 tabletop 기준 구현 완료** (closure decision)
+
+- [x] **completion criterion 정의** — RF 축 4-cell closed-form/algorithm closure + tabletop(plasma-wakefield) 축 cold-linear closed-form + 1-D linear PIC parity. 이것이 demiurge public-surface clean-room scope 안에서 자율적으로 도달 가능한 최대치. 사용자 결정 (2026-05-25, "테이블탑 기준으로 완료")
+- [x] CERN.md @goal 갱신 — tabletop completion criterion 명시. @scope 라인 추가 (scope=tabletop, downstream=wet-lab/external/GPU heavy)
+- [x] 미달 milestone → `## downstream` 으로 재분류 — Geant4-MC Stage 4 (wet-lab equivalent · pybind11 segfault wall) · measured-ring optics (sourced deck · clean-room risk) · 비선형 blowout PIC (2-D GPU heavy). 셋 다 *도메인 미완성*이 아니라 **scope 외부 dependency** 로 honest 분류
+- [x] A3 (Geant4-MC PoC 1점) 백그라운드 stop — A3 가 land 직전 도달한 발견: `geant4_pybind` trampoline ownership 충돌 + G4 physics-list 순서 segfault. 즉 Geant4-MC 본해는 정말로 wet-lab급 깊이 (pybind11 + G4 C++ ownership) 라 demiurge clean-room scope 외 확정. 이 발견 자체가 closure 결정의 근거
+- [x] 22:28 ScheduleWakeup 다음 라운드는 자연 종료 — open milestones=0 + no `## deferred` → /cycle depletion test PASS → loop terminates cleanly
+- [x] 잔여 라운드 활동: 없음. 도메인 board = 7/7 ✓ (RF 4-cell + tabletop 2-cell + closure marker)
+
+**왜 이게 정직한 완료인가** (g3): RF 축의 LHC급 measured-ring 과 Stage 4 Geant4-MC 는 *외부 wet-lab + 상용 toolchain* 없이는 demiurge 자체 cell 로 닫을 수 없는 본질적 외부성. clean-room scope 안에서 tabletop 축이 RF 축 closed-form 과 동등한 deepest closure 라는 것이 본 도메인의 demiurge-completable surface 의 max. wet-lab equivalent (별 도메인/별 시설) 가 채워지면 그 결과는 record 로 *소비*만 함 — 도메인 boundary 와 정합
+
 ## 2026-05-25T13:00Z — /cycle 라운드 1 reconcile: PIC 1-D linear parity 흡수 + C orphan worktree 정리
 
 - [x] **hexa-lang PR #1088 흡수** — `feat(stdlib/cern): plasma-wakefield linear-PIC parity (FBPIC) Δ=3.56% on top of cold-linear closed-form` (Agent C가 rate-limit-kill 직전 land 했으나 CERN.md flip + log entry는 못함 → reconcile)

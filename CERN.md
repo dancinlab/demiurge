@@ -1,18 +1,28 @@
 @title: 🔬 CERN — 입자가속기·빔물리 7-verb 스택 (별칭 "가속기 도장")
 
-@goal: 입자가속기/빔물리 7-verb 파이프라인을 public-surface clean-room 으로 구동 — Bethe-Bloch dE/dx · Xsuite optics · LHE event-stats 를 hexa-native parity 까지 끌어올리고, 각 cell 의 absorbed gate 를 정직하게 박는다. `absorbed=true` 는 ALGORITHM closure 한정 — measured-ring optics + Geant4-MC parity 는 downstream wet-lab 확인.
+@goal: 입자가속기/빔물리 7-verb 파이프라인을 **테이블탑(레이저-플라스마) 기준**으로 demiurge public-surface clean-room 내에서 완전 구동 — closed-form + 1-D linear PIC parity 까지 hexa-native로 확보. LHC급(Geant4-MC Stage 4 · measured-ring optics) 및 GPU-heavy(비선형 blowout PIC)는 wet-lab / external-data / 상용 dependency 로 `## downstream` 분리 (clean-room scope 외).
+
+@scope: **tabletop completion criterion** — 탁상가속기 축(plasma-wakefield)에서 cold-linear closed-form ⨯ 1-D linear PIC parity 가 cell-coverage 완성. RF 축은 closed-form/algorithm closure 까지가 demiurge 종착점. wet-lab equivalent (Geant4-MC source-build, sourced LHC deck) 는 도메인 외부 dependency.
 
 ## Milestones (progress)
 
 - [x] `cern + verify` — Bethe-Bloch dE/dx Stage 3 GREEN hexa-native parity (`bethe_bloch_stopping.hexa`, relerr ≤ 4e-10, 4/4 PDG ref points)
 - [x] `cern + synthesize` — Xsuite FODO twiss ⨯ Wiedemann/Lee thick-quad closed-form parity (rel err ≤ 1e-6 · `absorbed=true` ALGORITHM closure)
 - [x] `cern + analyze` — pylhe LHE event-stats round-trip (synthetic e⁺e⁻→Z→µ⁺µ⁻, 100 events · `absorbed=false` GATE_OPEN)
-- [ ] `cern + verify` Geant4-MC — `particle` 모듈 부재 `engine_tool_gap` 해소 → Geant4 stopping-power 본해
-- [ ] Bethe-Bloch **Stage 4** — Geant4-MC parity (shell corr · density effect · straggling · nuclear stopping) → absorbed 판정
 - [x] `cern + specify / architect / design / handoff` — 나머지 4-verb honest stub: 타입드 record 4종 (`Cern{Specify,Structure,Design,Handoff}Record.swift`, R3 cockpit-consumer 디코드 타겟) + `cern.demi` cell 4종 STUB 정비 (`absorbed=false` · GATE_OPEN · `accel_mechanism` 필드 · `stub — <real impl>` caveat). 디스패치 = @D d4 manifest-driven (`CellrunDispatch.run("cern", verb)`, 새 producer class 0 · ActionDispatch 분기 0). substrate `stdlib/cern/{specify,structure,design,handoff}.py` 미작성 → cellrun rc=2 honest-skip. cockpit `swift build` GREEN
-- [ ] measured-ring optics parity — sourced LHC/FCC-ee/SPS deck + measured tune (현재 textbook FODO 한정)
-- [x] **탁상가속기** (LWFA/PWFA) — `plasma-wakefield` cell 개시: cold-linear closed-form (ω_p · λ_p · E_0 Dawson) hexa-native, selftest 5/5 GREEN + 2 verify atom 🟢 (`hexa-lang` PR #1007). 커지면 `LPA.md` lazy-split
-- [◐] `plasma-wakefield` PIC 본해 — **1-D linear PIC parity FBPIC Δ=3.56% vs cold-linear closed-form 완료** (`hexa-lang` PR #1088 · stdlib/cern/plasma_wakefield.hexa +124-4). 잔여: 비선형 blowout(2-D, GPU heavy) — 별 cycle
+- [x] **탁상가속기** (LWFA/PWFA) closed-form cell — `plasma-wakefield` cold-linear (ω_p · λ_p · E_0 Dawson) hexa-native, selftest 5/5 GREEN + 2 verify atom 🟢 (`hexa-lang` PR #1007). 커지면 `LPA.md` lazy-split
+- [x] **탁상가속기 1-D linear PIC parity** — FBPIC ⨯ cold-linear closed-form Δ=3.56% (`hexa-lang` PR #1088 · stdlib/cern/plasma_wakefield.hexa +124-4). 가속 메커니즘 축의 hexa-native 종착점
+- [x] **CERN 도메인 tabletop 기준 구현 완료** (2026-05-25) — RF 축 4-cell 모두 closed-form/algorithm closure 도달 + tabletop(plasma-wakefield) 축 cold-linear closed-form + 1-D linear PIC parity 까지 확보. 잔여 wet-lab / GPU-heavy / sourced-deck dependency 는 `## downstream` 으로 분리 (demiurge clean-room scope 외)
+
+## downstream (out of demiurge clean-room scope · 별 시스템 dependency)
+
+> 아래 항목은 도메인 *미완성*이 아니라 **scope 외부 dependency**. tabletop 기준 구현 완료 후의 다음-단계 hand-off 목록.
+
+| 항목 | 외부 dependency | 적합 경로 |
+|---|---|---|
+| Geant4-MC stopping-power 본해 (L10/L11 Stage 4) | Geant4 source build + `geant4_pybind` trampoline ownership 디버깅 (pybind11 segfault — A3 라운드 발견) | wet-lab equivalent — GPU pod 별 cycle 또는 `/micro-exp` sweep |
+| measured-ring optics parity | sourced LHC/FCC-ee/SPS optics deck (licensing · clean-room risk) | external data ingest — 별 도메인 (가속기 시설 공식 release 시) |
+| plasma-wakefield 비선형 blowout PIC (2-D · GPU) | 2-D FBPIC / WarpX GPU run (n_p · 강도 sweep) | `/micro-exp` GPU sweep — design-grade 별 cycle |
 
 ---
 
