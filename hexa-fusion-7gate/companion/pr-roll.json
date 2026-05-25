@@ -1,0 +1,167 @@
+[
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1012,
+    "title": "feat(fusion): F1 Bosch-Hale ⟨σv⟩(T) reactivity + F2 Lawson/Q_plasma closed-form kernels (g5 atoms)",
+    "merged_at": "2026-05-25T09:25:32Z",
+    "files_changed": 3,
+    "lines_added": 559,
+    "lines_deleted": 0,
+    "gate": "(a) reactivity + (b) Lawson",
+    "role": "F1/F2 keystone closed-form kernels"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1020,
+    "title": "feat(fusion): F-funnel — design-point (a)×(b) composite ranker (consumes F1/F2 kernel #1012)",
+    "merged_at": "2026-05-25T10:51:38Z",
+    "files_changed": 2,
+    "lines_added": 385,
+    "lines_deleted": 0,
+    "gate": "F-funnel composite",
+    "role": "(a)×(b) ranker — top-K JSON emitter"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1027,
+    "title": "feat(fusion): F4 ideal-MHD β-limit — Troyon + cylindrical q* + kink (gate (d) closed-form kernel)",
+    "merged_at": "2026-05-25T11:09:07Z",
+    "files_changed": 4,
+    "lines_added": 332,
+    "lines_deleted": 0,
+    "gate": "(d) MHD stability",
+    "role": "Troyon β-limit + Wesson q* cylindrical kernel"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1032,
+    "title": "feat(fusion): F3 Grad-Shafranov free-boundary equilibrium wrap (gate (c) · install-gated honest-skip)",
+    "merged_at": "2026-05-25T11:10:19Z",
+    "files_changed": 1,
+    "lines_added": 301,
+    "lines_deleted": 0,
+    "gate": "(c) Grad-Shafranov",
+    "role": "FreeGS wrap (initially install-gated stub)"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1042,
+    "title": "feat(fusion-f5): HTS REBCO TF-coil magnet field-margin gate (e) — RTSC §9 substrate delegation",
+    "merged_at": "2026-05-25T11:26:51Z",
+    "files_changed": 1,
+    "lines_added": 458,
+    "lines_deleted": 0,
+    "gate": "(e) HTS TF magnet",
+    "role": "magnet_gate adapter — closed-form 1/R baseline (pre-bridge)"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1054,
+    "title": "feat(FUSION-F1): p-¹¹B aneutronic reactivity ⟨σv⟩(T) — Nevins-Swain framework (the D-T-beyond fuel axis)",
+    "merged_at": "2026-05-25T11:44:07Z",
+    "files_changed": 3,
+    "lines_added": 241,
+    "lines_deleted": 1,
+    "gate": "(a) reactivity (aneutronic)",
+    "role": "Tentori-Belloni 2023 + Nevins-Swain 2000 p-11B kernel"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1075,
+    "title": "fix(fusion/f3): converging FreeGS free-boundary GS solve (TestTokamak · freeBoundaryHagenow)",
+    "merged_at": "2026-05-25T12:16:41Z",
+    "files_changed": 1,
+    "lines_added": 20,
+    "lines_deleted": 10,
+    "gate": "(c) Grad-Shafranov",
+    "role": "wrap-and-fix: divergent custom coils → TestTokamak + Hagenow + stderr redirect"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1078,
+    "title": "feat(fusion-F6): OpenMC TBR real-transport adapter (.hexa, supersedes .py stub) — validated TBR=1.3222±0.0004 at 5M histories",
+    "merged_at": "2026-05-25T12:31:06Z",
+    "files_changed": 1,
+    "lines_added": 419,
+    "lines_deleted": 0,
+    "gate": "(f) TBR neutronics",
+    "role": "wrap-and-fix: transport-less .py stub → real .hexa OpenMC adapter"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1084,
+    "title": "feat(fusion-e): solenoid_axis_bz closed-form thick-solenoid on-axis B_z atom (HEXA-PORT P2 parity oracle anchor)",
+    "merged_at": "2026-05-25T12:39:57Z",
+    "files_changed": 2,
+    "lines_added": 38,
+    "lines_deleted": 0,
+    "gate": "(e) HTS TF magnet",
+    "role": "thick-solenoid closed-form parity anchor (registers atom:solenoid_axis_bz)"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1090,
+    "title": "feat(HEXA-PORT P0.5): git-LFS infra for future data-bound corpora",
+    "merged_at": "2026-05-25T12:48:46Z",
+    "files_changed": 2,
+    "lines_added": 33,
+    "lines_deleted": 0,
+    "gate": "infra (HEXA-PORT P4b prep)",
+    "role": "git-LFS scaffolding for ENDF/B-VIII corpus future ingest"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1095,
+    "title": "feat(fusion-e): F5 promote — getdp axisym FEM closes HEXA-PORT P2 parity oracle (Δ=-0.064%) + magnet_gate field_path flips to \"getdp\"",
+    "merged_at": "2026-05-25T13:02:28Z",
+    "files_changed": 4,
+    "lines_added": 429,
+    "lines_deleted": 18,
+    "gate": "(e) HTS TF magnet",
+    "role": "GetDP solenoid_solve .hexa driver; far-field truncation 5x→10x; Δ=-0.064%"
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1102,
+    "title": "feat(verify): BLUE-MAX 8 integer atoms — FUSION 🔵 algebraic-root pairs",
+    "merged_at": "2026-05-25T13:18:31Z",
+    "files_changed": 1,
+    "lines_added": 23,
+    "lines_deleted": 0,
+    "gate": "BLUE-MAX audit",
+    "role": "8 integer atoms (incl. q_star_constant=5) + 8 negative controls"
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 176,
+    "title": "feat(domains): FUSION (자기가둠 핵융합 설계) + HEXA-PORT (네이티브 솔버 이식) 신규 도메인 pointer 추가",
+    "merged_at": "2026-05-25T12:59:02Z",
+    "files_changed": 4,
+    "lines_added": 293,
+    "lines_deleted": 0,
+    "gate": "domain pointers",
+    "role": "FUSION + HEXA-PORT sibling-domain birth (snapshots + log)"
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 178,
+    "title": "feat(domains): FUSION (e) F5 promote LANDED + HEXA-PORT P2 oracle FULL — last honest-blocker 봉합",
+    "merged_at": "2026-05-25T13:05:46Z",
+    "files_changed": 3,
+    "lines_added": 3,
+    "lines_deleted": 1,
+    "gate": "domain pointers",
+    "role": "F5 promote signoff + HEXA-PORT P2 oracle close-out"
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 179,
+    "title": "feat(domains): FUSION BLUE-MAX 🔵 audit (#1102) — 8 algebraic-root int atoms, 12 libm covered",
+    "merged_at": "2026-05-25T13:21:22Z",
+    "files_changed": 2,
+    "lines_added": 2,
+    "lines_deleted": 0,
+    "gate": "domain pointers",
+    "role": "BLUE-MAX 🔵 audit absorption pointer (closes 12 libm + 8 integer)"
+  }
+]

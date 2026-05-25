@@ -1,0 +1,35 @@
+[
+  {
+    "id": "FUSION-DEFECT-001",
+    "file": "stdlib/fusion/openmc_tbr.py",
+    "origin_commit": "a7a185b (origin/main)",
+    "symptom": "Transport-less gate-classifier stub: imported OpenMC, checked ENDF data env, but NEVER built geometry or invoked openmc.run; reported a fake install-gated PASS.",
+    "root_cause": "PR #1032-era scaffolding committed the wrap as a .py syntax-check without a transport block; nobody flagged it because the 'check OpenMC importable' adapter was the gate's first-pass exit criterion.",
+    "fix_pr": 1078,
+    "fix_summary": "Wrote a new .hexa adapter (stdlib/fusion/openmc_tbr.hexa) that builds the spherical Pb-15.7Li breeder geometry (W armor / EUROFER FW / SS316 shield), runs a 5M-history MC transport via openmc.run, parses the TBR tally directly. Validated TBR = 1.3222 ± 0.0004; .py stub retained as a historical artifact but no longer on the call path.",
+    "tier_after": "🟢 SUPPORTED-NUMERICAL",
+    "honesty_note": "absorbed=false preserved — TBR is sim-PASS only; ENDF/B-VIII corpus is the data-bound dependency."
+  },
+  {
+    "id": "FUSION-DEFECT-002",
+    "file": "stdlib/fusion/f3_grad_shafranov_adapter.hexa",
+    "origin_commit": "PR #1032",
+    "symptom": "Picard solve diverged with 'No O points found' on a custom hardcoded coil set; FreeGS 0.8.2 could not locate a magnetic axis. Worse: the warning was emitted on STDOUT, which corrupted the adapter's JSON line so even when the solve technically completed there was no machine-readable output.",
+    "root_cause": "Two stacked defects: (i) the hardcoded custom coil currents were geometrically inconsistent (no admissible equilibrium for that coil-current pair); (ii) FreeGS's early-Picard diagnostic was sent to stdout, not stderr, and the adapter scraped stdout for the JSON tail.",
+    "fix_pr": 1075,
+    "fix_summary": "Switched to the canonical freegs.machine.TestTokamak() preset, used freeBoundaryHagenow boundary-integral method, raised the X-point isoflux constraint to converge cleanly. Wrapped the solve block in a stderr-redirect context so the 'No O points' warning (now spurious) does not pollute stdout. Result: Ip=200 kA, q0=1.355, q95~10.08, kappa=1.358, magnetic axis (R=1.280, Z=0.038) m.",
+    "tier_after": "🟢 SUPPORTED-NUMERICAL",
+    "honesty_note": "absorbed=false; converged equilibrium is the design witness, not a built machine."
+  },
+  {
+    "id": "FUSION-DEFECT-003",
+    "file": "stdlib/rtsc/getdp_hts.py",
+    "origin_commit": "pre-PR #1042",
+    "symptom": "shutil.which('getdp') checker only — adapter returned 'install-gated' if the GetDP binary was present, but never invoked it to solve a problem. The magnet_gate fell back to the closed-form 1/R baseline indefinitely, never exercising the FEM path. Initially suspected as a '2π/VolAxiSqu units bug' explaining a 1.4× residual; that diagnosis was WRONG.",
+    "root_cause": "Two layered issues: (i) the .py wrap-and-fix layer never reached the solve invocation (the binary-presence check was the entire adapter); (ii) when the actual GetDP solve was eventually run by hand, the on-axis B_z disagreed with the textbook by ~1.4%. Six hours of investigation chased a hypothesized 2π Jacobian / VolAxiSqu units bug in the .pro deck. The real cause was far-field truncation: the air-region outer radius/height was only ~5× the coil radius, leaking flux. Pushing R_out/H_out to ~10× collapsed the residual to <0.1% with no deck change.",
+    "fix_pr": 1095,
+    "fix_summary": "Wrote stdlib/rtsc/getdp_solenoid_solve.hexa as a hexa-native driver: builds the validated .pro deck with 10× far-field truncation, runs GetDP 3.5.0/4.0.0, parses the on-axis B_z token, emits a single 'B_peak -> <value>' line on stdout. magnet_gate.hexa now greps that token and flips field_path='getdp'. Parity with the closed-form anchor (atom:solenoid_axis_bz): Δ = -0.064% (well inside engineering 'few %' band).",
+    "tier_after": "🟢 SUPPORTED-NUMERICAL (FEM bridge) + 🔵 SUPPORTED-FORMAL (closed-form anchor)",
+    "honesty_note": "The 2π/VolAxiSqu diagnosis was a controlled-falsification artifact — we record it explicitly to spare the next implementer the same chase. absorbed=false: a 1.48 T on-axis B_z is a computed witness, not a built TF coil."
+  }
+]

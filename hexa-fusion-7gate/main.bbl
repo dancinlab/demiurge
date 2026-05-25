@@ -1,0 +1,183 @@
+\begin{thebibliography}{16}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bosch and Hale(1992)]{boschhale1992}
+H.-S. Bosch and G.~M. Hale.
+\newblock Improved formulas for fusion cross-sections and thermal reactivities.
+\newblock \emph{Nuclear Fusion}, 32\penalty0 (4):\penalty0 611--631, 1992.
+\newblock \doi{10.1088/0029-5515/32/4/I07}.
+
+\bibitem[Brown et~al.(2018)Brown, Chadwick, Capote, Kahler, Trkov, Herman,
+  Sonzogni, Danon, Carlson, Dunn, Smith, Hale, Arbanas, Arcilla, Bates, Beck,
+  Becker, Brown, Casperson, Conlin, Cullen, Descalle, Firestone, Gaines, Guber,
+  Hawari, Holmes, Johnson, Kawano, Kiedrowski, Koning, Kopecky, Leal, Lestone,
+  Lubitz, M{\'a}rquez~Dami{\'a}n, Mattoon, McCutchan, Mughabghab, Navratil,
+  Neudecker, Nobre, Noguere, Paris, Pigni, Plompen, Pritychenko, Pronyaev,
+  Roubtsov, Rochman, Romano, Schillebeeckx, Simakov, Sin, Sirakov, Sleaford,
+  Sobes, Soukhovitskii, Stetcu, Talou, Thompson, van~der Marck,
+  Welser-Sherrill, Wiarda, White, Wormald, Wright, Zerkle, {\v Z}erovnik, and
+  Zhu]{brown2018endf}
+D.~A. Brown, M.~B. Chadwick, R.~Capote, A.~C. Kahler, A.~Trkov, M.~W. Herman,
+  A.~A. Sonzogni, Y.~Danon, A.~D. Carlson, M.~Dunn, D.~L. Smith, G.~M. Hale,
+  G.~Arbanas, R.~Arcilla, C.~R. Bates, B.~Beck, B.~Becker, F.~Brown, R.~J.
+  Casperson, J.~Conlin, D.~E. Cullen, M.-A. Descalle, R.~Firestone, T.~Gaines,
+  K.~H. Guber, A.~I. Hawari, J.~Holmes, T.~D. Johnson, T.~Kawano, B.~C.
+  Kiedrowski, A.~J. Koning, S.~Kopecky, L.~Leal, J.~P. Lestone, C.~Lubitz,
+  J.~I. M{\'a}rquez~Dami{\'a}n, C.~M. Mattoon, E.~A. McCutchan, S.~Mughabghab,
+  P.~Navratil, D.~Neudecker, G.~P.~A. Nobre, G.~Noguere, M.~Paris, M.~T. Pigni,
+  A.~J. Plompen, B.~Pritychenko, V.~G. Pronyaev, D.~Roubtsov, D.~Rochman,
+  P.~Romano, P.~Schillebeeckx, S.~Simakov, M.~Sin, I.~Sirakov, B.~Sleaford,
+  V.~Sobes, E.~S. Soukhovitskii, I.~Stetcu, P.~Talou, I.~Thompson, S.~van~der
+  Marck, L.~Welser-Sherrill, D.~Wiarda, M.~White, J.~L. Wormald, R.~Q. Wright,
+  M.~Zerkle, G.~{\v Z}erovnik, and Y.~Zhu.
+\newblock {ENDF/B-VIII.0}: The 8th major release of the nuclear reaction data
+  library with {CIELO}-project cross sections, new standards and thermal
+  scattering data.
+\newblock \emph{Nuclear Data Sheets}, 148:\penalty0 1--142, 2018.
+\newblock \doi{10.1016/j.nds.2018.02.001}.
+
+\bibitem[Creely et~al.(2020)Creely, Greenwald, Ballinger, Brunner, Canik,
+  Doody, F{\"u}l{\"o}p, Garnier, Granetz, Gray, Holland, Howard, Hughes, Irby,
+  Izzo, Kramer, Kuang, LaBombard, Lin, Lipschultz, Logan, Lore, Marmar, Montes,
+  Mumgaard, Paz-Soldan, Rea, Reinke, Rodriguez-Fernandez, Sirvinskas, Sorbom,
+  Stillerman, Sweeney, Tinguely, Tolman, Umansky, Vallhagen, Varje, Whyte,
+  Wright, Wukitch, and Zhu]{creely2020sparc}
+A.~J. Creely, M.~J. Greenwald, S.~B. Ballinger, D.~Brunner, J.~Canik, J.~Doody,
+  T.~F{\"u}l{\"o}p, D.~T. Garnier, R.~Granetz, T.~K. Gray, C.~Holland, N.~T.
+  Howard, J.~W. Hughes, J.~H. Irby, V.~A. Izzo, G.~J. Kramer, A.~Q. Kuang,
+  B.~LaBombard, Y.~Lin, B.~Lipschultz, N.~C. Logan, J.~D. Lore, E.~S. Marmar,
+  K.~Montes, R.~T. Mumgaard, C.~Paz-Soldan, C.~Rea, M.~L. Reinke,
+  P.~Rodriguez-Fernandez, K.~Sirvinskas, B.~N. Sorbom, J.~A. Stillerman,
+  R.~Sweeney, R.~A. Tinguely, E.~A. Tolman, M.~Umansky, O.~Vallhagen, J.~Varje,
+  D.~G. Whyte, J.~C. Wright, S.~J. Wukitch, and J.~Zhu.
+\newblock Overview of the {SPARC} tokamak.
+\newblock \emph{Journal of Plasma Physics}, 86\penalty0 (5):\penalty0
+  865860502, 2020.
+\newblock \doi{10.1017/S0022377820001257}.
+
+\bibitem[Dudson et~al.(2014--2024)]{freegs}
+B.~D. Dudson et~al.
+\newblock {FreeGS}: Free boundary grad--shafranov solver.
+\newblock \url{https://github.com/freegs-plasma/freegs}, 2014--2024.
+\newblock Version 0.8.2; based on Hagenow boundary integral method.
+
+\bibitem[Dular et~al.(1998)Dular, Geuzaine, Henrotte, and Legros]{getdp}
+P.~Dular, C.~Geuzaine, F.~Henrotte, and W.~Legros.
+\newblock A general environment for the treatment of discrete problems and its
+  application to the finite element method.
+\newblock \emph{IEEE Transactions on Magnetics}, 34\penalty0 (5):\penalty0
+  3395--3398, 1998.
+\newblock \doi{10.1109/20.717799}.
+\newblock {GetDP}; see also \url{https://getdp.info}.
+
+\bibitem[Fischer et~al.(2017)Fischer, Bachmann, Pereslavtsev, and
+  Palermo]{fischer2019eudemoTBR}
+U.~Fischer, C.~Bachmann, P.~Pereslavtsev, and I.~Palermo.
+\newblock Neutronics requirements for a {DEMO} fusion power plant.
+\newblock \emph{Fusion Engineering and Design}, 123:\penalty0 1009--1014, 2017.
+\newblock \doi{10.1016/j.fusengdes.2017.04.131}.
+\newblock EU-DEMO HCLL tritium-breeding-ratio target context.
+
+\bibitem[Ghost and {Claude Opus 4.7}(2026)]{anthropic2026hexag69}
+D.~Ghost and {Claude Opus 4.7}.
+\newblock Sidecar commons governance {@D} g69: domain finalization gate ---
+  {BLUE-MAX} algebraic-root pair audit at \texttt{absorbed=true}.
+\newblock Sidecar commons.tape v0.10.7 (Dancinlab marketplace), 2026.
+\newblock `hexa verify --blue-max <DOMAIN>` audit rule; ANTIMATTER reference
+  implementation \#1094, FUSION pair audit \#1102.
+
+\bibitem[Hartwig et~al.(2024)Hartwig, Vieira, Sorbom, Badcock, Bajko, Beck,
+  Castaldo, Craighill, Davies, Estrada, Fry, Golfinopoulos, Granetz, Greenwald,
+  Heim, Irby, Kuznetsov, Lammi, Michael, Mouratidis, Murray, Pfeiffer, Pierson,
+  Radovinsky, Rowell, Salazar, Segantin, Stahle, Takayasu, Toland, and
+  Wang]{hartwig2024sparcmagnet}
+Z.~S. Hartwig, R.~F. Vieira, B.~N. Sorbom, R.~A. Badcock, M.~Bajko, W.~K. Beck,
+  B.~Castaldo, C.~L. Craighill, M.~Davies, J.~Estrada, V.~Fry,
+  T.~Golfinopoulos, A.~E. Granetz, M.~J. Greenwald, J.~T. Heim, J.~H. Irby,
+  S.~B. Kuznetsov, C.~J. Lammi, P.~C. Michael, T.~Mouratidis, R.~A. Murray,
+  A.~T. Pfeiffer, S.~Z. Pierson, A.~Radovinsky, M.~D. Rowell, E.~E. Salazar,
+  M.~Segantin, P.~W. Stahle, M.~Takayasu, T.~L. Toland, and L.~Wang.
+\newblock The {SPARC} {Toroidal} {Field} {Model} {Coil} {Program}.
+\newblock \emph{IEEE Transactions on Applied Superconductivity}, 34\penalty0
+  (2):\penalty0 1--16, 2024.
+\newblock \doi{10.1109/TASC.2023.3332613}.
+
+\bibitem[Keilhacker et~al.(1999)Keilhacker, Gibson, Gormezano, Lomas, Thomas,
+  Watkins, Andrew, Balet, Borba, Challis, Coffey, Cottrell, de~Esch,
+  Deliyanakis, Fasoli, Gowers, Guo, Huysmans, Jones, Kerner, K{\"o}nig,
+  Loughlin, Maas, Marcus, Nave, Rimini, Sadler, Sharapov, Sips, Smeulders,
+  S{\"o}ldner, Taroni, Tubbing, von Hellermann, Ward, and
+  Team]{keilhacker1999jet}
+M.~Keilhacker, A.~Gibson, C.~Gormezano, P.~J. Lomas, P.~R. Thomas, M.~L.
+  Watkins, P.~Andrew, B.~Balet, D.~Borba, C.~D. Challis, I.~Coffey, G.~A.
+  Cottrell, H.~P.~L. de~Esch, N.~Deliyanakis, A.~Fasoli, C.~W. Gowers, H.~Y.
+  Guo, G.~T.~A. Huysmans, T.~T.~C. Jones, W.~Kerner, R.~W.~T. K{\"o}nig, M.~J.
+  Loughlin, A.~Maas, F.~B. Marcus, M.~F.~F. Nave, F.~G. Rimini, G.~J. Sadler,
+  S.~E. Sharapov, G.~Sips, P.~Smeulders, F.~X. S{\"o}ldner, A.~Taroni, B.~J.~D.
+  Tubbing, M.~G. von Hellermann, D.~J. Ward, and JET Team.
+\newblock High fusion performance from deuterium--tritium plasmas in {JET}.
+\newblock \emph{Nuclear Fusion}, 39\penalty0 (2):\penalty0 209--234, 1999.
+\newblock \doi{10.1088/0029-5515/39/2/306}.
+
+\bibitem[Lawson(1957)]{lawson1957}
+J.~D. Lawson.
+\newblock Some criteria for a power producing thermonuclear reactor.
+\newblock \emph{Proceedings of the Physical Society. Section B}, 70\penalty0
+  (1):\penalty0 6--10, 1957.
+\newblock \doi{10.1088/0370-1301/70/1/303}.
+
+\bibitem[Nevins and Swain(2000)]{nevinsswain2000}
+W.~M. Nevins and R.~Swain.
+\newblock The thermonuclear fusion rate coefficient for p--$^{11}$b reactions.
+\newblock \emph{Nuclear Fusion}, 40\penalty0 (4):\penalty0 865--872, 2000.
+\newblock \doi{10.1088/0029-5515/40/4/310}.
+
+\bibitem[Romano et~al.(2015)Romano, Horelik, Herman, Nelson, Forget, and
+  Smith]{romano2015openmc}
+P.~K. Romano, N.~E. Horelik, B.~R. Herman, A.~G. Nelson, B.~Forget, and
+  K.~Smith.
+\newblock {OpenMC}: A state-of-the-art {M}onte {C}arlo code for research and
+  development.
+\newblock \emph{Annals of Nuclear Energy}, 82:\penalty0 90--97, 2015.
+\newblock \doi{10.1016/j.anucene.2014.07.048}.
+
+\bibitem[Sorbom et~al.(2015)Sorbom, Ball, Palmer, Mangiarotti, Sierchio,
+  Bonoli, Kasten, Sutherland, Barnard, Haakonsen, Goh, Sung, and
+  Whyte]{sorbom2015arc}
+B.~N. Sorbom, J.~Ball, T.~R. Palmer, F.~J. Mangiarotti, J.~M. Sierchio,
+  P.~Bonoli, C.~Kasten, D.~A. Sutherland, H.~S. Barnard, C.~B. Haakonsen,
+  J.~Goh, C.~Sung, and D.~G. Whyte.
+\newblock {ARC}: A compact, high-field, fusion nuclear science facility and
+  demonstration power plant with demountable magnets.
+\newblock \emph{Fusion Engineering and Design}, 100:\penalty0 378--405, 2015.
+\newblock \doi{10.1016/j.fusengdes.2015.07.008}.
+
+\bibitem[Tentori and Belloni(2023)]{tentori2023pb11}
+A.~Tentori and F.~Belloni.
+\newblock Revisiting p--$^{11}$b fusion reactions: A new look at an old
+  problem.
+\newblock \emph{Nuclear Fusion}, 63\penalty0 (8):\penalty0 086001, 2023.
+\newblock \doi{10.1088/1741-4326/acda4d}.
+\newblock Preserves the Nevins--Swain framework with updated coefficients;
+  Table~I and Eq.~6.
+
+\bibitem[Troyon et~al.(1984)Troyon, Gruber, Saurenmann, Semenzato, and
+  Succi]{troyon1984}
+F.~Troyon, R.~Gruber, H.~Saurenmann, S.~Semenzato, and S.~Succi.
+\newblock {MHD}-limits to plasma confinement.
+\newblock \emph{Plasma Physics and Controlled Fusion}, 26\penalty0
+  (1A):\penalty0 209--215, 1984.
+\newblock \doi{10.1088/0741-3335/26/1A/319}.
+
+\bibitem[Wesson(2011)]{wesson2011tokamaks}
+J.~Wesson.
+\newblock \emph{Tokamaks}.
+\newblock Oxford University Press, 4th edition, 2011.
+\newblock ISBN 9780199592234.
+\newblock Cylindrical safety factor $q^{*}$ derivation, Ch.~3.
+
+\end{thebibliography}
