@@ -2,6 +2,19 @@
 
 Append-only history sister of `ANTIMATTER.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T10:58Z — V1-V4 verify ledger 통합 (round-1+2 닫힌 atom 인벤토리 · @D g5 verbatim 인용)
+
+round-1+2 verify 작업(6/7 공정 닫힘)을 깔끔한 tier ledger 로 통합. **재실행 아님** — 이미 landed 된 atom 의 verbatim verdict 를 log/record 에서 인용(@D g5; LLM 자기판정 금지). 신규 hexa fn 추가 없음 · `verify_cli.hexa` 미수정 (DOC/LEDGER task).
+
+- [x] **V1 claim inventory** — 16 verified atom × tier × record × 공정단계 + 음성대조 🔴×7 표. 6/7 공정 닫힘(⓵⓶⓷⓸⓹⓻), **⓺가둠 🟠 PENDING** (본 ledger 시점 log 항목 미출현 → 정직 표기; 형제 agent 동시 작업 가능).
+- [x] **V2 🔵 push** — 🔵 SUPPORTED-FORMAL ×3 verbatim: `pair_threshold_factor(1)=6` · `cyclotron_cool_bexponent(0)=-2` · `recomb_3body_density_power(1)=2` (순수 정수 closed-form · g_self_verify · TECS-L Tier1).
+- [x] **V3 🟢 push** — 🟢 SUPPORTED-NUMERICAL ×13 verbatim: Penning 3-freq(\|Δ\|=0.0) · pair kinetic/total · h1s2s(2.46738 PHz) · rel ladder ×4 · cyclotron bratio(0.04)/massspeedup(6.19051) · recomb exponent(−4.5)/tratio(1953125.0) (libm/sqrt/pow class · \|Δ\|≤ε=1e-9 · TECS-L n6-rep Tier2).
+- [x] **V4 tier ledger** — 집계 **🔵 3 · 🟢 13 · 🟠 1공정(⓺) · 🔴 7(음성대조)**. verified positive atom 16 = 16 hexa-native fn 1:1.
+- [x] record-path 정직 — on-disk 확인 record 2건(⓷ `penning_3freq_…json` · ⓹ `recomb_3body_…json`); ⓵·⓶·⓸·⓻ 일부 record dir 은 본 worktree 에 미존재 → log-cited 로 표기(verbatim verdict 는 log 에 명기, origin/main `verify_cli.hexa` 16 fn + 재빌드 바이너리로 재현 가능).
+- [x] ledger 작성 — `exports/antimatter/verify/V_ledger_2026-05-25T10-58-43Z.md` (Korean doc).
+- [x] ANTIMATTER.md V1/V2/V3/V4 milestone `- [ ]`→`- [x]` flip (verify 섹션 lines ~22-25; ⓺가둠 process milestone line ~14 는 형제 agent 소유 — 미접촉).
+- [ ] **absorbed=false 유지** — 全 non-wet-lab gate PASS 아님: ⓺가둠 verify 미닫힘 + meta milestone(7-verb 풀파이프 · 인계 doc) + **CPT Δ(1S-2S H vs H̄) measured-oracle 필요 ⇒ downstream** (@D d5 · projection flip 금지). leading 폐형해는 15자리 재현 X — overclaim 금지(정직).
+
 ## 2026-05-25T10:46Z — ⓸냉각 cyclotron cooling verify (🔵 exact B-exponent + 🟢×2 numeric · 음성대조 🔴×2)
 
 **공정단계 ⓸냉각**: 트랩의 강한 자기장 B 속에서 자이로(회전)하는 전하는 라모어/싸이클로트론(synchrotron) 방사로 **횡에너지(transverse energy)** 를 지수적으로 잃는다 — E_⊥(t)=E_⊥(0)·e^(−t/τ_c). 양전자·전자가 먼저 자기 방사로 냉각된 뒤, 반양성자를 **공감냉각(sympathetic)** 으로 식힌다.

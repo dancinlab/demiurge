@@ -19,10 +19,10 @@
 
 ## verify (🔵/🟢 push · @D g5 · demiurge 자산 필수)
 
-- [ ] V1 claim inventory + tier triage (🔵/🟢/🟡/🟠) — 7공정 물리량 목록화
-- [ ] V2 🔵 push — pair-threshold · Penning 3-freq · Rydberg/QED 1S-2S · Ioffe-P trap depth closed-form identity → `hexa verify --expr` + atlas register · **Penning 3-freq DONE → 🟢** (`penning_omega_plus`/`penning_omega_minus`/`penning_invariance` 등록 + `--from-verify` atlas fold; 폐형해이나 sqrt 포함 libm-class라 tier=🟢, 불변량 잔차=0.0 exact) · **pair-threshold DONE → 🔵 factor-6 + 🟢 수치** · **1S-2S Rydberg DONE → 🟢** (`transition_factor_1s2s`=3/4 + `h1s2s_rydberg`=(3/4)R∞c·1e-15 PHz, hexa-lang PR #1005)
-- [ ] V3 🟢 push — libm/Newton 수치 재현 (감속 ladder · 재결합률 · 냉각 시간상수) · **Penning 3-freq 3-atom 🟢 |Δ|=0.0 (2026-05-25)** · **1S-2S leading freq 🟢 2.46738 PHz |Δ|=8.88e-16 (2026-05-25)** · **⓶감속 ladder DONE → 🟢** (`rel_kinetic_from_p`/`rel_p_from_kinetic` ×4 rungs+inverse · 비상대론 극한 환원 확인 · negative control 🔴, hexa-lang PR #1014) · **⓸냉각 cyclotron τ_c∝B^(−2) 🔵 exact −2 + 5T/1T ratio 0.04 🟢 + (m_p/m_e)³ speedup 6.19e9 🟢 (2026-05-25)**
-- [ ] V4 tier ledger — V1+V2+V3 통합 + CPT Δ + absorbed=false 정직 명시
+- [x] V1 claim inventory + tier triage (🔵/🟢/🟡/🟠) — 7공정 물리량 목록화 — **DONE**: 16 verified atom × tier × record × 공정단계 + 음성대조 🔴×7 표 → `exports/antimatter/verify/V_ledger_2026-05-25T10-58-43Z.md` §V1. 6/7 공정 닫힘(⓵⓶⓷⓸⓹⓻), ⓺가둠 🟠 PENDING(log 항목 미출현 — 정직).
+- [x] V2 🔵 push — pair-threshold · Penning 3-freq · Rydberg/QED 1S-2S · Ioffe-P trap depth closed-form identity → `hexa verify --expr` + atlas register · **Penning 3-freq DONE → 🟢** (`penning_omega_plus`/`penning_omega_minus`/`penning_invariance` 등록 + `--from-verify` atlas fold; 폐형해이나 sqrt 포함 libm-class라 tier=🟢, 불변량 잔차=0.0 exact) · **pair-threshold DONE → 🔵 factor-6 + 🟢 수치** · **1S-2S Rydberg DONE → 🟢** (`transition_factor_1s2s`=3/4 + `h1s2s_rydberg`=(3/4)R∞c·1e-15 PHz, hexa-lang PR #1005) — **DONE**: 🔵 SUPPORTED-FORMAL ×3 verbatim 인용(`pair_threshold_factor`=6 · `cyclotron_cool_bexponent`=−2 · `recomb_3body_density_power`=2) → ledger §V2.
+- [x] V3 🟢 push — libm/Newton 수치 재현 (감속 ladder · 재결합률 · 냉각 시간상수) · **Penning 3-freq 3-atom 🟢 |Δ|=0.0 (2026-05-25)** · **1S-2S leading freq 🟢 2.46738 PHz |Δ|=8.88e-16 (2026-05-25)** · **⓶감속 ladder DONE → 🟢** (`rel_kinetic_from_p`/`rel_p_from_kinetic` ×4 rungs+inverse · 비상대론 극한 환원 확인 · negative control 🔴, hexa-lang PR #1014) · **⓸냉각 cyclotron τ_c∝B^(−2) 🔵 exact −2 + 5T/1T ratio 0.04 🟢 + (m_p/m_e)³ speedup 6.19e9 🟢 (2026-05-25)** — **DONE**: 🟢 SUPPORTED-NUMERICAL ×13 verbatim 인용(Penning 3-freq · pair kinetic/total · h1s2s · rel ladder ×4 · cyclotron bratio/massspeedup · recomb exponent/tratio) → ledger §V3.
+- [x] V4 tier ledger — V1+V2+V3 통합 + CPT Δ + absorbed=false 정직 명시 — **DONE**: 집계 🔵 3 · 🟢 13 · 🟠 1공정(⓺) · 🔴 7(음성대조) → `exports/antimatter/verify/V_ledger_2026-05-25T10-58-43Z.md` §V4. **absorbed=false 유지** (⓺가둠 + meta milestone + CPT Δ measured-oracle 미완 · @D d5 — CPT Δ(1S-2S H vs H̄)는 측정 oracle 필요 ⇒ downstream).
 
 ---
 
