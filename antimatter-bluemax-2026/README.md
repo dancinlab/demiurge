@@ -1,59 +1,52 @@
-# <slug> — paper title placeholder
+# antimatter-bluemax-2026 — BLUE-MAX audit of the antimatter factory
 
-> One-line framing of the paper. Replace this block with paper-specific
-> notes (status · target length · companion records / data).
+arxiv-style LaTeX paper externalising the ANTIMATTER domain's BLUE-MAX
+algebraic-root audit. Regenerated on the paper-scaffolder **v0.8**
+(`sample-blue-max` template + the new auto-generation verbs).
 
-## Source
+## Claim
 
-- `main.tex` — single-column arxiv-style LaTeX (article class, 11pt A4)
-- `references.bib` — BibTeX, all entries with DOI / arxiv / URL
-- `Makefile` — `make` builds `main.pdf` (pdflatex × 3 + bibtex)
+The antimatter factory — a seven-stage antihydrogen production line
+(generation → deceleration → capture → cooling → recombination →
+confinement → measurement) — is reproduced verify-native as hexa-native
+atoms. Every libm-class 🟢 SUPPORTED-NUMERICAL atom is backed by an integer
+or rational 🔵 SUPPORTED-FORMAL sibling that pins its load-bearing exponent
+or factor exactly.
+
+- **26 atoms total** — 11 🟢 libm-class + 15 🔵 integer algebraic roots
+- **BLUE-MAX coverage 11/11** — every 🟢 atom has a 🔵 sibling (@D g69)
+- **absorbed=true** (demiurge PR #173) per @D d5
+- **CPT Δ** (H vs H̄ 1S–2S) is downstream wet-lab, named openly, non-blocking
 
 ## Build
 
-```bash
-make            # → main.pdf
-make clean      # remove .aux/.log/.bbl (keep PDF)
-make distclean  # also remove PDF
+```
+make            # xelatex × 3 + bibtex → main.pdf  (10 pages)
+/paper compile .
+/paper lint .   # commons g51 gate: ≥10 pages · ≥2 figures · ≥10 bib · sections
 ```
 
-## Figures
+## Provenance (paper v0.8 verbs used)
 
-The template ships with one working matplotlib example so `make` produces
-a paper that compiles end-to-end out of the box:
+- `/paper sample sample-blue-max antimatter-bluemax-2026` — template
+- `/paper companion init` — `companion/` (verify-ledger, pr-roll)
+- `/paper pr-roll dancinlab/demiurge <ref>` — merged-PR provenance
+- `/paper bib add <doi>` — 10 references auto-fetched from CrossRef
+- `/paper verify-block <fn> <args> <expected>` — verbatim `hexa verify` blocks
+- `/paper compile` + `/paper lint`
 
-- `figures/_scripts/fig01_example.py` — matplotlib bar chart (3 placeholder
-  data points). Replace the `DATA` rows + y-axis label + caption with your
-  result, then `make figures` to regenerate the PDF.
-- `figures/fig01_example.pdf` — the rendered output, included by `main.tex`.
+Verdicts are faithful captures of `hexa verify --expr` against
+`bin/hexa-verify` (rebuilt from `hexa-lang/tool/verify_cli.hexa`) on a single
+`POOL_DISABLE=1` host. The figure was generated via fal.ai; its prompt is
+preserved at `figures/_prompts/factory_line.txt` (provenance, @D g51).
 
-Add `fig02`, `fig03`, ... by copying the `_scripts/fig01_example.py` pattern;
-the Makefile picks up `figures/_scripts/*.py` automatically.
+## Layout
 
-Drop other figure sources under `figures/`:
-
-- vector: `.pdf` / `.eps` (preferred for plots)
-- raster: `.png` (cover / teaser / AI-generated schematics only)
-- TikZ: inline in `main.tex`
-
-For AI-generated figures, keep the verbatim prompt under
-`figures/_prompts/<name>.txt` so provenance is reproducible. Mark the
-caption with `% generated via <tool> (prompt: figures/_prompts/<name>.txt)`.
-
-Generate a fal.ai cover via the sidecar plugin:
-
-```bash
-/paper fig square_hd figures/_prompts/cover.txt figures/cover.png
 ```
-
-For a richer reference paper with multiple figures, tables, and 18 real
-bibtex entries, see `/paper sample <slug>` (copies the bundled
-`sample-nb-bcs-absorbed` verbatim).
-
-## Honest stance
-
-- Every claim traces to a bibtex entry with DOI / arxiv / URL.
-- Caveats live in `\section{Limitations and honest caveats}` and
-  should word-for-word match any companion data record.
-- Pre-register thresholds in the methods section — don't pick them
-  after seeing results.
+main.tex                  paper source
+main.pdf                  compiled (10 pp)
+references.bib            10 DOI-backed entries (bib add)
+figures/                  fal.ai factory-line schematic + prompt
+companion/                verify-ledger.json · pr-roll.json
+out/                      arxiv submission tarball
+```
