@@ -11,6 +11,21 @@ the honest scope caveats. The data source is the verify atom
 \texttt{openmc\_tbr\_pb157li} in \texttt{companion/verify-ledger.json} and the
 wrap-and-fix run recorded in \S\ref{sec:promote}.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/fig_blanket_concept.png}
+\caption{Conceptual DEMO breeding-blanket cross-section for pipeline stage
+\textcircled{\scriptsize 9} (gate~f): $14.06$\,MeV DT neutrons stream from
+the plasma side (left) through the W armor and EUROFER first wall into the
+Pb-15.7Li breeder, where the $^6$Li$(n,\alpha)$T reaction breeds tritium,
+with the SS316 shield outboard. The to-scale radial build and the OpenMC
+$\mathrm{TBR}=1.3222$ result are in Fig.~\ref{fig:blanket} and
+Table~\ref{tab:app:geom}. Image generated via \texttt{fal.ai} gpt-image-2
+(prompt: \texttt{figures/\_prompts/fig\_blanket\_concept.txt}; commons
+@D g44) --- illustrative, not a verified data figure.}
+\label{fig:blanket-concept}
+\end{figure}
+
 \subsection{Why TBR matters}
 \label{app:tbr:why}
 
@@ -58,6 +73,22 @@ with lithium enriched to $90\,\text{at\%}$ $^6$Li to maximize the
 $^6$Li$(n,\alpha)$T channel.}
 \label{tab:app:geom}
 \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.94\linewidth]{figures/fig09_blanket.pdf}
+\caption{DEMO-class spherical blanket radial build (Table~\ref{tab:app:geom}),
+drawn to scale on the radius axis: the W armor ($100$--$102$\,cm) and EUROFER97
+first wall ($102$--$104$\,cm) are each $2$\,cm thin, the Pb-15.7Li breeder is
+the $56$\,cm zone ($104$--$160$\,cm) where the $^6$Li$(n,\alpha)$T tritons are
+bred, and the SS316 shield runs $160$--$202$\,cm; the inner vacuum source
+cavity ($0$--$100$\,cm) is truncated at left. A single isotropic $14.06$\,MeV
+DT point source at the origin and a $5\!\times\!10^{6}$-history OpenMC\,0.15.3
+fixed-source run with ENDF/B-VIII.0 yield $\mathrm{TBR}=1.3222\pm0.0004$
+(verify atom \texttt{openmc\_tbr\_pb157li}, \tierGreen, PR~\#1078),
+self-sufficient with margin.}
+\label{fig:blanket}
+\end{figure}
 
 The breeder is the lead-lithium eutectic Pb-15.7Li (15.7\,at\% Li in Pb),
 with the lithium isotopically enriched to $90\,\text{at\%}$ $^6$Li --- $^6$Li

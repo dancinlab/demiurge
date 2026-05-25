@@ -14,6 +14,21 @@ and reports the HTS-margin headroom. The data sources are the verify atoms
 \texttt{RTSC/magnet/getdp/} (\texttt{solenoid\_axisym.geo} /
 \texttt{solenoid\_axisym.pro}).
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.78\linewidth]{figures/fig_tokamak.png}
+\caption{Conceptual tokamak cutaway situating pipeline stage
+\textcircled{\scriptsize 7} (gate~e): the glowing D--T plasma torus is
+confined by the D-shaped toroidal-field (TF) coils whose on-axis/peak
+field this appendix recomputes; the central solenoid, breeding blanket,
+and vacuum vessel are also shown. The closed-form solenoid anchor and the
+GetDP axisymmetric FEM of \S\ref{app:magnet:fem} model the TF-coil field.
+Image generated via \texttt{fal.ai} gpt-image-2 (prompt:
+\texttt{figures/\_prompts/fig\_tokamak.txt}; commons @D g44) ---
+illustrative, not a verified data figure.}
+\label{fig:tokamak}
+\end{figure}
+
 \subsection{Closed-form anchor and its derivation}
 \label{app:magnet:anchor}
 
@@ -182,6 +197,23 @@ presence of the dominant far-field-truncation systematic discussed in
 \label{tab:app:mesh}
 \end{table}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.74\linewidth]{figures/fig06_bz_parity.pdf}
+\caption{On-axis $B_z(0)$ parity: the closed-form thick-finite-solenoid
+anchor $1.48265$\,T (green, dashed reference line) versus the GetDP
+axisymmetric A--$\phi$ FEM at two mesh densities. The $33$k-node solve
+($1.4817$\,T, $\Delta\!=\!-0.064\%$) is the registered bridge value; the
+$61$k-node solve ($1.4782$\,T, $\Delta\!=\!-0.30\%$) is non-monotone, as
+expected for a first-order point-probe under the dominant far-field
+systematic of \S\ref{app:magnet:farfield}. Both lie inside the
+engineering few-\% band. The $y$-axis is zoomed to $1.475$--$1.485$\,T to
+make the sub-percent gaps visible. Data: verify atoms
+\texttt{solenoid\_axis\_bz} / \texttt{magnet\_gate\_b\_peak}
+(\tierGreen, PR~\#1084\,/\,\#1095).}
+\label{fig:bz-parity}
+\end{figure}
+
 \subsection{Far-field-truncation diagnosis (the real fix)}
 \label{app:magnet:farfield}
 
@@ -218,6 +250,23 @@ is recorded on purpose in \texttt{companion/adapter-defect-catalog.json}
 (row~e) to spare the next implementer the same multi-hour chase.}
 \label{tab:app:farfield}
 \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.74\linewidth]{figures/fig07_mesh_conv.pdf}
+\caption{Far-field-truncation sweep (semilog-$y$), the load-bearing
+methodological finding of this appendix. On the \emph{same} deck and
+Jacobian, pushing the air-box outer boundary from
+$R_{\text{out}}/H_{\text{out}}\!\approx\!5\times$ to $\approx\!10\times$
+the coil radius collapses the FEM--anchor residual from $\sim1.4\%$ to
+$<0.1\%$ --- more than an order of magnitude. This proves the originally
+suspected $2\pi/\text{VolAxiSqu}$ units bug was a false diagnosis
+(Table~\ref{tab:app:farfield}): a correctly-formed $2\pi r$ measure fails
+loudly (integer-factor offset), while truncation fails quietly (smooth
+percent drift that shrinks as the boundary recedes). Data: verify atom
+\texttt{magnet\_gate\_b\_peak} (\tierGreen, PR~\#1095).}
+\label{fig:far-field}
+\end{figure}
 
 We record the false diagnosis deliberately, both here and in the
 machine-readable defect catalog (Appendix~\ref{app:adapters},

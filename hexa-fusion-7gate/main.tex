@@ -476,6 +476,19 @@ verdicts are kept gate-separate to avoid blending sim-coverage tiers).}
 \label{tab:funnel-rank}
 \end{table}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/fig05_funnel.pdf}
+\caption{F-funnel $(a)\!\times\!(b)$ composite scores for the five design
+points of Table~\ref{tab:funnel-rank}. The two $T\!=\!20$\,keV points
+(ITER-class and compact-HTS) tie at $0.4843$; the score falls with
+operating temperature as the reactivity ceiling $(a)$ dominates. Data:
+verify atoms \texttt{f\_reactivity\_coverage} /
+\texttt{f\_margin\_coverage} / \texttt{f\_funnel\_composite}
+(\tierGreen\ \textsc{Supported-Numerical}, $|\Delta|=0$, PR~\#1020).}
+\label{fig:funnel}
+\end{figure}
+
 % =========================================================================
 \section{Verify --- Wrap-and-Fix: Promoting (c)/(f)/(e) from Install-Gated to Real PASS}
 \label{sec:promote}
