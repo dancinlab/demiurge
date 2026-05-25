@@ -285,6 +285,8 @@ python3 stdlib/nuclear/hfbtho_adapter.py <Z> <N> <out_dir>
 
 > **G3 top-K 확장 schema (2026-05-25 · sim.hexa v0.6.0 · hexa-lang #939)**: `top_k_she.json` (producer `sim.hexa@nuclear-N11-G3`) 가 record 에 `predicted_input: bool` · `Q_alpha_band_MeV` · `Q_alpha_source="PREDICTED via <arxiv:...>, NOT measured"` · `valid`+`guard_reason`(G1) · `scores.model_validity_flag`(G2) 추가. 리서치노트 §3 의 cited PREDICTED Q_α band 중앙값으로 Z=119/120 언락 → 랭킹 Og-294 0.242 > **²⁹⁵119 0.0462** > **²⁹⁷120 0.0306** > **²⁹³119 0.0017** > 295-120/Lv-293/Fl-289 (0.0). honest-skip: 293-120 · 298-120 · Z=121/122 (cited Q_α 없음 · @D d2). `absorbed=false 영구`; predicted-input ≠ measurement.
 
+> **G4 predicted-only novel view (2026-05-25 · sim.hexa v0.9.0 · hexa-lang #956)**: `top_k_novel.json` = `predicted_input=true` 셀만 (신규 Z=119/120 발견 후보), composite 내림차순 — 기지 앵커(Lv-293/Og-294/Fl-289) 제외하여 가속기 *발견* 우선순위를 깔끔히 표출. 전체 `top_k_she.json`은 유지 (순수 추가). 랭킹: 295-119 0.0462 > 297-120 0.0306 > 293-119 0.0017 > 295-120 0.0. 전부 `absorbed=false` · "후보일 가능성"≠"발견됨" (@D d2). 회귀 가드: `test/nuclear_r4_anchor_smoke.hexa` (#959) · SF 커널이 이제 `hexa verify --expr` 아톰 (#960 · sf_log10_t_hindered/zwp/sf_consensus 🟢).
+
 ### §6.2 Phase 2+ deferred
 
 - **N7 WKB** small closed-form kernel — same session if budget allows, else next session.
@@ -400,3 +402,6 @@ Historical log entries are in [`./NUCLEAR.log.md`](./NUCLEAR.log.md).
 - [x] GAP-fix B — NUCLEAR.md honesty: §2.2 composite=(c)-gate×island 단독 (5-gate=coverage map only) · §6.3.1 σ=6.0 hyperparameter + proton-magic model-dependent · §4.2 α 2-formula vs SF 단일 비대칭 caveat
 - [x] Round-2 A — SF physics (hexa-lang PR #949/#953 · sim.hexa v0.6.0→v0.8.0): odd-A SF hindrance (Hoffman 1993, log HF 5/10) + Ren-Xu Z≥114 domain guard → Lv-293 (0.0→0.433) · Fl-289 (0.0→0.170) RECOVERED · 2nd SF formula (Zdeb-Warda-Pomorski 2013) + sf_consensus spread. 검증=in-code 수치 self-check (cited 계수; --expr 아톰 등록=후속)
 - [x] Round-2 B — NUBASE2020 bulk parity (hexa-lang PR #955): α 커널 vs 85 측정 T½ (앵커 2→85) · 핵심도메인(ee Z≥83) RMS 0.35 dex·bias~0 · SHE(Z≥104) 0.61 · odd-A 1.31·-1.01 (hindrance 미포착 → G2 플래그 정당화) · 앵커 재현 U-238 +0.30·Og-294 -0.20
+- [x] Round-3 g5 — SF 커널 (sf_log10_t_hindered·zwp·sf_consensus_mean/spread) hexa verify --expr 아톰 등록 (hexa-lang PR #960) → 전부 🟢 SUPPORTED-NUMERICAL (full-precision); rounded-literal 🔴 = ε=1e-9 float-floor (VS/Royer 동일 class). round-2 g5 빚 청산
+- [x] Round-3 predicted-only view — N11 top_k_novel.json (predicted_input=true만) (hexa-lang PR #956 · sim.hexa v0.9.0): 295-119 0.0462 > 297-120 0.0306 > 293-119 0.0017 — 기지 핵종 제외, 신규 발견 후보만
+- [x] Round-3 regression test — test/nuclear_r4_anchor_smoke.hexa (hexa-lang PR #959): R4 absorbed=false 7/0 + U-238 +17.45·Og-294 -2.93 앵커 재현, negative-controlled. /gap F5 defense-in-depth
