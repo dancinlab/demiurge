@@ -1,25 +1,143 @@
-% SKELETON (fill batch): I — verbatim verify ledger (23 positive + 8 controls).
-% TODO (fill batch): fold the full @D g5 verbatim verdict ledger (the
-%   V1->V4 tier ledger at exports/antimatter/verify/V_ledger_*.md +
-%   companion/verify-ledger.json) — 3 🔵 + 20 🟢 positive atoms across the 7
-%   processes + 8 🔴 deterministic negative controls. NO LLM self-judgement
-%   (@D g5): verbatim verdicts only.
+% FILLED (fill batch): I — verbatim verify ledger.
+%   folds the full @D g5 verbatim verdict ledger (companion/verify-ledger.json):
+%   22 SUPPORTED-NUMERICAL + 11 SUPPORTED-FORMAL + 8 FALSIFIED = 41 rows.
+%   NO LLM self-judgement (@D g5): verbatim verdicts only.
 \section{Verify Ledger --- Verbatim Tier Record}
 \label{app:verify-ledger}
 
 This appendix is the full \texttt{hexa verify} ledger for ANTIMATTER, the
-verbatim-verdict spine of the paper (commons @D g5: every tier verdict is
-quoted as the CLI emitted it, never an LLM self-judgement). It will reproduce
-the per-process tier matrix --- 3 \tierBlue\ \textsc{Supported-Formal} core
-integer atoms + 20 \tierGreen\ \textsc{Supported-Numerical} libm-class
-recomputes (Penning, deceleration, cooling, recombination, Ioffe--Pritchard,
-1S--2S, pair-production) across processes
-\textcircled{\scriptsize 1}--\textcircled{\scriptsize 7}, with 8
-deterministic \tierRed\ negative controls --- each row carrying its source
-record path and the hexa-native function. Every entry mirrors a
-\texttt{companion/verify-ledger.json} object and the V-ledger at
-\texttt{exports/antimatter/verify/}.
+verbatim-verdict spine of the paper (commons @D~g5: every tier verdict is
+quoted as the CLI emitted it, never an LLM self-judgement). Every row mirrors
+a \texttt{companion/verify-ledger.json} object exactly --- function, args,
+expected, observed, $|\Delta|$, tier, PR, process. The aggregate partition is
+\textbf{22 \tierGreen\ \textsc{Supported-Numerical} $+$ 11 \tierBlue\
+\textsc{Supported-Formal} $+$ 8 \tierRed\ \textsc{Falsified} $=$ 41 rows}.
 
-% TODO (fill batch): the full longtable of verbatim verdicts (fn, args,
-% expected, observed, |Delta|, tier, record path, PR), the negative-control
-% table, the aggregate tier counts (🔵3 · 🟢20 · 🔴8).
+\paragraph{Count reconciliation.} The body and Fig.~2 cite \emph{20}
+\tierGreen\ atoms: that count is the 20 non-trivial libm-class recomputes
+(\texttt{sqrt}/\texttt{pow}/division). The ledger's 22 \tierGreen\ rows add
+the two bare-value atoms \verb|mu_b_over_kb|$=0.671714$ and
+\verb|transition_factor_1s2s|$=0.75$, whose ``recompute'' is a single inlined
+constant / exact ratio; they are tiered \tierGreen\ in the JSON but are not
+part of the ``20 libm-class'' headline. The \tierBlue\ (11) and \tierRed\ (8)
+counts are identical everywhere.
+
+% -------------------------------------------------------------------------
+\subsection{Positive atoms --- Supported-Numerical and Supported-Formal}
+\label{app:vl-positive}
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{longtable}{@{}c l l r r r c@{}}
+\toprule
+\textbf{P} & \textbf{fn} & \textbf{args} & \textbf{expected} & \textbf{observed} & $|\Delta|$ & \textbf{tier / PR} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{P} & \textbf{fn} & \textbf{args} & \textbf{expected} & \textbf{observed} & $|\Delta|$ & \textbf{tier / PR} \\
+\midrule
+\endhead
+\midrule \multicolumn{7}{r}{\footnotesize\itshape continued on next page} \\
+\endfoot
+\bottomrule
+\endlastfoot
+% --- process 1 ---
+\textcircled{\scriptsize 1} & \verb|pair_threshold_factor|       & (1)       & $6$       & $6$       & $0$      & \tierBlue\ atlas \\
+\textcircled{\scriptsize 1} & \verb|pair_threshold_kinetic|      & (938.272) & $5629.63$ & $5629.63$ & $9.1$e$\text{-}13$ & \tierGreen\ \#1014 \\
+\textcircled{\scriptsize 1} & \verb|pair_threshold_total|        & (938.272) & $6567.9$  & $6567.9$  & $0$      & \tierGreen\ \#1014 \\
+% --- process 2 ---
+\textcircled{\scriptsize 2} & \verb|rel_kinetic_from_p|          & (3500.0)  & $2685.31$ & $2685.31$ & $0$      & \tierGreen\ \#1014 \\
+\textcircled{\scriptsize 2} & \verb|rel_kinetic_from_p|          & (100.0)   & $5.3139$  & $5.3139$  & $0$      & \tierGreen\ \#1014 \\
+\textcircled{\scriptsize 2} & \verb|rel_p_from_kinetic|          & (0.1)     & $13.6991$ & $13.6991$ & $0$      & \tierGreen\ \#1014 \\
+\textcircled{\scriptsize 2} & \verb|rel_p_from_kinetic|          & (5.3139)  & $100.0$   & $100$     & $7.4$e$\text{-}13$ & \tierGreen\ \#1014 \\
+% --- process 3 ---
+\textcircled{\scriptsize 3} & \verb|penning_omega_plus|          & ($\omega_c,\omega_z$) & $4.78902$e$8$ & $4.78902$e$8$ & $0$ & \tierGreen\ atlas \\
+\textcircled{\scriptsize 3} & \verb|penning_omega_minus|         & ($\omega_c,\omega_z$) & $40003.3$ & $40003.3$ & $0$ & \tierGreen\ atlas \\
+\textcircled{\scriptsize 3} & \verb|penning_invariance|          & ($\omega_c,\omega_z$) & $4.78942$e$8$ & $4.78942$e$8$ & $0$ & \tierGreen\ atlas \\
+% --- process 4 ---
+\textcircled{\scriptsize 4} & \verb|cyclotron_cool_bexponent|    & (0)       & $-2$      & $-2$      & $0$      & \tierBlue\ \#1015 \\
+\textcircled{\scriptsize 4} & \verb|cyclotron_cool_bratio|       & (5.0,1.0) & $0.04$    & $0.04$    & $6.9$e$\text{-}18$ & \tierGreen\ \#1015 \\
+\textcircled{\scriptsize 4} & \verb|cyclotron_cool_massspeedup|  & ($m_{\bar p},m_e$) & $6.19051$ & $6.19051$ & $1.4$e$\text{-}14$ & \tierGreen\ \#1015 \\
+% --- process 5 ---
+\textcircled{\scriptsize 5} & \verb|recomb_3body_density_power|  & (1)       & $2$       & $2$       & $0$      & \tierBlue\ \#1018 \\
+\textcircled{\scriptsize 5} & \verb|recomb_3body_exponent|       & ()        & $-4.5$    & $-4.5$    & $0$      & \tierGreen\ \#1018 \\
+\textcircled{\scriptsize 5} & \verb|recomb_3body_tratio|         & (100.0,4.0) & $1953125$ & $1953125$ & $0$    & \tierGreen\ \#1018 \\
+% --- process 6 ---
+\textcircled{\scriptsize 6} & \verb|ioffe_loop_bz|               & (0.1,1e5,0.0) & $0.628319$ & $0.628319$ & $0$ & \tierGreen\ \#168 \\
+\textcircled{\scriptsize 6} & \verb|ioffe_mirror_bmin|           & (0.1,1e5,0.4) & $0.112397$ & $0.112397$ & $0$ & \tierGreen\ \#168 \\
+\textcircled{\scriptsize 6} & \verb|ioffe_mirror_bcoil|          & (0.1,1e5,0.4) & $0.637283$ & $0.637283$ & $0$ & \tierGreen\ \#168 \\
+\textcircled{\scriptsize 6} & \verb|ioffe_mirror_deltab|         & (0.1,1e5,0.4) & $0.524886$ & $0.524886$ & $1.1$e$\text{-}16$ & \tierGreen\ \#168 \\
+\textcircled{\scriptsize 6} & \verb|ioffe_trap_depth_k|          & (0.524886) & $0.352573$ & $0.352573$ & $1.7$e$\text{-}16$ & \tierGreen\ \#168 \\
+\textcircled{\scriptsize 6} & \verb|ioffe_trap_depth_k|          & (1.0)     & $0.671714$ & $0.671714$ & $2.2$e$\text{-}16$ & \tierGreen\ \#168 \\
+\textcircled{\scriptsize 6} & \verb|mu_b_over_kb|                & ()        & $0.671714$ & $0.671714$ & $2.2$e$\text{-}16$ & \tierGreen\ \#168 \\
+% --- process 7 ---
+\textcircled{\scriptsize 7} & \verb|transition_factor_1s2s|      & ()        & $0.75$    & $0.75$    & $1.1$e$\text{-}16$ & \tierGreen\ \#1005 \\
+\textcircled{\scriptsize 7} & \verb|h1s2s_rydberg|              & ($R_\infty,c$) & $2.46738$ & $2.46738$ & $8.9$e$\text{-}16$ & \tierGreen\ \#1005 \\
+% --- BLUE-MAX formal block (#1094) ---
+\textcircled{\scriptsize 1} & \verb|pair_threshold_kinetic_factor|& ()       & $6$       & $6$       & $0$      & \tierBlue\ \#1094 \\
+\textcircled{\scriptsize 1} & \verb|pair_threshold_total_factor| & ()        & $7$       & $7$       & $0$      & \tierBlue\ \#1094 \\
+\textcircled{\scriptsize 7} & \verb|transition_factor_1s2s_numerator| & ()   & $3$       & $3$       & $0$      & \tierBlue\ \#1094 \\
+\textcircled{\scriptsize 7} & \verb|transition_factor_1s2s_denominator| & () & $4$       & $4$       & $0$      & \tierBlue\ \#1094 \\
+\textcircled{\scriptsize 4} & \verb|cyclotron_cool_massexponent| & ()        & $3$       & $3$       & $0$      & \tierBlue\ \#1094 \\
+\textcircled{\scriptsize 4} & \verb|cyclotron_cool_bratio_exponent| & ()     & $2$       & $2$       & $0$      & \tierBlue\ \#1094 \\
+\textcircled{\scriptsize 5} & \verb|recomb_3body_exponent_doubled| & ()      & $-9$      & $-9$      & $0$      & \tierBlue\ \#1094 \\
+\textcircled{\scriptsize 5} & \verb|recomb_3body_tratio_exponent_doubled| & () & $9$     & $9$       & $0$      & \tierBlue\ \#1094 \\
+\caption{The 33 positive ANTIMATTER verify atoms (22 \tierGreen\
+\textsc{Supported-Numerical} $+$ 11 \tierBlue\ \textsc{Supported-Formal}),
+verbatim from \texttt{companion/verify-ledger.json}. ``P'' is the pipeline
+process; $\omega_c=4.78942\times10^8$, $\omega_z=6.18994\times10^6$\,rad/s for
+the Penning rows; $m_{\bar p}=1.67262\times10^{-27}$,
+$m_e=9.10938\times10^{-31}$\,kg; $R_\infty=1.09737\times10^7\,\mathrm{m}^{-1}$,
+$c=2.99792\times10^8$\,m/s. ``atlas'' = folded into the atlas SSOT (no PR).
+All $|\Delta|\le\varepsilon=10^{-9}$.}
+\label{tab:vl-positive}
+\end{longtable}
+\end{center}
+
+% -------------------------------------------------------------------------
+\subsection{Negative controls --- Falsified}
+\label{app:vl-controls}
+
+The eight deterministic \tierRed\ controls (Table~\ref{tab:vl-controls})
+assert a wrong expected value against the same function and return
+\textsc{Falsified}, proving the verifier is result-agnostic (commons @D~g5).
+They are retained as honest evidence, never deleted.
+
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}c l l r r r c@{}}
+\toprule
+\textbf{P} & \textbf{fn} & \textbf{args} & \textbf{(wrong) exp.} & \textbf{observed} & $|\Delta|$ & \textbf{PR} \\
+\midrule
+\textcircled{\scriptsize 2} & \verb|rel_kinetic_from_p|     & (3500.0)    & $2700.0$    & $2685.31$   & $14.69$     & \#1014 \\
+\textcircled{\scriptsize 2} & \verb|rel_p_from_kinetic|     & (0.1)       & $13.6987$   & $13.6991$   & $4$e$\text{-}4$ & \#1014 \\
+\textcircled{\scriptsize 4} & \verb|cyclotron_cool_bexponent| & (0)       & $-3$        & $-2$        & $1$         & \#1015 \\
+\textcircled{\scriptsize 4} & \verb|cyclotron_cool_bratio|  & (5.0,1.0)   & $0.1$       & $0.04$      & $0.06$      & \#1015 \\
+\textcircled{\scriptsize 5} & \verb|recomb_3body_density_power| & (1)     & $3$         & $2$         & $1$         & \#1018 \\
+\textcircled{\scriptsize 5} & \verb|recomb_3body_exponent|  & ()          & $-4.0$      & $-4.5$      & $0.5$       & \#1018 \\
+\textcircled{\scriptsize 5} & \verb|recomb_3body_tratio|    & (100.0,4.0) & $2000000.0$ & $1953125.0$ & $46875$     & \#1018 \\
+\textcircled{\scriptsize 6} & \verb|ioffe_mirror_deltab|    & (0.1,1e5,0.4) & $0.9$     & $0.524886$  & $0.375114$  & \#168 \\
+\bottomrule
+\end{tabular}
+\caption{The 8 deterministic \textsc{Falsified} negative controls
+(\texttt{companion/verify-ledger.json}, \texttt{atom\_class =
+falsified-controlled}). Each returns FALSIFIED because the (wrong) expected
+value exceeds the observed by $|\Delta|>\varepsilon=10^{-9}$. The
+non-relativistic-limit probe (process~\textcircled{\scriptsize 2}, row~2) and
+the $B^{-1}$ field-ratio probe (process~\textcircled{\scriptsize 4}, row~4)
+are physically-motivated wrong-approximation controls, not arbitrary numbers.}
+\label{tab:vl-controls}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Aggregate}
+\label{app:vl-aggregate}
+
+The ledger totals \textbf{41 rows}: 22 \tierGreen\ + 11 \tierBlue\ + 8
+\tierRed. Of the positive 33, every $|\Delta|\le\varepsilon=10^{-9}$ (most
+exactly $0$, the rest single-operation round-off); of the negative 8, every
+$|\Delta|>\varepsilon$. The tier distribution (in the body's 20-libm headline
+view) is plotted in body Fig.~2; the BLUE-MAX subset is Appendix~\ref{app:bluemax}.

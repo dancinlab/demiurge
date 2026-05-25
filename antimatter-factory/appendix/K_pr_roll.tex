@@ -1,19 +1,92 @@
-% SKELETON (fill batch): K — pull-request roll.
-% TODO (fill batch): fold the merged PR roll with gh-measured metadata —
-%   hexa-lang #1014/1015/1018/1094/1107 + demiurge #157/158/159/162/164/166/
-%   167/168/169, from companion/pr-roll.json (merged_at · files_changed ·
-%   lines_added/deleted measured via `gh pr view --json`, no fabrication).
+% FILLED (fill batch): K — pull-request roll.
+%   folds the merged PR roll with gh-measured metadata (gh pr view --json):
+%   hexa-lang #1014/1015/1018/1094/1107 + demiurge #157..#169, from
+%   companion/pr-roll.json. All metadata measured, NO fabrication (@D g3).
 \section{Pull-Request Roll}
 \label{app:pr-roll}
 
 This appendix is the merged-PR roll that produced ANTIMATTER FACTORY, in
 dependency order, with truthful \texttt{gh}-measured metadata
-(\texttt{merged\_at}, \texttt{files\_changed}, \texttt{lines\_added/deleted}).
-It will list the hexa-lang kernel PRs (\#1014 deceleration, \#1015 cooling,
-\#1018 synthesis, \#1094 BLUE-MAX pair audit, \#1107 g69 finalization) and
-the demiurge domain PRs (\#157--\#169, including \#168 the Ioffe--Pritchard /
-RTSC-inheritance confinement close), each tagged with the process it serves.
-Every row mirrors a \texttt{companion/pr-roll.json} object.
+(\texttt{merged\_at}, \texttt{files\_changed}, \texttt{lines\_added/deleted},
+all from \texttt{gh pr view --json}). Every row mirrors a
+\texttt{companion/pr-roll.json} object; 14 PRs total, all \textsc{merged}.
 
-% TODO (fill batch): the full PR table (repo, number, title, merged_at,
-% files_changed, lines_added/deleted, process, role).
+% -------------------------------------------------------------------------
+\subsection{The merged roll}
+\label{app:pr-table}
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}l l l c r r@{}}
+\toprule
+\textbf{repo} & \textbf{\#} & \textbf{process / role} & \textbf{files} & \textbf{+add} & \textbf{$-$del} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{repo} & \textbf{\#} & \textbf{process / role} & \textbf{files} & \textbf{+add} & \textbf{$-$del} \\
+\midrule
+\endhead
+\midrule \multicolumn{6}{r}{\footnotesize\itshape continued on next page} \\
+\endfoot
+\bottomrule
+\endlastfoot
+hexa-lang & \#1014 & \textcircled{\scriptsize 2} deceleration / kernel & $1$  & $36$  & $0$  \\
+hexa-lang & \#1015 & \textcircled{\scriptsize 4} cooling / kernel      & $1$  & $59$  & $0$  \\
+hexa-lang & \#1018 & \textcircled{\scriptsize 5} synthesis / kernel    & $1$  & $55$  & $1$  \\
+hexa-lang & \#1094 & BLUE-MAX pair audit / audit                       & $1$  & $16$  & $0$  \\
+hexa-lang & \#1107 & BLUE-MAX 11/11 + g69 PASS / audit                 & $1$  & $9$   & $0$  \\
+\midrule
+demiurge  & \#157  & domain init + 7-process scaffold                  & $3$  & $205$ & $0$  \\
+demiurge  & \#158  & process verify rounds / record                    & $3$  & $96$  & $1$  \\
+demiurge  & \#159  & verify ledger V1$\to$V4 / record                  & $3$  & $85$  & $3$  \\
+demiurge  & \#162  & \textcircled{\scriptsize 3}--\textcircled{\scriptsize 5} records & $3$ & $122$ & $2$ \\
+demiurge  & \#164  & \textcircled{\scriptsize 7} 1S--2S record          & $3$  & $103$ & $2$  \\
+demiurge  & \#166  & \textcircled{\scriptsize 1} threshold record       & $3$  & $113$ & $1$  \\
+demiurge  & \#167  & 7-verb pipeline + handoff / handoff                & $3$  & $200$ & $4$  \\
+demiurge  & \#168  & \textcircled{\scriptsize 6} confinement close / kernel & $3$ & $80$  & $1$  \\
+demiurge  & \#169  & verify-ledger refresh / record                    & $10$ & $414$ & $17$ \\
+\caption{The 14 merged PRs that produced ANTIMATTER FACTORY
+(\texttt{companion/pr-roll.json}, all \texttt{gh pr view --json}-measured).
+The five hexa-lang PRs landed the closed-form kernels and the BLUE-MAX audit;
+the nine demiurge PRs landed the domain scaffold, the per-process verify
+records, the 1S--2S / threshold / confinement closes, and the ledger refresh.
+All merged 2026-05-25.}
+\label{tab:pr-roll}
+\end{longtable}
+\end{center}
+
+% -------------------------------------------------------------------------
+\subsection{The stdlib-thin / domain-records split}
+\label{app:pr-split}
+
+The roll shows a deliberate size asymmetry (Fig.~\ref{fig:pr-roll}): the
+hexa-lang \emph{kernel} PRs are tiny ($9$--$59$ lines each, $175$ total ---
+the closed forms are a handful of formulas at the stdlib SSOT home), while the
+demiurge \emph{domain} PRs carry the bulk ($80$--$414$ lines --- the verify
+records, the scaffold, the ledger). This is exactly the architecture's
+prediction: implementation lives once in the stdlib (commons @D~d3), and the
+domain repo holds docs, manifests, and the verify-record axis. The single
+largest PR (\#169, $414$ lines, $10$ files) is the ledger refresh after the
+confinement close, not a kernel.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.94\linewidth]{figures/fig11_pr_roll.pdf}
+\caption{Lines added per merged PR (gh-measured), hexa-lang kernels/audit
+(blue) versus demiurge domain (green). The stdlib kernels are thin (the
+closed forms are a few formulas); the domain PRs carry the records, scaffold,
+and ledger. All values verbatim from \texttt{companion/pr-roll.json}
+(commons @D~g3); no estimated or rounded counts.}
+\label{fig:pr-roll}
+\end{figure}
+
+% -------------------------------------------------------------------------
+\subsection{Honest scope}
+\label{app:pr-scope}
+
+The metadata is the live \texttt{gh pr view --json} measurement at fold time,
+not a manual estimate. The hexa-lang PR numbers are in a sibling repo
+(\texttt{dancinlab/hexa-lang}); only the demiurge-side PRs are in this
+repository's history. Line counts are net per-PR (after squash-merge) and
+exclude any later edits to the same files by unrelated PRs.

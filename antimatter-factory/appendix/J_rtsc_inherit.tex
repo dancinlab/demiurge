@@ -1,23 +1,134 @@
-% SKELETON (fill batch): J — inherited RTSC magnet toolchain.
-% TODO (fill batch): fold the RTSC inheritance provenance — solenoid_axisym
-%   .geo/.pro (GetDP 4.0) + the Wheeler on-axis closed-form anchor (M318) +
-%   the 5-axis RtscVerifyRecord schema extension (device=ioffe_pritchard_trap)
-%   from RTSC.md §4.2 and ~/core/hexa-lang/stdlib/rtsc/ + stdlib/material/magnet/.
+% FILLED (fill batch): J — inherited RTSC magnet toolchain.
+%   folds the RTSC inheritance provenance — solenoid_axisym .geo/.pro (GetDP)
+%   + the Wheeler on-axis closed-form anchor + the 5-axis RtscVerifyRecord
+%   schema extension (device=ioffe_pritchard_trap), from RTSC.md §4.2 and
+%   ~/core/hexa-lang/stdlib/rtsc/ + stdlib/material/magnet/.
 \section{Inherited RTSC Magnet Toolchain}
 \label{app:rtsc}
 
 This appendix documents the cross-domain magnet inheritance that powers
-process \textcircled{\scriptsize 6} (Appendix~\ref{app:confinement}). It will
-trace each reused asset to its RTSC origin --- the GetDP\,4.0 axisymmetric
-A--$\phi$ magnetostatic deck (\texttt{solenoid\_axisym.geo}/\texttt{.pro})
-\citep{getdp}, the Wheeler on-axis closed-form current-loop anchor (the M318
-cross-check), and the RTSC verify-record schema extended with
-\texttt{device = ioffe\_pritchard\_trap} --- and argue why the same
-magnetostatic spine serves a field \emph{well} (this antihydrogen trap) and a
-field \emph{peak} (an RTSC high-field solenoid) with only a coil-geometry
-change. Provenance: \texttt{RTSC.md} \S4.2, hexa-lang
+process \textcircled{\scriptsize 6} (Appendix~\ref{app:confinement}). We trace
+each reused asset to its RTSC origin, argue why the same magnetostatic spine
+serves a field \emph{well} (this antihydrogen trap) and a field \emph{peak}
+(an RTSC high-field solenoid) with only a coil-geometry change, and give the
+deck-derivation runbook. Provenance: \texttt{RTSC.md} \S4.2, hexa-lang
 \texttt{stdlib/rtsc/} and \texttt{stdlib/material/magnet/}.
 
-% TODO (fill batch): the asset-by-asset provenance table, the peak-vs-well
-% geometry contrast, the verify-once-reuse-twice SSOT argument, the deck
-% derivation runbook.
+% -------------------------------------------------------------------------
+\subsection{Asset-by-asset provenance}
+\label{app:rtsc-assets}
+
+The confinement stage adds \emph{no new solver and no new closed form}. Every
+magnetostatic asset it uses already existed in the RTSC magnet domain and is
+reused unmodified; Table~\ref{tab:rtsc-assets} traces each to its canonical
+stdlib home.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{4.0cm} >{\raggedright\arraybackslash}m{4.3cm} >{\raggedright\arraybackslash}m{3.6cm}@{}}
+\toprule
+\textbf{RTSC asset} & \textbf{canonical home} & \textbf{ANTIMATTER reuse} \\
+\midrule
+Wheeler on-axis $B$ closed form (current-loop primitive at $r=0$) &
+\texttt{stdlib/material/magnet/} &
+the $B_{\mathrm{loop}}(\zeta)$ anchor of Eq.~(F.\ref{eq:conf-loop}),
+superposed into a magnetic well \\[3pt]
+\texttt{solenoid\_axisym.geo} (OCC + BooleanFragments parametric mesh) &
+\texttt{stdlib/rtsc/templates/} &
+re-parametrized into a two-coil mirror-pair geometry \\[3pt]
+\texttt{solenoid\_axisym.pro} (GetDP Form1P A--$\phi$, axis Dirichlet) &
+\texttt{stdlib/rtsc/templates/} &
+the same axisymmetric magnetostatic formulation, mirror layout \\[3pt]
+\texttt{getdp\_hts.py} 5-axis driver (closed-form V1 $\times$ GetDP FEM V2 + cross-check) &
+\texttt{stdlib/rtsc/} &
+the verify-once / reuse driver (FEM re-solve deferred, App.~\ref{app:confinement}) \\[3pt]
+\texttt{RtscVerifyRecord} 5-axis schema &
+\texttt{cockpit/.../Models/} &
+extended with \texttt{device = ioffe\_pritchard\_trap} \\
+\bottomrule
+\end{tabular}
+\caption{Direct inheritance of the RTSC magnet toolchain at process
+\textcircled{\scriptsize 6}. The Wheeler on-axis closed form and the GetDP
+axisymmetric A--$\phi$ deck (\texttt{RTSC.md} \S4.2) are reused unmodified;
+only the coil layout (two mirror coils instead of one solenoid) and the
+record's \texttt{device} field change.}
+\label{tab:rtsc-assets}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{The Wheeler closed form and its RTSC cross-check}
+\label{app:rtsc-wheeler}
+
+The single load-bearing primitive is the on-axis current-loop field
+$B_{\mathrm{loop}}(\zeta)=\mu_0 I a^2/[2(a^2+\zeta^2)^{3/2}]$
+(Eq.~(F.\ref{eq:conf-loop})). In the RTSC domain this same Wheeler on-axis
+form was FEM-cross-checked against a GetDP axisymmetric A--$\phi$ solve of a
+representative solenoid (200\,mm length, $r\in[30,55]$\,mm, 120 turns,
+$I=100$\,A): the on-axis centre field agreed to
+\begin{equation}
+B_{\mathrm{center}}^{\mathrm{Wheeler}} = 0.06939\ \mathrm{T},
+\quad
+B_{\mathrm{center}}^{\mathrm{FEM}} = 0.06842\ \mathrm{T},
+\quad
+\Delta = -1.40\%
+\label{eq:rtsc-xcheck}
+\end{equation}
+(\texttt{RTSC.md} \S4.2.1, GetDP 3.5.0 cross-check record; the current toolchain
+binary is GetDP 4.0.0 ARM \citep{getdp}). The $-1.40\%$ on-axis $B$ agreement
+is exactly the quantity ANTIMATTER inherits, because the Ioffe--Pritchard
+trap depth depends only on \emph{on-axis} $B_{\min}$ and $B_{\mathrm{coil}}$.
+We note honestly that RTSC's \emph{inductance} cross-check showed a larger
+$-21\%$ Wheeler-vs-FEM gap, attributed to the thin-coil approximation in the
+Wheeler inductance formula at a thick aspect ratio ($b/a=1.83$) --- but
+inductance is not used by the trap-depth calculation, so that caveat does
+\emph{not} propagate to process \textcircled{\scriptsize 6}.
+
+% -------------------------------------------------------------------------
+\subsection{Peak versus well: one spine, two targets}
+\label{app:rtsc-peak-well}
+
+A solenoid \emph{concentrates} field: a single coil (or close-packed stack)
+makes $|B|$ maximal at the centre. An Ioffe--Pritchard trap \emph{minimizes}
+it: two coils pulled apart ($s>a$) make $|B|$ minimal at the centre and rising
+outward. These are the \emph{same superposition of the same Wheeler primitive}
+with a different coil separation --- Helmholtz-like ($s<a$, a peak) versus
+mirror ($s>a$, a well). The magnetostatic kernel verified once in RTSC (the
+on-axis $B$ agreement of Eq.~\eqref{eq:rtsc-xcheck}) is therefore re-verified
+here against a \emph{new physical observable} --- a neutral-atom trap depth in
+kelvin (Eq.~(F.\ref{eq:conf-depth})) --- with no new code. This is the
+verify-once / reuse-twice payoff of the hexa-lang stdlib SSOT discipline: a
+primitive is verified at its canonical home and then serves any geometry that
+superposes it.
+
+% -------------------------------------------------------------------------
+\subsection{Deck-derivation runbook}
+\label{app:rtsc-runbook}
+
+To reproduce the optional GetDP FEM re-solve of the mirror geometry (the
+deferred cross-check of App.~\ref{app:confinement}):
+\begin{enumerate}\itemsep0.2em
+\item Copy \texttt{stdlib/rtsc/templates/solenoid\_axisym.geo} and set two
+  coil bands at $z=\pm s/2$ (instead of one centred band).
+\item Reuse \texttt{solenoid\_axisym.pro} verbatim (Form1P A--$\phi$,
+  axisymmetric, axis Dirichlet) --- the formulation is geometry-independent.
+\item Solve with GetDP 4.0.0 ARM (\texttt{\$GETDP\_BIN}); the on-axis
+  $B_{\min}$/$B_{\mathrm{coil}}$ should reproduce the closed-form
+  Table~(F.\ref{tab:conf-verify}) values within the $\sim$1.4\% on-axis FEM
+  agreement of Eq.~\eqref{eq:rtsc-xcheck}.
+\item Emit an \texttt{RtscVerifyRecord} with
+  \texttt{device = ioffe\_pritchard\_trap}.
+\end{enumerate}
+
+% -------------------------------------------------------------------------
+\subsection{Honest scope}
+\label{app:rtsc-scope}
+
+The inheritance is of the \emph{on-axis} closed form and its RTSC cross-check
+($-1.40\%$ on $B_{\mathrm{center}}$). The FEM re-solve of the mirror geometry
+is documented but \emph{not run} here (deferred, App.~\ref{app:confinement});
+the inductance-formula caveat ($-21\%$, thin-coil at thick aspect) is recorded
+for honesty but is irrelevant to the trap-depth chain. The RTSC records
+themselves carry \texttt{absorbed=false} (HTS critical-state not modelled in
+the linear A--$\phi$ solve); ANTIMATTER inherits that honesty stance unchanged.
