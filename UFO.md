@@ -39,7 +39,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 - [x] HEXA-HOVER 축 흡수 — hover-canon Meissner levitation 사양 → UFO/hover 통합 (manifest + README · RTSC 48T 솔레노이드 cross-link · HTS REBCO 1차 도체 · Earnshaw active feedback) LANDED PR pending
 - [x] HEXA-GRAV 축 흡수 — gravity-wave-canon + quantum-gravity-sensor-canon → UFO/grav 통합 (manifest + README · GW LIGO 미니어처 h~10⁻²³ arm 1-10m · atom-IF Δg~10⁻¹¹g + SQUID σ·τ=48 fT/√Hz · RTSC mu-metal×5 EM/관성 separation · 4 falsifier preregister) LANDED PR pending
 - [x] HEXA-CLOAK 축 흡수 — cloak-canon EM 가시성 차단 layer → UFO/cloak 통합 (manifest + README · transformation-optics ε-μ tensor metamaterial shell · RCS 10⁻⁶ m² + IR σ-φ=10 dB↓ · Stage 추진 EM 누설 vs cloak 양립성 budget · 4 falsifier preregister) LANDED PR pending
-- [ ] HEXA-TELEPORT 축 흡수 — teleport quantum-entangle protocol → UFO/teleport 통합
+- [x] HEXA-TELEPORT 축 흡수 — teleport quantum-entangle protocol → UFO/teleport 통합 (manifest + README · Bell-pair·BSM·고전채널≤c·unitary 4단계 표준 프로토콜 · entanglement swapping 중계 · 초광속 통신 + no-cloning ⚪ SPECULATION-FENCED honest fence · 분산 센서 양자 동기화 + QKD BB84/E91 보안 통신 응용) **Phase B 5/5 완료** LANDED PR pending
 - [x] HEXA-SIM 축 흡수 — 디지털트윈 sim 엔진 (CFD + EM + 추진 통합) → UFO/sim 통합 LANDED PR pending
 
 ### Phase C — demiurge 7-verb pipeline (spec → handoff)

@@ -2,6 +2,30 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T14:38:39Z — HEXA-TELEPORT 축 흡수 LANDED (Phase B 5/5 완료)
+
+Phase B 부수 5축의 **마지막** 슬롯 봉합 — 양자 상태 teleportation 프로토콜 (Bennett 1993) 을 비행체 분산 센서/통신 사양 manifest 로 흡수. docs/manifests only · @D d3/d4/d9/d10 준수. **이로써 Phase B (HEXA-HOVER · HEXA-SIM · HEXA-GRAV · HEXA-CLOAK · HEXA-TELEPORT) 부수축 흡수 완료.**
+
+- [x] source 식별 — `UFO/HEXA-TELEPORT.md` (692 LOC · blob `be4ac3d`) + `UFO/teleport/hexa-teleport.md` (440 LOC · blob `6cb5159`) + `UFO/hexa-teleport/hexa-teleport.md` (443 LOC · blob `b75b778`)
+- [x] `UFO/teleport/README.md` 작성 — 5-section 한국어 (§0 TL;DR + ASCII teleportation 다이어그램 · §1 흡수 source 3개 SHA+LOC · §2 Bell-pair·BSM·고전채널≤c·unitary 4단계 + correction 표 + entanglement swapping 중계 · §3 no-cloning/상대론 한계 honest fence ⚪ · §4 분산 센서 양자 동기화 + QKD BB84/E91 응용 · §5 cross-link)
+- [x] `UFO/teleport/manifest.tape` 작성 — @V 1.0 · @I id001 `ufo/teleport` (icon 🛸 · alias `teleport`) + @D t1~t4 결정 라인 + @A absorb_hexa_teleport (source SHA) + @C cross_link (17-type alphabet only)
+- [x] honest fence ⚪ — 초광속/즉시 전송 주장 거부 (no-communication theorem · 정보 ≤ c · 고전채널 필수) · "σ·sopfr·10=600km 즉시전송"·"no-cloning=n=6 유일성" source 수론 주장은 ⚪ SPECULATION-FENCED 로 정직 표기 (물리 한계, "돌파 경로" 아님)
+- [x] no-cloning 정합 — BSM 이 송신측 원본 붕괴 → 복제 아닌 *이전* (Wootters-Zurek 1982 선형성 증명 채택 · 수론 재유도 fence)
+- [x] QKD 보안 "절대불가" 과장 → 🟡 절제 (도청 *탐지* 정보이론 보안 · side-channel/구현 의존)
+- [x] 비행체 응용 = 분산 센서 양자 상태 동기화 (entanglement distribution · UFO/grav 수요) + QKD BB84/E91 보안 통신 — 물질/에너지/사람 전송 아님 (양자 상태 = 정보만)
+- [x] `UFO.md` Phase B HEXA-TELEPORT milestone → [x] 플립 (**Phase B 5/5 완료** 표기)
+- [x] explicit `git add` per @D d9 — UFO/teleport/{README.md,manifest.tape} + UFO.md + UFO.log.md (인접 worktree HEXA-CLOAK agent index 격리)
+- [x] @D d3 준수 — implementation 코드 0줄 (Bell-state/BSM/QKD 양자회로 = hexa-lang/stdlib SSOT 위임 · `.hexa` only)
+- [x] @D d4 준수 — single generic dispatch (SC 큐빗 cryo = RTSC 인프라 재활용 · 분기 hardcoding 금지)
+- [x] @D d10 준수 — icon 🛸 · name `UFO/teleport` · alias `teleport` 헤더
+
+deferred:
+- [ ] hexa-lang/stdlib/quantum/{bell_state,bsm,unitary_correction,qkd_bb84,qkd_e91} 모듈 신설 (양자회로 코드 SSOT 채움)
+- [ ] Bell-state fidelity F=⟨ψ|ρ_out|ψ⟩ closed-form verify 🟢 (`hexa verify`) → atlas register
+- [ ] entanglement swapping 후 concurrence(얽힘도) 정량 — 다중 중계기 hop loss budget
+- [ ] QKD QBER (quantum bit error rate) threshold 11% (BB84) preregister + side-channel falsifier 매핑
+- [ ] UFO/grav 분산 GW arm 노드 양자강화 측정 (Heisenberg 1/N vs 표준 1/√N) 통합 인터페이스
+
 ## 2026-05-25T23:40:00Z — HEXA-CLOAK 축 흡수 LANDED
 
 Phase B 부수 5축 중 4/5 봉합 — `UFO/HEXA-CLOAK.md` (678 LOC) + `UFO/CLOAK.md` (948 LOC) + `UFO/cloak/hexa-cloak.md` (471 LOC) + `UFO/cloak-canon/cloak.md` (698 LOC) + `UFO/hexa-cloak/hexa-cloak.md` (474 LOC) 5 source 를 `UFO/cloak/` 사양 manifest 로 흡수. 흡수 범위 = (1) transformation-optics cloak (좌표변환 ε-μ tensor metamaterial shell · 음굴절률 n<0 · RT-SC 공명 ε<0 + SRR μ<0 · impedance match Z=1) + (2) radar/optical stealth (RCS 10⁻⁴→10⁻⁶ m² 100× 감소 · 레이더 탐지거리 1/6 · 전대역 σ-τ=8 octave · IR σ-φ=10 dB↓ · φ=2 kg/m² 경량). 비행체 통합 핵심 risk = Stage 추진 EM 누설 (RTSC B Meissner self-shield · MHD/γ-rocket RF EMI Faraday cage+band-stop · IR plume cryo+방사율) vs cloak layer 양립성 — 능동 방출이 stealth 천적이므로 LPI waveform + GW 통신(EM-free) 대체. 4 falsifier preregister (RCS · 대역 octave · IR 억제 · 능동 누설). 코드 SSOT 는 hexa-lang/stdlib + UFO/hexa-cloak 의 canonical home 유지 (@D d3).
@@ -27,7 +51,7 @@ Phase B 부수 5축 중 4/5 봉합 — `UFO/HEXA-CLOAK.md` (678 LOC) + `UFO/CLOA
 - [ ] 가시광 cloaking 회절 한계 (동체 크기 ≫ λ) closed-form 경계 — verb-3 design
 - [ ] φ=2 kg/m² metamaterial 필름 무게 budget vs frame (UFO/structure 650kg) — verb-4 analyze ⟲
 
-Phase B 부수 5축 진행 현황: 4/5 (hover · sim · grav · cloak LANDED) — teleport 1 슬롯 미진행.
+Phase B 부수 5축 진행 현황: 4/5 (hover · sim · grav · cloak LANDED) — teleport 1 슬롯 미진행 (당시 시점 기록 · 이후 teleport LANDED 로 5/5 완료).
 
 ## 2026-05-25T23:35:00Z — verb-2 structure LANDED
 
