@@ -2,6 +2,19 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T03:30:00Z — V4 final tier ledger LANDED + Phase E absorbed=FALSE 판정
+
+verify ladder 봉합 — V1+V2+V3+verb-6 통합 tier ledger + Phase E absorbed 정직 판정.
+
+- [x] `UFO/verify/V4_tier_ledger.md` — 통합 tier 분포 🔵8·🟢10·🟡8·🟠5·⚪17·🔴0
+- [x] Phase E absorbed=**FALSE** 판정 — 全 non-wet-lab gate PASS 아님 (🟠 6: CFD·EM·응력·열·⟲·F-ANTI-3) → @D d5 projection flip 금지
+- [x] 돌파 경로 명시 (@D d2) — 🟠 6 게이트는 pool/cloud 무거운 sim 으로 닫을 수 있는 비-wet-lab 항목 (`hexa cloud`/`/micro-exp` 배치 → 🟠→🟢 → absorbed 재판정). wet-lab 은 downstream.
+- [x] `UFO.md` V4 milestone → [x] flip · Phase E 는 [ ] 유지 (absorbed≠true 정직)
+
+deferred:
+- [ ] Phase E absorbed=true — 🟠 6 게이트 pool/cloud 본해 수렴 후 재판정 (유일한 잔여 open milestone)
+- [ ] stdlib atom 등록 (meissner_lev_force · mhd_thrust · gamma_rocket_isp) → 🟡→🟢
+
 ## 2026-05-26T03:00:00Z — V2 🔵 push — n=6 lattice closed-form identity ledger
 
 verify ladder V2 (🔵 push). UFO 의 n=6 lattice **정수 항등식** σ·φ=24 · n·τ=24 · σ·τ=48 을 `hexa verify --expr` 로 🔵 SUPPORTED-FORMAL 도장 (σ/φ/τ/μ/σ_k 5 atom · hexa-native closed-form path · TECS-L Tier1 · 정수 동등 |Δ|=0). product 3곱은 이 정수 atom 들의 Δ₀-absolute 합성 → 동일 🔵. Stage-4~7 의 speculative 물리 metric (Alcubierre δ=1/σ · Morris-Thorne b₀=ℓ_Pl·σ · KK 4D→26D · (σ−φ)²=100c) 은 lattice 산술 대입만 🔵 이고 **물리 metric 자체는 ⚪ UNPROVEN** 으로 정직 분리 (@D d2 — 미증명이지 불가능 아님). atlas 5 atom 모두 idempotent skip — 신규 fold 0건 (drill 대량 fold 금지 · 공유 SSOT 오염 회피). atlas hash `663698a0…` (16115 nodes). g5: verdict VERBATIM. 문서 한국어 · 코드 영문.
