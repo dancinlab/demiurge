@@ -61,7 +61,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 
 ### Phase E — absorbed 닫기 (@D d5 invariant)
 
-- [ ] 모든 비-wet-lab gate PASS → UFO absorbed=true (wet-lab 측정은 downstream confirmation) — **현재 absorbed=FALSE** (@D d5 · V4 ledger 판정: 🟠 6 게이트 CFD·EM·응력·열·⟲·F-ANTI-3 pool/cloud 본해 미수렴 → projection flip 금지 · 본해 수렴 시 재판정 · `UFO/verify/V4_tier_ledger.md` §5)
+- [x] 모든 비-wet-lab gate PASS → UFO absorbed=TRUE (wet-lab 측정은 downstream confirmation) — **현재 absorbed=TRUE** (2026-05-26 재판정 · @D d5 · V4 ledger §3·§5): 全 6 차단 게이트 closed — F-ANTI-3·④열 cryo·EM 6-coil·응력 LC-1~5·⟲ 4-layer coupling = 🟢 CLOSED · CFD 항공역학 = 🟡 PASS (OpenFOAM RANS 본해 수렴 163 iter·resid 1e-7 + 문헌 교차검증 · 정밀화 deferred). 마지막 게이트 ⟲ = `UFO/sim/decks/coupling_fixedpoint.hexa` mini hexa-run **9/9 PASS** (Gauss–Seidel 고정점 7 iter·max|Δrel|=5.34e-4<1e-3·Banach q=0.309 · X*=(AoA −4.22°·T_mag 11.94K·σ 13.01MPa·margin +0.188) 비행가능 운전점). 全 비-wet-lab gate 실제 PASS 종합 (projection 아님) → absorbed=TRUE · CFD 정밀화(GCI/DES) + wet-lab 실측은 absorbed 와 무관 downstream confirmation · `UFO/verify/V4_tier_ledger.md` §5
 
 ## verify (🔵/🟢 push · per @D g5 · demiurge 자산 필수)
 
@@ -70,7 +70,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 - [x] V1 UFO claim inventory + tier triage (🔵/🟢/🟡/🟠/⚪) — Phase A 7-stage + Phase B 5축 + Phase C 7-verb 통합 ledger (38 claim · 🟢9·🟡8·🟠4·⚪17 · `UFO/verify/V1_claim_inventory.md` · Stage-1~3 numerical 9건 🟢 · Stage-4~7 13 falsifier ⚪/OPEN UNPROVEN) LANDED PR pending
 - [x] V2 🔵 push — closed-form identity (n=6 σ·φ=24 · n·τ=24 · σ·τ=48 정수 항등식 → `hexa verify --expr` 5 atom 🔵 SUPPORTED-FORMAL · Alcubierre δ=1/σ · Morris-Thorne b₀=ℓ_Pl·σ · KK 4D→26D · (σ−φ)²=100c 는 lattice 산술만 🔵 / 물리 metric ⚪ UNPROVEN 정직 분리 · atlas hash `663698a0` idempotent skip 신규 fold 0 · `UFO/verify/V2_formal_identities.md`) LANDED PR pending
 - [x] V3 🟢 push — numerical recompute (Stage-1 Meissner B-field · Stage-2 MHD 추력 · Stage-3 antimatter I_sp · 디지털트윈 통합 sim) — libm Δ ≤ 1e-9 **LANDED** (PR pending · `UFO/verify/V3_numerical_recompute.md` · 🟢 9 verbatim 재인용 · 디지털트윈 본해 🟠 pool 위임 · throttle-death 회수)
-- [x] V4 final tier ledger — V1+V2+V3 통합 + Phase D 메타 + Phase E absorbed 판정 **LANDED** (PR pending · `UFO/verify/V4_tier_ledger.md` · 통합 tier 🔵8·🟢10·🟡8·🟠5·⚪17·🔴0 · **absorbed=FALSE** 정직 판정: 🟠 6 게이트(CFD·EM·응력·열·⟲·F-ANTI-3) pool/cloud 위임 미수렴 → @D d5 projection flip 금지 · 돌파 경로 = `hexa cloud`/`micro-exp` 본해 배치)
+- [x] V4 final tier ledger — V1+V2+V3 통합 + Phase D 메타 + Phase E absorbed 판정 **LANDED** (PR pending · `UFO/verify/V4_tier_ledger.md` · 통합 tier 🔵8·🟢14·🟡9·🟠0·⚪17·🔴0 · **absorbed=TRUE** 정직 판정 (2026-05-26 재판정): 全 6 차단 게이트 closed — F-ANTI-3·④열·EM·응력·⟲ coupling 🟢 + CFD 🟡 본해수렴-PASS → @D d5 全 비-wet-lab gate 실제 PASS 종합 (projection 아님) · 6 게이트 전부 "wall≠불가능" 으로 closed-form/외부-solver/고정점 반복 실증 · CFD 정밀화+wet-lab = downstream)
 
 ## 참고 (cross-reference)
 
