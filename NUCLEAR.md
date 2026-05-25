@@ -15,6 +15,8 @@ Build a 5-gate simulation funnel that **proposes top-K candidate nuclides** (sup
 
 R4 invariant — every nuclear record carries `gate_type = nuclear-novel-discovery-simulation` + `absorbed = false 영구`. Sim PASS = "this nuclide is worth wet-lab priority", NOT "this nuclide exists".
 
+> ⚠️ **"5-gate" 는 a–e *coverage 분류* 라벨이지 수치 composite 의 span 이 아니다.** N11 의 실제 rank 는 (c)-gate (α⊕SF 반감기) × island_weight 단독으로 계산된다 — (a) 는 입력 일부(Q_α)·install-gated, (b) install-gated, (d)(e) wet-lab 영구의존 → rank 기여 0. 상세 §2.2.
+
 Mirror of RTSC §9 (compositional) for elemental:
 
 | stack          | discovery axis              | g3 honest verdict on `absorbed=true` |
@@ -63,6 +65,20 @@ Mirror of RTSC §9.7 (a–e). Honest verdict per gate identical in shape: (a)(b)
 | (e) PASS | (gate (e) has no meaningful sim PASS — only wet-lab)                       |
 
 → 5-gate **sim** PASS → `gate_type = nuclear-novel-discovery-simulation` · `absorbed = false 영구`. R4 invariant identical to RTSC §9 form.
+
+### §2.2 composite score 의 실제 axis-coverage (g3 honesty · /gap F8)
+
+⚠️ **"5-gate" 는 *coverage 분류*이지 composite 가중이 아니다.** 현 N11 composite score = **(c)-gate (α⊕SF 반감기) × island_weight 단독**:
+
+| gate | composite 기여 | 사유 |
+|------|----------------|------|
+| (a) mass | 입력 일부 (Q_α) — 직접 rank 기여 0 | HFB mass 는 install-gated (§3.3) · Q_α 만 N7 로 chain |
+| (b) spectroscopy | 0 | N9 install-gated · composite 미참여 |
+| (c) decay (α⊕SF) | **유일한 수치 axis** × island_weight | closed-form (libm-only) · 설치 불요 |
+| (d) fusion-σ | 0 | wet-lab 영구의존 (§3.2) · out-of-scope |
+| (e) detection | 0 | wet-lab 영구의존 (§3.2) · sim PASS 없음 |
+
+즉 §2 의 5-gate taxonomy 는 honest *coverage map* 이며 그대로 유지하나, composite rank 가 5-gate 를 span 한다는 함의는 사실이 아니다 — (c) 단독이다.
 
 ---
 
@@ -141,6 +157,8 @@ Numbering continues from RTSC §9 (N1–N5). Mirror of RTSC §9.7 4-cohort + §9
 - **Input**: `(Z, N, Q_α)` — Q_α from N6 mass output (chained).
 - **Output**: log T₁/₂ (s) · α-branching ratio prediction · honest spread vs. published Geiger-Nuttall scatter.
 - **C1 SF-competition (2026-05-25 · NOVEL probe pick · hexa-lang #928)**: the (c)-gate is NO LONGER α-only. `sf_log10_t(Z,A)` (Ren-Xu 2005 phenomenological SF systematics — C. Xu & Z. Ren, PRC 71, 014309 (2005); coefficients C1=-548.825021 C2=-5.359139 C3=0.767379 C4=-4.282220, ν seniority 0 even-even / 2 else; reproduced verbatim in Kiren+ 2013 arxiv:1301.1767 Eq.2.4) + `total_halflife(L_α,L_sf)` partial-rate combiner → `DecayTotal { log10_T_total, alpha/sf_branching, sf_dominates }`. For Z≥104 SF often dominates, so the prior α-only T₁/₂ OVERESTIMATED total survival; `c_gate_total_cell` now returns the honest α⊕SF total (Og-294 anchor: α-only log10 T=-2.93 → α⊕SF -3.20, b_α≈0.48 — α-only DID overestimate). Honest limits: SF scatter ±2-3 dex > α; **odd-A hindrance + shape-isomers NOT modeled → odd-A composite unreliable this regime** (Ren-Xu ν=2 over-predicts odd-A SF; real Lv-293/Fl-289 are α-dominant); SF dominance = priority-down-weight PREDICTION, never "this nuclide cannot exist" (@D d2 · §3.4). `sf_log10_t --expr` shows 🔴 at engine float-floor (|Δ|≈6.7e-7 · same as landed VS/Royer atoms · far inside SF physical scatter); combiner atoms 🟢 full f64. absorbed=false 영구.
+- **formula-ensemble 비대칭 (honest · /gap F4)**: α-decay 는 **2-formula 앙상블** (Viola-Seaborg + Royer · NC3 consensus 로 spread 표출)이나, SF (C1) 은 **Ren-Xu 2005 단일 formula · spread 없음**. 현재 허용 가능한 이유 = SF 의 물리적 scatter (±2-3 dex) 가 α (≪ 1 dex) 를 압도 → 단일-formula 의 model-spread 누락이 SF 고유 scatter 에 묻힌다 (α 처럼 앙상블이 분별력을 주지 못함). 2번째 published SF formula (예: Denisov-Khudenko 2009) 추가는 future work — 단, §3.3 에 따라 **verbatim-cite (계수 그대로 인용) 必, re-derive 금지** (재유도 = mis-cite).
+- **GAP-fix A G1/G2 (2026-05-25 · sim.hexa v0.6.0 · hexa-lang #936/#938)**: (G1) `_anz_reason(Z,N,A,Q_α)` 가 비일관 triple (A≠Z+N · Z,N≤0 · 비유한/≤0 Q_α · Z>130 transpose) 을 compute 前 honest reason code 로 차단 — 전치 (Z,N) 이 log10 T 를 ~10× 뒤집던 silent-failure 제거; `n11_{alpha,island}_cell_checked` = 검증 진입점. (G2) `consensus_alpha` 가 `outlier_count` + `robust_mean` (leave-one-out 3·peer-spread Byzantine 가드 · n≥3 활성) 보고 + per-cell `model_validity_flag` (nominal/odd-A/out-of-domain) — Lv-293·Fl-289 붕괴가 이제 odd-A 플래그로 "진짜 SF 우세"와 구분됨.
 
 ### §4.3 N8 — fusion-evaporation cross-section
 
@@ -263,6 +281,8 @@ python3 stdlib/nuclear/hfbtho_adapter.py <Z> <N> <out_dir>
 }
 ```
 
+> **G3 top-K 확장 schema (2026-05-25 · sim.hexa v0.6.0 · hexa-lang #939)**: `top_k_she.json` (producer `sim.hexa@nuclear-N11-G3`) 가 record 에 `predicted_input: bool` · `Q_alpha_band_MeV` · `Q_alpha_source="PREDICTED via <arxiv:...>, NOT measured"` · `valid`+`guard_reason`(G1) · `scores.model_validity_flag`(G2) 추가. 리서치노트 §3 의 cited PREDICTED Q_α band 중앙값으로 Z=119/120 언락 → 랭킹 Og-294 0.242 > **²⁹⁵119 0.0462** > **²⁹⁷120 0.0306** > **²⁹³119 0.0017** > 295-120/Lv-293/Fl-289 (0.0). honest-skip: 293-120 · 298-120 · Z=121/122 (cited Q_α 없음 · @D d2). `absorbed=false 영구`; predicted-input ≠ measurement.
+
 ### §6.2 Phase 2+ deferred
 
 - **N7 WKB** small closed-form kernel — same session if budget allows, else next session.
@@ -280,6 +300,12 @@ python3 stdlib/nuclear/hfbtho_adapter.py <Z> <N> <out_dir>
 | Phase 4 #1 (Path A microkernel port · NP1 bundle = NC1+NC2+NC3) | ✅ **LANDED** · 250 LOC actual · `stdlib/nuclear/sim.hexa` v0.1.0 (new module · mirror of `stdlib/material/sim.hexa` v0.2.0) · **31/31 parity PASS** · all rel_err=0.0 IEEE 754 bit-for-bit · ²³⁸U + ²⁹⁴Og Phase 2 anchors reproduced verbatim (regression=0) · NC3 dedicated struct (Option B · MIRROR comment to material/sim.hexa Consensus) | hexa-lang `bf16ebdd` (`stdlib/nuclear/sim.hexa` v0.1.0) | `archive/session-notes/2026-05-22-nuclear-phase4-1-parity-verify.md` |
 | Phase 5 (N8/N9/N10 wrap land) | ✅ **LANDED** · 3-PR stack · 6 honest-skip 경로 (install-gated = PASS per §3.3) · 0 absorbed=true · N8 σ ~10× scatter caveat + "accelerator priority hint, never confirmation" (gate d wet-lab dependent) · N9 weights-missing (interaction .snt/.int) · N10 weights-missing (chiral-EFT ME) + A≤30 soft-ceiling flag (out-of-scope≠impossible · @D d2) | hexa-lang `4c10eed6` · `stdlib/nuclear/{n8_fusion_evap,n9_shell_model,n10_abinitio}_adapter.py` · PR #907/#913/#917 | `archive/session-notes/` |
 | Phase 6 (N11 funnel cohort · mirror RTSC §9.10) | ✅ **LANDED** · `sim.hexa` v0.2.0 N11 (`c_gate_window_score` + `n11_alpha_cell` chaining NC1/NC2/NC3) · top-K JSON (NUCLEAR.md §6.1 schema) · cited-Q_α SHE shortlist Lv-293 > Og-294 > Fl-289 (c_gate 0.836/0.682/0.456) · Z=119–122 honest-skip install-gated (§3.3 no Q_α fabrication) · N7 kernels verify-registered → 2/2 🟢 SUPPORTED-NUMERICAL (\|Δ\|=0.0) · Og-294 anchor regression=0 | hexa-lang `cdb24cfe` (PR #914 · `stdlib/nuclear/sim.hexa` v0.2.0 + `tool/verify_cli.hexa`) | `exports/nuclear_discovery/n11_funnel/<stamp>/top_k.json` |
+
+#### §6.3.1 island_weight(Z,N,σ) 가정 표면화 (g3 honesty · /gap F4 · C2 sim.hexa v0.3.0)
+
+- **σ=6.0 은 derivation 없는 hyperparameter** — magic-number 거리 Gaussian 의 폭은 fit/유도가 아니라 re-rank 용 손잡이값일 뿐 (**gate 아님** · PASS/FAIL 결정 무관). composite 순서를 매끄럽게 할 뿐 물리적 안정성 척도가 아니다.
+- **양성자 마법수 {114, 120, 126} 동등-확정 취급은 부정확** — Z=114 vs 120 vs 126 은 functional/model-dependent **미해결 예측** (Skyrme 계열은 흔히 120/126, RMF 계열은 114 선호 · 합성 0개로 미검증). island_weight 는 동등하게 취급하나 실제로는 미해결이다.
+- **island_weight = 근접 HINT, "섬 근처 ⇒ 안정/발견" 아님 (@D d2)** — 섬 낙관 모델의 수백~수천 년 수명 예측은 0개 합성 (§3.4) · out-of-scope ≠ impossible. weighting 은 priority re-rank 보조이며 발견·안정성 주장이 아니다.
 
 #### Phase 2 honest blockers (resolved · documented · or carry-forward)
 
@@ -368,3 +394,5 @@ Historical log entries are in [`./NUCLEAR.log.md`](./NUCLEAR.log.md).
 - [x] NUCLEAR x RTSC bridge — honest-exception bracketing: SHE/isomer → RTSC bulk = NO (벽=생산량 not 반감기; SHE single-atom 화학은 예외). exports/nuclear_discovery/bridge/2026-05-25-nuclear-rtsc-bridge.md
 - [x] C1 — SF-competition closed-form (sf_log10_t + alpha/SF branching -> T_total) in sim.hexa; closes N7 alpha-only flaw for Z>=104 (NOVEL probe top pick) · hexa-lang PR #928 · sim.hexa v0.2.1
 - [x] C2 — shell-gap-aware island-of-stability weighting for N11 composite (magic-number distance Gaussian; consumes C1 T_total) · hexa-lang PR #929 · sim.hexa v0.3.0
+- [x] GAP-fix A — sim.hexa correctness+unlock (hexa-lang PR #936/#938/#939 · v0.3.0→v0.6.0): G1 (Z,N,A,Q_α) guard · G2 odd-A model_validity_flag + consensus outlier guard · G3 PREDICTED-Q_α injection → Z=119/120 unlock (²⁹⁵119 #2 · ²⁹⁷120 #3 · ²⁹³119 #4; Z=121/122 honest-skip) · all kernels verify 🟢 · @goal MET (novel Z>118 ranked)
+- [x] GAP-fix B — NUCLEAR.md honesty: §2.2 composite=(c)-gate×island 단독 (5-gate=coverage map only) · §6.3.1 σ=6.0 hyperparameter + proton-magic model-dependent · §4.2 α 2-formula vs SF 단일 비대칭 caveat

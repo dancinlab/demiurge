@@ -1,0 +1,126 @@
+{
+  "domain": "nuclear",
+  "verb": "verify",
+  "kind": "n11_zn_funnel_she_predicted",
+  "producer": "sim.hexa@nuclear-N11-G3",
+  "absorbed": false,
+  "gate_type": "nuclear-novel-discovery-simulation",
+  "provisional": true,
+  "query": { "Z_range": [114, 122], "N_range": [170, 184], "accelerator_band_log10_s": [-6.0, 3.0], "island_sigma": 6.0, "magic_Z": [82, 114, 120, 126], "magic_N": [126, 184] },
+  "predicted_input_targets": ["295-119", "293-119", "295-120", "297-120"],
+  "honest_skipped": [
+    "293-120 (Z=120,N=173): research note §3 rank7 gives 'Q_α 높음' QUALITATIVE only — no numeric band → honest-skip (§3.3).",
+    "298-120 (Z=120,N=178): 'N=178 deformed magic', NO Q_α band in note → honest-skip (no fabrication).",
+    "Z=121, Z=122: NO cited Q_α anywhere in the research note → honest-skip. Out-of-scope != impossible (@D d2); re-enter when a cited Q_α band exists."
+  ],
+  "top_k_candidates": [
+    {
+      "name": "Og-294",
+      "Z": 118, "N": 176, "A": 294,
+      "Q_alpha_MeV": 11.65,
+      "Q_alpha_band_MeV": "11.65 (measured)",
+      "Q_alpha_source": "NUBASE2020 / discovery 11.65 MeV (measured)",
+      "predicted_input": false,
+      "gate_type": "nuclear-novel-discovery-simulation",
+      "absorbed": false,
+      "valid": 1, "guard_reason": "ok",
+      "prediction": { "log10_T_total_s_alpha_sf": -3.19992, "alpha_branching": 0.538222, "dominant_channel": "alpha", "alpha_consensus_outlier_count": 0 },
+      "scores": { "c_total_score": 0.62224, "island_weight": 0.388896, "composite_score": 0.241986, "model_validity_flag": "nominal" }
+    },
+    {
+      "name": "295-119",
+      "Z": 119, "N": 176, "A": 295,
+      "Q_alpha_MeV": 12.95,
+      "Q_alpha_band_MeV": "12.5-13.4 (mass-model band; mid 12.95)",
+      "Q_alpha_source": "PREDICTED via arxiv:2604.19325, arxiv:2311.07145, NOT measured",
+      "predicted_input": true,
+      "gate_type": "nuclear-novel-discovery-simulation",
+      "absorbed": false,
+      "valid": 1, "guard_reason": "ok",
+      "prediction": { "log10_T_total_s_alpha_sf": -5.48727, "alpha_branching": 0.999968, "dominant_channel": "alpha", "alpha_consensus_outlier_count": 0 },
+      "scores": { "c_total_score": 0.113939, "island_weight": 0.405442, "composite_score": 0.0461956, "model_validity_flag": "odd-A-hindrance-not-modeled" }
+    },
+    {
+      "name": "297-120",
+      "Z": 120, "N": 177, "A": 297,
+      "Q_alpha_MeV": 13.2,
+      "Q_alpha_band_MeV": "12.9-13.5 (mass-model band; mid 13.20)",
+      "Q_alpha_source": "PREDICTED via arxiv:2604.09287, arxiv:2601.21317, NOT measured",
+      "predicted_input": true,
+      "gate_type": "nuclear-novel-discovery-simulation",
+      "absorbed": false,
+      "valid": 1, "guard_reason": "ok",
+      "prediction": { "log10_T_total_s_alpha_sf": -5.72827, "alpha_branching": 1, "dominant_channel": "alpha", "alpha_consensus_outlier_count": 0 },
+      "scores": { "c_total_score": 0.0603845, "island_weight": 0.506336, "composite_score": 0.0305748, "model_validity_flag": "odd-A-hindrance-not-modeled" }
+    },
+    {
+      "name": "293-119",
+      "Z": 119, "N": 174, "A": 293,
+      "Q_alpha_MeV": 13.2,
+      "Q_alpha_band_MeV": "12.8-13.6 (mass-model band; mid 13.20)",
+      "Q_alpha_source": "PREDICTED via arxiv:2604.19325, arxiv:2511.18337, NOT measured",
+      "predicted_input": true,
+      "gate_type": "nuclear-novel-discovery-simulation",
+      "absorbed": false,
+      "valid": 1, "guard_reason": "ok",
+      "prediction": { "log10_T_total_s_alpha_sf": -5.96846, "alpha_branching": 1, "dominant_channel": "alpha", "alpha_consensus_outlier_count": 0 },
+      "scores": { "c_total_score": 0.00700835, "island_weight": 0.245913, "composite_score": 0.00172344, "model_validity_flag": "odd-A-hindrance-not-modeled" }
+    },
+    {
+      "name": "295-120",
+      "Z": 120, "N": 175, "A": 295,
+      "Q_alpha_MeV": 13.35,
+      "Q_alpha_band_MeV": "13.0-13.7 (mass-model band; mid 13.35)",
+      "Q_alpha_source": "PREDICTED via arxiv:2604.09287, arxiv:2601.21317, NOT measured",
+      "predicted_input": true,
+      "gate_type": "nuclear-novel-discovery-simulation",
+      "absorbed": false,
+      "valid": 1, "guard_reason": "ok",
+      "prediction": { "log10_T_total_s_alpha_sf": -6.00536, "alpha_branching": 1, "dominant_channel": "alpha", "alpha_consensus_outlier_count": 0 },
+      "scores": { "c_total_score": 0.0, "island_weight": 0.324652, "composite_score": 0.0, "model_validity_flag": "odd-A-hindrance-not-modeled" }
+    },
+    {
+      "name": "Lv-293",
+      "Z": 116, "N": 177, "A": 293,
+      "Q_alpha_MeV": 10.54,
+      "Q_alpha_band_MeV": "10.54 (measured)",
+      "Q_alpha_source": "measured E_alpha first-detection (Lv->Fl) 10.54 MeV (measured)",
+      "predicted_input": false,
+      "gate_type": "nuclear-novel-discovery-simulation",
+      "absorbed": false,
+      "valid": 1, "guard_reason": "ok",
+      "prediction": { "log10_T_total_s_alpha_sf": -26.6164, "alpha_branching": 1.40098e-26, "dominant_channel": "SF", "alpha_consensus_outlier_count": 0 },
+      "scores": { "c_total_score": 0.0, "island_weight": 0.478973, "composite_score": 0.0, "model_validity_flag": "odd-A-hindrance-not-modeled" }
+    },
+    {
+      "name": "Fl-289",
+      "Z": 114, "N": 175, "A": 289,
+      "Q_alpha_MeV": 9.71,
+      "Q_alpha_band_MeV": "9.71 (measured)",
+      "Q_alpha_source": "measured decay energy 1998 Dubna 9.71 MeV (measured)",
+      "predicted_input": false,
+      "gate_type": "nuclear-novel-discovery-simulation",
+      "absorbed": false,
+      "valid": 1, "guard_reason": "ok",
+      "prediction": { "log10_T_total_s_alpha_sf": -27.8053, "alpha_branching": 1.76601e-29, "dominant_channel": "SF", "alpha_consensus_outlier_count": 0 },
+      "scores": { "c_total_score": 0.0, "island_weight": 0.324652, "composite_score": 0.0, "model_validity_flag": "odd-A-hindrance-not-modeled" }
+    }
+  ],
+  "scope_caveats": [
+    "(s1) PREDICTED-INPUT cells (Z=119/120) use a CITED Q_α band MIDPOINT from arxiv mass-model literature — predicted_input=true. This is sim-composed-with-sim (predicted Q_α → semi-empirical T), NOT measurement. 'Z=119 후보일 가능성' != '후보임' != '발견됨'.",
+    "(s2) Q_α is mass-model dependent (ΔQ_α ~0.3-1.0 MeV across FRDM/WS4/SkyHFB/KTUY/BSk; note §3.1). The band width IS the honest uncertainty; only the midpoint is scored. @D d6: no forced number.",
+    "(s3) C2 composite = C1 alpha+SF window x island_weight. odd-A cells carry model_validity_flag (G2) so a score=0 is distinguishable from true SF dominance. (a)(b)(d)(e) gates still install-gated.",
+    "(s4) absorbed=false 永久 (R4). 2026-05 현재 Z=119/120 confirmed discovery 0건 (RIKEN/Berkeley/JINR 모두 진행중/착수예정; note §2). (d) production sigma + (e) recoil-separator detection wet-lab permanent."
+  ],
+  "citations": [
+    "arxiv:2604.19325 — Z=119 Q_α/σ estimates (Ca,Ti,V,Cr beams)",
+    "arxiv:2311.07145 — 51V+248Cm Z=119 optimal energy (DNS)",
+    "arxiv:2604.09287 — element 120 DNS synthesis (PC-PK1)",
+    "arxiv:2511.18337 — systematic SHE formation 5 mass models",
+    "arxiv:2601.21317 — Z=120 competing decay modes (RMF/NL3,PCM)",
+    "arxiv:2405.07704 — odd-Z 119 shell structure (def. RHB)",
+    "Viola-Seaborg 1966 · Royer 2000 · Ren-Xu PRC71 014309 (kernels)",
+    "demiurge research note 2026-05-25-she-driplinelit.md §3 (Q_α bands)"
+  ],
+  "recommendation": "G3 accelerator beam-time priority shortlist INCLUDING cited-predicted Z=119/120 candidates (predicted_input=true). absorbed=true requires GSI/JINR/RIKEN beam + SHIP/DGFRS/GARIS detection + IUPAC priority — none from sim (NUCLEAR.md 7). '가능성' != '임'."
+}
