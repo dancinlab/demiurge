@@ -1,0 +1,23 @@
+% TODO (fill batch): transcribe companion/verify-ledger.json verbatim —
+% the Bethe-Bloch PDG points (4x GREEN), the two plasma-wakefield atoms
+% (wakefield_e0_gv_m, wakefield_lambda_um), the FODO twiss parity, and
+% the LHE round-trip. Per-atom: fn / args / expected / observed /
+% delta_abs / tier / atom_class / pr / gate / note.
+\section{Verification Ledger}
+\label{app:verify-ledger}
+
+This appendix is the verbatim transcription of the CERN verify ledger
+(\texttt{companion/\allowbreak verify-ledger.json}), the single source of
+truth for every numeric claim in the body. Each cited figure in
+\S\ref{sec:bethe}--\S\ref{sec:fodo} traces to exactly one row here. The
+ledger holds the per-atom recompute records partitioned by
+\texttt{atom\_class} (\texttt{supported-numerical} \tierGreen,
+\texttt{supported-formal} \tierBlue, \texttt{falsified-controlled}
+\tierRed), each carrying the function \texttt{fn}, the \texttt{args}, the
+\texttt{expected} and \texttt{observed} values, the absolute residual
+\texttt{delta\_abs}, the \texttt{tier}, the landing \texttt{pr}, the
+pipeline \texttt{stage}, and the per-atom \texttt{note}.
+
+% TODO (fill batch): per-atom verbatim JSON blocks grouped by tier;
+% the tier-distribution summary; and the claim-to-atom audit table
+% (every body numeric claim -> backing atom -> tier).

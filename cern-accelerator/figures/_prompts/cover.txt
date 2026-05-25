@@ -1,0 +1,15 @@
+A clean, technical schematic illustration of a tabletop laser-plasma
+accelerator, rendered in a precise scientific-diagram style on a dark
+navy background with cyan and amber accents. Left to right: (1) an intense
+red drive laser pulse enters from the left; (2) it crosses a glowing
+turquoise gas-jet plasma region; (3) behind the laser a bright crescent
+"wakefield bubble" cavity forms in the plasma, drawn as a luminous
+parabolic wave structure; (4) a tightly focused electron bunch (a small
+bright dot trailing the bubble) is accelerated forward; (5) the electron
+bunch then passes through a row of blue quadrupole magnets arranged as a
+FODO lattice (alternating focusing/defocusing, shown as paired magnet
+yokes); (6) on the far right, a stylized particle detector (concentric
+rings) registers the beam. Subtle field lines and a faint gradient arrow
+labeled GV/m above the plasma stage. Minimal, elegant, high-contrast,
+no text labels, 16:9 landscape, suitable as the cover figure of a physics
+monograph.
