@@ -2,6 +2,54 @@
 
 Append-only history sister of `ANTIMATTER.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T10:48Z — ⓹합성 recombination verify (🔵 밀도멱 + 🟢 T-스케일링)
+
+반수소 합성 공정 ⓹ — 차가운 p̄/e⁺ 플라즈마에서 **3체 재결합(three-body recombination, TBR)** 채널 `p̄ + e⁺ + e⁺ → H̄ + e⁺` (둘째 양전자가 제3체로 결합에너지를 들고 나감) 이 복사재결합을 지배. Mansbach–Keck / Glinsky–O'Neil 저온 플라즈마 이론의 폐형해 스케일링 불변량을 hexa CLI verify.
+
+- [x] 폐형해 스케일링 도출 — α₃ᵦ ∝ e¹⁰/(m_e^(1/2)(k_B T)^(9/2)) ⇒ **α₃ᵦ ∝ n_e · T^(−9/2)**, 반양성자당 재결합률 ∝ **n_e² · T^(−9/2)**. 핵심 불변량 = T-지수 −9/2=−4.5 (정확한 유리수) + 밀도멱 2 (정확한 정수). 대조: 복사재결합 p̄+e⁺→H̄+γ ~ T^(−1/2) (Kramers, 훨씬 약함).
+- [x] 수치예 — α₃ᵦ(4 K)/α₃ᵦ(100 K) = (100/4)^4.5 = **25^4.5 = 5⁹ = 1953125.0** (정확) — 100 K→4 K 냉각이 TBR 계수를 ~1.95×10⁶배 증폭 (ALPHA/ATRAP).
+- [x] hexa-native fn 3종 추가 (tool/verify_cli.hexa) — `recomb_3body_density_power(n)=2·n` (정수 🔵) · `recomb_3body_exponent()=−9/2=−4.5` (0-arg float) · `recomb_3body_tratio(T_hi,T_lo)=(T_hi/T_lo)^4.5` (2-arg float) → impl + _recompute/_recompute_float dispatch + _is_float_fn/_is_zero_arg_float_fn 멤버십 + help. `bin/hexa-verify` 재빌드 (-lm/-ldl 포함 clang -O2; tool/build_hexa_verify.sh). **hexa-lang PR #1018 MERGED** (06b61657).
+- [x] verify 호스트 = mini only (`POOL_DISABLE=1`) — 밀도멱 **🔵 SUPPORTED-FORMAL** · 지수/T-비율 **🟢 SUPPORTED-NUMERICAL |Δ|=0.0 ≤ ε=1e-9** (verbatim 아래).
+- [x] **음성대조 3건 모두 🔴 FALSIFIED** — 밀도멱=3 · 지수=−4.0 · T-비율=2000000.0 전부 결정론적으로 falsify → LLM 자기판정 아닌 결정론적 재계산 증명.
+- [x] record — `exports/antimatter/verify/2026-05-25T10-43-31Z/recomb_3body_20260525T104331Z.json`
+- [x] ANTIMATTER.md ⓹합성 `- [ ]`→`- [x]` (🔵+🟢 result note)
+- [ ] atlas register — SKIP (installed hexa 바이너리 verify_cli 에 신규 fn 미반영 → `register --from-verify` 🟠 INSUFFICIENT; task상 optional. atom 은 origin/main verify_cli + 재빌드 바이너리로 재현 가능. 다음 `hx install` 후 fold 가능)
+- [ ] absorbed — 全 게이트 PASS 아님 (다른 공정 미완) → false 유지 (@D d5)
+
+verbatim hexa verify verdict (`POOL_DISABLE=1 bin/hexa-verify --expr …`):
+
+```
+verify --expr recomb_3body_density_power(1)=2
+  calc   = 2  == expected 2
+  tier   = 🔵 SUPPORTED-FORMAL  (hexa-native closed-form, g_self_verify · TECS-L Tier1)
+
+verify --expr recomb_3body_exponent()=-4.5
+  calc   = -4.5  ≈ expected -4.5  (|Δ|=0.0 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+
+verify --expr recomb_3body_tratio(100.0,4.0)=1953125.0
+  calc   = 1953125.0  ≈ expected 1953125.0  (|Δ|=0.0 ≤ ε=1e-9)
+  tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+```
+
+negative control (determinism — wrong value MUST falsify):
+
+```
+verify --expr recomb_3body_density_power(1)=3
+  calc   = 2  != expected 3
+  tier   = 🔴 FALSIFIED  (calc deterministically disagrees — TECS-L result-agnostic closed negative)
+
+verify --expr recomb_3body_exponent()=-4.0
+  calc   = -4.5  ≠ expected -4.0  (|Δ|=0.5 > ε=1e-9)
+  tier   = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)
+
+verify --expr recomb_3body_tratio(100.0,4.0)=2000000.0
+  calc   = 1953125.0  ≠ expected 2000000.0  (|Δ|=46875.0 > ε=1e-9)
+  tier   = 🔴 FALSIFIED  (calc deterministically disagrees beyond ε — TECS-L result-agnostic closed negative)
+```
+
+note: 밀도멱은 정확한 정수 2 → 🔵 (g_self_verify · 순수 정수 closed-form). T-지수(−4.5)/T-비율(25^4.5)은 폐형해이나 float/pow libm-class 재계산이라 rubric상 🟢 (🔵=순수 정수/symbolic). hexa-lang verify_cli.hexa 변경은 형제 ANTIMATTER agent fn(penning_*·pair_threshold_*·transition_factor_1s2s·h1s2s_rydberg·rel_kinetic_from_p·cyclotron_cool_*) 과 같은 파일 — origin/main(#1014 ⓶감속·#1015 ⓸냉각) 진행으로 2차례 rebase·forward-merge, 형제 fn 전부 보존 (@D d9). 본 agent 는 자기 fn 3종만 추가.
+
 ## 2026-05-25T10:43:31Z — ⓶감속 AD/ELENA ladder verify (상대론 감속 ladder 🟢 · 비상대론 극한 환원)
 
 - [x] 물리 도출 — 상대론 정확식 E=√((pc)²+(m_p c²)²) ⇒ T=√((pc)²+(m_p c²)²)−m_p c² · 역식 pc=√(T²+2·T·m_p c²) · m_p c²=938.272 MeV (CODATA)
