@@ -1,4 +1,4 @@
-\begin{thebibliography}{16}
+\begin{thebibliography}{18}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -90,6 +90,13 @@ D.~Ghost and {Claude Opus 4.7}.
 \newblock `hexa verify --blue-max <DOMAIN>` audit rule; ANTIMATTER reference
   implementation \#1094, FUSION pair audit \#1102.
 
+\bibitem[Grad(1958)]{grad1958ms}
+H.~Grad.
+\newblock Hydrodynamic equilibria and force-free fields.
+\newblock \emph{Reviews of Modern Physics}, 30\penalty0 (3):\penalty0 920--923,
+  1958.
+\newblock \doi{10.1103/RevModPhys.30.920}.
+
 \bibitem[Hartwig et~al.(2024)Hartwig, Vieira, Sorbom, Badcock, Bajko, Beck,
   Castaldo, Craighill, Davies, Estrada, Fry, Golfinopoulos, Granetz, Greenwald,
   Heim, Irby, Kuznetsov, Lammi, Michael, Mouratidis, Murray, Pfeiffer, Pierson,
@@ -144,6 +151,12 @@ P.~K. Romano, N.~E. Horelik, B.~R. Herman, A.~G. Nelson, B.~Forget, and
   development.
 \newblock \emph{Annals of Nuclear Energy}, 82:\penalty0 90--97, 2015.
 \newblock \doi{10.1016/j.anucene.2014.07.048}.
+
+\bibitem[Shafranov(1966)]{shafranov1966}
+V.~D. Shafranov.
+\newblock Plasma equilibrium in a magnetic field.
+\newblock \emph{Reviews of Plasma Physics}, 2:\penalty0 103--151, 1966.
+\newblock Edited by M. A. Leontovich; Consultants Bureau, New York.
 
 \bibitem[Sorbom et~al.(2015)Sorbom, Ball, Palmer, Mangiarotti, Sierchio,
   Bonoli, Kasten, Sutherland, Barnard, Haakonsen, Goh, Sung, and
