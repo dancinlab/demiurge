@@ -2,6 +2,30 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T14:38:39Z — HEXA-TELEPORT 축 흡수 LANDED (Phase B 5/5 완료)
+
+Phase B 부수 5축의 **마지막** 슬롯 봉합 — 양자 상태 teleportation 프로토콜 (Bennett 1993) 을 비행체 분산 센서/통신 사양 manifest 로 흡수. docs/manifests only · @D d3/d4/d9/d10 준수. **이로써 Phase B (HEXA-HOVER · HEXA-SIM · HEXA-GRAV · HEXA-CLOAK · HEXA-TELEPORT) 부수축 흡수 완료.**
+
+- [x] source 식별 — `UFO/HEXA-TELEPORT.md` (692 LOC · blob `be4ac3d`) + `UFO/teleport/hexa-teleport.md` (440 LOC · blob `6cb5159`) + `UFO/hexa-teleport/hexa-teleport.md` (443 LOC · blob `b75b778`)
+- [x] `UFO/teleport/README.md` 작성 — 5-section 한국어 (§0 TL;DR + ASCII teleportation 다이어그램 · §1 흡수 source 3개 SHA+LOC · §2 Bell-pair·BSM·고전채널≤c·unitary 4단계 + correction 표 + entanglement swapping 중계 · §3 no-cloning/상대론 한계 honest fence ⚪ · §4 분산 센서 양자 동기화 + QKD BB84/E91 응용 · §5 cross-link)
+- [x] `UFO/teleport/manifest.tape` 작성 — @V 1.0 · @I id001 `ufo/teleport` (icon 🛸 · alias `teleport`) + @D t1~t4 결정 라인 + @A absorb_hexa_teleport (source SHA) + @C cross_link (17-type alphabet only)
+- [x] honest fence ⚪ — 초광속/즉시 전송 주장 거부 (no-communication theorem · 정보 ≤ c · 고전채널 필수) · "σ·sopfr·10=600km 즉시전송"·"no-cloning=n=6 유일성" source 수론 주장은 ⚪ SPECULATION-FENCED 로 정직 표기 (물리 한계, "돌파 경로" 아님)
+- [x] no-cloning 정합 — BSM 이 송신측 원본 붕괴 → 복제 아닌 *이전* (Wootters-Zurek 1982 선형성 증명 채택 · 수론 재유도 fence)
+- [x] QKD 보안 "절대불가" 과장 → 🟡 절제 (도청 *탐지* 정보이론 보안 · side-channel/구현 의존)
+- [x] 비행체 응용 = 분산 센서 양자 상태 동기화 (entanglement distribution · UFO/grav 수요) + QKD BB84/E91 보안 통신 — 물질/에너지/사람 전송 아님 (양자 상태 = 정보만)
+- [x] `UFO.md` Phase B HEXA-TELEPORT milestone → [x] 플립 (**Phase B 5/5 완료** 표기)
+- [x] explicit `git add` per @D d9 — UFO/teleport/{README.md,manifest.tape} + UFO.md + UFO.log.md (인접 worktree HEXA-CLOAK agent index 격리)
+- [x] @D d3 준수 — implementation 코드 0줄 (Bell-state/BSM/QKD 양자회로 = hexa-lang/stdlib SSOT 위임 · `.hexa` only)
+- [x] @D d4 준수 — single generic dispatch (SC 큐빗 cryo = RTSC 인프라 재활용 · 분기 hardcoding 금지)
+- [x] @D d10 준수 — icon 🛸 · name `UFO/teleport` · alias `teleport` 헤더
+
+deferred:
+- [ ] hexa-lang/stdlib/quantum/{bell_state,bsm,unitary_correction,qkd_bb84,qkd_e91} 모듈 신설 (양자회로 코드 SSOT 채움)
+- [ ] Bell-state fidelity F=⟨ψ|ρ_out|ψ⟩ closed-form verify 🟢 (`hexa verify`) → atlas register
+- [ ] entanglement swapping 후 concurrence(얽힘도) 정량 — 다중 중계기 hop loss budget
+- [ ] QKD QBER (quantum bit error rate) threshold 11% (BB84) preregister + side-channel falsifier 매핑
+- [ ] UFO/grav 분산 GW arm 노드 양자강화 측정 (Heisenberg 1/N vs 표준 1/√N) 통합 인터페이스
+
 ## 2026-05-25T23:35:00Z — verb-2 structure LANDED
 
 Phase C 의 **두 번째 verb (structure)** 슬롯 봉합 — verb-1 spec (PR#187) 의 1인승 통합 비행체 사양을 **외형 + 내부 구획 + 자석 어셈블리 + stage 모듈 인터페이스 + 응력 budget** 5축으로 구조화. docs/manifests only · @D d3/d4 준수.
