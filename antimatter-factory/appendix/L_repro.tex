@@ -1,23 +1,142 @@
-% SKELETON (fill batch): L — reproducibility runbook.
-% TODO (fill batch): fold the exact reproduction runbook — building
-%   bin/hexa-verify from tool/verify_cli.hexa (host=mini, POOL_DISABLE=1 per
-%   the verify-host note), the 22 hexa-native fns, the CODATA-2018 constants,
-%   the inherited magnet decks, and the companion/ rebuild steps.
+% FILLED (fill batch): L — reproducibility runbook.
+%   folds the exact reproduction runbook — building bin/hexa-verify, the 22
+%   hexa-native fns, the CODATA-2018 constants, the inherited magnet decks,
+%   the companion/ rebuild steps. host=mini, POOL_DISABLE=1 per verify-host note.
 \section{Reproducibility Runbook}
 \label{app:repro}
 
-This appendix is the step-by-step reproduction runbook. It will give the
-exact commands to rebuild the verify binary
-(\texttt{tool/build\_hexa\_verify.sh} $\to$ \texttt{bin/hexa-verify}, run on
-host \texttt{mini} with \texttt{POOL\_DISABLE=1} per the verify-host
-constraint), enumerate the 22 hexa-native functions and their canonical
-stdlib home, list the inlined CODATA-2018 constants
-\citep{mohr2018codata} ($m_p$, $e$, $\mu_B$, $k_B$, $R_\infty$; CPT
-$m_{\bar p}=m_p$), point to the inherited magnet decks under
-\texttt{stdlib/rtsc/} and \texttt{stdlib/material/magnet/}, and give the
-paper-build (\texttt{make}), figure (\texttt{make figures}), and lint
-(\texttt{make lint}) targets plus the \texttt{companion/} rebuild steps.
+This appendix is the step-by-step reproduction runbook: the verify-binary
+build, the per-process one-line \texttt{hexa verify --expr} invocations, the
+inlined constants, the inherited magnet decks, and the paper / figure /
+\texttt{companion} rebuild steps. Everything below is reproducible from the
+\texttt{dancinlab/demiurge} and \texttt{dancinlab/hexa-lang} repos at the
+PRs of Appendix~\ref{app:pr-roll}.
 
-% TODO (fill batch): the verify-binary build commands, the per-process
-% one-line `hexa verify --expr` invocations, the constants table, the
-% paper/figure/companion build steps.
+% -------------------------------------------------------------------------
+\subsection{Building the verify binary}
+\label{app:repro-build}
+
+The closed-form atoms are evaluated by a hexa-native verify binary compiled
+from the stdlib kernels. Build and run it on the canonical verify host:
+\begin{lstlisting}
+# host = mini (ubu-1 broken / ubu-2 segfaults on verify; pin mini)
+# POOL_DISABLE=1 so the build/run stays local (no pool dispatch)
+cd ~/core/hexa-lang
+POOL_DISABLE=1 tool/build_hexa_verify.sh    # -> bin/hexa-verify (needs -lm -ldl)
+POOL_DISABLE=1 bin/hexa-verify --expr <fn> <args> <expected>
+\end{lstlisting}
+The binary is \texttt{.hexa}$\to$C$\to$native (the stdlib is compiled, not
+interpreted); use absolute \texttt{/Users/} paths to keep the run on
+\texttt{mini}. The tier rubric is \texttt{hexa verify rubric}.
+
+% -------------------------------------------------------------------------
+\subsection{Per-process one-line invocations}
+\label{app:repro-invoke}
+
+Each closed-form claim reproduces in one CLI line (Table~\ref{tab:repro-cli}).
+The full verbatim verdicts are Appendix~\ref{app:verify-ledger}.
+
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}c l@{}}
+\toprule
+\textbf{P} & \texttt{hexa verify --expr} invocation \\
+\midrule
+\textcircled{\scriptsize 1} & \verb|pair_threshold_kinetic(938.272)=5629.63| \\
+\textcircled{\scriptsize 1} & \verb|pair_threshold_factor(1)=6| \\
+\textcircled{\scriptsize 2} & \verb|rel_kinetic_from_p(3500.0)=2685.31| \\
+\textcircled{\scriptsize 2} & \verb|rel_p_from_kinetic(5.3139)=100.0| \\
+\textcircled{\scriptsize 3} & \verb|penning_invariance(4.78942e8,6.18994e6)=4.78942e8| \\
+\textcircled{\scriptsize 4} & \verb|cyclotron_cool_bratio(5.0,1.0)=0.04| \\
+\textcircled{\scriptsize 4} & \verb|cyclotron_cool_bexponent(0)=-2| \\
+\textcircled{\scriptsize 5} & \verb|recomb_3body_tratio(100.0,4.0)=1953125.0| \\
+\textcircled{\scriptsize 5} & \verb|recomb_3body_density_power(1)=2| \\
+\textcircled{\scriptsize 6} & \verb|ioffe_mirror_bmin(0.1,100000.0,0.4)=0.112397| \\
+\textcircled{\scriptsize 6} & \verb|ioffe_trap_depth_k(1.0)=0.671714| \\
+\textcircled{\scriptsize 7} & \verb|h1s2s_rydberg(1.09737e7,2.99792e8)=2.46738| \\
+\bottomrule
+\end{tabular}
+\caption{Representative one-line reproductions, one or two per process. The
+full 33 positive atoms + 8 controls are in Appendix~\ref{app:verify-ledger};
+the 22 hexa-native functions live at a single canonical stdlib home (commons
+@D~d3).}
+\label{tab:repro-cli}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Inlined constants (CODATA-2018)}
+\label{app:repro-const}
+
+All dimensional atoms use CODATA-2018 constants \citep{mohr2018codata},
+inlined verbatim in the kernel; CPT supplies $m_{\bar p}=m_p$
+(Table~\ref{tab:repro-const}).
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\textbf{constant} & \textbf{value} & \textbf{used by} \\
+\midrule
+$m_p c^2$    & $938.272$\,MeV                       & \textcircled{\scriptsize 1}, \textcircled{\scriptsize 2} \\
+$m_p$        & $1.67262\times10^{-27}$\,kg          & \textcircled{\scriptsize 4} \\
+$m_e$        & $9.10938\times10^{-31}$\,kg          & \textcircled{\scriptsize 4} \\
+$\mu_B/k_B$  & $0.671714$\,K/T                      & \textcircled{\scriptsize 6} \\
+$R_\infty$   & $1.09737\times10^{7}\,\mathrm{m}^{-1}$ & \textcircled{\scriptsize 7} \\
+$c$          & $2.99792\times10^{8}$\,m/s           & \textcircled{\scriptsize 2}, \textcircled{\scriptsize 7} \\
+\bottomrule
+\end{tabular}
+\caption{Inlined CODATA-2018 constants \citep{mohr2018codata}. The
+$\mu_B/k_B$ entry is itself a registered atom (\texttt{mu\_b\_over\_kb},
+Appendix~\ref{app:confinement}); CPT supplies $m_{\bar p}=m_p$ for the
+antiproton.}
+\label{tab:repro-const}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Inherited magnet decks}
+\label{app:repro-decks}
+
+The confinement stage reuses the RTSC magnet decks unmodified
+(Appendix~\ref{app:rtsc}): the Wheeler on-axis current-loop closed form under
+\texttt{stdlib/material/magnet/}, and the GetDP axisymmetric A--$\phi$ deck
+(\texttt{solenoid\_axisym.geo}/\texttt{.pro}) under
+\texttt{stdlib/rtsc/templates/}. The optional FEM re-solve needs GetDP 4.0.0
+ARM (\texttt{\$GETDP\_BIN}); see the runbook in Appendix~\ref{app:rtsc-runbook}.
+
+% -------------------------------------------------------------------------
+\subsection{Paper, figures, and companion rebuild}
+\label{app:repro-paper}
+
+The monograph builds with \texttt{xelatex} (UTF-8/emoji-native):
+\begin{lstlisting}
+cd antimatter-factory
+make figures   # pgfplots/.tex snippets -> figures/fig*.pdf (pdflatex each)
+make           # xelatex x3 + bibtex (cross-ref resolution)
+make pages     # pdfinfo page count
+make lint      # /paper lint . (commons @D g51: pages + fal.ai figure)
+\end{lstlisting}
+A standalone figure rebuilds by dropping
+\texttt{figures/\_scripts/figNN\_<name>.tex} (the Makefile wildcard picks it
+up). The cover image \texttt{figures/cover.png} is the only fal.ai-generated
+asset; all other figures are pgfplots/TikZ from the \texttt{\_scripts/} sources
+(no \texttt{.py} figure scripts in this domain, per the hook policy). The
+\texttt{companion/} records (\texttt{verify-ledger.json}, \texttt{pr-roll.json},
+\texttt{session-journal.md}) are the externalized data axis; the PR-roll
+metadata is refreshable via \texttt{gh pr view --json}
+(Appendix~\ref{app:pr-roll}).
+
+% -------------------------------------------------------------------------
+\subsection{Honest scope}
+\label{app:repro-scope}
+
+The runbook reproduces the \emph{closed-form / numerical} funnel
+(processes~\textcircled{\scriptsize 1}--\textcircled{\scriptsize 6}) and the
+\emph{leading-order} 1S--2S frequency. It cannot reproduce the CPT verdict at
+process~\textcircled{\scriptsize 7}, which is a measured-oracle quantity
+(ALPHA / BASE, Appendix~\ref{app:measurement}); the funnel stays
+\texttt{absorbed=false} there by construction. The verify host is pinned to
+\texttt{mini} because the alternative hosts fail the verify build/run; this is
+an infrastructure constraint, not a result claim.
