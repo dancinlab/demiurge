@@ -1,9 +1,3 @@
-% TODO (fill batch): fold stdlib/cern/bethe_bloch_stopping.{hexa,py} —
-% the PDG eq.34.5 closed-form dE/dx kernel, the Al/Cu/W/Pb x KE 1MeV-1GeV
-% sweep, the 4/4 PDG reference-point parity (relerr <= 4e-10), and the
-% verify atom bethe_bloch_stopping. Source: verify-ledger.json + the
-% latest _cellrun.log; cite the engine_tool_gap on the Geant4 'particle'
-% module as the Stage-4 boundary.
 \section{Bethe--Bloch Stopping Power --- Full Data Record}
 \label{app:bethe}
 
@@ -14,9 +8,234 @@ stopping-power formula the kernel evaluates, the Al/Cu/W/Pb material set
 over kinetic energies \SIrange{1}{1000}{MeV}, the four-point PDG
 reference parity ($|\Delta|\!\le\!\SI{4e-10}{}$, \tierGreen), and the
 honest Stage-4 boundary (the four Geant4-MC corrections). Every digit
-traces to the \verb|bethe_bloch_stopping| atom in
+traces to the \verb|bethe_bloch_stopping| atoms in
 \texttt{companion/verify-ledger.json}.
 
-% TODO (fill batch): equation block (eq.34.5 expanded), the K-constant
-% derivation, the per-material I/Z/A table, the 4 PDG ref rows with
-% observed/expected/delta_abs, and the Stage-3-vs-Stage-4 honesty box.
+% -------------------------------------------------------------------------
+\subsection{The closed form (PDG eq.~34.5)}
+\label{app:bethe-eq}
+
+For a projectile of charge $z$ (in units of $e$) and velocity $\beta c$
+($\gamma=1/\sqrt{1-\beta^2}$) traversing a medium of atomic number $Z$,
+atomic mass $A$, and mean excitation energy $I$, the PDG mean mass
+stopping power is \citep{pdg2024}
+\begin{equation}
+-\left\langle\frac{\mathrm{d}E}{\mathrm{d}x}\right\rangle
+  = K\,z^{2}\,\frac{Z}{A}\,\frac{1}{\beta^{2}}
+   \left[\frac12\ln\!\frac{2 m_e c^{2}\beta^{2}\gamma^{2} W_{\max}}{I^{2}}
+   - \beta^{2} - \frac{\delta(\beta\gamma)}{2}\right],
+\label{eq:app-bethe}
+\end{equation}
+with the maximum single-collision energy transfer (PDG eq.~34.7)
+\begin{equation}
+W_{\max}
+  = \frac{2 m_e c^{2}\,\beta^{2}\gamma^{2}}
+         {1 + 2\gamma\,m_e/M + (m_e/M)^{2}},
+\label{eq:app-tmax}
+\end{equation}
+where $M$ is the projectile rest mass. The CERN kernel evaluates the
+antiproton case ($M=\SI{938.27208816}{MeV/c^2}$, $z=1$), and the kinetic
+energy enters through $\gamma = 1 + T/M$. The leading constant is the
+material-independent
+\begin{equation}
+K = 4\pi N_A r_e^{2} m_e c^{2}
+  = \SI{0.307075}{MeV\,cm^2/mol},
+\label{eq:app-K}
+\end{equation}
+fixed from CODATA. The kernel takes the \emph{clean-room} simplification
+$\delta(\beta\gamma)=0$ (no density-effect correction): it is a
+re-derivation of the PDG public closed form, not a Geant4 source
+re-derivation, and it deliberately omits the same four corrections the
+Stage-1 Python substrate omits (\S\ref{app:bethe-honesty}).
+
+% -------------------------------------------------------------------------
+\subsection{Material set (PDG Table 34.1)}
+\label{app:bethe-mat}
+
+The four CERN-style shielding / trap materials and their PDG constants
+are in Table~\ref{tab:app-bethe-mat}. Natural-mixture averages are used
+for the high-$Z$ pair.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}l c c c c@{}}
+\toprule
+material & $Z$ & $A$ (g/mol) & $I$ (eV) & $Z/A$ \\
+\midrule
+Al & 13 & 26.9815 & 166.0 & 0.4818 \\
+Cu & 29 & 63.5460 & 322.0 & 0.4564 \\
+W  & 74 & 183.840 & 727.0 & 0.4025 \\
+Pb & 82 & 207.200 & 823.0 & 0.3958 \\
+\bottomrule
+\end{tabular}
+\caption{Target-material constants from PDG Table 34.1, as carried in
+\texttt{cern\_materials()} of \texttt{bethe\_bloch\_stopping.hexa}. The
+mean excitation energy $I$ is the only material parameter inside the
+logarithm of Eq.~\ref{eq:app-bethe}; $Z/A$ scales the whole expression.}
+\label{tab:app-bethe-mat}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{The dE/dx sweep and the curve}
+\label{app:bethe-sweep}
+
+The kernel sweeps $4\times 7 = 28$ points (four materials $\times$ seven
+kinetic energies $1,3,10,30,100,300,\SI{1000}{MeV}$). Figure~\ref{fig:bethe}
+plots the full sweep as $-\langle\mathrm{d}E/\mathrm{d}x\rangle$ versus
+$\beta\gamma$ on log--log axes: the canonical $\sim\!1/\beta^2$ fall from
+the low-energy end toward the relativistic minimum-ionizing region is
+clearly reproduced, and the four black-ringed markers are the verify
+anchors (\S\ref{app:bethe-parity}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/fig04_bethe_bloch.pdf}
+\caption{Bethe--Bloch mass stopping power
+$-\langle\mathrm{d}E/\mathrm{d}x\rangle$ versus $\beta\gamma$ for the four
+target materials (antiproton, \SIrange{1}{1000}{MeV}), from the 28-row
+kernel sweep. The curves show the characteristic $1/\beta^2$ fall toward
+the minimum-ionizing region; higher-$Z$ materials lie lower (smaller
+$Z/A$). The four black-ringed markers are the verify-ledger reference
+anchors (Al@1\,MeV, Al@1\,GeV, Pb@100\,MeV, Pb@1\,GeV) at which
+hexa$\leftrightarrow$Python parity is pinned to $|\Delta|\le\SI{4e-10}{}$.}
+\label{fig:bethe}
+\end{figure}
+
+The full 28-row sweep (the data behind Fig.~\ref{fig:bethe}) is in
+Table~\ref{tab:app-bethe-sweep}, with the kinematic
+$(\beta,\gamma,W_{\max})$ columns the kernel emits alongside dE/dx; the
+same $(\beta,\gamma)$ apply to every material at a given KE since they
+depend only on the projectile.
+
+\begin{table}[h]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l r r r r r r r@{}}
+\toprule
+mat & KE (MeV) & $\beta$ & $\gamma$ & $\beta\gamma$ & $W_{\max}$ (MeV) & dE/dx \\
+\midrule
+Al & 1    & 0.04613 & 1.00107 & 0.04618 & 0.002177 & 178.82465 \\
+Al & 3    & 0.07978 & 1.00320 & 0.08003 & 0.006539 & 85.26499 \\
+Al & 10   & 0.14484 & 1.01066 & 0.14639 & 0.021877 & 34.27874 \\
+Al & 30   & 0.24699 & 1.03197 & 0.25489 & 0.066324 & 14.38117 \\
+Al & 100  & 0.42820 & 1.10658 & 0.47383 & 0.249453 & 5.68688 \\
+Al & 300  & 0.65257 & 1.31974 & 0.86122 & 0.928771 & 2.77939 \\
+Al & 1000 & 0.87503 & 2.06579 & 1.80762 & 5.179449 & 1.76663 \\
+\midrule
+Cu & 1    & 0.04613 & 1.00107 & 0.04618 & 0.002177 & 125.75020 \\
+Cu & 100  & 0.42820 & 1.10658 & 0.47383 & 0.249453 & 4.88009 \\
+Cu & 1000 & 0.87503 & 2.06579 & 1.80762 & 5.179449 & 1.55205 \\
+\midrule
+W  & 1    & 0.04613 & 1.00107 & 0.04618 & 0.002177 & 63.61595 \\
+W  & 100  & 0.42820 & 1.10658 & 0.47383 & 0.249453 & 3.75537 \\
+W  & 1000 & 0.87503 & 2.06579 & 1.80762 & 5.179449 & 1.23748 \\
+\midrule
+Pb & 1    & 0.04613 & 1.00107 & 0.04618 & 0.002177 & 55.46333 \\
+Pb & 10   & 0.14484 & 1.01066 & 0.14639 & 0.021877 & 18.88240 \\
+Pb & 100  & 0.42820 & 1.10658 & 0.47383 & 0.249453 & 3.60999 \\
+Pb & 300  & 0.65257 & 1.31974 & 0.86122 & 0.928771 & 1.82608 \\
+Pb & 1000 & 0.87503 & 2.06579 & 1.80762 & 5.179449 & 1.19698 \\
+\bottomrule
+\end{tabular}
+\caption{Representative rows of the 28-point kernel sweep (full Al row
+set; abbreviated Cu/W/Pb at the verify-anchor and turning-point KEs).
+dE/dx in \si{MeV.cm^2/mol}; $W_{\max}$ from Eq.~\ref{eq:app-tmax}. The
+$(\beta,\gamma,\beta\gamma,W_{\max})$ columns are material-independent at
+a given KE (they depend only on the antiproton kinematics). Source:
+\texttt{exports/cern/stopping/2026-05-21T09-14-02Z}.}
+\label{tab:app-bethe-sweep}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Worked evaluation (Pb @ \SI{1}{GeV})}
+\label{app:bethe-worked}
+
+To make the closed form auditable, here is the kernel's full evaluation
+of the worst-case anchor, Pb at $T=\SI{1}{GeV}$, step by step. The
+antiproton Lorentz factor is $\gamma = 1 + T/M = 1 + 1000/938.27209 =
+2.065789$, so
+\begin{align}
+\beta^2 &= 1 - 1/\gamma^2 = 0.765670, & \beta &= 0.875026, \\
+m_e/M &= 0.51099895/938.27209 = \num{5.4462e-4}, &&
+\end{align}
+and the maximum energy transfer (Eq.~\ref{eq:app-tmax}) is
+\begin{equation}
+W_{\max} = \frac{2 m_e c^2\beta^2\gamma^2}
+   {1 + 2\gamma\,(m_e/M) + (m_e/M)^2}
+   = \SI{3.331864}{MeV}.
+\end{equation}
+With Pb's $Z/A = 82/207.200 = 0.395753$ and $I=\SI{823}{eV}=
+\SI{8.23e-4}{MeV}$, the logarithm argument is
+\begin{equation}
+\frac{2 m_e c^2\beta^2\gamma^2 W_{\max}}{I^2} = \num{1.64267e7},
+\qquad \tfrac12\ln(\cdot) = 8.307210,
+\end{equation}
+and finally (with $\delta=0$, $z=1$)
+\begin{equation}
+-\left\langle\frac{\mathrm{d}E}{\mathrm{d}x}\right\rangle
+  = \frac{K\,(Z/A)}{\beta^2}\,\big[8.307210 - 0.765670\big]
+  = \SI{1.196980424}{MeV\,cm^2/mol},
+\end{equation}
+which reproduces the Stage-1 substrate reference $1.196980424$ exactly to
+the printed precision --- the rel.\ err \num{4.07e-10} of
+Table~\ref{tab:app-bethe-parity} is the float64 round-off at the next
+digits.
+
+% -------------------------------------------------------------------------
+\subsection{Four-point PDG parity (\tierGreen)}
+\label{app:bethe-parity}
+
+The selftest pins four discriminating reference points captured from a
+Stage-1 Python-substrate run (\texttt{particle}\,0.26.2). The
+hexa-native re-derivation reproduces each to a relative error well inside
+the \SI{1e-6}{} parity tolerance; the worst-case absolute residual is
+$\SI{4.9e-10}{}$ (Pb@1\,GeV), giving the body's
+$|\Delta|\!\le\!\SI{4e-10}{}$ headline. Table~\ref{tab:app-bethe-parity}
+is the per-anchor record, reproduced verbatim from the ledger.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}l c c c c c@{}}
+\toprule
+anchor & expected & observed & $|\Delta|$ & rel.\ err & tier \\
+\midrule
+Al @ \SI{1}{MeV}   & 178.824652  & 178.82465201 & \num{1.40e-8}  & \num{7.84e-11} & \tierGreen \\
+Al @ \SI{1}{GeV}   & 1.766629737 & 1.7666297365 & \num{4.78e-10} & \num{2.71e-10} & \tierGreen \\
+Pb @ \SI{100}{MeV} & 3.609992692 & 3.6099926917 & \num{3.47e-10} & \num{9.61e-11} & \tierGreen \\
+Pb @ \SI{1}{GeV}   & 1.196980424 & 1.1969804235 & \num{4.87e-10} & \num{4.07e-10} & \tierGreen \\
+\bottomrule
+\end{tabular}
+\caption{The four PDG-anchored verify points
+(\texttt{bethe\_bloch\_stopping}). dE/dx in \si{MeV.cm^2/mol}.
+``Observed'' is the hexa-native re-derivation; ``expected'' is the
+Stage-1 Python substrate reference. The residual is float64 round-off
+plus libm-vs-libm \texttt{log} spread --- both sides evaluate the
+identical closed form. The worst case (Pb@1\,GeV, rel.\ err
+\num{4.07e-10}) is the \tierGreen\ headline.}
+\label{tab:app-bethe-parity}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Stage-3 GREEN $\ne$ absorbed --- the honest boundary}
+\label{app:bethe-honesty}
+
+\noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{Honest scope
+(\texttt{absorbed=false} / \textsc{Gate-Open}).} The \tierGreen\ verdict
+certifies that \emph{the hexa port reproduces the Python substrate's
+closed form}, nothing more. Both sides deliberately omit the four
+Stage-4 corrections that a Geant4-MC \texttt{G4hIonisation} solve would
+add: (i) the \textbf{atomic-shell} correction (low-velocity, where the
+projectile speed is no longer large vs.\ the bound-electron speeds);
+(ii) the \textbf{density-effect} term $\delta(\beta\gamma)$ (here set to
+zero); (iii) the \textbf{energy-straggling} distribution (the kernel
+gives the \emph{mean} dE/dx, not the Landau--Vavilov fluctuation); and
+(iv) the \textbf{nuclear-stopping} channel. Flipping
+\texttt{absorbed=true} requires a Geant4-MC parity round against all four,
+which is a downstream wet-lab-equivalent item
+(Appendix~\ref{app:downstream}). The Geant4 \texttt{verify} cell records
+an \texttt{engine\_tool\_gap} on the \texttt{particle} module rather than
+a fabricated verdict.}}

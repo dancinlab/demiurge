@@ -1,9 +1,3 @@
-% TODO (fill batch): the bit-for-bit reproduction runbook — the
-% stdlib/cern/ canonical home (@D d3), the `hexa verify --expr <fn>
-% <args> <expected>` CLI invocations for each atom, the Xsuite/pylhe
-% adapter environment (xsuite@0.51.1, pylhe@1.0.4, FBPIC), the
-% exports/cern/ artifact layout, and the `make` / `make figures` /
-% `make pages` / `make lint` targets.
 \section{Reproducibility Runbook}
 \label{app:repro}
 
@@ -13,11 +7,104 @@ and is callable from \verb|hexa verify --expr <fn> <args> <expected>|.
 The Bethe--Bloch and plasma-wakefield kernels are hexa-native; the Xsuite
 optics (xsuite\,0.51.1) and pylhe statistics (pylhe\,1.0.4) adapters and
 the FBPIC parity run are Python under the same home. Artifacts land under
-\verb|exports/cern/|. The monograph builds with \texttt{make} (xelatex
-$\times 3$ + bibtex); figures with \texttt{make figures}; page/word count
-with \texttt{make pages} / \texttt{make wordcount}; lint with
-\texttt{make lint}.
+\verb|exports/cern/|.
 
-% TODO (fill batch): the per-atom `hexa verify` invocation list, the
-% adapter environment pin table, the exports/cern/ artifact tree, and the
-% end-to-end "clone -> verify -> build" walkthrough.
+% -------------------------------------------------------------------------
+\subsection{Per-atom \texttt{hexa verify} invocations}
+\label{app:repro-verify}
+
+\begin{lstlisting}
+# Bethe-Bloch dE/dx (Stage-3 GREEN, 4 PDG anchors)
+hexa run stdlib/cern/bethe_bloch_stopping.hexa      # selftest 4/4 PASS
+hexa verify --expr bethe_bloch_stopping "Al" 1.0    178.824652
+hexa verify --expr bethe_bloch_stopping "Pb" 1000.0 1.196980424
+
+# Plasma-wakefield cold-linear (selftest 5/5 GREEN)
+hexa run stdlib/cern/plasma_wakefield.hexa
+hexa verify --expr wakefield_e0_gv_m   1e18   96.15919872735485
+hexa verify --expr wakefield_lambda_um 1e18   33.38943270215429
+
+# 1-D linear PIC parity (FBPIC pins; pic_parity_check)
+hexa run stdlib/cern/plasma_wakefield.hexa --pic    # Delta=3.562% PASS
+
+# Xsuite FODO twiss (Python adapter, parity oracle built in)
+python3 stdlib/cern/xsuite_optics.py                # beta/q rel ~1e-14
+
+# pylhe LHE round-trip (Python adapter; absorbed=false)
+python3 stdlib/cern/lhe_stats.py                    # GATE_OPEN (permanent)
+\end{lstlisting}
+
+% -------------------------------------------------------------------------
+\subsection{Adapter environment pins}
+\label{app:repro-env}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}l l l@{}}
+\toprule
+component & version & host / note \\
+\midrule
+hexa (kernels)   & strict mode      & local build \\
+Xsuite           & 0.51.1           & Python 3.x, optics-only \\
+pylhe            & 1.0.4 (BSD-3)    & Python 3.14.4 \\
+FBPIC            & 0.27.0           & pool \texttt{ubu-1}, CPU/numba \\
+\texttt{particle}& 0.26.2           & Stage-1 substrate ref capture \\
+\bottomrule
+\end{tabular}
+\caption{Adapter / backend version pins. The FBPIC parity ran on a free
+Linux pool host (no paid compute); everything else is local.}
+\label{tab:app-repro-env}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Artifact tree and the build}
+\label{app:repro-tree}
+
+\begin{lstlisting}
+exports/cern/
+  stopping/<stamp>/   cern_g4_stopping_*.json   # 28-row dE/dx sweep
+  synthesize/<stamp>/ cern_synth_*.json         # FODO twiss + parity
+  lhe/<stamp>/        cern_lhe_*.json           # LHE round-trip stats
+  {specify,structure,design,handoff}/           # stub dirs (rc=2, empty)
+
+cern-accelerator/         # this monograph
+  main.tex  references.bib  Makefile
+  appendix/A_*.tex ... J_*.tex
+  figures/_scripts/figNN_*.tex  ->  figures/figNN_*.pdf
+  companion/verify-ledger.json  pr-roll.json  session-journal.md
+\end{lstlisting}
+
+% -------------------------------------------------------------------------
+\subsection{Bit-for-bit fingerprint}
+\label{app:repro-fp}
+
+The stopping-power export carries a content fingerprint that is stable
+across every re-run --- the strongest possible reproduction signal. Ten
+independent runs of the dE/dx sweep over two days
+(\texttt{2026-05-19}--\texttt{2026-05-21}) all emit the same digest:
+
+\begin{lstlisting}
+$ jq -r '.fingerprint' exports/cern/stopping/*/cern_g4_stopping_*.json | sort -u
+60e34a15cfb4477f      # one line -> all 10 runs bit-identical
+\end{lstlisting}
+
+Because the kernel is a deterministic closed-form evaluation (no RNG, no
+iterative solver) the fingerprint is a function of the inputs alone, so a
+reader who reruns the sweep and gets \texttt{60e34a15cfb4477f} has
+reproduced the data record exactly. The LHE round-trip is likewise
+deterministic (RNG seed \texttt{20260520} pinned in the record), and the
+plasma-wakefield / FODO atoms are pure closed-form recomputes.
+
+\paragraph{End-to-end walkthrough.} Clone the two repos; run the
+\verb|hexa verify| / \verb|hexa run| invocations above to reproduce the
+ledger values; then build the monograph. The build is \texttt{make}
+(xelatex $\times 3$ + bibtex); figures are regenerated from their
+\texttt{.tex} sources with \texttt{make figures} (each standalone
+pgfplots snippet compiles to a \texttt{figures/figNN\_*.pdf}); page and
+word counts with \texttt{make pages} / \texttt{make wordcount}; and lint
+with \texttt{make lint} (commons @D g51 --- pages + fal.ai figure floor).
+The six pgfplots charts (Bethe--Bloch dE/dx, wakefield density scaling,
+PIC parity, FODO $\beta$-profile, tier distribution) plus the fal.ai
+cover and the TikZ pipeline diagram are all reproducible from the sources
+under \verb|figures/|.

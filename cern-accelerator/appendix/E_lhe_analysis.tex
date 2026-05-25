@@ -1,8 +1,3 @@
-% TODO (fill batch): fold stdlib/cern/lhe_stats.py — pylhe@1.0.4 LHE
-% event-stats round-trip (synthetic e+e- -> Z -> mu+mu- @ sqrt(s)=
-% 91.1876 GeV, 100 events), the absorbed=false GATE_OPEN (permanent)
-% verdict, and the synthetic-vs-tuned-MC honesty caveat. Source: the
-% export stamp dir + verify-ledger.json.
 \section{pylhe LHE Event-Stats --- Full Data Record}
 \label{app:lhe}
 
@@ -16,6 +11,89 @@ computes, and the \emph{permanent} \texttt{absorbed=false} /
 Carlo) and there is no detector simulation, so the cell is a
 demonstrated parser surface, not a physics claim.
 
-% TODO (fill batch): the LHE record schema, the per-event kinematic
-% summary table, and the synthetic-vs-tuned-MC / no-detector-sim honesty
-% box that fixes the permanent GATE_OPEN status.
+% -------------------------------------------------------------------------
+\subsection{Sample and process}
+\label{app:lhe-sample}
+
+The cell (\verb|stdlib/cern/lhe_stats.py|, pylhe\,1.0.4, Python\,3.14.4)
+reads a synthetic Les Houches Event v3.0 file and computes per-event
+kinematic statistics. Table~\ref{tab:app-lhe-proc} is the process
+definition, reproduced from the export record
+(\verb|cern_lhe_20260519T172736Z.json|).
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}l l@{}}
+\toprule
+field & value \\
+\midrule
+channel              & $e^+e^-\to Z\to\mu^+\mu^-$ \\
+$\sqrt{s}$           & \SI{91.1876}{GeV} (on the $Z$ pole) \\
+events               & 100 (requested $=$ produced) \\
+LHE version          & 3.0 \\
+RNG seed             & 20260520 (deterministic) \\
+parser               & pylhe\,1.0.4 (BSD-3) \\
+artifact size        & \SI{75211}{bytes} \\
+\bottomrule
+\end{tabular}
+\caption{LHE sample definition. The events are synthetic on-shell $Z$
+decays with deterministic decay angles, written to standard LHE v3.0 and
+read back through pylhe.}
+\label{tab:app-lhe-proc}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Per-event kinematic summary}
+\label{app:lhe-stats}
+
+Table~\ref{tab:app-lhe-meas} is the complete measurement block. The
+final-state energy sum is the strongest internal check:
+$100 \times \SI{91.1876}{GeV} = \SI{9118.76}{GeV}$, i.e.\ per-event
+4-momentum conservation holds exactly across the round-trip. The
+multiplicity is uniformly 5 (the $Z$ plus the four leptons in the LHE
+particle list), and the PID counts confirm the channel.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}l r@{}}
+\toprule
+quantity & value \\
+\midrule
+events $n$                          & 100 \\
+final-state particles              & 200 \\
+total final-state energy           & \SI{9118.76}{GeV} \\
+total final-state $|p_z|$          & \SI{4594.7668}{GeV} \\
+multiplicity (min / mean / max)    & 5 / 5 / 5 \\
+PID counts ($e^-$/$e^+$)           & 100 / 100 \\
+PID counts ($\mu^-$/$\mu^+$)       & 100 / 100 \\
+PID counts ($Z$, pid 23)           & 100 \\
+\bottomrule
+\end{tabular}
+\caption{pylhe per-event kinematic summary (verbatim from the export
+\texttt{measurements} block). The energy-sum identity
+$9118.76 = 100\times 91.1876$ is the parser-round-trip integrity check.}
+\label{tab:app-lhe-meas}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Permanent GATE\_OPEN --- the honest boundary}
+\label{app:lhe-honesty}
+
+\noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{Permanent
+\texttt{absorbed=false} / \textsc{Gate-Open}.} The numbers above are
+\emph{real} --- they are the algorithm output of pylhe parsing a standard
+LHE v3.0 file. But the verdict is held at \textsc{Gate-Open} permanently,
+for three structural reasons. (i) \textbf{Synthetic input.} The events
+are synthetic kinematics with deterministic decay angles, \emph{not} the
+output of a tuned generator (MadGraph / POWHEG / Sherpa); the
+distributions (rapidity, $p_T$, angular) are not physical. (ii)
+\textbf{No detector simulation.} There is no Delphes/Geant4 smearing,
+efficiency, acceptance, or trigger model, so the record cannot be
+compared to ATLAS/CMS object selection. (iii) \textbf{Scope.} The cell is
+a demonstrated \emph{parser surface} --- a single-point LHE round-trip
+--- not a physics prediction. The BSD-3 pylhe + LHE standard are
+absorbable as tooling, but the \emph{predictive} content needs a tuned
+generator $+$ detector sim $+$ real LHC data, all out of the clean-room
+scope. This gate does not graduate.}}

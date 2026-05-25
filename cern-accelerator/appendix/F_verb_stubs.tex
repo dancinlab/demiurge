@@ -1,9 +1,3 @@
-% TODO (fill batch): fold the 4 honest-stub verbs — specify / structure
-% / design / handoff. Cern{Specify,Structure,Design,Handoff}Record.swift
-% + cern.demi STUB cells (GATE_OPEN, accel_mechanism field, rc=2 honest-
-% skip because stdlib/cern/{specify,structure,design,handoff}.py unwritten).
-% Dispatch = @D d4 manifest-driven (CellrunDispatch.run("cern", verb), 0
-% new producer classes). Source: cockpit records + cern.demi + _cellrun.log.
 \section{7-Verb Stub Status --- Honest-Skip Record}
 \label{app:stubs}
 
@@ -18,6 +12,132 @@ classes) returns \texttt{rc=2} (honest-skip) rather than a fabricated
 verdict. The \verb|accel_mechanism| field is carried in every record to
 make the verb $\times$ mechanism axis split explicit at the data level.
 
-% TODO (fill batch): per-verb record-schema table (field slots), the
-% cern.demi STUB cell listing, the rc=2 _cellrun.log transcript, and the
-% honest-stub-vs-fabricated-verdict design note.
+% -------------------------------------------------------------------------
+\subsection{Per-verb record schema}
+\label{app:stubs-schema}
+
+Each stub carries the common record envelope (\verb|domain|, \verb|verb|,
+\verb|kind|, \verb|stamp|, \verb|producer|, \verb|accelMechanism|,
+\verb|measurementGate|, \verb|absorbed|, \verb|scopeCaveats|,
+\verb|citations|, \verb|skippedReason|, \verb|headline|) plus a small set
+of verb-specific headline slots. Table~\ref{tab:app-stubs} lists the
+distinguishing slots and the cell's stdlib substrate target.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{1.6cm} >{\raggedright\arraybackslash}m{4.3cm} >{\raggedright\arraybackslash}m{4.3cm} c@{}}
+\toprule
+verb & record (Swift) & headline slots & substrate \\
+\midrule
+specify   & \texttt{CernSpecifyRecord}   & \texttt{targetFieldT}, \texttt{beamEnergyGeV}, \texttt{luminosityCm2S}, \texttt{machineClass} & unwritten \\
+structure & \texttt{CernStructureRecord} & \texttt{latticeType}, \texttt{cellCount}, \texttt{circumferenceM} & unwritten \\
+design    & \texttt{CernDesignRecord}    & \texttt{deckBackend}, \texttt{deckPath}, \texttt{elementCount} & unwritten \\
+handoff   & \texttt{CernHandoffRecord}   & \texttt{deliverables[]}, \texttt{slot}, \texttt{present}, \texttt{bundlePath} & unwritten \\
+\bottomrule
+\end{tabular}
+\caption{The four honest-stub verb records. The CDR target slots
+(specify), lattice topology slots (structure), MAD-X deck slots (design),
+and TDR deliverable schema (handoff) are typed and decode-ready; the
+stdlib \texttt{.py} substrate that would populate them is not yet
+authored.}
+\label{tab:app-stubs}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{The \texttt{cern.demi} STUB cells}
+\label{app:stubs-cell}
+
+Each stub is a manifest cell in \verb|domains/cern.demi| with a
+\verb|script| target, a \verb|record_kind|, and an \verb|output_dir|, but
+no implemented backend. The four UNWIRED cells are:
+
+\begin{lstlisting}
+[cell.specify]    script = stdlib/cern/specify.py    record_kind = cern_specify_record
+[cell.structure]  script = stdlib/cern/structure.py  record_kind = cern_structure_record
+[cell.design]     script = stdlib/cern/design.py     record_kind = cern_design_record
+[cell.handoff]    script = stdlib/cern/handoff.py     record_kind = cern_handoff_record
+\end{lstlisting}
+
+Each carries an honest \verb|scope_caveat| naming the intended producer,
+e.g.\ for specify: \emph{``physics case / Conceptual Design Report (CDR)
+template producer not authored''}; for structure: \emph{``ring/lattice
+topology producer (FODO chain or DBA cell counter) not authored''}; for
+design: \emph{``MAD-X lattice deck template producer not authored''}; for
+handoff: \emph{``Technical Design Report (TDR) bundle producer not
+authored''}. (The design cell notes that the \emph{synthesize} verb's
+\texttt{xsuite\_optics.py} acts as a de-facto stand-in for the
+matched-optics step; design proper would emit the SEQUENCE deck
+\emph{before} matching.)
+
+% -------------------------------------------------------------------------
+\subsection{rc=2 honest-skip --- the design note}
+\label{app:stubs-rc2}
+
+When the generic dispatch runs a stub cell, it finds the
+\verb|script| target missing and returns \texttt{rc=2} (honest-skip):
+
+\begin{lstlisting}
+$ cellrun cern specify
+[cellrun] cern.specify -> stdlib/cern/specify.py
+[cellrun] substrate not found (UNWIRED cell) -> rc=2 (honest-skip)
+          measurement_gate = GATE_OPEN, absorbed = false, no record emitted
+\end{lstlisting}
+
+All four stub cells return the same honest-skip across the generic
+dispatch:
+
+\begin{lstlisting}
+$ for v in specify structure design handoff; do cellrun cern $v; done
+[cellrun] cern.specify   -> stdlib/cern/specify.py    UNWIRED -> rc=2
+[cellrun] cern.structure -> stdlib/cern/structure.py  UNWIRED -> rc=2
+[cellrun] cern.design    -> stdlib/cern/design.py     UNWIRED -> rc=2
+[cellrun] cern.handoff   -> stdlib/cern/handoff.py    UNWIRED -> rc=2
+# all four: measurement_gate=GATE_OPEN, absorbed=false, no record emitted
+\end{lstlisting}
+
+\noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{Honest stub
+$\ne$ fabricated verdict.} This is the structural payoff of the single
+generic dispatch (@D d4). Because every verb of every domain traverses
+\emph{one} path --- \texttt{CellrunDispatch.run("cern", verb)} with zero
+per-verb producer classes and zero name-branching --- a stub can be
+\emph{honest}: the generic path runs the cell, finds no substrate, and
+returns \texttt{rc=2} rather than synthesizing a plausible-looking number.
+The typed record and the manifest slot are real (decode-ready,
+\texttt{accel\_mechanism}-carrying); only the physics substrate is
+deferred. A fabricated \tierGreen\ on an unwritten cell would be a g3
+violation; \texttt{rc=2} is the correct, auditable state.}}
+
+% -------------------------------------------------------------------------
+\subsection{The intended handoff (TDR) deliverable schema}
+\label{app:stubs-tdr}
+
+The handoff record is the most structured of the four stubs, since the
+Technical Design Report (TDR) it would emit has a known shape. The
+\verb|CernHandoffRecord| carries a \verb|deliverables[]| array of
+\verb|CernHandoffDeliverable| entries, each a \verb|slot| with a
+\verb|present| flag, plus a \verb|bundlePath| to the assembled archive.
+The natural deliverable set (from \texttt{CERN.md}, by analogy to the
+firmware CycloneDX bundle pattern) is in Table~\ref{tab:app-tdr}.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}l l@{}}
+\toprule
+slot & content (when authored) \\
+\midrule
+\texttt{lattice\_deck}      & MAD-X SEQUENCE deck (from the design verb) \\
+\texttt{shielding\_dossier} & Geant4 radiation / shielding budget \\
+\texttt{da\_scan}           & dynamic-aperture scan results \\
+\texttt{rf\_spec}           & RF cavity voltage / frequency spec \\
+\texttt{radiation\_budget}  & integrated dose / activation estimate \\
+\bottomrule
+\end{tabular}
+\caption{The TDR deliverable schema the \texttt{handoff} cell would
+populate. Today all slots are \texttt{present=false} (substrate
+unwritten); the typed shape is decode-ready so a future producer fills it
+without a record-schema change.}
+\label{tab:app-tdr}
+\end{table}

@@ -1,35 +1,112 @@
 [
   {
+    "repo": "dancinlab/demiurge",
+    "number": 156,
+    "title": "feat(CERN): domain init — particle-accelerator 7-verb stack + accel-mechanism axis",
+    "merged_at": "2026-05-25T09:04:33Z",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "all",
+    "role": "CERN domain init — the 7-verb roster, the accel_mechanism axis split (RF vs plasma-wakefield), the CERN.md / cern.demi scaffold."
+  },
+  {
     "repo": "dancinlab/hexa-lang",
     "number": 1007,
-    "title": "feat(cern): plasma-wakefield cold-linear closed form (omega_p, lambda_p, E_0 Dawson) + 2 verify atoms",
-    "merged_at": null,
+    "title": "feat(cern): plasma-wakefield cold-linear cell + 2 GREEN verify atoms",
+    "merged_at": "2026-05-25T09:20:13Z",
+    "files_changed": 1,
+    "lines_added": 176,
+    "lines_deleted": 0,
+    "stage": "2-3",
+    "role": "plasma_wakefield.hexa cold-linear kernel (omega_p, lambda_p, E_0 Dawson) + wakefield_e0_gv_m / wakefield_lambda_um atoms; selftest 5/5 GREEN."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 160,
+    "title": "docs(CERN): plasma-wakefield closed-form cell complete (GREEN x2, hexa-lang #1007)",
+    "merged_at": "2026-05-25T09:22:15Z",
     "files_changed": null,
     "lines_added": null,
     "lines_deleted": null,
     "stage": "2-3",
-    "role": "plasma-wakefield cold-linear kernel + wakefield_e0_gv_m / wakefield_lambda_um atoms. SKELETON — gh-measured metadata filled in a later batch."
+    "role": "CERN.md milestone flip absorbing hexa-lang #1007 (cold-linear cell + 2 atoms)."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 161,
+    "title": "feat(cern): remaining 4-verb honest stub — specify/architect/design/handoff (record + manifest)",
+    "merged_at": "2026-05-25T10:39:44Z",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "1,2,3,7",
+    "role": "the four honest-stub verbs: Cern{Specify,Structure,Design,Handoff}Record.swift + cern.demi STUB cells (rc=2 honest-skip, accel_mechanism field). @D d4 manifest-driven, zero new producer classes."
   },
   {
     "repo": "dancinlab/hexa-lang",
     "number": 1088,
-    "title": "feat(cern): 1-D linear PIC parity (FBPIC x cold-linear closed form, Delta=3.56%)",
-    "merged_at": null,
-    "files_changed": null,
+    "title": "feat(stdlib/cern): plasma-wakefield linear-PIC parity (FBPIC) Delta=3.56% on top of cold-linear closed-form",
+    "merged_at": "2026-05-25T12:44:34Z",
+    "files_changed": 1,
     "lines_added": 124,
     "lines_deleted": 4,
     "stage": "4",
-    "role": "plasma_wakefield.hexa +124/-4; FBPIC x cold-linear on-axis field parity. SKELETON — gh-measured merged_at / files_changed filled in a later batch."
+    "role": "plasma_wakefield.hexa +124/-4: FBPIC 0.27.0 linear-regime PIC parity layer (pic_parity_1e18, pic_parity_check). On-axis Ez lambda_p parity Delta=3.562%. Carries the accel-mechanism axis to its hexa-native terminus."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 174,
+    "title": "docs(CERN): PIC 1-D linear parity absorbed (#1088) + C orphan worktree cleanup",
+    "merged_at": "2026-05-25T12:53:48Z",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "4",
+    "role": "CERN.md milestone flip absorbing hexa-lang #1088 (1-D linear PIC parity)."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 175,
+    "title": "docs(CERN): Geant4 engine-tool probe — particle installed, verify exit=0 (engine pass, parity untested)",
+    "merged_at": "2026-05-25T12:57:47Z",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "6",
+    "role": "Geant4 engine-tool probe note — the engine_tool_gap boundary for the Stage-4 stopping-power parity (downstream)."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 180,
+    "title": "docs(CERN): tabletop criterion complete — downstream (wet-lab/external/GPU) separated",
+    "merged_at": "2026-05-25T13:22:33Z",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "all",
+    "role": "tabletop completion criterion declared; the three downstream items (Geant4-MC Stage-4, measured-ring optics, 2-D blowout PIC) split into CERN.md ## downstream."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 220,
+    "title": "feat(cern-monograph): SCAFFOLD+BODY — tabletop accelerator 7-verb monograph (body sec 1-9 + Full Pipeline + appendix SKELETON + companion + cover)",
+    "merged_at": "2026-05-25T17:12:39Z",
+    "files_changed": 23,
+    "lines_added": 1507,
+    "lines_deleted": 0,
+    "stage": "all",
+    "role": "monograph scaffold + body: sec 1-9 + Full Pipeline table + appendix A-J SKELETON stubs + companion (verify-ledger, pr-roll, journal) + fal.ai cover + fig03 pipeline."
   },
   {
     "repo": "dancinlab/demiurge",
     "number": null,
-    "title": "feat(cern-monograph): SCAFFOLD+BODY — body §1-9 + §Full Pipeline + appendix skeleton + companion + cover",
+    "title": "fill(cern-monograph): appendix A-J full data record + 6 pgfplots comparison charts",
     "merged_at": null,
     "files_changed": null,
     "lines_added": null,
     "lines_deleted": null,
     "stage": "all",
-    "role": "this monograph scaffold (body + Full Pipeline + appendix SKELETON + companion + cover). SKELETON — PR number / metadata filled after merge."
+    "role": "THIS PR — fills all 10 appendix stubs (A-J) to FUSION-level with closed-form derivations, data tables, and pgfplots comparison charts; companion JSON null placeholders replaced with real recompute values. number/metadata filled after merge."
   }
 ]
