@@ -44,7 +44,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 
 ### Phase C — demiurge 7-verb pipeline (spec → handoff)
 
-- [ ] verb-1 spec — 1인승 통합 비행체 사양 명세 (페이로드/항속/고도/안정성/추진 stage matrix)
+- [x] verb-1 spec — 1인승 통합 비행체 사양 명세 (페이로드/항속/고도/안정성/추진 stage matrix) **LANDED** (PR#187 · `UFO/spec/integrated-vehicle-spec.md` + `.tape` · 7-stage matrix · 1인승 LSS 12h · gyro x3 + jet x6 + EM trim 2x redundancy · RTSC/FUSION/ANTIMATTER record consume contract · hexa-ufo HEXA-Disc 1890-LOC 흡수 ledger)
 - [ ] verb-2 structure — frame + 자석 어셈블리 + stage 모듈 인터페이스 정의
 - [ ] verb-3 design — closed-form 통합 설계 (stages 1-3 실설계 · 4-7 falsifier-only)
 - [ ] verb-4 analyze ⟲ — CFD + EM 자장 + 응력 + 열관리 통합 sim 반복 수렴
