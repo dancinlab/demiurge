@@ -45,3 +45,14 @@ Append-only history sister of `CERN.md`. Each entry starts with `## <ISO timesta
 - [x] cell 별 정직 gate 명시 — verify=Stage3 GREEN/GATE_OPEN · synthesize=absorbed(알고리즘 closure 한정) · analyze=GATE_OPEN 영구
 - [ ] Geant4 + `particle` 설치 → `cern + verify` Geant4-MC 본해 (현재 engine_tool_gap)
 - [ ] Bethe-Bloch Stage 4 (Geant4-MC 4-보정 parity) → absorbed 판정
+
+## 2026-05-25T13:00Z — Geant4 engine-tool probe (narrow retry)
+
+- [x] `particle` 모듈 — local Mac `python3.13 -m pip install --user --break-system-packages particle` → `particle-0.26.2` 설치 성공
+- [x] `particle` 모듈 — ubu-1 (pool) `pip install --user --break-system-packages particle` → 0.26.2 already-satisfied
+- [x] Geant4 availability probe — `geant4_pybind` import OK on ubu-1 (no `__version__` attr but `import` succeeds); system `geant4-config` 없음 / `pip show geant4` 없음 → verdict = **AVAILABLE (pybind on ubu-1)**, local Mac은 미설치 (다음 라운드 cross-host dispatch 필요할 수 있음)
+- [x] `demiurge action verify cern` 재실행 (local Mac, python3.13) — `exit=0`, `gate=OPEN absorbed=false caveats=4`, `record → cern_verify_record_20260525T125633Z`, `CERN_G4_RESULT {"ok": true, ..., "particle_version": "0.26.2", "python_version": "3.13.13", "rows": 28}`
+- [ ] (이번 라운드 미시도) Stage 4 Geant4-MC parity Δ 측정 — 4-보정 본해 vs Bethe-Bloch closed-form → 다음 cycle
+- [ ] (이번 라운드 미시도) L10 / L11 milestone flip — engine 통과는 했으나 closed-form parity 미확인 → 둘 다 `[ ]` 유지 (g3 honest)
+
+**다음 라운드 hint**: (a) Stage 4 parity script 작성 — `bethe_bloch_stopping.py`가 이미 28-row CSV 생성하므로, closed-form Bethe-Bloch (M_p, β, γ, density correction δ) 와 row-by-row Δ ≤ tolerance 검증. (b) Geant4 backend가 Bethe-Bloch closed-form 그 자체인지 / 진짜 MC 인지 cell source `bethe_bloch_stopping.py` L233 근처 확인 (현재 `engine_tool_gap`만 보아 backend가 Geant4 wrapper인지 pure-Python 인지 불확실). (c) 본해가 closed-form wrap이면 cell rename / Stage 4 재정의 필요.
