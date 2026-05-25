@@ -1,17 +1,10 @@
 % =========================================================================
-% Appendix L — reproducibility runbook. SKELETON stub.
-% TODO (fill batch): fold UFO/verify/run_all.hexa + the build/verify runbook
-%   - per-atom verify recompute commands: hexa verify --expr ioffe_loop_bz ... ,
-%     triple_product ... , pair_threshold_total ... , rel_kinetic_from_p ...
-%   - lattice identity checks: UFO/verify/lattice_check.hexa, numerics_*.hexa
-%   - atlas SSOT provenance: compiler/atlas/embedded.gen.hexa hash 663698a0,
-%     idempotent reuse (parent-domain fold)
-%   - digital-twin closed-form decks: UFO/sim/decks/*.hexa (thermal_cryo,
-%     fanti3_isp_closure) 9/9 PASS
-%   - the deferred heavy body-solves (pool/cloud, @D d7): CFD/EM/FEA/circle-arrow
-%   - paper build: make (xelatex x3 + bibtex), make figures, make pages, make lint
-%   - companion/ axis: verify-ledger.json, pr-roll.json, integration-map.json,
-%     session-journal.md
+% Appendix L — reproducibility runbook. FILLED.
+%   folds UFO/verify/run_all.hexa + the build/verify runbook:
+%   per-atom verify recompute commands, lattice identity checks, atlas SSOT
+%   provenance (663698a0, idempotent reuse), the digital-twin closed-form
+%   decks (thermal_cryo, fanti3_isp_closure 9/9 PASS), the deferred heavy
+%   body-solves (pool/cloud @D d7), the paper build, and the companion axis.
 % =========================================================================
 \section{Reproducibility Runbook}
 \label{app:repro}
@@ -37,5 +30,131 @@ $\circlearrowleft$) are documented as pool/cloud micro-experiments
 \texttt{verify-ledger.json}, \texttt{pr-roll.json},
 \texttt{integration-map.json}, and \texttt{session-journal.md}.
 
-% TODO (fill batch): expand into the full per-atom recompute command
-% list and the deferred-body-solve micro-experiment runbook.
+% -------------------------------------------------------------------------
+\subsection{Per-atom recompute commands}
+\label{app:repro-atoms}
+
+The nine Stage-1--3 \tierGreen\ atoms reproduce exactly with these CLI
+calls (host \texttt{mini}, macOS libm; ubu-2 segfaults and ubu-1 is
+broken, so pin \texttt{mini}):
+
+\begin{lstlisting}
+# Stage-1 hover (RTSC ioffe_loop_bz, B = mu0*I/(2a) = 2 T)
+hexa verify --expr ioffe_loop_bz 0.3 954930.0 0.0 2.0     # |Delta|=5.67e-10
+hexa verify --expr ioffe_loop_bz 0.5 1591549.0 0.0 2.0    # |Delta|=5.67e-10
+hexa verify --expr ioffe_loop_bz 1.0 3183099.0 0.0 2.0    # |Delta|=5.67e-10
+# Stage-2 cruise (FUSION triple_product, F = J*B*V)
+hexa verify --expr triple_product 200000.0 5.0 0.096 96000.0   # |Delta|=0
+hexa verify --expr triple_product 150000.0 3.0 0.096 43200.0   # |Delta|=0
+hexa verify --expr triple_product 100000.0 2.0 0.096 19200.0   # |Delta|=0
+# Stage-3 orbital (ANTIMATTER annihilation + relativistic exhaust)
+hexa verify --expr pair_threshold_total 938.272 6567.904       # |Delta|=0
+hexa verify --expr rel_kinetic_from_p 9382.72 8491.244898780338 # |Delta|=0
+hexa verify --expr rel_kinetic_from_p 1625.13 938.272          # |Delta|=0
+\end{lstlisting}
+
+Each returns \texttt{tier = SUPPORTED-NUMERICAL} and
+\texttt{absorb = already in atlas -- idempotent skip} (the atoms were
+folded by RTSC/FUSION/ANTIMATTER, @D~g69). The lattice \tierBlue\
+identities recompute via:
+
+\begin{lstlisting}
+hexa verify --expr lattice_sigma_tau 6 48   # sigma(6)*tau(6)=12*4=48
+hexa verify --expr lattice_sigma_phi 6 24   # sigma(6)*phi(6)=12*2=24=n*tau
+hexa run UFO/verify/lattice_check.hexa       # all n=6 integer identities
+\end{lstlisting}
+
+% -------------------------------------------------------------------------
+\subsection{Atlas SSOT provenance}
+\label{app:repro-atlas}
+
+The live atlas hash is verified with \verb|hexa atlas hash| (expected
+\texttt{663698a0\dots ce7fb}, 16134 nodes). The Stage-1--3 atoms resolve
+under their \texttt{verified-<fn>-num} keys:
+
+\begin{lstlisting}
+hexa atlas hash                                       # -> 663698a0...ce7fb
+hexa atlas lookup verified-pair_threshold_total-num   # embedded.gen.hexa:30652
+hexa atlas lookup verified-rel_kinetic_from_p-num     # embedded.gen.hexa:30514
+hexa atlas lookup --prefix=verified-triple            # triple_product:30535
+\end{lstlisting}
+
+UFO registers \emph{no new atoms} --- every Stage-1--3 atom was folded by
+its parent domain, so the hash is stable across the capstone's PRs
+(idempotent reuse, @D~d3).
+
+% -------------------------------------------------------------------------
+\subsection{Digital-twin closed-form decks (9/9 PASS) and deferred body-solves}
+\label{app:repro-decks}
+
+The closed-form anchors of the verb-4 gates run locally as \verb|.hexa|
+decks; the 3-D heavy body-solves are deferred pool/cloud
+micro-experiments (Table~\ref{tab:repro-decks}).
+
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{3.4cm} >{\raggedright\arraybackslash}m{4.2cm} c@{}}
+\toprule
+\textbf{deck / gate} & \textbf{closed-form anchor (local)} & \textbf{heavy body-solve (@D~d7)} \\
+\midrule
+\texttt{thermal\_cryo.hexa} & \texttt{hexa run} 9/9 PASS (radiator, heat-leak, boil-off, transient $\tau$) & 3-D conjugate-heat CFD/FEM (pool/cloud) \\
+\texttt{fanti3\_isp\_closure.hexa} & \texttt{hexa run} 9/9 PASS (fuel-mass $I_{\text{sp}}$) & --- (definition closure) \\
+EM 6-coil $B$-map & getdp 3-D FEM + \texttt{ioffe\_loop\_bz} x-check, $\|\Delta B\|=0$ & HTS critical-state $H$-formulation (pool/cloud) \\
+structural FEA & CalculiX ccx 5/5 + Kirchhoff 17/17 & laminate/buckling/dynamic (pool/cloud) \\
+CFD aero & structure $L/D{\ge}4$, $C_d{\le}0.8$ target & compressible DES (vast.ai GPU) \\
+$\circlearrowleft$ coupling & $\max\Delta_{\text{rel}}{<}10^{-3}$ criterion & GPU pod (LC-2 fixed point) \\
+\bottomrule
+\end{tabular}
+\caption{The digital-twin decks. Two decks
+(\texttt{thermal\_cryo.hexa}, \texttt{fanti3\_isp\_closure.hexa}) run
+locally and pass 9/9; the EM and stress gates are closed by external
+solvers (getdp, CalculiX) with closed-form cross-checks; the CFD and
+$\circlearrowleft$ gates have only their closed-form anchors / convergence
+criteria and are \tierOrange\ deferred (App.~\ref{app:gateinv}). The
+heavy 3-D solves are pool/cloud micro-experiments per @D~d7, \emph{not}
+ad-hoc local Python (decks are \texttt{.hexa} only).}
+\label{tab:repro-decks}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Paper build and the companion axis}
+\label{app:repro-build}
+
+The monograph builds with three xelatex passes and a bibtex pass:
+
+\begin{lstlisting}
+# from ufo-capstone/ (xelatex: UTF-8/emoji-native; tier badges are TikZ discs)
+xelatex -interaction=nonstopmode main.tex
+bibtex main
+xelatex -interaction=nonstopmode main.tex
+xelatex -interaction=nonstopmode main.tex
+# figures: each figures/_scripts/figNN_*.tex -> figures/figNN_*.pdf (pdflatex)
+# convenience targets:
+make figures   # regenerate all standalone pgfplots figures
+make pages     # page count via pdfinfo
+make lint      # /paper lint . (commons @D g51)
+\end{lstlisting}
+
+The \texttt{companion/} axis externalizes every record so a reader can
+audit without re-running: \texttt{verify-ledger.json} (the Stage-1--3
+\tierGreen\ atoms + lattice \tierBlue\ identities + the open \tierWhite\
+falsifiers), \texttt{pr-roll.json} (the landed UFO PRs with role
+metadata), \texttt{integration-map.json} (the stage$\to$sibling-domain
+map of \S\ref{sec:intmap}), and \texttt{session-journal.md} (the capstone
+narrative).
+
+% -------------------------------------------------------------------------
+\subsection{Honest scope}
+\label{app:repro-scope}
+
+Everything in this runbook reproduces exactly \emph{except} the two
+\tierOrange\ deferred body-solves (CFD, $\circlearrowleft$), which require
+pool/cloud heavy compute (@D~d7) and are not yet converged --- the reason
+\texttt{absorbed=false}. The Stage-4--7 lattice identities reproduce as
+integer checks, but the physics they index is UNPROVEN
+(App.~\ref{app:stage47}); recomputing the integers does not reproduce a
+warp bubble or a traversable throat. The runbook reproduces the
+\emph{verified} content and \emph{documents} the deferred and unproven
+content --- exactly the honesty contract the capstone is built on.
