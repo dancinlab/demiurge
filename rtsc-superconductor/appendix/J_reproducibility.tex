@@ -2,20 +2,131 @@
 \section{Reproducibility}
 \label{app:repro}
 
-This appendix is the bit-for-bit reproduction record for the whole
-stack. It pins the toolchain versions (GetDP 3.5.0 Rosetta / 4.0.0 ARM
-native, gmsh 4.15.2, hexa-lang stdlib, paper v0.9.0 monograph), the
-exact build command (\texttt{make} = xelatex $\times 3$ + bibtex), the
-companion data layout (\texttt{verify-ledger.json}, \texttt{pr-roll.json},
-\texttt{session-journal.md}, \texttt{adapter-defect-catalog.json}), and
-the recompute recipe for each verify atom (\texttt{hexa verify --expr
-<fn> <args> <expected>}). It restates the honesty invariant:
-\texttt{absorbed=false} for every record; only a synthesized,
-ambient-stable, $\ge\!3$-lab-replicated measurement flips it.
+This appendix is the bit-for-bit reproduction record for the whole stack.
+It pins the toolchain versions, the exact build command, the companion
+data layout, and the recompute recipe for each verify atom. It restates
+the honesty invariant: \texttt{absorbed=false} for every record; only a
+synthesized, ambient-stable, $\ge\!3$-lab-replicated measurement flips it.
 Data source: \texttt{companion/} and the body \S\ref{sec:repro}.
 
-% TODO (fill batch): fold the toolchain-version table, the per-atom
-% `hexa verify` recompute commands, the companion-file schema, and the
-% absorbed=false invariant restatement with the §8.9 5-gate cross-ref.
-% Source: RTSC.md §7 (cross-reference) + §8.9 (5-gate) · RTSC.log.md
-% (getdp 3.5.0/4.0.0 · gmsh 4.15.2) · companion/.
+% -------------------------------------------------------------------------
+\subsection{Toolchain versions}
+\label{app:repro-toolchain}
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Component} & \textbf{Version} & \textbf{Role} \\
+\midrule
+GetDP   & 3.5.0 (Rosetta) / 4.0.0 (ARM native) & axisymmetric A--$\phi$ FEM \\
+gmsh    & 4.15.2 (OCC kernel) & mesh generation \\
+hexa-lang stdlib & session HEAD & $T_c$ kernels, Wheeler verifier \\
+\texttt{hexa verify} & libm, $\varepsilon{=}10^{-9}$ & atom recompute \\
+\TeX{} engine & XeLaTeX (\texttt{xelatex}) & monograph build \\
+paper scaffolder & v0.9.0 (monograph tier) & \texttt{/paper} skeleton + lint \\
+\bottomrule
+\end{tabular}
+\caption{Pinned toolchain. The dual GetDP version (3.5.0 Rosetta /
+4.0.0 ARM native) reproduces the same $B_z(0)=0.06842$\,T on both, the
+cross-architecture parity that backs the FEM number
+(Appendix~\ref{app:getdp}). The $T_c$ and Wheeler kernels are hexa-native
+(libm), recomputed through \texttt{hexa verify} at $\varepsilon=10^{-9}$.}
+\label{tab:toolchain}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Build}
+\label{app:repro-build}
+
+\begin{lstlisting}
+# monograph (this PDF)
+xelatex -interaction=nonstopmode main.tex   # pass 1
+bibtex  main                                # references
+xelatex -interaction=nonstopmode main.tex   # pass 2 (refs)
+xelatex -interaction=nonstopmode main.tex   # pass 3 (cross-refs settle)
+# or: make            (xelatex x3 + bibtex)
+# page count: make pages    lint: make lint    arxiv tarball: make arxiv-tar
+\end{lstlisting}
+The lint target enforces commons @D g51 (monograph tier: $\ge\!10$ pages +
+$\ge\!1$ \texttt{fal.ai} figure, traversing the appendices); this build
+clears it at $\ge\!25$ pages and $\ge\!9$ figures (one \texttt{fal.ai}
+cover + eight pgfplots data charts).
+
+% -------------------------------------------------------------------------
+\subsection{Per-atom recompute recipe}
+\label{app:repro-recompute}
+
+Every numeric in the body is independently recomputable in one CLI line:
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l >{\ttfamily\footnotesize}m{8.2cm} r@{}}
+\toprule
+\textbf{Atom} & \textbf{\normalfont Recompute command} & \textbf{Expected} \\
+\midrule
+\texttt{allen\_dynes\_tc} & hexa verify --expr allen\_dynes\_tc 1.30 1350 0.10 140.324 & 140.324 \\
+\texttt{mcmillan\_tc}     & hexa verify --expr mcmillan\_tc <lambda> <wlog> <mu> & per-cand. \\
+\texttt{bcs\_gap\_ratio}  & hexa verify --expr bcs\_gap\_ratio 3.527 & 3.527 \\
+\texttt{solenoid\_axis\_bz} & hexa verify --expr wheeler\_bz 120 100 0.0425 0.200 0 0.069391 & 0.069391 \\
+\texttt{wheeler\_fem\_bridge} & hexa verify --expr bridge 0.069391 0.06842 0.0142 & 0.0142 \\
+\bottomrule
+\end{tabular}
+\caption{Per-atom \texttt{hexa verify} recompute recipe
+(\texttt{companion/verify-ledger.json}). Each returns its tier verdict at
+$\varepsilon=10^{-9}$ (Appendix~\ref{app:verify}). The Wheeler/solenoid
+atoms also have the four self-tests of Appendix~\ref{app:wheeler}; the
+GetDP FEM is reproduced by re-running the deck of Appendix~\ref{app:getdp}
+on either pinned GetDP version.}
+\label{tab:recompute}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Companion data layout}
+\label{app:repro-companion}
+
+\begin{lstlisting}
+companion/
+  verify-ledger.json          # 5 load-bearing atoms (App H)
+  pr-roll.json                # 7 merged-PR records   (App I)
+  adapter-defect-catalog.json # 5 axisymmetric-FEM defects (App E)
+  session-journal.md          # build/run journal
+  README.md                   # companion index
+exports/material_verdict/
+  mgb2_budko2001_v1/  nb3sn_godeke2006_v1/         # reference-material
+  nb_finnemore1966_v1/  ybco_wu1987_v1/            # verdicts (App C)
+RTSC/magnet/getdp/
+  solenoid_axisym.geo  solenoid_axisym.pro         # FEM deck (App E, PR #92)
+RTSC/verify/
+  V1_*.md  V2_formal_identities.md
+  V3_numerical_recompute.md  V4_tier_ledger.md      # verify passes (App H)
+\end{lstlisting}
+
+% -------------------------------------------------------------------------
+\subsection{The \texttt{absorbed=false} invariant (restated)}
+\label{app:repro-invariant}
+
+The reproduction record closes on the honesty contract that governs every
+artifact above. Per the \S8.9 five-criterion gate
+(Eq.~\ref{eq:fivegate}, Appendix~\ref{app:material}):
+\begin{equation}
+\texttt{absorbed} = \text{(a)}\wedge\text{(b)}\wedge\text{(c)}\wedge
+  \text{(d)}\wedge\text{(e)},
+\qquad
+\text{else } \texttt{absorbed}=\texttt{false}\ \text{(code-level lock)}.
+\end{equation}
+No record in this stack clears (b) $T_c\!\ge\!270$\,K, (c) ambient
+pressure, and (d) $\ge\!3$-lab replication together; therefore
+\textbf{every verify atom, every reference verdict, every candidate, and
+every magnet record is \texttt{absorbed=false}}. The closed forms are
+\tierBlue/\tierGreen\ and recomputable to $\varepsilon=10^{-9}$; the
+\emph{material} achieving room-temperature superconductivity is a permanent
+wet-lab claim (\tierOrange), and only pipeline stage
+\textcircled{\scriptsize 9} (a synthesized, ambient-stable,
+multi-lab-replicated $R(T)\!=\!0$ + Meissner measurement) flips it.
+\textbf{We do not claim that any room-temperature superconductor has been
+achieved.}
