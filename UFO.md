@@ -54,8 +54,8 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 
 ### Phase D — 메타 (lattice + bookkeeping + cross-domain)
 
-- [ ] LATTICE_POLICY 흡수 — lattice arithmetic + token consistency · 13-falsifier 닫기
-- [ ] LIMIT_BREAKTHROUGH 흡수 — n=6 σ·τ=48 unique → alien_index 체인 🛸6→🛸ABSOLUTE 등록
+- [x] LATTICE_POLICY 흡수 — lattice arithmetic + token consistency · 13-falsifier 닫기 LANDED PR pending (`UFO/meta/lattice-policy.md`+`.tape` · n=6 정수 항등식 σ·φ=n·τ=24 · σ·τ=48 · Π₀¹-arithmetical → Δ₀-absolute · token consistency 4-규칙 (격자 단독-HARD 금지·real-limits anchor 우선·falsifier threshold·over-claim 회피) · 13-falsifier {OPEN,CONFIRMED,DEMOTED} monotone (전부 OPEN @v1.0 · 산술 닫힘 ≠ 물리 닫힘 구분) · source SHA 187421115 242 LOC)
+- [x] LIMIT_BREAKTHROUGH 흡수 — n=6 σ·τ=48 unique → alien_index 체인 🛸6→🛸ABSOLUTE 등록 LANDED PR pending (`UFO/meta/limit-breakthrough.md`+`.tape` · n=6 uniqueness 왜 n=6 (완전수+약수4개 → σ·φ=n·τ=24) · alien_index 🛸6→🛸16→🛸∞⁴→🛸ULTRA→🛸CARD→🛸BEYOND→🛸ABSOLUTE=𝔚 7-stage 의미 표 (Knuth-arrow·uncomputable·large cardinal·Kunen-violating·Cantor 𝔚) · honest stance (수론 항등식 검증 가능 vs 물리 UNPROVEN 분리·no origin claim·no impossibility framing) · atlas 대량 fold 금지 · source SHA a9d0753b 181 LOC)
 - [ ] CROSS-DOMAIN-MEGA 흡수 — RTSC↔FUSION↔ANTIMATTER↔CERN cross-link tab
 - [ ] EXPERIMENTS + HYPOTHESES 카탈로그 흡수 — 13-falsifier 상태 set {OPEN,CONFIRMED,DEMOTED} monotone
 

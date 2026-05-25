@@ -2,6 +2,34 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T02:05:00Z — Phase D 메타 — LIMIT_BREAKTHROUGH 흡수 LANDED (alien_index 🛸6→🛸ABSOLUTE 체인)
+
+Phase D 메타 2/2 — `UFO/LIMIT_BREAKTHROUGH.md` (Wave M · SHA a9d0753b · 181 LOC) 흡수. n=6 uniqueness (`σ·φ=n·τ=24` · `σ·τ=48` · 왜 n=6 = 완전수+약수 {1,2,3,6} 4개 특수성) 와 alien_index 7-stage 체인 (🛸6→🛸16→🛸∞⁴→🛸ULTRA→🛸CARD→🛸BEYOND→🛸ABSOLUTE=𝔚) 을 한국어 manifest + 17-type tape 로 등록. 핵심 정직 명제 = **수론적 항등식은 검증 가능 (Π₀¹-arithmetical → Δ₀-absolute) · alien_index 물리 의미는 미증명 (UNPROVEN)** — 둘을 분리. source §5 caveat 흡수 (no origin claim · alien_index = organizing fiction · Bayesian = mathematics not advocacy · falsifier register 가 올바른 형식). @D d2 (no impossibility framing — 벽엔 공학/데이터 경로) · @D d3/d4/d9/d10 준수. 문서 한국어 · 코드 영문.
+
+- [x] `UFO/meta/limit-breakthrough.md` — §0 TL;DR (UAP 증거-품질 audit + alien_index chain organizing fiction · 검증가능 vs 미증명) · §1 흡수 source (SHA·LOC·Wave M·PR#188 migration) · §2 n=6 uniqueness (master identity σ·φ=n·τ=24 · σ·τ=48 wormhole throat base · 왜 n=6 · Π₀¹→Δ₀-absolute) · §3 alien_index 7-stage 의미 표 (🛸6 perfect-number → 🛸16 meta² → 🛸∞⁴ Knuth-arrow → 🛸ULTRA uncomputable → 🛸CARD large cardinal → 🛸BEYOND Kunen-violating → 🛸ABSOLUTE=𝔚 Cantor) + monotone lock + 대량 등록 금지 · §4 honest stance (2-tier 표 수론 검증가능 / 물리 UNPROVEN / UAP bound · 4 caveat 인용) · §5 cross-link
+- [x] `UFO/meta/limit-breakthrough.tape` — `@V`1.0 · `@I id001/id002` (🛸 alias `limit-breakthrough`) · `@C` n6_uniqueness + alien_index_chain + chain_stage_meaning + chain_lock + 4 cross-link · `@D d1~d4` honest-stance governance (수론≠물리 분리 · organizing fiction · no impossibility · no origin claim) · 17-type 알파벳만 (@V/@I/@D/@C)
+- [x] alien_index chain lock — 상승 = 13-falsifier DEMOTE 없이는 gated (현재 13건 OPEN → 물리 도약 미증명) · atlas SSOT embedded.gen.hexa 미접촉 · 484-tier META-LK017~500 / 517 drill node 대량 fold 금지 (과생성·SSOT 오염 회피)
+- [x] `UFO.md` line 58 LIMIT_BREAKTHROUGH milestone `[ ]` → `[x] ... LANDED PR pending` flip
+
+deferred:
+- [ ] EXPERIMENTS + HYPOTHESES 카탈로그 흡수 — 13-falsifier 상태 set {OPEN,CONFIRMED,DEMOTED} monotone 통합 (Phase D 4/4)
+- [ ] CROSS-DOMAIN-MEGA 흡수 — RTSC↔FUSION↔ANTIMATTER↔CERN cross-link tab (Phase D 3/4)
+- [ ] alien_index 물리 도약 평가 — 13-falsifier 중 어느 것이 CONFIRM/DEMOTE 되면 🛸6→상위 monotone 평가 (over-time gate · 현재 전부 OPEN)
+
+## 2026-05-26T02:02:00Z — Phase D 메타 — LATTICE_POLICY 흡수 LANDED (lattice arithmetic + token consistency · 13-falsifier 닫기)
+
+Phase D 메타 1/2 — `UFO/LATTICE_POLICY.md` (Wave K · SHA 187421115 · 242 LOC) 흡수. 핵심 명제 = **격자(n=6)는 한계를 정하지 않는다** — 프로젝트 ceiling 은 수학·물리·공학 실제 한계가 정하고 격자는 *도구*이지 *제약*이 아니다. n=6 lattice arithmetic (`σ(6)=12·φ=2·τ=4·sopfr=5·J₂=24` · master identity `σ·φ=n·τ=24` · `σ·τ=48` · Π₀¹-arithmetical → Δ₀-absolute) 은 검증 가능한 정수 항등식 ✓ 이되, 그 자체는 물리 ceiling 이 아니다. token consistency 정책 (source §1.3 4-규칙) + Stage-4~7 13-falsifier {OPEN,CONFIRMED,DEMOTED} monotone (전부 OPEN @v1.0) 을 닫는다. **산술 닫힘 ≠ 물리 닫힘** 명시 구분 (verify PASS = lattice arithmetic + 토큰 일관성 검증, empirical claim 아님). @D d3/d4/d9/d10 준수. 문서 한국어 · 코드 영문.
+
+- [x] `UFO/meta/lattice-policy.md` — §0 TL;DR (격자≠한계 · 검증가능/미증명 2-column 표) · §1 흡수 source (SHA·LOC·Wave K·43 distribution target·PR#188 migration) · §2 lattice arithmetic (n=6 약수 primitive 표 OEIS · master identity σ·φ=n·τ=24 · σ·τ=48 · (σ−φ)²=100 · σ²=144 · Π₀¹→Δ₀-absolute) · §3 token consistency 4-규칙 + UFO PASS sentinel 의미 (토큰 일관성 ≠ empirical) · §4 13-falsifier {OPEN,CONFIRMED,DEMOTED} monotone 표 (13건 전부 OPEN · 산술 닫힘 ≠ falsifier 물리 닫힘) · §5 cross-link
+- [x] `UFO/meta/lattice-policy.tape` — `@V`1.0 · `@I id001/id002` (🛸 alias `lattice-policy`) · `@C` n6_divisors + n6_primitives + n6_master_identity + falsifier_monotone + 4 cross-link · `@D d1~d4` governance (격자 단독-HARD 금지 · real-limits anchor 우선 · over-claim 회피+falsifier threshold · 산술 닫힘 ≠ 물리 닫힘) · 17-type 알파벳만 (@V/@I/@D/@C)
+- [x] lattice arithmetic 검증 가능성 — σ·φ=n·τ=24 (12·2=6·4) · σ·τ=48 (12·4) · (σ−φ)²=100 · σ²=144 모두 정수 동등성 (부동소수 오차 0 · divisors(6) 에서 계산 · OEIS A000203/A000010/A000005/A001414)
+- [x] `UFO.md` line 57 LATTICE_POLICY milestone `[ ]` → `[x] ... LANDED PR pending` flip
+- [x] CONSTRAINT 준수 — lattice arithmetic(σ·τ=48 등) = 검증 가능한 정수 항등식 · alien_index 물리 의미 = speculative — 둘 정직 구분 명시 · atlas 대량 등록 금지 (과생성·공유 SSOT 오염 회피) · 구현 코드 0줄 (@D d3)
+
+deferred:
+- [ ] lattice arithmetic 🟢 도장 실행 — `UFO/verify/lattice_check.hexa` `hexa run` 으로 σ·τ=48 · (σ−φ)²=100 정수 항등식 libm Δ≤1e-9 검증 (V2/V3 verify-ladder 연동 · hexa verify host = mini)
+- [ ] Wave L cleanup 후보 — UFO envelope verify 에서 격자 HARD 체크 제거 + real-limits anchor 재배치 (source §4 · 사용자 승인 시)
+
 ## 2026-05-26T02:00:00Z — Phase C verb-6 verify — 디지털트윈 통합 verify ledger LANDED
 
 Phase C demiurge 7-verb pipeline 여섯 번째 슬롯 (verb-6 verify). UFO 통합 비행체의 **디지털트윈 통합 검증 ledger** — Stage-1~3 의 verify 🟢 (이미 LANDED) + verb-4 analyze 의 4-layer sim plan + 안정성 falsifier 를 통합해 "비행체가 비-wet-lab 으로 검증된 정도"를 정직 집계. 무거운 CFD/EM/FEA 본해는 pool/cloud 위임 (@D d7 · verb-4 deferred) — verb-6 은 기존 🟢 verdict 통합 (verbatim 재인용 @D g5) + 디지털트윈 통합 수렴 기준 + 안정성 falsifier 통과 여부를 ledger 로. 본해 미수렴 layer 는 🟠 정직 표기 (허위 🟢 금지 @D d6). 문서 한국어 · 코드 영문 · @D d1/d3/d4/d5/d9/d10 준수.
