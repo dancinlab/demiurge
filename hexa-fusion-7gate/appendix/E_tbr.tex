@@ -1,0 +1,21 @@
+% TODO (batch 3): fold gate ⑨ OpenMC geometry + ENDF/B-VIII materials + tally here.
+% Source: the OpenMC transport adapter (.hexa) + ENDF/B-VIII.0 30-nuclide subset (PR #1078).
+\section{Tritium Breeding --- OpenMC Neutronics}
+\label{app:tbr}
+
+This appendix is the full data record for pipeline stage
+\textcircled{\scriptsize 9} (gate f). It will carry the complete
+\textsc{OpenMC}\,0.15.3 transport setup: the spherical
+Pb-15.7Li breeder geometry (Li-6 enriched to 90\,at\%), the W armor /
+EUROFER first wall / SS316 shield material cards under
+ENDF/B-VIII.0~\citep{brown2018endf}, the $^6$Li$(n,\alpha)$T and
+$^7$Li$(n,n'\alpha)$T tally definitions, and the
+$5\!\times\!10^{6}$-history run banner.
+
+The headline result $\text{TBR}=1.3222\pm0.0004$ (and the
+transport-less-stub-to-real-run promotion narrative) will be expanded
+to the per-batch tally convergence and the 30-nuclide-subset scope
+caveat (dropped Mn/V/Mo/Si trace nuclides, TBR-negligible). Data
+source: PR \#1078, the OpenMC adapter geometry, and the
+\texttt{openmc\_tbr\_pb157li} atom in
+\texttt{companion/\allowbreak verify-ledger.json}.

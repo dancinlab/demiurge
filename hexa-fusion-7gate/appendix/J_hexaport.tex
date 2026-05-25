@@ -1,0 +1,22 @@
+% TODO (batch 5): fold the HEXA-PORT native-solver port roadmap — tier A/B/C ladder,
+%   P0–P4 milestones, parity-oracle methodology, git-LFS data axis.
+% Source: §Wider Architectural Context (sec:context) HEXA-PORT paragraph + roadmap notes.
+\section{HEXA-PORT Sibling --- Native Solver Port Roadmap}
+\label{app:hexaport}
+
+This appendix is the full roadmap for HEXA-PORT, the sibling project
+that reimplements the external solvers natively in hexa-lang
+(\S\ref{sec:context}). It will expand the tiered ladder: \textbf{Tier
+A} (closed-form, already native), \textbf{Tier B} (algorithm-defined
+PDE/FEM --- FreeGS and GetDP), and \textbf{Tier C} (data-bound ---
+OpenMC, where the $\sim$GB ENDF/B-VIII library is the irreducible
+part), mapped onto the P0--P4 milestone sequence.
+
+The methodological core is the \emph{parity-oracle} pattern: each
+wrap-and-fix result in this paper doubles as a numerical oracle that a
+future native port must reproduce. The appendix will detail the
+Tier-C decomposition (P4a native MC engine, P4b cross-section corpus
+port via git-LFS infra from PR \#1090, P4c first-principles
+cross-section generation) and state honestly that not all of HEXA-PORT
+is in scope for this paper. Data source: \S\ref{sec:context} and the
+roadmap notes.

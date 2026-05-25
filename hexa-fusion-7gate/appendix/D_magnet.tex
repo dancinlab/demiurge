@@ -1,0 +1,22 @@
+% TODO (batch 2): fold gate ⑦ solenoid analytic + GetDP FEM mesh-convergence here.
+% Source: stdlib/rtsc/getdp_solenoid_solve.hexa + the .pro/.geo decks under
+%   stdlib/rtsc/decks/ ; closed-form anchor solenoid_axis_bz (PR #1095).
+\section{TF Magnet --- Solenoid Integral and GetDP FEM Convergence}
+\label{app:magnet}
+
+This appendix is the full data record for pipeline stage
+\textcircled{\scriptsize 7} (gate e). It will carry the closed-form
+thick-finite-solenoid on-axis integral (Eq.~\eqref{eq:solenoid}) with
+its full derivation and the reference-coil evaluation
+$B_z(0)=1.48265$\,T, then the GetDP axisymmetric A--$\phi$
+magnetostatic FEM bridge: the Gmsh mesh, the VolAxiSqu Jacobian and
+Form1P perpendicular-edge basis, and the on-axis $B_z(0)$ readback.
+
+The load-bearing content is the \textbf{mesh-convergence study}: the
+$\sim$33k-node and 61k-node refinements, the two-platform
+(GetDP\,3.5.0 Linux / 4.0.0 Apple-silicon) duplication, and the
+far-field-truncation sweep that collapses the parity gap from
+$\sim$1.4\% to $-0.064\%$ --- demonstrating the original
+$2\pi$/VolAxiSqu units-bug diagnosis was wrong. Data source: PR
+\#1095, the deck text under \texttt{stdlib/rtsc/decks/}, and the
+\texttt{solenoid\_axis\_bz} / \texttt{magnet\_gate\_b\_peak} atoms.

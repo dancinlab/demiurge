@@ -1,0 +1,20 @@
+% TODO (batch 6): fold the 16 (full 15-row) session PRs with diff-stat here.
+% Source: companion/pr-roll.json (repo / number / title / merged_at /
+%   files_changed / lines_added / lines_deleted / gate / role).
+\section{Pull-Request Roll}
+\label{app:pr-roll}
+
+This appendix is the verbatim transcription of the
+\texttt{companion/\allowbreak pr-roll.json} session pull-request roll.
+It will be rendered as a longtable, one row per PR, carrying every
+field from the JSON record:
+the \texttt{repo} (hexa-lang stdlib SSOT vs.\ demiurge paper home), the
+PR \texttt{number}, the \texttt{title}, the \texttt{merged\_at}
+timestamp, the \texttt{gh}-measured diff-stat (\texttt{files\_changed},
+\texttt{lines\_added}, \texttt{lines\_deleted}), the \texttt{gate} it
+serves, and its \texttt{role} in the dependency chain.
+
+The PRs are presented in dependency order, matching the
+Reproducibility section's landing list (\S\ref{sec:repro}): the
+hexa-lang stdlib PRs (\#1012 \ldots \#1102) followed by the demiurge
+paper-home PRs. Data source: \texttt{companion/pr-roll.json}.

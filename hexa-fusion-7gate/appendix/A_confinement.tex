@@ -1,0 +1,25 @@
+% TODO (batch 1): fold gate ④ FreeGS run config + ψ/q/β output (PR #1075) here.
+% Source: stdlib/fusion/f3_grad_shafranov_adapter.hexa + the converged
+% TestTokamak free-boundary equilibrium recorded in the wrap-and-fix run.
+\section{Confinement --- Grad--Shafranov Free-Boundary Equilibrium}
+\label{app:confinement}
+
+This appendix is the full data record for pipeline stage
+\textcircled{\scriptsize 4} (gates c/d). It will contain the complete
+\textsc{FreeGS}\,0.8.2 run configuration --- the canonical
+\texttt{freegs.machine.TestTokamak()} coil set, the prescribed
+$p(\psi)$ and $ff'(\psi)$ profiles, the \texttt{freeBoundaryHagenow}
+boundary treatment and the raised-X-point single-isoflux constraint
+--- together with the converged free-boundary output: plasma current
+$I_p$, poloidal beta $\beta_{\text{pol}}$, magnetic-axis location, the
+$q$-profile ($q_0$, $q_{95}$), the LCFS minor radius and elongation
+$\kappa$. The figures summarized in the body (\S\ref{sec:promote}) are
+expanded here to the per-quantity verify atom and its reproducing
+re-run.
+
+The numbers reported in the body are headline values only; the data
+source for every digit is the PR \#1075 adapter run and the
+corresponding \tierGreen\ atoms in \texttt{companion/verify-ledger.json}.
+The Picard convergence narrative (the ``No O points'' divergence on the
+original hardcoded coil set, and the \texttt{stdout}-corruption fix) is
+cross-referenced from Appendix~\ref{app:adapters}.

@@ -1,0 +1,24 @@
+% TODO (batch 6): fold the full reproducibility runbook — every `hexa verify --expr`
+%   invocation, env specs (FreeGS/OpenMC/GetDP versions), and data paths.
+% Source: §Reproducibility (sec:repro) + the Makefile targets + companion/ README.
+\section{Reproducibility Runbook}
+\label{app:repro}
+
+This appendix is the complete reproducibility runbook for the paper.
+It will carry, verbatim, every \texttt{hexa verify --expr <fn> <args>
+<expected>} invocation that produces an atom in the verification
+ledger (Appendix~\ref{app:verify-ledger}), so a reader can re-run any
+single claim in one CLI line. Each invocation will be paired with its
+expected verdict block.
+
+The runbook will also pin the external-backend environment
+specifications --- \textsc{FreeGS}\,0.8.2 (numpy $<\!2.0$),
+\textsc{OpenMC}\,0.15.3 with ENDF/B-VIII.0, and GetDP\,3.5.0/4.0.0 ---
+and the canonical data paths: the stdlib kernel home, the GetDP
+\texttt{.pro}/\texttt{.geo} decks under
+\texttt{stdlib/\allowbreak rtsc/\allowbreak decks/},
+the deferred ENDF/B-VIII corpus under \texttt{data/nuclear/endf\_b8\_0/}
+(git-LFS infra from PR \#1090), and the \texttt{companion/} data-record
+axis. Build/lint targets (\texttt{make}, \texttt{make lint},
+\texttt{make pages}) are documented from the Makefile. Data source:
+\S\ref{sec:repro} and \texttt{companion/README.md}.

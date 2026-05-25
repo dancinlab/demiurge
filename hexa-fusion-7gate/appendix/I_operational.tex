@@ -1,0 +1,22 @@
+% TODO (batch 5): fold operational findings — rate-limit recovery, concurrency cap,
+%   codegen pitfalls (4π · far-field · UTF-8 · cross-repo merge), worktree discipline.
+% Source: companion/session-journal.md (the day's narrative).
+\section{Operational Findings}
+\label{app:operational}
+
+This appendix is the full data record for the session's operational
+lessons, drawn from \texttt{companion/\allowbreak session-journal.md}.
+It will
+carry the concrete, reproducible findings that shaped how the work was
+run: rate-limit recovery behavior under sustained parallel agents, the
+2--3 concurrent-agent cap (4+ triggers a rate-limit kill within minutes),
+and the worktree-discipline contract (sequential commit on the shared
+index, explicit-path staging only).
+
+It will also catalog the codegen pitfalls surfaced in-session: the
+$4\pi$/half-factor reduction, the far-field-truncation diagnosis, the
+UTF-8 / emoji engine constraint (xelatex over pdflatex), and the
+cross-repo merge discipline between hexa-lang (stdlib SSOT) and
+demiurge (paper home). Each finding will be stated as a symptom, the
+diagnosis, and the standing rule it became. Data source:
+\texttt{companion/session-journal.md}.

@@ -1,0 +1,25 @@
+% TODO (batch 1): fold gate ⑤ Bosch--Hale C1–C7 coefficient tables (4 channels)
+%   + ⟨σv⟩(T) reproduction + p-¹¹B reactivity here (PR #1012 / #1054).
+% Source: stdlib/fusion/bosch_hale.* coefficients (Bosch--Hale 1992 Table VII/VIII)
+%   and the Tentori--Belloni 2023 p-¹¹B coefficients.
+\section{Reaction --- Bosch--Hale All-Channel Reactivity}
+\label{app:reaction}
+
+This appendix is the full data record for pipeline stage
+\textcircled{\scriptsize 5} (gate a). It will reproduce, verbatim, the
+\citet{boschhale1992} Eq.\,(12) parametrization and its
+$C_1,\dots,C_7$ coefficient tables for all four canonical channels ---
+D--T, D--$^3$He, D(d,p)T and D(d,n)$^3$He --- alongside the Gamow
+constant $B_G$ and reduced mass $m_r c^2$ for each. The full
+$\langle\sigma v\rangle(T)$ reproduction against Bosch--Hale
+Table~VIII (to all printed digits) and the discriminating-$\varepsilon$
+$\times10^{18}$ view will be tabulated here, with the per-temperature
+verify atoms.
+
+The aneutronic p--$^{11}$B record will fold the verbatim
+\citet{tentori2023pb11} Table~I coefficients --- the
+$E_G=22.589$\,MeV Gamow energy, the $C_0/C_1/C_2$ low-energy S-factor
+terms and the 148\,keV Breit--Wigner resonance --- plus the 600-node
+midpoint Maxwellian quadrature and the honest keV-vs-MeV units caveat.
+Data source: PRs \#1012 and \#1054, and the corresponding atoms in
+\texttt{companion/verify-ledger.json}.

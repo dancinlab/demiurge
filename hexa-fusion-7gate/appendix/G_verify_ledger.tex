@@ -1,0 +1,20 @@
+% TODO (batch 4): fold all ~28 (full 36-row) FUSION verify atoms verbatim here.
+% Source: companion/verify-ledger.json (fn / args / expected / observed /
+%   delta_abs / tier / atom_class / pr / gate / note).
+\section{Verification Ledger}
+\label{app:verify-ledger}
+
+This appendix is the verbatim transcription of the complete FUSION
+verify ledger (\texttt{companion/\allowbreak verify-ledger.json}, 36
+atom-recompute
+entries: 20 \tierGreen\ numerical, 8 \tierBlue\ algebraic-root, and 8
+\tierRed\ negative controls). It will be rendered as a longtable, one
+row per atom, carrying every field from the JSON record: the function
+\texttt{fn}, the \texttt{args}, the \texttt{expected} and
+\texttt{observed} values, the absolute residual \texttt{delta\_abs},
+the \texttt{tier}, the \texttt{atom\_class}, the landing \texttt{pr},
+the \texttt{gate}, and the per-atom \texttt{note}.
+
+This is the single source of truth for every numeric claim in the
+body: each cited figure traces to exactly one row here. Data source:
+\texttt{companion/verify-ledger.json}.

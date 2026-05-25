@@ -182,6 +182,18 @@ isolate the only permanent wet-lab boundary (g). Image generated via
 \label{fig:cover}
 \end{figure}
 
+\smallskip\noindent\textbf{Document structure.} This is the
+\emph{monograph} form of HEXA-FUSION: the body
+(\S\S\ref{sec:intro}--\ref{sec:conclusion}) is the self-contained
+narrative argument, and the lettered appendices (A--L) are the full
+data record --- the per-gate run configurations and outputs
+(A--E), the BLUE-MAX algebraic-root audit (F), the verbatim
+verification ledger (G), the wrap-and-fix defect catalog (H), the
+operational findings (I), the HEXA-PORT port roadmap (J), the
+pull-request roll (K), and the reproducibility runbook (L). A reader
+can audit any body claim down to its atom by following the
+appendix it cites.
+
 % =========================================================================
 \section{Background}
 \label{sec:bg}
@@ -796,7 +808,27 @@ and OpenMC maintainers for their open-source backends.
 \bibliography{references}
 
 % =========================================================================
+\clearpage
 \appendix
+
+% ---- Monograph appendices (full data record, Parts A--L). ----
+% Skeleton stubs wired here; each is filled in a later batch (see the
+% per-file `% TODO (batch N)` markers). Appendix lettering is automatic
+% under \appendix (A, B, ... in \input order).
+\input{appendix/A_confinement}
+\input{appendix/B_reaction}
+\input{appendix/C_lawson}
+\input{appendix/D_magnet}
+\input{appendix/E_tbr}
+\input{appendix/F_bluemax}
+\input{appendix/G_verify_ledger}
+\input{appendix/H_adapters}
+\input{appendix/I_operational}
+\input{appendix/J_hexaport}
+\input{appendix/K_pr_roll}
+\input{appendix/L_repro}
+
+% ---- Original in-line claim-to-atom audit (retained as a trailing appendix). ----
 \section{BLUE-MAX appendix --- claim-to-atom audit}
 \label{app:blue-max}
 

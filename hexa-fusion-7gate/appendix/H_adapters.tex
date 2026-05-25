@@ -1,0 +1,24 @@
+% TODO (batch 4): fold the 3 wrap-and-fix adapter defects verbatim — symptom,
+%   root cause, diff, diagnostic narrative — here.
+% Source: companion/adapter-defect-catalog.json (id / file / origin_commit /
+%   symptom / root_cause / fix_pr / fix_summary / tier_after / honesty_note).
+\section{Wrap-and-Fix Adapter Defect Catalog}
+\label{app:adapters}
+
+This appendix is the full data record for the three wrap-and-fix
+defects summarized in Table~\ref{tab:defects}. For each defect ---
+the OpenMC transport-less gate-classifier stub, the FreeGS hardcoded
+coil-set divergence with \texttt{stdout}-corrupted JSON, and the
+GetDP \texttt{shutil.which}-only checker with the mis-diagnosed
+$\sim$1.4\% residual --- it will carry the verbatim
+\texttt{companion/\allowbreak adapter-defect-catalog.json} record: the
+origin
+commit, the symptom, the root cause, the fix PR, the fix summary, and
+the honesty note.
+
+The load-bearing narrative is the GetDP false diagnosis: the residual
+that looked like a $2\pi$/VolAxiSqu units bug was a far-field
+truncation artifact, and the appendix records the \emph{wrong}
+diagnosis on purpose, with the before/after deck diffs and the
+diagnostic chase. Data source:
+\texttt{companion/adapter-defect-catalog.json}.

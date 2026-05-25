@@ -1,0 +1,21 @@
+% TODO (batch 2): fold gate ⑥ Lawson 0-D power balance derivation here.
+% Source: stdlib/fusion/lawson.* — triple_product / q_plasma / ignition_margin atoms.
+\section{Lawson 0-D Power Balance}
+\label{app:lawson}
+
+This appendix is the full data record for pipeline stage
+\textcircled{\scriptsize 6} (gate b). It will carry the complete 0-D
+power-balance derivation: the Lawson triple product
+$nT\tau_{\!E}$ and its D--T ignition threshold, the 0-D plasma gain
+$Q_{\text{plasma}} = P_{\text{fus}}/P_{\text{heat}}$, and the ignition
+margin $f_\alpha P_{\text{fus}}/(W/\tau_{\!E})$, each derived from the
+$\alpha$-heating fraction and the stored-energy / confinement-time
+balance. Every step is a pure rational expression (no libm), so each
+intermediate is shown alongside its \tierGreen\ verify atom at
+$|\Delta|=0$.
+
+The appendix will also make explicit the honest scope line that
+$\tau_{\!E}$ is an \emph{input assumption}, not a transport prediction.
+Data source: the \texttt{triple\_product}, \texttt{q\_plasma} and
+\texttt{ignition\_margin} atoms in
+\texttt{companion/verify-ledger.json}.

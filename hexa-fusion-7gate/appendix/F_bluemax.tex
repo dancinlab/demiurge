@@ -1,0 +1,24 @@
+% TODO (batch 3): fold the 8 🔵 SUPPORTED-FORMAL + 8 🔴 FALSIFIED-control verdicts
+%   verbatim, with the integer algebraic-root derivations (PR #1102).
+% Source: companion/verify-ledger.json atom_class fields
+%   `supported-formal` and `falsified-controlled`.
+\section{BLUE-MAX Algebraic-Root Pair Audit}
+\label{app:bluemax}
+
+This appendix is the full data record for the BLUE-MAX coverage rule
+(\S\ref{sec:bluemax}). It will carry, verbatim, the eight
+\textsc{Supported-Formal} (\tierBlue) integer atoms and their eight
+matched \textsc{Falsified} (\tierRed) negative controls --- the
+deterministic algebraic-root coverage of the 12 libm-class FUSION
+atoms. Each pair will be shown with its full \texttt{hexa verify}
+verdict block ($|\Delta|=0$ for the formal atom, falsified for the
+control) and the integer-by-integer derivation of the factor or
+exponent it attests.
+
+The load-bearing entry is \texttt{q\_star\_constant}: the appendix will
+give the full derivation of the identity $2\pi/(\mu_0\!\cdot\!10^{6})=5$
+that reduces the Wesson cylindrical safety factor to the $\pi$-free
+$q^{*}=5\,a^{2}B/(R\,I_p)$, and the constant-folding precision argument
+for why the $\pi$-free form alone reaches $|\Delta|=0$. Data source:
+PR \#1102 and the \texttt{atom\_class} entries in
+\texttt{companion/\allowbreak verify-ledger.json}.
