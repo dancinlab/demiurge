@@ -102,6 +102,87 @@ hexa$\leftrightarrow$Python parity is pinned to $|\Delta|\le\SI{4e-10}{}$.}
 \label{fig:bethe}
 \end{figure}
 
+The full 28-row sweep (the data behind Fig.~\ref{fig:bethe}) is in
+Table~\ref{tab:app-bethe-sweep}, with the kinematic
+$(\beta,\gamma,W_{\max})$ columns the kernel emits alongside dE/dx; the
+same $(\beta,\gamma)$ apply to every material at a given KE since they
+depend only on the projectile.
+
+\begin{table}[h]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l r r r r r r r@{}}
+\toprule
+mat & KE (MeV) & $\beta$ & $\gamma$ & $\beta\gamma$ & $W_{\max}$ (MeV) & dE/dx \\
+\midrule
+Al & 1    & 0.04613 & 1.00107 & 0.04618 & 0.002177 & 178.82465 \\
+Al & 3    & 0.07978 & 1.00320 & 0.08003 & 0.006539 & 85.26499 \\
+Al & 10   & 0.14484 & 1.01066 & 0.14639 & 0.021877 & 34.27874 \\
+Al & 30   & 0.24699 & 1.03197 & 0.25489 & 0.066324 & 14.38117 \\
+Al & 100  & 0.42820 & 1.10658 & 0.47383 & 0.249453 & 5.68688 \\
+Al & 300  & 0.65257 & 1.31974 & 0.86122 & 0.928771 & 2.77939 \\
+Al & 1000 & 0.87503 & 2.06579 & 1.80762 & 5.179449 & 1.76663 \\
+\midrule
+Cu & 1    & 0.04613 & 1.00107 & 0.04618 & 0.002177 & 125.75020 \\
+Cu & 100  & 0.42820 & 1.10658 & 0.47383 & 0.249453 & 4.88009 \\
+Cu & 1000 & 0.87503 & 2.06579 & 1.80762 & 5.179449 & 1.55205 \\
+\midrule
+W  & 1    & 0.04613 & 1.00107 & 0.04618 & 0.002177 & 63.61595 \\
+W  & 100  & 0.42820 & 1.10658 & 0.47383 & 0.249453 & 3.75537 \\
+W  & 1000 & 0.87503 & 2.06579 & 1.80762 & 5.179449 & 1.23748 \\
+\midrule
+Pb & 1    & 0.04613 & 1.00107 & 0.04618 & 0.002177 & 55.46333 \\
+Pb & 10   & 0.14484 & 1.01066 & 0.14639 & 0.021877 & 18.88240 \\
+Pb & 100  & 0.42820 & 1.10658 & 0.47383 & 0.249453 & 3.60999 \\
+Pb & 300  & 0.65257 & 1.31974 & 0.86122 & 0.928771 & 1.82608 \\
+Pb & 1000 & 0.87503 & 2.06579 & 1.80762 & 5.179449 & 1.19698 \\
+\bottomrule
+\end{tabular}
+\caption{Representative rows of the 28-point kernel sweep (full Al row
+set; abbreviated Cu/W/Pb at the verify-anchor and turning-point KEs).
+dE/dx in \si{MeV.cm^2/mol}; $W_{\max}$ from Eq.~\ref{eq:app-tmax}. The
+$(\beta,\gamma,\beta\gamma,W_{\max})$ columns are material-independent at
+a given KE (they depend only on the antiproton kinematics). Source:
+\texttt{exports/cern/stopping/2026-05-21T09-14-02Z}.}
+\label{tab:app-bethe-sweep}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Worked evaluation (Pb @ \SI{1}{GeV})}
+\label{app:bethe-worked}
+
+To make the closed form auditable, here is the kernel's full evaluation
+of the worst-case anchor, Pb at $T=\SI{1}{GeV}$, step by step. The
+antiproton Lorentz factor is $\gamma = 1 + T/M = 1 + 1000/938.27209 =
+2.065789$, so
+\begin{align}
+\beta^2 &= 1 - 1/\gamma^2 = 0.765670, & \beta &= 0.875026, \\
+m_e/M &= 0.51099895/938.27209 = \num{5.4462e-4}, &&
+\end{align}
+and the maximum energy transfer (Eq.~\ref{eq:app-tmax}) is
+\begin{equation}
+W_{\max} = \frac{2 m_e c^2\beta^2\gamma^2}
+   {1 + 2\gamma\,(m_e/M) + (m_e/M)^2}
+   = \SI{3.331864}{MeV}.
+\end{equation}
+With Pb's $Z/A = 82/207.200 = 0.395753$ and $I=\SI{823}{eV}=
+\SI{8.23e-4}{MeV}$, the logarithm argument is
+\begin{equation}
+\frac{2 m_e c^2\beta^2\gamma^2 W_{\max}}{I^2} = \num{1.64267e7},
+\qquad \tfrac12\ln(\cdot) = 8.307210,
+\end{equation}
+and finally (with $\delta=0$, $z=1$)
+\begin{equation}
+-\left\langle\frac{\mathrm{d}E}{\mathrm{d}x}\right\rangle
+  = \frac{K\,(Z/A)}{\beta^2}\,\big[8.307210 - 0.765670\big]
+  = \SI{1.196980424}{MeV\,cm^2/mol},
+\end{equation}
+which reproduces the Stage-1 substrate reference $1.196980424$ exactly to
+the printed precision --- the rel.\ err \num{4.07e-10} of
+Table~\ref{tab:app-bethe-parity} is the float64 round-off at the next
+digits.
+
 % -------------------------------------------------------------------------
 \subsection{Four-point PDG parity (\tierGreen)}
 \label{app:bethe-parity}

@@ -79,6 +79,49 @@ fn lhe_event_stats_roundtrip
 \end{lstlisting}
 
 % -------------------------------------------------------------------------
+\subsection{Verbatim JSON (selected atoms)}
+\label{app:vl-json}
+
+For completeness, the raw \texttt{verify-ledger.json} entries for the
+worst-case Bethe--Bloch anchor, the PIC parity, and the permanent
+gate-open LHE atom are reproduced byte-for-byte below; the remaining
+seven follow the same schema.
+
+\begin{lstlisting}
+{
+  "fn": "bethe_bloch_stopping", "args": ["Pb", 1000.0],
+  "expected": 1.196980424, "observed": 1.1969804235133183,
+  "delta_abs": 4.867e-10, "rel_err": 4.066e-10,
+  "tier": "SUPPORTED-NUMERICAL", "atom_class": "supported-numerical",
+  "pr": null, "stage": "6",
+  "note": "PDG eq.34.5 dE/dx for Pb at KE=1 GeV (antiproton); selftest
+           anchor #4 (the worst-case residual, relerr 4.07e-10)."
+},
+{
+  "fn": "plasma_wakefield_pic_parity",
+  "args": ["1e18", "FBPIC 0.27.0"],
+  "expected": 33.38943270215429, "observed": 32.20017,
+  "delta_abs": 1.18926, "rel_err": 0.03562,
+  "tier": "SUPPORTED-NUMERICAL", "atom_class": "supported-numerical",
+  "pr": 1088, "stage": "4",
+  "note": "FBPIC 0.27.0 axisymmetric (Nm=2) moving-window PIC, a0=0.1,
+           n_e=1e18, Nz=512 Nr=40, 1792 steps, pool ubu-1 (no paid
+           compute). lambda_p_PIC=32.200 vs closed 33.389 -> 3.562%."
+},
+{
+  "fn": "lhe_event_stats_roundtrip",
+  "args": ["e+e- -> Z -> mu+mu-", "91.1876", "100"],
+  "expected": 9118.76, "observed": 9118.76,
+  "delta_abs": 0.0, "rel_err": 0.0,
+  "tier": "INSUFFICIENT", "atom_class": "gate-open",
+  "pr": null, "stage": "7",
+  "note": "pylhe 1.0.4 synthetic, rng_seed 20260520. 9118.76 = 100 x
+           91.1876. absorbed=false GATE_OPEN PERMANENT (synthetic, no
+           detector sim -> not comparable to ATLAS/CMS)."
+}
+\end{lstlisting}
+
+% -------------------------------------------------------------------------
 \subsection{Claim-to-atom audit}
 \label{app:vl-audit}
 

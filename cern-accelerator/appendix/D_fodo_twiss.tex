@@ -93,6 +93,44 @@ closed form; Xsuite\,0.51.1 reproduces it to rel.\ err $\SI{2.7e-14}{}$
 \label{fig:fodo}
 \end{figure}
 
+The matched periodic Twiss at the cell start is $\beta_0=\SI{81.515}{m}$,
+$\alpha_0=-1.019$, with per-cell phase advance $\cos\mu=0.99964$ (the
+weak-focusing regime of this low-$k$ textbook cell). Propagating
+$(\beta,\alpha,\gamma)$ through the thick-quad matrices
+\eqref{eq:app-fodo-mat} gives the profile sampled in
+Table~\ref{tab:app-fodo-beta}; $\beta_x$ rises monotonically through the
+first drift to its maximum at the focusing quad and is the mirror of
+$\beta_y$.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{8pt}
+\begin{tabular}{@{}r r r@{}}
+\toprule
+$s$ (m) & $\beta_x$ (m) & $\beta_y$ (m) \\
+\midrule
+0.000 & 81.515 & 83.579 \\
+0.333 & 82.197 & 82.885 \\
+0.667 & 82.885 & 82.197 \\
+1.000 & 83.579 & 81.515 \\
+1.050 & 83.631 & 81.464 \\
+1.100 & 83.579 & 81.515 \\
+1.433 & 82.885 & 82.197 \\
+1.767 & 82.197 & 82.885 \\
+2.100 & 81.515 & 83.579 \\
+2.150 & 81.464 & 83.631 \\
+2.200 & 81.515 & 83.579 \\
+\bottomrule
+\end{tabular}
+\caption{Propagated $\beta$-functions along the \SI{2.2}{m} cell
+(focusing quad QF at $s\in[1.0,1.1]$, defocusing QD at $s\in[2.1,2.2]$).
+The $x$ and $y$ planes are exact mirrors, and the periodic boundary
+$\beta_x(0)=\beta_x(2.2)=\SI{81.515}{m}$ confirms the matched solution.
+The maximum $\beta_{x,\max}=\SI{83.631}{m}$ occurs at the QF center.}
+\label{tab:app-fodo-beta}
+\end{table}
+
 % -------------------------------------------------------------------------
 \subsection{Xsuite $\times$ closed-form parity (\tierGreen)}
 \label{app:fodo-parity}

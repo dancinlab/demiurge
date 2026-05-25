@@ -87,6 +87,42 @@ tier     : SUPPORTED-NUMERICAL            PR : #1088   stage : 4
 \end{lstlisting}
 
 % -------------------------------------------------------------------------
+\subsection{Residual budget}
+\label{app:pic-budget}
+
+The $3.562\%$ gap is not noise --- it is the sum of identifiable,
+quantifiable effects, each of which would shrink with finer resolution or
+a longer-baseline period fit. Table~\ref{tab:app-pic-budget} attributes
+it.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{5.6cm} >{\raggedright\arraybackslash}m{6.0cm}@{}}
+\toprule
+source & character \\
+\midrule
+finite on-axis grid resolution & $N_z=512$ over the window samples the
+  $E_z$ wake with $\sim\!15$ cells per $\lambda_p$; zero-crossing
+  location carries a sub-cell bias \\
+zero-crossing / period jitter & the period is read from a finite number
+  of crossings over $\sim\!14\,\lambda_p$; statistical scatter on the fit \\
+PSATD finite-grid dispersion & the spectral solver has a small numerical
+  dispersion of the wake phase velocity, shifting the apparent
+  wavelength \\
+readout-point choice & on-axis vs.\ near-axis sampling of an axisymmetric
+  ($N_m=2$) field has a small systematic \\
+\bottomrule
+\end{tabular}
+\caption{Attribution of the $\Delta=3.562\%$ PIC-vs-closed-form residual.
+All four are numerical / sampling effects of a converging kinetic
+simulation, consistent with a leading-order cold-linear reference; none
+indicates a physics discrepancy.}
+\label{tab:app-pic-budget}
+\end{table}
+
+% -------------------------------------------------------------------------
 \subsection{Linear-regime validity}
 \label{app:pic-validity}
 

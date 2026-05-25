@@ -47,6 +47,32 @@ E_0\,[\si{V/m}] \approx 96\,\sqrt{n_e\,[\si{cm^{-3}}]},
 \end{equation}
 
 % -------------------------------------------------------------------------
+\subsection{Deriving the engineering coefficients}
+\label{app:wf-coeff}
+
+The two literature coefficients in Eq.~\ref{eq:app-coeff} fall directly
+out of the constants. Folding $\omega_p = \sqrt{n_e e^2/(\varepsilon_0
+m_e)}$ into $E_0 = m_e c\,\omega_p/e = c\sqrt{n_e m_e/\varepsilon_0}$ and
+evaluating at $n_e = \SI{1}{cm^{-3}} = \SI{e6}{m^{-3}}$ gives the
+per-$\sqrt{n_e}$ coefficient
+\begin{equation}
+\frac{E_0}{\sqrt{n_e\,[\si{cm^{-3}}]}}
+  = c\sqrt{\frac{\SI{e6}{}\,m_e}{\varepsilon_0}}
+  = \SI{96.159}{V/m},
+\end{equation}
+matching the textbook $\approx\!96$ to $0.2\%$. Likewise
+$\lambda_p = 2\pi c/\omega_p$ scales as $1/\sqrt{n_e}$, and at
+$n_e=\SI{1}{cm^{-3}}$ the product
+\begin{equation}
+\lambda_p\,[\si{\micro\meter}]\cdot\sqrt{n_e\,[\si{cm^{-3}}]}
+  = \SI{3.3389e10}{},
+\end{equation}
+matching the textbook $\approx\!\num{3.34e10}$ to $0.05\%$. Both
+coefficients are verified by the selftest cross-checks
+(\S\ref{app:wf-selftest}); they are not free parameters but consequences
+of the closed form.
+
+% -------------------------------------------------------------------------
 \subsection{Density-to-gradient scaling}
 \label{app:wf-scaling}
 
@@ -65,10 +91,13 @@ for the tabletop regime --- and $\lambda_p = \SI{33.39}{\micro\meter}$.
 \toprule
 $n_e$ (cm$^{-3}$) & $E_0$ (GV/m) & $\lambda_p$ ($\mu$m) \\
 \midrule
-$10^{16}$ & 9.6159   & 333.894 \\
-$10^{17}$ & 30.4082  & 105.587 \\
-$\mathbf{10^{18}}$ & \textbf{96.1592} & \textbf{33.3894} \\
-$10^{19}$ & 304.0821 & 10.5587 \\
+$10^{16}$            & 9.6159   & 333.894 \\
+$3\times 10^{16}$    & 16.6553  & 192.774 \\
+$10^{17}$            & 30.4082  & 105.587 \\
+$3\times 10^{17}$    & 52.6686  & 60.961  \\
+$\mathbf{10^{18}}$   & \textbf{96.1592} & \textbf{33.3894} \\
+$3\times 10^{18}$    & 166.5526 & 19.277  \\
+$10^{19}$            & 304.0821 & 10.5587 \\
 \bottomrule
 \end{tabular}
 \caption{Cold-linear wakefield scalings from
@@ -90,6 +119,34 @@ $\lambda_p$ falls as $\sqrt{n_e}$; the GV/m gradient is the tabletop
 advantage over RF.}
 \label{fig:wakefield}
 \end{figure}
+
+% -------------------------------------------------------------------------
+\subsection{Worked evaluation (the $10^{18}$ operating point)}
+\label{app:wf-worked}
+
+The three closed forms evaluated at the anchor density
+$n_e = \SI{e18}{cm^{-3}} = \SI{e24}{m^{-3}}$ trace as follows. The plasma
+angular frequency (Eq.~\ref{eq:app-wp}) is
+\begin{equation}
+\omega_p = \sqrt{\frac{\SI{e24}{}\,(\num{1.602177e-19})^2}
+   {(\num{8.854188e-12})(\num{9.109384e-31})}}
+   = \SI{5.6414602e13}{rad/s},
+\end{equation}
+from which the wavelength (Eq.~\ref{eq:app-lam}) is
+\begin{equation}
+\lambda_p = \frac{2\pi c}{\omega_p}
+   = \frac{2\pi\,(\num{2.99792458e8})}{\num{5.6414602e13}}
+   = \SI{3.338943e-5}{m} = \SI{33.38943}{\micro\meter},
+\end{equation}
+and the Dawson wave-breaking field (Eq.~\ref{eq:app-e0}) is
+\begin{equation}
+E_0 = \frac{m_e c\,\omega_p}{e}
+   = \frac{(\num{9.109384e-31})(\num{2.99792458e8})(\num{5.6414602e13})}
+   {\num{1.602177e-19}}
+   = \SI{96.15920}{GV/m}.
+\end{equation}
+These are the exact \tierGreen\ atom values (\S\ref{app:wf-selftest}),
+reproduced from CODATA constants with no fitting.
 
 % -------------------------------------------------------------------------
 \subsection{Selftest (5/5 GREEN) and the two atoms}

@@ -85,6 +85,18 @@ $ cellrun cern specify
           measurement_gate = GATE_OPEN, absorbed = false, no record emitted
 \end{lstlisting}
 
+All four stub cells return the same honest-skip across the generic
+dispatch:
+
+\begin{lstlisting}
+$ for v in specify structure design handoff; do cellrun cern $v; done
+[cellrun] cern.specify   -> stdlib/cern/specify.py    UNWIRED -> rc=2
+[cellrun] cern.structure -> stdlib/cern/structure.py  UNWIRED -> rc=2
+[cellrun] cern.design    -> stdlib/cern/design.py     UNWIRED -> rc=2
+[cellrun] cern.handoff   -> stdlib/cern/handoff.py    UNWIRED -> rc=2
+# all four: measurement_gate=GATE_OPEN, absorbed=false, no record emitted
+\end{lstlisting}
+
 \noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{Honest stub
 $\ne$ fabricated verdict.} This is the structural payoff of the single
 generic dispatch (@D d4). Because every verb of every domain traverses
@@ -96,3 +108,36 @@ The typed record and the manifest slot are real (decode-ready,
 \texttt{accel\_mechanism}-carrying); only the physics substrate is
 deferred. A fabricated \tierGreen\ on an unwritten cell would be a g3
 violation; \texttt{rc=2} is the correct, auditable state.}}
+
+% -------------------------------------------------------------------------
+\subsection{The intended handoff (TDR) deliverable schema}
+\label{app:stubs-tdr}
+
+The handoff record is the most structured of the four stubs, since the
+Technical Design Report (TDR) it would emit has a known shape. The
+\verb|CernHandoffRecord| carries a \verb|deliverables[]| array of
+\verb|CernHandoffDeliverable| entries, each a \verb|slot| with a
+\verb|present| flag, plus a \verb|bundlePath| to the assembled archive.
+The natural deliverable set (from \texttt{CERN.md}, by analogy to the
+firmware CycloneDX bundle pattern) is in Table~\ref{tab:app-tdr}.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}l l@{}}
+\toprule
+slot & content (when authored) \\
+\midrule
+\texttt{lattice\_deck}      & MAD-X SEQUENCE deck (from the design verb) \\
+\texttt{shielding\_dossier} & Geant4 radiation / shielding budget \\
+\texttt{da\_scan}           & dynamic-aperture scan results \\
+\texttt{rf\_spec}           & RF cavity voltage / frequency spec \\
+\texttt{radiation\_budget}  & integrated dose / activation estimate \\
+\bottomrule
+\end{tabular}
+\caption{The TDR deliverable schema the \texttt{handoff} cell would
+populate. Today all slots are \texttt{present=false} (substrate
+unwritten); the typed shape is decode-ready so a future producer fills it
+without a record-schema change.}
+\label{tab:app-tdr}
+\end{table}

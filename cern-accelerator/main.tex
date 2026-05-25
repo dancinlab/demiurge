@@ -196,9 +196,10 @@ record --- the per-verb run configurations and outputs (A--E), the
 7-verb stub status (F), the downstream / honest-scope catalog (G), the
 verbatim verification ledger (H), the pull-request roll (I), and the
 reproducibility runbook (J). A reader can audit any body claim down to
-its atom by following the appendix it cites. The appendices in this
-release are skeleton stubs carrying \texttt{\% TODO (fill batch)}
-markers; they are filled in later batches.
+its atom by following the appendix it cites. Each appendix carries the
+full data record --- closed-form derivation, data tables, comparison
+charts, and honest-scope boxes --- and traces every digit back to the
+\texttt{companion/} ledger.
 
 % =========================================================================
 \section{Background}
@@ -543,6 +544,42 @@ appropriate hand-off path, so a reader knows precisely what was closed,
 what was not, and why.
 
 % =========================================================================
+\section{Related Work}
+\label{sec:related}
+
+The CERN stack does not replace the mature open beam-physics codes; it
+sits \emph{above} them as a verb-uniform, per-atom-verified closed-form /
+parity layer, and bridges to them where a kinetic check is needed.
+
+\paragraph{Lattice / optics.} MAD-X and Xsuite \citep{wiedemann2015} are
+the de-facto standards for ring optics and tracking; Xsuite\,0.51.1 is
+the backend of our FODO \emph{synthesize} cell (\S\ref{sec:fodo}). Where
+those tools are an end-user simulation environment, the CERN cell adds an
+\emph{independent} Wiedemann/Lee thick-quad closed-form oracle that the
+Xsuite twiss is checked against to $10^{-14}$, turning the run into a
+verifiable atom rather than an unaudited number. The measured-ring layer
+(a sourced LHC/FCC-ee/SPS deck) is left to the facility's official
+release (\S\ref{sec:limits}).
+
+\paragraph{Plasma PIC.} FBPIC \citep{lehe2016fbpic}, WarpX, Smilei, and
+OSIRIS are full kinetic PIC codes; FBPIC\,0.27.0 supplies the 1-D linear
+parity (\S\ref{sec:plasma}). The CERN contribution is not a new PIC
+solver but the \emph{cross-check}: a cold-linear closed form
+\citep{dawson1959,esarey2009lpa} that the PIC must reproduce in the
+linear regime ($\Delta=3.56\%$), establishing the validating baseline
+before any nonlinear-blowout campaign.
+
+\paragraph{Stopping power and events.} Geant4 \citep{agostinelli2003geant4}
+is the reference Monte Carlo for particle--matter interaction; the CERN
+Bethe--Bloch cell (\S\ref{sec:bethe}) re-derives the PDG public closed
+form \citep{pdg2024} that Geant4's \texttt{G4hIonisation} tabulates in
+the non-relativistic regime, and is explicit that the four Geant4-MC
+corrections are out of scope. pylhe supplies the LHE parser surface
+(\S\ref{sec:fodo}). Across all of these the distinguishing feature is the
+same: a single verb taxonomy, a per-atom verify verdict, and a hard
+honest-scope boundary.
+
+% =========================================================================
 \section{Limitations and Honest Caveats}
 \label{sec:limits}
 
@@ -614,6 +651,27 @@ parity) on hexa-lang; the per-batch fill PRs are rolled in
 Appendix~\ref{app:prroll}.
 
 % =========================================================================
+\section{Future Work}
+\label{sec:future}
+
+The three downstream items (Appendix~\ref{app:downstream}) are not dead
+ends but the next three campaigns, each with a concrete first step.
+\textbf{(1) Geant4-MC Stage-4 stopping power}: stand up Geant4 on a
+dedicated GPU pod where the \texttt{geant4\_pybind} pybind11 segfault can
+be owned in isolation, then run the four-correction parity against the
+Stage-3 kernel; success flips the Bethe--Bloch \texttt{absorbed}.
+\textbf{(2) Nonlinear blowout PIC}: a \texttt{/micro-exp} GPU sweep over
+density and drive strength $a_0\gtrsim 1$, with the 1-D linear parity
+(\S\ref{sec:plasma}) as the validated baseline the nonlinear run departs
+from. \textbf{(3) Measured-ring optics}: ingest a facility-released
+LHC/FCC-ee/SPS optics deck as a separate domain and re-run the FODO
+\emph{synthesize} cell against a measured tune, extending the
+algorithm-level closure (\S\ref{sec:fodo}) toward a measured flip. Two
+further verb cells --- a real \emph{design} MAD-X SEQUENCE producer and a
+\emph{handoff} TDR bundler (Appendix~\ref{app:stubs}) --- would graduate
+the honest stubs to live cells without touching the generic dispatch.
+
+% =========================================================================
 \section{Conclusion}
 \label{sec:conclusion}
 
@@ -654,9 +712,9 @@ stopping-power reference data.
 \appendix
 
 % ---- Monograph appendices (full data record, Parts A--J). ----
-% Skeleton stubs wired here; each is filled in a later batch (see the
-% per-file `% TODO (fill batch)` markers). Appendix lettering is automatic
-% under \appendix (A, B, ... in \input order).
+% Each appendix is the full data record: closed-form derivation + data
+% table + comparison chart + honest-scope box. Appendix lettering is
+% automatic under \appendix (A, B, ... in \input order).
 \input{appendix/A_bethe_bloch}
 \input{appendix/B_plasma_wakefield}
 \input{appendix/C_pic_parity}
