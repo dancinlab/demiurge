@@ -26,7 +26,7 @@
   do   = "active coil (6-DOF PID μ=1ms) + gyro (n=6 60° rotor) + flux pinning hybrid"
   dont = "정자기 만으로 자유공간 정지 부상 가정 (Earnshaw 정리 위배)"
 
-@absorb := "HEXA-HOVER axis" :: status [active]
+@A absorb_hexa_hover := "HEXA-HOVER axis absorbed into UFO/hover" :: status [d=2026-05-25 active]
   source        = "~/core/hexa-ufo/HEXA-HOVER.md (706 LOC) + HOVER.md (733 LOC)"
   source_sha1   = "a5f60e2 (HEXA-HOVER) · acd19cc (HOVER)"
   absorbed_date = "2026-05-25"
