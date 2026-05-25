@@ -36,7 +36,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 
 ### Phase B — 부수 5축 흡수 (hexa-ufo sub-axes)
 
-- [x] HEXA-HOVER 축 흡수 — hover-canon Meissner levitation 사양 → UFO/hover 통합 (manifest + README · RTSC 48T 솔레노이드 cross-link · HTS REBCO 1차 도체 · Earnshaw active feedback) LANDED PR pending
+- [ ] HEXA-HOVER 축 흡수 — hover-canon Meissner levitation 사양 → UFO/hover 통합
 - [ ] HEXA-GRAV 축 흡수 — gravity-wave-canon + quantum-gravity-sensor-canon → UFO/grav 통합
 - [ ] HEXA-CLOAK 축 흡수 — cloak-canon EM 가시성 차단 layer → UFO/cloak 통합
 - [ ] HEXA-TELEPORT 축 흡수 — teleport quantum-entangle protocol → UFO/teleport 통합
@@ -44,7 +44,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 
 ### Phase C — demiurge 7-verb pipeline (spec → handoff)
 
-- [ ] verb-1 spec — 1인승 통합 비행체 사양 명세 (페이로드/항속/고도/안정성/추진 stage matrix)
+- [x] verb-1 spec — 1인승 통합 비행체 사양 명세 (페이로드/항속/고도/안정성/추진 stage matrix) **LANDED** (PR#TBD · `UFO/spec/integrated-vehicle-spec.md` + `.tape` · 7-stage matrix · 1인승 LSS 12h · gyro x3 + jet x6 + EM trim 2x redundancy · RTSC/FUSION/ANTIMATTER record consume contract · hexa-ufo HEXA-Disc 1890-LOC 흡수 ledger)
 - [ ] verb-2 structure — frame + 자석 어셈블리 + stage 모듈 인터페이스 정의
 - [ ] verb-3 design — closed-form 통합 설계 (stages 1-3 실설계 · 4-7 falsifier-only)
 - [ ] verb-4 analyze ⟲ — CFD + EM 자장 + 응력 + 열관리 통합 sim 반복 수렴
