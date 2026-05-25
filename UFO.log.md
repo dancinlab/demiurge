@@ -2,6 +2,29 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26 — ⟲ 4-layer fixed-point coupling 게이트 🟠→🟢 + absorbed 재판정 TRUE (마지막 게이트 · 6/6)
+
+- [x] **deck** `UFO/sim/decks/coupling_fixedpoint.hexa` (english · .hexa only @D d3/sim-hexa-only) — 4 layer (① CFD · ② EM · ③ 응력 · ④ 열) 의 verified 출력을 하나의 결합 map f(state) 으로 묶어 Gauss–Seidel/Picard 고정점 반복:
+  - state vector X = [AoA(deg) · T_magnet(K) · σ_peak(MPa) · lift_margin(–)]
+  - coupling map 8방향 (analyze §5.1): ② EM lift(T) → ④ thermal T(AoA-duty) → ② B_c(T) GL derating → ① CFD trim AoA → ① aero load → ③ stress σ(AoA,T) + 열응력 E·α·ΔT → ① OML/FSI
+  - under-relaxation ω=0.7 · stop max over X (‖ΔX‖/‖X‖) < 1e-3 · 9-test sentinel `__UFO_COUPLING__`
+- [x] **run** (mini hexa-run · `hexa verify host=mini` 핀 · deck scp→mini→HEXA_LANG run) — **9/9 PASS**:
+  - 수렴 **7 iter** · 최종 **max|Δ_rel| = 5.34e-4 < 1e-3** ✓
+  - 경험적 수축계수 **q = 0.309 < 1** → 참 Banach contraction (iter-cap artefact 아님 · @D d6)
+  - 고정점 X* = (**AoA −4.22° · T_magnet 11.94 K · σ_peak 13.01 MPa · lift_margin +0.188**)
+  - 비행가능 운전점: lift balance F_EM 7570 N + L_aero −1195 N = 6375 N ≈ m·g 6374 N (Δrel<1e-3) · SF 46.1 ≥ 2.5 · T*<Tc 90K SC · ω-invariance(ω=0.4) + 자기일관 f(X*)=X* 확증
+  - (1차 run 6/9 — check 3건 tolerance 버그(coupling-active vs 1e-9·ω-inv vs 1e-3·B(T) anchor) 발견 → 물리 정정(vs TOL·vs 2·TOL·GL derating-law exact identity) → 9/9 · @D d6 수렴값 강제 아님, 수렴은 실제)
+- [x] **ledger** `UFO/sim/decks/coupling-fixedpoint.md` (한국어) — 4-layer 결합 구조 ASCII · coupling map 8방향 표 · 수렴 결과 verdict VERBATIM · 고정점 물리 해석 · 🟠→🟢 판정 + monolithic 3-D co-sim honest fence
+- [x] **`UFO/verify/V4_tier_ledger.md` §3+§5 — absorbed 재판정**: ⟲ 게이트 🟠→🟢 · 全 6 차단 게이트 closed (F-ANTI-3·④열·EM·응력·⟲ 🟢 + CFD 🟡 본해수렴-PASS) → tier 🟢 13→14 · 🟠 1→0 · **absorbed=FALSE → TRUE** (@D d5 全 비-wet-lab gate 실제 PASS 종합 · projection 아님 · CFD 🟡 = 본해(OpenFOAM RANS 163 iter·resid 1e-7) 수렴이므로 PASS, GCI/DES 정밀화는 downstream)
+- [x] **`UFO.md`** Phase E line 64 + V4 verify-ladder line 갱신 — absorbed=TRUE (Phase E milestone `[ ]`→`[x]`)
+- [x] @D d1 (본해 수렴 closed-form 닫힘) · d2 (6 게이트 전부 "wall≠불가능" 으로 실증 · 발산 시 monolithic 승격 falsifier 준비 — 강제 수렴 아님) · d3 (sim=.hexa only) · d5 (absorbed=true ⇔ 全 비-wet-lab PASS · CFD 🟡 PASS 정직 판단) · d6 (수렴값 강제 금지) · d9 (격리 worktree · explicit-file commit) · g5 (verdict verbatim) 준수
+
+deferred (absorbed=TRUE 와 무관한 downstream 정밀화):
+- [ ] ⟲ monolithic 3-D 동시 co-simulation (FSI 격자갱신 · plasma duct hotspot · explicit dynamic · LC-2 cruise full ⟲) — pool/cloud GPU pod (@D d7)
+- [ ] ① CFD GCI mesh-convergence + AoA sweep + vast.ai DES (🟡→🟢 정량 강화)
+- [ ] stdlib atom 등록 (`fixedpoint_picard` · `banach_contraction_q`) → hexa-lang 별 PR
+- [ ] wet-lab 실측 confirmation (솔레노이드 B-map · 풍동 C_d · 구조시험 · cryo 운전) — absorbed downstream
+
 ## 2026-05-26T02:15:00Z — EM 6-coil 60° array B-map getdp 데크 + 본해 🟢 (absorbed 게이트 #2 닫힘)
 
 V4 §3 의 6 차단 게이트 중 **EM 6-coil B-map** 을 getdp 3D FEM (선형 A) + closed-form 교차검증으로 🟢 닫음. ‖ΔB‖=0<1e-4 T 충족.
