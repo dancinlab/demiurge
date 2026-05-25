@@ -1,0 +1,23 @@
+% SKELETON (fill batch): J — inherited RTSC magnet toolchain.
+% TODO (fill batch): fold the RTSC inheritance provenance — solenoid_axisym
+%   .geo/.pro (GetDP 4.0) + the Wheeler on-axis closed-form anchor (M318) +
+%   the 5-axis RtscVerifyRecord schema extension (device=ioffe_pritchard_trap)
+%   from RTSC.md §4.2 and ~/core/hexa-lang/stdlib/rtsc/ + stdlib/material/magnet/.
+\section{Inherited RTSC Magnet Toolchain}
+\label{app:rtsc}
+
+This appendix documents the cross-domain magnet inheritance that powers
+process \textcircled{\scriptsize 6} (Appendix~\ref{app:confinement}). It will
+trace each reused asset to its RTSC origin --- the GetDP\,4.0 axisymmetric
+A--$\phi$ magnetostatic deck (\texttt{solenoid\_axisym.geo}/\texttt{.pro})
+\citep{getdp}, the Wheeler on-axis closed-form current-loop anchor (the M318
+cross-check), and the RTSC verify-record schema extended with
+\texttt{device = ioffe\_pritchard\_trap} --- and argue why the same
+magnetostatic spine serves a field \emph{well} (this antihydrogen trap) and a
+field \emph{peak} (an RTSC high-field solenoid) with only a coil-geometry
+change. Provenance: \texttt{RTSC.md} \S4.2, hexa-lang
+\texttt{stdlib/rtsc/} and \texttt{stdlib/material/magnet/}.
+
+% TODO (fill batch): the asset-by-asset provenance table, the peak-vs-well
+% geometry contrast, the verify-once-reuse-twice SSOT argument, the deck
+% derivation runbook.

@@ -1,0 +1,43 @@
+% fig02_tier_dist.tex — ANTIMATTER verify-ledger tier distribution bar chart.
+% Compiled by the paper Makefile via `make figures` (pdflatex on the snippet).
+%
+% Data: Appendix I (Verify Ledger), companion/verify-ledger.json.
+% The ANTIMATTER ledger partitions by atom_class:
+%   20  SUPPORTED-NUMERICAL (green)  -- libm-class recomputes (sqrt/pow/div), |D|<=eps
+%   11  SUPPORTED-FORMAL    (blue)   -- 3 core integer atoms + 8 BLUE-MAX algebraic roots
+%    8  FALSIFIED           (red)    -- matched deterministic negative controls
+% (Cover badge cites the 3-core + 20-numerical canonical positive set = 23 atoms;
+%  with the +8 BLUE-MAX integer pairs the blue total is 11; coverage 11/11.)
+%
+% Manual single-shot compile (debug):
+%   pdflatex -interaction=nonstopmode -halt-on-error fig02_tier_dist.tex
+\documentclass[border=4pt]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+  width=10cm, height=6.6cm,
+  ybar,
+  bar width=42pt,
+  ymin=0, ymax=24,
+  ylabel={verify atoms},
+  symbolic x coords={Numerical, Formal, Falsified},
+  xtick={Numerical, Formal, Falsified},
+  xticklabels={Supported-Numerical, Supported-Formal (incl.\ BLUE-MAX), Falsified (controls)},
+  x tick label style={font=\scriptsize,rotate=12,anchor=east},
+  tick label style={font=\footnotesize},
+  label style={font=\small},
+  nodes near coords,
+  nodes near coords style={font=\small},
+  ymajorgrids,
+  grid style={gray!25},
+  enlarge x limits=0.30,
+]
+\addplot[draw=green!50!black,fill=green!35] coordinates {(Numerical,20)};
+\addplot[draw=blue!55!black,fill=blue!35,bar shift=0pt] coordinates {(Formal,11)};
+\addplot[draw=red!70!black,fill=red!35,bar shift=0pt] coordinates {(Falsified,8)};
+\end{axis}
+\end{tikzpicture}
+\end{document}

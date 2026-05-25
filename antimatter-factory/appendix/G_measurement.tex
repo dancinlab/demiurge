@@ -1,0 +1,30 @@
+% SKELETON (fill batch): process ⑦ Measurement — 1S-2S + g-factor -> CPT.
+% TODO (fill batch): fold stdlib transition_factor_1s2s / h1s2s_rydberg
+%   (PR #1005) + the leading (3/4)R∞c closed form + the gap-to-measured
+%   characterization (reduced-mass + QED/Lamb-shift) + the ALPHA/BASE CPT
+%   measured-oracle boundary, from companion/verify-ledger.json and
+%   exports/antimatter/verify/2026-05-25T09-13-09Z/.
+\section{Measurement --- 1S--2S Spectroscopy, $g$-Factor, and the CPT Boundary}
+\label{app:measurement}
+
+This appendix is the full data record for pipeline process
+\textcircled{\scriptsize 7}, the only measured-oracle (\tierOrange) process.
+It will state the leading-order antihydrogen 1S--2S transition frequency
+$f=\tfrac34 R_\infty c\approx2.4674$\,PHz, decompose the level-difference
+factor $\tfrac34=1-\tfrac14$ into its integer numerator/denominator
+\tierBlue\ atoms, and \emph{honestly characterize the gap to the measured
+frequency}: the $5.35\!\times\!10^{-4}$ fractional offset is nearly all the
+reduced-mass factor $m_e/(m_e+m_p)\approx0.99946$, with a residual
+$\sim\!10^{-5}$ from QED / Lamb-shift / finite-nuclear-size. It will then
+state why the CPT verdict $\Delta(H,\bar H)$ requires a measured spectroscopy
+oracle (ALPHA 1S--2S at $\approx\!2\!\times\!10^{-12}$
+\citep{ahmadi2018alpha1s2s}; BASE $\bar p$ $g$-factor
+\citep{smorra2017base}; cf.\ ASACUSA antiprotonic-helium
+\citep{hori2013asacusa} and the Standard-Model Extension
+\citep{kostelecky2011lorentz}) and stays \texttt{absorbed=false}. Every digit
+traces to PR~\#1005 and the \tierGreen\ atoms in
+\texttt{companion/verify-ledger.json}.
+
+% TODO (fill batch): Rydberg level structure, the (3/4) BLUE-MAX pairing, the
+% reduced-mass + QED gap characterization, the g-factor / antiproton magnetic
+% moment context, the CPT measured-oracle honesty boundary, verbatim verdicts.
