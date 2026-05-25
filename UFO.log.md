@@ -2,6 +2,21 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T03:00:00Z — V2 🔵 push — n=6 lattice closed-form identity ledger
+
+verify ladder V2 (🔵 push). UFO 의 n=6 lattice **정수 항등식** σ·φ=24 · n·τ=24 · σ·τ=48 을 `hexa verify --expr` 로 🔵 SUPPORTED-FORMAL 도장 (σ/φ/τ/μ/σ_k 5 atom · hexa-native closed-form path · TECS-L Tier1 · 정수 동등 |Δ|=0). product 3곱은 이 정수 atom 들의 Δ₀-absolute 합성 → 동일 🔵. Stage-4~7 의 speculative 물리 metric (Alcubierre δ=1/σ · Morris-Thorne b₀=ℓ_Pl·σ · KK 4D→26D · (σ−φ)²=100c) 은 lattice 산술 대입만 🔵 이고 **물리 metric 자체는 ⚪ UNPROVEN** 으로 정직 분리 (@D d2 — 미증명이지 불가능 아님). atlas 5 atom 모두 idempotent skip — 신규 fold 0건 (drill 대량 fold 금지 · 공유 SSOT 오염 회피). atlas hash `663698a0…` (16115 nodes). g5: verdict VERBATIM. 문서 한국어 · 코드 영문.
+
+- [x] `UFO/verify/V2_formal_identities.md` — V2 🔵 ledger (§0 TL;DR 5 atom+3 product 🔵 / 4 form ⚪ · §1 n=6 정수 항등식 verbatim 5건 + Δ₀ 합성 product · §2 Stage-4~7 lattice 🔵 / metric ⚪ 정직 분리 · §3 atlas idempotent · §4 V3 escalation+cross-link+deferred+governance)
+- [x] σ(6)=12 🔵 — `verify --expr sigma(6)=12` · calc=12 == 12 · tier=🔵 SUPPORTED-FORMAL (hexa-native closed-form, g_self_verify · TECS-L Tier1) · absorb=idempotent skip
+- [x] φ(6)=2 🔵 — `verify --expr phi(6)=2` · calc=2 == 2 · tier=🔵 SUPPORTED-FORMAL (hexa-native closed-form, g_self_verify · TECS-L Tier1) · absorb=idempotent skip
+- [x] τ(6)=4 🔵 — `verify --expr tau(6)=4` · calc=4 == 4 · tier=🔵 SUPPORTED-FORMAL (hexa-native closed-form, g_self_verify · TECS-L Tier1) · absorb=idempotent skip
+- [x] μ(6)=1 🔵 — `verify --expr mu(6)=1` · calc=1 == 1 · tier=🔵 SUPPORTED-FORMAL (hexa-native closed-form, g_self_verify · TECS-L Tier1) · absorb=idempotent skip
+- [x] σ_k(6,1)=12 🔵 — `verify --expr sigma_k(6,1)=12` · calc=12 == 12 · tier=🔵 SUPPORTED-FORMAL (hexa-native closed-form, g_self_verify · TECS-L Tier1) · absorb=idempotent skip
+- [x] product Δ₀ 합성 🔵 — σ·φ=12·2=24 · n·τ=6·4=24 · σ·τ=12·4=48 (각 인자 🔵 → 곱 동일 tier) · float 보강 `verify --expr triple_product(12.0,2.0,1.0)=24.0` calc=24.0 |Δ|=0.0 🟢 SUPPORTED-NUMERICAL cross-check
+- [x] Stage-4~7 symbolic ⚪ — Alcubierre δ=1/σ=1/12 · Morris-Thorne b₀=12 ℓ_Pl · KK 4D→26D ladder · (σ−φ)²=100 모두 lattice 산술 🔵 / 물리 metric ⚪ UNPROVEN 정직 분리 (LATTICE_POLICY §1.1 · LIMIT_BREAKTHROUGH SPECULATIVE-tag 정합)
+- [x] atlas 🔵 idempotent — 5 atom 모두 `absorb = · already in atlas — idempotent skip` · 신규 fold 0 · hash `663698a06bc6f967fa2855a77bc4e399aae465dda5ca948b3c7352dbf98ce7fb` (16115 nodes)
+- [x] UFO.md line 71 V2 체크박스 flip `[ ]` → `[x] ... LANDED PR pending`
+
 ## 2026-05-26T02:30:00Z — V3 🟢 push LANDED (throttle-death 회수)
 
 verify ladder V3 — Stage-1~3 numerical recompute 통합 ledger. 원 agent (adee871) 가 산출물 생성 후 push 전 rate-limit 사망 → parent 가 worktree 에서 `V3_numerical_recompute.md` (19.6KB) 회수 후 랜딩.
