@@ -2,6 +2,29 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T00:00:00Z — verb-4 analyze ⟲ LANDED (CFD+EM+응력+열 통합 분석 manifest)
+
+Phase C 4/7 — verb-3 design 의 closed-form 인계 set (§6) 을 입력으로 4 물리 도메인 (CFD · EM · 응력 · 열) 통합 sim 의 **분석 계획 + 지배방정식 + Re/격자/수렴 기준 + ⟲ coupling 반복 수렴 기준** manifest 산출. 무거운 본해는 pool/cloud micro-exp 으로 위임 (@D d7 deferred · ad-hoc python 금지 · sim 은 .hexa only). 기존 verified atom (RTSC getdp · UFO Stage-1 PR#191) 만 인용.
+
+- [x] `UFO/analyze/integrated-vehicle-analyze.md` — 한국어 8-section (§0 TL;DR 4-layer ⟲ coupling ASCII + 요약표 · §1 CFD Navier-Stokes Re/격자/residual · §2 EM Maxwell/Meissner + RTSC/UFO Stage-1 verified 인용 · §3 응력 FEA von Mises LC-1~5 σ_allow · §4 열 cryo+radiator Q̇=εσT⁴ · §5 ⟲ 4-layer coupling fixed-point max Δ_rel<1e-3 · §6 sim 위임 compute sizing pool/cloud · §7 analyze→synthesize 인계 + cross-link + deferred)
+- [x] `UFO/analyze/integrated-vehicle-analyze.tape` — @V 1.0 · @I id001 `ufo/analyze` (🛸 · alias `analyze`) · @C id010~016 cross-link · @D a1~a4 (do/dont) · absorption ledger (17-type 알파벳 클린: @V/@I/@D/@C)
+- [x] `UFO.md` verb-4 analyze ⟲ → [x] flip (LANDED PR pending)
+- [x] @D d1 준수 — analyze 계획 + 수렴 기준 closed-form (본해는 pool/cloud 위임 = completed-form 경로)
+- [x] @D d3 준수 — 구현 코드 0줄 (해석 코드 SSOT = hexa-lang/stdlib/sim/{cfd,em,fea,heat_cryo})
+- [x] @D d4 준수 — sim/README §2 (domain,verb,formulation,solver) 4축 매트릭스 generic dispatch 인용 · layer/LC 이름 hardcoding 없음
+- [x] @D d7 준수 — compute sizing (격자 cell/DOF/method scaling) → pool ubu idle / vast.ai GPU 라우팅 명시
+- [x] @D d2 준수 — sim 한계 시 불가능 framing 금지 · breakthrough path 명시 (CFRP T1100 승격 · dewar 통합 · monolithic coupling 승격 · shock-adaptive AMR)
+- [x] explicit `git add` per @D d9 — UFO/analyze/{*.md,*.tape} + UFO.md + UFO.log.md (인접 worktree agent index 격리)
+
+deferred:
+- [ ] ① CFD hover 2D axisym RANS + cruise 3D DES (C_d · L/D · shock-adaptive AMR) — pool ubu free dry-run → GPU pod (vast.ai)
+- [ ] ② EM 6-coil 60° array B-map FEM (single-coil closed-form → 다중 상호작용 ‖ΔB‖<1e-4 T) — getdp pool→cloud
+- [ ] ③ 응력 LC-1~5 FEA (650kg · SF=2.5 · 1/3/9/6/12 G · von Mises) — pool linear → cloud explicit dynamic
+- [ ] ④ 열 cryo transient + radiator 25 m² Q̇=εσT⁴ 검증 — pool steady → transient
+- [ ] ⟲ full coupling LC-2 cruise fixed-point (staggered → monolithic if 발산) — GPU pod
+- [ ] MHD 채널 effective thrust (duct 효율 + plasma 손실 vs 이상화 1.92e5 N) — ① CFD ⟷ ② EM coupled
+- [ ] 🟢 atlas register (sim 본해 verified atom → embedded.gen.hexa fold · verify-delegation)
+
 ## 2026-05-25T14:55:00Z — verb-3 design LANDED (throttle-death 회수)
 
 Phase C 3/7 — closed-form 통합 설계. 원 agent (a266ba0) 가 산출물 생성 후 push 전 rate-limit 사망 → parent 가 worktree 에서 `integrated-vehicle-design.{md,tape}` (524줄) 회수 후 랜딩 (cycle skill parent-recovery 패턴).

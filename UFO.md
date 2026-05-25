@@ -47,7 +47,7 @@ UFO 도메인은 **선행 demiurge 자산 4개 (RTSC · FUSION · ANTIMATTER · 
 - [x] verb-1 spec — 1인승 통합 비행체 사양 명세 (페이로드/항속/고도/안정성/추진 stage matrix) **LANDED** (PR#187 · `UFO/spec/integrated-vehicle-spec.md` + `.tape` · 7-stage matrix · 1인승 LSS 12h · gyro x3 + jet x6 + EM trim 2x redundancy · RTSC/FUSION/ANTIMATTER record consume contract · hexa-ufo HEXA-Disc 1890-LOC 흡수 ledger)
 - [x] verb-2 structure — frame + 자석 어셈블리 + stage 모듈 인터페이스 정의 **LANDED** (PR pending · `UFO/structure/integrated-vehicle-structure.md` + `.tape` · 디스크 lenticular OML D=6.0m H=1.6m · 5 bay layout · RTSC 솔레노이드 x6 등각 array + gyro CMG x3 + flux-pin · 6-slot stage mount 표 · 응력 budget 650kg/SF=2.5 · LC-1~5 카탈로그)
 - [x] verb-3 design — closed-form 통합 설계 (stages 1-3 실설계 · 4-7 falsifier-only) **LANDED** (PR pending · `UFO/design/integrated-vehicle-design.md` + `.tape` · Stage-1~3 closed-form 파라미터 실설계 RTSC/FUSION/ANTIMATTER 상속 · Stage-4~7 falsifier-only preregister · 무게/전력/냉각 budget 배분 · design→analyze 인계 param set)
-- [ ] verb-4 analyze ⟲ — CFD + EM 자장 + 응력 + 열관리 통합 sim 반복 수렴
+- [x] verb-4 analyze ⟲ — CFD + EM 자장 + 응력 + 열관리 통합 sim 반복 수렴 **LANDED** (PR pending · `UFO/analyze/integrated-vehicle-analyze.md` + `.tape` · 4-layer (① CFD Navier-Stokes · ② EM Maxwell/Meissner · ③ 응력 FEA von Mises · ④ 열 cryo+radiator) 지배방정식 + Re/격자/수렴 기준 + ⟲ fixed-point coupling (max Δ_rel<1e-3) · 무거운 본해는 pool/cloud micro-exp deferred (@D d7 sizing) · RTSC getdp · UFO Stage-1 PR#191 verified atom 인용)
 - [ ] verb-5 synthesize — BOM + 도면 + firmware 산출물
 - [ ] verb-6 verify — 디지털트윈 통합 🟢 (CFD + EM + 추진 + 안정성 falsifier 통과)
 - [ ] verb-7 handoff — 외부 제작소 패키지 (BOM·도면·firmware·인증서류)
