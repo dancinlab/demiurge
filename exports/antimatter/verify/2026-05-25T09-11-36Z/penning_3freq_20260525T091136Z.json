@@ -1,0 +1,68 @@
+{
+  "domain": "antimatter",
+  "verb": "verify",
+  "kind": "penning_trap_3freq_invariance",
+  "milestone": "⓷포획 — 페닝트랩 전하-입자 3주파(axial·cyclotron·magnetron) 폐형해 + invariance theorem",
+  "stamp": "20260525T091136Z",
+  "iso_stamp": "2026-05-25T09-11-36Z",
+  "producer": "hexa verify (bin/hexa-verify, compiled from tool/verify_cli.hexa)",
+  "verify_host": "mini (POOL_DISABLE=1)",
+  "absorbed": false,
+  "provisional": false,
+  "params": {
+    "particle": "antiproton (p-bar)",
+    "B_tesla": 5.0,
+    "U0_volt": 10.0,
+    "d_metre": 0.005,
+    "mass_kg": 1.67262192369e-27,
+    "charge_C": 1.602176634e-19,
+    "constants_source": "CODATA 2018 (m_p, e); CPT: m_pbar = m_p"
+  },
+  "computed_frequencies_rad_per_s": {
+    "omega_c_free_cyclotron": 478941657.7971818,
+    "omega_z_axial": 6189938.014534115,
+    "omega_plus_modified_cyclotron": 478901654.4559245,
+    "omega_minus_magnetron": 40003.34125730395
+  },
+  "computed_frequencies_hz": {
+    "f_c": 76225932.29104848,
+    "f_z": 985159.2324455366,
+    "f_plus": 76219565.56154719,
+    "f_minus": 6366.729501291879
+  },
+  "closed_form": {
+    "omega_c": "q*B/m",
+    "omega_z": "sqrt(q*U0/(m*d^2))",
+    "omega_plus": "omega_c/2 + sqrt((omega_c/2)^2 - omega_z^2/2)",
+    "omega_minus": "omega_c/2 - sqrt((omega_c/2)^2 - omega_z^2/2)",
+    "trapping_condition": "(omega_c/2)^2 - omega_z^2/2 >= 0  (omega_c >= sqrt(2)*omega_z)"
+  },
+  "identities_checked": {
+    "invariance_theorem": "omega_c^2 = omega_plus^2 + omega_z^2 + omega_minus^2",
+    "sum_identity": "omega_plus + omega_minus = omega_c",
+    "product_identity": "omega_plus * omega_minus = omega_z^2 / 2"
+  },
+  "verify_form": "hexa verify --expr <fn> <a> <b> <v>  (2-operand float-NUMERICAL recompute, eps=1e-9)",
+  "hexa_fns_added": [
+    "penning_omega_plus(omega_c, omega_z)",
+    "penning_omega_minus(omega_c, omega_z)",
+    "penning_invariance(omega_c, omega_z) = sqrt(omega_plus^2 + omega_z^2 + omega_minus^2) == omega_c"
+  ],
+  "verdicts_verbatim": [
+    "verify --expr penning_omega_plus(4.78942e+08,6.18994e+06)=4.78902e+08  |  calc = 4.78902e+08  ≈ expected 4.78902e+08  (|Δ|=0.0 ≤ ε=1e-9)  |  tier = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)",
+    "verify --expr penning_omega_minus(4.78942e+08,6.18994e+06)=40003.3  |  calc = 40003.3  ≈ expected 40003.3  (|Δ|=0.0 ≤ ε=1e-9)  |  tier = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)",
+    "verify --expr penning_invariance(4.78942e+08,6.18994e+06)=4.78942e+08  |  calc = 4.78942e+08  ≈ expected 4.78942e+08  (|Δ|=0.0 ≤ ε=1e-9)  |  tier = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)"
+  ],
+  "verdict_tier": "🟢 SUPPORTED-NUMERICAL",
+  "atlas_register": "hexa atlas register --from-verify penning_invariance ... → folded @F verified-penning_invariance-num into compiler/atlas/embedded.gen.hexa (binary-builtin SSOT, visible to lookup immediately, no rebuild)",
+  "citations": [
+    "Brown & Gabrielse 1986, Rev. Mod. Phys. 58:233 — geonium theory; invariance theorem omega_c^2 = omega_+^2 + omega_z^2 + omega_-^2 (holds under trap misalignment/ellipticity).",
+    "Penning 1936, Physica 3:873 — the trap configuration.",
+    "Dehmelt 1990, Rev. Mod. Phys. 62:525 — Nobel lecture, single-particle Penning-trap spectroscopy."
+  ],
+  "scope_caveats": [
+    "Closed-form eigenfrequencies of the ideal Penning trap (uniform axial B + ideal electrostatic quadrupole). The invariance theorem is the misalignment/ellipticity-robust identity but the three frequencies themselves assume the ideal quadrupole here.",
+    "Numerical anchor (B=5T, U0=10V, d=5mm) is a representative antiproton trap, not a sourced BASE/ALPHA experimental geometry.",
+    "Tier 🟢 SUPPORTED-NUMERICAL: hexa-native libm-class recompute (sqrt). The underlying invariance theorem is an exact algebraic identity (residual omega_c_recon - omega_c = 0.0 at machine precision)."
+  ]
+}
