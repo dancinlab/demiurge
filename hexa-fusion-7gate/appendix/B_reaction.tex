@@ -145,6 +145,26 @@ $\varepsilon=10^{-9}$.}
 \label{tab:bh-tableVIII}
 \end{table}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.86\linewidth]{figures/fig04_sigmav.pdf}
+\caption{Thermonuclear reactivity $\langle\sigma v\rangle(T)$, log--log.
+The D--T curve is the \citet{boschhale1992} Eq.~(12) parametrization
+evaluated at the verbatim Table~VII coefficients used by the kernel
+($B_G\!=\!34.3827$, $m_r c^2\!=\!1124656$\,keV); it passes \emph{exactly}
+through the three registered verify anchors (hollow squares):
+$\langle\sigma v\rangle(10)\!=\!1.13617\!\times\!10^{-16}$,
+$\langle\sigma v\rangle(15)\!=\!2.740\!\times\!10^{-16}$, and
+$\langle\sigma v\rangle(20)\!=\!4.330\!\times\!10^{-16}$\,cm$^3$/s
+(\texttt{sigma\_v\_dt\_e18}, PR~\#1012). The D--D total
+($1.1216\!\times\!10^{-17}$ at $15$\,keV, $=\!$\,\texttt{sigma\_v\_dd\_p}$+$\texttt{sigma\_v\_dd\_n})
+and D--$^3$He ($2.14\!\times\!10^{-20}$ at $50$\,keV,
+\texttt{sigma\_v\_d3he\_e21}) markers are plotted only at the
+temperatures backed by a verify atom; no off-anchor literature points are
+fabricated (commons @D g3). All \tierGreen\ \textsc{Supported-Numerical}.}
+\label{fig:sigmav}
+\end{figure}
+
 The companion channels are anchored at single representative temperatures:
 \verb|sigma_v_d3he_e21(50)|$=21.4$ (D--$^3$He at $50$\,keV, $\times10^{21}$
 view), \verb|sigma_v_dd_p(15)|$=5.781\times10^{-18}$ and

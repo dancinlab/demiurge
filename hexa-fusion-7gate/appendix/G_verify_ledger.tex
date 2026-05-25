@@ -24,6 +24,19 @@ Every row carries the full JSON record: the function \texttt{fn}, the
 absolute residual \texttt{delta\_abs}, the \texttt{tier}, the landing
 \texttt{pr}, the funnel \texttt{gate}, and the per-atom \texttt{note}.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.78\linewidth]{figures/fig08_tier_dist.pdf}
+\caption{Verify-ledger tier distribution
+(\texttt{companion/verify-ledger.json}): $20$ \tierGreen\
+\textsc{Supported-Numerical} libm-class recomputes, $8$ \tierBlue\
+\textsc{Supported-Formal} BLUE-MAX algebraic-root attestations, and $8$
+\tierRed\ \textsc{Falsified} matched negative controls --- $36$ atoms total
+across $8$ landing PRs. The controls are kept permanently: a negative
+control is evidence, never noise.}
+\label{fig:tier-dist}
+\end{figure}
+
 \subsection{The discriminating-epsilon convention and the absolute-$\varepsilon$ floor}
 \label{app:verify-ledger:epsilon}
 
