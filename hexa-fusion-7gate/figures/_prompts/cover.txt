@@ -1,0 +1,17 @@
+A clean technical schematic infographic, white background, navy + electric-blue accents, in the style of a Nature Physics or Physical Review Letters cover.
+
+Concept: a 7-gate funnel for magnetic-confinement fusion design feasibility. The funnel is drawn as a tall isometric tokamak silhouette in the center (D-shaped poloidal cross-section + toroidal field coils in silver-blue). Around it, seven hexagonal gate badges flow top-to-bottom like a process diagram:
+
+  (a) Bosch-Hale  ⟨σv⟩(T) reactivity      ← blue, "closed-form"
+  (b) Lawson      nTτ triple product       ← blue, "closed-form"
+  (c) Grad-Shafranov  free-boundary ψ      ← teal, "FreeGS PASS"
+  (d) Troyon      β-limit + q*             ← teal, "closed-form"
+  (e) HTS magnet  B_peak vs J_c margin     ← teal, "GetDP FEM PASS"
+  (f) TBR         neutronics blanket        ← teal, "OpenMC PASS"
+  (g) Q>1 ignition burning plasma          ← red/orange, "WET-LAB ONLY · permanent"
+
+A subtle horizontal divider just above (g) labeled "absorbed=false boundary".
+
+In a small corner badge: "8 🔵 algebraic-root atoms · q_star_const = 5".
+
+Style: minimalist, scientific, no people, no logos, vector-clean lines, large bold gate labels, monospace caption fonts, generous whitespace. Use a deep navy backdrop only behind the tokamak; everything else on white. The overall feel should be that of a verified-by-design engineering schema, not a hype illustration.
