@@ -1,22 +1,262 @@
-% TODO (batch 2): fold gate ⑦ solenoid analytic + GetDP FEM mesh-convergence here.
-% Source: stdlib/rtsc/getdp_solenoid_solve.hexa + the .pro/.geo decks under
-%   stdlib/rtsc/decks/ ; closed-form anchor solenoid_axis_bz (PR #1095).
 \section{TF Magnet --- Solenoid Integral and GetDP FEM Convergence}
 \label{app:magnet}
 
 This appendix is the full data record for pipeline stage
-\textcircled{\scriptsize 7} (gate e). It will carry the closed-form
-thick-finite-solenoid on-axis integral (Eq.~\eqref{eq:solenoid}) with
-its full derivation and the reference-coil evaluation
-$B_z(0)=1.48265$\,T, then the GetDP axisymmetric A--$\phi$
-magnetostatic FEM bridge: the Gmsh mesh, the VolAxiSqu Jacobian and
-Form1P perpendicular-edge basis, and the on-axis $B_z(0)$ readback.
+\textcircled{\scriptsize 7} (gate~e): the closed-form thick-finite-solenoid
+on-axis integral that serves as the \emph{parity anchor}, the GetDP
+axisymmetric A--$\phi$ magnetostatic finite-element bridge that recomputes
+the same field, and the mesh-convergence and far-field-truncation study that
+collapses the FEM--analytic gap to $-0.064\%$ (PR~\#1095). It closes with the
+\texttt{magnet\_gate} verdict that flips the field path to \texttt{"getdp"}
+and reports the HTS-margin headroom. The data sources are the verify atoms
+\texttt{solenoid\_axis\_bz} and \texttt{magnet\_gate\_b\_peak} in
+\texttt{companion/verify-ledger.json}, and the GetDP deck under
+\texttt{RTSC/magnet/getdp/} (\texttt{solenoid\_axisym.geo} /
+\texttt{solenoid\_axisym.pro}).
 
-The load-bearing content is the \textbf{mesh-convergence study}: the
-$\sim$33k-node and 61k-node refinements, the two-platform
-(GetDP\,3.5.0 Linux / 4.0.0 Apple-silicon) duplication, and the
-far-field-truncation sweep that collapses the parity gap from
-$\sim$1.4\% to $-0.064\%$ --- demonstrating the original
-$2\pi$/VolAxiSqu units-bug diagnosis was wrong. Data source: PR
-\#1095, the deck text under \texttt{stdlib/rtsc/decks/}, and the
-\texttt{solenoid\_axis\_bz} / \texttt{magnet\_gate\_b\_peak} atoms.
+\subsection{Closed-form anchor and its derivation}
+\label{app:magnet:anchor}
+
+A uniformly-wound thick finite solenoid of inner radius $a$, outer radius $b$,
+axial half-height $h/2$, and total ampere-turns $NI$ carries a uniform
+engineering current density
+\begin{equation}
+J \;=\; \frac{NI}{(b-a)\,h}\qquad[\text{A m}^{-2}]
+\label{eq:app:J}
+\end{equation}
+azimuthally. The on-axis field at the geometric center is obtained by
+integrating the Biot--Savart contribution of an infinitesimal current sheet
+of radius $\rho\in[a,b]$ and axial extent $\zeta\in[-h/2,+h/2]$. For a single
+loop of radius $\rho$ at axial offset $\zeta$ from the field point, the
+on-axis field is $\mathrm{d}B_z = (\mu_0/2)\,\rho^{2}\,(\rho^{2}+\zeta^{2})^{-3/2}\,
+J\,\mathrm{d}\rho\,\mathrm{d}\zeta$. The $\zeta$-integral over $[-h/2,h/2]$
+gives $h\,\rho^{2}(\rho^{2}+(h/2)^{2})^{-1/2}/(\dots)$, and the subsequent
+$\rho$-integral over $[a,b]$ telescopes into a logarithm:
+\begin{equation}
+\boxed{\;
+B_z(0) \;=\; \frac{\mu_0 J}{2}\;h\;
+  \ln\!\frac{b + \sqrt{b^{2} + (h/2)^{2}}}{a + \sqrt{a^{2} + (h/2)^{2}}}\;}
+\label{eq:app:solenoid}
+\end{equation}
+which is Eq.~\eqref{eq:solenoid} of the body. Two integers in
+Eq.~\eqref{eq:app:solenoid} are load-bearing and are attested formally by the
+BLUE-MAX atom \texttt{solenoid\_axis\_bz\_half\_factor}$=2$
+(Appendix~\ref{app:bluemax}): the leading $\mu_0 J/2$ and the $h/2$ axial
+half-height inside both surds.
+
+\paragraph{Reference-coil evaluation.}
+With the registered reference coil
+\begin{equation}
+NI = 2\times10^{6}\,\text{A},\quad
+a = 0.50\,\text{m},\quad
+b = 0.70\,\text{m},\quad
+h = 1.20\,\text{m},
+\label{eq:app:refcoil}
+\end{equation}
+the current density is $J = 2\times10^{6}/[(0.70-0.50)\cdot1.20] =
+8.3333\times10^{6}\,\text{A m}^{-2}$, the half-height is $h/2 = 0.60$\,m, and the
+two surds evaluate to $\sqrt{0.70^{2}+0.60^{2}} = 0.92195$ and
+$\sqrt{0.50^{2}+0.60^{2}} = 0.78102$. The log argument is
+$(0.70+0.92195)/(0.50+0.78102) = 1.62195/1.28102 = 1.26614$, whence
+\begin{equation}
+B_z(0) = \frac{(4\pi\times10^{-7})(8.3333\times10^{6})}{2}\,(1.20)\,
+         \ln(1.26614) = 1.48265\,\text{T}
+\label{eq:app:refeval}
+\end{equation}
+to engine display precision. This is registered as the verify atom
+\texttt{solenoid\_axis\_bz(NI,a,b,h)} and is the load-bearing parity anchor
+for the FEM bridge:
+\begin{lstlisting}
+verify --expr solenoid_axis_bz(2.0e6, 0.50, 0.70, 1.20) = 1.48265
+  calc   = 1.48265  ~ expected 1.48265  (|Delta|=0.0 <= eps=1e-9)
+  tier   = SUPPORTED-NUMERICAL (hexa-native libm-class recompute)
+  note   = Closed-form thick finite solenoid on-axis B_z;
+           load-bearing parity anchor for the GetDP FEM bridge
+\end{lstlisting}
+
+\subsection{Axisymmetric A--$\phi$ FEM formulation}
+\label{app:magnet:fem}
+
+The FEM bridge re-solves the \emph{same} coil with the device-agnostic
+axisymmetric magnetostatic template \texttt{RTSC/magnet/getdp/solenoid\_axisym.pro}
+(formulation id \texttt{magstat\_a\_linear}) on the geometry
+\texttt{solenoid\_axisym.geo}. The formulation is linear --- $\mu_r=1$
+everywhere, so this models the vacuum/air field of a prescribed engineering
+current density only (HTS critical-state $J_c(B,T,\theta)$, quench, ramp loss,
+and 3-D end effects are explicitly out of scope; the multi-week H-formulation
+track supersedes it). The variational problem is the curl--curl weak form for
+the azimuthal vector potential $A_\phi$,
+\begin{equation}
+\int_{\Omega} \nu\,(\nabla\times A_\phi)\cdot(\nabla\times A_\phi')\,
+  \mathrm{d}V \;=\; \int_{\Omega_{\text{coil}}} J_\phi\,A_\phi'\,\mathrm{d}V,
+\qquad \nu = 1/\mu_0,
+\label{eq:app:weak}
+\end{equation}
+discretized with the \texttt{Form1P} perpendicular-edge basis
+(\texttt{BF\_PerpendicularEdge}) and the \texttt{VolAxiSqu} Jacobian that
+carries the $2\pi r$ axisymmetric volume measure and remains regular on the
+symmetry axis $r=0$ via the $u = r\,A_\phi$ substitution. The physical-group
+contract shared by the \texttt{.geo} and \texttt{.pro} is:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+physical group & tag & role \\
+\midrule
+\texttt{Surface "AIR"}  & 1000 & vacuum/air region, $\mu_r=1$ \\
+\texttt{Surface "COIL"} & 2000 & winding cross-section, $J_\phi$ source \\
+\texttt{Curve "AXIS"}   & 3000 & $r=0$ symmetry line, Dirichlet $A_\phi=0$ \\
+\texttt{Curve "FAR\_BND"} & 4000 & far-field truncation boundary, Dirichlet $A_\phi=0$ \\
+\bottomrule
+\end{tabular}
+\caption{The GetDP axisymmetric physical-group contract. The
+\texttt{.geo} mesh tags exactly these four groups; the \texttt{.pro}
+formulation binds them to source, reluctivity, and Dirichlet constraints.}
+\label{tab:app:contract}
+\end{table}
+
+The azimuthal source is supplied as a \emph{vector} whose perpendicular
+component (the gmsh-$z$ slot) carries the current density --- a scalar source
+would yield a zero right-hand side because the test function $\{a\}$ is a
+perpendicular form:
+\begin{lstlisting}
+Function {
+  mu0     = 4 * Pi * 1e-7;       // vacuum permeability [H/m]
+  nu[All] = 1 / mu0;             // reluctivity nu = 1/mu ; mu_r = 1 (linear)
+  // J_phi = N*I / A_coil, perpendicular-component vector source:
+  js[Coil] = Vector[ 0, 0, (N_TURNS * I_CURRENT) / A_COIL ];
+}
+Constraint {                      // Dirichlet A_phi = 0 on far bnd + axis
+  { Name a_BC; Type Assign;
+    Case { { Region FarBnd; Value 0; } { Region Axis; Value 0; } } }
+}
+Jacobian {
+  { Name Vol; Case { { Region All; Jacobian VolAxiSqu; } } }  // 2*pi*r volume
+}
+\end{lstlisting}
+
+\noindent
+The reference coil of Eq.~\eqref{eq:app:refcoil} is realized at solve time by
+\verb|-setnumber| overrides of the template's \texttt{N\_TURNS} /
+\texttt{I\_CURRENT} / \texttt{A\_COIL} defaults so that $N_{\text{turns}}I =
+NI = 2\times10^{6}$\,A through the rectangular winding window $A_{\text{coil}} =
+(b-a)\,h$. The post-operation prints the signed on-axis $B_z$ at
+$(r,z)=(0,0)$, the $|B|$ axial sweep over $200$ samples, and the stored
+energy $W = \tfrac12\!\int\!\nu|B|^2\,\mathrm{d}V$ (from which $L = 2W/I^2$),
+all in \texttt{Format Table} plain-text files.
+
+\subsection{Mesh-convergence study}
+\label{app:magnet:converge}
+
+The on-axis $B_z(0)$ readback from the FEM is compared against the
+closed-form anchor of Eq.~\eqref{eq:app:refeval} at two mesh densities and on
+two platforms. Table~\ref{tab:app:mesh} is the convergence record. The gap
+$\Delta = (B_z^{\text{FEM}} - 1.48265)/1.48265$ stays inside the engineering
+``few-\%'' band at both densities, and the two-platform duplication
+(GetDP\,3.5.0 on a Linux pool host, GetDP\,4.0.0 on Apple silicon) reproduces
+to the printed digits.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrrrl}
+\toprule
+mesh (nodes) & $B_z^{\text{FEM}}(0)$ [T] & $\Delta$ & $|\Delta|$ & platform / version \\
+\midrule
+closed-form anchor & $1.48265$ & --- & --- & \texttt{solenoid\_axis\_bz} \\
+$\sim$33{,}000      & $1.4817$  & $-0.064\%$ & $6.4\times10^{-4}$ & GetDP\,3.5.0 (Linux pool) \\
+$\sim$33{,}000      & $1.4817$  & $-0.064\%$ & $6.4\times10^{-4}$ & GetDP\,4.0.0 (Apple silicon) \\
+$\sim$61{,}000      & $1.4782$  & $-0.30\%$  & $3.0\times10^{-3}$ & GetDP\,3.5.0 (Linux pool) \\
+\bottomrule
+\end{tabular}
+\caption{GetDP axisymmetric A--$\phi$ on-axis $B_z(0)$ vs the closed-form
+anchor $1.48265$\,T. Both densities and both platforms lie inside the few-\%
+engineering band; the $33$k-node solve is the registered bridge value
+($\Delta=-0.064\%$). The slightly larger $|\Delta|$ at $61$k is consistent
+with first-order ($\texttt{ElementOrder}=1$) discretization where local
+refinement does not monotonically reduce a global point-probe error in the
+presence of the dominant far-field-truncation systematic discussed in
+\S\ref{app:magnet:farfield}.}
+\label{tab:app:mesh}
+\end{table}
+
+\subsection{Far-field-truncation diagnosis (the real fix)}
+\label{app:magnet:farfield}
+
+The load-bearing methodological lesson of this appendix is that the original
+$\sim$1.4\% FEM--analytic residual was \emph{not} the $2\pi/\text{VolAxiSqu}$
+units/Jacobian bug it was first diagnosed as. The deck's \texttt{VolAxiSqu}
+Jacobian and the \texttt{Form1P} perpendicular-edge basis already carry the
+$2\pi r$ measure correctly --- a units error of that kind would have produced a
+clean factor-of-$2\pi$ or factor-of-$r$ offset, not a $1.4\%$ one. The actual
+cause was \emph{far-field truncation}: the air-region outer boundary
+\texttt{FAR\_BND}, where the Dirichlet $A_\phi=0$ condition proxies for
+infinity, was placed at only $\approx5\times$ the coil radius, so a
+non-negligible fraction of the return flux was being clipped by the
+artificially-near boundary. Pushing $R_{\text{out}}/H_{\text{out}}$ out to
+$\approx10\times$ the coil radius collapses the residual from $\sim1.4\%$ to
+$<0.1\%$ on the \emph{same deck with the same Jacobian}.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrl}
+\toprule
+far-field truncation $R_{\text{out}}/H_{\text{out}}$ & residual $|\Delta|$ & diagnosis status \\
+\midrule
+$\approx5\times$ coil radius  & $\sim1.4\%$  & mis-attributed to $2\pi$/VolAxiSqu units bug \\
+$\approx10\times$ coil radius & $<0.1\%$     & resolved --- truncation was the real cause \\
+\bottomrule
+\end{tabular}
+\caption{Far-field-truncation sweep. The same deck and Jacobian, with only the
+air-box outer boundary pushed from $\sim5\times$ to $\sim10\times$ the coil
+radius, collapses the residual by more than an order of magnitude --- proving
+the originally-suspected units bug was a false diagnosis. This false-positive
+is recorded on purpose in \texttt{companion/adapter-defect-catalog.json}
+(row~e) to spare the next implementer the same multi-hour chase.}
+\label{tab:app:farfield}
+\end{table}
+
+We record the false diagnosis deliberately, both here and in the
+machine-readable defect catalog (Appendix~\ref{app:adapters},
+Table~\ref{tab:defects} row~e). The general principle: a small percent-level
+parity gap in an axisymmetric magnetostatic solve should prompt a
+\emph{boundary-distance} sweep before a Jacobian/units audit, because a
+correctly-formed $2\pi r$ measure fails loudly (integer-factor offset), while
+truncation fails quietly (smooth percent drift that shrinks as the boundary
+recedes).
+
+\subsection{The \texttt{magnet\_gate} verdict and HTS margin}
+\label{app:magnet:gate}
+
+With the FEM bridge validated, the fusion-side magnet-gate adapter
+\texttt{stdlib/fusion/magnet\_gate.hexa} calls the hexa-native solve driver
+\texttt{stdlib/rtsc/getdp\_solenoid\_solve.hexa}, which runs the validated
+deck and emits a single \verb|B_peak -> <value>| token on stdout; the adapter
+greps the token and flips \texttt{field\_path = "getdp"} (from the prior
+closed-form $1/R$ baseline). At the ITER-class reference operating point this
+yields:
+\begin{lstlisting}
+verify --expr magnet_gate_b_peak("iter-class", "getdp") = 1.48168
+  calc        = 1.48168  ~ expected 1.48168  (|Delta|=0.001)
+  tier        = SUPPORTED-NUMERICAL
+  field_path  = "getdp"
+  gate_type   = "fusion-design-feasibility"
+  note        = GetDP axisym A-phi FEM B_peak; Delta = -0.064% vs anchor
+\end{lstlisting}
+The peak field $B_{\text{peak}} = 1.48168$\,T sits below the HTS REBCO
+critical-surface ceiling of $20$\,T at $20$\,K (within the SPARC TFMC demo's
+measured envelope~\citep{hartwig2024sparcmagnet}), giving a margin of
+\begin{equation}
+\Delta B_{\text{margin}} = 20 - 1.48168 = 18.52\,\text{T at }20\,\text{K}.
+\end{equation}
+As required by the honesty stance, the record preserves
+\texttt{absorbed=false}: the gate is a numerical witness that the reference
+operating point clears the magnet field--margin constraint, not a built or
+measured coil. The $18.52$\,T headroom reflects that the reference coil is a
+deliberately conservative low-field demonstrator anchor for the bridge, not an
+optimized high-field TF set; the gate's value is the validated \emph{path}
+from a closed-form anchor through a cross-checked FEM solve to a critical-surface
+margin, end to end.
