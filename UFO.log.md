@@ -2,6 +2,31 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T01:10:00Z — Phase C verb-5 synthesize — BOM + 도면 + firmware 산출물 LANDED
+
+Phase C demiurge 7-verb pipeline 다섯 번째 슬롯 (verb-5 synthesize). verb-3 design 의 Stage-1~3 closed-form 설계점 + verb-2 structure 의 5-bay 디스크 구조 + verb-4 analyze 의 산출 schema 를 입력으로, **외부 제작소가 받아 제작을 시작할 수 있는 수준의 제작 산출물 사양** 3종 (BOM · 도면 tree · firmware stack) + 제작 시퀀스 (QA 게이트) 를 manifest 로 정의. 실 제작/부품 구매가 아닌 **사양 명세** (@D d1) · firmware 는 **아키텍처 명세** 이고 제어 코드 SSOT = `~/core/hexa-lang/stdlib/` (@D d3 · UFO/synthesize 구현 코드 0줄). 문서 한국어 · 코드 영문.
+
+- [x] `UFO/synthesize/integrated-vehicle-synthesize.md` — §0 TL;DR (BOM+도면 tree+firmware stack ASCII) · §1 BOM 7-카테고리 · §2 도면 tree L0~L3 + 인터페이스 도면 · §3 firmware 3-layer 5-모듈 · §4 제작 시퀀스 8 단계 + QA 게이트 · §5 synthesize→verify 인계 + handoff 준비물 + cross-link + deferred
+- [x] `UFO/synthesize/integrated-vehicle-synthesize.tape` — `@V`1.0 · `@I id001/id002` (🛸 · alias `synthesize`) · `@C id010~013` cross-link 4건 (spec·structure·design·analyze) · `@D s1~s4` governance · provenance ledger · 17-type 알파벳만 (@V/@I/@C/@D)
+- [x] ① BOM — 7 카테고리 (A frame CFRP T700 180kg · B RTSC 솔레노이드×6 HTS REBCO NI=1.2e6 At + flux-pin + gyro CMG×3 120kg · C cryostat LHe 4.2K + He cryocooler 4K · D LSS 80kg · E avionics 45kg · F power dual bus net 150kg · G stage MHD×2 + Penning/Ioffe trap + e⁺ source + γ-shield) · 수량/재료/공급원 카테고리/추정 단가 범위 · 650kg 무게 reconcile (structure §5.1 cross-check)
+- [x] ② 도면 tree — L0 vehicle → L1 5-bay (avionics/cabin/magnet/power/LSS + frame) → L2 ~14 assembly → L3 ~40 part (BOM ID cross-link) · DWG-ID placeholder · 7 인터페이스 도면 (IF-PWR/CRYO/STR/EM/DATA/GS/THERM)
+- [x] ③ firmware stack — 3-계층 (app: 5-모듈 · RTOS: rate-monotonic + triplex voter DO-178C DAL-A · HAL: board support) · 5 제어 모듈 (① 자세제어 Kalman 15-state ‖q‖=1±1e-9 · ② stage 전환 SM · ③ 자석 PID 6-DOF per-slot · ④ LSS 모니터 · ⑤ 안전 인터록) · loop rate + DAL + redundancy 매핑 · 게인 sizing = verb-4 ⟲ 수렴 design point 위임
+- [x] ④ 제작 시퀀스 — 8 단계 (S0 입고 → S1 frame → S2 5-bay → S3 자석/cryo → S4 추진 mount → S5 firmware → S6 통합검사 → S7 인계) + QA 게이트 G0~G7 · verb-4 analyze LC/수렴 기준 cross-link
+- [x] `UFO.md` line 51 verb-5 synthesize `[ ]` → `[x] ... LANDED PR pending` flip
+- [x] @D d1 준수 — 제작 사양 manifest (실 제작/구매 아님 · 단가 = sizing 추정 범위, 조달 견적 아님)
+- [x] @D d3 준수 — firmware 아키텍처 명세만 · 제어 코드 (EKF/PID/SM) SSOT = hexa-lang/stdlib · UFO/synthesize 구현 코드 0줄
+- [x] @D d4 준수 — BOM line-item / 도면 노드 / firmware 모듈 = manifest 한 행 수정 (single generic dispatch · 이름 hardcoding 금지)
+- [x] Stage-4~7 (G6) = formal mount slot only — 제작 산출물 0 · 단가 $0 · app layer 모듈 없음 (design §4 falsifier-only 상속 · absorbed=true flip 금지 · 물리 한계 framing 금지 @D d2)
+
+deferred:
+- [ ] BOM 조달 견적 갱신 (추정 범위 → 입찰 · long-lead HTS 솔레노이드 B1 + 반물질 trap G2/G3) — verb-7 handoff
+- [ ] CAD 도면 geometry/치수/공차 (도면 tree → 실 도면) — verb-7 / 외부 제작소
+- [ ] firmware 제어 게인 sizing (Kalman Q/R · PID K_p/K_i/K_d · SM threshold) — verb-4 analyze ⟲ 수렴 design point
+- [ ] firmware SW-in-the-loop (SIL) 검증 — verb-6 디지털트윈 (UFO/sim 엔진)
+- [ ] DO-178C DAL-A 인증 산출물 (자세제어 · 자석 PID · 안전 인터록) — verb-7 handoff
+- [ ] QA 게이트 G0~G7 검사 절차서 정량 기준 (heat leak · σ 마진 · effective thrust) — verb-4 sim 본해
+- [ ] cryostat dewar 통합 BOM 반영 (자석 4.2K ↔ trap 4K 공유 · 8% 무게 감소) — verb-4 trade study
+
 ## 2026-05-26T00:30:00Z — Stage-3 orbital antimatter γ-rocket I_sp verify LANDED 🟢
 
 Phase A Stage-3 orbital (antimatter γ-rocket anti-H + H · 고도 200 km ~ 1 AU). ANTIMATTER substrate (γ-rocket · Penning 3-freq + Ioffe trap depth verify 🟢 완료) 위에 γ-rocket I_sp closed-form (annihilation `E = 2·m_p·c²` → relativistic exhaust → `I_sp = c/g` 광자 천장 3.057e7 s) 의 numerical recompute 를 `hexa verify --expr` 3건으로 🟢 SUPPORTED-NUMERICAL 도장. ANTIMATTER verified atom 재사용 (idempotent atlas fold) · @D d3/d4/d6/d9/d10 준수. 문서 한국어 · 코드 영문.
