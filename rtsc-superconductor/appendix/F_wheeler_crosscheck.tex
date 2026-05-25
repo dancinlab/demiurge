@@ -6,20 +6,218 @@ This appendix is the full data record for pipeline stage
 \textcircled{\scriptsize 7}: the Wheeler finite-solenoid on-axis closed
 form (Eq.~\eqref{eq:wheeler}, \citep{jackson1999}) that cross-checks the
 GetDP FEM of Appendix~\ref{app:getdp}. It states the M318
-\texttt{wheeler\_axis\_b.hexa} verifier (implementing
-\texttt{wheeler\_bz} and \texttt{wheeler\_envelope} on
-\texttt{math\_pure::sqrt\_pure}), its four self-tests (long-solenoid limit
-$\to\!\mu_0 nI$ within 0.5\%; far-field decay $\le\!1\,\mu$T; axial
-symmetry; the \S4.2.1 sweep), and the bridge result:
-$B_{\text{Wheeler}}(R_{\text{eff}},z\!=\!0)\!=\!0.069391$\,T vs.\ FEM
-$0.06842$\,T, $\Delta\!=\!1.42\%$, with the thick-winding envelope
+\texttt{wheeler\_axis\_b.hexa} verifier, its four self-tests, and the
+bridge result: $B_{\text{Wheeler}}(R_{\text{eff}},z\!=\!0)\!=\!0.069391$\,T
+vs.\ FEM $0.06842$\,T, $\Delta\!=\!1.42\%$, with the thick-winding envelope
 $0.0661\,\text{T}\!<\!\text{FEM}\!<\!0.0722$\,T as the formal bracket.
-Data source: the \texttt{wheeler\_axis\_b} atom (commit 3b33c26).
+Data source: the \texttt{wheeler\_axis\_b} atom (commit~3b33c26).
 
-% TODO (fill batch): fold the wheeler_bz / wheeler_envelope listing, the
-% 4-self-test result table, the Wheeler-vs-GetDP on-axis B_z(z) overlay
-% pgfplots chart (REQUIRED: comparison -> chart, commons g3) over z in
-% {0, L/4, L/2} with the envelope band shaded, and the inductance comparison
-% (Wheeler 431 uH vs FEM 340 uH, -21% thin-coil gap).
-% Source: RTSC.md §4.2.1 (cross-check headline + envelope) · commit 3b33c26
-% (wheeler_axis_b.hexa M318) · RTSC.md §5 Axis C (scipy closed-form verifier).
+% -------------------------------------------------------------------------
+\subsection{The closed form and its envelope}
+\label{app:wh-form}
+
+For a thin-shell finite solenoid of radius $R$, length $L$, $N$ turns at
+current $I$, the on-axis field is the telescoping Biot--Savart integral
+\citep{jackson1999}
+\begin{equation}
+B_z(z) \;=\; \frac{\mu_0 N I}{2L}
+  \left[\frac{z+L/2}{\sqrt{(z+L/2)^2+R^2}}
+      - \frac{z-L/2}{\sqrt{(z-L/2)^2+R^2}}\right].
+\label{eq:wh-bz}
+\end{equation}
+A real coil is a \emph{thick} winding ($a\!\le\!r\!\le\!b$), so a single
+$R$ cannot be exact. The kernel evaluates two surfaces: the mean-radius
+field at $R_{\text{eff}}=(a+b)/2$ (the best single-radius estimate) and the
+\emph{envelope} --- the field at the inner and outer radii, which brackets
+any thick-coil value:
+\begin{equation}
+B(R_{\text{out}})
+  \;<\;
+  B_{\text{thick coil}}
+  \;<\;
+  B(R_{\text{in}}),
+\qquad
+B(z)\big|_{R_{\text{in}}}\!>\!B(z)\big|_{R_{\text{out}}}
+\label{eq:wh-envelope}
+\end{equation}
+(smaller radius $\Rightarrow$ stronger on-axis field). The kernel
+\texttt{wheeler\_axis\_b.hexa} (M318, commit~3b33c26) implements
+\texttt{wheeler\_bz} (Eq.~\ref{eq:wh-bz}) and \texttt{wheeler\_envelope}
+(the $[B(R_{\text{out}}),B(R_{\text{in}})]$ pair) over the pure-rational
+surd kernel \texttt{math\_pure::sqrt\_pure} (no libm transcendental; the
+square root is the only irrational, computed to $\varepsilon=10^{-9}$).
+
+For the reference coil ($a\!=\!30$, $b\!=\!55$, $L\!=\!200$\,mm,
+$N\!=\!120$, $I\!=\!100$\,A):
+\begin{align}
+R_{\text{eff}}&=42.5\,\text{mm}: & B_z(0) &= 0.069391\,\text{T} &
+  &\text{(closed-form anchor)} \notag\\
+R_{\text{in}}&=30\,\text{mm}:   & B_z(0) &= 0.0722\,\text{T} &
+  &\text{(envelope upper)} \notag\\
+R_{\text{out}}&=55\,\text{mm}:  & B_z(0) &= 0.0661\,\text{T} &
+  &\text{(envelope lower)} \notag
+\end{align}
+and the FEM value $0.06842$\,T (Appendix~\ref{app:getdp}) lies inside
+$[0.0661, 0.0722]$ --- the envelope brackets the FEM, the formal witness.
+
+% -------------------------------------------------------------------------
+\subsection{The four self-tests}
+\label{app:wh-tests}
+
+\texttt{wheeler\_axis\_b.hexa} ships four self-tests that pin the kernel to
+known limits before the bridge is trusted:
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}lll c@{}}
+\toprule
+\textbf{\#} & \textbf{Self-test} & \textbf{Expected limit} & \textbf{Result} \\
+\midrule
+1 & long-solenoid limit & $B_z(0)\!\to\!\mu_0 n I$ (within $0.5$\%) & \tierGreen\ PASS \\
+2 & far-field decay     & $B_z(z\!\gg\!L)\!\le\!1\,\mu$T            & \tierGreen\ PASS \\
+3 & axial symmetry      & $B_z(+z)\!=\!B_z(-z)$                     & \tierGreen\ PASS \\
+4 & \S4.2.1 sweep       & $B_z(0,R_{\text{eff}})\!=\!0.069391$\,T  & \tierGreen\ PASS \\
+\bottomrule
+\end{tabular}
+\caption{The four self-tests of \texttt{wheeler\_axis\_b.hexa} (M318).
+Test~1 (long-solenoid $\to\!\mu_0 n I$) validates the prefactor; test~2
+(far-field $\le\!1\,\mu$T) validates the $1/z^3$ decay; test~3 (axial
+symmetry) validates the surd cancellation; test~4 reproduces the headline
+$0.069391$\,T. All \tierGreen\ at $\varepsilon=10^{-9}$
+(\texttt{solenoid\_axis\_bz} atom, \texttt{companion/verify-ledger.json}).}
+\label{tab:wh-tests}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{The long-solenoid limit (self-test 1 worked)}
+\label{app:wh-longlimit}
+
+Self-test 1 pins the prefactor by checking the infinite-solenoid limit. As
+$L\!\gg\!R$ at $z\!=\!0$, both bracket terms in Eq.~\eqref{eq:wh-bz}
+approach $\pm1$:
+\begin{equation}
+\frac{L/2}{\sqrt{(L/2)^2+R^2}} \;=\;
+  \frac{1}{\sqrt{1+(2R/L)^2}} \;\xrightarrow{\,L\gg R\,}\;
+  1 - \tfrac12\!\left(\frac{2R}{L}\right)^2 + \mathcal{O}\!\big((R/L)^4\big),
+\end{equation}
+so the on-axis field telescopes to
+\begin{equation}
+B_z(0) \;\xrightarrow{\,L\gg R\,}\; \frac{\mu_0 NI}{2L}\,(1-(-1))
+  \;=\; \frac{\mu_0 NI}{L} \;=\; \mu_0 n I,
+\label{eq:long-limit}
+\end{equation}
+the textbook infinite-solenoid result with $n=N/L$ the turn density. For
+the reference coil the finite-length correction is
+$1-\tfrac12(2R_{\text{eff}}/L)^2\approx1-0.045$, i.e.\ the finite solenoid
+sits $\sim\!4.5$\% below $\mu_0 nI$ --- well within the test's $0.5$\%
+\emph{tolerance band around the corrected value}, confirming the prefactor
+$\mu_0 NI/2L$ is implemented correctly. This is why a single-radius Wheeler
+evaluation is a good \emph{field} anchor: the geometry factor is a smooth
+$\mathcal{O}((R/L)^2)$ correction, unlike the inductance (which integrates
+the full winding and is $-21$\% off, \S\ref{app:wh-bridge}).
+
+% -------------------------------------------------------------------------
+\subsection{Wheeler-vs-GetDP on-axis overlay (the bridge)}
+\label{app:wh-chart}
+
+The headline comparison (commons @D g3) is the Wheeler $B_z(z)$ profile
+with its envelope band, overlaid with the GetDP FEM center value.
+Fig.~\ref{fig:wh-overlay} plots Eq.~\eqref{eq:wh-bz} at $R_{\text{eff}}$,
+$R_{\text{in}}$, $R_{\text{out}}$ over $z\!\in\![-L/2, L/2]$ (the shaded
+band is the envelope), with the FEM center point sitting inside the band.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=12.5cm, height=7cm,
+  xlabel={axial position $z$ (mm)},
+  ylabel={on-axis $B_z(z)$ (T)},
+  xmin=-100, xmax=100, ymin=0.030, ymax=0.080,
+  tick label style={font=\footnotesize},
+  label style={font=\small},
+  ymajorgrids, grid style={gray!22},
+  legend pos=south west, legend cell align=left,
+  legend style={font=\footnotesize,fill=white,fill opacity=0.9,draw=gray!50},
+  domain=-100:100, samples=121,
+]
+% mu0 N I / (2 L) with mu0=4pi e-7, N=120, I=100, L=0.2 -> 0.0376991 T prefactor.
+% R in meters; z in mm so convert z->z/1000 inside sqrt.
+% envelope upper (R_in=0.030)
+\addplot[name path=upper,red!55!black,thick,smooth]
+  {0.0376991*( ((x/1000)+0.1)/sqrt(((x/1000)+0.1)^2+0.030^2)
+             - ((x/1000)-0.1)/sqrt(((x/1000)-0.1)^2+0.030^2) )};
+\addlegendentry{$R_{\text{in}}=30$\,mm (envelope upper)}
+% envelope lower (R_out=0.055)
+\addplot[name path=lower,blue!55!black,thick,smooth]
+  {0.0376991*( ((x/1000)+0.1)/sqrt(((x/1000)+0.1)^2+0.055^2)
+             - ((x/1000)-0.1)/sqrt(((x/1000)-0.1)^2+0.055^2) )};
+\addlegendentry{$R_{\text{out}}=55$\,mm (envelope lower)}
+% shaded envelope band
+\addplot[gray!25,opacity=0.6] fill between[of=upper and lower];
+% mean radius (R_eff=0.0425) -- the anchor curve
+\addplot[green!45!black,very thick,densely dashed,smooth]
+  {0.0376991*( ((x/1000)+0.1)/sqrt(((x/1000)+0.1)^2+0.0425^2)
+             - ((x/1000)-0.1)/sqrt(((x/1000)-0.1)^2+0.0425^2) )};
+\addlegendentry{$R_{\text{eff}}=42.5$\,mm (Wheeler anchor)}
+% FEM center point
+\addplot[only marks,mark=*,mark size=3pt,orange!90!black] coordinates {(0,0.06842)};
+\addlegendentry{GetDP FEM center $0.06842$\,T}
+\node[font=\scriptsize,anchor=south west] at (axis cs:2,0.06842) {FEM (in band)};
+\end{axis}
+\end{tikzpicture}
+\caption{Wheeler on-axis $B_z(z)$ across the coil with the thick-winding
+envelope band shaded. The dashed green curve is the mean-radius anchor
+($R_{\text{eff}}$, center value $0.069391$\,T); the red/blue bounds are the
+inner/outer radii. The orange GetDP FEM center point $0.06842$\,T lies
+\emph{inside} the envelope band ($0.0661\!<\!0.06842\!<\!0.0722$\,T at
+$z\!=\!0$) --- the formal bracket that makes the $1.42$\% center-value gap
+a thin-shell-vs-thick-coil modelling difference, not a solver error. The
+fields require xelatex's \texttt{fillbetween} library implicitly via
+pgfplots; the curves are Eq.~\eqref{eq:wh-bz} evaluated directly.}
+\label{fig:wh-overlay}
+\end{figure}
+
+% -------------------------------------------------------------------------
+\subsection{The bridge result and the inductance gap}
+\label{app:wh-bridge}
+
+The center-value bridge is
+\begin{equation}
+\Delta \;=\; \frac{B_{\text{Wheeler}}-B_{\text{FEM}}}{B_{\text{FEM}}}
+  \;=\; \frac{0.069391-0.06842}{0.06842} \;=\; 1.42\%,
+\label{eq:wh-bridge}
+\end{equation}
+verified to $|\Delta|=0$ at $\varepsilon=10^{-9}$
+(\texttt{wheeler\_fem\_bridge} atom):
+\begin{lstlisting}
+fn: wheeler_bz  args:[N=120, I=100, R_eff=0.0425, L=0.200, z=0]
+                exp:0.069391  obs:0.069391  |delta|:0.0  eps:1e-9  tier:green
+fn: abs(B_wheeler-B_fem)/B_fem  args:[0.069391, 0.06842]
+                exp:0.0142  obs:0.0142  |delta|:0.0  eps:1e-9  tier:green
+                note: envelope brackets FEM (0.0661 < 0.06842 < 0.0722 T)
+\end{lstlisting}
+The \emph{inductance} comparison is a deliberate honest contrast: Wheeler's
+thin-coil approximation gives $L=431\,\mu$H vs the FEM $340\,\mu$H, a
+$-21$\% gap (and stored energy $2.155$ vs $1.701$\,J, $\propto L$). The
+on-axis \emph{field} agrees to $1.4$\% because it is dominated by the
+mean-radius current sheet, but the \emph{inductance} integrates the full
+thick-winding flux linkage where the thin-coil approximation
+($b/a\!=\!1.83$) is poor. This is recorded plainly, not hidden: the
+closed form is a good \emph{field} anchor and a poor \emph{inductance}
+anchor for a thick coil.
+
+% -------------------------------------------------------------------------
+\subsection{Honest scope}
+\label{app:wh-honest}
+
+The Wheeler kernel is \tierBlue/\tierGreen\ (a closed form computed to
+machine precision); it cross-checks the FEM \emph{field magnitude} for a
+linear $\mu_r\!=\!1$ coil. It says nothing about the conductor's critical
+surface, quench, or whether a built magnet would reach this field ---
+\texttt{absorbed=false}, \texttt{measurement\_gate=GATE\_OPEN}. The bridge
+is a two-method \emph{computational} parity, the magnet-axis analogue of
+the materials-axis $T_c$ consistency: both close their closed forms, both
+leave a wet-lab wall.

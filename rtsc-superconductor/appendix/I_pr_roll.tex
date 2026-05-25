@@ -3,16 +3,70 @@
 \label{app:prroll}
 
 This appendix is the merged-PR provenance roll for the RTSC stack: the
-landed pull requests that produced each pipeline stage's backing code
-and records. Known landed PRs include V1 claim inventory (\#25), V2
-formal identities (\#33), the \texttt{solenoid\_axisym} deck +
-pancake stub (\#92), the conductor handoff schema stub (\#90), the
-SrAuH$_3$ candidate (\#91), the H$_3$As candidate (\#97), and the
-Wheeler M318 verifier (commit 3b33c26). Data source:
+landed pull requests (and the Wheeler commit) that produced each pipeline
+stage's backing code and records. Data source:
 \texttt{companion/pr-roll.json}, regenerated via
 \texttt{/paper pr-roll dancinlab/demiurge <since-ref>}.
 
-% TODO (fill batch): fold the full PR table (number / title / pipeline
-% stage / merge date / files touched) generated from companion/pr-roll.json.
-% Source: RTSC.md §verify (PR #25/#33) · RTSC.log.md (M301/M302 #92 · M462
-% #90 · SrAuH3 #91 · h3as #97) · git log (commit 3b33c26 wheeler).
+% -------------------------------------------------------------------------
+\subsection{Landed PRs by pipeline stage}
+\label{app:pr-table}
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l >{\raggedright\arraybackslash}m{6.0cm} l c@{}}
+\toprule
+\textbf{PR / commit} & \textbf{Title} & \textbf{Pipeline stage} & \textbf{State} \\
+\midrule
+\#25 & V1 RTSC claim inventory + tier triage & verify-ledger
+  (\textcircled{\scriptsize 3}--\textcircled{\scriptsize 7}) & MERGED \\
+\#33 & V2 formal identities (Eliashberg $\lambda$, McMillan $T_c$, BCS gap
+  ratio) & $T_c$ closed form (\textcircled{\scriptsize 3}) & MERGED \\
+\#90 & conductor handoff schema stub (HTS REBCO baseline) & coil design
+  (\textcircled{\scriptsize 5}) & MERGED \\
+\#91 & SrAuH$_3$ hydride candidate (stable, $\lambda{=}0.62$,
+  $T_c{=}14.6$\,K, \texttt{absorbed=false}) & candidate
+  (\textcircled{\scriptsize 1}--\textcircled{\scriptsize 2}) & MERGED \\
+\#92 & \texttt{solenoid\_axisym} .geo/.pro + pancake stub (GetDP
+  axisymmetric A--$\phi$) & magnet FEM (\textcircled{\scriptsize 6}) & MERGED \\
+\#97 & H$_3$As candidate (unstable, $\lambda{\to}1.0$,
+  \texttt{absorbed=false}) & candidate
+  (\textcircled{\scriptsize 1}--\textcircled{\scriptsize 2}) & MERGED \\
+\texttt{3b33c26} & Wheeler on-axis $B$ closed-form verifier (M318
+  cross-check for \texttt{solenoid\_axisym}) & Wheeler cross-check
+  (\textcircled{\scriptsize 7}) & MERGED \\
+\bottomrule
+\end{tabular}
+\caption{Merged PR roll for the RTSC stack (verbatim from
+\texttt{companion/pr-roll.json}). The seven landed records cover both axes:
+the materials-discovery axis (\#25/\#33 verify + $T_c$, \#91/\#97
+candidates) and the magnet-design axis (\#90 conductor handoff, \#92
+solenoid FEM, commit~3b33c26 Wheeler). Every record carries
+\texttt{absorbed=false}; no PR flips the wet-lab gate (Appendix~\ref{app:material}).}
+\label{tab:pr-roll}
+\end{table}
+
+% -------------------------------------------------------------------------
+\subsection{Coverage by axis}
+\label{app:pr-coverage}
+
+The roll demonstrates that both axes are backed by landed code, not just
+prose. Of the seven records, four serve the materials-discovery axis
+(\#25, \#33, \#91, \#97) and three the magnet-design axis (\#90, \#92,
+commit~3b33c26). The two candidate PRs (\#91 SrAuH$_3$ stable-low-$T_c$,
+\#97 H$_3$As high-$\lambda$-unstable) are the two faces of the stability
+wall (Appendix~\ref{app:hydride}), both landed as
+\texttt{absorbed=false} --- the honest negatives are committed, not
+discarded (governance: \tierRed\ kept, never deleted).
+
+\paragraph{Regeneration.} The roll is reproducible from the live GitHub
+state:
+\begin{lstlisting}
+/paper pr-roll dancinlab/demiurge <since-ref>
+# -> companion/pr-roll.json  (number, title, stage, merge state)
+\end{lstlisting}
+The Wheeler entry is a \emph{commit} (3b33c26) rather than a PR because the
+M318 verifier landed directly on the branch; it is included in the roll for
+provenance completeness.
