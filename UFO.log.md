@@ -2,6 +2,19 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T14:55:00Z — verb-3 design LANDED (throttle-death 회수)
+
+Phase C 3/7 — closed-form 통합 설계. 원 agent (a266ba0) 가 산출물 생성 후 push 전 rate-limit 사망 → parent 가 worktree 에서 `integrated-vehicle-design.{md,tape}` (524줄) 회수 후 랜딩 (cycle skill parent-recovery 패턴).
+
+- [x] `UFO/design/integrated-vehicle-design.md` (356줄) — Stage-1~3 closed-form 실설계 (자석 turns/I/B RTSC 상속 · MHD 채널 dim FUSION 상속 · antimatter trap ANTIMATTER 상속) · Stage-4~7 falsifier-only preregister · 무게/전력/냉각 budget 배분 · design→analyze 인계 param set
+- [x] `UFO/design/integrated-vehicle-design.tape` (168줄) — @V/@I/@D/@C (17-type 알파벳 클린)
+- [x] `UFO.md` verb-3 design → [x] flip
+- [x] @D d2 준수 — Stage-4~7 = UNPROVEN falsifier-preregister (물리 한계 아님)
+- [x] @D d3 준수 — 구현 코드 0줄 (closed-form 값은 RTSC/FUSION/ANTIMATTER verified 인용 · 새 sim 없음 = verb-4 의무)
+
+deferred:
+- [ ] verb-4 analyze ⟲ — design param set 입력으로 CFD + EM + 응력 + 열 통합 sim 수렴
+
 ## 2026-05-25T14:38:39Z — HEXA-TELEPORT 축 흡수 LANDED (Phase B 5/5 완료)
 
 Phase B 부수 5축의 **마지막** 슬롯 봉합 — 양자 상태 teleportation 프로토콜 (Bennett 1993) 을 비행체 분산 센서/통신 사양 manifest 로 흡수. docs/manifests only · @D d3/d4/d9/d10 준수. **이로써 Phase B (HEXA-HOVER · HEXA-SIM · HEXA-GRAV · HEXA-CLOAK · HEXA-TELEPORT) 부수축 흡수 완료.**
