@@ -2,6 +2,18 @@
 
 Append-only history sister of `ANTIMATTER.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-25T13:00Z — absorbed=true 종결 (14/14 · 全 non-wet-lab gate PASS)
+
+ANTIMATTER 도메인 최종 게이트 닫음 — @D d5 ("absorbed=true ⇔ all non-wet-lab gates PASS — wet-lab is downstream confirmation").
+
+- [x] gate audit — 모든 non-wet-lab 게이트 PASS 확인:
+  - ⓵생성·⓶감속·⓷포획·⓸냉각·⓹합성·⓺가둠·⓻측정 = 7/7 verify-native 닫힘 (PR #157·#158·#159·#162·#164·#166·#168)
+  - V1·V2·V3·V4 verify ledger (#167)
+  - 7-verb 풀파이프 + 공장 인계 doc (#169)
+- [x] ANTIMATTER.md line 18 \`- [ ] absorbed=true\` → \`- [x] absorbed=true (全 non-wet-lab gate PASS · @D d5)\`
+- [x] 정직한 wet-lab caveat — CPT Δ (반수소 1S-2S 측정 vs 수소) = downstream wet-lab confirmation, d5상 absorbed 차단 사유 아님 (1S-2S leading closed-form 🟢 검증 완료, measured-precision은 ALPHA 실측 영역)
+- [x] 도메인 완전 닫힘 14/14 (100%) — 반물질 공장 verify-native 완주
+
 ## 2026-05-25T11:16Z — 7-verb 풀파이프 + 공장 인계 doc (반수소 트랩+소스 라인 cell · milestone 16+17 CLOSE)
 
 **반수소 트랩+소스 라인** 1개 공정 cell 로 demiurge 7-verb 척추(specify→structure→design→analyze→synthesize→verify→handoff)를 end-to-end 1회 관통. 7th verb(handoff) 산출 = 트랩·소스 팹 사양 = milestone 17. **single stamp `2026-05-25T11-16-10Z`** 로 7 record 산출.
