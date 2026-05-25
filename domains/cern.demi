@@ -89,63 +89,83 @@ scope_caveats     = [
   "measurement_gate = GATE_OPEN ALWAYS — toy FODO single particle is NOT a measurement claim.",
 ]
 
-# --- UNWIRED: specify (physics case / CDR template scaffold) ----------------
-# domains/cern.md §2 — "physics case / CDR; OSS spec-format 약함". No
-# substrate script yet. cellrun.hexa honest-skip via rc=2 (script missing).
+# --- STUB: specify (physics case / CDR template scaffold) -------------------
+# domains/cern.md §2 — "physics case / CDR; OSS spec-format 약함". Typed
+# cockpit-consumer record CernSpecifyRecord exists (R3 decode target); the
+# substrate script is NOT YET AUTHORED so cellrun.hexa honest-skips rc=2
+# (script missing) — honest stub, no faked physics (g3).
 [cell.specify]
 substrate         = python3
+python_candidates = python3.13, python3.12, python3
 script            = stdlib/cern/specify.py
 record_kind       = cern_specify_record
 output_dir        = exports/cern/specify
+accel_mechanism   = rf_cavity
 required_deps     = python3
 gate_default      = OPEN
 absorbed_default  = false
 scope_caveats     = [
-  "cern + specify pending — physics case / Conceptual Design Report (CDR) template producer not authored.",
-  "domains/cern.md §1 (lattice/optics deliverable) is the SSOT candidate — Python wrapper could convert it to a record JSON (~50 line firmware-stub-style scaffold).",
+  "stub — a real impl would parse a physics-case / Conceptual Design Report (CDR) brief (target B-field [T] · beam energy [GeV/TeV] · luminosity [cm⁻²s⁻¹] · machine class) into a typed CernSpecifyRecord; no substrate script authored yet (cellrun honest-skips rc=2).",
+  "domains/cern.md §1 (lattice/optics deliverable) is the SSOT candidate — a Python wrapper would convert it to record JSON (firmware/specify.py requirements-skeleton pattern reuse).",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false — a CDR / requirements skeleton is never an absorption claim (g3).",
 ]
 
-# --- UNWIRED: structure (ring/lattice topology in-tool) ---------------------
+# --- STUB: structure / 구조 ARCHITECT (ring/lattice topology in-tool) --------
+# Typed cockpit-consumer record CernStructureRecord exists (R3 decode
+# target); substrate script NOT YET AUTHORED → cellrun honest-skips rc=2.
 [cell.structure]
 substrate         = python3
+python_candidates = python3.13, python3.12, python3
 script            = stdlib/cern/structure.py
 record_kind       = cern_structure_record
 output_dir        = exports/cern/structure
+accel_mechanism   = rf_cavity
 required_deps     = python3
 gate_default      = OPEN
 absorbed_default  = false
 scope_caveats     = [
-  "cern + structure pending — ring/lattice topology producer (FODO chain or DBA cell counter) not authored.",
-  "Natural fit: networkx component-graph reuse from GridStructureProducer pattern, with lattice elements as nodes.",
+  "stub — a real impl would build a ring/lattice topology (격자 = FODO / TME / DBA per domains/cern.md §6) and emit element-graph metrics (cell pattern · cell count · circumference) into a typed CernStructureRecord; no substrate script authored yet (cellrun honest-skips rc=2).",
+  "Natural fit: networkx component-graph reuse (GridStructureProducer pattern), lattice elements as nodes.",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false — a topology skeleton is never an absorption claim (g3).",
 ]
 
-# --- UNWIRED: design (MAD-X / Xsuite scaffold) ------------------------------
-# Note: (.design, "cern") IS substrate-covered by xsuite_optics.py via
+# --- STUB: design (MAD-X / Xsuite lattice-deck handoff) ---------------------
+# Note: (.design, "cern") IS substrate-adjacent to xsuite_optics.py via
 # (.synthesize, "cern") but the verbs are different — synthesize emits the
 # matched-optics; design produces the lattice template before matching.
+# Typed cockpit-consumer record CernDesignRecord exists (R3 decode target);
+# substrate script NOT YET AUTHORED → cellrun honest-skips rc=2.
 [cell.design]
 substrate         = python3
+python_candidates = python3.13, python3.12, python3
 script            = stdlib/cern/design.py
 record_kind       = cern_design_record
 output_dir        = exports/cern/design
+accel_mechanism   = rf_cavity
 required_deps     = python3
 gate_default      = OPEN
 absorbed_default  = false
 scope_caveats     = [
-  "cern + design pending — MAD-X lattice deck template producer not authored.",
-  "domains/cern.md §2 — MAD-X is de-facto lattice/optics language; design verb naturally emits the SEQUENCE deck before synth verb does the matching/optimization.",
+  "stub — a real impl would emit a MAD-X SEQUENCE deck (or Xsuite line) as a lattice-deck handoff artifact (element defs · drift/quad lengths · strengths) into a typed CernDesignRecord; no substrate script authored yet (cellrun honest-skips rc=2).",
+  "domains/cern.md §2 — MAD-X is the de-facto lattice/optics language; design verb naturally emits the SEQUENCE deck BEFORE the synthesize verb does the matching/optimization.",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false — an un-matched lattice deck is never an absorption claim (g3).",
 ]
 
-# --- UNWIRED: handoff (TDR → construction; OSS deliverable format 약함) ------
+# --- STUB: handoff (TDR → construction; OSS deliverable format 약함) ---------
+# Typed cockpit-consumer record CernHandoffRecord exists (R3 decode
+# target); substrate script NOT YET AUTHORED → cellrun honest-skips rc=2.
 [cell.handoff]
 substrate         = python3
+python_candidates = python3.13, python3.12, python3
 script            = stdlib/cern/handoff.py
 record_kind       = cern_handoff_record
 output_dir        = exports/cern/handoff
+accel_mechanism   = rf_cavity
 required_deps     = python3
 gate_default      = OPEN
 absorbed_default  = false
 scope_caveats     = [
-  "cern + handoff pending — Technical Design Report (TDR) bundle producer not authored.",
-  "Natural shape: tarball of MAD-X deck + Geant4 shielding dossier + DA scan + RF spec + radiation budget — firmware/handoff.py CycloneDX bundle pattern reuse.",
+  "stub — a real impl would bundle a Technical Design Report (TDR) → construction deliverable schema (MAD-X deck + Geant4 shielding dossier + DA scan + RF spec + radiation budget manifest) into a typed CernHandoffRecord; no substrate script authored yet (cellrun honest-skips rc=2).",
+  "Natural shape: firmware/handoff.py CycloneDX-bundle pattern reuse (deliverable-slot manifest + tarball).",
+  "measurement_gate = GATE_OPEN permanently · absorbed=false — a TDR bundle skeleton is never an absorption claim (g3).",
 ]
