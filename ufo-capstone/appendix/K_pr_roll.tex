@@ -1,0 +1,32 @@
+% =========================================================================
+% Appendix K — pull-request roll. SKELETON stub.
+% TODO (fill batch): fold companion/pr-roll.json
+%   - the landed UFO PRs with gh-measured diff-stats (files, +/- lines, role)
+%     spec #187, structure/design/analyze/synthesize/verify/handoff PRs,
+%     meta (LATTICE_POLICY / LIMIT_BREAKTHROUGH / CROSS-DOMAIN-MEGA /
+%     EXPERIMENTS-HYPOTHESES), V1-V4 verify ledger PRs (#201/#216/#212/#206 ...)
+%   - grouped by phase (A ladder / B sub-axes / C 7-verb / D meta / verify)
+%   - roll totals (files, lines added/removed)
+%   - this monograph PR (the ufo-capstone scaffold+body)
+%   - schema {repo, number, title, merged_at, files_changed, lines_added,
+%     lines_deleted, phase, role}
+% =========================================================================
+\section{Pull-Request Roll}
+\label{app:prroll}
+
+This appendix is the transcription of the
+\texttt{companion/pr-roll.json} session pull-request roll: every merged
+PR that produced the UFO capstone, with its \texttt{gh}-measured
+diff-stat. The records carry no synthetic data ---
+\texttt{merged\_at}, \texttt{files\_changed}, and the line counts are
+read back from \texttt{gh pr view --json}. The roll is grouped by phase:
+Phase A (the 7-stage ladder folds), Phase B (the five sub-axes), Phase C
+(the seven-verb pipeline, headed by the \texttt{spec} PR), Phase D (the
+meta layer: LATTICE\_POLICY, LIMIT\_BREAKTHROUGH, CROSS-DOMAIN-MEGA,
+EXPERIMENTS$+$HYPOTHESES), and the verify ladder (V1--V4), plus this
+monograph PR itself. The implementation mass lives in hexa-lang (the
+canonical code home, @D~d3); the UFO side is pointer/manifest and
+absorption metadata only.
+
+% TODO (fill batch): expand into the full per-PR table grouped by phase,
+% with gh-measured diff-stats and roll totals.

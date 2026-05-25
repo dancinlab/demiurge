@@ -1,0 +1,79 @@
+[
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 187,
+    "title": "verb-1 spec — 1인승 통합 비행체 사양 명세 (7-stage matrix)",
+    "merged_at": "2026-05-25",
+    "files_changed": 2,
+    "lines_added": null,
+    "lines_deleted": null,
+    "phase": "C",
+    "role": "spec: single-pilot vehicle spec, LSS 12h, RTSC/FUSION/ANTIMATTER record-consume contract"
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 201,
+    "title": "V1 UFO claim inventory + tier triage",
+    "merged_at": "2026-05-25",
+    "files_changed": 1,
+    "lines_added": null,
+    "lines_deleted": null,
+    "phase": "verify",
+    "role": "V1: 38-claim triage (green9/yellow8/orange4/white17)"
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 206,
+    "title": "verb-6 verify — integrated digital-twin verify ledger",
+    "merged_at": "2026-05-25",
+    "files_changed": 2,
+    "lines_added": null,
+    "lines_deleted": null,
+    "phase": "C",
+    "role": "verify: 4-layer x tier matrix, Stage-1~3 nine green, body-solve orange deferred"
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 212,
+    "title": "V3 numerical recompute — Stage-1~3 nine green verbatim",
+    "merged_at": "2026-05-25",
+    "files_changed": 1,
+    "lines_added": null,
+    "lines_deleted": null,
+    "phase": "verify",
+    "role": "V3: libm recompute, |Delta|<=1e-9"
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 216,
+    "title": "V2 formal — n=6 lattice integer identities (blue)",
+    "merged_at": "2026-05-25",
+    "files_changed": 1,
+    "lines_added": null,
+    "lines_deleted": null,
+    "phase": "verify",
+    "role": "V2: 5 atoms + 3 products, atlas idempotent (fold 0)"
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 220,
+    "title": "feat(cern-monograph): SCAFFOLD+BODY — sibling monograph (reference pattern)",
+    "merged_at": "2026-05-26",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "phase": "sibling",
+    "role": "reference: the CERN sibling monograph this capstone mirrors for structure/style"
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": null,
+    "title": "feat(ufo-capstone): SCAFFOLD+BODY — 4-domain capstone monograph",
+    "merged_at": null,
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "phase": "monograph",
+    "role": "THIS PR: ufo-capstone scaffold + body §1-9 + §Full Pipeline + appendix A-L skeleton + companion + cover. absorbed=false."
+  }
+]

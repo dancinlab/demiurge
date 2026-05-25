@@ -1,0 +1,106 @@
+{
+  "schema": "ufo-capstone integration map: ladder stage -> sibling domain -> reuse atom/record",
+  "honesty_note": "Lower three rungs (hover/cruise/orbital) consume a sibling domain's VERIFIED atom. CERN is a candidate infra edge feeding the ANTIMATTER positron source. Stages 4-7 consume NO sibling domain — they are a 13-falsifier preregister, ALL OPEN, academically UNPROVEN.",
+  "shared_constant": {
+    "symbol": "B* = sigma*tau = 48",
+    "value": 48,
+    "factorization": "sigma(6)*tau(6) = 12*4 = 48",
+    "recurs_in": ["RTSC H_c2 = 48 T", "FUSION Lawson design target", "UFO Meissner-lift design field"],
+    "status": "ARITHMETIC-REUSE OBSERVATION, NOT integrated-physics proof. Bookkeeping closure != empirical truth."
+  },
+  "stages": [
+    {
+      "stage": 1,
+      "name": "hover",
+      "sibling_domain": "RTSC",
+      "role": "48T solenoid fringe -> Meissner lift F_lev=|chi|*V*B*(dB/dz)/mu0",
+      "reuse_atoms": ["ioffe_loop_bz", "current_loop_offaxis"],
+      "shared_constant": "B*=sigma*tau=48 T (H_c2)",
+      "tier": "GREEN",
+      "source": "UFO/verify/stage1-hover-fields.md",
+      "atlas_hash": "663698a0",
+      "proven": true
+    },
+    {
+      "stage": 2,
+      "name": "cruise",
+      "sibling_domain": "FUSION",
+      "role": "D-T Lawson ignition + MHD thrust F=J x B x V_ch",
+      "reuse_atoms": ["triple_product"],
+      "shared_constant": "B*=sigma*tau=48 T (Lawson target)",
+      "tier": "GREEN/YELLOW",
+      "source": "UFO/verify/stage2-cruise-mhd.md",
+      "atlas_hash": "663698a0",
+      "proven": true
+    },
+    {
+      "stage": 3,
+      "name": "orbital",
+      "sibling_domain": "ANTIMATTER",
+      "role": "p-bar+p -> 2 gamma -> relativistic exhaust I_sp=c/g photon ceiling",
+      "reuse_atoms": ["pair_threshold_total", "rel_kinetic_from_p"],
+      "shared_constant": "photon ceiling c/g ~ 3.06e7 s",
+      "tier": "GREEN/YELLOW",
+      "source": "UFO/verify/stage3-orbital-gamma.md",
+      "atlas_hash": "663698a0",
+      "proven": true
+    },
+    {
+      "stage": "infra",
+      "name": "fields/particles",
+      "sibling_domain": "CERN",
+      "role": "acceleration/deceleration ladder + relativistic kinematics (e+ generation/cooling)",
+      "reuse_atoms": ["accelerator"],
+      "shared_constant": null,
+      "tier": "candidate",
+      "source": "NEXUS.tape @X c1 (CERN<->ANTIMATTER)",
+      "proven": false
+    },
+    {
+      "stage": 4,
+      "name": "warp",
+      "sibling_domain": null,
+      "role": "Alcubierre metric (delta=1/sigma, R=n=6) — NO sibling reuse",
+      "reuse_atoms": [],
+      "tier": "WHITE",
+      "falsifiers": ["F-WARP-1", "F-WARP-2", "F-WARP-3"],
+      "status": "ALL OPEN — academically UNPROVEN",
+      "proven": false
+    },
+    {
+      "stage": 5,
+      "name": "wormhole",
+      "sibling_domain": null,
+      "role": "Morris-Thorne (b0=ell_Pl*sigma throat) — NO sibling reuse",
+      "reuse_atoms": [],
+      "tier": "WHITE",
+      "falsifiers": ["F-WORM-1", "F-WORM-2", "F-WORM-3"],
+      "status": "ALL OPEN — academically UNPROVEN",
+      "proven": false
+    },
+    {
+      "stage": 6,
+      "name": "dim-jump",
+      "sibling_domain": null,
+      "role": "Kaluza-Klein ladder 4D->6D->10D->11D->24D->26D — NO sibling reuse",
+      "reuse_atoms": [],
+      "tier": "WHITE",
+      "falsifiers": ["F-DIM-1", "F-DIM-2", "F-DIM-3"],
+      "status": "ALL OPEN — academically UNPROVEN",
+      "proven": false
+    },
+    {
+      "stage": 7,
+      "name": "dim-use",
+      "sibling_domain": null,
+      "role": "composite tau=4 cycle, (sigma-phi)^2=100c — NO sibling reuse",
+      "reuse_atoms": [],
+      "tier": "WHITE",
+      "falsifiers": ["F-USE-1", "F-USE-2", "F-USE-3", "F-USE-4"],
+      "status": "ALL OPEN — academically UNPROVEN",
+      "proven": false
+    }
+  ],
+  "absorbed": false,
+  "absorbed_reason": "Four non-wet-lab digital-twin gates (CFD, EM 3D, structural FEA, circle-arrow fixed-point) unconverged (deferred to pool/cloud); Stages 4-7 all open. No projection flip (@D d5)."
+}

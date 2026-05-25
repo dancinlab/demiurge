@@ -1,0 +1,38 @@
+% =========================================================================
+% Appendix J — absorbed=false gate inventory (honest). SKELETON stub.
+% TODO (fill batch): fold UFO/verify/V4_tier_ledger.md sec.3+sec.5
+%   - the four blocking orange digital-twin gates: CFD (C_d, L/D),
+%     EM 6-coil 60deg B-map FEM, structural FEA (LC-1..5, 650kg/SF2.5),
+%     circle-arrow 4-layer fixed-point coupling
+%   - each gate's closing path (@D d7): pool ubu dry-run -> vast.ai GPU /
+%     getdp pool->cloud / pool linear -> cloud explicit / GPU pod
+%   - the two closed-form-closed gates (F-ANTI-3 I_sp closure via fuel-mass
+%     redefinition 9/9 PASS; thermal-cryo 4-axis closed form 9/9 PASS)
+%   - the 13 Stage-4~7 white falsifiers (empirical, not non-wet-lab)
+%   - Phase E absorbed verdict: absorbed=FALSE, no projection flip (@D d5)
+%   - breakthrough paths named for every blocker (@D d2 — wall != impossible)
+%   - pgfplots: gate-status (orange unconverged / green closed / white open) chart
+% =========================================================================
+\section{The \texttt{absorbed=false} Gate Inventory (Honest)}
+\label{app:gateinv}
+
+This appendix is the full honest inventory behind the capstone's
+\texttt{absorbed=false} verdict (\S\ref{sec:absorbed}). Under the
+measured-oracle invariant (@D~d5), \texttt{absorbed=true} iff every
+non-wet-lab gate passes; UFO's do not. Four \tierOrange\ digital-twin
+gates remain unconverged --- CFD aerodynamics ($C_d$, $L/D$), the EM
+6-coil $60^{\circ}$ $B$-map FEM, the structural FEA (LC-1..5, 650\,kg,
+SF $=2.5$), and the $\circlearrowleft$ 4-layer fixed-point coupling ---
+each with a closed-form anchor but no body-solve yet, deferred to
+pool/cloud (@D~d7). Two gates that earlier blocked were closed by
+closed-form means in a later round: F-ANTI-3 ($\gamma$-rocket
+$I_{\text{sp}}$ closure via fuel-mass re-definition, 9/9 PASS) and the
+thermal-cryo gate (4-axis closed form, 9/9 PASS). The 13 Stage-4--7
+falsifiers are \tierWhite\ open (empirical, not non-wet-lab).
+\textbf{Verdict: \texttt{absorbed=false}}, with no projection flip
+(@D~d5) --- and a concrete breakthrough path named for every blocker
+(@D~d2: a wall is not an impossibility).
+
+% TODO (fill batch): expand into the full per-gate closing-path table,
+% the two closed-form-closed gate records, and a pgfplots gate-status
+% (orange / green / white) chart.

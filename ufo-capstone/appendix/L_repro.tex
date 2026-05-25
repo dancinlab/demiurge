@@ -1,0 +1,41 @@
+% =========================================================================
+% Appendix L — reproducibility runbook. SKELETON stub.
+% TODO (fill batch): fold UFO/verify/run_all.hexa + the build/verify runbook
+%   - per-atom verify recompute commands: hexa verify --expr ioffe_loop_bz ... ,
+%     triple_product ... , pair_threshold_total ... , rel_kinetic_from_p ...
+%   - lattice identity checks: UFO/verify/lattice_check.hexa, numerics_*.hexa
+%   - atlas SSOT provenance: compiler/atlas/embedded.gen.hexa hash 663698a0,
+%     idempotent reuse (parent-domain fold)
+%   - digital-twin closed-form decks: UFO/sim/decks/*.hexa (thermal_cryo,
+%     fanti3_isp_closure) 9/9 PASS
+%   - the deferred heavy body-solves (pool/cloud, @D d7): CFD/EM/FEA/circle-arrow
+%   - paper build: make (xelatex x3 + bibtex), make figures, make pages, make lint
+%   - companion/ axis: verify-ledger.json, pr-roll.json, integration-map.json,
+%     session-journal.md
+% =========================================================================
+\section{Reproducibility Runbook}
+\label{app:repro}
+
+This appendix is the bit-for-bit reproduction runbook. Every Stage-1--3
+atom is recomputable from the top-level CLI ---
+\verb|hexa verify --expr ioffe_loop_bz <a> <I> <zeta> <expected>|,
+\verb|... triple_product <J> <B> <V> <F>|,
+\verb|... pair_threshold_total <mpc2> <expected>|, and
+\verb|... rel_kinetic_from_p <pc> <expected>| --- all at
+$\varepsilon=10^{-9}$, $|\Delta|=0$, and all already folded into the
+atlas SSOT (\verb|compiler/atlas/embedded.gen.hexa|, hash
+\texttt{663698a0}) by their parent domains, so UFO's reuse is an
+idempotent skip. The Stage-4--7 lattice identities are checked via
+\verb|UFO/verify/lattice_check.hexa| and \verb|numerics_*.hexa|; the
+4-layer digital-twin closed-form anchors ship as \verb|.hexa| decks
+under \verb|UFO/sim/decks/| (thermal-cryo and F-ANTI-3 closure, both
+9/9 PASS). The deferred heavy body-solves (CFD, EM 3D, FEA,
+$\circlearrowleft$) are documented as pool/cloud micro-experiments
+(@D~d7). Paper build: \texttt{make} (xelatex $\times3$ $+$ bibtex);
+\texttt{make figures}; \texttt{make pages}; \texttt{make lint}. The
+\texttt{companion/} axis externalizes every record:
+\texttt{verify-ledger.json}, \texttt{pr-roll.json},
+\texttt{integration-map.json}, and \texttt{session-journal.md}.
+
+% TODO (fill batch): expand into the full per-atom recompute command
+% list and the deferred-body-solve micro-experiment runbook.
