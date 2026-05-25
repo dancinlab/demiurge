@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# ============================================================================
+#  run — mesh + solve the UFO six-coil 60-deg array, extract the B-map.
+#  (extension-less per project.tape .hexa marker; invoke: bash run [dry])
+# ----------------------------------------------------------------------------
+#  Pipeline (inherits the RTSC getdp toolchain, RTSC.md section 4.2):
+#     1. gmsh  : six_coil_array.geo  -> .msh   (3-D OCC + BooleanFragments)
+#     2. getdp : -msh + six_coil_array.pro -pre -cal -pos  (linear A magstat)
+#     3. extract: bmag_center.txt / bz_center.txt / bmag_axis.txt
+#
+#  USAGE:
+#     bash run            full solve (mesh + solve + extract)
+#     bash run dry        1-iter syntax/mesh dry-run (no full solve) per @D d16
+#
+#  BINARIES (override via env GMSH_BIN / GETDP_BIN):
+#     macOS arm64 (mini):  gmsh=/opt/homebrew/bin/gmsh
+#                          getdp=~/local/getdp/getdp-4.0.0-MacOSARM/bin/getdp
+#     linux pool (ubu-1):  gmsh / getdp on PATH (conda or apt)
+# ============================================================================
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$HERE"
+
+GMSH_BIN="${GMSH_BIN:-$(command -v gmsh || echo /opt/homebrew/bin/gmsh)}"
+GETDP_BIN="${GETDP_BIN:-$(command -v getdp || echo "$HOME/local/getdp/getdp-4.0.0-MacOSARM/bin/getdp")}"
+OUT_DIR="${OUT_DIR:-$HERE}"
+MODE="${1:-full}"
+
+GEO="$HERE/six_coil_array.geo"
+PRO="$HERE/six_coil_array.pro"
+MSH="$OUT_DIR/six_coil_array.msh"
+
+echo "[run] gmsh  = $GMSH_BIN"
+echo "[run] getdp = $GETDP_BIN"
+echo "[run] mode  = $MODE"
+
+# stale-output guard (MEMORY: truncate _out before exec or stale masks failure)
+rm -f "$OUT_DIR"/bmag_center.txt "$OUT_DIR"/bz_center.txt \
+      "$OUT_DIR"/bmag_axis.txt   "$OUT_DIR"/bz_coil1_center.txt
+
+# ---- 1. mesh ---------------------------------------------------------------
+echo "[run] meshing 3-D OCC geometry ..."
+"$GMSH_BIN" "$GEO" -3 -format msh2 -o "$MSH"
+
+if [ "$MODE" = "dry" ]; then
+  echo "[run] DRY mode: pre-processing only (syntax + DOF map, no solve)."
+  "$GETDP_BIN" "$PRO" -msh "$MSH" -pre MagStat 2>&1 | tee "$OUT_DIR/getdp_dry.log"
+  echo "[run] DRY OK — deck syntax + mesh validated. Free pre-check passed."
+  exit 0
+fi
+
+# ---- 2. solve --------------------------------------------------------------
+echo "[run] solving linear A magnetostatic ..."
+"$GETDP_BIN" "$PRO" -msh "$MSH" -pre MagStat -cal -pos MagStat \
+    -setstring OUT_DIR "$OUT_DIR" 2>&1 | tee "$OUT_DIR/getdp_solve.log"
+
+# ---- 3. extract headline ----------------------------------------------------
+echo "[run] ---- B-map headline ----"
+for f in bmag_center bz_center bz_coil1_center; do
+  if [ -f "$OUT_DIR/$f.txt" ]; then
+    printf "  %-18s = %s\n" "$f" "$(tail -1 "$OUT_DIR/$f.txt")"
+  fi
+done
+echo "[run] axis sweep -> $OUT_DIR/bmag_axis.txt ($(wc -l < "$OUT_DIR/bmag_axis.txt" 2>/dev/null || echo 0) rows)"
+echo "[run] done."
