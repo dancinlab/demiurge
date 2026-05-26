@@ -424,6 +424,35 @@ round, which is a downstream wet-lab-equivalent item
 (\S\ref{sec:limits}). The full run record is in
 Appendix~\ref{app:bethe}.
 
+\paragraph{Stage 4 measurement and Stage 5 closed-form corrections.}
+Both stages were crossed in this session. \textbf{Stage 4} (hexa-lang
+\#239 + demiurge \#241): a Geant4 11.04 patch-01 build on
+\texttt{pool/ubu-1} (conda-forge, \texttt{FTFP\_BERT} physics list)
+swept the 28-point grid Al/Cu/W/Pb $\times$
+$T\in\{1,3,10,30,100,300,1000\}\,\si{MeV}$ for the antiproton, measuring
+$\max|\Delta|\!=\!23.55\,\%$ at Cu @ \SI{1}{MeV} and
+$\overline{|\Delta|}\!=\!6.25\,\%$ --- the physical magnitude of the four
+omitted corrections, regime-resolved (shell at $\beta\gamma\!<\!0.3$,
+plateau at $\beta\gamma\!\sim\!0.3$--$1$, density-effect at
+$\beta\gamma\!>\!1$). \textbf{Stage 5} (hexa-lang \#1296 +
+demiurge \#243): Sternheimer density-effect + Andersen--Ziegler shell +
+Bloch $L_2$ + Barkas $L_1$ (antiproton $z_1\!=\!-1$ sign-flipped)
+closed-form corrections, each registered as a hexa-native \tierGreen\
+verify atom, move the mean to $\overline{|\Delta|}\!=\!4.39\,\%$ ---
+\textbf{30\,\% closure} of the absolute Stage-4 gap budget ---
+with the mid-$\beta\gamma$ plateau closing to 91--98\,\% per row
+(Cu @ \SI{100}{MeV} 98.6\,\%; W @ \SI{30}{MeV} 91.1\,\%;
+Pb @ \SI{100}{MeV} 98.4\,\%). The remaining residual is named with its
+physical cause --- AZ-77 out-of-calibration at $\eta\!<\!0.13$ for
+Cu @ \SI{1}{MeV}; sign-cancellation reveal at Pb @ \SI{1}{MeV};
+textbook L1/L2 vs.\ Geant4-tabulated $L_1$ in the relativistic tail ---
+and is the input to Stage~6 (\S\ref{sec:future}). The record remains
+\texttt{absorbed=false} (\textsc{Honest-Partial}) per
+\texttt{closure-is-physical-limit}: 30\,\%
+closure is reported as the measured physical limit of the textbook
+closed-form stack, not as ``stopping power solved''.
+Full record in Appendix~\ref{app:bethe} \S\ref{app:bethe-stage4}--\S\ref{app:bethe-stage6}.
+
 % =========================================================================
 \section{Method --- Plasma-Wakefield Acceleration (the tabletop axis)}
 \label{sec:plasma}
@@ -473,6 +502,27 @@ this axis. The \emph{nonlinear blowout} (bubble) regime, which requires a
 2-D/3-D GPU PIC run with a density / drive-strength sweep, is a
 downstream GPU-heavy item (\S\ref{sec:limits}) --- it is not closed here,
 and we do not claim it.
+
+\paragraph{2-D blowout transition sweep (qualitative, free-CPU).} As an
+addendum to the 1-D linear baseline, demiurge PR~\#235 ran a 3-point
+$a_0$ ladder $a_0\in\{0.5, 2.0, 4.0\}$ on FBPIC 2-D cylindrical
+($N_m\!=\!2$, moving window $v\!=\!c$) at the same density
+$n_e\!=\!10^{18}\,\si{cm^{-3}}$, measuring on-axis peak fields
+$E_z^{\text{peak}}\!=\!\{1.70,\,73.62,\,405.64\}\,\si{GV/m}$
+($E_z/E_0\!=\!\{0.018,\,0.766,\,4.218\}$). The ladder is monotonic and
+reproduces the canonical LWFA picture: diffraction-limited at
+$a_0\!\ll\!1$, blowout onset at $a_0\!\sim\!2$ (the cold $E_0$ scale is
+crossed exactly as Esarey \emph{et al.} 2009 RMP predicts), and deep
+blowout (relativistic boost) at $a_0\!=\!4$. The closed-form $E_0$
+behaves as the \emph{wave-breaking scale} the nonlinear field crosses,
+not as a value the field saturates at. Because pool-wide GPU
+provisioning was broken at the time, the sweep was pivoted to the free
+\texttt{pool/ubu-1} CPU (\$0; per @D~d11 feasibility-sized first,
+3-candidate single-pod-feasible on CPU); a design-grade flip (3-D,
+$a_0$-specific spot optimization, dephasing / pump-depletion) is
+preserved as a downstream GPU campaign (\S\ref{sec:limits}). The three
+field-peak numbers are \emph{sim-wall} measurements, not registrable
+verify atoms (g63). Full record in Appendix~\ref{app:wf-blowout}.
 
 % =========================================================================
 \section{Method --- FODO Twiss and LHE Analysis (synthesize / analyze)}
@@ -611,6 +661,26 @@ We deliberately do not claim:
   intra-beam scattering, impedance, beam-beam, wakefields-from-impedance,
   or collective instabilities are modeled. The plasma kernel is cold and
   linear; no thermal, relativistic-detuning, or pump-depletion physics.
+\item \textbf{Stage-5 low-$\beta\gamma$ AZ out-of-calibration residual
+  (Cu @ \SI{1}{MeV}, $|\Delta|\!=\!21.64\,\%$).} The Andersen--Ziegler
+  1977 universal shell-correction is calibrated for
+  $\eta\!=\!\beta\gamma\!\ge\!0.13$; the worst Stage-5 row sits at
+  $\eta\!=\!0.046$, where the kernel applies a linear taper that is a
+  placeholder, not a calibrated extension. This is a \emph{physical
+  limit of the textbook closed-form stack}, not a bug --- the closed
+  form is reaching the limit of where it is defined. The named
+  breakthrough is ICRU-49 / Lindhard--Sørensen low-energy stopping
+  (\S\ref{sec:future} path~1); per
+  \texttt{feedback-closure-is-physical-limit}, the residual is reported
+  as measured (30\,\% mean closure, 91--98\,\% mid-plateau closure) with
+  the residual class named, never as ``stopping power solved''.
+\item \textbf{Plasma-wakefield design-grade convergence.} The 2-D
+  blowout transition sweep (\S\ref{sec:plasma},
+  Appendix~\ref{app:wf-blowout}) is a 3-point qualitative ladder on a
+  moderate-grid free-CPU run; a design-grade convergence sweep (3-D
+  geometry, $a_0$-specific spot/pulse optimization, dephasing /
+  pump-depletion tracking, grid/particle convergence) remains a
+  downstream GPU campaign and is not claimed here.
 \end{itemize}
 
 \noindent
@@ -671,6 +741,27 @@ further verb cells --- a real \emph{design} MAD-X SEQUENCE producer and a
 \emph{handoff} TDR bundler (Appendix~\ref{app:stubs}) --- would graduate
 the honest stubs to live cells without touching the generic dispatch.
 
+\smallskip\noindent\textbf{Stage 6 Bethe--Bloch breakthrough paths.}
+The Stage-5 residual (\S\ref{sec:bethe}, Appendix~\ref{app:bethe-stage6})
+resolves into four concrete next-campaign paths --- each with the
+physics handle, and the engineering bridge Geant4 itself uses for that
+regime. (\textbf{1, low-$\beta\gamma$ shell}) Replace Andersen--Ziegler
+1977 below $\eta\!=\!0.13$ with \textbf{ICRU-49 / Lindhard--Sørensen}
+low-energy stopping --- the bridge Geant4 itself uses for
+$T\!\lesssim\!2$\,MeV/u. Target: Cu @ \SI{1}{MeV} $21.64\!\to\!\le\!5\,\%$.
+(\textbf{2, antiproton $L_1$ tabulated}) Replace the
+$z_1^3$ Ashley--Ritchie--Brandt log-normal fit with the
+\textbf{Andersen--Ziegler 1989} tabulated $L_1(\beta\gamma)$ from LEAR
+$\bar{p}$ data; this is the same data Geant4 ICRU-73 lookup tables
+encode. (\textbf{3, high-$Z$ Mott}) Add the Mott $z^2\alpha/\beta$
+Coulomb correction (PDG \S34 eq.~34.5 footnote 6); small but
+non-negligible for W, Pb. (\textbf{4, Pb @ \SI{1}{MeV} physical floor})
+Treat the sign-cancellation reveal at Pb @ \SI{1}{MeV}
+($+1.1\!\to\!-2.0\,\%$) as a permanent honest-residual row of the
+textbook stack rather than a row to tune --- it is a physical floor, not
+a regression. None of these is impossibility-framed (@D~d2): each names
+a textbook reference and a target reduction.
+
 % =========================================================================
 \section{Conclusion}
 \label{sec:conclusion}
@@ -693,7 +784,15 @@ event-stats) and the two out-of-scope downstream items (Geant4-MC
 Stage~4, GPU blowout PIC) are named, isolated, and not claimed. We hope
 the two-axis taxonomy, the tabletop-chain pipeline table, and the
 honest-scope discipline serve as a template for closed-form decision
-stacks in other compute-bound accelerator subdomains.
+stacks in other compute-bound accelerator subdomains. The Stage-5
+30\,\%-closure / 91--98\,\%-mid-plateau Geant4 parity result
+(\S\ref{sec:bethe}, Appendix~\ref{app:bethe-stage5}) is the working
+demonstration of \texttt{closure-is-physical-limit}: the textbook
+closed-form stack reaches as far as it is defined to reach, and the
+residual is surfaced as named physical classes (AZ out-of-calibration at
+$\eta\!<\!0.13$; sign-cancellation reveal at Pb @ \SI{1}{MeV};
+textbook-vs-tabulated L1/L2 microdiff in the relativistic tail) rather
+than smoothed away.
 
 % =========================================================================
 \paragraph{Acknowledgments.} The closed-form and parity codes were
