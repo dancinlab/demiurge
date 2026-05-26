@@ -1,20 +1,32 @@
 @title: 💧 QD-GARGLE — "가글액"
 @parent: QD
-@goal: 구강세정제·인후염 가글 라인업 쿠팡 SKU 풀 런칭
+@goal: 가글액 의약외품 바운더리 내 first-principles R&D — 항균 + VSC 구취 30%↓ + 알코올 free
 
-## 진행 마일스톤
+## R&D 마일스톤 (7-verb · [PLAYBOOK.md](PLAYBOOK.md) 참조)
 
-- [ ] discovery: 가글 카테고리 시장 분석 (구강청결/약용 점유율 · TOP 셀러 · 가격대)
-- [ ] discovery: 규제 스캔 (의약외품 vs 의약품 분류 경계 — 약효 성분에 따라 갈림)
-- [ ] sourcing: 제조사/OEM 발굴 (구강세정제 의약외품 라인업 보유 공장)
-- [ ] sourcing: 식약처 의약외품 품목허가증 확보 OR 정품 유통계약
-- [ ] listing: 쿠팡 상품 등록 draft (용량별·타입별·향별 SKU 분리)
-- [ ] listing: 광고 문구 규제 점검 ("치주염 치료" 등 의약품 효능 표현 회피)
-- [ ] launch: 첫 발주 + 재고 입고
-- [ ] launch: 광고 키워드 워밍 + 칫솔·치약과 묶음 전략
+- [ ] spec: 시판 TOP-N (가그린·리스테린·페리오) + 항균·VSC·알코올 매핑
+- [ ] structure: 활성성분 (CPC·자일리톨·에센셜오일) + first-principles 항균 메커니즘
+- [ ] design: 처방 설계 (CPC × 자일리톨 × pH × 향) — 비클로르헥시딘
+- [ ] analyze: pilot head-to-head — MIC + VSC (시판 vs 자체)
+- [ ] synthesize: GMP 시제품 제작
+- [ ] verify: MIC ≥시판 (S.mutans·P.gingivalis), VSC 30%↓, 알코올 ≤5%
+- [ ] handoff: 의약외품 신고 + 양산 + 쿠팡
 
-## 노트
+## 차별 가설
 
-- ⚠ 클로르헥시딘 등 약효 강한 성분 함유 가글은 의약품 — 약국 전용
-- 일반 구강청결제(에센셜오일·자일리톨류)는 의약외품 — 일반 유통 OK
-- "충치예방"·"잇몸질환 완화" 등 표현은 의약품 효능 — 광고 문구 차단 필요
+> CPC + 자일리톨 시너지 → 항균 동등 + **VSC 30% 감소** + 알코올 자극 free (어린이·민감군 라인)
+
+## 핵심 측정 지표
+
+- 항균: MIC (S.mutans·P.gingivalis·C.albicans)
+- 구취: VSC (Halimeter) — H2S·CH3SH·(CH3)2S
+- 알코올 함량: 표시 정확도
+
+## 분류 바운더리
+
+| 항목 | 내용 |
+|---|---|
+| 분류 | 의약외품 (구강청결제) |
+| 허용 클레임 | "구취 제거·구강 청결" |
+| ⚠ 경계 | 클로르헥시딘 0.1%↑ = 일반의약품(헥사메딘·약국 전용) |
+| 광고 금기 | "치주염 치료·잇몸 치료" |
