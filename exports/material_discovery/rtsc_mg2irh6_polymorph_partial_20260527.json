@@ -1,14 +1,16 @@
 {
-  "_status": "PLACEHOLDER — populated post-run",
+  "_status": "DISPATCH_LIVE — vc-relax in-flight on ubu-2, chain.sh detached (relax→scf→ph 2x2x2 partial)",
   "material": "Mg2IrH6 (polymorph escape, soft-mode displaced)",
-  "parent_structure": "Fm-3m (K2PtCl6 prototype) — falsified ambient 2026-05-26",
-  "method": "h3as soft-mode displacement transfer · ε=0.08 Å along Mg2IrH6 dyn1 mode 1 (-2235 cm-1, Γ, pure H-cage tilt)",
+  "parent_structure": "Fm-3m (K2PtCl6 prototype) — falsified ambient 2026-05-26 (PR #275-class verdict)",
+  "method": "h3as soft-mode displacement transfer · ε=0.08 Å along Mg2IrH6 dyn1 mode 1 (-2235 cm-1, Γ, pure H-cage tilt) · nosym=.true. seed allowing P1 relax",
   "compute": {
     "host": "ubu-2 (free pool)",
     "workdir": "$HOME/rtsc_mg2irh6_polymorph",
     "np": 6,
     "code": "QE 7.5 (miniforge3 qe env, conda)",
-    "cost_usd": 0.0
+    "cost_usd": 0.0,
+    "chain_pid": 828064,
+    "chain_log": "/tmp/mg2irh6_poly_chain.log"
   },
   "deck": "decks/mg2irh6_polymorph/{relax.in,scf.in,ph.in,run.hexa,build_displaced.hexa,extract_eigenvec.hexa}",
   "pseudopotentials": {
@@ -21,12 +23,25 @@
     "from": "ubu-1:~/rtsc_mg2irh6/mg2irh6.dyn1",
     "q": [0.0, 0.0, 0.0],
     "freq_cm1": -2235.067,
-    "character": "pure H-cage tilt — Ir/Mg stationary, all 6 H atoms displace coherently along Oh-symmetric pattern",
-    "norm_check": 1.0
+    "character": "pure H-cage tilt — Ir/Mg stationary, all 6 H atoms displace coherently along Oh-symmetric pattern (atom4=atom5: (+,0,+); atom6=atom7: (0,+,-); atom8=atom9: (-,-,0); amplitude 0.288675=1/sqrt(12))",
+    "norm_check": 1.0,
+    "note": "this is an H-octahedron rotational/breathing mode — the canonical instability of K2PtCl6 prototype with d^7 cation (Ir) — h3as analog dispatches the saddle escape"
   },
-  "VERDICT": null,
-  "verdict_reason": null,
-  "honesty_protocol": "g63 verdict branch · d6 no force · R4 absorbed=false (sim≠measured) · h3as method may not transfer (metal-octahedral ≠ hexa-hydrate cluster)",
-  "campaign_branch": "feat/rtsc-magnet-wheeler-v2 / cycle-mg2irh6-polymorph-2026-05-27",
+  "wall_time_estimate": {
+    "relax_hr": "1-4 (BFGS, ecut=80, 512 k-pts, no symmetry)",
+    "scf_hr": "0.5-1",
+    "ph_partial_hr": "10-20 (2x2x2 grid, ~3 IBZ q-points)",
+    "total_hr": "12-25",
+    "note": "harvest will be done by follow-up agent reading /tmp/mg2irh6_poly_chain.log + dyn-files; this session checkpoints DISPATCH_LIVE"
+  },
+  "verdict_branch_g63": {
+    "RED": "any partial-q hard imag (< -50 cm-1) → polymorph still unstable → h3as method does not transfer to Mg2IrH6 → strengthens 'X2MH6 K2PtCl6 prototype itself ambient-unstable' hypothesis",
+    "AMBER": "mild imag (-50 < freq < 0) only Γ-acoustic → 보류, iterate ε / try mode 2-3 / SSCHA anharmonic follow-up",
+    "GREEN": "all 3 partial q-points hard=0 → polymorph escape SUCCESS → 🔥 X2MH6 family rescued (subject to full BZ + el-ph follow-up)"
+  },
+  "VERDICT": "PENDING_HARVEST",
+  "verdict_reason": "chain.sh dispatched detached at 2026-05-27T02:32:19 KST · ubu-2 6 cores @ 99% · awaiting END CHAIN marker in /tmp/mg2irh6_poly_chain.log",
+  "honesty_protocol": "g63 verdict branch · d6 no force · R4 absorbed=false (sim≠measured) · h3as method may not transfer (metal-octahedral ≠ hexa-hydrate cluster) · negative result is VALID (cf. d_paper_negative_ok)",
+  "campaign_branch": "worktree-agent-a52e8da8b6d3feab7 (cycle-mg2irh6-polymorph-2026-05-27)",
   "date_utc": "2026-05-27"
 }
