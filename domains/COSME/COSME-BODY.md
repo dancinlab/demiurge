@@ -1,19 +1,31 @@
 @title: 🛀 COSME-BODY — "보디로션·바디오일"
 @parent: COSME
-@goal: 보디로션·바디오일·바디미스트 라인업 쿠팡 SKU 풀 런칭
+@goal: 보디케어 화장품 first-principles R&D — 보습 지속 + 자극↓ + 흡수↑
 
-## 진행 마일스톤
+## R&D 마일스톤 (7-verb · [PLAYBOOK.md](PLAYBOOK.md) 참조)
 
-- [ ] discovery: 보디케어 시장 분석 (로션·오일·미스트 점유율·시즌성)
-- [ ] discovery: 규제 스캔 (화장품 신고·보습 표현)
-- [ ] sourcing: 제조사/OEM 발굴 (보디케어 라인업 보유 공장)
-- [ ] sourcing: 화장품 신고 + 시험성적서
-- [ ] listing: 쿠팡 등록 (타입별·용량별·향별 SKU)
-- [ ] listing: 광고 카피 점검
-- [ ] launch: 겨울 시즌 사전 발주 + QD-MWASH/COSME-VEGAN 번들
+- [ ] spec: 시판 TOP-N (로션·오일·미스트) + 보습·지속·자극 매핑
+- [ ] structure: 활성성분 (세라마이드·시어버터·히알루론산·식물 오일) + 보습 메커니즘
+- [ ] design: 처방 설계 (보습 × 흡수 × 자극↓ × 향)
+- [ ] analyze: pilot head-to-head — Corneometer 8h + 흡수 (시판 vs 자체)
+- [ ] synthesize: CGMP 시제품 제작
+- [ ] verify: 8h Corneometer ≥시판 1.2배, TEWL ↓25%, 흡수 시간 ↓
+- [ ] handoff: 화장품 신고 + 양산 + 겨울 시즌 + 청결제·MWASH 묶음
 
-## 노트
+## 차별 가설
 
-- 임팩트 🔥🔥 — 시즌성(겨울) · 번들 유리
-- 차별: 향·보습 강도·민감피부·바디오일 (트렌드)
-- 번들: 청결제(QD-FWASH/MWASH) + 보디로션 묶음 패키지
+> 세라마이드 + 식물 오일 시너지 → **8h 보습 1.2배 + TEWL 25%↓ + 빠른 흡수** · 겨울·청결제 묶음
+
+## 핵심 측정 지표
+
+- 보습 지속: Corneometer (0·2·4·8h)
+- TEWL: Tewameter
+- 흡수: 사용감 timer + 끈적임 panel
+
+## 분류 바운더리
+
+| 항목 | 내용 |
+|---|---|
+| 분류 | 화장품 |
+| 허용 클레임 | "보습·청결" |
+| 시너지 | QD-FWASH/MWASH 묶음 패키지 |
