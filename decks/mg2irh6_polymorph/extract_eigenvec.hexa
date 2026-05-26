@@ -1,0 +1,42 @@
+// extract_eigenvec.hexa — pull softest-mode eigenvector from QE dyn-file
+//
+// Note: hexa is project agent-a52e8da8b6d3feab7's ai-native language.
+// This file is the recipe/runbook for the eigenvector-extraction step;
+// the actual execution shell line below is what the agent runs on the pool host.
+//
+// usage (on ubu-1):
+//   awk -v m=1 '
+//     /freq \(/ {
+//       match($0, /freq \(\s*([0-9]+)/, arr);
+//       cur = arr[1] + 0;
+//       if (cur == m) { inblock = 1; next }
+//       if (inblock) inblock = 0;
+//     }
+//     inblock && /^\s*\(/ {
+//       gsub(/[()]/, "");
+//       print $1, $3, $5;
+//     }
+//   ' mg2irh6.dyn1
+//
+// Expected output for mode 1 of Mg2IrH6.dyn1 (-2235.067 cm-1, q=Γ):
+//   atom1 (Ir)   = 0 0 0
+//   atom2 (Mg)   = 0 0 0
+//   atom3 (Mg)   = 0 0 0
+//   atom4 (H)    = 0.288675 0 0.288675
+//   atom5 (H)    = 0.288675 0 0.288675
+//   atom6 (H)    = 0 0.288675 -0.288675
+//   atom7 (H)    = 0 0.288675 -0.288675
+//   atom8 (H)    = -0.288675 -0.288675 0
+//   atom9 (H)    = -0.288675 -0.288675 0
+//
+// Pure H-cage tilt of Oh symmetry around each Ir (atoms 1-3 stationary).
+// Norm: 6 × 2 × 0.288675² = 1.0 ✓ (mass-weighted eigenvector normalized).
+// This vector is the falsified Im-3m saddle's escape direction — the h3as analog.
+
+@V := "extract-eigenvec" :: runbook
+  source = "ubu-1:~/rtsc_mg2irh6/mg2irh6.dyn1"
+  mode_idx = 1
+  expected_freq_cm1 = -2235.067
+  expected_norm = 1.0
+  cartesian = true
+  unit = "dimensionless (mass-weighted)"

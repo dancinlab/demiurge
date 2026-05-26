@@ -1,0 +1,40 @@
+// harvest.hexa — Mg2IrH6 polymorph verdict harvest runbook (follow-up agent)
+//
+// hexa-native: this file is the runbook for the downstream harvest step.
+// The actual commands below are what the next-session agent runs on the pool host.
+//
+// Trigger: receive Monitor event "TERMINAL" with "END CHAIN" line, OR chain log shows RELAX FAIL / SCF FAIL / PH PARTIAL_or_FAIL.
+
+@V := "harvest-mg2irh6-polymorph" :: runbook
+  pool_host          = "ubu-2"
+  workdir            = "$HOME/rtsc_mg2irh6_polymorph"
+  chain_log          = "/tmp/mg2irh6_poly_chain.log"
+  expected_dyn       = "mg2irh6_poly.dyn1, mg2irh6_poly.dyn2, mg2irh6_poly.dyn3 (2x2x2 grid → 3 IBZ q)"
+  verdict_target     = "exports/material_discovery/rtsc_mg2irh6_polymorph_partial_20260527.json"
+  log_target         = "domains/rtsc.log.md (prepend) + RTSC.log.md (root mirror if landed)"
+
+@steps := "harvest sequence"
+  step1_check_chain    = "pool on ubu-2 'cat /tmp/mg2irh6_poly_chain.log' — confirm END CHAIN line + which step terminated"
+  step2_relax_verdict  = "pool on ubu-2 'grep -E \"JOB DONE|Begin final|Final energy|Final stress\" ~/rtsc_mg2irh6_polymorph/relax.out | tail -10' — confirm relax converged"
+  step2b_relaxed_geom  = "pool on ubu-2 'awk \"/Begin final coordinates/,/End final coordinates/\" ~/rtsc_mg2irh6_polymorph/relax.out' — capture final cell + positions for atlas record"
+  step3_scf_verdict    = "pool on ubu-2 'grep -E \"JOB DONE|total energy\" ~/rtsc_mg2irh6_polymorph/scf.out | tail -5' — confirm scf converged"
+  step4_ph_dyn         = "scp ubu-2:~/rtsc_mg2irh6_polymorph/mg2irh6_poly.dyn* /tmp/ — pull dyn files"
+  step5_freq_extract   = "for f in /tmp/mg2irh6_poly.dyn[1-9]; do grep -E 'freq.*cm-1' \"$f\" | head -27; done — list all 27 modes per q"
+  step6_verdict_branch = "min_freq across all q → g63 RED (< -50) / AMBER (-50 to 0) / GREEN (> 0)"
+
+@gates := "g63 verdict decision (per task spec)"
+  gate_red    = "ANY q has min_freq < -50 cm-1 → 🔴 CLOSED_NEGATIVE — h3as method does not transfer to Mg2IrH6 (X2MH6 K2PtCl6 prototype intrinsically unstable hypothesis strengthened)"
+  gate_amber  = "min_freq within (-50, 0) cm-1 only, Γ-acoustic-like → 보류 + iterate ε (try 0.05, 0.10) OR mode 2-3"
+  gate_green  = "all q min_freq > 0 → 🔥 polymorph escape SUCCESS — X2MH6 family rescued (follow-up: full 4x4x4 BZ el-ph + Allen-Dynes Tc)"
+
+@outputs := "to commit on harvest"
+  json   = "exports/material_discovery/rtsc_mg2irh6_polymorph_partial_20260527.json — populate VERDICT + numbers + per_q array"
+  log    = "domains/rtsc.log.md — prepend entry per RTSC.log.md format"
+  atlas  = "exports/material_discovery/atlas_fold_pending.md — flip PENDING_HARVEST row to terminal verdict"
+  commit = "git commit -m 'data(RTSC-mg2irh6-polymorph): <verdict> harvest 2026-05-27' && gh pr create"
+
+@notes := "honesty"
+  d6_no_force   = "if AMBER, do NOT compute Tc on amber-stability; record min_freq + branch only"
+  d6_no_force_2 = "if GREEN, Tc requires FULL 4x4x4 q + el-ph (not in this dispatch); record stability ONLY, defer Tc"
+  R4_eternal    = "absorbed=false (sim≠measured) regardless of verdict"
+  negative_ok   = "🔴 closed-negative is a valid scientific finding (d_paper_negative_ok); do not bury or paraphrase"

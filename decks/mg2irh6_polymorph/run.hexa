@@ -1,0 +1,34 @@
+// Mg2IrH6 polymorph escape — soft-mode displacement runbook
+//
+// Goal: rescue X2MH6 Fm-3m falsified family by descending the -2235 cm-1 Γ saddle
+//       into a lower-symmetry P1 minimum (h3as method transfer).
+// Pool target: ubu-2 ~/rtsc_mg2irh6_polymorph/   (free, while ubu-1 runs unrelated jobs)
+// Cost: $0 (pool free).
+//
+// Pseudopotential copy: from ubu-1:~/rtsc_mg2irh6/pseudo/  (Mg/Ir/H PSL UPFs already vetted).
+
+@V := "run-mg2irh6-polymorph-deck" :: runbook
+  pool_host        = "ubu-2"
+  workdir          = "$HOME/rtsc_mg2irh6_polymorph"
+  np_default       = "physcores via getconf _NPROCESSORS_ONLN"
+  pseudo_dir       = "./pseudo"
+  decks            = "relax.in · scf.in · ph.in"
+  epsilon_ang      = 0.08
+  source_mode      = "Mg2IrH6 dyn1 Γ mode 1 (-2235.067 cm-1) — pure H-cage tilt"
+  q_grid           = "2x2x2 → ~3 IBZ q-points (partial probe per task)"
+
+@steps := "execution"
+  step1 = "scp ubu-1:~/rtsc_mg2irh6/pseudo/*.UPF ubu-2:~/rtsc_mg2irh6_polymorph/pseudo/"
+  step2 = "scp decks/mg2irh6_polymorph/*.in ubu-2:~/rtsc_mg2irh6_polymorph/"
+  step3 = "ubu-2 conda activate qe; mpirun -np <NP> pw.x -in relax.in > relax.out 2>&1"
+  step4 = "ubu-2 mpirun -np <NP> pw.x -in scf.in   > scf.out   2>&1"
+  step5 = "ubu-2 mpirun -np <NP> ph.x -in ph.in    > ph.out    2>&1"
+  step6 = "harvest dynN files; aggregate min freq per q; verdict per gate1/2/3"
+
+@gates := "decision tree (g63 verdict branch)"
+  gate1_pass = "vc-relax converged (|F|<1e-4) AND |σ|<0.5 kbar"
+  gate2_test = "phonon partial q — any q with min_freq < -50 cm-1 → still unstable"
+  gate3_test = "all q with min_freq > 0 → polymorph escape SUCCESS"
+  verdict_red    = "polymorph still hard-unstable → 🔴 CLOSED (X2MH6 method-transfer fail)"
+  verdict_green  = "stable polymorph → 🟢 escape success → full el-ph follow-up"
+  verdict_amber  = "mild residual imag (-50<ω<0) → 보류 + iterate ε / different mode"

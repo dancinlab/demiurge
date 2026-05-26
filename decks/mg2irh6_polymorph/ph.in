@@ -1,0 +1,14 @@
+Mg2IrH6 polymorph (soft-mode displaced) phonon probe — 2x2x2 partial
+&inputph
+  prefix              = 'mg2irh6_poly'
+  outdir              = './out'
+  fildyn              = 'mg2irh6_poly.dyn'
+  ldisp               = .true.
+  nq1                 = 2
+  nq2                 = 2
+  nq3                 = 2
+  tr2_ph              = 1.0d-12
+  recover             = .true.
+  alpha_mix(1)        = 0.3
+  max_seconds         = 80000
+/

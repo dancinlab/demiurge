@@ -1,0 +1,42 @@
+// build_displaced.hexa — soft-mode displaced Mg2IrH6 deck builder (recipe + canonical decks)
+//
+// hexa-native: this file is the canonical runbook + constants for the displacement step.
+// The agent emits relax.in / scf.in / ph.in by inlining the python expression below
+// into a `pool on ubu-2` heredoc (no .py file lands on disk in this repo).
+//
+// Cell — celldm(1)=12.2830 a.u., ibrav=2 FCC, a = 6.4998 Å.
+// Original crystal coords (Fm-3m parent prototype K2PtCl6):
+//   Ir   ( 0.0,   0.0,   0.0   )
+//   Mg   (-0.25,  0.25,  0.25  )
+//   Mg   (-0.75,  0.75,  0.75  )
+//   H4   (-0.137, 0.0,   0.137 )
+//   H5   (-0.363, 0.0,   0.363 )
+//   H6   ( 0.0,   0.137, 0.137 )
+//   H7   ( 0.0,   0.363, 0.363 )
+//   H8   (-0.137, 0.137, 0.0   )
+//   H9   (-0.363, 0.363, 0.0   )
+//
+// Softest-mode eigenvector at Γ (cartesian; mode 1 of dyn1, -2235 cm-1):
+//   Ir, Mg, Mg            = (0, 0, 0)              ← stationary
+//   H4 = H5               = ( 0.288675, 0,         0.288675)
+//   H6 = H7               = ( 0,        0.288675, -0.288675)
+//   H8 = H9               = (-0.288675,-0.288675,  0      )
+//
+// Displacement amplitude: ε = 0.08 Å  (h3as range = 0.05–0.10).
+// All atoms except Ir, Mg are shifted by ε × ev.
+// Symmetry-broken seed → nosym=.true. in QE.
+
+@V := "build-displaced" :: runbook
+  epsilon_ang = 0.08
+  cell_a_ang  = 6.499764       // celldm(1) = 12.2830 a.u. × 0.529177 Å/Bohr
+  nosym       = true
+  noinv       = true
+  cell_dofree = "all"
+  outputs     = "relax.in · scf.in · ph.in"
+  q_grid      = "2x2x2 → ~3 IBZ q-points partial probe (cost-cap $0, free pool)"
+
+@notes := "stability gates"
+  gate1 = "vc-relax converges + final stress |σ| < 0.5 kbar → continue"
+  gate2 = "post-relax phonon: any q with hard imag < -50 cm-1 → 🔴 polymorph still unstable"
+  gate3 = "all q stable (no hard imag) → 🟢 polymorph escape success → full el-ph campaign"
+  gate_partial = "Γ stable but BZ shows mild imag (-50 < ω < 0) → 보류 + iterate ε"
