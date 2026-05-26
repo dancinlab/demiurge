@@ -131,12 +131,11 @@ scope_caveats     = [
 
 # --- WIRED: handoff (FDA 510(k) Class II dossier skeleton) ------------------
 [cell.handoff]
-substrate         = python3
-python_candidates = python3.13, python3.12, python3
-script            = stdlib/aura/handoff.py
+substrate         = hexa
+script            = stdlib/aura/handoff.hexa
 record_kind       = aura_handoff_record
 output_dir        = exports/aura/handoff
-required_deps     = python3
+required_deps     = hexa
 gate_default      = OPEN
 absorbed_default  = false
 scope_caveats     = [

@@ -3,6 +3,31 @@
 > Append-only progression log for the AURA (post-aural wearable BCI) domain.
 > Snapshot SSOT: [aura.md](aura.md) · verb-cell manifest: [aura.demi](aura.demi)
 
+## 2026-05-27 — V7 handoff producer LANDED (hexa-native) — 🎉 7-verb 일주 완성
+
+- `stdlib/aura/handoff.hexa` 신규 166 LOC (hexa-lang PR #1366 MERGED) — final verb.
+- 5 block: fda_510k (510(k) Premarket Notification Class II non-implantable · substantial equivalence + predicate · IFU/labeling 21 CFR 801+803 · ISO 10993-1 biocompat + cytotoxicity · IEC 62304 SW lifecycle moderate-to-major LOC · eSTAR submission template) · eu_mdr (MDR 2017/745 Class IIa wearable · Annex IX QMS + TD baseline · GSPR Annex I 매핑 · Notified Body engagement + ISO 13485 audit + design-dossier review · UDI-DI + UDI-PI GS1 + EUDAMED 등록) · emc_testhouse (IEC 60601-1-2 Ed.4.1 home-healthcare · CISPR 11 Group 1 Class B emission + immunity ESD/RF/PFMF/proximity-field · ISO/IEC 17025 accredited testhouse · test plan+risk-analysis+uncertainty budget) · bt_sig (Bluetooth Core Spec v5.x · Declaration ID + Qualified Design ID QDID · PHY/LL/HCI/GAP/GATT/SMP per TCRL · BQTF Bluetooth Qualification Test Facility · launch studio listing + member fee + declaration submission · custom GATT EEG + Battery + DIS) · qms_risk (ISO 13485:2016 medical QMS · ISO 14971:2019 risk analysis/control · IEC 62366-1 usability engineering + summative validation · IEC 62304 SW lifecycle · PMS vigilance reporting + CAPA · DHF/DMR/DHR records).
+- cellrun manifest 변경: `[cell.handoff]` substrate=python3 → hexa, script=*.py → *.hexa, required_deps=python3 → hexa, python_candidates 제거.
+- 마일스톤: V7 → `[~]` in-progress (producer LANDED).
+- g3 honesty: `absorbed=false` PERMANENTLY · accredited-lab gates (510(k) FDA review · Notified Body audit · EMC testhouse · BT SIG qualification) 모두 downstream · MRI-safety labeling honest-gap = V6/G1 brk territory (Sim4Life FDA MDDT IRREPLACEABLE for ASTM F2182-19e2 + ISO 10974).
+
+### 🎯 AURA 7-verb 일주 완성 요약
+
+| verb | state | producer | LOC |
+|---|---|---|---|
+| V0 verify (EEG-spectral) | absorbed=true (G33 LANDED · Sleep-EDF 8.4e-07) | `sleep_edf_measured_oracle.py` + `_dft_alpha_band_batch.hexa` | — |
+| V1 specify | producer LANDED · in-progress | `specify.hexa` (PR #1338) | 124 |
+| V2 structure | producer LANDED · in-progress | `structure.hexa` (PR #1342) | 150 |
+| V3 design | producer LANDED · in-progress | `design.hexa` (PR #1343) | 142 |
+| V4 analyze | producer LANDED · in-progress | `analyze.hexa` (PR #1345) | 140 |
+| V5 synthesize | producer LANDED · in-progress | `synthesize.hexa` (PR #1347) | 146 |
+| V6 verify (EM-side) | sibling producer LANDED · in-progress | `verify.hexa` (PR #1350) | 143 |
+| V7 handoff | producer LANDED · in-progress | `handoff.hexa` (PR #1366) | 166 |
+
+총 1011 LOC · 14 PRs (7 hexa-lang + 7 demiurge) · 모두 g3 absorbed=false PERMANENTLY (TEMPLATE skeletons).
+
+다음 단계: dossier content 실제 채움(V1-V7 각 셀의 placeholder를 실값으로) + G1-G3 갭 돌파(@D d2) + accredited-lab gates 통과 (downstream).
+
 ## 2026-05-27 — V6 verify (EM-side) sibling producer LANDED (hexa-native)
 
 - `stdlib/aura/verify.hexa` 신규 143 LOC (hexa-lang PR #1350 MERGED) — EM-side sibling track.
