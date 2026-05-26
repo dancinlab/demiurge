@@ -46,12 +46,11 @@ scope_caveats     = [
 
 # --- WIRED: structure (sensor array + AFE + radio partitioning) -------------
 [cell.structure]
-substrate         = python3
-python_candidates = python3.13, python3.12, python3
-script            = stdlib/aura/structure.py
+substrate         = hexa
+script            = stdlib/aura/structure.hexa
 record_kind       = aura_structure_record
 output_dir        = exports/aura/structure
-required_deps     = python3
+required_deps     = hexa
 gate_default      = OPEN
 absorbed_default  = false
 scope_caveats     = [

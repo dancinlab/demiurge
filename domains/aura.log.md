@@ -3,6 +3,16 @@
 > Append-only progression log for the AURA (post-aural wearable BCI) domain.
 > Snapshot SSOT: [aura.md](aura.md) · verb-cell manifest: [aura.demi](aura.demi)
 
+## 2026-05-27 — V2 structure producer LANDED (hexa-native)
+
+- `stdlib/aura/structure.hexa` 신규 150 LOC (hexa-lang PR #1342 MERGED).
+- 패턴: V1 `specify.hexa` mirror (sentinel + scope_caveats).
+- 출력: `AURA_STRUCTURE_OK record_kind=aura_structure_record geometry_id=aura_structure_v1 gate=GATE_OPEN absorbed=false version=0.1.0` + `__HEXA_AURA_STRUCTURE__ PASS` + 5 architectural block + 4 scope_caveat.
+- 5 block: sensor_array (다중전극 8-32ch dry/wet + RLD + biocompat ISO 10993-1 + IEC 60601-1 Type BF) · afe_adc (low-noise instr-amp + 24-bit sigma-delta ADC ADS1299-class ref + RLD CMRR) · radio_ble (BLE 5.x nRF52/53/54 + nRF Connect SDK Zephyr + chip/trace antenna + custom GATT EEG service) · battery_power (CR2032 vs Li-Po + PMIC + 12-24h runtime + IEC 62133-2 safety) · mechanical (mastoid/temporal-bone clip + 의료급 실리콘 + IPX4 + <15g + FreeCAD/KiCad StepUp).
+- cellrun manifest 변경: `domains/aura.demi [cell.structure]` `substrate=python3` → `hexa`, `script=*.py` → `*.hexa`, `required_deps=python3` → `hexa`, `python_candidates` 제거.
+- 마일스톤: V2 → `[~]` in-progress (producer LANDED · 실 BOM/silicon selection은 chip+component cell territory).
+- g3 honesty: `absorbed=false` PERMANENTLY — partitioning skeleton, NEVER a built BOM.
+
 ## 2026-05-27 — V1 specify producer LANDED (hexa-native)
 
 - `stdlib/aura/specify.hexa` 신규 124 LOC (hexa-lang PR #1338 MERGED).
