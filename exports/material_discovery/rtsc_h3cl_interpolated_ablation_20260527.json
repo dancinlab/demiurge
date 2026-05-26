@@ -1,0 +1,101 @@
+{
+  "domain": "material",
+  "verb": "verify",
+  "kind": "h3cl_electron_phonon_simple_vs_interpolated_ablation",
+  "stamp": "20260527T030000Z",
+  "producer": "QE 7.5 (conda qe env) pw.x+ph.x electron_phonon='interpolated' (nk=48^3) @ pool:ubu-1 (-np 4 nice +10 alongside li2cuh6) + harvest_v2.py (validity gate)",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": false,
+  "R4_protection": true,
+
+  "purpose": "RTSC METHOD VALIDITY ablation per /gap full Tier-1 F2 — compare lambda_BZ + omega_log + Tc(mu=0.10) between electron_phonon='simple' (LANDED) and 'interpolated' (this) on identical h3cl 8x8x8q deck. Result determines whether every existing rtsc_*_elph_*.json record carries an unstated systematic (every record used 'simple').",
+
+  "system": "H3Cl cubic Im-3m BCC primitive (1 Cl + 3 H = 4 atoms), ibrav=3, celldm=5.65934 bohr (a~2.995 A), PBE PSL 1.0.0 RRKJUS pseudopotentials. Same cell as LANDED rtsc_h3cl_dft_6x6x6q_novel_20260524.json (6q) and the 8q simple baseline at ~/rtsc_h3cl_8q/.",
+
+  "method": {
+    "common": {
+      "pseudopotentials": "Cl.pbe-n-rrkjus_psl.1.0.0.UPF, H.pbe-rrkjus_psl.1.0.0.UPF",
+      "scf": "ecutwfc=60 Ry, ecutrho=600 Ry, 24x24x24 k-grid, MP smearing degauss=0.02 Ry",
+      "phonon": "ph.x DFPT ldisp 8x8x8 q (29 IBZ q-points)",
+      "tr2_ph": "1.0d-14",
+      "el_ph_sigma": "0.005 Ry",
+      "el_ph_nsigma": "10 (broadenings 0.005-0.050 Ry in 0.005 step)"
+    },
+    "simple_baseline": {
+      "electron_phonon": "simple",
+      "nk_interpolation": "none (uses SCF 24^3 grid directly)",
+      "source": "ph.x landed run at /home/aiden/rtsc_h3cl_8q/ (ubu-1) — JOB DONE marker present",
+      "harvest": "/home/aiden/rtsc_h3cl_8q/harvest_v2.json (RE-HARVESTED via harvest_v2.py 2026-05-27)"
+    },
+    "interpolated_arm": {
+      "electron_phonon": "interpolated",
+      "nk_interpolation": "48x48x48 (8x denser than SCF for double-Fermi-surface average)",
+      "recover": "false (Gamma q_1 dir absent; recover=true failed seqopn(99) on h3cl.recover)",
+      "lqdir": "true",
+      "source": "ph.x rerun at /home/aiden/rtsc_h3cl_8q/ with ph.interp.in (2026-05-27)",
+      "harvest": "/home/aiden/rtsc_h3cl_8q/harvest_v2_interp.json (to be written on JOB DONE)"
+    }
+  },
+
+  "harmonic_validity_gate_simple": {
+    "version": "1.0",
+    "harvest_v2_resampled": true,
+    "min_freq_cm1": 5.3842,
+    "n_imag_below_-5": 0,
+    "n_imag_below_-50": 0,
+    "verdict": "VALID",
+    "anharmonic_mandatory": false,
+    "reason": "phonon footprint within harmonic budget"
+  },
+
+  "simple_baseline_table": {
+    "harvest_v2_source": "/home/aiden/rtsc_h3cl_8q/harvest_v2.json (resampled 2026-05-27, dyn-file freqs + 29 IBZ uniform-weight)",
+    "n_q": 29,
+    "n_total_modes": 348,
+    "results": [
+      { "sigma_Ry": 0.005, "lambda_BZ": 0.6917, "omega_log_K": 1306.62, "Tc_mu010_K":  44.13, "Tc_mu013_K":  29.89 },
+      { "sigma_Ry": 0.010, "lambda_BZ": 0.9401, "omega_log_K": 1245.55, "Tc_mu010_K":  78.58 },
+      { "sigma_Ry": 0.015, "lambda_BZ": 1.1316, "omega_log_K": 1213.32, "Tc_mu010_K": 100.78 },
+      { "sigma_Ry": 0.020, "lambda_BZ": 1.2829, "omega_log_K": 1191.94, "Tc_mu010_K": 115.49 },
+      { "sigma_Ry": 0.025, "lambda_BZ": 1.3707, "omega_log_K": 1179.03, "Tc_mu010_K": 122.83 },
+      { "sigma_Ry": 0.030, "lambda_BZ": 1.4313, "omega_log_K": 1172.99, "Tc_mu010_K": 127.74, "selected": true, "note": "plateau center (sigma >= 0.025 stable)" },
+      { "sigma_Ry": 0.035, "lambda_BZ": 1.4798, "omega_log_K": 1171.13, "Tc_mu010_K": 131.78 },
+      { "sigma_Ry": 0.040, "lambda_BZ": 1.5207, "omega_log_K": 1171.41, "Tc_mu010_K": 135.26 },
+      { "sigma_Ry": 0.045, "lambda_BZ": 1.5553, "omega_log_K": 1172.56, "Tc_mu010_K": 138.23 },
+      { "sigma_Ry": 0.050, "lambda_BZ": 1.5838, "omega_log_K": 1173.96, "Tc_mu010_K": 140.68 }
+    ]
+  },
+
+  "interpolated_arm_table": {
+    "status": "PENDING — ph.x in flight on ubu-1 (PID 1781209-1781212 @ nice +10, -np 4)",
+    "estimated_completion": "+1-3h from 2026-05-27T03:13Z (Band Structure Calc on 2769 kp grid in progress; elph step follows)",
+    "results": "will be written on JOB DONE marker + harvest_v2 parse"
+  },
+
+  "ablation_gate_decision": {
+    "status": "PENDING_RESULT",
+    "rule_match_within_15pct": "Tc_interp within ±15% of Tc_simple(=127.7K mu=0.10) → simple method vindicated family-wide",
+    "rule_caveat_15_to_25pct": "Δ 15-25% → caveat banner on every existing rtsc_*_elph_*.json record",
+    "rule_break_gt_25pct": "Δ >25% → N5 wall doc revision REQUIRED; demote h3cl Tier-2 wetlab handoff to provisional; re-run remaining candidates (labeh8 SSCHA-pending, h3o, h3se, h3te) with interpolated"
+  },
+
+  "honest_observations_pre_result": [
+    "h3cl 8x8x8q simple gate VALID — fully stable phonons (min_freq +5.38 cm^-1, no imag).",
+    "Simple baseline σ=0.030 plateau center: λ_BZ=1.43, ω_log=1173 K, Tc(μ*=0.10)=128 K, Tc(μ*=0.13)=116 K.",
+    "Per /gap full F2 expectation: |Δλ| ~ 0.1-0.3, with interpolated typically delivering lower λ but better ω_log; net |ΔTc/Tc| family-mean ~5-15%.",
+    "Disk constraint on ubu-1 (99% full, 13 GB free) precludes a fresh independent workdir; ph.interp.in reuses dvscf perturbations + phsave dynmat markers in-place at /home/aiden/rtsc_h3cl_8q/, with simple-method elph.{q} files + phsave/elph.*.xml moved aside to /home/aiden/rtsc_h3cl_8q/_simple_backup/."
+  ],
+
+  "r4_invariant": "absorbed=false · gate_type=simulation-only-prediction · domain=material. Pattern 1 (R4 absorbed=true requires measured oracle) + Pattern 2 (no impossibility framing) preserved. Result table populates on JOB DONE.",
+
+  "provenance": {
+    "deck": "decks/h3cl_interp_ablation/run.hexa",
+    "harvest_canonical_hexa": "decks/labeh8/harvest_v2.hexa",
+    "audit": "exports/material_discovery/method_audit_20260527.md",
+    "host": "pool:ubu-1 (conda qe env, ph.x 7.5)",
+    "launcher": "~/launch_interp.sh (nice +10, -np 4, --bind-to none)",
+    "log": "/tmp/h3cl_interp.log on ubu-1"
+  }
+}

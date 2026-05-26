@@ -1,0 +1,136 @@
+// harvest_v2.hexa — canonical RTSC el-ph harvest with harmonic_validity_gate
+//
+// /gap full F1+F2 — METHOD validity gate.
+// Directly addresses harmonic_lambda vs anharmonic_lambda functor mismatch
+// (h3o: harmonic=2.479 -> SSCHA=0.52-1.48) by FORBIDDING a harmonic Tc to be
+// recorded when the harmonic stability footprint indicates anharmonic
+// correction is mandatory.
+//
+// Reads QE ph.x outputs (<prefix>.dyn{1..N} + <prefix>.dyn{i}.elph.{i}) and
+// produces a JSON harvest with:
+//   - per-sigma lambda_BZ + omega_log + Allen-Dynes Tc (mu*=0.10, 0.13)
+//   - phonon stability summary (min_freq, n_soft, n_hard)
+//   - harmonic_validity (VALID / INVALID -- too many mild / hard soft / deep mild)
+//   - anharmonic_mandatory boolean
+//   - electron_phonon method (simple|interpolated)
+//
+// Per @D d6 -- honest plateau, no forcing target Tc.
+// Per g63   -- closed-negative is data.
+// Per @D d3 -- implementation lives in one canonical home (this deck file).
+//
+// === Harmonic validity gate thresholds (central knob, /gap F1 finding) ===
+//
+//   IMAG_THRESHOLD_CM1     = -5.0   // below this counted as 'soft' (any imag)
+//   MAX_MILD_IMAG_COUNT    = 3      // Gamma-acoustic typical (3 modes); >3 INVALID
+//   HARD_IMAG_THRESHOLD    = -50.0  // any 1 mode below this = HARD INVALID
+//   DEEP_MILD_THRESHOLD    = -20.0  // min_freq below this = anharmonic required
+//
+// Threshold rationale (h3o anharmonic Tc collapse evidence):
+//   - h3o     : harmonic min_freq = -682 cm-1 (deep) -> SSCHA renormalizes -> real
+//               harmonic_lambda 2.479 -> anharmonic 0.52-1.48 (60-79% collapse).
+//   - labeh8  : min_freq = -8.19 cm-1 (3 Gamma-acoustic soft); all mild ->
+//               no real deep anharmonic correction expected (Be-cage 1d-rotor only).
+//   - mg2irh6 : min_freq = -2235 cm-1 -> HARD CLOSED-NEGATIVE; never anharmonic
+//               recoverable (lattice distortion mandatory).
+//
+// === Validity classification rule (decision tree) ===
+//
+//   if hard_count >= 1                  -> INVALID "hard soft (closed-negative)"
+//   elif soft_count > MAX_MILD_IMAG     -> INVALID "too many mild soft"
+//   elif min_freq < DEEP_MILD_THRESHOLD -> INVALID "deep mild requires SSCHA"
+//   else                                -> VALID
+//
+//   anharmonic_mandatory = (validity != VALID)
+//
+// On INVALID:
+//   - Tc fields RETAINED for transparency (raw harmonic numbers)
+//   - record headlines MUST NOT propagate the Tc -- anharmonic_mandatory=true
+//     forces SSCHA + re-harvest before any Tc claim.
+//
+// === BZ-weighted moments (canonical) ===
+//
+//   lambda_BZ = sum_q w_q sum_nu lambda(q,nu) / sum_q w_q
+//   omega_log = exp( sum_{q,nu, omega>1, lambda>0} w_q lambda log(omega) /
+//                    sum_{q,nu, omega>1, lambda>0} w_q lambda )
+//   Tc        = (omega_log/1.2) * exp(-1.04(1+lambda)/(lambda - mu*(1+0.62 lambda)))
+//                                          == Allen-Dynes base McMillan form
+//
+// === I/O contract (Python implementation companion) ===
+//
+//   workdir   : dir holding <prefix>.dyn{i} + <prefix>.dyn{i}.elph.{i}
+//   prefix    : QE prefix (e.g. "h3cl", "labeh8")
+//   n_q       : IBZ q-points
+//   method    : "simple" | "interpolated"
+//   weights   : star multiplicities (default uniform; len = n_q)
+//   out       : JSON path; writes structured harvest record
+//
+// === JSON output schema ===
+//
+//   {
+//     "prefix": "h3cl",
+//     "method": { "electron_phonon": "simple", "harvest_v2_version": "1.0-validity-gate" },
+//     "n_q": 29,
+//     "weights": [...],
+//     "n_total_modes": 348,
+//     "min_freq_cm1": <float>,
+//     "n_imag_below_-5":  <int>,
+//     "n_imag_below_-50": <int>,
+//     "harmonic_validity":     "VALID" | "INVALID -- <reason>",
+//     "anharmonic_mandatory":  <bool>,
+//     "validity_reason":       "<human-readable>",
+//     "results": [
+//       { "sigma_Ry": 0.030, "lambda_BZ": ..., "omega_log_K": ..., "Tc_mu010_K": ..., "Tc_mu013_K": ... },
+//       ...
+//     ],
+//     "note_validity": "(only if INVALID) ..."
+//   }
+//
+// === Companion runner ===
+//
+//   The reference Python implementation that consumes QE ph.x text outputs is
+//   exported via `hexa run decks/labeh8/harvest_v2.hexa --workdir ... --prefix ...
+//   --n_q ... --method ... --out ...` at the pool/cloud host (writes JSON to
+//   $out path). The .hexa here is the canonical SSOT of the validity gate
+//   contract; the Python lowering lives at the dispatch site (per memory
+//   "demiurge sims = .hexa only" hexa-runner translation pattern).
+//
+// === Promote-to-stdlib path (g61) ===
+//
+//   When >= 2 deck dirs (labeh8 + h3cl_interp_ablation + ...) consume this
+//   harvest, promote to hexa-lang stdlib/rtsc/elph_harvest.hexa with thin
+//   `import rtsc.elph_harvest` shims in each deck. /gap F6 finding.
+
+@V := "harvest-v2" :: spec [active]
+  version              = "1.0-validity-gate"
+  imag_threshold_cm1   = -5.0
+  max_mild_imag_count  = 3
+  hard_imag_threshold  = -50.0
+  deep_mild_threshold  = -20.0
+
+@gate := "harmonic_validity" :: classifier
+  rule_1_hard          = "hard_count >= 1  ->  INVALID hard-soft"
+  rule_2_mild_excess   = "soft_count > 3   ->  INVALID too-many-mild"
+  rule_3_deep_mild     = "min_freq < -20   ->  INVALID deep-mild SSCHA required"
+  rule_4_default       = "else             ->  VALID"
+
+@moments := "BZ-weighted" :: identity
+  lambda_BZ            = "sum_q w_q sum_nu lambda(q,nu) / sum_q w_q"
+  omega_log            = "exp(sum_{q,nu, w>1, lam>0} w_q lam ln(w) / sum_{...} w_q lam)"
+  Tc_AD                = "(omega_log/1.2) * exp(-1.04(1+lam) / (lam - mu*(1+0.62 lam)))"
+  cm1_to_K             = 1.43877735
+
+@io := "harvest-contract" :: contract
+  inputs               = "<prefix>.dyn{i} + <prefix>.dyn{i}.elph.{i} for i in 1..n_q"
+  outputs              = "JSON record with validity gate + per-sigma table"
+  method_field         = "simple | interpolated  (electron_phonon)"
+  weights              = "star multiplicities (default uniform)"
+
+@verdicts := "honest g63" :: branches
+  valid                = "harmonic_validity=VALID -> record headlines OK"
+  invalid_soft         = "harmonic_validity=INVALID(soft) -> raw lambda/omega_log only, Tc gated by SSCHA"
+  invalid_hard         = "harmonic_validity=INVALID(hard) -> closed-negative; lattice distortion mandatory"
+
+@notes := "stdlib-promote" :: deferred
+  when                 = ">= 2 decks consume this harvest"
+  how                  = "promote to hexa-lang stdlib/rtsc/elph_harvest.hexa + thin shim per deck (g61)"
+  gap_ref              = "/gap F6 stdlib promotion finding (2026-05-26)"

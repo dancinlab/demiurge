@@ -1,0 +1,70 @@
+// h3cl interpolated-vs-simple ablation deck (METHOD validity, /gap full F2)
+//
+// Goal: re-run ph.x electron-phonon on the LANDED H3Cl 8x8x8q deck with
+// `electron_phonon = "interpolated"` (everything else identical to the simple
+// run already done at ~/rtsc_h3cl_8q/), then compare lambda_BZ + omega_log +
+// Tc(mu=0.10) head-to-head.
+//
+// /gap full Tier-1 F2 finding (2026-05-26):
+//   electron_phonon='simple' vs 'interpolated' UN-VERIFIED across the entire
+//   RTSC campaign. Expected Δλ ~0.2-0.3 magnitude across the family
+//   (interpolated keeps frequency-dependence vs simple double-delta).
+//   Worst case: h3cl 8q Tc 123-140K (simple) -> ~80K (interpolated) would
+//   require revising N5 wall doc + h3cl Tier-2 handoff caveat.
+//
+// Cell pick rationale (h3cl over labeh8):
+//   - h3cl 8q inputs ALREADY on ubu-1 ~/rtsc_h3cl_8q/ (relax.in / scf.in / ph.in
+//     + relaxed SCF run + JOB-DONE simple ph.x complete). Just toggle one line
+//     in ph.in and re-fire ph.x with `recover=.false.` from scratch.
+//   - 4-atom cubic primitive vs labeh8 10-atom hex -> 1-2h wall vs 3-6h.
+//   - h3cl is the §10.1 q-convergence-decider AND Tier-2 wetlab handoff
+//     (rtsc_h3cl_tier2_wetlab_handoff_20260524.json) -> ablation directly
+//     validates the largest-impact LANDED record.
+//
+// Cost: $0 (pool ubu-1 free per @D d7 — small 4-atom cell).
+//
+// Honest-boundary expectation:
+//   - if Tc(interpolated) within +/-15% of Tc(simple) -> simple method
+//     vindicated, atlas validity gate stamps "interpolated_ablation = PASS"
+//     for the family.
+//   - if Tc(interpolated) drops > 20% -> RTSC.log entry mandatory:
+//     N5 wall doc revision, h3cl handoff Tier-2 demoted to provisional,
+//     re-run remaining candidates (labeh8, h3o, h3se, h3te) with
+//     electron_phonon='interpolated'.
+
+@V := "h3cl-interp-ablation" :: runbook
+  pool_host             = "ubu-1"
+  workdir_simple        = "$HOME/rtsc_h3cl_8q"               // existing LANDED
+  workdir_interp        = "$HOME/rtsc_h3cl_8q_interp"        // new copy
+  prefix                = "h3cl"
+  q_grid                = "8x8x8 (29 IBZ q-points)"
+  walltime_h            = 1.5
+  cost_usd              = 0.0
+  baseline_record       = "exports/material_discovery/rtsc_h3cl_dft_6x6x6q_novel_20260524.json (6q baseline)"
+  reference_8q          = "RTSC.md milestone: h3cl 8q ubu-1 ALL DONE · lambda_BZ=1.21-1.37 · omega_log~1350K · Tc(mu0.10)=123-140K"
+
+@steps := "execution"
+  step1 = "cp -r $HOME/rtsc_h3cl_8q $HOME/rtsc_h3cl_8q_interp  # full copy including recover artifacts"
+  step2 = "cd $HOME/rtsc_h3cl_8q_interp && rm -rf h3cl.dyn*.elph.* h3cl.elph.inp_lambda.* h3cl.a2Fsave"
+  step3 = "edit ph.in: electron_phonon='interpolated' (keep recover=.true. for SCF reuse via outdir/h3cl.* files; q-grid 8x8x8 unchanged; el_ph_sigma + nsigma unchanged)"
+  step4 = "mpirun -np 6 ph.x -in ph.in > ph.interp.out 2>&1   # ~1-2h on ubu-1"
+  step5 = "harvest_v2.py --workdir ~/rtsc_h3cl_8q_interp --prefix h3cl --n_q 29 --method interpolated --out ~/rtsc_h3cl_8q_interp/harvest_v2.json"
+  step6 = "also re-harvest the simple run for apples-to-apples: --workdir ~/rtsc_h3cl_8q --method simple --out ~/rtsc_h3cl_8q/harvest_v2.json"
+  step7 = "scp both harvest_v2.json back to laptop; write rtsc_h3cl_interpolated_ablation_20260527.json"
+
+@gates := "ablation verdict"
+  pass_within_15pct      = "abs(Tc_interp - Tc_simple)/Tc_simple < 0.15 -> simple method vindicated"
+  flag_drop_15_to_25pct  = "Tc drop 15-25% -> caveat + revisit family; do NOT revise wall yet"
+  hard_drop_gt_25pct     = "Tc drop > 25% -> N5 wall doc revision REQUIRED; demote h3cl Tier-2 record"
+  flat_or_higher         = "Tc(interp) >= Tc(simple) -> simple method either matches or under-estimated (recheck plateau)"
+
+@verdicts := "g63 honest"
+  match                  = "validates entire H3X 6-record family simple-method propagation"
+  caveat                 = "family-wide caveat banner on records: 'interpolated_ablation = <delta>'"
+  break                  = "RTSC method-validity wall identified — every h3cl-style record gets demoted; SSCHA + interpolated co-required"
+
+@notes := "interpolated mode mechanics"
+  simple_method          = "QE 'simple' = double-delta nesting at Fermi surface, weights = lambda_q approx; missing freq dependence in EPC weight"
+  interpolated_method    = "QE 'interpolated' = full Fermi surface average using interpolated electron eigenvalues; restores freq-dependent EPC weight"
+  expected_direction     = "interpolated typically gives lower lambda (less double-delta over-est) but better omega_log; net Tc usually mildly lower"
+  expected_magnitude     = "literature Δλ ~0.1-0.3 across hydride family (e.g. H3S simple 2.30 vs interp 2.05-2.15)"
