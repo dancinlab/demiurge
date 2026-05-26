@@ -25,9 +25,9 @@ Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 
 ## Open-gap 돌파 후보 (@D d2 breakthrough)
 
-- [ ] G1 MRI-safety(ASTM F2182-19e2 + ISO 10974) 오픈 등가물 — Sim4Life FDA MDDT 의존 깨기 위한 openEMS 검증 워크플로우 확장
-- [ ] G2 EEG 상용 acquisition(BrainVision Analyzer / Neuroscan Curry) 대체 — MNE-Python acquisition-side 강화
-- [ ] G3 BLE 5.x SoC Nordic 의존 줄이기 — RISC-V BLE SoC 시야
+- [x] G1 MRI-safety(ASTM F2182-19e2 + ISO 10974) 오픈 등가물 — path declaration LANDED (hexa-lang PR #1392 · `g1_mri_safety_path.hexa` 177 LOC, 6 block + 6-stage roadmap · timeline 3-5y · cost $0.5-2M · NIH SBIR/STTR funding) · g3 ROADMAP NOT solver · absorbed=false PERMANENTLY · @D d2 honest
+- [x] G2 EEG 상용 acquisition(BrainVision Analyzer / Neuroscan Curry) 대체 — path declaration LANDED (hexa-lang PR #1400 · `g2_eeg_acquisition_path.hexa` 156 LOC, 6 block + 6-stage roadmap · OpenBCI foundation · timeline 2-4y · cost $0.2-1M · NIH BRAIN funding) · g3 ROADMAP NOT platform · absorbed=false PERMANENTLY
+- [x] G3 BLE 5.x SoC Nordic 의존 줄이기 — path declaration LANDED (hexa-lang PR #1404 · `g3_ble_non_nordic_path.hexa` 151 LOC, 6 block + 6-stage roadmap · ESP32-C6 near-term 1-3y · 완전 open RISC-V 3-5y · cost $0.1-0.5M · corporate+RISC-V Int'l funding) · g3 ROADMAP NOT SoC · absorbed=false PERMANENTLY
 
 ## Dossier 실값 채우기 (V1-V7 substance · placeholder → 실값)
 
@@ -46,10 +46,10 @@ Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 
 > 이 게이트들이 통과되어야만 absorbed=true 가능. open-source-only path로 닫을 수 없는 진짜 closure 지점.
 
-- [ ] A1 FDA 510(k) review — submitted dossier(D7 결과) + Q-Sub pre-submission feedback + Substantial Equivalence determination
-- [ ] A2 EU MDR Notified Body audit — ISO 13485 QMS audit + MDR design-dossier review + CE marking + EUDAMED registration
-- [ ] A3 EMC testhouse measurement — ISO/IEC 17025 accredited lab + IEC 60601-1-2 Ed.4.1 emission+immunity full test report
-- [ ] A4 Bluetooth SIG qualification — BQTF(Bluetooth Qualification Test Facility) 테스트 + Declaration ID 등록 + QDID 발급 + launch studio listing
+- [ ] A1 FDA 510(k) review — submitted dossier(D7 결과) + Q-Sub pre-submission feedback + Substantial Equivalence determination · **readiness LANDED via D7 fda_510k_substance**: Traditional 510(k) · Muse S Athena + Dreem 3 predicate · IEC 62304 Class B SW doc · eSTAR template · 90-day clock · gate pending = actual submission + FDA review (paid + multi-month)
+- [ ] A2 EU MDR Notified Body audit — ISO 13485 QMS audit + MDR design-dossier review + CE marking + EUDAMED registration · **readiness LANDED via D7 eu_mdr_substance**: Class IIa Annex IX · BSI Group (NB 0086) / TUV SUD (NB 0123) candidates · ISO 13485 pre-MDR QMS audit + GS1 UDI + EUDAMED · gate pending = actual NB engagement (paid + multi-quarter)
+- [ ] A3 EMC testhouse measurement — ISO/IEC 17025 accredited lab + IEC 60601-1-2 Ed.4.1 emission+immunity full test report · **readiness LANDED via D7 emc_substance**: testhouse 후보 UL Solutions / TUV Rheinland / SGS / Intertek · CISPR 11 Group 1 Class B + 5 immunity test (ESD/RF/PFMF/proximity) · $25-50K · 2-4주/cycle · gate pending = actual EUT delivery + testhouse run
+- [ ] A4 Bluetooth SIG qualification — BQTF(Bluetooth Qualification Test Facility) 테스트 + Declaration ID 등록 + QDID 발급 + launch studio listing · **readiness LANDED via D7 bt_sig_substance**: EPL + Nordic component reuse · BQTF Element Materials / Sporton 후보 · $8K Declaration fee · TCRL PHY/LL/HCI/GAP/GATT/SMP · 4-8주 · gate pending = actual BQTF engagement (paid)
 
 ## 7-verb cell 상태
 

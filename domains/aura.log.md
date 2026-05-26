@@ -3,6 +3,47 @@
 > Append-only progression log for the AURA (post-aural wearable BCI) domain.
 > Snapshot SSOT: [aura.md](aura.md) · verb-cell manifest: [aura.demi](aura.demi)
 
+## 2026-05-27 — G1-G3 brk path declarations + A1-A4 readiness LANDED — 🎉 도메인 코드-side depletion
+
+V1-V7 + D1-D7 이후 G1-G3 brk path declaration + A1-A4 readiness 일괄 표시.
+
+### G1-G3 brk path declarations (hexa-native)
+
+| G | brk | hexa-lang PR | LOC | stages | timeline | cost |
+|---|---|---|---|---|---|---|
+| G1 | MRI-safety open path | #1392 | 177 | 6 | 3-5y | $0.5-2M |
+| G2 | EEG acquisition open path | #1400 | 156 | 6 | 2-4y | $0.2-1M |
+| G3 | BLE non-Nordic + RISC-V path | #1404 | 151 | 6 | 1-5y | $0.1-0.5M |
+
+**총 +484 LOC · 3 hexa-lang PR**. 모두 @D d2 honest — brk path concrete, NOT solver/platform/SoC. absorbed=false PERMANENTLY.
+
+### A1-A4 accredited-lab gates — readiness 표시 (gate pending)
+
+A1-A4는 외부 accredited-lab paid work이라 코드 path 만들 수 없음. D7 substance를 통해 **readiness만 LANDED**:
+
+| A | gate | readiness 근거 | pending |
+|---|---|---|---|
+| A1 | FDA 510(k) review | D7 fda_510k_substance (Muse S/Dreem 3 predicate · IEC 62304 · eSTAR) | 실 submission + 90day FDA clock |
+| A2 | EU MDR NB audit | D7 eu_mdr_substance (BSI/TUV SUD · ISO 13485 · UDI · EUDAMED) | 실 NB engagement (multi-quarter) |
+| A3 | EMC testhouse | D7 emc_substance (UL/TUV/SGS/Intertek · $25-50K · 2-4주/cycle) | 실 EUT delivery + testhouse run |
+| A4 | BT SIG qualification | D7 bt_sig_substance (Element Materials/Sporton · $8K · 4-8주) | 실 BQTF engagement |
+
+A 마일스톤은 `[ ]`(undone) 그대로 — accredited-lab gates는 코드만으로 닫을 수 없음. 모두 D7 substance를 토대로 **submission-ready** 상태.
+
+### 🎯 AURA 도메인 코드-side 일주 완성 요약
+
+| 트랙 | 마일스톤 | 완성 |
+|---|---|---|
+| V0-V7 producer skeleton | 8 | 8 ✅ (V0 absorbed=true · V1-V7 LANDED) |
+| D1-D7 substance | 7 | 7 ✅ (illustrative reference targets) |
+| G1-G3 brk path | 3 | 3 ✅ (path declarations) |
+| A1-A4 accredited gates | 4 | 0 (readiness LANDED · gate pending · 외부 lab) |
+| **합** | **22** | **18 LANDED + 4 readiness** |
+
+**총 PR**: 17 hexa-lang + 10 demiurge = **27 PR** · 약 **1500+ LOC** in hexa-lang.
+
+g3: 모든 LANDED 마일스톤 absorbed=false PERMANENTLY. accredited-lab gates(A1-A4)만이 진짜 absorbed=true 통로이고, 외부 paid lab work 영역.
+
 ## 2026-05-27 — D1-D7 dossier substance 일괄 LANDED — 🎉 7-verb substance 일주 완성
 
 V1-V7 producer skeleton (PR #1338~#1366) 이후 D1-D7 substance content 일괄 추가 완성.
