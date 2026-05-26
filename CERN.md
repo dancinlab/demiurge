@@ -12,6 +12,7 @@
 - [x] `cern + specify / architect / design / handoff` — 나머지 4-verb honest stub: 타입드 record 4종 (`Cern{Specify,Structure,Design,Handoff}Record.swift`, R3 cockpit-consumer 디코드 타겟) + `cern.demi` cell 4종 STUB 정비 (`absorbed=false` · GATE_OPEN · `accel_mechanism` 필드 · `stub — <real impl>` caveat). 디스패치 = @D d4 manifest-driven (`CellrunDispatch.run("cern", verb)`, 새 producer class 0 · ActionDispatch 분기 0). substrate `stdlib/cern/{specify,structure,design,handoff}.py` 미작성 → cellrun rc=2 honest-skip. cockpit `swift build` GREEN
 - [x] **탁상가속기** (LWFA/PWFA) closed-form cell — `plasma-wakefield` cold-linear (ω_p · λ_p · E_0 Dawson) hexa-native, selftest 5/5 GREEN + 2 verify atom 🟢 (`hexa-lang` PR #1007). 커지면 `LPA.md` lazy-split
 - [x] **탁상가속기 1-D linear PIC parity** — FBPIC ⨯ cold-linear closed-form Δ=3.56% (`hexa-lang` PR #1088 · stdlib/cern/plasma_wakefield.hexa +124-4). 가속 메커니즘 축의 hexa-native 종착점
+- [x] **탁상가속기 2-D 비선형 blowout PIC sweep** (2026-05-26 · 무료 CPU $0) — FBPIC 2-D cylindrical, a0={0.5, 2.0, 4.0} 사다리: E_z={1.70, 73.62, 405.64} GV/m (0.018 / 0.77 / 4.22 × E_0). blowout 전이 재현 — a0=0.5 diffraction-limited(E_z≪E_0) → a0=2 blowout 진입(0.77 E_0) → a0=4 deep blowout(>wavebreaking). sim-wall 측정값(atlas N/A · g63), 🟢 anchor `wakefield_e0_gv_m` 대비. ledger: `exports/sweep/cern-blowout-pic-2026-05-26/ledger.json`. (downstream 항목을 GPU 없이 free pool CPU 로 당겨 완료)
 - [x] **CERN 도메인 tabletop 기준 구현 완료** (2026-05-25) — RF 축 4-cell 모두 closed-form/algorithm closure 도달 + tabletop(plasma-wakefield) 축 cold-linear closed-form + 1-D linear PIC parity 까지 확보. 잔여 wet-lab / GPU-heavy / sourced-deck dependency 는 `## downstream` 으로 분리 (demiurge clean-room scope 외)
 
 ## downstream (out of demiurge clean-room scope · 별 시스템 dependency)
@@ -22,7 +23,7 @@
 |---|---|---|
 | Geant4-MC stopping-power 본해 (L10/L11 Stage 4) | Geant4 source build + `geant4_pybind` trampoline ownership 디버깅 (pybind11 segfault — A3 라운드 발견) | wet-lab equivalent — GPU pod 별 cycle 또는 `/micro-exp` sweep |
 | measured-ring optics parity | sourced LHC/FCC-ee/SPS optics deck (licensing · clean-room risk) | external data ingest — 별 도메인 (가속기 시설 공식 release 시) |
-| plasma-wakefield 비선형 blowout PIC (2-D · GPU) | 2-D FBPIC / WarpX GPU run (n_p · 강도 sweep) | `/micro-exp` GPU sweep — design-grade 별 cycle |
+| ~~plasma-wakefield 비선형 blowout PIC (2-D)~~ ✅ **당겨 완료** (2026-05-26) | ~~GPU~~ → 무료 pool CPU(ubu-1, $0)로 qualitative 사다리 확보 — `exports/sweep/cern-blowout-pic-2026-05-26/` | design-grade 수렴(grid/particle convergence · 3-D · a0-별 spot 최적화)은 여전히 GPU sweep 잔여 |
 
 ---
 

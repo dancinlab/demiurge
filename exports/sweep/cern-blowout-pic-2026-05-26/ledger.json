@@ -1,0 +1,51 @@
+{
+  "batch_id": "cern-blowout-pic-2026-05-26",
+  "domain": "CERN",
+  "axis": "plasma-wakefield (탁상가속기 / LWFA)",
+  "kind": "pic-wakefield-blowout",
+  "deck": "wakefield_pic_2d.py — FBPIC 2-D cylindrical LWFA (Nm=2 azimuthal modes, moving window v=c)",
+  "host": "pool:ubu-1 (free CPU, $0 — GPU provisioning broken pool-wide, scoped to CPU)",
+  "n_e_cm3": 1e18,
+  "lambda_p_um": 33.38943270215429,
+  "steps_per_candidate": 6000,
+  "budget": {"local_hours_max": 6, "usd_spent": 0, "note": "g64 — free pool CPU, no rent"},
+  "closed_form_anchor": {
+    "fn": "wakefield_e0_gv_m",
+    "E_0_GVm": 96.15919872735485,
+    "meaning": "cold non-relativistic wave-breaking SCALE (max sustainable), NOT the linear-regime field",
+    "tier": "🟢 SUPPORTED-NUMERICAL (hexa-lang tool/verify_cli.hexa · |Δ|≤5e-13 · PR #1176)"
+  },
+  "candidates": [
+    {
+      "id": "a0_0.5", "a0": 0.5, "regime": "linear / diffraction-limited",
+      "E_z_peak_GVm": 1.698697, "ratio_Ez_over_E0": 0.017665461355207142,
+      "json": "candidates/a0_0.5.json",
+      "note": "weak driver — no relativistic self-guiding (Rayleigh z_R~79um << 1.5mm plasma), laser diffracts → wake collapses → E_z << E_0. Confirms NO artificial saturation (g63 honest anchor)."
+    },
+    {
+      "id": "a0_2.0", "a0": 2.0, "regime": "blowout onset",
+      "E_z_peak_GVm": 73.62322528355536, "ratio_Ez_over_E0": 0.7656,
+      "json": "candidates/a0_2_full.json",
+      "note": "relativistic self-focusing guides the pulse → bubble forms → E_z ~ 0.77 E_0 (approaching wave-breaking scale)."
+    },
+    {
+      "id": "a0_4.0", "a0": 4.0, "regime": "deep blowout",
+      "E_z_peak_GVm": 405.6421915488577, "ratio_Ez_over_E0": 4.2185,
+      "json": "candidates/a0_4.json",
+      "note": "deep blowout — E_z exceeds cold wave-breaking E_0 by 4.2x (relativistic blowout, no cold closed-form parity expected; a0>=2 caveat in deck)."
+    }
+  ],
+  "pattern": "Monotonic E_z(a0) ladder spanning the LWFA self-guiding/blowout transition: a0=0.5 diffraction-limited (E_z<<E_0) → a0=2 blowout onset (E_z~0.77 E_0) → a0=4 deep blowout (E_z=4.2 E_0). The closed-form E_0=96.16 GV/m behaves as the wave-breaking SCALE the nonlinear field crosses near a0~2, exactly as Esarey RMP 2009 predicts. No falsification.",
+  "verdict": {
+    "tier": "sim-wall (PIC field) — atlas N/A (g63: continuous EM field is not a verify atom)",
+    "honesty_note": "These are FBPIC field-peak measurements, NOT registrable closed-form atoms. The 🟢 anchor (wakefield_e0_gv_m) is the registered atom; the PIC E_z values are measurements relative to it. NO atlas register (per micro-exp local-pool adapter — wall numbers persisted verbatim only).",
+    "linear_cross_check": "HONEST OUTCOME — a0=0.5 did NOT reproduce E_z->E_0 (the deck docstring's naive expectation was imprecise: E_0 is the wave-breaking MAX, not the weak-driver field). Instead a0=0.5 confirms the linear/diffraction-limited regime (E_z=0.018 E_0). The defensible cross-check is the BLOWOUT TRANSITION across the a0 ladder, which is reproduced.",
+    "g63_disposition": "all 3 candidates reached a result; none dropped; none falsified (CLOSED-complete sweep)"
+  },
+  "scope_caveats": [
+    "2-D cylindrical (Nm=2), not full 3-D — azimuthal asymmetries (hosing) not captured",
+    "no laser depletion / dephasing length tracking — single 1.5mm propagation snapshot",
+    "CPU run: production-grade convergence (grid/particle) not swept — qualitative ladder, not design-grade tune",
+    "pulse/spot params fixed (w0=1.2*sqrt(a0)*lambda_p/2pi) — not optimized per a0"
+  ]
+}

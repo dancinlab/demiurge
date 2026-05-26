@@ -1,0 +1,20 @@
+{
+  "deck": "wakefield_pic_2d",
+  "kind": "pic-wakefield",
+  "a0": 0.5,
+  "n_e_cm3": 1e+18,
+  "lambda_p_um": 33.38943270215429,
+  "e0_closed_form_GVm": 96.15919872735485,
+  "dry_run": false,
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "scope_caveats": [
+    "sim wall (PIC field) \u2014 NOT a verify atom, atlas N/A (g63)",
+    "a0<<1: E_z_peak -> E_0 closed-form (g5 cross-check)",
+    "a0>=2: blowout, E_z>E_0, no closed-form parity"
+  ],
+  "status": "ok",
+  "steps_run": 6000,
+  "E_z_peak_GVm": 1.6986966090657707,
+  "linear_ratio_Ez_over_E0": 0.017665461355207142
+}

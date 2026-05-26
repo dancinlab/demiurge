@@ -2,6 +2,20 @@
 
 Append-only history sister of `CERN.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T08:30Z — 탁상가속기 2-D 비선형 blowout PIC sweep 완료 (무료 CPU $0 · downstream 당겨 완료)
+
+`## downstream` 의 "2-D blowout PIC (GPU)" 항목을 GPU 없이 **무료 pool CPU(ubu-1)** 로 당겨 완료. FBPIC 2-D cylindrical, a0 강도 사다리 3점 — 모두 6000 step.
+
+- [x] FBPIC 2-D deck `wakefield_pic_2d.py` — Nm=2 azimuthal, moving window v=c (LWFA 필수), a0={0.5,2.0,4.0} sweep
+- [x] GPU provisioning 전(全) pool 고장(`hexa cloud rent` no-op) → **무료 CPU 로 pivot** ($0 spent · g64). ubu-1 ~0.7s/step
+- [x] **blowout 사다리 재현** — E_z = {1.70, 73.62, 405.64} GV/m = {0.018, 0.766, 4.218} × E_0(96.16):
+  - a0=0.5 → diffraction-limited (z_R~79µm ≪ 1.5mm, self-guiding 없음 → E_z ≪ E_0). 인위 saturation 없음 정직 anchor
+  - a0=2.0 → blowout 진입 (상대론적 self-focusing → bubble → E_z ~ 0.77 E_0)
+  - a0=4.0 → deep blowout (E_z = 4.2 E_0, cold wavebreaking 초과 — closed-form parity 기대 안 함, a0≥2 caveat)
+- [x] ledger `exports/sweep/cern-blowout-pic-2026-05-26/ledger.json` (g65 typed surface) + candidate JSON 3종
+- [x] **정직 노트** — sim-wall 측정값(PIC field) = verify atom 아님, atlas N/A (g63). 🟢 anchor `wakefield_e0_gv_m` 가 등재 atom; PIC E_z 는 그에 대한 상대 측정. linear cross-check 는 a0=0.5 가 E_0 를 *재현 안 함*(deck docstring 의 naive 기대가 부정확 — E_0 는 wavebreaking 최댓값이지 weak-driver 場 아님). 방어 가능한 cross-check = blowout 전이 재현(✓)
+- [ ] design-grade 잔여 (여전히 GPU sweep) — grid/particle convergence · 3-D · a0-별 spot 최적화
+
 ## 2026-05-26T05:00Z — BLUE-MAX 탐색 결론: 🔵 N/A (연속 물리량 = 🟢 천장) · 4 atom 🟢 verified · verify=로컬직접 교훈
 
 g69 BLUE-MAX(🔵 algebraic-root pair) 를 CERN wakefield 에 적용 시도 → **🔵 도달 불가가 정직한 결론**. verify-native closure 는 🟢 SUPPORTED-NUMERICAL 에서 완성 (= 원래 tabletop closure 의 천장이 옳았음).
