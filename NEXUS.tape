@@ -45,6 +45,24 @@
   reused_by = "ANTIMATTER (6) trap"
   evidence  = "RTSC 3b33c26 -> ANTIMATTER #168"
 
+@X e4 := "ANTIMATTER ioffe_loop_bz -> UFO" :: reuse-edge [tier-2 active]
+  provides  = "ANTIMATTER"
+  primitive = "ioffe_loop_bz (on-axis current-loop B_z)"
+  reused_by = "UFO Stage-1 hover — Meissner 부상 B-field verify (🟢 SUPPORTED-NUMERICAL ×3)"
+  evidence  = "UFO/verify/stage1-hover-fields.md · UFO.log R1 (#237)"
+
+@X e5 := "FUSION triple_product -> UFO" :: reuse-edge [tier-2 active]
+  provides  = "FUSION"
+  primitive = "triple_product (a·b·c product atom · Lawson n·T·τ)"
+  reused_by = "UFO Stage-2 cruise — MHD thrust F_MHD = J·B·V verify (🟢 |Δ|=0.0 ×3)"
+  evidence  = "UFO/verify/stage2-cruise-mhd.md · UFO.log R1 (#237)"
+
+@X e6 := "ANTIMATTER pair_threshold_total + rel_kinetic_from_p -> UFO" :: reuse-edge [tier-2 active]
+  provides  = "ANTIMATTER"
+  primitive = "pair_threshold_total · rel_kinetic_from_p (relativistic energy bookkeeping)"
+  reused_by = "UFO Stage-3 orbital — γ-rocket I_sp = c/g 광자천장 verify (🟢 |Δ|=0.0 ×3)"
+  evidence  = "UFO/verify/stage3-orbital-gamma.md · UFO.log R1 (#237)"
+
 # ── 2. provides[] registry (per-domain offered primitives · atlas fn) ──
 
 @X p1 := "NOVEL-TOOL provides" :: provides [active]
@@ -62,6 +80,15 @@
 @X p4 := "CERN provides" :: provides [active]
   domain     = "CERN"
   primitives = "accelerator (plasma-wakefield cold-linear)"
+
+@X p5 := "FUSION provides" :: provides [active]
+  domain     = "FUSION"
+  primitives = "triple_product · sigma_v_dt/dhe3/ddp/ddn · pb11_* · q_plasma · ignition_margin · beta_max_pct/beta_n/q_star (Troyon)"
+
+@X p6 := "UFO provides" :: provides [active]
+  domain     = "UFO"
+  primitives = "ufo_isp_fuel_ratio · ufo_rocket_beta · ufo_gl_derating · ufo_mli_shield (R1 실물리) · ufo_lattice_sigma_pow · ufo_warp_composite · ufo_lattice_master (R2 n6-lattice formal · 물리 ⚪-fenced)"
+  note       = "folded to hexa-lang atlas (@F verified-ufo_*-num · substrate hub g68) — recompute-resolvable · PR #1222 (R1) #1244 (R2)"
 
 # ── 3. candidate edges (conceptual · no code reuse yet) ──
 
@@ -83,4 +110,7 @@
   NOVEL-TOOL --current_loop_offaxis (M2.4)--+--> RTSC (Wheeler on-axis B · solenoid getdp)
                                             +--> ANTIMATTER (6) trap (Ioffe-Pritchard depth 0.35K)
   RTSC --getdp 4.0 toolchain---------------------> ANTIMATTER (6) trap
+  ANTIMATTER --ioffe_loop_bz · pair_threshold · rel_kinetic--> UFO (Stage-1 hover · Stage-3 γ-rocket)
+  FUSION --triple_product (J·B·V)----------------> UFO (Stage-2 MHD cruise)
+  UFO --provides (7 atom)--> hexa-lang atlas (isp/beta/gl/mli · lattice σ^k/(σ−φ)²/σ·φ)
   GRAPH
