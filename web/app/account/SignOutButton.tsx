@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export function SignOutButton() {
+export function SignOutButton({ label }: { label: string }) {
   const [loading, setLoading] = useState(false);
 
   async function signOut() {
@@ -20,7 +20,7 @@ export function SignOutButton() {
       disabled={loading}
       className="rounded border border-neutral-300 px-3 py-1 text-sm hover:bg-neutral-100 disabled:opacity-40 dark:border-neutral-700 dark:hover:bg-neutral-800"
     >
-      {loading ? "..." : "sign out"}
+      {loading ? "..." : label}
     </button>
   );
 }

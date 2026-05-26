@@ -4,7 +4,19 @@ import { useState } from "react";
 
 type Mode = "signin" | "signup";
 
-export function SignInForm() {
+export type SignInLabels = {
+  tabSignin: string;
+  tabSignup: string;
+  email: string;
+  password: string;
+  passwordHint: string;
+  submitSignin: string;
+  submitSignup: string;
+  loading: string;
+  errorRequired: string;
+};
+
+export function SignInForm({ labels }: { labels: SignInLabels }) {
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +26,7 @@ export function SignInForm() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!email || !password) {
-      setError("email + password 필수");
+      setError(labels.errorRequired);
       return;
     }
     setLoading(true);
@@ -55,13 +67,13 @@ export function SignInForm() {
                 : "text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100")
             }
           >
-            {m === "signin" ? "sign in" : "sign up"}
+            {m === "signin" ? labels.tabSignin : labels.tabSignup}
           </button>
         ))}
       </div>
       <form onSubmit={submit} className="space-y-3">
         <div>
-          <label className="block text-xs text-neutral-500">email</label>
+          <label className="block text-xs text-neutral-500">{labels.email}</label>
           <input
             type="email"
             value={email}
@@ -73,9 +85,9 @@ export function SignInForm() {
         </div>
         <div>
           <label className="block text-xs text-neutral-500">
-            password{" "}
+            {labels.password}{" "}
             {mode === "signup" && (
-              <span className="text-neutral-400">(≥6 chars)</span>
+              <span className="text-neutral-400">{labels.passwordHint}</span>
             )}
           </label>
           <input
@@ -97,7 +109,11 @@ export function SignInForm() {
           disabled={loading}
           className="w-full rounded bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-40 dark:bg-neutral-100 dark:text-neutral-900"
         >
-          {loading ? "..." : mode === "signin" ? "sign in" : "create account"}
+          {loading
+            ? labels.loading
+            : mode === "signin"
+              ? labels.submitSignin
+              : labels.submitSignup}
         </button>
       </form>
     </div>
