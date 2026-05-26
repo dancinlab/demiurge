@@ -61,12 +61,11 @@ scope_caveats     = [
 
 # --- WIRED: design (KiCad PCB + FreeCAD enclosure stub) ---------------------
 [cell.design]
-substrate         = python3
-python_candidates = python3.13, python3.12, python3
-script            = stdlib/aura/design.py
+substrate         = hexa
+script            = stdlib/aura/design.hexa
 record_kind       = aura_design_record
 output_dir        = exports/aura/design
-required_deps     = python3
+required_deps     = hexa
 gate_default      = OPEN
 absorbed_default  = false
 scope_caveats     = [
