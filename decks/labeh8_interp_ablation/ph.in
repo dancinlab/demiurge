@@ -1,0 +1,19 @@
+labeh8 4x4x4 q full-grid phonon + el-ph (METHOD ablation: electron_phonon='interpolated' vs prior 'simple' at PR #248)
+&inputph
+  prefix = 'labeh8'
+  outdir = '/home/aiden/rtsc_labeh8_interp_ablation/out'
+  fildyn = '/home/aiden/rtsc_labeh8_interp_ablation/labeh8.dyn'
+  ldisp = .true.
+  nq1 = 4
+  nq2 = 4
+  nq3 = 4
+  tr2_ph = 1.0d-12
+  recover = .true.
+  electron_phonon = 'interpolated'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+  nk1 = 32
+  nk2 = 32
+  nk3 = 32
+  fildvscf = 'dvscf'
+/

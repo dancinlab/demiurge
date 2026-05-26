@@ -1,0 +1,76 @@
+// run.hexa — labeh8 METHOD-validity ablation runner (hexa-native dispatch)
+//
+// Purpose: re-run ph.x with electron_phonon='interpolated' (vs prior PR #248
+// 'simple') on the same 4x4x4 q-grid; harvest_v2 will then compute delta on
+// (lambda_BZ, Tc) for the σ=0.030 plateau.
+//
+// Host: pool ubu-1 (shared with h3br agent a40c5a87 4 x ph.x for h3cl interp;
+// own footprint kept small — np=4 / OMP=1 / nice +10).
+// Walltime: timeout 6h cap (no recover slip-stream beyond that).
+// Cost: $0 (pool free).
+//
+// Provenance: this .hexa is the canonical executable record per @D d3 +
+// memory note "demiurge sims = .hexa only". Direct shell launch via
+// `pool on ubu-1 'cd <dir> && bash <(hexa lower run.hexa)'` or, more
+// commonly, the .hexa lowers to a transient shell script at dispatch.
+
+@V := "labeh8-interp-ablation" :: spec [active]
+  version  = "1.0"
+  prefix   = "labeh8"
+  host     = "ubu-1 (pool)"
+  np       = 4
+  omp      = 1
+  walltime = "6h"
+  nice     = 10
+
+@workdir := "ubu-1 absolute paths" :: paths
+  base     = "/home/aiden/rtsc_labeh8_interp_ablation"
+  pseudo   = "/home/aiden/rtsc_labeh8_interp_ablation/pseudo"
+  outdir   = "/home/aiden/rtsc_labeh8_interp_ablation/out"
+
+@env := "QE micromamba qe env" :: env
+  pw_x     = "pw.x  (QE 7.5, micromamba qe)"
+  ph_x     = "ph.x  (QE 7.5, micromamba qe)"
+  activate = "eval $(micromamba shell hook --shell bash) && micromamba activate qe"
+
+@step_1_scf := "SCF (8x8x8 k-grid)" :: action
+  cmd      = "timeout 1h nice -n 10 mpirun -np 4 pw.x -in scf.in > scf.out 2>&1"
+  done_marker = "JOB DONE in scf.out"
+  on_done  = "touch scf.done"
+  skip_if  = "scf.done exists"
+
+@step_2_ph := "ph.x 4x4x4q interpolated" :: action
+  cmd      = "timeout 6h nice -n 10 mpirun -np 4 ph.x -in ph.in > ph.out 2>&1"
+  done_marker = "JOB DONE in ph.out"
+  on_done  = "touch ph.done"
+  on_fail  = "tail -50 ph.out (timeout or convergence stall is also a finding)"
+
+@harvest := "post JOB DONE — separate agent" :: deferred
+  parser   = "decks/labeh8/harvest_v2.hexa companion python"
+  inputs   = "labeh8.dyn{1..8} + labeh8.dyn{i}.elph.{i}"
+  outputs  = "exports/material_discovery/rtsc_labeh8_interpolated_ablation_20260527.json"
+  delta_vs = "rtsc_labeh8_fullbz_elph_20260526.json  (simple baseline, PR #248)"
+
+@dispatch_recipe := "pool launch command" :: recipe
+  step_1   = "scp scf.in ph.in to ubu-1:/home/aiden/rtsc_labeh8_interp_ablation/"
+  step_2   = "pool on ubu-1 'cd /home/aiden/rtsc_labeh8_interp_ablation && bash <shell_lowering>'"
+  step_3   = "Monitor — tail ph.out, alert on JOB DONE | error | timeout"
+
+// === Shell lowering (transcribed below for direct copy-to-host) ===
+//
+//   #!/usr/bin/env bash
+//   set -euo pipefail
+//   WORKDIR=/home/aiden/rtsc_labeh8_interp_ablation
+//   cd "$WORKDIR"
+//   export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
+//   eval "$(micromamba shell hook --shell bash)" || true
+//   micromamba activate qe || true
+//   echo "[$(date -Iseconds)] === labeh8 interp ablation start (np=4 omp=1 nice+10) ==="
+//   if [[ ! -f scf.done ]]; then
+//     timeout 1h nice -n 10 mpirun -np 4 pw.x -in scf.in > scf.out 2>&1
+//     grep -q "JOB DONE" scf.out && touch scf.done
+//   fi
+//   echo "[$(date -Iseconds)] ph.x interpolated start"
+//   timeout 6h nice -n 10 mpirun -np 4 ph.x -in ph.in > ph.out 2>&1 || true
+//   if grep -q "JOB DONE" ph.out; then touch ph.done; fi
+//   echo "[$(date -Iseconds)] === labeh8 interp ablation end ==="
