@@ -1,0 +1,44 @@
+&CONTROL
+  ! MgB2 — AlB2 prototype P6/mmm (#191), 2 atoms / primitive
+  ! Pilot #2 of non-hydride RTSC frontier — ambient measured 39.0K (Akimitsu 2001)
+  ! BETE-NET training-set coverage (light, ambient) → direct reproduce baseline
+  calculation     = 'scf'
+  prefix          = 'mgb2_pure'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  verbosity       = 'high'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ! Hexagonal P6/mmm (AlB2 prototype, ibrav=4)
+  ! a = 3.086 Å = 5.832 Bohr · c = 3.524 Å · c/a = 1.142  (Akimitsu 2001 measured)
+  ! ibrav=4: celldm(1)=a · celldm(3)=c/a · ALL Bohr-relative
+  ! Mg at 1a (0,0,0) · B at 2d (1/3, 2/3, 1/2) + (2/3, 1/3, 1/2)
+  ibrav           = 4
+  celldm(1)       = 5.8320
+  celldm(3)       = 1.1418
+  nat             = 3
+  ntyp            = 2
+  ecutwfc         = 60
+  ecutrho         = 600
+  occupations     = 'smearing'
+  smearing        = 'mp'           ! Methfessel-Paxton — metal (d15)
+  degauss         = 0.02
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.7
+  electron_maxstep = 200
+/
+ATOMIC_SPECIES
+  Mg  24.305   Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF
+  B   10.811   B.pbe-n-rrkjus_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS crystal
+  Mg  0.0000000   0.0000000   0.0000000
+  B   0.3333333   0.6666667   0.5000000
+  B   0.6666667   0.3333333   0.5000000
+
+K_POINTS automatic
+  12 12 12  0 0 0

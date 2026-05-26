@@ -1,0 +1,18 @@
+MgB2 electron-phonon 6x6x6 q (non-hydride RTSC frontier pilot #2 — ambient 39K anchor)
+&inputph
+  prefix              = 'mgb2_pure'
+  outdir              = './out'
+  fildyn              = 'mgb2_pure.dyn'
+  fildvscf            = 'dvscf'
+  ldisp               = .true.
+  nq1                 = 6
+  nq2                 = 6
+  nq3                 = 6
+  tr2_ph              = 1.0d-14
+  electron_phonon     = 'simple'
+  el_ph_sigma         = 0.005      ! Ry, ramped via el_ph_nsigma
+  el_ph_nsigma        = 10         ! σ scan 0.005…0.050 Ry → plateau search
+  recover             = .true.     ! checkpoint-safe
+  alpha_mix(1)        = 0.3
+  max_seconds         = 100000
+/

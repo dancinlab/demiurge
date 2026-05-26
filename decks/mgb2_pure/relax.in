@@ -1,0 +1,50 @@
+&CONTROL
+  ! MgB2 — vc-relax to settle celldm (P6/mmm hexagonal, 3 atoms)
+  ! seed a = 5.832 Bohr (3.086 Å) · c/a = 1.1418 (3.524/3.086) — Akimitsu 2001
+  ! cell_dofree = '2Dxy' keeps c-axis variable, in-plane hex symmetric
+  calculation     = 'vc-relax'
+  prefix          = 'mgb2_pure'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ibrav           = 4
+  celldm(1)       = 5.8320
+  celldm(3)       = 1.1418
+  nat             = 3
+  ntyp            = 2
+  ecutwfc         = 60
+  ecutrho         = 600
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.02
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.7
+  electron_maxstep = 200
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  press           = 0.0            ! ambient target
+  cell_dofree     = 'all'           ! free a + c (P6/mmm symmetry preserved by atom positions)
+/
+ATOMIC_SPECIES
+  Mg  24.305   Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF
+  B   10.811   B.pbe-n-rrkjus_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS crystal
+  Mg  0.0000000   0.0000000   0.0000000
+  B   0.3333333   0.6666667   0.5000000
+  B   0.6666667   0.3333333   0.5000000
+
+K_POINTS automatic
+  12 12 12  0 0 0

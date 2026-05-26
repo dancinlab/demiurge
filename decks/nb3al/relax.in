@@ -1,0 +1,54 @@
+&CONTROL
+  ! Nb3Al — vc-relax to settle celldm (Pm-3n, 8 atoms)
+  ! seed celldm = 9.8020 Bohr (a_lit 5.187 Å @ 4K, Junod 1971)
+  ! cell_dofree = 'ibrav' constrains symmetry-preserving cell relaxation
+  calculation     = 'vc-relax'
+  prefix          = 'nb3al'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ibrav           = 1
+  celldm(1)       = 9.8020
+  nat             = 8
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 800
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.02
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  electron_maxstep = 200
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  press           = 0.0            ! ambient target
+  cell_dofree     = 'ibrav'         ! keep cubic symmetry (Pm-3n preserved)
+/
+ATOMIC_SPECIES
+  Nb  92.906   Nb.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Al  26.982   Al.pbe-n-rrkjus_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS crystal
+  Al  0.0000000   0.0000000   0.0000000
+  Al  0.5000000   0.5000000   0.5000000
+  Nb  0.2500000   0.0000000   0.5000000
+  Nb  0.7500000   0.0000000   0.5000000
+  Nb  0.5000000   0.2500000   0.0000000
+  Nb  0.5000000   0.7500000   0.0000000
+  Nb  0.0000000   0.5000000   0.2500000
+  Nb  0.0000000   0.5000000   0.7500000
+
+K_POINTS automatic
+  8 8 8  0 0 0

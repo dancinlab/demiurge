@@ -18,6 +18,8 @@
 - [ ] h3br ω_log 향상 probe (stable strong-λ base · 압력/lighter substitution → Tc ∝ ω_log) — N5 breakthrough (stable·강λ 확보, ω_log bottleneck 만 남음)
 - [x] N5 wall 재정의 — λ-포화 → ω_log bottleneck 축 전환 (h3o unstable↔h3br stable-low-Tc 대조 — λ 는 충분, ω_log·dynamical stability 가 진짜 벽) · cf. `RTSC/walls/N5_wall_redefinition.md`
 - [x] wet-lab handoff (Tier 2 recipe-as-record · §8 4-tier 경유) — h3cl recipe `exports/material_discovery/rtsc_h3cl_tier2_wetlab_handoff_20260524.json` · EOS 합성압력 **200.5 GPa @ Tc 구조** pinned (`rtsc_h3cl_eos_im3m_20260524.json`, ubu-1) · pressure-executable (잔여: Cl precursor·metastability = partner/optional)
+- [ ] Non-hydride RTSC family pilot (Nb₃Al, MgB₂) — BETE-NET trustworthy frontier 검증 · /gap full F8 (landscape) 응답 · `decks/nb3al/` + `decks/mgb2_pure/` spec LANDED, dispatch deferred · `domains/RTSC/research/non_hydride_candidates_brainstorm_20260527.md` (5-7 후보 표 + pilot rationale)
+- [ ] F-N6 pre-registered falsifier ledger (F-N6-1..4) — /gap full F4 응답 · `domains/RTSC/falsifiers/F-N6.md` · F-N6-1 (Mg₂IrH₆ PASSED 2026-05-26 PR#247) · F-N6-2 (Li₂CuH₆ PASSED 2026-05-27 PR#275) · F-N6-3 (LaBeH₈ anharm SSCHA Tc≥100K pre-register) · F-N6-4 (h3br pressure-scan ω_log slope ≥0.5K/GPa pre-register)
 - [ ] measured-oracle PASS → RTSC absorbed=true (최종 d5 invariant 충족)
 
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)

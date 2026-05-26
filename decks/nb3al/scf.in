@@ -1,0 +1,50 @@
+&CONTROL
+  ! Nb3Al — A15 prototype (Pm-3n, space group #223), 8 atoms / primitive
+  ! Pilot #1 of non-hydride RTSC frontier (BETE-NET trustworthy family, rel_err ~22%)
+  ! anchor: Tc_measured = 18.0 K (BCS regime, λ ≈ 0.84, ω_log ≈ 230 K)
+  calculation     = 'scf'
+  prefix          = 'nb3al'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  verbosity       = 'high'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ! A15 conventional cell IS the primitive cell (Pm-3n simple cubic, 8 atoms)
+  ! lattice parameter a_lit = 5.187 Å = 9.802 Bohr (measured @ 4K, Junod 1971)
+  ! ibrav = 1 (simple cubic) · celldm(1) in Bohr · MUST vc-relax (relax.in) first
+  ibrav           = 1
+  celldm(1)       = 9.8020
+  nat             = 8
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 800
+  occupations     = 'smearing'
+  smearing        = 'mp'           ! Methfessel-Paxton — metal (d15)
+  degauss         = 0.02
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  electron_maxstep = 200
+/
+ATOMIC_SPECIES
+  Nb  92.906   Nb.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Al  26.982   Al.pbe-n-rrkjus_psl.1.0.0.UPF
+
+! A15 prototype atomic positions (Pm-3n, #223)
+! Nb at 6c Wyckoff: (1/4, 1/2, 0) + permutations + body-centering
+! Al at 2a Wyckoff: (0, 0, 0) + (1/2, 1/2, 1/2)
+ATOMIC_POSITIONS crystal
+  Al  0.0000000   0.0000000   0.0000000
+  Al  0.5000000   0.5000000   0.5000000
+  Nb  0.2500000   0.0000000   0.5000000
+  Nb  0.7500000   0.0000000   0.5000000
+  Nb  0.5000000   0.2500000   0.0000000
+  Nb  0.5000000   0.7500000   0.0000000
+  Nb  0.0000000   0.5000000   0.2500000
+  Nb  0.0000000   0.5000000   0.7500000
+
+K_POINTS automatic
+  8 8 8  0 0 0
