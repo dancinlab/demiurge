@@ -1,7 +1,9 @@
 # 💊 QD — 의약외품(quasi-drug) 라인업 컨테이너
 
+> 🧪 **R&D 정공법** ([PLAYBOOK.md](PLAYBOOK.md)) — 모든 자식 도메인은 7-verb (spec → structure → design → analyze ⟲ → synthesize → verify → handoff) 따라 진행.
+> 단순 sourcing/OEM 카피가 아닌 **분류 바운더리 내 first-principles 효능 우위 자체 R&D + 실측 검증**. 시판 TOP 대비 head-to-head 우위 입증이 목표.
+
 > 쿠팡 등 일반 유통 채널에 풀 의약외품 SKU 라인업을 도메인 단위로 진행하는 컨테이너 폴더.
-> 자식 도메인은 품목 카테고리별로 분리(`QD-<품목>`).
 
 ---
 
