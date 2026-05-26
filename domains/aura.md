@@ -29,6 +29,28 @@ Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 - [ ] G2 EEG 상용 acquisition(BrainVision Analyzer / Neuroscan Curry) 대체 — MNE-Python acquisition-side 강화
 - [ ] G3 BLE 5.x SoC Nordic 의존 줄이기 — RISC-V BLE SoC 시야
 
+## Dossier 실값 채우기 (V1-V7 substance · placeholder → 실값)
+
+> V1-V7 hexa-native producer가 emit하는 record의 placeholder를 실제 값으로 채움.
+> g3: 채워도 absorbed=false 유지 (TEMPLATE 형태가 substance를 가져도 accredited-lab 통과 전까지는 aspirational scaffolding).
+
+- [ ] D1 specify 실값 — intended_use_statement · indications_for_use · predicate_devices(510(k) SE 비교 대상) · user_needs(VOU 캡처) · performance_requirements(정량 타깃) · safety_requirements(ISO 14971 risk-control) · regulatory_requirements 보완 · compatibility/labeling 실값
+- [ ] D2 structure 실값 — sensor count 확정(8/16/32ch 결정) · AFE 실 IC 선택(ADS1299 vs ADS1294 vs custom) · BLE SoC 핀배치 · 배터리 실 mAh + runtime 계측 · mastoid 클립 실 mechanical dimension(FreeCAD 실 enclosure)
+- [ ] D3 design 실값 — KiCad PCB 실 schematic + layout(4층 FR-4 실 stackup) · ngspice AFE 실 noise sim(input-referred noise 0.5-50Hz 실측) · FreeCAD 실 enclosure 3D model + KiCad StepUp 실 link · nRF Connect SDK 실 firmware skeleton(west init + 실 build)
+- [ ] D4 analyze 실값 — MNE 실 EEG dataset 실행 결과(BNCI Horizon · Sleep-EDF 외) · openEMS 실 antenna pattern S11 sweep(2.4-2.4835GHz · 실 PCB 안테나 geometry) · 실 SAR estimate(ITIS phantom 실 simulation)
+- [ ] D5 synthesize 실값 — 실 firmware cross-compile(west build · MCUboot 실 서명) · 실 deployable bundle(`firmware.signed.bin` 실 artifact) · 실 SBOM 생성
+- [ ] D6 verify(EM-side) 실값 — openEMS 실 antenna+SAR run(BLE 2.4GHz 실 시뮬레이션 결과) · honest-gap report 작성 · Sim4Life 의존 부분 명시
+- [ ] D7 handoff 실값 — 510(k) Substantial Equivalence section 실 작성 · Predicate Device 비교표 실 채움 · EU MDR Technical Documentation 실 작성 · BT SIG Declaration ID 실 신청 · ISO 13485 QMS 실 SOP 작성
+
+## Accredited-lab gates (downstream · g3 absorbed=true 통로)
+
+> 이 게이트들이 통과되어야만 absorbed=true 가능. open-source-only path로 닫을 수 없는 진짜 closure 지점.
+
+- [ ] A1 FDA 510(k) review — submitted dossier(D7 결과) + Q-Sub pre-submission feedback + Substantial Equivalence determination
+- [ ] A2 EU MDR Notified Body audit — ISO 13485 QMS audit + MDR design-dossier review + CE marking + EUDAMED registration
+- [ ] A3 EMC testhouse measurement — ISO/IEC 17025 accredited lab + IEC 60601-1-2 Ed.4.1 emission+immunity full test report
+- [ ] A4 Bluetooth SIG qualification — BQTF(Bluetooth Qualification Test Facility) 테스트 + Declaration ID 등록 + QDID 발급 + launch studio listing
+
 ## 7-verb cell 상태
 
 | verb | substrate | absorbed | gate | 근거 |
