@@ -66,6 +66,15 @@ func usage() {
                                        stack, topo foundation→apex.
                                        --converge (M15): analyze ⟲ loop
                                        — re-run until outcome fixpoint.
+      demiurge discover <objective> [--verifier <path>] [--rounds N] [--json]
+                                       8-verb head — phanes-bridged
+                                       autonomous discovery (objective +
+                                       verifier → verified candidate
+                                       catalog). Forwards to `phanes
+                                       discover` subprocess (d3/d4: phanes
+                                       owns the OUROBOROS loop; demiurge
+                                       just dispatches). PHANES_BIN env
+                                       overrides binary path.
       demiurge action <verb> [domain]  θ-2 action — dispatch a verb
                                        (specify/structure/design/analyze/
                                         synthesize/synth/verify/measure/
@@ -881,6 +890,69 @@ func llmCmd(_ args: [String]) -> Int32 {
     }
 }
 
+/// `discover` — 8-verb head. Thin subprocess wrapper around the phanes
+/// CLI; phanes owns the autonomous-discovery loop (d3 canonical home),
+/// demiurge just dispatches (d4 single generic).
+///
+/// Expected phanes-side contract (NOT yet implemented in phanes):
+///   phanes discover <objective> [--verifier <path>] [--rounds N] [--json]
+/// On `--json`, emits:
+///   { "catalog": [ { "id", "score", "provenance", "verifier_pass" }, ... ],
+///     "rounds_used": N, "objective": "..." }
+///
+/// Binary location resolution (in order):
+///   1. $PHANES_BIN
+///   2. `phanes` on PATH
+///   3. ~/core/phanes/bin/phanes (well-known sibling path)
+func discoverCmd(_ args: [String]) -> Int32 {
+    guard !args.isEmpty else {
+        FileHandle.standardError.write(Data("discover: usage — discover <objective> [--verifier <path>] [--rounds N] [--json]\n".utf8))
+        return 2
+    }
+
+    let fm = FileManager.default
+    let envBin = ProcessInfo.processInfo.environment["PHANES_BIN"]
+    let home = fm.homeDirectoryForCurrentUser.path
+    let candidates: [String] = [
+        envBin,
+        "/usr/local/bin/phanes",
+        "/opt/homebrew/bin/phanes",
+        "\(home)/core/phanes/bin/phanes",
+    ].compactMap { $0 }
+
+    let phanesPath = candidates.first { fm.isExecutableFile(atPath: $0) }
+
+    guard let bin = phanesPath else {
+        FileHandle.standardError.write(Data("""
+        discover: phanes CLI not found.
+          searched: \(candidates.joined(separator: ", "))
+          set PHANES_BIN env var to override.
+          contract expected (phanes-side):
+            phanes discover <objective> [--verifier <path>] [--rounds N] [--json]
+          phanes owns the OUROBOROS loop; demiurge dispatches only (d3/d4).
+          see ~/core/phanes/INBOX.log.md for the CLI surface request.
+
+        """.utf8))
+        return 2
+    }
+
+    let proc = Process()
+    proc.executableURL = URL(fileURLWithPath: bin)
+    proc.arguments = ["discover"] + args
+    proc.standardInput = FileHandle.standardInput
+    proc.standardOutput = FileHandle.standardOutput
+    proc.standardError = FileHandle.standardError
+
+    do {
+        try proc.run()
+        proc.waitUntilExit()
+        return proc.terminationStatus
+    } catch {
+        FileHandle.standardError.write(Data("discover: failed to spawn phanes at '\(bin)' — \(error)\n".utf8))
+        return 2
+    }
+}
+
 let args = CommandLine.arguments
 
 guard args.count >= 2 else {
@@ -964,6 +1036,8 @@ case "action":
         let cliDomain = actionArgs.count >= 2 ? actionArgs[1] : nil
         exitCode = cliAction(cliVerb, cliDomain, producerArg)
     }
+case "discover":
+    exitCode = discoverCmd(Array(args.dropFirst(2)))
 case "list-gates":
     exitCode = listGates()
 case "gate-summary":

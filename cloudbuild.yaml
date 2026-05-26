@@ -1,0 +1,64 @@
+# Cloud Build pipeline — Docker build → Artifact Registry push →
+# Cloud Run deploy. Source context = repo root (uploads everything
+# matched by .dockerignore). Run with:
+#
+#   gcloud builds submit --config cloudbuild.yaml \
+#     --project dancinlab \
+#     --substitutions=_REGION=us-central1,_SERVICE=demiurge-web
+
+substitutions:
+  _REGION: us-central1
+  _SERVICE: demiurge-web
+  _REPO: demiurge
+  _IMAGE: web
+
+images:
+  - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_IMAGE}:${BUILD_ID}"
+  - "${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_IMAGE}:latest"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: E2_HIGHCPU_8
+
+steps:
+  - id: docker-build
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -f
+      - web/Dockerfile
+      - -t
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_IMAGE}:${BUILD_ID}
+      - -t
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_IMAGE}:latest
+      - .
+
+  - id: docker-push
+    name: gcr.io/cloud-builders/docker
+    waitFor: ["docker-build"]
+    args:
+      - push
+      - --all-tags
+      - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_IMAGE}
+
+  - id: deploy-cloud-run
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    waitFor: ["docker-push"]
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_SERVICE}
+      - --region=${_REGION}
+      - --image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_IMAGE}:${BUILD_ID}
+      - --platform=managed
+      - --allow-unauthenticated
+      - --port=8080
+      - --memory=512Mi
+      - --cpu=1
+      - --concurrency=80
+      - --min-instances=0
+      - --max-instances=10
+      - --service-account=${_SERVICE}@${PROJECT_ID}.iam.gserviceaccount.com
+      - --set-env-vars=GCP_PROJECT=${PROJECT_ID},VERTEX_LOCATION=${_REGION},VERTEX_MODEL=gemini-2.5-flash
+      - --set-secrets=FIREBASE_WEB_API_KEY=firebase-web-api-key:latest

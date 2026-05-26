@@ -1,0 +1,31 @@
+# Repo-root .dockerignore — applies when Cloud Build uploads the
+# context. Keep ONLY what the Dockerfile actually copies (web/ +
+# DOMAINS.tape + domains/). Everything else slows uploads and leaks
+# data into the build cache.
+
+# Heavy / unrelated subprojects
+archive/
+cockpit/build
+cockpit/.build
+cockpit/dist
+**/node_modules
+**/.next
+**/.git
+**/.DS_Store
+
+# Build artifacts + caches
+exports/
+.swiftpm/
+.cache/
+
+# Logs + scratch
+**/*.log
+__pycache__/
+.venv/
+hexa-fusion-7gate-*.pdf
+hexa-fusion-7gate/
+
+# Per-developer config + secrets
+.env*
+*.local
+secrets/

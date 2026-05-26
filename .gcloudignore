@@ -1,0 +1,72 @@
+# gcloud builds submit uses .gcloudignore (NOT .dockerignore) to filter
+# the source upload. Strict allow-list: only what cloudbuild.yaml +
+# web/Dockerfile reference.
+#
+# Top-level exclusions
+.git
+.gitignore
+.DS_Store
+**/.DS_Store
+**/.git
+**/.gitignore
+
+# Build artifacts + caches everywhere
+node_modules
+**/node_modules
+.next
+**/.next
+.swiftpm
+**/.swiftpm
+.build
+**/.build
+.cache
+**/.cache
+
+# Cockpit Swift project (deploy doesn't ship the CLI yet)
+cockpit/
+
+# Archives + big repos sitting under demiurge root
+archive/
+exports/
+hexa-fusion-7gate/
+hexa-fusion-7gate-*.pdf
+
+# CARDIO+ and other meta-domain heavy folders
+CARDIO+/
+
+# Logs, virtualenvs, scratch
+**/*.log
+__pycache__/
+**/__pycache__/
+.venv/
+**/.venv/
+
+# Per-developer files
+*.local
+.env
+.env.*
+secrets/
+
+# Other domain heavy / scratch areas — keep DOMAINS.tape + domains/*.md only
+# (.gcloudignore is allow-by-default; we exclude everything we don't need)
+RTSC*/
+MONDALOY*/
+NOREFLOW*/
+SSCB*/
+NEURO*/
+NEXUS*/
+LIFE*/
+QUANTUM*/
+TTR*/
+PHARMA*/
+PILOTS*/
+PRODUCERS*/
+SUBSTRATE*/
+INDEX*/
+
+# Misc top-level scratch
+--expr
+*.pdf
+*.usdz
+*.usda
+*.stl

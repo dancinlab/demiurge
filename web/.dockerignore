@@ -1,0 +1,12 @@
+# Exclude developer-machine artifacts; Cloud Build only needs source.
+node_modules
+.next
+.git
+.gitignore
+.env*
+*.log
+README.md
+AGENTS.md
+CLAUDE.md
+.DS_Store
+coverage
