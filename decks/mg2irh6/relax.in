@@ -1,0 +1,53 @@
+&CONTROL
+  calculation     = 'vc-relax'
+  prefix          = 'mg2irh6'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ibrav           = 2
+  celldm(1)       = 12.2830
+  nat             = 9
+  ntyp            = 3
+  ecutwfc         = 80
+  ecutrho         = 800
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.02
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  electron_maxstep = 200
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  press           = 0.0            ! ambient target
+  cell_dofree     = 'all'
+/
+ATOMIC_SPECIES
+  Mg  24.305   Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF
+  Ir  192.217  Ir.pbe-n-rrkjus_psl.0.2.3.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS crystal
+  Ir   0.0000000   0.0000000   0.0000000
+  Mg  -0.2500000   0.2500000   0.2500000
+  Mg  -0.7500000   0.7500000   0.7500000
+  H   -0.1370000   0.0000000   0.1370000
+  H   -0.3630000   0.0000000   0.3630000
+  H    0.0000000   0.1370000   0.1370000
+  H    0.0000000   0.3630000   0.3630000
+  H   -0.1370000   0.1370000   0.0000000
+  H   -0.3630000   0.3630000   0.0000000
+
+K_POINTS automatic
+  12 12 12  0 0 0

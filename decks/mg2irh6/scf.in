@@ -1,0 +1,43 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'mg2irh6'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  verbosity       = 'high'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav           = 2
+  celldm(1)       = 12.2830        ! FCC, K2PtCl6 prototype, 9-atom primitive
+  nat             = 9
+  ntyp            = 3
+  ecutwfc         = 80
+  ecutrho         = 800
+  occupations     = 'smearing'
+  smearing        = 'mp'           ! Methfessel-Paxton — metal/small-gap (d15)
+  degauss         = 0.02
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  electron_maxstep = 200
+/
+ATOMIC_SPECIES
+  Mg  24.305   Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF
+  Ir  192.217  Ir.pbe-n-rrkjus_psl.0.2.3.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS crystal
+  Ir   0.0000000   0.0000000   0.0000000
+  Mg  -0.2500000   0.2500000   0.2500000
+  Mg  -0.7500000   0.7500000   0.7500000      ! = (0.25,-0.25,-0.25) in FCC ≡ (¾,¼,¼) anti-fluorite 8c
+  H   -0.1370000   0.0000000   0.1370000      ! 24e Wyckoff, x=0.137 (live dyn1 anchor; PR#150 doc said 0.24 — corrected to live value)
+  H   -0.3630000   0.0000000   0.3630000
+  H    0.0000000   0.1370000   0.1370000
+  H    0.0000000   0.3630000   0.3630000
+  H   -0.1370000   0.1370000   0.0000000
+  H   -0.3630000   0.3630000   0.0000000
+
+K_POINTS automatic
+  12 12 12  0 0 0

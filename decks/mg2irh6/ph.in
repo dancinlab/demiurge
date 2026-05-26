@@ -1,0 +1,18 @@
+Mg2IrH6 electron-phonon 4x4x4 q (demiurge RTSC M7 N5 funnel baseline)
+&inputph
+  prefix              = 'mg2irh6'
+  outdir              = './out'
+  fildyn              = 'mg2irh6.dyn'
+  fildvscf            = 'dvscf'
+  ldisp               = .true.
+  nq1                 = 4
+  nq2                 = 4
+  nq3                 = 4
+  tr2_ph              = 1.0d-14
+  electron_phonon     = 'simple'
+  el_ph_sigma         = 0.005      ! Ry, ramped via el_ph_nsigma
+  el_ph_nsigma        = 10         ! σ scan 0.005…0.050 Ry → plateau search
+  recover             = .true.     ! checkpoint-safe
+  alpha_mix(1)        = 0.3
+  max_seconds         = 100000
+/
