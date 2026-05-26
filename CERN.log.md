@@ -2,6 +2,18 @@
 
 Append-only history sister of `CERN.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T10:25Z — Stage 5 Sternheimer + AZ shell + Bloch + Barkas 본해 완료 (#1296 + #243) · mean Δ 30% closure (정직 부분)
+
+S5 에이전트(hexa-lang PR #1296 substrate + demiurge PR #243 parity export 둘 다 MERGED) — Stage 4 측정한 23.5% 갭에 hexa-native 보정 4종 추가 후 재측정. mid-plateau 거의 닫힘, low-βγ AZ 캘리브 한계로 잔여 surface.
+
+- [x] **substrate 본해** (hexa-lang #1296) — `stdlib/kernels/mc_transport/transport_kernel.py` 에 `sternheimer_density_delta` · `shell_correction_c` (AZ) · `bloch_correction_l2` · `barkas_correction_l1` 추가, `bethe_bloch_dedx(stage=3|5)` 게이팅 · `stdlib/cern/bethe_bloch_stopping.{py,hexa}` Stage 5 wrapper + `evaluate_stage5()` + `selftest_stage5()` · `STERNHEIMER_COEFFS` 테이블(Al/Cu/W/Pb · PDG/Sternheimer 1984) · antiproton z=−1 부호반전
+- [x] **28-point parity 재측정** (demiurge #243 export `exports/cern/verify/2026-05-26T10-19-26Z/bethe_bloch_stage5_corrections_parity.json`) — Stage 4 의 Geant4 값 재사용(Geant4 자체는 불변, closed-form bracket 만 변경, JSON honest tag)
+- [x] **closure 측정**: **mean |Δ| 6.25% → 4.39% (30% closure)** · max 23.55% → 21.64% (8% — Cu@1MeV) · total |Δ| 29.7% reduction · mid-plateau highlights: Cu@100MeV 1.17%→0.02% (98.6%) · W@30MeV 4.86%→−0.43% (91.1%) · Pb@100MeV 2.61%→−0.04% (98.4%) · W@10MeV 71.5% · Pb@10MeV 78.9%
+- [x] **verify atom 4×🟢** (모두 VERBATIM) — `sternheimer_delta_al_bg046` (|Δ|=1.22e-19 ≤ 1e-9 libm) · `shell_correction_cu_bg255` (|Δ|=5.21e-6 round-tolerant 1e-5) · `bloch_l2_beta046_z1` (|Δ|=1.43e-7 round-tolerant 1e-6) · `barkas_l1_cu_bg046_pbar` (|Δ|=2.71e-16 libm)
+- [x] **honest residuals** (NO ad-hoc tuning · 교과서 공식 그대로) — Cu@1MeV 21.64%: AZ shell 이 βγ=0.046 에서 out-of-calibration (η<0.05 linear taper-to-0) · Pb@1MeV −2% 과잉: Stage 3 의 lucky 1.1% near-match 는 두 누락 보정 사이 sign-cancellation 이었음 · 300-1000 MeV 약간 over: 교과서 Bloch/Barkas (1.202/1.29) vs Geant4 tabulated L1/L2 미세차
+- [x] **d2 breakthrough paths** (Stage 6, above-lane) — ① ICRU-49 / Lindhard-Sørensen 저에너지(η<0.13) → ~15-22% Cu/Al@1-3 MeV 잔여 닫음 ② Andersen-Ziegler 1989 LEAR pbar L1 데이터 → 보편-curve log-normal fit 대체 ③ Mott z²α/β Coulomb → 고-Z(W·Pb) 작지만 비무시 ④ Pb@1MeV 는 closed-form 의 물리적 floor (Geant4 parametrized table 에 도달 불가, 인정)
+- [x] **CERN.md reconcile** — §4 line146 Stage 4 entry 정돈 + Stage 5 entry 신규 추가 · §1 verb-map VERIFY (◐→✓) · §2.1 gate + Geant4 cell + Stage 6 next 행 · §4.2 verify cell map ASCII · downstream Geant4 행
+
 ## 2026-05-26T09:45Z — Stage 4 Geant4-MC parity 측정 완료 (#241) · absorbed=false-with-gap (정직)
 
 D 에이전트(PR #241) 가 Geant4 11.04-patch-01 (conda-forge `geant4` 11.3.2 pkg) on ubu-1 환경에서 28-point Bethe-Bloch Stage 4 parity 측정. PDG eq.34.5 closed-form ↔ Geant4-MC(보정 포함) Δ% 매핑.
