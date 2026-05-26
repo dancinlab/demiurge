@@ -3,6 +3,14 @@
 > Append-only progression log for the AURA (post-aural wearable BCI) domain.
 > Snapshot SSOT: [aura.md](aura.md) · verb-cell manifest: [aura.demi](aura.demi)
 
+## 2026-05-27 — V3 design producer LANDED (hexa-native)
+
+- `stdlib/aura/design.hexa` 신규 142 LOC (hexa-lang PR #1343 MERGED).
+- 4 design block: pcb_eda (KiCad 8.x BSD-3 + ngspice 임베디드 AFE 시뮬 + IEC 60601-1 Annex L creepage rules + 4층 FR-4 1.6mm) · mech_cad (FreeCAD 1.0+ LGPL + KiCad StepUp 워크벤치 PCB↔MCAD 연동 + 클램셸+클립 + IPX4 가스킷) · firmware_sdk (nRF Connect SDK BSD-3+Apache-2.0+Zephyr RTOS · BLE 5.x host+LL · 커스텀 GATT EEG 서비스 + Battery + DIS · MCUboot 서명 image) · dev_bringup (sigrok/PulseView GPL3 + nRF sniffer + Wireshark + JLinkExe/pyOCD).
+- cellrun manifest 변경: `domains/aura.demi [cell.design]` `substrate=python3` → `hexa`, `script=*.py` → `*.hexa`, `required_deps=python3` → `hexa`, `python_candidates` 제거.
+- 마일스톤: V3 → `[~]` in-progress (producer LANDED · 실 tape-out/vendor-validated silicon은 chip+component cell territory).
+- g3 honesty: `absorbed=false` PERMANENTLY — TEMPLATE EDA/MCAD/firmware stub, NEVER tape-out / vendor silicon selection.
+
 ## 2026-05-27 — V2 structure producer LANDED (hexa-native)
 
 - `stdlib/aura/structure.hexa` 신규 150 LOC (hexa-lang PR #1342 MERGED).
