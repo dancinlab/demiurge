@@ -91,8 +91,8 @@ Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 - [x] N16 선행 도메인 cross-link 5 cells (aura.demi [xlink.*]) LANDED (PR #295 · 77 LOC · chip+component+firmware+brain+bio)
 - [x] N17 5 도메인 역방향 cross-link [xlink.aura_*] LANDED (이 PR · 5 도메인 .demi 각 +12 LOC · peer view)
 - [x] N18 N13 ngspice 실측 path PROVEN (pool:ubu-1 · ngspice 42 install + v1+v2 batch run · numerical output 획득 · g3 ILLUSTRATIVE)
-- [ ] N19 N13.3 ADS1299 macro-model 정밀화 (INBOX entry LANDED · 이 PR · TI macro fetch + 정밀 deck redesign + atlas register · follow-up)
-- [ ] N20 cellrun substrate hexa 전환 — 4 선행 도메인 (chip · component · firmware · brain) hexa 전환 (bio 완료) · cross-domain hexa-native 통일
+- [x] N19 N13.3 ADS1299 정밀화 — v3 deck 실험 LANDED (Rn=Vn²/(4kT) thermal trick · Vn=25 nV/√Hz · 0.5-50Hz band · ngspice 42 · output 2932 µV-pp ≠ datasheet 1 µV-pp 차이 ~1700× · g3 ILLUSTRATIVE · INBOX TI macro fetch follow-up PR #299)
+- [x] N20 4 도메인 hexa-native dispatcher LANDED (hexa-lang PR #1441 · stdlib/{chip,component,firmware,brain}/*.hexa 4 신규 · bio.hexa 패턴 · 각 ~15 LOC · per-verb .py 점진 마이그레이션)
 
 ## 7-verb cell 상태
 
