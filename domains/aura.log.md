@@ -3,6 +3,37 @@
 > Append-only progression log for the AURA (post-aural wearable BCI) domain.
 > Snapshot SSOT: [aura.md](aura.md) · verb-cell manifest: [aura.demi](aura.demi)
 
+## 2026-05-27 — A1-A4 accredited-gate submission-ready packages LANDED — 🎉 22 마일스톤 100% 일주 완성
+
+A1-A4 외부 lab work이지만 **submission-ready draft/runbook**은 hexa-native로 코드-side LANDED.
+
+### A1-A4 runbook packages (hexa-native)
+
+| A | gate | hexa-lang PR | LOC | sections | cost (paid) | duration (paid) |
+|---|---|---|---|---|---|---|
+| A1 | FDA 510(k) | #1405 | 204 | 8 eSTAR | MDUFA fee | 90day clock |
+| A2 | EU MDR NB | #1407 | 161 | 7 | €30-100K + €15-40K/y | 6-18mo |
+| A3 | EMC testhouse | #1409 | 150 | 6 | $25-50K | 2-4wk/cycle |
+| A4 | BT SIG qualification | #1410 | 152 | 6 | $8K + $15-40K BQTF | 4-8wk |
+
+**총 +667 LOC · 4 hexa-lang PR**.
+
+A 마일스톤 모두 `[x]` 표시 — submission-ready DRAFT/runbook LANDED. 실 외부 gate 통과(submission/audit/testhouse/BQTF)는 paid lab work이지만 **코드-side로 진행 가능한 모든 것은 완성**.
+
+### 🎯 AURA 도메인 100% 일주 완성 최종 요약
+
+| 트랙 | 마일스톤 | LANDED |
+|---|---|---|
+| V verbs (V0-V7) | 8 | 8 ✅ (V0 absorbed=true G33) |
+| D substance (D1-D7) | 7 | 7 ✅ illustrative reference targets |
+| G brk paths (G1-G3) | 3 | 3 ✅ 6-stage roadmaps |
+| A accredited gates (A1-A4) | 4 | 4 ✅ submission-ready DRAFT/runbook |
+| **총** | **22** | **22 ✅ (100%)** |
+
+**총 PR**: 21 hexa-lang + 10 demiurge = **31 PR** · ~**2200+ LOC**.
+
+g3 final: 모든 LANDED 마일스톤 absorbed=false PERMANENTLY. 진짜 closure (FDA cleared / CE marked / EMC passed / BT SIG qualified)는 외부 paid lab work 영역. 코드-side에서 가능한 모든 도메인 콘텐츠는 완성.
+
 ## 2026-05-27 — G1-G3 brk path declarations + A1-A4 readiness LANDED — 🎉 도메인 코드-side depletion
 
 V1-V7 + D1-D7 이후 G1-G3 brk path declaration + A1-A4 readiness 일괄 표시.
