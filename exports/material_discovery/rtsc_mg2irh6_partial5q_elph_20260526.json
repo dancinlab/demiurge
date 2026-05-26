@@ -1,0 +1,88 @@
+{
+  "material": "Mg2IrH6",
+  "structure": "Fm-3m (K2PtCl6 prototype), 9-atom primitive cell",
+  "pressure_GPa": 0.0,
+  "ambient_target": true,
+  "method": "QE PBE pure (d14), ph.x electron_phonon='simple', 4x4x4 q-grid",
+  "pseudopotentials": {
+    "H": "H.pbe-rrkjus_psl.1.0.0.UPF",
+    "Ir": "Ir.pbe-n-rrkjus_psl.0.2.3.UPF",
+    "Mg": "Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF"
+  },
+  "n_q_total_IBZ": 13,
+  "n_q_completed": 5,
+  "completion_pct": 38.5,
+  "per_q": [
+    {
+      "q_idx": 1,
+      "n_modes": 27,
+      "min_freq_cm1": -2235.067,
+      "max_freq_cm1": 4789.319,
+      "n_imag_hard_below_-50": 12,
+      "n_imag_mild_-50_to_0": 0,
+      "n_real_positive": 15,
+      "DOS_Ef_states_per_spinRy_cell_sigma_0.005Ry": 19.458254,
+      "Ef_eV": 10.950271
+    },
+    {
+      "q_idx": 2,
+      "n_modes": 27,
+      "min_freq_cm1": -2232.053,
+      "max_freq_cm1": 4791.693,
+      "n_imag_hard_below_-50": 12,
+      "n_imag_mild_-50_to_0": 0,
+      "n_real_positive": 15,
+      "DOS_Ef_states_per_spinRy_cell_sigma_0.005Ry": 19.457767,
+      "Ef_eV": 10.950277
+    },
+    {
+      "q_idx": 3,
+      "n_modes": 27,
+      "min_freq_cm1": -113861.77,
+      "max_freq_cm1": 6975.755,
+      "n_imag_hard_below_-50": 15,
+      "n_imag_mild_-50_to_0": 0,
+      "n_real_positive": 12,
+      "DOS_Ef_states_per_spinRy_cell_sigma_0.005Ry": 19.457767,
+      "Ef_eV": 10.950277
+    },
+    {
+      "q_idx": 4,
+      "n_modes": 27,
+      "min_freq_cm1": -2232.088,
+      "max_freq_cm1": 4790.41,
+      "n_imag_hard_below_-50": 13,
+      "n_imag_mild_-50_to_0": 1,
+      "n_real_positive": 13,
+      "DOS_Ef_states_per_spinRy_cell_sigma_0.005Ry": 19.457767,
+      "Ef_eV": 10.950277
+    },
+    {
+      "q_idx": 5,
+      "n_modes": 27,
+      "min_freq_cm1": -2229.318,
+      "max_freq_cm1": 4791.926,
+      "n_imag_hard_below_-50": 13,
+      "n_imag_mild_-50_to_0": 0,
+      "n_real_positive": 14,
+      "DOS_Ef_states_per_spinRy_cell_sigma_0.005Ry": 19.457767,
+      "Ef_eV": 10.950277
+    }
+  ],
+  "aggregate": {
+    "min_freq_cm1_global": -113861.77,
+    "hard_imag_mode_pct_below_-50cm-1": 48.1,
+    "DOS_Ef_avg_states_per_spinRy_cell": 19.458
+  },
+  "VERDICT": "RED_CLOSED_NEGATIVE",
+  "verdict_reason": "Ambient Im-3m/Fm-3m DYNAMICALLY UNSTABLE. 48% of phonon modes are hard imaginary (<-50 cm-1) across 5 q-points. Minimum frequency = -113861.77 cm-1 (catastrophic). Tc is UNDEFINED for an unstable structure. 160K PRED (X2MH6 cation-VEC rule, PR #150) is FALSIFIED at the dynamical-stability gate \u2014 Mg2IrH6 ambient cannot host superconductivity in this prototype. Polymorph escape (lower-symmetry distorted) or pressure-induced stabilization (P>0) required.",
+  "Tc_K": null,
+  "lambda_BZ": null,
+  "omega_log_K": null,
+  "soft_mode_count_hard": 65,
+  "honesty_protocol": "g63 closed-negative \u00b7 d6 honest (Tc not forced) \u00b7 R4 absorbed=false (sim\u2260measured)",
+  "campaign_branch": "feat/rtsc-magnet-wheeler-v2 / cycle-mg2irh6-2026-05-26",
+  "harvest_partial": true,
+  "harvest_note": "q6-q13 (8 of 13) STILL IN FLIGHT on ubu-1 but verdict locked from q1-q5 \u2014 every completed q shows the same systematic hard-soft pattern (lowest mode ~-2230 cm-1). Continuing the run to completion will not change verdict; left running to avoid pkill abuse (memory: pkill micromamba \uae08\uc9c0).",
+  "date_utc": "2026-05-26"
+}

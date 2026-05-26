@@ -1,0 +1,29 @@
+// Mg2IrH6 ambient DFT — 4x4x4 q, 13 IBZ q-points
+// Pool target: ubu-1 ~/rtsc_mg2irh6/  (deck files staged adjacent to pseudo/)
+// Total wall-time (live run, 2026-05-25 → 2026-05-26): ~20h per q × 13 q ≈ ~11 days at -np 6 on ubu-1.
+//
+// NOTE: This deck reflects the in-flight RTSC.md milestone run. The first 5 q completed showed
+// systematic hard-imaginary modes (~-2230 cm-1) → RED CLOSED-NEGATIVE verdict (see
+// exports/material_discovery/rtsc_mg2irh6_partial5q_elph_20260526.json). Re-running is NOT recommended
+// without first changing the structure (polymorph escape) or applying P>0 GPa.
+
+@V := "run-mg2irh6-deck" :: runbook
+  pool_host           = "ubu-1"
+  workdir             = "$HOME/rtsc_mg2irh6"
+  np_default          = "physcores via getconf _NPROCESSORS_ONLN"
+  pseudo_dir          = "./pseudo"
+  decks               = "scf.in · relax.in (optional) · ph.in"
+  q_grid              = "4x4x4 → 13 IBZ q-points"
+  walltime_per_q_hr   = 20
+  walltime_total_days = 11
+  verdict             = "RED_CLOSED_NEGATIVE (locked from q1-q5; see exports/material_discovery/rtsc_mg2irh6_partial5q_elph_20260526.json)"
+
+@steps := "execution"
+  step1 = "mpirun -np <NP> pw.x  -in scf.in   > scf.out  2>&1   # scf"
+  step2 = "mpirun -np <NP> ph.x  -in ph.in    > ph.out   2>&1   # ph + electron-phonon (recover-safe)"
+  step3 = "harvest: scp ubu-1:$WORK/mg2irh6.dyn* /tmp/ && python3 harvest_mg2irh6.py"
+
+@notes := "stability gates"
+  gate1 = "Γ phonon dispersion REAL → continue to full BZ"
+  gate2 = "any q with hard imag mode < -50 cm-1 → 🔴 closed-negative (this material hit gate2 at q1)"
+  gate3 = "σ-plateau (σ ≥ 0.025 Ry) → record λ_BZ + ω_log + Allen-Dynes Tc"
