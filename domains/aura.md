@@ -51,6 +51,41 @@ Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 - [x] A3 EMC testhouse — test plan runbook LANDED (hexa-lang PR #1409 · `a3_emc_test_runbook.hexa` 150 LOC, 6 sections: standard scope(IEC 60601-1-2 Ed.4.1) · emission(CISPR 11 Class B) · immunity(8 IEC 61000-4-*) · essential performance · testhouse engagement(UL/TUV/SGS/Intertek · $25-50K) · pre-compliance) · gate pending = 실 EUT delivery + testhouse cycle (paid)
 - [x] A4 BT SIG qualification — engagement runbook LANDED (hexa-lang PR #1410 · `a4_bt_sig_qualification_runbook.hexa` 152 LOC, 6 sections: membership · qualification strategy(EPL + nRF5340 reuse) · test categories(TCRL HCI/GAP/GATT/SMP) · BQTF engagement(Element/Sporton · $15-40K · 4-8wk) · Declaration+QDID($8K) · radio cert(FCC/ETSI/ISED/MIC/KC 별도)) · gate pending = 실 BQTF + Declaration (paid)
 
+## Next-list — V-D-G-A 일주 후 추가 substantive 경로 (N1~N15)
+
+> V0-V7 + D1-D7 + G1-G3 + A1-A4 = 22 마일스톤 LANDED 후, 더 진행 가능한 substantive 경로 15개.
+> 우선순위: 🔴 brk stage_1 실 시작 (highest-leverage) → 🟡 dossier 확장 (breadth) → 🟢 cross-domain + 추가 market (lateral) → 🔵 verification + 측정 (depth) → ⚪ meta (governance + audit).
+
+### 🔴 brk stage_1 실 시작 (G 후속 · highest-leverage)
+
+- [ ] N1 G1 stage_1 — openEMS에 ISO 10974 + ASTM F2182 test-fixture replication 첫 코드 · MRI-safety open path 시동 · 500-1000 LOC
+- [ ] N2 G2 stage_1 — OpenBCI ↔ AURA-100 LSL bridge skeleton (Lab Streaming Layer) · EEG acquisition open path 시동 · 200-400 LOC
+- [ ] N3 G3 stage_1 — ESP32-C6 alt-SoC NimBLE firmware port skeleton · Nordic 의존 깨기 시동 · 300-500 LOC
+
+### 🟡 dossier 확장 (D 후속 · breadth)
+
+- [ ] N4 clinical evaluation report (CER) draft — MDCG 2020-13 + 문헌 리뷰 + clinical evidence 구조 · EU MDR 필수 · 200-300 LOC
+- [ ] N5 usability validation runbook — IEC 62366-1 summative study + 15-user formative · A1/A2 supporting · 150-250 LOC
+- [ ] N6 IEC 62304 software traceability matrix — 요구사항↔SW unit + DHF crossref · A1 SW doc supporting · 150-250 LOC
+- [ ] N7 cybersecurity package — FDA 524B + NIST SBOM + threat model · A1 cyber supporting · 200-300 LOC
+- [ ] N8 post-market surveillance plan + vigilance — Article 84 PMS + EUDAMED 통합 · A2 PMS supporting · 150-250 LOC
+
+### 🟢 cross-domain + 추가 market (lateral expansion)
+
+- [ ] N9 AURA × BRAIN cross-link — 공유 Sim4Life MRI-safety gap path coordination · 도메인 시너지 · 100-200 LOC
+- [ ] N10 AURA × FIRMWARE D73 cellrun 통합 — firmware 도메인 cellrun에서 AURA build invoke · substrate 통합 · 100-200 LOC
+- [ ] N11 추가 regulatory markets — Korea KC + Japan PMDA + China NMPA + Brazil ANVISA runbook · 글로벌 확장 · 400-600 LOC
+
+### 🔵 verification + 측정 substantive (depth)
+
+- [ ] N12 V0 G33 dataset extension — BNCI Horizon + EEGBCI 흡수 (Sleep-EDF 외 추가 oracle) · V0 absorbed 확장 · 200-400 LOC
+- [ ] N13 ngspice AFE 실 sim 실행 — pool:ubu-1에서 실 SPICE noise sim 돌려 데이터 수집 · D3 실값 → 측정값 · 100-200 LOC + sim run
+- [ ] N14 paper scaffold — post-aural wearable BCI design paper (arXiv 형식) · 외부 공개 · 300-500 LOC
+
+### ⚪ meta (governance + audit)
+
+- [ ] N15 AURA audit cell — 22 마일스톤 일관성 audit + scope_caveat 검증 · 자기 검증 · 100-200 LOC
+
 ## 7-verb cell 상태
 
 | verb | substrate | absorbed | gate | 근거 |
