@@ -107,6 +107,116 @@
     "lines_added": null,
     "lines_deleted": null,
     "stage": "all",
-    "role": "THIS PR — fills all 10 appendix stubs (A-J) to FUSION-level with closed-form derivations, data tables, and pgfplots comparison charts; companion JSON null placeholders replaced with real recompute values. number/metadata filled after merge."
+    "role": "fills all 10 appendix stubs (A-J) to FUSION-level with closed-form derivations, data tables, and pgfplots comparison charts; companion JSON null placeholders replaced with real recompute values. number/metadata filled after merge."
+  },
+  {
+    "repo": "dancinlab/hexa-lang",
+    "number": 1296,
+    "title": "feat(stdlib/cern): Stage-5 closed-form corrections — Sternheimer density-effect + Andersen-Ziegler shell + Bloch L2 + Barkas L1 (antiproton z=-1 sign-flip)",
+    "merged_at": "2026-05-26",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "6",
+    "role": "stdlib/kernels/mc_transport/transport_kernel.py + STERNHEIMER_COEFFS table (Al/Cu/W/Pb). Four new hexa verify atoms: sternheimer_delta_al_bg046 (|d|=1.22e-19), shell_correction_cu_bg255 (|d|=5.21e-6), bloch_l2_beta046_z1 (|d|=1.43e-7), barkas_l1_cu_bg046_pbar (|d|=2.71e-16). All tier GREEN within declared eps."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 235,
+    "title": "feat(cern): 2-D blowout PIC sweep — 3-pt a0 ladder (a0={0.5, 2.0, 4.0}, free pool/ubu-1 CPU, $0)",
+    "merged_at": "2026-05-26",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "3-4",
+    "role": "exports/sweep/cern-blowout-pic-2026-05-26/ ledger.json + 3 candidate JSONs. E_z={1.70, 73.62, 405.64} GV/m, E_z/E_0={0.018, 0.766, 4.218}; blowout transition reproduced (linear -> blowout onset -> deep blowout). PIC field NOT a verify atom (g63 sim-wall). GPU pivot to free CPU per @D d11."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 236,
+    "title": "feat(cern): xsuite analyze cell — full 4-D twiss-table (beta/Q/dQ/D_x/alpha_p), GATE_OPEN",
+    "merged_at": "2026-05-26",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "4 (analyze verb)",
+    "role": "exports/cern/analyze/2026-05-26T07-24-44Z/xsuite_optics_analyze.json. beta_x_max=83.58 m, Q_x=Q_y=0.0042422, dQ_x=-0.0042424, D_x=D_y=0, alpha_p~0. Cross-consistent with synthesize headlines. GATE_OPEN per honest scope (textbook FODO, not measured ring). py3.12 env required (xtrack 0.104.1 uses PEP-604 union syntax)."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 239,
+    "title": "HEXA-PORT Geant4 11.3.2 + particle 0.26.2 (conda-forge, pool/ubu-1 conda env `geant4`)",
+    "merged_at": "2026-05-26",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "6",
+    "role": "geant4_pybind trampoline segfault wall BROKEN — earlier pip geant4-pybind route bypassed via conda-forge official build (ABI-matched). Smoke PASS: RunManager + NIST materials (G4_Si I=173 eV, G4_WATER I=78 eV per PDG) + G4ParticleTable. Substrate prerequisite for #241 / #243."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 240,
+    "title": "docs(CERN): §4 ledger reconcile — Stage 4 absorbed-false (HONEST-FALSE with measured gap)",
+    "merged_at": "2026-05-26",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "6",
+    "role": "CERN.md milestone flip absorbing #241 Stage-4 grid; gate is 'measured gap', not a verdict fabrication."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 241,
+    "title": "feat(cern): Bethe-Bloch Stage 4 Geant4 parity export — 28-point grid (antiproton, Al/Cu/W/Pb x 1-1000 MeV)",
+    "merged_at": "2026-05-26",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "6",
+    "role": "exports/cern/verify/2026-05-26T09-36-53Z/bethe_bloch_stage4_geant4_parity.json. Headline max|Delta|=23.55% Cu@1MeV, mean|Delta|=6.25%. Substrate: hexa-lang stdlib/cern/bethe_bloch_stopping closed-form vs G4EmCalculator (FTFP_BERT). absorbed=false HONEST-FALSE with measured gap."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 242,
+    "title": "docs(CERN): §1 verb-map + §2.1 gate reconcile (Stage 4)",
+    "merged_at": "2026-05-26",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "6",
+    "role": "CERN.md §1/§2.1 update for the Stage 4 absorbed-false gate."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 243,
+    "title": "feat(cern): Bethe-Bloch Stage 5 corrections parity export (Sternheimer + AZ + Bloch + Barkas; #1296 substrate)",
+    "merged_at": "2026-05-26",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "6",
+    "role": "exports/cern/verify/2026-05-26T10-19-26Z/bethe_bloch_stage5_corrections_parity.json. Closure: max|Delta| 23.55 -> 21.64 (8%); mean|Delta| 6.25 -> 4.39 (30%); mid-plateau 91-98% closed per row (Cu@100MeV 98.6%, W@30MeV 91.1%, Pb@100MeV 98.4%). absorbed=false HONEST-PARTIAL per closure-is-physical-limit."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": 244,
+    "title": "docs(CERN): downstream Geant4 row reconcile — Stage 5 HONEST-PARTIAL closure absorbed",
+    "merged_at": "2026-05-26",
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "6",
+    "role": "CERN.md ## downstream Geant4 row update: engine_tool_gap -> Stage-5 30% closed, residuals named (AZ out-of-calibration eta<0.13, sign-cancellation Pb@1MeV, textbook-vs-G4 L1/L2 microdiff at high beta*gamma)."
+  },
+  {
+    "repo": "dancinlab/demiurge",
+    "number": null,
+    "title": "docs(cern-accelerator): partial update — Stage 4 측정·Stage 5 보정 본해·blowout sweep·xsuite analyze (9-PR session 흡수)",
+    "merged_at": null,
+    "files_changed": null,
+    "lines_added": null,
+    "lines_deleted": null,
+    "stage": "all",
+    "role": "THIS PR — partial monograph update absorbing the 9-PR Stage-5 sweep (#235·#236·#239·#240·#241·#242·#243·#244·hexa-lang#1296). Appendix A (Stage 4 grid + Stage 5 corrections + Stage 6 paths), B+C (blowout transition), D (xsuite analyze cell), H (4 new Stage-5 atoms), I (9-PR roll). main.tex §Bethe-Bloch / §Plasma-Wakefield / §Limitations / §Future / §Conclusion paragraphs extended. NO structural rewrite."
   }
 ]

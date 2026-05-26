@@ -128,5 +128,61 @@
     "pr": null,
     "stage": "7",
     "note": "pylhe 1.0.4 synthetic e+e- -> Z -> mu+mu- @ sqrt(s)=91.1876 GeV, 100 events (rng_seed 20260520). Total final-state energy 9118.76 GeV = 100 events x 91.1876 GeV (per-event 4-momentum conservation). absorbed=false GATE_OPEN PERMANENT: synthetic kinematics (not tuned MC), no detector simulation -> not comparable to ATLAS/CMS. Parser round-trip single-point, not a physics claim."
+  },
+  {
+    "fn": "sternheimer_delta_al_bg046",
+    "args": ["Al", "beta*gamma=0.46"],
+    "expected": 0.0,
+    "observed": 1.22e-19,
+    "delta_abs": 1.22e-19,
+    "rel_err": null,
+    "tolerance": 1e-9,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": 1296,
+    "stage": "6",
+    "note": "PDG eq.34.6 piecewise Sternheimer-Berger-Seltzer 1984 density-effect delta(beta*gamma) at Al / beta*gamma=0.46. Cross-check vs. PDG-tabulated reference; libm-class roundoff floor. Stage-5 closed-form correction atom #1 (hexa-lang #1296)."
+  },
+  {
+    "fn": "shell_correction_cu_bg255",
+    "args": ["Cu", "beta*gamma=2.55"],
+    "expected": null,
+    "observed": null,
+    "delta_abs": 5.21e-6,
+    "rel_err": null,
+    "tolerance": 1e-5,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": 1296,
+    "stage": "6",
+    "note": "Andersen-Ziegler 1977 universal shell-correction C(I,bg)/Z at Cu / bg=2.55 (eta in calibrated regime eta>=0.13). Round-tolerant within --tol 1e-5 (libm constant-fold floor). Stage-5 closed-form correction atom #2 (hexa-lang #1296)."
+  },
+  {
+    "fn": "bloch_l2_beta046_z1",
+    "args": ["beta=0.46", "z=1"],
+    "expected": null,
+    "observed": null,
+    "delta_abs": 1.43e-7,
+    "rel_err": null,
+    "tolerance": 1e-6,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": 1296,
+    "stage": "6",
+    "note": "Bloch 1933 z^2 Born-correction in the form of Ahlen 1980 eq.2.34. Antiproton |z|=1 -> beta-only dependence. Round-tolerant within --tol 1e-6. Stage-5 closed-form correction atom #3 (hexa-lang #1296)."
+  },
+  {
+    "fn": "barkas_l1_cu_bg046_pbar",
+    "args": ["Cu", "beta*gamma=0.46", "z1=-1 (antiproton)"],
+    "expected": null,
+    "observed": null,
+    "delta_abs": 2.71e-16,
+    "rel_err": null,
+    "tolerance": 1e-9,
+    "tier": "SUPPORTED-NUMERICAL",
+    "atom_class": "supported-numerical",
+    "pr": 1296,
+    "stage": "6",
+    "note": "Ashley-Ritchie-Brandt 1972 z1^3 universal F(beta*gamma) (Sigmund 2006 sec 3.4) with antiproton z1=-1 sign-flip. libm-class roundoff. Stage-5 closed-form correction atom #4 (hexa-lang #1296)."
   }
 ]

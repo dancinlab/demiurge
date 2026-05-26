@@ -142,3 +142,49 @@ move to the nonlinear (blowout) regime, which is a separate GPU-heavy
 downstream item (Appendix~\ref{app:downstream}). The gate stays
 \texttt{absorbed=false}: a converged 1-D linear parity is a feasibility
 witness of the cold-linear model, not a built or measured accelerator.}}
+
+% =========================================================================
+% Departure: 2-D blowout transition (qualitative, free-CPU)
+% =========================================================================
+\subsection{Departure from linear --- 2-D blowout transition sweep}
+\label{app:pic-blowout-departure}
+
+The 1-D linear parity (\S\ref{app:pic-parity}) is the validating
+baseline; the 2-D \emph{blowout-transition} sweep
+(Appendix~\ref{app:wf-blowout}) is the qualitative ladder departing from
+it. The two reports are complementary, not competing: the 1-D linear run
+($a_0\!=\!0.1$) pins the closed form to $\Delta\!=\!3.56\%$, and the 2-D
+ladder $a_0\in\{0.5, 2.0, 4.0\}$ then tracks the wake amplitude across
+the linear $\to$ blowout transition relative to the same $E_0$ scale.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}l c l l@{}}
+\toprule
+run & $a_0$ & $E_z^{\text{peak}}/E_0$ & regime \\
+\midrule
+PIC-1D linear (\#1088, \S\ref{app:pic-parity})        & 0.1 & $4.0\times 10^{-4}$ & linear, $\lambda_p$ parity $\Delta\!=\!3.56\%$ \\
+PIC-2D blowout (\#235, App.~\ref{app:wf-blowout})     & 0.5 & 0.018               & diffraction-limited \\
+PIC-2D blowout (\#235, App.~\ref{app:wf-blowout})     & 2.0 & 0.766               & blowout onset \\
+PIC-2D blowout (\#235, App.~\ref{app:wf-blowout})     & 4.0 & 4.218               & deep blowout (rel.\ boost) \\
+\bottomrule
+\end{tabular}
+\caption{The 1-D linear parity (top row, FBPIC axisymmetric, $a_0\!=\!0.1$)
+is the validating baseline; the 2-D blowout sweep (next three rows,
+FBPIC 2-D cylindrical $N_m\!=\!2$, free pool CPU) is the qualitative
+ladder that crosses the wave-breaking scale near $a_0\!\sim\!2$. Both use
+the same $E_0\!=\!96.16\,\si{GV/m}$ at $n_e\!=\!10^{18}\,\si{cm^{-3}}$
+closed-form anchor.}
+\label{tab:app-pic-blowout-departure}
+\end{table}
+
+\paragraph{Free-CPU pivot footnote.} The 2-D blowout ladder ran on the
+free \texttt{pool/ubu-1} CPU host (\$0) after pool-wide GPU provisioning
+broke during the session. Per @D~d7, dense-grid PIC should run on GPU; a
+moderate-grid 3-point ladder is single-pod-feasible on CPU and was sized
+that way (commons @D~d11, @D~d17 --- bound paid compute, validate first).
+A design-grade convergence sweep (3-D, $a_0$-specific spot optimization,
+dephasing/pump-depletion) remains a downstream GPU campaign
+(Appendix~\ref{app:downstream}).
