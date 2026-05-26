@@ -177,3 +177,69 @@ ring-optics deck (LHC/FCC-ee/SPS, with licensing / clean-room risk) and a
 measured tune, which is a downstream external-data dependency
 (Appendix~\ref{app:downstream}). The \tierGreen\ here certifies the
 synthesize-verb algorithm, not a built accelerator.}}
+
+% =========================================================================
+% Analyze cell (Xsuite full twiss-table, GATE_OPEN)
+% =========================================================================
+\subsection{Analyze cell --- full 4-D twiss-table (GATE\_OPEN)}
+\label{app:fodo-analyze}
+
+In addition to the \emph{synthesize} closure
+(\S\ref{app:fodo-parity}), the same textbook FODO is driven through the
+\emph{analyze} verb (demiurge PR~\#236) to emit the full periodic 4-D
+twiss-table, not just the two synthesize headlines. The cell
+(\verb|stdlib/cern/xsuite_optics_analyze.py|, Xsuite\,0.51.1) reports
+$\beta_{x,y}$ extremes, the cell tunes $Q_{x,y}$, natural chromaticity
+$dQ_{x,y}$, on-momentum dispersion $D_{x,y}$, and momentum-compaction
+$\alpha_p$ in one record.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+quantity & value & cross-check vs.\ synthesize \\
+\midrule
+$\beta_{x,\max}$        & \SI{83.579}{m}                & matches synthesize $\beta_{x,\max}$ (\S\ref{app:fodo-parity}) \\
+$\beta_{x,\min}$        & \SI{81.515}{m}                & matched periodic boundary $\beta_0$ \\
+$\beta_{y,\max}$        & \SI{83.579}{m}                & $x$/$y$ mirror exact \\
+cell tune $Q_x$         & $0.0042422$                   & matches synthesize $Q_x$ \\
+cell tune $Q_y$         & $0.0042422$                   & $x$/$y$ symmetric \\
+nat.\ chromaticity $dQ_x$ & $-0.0042424$                & $\approx\!-Q_x$ (focusing, no sextupole) \\
+nat.\ chromaticity $dQ_y$ & $-0.0042424$                & focusing, no sextupole correction \\
+dispersion $D_x$        & 0                             & no dipoles in cell (correct) \\
+dispersion $D_y$        & 0                             & no dipoles in cell (correct) \\
+momentum-compaction $\alpha_p$ & $-2.4\times 10^{-11}$  & $\approx 0$ (dispersion-free cell) \\
+\bottomrule
+\end{tabular}
+\caption{Xsuite analyze full twiss-table (\texttt{xsuite\_fodo\_twiss\_analyze},
+\SI{7}{TeV} proton, \texttt{twiss\_method=`4d'}). The
+$(\beta_{x,\max}, Q_x)$ pair is cross-consistent with the synthesize
+headlines (\S\ref{sec:fodo}) to float64 round-off. Natural chromaticity
+$dQ\!\approx\!-Q$ is the Wiedemann \S6.4 prediction for a focusing
+lattice with no sextupole correction. Source:
+\texttt{exports/cern/analyze/2026-05-26T07-24-44Z/xsuite\_optics\_analyze.json}.}
+\label{tab:app-fodo-analyze}
+\end{table}
+
+\paragraph{Why \texttt{measurement\_gate = GATE\_OPEN}.} The analyze cell
+flips \texttt{absorbed=false} for the same reason the synthesize cell
+flips \texttt{absorbed=true with caveat} (\S\ref{app:fodo-honesty}): the
+twiss-table is a verified \emph{algorithm} output (Xsuite reproducing
+Wiedemann/Lee to $\sim\!10^{-14}$), \emph{not} a measured-ring tune. To
+flip the analyze gate to \textsc{Gate-Closed-Measured} requires a
+sourced ring-optics deck \emph{plus} a measured Twiss to compare against
+(downstream external-data, Appendix~\ref{app:downstream}). The cell is
+the \emph{shape} of the analyze verb against a textbook lattice; the
+synthesize and analyze cells are now \emph{both} present, with
+analyze GATE\_OPEN as the honest analogue of synthesize's
+algorithm-closure flip.
+
+\paragraph{Environment note (Python 3.12).}\footnote{The \texttt{xtrack}
+0.104.1 import surface uses the PEP-604 \texttt{float\,|\,None}
+union-type syntax, which is a Python 3.10+ feature. The pool default
+\texttt{python3.9} environment trips
+\texttt{TypeError: unsupported operand type(s) for |: `type' and `NoneType'}
+on import; the cell is run under conda \texttt{py3.12} on
+\texttt{pool/ubu-1}. The dispatch is otherwise unchanged.}
