@@ -81,12 +81,11 @@ scope_caveats     = [
 # CLOSURE). aura+verify is the absorbed cell; aura+analyze keeps OPEN gate
 # until further dataset parity sweeps land.
 [cell.analyze]
-substrate         = python3
-python_candidates = python3.13, python3.12, python3
-script            = stdlib/aura/analyze.py
+substrate         = hexa
+script            = stdlib/aura/analyze.hexa
 record_kind       = aura_analyze_record
 output_dir        = exports/aura/analyze
-required_deps     = python3, mne
+required_deps     = hexa, python3, mne
 gate_default      = OPEN
 absorbed_default  = false
 scope_caveats     = [
