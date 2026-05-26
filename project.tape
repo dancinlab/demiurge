@@ -84,6 +84,13 @@
   do   = "round-1 fan-out includes >=1 NOVEL probe and >=1 arxiv+web deep-research search"
   dont = "round-1 with only incremental milestones · skip lit grounding · defer NOVEL to later round"
 
+@D d19 := "MATLAB-grade in-silico 100% closure — push to limit, no wet-lab trailer" :: governance [required active]
+  do   = "in-silico path (ngspice · openEMS · MNE-Python · MATLAB-grade) to 100% closure"
+  do   = "apply d1+d5: non-wet-lab gates PASS → flip absorbed=true · no closure delay"
+  do   = "datasheet mismatch → open-model / direct derivation / sympy+scipy bypass"
+  dont = "trailer wet-lab / external-lab / funding / paid / multi-year as 'excluded'"
+  dont = "repeat 'absorbed=false PERMANENTLY' trailer — d1/d5/d19 already covers it"
+
 #
 # Adapted from anima a_paper_* / a_claim_* (itself a port of hexa-codex cx_paper_*).
 # Prefix = `d_` (matches demiurge's d1-d17 directive family).
