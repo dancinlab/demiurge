@@ -205,5 +205,83 @@ geometry. The \tierGreen\ verdict certifies the leading-order closed form
 is reproduced; it is the \emph{validating reference} that the 1-D linear
 PIC parity (Appendix~\ref{app:pic}) is checked against. The nonlinear
 blowout (bubble) regime, where $E_0$ is boosted and the wave shape
-departs from the cold-linear form, is a GPU-heavy downstream item
-(Appendix~\ref{app:downstream}) and is not claimed here.}}
+departs from the cold-linear form, is a separate GPU-heavy downstream
+item (Appendix~\ref{app:downstream}); a free-CPU 2-D \emph{blowout
+transition sweep} is reported in \S\ref{app:wf-blowout} as the
+qualitative ladder the GPU campaign departs from.}}
+
+% =========================================================================
+% Blowout transition sweep (2-D FBPIC, free pool CPU, qualitative)
+% =========================================================================
+\subsection{2-D blowout transition sweep (free-CPU, qualitative)}
+\label{app:wf-blowout}
+
+The cold-linear reference (\S\ref{app:wf-eq}) sets the
+\emph{wave-breaking scale} that the nonlinear regime crosses. To
+characterize that crossing without paid GPU compute, the demiurge
+\texttt{cern} domain ran a 3-point $a_0$ ladder under FBPIC 2-D
+cylindrical (azimuthal modes $N_m\!=\!2$, moving window $v\!=\!c$) on
+\texttt{pool/ubu-1} free CPU (\$0; cost-bearing GPU provisioning was
+pool-wide broken at the time and was therefore pivoted to free CPU).
+The deck (\verb|stdlib/cern/wakefield_pic_2d.py|, demiurge PR~\#235)
+fixes the density at the closed-form anchor $n_e\!=\!10^{18}\,\si{cm^{-3}}$,
+the spot at $w_0\!=\!1.2\sqrt{a_0}\,\lambda_p/(2\pi)$, and runs 6000
+steps per $a_0$ ($\sim\!1.5$\,mm plasma).
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}c l r r l@{}}
+\toprule
+$a_0$ & regime & $E_z^{\text{peak}}$ (GV/m) & $E_z^{\text{peak}}/E_0$ & note \\
+\midrule
+0.5 & linear / diffraction-limited & 1.70   & 0.018 & no self-guiding ($z_R\!\sim\!79\,\mu m\ll\!1.5$\,mm) \\
+2.0 & blowout onset                & 73.62  & 0.766 & relativistic self-focusing $\Rightarrow$ bubble \\
+4.0 & deep blowout                 & 405.64 & 4.218 & exceeds cold $E_0$ (rel.\ wave-breaking boost) \\
+\bottomrule
+\end{tabular}
+\caption{Three-point $a_0$ ladder spanning the LWFA self-guiding
+transition. The $a_0\!=\!2.0$ row sits at $\approx\!0.77\,E_0$
+(approaching the wave-breaking scale, exactly the Esarey \emph{et al.}
+RMP 2009 prediction); $a_0\!=\!4.0$ overshoots the cold $E_0$ by
+$4.2\times$, the relativistic-blowout boost. Source:
+\texttt{exports/sweep/cern-blowout-pic-2026-05-26/ledger.json} +
+\texttt{candidates/a0\_\{0.5, 2.0, 4.0\}.json}.}
+\label{tab:app-wf-blowout}
+\end{table}
+
+\paragraph{The blowout-transition narrative.} The ladder is monotonic and
+reproduces the canonical LWFA picture: at $a_0\!\ll\!1$ the laser
+diffracts before the wake can develop (the Rayleigh length
+$z_R\!\sim\!79\,\mu m$ is much shorter than the 1.5\,mm plasma, so no
+self-guiding) and $E_z\!\ll\!E_0$; at $a_0\!\sim\!2$ relativistic
+self-focusing guides the pulse, a bubble forms, and $E_z$ approaches the
+cold wave-breaking scale $E_0$; at $a_0\!=\!4$ the pulse drives a deep
+blowout that exceeds $E_0$ via the relativistic-mass enhancement
+$\sqrt{2(\gamma_p\!-\!1)}$ of Akhiezer--Polovin. The cold-linear closed
+form $E_0$ functions exactly as the literature says: the
+\emph{wave-breaking scale} the nonlinear field crosses near $a_0\!\sim\!2$.
+
+\paragraph{Free-CPU pivot --- the \$0 footnote.} The original plan was a
+density$\,\times\,a_0$ GPU sweep (per @D~d7: $\ge\!20$ atoms / dense grid
+$\to$ GPU). The session's GPU provisioning was pool-wide broken, and
+rather than block on a paid rent we pivoted to a 3-point qualitative
+ladder on the free \texttt{ubu-1} CPU host (\$0, $\sim\!6$\,h wall per
+candidate, $N_z\!=\!1024$ moderate-resolution grid). Per @D~d11, the
+sweep was \emph{feasibility-sized} before launch (single-pod-feasible on
+CPU for 3 candidates), and the ledger records the cost honestly
+(\texttt{usd\_spent: 0}, host pool free CPU, atlas N/A per g63 since the
+PIC field is a continuous EM quantity, not a verify atom).
+
+\noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{Sim-wall caveat
+(g63).} The three field-peak measurements are \emph{sim-wall} numbers,
+not registrable closed-form atoms. The only \tierGreen\ anchor in this
+appendix is the cold-linear $E_0$ (\verb|wakefield_e0_gv_m|, \#1007); the
+3 PIC measurements are reported \emph{relative to it} and labelled
+$E_z^{\text{peak}}/E_0$. The sweep is \textsc{Closed-Complete}
+(3 candidates ran, none dropped, none falsified) but
+\texttt{absorbed=false}: a design-grade flip needs full 3-D, an
+$a_0$-specific spot/pulse optimization, dephasing/pump-depletion
+tracking, and convergence in grid/particle count --- a downstream GPU
+sweep, listed in Appendix~\ref{app:downstream}.}}
