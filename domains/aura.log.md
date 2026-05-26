@@ -3,6 +3,14 @@
 > Append-only progression log for the AURA (post-aural wearable BCI) domain.
 > Snapshot SSOT: [aura.md](aura.md) · verb-cell manifest: [aura.demi](aura.demi)
 
+## 2026-05-27 — V4 analyze producer LANDED (hexa-native)
+
+- `stdlib/aura/analyze.hexa` 신규 140 LOC (hexa-lang PR #1345 MERGED).
+- 3 analysis track: eeg_dsp (MNE-Python bandpass 0.5-50Hz+notch 50/60Hz mains+epoching 2-30s+Welch PSD · α 8-13Hz · β 13-30Hz · γ 30-50Hz · substrate SSOT=`stdlib/aura/aura_mne.py` D61-from-birth · naive-DFT companion=`_dft_alpha_band_batch.hexa` G33 LANDED) · em_fdtd (openEMS GPL-3 3D FDTD · BLE 2.4-2.4835GHz ISM · S11/VSWR + 3D radiation pattern + SAR via ITIS Foundation Virtual Population head phantom + π/T 매칭 + paraview VTK post) · synthetic_input (default = 사인+1/f pink-noise · Sleep-EDF measured-oracle parity는 V0 verify cell G33).
+- cellrun manifest 변경: `[cell.analyze]` substrate=python3 → hexa, script=*.py → *.hexa, required_deps=python3,mne → hexa,python3,mne.
+- 마일스톤: V4 → `[~]` in-progress (producer LANDED).
+- g3 honesty: `absorbed=false` PERMANENTLY · openEMS SAR FDA-MDDT honest-gap = V6 EM-side verify (G1 breakthrough 후보).
+
 ## 2026-05-27 — V3 design producer LANDED (hexa-native)
 
 - `stdlib/aura/design.hexa` 신규 142 LOC (hexa-lang PR #1343 MERGED).
