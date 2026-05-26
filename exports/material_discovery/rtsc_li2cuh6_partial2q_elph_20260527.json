@@ -1,0 +1,24 @@
+{
+  "material": "Li₂CuH₆",
+  "structure": "Fm-3m K₂PtCl₆ prototype",
+  "pressure_GPa": 0,
+  "verdict": "🔴 CLOSED_NEGATIVE",
+  "gate_failed": "dynamical-stability (gate 1 of 5)",
+  "q_grid": "4×4×4",
+  "q_completed": "2/8 IBZ (q1 Γ + q2 (-0.25, 0.25, -0.25))",
+  "hard_imag_count": 8,
+  "min_freq_cm1": -944.915059,
+  "soft_freqs_cm1_sample": [-944.92, -916.30, -643.59],
+  "Tc_K": "UNDEFINED (d6 honest — Tc not forced)",
+  "lambda_BZ": "N/A (gated by stability)",
+  "omega_log_K": "N/A (gated by stability)",
+  "method": "QE PBE pure (d14) · 4×4×4 q-grid · electron_phonon='simple' · pool ubu-1 free ($0)",
+  "pseudo": ["Li.pbe-s · Cu.pbe-dn PSL 1.0.0 · H.pbe-rrkjus_psl.1.0.0"],
+  "breakthrough_paths_d2": [
+    "polymorph escape — lower-sym Li₂CuH₆ variant via soft-mode condensation (h3as method transfer)",
+    "pressure stabilization — P > 0 GPa scan (H₃S/CaH₆ pattern)",
+    "X₂MH₆ prototype 의문 강화 — Fm-3m 자체 ambient-unstable, alternative prototype 탐색 필요"
+  ],
+  "context": "Mg₂IrH₆ (Ir d⁷) 🔴 closed-neg 이후 두번째 X₂MH₆ Fm-3m falsification (Cu d¹⁰). cation-VEC=19 sweet-spot 가설 2/2 falsified at dynamical-stability gate. cation 화학 ≠ 격자 안정. K₂PtCl₆ Fm-3m prototype 자체 ambient-unstable.",
+  "R4": "absorbed=false (sim ≠ measured; R4 영구)"
+}
