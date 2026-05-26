@@ -2,6 +2,19 @@
 
 Append-only history sister of `CERN.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26T09:45Z — Stage 4 Geant4-MC parity 측정 완료 (#241) · absorbed=false-with-gap (정직)
+
+D 에이전트(PR #241) 가 Geant4 11.04-patch-01 (conda-forge `geant4` 11.3.2 pkg) on ubu-1 환경에서 28-point Bethe-Bloch Stage 4 parity 측정. PDG eq.34.5 closed-form ↔ Geant4-MC(보정 포함) Δ% 매핑.
+
+- [x] **28-point parity grid** — Al·Cu·W·Pb × KE {1,3,10,30,100,300,1000} MeV. **max |Δ|=23.55% (Cu @ 1 MeV) · mean |Δ|=6.25%**
+- [x] **보정 지배 매핑**(βγ 척도) — βγ<0.3 (1-3 MeV) → shell 보정 (9-24%, PDG §34 매뉴얼 값 정확 일치) · βγ~0.3-1 (30-100 MeV) → Bethe-Bloch plateau (~1%) · βγ>1 (300 MeV-1 GeV) → density-effect onset (<1%)
+- [x] **mean-excitation I 일치 확인** — PDG closed-form 의 I 값(Al·Cu·W·Pb) = Geant4 ICRU 37 정확 일치 → I 가 Δ 원인 아님 (보정 항이 원인)
+- [x] **Geant4 nuclear stopping = 0** (antiproton, ICRU 49 는 ion 만)
+- [x] **absorbed=false-with-measured-gap** (정직) — Δ는 버그 아닌 누락 보정(shell·density·straggling·nuclear)의 *물리적 크기* (closure-is-physical-limit). Stage 3 closed-form 은 선언된 mid-βγ 영역에서 ~1% 일치 그대로 🟢. Stage 5(Sternheimer 밀도효과 + Bloch+Barkas 껍질보정 hexa-native 본해)가 갭 닫는 next-step (above-lane new spec)
+- [x] **d2 돌파 — G4EmCalculator EM-loss 테이블 lazy 빌드 segfault** → `BeamOn(0)` after `Initialize()` 로 강제 구성(3-iteration 진단). 메모리 등재 [[reference_geant4_dedx_lazy_tables]]
+- [x] **export** `exports/cern/verify/2026-05-26T09-36-53Z/bethe_bloch_stage4_geant4_parity.json` (28 points, oracle=Geant4 11.04-patch-01 · gate_type=sim_wall_measurement · g63 no atlas register)
+- [x] **CERN.md reconcile** — §4 L145 [x] + §1 verb-map VERIFY · §2.1 gate/Geant4 cell · downstream Geant4 행 모두 Stage 4 측정값 반영
+
 ## 2026-05-26T09:30Z — /cycle 라운드: xsuite analyze cell + Geant4/particle 설치(벽 돌파) + §4 ledger reconciliation
 
 CERN /cycle 2-agent fan-out 결과 land + §4 ledger 정합. A(xsuite) 정상 완료, C(Geant4) rate-limit 사망 → parent 가 checkpoint 회수해 포그라운드 land.
