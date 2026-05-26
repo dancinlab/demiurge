@@ -4,6 +4,20 @@ Append-only history sister of `HEXA-PORT.md`. Each entry starts with `## <ISO ti
 
 ## Log
 
+## 2026-05-26T12:00:00Z — Geant4 + particle 설치·등록 (P8 MC 입자수송 오라클 · CERN Bethe-Bloch Stage 4 공급)
+
+사용자 지시 "Geant4 + particle 설치 => hexa-port 에도 등록". CERN Bethe-Bloch Stage 4 의 4개 보정(shell·density·straggling·nuclear)을 Geant4-MC 가 wrap-as-is 오라클로 공급 — FUSION (FreeGS/getdp/OpenMC) · UFO (ccx/SU2/gmsh) 와 동일 공급 패턴.
+
+- [x] **dep — scikit-hep `particle` 0.26.2 설치+검증 ✓** (로컬 macOS Python 3.9 `pip install --user particle` · +hepunits 2.4.5). PDG 속성 lookup 동작: muon(13) mass=105.6583755 MeV·charge=−1 · proton(2212) mass=938.27208816 MeV·charge=+1. Tier-A 경량 데이터 dep (포팅 불필요) — P8/CERN Bethe-Bloch 입력.
+- [x] **P8 — Geant4 11.3.2 설치+스모크 PASS ✓ (trampoline 벽 돌파)** — pool ubu-1 conda-forge `geant4` 11.3.2 (build py312he45f0a4_6 · Geant4 11.04-patch-01 [MT] · `conda create -n geant4 -c conda-forge geant4 python=3.12`). 데이터셋 동봉(ENSDF·particlexs·photonevaporation·radioactivedecay 등 9종). **스모크 테스트 전부 PASS (exit 0)**: ① `import geant4_pybind` OK · ② `G4RunManagerFactory.CreateRunManager(Serial)` 구성 OK (← trampoline-ownership 경로) · ③ NIST 재질 + Bethe-Bloch-관련 이온화 속성 조회 (`G4_Si` ρ=2.33 g/cm³ I=173 eV · `G4_WATER` I=78 eV — PDG 값 정확) · ④ `G4ParticleTable` instance OK.
+- [x] **기존 `geant4_pybind` trampoline-ownership segfault 벽 = BROKEN** (@D d2 — 영구 제외 선언 안 함, 돌파). 선행 "A3" 라운드에서 3rd-party `pip install geant4-pybind` 가 pybind11 trampoline 소유권 segfault 로 막혔던 벽을, **conda-forge 공식 `geant4` 빌드**(자체 python 바인딩 동봉, ABI-매칭 빌드)로 우회 돌파. RunManager 구성(세그폴트 났던 정확한 경로)까지 exit 0 으로 통과.
+- [x] HEXA-PORT.md 등록 — §4 cohort 에 **P8** (Geant4 MC 입자수송 · CERN (e) wrap-run 오라클) + **dep** (`particle`) 행 추가 · 마일스톤 P8 설치-PASS + dep + P8 native(후순위) 3줄 · §6 citation (geant4.org + scikit-hep/particle).
+- [ ] P8 Path A native MC 입자수송 재구현 (Tier C · P4a OpenMC 엔진과 substrate 공유 · multi-month 후순위 · wrap→오라클→Path A→parity 파이프라인 §3).
+
+> 등록+설치까지 (registration+install). Geant4 의 wrap-run 출력이 향후 P8 native MC 엔진의 parity 오라클. CERN.md 의 Geant4 마일스톤은 parent 가 동시-편집 contention 회피 위해 별도 반영 (본 엔트리는 CERN.md 미편집).
+> **재사용 env**: ubu-1 conda env `geant4` (`/home/aiden/miniforge3/envs/geant4` · `geant4-config --version`=11.3.2). 활성화: `conda activate geant4`.
+> **돌파 경로 기록 (만약 conda-forge 도 막혔다면 — @D d2)**: ① conda-forge `geant4` (✓ 채택·성공) · ② `pip install geant4-pybind` (선행 A3 에서 trampoline segfault) · ③ 소스 빌드 + 패치된 trampoline (pybind11 소유권 명시) · ④ 컨테이너화 Geant4 (docker `geant4/geant4`) · ⑤ `pyg4ometry` (geometry-only, transport 없음 — 부분대안).
+
 ## 2026-05-26T04:30:00Z — UFO 외부 lib 일괄 등록 (P5 ccx · P6 SU2/OpenFOAM · P7 gmsh)
 
 UFO absorbed 캠페인이 외부 solver 로 게이트를 닫으면서(별도 목표 — 사용자 지시 "PORT 는 별도목표") 그 wrap-as-is 출력이 HEXA-PORT 의 parity 오라클이 됨. FUSION (FreeGS/getdp/OpenMC) 과 동일 공급 패턴.
