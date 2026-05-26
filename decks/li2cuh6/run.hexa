@@ -1,0 +1,45 @@
+// Li2CuH6 ambient DFT — 4x4x4 q, 13 IBZ q-points
+// Pool target: ubu-1 ~/rtsc_li2cuh6/  (deck files staged adjacent to pseudo/)
+// d2 breakthrough path #1 after Mg2IrH6 ambient Fm-3m FALSIFIED (rtsc_mg2irh6_partial5q_elph_20260526).
+// X2MH6 cation-VEC=19 sweet-spot — Li2 (smallest cation, stiff H) + Cu d10 (11-group).
+// Lit prediction: 86K (S2542529324000506 ScienceDirect) — to be verified or FALSIFIED (g63 honest).
+//
+// PREREQ d13 (DONE 2026-05-26):
+//   Li.pbe-s-rrkjus_psl.1.0.0.UPF   ← downloaded from pseudopotentials.quantum-espresso.org (PSL 1.0.0)
+//   Cu.pbe-dn-rrkjus_psl.1.0.0.UPF  ← downloaded from pseudopotentials.quantum-espresso.org (PSL 1.0.0)
+//   H.pbe-rrkjus_psl.1.0.0.UPF      ← already on ubu-1 (campaign-shared)
+// All three staged at /home/aiden/rtsc_li2cuh6/pseudo/ before launch.
+//
+// FLOW: vc-relax (a unknown → settle) → SCF (16^3 k) → ph.x electron_phonon=simple 4^3 q.
+// Total wall-time estimate (ubu-1 -np physcores): vc-relax ~6h + SCF ~1h + ph ~13×20h ≈ 11+ days.
+// Partial-q verdict (d17) — lock 🔴 at first hard-imag q (any single q with min_freq < -50 cm^-1).
+
+@V := "run-li2cuh6-deck" :: runbook
+  pool_host           = "ubu-1"
+  workdir             = "$HOME/rtsc_li2cuh6"
+  np_default          = "physcores via getconf _NPROCESSORS_ONLN (-np 6 on ubu-1)"
+  pseudo_dir          = "./pseudo"
+  decks               = "relax.in (vc-relax) · scf.in · ph.in"
+  q_grid              = "4x4x4 → 13 IBZ q-points"
+  walltime_per_q_hr   = 20
+  walltime_total_days = 11
+  verdict             = "TBD — locked by partial-q (≥5 q done OR first hard-imag) per d17"
+  reference_negative  = "rtsc_mg2irh6_partial5q_elph_20260526.json (X2MH6 Fm-3m sibling FALSIFIED)"
+
+@steps := "execution"
+  step1 = "mpirun -np <NP> pw.x  -in relax.in > vcrelax.out 2>&1  # vc-relax settle a"
+  step2 = "edit scf.in celldm(1)+positions ← relaxed values, then mpirun -np <NP> pw.x -in scf.in > scf.out 2>&1"
+  step3 = "mpirun -np <NP> ph.x  -in ph.in   > ph.out  2>&1     # ph + electron-phonon (recover-safe)"
+  step4 = "harvest: scp ubu-1:$WORK/li2cuh6.dyn* /tmp/ && python3 _tools/harvest_li2cuh6.py"
+
+@notes := "stability gates"
+  gate1 = "vc-relax convergence → real positive stress + force convergence → continue"
+  gate2 = "ph.x any q with hard imag mode < -50 cm-1 → 🔴 closed-negative (Mg2IrH6 pattern)"
+  gate3 = "all q real → σ-plateau (σ ≥ 0.025 Ry) → record λ_BZ + ω_log + Allen-Dynes Tc"
+  gate4 = "verify Tc via `hexa verify --expr allen_dynes_tc <λ> <ω_log> 0.10 --compute`"
+
+@verdict_branches := "g63 honest"
+  win        = "Stable AND Tc > 56K (h3as winner) → 🟢 new X2MH6 family viable"
+  data_point = "Stable AND Tc < h3as → 🟢 honest data point on N6 funnel"
+  hold       = "Mild Γ-soft only → ⚪ anharmonic 보류 (labeh8/ysbh6 pattern)"
+  fail       = "Hard soft → 🔴 closed-negative (X2MH6 Fm-3m falsified across cation-VEC)"

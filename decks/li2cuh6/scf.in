@@ -1,0 +1,48 @@
+&control
+  ! NOTE: run vc-relax FIRST (vcrelax.in) to settle a; this scf uses the relaxed celldm.
+  calculation = 'scf'
+  prefix = 'li2cuh6'
+  outdir = '/home/aiden/rtsc_li2cuh6/out'
+  pseudo_dir = '/home/aiden/rtsc_li2cuh6/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  nstep = 120
+  forc_conv_thr = 1.0d-4
+/
+&system
+  ! Li2CuH6  Fm-3m (No.225, K2PtCl6 prototype) — FCC primitive cell, 9 atoms (2 Li + 1 Cu + 6 H)
+  ! VEC = 2*1(Li) + 11(Cu) + 6(H) = 19  → 19-20 sweet spot (n_sigma* = VEC-18 = 1)
+  ! celldm(1) START 11.34 Bohr = 6.00 Ang (lit estimate S2542529324000506); MUST vc-relax — placeholder
+  ! ibrav=2 FCC; M(Cu) at 4a(0,0,0); X(Li) at 8c(1/4,1/4,1/4); H at 24e(x,0,0) x~0.24
+  ibrav = 2
+  celldm(1) = 11.3400000
+  nat = 9
+  ntyp = 3
+  ecutwfc = 80
+  ecutrho = 800
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.7
+  electron_maxstep = 200
+/
+
+ATOMIC_SPECIES
+  Li 6.941   Li.pbe-s-rrkjus_psl.1.0.0.UPF
+  Cu 63.546  Cu.pbe-dn-rrkjus_psl.1.0.0.UPF
+  H  1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Cu 0.000000 0.000000 0.000000
+  Li 0.250000 0.250000 0.250000
+  Li 0.750000 0.750000 0.750000
+  H  0.240000 0.000000 0.000000
+  H  0.760000 0.000000 0.000000
+  H  0.000000 0.240000 0.000000
+  H  0.000000 0.760000 0.000000
+  H  0.000000 0.000000 0.240000
+  H  0.000000 0.000000 0.760000
+K_POINTS automatic
+  16 16 16 0 0 0

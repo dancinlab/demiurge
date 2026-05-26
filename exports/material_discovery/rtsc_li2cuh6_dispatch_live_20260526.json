@@ -1,0 +1,53 @@
+{
+  "material": "Li2CuH6",
+  "structure_input": "Fm-3m (K2PtCl6 prototype), 9-atom primitive cell (1 Cu + 2 Li + 6 H)",
+  "pressure_GPa": 0.0,
+  "ambient_target": true,
+  "VEC": 19,
+  "n_sigma_star": 1,
+  "lit_prediction_K": 86,
+  "lit_prediction_source": "S2542529324000506 ScienceDirect (RULE-PREDICTED, NOT measured)",
+  "campaign_context": "X2MH6 cation-VEC funnel — d2 breakthrough path #1 after Mg2IrH6 ambient Fm-3m FALSIFIED (rtsc_mg2irh6_partial5q_elph_20260526). VEC=19 sweet-spot self-consistency test (Mg2IrH6 and Li2CuH6 both VEC=19; if Li2CuH6 also closed-negative, the entire X2MH6 Fm-3m prototype with VEC=19 is falsified across the cation axis).",
+  "method": "QE PBE pure (d14) · vc-relax (cell + atoms) → SCF (16^3 k) → ph.x electron_phonon='simple' 4x4x4 q-grid (13 IBZ q-points)",
+  "pseudopotentials_d13_gate": {
+    "Li": "Li.pbe-s-rrkjus_psl.1.0.0.UPF (PSlibrary 1.0.0 PBE rrkjus — downloaded 2026-05-26 from pseudopotentials.quantum-espresso.org)",
+    "Cu": "Cu.pbe-dn-rrkjus_psl.1.0.0.UPF (PSlibrary 1.0.0 PBE rrkjus — downloaded 2026-05-26)",
+    "H":  "H.pbe-rrkjus_psl.1.0.0.UPF (campaign-shared, already on ubu-1)"
+  },
+  "celldm_input_Bohr": 11.34,
+  "celldm_input_Angstrom": 6.00,
+  "celldm_input_source": "lit estimate (S2542529324000506); explicitly marked as unknown → vc-relax required (RTSC/research/cation_VEC_rule.md §4.1)",
+  "compute_host": "pool ubu-1 (12 cores, conda env qe, -np 6 no oversubscribe per memory:vast_elph_safe_launch)",
+  "cost_USD": 0.0,
+  "dispatch_status": "LIVE (vc-relax phase, BFGS step ~2 of ~10, started 2026-05-26T23:52:53+09:00)",
+  "early_vc_relax_observation": {
+    "initial_alat_Bohr": 11.34,
+    "initial_volume_au3": 364.57,
+    "step1_relaxed_volume_au3": 503.85,
+    "step1_relaxed_volume_Angstrom3": 74.66,
+    "implied_alat_Bohr_estimate": 12.64,
+    "implied_alat_Angstrom_estimate": 6.69,
+    "implication": "Initial lit estimate a=6.00 Å was severely COMPRESSED vs DFT equilibrium. Cell expanded ~38 % in BFGS step 1. Per RTSC/research/cation_VEC_rule.md §2.3 (Mg→Ca/Sr death mechanism), larger lattice → softer H phonons → ω_log↓ → Tc↓. Even if Li2CuH6 turns out dynamically stable, this strongly suggests Tc << 86 K literature prediction. d6 honesty: number TBD post-harvest, NO forcing."
+  },
+  "wall_time_estimate": "vc-relax ~30 min - 2 hr + SCF ~1 hr + ph.x 13 q × ~20 hr/q ≈ 11+ days (per RTSC.md/Mg2IrH6 sibling timing)",
+  "partial_q_verdict_protocol_d17": [
+    "🔴 CLOSED_NEGATIVE — lock at first q with min_freq < -50 cm^-1 (Mg2IrH6 pattern; ~5 q sufficient for falsification)",
+    "🟢 candidate — all q real OR mild Γ-soft only → wait full grid, then σ-plateau + Allen-Dynes Tc",
+    "⚪ anharmonic 보류 — mild Γ-soft only (labeh8/ysbh6 pattern) → SSCHA follow-up required",
+    "winner candidate threshold — Tc > 56 K (h3as N5 winner); below = honest data point on N6 funnel"
+  ],
+  "current_phase": "vc-relax (cell+atom geometry settling)",
+  "harvest_pending": true,
+  "VERDICT": "DISPATCH_LIVE — harvest pending. Cell expansion 38 % in BFGS step 1 = early-warning signal (larger lattice → softer H phonons → lower Tc, per cation_VEC_rule §2.3). Final verdict (🔴 closed-negative / 🟢 stable / ⚪ anharmonic-hold) deferred to ph.x partial-q outcome.",
+  "honesty_fence_d6": "Tc NOT predicted at dispatch — number waits on DFT harvest. Li2CuH6 86 K lit prediction is 🟡 PREDICTED-by-others, NOT measured. R4 absorbed=false permanently regardless of outcome (sim ≠ measured).",
+  "artifacts": {
+    "decks": "decks/li2cuh6/{relax.in,scf.in,ph.in,run.hexa}",
+    "ubu1_workdir": "/home/aiden/rtsc_li2cuh6/",
+    "ubu1_pseudos": "/home/aiden/rtsc_li2cuh6/pseudo/{Li,Cu,H}.pbe-*-rrkjus_psl.1.0.0.UPF",
+    "ubu1_launcher": "/home/aiden/rtsc_li2cuh6/run.sh (vc-relax → scf-relaxed (auto-extracted) → ph.x chain, JOB DONE guards)",
+    "ubu1_logs": "/home/aiden/rtsc_li2cuh6/{run.log,vcrelax.out,scf.out,ph.out}"
+  },
+  "next_action": "monitor vc-relax JOB DONE → SCF JOB DONE → ph.x partial-q (q1 takes ~15-20 hr after SCF) → lock verdict per d17. Cron-style follow-up agent recommended (not synchronous wait).",
+  "schema_version": "v1_dispatch_live",
+  "date_utc": "2026-05-26"
+}
