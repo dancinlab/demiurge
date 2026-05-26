@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+message: "If you use hexa-aura in academic work, please cite as below."
+title: "hexa-aura: HEXA family post-aural BCI chip substrate (측두골 클립; 4 pillars clip/coil/cortex/safety; n=6 invariant lattice σ·φ = n·τ = J₂ = 24)"
+authors:
+  - family-names: Park
+    given-names: Min Woo
+    alias: dancinlab
+    email: nerve011235@gmail.com
+    affiliation: dancinlab
+license: MIT
+repository-code: "https://github.com/dancinlab/hexa-aura"
+url: "https://github.com/dancinlab/hexa-aura"
+version: "v1.0.0"
+date-released: "2026-05-10"
+doi: "10.5281/zenodo.20114981"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.20114981"
+    description: "Concept DOI (always resolves to the latest version)"
+  - type: doi
+    value: "10.5281/zenodo.20114982"
+    description: "Version-specific DOI for v1.0.0"
+keywords:
+  - hexa-family
+  - n6-lattice
+  - perfect-number
+  - bci
+  - post-aural
+  - mastoid-clip
+  - rt-sc-nanocoil
+  - cortical-interface
+  - cortical-safety
+  - wearable-replacement
+  - neuromorphic
+  - chip-substrate
+  - runnable-surface-construction
+references:
+  - type: software
+    title: "hexa-cern: HEXA family benchtop-accelerator substrate (RSC worked example)"
+    url: "https://github.com/dancinlab/hexa-cern"
+  - type: software
+    title: "hexa-rtsc: room-temperature superconductor substrate (the coil pillar's RT-SC dependency)"
+    url: "https://github.com/dancinlab/hexa-rtsc"

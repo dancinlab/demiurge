@@ -1,0 +1,40 @@
+#!hexa strict
+// ──────────────────────────────────────────────────────────────────────────
+// hexa-aura/install.hexa — hx build hook (post-install quick selftest).
+//
+// @allow-bare-exec-file
+// @allow-silent-exit-file
+// @no-lock-needed
+//
+// Runs the CLI selftest (4 pillar + 5 atlas presence + n=6 lattice sanity) —
+// warn-only, not a blocker.
+// ──────────────────────────────────────────────────────────────────────────
+
+fn run_quick_selftest(root: str) -> bool {
+    let cli = root + "/cli/hexa-aura.hexa"
+    let exists = exec("[ -f \"" + cli + "\" ] && echo y || echo n").trim()  // @allow-bare-exec
+    if exists != "y" {
+        eprintln("[hexa-aura/install] WARN: cli/hexa-aura.hexa missing — skip selftest")
+        return false
+    }
+    println("[hexa-aura/install] [post] running quick selftest (4 pillar + 5 atlas presence + n=6 sanity)")
+    let cmd = "HEXA_AURA_ROOT=\"" + root + "\" hexa run \"" + cli + "\" selftest 2>&1"
+    let raw = exec(cmd)  // @allow-bare-exec
+    if raw.find("__HEXA_AURA_SELFTEST__ PASS") > -1 {
+        println("[hexa-aura/install]   selftest PASS — 4 pillar + 5 atlas + roadmap + n=6 lattice OK")
+        return true
+    }
+    eprintln("[hexa-aura/install] WARN: selftest non-PASS (warn-only)")
+    return false
+}
+
+fn main() {
+    let root = exec("git -C . rev-parse --show-toplevel 2>/dev/null").trim()  // @allow-bare-exec
+    if root.len() == 0 {
+        eprintln("[hexa-aura/install] ERROR: not a git repo")
+        return
+    }
+    println("[hexa-aura/install] post-install hook starting (root=" + root + ")")
+    let _ = run_quick_selftest(root)  // @allow-silent-exit
+    println("[hexa-aura/install] done")
+}

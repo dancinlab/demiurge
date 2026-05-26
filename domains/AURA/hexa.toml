@@ -1,0 +1,176 @@
+# hexa.toml — hexa-aura standalone package manifest
+#
+# Spec: shared/hexa-lang/hexa-toml-spec.json (version 1.0.0)
+# Distribution target: hx install hexa-aura
+# Provenance: bundled from canon/domains/{life,cognitive,compute}/ on 2026-05-10
+#             + 4 in-tree pillar specs authored 2026-05-10 (v1.0.0 full design).
+#             Sister of hexa-cern / hexa-ufo / hexa-rtsc / hexa-bio / hexa-chip
+#             under the dancinlab org. RSC pattern: ~/core/bedrock/docs/runnable_surface_recipe.md.
+#
+# Concept: 측두골(temporal bone) 유양돌기(mastoid) 클립 한 쌍 (φ=2개, 각 σ·n/10 =
+# 3.6 g) 이 스마트폰 + 18개 웨어러블 (AirPods / Vision Pro / Watch / 외골격 / 의수 /
+# e-skin / 후각·미각·수면·감정 트래커 …) 을 0개로 수렴. RT-SC 나노코일이 σ²=144 ch/타일
+# 로 청각(A1) · 시각(V1~V6) · 체성감각(S1) · 운동(M1) 피질을 직접 read/write 하는
+# post-aural BCI 칩-기판 + form-factor. n=6 invariant lattice σ·φ = n·τ = J₂ = 24.
+#
+# v1.0.0 ships: 4 pillar specs (clip + coil + cortex + safety) + 5-doc atlas
+# (neuro / brain-computer-interface / hexa-neuromorphic / l9-field-photon-neuro /
+# neuroscience; 2 of 5 historically restored from canon@{579ab196, ab155706}) +
+# RSC verify surface (T1 ×6 + T2 ×4 + T3 ×4 + cross-cutters ×2 + meta ×3 +
+# saturation = 19 scripts) + cli `verify [<sub>]` + 5 tests + build PDF pipeline +
+# numerics methodology. F-AURA-1/2/3/4 (15 sub-IDs) all OPEN. verdict = SPEC_FIRST_RSC.
+#
+# Scope discipline: hexa-aura is the CHIP + FORM-FACTOR substrate only.
+#   cognitive verbs (mind/dream/telepathy/oracle) → hexa-mind (pending)
+#   sensory   verbs (ear/speak/empath/olfact)     → hexa-senses (pending)
+#   BCI ML stack (hexa-neuro)                      → hexa-mind (pending, per canon plan)
+#   working EEG/BMI pipeline                        → hexa-brain (sister repo)
+#   RT-SC ambient-superconductor (coil pillar dep)  → hexa-rtsc (sister repo)
+#   decoder model serving                           → hexa-codex CLI
+#   neuromorphic silicon (chip-grade)               → hexa-chip CLI
+#   5G/6G uplink for cloud sync                     → hexa-grid CLI
+#
+# Honest C3 (raw#10): verify/* sentinel PASS = n=6 lattice + token consistency +
+# published-reference parity ARITHMETIC. NOT in-vivo validation, NOT a built
+# device, NOT regulatory clearance. NO craniotomy / external-only / NO clinical trial.
+
+[package]
+name = "hexa-aura"
+version = "1.0.0"
+entry = "cli/hexa-aura.hexa"
+description = "n=6 post-aural BCI chip substrate (HEXA family) — 측두골 클립이 스마트폰 + 18개 웨어러블 대체. 4 pillars: clip (HEXA-MASTOID-CLIP, F-AURA-1) · coil (HEXA-RT-SC-NANOCOIL, σ²=144 ch/tile, F-AURA-2) · cortex (HEXA-CORTICAL-IF, σ=12 zones, 18→0, F-AURA-3) · safety (HEXA-CORTICAL-SAFETY, Shannon k≤1.5 / SAR≤2 W/kg / ΔT≤0.5 K / MRI-conditional, F-AURA-4) + 5-doc atlas + RSC verify surface (T1+T2+T3 100% code-layer closure; F-AURA-1/2/3/4 all OPEN). Cognitive verbs → hexa-mind; sensory verbs → hexa-senses; RT-SC dep → hexa-rtsc."
+license = "MIT"
+authors = ["박민우 <nerve011235@gmail.com>"]
+repository = "https://github.com/dancinlab/hexa-aura"
+homepage = "https://github.com/dancinlab/hexa-aura"
+readme = "README.md"
+keywords = ["bci", "neuro", "post-aural", "mastoid-clip", "wearable-replacement", "rt-sc-nanocoil", "cortical-interface", "neuromorphic", "chip-substrate", "n6-invariant", "hexa-family"]
+categories = ["bci", "wearable", "neurotechnology", "spec-substrate"]
+
+[[bin]]
+name = "hexa-aura"
+path = "cli/hexa-aura.hexa"
+
+[test]
+runner = "hexa"
+files = [
+    "tests/test_selftest.hexa",
+    "tests/test_lattice.hexa",
+    "tests/test_calculators.hexa",
+    "tests/test_cli_verify.hexa",
+    "tests/test_all.hexa",
+]
+
+[scripts]
+install = "install.hexa"
+
+# ── Pillar verb manifest (4 pillars + 5-doc atlas) ──────────────────────────
+verb_parent = "."
+[verbs]
+# 4 pillars (n=6 post-aural BCI substrate)
+clip                      = ["clip/doc/mastoid-clip.md"]          # F-AURA-1 — form-factor
+coil                      = ["coil/doc/rt-sc-nanocoil.md"]        # F-AURA-2 — transducer
+cortex                    = ["cortex/doc/cortical-interface.md"]  # F-AURA-3 — cortical I/O
+safety                    = ["safety/doc/cortical-safety.md"]     # F-AURA-4 — safety caps
+# 5-doc atlas (background)
+neuro                     = ["docs/neuro.md"]
+brain_computer_interface  = ["docs/brain-computer-interface.md"]
+hexa_neuromorphic         = ["docs/hexa-neuromorphic.md"]
+l9_field_photon_neuro     = ["docs/l9-field-photon-neuro.md"]
+neuroscience              = ["docs/neuroscience.md"]
+
+# ── Modules manifest (4 pillar specs + 5 atlas docs + 19 verify scripts + 5 tests + docs + build) ──
+[modules]
+hexa = [
+    "cli/hexa-aura.hexa",
+    "verify/lattice_check.hexa",
+    "verify/cross_doc_audit.hexa",
+    "verify/calc_clip.hexa",
+    "verify/calc_coil.hexa",
+    "verify/calc_cortex.hexa",
+    "verify/calc_safety.hexa",
+    "verify/numerics_clip.hexa",
+    "verify/numerics_coil.hexa",
+    "verify/numerics_cortex.hexa",
+    "verify/numerics_safety.hexa",
+    "verify/numerics_clip_parity.hexa",
+    "verify/numerics_coil_parity.hexa",
+    "verify/numerics_cortex_parity.hexa",
+    "verify/numerics_safety_parity.hexa",
+    "verify/numerics_cross_pillar.hexa",
+    "verify/numerics_lattice_arithmetic.hexa",
+    "verify/falsifier_check.hexa",
+    "verify/lint_numerics.hexa",
+    "verify/saturation_check.hexa",
+    "tests/test_selftest.hexa",
+    "tests/test_lattice.hexa",
+    "tests/test_calculators.hexa",
+    "tests/test_cli_verify.hexa",
+    "tests/test_all.hexa",
+    "install.hexa",
+]
+docs = [
+    "clip/doc/mastoid-clip.md",
+    "coil/doc/rt-sc-nanocoil.md",
+    "cortex/doc/cortical-interface.md",
+    "safety/doc/cortical-safety.md",
+    "docs/neuro.md",
+    "docs/brain-computer-interface.md",
+    "docs/hexa-neuromorphic.md",
+    "docs/l9-field-photon-neuro.md",
+    "docs/neuroscience.md",
+    "docs/numerics_methodology.md",
+    "papers/n6-brain-computer-interface-paper.md",
+    "papers/n6-hexa-earphone-paper.md",
+    ".roadmap.hexa_aura",
+    "README.md",
+    "CHANGELOG.md",
+    "RELEASE_NOTES_v1.0.0.md",
+    "TODO.md",
+]
+
+# ── Dependencies ────────────────────────────────────────────────────────────
+# Pure-hexa. Zero Python deps. Zero network. (build/ PDF pipeline needs pandoc +
+# xelatex but is OPTIONAL — `make check` probes the toolchain.)
+[dependencies]
+hexa-lang = ">=1.0.0"
+
+# ── Cross-link (sister substrates — invoke their CLIs / repos directly) ─────
+# Policy (raw#10): DO NOT re-implement or proxy these through hexa-aura.
+[crosslink]
+rtsc   = "dancinlab/hexa-rtsc (room-temperature superconductor — the coil pillar's RT-SC ambient-operation claim depends on it; if hexa-rtsc is falsified, F-AURA-2 is DEMOTED)"
+brain  = "dancinlab/hexa-brain (working EEG/BMI pipeline — sister repo; cross-verify decode accuracy at v1.1.0)"
+mind   = "dancinlab/hexa-mind (cognitive verbs: mind/oracle/telepathy/dream/mind-upload/superpowers + BCI ML stack hexa-neuro — pending standalone, per canon/domains/cognitive/_standalone_repos.md)"
+senses = "dancinlab/hexa-senses (5-senses verbs: ear/speak/empath/olfact/dream — pending standalone)"
+codex  = "dancinlab/hexa-codex (decoder model serving — call `hexa-codex serve`)"
+chip   = "dancinlab/hexa-chip (chip-grade neuromorphic silicon — call `hexa-chip neuromorphic`)"
+grid   = "dancinlab/hexa-grid (5G/6G uplink for cloud sync — call `hexa-grid v2x`)"
+ufo    = "dancinlab/hexa-ufo (sibling speculative-substrate atlas; RSC pattern source alongside hexa-cern)"
+cern   = "dancinlab/hexa-cern (sibling benchtop-accelerator substrate; the canonical RSC worked example)"
+
+# ── Closure provenance (raw#10 honest C3) ──────────────────────────────────
+[closure]
+pillars_total = 4
+atlas_docs_total = 5
+falsifiers_total = 4
+falsifier_sub_ids_total = 15
+verify_scripts = 19          # 6 T1 (lattice + cross_doc + calc×4) + 4 T2 numerics + 4 T3 parity + 2 cross-cutters + 3 meta — wait: see breakdown below
+verify_breakdown = "T1: lattice_check + cross_doc_audit + calc_{clip,coil,cortex,safety} (6) · T2: numerics_{clip,coil,cortex,safety} (4) · T3: numerics_{clip,coil,cortex,safety}_parity (4) · cross-cutters: numerics_cross_pillar + numerics_lattice_arithmetic (2) · meta: falsifier_check + lint_numerics + saturation_check (3) = 19"
+tests_total = 5
+code_layer_closure_pct = 100  # T1 ✓ + T2 ✓ + T3 parity ✓ for all 4 falsifiers (per verify/falsifier_check.hexa)
+t4_status = "Stage-1+ in-vivo / phantom-skull rig / regulatory (FDA class III PMA, KFDA class 3-4) — OUT of RSC code-layer scope, see .roadmap.hexa_aura §A.6; all steps unstarted"
+verdict = "SPEC_FIRST_RSC"
+extracted_from = "canon/domains/{life,cognitive,compute}/ @ 5458b7d1 + 2 historical SHAs (579ab196, ab155706) + 4 in-tree pillar specs authored 2026-05-10"
+
+# ── Scope honesty (raw#10 C3) ──────────────────────────────────────────────
+[scope]
+honest_scope = "4-pillar post-aural BCI CHIP-SUBSTRATE + form-factor design spec (clip / coil / cortex / safety) + 5-doc background atlas + RSC verify surface. verify/* sentinel PASS validates: (a) n=6 lattice arithmetic σ·φ = n·τ = J₂ = 24 holds across roadmap + 4 pillars + 5 atlas docs; (b) per-pillar n=6 derivations are integer/exact-fraction consequences of the lattice; (c) closed-form numerics are internally consistent; (d) design targets sit relative to PUBLISHED references (Neuralink-N1 / Utah / Stentrode / cochlear / Argus-Orion / TMS / OPM-MEG / SQUID-MEG / Flesher-2016 / BrainGate / ICNIRP-2020 / IEEE-C95.1 / Shannon-1992 / McCreery / Rossi-2009 / ASTM-F2503 / IEC-60601) as claimed. F-AURA-1/2/3/4 (15 sub-IDs) all OPEN."
+not_scope = ["a built mastoid clip / RT-SC nano-coil tile / cortical-I/F device (Stage-1+, §A.6)", "the RT-SC ambient-operation material claim → hexa-rtsc", "in-vivo / cadaver-skull / NHP / first-in-human validation", "perceived audio intelligibility / AR image quality / haptic realism (F-AURA-3a/b/c OPEN)", "the decode ML stack (intent→text/cursor, percept→injection) → hexa-mind / hexa-codex / hexa-brain", "cognitive verbs (mind/dream/telepathy/oracle) → hexa-mind (pending)", "sensory verbs (ear/speak/empath/olfact) → hexa-senses (pending)", "working EEG/BMI pipeline → hexa-brain (sister)", "FDA / KFDA regulatory clearance — NOT cleared, NOT in trials (§A.6 step 5)", "MRI-conditional bench testing / biocompatibility assays / SAR-thermal compliance measurement"]
+caveat = "n=6 design targets (Shannon k ≤ 1.5 = round-up(sopfr/τ); SAR ≤ φ = 2 W/kg; ΔT ≤ φ/τ = 0.5 K; coating life ≥ φ·σ = 24 yr; watchdog FAR ≤ μ = 1 %) HAPPEN TO LAND on, or conservatively inside, the established human-exposure standards — the safety claim rests on the STANDARDS, not the arithmetic; the arithmetic only shows the targets are self-consistent with n=6. The 18→0 wearable collapse is a design claim measured against the perceptual bandwidth of the replaced devices, which exceeds any demonstrated cortical write rate (the honest gap is flagged in verify/numerics_cortex.hexa and the cortex pillar §2)."
+
+# ── Cost profile ───────────────────────────────────────────────────────────
+[cost]
+mac_local_default = "$0 (spec read + CLI dispatcher; verify/* are pure-hexa local audits — no network, no compute)"
+selftest = "$0 (4 pillar + 5 atlas presence + n=6 lattice arithmetic sanity; <1 s wall-clock)"
+verify_all = "$0 (19 pure-hexa local audits; <1 min wall-clock total)"
+build_pdf = "$0 (optional pandoc + xelatex; produces 5 spec PDFs locally)"

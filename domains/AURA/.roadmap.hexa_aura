@@ -1,0 +1,318 @@
+# .roadmap.hexa_aura — repo-overall tracker
+
+> Cross-cutting state: invariant lattice, release cadence, cycle history,
+> deadlines, falsifier preregister, hardware path. Sister of `hexa-cern` /
+> `hexa-ufo` / `hexa-rtsc` / `hexa-bio` / `hexa-chip` under `dancinlab` org.
+> Pattern: `~/core/bedrock/docs/runnable_surface_recipe.md` (RSC).
+
+**Last sync**: 2026-05-10 · **Current release**: v1.0.0 · **Branch**: `master`
+
+---
+
+## §0 Terminal goal — 측두골 클립이 스마트폰 + 18개 웨어러블을 0개로 수렴
+
+hexa-aura 도착지 = **귀뒤 측두골(temporal bone) 유양돌기(mastoid) 클립
+한 쌍이 (φ=2개, 각 σ·n/10 = 3.6 g) 스마트폰 + 18개 웨어러블 (AirPods /
+Vision Pro / Watch / 외골격 / 의수 / e-skin / 후각·미각·수면·감정 트래커 …)
+을 0개로 수렴 — RT-SC 나노코일이 σ²=144 ch/타일로 청각(A1) · 시각(V1~V6) ·
+체성감각(S1) · 운동(M1) 피질을 직접 읽고 쓰는 post-aural BCI 칩-기판 + form-factor
+의 closed-form 설계 + 코드-내 봉쇄 100% (T1+T2+T3)**.
+
+> hexa-aura 는 **칩 + form-factor 기판** 만 다룬다. 인지 동사 (mind / dream /
+> telepathy / oracle) → `hexa-mind` (pending), 감각 동사 (ear / speak / empath /
+> olfact) → `hexa-senses` (pending), BCI ML 스택 (hexa-neuro) → `hexa-mind`,
+> 동작하는 EEG/BMI 파이프라인 → `hexa-brain` (sister), 디코더 모델 서빙 →
+> `hexa-codex` CLI, 칩급 neuromorphic 실리콘 → `hexa-chip` CLI, 5G/6G uplink →
+> `hexa-grid` CLI. 본 repo 의 verify/* sentinel PASS 는 격자 산술 + 토큰 일관성
+> 검증 결과이며 in-vivo 실증 / regulatory clearance 가 **아니다** (raw#10 honest C3).
+
+DoD:
+1. `clip` (HEXA-MASTOID-CLIP) — 측두골 클립 form-factor spec 완성 (3.6 g/side,
+   sopfr=5 mm 뼈 두께, bone-conduction anchor, hair-hidden 외관 변화 0).
+2. `coil` (HEXA-RT-SC-NANOCOIL) — RT-SC 나노코일 타일 σ²=144 ch/tile spec 완성
+   (μ=1 μm coil pitch, J₂=24 양방향 ch/macro-tile, n^τ=1296-ch hex lattice).
+3. `cortex` (HEXA-CORTICAL-IF) — 직접 피질 read/write spec 완성 (A1 청각 / V1~V6
+   시각 / S1 체성감각 / M1 운동, φ=2 양방향, τ=4 operating mode).
+4. `safety` (HEXA-CORTICAL-SAFETY) — 안전 spec 완성 (Shannon k≤1.5 charge-density,
+   ICNIRP-2020 SAR ≤ 2 W/kg, ΔT ≤ 0.5 K, MRI-conditional, μ=1 1% seizure
+   false-alarm floor, no-craniotomy / external-only).
+5. F-AURA-1/2/3/4 모두 100% 코드-내 closure (T1 ✓ + T2 ≥1 ✓ + T3 parity ≥1 ✓).
+6. atlas tier — 5-doc 배경 (neuro / brain-computer-interface / hexa-neuromorphic /
+   l9-field-photon-neuro / neuroscience) presence + n=6 lattice 일관성.
+
+---
+
+## §A.1 Invariant lattice (n=6)
+
+```
+σ(6) · φ(6) = n · τ(6) = J₂ = 24
+   12   ·   2  =  6  ·   4  = 24
+sopfr(6) = 2 + 3 = 5      μ(6) = 1      λ(6) = 2 (Liouville)
+σ - φ = 10                σ² = 144      σ³ = 1728      n^τ = 6⁴ = 1296
+```
+
+| Symbol  | Value | Role                       | post-aural BCI projection |
+|---------|------:|----------------------------|---------------------------|
+| n       | 6     | master row                 | 6 cortical pyramidal layers (neocortex) — 6-phase synaptic pattern |
+| σ(6)    | 12    | sigma — sum-of-divisors    | 12 cortical target zones (A1·A2·V1·V2·V4·V5·V6·S1·S2·M1·PFC·hippocampal-relay); 12 ch / micro-tile |
+| τ(6)    | 4     | tau — divisor count        | 4 operating modes (sense / inject / sync / sleep); 4 cortex layers tapped (II/III · IV · V · VI) |
+| φ(6)    | 2     | phi — Euler totient        | 2 clips (left + right mastoid); φ=2 bidirectional (read + write) per channel |
+| sopfr(6)| 5     | sum of prime factors 2+3   | ≤ 5 mm temporal-bone thickness window; ≤ 5 ms closed-loop decode latency |
+| μ(6)    | 1     | Möbius                     | 1 μm nano-coil litho pitch; 1 % (μ=1) seizure-watchdog false-alarm floor |
+| λ(6)    | 2     | Liouville                  | 2 redundancy channels per safety-critical lane |
+| J₂      | 24    | Mathieu / Leech min-vector | 24 bidirectional channels / macro-tile; σ·φ = n·τ = J₂; 24-year (φ·σ) coating lifetime |
+| σ - φ   | 10    | benchtop-cm / 10× scale    | ≈ 10 g total clip-pair mass; 10× → 1 (18 wearables 한 자릿수로 수렴) |
+| σ²      | 144   | throughput multiplier      | 144 channels / tile; σ²·σ⁴·... = 1.44 M ch full-head array |
+| σ³      | 1728  | volume multiplier          | 1728-electrode-equivalent virtual array (σ³ · ... ); Neuralink 1024 → σ³ |
+| n^τ     | 1296  | 6⁴ hex lattice             | 1296-ch hexagonal cortical-column lattice (Neuralink 1024 ch parity·+) |
+
+Authority: this file §A.1 is the SSOT; every pillar doc + verify/* re-asserts these.
+
+---
+
+## §A.2 Release cadence
+
+| Version    | Date           | Status     | Highlights |
+|------------|----------------|------------|------------|
+| v0.1.0-pre | 2026-05-09     | superseded | 11-doc bundle (cognitive + sensory verbs co-located) — split out per canon plan |
+| v0.1.0     | 2026-05-10     | superseded | 5-doc CHIP-substrate bundle (`BUNDLE_FIRST`); 2 docs historically restored |
+| v1.0.0     | 2026-05-10     | RELEASED   | 4-pillar post-aural BCI substrate (clip + coil + cortex + safety) + 5-doc atlas + RSC verify surface (T1 ×6 + T2 ×4 + T3 ×4 + cross-cutters ×2 + meta ×3 + saturation) + cli `verify [<sub>]` + tests 5 + build PDF pipeline + numerics methodology. F-AURA-1/2/3/4 closure tracked by `verify/falsifier_check.hexa`. `verdict = SPEC_FIRST_RSC`. |
+| v1.1.0     | ~2026-09 (TGT) | planned    | `coil` ↔ `hexa-rtsc` RT-SC critical-current cross-verify; `cortex` ↔ `hexa-brain` working-pipeline cross-verify |
+| v1.2.0     | ~2026-12       | planned    | `safety` regulatory-pathway expansion (FDA/KFDA class III pre-submission); EEG-watchdog ROC curve numerics |
+| v2.0.0     | ~2027-Q3       | ASPIRATIONAL | Stage-1+ bench prototype (RT-SC coil tile + phantom skull rig) raw-data fit. **Out of RSC code-layer** — see §A.6. |
+
+---
+
+## §A.3 Cycle history
+
+- **Cycle 0 (2026-05-10)** — v0.1.0 5-doc CHIP-substrate bundle from canon@5458b7d1 + 2 historical SHAs. Commit `3824ef2` / `526ee8d` / `0366afb`.
+- **Cycle 1 (2026-05-10)** — v1.0.0 full design + RSC runnable surface. Adds:
+  - `.roadmap.hexa_aura` (this file — §A.1 lattice + §A.4 4-falsifier preregister + §B detail tables + §A.6 hardware path)
+  - 4 pillar spec docs: `clip/doc/mastoid-clip.md`, `coil/doc/rt-sc-nanocoil.md`, `cortex/doc/cortical-interface.md`, `safety/doc/cortical-safety.md`
+  - `verify/lattice_check.hexa` — n=6 closure across roadmap + 4 pillars + 5 atlas docs
+  - `verify/cross_doc_audit.hexa` — pillar ↔ pillar anchor agreement (refs, BT-links, lattice tokens)
+  - `verify/calc_clip.hexa` / `calc_coil.hexa` / `calc_cortex.hexa` / `calc_safety.hexa` — T1 per-pillar n=6 derivations
+  - `verify/numerics_clip.hexa` / `numerics_coil.hexa` / `numerics_cortex.hexa` / `numerics_safety.hexa` — T2 closed-form re-derivations (math_pure)
+  - `verify/numerics_clip_parity.hexa` / `numerics_coil_parity.hexa` / `numerics_cortex_parity.hexa` / `numerics_safety_parity.hexa` — T3 published-reference parity
+  - `verify/numerics_cross_pillar.hexa` — cross-pillar numerical anchor agreement
+  - `verify/numerics_lattice_arithmetic.hexa` — math_pure int↔float stability floor
+  - `verify/falsifier_check.hexa` — F-AURA-1/2/3/4 closure-pct tracker (3-tier ladder)
+  - `verify/lint_numerics.hexa` — meta-lint: every `numerics_*.hexa` follows the 5 invariants
+  - `verify/saturation_check.hexa` — RSC sat-1 + sat-2 → `__HEXA_AURA_RSC_SATURATED__ STOP`
+  - `cli/hexa-aura.hexa` rewrite — 4 pillar verbs + 5 atlas verbs + `status` + `selftest` + `verify [<sub>]`
+  - `tests/test_lattice.hexa` / `test_calculators.hexa` / `test_cli_verify.hexa` / `test_all.hexa`; `tests/test_selftest.hexa` updated to 4+5 docs
+  - `build/Makefile` + `build/header.tex` — pandoc + xelatex 5-PDF rebuild
+  - `docs/numerics_methodology.md` — reader's map of the verify surface
+  - 0 `.py` added — all new runnable code is `.hexa`.
+- **Cycle 2 (2026-05-11)** — RSC priority-6: 4 mini-ODE solver scripts (the 2nd T2 stack per pillar). Commit follows `3f59892`. Adds:
+  - `verify/numerics_clip_solver.hexa` — clip-anchor wobble: damped torsional oscillator `I·θ'' + b·θ' + κ·θ = M_jaw(t)`, `I = (1/3)·(σ·n/10)·(J₂)²`, leapfrog KDK over one τ=4 chew cycle. [F-AURA-1, 1a]
+  - `verify/numerics_coil_solver.hexa` — RT-SC drive-loop RL ODE `L·dI/dt = V − R·I` (R=0 SC loop ⇒ persistent current, 0 dissipation; R=50 mΩ parasitic lead ⇒ avg power ≪ 50 mW). [F-AURA-2, 2c]
+  - `verify/numerics_cortex_solver.hexa` — LIF neuron under the injected write field `τ_m·dV/dt = −(V − V_rest) + R_m·I_inj`; fires within the sopfr ms regime, no spurious off-phase firing (write loop stable). [F-AURA-3, 3a/3b/3c]
+  - `verify/numerics_safety_solver.hexa` — transient 1-node Pennes bioheat `ρc·dT/dt = q_gen − w_b·ρ_b·c_b·(T − T_a)`; monotone, no overshoot, steady-state ΔT ≤ φ/τ = 0.5 K, ΔT(3·τ_th) ≈ 0.95·ΔT_ss. [F-AURA-4, 4c]
+  - Wiring: `cli/hexa-aura.hexa` `VERIFY_SUBS` + `_verify_script()` + help (23 verify subs); `verify/lint_numerics.hexa` `NUMERICS_SCRIPTS` → 14; `tests/test_calculators.hexa` `CASES` → 23; `verify/saturation_check.hexa` `REQUIRED` → 22.
+  - Recipe §1 inventory now exhausted (cross-cutters + per-pillar T1/T2(×2)/T3 + meta). sat-1 ∧ sat-2 hold → `__HEXA_AURA_RSC_SATURATED__ STOP`. F-AURA-1/2/3/4 (15 sub-IDs) stay all OPEN; code-layer 3-tier closure stays 100% (solvers add T2 depth, not closure). 0 `.py`. (hexa runtime unavailable in authoring env — hand-checked, not executed.)
+- **Cycle 3 (2026-05-15)** — §A.6.1 stage B: FEM-class 3rd T2 rung per pillar (physical-closure deepening — the last layer the code-layer can directly touch). Adds:
+  - `verify/numerics_clip_fem.hexa` — discretized Euler–Bernoulli cantilever (trapezoidal double-integration of `M(x)/EI`) → analytic `FL³/(3EI)` at O(h²); deflection/stress/modal envelope. [F-AURA-1, 1a/1b]
+  - `verify/numerics_coil_fem.hexa` — discretized on-axis Maxwell near-field; central-FD `∂B/∂z` → analytic `−3μ₀NIa²z/(2(a²+z²)^{5/2})` at O(h²); column contrast + bone-decay + read/write reciprocity. [F-AURA-2, 2a/2b]
+  - `verify/numerics_cortex_fem.hexa` — discretized steady linear-cable operator residual on `V0·exp(−|x|/λ)` → 0 at O(h²); σ=12-zone electrotonic selectivity + injected-charge consistency. [F-AURA-3, 3a/3b/3c]
+  - `verify/numerics_safety_fem.hexa` — discretized 1D Pennes-bioheat operator residual on `ΔT0·exp(−r/L_th)` → 0 at O(h²); surface ΔT0 ≤ φ/τ=0.5 K cap, monotone profile. [F-AURA-4, 4b/4c]
+  - `verify/numerics_fem_cross_pillar.hexa` — coupled-FEM cross-cutter (FEM-tier analogue of `numerics_cross_pillar`): the 4 FEM analytic anchors recomputed independently agree < 1e-9, AND the coil→cortex→safety→clip chain of inequalities closes (B(cortex) drives a localized column · σ=12 selectivity · RT-SC R=0 ⇒ SAR_design ⇒ Pennes ΔT_ss ≤ 0.5 K · FEM modal ≥ the solver's 40 Hz). [F-AURA-1/2/3/4]
+  - Wiring: `verify/lint_numerics.hexa` `NUMERICS_SCRIPTS` → 19; `verify/saturation_check.hexa` `REQUIRED` → 27; `cli/hexa-aura.hexa` `VERIFY_SUBS`/`_verify_script()` +5 (`numerics-{clip,coil,cortex,safety}-fem` + `numerics-fem-cross`); `tests/test_calculators.hexa` `CASES` → 28.
+  - **Green-gate deferred** (honest, monotone-preserving): the 5 FEM-tier scripts (4 per-pillar + 1 coupled cross-cutter) are on disk + inventoried + hand-checked but NOT added to `verify/run_all.hexa` green-core — authoring env has no hexa runtime (cycles 0–2 likewise), so the orchestrator gate stays 19 and never PASS→FAIL per §A.6.1. They add **T2 depth, NOT closure**: sat-1 (12 tier-scripts) unchanged → `__HEXA_AURA_RSC_SATURATED__ STOP` preserved; `falsifier_check` 15-sub-ID OPEN + 100% 3-tier code-layer closure unchanged; T4 (in-vivo/regulatory) still §A.6, out of scope. 0 `.py`.
+- **Cycle 4 (2026-05-15)** — §A.6.1 stage B FEM-tier T3 parity + stage A paper-design. Adds:
+  - `verify/numerics_clip_fem_parity.hexa` — FEM-class structural numbers vs published Roark/Euler–Bernoulli + Ti-6Al-4V E/yield + BTE mass class (parity-or-lighter). [F-AURA-1, 1a/1b]
+  - `verify/numerics_coil_fem_parity.hexa` — vs exact Biot–Savart loop standard + TMS figure-8 focal regime + SQUID/OPM read floor (parity-or-tighter / conservative). [F-AURA-2, 2a/2b]
+  - `verify/numerics_cortex_fem_parity.hexa` — vs Rall infinite-cable exp standard + published cortical λ ∈ [0.5,1.0] mm + Mountcastle macrocolumn pitch. [F-AURA-3, 3a/3b/3c]
+  - `verify/numerics_safety_fem_parity.hexa` — vs Pennes-1948 exp standard + published brain k + perfused-tissue L_th + CEM43/ICNIRP threshold (parity-or-safer). [F-AURA-4, 4b/4c]
+  - `clip/doc/benchtop_v0_design.md` — §A.6.1 **stage A** paper-design hardening: BOM (part *classes*, no vendor numbers per g3) + ASCII block diagram + τ=4-lane interface table + bench safety spec. Docs-layer only; cross_doc_audit/lattice_check read docs by fixed path (not glob) so this is additive — no green-core effect.
+  - Wiring: `lint_numerics` `NUMERICS_SCRIPTS` → 23; `saturation_check` `REQUIRED` → 31; `cli` `VERIFY_SUBS`/`_verify_script()` +4 (`numerics-{clip,coil,cortex,safety}-fem-parity`); `test_calculators` `CASES` → 32.
+  - Same honest stance: 4 FEM-parity scripts green-gate deferred (run_all green-core stays 19, monotone, never PASS→FAIL). **Depth, NOT closure**: per LATTICE_POLICY g3/f1 parity = our-number-vs-their-published-number; n=6 NOT imposed on Roark/Ti/TMS/SQUID/Rall/Mountcastle/Pennes/ICNIRP. sat-1 / `__HEXA_AURA_RSC_SATURATED__ STOP` / `falsifier_check` 15-sub-ID-OPEN / 100% code-layer 3-tier all unchanged; T4 = §A.6. 0 `.py`.
+- **Cycle 5 (2026-05-15)** — §A.6.1 **stage C** sim-firmware (the first non-verify code layer). Adds:
+  - `firmware/sim/coil_driver_sim.hexa` — coil-driver DAC chain sim: 12-bit current DAC → RL drive loop (L=1 µH, R_par=50 mΩ) under the µs write pulse, τ=4/200 Hz frame; checks DAC resolution, quantized-vs-ideal peak current (< 5 %), pulse-area fidelity, duty < 1 %, avg power < 50 mW. [F-AURA-2/2c — informs, does not close]
+  - `firmware/sim/watchdog_adc_sim.hexa` — EEG-watchdog ADC chain sim: 16-bit ADC ≥ 1 kS/s on a deterministic synthetic EEG (θ+α+β + injected 3 Hz seizure burst) → sliding-window energy detector; checks ADC resolution, sensitivity (all burst windows flagged), FAR ≤ μ=1 → 1 % floor, λ=2 redundant-lane agreement, detection latency ≤ 2 windows. [F-AURA-4/4d — informs, does not close]
+  - **Isolation** (recipe §A.6.1 "C is the first non-verify layer — isolate in `firmware/sim/`"): NOT verify/* — NOT in `run_all.hexa` green core, NOT in `lint_numerics` `NUMERICS_SCRIPTS`, NOT in `saturation_check` `REQUIRED`, NOT in `test_calculators` `CASES`. Standalone-runnable (`hexa run firmware/sim/<name>.hexa`). Zero regression risk: lint globs `verify/numerics_*.hexa`, saturation/run_all/tests enumerate `verify/` only — `firmware/` is invisible to them.
+  - SSOT synced: `AGENTS.tape` `@L l1` (+`firmware/`, verify count → 33), `COIL.tape`/`SAFETY.tape` `@L` (+`firmware_sim`), `COIL.log.tape`/`SAFETY.log.tape` (+`@A commit_stageC`), `INDEX.md`. **Firmware-sim layer, NOT closure**: F-AURA sub-IDs stay OPEN; sat-1 / `__HEXA_AURA_RSC_SATURATED__ STOP` / `falsifier_check` 100% code-layer 3-tier unchanged; T4 (built driver / real-EEG ROC, §A.6) out of scope. 0 `.py` (hexa-native per AGENTS.tape hexa-first). hexa runtime unavailable in authoring env — hand-checked, not executed.
+- **Cycle 6 (2026-05-15)** — §A.6.1 **stage D** HDL/MCU skeleton, realized **hexa-native** (decision: the recipe table names `firmware/hdl/*.v` + `firmware/mcu/*.rs`, but AGENTS.tape `g2` hexa-first + the project's 0-non-hexa discipline override it — same logical content in `.hexa`, 0 `.v` / 0 `.rs` / 0 `.py`). Adds:
+  - `firmware/hdl/coil_timing_controller.hexa` — FPGA coil-timing skeleton: τ=4-phase / 200 Hz read-frame FSM (`next_phase` / `phase_at` / `pulse_active` pure decoders) + µs write-pulse slot + register/timing map. [F-AURA-2 — informs the build, does not close]
+  - `firmware/mcu/watchdog_mcu.hexa` — seizure-watchdog MCU skeleton: init→sample→eval→trip control-loop FSM (`next_state`) + λ=2 redundant lanes + IRQ/register map. [F-AURA-4 — informs the build, does not close]
+  - **Compile-only / DEFERRED**: these parse/typecheck and print their map but emit a `__HEXA_AURA_*__ DEFERRED` token — explicitly **NOT** a `__ PASS` verify sentinel. NOT synthesised, NOT target-compiled, NOT flashed, NOT a behavioural sim (that is stage C). "Start when board arrives" — §A.6 step 4, T4, out of RSC scope.
+  - **Isolation / zero regression**: ISOLATED in `firmware/hdl/` + `firmware/mcu/` — NOT verify/* (NOT in run_all green core / `lint_numerics` / `saturation_check` / `test_calculators`). verify inventories enumerate `verify/` only — invisible. **NOT closure**: F-AURA-2/4 stay OPEN; sat-1 / `__HEXA_AURA_RSC_SATURATED__ STOP` / `falsifier_check` 100% code-layer 3-tier unchanged.
+  - SSOT synced: `AGENTS.tape` `@L l1` (firmware/ → sim+hdl+mcu), `COIL.tape` (+`firmware_hdl`) / `SAFETY.tape` (+`firmware_mcu`) `@L`, `COIL.log.tape`/`SAFETY.log.tape` (+`@A commit_stageD`), `INDEX.md`. §A.6.1 stages A–D now all realized in the code-layer's reach (A docs · B FEM-tier · C sim · D hexa-native skeleton); D's hardware half stays gated on §A.6 step 4. hexa runtime unavailable in authoring env — hand-checked, not executed.
+
+---
+
+## §A.4 Falsifier preregister
+
+Monotone: each status flips `OPEN → CONFIRMED` or `OPEN → DEMOTED`. Silent
+retract forbidden. Verifier: `hexa run verify/falsifier_check.hexa` (closure
+pct per falsifier across the 3-tier ladder). Detail tables in §B.
+
+- **F-AURA-1** (form factor) — A passive 3.6 g/side mastoid clip with a
+  bone-conduction anchor cannot mechanically + thermally host an RT-SC nano-coil
+  array coupling through ~5 mm of temporal bone without invasive electrodes or a
+  craniotomy. (T1 `calc_clip` · T2 `numerics_clip` · T3 `numerics_clip_parity`
+  vs BTE hearing-aid / Shokz bone-conduction / AirPods / eyeglass-arm masses.)
+- **F-AURA-2** (coil / channel) — A room-temperature superconducting nano-coil
+  tile cannot generate the focal magnetic-field gradient ∂B/∂x needed for
+  selective cortical read **and** write at the per-channel SNR a σ²=144-ch tile
+  claims, inside the 3.6 g power/thermal budget. (T1 `calc_coil` · T2
+  `numerics_coil` · T3 `numerics_coil_parity` vs TMS figure-8 coil / OPM-MEG /
+  SQUID-MEG / Neuralink-N1 / Utah-array / Stentrode channel & field data.)
+- **F-AURA-3** (cortical I/O) — Non-invasive cortical injection cannot deliver
+  the perceptual bandwidth (audio ≈ 2 ch × 20 kHz; vision ≈ 10⁶ "pixels" ×
+  60 Hz; haptic ≈ 10⁴ taxels) of the wearables it claims to replace — the
+  substituted-device aggregate perceptual throughput exceeds the achievable
+  cortical write rate. (T1 `calc_cortex` · T2 `numerics_cortex` · T3
+  `numerics_cortex_parity` vs cochlear-implant ch / Argus-II + Orion electrode
+  count / BrainGate-handwriting + speech-BCI WPM / Flesher-2016 S1 ICMS touch.)
+- **F-AURA-4** (safety / certification) — A continuously-worn behind-the-ear
+  field-coil device cannot keep cortical induced current density / RF SAR /
+  tissue heating / seizure-induction risk inside ICNIRP-2020 + IEEE-C95.1-2019 +
+  IEC-60601-1 + Shannon-1992 charge-density limits at the field strengths
+  F-AURA-2/3 require. (T1 `calc_safety` · T2 `numerics_safety` · T3
+  `numerics_safety_parity` vs ICNIRP SAR / IEEE C95.1 / Shannon k=1.5,1.85 /
+  McCreery / Rossi TMS-seizure-incidence / FDA MRI-conditional labels.)
+
+---
+
+## §A.5 Pending decisions
+
+### Resolved (2026-05-15, status-quo-consistent — recorded as `@D` in the SSOT)
+
+- **D1 — pillar CLI dispatch order** → **DECIDED: `clip → coil → cortex → safety`**
+  (= pillar numbering 1–4 = falsifier F-AURA-1..4). Already implemented in
+  `cli/hexa-aura.hexa` `VERIFY_SUBS` / `_verify_script()`; the read/write-split
+  alternative is rejected (would scatter a pillar's tier ladder across two
+  groups, breaking the `falsifier_check` per-pillar mapping). Zero-risk;
+  recorded `@D d_cli_dispatch` in `AGENTS.tape`.
+- **D2 — `hexa-rtsc` cross-link strength** → **DECIDED: single `selftest`
+  cross-check (loose coupling), NOT full numeric import.** A full import would
+  make hexa-aura's green gate depend on another repo's runtime, violating the
+  "never PASS→FAIL / monotone" invariant (§A.6.1) and the green-core isolation
+  discipline. The coil pillar keeps the RT-SC material claim *deferred* to
+  `hexa-rtsc` (README scope-discipline: "if `hexa-rtsc` is falsified, F-AURA-2
+  is DEMOTED"). Recorded `@D d_rtsc_xlink` in `COIL.tape`.
+- **D3 — cortex M1 motor-decode lane** → **DECIDED: cortex keeps the M1
+  read/write *substrate* lane (covered by falsifier F-AURA-3d aggregate decode
+  WPM); the decode *model* is deferred to `hexa-brain`.** Consistent with the
+  existing scope-discipline (substrate here, decode ML → `hexa-mind` /
+  `hexa-brain`). Recorded `@D d_m1_lane` in `CORTEX.tape`.
+
+### Pending (owner / external — not autonomously decidable)
+
+- `hexa-mind` / `hexa-senses` standalone split timing (TODO.md §2 — owner-pending).
+- Canon-side restoration of the 2 ✦ KR historical docs (TODO.md §1 — Option A/B/C, owner-pending).
+- §A.6 Step-1 external-collab candidate (academic neuro-eng lab) selection timing.
+
+---
+
+## §A.6 Stage-1+ hardware path  (post-RSC, **out of code-layer scope**)
+
+The region the RSC (`verify/*.hexa`) loop **cannot** close. After v1.0.0 code-layer
+closure, the hardware / external-bound path toward v2.0.0 — funding · external
+validation · phantom-skull bench rigs · in-vivo trials.
+
+| step | content | target | RSC-able? | artifact |
+|:----:|:--------|:-------|:---------:|:---------|
+| 1 | external collab decision (neuro-eng lab w/ MEG + TMS rigs) | 2026-Q4 | ✗ | MOU |
+| 2 | funding round (RT-SC coil fab + phantom skull rig + MEG/OPM diagnostics) | 2027-Q1 | ✗ | grant / investment |
+| 3 | Stage-1 simulation parity (full Maxwell coil-field FEM + bioheat FEM + neuron-population response) | ~2026-12 | **partial** (`.hexa` T2 expansion) | `numerics_*_fem.hexa`-class scripts, sim-parity report |
+| 4 | Stage-2/3 bench build + cadaver-skull / non-human-primate validation (years out) | ~2027-Q3+ | ✗ | firmware · HDL · PCB · BOM · calibration logs · raw recordings |
+| 5 | regulatory: FDA/KFDA class III pre-submission → IDE → first-in-human | ~2028+ | ✗ | 510(k)/PMA dossier, IRB approvals, clinical-trial data |
+
+Step 3 is the last layer this repo can directly touch. Steps 1/2/4/5 are
+hardware-ops · external-stakeholder · multi-year work — not closable by
+cron/loop firing. §A.6 is `tracking only`; progress cross-referenced into §A.3.
+
+**Current (2026-05-10) status**: all steps unstarted. v2.0.0 = paper design.
+`clip/doc/mastoid-clip.md` §X "first-in-world proposal" + `safety/doc/cortical-safety.md`
+§X "regulatory pathway" are the starting points for the build-candidate BOM.
+
+### §A.6.1 recommended pre-work order (A → B → C → D)
+
+| stage | content | artifact | external HW? | RSC-able? | value |
+|:-----:|:--------|:---------|:------------:|:---------:|:------|
+| A | paper-design hardening — `clip/doc/benchtop_v0_design.md` (BOM + block diagram + interface table + safety spec) | `.md` ×1–3 + ASCII/TikZ figs | ✗ | ✓ docs-layer | until funding pitch deck |
+| B | Stage-1 simulation parity (= §A.6 step 3) — coil-field FEM + bioheat + neuron-population, FEMM / SimNIBS / Sim4Life published-case parity | `verify/numerics_*_fem.hexa` ×1–3 | ✗ | ✓ partial-RSC | external-collab meeting card |
+| C | sim-firmware — coil-driver DAC / EEG-watchdog ADC chain modelled sim-only, no hardware-in-the-loop | `firmware/sim/*.hexa` | ✗ | partial ✓ | prototype of the real MCU firmware |
+| D | HDL / MCU skeleton — FPGA coil-timing controller (Verilog) + MCU watchdog (Rust/C). Compiles OK, no flash target | `firmware/hdl/*.v` + `firmware/mcu/*.rs` | ✗ now / ✓ later | ✗ | start when board arrives |
+
+A/B do not break repo regression invariants — `saturation_check` stays PASS,
+`falsifier_check` stays 100 % closure, `cli verify all` monotone non-decreasing.
+Never PASS→FAIL. C is the first non-`.hexa` file layer — isolate in
+`firmware/sim/`. D → separate repo or `firmware/` sub-tree.
+
+---
+
+## §B Falsifier detail tables
+
+> **Status (raw#10 honest C3)**: all 4 falsifiers academically UNPROVEN at
+> v1.0.0. Each ships in-tree spec + 3-tier (T1/T2/T3) closure tracking. CLI
+> sentinel PASS validates lattice arithmetic + token consistency + published-ref
+> *parity arithmetic*, NOT in-vivo apparatus or regulatory clearance. Falsifier
+> monotone: OPEN → CONFIRMED or OPEN → DEMOTED. Silent retract forbidden.
+
+### §B.1 F-AURA-1 — clip (mastoid form-factor)
+
+Spec: `clip/doc/mastoid-clip.md` · Verb: `hexa-aura clip` · T1 `calc_clip` · T2 `numerics_clip` · T3 `numerics_clip_parity`
+
+| ID         | Falsifier                                                                                          | Status |
+|------------|----------------------------------------------------------------------------------------------------|--------|
+| F-AURA-1a  | a 3.6 g/side passive anchor cannot hold position on the mastoid against jaw/chewing motion          | OPEN   |
+| F-AURA-1b  | RT-SC coil + driver + battery + radio cannot fit in σ·n/10 = 3.6 g at hearing-aid-BTE density       | OPEN   |
+| F-AURA-1c  | bone-conduction back-channel cannot survive being hidden under hair (no skin-contact mic/speaker)   | OPEN   |
+
+n=6 encoding: φ=2 clips, σ·n/10 = 3.6 g/side → n·n/10 = 7.2 g pair (AirPods-Pro 5.4 g class),
+sopfr=5 mm bone window, τ=4-point anchor (helix root · mastoid tip · ear-canal entry · concha).
+
+### §B.2 F-AURA-2 — coil (RT-SC nano-coil tile)
+
+Spec: `coil/doc/rt-sc-nanocoil.md` · Verb: `hexa-aura coil` · T1 `calc_coil` · T2 `numerics_coil` · T3 `numerics_coil_parity` · Cross-link: `hexa-rtsc`
+
+| ID         | Falsifier                                                                                          | Status |
+|------------|----------------------------------------------------------------------------------------------------|--------|
+| F-AURA-2a  | a μ=1 μm pitch RT-SC tile cannot reach the ∂B/∂x focal gradient TMS-class cortical write needs       | OPEN   |
+| F-AURA-2b  | σ²=144 ch/tile read SNR is below OPM-MEG (≈15 fT/√Hz) noise floor through 5 mm bone                  | OPEN   |
+| F-AURA-2c  | the coil's switching power dissipates > the 3.6 g clip thermal budget allows (ΔT > 0.5 K at scalp)  | OPEN   |
+
+n=6 encoding: μ=1 μm litho pitch, σ²=144 ch/tile, J₂=24 bidirectional ch/macro-tile,
+n^τ=6⁴=1296-ch hex lattice, σ³=1728-electrode-equivalent, RT-SC @ ambient (hexa-rtsc cross-link).
+
+### §B.3 F-AURA-3 — cortex (direct cortical read/write)
+
+Spec: `cortex/doc/cortical-interface.md` · Verb: `hexa-aura cortex` · T1 `calc_cortex` · T2 `numerics_cortex` · T3 `numerics_cortex_parity` · Cross-link: `hexa-brain` (working pipeline)
+
+| ID         | Falsifier                                                                                          | Status |
+|------------|----------------------------------------------------------------------------------------------------|--------|
+| F-AURA-3a  | A1 auditory injection cannot match cochlear-implant intelligibility (Cochlear Nucleus 22-ch parity) | OPEN   |
+| F-AURA-3b  | V1~V6 injection cannot exceed Argus-II / Orion (60-electrode) effective-pixel count → AR-glass parity fails | OPEN   |
+| F-AURA-3c  | S1 haptic write cannot reach Flesher-2016 ICMS taxel density → e-skin replacement fails              | OPEN   |
+| F-AURA-3d  | aggregate read decode WPM stays below Willett/Metzger-2023 speech-BCI (≈62–78 WPM)                   | OPEN   |
+
+n=6 encoding: σ=12 cortical target zones, τ=4 operating modes, 6 pyramidal layers, φ=2 bidirectional,
+sopfr=5 ms closed-loop latency, σ·τ=48 K virtual-retina pixels (scales by σ powers per tile count).
+
+### §B.4 F-AURA-4 — safety (current-density / SAR / heating / seizure / no-craniotomy)
+
+Spec: `safety/doc/cortical-safety.md` · Verb: `hexa-aura safety` · T1 `calc_safety` · T2 `numerics_safety` · T3 `numerics_safety_parity`
+
+| ID         | Falsifier                                                                                          | Status |
+|------------|----------------------------------------------------------------------------------------------------|--------|
+| F-AURA-4a  | continuous-wear induced charge density exceeds Shannon k≤1.5 (and k≤1.85) cortical damage limit      | OPEN   |
+| F-AURA-4b  | local 10 g-avg SAR exceeds ICNIRP-2020 / IEEE-C95.1-2019 2 W/kg at F-AURA-2 write field strengths    | OPEN   |
+| F-AURA-4c  | scalp/cortex steady-state heating exceeds ΔT ≤ 0.5 K (CEM43 thermal-dose) limit                      | OPEN   |
+| F-AURA-4d  | EEG-watchdog seizure-detection ROC cannot reach the μ=1 → 1 % false-alarm floor at clinical sensitivity | OPEN   |
+| F-AURA-4e  | device is not MRI-conditional (RF heating / displacement-force / image-artifact fails IEC 60601 / ASTM F2503) | OPEN   |
+
+n=6 encoding: Shannon k ≤ sopfr/τ ≈ 1.25 → rounded design target ≤ 1.5; SAR ≤ φ = 2 W/kg;
+ΔT ≤ φ/τ = 0.5 K; coating lifetime φ·σ = 24 yr; μ=1 → 1 % watchdog false-alarm floor; τ=4-layer biocompatible coating.
+
+### §B.5 Aggregate
+
+- Total falsifiers preregistered: **4 top-level** (F-AURA-1/2/3/4) decomposed into **15 sub-IDs**
+  (F-AURA-1a..c, -2a..c, -3a..d, -4a..e).
+- All status: **OPEN** at v1.0.0.
+- Closure ladder per top-level falsifier: T1 (`verify/calc_<pillar>.hexa` on disk) +
+  T2 (`verify/numerics_<pillar>.hexa` on disk) + T3 (`verify/numerics_<pillar>_parity.hexa` on disk)
+  → `closure_pct ∈ {0, 33, 67, 100}` per `runnable_surface_recipe.md` §3.
+- v1.0.0 target: all 4 at T1 ✓ + T2 ✓ + T3 ✓ = 100 % code-layer closure. T4 (Stage-1+ in-vivo) = §A.6, out of RSC scope.

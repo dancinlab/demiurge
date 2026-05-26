@@ -1,4 +1,72 @@
-# domain — aura (post-aural wearable BCI)
+# AURA — current state
+
+@title: 🎧 AURA — "귀뒤 BCI" (post-aural wearable brain-computer interface)
+
+@goal: 후이부(mastoid · temporal-bone clip) 웨어러블 BCI 7-verb 설계도 완성 — FDA Class II 510(k) + EU MDR Class IIa + IEC 60601-1 / -1-2 EMC + Bluetooth SIG qualification dossier-skeleton 7개 셀 통과 · G33 absorbed=true(Sleep-EDF spectral parity mean_rel_err 8.4e-07, D117 2nd cell first-flip, R8 4/4 CLOSURE) 기반으로 verify 외 6개 verb-cell도 absorbed=true 끌어올림.
+
+## Migration note (2026-05-26)
+
+Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
+- GitHub: `dancinlab/hexa-aura` → `dancinlab/archive-aura` (private)
+- 로컬 폴더 `/Users/ghost/core/hexa-aura/` 삭제
+- 핵심 docs / *.tape / papers / state(708 KB) → `domains/AURA/` 이관 (snapshot 전용 · 코드 없음)
+- 구현 SSOT(`stdlib/aura/*.py`)는 `~/core/hexa-lang/stdlib/aura/` 그대로 유지 — `aura.demi` cellrun manifest 그대로 동작 (@D d3 canonical-home 준수)
+
+## Milestones (7-verb absorbed 끌어올리기)
+
+- [x] V0 aura+verify absorbed=true — Sleep-EDF spectral parity 8.4e-07 · G33 LANDED · D117 2nd cell first-flip · R8 4/4 CLOSURE
+- [ ] V1 aura+specify — FDA Design Input(21 CFR 820.30) + IEC 60601-1 + -1-2 EMC + BT SIG 매핑 dossier-skeleton
+- [ ] V2 aura+structure — 다중전극 dry/wet EEG sensor array + AFE/ADC + BLE radio + 전원 partitioning + mastoid 클립 mechanical
+- [ ] V3 aura+design — KiCad PCB(+ngspice AFE) + FreeCAD enclosure(StepUp 연동) + nRF Connect SDK BLE 5.x firmware skeleton
+- [ ] V4 aura+analyze — MNE-Python band-power(alpha/beta/gamma) + openEMS FDTD antenna pattern + SAR estimate
+- [ ] V5 aura+synthesize — Zephyr / nRF firmware build pointer + 신호처리 deployable bundle skeleton
+- [ ] V6 aura+verify(EM-side) — openEMS antenna + SAR honest-gap 닫기 (EEG-spectral은 V0 완료)
+- [ ] V7 aura+handoff — FDA 510(k) Class II 제출 dossier + EU MDR conformity-assessment + BT SIG qualification 패키지
+
+## Open-gap 돌파 후보 (@D d2 breakthrough)
+
+- [ ] G1 MRI-safety(ASTM F2182-19e2 + ISO 10974) 오픈 등가물 — Sim4Life FDA MDDT 의존 깨기 위한 openEMS 검증 워크플로우 확장
+- [ ] G2 EEG 상용 acquisition(BrainVision Analyzer / Neuroscan Curry) 대체 — MNE-Python acquisition-side 강화
+- [ ] G3 BLE 5.x SoC Nordic 의존 줄이기 — RISC-V BLE SoC 시야
+
+## 7-verb cell 상태
+
+| verb | substrate | absorbed | gate | 근거 |
+|---|---|---|---|---|
+| specify | python3 | false | OPEN | dossier skeleton TEMPLATE — 실 제출 dossier 아님 |
+| structure | python3 | false | OPEN | sensor + AFE + radio partitioning skeleton |
+| design | python3 | false | OPEN | KiCad / FreeCAD / nRF Connect SDK 스텁 |
+| analyze | python3 + mne | false | OPEN | MNE band-power on synthetic — 측정 oracle은 verify에 있음 |
+| synthesize | python3 | false | OPEN | firmware build pointer만 |
+| **verify** | **python3 + mne** | **true ✅** | **CLOSED (G33)** | **Sleep-EDF spectral 8.4e-07 · D117 2nd cell · R8 4/4** |
+| handoff | python3 | false | OPEN | FDA 510(k) + EU MDR + BT SIG dossier skeleton |
+
+## 파일 레이아웃 (이관 후)
+
+```
+demiurge/domains/
+├─ aura.md         ← 이 파일 (도메인 스냅샷 + public-surface tool map)
+├─ aura.demi       ← verb-cell cellrun manifest (포인터)
+├─ aura.log.md     ← step log (append-only)
+└─ AURA/           ← archive snapshot (708 KB · docs + .tape + papers + state)
+    ├─ README.md / INDEX.md / TODO.md / CHANGELOG.md / RELEASE_NOTES_v1.0.0.md
+    ├─ LIMIT_BREAKTHROUGH.md / LATTICE_POLICY.md / TAPE-AUDIT.md / DEPENDENCIES.md
+    ├─ IMPORTED_FROM_CANON.md(.tape) / hexa.toml / install.hexa / .roadmap.hexa_aura
+    ├─ AGENTS.tape · BENCHTOP.tape · CLIP.tape · COIL.tape · CORTEX.tape · SAFETY.tape · TODO.tape
+    └─ papers/ · state/ · docs/
+
+hexa-lang/stdlib/aura/  ← 구현 SSOT (그대로 · @D d3)
+├─ specify.py / structure.py / design.py / analyze.py / synthesize.py / verify.py / handoff.py
+├─ aura_mne.py
+├─ sleep_edf_measured_oracle.py
+└─ _dft_alpha_band_batch.hexa
+```
+
+archive: `github.com/dancinlab/archive-aura` (private · 2026-05-26 봉인)
+
+---
+
+# (legacy section) domain — aura (post-aural wearable BCI)
 
 > Status: **shallow public-surface map** (Cohort 2, `design.md` Decision 6).
 > Boundary: public-surface clean-room (`design.md` Decision 1). Pipeline =

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" role="img" aria-label="hexa-aura logo">
+  <polygon points="70,8 130,42 130,98 70,132 10,98 10,42"
+           fill="none" stroke="#bf8700" stroke-width="6"
+           stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="70" cy="70" r="14" fill="none" stroke="#bf8700" stroke-width="4"/>
+  <g stroke="#bf8700" stroke-width="3" stroke-linecap="round">
+    <line x1="70" y1="40" x2="70" y2="50"/>
+    <line x1="70" y1="90" x2="70" y2="100"/>
+    <line x1="40" y1="70" x2="50" y2="70"/>
+    <line x1="90" y1="70" x2="100" y2="70"/>
+    <line x1="49" y1="49" x2="56" y2="56"/>
+    <line x1="84" y1="84" x2="91" y2="91"/>
+    <line x1="91" y1="49" x2="84" y2="56"/>
+    <line x1="56" y1="84" x2="49" y2="91"/>
+  </g>
+  <text x="70" y="120" text-anchor="middle"
+        font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
+        font-size="14" font-weight="700" fill="#bf8700"
+        letter-spacing="1">aura</text>
+</svg>
