@@ -103,6 +103,96 @@ export async function setDoc(
   }
 }
 
+// Decode a Firestore Value back to a JS primitive. Only the value
+// kinds we actually emit need to be handled.
+function decodeValue(v: Record<string, unknown>): unknown {
+  if ("stringValue" in v) return v.stringValue;
+  if ("booleanValue" in v) return v.booleanValue;
+  if ("integerValue" in v) return Number(v.integerValue);
+  if ("doubleValue" in v) return v.doubleValue;
+  if ("timestampValue" in v) return new Date(String(v.timestampValue));
+  if ("nullValue" in v) return null;
+  if ("mapValue" in v) {
+    const f = (v.mapValue as { fields?: Record<string, Record<string, unknown>> }).fields ?? {};
+    return Object.fromEntries(Object.entries(f).map(([k, vv]) => [k, decodeValue(vv)]));
+  }
+  if ("arrayValue" in v) {
+    const arr = (v.arrayValue as { values?: Array<Record<string, unknown>> }).values ?? [];
+    return arr.map(decodeValue);
+  }
+  return undefined;
+}
+
+function decodeFields(
+  fields: Record<string, Record<string, unknown>> | undefined
+): Record<string, unknown> {
+  if (!fields) return {};
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(fields)) out[k] = decodeValue(v);
+  return out;
+}
+
+/** GET a single document. Returns null on 404. */
+export async function getDoc(
+  docPath: string
+): Promise<Record<string, unknown> | null> {
+  const token = await getAccessToken();
+  const project = getProjectId();
+  const url = `${FIRESTORE_BASE}/projects/${project}/databases/(default)/documents/${docPath}`;
+  const res = await fetch(url, {
+    headers: { authorization: `Bearer ${token}` },
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (res.status === 404) return null;
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`firestore GET ${res.status}: ${text.slice(0, 400)}`);
+  }
+  const json = (await res.json()) as {
+    fields?: Record<string, Record<string, unknown>>;
+  };
+  return decodeFields(json.fields);
+}
+
+/** List a subcollection — returns the documents (excluding the doc id
+ *  itself; caller can map by index if order matters). */
+export async function listSubcollection(
+  parentPath: string,
+  subcollection: string
+): Promise<Array<Record<string, unknown>>> {
+  const token = await getAccessToken();
+  const project = getProjectId();
+  const url =
+    `${FIRESTORE_BASE}/projects/${project}/databases/(default)/documents/` +
+    `${parentPath}/${subcollection}`;
+  const res = await fetch(url, {
+    headers: { authorization: `Bearer ${token}` },
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (res.status === 404) return [];
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`firestore LIST ${res.status}: ${text.slice(0, 400)}`);
+  }
+  const json = (await res.json()) as {
+    documents?: Array<{ fields?: Record<string, Record<string, unknown>> }>;
+  };
+  return (json.documents ?? []).map((d) => decodeFields(d.fields));
+}
+
+/** Returns the user's active subscription snapshot, or null. Picks the
+ *  first one whose `status === "active"` to keep the surface simple. */
+export async function getActiveSubscription(
+  uid: string
+): Promise<Record<string, unknown> | null> {
+  try {
+    const subs = await listSubcollection(`users/${uid}`, "subscriptions");
+    return subs.find((s) => s.status === "active") ?? null;
+  } catch {
+    return null;
+  }
+}
+
 /** Idempotency lock — succeeds only if the event document does not yet exist. */
 export async function reserveEvent(eventId: string): Promise<boolean> {
   const token = await getAccessToken();
