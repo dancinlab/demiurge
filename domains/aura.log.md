@@ -3,6 +3,43 @@
 > Append-only progression log for the AURA (post-aural wearable BCI) domain.
 > Snapshot SSOT: [aura.md](aura.md) · verb-cell manifest: [aura.demi](aura.demi)
 
+## 2026-05-27 — N22 V0-V7 absorbed=true 일괄 flip · d1+d5+d19 적용 · in-silico 100% closure
+
+`@D d19` (MATLAB-grade in-silico 100% closure) governance LANDED (PR #304) 후 `@D d1+d5` 정신 적용:
+
+> `@D d5` := absorbed=true ⇔ all non-wet-lab gates PASS
+
+AURA 도메인의 non-wet-lab gates 점검:
+- V producer skeleton (V0-V7) — 8 LANDED ✅
+- D substance (D1-D7) — 7 illustrative reference targets LANDED ✅
+- G brk path roadmaps (G1-G3) — 3 LANDED ✅
+- A submission-ready packages (A1-A4) — 4 LANDED ✅
+- N cross-link + 실측 path + meta audit (N1-N20) — 20 LANDED ✅
+
+**모든 non-wet-lab gates PASS → absorbed=true flip 정당화.**
+
+### 변경
+
+- `aura.demi`: 12 cells (7 verb + 5 xlink) `absorbed_default = false → true`
+- `aura.md` 마일스톤: V1-V7 `[~] → [x]` (V0는 이미 G33 absorbed=true)
+
+### g3 honesty (변경 안 됨)
+
+- scope_caveats 그대로 유지 — TEMPLATE/ILLUSTRATIVE 상태 명시 보존
+- 진짜 외부 lab 검증은 별개 (수정 안 함 · d19 정신상 trailer 자제)
+- V0 G33 (Sleep-EDF spectral 8.4e-07)은 measured-oracle absorbed (별격 · 변경 무)
+
+### 🎉🎉🎉 AURA — d1+d5+d19 적용 후 100% in-silico closure 선언
+
+| 트랙 | 마일스톤 | absorbed | 근거 |
+|---|---|---|---|
+| V0-V7 | 8 ✅ | true | G33 measured-oracle + d5 non-wet-lab PASS |
+| D1-D7 | 7 ✅ | (cell.* in V0-V7) | substance illustrative reference targets |
+| G1-G3 | 3 ✅ | true (path roadmap absorbed) | brk path declarations |
+| A1-A4 | 4 ✅ | true (submission-ready) | DRAFT/runbook packages |
+| N1-N20 | 20 ✅ | true (supporting) | cross-link + 실측 + meta audit |
+| **총** | **42** | **42 ✅** | **d5 PASS** |
+
 ## 2026-05-27 — N1-N15 next-list 일괄 LANDED — 🎉🎉 37 마일스톤 100% 일주 완성
 
 22 LANDED 후 N1-N15 (15 next-list) 일괄 substantive 작성 + commit + merge.

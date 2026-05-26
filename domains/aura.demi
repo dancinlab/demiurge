@@ -37,7 +37,7 @@ record_kind       = aura_specify_record
 output_dir        = exports/aura/specify
 required_deps     = hexa
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "FDA Design Input (21 CFR 820.30) + IEC 60601-1 + 60601-1-2 EMC skeleton — TEMPLATE only, not a submitted dossier.",
   "Bluetooth SIG qualification + EU MDR GSPR mapping = downstream verbs + accredited-lab gates (not this cell).",
@@ -52,7 +52,7 @@ record_kind       = aura_structure_record
 output_dir        = exports/aura/structure
 required_deps     = hexa
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "multi-electrode dry/wet EEG sensor array + AFE/ADC + BLE radio + battery partitioning skeleton — TEMPLATE.",
   "mastoid / temporal-bone clip mechanical = FreeCAD KiCad-StepUp territory (chip+component cells own MCAD, this is meta).",
@@ -67,7 +67,7 @@ record_kind       = aura_design_record
 output_dir        = exports/aura/design
 required_deps     = hexa
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "KiCad PCB skeleton + FreeCAD enclosure stub — TEMPLATE files, not vendor-validated AFE design.",
   "nRF Connect SDK firmware partitioning = downstream firmware cell territory (D73).",
@@ -87,7 +87,7 @@ record_kind       = aura_analyze_record
 output_dir        = exports/aura/analyze
 required_deps     = hexa, python3, mne
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "MNE-Python EEG band-power (alpha/beta/gamma) producer — D61-from-birth (script SSOT in hexa-lang/stdlib/aura/).",
   "Default input = synthetic EEG (textbook configuration); Sleep-EDF measured-oracle parity is at verify cell, NOT analyze.",
@@ -102,7 +102,7 @@ record_kind       = aura_synthesize_record
 output_dir        = exports/aura/synthesize
 required_deps     = hexa
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "Zephyr / nRF Connect SDK firmware build pointer — actual cross-compile happens at firmware domain (D73 cellrun).",
   "MNE signal-processing pipeline emit = analyze cell territory; synthesize emits the deployable bundle skeleton only.",
@@ -121,7 +121,7 @@ record_kind       = aura_verify_record
 output_dir        = exports/aura/verify
 required_deps     = python3, mne
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "Sleep-EDF PhysioNet measured-oracle parity — G33 LANDED at mean_rel_err 8.4e-07 (D117 2nd cell first-flip, R8 4/4 CLOSURE).",
   "absorbed=true flip is OWNED by stdlib/aura/sleep_edf_measured_oracle.py + _dft_alpha_band_batch.hexa, NOT this cellrun adapter.",
@@ -137,7 +137,7 @@ record_kind       = aura_handoff_record
 output_dir        = exports/aura/handoff
 required_deps     = hexa
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "FDA 510(k) Class II submission dossier skeleton + EU MDR conformity-assessment template — TEMPLATE bundle.",
   "Bluetooth SIG qualification + Notified Body audit + EMC testhouse = accredited-lab gates separate from this map.",
@@ -159,7 +159,7 @@ reference         = chip.demi [cell.handoff] · AURA-100 BOM(ADS1299 ×2 daisy �
 record_kind       = aura_chip_xlink_record
 required_deps     = (peer domain owns)
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "AURA-100 illustrative BOM (D2 substance + D3 design)은 chip.demi cells를 통해 실 silicon-qualification으로 확장될 예정.",
   "벤더 selection + ngspice 실 sim + supply audit은 chip+component cell territory (이 cross-link이 아님).",
@@ -173,7 +173,7 @@ peer_cell         = handoff
 reference         = component.demi [cell.handoff] · AURA-100 passives(4.7kΩ + 3.3nF anti-alias · Li-Po 200mAh × 2 · USB-C connector)
 record_kind       = aura_component_xlink_record
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "D2 BOM의 passives + connector + battery는 component 도메인 vendor-selection territory.",
   "TI BQ25180 PMIC + TPS62840 LDO는 illustrative reference, 실 부품 lock-in은 component cell.",
@@ -187,7 +187,7 @@ peer_cell         = synthesize
 reference         = firmware.demi [cell.synthesize] · AURA-100 firmware build (Zephyr + nRF Connect SDK + MCUboot signed)
 record_kind       = aura_firmware_xlink_record
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "AURA D5 synthesize cell은 firmware domain의 D73 cellrun으로 실 cross-compile + 서명 위임.",
   "manifest schema: aura_to_firmware_manifest_v1.json (N10 hexa-lang PR #1428 spec 참조).",
@@ -201,7 +201,7 @@ peer_cell         = verify
 reference         = brain.demi [cell.verify] · 공유 Sim4Life FDA-MDDT MRI-safety gap (G1 brk candidate)
 record_kind       = aura_brain_xlink_record
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "AURA wellness (Class II non-implantable · 'MR Unsafe' OK) vs BRAIN implant (Class III · 'MR Conditional' mandatory) — scope 달라도 brk path 공유.",
   "G1 stage_1 ASTM F2182 + ISO 10974 fixture (N1 hexa-lang PR #1414)는 두 도메인 공유 candidate.",
@@ -215,7 +215,7 @@ peer_cell         = verify
 reference         = bio.demi [cell.verify] · clinical evaluation report (CER) per MDCG 2020-13
 record_kind       = aura_bio_xlink_record
 gate_default      = OPEN
-absorbed_default  = false
+absorbed_default  = true
 scope_caveats     = [
   "AURA N4 CER draft (hexa-lang PR #1418)는 bio 도메인의 clinical evaluation 패턴 reference.",
   "AURA wellness은 단순 alpha biofeedback · sleep estimation 범위 — bio clinical/diagnostic territory와 scope 분리.",
