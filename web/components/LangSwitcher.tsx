@@ -5,12 +5,13 @@
 
 import { useState } from "react";
 
-const OPTIONS: Array<{ code: "en" | "ko" | "ja" | "zh" | "ru"; label: string }> = [
+// Display order: EN · 中文 · Русский · 日本語 · 한국어
+const OPTIONS: Array<{ code: "en" | "zh" | "ru" | "ja" | "ko"; label: string }> = [
   { code: "en", label: "English" },
-  { code: "ko", label: "한국어" },
-  { code: "ja", label: "日本語" },
   { code: "zh", label: "中文" },
   { code: "ru", label: "Русский" },
+  { code: "ja", label: "日本語" },
+  { code: "ko", label: "한국어" },
 ];
 
 export function LangSwitcher({ current }: { current: string }) {

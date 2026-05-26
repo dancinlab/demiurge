@@ -1,6 +1,6 @@
 // i18n — App Router native, zero npm deps.
 //
-// Locales: en · ko · ja · zh · ru (5).
+// Locales: en · zh · ru · ja · ko (display order: EN · 中文 · Русский · 日本語 · 한국어).
 // Resolution order (server side):
 //   1. cookie `lang` (set by /api/lang)
 //   2. Accept-Language header (best match)
@@ -10,29 +10,29 @@
 
 import { cookies, headers } from "next/headers";
 import enMessages from "@/messages/en.json";
-import koMessages from "@/messages/ko.json";
-import jaMessages from "@/messages/ja.json";
 import zhMessages from "@/messages/zh.json";
 import ruMessages from "@/messages/ru.json";
+import jaMessages from "@/messages/ja.json";
+import koMessages from "@/messages/ko.json";
 
-export const LOCALES = ["en", "ko", "ja", "zh", "ru"] as const;
+export const LOCALES = ["en", "zh", "ru", "ja", "ko"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 
 export const LOCALE_LABEL: Record<Locale, string> = {
   en: "English",
-  ko: "한국어",
-  ja: "日本語",
   zh: "中文",
   ru: "Русский",
+  ja: "日本語",
+  ko: "한국어",
 };
 
 const DICTS = {
   en: enMessages,
-  ko: koMessages,
-  ja: jaMessages,
   zh: zhMessages,
   ru: ruMessages,
+  ja: jaMessages,
+  ko: koMessages,
 } as const;
 
 export type Messages = typeof enMessages;

@@ -2,13 +2,13 @@
 
 @title: 🏆 XPRIZE — "구글 Gemini 90일 사업 대회"
 
-@goal: dancinlab 2-엔트리(📐 demiurge + 🪽 phanes)를 Build with Gemini XPRIZE 2026에 출전 — 90일 빌드(2026-05-19~08-17) + 실매출 증빙 + Vertex AI Gemini 호출 ≥1 + GCP 제품 ≥1 + 2026-08-17 제출 + 2026-09-25 LA 결승 finalist 5팀 진입 + Top-5 상금 획득 ($100K~$500K) 또는 카테고리상/runner-up($50K) 최소 1개
+@goal: dancinlab 단일 엔트리(📐 demiurge — phanes 발견엔진 8th verb로 내장)를 Build with Gemini XPRIZE 2026에 출전 — 90일 빌드(2026-05-19~08-17) + 실매출 증빙 + Vertex AI Gemini 호출 ≥1 + GCP 제품 ≥1 + 2026-08-17 제출 + 2026-09-25 LA 결승 finalist 5팀 진입 + Top-5 상금 획득 ($100K~$500K) 또는 카테고리상/runner-up($50K) 최소 1개. (Track B phanes 별도 출시 폐기 — 2026-05-27 결정 · 엔진은 `demiurge cli discover` 8th verb로 흡수, 차후 post-XPRIZE 분사 옵션 보존)
 
 ## Milestones
 
 ### Track A — demiurge 출전 (Professional Services · ② AI-Native Ops)
 
-- [ ] A1 카테고리 확정 — phanes와 분산 (둘 다 Professional Services면 내부 경쟁 → demiurge를 Entrepreneurship/Job Creation 등으로 이동 검토)
+- [x] A1 카테고리 확정 — **Professional Services** (단일 엔트리 · phanes 분리 폐기로 내부 경쟁 0)
 - [x] A2 GCP 프로젝트 `dancinlab` 생성 (2026-05-27 · 결제 계정도 `dancinlab`) → 나머지: Vertex AI · Cloud Run · Firebase · Firestore · Cloud Storage 5개 enable
 - [ ] A3 Web GUI M14 web-foundation 완료 (마감 2026-06-09) — Next.js scaffold + CLI proxy + Vertex AI SDK
 - [ ] A4 Web GUI M15 web-7verb-surface 완료 (마감 2026-06-30) — Gemini 호출 4 verb (spec/design/analyze/handoff)
@@ -18,13 +18,17 @@
 - [ ] A8 repo 심사용 공유 — `testing@devpost.com` + `judging@hacker.fund` collaborator (마감 2026-08-15)
 - [ ] A9 Devpost 제출 (마감 **2026-08-17**) — 영상 + narrative + repo link + GCP 제품 사용 증빙
 
-### Track B — phanes 출전 (별도 카테고리 권장 · ② AI-Native Ops)
+### ~~Track B — phanes 출전~~ (CLOSED 2026-05-27 · 단일 엔트리 집중 결정)
 
-- [ ] B1 카테고리 확정 (A1과 분산)
-- [ ] B2 phanes 신규 GCP 프로젝트 + Gemini 통합
-- [ ] B3 phanes Web product 90일 빌드 (별도 도메인 트래킹)
-- [ ] B4 phanes 데모영상 + narrative + repo 공유
-- [ ] B5 phanes Devpost 제출 (마감 **2026-08-17**)
+폐기 사유 — (1) D-83 timeline에 phanes 별도 빌드 시간 부족 · (2) demiurge `discover` 8th verb로 발견엔진 흡수 → ②AI-Native Ops narrative 1개에서 통합 노출 · (3) founder 단독 자원 집중 효과 ↑ · (4) post-XPRIZE 분사 옵션 보존.
+
+- [x] B1 ~~카테고리 확정~~ closed (분산 무효 · A1 Professional Services 단독)
+- [x] B2 ~~phanes 신규 GCP 프로젝트~~ closed (별도 프로젝트 불필요 · dancinlab 단일)
+- [x] B3 ~~phanes Web product 90일 빌드~~ closed (별도 Cloud Run service 불필요)
+- [x] B4 ~~phanes 데모영상 + narrative~~ closed (demiurge 데모에 `discover` 시연 포함)
+- [x] B5 ~~phanes Devpost 제출~~ closed (Devpost form 1개만 · demiurge 단독)
+
+**phanes 저장소 소유권 유지** — `bin/phanes` CLI 위치 + OUROBOROS 발견 로직 = phanes 저장소(canonical home, d3). demiurge `discover` verb는 thin subprocess wrapper일 뿐 (d4). XPRIZE 흡수 ≠ demiurge에 코드 이식, 그대로 `phanes cli discover ...` subprocess 호출 패턴 유지. post-XPRIZE 별도 SaaS 출시 시 phanes 저장소에서 그대로 분사 가능.
 
 ### Track C — 공통 인프라 (양 엔트리 공유 가능)
 
