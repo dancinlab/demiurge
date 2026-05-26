@@ -3,6 +3,15 @@
 > Append-only progression log for the AURA (post-aural wearable BCI) domain.
 > Snapshot SSOT: [aura.md](aura.md) · verb-cell manifest: [aura.demi](aura.demi)
 
+## 2026-05-27 — V6 verify (EM-side) sibling producer LANDED (hexa-native)
+
+- `stdlib/aura/verify.hexa` 신규 143 LOC (hexa-lang PR #1350 MERGED) — EM-side sibling track.
+- TWO verify tracks 명시: (a) EEG-spectral Sleep-EDF G33 LANDED absorbed=true (V0, substrate=sleep_edf_measured_oracle.py + _dft_alpha_band_batch.hexa, mean_rel_err 8.4e-07, D117 2nd cell, R8 4/4 CLOSURE) · (b) EM-side openEMS antenna+SAR honest-gap pending (이 파일).
+- 3 block: eeg_spectral_absorbed_V0 (V0 G33 reference) · em_antenna_sar_pending (openEMS GPL-3 3D FDTD BLE 2.4-2.4835GHz S11/VSWR + 3D radiation pattern + ITIS Foundation Virtual Population head phantom SAR + π/T smith-chart 매칭 + paraview VTK + matplotlib polar) · honest_gap_G1_brk (Sim4Life ZMT/IT'IS FDA MDDT-qualified IRREPLACEABLE for MRI-safety labeling — ASTM F2182-19e2 passive implants + ISO 10974 active implants · G1 breakthrough candidate = open EM/SAR/MRI-safety solver at Sim4Life parity with regulatory acceptance).
+- cellrun manifest [cell.verify] 무변경 (G33 sleep_edf path absorbed=true 그대로 유지). 이 .hexa는 sibling EM-side track 표명자.
+- 마일스톤: V6 → `[~]` in-progress (sibling producer LANDED · MRI-safety 라벨링 closure는 G1 brk territory).
+- g3 honesty: `absorbed=false` PERMANENTLY for EM-side track. open EM solver != FDA-MDDT-qualified Sim4Life · MRI-safety claim CANNOT be closed by open-source path alone.
+
 ## 2026-05-27 — V5 synthesize producer LANDED (hexa-native)
 
 - `stdlib/aura/synthesize.hexa` 신규 146 LOC (hexa-lang PR #1347 MERGED).
