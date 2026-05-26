@@ -2,6 +2,29 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-26 — 🛸 V2 atlas atom-fold 캠페인 R1·R2 — UFO closed-form 7개 hexa-lang 아틀라스 흡수 (🟢 ×7 verbatim · PR #1222·#1244)
+
+> absorbed=TRUE 이후 후속 — CERN·ANTIMATTER 식 atom 캠페인. UFO 의 magnitude-safe·formal-exact closed-form 을 hexa-lang verify recompute dispatch (`tool/verify_cli.hexa::_recompute_float` + `compiler/atlas/calc_dispatch.hexa::calc_is_float_fn`) 에 등록 → recompute-resolvable atom 흡수 (`@F verified-ufo_*-num`).
+
+### R1 — 실물리 무차원 atom ×4 (hexa-lang PR #1222 MERGED)
+- [x] `ufo_isp_fuel_ratio(μ)` = γμβ|η=1 (F-ANTI-3 유효 I_sp / 광자천장 c/g) — μ=1 → √3 = 1.7320508075688772 · 🟢 SUPPORTED-NUMERICAL |Δ|=4.44e-16
+- [x] `ufo_rocket_beta(μ)` = √(1−1/γ²)|η=1 (상대론 배기 β=v_e/c<1) — μ=1 → √3/2 = 0.8660254037844386 · 🟢 |Δ|=1.11e-16
+- [x] `ufo_gl_derating(r)` = 1−r² (HTS B(T)/B₀ GL 열-디레이팅) — r=4.2/90 → 0.9978222222222222 · 🟢 |Δ|=1.11e-16
+- [x] `ufo_mli_shield(N)` = 1/(N+1) (크라이오 MLI 복사차폐) — N=30 → 1/31 = 0.03225806451612903 · 🟢 |Δ|=0.0
+
+### R2 — n6-lattice formal-algebra atom ×3 (hexa-lang PR #1244 MERGED)
+정확한 정수 항등식 (σ=12,φ=2,n=6,τ=4) · 물리(Stage-4~7 warp/wormhole/dim)는 ⚪ SPECULATION-FENCED 유지, **대수만** 검증:
+- [x] `ufo_lattice_sigma_pow(k)` = σ^k — k=2→144(VDB reduction) · k=3→1728(R_c factor) · 🟢 |Δ|=0.0
+- [x] `ufo_warp_composite(φ)` = (σ−φ)² — φ=2→100 (Stage-7 합성 c-factor) · 🟢 |Δ|=0.0
+- [x] `ufo_lattice_master(φ)` = σ·φ=n·τ — φ=2→24(=6·4) 마스터 항등식 · 🟢 |Δ|=0.0
+
+### reuse (g67/g68 · 기존 SSOT atom 재사용 · 재등록 안 함)
+- [x] `ioffe_loop_bz` (Stage-1 B-field) · `triple_product` (Stage-2 MHD F=J·B·V) · `pair_threshold_total`+`rel_kinetic_from_p` (Stage-3 γ-rocket)
+
+### upstream 개선 (demiurge→hexa-lang INBOX → 타세션 fix)
+- [x] `sopfr` codegen build-break → hexa-lang **#1248** fix · `OK:--expr` verdict-replay quirk → **#1259** fix (transpiler-binary-as-driver 근본) · 빌드-해소 4건 **#1223** 문서화
+- [x] honest 천장 (@D d6·g63): dimensional 대값(meissner F~1.6e6 N · gamma_rocket I_sp~3.06e7 s)은 abs-ε 트랩 → magnitude-safe ratio/B-field/reused atom 으로 흡수, raw 강제 안 함. Stage-4~7 물리 = ⚪ 유지 (도메인 falsifier-only 정합).
+
 ## 2026-05-26 — ⟲ 4-layer fixed-point coupling 게이트 🟠→🟢 + absorbed 재판정 TRUE (마지막 게이트 · 6/6)
 
 - [x] **deck** `UFO/sim/decks/coupling_fixedpoint.hexa` (english · .hexa only @D d3/sim-hexa-only) — 4 layer (① CFD · ② EM · ③ 응력 · ④ 열) 의 verified 출력을 하나의 결합 map f(state) 으로 묶어 Gauss–Seidel/Picard 고정점 반복:
