@@ -17,6 +17,7 @@
 - [x] h3o anharmonic λ 재계산 (SSCHA dyn → ph.x EPC → anharmonic Tc · /gap #1) — SSCHA 안정화 후 필수 후속 (harmonic λ 폐기, anharmonic α²F 로 Tc 재산정)
 - [ ] h3br ω_log 향상 probe (stable strong-λ base · 압력/lighter substitution → Tc ∝ ω_log) — N5 breakthrough (stable·강λ 확보, ω_log bottleneck 만 남음)
 - [x] N5 wall 재정의 — λ-포화 → ω_log bottleneck 축 전환 (h3o unstable↔h3br stable-low-Tc 대조 — λ 는 충분, ω_log·dynamical stability 가 진짜 벽) · cf. `RTSC/walls/N5_wall_redefinition.md`
+- [x] PROTOCOL discipline 4-doc landed (Tier-3 from /gap full) — `RTSC/protocols/VALIDATION_FIRST.md` (4-gate mandate · pre-dispatch stability_pre_check) + `RTSC/protocols/CANDIDATE_SCORING.md` (5-term composite + JSON schema · F5 closed-loop) + `RTSC/walls/tropical_isocontour.md` (Tc=200K isocontour ASCII plot · F1 min-plus bottleneck) + `RTSC/protocols/ACTIVE_ACQUISITION.md` (info_gain/(cost+time) triage · F7 priority) — next 1순위: **h3br ω_log 향상 probe** (rank_score 0.167)
 - [x] wet-lab handoff (Tier 2 recipe-as-record · §8 4-tier 경유) — h3cl recipe `exports/material_discovery/rtsc_h3cl_tier2_wetlab_handoff_20260524.json` · EOS 합성압력 **200.5 GPa @ Tc 구조** pinned (`rtsc_h3cl_eos_im3m_20260524.json`, ubu-1) · pressure-executable (잔여: Cl precursor·metastability = partner/optional)
 - [ ] measured-oracle PASS → RTSC absorbed=true (최종 d5 invariant 충족)
 
