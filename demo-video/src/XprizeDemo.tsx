@@ -391,7 +391,7 @@ const Design06: React.FC = () => {
     { name: "GW", core: "many-body · best", risk: "100× slower" },
   ];
   return (
-    <AbsoluteFill style={{ background: palette.bg0, display: "flex", alignItems: "center", justifyContent: "center", gap: 36 }}>
+    <AbsoluteFill style={{ background: palette.bg0, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 36 }}>
       {opts.map((o, i) => {
         const sp = interpolate(frame, [i * 8, i * 8 + 20], [0, 1], { extrapolateRight: "clamp" });
         return (
@@ -671,7 +671,7 @@ const Handoff10: React.FC = () => {
   const koReveal = Math.floor(interpolate(frame, [10, 100], [0, ko.length], { extrapolateRight: "clamp" }));
   const enReveal = Math.floor(interpolate(frame, [110, 200], [0, en.length], { extrapolateRight: "clamp" }));
   return (
-    <AbsoluteFill style={{ background: palette.bg0, display: "flex" }}>
+    <AbsoluteFill style={{ background: palette.bg0, display: "flex", flexDirection: "row" }}>
       <div style={{ flex: 1, padding: 80, borderRight: `1px solid ${palette.muted}33` }}>
         <div style={{ fontSize: 28, color: palette.accent, letterSpacing: 4, fontFamily: 'Inter, system-ui, sans-serif' }}>한국어</div>
         <div style={{ marginTop: 40, fontSize: 32, color: palette.fg, fontFamily: 'ui-monospace, monospace', lineHeight: 1.5 }}>
@@ -696,7 +696,7 @@ const Pricing11: React.FC = () => {
     { name: "Org", price: 299, color: palette.accent },
   ];
   return (
-    <AbsoluteFill style={{ background: palette.bg0, display: "flex", alignItems: "center", justifyContent: "center", gap: 40 }}>
+    <AbsoluteFill style={{ background: palette.bg0, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 40 }}>
       {tiers.map((t, i) => {
         const o = interpolate(frame, [i * 12, i * 12 + 20], [0, 1], { extrapolateRight: "clamp" });
         return (
