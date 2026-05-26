@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "главная",
+    "pricing": "тарифы",
+    "account": "аккаунт",
+    "signin": "вход",
+    "discover": "поиск",
+    "back_home": "← главная",
+    "back_all": "← все домены"
+  },
+  "home": {
+    "title": "demiurge",
+    "subtitle_a": "8-глагольный конвейер · 3-surface (CLI · Cockpit · Web) · ",
+    "subtitle_link": "Gemini XPRIZE 2026",
+    "subtitle_b": " заявка",
+    "domains_heading": "Домены",
+    "no_domains_a": "Домены ещё не зарегистрированы. В корне репозитория выполните ",
+    "no_domains_code": "demiurge cli list-domains",
+    "no_domains_b": ".",
+    "footer_a": "SSOT: ",
+    "footer_b": " · dispatch: ",
+    "footer_c": " · LLM: Vertex AI Gemini · host: Cloud Run · demiurge.dancinlab.org"
+  },
+  "signin": {
+    "title": "вход / регистрация",
+    "subtitle": "Firebase Auth по REST · httpOnly cookie сессии (токен не раскрывается)",
+    "tab_signin": "вход",
+    "tab_signup": "регистрация",
+    "email": "почта",
+    "password": "пароль",
+    "password_hint": "(≥6 символов)",
+    "submit_signin": "войти",
+    "submit_signup": "создать аккаунт",
+    "loading": "...",
+    "error_required": "обязательны почта и пароль",
+    "footer": "XPRIZE выручка · платные планы доступны после входа на /account."
+  },
+  "account": {
+    "title": "аккаунт",
+    "email": "почта",
+    "verified": "почта подтверждена",
+    "uid": "uid",
+    "billing": "оплата",
+    "current_tier_a": "текущий план: ",
+    "renewal": "продление",
+    "cancel_warning": "⚠ запланирована отмена в конце периода",
+    "portal_note": "Квитанции · смена карты · отмена через Stripe portal (auto-redirect по customer.id в следующем слайсе).",
+    "no_sub_tagline": "$29 Solo · $99 Team · $299 Org (ежемесячно · бесплатный пробный период 14 дней)",
+    "pick_plan": "Выбрать план →",
+    "signout": "выйти"
+  },
+  "pricing": {
+    "title": "тарифы",
+    "subtitle": "Ежемесячная подписка · пробный период 14 дней · карта без списания, первое списание после окончания пробы",
+    "per_mo": "/ мес",
+    "tier_solo": "Solo",
+    "tier_team": "Team",
+    "tier_org": "Org",
+    "start_label": "Начать {tier}",
+    "signin_first": "Войти, чтобы начать",
+    "footer": "Платежи через Stripe · related-party помечается при оформлении · XPRIZE ежемесячный P&L отражается автоматически (M17 Firestore)."
+  },
+  "common": {
+    "loading": "загрузка...",
+    "language": "Язык"
+  }
+}

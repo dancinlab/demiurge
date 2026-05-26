@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "pricing": "料金プラン",
+    "account": "アカウント",
+    "signin": "ログイン",
+    "discover": "発見",
+    "back_home": "← ホーム",
+    "back_all": "← すべてのドメイン"
+  },
+  "home": {
+    "title": "demiurge",
+    "subtitle_a": "8動詞パイプライン · 3-surface (CLI · Cockpit · Web) · ",
+    "subtitle_link": "Gemini XPRIZE 2026",
+    "subtitle_b": " エントリー",
+    "domains_heading": "ドメイン",
+    "no_domains_a": "ドメインがまだ登録されていません。リポジトリのルートで ",
+    "no_domains_code": "demiurge cli list-domains",
+    "no_domains_b": " を実行してください。",
+    "footer_a": "SSOT: ",
+    "footer_b": " · dispatch: ",
+    "footer_c": " · LLM: Vertex AI Gemini · host: Cloud Run · demiurge.dancinlab.org"
+  },
+  "signin": {
+    "title": "ログイン / 登録",
+    "subtitle": "REST 経由の Firebase Auth · httpOnly セッションクッキー (トークン非公開)",
+    "tab_signin": "ログイン",
+    "tab_signup": "登録",
+    "email": "メール",
+    "password": "パスワード",
+    "password_hint": "(6文字以上)",
+    "submit_signin": "ログイン",
+    "submit_signup": "アカウント作成",
+    "loading": "...",
+    "error_required": "メールとパスワード必須",
+    "footer": "XPRIZE 売上サーフェス · 有料プランはログイン後 /account から。"
+  },
+  "account": {
+    "title": "アカウント",
+    "email": "メール",
+    "verified": "メール確認",
+    "uid": "uid",
+    "billing": "支払い",
+    "current_tier_a": "現在のプラン: ",
+    "renewal": "更新日",
+    "cancel_warning": "⚠ 期間終了後に自動解約予定",
+    "portal_note": "領収書 · カード変更 · 解約は Stripe 請求ポータルで (次のスライスで customer.id 自動 redirect)。",
+    "no_sub_tagline": "$29 Solo · $99 Team · $299 Org (月額 · 14日無料トライアル)",
+    "pick_plan": "プランを選択 →",
+    "signout": "ログアウト"
+  },
+  "pricing": {
+    "title": "料金プラン",
+    "subtitle": "月額 · 14日間無料トライアル · カード登録のみ、初回請求はトライアル終了後",
+    "per_mo": "/ 月",
+    "tier_solo": "Solo",
+    "tier_team": "Team",
+    "tier_org": "Org",
+    "start_label": "{tier} を開始",
+    "signin_first": "ログインして開始",
+    "footer": "決済は Stripe · related-party は会計段階でラベリング · XPRIZE 売上証明は月次 P&L に自動反映 (M17 Firestore)。"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "language": "言語"
+  }
+}

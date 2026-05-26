@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "首页",
+    "pricing": "定价",
+    "account": "账户",
+    "signin": "登录",
+    "discover": "发现",
+    "back_home": "← 首页",
+    "back_all": "← 所有域"
+  },
+  "home": {
+    "title": "demiurge",
+    "subtitle_a": "8动词管道 · 3-surface (CLI · Cockpit · Web) · ",
+    "subtitle_link": "Gemini XPRIZE 2026",
+    "subtitle_b": " 参赛作品",
+    "domains_heading": "域",
+    "no_domains_a": "尚未注册域。在仓库根目录运行 ",
+    "no_domains_code": "demiurge cli list-domains",
+    "no_domains_b": " 。",
+    "footer_a": "SSOT: ",
+    "footer_b": " · dispatch: ",
+    "footer_c": " · LLM: Vertex AI Gemini · host: Cloud Run · demiurge.dancinlab.org"
+  },
+  "signin": {
+    "title": "登录 / 注册",
+    "subtitle": "通过 REST 调用 Firebase Auth · httpOnly 会话 cookie (令牌不暴露)",
+    "tab_signin": "登录",
+    "tab_signup": "注册",
+    "email": "邮箱",
+    "password": "密码",
+    "password_hint": "(至少6位)",
+    "submit_signin": "登录",
+    "submit_signup": "创建账户",
+    "loading": "...",
+    "error_required": "邮箱和密码必填",
+    "footer": "XPRIZE 收入面 · 付费计划登录后在 /account 选择。"
+  },
+  "account": {
+    "title": "账户",
+    "email": "邮箱",
+    "verified": "邮箱已验证",
+    "uid": "uid",
+    "billing": "结算",
+    "current_tier_a": "当前计划: ",
+    "renewal": "续费日期",
+    "cancel_warning": "⚠ 计划在到期后自动取消",
+    "portal_note": "收据 · 卡片变更 · 取消通过 Stripe 计费门户 (下一切片中通过 customer.id 自动重定向)。",
+    "no_sub_tagline": "$29 Solo · $99 Team · $299 Org (按月 · 14天免费试用)",
+    "pick_plan": "选择计划 →",
+    "signout": "登出"
+  },
+  "pricing": {
+    "title": "定价",
+    "subtitle": "按月订阅 · 14天免费试用 · 仅需登记银行卡,试用期满后扣款",
+    "per_mo": "/ 月",
+    "tier_solo": "Solo",
+    "tier_team": "Team",
+    "tier_org": "Org",
+    "start_label": "开始 {tier}",
+    "signin_first": "登录后开始",
+    "footer": "支付通过 Stripe · related-party 在会计阶段标记 · XPRIZE 月度 P&L 自动反映 (M17 Firestore)。"
+  },
+  "common": {
+    "loading": "加载中...",
+    "language": "语言"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "home",
+    "pricing": "pricing",
+    "account": "account",
+    "signin": "sign in",
+    "discover": "discover",
+    "back_home": "← home",
+    "back_all": "← all domains"
+  },
+  "home": {
+    "title": "demiurge",
+    "subtitle_a": "8-verb pipeline · 3-surface (CLI · Cockpit · Web) · ",
+    "subtitle_link": "Gemini XPRIZE 2026",
+    "subtitle_b": " entry",
+    "domains_heading": "Domains",
+    "no_domains_a": "No domains registered yet. Run ",
+    "no_domains_code": "demiurge cli list-domains",
+    "no_domains_b": " from the repo root.",
+    "footer_a": "SSOT: ",
+    "footer_b": " · dispatch: ",
+    "footer_c": " · LLM: Vertex AI Gemini · host: Cloud Run · demiurge.dancinlab.org"
+  },
+  "signin": {
+    "title": "sign in / up",
+    "subtitle": "Firebase Auth via REST · httpOnly session cookie (token never exposed)",
+    "tab_signin": "sign in",
+    "tab_signup": "sign up",
+    "email": "email",
+    "password": "password",
+    "password_hint": "(≥6 chars)",
+    "submit_signin": "sign in",
+    "submit_signup": "create account",
+    "loading": "...",
+    "error_required": "email + password required",
+    "footer": "XPRIZE revenue surface · paid plans available after sign-in at /account."
+  },
+  "account": {
+    "title": "account",
+    "email": "email",
+    "verified": "verified",
+    "uid": "uid",
+    "billing": "billing",
+    "current_tier_a": "current plan: ",
+    "renewal": "renews on",
+    "cancel_warning": "⚠ scheduled to cancel at period end",
+    "portal_note": "Receipt / card / cancellation via Stripe billing portal (auto-redirect by customer id in next slice).",
+    "no_sub_tagline": "$29 Solo · $99 Team · $299 Org (monthly · 14-day free trial)",
+    "pick_plan": "Choose a plan →",
+    "signout": "sign out"
+  },
+  "pricing": {
+    "title": "pricing",
+    "subtitle": "Monthly subscription · 14-day free trial · card on file, first charge after trial ends",
+    "per_mo": "/ mo",
+    "tier_solo": "Solo",
+    "tier_team": "Team",
+    "tier_org": "Org",
+    "start_label": "Start {tier}",
+    "signin_first": "Sign in to start",
+    "footer": "Payments via Stripe · related-party labeled at checkout · XPRIZE monthly P&L auto-reflected (M17 Firestore)."
+  },
+  "common": {
+    "loading": "loading...",
+    "language": "Language"
+  }
+}

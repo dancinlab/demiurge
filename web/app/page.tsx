@@ -3,52 +3,60 @@
 
 import Link from "next/link";
 import { listDomains } from "@/lib/domains";
+import { getLocale, getMessages, t } from "@/lib/i18n";
+import { LangSwitcher } from "@/components/LangSwitcher";
 
 export const dynamic = "force-dynamic"; // filesystem-backed; never cache
 
 export default async function HomePage() {
-  const domains = await listDomains();
+  const [domains, locale, m] = await Promise.all([
+    listDomains(),
+    getLocale(),
+    getMessages(),
+  ]);
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-10 font-mono">
       <header className="mb-8 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">demiurge</h1>
+          <h1 className="text-2xl font-bold">{t(m, "home.title")}</h1>
           <p className="text-sm text-neutral-500">
-            8-verb pipeline · 3-surface (CLI · Cockpit · Web) ·{" "}
+            {t(m, "home.subtitle_a")}
             <a
               href="https://www.geminixprize.com"
               className="underline"
               target="_blank"
               rel="noreferrer"
             >
-              Gemini XPRIZE 2026
-            </a>{" "}
-            entry
+              {t(m, "home.subtitle_link")}
+            </a>
+            {t(m, "home.subtitle_b")}
           </p>
         </div>
-        <nav className="flex gap-3 text-sm">
+        <nav className="flex items-center gap-3 text-sm">
           <Link href="/pricing" className="underline">
-            pricing
+            {t(m, "nav.pricing")}
           </Link>
           <Link href="/account" className="underline">
-            account
+            {t(m, "nav.account")}
           </Link>
           <Link href="/discover" className="underline">
-            discover
+            {t(m, "nav.discover")}
           </Link>
+          <LangSwitcher current={locale} />
         </nav>
       </header>
 
       <section>
         <h2 className="mb-3 text-lg font-semibold">
-          Domains{" "}
+          {t(m, "home.domains_heading")}{" "}
           <span className="text-neutral-500">({domains.length})</span>
         </h2>
         {domains.length === 0 ? (
           <p className="text-neutral-500">
-            No domains registered yet. Run{" "}
-            <code>demiurge cli list-domains</code> from the repo root.
+            {t(m, "home.no_domains_a")}
+            <code>{t(m, "home.no_domains_code")}</code>
+            {t(m, "home.no_domains_b")}
           </p>
         ) : (
           <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
@@ -87,8 +95,8 @@ export default async function HomePage() {
       </section>
 
       <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500 dark:border-neutral-800">
-        SSOT: <code>DOMAINS.tape</code> · dispatch: <code>demiurge cli</code> ·
-        LLM: Vertex AI Gemini (M15+) · host: Cloud Run · demiurge.dancinlab.org
+        {t(m, "home.footer_a")}<code>DOMAINS.tape</code>{t(m, "home.footer_b")}
+        <code>demiurge cli</code>{t(m, "home.footer_c")}
       </footer>
     </main>
   );

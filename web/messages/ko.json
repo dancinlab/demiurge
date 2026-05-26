@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "홈",
+    "pricing": "요금제",
+    "account": "계정",
+    "signin": "로그인",
+    "discover": "발견",
+    "back_home": "← 홈",
+    "back_all": "← 전체 도메인"
+  },
+  "home": {
+    "title": "demiurge",
+    "subtitle_a": "8-verb 파이프라인 · 3-surface (CLI · Cockpit · Web) · ",
+    "subtitle_link": "Gemini XPRIZE 2026",
+    "subtitle_b": " 출전",
+    "domains_heading": "도메인",
+    "no_domains_a": "아직 등록된 도메인이 없습니다. 저장소 루트에서 ",
+    "no_domains_code": "demiurge cli list-domains",
+    "no_domains_b": " 를 실행하세요.",
+    "footer_a": "SSOT: ",
+    "footer_b": " · dispatch: ",
+    "footer_c": " · LLM: Vertex AI Gemini · host: Cloud Run · demiurge.dancinlab.org"
+  },
+  "signin": {
+    "title": "로그인 / 가입",
+    "subtitle": "Firebase Auth via REST · httpOnly 세션 쿠키 (토큰 노출 없음)",
+    "tab_signin": "로그인",
+    "tab_signup": "가입",
+    "email": "이메일",
+    "password": "비밀번호",
+    "password_hint": "(6자 이상)",
+    "submit_signin": "로그인",
+    "submit_signup": "계정 만들기",
+    "loading": "...",
+    "error_required": "이메일 + 비밀번호 필수",
+    "footer": "XPRIZE 매출 surface · 결제는 로그인 후 /account에서."
+  },
+  "account": {
+    "title": "계정",
+    "email": "이메일",
+    "verified": "이메일 인증",
+    "uid": "uid",
+    "billing": "결제",
+    "current_tier_a": "현재 요금제: ",
+    "renewal": "갱신일",
+    "cancel_warning": "⚠ 기간 종료 후 자동 해지 예정",
+    "portal_note": "영수증 · 카드 변경 · 해지는 Stripe 빌링 포털에서 (다음 슬라이스에서 현재 customer.id로 자동 redirect).",
+    "no_sub_tagline": "$29 Solo · $99 Team · $299 Org (월정액 · 14일 무료 trial)",
+    "pick_plan": "요금제 선택 →",
+    "signout": "로그아웃"
+  },
+  "pricing": {
+    "title": "요금제",
+    "subtitle": "월정액 · 14일 무료 trial · 카드 등록만, 첫 결제는 trial 종료 후",
+    "per_mo": "/ 월",
+    "tier_solo": "Solo",
+    "tier_team": "Team",
+    "tier_org": "Org",
+    "start_label": "{tier} 시작",
+    "signin_first": "로그인 후 시작",
+    "footer": "결제 = Stripe · related-party 라벨링은 webhook 적재 후 회계 단계에서 · XPRIZE 매출 증빙은 월별 P&L 자동 반영 (M17 Firestore)."
+  },
+  "common": {
+    "loading": "불러오는 중...",
+    "language": "언어"
+  }
+}
