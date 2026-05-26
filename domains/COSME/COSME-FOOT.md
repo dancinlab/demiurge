@@ -1,19 +1,32 @@
 @title: 🦶 COSME-FOOT — "발 케어"
 @parent: COSME
-@goal: 발 각질 제거·발크림·풋팩 라인업 쿠팡 SKU 풀 런칭
+@goal: 발 케어 화장품 first-principles R&D — 각질 제거 + 보습 + 항균
 
-## 진행 마일스톤
+## R&D 마일스톤 (7-verb · [PLAYBOOK.md](PLAYBOOK.md) 참조)
 
-- [ ] discovery: 발 케어 시장 분석 (각질 패드·발크림·풋팩 점유율)
-- [ ] discovery: 규제 스캔 (살리실산 함유 시 의약외품 영역 갈림)
-- [ ] sourcing: 제조사/OEM 발굴 (발 케어 라인업 보유 공장)
-- [ ] sourcing: 화장품 신고 + 안전 시험성적서
-- [ ] listing: 쿠팡 등록 (타입별 SKU)
-- [ ] listing: 광고 카피 점검 ("무좀 치료" → 의약품 영역 회피)
-- [ ] launch: 첫 발주
+- [ ] spec: 시판 TOP-N (각질 패드·발크림·풋팩) + 각질·보습·항균 매핑
+- [ ] structure: 활성성분 (살리실산 저농도·요소·AHA·차나무 오일) + 각질·보습 메커니즘
+- [ ] design: 처방 설계 (각질 제거 × 보습 × 항균 × 자극↓)
+- [ ] analyze: pilot head-to-head — 각질 박리·Corneometer·MIC (시판 vs 자체)
+- [ ] synthesize: CGMP 시제품 제작
+- [ ] verify: 각질 박리 +30%, Corneometer ↑20%, MIC ≥시판 (Trichophyton)
+- [ ] handoff: 화장품 신고 + 양산 + 여름 시즌 (각질 패드)
 
-## 노트
+## 차별 가설
 
-- 임팩트 🔥 — 니치
-- ⚠ 살리실산 농도·약효 표방 시 의약외품 영역 (QD/로 이전 검토)
-- 차별: 각질 패드(상품화 강력) · 무향 · 시즌 (여름)
+> 살리실산 1% (화장품 한계) + 요소 + AHA 시너지 → **각질 박리 +30% + 보습 +20%** · 무좀 회피 마케팅
+
+## 핵심 측정 지표
+
+- 각질 박리: 각질박리지수·D-Squame
+- 보습: Corneometer
+- 항균: MIC (T.rubrum·T.mentagrophytes)
+
+## 분류 바운더리
+
+| 항목 | 내용 |
+|---|---|
+| 분류 | 화장품 (각질 케어) |
+| 허용 클레임 | "각질 케어·보습" |
+| ⚠ 경계 | 살리실산 농도·"무좀" 표방 시 의약외품 영역 (QD/ 이전 검토) |
+| 광고 금기 | "무좀 치료·완화" |
