@@ -16,7 +16,7 @@ Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 
 - [x] V0 aura+verify absorbed=true — Sleep-EDF spectral parity 8.4e-07 · G33 LANDED · D117 2nd cell first-flip · R8 4/4 CLOSURE
 - [~] V1 aura+specify — producer hexa-native LANDED (hexa-lang PR #1338 · `stdlib/aura/specify.hexa` 124 LOC, sentinel emit + 8 regulatory base + 7 design-input source + 5 EMC immunity level + 4 scope_caveat) · dossier content 실제 채움(intended_use_statement · IFU · predicate_devices · user_needs · performance_requirements)은 follow-up · absorbed=false PERMANENTLY (g3)
-- [ ] V2 aura+structure — 다중전극 dry/wet EEG sensor array + AFE/ADC + BLE radio + 전원 partitioning + mastoid 클립 mechanical
+- [~] V2 aura+structure — producer hexa-native LANDED (hexa-lang PR #1342 · `stdlib/aura/structure.hexa` 150 LOC, 5 architectural block: sensor_array · afe_adc · radio_ble · battery_power · mechanical · 4 scope_caveat) · 실 BOM/silicon selection은 chip+component cell · absorbed=false PERMANENTLY (g3)
 - [ ] V3 aura+design — KiCad PCB(+ngspice AFE) + FreeCAD enclosure(StepUp 연동) + nRF Connect SDK BLE 5.x firmware skeleton
 - [ ] V4 aura+analyze — MNE-Python band-power(alpha/beta/gamma) + openEMS FDTD antenna pattern + SAR estimate
 - [ ] V5 aura+synthesize — Zephyr / nRF firmware build pointer + 신호처리 deployable bundle skeleton
