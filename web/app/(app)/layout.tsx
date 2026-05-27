@@ -59,17 +59,21 @@ export default async function AppLayout({
       <div className="flex h-screen flex-col bg-zinc-50 text-slate-900 antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
         <TopBar user={safeUser} activeDomain={activeDomain} i18n={i18n} />
         <div className="flex flex-1 gap-3 overflow-hidden p-3">
-          <aside className="shrink-0 rounded-[10px] border border-slate-200 bg-white p-2 shadow-sm">
-            <VerbTreeNav domain={activeDomain ?? undefined} i18n={i18n} />
+          {/* 좌: 헤더 컬럼 — verb (상단) + 요리선생 채팅 (하단) 세로 분할 */}
+          <aside className="flex w-72 shrink-0 flex-col gap-3">
+            <div className="shrink-0 rounded-[10px] border border-slate-200 bg-white p-2 shadow-sm">
+              <VerbTreeNav domain={activeDomain ?? undefined} i18n={i18n} />
+            </div>
+            <div className="min-h-0 flex-1">
+              <CookChefRail
+                domain={activeDomain ?? ""}
+                i18n={i18n}
+                chatI18n={chatI18n}
+                locale={locale}
+              />
+            </div>
           </aside>
-          <aside className="w-72 shrink-0">
-            <CookChefRail
-              domain={activeDomain ?? ""}
-              i18n={i18n}
-              chatI18n={chatI18n}
-              locale={locale}
-            />
-          </aside>
+          {/* 우: 메인 */}
           <main className="min-w-0 flex-1 overflow-auto rounded-[10px] border border-slate-200 bg-white p-6 shadow-sm">
             {children}
           </main>
