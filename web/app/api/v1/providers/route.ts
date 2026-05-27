@@ -48,7 +48,8 @@ export async function POST(req: NextRequest) {
   };
   // Single-active payment invariant — coerce active into available.
   if (!next.payment.available.includes(next.payment.active)) {
-    next.payment.active = next.payment.available[0] ?? "stripe";
+    const fallback = next.payment.available[0] ?? "stripe";
+    next.payment.active = fallback as "stripe" | "lemonsqueezy";
   }
   await writeRegistry(next);
   return NextResponse.json({ registry: next });
