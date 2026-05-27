@@ -38,7 +38,7 @@ export function DomainSwitcher({
         value={current}
         onChange={(e) => pick(e.target.value)}
         disabled={isPending}
-        className="cursor-pointer rounded-[6px] border border-gray-200 bg-white px-2 py-1 font-mono text-sm text-gray-900 hover:border-gray-300 disabled:opacity-60"
+        className="cursor-pointer rounded-chip border border-hairline bg-surface px-2 py-1 font-mono text-sm text-ink hover:border-hairline-strong disabled:opacity-60"
         aria-label={ariaLabel}
       >
         {names.map((n) => (
@@ -51,7 +51,7 @@ export function DomainSwitcher({
         onClick={() => router.push("/discover")}
         aria-label={newProjectLabel}
         title={newProjectLabel}
-        className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-[6px] border border-gray-200 text-gray-600 hover:border-gray-900 hover:text-gray-900"
+        className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-chip border border-hairline text-body hover:border-ink hover:text-ink"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <line x1="12" y1="5" x2="12" y2="19" />

@@ -1,4 +1,4 @@
-// VerbTreeNav — left rail 8-verb spine · shadcn Modern 톤 · Lucide Outline 아이콘.
+// VerbTreeNav — left rail 8-verb spine · ElevenLabs 톤 · Lucide Outline 아이콘.
 // /icons 비교에서 lucide-out 채택 (이모지 → 실 SVG path).
 // collapsible (≡ 토글 · localStorage 'verbtree.expanded').
 
@@ -61,9 +61,9 @@ const STATUS_DOT: Record<VerbStatus, string> = {
   todo: "○",
 };
 const STATUS_COLOR: Record<VerbStatus, string> = {
-  complete: "text-emerald-600",
-  in_progress: "text-amber-600",
-  todo: "text-gray-300",
+  complete: "text-success",
+  in_progress: "text-body",
+  todo: "text-muted-soft",
 };
 
 const VERB_RE = /^\/(spec|structure|design|analyze|synth|verify|handoff|discover)(?:\/([^/?#]+))?/;
@@ -118,7 +118,7 @@ export function VerbTreeNav({
       <button
         type="button"
         onClick={toggle}
-        className="mb-1 flex items-center justify-between rounded-md px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-gray-500 hover:bg-gray-100"
+        className="mb-1 flex items-center justify-between rounded-chip px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-muted hover:bg-surface-strong"
         title={expanded ? labels.verbtreeCollapse : labels.verbtreeExpand}
       >
         <span>{expanded ? (domain ? `· ${domain}` : labels.verbtree8Verbs) : "≡"}</span>
@@ -134,10 +134,10 @@ export function VerbTreeNav({
             href={href}
             title={v.label}
             className={[
-              "flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px]",
+              "flex items-center gap-2 rounded-chip px-2 py-1.5 text-[13px]",
               isActive
-                ? "bg-gray-100 font-semibold text-gray-900"
-                : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
+                ? "bg-surface-strong font-semibold text-ink"
+                : "text-body-strong hover:bg-surface-strong hover:text-ink",
             ].join(" ")}
           >
             <LucideIcon id={v.id} />
