@@ -1,0 +1,120 @@
+# photoredox.demi — verb-cell manifest for the PHOTOREDOX (photoredox catalysis · excited-state redox) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/photoredox/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("photoredox", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers.
+#
+# Citations (anchored — see domains/PHOTOREDOX.md):
+#   - Stern-Volmer quenching (open)
+#   - Rehm-Weller excited-state redox (open)
+#
+# Domain caveat (applies to every cell):
+# photoredox cells run open kinetics + descriptor estimates — ALL cells stay GATE_OPEN / absorbed=false (g3) — real
+# measurement lives in an accredited lab, not here. cellrun = D72 thin shim.
+
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photoredox/specify.py
+record_kind       = photoredox_specify_record
+output_dir        = exports/photoredox/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTOREDOX target spec skeleton — TEMPLATE.",
+  "real specify output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — specify scaffolding is not an absorption claim (g3).",
+]
+
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photoredox/structure.py
+record_kind       = photoredox_structure_record
+output_dir        = exports/photoredox/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTOREDOX structure/geometry skeleton — TEMPLATE.",
+  "real structure output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — structure scaffolding is not an absorption claim (g3).",
+]
+
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photoredox/design.py
+record_kind       = photoredox_design_record
+output_dir        = exports/photoredox/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTOREDOX design dossier skeleton — TEMPLATE.",
+  "real design output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photoredox/analyze.py
+record_kind       = photoredox_analyze_record
+output_dir        = exports/photoredox/analyze
+required_deps     = python3, rdkit
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTOREDOX analysis (open-tool compute) — TEMPLATE.",
+  "open-tool (rdkit) compute COPIES/derives public constants — copying/solving != demiurge measuring (g3).",
+  "absorbed=true requires hexa-native re-derivation + accredited-lab data, not tool passthrough.",
+]
+
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photoredox/synthesize.py
+record_kind       = photoredox_synthesize_record
+output_dir        = exports/photoredox/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTOREDOX synthesis recipe bundle skeleton — TEMPLATE.",
+  "real synthesize output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize scaffolding is not an absorption claim (g3).",
+]
+
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photoredox/verify.py
+record_kind       = photoredox_verify_record
+output_dir        = exports/photoredox/verify
+required_deps     = python3, scipy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTOREDOX verification (open-solver parity) — TEMPLATE.",
+  "open-tool (scipy) compute COPIES/derives public constants — copying/solving != demiurge measuring (g3).",
+  "absorbed=true requires hexa-native re-derivation + accredited-lab data, not tool passthrough.",
+]
+
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photoredox/handoff.py
+record_kind       = photoredox_handoff_record
+output_dir        = exports/photoredox/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTOREDOX handoff dossier skeleton — TEMPLATE.",
+  "real handoff output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — handoff scaffolding is not an absorption claim (g3).",
+]
+

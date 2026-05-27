@@ -1,0 +1,120 @@
+# photonic.demi — verb-cell manifest for the PHOTONIC (integrated photonics · waveguide · ring resonator) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/photonic/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("photonic", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers.
+#
+# Citations (anchored — see domains/PHOTONIC.md):
+#   - coupled-mode theory (open)
+#   - ring-resonator Q/FSR (analytic)
+#
+# Domain caveat (applies to every cell):
+# photonic cells run coupled-mode/analytic resonator models — ALL cells stay GATE_OPEN / absorbed=false (g3) — real
+# measurement lives in an accredited lab, not here. cellrun = D72 thin shim.
+
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photonic/specify.py
+record_kind       = photonic_specify_record
+output_dir        = exports/photonic/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTONIC target spec skeleton — TEMPLATE.",
+  "real specify output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — specify scaffolding is not an absorption claim (g3).",
+]
+
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photonic/structure.py
+record_kind       = photonic_structure_record
+output_dir        = exports/photonic/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTONIC structure/geometry skeleton — TEMPLATE.",
+  "real structure output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — structure scaffolding is not an absorption claim (g3).",
+]
+
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photonic/design.py
+record_kind       = photonic_design_record
+output_dir        = exports/photonic/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTONIC design dossier skeleton — TEMPLATE.",
+  "real design output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photonic/analyze.py
+record_kind       = photonic_analyze_record
+output_dir        = exports/photonic/analyze
+required_deps     = python3, numpy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTONIC analysis (open-tool compute) — TEMPLATE.",
+  "open-tool (numpy) compute COPIES/derives public constants — copying/solving != demiurge measuring (g3).",
+  "absorbed=true requires hexa-native re-derivation + accredited-lab data, not tool passthrough.",
+]
+
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photonic/synthesize.py
+record_kind       = photonic_synthesize_record
+output_dir        = exports/photonic/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTONIC synthesis recipe bundle skeleton — TEMPLATE.",
+  "real synthesize output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize scaffolding is not an absorption claim (g3).",
+]
+
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photonic/verify.py
+record_kind       = photonic_verify_record
+output_dir        = exports/photonic/verify
+required_deps     = python3, scipy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTONIC verification (open-solver parity) — TEMPLATE.",
+  "open-tool (scipy) compute COPIES/derives public constants — copying/solving != demiurge measuring (g3).",
+  "absorbed=true requires hexa-native re-derivation + accredited-lab data, not tool passthrough.",
+]
+
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/photonic/handoff.py
+record_kind       = photonic_handoff_record
+output_dir        = exports/photonic/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "PHOTONIC handoff dossier skeleton — TEMPLATE.",
+  "real handoff output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — handoff scaffolding is not an absorption claim (g3).",
+]
+

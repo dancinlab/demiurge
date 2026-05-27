@@ -1,0 +1,120 @@
+# neuromorphic.demi — verb-cell manifest for the NEUROMORPHIC (spiking neural / synaptic device · energy-per-op) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/neuromorphic/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("neuromorphic", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers.
+#
+# Citations (anchored — see domains/NEUROMORPHIC.md):
+#   - leaky integrate-and-fire neuron (open)
+#   - STDP plasticity (open)
+#
+# Domain caveat (applies to every cell):
+# neuromorphic cells run LIF/STDP numerical models — ALL cells stay GATE_OPEN / absorbed=false (g3) — real
+# measurement lives in an accredited lab, not here. cellrun = D72 thin shim.
+
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/neuromorphic/specify.py
+record_kind       = neuromorphic_specify_record
+output_dir        = exports/neuromorphic/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "NEUROMORPHIC target spec skeleton — TEMPLATE.",
+  "real specify output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — specify scaffolding is not an absorption claim (g3).",
+]
+
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/neuromorphic/structure.py
+record_kind       = neuromorphic_structure_record
+output_dir        = exports/neuromorphic/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "NEUROMORPHIC structure/geometry skeleton — TEMPLATE.",
+  "real structure output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — structure scaffolding is not an absorption claim (g3).",
+]
+
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/neuromorphic/design.py
+record_kind       = neuromorphic_design_record
+output_dir        = exports/neuromorphic/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "NEUROMORPHIC design dossier skeleton — TEMPLATE.",
+  "real design output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/neuromorphic/analyze.py
+record_kind       = neuromorphic_analyze_record
+output_dir        = exports/neuromorphic/analyze
+required_deps     = python3, numpy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "NEUROMORPHIC analysis (open-tool compute) — TEMPLATE.",
+  "open-tool (numpy) compute COPIES/derives public constants — copying/solving != demiurge measuring (g3).",
+  "absorbed=true requires hexa-native re-derivation + accredited-lab data, not tool passthrough.",
+]
+
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/neuromorphic/synthesize.py
+record_kind       = neuromorphic_synthesize_record
+output_dir        = exports/neuromorphic/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "NEUROMORPHIC synthesis recipe bundle skeleton — TEMPLATE.",
+  "real synthesize output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize scaffolding is not an absorption claim (g3).",
+]
+
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/neuromorphic/verify.py
+record_kind       = neuromorphic_verify_record
+output_dir        = exports/neuromorphic/verify
+required_deps     = python3, scipy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "NEUROMORPHIC verification (open-solver parity) — TEMPLATE.",
+  "open-tool (scipy) compute COPIES/derives public constants — copying/solving != demiurge measuring (g3).",
+  "absorbed=true requires hexa-native re-derivation + accredited-lab data, not tool passthrough.",
+]
+
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/neuromorphic/handoff.py
+record_kind       = neuromorphic_handoff_record
+output_dir        = exports/neuromorphic/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "NEUROMORPHIC handoff dossier skeleton — TEMPLATE.",
+  "real handoff output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — handoff scaffolding is not an absorption claim (g3).",
+]
+

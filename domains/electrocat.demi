@@ -1,0 +1,120 @@
+# electrocat.demi — verb-cell manifest for the ELECTROCAT (electrocatalysis HER/OER/CO2RR · overpotential) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/electrocat/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("electrocat", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers.
+#
+# Citations (anchored — see domains/ELECTROCAT.md):
+#   - Materials Project (open) — surface energetics
+#   - computational hydrogen electrode (Norskov, open)
+#
+# Domain caveat (applies to every cell):
+# electrocat cells run CHE/scaling screens + open DFT lookup — ALL cells stay GATE_OPEN / absorbed=false (g3) — real
+# measurement lives in an accredited lab, not here. cellrun = D72 thin shim.
+
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/electrocat/specify.py
+record_kind       = electrocat_specify_record
+output_dir        = exports/electrocat/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ELECTROCAT target spec skeleton — TEMPLATE.",
+  "real specify output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — specify scaffolding is not an absorption claim (g3).",
+]
+
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/electrocat/structure.py
+record_kind       = electrocat_structure_record
+output_dir        = exports/electrocat/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ELECTROCAT structure/geometry skeleton — TEMPLATE.",
+  "real structure output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — structure scaffolding is not an absorption claim (g3).",
+]
+
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/electrocat/design.py
+record_kind       = electrocat_design_record
+output_dir        = exports/electrocat/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ELECTROCAT design dossier skeleton — TEMPLATE.",
+  "real design output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/electrocat/analyze.py
+record_kind       = electrocat_analyze_record
+output_dir        = exports/electrocat/analyze
+required_deps     = python3, pymatgen
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ELECTROCAT analysis (open-tool compute) — TEMPLATE.",
+  "open-tool (pymatgen) compute COPIES/derives public constants — copying/solving != demiurge measuring (g3).",
+  "absorbed=true requires hexa-native re-derivation + accredited-lab data, not tool passthrough.",
+]
+
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/electrocat/synthesize.py
+record_kind       = electrocat_synthesize_record
+output_dir        = exports/electrocat/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ELECTROCAT synthesis recipe bundle skeleton — TEMPLATE.",
+  "real synthesize output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize scaffolding is not an absorption claim (g3).",
+]
+
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/electrocat/verify.py
+record_kind       = electrocat_verify_record
+output_dir        = exports/electrocat/verify
+required_deps     = python3, scipy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ELECTROCAT verification (open-solver parity) — TEMPLATE.",
+  "open-tool (scipy) compute COPIES/derives public constants — copying/solving != demiurge measuring (g3).",
+  "absorbed=true requires hexa-native re-derivation + accredited-lab data, not tool passthrough.",
+]
+
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/electrocat/handoff.py
+record_kind       = electrocat_handoff_record
+output_dir        = exports/electrocat/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ELECTROCAT handoff dossier skeleton — TEMPLATE.",
+  "real handoff output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — handoff scaffolding is not an absorption claim (g3).",
+]
+

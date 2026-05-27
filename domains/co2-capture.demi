@@ -1,0 +1,120 @@
+# co2-capture.demi — verb-cell manifest for the CO2-CAPTURE (MOF/amine CO2 sorbent · isotherm · DAC) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/co2-capture/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("co2-capture", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers.
+#
+# Citations (anchored — see domains/CO2-CAPTURE.md):
+#   - CoRE-MOF database (open) — pore geometry
+#   - Langmuir/Toth isotherm fit (analytic)
+#
+# Domain caveat (applies to every cell):
+# co2-capture cells run isotherm fits + open MOF-DB lookup — ALL cells stay GATE_OPEN / absorbed=false (g3) — real
+# measurement lives in an accredited lab, not here. cellrun = D72 thin shim.
+
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/co2-capture/specify.py
+record_kind       = co2-capture_specify_record
+output_dir        = exports/co2-capture/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CO2-CAPTURE target spec skeleton — TEMPLATE.",
+  "real specify output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — specify scaffolding is not an absorption claim (g3).",
+]
+
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/co2-capture/structure.py
+record_kind       = co2-capture_structure_record
+output_dir        = exports/co2-capture/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CO2-CAPTURE structure/geometry skeleton — TEMPLATE.",
+  "real structure output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — structure scaffolding is not an absorption claim (g3).",
+]
+
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/co2-capture/design.py
+record_kind       = co2-capture_design_record
+output_dir        = exports/co2-capture/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CO2-CAPTURE design dossier skeleton — TEMPLATE.",
+  "real design output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/co2-capture/analyze.py
+record_kind       = co2-capture_analyze_record
+output_dir        = exports/co2-capture/analyze
+required_deps     = python3, pymatgen
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CO2-CAPTURE analysis (open-tool compute) — TEMPLATE.",
+  "open-tool (pymatgen) compute COPIES/derives public constants — copying/solving != demiurge measuring (g3).",
+  "absorbed=true requires hexa-native re-derivation + accredited-lab data, not tool passthrough.",
+]
+
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/co2-capture/synthesize.py
+record_kind       = co2-capture_synthesize_record
+output_dir        = exports/co2-capture/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CO2-CAPTURE synthesis recipe bundle skeleton — TEMPLATE.",
+  "real synthesize output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize scaffolding is not an absorption claim (g3).",
+]
+
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/co2-capture/verify.py
+record_kind       = co2-capture_verify_record
+output_dir        = exports/co2-capture/verify
+required_deps     = python3, scipy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CO2-CAPTURE verification (open-solver parity) — TEMPLATE.",
+  "open-tool (scipy) compute COPIES/derives public constants — copying/solving != demiurge measuring (g3).",
+  "absorbed=true requires hexa-native re-derivation + accredited-lab data, not tool passthrough.",
+]
+
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/co2-capture/handoff.py
+record_kind       = co2-capture_handoff_record
+output_dir        = exports/co2-capture/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "CO2-CAPTURE handoff dossier skeleton — TEMPLATE.",
+  "real handoff output lives in an accredited lab / proprietary solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — handoff scaffolding is not an absorption claim (g3).",
+]
+
