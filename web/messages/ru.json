@@ -104,7 +104,9 @@
     "assist_discover": "discover (глагол 8)",
     "assist_note": "Gemini только черновики — verify остаётся детерминированным (0 вердиктов LLM).",
     "active_label": "активно",
-    "log_tail": "хвост лога (30)"
+    "log_tail": "хвост лога (30)",
+    "categories_heading": "категории",
+    "stdlib_matrix": "матрица stdlib"
   },
   "landing": {
     "badge": "Built with Gemini · Gemini XPRIZE 2026",

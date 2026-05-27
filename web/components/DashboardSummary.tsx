@@ -1,11 +1,14 @@
 // DashboardSummary — server component · pulls CATEGORIES + STDLIB_MATRIX
-// straight from the tape parser to render the new GUI navigation panels
-// (5 카테고리 trees · porting rollup · library shortcut).
+// straight from the tape parser to render the GUI navigation panels
+// (category trees · porting rollup). shadcn Modern 톤 · i18n.
+// Member click → /dashboard?d=<member> (active 도메인 cookie sync via middleware).
 
 import Link from "next/link";
 import { loadTape } from "@/lib/tape";
+import { getMessages, t } from "@/lib/i18n";
 
 export async function DashboardSummary() {
+  const messages = await getMessages();
   let categories: Array<{ id: string; icon: string; alias: string; members: string[] }> = [];
   let rollup: Record<string, string | number | boolean | string[]> = {};
   try {
@@ -26,34 +29,35 @@ export async function DashboardSummary() {
   }
 
   return (
-    <section className="mt-8 space-y-6">
-      <div className="flex items-baseline gap-4">
-        <h2 className="text-lg font-bold">🗂 카테고리</h2>
-        <span className="text-xs text-neutral-500">
-          stdlib matrix · {String(rollup.porting_complete ?? "—")}
+    <section className="mt-8 space-y-4">
+      <div className="flex items-baseline gap-3">
+        <h2 className="text-sm font-semibold text-slate-900">
+          🗂 {t(messages, "dashboard.categories_heading")}
+        </h2>
+        <span className="text-xs text-slate-500">
+          {t(messages, "dashboard.stdlib_matrix")} · {String(rollup.porting_complete ?? "—")}
         </span>
-        <Link href="/library" className="ml-auto text-xs hover:underline">
-          📖 라이브러리 →
-        </Link>
-        <Link href="/matter" className="text-xs hover:underline">
-          ⚖️ matter →
-        </Link>
       </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((c) => (
           <article
             key={c.id}
-            className="rounded border border-neutral-300 bg-white p-3 dark:border-neutral-700 dark:bg-neutral-900"
+            className="rounded-[10px] border border-slate-200 bg-white p-3 shadow-sm"
           >
-            <header className="mb-2 flex items-center gap-2">
-              <span className="text-lg">{c.icon}</span>
-              <span className="font-bold">{c.alias}</span>
-              <span className="ml-auto text-xs text-neutral-500">{c.members.length}</span>
+            <header className="mb-2 flex items-center gap-2 border-b border-slate-100 pb-1.5">
+              <span className="text-lg" aria-hidden="true">{c.icon}</span>
+              <span className="text-sm font-semibold text-slate-900">{c.alias}</span>
+              <span className="ml-auto rounded-full bg-slate-100 px-2 text-[10px] text-slate-500">
+                {c.members.length}
+              </span>
             </header>
             <ul className="space-y-0.5 text-xs">
               {c.members.map((m) => (
                 <li key={m}>
-                  <Link className="hover:underline" href={`/spec/${m}`}>
+                  <Link
+                    className="block rounded-[6px] px-1.5 py-0.5 font-mono text-[11px] text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    href={`/dashboard?d=${encodeURIComponent(m)}`}
+                  >
                     {m}
                   </Link>
                 </li>

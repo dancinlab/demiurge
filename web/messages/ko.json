@@ -104,7 +104,9 @@
     "assist_discover": "discover (8번째 verb)",
     "assist_note": "Gemini는 초안만 — verify는 결정론적 유지 (LLM 판정 0회).",
     "active_label": "활성",
-    "log_tail": "로그 꼬리 (30)"
+    "log_tail": "로그 꼬리 (30)",
+    "categories_heading": "카테고리",
+    "stdlib_matrix": "stdlib 매트릭스"
   },
   "landing": {
     "badge": "Built with Gemini · Gemini XPRIZE 2026",

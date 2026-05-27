@@ -104,7 +104,9 @@
     "assist_discover": "discover (第8动词)",
     "assist_note": "Gemini 仅生成草稿 — verify 保持确定性 (0 次 LLM 判定)。",
     "active_label": "当前",
-    "log_tail": "日志尾部 (30)"
+    "log_tail": "日志尾部 (30)",
+    "categories_heading": "类别",
+    "stdlib_matrix": "stdlib 矩阵"
   },
   "landing": {
     "badge": "Built with Gemini · Gemini XPRIZE 2026",
