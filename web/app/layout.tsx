@@ -49,21 +49,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // suppressHydrationWarning: next-themes sets the `class`/`style` on <html>
+  // before React hydrates (in the (app) surface), so the server/client
+  // markup intentionally differs on that element.
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <head>
-        {/* Apply stored color-mode before paint (no flash). Class-based:
-            sets .dark + color-scheme on <html> from localStorage. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "(function(){try{var t=localStorage.getItem('demiurge-theme')||'system';var d=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme:dark)').matches);var e=document.documentElement;e.classList.toggle('dark',d);e.style.colorScheme=d?'dark':'light';}catch(e){}})();",
-          }}
-        />
-      </head>
       <body className="min-h-full">{children}</body>
     </html>
   );

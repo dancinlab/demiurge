@@ -16,6 +16,7 @@ import { listDomains } from "@/lib/domains";
 import { getMessages, getLocale, t } from "@/lib/i18n";
 import { DomainSwitcher } from "@/components/DomainSwitcher";
 import { WorkbenchMenu } from "@/components/WorkbenchMenu";
+import { ProjectsMenu } from "@/components/ProjectsMenu";
 
 export const dynamic = "force-dynamic";
 
@@ -86,7 +87,12 @@ export default async function DashboardPage({
             demiurge
           </Link>
           <span className="text-neutral-300 dark:text-neutral-700">/</span>
-          <span className="text-sm text-neutral-500">{t(m, "dashboard.title")}</span>
+          <ProjectsMenu
+            label={t(m, "dashboard.title")}
+            projects={domains.map((d) => ({ name: d.name, goal: d.goal }))}
+            current={activeName}
+          />
+          <span className="text-neutral-300 dark:text-neutral-700">/</span>
           {names.length > 0 && (
             <DomainSwitcher names={names} current={activeName} />
           )}
