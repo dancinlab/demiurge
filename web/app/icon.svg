@@ -1,11 +1,1 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#8b5cf6"/>
-      <stop offset="1" stop-color="#06b6d4"/>
-    </linearGradient>
-  </defs>
-  <path d="M16 1.5 28.5 8.75v14.5L16 30.5 3.5 23.25V8.75L16 1.5Z" fill="url(#g)"/>
-  <path d="M21.5 12.2a7 7 0 1 0 1.2 6.1" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-  <path d="M21.9 8.4 22.6 12.7 18.4 12" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><style>.m{stroke:#1a1a1a}@media (prefers-color-scheme:dark){.m{stroke:#ededed}}</style><path d="M 128.00 32.60 L 210.62 80.30 L 210.62 175.70 L 128.00 223.40 L 45.38 175.70 L 45.38 80.30 Z" class="m" fill="none" stroke-width="16" stroke-linejoin="round"/><path d="M 107.39 83.81 A 48.76 48.76 0 1 1 148.61 83.81" class="m" fill="none" stroke-width="16" stroke-linecap="round"/><polyline points="161.42,77.11 143.86,81.44 150.97,98.07" class="m" fill="none" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/></svg>
