@@ -94,6 +94,31 @@ Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 - [x] N19 N13.3 ADS1299 정밀화 — v3 deck 실험 LANDED (Rn=Vn²/(4kT) thermal trick · Vn=25 nV/√Hz · 0.5-50Hz band · ngspice 42 · output 2932 µV-pp ≠ datasheet 1 µV-pp 차이 ~1700× · g3 ILLUSTRATIVE · INBOX TI macro fetch follow-up PR #299)
 - [x] N20 4 도메인 hexa-native dispatcher LANDED (hexa-lang PR #1441 · stdlib/{chip,component,firmware,brain}/*.hexa 4 신규 · bio.hexa 패턴 · 각 ~15 LOC · per-verb .py 점진 마이그레이션)
 
+## 실측 계획 — 전 영역 in-silico measurement matrix (@D d19)
+
+> AURA의 모든 verb-cell 영역을 in-silico 도구로 실측. wet-lab 아닌 numerical/sim measurement.
+> 도구 가용: pool:ubu-1 (python3.12 + MNE 1.12.1 + ngspice 42 설치됨) · local (python3.12 + tectonic).
+
+| 영역 | verb | 도구 | host | 도구 상태 | 측정 target | 상태 |
+|---|---|---|---|---|---|---|
+| EEG α-band parity | V0/V4 | MNE + naive-DFT | pool:ubu-1 | ✅ 설치+실행 | rel_spread → 2.23e-16 | ✅ DONE (N23 · 🟢) |
+| AFE input-noise | V3/D3 | ngspice | pool:ubu-1 | ✅ 설치+실행 | ~1 µV-pp | ⚠ N13 (N19 macro 정밀화) |
+| BLE link budget | V2 | numpy closed-form | local | ✅ 즉시 | -60 dBm @ 1m | M1 (closed-form 즉시) |
+| antenna S11 | V4/V6 | openEMS FDTD | pool:ubu-1 | ⏳ apt install | ≤ -10 dB BLE band | M2 |
+| SAR 1g/10g | V4/V6 | openEMS + ITIS phantom | pool:ubu-1 | ⏳ install + phantom | ≤ 0.5 / 0.3 W/kg | M3 |
+| firmware build size | V5 | west + QEMU smoke | pool:ubu-1 | ⏳ pip/apt | flash 40-60% · RAM 50-70KB | M4 |
+| PCB DRC | V3 | kicad-cli | local | ⏳ brew install | 0 DRC errors | M5 |
+| enclosure mass/IP | V2 | FreeCAD CLI | local | ⏳ brew install | ≤ 25 g/side · IPX4 | M6 |
+
+## 실측 마일스톤 (M1-M6 · in-silico measured)
+
+- [ ] M1 BLE link budget — numpy closed-form (Friis + path-loss + nRF5340 +8dBm Tx · -60 dBm RSSI @ 1m target) · local 즉시 실행 · 🟢 numerical
+- [ ] M2 antenna S11 sweep — openEMS FDTD install (pool:ubu-1 apt) + chip-antenna deck + 2.0-3.0GHz sweep → ≤-10dB BLE band 측정
+- [ ] M3 SAR 1g/10g — openEMS + ITIS Duke phantom subset + mastoid ROI → 1g/10g-avg SAR 측정 (FCC 1.6 / EU 2.0 한참 미만 target)
+- [ ] M4 firmware build size — west + nRF Connect SDK build (pool:ubu-1) → zephyr.signed.bin size + flash/RAM % + QEMU smoke
+- [ ] M5 PCB DRC — kicad-cli (brew install) + AURA-100 schematic skeleton → DRC 0-error 측정
+- [ ] M6 enclosure mass/IP — FreeCAD CLI (brew install) + 클램셸+클립 parametric model → mass + IPX4 gasket 검증
+
 ## 7-verb cell 상태
 
 | verb | substrate | absorbed | gate | 근거 |
