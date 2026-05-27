@@ -75,12 +75,11 @@ scope_caveats     = [
 # Producer target: stdlib/qubit/analyze.py — scqubits transmon/fluxonium
 # Hamiltonian diagonalization → levels, anharmonicity, charge dispersion.
 [cell.analyze]
-substrate         = python3
-python_candidates = python3.13, python3.12, python3
-script            = stdlib/qubit/analyze.py
+substrate         = hexa
+script            = stdlib/qubit/analyze.hexa
 record_kind       = qubit_analyze_record
 output_dir        = exports/qubit/analyze
-required_deps     = python3, scqubits
+required_deps     =
 gate_default      = OPEN
 absorbed_default  = false
 scope_caveats     = [

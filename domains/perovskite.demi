@@ -76,12 +76,11 @@ scope_caveats     = [
 # Producer target: stdlib/perovskite/analyze.py — pymatgen/MP bandgap +
 # decomposition-hull lookup + Goldschmidt/SQ-limit analytic screen.
 [cell.analyze]
-substrate         = python3
-python_candidates = python3.13, python3.12, python3
-script            = stdlib/perovskite/analyze.py
+substrate         = hexa
+script            = stdlib/perovskite/analyze.hexa
 record_kind       = perovskite_analyze_record
 output_dir        = exports/perovskite/analyze
-required_deps     = python3, pymatgen
+required_deps     =
 gate_default      = OPEN
 absorbed_default  = false
 scope_caveats     = [
