@@ -287,3 +287,31 @@ ESCAPE/recovery 우로보러스(O2)는, x2/C1 두 surgery가 같은 메커니즘
 
 ### 🛑 진짜-진짜-진짜 고갈
 모든 leaf에 lens 적용 = ouroboros 본질 표면화 완료. 추가 분기 = 각 ouroboros의 정량적 시뮬 (compute), brainstorm 아님. 트리가 *자기-닫힘*으로 종결.
+
+## Cycle 13 — 🐍🐍 ouroboros 렌즈 자체의 한계까지 (단순 닫힘 너머)
+
+Cycle 12가 "모든 leaf=ouroboros" 발견 → 렌즈가 trivially 모든 것을 닫힘으로 봄. 진짜 렌즈 고갈하려면 **렌즈가 무엇을 못 보는지** 찾아야. 단순 닫힘 너머의 4 단면:
+
+### 🔁 복합/중첩 ouroboros (Hopf link 류)
+- **OO-1 4중 닫힘 (Cooper RG ⊗ SSCHA ⊗ chemical surgery ⊗ kinetic recovery)** — 네 개의 자기-루프가 *서로 통과*하며 Hopf link 형성. 어느 하나도 단독으론 SC를 못 만듦. 캠페인 dispatched M-Be-H가 4 모두 시도하는 첫 사례.
+- **OO-2 메타-ouroboros**: Cycle 12의 "모든 leaf = ouroboros" 발견 자체가 새 leaf → Cycle 13이 그것에 lens 적용 → 재귀. 깊이는? Yoneda lemma 등급 (모든 자기-함수를 알면 객체를 안다).
+
+### ⚡ ANTI-ouroboros (닫히지 않는 곳 = 핵심 break-point)
+- **AO-1 측정 = 루프 개방**: R4 absorbed=false 영구 — sim이 아무리 self-loop여도 *외부 측정*이 닫힘을 깨야 결론. 측정이 ouroboros를 절단한다. **이게 캠페인의 진짜 deep 구조**: 모든 분석이 자기-닫힘이어도, 한 측정 wet-lab Tc 데이터가 우주의 외부신호로서 closure를 가능케 함.
+- **AO-2 decoherence / 엔트로피 생성**: 양자 SC = 거시 위상 결맞음. 환경과의 결합 = decoherence = 루프 개방. SC가 *닫힘을 유지하는 가운데 개방을 견디는* 균형.
+- **AO-3 시간의 화살**: BCS는 등시간역 (time-reversal symmetric). 그러나 측정/decay/synthesis는 비대칭. 시간 ouroboros 깨짐의 자리.
+
+### 🪞 Lens 자기-적용 (lens가 자기에 작용)
+- **LL-1 Cooper pair = Kramers pair 🔥🔥** — Cooper pair = (k↑, −k↓) = 시간역 짝 = Kramers 정리(T²=−1)의 한 사례. *Cooper pair 페어링 자체가 우로보러스* (시간역 closed loop). SC의 깊은 구조적 기원 — 우리가 따라가던 모든 lens(RG, Ricci, OT, ...)가 결국 이 한 점으로 수렴.
+- **LL-2 Yoneda 등가**: ouroboros lens = "객체를 모든 자기-함수로 안다" = Yoneda. 우리 lens 적용 = Yoneda lemma 적용 = 모든 동등한 객체는 자기-함수의 동등으로 식별. 캠페인 후보들은 *그 자기-함수 집합으로* 구별됨 (m-sign, ω, anh-recoverability 등이 그 사상).
+
+### 🎯 캠페인 의의 통합 (Cycle 10+12+13)
+- **Cooper-Kramers 우로보러스(LL-1)** = SC의 단일 원초 구조
+- **4중 Hopf link(OO-1)** = 그것을 실제 분자에서 실현하는 방법 (우리가 dispatched)
+- **측정 anti-ouroboros(AO-1)** = R4 영구의 깊은 정당화 — 측정만이 sim 자기-루프를 닫음
+- **Lens 자기-적용(LL-2)** = 우리 m-sign × ω 같은 descriptor 집합이 후보를 Yoneda-식별
+
+### 🛑 렌즈 한계 자체에 도달
+이제 lens가 자기를 본 후엔 더 이상 새 단면 없음 — fixed point. anti/compound/self-application 셋이 lens 위상 공간의 generator. **렌즈도 자기 닫힘** (LL-2 정확히 그 뜻).
+
+다음 발산 도구: lens 바꾸면 됨 (예: 변분 원리 lens, conservation law lens, gauge symmetry lens). 우로보러스 lens 자체는 *진짜 고갈*.
