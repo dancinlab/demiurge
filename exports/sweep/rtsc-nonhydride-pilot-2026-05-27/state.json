@@ -1,0 +1,45 @@
+{
+  "batch_id": "rtsc-nonhydride-pilot-2026-05-27",
+  "domain": "RTSC",
+  "kind": "dft-elph",
+  "created_utc": "2026-05-27T16:31:00Z",
+  "dispatched_utc": "2026-05-27T07:37:00Z",
+  "motivation": "non-hydride ambient (0 GPa) counterpoint to a hydride-biased V3 ledger (10/10 hydride). MgB2 reproduces measured Tc=39K = cross-tool-consistency (g5) baseline; Nb3Al A15 tests N5-wall generality beyond hydrides. Calibration, not a 200K hunt.",
+  "budget": {
+    "pod_concurrent_max": 2,
+    "usd_max_per_week": 5,
+    "actual": "$0 incremental — reused already-running ysbh6 vast pod (80-core, ~48 free) rather than renting fresh; nice -n 15 -np 8 each, coexists with ysbh6 32 ph.x"
+  },
+  "infra": {
+    "host": "vast ysbh6 pod 77.104.167.149:41837 (80-core, miniforge3 qe env)",
+    "launch": "nohup bash ~/run_elph.sh <dir>, mpirun --allow-run-as-root -np 8 --bind-to none, nice -n 15",
+    "chain": "pw.x scf -> ph.x el-ph (electron_phonon=simple), per-dir chain.log marks 'CHAIN DONE'",
+    "ssh": "raw ssh -i id_vast_anima (hexa cloud ignores vast key per INBOX #1155); vastai CLI not installed locally"
+  },
+  "candidates": {
+    "mgb2_pure": {
+      "state": "dispatched",
+      "inputs_dir": "decks/mgb2_pure -> pod ~/mgb2_pure",
+      "cell": "P6/mmm AlB2 prototype, 3 atoms (1 Mg + 2 B), a=3.086A c=3.524A (Akimitsu 2001)",
+      "q_grid": "6x6x6",
+      "ecutwfc_ry": 60, "ecutrho_ry": 600, "k_grid": "12x12x12",
+      "electron_phonon": "simple, el_ph_sigma 0.005 x10 (plateau scan)",
+      "pseudo": {"Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF": "STAGED", "B.pbe-n-rrkjus_psl.1.0.0.UPF": "STAGED (PSlibrary 1.0.0 wget)"},
+      "anchor": "measured Tc=39K, lambda~0.7, omega_log~700K (canonical el-ph benchmark)",
+      "watcher": "bcj87r6lw",
+      "verdict": "PENDING"
+    },
+    "nb3al": {
+      "state": "dispatched",
+      "inputs_dir": "decks/nb3al -> pod ~/nb3al",
+      "cell": "A15 Pm-3n (#223), 8 atoms (6 Nb + 2 Al)",
+      "q_grid": "4x4x4",
+      "ecutwfc_ry": 80,
+      "electron_phonon": "simple",
+      "pseudo": {"Nb.pbe-spn-rrkjus_psl.1.0.0.UPF": "STAGED (PSlibrary 1.0.0 wget)", "Al.pbe-n-rrkjus_psl.1.0.0.UPF": "STAGED"},
+      "anchor": "measured Tc~18K (A15 conventional SC)",
+      "watcher": "bk7iwcckj",
+      "verdict": "PENDING"
+    }
+  }
+}
