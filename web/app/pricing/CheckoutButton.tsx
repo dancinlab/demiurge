@@ -39,12 +39,12 @@ export function CheckoutButton({
       <button
         onClick={go}
         disabled={loading}
-        className="w-full rounded border border-neutral-900 bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-40 dark:border-neutral-100 dark:bg-neutral-100 dark:text-neutral-900"
+        className="w-full border-4 border-white bg-white px-4 py-3 text-sm font-black uppercase text-black hover:bg-yellow-300 disabled:opacity-40"
       >
         {loading ? "..." : label}
       </button>
       {error && (
-        <p className="text-xs text-neutral-600 dark:text-neutral-400">{error}</p>
+        <p className="border-l-4 border-yellow-300 pl-2 text-xs uppercase tracking-wide text-yellow-300">{error}</p>
       )}
     </div>
   );
