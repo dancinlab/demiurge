@@ -1,7 +1,32 @@
-// MainSplitPane — Q2 layout · 위=record JSON · 중간=시각화 슬롯 · 아래=history.
+// MainSplitPane — Q2 layout · 위=record · 중간=시각화 slot · 아래=history.
 // Server-rendered shell; slot/history children injected by the verb page.
+// shadcn Modern 톤 (border-slate-200 · rounded-[10px] · shadow-sm).
 
 import type { ReactNode } from "react";
+
+function Band({
+  label,
+  children,
+  grow = false,
+}: {
+  label: string;
+  children: ReactNode;
+  grow?: boolean;
+}) {
+  return (
+    <section
+      className={[
+        "rounded-[10px] border border-slate-200 bg-white p-3 shadow-sm",
+        grow ? "flex-1 min-h-0" : "",
+      ].join(" ")}
+    >
+      <div className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-500">
+        {label}
+      </div>
+      <div className={grow ? "h-full" : "font-mono text-xs text-slate-700"}>{children}</div>
+    </section>
+  );
+}
 
 export function MainSplitPane({
   record,
@@ -14,18 +39,9 @@ export function MainSplitPane({
 }) {
   return (
     <div className="flex h-full flex-col gap-3">
-      <section className="rounded border border-neutral-300 bg-white p-3 dark:border-neutral-700 dark:bg-neutral-900">
-        <div className="mb-1 text-xs uppercase text-neutral-500">📜 record</div>
-        <div className="font-mono text-xs">{record}</div>
-      </section>
-      <section className="flex-1 rounded border border-neutral-300 bg-white p-3 dark:border-neutral-700 dark:bg-neutral-900">
-        <div className="mb-1 text-xs uppercase text-neutral-500">🎨 slot</div>
-        <div className="h-full">{slot}</div>
-      </section>
-      <section className="rounded border border-neutral-300 bg-white p-3 dark:border-neutral-700 dark:bg-neutral-900">
-        <div className="mb-1 text-xs uppercase text-neutral-500">📜 history</div>
-        <div className="font-mono text-xs">{history}</div>
-      </section>
+      <Band label="📜 record">{record}</Band>
+      <Band label="🎨 slot" grow>{slot}</Band>
+      <Band label="📜 history">{history}</Band>
     </div>
   );
 }
