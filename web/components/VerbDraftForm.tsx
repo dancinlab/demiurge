@@ -97,14 +97,14 @@ export function VerbDraftForm(props: VerbDraftFormProps) {
       <form onSubmit={submit} className="space-y-3">
         {props.fields.map((f) => (
           <div key={f.name}>
-            <label className="block text-xs text-slate-500">{f.label}</label>
+            <label className="block text-xs text-gray-500">{f.label}</label>
             <textarea
               value={values[f.name]}
               onChange={(e) => setField(f.name, e.target.value)}
               rows={f.rows ?? 4}
               placeholder={f.placeholder}
               disabled={loading}
-              className="mt-1 w-full rounded-[6px] border border-slate-200 bg-white p-2 font-mono text-sm"
+              className="mt-1 w-full rounded-[6px] border border-gray-200 bg-white p-2 font-mono text-sm"
             />
           </div>
         ))}
@@ -112,13 +112,13 @@ export function VerbDraftForm(props: VerbDraftFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-[6px] bg-slate-900 px-3 py-1 text-sm text-white disabled:opacity-40"
+            className="rounded-[6px] bg-indigo-600 px-3 py-1 text-sm text-white disabled:opacity-40"
           >
             {loading
               ? "Gemini 호출 중..."
               : (props.submitLabel ?? "draft 받기")}
           </button>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-gray-500">
             모델: gemini-2.5-flash · server-side 호출 (token 노출 없음)
           </span>
         </div>
@@ -133,15 +133,15 @@ export function VerbDraftForm(props: VerbDraftFormProps) {
 
       {result && (
         <div className="space-y-2">
-          <div className="rounded-[6px] border border-slate-200 bg-slate-50 p-3">
-            <p className="mb-1 text-xs text-slate-500">
+          <div className="rounded-[6px] border border-gray-200 bg-gray-50 p-3">
+            <p className="mb-1 text-xs text-gray-500">
               Gemini draft (검수 필요 · 자동 적용 안 됨)
             </p>
             <pre className="overflow-x-auto whitespace-pre-wrap text-sm">
               {result.text || "(빈 응답 — maxOutputTokens 초과 가능)"}
             </pre>
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-gray-500">
             usage: prompt={result.usage.promptTokens} · candidate=
             {result.usage.candidateTokens} · total={result.usage.totalTokens}
             {result.usage.totalTokens >

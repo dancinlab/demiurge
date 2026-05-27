@@ -61,29 +61,29 @@ export function LibraryGallery() {
   }
 
   if (error) return <div className="text-red-500">{error}</div>;
-  if (!entries.length) return <div className="text-slate-500">로딩…</div>;
+  if (!entries.length) return <div className="text-gray-500">로딩…</div>;
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {entries.map((e) => (
         <article
           key={e.id}
-          className="flex flex-col rounded-[10px] border border-slate-200 bg-white p-4"
+          className="flex flex-col rounded-[10px] border border-gray-200 bg-white p-4"
         >
           <h3 className="text-lg font-bold">{e.subject}</h3>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-gray-500">
             {e.curator} · v{e.version} · {e.license}
           </p>
           <p className="mt-2 text-sm">{e.status}</p>
           {e.composes.length > 1 && (
-            <p className="mt-1 text-xs text-slate-500">
+            <p className="mt-1 text-xs text-gray-500">
               composes: {e.composes.join(" · ")}
             </p>
           )}
           <div className="mt-auto flex gap-2">
             <a
               href={`/structure/${e.composes[0] ?? e.id}`}
-              className="flex-1 rounded-[10px] border border-slate-300 px-3 py-1 text-center text-xs text-slate-600 hover:bg-slate-50"
+              className="flex-1 rounded-[10px] border border-gray-300 px-3 py-1 text-center text-xs text-gray-600 hover:bg-gray-50"
             >
               👁 둘러보기
             </a>
@@ -91,7 +91,7 @@ export function LibraryGallery() {
               type="button"
               disabled={!e.fork_ok || forking === e.id}
               onClick={() => fork(e.id)}
-              className="flex-1 rounded-[10px] border border-slate-900 px-3 py-1 text-xs text-slate-900 disabled:opacity-50 hover:bg-slate-100"
+              className="flex-1 rounded-[10px] border border-indigo-600 px-3 py-1 text-xs text-gray-900 disabled:opacity-50 hover:bg-gray-100"
             >
               {forking === e.id ? "fork 중…" : authed ? "🍴 fork" : "🔑 sign in to fork"}
             </button>

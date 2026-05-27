@@ -34,7 +34,7 @@ export function HandoffDossier({ domain }: { domain: string }) {
   }, [domain]);
 
   if (error) return <div className="text-xs text-red-500">{error}</div>;
-  if (!dossier) return <div className="text-xs text-slate-500">로딩…</div>;
+  if (!dossier) return <div className="text-xs text-gray-500">로딩…</div>;
 
   const m = dossier.manifest;
   const pct = m.verb_count
@@ -47,13 +47,13 @@ export function HandoffDossier({ domain }: { domain: string }) {
         <span className="text-2xl">📦</span>
         <div className="flex-1">
           <div className="font-bold">{dossier.domain} dossier</div>
-          <div className="text-xs text-slate-500">
+          <div className="text-xs text-gray-500">
             {dossier.generated_at.slice(0, 19).replace("T", " ")} ·{" "}
             {m.complete_count}/{m.verb_count} 완료 ({pct}%)
           </div>
         </div>
         <a
-          className="rounded-[6px] border border-slate-900 px-3 py-1 text-xs text-slate-900 hover:bg-slate-100"
+          className="rounded-[6px] border border-indigo-600 px-3 py-1 text-xs text-indigo-600 hover:bg-gray-100"
           href={`/api/v1/handoff/${domain}?download=1`}
         >
           ⬇ 다운로드 (.json)
@@ -66,13 +66,13 @@ export function HandoffDossier({ domain }: { domain: string }) {
         <div className="rounded-[6px] border border-yellow-300 bg-yellow-50 px-2 py-1">
           🟡 in_progress {m.in_progress_count}
         </div>
-        <div className="rounded-[6px] border border-slate-200 bg-slate-50 px-2 py-1">
+        <div className="rounded-[6px] border border-gray-200 bg-gray-50 px-2 py-1">
           ⚪ todo {m.todo_count}
         </div>
       </div>
       <details className="text-xs">
         <summary className="cursor-pointer">📜 records ({dossier.records.length})</summary>
-        <pre className="mt-1 max-h-72 overflow-auto rounded-[6px] bg-slate-100 p-2 text-[10px]">
+        <pre className="mt-1 max-h-72 overflow-auto rounded-[6px] bg-gray-100 p-2 text-[10px]">
           {JSON.stringify(dossier.records, null, 2)}
         </pre>
       </details>

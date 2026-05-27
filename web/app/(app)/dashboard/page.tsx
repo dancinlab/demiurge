@@ -29,7 +29,7 @@ function VerbChip({ verb, label, domain }: { verb: keyof typeof VERB_PATHS; labe
   return (
     <Link
       href={`/${verb}/${domain.toLowerCase()}`}
-      className="inline-flex items-center gap-1.5 rounded-[6px] border border-slate-200 bg-white px-2.5 py-1 text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+      className="inline-flex items-center gap-1.5 rounded-[6px] border border-gray-200 bg-white px-2.5 py-1 text-gray-700 hover:bg-gray-50 hover:text-gray-900"
     >
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d={VERB_PATHS[verb]} />
@@ -94,7 +94,7 @@ export default async function DashboardPage({
           newProjectLabel={t(messages, "app_gui.domain_new_project")}
         />
         {pct !== null && (
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-gray-500">
             {active!.progress.done}/{active!.progress.total} · {pct}%
           </span>
         )}
@@ -102,7 +102,7 @@ export default async function DashboardPage({
 
       {active && (
         <section className="space-y-3">
-          <h2 className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+          <h2 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
             {t(messages, "dashboard.active_label")} · {active.name}
           </h2>
           <div className="flex flex-wrap gap-2 text-xs">
@@ -113,8 +113,8 @@ export default async function DashboardPage({
             <VerbChip verb="handoff"   label="handoff"   domain={active.name} />
           </div>
           <details className="text-xs">
-            <summary className="cursor-pointer text-slate-500 hover:text-slate-700">📜 {t(messages, "dashboard.log_tail")}</summary>
-            <pre className="mt-1 max-h-72 overflow-auto rounded-[6px] border border-slate-200 bg-slate-50 p-2 font-mono text-[11px] text-slate-700">
+            <summary className="cursor-pointer text-gray-500 hover:text-gray-700">📜 {t(messages, "dashboard.log_tail")}</summary>
+            <pre className="mt-1 max-h-72 overflow-auto rounded-[6px] border border-gray-200 bg-gray-50 p-2 font-mono text-[11px] text-gray-700">
               {logTail}
             </pre>
           </details>

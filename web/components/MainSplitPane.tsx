@@ -1,6 +1,6 @@
 // MainSplitPane — Q2 layout · 위=record · 중간=시각화 slot · 아래=history.
 // Server-rendered shell; slot/history children injected by the verb page.
-// shadcn Modern 톤 (border-slate-200 · rounded-[10px] · shadow-sm).
+// shadcn Modern 톤 (border-gray-200 · rounded-[10px] · shadow-sm).
 
 import type { ReactNode } from "react";
 
@@ -16,14 +16,14 @@ function Band({
   return (
     <section
       className={[
-        "rounded-[10px] border border-slate-200 bg-white p-3 shadow-sm",
+        "rounded-[10px] border border-gray-200 bg-white p-3 shadow-sm",
         grow ? "flex-1 min-h-0" : "",
       ].join(" ")}
     >
-      <div className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-500">
+      <div className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-gray-500">
         {label}
       </div>
-      <div className={grow ? "h-full" : "font-mono text-xs text-slate-700"}>{children}</div>
+      <div className={grow ? "h-full" : "font-mono text-xs text-gray-700"}>{children}</div>
     </section>
   );
 }

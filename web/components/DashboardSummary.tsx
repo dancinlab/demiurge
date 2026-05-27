@@ -31,10 +31,10 @@ export async function DashboardSummary() {
   return (
     <section className="mt-8 space-y-4">
       <div className="flex items-baseline gap-3">
-        <h2 className="text-sm font-semibold text-slate-900">
+        <h2 className="text-sm font-semibold text-gray-900">
           🗂 {t(messages, "dashboard.categories_heading")}
         </h2>
-        <span className="text-xs text-slate-500">
+        <span className="text-xs text-gray-500">
           {t(messages, "dashboard.stdlib_matrix")} · {String(rollup.porting_complete ?? "—")}
         </span>
       </div>
@@ -42,12 +42,12 @@ export async function DashboardSummary() {
         {categories.map((c) => (
           <article
             key={c.id}
-            className="rounded-[10px] border border-slate-200 bg-white p-3 shadow-sm"
+            className="rounded-[10px] border border-gray-200 bg-white p-3 shadow-sm"
           >
-            <header className="mb-2 flex items-center gap-2 border-b border-slate-100 pb-1.5">
+            <header className="mb-2 flex items-center gap-2 border-b border-gray-100 pb-1.5">
               <span className="text-lg" aria-hidden="true">{c.icon}</span>
-              <span className="text-sm font-semibold text-slate-900">{c.alias}</span>
-              <span className="ml-auto rounded-full bg-slate-100 px-2 text-[10px] text-slate-500">
+              <span className="text-sm font-semibold text-gray-900">{c.alias}</span>
+              <span className="ml-auto rounded-full bg-gray-100 px-2 text-[10px] text-gray-500">
                 {c.members.length}
               </span>
             </header>
@@ -55,7 +55,7 @@ export async function DashboardSummary() {
               {c.members.map((m) => (
                 <li key={m}>
                   <Link
-                    className="block rounded-[6px] px-1.5 py-0.5 font-mono text-[11px] text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    className="block rounded-[6px] px-1.5 py-0.5 font-mono text-[11px] text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                     href={`/dashboard?d=${encodeURIComponent(m)}`}
                   >
                     {m}

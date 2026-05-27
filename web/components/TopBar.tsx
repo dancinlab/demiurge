@@ -1,6 +1,6 @@
 // TopBar — server component. Pure presentation: user, activeDomain, and i18n
 // strings all come as props from (app)/layout.tsx.
-// shadcn Modern 톤: accent = slate-900 (검정).
+// shadcn Modern 톤: accent = gray-900 (검정).
 
 import Link from "next/link";
 

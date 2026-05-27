@@ -63,7 +63,7 @@ const STATUS_DOT: Record<VerbStatus, string> = {
 const STATUS_COLOR: Record<VerbStatus, string> = {
   complete: "text-emerald-600",
   in_progress: "text-amber-600",
-  todo: "text-slate-300",
+  todo: "text-gray-300",
 };
 
 const VERB_RE = /^\/(spec|structure|design|analyze|synth|verify|handoff|discover)(?:\/([^/?#]+))?/;

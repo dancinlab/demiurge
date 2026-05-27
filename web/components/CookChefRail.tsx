@@ -21,15 +21,15 @@ export function CookChefRail({
   locale: string;
 }) {
   return (
-    <aside className="flex h-full flex-col rounded-[10px] border border-slate-200 bg-white p-3 text-sm shadow-sm">
-      <header className="mb-2 flex items-center gap-2 border-b border-slate-200 pb-2">
+    <aside className="flex h-full flex-col rounded-[10px] border border-gray-200 bg-white p-3 text-sm shadow-sm">
+      <header className="mb-2 flex items-center gap-2 border-b border-gray-200 pb-2">
         <span className="text-lg" aria-hidden="true">🧑‍🍳</span>
         <div className="flex flex-col leading-tight">
-          <span className="font-semibold text-slate-900">{i18n.chefTitle}</span>
+          <span className="font-semibold text-gray-900">{i18n.chefTitle}</span>
           {domain ? (
-            <span className="font-mono text-[10px] text-slate-500">· {domain}</span>
+            <span className="font-mono text-[10px] text-gray-500">· {domain}</span>
           ) : (
-            <span className="text-[10px] text-slate-400">{i18n.chefAwaiting}</span>
+            <span className="text-[10px] text-gray-400">{i18n.chefAwaiting}</span>
           )}
         </div>
         <span
