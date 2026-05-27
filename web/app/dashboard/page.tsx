@@ -76,7 +76,7 @@ export default async function DashboardPage({
   const activeName = active?.name ?? "";
 
   return (
-    <main className="mx-auto flex h-screen max-w-[1600px] flex-col bg-white font-mono text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+    <main className="flex h-screen w-full flex-col bg-white font-mono text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
       {/* top toolbar — sample 1 mono pattern: small badge + 1px border */}
       <div className="flex items-center justify-between gap-4 border-b border-neutral-300 px-6 py-3 dark:border-neutral-700">
         <div className="flex items-center gap-3">
@@ -113,7 +113,7 @@ export default async function DashboardPage({
         </div>
       </div>
 
-      <div className="grid flex-1 grid-cols-[200px_1fr_260px] overflow-hidden">
+      <div className="grid min-h-0 flex-1 grid-cols-[200px_minmax(0,1fr)_260px] overflow-hidden">
         {/* ① left rail — 8-verb spine */}
         <nav className="flex flex-col gap-0.5 overflow-y-auto border-r border-neutral-300 p-4 text-sm dark:border-neutral-700">
           <span className="mb-2 text-[11px] uppercase tracking-wider text-neutral-500">

@@ -19,8 +19,5 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* body styling driven by Tailwind classes in layout.tsx (`bg-white …`),
+   not by CSS variables here — keeps explicit per-page control. */
