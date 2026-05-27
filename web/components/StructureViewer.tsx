@@ -35,12 +35,12 @@ export function StructureViewer({
     });
 
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-[6px] bg-gray-50">
+    <div className="relative h-full w-full overflow-hidden rounded-chip bg-canvas">
       {projected.map((a) => (
         <div
           key={a.i}
           title={a.label}
-          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-gray-600/40 shadow"
+          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-body/40 shadow"
           style={{
             left: `${50 + a.x * 8}%`,
             top: `${50 - a.y * 8}%`,
@@ -52,7 +52,7 @@ export function StructureViewer({
         />
       ))}
       {caption && (
-        <div className="absolute bottom-2 left-2 rounded-[6px] bg-white/80 px-2 py-0.5 text-xs text-gray-600">
+        <div className="absolute bottom-2 left-2 rounded-chip bg-surface/80 px-2 py-0.5 text-xs text-body">
           🧊 {caption}
         </div>
       )}
