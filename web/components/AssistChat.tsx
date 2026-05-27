@@ -1,6 +1,6 @@
 "use client";
 
-// AssistChat — 요리선생 chat surface. shadcn Modern 톤.
+// AssistChat — 요리선생 chat surface. ElevenLabs 톤 (토큰 SSOT 소비).
 // Full: seed prompts (활성 도메인 인식) · multi-turn context · 도메인별
 // localStorage history · lightweight inline markdown.
 // All UI strings + persona come as i18n props (5 locales) — no hardcoded text.
@@ -116,7 +116,7 @@ function renderInline(s: string): React.ReactNode[] {
     if (m[1]) nodes.push(<strong key={`b-${key++}`}>{m[1]}</strong>);
     else if (m[2])
       nodes.push(
-        <code key={`c-${key++}`} className="rounded bg-gray-100 px-1 font-mono text-[11px]">
+        <code key={`c-${key++}`} className="rounded-tag bg-surface-strong px-1 font-mono text-[11px]">
           {m[2]}
         </code>,
       );
@@ -134,7 +134,7 @@ function renderMarkdown(s: string): React.ReactElement[] {
       out.push(
         <pre
           key={`code-${i}`}
-          className="my-1 overflow-auto rounded-[6px] bg-gray-900 px-2 py-1.5 font-mono text-[11px] text-gray-100"
+          className="my-1 overflow-auto rounded-chip bg-ink px-2 py-1.5 font-mono text-[11px] text-canvas"
         >
           {part.trim()}
         </pre>,
@@ -239,13 +239,13 @@ export function AssistChat({
           placeholder={i18n.placeholder}
           disabled={busy}
           rows={2}
-          className="w-full resize-none rounded-[10px] border border-gray-200 bg-white px-2.5 py-1.5 text-[12px] text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none disabled:opacity-60"
+          className="w-full resize-none rounded-control border border-hairline bg-surface px-2.5 py-1.5 text-[12px] text-ink placeholder:text-muted-soft focus:border-hairline-strong focus:outline-none disabled:opacity-60"
         />
         <div className="flex items-center justify-between">
           <button
             onClick={clear}
             disabled={busy || msgs.length === 0}
-            className="inline-flex items-center gap-1 text-[10px] text-gray-400 hover:text-gray-700 disabled:opacity-30"
+            className="inline-flex items-center gap-1 text-[10px] text-muted-soft hover:text-body disabled:opacity-30"
             title={i18n.clear}
           >
             <Trash2 className="h-3 w-3" /> {i18n.clear}
@@ -253,7 +253,7 @@ export function AssistChat({
           <button
             onClick={() => void send()}
             disabled={busy || !input.trim()}
-            className="inline-flex items-center gap-1 rounded-full bg-gray-900 px-3 py-1 text-[11px] font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+            className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-[11px] font-medium text-white hover:bg-primary-active disabled:opacity-50"
           >
             {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
             {i18n.send}
@@ -265,19 +265,19 @@ export function AssistChat({
       {/* 입력이 상단이므로 메시지도 역순 — 최신이 맨 위(입력 바로 아래) */}
       <div ref={scrollRef} className="flex-1 space-y-2 overflow-auto pr-0.5">
         {busy && (
-          <div className="mr-auto inline-flex items-center gap-1.5 rounded-[10px] bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
+          <div className="mr-auto inline-flex items-center gap-1.5 rounded-control bg-surface-strong px-3 py-2 text-[11px] text-muted">
             <Loader2 className="h-3 w-3 animate-spin" /> {i18n.thinking}
           </div>
         )}
         {msgs.length === 0 ? (
           <div className="space-y-2 py-1">
-            <p className="text-xs text-gray-500">{i18n.greeting}</p>
+            <p className="text-xs text-muted">{i18n.greeting}</p>
             <div className="flex flex-wrap gap-1.5">
               {seedPrompts(domain, i18n).map((sp, i) => (
                 <button
                   key={i}
                   onClick={() => void send(sp)}
-                  className="rounded-full bg-gray-100 px-3 py-1 text-[11px] text-gray-700 hover:bg-gray-200"
+                  className="rounded-full bg-surface-strong px-3 py-1 text-[11px] text-body hover:bg-hairline"
                 >
                   {sp}
                 </button>
@@ -294,10 +294,10 @@ export function AssistChat({
                   "animate-msg-in rounded-2xl px-3 py-2 text-[12px] leading-relaxed",
                   // 꼬리 효과 — user 우하단 직각 · assistant 좌하단 직각
                   m.role === "user"
-                    ? "ml-auto max-w-[85%] rounded-tr-sm bg-gray-900 text-white"
+                    ? "ml-auto max-w-[85%] rounded-tr-sm bg-ink text-white"
                     : isError
-                      ? "mr-auto max-w-[95%] rounded-tl-sm bg-rose-50 text-rose-700"
-                      : "mr-auto max-w-[95%] rounded-tl-sm border border-gray-200 bg-white text-gray-900",
+                      ? "mr-auto max-w-[95%] rounded-tl-sm bg-danger/5 text-danger"
+                      : "mr-auto max-w-[95%] rounded-tl-sm border border-hairline bg-surface text-ink",
                 ].join(" ")}
               >
                 {m.role === "assistant" && !isError ? renderMarkdown(m.text) : m.text}
