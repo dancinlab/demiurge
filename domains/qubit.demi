@@ -1,0 +1,138 @@
+# qubit.demi — verb-cell manifest for the QUBIT (superconducting transmon /
+# circuit-QED qubit · coherence budget · gate fidelity) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/qubit/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("qubit", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+#
+# Citations (anchored, not repeated per-cell — see domains/QUBIT.md):
+#   - scqubits (open · BSD) — transmon/fluxonium spectrum diagonalization,
+#     EJ/EC anharmonicity, charge dispersion (qubit+analyze)
+#   - QuTiP (open · BSD) — Lindblad master-equation T1/T2 + gate-fidelity
+#     simulation (qubit+verify)
+#   - Koch et al. 2007 (transmon Hamiltonian, open) — EJ/EC design regime
+#   - circuit-QED dispersive readout χ-shift (rfc-cohort analytic)
+#   - surface-code threshold ~1% (Fowler 2012, open) — error-correction target
+#
+# Domain caveat (applies to every cell):
+# qubit cells RUN open Hamiltonian / master-equation solvers + analytic
+# circuit-QED formulas — demiurge NEVER originates the fabricated-device
+# measurement. ALL cells stay GATE_OPEN / absorbed=false (g3): real T1/T2
+# + randomized-benchmarking fidelity live in a dilution-fridge lab, not
+# here. cellrun adapter = D72 thin shim only.
+
+# --- WIRED: specify (qubit spec skeleton — f01 / T1 / T2 / anharmonicity) ---
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/qubit/specify.py
+record_kind       = qubit_specify_record
+output_dir        = exports/qubit/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Qubit spec skeleton (transition frequency 4-6 GHz / T1 / T2* / anharmonicity / gate target) — TEMPLATE.",
+  "Transmon vs fluxonium vs spin = reference qubit-modality classes only.",
+  "measurement_gate = GATE_OPEN permanently — specify is illustrative, not an absorption claim (g3).",
+]
+
+# --- WIRED: structure (Josephson junction + resonator geometry skeleton) ----
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/qubit/structure.py
+record_kind       = qubit_structure_record
+output_dir        = exports/qubit/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Transmon island + Josephson junction + readout/coupling resonator geometry skeleton — TEMPLATE.",
+  "Real junction area / Cs shunt-cap / Purcell-filter dimensions live in CAD + EM solver, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: design (circuit-QED dossier — EJ/EC, coupling, readout) ---------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/qubit/design.py
+record_kind       = qubit_design_record
+output_dir        = exports/qubit/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Circuit-QED dossier (EJ/EC ratio, g coupling, dispersive χ-shift, Purcell budget) skeleton — TEMPLATE.",
+  "qubit+design absorbed=true requires Ansys HFSS / Sonnet EM parity (proprietary axis, no open equivalent yet).",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- WIRED: analyze (scqubits spectrum + anharmonicity diagonalization) -----
+# Producer target: stdlib/qubit/analyze.py — scqubits transmon/fluxonium
+# Hamiltonian diagonalization → levels, anharmonicity, charge dispersion.
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/qubit/analyze.py
+record_kind       = qubit_analyze_record
+output_dir        = exports/qubit/analyze
+required_deps     = python3, scqubits
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "scqubits transmon/fluxonium spectrum diagonalization — computed levels + anharmonicity, NOT measured spectroscopy.",
+  "Charge-dispersion / flux-sensitivity are model outputs; THIS run is not a demiurge measurement (g3).",
+  "absorbed=true requires hexa-native re-derivation + measured two-tone spectroscopy, not solver passthrough.",
+]
+
+# --- WIRED: synthesize (fab process bundle — Al/AlOx junction skeleton) -----
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/qubit/synthesize.py
+record_kind       = qubit_synthesize_record
+output_dir        = exports/qubit/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Fabrication process bundle (Dolan-bridge Al/AlOx junction, e-beam dose, oxidation window) — TEMPLATE skeleton.",
+  "Real cleanroom recipes + junction-resistance targeting live in a fab line, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize bundle is not an absorption claim (g3).",
+]
+
+# --- WIRED: verify (QuTiP master-equation T1/T2 + gate-fidelity parity) -----
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/qubit/verify.py
+record_kind       = qubit_verify_record
+output_dir        = exports/qubit/verify
+required_deps     = python3, qutip
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "QuTiP Lindblad master-equation T1/T2 decay + single-qubit gate fidelity — idealized noise model, NOT a measured RB curve.",
+  "Surface-code ~1% threshold comparison is an analytic target, not a fabricated-lattice result.",
+  "absorbed=true requires hexa-native re-derivation + measured randomized-benchmarking fidelity per ABSORPTION.md (g3).",
+]
+
+# --- WIRED: handoff (cryostat integration + calibration dossier skeleton) ---
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/qubit/handoff.py
+record_kind       = qubit_handoff_record
+output_dir        = exports/qubit/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Dilution-fridge wiring + control-stack + calibration-sequence dossier skeleton — TEMPLATE bundle.",
+  "Real cryostat thermalization + microwave-line attenuation budget = accredited-lab gates outside this map.",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]

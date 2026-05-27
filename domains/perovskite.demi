@@ -1,0 +1,139 @@
+# perovskite.demi — verb-cell manifest for the PEROVSKITE (ABX3 halide
+# perovskite photovoltaics · bandgap engineering · phase stability) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/perovskite/
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("perovskite", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+#
+# Citations (anchored, not repeated per-cell — see domains/PEROVSKITE.md):
+#   - pymatgen / Materials Project (open · BSD) — DFT-relaxed ABX3 bandgaps,
+#     formation energies, decomposition hull (perovskite+analyze)
+#   - Goldschmidt tolerance factor t = (rA+rX)/√2(rB+rX) (rfc-cohort analytic)
+#     + octahedral factor μ — phase-stability geometric screen
+#   - SCAPS-1D / drift-diffusion (open academic) — device J-V / PCE parity
+#     (perovskite+verify)
+#   - Shockley-Queisser detailed-balance limit (analytic) — PCE ceiling vs Eg
+#   - ISOS-D/L/T stability protocols (open consensus) — degradation targets
+#
+# Domain caveat (applies to every cell):
+# perovskite cells COPY public DFT / device-sim constants + run analytic
+# screens — demiurge NEVER originates the fabricated-film measurement. ALL
+# cells stay GATE_OPEN / absorbed=false (g3): real spin-coated film J-V +
+# XRD phase + operational stability live in a wet PV lab, not here.
+# cellrun adapter = D72 thin shim only.
+
+# --- WIRED: specify (absorber spec skeleton — Eg / PCE / stability target) --
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/perovskite/specify.py
+record_kind       = perovskite_specify_record
+output_dir        = exports/perovskite/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Absorber spec skeleton (target bandgap 1.5-1.7 eV / PCE / ISOS stability window) — TEMPLATE.",
+  "Single-junction vs tandem top-cell (~1.68 eV) = reference target classes only.",
+  "measurement_gate = GATE_OPEN permanently — specify is illustrative, not an absorption claim (g3).",
+]
+
+# --- WIRED: structure (ABX3 lattice + tolerance-factor skeleton) ------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/perovskite/structure.py
+record_kind       = perovskite_structure_record
+output_dir        = exports/perovskite/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ABX3 cubic/tetragonal/orthorhombic lattice + A/B/X site assignment skeleton — TEMPLATE.",
+  "Goldschmidt tolerance + octahedral factor are geometric screens, NOT a measured phase diagram.",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- WIRED: design (device stack ETL/absorber/HTL dossier skeleton) ---------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/perovskite/design.py
+record_kind       = perovskite_design_record
+output_dir        = exports/perovskite/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Device stack dossier (ETL / perovskite absorber / HTL / contacts band alignment) skeleton — TEMPLATE.",
+  "perovskite+design absorbed=true requires SCAPS-1D / Sentaurus TCAD parity (axis without a hexa-native equivalent yet).",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- WIRED: analyze (Materials Project DFT bandgap + tolerance screen) ------
+# Producer target: stdlib/perovskite/analyze.py — pymatgen/MP bandgap +
+# decomposition-hull lookup + Goldschmidt/SQ-limit analytic screen.
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/perovskite/analyze.py
+record_kind       = perovskite_analyze_record
+output_dir        = exports/perovskite/analyze
+required_deps     = python3, pymatgen
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "pymatgen / Materials Project DFT bandgaps + decomposition energies COPIED from the open MP aggregator.",
+  "DFT-PBE underestimates Eg; MP values are computed (not measured) and THIS run is not a demiurge measurement (g3).",
+  "absorbed=true requires hexa-native re-derivation + measured UV-vis/PL bandgap, not aggregator passthrough.",
+]
+
+# --- WIRED: synthesize (precursor + anti-solvent recipe bundle skeleton) ----
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/perovskite/synthesize.py
+record_kind       = perovskite_synthesize_record
+output_dir        = exports/perovskite/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Precursor stoichiometry + anti-solvent / annealing recipe bundle — TEMPLATE skeleton.",
+  "Real spin-coat / thermal-evaporation process windows live in a wet PV fabrication lab, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize bundle is not an absorption claim (g3).",
+]
+
+# --- WIRED: verify (SCAPS-1D / drift-diffusion J-V parity) ------------------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/perovskite/verify.py
+record_kind       = perovskite_verify_record
+output_dir        = exports/perovskite/verify
+required_deps     = python3, scipy
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Drift-diffusion / SCAPS-1D J-V + PCE estimate — idealized recombination, NOT a measured device curve.",
+  "Shockley-Queisser detailed-balance ceiling omits non-radiative loss / series resistance / hysteresis.",
+  "absorbed=true requires hexa-native re-derivation + measured AM1.5G J-V per ABSORPTION.md (g3).",
+]
+
+# --- WIRED: handoff (stability protocol + scale-up dossier skeleton) --------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/perovskite/handoff.py
+record_kind       = perovskite_handoff_record
+output_dir        = exports/perovskite/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "ISOS stability-protocol + module scale-up + encapsulation dossier skeleton — TEMPLATE bundle.",
+  "Real certified PCE (NREL chart) + IEC 61215 damp-heat = accredited-lab gates outside this map.",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]
