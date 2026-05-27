@@ -58,9 +58,10 @@ export default async function AppLayout({
     <ThemeProvider>
       {/* 가로 분할: 좌 사이드(세로 전체) | 우 컬럼(TopBar + main) · ara 톤 gray */}
       <div className="flex h-screen bg-gray-50 text-gray-900 antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
-        {/* 좌: 세로 전체 사이드 — verb(상단) + 요리선생 채팅(하단) */}
-        <aside className="flex w-72 shrink-0 flex-col gap-3 border-r border-gray-200 bg-white p-3">
-          <div className="shrink-0 rounded-lg border border-gray-200 p-2">
+        {/* 좌: 세로 전체 사이드 — verb(상단) + 요리선생 채팅(하단)
+            gap·rounded 없음 · 내부 구분은 직선 라인(border-b)만 */}
+        <aside className="flex w-72 shrink-0 flex-col border-r border-gray-200 bg-white">
+          <div className="shrink-0 border-b border-gray-200 p-2">
             <VerbTreeNav domain={activeDomain ?? undefined} i18n={i18n} />
           </div>
           <div className="min-h-0 flex-1">
