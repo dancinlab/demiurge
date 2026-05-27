@@ -1,0 +1,128 @@
+{
+  "_meta": {
+    "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+    "voice_name": "George - British storyteller",
+    "model_id": "eleven_multilingual_v2",
+    "stability": 0.55,
+    "similarity_boost": 0.75,
+    "style": 0.0,
+    "use_speaker_boost": true,
+    "target_total_sec": 150,
+    "fps": 30,
+    "resolution": [1920, 1080]
+  },
+  "shots": [
+    {
+      "id": "01_hook",
+      "duration_sec": 7.13,
+      "narration": "demiurge — an AI-native technical-design pipeline. Five languages, one production loop.",
+      "subtitle_ko": "demiurge — AI 네이티브 기술 설계 파이프라인. 5개 언어, 한 production 루프.",
+      "capture": "demiurge.dancinlab.org / + LangSwitcher cycling zh→ja→ru→en"
+    },
+    {
+      "id": "02_domains",
+      "duration_sec": 4.3,
+      "narration": "Twenty research domains, each running the same eight-verb loop.",
+      "subtitle_ko": "20개 연구 도메인, 동일한 8-verb 루프",
+      "capture": "도메인 인덱스 grid scroll (AURA · XPRIZE · RTSC tiles)"
+    },
+    {
+      "id": "03_discover",
+      "duration_sec": 13.91,
+      "narration": "It starts with discover. You bring an objective and a verifier. Phanes runs the OUROBOROS loop; demiurge dispatches and ingests the verified catalog. Two repositories, one canonical engine.",
+      "subtitle_ko": "discover로 시작 · objective + verifier · phanes가 OUROBOROS 루프 · demiurge가 dispatch + 흡수 · 2 저장소 1 엔진",
+      "capture": "/discover · objective input + rounds=5 submit + phanes log live tail"
+    },
+    {
+      "id": "04_spec",
+      "duration_sec": 10.93,
+      "narration": "Spec. Gemini drafts a measurable goal, based on the hot-spot you typed. Never auto-applied. Always reviewed by a human, then committed to the canonical SSOT.",
+      "subtitle_ko": "spec · Gemini가 hint 기반 @goal 초안 · 자동 적용 안 함 · 검수 후 SSOT 커밋",
+      "capture": "/spec/RTSC · hint 입력 → Gemini stream response"
+    },
+    {
+      "id": "05_structure",
+      "duration_sec": 5.21,
+      "narration": "Structure. A deterministic dependency tree. No model in this loop.",
+      "subtitle_ko": "structure · 결정론적 의존 트리 · 이 루프에 LLM 없음",
+      "capture": "/structure/RTSC · ASCII dependency tree zoom"
+    },
+    {
+      "id": "06_design",
+      "duration_sec": 5.26,
+      "narration": "Design. Three honest trade-offs. It never picks a winner. The human decides.",
+      "subtitle_ko": "design · 3-옵션 trade-off · 우열 선언 안 함 · 사람이 결정",
+      "capture": "/design/RTSC · question input → 3-row table highlight"
+    },
+    {
+      "id": "07_analyze",
+      "duration_sec": 5.32,
+      "narration": "Analyze. Server-sent events stream the loop. You watch the system think.",
+      "subtitle_ko": "analyze · SSE로 라이브 tail · AI 사고 과정 실시간",
+      "capture": "/analyze/RTSC · SSE LiveTail terminal-style stream"
+    },
+    {
+      "id": "08_verify",
+      "duration_sec": 16.68,
+      "narration": "Verify is sacred. The hexa calculator returns one of five tiers — closed-form, numerical, citation, insufficient, falsified. Zero LLM verdicts. Every claim carries its provenance. This is what separates production AI from chat.",
+      "subtitle_ko": "verify는 신성 영역 · 5-tier · LLM 판정 0회 · provenance 부착",
+      "capture": "/verify/RTSC · rubric 5-tier color blocks + 'LLM calls: 0' overlay"
+    },
+    {
+      "id": "09_synth",
+      "duration_sec": 6.41,
+      "narration": "Synth routes the heavy work. Pool, Vertex AI, Cloud Run. Deterministic dispatch.",
+      "subtitle_ko": "synth · 라우팅 결정론적 (d7)",
+      "capture": "/synth/RTSC · backend list grid"
+    },
+    {
+      "id": "10_handoff",
+      "duration_sec": 11.30,
+      "narration": "Handoff. Korean and English, side by side, with the first action highlighted. The next person — researcher, engineer, or regulator — gets exactly the context they need.",
+      "subtitle_ko": "handoff · 한/영 사이드바이사이드 · 첫 액션 강조",
+      "capture": "/handoff/RTSC · ko/en split panel"
+    },
+    {
+      "id": "11_pricing",
+      "duration_sec": 5.26,
+      "narration": "Solo, Team, Org. Five locales. Stripe-backed. Fourteen-day trial.",
+      "subtitle_ko": "Solo · Team · Org · 5-locale · Stripe · 14일 trial",
+      "capture": "/pricing 5-locale rapid cycle"
+    },
+    {
+      "id": "12_gcp",
+      "duration_sec": 17.46,
+      "narration": "Seven Google Cloud products work together — Vertex AI, Cloud Run, Cloud Build, Artifact Registry, Firestore, Identity Toolkit, and Secret Manager. Authentication runs through the metadata server. Zero secrets ever live in our code.",
+      "subtitle_ko": "GCP 7 제품 — Vertex AI · Cloud Run · ... · metadata-server ADC · 시크릿 0",
+      "capture": "terminal: gcloud services list output, 7 lines highlighted"
+    },
+    {
+      "id": "13_newproject",
+      "duration_sec": 4.71,
+      "narration": "New GCP project, after the submission start date. Rule met.",
+      "subtitle_ko": "신규 GCP 프로젝트 · 규정 충족",
+      "capture": "terminal: gcloud projects describe dancinlab createTime"
+    },
+    {
+      "id": "14_liveapi",
+      "duration_sec": 11.06,
+      "narration": "And here it is. A live call to Gemini 2.5 Flash, from production, right now. Two hundred prompt tokens in, twenty-three candidate tokens out.",
+      "subtitle_ko": "라이브 Gemini · production · prompt 200 candidate 23",
+      "capture": "terminal: POST /api/llm JSON response highlighted"
+    },
+    {
+      "id": "15_close",
+      "duration_sec": 4.14,
+      "narration": "demiurge dot dancinlab dot org. Built with Gemini.",
+      "subtitle_ko": "demiurge.dancinlab.org · Built with Gemini",
+      "capture": "final card: large URL + Built-with-Gemini badge + dancinlab logo"
+    },
+    {
+      "id": "16_outro_montage",
+      "duration_sec": 21.0,
+      "narration": "",
+      "subtitle_ko": "(visual-only · evidence montage)",
+      "capture": "outro · GCP product logos fan-out + Devpost category card + 5-locale zoom + final URL hold"
+    }
+  ]
+}

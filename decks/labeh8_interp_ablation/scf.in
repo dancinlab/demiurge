@@ -1,0 +1,43 @@
+&control
+  calculation = 'scf'
+  prefix = 'labeh8'
+  outdir = '/home/aiden/rtsc_labeh8_interp_ablation/out'
+  pseudo_dir = '/home/aiden/rtsc_labeh8_interp_ablation/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'high'
+/
+&system
+  ibrav = 4
+  celldm(1) = 6.804
+  celldm(3) = 1.611
+  nat = 10
+  ntyp = 3
+  ecutwfc = 80
+  ecutrho = 800
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.4
+  electron_maxstep = 300
+/
+ATOMIC_SPECIES
+  La 138.905 La.pbe-spfn-rrkjus_psl.1.0.0.UPF
+  Be 9.0122  Be.pbe-n-rrkjus_psl.1.0.0.UPF
+  H  1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  La 0.000000 0.000000 0.000000
+  La 0.000000 0.000000 0.500000
+  Be 0.333333 0.666667 0.250000
+  Be 0.666667 0.333333 0.750000
+  H  0.333333 0.666667 0.625000
+  H  0.666667 0.333333 0.125000
+  H  0.333333 0.666667 0.875000
+  H  0.666667 0.333333 0.375000
+  H  0.166667 0.333333 0.250000
+  H  0.833333 0.666667 0.750000
+K_POINTS automatic
+  8 8 8 0 0 0

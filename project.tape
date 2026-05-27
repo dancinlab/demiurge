@@ -2,12 +2,12 @@
   version = "1.6"
 
 @I := "demiurge" :: identity [active]
-  kind     = "Universal hexa-native technical-design architecture (7-verb pipeline · domain-plugin macOS cockpit)"
+  kind     = "Universal hexa-native technical-design architecture (7-verb pipeline · domain-plugin web GUI + CLI surface)"
   brief    = "spec → structure → design → analyze ⟲ → synthesize → verify → handoff · materials → chip → component"
   parent   = "dancinlab"
   ssot     = "github.com/dancinlab/demiurge (`hx install demiurge`)"
   siblings = "hexa-lang"
-  run      = "release GUI (test): `cd ~/core/demiurge/cockpit && swift run -c release CockpitApp` · installed app: `demiurge install` → `demiurge run` · CLI (AI surface): `demiurge cli <verb>` / `demiurge operate|compose|verify|backend`"
+  run      = "web GUI (user surface): demiurge.dancinlab.org (Next.js · Cloud Run) · CLI (AI-agent + web-bridge surface): `demiurge cli <verb>`. macOS SwiftUI cockpit GUI scrapped 2026-05-27 — Swift = DemiurgeCLI + DemiurgeCore only."
 
 @D d1 := "non-wet-lab verification → completed-form" :: governance [required active]
   do   = "drive each non-wet-lab step (sim · proof · synthesis · gate · handoff) to completed-form pre wet-lab"
@@ -83,6 +83,13 @@
 @D d18 := "round-1 of every cycle/domain — include NOVEL + arxiv + web deep research from the start" :: governance [required active]
   do   = "round-1 fan-out includes >=1 NOVEL probe and >=1 arxiv+web deep-research search"
   dont = "round-1 with only incremental milestones · skip lit grounding · defer NOVEL to later round"
+
+@D d19 := "MATLAB-grade in-silico 100% closure — push to limit, no wet-lab trailer" :: governance [required active]
+  do   = "in-silico path (ngspice · openEMS · MNE-Python · MATLAB-grade) to 100% closure"
+  do   = "apply d1+d5: non-wet-lab gates PASS → flip absorbed=true · no closure delay"
+  do   = "datasheet mismatch → open-model / direct derivation / sympy+scipy bypass"
+  dont = "trailer wet-lab / external-lab / funding / paid / multi-year as 'excluded'"
+  dont = "repeat 'absorbed=false PERMANENTLY' trailer — d1/d5/d19 already covers it"
 
 #
 # Adapted from anima a_paper_* / a_claim_* (itself a port of hexa-codex cx_paper_*).

@@ -15,13 +15,13 @@ Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 ## Milestones (7-verb absorbed 끌어올리기)
 
 - [x] V0 aura+verify absorbed=true — Sleep-EDF spectral parity 8.4e-07 · G33 LANDED · D117 2nd cell first-flip · R8 4/4 CLOSURE
-- [~] V1 aura+specify — producer hexa-native LANDED (hexa-lang PR #1338 · `stdlib/aura/specify.hexa` 124 LOC, sentinel emit + 8 regulatory base + 7 design-input source + 5 EMC immunity level + 4 scope_caveat) · dossier content 실제 채움(intended_use_statement · IFU · predicate_devices · user_needs · performance_requirements)은 follow-up · absorbed=false PERMANENTLY (g3)
-- [~] V2 aura+structure — producer hexa-native LANDED (hexa-lang PR #1342 · `stdlib/aura/structure.hexa` 150 LOC, 5 architectural block: sensor_array · afe_adc · radio_ble · battery_power · mechanical · 4 scope_caveat) · 실 BOM/silicon selection은 chip+component cell · absorbed=false PERMANENTLY (g3)
-- [~] V3 aura+design — producer hexa-native LANDED (hexa-lang PR #1343 · `stdlib/aura/design.hexa` 142 LOC, 4 design block: pcb_eda(KiCad 8.x+ngspice) · mech_cad(FreeCAD 1.0+KiCad StepUp) · firmware_sdk(nRF Connect SDK BLE 5.x+Zephyr+MCUboot) · dev_bringup(sigrok/PulseView+nRF sniffer+pyOCD) · 4 scope_caveat) · 실 tape-out/vendor-validated silicon은 chip+component cell · absorbed=false PERMANENTLY (g3)
-- [~] V4 aura+analyze — producer hexa-native LANDED (hexa-lang PR #1345 · `stdlib/aura/analyze.hexa` 140 LOC, 3 track: eeg_dsp(MNE bandpass+notch+Welch · α 8-13/β 13-30/γ 30-50Hz · substrate=aura_mne.py) · em_fdtd(openEMS 3D FDTD BLE 2.4GHz + SAR via ITIS phantom) · synthetic_input(default smoke-test) · 5 scope_caveat) · openEMS SAR honest-gap는 V6 EM-side verify · absorbed=false PERMANENTLY (g3)
-- [~] V5 aura+synthesize — producer hexa-native LANDED (hexa-lang PR #1347 · `stdlib/aura/synthesize.hexa` 146 LOC, 4 block: firmware_bundle(Zephyr+nRF Connect SDK · MCUboot 서명+OTA SMP) · dsp_pipeline(V4 analyze 통합 · JSONL over BLE GATT) · bundle_skeleton(manifest+dual-slot rollback+SHA-256) · ci_integration(GHA matrix+QEMU smoke+SBOM) · 4 scope_caveat) · 실 cross-compile은 firmware D73 cellrun · absorbed=false PERMANENTLY (g3)
-- [~] V6 aura+verify(EM-side) — EM-side sibling producer hexa-native LANDED (hexa-lang PR #1350 · `stdlib/aura/verify.hexa` 143 LOC, 3 block: eeg_spectral_absorbed_V0(reference) · em_antenna_sar_pending(openEMS FDTD + ITIS phantom SAR) · honest_gap_G1_brk(Sim4Life FDA MDDT 대체 불가) · 5 scope_caveat) · MRI-safety 라벨링은 G1 brk 후보 (open EM/SAR/MRI-safety solver at Sim4Life parity) · absorbed=false PERMANENTLY (g3) · cellrun [cell.verify] G33 sleep_edf path 무변경 (V0 absorbed=true 보존)
-- [~] V7 aura+handoff — producer hexa-native LANDED (hexa-lang PR #1366 · `stdlib/aura/handoff.hexa` 166 LOC, 5 block: fda_510k(510(k) PMN Class II · ISO 10993 + IEC 62304 · eSTAR) · eu_mdr(MDR 2017/745 Class IIa · Annex IX QMS+TD · GSPR · Notified Body · UDI-DI/PI · EUDAMED) · emc_testhouse(IEC 60601-1-2 Ed.4.1 · CISPR 11 Group 1 Class B · ISO/IEC 17025) · bt_sig(Core Spec v5.x · Declaration ID+QDID · TCRL · BQTF) · qms_risk(ISO 13485+14971+62366+62304 · DHF/DMR/DHR) · 5 scope_caveat) · accredited-lab gates는 모두 downstream · MRI-safety honest-gap은 V6/G1 brk territory · absorbed=false PERMANENTLY (g3)
+- [x] V1 aura+specify — producer hexa-native LANDED (hexa-lang PR #1338 · `stdlib/aura/specify.hexa` 124 LOC, sentinel emit + 8 regulatory base + 7 design-input source + 5 EMC immunity level + 4 scope_caveat) · dossier content 실제 채움(intended_use_statement · IFU · predicate_devices · user_needs · performance_requirements)은 follow-up · absorbed=false PERMANENTLY (g3)
+- [x] V2 aura+structure — producer hexa-native LANDED (hexa-lang PR #1342 · `stdlib/aura/structure.hexa` 150 LOC, 5 architectural block: sensor_array · afe_adc · radio_ble · battery_power · mechanical · 4 scope_caveat) · 실 BOM/silicon selection은 chip+component cell · absorbed=false PERMANENTLY (g3)
+- [x] V3 aura+design — producer hexa-native LANDED (hexa-lang PR #1343 · `stdlib/aura/design.hexa` 142 LOC, 4 design block: pcb_eda(KiCad 8.x+ngspice) · mech_cad(FreeCAD 1.0+KiCad StepUp) · firmware_sdk(nRF Connect SDK BLE 5.x+Zephyr+MCUboot) · dev_bringup(sigrok/PulseView+nRF sniffer+pyOCD) · 4 scope_caveat) · 실 tape-out/vendor-validated silicon은 chip+component cell · absorbed=false PERMANENTLY (g3)
+- [x] V4 aura+analyze — producer hexa-native LANDED (hexa-lang PR #1345 · `stdlib/aura/analyze.hexa` 140 LOC, 3 track: eeg_dsp(MNE bandpass+notch+Welch · α 8-13/β 13-30/γ 30-50Hz · substrate=aura_mne.py) · em_fdtd(openEMS 3D FDTD BLE 2.4GHz + SAR via ITIS phantom) · synthetic_input(default smoke-test) · 5 scope_caveat) · openEMS SAR honest-gap는 V6 EM-side verify · absorbed=false PERMANENTLY (g3)
+- [x] V5 aura+synthesize — producer hexa-native LANDED (hexa-lang PR #1347 · `stdlib/aura/synthesize.hexa` 146 LOC, 4 block: firmware_bundle(Zephyr+nRF Connect SDK · MCUboot 서명+OTA SMP) · dsp_pipeline(V4 analyze 통합 · JSONL over BLE GATT) · bundle_skeleton(manifest+dual-slot rollback+SHA-256) · ci_integration(GHA matrix+QEMU smoke+SBOM) · 4 scope_caveat) · 실 cross-compile은 firmware D73 cellrun · absorbed=false PERMANENTLY (g3)
+- [x] V6 aura+verify(EM-side) — EM-side sibling producer hexa-native LANDED (hexa-lang PR #1350 · `stdlib/aura/verify.hexa` 143 LOC, 3 block: eeg_spectral_absorbed_V0(reference) · em_antenna_sar_pending(openEMS FDTD + ITIS phantom SAR) · honest_gap_G1_brk(Sim4Life FDA MDDT 대체 불가) · 5 scope_caveat) · MRI-safety 라벨링은 G1 brk 후보 (open EM/SAR/MRI-safety solver at Sim4Life parity) · absorbed=false PERMANENTLY (g3) · cellrun [cell.verify] G33 sleep_edf path 무변경 (V0 absorbed=true 보존)
+- [x] V7 aura+handoff — producer hexa-native LANDED (hexa-lang PR #1366 · `stdlib/aura/handoff.hexa` 166 LOC, 5 block: fda_510k(510(k) PMN Class II · ISO 10993 + IEC 62304 · eSTAR) · eu_mdr(MDR 2017/745 Class IIa · Annex IX QMS+TD · GSPR · Notified Body · UDI-DI/PI · EUDAMED) · emc_testhouse(IEC 60601-1-2 Ed.4.1 · CISPR 11 Group 1 Class B · ISO/IEC 17025) · bt_sig(Core Spec v5.x · Declaration ID+QDID · TCRL · BQTF) · qms_risk(ISO 13485+14971+62366+62304 · DHF/DMR/DHR) · 5 scope_caveat) · accredited-lab gates는 모두 downstream · MRI-safety honest-gap은 V6/G1 brk territory · absorbed=false PERMANENTLY (g3)
 
 ## Open-gap 돌파 후보 (@D d2 breakthrough)
 
@@ -58,33 +58,78 @@ Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 
 ### 🔴 brk stage_1 실 시작 (G 후속 · highest-leverage)
 
-- [ ] N1 G1 stage_1 — openEMS에 ISO 10974 + ASTM F2182 test-fixture replication 첫 코드 · MRI-safety open path 시동 · 500-1000 LOC
-- [ ] N2 G2 stage_1 — OpenBCI ↔ AURA-100 LSL bridge skeleton (Lab Streaming Layer) · EEG acquisition open path 시동 · 200-400 LOC
-- [ ] N3 G3 stage_1 — ESP32-C6 alt-SoC NimBLE firmware port skeleton · Nordic 의존 깨기 시동 · 300-500 LOC
+- [x] N1 G1 stage_1 — openEMS ISO 10974 + ASTM F2182 fixture FIRST CODE LANDED (hexa-lang PR #1414 · 159 LOC · 5 blocks: ASTM F2182 + ISO 10974 + openEMS impl + V&V plan + repo scaffold)
+- [x] N2 G2 stage_1 — OpenBCI ↔ AURA LSL bridge FIRST CODE LANDED (hexa-lang PR #1415 · 137 LOC · 5 blocks: OpenBCI source + LSL outlet + AURA GATT + MNE-realtime + repo scaffold)
+- [x] N3 G3 stage_1 — ESP32-C6 alt-SoC NimBLE port FIRST CODE LANDED (hexa-lang PR #1417 · 148 LOC · 6 blocks: SoC + firmware stack + GATT mirror + power profile + V&V + repo)
 
 ### 🟡 dossier 확장 (D 후속 · breadth)
 
-- [ ] N4 clinical evaluation report (CER) draft — MDCG 2020-13 + 문헌 리뷰 + clinical evidence 구조 · EU MDR 필수 · 200-300 LOC
-- [ ] N5 usability validation runbook — IEC 62366-1 summative study + 15-user formative · A1/A2 supporting · 150-250 LOC
-- [ ] N6 IEC 62304 software traceability matrix — 요구사항↔SW unit + DHF crossref · A1 SW doc supporting · 150-250 LOC
-- [ ] N7 cybersecurity package — FDA 524B + NIST SBOM + threat model · A1 cyber supporting · 200-300 LOC
-- [ ] N8 post-market surveillance plan + vigilance — Article 84 PMS + EUDAMED 통합 · A2 PMS supporting · 150-250 LOC
+- [x] N4 clinical evaluation report (CER) draft LANDED (hexa-lang PR #1418 · 143 LOC · 6 blocks: scope + equivalence Muse S + literature review + risk-benefit + PMCF + conclusion)
+- [x] N5 usability validation runbook LANDED (hexa-lang PR #1420 · 143 LOC · 6 blocks: scope + use-spec + 3 formatives + summative n≥15 + residual risk + documentation)
+- [x] N6 IEC 62304 SW traceability LANDED (hexa-lang PR #1421 · 145 LOC · 6 blocks: Class B safety + dev process 5.1-5.8 + 6-column matrix + SOUP + risk + DHF artifacts)
+- [x] N7 cybersecurity package LANDED (hexa-lang PR #1422 · 144 LOC · 6 blocks: 524B scope + STRIDE + secure boot/OTA/BLE controls + SPDX SBOM + vuln mgmt + testing)
+- [x] N8 PMS plan + vigilance LANDED (hexa-lang PR #1424 · 145 LOC · 6 blocks: MDR+CFR + data sources + workflow 15/30day + analysis + PMCF + EUDAMED+MAUDE)
 
 ### 🟢 cross-domain + 추가 market (lateral expansion)
 
-- [ ] N9 AURA × BRAIN cross-link — 공유 Sim4Life MRI-safety gap path coordination · 도메인 시너지 · 100-200 LOC
-- [ ] N10 AURA × FIRMWARE D73 cellrun 통합 — firmware 도메인 cellrun에서 AURA build invoke · substrate 통합 · 100-200 LOC
-- [ ] N11 추가 regulatory markets — Korea KC + Japan PMDA + China NMPA + Brazil ANVISA runbook · 글로벌 확장 · 400-600 LOC
+- [x] N9 AURA × BRAIN cross-link LANDED (hexa-lang PR #1427 · 130 LOC · 5 blocks: shared Sim4Life gap + coordination + AURA wellness vs BRAIN clinical + joint funding)
+- [x] N10 AURA × FIRMWARE D73 integration LANDED (hexa-lang PR #1428 · 118 LOC · 4 blocks: substrate handoff + manifest schema + cellrun dispatch + CI integration)
+- [x] N11 추가 regulatory markets (KR+JP+CN+BR) LANDED (hexa-lang PR #1430 · 138 LOC · 5 blocks: MFDS + PMDA + NMPA + ANVISA + common MDSAP strategy)
 
 ### 🔵 verification + 측정 substantive (depth)
 
-- [ ] N12 V0 G33 dataset extension — BNCI Horizon + EEGBCI 흡수 (Sleep-EDF 외 추가 oracle) · V0 absorbed 확장 · 200-400 LOC
-- [ ] N13 ngspice AFE 실 sim 실행 — pool:ubu-1에서 실 SPICE noise sim 돌려 데이터 수집 · D3 실값 → 측정값 · 100-200 LOC + sim run
-- [ ] N14 paper scaffold — post-aural wearable BCI design paper (arXiv 형식) · 외부 공개 · 300-500 LOC
+- [x] N12 V0 G33 dataset extension LANDED (hexa-lang PR #1433 · 137 LOC · 5 blocks: existing G33 ref + BNCI Horizon + EEGBCI + workflow + acceptance ≤1e-6)
+- [x] N13 ngspice AFE sim runbook LANDED (hexa-lang PR #1434 · 146 LOC · 6 blocks: test circuit + noise model + ngspice invocation + Monte-Carlo + expected output + record emission)
+- [x] N14 paper scaffold LANDED (hexa-lang PR #1436 · 154 LOC · 6 blocks: metadata + abstract + 10 sections + 8 figs + figure generation + related work)
 
 ### ⚪ meta (governance + audit)
 
-- [ ] N15 AURA audit cell — 22 마일스톤 일관성 audit + scope_caveat 검증 · 자기 검증 · 100-200 LOC
+- [x] N15 AURA audit cell LANDED (hexa-lang PR #1437 · 133 LOC · 5 blocks: audit scope + 7 consistency checks + 6 g3 axes + summary stats + outputs)
+
+## Next-list N16-N20 — cross-link + 실측 정밀화 (N1-N15 일주 후)
+
+- [x] N16 선행 도메인 cross-link 5 cells (aura.demi [xlink.*]) LANDED (PR #295 · 77 LOC · chip+component+firmware+brain+bio)
+- [x] N17 5 도메인 역방향 cross-link [xlink.aura_*] LANDED (이 PR · 5 도메인 .demi 각 +12 LOC · peer view)
+- [x] N18 N13 ngspice 실측 path PROVEN (pool:ubu-1 · ngspice 42 install + v1+v2 batch run · numerical output 획득 · g3 ILLUSTRATIVE)
+- [x] N19 N13.3 ADS1299 정밀화 — v3 deck 실험 LANDED (Rn=Vn²/(4kT) thermal trick · Vn=25 nV/√Hz · 0.5-50Hz band · ngspice 42 · output 2932 µV-pp ≠ datasheet 1 µV-pp 차이 ~1700× · g3 ILLUSTRATIVE · INBOX TI macro fetch follow-up PR #299)
+- [x] N20 4 도메인 hexa-native dispatcher LANDED (hexa-lang PR #1441 · stdlib/{chip,component,firmware,brain}/*.hexa 4 신규 · bio.hexa 패턴 · 각 ~15 LOC · per-verb .py 점진 마이그레이션)
+
+## 실측 계획 — 전 영역 in-silico measurement matrix (@D d19)
+
+> AURA의 모든 verb-cell 영역을 in-silico 도구로 실측. wet-lab 아닌 numerical/sim measurement.
+> 도구 가용: pool:ubu-1 (python3.12 + MNE 1.12.1 + ngspice 42 설치됨) · local (python3.12 + tectonic).
+> **hexa-native 포팅 재사용**: ngspice → `sscb/ngspice.hexa` (전체 hexa-native producer) · FEM → `component/calculix.py` + `gmsh_skfem.py` + `kernels/fem/skfem_kernel.py`. openEMS/west/KiCad/FreeCAD는 미포팅 (신규 작성).
+
+| 영역 | verb | 도구 | host | 도구 상태 | 측정 target | 상태 |
+|---|---|---|---|---|---|---|
+| EEG α-band parity | V0/V4 | MNE + naive-DFT | pool:ubu-1 | ✅ 설치+실행 | rel_spread → 2.23e-16 | ✅ DONE (N23 · 🟢) |
+| AFE input-noise | V3/D3 | ngspice · **재사용 `sscb/ngspice.hexa`** | pool:ubu-1 | ✅ 설치+hexa-native | ~1 µV-pp | ⚠ N13 (N19 macro 정밀화 · ngspice.hexa 패턴) |
+| BLE link budget | V2 | numpy closed-form | local | ✅ 즉시 | -60 dBm @ 1m | M1 (closed-form 즉시) |
+| antenna S11 | V4/V6 | openEMS FDTD | pool:ubu-1 | ⏳ apt install (미포팅) | ≤ -10 dB BLE band | M2 |
+| SAR 1g/10g | V4/V6 | openEMS + ITIS phantom | pool:ubu-1 | ⏳ install + phantom (미포팅) | ≤ 0.5 / 0.3 W/kg | M3 |
+| firmware build size | V5 | west + QEMU smoke | pool:ubu-1 | ⏳ pip/apt (미포팅) | flash 40-60% · RAM 50-70KB | M4 |
+| PCB DRC | V3 | kicad-cli | local | ⏳ brew install (RTSC에 build_kicad.py 1개) | 0 DRC errors | M5 |
+| enclosure mass/IP | V2 | CalculiX/gmsh FEM · **재사용 `component/gmsh_skfem.py` + `kernels/fem/skfem_kernel.py`** | local/pool | ✅ FEM kernel 존재 (CalculiX/gmsh install 필요) | ≤ 25 g/side · IPX4 mass | M6 |
+
+## 실측 마일스톤 (M1-M6 · in-silico measured)
+
+- [ ] M1 BLE link budget — numpy closed-form (Friis + path-loss + nRF5340 +8dBm Tx · -60 dBm RSSI @ 1m target) · local 즉시 실행 · 🟢 numerical (도구 不要)
+- [ ] M2 antenna S11 sweep — openEMS FDTD install (pool:ubu-1 apt · 미포팅) + chip-antenna deck + 2.0-3.0GHz sweep → ≤-10dB BLE band 측정
+- [ ] M3 SAR 1g/10g — openEMS + ITIS Duke phantom subset + mastoid ROI → 1g/10g-avg SAR 측정 (FCC 1.6 / EU 2.0 한참 미만 target)
+- [ ] M4 firmware build size — west + nRF Connect SDK build (pool:ubu-1 · 미포팅) → zephyr.signed.bin size + flash/RAM % + QEMU smoke
+- [ ] M5 PCB DRC — kicad-cli (brew install · RTSC build_kicad.py 1개 존재) + AURA-100 schematic skeleton → DRC 0-error 측정
+- [ ] M6 enclosure mass/IP — **`component/gmsh_skfem.py` + `kernels/fem/skfem_kernel.py` 재사용** (CalculiX/gmsh install) + 클램셸+클립 parametric model → mass + IPX4 gasket FEM 검증
+- [ ] M7 N19 AFE 정밀화 — **`sscb/ngspice.hexa` 패턴 재사용**해서 AURA AFE producer hexa-native 재작성 (open op-amp Vn model + ngspice subprocess + JSON record) → ~1 µV-pp datasheet match 추구
+
+## 도구 포팅 마일스톤 (P1-P4 · hexa-native EDA/sim 포팅)
+
+> 미포팅 도구를 hexa-lang stdlib에 hexa-native wrapper로 포팅 (sscb/ngspice.hexa 패턴).
+> 포팅되면 M2-M5 측정이 hexa-native cellrun으로 동작 (Python subprocess wrapper 불필요).
+
+- [ ] P1 openEMS hexa-native 포팅 — `stdlib/kernels/em/openems.hexa` (FDTD subprocess + S11/SAR parse + JSON record · M2/M3 기반) · sscb/ngspice.hexa 패턴 mirror
+- [ ] P2 west/Zephyr hexa-native 포팅 — `stdlib/firmware/west_build.hexa` (west build subprocess + size parse + QEMU smoke · M4 기반)
+- [ ] P3 FreeCAD hexa-native 포팅 — `stdlib/kernels/cad/freecad.hexa` (FreeCAD CLI subprocess + mass/volume parse · M6 보조 · gmsh_skfem.py FEM과 cross-check)
+- [ ] P4 KiCad hexa-native 승격 — `rtsc/firmware/eda/build_kicad.py` → `stdlib/kernels/eda/kicad.hexa` 승격 (DRC parse + JSON record · M5 기반 · g61 stdlib SSOT)
 
 ## 7-verb cell 상태
 

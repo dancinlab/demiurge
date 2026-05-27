@@ -104,7 +104,7 @@ export function VerbDraftForm(props: VerbDraftFormProps) {
               rows={f.rows ?? 4}
               placeholder={f.placeholder}
               disabled={loading}
-              className="mt-1 w-full rounded border border-neutral-300 bg-white p-2 font-mono text-sm dark:border-neutral-700 dark:bg-neutral-950"
+              className="mt-1 w-full rounded border border-neutral-300 bg-white p-2 font-mono text-sm"
             />
           </div>
         ))}
@@ -112,7 +112,7 @@ export function VerbDraftForm(props: VerbDraftFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="rounded bg-neutral-900 px-3 py-1 text-sm text-white disabled:opacity-40 dark:bg-neutral-100 dark:text-neutral-900"
+            className="rounded bg-neutral-900 px-3 py-1 text-sm text-white disabled:opacity-40"
           >
             {loading
               ? "Gemini 호출 중..."
@@ -125,7 +125,7 @@ export function VerbDraftForm(props: VerbDraftFormProps) {
       </form>
 
       {error && (
-        <div className="rounded border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-800 dark:bg-red-950/40 dark:text-red-200">
+        <div className="rounded border border-red-300 bg-red-50 p-3 text-sm text-red-900">
           <p className="font-semibold">실패</p>
           <pre className="mt-1 whitespace-pre-wrap text-xs">{error}</pre>
         </div>
@@ -133,7 +133,7 @@ export function VerbDraftForm(props: VerbDraftFormProps) {
 
       {result && (
         <div className="space-y-2">
-          <div className="rounded border border-neutral-200 bg-neutral-50 p-3 dark:border-neutral-800 dark:bg-neutral-900">
+          <div className="rounded border border-neutral-200 bg-neutral-50 p-3">
             <p className="mb-1 text-xs text-neutral-500">
               Gemini draft (검수 필요 · 자동 적용 안 됨)
             </p>

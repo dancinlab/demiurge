@@ -1,0 +1,26 @@
+{
+  "name": "demiurge-demo-video",
+  "version": "0.1.0",
+  "private": true,
+  "description": "XPRIZE 2026 3-min demo video — Remotion + ElevenLabs",
+  "scripts": {
+    "voice": "tsx scripts/generate-voice.ts",
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts XprizeDemo out/demiurge-xprize-demo.mp4",
+    "preview": "remotion preview src/index.ts"
+  },
+  "dependencies": {
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "^4.0.300",
+    "@remotion/cli": "^4.0.300",
+    "@remotion/bundler": "^4.0.300",
+    "@remotion/renderer": "^4.0.300"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.0",
+    "@types/react-dom": "19.0.0",
+    "typescript": "^5.6.0",
+    "tsx": "^4.19.0"
+  }
+}

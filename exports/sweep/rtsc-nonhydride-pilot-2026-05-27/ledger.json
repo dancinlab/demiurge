@@ -1,0 +1,46 @@
+{
+  "batch_id": "rtsc-nonhydride-pilot-2026-05-27",
+  "domain": "RTSC",
+  "kind": "dft-elph",
+  "status": "DISPATCHED",
+  "wave": 1,
+  "candidates_total": 2,
+  "candidates_absorbed": 0,
+  "candidates_dispatched": 2,
+  "candidates_queued": 0,
+  "verdicts": {
+    "mgb2_pure": {"tier": "PENDING", "atlas_node": null, "export_json": null},
+    "nb3al": {"tier": "PENDING", "atlas_node": null, "export_json": null}
+  },
+  "pattern_observations": [
+    "Wave-1 DISPATCHED on the already-running ysbh6 vast pod (80-core, ~48 free) instead of fresh rent -> $0 incremental, no QE provisioning, no vastai CLI (not installed locally). nice -n 15 -np 8 each, coexists with ysbh6 32 ph.x (~48/80 total, no thrash).",
+    "prterun (OpenMPI 5.x) refused root -> fixed with --allow-run-as-root; stale scf.out truncated before exec (feedback_stale_temp_files).",
+    "Both candidates are CALIBRATION anchors (MgB2 39K measured, Nb3Al ~18K) -> success = cross-tool-consistency (g5) match within a few K, NOT a 200K discovery. Reproducing measured non-hydride Tc validates the el-ph pipeline against the hydride-only V3 ledger.",
+    "Expected N5-wall generality result: non-hydride conventional SC stays << hydride ladder (h3cl 140K) -> confirms the hydride advantage is real, not a pipeline artifact."
+  ],
+  "harvest_trigger": "armed terminal watchers bcj87r6lw (mgb2) / bk7iwcckj (nb3al) fire on chain.log 'CHAIN DONE'; event-driven, no ScheduleWakeup. On fire: harvest lambda_BZ/omega_log/Tc -> hexa verify allen_dynes_tc (g5 verbatim) -> apply success_criteria below -> persist exports/material_discovery/.",
+  "success_criteria_pre_declared": {
+    "policy": "harvest 전에 사전 선언된 Δ — Tc_DFT vs Tc_measured 차이로 PASS/AMBER/RED 판정 (사후 합리화 방지). gap-priority P2 close (F4 falsifier + F5 success-criteria).",
+    "mgb2_pure": {
+      "Tc_measured_K": 39, "anchor_source": "Akimitsu Nature 2001",
+      "PASS_K_range":  [29, 49],
+      "AMBER_K_range": [19, 59],
+      "RED_K_outside": "Tc < 19 or Tc > 59 -> 파이프라인 결함 의심 (PBE+rrkjus가 MgB2에 부적합하다는 lit 인지 가정 surface)"
+    },
+    "nb3al": {
+      "Tc_measured_K": 18, "anchor_source": "A15 conventional SC literature",
+      "PASS_K_range":  [8, 28],
+      "AMBER_K_range": [0, 38],
+      "RED_K_outside": "Tc < 0 (의미없음) or Tc > 38 -> 파이프라인 결함 의심"
+    },
+    "falsifier_pre_declared": "둘 다 RED 영역 -> 비수소화물 el-ph 파이프라인 systemic 결함, 본 hydride ledger의 신뢰성 의심 -> H3S/CaH6 측정-grade DFT 재교차 필요. 한쪽 RED + 한쪽 PASS -> 후자 victim-system 추정, 단발 결함."
+  },
+  "m_sign_mapping": {
+    "policy": "후보를 m=(lambda-2.5)/lambda 축에 매핑하여 ESCAPE/TRAPPED 분류 — 본 pilot은 deep TRAPPED 극단 anchor. doc: domains/RTSC/walls/m_sign_classification.md",
+    "mgb2_pure":   {"lambda_lit": 0.7, "m_lit": -2.571, "class": "deep TRAPPED (m-axis 음의 끝 anchor)"},
+    "nb3al":       {"lambda_lit": 0.6, "m_lit": -3.167, "class": "even deeper TRAPPED"}
+  },
+  "links": {
+    "state": "exports/sweep/rtsc-nonhydride-pilot-2026-05-27/state.json"
+  }
+}

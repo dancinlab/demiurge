@@ -190,3 +190,18 @@ scope_caveats     = [
   "honest-skip (rc=2 script-missing) — a future template-emit (deposit checklist / IND skeleton · NOT a filed submission) is the only honest software artifact; the actual deposit/filing requires wet + clinical evidence.",
   "measurement_gate = GATE_OPEN permanently · absorbed=false — handoff dossier scaffolding is not an absorption claim; clinical/regulatory verdict lives entirely past the wet-lab boundary (g3 · D106).",
 ]
+
+# --- CROSS-LINK from AURA (post-aural wearable BCI) -------------------------
+# AURA aura.demi [xlink.bio_aura] points to this domain's cell as predecessor.
+[xlink.aura_bio]
+peer_domain       = aura
+peer_cell         = (see aura.demi xlink.bio_aura)
+reference         = aura.demi · AURA-100 wearable BCI consumes this domain's output
+record_kind       = bio_aura_xlink_record
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Cross-link decl from AURA — this domain's output is consumed by AURA-100 wearable BCI.",
+  "Actual peer-to-peer integration lives via cellrun.hexa generic dispatch.",
+  "absorbed=false PERMANENTLY (g3) — cross-link only.",
+]

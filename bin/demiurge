@@ -3,8 +3,10 @@
 # Installed via `hx install /Users/ghost/core/demiurge`, then reachable
 # as `demiurge <subcommand>` through the hx shim.
 #
-#   demiurge install        build + install /Applications/demiurge.app
-#   demiurge run            launch the installed app
+# The macOS SwiftUI cockpit GUI was scrapped — the user surface is now
+# the web GUI (Next.js · Cloud Run, demiurge.dancinlab.org). Swift is
+# CLI-only; this shim is the headless / AI-agent surface.
+#
 #   demiurge cli <args...>  run DemiurgeCLI (list-records / show / …)
 #   demiurge                this help
 set -euo pipefail
@@ -21,17 +23,6 @@ done
 REPO="$(cd -P "$(dirname "$SOURCE")/.." && pwd)"
 
 case "${1:-}" in
-  install)
-    exec bash "$REPO/cockpit/install.sh"
-    ;;
-  run)
-    if [ -d /Applications/demiurge.app ]; then
-      exec open /Applications/demiurge.app
-    else
-      echo "demiurge: not installed — run 'demiurge install' first" >&2
-      exit 1
-    fi
-    ;;
   cli)
     shift
     cd "$REPO/cockpit"
@@ -41,14 +32,13 @@ case "${1:-}" in
     cat <<'USAGE'
 demiurge — universal hexa-native technical-design architecture program
 
-  demiurge install        build + install /Applications/demiurge.app
-  demiurge run            launch the installed cockpit app
   demiurge cli <args...>  run DemiurgeCLI (list-records / list-decisions
                           / list-rfcs / list-domains / show <path> / …)
   demiurge --help         this help
 
-The macOS cockpit GUI is the user surface; the CLI is the AI-agent
-surface (design.md D34). See cockpit/README.md.
+The user surface is the web GUI (Next.js · Cloud Run); the CLI is the
+AI-agent + web-bridge surface (design.md D34). The macOS SwiftUI cockpit
+was scrapped.
 USAGE
     ;;
   *)

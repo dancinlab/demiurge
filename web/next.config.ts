@@ -17,6 +17,32 @@ const nextConfig: NextConfig = {
       "../*.md",
     ],
   },
+  async headers() {
+    // Dev: let Next.js manage cache-control (custom headers on
+    // /_next/static break HMR/RSC payload fetches). Apply our cache
+    // policy only on prod builds.
+    if (process.env.NODE_ENV !== "production") return [];
+    return [
+      // brand/icon assets — regenerated every release, never cache
+      {
+        source: "/:icon(icon.svg|favicon.ico|apple-icon.png|opengraph-image.png|logo.svg)",
+        headers: [{ key: "Cache-Control", value: "no-store, must-revalidate" }],
+      },
+      // hashed bundles — safe to cache forever (Next emits content-hashed filenames)
+      {
+        source: "/_next/static/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      // every other route (HTML, API, images served from app/) — never cache
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Cache-Control", value: "no-store, must-revalidate" },
+          { key: "Pragma", value: "no-cache" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

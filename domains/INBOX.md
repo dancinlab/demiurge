@@ -8,6 +8,7 @@
 
 ### cross-repo (→ hexa-lang) patch
 
+- [ ] **AURA N13.3 ngspice ADS1299 정밀화** — TI ADS1299 SPICE macro-model fetch + 정밀 op-amp behavioral model + RLD CMRR 검증 deck redesign. 현재 v1+v2 deck은 thermal trick으로 datasheet target(~1µV-pp @ gain=24) 매치 불가 (v1=3,485µV-pp · v2=72.6µV-rms · ADS1299 actual ~1µV-pp). 실 ngspice 동작은 pool:ubu-1 verified (N13 PR #1434 LANDED). 후속 — macro-model 통합 후 atlas register `D_aura_afe_noise = <measured µV-pp>`.
 - [ ] hexa-lang stdlib **bio-stats kernel** — HW · binomial CI · Wilson CI · Markov^n · ICER 8개 함수 `verify --expr` 확장 (DAPTPGX V2 ledger 10+ atom escalation 가능) · spec: `archive/session-notes/patches/hexa-lang-stdlib-bio-stats.md`
 - [ ] hexa-lang **atlas PGx K-kind 확장** — `append-witness` emitter 를 `atlas pr --staging` promoter 가 인식 못함 (0 promoted) → DAPTPGX V2 shard 흡수 불가 · spec: `archive/session-notes/patches/hexa-atlas-pgx-kind-extension.md`
 

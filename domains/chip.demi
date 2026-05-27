@@ -175,3 +175,18 @@ scope_caveats     = [
 #     for verb in [specify, structure, design, analyze, synthesize, verify, handoff]:
 #       swift run DemiurgeCLI action <verb> chip --rtl archive/comb/rtl/<chip>.v
 # producing 5 × 7 = 35 record JSONs under exports/chip/<verb>/.
+
+# --- CROSS-LINK from AURA (post-aural wearable BCI) -------------------------
+# AURA aura.demi [xlink.chip_aura] points to this domain's cell as predecessor.
+[xlink.aura_chip]
+peer_domain       = aura
+peer_cell         = (see aura.demi xlink.chip_aura)
+reference         = aura.demi · AURA-100 wearable BCI consumes this domain's output
+record_kind       = chip_aura_xlink_record
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Cross-link decl from AURA — this domain's output is consumed by AURA-100 wearable BCI.",
+  "Actual peer-to-peer integration lives via cellrun.hexa generic dispatch.",
+  "absorbed=false PERMANENTLY (g3) — cross-link only.",
+]
