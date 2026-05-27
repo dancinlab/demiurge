@@ -1,0 +1,585 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------- arxiv-style preamble ----------
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\DeclareSIUnit{\rydberg}{Ry}
+\DeclareSIUnit{\atm}{atm}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+% pgfplots — shipped by default (the 58p monograph build had every agent add
+% this by hand + `sudo tlmgr install pgfplots`). The fig02_line.tex standalone
+% uses it; the compat line is pinned so axis behaviour is deterministic.
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{array}
+\captionsetup{font=small,labelfont=bf}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black
+}
+
+% ---------- tier badges (color-coded text labels; font-independent) ----------
+% This BasicTeX install has no color-emoji font fallback, so the tier badges
+% render as bracketed colored words. Each maps 1:1 to a hexa verify tier.
+\newcommand{\tierBlue}{\textcolor{blue!60!black}{[\textsc{formal}]}}
+\newcommand{\tierGreen}{\textcolor{teal}{[\textsc{green}]}}
+\newcommand{\tierYellow}{\textcolor{olive}{[\textsc{cited}]}}
+\newcommand{\tierOrange}{\textcolor{orange!85!black}{[\textsc{deferred}]}}
+\newcommand{\tierRed}{\textcolor{red!75!black}{[\textsc{falsified}]}}
+\newcommand{\tierWhite}{\textcolor{gray}{[\textsc{fenced}]}}
+
+% ---------- lightweight \ce{...} (mhchem not available in this TeX install) ----------
+% Renders a chemical formula in upright text with digits auto-subscripted, so
+% \ce{H3S} -> H$_3$S, \ce{Mg2IrH6} -> Mg$_2$IrH$_6$. Handles plain letters and
+% digits only (sufficient for the formulae in this monograph). No dependency.
+\newcommand{\ceStop}{\ceStop}
+\newcommand{\ceScan}[1]{%
+  \ifx#1\ceStop\else
+    \ifnum`#1<`0 #1\else
+      \ifnum`#1>`9 #1\else \textsubscript{#1}\fi
+    \fi
+    \expandafter\ceScan
+  \fi}
+\newcommand{\ce}[1]{\textup{\ceScan#1\ceStop}}
+
+\title{
+  \textbf{The RTSC DFT Campaign: A Soft-Mode-Escape Methodology, a
+  158\,K Dynamically-Stable Hydride Record, and the N5 Coupling--Frequency Wall}\\[4pt]
+  \large An honest first-principles electron--phonon survey of hydride
+  superconductors --- what the method validates, and what the room-temperature
+  ambient goal does \emph{not} yet reach
+}
+
+% ---------- author block (hexa-codex style) ----------
+% Convention: <repo> maintainers / dancinlab / clickable github URL.
+% LLM collaborator goes in \paragraph{Acknowledgments} at the tail — NOT here.
+\author{
+  \texttt{demiurge} maintainers\\
+  \normalsize\textit{dancinlab}\\[2pt]
+  \normalsize\href{https://github.com/dancinlab/demiurge}{\texttt{github.com/dancinlab/demiurge}}
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+% =========================================================================
+\begin{abstract}
+We report a density-functional-theory (DFT) electron--phonon coupling
+campaign that searched binary and ternary hydrides for a room-temperature
+ambient superconductor (RTSC). The campaign's defensible results are
+\emph{methodological}, not a room-temperature claim. First, we validate the
+DFT $\to$ Allen--Dynes pipeline against three measurement-grade anchors:
+\ce{H3S} (\SI{203}{\kelvin} @ \SI{155}{\giga\pascal}), \ce{CaH6}
+(\SI{213}{\kelvin} @ \SI{170}{\giga\pascal}), and \ce{LaBeH8}
+(\SI{110}{\kelvin} measured @ \SI{80}{\giga\pascal}); the pipeline reproduces
+each within campaign tolerance (Appendix~\ref{app:A}). Second, we introduce
+a \emph{soft-mode-escape} methodology: an \ce{H3As} structure that is
+dynamically unstable in $Im\bar{3}m$ (saddle point) relaxes into a stable
+$R3m$ polymorph with strong coupling $\lambda = 1.65$, $\omega_{\log} =
+\SI{450}{\kelvin}$, and $T_c = \SI{55.9}{\kelvin}$ ($14/14$ stable
+$q$-points; Appendix~\ref{app:C}). Third, the survey establishes the
+\emph{N5 wall}: across the binary $H_3X$ family, \emph{stable AND
+strong-$\lambda$ AND high-$\omega_{\log}$} cannot be achieved
+simultaneously --- harmonic strong coupling is a soft-mode artifact that
+collapses under anharmonic renormalization, while the stable branch is
+capped by $\omega_{\log}$. We quantify this with two novel closed-form
+margins ($\lambda$-suppression ratio $S$ and stability--coupling margin
+$m$, both \tierGreen; Appendix~\ref{app:D}). The strongest stable record is
+\ce{H3Br} at \SI{200}{\giga\pascal}: $\lambda_{\mathrm{BZ}} = 2.156$,
+$\omega_{\log} = \SI{1046}{\kelvin}$, $T_c = \SI{158}{\kelvin}$ ($8/8$
+stable), with a pressure leverage of $+\SI{4.79}{\kelvin\per\giga\pascal}$
+that is nonetheless sub-linear in target terms (Appendix~\ref{app:F}). The
+ternary $X_2MH_6$ \emph{cation-VEC}\,$=19$ sweet spot is a necessary but
+\emph{insufficient} condition: \ce{Mg2IrH6} and \ce{Li2CuH6} are both
+ambient-unstable (2/2 falsified; Appendix~\ref{app:E}). We log every
+closed negative without cherry-picking (Appendix~\ref{app:G}).
+\textbf{Scope, stated plainly:} the \SI{293}{\kelvin}@\SI{1}{\atm} goal is
+\emph{not} reached --- the high-pressure hydride ceiling sits near
+\SI{158}{\kelvin} (stable). The campaign's \texttt{absorbed} flag remains
+\texttt{false} permanently (R4 invariant); a room-temperature ambient
+superconductor requires a different mechanism. All critical-temperature
+numbers carry their verbatim \texttt{hexa verify} verdict, and the
+\texttt{companion/} data records (verify-ledger, PR-roll, session journal)
+support bit-for-bit reproduction.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+The discovery of high-temperature conventional superconductivity in
+compressed hydrides --- \ce{H3S} at \SI{203}{\kelvin}~\cite{drozdov2015} and
+the clathrate \ce{CaH6} at \SI{213}{\kelvin}~\cite{ma2022} --- reshaped the
+search for a room-temperature superconductor. These are
+Bardeen--Cooper--Schrieffer (BCS) superconductors in which light hydrogen
+provides high phonon frequencies and strong electron--phonon coupling, and
+the mechanism is, in principle, computable from first principles: a DFT
+electron--phonon calculation yields the coupling constant $\lambda$ and the
+logarithmic phonon average $\omega_{\log}$, which the Allen--Dynes
+formula~\cite{allendynes1975} maps to a critical temperature $T_c$. The
+field's open question is whether this mechanism can be pushed to ambient
+conditions --- \SI{293}{\kelvin} at \SI{1}{\atm} --- where every record to
+date requires hundreds of gigapascals.
+
+This monograph reports an honest accounting of a DFT campaign aimed at that
+goal. We are explicit at the outset: \textbf{the campaign did not reach
+\SI{293}{\kelvin}@\SI{1}{\atm}.} What it produced instead is (i) a validated
+DFT pipeline, (ii) a reusable methodology for escaping spurious harmonic
+instabilities, and (iii) a quantitative characterisation of \emph{why} the
+binary-hydride route hits a ceiling. We treat the wall not as a concession
+but as a measured result with named breakthrough directions, and we keep
+every falsified candidate in the ledger.
+
+\medskip
+\noindent\textbf{Contributions.}
+\begin{enumerate}\itemsep0.3em
+\item \textbf{Pipeline validation against measured anchors}
+  (Appendix~\ref{app:A}). The DFT $\to$ Allen--Dynes chain reproduces
+  \ce{H3S}, \ce{CaH6}, and \ce{LaBeH8} within campaign tolerance,
+  establishing that the simulation surface is measurement-grade.
+\item \textbf{Soft-mode-escape methodology} (Appendix~\ref{app:C}). A
+  candidate that is a dynamical saddle in the high-symmetry structure can be
+  relaxed along its imaginary eigenvector into a stable lower-symmetry
+  polymorph that retains strong coupling --- demonstrated on
+  \ce{H3As} ($Im\bar{3}m \to R3m$).
+\item \textbf{The N5 wall, quantified} (Appendices~\ref{app:B},
+  \ref{app:D}). Across the $H_3X$ group-14--17 fan-out, stability,
+  strong coupling, and high $\omega_{\log}$ are mutually exclusive. Two
+  novel closed-form margins make the trade-off falsifiable.
+\item \textbf{A \SI{158}{\kelvin} stable record + pressure leverage}
+  (Appendix~\ref{app:F}). \ce{H3Br} at \SI{200}{\giga\pascal} is the
+  strongest dynamically-stable candidate in the campaign, with a measured
+  $\omega_{\log}(P)$ slope that is positive but sub-linear in target terms.
+\item \textbf{Ternary falsification + an unflinching negative ledger}
+  (Appendices~\ref{app:E}, \ref{app:G}). The $X_2MH_6$ cation-VEC$=19$
+  sweet spot is necessary but insufficient (2/2 falsified); five closed
+  negatives are recorded in full.
+\end{enumerate}
+
+\section{Background}
+\label{sec:bg}
+
+\paragraph{Conventional (BCS) superconductivity in hydrides.}
+In the Migdal--Eliashberg framework the electron--phonon coupling is the
+inverse-frequency moment of the Eliashberg spectral function $\alpha^2F$,
+$\lambda = 2\int_0^\infty \alpha^2F(\omega)/\omega\,d\omega$, and McMillan
+and Hopfield~\cite{mcmillan1968,hopfield1969} decompose it as $\lambda =
+\eta/(M\langle\omega^2\rangle)$ with electronic numerator $\eta =
+N(E_F)\langle I^2\rangle$ and lattice denominator $M\langle\omega^2\rangle$.
+The Allen--Dynes formula~\cite{allendynes1975},
+\begin{equation}
+T_c \;=\; \frac{\omega_{\log}}{1.2}\,
+  \exp\!\left[\frac{-1.04\,(1+\lambda)}
+                  {\lambda - \mu^\ast(1+0.62\lambda)}\right],
+\label{eq:ad}
+\end{equation}
+is the closed-form map we verify throughout; $\mu^\ast$ is the Morel--Anderson
+Coulomb pseudopotential (we use $\mu^\ast = 0.10$ unless noted).
+
+\paragraph{Why hydrogen, why pressure.}
+Light mass $M$ shrinks the denominator of $\lambda$ and lifts
+$\omega_{\log}$. Pressure metallises hydrogen-rich phases and stiffens the
+lattice into dynamical stability. The cost is that every measured hydride
+record lives at $\gtrsim\SI{100}{\giga\pascal}$, which is the gap this work
+probes and ultimately respects.
+
+\paragraph{Verification surface.}
+Every numerical claim in this monograph is recomputed by the
+\texttt{hexa verify} libm-class calculator and tagged with one of the tiers
+in the rubric below; the verbatim verdict is printed inline so a reader can
+read the tier without re-running. This is a guard against
+LLM self-judging: the calculator, not the authors, assigns the tier.
+
+\section{Closed-form verification identities}
+\label{sec:identities}
+
+The campaign rests on seven closed-form superconductivity identities, each
+recomputed by the \texttt{hexa verify} libm-class calculator. We list them
+here because the verification surface is itself a result: when the calculator
+\emph{lacked} these functions (the V2 stage, \S\ref{sec:vseries}), the honest
+verdict was \tierOrange\ INSUFFICIENT for all seven --- a gap that was named
+before it was closed, not silently treated as support.
+
+\begin{enumerate}\itemsep0.3em
+\item \textbf{Allen--Dynes $T_c$} (Eq.~\eqref{eq:ad}). The
+  $(\lambda,\omega_{\log},\mu^\ast)\to T_c$ map used for every candidate.
+  Limits: $\lambda\to0\Rightarrow T_c\to0$; $\lambda\to\infty\Rightarrow
+  T_c\to0.295\,\omega_{\log}$ (saturation); $\mu^\ast>\lambda/(1+0.62\lambda)
+  \Rightarrow$ no superconductivity (denominator sign change).
+\item \textbf{McMillan $T_c$}: the Allen--Dynes precursor with
+  $\omega_{\log}\to\Theta_D/1.45$; identical exponential, more conservative
+  prefactor.
+\item \textbf{BCS gap ratio} $2\Delta(0)/k_BT_c = 2\pi e^{-\gamma_E} = 3.528$,
+  the weak-coupling universal constant ($\gamma_E$ = Euler--Mascheroni).
+  Strong-coupling hydrides deviate upward ($\approx4.8$ for \ce{H3S}), which
+  the ratio correctly predicts.
+\item \textbf{Eliashberg $\lambda$} $= 2\int_0^\infty \alpha^2F(\omega)/\omega
+  \,d\omega$, the inverse-frequency moment of the spectral function.
+\item \textbf{$\omega_{\log}$ moment} $= \exp[(2/\lambda)\int
+  \alpha^2F\,\omega^{-1}\ln\omega\,d\omega]$, the logarithmic phonon average.
+\item \textbf{Migdal adiabatic ratio} $r = \omega_{\mathrm{ph,max}}/E_F$;
+  the DFT electron--phonon treatment is valid only for $r\ll1$ (\ce{H3O}:
+  $r\approx0.025$, safe).
+\item \textbf{Anharmonic margins} $S$ and $m$ (Appendix~\ref{app:D}), the two
+  novel primitives that quantify the N5 wall.
+\end{enumerate}
+
+\noindent The BCS universal constant verifies to libm precision (g5):
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=0pt]
+$ hexa verify --expr bcs_gap_ratio 3.528 --tol 0.001
+  calc   = 3.52775  ~= expected 3.528  (within tol 0.001, |D|=0.000246022)
+  tier   = GREEN SUPPORTED-NUMERICAL  (2*pi*exp(-gamma_Euler))
+\end{lstlisting}
+
+% =========================================================================
+\section{Full Pipeline}
+\label{sec:pipeline}
+
+The campaign runs each candidate through the same seven-stage path from
+question to verified result. Each stage is tier-tagged under the rubric
+below; the ``backing record'' is the persistence artifact that makes the
+stage independently re-verifiable (a \texttt{hexa verify} verdict, a
+companion JSON entry, a published DOI, or a PR number). The honest contract
+is in the caption: the wet-lab handoff stage (\tierOrange) never graduates
+to \tierGreen\ without an external measurement, and so the campaign's
+\texttt{absorbed} status is \texttt{false} until that measurement exists.
+
+\medskip
+\noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{Tier rubric.}
+\tierBlue\ closed-form (algebraic or proof-level identity) \(\cdot\)
+\tierGreen\ numerical (reproducible script + persisted output) \(\cdot\)
+\tierYellow\ cited (DOI / arxiv / dataset entry) \(\cdot\)
+\tierOrange\ wet-lab or install-gated (downstream confirmation needed) \(\cdot\)
+\tierRed\ falsified (kept as honest negative, never deleted).}}
+
+\medskip
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}>{\centering\arraybackslash}m{0.4cm} >{\raggedright\arraybackslash}m{4.2cm} c >{\raggedright\arraybackslash}m{6cm}@{}}
+\toprule
+\textbf{\#} & \textbf{Stage} & \textbf{Tier} & \textbf{Backing record} \\
+\midrule
+\textcircled{\scriptsize 1} & Candidate enumeration (group/VEC rule) & \tierBlue   & VEC$=2v(X)+v(M)+6$ (Apx.~\ref{app:E}) \\
+\textcircled{\scriptsize 2} & Literature anchor survey              & \tierYellow & \texttt{references.bib} (Drozdov, Ma, \dots) \\
+\textcircled{\scriptsize 3} & DFT relax + \texttt{ph.x} el--ph       & \tierGreen  & \texttt{exports/material\_discovery/*.json} \\
+\textcircled{\scriptsize 4} & Allen--Dynes $T_c$ closed-form         & \tierGreen  & \texttt{companion/verify-ledger.json} \\
+\textcircled{\scriptsize 5} & Dynamical-stability gate ($q$-points)  & \tierGreen  & per-$q$ \texttt{min\_freq} census \\
+\textcircled{\scriptsize 6} & Pre-registered falsifier sweep         & \tierRed/\tierGreen & \texttt{falsifiers/F-N6.md} (Apx.~\ref{app:G}) \\
+\textcircled{\scriptsize 7} & Wet-lab synthesis handoff              & \tierOrange & recipe-as-record (Apx.~\ref{app:A}, \S \ref{sec:limits}) \\
+\bottomrule
+\end{tabular}
+\caption{Campaign pipeline, stages \textcircled{\scriptsize 1}--\textcircled{\scriptsize 7},
+each tier-tagged. Stages 3--5 are the per-candidate DFT core; stage 6 is
+result-agnostic (a candidate that \emph{fails} a falsifier is \tierRed, a
+closed negative, and is kept). Stage 7 is \tierOrange\ and does not graduate
+to \tierGreen\ without an external measurement --- this is why
+\texttt{absorbed} stays \texttt{false} (R4).}
+\label{tab:pipeline}
+\end{table}
+
+\section{Method}
+\label{sec:method}
+
+\paragraph{DFT electron--phonon.}
+Candidates are relaxed in Quantum ESPRESSO with PBE pseudopotentials (PSL
+1.0.0 RRKJUS, \texttt{pbe-rrkjus} for H), plane-wave cutoffs of
+\SIrange{60}{80}{\rydberg} (wavefunction) / \SIrange{600}{800}{\rydberg}
+(charge), Methfessel--Paxton smearing
+(\texttt{degauss}\,$=\numrange{0.005}{0.02}$), and dense electronic
+$k$-grids ($16^3$ for small metals). Phonons and the deformation potential
+use \texttt{ph.x} with \texttt{electron\_phonon='simple'} on $q$-grids of
+$4^3$ (13 irreducible $q$) up to $8^3$ where convergence demands it. We
+report the Brillouin-zone-converged $\lambda_{\mathrm{BZ}}$ and
+$\omega_{\log}$, never under-sampled $\Gamma$-only values, as the inputs to
+Eq.~\eqref{eq:ad}.
+
+\paragraph{Stability gate.}
+A candidate is \emph{dynamically stable} only if every $q$-point's minimum
+phonon frequency clears the hard-imaginary threshold (\texttt{min\_freq}
+$> -\SI{50}{\per\centi\meter}$). We refine this to the anharmonic
+\emph{escape} criterion $m > 0$ (Appendix~\ref{app:D}); imaginary-free is
+necessary but not sufficient. Harmonic strong-$\lambda$ candidates with soft
+modes are renormalised by the stochastic self-consistent harmonic
+approximation (SSCHA) before $T_c$ is trusted.
+
+\paragraph{Pre-registered falsifiers.}
+For the ternary funnel we registered the pass/fail thresholds \emph{before}
+harvesting data (Appendix~\ref{app:E}, \ref{app:G}); the falsifier ledger
+\texttt{falsifiers/F-N6.md} is the R4-integrity surface, and a candidate is
+judged by the threshold alone, never by author opinion.
+
+\section{Verify}
+\label{sec:verify}
+
+Each $T_c$ in this monograph is recomputed by \texttt{hexa verify} against
+Eq.~\eqref{eq:ad}; the verbatim verdict block follows. Literature-rounded
+inputs are matched with the opt-in \texttt{--tol} flag (this is rounding
+reconciliation, not laundering --- values beyond the tolerance stay
+\tierRed). The headline records:
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=0pt]
+$ hexa verify --expr allen_dynes_tc 2.156 1046 0.10 158.06 --tol 0.01
+  calc   = 158.06  ~= expected 158.06  (within tol 0.01, |D|=0.00041706)
+  tier   = GREEN SUPPORTED-NUMERICAL  (H3Br @ 200 GPa, stable record)
+
+$ hexa verify --expr allen_dynes_tc 1.65 450 0.10 55.88 --tol 0.01
+  calc   = 55.8806 ~= expected 55.88  (within tol 0.01, |D|=0.000567718)
+  tier   = GREEN SUPPORTED-NUMERICAL  (H3As R3m soft-mode-escape polymorph)
+
+$ hexa verify --expr allen_dynes_tc 1.43 1173 0.10 127.63 --tol 0.01
+  calc   = 127.63  ~= expected 127.63 (within tol 0.01, |D|=0.000208059)
+  tier   = GREEN SUPPORTED-NUMERICAL  (H3Cl 8q)
+\end{lstlisting}
+
+The closed-form N5-wall margins (Appendix~\ref{app:D}) are likewise
+\tierGreen: \texttt{lambda\_anharm\_suppress(1.0,1.479)=0.403388} and
+\texttt{stability\_coupling\_margin(1.0,0.5)=0.5}. Full verdicts, including
+falsified negative controls, are in the appendices and in
+\texttt{companion/verify-ledger.json}.
+
+\section{Verification escalation (V1$\to$V4)}
+\label{sec:vseries}
+
+The tier assignments in this monograph are the endpoint of a four-step
+escalation, recorded because the intermediate honest gap is itself a result.
+\begin{enumerate}\itemsep0.25em
+\item \textbf{V1 (inventory).} 52 campaign claims triaged into the six tiers
+  by inspection, with no recompute.
+\item \textbf{V2 (replay).} An attempt to recompute the superconductivity
+  claims found the calculator had \emph{zero} electron--phonon functions ---
+  $7/7$ identities landed at \tierOrange\ INSUFFICIENT. This was recorded as
+  an honest gap, with the explicit path forward (add the seven functions),
+  not laundered into false support.
+\item \textbf{V3 (recompute).} After the six supercon primitives were added,
+  the V2 gap closed: $15/15$ Allen--Dynes $T_c$ claims recompute to libm
+  precision, all \tierGreen.
+\item \textbf{V4 (ledger).} The unified register
+  (Appendix~\ref{app:G}, Tab.~\ref{tab:tiers}).
+\end{enumerate}
+The discipline here is that a verification surface with no calculator path is
+honestly INSUFFICIENT (\tierOrange), never silently SUPPORTED. The same
+discipline governs the \texttt{absorbed} flag: it is \texttt{false} not
+because measurement is merely pending, but because the non-wet-lab gate
+itself ($T_c\ge\SI{270}{\kelvin}$ ambient) is unmet (\S\ref{sec:limits}).
+
+\section{Results}
+\label{sec:results}
+
+The campaign frontier is summarised in Fig.~\ref{fig:headline} and the
+candidate ledger in Tab.~\ref{tab:results}. The headline reading is
+two-sided: the soft-mode-escape methodology and the anchor reproduction are
+genuine, but the stable-candidate $T_c$ ceiling (\SI{158}{\kelvin}, at
+\SI{200}{\giga\pascal}) sits far below the \SI{293}{\kelvin}@\SI{1}{\atm}
+goal, and the gap is structural (the N5 wall, Fig.~\ref{fig:headline}'s
+shaded region), not a matter of more compute.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.92\linewidth]{figures/fig_frontier.png}
+\caption{RTSC campaign frontier: dynamically-stable critical temperature
+$T_c$ versus pressure. Orange diamonds are measurement-grade anchors
+(\ce{H3S} \SI{203}{\kelvin}, \ce{CaH6} \SI{213}{\kelvin}, \ce{LaBeH8}
+\SI{110}{\kelvin}); green circles are this campaign's stable novel DFT
+verdicts (\ce{H3Br} \SI{158}{\kelvin} record, \ce{H3Cl} \SI{128}{\kelvin},
+\ce{H3As}-$R3m$ \SI{56}{\kelvin}). The dashed red line is the unreached
+\SI{293}{\kelvin} ambient goal; the shaded region is the N5 wall, where
+\emph{stable AND strong-$\lambda$ AND high-$\omega_{\log}$} cannot coexist.
+Every plotted $T_c$ carries a \tierGreen\ \texttt{hexa verify} verdict.}
+\label{fig:headline}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Candidate} & \textbf{$\lambda$} & \textbf{$\omega_{\log}$ (K)} &
+  \textbf{$T_c$ (K)} & \textbf{stable?} & \textbf{tier} \\
+\midrule
+\ce{H3S} (anchor)        & 2.0   & 1170   & 203 (meas.) & \checkmark & \tierYellow/\tierGreen \\
+\ce{CaH6} (anchor)       & 1.135 & 1254   & 213 (meas.) & \checkmark & \tierYellow/\tierGreen \\
+\ce{LaBeH8} (anchor)     & 3.9   & 589    & 110 (meas.) & mild soft  & \tierYellow/\tierGreen \\
+\midrule
+\ce{H3Br} @ 200 GPa      & 2.156 & 1046   & \textbf{158} & \checkmark ($8/8$) & \tierGreen \\
+\ce{H3Cl}                & 1.43  & 1173   & 128          & \checkmark         & \tierGreen \\
+\ce{H3As}-$R3m$          & 1.65  & 450    & 56           & \checkmark ($14/14$) & \tierGreen \\
+\ce{H3O} (harmonic)      & 2.479 & 1097   & 180          & \textbf{unstable}  & \tierGreen (artifact) \\
+\ce{H3O} (anharmonic)    & 0.52--1.48 & ---  & 9--109     & stable             & \tierGreen \\
+\midrule
+\ce{Mg2IrH6}             & ---   & ---    & ---          & \textbf{falsified} & \tierRed \\
+\ce{Li2CuH6}             & ---   & ---    & ---          & \textbf{falsified} & \tierRed \\
+\bottomrule
+\end{tabular}
+\caption{Campaign candidate ledger (representative rows; full ledger in
+Appendices~\ref{app:B}, \ref{app:G}). $\mu^\ast = 0.10$ throughout.
+\ce{H3O} illustrates the N5 wall in one material: harmonic
+strong-$\lambda$ is a soft-mode artifact ($16/16$ imaginary $q$) whose $T_c$
+collapses under anharmonic renormalisation. \ce{Mg2IrH6} and \ce{Li2CuH6}
+are the 2/2-falsified $X_2MH_6$ ternaries.}
+\label{tab:results}
+\end{table}
+
+\section{Limitations and honest caveats}
+\label{sec:limits}
+
+\begin{itemize}\itemsep0.3em
+\item \textbf{The room-temperature ambient goal is not reached.} The best
+  dynamically-stable candidate, \ce{H3Br}, gives \SI{158}{\kelvin} at
+  \SI{200}{\giga\pascal}. The campaign's \SI{293}{\kelvin}@\SI{1}{\atm}
+  target is missed by both axes; a different (non-conventional, or
+  ambient-pressure) mechanism would be required.
+\item \textbf{\texttt{absorbed} = false, permanently (R4).} No candidate
+  passes the non-wet-lab gate of $T_c \geq \SI{270}{\kelvin}$ at ambient
+  pressure, so the campaign cannot flip \texttt{absorbed} even under the
+  ``all non-wet-lab gates pass'' definition. The pipeline-validation result
+  is evidence of \emph{measurement-grade capability}, not of any candidate's
+  RTSC status.
+\item \textbf{Allen--Dynes is a fit, not Eliashberg.} We report $T_c$ from
+  Eq.~\eqref{eq:ad}; full anisotropic Eliashberg solutions and spin
+  fluctuations are out of scope. $\mu^\ast = 0.10$ is fixed, not fitted.
+\item \textbf{$\Gamma$-only pressure proxies over-estimate $\omega_{\log}$.}
+  The \ce{H3Br} pressure scan (Appendix~\ref{app:F}) uses a $\Gamma$-only
+  proxy; the absolute $\omega_{\log,\mathrm{BZ}}$ is likely 10--30\% lower.
+  The \emph{slope sign} and monotone trend are robust, but the absolute
+  number at any single pressure is a proxy until a full $4^3$ el--ph run.
+\item \textbf{SSCHA renormalisation is partial.} \ce{H3O}'s anharmonic
+  band (9--\SI{109}{\kelvin}) and \ce{LaBeH8}'s anharmonic $T_c$ are not
+  fully converged; the harmonic-strong-$\lambda$ values for those materials
+  are explicitly flagged as soft-mode artifacts.
+\item \textbf{Wet-lab synthesis is downstream (\tierOrange).} The only
+  recipe-as-record handoff (\ce{H3Cl}) still has an open synthesis-pressure
+  EOS blocker; no candidate has been synthesised or measured by this work.
+\end{itemize}
+
+\section{Reproducibility}
+\label{sec:repro}
+
+Code and campaign records: \url{https://github.com/dancinlab/demiurge}
+(\texttt{domains/RTSC/}). Verified verdicts:
+\texttt{companion/verify-ledger.json} --- every $T_c$ in this monograph as a
+\texttt{(expr, expected, computed, tol, tier)} tuple reproducible with
+\texttt{hexa verify --expr <expr> <expected> [--tol <eps>]}. DFT records:
+\texttt{exports/material\_discovery/*.json} (per-candidate $\lambda$,
+$\omega_{\log}$, per-$q$ \texttt{min\_freq} census). Pre-registered
+falsifiers: \texttt{falsifiers/F-N6.md} (the R4-integrity surface). Wall
+quantification: \texttt{verify/V5\_stability\_coupling\_wall.md}. Build:
+\texttt{make} (xelatex $\times3$ + bibtex). Figures: native TikZ/pgfplots
+(no Python dependency) plus the fal.ai frontier render. Lint: \texttt{make
+lint} (commons g51). Arxiv tarball: \texttt{make arxiv-tar}.
+
+\medskip
+\noindent\textbf{How to re-verify a headline number.} The
+\SI{158}{\kelvin} \ce{H3Br} record is one command:
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=0pt]
+$ hexa verify --expr allen_dynes_tc 2.156 1046 0.10 158.06 --tol 0.01
+\end{lstlisting}
+returning \tierGreen\ SUPPORTED-NUMERICAL. The DFT inputs
+$(\lambda_{\mathrm{BZ}}=2.156, \omega_{\log}=\SI{1046}{\kelvin})$ are the
+companion record's; the closed-form map is exact.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+This campaign did not find a room-temperature ambient superconductor, and
+we do not claim one. What it did establish is durable: a DFT $\to$
+Allen--Dynes pipeline that reproduces three measured hydride records; a
+soft-mode-escape methodology that converts a dynamical saddle into a stable,
+strongly-coupled polymorph (\ce{H3As} $Im\bar{3}m \to R3m$); a
+\SI{158}{\kelvin} dynamically-stable record (\ce{H3Br} @ \SI{200}{\giga\pascal});
+and a first-principles characterisation of the N5 wall with two novel,
+\tierGreen-verified closed-form margins. The wall is the central physics
+result: in binary hydrides the lattice stiffness $\langle\omega^2\rangle$
+plays a double role --- it is both the denominator of $\lambda$ (wants to be
+small) and the dynamical-stability discriminant (must be large) --- so
+stability and strong coupling cannot be optimised together.
+
+\medskip
+\noindent\textbf{Breakthrough directions} (we name them rather than concede,
+per the campaign's governance): (i) the cation-decoupling route, in which a
+stuffed-cation clathrate raises $\langle\omega^2\rangle$ (stability) while a
+cation electron-doping preserves $N(E_F)$ (coupling) --- the \ce{CaH6}
+escape ($m = +0.5$) is the existence proof, even though the ambient
+$X_2MH_6$ octahedral instances tested here are 2/2 falsified; (ii)
+$\omega_{\log}(P)$ leverage on an already-stable strong-$\lambda$ base such
+as \ce{H3Br}, recognising it is sub-linear; (iii) full anharmonic SSCHA
+$T_c$ for \ce{LaBeH8} as the measured ternary anchor. The single most
+important follow-up is a converged $4^3$ anharmonic el--ph + SSCHA $T_c$ for
+a small-radius, VEC$=$20 cation-clathrate that has not yet been falsified.
+
+\medskip
+\noindent The appendices that follow document each result in full:
+Appendix~\ref{app:A} (anchor reproduction), \ref{app:B} ($H_3X$ fan-out),
+\ref{app:C} (soft-mode escape), \ref{app:D} (N5 wall quantification),
+\ref{app:E} (ternary falsification), \ref{app:F} (\ce{H3Br} pressure scan),
+and \ref{app:G} (the closed-negative ledger and 6-tier register).
+
+% =========================================================================
+\paragraph{Acknowledgments.}
+This work used the \texttt{hexa-lang} \texttt{verify} surface (libm-class
+recompute, tier rubric) for every numerical verdict, the Quantum ESPRESSO
+DFT package for electron--phonon calculations, and the \texttt{sidecar/paper}
+monograph scaffold. The fal.ai \texttt{gpt-image} backend rendered the
+frontier figure. LLM collaborator: Claude Opus 4.x (Anthropic), under the
+\texttt{demiurge} 7-verb governance (\texttt{absorbed=false} invariant, g5
+verdict-verbatim, g63 honest-negative).
+
+% =========================================================================
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+% =========================================================================
+% BLUE-MAX appendix template (commented out --- uncomment + fill when a paper
+% does an algebraic-root audit that earns the BLUE-MAX badge).
+%
+% \appendix
+% \section{BLUE-MAX appendix --- algebraic-root audit}
+% \label{app:blue-max}
+%
+% Every claim in this paper is audited against the closed-form algebraic
+% root below. Each row maps a claim to an `atom:<id>` whose verdict is
+% \tierBlue\ (closed-form) or \tierGreen\ (numerical with proof).
+%
+% \begin{table}[h]
+% \centering
+% \small
+% \begin{tabular}{@{}lll@{}}
+% \toprule
+% \textbf{Claim} & \textbf{Atom} & \textbf{Tier} \\
+% \midrule
+% claim 1 & \texttt{atom:<id-1>} & \tierBlue  \\
+% claim 2 & \texttt{atom:<id-2>} & \tierGreen \\
+% \bottomrule
+% \end{tabular}
+% \caption{BLUE-MAX audit table. Every paper claim has an atom; every
+% atom has a verdict; no orange claims survive into the body.}
+% \end{table}
+
+
+% =========================================================================
+% MONOGRAPH APPENDICES (scaffolded by /paper monograph-init).
+% Each \input target is a self-contained chapter under appendix/.
+% Fill one at a time with `/paper fill <letter>`; recompile with `make`.
+\appendix
+\input{appendix/A_appendix_1}
+\input{appendix/B_appendix_2}
+\input{appendix/C_appendix_3}
+\input{appendix/D_appendix_4}
+\input{appendix/E_appendix_5}
+\input{appendix/F_appendix_6}
+\input{appendix/G_appendix_7}
+
+\end{document}

@@ -8,6 +8,7 @@
 @paper rtsc-superconductor              := "./PAPERS/rtsc-superconductor"
 @paper ufo-capstone                     := "./PAPERS/ufo-capstone"
 @paper cardio-plus-postpci              := "./PAPERS/cardio-plus-postpci"
+@paper rtsc-campaign-2026              := "./PAPERS/rtsc-campaign-2026"
 @paper aura-bci                         := "./PAPERS/aura-bci"
 @paper cube-fullcycle-617s              := "./PAPERS/cube-fullcycle-617s"
 @paper rtsc-dft-h3s-textbook-2026-05-22 := "./PAPERS/rtsc-dft-h3s-textbook-2026-05-22"

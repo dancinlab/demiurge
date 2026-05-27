@@ -1,0 +1,151 @@
+[
+  {
+    "id": "h3br-200gpa-record",
+    "expr": "allen_dynes_tc 2.156 1046 0.10",
+    "expected": 158.06,
+    "computed": 158.06,
+    "tol": 0.01,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "H3Br @ 200 GPa, lambda_BZ=2.156, omega_log=1046K, 8/8 stable. Campaign stable record.",
+    "appendix": "F"
+  },
+  {
+    "id": "h3as-r3m-escape",
+    "expr": "allen_dynes_tc 1.65 450 0.10",
+    "expected": 55.88,
+    "computed": 55.8806,
+    "tol": 0.01,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "H3As R3m soft-mode-escape polymorph (Im-3m saddle -> R3m), 14/14 stable.",
+    "appendix": "C"
+  },
+  {
+    "id": "h3cl-8q",
+    "expr": "allen_dynes_tc 1.43 1173 0.10",
+    "expected": 127.63,
+    "computed": 127.63,
+    "tol": 0.01,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "H3Cl 8^3-q converged, stable, omega_log-capped.",
+    "appendix": "B"
+  },
+  {
+    "id": "h3si",
+    "expr": "allen_dynes_tc 1.787 590.1 0.10",
+    "expected": 78.18,
+    "computed": 78.1847,
+    "tol": 0.01,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "H3Si group-14, stable, weak-lambda.",
+    "appendix": "B"
+  },
+  {
+    "id": "h3f",
+    "expr": "allen_dynes_tc 0.807 658.6 0.10",
+    "expected": 31.41,
+    "computed": 31.4139,
+    "tol": 0.01,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "H3F group-17, stable, weak-lambda.",
+    "appendix": "B"
+  },
+  {
+    "id": "h3o-harmonic-artifact",
+    "expr": "allen_dynes_tc 2.479 1096.6 0.10",
+    "expected": 179.78,
+    "computed": 179.779,
+    "tol": 0.01,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "H3O harmonic. 16/16 imaginary q-points: the Tc is a soft-mode ARTIFACT, not a stable prediction. Anharmonic SSCHA collapses to 9-109 K.",
+    "appendix": "B,D"
+  },
+  {
+    "id": "h3br-strong-lambda-branch",
+    "expr": "allen_dynes_tc 4.4191 530.7 0.10",
+    "expected": 109.8,
+    "computed": 109.796,
+    "tol": 0.1,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "H3Br low-pressure strong-lambda branch (lambda=4.42, omega_log=531K), 16/16 stable.",
+    "appendix": "F"
+  },
+  {
+    "id": "cah6-anchor",
+    "expr": "allen_dynes_tc 1.135 1254.2 0.10",
+    "expected": 104.5972,
+    "computed": 104.597,
+    "tol": 0.001,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "CaH6 anchor (measured 213 K @ 170 GPa; clathrate phase). Pipeline validation.",
+    "appendix": "A"
+  },
+  {
+    "id": "labeh8-anchor-harmonic",
+    "expr": "allen_dynes_tc 3.9 589 0.10",
+    "expected": 117.2,
+    "computed": 117.204,
+    "tol": 0.01,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "LaBeH8 harmonic (measured 110 K @ 80 GPa). Mild Gamma-soft; SSCHA pending.",
+    "appendix": "A"
+  },
+  {
+    "id": "n5-lambda-anharm-suppress-h3o",
+    "expr": "lambda_anharm_suppress 1.0 1.479",
+    "expected": 0.4033884626,
+    "computed": 0.403388,
+    "tol": 1e-9,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "N5-wall margin S: harmonic lambda=2.479 renormalizes to ~1.0 under SSCHA. NOVEL closed-form primitive.",
+    "appendix": "D"
+  },
+  {
+    "id": "n5-stability-margin-cah6-escape",
+    "expr": "stability_coupling_margin 1.0 0.5",
+    "expected": 0.5,
+    "computed": 0.5,
+    "tol": 1e-9,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "N5-wall margin m>0: CaH6 escape (stable AND strong). NOVEL closed-form primitive.",
+    "appendix": "D"
+  },
+  {
+    "id": "n5-stability-margin-h3o-trapped",
+    "expr": "stability_coupling_margin 1.0 2.479",
+    "expected": -1.479,
+    "computed": -1.479,
+    "tol": 1e-9,
+    "tier": "GREEN_SUPPORTED_NUMERICAL",
+    "note": "N5-wall margin m<0: H3O trapped (binary hydride region).",
+    "appendix": "D"
+  },
+  {
+    "id": "f-n6-1-mg2irh6",
+    "expr": "dynamical_stability_gate min_freq=-2235 hard_imag=48pct",
+    "tier": "RED_FALSIFIED",
+    "note": "F-N6-1: Mg2IrH6 Fm-3m cation-VEC=19 ambient unstable. Sweet-spot is NECESSARY but INSUFFICIENT. PR #247.",
+    "appendix": "E,G"
+  },
+  {
+    "id": "f-n6-2-li2cuh6",
+    "expr": "dynamical_stability_gate min_freq=-944.92 hard_imag=8modes",
+    "tier": "RED_FALSIFIED",
+    "note": "F-N6-2: Li2CuH6 Fm-3m ambient unstable. X2MH6 K2PtCl6 prototype 2/2 falsified. PR #275.",
+    "appendix": "E,G"
+  },
+  {
+    "id": "f-n6-4-h3br-pscan",
+    "expr": "omega_log_slope_K_per_GPa",
+    "expected": 0.5,
+    "computed": 4.789,
+    "tier": "GREEN_PASSED",
+    "note": "F-N6-4 PASSED (pre-registered): omega_log(P) slope +4.79 K/GPa (R^2=0.915, 9.6x threshold). omega_log bottleneck IS pressure-responsive in H3Br at Gamma probe.",
+    "appendix": "F"
+  },
+  {
+    "id": "absorbed-flag",
+    "tier": "R4_INVARIANT",
+    "value": false,
+    "note": "absorbed=false PERMANENTLY. No candidate passes the non-wet-lab RTSC gate (Tc>=270K at ambient). Best stable = H3Br 158K @ 200 GPa. The room-temperature ambient goal is NOT reached."
+  }
+]
