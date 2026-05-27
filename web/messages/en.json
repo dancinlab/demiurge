@@ -145,6 +145,15 @@
     "sign_in_to_fork": "sign in to fork",
     "matter_title": "matter — attestation / verdict ledger",
     "matter_subtitle": "per-material absorbed? gate · CLAUDE.md d_paper_* SSOT",
-    "matter_empty": "No records yet under exports/material_{attestation,verdict}/."
+    "matter_empty": "No records yet under exports/material_{attestation,verdict}/.",
+    "topbar_domains": "📦 domains",
+    "topbar_active_project": "active project",
+    "chef_awaiting_domain": "no domain selected",
+    "chef_ready": "ready",
+    "domain_aria": "domain",
+    "domain_new_project": "new project (discover)",
+    "verbtree_collapse": "collapse",
+    "verbtree_expand": "expand",
+    "verbtree_8verbs": "8 verbs"
   }
 }

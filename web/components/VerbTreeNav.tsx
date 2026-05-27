@@ -74,16 +74,32 @@ function detectActive(pathname: string): { verb: VerbId | null; domain: string |
   return { verb: m[1] as VerbId, domain: m[2] ?? null };
 }
 
+type VerbTreeI18n = {
+  verbtreeCollapse: string;
+  verbtreeExpand: string;
+  verbtree8Verbs: string;
+};
+
 export function VerbTreeNav({
   domain: domainProp,
   statusByVerb,
+  i18n,
 }: {
   domain?: string;
   statusByVerb?: Partial<Record<VerbId, VerbStatus>>;
+  i18n?: VerbTreeI18n;
 }) {
   const pathname = usePathname() ?? "";
   const { verb: activeVerb, domain: detectedDomain } = detectActive(pathname);
   const domain = domainProp ?? detectedDomain;
+
+  // Fallback strings — used when this component is mounted outside the
+  // (app) layout (e.g. tests · public pages). Layout always passes i18n.
+  const labels = i18n ?? {
+    verbtreeCollapse: "collapse",
+    verbtreeExpand: "expand",
+    verbtree8Verbs: "8 verbs",
+  };
 
   const [expanded, setExpanded] = useState(false);
   useEffect(() => {
@@ -103,9 +119,9 @@ export function VerbTreeNav({
         type="button"
         onClick={toggle}
         className="mb-1 flex items-center justify-between rounded-[6px] px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-slate-500 hover:bg-slate-100"
-        title={expanded ? "접기" : "펼치기"}
+        title={expanded ? labels.verbtreeCollapse : labels.verbtreeExpand}
       >
-        <span>{expanded ? (domain ? `· ${domain}` : "8 verbs") : "≡"}</span>
+        <span>{expanded ? (domain ? `· ${domain}` : labels.verbtree8Verbs) : "≡"}</span>
         <span>{expanded ? "◂" : "▸"}</span>
       </button>
       {VERBS.map((v) => {

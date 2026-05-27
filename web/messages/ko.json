@@ -145,6 +145,15 @@
     "sign_in_to_fork": "로그인하고 fork",
     "matter_title": "matter — attestation / verdict 원장",
     "matter_subtitle": "material 별 absorbed? 게이트 · CLAUDE.md d_paper_* SSOT",
-    "matter_empty": "exports/material_{attestation,verdict}/ 에 기록이 없습니다."
+    "matter_empty": "exports/material_{attestation,verdict}/ 에 기록이 없습니다.",
+    "topbar_domains": "📦 도메인",
+    "topbar_active_project": "활성 프로젝트",
+    "chef_awaiting_domain": "도메인 선택 대기",
+    "chef_ready": "준비 됨",
+    "domain_aria": "도메인",
+    "domain_new_project": "새 프로젝트 (discover)",
+    "verbtree_collapse": "접기",
+    "verbtree_expand": "펼치기",
+    "verbtree_8verbs": "8 verb"
   }
 }

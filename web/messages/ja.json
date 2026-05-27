@@ -145,6 +145,15 @@
     "sign_in_to_fork": "サインインして fork",
     "matter_title": "matter — attestation / verdict 元帳",
     "matter_subtitle": "material ごとの absorbed? ゲート",
-    "matter_empty": "記録なし。"
+    "matter_empty": "記録なし。",
+    "topbar_domains": "📦 ドメイン",
+    "topbar_active_project": "アクティブ プロジェクト",
+    "chef_awaiting_domain": "ドメイン未選択",
+    "chef_ready": "準備完了",
+    "domain_aria": "ドメイン",
+    "domain_new_project": "新規プロジェクト (discover)",
+    "verbtree_collapse": "折りたたむ",
+    "verbtree_expand": "展開",
+    "verbtree_8verbs": "8 動詞"
   }
 }
