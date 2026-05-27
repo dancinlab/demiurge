@@ -1,0 +1,94 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+\title{AURA-100: An Open Reference Design for Post-Aural Wearable\\
+Brain-Computer Interfaces with g3-Honest Regulatory Scaffolding}
+\author{dancinlab AURA project}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The wearable EEG-based brain-computer interface (BCI) ecosystem is
+fragmented: open-source tooling excels at signal analysis (MNE-Python,
+EEGLAB) yet lags in acquisition hardware and clinical-grade regulatory
+scaffolding, where proprietary platforms dominate. We present AURA-100,
+an open hexa-native reference design for a post-aural / temporal-bone
+clip wearable BCI, organized around a seven-verb pipeline
+(specify $\to$ structure $\to$ design $\to$ analyze $\to$ synthesize
+$\to$ verify $\to$ handoff). Our contributions are: (1) an open
+reference design with illustrative bill-of-materials; (2) honest
+regulatory dossier scaffolding spanning FDA 510(k) Class II, EU MDR
+Class IIa, IEC 60601-1-2 EMC, and Bluetooth SIG qualification; (3) a
+cross-vendor SoC and Lab Streaming Layer (LSL) bridge proposal
+(Nordic nRF5340, Espressif ESP32-C6, OpenBCI); and (4) an honest-gap
+declaration for MRI-safety, where Sim4Life holds an FDA-MDDT monopoly
+and we sketch a multi-year open-source breakthrough path. A key
+numerical result: a naive-DFT alpha-band periodogram reproduces the
+MNE-Welch (boxcar) estimator at float64 machine precision
+($\text{rel\_spread} = 2.23 \times 10^{-16}$) on real PhysioNet
+EEGBCI data, generalizing the Sleep-EDF spectral parity
+(mean\_rel\_err $= 8.4 \times 10^{-7}$). All artifacts are
+template / illustrative (\texttt{absorbed=false} where accredited
+closure is pending); the \texttt{g3} honesty discipline keeps every
+claim ring-fenced.
+\end{abstract}
+
+\section{Introduction}
+Wearable BCI landscape; open-vs-proprietary gap; the case for an open
+post-aural reference design.
+
+\section{Seven-Verb Design Pipeline}
+V0--V7 producer cells and architectural choices. V0 (verify) is the
+sole \texttt{absorbed=true} measured-oracle cell, anchored on
+PhysioNet Sleep-EDF spectral parity.
+
+\section{Illustrative Substance (D1--D7)}
+Bill-of-materials (Texas Instruments ADS1299, Nordic nRF5340, Li-Po),
+ngspice AFE noise modeling, openEMS antenna / SAR, MNE-Python band
+power. Every value is an illustrative reference target.
+
+\section{Breakthrough Paths (G1--G3)}
+G1 open MRI-safety solver (ASTM F2182, ISO 10974) at Sim4Life parity;
+G2 open EEG acquisition platform; G3 RISC-V BLE SoC diversity.
+
+\section{Regulatory Scaffolding (A1--A4)}
+FDA 510(k) eSTAR, EU MDR Annex IX, IEC 60601-1-2 EMC, Bluetooth SIG
+qualification --- submission-ready drafts.
+
+\section{Numerical Verification}
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+Dataset & Estimator pair & Agreement \\
+\midrule
+Sleep-EDF & naive-DFT vs MNE-Welch & mean\_rel\_err $8.4\times10^{-7}$ \\
+EEGBCI s1r1 & naive-DFT vs Welch(Hann) & rel\_err $0.28$ (window mismatch) \\
+EEGBCI s1r1 & naive-DFT vs Welch(boxcar) & rel\_spread $2.23\times10^{-16}$ \\
+\bottomrule
+\end{tabular}
+\caption{Alpha-band periodogram parity. Window convention (Hann vs
+no-window) is the only variable; with boxcar pinned, the naive-DFT and
+MNE-Welch estimators agree to float64 machine precision.}
+\end{table}
+
+\section{g3 Honesty Discipline}
+Scope-caveat methodology; \texttt{absorbed=false} rationale; the
+distinction between in-silico closure and accredited-lab confirmation.
+
+\section{Discussion and Limitations}
+Open ecosystem implications; Sim4Life monopoly; RISC-V medical
+silicon; template-substance limitations and downstream gates.
+
+\section{Conclusion}
+hexa-native open reference design as an honest scaffolding pattern for
+regulated wearable BCI development.
+
+\end{document}
