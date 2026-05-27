@@ -1,11 +1,14 @@
 "use client";
 
-// Dashboard domain switcher — navigates to /dashboard?d=<NAME> AND mirrors the
-// choice to localStorage so TopBar (and any other client) can render the
-// active project name without a server round-trip.
+// DomainSwitcher — calls a Server Action that writes the canonical
+// `demiurge.active.domain` cookie, then navigates + refreshes so the layout
+// (server component) re-reads cookies and TopBar/VerbTreeNav rerender with
+// the new active domain. No localStorage, no client-state.
 // The trailing "+" starts a new project via the 8th verb (discover).
 
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { setActiveDomain } from "@/app/actions/active-domain";
 
 export function DomainSwitcher({
   names,
@@ -15,18 +18,23 @@ export function DomainSwitcher({
   current: string;
 }) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
   function pick(name: string) {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("demiurge.active.domain", name);
-    }
-    router.push(`/dashboard?d=${encodeURIComponent(name)}`);
+    startTransition(async () => {
+      await setActiveDomain(name);
+      router.push(`/dashboard?d=${encodeURIComponent(name)}`);
+      router.refresh();
+    });
   }
+
   return (
     <div className="flex items-center gap-1.5">
       <select
         value={current}
         onChange={(e) => pick(e.target.value)}
-        className="cursor-pointer rounded-[6px] border border-slate-200 bg-white px-2 py-1 font-mono text-sm text-slate-900 hover:border-slate-300"
+        disabled={isPending}
+        className="cursor-pointer rounded-[6px] border border-slate-200 bg-white px-2 py-1 font-mono text-sm text-slate-900 hover:border-slate-300 disabled:opacity-60"
         aria-label="domain"
       >
         {names.map((n) => (

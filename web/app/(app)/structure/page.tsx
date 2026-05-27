@@ -1,13 +1,16 @@
-// /structure — verb-only landing. ?d=<domain> → canonical /structure/<domain>. bare → /dashboard.
+// /structure — verb-only landing. If active domain (?d= or cookie) exists,
+// redirect to its canonical /<verb>/<domain>; else go to /dashboard.
 
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-export default async function StructureVerbLanding({
+export default async function VerbLanding({
   searchParams,
 }: {
   searchParams: Promise<{ d?: string }>;
 }) {
-  const { d } = await searchParams;
-  if (d) redirect(`/structure/${encodeURIComponent(d.toLowerCase())}`);
+  const [{ d }, c] = await Promise.all([searchParams, cookies()]);
+  const active = d ?? c.get("demiurge.active.domain")?.value ?? null;
+  if (active) redirect(`/structure/${encodeURIComponent(active.toLowerCase())}`);
   redirect("/dashboard");
 }

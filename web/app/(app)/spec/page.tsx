@@ -1,15 +1,16 @@
-// /spec — verb-only landing. Accepts ?d=<domain> (legacy query form from
-// older menus) and redirects to the canonical /spec/<domain> path. Bare
-// /spec (no query) lands on /dashboard.
+// /spec — verb-only landing. If active domain (?d= or cookie) exists,
+// redirect to its canonical /<verb>/<domain>; else go to /dashboard.
 
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-export default async function SpecVerbLanding({
+export default async function VerbLanding({
   searchParams,
 }: {
   searchParams: Promise<{ d?: string }>;
 }) {
-  const { d } = await searchParams;
-  if (d) redirect(`/spec/${encodeURIComponent(d.toLowerCase())}`);
+  const [{ d }, c] = await Promise.all([searchParams, cookies()]);
+  const active = d ?? c.get("demiurge.active.domain")?.value ?? null;
+  if (active) redirect(`/spec/${encodeURIComponent(active.toLowerCase())}`);
   redirect("/dashboard");
 }

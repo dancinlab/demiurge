@@ -1,13 +1,16 @@
-// /synth — verb-only landing. ?d=<domain> → canonical /synth/<domain>. bare → /dashboard.
+// /synth — verb-only landing. If active domain (?d= or cookie) exists,
+// redirect to its canonical /<verb>/<domain>; else go to /dashboard.
 
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-export default async function SynthVerbLanding({
+export default async function VerbLanding({
   searchParams,
 }: {
   searchParams: Promise<{ d?: string }>;
 }) {
-  const { d } = await searchParams;
-  if (d) redirect(`/synth/${encodeURIComponent(d.toLowerCase())}`);
+  const [{ d }, c] = await Promise.all([searchParams, cookies()]);
+  const active = d ?? c.get("demiurge.active.domain")?.value ?? null;
+  if (active) redirect(`/synth/${encodeURIComponent(active.toLowerCase())}`);
   redirect("/dashboard");
 }
