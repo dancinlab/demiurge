@@ -9,6 +9,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { currentUser } from "@/lib/session";
 import { listDomains } from "@/lib/domains";
+import { getMessages, t } from "@/lib/i18n";
 import { DomainSwitcher } from "@/components/DomainSwitcher";
 import { DashboardSummary } from "@/components/DashboardSummary";
 
@@ -46,10 +47,11 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ d?: string }>;
 }) {
-  const [user, domains, sp] = await Promise.all([
+  const [user, domains, sp, messages] = await Promise.all([
     currentUser(),
     listDomains(),
     searchParams,
+    getMessages(),
   ]);
   if (!user) redirect("/signin");
 
@@ -84,10 +86,12 @@ export default async function DashboardPage({
   return (
     <div className="space-y-6">
       <header className="flex items-center gap-3">
-        <h1 className="text-lg font-semibold tracking-tight text-slate-900">🏠 dashboard</h1>
+        <h1 className="text-lg font-semibold tracking-tight text-slate-900">🏠 {t(messages, "dashboard.title")}</h1>
         <DomainSwitcher
           names={domains.map((d) => d.name)}
           current={active?.name ?? ""}
+          ariaLabel={t(messages, "app_gui.domain_aria")}
+          newProjectLabel={t(messages, "app_gui.domain_new_project")}
         />
         {pct !== null && (
           <span className="text-xs text-slate-500">
@@ -99,7 +103,7 @@ export default async function DashboardPage({
       {active && (
         <section className="space-y-3">
           <h2 className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
-            active · {active.name}
+            {t(messages, "dashboard.active_label")} · {active.name}
           </h2>
           <div className="flex flex-wrap gap-2 text-xs">
             <VerbChip verb="discover"  label="discover"  domain={active.name} />
@@ -109,7 +113,7 @@ export default async function DashboardPage({
             <VerbChip verb="handoff"   label="handoff"   domain={active.name} />
           </div>
           <details className="text-xs">
-            <summary className="cursor-pointer text-slate-500 hover:text-slate-700">📜 log tail (30)</summary>
+            <summary className="cursor-pointer text-slate-500 hover:text-slate-700">📜 {t(messages, "dashboard.log_tail")}</summary>
             <pre className="mt-1 max-h-72 overflow-auto rounded-[6px] border border-slate-200 bg-slate-50 p-2 font-mono text-[11px] text-slate-700">
               {logTail}
             </pre>
