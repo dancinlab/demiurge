@@ -1,0 +1,49 @@
+// harvest.hexa — h3br 200 GPa full 4x4x4 q el-ph harvest (harvest_v2 contract SSOT)
+//
+// Consumes QE ph.x electron_phonon='simple' outputs:
+//   - <prefix>.dyn{i}            : phonon freqs (stability + per-mode omega)  i in 1..n_q
+//   - ph.out  Gaussian-Broadening blocks : lambda(nu), gamma per sigma per q-point
+// Produces JSON harvest: per-sigma lambda_BZ, omega_log (Allen-weighted), Allen-Dynes Tc (mu*=0.10/0.13),
+//   stability summary (min_freq, n_soft, n_hard), harmonic_validity gate.
+//
+// The reference Python lowering is authored at the DISPATCH SITE (ubu-1) per memory
+// "demiurge sims = .hexa only" — this .hexa is the canonical SSOT of the contract.
+// Inherits the harvest_v2 validity gate (decks/labeh8/harvest_v2.hexa, g61 promote-pending).
+
+@V := "harvest-h3br-200gpa-fullq" :: spec [active]
+  version             = "1.0-validity-gate"
+  imag_threshold_cm1  = -5.0
+  max_mild_imag_count = 3
+  hard_imag_threshold = -50.0
+  deep_mild_threshold = -20.0
+  cm1_to_K            = 1.43877735
+
+@io := "harvest-contract" :: contract
+  workdir = "/home/aiden/rtsc_h3br_pscan/200gpa_fullq"
+  prefix  = "h3br"
+  n_q     = 8   // 4x4x4 BCC ibrav=3 -> 8 IBZ q-points (from h3br.dyn0)
+  method  = "simple"
+  inputs  = "h3br.dyn{1..8} + ph.out Gaussian-Broadening lambda blocks"
+  out     = "harvest.json"
+
+@moments := "BZ-weighted (canonical)" :: identity
+  lambda_BZ = "sum_q w_q sum_nu lambda(q,nu) / sum_q w_q"
+  omega_log = "exp(sum_{q,nu real, lam>0} w_q lam ln(omega) / sum_{...} w_q lam)"
+  Tc_AD     = "(omega_log/1.2) * exp(-1.04(1+lam) / (lam - mu*(1+0.62 lam)))"
+
+@gate := "harmonic_validity" :: classifier
+  rule_1_hard        = "n_hard >= 1  -> INVALID hard-soft (closed-negative)"
+  rule_2_mild_excess = "n_soft > 3   -> INVALID too-many-mild"
+  rule_3_deep_mild   = "min_freq < -20 -> INVALID deep-mild SSCHA required"
+  rule_4_default     = "else -> VALID"
+
+@verdicts := "g63 honest" :: branches
+  breakthrough = "VALID (all q real) AND Tc>200K -> first campaign 200K+ (atlas register --from-verify)"
+  data_point   = "VALID AND Tc<200K -> honest data point (omega_log-up effect quantified)"
+  closed_neg   = "n_hard>=1 (zone-boundary) -> atlas register --from-falsify h3br_200gpa_stable"
+
+@honesty := "d6 · g3" :: bounds
+  b1 = "Gamma-only omega_log=1766K may be 10-30% over-estimate; full-BZ Allen-weighted is the truth"
+  b2 = "lambda_BZ unmeasured before this run -> prior Tc was extrapolation only"
+  b3 = "no plateau-forcing; honest sigma-plateau (sigma>=0.025 Ry) or report under-converged"
+  b4 = "RTSC absorbed=false permanently (R4) — candidate-funnel data point, not wet-lab claim"
