@@ -1,0 +1,54 @@
+! YH10 Fm-3m #225 sodalite (LaH10-iso) hall=523 a=4.75 FCC-prim @250GPa min_d=1.028Ang
+&CONTROL
+  calculation = 'vc-relax'
+  prefix = 'yh10'
+  outdir = './tmp'
+  pseudo_dir = '../pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  etot_conv_thr = 1.0d-5
+  nstep = 200
+/
+&SYSTEM
+  ibrav = 2
+  celldm(1) = 8.97619911
+  nat = 11
+  ntyp = 2
+  ecutwfc = 80
+  ecutrho = 800
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&ELECTRONS
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+&IONS
+  ion_dynamics = 'bfgs'
+/
+&CELL
+  cell_dynamics = 'bfgs'
+  press = 2500.0
+  press_conv_thr = 0.5
+  cell_factor = 3.0
+/
+ATOMIC_SPECIES
+  Y   88.906  Y.UPF
+  H   1.008   H.UPF
+ATOMIC_POSITIONS crystal
+  Y   0.00000000 0.00000000 0.00000000
+  H   0.75000000 0.75000000 0.75000000
+  H   0.25000000 0.25000000 0.25000000
+  H   0.62500000 0.12500000 0.62500000
+  H   0.37500000 0.87500000 0.37500000
+  H   0.37500000 0.37500000 0.37500000
+  H   0.62500000 0.62500000 0.62500000
+  H   0.12500000 0.62500000 0.62500000
+  H   0.87500000 0.37500000 0.37500000
+  H   0.37500000 0.37500000 0.87500000
+  H   0.62500000 0.62500000 0.12500000
+K_POINTS automatic
+  12 12 12 0 0 0

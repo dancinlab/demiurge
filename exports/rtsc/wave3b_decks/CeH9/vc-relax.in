@@ -1,0 +1,64 @@
+! CeH9 P6_3/mmc #194 explicit-orbit hall=488 a=3.711 c=5.5429 @100GPa min_d=1.120Ang
+&CONTROL
+  calculation = 'vc-relax'
+  prefix = 'ceh9'
+  outdir = './tmp'
+  pseudo_dir = '../pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  etot_conv_thr = 1.0d-5
+  nstep = 200
+/
+&SYSTEM
+  ibrav = 4
+  celldm(1) = 7.01277366
+  celldm(3) = 1.49364053
+  nat = 20
+  ntyp = 2
+  ecutwfc = 80
+  ecutrho = 800
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&ELECTRONS
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+&IONS
+  ion_dynamics = 'bfgs'
+/
+&CELL
+  cell_dynamics = 'bfgs'
+  press = 1000.0
+  press_conv_thr = 0.5
+  cell_factor = 3.0
+/
+ATOMIC_SPECIES
+  Ce  140.116  Ce.UPF
+  H   1.008    H.UPF
+ATOMIC_POSITIONS crystal
+  Ce  0.66666667 0.33333333 0.25000000
+  Ce  0.33333333 0.66666667 0.75000000
+  H   0.00000000 0.00000000 0.25000000
+  H   0.00000000 0.00000000 0.75000000
+  H   0.33333333 0.66666667 0.14900000
+  H   0.66666667 0.33333333 0.85100000
+  H   0.66666667 0.33333333 0.64900000
+  H   0.33333333 0.66666667 0.35100000
+  H   0.15600000 0.31200000 0.06200000
+  H   0.84400000 0.68800000 0.93800000
+  H   0.84400000 0.15600000 0.56200000
+  H   0.15600000 0.84400000 0.43800000
+  H   0.68800000 0.84400000 0.06200000
+  H   0.31200000 0.15600000 0.93800000
+  H   0.84400000 0.68800000 0.56200000
+  H   0.15600000 0.31200000 0.43800000
+  H   0.15600000 0.84400000 0.06200000
+  H   0.84400000 0.15600000 0.93800000
+  H   0.31200000 0.15600000 0.56200000
+  H   0.68800000 0.84400000 0.43800000
+K_POINTS automatic
+  12 12 12 0 0 0

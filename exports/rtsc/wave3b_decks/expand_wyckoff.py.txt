@@ -1,0 +1,259 @@
+#!/usr/bin/env python3
+"""Wave-3b RTSC deck re-author: expand published Wyckoff representatives into
+FULL explicit conventional-cell ATOMIC_POSITIONS (crystal), matching the
+YH6-proven explicit-positions QE pattern (no space_group card).
+
+Uses spglib.get_symmetry_from_database(hall_number) for deterministic orbit
+expansion. Outputs one vc-relax.in per candidate to /tmp/wave3d_out/<C>/.
+"""
+import spglib
+import numpy as np
+import os
+
+OUT = "/tmp/wave3d_out"
+
+def hall_for(ita):
+    cands = []
+    for h in range(1, 531):
+        t = spglib.get_spacegroup_type(h)
+        if t is None:
+            continue
+        if t["number"] == ita:
+            cands.append((h, t))
+    return cands
+
+def sym_ops(hall):
+    d = spglib.get_symmetry_from_database(hall)
+    return d["rotations"], d["translations"]
+
+def expand(reps, rots, trans, tol=1e-4):
+    out = []
+    for sp, r0 in reps:
+        orbit = []
+        for R, t in zip(rots, trans):
+            c = (R @ r0 + t) % 1.0
+            c = np.where(np.abs(c - 1.0) < tol, 0.0, c)
+            c = c % 1.0
+            dup = False
+            for o in orbit:
+                d = np.abs(c - o)
+                d = np.minimum(d, 1.0 - d)
+                if np.all(d < tol):
+                    dup = True
+                    break
+            if not dup:
+                orbit.append(c)
+        for c in orbit:
+            out.append((sp, c))
+    return out
+
+def write_vcrelax(path, prefix, cell_card, species_card, atoms, press_kbar,
+                  ntyp, comment):
+    nat = len(atoms)
+    L = []
+    L.append("&CONTROL")
+    L.append("  calculation = 'vc-relax'")
+    L.append(f"  prefix = '{prefix}'")
+    L.append("  outdir = './tmp'")
+    L.append("  pseudo_dir = '../pseudo'")
+    L.append("  tprnfor = .true.")
+    L.append("  tstress = .true.")
+    L.append("  forc_conv_thr = 1.0d-4")
+    L.append("  etot_conv_thr = 1.0d-5")
+    L.append("  nstep = 200")
+    L.append("/")
+    L.append("&SYSTEM")
+    L += cell_card
+    L.append(f"  nat = {nat}")
+    L.append(f"  ntyp = {ntyp}")
+    L.append("  ecutwfc = 80")
+    L.append("  ecutrho = 800")
+    L.append("  occupations = 'smearing'")
+    L.append("  smearing = 'mp'")
+    L.append("  degauss = 0.02")
+    L.append("/")
+    L.append("&ELECTRONS")
+    L.append("  conv_thr = 1.0d-12")
+    L.append("  mixing_beta = 0.4")
+    L.append("  electron_maxstep = 400")
+    L.append("/")
+    L.append("&IONS")
+    L.append("  ion_dynamics = 'bfgs'")
+    L.append("/")
+    L.append("&CELL")
+    L.append("  cell_dynamics = 'bfgs'")
+    L.append(f"  press = {press_kbar}")
+    L.append("  press_conv_thr = 0.5")
+    L.append("  cell_factor = 3.0")
+    L.append("/")
+    L.append("ATOMIC_SPECIES")
+    L += species_card
+    L.append("ATOMIC_POSITIONS crystal")
+    for sp, c in atoms:
+        L.append(f"  {sp:<3s} {c[0]:.8f} {c[1]:.8f} {c[2]:.8f}")
+    L.append("K_POINTS automatic")
+    L.append("  12 12 12 0 0 0")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as f:
+        f.write("! " + comment + "\n")
+        f.write("\n".join(L) + "\n")
+    return nat
+
+def min_dist_frac(atoms, lattice_vecs):
+    Lm = np.array(lattice_vecs)
+    coords = np.array([c for _, c in atoms])
+    n = len(coords)
+    mind = 1e9
+    for i in range(n):
+        for j in range(i + 1, n):
+            d = coords[i] - coords[j]
+            d = d - np.round(d)
+            cart = d @ Lm
+            dist = np.linalg.norm(cart)
+            if dist < mind:
+                mind = dist
+    return mind
+
+def hex_lattice(a, c):
+    return [[a, 0, 0], [-a / 2, a * np.sqrt(3) / 2, 0], [0, 0, c]]
+
+def cubic_lattice(a):
+    return [[a, 0, 0], [0, a, 0], [0, 0, a]]
+
+def fcc_prim_lattice(a):
+    # QE ibrav=2 convention: a1=(-a/2,0,a/2) a2=(0,a/2,a/2) a3=(-a/2,a/2,0)
+    return [[-a/2, 0, a/2], [0, a/2, a/2], [-a/2, a/2, 0]]
+
+def to_fcc_primitive(conv_atoms, a):
+    """Reduce conventional-cubic fractional coords to FCC-primitive fractional.
+    conv (cubic) cartesian = f_conv @ (a*I). Primitive basis P (rows = a1,a2,a3
+    in QE ibrav=2). f_prim = cart @ inv(P) ; keep only atoms whose f_prim is in
+    [0,1) modulo lattice and dedupe (the conventional cell holds 4 primitive
+    copies)."""
+    P = np.array(fcc_prim_lattice(a))
+    Pinv = np.linalg.inv(P)
+    out = []
+    seen = []
+    for sp, fc in conv_atoms:
+        cart = np.array(fc) * a
+        fp = (cart @ Pinv) % 1.0
+        fp = np.where(np.abs(fp - 1.0) < 1e-5, 0.0, fp) % 1.0
+        dup = False
+        for s2, o in seen:
+            if s2 != sp:
+                continue
+            d = np.abs(fp - o); d = np.minimum(d, 1.0 - d)
+            if np.all(d < 1e-4):
+                dup = True
+                break
+        if not dup:
+            seen.append((sp, fp))
+            out.append((sp, fp))
+    return out
+
+BOHR = 0.52917721
+
+def pick_hall(ita, choice=None):
+    cands = hall_for(ita)
+    if choice is not None:
+        for h, t in cands:
+            if t.get("choice") == choice:
+                return h
+    return cands[0][0]
+
+def main():
+    summary = []
+
+    # CeH9 P6_3/mmc #194 a=3.7110 c=5.5429 @100GPa
+    # Published (Nature Comm 2019, s41467-019-12326-y): Ce 2d(2/3,1/3,1/4);
+    # H 2b(0,0,1/4); H 4f(1/3,2/3,0.149); H 12k(0.156,0.312,0.062).
+    # NOTE: task brief had 12k z=0.4404 (transcription error) -> 0.55Ang overlap;
+    # published z=0.062 gives min H-H = 1.12 Ang (matches paper's 1.116 Ang).
+    h194 = pick_hall(194)
+    R194, T194 = sym_ops(h194)
+    ce_reps = [
+        ("Ce", np.array([2/3, 1/3, 1/4])),
+        ("H",  np.array([0.0, 0.0, 1/4])),
+        ("H",  np.array([1/3, 2/3, 0.149])),
+        ("H",  np.array([0.156, 0.312, 0.062])),
+    ]
+    ce_atoms = expand(ce_reps, R194, T194)
+    a, c = 3.7110, 5.5429
+    md = min_dist_frac(ce_atoms, hex_lattice(a, c))
+    write_vcrelax(f"{OUT}/CeH9/vc-relax.in", "ceh9",
+        ["  ibrav = 4", f"  celldm(1) = {a/BOHR:.8f}", f"  celldm(3) = {c/a:.8f}"],
+        ["  Ce  140.116  Ce.UPF", "  H   1.008    H.UPF"],
+        ce_atoms, "1000.0", 2,
+        f"CeH9 P6_3/mmc #194 explicit-orbit hall={h194} a={a} c={c} @100GPa min_d={md:.3f}Ang")
+    summary.append(("CeH9", 194, h194, len(ce_atoms),
+        {s: sum(1 for x, _ in ce_atoms if x == s) for s in ("Ce", "H")}, md))
+
+    # YH9 P6_3/mmc #194 a=3.58 c=5.40 @250GPa
+    yh9_reps = [
+        ("Y",  np.array([2/3, 1/3, 1/4])),
+        ("H",  np.array([0.0, 0.0, 1/4])),
+        ("H",  np.array([1/3, 2/3, 0.149])),
+        ("H",  np.array([0.156, 0.312, 0.062])),
+    ]
+    yh9_atoms = expand(yh9_reps, R194, T194)
+    a, c = 3.58, 5.40
+    md = min_dist_frac(yh9_atoms, hex_lattice(a, c))
+    write_vcrelax(f"{OUT}/YH9/vc-relax.in", "yh9",
+        ["  ibrav = 4", f"  celldm(1) = {a/BOHR:.8f}", f"  celldm(3) = {c/a:.8f}"],
+        ["  Y   88.906  Y.UPF", "  H   1.008   H.UPF"],
+        yh9_atoms, "2500.0", 2,
+        f"YH9 P6_3/mmc #194 (iso CeH9) hall={h194} a={a} c={c} @250GPa min_d={md:.3f}Ang")
+    summary.append(("YH9", 194, h194, len(yh9_atoms),
+        {s: sum(1 for x, _ in yh9_atoms if x == s) for s in ("Y", "H")}, md))
+
+    # YH10 Fm-3m #225 sodalite a=4.75 conv @250GPa
+    h225 = pick_hall(225)
+    R225, T225 = sym_ops(h225)
+    yh10_reps = [
+        ("Y", np.array([0.0, 0.0, 0.0])),
+        ("H", np.array([1/4, 1/4, 1/4])),
+        ("H", np.array([0.375, 0.375, 0.375])),
+    ]
+    yh10_conv = expand(yh10_reps, R225, T225)
+    a = 4.75
+    yh10_atoms = to_fcc_primitive(yh10_conv, a)  # FCC primitive -> YH10 = 11 atoms
+    md = min_dist_frac(yh10_atoms, fcc_prim_lattice(a))
+    write_vcrelax(f"{OUT}/YH10/vc-relax.in", "yh10",
+        ["  ibrav = 2", f"  celldm(1) = {a/BOHR:.8f}"],
+        ["  Y   88.906  Y.UPF", "  H   1.008   H.UPF"],
+        yh10_atoms, "2500.0", 2,
+        f"YH10 Fm-3m #225 sodalite (LaH10-iso) hall={h225} a={a} FCC-prim @250GPa min_d={md:.3f}Ang")
+    summary.append(("YH10", 225, h225, len(yh10_atoms),
+        {s: sum(1 for x, _ in yh10_atoms if x == s) for s in ("Y", "H")}, md))
+
+    # Li2MgH16 Fd-3m #227 origin-2 a=6.7185 @250GPa
+    h227 = pick_hall(227, choice="2")
+    R227, T227 = sym_ops(h227)
+    # 96g is an (x,x,z) site; task brief gave 3 distinct numbers (a general-pos
+    # form) which over-expands to 192 + overlaps. Use (x,x,z)=(0.0647,0.0647,
+    # 0.4353) -> 96 mult, most-physical H-H of the (x,x,z) reorderings.
+    li_reps = [
+        ("Li", np.array([0.0, 0.0, 0.0])),               # 16c
+        ("Mg", np.array([3/8, 3/8, 3/8])),               # 8b
+        ("H",  np.array([0.833, 0.833, 0.833])),         # 32e
+        ("H",  np.array([0.0647, 0.0647, 0.4353])),      # 96g (x,x,z)
+    ]
+    li_conv = expand(li_reps, R227, T227)
+    a = 6.7185
+    li_atoms = to_fcc_primitive(li_conv, a)  # FCC primitive -> Li4Mg2H32 = 38 atoms
+    md = min_dist_frac(li_atoms, fcc_prim_lattice(a))
+    write_vcrelax(f"{OUT}/Li2MgH16/vc-relax.in", "li2mgh16",
+        ["  ibrav = 2", f"  celldm(1) = {a/BOHR:.8f}"],
+        ["  Li  6.941    Li.UPF", "  Mg  24.305   Mg.UPF", "  H   1.008    H.UPF"],
+        li_atoms, "2500.0", 3,
+        f"Li2MgH16 Fd-3m #227 origin-2 hall={h227} a={a} FCC-prim @250GPa min_d={md:.3f}Ang")
+    summary.append(("Li2MgH16", 227, h227, len(li_atoms),
+        {s: sum(1 for x, _ in li_atoms if x == s) for s in ("Li", "Mg", "H")}, md))
+
+    print("=== WAVE-3B EXPANSION SUMMARY ===")
+    for name, ita, hall, nat, comp, md in summary:
+        flag = "  <-- WARN min_dist<0.6" if md < 0.6 else ""
+        print(f"{name:10s} SG#{ita} hall={hall} nat={nat:3d} comp={comp} min_dist={md:.3f}Ang{flag}")
+
+if __name__ == "__main__":
+    main()
