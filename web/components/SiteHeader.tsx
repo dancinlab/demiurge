@@ -32,10 +32,9 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/80">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-6">
-        <Link href="/" className="flex items-center gap-2 font-mono font-bold">
+        <Link href="/" aria-label="demiurge — home" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/icon.svg" alt="" width={22} height={22} aria-hidden />
-          <span>demiurge</span>
+          <img src="/logo.svg" alt="demiurge" width={106} height={27} />
         </Link>
         <nav className="flex items-center gap-4 font-mono text-sm">
           {links.map((l) => (

@@ -19,10 +19,7 @@ export async function SiteFooter() {
       <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-8 font-mono text-xs text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/icon.svg" alt="" width={18} height={18} aria-hidden />
-          <span className="font-bold text-neutral-700 dark:text-neutral-300">
-            demiurge
-          </span>
+          <img src="/logo.svg" alt="demiurge" width={94} height={24} />
           <span className="text-neutral-400 dark:text-neutral-600">
             · spec → verify → handoff
           </span>
