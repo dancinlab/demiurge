@@ -1,5 +1,6 @@
-// /dashboard — the authenticated MAIN workbench (web reflection of the
-// macOS cockpit WorkbenchView). 3 columns:
+// /dashboard — the authenticated MAIN workbench. The 3-column cockpit
+// (the macOS SwiftUI GUI was scrapped 2026-05-27; this web workbench is
+// now the sole user surface). 3 columns:
 //   ① left rail   — 8-verb spine (discover at top + the 7-verb pipeline)
 //   ② work zone   — active domain: @goal · progress · snapshot · log tail
 //   ③ assist rail — Gemini-assisted verb shortcuts

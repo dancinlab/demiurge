@@ -2,8 +2,8 @@
 //
 // Format (per CLAUDE.md domain spec):
 //   NAME → relative path to <NAME>.md (companion <NAME>.log.md sits next to it)
-// Web GUI never duplicates this list; we parse the roster the cockpit
-// already maintains.
+// Web GUI never duplicates this list; we parse the roster the CLI /
+// domain tooling already maintains.
 
 import fs from "node:fs/promises";
 import path from "node:path";
