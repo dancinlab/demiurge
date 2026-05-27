@@ -1,7 +1,8 @@
-// /handoff/[domain] — 8-verb shell · slot placeholder until PR#5+ wires real viewers.
+// /handoff/[domain] — handoff verb 완성형.
+// Slot = 실 dossier 다운로드 가능 (HandoffDossier client component).
 
 import { VerbShell } from "@/components/VerbShell";
-import type { VerbId } from "@/components/VerbTreeNav";
+import { HandoffDossier } from "@/components/HandoffDossier";
 
 export const dynamic = "force-dynamic";
 
@@ -11,15 +12,14 @@ export default async function Page({
   params: Promise<{ domain: string }>;
 }) {
   const { domain } = await params;
-  const verb: VerbId = "handoff";
   return (
     <VerbShell
-      verb={verb}
+      verb="handoff"
       domain={domain}
       statusByVerb={{}}
-      record={<pre className="text-xs">{JSON.stringify({ verb, domain }, null, 2)}</pre>}
-      slot={<div className="text-xs text-neutral-500">slot · {verb} (real viewer = PR#5+)</div>}
-      history={<div className="text-xs text-neutral-500">history · {domain}/{verb} (Firestore stream pending)</div>}
+      record={<pre className="text-xs">{JSON.stringify({ verb: "handoff", domain }, null, 2)}</pre>}
+      slot={<HandoffDossier domain={domain} />}
+      history={<div className="text-xs text-neutral-500">history · {domain}/handoff · 매 다운로드는 generated_at 새로 기록</div>}
     />
   );
 }
