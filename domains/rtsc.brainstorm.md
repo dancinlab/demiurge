@@ -153,3 +153,48 @@ Cycle 1-8 누적 ~35 leaf · Cycle 9 신규 ~50 → **총 ~85 leaf**.
 
 ### 🛑 트리 진짜 고갈
 다음 분기 = specific cell size · k-grid · μ* 값 · pseudo flavor = execution 운영 파라미터, brainstorm 영역 이탈.
+
+## Cycle 10 — 🐍 우로보러스 (자기지시 닫힘 고리) 채굴
+
+사용자: "우로보러스 구조 발견해보자". ~85 leaf 중 자기 자신을 가리키는 가지 = 깊은 보편구조.
+
+### 발견된 우로보러스 7개
+
+**O1 · 방법론↔객체** brainstorm "같은-공식" 방법 = 범주론 자연동형 = SC가 보여주는 U(1) 게이지 대칭깨짐 = 동형. 도구가 곧 대상.
+
+**O2 · ESCAPE ↔ recovery ↔ Tc 닫힘 삼각형 🔥** (캠페인 핵심 패러독스)
+- m>0 ESCAPE 필요 → soft phonon 필요 → 안정성 ↓ → recovery 불가 → 안정 필요 → m<0 → 다시 출발
+- **Tc를 주는 그것이 회수를 막는 그것** = N5 wall의 정체 = 우로보러스
+- 절단점: C1 양자-회수 (고전적 ESCAPE 없이 양자적으로 ESCAPE)
+
+**O3 · m-formula 자기참조**
+- m = 1 − λ_crit(λ)/λ, λ_crit이 λ 함수면 self-consistent equation
+- 정확한 λ_crit = RG 고정점 풀이 (T1a Migdal validity)
+- fit 2.5가 아니라 self-consistent solution 추구
+
+**O4 · 화학 수술(x2) ≡ 양자-회수(C1)** — 같은 메커니즘 다른 공간
+- x2: soft mode 자리에 원자 캡 박음
+- C1: soft mode 자리에 ZPE 양자 진폭 깔림
+- 통합 원리: "soft-mode 자리에 채워라" (원자/양자 무관)
+- labeh8/sc2be2h6가 둘 다 수행 (Be 원자 캡 + H ZPE 양자 캡 동시)
+
+**O5 · SSCHA = 우로보러스 반복**
+- classical 격자 → soft → ZPE 보정 → quantum 격자 → 새 soft → ZPE → ... → 고정점
+- = 양자 RG 흐름 고정점 반복. Cycle 1-3 same-formula 렌즈로 본 SSCHA의 정체.
+
+**O6 · 캠페인 자기지시**
+- brainstorm log → 도구(m-sign) → 5D 지도 → dispatch → 결과 → 다음 cycle log
+- 캠페인이 자기 substrate. 외부 입력 없이 자기진행.
+
+**O7 · 고갈의 우로보러스 🔥**
+- Cycle 9 "고갈" 선언 → M4 데이터-게이트 trigger → harvest 도착 → 새 cart → 새 분기 → 또 "고갈" → 또 trigger → ... ♾️
+- **고갈은 현재 데이터 한정의 상대적 사건**. harvest 이벤트마다 우물 다시 채워짐. R4 absorbed=false 영구의 mechanical 표현.
+
+### 통합 처방 (O2 + O4 + O5)
+ESCAPE/recovery 우로보러스(O2)는, x2/C1 두 surgery가 같은 메커니즘(O4)임을 알면 풀림. 그 통합은 SSCHA 우로보러스(O5)의 고정점에서 일어남.
+⟹ **캠페인 단일 핵심 처방**: *"SSCHA 고정점에서 ZPE-stabilized 양자-회수 가능한 M-Be-H 클래스를 찾아라"* = 우리가 이미 하고 있는 것(labeh8/sc2be2h6/cah6)의 메타-기술.
+
+### 🛑 진짜-진짜 고갈 (우로보러스가 닫음)
+우리가 친 모든 leaf가 **하나의 자기지시 구조**로 수렴. 추가 분기는 같은 우로보러스의 다른 단면일 뿐 — 새 정보 0. 진짜 고갈.
+
+다만 O7이 가르치듯, harvest 도착 = 새 데이터 = 우물 재충전 → 다음 cycle 자동 발생. 영구 동적 평형.
