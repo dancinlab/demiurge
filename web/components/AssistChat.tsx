@@ -211,9 +211,8 @@ export function AssistChat({
       ]);
     } finally {
       setBusy(false);
-      requestAnimationFrame(() =>
-        scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight }),
-      );
+      // 최신이 맨 위 — 위로 스크롤
+      requestAnimationFrame(() => scrollRef.current?.scrollTo({ top: 0 }));
     }
   }
 
@@ -263,7 +262,13 @@ export function AssistChat({
       </div>
 
       {/* Transcript — 하단 */}
+      {/* 입력이 상단이므로 메시지도 역순 — 최신이 맨 위(입력 바로 아래) */}
       <div ref={scrollRef} className="flex-1 space-y-2 overflow-auto pr-0.5">
+        {busy && (
+          <div className="mr-auto inline-flex items-center gap-1.5 rounded-[10px] bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
+            <Loader2 className="h-3 w-3 animate-spin" /> {i18n.thinking}
+          </div>
+        )}
         {msgs.length === 0 ? (
           <div className="space-y-2 py-1">
             <p className="text-xs text-gray-500">{i18n.greeting}</p>
@@ -280,7 +285,7 @@ export function AssistChat({
             </div>
           </div>
         ) : (
-          msgs.map((m, i) => {
+          [...msgs].reverse().map((m, i) => {
             const isError = m.role === "assistant" && m.text.startsWith("⚠");
             return (
               <div
@@ -298,11 +303,6 @@ export function AssistChat({
               </div>
             );
           })
-        )}
-        {busy && (
-          <div className="mr-auto inline-flex items-center gap-1.5 rounded-[10px] bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
-            <Loader2 className="h-3 w-3 animate-spin" /> {i18n.thinking}
-          </div>
         )}
       </div>
     </div>
