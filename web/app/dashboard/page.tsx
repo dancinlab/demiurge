@@ -75,7 +75,7 @@ export default async function DashboardPage({
   const activeName = active?.name ?? "";
 
   return (
-    <main className="mx-auto flex h-[calc(100vh-3.5rem)] max-w-[1600px] flex-col font-mono">
+    <main className="mx-auto flex h-screen max-w-[1600px] flex-col font-mono">
       {/* ④ top toolbar */}
       <div className="flex items-center justify-between gap-4 border-b border-neutral-200 px-6 py-3 dark:border-neutral-800">
         <div className="flex items-center gap-3">
@@ -91,7 +91,7 @@ export default async function DashboardPage({
             </span>
             <div className="h-2 w-40 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
               <div
-                className="h-full rounded-full bg-violet-500"
+                className="h-full rounded-full bg-neutral-900 dark:bg-neutral-100"
                 style={{ width: `${pct}%` }}
               />
             </div>
@@ -115,7 +115,7 @@ export default async function DashboardPage({
               <Link
                 key={verb}
                 href={href}
-                className="flex items-center gap-2 rounded px-2 py-1.5 text-neutral-600 hover:bg-neutral-100 hover:text-violet-600 dark:text-neutral-400 dark:hover:bg-neutral-900"
+                className="flex items-center gap-2 rounded px-2 py-1.5 text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-neutral-50"
               >
                 <span className="w-4 text-right text-[11px] text-neutral-400">
                   {i === 0 ? "8" : i}
@@ -167,25 +167,25 @@ export default async function DashboardPage({
             <div className="flex flex-col gap-2">
               <Link
                 href={`/spec/${encodeURIComponent(activeName)}`}
-                className="rounded border border-neutral-200 px-3 py-2 hover:border-violet-400 dark:border-neutral-800"
+                className="rounded border border-neutral-200 px-3 py-2 hover:border-neutral-500 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:border-neutral-500 dark:hover:bg-neutral-900"
               >
                 ✍️ {t(m, "dashboard.assist_spec")}
               </Link>
               <Link
                 href={`/analyze/${encodeURIComponent(activeName)}`}
-                className="rounded border border-neutral-200 px-3 py-2 hover:border-violet-400 dark:border-neutral-800"
+                className="rounded border border-neutral-200 px-3 py-2 hover:border-neutral-500 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:border-neutral-500 dark:hover:bg-neutral-900"
               >
                 📡 {t(m, "dashboard.assist_analyze")}
               </Link>
               <Link
                 href={`/verify/${encodeURIComponent(activeName)}`}
-                className="rounded border border-neutral-200 px-3 py-2 hover:border-violet-400 dark:border-neutral-800"
+                className="rounded border border-neutral-200 px-3 py-2 hover:border-neutral-500 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:border-neutral-500 dark:hover:bg-neutral-900"
               >
                 ✓ {t(m, "dashboard.assist_verify")}
               </Link>
               <Link
                 href="/discover"
-                className="rounded border border-neutral-200 px-3 py-2 hover:border-violet-400 dark:border-neutral-800"
+                className="rounded border border-neutral-200 px-3 py-2 hover:border-neutral-500 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:border-neutral-500 dark:hover:bg-neutral-900"
               >
                 🔭 {t(m, "dashboard.assist_discover")}
               </Link>
