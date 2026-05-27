@@ -249,19 +249,24 @@ export function AssistChat({
             </div>
           </div>
         ) : (
-          msgs.map((m, i) => (
-            <div
-              key={`${m.ts}-${i}`}
-              className={[
-                "rounded-[10px] px-3 py-2 text-[12px] leading-relaxed",
-                m.role === "user"
-                  ? "ml-auto max-w-[85%] bg-slate-900 text-white"
-                  : "mr-auto max-w-[95%] bg-slate-50 text-slate-900",
-              ].join(" ")}
-            >
-              {m.role === "assistant" ? renderMarkdown(m.text) : m.text}
-            </div>
-          ))
+          msgs.map((m, i) => {
+            const isError = m.role === "assistant" && m.text.startsWith("⚠");
+            return (
+              <div
+                key={`${m.ts}-${i}`}
+                className={[
+                  "rounded-[10px] px-3 py-2 text-[12px] leading-relaxed",
+                  m.role === "user"
+                    ? "ml-auto max-w-[85%] bg-slate-900 text-white"
+                    : isError
+                      ? "mr-auto max-w-[95%] border border-rose-200 bg-rose-50 text-rose-700"
+                      : "mr-auto max-w-[95%] bg-slate-50 text-slate-900",
+                ].join(" ")}
+              >
+                {m.role === "assistant" && !isError ? renderMarkdown(m.text) : m.text}
+              </div>
+            );
+          })
         )}
         {busy && (
           <div className="mr-auto inline-flex items-center gap-1.5 rounded-[10px] bg-slate-50 px-3 py-2 text-[11px] text-slate-500">
