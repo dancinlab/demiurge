@@ -1,0 +1,140 @@
+{
+  "version": "1.0-temp",
+  "schema_origin": "sidecar INBOX #193 (~/.pool/pods.json proposed)",
+  "last_updated_utc": "2026-05-27T14:30:00Z",
+  "campaign": "rtsc-293K-1atm",
+  "budget": { "krw": 1000000, "usd": 750, "used_usd": 0 },
+
+  "design_constraints": {
+    "throttle_safety": "per-pod cores_used <= 64 (16 core headroom), max 8 concurrent jobs",
+    "wall_objective": "minimize BOTH RTSC-closure wall AND per-pod result wall (multi-objective)",
+    "load_balance": "LPT bin-packing across pods, heavy jobs isolated to dedicated slots"
+  },
+
+  "pods": {
+    "vast-ysbh6-pod-41837": {
+      "host": "77.104.167.149:41837", "provider": "vast.ai", "cores": 80,
+      "ssh_key": "id_vast_anima", "qe_env": "/root/miniforge3/envs/qe",
+      "status": "running", "rented_since": "2026-05-25T...", "cost_usd_per_hr": 0.20,
+      "est_wall_remaining_h": 50, "load_1min": 55,
+      "jobs": ["ysbh6","mgb2_pure","nb3al","sc2be2h6","y2be2h6","cah6_decompress"]
+    },
+    "vast-pod-2-new": {
+      "provider": "vast.ai", "cores": 80, "status": "PLANNED",
+      "cost_usd_per_hr": 0.20, "est_wall_h": 100, "est_cost_usd": 20,
+      "rationale": "heavy HE + ternary 클래스 분리 (Y2CdH18, HE 4-cation)",
+      "jobs": ["he_4cation_LaYCaScH10","Y2CdH18","LaBH8","YH6","H2B2"]
+    },
+    "vast-pod-3-new": {
+      "provider": "vast.ai", "cores": 80, "status": "PLANNED",
+      "cost_usd_per_hr": 0.20, "est_wall_h": 80, "est_cost_usd": 16,
+      "rationale": "Li2MgH16 + ternary + medium hydrides",
+      "jobs": ["Li2MgH16","Ca2SnH18","Ge_H3S","YH10","CeH9","MgBC2"]
+    },
+    "vast-pod-4-new": {
+      "provider": "vast.ai", "cores": 80, "status": "PLANNED",
+      "cost_usd_per_hr": 0.20, "est_wall_h": 80, "est_cost_usd": 16,
+      "rationale": "labeh8 SSCHA (heaviest verify) + medium",
+      "jobs": ["labeh8_SSCHA","Y2InH18","LaY_H10","CaY_H6","ScH9","CaBeH8"]
+    },
+    "vast-pod-5-new": {
+      "provider": "vast.ai", "cores": 80, "status": "PLANNED",
+      "cost_usd_per_hr": 0.20, "est_wall_h": 120, "est_cost_usd": 24,
+      "rationale": "계층 clathrate 단독 슬롯 (가장 무거움) + BeB2Hx + 작은 보조",
+      "jobs": ["mackay_layered_LaBe6H12","BeB2Hx","YH9","H3S_H3P","H3SSe","selfcat_synth"]
+    }
+  },
+
+  "jobs": {
+    "ysbh6":            {"pod":"vast-ysbh6-pod-41837","status":"running","stage":"ph","est_wall_h":50,"np":32,"watcher":"boowryffy","anchor_tc_K":118,"verdict":"PENDING"},
+    "mgb2_pure":        {"pod":"vast-ysbh6-pod-41837","status":"running","stage":"ph","est_wall_h":25,"np":8,"watcher":"bpl3k1l8m","anchor_tc_K":39,"verdict":"PENDING"},
+    "nb3al":            {"pod":"vast-ysbh6-pod-41837","status":"running","stage":"ph","est_wall_h":45,"np":8,"watcher":"boy5ld7u5","anchor_tc_K":18,"verdict":"PENDING"},
+    "sc2be2h6":         {"pod":"vast-ysbh6-pod-41837","status":"running","stage":"vc-relax","est_wall_h":40,"np":6,"watcher":"b8tw784iy","hypothesis":"Sc 최경량→ω↑","verdict":"PENDING"},
+    "y2be2h6":          {"pod":"vast-ysbh6-pod-41837","status":"running","stage":"vc-relax","est_wall_h":40,"np":6,"watcher":"bv0u66qdv","hypothesis":"YH10-family","verdict":"PENDING"},
+    "cah6_decompress":  {"pod":"vast-ysbh6-pod-41837","status":"running","stage":"vc-relax","est_wall_h":20,"np":6,"watcher":"bfvsatagh","hypothesis":"x11 회수성","verdict":"PENDING"},
+
+    "he_4cation_LaYCaScH10": {"pod":"vast-pod-2-new","status":"queued","stage":"vc-relax","est_wall_h":100,"np":10,"hypothesis":"Perelman 엔트로피 4-cation","verdict":"PENDING"},
+    "Y2CdH18":          {"pod":"vast-pod-2-new","status":"queued","stage":"vc-relax","est_wall_h":70,"np":8,"hypothesis":"arxiv 2411.11674 Tc>110K","verdict":"PENDING"},
+    "LaBH8":            {"pod":"vast-pod-2-new","status":"queued","stage":"vc-relax","est_wall_h":50,"np":6,"hypothesis":"Di Cataldo 126K@<50GPa","verdict":"PENDING"},
+    "YH6":              {"pod":"vast-pod-2-new","status":"queued","stage":"scf+ph","est_wall_h":40,"np":6,"hypothesis":"marginal 측정 anchor","verdict":"PENDING"},
+    "H2B2":             {"pod":"vast-pod-2-new","status":"queued","stage":"vc-relax","est_wall_h":30,"np":4,"hypothesis":"H-rich MgB2","verdict":"PENDING"},
+
+    "Li2MgH16":         {"pod":"vast-pod-3-new","status":"queued","stage":"vc-relax","est_wall_h":80,"np":10,"hypothesis":"Sun 2019 473K@250GPa anchor","verdict":"PENDING"},
+    "Ca2SnH18":         {"pod":"vast-pod-3-new","status":"queued","stage":"vc-relax","est_wall_h":70,"np":8,"hypothesis":"arxiv 2411.11674","verdict":"PENDING"},
+    "Ge_H3S":           {"pod":"vast-pod-3-new","status":"queued","stage":"scf+ph","est_wall_h":50,"np":6,"hypothesis":"Ge 2016 280K 예측","verdict":"PENDING"},
+    "YH10":             {"pod":"vast-pod-3-new","status":"queued","stage":"scf+ph","est_wall_h":50,"np":6,"hypothesis":"sister marginal 측정점","verdict":"PENDING"},
+    "CeH9":             {"pod":"vast-pod-3-new","status":"queued","stage":"vc-relax","est_wall_h":50,"np":6,"hypothesis":"측정 80-100GPa 저압","verdict":"PENDING"},
+    "MgBC2":            {"pod":"vast-pod-3-new","status":"queued","stage":"vc-relax","est_wall_h":30,"np":4,"hypothesis":"C-doped MgB2","verdict":"PENDING"},
+
+    "labeh8_SSCHA":     {"pod":"vast-pod-4-new","status":"queued","stage":"sscha","est_wall_h":80,"np":12,"hypothesis":"C1 양자-회수 직접 검증","verdict":"PENDING"},
+    "Y2InH18":          {"pod":"vast-pod-4-new","status":"queued","stage":"vc-relax","est_wall_h":70,"np":8,"hypothesis":"arxiv 2411.11674","verdict":"PENDING"},
+    "LaY_H10":          {"pod":"vast-pod-4-new","status":"queued","stage":"vc-relax","est_wall_h":50,"np":6,"hypothesis":"(La,Y)H10 고용체","verdict":"PENDING"},
+    "CaY_H6":           {"pod":"vast-pod-4-new","status":"queued","stage":"vc-relax","est_wall_h":45,"np":6,"hypothesis":"(Ca,Y)H6 두 ESCAPE","verdict":"PENDING"},
+    "ScH9":             {"pod":"vast-pod-4-new","status":"queued","stage":"vc-relax","est_wall_h":40,"np":6,"hypothesis":"Sc-쪽 marginal","verdict":"PENDING"},
+    "CaBeH8":           {"pod":"vast-pod-4-new","status":"queued","stage":"vc-relax","est_wall_h":40,"np":6,"hypothesis":"비방사성 M-Be-H 가장 가벼운","verdict":"PENDING"},
+
+    "mackay_layered_LaBe6H12": {"pod":"vast-pod-5-new","status":"queued","stage":"vc-relax","est_wall_h":120,"np":12,"hypothesis":"AcBeH8 다층화 극한 (🥇)","verdict":"PENDING"},
+    "BeB2Hx":           {"pod":"vast-pod-5-new","status":"queued","stage":"vc-relax","est_wall_h":70,"np":8,"hypothesis":"σ+π 다중-band Cooper-loop","verdict":"PENDING"},
+    "YH9":              {"pod":"vast-pod-5-new","status":"queued","stage":"vc-relax","est_wall_h":45,"np":6,"hypothesis":"압력 sweep marginal","verdict":"PENDING"},
+    "H3S_H3P":          {"pod":"vast-pod-5-new","status":"queued","stage":"scf+ph","est_wall_h":50,"np":6,"hypothesis":"P-doping 280K 예측","verdict":"PENDING"},
+    "H3SSe":            {"pod":"vast-pod-5-new","status":"queued","stage":"scf+ph","est_wall_h":50,"np":6,"hypothesis":"Se 치환 H3S","verdict":"PENDING"},
+    "selfcat_synth":    {"pod":"vast-pod-5-new","status":"queued","stage":"vc-relax","est_wall_h":30,"np":4,"hypothesis":"O-RTSC-5 자기-촉매 합성","verdict":"PENDING"}
+  },
+
+  "per_pod_wall_summary": {
+    "vast-ysbh6-pod-41837": { "wall_h":50, "cores_used":66, "throttle_risk":"none" },
+    "vast-pod-2-new":        { "wall_h":100, "cores_used":34, "throttle_risk":"low" },
+    "vast-pod-3-new":        { "wall_h":80,  "cores_used":40, "throttle_risk":"low" },
+    "vast-pod-4-new":        { "wall_h":80,  "cores_used":44, "throttle_risk":"low" },
+    "vast-pod-5-new":        { "wall_h":120, "cores_used":42, "throttle_risk":"low" }
+  },
+
+  "rtsc_closure_wall": {
+    "first_answer_h": 50,
+    "first_answer_what": "Pod 1 완료 — 5D 지도 + 측정 anchor 확정 + sc/y/cah6 결과 (5D 빠진 축 닫힘 검증)",
+    "complete_answer_h": 80,
+    "complete_answer_what": "Pod 1/3/4 완료 — 25 후보 중 22 결과 (HE + 계층 제외) → 최상위 5 후보 식별",
+    "deep_dive_h": 120,
+    "deep_dive_what": "전체 완료 — HE 4-cation + 계층 clathrate 포함 31 결과 + SSCHA + 5D 지도 완성"
+  },
+
+  "cost_summary": {
+    "pod1_remaining":  { "h": 50, "rate": 0.20, "usd": 10 },
+    "pod2_new":        { "h": 100, "rate": 0.20, "usd": 20 },
+    "pod3_new":        { "h": 80, "rate": 0.20, "usd": 16 },
+    "pod4_new":        { "h": 80, "rate": 0.20, "usd": 16 },
+    "pod5_new":        { "h": 120, "rate": 0.20, "usd": 24 },
+    "provisioning_overhead_usd": 5,
+    "storage_overhead_usd": 5,
+    "total_usd": 96,
+    "total_krw": 130000,
+    "budget_usage_pct": 13
+  },
+
+  "decision_gates": {
+    "gate_50h": "Pod 1 완료 시: 5D 지도 점 6개 + 최근접 후보 확정 → 다음 lens",
+    "gate_80h": "Pod 3/4 완료 시: 22 후보 결과 → 최상위 5 후보 + paper 1차 갱신",
+    "gate_100h": "Pod 2 완료 시: HE 4-cation 결과 → 4-cation 가설 close",
+    "gate_120h": "Pod 5 완료 시: 계층 clathrate 결과 → 🥇 후보 verdict",
+    "gate_after_120h": "전체 결과로 paper finalize + 측정 wet-lab 핸드오프 결정"
+  },
+
+  "execution_order": [
+    "1. provision Pod 2/3/4/5 병렬 (~60min, vastai CLI 셋업 30min 포함)",
+    "2. pseudo 다운로드 + chain script 복붙 + decks 작성 (~30min)",
+    "3. 25 신규 job dispatch (Pod별 LPT 분배 따라)",
+    "4. 25 watcher background 무장 (event-driven)",
+    "5. mining cycle 16 'wave-3 dispatch' append",
+    "6. harvest 이벤트마다 자동 5D 지도 점 추가 + verdict 갱신",
+    "7. 모든 verdict 도착 시 paper finalize"
+  ],
+
+  "honest_caveats": [
+    "wall_h는 추정치 — DFT SCF 수렴 어려움/RAM 한계 시 ±30% 변동",
+    "vastai CLI 설치 30-60min — py3.9 venv 회피 필요 (memory #1155)",
+    "계층 clathrate 구조는 spec 단계, vc-relax 발산 가능 (이 경우 closed-neg)",
+    "SSCHA labeh8은 메모리 24GB+ 필요 — pod RAM 확인 필수",
+    "5D 5축 모두 ✓ 후보 발견 가능성 = 미지 (current cart 무 후보)",
+    "최선 결과 = '293K@50GPa 후보 확정' 또는 '293K@1atm closed-negative + 다음 lens'"
+  ]
+}
