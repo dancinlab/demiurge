@@ -15,34 +15,16 @@ type TopBarI18n = {
 
 export function TopBar({
   user,
-  activeDomain,
   i18n,
 }: {
   user: TopBarUser | null;
-  activeDomain: string | null;
+  // activeDomain kept for caller compat — 도메인명 칩 폐기 (브랜드는 사이드바 일원화).
+  activeDomain?: string | null;
   i18n: TopBarI18n;
 }) {
-  // ElevenLabs 톤: 웜 뉴트럴 + Geist 라이트 로고 + 파스텔/액센트 무 (CTA=espresso).
+  // ElevenLabs 톤: 브랜드는 사이드바에만 — TopBar 는 우측 액션만 (도메인 칩·로고 폐기).
   return (
     <header className="flex items-center gap-3 border-b border-hairline bg-surface px-5 py-3 text-sm">
-      <Link
-        href="/dashboard"
-        className="font-display text-lg font-light tracking-tight text-ink hover:text-ink"
-      >
-        📐 demiurge
-      </Link>
-      {activeDomain && (
-        <>
-          <span className="text-muted-soft" aria-hidden="true">/</span>
-          <Link
-            href={`/dashboard?d=${encodeURIComponent(activeDomain)}`}
-            title={i18n.topbarActiveProject}
-            className="rounded-full bg-surface-strong px-2 py-0.5 font-mono text-xs text-ink hover:bg-hairline"
-          >
-            {activeDomain}
-          </Link>
-        </>
-      )}
       <span className="flex-1" />
       <Link
         href="/dashboard"

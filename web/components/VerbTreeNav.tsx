@@ -6,7 +6,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 // Lucide outline SVG path 8개 (file-text · layers · pen-tool · bar-chart · flask-conical
 // · check-circle · package · search). ISC 라이선스 (lucide).
@@ -83,47 +82,19 @@ type VerbTreeI18n = {
 export function VerbTreeNav({
   domain: domainProp,
   statusByVerb,
-  i18n,
 }: {
   domain?: string;
   statusByVerb?: Partial<Record<VerbId, VerbStatus>>;
+  // i18n kept for caller compat (collapse/expand strings now unused — toggle 폐기).
   i18n?: VerbTreeI18n;
 }) {
   const pathname = usePathname() ?? "";
   const { verb: activeVerb, domain: detectedDomain } = detectActive(pathname);
   const domain = domainProp ?? detectedDomain;
 
-  // Fallback strings — used when this component is mounted outside the
-  // (app) layout (e.g. tests · public pages). Layout always passes i18n.
-  const labels = i18n ?? {
-    verbtreeCollapse: "collapse",
-    verbtreeExpand: "expand",
-    verbtree8Verbs: "8 verbs",
-  };
-
-  const [expanded, setExpanded] = useState(false);
-  useEffect(() => {
-    const v = typeof window !== "undefined" && localStorage.getItem("verbtree.expanded");
-    if (v === "1") setExpanded(true);
-  }, []);
-  function toggle() {
-    setExpanded((e) => {
-      if (typeof window !== "undefined") localStorage.setItem("verbtree.expanded", e ? "0" : "1");
-      return !e;
-    });
-  }
-
+  // ElevenLabs 사이드바 패턴 — 항상 아이콘 + 라벨 표시 (펼치기/접기 토글 폐기).
   return (
     <nav className="flex h-full flex-col gap-0.5 text-sm">
-      <button
-        type="button"
-        onClick={toggle}
-        className="mb-1 flex items-center justify-between rounded-chip px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-muted hover:bg-surface-strong"
-        title={expanded ? labels.verbtreeCollapse : labels.verbtreeExpand}
-      >
-        <span>{expanded ? (domain ? `· ${domain}` : labels.verbtree8Verbs) : "≡"}</span>
-        <span>{expanded ? "◂" : "▸"}</span>
-      </button>
       {VERBS.map((v) => {
         const status: VerbStatus = statusByVerb?.[v.id] ?? "todo";
         const isActive = v.id === activeVerb;
@@ -141,8 +112,8 @@ export function VerbTreeNav({
             ].join(" ")}
           >
             <LucideIcon id={v.id} />
-            {expanded && <span className="flex-1">{v.label}</span>}
-            {expanded && <span className={`text-xs ${STATUS_COLOR[status]}`}>{STATUS_DOT[status]}</span>}
+            <span className="flex-1">{v.label}</span>
+            <span className={`text-xs ${STATUS_COLOR[status]}`}>{STATUS_DOT[status]}</span>
           </Link>
         );
       })}

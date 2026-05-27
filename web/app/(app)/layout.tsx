@@ -61,16 +61,14 @@ export default async function AppLayout({
       <div className="flex h-screen bg-canvas text-ink antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
         {/* 좌: 세로 전체 레일 — canvas 틴트(복구). 최상단 브랜드 로고 + verb(상단) + 요리선생 채팅(하단) */}
         <aside className="flex w-72 shrink-0 flex-col border-r border-hairline bg-canvas">
-          {/* 브랜드 로고 — 사이드바 최상단 (ElevenLabs 워드마크 패턴) */}
+          {/* 브랜드 로고 — 사이드바 최상단 demiurge 워드마크 (ElevenLabs 패턴) */}
           <Link
             href="/dashboard"
             className="flex shrink-0 items-center gap-2 px-3 pb-1.5 pt-3 hover:opacity-80"
           >
-            <span className="grid h-6 w-6 place-items-center rounded-chip bg-ink text-[11px] font-bold text-surface">
-              FX
-            </span>
-            <span className="font-display text-[15px] font-medium tracking-tight text-ink">
-              FUSION X
+            <span className="text-lg leading-none">📐</span>
+            <span className="font-display text-[16px] font-light tracking-tight text-ink">
+              demiurge
             </span>
           </Link>
           <div className="shrink-0 p-2">
