@@ -1,7 +1,7 @@
-@import "tailwindcss";
-
-/* shadcn Modern 톤 — Inter sans-serif. (app) layout 이 inline 으로 stack 도 명시. */
+/* shadcn Modern 톤 — Inter sans-serif. (app) layout 이 inline stack 도 명시. */
+/* @import 는 모든 다른 rules 보다 먼저 와야 (PostCSS spec). */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
 
 /* Class-based dark mode (not OS media query). The workbench color-mode
    control toggles `.dark` on <html>; Tailwind `dark:` variants fire off
@@ -22,4 +22,3 @@
 
 /* body palette is driven by Tailwind classes in the route-group layouts
    (marketing = Brutalist, app = Mono) — no global body rule here. */
-
