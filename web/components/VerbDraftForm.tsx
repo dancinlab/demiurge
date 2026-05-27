@@ -112,7 +112,7 @@ export function VerbDraftForm(props: VerbDraftFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-[6px] bg-indigo-600 px-3 py-1 text-sm text-white disabled:opacity-40"
+            className="rounded-[6px] bg-gray-900 px-3 py-1 text-sm text-white disabled:opacity-40"
           >
             {loading
               ? "Gemini 호출 중..."

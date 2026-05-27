@@ -53,7 +53,7 @@ export function HandoffDossier({ domain }: { domain: string }) {
           </div>
         </div>
         <a
-          className="rounded-[6px] border border-indigo-600 px-3 py-1 text-xs text-indigo-600 hover:bg-gray-100"
+          className="rounded-[6px] border border-gray-900 px-3 py-1 text-xs text-gray-900 hover:bg-gray-100"
           href={`/api/v1/handoff/${domain}?download=1`}
         >
           ⬇ 다운로드 (.json)

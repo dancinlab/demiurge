@@ -136,7 +136,7 @@ export function VerbTreeNav({
             className={[
               "flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px]",
               isActive
-                ? "bg-indigo-50 font-semibold text-indigo-700"
+                ? "bg-gray-100 font-semibold text-gray-900"
                 : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
             ].join(" ")}
           >

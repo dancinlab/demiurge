@@ -27,7 +27,7 @@ export function TopBar({
     <header className="flex items-center gap-3 border-b border-gray-200 bg-white px-5 py-3 text-sm">
       <Link
         href="/dashboard"
-        className="font-serif text-lg font-semibold tracking-tight text-gray-900 hover:text-indigo-600"
+        className="font-serif text-lg font-semibold tracking-tight text-gray-900 hover:text-gray-900"
       >
         📐 demiurge
       </Link>
@@ -37,7 +37,7 @@ export function TopBar({
           <Link
             href={`/dashboard?d=${encodeURIComponent(activeDomain)}`}
             title={i18n.topbarActiveProject}
-            className="rounded-md bg-indigo-50 px-2 py-0.5 font-mono text-xs text-indigo-700 hover:bg-indigo-100"
+            className="rounded-full bg-gray-100 px-2 py-0.5 font-mono text-xs text-gray-900 hover:bg-gray-200"
           >
             {activeDomain}
           </Link>
@@ -46,14 +46,14 @@ export function TopBar({
       <span className="flex-1" />
       <Link
         href="/dashboard"
-        className="rounded-md px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+        className="rounded-full px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 hover:text-gray-900"
       >
         {i18n.topbarDomains}
       </Link>
       {user?.role === "admin" && (
         <Link
           href="/admin"
-          className="rounded-md border border-rose-200 bg-rose-50 px-2 py-1 text-xs text-rose-700 hover:bg-rose-100"
+          className="rounded-full border border-rose-200 bg-rose-50 px-2 py-1 text-xs text-rose-700 hover:bg-rose-100"
         >
           ⚙️ {i18n.topbarAdmin}
         </Link>
@@ -61,14 +61,14 @@ export function TopBar({
       {user ? (
         <Link
           href="/account"
-          className="rounded-md bg-gray-100 px-2.5 py-1 text-xs text-gray-700 hover:bg-gray-200"
+          className="rounded-full bg-gray-100 px-2.5 py-1 text-xs text-gray-700 hover:bg-gray-200"
         >
           {user.email}
         </Link>
       ) : (
         <Link
           href="/signin"
-          className="rounded-md bg-indigo-600 px-3 py-1 text-xs font-medium text-white hover:bg-indigo-700"
+          className="rounded-full bg-gray-900 px-3 py-1 text-xs font-medium text-white hover:bg-gray-800"
         >
           {i18n.topbarSignIn}
         </Link>

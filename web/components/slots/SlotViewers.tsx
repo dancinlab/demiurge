@@ -70,7 +70,7 @@ export function RecipeLadder({ steps }: { steps?: string[] }) {
     <ol className="space-y-1 text-sm">
       {items.map((s, i) => (
         <li key={i} className="flex items-center gap-2 rounded-[6px] border border-gray-200 bg-gray-50 px-2 py-1">
-          <span className="rounded-[6px] bg-indigo-600 px-1.5 py-0.5 text-xs font-mono text-white">{i + 1}</span>
+          <span className="rounded-[6px] bg-gray-900 px-1.5 py-0.5 text-xs font-mono text-white">{i + 1}</span>
           <span>{s}</span>
         </li>
       ))}

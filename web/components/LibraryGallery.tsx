@@ -91,7 +91,7 @@ export function LibraryGallery() {
               type="button"
               disabled={!e.fork_ok || forking === e.id}
               onClick={() => fork(e.id)}
-              className="flex-1 rounded-[10px] border border-indigo-600 px-3 py-1 text-xs text-gray-900 disabled:opacity-50 hover:bg-gray-100"
+              className="flex-1 rounded-[10px] border border-gray-900 px-3 py-1 text-xs text-gray-900 disabled:opacity-50 hover:bg-gray-100"
             >
               {forking === e.id ? "fork 중…" : authed ? "🍴 fork" : "🔑 sign in to fork"}
             </button>

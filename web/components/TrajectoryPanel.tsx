@@ -5,7 +5,7 @@
 import type { TrajEntry, TrajLabel } from "@/lib/trajectory";
 
 const LABEL_STYLE: Record<TrajLabel, { chip: string; dot: string }> = {
-  decision: { chip: "bg-indigo-50 text-indigo-700", dot: "bg-indigo-500" },
+  decision: { chip: "bg-gray-100 text-gray-900", dot: "bg-gray-1000" },
   dead_end: { chip: "bg-rose-50 text-rose-700", dot: "bg-rose-500" },
   heuristic: { chip: "bg-amber-50 text-amber-700", dot: "bg-amber-500" },
   experiment: { chip: "bg-emerald-50 text-emerald-700", dot: "bg-emerald-500" },
@@ -31,9 +31,9 @@ export function TrajectoryPanel({
         </p>
         <div className="mb-3 flex flex-wrap items-center gap-1.5 text-[11px] text-gray-500">
           <span>Context Harvester</span>
-          <span className="text-indigo-400" aria-hidden="true">→</span>
+          <span className="text-gray-400" aria-hidden="true">→</span>
           <span>Event Router</span>
-          <span className="text-indigo-400" aria-hidden="true">→</span>
+          <span className="text-gray-400" aria-hidden="true">→</span>
           <span>Maturity Tracker</span>
         </div>
         <ul className="space-y-1.5">

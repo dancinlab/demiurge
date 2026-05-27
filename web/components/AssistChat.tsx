@@ -134,7 +134,7 @@ function renderMarkdown(s: string): React.ReactElement[] {
       out.push(
         <pre
           key={`code-${i}`}
-          className="my-1 overflow-auto rounded-[6px] bg-indigo-600 px-2 py-1.5 font-mono text-[11px] text-gray-100"
+          className="my-1 overflow-auto rounded-[6px] bg-gray-900 px-2 py-1.5 font-mono text-[11px] text-gray-100"
         >
           {part.trim()}
         </pre>,
@@ -257,7 +257,7 @@ export function AssistChat({
                 className={[
                   "rounded-[10px] px-3 py-2 text-[12px] leading-relaxed",
                   m.role === "user"
-                    ? "ml-auto max-w-[85%] bg-indigo-600 text-white"
+                    ? "ml-auto max-w-[85%] bg-gray-900 text-white"
                     : isError
                       ? "mr-auto max-w-[95%] border border-rose-200 bg-rose-50 text-rose-700"
                       : "mr-auto max-w-[95%] bg-gray-50 text-gray-900",
@@ -298,7 +298,7 @@ export function AssistChat({
           <button
             onClick={() => void send()}
             disabled={busy || !input.trim()}
-            className="inline-flex items-center gap-1 rounded-[6px] bg-indigo-600 px-3 py-1 text-[11px] font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+            className="inline-flex items-center gap-1 rounded-[6px] bg-gray-900 px-3 py-1 text-[11px] font-medium text-white hover:bg-gray-800 disabled:opacity-50"
           >
             {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
             {i18n.send}
