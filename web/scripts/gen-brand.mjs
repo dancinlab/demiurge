@@ -9,6 +9,8 @@
 //   web/public/logo.svg           horizontal wordmark (black bg)
 //   web/app/apple-icon.png 180²   stacked
 //   web/app/opengraph-image.png 1200×630   horizontal hero + tagline
+//   web/app/twitter-image.png  1200×600   horizontal hero (Twitter card aspect)
+//   web/app/favicon.ico  16/32/48 multi-resolution ICO (stacked, ImageMagick)
 //
 // Run: node web/scripts/gen-brand.mjs
 //
@@ -84,6 +86,22 @@ function rsvg(srcSvgPath, outPngPath, w, h) {
   }
 }
 
+// Build a multi-resolution ICO from one SVG source. Renders 16/32/48 PNGs
+// with rsvg-convert (sharp at small sizes — Cairo-rendered), then bundles
+// them with ImageMagick.
+function buildIco(srcSvgPath, outIcoPath, tmpDir) {
+  const pngs = [16, 32, 48].map((sz) => {
+    const p = resolve(tmpDir, `fav-${sz}.png`);
+    rsvg(srcSvgPath, p, sz, sz);
+    return p;
+  });
+  try {
+    execFileSync("magick", [...pngs, outIcoPath]);
+  } catch (e) {
+    throw new Error(`[gen-brand] magick failed: ${e.message}\n  install: brew install imagemagick`);
+  }
+}
+
 function main() {
   const iconPath  = resolve(WEB_ROOT, "app/icon.svg");
   const logoPath  = resolve(WEB_ROOT, "public/logo.svg");
@@ -107,6 +125,19 @@ function main() {
   writeFileSync(ogSrcPath, ogSvg());
   rsvg(ogSrcPath, ogPath, 1200, 630);
   console.log(`✓ ${ogPath} (1200×630 horizontal hero)`);
+
+  // Twitter card — same hero, 1200×600 (Twitter's preferred 2:1).
+  const twitterPath = resolve(WEB_ROOT, "app/twitter-image.png");
+  rsvg(ogSrcPath, twitterPath, 1200, 600);
+  console.log(`✓ ${twitterPath} (1200×600 horizontal hero)`);
+
+  // favicon.ico — multi-res 16/32/48 from the stacked SVG. Small sizes
+  // use a tighter SVG (no descender on '.' below baseline → readable at 16px).
+  const faviconPath = resolve(WEB_ROOT, "app/favicon.ico");
+  const faviconSrc = resolve(tmpDir, "favicon-src.svg");
+  writeFileSync(faviconSrc, stackedSquareSvg(64));
+  buildIco(faviconSrc, faviconPath, tmpDir);
+  console.log(`✓ ${faviconPath} (16/32/48 multi-res ICO)`);
 
   console.log(`\n  i1 palette: ${BG} / ${INK} / ${ACCENT}   ✓`);
   console.log(`  i2 font: system bold sans stack          ✓`);
