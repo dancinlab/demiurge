@@ -113,7 +113,7 @@ export default async function DashboardPage({
         </div>
       </div>
 
-      <div className="grid min-h-0 flex-1 grid-cols-[200px_minmax(0,1fr)_260px] overflow-hidden">
+      <div className="grid min-h-0 flex-1 grid-cols-[200px_1fr_260px] overflow-hidden [&>*]:min-w-0">
         {/* ① left rail — 8-verb spine */}
         <nav className="flex flex-col gap-0.5 overflow-y-auto border-r border-neutral-300 p-4 text-sm">
           <span className="mb-2 text-[11px] uppercase tracking-wider text-neutral-500">
