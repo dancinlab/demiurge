@@ -51,8 +51,8 @@ export function SignInForm({ labels }: { labels: SignInLabels }) {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-0 border-b-4 border-white">
+    <div className="space-y-4">
+      <div className="flex gap-1 border-b border-neutral-200 dark:border-neutral-800">
         {(["signin", "signup"] as Mode[]).map((m) => (
           <button
             key={m}
@@ -61,33 +61,33 @@ export function SignInForm({ labels }: { labels: SignInLabels }) {
               setError(null);
             }}
             className={
-              "px-4 py-2 text-xs font-black uppercase tracking-[0.2em] " +
+              "px-3 py-1 text-sm " +
               (mode === m
-                ? "bg-yellow-300 text-black"
-                : "bg-black text-white/60 hover:text-yellow-300")
+                ? "border-b-2 border-neutral-900 font-semibold dark:border-neutral-100"
+                : "text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100")
             }
           >
             {m === "signin" ? labels.tabSignin : labels.tabSignup}
           </button>
         ))}
       </div>
-      <form onSubmit={submit} className="space-y-4">
+      <form onSubmit={submit} className="space-y-3">
         <div>
-          <label className="block text-xs font-black uppercase tracking-[0.2em] text-white/70">{labels.email}</label>
+          <label className="block text-xs text-neutral-500">{labels.email}</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
             disabled={loading}
-            className="mt-2 w-full border-4 border-white bg-black p-3 font-mono text-sm text-white focus:border-yellow-300 focus:outline-none"
+            className="mt-1 w-full rounded border border-neutral-300 bg-white p-2 font-mono text-sm dark:border-neutral-700 dark:bg-neutral-950"
           />
         </div>
         <div>
-          <label className="block text-xs font-black uppercase tracking-[0.2em] text-white/70">
+          <label className="block text-xs text-neutral-500">
             {labels.password}{" "}
             {mode === "signup" && (
-              <span className="text-white/40">{labels.passwordHint}</span>
+              <span className="text-neutral-400">{labels.passwordHint}</span>
             )}
           </label>
           <input
@@ -96,18 +96,18 @@ export function SignInForm({ labels }: { labels: SignInLabels }) {
             onChange={(e) => setPassword(e.target.value)}
             autoComplete={mode === "signin" ? "current-password" : "new-password"}
             disabled={loading}
-            className="mt-2 w-full border-4 border-white bg-black p-3 font-mono text-sm text-white focus:border-yellow-300 focus:outline-none"
+            className="mt-1 w-full rounded border border-neutral-300 bg-white p-2 font-mono text-sm dark:border-neutral-700 dark:bg-neutral-950"
           />
         </div>
         {error && (
-          <div className="border-l-4 border-yellow-300 bg-black p-3 text-xs uppercase tracking-wide text-yellow-300">
+          <div className="rounded border border-neutral-300 bg-neutral-50 p-2 text-xs text-neutral-700 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
             {error}
           </div>
         )}
         <button
           type="submit"
           disabled={loading}
-          className="w-full border-4 border-white bg-yellow-300 px-4 py-3 text-sm font-black uppercase text-black hover:bg-white disabled:opacity-40"
+          className="w-full rounded bg-neutral-900 px-3 py-2 text-sm text-white disabled:opacity-40 dark:bg-neutral-100 dark:text-neutral-900"
         >
           {loading
             ? labels.loading

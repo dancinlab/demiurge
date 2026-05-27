@@ -1,5 +1,5 @@
 // /account — Server component reading the session cookie + Firestore
-// subscription. Redirects to /signin if guest. Brutalist tone.
+// subscription. Redirects to /signin if guest. Mono / Terminal tone.
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -42,30 +42,28 @@ export default async function AccountPage() {
   const periodEnd = formatPeriodEnd(sub?.currentPeriodEnd);
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <div className="mx-auto max-w-2xl px-8 py-16">
-        <nav className="mb-10 text-xs uppercase tracking-[0.3em] text-white/70">
-          <Link href="/" className="hover:text-yellow-300">
+    <main className="min-h-screen bg-white font-mono text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+      <div className="mx-auto max-w-md px-8 py-16">
+        <nav className="mb-6 text-xs text-neutral-500">
+          <Link href="/" className="underline">
             {t(m, "nav.back_home")}
           </Link>
-          <span className="px-3 text-white/40">//</span>
-          <Link href="/dashboard" className="hover:text-yellow-300">
-            DASHBOARD
+          {" · "}
+          <Link href="/dashboard" className="underline">
+            dashboard
           </Link>
         </nav>
 
-        <div className="border-y-4 border-white py-2 text-xs uppercase" style={{ letterSpacing: "0.4em" }}>
-          ACCOUNT&nbsp;&nbsp;//&nbsp;&nbsp;BILLING&nbsp;&nbsp;//&nbsp;&nbsp;SESSION
-        </div>
-
-        <header className="mt-10 flex items-end justify-between gap-6">
-          <h1 className="text-[64px] font-black uppercase leading-[0.85] tracking-tighter">
-            {t(m, "account.title")}
-            <span className="text-yellow-300">.</span>
-          </h1>
+        <header className="mb-8 flex items-center justify-between gap-3">
+          <div>
+            <span className="inline-block rounded border border-neutral-300 px-2 py-0.5 text-xs text-neutral-600 dark:border-neutral-700 dark:text-neutral-400">
+              account
+            </span>
+            <h1 className="mt-3 text-3xl font-bold tracking-tight">{t(m, "account.title")}</h1>
+          </div>
           {meta && tierLabel && (
             <span
-              className="shrink-0 border-4 border-yellow-300 bg-yellow-300 px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-black"
+              className="shrink-0 rounded border border-neutral-900 px-3 py-1 text-xs font-semibold dark:border-neutral-100"
               title={meta.badge}
             >
               {tierLabel}
@@ -73,80 +71,61 @@ export default async function AccountPage() {
           )}
         </header>
 
-        <section className="mt-12 border-4 border-white">
-          <div className="grid grid-cols-1">
-            <div className="flex items-center justify-between border-b-4 border-white px-4 py-3">
-              <span className="text-xs font-black uppercase tracking-[0.2em] text-white/70">
-                {t(m, "account.email")}
-              </span>
-              <span className="text-sm uppercase">{user.email}</span>
+        <section className="mb-6 rounded border border-neutral-300 dark:border-neutral-700">
+          <dl className="divide-y divide-neutral-200 text-sm dark:divide-neutral-800">
+            <div className="flex justify-between px-3 py-2">
+              <dt className="text-neutral-500">{t(m, "account.email")}</dt>
+              <dd>{user.email}</dd>
             </div>
-            <div className="flex items-center justify-between border-b-4 border-white px-4 py-3">
-              <span className="text-xs font-black uppercase tracking-[0.2em] text-white/70">
-                {t(m, "account.verified")}
-              </span>
-              <span className="text-sm">
-                {user.emailVerified ? (
-                  <span className="text-yellow-300">✓</span>
-                ) : (
-                  "—"
-                )}
-              </span>
+            <div className="flex justify-between px-3 py-2">
+              <dt className="text-neutral-500">{t(m, "account.verified")}</dt>
+              <dd>{user.emailVerified ? "✓" : "—"}</dd>
             </div>
-            <div className="flex items-center justify-between px-4 py-3">
-              <span className="text-xs font-black uppercase tracking-[0.2em] text-white/70">
-                {t(m, "account.uid")}
-              </span>
-              <span className="font-mono text-xs">{user.localId}</span>
+            <div className="flex justify-between px-3 py-2">
+              <dt className="text-neutral-500">{t(m, "account.uid")}</dt>
+              <dd className="text-xs">{user.localId}</dd>
             </div>
-          </div>
+          </dl>
         </section>
 
-        <section className="mt-12">
-          <h2 className="border-y-4 border-white py-2 text-xs font-black uppercase tracking-[0.4em]">
-            {t(m, "account.billing")}
-          </h2>
+        <section className="mb-6">
+          <h2 className="mb-2 text-lg font-semibold">{t(m, "account.billing")}</h2>
           {meta && tierLabel ? (
-            <div className="mt-4 space-y-3 border-l-4 border-white pl-4">
-              <p className="text-base uppercase tracking-wide">
-                <span className="font-black">{tierLabel}</span>
-                <span className="px-3 text-white/40">//</span>
-                <span className="text-white/70">{meta.badge}</span>
+            <div className="space-y-2">
+              <p className="text-sm">
+                <span className="font-semibold">{tierLabel}</span>{" "}
+                <span className="text-neutral-500">· {meta.badge}</span>
               </p>
               {periodEnd && (
-                <p className="text-xs uppercase tracking-wide text-white/70">
+                <p className="text-xs text-neutral-500">
                   {t(m, "account.renewal")}:{" "}
-                  <span className="font-mono text-white">{periodEnd}</span>
+                  <span className="font-mono">{periodEnd}</span>
                 </p>
               )}
               {typeof sub?.cancelAtPeriodEnd === "boolean" &&
                 sub.cancelAtPeriodEnd && (
-                  <p className="text-xs uppercase tracking-wide text-yellow-300">
+                  <p className="text-xs text-neutral-700 dark:text-neutral-300">
                     {t(m, "account.cancel_warning")}
                   </p>
                 )}
-              <p className="text-xs uppercase tracking-wide text-white/70">
-                {t(m, "account.portal_note")}
-              </p>
+              <p className="text-xs text-neutral-500">{t(m, "account.portal_note")}</p>
             </div>
           ) : (
-            <div className="mt-4">
-              <p className="mb-4 border-l-4 border-white pl-4 text-xs uppercase tracking-wide text-white/70">
+            <>
+              <p className="mb-2 text-xs text-neutral-500">
                 {t(m, "account.no_sub_tagline")}
               </p>
               <Link
                 href="/pricing"
-                className="inline-block border-4 border-white bg-yellow-300 px-6 py-3 text-sm font-black uppercase text-black hover:bg-white"
+                className="inline-block rounded bg-neutral-900 px-3 py-1 text-sm text-white dark:bg-neutral-100 dark:text-neutral-900"
               >
-                {t(m, "account.pick_plan")} ▶
+                {t(m, "account.pick_plan")}
               </Link>
-            </div>
+            </>
           )}
         </section>
 
-        <div className="mt-12 border-t-4 border-white pt-6">
-          <SignOutButton label={t(m, "account.signout")} />
-        </div>
+        <SignOutButton label={t(m, "account.signout")} />
       </div>
     </main>
   );
