@@ -1,8 +1,13 @@
 // TopBar — server component. Pure presentation: user, activeDomain, and i18n
 // strings all come as props from (app)/layout.tsx.
-// ElevenLabs 톤: 흰 surface 바 · hairline 보더 · Geist 라이트 로고 · CTA=primary.
+// ElevenLabs 톤: 흰 surface 바 · hairline 보더 · 우측 액션 클러스터(Docs · 알림 · 계정).
+// 클라 상호작용(아바타 드롭다운)만 AccountMenu(client)로 분리 — TopBar 는 server 유지.
 
 import Link from "next/link";
+import { BookOpen, Bell } from "lucide-react";
+import { AccountMenu } from "@/components/AccountMenu";
+
+// 테마 토글(Light/Dark/System)은 이번엔 제외 — 다크 팔레트 미구현. 추후 우측 클러스터에 추가 예정.
 
 type TopBarUser = { email: string; role?: string };
 
@@ -22,10 +27,26 @@ export function TopBar({
   activeDomain?: string | null;
   i18n: TopBarI18n;
 }) {
-  // ElevenLabs 톤: 브랜드는 사이드바에만 — TopBar 는 우측 액션만 (도메인 칩·로고 폐기).
+  // ElevenLabs 상단 우측: Docs · 알림 벨 · domains · admin(조건) · 계정 아바타.
   return (
     <header className="flex items-center gap-3 border-b border-hairline bg-surface px-5 py-3 text-sm">
       <span className="flex-1" />
+      <a
+        href="https://demiurge.dancinlab.org"
+        target="_blank"
+        rel="noreferrer"
+        className="flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted hover:bg-surface-strong hover:text-ink"
+      >
+        <BookOpen className="h-4 w-4" aria-hidden="true" />
+        Docs
+      </a>
+      <Link
+        href="/account"
+        aria-label="Notifications"
+        className="rounded-full p-1.5 text-muted hover:bg-surface-strong hover:text-ink"
+      >
+        <Bell className="h-4 w-4" aria-hidden="true" />
+      </Link>
       <Link
         href="/dashboard"
         className="rounded-full px-2 py-1 text-xs text-muted hover:bg-surface-strong hover:text-ink"
@@ -41,12 +62,7 @@ export function TopBar({
         </Link>
       )}
       {user ? (
-        <Link
-          href="/account"
-          className="rounded-full bg-surface-strong px-2.5 py-1 text-xs text-body hover:bg-hairline"
-        >
-          {user.email}
-        </Link>
+        <AccountMenu email={user.email} />
       ) : (
         <Link
           href="/signin"
