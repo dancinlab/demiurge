@@ -240,3 +240,41 @@ R4 absorbed=false 영구 — wet-lab 측정 PASS까지 closure 없음. ♾️ pe
 ### wave-3 진행 (구조 deck 작성 후 추가):
 - 🥇 다음 우선순위 (lit-known): LaBH₈ · CeH₉ · YH₆ · YH₉ · YH₁₀ · Li₂MgH₁₆
 - 다음 turn에 정확한 Wyckoff + lattice로 author 후 dispatch
+
+## Cycle 17 — wave-3 lit-known dispatch (2/6 fired)
+
+pod-2 (`vast-cuda-ssh9-15988`, ssh9.vast.ai:15988, 128c) 에 lit-known 초전도체 후보 DFT el-ph 발사. autonomous cost-bearing fire (~$18 authorized, @D d17). **정직: 2/6 fired, 4/6 skipped.**
+
+### nested-heredoc 함정 회피 (핵심)
+- cabeh8 run.sh 의 inline-heredoc python cell-extract (`'"'"'scf'"'"'` 중첩 따옴표) → python SyntaxError 무성 stall 재발 금지.
+- **해결**: clean `extract.py` 별도 author (LOCAL /tmp) → `hexa cloud copy-to` → run.sh 가 `python3 extract.py` 호출 (inline heredoc 0). cah6_decompress/sc2be2h6 수리 패턴 계승.
+- run.sh 는 generic (PREFIX=dir basename, @D d4 single-dispatch) — 후보별 하드코딩 0.
+
+### ✓ FIRED (2) — d16 free dry-run PASS 후 nohup detached
+| dir | structure | P | np | PID | dry-run |
+|-----|-----------|---|----|----|---------|
+| `/root/wave3/YH6` | Im-3̄m #229 bcc clathrate, ibrav=1 conv Y₂H₁₂ nat=14 | 150GPa (1500kbar) | 6 | 3311 | PASS — 14 atoms/34 e⁻, SCF→-179.81 Ry, no err |
+| `/root/wave3/LaBH8` | Fm-3̄m #225 fcc, ibrav=2 prim nat=10 (32f→8 H fold) | 50GPa (500kbar) | 6 | 3343 | PASS — 10 atoms/22 e⁻, bravais=2, SCF→-140.8 Ry, no err |
+
+- **YH₆** (🥇 최고우선): Troyan 2021 측정 ~224K@166GPa anchor. Im-3̄m 2a (0,0,0)+12d 오빗 12 H → conv cell nat=14. 가장 단순한 clathrate, 측정 anchor → 하이드라이드 pipeline 검증.
+- **LaBH₈** (<50GPa milestone): Di Cataldo 2021 예측 ~126K@<50GPa. Fm-3̄m 4a La + 4b B + 32f (x,x,x) x=0.375 → primitive fcc fold 8 H, nat=10. 최저압 ternary.
+- 둘 다 발사 후 20s 검증: relax.out 증가 + SCF 반복 (YH6 9 iter, LaBH8 5 iter) + error 0 → 무성 stall 아님 확인.
+
+### ⏭ SKIPPED (4) — 정직한 사유 (d6 no-forcing: 틀린 구조 발사보다 skip)
+| 후보 | 사유 |
+|------|------|
+| **CeH₉** | task 가 Ce 2c 만 제공, H clathrate cage 18-atom Wyckoff 내부좌표 미제공. P6₃/mmc CeH₉ H 케이지 (Salke/Li 2019) 자유 파라미터 추측 = garbage 위험. pseudo (Ce.pbe-spdn)는 준비 완료 — 좌표만 받으면 즉시 발사 가능. |
+| **YH₉** | P6₃/mmc clathrate, task 에 H 케이지 좌표 0. 위와 동일 — metal site 만으로 발사 불가. |
+| **YH₁₀** | Fm-3̄m sodalite clathrate, H 32f x-파라미터 + 보조 site 미제공. sodalite 토폴로지는 알려져 있으나 정확한 x 값 추측 시 wrong structure. |
+| **Li₂MgH₁₆** | Fd-3̄m, task 에 Wyckoff 좌표 전무 (구조 가장 복잡 + 최저우선). Mg pseudo (spnl variant) fetch 완료했으나 좌표 없음. |
+
+- skip 4건 모두 "metal site 만 제공, H 케이지/sodalite 내부좌표 미제공" 동일 사유. task 명시 "do NOT hallucinate coords" + "fire 3 correct than 6 with typos" 준수.
+- pseudo 7종 (Y/La/Ce/Li/Mg/B/H rrkjus_psl 1.0.0) `~/wave3/pseudo/` 전부 fetch 완료 — 향후 좌표 확보 시 즉시 author 가능.
+
+### 비용
+- 2 job × np=6 = 12 cores + cabeh8 8 = ~20/128 (throttle-safe, cap 6 jobs 미달).
+- est wall YH6 ~30-40h, LaBH8 ~30-40h @ $0.40/hr → ~$12-16 (≤$18 budget).
+
+### watcher (parent 가 무장 — self-arm 금지)
+- YH6:   `hexa cloud exec root@ssh9.vast.ai --port 15988 --insecure -- 'grep -c "CHAIN DONE" ~/wave3/YH6/chain.log'`
+- LaBH8: `hexa cloud exec root@ssh9.vast.ai --port 15988 --insecure -- 'grep -c "CHAIN DONE" ~/wave3/LaBH8/chain.log'`

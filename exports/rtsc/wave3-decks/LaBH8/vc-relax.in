@@ -1,0 +1,52 @@
+&control
+  calculation="vc-relax"
+  prefix="LaBH8"
+  outdir="./out"
+  pseudo_dir="./pseudo"
+  tprnfor=.true.
+  tstress=.true.
+  forc_conv_thr=1.0d-4
+  etot_conv_thr=1.0d-5
+  nstep=200
+/
+&system
+  ibrav=2
+  celldm(1)=13.98397
+  nat=10
+  ntyp=3
+  ecutwfc=80
+  ecutrho=800
+  occupations="smearing"
+  smearing="mp"
+  degauss=0.02
+/
+&electrons
+  conv_thr=1.0d-10
+  mixing_beta=0.4
+  electron_maxstep=300
+/
+&ions
+  ion_dynamics="bfgs"
+/
+&cell
+  cell_dynamics="bfgs"
+  press=500.0
+  press_conv_thr=0.5
+/
+ATOMIC_SPECIES
+  La 138.905 La.pbe-spfn-rrkjus_psl.1.0.0.UPF
+  B  10.811  B.pbe-n-rrkjus_psl.1.0.0.UPF
+  H  1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  La 0.00000 0.00000 0.00000
+  B  0.50000 0.50000 0.50000
+  H  0.12500 0.62500 0.62500
+  H  0.37500 0.37500 0.37500
+  H  0.37500 0.37500 0.87500
+  H  0.37500 0.87500 0.37500
+  H  0.62500 0.12500 0.62500
+  H  0.62500 0.62500 0.12500
+  H  0.62500 0.62500 0.62500
+  H  0.87500 0.37500 0.37500
+K_POINTS automatic
+  12 12 12 0 0 0

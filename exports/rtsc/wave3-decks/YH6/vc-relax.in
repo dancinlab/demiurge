@@ -1,0 +1,55 @@
+&control
+  calculation="vc-relax"
+  prefix="YH6"
+  outdir="./out"
+  pseudo_dir="./pseudo"
+  tprnfor=.true.
+  tstress=.true.
+  forc_conv_thr=1.0d-4
+  etot_conv_thr=1.0d-5
+  nstep=200
+/
+&system
+  ibrav=1
+  celldm(1)=6.70853
+  nat=14
+  ntyp=2
+  ecutwfc=80
+  ecutrho=800
+  occupations="smearing"
+  smearing="mp"
+  degauss=0.02
+/
+&electrons
+  conv_thr=1.0d-10
+  mixing_beta=0.4
+  electron_maxstep=300
+/
+&ions
+  ion_dynamics="bfgs"
+/
+&cell
+  cell_dynamics="bfgs"
+  press=1500.0
+  press_conv_thr=0.5
+/
+ATOMIC_SPECIES
+  Y 88.906 Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H 1.008  H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Y 0.000000 0.000000 0.000000
+  Y 0.500000 0.500000 0.500000
+  H 0.000000 0.250000 0.500000
+  H 0.000000 0.500000 0.250000
+  H 0.000000 0.500000 0.750000
+  H 0.000000 0.750000 0.500000
+  H 0.250000 0.000000 0.500000
+  H 0.250000 0.500000 0.000000
+  H 0.500000 0.000000 0.250000
+  H 0.500000 0.000000 0.750000
+  H 0.500000 0.250000 0.000000
+  H 0.500000 0.750000 0.000000
+  H 0.750000 0.000000 0.500000
+  H 0.750000 0.500000 0.000000
+K_POINTS automatic
+  12 12 12 0 0 0

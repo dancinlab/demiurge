@@ -1,7 +1,7 @@
 {
   "version": "1.0-temp",
   "schema_origin": "sidecar INBOX #193 (~/.pool/pods.json proposed)",
-  "last_updated_utc": "2026-05-28T00:30Z",
+  "last_updated_utc": "2026-05-27T20:45Z",
   "campaign": "rtsc-293K-1atm",
   "budget": {
     "krw": 1000000,
@@ -115,7 +115,9 @@
       "image": "nvidia/cuda:12.2.0-base-ubuntu22.04",
       "qe_version": "6.7-2build1 (apt)",
       "jobs": [
-        "cabeh8"
+        "cabeh8",
+        "YH6",
+        "LaBH8"
       ],
       "ssh_note": "hexa cloud exec required (cloud-guard blocks raw ssh)"
     },
@@ -424,6 +426,40 @@
       "watcher": "b08qnguq6",
       "est_wall_h": 40,
       "hypothesis": "Sc/Y/Ca M-Be-H 자매 완성 (가장 가벼운 비방사성 cation)",
+      "verdict": "PENDING"
+    },
+    "YH6": {
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "running",
+      "stage": "vc-relax",
+      "started_utc": "2026-05-27T20:44:52Z",
+      "pid": 3311,
+      "np": 6,
+      "dir": "/root/wave3/YH6",
+      "structure": "Im-3m (#229) bcc clathrate, ibrav=1 conv cell Y2H12, nat=14",
+      "pressure_kbar": 1500,
+      "pressure_GPa": 150,
+      "anchor_tc_K": 224,
+      "anchor_ref": "Troyan 2021 measured ~224K@166GPa",
+      "dryrun_verdict": "PASS — 14 atoms/34 e-, SCF converging ~-179.81 Ry, no directive/pseudo errors",
+      "hypothesis": "wave-3 lit-known: simplest bcc clathrate, measured anchor — validate hydride el-ph pipeline",
+      "verdict": "PENDING"
+    },
+    "LaBH8": {
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "running",
+      "stage": "vc-relax",
+      "started_utc": "2026-05-27T20:44:55Z",
+      "pid": 3343,
+      "np": 6,
+      "dir": "/root/wave3/LaBH8",
+      "structure": "Fm-3m (#225) fcc, ibrav=2 primitive LaBH8, nat=10 (32f->8 H fold)",
+      "pressure_kbar": 500,
+      "pressure_GPa": 50,
+      "anchor_tc_K": 126,
+      "anchor_ref": "Di Cataldo 2021 predicted ~126K@<50GPa",
+      "dryrun_verdict": "PASS — 10 atoms/22 e-, bravais=2 fcc, SCF iterating ~-140.8 Ry, no errors",
+      "hypothesis": "wave-3 lit-known: addresses <50GPa milestone (lowest pressure ternary hydride)",
       "verdict": "PENDING"
     },
     "h3cl_interp_ablation": {
