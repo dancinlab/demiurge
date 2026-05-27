@@ -18,7 +18,7 @@ export function SignOutButton({ label }: { label: string }) {
     <button
       onClick={signOut}
       disabled={loading}
-      className="border-4 border-white bg-black px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-white hover:bg-yellow-300 hover:text-black disabled:opacity-40"
+      className="rounded border border-neutral-300 px-3 py-1 text-sm hover:bg-neutral-100 disabled:opacity-40 dark:border-neutral-700 dark:hover:bg-neutral-800"
     >
       {loading ? "..." : label}
     </button>
