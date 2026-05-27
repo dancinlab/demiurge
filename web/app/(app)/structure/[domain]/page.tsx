@@ -32,9 +32,7 @@ export default async function Page({
       verb="structure"
       domain={domain}
       statusByVerb={{}}
-      record={<pre className="text-xs">{JSON.stringify({ verb: "structure", domain }, null, 2)}</pre>}
       slot={slot}
-      history={<div className="text-xs text-neutral-500">history · {domain}/structure</div>}
     />
   );
 }

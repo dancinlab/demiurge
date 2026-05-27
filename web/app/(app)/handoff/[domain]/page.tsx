@@ -17,9 +17,7 @@ export default async function Page({
       verb="handoff"
       domain={domain}
       statusByVerb={{}}
-      record={<pre className="text-xs">{JSON.stringify({ verb: "handoff", domain }, null, 2)}</pre>}
       slot={<HandoffDossier domain={domain} />}
-      history={<div className="text-xs text-neutral-500">history · {domain}/handoff · 매 다운로드는 generated_at 새로 기록</div>}
     />
   );
 }

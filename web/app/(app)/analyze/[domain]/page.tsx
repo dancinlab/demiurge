@@ -12,9 +12,7 @@ export default async function Page({ params }: { params: Promise<{ domain: strin
       verb="analyze"
       domain={domain}
       statusByVerb={{}}
-      record={<pre className="text-xs">{JSON.stringify({ verb: "analyze", domain }, null, 2)}</pre>}
       slot={pickSlot("analyze", domain)}
-      history={<div className="text-xs text-neutral-500">history · {domain}/analyze</div>}
     />
   );
 }
