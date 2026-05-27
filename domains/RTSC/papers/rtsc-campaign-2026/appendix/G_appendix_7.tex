@@ -58,6 +58,29 @@ DFT/wet-lab question, not a proven identity.}
 \label{tab:tiers}
 \end{table}
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.80\linewidth, height=5.6cm,
+  ybar, bar width=16pt,
+  xlabel={tier}, ylabel={claim count},
+  symbolic x coords={FORMAL,NUMERICAL,CITATION,DEFERRED,FALSIFIED,FENCED},
+  xtick=data, x tick label style={font=\scriptsize,rotate=20,anchor=east},
+  ymin=0, ymax=40, nodes near coords, nodes near coords style={font=\tiny},
+  grid=both, grid style={gray!18},
+]
+\addplot[draw=black,fill=blue!35]
+  coordinates {(FORMAL,14)(NUMERICAL,35)(CITATION,12)(DEFERRED,6)(FALSIFIED,3)(FENCED,4)};
+\end{axis}
+\end{tikzpicture}
+\caption{The 6-tier register over $\sim$57 primary claims. SUPPORTED-NUMERICAL
+(35, libm recompute) dominates; FALSIFIED (3+) is the honest-negative
+discipline, never zero by design. SPECULATION-FENCED (4) is the mechanism
+narrative that is honestly held out of the proven set.}
+\label{fig:tiers}
+\end{figure}
+
 \paragraph{R4 integrity.}
 The falsifier ledger (\texttt{falsifiers/F-N6.md}) is the campaign's
 R4-integrity surface. Two of the four ternary falsifiers (F-N6-3, F-N6-4)

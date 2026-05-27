@@ -41,6 +41,32 @@ $R^2 = 0.915$ --- $9.6\times$ the F-N6-4 threshold.}
 \label{tab:pscan}
 \end{table}
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.78\linewidth, height=6cm,
+  xlabel={Pressure $P$ (GPa)}, ylabel={$\omega_{\log}$ ($\Gamma$ proxy, K)},
+  xmin=0, xmax=220, ymin=800, ymax=1900,
+  grid=both, grid style={gray!18},
+  legend pos=south east, legend style={font=\scriptsize},
+]
+\addplot[only marks,mark=*,draw=teal,fill=teal]
+  coordinates {(30,949.5)(100,1500.2)(150,1660.3)(200,1766.4)};
+\addlegendentry{DFT $\Gamma$ proxy}
+\addplot[red,thick,domain=0:220] {894.4 + 4.789*x};
+\addlegendentry{fit: $894.4 + 4.79\,P$ ($R^2{=}0.915$)}
+\end{axis}
+\end{tikzpicture}
+\caption{\ce{H3Br} $\omega_{\log}$ versus pressure ($\Gamma$-point proxy).
+The positive slope $+\SI{4.79}{\kelvin\per\giga\pascal}$ ($9.6\times$ the
+F-N6-4 threshold) confirms the $\omega_{\log}$ bottleneck is
+pressure-responsive; every point is dynamically stable (zero imaginary
+modes). The absolute values are a $\Gamma$-only proxy (Limitations); the
+slope and monotone trend are robust.}
+\label{fig:pscan}
+\end{figure}
+
 \paragraph{Verdict.}
 \tierGreen\ \textbf{PASSED} 2026-05-27. The slope is
 $+\SI{4.79}{\kelvin\per\giga\pascal}$, an order of magnitude above the
