@@ -39,7 +39,10 @@ function LucideIcon({ id }: { id: string }) {
   );
 }
 
+// discover 가 최상단 — 모든 작업의 시작점 (kick / gap / 발산).
+// 그 뒤로 7-verb pipeline (spec → ... → handoff) 정통 순서.
 export const VERBS = [
+  { id: "discover", label: "discover" },
   { id: "spec", label: "spec" },
   { id: "structure", label: "structure" },
   { id: "design", label: "design" },
@@ -47,7 +50,6 @@ export const VERBS = [
   { id: "synth", label: "synth" },
   { id: "verify", label: "verify" },
   { id: "handoff", label: "handoff" },
-  { id: "discover", label: "discover" },
 ] as const;
 
 export type VerbId = (typeof VERBS)[number]["id"];
