@@ -1,3 +1,51 @@
+# RTSC mining log — 사이클별 전체 기록 (append-only)
+
+> 협업 lens-driven brainstorm + edge connection 누적. 사이클마다 append.
+
+## 📌 단일 진실 (15 사이클 압축)
+
+```
+                  🐍 Cooper-Kramers ouroboros (LL-1)
+                     = SC 단일 원초 구조 (시간역 짝 페어링)
+                              ↕ (메커니즘 통합 8 edge)
+                  4중 Hopf cut [x2 ≡ C1 ≡ O4 ≡ M-Be-H]
+                              ↕ (실측-이론 8 edge)
+                  8 dispatched + 5D 지도
+                  (CaH₆ + labeh8 자매 + sc/y/cah6 게이트)
+                              ↕ (자연 시퀀스 5 edge)
+                  wave-3: O-RTSC-1 계층 clathrate (AcBeH₈ 확장)
+                              ↕ (미커버 6)
+                  μ* · YH10 · AdS bound · paper · 외부협업 · wave-3
+```
+
+## 📑 사이클 인덱스
+
+| Cycle | 주제 | 산출 |
+|---|---|---|
+| 1 | 물질 후보 발산 | 34 후보 (R1-R6) |
+| 2 | arxiv grounding | M-Be-H dispatch (sc/y) |
+| 3 | 수학↔물리 같은-공식 | 24 lens 아이디어 |
+| 4 | 2D 실측 지도 | m-sign × ω_log (15물질) |
+| 5 | 5D 생존 벡터 | CaH₆/labeh8 = "1축만 빠짐" |
+| 6 | x11 CaH₆ 발사 | 감압 게이트 dispatch |
+| 7 | 모순 채굴 + 조합 | T1-3 + C1-5 (8 derivative) |
+| 8 | 트리 가지치기 | ~35 leaf |
+| 9 | cart 전수 분기 | +50 leaf (~85) |
+| 10 | 우로보러스 7개 | 자기지시 발견 |
+| 11 | ouroboros 렌즈 RTSC 후보 | O-RTSC-1~9 (+9) |
+| 12 | 모든 leaf에 lens 적용 | ~94 leaf 전부 self-loop |
+| 13 | lens 한계 (LL-1 Cooper-Kramers) | 단일 수렴점 |
+| 14 | lens identity functor | 진짜 고갈 |
+| 15 | edge 연결 고갈 | 32 의미있는 edge |
+
+## 📊 통계
+
+- 총 leaf: ~94
+- 의미있는 direct edge: 32 (가능 ~4370 중)
+- lens 종류 사용: 5 (same-formula · 차원 · 모순 · 조합 · ouroboros)
+- 미커버 axis: 6 (μ* · YH10 · AdS · paper · 외부협업 · wave-3)
+
+---
 # RTSC brainstorm log — 사이클별 전체 기록 (append-only)
 
 > 협업 brainstorm의 모든 내용을 사이클마다 누적 기록. 아이디어 cart는 `.discoveries/rtsc-escape-clathrate.tape`(24개), 본 로그는 **분석 결과 + 추론 + 도구**를 담는다. 활성 도메인 RTSC · @goal 293K@1atm · R4 absorbed=false 영구.

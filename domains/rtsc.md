@@ -1418,3 +1418,6 @@ REBCO / Bi-2212 coils (open tooling is 2-D-limited).
 - 관련 wall doc: [`RTSC/walls/stability_coupling_margin.md`](RTSC/walls/stability_coupling_margin.md) — m-sign closed-form (PR #335/344/346 landed)
 
 방법: math↔physics 같은-공식 cross-pollination (RG flow · Ricci surgery · 최적수송 · Perelman 엔트로피 · Kramers · ZPE-Casimir · Lifshitz/persistent-homology · BKT · Lyapunov 등). 차원 사다리 2D(m×ω) → 5D(+μ*, +stability, +P) → 6D(+f_H). Top 보석: x11 Kramers 회수성(293K@1atm 직격) · x3 OT H-모드분율 · C1 양자-회수 ZPE.
+
+### 5분 쉽게 보기
+- [`rtsc.easy.md`](rtsc.easy.md) — 캠페인 한 페이지 (5분 입문, easy 모드 ASCII)
