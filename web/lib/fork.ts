@@ -31,6 +31,8 @@ export async function forkPublicDomain(
       ? src.fields.composes[0]
       : sourceId,
     composes: Array.isArray(src.fields.composes) ? src.fields.composes : [],
+    members: [uid], // Q10 team-seat 공동 데이터 — owner 가 첫 멤버
+    owner: uid,
     createdAt: new Date().toISOString(),
   });
 
