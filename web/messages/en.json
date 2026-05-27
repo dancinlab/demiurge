@@ -60,6 +60,7 @@
     "cli_disclaimer": "Tokens are scoped per workspace and can be revoked anytime. Last 4 digits shown only — full token is displayed once at creation.",
     "usage_intro": "This-month resource consumption. Subscription seat is included; all GCP compute lines bill directly via your linked Google Cloud project.",
     "usage_col_resource": "Resource",
+    "usage_col_unit": "Unit",
     "usage_col_used": "Used",
     "usage_col_limit": "Limit",
     "usage_row_gemini_tokens": "Gemini tokens",

@@ -260,24 +260,23 @@ function UsagePanel({ m, meta }: { m: Msgs; meta: TierMeta | null }) {
         {t(m, "account.usage_intro")}
       </p>
       <div className="border-4 border-white">
-        <div className="grid grid-cols-[1fr_auto_auto] items-center border-b-4 border-white bg-yellow-300 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-black">
+        <div className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 border-b-4 border-white bg-yellow-300 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-black">
           <span>{t(m, "account.usage_col_resource")}</span>
-          <span className="px-6">{t(m, "account.usage_col_used")}</span>
+          <span className="text-right">{t(m, "account.usage_col_unit")}</span>
+          <span className="text-right">{t(m, "account.usage_col_used")}</span>
           <span className="text-right">{t(m, "account.usage_col_limit")}</span>
         </div>
         {rows.map((r, i) => (
           <div
             key={r.k}
             className={
-              "grid grid-cols-[1fr_auto_auto] items-center px-4 py-3 text-xs uppercase tracking-wide " +
+              "grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 px-4 py-3 text-xs uppercase tracking-wide " +
               (i < rows.length - 1 ? "border-b border-white/30 " : "")
             }
           >
-            <div>
-              <div className="font-black text-white">{t(m, `account.usage_row_${r.k}`)}</div>
-              <div className="mt-0.5 text-[10px] normal-case tracking-normal text-white/50">{r.unit}</div>
-            </div>
-            <span className="px-6 font-mono text-white/70">{r.used}</span>
+            <span className="font-black text-white">{t(m, `account.usage_row_${r.k}`)}</span>
+            <span className="text-right font-mono normal-case tracking-normal text-white/50">{r.unit}</span>
+            <span className="text-right font-mono text-white/70">{r.used}</span>
             <span className="text-right font-black text-yellow-300">{r.limit}</span>
           </div>
         ))}

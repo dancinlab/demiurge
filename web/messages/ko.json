@@ -60,6 +60,7 @@
     "cli_disclaimer": "토큰은 워크스페이스 단위로 스코프되며 언제든 회수 가능. 마지막 4자리만 표시 — 전체 토큰은 발급 시 한 번만 표시.",
     "usage_intro": "이번 달 리소스 사용량. 구독 seat 는 포함, 모든 GCP 컴퓨트는 본인의 연결된 Google Cloud project 에서 직접 청구.",
     "usage_col_resource": "리소스",
+    "usage_col_unit": "단위",
     "usage_col_used": "사용",
     "usage_col_limit": "한도",
     "usage_row_gemini_tokens": "Gemini 토큰",

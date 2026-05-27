@@ -60,6 +60,7 @@
     "cli_disclaimer": "令牌按工作区作用域，可随时撤销。仅显示末 4 位 — 完整令牌仅在创建时显示一次。",
     "usage_intro": "本月资源消耗。订阅 seat 已包含，所有 GCP 算力均直接计入您连接的 Google Cloud 项目。",
     "usage_col_resource": "资源",
+    "usage_col_unit": "单位",
     "usage_col_used": "已用",
     "usage_col_limit": "上限",
     "usage_row_gemini_tokens": "Gemini 令牌",

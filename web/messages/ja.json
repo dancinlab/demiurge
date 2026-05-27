@@ -60,6 +60,7 @@
     "cli_disclaimer": "トークンはワークスペース単位でスコープされ、いつでも取り消し可能。末尾 4 桁のみ表示 — 全文は発行時に一度だけ。",
     "usage_intro": "今月のリソース消費。サブスクリプション seat は含まれ、GCP コンピュートは連携した Google Cloud プロジェクトに直接請求。",
     "usage_col_resource": "リソース",
+    "usage_col_unit": "単位",
     "usage_col_used": "使用",
     "usage_col_limit": "上限",
     "usage_row_gemini_tokens": "Gemini トークン",
