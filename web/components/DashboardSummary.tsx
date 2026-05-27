@@ -42,7 +42,7 @@ export async function DashboardSummary() {
         {categories.map((c) => (
           <article
             key={c.id}
-            className="bg-gray-50 p-3"
+            className="rounded-xl border border-gray-200 bg-gray-50 p-3"
           >
             <header className="mb-2 flex items-center gap-2 pb-1.5">
               <span className="text-lg" aria-hidden="true">{c.icon}</span>

@@ -28,4 +28,4 @@
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.animate-msg-in { animation: msg-in 0.22s ease-out; }
+.animate-msg-in { animation: msg-in 0.4s cubic-bezier(0.23, 1, 0.32, 1); }

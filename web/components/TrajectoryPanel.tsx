@@ -20,7 +20,7 @@ export function TrajectoryPanel({
 }) {
   if (entries.length === 0) return null;
   return (
-    <section className="bg-gray-50">
+    <section className="overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
       <header className="flex items-baseline gap-2 px-4 py-2.5">
         <h3 className="font-serif text-base font-semibold text-gray-900">RESEARCH SESSION</h3>
         <span className="font-mono text-[11px] text-gray-400">session-{sessionId}</span>
