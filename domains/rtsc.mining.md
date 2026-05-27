@@ -327,3 +327,50 @@ worktree 영구 저장. transport 만 막힘.
 3. pseudo 파일명 해소 (`~/wave3/pseudo/` 의 rrkjus_psl 1.0.0 → 베어 `<El>.UPF` 심링크) = RUNBOOK §1.
 
 **deck SSOT**: `exports/wave3b-decks/{CeH9,YH9,YH10,Li2MgH16}/` + 공용 `extract.py` + `FIRE-RUNBOOK.md`.
+
+## Cycle 19 — wave-3b re-author + fire (4/4 · explicit-positions) ✅ FIRED
+
+Cycle 18 TRANSPORT BLOCKED 는 오진 — pod `ssh9.vast.ai:15988` 은 살아있었음
+(`hexa cloud exec`의 `<host> [conn] -- <argv>` 위치인자 형식을 안 쓰고 `--cmd` 플래그로
+호출해 host 파싱 실패 → exit 255). 정상 형식으로 재접속 즉시 성공.
+
+### 근본 원인 (4 deck 모두 crystal_sg+space_group 모드 QE startup 실패)
+- YH9, CeH9 (P6₃/mmc #194): `check_atoms (1): atoms #1 and #2 overlap` — crystal_sg
+  representative-site 오빗 전개가 충돌.
+- YH10, Li2MgH16 (cubic #225/#227): `input (1): Input ibrav not compatible with space group number`.
+
+### 해결 (path A) — explicit Wyckoff-orbit 전개 (YH6-proven 패턴)
+spglib `get_symmetry_from_database(hall)` 로 출판 Wyckoff rep → 전체 explicit
+`ATOMIC_POSITIONS crystal` 결정론적 전개 (수기오류 0). `space_group` 카드 제거.
+
+| 후보 | SG | ibrav | nat | comp | min H-H | d16 | fire PID |
+|------|----|-------|-----|------|---------|-----|----------|
+| CeH9 | P6₃/mmc #194 | 4 hex | 20 | Ce₂H₁₈ | 1.120 Å | ✅ PASS | 6079 |
+| YH9  | P6₃/mmc #194 | 4 hex | 20 | Y₂H₁₈  | 1.091 Å | ✅ PASS | 6115 |
+| YH10 | Fm-3m #225   | 2 fcc-prim | 11 | YH₁₀ | 1.028 Å | ✅ PASS | 6151 |
+| Li2MgH16 | Fd-3m #227 o2 | 2 fcc-prim | 38 | Li₄Mg₂H₃₂ | 0.798 Å | ✅ PASS | 6732 |
+
+### 좌표 보정 (환각 0 — 출판 근거)
+- **CeH9/YH9 12k z**: 브리프 z=0.4404 → min H-H 0.55 Å (비물리 overlap). Nature Comm 2019
+  (s41467-019-12326-y) 출판값 **z=0.062** 사용 → 논문 측정 nearest H-H 1.116 Å 복원
+  (우리 전개 1.120 Å). 브리프 값은 전사 오류.
+- **YH10/Li2MgH16 cubic**: ibrav=1 conventional 대신 **FCC primitive (ibrav=2)** 사용 →
+  ph.x tractable (YH10 11 vs 44; Li2MgH16 38 vs 152). 96g 는 (x,x,z) special form 재구성
+  (브리프의 3-distinct triple = general-pos 형 → 192 over-expand + overlap).
+
+### Li.UPF QE-6.7 GIPAW 파서 버그 + fix (d16 dry-run 이 잡음)
+Li2MgH16 d16 (np=2 AND np=1 serial 둘 다) `end of file reached, tag
+PP_GIPAW_ORBITALS not found` (xmltools.f90:1126). Li.pbe-s-rrkjus_psl.1.0.0.UPF
+단독 격리 (Mg/H/Y 정상). fix: NMR전용 `<PP_GIPAW>...</PP_GIPAW>` 블록 strip +
+header `has_gipaw="true"`→`"false"` → `Li.nogipaw.UPF`, `Li.UPF` 심링크 repoint.
+재-d16 PASS. 상세: `exports/rtsc/wave3b_decks/D16-NOTES.md`.
+
+### 비용
+already-running pod `vast-cuda-ssh9-15988` ($0.40/hr) 에 4 chain 추가 → 신규 rent 0.
+incremental = 가장 긴 chain wall × $0.40/hr (~$24 예산 내).
+
+### watcher (parent 가 무장 — self-arm 금지)
+- `grep -c 'CHAIN DONE' ~/wave3/CeH9/chain.log` (PID 6079)
+- `grep -c 'CHAIN DONE' ~/wave3/YH9/chain.log` (PID 6115)
+- `grep -c 'CHAIN DONE' ~/wave3/YH10/chain.log` (PID 6151)
+- `grep -c 'CHAIN DONE' ~/wave3/Li2MgH16/chain.log` (PID 6732)
