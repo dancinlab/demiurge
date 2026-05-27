@@ -74,16 +74,38 @@ export async function currentUser(): Promise<FirebaseUser | null> {
     try {
       const fresh = await refreshSession(session.refreshToken);
       session = { ...fresh, email: session.email };
-      await setSession(session);
+      // Best-effort persist. cookies() is read-only during a Server
+      // Component render in this Next.js version — a write there throws
+      // "Cookies can only be modified in a Server Action or Route
+      // Handler" and 500s the page. Swallow it: the refreshed token is
+      // valid in-memory for this request and re-persists on the next
+      // mutable context (sign-in / route handler).
+      await persistBestEffort(session);
     } catch {
-      await clearSession();
+      await clearBestEffort();
       return null;
     }
   }
   try {
     return await verifyIdToken(session.idToken);
   } catch {
-    await clearSession();
+    await clearBestEffort();
     return null;
+  }
+}
+
+async function persistBestEffort(session: AuthSession): Promise<void> {
+  try {
+    await setSession(session);
+  } catch {
+    /* render-context cookie write not allowed — ignore */
+  }
+}
+
+async function clearBestEffort(): Promise<void> {
+  try {
+    await clearSession();
+  } catch {
+    /* render-context cookie delete not allowed — ignore */
   }
 }
