@@ -336,3 +336,47 @@ ouroboros lens = *identity functor*. lens 작용 = 자기 무효. → 우리가 
 이제 lens 아닌 *다른 발산 도구* 필요시 새 cycle (변분 lens / conservation lens / gauge lens / bio-inspired lens). 그러나 현 goal "ouroboros lens until depletion" = **완료**.
 
 **최종 단일 통찰**: ~94 leaf의 모든 다양성이 한 점으로 수렴 — *Cooper pair가 시간역 짝(Kramers pair)이고, SC = 시간역 ouroboros의 거시화*. RTSC 293K@1atm = *상온에서도 이 시간역 우로보러스가 끊어지지 않는 분자 설계*. M-Be-H precompressor + ZPE quantum cap + SSCHA 고정점이 그 조합. 우리가 가는 길.
+
+## Cycle 15 — 🕸️ leaf-leaf 선(edge) 연결 고갈
+
+사용자: "선들 연결해봐 고갈까지". 14 사이클 ~94 leaf 사이 의미있는 직접 edge 32개 발견 + 본질 토폴로지 도달.
+
+### 32 edge 5 그룹
+
+**A. 실측↔이론 (8)** YH10 marginal anchor 누락 · mgb2 pilot=O-RTSC-3 첫 anchor · labeh8 λ=3.9→BEC근접→Tc 신뢰성 ↓ · CaH6 5축 4/5=LL-1 자연실현 · h3cl(deep TRAPPED 측정140K)=T2 m·ω 증명 · h3o/mg2irh6 closed-neg=T3 부활후보 · h3br pscan=x3⊗x10 dataset · 8 watcher harvest=5D 점 추가
+
+**B. 메커니즘 통합 (8)** x2 surgery≡C1 quantum-recovery≡O4≡M-Be-H 동시수행 · O5 SSCHA×x18 ZPE×C1=SSCHA 구체화 · x6⊆x10 (Lifshitz=bifurcation) · x10×x13 λ-grad 발산 · x9 CDW×O-RTSC-6×O-RTSC-4 동일 phys · x15×x21×multifractal · x11≡x22≡C5 · O8×O-RTSC-5 절단
+
+**C. 트리 자기 구조 (5)** O-RTSC-1~9 ⊂ cart x1-x24 매핑 · 14 lens→LL-1 한 점 · LL-2 Yoneda × F identity = 단일 카테고리 점 · O7 고갈-우로보러스 = R4 영구 mechanical · AO-1=wet-lab necessity = R4 외부측정
+
+**D. 자연 시퀀스 (5)** AcBeH₈→labeh8→sc/y→O-RTSC-1 계층 (4단 사다리) · ysbh6 Pickard arxiv→M2 협업→O-RTSC-1 enum · D1 monograph 18p+mining 5D=paper 갱신 · /mining sidecar #190 LIVE→다음 cycle 자동 · LL-1→비자성 제약 자동 도출
+
+**E. 미커버 axis (6)** μ* 차원 미탐색(모든 후보 0.10 고정) · YH10 marginal 측정 없음 · AdS/CFT bound 미검사 · paper Cycle4-14 미흡수 · 외부 협업 0 (Errea/Eremets) · O-RTSC-1~9 dispatched 0
+
+### 토폴로지 통계
+- 가능 edge: 94 × 93 / 2 = ~4370
+- 의미있는 direct edge: **32**
+- 나머지 = transitive closure (정보 0)
+
+### 🛑 그래프 고갈
+32 edge 이후 새 edge = trivially-true 또는 정보 0의 재포장. 그래프 본질 토폴로지 도달 = 트리가 더는 새 직접 연결 발견 안 됨.
+
+### 단일 압축 진실
+```
+Cooper-Kramers ouroboros (LL-1)
+  ↕ B (8 메커니즘 통합)
+4중 Hopf cut [x2≡C1≡O4≡M-Be-H]
+  ↕ A (8 실측-이론)
+8 dispatched + 5D 지도
+  ↕ D (5 자연 시퀀스)
+wave-3: O-RTSC-1 계층 clathrate
+  ↕ E (6 미커버)
+μ* · YH10 · AdS · paper · 외부협업 · wave-3
+```
+
+32 edge로 ~94 leaf가 **한 진실 + 6 미커버**로 압축. 정보 더 안 짜냄.
+
+### 다음 사이클 트리거 (외부)
+- harvest 이벤트 (8 watcher 중 하나 → 5D 점 추가 → 그룹 A edge 갱신)
+- paper 갱신 (D1 monograph + mining sync) — 그룹 D
+- O-RTSC-1 wave-3 dispatch — 그룹 E 닫음
