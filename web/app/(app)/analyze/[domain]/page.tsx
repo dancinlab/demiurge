@@ -73,7 +73,7 @@ export default async function AnalyzePage({
         />
       </section>
 
-      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500 dark:border-neutral-800">
+      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500">
         ⚠ Gemini는 입력에 없는 수치 추론 금지 — 요약만. 라이브 tail은
         M16에서 SSE 채널로 land.
       </footer>

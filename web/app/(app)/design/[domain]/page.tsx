@@ -62,7 +62,7 @@ export default async function DesignPage({
         />
       </section>
 
-      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500 dark:border-neutral-800">
+      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500">
         D-number는 ARCH.md §11.4 SSOT를 직접 grep하여 충돌 없는 번호로
         예약하세요 (Gemini가 추측 금지).
       </footer>

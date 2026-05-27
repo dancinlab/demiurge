@@ -55,12 +55,12 @@ export default async function StructurePage({
 
       <section>
         <h2 className="mb-2 text-lg font-semibold">composition</h2>
-        <pre className="overflow-x-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs dark:border-neutral-800 dark:bg-neutral-900">
+        <pre className="overflow-x-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs">
           {compose}
         </pre>
       </section>
 
-      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500 dark:border-neutral-800">
+      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500">
         graph 시각화 (cytoscape)는 M16에서 land. 본 페이지는 ASCII fallback
         형태.
       </footer>

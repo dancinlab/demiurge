@@ -57,7 +57,7 @@ export default async function HandoffPage({
         />
       </section>
 
-      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500 dark:border-neutral-800">
+      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500">
         Gemini는 packet에 명시된 사실만 사용 (추측 금지). 한국어 먼저 → 영어
         2 버전 출력.
       </footer>

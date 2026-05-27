@@ -83,7 +83,7 @@ export function LiveTail({
       <div className="flex items-center gap-3">
         <button
           onClick={running ? stop : start}
-          className="rounded bg-neutral-900 px-3 py-1 text-sm text-white dark:bg-neutral-100 dark:text-neutral-900"
+          className="rounded bg-neutral-900 px-3 py-1 text-sm text-white"
         >
           {running ? "stop" : (label ?? "start tail")}
         </button>
@@ -91,7 +91,7 @@ export function LiveTail({
           <span className="text-xs text-neutral-500">exit code: {exitCode}</span>
         )}
       </div>
-      <pre className="max-h-96 overflow-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs leading-snug dark:border-neutral-800 dark:bg-neutral-900">
+      <pre className="max-h-96 overflow-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs leading-snug">
         {lines.length === 0 ? (
           <span className="text-neutral-500">(no output yet)</span>
         ) : (
@@ -100,7 +100,7 @@ export function LiveTail({
               key={l.id}
               className={
                 l.kind === "stderr"
-                  ? "text-yellow-700 dark:text-yellow-300"
+                  ? "text-yellow-700"
                   : l.kind === "meta"
                     ? "text-neutral-500"
                     : ""

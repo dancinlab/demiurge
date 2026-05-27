@@ -19,7 +19,7 @@ export function DomainSwitcher({
       onChange={(e) =>
         router.push(`/dashboard?d=${encodeURIComponent(e.target.value)}`)
       }
-      className="rounded border border-neutral-300 bg-white px-2 py-1 text-sm font-mono dark:border-neutral-700 dark:bg-neutral-950"
+      className="rounded border border-neutral-300 bg-white px-2 py-1 text-sm font-mono"
       aria-label="domain"
     >
       {names.map((n) => (

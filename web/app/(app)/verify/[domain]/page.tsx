@@ -60,7 +60,7 @@ export default async function VerifyPage({
 
       <section className="mb-8">
         <h2 className="mb-2 text-lg font-semibold">rubric</h2>
-        <pre className="overflow-x-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs dark:border-neutral-800 dark:bg-neutral-900">
+        <pre className="overflow-x-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs">
           {rubric}
         </pre>
       </section>
@@ -88,7 +88,7 @@ export default async function VerifyPage({
         </p>
       </section>
 
-      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500 dark:border-neutral-800">
+      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500">
         ⚠ verify never calls LLM (g5 invariant) — output is the calculator
         verdict, verbatim.
       </footer>

@@ -59,7 +59,7 @@ export function DiscoverForm() {
             rows={3}
             placeholder="예: RTSC candidate at 300K ambient pressure, BCS-validated"
             disabled={loading}
-            className="mt-1 w-full rounded border border-neutral-300 bg-white p-2 font-mono text-sm dark:border-neutral-700 dark:bg-neutral-950"
+            className="mt-1 w-full rounded border border-neutral-300 bg-white p-2 font-mono text-sm"
           />
         </div>
         <div className="flex flex-wrap items-end gap-3">
@@ -74,7 +74,7 @@ export function DiscoverForm() {
               value={rounds}
               onChange={(e) => setRounds(e.target.value)}
               disabled={loading}
-              className="mt-1 w-24 rounded border border-neutral-300 bg-white p-1 font-mono text-sm dark:border-neutral-700 dark:bg-neutral-950"
+              className="mt-1 w-24 rounded border border-neutral-300 bg-white p-1 font-mono text-sm"
             />
           </div>
           <label className="flex items-center gap-1 text-xs text-neutral-500">
@@ -89,7 +89,7 @@ export function DiscoverForm() {
           <button
             type="submit"
             disabled={loading || !objective.trim()}
-            className="rounded bg-neutral-900 px-3 py-1 text-sm text-white disabled:opacity-40 dark:bg-neutral-100 dark:text-neutral-900"
+            className="rounded bg-neutral-900 px-3 py-1 text-sm text-white disabled:opacity-40"
           >
             {loading ? "phanes 호출 중..." : "discover"}
           </button>
@@ -97,7 +97,7 @@ export function DiscoverForm() {
       </form>
 
       {error && (
-        <div className="rounded border border-red-300 bg-red-50 p-3 text-sm text-red-900 dark:border-red-800 dark:bg-red-950/40 dark:text-red-200">
+        <div className="rounded border border-red-300 bg-red-50 p-3 text-sm text-red-900">
           <p className="font-semibold">실패</p>
           <pre className="mt-1 whitespace-pre-wrap text-xs">{error}</pre>
         </div>
@@ -108,7 +108,7 @@ export function DiscoverForm() {
           {result.stdout && (
             <div>
               <p className="mb-1 text-xs text-neutral-500">stdout</p>
-              <pre className="overflow-x-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs dark:border-neutral-800 dark:bg-neutral-900">
+              <pre className="overflow-x-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs">
                 {result.stdout}
               </pre>
             </div>
@@ -118,7 +118,7 @@ export function DiscoverForm() {
               <p className="mb-1 text-xs text-neutral-500">
                 stderr (exit={result.exitCode})
               </p>
-              <pre className="overflow-x-auto rounded border border-yellow-300 bg-yellow-50 p-3 text-xs text-yellow-900 dark:border-yellow-700 dark:bg-yellow-950/40 dark:text-yellow-200">
+              <pre className="overflow-x-auto rounded border border-yellow-300 bg-yellow-50 p-3 text-xs text-yellow-900">
                 {result.stderr}
               </pre>
             </div>

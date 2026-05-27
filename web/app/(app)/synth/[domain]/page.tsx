@@ -54,7 +54,7 @@ export default async function SynthPage({
 
       <section className="mb-6">
         <h2 className="mb-2 text-lg font-semibold">available backends</h2>
-        <pre className="overflow-x-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs dark:border-neutral-800 dark:bg-neutral-900">
+        <pre className="overflow-x-auto rounded border border-neutral-200 bg-neutral-50 p-3 text-xs">
           {backends}
         </pre>
       </section>
@@ -67,7 +67,7 @@ export default async function SynthPage({
         </p>
       </section>
 
-      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500 dark:border-neutral-800">
+      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500">
         ⚠ synth는 결정론적 dispatch — Gemini 호출 없음. host 라우팅은 d7
         rule을 따름.
       </footer>

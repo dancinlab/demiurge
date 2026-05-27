@@ -36,7 +36,7 @@ export default async function DiscoverPage() {
         <DiscoverForm />
       </section>
 
-      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500 dark:border-neutral-800">
+      <footer className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-500">
         ⚠ phanes CLI (<code>bin/phanes</code>) 미설치 시 friendly error +
         contract 안내 (~/core/phanes/INBOX.log.md::demiurge-discover-bridge).
       </footer>
