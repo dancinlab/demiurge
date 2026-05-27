@@ -154,6 +154,18 @@
     "domain_new_project": "新项目 (discover)",
     "verbtree_collapse": "收起",
     "verbtree_expand": "展开",
-    "verbtree_8verbs": "8 个动词"
+    "verbtree_8verbs": "8 个动词",
+    "chat_greeting": "你好！我是 요리선생。我们一起来烹饪一个领域吧？",
+    "chat_placeholder": "向 요리선생 提问… (Enter 发送 · Shift+Enter 换行)",
+    "chat_send": "发送",
+    "chat_clear": "清空",
+    "chat_thinking": "思考中…",
+    "chat_seed_spec": "帮我整理 {domain} 的 spec",
+    "chat_seed_structure": "我们来梳理 {domain} 的结构吧",
+    "chat_seed_verify": "{domain} 的下一个 verify 步骤是什么？",
+    "chat_seed_similar": "推荐与 {domain} 相似的领域",
+    "chat_seed_new_discover": "开始新项目 (discover)",
+    "chat_seed_spec_howto": "怎么写 spec？",
+    "chat_seed_ref": "推荐参考领域"
   }
 }

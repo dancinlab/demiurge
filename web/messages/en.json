@@ -154,6 +154,18 @@
     "domain_new_project": "new project (discover)",
     "verbtree_collapse": "collapse",
     "verbtree_expand": "expand",
-    "verbtree_8verbs": "8 verbs"
+    "verbtree_8verbs": "8 verbs",
+    "chat_greeting": "Hi! I'm 요리선생. Shall we cook up a domain together?",
+    "chat_placeholder": "Ask 요리선생… (Enter to send · Shift+Enter for newline)",
+    "chat_send": "send",
+    "chat_clear": "clear",
+    "chat_thinking": "thinking…",
+    "chat_seed_spec": "Help me draft the spec for {domain}",
+    "chat_seed_structure": "Let's lay out the structure of {domain}",
+    "chat_seed_verify": "What's the next verify step for {domain}?",
+    "chat_seed_similar": "Show me domains similar to {domain}",
+    "chat_seed_new_discover": "Start a new project (discover)",
+    "chat_seed_spec_howto": "How do I write a spec?",
+    "chat_seed_ref": "Recommend reference domains"
   }
 }

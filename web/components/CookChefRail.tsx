@@ -1,8 +1,7 @@
 // CookChefRail — server component. i18n strings flow as props.
-// shadcn Modern 톤. AssistChat 본체는 별도 client (자체 한국어 hardcoded —
-// 후속 PR 에서 i18n).
+// shadcn Modern 톤. AssistChat 본체에 chat i18n + locale 전달.
 
-import { AssistChat } from "./AssistChat";
+import { AssistChat, type ChatI18n } from "./AssistChat";
 
 type ChefI18n = {
   chefTitle: string;
@@ -13,9 +12,13 @@ type ChefI18n = {
 export function CookChefRail({
   domain,
   i18n,
+  chatI18n,
+  locale,
 }: {
   domain: string;
   i18n: ChefI18n;
+  chatI18n: ChatI18n;
+  locale: string;
 }) {
   return (
     <aside className="flex h-full flex-col rounded-[10px] border border-slate-200 bg-white p-3 text-sm shadow-sm">
@@ -36,7 +39,7 @@ export function CookChefRail({
         />
       </header>
       <div className="flex-1 min-h-0 overflow-hidden">
-        <AssistChat note={domain} />
+        <AssistChat note={domain} i18n={chatI18n} locale={locale} />
       </div>
     </aside>
   );

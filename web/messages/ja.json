@@ -154,6 +154,18 @@
     "domain_new_project": "新規プロジェクト (discover)",
     "verbtree_collapse": "折りたたむ",
     "verbtree_expand": "展開",
-    "verbtree_8verbs": "8 動詞"
+    "verbtree_8verbs": "8 動詞",
+    "chat_greeting": "こんにちは！요리선생だよ。一緒にドメインを煮込もうか？",
+    "chat_placeholder": "요리선생に質問… (Enter 送信 · Shift+Enter 改行)",
+    "chat_send": "送信",
+    "chat_clear": "クリア",
+    "chat_thinking": "考え中…",
+    "chat_seed_spec": "{domain} の spec をまとめるのを手伝って",
+    "chat_seed_structure": "{domain} の構造を立ててみよう",
+    "chat_seed_verify": "{domain} の次の verify ステップは？",
+    "chat_seed_similar": "{domain} に似たドメインを教えて",
+    "chat_seed_new_discover": "新規プロジェクトを発散開始",
+    "chat_seed_spec_howto": "spec はどう書くの？",
+    "chat_seed_ref": "参考ドメインを推薦して"
   }
 }

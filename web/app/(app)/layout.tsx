@@ -7,15 +7,16 @@ import { TopBar } from "@/components/TopBar";
 import { VerbTreeNav } from "@/components/VerbTreeNav";
 import { CookChefRail } from "@/components/CookChefRail";
 import { currentUser } from "@/lib/session";
-import { getMessages, t } from "@/lib/i18n";
+import { getLocale, getMessages, t } from "@/lib/i18n";
 
 export default async function AppLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [user, c, messages] = await Promise.all([
+  const [user, c, messages, locale] = await Promise.all([
     currentUser(),
     cookies(),
     getMessages(),
+    getLocale(),
   ]);
   const activeDomain = c.get("demiurge.active.domain")?.value ?? null;
   const safeUser = user
@@ -37,6 +38,22 @@ export default async function AppLayout({
     verbtree8Verbs: t(messages, "app_gui.verbtree_8verbs"),
   };
 
+  // Chat (요리선생) strings — passed to AssistChat via CookChefRail.
+  const chatI18n = {
+    greeting: t(messages, "app_gui.chat_greeting"),
+    placeholder: t(messages, "app_gui.chat_placeholder"),
+    send: t(messages, "app_gui.chat_send"),
+    clear: t(messages, "app_gui.chat_clear"),
+    thinking: t(messages, "app_gui.chat_thinking"),
+    seedSpec: t(messages, "app_gui.chat_seed_spec"),
+    seedStructure: t(messages, "app_gui.chat_seed_structure"),
+    seedVerify: t(messages, "app_gui.chat_seed_verify"),
+    seedSimilar: t(messages, "app_gui.chat_seed_similar"),
+    seedNewDiscover: t(messages, "app_gui.chat_seed_new_discover"),
+    seedSpecHowto: t(messages, "app_gui.chat_seed_spec_howto"),
+    seedRef: t(messages, "app_gui.chat_seed_ref"),
+  };
+
   return (
     <ThemeProvider>
       <div className="flex h-screen flex-col bg-zinc-50 text-slate-900 antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
@@ -46,7 +63,12 @@ export default async function AppLayout({
             <VerbTreeNav domain={activeDomain ?? undefined} i18n={i18n} />
           </aside>
           <aside className="w-72 shrink-0">
-            <CookChefRail domain={activeDomain ?? ""} i18n={i18n} />
+            <CookChefRail
+              domain={activeDomain ?? ""}
+              i18n={i18n}
+              chatI18n={chatI18n}
+              locale={locale}
+            />
           </aside>
           <main className="min-w-0 flex-1 overflow-auto rounded-[10px] border border-slate-200 bg-white p-6 shadow-sm">
             {children}

@@ -154,6 +154,18 @@
     "domain_new_project": "новый проект (discover)",
     "verbtree_collapse": "свернуть",
     "verbtree_expand": "развернуть",
-    "verbtree_8verbs": "8 глаголов"
+    "verbtree_8verbs": "8 глаголов",
+    "chat_greeting": "Привет! Я 요리선생. Приготовим домен вместе?",
+    "chat_placeholder": "Спросить 요리선생… (Enter — отправить · Shift+Enter — перенос)",
+    "chat_send": "отправить",
+    "chat_clear": "очистить",
+    "chat_thinking": "думаю…",
+    "chat_seed_spec": "Помоги составить spec для {domain}",
+    "chat_seed_structure": "Давай выстроим структуру {domain}",
+    "chat_seed_verify": "Какой следующий шаг verify для {domain}?",
+    "chat_seed_similar": "Покажи домены, похожие на {domain}",
+    "chat_seed_new_discover": "Начать новый проект (discover)",
+    "chat_seed_spec_howto": "Как написать spec?",
+    "chat_seed_ref": "Порекомендуй референс-домены"
   }
 }

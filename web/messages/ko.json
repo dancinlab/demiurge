@@ -154,6 +154,18 @@
     "domain_new_project": "새 프로젝트 (discover)",
     "verbtree_collapse": "접기",
     "verbtree_expand": "펼치기",
-    "verbtree_8verbs": "8 verb"
+    "verbtree_8verbs": "8 verb",
+    "chat_greeting": "안녕! 요리선생이야. 같이 도메인 한 그릇 끓여볼까?",
+    "chat_placeholder": "요리선생에게 물어보기… (Enter 전송 · Shift+Enter 줄바꿈)",
+    "chat_send": "보내기",
+    "chat_clear": "비우기",
+    "chat_thinking": "생각 중…",
+    "chat_seed_spec": "{domain} 의 spec 정리 도와줘",
+    "chat_seed_structure": "{domain} 구조를 잡아볼까?",
+    "chat_seed_verify": "{domain} 의 다음 verify 단계는?",
+    "chat_seed_similar": "{domain} 와 비슷한 도메인 알려줘",
+    "chat_seed_new_discover": "새 프로젝트 발산 시작",
+    "chat_seed_spec_howto": "spec 어떻게 쓰는 거야?",
+    "chat_seed_ref": "reference 도메인 추천해줘"
   }
 }
