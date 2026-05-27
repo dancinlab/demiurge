@@ -2,12 +2,12 @@
   version = "1.6"
 
 @I := "demiurge" :: identity [active]
-  kind     = "Universal hexa-native technical-design architecture (7-verb pipeline · domain-plugin macOS cockpit)"
+  kind     = "Universal hexa-native technical-design architecture (7-verb pipeline · domain-plugin web GUI + CLI surface)"
   brief    = "spec → structure → design → analyze ⟲ → synthesize → verify → handoff · materials → chip → component"
   parent   = "dancinlab"
   ssot     = "github.com/dancinlab/demiurge (`hx install demiurge`)"
   siblings = "hexa-lang"
-  run      = "release GUI (test): `cd ~/core/demiurge/cockpit && swift run -c release CockpitApp` · installed app: `demiurge install` → `demiurge run` · CLI (AI surface): `demiurge cli <verb>` / `demiurge operate|compose|verify|backend`"
+  run      = "web GUI (user surface): demiurge.dancinlab.org (Next.js · Cloud Run) · CLI (AI-agent + web-bridge surface): `demiurge cli <verb>`. macOS SwiftUI cockpit GUI scrapped 2026-05-27 — Swift = DemiurgeCLI + DemiurgeCore only."
 
 @D d1 := "non-wet-lab verification → completed-form" :: governance [required active]
   do   = "drive each non-wet-lab step (sim · proof · synthesis · gate · handoff) to completed-form pre wet-lab"
