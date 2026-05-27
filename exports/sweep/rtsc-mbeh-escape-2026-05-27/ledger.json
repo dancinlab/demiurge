@@ -1,0 +1,30 @@
+{
+  "batch_id": "rtsc-mbeh-escape-2026-05-27",
+  "domain": "RTSC",
+  "kind": "dft-elph (vc-relax -> scf -> ph)",
+  "status": "DISPATCHED",
+  "wave": 1,
+  "created_utc": "2026-05-27T12:57:00Z",
+  "motivation": "M-Be-H ESCAPE family — arxiv-grounded (.discoveries/rtsc-escape-clathrate.tape). AcBeH8 (2411.19028) proved Be-H = chemical precompressor (181K@10GPa); labeh8 (La, OUR measured m=+0.359) = non-radioactive sibling. Cation substitution Sc/Y into labeh8-lineage structure tests: does ESCAPE (m>0) + lighter cage core (higher omega_log) break the labeh8 117K ceiling?",
+  "structure_provenance": "seed = labeh8_interp_ablation/scf.in (ibrav=4 hexagonal, La2Be2H6, celldm 6.804/1.611, the campaign's ACTUAL labeh8 structure that gave lambda_BZ=3.903 @20GPa). Honest formula = M2Be2H6 (NOT canonical MBeH8 Fm-3m H16); slug reflects this (sc2be2h6/y2be2h6). vc-relax @press=200kbar (20GPa) adapts lattice per cation.",
+  "budget": {"infra": "reused ysbh6 vast pod (80-core), nice -n 15 -np 6 each, $0 incremental", "pod_concurrent_max": 1, "in_pod_jobs": 2},
+  "candidates": {
+    "sc2be2h6": {
+      "state": "dispatched", "cation": "Sc (mass 44.956, lightest -> omega_log boost hypothesis)",
+      "chain": "vc-relax(celldm seed 6.0, press 200kbar) -> python cell-extract -> scf(ibrav=0, 12^3 k) -> ph(4^3 q, el-ph simple, sigma-scan x10)",
+      "watcher": "b8tw784iy", "hypothesis": "ESCAPE m>0 AND omega_log >> labeh8 589K (Sc lighter than La) -> Tc breakthrough", "verdict": "PENDING"
+    },
+    "y2be2h6": {
+      "state": "dispatched", "cation": "Y (mass 88.906)",
+      "chain": "vc-relax(celldm seed 6.8, press 200kbar) -> scf -> ph(4^3 q)",
+      "watcher": "bv0u66qdv", "hypothesis": "YH10-family ESCAPE direct test (sister prediction; La<->Y 자매)", "verdict": "PENDING"
+    }
+  },
+  "queued_next_wave": ["ca2be2h6", "CeH9 (lit low-P 80-100GPa)", "LaBH8 (Fm-3m B-cage)", "Y2CdH18/Ca2SnH18 (2411.11674 clathrate)"],
+  "harvest_trigger": "watchers b8tw784iy/bv0u66qdv on chain.log CHAIN DONE; event-driven, no ScheduleWakeup. On fire: harvest lambda_BZ/omega_log/Tc -> hexa verify allen_dynes_tc (g5) -> m-sign placement (domains/RTSC/walls/stability_coupling_margin.md) -> compare omega_log vs labeh8 589K -> atlas register tier per dyn min_freq (hard<-50=closed-neg, mild=hold, stable=GREEN)",
+  "honest_caveats": [
+    "M2Be2H6 formula (H-poor) vs canonical MBeH8 (H-rich Fm-3m) — this is the labeh8-lineage structure, results compare to labeh8 not to literature MBeH8",
+    "vc-relax @20GPa may find soft modes if substituted cation destabilizes the La-optimized framework — that IS a valid closed-negative (g63)",
+    "Tc/m-sign predictions are PENDING DFT — no claim until ph.x harvest + hexa verify"
+  ]
+}
