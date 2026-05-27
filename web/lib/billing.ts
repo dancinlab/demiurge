@@ -28,6 +28,7 @@ export const TIERS: Tier[] = [
       "1 seat",
       "8-verb pipeline · CLI + Web",
       "Gemini 2.5 draft 어시스트",
+      "GPU/TPU = GCP 실사용량 정산",
       "14d 무료 trial",
     ],
     priceEnv: "STRIPE_PRICE_SOLO",
@@ -41,6 +42,7 @@ export const TIERS: Tier[] = [
       "5 seats",
       "Solo 전체 +",
       "공유 도메인 SSOT",
+      "GPU/TPU = GCP 실사용량 정산",
       "Workspace SSO (post-M16)",
     ],
     priceEnv: "STRIPE_PRICE_TEAM",
@@ -53,6 +55,7 @@ export const TIERS: Tier[] = [
     highlights: [
       "25 seats",
       "Team 전체 +",
+      "GPU/TPU = GCP 실사용량 정산 (월별 통합 청구서)",
       "audit log + BigQuery export",
       "우선 지원 (24h)",
     ],

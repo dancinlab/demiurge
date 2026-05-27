@@ -59,7 +59,7 @@
     "tier_org": "Org",
     "start_label": "{tier} 시작",
     "signin_first": "로그인 후 시작",
-    "footer": "결제 = Stripe · related-party 라벨링은 webhook 적재 후 회계 단계에서 · XPRIZE 매출 증빙은 월별 P&L 자동 반영 (M17 Firestore)."
+    "footer": "구독료는 seat + 제품 액세스만 포함. GPU/TPU 컴퓨트는 Google Cloud(Vertex AI · Cloud Run · GKE)에서 실행되며 실사용량 기준 별도 청구 — RunPod · Vast.ai · 외부 GPU 중개 일절 미사용."
   },
   "common": {
     "loading": "불러오는 중...",

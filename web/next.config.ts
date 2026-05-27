@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
     ],
   },
   async headers() {
+    // Dev: let Next.js manage cache-control (custom headers on
+    // /_next/static break HMR/RSC payload fetches). Apply our cache
+    // policy only on prod builds.
+    if (process.env.NODE_ENV !== "production") return [];
     return [
       // brand/icon assets — regenerated every release, never cache
       {

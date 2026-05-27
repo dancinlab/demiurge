@@ -59,7 +59,7 @@
     "tier_org": "Org",
     "start_label": "{tier} を開始",
     "signin_first": "ログインして開始",
-    "footer": "決済は Stripe · related-party は会計段階でラベリング · XPRIZE 売上証明は月次 P&L に自動反映 (M17 Firestore)。"
+    "footer": "サブスクリプション料金は seat + 製品アクセスのみ。GPU/TPU コンピュートは Google Cloud(Vertex AI · Cloud Run · GKE)で実行され、実使用量に応じて別途請求 — RunPod · Vast.ai · 外部 GPU ブローカー一切不使用。"
   },
   "common": {
     "loading": "読み込み中...",

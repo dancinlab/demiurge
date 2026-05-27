@@ -59,7 +59,7 @@
     "tier_org": "Org",
     "start_label": "开始 {tier}",
     "signin_first": "登录后开始",
-    "footer": "支付通过 Stripe · related-party 在会计阶段标记 · XPRIZE 月度 P&L 自动反映 (M17 Firestore)。"
+    "footer": "订阅费仅包含 seat + 产品访问。GPU/TPU 算力运行在 Google Cloud(Vertex AI · Cloud Run · GKE)上，按实际用量另行计费 — 不使用 RunPod · Vast.ai · 任何第三方 GPU 中介。"
   },
   "common": {
     "loading": "加载中...",

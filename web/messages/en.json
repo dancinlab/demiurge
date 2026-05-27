@@ -59,7 +59,7 @@
     "tier_org": "Org",
     "start_label": "Start {tier}",
     "signin_first": "Sign in to start",
-    "footer": "Payments via Stripe · related-party labeled at checkout · XPRIZE monthly P&L auto-reflected (M17 Firestore)."
+    "footer": "Subscription fee covers seats + product access. GPU/TPU compute runs on Google Cloud (Vertex AI · Cloud Run · GKE) and is billed by actual usage — no RunPod, no Vast.ai, no third-party GPU broker."
   },
   "common": {
     "loading": "loading...",

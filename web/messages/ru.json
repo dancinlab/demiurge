@@ -59,7 +59,7 @@
     "tier_org": "Org",
     "start_label": "Начать {tier}",
     "signin_first": "Войти, чтобы начать",
-    "footer": "Платежи через Stripe · related-party помечается при оформлении · XPRIZE ежемесячный P&L отражается автоматически (M17 Firestore)."
+    "footer": "Стоимость подписки покрывает seat + доступ к продукту. GPU/TPU-вычисления выполняются в Google Cloud (Vertex AI · Cloud Run · GKE) и оплачиваются по фактическому потреблению — никаких RunPod · Vast.ai · сторонних GPU-брокеров."
   },
   "common": {
     "loading": "загрузка...",
