@@ -1,5 +1,6 @@
 {
   "nav": {
+    "dashboard": "대시보드",
     "home": "홈",
     "pricing": "요금제",
     "account": "계정",
@@ -63,5 +64,34 @@
   "common": {
     "loading": "불러오는 중...",
     "language": "언어"
+  },
+  "dashboard": {
+    "title": "워크벤치",
+    "spine": "8-verb 파이프라인",
+    "empty": "선택된 도메인 없음",
+    "assist": "어시스트",
+    "assist_spec": "spec 초안 (Gemini)",
+    "assist_analyze": "analyze (라이브)",
+    "assist_verify": "verify (5-tier)",
+    "assist_discover": "discover (8번째 verb)",
+    "assist_note": "Gemini는 초안만 — verify는 결정론적 유지 (LLM 판정 0회)."
+  },
+  "landing": {
+    "badge": "Built with Gemini · Gemini XPRIZE 2026",
+    "title": "AI 네이티브 기술-설계 파이프라인",
+    "sub": "spec → structure → design → analyze → synthesize → verify → handoff. 원자·물질·칩·바이오·화학을 가로지르는 하나의 production 루프.",
+    "cta_start": "무료로 시작",
+    "pipeline_title": "하나의 루프, 여덟 개의 verb.",
+    "pipeline_sub": "discover가 씨앗을 뿌리고 verify가 닫는다. 모든 단계는 챗이 아닌 결정론적 표면.",
+    "feat_verify_title": "verify는 신성 영역",
+    "feat_verify_body": "5-tier 계산기가 판정을 반환 — LLM 판정 0회. 모든 클레임에 provenance 부착.",
+    "feat_i18n_title": "5개 언어",
+    "feat_i18n_body": "EN · 中文 · Русский · 日本語 · 한국어. 하나의 루프, 어떤 로케일이든, 사이드바이사이드 handoff.",
+    "feat_gcp_title": "Google Cloud 네이티브",
+    "feat_gcp_body": "Vertex AI · Cloud Run · Firestore · Secret Manager. metadata-server 인증 — 코드에 시크릿 0.",
+    "domains_title": "바로 돌릴 수 있는 연구 도메인",
+    "domains_sub": "원자 · 물질 · 칩 · 바이오 · 화학",
+    "pricing_title": "단순하고 투명한 가격",
+    "cta_final": "루프 실행하기"
   }
 }

@@ -1,5 +1,6 @@
 {
   "nav": {
+    "dashboard": "панель",
     "home": "главная",
     "pricing": "тарифы",
     "account": "аккаунт",
@@ -63,5 +64,34 @@
   "common": {
     "loading": "загрузка...",
     "language": "Язык"
+  },
+  "dashboard": {
+    "title": "воркбенч",
+    "spine": "конвейер из 8 глаголов",
+    "empty": "домен не выбран",
+    "assist": "ассистент",
+    "assist_spec": "черновик spec (Gemini)",
+    "assist_analyze": "analyze (вживую)",
+    "assist_verify": "verify (5 уровней)",
+    "assist_discover": "discover (глагол 8)",
+    "assist_note": "Gemini только черновики — verify остаётся детерминированным (0 вердиктов LLM)."
+  },
+  "landing": {
+    "badge": "Built with Gemini · Gemini XPRIZE 2026",
+    "title": "AI-нативный конвейер технического проектирования",
+    "sub": "spec → structure → design → analyze → synthesize → verify → handoff. Один производственный цикл для атомов, материалов, чипов, биологии и химии.",
+    "cta_start": "Начать бесплатно",
+    "pipeline_title": "Один цикл. Восемь глаголов.",
+    "pipeline_sub": "discover засевает, verify закрывает. Каждый этап — детерминированная поверхность, а не чат.",
+    "feat_verify_title": "verify священен",
+    "feat_verify_body": "5-уровневый калькулятор выдаёт вердикт — ноль вердиктов LLM. Каждое утверждение несёт происхождение.",
+    "feat_i18n_title": "Пять языков",
+    "feat_i18n_body": "EN · 中文 · Русский · 日本語 · 한국어. Один цикл, любая локаль, передача бок о бок.",
+    "feat_gcp_title": "Нативно для Google Cloud",
+    "feat_gcp_body": "Vertex AI · Cloud Run · Firestore · Secret Manager. Аутентификация через metadata-сервер — ноль секретов в коде.",
+    "domains_title": "Исследовательские домены, готовые к запуску",
+    "domains_sub": "атом · материал · чип · био · химия",
+    "pricing_title": "Простые, прозрачные цены",
+    "cta_final": "Запустить цикл"
   }
 }

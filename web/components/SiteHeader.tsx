@@ -6,16 +6,28 @@
 import Link from "next/link";
 import { getLocale, getMessages, t } from "@/lib/i18n";
 import { LangSwitcher } from "@/components/LangSwitcher";
+import { readSession } from "@/lib/session";
 
 export async function SiteHeader() {
-  const [locale, m] = await Promise.all([getLocale(), getMessages()]);
+  const [locale, m, session] = await Promise.all([
+    getLocale(),
+    getMessages(),
+    readSession(),
+  ]);
+  const signedIn = session !== null;
 
-  const links = [
-    { href: "/", label: t(m, "nav.home") },
-    { href: "/discover", label: t(m, "nav.discover") },
-    { href: "/pricing", label: t(m, "nav.pricing") },
-    { href: "/account", label: t(m, "nav.account") },
-  ];
+  // dashboard + account surface only when signed in; discover lives
+  // INSIDE the dashboard (8-verb spine), never a public nav item.
+  const links = signedIn
+    ? [
+        { href: "/dashboard", label: t(m, "nav.dashboard") },
+        { href: "/pricing", label: t(m, "nav.pricing") },
+        { href: "/account", label: t(m, "nav.account") },
+      ]
+    : [
+        { href: "/pricing", label: t(m, "nav.pricing") },
+        { href: "/signin", label: t(m, "nav.signin") },
+      ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur-md dark:border-neutral-800 dark:bg-neutral-950/80">

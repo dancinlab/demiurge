@@ -5,18 +5,22 @@
 // this page is just the operator console.
 
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { currentUser } from "@/lib/session";
 import { DiscoverForm } from "./DiscoverForm";
 
 export const dynamic = "force-dynamic";
 
-export default function DiscoverPage() {
+export default async function DiscoverPage() {
+  const user = await currentUser();
+  if (!user) redirect("/signin");
   return (
     <main className="mx-auto max-w-5xl px-6 py-10 font-mono">
       <nav className="mb-4 text-xs text-neutral-500">
-        <Link href="/" className="underline">
-          ← all domains
+        <Link href="/dashboard" className="underline">
+          ← dashboard
         </Link>
-        <span> / discover</span>
+        <span> / discover (verb 8)</span>
       </nav>
 
       <header className="mb-6">
