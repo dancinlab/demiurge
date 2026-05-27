@@ -118,7 +118,7 @@ export function VerbTreeNav({
       <button
         type="button"
         onClick={toggle}
-        className="mb-1 flex items-center justify-between rounded-[6px] px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-slate-500 hover:bg-slate-100"
+        className="mb-1 flex items-center justify-between rounded-md px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-gray-500 hover:bg-gray-100"
         title={expanded ? labels.verbtreeCollapse : labels.verbtreeExpand}
       >
         <span>{expanded ? (domain ? `· ${domain}` : labels.verbtree8Verbs) : "≡"}</span>
@@ -134,10 +134,10 @@ export function VerbTreeNav({
             href={href}
             title={v.label}
             className={[
-              "flex items-center gap-2 rounded-[6px] px-2 py-1.5 text-[13px]",
+              "flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px]",
               isActive
-                ? "bg-slate-100 font-semibold text-slate-900"
-                : "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
+                ? "bg-indigo-50 font-semibold text-indigo-700"
+                : "text-gray-700 hover:bg-gray-100 hover:text-gray-900",
             ].join(" ")}
           >
             <LucideIcon id={v.id} />

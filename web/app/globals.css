@@ -15,8 +15,10 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-cormorant);
 }
 
 /* body palette is driven by Tailwind classes in the route-group layouts
-   (marketing = Brutalist, app = shadcn Modern) — no global body rule here.
-   Inter font is loaded canonically via next/font/google in app/layout.tsx. */
+   (marketing = Brutalist, app = ara 톤 gray+indigo) — no global body rule here.
+   Inter(본문) + Cormorant Garamond(제목·--font-serif) via next/font/google
+   in app/layout.tsx. `font-serif` utility → Cormorant. */

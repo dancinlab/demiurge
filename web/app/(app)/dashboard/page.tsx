@@ -86,7 +86,7 @@ export default async function DashboardPage({
   return (
     <div className="space-y-6">
       <header className="flex items-center gap-3">
-        <h1 className="text-lg font-semibold tracking-tight text-slate-900">🏠 {t(messages, "dashboard.title")}</h1>
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">🏠 {t(messages, "dashboard.title")}</h1>
         <DomainSwitcher
           names={domains.map((d) => d.name)}
           current={active?.name ?? ""}
