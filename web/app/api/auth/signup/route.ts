@@ -2,6 +2,7 @@
 
 import { signUp } from "@/lib/firebase-auth";
 import { setSession } from "@/lib/session";
+import { seedQubitDemo } from "@/lib/seed";
 
 export async function POST(request: Request) {
   let body: { email?: unknown; password?: unknown };
@@ -29,6 +30,12 @@ export async function POST(request: Request) {
   try {
     const session = await signUp({ email, password });
     await setSession(session);
+    // Auto-seed QUBIT demo (Q14 + Q14′) — non-fatal if Firestore unreachable.
+    try {
+      await seedQubitDemo(session.localId);
+    } catch {
+      // Seed failure should not block sign-up.
+    }
     return Response.json({ ok: true, email: session.email, localId: session.localId });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
