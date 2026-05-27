@@ -1,6 +1,7 @@
-// (app) — shadcn Modern 톤. Server Component: reads currentUser, active domain,
+// (app) — ElevenLabs 톤. Server Component: reads currentUser, active domain,
 // AND i18n messages in one place. Strings flow down as props — no client t().
 
+import Link from "next/link";
 import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { TopBar } from "@/components/TopBar";
@@ -58,8 +59,20 @@ export default async function AppLayout({
     <ThemeProvider>
       {/* ElevenLabs 톤(Create 페이지): 좌 레일=canvas(웜 그레이 틴트) | 우 메인=surface(흰색) */}
       <div className="flex h-screen bg-canvas text-ink antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
-        {/* 좌: 세로 전체 레일 — surface-strong 틴트(메인 흰색과 또렷이 구분). verb(상단) + 요리선생 채팅(하단) */}
-        <aside className="flex w-72 shrink-0 flex-col border-r border-hairline bg-surface-strong">
+        {/* 좌: 세로 전체 레일 — canvas 틴트(복구). 최상단 브랜드 로고 + verb(상단) + 요리선생 채팅(하단) */}
+        <aside className="flex w-72 shrink-0 flex-col border-r border-hairline bg-canvas">
+          {/* 브랜드 로고 — 사이드바 최상단 (ElevenLabs 워드마크 패턴) */}
+          <Link
+            href="/dashboard"
+            className="flex shrink-0 items-center gap-2 px-3 pb-1.5 pt-3 hover:opacity-80"
+          >
+            <span className="grid h-6 w-6 place-items-center rounded-chip bg-ink text-[11px] font-bold text-surface">
+              FX
+            </span>
+            <span className="font-display text-[15px] font-medium tracking-tight text-ink">
+              FUSION X
+            </span>
+          </Link>
           <div className="shrink-0 p-2">
             <VerbTreeNav domain={activeDomain ?? undefined} i18n={i18n} />
           </div>
