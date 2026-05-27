@@ -58,8 +58,8 @@ export default async function AppLayout({
     <ThemeProvider>
       {/* ElevenLabs 톤(Create 페이지): 좌 레일=canvas(웜 그레이 틴트) | 우 메인=surface(흰색) */}
       <div className="flex h-screen bg-canvas text-ink antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
-        {/* 좌: 세로 전체 레일 — canvas 틴트 배경. verb(상단) + 요리선생 채팅(하단). hairline 으로 우측과 구분 */}
-        <aside className="flex w-72 shrink-0 flex-col border-r border-hairline bg-canvas">
+        {/* 좌: 세로 전체 레일 — surface-strong 틴트(메인 흰색과 또렷이 구분). verb(상단) + 요리선생 채팅(하단) */}
+        <aside className="flex w-72 shrink-0 flex-col border-r border-hairline bg-surface-strong">
           <div className="shrink-0 p-2">
             <VerbTreeNav domain={activeDomain ?? undefined} i18n={i18n} />
           </div>
