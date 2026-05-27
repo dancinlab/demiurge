@@ -11,7 +11,7 @@ export async function SiteHeader() {
   const [locale, m] = await Promise.all([getLocale(), getMessages()]);
 
   const links = [
-    { href: "/", label: t(m, "nav.home") },
+    { href: "/", label: t(m, "nav.dashboard") },
     { href: "/discover", label: t(m, "nav.discover") },
     { href: "/pricing", label: t(m, "nav.pricing") },
     { href: "/account", label: t(m, "nav.account") },
