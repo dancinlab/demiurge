@@ -215,3 +215,28 @@ D 외부  → 8 dispatch 무장 · 15 PR 영구
 ```
 
 R4 absorbed=false 영구 — wet-lab 측정 PASS까지 closure 없음. ♾️ perpetual.
+
+## Cycle 16 — wave-3 시작 (1/15 cabeh8 vast 신규 pod 발사)
+
+사용자 `go` → wave-3 plan 시작.
+
+### 실행 결과 (정직)
+- ✓ vastai CLI 설치 (py3.12 venv, py3.9 호환 안됨 #1155 정합)
+- ✓ 새 vast pod rent (contract `38095989`, 128c/128GB RTX_3070 $0.40/hr)
+- ✓ QE 6.7 apt install (Ubuntu 22.04, ~3min)
+- ✓ pseudo 3종 wget (Ca/Be/H rrkjus_psl 1.0.0)
+- ✓ **cabeh8 (Ca₂Be₂H₆ ibrav=4) vc-relax @20GPa 발사** (PID 1149, np=8, watcher b08qnguq6)
+- ✓ pods.temp.json 갱신 (update-form, contract id + ssh + job mapping)
+
+### 가격 정직 보정
+- 계획 $0.20/hr × 100h = $20 → 실측 **$0.40/hr × 100h = $40** (×1.85)
+- 4-pod plan → **2-pod plan (현재 + 신규 128c)** 로 단축 가능 (128c가 15+ 동시 수용)
+- 총 wave-3 비용 추정 $40-80 (예산 100만원의 5-10%)
+
+### 인프라 차단 + 우회
+- cloud-guard (commons @D g8): raw ssh root@vast 차단 → `hexa cloud {exec|run|copy-to}` 필수
+- hexa cloud exec 호환 검증 OK (heredoc deck 작성 · python3 cell-extract · nohup launch)
+
+### wave-3 진행 (구조 deck 작성 후 추가):
+- 🥇 다음 우선순위 (lit-known): LaBH₈ · CeH₉ · YH₆ · YH₉ · YH₁₀ · Li₂MgH₁₆
+- 다음 turn에 정확한 Wyckoff + lattice로 author 후 dispatch

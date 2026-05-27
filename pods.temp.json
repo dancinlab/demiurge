@@ -1,7 +1,7 @@
 {
   "version": "1.0-temp",
   "schema_origin": "sidecar INBOX #193 (~/.pool/pods.json proposed)",
-  "last_updated_utc": "2026-05-27T14:30:00Z",
+  "last_updated_utc": "2026-05-27T15:00Z",
   "campaign": "rtsc-293K-1atm",
   "budget": {
     "krw": 1000000,
@@ -100,6 +100,24 @@
         "H3SSe",
         "selfcat_synth"
       ]
+    },
+    "vast-cuda-ssh9-15988": {
+      "host": "ssh9.vast.ai:15988",
+      "ip": "211.21.106.81",
+      "provider": "vast.ai",
+      "contract_id": 38095989,
+      "cores": 128,
+      "ram_gb": 128,
+      "gpu": "RTX_3070",
+      "cost_usd_per_hr": 0.4011,
+      "status": "running",
+      "rented_at": "2026-05-27T14:54Z",
+      "image": "nvidia/cuda:12.2.0-base-ubuntu22.04",
+      "qe_version": "6.7-2build1 (apt)",
+      "jobs": [
+        "cabeh8"
+      ],
+      "ssh_note": "hexa cloud exec required (cloud-guard blocks raw ssh)"
     }
   },
   "jobs": {
@@ -369,6 +387,18 @@
       "np": 4,
       "hypothesis": "O-RTSC-5 자기-촉매 합성",
       "verdict": "PENDING"
+    },
+    "cabeh8": {
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "running",
+      "stage": "vc-relax",
+      "started_utc": "2026-05-27T14:59:34Z",
+      "pid": 1149,
+      "np": 8,
+      "watcher": "b08qnguq6",
+      "est_wall_h": 40,
+      "hypothesis": "Sc/Y/Ca M-Be-H 자매 완성 (가장 가벼운 비방사성 cation)",
+      "verdict": "PENDING"
     }
   },
   "per_pod_wall_summary": {
@@ -450,7 +480,10 @@
       "h": 30,
       "rate": 0.2,
       "usd": 6
-    }
+    },
+    "pod_new_actual": "RTX_3070 128c 128GB $0.40/hr (검색 결과 보정, 원 plan $0.20→$0.40 1.85x)",
+    "plan_revision": "128c 1개 pod로 wave-3 15+ 후보 동시 가능 → 2-pod plan (현 + 신규)이 5-pod보다 경제적",
+    "actual_so_far_usd": 0.07
   },
   "decision_gates": {
     "gate_50h": "Pod 1 완료 시: 5D 지도 점 6개 + 최근접 후보 확정 → 다음 lens",
