@@ -15,15 +15,78 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+  /* Display = ElevenLabs "Waldenburg" light grotesque → Geist 300 (closest
+     already-loaded free match). Apply with `font-display font-light` + tight
+     tracking. font-serif retained only for legacy markup. */
+  --font-display: var(--font-geist-sans);
   --font-serif: var(--font-cormorant);
 }
 
-/* body palette is driven by Tailwind classes in the route-group layouts
-   (marketing = Brutalist, app = ara 톤 흑백 미니멀) — no global body rule here.
-   Inter(본문) + Cormorant Garamond(제목·--font-serif) via next/font/google
-   in app/layout.tsx. `font-serif` utility → Cormorant. */
+/* ── ElevenLabs design-token SSOT (디자인 멱등성 단일 출처) ──────────────────────
+   라인색·표면·잉크·라운딩·모션을 여기 한 곳에서만 정의한다. (app) 컴포넌트는
+   `bg-canvas`/`bg-surface`/`border-hairline`/`text-ink`/`rounded-panel` 같은
+   시맨틱 유틸만 쓰고, gray-200·rounded-[6px] 같은 하드코딩 값을 쓰지 않는다.
+   토큰 하나를 바꾸면 전 화면이 일관되게 따라온다 = 디자인 멱등성.
+   값 출처: ElevenLabs 디자인 토큰(canvas #f5f5f5 · ink #0c0a09 · hairline #e7e5e4
+   · CTA #292524 · 파스텔 orb · 라운딩 4·6·8·12·16·24). 액센트 색(indigo 등) 금지 —
+   유일한 컬러 모먼트는 파스텔 orb 그라데이션뿐.
+   plain @theme (not inline) → CSS 변수를 :root 로 방출 → 유틸 + var() 둘 다 가능. */
+@theme {
+  /* 캔버스 · 표면 — 페이지는 웜 그레이, 카드는 흰색으로 떠보인다 */
+  --color-canvas: #f5f5f5;
+  --color-canvas-soft: #fafafa;
+  --color-surface: #ffffff;
+  --color-surface-strong: #f0efed;
+  --color-ink-elevated: #1c1917;
 
-/* ara 채팅 말풍선 등장 — fade + slide-up */
+  /* 잉크 · 텍스트 — 웜 뉴트럴 (순흑 아님) */
+  --color-ink: #0c0a09;
+  --color-body: #4e4e4e;
+  --color-body-strong: #292524;
+  --color-muted: #777169;
+  --color-muted-soft: #a8a29e;
+
+  /* CTA — 에스프레소 잉크 pill */
+  --color-primary: #292524;
+  --color-primary-active: #0c0a09;
+
+  /* 헤어라인 보더 — 3단계 (soft → 기본 → strong) */
+  --color-hairline-soft: #f0efed;
+  --color-hairline: #e7e5e4;
+  --color-hairline-strong: #d6d3d1;
+
+  /* 시맨틱 상태 */
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+
+  /* 파스텔 orb — 유일한 컬러 모먼트 (그라데이션 전용) */
+  --color-orb-mint: #a7e5d3;
+  --color-orb-peach: #f4c5a8;
+  --color-orb-lavender: #c8b8e0;
+  --color-orb-sky: #a8c8e8;
+  --color-orb-rose: #e8b8c4;
+
+  /* 라운딩 스케일 (시맨틱) — tag4 · chip6 · control8 · panel12 · card16 · orb24 */
+  --radius-tag: 4px;
+  --radius-chip: 6px;
+  --radius-control: 8px;
+  --radius-panel: 12px;
+  --radius-card: 16px;
+  --radius-orb: 24px;
+
+  /* 모션 — 등장 .4s brand-ease, hover .15s */
+  --ease-brand: cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* 카드 hover soft-drop 그림자 */
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* body palette is driven by Tailwind classes in the route-group layouts
+   (marketing = Brutalist · app = ElevenLabs 따뜻한 에디토리얼 미니멀) — no
+   global body rule here. Inter(본문) + Geist(제목·--font-display) via
+   next/font/google in app/layout.tsx. */
+
+/* 채팅 말풍선 등장 — fade + slide-up (brand-ease) */
 @keyframes msg-in {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
