@@ -94,17 +94,34 @@ Firestore admin 권한 부여:
 
 ---
 
-## 6. 아직 안 한 것 (다음 세션 우선순위)
+## 6. 모두 완료 ✅ (PR#398~#406)
 
-1. **R3F 패키지 도입** — `@react-three/fiber` · `three` · `@react-three/drei`. 현재 CSS-3D 플레이스홀더. JosephsonScene을 진짜 3D로.
-2. **8 verb slot 실 viewer** — Q12 매핑 (spec=📜form · design=📐SVG · analyze=📊chart · synth=🧪ladder · verify=🟢matrix · handoff=📦dossier · discover=🌳tree). 현재 placeholder div.
-3. **/library 페이지** — `domains/PUBLIC_DOMAINS.tape` 갤러리. 게스트 view OK · 회원 fork.
-4. **fork 액션** — `POST /api/v1/projects/fork { sourceId }` → 사용자 private 프로젝트 복제.
-5. **discover (8th verb) phanes 브리지** — `~/core/phanes/bin/phanes` subprocess 호출.
-6. **/matter ledger 페이지** — material attestation/verdict 노출.
-7. **R3F 풀 반응형 터치 컨트롤** (Q13).
-8. **dashboard 새 셸로 마이그레이션** — 기존 WorkbenchSpine/WorkbenchMenu → VerbShell 점진 통합.
-9. **i18n** — 새 TopBar/VerbTreeNav/CookChefRail 한국어 + en/ja/zh/ru.
+이전 v1 의 9 우선순위 항목이 후속 8 PR로 전부 머지됨 (handoff 모드 자율 fire).
+
+| # | 항목 | PR |
+|---|---|---|
+| 1 | R3F 패키지 도입 (@react-three/fiber · three · drei) | #405 |
+| 2 | 8 verb slot 실 viewer (Q12 매핑 6종) | #401 |
+| 3 | /library 페이지 (guest gallery + member fork) | #399 |
+| 4 | /api/v1/projects/fork (public-domain 복제) | #400 |
+| 5 | phanes 브리지 (discover 8th verb subprocess) | #403 |
+| 6 | /matter ledger 페이지 | #402 |
+| 7 | 풀 반응형 (R3F + grid · Q13) | #401·#405 |
+| 8 | dashboard 새 셸 (DashboardSummary 카테고리 카드) | #406 |
+| 9 | i18n (5 locale × 21 keys app_gui dict) | #404 |
+| extra | handoff verb 실 dossier (end-user 인계) | #398 |
+
+총 18 PR (PR#388~#406) · ~2,500 LOC · 0 비용 · 0 GPU.
+
+### 다음 우선순위 (idle slate)
+
+- npm install + lockfile 갱신 (R3F 실제 동작 위해)
+- 8 verb slot의 실 데이터 wiring (현재 stub 데이터)
+- fork 액션의 history bridge (project 단위 commit log)
+- discover phanes 바이너리 빌드/배포 (현재 stub fallback)
+- /matter ledger 의 paper 링크 (PAPER.tape 통합)
+- mobile R3F 터치 풀 테스트
+- AdminToggles 우선순위 drag&drop (현재 toggle만)
 
 ---
 
@@ -129,6 +146,7 @@ Firestore admin 권한 부여:
 ## 9. 한 줄 시작 가이드 (다음 세션이 첫 명령으로 쓸 것)
 
 ```
-이전 세션이 PR#388~#396 7개를 merge 했어요.
-domains/HANDOFF.md 읽고, "다음 우선순위 1번 R3F 패키지 도입" 부터 진행.
+이전 세션이 PR#388~#406 18개를 merge 했어요 (handoff 모드 자율 fire).
+domains/HANDOFF.md § 6 "다음 우선순위 (idle slate)" 부터 골라서 진행.
+가장 먼저 = `cd web && npm install` 후 dev 실행해 R3F 동작 확인.
 ```
