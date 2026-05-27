@@ -59,7 +59,14 @@
     "tier_org": "Org",
     "start_label": "{tier} を開始",
     "signin_first": "ログインして開始",
-    "footer": "サブスクリプション料金は seat + 製品アクセスのみ。GPU/TPU コンピュートは Google Cloud(Vertex AI · Cloud Run · GKE)で実行され、実使用量に応じて別途請求 — RunPod · Vast.ai · 外部 GPU ブローカー一切不使用。"
+    "footer": "サブスクリプション料金は seat + 製品アクセスのみ。GPU/TPU コンピュートは Google Cloud(Vertex AI · Cloud Run · GKE)で実行され、実使用量に応じて別途請求 — RunPod · Vast.ai · 外部 GPU ブローカー一切不使用。",
+    "gcp_label": "コンピュート使用量",
+    "gcp_title": "GCP 公開価格",
+    "gcp_subtitle": "公開 list price、us-central1。Google が直接請求 — リージョン・継続利用割引・確約利用割引・無料枠で変動。",
+    "gcp_col_resource": "リソース",
+    "gcp_col_unit": "単位",
+    "gcp_col_price": "USD",
+    "gcp_disclaimer": "参考スナップショット。最新価格は cloud.google.com/pricing。discover 段階の使用量は無料枠でほぼ収まる。"
   },
   "common": {
     "loading": "読み込み中...",

@@ -59,7 +59,14 @@
     "tier_org": "Org",
     "start_label": "{tier} 시작",
     "signin_first": "로그인 후 시작",
-    "footer": "구독료는 seat + 제품 액세스만 포함. GPU/TPU 컴퓨트는 Google Cloud(Vertex AI · Cloud Run · GKE)에서 실행되며 실사용량 기준 별도 청구 — RunPod · Vast.ai · 외부 GPU 중개 일절 미사용."
+    "footer": "구독료는 seat + 제품 액세스만 포함. GPU/TPU 컴퓨트는 Google Cloud(Vertex AI · Cloud Run · GKE)에서 실행되며 실사용량 기준 별도 청구 — RunPod · Vast.ai · 외부 GPU 중개 일절 미사용.",
+    "gcp_label": "컴퓨트 사용량",
+    "gcp_title": "GCP 정가",
+    "gcp_subtitle": "공식 list price, us-central1 기준. Google 이 직접 청구 — 리전 · 지속사용 할인 · 약정 할인 · 무료 한도에 따라 변동.",
+    "gcp_col_resource": "리소스",
+    "gcp_col_unit": "단위",
+    "gcp_col_price": "USD",
+    "gcp_disclaimer": "참고용 스냅샷. 최신 가격: cloud.google.com/pricing. discover 단계 사용량 대부분 무료 한도로 충분."
   },
   "common": {
     "loading": "불러오는 중...",

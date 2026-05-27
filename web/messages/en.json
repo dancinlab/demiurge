@@ -59,7 +59,14 @@
     "tier_org": "Org",
     "start_label": "Start {tier}",
     "signin_first": "Sign in to start",
-    "footer": "Subscription fee covers seats + product access. GPU/TPU compute runs on Google Cloud (Vertex AI · Cloud Run · GKE) and is billed by actual usage — no RunPod, no Vast.ai, no third-party GPU broker."
+    "footer": "Subscription fee covers seats + product access. GPU/TPU compute runs on Google Cloud (Vertex AI · Cloud Run · GKE) and is billed by actual usage — no RunPod, no Vast.ai, no third-party GPU broker.",
+    "gcp_label": "COMPUTE USAGE",
+    "gcp_title": "GCP list prices",
+    "gcp_subtitle": "Public list prices, us-central1. Billed directly by Google — varies by region, sustained-use discount, committed-use discount, and free tier.",
+    "gcp_col_resource": "RESOURCE",
+    "gcp_col_unit": "UNIT",
+    "gcp_col_price": "USD",
+    "gcp_disclaimer": "Snapshot for reference. Authoritative pricing: cloud.google.com/pricing. Free tier covers most discover-stage usage."
   },
   "common": {
     "loading": "loading...",
