@@ -220,7 +220,7 @@ function CliPanel({ m }: { m: Msgs }) {
         {t(m, "account.cli_intro")}
       </p>
 
-      <pre className="overflow-x-auto border-4 border-white bg-black p-4 font-mono text-xs leading-relaxed text-yellow-300">{`# 1. install hexa-lang  (gives you 'hexa' + 'hx' package manager)\n/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/dancinlab/hexa-lang/main/install.sh)"\n\n# 2. install demiurge\nhx install demiurge\n\n# 3. authenticate  (paste the token below)\ndemiurge auth login --token <DEMIURGE_PAT>\n\n# 4. run any verb\ndemiurge cli discover "high-Tc ambient-pressure RTSC"`}</pre>
+      <pre className="overflow-x-auto border-4 border-white bg-black px-6 py-5 font-mono text-xs leading-loose text-yellow-300">{`# 1. install hexa-lang  (gives you 'hexa' + 'hx' package manager)\n/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/dancinlab/hexa-lang/main/install.sh)"\n\n# 2. install demiurge\nhx install demiurge\n\n# 3. authenticate  (paste the token below)\ndemiurge auth login --token <DEMIURGE_PAT>\n\n# 4. run any verb\ndemiurge cli discover "high-Tc ambient-pressure RTSC"`}</pre>
 
       <div className="border-4 border-white">
         <div className="flex items-center justify-between border-b-4 border-white bg-yellow-300 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-black">
@@ -259,28 +259,30 @@ function UsagePanel({ m, meta }: { m: Msgs; meta: TierMeta | null }) {
       <p className="border-l-4 border-white pl-4 text-xs uppercase tracking-wide text-white/70">
         {t(m, "account.usage_intro")}
       </p>
-      <div className="border-4 border-white">
-        <div className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 border-b-4 border-white bg-yellow-300 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-black">
-          <span>{t(m, "account.usage_col_resource")}</span>
-          <span className="text-right">{t(m, "account.usage_col_unit")}</span>
-          <span className="text-right">{t(m, "account.usage_col_used")}</span>
-          <span className="text-right">{t(m, "account.usage_col_limit")}</span>
-        </div>
-        {rows.map((r, i) => (
-          <div
-            key={r.k}
-            className={
-              "grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 px-4 py-3 text-xs uppercase tracking-wide " +
-              (i < rows.length - 1 ? "border-b border-white/30 " : "")
-            }
-          >
-            <span className="font-black text-white">{t(m, `account.usage_row_${r.k}`)}</span>
-            <span className="text-right font-mono normal-case tracking-normal text-white/50">{r.unit}</span>
-            <span className="text-right font-mono text-white/70">{r.used}</span>
-            <span className="text-right font-black text-yellow-300">{r.limit}</span>
-          </div>
-        ))}
-      </div>
+      <table className="w-full border-4 border-white border-separate" style={{ borderSpacing: 0 }}>
+        <thead>
+          <tr className="bg-yellow-300 text-black">
+            <th className="border-b-4 border-white px-4 py-2 text-left text-[10px] font-black uppercase tracking-[0.3em]">{t(m, "account.usage_col_resource")}</th>
+            <th className="border-b-4 border-white px-4 py-2 text-right text-[10px] font-black uppercase tracking-[0.3em]">{t(m, "account.usage_col_unit")}</th>
+            <th className="border-b-4 border-white px-4 py-2 text-right text-[10px] font-black uppercase tracking-[0.3em]">{t(m, "account.usage_col_used")}</th>
+            <th className="border-b-4 border-white px-4 py-2 text-right text-[10px] font-black uppercase tracking-[0.3em]">{t(m, "account.usage_col_limit")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => {
+            const last = i === rows.length - 1;
+            const cellBase = "px-4 py-3 text-xs uppercase tracking-wide " + (last ? "" : "border-b border-white/30 ");
+            return (
+              <tr key={r.k}>
+                <td className={cellBase + "text-left font-black text-white"}>{t(m, `account.usage_row_${r.k}`)}</td>
+                <td className={cellBase + "text-right font-mono normal-case tracking-normal text-white/50"}>{r.unit}</td>
+                <td className={cellBase + "text-right font-mono text-white/70"}>{r.used}</td>
+                <td className={cellBase + "text-right font-black text-yellow-300"}>{r.limit}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
       <p className="text-[10px] uppercase tracking-wide text-white/50">
         {t(m, "account.usage_disclaimer")}
       </p>
