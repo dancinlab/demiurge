@@ -2,6 +2,10 @@
 // PR#36: (app)/layout.tsx 가 좌측 sidebar (8 verb · 🧑‍🍳 요리선생) + 상단 TopBar
 // 모두 갖고 있으므로 page.tsx 는 메인 영역 콘텐츠만 — DomainSwitcher · active
 // 도메인 진행도 · DashboardSummary (5 카테고리 카드).
+//
+// ElevenLabs Home 패턴: 큰 디스플레이 헤딩("무엇을 만들까요?" 톤) + verb 액션
+// 카드 그리드. 메인 영역은 흰색(bg-surface)이라 카드는 bg-canvas 틴트 +
+// border-hairline 로 구분한다. 시맨틱 토큰만 사용 (DESIGN_TOKENS.md SSOT).
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -27,16 +31,47 @@ const VERB_PATHS: Record<string, string> = {
   handoff:   "M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z",
 };
 
-function VerbChip({ verb, label, domain }: { verb: keyof typeof VERB_PATHS; label: string; domain: string }) {
+// 메인 화면에 띄울 5개 verb 액션 카드 — 각 카드는 한 줄 설명을 동반한다.
+const VERB_CARDS: { verb: keyof typeof VERB_PATHS; label: string; blurb: string }[] = [
+  { verb: "discover",  label: "discover",  blurb: "새 도메인 발산 · gap 돌파" },
+  { verb: "spec",      label: "spec",      blurb: "타겟 · 제약 정의" },
+  { verb: "structure", label: "structure", blurb: "구조 · 토폴로지 설계" },
+  { verb: "analyze",   label: "analyze",   blurb: "시뮬 · 검증 분석" },
+  { verb: "handoff",   label: "handoff",   blurb: "완성형 인계 dossier" },
+];
+
+function ActionCard({
+  verb,
+  label,
+  blurb,
+  domain,
+}: {
+  verb: keyof typeof VERB_PATHS;
+  label: string;
+  blurb: string;
+  domain: string;
+}) {
   return (
     <Link
       href={`/${verb}/${domain.toLowerCase()}`}
-      className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1 text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+      className="group flex flex-col gap-2 rounded-card border border-hairline bg-canvas p-4 transition hover:border-hairline-strong hover:shadow-card"
     >
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <svg
+        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="h-5 w-5 text-ink"
+      >
         <path d={VERB_PATHS[verb]} />
       </svg>
-      {label}
+      <span className="font-display text-[15px] font-medium text-ink">{label}</span>
+      <span className="text-[13px] text-muted">{blurb}</span>
     </Link>
   );
 }
@@ -88,37 +123,47 @@ export default async function DashboardPage({
       : null;
 
   return (
-    <div className="space-y-6">
-      <header className="flex items-center gap-3">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-gray-900">🏠 {t(messages, "dashboard.title")}</h1>
-        <DomainSwitcher
-          names={domains.map((d) => d.name)}
-          current={active?.name ?? ""}
-          ariaLabel={t(messages, "app_gui.domain_aria")}
-          newProjectLabel={t(messages, "app_gui.domain_new_project")}
-        />
-        {pct !== null && (
-          <span className="text-xs text-gray-500">
-            {active!.progress.done}/{active!.progress.total} · {pct}%
-          </span>
-        )}
+    <div className="space-y-8">
+      <header className="space-y-3">
+        <h1 className="font-display text-3xl font-light tracking-tight text-ink">
+          {t(messages, "dashboard.title")}
+        </h1>
+        <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
+          <DomainSwitcher
+            names={domains.map((d) => d.name)}
+            current={active?.name ?? ""}
+            ariaLabel={t(messages, "app_gui.domain_aria")}
+            newProjectLabel={t(messages, "app_gui.domain_new_project")}
+          />
+          {pct !== null && (
+            <span>
+              {active!.progress.done}/{active!.progress.total} · {pct}%
+            </span>
+          )}
+        </div>
       </header>
 
       {active && (
-        <section className="space-y-3">
-          <h2 className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">
+        <section className="space-y-4">
+          <h2 className="text-[11px] font-semibold uppercase tracking-wide text-muted">
             {t(messages, "dashboard.active_label")} · {active.name}
           </h2>
-          <div className="flex flex-wrap gap-2 text-xs">
-            <VerbChip verb="discover"  label="discover"  domain={active.name} />
-            <VerbChip verb="spec"      label="spec"      domain={active.name} />
-            <VerbChip verb="structure" label="structure" domain={active.name} />
-            <VerbChip verb="analyze"   label="analyze"   domain={active.name} />
-            <VerbChip verb="handoff"   label="handoff"   domain={active.name} />
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {VERB_CARDS.map((c) => (
+              <ActionCard
+                key={c.verb}
+                verb={c.verb}
+                label={c.label}
+                blurb={c.blurb}
+                domain={active.name}
+              />
+            ))}
           </div>
           <details className="text-xs">
-            <summary className="cursor-pointer text-gray-500 hover:text-gray-700">📜 {t(messages, "dashboard.log_tail")}</summary>
-            <pre className="mt-1 max-h-72 overflow-auto bg-gray-50 p-2 font-mono text-[11px] text-gray-700">
+            <summary className="cursor-pointer text-muted hover:text-body">
+              📜 {t(messages, "dashboard.log_tail")}
+            </summary>
+            <pre className="mt-2 max-h-72 overflow-auto rounded-panel bg-canvas p-3 font-mono text-[11px] text-body">
               {logTail}
             </pre>
           </details>
