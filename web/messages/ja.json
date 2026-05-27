@@ -64,5 +64,34 @@
   "common": {
     "loading": "読み込み中...",
     "language": "言語"
+  },
+  "dashboard": {
+    "title": "ワークベンチ",
+    "spine": "8動詞パイプライン",
+    "empty": "ドメイン未選択",
+    "assist": "アシスト",
+    "assist_spec": "spec 下書き (Gemini)",
+    "assist_analyze": "analyze (ライブ)",
+    "assist_verify": "verify (5段階)",
+    "assist_discover": "discover (第8動詞)",
+    "assist_note": "Gemini は下書きのみ — verify は決定論的 (LLM 判定 0 回)。"
+  },
+  "landing": {
+    "badge": "Built with Gemini · Gemini XPRIZE 2026",
+    "title": "AI ネイティブの技術設計パイプライン",
+    "sub": "spec → structure → design → analyze → synthesize → verify → handoff。原子・材料・チップ・バイオ・化学を貫く一つの本番ループ。",
+    "cta_start": "無料で開始",
+    "pipeline_title": "一つのループ、八つの動詞。",
+    "pipeline_sub": "discover が種をまき、verify が閉じる。各段階はチャットではなく決定論的なサーフェス。",
+    "feat_verify_title": "verify は神聖",
+    "feat_verify_body": "5 段階の計算機が判定を返す — LLM 判定ゼロ。すべての主張に来歴が付く。",
+    "feat_i18n_title": "5 言語",
+    "feat_i18n_body": "EN · 中文 · Русский · 日本語 · 한국어。一つのループ、どのロケールでも、左右並びの handoff。",
+    "feat_gcp_title": "Google Cloud ネイティブ",
+    "feat_gcp_body": "Vertex AI · Cloud Run · Firestore · Secret Manager。メタデータサーバー認証 — コードに秘密ゼロ。",
+    "domains_title": "すぐ走らせられる研究ドメイン",
+    "domains_sub": "原子 · 材料 · チップ · バイオ · 化学",
+    "pricing_title": "シンプルで透明な価格",
+    "cta_final": "ループを実行"
   }
 }

@@ -64,5 +64,34 @@
   "common": {
     "loading": "loading...",
     "language": "Language"
+  },
+  "dashboard": {
+    "title": "workbench",
+    "spine": "8-verb spine",
+    "empty": "no domain selected",
+    "assist": "assist",
+    "assist_spec": "spec draft (Gemini)",
+    "assist_analyze": "analyze (live)",
+    "assist_verify": "verify (5-tier)",
+    "assist_discover": "discover (verb 8)",
+    "assist_note": "Gemini drafts only — verify stays deterministic (0 LLM verdicts)."
+  },
+  "landing": {
+    "badge": "Built with Gemini · Gemini XPRIZE 2026",
+    "title": "The AI-native technical-design pipeline",
+    "sub": "spec → structure → design → analyze → synthesize → verify → handoff. One production loop across atoms, materials, chips, bio, and chemistry.",
+    "cta_start": "Start free",
+    "pipeline_title": "One loop. Eight verbs.",
+    "pipeline_sub": "discover seeds it; verify closes it. Every stage is a deterministic surface — not a chat.",
+    "feat_verify_title": "Verify is sacred",
+    "feat_verify_body": "A 5-tier calculator returns the verdict — zero LLM judgments. Every claim carries its provenance.",
+    "feat_i18n_title": "Five languages",
+    "feat_i18n_body": "EN · 中文 · Русский · 日本語 · 한국어. One loop, any locale, side-by-side handoff.",
+    "feat_gcp_title": "Google Cloud native",
+    "feat_gcp_body": "Vertex AI · Cloud Run · Firestore · Secret Manager. Metadata-server auth — zero secrets in code.",
+    "domains_title": "Research domains, ready to run",
+    "domains_sub": "atom · matter · chip · bio · chemistry",
+    "pricing_title": "Simple, transparent pricing",
+    "cta_final": "Run the loop"
   }
 }
