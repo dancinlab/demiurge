@@ -102,7 +102,9 @@
     "assist_analyze": "analyze (ライブ)",
     "assist_verify": "verify (5段階)",
     "assist_discover": "discover (第8動詞)",
-    "assist_note": "Gemini は下書きのみ — verify は決定論的 (LLM 判定 0 回)。"
+    "assist_note": "Gemini は下書きのみ — verify は決定論的 (LLM 判定 0 回)。",
+    "active_label": "アクティブ",
+    "log_tail": "ログ末尾 (30)"
   },
   "landing": {
     "badge": "Built with Gemini · Gemini XPRIZE 2026",

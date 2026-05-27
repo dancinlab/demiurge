@@ -102,7 +102,9 @@
     "assist_analyze": "analyze (live)",
     "assist_verify": "verify (5-tier)",
     "assist_discover": "discover (verb 8)",
-    "assist_note": "Gemini drafts only — verify stays deterministic (0 LLM verdicts)."
+    "assist_note": "Gemini drafts only — verify stays deterministic (0 LLM verdicts).",
+    "active_label": "active",
+    "log_tail": "log tail (30)"
   },
   "landing": {
     "badge": "Built with Gemini · Gemini XPRIZE 2026",
