@@ -29,16 +29,15 @@
   urlcolor=blue!50!black
 }
 
-% ---------- emoji tier badges (xelatex-native; pdflatex must use replacement marks) ----------
-% Use \tierBlue / \tierGreen / \tierYellow / \tierOrange / \tierRed in tables so
-% the source stays compile-safe under either engine. Default = literal emoji
-% (xelatex/lualatex render natively; the shipped Makefile pins xelatex).
-\providecommand{\tierBlue}{🔵}
-\providecommand{\tierGreen}{🟢}
-\providecommand{\tierYellow}{🟡}
-\providecommand{\tierOrange}{🟠}
-\providecommand{\tierRed}{🔴}
-\providecommand{\tierWhite}{⚪}
+% ---------- tier badges (color-coded text labels; font-independent) ----------
+% This BasicTeX install has no color-emoji font fallback, so the tier badges
+% render as bracketed colored words. Each maps 1:1 to a hexa verify tier.
+\newcommand{\tierBlue}{\textcolor{blue!60!black}{[\textsc{formal}]}}
+\newcommand{\tierGreen}{\textcolor{teal}{[\textsc{green}]}}
+\newcommand{\tierYellow}{\textcolor{olive}{[\textsc{cited}]}}
+\newcommand{\tierOrange}{\textcolor{orange!85!black}{[\textsc{deferred}]}}
+\newcommand{\tierRed}{\textcolor{red!75!black}{[\textsc{falsified}]}}
+\newcommand{\tierWhite}{\textcolor{gray}{[\textsc{fenced}]}}
 
 % ---------- lightweight \ce{...} (mhchem not available in this TeX install) ----------
 % Renders a chemical formula in upright text with digits auto-subscripted, so

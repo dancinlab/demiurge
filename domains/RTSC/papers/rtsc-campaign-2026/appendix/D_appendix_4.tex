@@ -142,6 +142,35 @@ $ hexa verify --expr stability_coupling_margin 1.0 2.479 -1.479
   calc = -1.479  tier = GREEN SUPPORTED-NUMERICAL   (H3O trapped, m<0)
 \end{lstlisting}
 
+\paragraph{Three axes of the wall.}
+The wall has three measurable faces, each with its own diagnostic.
+
+\emph{Axis A --- $\lambda$-saturation (harmonic artifact).} The same
+material, \ce{H3O}, splits under treatment: harmonic gives $\lambda=2.479$,
+$T_c\approx\SI{180}{\kelvin}$, but with $16/16$ imaginary $q$-points;
+SSCHA renormalisation hardens the soft modes, normalises
+$\langle\omega^2\rangle$, and collapses $\lambda$ to the 0.52--1.48 band,
+$T_c\to9$--\SI{109}{\kelvin}. The harmonic enhancement \emph{was} the
+instability. Margin~$S=0.4034$ quantifies the collapse closed-form.
+
+\emph{Axis B --- the $\omega_{\log}$ ceiling (stable branch).} For the stable
+candidates the Allen--Dynes prefactor $\omega_{\log}/1.2$ dominates in the
+strong-coupling regime, so $T_c\approx\omega_{\log}$-limited:
+\ce{H3Br} ($\lambda=2.0$, $\omega_{\log}=\SI{620}{\kelvin}$)
+$\to\SI{110}{\kelvin}$, \ce{H3Si} ($\lambda=1.8$, $\SI{600}{\kelvin}$)
+$\to\SI{78}{\kelvin}$, \ce{H3Cl} ($\lambda=1.4$, $\SI{1173}{\kelvin}$)
+$\to\SI{128}{\kelvin}$. Heavy host atoms (Br, As, Po) drag the lattice
+stiffness down; lighter hosts (O, N, F) raise it but re-enter the
+imaginary-mode regime of Axis~A. Light-host benefit and the stability gate
+are themselves coupled.
+
+\emph{Axis C --- the stability gate ($m>0$ escape).} The true gate is not
+``imaginary-free'' but the anharmonic escape $m>0$. The stable binary
+candidates are imaginary-free yet (closed-form unevaluated, but
+$T_c<\SI{200}{\kelvin}$ implies) $m<0$ --- trapped. Only the cation-clathrate
+\ce{CaH6} ($m=+0.5$) escapes. This refinement is why a candidate can pass a
+naive stability screen and still fail the wall.
+
 \paragraph{Reading.}
 The N5 wall is the reason the binary route ceilings near \SI{158}{\kelvin}
 (stable). The escape direction is to decouple $\eta$ from

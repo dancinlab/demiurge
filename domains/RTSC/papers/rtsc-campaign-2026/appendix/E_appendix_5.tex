@@ -8,6 +8,17 @@ octahedral hydrides $X_2MH_6$ (Fm$\bar{3}$m, K$_2$PtCl$_6$ prototype) that
 might decouple coupling from stability. This appendix reports the
 \emph{pre-registered} falsification of that route at ambient pressure.
 
+\paragraph{Structure and the octahedral molecular orbitals.}
+The Fm$\bar{3}$m K$_2$PtCl$_6$ prototype places the transition metal $M$ at
+the $4a$ Wyckoff site $(0,0,0)$, the cations $X$ at $8c$
+$(\frac14,\frac14,\frac14)$, and the six hydrogens at $24e$ $(x,0,0)$ with
+$x\approx0.24$ --- a 9-atom primitive cell ($1M + 2X + 6H$). The six H~$1s$
+orbitals form the symmetry-adapted ligand combinations $a_{1g}+e_g+t_{1u}$,
+which hybridise with the metal $s$/$p$/$d$ manifold to produce bonding,
+non-bonding, and antibonding ($\sigma^\ast$) bands. The $\sigma^\ast$ band is
+H--H/H--M antibonding and therefore steep in the density of states; its
+partial filling is the engine of the proposed superconductivity.
+
 \paragraph{The cation-VEC rule.}
 The valence-electron count of the octahedral unit is the closed-form
 \begin{equation}
@@ -15,12 +26,55 @@ The valence-electron count of the octahedral unit is the closed-form
 \qquad
 n_{\sigma^\ast} = \mathrm{VEC} - 18,
 \end{equation}
-where $v(\cdot)$ is the group valence and $n_{\sigma^\ast}$ is the filling of
-the \ce{H6}-derived $\sigma^\ast$ antibonding manifold. The model predicts a
-sweet spot at VEC$\in\{19,20\}$ ($n_{\sigma^\ast}=1$--2), where $N(E_F)$ is
-maximised. Both \ce{Mg2IrH6} ($2\cdot2+9+6=19$) and \ce{Li2CuH6}
+where $v(\cdot)$ is the group valence, the $+6$ is the six H electrons, and
+$n_{\sigma^\ast}$ is the $\sigma^\ast$ filling above the octahedral
+18-electron closed shell. The model predicts a sweet spot at
+VEC$\in\{19,20\}$ ($n_{\sigma^\ast}=1$--2): at VEC$=18$ the shell is closed
+($N(E_F)\to0$, $T_c\to0$); at VEC$\ge21$ the $\sigma^\ast$ over-fills, the
+M--H bond weakens, and a soft mode collapses the lattice. The
+$\{19,20\}$ window is the intersection of ``enough electrons'' and ``stable
+lattice.'' Both \ce{Mg2IrH6} ($2\cdot2+9+6=19$) and \ce{Li2CuH6}
 ($2\cdot1+11+6=19$) land exactly on it --- so the rule, as a heuristic, is
-self-consistent. The question is whether VEC$=19$ is \emph{sufficient}.
+self-consistent. The question this appendix answers is whether VEC$=19$ is
+\emph{sufficient}.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{ccl}
+\toprule
+\textbf{VEC} & \textbf{$n_{\sigma^\ast}$} & \textbf{state} \\
+\midrule
+18 & 0 & closed shell, $N(E_F)\downarrow$, $T_c\approx0$ \\
+19 & 1 & $\sigma^\ast$ quarter-filled, $N(E_F)\uparrow$, strong e--ph (sweet spot) \\
+20 & 2 & $\sigma^\ast$ half-filled, optimal $\lambda$ (sweet spot) \\
+21 & 3 & over-filled, M--H weakened $\to$ soft mode, unstable \\
+22 & 4 & severe over-fill $\to$ lattice decomposition \\
+\bottomrule
+\end{tabular}
+\caption{Octahedral $\sigma^\ast$ band-filling model. The campaign-tested
+VEC$=19$ candidates sit in the predicted sweet spot, yet are dynamically
+unstable at ambient pressure (Tab.~\ref{tab:ternary}) --- the rule is a
+necessary filter, not a stability guarantee.}
+\label{tab:vec}
+\end{table}
+
+\paragraph{Why VEC alone is insufficient: the cation-radius axis.}
+\ce{Ca2IrH6} and \ce{Sr2IrH6} also have VEC$=19$ ($2\cdot2+9+6$), yet are
+expected to have $T_c\approx0$. The second axis is the cation \emph{ionic
+radius}: small, electronegative cations ($\mathrm{Li}^+$ $0.76$\,\AA,
+$\mathrm{Mg}^{2+}$ $0.72$\,\AA) chemically pre-compress the \ce{H6} cage,
+stiffening the H phonons; large cations ($\mathrm{Ca}^{2+}$ $1.00$\,\AA,
+$\mathrm{Sr}^{2+}$ $1.18$\,\AA) expand the lattice, soften the H phonons,
+lower $\omega_{\log}$, and let cation $d$-states intrude near $E_F$, diluting
+the hydrogen-dominated coupling. The honest closed-form statement of this is fenced (it is a
+DFT/wet-lab mechanism question, not an identity):
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=0pt]
+$ hexa verify --fence "X2MH6 Tc peaks at VEC 19-20 (sigma* partial fill
+  maximizes N(EF)); Mg->Ca/Sr keeps VEC=19 but expands lattice, softens H
+  phonons and intrudes cation d-states, killing Tc"
+  tier = WHITE SPECULATION-FENCED  (mechanism, verification N/A by design)
+\end{lstlisting}
 
 \paragraph{Pre-registered falsifiers.}
 We registered the pass/fail threshold before harvesting either result:
@@ -63,6 +117,41 @@ family-falsifies the K$_2$PtCl$_6$ prototype at ambient.\\
 \textbf{Result:} \tierRed\ PASSED 2026-05-27 --- $q_2$ alone: 8 hard-imag,
 $-\SI{944.92}{\per\centi\meter}$. $X_2MH_6$ Fm$\bar{3}$m 2/2 falsified.
 \end{quote}
+
+\paragraph{The cation-decoupling escape (open route).}
+The N5 wall (Appendix~\ref{app:D}) and the falsification above point to the
+same escape: decouple the coupling numerator $\eta = N(E_F)\langle
+I^2\rangle$ from the stability denominator $\langle\omega^2\rangle$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[font=\footnotesize,node distance=6mm]
+\node[draw,rounded corners,fill=red!8,text width=4.4cm,align=center] (b) {%
+  \textbf{binary} $H_3X$\\[2pt]
+  $\eta$ and $\langle\omega^2\rangle$ both tied to one knob\\
+  $\Rightarrow$ soft for $\lambda\uparrow$ but unstable};
+\node[draw,rounded corners,fill=teal!10,text width=4.8cm,align=center,
+      right=14mm of b] (t) {%
+  \textbf{ternary} $X_2MH_6$ / clathrate\\[2pt]
+  cation doping: $N(E_F)$ preserved ($\eta\uparrow$)\\
+  cation pre-compression: cage stiffens ($\langle\omega^2\rangle\uparrow$)\\
+  $\Rightarrow$ two independent knobs};
+\draw[-{Latex},thick] (b) -- (t) node[midway,above,font=\tiny]{decouple};
+\end{tikzpicture}
+\caption{The cation-decoupling hypothesis. In binary hydrides a single knob
+($\langle\omega^2\rangle$) controls both coupling and stability; a
+stuffed-cation phase can in principle move them independently. \ce{CaH6}
+($m=+0.5$, Apx.~\ref{app:D}) is the existence proof; the ambient
+$X_2MH_6$ octahedral instances tested here ($m<0$, unstable) are not.}
+\label{fig:decouple}
+\end{figure}
+
+\noindent The expansion matrix derived from the VEC rule (small cation,
+group-9/11 metal, VEC$\in\{19,20\}$) nominates \ce{Mg2RhH6}, \ce{Mg2CoH6},
+\ce{Al2MnH6} (VEC$=19$) and \ce{Mg2NiH6}, \ce{Mg2PtH6} (VEC$=20$) as
+not-yet-falsified candidates, and pre-excludes \ce{Ca2IrH6}, \ce{Sr2IrH6},
+\ce{K2CuH6}, and the VEC$\ge21$ over-filled set to save DFT budget. These
+are \emph{rule-predicted only} (no DFT yet) and carry no $T_c$ claim.
 
 \paragraph{Reading.}
 The cation-VEC rule survives as a necessary filter (it correctly places both
