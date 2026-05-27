@@ -59,8 +59,11 @@ async function fetchTokenFromGcloud(): Promise<string | null> {
     const { execFile } = await import("node:child_process");
     const { promisify } = await import("node:util");
     const run = promisify(execFile);
+    // GCLOUD_BIN lets dev point at the absolute path — a nohup/GUI-launched
+    // server often lacks /opt/homebrew/bin on PATH, so bare "gcloud" ENOENTs.
+    const gcloudBin = process.env.GCLOUD_BIN ?? "gcloud";
     const { stdout } = await run(
-      "gcloud",
+      gcloudBin,
       ["auth", "application-default", "print-access-token"],
       { timeout: 8000 },
     );
