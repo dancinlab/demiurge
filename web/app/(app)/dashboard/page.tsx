@@ -31,7 +31,7 @@ function VerbChip({ verb, label, domain }: { verb: keyof typeof VERB_PATHS; labe
   return (
     <Link
       href={`/${verb}/${domain.toLowerCase()}`}
-      className="inline-flex items-center gap-1.5 rounded-[6px] border border-gray-200 bg-white px-2.5 py-1 text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+      className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1 text-gray-700 hover:bg-gray-50 hover:text-gray-900"
     >
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d={VERB_PATHS[verb]} />

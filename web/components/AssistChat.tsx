@@ -231,7 +231,38 @@ export function AssistChat({
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-2">
-      {/* Transcript */}
+      {/* Input — 상단 */}
+      <div className="space-y-1.5">
+        <textarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={onKeyDown}
+          placeholder={i18n.placeholder}
+          disabled={busy}
+          rows={2}
+          className="w-full resize-none rounded-[10px] border border-gray-200 bg-white px-2.5 py-1.5 text-[12px] text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none disabled:opacity-60"
+        />
+        <div className="flex items-center justify-between">
+          <button
+            onClick={clear}
+            disabled={busy || msgs.length === 0}
+            className="inline-flex items-center gap-1 text-[10px] text-gray-400 hover:text-gray-700 disabled:opacity-30"
+            title={i18n.clear}
+          >
+            <Trash2 className="h-3 w-3" /> {i18n.clear}
+          </button>
+          <button
+            onClick={() => void send()}
+            disabled={busy || !input.trim()}
+            className="inline-flex items-center gap-1 rounded-full bg-gray-900 px-3 py-1 text-[11px] font-medium text-white hover:bg-gray-800 disabled:opacity-50"
+          >
+            {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
+            {i18n.send}
+          </button>
+        </div>
+      </div>
+
+      {/* Transcript — 하단 */}
       <div ref={scrollRef} className="flex-1 space-y-2 overflow-auto pr-0.5">
         {msgs.length === 0 ? (
           <div className="space-y-2 py-1">
@@ -273,37 +304,6 @@ export function AssistChat({
             <Loader2 className="h-3 w-3 animate-spin" /> {i18n.thinking}
           </div>
         )}
-      </div>
-
-      {/* Input */}
-      <div className="space-y-1.5">
-        <textarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={onKeyDown}
-          placeholder={i18n.placeholder}
-          disabled={busy}
-          rows={2}
-          className="w-full resize-none rounded-[10px] border border-gray-200 bg-white px-2.5 py-1.5 text-[12px] text-gray-900 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none disabled:opacity-60"
-        />
-        <div className="flex items-center justify-between">
-          <button
-            onClick={clear}
-            disabled={busy || msgs.length === 0}
-            className="inline-flex items-center gap-1 text-[10px] text-gray-400 hover:text-gray-700 disabled:opacity-30"
-            title={i18n.clear}
-          >
-            <Trash2 className="h-3 w-3" /> {i18n.clear}
-          </button>
-          <button
-            onClick={() => void send()}
-            disabled={busy || !input.trim()}
-            className="inline-flex items-center gap-1 rounded-[6px] bg-gray-900 px-3 py-1 text-[11px] font-medium text-white hover:bg-gray-800 disabled:opacity-50"
-          >
-            {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
-            {i18n.send}
-          </button>
-        </div>
       </div>
     </div>
   );
