@@ -97,6 +97,16 @@ export type GeminiTextResponse = {
 export async function generateText(
   req: GeminiTextRequest
 ): Promise<GeminiTextResponse> {
+  // Q11′ LLM provider registry gate — verify vertex_gemini is enabled
+  // before spending a Vertex call. Cheap (single Firestore doc read,
+  // cached one-doc) + non-fatal (defaults to active when reg unavailable).
+  const { getRegistry } = await import("./providers");
+  const reg = await getRegistry();
+  const llm = reg.llm.vertex_gemini;
+  if (llm && llm.enabled === false) {
+    throw new Error("vertex_gemini disabled in providers/registry — toggle in /admin");
+  }
+
   const project = getProjectId();
   const location = req.location ?? DEFAULT_LOCATION;
   const model = req.model ?? DEFAULT_MODEL;
