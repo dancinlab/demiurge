@@ -56,10 +56,10 @@ export default async function AppLayout({
 
   return (
     <ThemeProvider>
-      {/* 가로 분할: 좌 사이드(연회색) | 우 컬럼(흰색) — 테두리·라운딩 없이 배경색으로만 구분 */}
-      <div className="flex h-screen bg-white text-gray-900 antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
-        {/* 좌: 세로 전체 사이드 — verb(상단) + 요리선생 채팅(하단). bg-gray-50 으로 우측과 구분 */}
-        <aside className="flex w-72 shrink-0 flex-col border-r border-gray-200 bg-gray-50">
+      {/* ElevenLabs 톤: 페이지=canvas(웜 그레이) · 흰 카드가 떠보임. 좌 흰 레일 | 우 컬럼 */}
+      <div className="flex h-screen bg-canvas text-ink antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
+        {/* 좌: 세로 전체 흰 레일 — verb(상단) + 요리선생 채팅(하단). hairline 으로 우측과 구분 */}
+        <aside className="flex w-72 shrink-0 flex-col border-r border-hairline bg-surface">
           <div className="shrink-0 p-2">
             <VerbTreeNav domain={activeDomain ?? undefined} i18n={i18n} />
           </div>
