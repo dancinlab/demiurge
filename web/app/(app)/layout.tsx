@@ -56,25 +56,26 @@ export default async function AppLayout({
 
   return (
     <ThemeProvider>
-      <div className="flex h-screen flex-col bg-zinc-50 text-slate-900 antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
-        <TopBar user={safeUser} activeDomain={activeDomain} i18n={i18n} />
-        <div className="flex flex-1 gap-3 overflow-hidden p-3">
-          {/* 좌: 헤더 컬럼 — verb (상단) + 요리선생 채팅 (하단) 세로 분할 */}
-          <aside className="flex w-72 shrink-0 flex-col gap-3">
-            <div className="shrink-0 rounded-[10px] border border-slate-200 bg-white p-2 shadow-sm">
-              <VerbTreeNav domain={activeDomain ?? undefined} i18n={i18n} />
-            </div>
-            <div className="min-h-0 flex-1">
-              <CookChefRail
-                domain={activeDomain ?? ""}
-                i18n={i18n}
-                chatI18n={chatI18n}
-                locale={locale}
-              />
-            </div>
-          </aside>
-          {/* 우: 메인 */}
-          <main className="min-w-0 flex-1 overflow-auto rounded-[10px] border border-slate-200 bg-white p-6 shadow-sm">
+      {/* 가로 분할: 좌 사이드(세로 전체) | 우 컬럼(TopBar + main) */}
+      <div className="flex h-screen bg-zinc-50 text-slate-900 antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
+        {/* 좌: 세로 전체 사이드 — verb(상단) + 요리선생 채팅(하단) */}
+        <aside className="flex w-72 shrink-0 flex-col gap-3 border-r border-slate-200 bg-white p-3">
+          <div className="shrink-0 rounded-[10px] border border-slate-200 p-2">
+            <VerbTreeNav domain={activeDomain ?? undefined} i18n={i18n} />
+          </div>
+          <div className="min-h-0 flex-1">
+            <CookChefRail
+              domain={activeDomain ?? ""}
+              i18n={i18n}
+              chatI18n={chatI18n}
+              locale={locale}
+            />
+          </div>
+        </aside>
+        {/* 우: TopBar(메인 상단) + main */}
+        <div className="flex min-w-0 flex-1 flex-col">
+          <TopBar user={safeUser} activeDomain={activeDomain} i18n={i18n} />
+          <main className="min-h-0 flex-1 overflow-auto p-6">
             {children}
           </main>
         </div>
