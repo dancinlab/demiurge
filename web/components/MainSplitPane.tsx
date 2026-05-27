@@ -16,7 +16,7 @@ function Band({
   return (
     <section
       className={[
-        "rounded-[10px] border border-gray-200 bg-white p-3 shadow-sm",
+        "bg-gray-50 p-3",
         grow ? "flex-1 min-h-0" : "",
       ].join(" ")}
     >

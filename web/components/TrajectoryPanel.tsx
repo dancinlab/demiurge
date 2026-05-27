@@ -20,12 +20,12 @@ export function TrajectoryPanel({
 }) {
   if (entries.length === 0) return null;
   return (
-    <section className="border border-gray-200 bg-white">
-      <header className="flex items-baseline gap-2 border-b border-gray-200 px-4 py-2.5">
+    <section className="bg-gray-50">
+      <header className="flex items-baseline gap-2 px-4 py-2.5">
         <h3 className="font-serif text-base font-semibold text-gray-900">RESEARCH SESSION</h3>
         <span className="font-mono text-[11px] text-gray-400">session-{sessionId}</span>
       </header>
-      <div className="px-4 py-3">
+      <div className="px-4 pb-3">
         <p className="mb-1.5 text-[10px] font-medium uppercase tracking-wide text-gray-400">
           auto-captured trajectory
         </p>
@@ -50,6 +50,9 @@ export function TrajectoryPanel({
             );
           })}
         </ul>
+        <p className="mt-3 text-[11px] leading-relaxed text-gray-400">
+          Collaborate with AI on research. The trajectory is automatically captured with epistemic provenance.
+        </p>
       </div>
     </section>
   );

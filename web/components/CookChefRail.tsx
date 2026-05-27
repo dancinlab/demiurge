@@ -21,7 +21,7 @@ export function CookChefRail({
   locale: string;
 }) {
   return (
-    <aside className="flex h-full flex-col bg-white p-3 text-sm">
+    <aside className="flex h-full flex-col p-3 text-sm">
       <header className="mb-2 flex items-center gap-2 border-b border-gray-200 pb-2">
         <span className="text-lg" aria-hidden="true">🧑‍🍳</span>
         <div className="flex flex-col leading-tight">

@@ -118,7 +118,7 @@ export default async function DashboardPage({
           </div>
           <details className="text-xs">
             <summary className="cursor-pointer text-gray-500 hover:text-gray-700">📜 {t(messages, "dashboard.log_tail")}</summary>
-            <pre className="mt-1 max-h-72 overflow-auto rounded-[6px] border border-gray-200 bg-gray-50 p-2 font-mono text-[11px] text-gray-700">
+            <pre className="mt-1 max-h-72 overflow-auto bg-gray-50 p-2 font-mono text-[11px] text-gray-700">
               {logTail}
             </pre>
           </details>

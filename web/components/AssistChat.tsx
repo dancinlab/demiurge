@@ -291,12 +291,13 @@ export function AssistChat({
               <div
                 key={`${m.ts}-${i}`}
                 className={[
-                  "rounded-[10px] px-3 py-2 text-[12px] leading-relaxed",
+                  "animate-msg-in rounded-2xl px-3 py-2 text-[12px] leading-relaxed",
+                  // 꼬리 효과 — user 우하단 직각 · assistant 좌하단 직각
                   m.role === "user"
-                    ? "ml-auto max-w-[85%] bg-gray-900 text-white"
+                    ? "ml-auto max-w-[85%] rounded-br-sm bg-gray-900 text-white"
                     : isError
-                      ? "mr-auto max-w-[95%] border border-rose-200 bg-rose-50 text-rose-700"
-                      : "mr-auto max-w-[95%] bg-gray-50 text-gray-900",
+                      ? "mr-auto max-w-[95%] rounded-bl-sm bg-rose-50 text-rose-700"
+                      : "mr-auto max-w-[95%] rounded-bl-sm border border-gray-200 bg-white text-gray-900",
                 ].join(" ")}
               >
                 {m.role === "assistant" && !isError ? renderMarkdown(m.text) : m.text}

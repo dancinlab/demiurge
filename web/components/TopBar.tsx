@@ -24,7 +24,7 @@ export function TopBar({
 }) {
   // ara 톤: gray 회색조 + indigo accent + Cormorant 세리프 로고.
   return (
-    <header className="flex items-center gap-3 border-b border-gray-200 bg-white px-5 py-3 text-sm">
+    <header className="flex items-center gap-3 bg-white px-5 py-3 text-sm">
       <Link
         href="/dashboard"
         className="font-serif text-lg font-semibold tracking-tight text-gray-900 hover:text-gray-900"
