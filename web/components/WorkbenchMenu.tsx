@@ -109,7 +109,7 @@ export function WorkbenchMenu({ currentLocale }: { currentLocale: string }) {
             style={{ transform: view === "root" ? "translateX(0)" : "translateX(-50%)" }}
           >
             {/* pane 0 — root */}
-            <div className="flex w-1/2 flex-col gap-1.5 p-2">
+            <div className="flex w-1/2 flex-col gap-1.5 p-3">
               <button onClick={() => setView("lang")} className={rowCls}>
                 <span className="flex items-center gap-2 uppercase tracking-wider text-neutral-500">
                   <Languages size={13} /> language
@@ -135,7 +135,7 @@ export function WorkbenchMenu({ currentLocale }: { currentLocale: string }) {
             </div>
 
             {/* pane 1 — picker */}
-            <div className="w-1/2 p-2">
+            <div className="w-1/2 p-3">
               <button
                 onClick={() => setView("root")}
                 className="mb-2 flex cursor-pointer items-center gap-1 text-[10px] uppercase tracking-[0.2em] text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100"

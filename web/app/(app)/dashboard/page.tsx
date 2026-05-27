@@ -16,26 +16,13 @@ import { listDomains } from "@/lib/domains";
 import { getMessages, getLocale, t } from "@/lib/i18n";
 import { DomainSwitcher } from "@/components/DomainSwitcher";
 import { WorkbenchMenu } from "@/components/WorkbenchMenu";
-import {
-  Telescope, FileText, Network, PenTool, Activity, Combine, CheckCircle2, Send,
-} from "lucide-react";
+import { WorkbenchSpine } from "@/components/WorkbenchSpine";
+import { AssistChat } from "@/components/AssistChat";
 
 export const dynamic = "force-dynamic";
 
 const REPO_ROOT =
   process.env.DEMIURGE_DATA_ROOT ?? path.resolve(process.cwd(), "..");
-
-// 8-verb spine — discover (8th, head) sits ABOVE the canonical 7.
-const SPINE: Array<{ verb: string; domainScoped: boolean; Icon: typeof FileText }> = [
-  { verb: "discover", domainScoped: false, Icon: Telescope },
-  { verb: "spec", domainScoped: true, Icon: FileText },
-  { verb: "structure", domainScoped: true, Icon: Network },
-  { verb: "design", domainScoped: true, Icon: PenTool },
-  { verb: "analyze", domainScoped: true, Icon: Activity },
-  { verb: "synth", domainScoped: true, Icon: Combine },
-  { verb: "verify", domainScoped: true, Icon: CheckCircle2 },
-  { verb: "handoff", domainScoped: true, Icon: Send },
-];
 
 export default async function DashboardPage({
   searchParams,
@@ -129,34 +116,9 @@ export default async function DashboardPage({
         </div>
       </div>
 
-      <div className="grid min-h-0 flex-1 grid-cols-[200px_1fr_260px] overflow-hidden [&>*]:min-w-0">
-        {/* ① left rail — 8-verb spine */}
-        <nav className="flex flex-col gap-2 overflow-y-auto border-r border-neutral-300 p-4 text-sm dark:border-neutral-700">
-          <span className="mb-1 text-[11px] uppercase tracking-wider text-neutral-500">
-            {t(m, "dashboard.spine")}
-          </span>
-          {SPINE.map(({ verb, domainScoped, Icon }, i) => {
-            const href =
-              domainScoped && activeName
-                ? `/${verb}/${encodeURIComponent(activeName)}`
-                : `/${verb}`;
-            return (
-              <Link
-                key={verb}
-                href={href}
-                className="flex items-center gap-2.5 rounded border border-neutral-300 px-3 py-2.5 text-neutral-700 hover:border-neutral-900 hover:text-neutral-900 dark:border-neutral-700 dark:text-neutral-300 dark:hover:border-neutral-100 dark:hover:text-neutral-50"
-              >
-                <Icon size={15} className="shrink-0 text-neutral-400" />
-                <span>{verb}</span>
-                {i === 0 && (
-                  <span className="ml-auto text-[10px] uppercase tracking-wider text-neutral-400">
-                    head
-                  </span>
-                )}
-              </Link>
-            );
-          })}
-        </nav>
+      <div className="grid min-h-0 flex-1 grid-cols-[auto_1fr_340px] overflow-hidden [&>*]:min-w-0">
+        {/* ① left rail — 8-verb spine (collapsible) */}
+        <WorkbenchSpine activeName={activeName} spineLabel={t(m, "dashboard.spine")} />
 
         {/* ② work zone */}
         <section className="overflow-y-auto px-8 py-6">
@@ -236,43 +198,9 @@ export default async function DashboardPage({
           )}
         </section>
 
-        {/* ③ assist rail */}
-        <aside className="flex flex-col gap-3 overflow-y-auto border-l border-neutral-300 p-4 text-sm dark:border-neutral-700">
-          <span className="text-[11px] uppercase tracking-wider text-neutral-500">
-            {t(m, "dashboard.assist")}
-          </span>
-          {activeName && (
-            <div className="flex flex-col gap-2">
-              <Link
-                href={`/spec/${encodeURIComponent(activeName)}`}
-                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:border-neutral-100 dark:hover:bg-neutral-900"
-              >
-                {t(m, "dashboard.assist_spec")}
-              </Link>
-              <Link
-                href={`/analyze/${encodeURIComponent(activeName)}`}
-                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:border-neutral-100 dark:hover:bg-neutral-900"
-              >
-                {t(m, "dashboard.assist_analyze")}
-              </Link>
-              <Link
-                href={`/verify/${encodeURIComponent(activeName)}`}
-                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:border-neutral-100 dark:hover:bg-neutral-900"
-              >
-                {t(m, "dashboard.assist_verify")}
-              </Link>
-              <Link
-                href="/discover"
-                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:border-neutral-100 dark:hover:bg-neutral-900"
-              >
-                {t(m, "dashboard.assist_discover")}
-              </Link>
-            </div>
-          )}
-          <p className="mt-2 text-[11px] leading-relaxed text-neutral-500">
-            {t(m, "dashboard.assist_note")}
-          </p>
-        </aside>
+        {/* ③ right rail — LLM chat assist (Gemini draft).
+            NOTE: old verb-shortcut assist rail disabled; chat panel below. */}
+        <AssistChat note={t(m, "dashboard.assist_note")} />
       </div>
     </main>
   );
