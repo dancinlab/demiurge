@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Class-based dark mode (not OS media query). The workbench color-mode
+   control toggles `.dark` on <html>; Tailwind `dark:` variants fire off
+   that class only — so OS preference never auto-bleeds into a surface. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -12,12 +17,5 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-/* body styling driven by Tailwind classes in layout.tsx (`bg-white …`),
-   not by CSS variables here — keeps explicit per-page control. */
+/* body palette is driven by Tailwind classes in the route-group layouts
+   (marketing = Brutalist, app = Mono) — no global body rule here. */

@@ -13,8 +13,9 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { currentUser } from "@/lib/session";
 import { listDomains } from "@/lib/domains";
-import { getMessages, t } from "@/lib/i18n";
+import { getMessages, getLocale, t } from "@/lib/i18n";
 import { DomainSwitcher } from "@/components/DomainSwitcher";
+import { WorkbenchMenu } from "@/components/WorkbenchMenu";
 
 export const dynamic = "force-dynamic";
 
@@ -38,9 +39,10 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ d?: string }>;
 }) {
-  const [user, m, domains, sp] = await Promise.all([
+  const [user, m, locale, domains, sp] = await Promise.all([
     currentUser(),
     getMessages(),
+    getLocale(),
     listDomains(),
     searchParams,
   ]);
@@ -76,14 +78,14 @@ export default async function DashboardPage({
   const activeName = active?.name ?? "";
 
   return (
-    <main className="flex h-screen w-full flex-col bg-white font-mono text-neutral-900">
+    <main className="flex h-screen w-full flex-col font-mono">
       {/* top toolbar — sample 1 mono pattern: small badge + 1px border */}
-      <div className="flex items-center justify-between gap-4 border-b border-neutral-300 px-6 py-3">
+      <div className="flex items-center justify-between gap-4 border-b border-neutral-300 px-6 py-3 dark:border-neutral-700">
         <div className="flex items-center gap-3">
           <Link href="/" className="text-sm font-bold tracking-tight hover:underline">
             demiurge
           </Link>
-          <span className="text-neutral-300">/</span>
+          <span className="text-neutral-300 dark:text-neutral-700">/</span>
           <span className="text-sm text-neutral-500">{t(m, "dashboard.title")}</span>
           {names.length > 0 && (
             <DomainSwitcher names={names} current={activeName} />
@@ -95,27 +97,22 @@ export default async function DashboardPage({
               <span className="text-xs text-neutral-500">
                 {active!.progress!.done}/{active!.progress!.total}
               </span>
-              <div className="h-1.5 w-40 overflow-hidden rounded-full bg-neutral-200">
+              <div className="h-1.5 w-40 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
                 <div
-                  className="h-full rounded-full bg-neutral-900"
+                  className="h-full rounded-full bg-neutral-900 dark:bg-neutral-100"
                   style={{ width: `${pct}%` }}
                 />
               </div>
               <span className="text-xs font-semibold">{pct}%</span>
             </div>
           )}
-          <Link
-            href="/account"
-            className="rounded border border-neutral-300 px-2 py-1 text-xs text-neutral-700 hover:border-neutral-900 hover:text-neutral-900"
-          >
-            {user.email}
-          </Link>
+          <WorkbenchMenu currentLocale={locale} />
         </div>
       </div>
 
       <div className="grid min-h-0 flex-1 grid-cols-[200px_1fr_260px] overflow-hidden [&>*]:min-w-0">
         {/* ① left rail — 8-verb spine */}
-        <nav className="flex flex-col gap-0.5 overflow-y-auto border-r border-neutral-300 p-4 text-sm">
+        <nav className="flex flex-col gap-0.5 overflow-y-auto border-r border-neutral-300 p-4 text-sm dark:border-neutral-700">
           <span className="mb-2 text-[11px] uppercase tracking-wider text-neutral-500">
             {t(m, "dashboard.spine")}
           </span>
@@ -128,7 +125,7 @@ export default async function DashboardPage({
               <Link
                 key={verb}
                 href={href}
-                className="flex items-center gap-3 rounded px-2 py-1.5 text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900"
+                className="flex items-center gap-3 rounded px-2 py-1.5 text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-900 dark:hover:text-neutral-50"
               >
                 <span className="w-4 text-right text-[11px] text-neutral-400">
                   {i === 0 ? "8" : i}
@@ -150,16 +147,16 @@ export default async function DashboardPage({
             <p className="text-sm text-neutral-500">{t(m, "dashboard.empty")}</p>
           ) : (
             <>
-              <header className="mb-6 border-b border-neutral-200 pb-4">
-                <span className="inline-block rounded border border-neutral-300 px-2 py-0.5 text-[11px] text-neutral-600">
+              <header className="mb-6 border-b border-neutral-200 pb-4 dark:border-neutral-800">
+                <span className="inline-block rounded border border-neutral-300 px-2 py-0.5 text-[11px] text-neutral-600 dark:border-neutral-700 dark:text-neutral-400">
                   {active.name}
                 </span>
                 <h1 className="mt-3 text-2xl font-bold tracking-tight">
                   {active.title ?? active.name}
                 </h1>
                 {active.goal && (
-                  <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-neutral-600">
-                    <span className="font-semibold text-neutral-900">@goal:</span>{" "}
+                  <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+                    <span className="font-semibold text-neutral-900 dark:text-neutral-100">@goal:</span>{" "}
                     {active.goal}
                   </p>
                 )}
@@ -167,13 +164,13 @@ export default async function DashboardPage({
               <h2 className="mb-2 text-[11px] uppercase tracking-wider text-neutral-500">
                 snapshot
               </h2>
-              <pre className="mb-6 overflow-x-auto rounded border border-neutral-300 bg-neutral-50 p-4 text-xs leading-relaxed">
+              <pre className="mb-6 overflow-x-auto rounded border border-neutral-300 bg-neutral-50 p-4 text-xs leading-relaxed dark:border-neutral-700 dark:bg-neutral-900">
                 {mdBody}
               </pre>
               <h2 className="mb-2 text-[11px] uppercase tracking-wider text-neutral-500">
                 log
               </h2>
-              <pre className="overflow-x-auto rounded border border-neutral-300 bg-neutral-50 p-4 text-xs leading-relaxed">
+              <pre className="overflow-x-auto rounded border border-neutral-300 bg-neutral-50 p-4 text-xs leading-relaxed dark:border-neutral-700 dark:bg-neutral-900">
                 {logTail}
               </pre>
             </>
@@ -181,7 +178,7 @@ export default async function DashboardPage({
         </section>
 
         {/* ③ assist rail */}
-        <aside className="flex flex-col gap-3 overflow-y-auto border-l border-neutral-300 p-4 text-sm">
+        <aside className="flex flex-col gap-3 overflow-y-auto border-l border-neutral-300 p-4 text-sm dark:border-neutral-700">
           <span className="text-[11px] uppercase tracking-wider text-neutral-500">
             {t(m, "dashboard.assist")}
           </span>
@@ -189,25 +186,25 @@ export default async function DashboardPage({
             <div className="flex flex-col gap-2">
               <Link
                 href={`/spec/${encodeURIComponent(activeName)}`}
-                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50"
+                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:border-neutral-100 dark:hover:bg-neutral-900"
               >
                 {t(m, "dashboard.assist_spec")}
               </Link>
               <Link
                 href={`/analyze/${encodeURIComponent(activeName)}`}
-                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50"
+                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:border-neutral-100 dark:hover:bg-neutral-900"
               >
                 {t(m, "dashboard.assist_analyze")}
               </Link>
               <Link
                 href={`/verify/${encodeURIComponent(activeName)}`}
-                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50"
+                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:border-neutral-100 dark:hover:bg-neutral-900"
               >
                 {t(m, "dashboard.assist_verify")}
               </Link>
               <Link
                 href="/discover"
-                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50"
+                className="rounded border border-neutral-300 px-3 py-2 hover:border-neutral-900 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:border-neutral-100 dark:hover:bg-neutral-900"
               >
                 {t(m, "dashboard.assist_discover")}
               </Link>
