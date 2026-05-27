@@ -1,0 +1,61 @@
+{
+  "schema": "material_discovery/v2",
+  "record_id": "rtsc_h3br_200gpa_fullbz_elph_20260527",
+  "domain": "rtsc",
+  "milestone": "L14",
+  "next_list_item": "N1",
+  "title": "h3br 200 GPa full 4x4x4 q electron-phonon (lambda_BZ + omega_log_BZ + Allen-Dynes Tc)",
+  "status": "DISPATCH_LIVE",
+  "timestamp_kst": "2026-05-27T14:40:09",
+  "hypothesis": {
+    "text": "h3br at 200 GPa, full-BZ el-ph retains strong coupling (lambda_BZ) while omega_log rises with pressure -> Tc > 200K candidate (campaign first live 200K+ path).",
+    "basis": "Gamma-only pressure-scan (PR #289): omega_log(P) slope +4.789 K/GPa; 200 GPa Gamma omega_log=1766.4K; all P dynamically stable (imag=0). baseline 69 GPa lambda=4.42, Tc~110K.",
+    "falsifier_branch_g63": {
+      "breakthrough": "stable (all IBZ q real) AND Tc>200K -> first campaign 200K+ (h3as/labeh8 ceiling broken)",
+      "data_point": "stable AND Tc<200K -> honest data point quantifying omega_log-up effect",
+      "closed_negative": "zone-boundary hard imag -> Gamma-probe missed instability -> atlas register --from-falsify"
+    }
+  },
+  "method": {
+    "engine": "Quantum ESPRESSO (pw.x + ph.x), conda qe (miniforge3)",
+    "functional": "PBE pure (d14)",
+    "structure": "Im-3m h3br primitive, ibrav=3 BCC, 4 atoms (Br + 3H @ alat-edge midpoints)",
+    "cell": "celldm(1)=6.009113 bohr (LANDED 200 GPa equilibrium, vc-relax press=2000 kbar, PR #289 Gamma-probe)",
+    "pseudopotentials": "PSL 1.0.0 (Br.pbe-n-rrkjus, H.pbe-rrkjus) [d13 verified]",
+    "ecut": "60 / 600 Ry",
+    "scf_kgrid": "16x16x16 (dense for electron_phonon=simple double-delta EPC integration)",
+    "scf_conv_thr": "1.0d-12",
+    "phonon_qgrid": "4x4x4 (ldisp=.true.) -> 8 IBZ q-points (full BZ, zone-boundary tested)",
+    "electron_phonon": "simple",
+    "el_ph_sigma": 0.005,
+    "el_ph_nsigma": 10,
+    "tr2_ph": "1.0d-14",
+    "smearing": "mp, degauss=0.02"
+  },
+  "dispatch": {
+    "host": "pool:ubu-1",
+    "np": 6,
+    "note": "shares 12-core box with h3cl ph.interp -np 4 (co-existence precedent from pscan)",
+    "launch": "setsid nohup bash run.sh, --bind-to none, NO --oversubscribe; timeout caps SCF 4h / ph 20h",
+    "workdir": "/home/aiden/rtsc_h3br_pscan/200gpa_fullq",
+    "logs": "chain.log, scf.out, ph.out",
+    "done_marker": "ALL_DONE.flag",
+    "d16_dryrun": "PASSED (maxstep=2 SCF iterated, E=-32.59 Ry matches prior 8^3 SCF, no directive/basis error)",
+    "cost_usd": 0.0
+  },
+  "harvest_pending": {
+    "lambda_BZ": null,
+    "omega_log_K": null,
+    "Tc_AD_mu_0.10_K": null,
+    "Tc_AD_mu_0.13_K": null,
+    "stability_all_q_real": null,
+    "min_freq_cm1": null
+  },
+  "honesty": [
+    "Gamma-only omega_log=1766K may be 10-30% over-estimate; full-BZ Allen-weighted omega_log is the truth.",
+    "lambda_BZ unmeasured before this run -> prior Tc was extrapolation only.",
+    "no plateau-forcing (d6); honest sigma-plateau (sigma>=0.025 Ry) or report under-converged.",
+    "RTSC absorbed=false permanently (R4); this is a candidate-funnel data point, not a wet-lab claim."
+  ],
+  "governance": ["d2", "d6", "d11", "d13", "d14", "d16", "d17", "g63"]
+}
