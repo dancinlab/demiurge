@@ -125,14 +125,11 @@ export default async function DashboardPage({
               <Link
                 key={verb}
                 href={href}
-                className="flex items-center gap-3 rounded px-2 py-1.5 text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-900 dark:hover:text-neutral-50"
+                className="flex items-center justify-between rounded border border-neutral-300 px-3 py-2 text-neutral-700 hover:border-neutral-900 hover:text-neutral-900 dark:border-neutral-700 dark:text-neutral-300 dark:hover:border-neutral-100 dark:hover:text-neutral-50"
               >
-                <span className="w-4 text-right text-[11px] text-neutral-400">
-                  {i === 0 ? "8" : i}
-                </span>
                 <span>{verb}</span>
                 {i === 0 && (
-                  <span className="ml-auto text-[10px] uppercase tracking-wider text-neutral-400">
+                  <span className="text-[10px] uppercase tracking-wider text-neutral-400">
                     head
                   </span>
                 )}
