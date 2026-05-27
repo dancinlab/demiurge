@@ -121,5 +121,30 @@
     "domains_sub": "atom · matter · chip · bio · chemistry",
     "pricing_title": "Simple, transparent pricing",
     "cta_final": "Run the loop"
+  },
+  "app_gui": {
+    "library": "library",
+    "admin": "admin",
+    "sign_in": "sign in",
+    "chef_title": "sous-chef",
+    "always_on": "always on",
+    "handoff_title": "dossier",
+    "download_json": "download (.json)",
+    "status_complete": "complete",
+    "status_in_progress": "in progress",
+    "status_todo": "todo",
+    "records": "records",
+    "loading": "loading…",
+    "payment_section": "Payment (single-active)",
+    "gpu_section": "GPU (multi · priority)",
+    "llm_section": "LLM (multi · priority)",
+    "save_failed": "save failed",
+    "library_title": "Public Domain Library",
+    "library_subtitle": "Free domains curated by the founder — members can fork into their own.",
+    "fork": "fork",
+    "sign_in_to_fork": "sign in to fork",
+    "matter_title": "matter — attestation / verdict ledger",
+    "matter_subtitle": "per-material absorbed? gate · CLAUDE.md d_paper_* SSOT",
+    "matter_empty": "No records yet under exports/material_{attestation,verdict}/."
   }
 }
