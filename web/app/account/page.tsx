@@ -220,7 +220,7 @@ function CliPanel({ m }: { m: Msgs }) {
         {t(m, "account.cli_intro")}
       </p>
 
-      <pre className="overflow-x-auto border-4 border-white bg-black p-4 font-mono text-xs leading-relaxed text-yellow-300">{`# install\nnpm i -g @demiurge/cli\n\n# authenticate (paste the token below)\ndemiurge auth login --token <DEMIURGE_PAT>\n\n# run any verb\ndemiurge cli discover "high-Tc ambient-pressure RTSC"`}</pre>
+      <pre className="overflow-x-auto border-4 border-white bg-black p-4 font-mono text-xs leading-relaxed text-yellow-300">{`# 1. install hexa-lang  (gives you 'hexa' + 'hx' package manager)\n/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/dancinlab/hexa-lang/main/install.sh)"\n\n# 2. install demiurge\nhx install demiurge\n\n# 3. authenticate  (paste the token below)\ndemiurge auth login --token <DEMIURGE_PAT>\n\n# 4. run any verb\ndemiurge cli discover "high-Tc ambient-pressure RTSC"`}</pre>
 
       <div className="border-4 border-white">
         <div className="flex items-center justify-between border-b-4 border-white bg-yellow-300 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-black">
