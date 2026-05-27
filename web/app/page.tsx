@@ -1,63 +1,51 @@
-// Public landing — production-grade marketing surface. The working
-// 8-verb pipeline + discover live behind /dashboard (auth).
+// Public landing — Brutalist tone (검정·노랑·과대 산세리프·하드 보더).
+// Sample SSOT: ~/Desktop/demiurge-design-samples/2-brutalist.md
+// 대시보드(/dashboard)는 Mono 톤 유지 — 두 surface가 의도적으로 대비.
 
 import Link from "next/link";
 import { listDomains } from "@/lib/domains";
 import { getMessages, t } from "@/lib/i18n";
 
-export const dynamic = "force-dynamic"; // roster is filesystem-backed
+export const dynamic = "force-dynamic";
 
-const PIPELINE = [
-  "discover",
-  "spec",
-  "structure",
-  "design",
-  "analyze",
-  "synth",
-  "verify",
-  "handoff",
-] as const;
-
+const PIPELINE = ["discover", "spec", "structure", "design", "analyze", "synth", "verify", "handoff"] as const;
 const TIERS = [
-  { id: "tier_solo", price: "$29", accent: "border-emerald-400" },
-  { id: "tier_team", price: "$99", accent: "border-sky-400" },
-  { id: "tier_org", price: "$299", accent: "border-violet-400" },
+  { id: "tier_solo", price: "$29",  accent: false },
+  { id: "tier_team", price: "$99",  accent: true },
+  { id: "tier_org",  price: "$299", accent: false },
 ] as const;
 
 export default async function HomePage() {
   const [domains, m] = await Promise.all([listDomains(), getMessages()]);
 
   return (
-    <main className="font-mono">
-      {/* ── hero ───────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-neutral-200 dark:border-neutral-800">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-60"
-          style={{
-            background:
-              "radial-gradient(60% 80% at 50% -10%, rgba(139,92,246,0.18), transparent 70%)",
-          }}
-        />
-        <div className="relative mx-auto max-w-5xl px-6 py-24 text-center">
-          <span className="inline-block rounded-full border border-violet-300 bg-violet-50 px-3 py-1 text-xs text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-300">
-            {t(m, "landing.badge")}
-          </span>
-          <h1 className="mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold leading-tight sm:text-5xl">
-            {t(m, "landing.title")}
+    <main
+      className="min-h-screen bg-black text-white"
+      style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif" }}
+    >
+      {/* ── hero ──────────────────────────────────────────────── */}
+      <section className="border-b-4 border-white">
+        <div className="mx-auto max-w-6xl px-8 py-16">
+          <div className="border-y-4 border-white py-2 text-xs uppercase" style={{ letterSpacing: "0.4em" }}>
+            BUILT &nbsp;//&nbsp; WITH &nbsp;//&nbsp; GEMINI &nbsp;//&nbsp; XPRIZE&nbsp;2026
+          </div>
+          <h1 className="mt-10 text-[clamp(64px,11vw,128px)] font-black uppercase leading-[0.85] tracking-tighter">
+            DEMI<br />URGE<span className="text-yellow-300">.</span>
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-balance text-sm leading-relaxed text-neutral-500 sm:text-base">
-            {t(m, "landing.sub")}
+          <p className="mt-10 max-w-2xl border-l-4 border-white pl-4 text-base uppercase tracking-wide">
+            AI-NATIVE 8-VERB PIPELINE.&nbsp; ATOMS · MATERIALS · CHIPS · BIO · CHEMISTRY.&nbsp; ONE PRODUCTION LOOP.&nbsp;
+            VERIFY IS SACRED — ZERO LLM VERDICTS.
           </p>
-          <div className="mt-8 flex items-center justify-center gap-3">
+          <div className="mt-12 flex">
             <Link
               href="/signin"
-              className="rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-violet-500"
+              className="border-4 border-white bg-yellow-300 px-8 py-4 text-base font-black uppercase text-black hover:bg-white"
             >
-              {t(m, "landing.cta_start")}
+              {t(m, "landing.cta_start")} &nbsp;▶
             </Link>
             <Link
               href="/pricing"
-              className="rounded-lg border border-neutral-300 px-5 py-2.5 text-sm font-semibold transition-colors hover:border-neutral-500 dark:border-neutral-700"
+              className="-ml-1 border-4 border-white px-8 py-4 text-base font-black uppercase hover:bg-yellow-300 hover:text-black"
             >
               {t(m, "nav.pricing")}
             </Link>
@@ -65,80 +53,73 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── pipeline ──────────────────────────────────────── */}
-      <section className="border-b border-neutral-200 px-6 py-16 dark:border-neutral-800">
-        <div className="mx-auto max-w-5xl text-center">
-          <h2 className="text-2xl font-bold">{t(m, "landing.pipeline_title")}</h2>
-          <p className="mx-auto mt-2 max-w-2xl text-sm text-neutral-500">
-            {t(m, "landing.pipeline_sub")}
+      {/* ── pipeline 8-verb grid ─────────────────────────────── */}
+      <section className="border-b-4 border-white">
+        <div className="mx-auto max-w-6xl px-8 py-16">
+          <h2 className="text-3xl font-black uppercase tracking-tight">
+            ONE LOOP.&nbsp;<span className="text-yellow-300">EIGHT VERBS.</span>
+          </h2>
+          <p className="mt-3 max-w-xl text-sm uppercase tracking-wide text-white/70">
+            DISCOVER SEEDS IT. VERIFY CLOSES IT. EVERY STAGE — A DETERMINISTIC SURFACE, NEVER A CHAT.
           </p>
-          <ol className="mt-8 flex flex-wrap items-center justify-center gap-2 text-sm">
+          <div className="mt-10 grid grid-cols-2 gap-0 border-4 border-white sm:grid-cols-4">
             {PIPELINE.map((v, i) => (
-              <li key={v} className="flex items-center gap-2">
-                <span
-                  className={
-                    "rounded-lg border px-3 py-1.5 " +
-                    (i === 0
-                      ? "border-violet-400 bg-violet-50 font-semibold text-violet-700 dark:bg-violet-950/40 dark:text-violet-300"
-                      : "border-neutral-300 dark:border-neutral-700")
-                  }
-                >
-                  {i === 0 ? `${v} · 8` : v}
-                </span>
-                {i < PIPELINE.length - 1 && (
-                  <span className="text-neutral-400">→</span>
-                )}
-              </li>
+              <div
+                key={v}
+                className={
+                  "border border-white px-4 py-6 text-center " +
+                  (i === 0 ? "bg-yellow-300 text-black" : "bg-black")
+                }
+              >
+                <div className="text-xs uppercase opacity-60" style={{ letterSpacing: "0.15em" }}>
+                  {i === 0 ? "08 · head" : String(i).padStart(2, "0")}
+                </div>
+                <div className="mt-1 text-lg font-black uppercase">{v}</div>
+              </div>
             ))}
-          </ol>
+          </div>
         </div>
       </section>
 
-      {/* ── features ──────────────────────────────────────── */}
-      <section className="border-b border-neutral-200 px-6 py-16 dark:border-neutral-800">
-        <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-3">
+      {/* ── features 3 ────────────────────────────────────────── */}
+      <section className="border-b-4 border-white">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-0 px-8 sm:grid-cols-3">
           {[
-            { k: "verify", icon: "✓" },
-            { k: "i18n", icon: "🌐" },
-            { k: "gcp", icon: "☁️" },
-          ].map(({ k, icon }) => (
+            { k: "verify",  title: t(m, "landing.feat_verify_title"),  body: t(m, "landing.feat_verify_body") },
+            { k: "i18n",    title: t(m, "landing.feat_i18n_title"),    body: t(m, "landing.feat_i18n_body") },
+            { k: "gcp",     title: t(m, "landing.feat_gcp_title"),     body: t(m, "landing.feat_gcp_body") },
+          ].map((c, i) => (
             <div
-              key={k}
-              className="rounded-xl border border-neutral-200 p-5 dark:border-neutral-800"
+              key={c.k}
+              className={"px-6 py-10 " + (i < 2 ? "border-b-4 sm:border-b-0 sm:border-r-4 border-white" : "")}
             >
-              <div className="text-2xl">{icon}</div>
-              <h3 className="mt-3 font-bold">
-                {t(m, `landing.feat_${k}_title`)}
-              </h3>
-              <p className="mt-2 text-xs leading-relaxed text-neutral-500">
-                {t(m, `landing.feat_${k}_body`)}
-              </p>
+              <div className="text-xs uppercase tracking-[0.3em] text-yellow-300">{`0${i + 1}`}</div>
+              <h3 className="mt-2 text-xl font-black uppercase">{c.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed uppercase tracking-wide text-white/70">{c.body}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── domains showcase ──────────────────────────────── */}
-      <section className="border-b border-neutral-200 px-6 py-16 dark:border-neutral-800">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-6 text-center">
-            <h2 className="text-2xl font-bold">
-              {t(m, "landing.domains_title")}{" "}
-              <span className="text-neutral-400">({domains.length})</span>
-            </h2>
-            <p className="mt-2 text-sm text-neutral-500">
-              {t(m, "landing.domains_sub")}
-            </p>
-          </div>
-          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+      {/* ── 20 research domains ──────────────────────────────── */}
+      <section className="border-b-4 border-white">
+        <div className="mx-auto max-w-6xl px-8 py-16">
+          <h2 className="text-3xl font-black uppercase tracking-tight">
+            {t(m, "landing.domains_title")}{" "}
+            <span className="text-yellow-300">/ {domains.length}</span>
+          </h2>
+          <p className="mt-3 text-xs uppercase tracking-[0.3em] text-white/60">
+            ATOM · MATTER · CHIP · BIO · CHEMISTRY
+          </p>
+          <ul className="mt-8 grid grid-cols-2 gap-0 border-4 border-white sm:grid-cols-4">
             {domains.map((d) => (
-              <li key={d.name}>
+              <li key={d.name} className="border border-white">
                 <Link
                   href={`/${encodeURIComponent(d.name)}`}
-                  className="block truncate rounded-lg border border-neutral-200 px-3 py-2.5 text-sm transition-colors hover:border-violet-400 hover:text-violet-600 dark:border-neutral-800"
+                  className="block truncate px-4 py-4 text-sm font-black uppercase hover:bg-yellow-300 hover:text-black"
                   title={d.goal ?? d.name}
                 >
-                  {d.title ?? d.name}
+                  {d.name}
                 </Link>
               </li>
             ))}
@@ -146,45 +127,48 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── pricing teaser ────────────────────────────────── */}
-      <section className="border-b border-neutral-200 px-6 py-16 dark:border-neutral-800">
-        <div className="mx-auto max-w-4xl">
-          <h2 className="mb-6 text-center text-2xl font-bold">
+      {/* ── pricing teaser ───────────────────────────────────── */}
+      <section className="border-b-4 border-white">
+        <div className="mx-auto max-w-6xl px-8 py-16">
+          <h2 className="text-3xl font-black uppercase tracking-tight">
             {t(m, "landing.pricing_title")}
           </h2>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {TIERS.map((tier) => (
+          <div className="mt-8 grid grid-cols-1 gap-0 border-4 border-white sm:grid-cols-3">
+            {TIERS.map((tier, i) => (
               <Link
                 key={tier.id}
                 href="/pricing"
                 className={
-                  "flex flex-col items-center rounded-xl border-2 p-6 transition-transform hover:-translate-y-0.5 " +
-                  tier.accent
+                  "block border border-white px-6 py-8 " +
+                  (tier.accent ? "bg-yellow-300 text-black" : "bg-black") +
+                  " hover:bg-white hover:text-black"
                 }
               >
-                <span className="text-sm text-neutral-500">
-                  {t(m, `pricing.${tier.id}`)}
-                </span>
-                <span className="mt-2 text-3xl font-bold">
+                <div className="text-xs uppercase opacity-60" style={{ letterSpacing: "0.2em" }}>{`0${i + 1}`}</div>
+                <div className="mt-1 text-xl font-black uppercase">{t(m, `pricing.${tier.id}`)}</div>
+                <div className="mt-4 text-5xl font-black">
                   {tier.price}
-                  <span className="text-sm font-normal text-neutral-500">
-                    /mo
-                  </span>
-                </span>
+                  <span className="text-base font-normal opacity-70"> / MO</span>
+                </div>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── final CTA ─────────────────────────────────────── */}
-      <section className="px-6 py-20 text-center">
-        <Link
-          href="/signin"
-          className="inline-block rounded-lg bg-violet-600 px-8 py-3 text-base font-semibold text-white transition-colors hover:bg-violet-500"
-        >
-          {t(m, "landing.cta_final")} →
-        </Link>
+      {/* ── final CTA ────────────────────────────────────────── */}
+      <section className="bg-yellow-300 text-black">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-8 py-16 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-4xl font-black uppercase leading-none tracking-tighter sm:text-5xl">
+            {t(m, "landing.cta_final")}<span className="text-black">.</span>
+          </h2>
+          <Link
+            href="/signin"
+            className="border-4 border-black px-8 py-4 text-base font-black uppercase hover:bg-black hover:text-yellow-300"
+          >
+            {t(m, "landing.cta_start")} &nbsp;▶
+          </Link>
+        </div>
       </section>
     </main>
   );
