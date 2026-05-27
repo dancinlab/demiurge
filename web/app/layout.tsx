@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
-import { HideOnDashboard } from "@/components/HideOnDashboard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,6 +39,11 @@ export const metadata: Metadata = {
   },
 };
 
+// Root layout is intentionally bare — it owns ONLY <html>/<body>, fonts,
+// and metadata. The two surfaces decide their own shell + palette:
+//   app/(marketing)/layout.tsx  → Brutalist (black/yellow) + SiteHeader/Footer
+//   app/(app)/layout.tsx        → Mono / Terminal (white) workbench, no chrome
+// This keeps landing CSS and app CSS fully isolated (no cross-bleed).
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -50,14 +52,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      style={{ colorScheme: "light" }}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white text-neutral-900">
-        <HideOnDashboard><SiteHeader /></HideOnDashboard>
-        <div className="flex-1">{children}</div>
-        <HideOnDashboard><SiteFooter /></HideOnDashboard>
-      </body>
+      <body className="min-h-full">{children}</body>
     </html>
   );
 }
