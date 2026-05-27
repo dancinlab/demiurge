@@ -89,9 +89,14 @@ function buildPrompt(
 ): string {
   const lines: string[] = [persona(locale)];
   if (domain) lines.push(`Active domain: ${domain}`);
-  if (history.length > 0) {
+  // Skip transient error bubbles (⚠ …) — feeding them back as context made
+  // the model parrot the error (e.g. "set GCP_PROJECT") instead of answering.
+  const clean = history
+    .slice(-MAX_HISTORY)
+    .filter((m) => !(m.role === "assistant" && m.text.startsWith("⚠")));
+  if (clean.length > 0) {
     lines.push("", "Conversation so far:");
-    for (const m of history.slice(-MAX_HISTORY)) {
+    for (const m of clean) {
       lines.push(`${m.role === "user" ? "User" : "요리선생"}: ${m.text}`);
     }
   }
@@ -184,19 +189,26 @@ export function AssistChat({
         body: JSON.stringify({ prompt: fullPrompt }),
       });
       const data = (await res.json()) as { text?: string; error?: string };
-      const reply: Msg = {
-        role: "assistant",
-        text: data.text ?? `⚠ ${data.error ?? "no response"}`,
-        ts: Date.now(),
-      };
-      persist([...afterUser, reply]);
+      if (data.text) {
+        // success — persist so it joins multi-turn context
+        persist([...afterUser, { role: "assistant", text: data.text, ts: Date.now() }]);
+      } else {
+        // error — show on screen but DON'T persist (transient · keeps the
+        // model's future context clean so it never parrots the error back)
+        setMsgs([
+          ...afterUser,
+          { role: "assistant", text: `⚠ ${data.error ?? "no response"}`, ts: Date.now() },
+        ]);
+      }
     } catch (e) {
-      const reply: Msg = {
-        role: "assistant",
-        text: `⚠ ${e instanceof Error ? e.message : String(e)}`,
-        ts: Date.now(),
-      };
-      persist([...afterUser, reply]);
+      setMsgs([
+        ...afterUser,
+        {
+          role: "assistant",
+          text: `⚠ ${e instanceof Error ? e.message : String(e)}`,
+          ts: Date.now(),
+        },
+      ]);
     } finally {
       setBusy(false);
       requestAnimationFrame(() =>
