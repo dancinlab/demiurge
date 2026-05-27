@@ -10,7 +10,7 @@ import path from "node:path";
 import { currentUser } from "@/lib/session";
 import { listDomains } from "@/lib/domains";
 import { getMessages, t } from "@/lib/i18n";
-import { logToTrajectory } from "@/lib/trajectory";
+import { logToTrajectory, DEMO_TRAJECTORY } from "@/lib/trajectory";
 import { DomainSwitcher } from "@/components/DomainSwitcher";
 import { DashboardSummary } from "@/components/DashboardSummary";
 import { TrajectoryPanel } from "@/components/TrajectoryPanel";
@@ -126,7 +126,10 @@ export default async function DashboardPage({
       )}
 
       {active && (
-        <TrajectoryPanel sessionId={active.name.toLowerCase()} entries={trajectory} />
+        <TrajectoryPanel
+          sessionId={trajectory.length > 0 ? active.name.toLowerCase() : "042"}
+          entries={trajectory.length > 0 ? trajectory : DEMO_TRAJECTORY}
+        />
       )}
 
       <DashboardSummary />

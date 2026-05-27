@@ -23,15 +23,35 @@ export function classifyLogLine(line: string): TrajLabel {
   return "heuristic";
 }
 
-// 로그 본문 → 최근 N개 trajectory entry (앞부분이 최신 — log 는 prepend 가정).
+// 로그 본문 → 최근 N개 trajectory entry. demiurge .log.md 는 append-only
+// (맨 아래가 최신) 이므로 헤더(# · >)·구분선 제외하고 tail 에서 최신순으로.
 export function logToTrajectory(logText: string, max = 8): TrajEntry[] {
   return logText
     .split("\n")
-    .map((l) => l.replace(/^[-*#>\s]+/, "").trim())
-    .filter((l) => l.length > 8 && !/^={3,}|^-{3,}/.test(l))
-    .slice(0, max)
+    .map((l) => l.trim())
+    .filter(
+      (l) =>
+        l.length > 8 &&
+        !l.startsWith("#") &&
+        !l.startsWith(">") &&
+        !/^={3,}|^-{3,}/.test(l),
+    )
+    .map((l) => l.replace(/^[-*\s]+/, "").trim())
+    .slice(-max) // append-only → 맨 아래(최신) N개
+    .reverse() // 최신 먼저
     .map((text) => ({
       label: classifyLogLine(text),
       text: text.length > 140 ? text.slice(0, 137) + "…" : text,
     }));
 }
+
+// log 가 비어있는 도메인용 데모 trajectory (ara session-042 예시).
+// 4-label 이 모두 등장해 패턴을 한눈에 보여줌.
+export const DEMO_TRAJECTORY: TrajEntry[] = [
+  { label: "decision", text: "ReLU transformer approach" },
+  { label: "dead_end", text: "Loss diverged (norm bug)" },
+  { label: "heuristic", text: "Inv-std outside forward pass" },
+  { label: "experiment", text: "Training stable, loss 4.60" },
+  { label: "heuristic", text: "Differential LR: emb 3e-4 / tfm 3e-5" },
+  { label: "experiment", text: "Loss 3.98 (+13% vs uniform)" },
+];
