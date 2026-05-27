@@ -121,5 +121,30 @@
     "domains_sub": "原子 · 材料 · 芯片 · 生物 · 化学",
     "pricing_title": "简单透明的定价",
     "cta_final": "运行循环"
+  },
+  "app_gui": {
+    "library": "图书馆",
+    "admin": "管理员",
+    "sign_in": "登录",
+    "chef_title": "主厨",
+    "always_on": "始终开启",
+    "handoff_title": "档案",
+    "download_json": "下载 (.json)",
+    "status_complete": "已完成",
+    "status_in_progress": "进行中",
+    "status_todo": "待办",
+    "records": "记录",
+    "loading": "加载中…",
+    "payment_section": "支付 (单一活动)",
+    "gpu_section": "GPU (多 · 优先级)",
+    "llm_section": "LLM (多 · 优先级)",
+    "save_failed": "保存失败",
+    "library_title": "公共领域库",
+    "library_subtitle": "创始人策划的免费公共域 · 会员可以 fork。",
+    "fork": "fork",
+    "sign_in_to_fork": "登录后 fork",
+    "matter_title": "matter — 证明 / 裁定 账本",
+    "matter_subtitle": "按物质 absorbed? 门",
+    "matter_empty": "暂无记录。"
   }
 }

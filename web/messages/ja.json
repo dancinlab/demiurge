@@ -121,5 +121,30 @@
     "domains_sub": "原子 · 材料 · チップ · バイオ · 化学",
     "pricing_title": "シンプルで透明な価格",
     "cta_final": "ループを実行"
+  },
+  "app_gui": {
+    "library": "ライブラリ",
+    "admin": "管理者",
+    "sign_in": "サインイン",
+    "chef_title": "料理長",
+    "always_on": "常時オン",
+    "handoff_title": "ドシエ",
+    "download_json": "ダウンロード (.json)",
+    "status_complete": "完了",
+    "status_in_progress": "進行中",
+    "status_todo": "待機",
+    "records": "記録",
+    "loading": "読み込み中…",
+    "payment_section": "決済 (単一アクティブ)",
+    "gpu_section": "GPU (複数 · 優先順位)",
+    "llm_section": "LLM (複数 · 優先順位)",
+    "save_failed": "保存失敗",
+    "library_title": "パブリックドメインライブラリ",
+    "library_subtitle": "創設者が登録した無料公開ドメイン · 会員は fork 可能。",
+    "fork": "fork",
+    "sign_in_to_fork": "サインインして fork",
+    "matter_title": "matter — attestation / verdict 元帳",
+    "matter_subtitle": "material ごとの absorbed? ゲート",
+    "matter_empty": "記録なし。"
   }
 }

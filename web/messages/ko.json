@@ -121,5 +121,30 @@
     "domains_sub": "원자 · 물질 · 칩 · 바이오 · 화학",
     "pricing_title": "단순하고 투명한 가격",
     "cta_final": "루프 실행하기"
+  },
+  "app_gui": {
+    "library": "라이브러리",
+    "admin": "관리자",
+    "sign_in": "로그인",
+    "chef_title": "요리선생",
+    "always_on": "항상 열림",
+    "handoff_title": "인계 박스",
+    "download_json": "다운로드 (.json)",
+    "status_complete": "완료",
+    "status_in_progress": "진행중",
+    "status_todo": "대기",
+    "records": "기록",
+    "loading": "로딩…",
+    "payment_section": "결제 (단일 활성)",
+    "gpu_section": "GPU (멀티 · 우선순위)",
+    "llm_section": "LLM (멀티 · 우선순위)",
+    "save_failed": "저장 실패",
+    "library_title": "공개 도메인 라이브러리",
+    "library_subtitle": "founder 가 등록한 무료 공개 도메인 · 회원은 fork 해서 내 방향으로 자유롭게.",
+    "fork": "fork",
+    "sign_in_to_fork": "로그인하고 fork",
+    "matter_title": "matter — attestation / verdict 원장",
+    "matter_subtitle": "material 별 absorbed? 게이트 · CLAUDE.md d_paper_* SSOT",
+    "matter_empty": "exports/material_{attestation,verdict}/ 에 기록이 없습니다."
   }
 }

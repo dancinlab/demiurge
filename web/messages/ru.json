@@ -121,5 +121,30 @@
     "domains_sub": "атом · материал · чип · био · химия",
     "pricing_title": "Простые, прозрачные цены",
     "cta_final": "Запустить цикл"
+  },
+  "app_gui": {
+    "library": "библиотека",
+    "admin": "админ",
+    "sign_in": "войти",
+    "chef_title": "шеф",
+    "always_on": "всегда вкл",
+    "handoff_title": "досье",
+    "download_json": "скачать (.json)",
+    "status_complete": "готово",
+    "status_in_progress": "в работе",
+    "status_todo": "в очереди",
+    "records": "записи",
+    "loading": "загрузка…",
+    "payment_section": "Оплата (один активный)",
+    "gpu_section": "GPU (мульти · приоритет)",
+    "llm_section": "LLM (мульти · приоритет)",
+    "save_failed": "ошибка сохранения",
+    "library_title": "Библиотека публичных доменов",
+    "library_subtitle": "Бесплатные домены от основателя · участники могут fork.",
+    "fork": "fork",
+    "sign_in_to_fork": "войти для fork",
+    "matter_title": "matter — журнал attestation / verdict",
+    "matter_subtitle": "absorbed? gate по материалам",
+    "matter_empty": "Записей нет."
   }
 }
