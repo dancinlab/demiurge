@@ -1,0 +1,70 @@
+// stdlib/discover/discover.hexa
+//
+// Canonical home for the 8th verb `discover` — the OUROBOROS
+// autonomous-discovery loop.  Absorbed 2026-05-27 from the sibling
+// phanes repo (see ../../phanes/README.md for the concept SSOT and
+// ../../phanes/INBOX.md for the historical bridge contract).
+//
+// Surface (CLI):
+//   demiurge cli discover <objective>
+//                         [--verifier <path>]   // .hexa verifier module
+//                         [--rounds N]          // round cap, default 8
+//                         [--json]              // emit JSON, else human
+//
+// Algorithm (one round = goal -> falsifier -> saturation check):
+//   1. seed   = { objective, verifier, atlas_snapshot }
+//   2. round k:
+//        a. candidate_gen ← hexa atlas (verified atoms) + LLM draft
+//        b. per_candidate  ← hexa verify <verifier> (5-tier gate, g5)
+//        c. survivors      → next round's seed pool
+//        d. if  ∂(catalog)/∂k == 0   →   saturation, break
+//   3. emit provenance-tracked catalog
+//
+// Status: skeleton (this PR).  Round loop body lands in the next
+// stacked PR (g4 — <200 lines, 1 logical thing).
+
+// --- types ---
+
+type DiscoverArgs := {
+  objective:  string,
+  verifier:   string,   // path to .hexa verifier module
+  rounds_cap: int,      // default 8
+  json:       bool      // false → human, true → JSON schema (see README)
+}
+
+type CatalogEntry := {
+  id:            string,   // atlas-style id or candidate slug
+  score:         float64,  // verifier score [0..1]
+  verifier_pass: bool,     // 5-tier gate passed?
+  provenance:    string    // atlas anchor / lineage trail
+}
+
+type DiscoverResult := {
+  objective:           string,
+  rounds_used:         int,
+  rounds_cap:          int,
+  saturation_reached:  bool,
+  catalog:             [CatalogEntry]
+}
+
+// --- entry ---
+//
+// Skeleton: validates args + returns empty saturation result.
+// Real OUROBOROS body lands in the next slice.
+
+pub fn discover(args: DiscoverArgs) -> DiscoverResult {
+  // TODO[round-loop]: implement OUROBOROS rounds with hexa-atlas
+  //   candidate generation + hexa-verify gate per candidate.
+  // For now, return an empty saturated catalog so the dispatch
+  // surface is wired end-to-end (CLI → stdlib/discover → JSON out).
+
+  let empty_catalog: [CatalogEntry] = []
+
+  return DiscoverResult {
+    objective:          args.objective,
+    rounds_used:        0,
+    rounds_cap:         args.rounds_cap,
+    saturation_reached: true,   // empty = trivially saturated
+    catalog:            empty_catalog
+  }
+}
