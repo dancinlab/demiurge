@@ -46,7 +46,7 @@ export function AssistChat({ note }: { note: string }) {
   }
 
   return (
-    <aside className="flex h-full flex-col border-l border-neutral-300 dark:border-neutral-700">
+    <aside className="flex h-full flex-col border-r border-neutral-300 dark:border-neutral-700">
       <div className="border-b border-neutral-200 px-4 py-3 text-[11px] uppercase tracking-wider text-neutral-500 dark:border-neutral-800">
         assist · gemini
       </div>
