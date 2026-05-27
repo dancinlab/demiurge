@@ -50,10 +50,13 @@ function ReadoutResonator() {
 }
 
 export function JosephsonR3F() {
+  // KNOWN LIMITATION: WebGL 씬 내부 머티리얼/조명 색은 CSS 토큰을 따르지 않는다(범위 외).
+  // 다크모드는 호스트 캔버스 배경만 dark:bg-canvas(검정)로 맞춘다. 이전 dark:bg-ink 는
+  // ink 가 다크에서 #fafafa(흰색)로 반전돼 backdrop 이 하얘지는 회귀라 canvas 로 교체.
   return (
     <Canvas
       camera={{ position: [4, 3, 5], fov: 45 }}
-      className="h-full w-full rounded bg-canvas-soft dark:bg-ink"
+      className="h-full w-full rounded bg-canvas-soft dark:bg-canvas"
     >
       <ambientLight intensity={0.45} />
       <directionalLight position={[5, 5, 5]} intensity={0.9} />

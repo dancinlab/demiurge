@@ -21,7 +21,10 @@
 | 카드 표면 | `--color-surface` | `#ffffff` | `bg-surface` |
 | 표면 strong(뱃지) | `--color-surface-strong` | `#f0efed` | `bg-surface-strong` |
 | 다크 표면 elevated | `--color-ink-elevated` | `#1c1917` | `bg-ink-elevated` |
-| 잉크(제목) | `--color-ink` | `#0c0a09` | `text-ink` `bg-ink` |
+| 잉크(제목 텍스트) | `--color-ink` | `#0c0a09` | `text-ink` |
+| 반전 fill(말풍선·배지·progress·avatar) | `--color-inverted` | `#0c0a09` | `bg-inverted` |
+| 반전 fill 위 텍스트 | `--color-on-inverted` | `#ffffff` | `text-on-inverted` |
+| primary CTA 위 텍스트 | `--color-on-primary` | `#ffffff` | `text-on-primary` |
 | 본문 | `--color-body` | `#4e4e4e` | `text-body` |
 | 본문 strong | `--color-body-strong` | `#292524` | `text-body-strong` |
 | muted | `--color-muted` | `#777169` | `text-muted` |
@@ -62,6 +65,17 @@
 | `--ease-brand` | `cubic-bezier(.23,1,.32,1)` | 등장 0.4s · `ease-brand` |
 | hover | 0.15s | hover transition |
 | `--shadow-card` | `0 4px 16px rgba(0,0,0,.04)` | 카드 hover soft-drop · `shadow-card` |
+
+## 다크모드 (`.dark` 클래스)
+
+- 토글 = `components/ThemeToggle.tsx` (next-themes `attribute="class"`, light↔dark). `.dark` 가
+  `<html>` 에 붙으면 `globals.css` 의 `.dark { … }` 오버라이드가 시맨틱 토큰을 전부 다크값으로 뒤집는다.
+- **inverted 분리가 핵심**: `--color-ink` 는 *텍스트*(다크에선 밝아짐), `--color-inverted` 는 *fill*
+  (다크에선 밝은 칩으로 반전). 둘을 한 토큰으로 묶으면 다크에서 fill 이 깨지므로 분리했다.
+- fill 유틸은 `bg-ink` 가 아니라 `bg-inverted` + `text-on-inverted` 를 쓴다(말풍선·배지·progress·avatar).
+  primary CTA 위 텍스트는 `text-white` 대신 `text-on-primary`.
+- 다크 팔레트: canvas `#0a0a0a` · surface `#171717` · ink `#fafafa` · inverted `#fafafa` · primary `#fafafa`.
+- **범위 외**: WebGL 3D 씬(`JosephsonR3F`)의 머티리얼/조명 색은 CSS 토큰을 따르지 않는다(호스트 캔버스 배경만 추종).
 
 ## 마케팅 서피스 격리
 

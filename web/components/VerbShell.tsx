@@ -51,7 +51,7 @@ export async function VerbShell({
       )}
       {pct !== null && (
         <div className="h-1.5 overflow-hidden rounded-full bg-surface-strong">
-          <div className="h-full rounded-full bg-ink" style={{ width: `${pct}%` }} />
+          <div className="h-full rounded-full bg-inverted" style={{ width: `${pct}%` }} />
         </div>
       )}
     </div>

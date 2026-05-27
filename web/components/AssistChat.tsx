@@ -134,7 +134,7 @@ function renderMarkdown(s: string): React.ReactElement[] {
       out.push(
         <pre
           key={`code-${i}`}
-          className="my-1 overflow-auto rounded-chip bg-ink px-2 py-1.5 font-mono text-[11px] text-canvas"
+          className="my-1 overflow-auto rounded-chip bg-inverted px-2 py-1.5 font-mono text-[11px] text-on-inverted"
         >
           {part.trim()}
         </pre>,
@@ -253,7 +253,7 @@ export function AssistChat({
           <button
             onClick={() => void send()}
             disabled={busy || !input.trim()}
-            className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-[11px] font-medium text-white hover:bg-primary-active disabled:opacity-50"
+            className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-[11px] font-medium text-on-primary hover:bg-primary-active disabled:opacity-50"
           >
             {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
             {i18n.send}
@@ -294,7 +294,7 @@ export function AssistChat({
                   "animate-msg-in rounded-2xl px-3 py-2 text-[12px] leading-relaxed",
                   // 꼬리 효과 — user 우하단 직각 · assistant 좌하단 직각
                   m.role === "user"
-                    ? "ml-auto max-w-[85%] rounded-tr-sm bg-ink text-white"
+                    ? "ml-auto max-w-[85%] rounded-tr-sm bg-inverted text-on-inverted"
                     : isError
                       ? "mr-auto max-w-[95%] rounded-tl-sm bg-danger/5 text-danger"
                       : "mr-auto max-w-[95%] rounded-tl-sm border border-hairline bg-surface text-ink",

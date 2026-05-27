@@ -6,8 +6,9 @@
 import Link from "next/link";
 import { BookOpen, Bell } from "lucide-react";
 import { AccountMenu } from "@/components/AccountMenu";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
-// 테마 토글(Light/Dark/System)은 이번엔 제외 — 다크 팔레트 미구현. 추후 우측 클러스터에 추가 예정.
+// 테마 토글(Light↔Dark)은 우상단 ☀️/🌙 (ThemeToggle, client). ElevenLabs 다크 팔레트.
 
 type TopBarUser = { email: string; role?: string };
 
@@ -31,6 +32,7 @@ export function TopBar({
   return (
     <header className="flex items-center gap-3 border-b border-hairline bg-surface px-5 py-3 text-sm">
       <span className="flex-1" />
+      <ThemeToggle />
       <a
         href="https://demiurge.dancinlab.org"
         target="_blank"
@@ -66,7 +68,7 @@ export function TopBar({
       ) : (
         <Link
           href="/signin"
-          className="rounded-full bg-primary px-3 py-1 text-xs font-medium text-white hover:bg-primary-active"
+          className="rounded-full bg-primary px-3 py-1 text-xs font-medium text-on-primary hover:bg-primary-active"
         >
           {i18n.topbarSignIn}
         </Link>

@@ -20,7 +20,7 @@ export function AccountMenu({ email }: { email: string }) {
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="grid h-8 w-8 place-items-center rounded-full bg-ink text-xs font-medium text-surface hover:opacity-90"
+        className="grid h-8 w-8 place-items-center rounded-full bg-inverted text-xs font-medium text-on-inverted hover:opacity-90"
       >
         {initial}
       </button>

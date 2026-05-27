@@ -49,6 +49,11 @@
   /* CTA — 에스프레소 잉크 pill */
   --color-primary: #292524;
   --color-primary-active: #0c0a09;
+  --color-on-primary: #ffffff;     /* primary CTA 위 텍스트 */
+
+  /* 반전 fill — 말풍선·배지·progress fill·avatar (text-ink 와 분리) */
+  --color-inverted: #0c0a09;       /* 반전 fill (라이트=다크칩) */
+  --color-on-inverted: #ffffff;    /* 그 위 텍스트 */
 
   /* 헤어라인 보더 — 3단계 (soft → 기본 → strong) */
   --color-hairline-soft: #f0efed;
@@ -79,6 +84,34 @@
 
   /* 카드 hover soft-drop 그림자 */
   --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* ── ElevenLabs 다크 팔레트 오버라이드 ─────────────────────────────────────────
+   plain @theme (위) 가 토큰을 :root CSS 변수로 방출하므로, 여기 일반 .dark 규칙에서
+   재정의하면 시맨틱 유틸(bg-canvas·text-ink·bg-inverted 등)이 전부 다크값을 따라간다.
+   @theme 블록은 그대로 두고 이 .dark 블록만 추가 (Tailwind v4 plain @theme 패턴).
+   주의: --color-inverted 는 다크모드에서 "밝은 칩"으로 반전 → 말풍선/CTA fill 이
+   흰 배경 + 검정 텍스트로 뒤집힌다 (text-ink 본문은 #fafafa 로 밝아짐). */
+.dark {
+  --color-canvas: #0a0a0a;
+  --color-canvas-soft: #141414;
+  --color-surface: #171717;
+  --color-surface-strong: #262626;
+  --color-ink-elevated: #262626;
+  --color-ink: #fafafa;
+  --color-body: #d4d4d4;
+  --color-body-strong: #ededed;
+  --color-muted: #a1a1aa;
+  --color-muted-soft: #71717a;
+  --color-hairline-soft: #1c1c1c;
+  --color-hairline: #2a2a2a;
+  --color-hairline-strong: #404040;
+  --color-inverted: #fafafa;       /* 다크모드에선 반전 fill = 밝은칩 */
+  --color-on-inverted: #0a0a0a;
+  --color-primary: #fafafa;        /* 다크 CTA = 흰색 */
+  --color-on-primary: #0a0a0a;
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
 }
 
 /* body palette is driven by Tailwind classes in the route-group layouts
