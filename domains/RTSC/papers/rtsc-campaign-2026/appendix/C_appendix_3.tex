@@ -1,8 +1,65 @@
-% Appendix C — TODO: title this appendix.
-% Filled standalone, then \input'd by main.tex (see \appendix block).
-% Compile check: `make` (the Makefile's APPENDIX wildcard picks this up).
-\section{Appendix C --- TODO appendix title}
+% Appendix C — soft-mode escape methodology (H3As Im-3m -> R3m).
+\section{Appendix C --- The soft-mode-escape methodology}
 \label{app:C}
 
-% TODO: appendix C body. Each appendix is a self-contained
-% chapter — figures, tables, verify blocks. Cite atoms / DOIs inline.
+This appendix documents the campaign's most transferable contribution: a
+procedure for converting a dynamically \emph{unstable} high-symmetry
+candidate into a \emph{stable} lower-symmetry polymorph that retains strong
+coupling. The worked example is \ce{H3As}.
+
+\paragraph{The instability.}
+\ce{H3As} in the high-symmetry $Im\bar{3}m$ structure is a dynamical saddle
+point: a $4^3$-$q$ \texttt{ph.x} census finds imaginary modes ($25/192$
+imaginary, minimum $-\SI{1267}{\per\centi\meter}$). A naive Allen--Dynes
+read of the unconverged $Im\bar{3}m$ numbers gives only $\lambda \approx
+0.97$, $T_c \approx \SI{30}{\kelvin}$ --- the lattice is collapsing before
+strong coupling sets in.
+
+\paragraph{The escape (method).}
+\begin{enumerate}\itemsep0.25em
+\item Identify the softest (most negative) phonon eigenvector at the
+  unstable $q$-point. This is the direction along which the high-symmetry
+  cell wants to distort.
+\item Displace the structure along that eigenvector and relax. The symmetry
+  drops --- here $Im\bar{3}m \to R3m$ (rhombohedral), a trigonal distortion
+  of the cubic cell.
+\item Re-run the full electron--phonon calculation in the distorted cell. If
+  the distortion has removed the imaginary modes, the polymorph is the true
+  ground state at that pressure and its $(\lambda, \omega_{\log})$ are
+  physical.
+\end{enumerate}
+
+\paragraph{The result.}
+The $R3m$ \ce{H3As} polymorph is dynamically stable ($14/14$ $q$-points
+clear) and carries genuine strong coupling: $\lambda = 1.65$, $\omega_{\log}
+= \SI{450}{\kelvin}$. The Allen--Dynes critical temperature is verified to
+libm precision (g5):
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=0pt]
+$ hexa verify --expr allen_dynes_tc 1.65 450 0.10 55.88 --tol 0.01
+  calc   = 55.8806  ~= expected 55.88  (within tol 0.01, |D|=0.000567718)
+  tier   = GREEN SUPPORTED-NUMERICAL  (H3As R3m soft-mode-escape polymorph)
+\end{lstlisting}
+
+\noindent The escape recovers a stable, strongly-coupled phase
+($T_c = \SI{55.9}{\kelvin}$) from a candidate that the high-symmetry screen
+would have discarded as ``unstable, weak.'' The coupling nearly doubled
+($0.97 \to 1.65$) once the lattice was allowed to find its real ground state.
+
+\paragraph{Why this matters beyond \ce{H3As}.}
+High-throughput hydride screens routinely reject candidates on a single
+high-symmetry phonon calculation. Soft-mode escape says that a negative
+eigenvalue is an \emph{instruction}, not a verdict: it points to the
+lower-symmetry polymorph that should be evaluated instead. The procedure is
+generic --- it requires only the soft eigenvector, which \texttt{ph.x}
+already produces --- and it is the methodological complement to the N5 wall
+(Appendix~\ref{app:D}): the wall says strong harmonic coupling is often a
+soft-mode artifact, and escape is the disciplined way to find out whether a
+stable polymorph survives underneath.
+
+\paragraph{Honest scope.}
+\ce{H3As}-$R3m$ at \SI{56}{\kelvin} is not a record and not ambient. The
+methodology, not the number, is the contribution. The $R3m$ verdict is a
+campaign-internal DFT result pending an independent atlas-registration
+record; the $T_c$ value itself is \tierGreen\ closed-form, but the structural
+identification carries the usual DFT-level (not measured) status (R4).

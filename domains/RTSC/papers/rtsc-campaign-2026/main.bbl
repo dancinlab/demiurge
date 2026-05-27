@@ -1,0 +1,58 @@
+\begin{thebibliography}{6}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allen and Dynes(1975)]{allendynes1975}
+P.~B. Allen and R.~C. Dynes.
+\newblock Transition temperature of strong-coupled superconductors reanalyzed.
+\newblock \emph{Physical Review B}, 12:\penalty0 905--922, 1975.
+\newblock \doi{10.1103/PhysRevB.12.905}.
+\newblock URL \url{https://doi.org/10.1103/PhysRevB.12.905}.
+
+\bibitem[Drozdov et~al.(2015)Drozdov, Eremets, Troyan, Ksenofontov, and
+  Shylin]{drozdov2015}
+A.~P. Drozdov, M.~I. Eremets, I.~A. Troyan, V.~Ksenofontov, and S.~I. Shylin.
+\newblock Conventional superconductivity at 203 kelvin at high pressures in the
+  sulfur hydride system.
+\newblock \emph{Nature}, 525:\penalty0 73--76, 2015.
+\newblock \doi{10.1038/nature14964}.
+\newblock URL \url{https://doi.org/10.1038/nature14964}.
+
+\bibitem[Hopfield(1969)]{hopfield1969}
+J.~J. Hopfield.
+\newblock Angular momentum and transition-metal superconductivity.
+\newblock \emph{Physical Review}, 186:\penalty0 443--451, 1969.
+\newblock \doi{10.1103/PhysRev.186.443}.
+\newblock URL \url{https://doi.org/10.1103/PhysRev.186.443}.
+
+\bibitem[Ma et~al.(2022)Ma, Wang, Xie, Yang, Wang, Zhou, Liu, Yu, Zhao, Wang,
+  Liu, and Ma]{ma2022}
+Liang Ma, Kui Wang, Yu~Xie, Xin Yang, Yingying Wang, Mi~Zhou, Hanyu Liu,
+  Xiaohui Yu, Yusheng Zhao, Hongbo Wang, Guangtao Liu, and Yanming Ma.
+\newblock High-temperature superconducting phase in clathrate calcium hydride
+  cah6 up to 215 k at a pressure of 172 gpa.
+\newblock \emph{Nature}, 605:\penalty0 147--151, 2022.
+\newblock \doi{10.1038/s41586-022-04395-7}.
+\newblock URL \url{https://doi.org/10.1038/s41586-022-04395-7}.
+
+\bibitem[McMillan(1968)]{mcmillan1968}
+W.~L. McMillan.
+\newblock Transition temperature of strong-coupled superconductors.
+\newblock \emph{Physical Review}, 167:\penalty0 331--344, 1968.
+\newblock \doi{10.1103/PhysRev.167.331}.
+\newblock URL \url{https://doi.org/10.1103/PhysRev.167.331}.
+
+\bibitem[Song et~al.(2023)Song, Bi, Nakamoto, Shimizu, Liu, Zou, Liu, Wang, and
+  Ma]{song2023labeh8}
+Yu~Song, Jianning Bi, Yuki Nakamoto, Katsuya Shimizu, Hanyu Liu, Bo~Zou,
+  Guangtao Liu, Hongbo Wang, and Yanming Ma.
+\newblock Stoichiometric ternary superhydride labeh8 as a new template for
+  high-temperature superconductivity at 110 k under 80 gpa.
+\newblock \emph{Physical Review Letters}, 130:\penalty0 266001, 2023.
+\newblock \doi{10.1103/PhysRevLett.130.266001}.
+\newblock URL \url{https://doi.org/10.1103/PhysRevLett.130.266001}.
+
+\end{thebibliography}

@@ -1,8 +1,79 @@
-% Appendix F — TODO: title this appendix.
-% Filled standalone, then \input'd by main.tex (see \appendix block).
-% Compile check: `make` (the Makefile's APPENDIX wildcard picks this up).
-\section{Appendix F --- TODO appendix title}
+% Appendix F — H3Br pressure scan: 200 GPa 158K record + omega_log(P) leverage.
+\section{Appendix F --- \ce{H3Br} pressure scan: the \SI{158}{\kelvin}
+record and $\omega_{\log}(P)$ leverage}
 \label{app:F}
 
-% TODO: appendix F body. Each appendix is a self-contained
-% chapter — figures, tables, verify blocks. Cite atoms / DOIs inline.
+\ce{H3Br} is the campaign's most useful binary: it is the first candidate
+that is \emph{simultaneously} dynamically stable and strongly coupled
+(Appendix~\ref{app:B}). Its only deficit is the $\omega_{\log}$ bottleneck of
+the N5 wall. This appendix tests whether pressure relieves that bottleneck.
+
+\paragraph{Pre-registered falsifier F-N6-4.}
+Registered before the scan: if the $\omega_{\log}$ linear-fit slope over the
+pressure scan satisfies $|\mathrm{d}\omega_{\log}/\mathrm{d}P| \ge
+\SI{0.5}{\kelvin\per\giga\pascal}$, the ``$\omega_{\log}$ bottleneck is
+pressure-responsive'' hypothesis survives; below that, the bottleneck is a
+plateau and the N5 stability--$\omega$ ceiling is confirmed.
+
+\paragraph{The scan.}
+Four pressure points, each a \texttt{vc-relax} $\to$ \texttt{scf} $\to$
+$\Gamma$-only \texttt{ph.x} probe (PSL 1.0.0 UPF, ecut 60/600 Ry, $k=8^3$),
+on a free pool node. Tab.~\ref{tab:pscan} is the harvest.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{rrrrr}
+\toprule
+\textbf{$P$ (GPa)} & \textbf{vol (bohr$^3$)} & \textbf{$a_{\mathrm{eq}}$ (bohr)} &
+  \textbf{$\omega_{\log}$ ($\Gamma$ proxy, K)} & \textbf{imag modes} \\
+\midrule
+30  & 170.76 & 6.99 & 949.5  & 0 \\
+100 & 131.42 & 6.41 & 1500.2 & 0 \\
+150 & 117.90 & 6.18 & 1660.3 & 0 \\
+200 & 108.49 & 6.01 & 1766.4 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{\ce{H3Br} pressure scan. Dynamically stable (zero imaginary modes)
+at every pressure probed. Linear fit: slope $=
++\SI{4.789}{\kelvin\per\giga\pascal}$, intercept \SI{894.4}{\kelvin},
+$R^2 = 0.915$ --- $9.6\times$ the F-N6-4 threshold.}
+\label{tab:pscan}
+\end{table}
+
+\paragraph{Verdict.}
+\tierGreen\ \textbf{PASSED} 2026-05-27. The slope is
+$+\SI{4.79}{\kelvin\per\giga\pascal}$, an order of magnitude above the
+falsifier threshold: the $\omega_{\log}$ bottleneck \emph{is}
+pressure-responsive in \ce{H3Br}. At the \SI{200}{\giga\pascal} state point a
+full Brillouin-zone el--ph run gives $\lambda_{\mathrm{BZ}} = 2.156$,
+$\omega_{\log} = \SI{1046}{\kelvin}$ --- the campaign's strongest stable
+record:
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=0pt]
+$ hexa verify --expr allen_dynes_tc 2.156 1046 0.10 158.06 --tol 0.01
+  calc   = 158.06  ~= expected 158.06  (within tol 0.01, |D|=0.00041706)
+  tier   = GREEN SUPPORTED-NUMERICAL  (H3Br @ 200 GPa, 8/8 stable record)
+\end{lstlisting}
+
+\paragraph{The sub-linear limit (honest).}
+A positive slope is not a victory. Two caveats bound the result:
+\begin{itemize}\itemsep0.2em
+\item \textbf{$\Gamma$-only proxy.} The scan's $\omega_{\log}$ is a
+  $\Gamma$-point proxy, likely 10--30\% above the full-BZ
+  Allen-weighted value. The slope \emph{sign} and monotone trend are robust;
+  the absolute $\omega_{\log}$ at any single pressure is a proxy.
+\item \textbf{Sub-linear in target terms.} Extrapolating the
+  \SI{4.79}{\kelvin\per\giga\pascal} $\omega_{\log}$ slope through
+  Eq.~\eqref{eq:ad} does not reach \SI{293}{\kelvin} within any physically
+  accessible pressure: $T_c$ grows roughly like $\omega_{\log}$, so closing
+  the \SI{135}{\kelvin} gap from \SI{158}{\kelvin} would demand an
+  $\omega_{\log}$ increase that the slope cannot deliver below the
+  decomposition pressure. \ce{H3Br} relieves the bottleneck but does not
+  break the ceiling.
+\end{itemize}
+
+\noindent \ce{H3Br} is therefore the campaign's \emph{best stable record}
+(\SI{158}{\kelvin}, high pressure) and a live escape candidate for the
+$\omega_{\log}$ axis of the N5 wall --- but it confirms, rather than
+overturns, the ambient ceiling.

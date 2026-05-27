@@ -3,10 +3,11 @@
 % ---------- arxiv-style preamble ----------
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
-\usepackage[version=4]{mhchem}  % \ce{...} chemical formulae
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{siunitx}
+\DeclareSIUnit{\rydberg}{Ry}
+\DeclareSIUnit{\atm}{atm}
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage[numbers,sort&compress]{natbib}
@@ -37,6 +38,21 @@
 \providecommand{\tierYellow}{🟡}
 \providecommand{\tierOrange}{🟠}
 \providecommand{\tierRed}{🔴}
+\providecommand{\tierWhite}{⚪}
+
+% ---------- lightweight \ce{...} (mhchem not available in this TeX install) ----------
+% Renders a chemical formula in upright text with digits auto-subscripted, so
+% \ce{H3S} -> H$_3$S, \ce{Mg2IrH6} -> Mg$_2$IrH$_6$. Handles plain letters and
+% digits only (sufficient for the formulae in this monograph). No dependency.
+\newcommand{\ceStop}{\ceStop}
+\newcommand{\ceScan}[1]{%
+  \ifx#1\ceStop\else
+    \ifnum`#1<`0 #1\else
+      \ifnum`#1>`9 #1\else \textsubscript{#1}\fi
+    \fi
+    \expandafter\ceScan
+  \fi}
+\newcommand{\ce}[1]{\textup{\ceScan#1\ceStop}}
 
 \title{
   \textbf{The RTSC DFT Campaign: A Soft-Mode-Escape Methodology, a
@@ -92,7 +108,7 @@ ternary $X_2MH_6$ \emph{cation-VEC}\,$=19$ sweet spot is a necessary but
 \emph{insufficient} condition: \ce{Mg2IrH6} and \ce{Li2CuH6} are both
 ambient-unstable (2/2 falsified; Appendix~\ref{app:E}). We log every
 closed negative without cherry-picking (Appendix~\ref{app:G}).
-\textbf{Scope, stated plainly:} the \SI{293}{\kelvin}@\SI{1}{atm} goal is
+\textbf{Scope, stated plainly:} the \SI{293}{\kelvin}@\SI{1}{\atm} goal is
 \emph{not} reached --- the high-pressure hydride ceiling sits near
 \SI{158}{\kelvin} (stable). The campaign's \texttt{absorbed} flag remains
 \texttt{false} permanently (R4 invariant); a room-temperature ambient
@@ -116,12 +132,12 @@ electron--phonon calculation yields the coupling constant $\lambda$ and the
 logarithmic phonon average $\omega_{\log}$, which the Allen--Dynes
 formula~\cite{allendynes1975} maps to a critical temperature $T_c$. The
 field's open question is whether this mechanism can be pushed to ambient
-conditions --- \SI{293}{\kelvin} at \SI{1}{atm} --- where every record to
+conditions --- \SI{293}{\kelvin} at \SI{1}{\atm} --- where every record to
 date requires hundreds of gigapascals.
 
 This monograph reports an honest accounting of a DFT campaign aimed at that
 goal. We are explicit at the outset: \textbf{the campaign did not reach
-\SI{293}{\kelvin}@\SI{1}{atm}.} What it produced instead is (i) a validated
+\SI{293}{\kelvin}@\SI{1}{\atm}.} What it produced instead is (i) a validated
 DFT pipeline, (ii) a reusable methodology for escaping spurious harmonic
 instabilities, and (iii) a quantitative characterisation of \emph{why} the
 binary-hydride route hits a ceiling. We treat the wall not as a concession
@@ -302,7 +318,7 @@ The campaign frontier is summarised in Fig.~\ref{fig:headline} and the
 candidate ledger in Tab.~\ref{tab:results}. The headline reading is
 two-sided: the soft-mode-escape methodology and the anchor reproduction are
 genuine, but the stable-candidate $T_c$ ceiling (\SI{158}{\kelvin}, at
-\SI{200}{\giga\pascal}) sits far below the \SI{293}{\kelvin}@\SI{1}{atm}
+\SI{200}{\giga\pascal}) sits far below the \SI{293}{\kelvin}@\SI{1}{\atm}
 goal, and the gap is structural (the N5 wall, Fig.~\ref{fig:headline}'s
 shaded region), not a matter of more compute.
 
@@ -355,14 +371,33 @@ are the 2/2-falsified $X_2MH_6$ ternaries.}
 \section{Limitations and honest caveats}
 \label{sec:limits}
 
-Enumerate what would invalidate the result and what is out of scope.
-Each caveat should be specific enough that a reader can independently
-judge whether it applies to their case.
-
-\begin{itemize}\itemsep0.2em
-\item Caveat 1: scope of the claim.
-\item Caveat 2: parameter regime not swept.
-\item Caveat 3: downstream wet-lab confirmation still \tierOrange.
+\begin{itemize}\itemsep0.3em
+\item \textbf{The room-temperature ambient goal is not reached.} The best
+  dynamically-stable candidate, \ce{H3Br}, gives \SI{158}{\kelvin} at
+  \SI{200}{\giga\pascal}. The campaign's \SI{293}{\kelvin}@\SI{1}{\atm}
+  target is missed by both axes; a different (non-conventional, or
+  ambient-pressure) mechanism would be required.
+\item \textbf{\texttt{absorbed} = false, permanently (R4).} No candidate
+  passes the non-wet-lab gate of $T_c \geq \SI{270}{\kelvin}$ at ambient
+  pressure, so the campaign cannot flip \texttt{absorbed} even under the
+  ``all non-wet-lab gates pass'' definition. The pipeline-validation result
+  is evidence of \emph{measurement-grade capability}, not of any candidate's
+  RTSC status.
+\item \textbf{Allen--Dynes is a fit, not Eliashberg.} We report $T_c$ from
+  Eq.~\eqref{eq:ad}; full anisotropic Eliashberg solutions and spin
+  fluctuations are out of scope. $\mu^\ast = 0.10$ is fixed, not fitted.
+\item \textbf{$\Gamma$-only pressure proxies over-estimate $\omega_{\log}$.}
+  The \ce{H3Br} pressure scan (Appendix~\ref{app:F}) uses a $\Gamma$-only
+  proxy; the absolute $\omega_{\log,\mathrm{BZ}}$ is likely 10--30\% lower.
+  The \emph{slope sign} and monotone trend are robust, but the absolute
+  number at any single pressure is a proxy until a full $4^3$ el--ph run.
+\item \textbf{SSCHA renormalisation is partial.} \ce{H3O}'s anharmonic
+  band (9--\SI{109}{\kelvin}) and \ce{LaBeH8}'s anharmonic $T_c$ are not
+  fully converged; the harmonic-strong-$\lambda$ values for those materials
+  are explicitly flagged as soft-mode artifacts.
+\item \textbf{Wet-lab synthesis is downstream (\tierOrange).} The only
+  recipe-as-record handoff (\ce{H3Cl}) still has an open synthesis-pressure
+  EOS blocker; no candidate has been synthesised or measured by this work.
 \end{itemize}
 
 \section{Reproducibility}
@@ -378,14 +413,48 @@ Lint: \texttt{make lint}. Arxiv tarball: \texttt{make arxiv-tar}.
 \section{Conclusion}
 \label{sec:conclusion}
 
-What this changes. What stays the same. The single most important
-follow-up experiment.
+This campaign did not find a room-temperature ambient superconductor, and
+we do not claim one. What it did establish is durable: a DFT $\to$
+Allen--Dynes pipeline that reproduces three measured hydride records; a
+soft-mode-escape methodology that converts a dynamical saddle into a stable,
+strongly-coupled polymorph (\ce{H3As} $Im\bar{3}m \to R3m$); a
+\SI{158}{\kelvin} dynamically-stable record (\ce{H3Br} @ \SI{200}{\giga\pascal});
+and a first-principles characterisation of the N5 wall with two novel,
+\tierGreen-verified closed-form margins. The wall is the central physics
+result: in binary hydrides the lattice stiffness $\langle\omega^2\rangle$
+plays a double role --- it is both the denominator of $\lambda$ (wants to be
+small) and the dynamical-stability discriminant (must be large) --- so
+stability and strong coupling cannot be optimised together.
+
+\medskip
+\noindent\textbf{Breakthrough directions} (we name them rather than concede,
+per the campaign's governance): (i) the cation-decoupling route, in which a
+stuffed-cation clathrate raises $\langle\omega^2\rangle$ (stability) while a
+cation electron-doping preserves $N(E_F)$ (coupling) --- the \ce{CaH6}
+escape ($m = +0.5$) is the existence proof, even though the ambient
+$X_2MH_6$ octahedral instances tested here are 2/2 falsified; (ii)
+$\omega_{\log}(P)$ leverage on an already-stable strong-$\lambda$ base such
+as \ce{H3Br}, recognising it is sub-linear; (iii) full anharmonic SSCHA
+$T_c$ for \ce{LaBeH8} as the measured ternary anchor. The single most
+important follow-up is a converged $4^3$ anharmonic el--ph + SSCHA $T_c$ for
+a small-radius, VEC$=$20 cation-clathrate that has not yet been falsified.
+
+\medskip
+\noindent The appendices that follow document each result in full:
+Appendix~\ref{app:A} (anchor reproduction), \ref{app:B} ($H_3X$ fan-out),
+\ref{app:C} (soft-mode escape), \ref{app:D} (N5 wall quantification),
+\ref{app:E} (ternary falsification), \ref{app:F} (\ce{H3Br} pressure scan),
+and \ref{app:G} (the closed-negative ledger and 6-tier register).
 
 % =========================================================================
 \paragraph{Acknowledgments.}
-This work used the \texttt{hexa-lang} verification surface and the
-\texttt{sidecar/paper} scaffold. LLM collaborator credit (model + version,
-e.g. Claude Opus 4.x) is listed here, not in the author block above.
+This work used the \texttt{hexa-lang} \texttt{verify} surface (libm-class
+recompute, tier rubric) for every numerical verdict, the Quantum ESPRESSO
+DFT package for electron--phonon calculations, and the \texttt{sidecar/paper}
+monograph scaffold. The fal.ai \texttt{gpt-image} backend rendered the
+frontier figure. LLM collaborator: Claude Opus 4.x (Anthropic), under the
+\texttt{demiurge} 7-verb governance (\texttt{absorbed=false} invariant, g5
+verdict-verbatim, g63 honest-negative).
 
 % =========================================================================
 \bibliographystyle{plainnat}

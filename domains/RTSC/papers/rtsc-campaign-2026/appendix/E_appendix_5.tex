@@ -1,8 +1,77 @@
-% Appendix E — TODO: title this appendix.
-% Filled standalone, then \input'd by main.tex (see \appendix block).
-% Compile check: `make` (the Makefile's APPENDIX wildcard picks this up).
-\section{Appendix E --- TODO appendix title}
+% Appendix E — N6 ternary X2MH6 2/2 falsification; cation-VEC insufficient.
+\section{Appendix E --- The $X_2MH_6$ ternary funnel: cation-VEC is
+necessary but insufficient}
 \label{app:E}
 
-% TODO: appendix E body. Each appendix is a self-contained
-% chapter — figures, tables, verify blocks. Cite atoms / DOIs inline.
+The N5 wall (Appendix~\ref{app:D}) motivated a ternary funnel: stuffed-cation
+octahedral hydrides $X_2MH_6$ (Fm$\bar{3}$m, K$_2$PtCl$_6$ prototype) that
+might decouple coupling from stability. This appendix reports the
+\emph{pre-registered} falsification of that route at ambient pressure.
+
+\paragraph{The cation-VEC rule.}
+The valence-electron count of the octahedral unit is the closed-form
+\begin{equation}
+\mathrm{VEC} = 2\,v(X) + v(M) + 6,
+\qquad
+n_{\sigma^\ast} = \mathrm{VEC} - 18,
+\end{equation}
+where $v(\cdot)$ is the group valence and $n_{\sigma^\ast}$ is the filling of
+the \ce{H6}-derived $\sigma^\ast$ antibonding manifold. The model predicts a
+sweet spot at VEC$\in\{19,20\}$ ($n_{\sigma^\ast}=1$--2), where $N(E_F)$ is
+maximised. Both \ce{Mg2IrH6} ($2\cdot2+9+6=19$) and \ce{Li2CuH6}
+($2\cdot1+11+6=19$) land exactly on it --- so the rule, as a heuristic, is
+self-consistent. The question is whether VEC$=19$ is \emph{sufficient}.
+
+\paragraph{Pre-registered falsifiers.}
+We registered the pass/fail threshold before harvesting either result:
+a candidate is dynamically stable (and the sweet spot ``sufficient'') only
+if every $q$-point clears $\texttt{min\_freq} > -\SI{50}{\per\centi\meter}$
+with at most one hard-imaginary mode. Tab.~\ref{tab:ternary} is the verdict.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lcccl}
+\toprule
+\textbf{Candidate} & \textbf{VEC} & \textbf{ambient stable?} &
+  \textbf{min freq (\si{\per\centi\meter})} & \textbf{verdict} \\
+\midrule
+\ce{Mg2IrH6} & 19 & \textbf{no} (48\% hard-imag) & $-2235$ & \tierRed\ FALSIFIED \\
+\ce{Li2CuH6} & 19 & \textbf{no} ($8$ hard-imag modes) & $-944.92$ & \tierRed\ FALSIFIED \\
+\bottomrule
+\end{tabular}
+\caption{The $X_2MH_6$ cation-VEC$=19$ sweet spot, falsified 2/2 at ambient
+pressure. \ce{Mg2IrH6}: 5/13 partial $q$-verdict already violates the
+threshold (PR \#247). \ce{Li2CuH6}: the second $q$-point alone locks 8
+hard-imaginary modes (PR \#275). The K$_2$PtCl$_6$ Fm$\bar{3}$m prototype is
+ambient-unstable for both.}
+\label{tab:ternary}
+\end{table}
+
+\paragraph{The falsifier statements (verbatim, F-N6 ledger).}
+\begin{quote}\small
+\textbf{F-N6-1.} If \ce{Mg2IrH6} Fm$\bar{3}$m at $P=0$ satisfies
+$\texttt{min\_freq} > -\SI{50}{\per\centi\meter}$ on all $q$ with
+hard-imag count $\le 1$, the VEC$=19$ sweet spot is \emph{sufficient};
+otherwise it is only \emph{necessary}.\\
+\textbf{Result:} \tierRed\ PASSED 2026-05-26 --- threshold clearly violated
+($-\SI{2235}{\per\centi\meter}$, 48\% hard-imag). Sufficiency falsified.
+
+\medskip
+\textbf{F-N6-2.} The same threshold for \ce{Li2CuH6}; failure
+family-falsifies the K$_2$PtCl$_6$ prototype at ambient.\\
+\textbf{Result:} \tierRed\ PASSED 2026-05-27 --- $q_2$ alone: 8 hard-imag,
+$-\SI{944.92}{\per\centi\meter}$. $X_2MH_6$ Fm$\bar{3}$m 2/2 falsified.
+\end{quote}
+
+\paragraph{Reading.}
+The cation-VEC rule survives as a necessary filter (it correctly places both
+candidates on the sweet spot and explains why \ce{Mg}$\to$\ce{Ca}/\ce{Sr}
+substitution kills $T_c$ despite preserving VEC --- the larger ionic radius
+expands the lattice and softens the H phonons). But VEC$=19$ does \emph{not}
+guarantee dynamical stability: the octahedral $\sigma^\ast$ filling that
+maximises $N(E_F)$ also drives the soft modes that collapse the lattice. This
+is the N5 wall reappearing in the ternary family. The honest consequence is
+that the ambient $X_2MH_6$ octahedral route, as tested, is closed; the
+clathrate $MXH_8$ route (\ce{LaBeH8} anchor) remains open and is the
+campaign's recommended next probe (\S\ref{sec:conclusion}).
