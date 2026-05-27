@@ -1,0 +1,34 @@
+&control
+  calculation = 'scf'
+  prefix = 'h3br'
+  outdir = '/home/aiden/rtsc_h3br_pscan/200gpa_fullq/out'
+  pseudo_dir = '/home/aiden/rtsc_h3br_pscan/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+/
+&system
+  ibrav = 3
+  celldm(1) = 6.009113
+  nat = 4
+  ntyp = 2
+  ecutwfc = 60
+  ecutrho = 600
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-12
+  mixing_beta = 0.5
+  electron_maxstep = 250
+/
+ATOMIC_SPECIES
+  Br 79.904 Br.pbe-n-rrkjus_psl.1.0.0.UPF
+  H 1.008 H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS alat
+  Br 0.0 0.0 0.0
+  H 0.5 0.0 0.0
+  H 0.0 0.5 0.0
+  H 0.0 0.0 0.5
+K_POINTS automatic
+  16 16 16 0 0 0
