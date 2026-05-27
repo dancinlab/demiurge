@@ -16,6 +16,25 @@ Append-only history sister of `XPRIZE.md`. Each entry starts with `## <ISO times
 🔑 핵심: Web GUI 전체 stack이 GCP-native + 0 dep. 인수 옵셔널리티 + XPRIZE 규정 완벽 충족 (Gemini ≥1 ✓ · GCP 제품 ≥1 ✓ · 신규 프로젝트 ✓ · 매출 surface 가동 가능).
 🌱 다음: 사용자 secret 5개 셋업 → M17 deploy 진입.
 
+## 2026-05-27T03:42:00Z — 🌐 i18n 5-locale (en · ko · ja · zh · ru) · /account tier badge · 테스트 계정 2개
+
+- [x] **PR #285 MERGED** — M14-M17 web 전체 land (Next.js 16 + Vertex AI + Firebase + Stripe REST + Cloud Run · 2700 LOC)
+- [x] **PR #287 MERGED** — /account Firestore lookup → Solo/Team/Org pill 배지 + currentPeriodEnd + cancelAtPeriodEnd 경고
+- [x] **PR #288 MERGED** — i18n 인프라 (lib/i18n · 5 messages/*.json · /api/lang cookie · LangSwitcher · home 페이지 번역)
+- [x] **PR #290 MERGED** — i18n fast-follow (/signin /pricing /account 5-locale 적용)
+- [x] **테스트 계정 2개** — `xprize-judge-demo@dancinlab.test` (judging demo) + `dev@dancinlab.test` (founder dev) · 둘 다 Org tier active · related_party=true (XPRIZE 매출 제외)
+- [x] **Firestore 직접 적재** — `users/{uid}/subscriptions/sub_*_org` documents · status=active · currentPeriodEnd=2027-01-01 · stripeCustomer=cus_test_*
+- [x] **secret keychain** — `demiurge.test_email/password` + `demiurge.dev_email/password` 저장
+- [x] **인프라 0 npm SDK 유지** — i18n도 JSON dict + Next.js cookies()/headers() native · Stripe/Firebase/Vertex AI/Firestore 모두 REST + node:crypto · 인수 옵셔널리티 완전 보존
+- [ ] Cloud Build 재배포 진행 중 (background `by3difwhx` · i18n production 반영 대기)
+- [ ] Stripe 5 secret 셋업 (사용자 manual)
+- [ ] 첫 유료 전환 1건 (외부 사용자 · related_party=false · XPRIZE 매출 증빙)
+- [ ] phanes Track B 카테고리 분산 결정
+- [ ] 데모영상 (D-7~D-3 촬영) + Devpost form 제출 (D-1)
+
+🔑 핵심: production UI 5개 언어 + tier 시각화 + 심사용 + 본인용 계정 모두 활성. XPRIZE 심사 시 누구나 사인업/로그인/요금제 선택 가능 (i18n로 글로벌 심사위원 진입 장벽 0).
+🌱 다음: Cloud Build 완료 → 라이브 5-locale 검증 → Stripe 실 결제 라이브화 → 데모영상.
+
 ## 2026-05-27T03:10:30Z — 🎉 https://demiurge.dancinlab.org LIVE (custom domain + production SSL)
 
 - [x] **Cloud Build #2 SUCCESS** — image `us-central1-docker.pkg.dev/dancinlab/demiurge/web:44a831a3-...` · 2m52s · revision `demiurge-web-00001-jft`

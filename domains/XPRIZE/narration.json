@@ -1,0 +1,122 @@
+{
+  "_meta": {
+    "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+    "voice_name": "George - British storyteller",
+    "model_id": "eleven_multilingual_v2",
+    "stability": 0.55,
+    "similarity_boost": 0.75,
+    "style": 0.0,
+    "use_speaker_boost": true,
+    "target_duration_sec": 180,
+    "shots": 15,
+    "avg_per_shot_sec": 12,
+    "wpm_target": 150
+  },
+  "shots": [
+    {
+      "id": "01_hook",
+      "t_start": 0,
+      "t_end": 8,
+      "narration": "demiurge — an AI-native technical-design pipeline. Five languages, one production loop.",
+      "subtitle_ko": "demiurge — AI 네이티브 기술 설계 파이프라인. 5개 언어, 한 production 루프."
+    },
+    {
+      "id": "02_domains",
+      "t_start": 8,
+      "t_end": 15,
+      "narration": "Twenty research domains, each running the same eight-verb loop.",
+      "subtitle_ko": "20개 연구 도메인, 동일한 8-verb 루프"
+    },
+    {
+      "id": "03_discover",
+      "t_start": 15,
+      "t_end": 30,
+      "narration": "It starts with discover. You bring an objective and a verifier. Phanes runs the OUROBOROS loop; demiurge dispatches and ingests the verified catalog. Two repositories, one canonical engine.",
+      "subtitle_ko": "discover로 시작 · objective + verifier · phanes가 OUROBOROS 루프 · demiurge가 dispatch + 흡수 · 2 저장소 1 엔진"
+    },
+    {
+      "id": "04_spec",
+      "t_start": 30,
+      "t_end": 45,
+      "narration": "Spec. Gemini drafts a measurable goal, based on the hot-spot you typed. Never auto-applied. Always reviewed by a human, then committed to the canonical SSOT.",
+      "subtitle_ko": "spec · Gemini가 hint 기반 @goal 초안 · 자동 적용 안 함 · 검수 후 SSOT 커밋"
+    },
+    {
+      "id": "05_structure",
+      "t_start": 45,
+      "t_end": 58,
+      "narration": "Structure. A deterministic dependency tree. No model in this loop.",
+      "subtitle_ko": "structure · 결정론적 의존 트리 · 이 루프에 LLM 없음"
+    },
+    {
+      "id": "06_design",
+      "t_start": 58,
+      "t_end": 75,
+      "narration": "Design. Three honest trade-offs. It never picks a winner. The human decides.",
+      "subtitle_ko": "design · 3-옵션 trade-off · 우열 선언 안 함 · 사람이 결정"
+    },
+    {
+      "id": "07_analyze",
+      "t_start": 75,
+      "t_end": 90,
+      "narration": "Analyze. Server-sent events stream the loop. You watch the system think.",
+      "subtitle_ko": "analyze · SSE로 라이브 tail · AI 사고 과정 실시간"
+    },
+    {
+      "id": "08_verify",
+      "t_start": 90,
+      "t_end": 110,
+      "narration": "Verify is sacred. The hexa calculator returns one of five tiers — closed-form, numerical, citation, insufficient, falsified. Zero LLM verdicts. Every claim carries its provenance. This is what separates production AI from chat.",
+      "subtitle_ko": "verify는 신성 영역 · 5-tier (closed-form · numerical · citation · insufficient · falsified) · LLM 판정 0회 · provenance 부착 · production AI와 챗봇의 차이"
+    },
+    {
+      "id": "09_synth",
+      "t_start": 110,
+      "t_end": 125,
+      "narration": "Synth routes the heavy work. Pool, Vertex AI, Cloud Run. Deterministic dispatch.",
+      "subtitle_ko": "synth · 라우팅: pool · Vertex AI · Cloud Run · 결정론적"
+    },
+    {
+      "id": "10_handoff",
+      "t_start": 125,
+      "t_end": 140,
+      "narration": "Handoff. Korean and English, side by side, with the first action highlighted. The next person — researcher, engineer, or regulator — gets exactly the context they need.",
+      "subtitle_ko": "handoff · 한/영 사이드바이사이드 · 첫 액션 강조 · 연구자/엔지니어/규제기관 누구든 필요한 맥락 100%"
+    },
+    {
+      "id": "11_pricing",
+      "t_start": 140,
+      "t_end": 152,
+      "narration": "Solo, Team, Org. Five locales. Stripe-backed. Fourteen-day trial.",
+      "subtitle_ko": "Solo · Team · Org · 5-locale · Stripe · 14일 trial"
+    },
+    {
+      "id": "12_gcp",
+      "t_start": 152,
+      "t_end": 165,
+      "narration": "Seven Google Cloud products work together — Vertex AI, Cloud Run, Cloud Build, Artifact Registry, Firestore, Identity Toolkit, and Secret Manager. Authentication runs through the metadata server. Zero secrets ever live in our code.",
+      "subtitle_ko": "GCP 7 제품 — Vertex AI · Cloud Run · Cloud Build · Artifact Registry · Firestore · Identity Toolkit · Secret Manager · metadata-server ADC · 코드 시크릿 0"
+    },
+    {
+      "id": "13_newproject",
+      "t_start": 165,
+      "t_end": 173,
+      "narration": "New GCP project, after the submission start date. Rule met.",
+      "subtitle_ko": "신규 GCP 프로젝트 · 제출 시작일 이후 생성 · 규정 충족"
+    },
+    {
+      "id": "14_liveapi",
+      "t_start": 173,
+      "t_end": 178,
+      "narration": "And here it is. A live call to Gemini 2.5 Flash, from production, right now. Two hundred prompt tokens in, twenty-three candidate tokens out.",
+      "subtitle_ko": "라이브 Gemini 2.5 Flash · production · 지금 · prompt 200 · candidate 23"
+    },
+    {
+      "id": "15_close",
+      "t_start": 178,
+      "t_end": 180,
+      "narration": "demiurge dot dancinlab dot org. Built with Gemini.",
+      "subtitle_ko": "demiurge.dancinlab.org · Built with Gemini"
+    }
+  ]
+}
