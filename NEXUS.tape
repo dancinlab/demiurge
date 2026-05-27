@@ -19,11 +19,11 @@
 @V := "tape" :: spec [active]
   version = "1.2"
 
-@I nexus := "demiurge intra-project reuse lattice" :: identity [active]
-  kind  = "cross-domain reuse graph — verified primitives + discoveries shared between sibling domains"
-  scope = "intra-project ONLY — never link domains across repos (@D g67)"
+@I nexus := "demiurge reuse lattice (intra g67 + cross-repo bidirectional peers g68)" :: identity [active]
+  kind  = "intra: cross-domain reuse graph · cross-repo: 4 bidirectional peers (hexa-lang, anima, phanes, echoes)"
+  scope = "intra-project (g67) + 4 cross-repo bidirectional peers (g68) — unidirectional consumers NOT enumerated here"
   ssot  = "this file (NEXUS.tape) · INDEX.md is a pointer to it"
-  governs = "commons @D g67 (universal) + project @D d19"
+  governs = "commons @D g67 (intra) + g68 (cross-repo peers) + project @D d19"
 
 # ── 1. VERIFIED reuse edges (provides -> reused_by, with evidence) ──
 
@@ -114,3 +114,29 @@
   FUSION --triple_product (J·B·V)----------------> UFO (Stage-2 MHD cruise)
   UFO --provides (7 atom)--> hexa-lang atlas (isp/beta/gl/mli · lattice σ^k/(σ−φ)²/σ·φ)
   GRAPH
+
+# ── 5. cross-repo bidirectional peers (g68) — declared 2026-05-28 ──
+# 4 sibling repos with explicit mutual awareness. Unidirectional consumer relationships
+# remain at the source repo's NEXUS.tape (not bidirectionally enumerated here).
+
+@X xr1 := "demiurge <-> hexa-lang" :: cross-repo-peer [bidirectional active]
+  peer       = "hexa-lang (shared substrate hub · @D g68)"
+  from-hexa  = "stdlib/material/magnet · stdlib/rtsc/templates · stdlib/antimatter (16 fns) · stdlib/cern · compiler/atlas"
+  to-hexa    = "UFO atom family (7 atoms) folded to compiler/atlas/embedded.gen.hexa (PR #1222/#1244)"
+  evidence   = "hexa-lang NEXUS.tape p_magnet/p_rtsc_templates/p_antimatter/p_cern + e1/e2/e3 + e4 (atlas peer)"
+
+@X xr2 := "demiurge <-> anima" :: cross-repo-peer [bidirectional declared]
+  peer       = "anima (HEXAD/* consciousness substrate)"
+  evidence   = "user NEXUS scope 2026-05-28 — concrete reuse edges TBD"
+
+@X xr3 := "demiurge <-> phanes" :: cross-repo-peer [bidirectional declared]
+  peer       = "phanes (hosted OUROBOROS platform · downstream of hexa kick)"
+  evidence   = "user NEXUS scope 2026-05-28 — phanes tenants may target demiurge-style objectives"
+
+@X xr4 := "demiurge <-> echoes" :: cross-repo-peer [bidirectional declared]
+  peer       = "echoes (HEXA-* discoveries catalog · σφτ identity at centre)"
+  evidence   = "user NEXUS scope 2026-05-28 · echoes README HEXA-* family listing"
+
+@N n3 := "cross-repo scope policy (g68)" :: note [active]
+  rule = "ONLY 4 declared bidirectional peers (hexa-lang, anima, phanes, echoes). other cross-repo consumers are unidirectional and live at the source repo's NEXUS.tape."
+  ssot = "hexa-lang NEXUS.tape n2.scope_rule — hub records hub<->peer only; peer-mesh is peer-side."
