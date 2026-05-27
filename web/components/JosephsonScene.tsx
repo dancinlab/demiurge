@@ -28,9 +28,19 @@ const FALLBACK_ATOMS: Atom3D[] = [
 
 export function JosephsonScene() {
   // R3F path renders client-side; SSR uses CSS-3D fallback so the slot is
-  // never empty during first paint.
+  // never empty during first paint. The `data-scene` attribute lets QA
+  // conformance scripts confirm the route was hit even when ssr=false hides
+  // the underlying R3F module from the SSR HTML stream.
   if (typeof window === "undefined") {
-    return <StructureViewer atoms={FALLBACK_ATOMS} caption="QUBIT · CSS-3D SSR" />;
+    return (
+      <div data-scene="JosephsonScene" data-mode="ssr-fallback" className="h-full w-full">
+        <StructureViewer atoms={FALLBACK_ATOMS} caption="QUBIT · CSS-3D SSR" />
+      </div>
+    );
   }
-  return <JosephsonR3F />;
+  return (
+    <div data-scene="JosephsonScene" data-mode="r3f" className="h-full w-full">
+      <JosephsonR3F />
+    </div>
+  );
 }
