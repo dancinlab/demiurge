@@ -1,0 +1,14 @@
+h3br 200 GPa full 4x4x4 q electron-phonon (RTSC N1 · L14 follow-on · electron_phonon=simple)
+&inputph
+  prefix = 'h3br'
+  outdir = '/home/aiden/rtsc_h3br_pscan/200gpa_fullq/out'
+  fildyn = '/home/aiden/rtsc_h3br_pscan/200gpa_fullq/h3br.dyn'
+  fildvscf = 'h3br.dvscf'
+  ldisp = .true.
+  nq1 = 4, nq2 = 4, nq3 = 4
+  tr2_ph = 1.0d-14
+  recover = .true.
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+/

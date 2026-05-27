@@ -1,0 +1,42 @@
+// h3br 200 GPa full 4x4x4 q electron-phonon — RTSC N1 (L14 follow-on)
+// Reuses the LANDED 200 GPa equilibrium cell (celldm=6.009113 bohr, PR #289 Gamma-probe vc-relax).
+// CHAIN: dense-16^3-k SCF (electron_phonon=simple needs dense k for double-delta EPC) -> ph.x 4^3 q el-ph.
+//
+// Dispatch: pool ubu-1 (200 GPa converged state + PSL 1.0.0 pseudos already staged at ~/rtsc_h3br_pscan/).
+//   -np 6 (shares 12-core box with h3cl ph.interp -np 4 · precedent: pscan ran -np 4 alongside h3cl).
+//   setsid + nohup detached · timeout caps (SCF 4h, ph 20h) · --bind-to none · NO --oversubscribe.
+//
+// inputs (siblings of this file, staged into ~/rtsc_h3br_pscan/200gpa_fullq/ before launch):
+//   scf.in : scf @ celldm=6.009113 (200 GPa eq), 16^3 k, conv_thr 1d-12  (dense for EPC)
+//   ph.in  : ph.x ldisp=.true. nq=4^3 · electron_phonon='simple' · el_ph_sigma=0.005 nsigma=10 · fildvscf
+//
+// q-grid: 4x4x4 -> 8 IBZ q-points for ibrav=3 BCC (vs Gamma-only probe). Zone-boundary stability NOW tested.
+
+pub fn workdir() -> str {
+  "/home/aiden/rtsc_h3br_pscan/200gpa_fullq"
+}
+
+// remote chain (authored on ubu-1 via `pool on ubu-1 'cat > run.sh <<EOF ... EOF'` then setsid):
+//
+//   set -e
+//   SRC=/home/aiden/rtsc_h3br_pscan ; WORK=$SRC/200gpa_fullq
+//   mkdir -p "$WORK/out" ; cd "$WORK"
+//   export OMP_NUM_THREADS=1 ; NP=6
+//   source ~/miniforge3/etc/profile.d/conda.sh ; conda activate qe
+//   timeout 4h  mpirun -np $NP --bind-to none pw.x -in scf.in > scf.out 2>&1   # dense-k SCF
+//   grep -q "JOB DONE" scf.out || { echo SCF_FAIL; exit 1; }
+//   timeout 20h mpirun -np $NP --bind-to none ph.x -in ph.in  > ph.out  2>&1   # full 4^3 q el-ph
+//   touch "$WORK/ALL_DONE.flag"
+//
+// HARVEST (harvest_v2 pattern, JOB DONE or hard-soft):
+//   - sigma-plateau (sigma >= 0.025 Ry): pick lambda at the plateau, not the monotone-broadening tail.
+//   - lambda_BZ = sum_q w_q sum_nu lambda_q,nu  (weights from h3br.dyn0 q-list multiplicities).
+//   - omega_log: Allen-weighted exp(<ln w>) over real modes, BZ-averaged.
+//   - Tc: Allen-Dynes  `hexa verify --expr allen_dynes_tc <lambda> <omega_log> 0.10 --compute` (mu*=0.10 and 0.13).
+//   - stability: every IBZ q must be real (Gamma-probe was stable; zone-boundary unconfirmed until now).
+//
+// HONESTY (d6 · g3):
+//   - Gamma-only omega_log=1766K may be 10-30% over-estimate; full-BZ Allen-weighted omega_log is the truth.
+//   - lambda_BZ unmeasured before this run -> Tc was extrapolation only.
+//   - no plateau-forcing; honest sigma-plateau or report under-converged.
+//   - cost $0 (pool free).

@@ -1,0 +1,99 @@
+{
+  "schema": "material_discovery/v2",
+  "record_id": "rtsc_h3br_200gpa_fullbz_elph_20260527",
+  "domain": "rtsc",
+  "milestone": "L18",
+  "next_list_item": "N1",
+  "title": "h3br 200 GPa full 4x4x4 q electron-phonon (lambda_BZ + omega_log_BZ + Allen-Dynes Tc)",
+  "status": "LANDED",
+  "verdict": "GREEN_DATA_POINT",
+  "verdict_emoji": "🟢",
+  "timestamp_kst": "2026-05-27T15:08:33",
+  "hypothesis": {
+    "text": "h3br at 200 GPa, full-BZ el-ph retains strong coupling (lambda_BZ) while omega_log rises with pressure -> Tc > 200K candidate (campaign first live 200K+ path).",
+    "basis": "Gamma-only pressure-scan (PR #289): omega_log(P) slope +4.789 K/GPa; 200 GPa Gamma omega_log=1766.4K; all P dynamically stable (imag=0). baseline 69 GPa lambda=4.42, Tc~110K.",
+    "outcome": "STABLE full-BZ (all 8 IBZ q real, min_freq=5.02 cm-1) AND strong coupling (lambda_BZ=2.16) BUT Tc=158K(mu0.10) < 200K. Gamma-only omega_log 1766K was a 41% over-estimate vs full-BZ Allen-weighted 1046K -> 200K extrapolation does not hold under full el-ph."
+  },
+  "method": {
+    "engine": "Quantum ESPRESSO (pw.x + ph.x), conda qe (miniforge3)",
+    "functional": "PBE pure (d14)",
+    "structure": "Im-3m h3br primitive, ibrav=3 BCC, 4 atoms (Br + 3H @ alat-edge midpoints)",
+    "cell": "celldm(1)=6.009113 bohr (LANDED 200 GPa equilibrium, vc-relax press=2000 kbar, PR #289 Gamma-probe; reused, not re-relaxed)",
+    "pseudopotentials": "PSL 1.0.0 (Br.pbe-n-rrkjus, H.pbe-rrkjus) [d13 verified]",
+    "ecut": "60 / 600 Ry",
+    "scf_kgrid": "16x16x16 (dense for electron_phonon=simple double-delta EPC integration)",
+    "scf_conv_thr": "1.0d-12",
+    "phonon_qgrid": "4x4x4 (ldisp=.true.) -> 8 IBZ q-points (full BZ, zone-boundary tested)",
+    "star_weights": [1, 12, 6, 24, 6, 12, 2, 1],
+    "star_weights_sum": 64,
+    "electron_phonon": "simple",
+    "el_ph_sigma": 0.005,
+    "el_ph_nsigma": 10,
+    "tr2_ph": "1.0d-14",
+    "smearing": "mp, degauss=0.02"
+  },
+  "dispatch": {
+    "host": "pool:ubu-1",
+    "np": 6,
+    "note": "shared 12-core box with h3cl ph.interp -np 4 (co-existence). NO --oversubscribe.",
+    "launch": "setsid nohup bash run.sh, --bind-to none, timeout SCF 4h / ph 20h",
+    "workdir": "/home/aiden/rtsc_h3br_pscan/200gpa_fullq",
+    "wall_time": "~28 min (14:40:09 -> 15:08:33 KST; dense-k SCF JOB DONE in 4s on reused converged cell)",
+    "d16_dryrun": "PASSED (maxstep=2 SCF iterated, E=-32.59 Ry matches prior 8^3 SCF, no directive/basis error)",
+    "cost_usd": 0.0
+  },
+  "results": {
+    "stability_all_q_real": true,
+    "min_freq_cm1": 5.02,
+    "n_imag_below_minus5": 0,
+    "n_imag_below_minus50": 0,
+    "harmonic_validity": "VALID",
+    "anharmonic_mandatory": false,
+    "n_total_modes": 96,
+    "sigma_plateau": {
+      "sigma_Ry": 0.025,
+      "rationale": "lambda_BZ peaks at sigma=0.025 (broadening-converged plateau, sigma>=0.025 per d6) then declines; plateau center pick.",
+      "lambda_BZ": 2.1563,
+      "omega_log_cm1": 727.0,
+      "omega_log_K": 1046.2,
+      "Tc_mu010_K": 158.1,
+      "Tc_mu013_K": 148.2
+    },
+    "per_sigma_table": [
+      {"sigma_Ry": 0.005, "lambda_BZ": 1.0860, "omega_log_K": 1421.1, "Tc_mu010_K": 111.6, "Tc_mu013_K": 97.4},
+      {"sigma_Ry": 0.010, "lambda_BZ": 1.7206, "omega_log_K": 1070.3, "Tc_mu010_K": 137.6, "Tc_mu013_K": 127.0},
+      {"sigma_Ry": 0.015, "lambda_BZ": 2.0515, "omega_log_K": 1033.8, "Tc_mu010_K": 151.3, "Tc_mu013_K": 141.4},
+      {"sigma_Ry": 0.020, "lambda_BZ": 2.1187, "omega_log_K": 1038.2, "Tc_mu010_K": 155.2, "Tc_mu013_K": 145.3},
+      {"sigma_Ry": 0.025, "lambda_BZ": 2.1563, "omega_log_K": 1046.2, "Tc_mu010_K": 158.1, "Tc_mu013_K": 148.2},
+      {"sigma_Ry": 0.030, "lambda_BZ": 2.1123, "omega_log_K": 1053.3, "Tc_mu010_K": 157.1, "Tc_mu013_K": 147.1},
+      {"sigma_Ry": 0.035, "lambda_BZ": 2.0081, "omega_log_K": 1058.3, "Tc_mu010_K": 152.6, "Tc_mu013_K": 142.5},
+      {"sigma_Ry": 0.040, "lambda_BZ": 1.8955, "omega_log_K": 1061.4, "Tc_mu010_K": 147.0, "Tc_mu013_K": 136.7},
+      {"sigma_Ry": 0.045, "lambda_BZ": 1.7983, "omega_log_K": 1063.1, "Tc_mu010_K": 141.5, "Tc_mu013_K": 131.1},
+      {"sigma_Ry": 0.050, "lambda_BZ": 1.7217, "omega_log_K": 1064.0, "Tc_mu010_K": 136.9, "Tc_mu013_K": 126.4}
+    ]
+  },
+  "verification": {
+    "tool": "hexa verify --expr allen_dynes_tc",
+    "Tc_mu010": "allen_dynes_tc(2.1563,1046.2,0.10) = 158.104 K -> tier GREEN SUPPORTED-NUMERICAL",
+    "Tc_mu013": "allen_dynes_tc(2.1563,1046.2,0.13) = 148.212 K -> tier GREEN SUPPORTED-NUMERICAL"
+  },
+  "verdict_branch_g63": {
+    "result": "STABLE (all IBZ q real) AND Tc=158K < 200K -> GREEN honest data point (omega_log-up effect quantified).",
+    "not_breakthrough_reason": "Gamma-only omega_log=1766K over-estimated full-BZ Allen-weighted omega_log (1046K) by 41%; with the true omega_log the 200K extrapolation does not hold. lambda_BZ=2.16 confirms strong coupling but omega_log ceiling (~1046K stable branch) caps Tc per the tropical isocontour wall.",
+    "atlas": "register --from-verify allen_dynes_tc 2.1563 1046.2 0.10 (stable strong-lambda Tc=158K node)"
+  },
+  "honesty": [
+    "Gamma-only omega_log=1766K was confirmed a 41% over-estimate; full-BZ Allen-weighted omega_log=1046K is the truth (pre-registered honesty bound b1 realized).",
+    "lambda_BZ=2.16 now measured (was unmeasured -> prior Tc extrapolation only).",
+    "sigma-plateau honest pick at sigma=0.025 (lambda peaks then declines); no Tc-forcing (d6).",
+    "BZ weighting by QE star multiplicities [1,12,6,24,6,12,2,1] (sum=64); uniform-weight first pass gave Tc=116K and was corrected to star-weighted Tc=158K.",
+    "RTSC absorbed=false permanently (R4) — candidate-funnel data point, not a wet-lab claim. 200 GPa is high pressure (not ambient)."
+  ],
+  "physical_implication": "h3br at 200 GPa is a STABLE full-BZ strong-coupling superconductor (lambda_BZ=2.16, Tc~158K). It does not reach 200K because omega_log saturates near 1046K in the stable branch (tropical isocontour: lambda>1.5 -> Tc~0.353*omega_log). Confirms the N5 wall analysis: stable strong-lambda binary hydrides hit an omega_log ceiling. Pressure raised Tc from ~110K (69 GPa) to ~158K (200 GPa), validating the positive omega_log(P) slope, but the gain is sub-linear in Tc due to the lambda-saturation/omega_log-ceiling trade-off.",
+  "artifacts": [
+    "decks/h3br_pscan/200gpa_fullq/{scf.in,ph.in,run.hexa,harvest.hexa}",
+    "exports/material_discovery/rtsc_h3br_200gpa_fullbz_elph_20260527.json",
+    "ubu-1:/home/aiden/rtsc_h3br_pscan/200gpa_fullq/{ph.out,scf.out,h3br.dyn1-8,harvest.json,chain.log}"
+  ],
+  "governance": ["d2", "d6", "d11", "d13", "d14", "d16", "d17", "g63"]
+}
