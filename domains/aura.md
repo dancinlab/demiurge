@@ -121,6 +121,16 @@ Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 - [ ] M6 enclosure mass/IP — **`component/gmsh_skfem.py` + `kernels/fem/skfem_kernel.py` 재사용** (CalculiX/gmsh install) + 클램셸+클립 parametric model → mass + IPX4 gasket FEM 검증
 - [ ] M7 N19 AFE 정밀화 — **`sscb/ngspice.hexa` 패턴 재사용**해서 AURA AFE producer hexa-native 재작성 (open op-amp Vn model + ngspice subprocess + JSON record) → ~1 µV-pp datasheet match 추구
 
+## 도구 포팅 마일스톤 (P1-P4 · hexa-native EDA/sim 포팅)
+
+> 미포팅 도구를 hexa-lang stdlib에 hexa-native wrapper로 포팅 (sscb/ngspice.hexa 패턴).
+> 포팅되면 M2-M5 측정이 hexa-native cellrun으로 동작 (Python subprocess wrapper 불필요).
+
+- [ ] P1 openEMS hexa-native 포팅 — `stdlib/kernels/em/openems.hexa` (FDTD subprocess + S11/SAR parse + JSON record · M2/M3 기반) · sscb/ngspice.hexa 패턴 mirror
+- [ ] P2 west/Zephyr hexa-native 포팅 — `stdlib/firmware/west_build.hexa` (west build subprocess + size parse + QEMU smoke · M4 기반)
+- [ ] P3 FreeCAD hexa-native 포팅 — `stdlib/kernels/cad/freecad.hexa` (FreeCAD CLI subprocess + mass/volume parse · M6 보조 · gmsh_skfem.py FEM과 cross-check)
+- [ ] P4 KiCad hexa-native 승격 — `rtsc/firmware/eda/build_kicad.py` → `stdlib/kernels/eda/kicad.hexa` 승격 (DRC parse + JSON record · M5 기반 · g61 stdlib SSOT)
+
 ## 7-verb cell 상태
 
 | verb | substrate | absorbed | gate | 근거 |
