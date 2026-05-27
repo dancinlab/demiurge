@@ -145,6 +145,15 @@
     "sign_in_to_fork": "войти для fork",
     "matter_title": "matter — журнал attestation / verdict",
     "matter_subtitle": "absorbed? gate по материалам",
-    "matter_empty": "Записей нет."
+    "matter_empty": "Записей нет.",
+    "topbar_domains": "📦 домены",
+    "topbar_active_project": "активный проект",
+    "chef_awaiting_domain": "домен не выбран",
+    "chef_ready": "готов",
+    "domain_aria": "домен",
+    "domain_new_project": "новый проект (discover)",
+    "verbtree_collapse": "свернуть",
+    "verbtree_expand": "развернуть",
+    "verbtree_8verbs": "8 глаголов"
   }
 }

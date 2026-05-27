@@ -145,6 +145,15 @@
     "sign_in_to_fork": "登录后 fork",
     "matter_title": "matter — 证明 / 裁定 账本",
     "matter_subtitle": "按物质 absorbed? 门",
-    "matter_empty": "暂无记录。"
+    "matter_empty": "暂无记录。",
+    "topbar_domains": "📦 领域",
+    "topbar_active_project": "当前项目",
+    "chef_awaiting_domain": "待选领域",
+    "chef_ready": "就绪",
+    "domain_aria": "领域",
+    "domain_new_project": "新项目 (discover)",
+    "verbtree_collapse": "收起",
+    "verbtree_expand": "展开",
+    "verbtree_8verbs": "8 个动词"
   }
 }
