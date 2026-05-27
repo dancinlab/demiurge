@@ -1409,12 +1409,12 @@ REBCO / Bi-2212 coils (open tooling is 2-D-limited).
 - 구조: 권선 = 팬케이크 / 솔레노이드
 - 설계: 도체 = REBCO / Bi-2212
 
-## 10. Brainstorm 가지치기 (293K@1atm DFT discovery)
+## 10. Mining (lens 기반 가지치기) (293K@1atm DFT discovery)
 
 > 협업 brainstorm 영구 기록 + 아이디어 cart. 사이클마다 append, 트리 가지치기 고갈까지.
 
-- [`rtsc.brainstorm.md`](rtsc.brainstorm.md) — 사이클별 분석·추론·도구 누적 (Cycle 1-8)
-- [`rtsc.brainstorm.tape`](rtsc.brainstorm.tape) — 24+ 아이디어 backlog + 라운드별 발산 (R1-R5 + frontiers 4)
+- [`rtsc.mining.md`](rtsc.mining.md) — 사이클별 분석·추론·도구 누적 (Cycle 1-8)
+- [`rtsc.mining.tape`](rtsc.mining.tape) — 24+ 아이디어 backlog + 라운드별 발산 (R1-R5 + frontiers 4)
 - 관련 wall doc: [`RTSC/walls/stability_coupling_margin.md`](RTSC/walls/stability_coupling_margin.md) — m-sign closed-form (PR #335/344/346 landed)
 
 방법: math↔physics 같은-공식 cross-pollination (RG flow · Ricci surgery · 최적수송 · Perelman 엔트로피 · Kramers · ZPE-Casimir · Lifshitz/persistent-homology · BKT · Lyapunov 등). 차원 사다리 2D(m×ω) → 5D(+μ*, +stability, +P) → 6D(+f_H). Top 보석: x11 Kramers 회수성(293K@1atm 직격) · x3 OT H-모드분율 · C1 양자-회수 ZPE.
