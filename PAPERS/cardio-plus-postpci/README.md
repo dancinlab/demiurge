@@ -37,7 +37,7 @@
 
 복구 후:
 ```
-/imagine CARDIO+/PAPER/figures/overview_prompt.txt CARDIO+/PAPER/figures/overview.png -s landscape_16_9
+/imagine PAPERS/cardio-plus-postpci/figures/overview_prompt.txt PAPERS/cardio-plus-postpci/figures/overview.png -s landscape_16_9
 ```
 또는 toolchain 정상 host에서:
 ```
@@ -47,11 +47,11 @@ hexa run $(command -v _imagine.hexa) <prompt> <out.png> -s landscape_16_9
 ## compile (toolchain 복구 후)
 
 ```
-/paper compile CARDIO+/PAPER
+/paper compile PAPERS/cardio-plus-postpci
 ```
 또는 직접:
 ```
-cd CARDIO+/PAPER && pdflatex main && pdflatex main && pdflatex main
+cd PAPERS/cardio-plus-postpci && pdflatex main && pdflatex main && pdflatex main
 ```
 (3-pass: TOC + ref 해소)
 
