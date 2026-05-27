@@ -278,3 +278,52 @@ pod-2 (`vast-cuda-ssh9-15988`, ssh9.vast.ai:15988, 128c) 에 lit-known 초전도
 ### watcher (parent 가 무장 — self-arm 금지)
 - YH6:   `hexa cloud exec root@ssh9.vast.ai --port 15988 --insecure -- 'grep -c "CHAIN DONE" ~/wave3/YH6/chain.log'`
 - LaBH8: `hexa cloud exec root@ssh9.vast.ai --port 15988 --insecure -- 'grep -c "CHAIN DONE" ~/wave3/LaBH8/chain.log'`
+
+---
+
+## Cycle 18 — wave-3 잔여 좌표조사+발사 (코드네임 wave3b)
+
+> 이전 wave-3 agent 가 H-cage 내부좌표 부재로 SKIP 한 4 후보를 **출판된 좌표 직접 조사**(arxiv+web, 비-환각) 후 deck author → d16 dry-run → 발사. "queued ≠ permission-wait, coord-wait" 해소.
+
+### ✓ 좌표 RESOLVED (4/4) — 출판 출처 인용
+
+| 후보 | SG | 좌표 (Wyckoff rep) | 출처 (citation) |
+|------|----|--------------------|------------------|
+| **CeH₉** | P6₃/mmc #194 | Ce 2d(⅔,⅓,¼) · H 2b(0,0,¼) · H 4f(⅓,⅔,0.1499) · H 12k(0.1565,0.3130,0.4404); a=3.7110 c=5.5429 Å @100GPa | Salke 2019 Nat.Commun 10,4453 (arxiv 1805.02060) — verbatim Table |
+| **YH₉** | P6₃/mmc #194 | Y 2d + H 2b/4f/12k = **CeH₉ H29-clathrate 동형 전이** (Y→2d) | Kong 2021 NatCommun 12,5075 측정 243K@201GPa; 동형성 arxiv 2302.01122 "P63/mmc-1 H29 cage, widely exists in RE superhydrides" |
+| **YH₁₀** | Fm-3̄m #225 | Y 4a(0,0,0) · H 8c(¼,¼,¼) · H 32f(x,x,x) x=0.375 (sodalite H₈-cube) | Liu/Peng/Ma 2017 PNAS 114,6990 (예측 303K@400GPa); LaH₁₀ 동형 (Errea 2020) |
+| **Li₂MgH₁₆** | Fd-3̄m #227 (origin 2) | Li 16c(0.625,0.875,0.875) · Mg 8b(0,0,0) · H 32e(0.83306,0.16694,0.16694) · H 96g(0.06466,0.24560,0.43534); a=6.718513 Å | Sun 2019 PRL 123,097001 (예측 473K@250GPa); 좌표 verbatim Table S1 of arxiv 2305.04875 (solid phase) |
+
+- **환각 0건**: 모든 자유파라미터(CeH₉ 4f z=0.1499 / 12k x=0.1565 z=0.4404; Li₂MgH₁₆ 32e/96g)는 출판 Table 에서 verbatim 발췌 (local pdftotext). 추측한 좌표 없음.
+- YH₁₀ 32f x=0.375 = sodalite H₈-cube 표준값 (lit 보고 0.12 = 0.5−0.375 대칭짝); vc-relax 가 정밀화. 단일 자유파라미터.
+- YH₉ = CeH₉ 동형 전이 (task 명시 승인 "Same P6₃/mmc family → coords transfer with Y"); 2302.01122 가 H29-cage 동형성 확인.
+- deck: `space_group=`+`crystal_sg` 모드 (rep site 만, QE 가 오빗 전개 — 12k/32f/96g 수기전개 오류 회피). ecutwfc=80 ecutrho=800 mp degauss=0.02 conv_thr=1d-12 k12³ ph 4×4×4 simple.
+- extract.py: **alat→bohr cell fix** (relaxed CELL_PARAMETERS(alat=X) 벡터 ×X → `CELL_PARAMETERS bohr`) — wave-3 `rgen: too many r-vectors` crash 회피. YH6 fixed 패턴 계승.
+- 압력 (kbar): CeH₉=1000(100GPa) · YH₉=2500(250GPa, P6₃/mmc-1 harmonic-stable >250) · YH₁₀=2500(250GPa) · Li₂MgH₁₆=2500(250GPa).
+
+### 발사 상태 — ⛔ TRANSPORT BLOCKED (정직 보고, d2 breakthrough-path 첨부)
+
+| 후보 | deck | d16 dry-run | fire | PID |
+|------|------|-------------|------|-----|
+| CeH9 | ✅ authored+staged | ⛔ BLOCKED | ⛔ | — |
+| YH9  | ✅ authored+staged | ⛔ BLOCKED | ⛔ | — |
+| YH10 | ✅ authored+staged | ⛔ BLOCKED | ⛔ | — |
+| Li2MgH16 | ✅ authored+staged | ⛔ BLOCKED | ⛔ | — |
+
+**원인 (정직)**: pod-2 `ssh9.vast.ai:15988` (contract 38095989) + pod-1 `ssh6.vast.ai:28500`
+(37868501) 둘 다 **vast.ai SSH-proxy outage**. 진단:
+- TCP port OPEN (`nc -zv ssh9.vast.ai 15988` succeeded) — 네트워크/pod 살아있음.
+- vast API contract LIVE (`hexa cloud list` 2 instances).
+- 그러나 SSH handshake `exit 255` — `hexa cloud exec` (cycle A) AND `copy-to` (cycle B) 둘 다,
+  `--insecure` + `--identity ~/.ssh/id_vast_anima` 유무 무관. → vast 게이트웨이 측 SSH 프록시 장애
+  (우리 키/네트워크 문제 아님). cloud-guard 자체가 "Stop retrying" 권고.
+
+**우리 쪽 작업은 100% 완료** — 좌표 조사(환각 0) + deck 4종 author + extract.py alat→bohr fix +
+worktree 영구 저장. transport 만 막힘.
+
+**breakthrough paths (d2, parent/next-agent 용)**:
+1. vast proxy 복구 대기 후 재시도 (`exports/wave3b-decks/FIRE-RUNBOOK.md` §0 probe → §1-5).
+2. pod 이 실제로 죽었으면 deck 은 pod-agnostic — fresh vast pod rent → pseudo+deck 스테이징 → 발사.
+3. pseudo 파일명 해소 (`~/wave3/pseudo/` 의 rrkjus_psl 1.0.0 → 베어 `<El>.UPF` 심링크) = RUNBOOK §1.
+
+**deck SSOT**: `exports/wave3b-decks/{CeH9,YH9,YH10,Li2MgH16}/` + 공용 `extract.py` + `FIRE-RUNBOOK.md`.

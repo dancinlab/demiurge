@@ -1,0 +1,27 @@
+&CONTROL
+  calculation = 'scf'
+  prefix = 'li2mgh16'
+  outdir = './tmp'
+  pseudo_dir = '../pseudo'
+  tprnfor = .true.
+  tstress = .true.
+/
+&SYSTEM
+  ibrav = 0
+  nat = __NAT__
+  ntyp = 3
+  ecutwfc = 80
+  ecutrho = 800
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&ELECTRONS
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Li  6.941    Li.UPF
+  Mg  24.305   Mg.UPF
+  H   1.008    H.UPF

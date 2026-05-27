@@ -1,0 +1,47 @@
+&CONTROL
+  calculation = 'vc-relax'
+  prefix = 'li2mgh16'
+  outdir = './tmp'
+  pseudo_dir = '../pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  nstep = 200
+/
+&SYSTEM
+  ibrav = 1
+  space_group = 227
+  origin_choice = 2
+  A = 6.718513
+  nat = 4
+  ntyp = 3
+  ecutwfc = 80
+  ecutrho = 800
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&ELECTRONS
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+&IONS
+  ion_dynamics = 'bfgs'
+/
+&CELL
+  cell_dynamics = 'bfgs'
+  press = 2500.0
+  cell_factor = 3.0
+/
+ATOMIC_SPECIES
+  Li  6.941    Li.UPF
+  Mg  24.305   Mg.UPF
+  H   1.008    H.UPF
+ATOMIC_POSITIONS crystal_sg
+  Li  0.625000  0.875000  0.875000
+  Mg  0.000000  0.000000  0.000000
+  H   0.833060  0.166940  0.166940
+  H   0.064660  0.245600  0.435340
+K_POINTS automatic
+  12 12 12 0 0 0

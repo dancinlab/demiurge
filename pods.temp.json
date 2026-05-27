@@ -117,7 +117,11 @@
       "jobs": [
         "cabeh8",
         "YH6",
-        "LaBH8"
+        "LaBH8",
+        "CeH9",
+        "YH9",
+        "YH10",
+        "Li2MgH16"
       ],
       "ssh_note": "hexa cloud exec required (cloud-guard blocks raw ssh)"
     },
@@ -482,6 +486,70 @@
       "np": 6,
       "watcher": "b0b3r04yd",
       "hypothesis": "Mg₂IrH₆ polymorph dyn-stability check",
+      "verdict": "PENDING"
+    },
+    "CeH9": {
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "READY-TO-FIRE",
+      "stage": "vc-relax",
+      "np": 6,
+      "dir": "/root/wave3/CeH9",
+      "structure": "P6_3/mmc (#194), ibrav=4 space_group crystal_sg; Ce 2d + H 2b/4f/12k; conv Ce2H18 nat~20",
+      "pressure_kbar": 1000,
+      "pressure_GPa": 100,
+      "anchor_tc_K": 100,
+      "anchor_ref": "Salke 2019 Nat.Commun 10,4453 — synthesized ~100K-class @ 80-100 GPa",
+      "coord_citation": "arxiv 1805.02060 verbatim Table: Ce 2d(2/3,1/3,1/4), H 2b(0,0,1/4), H 4f(1/3,2/3,0.1499), H 12k(0.1565,0.3130,0.4404); a=3.7110 c=5.5429 @100GPa",
+      "dryrun_verdict": "BLOCKED — vast.ai SSH-proxy outage on ssh9.vast.ai:15988 (TCP open, API live, ssh handshake exit 255 for exec+copy-to). Deck authored + staged at demiurge:exports/wave3b-decks/CeH9. See FIRE-RUNBOOK.md.",
+      "hypothesis": "wave-3 lit-known: lowest-pressure RE superhydride (synthesized <100 GPa) — coord-resolved skip-recovery",
+      "verdict": "PENDING"
+    },
+    "YH9": {
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "READY-TO-FIRE",
+      "stage": "vc-relax",
+      "np": 6,
+      "dir": "/root/wave3/YH9",
+      "structure": "P6_3/mmc (#194), ibrav=4 space_group crystal_sg; Y 2d + H 2b/4f/12k = CeH9 H29-clathrate isostructural transfer; conv Y2H18 nat~20",
+      "pressure_kbar": 2500,
+      "pressure_GPa": 250,
+      "anchor_tc_K": 243,
+      "anchor_ref": "Kong 2021 Nat.Commun 12,5075 — measured 243K @ 201 GPa",
+      "coord_citation": "Kong 2021 (243K@201GPa); P6_3/mmc-1 H29-cage isostructural to CeH9 per arxiv 2302.01122 'clathrate ... H29 cage, widely exists in RE superhydrides'. Coords = CeH9 set, Y->2d. Harmonic-stable >250 GPa (2302.01122 Fig S4).",
+      "dryrun_verdict": "BLOCKED — vast.ai SSH-proxy outage (see CeH9). Deck at demiurge:exports/wave3b-decks/YH9.",
+      "hypothesis": "wave-3 lit-known: highest measured RE-binary Tc (243K) — coord-resolved skip-recovery",
+      "verdict": "PENDING"
+    },
+    "YH10": {
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "READY-TO-FIRE",
+      "stage": "vc-relax",
+      "np": 6,
+      "dir": "/root/wave3/YH10",
+      "structure": "Fm-3m (#225) sodalite, ibrav=1 space_group crystal_sg; Y 4a(0,0,0) + H 8c(1/4,1/4,1/4) + H 32f(x,x,x) x=0.375; prim YH10 nat~11",
+      "pressure_kbar": 2500,
+      "pressure_GPa": 250,
+      "anchor_tc_K": 303,
+      "anchor_ref": "Liu/Peng/Ma 2017 PNAS 114,6990 — predicted ~303K @ 400 GPa",
+      "coord_citation": "Liu/Peng 2017 PNAS (pred 303K@400GPa); LaH10-isostructural sodalite (Errea 2020 Nature). 32f single free param x=0.375 (H8-cube; lit 0.12=0.5-0.375 partner). vc-relax refines.",
+      "dryrun_verdict": "BLOCKED — vast.ai SSH-proxy outage (see CeH9). Deck at demiurge:exports/wave3b-decks/YH10.",
+      "hypothesis": "wave-3 lit-known: room-T-class sodalite clathrate — coord-resolved skip-recovery",
+      "verdict": "PENDING"
+    },
+    "Li2MgH16": {
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "READY-TO-FIRE",
+      "stage": "vc-relax",
+      "np": 6,
+      "dir": "/root/wave3/Li2MgH16",
+      "structure": "Fd-3m (#227, origin 2), ibrav=1 space_group crystal_sg; Li 16c + Mg 8b + H 32e + H 96g; prim Li2MgH16 nat~38",
+      "pressure_kbar": 2500,
+      "pressure_GPa": 250,
+      "anchor_tc_K": 473,
+      "anchor_ref": "Sun 2019 PRL 123,097001 — predicted 473K @ 250 GPa (highest predicted Tc)",
+      "coord_citation": "Sun 2019 PRL (pred 473K@250GPa); coords verbatim Table S1 of arxiv 2305.04875 (solid phase, a=6.718513): Li 16c(0.625,0.875,0.875), Mg 8b(0,0,0), H 32e(0.83306,0.16694,0.16694), H 96g(0.06466,0.24560,0.43534). origin_choice=2 first guess; flip to 1 if dry-run atom-count mismatch.",
+      "dryrun_verdict": "BLOCKED — vast.ai SSH-proxy outage (see CeH9). Deck at demiurge:exports/wave3b-decks/Li2MgH16.",
+      "hypothesis": "wave-3 lit-known: highest predicted Tc ternary (473K) — coord-resolved skip-recovery",
       "verdict": "PENDING"
     }
   },

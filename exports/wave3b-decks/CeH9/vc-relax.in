@@ -1,0 +1,46 @@
+&CONTROL
+  calculation = 'vc-relax'
+  prefix = 'ceh9'
+  outdir = './tmp'
+  pseudo_dir = '../pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  nstep = 200
+/
+&SYSTEM
+  ibrav = 4
+  space_group = 194
+  A = 3.7110
+  C = 5.5429
+  nat = 4
+  ntyp = 2
+  ecutwfc = 80
+  ecutrho = 800
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&ELECTRONS
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+&IONS
+  ion_dynamics = 'bfgs'
+/
+&CELL
+  cell_dynamics = 'bfgs'
+  press = 1000.0
+  cell_factor = 3.0
+/
+ATOMIC_SPECIES
+  Ce  140.116  Ce.UPF
+  H   1.008    H.UPF
+ATOMIC_POSITIONS crystal_sg
+  Ce  0.666667  0.333333  0.250000
+  H   0.000000  0.000000  0.250000
+  H   0.333333  0.666667  0.149900
+  H   0.156500  0.313000  0.440400
+K_POINTS automatic
+  12 12 12 0 0 0

@@ -1,0 +1,44 @@
+&CONTROL
+  calculation = 'vc-relax'
+  prefix = 'yh10'
+  outdir = './tmp'
+  pseudo_dir = '../pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  nstep = 200
+/
+&SYSTEM
+  ibrav = 1
+  space_group = 225
+  A = 4.7500
+  nat = 3
+  ntyp = 2
+  ecutwfc = 80
+  ecutrho = 800
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&ELECTRONS
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+&IONS
+  ion_dynamics = 'bfgs'
+/
+&CELL
+  cell_dynamics = 'bfgs'
+  press = 2500.0
+  cell_factor = 3.0
+/
+ATOMIC_SPECIES
+  Y   88.906  Y.UPF
+  H   1.008   H.UPF
+ATOMIC_POSITIONS crystal_sg
+  Y   0.000000  0.000000  0.000000
+  H   0.250000  0.250000  0.250000
+  H   0.375000  0.375000  0.375000
+K_POINTS automatic
+  12 12 12 0 0 0
