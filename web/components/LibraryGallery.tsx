@@ -80,14 +80,22 @@ export function LibraryGallery() {
               composes: {e.composes.join(" · ")}
             </p>
           )}
-          <button
-            type="button"
-            disabled={!e.fork_ok || forking === e.id}
-            onClick={() => fork(e.id)}
-            className="mt-auto rounded border border-blue-500 px-3 py-1 text-xs text-blue-600 disabled:opacity-50 hover:bg-blue-50 dark:hover:bg-blue-950"
-          >
-            {forking === e.id ? "fork 중…" : authed ? "🍴 fork" : "🔑 sign in to fork"}
-          </button>
+          <div className="mt-auto flex gap-2">
+            <a
+              href={`/structure/${e.composes[0] ?? e.id}`}
+              className="flex-1 rounded border border-neutral-400 px-3 py-1 text-center text-xs text-neutral-700 hover:bg-neutral-50 dark:border-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-800"
+            >
+              👁 둘러보기
+            </a>
+            <button
+              type="button"
+              disabled={!e.fork_ok || forking === e.id}
+              onClick={() => fork(e.id)}
+              className="flex-1 rounded border border-blue-500 px-3 py-1 text-xs text-blue-600 disabled:opacity-50 hover:bg-blue-50 dark:hover:bg-blue-950"
+            >
+              {forking === e.id ? "fork 중…" : authed ? "🍴 fork" : "🔑 sign in to fork"}
+            </button>
+          </div>
         </article>
       ))}
     </div>
