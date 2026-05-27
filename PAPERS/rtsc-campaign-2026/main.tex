@@ -203,6 +203,47 @@ in the rubric below; the verbatim verdict is printed inline so a reader can
 read the tier without re-running. This is a guard against
 LLM self-judging: the calculator, not the authors, assigns the tier.
 
+\section{Closed-form verification identities}
+\label{sec:identities}
+
+The campaign rests on seven closed-form superconductivity identities, each
+recomputed by the \texttt{hexa verify} libm-class calculator. We list them
+here because the verification surface is itself a result: when the calculator
+\emph{lacked} these functions (the V2 stage, \S\ref{sec:vseries}), the honest
+verdict was \tierOrange\ INSUFFICIENT for all seven --- a gap that was named
+before it was closed, not silently treated as support.
+
+\begin{enumerate}\itemsep0.3em
+\item \textbf{Allen--Dynes $T_c$} (Eq.~\eqref{eq:ad}). The
+  $(\lambda,\omega_{\log},\mu^\ast)\to T_c$ map used for every candidate.
+  Limits: $\lambda\to0\Rightarrow T_c\to0$; $\lambda\to\infty\Rightarrow
+  T_c\to0.295\,\omega_{\log}$ (saturation); $\mu^\ast>\lambda/(1+0.62\lambda)
+  \Rightarrow$ no superconductivity (denominator sign change).
+\item \textbf{McMillan $T_c$}: the Allen--Dynes precursor with
+  $\omega_{\log}\to\Theta_D/1.45$; identical exponential, more conservative
+  prefactor.
+\item \textbf{BCS gap ratio} $2\Delta(0)/k_BT_c = 2\pi e^{-\gamma_E} = 3.528$,
+  the weak-coupling universal constant ($\gamma_E$ = Euler--Mascheroni).
+  Strong-coupling hydrides deviate upward ($\approx4.8$ for \ce{H3S}), which
+  the ratio correctly predicts.
+\item \textbf{Eliashberg $\lambda$} $= 2\int_0^\infty \alpha^2F(\omega)/\omega
+  \,d\omega$, the inverse-frequency moment of the spectral function.
+\item \textbf{$\omega_{\log}$ moment} $= \exp[(2/\lambda)\int
+  \alpha^2F\,\omega^{-1}\ln\omega\,d\omega]$, the logarithmic phonon average.
+\item \textbf{Migdal adiabatic ratio} $r = \omega_{\mathrm{ph,max}}/E_F$;
+  the DFT electron--phonon treatment is valid only for $r\ll1$ (\ce{H3O}:
+  $r\approx0.025$, safe).
+\item \textbf{Anharmonic margins} $S$ and $m$ (Appendix~\ref{app:D}), the two
+  novel primitives that quantify the N5 wall.
+\end{enumerate}
+
+\noindent The BCS universal constant verifies to libm precision (g5):
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=0pt]
+$ hexa verify --expr bcs_gap_ratio 3.528 --tol 0.001
+  calc   = 3.52775  ~= expected 3.528  (within tol 0.001, |D|=0.000246022)
+  tier   = GREEN SUPPORTED-NUMERICAL  (2*pi*exp(-gamma_Euler))
+\end{lstlisting}
+
 % =========================================================================
 \section{Full Pipeline}
 \label{sec:pipeline}
@@ -310,6 +351,31 @@ The closed-form N5-wall margins (Appendix~\ref{app:D}) are likewise
 falsified negative controls, are in the appendices and in
 \texttt{companion/verify-ledger.json}.
 
+\section{Verification escalation (V1$\to$V4)}
+\label{sec:vseries}
+
+The tier assignments in this monograph are the endpoint of a four-step
+escalation, recorded because the intermediate honest gap is itself a result.
+\begin{enumerate}\itemsep0.25em
+\item \textbf{V1 (inventory).} 52 campaign claims triaged into the six tiers
+  by inspection, with no recompute.
+\item \textbf{V2 (replay).} An attempt to recompute the superconductivity
+  claims found the calculator had \emph{zero} electron--phonon functions ---
+  $7/7$ identities landed at \tierOrange\ INSUFFICIENT. This was recorded as
+  an honest gap, with the explicit path forward (add the seven functions),
+  not laundered into false support.
+\item \textbf{V3 (recompute).} After the six supercon primitives were added,
+  the V2 gap closed: $15/15$ Allen--Dynes $T_c$ claims recompute to libm
+  precision, all \tierGreen.
+\item \textbf{V4 (ledger).} The unified register
+  (Appendix~\ref{app:G}, Tab.~\ref{tab:tiers}).
+\end{enumerate}
+The discipline here is that a verification surface with no calculator path is
+honestly INSUFFICIENT (\tierOrange), never silently SUPPORTED. The same
+discipline governs the \texttt{absorbed} flag: it is \texttt{false} not
+because measurement is merely pending, but because the non-wet-lab gate
+itself ($T_c\ge\SI{270}{\kelvin}$ ambient) is unmet (\S\ref{sec:limits}).
+
 \section{Results}
 \label{sec:results}
 
@@ -402,12 +468,28 @@ are the 2/2-falsified $X_2MH_6$ ternaries.}
 \section{Reproducibility}
 \label{sec:repro}
 
-Code: \url{https://github.com/dancinlab/<repo>}. Data: \texttt{companion/}
-(\texttt{verify-ledger.json}, \texttt{pr-roll.json},
-\texttt{session-journal.md}, \texttt{adapter-defect-catalog.json}).
-Build: \texttt{make} (xelatex \(\times 3\) + bibtex). Figures: \texttt{make figures}.
-Word count: \texttt{make wordcount}. Page count: \texttt{make pages}.
-Lint: \texttt{make lint}. Arxiv tarball: \texttt{make arxiv-tar}.
+Code and campaign records: \url{https://github.com/dancinlab/demiurge}
+(\texttt{domains/RTSC/}). Verified verdicts:
+\texttt{companion/verify-ledger.json} --- every $T_c$ in this monograph as a
+\texttt{(expr, expected, computed, tol, tier)} tuple reproducible with
+\texttt{hexa verify --expr <expr> <expected> [--tol <eps>]}. DFT records:
+\texttt{exports/material\_discovery/*.json} (per-candidate $\lambda$,
+$\omega_{\log}$, per-$q$ \texttt{min\_freq} census). Pre-registered
+falsifiers: \texttt{falsifiers/F-N6.md} (the R4-integrity surface). Wall
+quantification: \texttt{verify/V5\_stability\_coupling\_wall.md}. Build:
+\texttt{make} (xelatex $\times3$ + bibtex). Figures: native TikZ/pgfplots
+(no Python dependency) plus the fal.ai frontier render. Lint: \texttt{make
+lint} (commons g51). Arxiv tarball: \texttt{make arxiv-tar}.
+
+\medskip
+\noindent\textbf{How to re-verify a headline number.} The
+\SI{158}{\kelvin} \ce{H3Br} record is one command:
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=0pt]
+$ hexa verify --expr allen_dynes_tc 2.156 1046 0.10 158.06 --tol 0.01
+\end{lstlisting}
+returning \tierGreen\ SUPPORTED-NUMERICAL. The DFT inputs
+$(\lambda_{\mathrm{BZ}}=2.156, \omega_{\log}=\SI{1046}{\kelvin})$ are the
+companion record's; the closed-form map is exact.
 
 \section{Conclusion}
 \label{sec:conclusion}

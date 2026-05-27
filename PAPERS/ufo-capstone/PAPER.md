@@ -1,0 +1,11 @@
+# ufo-capstone — paper status
+
+@title: 📄 🛸 UFO --- Integrated Single-Seat Vehicle: a 4-Domain Capstone of Verify-Nativ...
+@goal: TODO — declare paper goal in one line (one outcome, one sentence)
+
+- [ ] draft v1
+- [ ] figures complete (≥1 fal.ai-generated)
+- [ ] references ≥10 (`/paper bib add <doi-or-arxiv>`)
+- [ ] lint pass (`/paper lint .`)
+- [ ] compile clean (`/paper compile .`)
+- [ ] arxiv submit ready (`/paper arxiv-prep .`)

@@ -25,7 +25,7 @@
 - [x] X7 교수님 handoff package (DOCTOR feed) — 4 트랙 통합 1-page executive + 즉시/6m/3y timeline → `CARDIO+/X7_doctor_feed.md` (thesis: mPTP=mis-delivered · H1/H7/H8/H10 즉시 채움)
 - [x] X8 cross-domain g5 grade ledger — 모든 영역 🔵 trajectory + 🟢 NUMERICAL 합산 + ⚪ fence + 🔴 falsified 통합 → `CARDIO+/X8_grade_ledger.md` (🔵1·🟢43·🟡~215·🟠45·🔴5·⚪31 · 강근거 44→~67-97)
 - [x] X9 cross-domain d2 wall map — 4 sub-domain 각 wall + 돌파 path 시너지 (예: ALDH2*2 × Lp(a) × CYP2C19 stratification 통합) → `CARDIO+/X9_wall_map.md` (18 wall · 최고 leverage=bio-verify-kernel phase2 PR + 3-axis 패널)
-- [x] X10 paper-ready — arxiv-style 통합 논문 `CARDIO+/PAPER/main.pdf` (10 pages · TikZ Fig1 + fal graphical abstract · 6 표 · 14 refs · g51 ✅) + `CARDIO+/PAPER/{main.tex,README.md}`
+- [x] X10 paper-ready — arxiv-style 통합 논문 `PAPERS/cardio-plus-postpci/main.pdf` (10 pages · TikZ Fig1 + fal graphical abstract · 6 표 · 14 refs · g51 ✅) + `PAPERS/cardio-plus-postpci/{main.tex,README.md}` (2026-05-27 PAPERS/ 로스터로 이관)
 - [x] X11 통합 layered-care 프로토콜 — 4축을 채혈 1회 3-axis 패널서 분기하는 단일 침상 결정흐름 (1 패널 → 6 wall 동시 stratify) → `CARDIO+/X11_layered_care.md`
 - [x] X12 4-trial MCDA 우선순위 — B DAPT-PGx-K 1위(4.60, 5/5 민감도 robust) ▸ A ▸ D ▸ C · 가중치 ⚪ proposal → `CARDIO+/X12_trial_mcda.md`
 - [x] X13 red-team falsification — 8 claim 적대검정 (survives 2·weakened 4·🔴-flip 후보 1) · thesis "mis-delivered" hedge 권고 · numerical→causal over-read 최대 취약 · gradedown 0 → `CARDIO+/X13_redteam.md`
