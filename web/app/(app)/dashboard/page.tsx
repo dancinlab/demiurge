@@ -15,7 +15,9 @@ import { DashboardSummary } from "@/components/DashboardSummary";
 export const dynamic = "force-dynamic";
 
 // Lucide outline path (subset for dashboard verb chips · same as VerbTreeNav).
+// Lucide outline path subset for dashboard verb chips. discover 가 최상단.
 const VERB_PATHS: Record<string, string> = {
+  discover:  "M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z",
   spec:      "M14 3v4a1 1 0 0 0 1 1h4M5 8V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-3M9 12h6M9 16h4",
   structure: "M3 7l9-4 9 4-9 4-9-4zM3 12l9 4 9-4M3 17l9 4 9-4",
   analyze:   "M3 3v18h18M7 16V9M12 16V5M17 16v-5",
@@ -100,6 +102,7 @@ export default async function DashboardPage({
             active · {active.name}
           </h2>
           <div className="flex flex-wrap gap-2 text-xs">
+            <VerbChip verb="discover"  label="discover"  domain={active.name} />
             <VerbChip verb="spec"      label="spec"      domain={active.name} />
             <VerbChip verb="structure" label="structure" domain={active.name} />
             <VerbChip verb="analyze"   label="analyze"   domain={active.name} />
