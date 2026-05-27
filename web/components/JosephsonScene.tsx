@@ -12,18 +12,19 @@ const JosephsonR3F = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="grid h-full w-full place-items-center text-xs text-neutral-500">
+      <div className="grid h-full w-full place-items-center text-xs text-muted">
         🧊 loading 3D…
       </div>
     ),
   },
 );
 
+// ElevenLabs 팔레트 (DESIGN_TOKENS.md 동기) — 웜 뉴트럴 + orb-peach 단일 하이라이트.
 const FALLBACK_ATOMS: Atom3D[] = [
-  { x: 0, y: 1.8, z: 0.2, color: "#cbd5e1" },
-  { x: 0, y: 0.8, z: 0.5, color: "#f59e0b", label: "AlOx" },
-  { x: 0, y: -0.2, z: 0.3, color: "#94a3b8" },
-  { x: 3.2, y: 1.0, z: 0.3, color: "#3b82f6", label: "readout" },
+  { x: 0, y: 1.8, z: 0.2, color: "#d6d3d1" },
+  { x: 0, y: 0.8, z: 0.5, color: "#f4c5a8", label: "AlOx" },
+  { x: 0, y: -0.2, z: 0.3, color: "#a8a29e" },
+  { x: 3.2, y: 1.0, z: 0.3, color: "#292524", label: "readout" },
 ];
 
 export function JosephsonScene() {
