@@ -41,8 +41,9 @@ export async function forkPublicDomain(
   if (composes.includes("qubit") || sourceId.startsWith("qubit")) {
     await seedQubitDemo(uid);
   } else {
-    // Minimal scaffold for non-qubit sources (HBM etc.) — 7 todo records.
-    const verbs = ["spec", "structure", "design", "analyze", "synth", "verify", "handoff"];
+    // Minimal scaffold for non-qubit sources (HBM etc.) — 8 todo records.
+    // discover 최상단 (모든 작업의 시작점) + 7-verb pipeline.
+    const verbs = ["discover", "spec", "structure", "design", "analyze", "synth", "verify", "handoff"];
     for (const v of verbs) {
       await setDoc(`${base}/records/${v}`, {
         verb: v,
