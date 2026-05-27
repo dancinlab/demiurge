@@ -59,7 +59,14 @@
     "tier_org": "Org",
     "start_label": "开始 {tier}",
     "signin_first": "登录后开始",
-    "footer": "订阅费仅包含 seat + 产品访问。GPU/TPU 算力运行在 Google Cloud(Vertex AI · Cloud Run · GKE)上，按实际用量另行计费 — 不使用 RunPod · Vast.ai · 任何第三方 GPU 中介。"
+    "footer": "订阅费仅包含 seat + 产品访问。GPU/TPU 算力运行在 Google Cloud(Vertex AI · Cloud Run · GKE)上，按实际用量另行计费 — 不使用 RunPod · Vast.ai · 任何第三方 GPU 中介。",
+    "gcp_label": "算力用量",
+    "gcp_title": "GCP 公开价格",
+    "gcp_subtitle": "公开 list price，us-central1。Google 直接计费 — 因区域、持续使用折扣、承诺使用折扣、免费额度而异。",
+    "gcp_col_resource": "资源",
+    "gcp_col_unit": "单位",
+    "gcp_col_price": "USD",
+    "gcp_disclaimer": "参考快照。最新价格：cloud.google.com/pricing。discover 阶段用量通常在免费额度内。"
   },
   "common": {
     "loading": "加载中...",

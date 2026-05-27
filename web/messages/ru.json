@@ -59,7 +59,14 @@
     "tier_org": "Org",
     "start_label": "Начать {tier}",
     "signin_first": "Войти, чтобы начать",
-    "footer": "Стоимость подписки покрывает seat + доступ к продукту. GPU/TPU-вычисления выполняются в Google Cloud (Vertex AI · Cloud Run · GKE) и оплачиваются по фактическому потреблению — никаких RunPod · Vast.ai · сторонних GPU-брокеров."
+    "footer": "Стоимость подписки покрывает seat + доступ к продукту. GPU/TPU-вычисления выполняются в Google Cloud (Vertex AI · Cloud Run · GKE) и оплачиваются по фактическому потреблению — никаких RunPod · Vast.ai · сторонних GPU-брокеров.",
+    "gcp_label": "ИСПОЛЬЗОВАНИЕ COMPUTE",
+    "gcp_title": "Публичные цены GCP",
+    "gcp_subtitle": "Публичные list price, us-central1. Счёт выставляет Google напрямую — варьируется в зависимости от региона, sustained-use, committed-use и бесплатной квоты.",
+    "gcp_col_resource": "РЕСУРС",
+    "gcp_col_unit": "ЕДИНИЦА",
+    "gcp_col_price": "USD",
+    "gcp_disclaimer": "Снимок для справки. Актуальные цены: cloud.google.com/pricing. Бесплатная квота покрывает большинство задач на этапе discover."
   },
   "common": {
     "loading": "загрузка...",

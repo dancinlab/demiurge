@@ -107,6 +107,60 @@ export default async function PricingPage() {
           })}
         </section>
 
+        {/* GCP compute usage table — public list prices, us-central1.
+            Billed directly by Google (not by demiurge). */}
+        <section className="mt-20">
+          <div className="border-y-4 border-white py-2 text-xs uppercase" style={{ letterSpacing: "0.4em" }}>
+            GCP&nbsp;&nbsp;//&nbsp;&nbsp;{t(m, "pricing.gcp_label")}
+          </div>
+          <h2 className="mt-8 text-4xl font-black uppercase leading-[0.9] tracking-tighter">
+            {t(m, "pricing.gcp_title")}
+            <span className="text-yellow-300">.</span>
+          </h2>
+          <p className="mt-4 max-w-2xl border-l-4 border-white pl-4 text-xs uppercase tracking-wide text-white/70">
+            {t(m, "pricing.gcp_subtitle")}
+          </p>
+
+          <div className="mt-8 border-4 border-white">
+            <div className="grid grid-cols-[1fr_auto_auto] items-center border-b-4 border-white bg-yellow-300 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-black">
+              <span>{t(m, "pricing.gcp_col_resource")}</span>
+              <span className="px-6">{t(m, "pricing.gcp_col_unit")}</span>
+              <span className="text-right">{t(m, "pricing.gcp_col_price")}</span>
+            </div>
+            {[
+              { resource: "Gemini 2.5 Flash",   unit: "per 1M tokens",  price: "$0.20 / $0.70",  note: "input / output · Vertex AI" },
+              { resource: "Gemini 2.5 Pro",     unit: "per 1M tokens",  price: "$1.25 / $5.00",  note: "input / output · Vertex AI" },
+              { resource: "Cloud Run vCPU",     unit: "per vCPU-hour",  price: "$0.0864",        note: "per-second billing, scale-to-zero" },
+              { resource: "GPU · L4 (24 GB)",   unit: "per hour",       price: "$0.71",          note: "inference · lighter training" },
+              { resource: "GPU · A100 (40 GB)", unit: "per hour",       price: "$3.67",          note: "training · heavy inference" },
+              { resource: "GPU · H100 (80 GB)", unit: "per hour",       price: "$11.06",         note: "large-scale training · LLM finetune" },
+              { resource: "TPU v5e",            unit: "per chip-hour",  price: "$1.20",          note: "inference-optimized" },
+              { resource: "TPU v5p",            unit: "per chip-hour",  price: "$4.20",          note: "training-optimized" },
+              { resource: "BigQuery",           unit: "per TB scanned", price: "$5.00",          note: "on-demand · or flat-rate slots" },
+              { resource: "Cloud Storage",      unit: "per GB-month",   price: "$0.020",         note: "standard class, us-central1" },
+            ].map((row, i, arr) => (
+              <div
+                key={row.resource}
+                className={
+                  "grid grid-cols-[1fr_auto_auto] items-center px-4 py-3 text-xs uppercase tracking-wide " +
+                  (i < arr.length - 1 ? "border-b border-white/30 " : "")
+                }
+              >
+                <div>
+                  <div className="font-black text-white">{row.resource}</div>
+                  <div className="mt-0.5 text-[10px] normal-case tracking-normal text-white/50">{row.note}</div>
+                </div>
+                <span className="px-6 text-white/70">{row.unit}</span>
+                <span className="text-right font-black text-yellow-300">{row.price}</span>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-4 text-[10px] uppercase tracking-wide text-white/50">
+            {t(m, "pricing.gcp_disclaimer")}
+          </p>
+        </section>
+
         <footer className="mt-12 border-t-4 border-white pt-4 text-xs uppercase tracking-wide text-white/70">
           {t(m, "pricing.footer")}
         </footer>
