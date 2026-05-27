@@ -61,29 +61,29 @@ export function LibraryGallery() {
   }
 
   if (error) return <div className="text-red-500">{error}</div>;
-  if (!entries.length) return <div className="text-neutral-500">로딩…</div>;
+  if (!entries.length) return <div className="text-slate-500">로딩…</div>;
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {entries.map((e) => (
         <article
           key={e.id}
-          className="flex flex-col rounded border border-neutral-300 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+          className="flex flex-col rounded-[10px] border border-slate-200 bg-white p-4"
         >
           <h3 className="text-lg font-bold">{e.subject}</h3>
-          <p className="mt-1 text-xs text-neutral-500">
+          <p className="mt-1 text-xs text-slate-500">
             {e.curator} · v{e.version} · {e.license}
           </p>
           <p className="mt-2 text-sm">{e.status}</p>
           {e.composes.length > 1 && (
-            <p className="mt-1 text-xs text-neutral-500">
+            <p className="mt-1 text-xs text-slate-500">
               composes: {e.composes.join(" · ")}
             </p>
           )}
           <div className="mt-auto flex gap-2">
             <a
               href={`/structure/${e.composes[0] ?? e.id}`}
-              className="flex-1 rounded border border-neutral-400 px-3 py-1 text-center text-xs text-neutral-700 hover:bg-neutral-50 dark:border-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-800"
+              className="flex-1 rounded-[10px] border border-slate-300 px-3 py-1 text-center text-xs text-slate-600 hover:bg-slate-50"
             >
               👁 둘러보기
             </a>
@@ -91,7 +91,7 @@ export function LibraryGallery() {
               type="button"
               disabled={!e.fork_ok || forking === e.id}
               onClick={() => fork(e.id)}
-              className="flex-1 rounded border border-blue-500 px-3 py-1 text-xs text-blue-600 disabled:opacity-50 hover:bg-blue-50 dark:hover:bg-blue-950"
+              className="flex-1 rounded-[10px] border border-slate-900 px-3 py-1 text-xs text-slate-900 disabled:opacity-50 hover:bg-slate-100"
             >
               {forking === e.id ? "fork 중…" : authed ? "🍴 fork" : "🔑 sign in to fork"}
             </button>
