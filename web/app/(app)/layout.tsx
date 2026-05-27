@@ -56,10 +56,10 @@ export default async function AppLayout({
 
   return (
     <ThemeProvider>
-      {/* ElevenLabs 톤: 페이지=canvas(웜 그레이) · 흰 카드가 떠보임. 좌 흰 레일 | 우 컬럼 */}
+      {/* ElevenLabs 톤(Create 페이지): 좌 레일=canvas(웜 그레이 틴트) | 우 메인=surface(흰색) */}
       <div className="flex h-screen bg-canvas text-ink antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
-        {/* 좌: 세로 전체 흰 레일 — verb(상단) + 요리선생 채팅(하단). hairline 으로 우측과 구분 */}
-        <aside className="flex w-72 shrink-0 flex-col border-r border-hairline bg-surface">
+        {/* 좌: 세로 전체 레일 — canvas 틴트 배경. verb(상단) + 요리선생 채팅(하단). hairline 으로 우측과 구분 */}
+        <aside className="flex w-72 shrink-0 flex-col border-r border-hairline bg-canvas">
           <div className="shrink-0 p-2">
             <VerbTreeNav domain={activeDomain ?? undefined} i18n={i18n} />
           </div>
@@ -72,10 +72,10 @@ export default async function AppLayout({
             />
           </div>
         </aside>
-        {/* 우: TopBar(메인 상단) + main */}
-        <div className="flex min-w-0 flex-1 flex-col">
+        {/* 우: TopBar(메인 상단) + main — 흰색 surface 컬럼 */}
+        <div className="flex min-w-0 flex-1 flex-col bg-surface">
           <TopBar user={safeUser} activeDomain={activeDomain} i18n={i18n} />
-          <main className="min-h-0 flex-1 overflow-auto p-6">
+          <main className="min-h-0 flex-1 overflow-auto bg-surface p-6">
             {children}
           </main>
         </div>
