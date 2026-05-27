@@ -9,11 +9,11 @@ export function SpecForm({ domain, target }: { domain: string; target?: Record<s
   const fields = target ?? { goal: `${domain} target`, eta: "TBD" };
   return (
     <div className="space-y-2 text-sm">
-      <div className="flex items-center gap-2 text-xs uppercase text-neutral-500">📜 spec form</div>
-      <dl className="grid grid-cols-2 gap-1 rounded border border-neutral-300 p-3 dark:border-neutral-700">
+      <div className="flex items-center gap-2 text-xs uppercase text-slate-500">📜 spec form</div>
+      <dl className="grid grid-cols-2 gap-1 rounded-[6px] border border-slate-200 p-3">
         {Object.entries(fields).map(([k, v]) => (
           <div key={k} className="contents">
-            <dt className="text-neutral-500">{k}</dt>
+            <dt className="text-slate-500">{k}</dt>
             <dd className="font-mono">{String(v)}</dd>
           </div>
         ))}
@@ -31,13 +31,13 @@ export function DesignSchematic({ nodes }: { nodes?: string[] }) {
         const x = 20 + i * 95;
         return (
           <g key={n}>
-            <rect x={x} y={30} width={80} height={40} rx={4} className="fill-blue-100 stroke-blue-500 dark:fill-blue-950" />
-            <text x={x + 40} y={55} textAnchor="middle" className="fill-neutral-900 dark:fill-neutral-100 text-[11px] font-mono">{n}</text>
-            {i < items.length - 1 && <path d={`M ${x + 80} 50 L ${x + 95} 50`} className="stroke-neutral-500" markerEnd="url(#arr)" />}
+            <rect x={x} y={30} width={80} height={40} rx={4} className="fill-slate-100 stroke-slate-400" />
+            <text x={x + 40} y={55} textAnchor="middle" className="fill-slate-900 text-[11px] font-mono">{n}</text>
+            {i < items.length - 1 && <path d={`M ${x + 80} 50 L ${x + 95} 50`} className="stroke-slate-500" markerEnd="url(#arr)" />}
           </g>
         );
       })}
-      <defs><marker id="arr" markerWidth={6} markerHeight={6} refX={5} refY={3} orient="auto"><path d="M0,0 L6,3 L0,6 Z" className="fill-neutral-500" /></marker></defs>
+      <defs><marker id="arr" markerWidth={6} markerHeight={6} refX={5} refY={3} orient="auto"><path d="M0,0 L6,3 L0,6 Z" className="fill-slate-500" /></marker></defs>
     </svg>
   );
 }
@@ -54,8 +54,8 @@ export function AnalyzeChart({ series }: { series?: Array<{ label: string; value
         return (
           <g key={d.label}>
             <rect x={x} y={100 - h} width={50} height={h} className="fill-green-400 stroke-green-700" />
-            <text x={x + 25} y={115} textAnchor="middle" className="fill-neutral-700 dark:fill-neutral-300 text-[10px]">{d.label}</text>
-            <text x={x + 25} y={100 - h - 4} textAnchor="middle" className="fill-neutral-900 dark:fill-neutral-100 text-[10px] font-mono">{d.value.toFixed(2)}</text>
+            <text x={x + 25} y={115} textAnchor="middle" className="fill-slate-600 text-[10px]">{d.label}</text>
+            <text x={x + 25} y={100 - h - 4} textAnchor="middle" className="fill-slate-900 text-[10px] font-mono">{d.value.toFixed(2)}</text>
           </g>
         );
       })}
@@ -69,8 +69,8 @@ export function RecipeLadder({ steps }: { steps?: string[] }) {
   return (
     <ol className="space-y-1 text-sm">
       {items.map((s, i) => (
-        <li key={i} className="flex items-center gap-2 rounded border border-neutral-300 bg-neutral-50 px-2 py-1 dark:border-neutral-700 dark:bg-neutral-900">
-          <span className="rounded bg-orange-100 px-1.5 py-0.5 text-xs font-mono text-orange-800 dark:bg-orange-900 dark:text-orange-200">{i + 1}</span>
+        <li key={i} className="flex items-center gap-2 rounded-[6px] border border-slate-200 bg-slate-50 px-2 py-1">
+          <span className="rounded-[6px] bg-slate-900 px-1.5 py-0.5 text-xs font-mono text-white">{i + 1}</span>
           <span>{s}</span>
         </li>
       ))}
@@ -89,7 +89,7 @@ export function VerdictMatrix({ rows }: { rows?: Array<{ claim: string; tier: "�
     <table className="w-full text-sm">
       <tbody>
         {data.map((r, i) => (
-          <tr key={i} className="border-b border-neutral-200 dark:border-neutral-800">
+          <tr key={i} className="border-b border-slate-200">
             <td className="py-1 pr-2 text-2xl">{r.tier}</td>
             <td className="py-1 font-mono text-xs">{r.claim}</td>
           </tr>
