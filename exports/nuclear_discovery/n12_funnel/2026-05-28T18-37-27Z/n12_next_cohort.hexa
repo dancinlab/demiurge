@@ -1,0 +1,83 @@
+// n12_next_cohort.hexa — NUCLEAR N12 funnel: next-cohort SHE candidate sweep.
+//
+// Sibling of the N11 G4 `_write_n11_novel_topk` slice (sim.hexa@nuclear-N11-G4),
+// extended to the Z=119/120 isotopes NOT covered by N11 (N11 scored only
+// 293/295-119 + 295/297-120). N12 sweeps the neutron-rich tail toward the
+// predicted N≈184 island using CITED Q_alpha from arxiv:1706.04068 (WS4
+// primary; KTUY05 where W4 unavailable). Every cell traverses the same
+// install-FREE (c)-gate WKB/Geiger-Nuttall scorer the N11 funnel used —
+// `n11_island_cell_checked` (NC1 Viola-Seaborg + NC2 Royer + C1 alpha⊕SF
+// total + C2 island_weight Gaussian). NO fabrication: only cells with a
+// cited numeric Q_alpha band are scored (§3.3); Z=121/122 + N=184-region
+// cells with no cited Q_alpha stay honest-skipped.
+//
+// R4 invariant: gate_type=nuclear-novel-discovery-simulation · absorbed=false
+// 영구 (sim PASS = accelerator beam-time priority hint, NEVER a discovery).
+//
+// Run:  hexa run n12_next_cohort.hexa
+// Output: stdout panel (name · L_total · c_total · island_weight · composite
+//         · dominant channel · model_validity) — parsed by the harvester
+//         into top_k_next.json (NUCLEAR.md §6.1 / G4 schema mirror).
+
+import "stdlib/nuclear/sim.hexa"
+
+// Accelerator band [lo,hi]=[-6,3] log10 s (identical to N11 main / G4).
+let band_lo = 0.0 - 6.0
+let band_hi = 3.0
+let sigma = 6.0
+
+// One next-cohort cell: (Z,N,A,Q_alpha) → island-weighted (c)-gate composite.
+// Mirrors _emit_she in sim.hexa but emits a stable machine-parsable line.
+fn n12_row(name: string, Z: int, N: int, A: int, Q_alpha_MeV: float) {
+    let s = n11_island_cell_checked(Z, N, A, Q_alpha_MeV, band_lo, band_hi, sigma)
+    let mv = _model_validity_code(Z, N)
+    let mut dom = "alpha"
+    if s.sf_dominates == 1 { dom = "SF" }
+    let mut sfinv = "false"
+    if s.sf_model_invalid == 1 { sfinv = "true" }
+    println("ROW|" + name +
+            "|Z=" + to_string(Z) +
+            "|N=" + to_string(N) +
+            "|A=" + to_string(A) +
+            "|Qa=" + to_string(Q_alpha_MeV) +
+            "|valid=" + to_string(s.valid) +
+            "|reason=" + _anz_reason_str(s.reason) +
+            "|Ltotal=" + to_string(s.log10_T_total_s) +
+            "|balpha=" + to_string(s.alpha_branching) +
+            "|ctotal=" + to_string(s.c_total_score) +
+            "|island=" + to_string(s.island_weight) +
+            "|composite=" + to_string(s.composite_score) +
+            "|dom=" + dom +
+            "|sf_model_invalid=" + sfinv +
+            "|mv=" + _model_validity_str(mv))
+}
+
+println("== NUCLEAR N12 next-cohort funnel (cited Q_alpha · arxiv:1706.04068 WS4/KTUY05) ==")
+println("== install-FREE (c)-gate: NC1 Viola-Seaborg + NC2 Royer + C1 alpha-SF + C2 island_weight ==")
+println("== R4: gate_type=nuclear-novel-discovery-simulation · absorbed=false 영구 ==")
+
+// ── Z=119 next cohort (NOT in N11: N11 had 293/295-119) ────────────────
+// 296-119 N=177  Q_a 11.209 MeV  (WS4, from decay chain — lower-confidence cite)
+n12_row("296-119", 119, 177, 296, 11.209)
+// 297-119 N=178  Q_a 12.046 MeV  (KTUY05; W4 unavailable)
+n12_row("297-119", 119, 178, 297, 12.046)
+// 299-119 N=180  Q_a 12.526 MeV  (KTUY05; W4 unavailable)
+n12_row("299-119", 119, 180, 299, 12.526)
+// 300-119 N=181  Q_a 12.278 MeV  (WS4, odd-odd)
+n12_row("300-119", 119, 181, 300, 12.278)
+
+// ── Z=120 next cohort (NOT in N11: N11 had 295/297-120) ────────────────
+// 296-120 N=176  Q_a 13.131 MeV  (WS4, even-even)
+n12_row("296-120", 120, 176, 296, 13.131)
+// 298-120 N=178  Q_a 11.486 MeV  (WS4, from decay chain — deformed-magic candidate)
+n12_row("298-120", 120, 178, 298, 11.486)
+// 299-120 N=179  Q_a 13.14 MeV   (WS4, even-odd)
+n12_row("299-120", 120, 179, 299, 13.14)
+// 300-120 N=180  Q_a 13.308 MeV  (WS4, even-even)
+n12_row("300-120", 120, 180, 300, 13.308)
+// 301-120 N=181  Q_a 12.939 MeV  (WS4, even-odd)
+n12_row("301-120", 120, 181, 301, 12.939)
+// 302-120 N=182  Q_a 12.766 MeV  (WS4, even-even — closest to predicted N=184)
+n12_row("302-120", 120, 182, 302, 12.766)
+
+println("== END N12 ==")
