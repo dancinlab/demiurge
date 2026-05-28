@@ -1,0 +1,111 @@
+{
+  "domain": "material",
+  "verb": "verify",
+  "kind": "yh10_dft_electron_phonon_4x4x4q_high_pressure_high_tc_prediction",
+  "stamp": "20260528T112225Z",
+  "producer": "QE 7.5 pw.x vc-relax + scf + ph.x electron_phonon='simple' @ vast.ai pod-2 (ssh9.vast.ai:15988, /root/wave3/YH10) — RTSC wave3 campaign job YH10, first terminal job of the 7-job grind. Aggregation parser /tmp/yh10_agg/agg.py (QE star-weighted lambda + lambda-weighted omega_log).",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": false,
+  "R4_protection": true,
+  "purpose": "First measurement-grade verdict of the RTSC wave3 campaign. YH10 (YH_10) sodalite clathrate hydride el-ph coupling -> Allen-Dynes Tc. YH10 is a predicted high-Tc superconductor (Liu 2017 PNAS 114:6990; Peng 2017 PRL 119:107001 — Tc ~303 K at ~400 GPa predicted). This run probes our DFT pipeline at the relaxed-pressure point ~250 GPa.",
+  "system": "YH10 sodalite clathrate, FCC-derived primitive cell (1 Y + 10 H = 11 atoms), vc-relaxed; CELL_PARAMETERS bohr [[-4.4344,0,4.4344],[0,4.4344,4.4344],[-4.4344,4.4344,0]], unit-cell volume 174.40 a.u.^3 (25.84 Ang^3), total energy -93.85937908 Ry, Fermi energy 20.1124 eV. PBE UPF (Y.UPF + H.UPF).",
+  "pressure": {
+    "final_vcrelax_kbar": 2499.98,
+    "final_vcrelax_GPa": 250.0,
+    "note": "vc-relax converged to P=2499.98 kbar (~250 GPa). YH10 is a high-pressure phase; the Liu/Peng 2017 ~300 K prediction is at ~250-400 GPa. Our 250 GPa point is in-regime (clathrate cage stable, 0 imaginary modes). NOT ambient -> fails RTSC ambient-pressure gate."
+  },
+  "method": {
+    "stage_1_vcrelax": "vc-relax, converged P=2499.98 kbar (criteria energy<1e-5 Ry, force<1e-4 Ry/Bohr, cell<0.5 kbar), final !total energy via subsequent scf -93.85937908 Ry",
+    "stage_2_scf": "ibrav=0 nat=11 ntyp=2, ecutwfc=80 Ry, ecutrho=800 Ry, 12x12x12 k-grid, MP smearing degauss=0.02 Ry, conv_thr=1e-12",
+    "stage_3_phonon": "ph.x DFPT ldisp 4x4x4 q (8 irreducible q-points, star weights [1,8,4,6,24,12,3,6] sum=64 = full BZ), electron_phonon='simple', el_ph_sigma=0.005 Ry x el_ph_nsigma=10 (broadenings 0.005-0.050 Ry), trans=.true., tr2_ph=1e-14, -np 6",
+    "qblocks_parsed": "8/8 (COMPLETE IBZ coverage at 4^3 q-grid; star multiplicities sum to 64 = 4x4x4 full BZ, no missing q)",
+    "moments": "BZ-weighted lambda = sum_q w_q * sum_mode lambda(q,mode) / sum_q w_q (33 modes/q); lambda-weighted log-average omega_log; Allen-Dynes Tc with mu*=0.10 and 0.13. lambda(q,nu) taken VERBATIM from QE ph.out (QE already applies lambda=gamma/(pi N(Ef) omega^2) normalization in elph_simple).",
+    "chain_status": "chain.log: vc-relax JOB DONE / scf JOB DONE / ph JOB DONE / CHAIN DONE 2026-05-28T09:47:43Z. STOP=0 err=0."
+  },
+  "q_grid": {
+    "nq": "4x4x4",
+    "irreducible_q_done": 8,
+    "irreducible_q_total": 8,
+    "complete": true,
+    "star_weights": [1, 8, 4, 6, 24, 12, 3, 6],
+    "weight_sum": 64,
+    "full_bz_points": 64,
+    "completeness_note": "All 8 IBZ q-points computed (each with full 33-mode freq table + 10 broadening el-ph blocks). Star weights sum to 64 = full 4x4x4 BZ. NO missing q (d6 partiality does NOT apply)."
+  },
+  "dos_at_Ef_states_per_spin_per_Ry": {
+    "broad_0.005": 5.0168,
+    "broad_0.020": 3.0166,
+    "note": "DOS broadening-dependent (Gaussian double-delta); reported as the in-cell value at each el_ph_sigma."
+  },
+  "results_by_broadening": [
+    {"broad_Ry": 0.005, "lambda_BZ": 4.4197, "omega_log_K": 1139.10, "omega_log_cm1": 791.71, "note": "under-converged (smearing too small, double-delta under-sampled — lambda inflated)"},
+    {"broad_Ry": 0.010, "lambda_BZ": 2.6126, "omega_log_K": 1218.80, "omega_log_cm1": 847.11, "Tc_AD_mu010_K": 205.4, "Tc_AD_mu013_K": 194.4},
+    {"broad_Ry": 0.015, "lambda_BZ": 2.5066, "omega_log_K": 1295.69, "omega_log_cm1": 900.55, "Tc_AD_mu010_K": 213.7, "Tc_AD_mu013_K": 201.8},
+    {"broad_Ry": 0.020, "lambda_BZ": 2.8197, "omega_log_K": 1300.43, "omega_log_cm1": 903.85, "Tc_AD_mu010_K": 227.5, "Tc_AD_mu013_K": 215.9, "PRIMARY": true},
+    {"broad_Ry": 0.025, "lambda_BZ": 3.0166, "omega_log_K": 1289.10, "omega_log_cm1": 895.97, "Tc_AD_mu010_K": 232.5, "Tc_AD_mu013_K": 221.2},
+    {"broad_Ry": 0.030, "lambda_BZ": 2.9520, "omega_log_K": 1281.84, "omega_log_cm1": 890.92, "Tc_AD_mu010_K": 229.0, "Tc_AD_mu013_K": 217.7},
+    {"broad_Ry": 0.035, "lambda_BZ": 2.8185, "omega_log_K": 1277.43, "omega_log_cm1": 887.86},
+    {"broad_Ry": 0.040, "lambda_BZ": 2.7050, "omega_log_K": 1274.34, "omega_log_cm1": 885.71},
+    {"broad_Ry": 0.045, "lambda_BZ": 2.6256, "omega_log_K": 1271.92, "omega_log_cm1": 884.03},
+    {"broad_Ry": 0.050, "lambda_BZ": 2.5750, "omega_log_K": 1270.16, "omega_log_cm1": 882.80}
+  ],
+  "primary_verdict": {
+    "broadening_choice": "el_ph_sigma=0.020 Ry — matches scf MP degauss=0.02 Ry (self-consistent), sits at the center of the converged lambda plateau (0.010-0.030 Ry spans lambda 2.51-3.02).",
+    "lambda": 2.8197,
+    "omega_log_K": 1300.43,
+    "omega_log_cm1": 903.85,
+    "Tc_AD_mu010_K": 227.501,
+    "Tc_AD_mu013_K": 215.916,
+    "plateau_range_Tc_K": "201.8 (sigma=0.015, mu=0.13) to 232.5 (sigma=0.025, mu=0.10)",
+    "tier": "GREEN — SUPPORTED-NUMERICAL (hexa verify allen_dynes_tc verbatim)"
+  },
+  "Tc": {
+    "mu_star_0.10_K": 227.501,
+    "mu_star_0.13_K": 215.916
+  },
+  "m_sign": {
+    "formula": "m = (lambda - 2.5) / lambda",
+    "value_primary": 0.113381,
+    "sign": "+",
+    "interpretation": "POSITIVE (m=+0.113 at primary lambda=2.82 > 2.5) -> strong-coupling side. m>0 across the entire converged plateau (sigma 0.015: m=+0.003, 0.020: m=+0.113, 0.025: m=+0.171). RTSC m-sign batch entry: YH10 = strong-coupling (lambda > 2.5)."
+  },
+  "stability": {
+    "phonon_imaginary_modes": "0 across all 8 q-blocks (no frequency below -1 cm-1; clathrate cage dynamically stable at relaxed ~250 GPa)",
+    "metastability_note": "YH10 is a high-pressure phase (~250 GPa here; literature stability ~250-400 GPa). Pressure-stable, NOT ambient. Not RTSC (fails ambient-pressure gate)."
+  },
+  "verify_verbatim": {
+    "tool": "hexa verify --expr allen_dynes_tc <lambda> <omega_log_K> <mu*> <Tc> --tol 0.01",
+    "host": "mini (verify host pin per memory: ubu-2 segfault, ubu-1 broken)",
+    "mu_star_0.10": "verify --expr allen_dynes_tc(2.8197,1300.43,0.1)=227.501 | calc = 227.501  ~= expected 227.501  (within tol 0.01, calc=227.501 vs expected=227.501, |delta|=0.000133986) | tier = GREEN SUPPORTED-NUMERICAL  (round-tolerant: literature-rounded value within opt-in --tol 0.01, TECS-L n6-rep Tier2)",
+    "mu_star_0.13": "verify --expr allen_dynes_tc(2.8197,1300.43,0.13)=215.916 | calc = 215.916  ~= expected 215.916  (within tol 0.01, calc=215.916 vs expected=215.916, |delta|=0.0003738) | tier = GREEN SUPPORTED-NUMERICAL  (round-tolerant: literature-rounded value within opt-in --tol 0.01, TECS-L n6-rep Tier2)"
+  },
+  "verdict_tier": "GREEN — measured-grade DFT el-ph prediction. Complete 4x4x4-q IBZ, dynamically stable, lambda=2.82 (strong-coupling), Allen-Dynes Tc = 216-228 K (mu* 0.13-0.10) at ~250 GPa. Tc closed-form VERIFIED hexa-native (allen_dynes_tc, GREEN SUPPORTED-NUMERICAL, both mu*). This is a HIGH-Tc verdict (NOT low-Tc / closed-negative). Honest caveat: 4x4x4 q-grid is coarse (the published ~300 K YH10 figure uses denser grids + higher pressure ~400 GPa); our 250 GPa point gives a self-consistent 216-228 K. Pressure-bound (not ambient) -> not RTSC by ambient gate.",
+  "verdict": "RTSC wave3 first terminal verdict. YH10 @ ~250 GPa: lambda_BZ = 2.82 (sigma=0.020 Ry, center of 0.010-0.030 plateau spanning 2.51-3.02), omega_log = 1300 K, Allen-Dynes Tc = 227.5 K (mu*=0.10) / 215.9 K (mu*=0.13), both hexa-verified GREEN. Strong-coupling (m-sign +). Dynamically stable, complete IBZ. Confirms YH10 as a high-Tc strong-coupling hydride superconductor in-silico at the relaxed pressure; consistent in lambda-ladder with the CaH6 (lambda 3.4-4.4) and H3S anchors. Pressure-bound, not ambient.",
+  "honesty_notes": [
+    "q-grid COMPLETE (8/8 IBZ, weights sum 64 = full BZ) — d6 partiality does NOT apply.",
+    "sigma=0.005 Ry result (lambda=4.42) is under-converged double-delta and EXCLUDED from the verdict; primary uses sigma=0.020 = scf degauss for self-consistency.",
+    "This is a high-Tc (216-228 K), NOT a low-Tc/closed-negative result (g63 — surfaced regardless).",
+    "Tc lower than the literature ~300 K because (a) pressure here ~250 GPa vs ~400 GPa in Peng/Liu 2017, (b) 4x4x4 q-grid is coarse. Honest in-regime value, not forced (d6).",
+    "Pressure-bound phase (~250 GPa) -> NOT ambient RTSC; absorbed=false retained."
+  ],
+  "provenance": {
+    "dft_run_host": "vast.ai pod-2 (ssh9.vast.ai:15988)",
+    "remote_workdir": "/root/wave3/YH10",
+    "campaign": "RTSC wave3 (7-job grind; YH10 = first terminal)",
+    "artifacts_copied": ["ph.out", "scf.out", "scf.in", "geom.in", "vc-relax.out", "yh10.dyn0", "yh10.dyn1-8.elph.1-8"],
+    "local_raw_dir": "exports/material_discovery/_yh10_raw/",
+    "aggregation_parser": "/tmp/yh10_agg/agg.py (QE star-weighted lambda + lambda-weighted omega_log; CM_TO_K=1.438776877)",
+    "capture_date": "2026-05-28",
+    "harvest_mode": "read-only copy-from (g8 — hexa cloud copy-from/exec only, no raw ssh/scp; YH10 dir read-only, no modify/kill — pod-2 other 6 jobs untouched)"
+  },
+  "citations": [
+    "Liu, Naumov, Hoffmann, Ashcroft, Hemley 2017 PNAS 114:6990 (YH10 sodalite clathrate predicted high-Tc)",
+    "Peng, Sun, Pickard, Needs, Wu, Ma 2017 PRL 119:107001 (YH10 Tc ~303 K predicted ~400 GPa)",
+    "Allen & Dynes 1975 PRB 12 905 (Tc modified-McMillan)",
+    "Quantum ESPRESSO 7.5",
+    "exports/material_discovery/rtsc_cah6_dft_4x4x4q_textbook_proof_20260524.json (CaH6 anchor — same 4x4x4-q el-ph simple pipeline)",
+    "project.tape @D d5 (absorbed gate) · d6 (under-converged != result) · @D g5 (verify verbatim) · g8 (hexa cloud only) · g63 (low-Tc still valid)"
+  ]
+}
