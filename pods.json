@@ -1,7 +1,7 @@
 {
   "version": "1.0-temp",
   "schema_origin": "sidecar INBOX #193 (~/.pool/pods.json proposed)",
-  "last_updated_utc": "2026-05-28T17:35:07Z",
+  "last_updated_utc": "2026-05-28T18:18:01Z",
   "wave3b_reauthor_note": "4 candidates (CeH9/YH9/YH10/Li2MgH16) re-authored from failed crystal_sg+space_group decks to YH6-proven explicit ATOMIC_POSITIONS crystal (spglib orbit expansion); all 4 d16 PASS + FIRED on vast-cuda-ssh9-15988 (already-running pod, no new rent). Incremental cost ~ pod $0.40/hr x chain wall (within ~$24 budget). See exports/rtsc/wave3b_decks/D16-NOTES.md.",
   "campaign": "rtsc-293K-1atm",
   "budget": {
@@ -533,6 +533,41 @@
       "watcher": "b0b3r04yd",
       "hypothesis": "Mg₂IrH₆ polymorph dyn-stability check",
       "verdict": "PENDING"
+    },
+    "MgBeH8": {
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "running",
+      "stage": "vc-relax",
+      "kind": "dft-elph",
+      "est_wall_h": 140,
+      "np": 8,
+      "verdict": "PENDING",
+      "anchor_tc_K": 181,
+      "recovered_utc": "2026-05-28T18:18:01Z",
+      "recovered_note": "pilot A01/A11/A25 fired 2026-05-29 — A01 10atom 10GPa AcBeH8 Mg-variant, system QE pid1434"
+    },
+    "CaAuH3": {
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "running",
+      "stage": "vc-relax",
+      "kind": "dft-elph",
+      "est_wall_h": 17,
+      "np": 8,
+      "verdict": "PENDING",
+      "recovered_utc": "2026-05-28T18:18:01Z",
+      "recovered_note": "pilot A01/A11/A25 fired 2026-05-29 — A11 5atom 50GPa SrAuH3 Ca-variant perovskite, system QE pid1481"
+    },
+    "MgCaB2_x025": {
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "running",
+      "stage": "vc-relax",
+      "kind": "dft-elph",
+      "est_wall_h": 121,
+      "np": 8,
+      "verdict": "PENDING",
+      "anchor_tc_K": 39,
+      "recovered_utc": "2026-05-28T18:18:01Z",
+      "recovered_note": "pilot A01/A11/A25 fired 2026-05-29 — A25 12atom ambient Ca-doped MgB2 BCS line, system QE pid1528"
     }
   },
   "per_pod_wall_summary": {
