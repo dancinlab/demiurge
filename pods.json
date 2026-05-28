@@ -1,7 +1,7 @@
 {
   "version": "1.0-temp",
   "schema_origin": "sidecar INBOX #193 (~/.pool/pods.json proposed)",
-  "last_updated_utc": "2026-05-28T15:05:04Z",
+  "last_updated_utc": "2026-05-28T17:35:07Z",
   "wave3b_reauthor_note": "4 candidates (CeH9/YH9/YH10/Li2MgH16) re-authored from failed crystal_sg+space_group decks to YH6-proven explicit ATOMIC_POSITIONS crystal (spglib orbit expansion); all 4 d16 PASS + FIRED on vast-cuda-ssh9-15988 (already-running pod, no new rent). Incremental cost ~ pod $0.40/hr x chain wall (within ~$24 budget). See exports/rtsc/wave3b_decks/D16-NOTES.md.",
   "campaign": "rtsc-293K-1atm",
   "budget": {
@@ -16,7 +16,7 @@
   },
   "pods": {
     "vast-ysbh6-pod-41837": {
-      "host": "77.104.167.149:41837",
+      "host": "ssh6.vast.ai:28500",
       "provider": "vast.ai",
       "cores": 80,
       "ssh_key": "id_vast_anima",
@@ -33,7 +33,8 @@
         "sc2be2h6",
         "y2be2h6",
         "cah6_decompress"
-      ]
+      ],
+      "host_migrated_note": "77.104.167.149:41837 → ssh6.vast.ai:28500 (2026-05-29 reboot recovery)"
     },
     "vast-pod-2-new": {
       "provider": "vast.ai",
@@ -160,7 +161,9 @@
       "np": 32,
       "watcher": "boowryffy",
       "anchor_tc_K": 118,
-      "verdict": "PENDING"
+      "verdict": "PENDING",
+      "recovered_utc": "2026-05-28T17:35:07Z",
+      "recovered_note": "ph recover (_ph0 CURRENT_Q=2, np32) pid407 Rep#18"
     },
     "mgb2_pure": {
       "pod": "vast-ysbh6-pod-41837",
@@ -170,7 +173,9 @@
       "np": 8,
       "watcher": "bpl3k1l8m",
       "anchor_tc_K": 39,
-      "verdict": "PENDING"
+      "verdict": "PENDING",
+      "recovered_utc": "2026-05-28T17:35:07Z",
+      "recovered_note": "ph recover (q7/28, np8) pid563"
     },
     "nb3al": {
       "pod": "vast-ysbh6-pod-41837",
@@ -180,7 +185,9 @@
       "np": 8,
       "watcher": "boy5ld7u5",
       "anchor_tc_K": 18,
-      "verdict": "PENDING"
+      "verdict": "PENDING",
+      "recovered_utc": "2026-05-28T17:35:07Z",
+      "recovered_note": "ph recover (np8) pid619 Rep#9"
     },
     "sc2be2h6": {
       "pod": "vast-ysbh6-pod-41837",
@@ -190,7 +197,9 @@
       "np": 6,
       "watcher": "b8tw784iy",
       "hypothesis": "Sc 최경량→ω↑",
-      "verdict": "PENDING"
+      "verdict": "PENDING",
+      "recovered_utc": "2026-05-28T17:35:07Z",
+      "recovered_note": "chain run_chain.bash NP24 (vc-relax iter38) pid675"
     },
     "y2be2h6": {
       "pod": "vast-ysbh6-pod-41837",
@@ -200,7 +209,8 @@
       "np": 6,
       "watcher": "bv0u66qdv",
       "hypothesis": "YH10-family",
-      "verdict": "PENDING"
+      "verdict": "restart-needed",
+      "restart_note": "scf iter#1 errcode72 (serial+cg+davidson+npool ALL crash) = pseudo/ecut low-level, NOT MPI/solver. relax geom complete+preserved → fixed deck reuses it."
     },
     "cah6_decompress": {
       "pod": "vast-ysbh6-pod-41837",
@@ -210,7 +220,9 @@
       "np": 6,
       "watcher": "bfvsatagh",
       "hypothesis": "x11 회수성",
-      "verdict": "PENDING"
+      "verdict": "PENDING",
+      "recovered_utc": "2026-05-28T17:35:07Z",
+      "recovered_note": "reboot recovery resume"
     },
     "he_4cation_LaYCaScH10": {
       "pod": "vast-pod-2-new",
@@ -231,21 +243,37 @@
       "verdict": "PENDING"
     },
     "LaBH8": {
-      "pod": "vast-pod-2-new",
-      "status": "queued",
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "running",
       "stage": "vc-relax",
-      "est_wall_h": 50,
+      "started_utc": "2026-05-27T20:44:55Z",
+      "pid": 3343,
       "np": 6,
-      "hypothesis": "Di Cataldo 126K@<50GPa",
+      "dir": "/root/wave3/LaBH8",
+      "structure": "Fm-3m (#225) fcc, ibrav=2 primitive LaBH8, nat=10 (32f->8 H fold)",
+      "pressure_kbar": 500,
+      "pressure_GPa": 50,
+      "anchor_tc_K": 126,
+      "anchor_ref": "Di Cataldo 2021 predicted ~126K@<50GPa",
+      "dryrun_verdict": "PASS — 10 atoms/22 e-, bravais=2 fcc, SCF iterating ~-140.8 Ry, no errors",
+      "hypothesis": "wave-3 lit-known: addresses <50GPa milestone (lowest pressure ternary hydride)",
       "verdict": "PENDING"
     },
     "YH6": {
-      "pod": "vast-pod-2-new",
-      "status": "queued",
-      "stage": "scf+ph",
-      "est_wall_h": 40,
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "running",
+      "stage": "vc-relax",
+      "started_utc": "2026-05-27T20:44:52Z",
+      "pid": 3311,
       "np": 6,
-      "hypothesis": "marginal 측정 anchor",
+      "dir": "/root/wave3/YH6",
+      "structure": "Im-3m (#229) bcc clathrate, ibrav=1 conv cell Y2H12, nat=14",
+      "pressure_kbar": 1500,
+      "pressure_GPa": 150,
+      "anchor_tc_K": 224,
+      "anchor_ref": "Troyan 2021 measured ~224K@166GPa",
+      "dryrun_verdict": "PASS — 14 atoms/34 e-, SCF converging ~-179.81 Ry, no directive/pseudo errors",
+      "hypothesis": "wave-3 lit-known: simplest bcc clathrate, measured anchor — validate hydride el-ph pipeline",
       "verdict": "PENDING"
     },
     "H2B2": {
@@ -258,12 +286,23 @@
       "verdict": "PENDING"
     },
     "Li2MgH16": {
-      "pod": "vast-pod-3-new",
-      "status": "queued",
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "FIRED",
       "stage": "vc-relax",
-      "est_wall_h": 80,
-      "np": 10,
-      "hypothesis": "Sun 2019 473K@250GPa anchor",
+      "np": 6,
+      "pid": 6732,
+      "started_utc": "2026-05-27T22:44:18Z",
+      "dir": "/root/wave3/Li2MgH16",
+      "structure": "Fd-3m (#227, origin 2), ibrav=2 FCC-primitive EXPLICIT crystal (re-author wave-3b); Li 16c + Mg 8b + H 32e(x=0.833) + H 96g(x,x,z form) spglib orbit-expanded -> primitive; nat=38 Li4Mg2H32; min H-H 0.798 Ang",
+      "pressure_kbar": 2500,
+      "pressure_GPa": 250,
+      "anchor_tc_K": 473,
+      "anchor_ref": "Sun 2019 PRL 123,097001 — predicted 473K @ 250 GPa (highest predicted Tc)",
+      "coord_citation": "Sun 2019 PRL (pred 473K@250GPa); Fd-3m#227 o2 Li 16c, Mg 8b(3/8,3/8,3/8), H 32e(x=0.833), H 96g recast as (x,x,z)=(0.0647,0.0647,0.4353). a=6.7185. FCC-primitive (ibrav=2) keeps nat=38 (vs 152 conventional). 96g brief-triple was a general-pos form (over-expand 192+overlap) -> recast to special (x,x,z).",
+      "dryrun_verdict": "PASS — bravais=2 fcc, 38 atoms, 64 e-, SCF iterating ~-341.9 Ry, no check_atoms/input/rgen error. ibrav=2 FCC-prim cleared the ibrav-incompat error; Li.UPF GIPAW-strip fix cleared the QE-6.7 PP_GIPAW_ORBITALS xmltools EOF parser bug.",
+      "watcher_arm": "grep -c 'CHAIN DONE' ~/wave3/Li2MgH16/chain.log",
+      "pseudo_note": "Li.UPF -> Li.nogipaw.UPF (GIPAW block stripped + has_gipaw=false) — QE 6.7 parser fix; see exports/rtsc/wave3b_decks/D16-NOTES.md",
+      "hypothesis": "wave-3 lit-known: highest predicted Tc ternary (473K) — coord-resolved skip-recovery",
       "verdict": "PENDING"
     },
     "Ca2SnH18": {
@@ -285,21 +324,49 @@
       "verdict": "PENDING"
     },
     "YH10": {
-      "pod": "vast-pod-3-new",
-      "status": "queued",
-      "stage": "scf+ph",
-      "est_wall_h": 50,
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "FIRED",
+      "stage": "ph",
       "np": 6,
-      "hypothesis": "sister marginal 측정점",
-      "verdict": "PENDING"
+      "pid": 6151,
+      "started_utc": "2026-05-27T22:37:11Z",
+      "dir": "/root/wave3/YH10",
+      "structure": "Fm-3m (#225) sodalite, ibrav=2 FCC-primitive EXPLICIT crystal (re-author wave-3b); Y 4a + H 8c + H 32f(x=0.375) spglib orbit-expanded -> primitive; nat=11 YH10; min H-H 1.028 Ang",
+      "pressure_kbar": 2500,
+      "pressure_GPa": 250,
+      "anchor_tc_K": 303,
+      "anchor_ref": "Liu/Peng/Ma 2017 PNAS 114,6990 — predicted ~303K @ 400 GPa",
+      "coord_citation": "Liu/Peng 2017 PNAS (pred 303K@400GPa); LaH10-isostructural sodalite (Errea 2020 Nature). 32f free param x=0.375. FCC-primitive cell (ibrav=2) keeps nat=11 (vs 44 conventional).",
+      "dryrun_verdict": "PASS — bravais=2 fcc, 11 atoms, 21 e-, SCF iterating ~-93.95 Ry, no check_atoms/input/rgen error. ibrav=2 FCC-prim cleared the original ibrav-incompatible-space-group error. (smallest cell -> already past vc-relax+scf into PH at snapshot)",
+      "watcher_arm": "grep -c 'CHAIN DONE' ~/wave3/YH10/chain.log",
+      "hypothesis": "wave-3 lit-known: room-T-class sodalite clathrate — coord-resolved skip-recovery",
+      "harvested_artifact": "exports/material_discovery/rtsc_yh10_dft_elph_20260528.json",
+      "metric": {
+        "lambda": 2.8197,
+        "omega_log_K": 1300.43,
+        "Tc_AD_mu0p10_K": 227.501134,
+        "pressure_GPa": 250,
+        "ambient_absorbed": false
+      },
+      "verdict": "🟢"
     },
     "CeH9": {
-      "pod": "vast-pod-3-new",
-      "status": "queued",
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "FIRED",
       "stage": "vc-relax",
-      "est_wall_h": 50,
       "np": 6,
-      "hypothesis": "측정 80-100GPa 저압",
+      "pid": 6079,
+      "started_utc": "2026-05-27T22:37:09Z",
+      "dir": "/root/wave3/CeH9",
+      "structure": "P6_3/mmc (#194), ibrav=4 EXPLICIT crystal (re-author wave-3b); Ce 2d(2/3,1/3,1/4) + H 2b/4f/12k spglib orbit-expanded; nat=20 Ce2H18; min H-H 1.120 Ang",
+      "pressure_kbar": 1000,
+      "pressure_GPa": 100,
+      "anchor_tc_K": 100,
+      "anchor_ref": "Salke 2019 Nat.Commun 10,4453 — synthesized ~100K-class @ 80-100 GPa",
+      "coord_citation": "Nature Comm 2019 s41467-019-12326-y: Ce 2d(2/3,1/3,1/4), H 2b(0,0,1/4), H 4f(1/3,2/3,0.149), H 12k(0.156,0.312,0.062); a=3.7110 c=5.5429 @100GPa. (12k z corrected 0.4404->0.062 vs task brief -> restores published 1.116 Ang H-H)",
+      "dryrun_verdict": "PASS — bravais=4, 20 atoms, 40 e-, SCF iterating ~-273.5 Ry, no check_atoms/input/rgen error. Explicit-positions re-author cleared the original crystal_sg check_atoms overlap.",
+      "watcher_arm": "grep -c 'CHAIN DONE' ~/wave3/CeH9/chain.log",
+      "hypothesis": "wave-3 lit-known: lowest-pressure RE superhydride (synthesized <100 GPa) — coord-resolved skip-recovery",
       "verdict": "PENDING"
     },
     "MgBC2": {
@@ -384,12 +451,22 @@
       "verdict": "PENDING"
     },
     "YH9": {
-      "pod": "vast-pod-5-new",
-      "status": "queued",
+      "pod": "vast-cuda-ssh9-15988",
+      "status": "FIRED",
       "stage": "vc-relax",
-      "est_wall_h": 45,
       "np": 6,
-      "hypothesis": "압력 sweep marginal",
+      "pid": 6115,
+      "started_utc": "2026-05-27T22:37:10Z",
+      "dir": "/root/wave3/YH9",
+      "structure": "P6_3/mmc (#194), ibrav=4 EXPLICIT crystal (re-author wave-3b); Y 2d + H 2b/4f/12k = CeH9 H29-clathrate isostructural transfer, spglib orbit-expanded; nat=20 Y2H18; min H-H 1.091 Ang",
+      "pressure_kbar": 2500,
+      "pressure_GPa": 250,
+      "anchor_tc_K": 243,
+      "anchor_ref": "Kong 2021 Nat.Commun 12,5075 — measured 243K @ 201 GPa",
+      "coord_citation": "Kong 2021 (243K@201GPa); P6_3/mmc-1 H29-cage isostructural to CeH9 per arxiv 2302.01122. Coords = CeH9 set (12k z=0.062 corrected), Y->2d. Harmonic-stable >250 GPa (2302.01122 Fig S4).",
+      "dryrun_verdict": "PASS — bravais=4, 20 atoms, 40 e-, SCF iterating ~-186.6 Ry, no check_atoms/input/rgen error. Explicit-positions re-author cleared the original crystal_sg check_atoms overlap.",
+      "watcher_arm": "grep -c 'CHAIN DONE' ~/wave3/YH9/chain.log",
+      "hypothesis": "wave-3 lit-known: highest measured RE-binary Tc (243K) — coord-resolved skip-recovery",
       "verdict": "PENDING"
     },
     "H3S_H3P": {
@@ -431,41 +508,9 @@
       "watcher": "b08qnguq6",
       "est_wall_h": 40,
       "hypothesis": "Sc/Y/Ca M-Be-H 자매 완성 (가장 가벼운 비방사성 cation)",
-      "verdict": "PENDING"
-    },
-    "YH6": {
-      "pod": "vast-cuda-ssh9-15988",
-      "status": "running",
-      "stage": "vc-relax",
-      "started_utc": "2026-05-27T20:44:52Z",
-      "pid": 3311,
-      "np": 6,
-      "dir": "/root/wave3/YH6",
-      "structure": "Im-3m (#229) bcc clathrate, ibrav=1 conv cell Y2H12, nat=14",
-      "pressure_kbar": 1500,
-      "pressure_GPa": 150,
-      "anchor_tc_K": 224,
-      "anchor_ref": "Troyan 2021 measured ~224K@166GPa",
-      "dryrun_verdict": "PASS — 14 atoms/34 e-, SCF converging ~-179.81 Ry, no directive/pseudo errors",
-      "hypothesis": "wave-3 lit-known: simplest bcc clathrate, measured anchor — validate hydride el-ph pipeline",
-      "verdict": "PENDING"
-    },
-    "LaBH8": {
-      "pod": "vast-cuda-ssh9-15988",
-      "status": "running",
-      "stage": "vc-relax",
-      "started_utc": "2026-05-27T20:44:55Z",
-      "pid": 3343,
-      "np": 6,
-      "dir": "/root/wave3/LaBH8",
-      "structure": "Fm-3m (#225) fcc, ibrav=2 primitive LaBH8, nat=10 (32f->8 H fold)",
-      "pressure_kbar": 500,
-      "pressure_GPa": 50,
-      "anchor_tc_K": 126,
-      "anchor_ref": "Di Cataldo 2021 predicted ~126K@<50GPa",
-      "dryrun_verdict": "PASS — 10 atoms/22 e-, bravais=2 fcc, SCF iterating ~-140.8 Ry, no errors",
-      "hypothesis": "wave-3 lit-known: addresses <50GPa milestone (lowest pressure ternary hydride)",
-      "verdict": "PENDING"
+      "verdict": "PENDING",
+      "recovered_utc": "2026-05-28T17:35:07Z",
+      "recovered_note": "ph recover (q14 corrupt fixed via control_ph.xml drop, q1-13 preserved) pid659 — SYSTEM QE /usr/bin/ph.x"
     },
     "h3cl_interp_ablation": {
       "pod": "local-ubu-1",
@@ -487,85 +532,6 @@
       "np": 6,
       "watcher": "b0b3r04yd",
       "hypothesis": "Mg₂IrH₆ polymorph dyn-stability check",
-      "verdict": "PENDING"
-    },
-    "CeH9": {
-      "pod": "vast-cuda-ssh9-15988",
-      "status": "FIRED",
-      "stage": "vc-relax",
-      "np": 6,
-      "pid": 6079,
-      "started_utc": "2026-05-27T22:37:09Z",
-      "dir": "/root/wave3/CeH9",
-      "structure": "P6_3/mmc (#194), ibrav=4 EXPLICIT crystal (re-author wave-3b); Ce 2d(2/3,1/3,1/4) + H 2b/4f/12k spglib orbit-expanded; nat=20 Ce2H18; min H-H 1.120 Ang",
-      "pressure_kbar": 1000,
-      "pressure_GPa": 100,
-      "anchor_tc_K": 100,
-      "anchor_ref": "Salke 2019 Nat.Commun 10,4453 — synthesized ~100K-class @ 80-100 GPa",
-      "coord_citation": "Nature Comm 2019 s41467-019-12326-y: Ce 2d(2/3,1/3,1/4), H 2b(0,0,1/4), H 4f(1/3,2/3,0.149), H 12k(0.156,0.312,0.062); a=3.7110 c=5.5429 @100GPa. (12k z corrected 0.4404->0.062 vs task brief -> restores published 1.116 Ang H-H)",
-      "dryrun_verdict": "PASS — bravais=4, 20 atoms, 40 e-, SCF iterating ~-273.5 Ry, no check_atoms/input/rgen error. Explicit-positions re-author cleared the original crystal_sg check_atoms overlap.",
-      "watcher_arm": "grep -c 'CHAIN DONE' ~/wave3/CeH9/chain.log",
-      "hypothesis": "wave-3 lit-known: lowest-pressure RE superhydride (synthesized <100 GPa) — coord-resolved skip-recovery",
-      "verdict": "PENDING"
-    },
-    "YH9": {
-      "pod": "vast-cuda-ssh9-15988",
-      "status": "FIRED",
-      "stage": "vc-relax",
-      "np": 6,
-      "pid": 6115,
-      "started_utc": "2026-05-27T22:37:10Z",
-      "dir": "/root/wave3/YH9",
-      "structure": "P6_3/mmc (#194), ibrav=4 EXPLICIT crystal (re-author wave-3b); Y 2d + H 2b/4f/12k = CeH9 H29-clathrate isostructural transfer, spglib orbit-expanded; nat=20 Y2H18; min H-H 1.091 Ang",
-      "pressure_kbar": 2500,
-      "pressure_GPa": 250,
-      "anchor_tc_K": 243,
-      "anchor_ref": "Kong 2021 Nat.Commun 12,5075 — measured 243K @ 201 GPa",
-      "coord_citation": "Kong 2021 (243K@201GPa); P6_3/mmc-1 H29-cage isostructural to CeH9 per arxiv 2302.01122. Coords = CeH9 set (12k z=0.062 corrected), Y->2d. Harmonic-stable >250 GPa (2302.01122 Fig S4).",
-      "dryrun_verdict": "PASS — bravais=4, 20 atoms, 40 e-, SCF iterating ~-186.6 Ry, no check_atoms/input/rgen error. Explicit-positions re-author cleared the original crystal_sg check_atoms overlap.",
-      "watcher_arm": "grep -c 'CHAIN DONE' ~/wave3/YH9/chain.log",
-      "hypothesis": "wave-3 lit-known: highest measured RE-binary Tc (243K) — coord-resolved skip-recovery",
-      "verdict": "PENDING"
-    },
-    "YH10": {
-      "pod": "vast-cuda-ssh9-15988",
-      "status": "FIRED",
-      "stage": "ph",
-      "np": 6,
-      "pid": 6151,
-      "started_utc": "2026-05-27T22:37:11Z",
-      "dir": "/root/wave3/YH10",
-      "structure": "Fm-3m (#225) sodalite, ibrav=2 FCC-primitive EXPLICIT crystal (re-author wave-3b); Y 4a + H 8c + H 32f(x=0.375) spglib orbit-expanded -> primitive; nat=11 YH10; min H-H 1.028 Ang",
-      "pressure_kbar": 2500,
-      "pressure_GPa": 250,
-      "anchor_tc_K": 303,
-      "anchor_ref": "Liu/Peng/Ma 2017 PNAS 114,6990 — predicted ~303K @ 400 GPa",
-      "coord_citation": "Liu/Peng 2017 PNAS (pred 303K@400GPa); LaH10-isostructural sodalite (Errea 2020 Nature). 32f free param x=0.375. FCC-primitive cell (ibrav=2) keeps nat=11 (vs 44 conventional).",
-      "dryrun_verdict": "PASS — bravais=2 fcc, 11 atoms, 21 e-, SCF iterating ~-93.95 Ry, no check_atoms/input/rgen error. ibrav=2 FCC-prim cleared the original ibrav-incompatible-space-group error. (smallest cell -> already past vc-relax+scf into PH at snapshot)",
-      "watcher_arm": "grep -c 'CHAIN DONE' ~/wave3/YH10/chain.log",
-      "hypothesis": "wave-3 lit-known: room-T-class sodalite clathrate — coord-resolved skip-recovery",
-      "harvested_artifact": "exports/material_discovery/rtsc_yh10_dft_elph_20260528.json",
-      "metric": { "lambda": 2.8197, "omega_log_K": 1300.43, "Tc_AD_mu0p10_K": 227.501134, "pressure_GPa": 250, "ambient_absorbed": false },
-      "verdict": "🟢"
-    },
-    "Li2MgH16": {
-      "pod": "vast-cuda-ssh9-15988",
-      "status": "FIRED",
-      "stage": "vc-relax",
-      "np": 6,
-      "pid": 6732,
-      "started_utc": "2026-05-27T22:44:18Z",
-      "dir": "/root/wave3/Li2MgH16",
-      "structure": "Fd-3m (#227, origin 2), ibrav=2 FCC-primitive EXPLICIT crystal (re-author wave-3b); Li 16c + Mg 8b + H 32e(x=0.833) + H 96g(x,x,z form) spglib orbit-expanded -> primitive; nat=38 Li4Mg2H32; min H-H 0.798 Ang",
-      "pressure_kbar": 2500,
-      "pressure_GPa": 250,
-      "anchor_tc_K": 473,
-      "anchor_ref": "Sun 2019 PRL 123,097001 — predicted 473K @ 250 GPa (highest predicted Tc)",
-      "coord_citation": "Sun 2019 PRL (pred 473K@250GPa); Fd-3m#227 o2 Li 16c, Mg 8b(3/8,3/8,3/8), H 32e(x=0.833), H 96g recast as (x,x,z)=(0.0647,0.0647,0.4353). a=6.7185. FCC-primitive (ibrav=2) keeps nat=38 (vs 152 conventional). 96g brief-triple was a general-pos form (over-expand 192+overlap) -> recast to special (x,x,z).",
-      "dryrun_verdict": "PASS — bravais=2 fcc, 38 atoms, 64 e-, SCF iterating ~-341.9 Ry, no check_atoms/input/rgen error. ibrav=2 FCC-prim cleared the ibrav-incompat error; Li.UPF GIPAW-strip fix cleared the QE-6.7 PP_GIPAW_ORBITALS xmltools EOF parser bug.",
-      "watcher_arm": "grep -c 'CHAIN DONE' ~/wave3/Li2MgH16/chain.log",
-      "pseudo_note": "Li.UPF -> Li.nogipaw.UPF (GIPAW block stripped + has_gipaw=false) — QE 6.7 parser fix; see exports/rtsc/wave3b_decks/D16-NOTES.md",
-      "hypothesis": "wave-3 lit-known: highest predicted Tc ternary (473K) — coord-resolved skip-recovery",
       "verdict": "PENDING"
     }
   },
@@ -676,5 +642,6 @@
     "SSCHA labeh8은 메모리 24GB+ 필요 — pod RAM 확인 필수",
     "5D 5축 모두 ✓ 후보 발견 가능성 = 미지 (current cart 무 후보)",
     "최선 결과 = '293K@50GPa 후보 확정' 또는 '293K@1atm closed-negative + 다음 lens'"
-  ]
+  ],
+  "recovery_event": "2026-05-29 — 13-job dark (vast transport drop on reboot/migration) recovered via vast_reboot direct call + QE recover resume. 6/7 grinding, y2be2h6 restart-needed. SSH restored ok=1."
 }
