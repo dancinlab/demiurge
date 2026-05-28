@@ -29,6 +29,7 @@ export default async function AppLayout({
   const i18n = {
     topbarDomains: t(messages, "app_gui.topbar_domains"),
     topbarActiveProject: t(messages, "app_gui.topbar_active_project"),
+    topbarWorkbench: t(messages, "dashboard.title"),
     topbarSignIn: t(messages, "app_gui.sign_in"),
     topbarAdmin: t(messages, "app_gui.admin"),
     chefTitle: t(messages, "app_gui.chef_title"),
@@ -61,16 +62,25 @@ export default async function AppLayout({
       <div className="flex h-screen bg-canvas text-ink antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
         {/* 좌: 세로 전체 레일 — canvas 틴트(복구). 최상단 브랜드 로고 + verb(상단) + 요리선생 채팅(하단) */}
         <aside className="flex w-72 shrink-0 flex-col border-r border-hairline bg-canvas">
-          {/* 브랜드 로고 — 랜딩 SiteHeader 워드마크와 동일 형태:
-              대문자 DEMIURGE + 노랑 액센트 닷 · font-black · tight tracking.
-              본체는 text-ink(토큰 → 다크 자동 추종), 닷은 브랜드 노랑(라이트/다크 둘 다 읽힘). */}
+          {/* 브랜드 로고 — 랜딩 SiteHeader 워드마크와 폰트 100% 동일:
+              시스템 산세리프 · font-black · uppercase · 22px · letterSpacing -0.04em · 노랑 닷.
+              본체만 text-ink 토큰(다크 자동 추종) — 랜딩은 검정 위 white(배경만 다름).
+              여백 px-4 = 8verb 메뉴 좌측 인셋(래퍼 p-2 + 아이템 px-2 = 16px)과 동일 정렬. */}
           <Link
             href="/dashboard"
             aria-label="demiurge — home"
-            className="flex shrink-0 items-center px-3 pb-1.5 pt-3 hover:opacity-80"
+            className="flex shrink-0 items-center px-4 py-3 hover:opacity-80"
           >
-            <span className="font-display text-[19px] font-black uppercase leading-none tracking-tighter text-ink">
-              demiurge<span className="text-yellow-400">.</span>
+            <span
+              className="font-black uppercase leading-none text-ink"
+              style={{
+                fontFamily:
+                  "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif",
+                fontSize: 22,
+                letterSpacing: "-0.04em",
+              }}
+            >
+              demiurge<span className="text-yellow-300">.</span>
             </span>
           </Link>
           <div className="shrink-0 p-2">
