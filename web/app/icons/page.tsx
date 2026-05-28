@@ -1,6 +1,13 @@
-// /icons — 8 verb 아이콘 셋 비교 (실 SVG / 글리프 · 이모지 X).
-// 5 셋: lucide-outline · solid-fill · duotone · mono-thin · symbol-glyph.
-// 보기 전용 · 마음에 드는 셋 알려주면 VerbTreeNav 에 swap.
+// /icons — DEV-ONLY 8-verb icon-set comparison (debug surface).
+//
+// This page is a designer scratchpad for picking the verb glyph set; it is NOT
+// part of the product. It is never linked from any production nav, and the
+// `notFound()` guard below makes the route itself 404 under a production build
+// (NODE_ENV === "production"). Under `next dev` it stays reachable at /icons.
+//
+// Real SVG glyphs (no emoji). Semantic tokens only (DESIGN_TOKENS.md SSOT).
+
+import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -20,58 +27,79 @@ const VERBS: IconPath[] = [
 const SETS = [
   { id: "lucide-out",  name: "Lucide Outline",     stroke: "currentColor", fill: "none",          width: 1.6, accent: false },
   { id: "lucide-bold", name: "Lucide Bold",        stroke: "currentColor", fill: "none",          width: 2.4, accent: false },
-  { id: "duotone",     name: "Duotone",            stroke: "currentColor", fill: "#3b82f622",     width: 1.6, accent: true },
+  { id: "duotone",     name: "Duotone",            stroke: "currentColor", fill: "currentColor",  width: 1.6, accent: true },
   { id: "solid",       name: "Solid Fill",         stroke: "none",         fill: "currentColor",  width: 0,   accent: false },
   { id: "mono-thin",   name: "Mono Thin",          stroke: "currentColor", fill: "none",          width: 1.0, accent: false },
 ];
 
-function Glyph({ d, set }: { d: string; set: typeof SETS[number] }) {
+function Glyph({ d, set }: { d: string; set: (typeof SETS)[number] }) {
   return (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill={set.fill} stroke={set.stroke} strokeWidth={set.width} strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 24 24"
+      width="22"
+      height="22"
+      fill={set.fill}
+      fillOpacity={set.accent ? 0.13 : undefined}
+      stroke={set.stroke}
+      strokeWidth={set.width}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d={d} />
     </svg>
   );
 }
 
 export default function IconsPage() {
+  // Hard dev-only gate: production builds 404 this route entirely.
+  if (process.env.NODE_ENV === "production") notFound();
+
   return (
-    <main className="min-h-screen bg-neutral-50 px-8 py-8 text-slate-900 antialiased dark:bg-neutral-950 dark:text-neutral-100">
+    <main className="min-h-screen bg-canvas px-8 py-8 text-ink antialiased">
       <header className="mb-6">
-        <h1 className="text-2xl font-bold">🔣 8 verb 아이콘 셋 비교 (이모지 X · 실 SVG / 글리프)</h1>
-        <p className="mt-1 text-sm text-neutral-500">
-          마음에 드는 셋 알려주시면 VerbTreeNav 의 emoji 를 그 셋으로 swap.
+        <h1 className="font-display text-2xl font-light tracking-tight text-ink">
+          dev · 8-verb icon-set comparison
+        </h1>
+        <p className="mt-1 text-sm text-muted">
+          Real SVG glyphs (no emoji). Dev-only scratchpad — pick a set, swap it
+          into VerbTreeNav.
         </p>
       </header>
 
-      <div className="overflow-x-auto rounded-lg border border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+      <div className="overflow-x-auto rounded-card border border-hairline bg-surface shadow-card">
         <table className="w-full text-sm">
-          <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase text-neutral-500 dark:border-neutral-800 dark:bg-neutral-950">
+          <thead className="border-b border-hairline bg-surface-strong text-xs uppercase text-muted">
             <tr>
               <th className="px-3 py-3 text-left">verb</th>
               {SETS.map((s) => (
                 <th key={s.id} className="px-3 py-3 text-center">
-                  <div className="font-semibold text-slate-900 dark:text-neutral-100">{s.name}</div>
-                  <div className="mt-0.5 text-[10px] text-neutral-400">{s.id}</div>
+                  <div className="font-semibold text-ink">{s.name}</div>
+                  <div className="mt-0.5 text-[10px] text-muted-soft">{s.id}</div>
                 </th>
               ))}
               <th className="px-3 py-3 text-center">
-                <div className="font-semibold">Symbol Glyph</div>
-                <div className="mt-0.5 text-[10px] text-neutral-400">unicode 만</div>
+                <div className="font-semibold text-ink">Symbol Glyph</div>
+                <div className="mt-0.5 text-[10px] text-muted-soft">unicode only</div>
               </th>
             </tr>
           </thead>
           <tbody>
             {VERBS.map((v) => (
-              <tr key={v.id} className="border-b border-neutral-100 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-950">
-                <td className="px-3 py-3 font-mono text-xs text-neutral-700 dark:text-neutral-300">{v.id}</td>
+              <tr key={v.id} className="border-b border-hairline hover:bg-surface-strong">
+                <td className="px-3 py-3 font-mono text-xs text-body">{v.id}</td>
                 {SETS.map((s) => (
                   <td key={s.id} className="px-3 py-3 text-center">
-                    <div className="inline-flex h-9 w-9 items-center justify-center" style={{ color: s.accent ? "#3b82f6" : undefined }}>
+                    <div
+                      className={
+                        "inline-flex h-9 w-9 items-center justify-center " +
+                        (s.accent ? "text-success" : "text-ink")
+                      }
+                    >
                       <Glyph d={v.lucide} set={s} />
                     </div>
                   </td>
                 ))}
-                <td className="px-3 py-3 text-center text-xl font-mono">{v.symbol}</td>
+                <td className="px-3 py-3 text-center font-mono text-xl text-ink">{v.symbol}</td>
               </tr>
             ))}
           </tbody>
@@ -80,18 +108,23 @@ export default function IconsPage() {
 
       <section className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {SETS.map((s) => (
-          <article key={s.id} className="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+          <article key={s.id} className="rounded-card border border-hairline bg-surface p-4 shadow-card">
             <header className="mb-3 flex items-baseline justify-between">
-              <h3 className="text-sm font-semibold">{s.name}</h3>
-              <code className="text-[10px] text-neutral-400">id={s.id}</code>
+              <h3 className="text-sm font-semibold text-ink">{s.name}</h3>
+              <code className="text-[10px] text-muted-soft">id={s.id}</code>
             </header>
             <ul className="grid grid-cols-2 gap-2 text-xs">
               {VERBS.map((v) => (
-                <li key={v.id} className="flex items-center gap-2 rounded px-2 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800">
-                  <span style={{ color: s.accent ? "#3b82f6" : undefined }} className="inline-flex h-5 w-5 items-center justify-center">
+                <li key={v.id} className="flex items-center gap-2 rounded-control px-2 py-1 hover:bg-surface-strong">
+                  <span
+                    className={
+                      "inline-flex h-5 w-5 items-center justify-center " +
+                      (s.accent ? "text-success" : "text-body")
+                    }
+                  >
                     <Glyph d={v.lucide} set={s} />
                   </span>
-                  <span className="font-mono">{v.id}</span>
+                  <span className="font-mono text-body">{v.id}</span>
                 </li>
               ))}
             </ul>
@@ -99,8 +132,8 @@ export default function IconsPage() {
         ))}
       </section>
 
-      <p className="mt-8 text-xs text-neutral-500">
-        💡 마음에 드는 id (예: <code>lucide-out</code> · <code>duotone</code> · <code>solid</code>) 알려주면 적용.
+      <p className="mt-8 text-xs text-muted-soft">
+        Tell me a set id (e.g. lucide-out · duotone · solid) to apply it.
       </p>
     </main>
   );

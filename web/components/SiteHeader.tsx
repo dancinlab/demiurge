@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { getLocale, getMessages, t } from "@/lib/i18n";
 import { LangSwitcher } from "@/components/LangSwitcher";
+import { MarketingMobileNav } from "@/components/MarketingMobileNav";
 import { readSession } from "@/lib/session";
 
 export async function SiteHeader() {
@@ -31,7 +32,7 @@ export async function SiteHeader() {
       className="sticky top-0 z-50 border-b-4 border-white bg-black text-white"
       style={{ fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', sans-serif" }}
     >
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-6">
+      <div className="relative mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-6">
         <Link
           href="/"
           aria-label="demiurge — home"
@@ -40,7 +41,8 @@ export async function SiteHeader() {
         >
           DEMIURGE<span className="text-yellow-300">.</span>
         </Link>
-        <nav className="flex items-center gap-1 text-xs uppercase">
+        {/* desktop nav — ≥ md */}
+        <nav className="hidden items-center gap-1 text-xs uppercase md:flex">
           {links.map((l) => (
             <Link
               key={l.href}
@@ -54,6 +56,13 @@ export async function SiteHeader() {
             <LangSwitcher current={locale} />
           </span>
         </nav>
+        {/* mobile nav — < md */}
+        <MarketingMobileNav
+          links={links}
+          openLabel="Open menu"
+          closeLabel="Close menu"
+          langSwitcher={<LangSwitcher current={locale} />}
+        />
       </div>
     </header>
   );

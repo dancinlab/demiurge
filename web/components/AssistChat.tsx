@@ -1,6 +1,6 @@
 "use client";
 
-// AssistChat — 장인 chat surface. ElevenLabs 톤 (토큰 SSOT 소비).
+// AssistChat — DEMI chat surface. ElevenLabs 톤 (토큰 SSOT 소비).
 // Full: seed prompts (활성 도메인 인식) · multi-turn context · 도메인별
 // localStorage history · lightweight inline markdown.
 // All UI strings + persona come as i18n props (5 locales) — no hardcoded text.
@@ -10,6 +10,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Send, Loader2, Trash2 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffectiveReducedMotion } from "@/lib/motion";
 
 type Msg = { role: "user" | "assistant"; text: string; ts: number };
 
@@ -57,10 +59,10 @@ function saveHistory(domain: string, msgs: Msg[]): void {
 }
 
 // Persona prepended to every request. Localized response language is enforced
-// by the `locale` line so 장인 replies in the user's UI language.
+// by the `locale` line so DEMI replies in the user's UI language.
 function persona(locale: string): string {
   return [
-    'You are demiurge "장인", a friendly, concise assistant.',
+    'You are demiurge "DEMI", a friendly, concise assistant.',
     "demiurge is an AI-native 8-verb technical-design pipeline:",
     "discover → spec → structure → design → analyze → synth → verify → handoff.",
     "Help the user diverge / specify / structure / analyze / synthesize / verify / hand off domains.",
@@ -97,10 +99,10 @@ function buildPrompt(
   if (clean.length > 0) {
     lines.push("", "Conversation so far:");
     for (const m of clean) {
-      lines.push(`${m.role === "user" ? "User" : "장인"}: ${m.text}`);
+      lines.push(`${m.role === "user" ? "User" : "DEMI"}: ${m.text}`);
     }
   }
-  lines.push("", `User: ${current}`, "장인:");
+  lines.push("", `User: ${current}`, "DEMI:");
   return lines.join("\n");
 }
 
@@ -163,6 +165,8 @@ export function AssistChat({
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  // 모션 정책 = lib/motion 의 RESPECT_REDUCED_MOTION 단일 토글에 위임.
+  const reduced = useEffectiveReducedMotion();
 
   useEffect(() => {
     setMsgs(loadHistory(domain));
@@ -255,7 +259,17 @@ export function AssistChat({
             disabled={busy || !input.trim()}
             className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-[11px] font-medium text-on-primary hover:bg-primary-active disabled:opacity-50"
           >
-            {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
+            {busy ? (
+              <motion.span
+                className="inline-flex"
+                animate={reduced ? undefined : { rotate: 360 }}
+                transition={reduced ? undefined : { duration: 0.8, ease: "linear", repeat: Infinity }}
+              >
+                <Loader2 className="h-3 w-3" />
+              </motion.span>
+            ) : (
+              <Send className="h-3 w-3" />
+            )}
             {i18n.send}
           </button>
         </div>
@@ -264,11 +278,44 @@ export function AssistChat({
       {/* Transcript — 하단 */}
       {/* 입력이 상단이므로 메시지도 역순 — 최신이 맨 위(입력 바로 아래) */}
       <div ref={scrollRef} className="flex-1 space-y-2 overflow-auto pr-0.5">
-        {busy && (
-          <div className="mr-auto inline-flex items-center gap-1.5 rounded-control bg-surface-strong px-3 py-2 text-[11px] text-muted">
-            <Loader2 className="h-3 w-3 animate-spin" /> {i18n.thinking}
-          </div>
-        )}
+        {/* #1 응답 대기 모션 — typing indicator (점 3개 stagger bounce) + 텍스트.
+            데미가 "생각 중"인 시그널. CSS keyframe(demi-typing-dot) + per-dot 지연
+            stagger; reduced-motion 에선 globals.css 미디어쿼리가 점을 정지시킨다. */}
+        <AnimatePresence>
+          {busy && (
+            <motion.div
+              key="demi-typing"
+              initial={reduced ? false : { opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduced ? { opacity: 0 } : { opacity: 0, y: 4 }}
+              transition={{ duration: 0.18, ease: [0.23, 1, 0.32, 1] }}
+              className="mr-auto inline-flex items-center gap-1.5 rounded-control bg-surface-strong px-3 py-2 text-[11px] text-muted"
+              aria-live="polite"
+              aria-label={i18n.thinking}
+            >
+              <span className="inline-flex items-center gap-0.5" aria-hidden="true">
+                {[0, 1, 2].map((d) => (
+                  <motion.span
+                    key={d}
+                    className="inline-block h-1 w-1 rounded-full bg-muted"
+                    animate={reduced ? undefined : { y: [0, -3, 0], opacity: [0.3, 1, 0.3] }}
+                    transition={
+                      reduced
+                        ? undefined
+                        : {
+                            duration: 1.2,
+                            ease: [0.23, 1, 0.32, 1],
+                            repeat: Infinity,
+                            delay: d * 0.16,
+                          }
+                    }
+                  />
+                ))}
+              </span>
+              {i18n.thinking}
+            </motion.div>
+          )}
+        </AnimatePresence>
         {msgs.length === 0 ? (
           <div className="space-y-2 py-1">
             <p className="text-xs text-muted">{i18n.greeting}</p>
@@ -285,25 +332,47 @@ export function AssistChat({
             </div>
           </div>
         ) : (
-          [...msgs].reverse().map((m, i) => {
-            const isError = m.role === "assistant" && m.text.startsWith("⚠");
-            return (
-              <div
-                key={`${m.ts}-${i}`}
-                className={[
-                  "animate-msg-in rounded-2xl px-3 py-2 text-[12px] leading-relaxed",
-                  // 꼬리 효과 — user 우하단 직각 · assistant 좌하단 직각
-                  m.role === "user"
-                    ? "ml-auto max-w-[85%] rounded-tr-sm bg-inverted text-on-inverted"
-                    : isError
-                      ? "mr-auto max-w-[95%] rounded-tl-sm bg-danger/5 text-danger"
-                      : "mr-auto max-w-[95%] rounded-tl-sm border border-hairline bg-surface text-ink",
-                ].join(" ")}
-              >
-                {m.role === "assistant" && !isError ? renderMarkdown(m.text) : m.text}
-              </div>
-            );
-          })
+          // #2 메시지 등장 모션 — Motion AnimatePresence + motion.div. 새 말풍선이
+          // 역순 리스트 top(입력 바로 아래)에 부드럽게 fade+slide. reduced-motion 이면
+          // 전환을 무모션(initial=false)으로 — globals.css .animate-msg-in fallback 도
+          // 미디어쿼리로 정지되어 이중 가드. layout 으로 아래 항목들이 자연스레 밀림.
+          <AnimatePresence initial={false}>
+            {[...msgs].reverse().map((m) => {
+              const isError = m.role === "assistant" && m.text.startsWith("⚠");
+              return (
+                <motion.div
+                  key={m.ts}
+                  layout={!reduced}
+                  initial={reduced ? false : { opacity: 0, y: -8, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: -4 }}
+                  transition={
+                    reduced
+                      ? { duration: 0.15 }
+                      : {
+                          // 스프링 물리 — 말풍선이 작게 시작해 톡 자리잡음(iMessage 톤).
+                          type: "spring",
+                          stiffness: 460,
+                          damping: 30,
+                          mass: 0.8,
+                          opacity: { duration: 0.18 },
+                        }
+                  }
+                  className={[
+                    "rounded-2xl px-3 py-2 text-[12px] leading-relaxed",
+                    // 꼬리 효과 — user 우하단 직각 · assistant 좌하단 직각
+                    m.role === "user"
+                      ? "ml-auto max-w-[85%] origin-top-right rounded-tr-sm bg-inverted text-on-inverted"
+                      : isError
+                        ? "mr-auto max-w-[95%] origin-top-left rounded-tl-sm bg-danger/5 text-danger"
+                        : "mr-auto max-w-[95%] origin-top-left rounded-tl-sm border border-hairline bg-surface text-ink",
+                  ].join(" ")}
+                >
+                  {m.role === "assistant" && !isError ? renderMarkdown(m.text) : m.text}
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         )}
       </div>
     </div>

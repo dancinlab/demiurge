@@ -3,14 +3,14 @@
 // This file collects spec/design/analyze/synth/verify/discover — all server-renderable.
 
 import type { ReactNode } from "react";
+import { Section } from "@/components/ui/Section";
 
 // ── 📜 spec — form-style target card ─────────────────────────────────────────
 export function SpecForm({ domain, target }: { domain: string; target?: Record<string, unknown> }) {
   const fields = target ?? { goal: `${domain} target`, eta: "TBD" };
   return (
-    <div className="space-y-2 text-sm">
-      <div className="flex items-center gap-2 text-xs uppercase text-muted">📜 spec form</div>
-      <dl className="grid grid-cols-2 gap-1 rounded-chip border border-hairline bg-surface-strong p-3">
+    <Section eyebrow="📜 spec form" bodyClassName="mt-2 space-y-2 text-sm">
+      <dl className="grid grid-cols-2 gap-1">
         {Object.entries(fields).map(([k, v]) => (
           <div key={k} className="contents">
             <dt className="text-muted">{k}</dt>
@@ -18,7 +18,7 @@ export function SpecForm({ domain, target }: { domain: string; target?: Record<s
           </div>
         ))}
       </dl>
-    </div>
+    </Section>
   );
 }
 
@@ -69,7 +69,7 @@ export function RecipeLadder({ steps }: { steps?: string[] }) {
   return (
     <ol className="space-y-1 text-sm">
       {items.map((s, i) => (
-        <li key={i} className="flex items-center gap-2 rounded-chip border border-hairline bg-surface-strong px-2 py-1 text-body-strong">
+        <li key={i} className="flex items-center gap-2 py-1 text-body-strong">
           <span className="rounded-chip bg-inverted px-1.5 py-0.5 text-xs font-mono text-on-inverted">{i + 1}</span>
           <span>{s}</span>
         </li>
@@ -89,7 +89,7 @@ export function VerdictMatrix({ rows }: { rows?: Array<{ claim: string; tier: "�
     <table className="w-full text-sm">
       <tbody>
         {data.map((r, i) => (
-          <tr key={i} className="border-b border-hairline">
+          <tr key={i} className="border-b border-hairline-soft">
             <td className="py-1 pr-2 text-2xl">{r.tier}</td>
             <td className="py-1 font-mono text-xs text-body-strong">{r.claim}</td>
           </tr>

@@ -6,7 +6,19 @@
 import { useState } from "react";
 import type { ProviderRegistry } from "@/lib/providers";
 
-export function AdminToggles({ initial }: { initial: ProviderRegistry }) {
+export type AdminTogglesI18n = {
+  payment: string; // "💳 Payment (single-active)"
+  gpu: string; // "🎮 GPU (multi · priority)"
+  llm: string; // "🧠 LLM (multi · priority)"
+};
+
+export function AdminToggles({
+  initial,
+  i18n,
+}: {
+  initial: ProviderRegistry;
+  i18n: AdminTogglesI18n;
+}) {
   const [registry, setRegistry] = useState<ProviderRegistry>(initial);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +60,7 @@ export function AdminToggles({ initial }: { initial: ProviderRegistry }) {
   return (
     <div className="mt-8 space-y-8 text-sm">
       <section>
-        <h2 className="mb-2 font-bold">💳 결제 (single-active)</h2>
+        <h2 className="mb-2 font-bold">{i18n.payment}</h2>
         {registry.payment.available.map((p) => (
           <label key={p} className="mr-4 inline-flex items-center gap-2">
             <input
@@ -66,7 +78,7 @@ export function AdminToggles({ initial }: { initial: ProviderRegistry }) {
       {(["gpu", "llm"] as const).map((kind) => (
         <section key={kind}>
           <h2 className="mb-2 font-bold">
-            {kind === "gpu" ? "🎮 GPU" : "🧠 LLM"} (multi · priority)
+            {kind === "gpu" ? i18n.gpu : i18n.llm}
           </h2>
           <ul>
             {Object.entries(registry[kind])
@@ -80,14 +92,14 @@ export function AdminToggles({ initial }: { initial: ProviderRegistry }) {
                     onChange={() => toggleKind(kind, id)}
                   />
                   <span className="w-32">{id}</span>
-                  <span className="text-xs text-neutral-500">p{v.priority}</span>
+                  <span className="text-xs text-muted-soft">p{v.priority}</span>
                 </li>
               ))}
           </ul>
         </section>
       ))}
 
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-danger">{error}</p>}
     </div>
   );
 }

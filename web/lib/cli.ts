@@ -6,9 +6,15 @@
 //
 // Resolution order for the binary:
 //   1. $DEMIURGE_BIN
-//   2. `demiurge` on PATH (looked up at spawn time)
-//   3. dev fallback: cockpit/.build/debug/DemiurgeCLI
-//   4. dev fallback: cockpit/.build/release/DemiurgeCLI
+//   2. dev fallback: <repo>/cockpit/.build/{release,debug}/DemiurgeCLI
+//   3. dev fallback: any sibling demiurge*/cockpit/.build/… (the localdev
+//      clone ships no compiled CLI; reuse the canonical checkout's build)
+//   4. `demiurge` on PATH (looked up at spawn time) — the hx WRAPPER, which
+//      needs a leading `cli` subcommand (handled by spawnArgs() below).
+//
+// resolveBinary() returns { bin, wrapper }. When `wrapper` is true the bin is
+// the PATH `demiurge` shim (`demiurge cli <args…>`), so spawnArgs() prepends
+// "cli"; when false the bin is a DemiurgeCLI binary invoked with args directly.
 //
 // Anything reading stdin/stdout outside of this helper is a smell.
 
@@ -18,18 +24,42 @@ import fs from "node:fs";
 
 const REPO_ROOT = path.resolve(process.cwd(), "..");
 
-function resolveBinary(): string {
-  const env = process.env.DEMIURGE_BIN;
-  if (env && fs.existsSync(env)) return env;
+type Resolved = { bin: string; wrapper: boolean };
 
-  const dev = [
-    path.join(REPO_ROOT, "cockpit", ".build", "release", "DemiurgeCLI"),
-    path.join(REPO_ROOT, "cockpit", ".build", "debug", "DemiurgeCLI"),
+function buildPaths(root: string): string[] {
+  return [
+    path.join(root, "cockpit", ".build", "release", "DemiurgeCLI"),
+    path.join(root, "cockpit", ".build", "debug", "DemiurgeCLI"),
   ];
-  for (const p of dev) {
-    if (fs.existsSync(p)) return p;
+}
+
+function resolveBinary(): Resolved {
+  const env = process.env.DEMIURGE_BIN;
+  if (env && fs.existsSync(env)) return { bin: env, wrapper: false };
+
+  // (2) this repo's own build, then (3) any sibling demiurge* checkout that
+  // carries a compiled DemiurgeCLI (the localdev tree typically has none).
+  const candidates = [...buildPaths(REPO_ROOT)];
+  try {
+    const parent = path.resolve(REPO_ROOT, "..");
+    for (const sib of fs.readdirSync(parent)) {
+      if (!sib.startsWith("demiurge")) continue;
+      const sibRoot = path.join(parent, sib);
+      if (sibRoot === REPO_ROOT) continue;
+      candidates.push(...buildPaths(sibRoot));
+    }
+  } catch {
+    /* parent unreadable — skip sibling probe */
   }
-  return "demiurge"; // PATH lookup
+  for (const p of candidates) {
+    if (fs.existsSync(p)) return { bin: p, wrapper: false };
+  }
+
+  return { bin: "demiurge", wrapper: true }; // PATH lookup (hx wrapper)
+}
+
+function spawnArgs(resolved: Resolved, args: string[]): string[] {
+  return resolved.wrapper ? ["cli", ...args] : args;
 }
 
 export type CliResult = {
@@ -42,11 +72,11 @@ export async function runCli(
   args: string[],
   opts: { timeoutMs?: number; stdin?: string } = {}
 ): Promise<CliResult> {
-  const bin = resolveBinary();
+  const resolved = resolveBinary();
   const timeoutMs = opts.timeoutMs ?? 30_000;
 
   return new Promise((resolve, reject) => {
-    const proc = spawn(bin, args, { cwd: REPO_ROOT });
+    const proc = spawn(resolved.bin, spawnArgs(resolved, args), { cwd: REPO_ROOT });
     let stdout = "";
     let stderr = "";
 
@@ -78,8 +108,8 @@ export async function runCli(
 export async function* streamCli(
   args: string[]
 ): AsyncGenerator<{ kind: "stdout" | "stderr" | "exit"; data: string | number }> {
-  const bin = resolveBinary();
-  const proc = spawn(bin, args, { cwd: REPO_ROOT });
+  const resolved = resolveBinary();
+  const proc = spawn(resolved.bin, spawnArgs(resolved, args), { cwd: REPO_ROOT });
 
   const queue: Array<{ kind: "stdout" | "stderr" | "exit"; data: string | number }> = [];
   let resolveNext: (() => void) | null = null;

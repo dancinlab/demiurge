@@ -12,6 +12,7 @@
 
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { repoDataRoot } from "@/lib/data-root";
 
 export type TapeNode = {
   type: string;
@@ -70,9 +71,10 @@ export function parseTape(src: string): TapeNode[] {
 }
 
 export async function loadTape(relPath: string): Promise<TapeNode[]> {
-  // demiurge repo root is two levels above web/lib at runtime.
-  // We resolve relative to process.cwd() which is the web/ dir in Cloud Run.
-  const root = process.env.DEMIURGE_ROOT ?? join(process.cwd(), "..");
+  // Resolve the demiurge data root through the canonical helper (same one the
+  // dashboard / matter ledger use) — robust whether the dev server's cwd is
+  // web/ or the repo root. An explicit DEMIURGE_ROOT override still wins.
+  const root = process.env.DEMIURGE_ROOT ?? repoDataRoot();
   const src = await readFile(join(root, relPath), "utf8");
   return parseTape(src);
 }

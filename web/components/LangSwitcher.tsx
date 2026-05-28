@@ -37,7 +37,7 @@ export function LangSwitcher({ current }: { current: string }) {
       value={current}
       disabled={busy}
       onChange={(e) => pick(e.target.value)}
-      className="rounded border border-neutral-300 bg-white px-2 py-1 text-xs dark:border-neutral-700 dark:bg-neutral-950"
+      className="rounded-control border border-hairline bg-surface px-2 py-1 text-xs text-ink"
       aria-label="Language"
     >
       {OPTIONS.map((o) => (
