@@ -1,7 +1,7 @@
 {
   "version": "1.0-temp",
   "schema_origin": "sidecar INBOX #193 (~/.pool/pods.json proposed)",
-  "last_updated_utc": "2026-05-28T18:18:01Z",
+  "last_updated_utc": "2026-05-29T19:35:00Z",
   "wave3b_reauthor_note": "4 candidates (CeH9/YH9/YH10/Li2MgH16) re-authored from failed crystal_sg+space_group decks to YH6-proven explicit ATOMIC_POSITIONS crystal (spglib orbit expansion); all 4 d16 PASS + FIRED on vast-cuda-ssh9-15988 (already-running pod, no new rent). Incremental cost ~ pod $0.40/hr x chain wall (within ~$24 budget). See exports/rtsc/wave3b_decks/D16-NOTES.md.",
   "campaign": "rtsc-293K-1atm",
   "budget": {
@@ -415,13 +415,15 @@
       "verdict": "PENDING"
     },
     "ScH9": {
-      "pod": "vast-pod-4-new",
-      "status": "queued",
+      "pod": "ssh9",
+      "status": "running",
       "stage": "vc-relax",
-      "est_wall_h": 40,
-      "np": 6,
+      "est_wall_h": 140,
+      "np": 8,
       "hypothesis": "Sc-쪽 marginal",
-      "verdict": "PENDING"
+      "verdict": "PENDING",
+      "kind": "dft-elph",
+      "note": "Wave-2 발견-기반 fired 2026-05-29 (150GPa, supersedes stale queued vast-pod-4-new entry; pid2595)"
     },
     "CaBeH8": {
       "pod": "vast-pod-4-new",
@@ -568,6 +570,47 @@
       "anchor_tc_K": 39,
       "recovered_utc": "2026-05-28T18:18:01Z",
       "recovered_note": "pilot A01/A11/A25 fired 2026-05-29 — A25 12atom ambient Ca-doped MgB2 BCS line, system QE pid1528"
+    },
+    "KBeH8": {
+      "pod": "ssh9",
+      "status": "running",
+      "stage": "vc-relax",
+      "est_wall_h": 140,
+      "np": 8,
+      "verdict": "PENDING",
+      "kind": "dft-elph",
+      "anchor_tc_K": 181,
+      "note": "Wave-2 발견-기반 fired 2026-05-29"
+    },
+    "SrPtH3": {
+      "pod": "ssh9",
+      "status": "running",
+      "stage": "vc-relax",
+      "est_wall_h": 17.5,
+      "np": 8,
+      "verdict": "PENDING",
+      "kind": "dft-elph",
+      "note": "Wave-2 발견-기반 fired 2026-05-29"
+    },
+    "BaAuH3": {
+      "pod": "ssh9",
+      "status": "running",
+      "stage": "vc-relax",
+      "est_wall_h": 17.5,
+      "np": 8,
+      "verdict": "PENDING",
+      "kind": "dft-elph",
+      "note": "Wave-2 발견-기반 fired 2026-05-29"
+    },
+    "YAuH3": {
+      "pod": "ssh9",
+      "status": "running",
+      "stage": "vc-relax",
+      "est_wall_h": 17.5,
+      "np": 8,
+      "verdict": "PENDING",
+      "kind": "dft-elph",
+      "note": "Wave-2 발견-기반 fired 2026-05-29"
     }
   },
   "per_pod_wall_summary": {
