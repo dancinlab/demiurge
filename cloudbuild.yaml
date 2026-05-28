@@ -26,7 +26,7 @@ steps:
     args:
       - build
       - -f
-      - web/Dockerfile
+      - Dockerfile
       - -t
       - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_IMAGE}:${BUILD_ID}
       - -t
