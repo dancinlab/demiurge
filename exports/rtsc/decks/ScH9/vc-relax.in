@@ -1,0 +1,74 @@
+&control
+  ! B10 ScH9 — Sc-substituted YH9/CeH9 clathrate superhydride (RTSC Wave-2, YH10-family sister).
+  ! Anchor: YH9 / CeH9 H-clathrate (P6_3/mmc-ish hexagonal, H sodalite-like cage around metal).
+  !   YH9: Tc~243K@>200GPa (exptl); CeH9 lower-P. Both = clathrate superhydride mechanism class.
+  ! Substitution: Y/Ce -> Sc (lighter, smaller 3d congener of Y). Sc (r=0.87 Ang) << Y (1.04 Ang)
+  !   -> strong cage contraction; lighter mass raises phonon frequencies (omega_log up).
+  ! Cell: 1 formula unit ScH9 (1 Sc + 9 H = 10 atoms), hexagonal. The 9 H form the clathrate
+  !   cage around the central Sc. START guess from YH9 geometry contracted ~16% for Sc.
+  ! Pressure: 150 GPa (=1500 kbar) — YH9-like clathrate stabilization regime.
+  !   For a lower-P fallback re-run with press=1000.0 (100 GPa) — see RUNBOOK fallback.
+  calculation = 'vc-relax'
+  prefix = 'sch9'
+  outdir = '/home/aiden/rtsc_sch9/out'
+  pseudo_dir = '/home/aiden/rtsc_sch9/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  etot_conv_thr = 1.0d-5
+  nstep = 250
+  verbosity = 'low'
+/
+&system
+  ! ibrav=4 hexagonal (a, c) — P6_3/mmc clathrate, 1 f.u. (Sc + 9 H).
+  ! celldm(1)=a in Bohr, celldm(3)=c/a. START: a=5.20 Bohr (=2.75 Ang, YH9 ~3.27 Ang x0.84),
+  !   c/a=1.57 (near-ideal hcp-derived clathrate). nosym guard for relaxation under stress.
+  ! Sc at 2a-like origin; 9 H tile the surrounding sodalite cage (relaxed by vc-relax).
+  ibrav = 4
+  celldm(1) = 5.20
+  celldm(3) = 1.57
+  nat = 10
+  ntyp = 2
+  ecutwfc = 80.0
+  ecutrho = 640.0
+  nosym = .true.
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  ! d15 small-gap SCF aids (metallic superhydride): tight conv + low mixing + maxiter headroom.
+  conv_thr = 1.0d-10
+  mixing_beta = 0.3
+  mixing_mode = 'plain'
+  electron_maxstep = 400
+/
+&ions
+  ion_dynamics = 'bfgs'
+/
+&cell
+  cell_dynamics = 'bfgs'
+  press = 1500.0
+  press_conv_thr = 0.5
+  cell_dofree = 'all'
+/
+
+ATOMIC_SPECIES
+  Sc 44.956 Sc.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H  1.008  H.pbe-rrkjus_psl.1.0.0.UPF
+! Clathrate cage START coords (fractional, hexagonal). Sc central; 9 H tile the H-cage.
+! These are a physically-motivated START guess for the H sodalite cage — vc-relax RELAXES
+! them to the true clathrate minimum (the exact Wyckoff set emerges from the relaxation).
+ATOMIC_POSITIONS crystal
+  Sc 0.000000 0.000000 0.000000
+  H  0.333333 0.166667 0.100000
+  H  0.166667 0.333333 0.300000
+  H  0.666667 0.833333 0.100000
+  H  0.833333 0.666667 0.300000
+  H  0.500000 0.500000 0.500000
+  H  0.000000 0.500000 0.250000
+  H  0.500000 0.000000 0.750000
+  H  0.250000 0.750000 0.600000
+  H  0.750000 0.250000 0.400000
+K_POINTS automatic
+  10 10 8 0 0 0

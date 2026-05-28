@@ -1,0 +1,22 @@
+ScH9 phonon + electron-phonon 2x2x2 q (RTSC B10 · YH9/CeH9 Sc-variant · clathrate superhydride · YH10-family sister)
+&inputph
+  prefix = 'sch9'
+  outdir = '/home/aiden/rtsc_sch9/out'
+  fildyn = '/home/aiden/rtsc_sch9/sch9.dyn'
+  fildvscf = 'sch9.dvscf'
+  ! ldisp + 2x2x2 q-mesh sized to the 10-atom clathrate cell (single-pod feasible for a
+  !   10-atom metallic superhydride, cf. MgBeH8 pilot). nq=8 matches the preflight.
+  !   Refine to 4x4x4 only on a multi-pod / split-q campaign.
+  ldisp = .true.
+  nq1 = 2, nq2 = 2, nq3 = 2
+  tr2_ph = 1.0d-14
+  recover = .true.
+  ! 'simple' el-ph: double-delta EPC, swept over el_ph_nsigma broadenings.
+  ! Harvest reads the sigma-plateau lambda (NOT the monotone-broadening tail).
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+  alpha_mix(1) = 0.3
+  ! preflight #1885: 10 atoms · nq=8 · metallic -> est 93.3h, floor 140h.
+  max_seconds = 504000
+/
