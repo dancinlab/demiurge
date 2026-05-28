@@ -63,6 +63,14 @@
   reused_by = "UFO Stage-3 orbital — γ-rocket I_sp = c/g 광자천장 verify (🟢 |Δ|=0.0 ×3)"
   evidence  = "UFO/verify/stage3-orbital-gamma.md · UFO.log R1 (#237)"
 
+@X e7 := "NUCLEAR n11_island_cell_checked -> RTSC+NUCLEAR (meta funnel finding)" :: reuse-edge [tier-2 active]
+  provides  = "NUCLEAR (n11_island_cell_checked island funnel)"
+  primitive = "(c)-gate island_weight composite scorer — accelerator-priority SHE shortlist"
+  reused_by = "RTSC+NUCLEAR §F4 (meta-domain elemental-funnel · PARALLEL lane, NOT a supply merge)"
+  finding   = "N12: 298-120 (deformed-magic N=178) composite 0.545 = funnel TOP · OUT-ranks entire N11 G4 cohort (N11 top 295-119=0.046). N13: chain-daughter calibration (292-Lv 0.3725 top) confirms 298-120 stands as the novel-element headline."
+  evidence  = "exports/nuclear_discovery/n12_funnel/2026-05-28T18-37-27Z + n13_funnel/2026-05-28T19-20-02Z · NUCLEAR PR #504 + N13"
+  invariant = "absorbed=false 영구 (R4) · sim PASS = accelerator beam-time hint, NEVER a discovery · meta bridge §6.1 honest-rejects 초중핵→RTSC-bulk supply (벽=생산량) — this is the parallel-funnel reflection, not a coupling"
+
 # ── 2. provides[] registry (per-domain offered primitives · atlas fn) ──
 
 @X p1 := "NOVEL-TOOL provides" :: provides [active]
@@ -90,13 +98,18 @@
   primitives = "ufo_isp_fuel_ratio · ufo_rocket_beta · ufo_gl_derating · ufo_mli_shield (R1 실물리) · ufo_lattice_sigma_pow · ufo_warp_composite · ufo_lattice_master (R2 n6-lattice formal · 물리 ⚪-fenced)"
   note       = "folded to hexa-lang atlas (@F verified-ufo_*-num · substrate hub g68) — recompute-resolvable · PR #1222 (R1) #1244 (R2)"
 
+@X p7 := "NUCLEAR provides" :: provides [active]
+  domain     = "NUCLEAR"
+  primitives = "n11_island_cell_checked (install-FREE (c)-gate: NC1 Viola-Seaborg · NC2 Royer · C1 α⊕SF total · C2 island_weight 2-D Gaussian) · sf_consensus (C3 Ren-Xu/Hoffman · C4 Zdeb-Warda-Pomorski) · n11_alpha_cell (VS+Royer consensus)"
+  note       = "stdlib/nuclear/sim.hexa (@D d3 home) · α-kernels 🟢 SUPPORTED-NUMERICAL (hexa-lang #960) · anchor smoke 4/4 (test/nuclear_r4_anchor_smoke.hexa) · absorbed=false 영구 (R4)"
+
 # ── 3. candidate edges (conceptual · no code reuse yet) ──
 
 @X c1 := "CERN accelerator <-> ANTIMATTER deceleration/generation" :: reuse-candidate [proposed draft]
   note = "shared relativistic kinematics + deceleration ladder — unverified"
 
-@X c2 := "NUCLEAR <-> RTSC+NUCLEAR" :: reuse-candidate [proposed draft]
-  note = "meta-domain (+) composition"
+@X c2 := "NUCLEAR <-> RTSC+NUCLEAR" :: reuse-candidate [promoted active]
+  note = "meta-domain (+) composition — PROMOTED to verified finding edge e7 (NUCLEAR N12 island funnel -> RTSC+NUCLEAR §F4 parallel lane). Composition stays PARALLEL: meta bridge §6.1 honest-rejects 초중핵→RTSC-bulk supply (벽=생산량)."
 
 # ── 4. usage protocol (atlas-first · @D g67 / d19) ──
 
@@ -113,6 +126,7 @@
   ANTIMATTER --ioffe_loop_bz · pair_threshold · rel_kinetic--> UFO (Stage-1 hover · Stage-3 γ-rocket)
   FUSION --triple_product (J·B·V)----------------> UFO (Stage-2 MHD cruise)
   UFO --provides (7 atom)--> hexa-lang atlas (isp/beta/gl/mli · lattice σ^k/(σ−φ)²/σ·φ)
+  NUCLEAR --n11_island_cell_checked (N12: 298-120=0.545 top)--> RTSC+NUCLEAR §F4 (PARALLEL lane · NOT supply merge · §6.1 honest-reject)
   GRAPH
 
 # ── 5. cross-repo bidirectional peers (g68) — declared 2026-05-28 ──

@@ -234,3 +234,40 @@ RTSC §8.9 어떤 gate 도 미충족). RTSC scope 밖이되 NUCLEAR 측 진짜 t
 recoil-separator 검출) 이며, bulk bridge 의 재평가 트리거는 bridge §6.1 그대로 —
 **"분 단위 수명 island-of-stability 핵종의 거시량 생산"** (차세대 neutron-rich beam +
 10¹⁵배 생산률 도약의 이중 천문학적 전제). out-of-scope ≠ impossible.
+
+#### (e) elemental-funnel 최신 novel-element 랭킹 — N12 (298-120 top, N11 능가) + N13 calibration
+
+> §F4 (b) 의 "first novel-element ranking" meta-bridge 반영을 **갱신**한다. 이는 §F3 R4
+> #4 **PARALLEL** framing 그대로 (supply 통합 아님 · §6.1 honest-reject 불변) — elemental
+> funnel 의 *방법·성과* 진척을 §F MIRROR 인벤토리에 흡수하는 것이지, 초중핵을 RTSC bulk
+> 입력으로 받는 것이 결코 아니다. (a) 의 bulk-SC REJECT 평결은 100% 유지된다.
+
+NUCLEAR funnel 이 N11(G3) 이후 동일 `n11_island_cell_checked` (c)-gate scorer 로 두
+wave 를 더 돌려 novel-element 랭킹을 심화했다:
+
+```
+N12 (2026-05-28 · N11 미커버 Z=119/120 부모 10셀 · cited WS4/KTUY Q_α):
+   #1  298-120 (N=178 deformed-magic · α-dominant)  composite 0.545  ← 신규원소 funnel TOP
+   #2  296-119                                       composite 0.492
+        → 둘 다 N11 G4 전체(top 295-119 = 0.046)를 OUT-RANK
+          (낮은 Q_α → 반감기가 가속기 band [-6,+3] log10 s 안쪽 착지)
+   최고 island_weight = 302-120 (0.946 · N=182 = 예측 N=184 최근접)
+   300-120 = CLOSED-NEGATIVE (g63 · even-even in-model SF-collapse · KEPT)
+
+N13 (2026-05-28 · 298-120/296-120 의 α-붕괴 사슬 딸핵종 9셀 · MEASURED Q_α):
+   #1  292-Lv  0.3725  ·  #2  294-Og 0.2199 (298-120 의 첫 α-tag step · smoke-anchor)
+   3 CLOSED-NEGATIVE (282-Cn·284-Cn·278-Ds) = 확인핵종 측정 SF-collapse 재현 = calibration
+   → 사슬 딸핵종 전부 298-120(0.545) 아래 ⇒ Z=120 부모가 funnel headline 유지
+```
+
+- **헤드라인 = 298-120** 이 elemental funnel 의 최신 novel-element 1위이며, N11 코호트
+  전체를 능가한다. 이는 §F4 (b) 가 기록한 "(a)존재 슬롯 → N11/IslandScore (a→c composite)"
+  funnel 이 *더 신규한 셀*에서 한 번 더 닫혔다는 진척 — RTSC N5 ↔ NUCLEAR N11 ★MIRROR
+  의 *원소* 축 강화의 2nd/3rd wave.
+- **PARALLEL 불변**: 298-120 도 ²⁹⁵119 와 동일하게 RTSC compositional funnel 입력이 **될 수
+  없다** ((a) bulk-SC REJECT · single-atom · 10¹⁵+배 생산량 벽). N13 의 딸핵종(294-Og 등)은
+  *확인된* 핵종이지만 마찬가지로 single-atom SHE → RTSC bulk SC 아님 (calibration 성과일 뿐).
+- **absorbed=false 영구 (R4)**: N12/N13 sim PASS = 가속기 빔타임/α-tag 우선순위 hint 이지
+  발견·합성 주장이 아니다. (e)-gate (DGFRS-2/GARIS-III) 영구 wet-lab. '가능성' ≠ '임'.
+- ledger: `exports/nuclear_discovery/n12_funnel/2026-05-28T18-37-27Z/` (N11 능가) ·
+  `n13_funnel/2026-05-28T19-20-02Z/` (chain calibration) · NEXUS.tape e7 (cross-domain finding edge).
