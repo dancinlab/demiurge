@@ -5,8 +5,9 @@
 
 import Link from "next/link";
 import { BookOpen, Bell } from "lucide-react";
-import { AccountMenu } from "@/components/AccountMenu";
+import { AccountMenu, type AccountMenuI18n } from "@/components/AccountMenu";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { MobileMenuButton } from "@/components/MobileMenuButton";
 
 // 테마 토글(Light↔Dark)은 우상단 ☀️/🌙 (ThemeToggle, client). ElevenLabs 다크 팔레트.
 
@@ -14,10 +15,14 @@ type TopBarUser = { email: string; role?: string };
 
 type TopBarI18n = {
   topbarDomains: string;
+  topbarDocs: string;
   topbarActiveProject: string;
   topbarWorkbench: string;
   topbarSignIn: string;
   topbarAdmin: string;
+  topbarNotifications: string;
+  topbarMenu: string;
+  account: AccountMenuI18n;
 };
 
 export function TopBar({
@@ -31,7 +36,9 @@ export function TopBar({
 }) {
   // 좌측: 워크벤치 / 도메인명 (브레드크럼). 우측: 테마 · Docs · 알림 · domains · admin · 계정.
   return (
-    <header className="flex items-center gap-3 border-b border-hairline bg-surface px-5 py-3 text-sm">
+    <header className="flex items-center gap-2 bg-surface px-3 py-3 text-sm sm:gap-3 sm:px-5">
+      {/* < md: 햄버거 → off-canvas 좌 레일 드로어 토글. >= md: 숨김. */}
+      <MobileMenuButton label={i18n.topbarMenu} />
       <div className="flex min-w-0 flex-1 items-center gap-1.5">
         <span className="font-medium text-ink">{i18n.topbarWorkbench}</span>
         {activeDomain ? (
@@ -42,38 +49,37 @@ export function TopBar({
         ) : null}
       </div>
       <ThemeToggle />
-      <a
-        href="https://demiurge.dancinlab.org"
-        target="_blank"
-        rel="noreferrer"
-        className="flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted hover:bg-surface-strong hover:text-ink"
+      <Link
+        href="/docs"
+        aria-label={i18n.topbarDocs}
+        className="flex items-center gap-1.5 rounded-full px-1.5 py-1 text-xs text-muted hover:bg-surface-strong hover:text-ink sm:px-2"
       >
         <BookOpen className="h-4 w-4" aria-hidden="true" />
-        Docs
-      </a>
+        <span className="hidden sm:inline">{i18n.topbarDocs}</span>
+      </Link>
       <Link
         href="/account"
-        aria-label="Notifications"
+        aria-label={i18n.topbarNotifications}
         className="rounded-full p-1.5 text-muted hover:bg-surface-strong hover:text-ink"
       >
         <Bell className="h-4 w-4" aria-hidden="true" />
       </Link>
       <Link
         href="/dashboard"
-        className="rounded-full px-2 py-1 text-xs text-muted hover:bg-surface-strong hover:text-ink"
+        className="hidden rounded-full px-2 py-1 text-xs text-muted hover:bg-surface-strong hover:text-ink sm:inline-block"
       >
         {i18n.topbarDomains}
       </Link>
       {user?.role === "admin" && (
         <Link
           href="/admin"
-          className="rounded-full border border-danger/20 bg-danger/5 px-2 py-1 text-xs text-danger hover:bg-danger/10"
+          className="rounded-full bg-danger/10 px-2 py-1 text-xs text-danger hover:bg-danger/20"
         >
           ⚙️ {i18n.topbarAdmin}
         </Link>
       )}
       {user ? (
-        <AccountMenu email={user.email} />
+        <AccountMenu email={user.email} i18n={i18n.account} />
       ) : (
         <Link
           href="/signin"

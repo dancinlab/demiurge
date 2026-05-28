@@ -5,6 +5,24 @@
    that class only — so OS preference never auto-bleeds into a surface. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ── 커서 SSOT — 클릭 가능 요소 손모양 커서 단일 출처 ──────────────────────────
+   Tailwind v4 Preflight 는 button 의 cursor 를 default(브라우저 기본)로 둔다
+   (v3 = pointer). @layer base 안에 두면 Preflight 와 같은 layer 라 순서 의존이
+   되어 일부 환경에서 덮어쓰기가 불안정 — 안전하게 layer 바깥 + !important 로
+   강제한다. 토글/이동이 필요한 특수 요소(드래그 핸들 등)는 컴포넌트에서
+   cursor-* 로 개별 override 가능. label[for] 은 자식 input 의 text cursor 와
+   충돌해 글자입력 커서가 뜨는 케이스가 있어 제외. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+summary,
+select:not(:disabled) {
+  cursor: pointer !important;
+}
+button:disabled,
+[role="button"][aria-disabled="true"] {
+  cursor: not-allowed !important;
+}
+
 :root {
   --background: #ffffff;
   --foreground: hsl(240 3% 6%);
@@ -123,9 +141,6 @@
    here. Atkinson Hyperlegible(본문) + Inter(제목·--font-display) via
    next/font/google in app/layout.tsx. */
 
-/* 채팅 말풍선 등장 — fade + slide-up (brand-ease) */
-@keyframes msg-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-msg-in { animation: msg-in 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+/* 모든 애니메이션은 Motion(JS) + lib/motion 의 RESPECT_REDUCED_MOTION 단일
+   토글로 통일한다. 커스텀 CSS @keyframes 는 두지 않는다 — CSS 미디어쿼리가
+   토글과 엇갈리지 않도록(일관성). 모션 on/off 는 lib/motion 한 줄로만 제어. */

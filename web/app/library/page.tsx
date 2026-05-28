@@ -1,20 +1,15 @@
-// /library — guest-viewable public domain gallery (Q18).
-// Members may fork; guests are prompted to sign in.
+// /library — ABSORBED into the dashboard domain browser (#6b).
+//
+// library (공개 도메인 갤러리) is no longer a separate top-level concept — it is a
+// VIEW of the single "domain" concept, surfaced as the "public" tab inside the
+// dashboard's DomainBrowser (the LibraryGallery component is reused there). This
+// route is kept only as a permanent redirect so any old bookmark lands on the
+// unified surface.
 
-import { LibraryGallery } from "@/components/LibraryGallery";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default function LibraryPage() {
-  return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <header className="mb-6">
-        <h1 className="text-2xl font-bold">📖 공개 도메인 라이브러리</h1>
-        <p className="mt-1 text-sm text-neutral-500">
-          founder 가 등록한 무료 공개 도메인 · 회원은 fork 해서 내 방향으로 자유롭게.
-        </p>
-      </header>
-      <LibraryGallery />
-    </main>
-  );
+  redirect("/dashboard");
 }

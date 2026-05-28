@@ -22,7 +22,7 @@ export default async function PricingPage() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <div className="mx-auto max-w-5xl px-8 py-16">
+      <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-16">
         <nav className="mb-10 text-xs uppercase tracking-[0.3em] text-white/70">
           <Link href="/" className="hover:text-yellow-300">
             {t(m, "nav.back_home")}
@@ -39,19 +39,19 @@ export default async function PricingPage() {
           )}
         </nav>
 
-        <div className="border-y-4 border-white py-2 text-xs uppercase" style={{ letterSpacing: "0.4em" }}>
-          PRICING&nbsp;&nbsp;//&nbsp;&nbsp;TIERS&nbsp;&nbsp;//&nbsp;&nbsp;BILLING
+        <div className="overflow-x-auto border-y-4 border-white py-2 text-[10px] uppercase sm:text-xs" style={{ letterSpacing: "0.3em" }}>
+          <span className="whitespace-nowrap sm:tracking-[0.4em]">PRICING&nbsp;&nbsp;//&nbsp;&nbsp;TIERS&nbsp;&nbsp;//&nbsp;&nbsp;BILLING</span>
         </div>
 
-        <h1 className="mt-10 text-[80px] font-black uppercase leading-[0.85] tracking-tighter">
+        <h1 className="mt-8 text-[clamp(48px,14vw,80px)] font-black uppercase leading-[0.85] tracking-tighter sm:mt-10">
           {t(m, "pricing.title")}
           <span className="text-yellow-300">.</span>
         </h1>
-        <p className="mt-6 max-w-xl border-l-4 border-white pl-4 text-base uppercase tracking-wide">
+        <p className="mt-6 max-w-xl border-l-4 border-white pl-4 text-sm uppercase tracking-wide sm:text-base">
           {t(m, "pricing.subtitle")}
         </p>
 
-        <section className="mt-16 grid grid-cols-1 gap-0 border-4 border-white md:grid-cols-3">
+        <section className="mt-10 grid grid-cols-1 gap-0 border-4 border-white sm:mt-16 md:grid-cols-3">
           {TIERS.map((tier, idx) => {
             const tierLabel = t(m, TIER_KEY[tier.id]);
             const startLabel = t(m, "pricing.start_label").replace(
@@ -109,11 +109,11 @@ export default async function PricingPage() {
 
         {/* GCP compute usage table — public list prices, us-central1.
             Billed directly by Google (not by demiurge). */}
-        <section className="mt-20">
-          <div className="border-y-4 border-white py-2 text-xs uppercase" style={{ letterSpacing: "0.4em" }}>
-            GCP&nbsp;&nbsp;//&nbsp;&nbsp;{t(m, "pricing.gcp_label")}
+        <section className="mt-14 sm:mt-20">
+          <div className="overflow-x-auto border-y-4 border-white py-2 text-[10px] uppercase sm:text-xs" style={{ letterSpacing: "0.3em" }}>
+            <span className="whitespace-nowrap sm:tracking-[0.4em]">GCP&nbsp;&nbsp;//&nbsp;&nbsp;{t(m, "pricing.gcp_label")}</span>
           </div>
-          <h2 className="mt-8 text-4xl font-black uppercase leading-[0.9] tracking-tighter">
+          <h2 className="mt-8 text-3xl font-black uppercase leading-[0.9] tracking-tighter sm:text-4xl">
             {t(m, "pricing.gcp_title")}
             <span className="text-yellow-300">.</span>
           </h2>
@@ -121,10 +121,10 @@ export default async function PricingPage() {
             {t(m, "pricing.gcp_subtitle")}
           </p>
 
-          <div className="mt-8 border-4 border-white">
-            <div className="grid grid-cols-[1fr_auto_auto] items-center border-b-4 border-white bg-yellow-300 px-4 py-2 text-[10px] font-black uppercase tracking-[0.3em] text-black">
+          <div className="mt-8 overflow-x-auto border-4 border-white">
+            <div className="grid min-w-[20rem] grid-cols-[1fr_auto_auto] items-center border-b-4 border-white bg-yellow-300 px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-black sm:min-w-0 sm:tracking-[0.3em]">
               <span>{t(m, "pricing.gcp_col_resource")}</span>
-              <span className="px-6">{t(m, "pricing.gcp_col_unit")}</span>
+              <span className="px-2 sm:px-6">{t(m, "pricing.gcp_col_unit")}</span>
               <span className="text-right">{t(m, "pricing.gcp_col_price")}</span>
             </div>
             {[
@@ -142,7 +142,7 @@ export default async function PricingPage() {
               <div
                 key={row.resource}
                 className={
-                  "grid grid-cols-[1fr_auto_auto] items-center px-4 py-3 text-xs uppercase tracking-wide " +
+                  "grid min-w-[20rem] grid-cols-[1fr_auto_auto] items-center px-4 py-3 text-xs uppercase tracking-wide sm:min-w-0 " +
                   (i < arr.length - 1 ? "border-b border-white/30 " : "")
                 }
               >
@@ -150,7 +150,7 @@ export default async function PricingPage() {
                   <div className="font-black text-white">{row.resource}</div>
                   <div className="mt-0.5 text-[10px] normal-case tracking-normal text-white/50">{row.note}</div>
                 </div>
-                <span className="px-6 text-white/70">{row.unit}</span>
+                <span className="px-2 text-white/70 sm:px-6">{row.unit}</span>
                 <span className="text-right font-black text-yellow-300">{row.price}</span>
               </div>
             ))}

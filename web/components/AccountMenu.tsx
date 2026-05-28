@@ -8,7 +8,19 @@ import Link from "next/link";
 import { useState } from "react";
 import { User, Settings, LogOut } from "lucide-react";
 
-export function AccountMenu({ email }: { email: string }) {
+export type AccountMenuI18n = {
+  account: string;
+  settings: string;
+  signOut: string;
+};
+
+export function AccountMenu({
+  email,
+  i18n,
+}: {
+  email: string;
+  i18n: AccountMenuI18n;
+}) {
   const [open, setOpen] = useState(false);
   const initial = email.trim().charAt(0).toUpperCase() || "?";
 
@@ -35,10 +47,9 @@ export function AccountMenu({ email }: { email: string }) {
           />
           <div
             role="menu"
-            className="absolute right-0 z-50 mt-2 w-56 rounded-card border border-hairline bg-surface p-1.5 shadow-card"
+            className="absolute right-0 z-50 mt-2 w-56 rounded-card bg-surface p-1.5 shadow-card ring-1 ring-hairline"
           >
-            <div className="px-2 py-1.5 text-xs text-muted">{email}</div>
-            <div className="my-1 border-t border-hairline" />
+            <div className="px-2 py-1.5 text-[10px] uppercase tracking-wide text-muted">{email}</div>
             <Link
               href="/account"
               role="menuitem"
@@ -46,7 +57,7 @@ export function AccountMenu({ email }: { email: string }) {
               className="flex items-center gap-2 rounded-chip px-2 py-1.5 text-sm text-body hover:bg-surface-strong"
             >
               <User className="h-4 w-4" aria-hidden="true" />
-              Account
+              {i18n.account}
             </Link>
             <Link
               href="/account"
@@ -55,7 +66,7 @@ export function AccountMenu({ email }: { email: string }) {
               className="flex items-center gap-2 rounded-chip px-2 py-1.5 text-sm text-body hover:bg-surface-strong"
             >
               <Settings className="h-4 w-4" aria-hidden="true" />
-              Settings
+              {i18n.settings}
             </Link>
             <Link
               href="/signin"
@@ -64,7 +75,7 @@ export function AccountMenu({ email }: { email: string }) {
               className="flex items-center gap-2 rounded-chip px-2 py-1.5 text-sm text-body hover:bg-surface-strong"
             >
               <LogOut className="h-4 w-4" aria-hidden="true" />
-              Sign out
+              {i18n.signOut}
             </Link>
           </div>
         </>

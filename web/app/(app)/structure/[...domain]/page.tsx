@@ -1,5 +1,7 @@
-// /structure/[domain] — 8-verb shell with R3F-equivalent CSS-3D viewer.
+// /structure/[...domain] — 8-verb shell with R3F-equivalent CSS-3D viewer.
 // QUBIT 도메인 = Josephson junction scene (Q14′ 데모) · 그 외 = generic stub.
+// catch-all [...domain] so nested meta/sub ids (e.g. CARDIO+/DAPTPGX) route as
+// path segments; flat ids (RTSC) arrive as a 1-element array. Joined with "/".
 
 import { VerbShell } from "@/components/VerbShell";
 import { StructureViewer } from "@/components/StructureViewer";
@@ -10,11 +12,15 @@ export const dynamic = "force-dynamic";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ domain: string }>;
+  params: Promise<{ domain: string[] }>;
 }) {
-  const { domain } = await params;
+  const { domain: seg } = await params;
+  const domain = (seg ?? []).map(decodeURIComponent).join("/");
+  // Compare on the leaf segment so the QUBIT scene still triggers for
+  // /structure/qubit (flat); nested ids never collide here.
+  const leaf = (seg?.[seg.length - 1] ?? "").toLowerCase();
   const slot =
-    domain === "qubit" ? (
+    leaf === "qubit" ? (
       <JosephsonScene />
     ) : (
       <StructureViewer

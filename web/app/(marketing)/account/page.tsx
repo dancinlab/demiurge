@@ -57,7 +57,7 @@ export default async function AccountPage({
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <div className="mx-auto max-w-4xl px-8 py-16">
+      <div className="mx-auto max-w-4xl px-5 py-10 sm:px-8 sm:py-16">
         <nav className="mb-10 text-xs uppercase tracking-[0.3em] text-white/70">
           <Link href="/" className="hover:text-yellow-300">
             {t(m, "nav.back_home")}
@@ -68,8 +68,8 @@ export default async function AccountPage({
           </Link>
         </nav>
 
-        <header className="flex items-end justify-between gap-6">
-          <h1 className="text-[64px] font-black uppercase leading-[0.85] tracking-tighter">
+        <header className="flex flex-wrap items-end justify-between gap-4 sm:gap-6">
+          <h1 className="text-[clamp(48px,14vw,64px)] font-black uppercase leading-[0.85] tracking-tighter">
             {t(m, "account.title")}
             <span className="text-yellow-300">.</span>
           </h1>
@@ -260,7 +260,8 @@ function UsagePanel({ m, meta }: { m: Msgs; meta: TierMeta | null }) {
       <p className="border-l-4 border-white pl-4 text-xs uppercase tracking-wide text-white/70">
         {t(m, "account.usage_intro")}
       </p>
-      <table className="w-full border-4 border-white border-separate" style={{ borderSpacing: 0 }}>
+      <div className="overflow-x-auto">
+      <table className="w-full min-w-[34rem] border-4 border-white border-separate sm:min-w-0" style={{ borderSpacing: 0 }}>
         <thead>
           <tr className="bg-yellow-300 text-black">
             <th className="border-b-4 border-white px-4 py-2 text-left text-[10px] font-black uppercase tracking-[0.3em]">{t(m, "account.usage_col_resource")}</th>
@@ -284,6 +285,7 @@ function UsagePanel({ m, meta }: { m: Msgs; meta: TierMeta | null }) {
           })}
         </tbody>
       </table>
+      </div>
       <p className="text-[10px] uppercase tracking-wide text-white/50">
         {t(m, "account.usage_disclaimer")}
       </p>

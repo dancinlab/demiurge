@@ -1,30 +1,35 @@
 // MainSplitPane — Q2 layout · 위=record · 중간=시각화 slot · 아래=history.
 // Server-rendered shell; slot/history children injected by the verb page.
-// ElevenLabs 톤 — 흰 메인 위 밴드는 bg-canvas 틴트 + border-hairline 로 구분.
+// 재설계 후 — 옵션 H · 완전 평면. 밴드 배경/라운딩 0; 분리는 헤딩 위계 + 공간만.
+//
+// 헤딩 = `components/ui/Section` SSOT (H 패턴 자동 적용 — font-display +
+// font-light + tracking-tight). 밴드 박스 배경(bg-surface-strong)·라운딩 제거.
 
 import type { ReactNode } from "react";
+import { Section } from "./ui/Section";
 
 function Band({
-  label,
+  title,
   children,
   grow = false,
 }: {
-  label: string;
+  title: string;
   children: ReactNode;
   grow?: boolean;
 }) {
   return (
-    <section
-      className={[
-        "rounded-panel border border-hairline bg-canvas p-3",
-        grow ? "flex-1 min-h-0" : "",
-      ].join(" ")}
+    <div
+      className={grow ? "min-h-0 flex-1" : ""}
     >
-      <div className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-muted">
-        {label}
-      </div>
-      <div className={grow ? "h-full" : "font-mono text-xs text-body-strong"}>{children}</div>
-    </section>
+      <Section
+        title={title}
+        bodyClassName={
+          grow ? "mt-2 h-full" : "mt-2 font-mono text-xs text-body-strong"
+        }
+      >
+        {children}
+      </Section>
+    </div>
   );
 }
 
@@ -39,9 +44,9 @@ export function MainSplitPane({
 }) {
   return (
     <div className="flex h-full flex-col gap-3">
-      <Band label="📜 record">{record}</Band>
-      <Band label="🎨 slot" grow>{slot}</Band>
-      <Band label="📜 history">{history}</Band>
+      <Band title="record">{record}</Band>
+      <Band title="slot" grow>{slot}</Band>
+      <Band title="history">{history}</Band>
     </div>
   );
 }
