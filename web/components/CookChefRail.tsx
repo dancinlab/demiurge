@@ -22,18 +22,18 @@ export function CookChefRail({
 }) {
   return (
     <aside className="flex h-full flex-col p-3 text-sm">
-      <header className="mb-2 flex items-center gap-2 border-b border-gray-200 pb-2">
-        <span className="text-lg" aria-hidden="true">🧑‍🍳</span>
-        <div className="flex flex-col leading-tight">
-          <span className="font-serif text-base font-semibold text-gray-900">{i18n.chefTitle}</span>
-          {domain ? (
-            <span className="font-mono text-[10px] text-gray-500">· {domain}</span>
-          ) : (
-            <span className="text-[10px] text-gray-400">{i18n.chefAwaiting}</span>
-          )}
-        </div>
+      {/* 단일 행: 🧑‍🍳 + 제목(고정) + · 도메인(truncate) + 상태닷(고정).
+          긴 도메인은 줄내림 대신 말줄임(…) — flex-col 스택 제거가 줄내림 수정. */}
+      <header className="mb-2 flex items-center gap-2 border-b border-hairline pb-2">
+        <span className="shrink-0 text-lg leading-none" aria-hidden="true">🧑‍🍳</span>
+        <span className="shrink-0 font-serif text-base font-semibold text-ink">{i18n.chefTitle}</span>
+        {domain ? (
+          <span className="min-w-0 flex-1 truncate font-mono text-[10px] text-muted">· {domain}</span>
+        ) : (
+          <span className="min-w-0 flex-1 truncate text-[10px] text-muted-soft">{i18n.chefAwaiting}</span>
+        )}
         <span
-          className="ml-auto h-2 w-2 rounded-full bg-emerald-500"
+          className="ml-auto h-2 w-2 shrink-0 rounded-full bg-success"
           title={i18n.chefReady}
           aria-label={i18n.chefReady}
         />
