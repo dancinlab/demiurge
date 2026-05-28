@@ -15,23 +15,32 @@ type TopBarUser = { email: string; role?: string };
 type TopBarI18n = {
   topbarDomains: string;
   topbarActiveProject: string;
+  topbarWorkbench: string;
   topbarSignIn: string;
   topbarAdmin: string;
 };
 
 export function TopBar({
   user,
+  activeDomain,
   i18n,
 }: {
   user: TopBarUser | null;
-  // activeDomain kept for caller compat — 도메인명 칩 폐기 (브랜드는 사이드바 일원화).
   activeDomain?: string | null;
   i18n: TopBarI18n;
 }) {
-  // ElevenLabs 상단 우측: Docs · 알림 벨 · domains · admin(조건) · 계정 아바타.
+  // 좌측: 워크벤치 / 도메인명 (브레드크럼). 우측: 테마 · Docs · 알림 · domains · admin · 계정.
   return (
     <header className="flex items-center gap-3 border-b border-hairline bg-surface px-5 py-3 text-sm">
-      <span className="flex-1" />
+      <div className="flex min-w-0 flex-1 items-center gap-1.5">
+        <span className="font-medium text-ink">{i18n.topbarWorkbench}</span>
+        {activeDomain ? (
+          <>
+            <span className="text-muted-soft">/</span>
+            <span className="truncate font-mono text-xs text-muted">{activeDomain}</span>
+          </>
+        ) : null}
+      </div>
       <ThemeToggle />
       <a
         href="https://demiurge.dancinlab.org"
