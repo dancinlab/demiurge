@@ -164,3 +164,9 @@
   do   = "keep repo-root NEXUS.tape (cross-domain reuse graph) current"
   dont = "rebuild a sibling domain's verified primitive · leave a reuse edge off NEXUS.tape"
   dont = "link domains across repos — intra-project only"
+
+@D d_deploy := "web GUI surface ONLY — local hot-reload work mode · deploy gated on user approval" :: governance [required active]
+  do   = "web GUI: iterate live in localdev git tree (~/core/demiurge-localdev/web · next dev Fast Refresh)"
+  do   = "web deploy (push main → Cloud Run demiurge.dancinlab.org) ONLY on explicit user approval"
+  do   = "scope = web GUI surface ONLY — compute/campaign autonomy (d17) unaffected"
+  dont = "auto-merge/push/deploy web changes per tweak without approval"
