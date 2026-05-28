@@ -1,0 +1,62 @@
+&CONTROL
+  calculation     = 'vc-relax'
+  prefix          = 'kbeh8'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ibrav           = 2                ! FCC, Fm-3m (SG 225) — AcBeH8/LaBeH8 prototype
+  celldm(1)       = 10.0157          ! a_conv = 5.30 A (K variant — K+ 1.38 A is LARGER than Ac, start at full AcBeH8 a, relax expands)
+  nat             = 10               ! 1 K + 1 Be + 8 H (BeH8 clathrate cage, 1 f.u./primitive)
+  ntyp            = 3
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.           ! guard — avoids checkallsym crash (cf. sc2be2h6 campaign)
+  occupations     = 'smearing'
+  smearing        = 'mp'             ! Methfessel-Paxton — metallic hydride (d15)
+  degauss         = 0.01             ! d15 small-gap SCF aid (smear 0.01)
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400             ! d15 maxiter 400
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  press           = 100.0            ! target 10 GPa  (QE press unit = kbar; 10 GPa = 100 kbar)
+  press_conv_thr  = 0.5
+  cell_dofree     = 'all'
+/
+! FALLBACK: if dynamic instability persists, re-run with press = 500.0 (50 GPa) — see RUNBOOK.md.
+ATOMIC_SPECIES
+  K   39.098   K.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Be   9.0122  Be.pbe-n-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! BeH8 clathrate cage: K @ 4a (0,0,0), Be @ 4b (1/2,1/2,1/2),
+! H @ 32f Wyckoff (xxx, x~0.12) forming the 8-coordinate cage around Be.
+! Fractional coords below are the fcc-primitive representation (LaBeH8 family).
+ATOMIC_POSITIONS crystal
+  K    0.0000000   0.0000000   0.0000000
+  Be   0.5000000   0.5000000   0.5000000
+  H    0.1200000   0.1200000   0.1200000
+  H   -0.1200000  -0.1200000  -0.1200000
+  H    0.6200000   0.6200000   0.3800000
+  H    0.3800000   0.3800000   0.6200000
+  H    0.6200000   0.3800000   0.6200000
+  H    0.3800000   0.6200000   0.3800000
+  H    0.3800000   0.6200000   0.6200000
+  H    0.6200000   0.3800000   0.3800000
+
+K_POINTS automatic
+  12 12 12  0 0 0

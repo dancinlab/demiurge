@@ -1,0 +1,65 @@
+&control
+  ! A08 SrPtH3 — B-site Pt-substituted SrAuH3 perovskite-hydride (RTSC candidate).
+  ! Anchor: SrAuH3 cubic perovskite Pm-3m (celldm=7.2340 Bohr = 3.828 Ang, d19 reuse).
+  ! A-site Sr UNCHANGED; B-site Au -> Pt (both 5d, Pt Z=78 left of Au Z=79).
+  ! Pt (metallic r~1.39 Ang) ~ Au (1.44 Ang) -> near-isostructural; START guess = SrAuH3 a
+  ! celldm(1)=7.2340 Bohr (=3.828 Ang, x1.000 SrAuH3). vc-relax FINDS the true a.
+  ! Pt has one fewer d-electron than Au -> different Fermi-level DOS / EPC (the discriminant).
+  ! Perovskite-hydrides are a DISTINCT mechanism class from clathrate superhydrides.
+  ! Pressure: 50 GPa here (moderate — perovskite often stable mid-P). For an ambient
+  !   stability test re-run with press=0.0 (1 atm). press_conv_thr loose enough for metal.
+  calculation = 'vc-relax'
+  prefix = 'srpth3'
+  outdir = '/home/aiden/rtsc_srpth3/out'
+  pseudo_dir = '/home/aiden/rtsc_srpth3/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  etot_conv_thr = 1.0d-5
+  nstep = 200
+  verbosity = 'low'
+/
+&system
+  ! ibrav=1 simple cubic; 5-atom perovskite cell (1 Sr + 1 Pt + 3 H).
+  ! Pm-3m: Sr at A-site (1/2,1/2,1/2) corner-equiv, Pt at B-site (0,0,0) body-center,
+  !   H at the 3 face-centers — Pt-H octahedral framework.
+  ! nosym=.true. guard: avoids symmetry-detection edge cases during cell relaxation
+  !   (high-sym start can mis-assign the point group under stress).
+  ibrav = 1
+  celldm(1) = 7.2340
+  nat = 5
+  ntyp = 3
+  ecutwfc = 80.0
+  ecutrho = 640.0
+  nosym = .true.
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  ! d15 small-gap SCF aids (metallic perovskite): tight conv + maxiter headroom.
+  conv_thr = 1.0d-10
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+&ions
+  ion_dynamics = 'bfgs'
+/
+&cell
+  cell_dynamics = 'bfgs'
+  press = 50.0
+  press_conv_thr = 0.5
+/
+
+ATOMIC_SPECIES
+  Sr 87.62   Sr.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Pt 195.084 Pt.pbe-n-rrkjus_psl.1.0.0.UPF
+  H  1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Sr 0.5 0.5 0.5
+  Pt 0.0 0.0 0.0
+  H  0.5 0.0 0.0
+  H  0.0 0.5 0.0
+  H  0.0 0.0 0.5
+K_POINTS automatic
+  12 12 12 0 0 0
