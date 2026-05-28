@@ -121,6 +121,23 @@ QE 7.x 가 NVIDIA CUDA 지원. el-ph 의 dvscf/calphi 단계가 GPU 친화적.
 
 ---
 
+## 글로벌 SSOT 전환 (M11 · 2026-05-29)
+
+provider 카탈로그는 hexa-lang CLOUD 도메인의 **글로벌 SSOT** 로 이관됨 — per-project `PROVIDERS.json` 폐기.
+
+- **카탈로그 SSOT**: `~/.hx/cloud/providers.json` (M8 · 27 provider) → `hexa cloud providers list|fit|recommend`
+- **활성 pod registry**: `~/.hx/cloud/active-pods.json` (M5) → `hexa cloud pods`
+
+폐기된 `PROVIDERS.json` 의 RTSC 캠페인 픽 (무손실 보존):
+
+| 시나리오 | provider | 월 $ | 근거 |
+|---|---|---|---|
+| 유지 (16잡) | vast.ai | 200–400 | 안정·충분 |
+| walltime crunch | AWS hpc7a.96xl spot | 50–100 | Mg₂IrH6-class 22h → 5–7h |
+| el-ph dense q-grid | RunPod H100 80G | 50–200 | Kagome-H3·twisted 큰 k-grid 10×+ 단축 |
+| 장기 무료 | NSF ACCESS | 0 | proposal 승인 시 1년 학술 무료 |
+| 즉시 무비용 | qe_avx512 등 pool | 0 | 로컬 pool 재사용 |
+
 ## 참조
 
 - 현 hexa cloud 통합: PR #1864 (--source) · #1883 (host-guard) · #1885 (preflight walltime) · #1887 (forget) · #1889 (tail 3-tier)

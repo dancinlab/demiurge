@@ -1,6 +1,6 @@
 # PROVIDERS — 친근 비교 (easy 모드)
 
-> 컴퓨팅 서비스를 비유 + ASCII + 표로 풀어쓴 가이드. 데이터 SSOT = [`PROVIDERS.json`](./PROVIDERS.json) · 분석 = [`domains/rtsc.compute_services.md`](./domains/rtsc.compute_services.md).
+> 컴퓨팅 서비스를 비유 + ASCII + 표로 풀어쓴 가이드. 데이터 SSOT = 글로벌 `hexa cloud providers list|fit|recommend` (`~/.hx/cloud/providers.json`) · 분석 = [`domains/rtsc.compute_services.md`](./domains/rtsc.compute_services.md).
 
 ## 🚗 vast.ai vs ☁️ AWS — "동네 PC방 vs 슈퍼컴 부스"
 
@@ -112,4 +112,4 @@ GPU 가속 신메커니즘 (Kagome·TBL) = RunPod H100
 장기 = NSF ACCESS proposal 병행
 ```
 
-세부 데이터·jq 쿼리는 [`PROVIDERS.json`](./PROVIDERS.json), 정량 분석은 [`domains/rtsc.compute_services.md`](./domains/rtsc.compute_services.md) 참조.
+세부 데이터·쿼리는 글로벌 `hexa cloud providers list|fit|recommend` (`~/.hx/cloud/providers.json`), 정량 분석은 [`domains/rtsc.compute_services.md`](./domains/rtsc.compute_services.md) 참조.
