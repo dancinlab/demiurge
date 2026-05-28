@@ -22,9 +22,9 @@ export function CookChefRail({
 }) {
   return (
     <aside className="flex h-full flex-col p-3 text-sm">
-      {/* 단일 행: 🧑‍🍳 + 제목 + 상태닷. 도메인명은 헤더(TopBar 좌측)로 이동 — 여기선 제거. */}
+      {/* 단일 행: 🛠️ + 제목 + 상태닷. 도메인명은 헤더(TopBar 좌측)로 이동 — 여기선 제거. */}
       <header className="mb-2 flex items-center gap-2 border-b border-hairline pb-2">
-        <span className="shrink-0 text-lg leading-none" aria-hidden="true">🧑‍🍳</span>
+        <span className="shrink-0 text-lg leading-none" aria-hidden="true">🛠️</span>
         <span className="flex-1 truncate font-serif text-base font-semibold text-ink">{i18n.chefTitle}</span>
         <span
           className="h-2 w-2 shrink-0 rounded-full bg-success"

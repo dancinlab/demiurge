@@ -1,6 +1,6 @@
 "use client";
 
-// AssistChat — 요리선생 chat surface. ElevenLabs 톤 (토큰 SSOT 소비).
+// AssistChat — 장인 chat surface. ElevenLabs 톤 (토큰 SSOT 소비).
 // Full: seed prompts (활성 도메인 인식) · multi-turn context · 도메인별
 // localStorage history · lightweight inline markdown.
 // All UI strings + persona come as i18n props (5 locales) — no hardcoded text.
@@ -57,10 +57,10 @@ function saveHistory(domain: string, msgs: Msg[]): void {
 }
 
 // Persona prepended to every request. Localized response language is enforced
-// by the `locale` line so 요리선생 replies in the user's UI language.
+// by the `locale` line so 장인 replies in the user's UI language.
 function persona(locale: string): string {
   return [
-    'You are demiurge "요리선생", a friendly, concise assistant.',
+    'You are demiurge "장인", a friendly, concise assistant.',
     "demiurge is an AI-native 8-verb technical-design pipeline:",
     "discover → spec → structure → design → analyze → synth → verify → handoff.",
     "Help the user diverge / specify / structure / analyze / synthesize / verify / hand off domains.",
@@ -97,10 +97,10 @@ function buildPrompt(
   if (clean.length > 0) {
     lines.push("", "Conversation so far:");
     for (const m of clean) {
-      lines.push(`${m.role === "user" ? "User" : "요리선생"}: ${m.text}`);
+      lines.push(`${m.role === "user" ? "User" : "장인"}: ${m.text}`);
     }
   }
-  lines.push("", `User: ${current}`, "요리선생:");
+  lines.push("", `User: ${current}`, "장인:");
   return lines.join("\n");
 }
 
