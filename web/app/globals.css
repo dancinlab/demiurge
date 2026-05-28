@@ -7,18 +7,17 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: hsl(240 3% 6%);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
+  /* Body default = Atkinson Hyperlegible (= ElevenLabs app body font;
+     readability-tuned). Headings = Inter (matches EL h1/h2). */
+  --font-sans: var(--font-atkinson);
   --font-mono: var(--font-geist-mono);
-  /* Display = ElevenLabs "Waldenburg" light grotesque → Geist 300 (closest
-     already-loaded free match). Apply with `font-display font-light` + tight
-     tracking. font-serif retained only for legacy markup. */
-  --font-display: var(--font-geist-sans);
+  --font-display: var(--font-inter);
   --font-serif: var(--font-cormorant);
 }
 
@@ -27,38 +26,41 @@
    `bg-canvas`/`bg-surface`/`border-hairline`/`text-ink`/`rounded-panel` 같은
    시맨틱 유틸만 쓰고, gray-200·rounded-[6px] 같은 하드코딩 값을 쓰지 않는다.
    토큰 하나를 바꾸면 전 화면이 일관되게 따라온다 = 디자인 멱등성.
-   값 출처: ElevenLabs 디자인 토큰(canvas #f5f5f5 · ink #0c0a09 · hairline #e7e5e4
-   · CTA #292524 · 파스텔 orb · 라운딩 4·6·8·12·16·24). 액센트 색(indigo 등) 금지 —
+   값 출처: ElevenLabs 앱 실제 컴파일 CSS (2026-05-28 사용자 제공) — 쿨 뉴트럴
+   hue 240, 저채도. 라이트 background = `hsl(0 0% 100%)`, foreground =
+   `hsl(240 3% 6%)`, gray scale hue 240, border = alpha. CTA(btn-primary)는
+   EL이 `hsl(foreground)` 으로 채우는 패턴 → --color-primary = ink 와 동일,
+   다크에서 자동 flip(흰 fill + 검정 텍스트). 액센트 색(indigo·blue) 금지 —
    유일한 컬러 모먼트는 파스텔 orb 그라데이션뿐.
    plain @theme (not inline) → CSS 변수를 :root 로 방출 → 유틸 + var() 둘 다 가능. */
 @theme {
-  /* 캔버스 · 표면 — 페이지는 웜 그레이, 카드는 흰색으로 떠보인다 */
-  --color-canvas: #f5f5f5;
-  --color-canvas-soft: #fafafa;
+  /* 캔버스 · 표면 — 사이드바는 미세 틴트(98%), 카드/메인은 흰색 */
+  --color-canvas: hsl(0 0% 98%);
+  --color-canvas-soft: hsl(240 5% 96%);
   --color-surface: #ffffff;
-  --color-surface-strong: #f0efed;
-  --color-ink-elevated: #1c1917;
+  --color-surface-strong: hsl(240 5% 96%);
+  --color-ink-elevated: hsl(240 6% 10%);
 
-  /* 잉크 · 텍스트 — 웜 뉴트럴 (순흑 아님) */
-  --color-ink: #0c0a09;
-  --color-body: #4e4e4e;
-  --color-body-strong: #292524;
-  --color-muted: #777169;
-  --color-muted-soft: #a8a29e;
+  /* 잉크 · 텍스트 — 쿨 뉴트럴 hue 240 (EL foreground = 240 3% 6%) */
+  --color-ink: hsl(240 3% 6%);
+  --color-body: hsl(240 4% 36%);
+  --color-body-strong: hsl(240 5% 26%);
+  --color-muted: hsl(240 4% 46%);
+  --color-muted-soft: hsl(240 5% 65%);
 
-  /* CTA — 에스프레소 잉크 pill */
-  --color-primary: #292524;
-  --color-primary-active: #0c0a09;
-  --color-on-primary: #ffffff;     /* primary CTA 위 텍스트 */
+  /* CTA — EL btn-primary { background: hsl(foreground) } 패턴 → primary = ink */
+  --color-primary: hsl(240 3% 6%);
+  --color-primary-active: hsl(240 4% 16%);
+  --color-on-primary: #ffffff;
 
   /* 반전 fill — 말풍선·배지·progress fill·avatar (text-ink 와 분리) */
-  --color-inverted: #0c0a09;       /* 반전 fill (라이트=다크칩) */
-  --color-on-inverted: #ffffff;    /* 그 위 텍스트 */
+  --color-inverted: hsl(240 3% 6%);
+  --color-on-inverted: #ffffff;
 
-  /* 헤어라인 보더 — 3단계 (soft → 기본 → strong) */
-  --color-hairline-soft: #f0efed;
-  --color-hairline: #e7e5e4;
-  --color-hairline-strong: #d6d3d1;
+  /* 헤어라인 보더 — 3단계 (soft → 기본 → strong) · EL gray-100/200/300 */
+  --color-hairline-soft: hsl(240 5% 96%);
+  --color-hairline: hsl(240 6% 90%);
+  --color-hairline-strong: hsl(240 5% 84%);
 
   /* 시맨틱 상태 */
   --color-success: #16a34a;
@@ -89,34 +91,36 @@
 /* ── ElevenLabs 다크 팔레트 오버라이드 ─────────────────────────────────────────
    plain @theme (위) 가 토큰을 :root CSS 변수로 방출하므로, 여기 일반 .dark 규칙에서
    재정의하면 시맨틱 유틸(bg-canvas·text-ink·bg-inverted 등)이 전부 다크값을 따라간다.
-   @theme 블록은 그대로 두고 이 .dark 블록만 추가 (Tailwind v4 plain @theme 패턴).
-   주의: --color-inverted 는 다크모드에서 "밝은 칩"으로 반전 → 말풍선/CTA fill 이
-   흰 배경 + 검정 텍스트로 뒤집힌다 (text-ink 본문은 #fafafa 로 밝아짐). */
+   값 출처: ElevenLabs 앱 실제 .dark 블록 — bg = hsl(240 3% 6%) = #0f0f10 (순흑 아님),
+   foreground = white, gray scale flip, border = 흰 alpha.
+   --color-inverted/--color-primary 는 다크에서 "밝은 칩"으로 자동 반전 → 말풍선/CTA
+   fill 이 흰 배경 + 검정 텍스트로 뒤집힌다 (text-ink 본문은 흰색으로 밝아짐). */
 .dark {
-  --color-canvas: #0a0a0a;
-  --color-canvas-soft: #141414;
-  --color-surface: #171717;
-  --color-surface-strong: #262626;
-  --color-ink-elevated: #262626;
-  --color-ink: #fafafa;
-  --color-body: #d4d4d4;
-  --color-body-strong: #ededed;
-  --color-muted: #a1a1aa;
-  --color-muted-soft: #71717a;
-  --color-hairline-soft: #1c1c1c;
-  --color-hairline: #2a2a2a;
-  --color-hairline-strong: #404040;
-  --color-inverted: #fafafa;       /* 다크모드에선 반전 fill = 밝은칩 */
-  --color-on-inverted: #0a0a0a;
-  --color-primary: #fafafa;        /* 다크 CTA = 흰색 */
-  --color-on-primary: #0a0a0a;
+  --color-canvas: hsl(240 3% 6%);
+  --color-canvas-soft: hsl(240 4% 9%);
+  --color-surface: hsl(240 4% 11%);
+  --color-surface-strong: hsl(240 4% 16%);
+  --color-ink-elevated: hsl(240 4% 16%);
+  --color-ink: hsl(0 0% 98%);
+  --color-body: hsl(240 5% 84%);
+  --color-body-strong: hsl(240 6% 90%);
+  --color-muted: hsl(240 5% 65%);
+  --color-muted-soft: hsl(240 4% 46%);
+  --color-hairline-soft: hsl(0 0% 100% / 0.04);
+  --color-hairline: hsl(0 0% 100% / 0.09);
+  --color-hairline-strong: hsl(0 0% 100% / 0.14);
+  --color-inverted: hsl(0 0% 98%);
+  --color-on-inverted: hsl(240 3% 6%);
+  --color-primary: hsl(0 0% 98%);
+  --color-primary-active: hsl(0 0% 90%);
+  --color-on-primary: hsl(240 3% 6%);
   --color-success: #22c55e;
   --color-danger: #ef4444;
 }
 
 /* body palette is driven by Tailwind classes in the route-group layouts
-   (marketing = Brutalist · app = ElevenLabs 따뜻한 에디토리얼 미니멀) — no
-   global body rule here. Inter(본문) + Geist(제목·--font-display) via
+   (marketing = Brutalist · app = ElevenLabs 쿨 미니멀) — no global body rule
+   here. Atkinson Hyperlegible(본문) + Inter(제목·--font-display) via
    next/font/google in app/layout.tsx. */
 
 /* 채팅 말풍선 등장 — fade + slide-up (brand-ease) */

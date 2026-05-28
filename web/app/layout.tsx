@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Cormorant_Garamond } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Cormorant_Garamond, Atkinson_Hyperlegible } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,14 +12,22 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// (app) 셸 본문 폰트 — Inter (ara 톤).
+// (app) 셸 본문 폰트 — Atkinson Hyperlegible (ElevenLabs 앱 body font 와 동일).
+// 가독성 튜닝 폰트. 시맨틱 토큰 --font-sans → atkinson (globals.css @theme inline).
+const atkinson = Atkinson_Hyperlegible({
+  variable: "--font-atkinson",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+// (app) 셸 제목 폰트 — Inter (ElevenLabs h1/h2 와 동일). 시맨틱 --font-display → inter.
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
-// (app) 셸 제목 폰트 — Cormorant Garamond 세리프 (ara 톤 · 논문체).
+// Legacy 세리프 — ara 톤 논문체 잔존 컴포넌트용 (--font-serif 유지).
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
@@ -70,7 +78,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${cormorant.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${cormorant.variable} ${atkinson.variable} h-full antialiased`}
     >
       <body className="min-h-full">{children}</body>
     </html>
