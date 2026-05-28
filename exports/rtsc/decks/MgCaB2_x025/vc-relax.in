@@ -1,0 +1,79 @@
+&control
+  ! A25 Mg(1-x)Ca(x)B2, x=0.25 — Ca-doped MgB2 (BCS-side AMBIENT-pressure RTSC candidate).
+  ! GOAL: push past MgB2's 39K BCS ceiling by Ca substitution — tune the boron sigma-band
+  !   filling / lattice (a, c) of the AlB2-prototype honeycomb boron layer.
+  ! Anchor: pure MgB2 P6/mmm (AlB2 prototype #191), a=3.086 Ang (5.832 Bohr), c/a=1.1418
+  !   (Akimitsu 2001 measured, Tc=39K). VERIFIED baseline in this repo:
+  !   exports/material_verdict/mgb2_budko2001_v1/ (McMillan/Allen-Dynes Tc consistency PASS).
+  ! Supercell: 2x2x1 of the primitive = 4 metal + 8 B = 12 atoms. Replace 1 Mg -> Ca => x=0.25.
+  ! Composition: Mg0.75 Ca0.25 B2  (1 Ca + 3 Mg + 8 B).
+  ! PRESSURE: AMBIENT (press=0.0, 1 atm). This is a DOPING study, NOT a high-P clathrate —
+  !   the only pressure-axis-free line in the pilot, complementary to the high-P hydrides.
+  ! ibrav=0 with explicit CELL_PARAMETERS for the 2x2x1 hexagonal supercell vectors.
+  ! cell_dofree='all' lets a + c both relax under press=0 (no symmetry constraint imposed).
+  calculation = 'vc-relax'
+  prefix = 'mgcab2_x025'
+  outdir = '/home/aiden/rtsc_mgcab2_x025/out'
+  pseudo_dir = '/home/aiden/rtsc_mgcab2_x025/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  etot_conv_thr = 1.0d-6
+  nstep = 200
+  verbosity = 'low'
+/
+&system
+  ! ibrav=0 -> CELL_PARAMETERS block below (2x2x1 supercell of AlB2 hexagonal primitive).
+  ! nat=12 (1 Ca + 3 Mg + 8 B), ntyp=3.
+  ! nosym=.true. GUARD: the Ca substitution breaks the supercell point-group symmetry;
+  !   high-symmetry auto-detection would mis-assign the group and mishandle the doped site.
+  ibrav = 0
+  nat = 12
+  ntyp = 3
+  ecutwfc = 60.0
+  ecutrho = 600.0
+  nosym = .true.
+  occupations = 'smearing'
+  smearing = 'mp'              ! Methfessel-Paxton — clean metal (d15)
+  degauss = 0.02
+/
+&electrons
+  ! d15 small-gap SCF aids (metallic, near-degenerate sigma/pi bands at E_F):
+  !   smear (degauss 0.02) + mixing_beta 0.3 + electron_maxstep 400.
+  conv_thr = 1.0d-10
+  mixing_beta = 0.3
+  electron_maxstep = 400
+/
+&ions
+  ion_dynamics = 'bfgs'
+/
+&cell
+  cell_dynamics = 'bfgs'
+  press = 0.0                  ! AMBIENT (1 atm) — doping study, not high-P
+  press_conv_thr = 0.5
+  cell_dofree = 'all'         ! relax a + c (supercell vectors free)
+/
+
+CELL_PARAMETERS bohr
+  11.664000   0.000000   0.000000
+  -5.832000  10.101320   0.000000
+   0.000000   0.000000   6.658978
+ATOMIC_SPECIES
+  Ca 40.078  Ca.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Mg 24.305  Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF
+  B  10.811  B.pbe-n-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Ca 0.0000000  0.0000000  0.0000000
+  Mg 0.0000000  0.5000000  0.0000000
+  Mg 0.5000000  0.0000000  0.0000000
+  Mg 0.5000000  0.5000000  0.0000000
+  B  0.1666667  0.3333333  0.5000000
+  B  0.1666667  0.8333333  0.5000000
+  B  0.6666667  0.3333333  0.5000000
+  B  0.6666667  0.8333333  0.5000000
+  B  0.3333333  0.1666667  0.5000000
+  B  0.3333333  0.6666667  0.5000000
+  B  0.8333333  0.1666667  0.5000000
+  B  0.8333333  0.6666667  0.5000000
+K_POINTS automatic
+  8 8 8 0 0 0

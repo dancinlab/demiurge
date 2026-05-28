@@ -1,0 +1,56 @@
+&control
+  ! A25 Mg0.75Ca0.25B2 — post-relax SCF. MUST read the relaxed CELL_PARAMETERS +
+  !   ATOMIC_POSITIONS from vc-relax.out (final block) BEFORE running this. The vectors
+  !   and positions below are the START guess and are overwritten in the RUNBOOK step.
+  ! electron_phonon='simple' needs a DENSE k-mesh for the double-delta EPC integral ->
+  !   12x12x12 here (denser than the 8^3 relax mesh; supercell BZ is folded 2x in-plane).
+  ! AMBIENT pressure (the relaxed cell came from press=0 vc-relax).
+  calculation = 'scf'
+  prefix = 'mgcab2_x025'
+  outdir = '/home/aiden/rtsc_mgcab2_x025/out'
+  pseudo_dir = '/home/aiden/rtsc_mgcab2_x025/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'high'
+/
+&system
+  ibrav = 0
+  nat = 12
+  ntyp = 3
+  ecutwfc = 60.0
+  ecutrho = 600.0
+  nosym = .true.
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  ! d15 small-gap SCF aids (metallic): tight conv + mixing_beta 0.3 + maxiter headroom.
+  conv_thr = 1.0d-12
+  mixing_beta = 0.3
+  electron_maxstep = 400
+/
+
+CELL_PARAMETERS bohr
+  11.664000   0.000000   0.000000
+  -5.832000  10.101320   0.000000
+   0.000000   0.000000   6.658978
+ATOMIC_SPECIES
+  Ca 40.078  Ca.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Mg 24.305  Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF
+  B  10.811  B.pbe-n-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Ca 0.0000000  0.0000000  0.0000000
+  Mg 0.0000000  0.5000000  0.0000000
+  Mg 0.5000000  0.0000000  0.0000000
+  Mg 0.5000000  0.5000000  0.0000000
+  B  0.1666667  0.3333333  0.5000000
+  B  0.1666667  0.8333333  0.5000000
+  B  0.6666667  0.3333333  0.5000000
+  B  0.6666667  0.8333333  0.5000000
+  B  0.3333333  0.1666667  0.5000000
+  B  0.3333333  0.6666667  0.5000000
+  B  0.8333333  0.1666667  0.5000000
+  B  0.8333333  0.6666667  0.5000000
+K_POINTS automatic
+  12 12 12 0 0 0
