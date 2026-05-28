@@ -1,7 +1,7 @@
 {
   "version": "1.0-temp",
   "schema_origin": "sidecar INBOX #193 (~/.pool/pods.json proposed)",
-  "last_updated_utc": "2026-05-28T22:45Z",
+  "last_updated_utc": "2026-05-28T15:05:04Z",
   "wave3b_reauthor_note": "4 candidates (CeH9/YH9/YH10/Li2MgH16) re-authored from failed crystal_sg+space_group decks to YH6-proven explicit ATOMIC_POSITIONS crystal (spglib orbit expansion); all 4 d16 PASS + FIRED on vast-cuda-ssh9-15988 (already-running pod, no new rent). Incremental cost ~ pod $0.40/hr x chain wall (within ~$24 budget). See exports/rtsc/wave3b_decks/D16-NOTES.md.",
   "campaign": "rtsc-293K-1atm",
   "budget": {
@@ -544,7 +544,9 @@
       "dryrun_verdict": "PASS — bravais=2 fcc, 11 atoms, 21 e-, SCF iterating ~-93.95 Ry, no check_atoms/input/rgen error. ibrav=2 FCC-prim cleared the original ibrav-incompatible-space-group error. (smallest cell -> already past vc-relax+scf into PH at snapshot)",
       "watcher_arm": "grep -c 'CHAIN DONE' ~/wave3/YH10/chain.log",
       "hypothesis": "wave-3 lit-known: room-T-class sodalite clathrate — coord-resolved skip-recovery",
-      "verdict": "PENDING"
+      "harvested_artifact": "exports/material_discovery/rtsc_yh10_dft_elph_20260528.json",
+      "metric": { "lambda": 2.8197, "omega_log_K": 1300.43, "Tc_AD_mu0p10_K": 227.501134, "pressure_GPa": 250, "ambient_absorbed": false },
+      "verdict": "🟢"
     },
     "Li2MgH16": {
       "pod": "vast-cuda-ssh9-15988",
