@@ -1,0 +1,24 @@
+MgCaB2 x=0.25 phonon + electron-phonon 2x2x1 q (RTSC A25 · Ca-doped MgB2 · AMBIENT BCS line)
+&inputph
+  prefix = 'mgcab2_x025'
+  outdir = '/home/aiden/rtsc_mgcab2_x025/out'
+  fildyn = '/home/aiden/rtsc_mgcab2_x025/mgcab2_x025.dyn'
+  fildvscf = 'mgcab2_x025.dvscf'
+  ! ldisp + 2x2x1 q-mesh sized to the 2x2x1 SUPERCELL (in-plane BZ already folded 2x).
+  ! 2x2x1 captures Gamma + the boron-layer in-plane q-points => the E2g phonon (the key
+  !   MgB2 SC mode, B-B bond-stretch in the honeycomb plane) is sampled along Gamma-M/Gamma-K.
+  ! nq3=1: the supercell is single-layer along c (c unchanged from primitive) -> Gamma-A
+  !   dispersion is already captured by the primitive anchor; in-plane is where Ca acts.
+  ! With nosym (Ca breaks symmetry) the 2x2x1 grid => 4 q-points, none reduced by symmetry.
+  ldisp = .true.
+  nq1 = 2, nq2 = 2, nq3 = 1
+  tr2_ph = 1.0d-14
+  recover = .true.            ! checkpoint-safe — undersized walltime loses 0 work
+  ! 'simple' el-ph: double-delta EPC, swept over el_ph_nsigma broadenings.
+  ! Harvest reads the sigma-plateau lambda (NOT the monotone-broadening tail).
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005         ! Ry, ramped via el_ph_nsigma
+  el_ph_nsigma = 10           ! sigma scan 0.005..0.050 Ry -> plateau search
+  alpha_mix(1) = 0.3
+  max_seconds = 432000        ! 120 h floor (preflight recommended; recover protects)
+/
