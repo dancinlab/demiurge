@@ -61,14 +61,16 @@ export default async function AppLayout({
       <div className="flex h-screen bg-canvas text-ink antialiased [font-family:var(--font-inter),system-ui,sans-serif]">
         {/* 좌: 세로 전체 레일 — canvas 틴트(복구). 최상단 브랜드 로고 + verb(상단) + 요리선생 채팅(하단) */}
         <aside className="flex w-72 shrink-0 flex-col border-r border-hairline bg-canvas">
-          {/* 브랜드 로고 — 사이드바 최상단 demiurge 워드마크 (ElevenLabs 패턴) */}
+          {/* 브랜드 로고 — 랜딩 SiteHeader 워드마크와 동일 형태:
+              대문자 DEMIURGE + 노랑 액센트 닷 · font-black · tight tracking.
+              본체는 text-ink(토큰 → 다크 자동 추종), 닷은 브랜드 노랑(라이트/다크 둘 다 읽힘). */}
           <Link
             href="/dashboard"
-            className="flex shrink-0 items-center gap-2 px-3 pb-1.5 pt-3 hover:opacity-80"
+            aria-label="demiurge — home"
+            className="flex shrink-0 items-center px-3 pb-1.5 pt-3 hover:opacity-80"
           >
-            <span className="text-lg leading-none">📐</span>
-            <span className="font-display text-[16px] font-light tracking-tight text-ink">
-              demiurge
+            <span className="font-display text-[19px] font-black uppercase leading-none tracking-tighter text-ink">
+              demiurge<span className="text-yellow-400">.</span>
             </span>
           </Link>
           <div className="shrink-0 p-2">
