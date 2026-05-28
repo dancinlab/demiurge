@@ -4,6 +4,97 @@ Spec at [`./RTSC.md`](./RTSC.md). Log entries below preserve session-by-session 
 
 ## Log
 
+## 2026-05-29 pods.json → 글로벌 전환 (M11-b) — BLOCKED-on-upstream + 무손실 캡처
+
+**작업 (b)** — per-project `pods.json` 폐기 + RTSC 캠페인 데이터 무손실 캡처 + /system 글로벌 SSOT 전환. **결론: (b) 전체 전환은 hexa-lang CLOUD M5 job-schema 갭에 BLOCKED.** 아래는 정직한 reality-check + 무손실 캡처 결과.
+
+### Reality check (d6 정직)
+
+- **글로벌 `~/.hx/cloud/active-pods.json` 스키마 = POD-RENTAL ONLY** (227 B). 필드 = `id · provider · created_at · rented_by · ssh_host · ssh_port · status · ttl_sec · max_cost_usd · cumulative_cost_usd`. **`jobs` 섹션 없음 · verdict/stage/hypothesis 없음.** 이것은 `/cloud` 의 pod-rental 레지스트리(M5/M8 글로벌 SSOT)이지, 캠페인 job-tracking 표면이 아니다.
+- **/system 의 manifest 계약 (SKILL 0.9.0 commands/system.md L23·L30-31)** = `## Manifest SSOT — ./pods.json (extended)` — cwd-상대 캠페인-로컬 파일. `jobs.<id>` = `{pod · workdir · kind · terminal_marker · stage · pid · watcher · metric_parser · verdict}`. `drive` 마커(durable state) · ledger 동기화 모두 `./pods.json` 에 산다. L307: "Reuses /cloud (pods.json)".
+- ⇒ **글로벌 active-pods.json 은 job-level 데이터를 담을 수 없다.** "/system → 글로벌 SSOT" 진짜 전환은 active-pods.json 에 `jobs` 섹션을 추가하는 **hexa-lang CLOUD M5 변경**(cross-repo, g59 INBOX 핸드오프)을 먼저 요구한다. 그 전에 pods.json 을 삭제하면 LIVE watcher(PR #502 heartbeat, 11 job 읽음)가 읽을 표면을 잃는다 ⇒ lossless 위반 + watcher 단절. **pods.json KEPT-LIVE.**
+
+### 무손실 캡처 — pods.json 전체 roster (PR #502 SSOT · last_updated 2026-05-28T18:18:01Z)
+
+**campaign** = `rtsc-293K-1atm` · **budget** = $750 (₩1,000,000) · **used_usd = $0** (actual_so_far $0.07) · **schema_origin** = sidecar INBOX #193 (`~/.pool/pods.json` proposed) · **schema version** = `1.0-temp`.
+
+**design_constraints**: per-pod cores_used ≤64 (16-core headroom) · max 8 concurrent · multi-objective wall (RTSC-closure + per-pod) · LPT bin-packing, heavy jobs isolated.
+
+**POD roster (7)**:
+
+| pod-id | host | provider | cores | gpu | $/hr | status | jobs |
+|---|---|---|---:|---|---:|---|---|
+| vast-ysbh6-pod-41837 | ssh6.vast.ai:28500 | vast.ai | 80 | — | 0.2 | running | ysbh6·mgb2_pure·nb3al·sc2be2h6·y2be2h6·cah6_decompress |
+| vast-pod-2-new | — | vast.ai | 80 | — | 0.2 | PLANNED | he_4cation_LaYCaScH10·Y2CdH18·LaBH8·YH6·H2B2 |
+| vast-pod-3-new | — | vast.ai | 80 | — | 0.2 | PLANNED | Li2MgH16·Ca2SnH18·Ge_H3S·YH10·CeH9·MgBC2 |
+| vast-pod-4-new | — | vast.ai | 80 | — | 0.2 | PLANNED | labeh8_SSCHA·Y2InH18·LaY_H10·CaY_H6·ScH9·CaBeH8 |
+| vast-pod-5-new | — | vast.ai | 80 | — | 0.2 | PLANNED | mackay_layered_LaBe6H12·BeB2Hx·YH9·H3S_H3P·H3SSe·selfcat_synth |
+| vast-cuda-ssh9-15988 | ssh9.vast.ai:15988 (211.21.106.81) | vast.ai | 128 | RTX_3070 | 0.4011 | running | cabeh8·YH6·LaBH8·CeH9·YH9·YH10·Li2MgH16 (+pilots MgBeH8·CaAuH3·MgCaB2_x025) |
+| local-ubu-1 | ubu-1 | pool | shared | — | 0 | running | h3cl_interp_ablation |
+| local-ubu-2 | ubu-2 | pool | shared | — | 0 | running | mg2irh6_polymorph |
+
+- pod-41837 host-migrated: `77.104.167.149:41837 → ssh6.vast.ai:28500` (2026-05-29 reboot recovery). contract_id ssh9 = 38095989, RAM 128 GB, image nvidia/cuda:12.2.0-base-ubuntu22.04, QE 6.7-2build1 (apt), ssh-note: hexa cloud exec 필수(cloud-guard blocks raw ssh).
+
+**JOB roster (32 jobs + 3 pilots = 35)** — id · pod · stage · np · anchor_Tc(K) · verdict · hypothesis/note:
+
+| job-id | pod | stage | np | anchor_Tc | verdict | hypothesis / note |
+|---|---|---|---:|---:|---|---|
+| ysbh6 | ysbh6-pod-41837 | ph | 32 | 118 | PENDING | watcher boowryffy · ph recover (_ph0 CURRENT_Q=2) pid407 Rep#18 |
+| mgb2_pure | ysbh6-pod-41837 | ph | 8 | 39 | PENDING | watcher bpl3k1l8m · ph recover (q7/28) pid563 |
+| nb3al | ysbh6-pod-41837 | ph | 8 | 18 | PENDING | watcher boy5ld7u5 · ph recover pid619 Rep#9 |
+| sc2be2h6 | ysbh6-pod-41837 | vc-relax | 6 | — | PENDING | Sc 최경량→ω↑ · chain NP24 (vc-relax iter38) pid675 · watcher b8tw784iy |
+| y2be2h6 | ysbh6-pod-41837 | vc-relax | 6 | — | **restart-needed** | YH10-family · scf iter#1 errcode72 (serial+cg+davidson+npool ALL crash)=pseudo/ecut low-level NOT MPI/solver; relax geom preserved → fixed deck reuses · watcher bv0u66qdv |
+| cah6_decompress | ysbh6-pod-41837 | vc-relax | 6 | — | PENDING | x11 회수성 · reboot recovery resume · watcher bfvsatagh |
+| he_4cation_LaYCaScH10 | pod-2-new | vc-relax | 10 | — | PENDING (queued) | Perelman 엔트로피 4-cation · est_wall 100h |
+| Y2CdH18 | pod-2-new | vc-relax | 8 | — | PENDING (queued) | arxiv 2411.11674 Tc>110K · 70h |
+| LaBH8 | cuda-ssh9-15988 | vc-relax | 6 | 126 | PENDING (running) | wave-3 lit-known <50GPa 최저압 ternary · Fm-3m fcc nat=10 · 500 kbar/50 GPa · pid3343 · dryrun PASS (~−140.8 Ry) · Di Cataldo 2021 |
+| YH6 | cuda-ssh9-15988 | vc-relax | 6 | 224 | PENDING (running) | simplest bcc clathrate measured anchor · Im-3m nat=14 · 1500 kbar/150 GPa · pid3311 · dryrun PASS (~−179.81 Ry) · Troyan 2021 measured 224K@166GPa |
+| H2B2 | pod-2-new | vc-relax | 4 | — | PENDING (queued) | H-rich MgB2 · 30h |
+| Li2MgH16 | cuda-ssh9-15988 | vc-relax | 6 | 473 | PENDING (FIRED) | 최고 예측 Tc ternary 473K · Fd-3m#227 o2 FCC-prim nat=38 Li4Mg2H32 · 2500 kbar/250 GPa · pid6732 · Li.UPF GIPAW-strip fix · dryrun PASS (~−341.9 Ry) · Sun 2019 PRL 123,097001 |
+| Ca2SnH18 | pod-3-new | vc-relax | 8 | — | PENDING (queued) | arxiv 2411.11674 · 70h |
+| Ge_H3S | pod-3-new | scf+ph | 6 | — | PENDING (queued) | Ge 2016 280K 예측 · 50h |
+| YH10 | cuda-ssh9-15988 | ph | 6 | 303 | **🟢** | Fm-3m sodalite nat=11 · 250 GPa · pid6151 · **λ=2.8197 ω_log=1300.43K Tc_AD(μ0.10)=227.50K ambient_absorbed=false** · harvest=exports/material_discovery/rtsc_yh10_dft_elph_20260528.json · Liu/Peng/Ma 2017 PNAS 114,6990 |
+| CeH9 | cuda-ssh9-15988 | vc-relax | 6 | 100 | PENDING (FIRED) | 최저압 RE superhydride synth <100GPa · P6_3/mmc nat=20 Ce2H18 · 1000 kbar/100 GPa · pid6079 · dryrun PASS (~−273.5 Ry) · Salke 2019 Nat.Commun 10,4453 |
+| MgBC2 | pod-3-new | vc-relax | 4 | — | PENDING (queued) | C-doped MgB2 · 30h |
+| labeh8_SSCHA | pod-4-new | sscha | 12 | — | PENDING (queued) | C1 양자-회수 직접 검증 · 80h · RAM 24GB+ 필요 |
+| Y2InH18 | pod-4-new | vc-relax | 8 | — | PENDING (queued) | arxiv 2411.11674 · 70h |
+| LaY_H10 | pod-4-new | vc-relax | 6 | — | PENDING (queued) | (La,Y)H10 고용체 · 50h |
+| CaY_H6 | pod-4-new | vc-relax | 6 | — | PENDING (queued) | (Ca,Y)H6 두 ESCAPE · 45h |
+| ScH9 | pod-4-new | vc-relax | 6 | — | PENDING (queued) | Sc-쪽 marginal · 40h |
+| CaBeH8 | pod-4-new | vc-relax | 6 | — | PENDING (queued) | 비방사성 M-Be-H 가장 가벼운 · 40h |
+| mackay_layered_LaBe6H12 | pod-5-new | vc-relax | 12 | — | PENDING (queued) | AcBeH8 다층화 극한 (🥇) · 120h |
+| BeB2Hx | pod-5-new | vc-relax | 8 | — | PENDING (queued) | σ+π 다중-band Cooper-loop · 70h |
+| YH9 | cuda-ssh9-15988 | vc-relax | 6 | 243 | PENDING (FIRED) | 최고 measured RE-binary Tc 243K · P6_3/mmc nat=20 Y2H18 · 2500 kbar/250 GPa · pid6115 · dryrun PASS (~−186.6 Ry) · Kong 2021 Nat.Commun 12,5075 measured 243K@201GPa |
+| H3S_H3P | pod-5-new | scf+ph | 6 | — | PENDING (queued) | P-doping 280K 예측 · 50h |
+| H3SSe | pod-5-new | scf+ph | 6 | — | PENDING (queued) | Se 치환 H3S · 50h |
+| selfcat_synth | pod-5-new | vc-relax | 4 | — | PENDING (queued) | O-RTSC-5 자기-촉매 합성 · 30h |
+| cabeh8 | cuda-ssh9-15988 | vc-relax | 8 | — | PENDING (running) | Sc/Y/Ca M-Be-H 자매 완성 (가장 가벼운 비방사성 cation) · pid1149 · est_wall 40h · ph recover (q14 corrupt fixed via control_ph.xml drop, q1-13 preserved) pid659 SYSTEM QE /usr/bin/ph.x · watcher b08qnguq6 |
+| h3cl_interp_ablation | local-ubu-1 | ph.interp | 7 | 140 | PENDING (running) | interp(true\|false) ablation simple vs interp el-ph · watcher bhayd8tmk |
+| mg2irh6_polymorph | local-ubu-2 | ph | 6 | — | PENDING (running) | Mg₂IrH₆ polymorph dyn-stability check · dyn2 iter2 cpu_h16.4 · watcher b0b3r04yd |
+| **MgBeH8** (pilot A01) | cuda-ssh9-15988 | vc-relax | 8 | 181 | PENDING (running) | dft-elph · est_wall 140h · pilot fired 2026-05-29 — A01 10atom 10GPa AcBeH8 Mg-variant · **system QE pid1434** |
+| **CaAuH3** (pilot A11) | cuda-ssh9-15988 | vc-relax | 8 | — | PENDING (running) | dft-elph · est_wall 17h · pilot fired 2026-05-29 — A11 5atom 50GPa SrAuH3 Ca-variant perovskite · **system QE pid1481** |
+| **MgCaB2_x025** (pilot A25) | cuda-ssh9-15988 | vc-relax | 8 | 39 | PENDING (running) | dft-elph · est_wall 121h · pilot fired 2026-05-29 — A25 12atom ambient Ca-doped MgB2 BCS line · **system QE pid1528** |
+
+**recovery_event (2026-05-29)**: 13-job dark (vast transport drop on reboot/migration) recovered via `vast_reboot` direct call + QE recover resume. 6/7 grinding, y2be2h6 restart-needed. SSH restored ok=1. recovered_utc 17:35:07Z (6 jobs on pod-41837 + cabeh8) · 18:18:01Z (3 pilots fired).
+
+**pilot fire (2026-05-29)**: A01 MgBeH8 pid1434 (10atom 10GPa AcBeH8 Mg-variant, anchor 181K) · A11 CaAuH3 pid1481 (5atom 50GPa SrAuH3 Ca-variant perovskite) · A25 MgCaB2_x025 pid1528 (12atom ambient Ca-doped MgB2 BCS line, anchor 39K) — all 3 on ssh9, $0 reuse (already-running pod), system QE.
+
+**wave-3b re-author note**: 4 candidates (CeH9/YH9/YH10/Li2MgH16) re-authored from failed crystal_sg+space_group decks to YH6-proven explicit ATOMIC_POSITIONS crystal (spglib orbit expansion); all 4 d16 PASS + FIRED on vast-cuda-ssh9-15988 (already-running pod, no new rent). See exports/rtsc/wave3b_decks/D16-NOTES.md.
+
+**rtsc_closure_wall**: first-answer 50h (Pod1 — 5D 지도+anchor) · complete 80h (Pod1/3/4 — 22/25 결과) · deep-dive 120h (전체 31 harmonic+SSCHA) · sim-closure 170h (L5 — harmonic 31 + top-5 SSCHA + mustar/isotope/P-ladder + paper). L0 wet-lab = 외부 측정 R4 영구 (우리 통제 외). **cost_summary**: total_usd $112 (budget 15%), pod_new RTX_3070 128c 128GB $0.40/hr (원plan $0.20→$0.40 1.85x), 2-pod plan (현+신규) > 5-pod 경제적, actual_so_far $0.07.
+
+**verdict 분포**: 🟢 1 (YH10) · restart-needed 1 (y2be2h6) · PENDING 33. Terminal = 1/35.
+
+### 결정 + watcher 표면
+
+- **pods.json = KEPT-LIVE** (삭제 안 함). 이유: 글로벌 active-pods.json 이 job-level 데이터를 담을 수 없어 삭제 시 LIVE watcher(PR #502 heartbeat) 가 읽을 표면을 잃음 = lossless 위반. (b) 전체 전환은 upstream M5 schema 가 착지해야 do-able.
+- **watcher 표면 = 변경 없음.** parent 의 ScheduleWakeup heartbeat(~03:52)가 계속 `pods.json (PR #502 SSOT)` 를 읽으면 됨 — re-point 불필요. M5 job-schema 가 hexa-lang 에 착지한 뒤에야 watcher 를 글로벌 active-pods.json 으로 옮길 수 있음.
+- **upstream 핸드오프**: hexa-lang `INBOX.log.md` 에 "CLOUD M5 active-pods.json job-schema extension" 갭 등록 (🟠 OPEN). active-pods.json 에 `jobs` 섹션(verdict/stage/hypothesis)이 들어가면 /system 의 per-project pods.json 이 글로벌 SSOT 로 전환 가능.
+
+### (b) 상태 = **BLOCKED-on-upstream**
+
+무손실 캡처 완료(본 entry) + hexa-lang INBOX 등록 + pods.json KEPT-LIVE. 전체 삭제+글로벌 마이그레이션은 hexa-lang CLOUD M5 active-pods.json job-schema 확장이 착지한 뒤 do-able. governance: g8·g28·g34·g59·d6(정직)·lossless. branch `feat/rtsc-magnet-wheeler-v2` worktree agent-a4e40b4fa80440097.
+
 - **2026-05-27 KST** — **🧱 SUPERLATTICE cell-design protocol LANDED (P2 · compute-free design doc · mgb2_mgh2 실패 교훈 → 5-step commensurate stacking)**. `RTSC/protocols/SUPERLATTICE_CELL_DESIGN.md` (~164 lines). **motivation**: 역할분리 가설("딱딱한 stabilizer 층이 H soft-mode 클램프 + 강결합 H층 제공")의 첫 검증셀 **mgb2_mgh2 가 🔴** (Γ **−1373 cm⁻¹ × 2 · −1362** · `mgb2h(−1373×2)` precedent — labeh8 entry 가 clean closed-negative 사례로 인용) — 진단: (a) **on-top Mg** H placement 비현실적 (양이온 potential 극대·반발), (b) MgB₂↔MgH₂ in-plane **commensurability 미검토** (strain→soft mode), (c) c-축 arbitrary 2배 (LCM 주기 무시). **정직 분리**: 가설 **미반증** — 셀이 나빴음 (셀 결함 ≠ 가설 결함, d6). 5 deferred 후보 (lah_bn · cah6_b · h3as_h3o · mgb2_h3s · h3as_h3o_h3s) blind-dispatch 금지 → 셀-설계 protocol 선행. **5-step protocol**: (1) sub-layer 독립 안정화 (각 층 단독 vc-relax → in-plane lattice 추출) · (2) 2D commensurate lattice-match (ε_lattice <2% PASS / 2-5% supercell AMBER / ≥5% REJECT) · (3) interstitial H placement (on-top Mg 금지 → (a) electrostatic 최소점 (b) bond-length 휴리스틱 H–H>0.8Å·H–metal~1.5-2.0Å (c) 검증된 안정 hydride motif 차용 — 우선순위 (c)>(a)>(b)) · (4) stacking commensurability (c_super=LCM · AA vs AB registry 에너지 비교) · (5) stability pre-check gate (vc-relax→Γ-phonon→hard<−50 즉시 🔴 · full el-ph 전 차단 · AMBER 시 h3as R3m displaced-seed escape · **ω_log 보존 게이트** = stabilizer 가 ω_log 안 깎으면서 클램프해야 N5 bottleneck 미상속). **5-후보 cell-design table** (DFT 미실행 · ε·Tc·위험 = 입력 추정 verify-grade 아님): lah_bn (BN stiff frame + LaH_x · ε~10-15% supercell 필수) · cah6_b (B sheet + CaH₆ clathrate motif · 가압 필요) · h3as_h3o (h3as R3m clamp + h3o 강λ source · 가설 가장 직접 시험 · h3o anharmonic soft 상속 위험) · mgb2_h3s (mgb2_mgh2 정정 재시도 — H-rich 를 H₃S motif 로 · BETE-NET trustworthy) · h3as_h3o_h3s (3-layer · atoms 최대 d11 위험 · h3as_h3o PROCEED 후에만). **dispatch 우선순위 권고**: 1) cah6_b/h3as_h3o (measured-stable motif → step3 위험 최저) > 2) mgb2_h3s > 3) lah_bn (ε 큼) > 4) h3as_h3o_h3s (3-layer 최후). **record schema**: `superlattice_design` JSON block (step1-5 산출물 + `validation_log` 동반). **gate 위치**: VALIDATION_FIRST.md gate 4 (stability_pre_check) 의 *셀-구성 선행* — 입력 셀이 naive 하면 gate 4 가 매번 🔴 만 찍음 (mgb2_mgh2 가 정확히 그 경우). cost **$0** (doc only · DFT 다음 round). R4 absorbed=false 영구 (d5/d6). governance d1·d2·d6·d11·d13·d16·d17. branch `cycle-superlattice-design`. artifacts: `RTSC/protocols/SUPERLATTICE_CELL_DESIGN.md` + RTSC.md milestone cross-ref + 본 log entry.
 - **2026-05-27 KST** — **🟢 h3br 200 GPa FULL 4×4×4 q el-ph LANDED — N1 / L18 ω_log probe 완결. STABLE strong-λ Tc=158K (μ0.10), 200K 미달 · Γ-probe ω_log 41% over-estimate 확인**. Γ-only pscan (PR #289 F-N6-4 🔴 PASSED) 의 200 GPa 평형 cell (`celldm=6.009113` bohr, vc-relax press=2000 kbar LANDED) 을 seed 로 full-BZ el-ph 확장 (heavy vc-relax/SCF 재사용 — 재실행 불필요). **방법**: dense-k SCF (16³ k · electron_phonon='simple' double-delta EPC 정확도, li2cuh6 precedent) → ph.x ldisp=.true. nq=4³ → **8 IBZ q-points** · electron_phonon='simple' · el_ph_sigma=0.005 nsigma=10 · tr2_ph=1d-14 · fildvscf. PSL 1.0.0 UPF (Br.pbe-n-rrkjus + H.pbe-rrkjus, ecut 60/600 Ry, d14 PBE pure). pool ubu-1 -np 6 (h3cl ph.interp -np 4 와 공존 · setsid detached · NO --oversubscribe). d16 dry-run PASSED. **wall ~28min** (reused-cell SCF 4초 JOB DONE). **결과**: 전 8 IBZ q **모두 real** (min_freq=5.02 cm⁻¹ Γ-acoustic · n_hard=0 · n_soft=0 · harmonic_validity=VALID) — zone-boundary 까지 dynamical stability 확정 (Γ-probe 가 못 본 영역). **σ-plateau (star-weighted q-multiplicities [1,12,6,24,6,12,2,1] sum=64)**: λ_BZ σ=0.020-0.030 에서 2.12-2.16 plateau → σ=0.025 center **λ_BZ=2.156 · ω_log=1046K · Tc(μ0.10)=158.1K · Tc(μ0.13)=148.2K**. 🟢 hexa verify SUPPORTED-NUMERICAL (allen_dynes_tc(2.1563,1046.2,0.10)=158.104, μ0.13=148.212). **verdict 🟢 data point** (stable + Tc<200K). **핵심 정직 finding (d6 · pre-registered b1 realized)**: Γ-only ω_log=1766K 는 full-BZ Allen-weighted ω_log=1046K 대비 **41% over-estimate** — 200K extrapolation 미성립. λ_BZ=2.16 강결합 확인이나 ω_log 가 stable 분지 ~1046K ceiling 에 갇힘 (tropical isocontour λ>1.5 → Tc≈0.353·ω_log). **압력 효과 정량**: 69 GPa ~110K → 200 GPa ~158K, ω_log(P) slope 양수 검증되나 Tc gain 은 sub-linear (λ-saturation ↔ ω_log-ceiling 트레이드오프 = N5 wall 직접 재확인). 첫 uniform-weight pass Tc=116K → star-weight 보정 Tc=158K (BZ-weighting 차이 정직 명시). cost $0 (pool free · d17). atlas register --from-verify allen_dynes_tc (stable strong-λ Tc node fold). artifacts: `decks/h3br_pscan/200gpa_fullq/{scf.in,ph.in,run.hexa,harvest.hexa}` · `exports/material_discovery/rtsc_h3br_200gpa_fullbz_elph_20260527.json` (LANDED) · ubu-1 `~/rtsc_h3br_pscan/200gpa_fullq/{ph.out,h3br.dyn1-8,harvest.json}`. branch `cycle-h3br-200gpa-fullq`. R4 absorbed=false (d19: in-silico data point, wet-lab downstream).
 
