@@ -57,7 +57,7 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "owner",           summary: "owner-mode (사장실) 상태",               ported: true },
     VerbSpec { name: "llm",             summary: "AI 연결 (Claude/Codex/Gemini)",          ported: false },
     VerbSpec { name: "emit-component",  summary: "BIPV 컴포넌트 아티팩트 emit",            ported: false },
-    VerbSpec { name: "export-component",summary: "번들 geometry export (usda|stl)",        ported: false }
+    VerbSpec { name: "export-component",summary: "번들 geometry export (usda|stl)",        ported: true }
   ]
 }
 
@@ -753,6 +753,407 @@ fn _cmd_gate_summary() -> int {
 // "%.1f" 포맷 — printf 로 위임해 스위프트 String(format:) 와 byte-identical.
 fn _fmt1(x: float) -> string {
   return to_string(exec("printf '%.1f' " + _shq(to_string(x)))).trim()
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// ComponentGeometry + USDExporter + STLExporter — 스위프트 ComponentGeometry.swift
+// / USDExporter.swift / STLExporter.swift + main.swift exportComponent() 이식
+// (PR-H · 헤비 verb 3/6). bipv5Layer 는 스위프트 static 상수 preset(매니페스트
+// 아님) → 동일 리터럴 하드코딩이 충실 이식 (d4 위반 아님 · 번들 preset).
+// hexa float→to_string 이 ~3소수자리에서 손실되는 런타임 한계가 있어, 비종단
+// 소수(cell-grid·fin, 940/15=62.666…·168/255 등)는 awk 산술 표현식 문자열을
+// 풀-Double 로 평가해 스위프트 String(format:"%.4f")/USDExporter.fmt 와
+// byte-identical. cockpit export 메뉴와 동일 exporter (D50). export-component =
+// 결정론적 geometry→텍스트→평문 파일 기록 (레코드 아님 · 타임스탬프 無).
+// ════════════════════════════════════════════════════════════════════════════
+
+// "%.4f" — STL 좌표 포맷 (printf 위임). STL 값은 전부 종단 소수라 hexa float 충분.
+fn _fmt4(x: float) -> string {
+  return to_string(exec("printf '%.4f' " + _shq(to_string(x)))).trim()
+}
+// "%.4f" — awk 산술 표현식(풀-Double) 평가 포맷. USD 비종단 소수용.
+fn _fmt4e(expr: string) -> string {
+  return to_string(exec("awk 'BEGIN{ printf \"%.4f\", " + expr + " }'")).trim()
+}
+// USD fmt — v==v.rounded() 면 정수 문자열, 아니면 "%.4f" (USDExporter.fmt §131).
+// expr = awk 산술 문자열. nearest(%.0f)==v 판정도 awk 로.
+fn _usd_fmt_e(expr: string) -> string {
+  let probe = to_string(exec(
+    "awk 'BEGIN{ v=" + expr + "; n=sprintf(\"%.0f\",v)+0; if(n==v) printf \"I%d\", n; else printf \"F\" }'")).trim()
+  if probe.len() >= 1 && probe.substring(0, 1) == "I" {
+    return probe.substring(1, probe.len())
+  }
+  return _fmt4e(expr)
+}
+fn _usd_fmt(x: float) -> string { return _usd_fmt_e(to_string(x)) }
+
+// bipv5Layer preset (ComponentGeometry.bipv5Layer §112). width=depth=1000.
+fn _bipv_layer_count() -> int { return 5 }
+fn _bipv_width() -> float { return 1000.0 }
+fn _bipv_depth() -> float { return 1000.0 }
+fn _bipv_name(i: int) -> string {
+  if i == 0 { return "Glass Face" }
+  if i == 1 { return "PV Cells" }
+  if i == 2 { return "Corrosion-Proof Frame" }
+  if i == 3 { return "Thermal Sink" }
+  return "Structural Mount"
+}
+fn _bipv_thickness(i: int) -> float {
+  if i == 0 { return 3.2 }
+  if i == 1 { return 0.2 }
+  if i == 2 { return 8.0 }
+  if i == 3 { return 12.0 }
+  return 18.0
+}
+fn _bipv_color(i: int) -> string {
+  if i == 0 { return "#A8D8E8" }
+  if i == 1 { return "#1B2A6B" }
+  if i == 2 { return "#9AA0A6" }
+  if i == 3 { return "#FF9500" }
+  return "#555555"
+}
+fn _bipv_render(i: int) -> string {
+  if i == 0 { return "slab" }
+  if i == 1 { return "cellGrid" }
+  if i == 2 { return "frameBorder" }
+  if i == 3 { return "finnedSink" }
+  return "mountBase"
+}
+fn _bipv_opacity(i: int) -> float {
+  if i == 0 { return 0.32 }
+  return 1.0
+}
+fn _bipv_total_thickness() -> float {
+  let mut t = 0.0
+  let mut i = 0
+  while i < 5 { t = t + _bipv_thickness(i); i = i + 1 }
+  return t
+}
+// layerCenterY(index) — 모델 원점 중심 (ComponentGeometry §100). STL 용 float.
+fn _layer_center_y(index: int) -> float {
+  let mut top = _bipv_total_thickness() / 2.0
+  let mut i = 0
+  while i < index { top = top - _bipv_thickness(i); i = i + 1 }
+  return top - _bipv_thickness(index) / 2.0
+}
+// layerCenterY 의 awk 표현식 버전 (USD 용 · explodeFactor=0).
+fn _layer_center_y_expr(index: int) -> string {
+  let mut expr = "(" + to_string(_bipv_total_thickness()) + "/2.0"
+  let mut i = 0
+  while i < index { expr = expr + "-" + to_string(_bipv_thickness(i)); i = i + 1 }
+  expr = expr + "-" + to_string(_bipv_thickness(index)) + "/2.0)"
+  return expr
+}
+
+// hex2 / hexdigit — colorHex 파싱.
+fn _hexdigit(c: string) -> int {
+  if c >= "0" && c <= "9" { return to_int(c) }
+  if c == "a" || c == "A" { return 10 }
+  if c == "b" || c == "B" { return 11 }
+  if c == "c" || c == "C" { return 12 }
+  if c == "d" || c == "D" { return 13 }
+  if c == "e" || c == "E" { return 14 }
+  if c == "f" || c == "F" { return 15 }
+  return -1
+}
+fn _hex2(s: string) -> int {
+  let mut v = 0
+  let mut i = 0
+  while i < s.len() {
+    let d = _hexdigit(s.substring(i, i + 1))
+    if d < 0 { return -1 }
+    v = v * 16 + d
+    i = i + 1
+  }
+  return v
+}
+// colorHex → rgb awk 표현식 (0..1). 잘못된 hex → "0.5" (ComponentLayer.rgb §148).
+fn _hex_rgb_expr(hex: string) -> array {
+  let mut h = hex
+  if h.starts_with("#") { h = h.substring(1, h.len()) }
+  if h.len() != 6 { return ["0.5", "0.5", "0.5"] }
+  let r = _hex2(h.substring(0, 2))
+  let g = _hex2(h.substring(2, 4))
+  let b = _hex2(h.substring(4, 6))
+  if r < 0 || g < 0 || b < 0 { return ["0.5", "0.5", "0.5"] }
+  return ["(" + to_string(r) + "/255.0)", "(" + to_string(g) + "/255.0)", "(" + to_string(b) + "/255.0)"]
+}
+
+// layerBoxes — USD 용 awk 표현식 문자열 버전 (ComponentGeometry.layerBoxes §190).
+// 반환 = [[cx,cy,cz,sx,sy,sz](표현식 문자열), ...]. 좌표는 layer-local.
+fn _layer_boxes_expr(index: int) -> array {
+  let r = _bipv_render(index)
+  let t = to_string(_bipv_thickness(index))
+  let w = to_string(_bipv_width())
+  let d = to_string(_bipv_depth())
+  if r == "slab" {
+    return [["0", "0", "0", w, t, d]]
+  }
+  if r == "cellGrid" {
+    let n = 8
+    let area = "(" + w + "*0.92)"
+    let pitch = "(" + area + "/8.0)"
+    let cell = "(" + pitch + "*0.86)"
+    let mut out = []
+    let mut i = 0
+    while i < n {
+      let mut j = 0
+      while j < n {
+        let cx = "((0.0-" + area + ")/2.0+" + pitch + "*(" + to_string(i) + "+0.5))"
+        let cz = "((0.0-" + area + ")/2.0+" + pitch + "*(" + to_string(j) + "+0.5))"
+        out.push([cx, "0", cz, cell, t, cell])
+        j = j + 1
+      }
+      i = i + 1
+    }
+    return out
+  }
+  if r == "frameBorder" {
+    let bar = "(" + _usd_min_expr(w, d) + "*0.09)"
+    let innerD = "(" + d + "-2.0*" + bar + ")"
+    return [
+      ["0", "0", "((" + d + "-" + bar + ")/2.0)", w, t, bar],
+      ["0", "0", "((0.0-(" + d + "-" + bar + "))/2.0)", w, t, bar],
+      ["((" + w + "-" + bar + ")/2.0)", "0", "0", bar, t, innerD],
+      ["((0.0-(" + w + "-" + bar + "))/2.0)", "0", "0", bar, t, innerD]
+    ]
+  }
+  if r == "finnedSink" {
+    let baseT = "(" + t + "*0.28)"
+    let finT = "(" + t + "-" + baseT + ")"
+    let mut out = [["0", "((" + baseT + "-" + t + ")/2.0)", "0", w, baseT, d]]
+    let count = 15
+    let span = "(" + w + "*0.94)"
+    let pitch = "(" + span + "/15.0)"
+    let fin = "(" + pitch + "*0.5)"
+    let mut i = 0
+    while i < count {
+      let cx = "((0.0-" + span + ")/2.0+" + pitch + "*(" + to_string(i) + "+0.5))"
+      out.push([cx, "(" + baseT + "/2.0)", "0", fin, finT, "(" + d + "*0.9)"])
+      i = i + 1
+    }
+    return out
+  }
+  // mountBase
+  let baseT = "(" + t + "*0.5)"
+  let mut out = [["0", "((" + baseT + "-" + t + ")/2.0)", "0", "(" + w + "*0.82)", baseT, "(" + d + "*0.82)"]]
+  let br = "(" + _usd_min_expr(w, d) + "*0.16)"
+  let ox = "(" + w + "*0.41)"
+  let oz = "(" + d + "*0.41)"
+  out.push(["(" + ox + "*1.0)", "0", "(" + oz + "*1.0)", br, t, br])
+  out.push(["(" + ox + "*(0.0-1.0))", "0", "(" + oz + "*1.0)", br, t, br])
+  out.push(["(" + ox + "*1.0)", "0", "(" + oz + "*(0.0-1.0))", br, t, br])
+  out.push(["(" + ox + "*(0.0-1.0))", "0", "(" + oz + "*(0.0-1.0))", br, t, br])
+  return out
+}
+// min(a,b) 표현식 — 두 종단 상수 비교 (w==d==1000).
+fn _usd_min_expr(a: string, b: string) -> string {
+  if to_float(a) < to_float(b) { return a }
+  return b
+}
+
+// USD primName — letter/number 유지, 그 외 '_', 첫 char 숫자면 '_' 접두.
+fn _usd_prim_name(raw: string) -> string {
+  let mut out = ""
+  let mut i = 0
+  while i < raw.len() {
+    let c = raw.substring(i, i + 1)
+    if _is_alnum(c) { out = out + c } else { out = out + "_" }
+    i = i + 1
+  }
+  if out.len() > 0 {
+    let f = out.substring(0, 1)
+    if f >= "0" && f <= "9" { out = "_" + out }
+  }
+  if out.len() == 0 { return "Layer" }
+  return out
+}
+fn _stl_sanitize(raw: string) -> string {
+  let mut out = ""
+  let mut i = 0
+  while i < raw.len() {
+    let c = raw.substring(i, i + 1)
+    if _is_alnum(c) || c == "_" { out = out + c } else { out = out + "_" }
+    i = i + 1
+  }
+  if out.len() == 0 { return "component" }
+  return out
+}
+fn _is_alnum(c: string) -> bool {
+  return (c >= "a" && c <= "z") || (c >= "A" && c <= "Z") || (c >= "0" && c <= "9")
+}
+fn _usd_is_metal(r: string) -> bool {
+  return r == "frameBorder" || r == "finnedSink" || r == "mountBase"
+}
+
+// STLExporter.stl(geometry, explodeFactor=0) (STLExporter.swift §16).
+fn _stl_export() -> string {
+  let name = _stl_sanitize("bipv_5layer_v0")
+  let mut s = "solid " + name + "\n"
+  let hw = _bipv_width() / 2.0
+  let hd = _bipv_depth() / 2.0
+  let mut i = 0
+  while i < _bipv_layer_count() {
+    let cy = _layer_center_y(i)
+    s = s + _stl_box_facets(hw, _bipv_thickness(i) / 2.0, hd, cy)
+    i = i + 1
+  }
+  s = s + "endsolid " + name + "\n"
+  return s
+}
+fn _stl_box_facets(hw: float, ht: float, hd: float, cy: float) -> string {
+  let x0 = 0.0 - hw
+  let x1 = hw
+  let y0 = cy - ht
+  let y1 = cy + ht
+  let z0 = 0.0 - hd
+  let z1 = hd
+  let p000 = [x0, y0, z0]
+  let p100 = [x1, y0, z0]
+  let p110 = [x1, y1, z0]
+  let p010 = [x0, y1, z0]
+  let p001 = [x0, y0, z1]
+  let p101 = [x1, y0, z1]
+  let p111 = [x1, y1, z1]
+  let p011 = [x0, y1, z1]
+  let mut s = ""
+  s = s + _stl_quad([0.0, 0.0, 0.0 - 1.0], p000, p010, p110, p100)
+  s = s + _stl_quad([0.0, 0.0, 1.0], p001, p101, p111, p011)
+  s = s + _stl_quad([0.0 - 1.0, 0.0, 0.0], p000, p001, p011, p010)
+  s = s + _stl_quad([1.0, 0.0, 0.0], p100, p110, p111, p101)
+  s = s + _stl_quad([0.0, 0.0 - 1.0, 0.0], p000, p100, p101, p001)
+  s = s + _stl_quad([0.0, 1.0, 0.0], p010, p011, p111, p110)
+  return s
+}
+fn _stl_quad(n: array, a: array, b: array, c: array, d: array) -> string {
+  return _stl_tri(n, a, b, c) + _stl_tri(n, a, c, d)
+}
+fn _stl_tri(n: array, a: array, b: array, c: array) -> string {
+  let mut s = "  facet normal " + _fmt4(to_float(n[0])) + " " + _fmt4(to_float(n[1])) + " " + _fmt4(to_float(n[2])) + "\n"
+  s = s + "    outer loop\n"
+  s = s + "      vertex " + _fmt4(to_float(a[0])) + " " + _fmt4(to_float(a[1])) + " " + _fmt4(to_float(a[2])) + "\n"
+  s = s + "      vertex " + _fmt4(to_float(b[0])) + " " + _fmt4(to_float(b[1])) + " " + _fmt4(to_float(b[2])) + "\n"
+  s = s + "      vertex " + _fmt4(to_float(c[0])) + " " + _fmt4(to_float(c[1])) + " " + _fmt4(to_float(c[2])) + "\n"
+  s = s + "    endloop\n  endfacet\n"
+  return s
+}
+
+// USDExporter.usda(geometry, explodeFactor=0) (USDExporter.swift §22).
+fn _usd_export() -> string {
+  let gid = "bipv_5layer_v0"
+  let gname = "BIPV Module (5-layer)"
+  let mut s = "#usda 1.0\n(\n"
+  s = s + "    defaultPrim = \"Component\"\n"
+  s = s + "    metersPerUnit = 0.001\n"
+  s = s + "    upAxis = \"Y\"\n"
+  s = s + "    doc = \"demiurge ComponentGeometry export — "
+  s = s + gid + ". PROCEDURAL PLACEHOLDER geometry (g3), "
+  s = s + "not a measured component.\"\n"
+  s = s + ")\n\n"
+  s = s + "def Xform \"Component\" (\n    kind = \"component\"\n)\n{\n"
+  s = s + "    custom string demiurge:geometryId = \"" + gid + "\"\n"
+  s = s + "    custom string demiurge:displayName = "
+  s = s + "\"" + gname + "\"\n"
+  s = s + "    custom double demiurge:explodeFactor = "
+  s = s + _usd_fmt(0.0) + "\n"
+  s = s + "    custom string demiurge:provenance = "
+  s = s + "\"procedural_placeholder · GATE_OPEN · absorbed=false\"\n\n"
+  s = s + _usd_materials_block()
+  let mut i = 0
+  while i < _bipv_layer_count() {
+    s = s + _usd_layer_xform(i)
+    i = i + 1
+  }
+  s = s + "}\n"
+  return s
+}
+fn _usd_materials_block() -> string {
+  let mut s = "    def Scope \"Materials\"\n    {\n"
+  let mut i = 0
+  while i < _bipv_layer_count() {
+    let mat = "mat_" + _usd_prim_name(_bipv_name(i))
+    let rgb = _hex_rgb_expr(_bipv_color(i))
+    let is_metal = _usd_is_metal(_bipv_render(i))
+    let metallic = if is_metal { "0.85" } else { "0.0" }
+    let rough = if is_metal { "0.35" } else { "0.12" }
+    s = s + "        def Material \"" + mat + "\"\n        {\n"
+    s = s + "            token outputs:surface.connect = "
+    s = s + "</Component/Materials/" + mat + "/Shader.outputs:surface>\n"
+    s = s + "            def Shader \"Shader\"\n            {\n"
+    s = s + "                uniform token info:id = \"UsdPreviewSurface\"\n"
+    s = s + "                color3f inputs:diffuseColor = "
+    s = s + "(" + _usd_fmt_e(to_string(rgb[0])) + ", " + _usd_fmt_e(to_string(rgb[1])) + ", " + _usd_fmt_e(to_string(rgb[2])) + ")\n"
+    s = s + "                float inputs:metallic = " + _usd_fmt_e(metallic) + "\n"
+    s = s + "                float inputs:roughness = " + _usd_fmt_e(rough) + "\n"
+    s = s + "                float inputs:opacity = "
+    s = s + _usd_fmt(_bipv_opacity(i)) + "\n"
+    s = s + "                token outputs:surface\n"
+    s = s + "            }\n        }\n"
+    i = i + 1
+  }
+  s = s + "    }\n\n"
+  return s
+}
+fn _usd_layer_xform(index: int) -> string {
+  let xn = _usd_prim_name(_bipv_name(index))
+  let mat = "mat_" + xn
+  let mut s = "    def Xform \"Layer_" + xn + "\"\n    {\n"
+  s = s + "        float3 xformOp:translate = (0, " + _usd_fmt_e(_layer_center_y_expr(index)) + ", 0)\n"
+  s = s + "        uniform token[] xformOpOrder = [\"xformOp:translate\"]\n"
+  s = s + "        custom string demiurge:layerName = \"" + _bipv_name(index) + "\"\n"
+  s = s + "        custom double demiurge:thicknessMM = "
+  s = s + _usd_fmt(_bipv_thickness(index)) + "\n"
+  let boxes = _layer_boxes_expr(index)
+  let rgb = _hex_rgb_expr(_bipv_color(index))
+  let mut bi = 0
+  while bi < len(boxes) {
+    let p = boxes[bi]
+    s = s + "        def Cube \"Box_" + to_string(bi) + "\"\n        {\n"
+    s = s + "            double size = 1\n"
+    s = s + "            float3 xformOp:translate = "
+    s = s + "(" + _usd_fmt_e(to_string(p[0])) + ", " + _usd_fmt_e(to_string(p[1])) + ", " + _usd_fmt_e(to_string(p[2])) + ")\n"
+    s = s + "            float3 xformOp:scale = "
+    s = s + "(" + _usd_fmt_e(to_string(p[3])) + ", " + _usd_fmt_e(to_string(p[4])) + ", " + _usd_fmt_e(to_string(p[5])) + ")\n"
+    s = s + "            uniform token[] xformOpOrder = "
+    s = s + "[\"xformOp:translate\", \"xformOp:scale\"]\n"
+    s = s + "            rel material:binding = "
+    s = s + "</Component/Materials/" + mat + ">\n"
+    s = s + "            color3f[] primvars:displayColor = "
+    s = s + "[(" + _usd_fmt_e(to_string(rgb[0])) + ", " + _usd_fmt_e(to_string(rgb[1])) + ", " + _usd_fmt_e(to_string(rgb[2])) + ")]\n"
+    s = s + "        }\n"
+    bi = bi + 1
+  }
+  s = s + "    }\n"
+  return s
+}
+
+// `export-component <format> [path]` (main.swift §740). geometry=bipv5Layer.
+fn _cmd_export_component(rest: array) -> int {
+  if len(rest) == 0 {
+    eprintln("export-component: missing <format> argument (usda|stl)")
+    return 2
+  }
+  let fmt = _lower(to_string(rest[0]))
+  let mut body = ""
+  let mut ext = ""
+  if fmt == "usda" || fmt == "usd" { body = _usd_export(); ext = "usda" }
+  else if fmt == "stl" { body = _stl_export(); ext = "stl" }
+  else {
+    eprintln("export-component: unknown format '" + to_string(rest[0]) + "' — use usda | stl  (usdz: emit-component packages it)")
+    return 2
+  }
+  let raw_path = if len(rest) >= 2 { to_string(rest[1]) } else { "bipv_5layer_v0." + ext }
+  // 스위프트 URL(fileURLWithPath:).path — 상대경로는 cwd 기준 절대화.
+  let out_path = if raw_path.starts_with("/") { raw_path }
+                 else { to_string(exec("pwd")).trim() + "/" + raw_path }
+  exec("printf '%s' " + _shq(body) + " > " + _shq(out_path))
+  if !_path_exists(out_path) {
+    eprintln("export-component: write failed")
+    return 1
+  }
+  println("export-component: wrote " + out_path + " (" + ext + ")")
+  println("   procedural placeholder geometry — GATE_OPEN (g3)")
+  return 0
 }
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -2131,6 +2532,7 @@ fn _dispatch(verb: string, rest: array) -> int {
   if verb == "verify"   { return _cmd_verify(rest) }
   if verb == "compose"  { return _cmd_compose(rest) }
   if verb == "project"  { return _cmd_project(rest) }
+  if verb == "export-component" { return _cmd_export_component(rest) }
   if verb == "owner"    { return _cmd_owner() }
   // 도달 불가 (generic 층이 ported 플래그로 이미 거른다).
   return 3
