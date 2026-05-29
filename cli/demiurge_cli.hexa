@@ -24,7 +24,7 @@ let DEMIURGE_CLI_VERSION = "0.0.2 (phase α-3 + β, read-only — rfc_011 §10)"
 // 각 행 = { name, summary }. generic 층은 이 테이블만 보고 검증/usage 를
 // 렌더한다. 새 verb 이식 = 이 테이블에 한 줄 추가 + dispatch 한 줄
 // (per-verb 하드코딩을 generic 층에 두지 않는다).
-type VerbSpec := {
+struct VerbSpec {
   name:    string,
   summary: string,
   ported:  bool      // true = hexa-native 구현 완료, false = 아직 스위프트
@@ -167,5 +167,3 @@ fn main() {
   while i < len(a) { rest.push(to_string(a[i])); i = i + 1 }
   exit(_dispatch(verb0, rest))
 }
-
-main()
