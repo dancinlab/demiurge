@@ -45,14 +45,14 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "project",         summary: "프로젝트 new|advance|retreat",           ported: false },
     VerbSpec { name: "list-shelf",      summary: "도메인 §6 ingredient shelf",             ported: false },
     VerbSpec { name: "action",          summary: "θ-2 액션 dispatch (verb · domain)",      ported: false },
-    VerbSpec { name: "discover",        summary: "8-verb head — phanes-bridged 발견",      ported: false },
+    VerbSpec { name: "discover",        summary: "8-verb head — phanes-bridged 발견",      ported: true },
     VerbSpec { name: "list-gates",      summary: "gate 별 F1F2 레코드",                    ported: false },
     VerbSpec { name: "gate-summary",    summary: "gate + absorbed 합계",                   ported: false },
     VerbSpec { name: "operate",         summary: "operation manifest list|audit",          ported: false },
     VerbSpec { name: "backend",         summary: "compute backend list|current",           ported: false },
     VerbSpec { name: "compose",         summary: "도메인 → 구성 스택 해소",                ported: false },
     VerbSpec { name: "verify",          summary: "provenance/claim-gate · hexa verify",    ported: false },
-    VerbSpec { name: "atlas",           summary: "hexa atlas SSOT 읽기/owner-write",       ported: false },
+    VerbSpec { name: "atlas",           summary: "hexa atlas SSOT 읽기/owner-write",       ported: true },
     VerbSpec { name: "owner",           summary: "owner-mode (사장실) 상태",               ported: false },
     VerbSpec { name: "llm",             summary: "AI 연결 (Claude/Codex/Gemini)",          ported: false },
     VerbSpec { name: "emit-component",  summary: "BIPV 컴포넌트 아티팩트 emit",            ported: false },
@@ -106,10 +106,99 @@ fn _usage() {
   println("  ·  = 아직 스위프트 폴백 (hexa-native 이식 진행 중)")
 }
 
-// ── verb 핸들러 (PR1: version 만) ────────────────────────────────────────────
+// ── 공용 헬퍼 ────────────────────────────────────────────────────────────────
+//
+// shell single-quote escape: ' → '\''  (exec() 임베딩 안전).
+fn _shq(s: string) -> string {
+  let mut out = "'"
+  let n = len(s)
+  let mut i = 0
+  while i < n {
+    let c = s.substring(i, i + 1)
+    if c == "'" { out = out + "'\\''" } else { out = out + c }
+    i = i + 1
+  }
+  return out + "'"
+}
+
+fn _file_exists(p: string) -> bool {
+  return to_string(exec("test -x " + _shq(p) + " && echo Y || echo N")).trim() == "Y"
+}
+
+// ── verb 핸들러 ──────────────────────────────────────────────────────────────
 fn _cmd_version() -> int {
   println("demiurge " + DEMIURGE_CLI_VERSION)
   return 0
+}
+
+// `discover <objective> [--verifier <p>] [--rounds N] [--json]` — 8-verb head.
+// phanes CLI 로 dispatch 하는 얇은 subprocess 래퍼 (d3 — phanes 가 OUROBOROS
+// 루프 소유, demiurge 는 dispatch 만 · d4). 바이너리 위치 resolution:
+//   1. $PHANES_BIN  2. /usr/local/bin/phanes  3. /opt/homebrew/bin/phanes
+//   4. ~/core/phanes/bin/phanes  (스위프트 discoverCmd 과 동일 순서).
+fn _cmd_discover(rest: array) -> int {
+  if len(rest) == 0 {
+    eprintln("discover: usage — discover <objective> [--verifier <path>] [--rounds N] [--json]")
+    return 2
+  }
+  let home = to_string(exec("echo $HOME")).trim()
+  let env_bin = env("PHANES_BIN")
+  let mut cands = []
+  if env_bin.len() > 0 { cands.push(env_bin) }
+  cands.push("/usr/local/bin/phanes")
+  cands.push("/opt/homebrew/bin/phanes")
+  cands.push(home + "/core/phanes/bin/phanes")
+  let mut bin = ""
+  let mut i = 0
+  while i < len(cands) {
+    if _file_exists(to_string(cands[i])) { bin = to_string(cands[i]); break }
+    i = i + 1
+  }
+  if bin == "" {
+    eprintln("discover: phanes CLI not found.")
+    eprintln("  searched: " + cands.join(", "))
+    eprintln("  set PHANES_BIN env var to override.")
+    eprintln("  contract expected (phanes-side):")
+    eprintln("    phanes discover <objective> [--verifier <path>] [--rounds N] [--json]")
+    eprintln("  phanes owns the OUROBOROS loop; demiurge dispatches only (d3/d4).")
+    return 2
+  }
+  // argv 를 그대로 forward (출력 캡처 후 재출력 · 종료코드 전파).
+  let mut cmd = _shq(bin) + " discover"
+  let mut k = 0
+  while k < len(rest) { cmd = cmd + " " + _shq(to_string(rest[k])); k = k + 1 }
+  let r = exec_with_status(cmd + " 2>&1")
+  let out = to_string(r[0])
+  print(out)
+  if out.len() > 0 && !out.ends_with("\n") { println("") }
+  return r[1]
+}
+
+// `atlas <verb> [args]` — hexa atlas SSOT 읽기. READ verb (lookup/stats/hash/
+// dump) 는 `hexa atlas` 로 VERBATIM forward. WRITE verb (register/append-
+// witness/pr) 은 owner op (사장실 · M20) — DEMIURGE_OWNER 없으면 거부.
+fn _cmd_atlas(rest: array) -> int {
+  let verb = if len(rest) >= 1 { to_string(rest[0]) } else { "stats" }
+  let is_read = verb == "lookup" || verb == "stats" || verb == "hash" || verb == "dump"
+  let is_write = verb == "register" || verb == "append-witness" || verb == "pr"
+  if is_write {
+    let owner = env("DEMIURGE_OWNER")
+    if owner.len() == 0 {
+      eprintln("atlas: '" + verb + "' = owner op (사장실 · M20). Set DEMIURGE_OWNER to unlock. External read-only: lookup/stats/hash/dump.")
+      return 2
+    }
+  } else if !is_read {
+    eprintln("atlas: unknown verb '" + verb + "' — read: lookup/stats/hash/dump · owner write: register/append-witness/pr")
+    return 2
+  }
+  let mut cmd = "hexa atlas"
+  let mut k = 0
+  while k < len(rest) { cmd = cmd + " " + _shq(to_string(rest[k])); k = k + 1 }
+  let r = exec_with_status(cmd + " 2>&1")
+  let out = to_string(r[0])
+  print(out)
+  if out.len() > 0 && !out.ends_with("\n") { println("") }
+  return r[1]
 }
 
 // ── generic dispatch ─────────────────────────────────────────────────────────
@@ -129,7 +218,9 @@ fn _lookup(reg: [VerbSpec], name: string) -> int {
 
 fn _dispatch(verb: string, rest: array) -> int {
   // 단일 dispatch 지점 — 이식된 verb 만. (이식되며 한 줄씩 늘어난다.)
-  if verb == "version" { return _cmd_version() }
+  if verb == "version"  { return _cmd_version() }
+  if verb == "discover" { return _cmd_discover(rest) }
+  if verb == "atlas"    { return _cmd_atlas(rest) }
   // 도달 불가 (generic 층이 ported 플래그로 이미 거른다).
   return 3
 }
