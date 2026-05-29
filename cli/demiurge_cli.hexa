@@ -43,7 +43,7 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "show",            summary: "F1F2 레코드 1건 + provenance",           ported: true },
     VerbSpec { name: "list-projects",   summary: "워크벤치 프로젝트 나열",                 ported: true },
     VerbSpec { name: "show-project",    summary: "프로젝트 1건 + 7-verb 진행도",           ported: true },
-    VerbSpec { name: "project",         summary: "프로젝트 new|advance|retreat",           ported: false },
+    VerbSpec { name: "project",         summary: "프로젝트 new|advance|retreat",           ported: true },
     VerbSpec { name: "list-shelf",      summary: "도메인 §6 ingredient shelf",             ported: true },
     VerbSpec { name: "action",          summary: "θ-2 액션 dispatch (verb · domain)",      ported: false },
     VerbSpec { name: "discover",        summary: "8-verb head — phanes-bridged 발견",      ported: true },
@@ -1613,6 +1613,273 @@ fn _join_dot(a: array) -> string {
   return out
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// ProjectStore WRITE — 스위프트 ProjectStore.save / Project(new) / projectNew /
+// projectStep + DomainCatalog.infer 이식 (PR-G · 헤비 verb 2/6, WRITE).
+// 매니페스트는 ~/Library/Application Support/lab.dancin.demiurge/projects/<uuid>/
+// manifest.json — Foundation JSONEncoder(.prettyPrinted+.sortedKeys+.iso8601)
+// 와 byte-identical 직렬화: 2-space indent · "key" : value (콜론 양옆 공백) ·
+// 키 알파벳 정렬 · 빈 배열 = "[\n\n  ]" · 비빈 배열 = 4-space 원소 · 마지막
+// 개행 없음 · createdAt ISO8601(Z, 소수초 無) · id 대문자 UUID. cockpit
+// ProjectStore 와 동일 SSOT (D50). 신규 walk = DomainComposer topo-closure.
+// ════════════════════════════════════════════════════════════════════════════
+
+// DomainCatalog.infer(from:) — lowercased target 가 어느 도메인 keyword 를
+// substring 으로 포함하는 첫 도메인 id (INDEX.demi 섹션 순서), 없으면 "general".
+fn _domain_infer(target: string) -> string {
+  let path = _project_root() + "/domains/INDEX.demi"
+  if !_path_exists(path) { return "general" }
+  let t = _lower(target)
+  // INDEX.demi 의 [<id>] 섹션을 등장 순서대로 — 각 섹션 keywords 리스트 검사.
+  let ids_raw = to_string(exec(
+    "grep -E '^\\[' " + _shq(path) + " 2>/dev/null | sed -E 's/^\\[(.*)\\]$/\\1/'"))
+  let ids = ids_raw.split("\n")
+  let mut i = 0
+  while i < len(ids) {
+    let id = to_string(ids[i]).trim()
+    i = i + 1
+    if id.len() == 0 { continue }
+    let body = _domain_section(id)
+    if body.len() == 0 { continue }
+    let kwraw = to_string(exec(
+      "printf '%s' " + _shq(body) + " | grep -E '^[[:space:]]*keywords[[:space:]]*=' | head -1"))
+    let kws = _demi_string_list(kwraw)
+    let mut k = 0
+    while k < len(kws) {
+      let kw = _lower(to_string(kws[k]))
+      if kw.len() > 0 && t.contains(kw) { return id }
+      k = k + 1
+    }
+  }
+  return "general"
+}
+
+// Foundation JSONEncoder(.prettyPrinted,.sortedKeys) byte-identical 매니페스트.
+// 인자 = uuid · created(ISO8601) · cv(int) · domain · name · target · walk[] ·
+// done_csv. 키 알파벳: createdAt·currentVerb·domain·doneVerbs·id·name·target·walk.
+fn _manifest_json(uuid: string, created: string, cv: int, domain: string,
+                  name: string, target: string, walk: array, done_csv: string) -> string {
+  let mut s = "{\n"
+  s = s + "  \"createdAt\" : \"" + created + "\",\n"
+  s = s + "  \"currentVerb\" : " + to_string(cv) + ",\n"
+  s = s + "  \"domain\" : \"" + _json_esc(domain) + "\",\n"
+  // doneVerbs — Set<Int> 정렬(오름차순). 빈 배열 = "[\n\n  ]".
+  s = s + "  \"doneVerbs\" : " + _int_array_json(done_csv, 1) + ",\n"
+  s = s + "  \"id\" : \"" + uuid + "\",\n"
+  s = s + "  \"name\" : \"" + _json_esc(name) + "\",\n"
+  s = s + "  \"target\" : \"" + _json_esc(target) + "\",\n"
+  s = s + "  \"walk\" : " + _string_array_json(walk, 1) + "\n"
+  s = s + "}"
+  return s
+}
+
+// JSON 문자열 이스케이프 (Foundation: " \ 제어문자). 프로젝트 name/target/
+// domain 은 일반적으로 \ " 미포함이나 안전하게 처리.
+fn _json_esc(v: string) -> string {
+  let mut out = ""
+  let mut i = 0
+  while i < v.len() {
+    let c = v.substring(i, i + 1)
+    if c == "\"" { out = out + "\\\"" }
+    else if c == "\\" { out = out + "\\\\" }
+    else if c == "\n" { out = out + "\\n" }
+    else if c == "\t" { out = out + "\\t" }
+    else { out = out + c }
+    i = i + 1
+  }
+  return out
+}
+
+// 정렬된 int 배열(오름차순) JSON — indent_level 의 부모 들여쓰기 기준.
+// 빈 = "[\n\n<pad>]" · 원소 = "[\n<pad+2>v,\n...<pad>]". (Foundation 형식)
+fn _int_array_json(csv: string, depth: int) -> string {
+  let pad = _spaces(depth * 2)
+  let ipad = _spaces((depth + 1) * 2)
+  if csv.len() == 0 { return "[\n\n" + pad + "]" }
+  // CSV → 정수 정렬.
+  let parts = csv.split(",")
+  let mut vals = []
+  let mut i = 0
+  while i < len(parts) {
+    let p = to_string(parts[i]).trim()
+    if p.len() > 0 { vals.push(to_int(p)) }
+    i = i + 1
+  }
+  // 오름차순 정렬.
+  let mut a = 0
+  while a < len(vals) {
+    let mut b = a + 1
+    while b < len(vals) {
+      if to_int(vals[b]) < to_int(vals[a]) { let tmp = vals[a]; vals[a] = vals[b]; vals[b] = tmp }
+      b = b + 1
+    }
+    a = a + 1
+  }
+  let mut s = "[\n"
+  let mut k = 0
+  while k < len(vals) {
+    s = s + ipad + to_string(vals[k])
+    if k < len(vals) - 1 { s = s + "," }
+    s = s + "\n"
+    k = k + 1
+  }
+  return s + pad + "]"
+}
+
+// 문자열 배열 JSON — 빈 = "[\n\n<pad>]" · 원소 = 4-space 들여쓰기.
+fn _string_array_json(arr: array, depth: int) -> string {
+  let pad = _spaces(depth * 2)
+  let ipad = _spaces((depth + 1) * 2)
+  if len(arr) == 0 { return "[\n\n" + pad + "]" }
+  let mut s = "[\n"
+  let mut k = 0
+  while k < len(arr) {
+    s = s + ipad + "\"" + _json_esc(to_string(arr[k])) + "\""
+    if k < len(arr) - 1 { s = s + "," }
+    s = s + "\n"
+    k = k + 1
+  }
+  return s + pad + "]"
+}
+
+fn _spaces(n: int) -> string {
+  let mut s = ""
+  let mut i = 0
+  while i < n { s = s + " "; i = i + 1 }
+  return s
+}
+
+// 매니페스트를 <root>/<uuid>/manifest.json 에 atomic 기록 (ProjectStore.save).
+fn _write_manifest(uuid: string, body: string) -> bool {
+  let root = _projects_root()
+  let dir = root + "/" + uuid
+  exec("mkdir -p " + _shq(dir))
+  let path = dir + "/manifest.json"
+  // printf %s 로 정확 바이트 기록 (개행 추가 없음 · 마지막 } 뒤 개행 無).
+  exec("printf '%s' " + _shq(body) + " > " + _shq(path))
+  return _path_exists(path)
+}
+
+// `project new <name> <target> [domain]` (main.swift §523).
+fn _cmd_project_new(name: string, target: string, domain_arg: string) -> int {
+  let domain = if domain_arg.len() > 0 { domain_arg } else { _domain_infer(target) }
+  // DomainComposer.resolve(domain).ids — topo-ordered closure (compose 와 동일).
+  let closure = _transitive_closure(domain)
+  let walk = _topo_sort(closure)
+  let stack_n = len(closure)
+  let scale = _domain_scale(domain)
+  let kind = if scale == "system" { "meta" }
+             else if stack_n > 1 { "composite" }
+             else { "atomic" }
+  let uuid = to_string(exec("uuidgen")).trim()
+  let created = to_string(exec("date -u +%Y-%m-%dT%H:%M:%SZ")).trim()
+  // 새 프로젝트: currentVerb=0(specify) · doneVerbs=[].
+  let body = _manifest_json(uuid, created, 0, domain, name, target, walk, "")
+  if !_write_manifest(uuid, body) {
+    eprintln("project new: save failed")
+    return 1
+  }
+  let infer_tag = if domain_arg.len() == 0 { " (target에서 추론)" } else { "" }
+  println("project '" + name + "' 생성 — domain=" + domain + infer_tag + " · "
+          + kind + " · 구성 " + to_string(stack_n))
+  let walk_line = if len(walk) == 0 { domain } else { _join_arrow(walk) }
+  println("  walk (topo): " + walk_line)
+  println("  현재 단계: 1/7 " + _verb_korean(0) + "(" + _verb_plain(0) + ")")
+  return 0
+}
+
+// `project advance|retreat <name>` (main.swift §484). 매니페스트 read →
+// currentVerb step → 재기록 (id·createdAt·domain·walk·doneVerbs 보존).
+fn _cmd_project_step(direction: string, name: string) -> int {
+  let root = _projects_root()
+  if !_path_exists(root) {
+    eprintln("project: no project named '" + name + "'")
+    return 2
+  }
+  // 매니페스트 검색 (uuid 디렉터리 순회, name 매칭 첫째).
+  let listing = to_string(exec("ls -1 " + _shq(root) + " 2>/dev/null"))
+  let dirs = listing.split("\n")
+  let mut found_path = ""
+  let mut found_uuid = ""
+  let mut found_content = ""
+  let mut i = 0
+  while i < len(dirs) {
+    let d = to_string(dirs[i]).trim()
+    i = i + 1
+    if d.len() == 0 { continue }
+    let mp = root + "/" + d + "/manifest.json"
+    if !_path_exists(mp) { continue }
+    let content = to_string(exec("cat " + _shq(mp) + " 2>/dev/null"))
+    if _json_string(content, "name", 0) == name {
+      found_path = mp; found_uuid = d; found_content = content; break
+    }
+  }
+  if found_path.len() == 0 {
+    eprintln("project: no project named '" + name + "'")
+    return 2
+  }
+  let cv = to_int(_json_scalar(found_content, "currentVerb", 0))
+  // canAdvance = cv != 6(handoff) · canRetreat = cv != 0(specify).
+  let mut new_cv = cv
+  if direction == "advance" {
+    if cv >= 6 {
+      println("project '" + name + "' 이미 마지막 단계 (" + _verb_korean(cv) + ")")
+      return 0
+    }
+    new_cv = cv + 1
+  } else if direction == "retreat" {
+    if cv <= 0 {
+      println("project '" + name + "' 이미 첫 단계 (" + _verb_korean(cv) + ")")
+      return 0
+    }
+    new_cv = cv - 1
+  } else {
+    eprintln("project: unknown direction '" + direction + "' — use advance | retreat")
+    return 2
+  }
+  // 기존 필드 보존하여 재직렬화.
+  let domain = _json_string(found_content, "domain", 0)
+  let pname = _json_string(found_content, "name", 0)
+  let target = _json_string(found_content, "target", 0)
+  let created = _json_string(found_content, "createdAt", 0)
+  let walk = _json_string_array(found_content, "walk")
+  let done_csv = _json_int_array_csv(found_content, "doneVerbs")
+  let body = _manifest_json(found_uuid, created, new_cv, domain, pname, target, walk, done_csv)
+  if !_write_manifest(found_uuid, body) {
+    eprintln("project: save failed")
+    return 1
+  }
+  println("project '" + name + "' → " + to_string(new_cv + 1) + "/7 "
+          + _verb_korean(new_cv) + "(" + _verb_plain(new_cv) + ")")
+  return 0
+}
+
+// `project <new|advance|retreat> ...` 디스패치 (main.swift §1076 switch).
+fn _cmd_project(rest: array) -> int {
+  if len(rest) == 0 {
+    eprintln("project: usage — project new <name> <target> [domain] | project <advance|retreat> <name>")
+    return 2
+  }
+  let sub = to_string(rest[0])
+  if sub == "new" {
+    if len(rest) < 3 {
+      eprintln("project new: usage — project new <name> <target> [domain]")
+      return 2
+    }
+    let domain_arg = if len(rest) >= 4 { to_string(rest[3]) } else { "" }
+    return _cmd_project_new(to_string(rest[1]), to_string(rest[2]), domain_arg)
+  }
+  if sub == "advance" || sub == "retreat" {
+    if len(rest) < 2 {
+      eprintln("project: usage — project <advance|retreat> <name>")
+      return 2
+    }
+    return _cmd_project_step(sub, to_string(rest[1]))
+  }
+  eprintln("project: unknown subcommand '" + sub + "' — use new | advance | retreat")
+  return 2
+}
+
 // ── verb 핸들러 ──────────────────────────────────────────────────────────────
 fn _cmd_version() -> int {
   println("demiurge " + DEMIURGE_CLI_VERSION)
@@ -1863,6 +2130,7 @@ fn _dispatch(verb: string, rest: array) -> int {
   if verb == "atlas"    { return _cmd_atlas(rest) }
   if verb == "verify"   { return _cmd_verify(rest) }
   if verb == "compose"  { return _cmd_compose(rest) }
+  if verb == "project"  { return _cmd_project(rest) }
   if verb == "owner"    { return _cmd_owner() }
   // 도달 불가 (generic 층이 ported 플래그로 이미 거른다).
   return 3
