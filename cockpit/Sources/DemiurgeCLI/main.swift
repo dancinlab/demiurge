@@ -953,6 +953,34 @@ func discoverCmd(_ args: [String]) -> Int32 {
     }
 }
 
+/// Take a value-flag's value out of `args`, validating it. d4-generic:
+/// driven by the `flag` name the caller passes — no per-flag branch. If
+/// `flag` is absent → returns nil (the flag is optional). If present but
+/// its value is missing (end-of-args) OR itself looks like another flag
+/// (`--*`), emits a clear `flag <X> needs a value, got '<token>'` (or
+/// `…got end-of-args`) to stderr and exits 2 — instead of silently
+/// swallowing the next flag as the value (the `--producer --compose`
+/// class of bug, mirror of hexa cloud's `--port --insecure` → `Bad port`).
+/// On success removes BOTH the flag and its value from `args` and returns
+/// the value.
+func takeValueFlag(_ args: inout [String], _ flag: String) -> String? {
+    guard let idx = args.firstIndex(of: flag) else { return nil }
+    guard idx + 1 < args.count else {
+        FileHandle.standardError.write(
+            Data("error: flag \(flag) needs a value, got end-of-args\n".utf8))
+        exit(2)
+    }
+    let value = args[idx + 1]
+    if value == "--" || value.hasPrefix("--") {
+        FileHandle.standardError.write(
+            Data("error: flag \(flag) needs a value, got '\(value)'\n".utf8))
+        exit(2)
+    }
+    args.remove(at: idx + 1)
+    args.remove(at: idx)
+    return value
+}
+
 let args = CommandLine.arguments
 
 guard args.count >= 2 else {
@@ -1011,13 +1039,10 @@ case "action":
     // ProducerRegistry alternatives (e.g. cern + analyze →
     // xsuite-tracking | pylhe).
     var actionArgs = Array(args.dropFirst(2))
-    var producerArg: String? = nil
-    if let pIdx = actionArgs.firstIndex(of: "--producer"),
-       pIdx + 1 < actionArgs.count {
-        producerArg = actionArgs[pIdx + 1]
-        actionArgs.remove(at: pIdx + 1)
-        actionArgs.remove(at: pIdx)
-    }
+    // --producer is a value-flag; route through the shared validator so a
+    // missing/flag-as-value (`--producer --compose`) errors cleanly instead
+    // of swallowing the next flag as the producer name.
+    let producerArg: String? = takeValueFlag(&actionArgs, "--producer")
     // `--compose` (M15) — run the verb across the domain's constituent
     // (prerequisite) stack, topo-ordered foundation→apex, instead of the
     // single (verb, domain) cell.
