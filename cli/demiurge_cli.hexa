@@ -49,8 +49,8 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "discover",        summary: "8-verb head — phanes-bridged 발견",      ported: true },
     VerbSpec { name: "list-gates",      summary: "gate 별 F1F2 레코드",                    ported: true },
     VerbSpec { name: "gate-summary",    summary: "gate + absorbed 합계",                   ported: true },
-    VerbSpec { name: "operate",         summary: "operation manifest list|audit",          ported: false },
-    VerbSpec { name: "backend",         summary: "compute backend list|current",           ported: false },
+    VerbSpec { name: "operate",         summary: "operation manifest list|audit",          ported: true },
+    VerbSpec { name: "backend",         summary: "compute backend list|current",           ported: true },
     VerbSpec { name: "compose",         summary: "도메인 → 구성 스택 해소",                ported: false },
     VerbSpec { name: "verify",          summary: "provenance/claim-gate · hexa verify",    ported: true },
     VerbSpec { name: "atlas",           summary: "hexa atlas SSOT 읽기/owner-write",       ported: true },
@@ -755,6 +755,260 @@ fn _fmt1(x: float) -> string {
   return to_string(exec("printf '%.1f' " + _shq(to_string(x)))).trim()
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// OperationRegistry + OperabilityAudit + BackendResolver — 스위프트
+// OperationRegistry.swift / ComputeBackend.swift / DemiurgeMode + main.swift
+// operate()/backend() 이식 (PR-D). expert/owner gate 는 DEMIURGE_EXPERT/
+// DEMIURGE_OWNER env 로 동일 분기 (DemiurgeMode.swift). 데이터테이블이 SSOT —
+// op 추가/이름변경 = 이 테이블 한 줄 (d4, 스위프트 census 와 일치).
+// ════════════════════════════════════════════════════════════════════════════
+
+fn _expert() -> bool { return env("DEMIURGE_EXPERT").len() > 0 }
+fn _owner()  -> bool { return env("DEMIURGE_OWNER").len() > 0 }
+
+// Operation row — { reach_glyph, id, tier, verb(canonical|""), target,
+// milestone, title }. 스위프트 OperationRegistry.all 17-op census 그대로
+// (order = product 12 → owner 5). EDIT HERE = add/rename/remove (d4).
+struct OpRow {
+  glyph:     string,
+  id:        string,
+  tier:      string,   // "product" | "owner"
+  verb:      string,   // canonical English ("" = nil cross-cutting → "—")
+  target:    string,   // "swift" | "hexa" | "substrate"
+  milestone: string,
+  title:     string
+}
+
+fn _op_registry() -> [OpRow] {
+  return [
+    OpRow { glyph: "✅", id: "project",         tier: "product", verb: "specify",    target: "swift",     milestone: "M15", title: "프로젝트 생성·목록·전환·삭제" },
+    OpRow { glyph: "✅", id: "verb-nav",        tier: "product", verb: "",           target: "swift",     milestone: "M15", title: "7단계 앞/뒤 이동" },
+    OpRow { glyph: "✅", id: "spec-capture",    tier: "product", verb: "specify",    target: "swift",     milestone: "M15", title: "spec 입력 (재료 선반)" },
+    OpRow { glyph: "✅", id: "structure-view",  tier: "product", verb: "structure",  target: "swift",     milestone: "M15", title: "structure 구조 분해 뷰" },
+    OpRow { glyph: "✅", id: "design-pick",     tier: "product", verb: "design",     target: "swift",     milestone: "M15", title: "design 옵션 선택" },
+    OpRow { glyph: "✅", id: "analyze-loop",    tier: "product", verb: "analyze",    target: "swift",     milestone: "M15", title: "analyze ⟲ 수렴 runner" },
+    OpRow { glyph: "✅", id: "synthesize-run",  tier: "product", verb: "synthesize", target: "swift",     milestone: "M15", title: "synthesize 실행 (engine)" },
+    OpRow { glyph: "✅", id: "verify",          tier: "product", verb: "verify",     target: "hexa",      milestone: "M16", title: "verify (5-tier 검증)" },
+    OpRow { glyph: "✅", id: "record-view",     tier: "product", verb: "verify",     target: "swift",     milestone: "M15", title: "record·gate 열람" },
+    OpRow { glyph: "✅", id: "export",          tier: "product", verb: "handoff",    target: "swift",     milestone: "M15", title: "결과 export (usd/stl/record)" },
+    OpRow { glyph: "✅", id: "atlas-lookup",    tier: "product", verb: "verify",     target: "hexa",      milestone: "M16", title: "atlas 조회 (읽기)" },
+    OpRow { glyph: "✅", id: "compute-backend", tier: "product", verb: "synthesize", target: "substrate", milestone: "M17", title: "compute 백엔드 선택 (로컬/원격)" },
+    OpRow { glyph: "🔶", id: "pool-route",      tier: "owner",   verb: "synthesize", target: "substrate", milestone: "M20", title: "pool → 내 호스트 라우팅" },
+    OpRow { glyph: "🔶", id: "inbox-handoff",   tier: "owner",   verb: "handoff",    target: "substrate", milestone: "M20", title: "inbox/patches → hexa-lang 핸드오프" },
+    OpRow { glyph: "🔶", id: "atlas-register",  tier: "owner",   verb: "verify",     target: "substrate", milestone: "M20", title: "atlas 등록 PR → dancinlab" },
+    OpRow { glyph: "🔶", id: "governance",      tier: "owner",   verb: "",           target: "swift",     milestone: "M20", title: "@D 거버넌스 enforcement" },
+    OpRow { glyph: "🔶", id: "owner-domain",    tier: "owner",   verb: "specify",    target: "swift",     milestone: "M20", title: "내 연구 domain <NAME>.md 운영" }
+  ]
+}
+
+// `operate [list|audit]` (main.swift §579). --owner 플래그 또는 DEMIURGE_OWNER
+// 면 사장실 op 노출. 첫 비-플래그 토큰이 subcommand (기본 list).
+fn _cmd_operate(rest: array) -> int {
+  let sub = _operate_first_nonflag(rest)        // firstWhere !hasPrefix "--" ?? "list"
+  let want_owner = _backend_owner_flag(rest)    // --owner || DEMIURGE_OWNER
+  let ops = _op_registry()
+  if sub == "list" {
+    // tier.allCases = [product, owner]. 각 tier 의 visible 행만.
+    let tiers = ["product", "owner"]
+    let mut t = 0
+    while t < len(tiers) {
+      let tier = to_string(tiers[t])
+      t = t + 1
+      if tier == "owner" && !want_owner { continue }   // visible() 필터
+      // 이 tier 의 행 수.
+      let mut rows = []
+      let mut k = 0
+      while k < len(ops) {
+        if ops[k].tier == tier { rows.push(k) }
+        k = k + 1
+      }
+      if len(rows) == 0 { continue }
+      let label = if tier == "product" { "🛒 진열대 (external)" } else { "🔒 사장실 (owner)" }
+      println(label + " — " + to_string(len(rows)) + ":")
+      let mut r = 0
+      while r < len(rows) {
+        let o = ops[to_int(rows[r])]
+        r = r + 1
+        if _expert() {
+          let verb = if o.verb.len() > 0 { o.verb } else { "—" }
+          println("  " + o.glyph + " " + o.id + "  [" + o.target + " · " + verb + " · " + o.milestone + "]  " + o.title)
+        } else {
+          println("  " + o.glyph + " " + o.title)
+        }
+      }
+      println("")
+    }
+    if !want_owner {
+      println("(🔒 owner ops hidden — set DEMIURGE_OWNER or pass --owner)")
+    }
+    return 0
+  }
+  if sub == "audit" {
+    // product 행 reach 집계. 현재 census: product 12 = 전부 ✅ (ok).
+    // glyph 로 reach 판정 (✅=ok, 🔶=partial, ❌=blocked).
+    let mut p_ok = 0
+    let mut p_part = 0
+    let mut p_block = 0
+    let mut o_total = 0
+    let mut k = 0
+    while k < len(ops) {
+      let o = ops[k]
+      k = k + 1
+      if o.tier == "owner" { o_total = o_total + 1; continue }
+      if o.glyph == "✅" { p_ok = p_ok + 1 }
+      else if o.glyph == "🔶" { p_part = p_part + 1 }
+      else { p_block = p_block + 1 }
+    }
+    let p_total = p_ok + p_part + p_block
+    println("operability audit (CLI+COCKPIT M21):")
+    println("  product: " + to_string(p_ok) + " ✅ · " + to_string(p_part) + " 🔶 · " + to_string(p_block) + " ❌  (of " + to_string(p_total) + ")")
+    println("  owner:   " + to_string(o_total) + " 🔒 (env-gated)")
+    if p_block == 0 && p_part == 0 {
+      println("  verdict: ✅ external operability COMPLETE — @goal met")
+      return 0
+    }
+    // pending = product 중 reach != ok → "id(milestone)" join.
+    let mut pend = ""
+    k = 0
+    while k < len(ops) {
+      let o = ops[k]
+      k = k + 1
+      if o.tier == "product" && o.glyph != "✅" {
+        if pend.len() > 0 { pend = pend + ", " }
+        pend = pend + o.id + "(" + o.milestone + ")"
+      }
+    }
+    println("  verdict: ⏳ pending — " + pend)
+    return 1
+  }
+  eprintln("operate: unknown subcommand '" + sub + "' — use list | audit")
+  return 2
+}
+
+// 첫 비-플래그 토큰 (스위프트 args.first(where: !hasPrefix "--") ?? "list").
+fn _operate_first_nonflag(rest: array) -> string {
+  let mut i = 0
+  while i < len(rest) {
+    let a = to_string(rest[i])
+    i = i + 1
+    if !a.starts_with("--") { return a }
+  }
+  return "list"
+}
+
+// BackendResolver — local 기본 + DEMIURGE_BACKEND remote + (owner) ~/.pool/
+// pool.json hosts. 반환 행 = [id, label, kind, host, owner_bool].
+fn _backend_userremote() -> array {
+  let spec = env("DEMIURGE_BACKEND").trim()
+  if spec.len() == 0 || spec == "local" { return [] }
+  let mut host = spec
+  if spec.starts_with("ssh:") { host = spec.substring(4, spec.len()) }
+  return ["remote:" + host, "원격 백엔드 (" + host + ")", "remote", host, "false"]
+}
+
+// active = userRemote ?? local.
+fn _backend_active() -> array {
+  let r = _backend_userremote()
+  if len(r) > 0 { return r }
+  return ["local", "내 컴퓨터 (local)", "local", "this machine", "false"]
+}
+
+// ~/.pool/pool.json → pool host 행들 (owner only). JSON: { "hosts": [
+// { "name", "ssh", "os" }, ... ] }. 부재/파싱실패 = 빈 배열.
+fn _backend_poolhosts() -> array {
+  let home = to_string(exec("echo $HOME")).trim()
+  let path = home + "/.pool/pool.json"
+  if !_path_exists(path) { return [] }
+  let content = to_string(exec("cat " + _shq(path) + " 2>/dev/null"))
+  // hosts 배열 안에서 각 객체의 name/ssh/os 를 순차 추출.
+  let mut out = []
+  let cp = _find_colon_after_key(content, "hosts", 0)
+  if cp < 0 { return out }
+  // 각 객체 블록을 "}" 단위로 스캔 — name 키가 나타나는 위치부터.
+  let mut i = cp
+  while i < content.len() {
+    let c = content.substring(i, i + 1)
+    if c == "]" { break }
+    if c == "{" {
+      // 이 객체 블록 추출.
+      let mut depth = 0
+      let start = i
+      while i < content.len() {
+        let cc = content.substring(i, i + 1)
+        if cc == "{" { depth = depth + 1 }
+        else if cc == "}" { depth = depth - 1; if depth == 0 { break } }
+        i = i + 1
+      }
+      let block = content.substring(start, i + 1)
+      let name = _json_string(block, "name", 0)
+      let ssh  = _json_string(block, "ssh", 0)
+      let os   = _json_string(block, "os", 0)
+      out.push("pool:" + name + "|pool · " + name + " (" + os + ")|pool|" + ssh + "|true")
+    }
+    i = i + 1
+  }
+  return out
+}
+
+// `backend [list|current]` (main.swift §543).
+fn _cmd_backend(rest: array) -> int {
+  let sub = _operate_first_nonflag(rest)   // 동일 firstWhere 의미
+  let want_owner = _backend_owner_flag(rest)
+  let active = _backend_active()
+  if sub == "list" {
+    // available = [local] + (userRemote?) + (owner ? poolHosts).
+    let mut rows = []
+    rows.push(["local", "내 컴퓨터 (local)", "local", "this machine", "false"])
+    let ur = _backend_userremote()
+    if len(ur) > 0 { rows.push(ur) }
+    if want_owner {
+      let ph = _backend_poolhosts()
+      let mut j = 0
+      while j < len(ph) {
+        let parts = to_string(ph[j]).split("|")
+        rows.push([to_string(parts[0]), to_string(parts[1]), to_string(parts[2]), to_string(parts[3]), to_string(parts[4])])
+        j = j + 1
+      }
+    }
+    let active_id = to_string(active[0])
+    let mut i = 0
+    while i < len(rows) {
+      let b = rows[i]
+      i = i + 1
+      let bid = to_string(b[0])
+      let mark = if bid == active_id { "▶" } else { " " }
+      let gate = if to_string(b[4]) == "true" { " 🔒" } else { "" }
+      if _expert() {
+        println(mark + " " + bid + gate + "  [" + to_string(b[2]) + "]  " + to_string(b[1]) + " — " + to_string(b[3]))
+      } else {
+        println(mark + " " + to_string(b[1]) + gate)
+      }
+    }
+    if !want_owner {
+      println("(🔒 owner pool hosts hidden — DEMIURGE_OWNER + ~/.pool/pool.json)")
+    }
+    println("active: " + active_id + "  (change via DEMIURGE_BACKEND env)")
+    return 0
+  }
+  if sub == "current" {
+    println("active backend: " + to_string(active[0]) + " · " + to_string(active[1]) + " — " + to_string(active[3]))
+    return 0
+  }
+  eprintln("backend: unknown subcommand '" + sub + "' — use list | current")
+  return 2
+}
+
+// --owner 플래그 또는 DEMIURGE_OWNER (스위프트 args.contains||ownerModeEnabled).
+fn _backend_owner_flag(rest: array) -> bool {
+  if _owner() { return true }
+  let mut i = 0
+  while i < len(rest) {
+    if to_string(rest[i]) == "--owner" { return true }
+    i = i + 1
+  }
+  return false
+}
+
 // ── verb 핸들러 ──────────────────────────────────────────────────────────────
 fn _cmd_version() -> int {
   println("demiurge " + DEMIURGE_CLI_VERSION)
@@ -897,6 +1151,8 @@ fn _dispatch(verb: string, rest: array) -> int {
   if verb == "show"           { return _cmd_show(rest) }
   if verb == "list-gates"     { return _cmd_list_gates() }
   if verb == "gate-summary"   { return _cmd_gate_summary() }
+  if verb == "operate"        { return _cmd_operate(rest) }
+  if verb == "backend"        { return _cmd_backend(rest) }
   if verb == "discover" { return _cmd_discover(rest) }
   if verb == "atlas"    { return _cmd_atlas(rest) }
   if verb == "verify"   { return _cmd_verify(rest) }
