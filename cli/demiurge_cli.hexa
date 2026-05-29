@@ -33,12 +33,13 @@ struct VerbSpec {
 fn _verb_registry() -> [VerbSpec] {
   return [
     VerbSpec { name: "version",         summary: "버전 배너 출력",                         ported: true },
+    // ── DemiurgeCore-port read-only list-* (PR-A) ──
+    VerbSpec { name: "list-all",        summary: "모든 종류 아티팩트 나열",                ported: true },
+    VerbSpec { name: "list-records",    summary: "exports/ F1F2 레코드 나열",              ported: true },
+    VerbSpec { name: "list-decisions",  summary: "design.md 결정 나열",                    ported: true },
+    VerbSpec { name: "list-rfcs",       summary: "proposals/rfc_*.md 나열",                ported: true },
+    VerbSpec { name: "list-domains",    summary: "domains/*.md 나열",                      ported: true },
     // ── 후속 스택 PR 에서 ported:true 로 전환 ──
-    VerbSpec { name: "list-all",        summary: "모든 종류 아티팩트 나열",                ported: false },
-    VerbSpec { name: "list-records",    summary: "exports/ F1F2 레코드 나열",              ported: false },
-    VerbSpec { name: "list-decisions",  summary: "design.md 결정 나열",                    ported: false },
-    VerbSpec { name: "list-rfcs",       summary: "proposals/rfc_*.md 나열",                ported: false },
-    VerbSpec { name: "list-domains",    summary: "domains/*.md 나열",                      ported: false },
     VerbSpec { name: "show",            summary: "F1F2 레코드 1건 + provenance",           ported: false },
     VerbSpec { name: "list-projects",   summary: "워크벤치 프로젝트 나열",                 ported: false },
     VerbSpec { name: "show-project",    summary: "프로젝트 1건 + 7-verb 진행도",           ported: false },
@@ -123,6 +124,280 @@ fn _shq(s: string) -> string {
 
 fn _file_exists(p: string) -> bool {
   return to_string(exec("test -x " + _shq(p) + " && echo Y || echo N")).trim() == "Y"
+}
+
+fn _path_exists(p: string) -> bool {
+  return to_string(exec("test -e " + _shq(p) + " && echo Y || echo N")).trim() == "Y"
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// DemiurgeCore-port — 스위프트 `cockpit/Sources/DemiurgeCore/` 의 read-only
+// 파트(ArtifactRegistry · ArtifactStub · F1F2Record · RecordLoader)를 hexa-
+// native 로 이식. import 없는 단일 파일 빌드(알려진 빌드-우회)를 유지하기 위해
+// 스캐폴드 패턴 그대로 인라인하되, 이 배너로 명확히 구획한다. (별도 cli/core/*
+// 파일은 flatten/build 단계의 import 해소가 필요 → 빌드-우회 범위 밖.)
+// ════════════════════════════════════════════════════════════════════════════
+
+// ── RecordLoader.exportsRoot 와 동일 해소 (스위프트 RecordLoader.swift §48) ──
+//   1. $DEMIURGE_REPO/exports (env 설정 시 · 설치된 앱 경로)
+//   2. else <cwd>/../exports (`swift run` cwd=cockpit/ 케이스와 byte-identical)
+fn _exports_root() -> string {
+  let repo = env("DEMIURGE_REPO")
+  if repo.len() > 0 { return repo + "/exports" }
+  let cwd = to_string(exec("pwd")).trim()
+  return cwd + "/../exports"
+}
+
+// f1f2RecordsRoot — exportsRoot/chip/noc/f1f2/records (스위프트 §60).
+fn _f1f2_root() -> string {
+  return _exports_root() + "/chip/noc/f1f2/records"
+}
+
+// projectRoot — exportsRoot 의 부모 (ArtifactRegistry.swift §180).
+fn _project_root() -> string {
+  return _exports_root() + "/.."
+}
+
+// ArtifactStub — { id_display, title, path } (ArtifactStub.swift §44).
+// id_display = "$R<n>" / "$D<n>" / "$RFC<n>" / "$DOM:<name>".
+struct ArtifactStub {
+  id_display: string,
+  title:      string,
+  path:       string
+}
+
+// ArtifactKind prefix (ArtifactStub.swift §23).
+fn _kind_prefix(kind: string) -> string {
+  if kind == "f1f2"     { return "$R" }
+  if kind == "decision" { return "$D" }
+  if kind == "rfc"      { return "$RFC" }
+  if kind == "domain"   { return "$DOM:" }
+  return "$"
+}
+
+// ArtifactKind rawValue — 헤더 라벨 (ArtifactStub.swift §16).
+fn _kind_label(kind: string) -> string {
+  if kind == "f1f2"     { return "Records" }
+  if kind == "decision" { return "Decisions" }
+  if kind == "rfc"      { return "RFCs" }
+  if kind == "domain"   { return "Domains" }
+  return kind
+}
+
+// ── ArtifactRegistry.loadF1F2 (ArtifactRegistry.swift §39) ──────────────────
+// exports/chip/noc/f1f2/records/*.json — 파일명 정렬 후 1-based index id.
+fn _load_f1f2() -> [ArtifactStub] {
+  let mut out = []
+  let root = _f1f2_root()
+  if !_path_exists(root) { return out }
+  // 파일명만, .json 만, 정렬 (스위프트 sorted{lastPathComponent}).
+  let listing = to_string(exec(
+    "ls -1 " + _shq(root) + " 2>/dev/null | grep '\\.json$' | LC_ALL=C sort"))
+  let lines = listing.split("\n")
+  let mut i = 0
+  let mut n = 0
+  while i < len(lines) {
+    let fname = to_string(lines[i]).trim()
+    i = i + 1
+    if fname.len() == 0 { continue }
+    n = n + 1
+    // title = deletingPathExtension (".json" 제거).
+    let stem = fname.substring(0, fname.len() - 5)
+    out.push(ArtifactStub {
+      id_display: "$R" + to_string(n),
+      title:      stem,
+      path:       root + "/" + fname
+    })
+  }
+  return out
+}
+
+// ── ArtifactRegistry.loadDecisions (ArtifactRegistry.swift §63) ─────────────
+// design.md 에서 `### Decision N — <title>` 파싱, N 중복 제거(첫째 유지),
+// N 숫자 정렬. id="$D<n>", title="D<n> — <title>".
+fn _load_decisions() -> [ArtifactStub] {
+  let mut out = []
+  let path = _project_root() + "/design.md"
+  if !_path_exists(path) { return out }
+  // 헤딩 라인만 추출 (앵커 ^### Decision).
+  let raw = to_string(exec(
+    "grep -E '^### Decision [0-9]+ — ' " + _shq(path) + " 2>/dev/null"))
+  let lines = raw.split("\n")
+  let mut seen = ""
+  let mut i = 0
+  while i < len(lines) {
+    let line = to_string(lines[i]).trim()
+    i = i + 1
+    if line.len() == 0 { continue }
+    // "### Decision " 접두 제거 후 N 과 title 분리.
+    let rest = line.substring(13, line.len())   // len("### Decision ")=13
+    // N = 선행 숫자.
+    let mut j = 0
+    while j < rest.len() {
+      let c = rest.substring(j, j + 1)
+      if c < "0" || c > "9" { break }
+      j = j + 1
+    }
+    if j == 0 { continue }
+    let num = rest.substring(0, j)
+    // 중복 N 제거 (첫째 유지).
+    let mark = "|" + num + "|"
+    if seen.contains(mark) { continue }
+    seen = seen + mark
+    // title = " — " 다음 부분.
+    let after = rest.substring(j, rest.len())
+    let mut title = after
+    let dash = after.index_of(" — ")
+    if dash >= 0 { title = after.substring(dash + 3, after.len()) }
+    out.push(ArtifactStub {
+      id_display: "$D" + num,
+      title:      "D" + num + " — " + title,
+      path:       path
+    })
+  }
+  // N 숫자 정렬 (insertion sort — grep 순서는 이미 파일순이나 안전하게).
+  let mut a = 0
+  while a < len(out) {
+    let mut b = a + 1
+    while b < len(out) {
+      if _stub_dnum(out[b]) < _stub_dnum(out[a]) {
+        let tmp = out[a]; out[a] = out[b]; out[b] = tmp
+      }
+      b = b + 1
+    }
+    a = a + 1
+  }
+  return out
+}
+
+// "$D<n>" → n (정렬 키).
+fn _stub_dnum(s: ArtifactStub) -> int {
+  let d = s.id_display.substring(2, s.id_display.len())   // "$D" 제거
+  return to_int(d)
+}
+
+// ── ArtifactRegistry.loadRFCs (ArtifactRegistry.swift §95) ──────────────────
+// proposals/rfc_*.md — 파일명 정렬, stem 의 두번째 "_" 토큰 = N.
+fn _load_rfcs() -> [ArtifactStub] {
+  let mut out = []
+  let dir = _project_root() + "/proposals"
+  if !_path_exists(dir) { return out }
+  let listing = to_string(exec(
+    "ls -1 " + _shq(dir) + " 2>/dev/null | grep -E '^rfc_.*\\.md$' | LC_ALL=C sort"))
+  let lines = listing.split("\n")
+  let mut i = 0
+  while i < len(lines) {
+    let fname = to_string(lines[i]).trim()
+    i = i + 1
+    if fname.len() == 0 { continue }
+    let stem = fname.substring(0, fname.len() - 3)   // ".md" 제거
+    // parts = stem.split("_"), N = parts[1].
+    let parts = stem.split("_")
+    if len(parts) < 2 { continue }
+    let num = to_string(parts[1])
+    out.push(ArtifactStub {
+      id_display: "$RFC" + num,
+      title:      stem,
+      path:       dir + "/" + fname
+    })
+  }
+  return out
+}
+
+// ── ArtifactRegistry.loadDomains (ArtifactRegistry.swift §122) ──────────────
+// domains/*.md (README.md 제외) — id="$DOM:<name>", 최종 id.key 정렬.
+// domains/matter/README.md 가 있으면 matter 포인터 추가.
+fn _load_domains() -> [ArtifactStub] {
+  let mut out = []
+  let dir = _project_root() + "/domains"
+  if !_path_exists(dir) { return out }
+  let listing = to_string(exec(
+    "ls -1 " + _shq(dir) + " 2>/dev/null | grep -E '\\.md$' | LC_ALL=C sort"))
+  let lines = listing.split("\n")
+  let mut i = 0
+  while i < len(lines) {
+    let fname = to_string(lines[i]).trim()
+    i = i + 1
+    if fname.len() == 0 { continue }
+    if fname == "README.md" { continue }
+    let name = fname.substring(0, fname.len() - 3)
+    out.push(ArtifactStub {
+      id_display: "$DOM:" + name,
+      title:      name,
+      path:       dir + "/" + fname
+    })
+  }
+  // matter 포인터 (스위프트 §141).
+  let matter = dir + "/matter/README.md"
+  if _path_exists(matter) {
+    out.push(ArtifactStub {
+      id_display: "$DOM:matter",
+      title:      "matter (pointer — D17 hexa-lang absorbed)",
+      path:       matter
+    })
+  }
+  // 최종 id.key 정렬 (스위프트 §149: sorted{id.key}).
+  let mut a = 0
+  while a < len(out) {
+    let mut b = a + 1
+    while b < len(out) {
+      if _dom_key(out[b]) < _dom_key(out[a]) {
+        let tmp = out[a]; out[a] = out[b]; out[b] = tmp
+      }
+      b = b + 1
+    }
+    a = a + 1
+  }
+  return out
+}
+
+// "$DOM:<name>" → name (정렬 키).
+fn _dom_key(s: ArtifactStub) -> string {
+  return s.id_display.substring(5, s.id_display.len())   // "$DOM:" 제거
+}
+
+// ArtifactRegistry.load(kind:) dispatch (ArtifactRegistry.swift §28).
+fn _registry_load(kind: string) -> [ArtifactStub] {
+  if kind == "f1f2"     { return _load_f1f2() }
+  if kind == "decision" { return _load_decisions() }
+  if kind == "rfc"      { return _load_rfcs() }
+  if kind == "domain"   { return _load_domains() }
+  return []
+}
+
+// ── DemiurgeCLI.list(kind:) 렌더 (main.swift §145) ──────────────────────────
+//   <rawValue> (<count>):
+//     <id.display><pad>  <title>
+// pad = 이 batch 의 최장 id.display 에 정렬.
+fn _list_kind(kind: string) -> int {
+  let stubs = _registry_load(kind)
+  println(_kind_label(kind) + " (" + to_string(len(stubs)) + "):")
+  let mut max_len = 0
+  let mut i = 0
+  while i < len(stubs) {
+    let l = stubs[i].id_display.len()
+    if l > max_len { max_len = l }
+    i = i + 1
+  }
+  i = 0
+  while i < len(stubs) {
+    let s = stubs[i]
+    let mut pad = ""
+    let mut k = s.id_display.len()
+    while k < max_len { pad = pad + " "; k = k + 1 }
+    println("  " + s.id_display + pad + "  " + s.title)
+    i = i + 1
+  }
+  return 0
+}
+
+// ── DemiurgeCLI.listAll (main.swift §158) — allCases 순서 + 각 뒤 빈 줄 ──────
+fn _cmd_list_all() -> int {
+  _list_kind("f1f2");     println("")
+  _list_kind("decision"); println("")
+  _list_kind("rfc");      println("")
+  _list_kind("domain");   println("")
+  return 0
 }
 
 // ── verb 핸들러 ──────────────────────────────────────────────────────────────
@@ -259,6 +534,11 @@ fn _lookup(reg: [VerbSpec], name: string) -> int {
 fn _dispatch(verb: string, rest: array) -> int {
   // 단일 dispatch 지점 — 이식된 verb 만. (이식되며 한 줄씩 늘어난다.)
   if verb == "version"  { return _cmd_version() }
+  if verb == "list-all"       { return _cmd_list_all() }
+  if verb == "list-records"   { return _list_kind("f1f2") }
+  if verb == "list-decisions" { return _list_kind("decision") }
+  if verb == "list-rfcs"      { return _list_kind("rfc") }
+  if verb == "list-domains"   { return _list_kind("domain") }
   if verb == "discover" { return _cmd_discover(rest) }
   if verb == "atlas"    { return _cmd_atlas(rest) }
   if verb == "verify"   { return _cmd_verify(rest) }
