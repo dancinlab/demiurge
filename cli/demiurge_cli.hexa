@@ -41,8 +41,8 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "list-domains",    summary: "domains/*.md 나열",                      ported: true },
     // ── 후속 스택 PR 에서 ported:true 로 전환 ──
     VerbSpec { name: "show",            summary: "F1F2 레코드 1건 + provenance",           ported: true },
-    VerbSpec { name: "list-projects",   summary: "워크벤치 프로젝트 나열",                 ported: false },
-    VerbSpec { name: "show-project",    summary: "프로젝트 1건 + 7-verb 진행도",           ported: false },
+    VerbSpec { name: "list-projects",   summary: "워크벤치 프로젝트 나열",                 ported: true },
+    VerbSpec { name: "show-project",    summary: "프로젝트 1건 + 7-verb 진행도",           ported: true },
     VerbSpec { name: "project",         summary: "프로젝트 new|advance|retreat",           ported: false },
     VerbSpec { name: "list-shelf",      summary: "도메인 §6 ingredient shelf",             ported: false },
     VerbSpec { name: "action",          summary: "θ-2 액션 dispatch (verb · domain)",      ported: false },
@@ -1009,6 +1009,242 @@ fn _backend_owner_flag(rest: array) -> bool {
   return false
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// ProjectStore + DomainCatalog + Verb — 스위프트 ProjectStore.swift /
+// Project.swift(Verb) / Domain.swift(DomainCatalog) + main.swift
+// listProjects()/showProject() 이식 (PR-A). 프로젝트 매니페스트는
+// ~/Library/Application Support/lab.dancin.demiurge/projects/<uuid>/
+// manifest.json (앱-데이터 위치, exports/ 밖 · cockpit 과 동일 SSOT).
+// 도메인 메타(label/canvas_mode)는 domains/INDEX.demi 에서 .demi 파싱.
+// ════════════════════════════════════════════════════════════════════════════
+
+// Verb 7-spine — koreanLabel + plain (Project.swift). rawValue 0..6.
+fn _verb_korean(rv: int) -> string {
+  if rv == 0 { return "명세" }
+  if rv == 1 { return "구조" }
+  if rv == 2 { return "설계" }
+  if rv == 3 { return "해석⟲" }
+  if rv == 4 { return "합성" }
+  if rv == 5 { return "검증" }
+  return "인계"
+}
+fn _verb_plain(rv: int) -> string {
+  if rv == 0 { return "무엇을" }
+  if rv == 1 { return "어떻게" }
+  if rv == 2 { return "설계" }
+  if rv == 3 { return "점검" }
+  if rv == 4 { return "만들기" }
+  if rv == 5 { return "검증" }
+  return "넘기기"
+}
+
+// projectsRoot = ~/Library/Application Support/lab.dancin.demiurge/projects.
+fn _projects_root() -> string {
+  let home = to_string(exec("echo $HOME")).trim()
+  return home + "/Library/Application Support/lab.dancin.demiurge/projects"
+}
+
+// DomainCatalog.domain(for:) — INDEX.demi 의 [<id>] 섹션에서 label/canvas_mode.
+// 미등록 키 → label = (key=="general" ? "일반 공학" : key), canvas="cohort".
+// 반환 [label, canvasMode].
+fn _domain_meta(key: string) -> array {
+  let path = _project_root() + "/domains/INDEX.demi"
+  if _path_exists(path) {
+    // [<key>] 섹션 추출 후 label/canvas_mode 파싱 (DemiParser 동치 · 라인기반).
+    // awk: 해당 섹션 헤더부터 다음 헤더 전까지의 라인.
+    let body = to_string(exec(
+      "awk 'BEGIN{f=0} /^\\[/{ if(f)exit; if($0==\"[" + key + "]\")f=1; next } f{print}' "
+      + _shq(path) + " 2>/dev/null"))
+    if body.len() > 0 {
+      let label = _demi_scalar(body, "label")
+      let mut canvas = _demi_scalar(body, "canvas_mode")
+      if canvas.len() == 0 { canvas = "cohort" }   // project(): canvas_mode ?? "cohort"
+      if label.len() > 0 { return [label, canvas] }
+    }
+  }
+  // 미등록 fallback (DomainCatalog.domain synthetic).
+  let label = if key == "general" { "일반 공학" } else { key }
+  return [label, "cohort"]
+}
+
+// .demi 섹션 본문에서 `key = "value"` 스칼라 추출 (unquote · trailing # 제거).
+fn _demi_scalar(body: string, key: string) -> string {
+  let raw = to_string(exec(
+    "printf '%s' " + _shq(body) + " | grep -E '^[[:space:]]*" + key + "[[:space:]]*=' | head -1"))
+  let line = raw.trim()
+  if line.len() == 0 { return "" }
+  let eq = line.index_of("=")
+  if eq < 0 { return "" }
+  let mut v = line.substring(eq + 1, line.len()).trim()
+  // trailing comment.
+  let hash = v.index_of("#")
+  if hash >= 0 { v = v.substring(0, hash).trim() }
+  // unquote.
+  if v.len() >= 2 && v.starts_with("\"") && v.ends_with("\"") {
+    v = v.substring(1, v.len() - 1)
+  }
+  return v
+}
+
+// 한 프로젝트 매니페스트 → 필드 맵 (반환 [name, target, domain, currentVerb,
+// createdAt, doneVerbs_csv]). 디코드 실패 시 name="".
+fn _load_project_manifest(path: string) -> array {
+  let content = to_string(exec("cat " + _shq(path) + " 2>/dev/null"))
+  if content.len() == 0 { return [""] }
+  let name = _json_string(content, "name", 0)
+  let target = _json_string(content, "target", 0)
+  let domain = _json_string(content, "domain", 0)
+  let cv = _json_scalar(content, "currentVerb", 0)
+  let created = _json_string(content, "createdAt", 0)
+  if name.len() == 0 { return [""] }
+  // doneVerbs = [int,...] — `"doneVerbs"` 다음 [ ] 내부에서 정수 토큰 추출.
+  let done_csv = _json_int_array_csv(content, "doneVerbs")
+  return [name, target, domain, cv, created, done_csv]
+}
+
+// "key": [ 1, 2, ... ] → "1,2" CSV (doneVerbs int 배열).
+fn _json_int_array_csv(src: string, key: string) -> string {
+  let cp = _find_colon_after_key(src, key, 0)
+  if cp < 0 { return "" }
+  let mut i = cp
+  while i < src.len() && src.substring(i, i + 1) != "[" { i = i + 1 }
+  if i >= src.len() { return "" }
+  i = i + 1
+  let mut out = ""
+  let mut cur = ""
+  while i < src.len() {
+    let c = src.substring(i, i + 1)
+    i = i + 1
+    if c == "]" { break }
+    if c >= "0" && c <= "9" { cur = cur + c; continue }
+    // 구분자 — 누적된 토큰 flush.
+    if cur.len() > 0 { if out.len() > 0 { out = out + "," }; out = out + cur; cur = "" }
+  }
+  if cur.len() > 0 { if out.len() > 0 { out = out + "," }; out = out + cur }
+  return out
+}
+
+// 모든 프로젝트 매니페스트 로드 (createdAt 오름차순 정렬 — ProjectStore.loadAll).
+// 반환 = [[name,target,domain,cv,created,done], ...].
+fn _load_all_projects() -> array {
+  let root = _projects_root()
+  let mut out = []
+  if !_path_exists(root) { return out }
+  // <uuid>/manifest.json 목록.
+  let listing = to_string(exec(
+    "ls -1 " + _shq(root) + " 2>/dev/null"))
+  let dirs = listing.split("\n")
+  let mut i = 0
+  while i < len(dirs) {
+    let d = to_string(dirs[i]).trim()
+    i = i + 1
+    if d.len() == 0 { continue }
+    let mp = root + "/" + d + "/manifest.json"
+    if !_path_exists(mp) { continue }
+    let m = _load_project_manifest(mp)
+    if to_string(m[0]).len() == 0 { continue }   // 디코드 실패 SKIP
+    out.push(m)
+  }
+  // createdAt 오름차순 (문자열 ISO8601 비교 = 시간순 동치).
+  let mut a = 0
+  while a < len(out) {
+    let mut b = a + 1
+    while b < len(out) {
+      if to_string(out[b][4]) < to_string(out[a][4]) {
+        let tmp = out[a]; out[a] = out[b]; out[b] = tmp
+      }
+      b = b + 1
+    }
+    a = a + 1
+  }
+  return out
+}
+
+// `list-projects` (main.swift §206).
+//   projects (<count>):
+//     <name>  —  <domain.label> · <cv+1>/7 <verb.koreanLabel>
+fn _cmd_list_projects() -> int {
+  let ps = _load_all_projects()
+  println("projects (" + to_string(len(ps)) + "):")
+  let mut i = 0
+  while i < len(ps) {
+    let p = ps[i]
+    i = i + 1
+    let meta = _domain_meta(to_string(p[2]))
+    let cv = to_int(p[3])
+    println("  " + to_string(p[0]) + "  —  " + to_string(meta[0]) + " · " + to_string(cv + 1) + "/7 " + _verb_korean(cv))
+  }
+  return 0
+}
+
+// ISO8601 UTC → Swift Date.description ("YYYY-MM-DD HH:MM:SS +0000").
+// "2026-05-29T15:43:10Z" → "2026-05-29 15:43:10 +0000".
+fn _date_desc(iso: string) -> string {
+  let mut s = iso
+  // 소수초가 있으면 (예 ...10.5Z) 정수초로 절단은 하지 않음 — 스위프트 Date
+  // description 은 소수초 없을 때 SS 만 출력. 매니페스트는 .iso8601(소수초無).
+  // 'T' → ' '.
+  let t = s.index_of("T")
+  if t >= 0 { s = s.substring(0, t) + " " + s.substring(t + 1, s.len()) }
+  // trailing 'Z' 제거.
+  if s.ends_with("Z") { s = s.substring(0, s.len() - 1) }
+  return s + " +0000"
+}
+
+// `show-project <name>` (main.swift §218).
+fn _cmd_show_project(rest: array) -> int {
+  if len(rest) == 0 {
+    eprintln("show-project: missing <name> argument")
+    return 2
+  }
+  let name = to_string(rest[0])
+  let ps = _load_all_projects()
+  let mut found = -1
+  let mut i = 0
+  while i < len(ps) {
+    if to_string(ps[i][0]) == name { found = i; break }
+    i = i + 1
+  }
+  if found < 0 {
+    eprintln("show-project: no project named '" + name + "'")
+    return 2
+  }
+  let p = ps[found]
+  let meta = _domain_meta(to_string(p[2]))
+  let cv = to_int(p[3])
+  // doneVerbs 셋.
+  let done = to_string(p[5])
+  println("name:        " + to_string(p[0]))
+  println("target:      " + to_string(p[1]))
+  println("domain:      " + to_string(p[2]) + " (" + to_string(meta[0]) + ")")
+  println("canvas_mode: " + to_string(meta[1]))
+  println("created_at:  " + _date_desc(to_string(p[4])))
+  println("7-verb progress:")
+  let mut v = 0
+  while v < 7 {
+    // state(of:) — done / current / visited / upcoming.
+    let mark = if _set_has(done, v) { "[x] done (measured)" }
+               else if v == cv { "[>] current" }
+               else if v < cv { "[~] visited (unmeasured)" }
+               else { "[ ] upcoming" }
+    println("  " + to_string(v + 1) + ". " + _verb_korean(v) + " (" + _verb_plain(v) + ")  " + mark)
+    v = v + 1
+  }
+  return 0
+}
+
+// doneVerbs CSV 에 rawValue 포함 여부.
+fn _set_has(csv: string, rv: int) -> bool {
+  if csv.len() == 0 { return false }
+  let parts = csv.split(",")
+  let mut i = 0
+  while i < len(parts) {
+    if to_string(parts[i]).trim() == to_string(rv) { return true }
+    i = i + 1
+  }
+  return false
+}
+
 // ── verb 핸들러 ──────────────────────────────────────────────────────────────
 fn _cmd_version() -> int {
   println("demiurge " + DEMIURGE_CLI_VERSION)
@@ -1149,6 +1385,8 @@ fn _dispatch(verb: string, rest: array) -> int {
   if verb == "list-rfcs"      { return _list_kind("rfc") }
   if verb == "list-domains"   { return _list_kind("domain") }
   if verb == "show"           { return _cmd_show(rest) }
+  if verb == "list-projects"  { return _cmd_list_projects() }
+  if verb == "show-project"   { return _cmd_show_project(rest) }
   if verb == "list-gates"     { return _cmd_list_gates() }
   if verb == "gate-summary"   { return _cmd_gate_summary() }
   if verb == "operate"        { return _cmd_operate(rest) }
