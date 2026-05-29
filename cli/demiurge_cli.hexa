@@ -44,7 +44,7 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "list-projects",   summary: "워크벤치 프로젝트 나열",                 ported: true },
     VerbSpec { name: "show-project",    summary: "프로젝트 1건 + 7-verb 진행도",           ported: true },
     VerbSpec { name: "project",         summary: "프로젝트 new|advance|retreat",           ported: false },
-    VerbSpec { name: "list-shelf",      summary: "도메인 §6 ingredient shelf",             ported: false },
+    VerbSpec { name: "list-shelf",      summary: "도메인 §6 ingredient shelf",             ported: true },
     VerbSpec { name: "action",          summary: "θ-2 액션 dispatch (verb · domain)",      ported: false },
     VerbSpec { name: "discover",        summary: "8-verb head — phanes-bridged 발견",      ported: true },
     VerbSpec { name: "list-gates",      summary: "gate 별 F1F2 레코드",                    ported: true },
@@ -1245,6 +1245,109 @@ fn _set_has(csv: string, rv: int) -> bool {
   return false
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// IngredientShelf — 스위프트 Ingredient.swift(IngredientShelf) + main.swift
+// listShelf() 이식 (PR-B). domains/<domain>.md 의 "## ... Design options ..."
+// 섹션을 파싱해 verb 별 옵션 그룹을 렌더. cockpit ② work zone 과 동일 SSOT.
+// ════════════════════════════════════════════════════════════════════════════
+
+// "## ...Design options..." 섹션 라인들 (다음 ## 전까지). 부재면 빈 배열.
+fn _shelf_section6(domain: string) -> array {
+  let path = _project_root() + "/domains/" + domain + ".md"
+  if !_path_exists(path) { return [] }
+  // 첫 "## ...Design options..." 헤더부터 다음 "## " 전까지의 라인 (헤더 제외).
+  let body = to_string(exec(
+    "awk '/^## /{ if(insec)exit; if(index($0,\"Design options\"))insec=1; next } insec{print}' "
+    + _shq(path) + " 2>/dev/null"))
+  if body.trim().len() == 0 { return [] }
+  return body.split("\n")
+}
+
+// 한 그룹 문자열 "title = a / b / c" → 렌더용 "title[tag] = a / b / c".
+// [multi] 마커 → title 끝에서 제거 + " (multi)" tag. 빈 title/options 는 skip
+// (반환 ""), 호출부에서 무시.
+fn _shelf_group_render(group: string) -> string {
+  let eq = group.index_of("=")
+  if eq < 0 { return "" }
+  let mut title = group.substring(0, eq).trim()
+  let opts_raw = group.substring(eq + 1, group.len())
+  // [multi] 마커 (제목 끝 `\s*[multi]\s*$`).
+  let mut multi = false
+  if title.ends_with("[multi]") {
+    multi = true
+    title = title.substring(0, title.len() - 7).trim()
+  }
+  // options split "/" · trim · 빈 항목 제거.
+  let parts = opts_raw.split("/")
+  let mut opts = []
+  let mut i = 0
+  while i < len(parts) {
+    let o = to_string(parts[i]).trim()
+    i = i + 1
+    if o.len() > 0 { opts.push(o) }
+  }
+  if title.len() == 0 || len(opts) == 0 { return "" }
+  let tag = if multi { " (multi)" } else { "" }
+  let mut joined = ""
+  let mut k = 0
+  while k < len(opts) { if k > 0 { joined = joined + " / " }; joined = joined + to_string(opts[k]); k = k + 1 }
+  return title + tag + " = " + joined
+}
+
+// `list-shelf <domain>` (main.swift §247).
+fn _cmd_list_shelf(rest: array) -> int {
+  if len(rest) == 0 {
+    eprintln("list-shelf: missing <domain> argument")
+    return 2
+  }
+  let domain = to_string(rest[0])
+  let meta = _domain_meta(domain)
+  println("ingredient shelf — domain '" + domain + "' (" + to_string(meta[0]) + "):")
+  let lines = _shelf_section6(domain)
+  // verb.allCases 순서로 — 각 verb 의 koreanLabel.hasPrefix(lineVerb) 매칭 라인의
+  // 그룹들을 모은다.
+  let mut any = false
+  let mut v = 0
+  while v < 7 {
+    let klabel = _verb_korean(v)
+    // 이 verb 에 매칭되는 그룹 렌더 목록.
+    let mut groups = []
+    let mut li = 0
+    while li < len(lines) {
+      let line = to_string(lines[li])
+      li = li + 1
+      if !line.starts_with("- ") { continue }
+      let bodyl = line.substring(2, line.len())
+      let colon = bodyl.index_of(":")
+      if colon < 0 { continue }
+      let lineVerb = bodyl.substring(0, colon).trim()
+      // verb.koreanLabel.hasPrefix(lineVerb) — §6 은 "해석" 짧게, label="해석⟲".
+      if lineVerb.len() == 0 { continue }
+      if !klabel.starts_with(lineVerb) { continue }
+      let rest_str = bodyl.substring(colon + 1, bodyl.len())
+      // ";" 로 그룹 분할.
+      let gparts = rest_str.split(";")
+      let mut gi = 0
+      while gi < len(gparts) {
+        let r = _shelf_group_render(to_string(gparts[gi]))
+        gi = gi + 1
+        if r.len() > 0 { groups.push(r) }
+      }
+    }
+    if len(groups) > 0 {
+      any = true
+      println("  " + to_string(v + 1) + ". " + klabel + ":")
+      let mut g = 0
+      while g < len(groups) { println("       " + to_string(groups[g])); g = g + 1 }
+    }
+    v = v + 1
+  }
+  if !any {
+    println("  (no §6 design-options section — domains/" + domain + ".md absent or mapless)")
+  }
+  return 0
+}
+
 // ── verb 핸들러 ──────────────────────────────────────────────────────────────
 fn _cmd_version() -> int {
   println("demiurge " + DEMIURGE_CLI_VERSION)
@@ -1387,6 +1490,7 @@ fn _dispatch(verb: string, rest: array) -> int {
   if verb == "show"           { return _cmd_show(rest) }
   if verb == "list-projects"  { return _cmd_list_projects() }
   if verb == "show-project"   { return _cmd_show_project(rest) }
+  if verb == "list-shelf"     { return _cmd_list_shelf(rest) }
   if verb == "list-gates"     { return _cmd_list_gates() }
   if verb == "gate-summary"   { return _cmd_gate_summary() }
   if verb == "operate"        { return _cmd_operate(rest) }
