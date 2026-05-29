@@ -8,6 +8,7 @@
 # CLI-only; this shim is the headless / AI-agent surface.
 #
 #   demiurge cli <args...>  run DemiurgeCLI (list-records / show / …)
+#   demiurge --version      print the version (forwards to the CLI core)
 #   demiurge                this help
 set -euo pipefail
 
@@ -28,12 +29,20 @@ case "${1:-}" in
     cd "$REPO/cockpit"
     exec swift run DemiurgeCLI "$@"
     ;;
+  -v|--version)
+    # 버전 단일출처(d4) — 래퍼가 문자열을 하드코딩하지 않고 CLI 코어로
+    # 그대로 위임한다. `demiurge --version` 과 `demiurge cli --version`
+    # 이 동일한 배너·exit code 를 내도록 표면을 일치시킨다.
+    cd "$REPO/cockpit"
+    exec swift run DemiurgeCLI --version
+    ;;
   ""|-h|--help|help)
     cat <<'USAGE'
 demiurge — universal hexa-native technical-design architecture program
 
   demiurge cli <args...>  run DemiurgeCLI (list-records / list-decisions
                           / list-rfcs / list-domains / show <path> / …)
+  demiurge --version      print the version (forwards to the CLI core)
   demiurge --help         this help
 
 The user surface is the web GUI (Next.js · Cloud Run); the CLI is the
