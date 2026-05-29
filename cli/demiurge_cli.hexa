@@ -47,8 +47,8 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "list-shelf",      summary: "도메인 §6 ingredient shelf",             ported: false },
     VerbSpec { name: "action",          summary: "θ-2 액션 dispatch (verb · domain)",      ported: false },
     VerbSpec { name: "discover",        summary: "8-verb head — phanes-bridged 발견",      ported: true },
-    VerbSpec { name: "list-gates",      summary: "gate 별 F1F2 레코드",                    ported: false },
-    VerbSpec { name: "gate-summary",    summary: "gate + absorbed 합계",                   ported: false },
+    VerbSpec { name: "list-gates",      summary: "gate 별 F1F2 레코드",                    ported: true },
+    VerbSpec { name: "gate-summary",    summary: "gate + absorbed 합계",                   ported: true },
     VerbSpec { name: "operate",         summary: "operation manifest list|audit",          ported: false },
     VerbSpec { name: "backend",         summary: "compute backend list|current",           ported: false },
     VerbSpec { name: "compose",         summary: "도메인 → 구성 스택 해소",                ported: false },
@@ -650,6 +650,111 @@ fn _cmd_show(rest: array) -> int {
   return 0
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// gate 집계 — 스위프트 main.swift listGates()/gateSummary() + F1F2Record
+// .MeasurementGate 이식 (PR-C). 모든 F1F2 stub 을 RecordLoader 로 로드하고,
+// 디코드 실패(필수필드 누락)는 스위프트와 동일하게 SILENT SKIP — 그래서
+// `ls *.json` 개수보다 집계 대상이 적을 수 있다 (스위프트 byte-identical).
+// ════════════════════════════════════════════════════════════════════════════
+
+// F1F2Record.MeasurementGate.allCases — rawValue == displayLabel
+// (F1F2Record.swift §61). 렌더/집계 순서도 이 배열이 SSOT.
+fn _gate_cases() -> array {
+  return ["GATE_OPEN", "GATE_B_PINNED_MET", "GATE_CLOSED_MEASURED", "GATE_FAILED"]
+}
+
+// 한 레코드의 (measurement_gate, absorbed) 를 provenance 블록에서 읽는다.
+// 반환 [gate, absorbed] — gate="" 면 디코드 실패(스킵 대상).
+fn _record_gate_absorbed(content: string) -> array {
+  let prov = _json_object_block(content, "provenance")
+  let gate = _json_string(prov, "measurement_gate", 0)
+  let absorbed = _json_scalar(prov, "absorbed", 0)
+  return [gate, absorbed]
+}
+
+// `list-gates` — 모든 F1F2 레코드를 gate 별로 묶어 렌더 (main.swift §410).
+//   <gate.displayLabel> (<count>):
+//     <recordId>  absorbed=<bool>  <stub.title>
+// gate.allCases 순서로, 각 gate 의 행은 stub(=파일명) 순서 그대로.
+fn _cmd_list_gates() -> int {
+  let stubs = _load_f1f2()
+  let gates = _gate_cases()
+  let mut gi = 0
+  while gi < len(gates) {
+    let gate = to_string(gates[gi])
+    gi = gi + 1
+    // 이 gate 에 속하는 행을 stub 순서로 모은다.
+    let mut rows = []
+    let mut i = 0
+    while i < len(stubs) {
+      let s = stubs[i]
+      i = i + 1
+      let r = _record_load(s.path)
+      if to_string(r[0]) != "ok" { continue }   // 디코드 실패 SILENT SKIP
+      let content = to_string(r[1])
+      let ga = _record_gate_absorbed(content)
+      if to_string(ga[0]) != gate { continue }
+      let rid = _json_string(content, "record_id", 0)
+      rows.push(rid + "  absorbed=" + to_string(ga[1]) + "  " + s.title)
+    }
+    println(gate + " (" + to_string(len(rows)) + "):")
+    let mut k = 0
+    while k < len(rows) { println("  " + to_string(rows[k])); k = k + 1 }
+  }
+  return 0
+}
+
+// `gate-summary` — gate 별 개수 + absorbed 합계 (main.swift §428).
+fn _cmd_gate_summary() -> int {
+  let stubs = _load_f1f2()
+  let gates = _gate_cases()
+  // 각 gate 카운트 + total + absorbed true/false.
+  let mut counts = []
+  let mut z = 0
+  while z < len(gates) { counts.push(0); z = z + 1 }
+  let mut total = 0
+  let mut atrue = 0
+  let mut afalse = 0
+  let mut i = 0
+  while i < len(stubs) {
+    let r = _record_load(stubs[i].path)
+    i = i + 1
+    if to_string(r[0]) != "ok" { continue }   // 디코드 실패 SILENT SKIP
+    let content = to_string(r[1])
+    let ga = _record_gate_absorbed(content)
+    total = total + 1
+    let gate = to_string(ga[0])
+    let mut gi = 0
+    while gi < len(gates) {
+      if to_string(gates[gi]) == gate { counts[gi] = to_int(counts[gi]) + 1 }
+      gi = gi + 1
+    }
+    if to_string(ga[1]) == "true" { atrue = atrue + 1 } else { afalse = afalse + 1 }
+  }
+  println("total records: " + to_string(total))
+  let mut gj = 0
+  while gj < len(gates) {
+    let label = to_string(gates[gj])
+    let n = to_int(counts[gj])
+    // pct = n/total*100, 소수1자리 ("%.1f"). total=0 → 0.0.
+    let pct = if total > 0 { (to_float(n) / to_float(total)) * 100.0 } else { 0.0 }
+    // 22-width label 패딩 (스위프트 max(0, 22 - label.count)).
+    let mut pad = ""
+    let mut p = label.len()
+    while p < 22 { pad = pad + " "; p = p + 1 }
+    println("  " + label + pad + to_string(n) + "  (" + _fmt1(pct) + "%)")
+    gj = gj + 1
+  }
+  println("absorbed=true:  " + to_string(atrue))
+  println("absorbed=false: " + to_string(afalse))
+  return 0
+}
+
+// "%.1f" 포맷 — printf 로 위임해 스위프트 String(format:) 와 byte-identical.
+fn _fmt1(x: float) -> string {
+  return to_string(exec("printf '%.1f' " + _shq(to_string(x)))).trim()
+}
+
 // ── verb 핸들러 ──────────────────────────────────────────────────────────────
 fn _cmd_version() -> int {
   println("demiurge " + DEMIURGE_CLI_VERSION)
@@ -790,6 +895,8 @@ fn _dispatch(verb: string, rest: array) -> int {
   if verb == "list-rfcs"      { return _list_kind("rfc") }
   if verb == "list-domains"   { return _list_kind("domain") }
   if verb == "show"           { return _cmd_show(rest) }
+  if verb == "list-gates"     { return _cmd_list_gates() }
+  if verb == "gate-summary"   { return _cmd_gate_summary() }
   if verb == "discover" { return _cmd_discover(rest) }
   if verb == "atlas"    { return _cmd_atlas(rest) }
   if verb == "verify"   { return _cmd_verify(rest) }
