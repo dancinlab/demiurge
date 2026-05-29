@@ -8,6 +8,7 @@
 @domain MONDALOY      := "domains/MONDALOY.md"
 @domain MP            := "domains/MP.md"
 @domain NUCLEAR       := "domains/NUCLEAR.md"
+@domain QFORGE        := "QFORGE/QFORGE.md"
 @domain RTSC          := "domains/rtsc.md"
 @domain RTSC+NUCLEAR  := "domains/RTSC+NUCLEAR.md"
 @domain UFO           := "domains/ufo.md"
