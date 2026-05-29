@@ -51,9 +51,9 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "operate",         summary: "operation manifest list|audit",          ported: false },
     VerbSpec { name: "backend",         summary: "compute backend list|current",           ported: false },
     VerbSpec { name: "compose",         summary: "도메인 → 구성 스택 해소",                ported: false },
-    VerbSpec { name: "verify",          summary: "provenance/claim-gate · hexa verify",    ported: false },
+    VerbSpec { name: "verify",          summary: "provenance/claim-gate · hexa verify",    ported: true },
     VerbSpec { name: "atlas",           summary: "hexa atlas SSOT 읽기/owner-write",       ported: true },
-    VerbSpec { name: "owner",           summary: "owner-mode (사장실) 상태",               ported: false },
+    VerbSpec { name: "owner",           summary: "owner-mode (사장실) 상태",               ported: true },
     VerbSpec { name: "llm",             summary: "AI 연결 (Claude/Codex/Gemini)",          ported: false },
     VerbSpec { name: "emit-component",  summary: "BIPV 컴포넌트 아티팩트 emit",            ported: false },
     VerbSpec { name: "export-component",summary: "번들 geometry export (usda|stl)",        ported: false }
@@ -201,6 +201,46 @@ fn _cmd_atlas(rest: array) -> int {
   return r[1]
 }
 
+// `verify <path|id>` | `verify --expr|--fence|rubric ...` — M16.
+// --expr/--fence/rubric 은 `hexa verify` 로 VERBATIM forward (verdict 그대로 ·
+// @D g5 — demiurge 는 재판정하지 않고 dispatch 만). 바레 <path|id> (provenance/
+// claim-gate 일관성) 은 DemiurgeCore RecordLoader 의존 — DemiurgeCore 포팅
+// 단계로 연기, 그때까지 스위프트 폴백 센티넬(exit 3).
+fn _cmd_verify(rest: array) -> int {
+  if len(rest) == 0 {
+    eprintln("verify: missing <path|id> argument")
+    return 2
+  }
+  let sub = to_string(rest[0])
+  if sub == "--expr" || sub == "--fence" || sub == "rubric" {
+    let mut cmd = "hexa verify"
+    let mut k = 0
+    while k < len(rest) { cmd = cmd + " " + _shq(to_string(rest[k])); k = k + 1 }
+    let r = exec_with_status(cmd + " 2>&1")
+    let out = to_string(r[0])
+    print(out)
+    if out.len() > 0 && !out.ends_with("\n") { println("") }
+    return r[1]
+  }
+  // 바레 <path|id> record-consistency — DemiurgeCore 포팅 대기 → 스위프트 폴백.
+  eprintln("verify: record-consistency arm (<path|id>) 아직 hexa-native 미이식 — 스위프트 폴백 (DemiurgeCore 포팅 단계).")
+  return 3
+}
+
+// `owner` — 사장실 status surface (M20). DEMIURGE_OWNER 설정 여부 + gate 되는
+// owner-only op 목록. (스위프트는 OperationRegistry manifest 에서 op 목록을
+// 읽는다 — 그 manifest 는 DemiurgeCore 포팅 단계로 연기; 여기선 status 만.)
+fn _cmd_owner() -> int {
+  let on = env("DEMIURGE_OWNER").len() > 0
+  if on {
+    println("owner-mode (사장실): ✅ unlocked (DEMIURGE_OWNER)")
+  } else {
+    println("owner-mode (사장실): 🔒 locked")
+    println("  → unlock: DEMIURGE_OWNER=1 demiurge <cmd>  (외부 사용자에겐 비노출)")
+  }
+  return 0
+}
+
 // ── generic dispatch ─────────────────────────────────────────────────────────
 //
 // verb 이름으로 직접 분기하지 않는다: (1) 레지스트리 순회로 verb 존재/이식
@@ -221,6 +261,8 @@ fn _dispatch(verb: string, rest: array) -> int {
   if verb == "version"  { return _cmd_version() }
   if verb == "discover" { return _cmd_discover(rest) }
   if verb == "atlas"    { return _cmd_atlas(rest) }
+  if verb == "verify"   { return _cmd_verify(rest) }
+  if verb == "owner"    { return _cmd_owner() }
   // 도달 불가 (generic 층이 ported 플래그로 이미 거른다).
   return 3
 }
