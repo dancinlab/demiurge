@@ -51,7 +51,7 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "gate-summary",    summary: "gate + absorbed 합계",                   ported: true },
     VerbSpec { name: "operate",         summary: "operation manifest list|audit",          ported: true },
     VerbSpec { name: "backend",         summary: "compute backend list|current",           ported: true },
-    VerbSpec { name: "compose",         summary: "도메인 → 구성 스택 해소",                ported: false },
+    VerbSpec { name: "compose",         summary: "도메인 → 구성 스택 해소",                ported: true },
     VerbSpec { name: "verify",          summary: "provenance/claim-gate · hexa verify",    ported: true },
     VerbSpec { name: "atlas",           summary: "hexa atlas SSOT 읽기/owner-write",       ported: true },
     VerbSpec { name: "owner",           summary: "owner-mode (사장실) 상태",               ported: true },
@@ -1348,6 +1348,271 @@ fn _cmd_list_shelf(rest: array) -> int {
   return 0
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// DomainComposer — 스위프트 DomainComposition.swift / DomainGraph.swift /
+// Domain.swift(facets) + main.swift compose() 이식 (PR-F · 헤비 verb 1/6).
+// 도메인 그래프 메타(prerequisites · facets.scale · facets.cluster)는
+// domains/INDEX.demi 에서 .demi 섹션 파싱 — d4/D86 (하드코딩 금지, SSOT 단일).
+//   • transitiveClosure — BFS over prerequisite edges (start 포함)
+//   • topologicalSort    — Kahn (in-degree 0 부터, 알파벳 secondary)
+//   • clusterUnion       — first-seen 순 distinct cluster
+//   • kind               — scale==system→meta · closure>1→composite · else atomic
+//   • crossesDiscipline  — START 도메인 own cluster 가 LIFE∩TECH 양쪽 접촉
+// cockpit NewProject wizard + 7-verb dispatch 와 동일 SSOT (D50).
+// ════════════════════════════════════════════════════════════════════════════
+
+// INDEX.demi 의 [<key>] 섹션 본문 추출 (다음 [ 헤더 전까지). _domain_meta 와 동일
+// awk 라인기반 (DemiParser 동치). 미존재 → "".
+fn _domain_section(key: string) -> string {
+  let path = _project_root() + "/domains/INDEX.demi"
+  if !_path_exists(path) { return "" }
+  return to_string(exec(
+    "awk 'BEGIN{f=0} /^\\[/{ if(f)exit; if($0==\"[" + key + "]\")f=1; next } f{print}' "
+    + _shq(path) + " 2>/dev/null"))
+}
+
+// 한 도메인의 직접 prerequisites (그래프 edge). 미등록 → [].
+fn _domain_prereqs(key: string) -> array {
+  let body = _domain_section(key)
+  if body.len() == 0 { return [] }
+  // prerequisites = ["a", "b"] — .demi 리스트. 따옴표 토큰 순차 추출.
+  let raw = to_string(exec(
+    "printf '%s' " + _shq(body) + " | grep -E '^[[:space:]]*prerequisites[[:space:]]*=' | head -1"))
+  return _demi_string_list(raw)
+}
+
+// 한 도메인 facets.cluster 리스트 (rawValue = INDEX.demi 문자열 그대로).
+fn _domain_clusters(key: string) -> array {
+  let body = _domain_section(key)
+  if body.len() == 0 { return [] }
+  let raw = to_string(exec(
+    "printf '%s' " + _shq(body) + " | grep -E '^[[:space:]]*facets\\.cluster[[:space:]]*=' | head -1"))
+  return _demi_string_list(raw)
+}
+
+// 한 도메인 facets.scale (미등록 → "system" — DomainCatalog synthetic fallback).
+fn _domain_scale(key: string) -> string {
+  let body = _domain_section(key)
+  if body.len() == 0 { return "system" }
+  let v = _demi_scalar(body, "facets\\.scale")
+  if v.len() == 0 { return "system" }
+  return v
+}
+
+// `key = ["a", "b", ...]` 라인에서 따옴표 문자열 원소 추출 (.demi 리스트).
+fn _demi_string_list(line: string) -> array {
+  let mut out = []
+  let lb = line.index_of("[")
+  if lb < 0 { return out }
+  let mut i = lb + 1
+  while i < line.len() {
+    let c = line.substring(i, i + 1)
+    if c == "]" { break }
+    if c == "\"" {
+      i = i + 1
+      let mut s = ""
+      while i < line.len() {
+        let cc = line.substring(i, i + 1)
+        if cc == "\"" { break }
+        s = s + cc
+        i = i + 1
+      }
+      out.push(s)
+    }
+    i = i + 1
+  }
+  return out
+}
+
+// transitiveClosure(of: start) — BFS, start 포함. 반환 = 방문순 id 배열.
+fn _transitive_closure(start: string) -> array {
+  let mut visited = ""        // "|id|" 마커 셋
+  let mut queue = [start]
+  let mut collected = []
+  while len(queue) > 0 {
+    let id = to_string(queue[0])
+    // dequeue front.
+    let mut nq = []
+    let mut k = 1
+    while k < len(queue) { nq.push(to_string(queue[k])); k = k + 1 }
+    queue = nq
+    let mark = "|" + id + "|"
+    if visited.contains(mark) { continue }
+    visited = visited + mark
+    // 스위프트 DomainGraph.transitiveClosure: `guard let d = idx[id] else
+    // { continue }` — INDEX.demi 에 섹션이 없는(미등록) 노드는 collected 에
+    // 넣지 않는다 (general 같은 synthetic 은 closure 0 · 스위프트 동치).
+    if _domain_section(id).len() == 0 { continue }
+    collected.push(id)
+    let prereqs = _domain_prereqs(id)
+    let mut p = 0
+    while p < len(prereqs) {
+      let pid = to_string(prereqs[p])
+      if !visited.contains("|" + pid + "|") { queue.push(pid) }
+      p = p + 1
+    }
+  }
+  return collected
+}
+
+// topologicalSort(ids) — Kahn. foundation(no prereq within subgraph) 먼저,
+// ready 는 알파벳 정렬 secondary. 스위프트 DomainGraph.topologicalSort 동치.
+fn _topo_sort(ids: array) -> array {
+  // subgraph set.
+  let mut inset = ""
+  let mut i = 0
+  while i < len(ids) { inset = inset + "|" + to_string(ids[i]) + "|"; i = i + 1 }
+  // in-degree: id 가 의존하는 subgraph 내 prereq 수.
+  // remaining[id] = 현재 in-degree (제거되며 감소).
+  let mut keys = []     // 병렬 배열: keys[i] / deg[i] / removed[i]
+  let mut deg = []
+  let mut removed = []
+  i = 0
+  while i < len(ids) {
+    let id = to_string(ids[i])
+    let prereqs = _domain_prereqs(id)
+    let mut d = 0
+    let mut p = 0
+    while p < len(prereqs) {
+      if inset.contains("|" + to_string(prereqs[p]) + "|") { d = d + 1 }
+      p = p + 1
+    }
+    keys.push(id); deg.push(d); removed.push(false)
+    i = i + 1
+  }
+  let mut result = []
+  let mut placed = 0
+  let total = len(keys)
+  while placed < total {
+    // ready = removed=false && deg==0, 알파벳 최소 선택.
+    let mut pick = -1
+    let mut j = 0
+    while j < len(keys) {
+      if !to_bool(removed[j]) && to_int(deg[j]) == 0 {
+        if pick < 0 || to_string(keys[j]) < to_string(keys[pick]) { pick = j }
+      }
+      j = j + 1
+    }
+    if pick < 0 { break }   // cycle (DAG 불변에서 미발생)
+    result.push(to_string(keys[pick]))
+    removed[pick] = true
+    placed = placed + 1
+    // pick 의 successor (pick 을 prereq 로 갖는 subgraph 노드) in-degree 감소.
+    let mut s = 0
+    while s < len(keys) {
+      if !to_bool(removed[s]) {
+        let sp = _domain_prereqs(to_string(keys[s]))
+        let mut q = 0
+        while q < len(sp) {
+          if to_string(sp[q]) == to_string(keys[pick]) {
+            deg[s] = to_int(deg[s]) - 1
+          }
+          q = q + 1
+        }
+      }
+      s = s + 1
+    }
+  }
+  // 남은 cycle 노드 — id 정렬 append (불변상 비어있음).
+  let mut r = 0
+  while r < len(keys) {
+    if !to_bool(removed[r]) { result.push(to_string(keys[r])) }
+    r = r + 1
+  }
+  return result
+}
+
+// LIFE = bio·chem·life · TECH = engineering·physical·propulsion·sensing·matter·system.
+fn _is_life_cluster(c: string) -> bool {
+  return c == "bio" || c == "chem" || c == "life"
+}
+fn _is_tech_cluster(c: string) -> bool {
+  return c == "engineering" || c == "physical" || c == "propulsion"
+      || c == "sensing" || c == "matter" || c == "system"
+}
+
+// `compose <domain>` (main.swift §455). plain 모드 기본 (DEMIURGE_EXPERT 없음):
+//   compose <start> — <label> · <kind>[ · 결합]
+//     구성 도메인 (<n>):
+//       <id → id → ...>  (또는 (none))
+//     성격: <cluster · cluster · ...>
+fn _cmd_compose(rest: array) -> int {
+  if len(rest) == 0 {
+    eprintln("compose: missing <domain> argument")
+    return 2
+  }
+  let start = to_string(rest[0])
+  let meta = _domain_meta(start)        // [label, canvas]
+  let closure = _transitive_closure(start)
+  let ordered = _topo_sort(closure)
+  // kind — start scale==system → meta · closure>1 → composite · else atomic.
+  let scale = _domain_scale(start)
+  let expert = env("DEMIURGE_EXPERT").len() > 0
+  let kind_label = if scale == "system" {
+                     if expert { "meta" } else { "메타(통합)" }
+                   } else if len(closure) > 1 {
+                     if expert { "composite" } else { "구성형" }
+                   } else {
+                     if expert { "atomic" } else { "단일" }
+                   }
+  // crossesDiscipline — START own cluster 가 life-side ∧ tech-side 양쪽 접촉.
+  let own_cl = _domain_clusters(start)
+  let mut has_life = false
+  let mut has_tech = false
+  let mut ci = 0
+  while ci < len(own_cl) {
+    let c = to_string(own_cl[ci])
+    if _is_life_cluster(c) { has_life = true }
+    if _is_tech_cluster(c) { has_tech = true }
+    ci = ci + 1
+  }
+  let crosses = has_life && has_tech
+  let combined_tag = if crosses { if expert { " · 결합(cross-discipline)" } else { " · 결합" } } else { "" }
+  println("compose " + start + " — " + to_string(meta[0]) + " · " + kind_label + combined_tag)
+  println("  구성 도메인 (" + to_string(len(ordered)) + "):")
+  let ids_line = if len(ordered) == 0 { "(none)" } else { _join_arrow(ordered) }
+  println("    " + ids_line)
+  // clusterUnion — stack 순회 first-seen distinct.
+  let mut seen = ""
+  let mut union = []
+  let mut oi = 0
+  while oi < len(ordered) {
+    let cls = _domain_clusters(to_string(ordered[oi]))
+    let mut k = 0
+    while k < len(cls) {
+      let c = to_string(cls[k])
+      if !seen.contains("|" + c + "|") { seen = seen + "|" + c + "|"; union.push(c) }
+      k = k + 1
+    }
+    oi = oi + 1
+  }
+  println("  성격: " + _join_dot(union))
+  return 0
+}
+
+// 배열 → "a → b → c".
+fn _join_arrow(a: array) -> string {
+  let mut out = ""
+  let mut i = 0
+  while i < len(a) {
+    if i > 0 { out = out + " → " }
+    out = out + to_string(a[i])
+    i = i + 1
+  }
+  return out
+}
+// 배열 → "a · b · c".
+fn _join_dot(a: array) -> string {
+  let mut out = ""
+  let mut i = 0
+  while i < len(a) {
+    if i > 0 { out = out + " · " }
+    out = out + to_string(a[i])
+    i = i + 1
+  }
+  return out
+}
+
 // ── verb 핸들러 ──────────────────────────────────────────────────────────────
 fn _cmd_version() -> int {
   println("demiurge " + DEMIURGE_CLI_VERSION)
@@ -1597,6 +1862,7 @@ fn _dispatch(verb: string, rest: array) -> int {
   if verb == "discover" { return _cmd_discover(rest) }
   if verb == "atlas"    { return _cmd_atlas(rest) }
   if verb == "verify"   { return _cmd_verify(rest) }
+  if verb == "compose"  { return _cmd_compose(rest) }
   if verb == "owner"    { return _cmd_owner() }
   // 도달 불가 (generic 층이 ported 플래그로 이미 거른다).
   return 3
