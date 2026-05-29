@@ -40,7 +40,7 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "list-rfcs",       summary: "proposals/rfc_*.md 나열",                ported: true },
     VerbSpec { name: "list-domains",    summary: "domains/*.md 나열",                      ported: true },
     // ── 후속 스택 PR 에서 ported:true 로 전환 ──
-    VerbSpec { name: "show",            summary: "F1F2 레코드 1건 + provenance",           ported: false },
+    VerbSpec { name: "show",            summary: "F1F2 레코드 1건 + provenance",           ported: true },
     VerbSpec { name: "list-projects",   summary: "워크벤치 프로젝트 나열",                 ported: false },
     VerbSpec { name: "show-project",    summary: "프로젝트 1건 + 7-verb 진행도",           ported: false },
     VerbSpec { name: "project",         summary: "프로젝트 new|advance|retreat",           ported: false },
@@ -400,6 +400,256 @@ fn _cmd_list_all() -> int {
   return 0
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// RecordLoader (load+show) + F1F2Record reader — 스위프트 RecordLoader.swift +
+// F1F2Record.swift + main.swift show() 이식 (PR-B). path-jail 보존:
+// exports/** 밖 경로는 invariant-a 로 거부 (스위프트와 byte-identical wording).
+// ════════════════════════════════════════════════════════════════════════════
+
+// 경로를 cwd 기준 절대경로로 lexical 정규화 (스위프트 standardizedFileURL —
+// `..`/`.` 만 해소, 심볼릭링크는 해소하지 않음). python os.path.normpath 가
+// 동일 의미 (lexical) → exec 로 위임해 byte-identical 절대경로 산출.
+fn _canonical_path(rel: string) -> string {
+  let cmd = "python3 -c 'import os,sys; print(os.path.normpath(os.path.join(os.getcwd(), sys.argv[1])))' " + _shq(rel)
+  return to_string(exec(cmd)).trim()
+}
+
+// JSON 문자열에서 키 위치 다음의 raw 토큰(따옴표 안 또는 다음 구분자까지)을
+// 추출. depth-안전을 위해 "key" 의 첫 출현 + 콜론 다음을 읽는다 (F1F2 스키마는
+// 각 객체 안에서 키가 유일 → 단순 first-match 로 충분, 스위프트 Codable 과 동일
+// 값에 도달). 객체 스코프 제한은 _json_str_in 으로 처리.
+// 객체 블록 안에서 키는 유일하므로 from 인자는 항상 0 (index_of 전체 검색).
+fn _find_colon_after_key(src: string, key: string, from: int) -> int {
+  let needle = "\"" + key + "\""
+  let kpos = src.index_of(needle)
+  if kpos < 0 { return -1 }
+  let mut i = kpos + needle.len()
+  // 콜론까지 공백 스킵.
+  while i < src.len() {
+    let c = src.substring(i, i + 1)
+    if c == ":" { return i + 1 }
+    if c == " " || c == "\t" || c == "\n" || c == "\r" { i = i + 1; continue }
+    return -1
+  }
+  return -1
+}
+
+// "key": "string-value"  → string-value (이스케이프 \" \\ \n 디코드).
+fn _json_string(src: string, key: string, from: int) -> string {
+  let cp = _find_colon_after_key(src, key, from)
+  if cp < 0 { return "" }
+  let mut i = cp
+  while i < src.len() {
+    let c = src.substring(i, i + 1)
+    if c == " " || c == "\t" || c == "\n" || c == "\r" { i = i + 1; continue }
+    break
+  }
+  if i >= src.len() || src.substring(i, i + 1) != "\"" { return "" }
+  i = i + 1
+  let mut out = ""
+  while i < src.len() {
+    let c = src.substring(i, i + 1)
+    if c == "\\" {
+      let nx = src.substring(i + 1, i + 2)
+      if nx == "n" { out = out + "\n" }
+      else if nx == "t" { out = out + "\t" }
+      else if nx == "\"" { out = out + "\"" }
+      else if nx == "\\" { out = out + "\\" }
+      else if nx == "/" { out = out + "/" }
+      else { out = out + nx }
+      i = i + 2
+      continue
+    }
+    if c == "\"" { break }
+    out = out + c
+    i = i + 1
+  }
+  return out
+}
+
+// "key": <number-or-bool-or-bareword>  → 토큰 문자열 (콤마/중괄호 전까지 trim).
+fn _json_scalar(src: string, key: string, from: int) -> string {
+  let cp = _find_colon_after_key(src, key, from)
+  if cp < 0 { return "" }
+  let mut i = cp
+  while i < src.len() {
+    let c = src.substring(i, i + 1)
+    if c == " " || c == "\t" || c == "\n" || c == "\r" { i = i + 1; continue }
+    break
+  }
+  let mut out = ""
+  while i < src.len() {
+    let c = src.substring(i, i + 1)
+    if c == "," || c == "}" || c == "]" || c == "\n" { break }
+    out = out + c
+    i = i + 1
+  }
+  return out.trim()
+}
+
+// "key": "value" 가 src 안에 존재하는지 (필수필드 누락 → decode 실패 판정용).
+fn _json_has_key(src: string, key: string) -> bool {
+  return src.contains("\"" + key + "\"")
+}
+
+// 객체 블록 추출: "key": { ... } 의 균형 잡힌 중괄호 내부. (topology/verdict/
+// provenance 같은 중첩 객체를 그 스코프 안에서만 키 탐색하기 위함.)
+fn _json_object_block(src: string, key: string) -> string {
+  let cp = _find_colon_after_key(src, key, 0)
+  if cp < 0 { return "" }
+  let mut i = cp
+  while i < src.len() && src.substring(i, i + 1) != "{" { i = i + 1 }
+  if i >= src.len() { return "" }
+  let start = i
+  let mut depth = 0
+  while i < src.len() {
+    let c = src.substring(i, i + 1)
+    if c == "{" { depth = depth + 1 }
+    else if c == "}" { depth = depth - 1; if depth == 0 { return src.substring(start, i + 1) } }
+    i = i + 1
+  }
+  return ""
+}
+
+// "key": [ "a", "b", ... ]  → 문자열 원소 배열 (스위프트 [String] 디코드).
+fn _json_string_array(src: string, key: string) -> array {
+  let mut out = []
+  let cp = _find_colon_after_key(src, key, 0)
+  if cp < 0 { return out }
+  let mut i = cp
+  while i < src.len() && src.substring(i, i + 1) != "[" { i = i + 1 }
+  if i >= src.len() { return out }
+  i = i + 1
+  // [ ... ] 내부에서 따옴표 문자열을 순차 추출.
+  while i < src.len() {
+    let c = src.substring(i, i + 1)
+    if c == "]" { break }
+    if c == "\"" {
+      i = i + 1
+      let mut s = ""
+      while i < src.len() {
+        let cc = src.substring(i, i + 1)
+        if cc == "\\" {
+          let nx = src.substring(i + 1, i + 2)
+          if nx == "n" { s = s + "\n" }
+          else if nx == "t" { s = s + "\t" }
+          else if nx == "\"" { s = s + "\"" }
+          else if nx == "\\" { s = s + "\\" }
+          else if nx == "/" { s = s + "/" }
+          else { s = s + nx }
+          i = i + 2
+          continue
+        }
+        if cc == "\"" { break }
+        s = s + cc
+        i = i + 1
+      }
+      out.push(s)
+    }
+    i = i + 1
+  }
+  return out
+}
+
+// ── RecordLoader.load — path-jail + 파일 존재 + F1F2 필수필드 디코드 ──────────
+// 반환: [status, payload]. status="ok"|"outside"|"notfound"|"decode",
+// payload = ok 면 파일내용(JSON), 그 외엔 canonicalPath.
+fn _record_load(rel: string) -> array {
+  let canonical = _canonical_path(rel)
+  let exports = _canonical_path(_exports_root())   // exportsRoot 도 동일 정규화
+  // path-jail: canonical 이 exports 로 시작해야 함 (스위프트 hasPrefix).
+  if !canonical.starts_with(exports) {
+    return ["outside", canonical]
+  }
+  if !_path_exists(canonical) {
+    return ["notfound", canonical]
+  }
+  let content = to_string(exec("cat " + _shq(canonical) + " 2>/dev/null"))
+  // F1F2 필수 최상위/중첩 필드 존재 확인 (스위프트 Codable 필수키 — 누락 시
+  // decodeFailed). 중첩 객체는 블록 추출 후 그 안에서 확인.
+  let topo = _json_object_block(content, "topology")
+  let verd = _json_object_block(content, "verdict")
+  let prov = _json_object_block(content, "provenance")
+  let req_top = _json_has_key(content, "interface") && _json_has_key(content, "schema_version")
+              && _json_has_key(content, "record_id") && _json_has_key(content, "produced_at_utc")
+              && _json_has_key(content, "traffic") && topo.len() > 0 && verd.len() > 0 && prov.len() > 0
+  let req_topo = _json_has_key(topo, "kind") && _json_has_key(topo, "degree")
+              && _json_has_key(topo, "node_count") && _json_has_key(topo, "routing")
+  let req_verd = _json_has_key(verd, "f1") && _json_has_key(verd, "f2") && _json_has_key(verd, "rationale")
+  let req_prov = _json_has_key(prov, "absorbed") && _json_has_key(prov, "measurement_gate")
+              && _json_has_key(prov, "sim_engine") && _json_has_key(prov, "sim_commit_hash")
+              && _json_has_key(prov, "gate_failures") && _json_has_key(prov, "consumer_target")
+              && _json_has_key(prov, "atlas_cite_block") && _json_has_key(prov, "scope_caveats")
+  if !(req_top && req_topo && req_verd && req_prov) {
+    return ["decode", canonical]
+  }
+  return ["ok", content]
+}
+
+// ── DemiurgeCLI.show (main.swift §166) ──────────────────────────────────────
+fn _cmd_show(rest: array) -> int {
+  if len(rest) == 0 {
+    eprintln("show: missing <path> argument")
+    return 2
+  }
+  let path = to_string(rest[0])
+  let r = _record_load(path)
+  let status = to_string(r[0])
+  if status == "outside" {
+    eprintln("show: Refused (@D g_cockpit_isolation invariant a): path is outside ../exports/**: " + to_string(r[1]))
+    return 2
+  }
+  if status == "notfound" {
+    eprintln("show: Record file not found: " + to_string(r[1]))
+    return 2
+  }
+  if status == "decode" {
+    eprintln("show: Decode failed (" + to_string(r[1]) + "): F1F2Record 필수 필드 누락")
+    return 2
+  }
+  let src = to_string(r[1])
+  let topo = _json_object_block(src, "topology")
+  let verd = _json_object_block(src, "verdict")
+  let prov = _json_object_block(src, "provenance")
+  let commit = _json_string(prov, "sim_commit_hash", 0)
+  let mut commit12 = commit
+  if commit.len() > 12 { commit12 = commit.substring(0, 12) }
+  let gate_fail = _json_string_array(prov, "gate_failures")
+  let scope = _json_string_array(prov, "scope_caveats")
+
+  println("record_id:                  " + _json_string(src, "record_id", 0))
+  println("interface:                  " + _json_string(src, "interface", 0))
+  println("schema_version:             " + _json_string(src, "schema_version", 0))
+  println("produced_at_utc:            " + _json_string(src, "produced_at_utc", 0))
+  println("topology.kind:              " + _json_string(topo, "kind", 0))
+  println("topology.degree:            " + _json_scalar(topo, "degree", 0))
+  println("topology.node_count:        " + _json_scalar(topo, "node_count", 0))
+  println("topology.routing:           " + _json_string(topo, "routing", 0))
+  println("traffic:                    " + _json_string(src, "traffic", 0))
+  println("verdict.f1:                 " + _json_string(verd, "f1", 0))
+  println("verdict.f2:                 " + _json_string(verd, "f2", 0))
+  println("verdict.rationale:          " + _json_string(verd, "rationale", 0))
+  println("provenance.measurement_gate:" + _json_string(prov, "measurement_gate", 0))
+  println("provenance.absorbed:        " + _json_scalar(prov, "absorbed", 0))
+  println("provenance.sim_engine:      " + _json_string(prov, "sim_engine", 0))
+  println("provenance.sim_commit:      " + commit12)
+  println("provenance.consumer_target: " + _json_string(prov, "consumer_target", 0))
+  println("provenance.atlas_cite:      " + _json_string(prov, "atlas_cite_block", 0))
+  println("provenance.gate_failures:   " + to_string(len(gate_fail)))
+  let mut i = 0
+  while i < len(gate_fail) {
+    println("  [" + to_string(i) + "] " + to_string(gate_fail[i]))
+    i = i + 1
+  }
+  println("provenance.scope_caveats:   " + to_string(len(scope)))
+  i = 0
+  while i < len(scope) {
+    println("  [" + to_string(i) + "] " + to_string(scope[i]))
+    i = i + 1
+  }
+  return 0
+}
+
 // ── verb 핸들러 ──────────────────────────────────────────────────────────────
 fn _cmd_version() -> int {
   println("demiurge " + DEMIURGE_CLI_VERSION)
@@ -539,6 +789,7 @@ fn _dispatch(verb: string, rest: array) -> int {
   if verb == "list-decisions" { return _list_kind("decision") }
   if verb == "list-rfcs"      { return _list_kind("rfc") }
   if verb == "list-domains"   { return _list_kind("domain") }
+  if verb == "show"           { return _cmd_show(rest) }
   if verb == "discover" { return _cmd_discover(rest) }
   if verb == "atlas"    { return _cmd_atlas(rest) }
   if verb == "verify"   { return _cmd_verify(rest) }
