@@ -1,0 +1,55 @@
+&control
+  ! B10 ScH9 — post-relax SCF. MUST read the relaxed celldm(1), celldm(3) + positions from
+  !   the vc-relax.out (CELL_PARAMETERS / ATOMIC_POSITIONS final block) BEFORE running this.
+  !   The celldm values below are the START guess and are overwritten in the RUNBOOK step.
+  ! electron_phonon='simple' needs a DENSE k-mesh for the double-delta EPC integral ->
+  !   denser than the relax mesh (16x16x12 hexagonal).
+  calculation = 'scf'
+  prefix = 'sch9'
+  outdir = '/root/ScH9/out'
+  pseudo_dir = '/root/ScH9/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'low'
+/
+&system
+  ibrav = 0
+  nat = 10
+  ntyp = 2
+  ecutwfc = 80.0
+  ecutrho = 640.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  ! d15 small-gap SCF aids (metallic superhydride).
+  conv_thr = 1.0d-12
+  mixing_beta = 0.3
+  mixing_mode = 'plain'
+  electron_maxstep = 400
+/
+
+ATOMIC_SPECIES
+  Sc 44.956 Sc.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H  1.008  H.pbe-rrkjus_psl.1.0.0.UPF
+  16 16 12 0 0 0
+
+CELL_PARAMETERS bohr
+  5.3441454716  0.0431586896  -0.6844787144
+  -2.7803290528  4.6550378888  -0.1890989152
+  -1.7125314076  -1.0398393616  7.6354005364
+
+ATOMIC_POSITIONS crystal
+Sc           -0.1048364454       -0.1553754240       -0.1222045577
+H             0.7396726531        0.2902179640        0.1220242339
+H             0.2714790240        0.1346992324        0.3338093347
+H             0.3428396011        0.5910584220        0.0274634365
+H             0.7138740255        0.9505681184        0.4050808338
+H             0.4683851532        0.4573483389        0.4103292422
+H            -0.0080055578        0.6288410530        0.2848580913
+H             0.4533466398        0.1202368326        0.7167835084
+H             0.1860308297        0.7353563490        0.5666406615
+H             0.9372140767        0.2470491137        0.5552152154
+
+

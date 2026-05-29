@@ -1,0 +1,77 @@
+{
+  "version": "1.0",
+  "last_updated_utc": "2026-05-29T10:36:00Z",
+  "pods": {
+    "37868501": {
+      "host": "ssh6.vast.ai:28500",
+      "provider": "vast",
+      "note": "EXISTING — Wave-1 (do not touch)"
+    },
+    "38095989": {
+      "host": "ssh9.vast.ai:15988",
+      "provider": "vast",
+      "note": "EXISTING — A11 CaAuH3 flagship wave (do not touch; perovskite scf-done workdirs live here)"
+    },
+    "38367660": {
+      "host": "ssh9.vast.ai:17660",
+      "provider": "vast",
+      "cores": 192,
+      "note": "EXISTING wave3 pod (9 jobs np=6) + 8 NEW bin-packed RTSC jobs np=6 each — 102 ranks <= 192 cores, no oversubscription"
+    },
+    "38382692": {
+      "host": "ssh8.vast.ai:22692",
+      "provider": "vast",
+      "cores": 192,
+      "owner": "rtsc-parallel-fire",
+      "registered_utc": "2026-05-29T10:24:00Z",
+      "note": "NEW — Li2MgH16 SOLO dedicated pod. micromamba QE 7.5. np=12, OMP=1. Shortest-walltime spec (nq 2x2x2, ecut 60, 250 GPa)."
+    }
+  },
+  "jobs": {
+    "rtsc-li2mgh16-solo": {
+      "pod": "38382692", "dir": "/root/decks/Li2MgH16", "kind": "dft-elph", "stage": "vc-relax",
+      "spec": "38-atom FCC primitive Fd-3m, nq=2x2x2, ecut=60, press=2500kbar(250GPa), np=12",
+      "started_utc": "2026-05-29T10:35:30Z", "verdict": "PENDING", "note": "SOLO headline RT-SC candidate"
+    },
+    "rtsc-baauh3-fire": {
+      "pod": "38367660", "dir": "/root/decks/BaAuH3", "kind": "dft-elph", "stage": "vc-relax",
+      "spec": "5-atom Pm-3m perovskite, nq=4x4x4, ecut=80, press=50GPa, np=6",
+      "started_utc": "2026-05-29T10:31:23Z", "verdict": "PENDING"
+    },
+    "rtsc-srpth3-fire": {
+      "pod": "38367660", "dir": "/root/decks/SrPtH3", "kind": "dft-elph", "stage": "vc-relax",
+      "spec": "5-atom Pm-3m perovskite, nq=4x4x4, ecut=80, press=50GPa, np=6",
+      "started_utc": "2026-05-29T10:29:50Z", "verdict": "PENDING"
+    },
+    "rtsc-yauh3-fire": {
+      "pod": "38367660", "dir": "/root/decks/YAuH3", "kind": "dft-elph", "stage": "vc-relax",
+      "spec": "5-atom Pm-3m perovskite, nq=4x4x4, ecut=80, press=50GPa, np=6",
+      "started_utc": "2026-05-29T10:31:26Z", "verdict": "PENDING"
+    },
+    "rtsc-kbeh8-fire": {
+      "pod": "38367660", "dir": "/root/decks/KBeH8", "kind": "dft-elph", "stage": "vc-relax",
+      "spec": "10-atom BeH8 clathrate, nq=2x2x2, ecut=80, press=10GPa, np=6",
+      "started_utc": "2026-05-29T10:29:57Z", "verdict": "PENDING"
+    },
+    "rtsc-mgbeh8-fire": {
+      "pod": "38367660", "dir": "/root/decks/MgBeH8", "kind": "dft-elph", "stage": "vc-relax",
+      "spec": "10-atom BeH8 clathrate, nq=2x2x2, ecut=80, press=10GPa, np=6",
+      "started_utc": "2026-05-29T10:30:09Z", "verdict": "PENDING"
+    },
+    "rtsc-sch9-fire": {
+      "pod": "38367660", "dir": "/root/decks/ScH9", "kind": "dft-elph", "stage": "vc-relax",
+      "spec": "10-atom hexagonal clathrate, nq=2x2x2, ecut=80, press=150GPa, np=6",
+      "started_utc": "2026-05-29T10:30:12Z", "verdict": "PENDING"
+    },
+    "rtsc-ceh9-fire": {
+      "pod": "38367660", "dir": "/root/decks/CeH9", "kind": "dft-elph", "stage": "vc-relax",
+      "spec": "20-atom P6_3/mmc clathrate (Salke2019 coords, ASE orbit), nq=2x2x2, ecut=70, press=100GPa, np=6",
+      "started_utc": "2026-05-29T10:30:15Z", "verdict": "PENDING"
+    },
+    "rtsc-layh10-fire": {
+      "pod": "38367660", "dir": "/root/decks/LaY_H10", "kind": "dft-elph", "stage": "vc-relax",
+      "spec": "22-atom ordered LaYH20 sodalite (Fm-3m mean-lattice La+Y ordering, ASE), nq=2x2x2, ecut=70, press=250GPa, np=6",
+      "started_utc": "2026-05-29T10:30:18Z", "verdict": "PENDING"
+    }
+  }
+}

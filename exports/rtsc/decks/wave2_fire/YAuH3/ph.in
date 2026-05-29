@@ -1,0 +1,20 @@
+YAuH3 phonon + electron-phonon 4x4x4 q (RTSC A15 · SrAuH3 Y-variant · perovskite-hydride · YH10-family)
+&inputph
+  prefix = 'yauh3'
+  outdir = '/root/YAuH3/out'
+  fildyn = '/root/YAuH3/yauh3.dyn'
+  fildvscf = 'yauh3.dvscf'
+  ! ldisp + 4x4x4 q-mesh sized to the 5-atom SC perovskite cell.
+  ! SC 4^3 with full cubic symmetry -> 8 irreducible q-points (matches SrAuH3 anchor + preflight nq=8).
+  ldisp = .true.
+  nq1 = 4, nq2 = 4, nq3 = 4
+  tr2_ph = 1.0d-14
+  recover = .true.
+  ! 'simple' el-ph: double-delta EPC, swept over el_ph_nsigma broadenings.
+  ! Harvest reads the sigma-plateau lambda (NOT the monotone-broadening tail).
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+  ! preflight #1885: 5 atoms · nq=8 · metallic -> est 11.6h, floor 17.5h.
+  max_seconds = 63000
+/

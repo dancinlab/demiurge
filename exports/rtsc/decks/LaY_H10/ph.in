@@ -1,0 +1,14 @@
+LaY_H10 el-ph 2x2x2 q (RTSC clathrate electron_phonon=simple)
+&inputph
+  prefix = 'lay_h10'
+  outdir = '/root/decks/LaY_H10/out'
+  fildyn = './lay_h10.dyn'
+  fildvscf = 'lay_h10.dvscf'
+  ldisp = .true.
+  nq1 = 2, nq2 = 2, nq3 = 2
+  tr2_ph = 1.0d-14
+  recover = .true.
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+/

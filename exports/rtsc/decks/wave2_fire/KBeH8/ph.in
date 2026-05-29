@@ -1,0 +1,18 @@
+KBeH8 electron-phonon 2x2x2 q (RTSC A02 — K variant of AcBeH8 low-P precompressor)
+&inputph
+  prefix              = 'kbeh8'
+  outdir              = '/root/KBeH8/out'
+  fildyn              = 'kbeh8.dyn'
+  fildvscf            = 'dvscf'
+  ldisp               = .true.
+  nq1                 = 2            ! 2x2x2 q-grid (nq=8) — single-pod feasible for 10-atom metallic (~93h, preflight #1885)
+  nq2                 = 2            ! refine to 4x4x4 (nq=64, ~746h) only on a multi-pod / split-q campaign
+  nq3                 = 2
+  tr2_ph              = 1.0d-14
+  electron_phonon     = 'simple'     ! project standard (Allen-Dynes Tc from lambda/omega_log)
+  el_ph_sigma         = 0.005        ! Ry, ramped via el_ph_nsigma
+  el_ph_nsigma        = 10           ! sigma scan 0.005...0.050 Ry -> plateau search for lambda
+  recover             = .true.       ! checkpoint-safe / resumable (re-dispatch picks up mid-q)
+  alpha_mix(1)        = 0.3
+  max_seconds         = 504000       ! 140h floor (preflight ×1.5 of 93h est for 2x2x2 metallic)
+/

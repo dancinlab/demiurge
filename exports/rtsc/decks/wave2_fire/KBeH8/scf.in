@@ -1,0 +1,54 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'kbeh8'
+  outdir          = '/root/KBeH8/out'
+  pseudo_dir      = '/root/KBeH8/pseudo'
+  verbosity       = 'high'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav = 0
+  nat             = 10               ! 1 K + 1 Be + 8 H
+  ntyp            = 3
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.           ! guard — keep symmetry off through scf->ph for consistency
+  occupations     = 'smearing'
+  smearing        = 'mp'             ! Methfessel-Paxton — metallic hydride (d15)
+  degauss         = 0.01             ! d15 small-gap SCF aid (smear 0.01)
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400             ! d15 maxiter 400
+/
+ATOMIC_SPECIES
+  K   39.098   K.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Be   9.0122  Be.pbe-n-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! REPLACE the positions below with the RELAXED ATOMIC_POSITIONS from vc-relax.out
+! (the dispatch chain greps the final "ATOMIC_POSITIONS" block of vc-relax.out into this file).
+
+CELL_PARAMETERS bohr
+  -7.9614804308  2.7264660618  7.9614855889
+  -2.7264661419  7.9614826643  7.9614863701
+  -7.9614785879  7.9614800402  2.7264657112
+
+ATOMIC_POSITIONS crystal
+K            -0.0000000997        0.0000002044       -0.0000001041
+Be            0.4999999317        0.5000001129        0.4999999555
+H             0.1278789682        0.1278803929        0.1278761355
+H            -0.1278792658       -0.1278799548       -0.1278762764
+H             0.7222267192        0.7222269589        0.2039506907
+H             0.2777733172        0.2777729365        0.7960495106
+H             0.7222264388        0.2039528704        0.7222255153
+H             0.2777736712        0.7960466046        0.2777745746
+H             0.2039526336        0.7222267347        0.7222255365
+H             0.7960476856        0.2777731394        0.2777744617
+
+K_POINTS automatic
+  12 12 12  0 0 0
