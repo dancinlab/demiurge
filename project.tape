@@ -80,6 +80,17 @@
   dont = "ask 'may I rent?' · defer fire to shrink cost · gate scale-up behind a 1-cell step"
   dont = "$ cap / budget gate that requires user sign-off before firing"
 
+@D d_parallel_fire := "pod dispatch — 1 pod=1 candidate · own-pod parallel · paced, no fork-storm" :: governance [required active]
+  do   = "1 pod = 1 candidate · each candidate gets its own pod (ranks<=physcores, OMP/MKL=1)"
+  do   = "pace dispatch 1-2 at a time via attached `hexa cloud dft-run` · `df` headroom check first"
+  do   = "split a candidate off a shared / over-subscribed pod onto its own pod on sight"
+  dont = "bin-pack 2+ candidates on one pod — oversubscription thrash + disk-fill kills both"
+  dont = "fire-and-forget `( nohup … & )` double-fork → launchd zombie re-launch storm"
+
+@D d_domains_demi_only := "domains/ = .demi domain files only — engine/code projects live at repo root" :: governance [required active]
+  do   = "engine/code project (own source tree, e.g. QFORGE) → repo root + DOMAINS.tape roster link"
+  dont = "nest a code/engine project folder under domains/ — domains/ = .demi domain files, not source home"
+
 @D d18 := "round-1 of every cycle/domain — include NOVEL + arxiv + web deep research from the start" :: governance [required active]
   do   = "round-1 fan-out includes >=1 NOVEL probe and >=1 arxiv+web deep-research search"
   dont = "round-1 with only incremental milestones · skip lit grounding · defer NOVEL to later round"
@@ -109,6 +120,11 @@
 @D d_claim_manifest := "CLAIMS.tape — single audit index of verifiable demiurge claims" :: workflow [required active]
   do   = "every verifiable claim in root CLAIMS.tape — id · text · method · slug · group · record pointer"
   dont = "scatter claims across domain logs without a CLAIMS.tape index — no audit surface"
+
+@D d_campaign_ledger := "per-candidate campaign ledger JSONL at repo root — RTSC_LEDGER.jsonl is the reference" :: workflow [required active]
+  do   = "each campaign keeps root <NAME>_LEDGER.jsonl — 1 line per candidate (status·verdict·record)"
+  do   = "update the candidate line on every state change — fire·crash·harvest·terminal verdict"
+  dont = "scatter status across pods/logs w/o the root ledger · leave a state change unmirrored"
 
 @D d_claim_verify := "every claim closed by a typed record, excerpt persisted verbatim" :: workflow [required active]
   do   = "close each CLAIMS.tape entry with a typed record (attestation/verdict) or `hexa verify` (g5)"
