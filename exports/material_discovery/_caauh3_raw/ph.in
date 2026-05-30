@@ -1,0 +1,18 @@
+CaAuH3 phonon + electron-phonon 4x4x4 q (RTSC A11 · SrAuH3 Ca-variant · perovskite-hydride)
+&inputph
+  prefix = 'caauh3'
+  outdir = './out'
+  fildyn = './caauh3.dyn'
+  fildvscf = 'caauh3.dvscf'
+  ! ldisp + 4x4x4 q-mesh sized to the 5-atom SC perovskite cell.
+  ! SC 4^3 with full cubic symmetry -> 8 irreducible q-points (matches SrAuH3 anchor + preflight nq=8).
+  ldisp = .true.
+  nq1 = 4, nq2 = 4, nq3 = 4
+  tr2_ph = 1.0d-14
+  recover = .true.
+  ! 'simple' el-ph: double-delta EPC, swept over el_ph_nsigma broadenings.
+  ! Harvest reads the sigma-plateau lambda (NOT the monotone-broadening tail).
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+/
