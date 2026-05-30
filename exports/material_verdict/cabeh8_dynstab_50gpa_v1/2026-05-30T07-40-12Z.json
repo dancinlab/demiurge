@@ -1,0 +1,48 @@
+{
+  "absorbed" : false,
+  "aggregate_verdict" : "CLOSED-NEGATIVE-DYNAMICALLY-UNSTABLE",
+  "domain" : "material_verdict",
+  "gate_type" : "tier1-dynamical-stability (DFPT phonon)",
+  "measurement_gate" : "GATE_CLOSED_NEGATIVE",
+  "kind" : "phonon_stability_gate",
+  "sample_id" : "cabeh8_dynstab_50gpa_v1",
+  "material" : "CaBeH8",
+  "verb" : "verify",
+  "stamp" : "2026-05-30T07-40-12Z",
+  "pod" : "vast 38095989 (demiurge RTSC el-ph cabeh8)",
+  "method" : "QE ph.x DFPT, 4x4x4 q-grid (21 irreducible q), electron_phonon='simple'",
+  "falsifier_results" : [
+    {
+      "id" : "F-DYN-1-gamma-imaginary",
+      "name" : "Gamma-point dynamical stability (all real phonon modes)",
+      "status" : "FALSIFIED",
+      "confidence" : 0.95,
+      "evidence" : "cabeh8.dyn1 (Gamma): 8 of 20 modes imaginary; largest freq(1)=-329.191 THz (-10980.6 cm-1), freq(2)=-328.717 THz, freq(3)=-183.124 THz. Acoustic-sum-rule residuals at Gamma are normally a few cm-1; these are 1e4 cm-1 imaginary => saddle-point / violently unstable structure."
+    },
+    {
+      "id" : "F-DYN-2-grid-imaginary",
+      "name" : "Full q-grid dynamical stability (no imaginary modes off-Gamma)",
+      "status" : "FALSIFIED",
+      "confidence" : 0.95,
+      "evidence" : "Imaginary modes pervasive across grid: dyn1=8, dyn10=8, dyn15=10, dyn21=10 negative-freq modes (of 20). Instability is not a localized Gamma artifact."
+    },
+    {
+      "id" : "F-DYN-3-negative-lambda",
+      "name" : "Physical el-ph coupling (lambda >= 0 per mode)",
+      "status" : "FALSIFIED",
+      "confidence" : 0.9,
+      "evidence" : "Per-mode lambda from ph.out negative on the soft modes: lambda(5)=-0.9434, lambda(6)=-0.5380, lambda(1)=-0.1427. Negative lambda is the el-ph signature of imaginary phonons => Eliashberg/Allen-Dynes Tc is undefined; the structure cannot host phonon-mediated superconductivity at this geometry/pressure."
+    }
+  ],
+  "scope_caveats" : [
+    "This is a VALID closed-negative result (d_paper_negative_ok), analogous to CaAuH3. It rules out CaBeH8 at this pressure (~50 GPa, the deck's vc-relax press) as a phonon-mediated RTSC candidate in its current relaxed geometry.",
+    "The original el-ph run also crashed at q14 with an MPI segfault (likely _ph0 scratch-disk exhaustion on a full overlay). That crash is NOT the finding -- the finding is the dynamical instability, which is independent of and prior to the disk crash. Re-running the full grid with disk headroom would only re-compute unphysical coupling on imaginary modes.",
+    "Does NOT rule out a DIFFERENT CaBeH8 polymorph / pressure. A higher-pressure phase or alternate symmetry could be dynamically stable -- that would be a separate deck.",
+    "absorbed=false unconditionally (RTSC g3 honest stance)."
+  ],
+  "breakthrough_paths" : [
+    "Re-relax CaBeH8 at substantially higher pressure (e.g. 100-200 GPa) -- hydride clathrates frequently stabilize only above a threshold pressure; the soft modes may harden.",
+    "Symmetry-lower / distort along the dominant imaginary eigenvector (freq(1) at Gamma) and re-relax -- the structure may relax into a stable lower-symmetry well.",
+    "SSCHA (anharmonic) treatment -- quantum/anharmonic effects can dynamically stabilize hydrides whose harmonic phonons are imaginary; this is the standard rescue for soft H-modes."
+  ]
+}
