@@ -1,0 +1,148 @@
+{
+  "domain": "material",
+  "verb": "verify",
+  "kind": "caauh3_dft_electron_phonon_4x4x4q_perovskite_hydride_DYNAMICALLY_UNSTABLE_closed_negative",
+  "stamp": "20260530T093000Z",
+  "producer": "QE 7.5 pw.x vc-relax + scf + ph.x electron_phonon='simple' @ vast.ai pod 38095989 (ssh9.vast.ai:15988, @anima, /root/CaAuH3) — RTSC A11 CaAuH3 (Ca-Au-H ternary perovskite-hydride, SrAuH3 Ca-variant). Read-only harvest (g8 hexa cloud copy-from/exec; pod runs 4 other live decks, untouched). Aggregation = inline python parser (QE star-weighted lambda + lambda-weighted omega_log, same method as YH10 rtsc_yh10_dft_elph_20260528.json).",
+  "measurement_gate": "GATE_OPEN",
+  "absorbed": false,
+  "gate_type": "simulation-only-prediction",
+  "provisional": false,
+  "R4_protection": true,
+  "purpose": "RTSC A11 terminal verdict. CaAuH3 = SrAuH3 (cubic Pm-3m perovskite-hydride) with the A-site cation substituted Sr->Ca (lighter, smaller) to probe whether the Au-H octahedral-framework perovskite-hydride mechanism tunes to higher Tc / lower pressure. DISTINCT mechanism class from clathrate superhydrides. This run gives the FIRST measured el-ph verdict for the Ca-variant.",
+  "system": "CaAuH3 cubic perovskite Pm-3m, ibrav=1 5-atom cell (1 Ca + 1 Au + 3 H): Ca @ A-site (1/2,1/2,1/2), Au @ B-site (0,0,0), H @ 3 face-centers (Au-H octahedral framework). PBE PSL.1.0.0 RRKJUS UPF (Ca.pbe-spn / Au.pbe-n scalar-relativistic / H.pbe). Au is 5d — SOC NOT included in this scalar-relativistic baseline (full-rel SOC cross-check is a deferred axis).",
+  "RESULT_HEADLINE": "DYNAMICALLY UNSTABLE — cubic Pm-3m CaAuH3 is dynamically unstable at the computed cell (~23 GPa). 4 of 10 IBZ q-points carry imaginary (soft) phonons, including a triple-degenerate -324 cm-1 mode at the R-point (-0.5,-0.5,-0.5) (octahedral-rotation / antiferrodistortive instability) and a near-zero -25 cm-1 soft mode at (0.25,0.25,-0.5) that drives the QE el-ph lambda divergently NEGATIVE (lambda(soft)=-16.0). 🔴 CLOSED-NEGATIVE: the cubic phase is NOT a superconductor at this structure/pressure. Even the real-mode (stable-subspace) coupling is only lambda=0.92 -> Tc 17-20 K (weak-to-moderate, FAR from high-Tc/RTSC). Both the instability AND the low real-mode lambda independently rule out the high-Tc hypothesis.",
+  "pressure": {
+    "elph_cell_scf_kbar": 230.77,
+    "elph_cell_scf_GPa": 23.08,
+    "note": "PROVENANCE CAVEAT (d6 honesty): the el-ph was computed on the START cubic cell celldm(1)=6.8361 a.u. (volume 319.47 a.u.^3), NOT the vc-relaxed cell. chain.log shows '[geom] scf.in patched: ... celldm=0' — the RUNBOOK step to update scf.in celldm(1) to the relaxed value did NOT fire (patched celldm=0 = not applied). The scf reports P=230.77 kbar = ~23 GPa for this cell. The separate vc-relax (press=50 kbar = 5 GPa target) DID converge to a larger cell (scale 1.047708 x alat -> volume 367.41 a.u.^3, P~50 kbar=5 GPa, E=-164.0431 Ry). So this el-ph verdict characterizes cubic CaAuH3 at ~23 GPa (the un-updated scf cell), NOT at the 5-GPa relaxed minimum nor at ambient. Either way: high-P phase, NOT ambient -> fails RTSC ambient gate.",
+    "vcrelax_target_kbar": 50.0,
+    "vcrelax_converged_kbar": 49.97,
+    "vcrelax_converged_GPa": 5.0,
+    "vcrelax_volume_au3": 367.41,
+    "vcrelax_energy_Ry": -164.04313608
+  },
+  "method": {
+    "stage_1_vcrelax": "vc-relax press=50 kbar (~5 GPa), nosym, converged P=49.97 kbar, final scale 1.047708 x alat6.8361, volume 367.41 a.u.^3, E=-164.0431 Ry (5-atom Pm-3m retained, positions stay at ideal perovskite sites)",
+    "stage_2_scf": "ibrav=1 nat=5 ntyp=3, celldm(1)=6.8361 (START cell, NOT relaxed — celldm patch did not apply), ecutwfc=80 Ry ecutrho=640 Ry, 16x16x16 k-grid (165 IBZ k-pts), MP smearing degauss=0.02 Ry, conv_thr=1e-12, Ef=13.2533 eV, P=230.77 kbar, E=-164.00092 Ry",
+    "stage_3_phonon": "ph.x DFPT ldisp 4x4x4 q (10 irreducible q-points), electron_phonon='simple', el_ph_sigma=0.005 Ry x el_ph_nsigma=10 (0.005-0.050 Ry), trans=.true., tr2_ph=1e-14, recover=.true.. Run hit a davcio write error at q_6 (disk-headroom trap) -> recovered via ph_startq.in resume; all 10 q completed (terminal test: dynN==q-total=10 AND no CaAuH3 ph.x process running; JOB DONE marker ignored per checkpoint trap).",
+    "moments": "BZ-star-weighted lambda = sum_q w_q * sum_mode lambda(q,nu) / sum_q w_q (15 modes/q, 10 q); lambda(q,nu) VERBATIM from QE elph files (QE already applies lambda=gamma/(pi N(Ef) omega^2)). omega_log = lambda-weighted log-average over REAL modes (omega>1 cm-1, lambda>0). Allen-Dynes Tc mu*=0.10 and 0.13. omega_cm = sign(w2)*sqrt(|w2|)*109737.316 (w2 = elph-header eigenvalue in Ry^2). CM_TO_K=1.438776877.",
+    "two_aggregations": "(a) VERBATIM full BZ-sum INCLUDING imaginary modes -> lambda_BZ NEGATIVE at every sigma (-1.9 to -5.5) = unphysical, the mathematical signature of the divergent soft mode (lambda(-25cm-1 mode)=-16.0 x star12). (b) REAL-MODES-ONLY (imaginary modes excluded) stable-subspace lambda -> 0.69-1.51 (plateau ~0.92-1.03 at sigma 0.020-0.025). Reported BOTH (a) shows the instability, (b) characterizes the would-be coupling if stabilized."
+  },
+  "q_grid": {
+    "nq": "4x4x4",
+    "irreducible_q_done": 10,
+    "irreducible_q_total": 10,
+    "complete": true,
+    "q_points_dyn0_order": [
+      "(0,0,0)", "(0,0,0.25)", "(0,0,-0.5)", "(0,0.25,0.25)", "(0,0.25,-0.5)",
+      "(0,-0.5,-0.5)", "(0.25,0.25,0.25)", "(0.25,0.25,-0.5)", "(0.25,-0.5,-0.5)", "(-0.5,-0.5,-0.5)"
+    ],
+    "star_weights": [1, 6, 3, 12, 12, 3, 8, 12, 6, 1],
+    "weight_sum": 64,
+    "full_bz_points": 64,
+    "completeness_note": "All 10 IBZ q-points computed (each 15-mode freq table + 10 broadening el-ph blocks). Star weights (mapped q->weight from ph.out + ph_startq.out resume blocks) sum to 64 = full 4x4x4 BZ. NO missing q (d6 partiality does NOT apply — q-grid is COMPLETE; the verdict is closed-negative on PHYSICS, not on partiality)."
+  },
+  "dos_at_Ef_states_per_spin_per_Ry": {
+    "broad_0.005": 8.782034,
+    "broad_0.020": 4.362145,
+    "broad_0.025": 4.717814,
+    "Ef_eV_scf": 13.2533,
+    "note": "DOS broadening-dependent (Gaussian double-delta). Ef=13.2533 eV (scf), ~13.25-13.32 eV across broadenings."
+  },
+  "stability": {
+    "phonon_imaginary_modes": "PRESENT — 4 of 10 IBZ q-points dynamically unstable",
+    "imaginary_q_points": [
+      {"q": "(0,-0.5,-0.5)", "star": 3, "min_freq_cm1": -260.9, "n_imag_modes": 1},
+      {"q": "(0.25,0.25,-0.5)", "star": 12, "min_freq_cm1": -25.0, "n_imag_modes": 1, "note": "near-zero soft mode -> QE lambda diverges to -16.0 (signature of instability threshold)"},
+      {"q": "(0.25,-0.5,-0.5)", "star": 6, "min_freq_cm1": -292.9, "n_imag_modes": 1},
+      {"q": "(-0.5,-0.5,-0.5)", "star": 1, "min_freq_cm1": -324.0, "n_imag_modes": 3, "note": "R-point zone-corner, triple-degenerate -324 cm-1 = octahedral-rotation / antiferrodistortive instability (classic perovskite soft mode)"}
+    ],
+    "stable_q_points": "(0,0,0), (0,0,0.25), (0,0,-0.5), (0,0.25,0.25), (0,0.25,-0.5), (0.25,0.25,0.25) — 6 of 10 all-real",
+    "verdict": "DYNAMICALLY UNSTABLE cubic Pm-3m CaAuH3 at the computed cell (~23 GPa). The imaginary modes (esp. the R-point octahedral rotation) mean the cubic structure spontaneously distorts -> it is NOT the true ground-state structure and NOT a superconductor as cubic. Breakthrough paths (d2): (1) follow the soft eigenvectors to a lower-symmetry distorted phase (tetragonal/orthorhombic octahedral tilt) and re-run el-ph; (2) pressure sweep — higher P may stiffen the R-point soft mode (re-run at the 5-GPa relaxed cell AND at >23 GPa); (3) full-relativistic Au SOC may shift the Fermi surface / soft-mode landscape."
+  },
+  "results_by_broadening_VERBATIM_full_BZ": [
+    {"broad_Ry": 0.005, "lambda_BZ": -5.5471, "note": "negative — imaginary-mode divergence, unphysical"},
+    {"broad_Ry": 0.010, "lambda_BZ": -3.5447},
+    {"broad_Ry": 0.015, "lambda_BZ": -2.6375},
+    {"broad_Ry": 0.020, "lambda_BZ": -2.0844, "PRIMARY_broadening": true, "note": "matches scf MP degauss=0.02 Ry — NEGATIVE => no valid Tc, lattice unstable"},
+    {"broad_Ry": 0.025, "lambda_BZ": -1.9311},
+    {"broad_Ry": 0.030, "lambda_BZ": -2.0053},
+    {"broad_Ry": 0.035, "lambda_BZ": -2.2305},
+    {"broad_Ry": 0.040, "lambda_BZ": -2.5097},
+    {"broad_Ry": 0.045, "lambda_BZ": -2.7578},
+    {"broad_Ry": 0.050, "lambda_BZ": -2.9399}
+  ],
+  "results_by_broadening_REAL_MODES_ONLY": [
+    {"broad_Ry": 0.005, "lambda_real": 0.9865, "omega_log_K": 333.96, "omega_log_cm1": 232.11, "Tc_AD_mu010_K": 22.77, "Tc_AD_mu013_K": 19.49, "note": "under-converged small-sigma double-delta"},
+    {"broad_Ry": 0.010, "lambda_real": 0.6903, "omega_log_K": 331.93, "omega_log_cm1": 230.70, "Tc_AD_mu010_K": 11.16, "Tc_AD_mu013_K": 8.49},
+    {"broad_Ry": 0.015, "lambda_real": 0.7972, "omega_log_K": 335.50, "omega_log_cm1": 233.18, "Tc_AD_mu010_K": 15.61, "Tc_AD_mu013_K": 12.60},
+    {"broad_Ry": 0.020, "lambda_real": 0.9209, "omega_log_K": 332.90, "omega_log_cm1": 231.38, "Tc_AD_mu010_K": 20.288, "Tc_AD_mu013_K": 17.082, "PRIMARY": true, "note": "sigma matches scf degauss=0.02 Ry (self-consistent)"},
+    {"broad_Ry": 0.025, "lambda_real": 1.0248, "omega_log_K": 326.30, "omega_log_cm1": 226.79, "Tc_AD_mu010_K": 23.58, "Tc_AD_mu013_K": 20.35},
+    {"broad_Ry": 0.030, "lambda_real": 1.1342, "omega_log_K": 317.20, "omega_log_cm1": 220.46, "Tc_AD_mu010_K": 26.43, "Tc_AD_mu013_K": 23.23},
+    {"broad_Ry": 0.035, "lambda_real": 1.2557, "omega_log_K": 306.52, "omega_log_cm1": 213.04, "Tc_AD_mu010_K": 28.98, "Tc_AD_mu013_K": 25.87},
+    {"broad_Ry": 0.040, "lambda_real": 1.3696, "omega_log_K": 296.11, "omega_log_cm1": 205.81, "Tc_AD_mu010_K": 30.82, "Tc_AD_mu013_K": 27.83},
+    {"broad_Ry": 0.045, "lambda_real": 1.4561, "omega_log_K": 287.41, "omega_log_cm1": 199.76, "Tc_AD_mu010_K": 31.84, "Tc_AD_mu013_K": 28.94},
+    {"broad_Ry": 0.050, "lambda_real": 1.5111, "omega_log_K": 280.84, "omega_log_cm1": 195.19, "Tc_AD_mu010_K": 32.24, "Tc_AD_mu013_K": 29.42}
+  ],
+  "primary_verdict": {
+    "broadening_choice": "el_ph_sigma=0.020 Ry — matches scf MP degauss=0.02 Ry (self-consistent).",
+    "verbatim_full_BZ_lambda": -2.0844,
+    "verbatim_lambda_note": "NEGATIVE => no physically valid Tc; the cubic lattice is dynamically unstable.",
+    "real_modes_only_lambda": 0.9209,
+    "real_modes_only_omega_log_K": 332.90,
+    "real_modes_only_omega_log_cm1": 231.38,
+    "real_modes_only_Tc_AD_mu010_K": 20.288,
+    "real_modes_only_Tc_AD_mu013_K": 17.082,
+    "real_modes_plateau_Tc_K": "8.5 (sigma0.010 mu0.13) to 32.2 (sigma0.050 mu0.10); self-consistent sigma=0.020 gives 17-20 K",
+    "tier": "RED — CLOSED-NEGATIVE (dynamically unstable). Real-mode Allen-Dynes Tc hexa-verified GREEN as a numerical sub-result, but the structure is unstable so the operative verdict is closed-negative."
+  },
+  "Tc": {
+    "verdict": "NO VALID Tc — dynamically unstable cubic phase. Real-mode (would-be-if-stabilized) Tc(mu*=0.10)=20.3 K, Tc(mu*=0.13)=17.1 K — weak-to-moderate, low-Tc.",
+    "real_mode_mu_star_0.10_K": 20.288,
+    "real_mode_mu_star_0.13_K": 17.082
+  },
+  "m_sign": {
+    "formula": "m = (lambda - 2.5) / lambda",
+    "value_real_mode_primary": -1.7148,
+    "sign": "-",
+    "interpretation": "NEGATIVE (real-mode lambda=0.92 << 2.5) -> weak-coupling side. RTSC m-sign batch entry: CaAuH3 = weak-coupling (lambda < 2.5) AND dynamically unstable. Full-BZ verbatim lambda is itself negative (unphysical, instability)."
+  },
+  "verify_verbatim": {
+    "tool": "hexa verify --expr allen_dynes_tc <lambda> <omega_log_K> <mu*> <Tc_expected_full_precision>",
+    "host": "local hexa (/Users/ghost/.hx/bin/hexa) — hexa-native libm-class recompute",
+    "subject": "real-modes-only Allen-Dynes Tc (the only physically meaningful Tc; the full-BZ lambda is negative so no Tc there)",
+    "mu_star_0.10": "verify --expr allen_dynes_tc(0.9209,332.9,0.1)=20.2877 | calc = 20.2877 ≈ expected 20.2877 (|Δ|=1.57492e-11 ≤ ε=1e-9) | tier = 🟢 SUPPORTED-NUMERICAL (hexa-native libm-class recompute, TECS-L n6-rep Tier2) | absorb = already in atlas — idempotent skip",
+    "mu_star_0.13": "verify --expr allen_dynes_tc(0.9209,332.9,0.13)=17.0818 | calc = 17.0818 ≈ expected 17.0818 (|Δ|=4.18225e-11 ≤ ε=1e-9) | tier = 🟢 SUPPORTED-NUMERICAL (hexa-native libm-class recompute, TECS-L n6-rep Tier2) | absorb = already in atlas — idempotent skip",
+    "anchor_note": "Full-precision expected anchors (Tc010=20.2876551817, Tc013=17.0818446851) fed -> 🟢 (rounded would 🔴 the abs-ε=1e-9 trap per memory)."
+  },
+  "verdict_tier": "RED — CLOSED-NEGATIVE (g63, d6 honest). Complete 4x4x4-q IBZ (10/10, star-weights sum 64), but cubic Pm-3m CaAuH3 is DYNAMICALLY UNSTABLE at the computed ~23 GPa cell: 4/10 IBZ q-points carry imaginary phonons (R-point -324 cm-1 octahedral rotation; -293, -261, -25 cm-1 elsewhere). The full-BZ el-ph lambda is therefore NEGATIVE (-2.08 at the self-consistent sigma) — no valid Tc, no superconductivity in the cubic phase. The real-mode stable-subspace coupling is only lambda=0.92 -> Allen-Dynes Tc 17-20 K (hexa-verified GREEN as a number), i.e. WEAK-coupling LOW-Tc even if the lattice were stabilized. The high-Tc / RTSC hypothesis for cubic CaAuH3 is FALSIFIED on two independent axes (instability + low lambda). This rules out the cubic Pm-3m Ca-substituted SrAuH3 perovskite-hydride as an RTSC candidate at this pressure. Pressure-bound + unstable -> absorbed=false.",
+  "verdict": "RTSC A11 terminal CLOSED-NEGATIVE. Cubic Pm-3m CaAuH3 (Ca-substituted SrAuH3 perovskite-hydride) at ~23 GPa is dynamically unstable — the R-point octahedral-rotation soft mode (-324 cm-1) and three other soft q-points drive the QE el-ph lambda negative (full-BZ lambda=-2.08 at sigma=0.020). Not a superconductor as cubic. The stable real-mode subspace gives only lambda=0.92, omega_log=333 K, Allen-Dynes Tc=20.3 K (mu*=0.10)/17.1 K (mu*=0.13), both hexa-verified GREEN — weak-coupling low-Tc. Contrast with the YH10 high-Tc verdict (lambda=2.82, Tc 216-228 K): the perovskite-hydride mechanism for the Ca-variant does NOT reach high-Tc and is structurally unstable in the cubic phase. Negative result (d_paper_negative_ok) ruling out cubic Ca-substituted SrAuH3 perovskite-hydride at this pressure.",
+  "honesty_notes": [
+    "q-grid COMPLETE (10/10 IBZ, star weights 1,6,3,12,12,3,8,12,6,1 sum 64 = full BZ) — this is a closed-negative on PHYSICS (instability), NOT on partiality. d6 partiality does NOT apply.",
+    "IMAGINARY MODES are the headline (g63): 4/10 q-points soft, incl. -324 cm-1 triple-degenerate R-point. Cubic CaAuH3 is dynamically unstable -> NOT a superconductor in this structure. Surfaced honestly, not buried.",
+    "PROVENANCE: the el-ph ran on the START cubic cell (celldm 6.8361, ~23 GPa scf), NOT the vc-relaxed cell — chain.log shows 'celldm=0' patch (the RUNBOOK scf.in update did not apply). So the verdict is for cubic CaAuH3 at ~23 GPa. The vc-relax itself converged to a 5-GPa cell (volume 367.4 a.u.^3). Either point is high-P, not ambient.",
+    "Full-BZ verbatim lambda is NEGATIVE (-2.08 at primary) — this is the correct, honest, unphysical signature of the divergent soft mode (lambda(-25cm-1)=-16.0 x star12). I did NOT force it positive or hide it.",
+    "Real-modes-only lambda=0.92 (Tc 17-20 K) is a SECONDARY characterization of the stable subspace — reported so the reader sees the coupling is weak-to-moderate EVEN IF stabilized. It is NOT presented as the material's Tc (the material is unstable).",
+    "Au 5d SOC NOT included (scalar-relativistic Au UPF). Full-rel SOC is a deferred cross-check that could shift the soft-mode landscape (d2 breakthrough path).",
+    "This is a CLOSED-NEGATIVE, not a high-Tc result. It is a valid terminal verdict (d_paper_negative_ok) and a publishable negative finding.",
+    "Pressure-bound + dynamically unstable -> absorbed=false retained (fails RTSC ambient gate AND dynamical-stability gate)."
+  ],
+  "provenance": {
+    "dft_run_host": "vast.ai pod 38095989 (ssh9.vast.ai:15988, @anima)",
+    "remote_workdir": "/root/CaAuH3",
+    "campaign": "RTSC A11 (CaAuH3 perovskite-hydride; SrAuH3 Ca-variant)",
+    "artifacts_copied": ["caauh3.dyn0", "ph.out", "startq.out", "scf.out", "vc-relax.out", "scf.in", "ph.in", "vc-relax.in", "chain.log", "caauh3.dyn1-10.elph.1-10"],
+    "local_raw_dir": "exports/material_discovery/_caauh3_raw/",
+    "aggregation_method": "inline python (QE star-weighted lambda + lambda-weighted omega_log over real modes; CM_TO_K=1.438776877, RY_TO_CM=109737.316). Same method as rtsc_yh10_dft_elph_20260528.json.",
+    "capture_date": "2026-05-30",
+    "harvest_mode": "read-only copy-from/exec (g8 — hexa cloud only, NO raw ssh/scp; pod NOT modified/downed — its 4 other live decks (MgBeH8/cabeh8 etc., 36 ph.x procs) untouched; NO CaAuH3 ph.x running = terminal confirmed)"
+  },
+  "citations": [
+    "exports/material_discovery/rtsc_yh10_dft_elph_20260528.json (YH10 — same 4x4x4-q el-ph-simple star-weighted aggregation method; high-Tc contrast anchor)",
+    "exports/material_discovery/rtsc_srauh3_dft_4x4x4q_20260525.json (SrAuH3 parent perovskite-hydride — d19 anchor)",
+    "Allen & Dynes 1975 PRB 12 905 (Tc modified-McMillan)",
+    "Quantum ESPRESSO 7.5 (ph.x electron_phonon='simple')",
+    "project.tape @D d5 (absorbed gate) · d6 (honest, under-converged != result) · @D g5 (verify verbatim) · g8 (hexa cloud only) · g63 (low-Tc / closed-negative still valid) · d_paper_negative_ok (closed-negative publishable)"
+  ]
+}
