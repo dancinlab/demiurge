@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated_utc": "2026-05-31T10:56:43Z",
+  "last_updated_utc": "2026-05-31T16:22:20Z",
   "pods": {
     "37868501": {
       "host": "ssh6.vast.ai:28500",
@@ -50,6 +50,22 @@
       "host": "ssh3.vast.ai",
       "provider": "vast",
       "registered_utc": "2026-05-31T10:56:43Z"
+    },
+    "38832": {
+      "host": "root@194.14.47.19",
+      "registered_utc": "2026-05-31T16:22:00Z"
+    },
+    "1448": {
+      "host": "root@185.99.66.48",
+      "registered_utc": "2026-05-31T16:22:14Z"
+    },
+    "1522": {
+      "host": "root@107.205.138.127",
+      "registered_utc": "2026-05-31T16:22:17Z"
+    },
+    "1471": {
+      "host": "root@93.91.156.99",
+      "registered_utc": "2026-05-31T16:22:20Z"
     }
   },
   "jobs": {
@@ -287,6 +303,49 @@
       "stage": "rented",
       "started_utc": "2026-05-31T10:56:43Z",
       "verdict": "PENDING"
+    },
+    "YAuH3-phfix": {
+      "pod": "38832",
+      "dir": "/Users/mini/dancinlab/demiurge",
+      "stage": "running",
+      "pid": 38832,
+      "started_utc": "2026-05-31T16:22:00Z",
+      "verdict": "PENDING"
+    },
+    "SrPtH3-phfix": {
+      "pod": "1448",
+      "dir": "/Users/mini/dancinlab/demiurge",
+      "stage": "running",
+      "pid": 1448,
+      "started_utc": "2026-05-31T16:22:14Z",
+      "verdict": "PENDING"
+    },
+    "ScH9-phfix": {
+      "pod": "1522",
+      "dir": "/Users/mini/dancinlab/demiurge",
+      "stage": "running",
+      "pid": 1522,
+      "started_utc": "2026-05-31T16:22:17Z",
+      "verdict": "PENDING"
+    },
+    "BaAuH3-phfix": {
+      "pod": "1471",
+      "dir": "/Users/mini/dancinlab/demiurge",
+      "stage": "running",
+      "pid": 1471,
+      "started_utc": "2026-05-31T16:22:20Z",
+      "verdict": "PENDING"
     }
+  },
+  "drive": {
+    "on": true,
+    "budget_cap": null,
+    "max_pods": null,
+    "engaged_utc": "2026-05-31T18:42:13Z",
+    "note": "autonomous unlimited (user: 자율 무제한). harvest+resume+re-dispatch cross-turn."
+  },
+  "budget": {
+    "cap_usd": null,
+    "spent_usd": null
   }
 }
