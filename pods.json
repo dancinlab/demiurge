@@ -233,6 +233,51 @@
       "started_utc": "2026-05-29T10:48:00Z",
       "verdict": "PENDING",
       "workdir": "exports/rtsc/decks/YH9"
+    },
+    "rtsc-h3s-anchor": {
+      "pod": "38713334",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "phonon",
+      "verdict": "PENDING",
+      "note": "re-pointed keep-twin (9 q-pts) · consolidation",
+      "workdir": "exports/rtsc/decks/H3S_anchor"
+    },
+    "rtsc-ysbh6": {
+      "pod": "38795479",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "backlog re-fire · relax done, awaiting scf+ph",
+      "workdir": "exports/rtsc/decks/YSbH6"
+    },
+    "rtsc-thh10": {
+      "pod": "38814083",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "backlog canary · relax done, awaiting scf+ph",
+      "workdir": "exports/rtsc/decks/ThH10_clathrate"
+    },
+    "rtsc-mgcab2": {
+      "pod": "38815084",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "backlog · relax done, awaiting scf+ph",
+      "workdir": "exports/rtsc/decks/MgCaB2_x025"
+    },
+    "rtsc-luh10": {
+      "pod": "38815086",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "backlog falsifier · relax done, awaiting scf+ph",
+      "workdir": "exports/rtsc/decks/LuH10_falsifier"
     }
   },
   "drive": {
