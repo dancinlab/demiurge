@@ -2533,7 +2533,7 @@ from math import gcd
 from collections import Counter
 import random as _r
 
-d = json.load(open('/Users/ghost/Dev/nexus/shared/reality_map.json'))
+d = json.load(open('/Users/mini/Dev/nexus/shared/reality_map.json'))
 nodes = [n for n in d['nodes'] if isinstance(n,dict) and 'measured' in n and 'grade' in n]
 
 def sigma(n): return sum(k for k in range(1,n+1) if n%k==0)
@@ -2616,7 +2616,7 @@ print(f"\n검증 결과: {passed}/3 풀에서 z(n=6) > 5σ")
 
 ## 7. 데이터 출처
 
-- `/Users/ghost/Dev/nexus/shared/reality_map.json` (v8.0, 2026-04-08)
+- `/Users/mini/Dev/nexus/shared/reality_map.json` (v8.0, 2026-04-08)
 - `_meta.node_count = 342`, `grade_stats.EXACT = 325`
 - `origin_stats: natural=213, engineering=67, convention=62`
 
@@ -2740,7 +2740,7 @@ assert sigma(496)==992 and tau(496)==10 and phi(496)==240 and sopfr(496)==2+2+2+
 def strict_set(n):
     return {sigma(n), tau(n), phi(n), sopfr(n), jordan2(n)}
 
-d = json.load(open('/Users/ghost/Dev/nexus/shared/reality_map.json'))
+d = json.load(open('/Users/mini/Dev/nexus/shared/reality_map.json'))
 nodes = [x for x in d['nodes'] if '_comment' not in x and x.get('origin')=='natural']
 vals = []
 for x in nodes:

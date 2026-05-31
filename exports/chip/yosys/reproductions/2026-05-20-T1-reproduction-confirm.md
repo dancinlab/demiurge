@@ -57,7 +57,7 @@ The CLOSED_MEASURED record noted SKY130 lib ownership is open
 non-volatile copy already exists on this host:
 
 ```
-/Users/ghost/core/OpenROAD-flow-scripts/flow/platforms/sky130hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+/Users/mini/dancinlab/OpenROAD-flow-scripts/flow/platforms/sky130hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
   (12 800 135 bytes, mtime 2026-05-18)
 ```
 
@@ -70,7 +70,7 @@ upstream of this reproduction record.
 
 Ran `stdlib/yosys/gate_record.hexa` against `comb/rtl/router_d{4,6}.v`
 via `hexa-parse` (build path; module_loader resolved via
-`HEXA_MODULE_LOADER=/Users/ghost/core/hexa-lang/build/hexa_module_loader`).
+`HEXA_MODULE_LOADER=/Users/mini/dancinlab/hexa-lang/build/hexa_module_loader`).
 
 Pipeline trace (this session):
 - `read_verilog`, `hierarchy`, `proc`, `flatten`, `opt`, `techmap_sky130`,

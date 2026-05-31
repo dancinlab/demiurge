@@ -115,7 +115,7 @@ Case A (대표) 만 등록 (atlas 는 fn-id 별 1 entry, B/C 는 동일 fn → �
 ```
 hexa atlas register --from-verify ioffe_loop_bz(0.3,954930,0)=2.00000071565
   tier   = 🟢 SUPPORTED-NUMERICAL  (delegated via `hexa verify --expr`)
-  atlas  = folded @F verified-ioffe_loop_bz-num → /Users/ghost/core/hexa-lang/compiler/atlas/embedded.gen.hexa (binary-builtin SSOT)
+  atlas  = folded @F verified-ioffe_loop_bz-num → /Users/mini/dancinlab/hexa-lang/compiler/atlas/embedded.gen.hexa (binary-builtin SSOT)
   note   = visible to `hexa atlas lookup` immediately — no rebuild
 ```
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # demiurge — hx package entry point (hx convention: <pkg>/bin/<name>).
-# Installed via `hx install /Users/ghost/core/demiurge`, then reachable
+# Installed via `hx install /Users/mini/dancinlab/demiurge`, then reachable
 # as `demiurge <subcommand>` through the hx shim.
 #
 # The macOS SwiftUI cockpit GUI was scrapped — the user surface is now

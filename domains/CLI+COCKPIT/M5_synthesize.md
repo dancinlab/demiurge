@@ -45,7 +45,7 @@ synthesize의 입력 = design.md SSOT + analyze 수렴 결과. 출력 = sim asse
 
 ## 4. 살아있는 사례 ① — DAPTPGX V3 numerical recompute
 
-**input**: `/Users/ghost/core/demiurge/DAPTPGX/sims/v3_recompute.hexa` (Hardy-Weinberg + ICER + Markov)
+**input**: `/Users/mini/dancinlab/demiurge/DAPTPGX/sims/v3_recompute.hexa` (Hardy-Weinberg + ICER + Markov)
 
 **의도된 route** (per d7 small): pool ubu-1
 ```bash

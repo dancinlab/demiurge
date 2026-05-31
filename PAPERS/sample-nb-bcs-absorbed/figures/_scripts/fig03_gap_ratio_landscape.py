@@ -81,7 +81,7 @@ ax.legend(handles=[
 
 ax.grid(axis="y", linestyle=":", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
-out = "/Users/ghost/core/demiurge/PAPERS/sample-nb-bcs-absorbed/figures/fig03_gap_ratio_landscape.pdf"
+out = "/Users/mini/dancinlab/demiurge/PAPERS/sample-nb-bcs-absorbed/figures/fig03_gap_ratio_landscape.pdf"
 plt.savefig(out, bbox_inches="tight", pad_inches=0.05)
 print(f"[fig03] wrote {out}")
 print(f"  Nb measurement: {DATA[i_nb][1]} ± {DATA[i_nb][2]} → BCS rel-err = "

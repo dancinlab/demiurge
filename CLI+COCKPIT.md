@@ -94,7 +94,7 @@ verify --fence
 ```
 $ demiurge cli action verify bio
 action: 검증 (검증) · domain=bio — dispatching…
-[bio+verify] scanning /Users/ghost/core/demiurge/exports/bio/verify
+[bio+verify] scanning /Users/mini/dancinlab/demiurge/exports/bio/verify
 scanned 1 anima bridge record(s); latest = anima_bio_20260521T083318Z.json
 producer = anima-bio-hippocampus-memristor-bridge
             (anima-physics owns substrate; demiurge witnesses)
@@ -221,7 +221,7 @@ DAPTPGX 14/14 milestone (M1-M11 + V1-V4) 완수로 NOREFLOW · ISR · LPA의 cro
 | M5 synthesize | `scp v3_recompute.hexa mini:/tmp/ && ssh mini 'hexa run ...'` 32줄 stdout — pool wrapper hexa-compile bug fallback | ssh direct fallback = cross-domain 4번째 (LPA+ISR+NOREFLOW+DAPTPGX) — d7 routing 결정트리에 fallback chain (ubu-1→ubu-2→mini→로컬) 필수 |
 | M6 verify | `hexa verify --fence "..."` 4 claim → ⚪ + `hexa verify --expr phi 100 40` → 🔵 sanity + `hexa atlas stats` 16066 nodes | rubric · fence · expr · atlas-stats 4 dispatch path 모두 verified VERBATIM — M6_verify.md spec의 입력 데이터 |
 | M6 verify | V2 promoter 0-proposal bug — `atlas append-witness` syntactic 성공/promoter reject → 4 shard staged `/tmp/daptpgx-staging/` | atlas register의 hidden gate = promoter health · M6 surface dispatch에 사전체크 step 필요 (M6 spec §8) |
-| M7 handoff | `cp /Users/ghost/core/demiurge/archive/session-notes/patches/{stdlib-bio-stats,atlas-pgx-kind}.md ~/core/hexa-lang/inbox/patches/daptpgx-*-2026-05-25.md` ✅ | cross-project handoff = cp 1줄 + frontmatter convention · M7 spec의 살아있는 데이터 |
+| M7 handoff | `cp /Users/mini/dancinlab/demiurge/archive/session-notes/patches/{stdlib-bio-stats,atlas-pgx-kind}.md ~/core/hexa-lang/inbox/patches/daptpgx-*-2026-05-25.md` ✅ | cross-project handoff = cp 1줄 + frontmatter convention · M7 spec의 살아있는 데이터 |
 | M7 handoff | 6 inbox notes (M11 PGx 라이브러리 인벤토리) + 2 inbox patches (V2 stdlib + atlas extension) = 8 handoff packets | inbox notes (design) vs patches (code spec) 2-channel · cockpit M7 panel 책무 매핑 |
 | V4 ledger | 30 claim final: 🔵 0 + 🟢 5 + 🟡 18 + 🟠 4 + ⚪ 3 + 🔴 0 (V2 흡수 후 🔵 4 + 🟢 12 escalation 예상) | NOREFLOW V1 72-claim + ISR 7-fn + LPA 5-fn과 합산 17+ identity × 4 도메인 → PR #665 merge 시 일제 escalation |
 

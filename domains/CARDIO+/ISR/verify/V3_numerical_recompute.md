@@ -37,7 +37,7 @@ SE diffusion ★ (closed-form)      —                —                —
 
 ### §0.3 pool list 상태 (시연 시점)
 
-`pool list` 직접 호출 = `hexa build pool.hexa` compile error (`/Users/ghost/.hx/packages/pool/bin/pool.hexa` line 703/710/720 macro arg 미정의) — 별도 hexa-lang inbox 등록 권장 (per @D d8 absorb 경로).
+`pool list` 직접 호출 = `hexa build pool.hexa` compile error (`/Users/mini/.hx/packages/pool/bin/pool.hexa` line 703/710/720 macro arg 미정의) — 별도 hexa-lang inbox 등록 권장 (per @D d8 absorb 경로).
 
 회피 = `hexa cloud run <host>` (ssh-alias `ubu-1`) — `hexa cloud` 는 build OK · pool roster 없이도 alias 직접 사용. 본 V3 의 실제 ssh target:
 
@@ -314,7 +314,7 @@ V1 §3 의 NUM-01/02/04/05 — DFT · MD · CFD · FEA — 모두 본 V3 first-p
 
 본 V3 가 발견한 demiurge 자산 gap 3건 — hexa-lang/inbox/patches/ 에 등록 권고:
 
-1. **`pool.hexa` compile error** (`/Users/ghost/.hx/packages/pool/bin/pool.hexa` 703/710/720 `ks`/`i` 미정의) — `archive/session-notes/patches/pool_macro_arg_unbound.md`.
+1. **`pool.hexa` compile error** (`/Users/mini/.hx/packages/pool/bin/pool.hexa` 703/710/720 `ks`/`i` 미정의) — `archive/session-notes/patches/pool_macro_arg_unbound.md`.
 2. **`hexa verify --expr` float-arg 미지원** — `archive/session-notes/patches/verify_expr_float_kernel.md` — bio identity (higuchi · tafel · stokes_einstein · hill · arrhenius) 의 numerical recompute path.
 3. **`hexa cloud run` argv 의 newline 거부** — 본 V3 첫 시도 `bash -lc "..."` 실패 — `archive/session-notes/patches/cloud_run_heredoc.md` — `--stdin-script` 옵션 추가 권고.
 

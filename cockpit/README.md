@@ -26,7 +26,7 @@ cockpit/
 ## Install (macOS .app)
 
 ```
-hx install /Users/ghost/core/demiurge    # register as an hx package
+hx install /Users/mini/dancinlab/demiurge    # register as an hx package
 demiurge install                         # build + install /Applications/demiurge.app
 demiurge run                             # launch the installed app
 demiurge cli list-records                # run DemiurgeCLI through the shim

@@ -110,7 +110,7 @@ method → 명령 매핑:
 - 공개 구조 fetch (staged → `ubu-1:~/ttr-m5/inputs`):
   - PDB ×5: 1V4B(173KB) · 4G2C(734KB) · 2D3Q(606KB) · 1KYA(1.45MB) · 1ATJ(1.63MB)
   - ligand ×5: cid_2169·14570·54670067 (3D SDF) · cid_2973(DFO)·643975(FMN) (2D → RDKit embed 필요)
-- **rent 툴체인 이미 준비됨** (정정) — `/Users/ghost/bin/hexa-cloud` v0.2.1 (rent/down/list/status ✅, @D g8 호환) + `/Users/ghost/bin/vastai` (py3.12 venv). **반드시 절대경로 호출** (pool-route 훅이 Bash 를 load-balance → `~/bin` 은 mini 에만 존재). 정식루트 fresh 빌드는 loader gotcha 로 rent 누락 → 기존 prebuilt 사용.
+- **rent 툴체인 이미 준비됨** (정정) — `/Users/mini/bin/hexa-cloud` v0.2.1 (rent/down/list/status ✅, @D g8 호환) + `/Users/mini/bin/vastai` (py3.12 venv). **반드시 절대경로 호출** (pool-route 훅이 Bash 를 load-balance → `~/bin` 은 mini 에만 존재). 정식루트 fresh 빌드는 loader gotcha 로 rent 누락 → 기존 prebuilt 사용.
 
 **산화물 구조 ✅ (MP 키 등록 후 해금 · 2026-05-25)**
 - MP next-gen API fetch + 포뮬러 검증 (staged `mini:~/.cache/m5_oxides/`):
@@ -121,6 +121,6 @@ method → 명령 매핑:
 - ⚠ **ubu-1 conda/mamba 없음** → ASE/Vina/docking 전 micromamba 설치 필요 (무료, 가능).
 - 🔧 수동 comp-chem (전문 판단): CeO₂ NP carve · DyP Compound-I · FMN→FMNH⁻ · azo CHARMM36m 파라미터(CGenFF 로그인).
 
-**rent 인프라 ✅ (정정)** — `/Users/ghost/bin/hexa-cloud rent vast --gpu ... --image nvidia/cuda:12.4.1-devel-ubuntu22.04 --owner demiurge::m5` 로 즉시 가능 (절대경로). ⚠ 현재 vast 라이브 인스턴스 4개 과금 중 (RTSC 등 **타 작업** · 미접촉). rent 는 image 에 sshd 필수 (`nvidia/cuda:*-devel` 검증됨 · `miniconda3` 는 sshd 미기동).
+**rent 인프라 ✅ (정정)** — `/Users/mini/bin/hexa-cloud rent vast --gpu ... --image nvidia/cuda:12.4.1-devel-ubuntu22.04 --owner demiurge::m5` 로 즉시 가능 (절대경로). ⚠ 현재 vast 라이브 인스턴스 4개 과금 중 (RTSC 등 **타 작업** · 미접촉). rent 는 image 에 sshd 필수 (`nvidia/cuda:*-devel` 검증됨 · `miniconda3` 는 sshd 미기동).
 
 ⇒ **입력 구조 100% 수집 + rent 인프라 완료**. 남은 게이트 = **(1) ubu-1 micromamba (docking·NP carve 실행환경 · 무료), (2) 수동 cofactor 큐레이션 (DyP Compound-I · FMN→FMNH⁻ · azo CHARMM36m FF)** — MP 키 게이트는 해소됨.

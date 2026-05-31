@@ -8,7 +8,7 @@
 
 Sibling repo `github.com/dancinlab/hexa-aura` 봉인:
 - GitHub: `dancinlab/hexa-aura` → `dancinlab/archive-aura` (private)
-- 로컬 폴더 `/Users/ghost/core/hexa-aura/` 삭제
+- 로컬 폴더 `/Users/mini/dancinlab/hexa-aura/` 삭제
 - 핵심 docs / *.tape / papers / state(708 KB) → `domains/AURA/` 이관 (snapshot 전용 · 코드 없음)
 - 구현 SSOT(`stdlib/aura/*.py`)는 `~/core/hexa-lang/stdlib/aura/` 그대로 유지 — `aura.demi` cellrun manifest 그대로 동작 (@D d3 canonical-home 준수)
 

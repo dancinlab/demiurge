@@ -11,7 +11,7 @@ appendix SKELETON + companion + cover** 까지. 본문 fill 은 다음 배치.
 
 ### 한 일
 
-- `feat/cern-monograph` 워크트리를 origin/main 에서 분기 (`/Users/ghost/wt-cern-mono`).
+- `feat/cern-monograph` 워크트리를 origin/main 에서 분기 (`/Users/mini/wt-cern-mono`).
 - `cern-accelerator/` 스캐폴드 — fusion 구조(Makefile · preamble · `\tierBlue` 매크로 ·
   §Full Pipeline 표 · `\appendix` 와이어링 · pgfplots) 미러.
 - `main.tex` — 9-section spine + §Full Pipeline (탁상가속기 체인 7-stage 표) + §Limitations +

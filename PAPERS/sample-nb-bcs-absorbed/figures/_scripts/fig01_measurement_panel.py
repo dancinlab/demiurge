@@ -69,6 +69,6 @@ ax.legend(loc="lower left", fontsize=8, frameon=False)
 ax.grid(axis="x", linestyle=":", linewidth=0.5, alpha=0.5)
 
 plt.tight_layout()
-out = "/Users/ghost/core/demiurge/PAPERS/sample-nb-bcs-absorbed/figures/fig01_measurement_panel.pdf"
+out = "/Users/mini/dancinlab/demiurge/PAPERS/sample-nb-bcs-absorbed/figures/fig01_measurement_panel.pdf"
 plt.savefig(out, bbox_inches="tight", pad_inches=0.05)
 print(f"[fig01] wrote {out}  rel_err={rel:.4f}%  consensus={mean:.4f}+/-{sigma:.4f}")

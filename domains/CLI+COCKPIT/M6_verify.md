@@ -106,7 +106,7 @@ cockpit panel               CLI 호출                          cockpit render
 ## 8. 살아있는 사례 ④ — DAPTPGX V3 numerical recompute (🟢)
 
 cockpit이 V3 sim 결과를 표시할 때:
-- input: `/Users/ghost/core/demiurge/DAPTPGX/sims/v3_recompute.hexa`
+- input: `/Users/mini/dancinlab/demiurge/DAPTPGX/sims/v3_recompute.hexa`
 - exec: `ssh mini 'hexa run /tmp/v3_recompute.hexa'`
 - output: cockpit는 stdout (32 줄) 전체 표시 + claim별 tolerance check 결과 부여
 
@@ -131,7 +131,7 @@ cockpit이 V3 sim 결과를 표시할 때:
 | §5 fence demonstration | ⚪ SPECULATION-FENCED | 본문 verbatim verdict |
 | §6 atlas state | 🟢 SUPPORTED-NUMERICAL | atlas stats 직접 캡처 |
 | §7 cockpit ↔ CLI 매핑 | 🟠 INSUFFICIENT (디자인 명세) | spec 단계, 구현 미완 |
-| §8 DAPTPGX V3 사례 | 🟢 SUPPORTED-NUMERICAL | `/Users/ghost/core/demiurge/DAPTPGX/verify/V3_numerical_recompute.md` 본문 |
+| §8 DAPTPGX V3 사례 | 🟢 SUPPORTED-NUMERICAL | `/Users/mini/dancinlab/demiurge/DAPTPGX/verify/V3_numerical_recompute.md` 본문 |
 
 ## 11. 핵심 통찰 5 bullets
 

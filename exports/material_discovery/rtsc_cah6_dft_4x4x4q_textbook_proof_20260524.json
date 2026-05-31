@@ -69,7 +69,7 @@
   "provenance": {
     "dft_run_host": "pool:ubu-2 (free baseline · per @D d8 small-cell + free pool routing)",
     "remote_workdir": "ubu-2:/home/summer/rtsc_cah6_retry/",
-    "local_result_txt": "/Users/ghost/etc/rtsc-results/cah6/result.txt",
+    "local_result_txt": "/Users/mini/etc/rtsc-results/cah6/result.txt",
     "ph_in_summary": "ldisp .true., nq=4x4x4, tr2_ph=1e-15, nmix_ph=6, alpha_mix(1)=0.3, electron_phonon='simple', el_ph_sigma=0.005, el_ph_nsigma=10, max_seconds=86000",
     "wall_clock": "00:26 KST launch -> 02:10 KST JOB DONE (~1h 44m)",
     "capture_date": "2026-05-24",

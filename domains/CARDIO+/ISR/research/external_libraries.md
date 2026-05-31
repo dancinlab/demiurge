@@ -190,16 +190,16 @@
 
 | # | slug | tool | absorb target | inbox note (absolute) |
 |---|---|---|---|---|
-| 1 | `chembl-bioactivity-fetch` | **ChEMBL REST + chembl_webresource_client** | `hexa stdlib chem.bioactivity` — IC50/Ki bulk lookup verb | `/Users/ghost/core/hexa-lang/inbox/notes/2026-05-25-chembl-bioactivity-fetch.md` |
-| 2 | `pubchem-cid-resolver` | **PubChem PUG-REST** | `hexa stdlib chem.pubchem` — CID/SMILES/logP resolver | `/Users/ghost/core/hexa-lang/inbox/notes/2026-05-25-pubchem-cid-resolver.md` |
-| 3 | `drugbank-label-lookup` | **DrugBank Pro REST** | `hexa stdlib chem.drugbank` — clinical label/ADMET hook | `/Users/ghost/core/hexa-lang/inbox/notes/2026-05-25-drugbank-label-lookup.md` |
-| 4 | `bindingdb-affinity-matrix` | **BindingDB REST** | `hexa stdlib chem.bindingdb` — target×ligand Ki matrix | `/Users/ghost/core/hexa-lang/inbox/notes/2026-05-25-bindingdb-affinity-matrix.md` |
-| 5 | `simvascular-cfd-driver` | **SimVascular Python API** | `hexa stdlib sim.cardio` — patient-specific CFD verb | `/Users/ghost/core/hexa-lang/inbox/notes/2026-05-25-simvascular-cfd-driver.md` |
-| 6 | `febio-biomech-driver` | **FEBio + febio-python** | `hexa stdlib sim.biomech` — nonlinear FEA verb | `/Users/ghost/core/hexa-lang/inbox/notes/2026-05-25-febio-biomech-driver.md` |
-| 7 | `openfoam-cfd-driver` | **OpenFOAM (pyFoam)** | `hexa stdlib sim.cfd` — DCB drug elution CFD verb | `/Users/ghost/core/hexa-lang/inbox/notes/2026-05-25-openfoam-cfd-driver.md` |
-| 8 | `pk-sim-mobi-driver` | **OSP PK-Sim / MoBi (open)** | `hexa stdlib pk.pbpk` — vessel wall compartment | `/Users/ghost/core/hexa-lang/inbox/notes/2026-05-25-pk-sim-mobi-driver.md` |
-| 9 | `monai-medimaging-backbone` | **MONAI (PyTorch)** | `hexa stdlib imaging.med` — OCT/IVUS DL backbone | `/Users/ghost/core/hexa-lang/inbox/notes/2026-05-25-monai-medimaging-backbone.md` |
-| 10 | `redcap-edc-bridge` | **REDCap API** | `hexa stdlib registry.edc` — IIT CRF bridge | `/Users/ghost/core/hexa-lang/inbox/notes/2026-05-25-redcap-edc-bridge.md` |
+| 1 | `chembl-bioactivity-fetch` | **ChEMBL REST + chembl_webresource_client** | `hexa stdlib chem.bioactivity` — IC50/Ki bulk lookup verb | `/Users/mini/dancinlab/hexa-lang/inbox/notes/2026-05-25-chembl-bioactivity-fetch.md` |
+| 2 | `pubchem-cid-resolver` | **PubChem PUG-REST** | `hexa stdlib chem.pubchem` — CID/SMILES/logP resolver | `/Users/mini/dancinlab/hexa-lang/inbox/notes/2026-05-25-pubchem-cid-resolver.md` |
+| 3 | `drugbank-label-lookup` | **DrugBank Pro REST** | `hexa stdlib chem.drugbank` — clinical label/ADMET hook | `/Users/mini/dancinlab/hexa-lang/inbox/notes/2026-05-25-drugbank-label-lookup.md` |
+| 4 | `bindingdb-affinity-matrix` | **BindingDB REST** | `hexa stdlib chem.bindingdb` — target×ligand Ki matrix | `/Users/mini/dancinlab/hexa-lang/inbox/notes/2026-05-25-bindingdb-affinity-matrix.md` |
+| 5 | `simvascular-cfd-driver` | **SimVascular Python API** | `hexa stdlib sim.cardio` — patient-specific CFD verb | `/Users/mini/dancinlab/hexa-lang/inbox/notes/2026-05-25-simvascular-cfd-driver.md` |
+| 6 | `febio-biomech-driver` | **FEBio + febio-python** | `hexa stdlib sim.biomech` — nonlinear FEA verb | `/Users/mini/dancinlab/hexa-lang/inbox/notes/2026-05-25-febio-biomech-driver.md` |
+| 7 | `openfoam-cfd-driver` | **OpenFOAM (pyFoam)** | `hexa stdlib sim.cfd` — DCB drug elution CFD verb | `/Users/mini/dancinlab/hexa-lang/inbox/notes/2026-05-25-openfoam-cfd-driver.md` |
+| 8 | `pk-sim-mobi-driver` | **OSP PK-Sim / MoBi (open)** | `hexa stdlib pk.pbpk` — vessel wall compartment | `/Users/mini/dancinlab/hexa-lang/inbox/notes/2026-05-25-pk-sim-mobi-driver.md` |
+| 9 | `monai-medimaging-backbone` | **MONAI (PyTorch)** | `hexa stdlib imaging.med` — OCT/IVUS DL backbone | `/Users/mini/dancinlab/hexa-lang/inbox/notes/2026-05-25-monai-medimaging-backbone.md` |
+| 10 | `redcap-edc-bridge` | **REDCap API** | `hexa stdlib registry.edc` — IIT CRF bridge | `/Users/mini/dancinlab/hexa-lang/inbox/notes/2026-05-25-redcap-edc-bridge.md` |
 
 → **핵심 픽 3**:
 - **#5 simvascular-cfd-driver** — M5 DCB carrier release + M6 BRS WSS 패턴 검증의 open SSOT.
