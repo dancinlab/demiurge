@@ -80,17 +80,6 @@
   dont = "ask 'may I rent?' · defer fire to shrink cost · gate scale-up behind a 1-cell step"
   dont = "$ cap / budget gate that requires user sign-off before firing"
 
-@D d_parallel_fire := "pod dispatch — 1 pod=1 candidate · own-pod parallel · paced, no fork-storm" :: governance [required active]
-  do   = "1 pod = 1 candidate · each candidate gets its own pod (ranks<=physcores, OMP/MKL=1)"
-  do   = "pace dispatch 1-2 at a time via attached `hexa cloud dft-run` · `df` headroom check first"
-  do   = "split a candidate off a shared / over-subscribed pod onto its own pod on sight"
-  dont = "bin-pack 2+ candidates on one pod — oversubscription thrash + disk-fill kills both"
-  dont = "fire-and-forget `( nohup … & )` double-fork → launchd zombie re-launch storm"
-
-@D d_domains_demi_only := "domains/ = .demi domain files only — engine/code projects live at repo root" :: governance [required active]
-  do   = "engine/code project (own source tree, e.g. QFORGE) → repo root + DOMAINS.tape roster link"
-  dont = "nest a code/engine project folder under domains/ — domains/ = .demi domain files, not source home"
-
 @D d18 := "round-1 of every cycle/domain — include NOVEL + arxiv + web deep research from the start" :: governance [required active]
   do   = "round-1 fan-out includes >=1 NOVEL probe and >=1 arxiv+web deep-research search"
   dont = "round-1 with only incremental milestones · skip lit grounding · defer NOVEL to later round"
@@ -105,31 +94,26 @@
 #
 # Adapted from anima a_paper_* / a_claim_* (itself a port of hexa-codex cx_paper_*).
 # Prefix = `d_` (matches demiurge's d1-d17 directive family).
-# demiurge does NOT mint a new oracle — the typed record IS the verdict:
-#   exports/material_attestation/<m>/*.json  (measurement_gate · absorbed)
-#   exports/material_verdict/<m>/*.json        (aggregate_verdict · absorbed)
+# demiurge does NOT mint a new oracle — the atlas atom IS the verdict:
+#   embedded.gen.hexa (atlas SSOT · hexa atlas dump --json for audit index)
 # Groups = ABSORPTION · SYNTHESIS · ARCH (one canonical paper each).
 #
 # LINT: every `do =` / `dont =` value is ≤100 chars (verified pre-merge).
 #
 # Paste the block below between d17 and the philosophy/closing section.
 
-# ── PAPER auto-generation flow (ported from anima a_paper_* · cx_paper_* lineage) ──
-# research result → typed record (attestation/verdict) → .verdicts/<slug>/<id>.txt → CLAIMS.tape → /paper
+# ── PAPER auto-generation flow (atlas-as-audit-SSOT lineage) ──
+# research result → hexa verify pass → atlas atom direct fold → /paper
 
-@D d_claim_manifest := "CLAIMS.tape — single audit index of verifiable demiurge claims" :: workflow [required active]
-  do   = "every verifiable claim in root CLAIMS.tape — id · text · method · slug · group · record pointer"
-  dont = "scatter claims across domain logs without a CLAIMS.tape index — no audit surface"
+@D d_atlas_as_audit_ssot := "atlas embedded.gen.hexa single SSOT — zero intermediate ledger files" :: workflow [required active]
+  do   = "verify pass → atlas atom direct fold (assumes · recipe · provenance · falsifier meta)"
+  do   = "audit index = `hexa atlas dump --json` (per-claim · per-domain · per-group queries)"
+  dont = "CLAIMS.tape · per-domain ledger · attestation JSON · .verdicts mirror · any intermediate index"
 
-@D d_campaign_ledger := "per-candidate campaign ledger JSONL at repo root — RTSC_LEDGER.jsonl is the reference" :: workflow [required active]
-  do   = "each campaign keeps root <NAME>_LEDGER.jsonl — 1 line per candidate (status·verdict·record)"
-  do   = "update the candidate line on every state change — fire·crash·harvest·terminal verdict"
-  dont = "scatter status across pods/logs w/o the root ledger · leave a state change unmirrored"
-
-@D d_claim_verify := "every claim closed by a typed record, excerpt persisted verbatim" :: workflow [required active]
-  do   = "close each CLAIMS.tape entry with a typed record (attestation/verdict) or `hexa verify` (g5)"
-  do   = "mirror the record's field excerpt verbatim into `.verdicts/<slug>/<id>.txt`"
-  dont = "LLM self-judge correctness (g3) · paraphrase the record · hide an INCONCLUSIVE / unfenced claim"
+@D d_claim_verify := "every claim closed by an atlas atom (hexa verify pass · direct fold)" :: workflow [required active]
+  do   = "close each claim via `hexa verify` (g5) → atlas atom direct fold into embedded.gen.hexa"
+  do   = "atom meta carries the verdict verbatim — assumes · recipe · provenance · falsifier · tier"
+  dont = "LLM self-judge correctness (g3) · paraphrase the atom · hide an INCONCLUSIVE / unfenced claim"
 
 @D d_paper_gate := "/paper gated on terminal verdict AND significance" :: workflow [required active]
   do   = "`/paper new <slug>` only when every section claim is terminal AND significance satisfied"
@@ -151,8 +135,8 @@
   do   = "commons g51 — compile ≥10 pages + ≥1 fal.ai figure"
   dont = "narrative-only · measurement substitute for hypothesis · skip §finding · vague claims"
 
-@D d_paper_sections := "every paper section claim links to its record mirror" :: workflow [required active]
-  do   = "every section claim links to its `.verdicts/<slug>/<id>.txt` record excerpt (verbatim)"
+@D d_paper_sections := "every paper section claim links to its atlas atom" :: workflow [required active]
+  do   = "every section claim links to its atlas atom id (resolved via `hexa atlas lookup <id>`)"
   do   = "an `RTSC absorbed=true` literal also passes `_tools/check_rtsc_claim.sh` (5-gate ALL_PASS)"
   dont = "ship paper with any unresolved residual section · treat the verdict matrix as optional"
 
@@ -180,3 +164,9 @@
   do   = "keep repo-root NEXUS.tape (cross-domain reuse graph) current"
   dont = "rebuild a sibling domain's verified primitive · leave a reuse edge off NEXUS.tape"
   dont = "link domains across repos — intra-project only"
+
+@D d_deploy := "web GUI surface ONLY — local hot-reload work mode · deploy gated on user approval" :: governance [required active]
+  do   = "web GUI: iterate live in localdev git tree (~/core/demiurge-localdev/web · next dev Fast Refresh)"
+  do   = "web deploy (push main → Cloud Run demiurge.dancinlab.org) ONLY on explicit user approval"
+  do   = "scope = web GUI surface ONLY — compute/campaign autonomy (d17) unaffected"
+  dont = "auto-merge/push/deploy web changes per tweak without approval"
