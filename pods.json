@@ -5,18 +5,18 @@
     "37868501": {
       "host": "ssh6.vast.ai:28500",
       "provider": "vast",
-      "note": "EXISTING \u2014 Wave-1 (do not touch)"
+      "note": "EXISTING — Wave-1 (do not touch)"
     },
     "38095989": {
       "host": "ssh9.vast.ai:15988",
       "provider": "vast",
-      "note": "EXISTING \u2014 A11 CaAuH3 flagship wave (do not touch; perovskite scf-done workdirs live here)"
+      "note": "EXISTING — A11 CaAuH3 flagship wave (do not touch; perovskite scf-done workdirs live here)"
     },
     "38367660": {
       "host": "ssh9.vast.ai:17660",
       "provider": "vast",
       "cores": 192,
-      "note": "EXISTING wave3 pod (9 jobs np=6) + 8 NEW bin-packed RTSC jobs np=6 each \u2014 102 ranks <= 192 cores, no oversubscription"
+      "note": "EXISTING wave3 pod (9 jobs np=6) + 8 NEW bin-packed RTSC jobs np=6 each — 102 ranks <= 192 cores, no oversubscription"
     },
     "38382692": {
       "host": "ssh8.vast.ai:22692",
@@ -24,14 +24,14 @@
       "cores": 192,
       "owner": "rtsc-parallel-fire",
       "registered_utc": "2026-05-29T10:24:00Z",
-      "note": "NEW \u2014 Li2MgH16 SOLO dedicated pod. micromamba QE 7.5. np=12, OMP=1. Shortest-walltime spec (nq 2x2x2, ecut 60, 250 GPa)."
+      "note": "NEW — Li2MgH16 SOLO dedicated pod. micromamba QE 7.5. np=12, OMP=1. Shortest-walltime spec (nq 2x2x2, ecut 60, 250 GPa)."
     },
     "38384813": {
       "host": "ssh6.vast.ai:24812",
       "provider": "vast",
       "owner": "rtsc-wave3b-1",
       "registered_utc": "2026-05-29T10:41:09Z",
-      "note": "wave3b fire pod \u2014 RTX PRO 6000 Blackwell 256-core, QE 7.5 conda-forge, 11 RTSC el-ph jobs PARALLEL (np=6 each, 66 ranks <= 256 cores, OMP/MKL/OPENBLAS=1, NO oversubscription, NO sequential chain)"
+      "note": "wave3b fire pod — RTX PRO 6000 Blackwell 256-core, QE 7.5 conda-forge, 11 RTSC el-ph jobs PARALLEL (np=6 each, 66 ranks <= 256 cores, OMP/MKL/OPENBLAS=1, NO oversubscription, NO sequential chain)"
     },
     "38444699": {
       "host": "ssh7.vast.ai",
@@ -150,15 +150,6 @@
       "verdict": "PENDING",
       "workdir": "exports/rtsc/decks/CeH9"
     },
-    "rtsc-layh10-fire": {
-      "pod": "38367660",
-      "dir": "/root/decks/LaY_H10",
-      "kind": "dft-elph",
-      "stage": "vc-relax",
-      "spec": "22-atom ordered LaYH20 sodalite (Fm-3m mean-lattice La+Y ordering, ASE), nq=2x2x2, ecut=70, press=250GPa, np=6",
-      "started_utc": "2026-05-29T10:30:18Z",
-      "verdict": "PENDING"
-    },
     "rtsc-wave3b-LaBeH8": {
       "pod": "38384813",
       "dir": "/root/decks/LaBeH8",
@@ -194,17 +185,6 @@
       "started_utc": "2026-05-29T10:48:00Z",
       "verdict": "PENDING",
       "workdir": "exports/rtsc/decks/YBeH8"
-    },
-    "rtsc-wave3b-CaBeH8": {
-      "pod": "38384813",
-      "dir": "/root/decks/CaBeH8",
-      "kind": "dft-elph",
-      "stage": "vc-relax",
-      "pid": 1166,
-      "np": 6,
-      "pressure_gpa": 50,
-      "started_utc": "2026-05-29T10:48:00Z",
-      "verdict": "PENDING"
     },
     "rtsc-wave3b-LaBH8": {
       "pod": "38384813",
@@ -253,111 +233,14 @@
       "started_utc": "2026-05-29T10:48:00Z",
       "verdict": "PENDING",
       "workdir": "exports/rtsc/decks/YH9"
-    },
-    "rtsc-wave3b-Y2InH18": {
-      "pod": "38384813",
-      "dir": "/root/decks/Y2InH18",
-      "kind": "dft-elph",
-      "stage": "vc-relax",
-      "pid": 1396,
-      "np": 6,
-      "pressure_gpa": 250,
-      "started_utc": "2026-05-29T10:48:00Z",
-      "verdict": "PENDING"
-    },
-    "rtsc-wave3b-Y2CdH18": {
-      "pod": "38384813",
-      "dir": "/root/decks/Y2CdH18",
-      "kind": "dft-elph",
-      "stage": "vc-relax",
-      "pid": 1442,
-      "np": 6,
-      "pressure_gpa": 250,
-      "started_utc": "2026-05-29T10:48:00Z",
-      "verdict": "PENDING"
-    },
-    "rtsc-wave3b-Ca2SnH18": {
-      "pod": "38384813",
-      "dir": "/root/decks/Ca2SnH18",
-      "kind": "dft-elph",
-      "stage": "vc-relax",
-      "pid": 1488,
-      "np": 6,
-      "pressure_gpa": 250,
-      "started_utc": "2026-05-29T10:48:00Z",
-      "verdict": "PENDING"
-    },
-    "rent-1780077655-ssh7-vast-ai": {
-      "pod": "38444699",
-      "dir": "/Users/mini/dancinlab/demiurge",
-      "kind": "rent",
-      "stage": "rented",
-      "started_utc": "2026-05-29T18:00:56Z",
-      "verdict": "PENDING"
-    },
-    "auto-1780126695-ssh6-vast-ai": {
-      "pod": "4528",
-      "dir": "/Users/mini/dancinlab/demiurge",
-      "stage": "running",
-      "pid": 4528,
-      "started_utc": "2026-05-30T07:38:15Z",
-      "verdict": "PENDING"
-    },
-    "auto-1780126737-ssh6-vast-ai": {
-      "pod": "4590",
-      "dir": "/Users/mini/dancinlab/demiurge",
-      "stage": "running",
-      "pid": 4590,
-      "started_utc": "2026-05-30T07:38:57Z",
-      "verdict": "PENDING"
-    },
-    "rent-1780225003-ssh3-vast-ai": {
-      "pod": "38754569",
-      "dir": "/Users/mini/dancinlab/demiurge",
-      "kind": "rent",
-      "stage": "rented",
-      "started_utc": "2026-05-31T10:56:43Z",
-      "verdict": "PENDING"
-    },
-    "YAuH3-phfix": {
-      "pod": "38832",
-      "dir": "/Users/mini/dancinlab/demiurge",
-      "stage": "running",
-      "pid": 38832,
-      "started_utc": "2026-05-31T16:22:00Z",
-      "verdict": "PENDING"
-    },
-    "SrPtH3-phfix": {
-      "pod": "1448",
-      "dir": "/Users/mini/dancinlab/demiurge",
-      "stage": "running",
-      "pid": 1448,
-      "started_utc": "2026-05-31T16:22:14Z",
-      "verdict": "PENDING"
-    },
-    "ScH9-phfix": {
-      "pod": "1522",
-      "dir": "/Users/mini/dancinlab/demiurge",
-      "stage": "running",
-      "pid": 1522,
-      "started_utc": "2026-05-31T16:22:17Z",
-      "verdict": "PENDING"
-    },
-    "BaAuH3-phfix": {
-      "pod": "1471",
-      "dir": "/Users/mini/dancinlab/demiurge",
-      "stage": "running",
-      "pid": 1471,
-      "started_utc": "2026-05-31T16:22:20Z",
-      "verdict": "PENDING"
     }
   },
   "drive": {
     "on": true,
     "budget_cap": null,
     "max_pods": null,
-    "engaged_utc": "2026-05-31T18:42:13Z",
-    "note": "autonomous unlimited (user: \uc790\uc728 \ubb34\uc81c\ud55c). harvest+resume+re-dispatch cross-turn."
+    "engaged_utc": "2026-06-01T05:20:00Z",
+    "note": "autonomous unlimited (자율 무제한). RE-ARMED post session-restart via CANONICAL 1.15.0 harness (tick --apply, no raw-ssh). harvest+resume+re-dispatch cross-turn."
   },
   "budget": {
     "cap_usd": null,
