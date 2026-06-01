@@ -180,6 +180,11 @@
   note  = "방사성 초수소화물(ThH10/AcH10) 후보 → RADGUARD 3축(제어/제거/결박) 안전성 참조"
   scope = "intra-project (g67); conceptual edge, no code reuse yet"
 
+@X c7 := "QFORGE el-ph engine -> RTSC (canonical compute engine)" :: reuse-candidate [proposed active]
+  note  = "QFORGE(hexa-native SCF·DFPT·λ·Tc, stdlib/qforge) = RTSC 캠페인 계산엔진. QE = cross-val reference."
+  gate  = "전환 게이트: QFORGE vs QE λ·Tc g5 일치(LaH10·CaH6·Li2MgH16) 통과 시 verified-edge 승격 + full migration"
+  scope = "intra-project (g67); engine dependency RTSC←QFORGE (QFORGE.md SSOT 선언). cross-val 통과 전 candidate."
+
 # ── 4. usage protocol (atlas-first · @D g67 / d19) ──
 
 @N n1 := "reuse protocol" :: note [active]

@@ -2,6 +2,8 @@
 
 @goal: 상온 상압 초전도체 293K 1atm — 경로 고압 수소화물 파이프라인 검증부터 상압 안정 구조 탐색까지 R4 absorbed false until measured oracle PASS
 
+@engine: QFORGE (hexa-native SCF·DFPT·λ·Tc · stdlib/qforge · NEXUS c7 RTSC←QFORGE) = canonical 계산엔진. QE(Quantum ESPRESSO) = cross-val reference/legacy. 전환 게이트 = QFORGE vs QE λ·Tc g5 일치(LaH10·CaH6·Li2MgH16) 통과 시 full migration. cross-val 통과 전 신규 결과는 QE로 검증 · absorbed 판정은 게이트 후.
+
 ## Milestones (progress)
 
 - [x] H₃S 측정-grade DFT 6³q — 2015 Drozdov 203K anchor 재현 (Tc_AD 175–195K)
@@ -22,6 +24,7 @@
 - [ ] Non-hydride RTSC family pilot (Nb₃Al, MgB₂) — BETE-NET trustworthy frontier 검증 · /gap full F8 (landscape) 응답 · `decks/nb3al/` + `decks/mgb2_pure/` spec LANDED, dispatch deferred · `domains/RTSC/research/non_hydride_candidates_brainstorm_20260527.md` (5-7 후보 표 + pilot rationale)
 - [ ] F-N6 pre-registered falsifier ledger (F-N6-1..4) — /gap full F4 응답 · `domains/RTSC/falsifiers/F-N6.md` · F-N6-1 (Mg₂IrH₆ PASSED 2026-05-26 PR#247) · F-N6-2 (Li₂CuH₆ PASSED 2026-05-27 PR#275) · F-N6-3 (LaBeH₈ anharm SSCHA Tc≥100K pre-register) · F-N6-4 (h3br pressure-scan ω_log slope ≥0.5K/GPa pre-register)
 - [x] Superlattice cell-design protocol (역할분리 가설 — stabilizer clamp + 강결합 H층) — `RTSC/protocols/SUPERLATTICE_CELL_DESIGN.md` (5-step commensurate stacking: sub-layer 독립 relax → ε_lattice<2% match → interstitial H placement [on-top Mg 금지, motif 차용] → LCM stacking AA/AB → stability pre-check gate). mgb2_mgh2 🔴 (Γ −1373×2) = 셀 결함 (on-top Mg naive), 가설 미반증 (d6 honest). 5 deferred 후보 cell-design table (lah_bn · cah6_b · h3as_h3o · mgb2_h3s · h3as_h3o_h3s) — blind-dispatch 금지, protocol 선행. compute $0 (doc only · DFT 다음 round). cf. `RTSC/protocols/VALIDATION_FIRST.md` gate 4 셀-구성 선행
+- [ ] h3o SSCHA x2 surgery × x18 ZPE 동시 작동 직접 증명 — anharmonic SSCHA 가 -682cm⁻¹ imaginary mode → +stable 회복하는 단일 사례에서 soft-mode surgery (x2) 와 ZPE 안정화 (x18) 두 메커니즘이 동시 실현됨을 직접 증명 · target: dispatch h3o anharmonic SSCHA + verify Tc bracket 9-109K · provenance: `domains/rtsc.mining.md` cycle 17 E34
 - [ ] measured-oracle PASS → RTSC absorbed=true (최종 d5 invariant 충족)
 
 ## verify (🔵 SUPPORTED-FORMAL push · per @D g5 · demiurge 자산 필수)
