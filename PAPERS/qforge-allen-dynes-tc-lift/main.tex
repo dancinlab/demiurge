@@ -24,12 +24,16 @@
   urlcolor=blue!50!black
 }
 
-% ---------- emoji tier badges (xelatex-native) ----------
-\providecommand{\tierBlue}{🔵}
-\providecommand{\tierGreen}{🟢}
-\providecommand{\tierYellow}{🟡}
-\providecommand{\tierOrange}{🟠}
-\providecommand{\tierRed}{🔴}
+% ---------- tier badges ----------
+% xelatex renders the literal tier emoji natively; tectonic's default Latin
+% Modern font lacks the color-emoji glyphs, so fall back to colored text
+% markers (per Makefile note: redefine \tier* to a non-emoji marker). Tier
+% semantics preserved -- each badge names its verification tier in its color.
+\providecommand{\tierBlue}{\textcolor{blue!60!black}{\textbf{[FORMAL]}}}
+\providecommand{\tierGreen}{\textcolor{green!50!black}{\textbf{[SUPPORTED]}}}
+\providecommand{\tierYellow}{\textcolor{yellow!55!black}{\textbf{[CITATION]}}}
+\providecommand{\tierOrange}{\textcolor{orange!85!black}{\textbf{[INCONCLUSIVE]}}}
+\providecommand{\tierRed}{\textcolor{red!75!black}{\textbf{[FALSIFIED]}}}
 
 \title{
   \textbf{Proper Allen--Dynes $f_1 f_2$ Raises Every Recorded $T_c$ in a
@@ -447,6 +451,9 @@ This work used the \texttt{hexa-lang} QFORGE verification surface and the
 \texttt{sidecar/paper} scaffold. LLM collaborator: Claude Opus 4.8 (1M context).
 
 % =========================================================================
+% surface all 11 curated references (the discussion grounds in the full set;
+% \nocite{*} lists every entry, not only the 4 inline \citep keys)
+\nocite{*}
 \bibliographystyle{plainnat}
 \bibliography{references}
 
