@@ -13,3 +13,4 @@
 @paper cube-fullcycle-617s              := "./PAPERS/cube-fullcycle-617s"
 @paper rtsc-dft-h3s-textbook-2026-05-22 := "./PAPERS/rtsc-dft-h3s-textbook-2026-05-22"
 @paper sample-nb-bcs-absorbed           := "./PAPERS/sample-nb-bcs-absorbed"
+@paper qforge-allen-dynes-tc-lift       := "./PAPERS/qforge-allen-dynes-tc-lift"
