@@ -256,6 +256,97 @@ number exists → rel-ε not computable. M6 HELD; dispatch default NOT flipped
 "QFORGE-NC engine RUNS but CaH6 needs the aperiodic-Hartree piece (M5.7)" is a VALID
 M6 result, not a failure.
 
+### M5.7 PR3 — REAL CaH6 SCF VERIFY (2026-06-01 · engine RUNS, residual = metallic mixing)
+
+Isolated worktree off origin/main `34d8657a7` (M5.7 PR2 #2426 HEAD), mini-local,
+POD-FREE (QE-NC pod torn down in cost-teardown → QE-vs-QFORGE cross-val OUT OF
+SCOPE / deferred). Deliverable: does the now-complete V_H[ρ] engine CONVERGE a
+real inhomogeneous CaH6 cell (the case that failed when V_H was a frozen stub)?
+
+**M5.7 selftests — g5 VERBATIM (all PASS):**
+```
+qforge_scf_pw_selftest PASS
+  PASS (E)(a) neutral uniform ρ: in-loop V_H=0 == frozen path (-0.781593)
+  PASS (E)(b) in-loop V_H added per-site: diag_on−diag_off = V_H[ρ] (0.0238734)
+  PASS (E)(b) V_H fires (non-uniform ρ → diag shifts)
+  PASS (E)(c) in-loop-V_H SCF converges (qforge_scf_pw_h)
+  PASS (E)(d) original qforge_scf_pw FE path unchanged
+qforge_screening_selftest PASS
+  PASS (H)(a) V_H[ρ]=(4π/|G|²)·δcos (analytic, neutral bg→0) (1.93159e-07)
+  PASS (H)(b) neutral/G=0: uniform ρ → V_H≡0 (0.0)
+  PASS (H)(c) V_H[ρ] == response Poisson core (d19 reuse) (0.0)
+qforge_orchestrator_pw_selftest PASS   (10/10 — full atoms→SCF→|g|²→λ→Tc chain)
+```
+
+**New engine bricks (this PR, g4):** `qforge_assemble_h_multi` (multi-species
+V_ext = Σ_s V_loc^s·S_s — a real heteroatomic hydride needs both Ca and H
+channels) + `qforge_scf_pw_h_multi` (drives that assembly with the M5.7 in-loop
+V_H[ρ]). d4-generic; CaH6/LaH10/Li2MgH16 traverse one entry. Fixture:
+`stdlib/qforge/fixtures/cah6_scf_run.hexa`.
+
+**CaH6 real-cell run — VERBATIM:**
+```
+UPF: Ca Z=10.0 mesh=1766 · H Z=1.0 mesh=1166
+valence electrons = 16 → nocc = 8
+cell: a=6.464 bohr  Ω=135.044 bohr³
+PW basis: n=16 lowest-|G|² G-vectors (NPW=16)
+--- SCF RESULT ---
+converged = false
+iters     = 80
+e_total   = -28.0543 (band-energy sum, Hartree)
+evals[0..nocc] = -4.797 -2.27637 -2.06876 -1.77885 -1.7461 -1.10997 -0.152709 -0.097395
+```
+
+**el-ph→Tc chain on the best-effort ρ — VERBATIM (engine-verify, NOT production):**
+```
+--- el-ph→Tc CHAIN (Γ-only Einstein, coarse — verification, not production) ---
+chain ok  = 1
+lambda    = 0.00926877
+omega_log = 1236.28 K
+Tc_AD     = 0.0 K
+Tc_ME     = 0.0 K
+```
+
+**FINDING (engine-verification milestone):** the M5.7 engine now RUNS a real
+inhomogeneous CaH6 cell END-TO-END — cell→H(multi-species)→SCF(in-loop V_H[ρ])→
+|g|²→λ→Tc — producing a FINITE, BOUND, density-dependent KS spectrum
+(e_total≈−28.05 Ha, occupied evals −4.80…−0.10 Ha) AND a FINITE chain λ=0.00927
+(ω_log=1236.28 K). This was IMPOSSIBLE before M5.7 (V_H was a frozen stub). The
+multi-species assembly + self-consistent ρ-loop + in-loop V_H[ρ] + el-ph contraction
+all execute on a real cell. λ is small / Tc→0 because (a) the SCF is best-effort
+not self-consistent (the M5.8 residual below) and (b) the rigid Einstein perturbation
+is a PLACEHOLDER for real DFPT modes — so this λ is an ENGINE-RUNS proof, NOT a
+production CaH6 Tc (and explicitly NOT the QE-validated λ=4.376).
+
+**HONEST residual (d6) — the SCF does NOT reach self-consistency.** A per-iter
+residual trace (mix=0.10, NPW=16) shows the density residual PINNED at ~0.83–1.7,
+NOT decreasing (e0 oscillating −3.5…−5.1 Ha) — a charge-sloshing LIMIT CYCLE:
+```
+it=1  resid=0.84654  e0=-3.48603
+it=5  resid=0.828348 e0=-5.12064
+it=10 resid=0.887076 e0=-4.29736
+it=20 resid=0.836888 e0=-4.47067
+it=40 resid=0.915781 e0=-3.8873
+it=60 resid=1.7077    e0=-4.47688
+```
+Root cause: CaH6 is METALLIC (deck: `occupations='smearing'`, MP, degauss=0.01).
+The shared `qforge_scf` driver uses (1) FIXED integer occupations — no Fermi
+level, no smearing (`scf_occupations`, scf.hexa L64), and (2) PLAIN linear mixing.
+Bands straddling E_F swap which is occupied between iterations → ρ jumps → no
+fixed point. **The residual is the OCCUPATION/MIXING scheme, NOT the Hartree
+wiring** (V_H[ρ] is verified active by both the spectrum and the M5.7 selftests).
+
+**BREAKTHROUGH PATH (d2) — new milestone M5.8:** add Fermi-Dirac/MP smearing
+(fractional occupations + an E_F solver) + Anderson/Broyden density mixing to the
+`qforge_scf` driver. This is the standard metallic-SCF convergence accelerator;
+with it the CaH6 self-consistent SCF should converge. Then the independent
+QFORGE-NC λ·Tc is producible, and (on a QE-NC re-fire) g5 cross-val.
+
+Per d6: NO fabricated λ, NO tuning to the QE target (λ=4.376), NO QE-moment
+fallback relabelled "independent". The QFORGE-NC engine output is reported as an
+INDEPENDENT engine result, NOT cross-validated (QE-NC pod gone). Gate stays HELD;
+dispatch default NOT flipped (d_qforge_engine — 3-anchor QE cross-val still required).
+
 ### PR #2407 — brick 1/5 structure factor S(G)
 `stdlib/qforge/structure.hexa` (+ selftest). S(G)=Σ_a exp(−i G·τ_a), cartesian
 + fractional builders. g5 VERBATIM (all PASS):
