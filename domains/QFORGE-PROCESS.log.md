@@ -96,3 +96,22 @@
   grand wall_s=1180  decks=2  skipped=0
   ```
   Reading: campaign-wide, the `ph` (per-q DFPT) stage class dominates at 66% of total wall across both decks — consistent with the single-deck #2477 finding, now confirmed to hold ACROSS the campaign, not just one deck. LaH10 is the slowest deck (57% of campaign wall). LaH10's `ph:q2` rss came back null → it is excluded from the rss sum (deck sum_rss = scf 900000 + ph:q1 700000 = 1600000), the d6 no-fabrication fail-safe carried up to the campaign tier.
+
+## 2026-06-02 — PROCESS library LIVE-wired into dft-run (#2477 analyzer auto-runs on terminal) · hexa-lang PR#2489
+- The PROCESS chain had the library (emit #2474 · analyze #2477 · regress #2483 · rollup #2487) but the analyzer was a HAND call. **Closed the loop**: `dft-run` now auto-runs the #2477 analyzer at the terminal/harvest point — no manual invocation. Every campaign run self-surfaces its per-stage bottleneck.
+- **Wire (hexa-lang `stdlib/cloud/dft_dispatch.hexa`)** — at BOTH terminal/harvest sites (the synchronous `--go` end AND the `--resume` ph-terminal end), after the chain harvests `ph.out`/`scf.out` it now ALSO pulls the deck-local `.dft_telemetry.jsonl` (the per-stage `_dft_telemetry_wrap` emitted it on the pod), runs `qforge_telemetry_report` + `qforge_telemetry_report_render`, and writes the ranked table to **`<deck>/.dft_bottleneck.txt`** (`_dft_write_bottleneck`).
+- **Guarded (@L2/d6)** — if `.dft_telemetry.jsonl` is ABSENT (a pre-#2474 run) OR EMPTY (a chain that never reached a wrapped stage), the wire writes NOTHING and returns clean (no error, no fabricated report). Existing dispatch behavior is byte-identical otherwise; the `.dft_stage` chain + per-stage builders are untouched (regression-pinned). The #2477 analyzer module is IMPORTED, not edited (@L3 — 0-diff to telemetry_report/regress/rollup).
+- **g5** — `dft_dispatch_test.hexa` extended (`HEXA_STDLIB_ROOT="$PWD/stdlib" hexa run …` PASS): terminal-WITH-telemetry → `.dft_bottleneck.txt` written with correct DESC-ranked content (ph before scf before relax, slowest flagged, total aggregated) · terminal-WITHOUT (absent + empty) → NO file, returns 0, no error · chain-additive regression (a pre-existing `.validated` sibling + the telemetry source both stay untouched). All cases ok.
+- **Sample auto-generated `<deck>/.dft_bottleneck.txt`** (4-stage chain: relax · scf · ph:q1 · ph:q2 — the per-q DFPT stages dominate, exactly the migration-gate live observation above):
+  ```text
+  QFORGE-PROCESS per-stage bottleneck report
+  stage        wall_s   %tot   peak_rss_kb  exit
+  -----------  -------  -----  -----------  ----
+  ph:q2            480    44%      2100000     0  ◄ slowest
+  ph:q1            420    38%      2048000     0
+  scf              120    11%       768000     0
+  relax             60     5%       512000     0
+  -----------  -------  -----  -----------  ----
+  total wall_s=1080  stages=4  malformed=0  unpaired=0
+  ```
+  Reading: with this single dispatcher write, every finished deck leaves a self-explanatory bottleneck table next to its outputs — `ph:q2` is the slowest stage (44% of wall), the two per-q DFPT stages together are 82% of total wall, confirming the el-ph (DFPT) stage class is the campaign bottleneck right at the point of harvest, with zero manual analysis.
