@@ -187,7 +187,7 @@
 
 @X c8 := "PWFORGE plane-wave H assembler -> QFORGE (cell->H_of_rho front-end)" :: reuse-candidate [tier-2 active]
   note  = "PWFORGE(평면파 해밀토니안 조립기 · domains/PWFORGE.md) = QFORGE SCF 가 소비하는 H_of_rho 입구. S(G)·V_loc->V_ext·kinetic·KB-projector -> H_of_rho closure."
-  gate  = "front-end LIVE — M1~M5 landed+g5-green (PR#2407~#2411), Si SCF in-repo 독립수렴 실증. 2026-06-01: M6 PP-input blocker CLOSED (ONCV NC Ca+H d13-검증 + upf_parse 소비 + CaH6_NC NC deck emit, hexa-lang feat/qforge-cah6-nc-m6). cell→H assembly 절반 CLOSED. 잔존 2-blocker: A=compute-dispatch(hexa cloud cloud_cli mac cache-GC race + 풀-다운, d8 patch) · B=engine-chain 갭(atoms→self-consistent-SCF→DFPT→|g|²→Tc orchestrator 부재 — M5.5/M5.6 미배선). M6 미종결 · gate HELD on #2+M6. M6 g5 통과 시 reuse-edge 승격."
+  gate  = "front-end LIVE + engine-chain blocker B CLOSED — M1~M5 landed+g5-green (PR#2407~#2411). 2026-06-01: M6 PP-input blocker CLOSED (ONCV NC Ca+H d13-검증 + CaH6_NC deck emit). **M5.5+M5.6+PR3 landed+g5-green (hexa-lang PR#2412·#2413·#2414)**: 실 self-consistent ρ-loop(scf_pw.hexa, V_H+V_xc 매-iter 갱신) + Sternheimer→|g|² atoms-경로(elph_scf.hexa, Hellmann-Feynman frozen-phonon FD 독립검증) + atoms→Tc in-repo orchestrator(orchestrator_pw.hexa). **독립 atoms→|g|² 경로 LIVE** — QE dvscf 모멘트 경계 미사용. cell→H assembly + atoms→Tc chain 둘 다 CLOSED. **잔존 blocker A 만**: compute-dispatch(hexa cloud cloud_cli mac cache-GC race + 풀-다운, d8 patch, 별도 에이전트) → QE-NC ref → CaH6 NC-vs-NC cross-val. M6 미종결(A 대기) · gate HELD on #2+M6(A). M6 g5 통과 시 reuse-edge 승격."
   scope = "intra-project (g67); QFORGE migration blocker #1 의 cell->H front-end 절반. d4 generic dispatch (H_of_rho = caller closure) · d6 no forced number. stdlib/qforge SSOT (d3)."
 
 # ── 4. usage protocol (atlas-first · @D g67 / d19) ──

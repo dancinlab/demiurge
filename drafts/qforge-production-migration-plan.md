@@ -201,6 +201,18 @@ qa-results). Run env note (g6): the campaign pool hosts (summer, aiden) are down
 (`preflight rc=255 workdir missing`), so all five selftests ran mini-local via
 `HEXA_LANG=. hexa run stdlib/qforge/<test>.hexa`.
 
+### engine-chain (M5.5/M5.6/PR3) — blocker B CLOSED, atoms→Tc LIVE
+Three stacked g4 PRs off origin/main in an isolated worktree, each g5-green on
+mini-local hexa, close the engine-chain structural gap (the prior assembler E2E
+proved the wiring with a density-INDEPENDENT stub, not a real SCF):
+- **PR#2412 M5.5** `scf_pw.hexa` (170 LOC) — density-dependent self-consistent
+  ρ-loop (V_H+V_xc re-evaluated each iter). 16/16 PASS.
+- **PR#2413 M5.6** `elph_scf.hexa` (177 LOC) — Sternheimer→|g|² from the SCF, no
+  QE moment boundary, Hellmann-Feynman frozen-phonon FD cross-check. 11/11 PASS.
+- **PR#2414 PR3** `orchestrator_pw.hexa` (133 LOC) — atoms→SCF→|g|²→λ→Tc full chain
+  in-repo. 10/10 PASS (Einstein round-trip λ=0.04076 = analytic).
+The independent atoms→|g|² path is LIVE; full verdicts in the gate-status section.
+
 ### PR #2407 — brick 1/5 structure factor S(G)
 `stdlib/qforge/structure.hexa` (+ selftest). S(G)=Σ_a exp(−i G·τ_a), cartesian
 + fractional builders. g5 VERBATIM (all PASS):
@@ -365,19 +377,40 @@ closes the STRUCTURAL half of blocker #1 (the cell-assembly + UPF→V_ext + PW
 Hamiltonian that was grep-confirmed absent).
 
 **blocker #1's |g|² ACCEPTANCE remains open** on CaH6 specifically. UPDATE
-2026-06-01: the PP-input sub-gap (matched NC Ca+H pseudos + NC deck) is now CLOSED
-(M6 path ① above), but acceptance still does NOT close, now on TWO residual blockers:
-(A) compute-dispatch — `hexa cloud` QE-NC run is blocked (mac cache-GC race + pool
-down; d8 patch filed), and (B) engine-chain — the independent QFORGE atoms→Tc chain
-(self-consistent ρ-loop + Sternheimer→|g|²) is not wired in-repo (M5.5/M5.6). So
-blocker #1 splits: **cell→H ASSEMBLY half = CLOSED; atoms→Tc CHAIN half = HELD.**
+2026-06-01: the PP-input sub-gap (matched NC Ca+H pseudos + NC deck) is CLOSED
+(M6 path ① above), AND **blocker B (engine-chain) is now CLOSED** — see below. So
+acceptance now hangs on a SINGLE residual blocker: (A) compute-dispatch — the
+`hexa cloud` QE-NC run (mac cache-GC race + pool down; d8 patch filed, separate agent).
+
+**blocker B (engine-chain) CLOSED — 2026-06-01 (hexa-lang PR#2412·#2413·#2414).**
+The independent QFORGE atoms→Tc chain is now WIRED in-repo and g5-green:
+- **M5.5** `stdlib/qforge/scf_pw.hexa` (PR#2412, 170 LOC) — the real self-consistent
+  ρ-loop. Every SCF iteration re-evaluates `V_scr = V_H(ρ) + V_xc(ρ)` (Slater-x +
+  PW92-c) and re-assembles H via assembler.hexa, graduating the prior density-
+  INDEPENDENT stub (the assembler E2E's `gh_of_rho` ignored ρ). g5 16/16 PASS:
+  free-electron reproduction; jellium V_xc shift = analytic LDA (V_x=−0.781593,
+  V_xc=−0.855151); self-consistent fixed point (converged ρ a TRUE fixed point,
+  Δρ<1e-7); energy monotone / mixing-invariant (E=0.535729).
+- **M5.6** `stdlib/qforge/elph_scf.hexa` (PR#2413, 177 LOC) — Sternheimer→|g|² from
+  the SELF-CONSISTENT SCF: g_{mn}=⟨ψ_m|ΔV_scf|ψ_n⟩ computed atoms→ with NO QE dvscf
+  moment boundary. g5 11/11 PASS, anchored by a Hellmann-Feynman frozen-phonon
+  finite-difference cross-check (g_00=−0.223116=dε_0/du FD) — a genuinely
+  independent derivative; plus bare limit, SC screening convergence, hermiticity,
+  acoustic sum rule.
+- **PR3** `stdlib/qforge/orchestrator_pw.hexa` (PR#2414, 133 LOC) — the full
+  atoms→SCF→|g|²→λ→Tc chain in-repo (QE in no loop). g5 10/10 PASS: chain completes
+  (ok=1, λ>0, Tc finite); |g|² is SCF-sourced (ΔV×2 → λ ratio = 4.0 exactly,
+  λ∝|g|²∝ΔV²); Einstein round-trip (chain λ=0.04076 = analytic).
+
+So blocker #1 now reads: **cell→H ASSEMBLY half = CLOSED; atoms→Tc CHAIN half = CLOSED
+(blocker B); M6 |g|² ACCEPTANCE = HELD on blocker A only.**
 
 **Gate still HELD on #2** (LaH10 + Li2MgH16 QE refs still PENDING/running).
 
-Decision: **dispatch default stays `qe`. NO flip.** blocker #1's H-assembly front-end
-is LIVE and the CaH6 PP-input is now resolved, but the independent atoms→Tc chain is
-not yet runnable (blockers A+B) and #2 still pends — so NO gate condition is fully
-satisfied and NOTHING is flipped. Remaining for the gate: (1) close M6 = QFORGE-NC ↔
-QE-NC |g|²/λ/Tc g5 cross-val on the CaH6_NC deck once blocker A (cloud dispatch) AND
-blocker B (M5.5+M5.6 atoms→Tc chain) clear, (2) LaH10 + Li2MgH16 QE refs to terminal.
-Plan stays `active`.
+Decision: **dispatch default stays `qe`. NO flip.** The independent atoms→|g|² path now
+EXISTS and the chain RUNS in-repo, but the M6 CaH6 NC-vs-NC cross-val still needs the
+QE-NC reference (blocker A) and #2 still pends — so NO gate condition is fully satisfied
+and NOTHING is flipped (d_qforge_engine — un-cross-val'd result must not flip absorbed).
+Remaining for the gate: (1) close M6 = QFORGE-NC ↔ QE-NC |g|²/λ/Tc g5 cross-val on the
+CaH6_NC deck once blocker A (cloud dispatch) clears (the sole remaining M6 gate),
+(2) LaH10 + Li2MgH16 QE refs to terminal. Plan stays `active`.
