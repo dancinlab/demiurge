@@ -102,3 +102,11 @@ Decks built but never fired (no .dft_detach.state / relax.out), reviewed for fir
 | yh10-400gpa | ✗ | 📦 LOW-park | "" |
 
 **LOW-park** = kept in the deck pool (NEVER deleted, d_defer_no_delete) but NOT queued — they refine/sweep already-CLOSED candidates, so they sit below every novel/target-aligned candidate. Re-prioritize only if the binary-wall or YH10-gate conclusions are reopened.
+
+## 2026-06-01 — Li2MgH16 (QFORGE-gate anchor) DEFERRED — dft-run direct-endpoint scp255
+
+| candidate | validated | action | note |
+|---|---|---|---|
+| Li2MgH16 | ✓ | ⛔ HELD-DEFERRED (confirmed scp-255 class · tooling blocker, NOT physics) | QFORGE migration-gate anchor (needs terminal QE λ·Tc). FRESH re-fire failed **×3** (instances 38917013, 38917304, **38917745**): `reachability OK` then `scp exit 255` → dft-run tore each down cleanly (zero orphan, verified via `hexa cloud reap --provider vast` dry-run — all 3 IDs absent). NOT transient — the offer's `--direct` bare-IP endpoint (116.101.122.173:59xxx) is proxy-only / refuses scp. **CRITICAL (2026-06-01): the changed recipe `--query "direct_port_count>=2"` did NOT bypass the broken offer — dft-run STILL re-picked 28919799 AND scp-255'd again.** So `direct_port_count` ≠ "scp works", and `--query` is ANDed into the search rather than excluding a known-bad pick. This is now a CONFIRMED class on this deck → per "stop auto-retrying a confirmed class on the SAME deck", NO further blind re-fires. **Blocker:** dft-run needs (a) scp proxy-fallback + (c) in-campaign offer blacklist (proposal (b) direct-port filter alone is insufficient — proven). **retry recipe (post-fix only):** `hexa cloud dft-run exports/rtsc/decks/Li2MgH16 --detach` once (a)+(c) land (offer 28919799 then auto-blacklisted + proxy-endpoint upload fallback). Interim manual route if needed: rent a known-direct/GPU offer by ID, `hexa cloud copy-to` the deck over the **proxy** endpoint (`hexa cloud resolve <id>` → sshN.vast.ai:PORT), launch relax there. d8 filed + updated (hexa-lang/inbox/patches/dft-run-direct-endpoint-scp255.md, 2026-06-01 section). |
+
+note: LaH10 (sibling gate anchor) is UNAFFECTED — its prior pod 38704336 is alive (adopted, project=demiurge) and its phonon DFPT is RUNNING; poll `hexa cloud dft-run exports/rtsc/decks/LaH10 --resume` for terminal harvest.
