@@ -105,6 +105,7 @@ PR claiming > ~2000× on a single GEMV contradicts this roofline and is suspect.
 |---|---|---|
 | dense H_apply matvec is memory-bound on RTX 5070 | 🟢 SUPPORTED-NUMERICAL | `.verdicts/qforge-perf-roofline/h-apply-membound.txt` |
 | CPU-scalar baseline ≈ 0.140 GFLOP/s (flat in n) | 🟢 measured | this file §2 (reproduce: `HEXA_LANG=. hexa run bench/qforge/h_apply_n256.hexa`) |
+| ⚡ H_apply forge-GEMM achieves a GPU speedup | 🔴 BLOCKED-MEASURED | this file §9 — pod 38986330 (RTX PRO 6000): byte-eq PASS (maxAbsDiff 1.4e-14) but GPU util 0%, forge path = CPU fallback, NO speedup |
 
 ## 7. The other three hot loops — per-call wall baselines
 
@@ -236,3 +237,31 @@ read-only) runs on the **same** deterministic matrix as `davidson_core` (n=256):
 accuracy Lanczos offers **no matvec-count advantage** — Davidson's diagonal
 preconditioner dominates on this well-separated spectrum. Closure: **Davidson stays**;
 Lanczos is not worth swapping in. Verdict `lanczos-vs-davidson.txt` (🟢).
+
+## 9. Measured GPU-pod attempt — H_apply forge-GEMM (pod 38986330, 2026-06-01)
+
+First live GPU-pod bench of the `qforge_h_apply` forge-GEMM seam (#2486 wip).
+Pod 38986330 = vast.ai RTX PRO 6000 Blackwell Workstation ×2. Harvested verbatim
+from `/root/gpu_bench.out` before teardown.
+
+```
+n , scalar_GFLOPs , forge_GFLOPs , wallDelta(scalar/forge) , maxAbsDiff
+256  , 0.0326284 , 0.0001692 , 0.00519 , 1.42e-14
+512  , 0.0273174 , 0.0259791 , 0.951   , 2.84e-14
+1024 , 0.0261850 , 0.0259079 , 0.989   , 7.82e-14
+```
+
+**Verdict — 🔴 BLOCKED-MEASURED (honest negative, g63):**
+- **Correctness PASS:** `maxAbsDiff = 1.4e-14` — the forge-GEMM path is byte-equivalent
+  to the scalar matvec. The seam is numerically correct.
+- **NO speedup — GPU never engaged.** `smi_during.csv` shows **0 % GPU util, 0–37 MiB**
+  throughout. `forge_dispatch_matmul` fell back to CPU on this build; it did not route
+  to cuBLAS. `forge_GFLOPs ≈ scalar_GFLOPs` (best 0.0259 at n=1024), and at n=256 the
+  forge path is ~193× SLOWER (dispatch/transfer overhead, no compute offload).
+- **achieved ÷ 0.140 baseline = 0.0259 / 0.140 ≈ 0.19×** — a slowdown, not a speedup.
+  The ⚡ H_apply GPU-GEMM board item **does NOT flip to closed** (closure rule §5/§100).
+
+**Next knob (minimal):** wire `forge_dispatch_matmul` to an actual GPU GEMM backend
+(cuBLAS / NVPTX device kernel) so util > 0; re-bench on the same pod-class. The
+roofline ceiling (§3, 139.88/279.76 GFLOP/s) remains the target once dispatch engages.
+The seam (#2486) and byte-eq are the durable wins; GPU offload is the open residual.

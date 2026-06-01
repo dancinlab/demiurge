@@ -241,3 +241,13 @@ dvscf-DFPT 만 가속(el-ph 최종은 CPU)하려는 *실험적* 경로 — 즉�
   max-centre.eu/quantumespresso-accelerating-electronic-structure-calculations-for-metals-on-gpus/
 - 우리 deck 확인: exports/rtsc/decks/{LaH10,Li2MgH16}/ph.in (`electron_phonon='simple'`,
   2×2×2 q, nat 11/38)
+
+## 2026-06-02 — GPU-pod H_apply forge-GEMM bench harvested + pod torn down
+- pod 38986330 (vast RTX PRO 6000 Blackwell ×2) ran the #2486 forge-GEMM seam bench;
+  prior session's managing agent died on SSH drop, leaving the pod billing.
+- Harvested `/root/gpu_bench.out` verbatim → posted to QFORGE-PERF.bench.md §9.
+- Result 🔴 BLOCKED-MEASURED: byte-eq PASS (maxAbsDiff 1.4e-14) but GPU util 0%
+  (`smi_during.csv`) — `forge_dispatch_matmul` fell back to CPU, NO speedup
+  (achieved 0.0259 ÷ 0.140 ≈ 0.19×). ⚡ H_apply GPU-GEMM stays open.
+- Next knob: wire forge_dispatch_matmul to a real cuBLAS/NVPTX backend, re-bench.
+- `hexa cloud down 38986330 --force` → destroyed (confirmed), registry closed.
