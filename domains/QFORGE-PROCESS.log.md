@@ -54,3 +54,21 @@
   total wall_s=4155  stages=5  malformed=0  unpaired=0
   ```
   Reading: phonon-per-q (`ph:q1`+`ph:q2`) dominates at 71% of wall — the el-ph campaign's true bottleneck is the per-q DFPT sweep, not relax/scf. That is the "MEASURE not anecdotal" lever the QFORGE-PROCESS loop set out to close.
+
+## 2026-06-02 — REGRESSION DETECTOR SHIPPED — cross-run wall/RSS Δ flag (the improvement lever)
+- hexa-lang PR#2483 (squash-merged → origin/main): `qforge_telemetry_regress(baseline_jsonl, current_jsonl, pct_threshold) -> RegressReport` in `stdlib/qforge/telemetry_regress.hexa`. Given a BASELINE run's `.dft_telemetry.jsonl` and a CURRENT run's, it JOINs per stage and flags any stage whose wall (or peak RSS) GREW beyond `pct_threshold` as REGRESSED (surfacing IMPROVED too). Reuses the PR#2477 `qforge_telemetry_report` parser (d3/d19 — no re-impl; `telemetry_report.hexa` is 0-diff). READ-only pure fn over two JSONL texts (no pod ops, no mutation, no I/O).
+- Edge cases (@L2): stage in current but not baseline = NEW · in baseline but not current = DROPPED · rss null on EITHER side → rss-Δ skipped + rendered `null` (d6 no fabrication), wall-Δ still computed · zero-baseline-wall → NEW (no divide-by-zero). Rows ranked by Δwall% DESC, NEW/DROPPED sink to the tail.
+- g5 `qforge_telemetry_regress_selftest` @ci_gate PASS (15 cases: >threshold flagged REGRESSED · sub-threshold NOT flagged · IMPROVED surfaced · NEW/DROPPED · real Δrss% both sides · rss-null one-side skip+render null · zero-baseline guard · empty/empty edge · rank worst-first).
+- RENDERED over a baseline-vs-slower-current pair (an el-ph re-dispatch where `scf` blew up — +80% wall, +66% rss — while `ph:q1`'s current-run rss came back null):
+  ```text
+  QFORGE-PROCESS cross-run regression report (threshold=+30%)
+  stage        kind        base_w   cur_w   Δwall   Δrss
+  -----------  ----------  -------  ------  ------  ------
+  scf          REGRESSED       300     540    +80%    +66%  ◄ REGRESSED
+  relax        SAME            120     130     +8%     +4%
+  lambda       SAME             10      10     +0%     +0%
+  ph:q1        SAME            200     190     -5%    null
+  -----------  ----------  -------  ------  ------  ------
+  base_total=630  cur_total=870  regressed=1  improved=0  new=0  dropped=0
+  ```
+  Reading: `scf` is the single REGRESSED stage (>+30% on both wall AND rss) — the cross-run "improvement lever" the QFORGE-PROCESS @goal calls for: the loop now MEASURES run-over-run drift, not just within-run bottlenecks. `ph:q1`'s `null` Δrss is the d6 fail-safe (current rss was null → no fabricated %).
