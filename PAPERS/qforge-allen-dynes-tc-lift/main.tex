@@ -446,6 +446,217 @@ on the same moments, to bracket the high-$\lambda$ hydrides between the McMillan
 lower bound and the Allen--Dynes upper bound.
 
 % =========================================================================
+\appendix
+
+\section{Per-candidate BLUE-MAX audit}
+\label{app:audit}
+
+The body summarizes the recompute and shows the \texttt{hexa verify} verdict for
+five representative candidates (Sec.~\ref{sec:verify}). This appendix discharges
+the full audit obligation: the complete provenance of every DFPT moment
+(Table~\ref{tab:provenance}), the per-candidate \texttt{hexa verify} grade for
+\emph{all $14$} rows at both $\mu^*$ (Table~\ref{tab:audit}), and a row-by-row
+reading of each candidate. Nothing here is new physics --- it is the underlying
+audit ledger (\texttt{companion/recompute-table.csv},
+\texttt{companion/verify-ledger.json}) that the body's Table~\ref{tab:results}
+condenses, rendered in full so a reviewer can re-derive every published number
+from its named record file.
+
+\subsection{Provenance of the DFPT moments}
+\label{app:provenance}
+
+Each $(\lambda,\omega_{\log})$ pair is read verbatim from one terminal RTSC-campaign
+QE el--ph verdict record. Table~\ref{tab:provenance} names that record file, the
+$q$-grid the \texttt{ph.x} run used, and the pressure, for every candidate. The
+file names are the literal artifacts under
+\texttt{exports/material\_discovery/}; a reviewer grepping any one of them
+recovers the exact $(\lambda,\omega_{\log})$ this paper consumes.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrrl}
+\toprule
+\textbf{candidate} & \textbf{DFPT record (\texttt{exports/material\_discovery/})}
+  & $q$-grid & \textbf{$P$ (GPa)} & \textbf{role} \\
+\midrule
+SrAuH$_3$ & \texttt{rtsc\_srauh3\_dft\_4x4x4q\_20260525.json}        & $4^3$ & ambient & weak-coupling anchor \\
+H$_3$F    & \texttt{rtsc\_h3f\_dft\_6x6x6q\_novel\_20260524.json}     & $6^3$ & ---     & novel H$_3$X \\
+H$_3$As   & \texttt{rtsc\_h3as\_dft\_6x6x6q\_20260525.json}           & $6^3$ & ---     & novel H$_3$X (unstable) \\
+Nb        & \texttt{rtsc\_nb\_dft\_elph\_ambient\_proof\_20260522.json} & $-$ & ambient & elemental proof \\
+H$_3$Se   & \texttt{rtsc\_h3se\_dft\_6x6x6q\_novel\_20260522.json}    & $6^3$ & ---     & novel H$_3$X \\
+H$_3$Cl   & \texttt{rtsc\_h3cl\_dft\_6x6x6q\_novel\_20260524.json}    & $6^3$ & ---     & novel H$_3$X \\
+H$_3$Si   & \texttt{rtsc\_h3si\_dft\_6x6x6q\_novel\_20260524.json}    & $6^3$ & ---     & novel H$_3$X \\
+H$_3$Br   & \texttt{rtsc\_h3br\_200gpa\_fullbz\_elph\_20260527.json}  & full BZ & $200$ & novel H$_3$X \\
+H$_3$Te   & \texttt{rtsc\_h3te\_dft\_6x6x6q\_novel\_20260522.json}    & $6^3$ & ---     & novel H$_3$X \\
+H$_3$S    & \texttt{rtsc\_h3s\_dft\_6x6x6q\_textbook\_proof\_20260522.json} & $6^3$ & $200$ & textbook anchor \\
+H$_3$O    & \texttt{rtsc\_h3o\_dft\_6x6x6q\_novel\_20260524.json}     & $6^3$ & ---     & novel H$_3$X \\
+YH$_{10}$ & \texttt{rtsc\_yh10\_dft\_elph\_20260528.json}             & $-$ & $250$ & clathrate, threshold \\
+H$_3$Po   & \texttt{rtsc\_h3po\_dft\_6x6x6q\_novel\_20260524.json}    & $6^3$ & ---     & novel H$_3$X ($\lambda{>}3$) \\
+CaH$_6$   & \texttt{rtsc\_cah6\_dft\_4x4x4q\_textbook\_proof\_20260524.json} & $4^3$ & $172$ & clathrate, headline \\
+\bottomrule
+\end{tabular}
+\caption{Provenance of every DFPT moment. ``$-$'' = the record does not log a
+single uniform $q$-grid field (multi-broadening / converged-plateau record);
+``---'' pressure = a novel-sweep entry whose record does not stamp a single
+pressure. The $14$ records are the literal files consumed; no moment is
+fabricated or interpolated.}
+\label{tab:provenance}
+\end{table}
+
+\subsection{Per-candidate \texttt{hexa verify} grades (all 14, both $\mu^*$)}
+\label{app:grades}
+
+Table~\ref{tab:audit} is the per-candidate audit. Each true-AD value
+$T_c^{\mathrm{AD}}$ in Table~\ref{tab:results} was re-derived by an independent
+hexa-native numerical recompute (\texttt{hexa verify --expr allen\_dynes\_full}
+$\lambda\ \omega_{\log}\ \omega_{\log}\ \mu^*\ T_c$; libm-class,
+$\varepsilon=10^{-9}$, rounding tolerance $\le 0.05$~K for the published
+rounding). Every one of the $28$ evaluations ($14$ candidates $\times$ two
+$\mu^*$) returned \tierGreen\ \texttt{SUPPORTED-NUMERICAL}; none was
+\tierOrange\ or \tierRed. The grade column reproduces the
+\texttt{companion/verify-ledger.json} tier verbatim.
+
+\begin{table}[h]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrr rr rr c}
+\toprule
+& & & \multicolumn{2}{c}{$T_c^{\mathrm{AD}}$ (K)}
+    & \multicolumn{2}{c}{lift (\%)} & \\
+\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+\textbf{candidate} & $\lambda$ & $\omega_{\log}$ (K)
+  & $\mu^*{=}.10$ & $.13$ & $.10$ & $.13$ & \textbf{tier} \\
+\midrule
+SrAuH$_3$ & 0.615  & 591.2  & 14.9  & 10.6  & 2.5  & 2.2  & \tierGreen \\
+H$_3$F    & 0.822  & 670.3  & 34.4  & 28.0  & 3.8  & 3.4  & \tierGreen \\
+H$_3$As   & 0.971  & 444.1  & 30.9  & 26.3  & 4.9  & 4.3  & \tierGreen \\
+Nb        & 1.171  & 193.0  & 17.8  & 15.6  & 6.3  & 5.7  & \tierGreen \\
+H$_3$Se   & 1.258  & 1356.7 & 137.5 & 122.0 & 7.0  & 6.3  & \tierGreen \\
+H$_3$Cl   & 1.406  & 1250.4 & 144.7 & 130.0 & 8.2  & 7.3  & \tierGreen \\
+H$_3$Si   & 1.821  & 571.8  & 85.8  & 78.8  & 11.7 & 10.5 & \tierGreen \\
+H$_3$Br   & 2.156  & 1046.2 & 181.2 & 167.7 & 14.6 & 13.2 & \tierGreen \\
+H$_3$Te   & 2.410  & 467.6  & 88.2  & 82.0  & 16.9 & 15.3 & \tierGreen \\
+H$_3$S    & 2.619  & 1154.3 & 231.4 & 215.6 & 18.8 & 17.0 & \tierGreen \\
+H$_3$O    & 2.729  & 1110.8 & 229.3 & 213.8 & 19.8 & 17.9 & \tierGreen \\
+YH$_{10}$ & 2.820  & 1300.4 & 274.5 & 256.3 & 20.7 & 18.7 & \tierGreen \\
+H$_3$Po   & 3.313  & 258.2  & 60.6  & 56.8  & 25.2 & 22.9 & \tierGreen \\
+CaH$_6$   & 4.376  & 1236.4 & 344.5 & 323.5 & 35.1 & 32.0 & \tierGreen \\
+\bottomrule
+\end{tabular}
+\caption{Per-candidate audit: the true Allen--Dynes $f_1 f_2$ $T_c$ and its lift
+over the recorded AD-kernel value, each graded by an independent
+\texttt{hexa verify} numerical recompute. All $28$ evaluations are
+\tierGreen\ \texttt{SUPPORTED-NUMERICAL} (closed form, $\varepsilon=10^{-9}$).
+This is the verify-ledger of Table~\ref{tab:results}, made per-row explicit.}
+\label{tab:audit}
+\end{table}
+
+\noindent The remaining $9$ per-candidate \texttt{hexa verify} invocations (the
+body shows Nb, CaH$_6$, YH$_{10}$, H$_3$S, H$_3$O; the form is identical for the
+rest), at $\mu^*{=}0.10$:
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=0pt]
+$ hexa verify --expr allen_dynes_full 0.615 591.18 591.18 0.10 14.9  --tol 0.05  # SrAuH3 -> GREEN
+$ hexa verify --expr allen_dynes_full 0.822 670.30 670.30 0.10 34.4  --tol 0.05  # H3F   -> GREEN
+$ hexa verify --expr allen_dynes_full 0.971 444.06 444.06 0.10 30.9  --tol 0.05  # H3As  -> GREEN
+$ hexa verify --expr allen_dynes_full 1.258 1356.7 1356.7 0.10 137.5 --tol 0.05  # H3Se  -> GREEN
+$ hexa verify --expr allen_dynes_full 1.406 1250.4 1250.4 0.10 144.7 --tol 0.05  # H3Cl  -> GREEN
+$ hexa verify --expr allen_dynes_full 1.821 571.80 571.80 0.10 85.8  --tol 0.05  # H3Si  -> GREEN
+$ hexa verify --expr allen_dynes_full 2.156 1046.2 1046.2 0.10 181.2 --tol 0.05  # H3Br  -> GREEN
+$ hexa verify --expr allen_dynes_full 2.410 467.60 467.60 0.10 88.2  --tol 0.05  # H3Te  -> GREEN
+$ hexa verify --expr allen_dynes_full 3.313 258.20 258.20 0.10 60.6  --tol 0.05  # H3Po  -> GREEN
+\end{lstlisting}
+
+\subsection{Row-by-row reading}
+\label{app:rowbyrow}
+
+\paragraph{The $\lambda$-monotone spine (SrAuH$_3$ $\to$ CaH$_6$).}
+Reading Table~\ref{tab:audit} top to bottom, the lift at $\mu^*{=}0.10$ climbs
+strictly: $2.5 \to 3.8 \to 4.9 \to 6.3 \to 7.0 \to 8.2 \to 11.7 \to 14.6 \to
+16.9 \to 18.8 \to 19.8 \to 20.7 \to 25.2 \to 35.1\%$, with no inversion. This is
+the $f_1$ strong-coupling factor and nothing else: $f_1$ is a monotone-increasing
+function of $\lambda$, so once the rows are sorted by $\lambda$ the lift column is
+forced to be sorted too. The $\mu^*{=}0.13$ column is uniformly $\sim$$0.3$--$3$
+points smaller (a larger Coulomb pseudopotential suppresses both $T_c$ and the
+fractional lift), but preserves the same strict ordering. The weak-coupling floor
+is SrAuH$_3$ ($\lambda{=}0.62$, lift $2.5\%$) --- here $f_1\!\to\!1$ and the true
+AD and AD-kernel forms nearly coincide, which is exactly why a campaign that
+dropped $f_1 f_2$ saw no discrepancy at low $\lambda$ and only the high-$\lambda$
+hydrides expose it.
+
+\paragraph{High-$\lambda$ over-prediction caveat, per candidate.}
+The two rows in the $\lambda > 3$ regime carry an explicit reliability discount.
+\textbf{CaH$_6$} ($\lambda{=}4.38$) has the largest lift in the table ($35.1\%$,
+$255.1\!\to\!\SI{344.5}{\kelvin}$ at $\mu^*{=}0.10$) and is therefore the row
+where the $f_1 f_2$ closed form is \emph{most} likely to over-predict: the
+Allen--Dynes fit was calibrated on a model $\alpha^2F$ and is known to exceed the
+rigorous isotropic Migdal--Eliashberg solve for $\lambda \gtrsim 3$. Its
+\SI{344}{\kelvin} is an \emph{upper} bound, not a point estimate.
+\textbf{H$_3$Po} ($\lambda{=}3.31$, lift $25.2\%$,
+$48.4\!\to\!\SI{60.6}{\kelvin}$) sits in the same regime and inherits the same
+discount; its low $\omega_{\log}$ ($\SI{258}{\kelvin}$) keeps the absolute $T_c$
+modest, so it never threatens a threshold, but its lift is still an over-estimate.
+For both, the \texttt{verify-ledger.json} carries the literal note
+``$\lambda{>}3$: $f_1 f_2$ over-prediction regime'' --- the \tierGreen\ grade
+certifies the \emph{arithmetic} of the closed form, not the physical fidelity of
+the closed form at extreme $\lambda$, which Sec.~\ref{sec:limits} bounds.
+
+\paragraph{The two threshold-crossing rows.}
+Only CaH$_6$ ($\SI{344.5}{\kelvin}$ / $\SI{323.5}{\kelvin}$) and YH$_{10}$
+($\SI{274.5}{\kelvin}$ at $\mu^*{=}0.10$, dropping below $\SI{273}{\kelvin}$ to
+$\SI{256.3}{\kelvin}$ at $\mu^*{=}0.13$) cross a room-temperature threshold, both
+as model upper estimates at $172$ and $\SI{250}{\giga\pascal}$ respectively ---
+not ambient. YH$_{10}$ is the marginal case: its crossing is $\mu^*$-dependent and
+vanishes at the more conservative $\mu^*{=}0.13$, so it is reported as a
+threshold-\emph{touching} rather than a robust threshold-crossing candidate.
+
+\paragraph{The $f_2{=}1$ lower-bound note.}
+Every row uses $\bar\omega_2=\omega_{\log}\Rightarrow f_2=1$, because the campaign
+records log only $(\lambda,\omega_{\log})$, not the mean-square frequency
+$\bar\omega_2$. Since a physical $\alpha^2F$ generically has
+$\bar\omega_2 \ge \omega_{\log}$ (equality only for a delta-function spectrum),
+the true $f_2 \ge 1$, so every lift in Table~\ref{tab:audit} is itself a
+\emph{lower bound} on the true-AD lift. The reported AD $T_c$ are thus bracketed
+on both sides: the $f_2{=}1$ assumption pushes them \emph{down} from the true AD
+value, while the high-$\lambda$ over-prediction (CaH$_6$, H$_3$Po) pushes them
+\emph{up} from the rigorous Eliashberg value --- the two error directions do not
+cancel and are tracked separately.
+
+\paragraph{Excluded candidates (and why they are absent).}
+The recompute is restricted to the $14$ candidates whose el--ph record is a
+terminal converged DFPT verdict with a recorded $T_c$. Two campaign candidates
+that appear elsewhere in the RTSC roster are deliberately \emph{excluded} from
+this table because they are dynamically unstable (imaginary phonon modes in their
+relaxed structure), so an Allen--Dynes $T_c$ on them would be physically
+meaningless regardless of how cleanly the closed form evaluates:
+\textbf{Mg$_2$IrH$_6$} and \textbf{Li$_2$CuH$_6$}. For these the gating quantity
+is dynamical stability, not the prefactor convention, so they fall outside the
+scope of this paper's hypothesis (which is strictly about the $f_1 f_2$ factor on
+\emph{stable}, recorded candidates). One further row, \textbf{H$_3$As}, is
+\emph{included} (it has a clean recorded moment and verifies \tierGreen) but its
+record carries \texttt{stability.verdict=UNSTABLE}; it is kept in the table for
+completeness with this flag noted, since its low $\lambda{=}0.97$ contributes only
+a $4.9\%$ lift and does not affect any threshold conclusion.
+
+\paragraph{Engine-defect resolution (\texttt{allen\_dynes\_full} rescale).}
+Sec.~\ref{sec:limits} flagged a sibling engine entry,
+\texttt{allen\_dynes\_full}, that applied a spurious additional $1.45/1.2$
+prefactor rescale on top of the already-$\omega_{\log}/1.2$ kernel, double-counting
+the prefactor and inflating CaH$_6$ to a non-physical $\SI{416}{\kelvin}$. That
+defect has since been fixed upstream (hexa-lang PR~\#2374): the rescale was
+removed so \texttt{allen\_dynes\_full} now evaluates the textbook
+$\omega_{\log}/1.2 \times f_1 f_2$ form, and CaH$_6$ falls from
+$\SI{416}{\kelvin}$ to the $\SI{344}{\kelvin}$ reported throughout this paper.
+The \texttt{hexa verify --expr allen\_dynes\_full} invocations above and in
+Sec.~\ref{sec:verify} therefore now agree, expression-for-expression, with the
+\texttt{qforge\_tc\_allen\_dynes} numbers in Table~\ref{tab:results} --- the two
+code paths are reconciled, and the audit no longer depends on which entry point
+a reviewer calls.
+
+% =========================================================================
 \paragraph{Acknowledgments.}
 This work used the \texttt{hexa-lang} QFORGE verification surface and the
 \texttt{sidecar/paper} scaffold. LLM collaborator: Claude Opus 4.8 (1M context).
