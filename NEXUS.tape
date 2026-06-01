@@ -185,6 +185,11 @@
   gate  = "GATE A PASS (L0 Tc ↔ QE 12/12, rel-ε≤2.5e-3, PR#2362) + GATE L3 PASS (α²F assembler ↔ QE el-ph, YH10 4×4×4-q .elph verbatim, λ rel-ε=9.76e-5≪1%, hexa-lang PR#2380). FULL MIGRATION GATE CLOSED — QFORGE α²F 어셈블러 QE-validated."
   scope = "intra-project (g67); engine dependency RTSC←QFORGE (QFORGE.md SSOT). L0 Tc + L3 α²F layer 검증완료 (full migration green) → verified-edge 승격."
 
+@X c8 := "PWFORGE plane-wave H assembler -> QFORGE (cell->H_of_rho front-end)" :: reuse-candidate [tier-2 active]
+  note  = "PWFORGE(평면파 해밀토니안 조립기 · domains/PWFORGE.md) = QFORGE SCF 가 소비하는 H_of_rho 입구. S(G)·V_loc->V_ext·kinetic·KB-projector -> H_of_rho closure."
+  gate  = "IN-PROGRESS — front-end 스택 M1~M6 빌드 중 (각 g5 analytic anchor). XC 항(Hartree+exchange+correlation)은 QFORGE 에 landed (PR#2402·#2405 g5-green). M6 CaH6 독립 cross-val (atoms->|g|², rel-ε<=0.5%) 통과 시 reuse-edge 승격."
+  scope = "intra-project (g67); QFORGE migration blocker #1 의 cell->H front-end 절반. d4 generic dispatch (H_of_rho = caller closure) · d6 no forced number. stdlib/qforge SSOT (d3)."
+
 # ── 4. usage protocol (atlas-first · @D g67 / d19) ──
 
 @N n1 := "reuse protocol" :: note [active]
