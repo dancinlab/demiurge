@@ -3,6 +3,7 @@
 @goal: track the capabilities QFORGE still needs to become a fully self-contained, QE-independent el-ph engine + dispatch toolchain. Each entry = a concrete feature with a why (which wall it breaks) and a fitness gate (g5/cross-val). NOT bugs (those go to hexa-lang inbox) — this is the FORWARD feature backlog. Seeded from gaps surfaced during the 2026-06-01/02 QFORGE migration-gate campaign.
 
 icon 🧰 · name QFORGE-FEATURE · alias "기능 위시리스트" (capability backlog)
+**부모(parent)**: 🔨 QFORGE (engine · `QFORGE/QFORGE.md`) · siblings: ⚙️ QFORGE-PROCESS · 🚀 QFORGE-PERF
 
 - 하는 일: QFORGE가 QE를 완전히 걷어내고 독립 엔진이 되려면 아직 무엇이 필요한지 — 기능 단위로 목록·우선순위·완료게이트를 기록
 - 비유: 새 차에 "아직 없는 옵션" 위시리스트 — 어떤 옵션이 어떤 불편을 없애는지 + 언제 "장착 완료"로 칠지

@@ -2,6 +2,8 @@
 
 @title: 🚀 QFORGE-PERF — "큐포지 가속기" (QFORGE el-ph accelerator backlog)
 
+**부모(parent)**: 🔨 QFORGE (engine · `QFORGE/QFORGE.md`) · siblings: ⚙️ QFORGE-PROCESS · 🧰 QFORGE-FEATURE
+
 @goal: hexa-native QFORGE el-ph 엔진(stdlib/qforge · SCF·DFPT·λ·Tc · g5 cross-val vs QE ref, d_qforge_engine)을 **두 개의 벽** 너머로 가속한다 — (1) **하드웨어 벽**: QE ph.x 의 no-GPU DFPT 한계(29-pod CPU teardown 의 원인) · (2) **알고리즘 벽**: O(N³) 대각화 + dense per-q DFPT 의 본질적 스케일링. 세 LANE(⚡hardware · 🧮algorithmic · 🧠paradigm)로 정렬. **각 아이디어는 PROPOSAL** — 실 `hexa bench` roofline + Δ-vs-baseline 으로 닫기 전에는 ⚡/🧮 closed 아님 (g6/g63 정직 scope). **21/21 백로그 항목이 terminal** (`## closure status`): 6 항목 CLOSED — 5 closed-form (SIMD-INERT 🔴 / mixedprec-2× / multigrid-fav / symmetry-48 / threading-10) + 1 measured (Lanczos vs Davidson · docs-only bench) · 4 항목 측정-grounded (분모 박제 · [[QFORGE-PERF.bench]] §2/§7) · 11 항목 GATED (GPU pod / 엔진 edit / ML infra 외부 의존 명시). docs-only 도메인에서 가능한 100% closure.
 
 ## baseline — measured anchor (2026-06-01 · [[QFORGE-PERF.bench]])

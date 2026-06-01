@@ -3,6 +3,7 @@
 @goal: capture the LIVE el-ph campaign pipeline flow stage-by-stage (vc-relax → scf → ph/DFPT → elph → λ → Tc) with measured wall/resource per stage, so the performance · resource · speed bottlenecks are auditable and improvement levers are found. NOT the engine (root QFORGE/) — this is the PROCESS observability + optimization domain.
 
 icon ⚙️ · name QFORGE-PROCESS · alias "공정 기록자" (production-line logbook)
+**부모(parent)**: 🔨 QFORGE (engine · `QFORGE/QFORGE.md`) · siblings: 🚀 QFORGE-PERF · 🧰 QFORGE-FEATURE
 
 - 하는 일: QE el-ph 파이프라인이 실제로 어떻게 흐르고 어디서 시간·자원을 쓰는지 단계별로 기록 → 개선 레버 발굴
 - 비유: 공장 컨베이어 벨트 옆에서 "어느 공정이 느린가" 스톱워치로 재는 관리자
