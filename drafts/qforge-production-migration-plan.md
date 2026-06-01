@@ -213,6 +213,49 @@ proved the wiring with a density-INDEPENDENT stub, not a real SCF):
   in-repo. 10/10 PASS (Einstein round-trip λ=0.04076 = analytic).
 The independent atoms→|g|² path is LIVE; full verdicts in the gate-status section.
 
+### M6 FINAL CROSS-VAL RUN — 2026-06-01 (blocker A RESOLVED; NEW d6 residual: aperiodic ground-state Hartree → M5.7)
+Resumed M6 from an isolated worktree `/tmp/hexa-qforge-m6` pinned at hexa-lang
+origin/main (bec4b166e, includes PR3 #2414), run mini-local.
+
+**QE-NC reference — RUNNING (do NOT re-fire).** Pod `38891053@158.181.52.19:42271`,
+deck `/root/deck` (CaH6_NC: ONCV NC Ca+H both sides, 2×2×2-q). SSH verbatim: vc-relax
+phase, 3 BFGS steps done, enthalpy −77.8719→−78.0982→−78.3442 Ry (monotone), SCF
+acc 2.3E-10 Ry, 7× pw.x at 99.9% CPU. DFPT (2×2×2-q) self-resumes pod-side
+(recover=.true.). HARVEST when finished:
+`hexa cloud copy-from 158.181.52.19 /root/deck/ph.out exports/rtsc/decks/CaH6_NC/ --port 42271`.
+
+**QFORGE-NC independent run.** orchestrator_pw chain re-confirmed g5-green
+(`HEXA_LANG=. hexa run stdlib/qforge/orchestrator_pw_selftest.hexa` → 10/10 PASS,
+λ=0.04076 Einstein round-trip). Real-CaH6 probe (`m6_cah6_probe.hexa`): both real
+ONCV NC UPFs parse ok (Ca: NC·Zval=10·nproj=6·mesh=1766; H: NC·Zval=1·nproj=2·mesh=1166);
+CaH6 cell valence e⁻ = 16.0.
+
+**HONEST residual (d6) — aperiodic ground-state Hartree.** The chain is g5-green on
+the free-electron/Einstein anchor and the real ONCV NC UPFs ingest, BUT the real
+CaH6 self-consistent SCF does NOT converge: CaH6's inhomogeneous ρ has V_H[ρ]≠0,
+yet `qforge_scf_pw` takes the ground-state Hartree `vh_diag` as an INPUT
+(caller-supplied) and NO in-repo routine builds it for an aperiodic ρ on the PW
+basis (scf_pw.hexa L38-40 self-flags this; scf.hexa L24-32 lists FFT-Poisson
+Hartree[ρ] as the NEXT integration piece). The only G-space Hartree in the tree,
+`qforge_vhartree_from_drho` (screening.hexa), is the DFPT **response Δρ** screening
+kernel — NOT the ground-state V_H[ρ] (grep: callers = screening_selftest + dvscf
+kernel only; zero callers build scf_pw vh_diag). M5.5 closed only the V_H=0
+jellium/free-electron case. Per d6: NO fabricated λ, NO QE-moment-boundary fallback
+relabelled "independent", NO tuning to the QE target.
+
+**BREAKTHROUGH PATH (d2) — new milestone M5.7.** Wire an aperiodic ground-state
+Hartree V_H[ρ] into `qforge_scf_pw`: add `qforge_vhartree_from_rho` (ground-state ρ
+dense FFT-Poisson; reuse the response-Δρ version d19) so vh_diag is built in-loop,
+not caller-supplied; g5-gate on a neutral H₂-like molecule with a known V_H. Then
+re-run CaH6 atoms→scf_pw→elph_scf→λ→Tc independently and cross-val vs the QE-NC harvest.
+
+**Cross-val verdict: PENDING — pending QE-NC harvest + M5.7.** QFORGE-NC λ not
+produced (needs M5.7); QE-NC λ not produced (pod still vc-relax→scf→ph). Neither
+number exists → rel-ε not computable. M6 HELD; dispatch default NOT flipped
+(d_qforge_engine — blocker #2 LaH10/Li2MgH16 still required). The honest outcome
+"QFORGE-NC engine RUNS but CaH6 needs the aperiodic-Hartree piece (M5.7)" is a VALID
+M6 result, not a failure.
+
 ### PR #2407 — brick 1/5 structure factor S(G)
 `stdlib/qforge/structure.hexa` (+ selftest). S(G)=Σ_a exp(−i G·τ_a), cartesian
 + fractional builders. g5 VERBATIM (all PASS):
