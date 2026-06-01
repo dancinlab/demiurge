@@ -182,8 +182,8 @@
 
 @X c7 := "QFORGE el-ph engine -> RTSC (canonical compute engine)" :: reuse-edge [tier-1 active]
   note  = "QFORGE(hexa-native SCF·DFPT·λ·Tc, stdlib/qforge) = RTSC 캠페인 계산엔진. QE = cross-val reference."
-  gate  = "GATE A PASS — QFORGE L0 Tc ↔ QE 12/12 (Nb·CaH6·H3S·YH10·H3O, rel-ε≤2.5e-3, hexa-lang PR#2362). full migration = L3 |g| cross-val(Li2MgH16/LaH10 terminal) 잔여."
-  scope = "intra-project (g67); engine dependency RTSC←QFORGE (QFORGE.md SSOT). L0 Tc layer 검증완료 → verified-edge 승격."
+  gate  = "GATE A PASS (L0 Tc ↔ QE 12/12, rel-ε≤2.5e-3, PR#2362) + GATE L3 PASS (α²F assembler ↔ QE el-ph, YH10 4×4×4-q .elph verbatim, λ rel-ε=9.76e-5≪1%, hexa-lang PR#2380). FULL MIGRATION GATE CLOSED — QFORGE α²F 어셈블러 QE-validated."
+  scope = "intra-project (g67); engine dependency RTSC←QFORGE (QFORGE.md SSOT). L0 Tc + L3 α²F layer 검증완료 (full migration green) → verified-edge 승격."
 
 # ── 4. usage protocol (atlas-first · @D g67 / d19) ──
 
