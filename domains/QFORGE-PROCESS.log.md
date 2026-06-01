@@ -18,3 +18,13 @@
 - perf: ph.x el-ph is CPU-bound → GPU NVPTX kernels (QFORGE-PERF / migration track) are the per-q-cost lever.
 - resource: SCF `.save` not banked → a dead pod forces a full fresh rerun; banking `.save` would enable true resume.
 - next: instrument per-stage wall/cpu into the lab ledger so these are MEASURED, not anecdotal.
+
+## 2026-06-02 — structured per-stage telemetry SHIPPED (closes the "MEASURE not anecdotal" lever)
+- hexa-lang PR#2474 (merged → origin/main 8a2f4a085): `dft-run` now wraps each el-ph stage (vc-relax · scf · ph · λ/Tc) with `_dft_telemetry_wrap`, emitting one JSONL line per stage transition to `<deck>/.dft_telemetry.jsonl`: `{"ts","stage","event":start|done,"wall_s","rss_kb","exit"}`. ADDITIVE only — the coarse detach markers stay byte-identical (a new sibling file). wall = `date +%s` monotonic delta · rss = `ps -o rss` peak (or `null` fail-safe, d6 — never fabricated). g5 `dft_dispatch_test` PASS (JSON well-formed · all stages present · builder byte-identical regression · real-shell behavioral).
+- INGEST loop closed — replaying the EXACT merged emit shell (stub compute, real `ps` sample) produced and re-parsed a genuine transition pair:
+  ```jsonl
+  {"ts":1780336498,"stage":"relax","event":"start","wall_s":0,"rss_kb":null,"exit":null}
+  {"ts":1780336499,"stage":"relax","event":"done","wall_s":1,"rss_kb":null,"exit":0}
+  ```
+  parsed → `stage 'relax' completed in 1s, peak_rss=null, exit=0`. (rss=null here because the stub proc exited before the post-sample — the d6 no-fabrication fail-safe firing as designed; a live ph.x stage, alive at sample time, yields a real KB peak.)
+- LIVE-POD confirmation DEFERRED (honest): the in-flight gate pods (Li2MgH16 38773054 · LaH10 38704336, both PENDING) were launched with PRE-telemetry `dft-run`, so they cannot emit `.dft_telemetry.jsonl` — only a stage dispatched after the merge will. Confirm on the next post-merge dispatch (READ-ONLY copy-from); no transition fired in this window, so not faked.
