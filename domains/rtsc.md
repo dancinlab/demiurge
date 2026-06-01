@@ -6,6 +6,7 @@
 
 ## Milestones (progress)
 
+- [x] **QFORGE 엔진 채택 + GATE A PASS** (2026-06-01) — QFORGE L0 Tc ↔ QE 12/12 일치(hexa-lang PR#2362, rel-ε≤2.5e-3). **발견(g6)**: 캠페인 기록 "Allen-Dynes Tc"는 실제 McMillan 하한 = QFORGE 진짜 AD(f1·f2)는 λ-monotone 리프트(Nb +6%→CaH6 +35%) → 기록 Tc 보수적. AD f1·f2 전수 재산정 진행중(QFORGE). 차폐커널 PR#2363(Hartree+LDA-exch). NEXUS c7 verified. 잔여 = L3 |g| (Li2MgH16/LaH10 terminal).
 - [x] H₃S 측정-grade DFT 6³q — 2015 Drozdov 203K anchor 재현 (Tc_AD 175–195K)
 - [x] CaH₆ 측정-grade DFT — Ma 2022 215K vs 213K (2K 정합 · clathrate topology)
 - [x] H₃X 5/8 LANDED + d7 wall α²F grid ceiling 100 meV 정량 식별
