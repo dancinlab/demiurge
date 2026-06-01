@@ -73,6 +73,12 @@
   do   = "build deck + 1-iter dry-run on pool free → catch directive/basis errors before paid rent"
   dont = "discover NWChem syntax errors on a billing pod — every iteration is wasted $"
 
+@D d_qforge_engine := "RTSC el-ph engine = QFORGE (hexa-native) · QE = cross-val reference" :: governance [required active]
+  do   = "RTSC el-ph (SCF·DFPT·λ·Tc) canonical engine = QFORGE (hexa-lang stdlib/qforge · g5 · atlas)"
+  do   = "QE = cross-val reference; full migration when QFORGE vs QE λ·Tc g5-agree (LaH10·CaH6·Li2MgH16)"
+  do   = "QFORGE GPU accel self-controlled (hexa eigen/fft) — no QE-7.2 dep · NEXUS c7 RTSC<-QFORGE"
+  dont = "perpetual external-QE dep · absorbed on un-cross-val'd QFORGE result · engine swap w/o the gate"
+
 @D d17 := "cost-bearing fire — dispatch autonomously, no user gate" :: governance [required active]
   do   = "validated deck (d16 free dry-run passed) → fire full-campaign rent autonomously · parallel"
   do   = "state estimated cost in one line, then fire — no user consult / approval / confirm"
@@ -164,6 +170,14 @@
   do   = "keep repo-root NEXUS.tape (cross-domain reuse graph) current"
   dont = "rebuild a sibling domain's verified primitive · leave a reuse edge off NEXUS.tape"
   dont = "link domains across repos — intra-project only"
+
+@D d_defer_no_delete := "technical/resource failure → DEFER · never delete from the candidate pool" :: governance [required active]
+  do   = "OOM · infra · endpoint-fail · walltime → status=deferred · keep the candidate in the pool"
+  do   = "track deferrals durably in exports/<domain>/DEFERRED.md + the campaign run-state ledger"
+  do   = "retry recipe per deferral — lower cutoff · coarser k/q-grid · npool · bigger RAM"
+  do   = "stop auto-retrying a confirmed OOM-class on the SAME deck — flag for parameter-tuning"
+  dont = "DELETE / abandon a candidate for a TECHNICAL fail — only a 🔴 FALSIFIED verdict (g63) closes one"
+  dont = "leave a deferred candidate in an ephemeral /tmp note that vanishes on reboot"
 
 @D d_deploy := "web GUI surface ONLY — local hot-reload work mode · deploy gated on user approval" :: governance [required active]
   do   = "web GUI: iterate live in localdev git tree (~/core/demiurge-localdev/web · next dev Fast Refresh)"
