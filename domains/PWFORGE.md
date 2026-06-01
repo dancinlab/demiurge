@@ -28,16 +28,16 @@
 ```
 
 - **vs QE pw.x**: PWFORGE = QE의 평면파 H 구성 핵심을 hexa-native 로 포팅한 것. QFORGE(SCF·DFPT·λ·Tc)가 이미 있는데 그 입구(H 조립)만 비어 있어서, QE 모멘트 경계에서 시작할 수밖에 없었던 것을 PWFORGE 가 원자위치까지 끌어내린다.
-- **현재 상태(정직 g6)**: ⚙️ IN-PROGRESS — front-end 스택 에이전트가 PR 단위로 빌드 중. XC 항(Hartree+exchange+correlation)은 이미 QFORGE 에 landed(PR#2402 PZ81/PW92 · #2405 PBE GGA, g5-green). 남은 4조각 + 조립기 = PWFORGE 범위.
+- **현재 상태(정직 g6, 2026-06-01)**: ✅ **front-end LIVE** — M1~M5 全 landed+g5-green (hexa-lang PR#2407~#2411), 실제 Si SCF 가 원자위치부터 in-repo 독립 수렴 실증. M6(CaH6 독립 cross-val)만 ⚠ input-blocked(NC 의사퍼텐셜 부재 · 구조 아님). XC 항은 QFORGE 에 기 landed(PR#2402·#2405). blocker #1 **구조 갭 CLOSED**, |g|² acceptance 는 PP-input 대기.
 
 ## 1. front-end 스택 (마일스톤 · 각 g5 anchor)
 
-- [ ] **M1 — S(G) 구조인자** · anchor: 단원자@원점 → S(G)=1 ∀G · 2원자 basis 간섭패턴 · 병진위상 일관성
-- [ ] **M2 — plane-wave kinetic** · anchor: 자유전자 고유값 |k+G|²/2 closed-form (🔵)
-- [ ] **M3 — V_loc(G)→V_ext** · anchor: G=0 보상 처리 · Coulomb tail −Z·4π/G² 점근 · 실제 UPF local 채널 샘플값
-- [ ] **M4 — KB 비국소 projector** · anchor: projector 정규화 · V_NL 블록 hermiticity · 1-projector analytic case
-- [ ] **M5 — 조립기 (H_of_rho)** · S(G)+kinetic+V_loc+V_NL+Hartree+XC 합성 → qforge_scf 입력 · anchor: H hermiticity · 소형계(H atom/전자가스) SCF 기준 총에너지 수렴 (🟢)
-- [ ] **M6 — CaH6 독립 cross-val (payoff)** · 원자위치부터 atoms→SCF→|g|²→λ→Tc QFORGE-only 실행 → QE ref(λ=4.376·ω_log=1236.4K·Tc 255.1K)와 λ·Tc rel-ε g5 대조 (목표 ≤0.5%)
+- [x] **M1 — S(G) 구조인자** · `stdlib/qforge/structure.hexa` · hexa-lang PR#2407 · g5-green (단원자→S(G)=1 · 2원자 간섭 · 병진위상)
+- [x] **M2 — plane-wave kinetic** · `stdlib/qforge/kinetic.hexa` · PR#2408 · 자유전자 |k+G|²/2 closed-form 🔵
+- [x] **M3 — V_loc(G)→V_ext** · `stdlib/qforge/vloc.hexa` · PR#2409 · 순수-Coulomb anchor rel 0.0 · −Z·4π/G² 점근
+- [x] **M4 — KB 비국소 projector** · `stdlib/qforge/projector.hexa` · PR#2410 · Gaussian projector closed-form rel ~1e-11 · V_NL hermiticity
+- [x] **M5 — 조립기 (H_of_rho)** · `stdlib/qforge/assembler.hexa` · PR#2411 (tip 9ba148db6) · **실증**: 실제 Si NC UPF + 원자위치로 27-PW H 조립 → `qforge_scf` 독립 수렴 (converged=true, 26 iters, lowest KS −3.47 Ha) — atoms→SCF front-end LIVE in-repo
+- [ ] **M6 — CaH6 독립 cross-val (payoff)** · ⚠ **input-blocked (구조 아님 · d6 정직)** — `upf.hexa`=norm-conserving 전용인데 디스크의 유일한 H 의사퍼텐셜이 ultrasoft, Ca 의사퍼텐셜 부재, QE CaH6 ref 는 PBE PAW → NC-vs-PAW pseudization 혼입(d6 금지). 컴퓨트 무관(free ~7-atom). breakthrough paths(@D d2): ① ONCV NC Ca+H set + QE NC ref 재생성 · ② upf 파서 US/PAW 확장 · ③ matched-NC ref 있는 형제 수소화물에서 |g|² 종결
 
 ## 2. 게이트 관계 (QFORGE 마이그레이션)
 
