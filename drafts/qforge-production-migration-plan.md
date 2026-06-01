@@ -347,6 +347,55 @@ fallback relabelled "independent". The QFORGE-NC engine output is reported as an
 INDEPENDENT engine result, NOT cross-validated (QE-NC pod gone). Gate stays HELD;
 dispatch default NOT flipped (d_qforge_engine — 3-anchor QE cross-val still required).
 
+### M5.8 — METALLIC-SCF CONVERGENCE CLOSED (2026-06-01 · CaH6 CONVERGES)
+
+Isolated worktree off origin/main, mini-local, pod-free. **3 stacked PRs (g4,
+each <200 lines, merged to hexa-lang origin/main):**
+- **PR1 #2437** `stdlib/qforge/smearing.hexa` — Fermi-Dirac fractional occupations
+  f(ε)=1/(1+exp((ε−E_F)/σ)) + an E_F bisection solver enforcing Σ spin·f(ε_k)=nelec.
+- **PR2 #2438** `stdlib/qforge/mixing.hexa` — Anderson (Pulay/DIIS-class) history
+  mixing + an inline small m×m Gaussian-elim solve; m=0 / h=1 / singular-Gram →
+  plain-linear fallback (backward-compat).
+- **PR3 #2440** `qforge_scf_smeared` (scf.hexa opt-in driver; σ≤0 ∧ depth≤0 →
+  `qforge_scf` bit-identical) + `qforge_scf_pw_h_multi_smeared` (multi-species
+  entry) + CaH6 fixture re-run.
+
+**g5 selftests — VERBATIM (all PASS):**
+```
+qforge_smearing_selftest PASS   (A f(E_F)=½ · B σ→0 integer recovery · C charge
+                                 conservation Σ2·f=nelec=5 metallic · D insulator
+                                 integer occ + E_F in-gap · E Σf E_F-monotone)
+qforge_mixing_selftest PASS     (A small-solve exact 2×2/3×3 + singular→[] · B
+                                 m=0/h=1 plain-linear EXACT · C ρ_out==ρ_in→no-move
+                                 · D LOAD-BEARING: undamped linear limit-cycle
+                                 β=2/(1+k) residual pinned 1.95 over 200 iters →
+                                 Anderson converges in 3 iters, monotone)
+qforge_scf_selftest PASS        (+ D metal: integer occ misses half-fill ρ≉(1,1);
+                                 smeared+Anderson reaches ρ*=(1,1); backward-compat
+                                 σ=0,depth=0 bit-identical to qforge_scf)
+qforge_scf_pw_selftest PASS     (regression, unchanged)
+qforge_screening_selftest PASS  (regression, unchanged)
+qforge_orchestrator_pw_selftest PASS  (regression, unchanged)
+```
+
+**CaH6 real-cell re-run — VERBATIM** (`qforge_scf_pw_h_multi_smeared`, σ=0.02 Ha,
+Anderson depth=6, mix=0.3, tol=1e-6, max_iter=200):
+```
+converged = true        ← was FALSE (residual pinned ~0.83–1.7) in M5.7 PR3
+iters     = 86
+e_total   = -14.9469 Ha (band-energy sum)
+el-ph chain:  λ = 0.0207576   ω_log = 1236.28 K   chain ok = 1
+```
+
+**FINDING:** the metallic CaH6 cell now reaches a self-consistent density — the
+charge-sloshing limit cycle is removed by fractional Fermi occupation (a band
+crossing E_F changes occupation continuously) + Anderson mixing (cancels the
+oscillating mode linear mixing pinned). λ=0.0208 is the INDEPENDENT QFORGE-NC
+engine output. **NOT cross-val, NOT production, NOT absorbed** (Γ-only Einstein
+coarse verify; local-pseudopotential nproj=0; QE-NC pod torn down → cross-val
+deferred; unrelated to QE λ=4.376). Dispatch default stays HELD (d_qforge_engine
+— 3-anchor QE cross-val LaH10·Li2MgH16 still pending).
+
 ### PR #2407 — brick 1/5 structure factor S(G)
 `stdlib/qforge/structure.hexa` (+ selftest). S(G)=Σ_a exp(−i G·τ_a), cartesian
 + fractional builders. g5 VERBATIM (all PASS):
