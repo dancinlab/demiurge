@@ -72,3 +72,27 @@
   base_total=630  cur_total=870  regressed=1  improved=0  new=0  dropped=0
   ```
   Reading: `scf` is the single REGRESSED stage (>+30% on both wall AND rss) — the cross-run "improvement lever" the QFORGE-PROCESS @goal calls for: the loop now MEASURES run-over-run drift, not just within-run bottlenecks. `ph:q1`'s `null` Δrss is the d6 fail-safe (current rss was null → no fabricated %).
+
+## 2026-06-02 — CAMPAIGN ROLLUP SHIPPED — cross-deck bottleneck dashboard (which stage·deck eats campaign wall)
+- hexa-lang PR#2487 (squash-merged → origin/main): `qforge_telemetry_rollup(decks: [(deck_name, jsonl_text)]) -> RollupReport` in `stdlib/qforge/telemetry_rollup.hexa`. The emit (#2474) → analyze (#2477) → regress (#2483) chain operated on ONE deck's `.dft_telemetry.jsonl`; this is the CAMPAIGN tier — ingest MANY decks at once and aggregate two cross-deck views a per-deck report cannot give: (1) which STAGE CLASS dominates campaign-wide wall (scf vs ph vs relax vs lambda, `ph:qN` collapsed into class `ph`), and (2) which DECK is slowest. Per deck it calls the PR#2477 `qforge_telemetry_report` verbatim (d3/d19 — no re-parse; `telemetry_report.hexa`/`telemetry_regress.hexa` are 0-diff). READ-only pure fn over a list of JSONL texts (no pod ops, no mutation, no I/O).
+- Edge cases (@L2): a deck whose telemetry is malformed/empty (0 stages AND 0 wall) is SKIPPED + counted in `skipped_decks` (never crashes, no phantom row); `n_decks` counts only successfully-ingested decks. rss is SUMMED only across cells that carried a real measured rss — a stage class / deck with no measured rss anywhere passes through as `null`, never a fabricated 0 (d6). Stage classes ranked wall DESC (single max flagged `dominant`); decks ranked wall DESC (single max flagged `slowest`); empty list → 0 rows / 0 grand / 0 decks / 0 skipped.
+- g5 `qforge_telemetry_rollup_selftest` @ci_gate PASS (22 cases: stage-class SUM + `ph:qN` collapse + rank + %camp + dominant flag · per-deck total + rank + slowest flag · rss aggregated where present with d6 null-skip · malformed+empty deck skipped+counted · render flags dominant+slowest+`null` · empty list edge).
+- RENDERED over a 2-deck fixture (LaH10 scf+ph:q1+ph:q2[rss null] · CaH6 scf+ph:q1):
+  ```text
+  QFORGE-PROCESS campaign telemetry rollup
+
+  [1] stage-class rollup (which stage dominates campaign wall)
+  stage_class  wall_s   %camp  sum_rss_kb
+  -----------  -------  -----  ----------
+  ph               780    66%     1500000  ◄ dominant
+  scf              400    33%     1100000
+
+  [2] per-deck rollup (which deck is slowest)
+  deck         wall_s   %camp  stages  sum_rss_kb
+  -----------  -------  -----  ------  ----------
+  LaH10            680    57%       3     1600000  ◄ slowest
+  CaH6             500    42%       2     1000000
+  -----------  -------  -----  ------  ----------
+  grand wall_s=1180  decks=2  skipped=0
+  ```
+  Reading: campaign-wide, the `ph` (per-q DFPT) stage class dominates at 66% of total wall across both decks — consistent with the single-deck #2477 finding, now confirmed to hold ACROSS the campaign, not just one deck. LaH10 is the slowest deck (57% of campaign wall). LaH10's `ph:q2` rss came back null → it is excluded from the rss sum (deck sum_rss = scf 900000 + ph:q1 700000 = 1600000), the d6 no-fabrication fail-safe carried up to the campaign tier.
