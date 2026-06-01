@@ -12,8 +12,8 @@
 
 pub fn chain_P_GPa(P_GPA: i64) -> str {
   // P_KBAR = P_GPA * 10 — patched into relax.in via sed before dispatch
-  // returns: "harvest.json" path on ubu-1 with omega_log_K_gamma_proxy field
-  "/home/aiden/rtsc_h3br_pscan/${P_GPA}gpa/harvest.json"
+  // returns: "harvest.json" path on ubu-1 (under remote $HOME) with omega_log_K_gamma_proxy field
+  "${HOME}/rtsc_h3br_pscan/${P_GPA}gpa/harvest.json"
 }
 
 // remote bash chain (executed via `pool on ubu-1 'bash <<EOF ... EOF'`):

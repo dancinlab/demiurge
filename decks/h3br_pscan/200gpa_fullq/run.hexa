@@ -13,7 +13,8 @@
 // q-grid: 4x4x4 -> 8 IBZ q-points for ibrav=3 BCC (vs Gamma-only probe). Zone-boundary stability NOW tested.
 
 pub fn workdir() -> str {
-  "/home/aiden/rtsc_h3br_pscan/200gpa_fullq"
+  // remote workdir relative to the pool host's $HOME (was a /home/<author> literal)
+  "${HOME}/rtsc_h3br_pscan/200gpa_fullq"
 }
 
 // remote chain (authored on ubu-1 via `pool on ubu-1 'cat > run.sh <<EOF ... EOF'` then setsid):

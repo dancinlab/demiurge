@@ -3,6 +3,7 @@
 # Shows where BCS-class formulas work (Nb) and fail (MgB2 two-gap, Nb3Sn strong-coupling).
 # Demonstrates why "Tc parity" alone is NOT the right metric — motivates the universal-ratio.
 import math
+import os
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -79,7 +80,9 @@ ax.annotate("BCS N/A\n($d$-wave)",
             arrowprops=dict(arrowstyle="->", color="#c62828", lw=0.6))
 
 plt.tight_layout()
-out = "/Users/ghost/core/demiurge/PAPERS/sample-nb-bcs-absorbed/figures/fig02_tc_landscape.pdf"
+# Output beside the figures/ dir (parent of this _scripts/ dir); override via FIG_OUT_DIR.
+_fig_dir = os.environ.get("FIG_OUT_DIR", os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+out = os.path.join(_fig_dir, "fig02_tc_landscape.pdf")
 plt.savefig(out, bbox_inches="tight", pad_inches=0.05)
 print(f"[fig02] wrote {out}")
 print("  family Tc-AD vs measured deltas:")

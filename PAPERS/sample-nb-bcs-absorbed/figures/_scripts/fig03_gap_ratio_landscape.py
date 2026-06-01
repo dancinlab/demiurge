@@ -3,6 +3,7 @@
 # the 5% BCS-universal gate. Strong-coupling renormalizes UP, d-wave is
 # fundamentally different.
 import math
+import os
 import matplotlib.pyplot as plt
 
 GAMMA_E = 0.5772156649015329
@@ -81,7 +82,9 @@ ax.legend(handles=[
 
 ax.grid(axis="y", linestyle=":", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
-out = "/Users/ghost/core/demiurge/PAPERS/sample-nb-bcs-absorbed/figures/fig03_gap_ratio_landscape.pdf"
+# Output beside the figures/ dir (parent of this _scripts/ dir); override via FIG_OUT_DIR.
+_fig_dir = os.environ.get("FIG_OUT_DIR", os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+out = os.path.join(_fig_dir, "fig03_gap_ratio_landscape.pdf")
 plt.savefig(out, bbox_inches="tight", pad_inches=0.05)
 print(f"[fig03] wrote {out}")
 print(f"  Nb measurement: {DATA[i_nb][1]} ± {DATA[i_nb][2]} → BCS rel-err = "
