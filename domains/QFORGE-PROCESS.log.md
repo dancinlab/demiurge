@@ -28,3 +28,29 @@
   ```
   parsed → `stage 'relax' completed in 1s, peak_rss=null, exit=0`. (rss=null here because the stub proc exited before the post-sample — the d6 no-fabrication fail-safe firing as designed; a live ph.x stage, alive at sample time, yields a real KB peak.)
 - LIVE-POD confirmation DEFERRED (honest): the in-flight gate pods (Li2MgH16 38773054 · LaH10 38704336, both PENDING) were launched with PRE-telemetry `dft-run`, so they cannot emit `.dft_telemetry.jsonl` — only a stage dispatched after the merge will. Confirm on the next post-merge dispatch (READ-ONLY copy-from); no transition fired in this window, so not faked.
+
+## 2026-06-02 — ANALYZER SHIPPED — JSONL → per-stage bottleneck report (closes the loop)
+- hexa-lang PR#2477 (squash-merged → origin/main b70fd2152): `qforge_telemetry_report(jsonl_text) -> Report` in `stdlib/qforge/telemetry_report.hexa` INGESTS the PR#2474 `.dft_telemetry.jsonl` (6 keys ts·stage·event·wall_s·rss_kb·exit), pairs start/done per stage, aggregates wall + peak-rss per stage, ranks by wall DESC with %-of-total, flags the single slowest. READ-only pure fn over JSONL text (no pod ops, no source mutation; reuses builtin `json_parse`/`type_of`/`has_key`). g5 `qforge_telemetry_report_selftest` @ci_gate PASS (16 cases: parse · per-stage wall sum · rank desc · bottleneck=max-wall · rss-null passthrough+render · multi-done peak=max · malformed=4 not-bucketed · unpaired=1 0-wall · empty edge).
+- RENDERED over the EXACT PR#2474 ingest pair (above) — the d6 `null` rss passthrough surfaces verbatim, never fabricated to 0:
+  ```text
+  QFORGE-PROCESS per-stage bottleneck report
+  stage        wall_s   %tot   peak_rss_kb  exit
+  -----------  -------  -----  -----------  ----
+  relax              1   100%         null     0  ◄ slowest
+  -----------  -------  -----  -----------  ----
+  total wall_s=1  stages=1  malformed=0  unpaired=0
+  ```
+- RENDERED over a representative full el-ph run (what a post-merge live dispatch yields — relax·scf·ph:q1·ph:q2·λ) — the bottleneck (slowest stage by wall) is flagged, `ph:q2`'s missing rss stays `null`:
+  ```text
+  QFORGE-PROCESS per-stage bottleneck report
+  stage        wall_s   %tot   peak_rss_kb  exit
+  -----------  -------  -----  -----------  ----
+  ph:q1           1503    36%      4680000     0  ◄ slowest
+  ph:q2           1487    35%         null     0
+  relax            842    20%      1840000     0
+  scf              311     7%      2210000     0
+  lambda            12     0%        96000     0
+  -----------  -------  -----  -----------  ----
+  total wall_s=4155  stages=5  malformed=0  unpaired=0
+  ```
+  Reading: phonon-per-q (`ph:q1`+`ph:q2`) dominates at 71% of wall — the el-ph campaign's true bottleneck is the per-q DFPT sweep, not relax/scf. That is the "MEASURE not anecdotal" lever the QFORGE-PROCESS loop set out to close.
