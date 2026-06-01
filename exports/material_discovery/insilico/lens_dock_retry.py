@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """LENS docking — 6L8H chain A only (single-chain) retry"""
-import os, subprocess, sys, glob
+import os, subprocess, sys, glob, shutil
 
 FIXED = "/tmp/6l8h_fixed.pdb"
 CHAINA = "/tmp/6l8h_chainA.pdb"
@@ -32,9 +32,12 @@ cy = statistics.mean(c[1] for c in hem_a)
 cz = statistics.mean(c[2] for c in hem_a)
 print("HEM chain A box center ({} atoms): ({:.2f}, {:.2f}, {:.2f})".format(len(hem_a), cx, cy, cz))
 
-# Receptor prep
-MK = "/home/aiden/.venv-cosmedrug/bin/mk_prepare_receptor.py"
-r = subprocess.run([MK, "--read_pdb", CHAINA, "-o", RECEPTOR_BASE, "-p"],
+# Receptor prep — resolve the meeko tool from MK_PREPARE_RECEPTOR env, else PATH; fail fast.
+MK = os.environ.get("MK_PREPARE_RECEPTOR") or shutil.which("mk_prepare_receptor.py")
+if not MK:
+    sys.exit("mk_prepare_receptor.py not found on PATH; set MK_PREPARE_RECEPTOR to its path "
+             "(install meeko, e.g. pip install meeko).")
+r = subprocess.run([sys.executable, MK, "--read_pdb", CHAINA, "-o", RECEPTOR_BASE, "-p"],
                    capture_output=True, text=True, timeout=600)
 print("mk_prepare_receptor rc={}".format(r.returncode))
 if r.stderr and len(r.stderr) > 200:

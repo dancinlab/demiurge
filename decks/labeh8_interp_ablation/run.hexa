@@ -23,10 +23,10 @@
   walltime = "6h"
   nice     = 10
 
-@workdir := "ubu-1 absolute paths" :: paths
-  base     = "/home/aiden/rtsc_labeh8_interp_ablation"
-  pseudo   = "/home/aiden/rtsc_labeh8_interp_ablation/pseudo"
-  outdir   = "/home/aiden/rtsc_labeh8_interp_ablation/out"
+@workdir := "ubu-1 paths (under remote $HOME)" :: paths
+  base     = "$HOME/rtsc_labeh8_interp_ablation"
+  pseudo   = "$HOME/rtsc_labeh8_interp_ablation/pseudo"
+  outdir   = "$HOME/rtsc_labeh8_interp_ablation/out"
 
 @env := "QE micromamba qe env" :: env
   pw_x     = "pw.x  (QE 7.5, micromamba qe)"
@@ -52,8 +52,8 @@
   delta_vs = "rtsc_labeh8_fullbz_elph_20260526.json  (simple baseline, PR #248)"
 
 @dispatch_recipe := "pool launch command" :: recipe
-  step_1   = "scp scf.in ph.in to ubu-1:/home/aiden/rtsc_labeh8_interp_ablation/"
-  step_2   = "pool on ubu-1 'cd /home/aiden/rtsc_labeh8_interp_ablation && bash <shell_lowering>'"
+  step_1   = "scp scf.in ph.in to ubu-1:\$HOME/rtsc_labeh8_interp_ablation/"
+  step_2   = "pool on ubu-1 'cd \$HOME/rtsc_labeh8_interp_ablation && bash <shell_lowering>'"
   step_3   = "Monitor — tail ph.out, alert on JOB DONE | error | timeout"
 
 // === Shell lowering (transcribed below for direct copy-to-host) ===

@@ -19,7 +19,7 @@
   cm1_to_K            = 1.43877735
 
 @io := "harvest-contract" :: contract
-  workdir = "/home/aiden/rtsc_h3br_pscan/200gpa_fullq"
+  workdir = "$HOME/rtsc_h3br_pscan/200gpa_fullq"
   prefix  = "h3br"
   n_q     = 8   // 4x4x4 BCC ibrav=3 -> 8 IBZ q-points (from h3br.dyn0)
   method  = "simple"
