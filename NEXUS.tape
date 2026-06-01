@@ -187,7 +187,7 @@
 
 @X c8 := "PWFORGE plane-wave H assembler -> QFORGE (cell->H_of_rho front-end)" :: reuse-candidate [tier-2 active]
   note  = "PWFORGE(평면파 해밀토니안 조립기 · domains/PWFORGE.md) = QFORGE SCF 가 소비하는 H_of_rho 입구. S(G)·V_loc->V_ext·kinetic·KB-projector -> H_of_rho closure."
-  gate  = "front-end LIVE — M1~M5 landed+g5-green (hexa-lang PR#2407~#2411), 실제 Si SCF 원자위치부터 in-repo 독립 수렴 실증. 구조 갭 CLOSED. M6 CaH6 독립 cross-val 만 input-blocked (NC 의사퍼텐셜 부재 · d6, 구조 아님). M6 g5 통과 시 reuse-edge 승격."
+  gate  = "front-end LIVE — M1~M5 landed+g5-green (PR#2407~#2411), Si SCF in-repo 독립수렴 실증. 2026-06-01: M6 PP-input blocker CLOSED (ONCV NC Ca+H d13-검증 + upf_parse 소비 + CaH6_NC NC deck emit, hexa-lang feat/qforge-cah6-nc-m6). cell→H assembly 절반 CLOSED. 잔존 2-blocker: A=compute-dispatch(hexa cloud cloud_cli mac cache-GC race + 풀-다운, d8 patch) · B=engine-chain 갭(atoms→self-consistent-SCF→DFPT→|g|²→Tc orchestrator 부재 — M5.5/M5.6 미배선). M6 미종결 · gate HELD on #2+M6. M6 g5 통과 시 reuse-edge 승격."
   scope = "intra-project (g67); QFORGE migration blocker #1 의 cell->H front-end 절반. d4 generic dispatch (H_of_rho = caller closure) · d6 no forced number. stdlib/qforge SSOT (d3)."
 
 # ── 4. usage protocol (atlas-first · @D g67 / d19) ──

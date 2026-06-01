@@ -1,0 +1,44 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'cah6'
+  outdir          = './out'
+  verbosity       = 'high'
+  pseudo_dir      = './pseudo'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav           = 3
+  celldm(1)       = 6.4640           ! REPLACE with relaxed celldm(1) from vc-relax.out
+  nat             = 7
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 320
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Ca  40.078   Ca_ONCV_PBE_sr.upf
+  H    1.008   H_ONCV_PBE_sr.upf
+
+! REPLACE celldm(1) + ATOMIC_POSITIONS below with the RELAXED values from vc-relax.out.
+ATOMIC_POSITIONS crystal
+  Ca   0.0000000   0.0000000   0.0000000
+  H    0.2500000   0.5000000   0.0000000
+  H    0.5000000   0.0000000   0.2500000
+  H    0.0000000   0.2500000   0.5000000
+  H    0.7500000   0.5000000   0.0000000
+  H    0.5000000   0.0000000   0.7500000
+  H    0.0000000   0.7500000   0.5000000
+
+K_POINTS automatic
+  16 16 16  0 0 0

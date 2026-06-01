@@ -28,7 +28,7 @@
 ```
 
 - **vs QE pw.x**: PWFORGE = QE의 평면파 H 구성 핵심을 hexa-native 로 포팅한 것. QFORGE(SCF·DFPT·λ·Tc)가 이미 있는데 그 입구(H 조립)만 비어 있어서, QE 모멘트 경계에서 시작할 수밖에 없었던 것을 PWFORGE 가 원자위치까지 끌어내린다.
-- **현재 상태(정직 g6, 2026-06-01)**: ✅ **front-end LIVE** — M1~M5 全 landed+g5-green (hexa-lang PR#2407~#2411), 실제 Si SCF 가 원자위치부터 in-repo 독립 수렴 실증. M6(CaH6 독립 cross-val)만 ⚠ input-blocked(NC 의사퍼텐셜 부재 · 구조 아님). XC 항은 QFORGE 에 기 landed(PR#2402·#2405). blocker #1 **구조 갭 CLOSED**, |g|² acceptance 는 PP-input 대기.
+- **현재 상태(정직 g6, 2026-06-01 업데이트)**: ✅ **front-end LIVE** — M1~M5 全 landed+g5-green (hexa-lang PR#2407~#2411), 실제 Si SCF 가 원자위치부터 in-repo 독립 수렴 실증. XC 항 QFORGE 기 landed(PR#2402·#2405). **M6 진척**: PP-input blocker **CLOSED**(ONCV NC Ca+H d13-검증 · upf_parse 소비 · CaH6_NC NC deck emit). 그러나 M6 종결은 **2개 잔존 blocker**: (A) compute-dispatch — `hexa cloud` 가 mac cache-GC 레이스 + 풀-다운으로 QE-NC ref 미실행(g8 위반 회피 · d8 patch 제출); (B) engine-chain 구조 갭 — QFORGE atoms→self-consistent-SCF→DFPT→|g|²→λ→Tc end-to-end orchestrator 부재(assembler E2E 는 density-independent stub + free-electron 만 실증). 즉 blocker #1 의 **H-assembly 절반은 CLOSED**, 그러나 **독립 atoms→Tc 실행 절반은 미배선(M5.5/M5.6)** — d6 정직: QE 모멘트 경계 재진입으로 "독립" 라벨링 금지.
 
 ## 1. front-end 스택 (마일스톤 · 각 g5 anchor)
 
@@ -37,19 +37,22 @@
 - [x] **M3 — V_loc(G)→V_ext** · `stdlib/qforge/vloc.hexa` · PR#2409 · 순수-Coulomb anchor rel 0.0 · −Z·4π/G² 점근
 - [x] **M4 — KB 비국소 projector** · `stdlib/qforge/projector.hexa` · PR#2410 · Gaussian projector closed-form rel ~1e-11 · V_NL hermiticity
 - [x] **M5 — 조립기 (H_of_rho)** · `stdlib/qforge/assembler.hexa` · PR#2411 (tip 9ba148db6) · **실증**: 실제 Si NC UPF + 원자위치로 27-PW H 조립 → `qforge_scf` 독립 수렴 (converged=true, 26 iters, lowest KS −3.47 Ha) — atoms→SCF front-end LIVE in-repo
-- [ ] **M6 — CaH6 독립 cross-val (payoff)** · ⚠ **input-blocked (구조 아님 · d6 정직)** — `upf.hexa`=norm-conserving 전용인데 디스크의 유일한 H 의사퍼텐셜이 ultrasoft, Ca 의사퍼텐셜 부재, QE CaH6 ref 는 PBE PAW → NC-vs-PAW pseudization 혼입(d6 금지). 컴퓨트 무관(free ~7-atom). breakthrough paths(@D d2): ① ONCV NC Ca+H set + QE NC ref 재생성 · ② upf 파서 US/PAW 확장 · ③ matched-NC ref 있는 형제 수소화물에서 |g|² 종결
-
+- [ ] **M6 — CaH6 독립 cross-val (payoff)** · ⚠ **PP-input CLOSED · 2-blocker 잔존 (d6 정직 · 2026-06-01)**. ①번 path(ONCV NC) 진행: **PP-input blocker CLOSED** — PseudoDojo/SG15 ONCV-PBE-SR `Ca_ONCV_PBE_sr.upf`(NC·PBE·scalar·Zval=10·nproj=6) + `H_ONCV_PBE_sr.upf`(NC·Zval=1·nproj=2) 소싱+d13 검증(pseudo_type=NC·is_ultrasoft=F·is_paw=F) + hexa `upf.hexa` upf_parse 깨끗이 소비 확인. CaH6_NC deck(7-atom Im-3m, 2×2×2-q, NC 양면) **생성기 통해 emit 완료** (exports/rtsc/decks/CaH6_NC/ · hexa-lang PR `feat/qforge-cah6-nc-m6` SHA 15f42324d — `cah6_sodalite_im3m` 프로토타입 + h_site_upf 파라미터화, 기존 프로토타입 무회귀). **잔존 blocker A (compute-dispatch)**: QE-NC ref 를 `hexa cloud dft-run`(g8) 로 못 돌림 — cloud_cli.hexa 빌드가 mac shared-cache GC 레이스로 phantom-fail(동일 clang 손수동 2.2s exit0) + Linux 풀 호스트(summer/aiden) 다운(preflight rc=255). d8 inbox patch 제출(hexa-lang `inbox/patches/cloud-cli-mac-cache-gc-race.md`). **잔존 blocker B (engine-chain 구조 갭, d6)**: QFORGE stdlib 에 atoms→self-consistent-SCF→DFPT→|g|²→λ→Tc 를 chain 하는 end-to-end orchestrator 부재 — assembler 셀프테스트는 density-INDEPENDENT H_of_rho stub + free-electron E2E 만 실증, 실 self-consistent ρ-loop(V_H+V_xc 갱신) + Sternheimer-from-SCF |g|² 미배선(scf.hexa 헤더가 ">200줄 통합 조각" 으로 플래그). 즉 Step 3(독립 QFORGE) 가 compute 아니라 in-repo chain 부재로 오늘 실행 불가. breakthrough paths(@D d2): A→ cloud_cli GC-race fix(min안: post-clang 존재검사 GC-무관 경로) OR 풀 호스트 복구 · B→ self-consistent H_of_rho(ρ) 통합 PR(V_H+V_xc 갱신 배선) + Sternheimer→|g|² atoms-경로 PR (PWFORGE M5.5/M5.6 신규 마일스톤 후보)
+- [ ] **M5.5 — self-consistent H_of_rho(ρ) 통합 (engine-chain blocker B 절반)** · `stdlib/qforge/assembler.hexa` + `scf.hexa` · 실 metallic-hydride 에서 V_H(ρ)+V_xc(ρ) 를 매 SCF iter 갱신하는 H_of_rho(ρ) 클로저 배선 → density-INDEPENDENT stub 졸업. anchor: 실 Si/CaH6 NC UPF 로 self-consistent 수렴 + 에너지 단조감소.
+- [ ] **M5.6 — Sternheimer→|g|² atoms-경로 (engine-chain blocker B 절반)** · `stdlib/qforge/sternheimer.hexa` + `elph.hexa` · 수렴 SCF 밀도에서 DFPT 선형응답 → ΔV_scf → |g_{k,k+q}^ν|² 를 atoms 로부터 직접 산출(QE dvscf 경계 아님). anchor: g5 vs QE |g|² (matched NC).
 ## 2. 게이트 관계 (QFORGE 마이그레이션)
 
 ```
 QFORGE production 마이그레이션 게이트
 ├─ blocker #1  el-ph front-end
-│   ├─ XC 항          ✅ CLOSED (correlation landed, g5-green)
-│   └─ cell→H 조립기  ⬅ PWFORGE 가 닫는 부분 (M1~M6)
+│   ├─ XC 항              ✅ CLOSED (correlation landed, g5-green)
+│   ├─ cell→H assembly    ✅ CLOSED (M1~M5 + CaH6 NC deck/pseudo emit — H_of_rho assembler LIVE)
+│   └─ atoms→Tc chain     ⏳ HELD (M5.5 self-consistent ρ-loop + M5.6 Sternheimer→|g|² 미배선
+│                              · M6 NC-vs-NC 실행은 cloud-dispatch(A)+chain(B) blocker 대기)
 └─ blocker #2  3-anchor terminal (CaH6 ✅ / LaH10·Li2MgH16 QE pending)
 ```
 
-- M6 통과 ⇒ blocker #1 완전 CLOSED. 그래도 full migration flip 은 blocker #2(LaH10·Li2MgH16 QE terminal+일치)까지 충족해야 함 (@D d_qforge_engine — un-cross-val'd 결과로 absorbed 금지 · no forced flip).
+- M6 = atoms→Tc 독립 chain(B) + QE-NC ref(A) 둘 다 닫혀야 통과 ⇒ 그때 blocker #1 완전 CLOSED. cell→H assembly 절반은 CLOSED. full migration flip 은 그래도 blocker #2(LaH10·Li2MgH16 QE terminal+일치)까지 충족해야 함 (@D d_qforge_engine — un-cross-val'd 결과로 absorbed 금지 · no forced flip). **gate 상태: blocker #1 부분진척(assembly CLOSED, chain HELD) · gate 전체 HELD on #2 + M6.**
 
 ## 3. 거버넌스 · reuse
 
