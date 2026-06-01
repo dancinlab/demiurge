@@ -124,3 +124,120 @@ Davidson 비교" (🧮 LANE B · ⚪speculative).
 ## 2026-06-02 — MIGRATED to demiurge/domains/ (이관)
 - Domain docs (QFORGE-PERF.md · .log.md · .bench.md) + .verdicts/qforge-perf-roofline/ migrated faithfully from hexa-lang/domains/ → demiurge/domains/ (canonical QFORGE-family home; root QFORGE/ + sibling QFORGE-PROCESS · QFORGE-FEATURE).
 - Rationale: consolidate all QFORGE tracking/backlog docs under the demiurge domain roster (DOMAINS.tape). The el-ph engine CODE stays in hexa-lang stdlib/qforge (d3); only the perf-backlog DOC domain moves here. The .bench.md numbers reference hexa-lang bench runs (kept verbatim as a measured snapshot).
+
+## 2026-06-02 — QE-GPU DFPT feasibility investigation
+
+READ-ONLY 조사 (no pod rent · live gate pods 38943553 LaH10 / 38922322 Li2MgH16 비간섭).
+동기: user "QE 느림 → GPU 쓰게 버전 올려라". @goal 이 박제한 **"QE ph.x no-GPU DFPT
+wall (29-pod CPU teardown 원인)"** claim 을 현 사실로 verify/update. 결론 — **claim 은
+PART OUTDATED·PART STILL-TRUE**: phonon DFPT(dynmat) 는 QE 7.2+ 에서 GPU-가속되지만,
+**우리가 쓰는 `electron_phonon='simple'` (λ·a²F) 스텝은 GPU 미포팅** — QE 수석저자
+Giannozzi 가 명시 확인.
+
+### (a) per-version ph.x / DFPT / el-ph GPU 지원 표
+
+```
+QE ver   pw.x SCF GPU   ph.x DFPT(dynmat) GPU   electron_phonon=λ·a²F GPU   비고
+──────   ────────────   ─────────────────────   ─────────────────────────   ──────────────────────
+7.0      ✅ (CUDA-F)     ❌ (CPU only)            ❌                          "GPU for PWscf/CP 확장"
+7.1      ✅ improved      ❌                       ❌                          phonon GPU 언급 無
+7.2      ✅              ✅ NEW (CINECA Team)      ❌  미포팅                   "GPU-accelerated phonon
+                                                                             code" — 전 PHonon
+                                                                             OpenACC化(Sternheimer
+                                                                             LR 포함). lin-resp
+                                                                             {PHonon·turboEELS·
+                                                                             turboLanczos·HP·CP}.
+7.3      ✅              ✅ (7.2 상속)            ❌                          phonon GPU 추가 변경 無
+7.3.1    ✅              ✅                       ❌                          pw2wannier 소수정만
+7.4      ✅              ✅                       ❌                          PHonon User Guide v7.4
+                                                                             존재 (GPU 문서화)
+7.4.1    ✅              ✅                       ❌                          GPU-phonon 변경 無
+7.5      ✅              ✅ (OpenACC 전면대체)     ❌  미포팅 (CRASH)           CUDA-F→OpenACC almost
+                                                                             everywhere · DFPT
+                                                                             dfpt_kernel 모듈화
+```
+
+핵심 사실 (출처별):
+- **QE 7.2 = ph.x GPU 가속 최초 도입** (CINECA Team). 전 PHonon 코드를 OpenACC+CUDA-Fortran
+  로 포팅 — non-SCF (k+q) wavefn + **Sternheimer LR(dvscf) 가 GPU 가속됨** (JCTC exascale
+  paper §PHonon). 즉 dense per-q DFPT 의 핵심 inner-loop 는 7.2+ 에서 GPU 위에서 돈다.
+- **그러나 `electron_phonon` (λ·a²F·el-ph 계수) 스텝은 GPU 미포팅.** QE 수석저자 Paolo
+  Giannozzi 직접: *"I don't think that the electron-phonon calculation has been ported to
+  GPUs"* (QE-users 메일링 v7.5 elphon.f90 crash 스레드, msg45555). v7.5 에서 `electron_phonon`
+  활성 시 GPU ph.x 가 `a2Fsave` "read past end of file" 로 **크래시** — race/미포팅. 동일
+  입력이 CPU 바이너리에선 정상. 추가 함정: nvfortran 가 쓴 `.dvscf` 바이너리를 gfortran
+  CPU 바이너리가 못 읽음(padding 차) → **GPU-DFPT→CPU-elph clean handoff 도 불가**.
+- NGC 컨테이너(nvcr.io/hpc/quantum_espresso, SISSA 빌드, A100/V100)는 **ph.x 미동봉**
+  (qe-7.1 SIF 에서 "ph.x 없음" 보고 · NVIDIA forum). GPU ph.x 는 직접 빌드 필요(NVHPC SDK).
+
+### (b) 정직 verdict — LaH10(11 at, 2×2×2 q) + Li2MgH16(38 at, 2×2×2 q)
+
+두 deck 모두 `electron_phonon = 'simple'` (exports/rtsc/decks/{LaH10,Li2MgH16}/ph.in 확인).
+이게 정확히 Giannozzi 가 "GPU 미포팅" 이라 한 경로.
+
+**verdict = PARTIAL — GPU 가 느린 부분의 대부분(DFPT dvscf)은 가속하나, λ·a²F 최종스텝은
+못 가속 + clean handoff 불가 → 두 셀에 대해 "버전만 올리면 GPU 빨라짐" 은 거짓.**
+
+- 느린 게 무엇인가: 우리 pods 가 멈춰있는 곳 = **per-q DFPT linear-response SCF(dvscf/
+  Sternheimer)** — phonon iter#8(LaH10)/iter#3(Li2MgH16). 이 부분은 **QE 7.2+ GPU 가
+  실제로 가속**(JCTC: Si-slab PHonon GPU/CPU 4–6×). 따라서 *원론적으론* GPU 가 우리 병목을
+  친다.
+- 그런데 함정 둘: ① `electron_phonon='simple'` 최종 λ 적분 스텝은 GPU 위에서 **돌지 않고
+  (7.5 는 크래시)**, ② GPU(nvfortran) `.dvscf` 를 CPU 바이너리가 못 읽어 "DFPT는 GPU,
+  el-ph는 CPU" 분할도 막힘. el-ph 적분 자체는 DFPT 대비 싼 post-step(a²F는 cheap)이라
+  최종스텝 CPU 회귀의 손실은 작지만, **단일 GPU 바이너리로 deck 을 end-to-end 완주할 수
+  없음** — el-ph 끄고 dvscf 만 GPU 로 뽑은 뒤 CPU 로 λ 재계산하는 2-binary 워크플로를
+  새로 깔아야 하고, .dvscf 비호환이 그 handoff 마저 깸. = 즉시 "rent GPU, resume" 불가.
+- d7 sizing: LaH10 11-atom 은 d7 GPU 문턱(≥20 atom) **미달** → 원칙상 CPU 유지 대상.
+  Li2MgH16 38-atom 은 GPU 문턱 충족 — DFPT dvscf 만 보면 GPU 후보지만, 위 el-ph 미포팅
+  +.dvscf 비호환으로 **재현가능한 end-to-end GPU 경로가 현재 없음**.
+- 결론: @goal 의 "QE ph.x no-GPU DFPT wall" 은 **dynmat-DFPT 한정으론 OUTDATED**(7.2+
+  GPU O), 그러나 **el-ph(λ·a²F) 한정으론 STILL TRUE**(미포팅·크래시·.dvscf 비호환). 우리
+  캠페인이 닫으려는 건 λ·Tc 이므로 **실효적 wall 은 유지** — 단, 사유를 "전 ph.x no-GPU"
+  에서 "**electron_phonon λ·a²F 미포팅 + GPU/CPU .dvscf 바이너리 비호환**" 으로 정밀화해야.
+
+### (c) GPU 가 부분적으로 값어치 있는 경우의 build path + cost (조건부)
+
+dvscf-DFPT 만 가속(el-ph 최종은 CPU)하려는 *실험적* 경로 — 즉시발사 권장 아님:
+- build: vast GPU pod(A100/H100 권장) + NVIDIA HPC SDK(nvfortran) 로 q-e 7.4/7.5 직접
+  `configure --with-cuda=... --with-cuda-cc=80 --enable-openmp` 빌드. NGC 컨테이너는
+  ph.x 미동봉이라 base 만 쓰고 ph.x self-build, 또는 소스 빌드.
+- 적용 셀: d7 상 Li2MgH16(38 at)만 후보. LaH10(11 at)은 CPU 유지.
+- 러프 cost: vast A100 ~$1.0–1.5/hr. dvscf-DFPT 4–6× 가속 시 Li2MgH16 잔여 DFPT 가
+  현 CPU 다수십시간 → GPU 수~십시간 단위. **단 el-ph 미포팅 우회 워크플로(2-binary
+  + .dvscf 재생성) 구축 리스크가 cost 를 압도** — 이 우회 자체가 미검증.
+- ⚠ 이 경로는 PROPOSAL 이며 본 조사 권고는 "지금 발사하지 말 것" (d17 의 'validated deck'
+  전제 미충족 — GPU el-ph end-to-end deck 이 아직 검증 불가).
+
+### (d) QE-GPU vs QFORGE-NVPTX 권고
+
+- QE-GPU 가 우리 λ·Tc 게이트를 **end-to-end 닫지 못함**(el-ph 미포팅)이 바로 **QFORGE 가
+  존재하는 이유를 VALIDATE** — d_qforge_engine 의 "self-controlled GPU el-ph, no QE dep"
+  가 정확히 이 갭을 겨냥. 외부 QE 는 el-ph GPU 를 영구히 안 줄 수 있음(d8/perpetual-dep
+  안티패턴).
+- 권고: **QE-GPU 빌드에 캠페인 리소스 투입 금지.** 대신 (1) 현 CPU 게이트 pod 를 그대로
+  완주(λ·Tc cross-val anchor 확보 — 건강히 계산중, 비간섭), (2) 가속 투자는 QFORGE-NVPTX
+  트랙(이 도메인 ⚡ Lane A: Sternheimer CG GPU-resident · H_apply GPU-GEMM · cuFFT Poisson)
+  으로, el-ph 전 경로를 hexa-native 로 GPU 화. QE 에 없는 바로 그 부분(el-ph GPU)을
+  QFORGE 가 메우는 게 전략적으로 유일하게 합리적.
+- 예외: cross-val anchor 를 *더 빨리* 얻으려는 1회성 목적이면 QE-GPU dvscf-DFPT(el-ph CPU)
+  를 Li2MgH16 한정 실험 가능하나, 위 .dvscf 비호환 우회부터 검증 필요 → 별도 spike,
+  캠페인 차단 금지.
+
+### (e) sources cited
+- QE 7.2 release notes — "GPU-accelerated phonon code (CINECA Team)":
+  quantum-espresso.org/release-notes/release-notes-QE7-2.html ·
+  github.com/QEF/q-e/blob/master/Doc/release-notes (per-version GPU/phonon diff)
+- JCTC "Quantum ESPRESSO: One Further Step toward the Exascale" (2023) — 전 PHonon
+  OpenACC 포팅 · Sternheimer GPU · Si-slab PHonon GPU/CPU 4–6×:
+  pubs.acs.org/doi/10.1021/acs.jctc.3c00249 (PMC10601483)
+- **Giannozzi 메일(핵심)** — "el-ph calc NOT ported to GPUs" · v7.5 elphon.f90
+  a2Fsave crash · nvfortran/.dvscf↔gfortran 비호환:
+  mail-archive.com/users@lists.quantum-espresso.org/msg45552.html (보고) ·
+  …/msg45555.html (Giannozzi 회신)
+- NGC 컨테이너 ph.x 미동봉: catalog.ngc.nvidia.com/orgs/hpc/containers/quantum_espresso ·
+  forums.developer.nvidia.com/t/.../257420 (ph.x not in qe-7.1 SIF)
+- MaX/CINECA "QE: Accelerating … for metals on GPUs":
+  max-centre.eu/quantumespresso-accelerating-electronic-structure-calculations-for-metals-on-gpus/
+- 우리 deck 확인: exports/rtsc/decks/{LaH10,Li2MgH16}/ph.in (`electron_phonon='simple'`,
+  2×2×2 q, nat 11/38)
