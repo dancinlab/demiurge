@@ -71,6 +71,11 @@
 @domain CO2-CAPTURE   := "domains/CO2-CAPTURE.md"
 @domain GREEN-NH3     := "domains/GREEN-NH3.md"
 
+# 〔QFORGE el-ph engine sub-domains — process · perf · feature trackers〕
+@domain QFORGE-PROCESS := "domains/QFORGE-PROCESS.md"
+@domain QFORGE-PERF    := "domains/QFORGE-PERF.md"
+@domain QFORGE-FEATURE := "domains/QFORGE-FEATURE.md"
+
 # 〔COSME 컨테이너 sub-domains〕
 @domain COSME-ACNE    := "domains/COSME-ACNE.md"
 @domain COSME-AMPOULE := "domains/COSME-AMPOULE.md"
