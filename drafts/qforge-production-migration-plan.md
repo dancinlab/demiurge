@@ -82,10 +82,25 @@ f1·f2 (=344.5 K, the stronger high-λ form); the campaign's *recorded* CaH6 "Tc
 difference, not a physics divergence — λ itself agrees to 1.2e-4.
 
 ### LaH10 / Li2MgH16 — PENDING (not failed)
-Both QE refs are still `running` at the phonon stage in RTSC_LEDGER.jsonl
-(lambda=null, omega_log=null, Tc=null; LaH10 pod 38704336, Li2MgH16 pod 38759972).
-The lah10_cah6_yh6 extension record has LaH10 as SETUP-ONLY / not_started. No
-terminal QE λ·Tc to cross-validate yet → anchors PENDING.
+LaH10 QE ref is `running` at the phonon stage in RTSC_LEDGER.jsonl
+(lambda=null, omega_log=null, Tc=null; LaH10 pod 38704336). The lah10_cah6_yh6
+extension record has LaH10 as SETUP-ONLY / not_started. No terminal QE λ·Tc to
+cross-validate yet → LaH10 PENDING.
+
+Li2MgH16 QE ref is RUNNING (relax) — lambda=null, omega_log=null, Tc=null (not
+terminal yet; no value fabricated, d6). The dft-run scp-255 tooling blocker that
+held it is RESOLVED 2026-06-01: hexa-lang PR#2451 (scp DIRECT→PROXY fallback) +
+PR#2453 (durable cross-invocation offer-blacklist) — the upstream absorption of
+inbox/patches/dft-run-direct-endpoint-scp255.md (a)+(c). After install, a fresh
+`hexa cloud dft-run exports/rtsc/decks/Li2MgH16 --detach` did NOT re-pick the
+broken offer 28919799 (it picked 29302413 @ 79.112.108.70), uploaded OK, and
+LAUNCHED relax detached on pod 38922322 (DETACH OK, no teardown). `--resume`
+reaches the pod via the stamped endpoint and reports relax STILL RUNNING. So
+Li2MgH16 is now PENDING-RUNNING (advancing relax→scf→ph DFPT 2×2×2-q→λ·Tc), no
+longer DEFERRED. Terminal QE λ·ω_log·Tc is harvested by polling `--resume`; the
+QFORGE cross-val anchor for Li2MgH16 stays PENDING until that terminal lands.
+(Li2MgH16 lit reference for context only: Tc ~473 K @ 250 GPa — NOT used as a
+result; the QE cross-val number will come from this run, no tuning, d6.)
 
 ### structural deliverables (#2395/#2396) = SHIPPED
 Both PRs are merged in origin/main and verified live this session (verdicts above).
