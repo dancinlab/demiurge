@@ -435,3 +435,89 @@ resolves ever deeper**. Concrete breakthrough paths:
 **Pool host: summer** (linux, FREE, no rent, no pod ops). Build+all runs on summer via
 `sidecar pool on summer`. mini Darwin /tmp-guard avoided. Verification worktrees removed; install
 toolchain restored byte-clean (`_QF` count 0, runtime.a in place).
+
+## 2026-06-02 — KB nonlocal WIRED into H (step 1+2) · hexa-lang PR#2527 MERGED · 🟠 plateau STILL NOT reached, energy-functional residual RULED IN
+
+**The diagnosed deeper wall (from e364a1a):** prior agents found the bare (T+V_ext) lowest eig DIVES
+unbounded with NPW even after the V_ext Ry→Ha ½ fix (PR#2525). Top hypothesis (d2 #1): the
+`cah6_bare_eig_probe` ran `nprojs=[0,0]` — it OMITTED the Kleinman-Bylander NONLOCAL projectors,
+whose repulsive core-orthogonalization should CANCEL the deep local well. This session WIRED the KB
+nonlocal into H and re-ran the probe + plateau check.
+
+**Gap found + fixed (the missing wiring, hexa-lang PR#2527 MERGED, merge 0845d98f):**
+- `upf.hexa`: `upf_parse` extracted `dij` + `beta_lengths` but THREW AWAY the actual β(r) projector
+  samples and the angular momenta. `qforge_vnl_block` could never be fed real projectors. **Fix:**
+  `Upf` now exposes `betas: [float]` (flat [nproj·mesh], each PP_BETA.i zero-padded to mesh — the radial
+  quadrature in `qforge_proj_radial` needs len(beta)==len(r)) + `ls: [int]` (angular_momentum attr per
+  PP_BETA.i, read from the multi-line opening tag). New helpers `_upf_tag_attr` / `_upf_betas_flat` /
+  `_upf_beta_ls`.
+- `assembler.hexa` (2 bugs): (1) the V_NL block was added RAW (Rydberg) while H is Hartree — applied the
+  documented `_QF_VEXT_RY2HA` ½ to `vnl_sum` (and the single-species path), per projector.hexa's
+  "dij (Ry; assembler applies ½ Ry→Ha)" contract. (2) multi-species dij offset was `dij[doff*np+di]`
+  — WRONG for unequal-np species (Ca np=6, H np=2: H block would alias into Ca's 36-entry block).
+  Replaced with a dedicated running `dijoff` accumulator advanced by `dl` per species.
+- Selftests GREEN (zero regression): upf_selftest · assembler_selftest · projector_selftest ·
+  vloc_selftest · qforge_qe_xval_test (headline QE Allen-Dynes anchor) all PASS.
+
+**bare_eig_probe WITH KB nonlocal (cah6_bare_eig_probe_nl) — VERBATIM:**
+```
+Ca nproj=6 nbeta_flat=10596 ndij=36 nls=6   (6 projectors × 1766 mesh = 10596)
+H  nproj=2 nbeta_flat=2332  ndij=4  nls=2
+NPW   eig0      eig1      eig2   (lowest 3 bare T+V_ext+V_NL eigenvalues, Ha)
+48   -5.51447  -8.9e-16  0.0
+64   -6.81125  -0.370464 -0.213609
+96   -9.31458  -1.84364  -1.74845
+128  -10.4567  -3.39478  9.1e-34
+180  -13.5918  -6.15251  -6.05131
+```
+**eig0 STILL DIVES (−5.51→−13.59 over NPW 48→180), even deeper than local-only (−4.25→−10.86).** The
+KB nonlocal (correctly ½-scaled, real projectors from the UPF) does NOT converge the bare eigenvalue.
+**→ HYPOTHESIS #1 (missing KB core-repulsion) is FALSIFIED.** The dive is NOT a probe artifact.
+
+**real-cell FDG Mermin-F WITH KB nonlocal (cah6_realcell_fdg_monotone_nl) — VERDICT VERBATIM:**
+```
+NPW   n_used  conv  iters   F=Mermin etot (Ha)
+48    48    true  3    -19.8781
+64    64    true  3    -23.7309
+96    96    true  3    -34.7892
+128   128   true  3    -43.4837
+── VERDICT (d6 VERBATIM) ──
+Mermin F basis-monotone over the REAL cell = true
+|ΔF| last step (NPW=96→128) = 8.69454 Ha  (plateau if small)
+```
+**monotone=true but |ΔF|_last = 8.69 Ha — PLATEAU NOT REACHED** (worse than local-only 6.07 Ha; the
+deeper bare well drags F down faster). KB nonlocal does not produce a plateau either.
+
+**ROOT CAUSE RULED IN (d2 path #2 — the energy functional itself):** audited
+`qforge_scf_pw_h_multi_smeared_fdg → qforge_scf_smeared`. Its `e_total = scf_band_energy(evals, occ)`
+= **Σ occ·ε — the bare BAND-ENERGY SUM**, NOT the variational Mermin free energy. The "Mermin etot"
+label is a MISNOMER: there is NO `−½∫V_H·ρ` Hartree double-count subtraction, NO `∫V_xc·ρ` correction,
+and NO ion-ion Ewald constant. So `e_total` directly tracks the diving eigenvalues → it can NEVER
+plateau by construction, independent of the eig dive.
+
+**Two-layer honest diagnosis:**
+  1. **Fundamental:** the NC pseudo-H eigenvalues themselves dive with NPW (bare-eig probe, WITH
+     nonlocal) — the deep local well is resolved ever-deeper; the documented "local-only well unbound
+     from below" persists even with the full KB block. This is the real wall.
+  2. **Measurement:** the plateau test measures Σεᵢ (band energy), not the total energy with
+     double-count + Ewald — so it could not plateau even if (1) were cured.
+
+**CLASSIFICATION (d6, @L4 NO forced flip): 🟠 plateau NOT reached → HONEST RESIDUAL, HELD.** Gate
+measurement (step 3: screened λ + Tc + rel-ε vs 2.27) NOT run — running it on a non-converged SCF /
+non-variational energy would emit an unfenced number (d6 forbids). NEVER tuned toward 2.27.
+
+**Next concrete paths (d2, for the next session):**
+- (a) Add the variational total-energy functional to `qforge_scf_smeared`: E = Σεᵢ − ½∫V_H ρ − ∫V_xc ρ
+  + E_xc[ρ] + E_ewald(ion-ion). This makes `e_total` the real quantity — but will NOT plateau until (b).
+- (b) The eig dive itself (layer 1): the PW representation of the NC local channel needs a proper
+  kinetic-energy cutoff / G-space smoothing of V_loc small-G head, OR a core-state projection floor
+  (project out eigenstates below a physical valence threshold), OR cross-check the Ca ONCV V_loc(r→0)
+  tail vs the −Z/r Coulomb limit (a too-attractive r→0 local channel binds a spurious deep state).
+- (c) Cross-val the assembled H eigenvalues at fixed NPW against a QE single-SCF-iteration band
+  structure for CaH6 — if QE's lowest band is bounded at the same cutoff, the residual is purely in
+  QFORGE's V_loc small-G treatment, not the physics.
+
+**Ship:** hexa-lang fresh worktree off origin/main (4176ff58) on the FREE pool host **aiden** →
+commit c36ab552 → branch qforge-kb-nonlocal-wire → **PR#2527 MERGED** (origin/main HEAD 0845d98f).
+Deck UPFs scp'd to aiden `~/qf-kb-wt/_deck/CaH6_NC/pseudo/`. Cache-bust recipe used (clear
+build/artifacts + ~/.hx/cache, `// cachebust` line, run from worktree CWD). NEVER ran on mac.
