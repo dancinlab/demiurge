@@ -1,5 +1,30 @@
 # QFORGE-FEATURE — work log (append-only)
 
+## 2026-06-02 — CaH6-NC FINAL MEASURE under Mermin-F SCF (PR#2514): synthetic gate PASS, but REAL cell STILL NON-monotone — composed λ=0.215, the λ=4.59 point did NOT survive (CLASSIFICATION = STILL-UNSTABLE · gate HELD · d6/g63 NO forced flip) · hexa-lang PR#2519
+- **HEADLINE (🔴 honest negative, d6/g63 VERBATIM):** ran the CaH6 real-cell ground SCF + all-4-brick composition at the converged NPW=64 with the Mermin-stabilized SCF (PR#2514). The OLD non-variational energy's "tantalizing" NPW=64 point (λ=4.59, ω_log=965 K, rel-ε 4.9%) **did NOT survive** the variational fix. The Mermin F corrected the energy FUNCTIONAL (synthetic selftest PASS) but the REAL inhomogeneous CaH6 cell is **STILL basis-NON-monotone** — so the composed λ at the converged cell is **0.215**, rel-ε **95%** vs QE 4.376. CaH6-NC migration gate **stays HELD** (converged-but-unstable; NOT closed).
+- **REAL-CELL Mermin-F etot-vs-NPW curve (VERBATIM, mini native, `cah6_realcell_mermin_monotone_check`):**
+
+  | NPW | n_used | converged | iters | Mermin F = Σocc·ε − σS (Ha) |
+  |---|---|---|---|---|
+  | 48 | 48 | true | 17  | **−37.0803** |
+  | 64 | 64 | true | 531 | **−28.6118** |
+  | 96 | 96 | true | 13  | **−52.7852** |
+
+  - **Mermin F basis-monotone over the REAL cell = `false`** (F(N+1) ≤ F(N)+tol VIOLATED: −37.08 → −28.61 → −52.79; adding plane waves RAISED then LOWERED F — Rayleigh-Ritz broken). **|ΔF|_last (NPW=64→96) = 24.1734 Ha, NO plateau.** This is the REAL-cell answer the synthetic `scf_mermin_monotone_selftest` (FIXED spectrum, monotone PASS) could not give.
+- **COMPOSED λ at the converged NPW=64 cell (`cah6_realcell_compose_xval`, VERBATIM, NOT tuned):**
+  - ground SCF: converged=true, iters=531, etot(Mermin F) = **−28.6118 Ha** (was −28.7767 under the OLD bare band-sum).
+  - real ω band[a]: 16 modes, ω_log(band)=**1165.38 K**; N(E_F)[c] real smeared DOS = **32.1868** (vs 1.0 placeholder); screened ΔV[d] STILL **NaN/BLOCKED** (Picard 400 passes non-convergent — same named knob).
+  - **BARE-COMPOSED a+b+c λ = 0.215369, ω_log = 1039.81 K** ← primary (finite, screening-independent).
+  - rel-ε vs QE 4.376 = **0.950784 (95%)**. composition LOWERED λ vs isolated-bare 5.471 → 0.215 (the real N(E_F)=32.19 divides the bare ~5.5 down by ~25×).
+- **CLASSIFICATION = STILL-UNSTABLE (the third branch — the Mermin fix did NOT fully stabilize the real cell).** VERBATIM verdict: `VERDICT: PARTIAL — bare-composed real λ outside 1%; screened path [d] BLOCKED on converged cell`. The λ=4.59 was a chaotic-neighbourhood artifact of the non-variational energy, NOT a converged limit — under the correct Mermin F it collapses to 0.215. **Gate HELD, NOT closed; NEVER forced toward 4.376.**
+- **RESIDUAL (named, d2 breakthrough path):** the energy-functional definition is now correct (synthetic gate green), but each NPW on the REAL cell self-consists to a DIFFERENT (partly spurious) local solution — note NPW=48/96 converge in 13-17 iters while NPW=64 needs 531, i.e. they land on distinct minima. The real residual is the **real-cell SCF basis-dependence**, NOT the Mermin energy. Breakthrough paths: (1) basis-consistent dense real-space ρ grid DECOUPLED from the PW count (the long-standing "aperiodic ρ FFT grid" residual), (2) denser k-mesh beyond Γ-only, (3) Anderson/Broyden on the screening solver to unblock ΔV_scr[d].
+- **g5 VERBATIM (all from the PR#2514 worktree HEAD a7f145c via HEXA_STDLIB_ROOT):**
+  - `qforge_scf_mermin_monotone_selftest PASS` — synthetic monotonicity: F(N+1)≤F(N)+tol for 6→7→8→10→12→16→20, F PLATEAUS, entropy 2·ln2, σ=0 backward-compat. (The fix IS correct on a fixed spectrum.)
+  - `compose_cah6 selftest: 6/6 checks pass · ALL_PASS` — the composition assembler (α²F≥0, λ≥0, 1/N(E_F) exactly once, etc.) is VERIFIED correct → the λ=0.215 is the honest output of correct composition, not an assembler bug.
+  - `qforge_migration_gate_test PASS` → `AGGREGATE HELD — 1/3 anchors terminal & within bar; 2 PENDING (migration stays manual; no fabrication)`. NOTE: this gate test's CaH6 row uses `lam_qf = lam_qe` (a SCOREBOARD placeholder = QE 4.376, pending a real CaH6 `.elph` fixture, per its lines 32-34) — it tracks gate STATE, NOT the live real-cell λ. The live real-cell composed λ measured here (0.215) is the actual physics finding that the scoreboard's 4.376 entry is NOT yet reproduced by a basis-stable real-cell composition.
+- **WHY this matters for the 3-anchor gate:** CaH6 was the closest-looking anchor (the OLD 4.59). This measurement shows that closeness was non-variational noise. CaH6-NC is therefore **converged-but-unstable**, NOT eligible to close. The full-flip across CaH6·LaH10·Li2MgH16 remains the user's gate; LaH10/Li2MgH16 QE DFPT still PENDING.
+- cite: hexa-lang **PR#2519** (`qforge-cah6-realcell-mermin-check`, squash-merge **8af2073**), file `stdlib/qforge/fixtures/cah6_realcell_mermin_monotone_check.hexa`. Measurement engine = PR#2514 HEAD **a7f145cdff791b4eb7d2a75dc5f2bfb2b19312eb** (origin/main), run via isolated worktree + `HEXA_STDLIB_ROOT` (`~/.hx/src` untouched, was stale at #2497). Host = **mini native-CPU** (FREE, no rent, no pod). Live gate pods (LaH10/Li2MgH16 + others) untouched.
+
 ## 2026-06-02 — CaH6-NC SCF BASIS-INSTABILITY ROOT CAUSE FIXED — Mermin free energy makes etot basis-MONOTONE (the variational wall BROKEN; g5-proven · d6/g63 NO forced flip) · hexa-lang PR#2514
 
 - **THE WALL (7581435):** the CaH6 real-cell ground SCF etot SCATTERED non-variationally with NPW (−13.39→−18.09→−36.96→−28.78→−51.96 Ry over NPW=16/32/48/64/96), so composed λ was ill-posed (3.36 → 1.39e7 → 0 → 4.59 → 4.3e-52). The Al/Nb/Pb ladder proved the el-ph assembler correct → the wall = ABSENCE of a basis-converged, variationally-stable SCF (NOT BZ, NOT assembler).
