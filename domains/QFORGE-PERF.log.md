@@ -565,3 +565,61 @@ definition. Step 2 (re-run cah6_realcell_mermin_monotone with E_tot) is next.
 **Pool host: aiden** (FREE; summer GPU-saturated). Fresh worktree /home/aiden/qf-etot-wt off
 origin/main 0845d98f, branch qforge-variational-etot. Cache-bust recipe (clear build/artifacts +
 ~/.hx/cache, // cachebust line, HEXA_STDLIB_ROOT + worktree CWD). NEVER ran on mac. hexa-lang PR next.
+
+## 2026-06-02 — STEP 2 RE-VERIFY: variational E_tot does NOT plateau — layer-1 eigenvalue dive CONFIRMED as the root residual (NOT the energy functional)
+
+**Ran** `cah6_realcell_etot_monotone_nl` (FDG screening + FULL H KB-nonlocal nprojs=[6,2], NPW∈{48,64,96,
+128}), reporting BOTH the bare band sum F_band (old `_fdg`) and the variational E_tot (new `_fdg_etot`,
+= F_band + e_dc + E_ewald). E_ewald computed via the new `qforge_ewald` (η-independent: −35.8486 @η=.45
+= −35.8487 @η=.60 — Ewald split verified; required a `qforge_recip_basis` helper because the deck's PW
+b1,b2,b3 are the degenerate BCC recip set with b1−b2+b3=0 → zero-|G| for (n,−n,n) triples; fixed +
+guarded). e_dc(xc double-count, ρ̄=nelec/Ω) = +2.0527 Ha. Constant shift e_dc+E_ewald = −33.7959 Ha.
+
+**VERDICT (d6 VERBATIM):**
+```
+E_ewald(eta=0.45)=-35.8486  E_ewald(eta=0.60)=-35.8487  (eta-indep check)
+e_dc(xc double-count, rhobar=nelec/Omega)=2.0527  total const shift e_dc+E_ewald=-33.7959
+NPW  n   F_band(Σocc·ε−σS)    E_tot(variational)
+48  48  -19.8781    -53.674
+64  64  -23.7309    -57.5268
+96  96  -34.7892    -68.5851
+128  128  -43.4837    -77.2796
+── VERDICT (d6 VERBATIM) ──
+F_band monotone = true
+E_tot (variational) monotone = true
+|ΔF_band| last (NPW=96→128) = 8.69454 Ha
+|ΔE_tot| last (NPW=96→128) = 8.69454 Ha  (PLATEAU if small, e.g. <1e-2)
+```
+
+**RESULT: E_tot does NOT plateau — |ΔE_tot|_last = 8.69454 Ha = |ΔF_band|_last EXACTLY.** The variational
+correction (e_dc + E_ewald = −33.7959 Ha) is an NPW-INDEPENDENT constant, so E_tot(NPW) = F_band(NPW) −
+33.7959 at EVERY NPW → the inter-NPW delta is identical. **This deterministically rules OUT the energy-
+functional definition as the cause of the non-plateau** (the step-1 fix was correct + necessary for a
+variational energy, but it is provably NOT the residual). F_band rows (−19.8781/−23.7309/−34.7892/
+−43.4837) reproduce the prior KB-nonlocal run EXACTLY — same physics, no regression.
+
+**HONEST FALLBACK CONFIRMED (d2): LAYER 1 DOMINATES.** The residual is the genuine eigenvalue dive — the
+NC pseudo-H lowest eigenvalue dives unbounded with NPW (the deep BARE LOCAL well resolved ever-deeper by
+the growing PW basis; confirmed earlier WITH the KB nonlocal block in H, PR#2527). The dive corrupts the
+occupied manifold → the band sum (and hence E_tot) keeps descending. This is a PW-representation problem
+in the NC local channel, NOT a missing energy term.
+
+**CLASSIFICATION (d6, @L4 NO forced flip): 🟠 plateau NOT reached → HONEST RESIDUAL, HELD.** Gate
+measurement (step 3: screened λ + Tc + rel-ε vs QE 2.27) NOT run — running it on a non-converged /
+diving SCF would emit an unfenced number (d6 forbids). NEVER tuned toward 2.27.
+
+**NEXT PATH (d2, layer-1 cure — the SINGLE remaining residual, for the next session):** the eigenvalue
+dive must be cured at the SOURCE (the NC V_loc small-G / r→0 treatment), since the energy bookkeeping is
+now provably complete. Concrete, ranked:
+- **(1) V_loc small-G smoothing / KE-cutoff smoothing fn.** The bare local well's r→0 (−Z/r) tail, sampled
+  on an ever-denser PW basis, binds a spurious deep state. Apply a G-space smoothing of the V_loc small-G
+  head (or an `ecutrho`-equivalent density cutoff) so the resolved well depth saturates with NPW.
+- **(2) Core-state projection floor.** Project out eigenstates below a physical valence-band threshold
+  (the dive lands on an increasingly core-localized non-physical state; no PAW/core cutoff currently).
+- **(3) QE single-SCF-iteration band cross-val at fixed NPW.** Cross-check the assembled H lowest band vs
+  a QE 1-iter CaH6 band at the same cutoff — if QE is bounded, the residual is purely QFORGE's V_loc(r→0)
+  / projector-data treatment, localizing the fix precisely.
+
+**Ship:** hexa-lang PR#2530 MERGED (origin/main HEAD 3fc2b077) — scf_etot.hexa + qforge_scf_smeared_dc +
+qforge_scf_pw_h_multi_smeared_fdg_etot + qforge_recip_basis (the η-zero-|G| guard). Pool host: aiden
+(FREE; summer GPU-saturated). Worktree /home/aiden/qf-etot-wt off origin/main. NEVER ran on mac.
