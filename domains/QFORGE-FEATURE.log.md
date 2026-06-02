@@ -282,3 +282,36 @@
 - **CaH6-class Tc LIFT (the gate physics restored):** for λ=4.376, ω_log=900 K, ω̄₂/ω_log=1.3, μ*=0.1 → **f1=1.3506, f2=1.1689** (both >1) ⇒ **Tc_plain (f1=f2=1, McMillan ω_log/1.2) = 185.7 K → Tc_full (f1·f2) = 293.1 K**, a **≈1.58× strong-coupling lift**. This is precisely the high-λ Tc the plain form drops and that the QFORGE-vs-QE gate needs to agree on.
 - **SCOPE:** pure-additive g5 gate (1 new file, 1 concern). Existing `qforge_l0_selftest` (the AD/Tc path) stays GREEN. Pre-existing `qforge_l1` (Eliashberg Matsubara ME-anchor) FAIL + `qforge_l3` clang build error are on origin/main, UNTOUCHED by this change (confirmed: `git diff` = the single new file only).
 - cite: hexa-lang **PR#2517** (`qforge-ad-f1f2-selftest`, squash-merge **4b86df33cda42bc029ed9edbfa58ed340cd3dad0**), file `stdlib/qforge/allen_dynes_f1f2_selftest.hexa` (`@ci_gate`-tagged). Isolated FRESH worktree off origin/main `a7f145cdf` (d9 — `~/.hx/src` untouched, worktree removed post-merge). Host `mini` native-CPU (FREE — no pod, no rent). Live gate pods (LaH10 38943553 / Li2MgH16 38922322) + other agents untouched.
+
+## 2026-06-02 — TRUE WALL #2 (screened ΔV NaN) — NaN BROKEN: CaH6 real-cell screened λ now FINITE (0.604), residual = under-converged dielectric fixed point (d6 honest) · hexa-lang PR#2520
+- **HEADLINE (🟠 NaN-WALL BROKEN, finite-but-under-converged, d6 VERBATIM, NOT tuned):** the screened el-ph ΔV_scr on the CaH6 real cell no longer returns NaN/BLOCKED. The Anderson-accelerated dielectric solver produces a **FINITE** screened ΔV (`fixed_point_res=0.0655`, NOT NaN), and the all-4 composed λ with the screened [d] columns = **0.604** (finite). The OLD damped-Picard β=0.05 on the SAME cell still NaNs (`col0_finite=false`). NaN wall = BROKEN; the residual is now a CONVERGENCE-DEPTH issue, not a NaN.
+- **DIAGNOSED NaN CAUSE (file:function — NOT an unwired/broken solver):** the stabilized solver `qforge_screened_dv_columns_anderson` (`stdlib/qforge/screening_anderson.hexa`, landed #2501 — GMRES-on-(I−L) Anderson w/ monotone line-search) was ALREADY correct, g5-proven, and ALREADY wired into `fixtures/cah6_realcell_compose_xval_anderson.hexa` (line 253). The NaN/BLOCKED λ=0.215 reported earlier (8ffac91) came from the **OLD Picard compose fixture** `fixtures/cah6_realcell_compose_xval.hexa` (line 241 → `qforge_screened_dv_columns`, β=0.05 damped Picard) being the one MEASURED — that Picard diverges to NaN on a converged metallic ρ at every β. The fix was to RUN the correct Anderson fixture on the real cell + add the missing g5 linear-algebra identity.
+- **REAL-CELL VERBATIM (`cah6_realcell_compose_xval_anderson`, mini native-CPU, NPW=64):**
+  ```
+  [ground SCF] NPW=64 converged=true iters=531 etot=-28.6118
+  [d screen ANDERSON] passes=400 converged=false max_residual=9.15066e-09 fixed_point_res=0.0655187
+  [d screen PICARD β=0.05] converged=false col0_finite=false  (the #2500 NaN wall)
+  [d screen] ‖ΔV_scr‖/‖ΔV_bare‖ (state 0) = 0.993295  (weakened, as-found, d6)
+  isolated bare      (1 ω₀, n_ef=1, bare ΔV)   λ = 5.47123
+  isolated screened  (1 ω₀, n_ef=1, ΔV_scr)    λ = 36.9019
+  BARE-COMPOSED a+b+c (real band[a]+N(E_F)[c]+offdiag[b]) λ = 0.0895675  ω_log=1039.81 K
+  COMPOSED all-4 (real band[a]+ΔV_scr[d]+N(E_F)[c]+offdiag[b]) λ = 0.604107  [screening converged=false]
+  QE reference λ = 4.376
+  ```
+- **FINITE screened λ (the deliverable, as-found):** all-4 composed with the screened [d] columns = **λ = 0.604** (finite — up from bare-composed 0.0896). Sternheimer inner solves converged (max_residual 9.15e-09); the OUTER dielectric fixed point plateaued at residual **0.0655** after the 400-pass cap → `scr.converged=false`, so the fixture's gate classifies BLOCKED and reports the bare-composed fallback (0.0896) as PRIMARY. The honest as-found screened number is 0.604; it is NOT tuned toward 4.376.
+- **RESIDUAL + NEXT PATH (d2/d6 honest, NOT a fake flip):** the screened ΔV is FINITE but the dielectric fixed point is UNDER-CONVERGED (res 0.0655 > tol 1e-8) on this real cell. Likely downstream of WALL#1 (the real-cell SCF basis NON-monotonicity a sibling agent is fixing in `scf.hexa` + the realcell driver) — χ is built on the same basis-unstable cell. Named breakthrough paths: (1) the WALL#1 basis fix should let the dielectric fixed point converge tighter; (2) raise the Anderson pass cap + history window on the real cell; (3) precondition (I−L) with a diagonal/Jacobi split before the Krylov solve. Do NOT flip CaH6-NC terminal until the screened fixed point converges (d6/g63).
+- **THE FIX SHIPPED (hexa-lang PR#2520, MERGED):** extracted the monotone-line-search Anderson core as a directly-testable generic primitive `qforge_anderson_fixed_point(g_apply, x0, n, tol, max_iter, mix, mdepth)` (GMRES on (I−L)x=b; converges to exact x*=(I−L)⁻¹b even when ‖L‖>1; unconditional no-NaN line-search) + added the missing g5 **known-linear-algebra-solution identity** the gate required. Additive only; `scf.hexa` + realcell driver UNTOUCHED (sibling's WALL#1).
+- **g5 VERBATIM (`screening_anderson_selftest` — 22/22 PASS, incl. new linear-solve identity):**
+  ```
+  PASS (B) Picard diverges at metallic gain (β=0.05) (true)
+  PASS (B) Anderson converged at metallic gain (true)
+  PASS (B) Anderson fixed-point residual < 1e-4 (9.86464e-09 < 0.0001)
+  PASS (G) Anderson affine converged (true)
+  PASS (G) Anderson x* == (I−L)⁻¹b (max|Δ|) (4.9738e-14 < 1e-07)
+  PASS (G) Anderson fixed-point residual < tol (4.41288e-14 < 1e-10)
+  PASS (G') near-singular x* all FINITE (no NaN/inf) (true)
+  PASS (G') near-singular x* rel-ε vs (I−L)⁻¹b (1.32836e-13 < 0.0001)
+  qforge_screening_anderson_selftest PASS
+  ```
+  The (I−L)x=b linear-solve identity is verified hexa-native NUMERICAL (🟢) vs an independent direct (I−L)⁻¹b reference (|Δ|=4.97e-14), incl. the no-NaN guarantee on a near-singular (spectral-radius→1⁻) fixture. All pre-existing cases A–F stay GREEN.
+- cite: hexa-lang **PR#2520** (`screening-anderson-cah6`, squash-merge **69733b2ec82e74d3c39315dcb31581d88e457eb0**), files `stdlib/qforge/screening_anderson.hexa` (+ generic `qforge_anderson_fixed_point`) · `screening_anderson_selftest.hexa` (+ cases G/G'). FRESH worktree off origin/main `8af2073` (d9 — `~/.hx/src` STALE #2497 untouched; HEXA_STDLIB_ROOT → worktree). `scf.hexa` + realcell driver NOT touched (sibling WALL#1). Host `mini` native-CPU (FREE — no pod, no rent). Live gate pods + other agents untouched.
