@@ -132,3 +132,21 @@
 - **LOCALIZATION VERDICT = (B) BZ/basis UNDERSAMPLING, calibration (A) RULED OUT.** QFORGE-NC samples **ONE Γ k-point, NPW=16, nactive=10 bands, 1 Einstein (or a small real-ω-band) mode**; QE used **16×16×16 k (145 irred) + 4×4×4 q (8 irred, W=124) + ecutwfc=70 Ry (thousands of PW) + 21 modes**. The Fermi-surface el-ph scattering-channel count is orders of magnitude larger in QE. Closing the 49× requires the **HEAVY full-4×4×4q converged-NPW BZ run** (the migration plan's compute step) + the converged screened coupling [d] — NOT a light factor fix.
 - **g5 (existing selftests stay green, run on the worktree):** `qforge_elph_offdiag_selftest PASS` (F1 virial/curvature/amp² 🔵 all PASS) · nc_norm_convention · realcell_phonon · dos_nef re-run on origin/main HEAD (unchanged — diagnosis added/removed only the ephemeral probe, net-zero source).
 - **CLASSIFICATION = PARTIAL → gate HELD.** No |g|² factor exists to fix (calibration ruled out via the physical eV/Å scale + the non-constant ratio). NO hexa-lang code change → **NO PR** (diagnostic-only finding; @L6 no empty PR). 4.376 NOT forced; no factor tuned. Migration gate CaH6-NC + metallic line stay **HELD** (PARTIAL, not terminal-CLOSED). The honest next step is the heavy full-BZ run, named not faked. cite: hexa-lang origin/main `6ad68de23`, fixture `cah6_realcell_offdiag_xval.hexa` + ephemeral `cah6_gmag_probe.hexa` (committed+removed in the `qforge-gmn-calib` worktree), host `mini` native-CPU.
+
+## 2026-06-02 — CaH6-NC metallic gate: queued into 3-anchor campaign batch (compute-closure step)
+- METALLIC-WALL CODE ARC COMPLETE (g5-proven): breadth a·b·c·d (#2488/2490/2491/2494) ·
+  Anderson screening solver (#2501, Picard-NaN wall broken) · F2 ω-Hartree + F1 √(ℏ/2Mω)
+  unit fixes (#2502, 6-order leak removed) · N(E_F) 1/N Allen prefactor convention (#2503).
+- |g|² calibration diagnosis (f263d89): max|g|=0.225 Ha/bohr=11.6 eV/Å (physical hydride
+  deformation potential); eigenvectors normalized; QE/QFORGE ratio NOT a fixed constant →
+  calibration (A) RULED OUT. The residual CaH6-NC λ=0.0896 vs QE 4.376 (49× under) is
+  PURELY (B) BZ/basis undersampling: QFORGE-NC = Γ 1-k · NPW16 · ~10 bands · 1 mode vs
+  QE = 16³k (145 irred) · 4³q · ecut 70 Ry · 21 modes. NOT a bug; bounded compute.
+- DISPOSITION (campaign decision ①): CaH6-NC closure is now a PURE-COMPUTE step, identical
+  in nature to the live QE anchor runs (LaH10 38943553, Li2MgH16 38922322). QUEUED as the
+  3-anchor gate's compute-closure batch — NOT fired as a solo heavy run (g0 no-duplication).
+  Closure recipe (fire when batched / capacity per d7·d11·d17): converged-NPW≥48 CaH6 SCF +
+  full 4×4×4q BZ + Anderson-screened [d] (Kerker-precond the outer loop) → composed λ vs QE.
+  qforge_migration_gate_test CaH6-NC stays HELD until the full-BZ λ lands within 1%.
+- Gate evaluates all 3 anchors together; drive heartbeat watches LaH10/Li2MgH16 QE λ·Tc
+  landing → then the CaH6-NC full-BZ run completes the batch. No forced flip (@L4).
