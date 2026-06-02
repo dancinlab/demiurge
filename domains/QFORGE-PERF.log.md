@@ -331,3 +331,28 @@ units/structure-factor fix (next concrete path, d2).
 
 **Selftests GREEN (no regression):** scf · scf_pw (the edited file) · scf_mermin_monotone (synthetic
 gate, untouched by FDG) · assembler all PASS. Host: mini native-CPU (FREE, no rent).
+
+## 2026-06-02 — V_ext Ry→Ha ½ fix (lane A 2nd wall · step 1/3) · hexa-lang PR#2525 MERGED
+
+**The 2nd wall (handed off from grid-coupling fix):** real-cell Mermin F is MONOTONE but does NOT
+plateau (48→−27.16, 64→−31.62, 96→−47.07, 128→−60.04 Ha). `cah6_bare_eig_probe`: bare (T+V_ext, no
+screening) lowest eig dives unbounded with NPW (−9.15→−22.96 over 48→180). **Root cause CONFIRMED:**
+`assembler.hexa` composed V_ext = V_loc(G)·S(G) WITHOUT the documented Ry→Ha ½ factor. `vloc.hexa`
+`qforge_vloc_of_g` returns RYDBERG (UPF e²=2; anchored by vloc_selftest pure-Coulomb tail −8πZ/ΩG²);
+the kinetic diagonal ½|k+G|² is HARTREE. Ionic well 2× too deep → spurious bound state deepens with NPW.
+
+**Fix (ONE canonical site, d4):** added a single named constant `_QF_VEXT_RY2HA: float = 0.5` and
+applied it at the V_ext composition in BOTH `qforge_assemble_h` (line 133) and `qforge_assemble_h_multi`
+(line 227) — not scattered ×0.5. The form factor (`vloc_of_g`) STAYS Rydberg — only the Hamiltonian
+composition converts, so the vloc_selftest Coulomb-tail anchor is unaffected (d6: fix the unit at
+composition, do not corrupt the verified brick). assembler.hexa: +13/−2 lines (g4 single concern).
+
+**Backward-compat / QE cross-val anchors:** updated NOT by a legacy-pin but in lockstep — verified the
+full **qforge selftest suite GREEN 43/43** on the FREE linux pool (summer). vloc_selftest (Rydberg
+form-factor anchor) PASS; assembler_selftest (FE eps=½, Si hermiticity, 2-level split, E2E SCF) PASS;
+the QE cross-val xval fixtures are d6/g63 REPORTING fixtures (print λ + rel-ε, no magnitude gate) so the
+½ corrects their reported numbers rather than breaking a gate. NO anchor encoded the bug; nothing pinned.
+
+**Ship:** hexa-lang `qforge-vext-units` (fresh worktree off origin/main #9be00dab) → commit 02674f7e →
+**PR#2525 MERGED** (merge commit 74d69d69; origin/main now carries `_QF_VEXT_RY2HA` ×3). Build+suite ran
+on summer (FREE pool, no rent) — never on the mac Darwin /tmp-guard. Step 2 (plateau re-verify) next.
