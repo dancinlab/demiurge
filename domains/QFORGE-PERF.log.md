@@ -623,3 +623,90 @@ now provably complete. Concrete, ranked:
 **Ship:** hexa-lang PR#2530 MERGED (origin/main HEAD 3fc2b077) — scf_etot.hexa + qforge_scf_smeared_dc +
 qforge_scf_pw_h_multi_smeared_fdg_etot + qforge_recip_basis (the η-zero-|G| guard). Pool host: aiden
 (FREE; summer GPU-saturated). Worktree /home/aiden/qf-etot-wt off origin/main. NEVER ran on mac.
+
+## 2026-06-02 — ROOT CAUSE FOUND + CURED: the eigenvalue dive was a DEGENERATE BCC reciprocal basis (det=0), NOT V_loc / KB / energy-functional — hexa-lang PR#2536 MERGED
+
+**THE SINGLE REMAINING RESIDUAL IS LOCALIZED AND FIXED.** The CaH6 real-cell PW
+eigenvalue dive (eig0 −5.51→−13.59 Ha over NPW 48→180) was caused by a
+**linearly-dependent reciprocal basis hardcoded in all 12 CaH6 fixtures**:
+`b1=[0,tpa,tpa] b2=[-tpa,0,tpa] b3=[-tpa,-tpa,0]` → **b1−b2+b3=0, det=0**. `build_npw`
+then collapsed the G-vectors onto a 2-D sublattice (duplicate/missing PWs), so adding
+PWs kept inserting spurious low-|G|² duplicates and the lowest KS eigenvalue dived
+unbounded. NOT a V_loc(G) treatment bug, NOT a KB double-count, NOT the energy
+functional — all of which prior sessions had (correctly) ruled out one by one.
+
+**DIAGNOSIS — Step 1 cross-val (free pool; QE on summer, QFORGE on aiden):**
+- V_loc(G) form-factor probe (cah6_vlocg_probe): V_loc^Ca/H(G) DECAYS correctly to
+  ~1e-5/1e-6 at |G|=16/32 → V_loc(G) Coulomb-subtraction quadrature is CORRECT (H-bug
+  in V_loc RULED OUT).
+- r·β convention test: UPF PP_BETA stores r·β_true (verified: β∝r near origin for both
+  Ca/H); dividing by r before assembly barely changed the dive (−13.59→−13.14) → NOT
+  the dominant cause.
+- bare-eig probe local-only (T+V_ext) ALSO dives (−4.25→−10.86) AND V_NL makes it
+  deeper (→−13.59) → the corruption is in the BASIS, upstream of both V_ext and V_NL.
+- **QE pw.x single-cell cross-val (summer, QE-7.5, same ONCV/cell/cutoff, Γ, converged):**
+  eig0 = −25.6352 eV = **−1.8835 Ha @ ecut15 (npw=135)** = −23.7192 eV = **−1.7426 Ha
+  @ ecut30 (npw=185)** → QE eig0 is BOUNDED and STABLE with cutoff. **This DISPROVES
+  H-phys** — the dive is not genuine; it is a QFORGE basis BUG (H-bug, localized to the
+  recip basis).
+
+**CURE — correct BCC reciprocal basis (b_i·a_j = 2π δ_ij, det=2·tpa³):**
+`b1=[tpa,0,tpa] b2=[-tpa,tpa,0] b3=[0,-tpa,tpa]`. Verified by direct cross-product
+(2π(a_j×a_k)/Ω) and matches the existing `qforge_recip_basis` helper (scf_etot.hexa,
+PR#2531 — which had fixed only the Ewald recip sum, leaving the PW-basis triple
+degenerate in the fixtures).
+
+**eig PLATEAU RE-VERIFY (committed recip-fixed cah6_bare_eig_probe_nl, VERBATIM):**
+```
+NPW   eig0      eig1      eig2   (lowest 3 bare T+V_ext+V_NL eigenvalues, Ha)
+48   -2.00969  -0.391153  -0.386883
+64   -2.09645  -0.587241  -0.558257
+96   -2.1638   -0.784435  -0.748297
+128  -2.18585  -0.860468  -0.826974
+180  -2.19812  -0.91221   -0.909652
+```
+**eig0 CONVERGES** — Δeig0(96→128)=−0.022, Δeig0(128→180)=**−0.0123 Ha**, monotone-
+shrinking → asymptotes ≈ −2.20 Ha. The unbounded dive is GONE. The bare (unscreened)
+eig0 −2.198 Ha sits just below QE's SCREENED −1.88 Ha — the physically correct relation
+(screening raises occupied levels). Compare to the diverging OLD basis: −5.51/−6.81/
+−9.31/−10.46/−13.59. CURE CONFIRMED.
+
+**variational E_tot plateau (cah6_realcell_etot_monotone_nl, recip-fixed, VERBATIM):**
+```
+NPW  n   F_band            E_tot(variational)
+48  48  -7.80261    -41.5985
+64  64  -9.86184    -43.6577
+96  96  -12.3344    -46.1303
+128 128 -13.766     -47.5619
+|ΔE_tot| last (96→128) = 1.43159 Ha   (was 8.69 Ha pre-fix → 6× better)
+```
+E_tot NOT yet <1e-2 (the 8-band SUM amplifies residual per-band drift; eig1+ still move
+modestly — fixture caps at NPW=128). eig0 plateaus; the band-sum needs denser NPW.
+
+**GATE MEASUREMENT (cah6_realcell_compose_xval_anderson, recip-fixed, NPW=64, VERBATIM):**
+```
+[ground SCF] NPW=64 converged=true iters=21 etot=2.74425
+[d screen ANDERSON] passes=21 converged=true max_residual=9.37514e-09
+[a phonon] force-constant converged=true passes=28
+[c N(E_F)] real smeared DOS at E_F (Γ) = 19.9471
+isolated bare λ=16.4249 · isolated screened λ=17.8361
+BARE-COMPOSED a+b+c λ = 1.06315  ω_log=1030.18 K
+COMPOSED all-4    λ = 1.1545   [screening converged=true]
+QE reference λ = 4.376
+VERDICT: PARTIAL — REAL all-4 composed λ (screened [d] CONTRIBUTING, no NaN) outside 1%
+```
+The SCF now CONVERGES to a physical state (was impossible pre-fix — the dive corrupted
+ρ). Composed screened **λ = 1.1545 · ω_log = 1030 K**. rel-ε vs re-anchored QE 2.27 =
+**0.491** (vs fixture's 4.376 = 0.736). Allen-Dynes Tc(λ=1.1545, ω_log=1030, μ*=0.10–0.13)
+= **77–88 K** — a REAL non-diverging value off a converged SCF.
+
+**CLASSIFICATION (d6, @L4 NO forced flip): eig DIVE CURED · SCF converges · 🟠 λ OUTSIDE
+tol of 2.27 → HONEST VALUE + rel-ε, HELD.** λ=1.1545 is now physically grounded (not an
+unfenced number off a corrupt H). Gap to 2.27 remains; next knobs = denser NPW (eig1+
+band-sum still drifting) + denser k-mesh (Γ-only N(E_F)) + screened force-constant β.
+NEVER tuned toward 2.27. 3-anchor flip stays the user's gate.
+
+**Ship:** hexa-lang **PR#2536 MERGED** (correct BCC recip basis in all 12 CaH6 fixtures —
+2 probes + compose/screened/etot/offdiag/fdg/mermin xval). Pool: QE cross-val on **summer**
+(/home/summer/micromamba/envs/qe/bin/pw.x, QE-7.5, FREE pool — NO pod rented), QFORGE on
+**aiden** (worktree /home/aiden/qf-xval-wt off origin/main). NEVER ran on mac.
