@@ -790,3 +790,30 @@ typically LOWERS λ further). NPW was held at 64 (eig0 plateau already confirmed
 **Ship:** hexa-lang — `qforge_pwm_set_kvec` NSCF setter (scf_pw.hexa, 12 lines) +
 `cah6_kmesh_nef_probe.hexa` + `cah6_compose_kmesh_lambda.hexa` fixtures. PR pending self-merge.
 Pool: aiden (FREE, /home/aiden/qf-xval-wt off origin/main d437f3fb). NEVER ran on mac.
+
+## 2026-06-02 — SHIPPED: hexa-lang PR#2541 MERGED (5ac3e197) · live scoreboard CaH6 row updated
+
+**hexa-lang PR#2541 MERGED** (squash 5ac3e197, fresh-cut off origin/main a740769c, 4 files /
++605/−1): `qforge_pwm_set_kvec` NSCF setter (scf_pw.hexa, 12 lines) + `cah6_kmesh_nef_probe`
++ `cah6_compose_kmesh_lambda` fixtures + CaH6 scoreboard anchor 0.0896→3.45443 (HELD).
+
+**LIVE `hexa qforge gate` CaH6 row (run from the worktree scoreboard fixture, VERBATIM):**
+```
+anchor    QE λ     QF λ      rel-ε    Tc(QE)    Tc(QF)    status
+CaH6      2.270    3.4544    52.18%   181.3     225.1     HELD
+migration gate = HELD (0/3 anchors PASS · 1 HELD · 2 PENDING)
+```
+
+**ANSWER to "did dense k-mesh close the gap?": NO — it OVERSHOT.** The Γ-only N(E_F) was the
+#1 suspect and it WAS a real, dominant error (10× DOS underestimate), but fixing it does not
+land λ on 2.27 — it pushes λ from 1.15 (−49%) past 2.27 to 3.45 (+52%). The Γ-only under-count
+had been partially cancelling a coupling over-count; correcting the DOS exposes the coupling
+residual. The k-mesh IS converged (λ plateau ≈3.45, N(E_F)≈13.1, E_F≈1.052; Δλ(4³→6³)≈9%).
+
+**NEXT (d2, ranked — for the next session):** (1) **k-resolved |g_mn|** — build ψ_m at each
+MP k (not just Γ); the el-ph matrix elements reuse the Γ manifold for every Fermi-surface pair,
+the dominant over-count. (2) **screened-FC β knob** in qforge_force_constant — the phonon band
+is BARE (un-screened) FC; screening hardens ω → lowers λ. (3) **anharmonic/SSCHA** ω
+renormalization (CaH6 H-sublattice strongly anharmonic; QE 2.27 is harmonic; SSCHA lowers λ).
+All three push λ DOWN from 3.45 toward 2.27 — physically consistent with the overshoot sign.
+NPW held at 64 (eig0 plateau confirmed PR#2536). Pool: aiden FREE. NEVER ran on mac.
