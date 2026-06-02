@@ -1,0 +1,65 @@
+{
+  "schema": "omega_cycle.witness_v1",
+  "ts": "2026-05-05T00:00:00Z",
+  "cycle": 24,
+  "phase": "f-tp5-b-mvp-c0b-weave-compose",
+  "topic": "F-TP5-b PASS — weave_compose() end-to-end MVP composition, P=10 bundles × N=50 trials per bundle = 500 trial rows + 1 aggregate, 6/6 deterministic criteria",
+  "verdict": "PASS",
+  "verdict_detail": "_python_bridge/module/weave_composition.py (813 LOC, Python stdlib only) implements write-side composition pipeline: 12-strand built-in catalogue (FASTA-style {id, sequence, length, conf_state_tau6 0..3 placeholder}), greedy inverse-search over σ(6)=12 raw-strategy pool exponents 1..12, Landauer floor gate (heat_budget_kT=1e6 default), Π^p_2 verifier stub (pairwise sequence-overlap < threshold). BLOSUM62 inlined as constant table. New --compose mode coexists with existing --cage-assembly, --bayesian-audit, --all modes.",
+  "result": {
+    "P_bundles": 10,
+    "N_trials_per_bundle": 50,
+    "total_trial_rows": 500,
+    "total_aggregate_rows": 1,
+    "registry_rows_total_emitted_this_cycle": 501,
+    "wall_clock_seconds": 0.09,
+    "heat_budget_kT_default": 1.0e6,
+    "T_kelvin": 310.0
+  },
+  "pass_criteria": {
+    "1_n6_invariant_master_identity": "PASS (σ·φ=12·2=24, 6·τ=6·4=24)",
+    "2_P_at_least_10": "PASS (P=10)",
+    "3_N_at_least_50": "PASS (N=50)",
+    "4_each_bundle_has_landauer_pass": "PASS (≥1 Landauer-passing trial per bundle)",
+    "5_each_bundle_has_pi_p2_pass": "PASS (≥1 Π^p_2-passing trial per bundle)",
+    "6_registry_rows_written_match": "PASS (501 = P×N+1)"
+  },
+  "n6_invariant": {"sigma_6": 12, "tau_6": 4, "phi_6": 2, "J2": 24, "master_identity": "σ·φ = 6·τ = J₂ = 24"},
+  "implementation_notes": {
+    "catalogue_built_in": "12 strands {id, sequence, length, conf_state_tau6 (0..3 categorical placeholder)} — self-contained MVP, no external FASTA dependency",
+    "greedy_compose": "per trial: pick random subset (size from σ(6)=12 raw-strategy pool exponents 1..12); score = energy_proxy − landauer_kT_floor + nyquist_compat_penalty; BLOSUM62 inlined ~24 constant lines for energy_proxy",
+    "landauer_gate": "landauer_floor_check(bundle, T_kelvin=310, heat_budget_kT=1e6) — threshold per parent §10 F-CL2-a 10^6 orders claim",
+    "pi_p2_verifier_stub": "pairwise sequence-overlap < threshold (MVP-grade; full Π^p_2 NP solver explicitly out of scope per parent §9 R-list)",
+    "deterministic_seed": 42,
+    "preserved_modes": "--cage-assembly + --bayesian-audit + --all (existing) all unmodified"
+  },
+  "raw_91_c3_disclose": [
+    "Greedy heuristic acceptable per .roadmap.weave C0a + parent body §6 L9 / parent §3 W7 ('greedy heuristic acceptable for MVP'). Full Π^p_2 NP solver out of scope per parent §9 R-list.",
+    "Π^p_2 verifier is MVP-grade STUB (pairwise sequence-overlap, not ∀-off-target ∃-refold-avoidance NP solver).",
+    "Landauer gate threshold heat_budget_kT=1e6 is literal interpretation of parent §10 F-CL2-a 10^6 orders claim — flagged for user confirmation in plan, default applied.",
+    "Off-target ban list = empty default (acceptable for MVP).",
+    "AF-3 differentiation case (P0-5 / F-MVP-3) NOT in this kick — out of scope for C0b per cross-cutting decision (deferred to C0c or later).",
+    "Strand semantics: FASTA seq + τ(6)=4 conformer-state as categorical 0..3 placeholder — definitive answer pending domain expert input.",
+    "(R2) preserved: cage_assembly_simulation.py and polyhedral_cage_bayesian_audit.py untouched — read-only audit/assembly path remains the cycle-22 RESOLVED reference.",
+    "(R5) raw 9 stdlib only — argparse/hashlib/json/math/os/random/sys/time/datetime."
+  ],
+  "raw_71_falsifiers": [
+    {"id": "F-CYCLE24-WEAVE-COMPOSE-1", "condition": "weave_compose registry rows ≠ P×N+1 within 30d (regression on PASS criterion 6)", "deadline": "2026-06-04", "status": "preregistered"},
+    {"id": "F-CYCLE24-WEAVE-LANDAUER-1", "condition": "landauer_floor_check default heat_budget_kT (1e6) revised without §10 F-CL2-a citation update", "deadline": "2026-12-31", "status": "preregistered"},
+    {"id": "F-CYCLE24-WEAVE-PI-P2-1", "condition": "Π^p_2 verifier upgraded from stub to true NP-solver path within 180d (closes MVP-stub gap; if not, ratchet down to C0c claim)", "deadline": "2026-11-04", "status": "preregistered"}
+  ],
+  "files_modified": [
+    "_python_bridge/module/weave_composition.py",
+    "weave/module/weave.hexa",
+    "tests/test_weave_compose.hexa",
+    "examples/05_quick_weave_compose.hexa",
+    "state/discovery_absorption/registry.jsonl",
+    ".roadmap.weave",
+    ".roadmap.hexa_bio"
+  ],
+  "lines_of_code": {"python": 813, "hexa_edit_diff": 64, "test": 46, "example": 34, "total": 957},
+  "witness_path": "state/discovery_absorption/registry.jsonl",
+  "witness_schema": "raw_77_weave_compose_v1",
+  "raw_138_sentinel": "__WEAVE_MVP_RESULT__ PASS",
+  "raw_77_append_only": true
+}

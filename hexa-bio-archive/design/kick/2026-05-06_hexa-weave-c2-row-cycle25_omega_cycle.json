@@ -1,0 +1,52 @@
+{
+  "schema": "omega_cycle.witness_v1",
+  "ts": "2026-05-06T00:00:00Z",
+  "cycle": 25,
+  "phase": "c2-w-row-closure",
+  "topic": "WEAVE C2 row closure — 4 disease-class candidates verified via F-TP5-b weave_compose pipeline",
+  "verdict": "PASS (formalism), TERMINAL-NEUTRAL",
+  "verdict_detail": "WEAVE row of the 16-cell matrix complete. Each cell wraps weave_composition.weave_compose() with a candidate-spec metadata dict annotated against publicly catalogued disease-class markers. Pipeline PASS criteria are sequence-independent at the kinetics level — they verify P≥10 / N≥50 / Landauer gate / Π^p_2 stub deterministically.",
+  "cells": {
+    "W_alpha": {
+      "marker": "CD33 + CD3 (public AB DB catalogued antibody pair, e.g. anti-CD33 / anti-CD3)",
+      "construct_topology": "tandem-scFv 5-binding-module construct",
+      "module_count": 5,
+      "file": "_python_bridge/module/weave_aml_modular_construct_candidate.py",
+      "witness_schema": "raw_77_c2_weave_aml_v1",
+      "sentinel": "__W_ALPHA_AML_C2__ PASS"
+    },
+    "W_beta": {
+      "marker": "HBB Glu6Val (public open-access hematology literature catalogued variant)",
+      "construct_topology": "single-chain corrected-globin module set",
+      "module_count": 4,
+      "file": "_python_bridge/module/weave_scd_globin_construct_candidate.py",
+      "witness_schema": "raw_77_c2_weave_scd_v1",
+      "sentinel": "__W_BETA_SCD_C2__ PASS"
+    },
+    "W_gamma": {
+      "marker": "conserved coronavirus envelope-protein RBD region (public structural biology literature)",
+      "construct_topology": "broadly-binding scaffolded module set",
+      "module_count": 5,
+      "file": "_python_bridge/module/weave_pancov_construct_candidate.py",
+      "witness_schema": "raw_77_c2_weave_pancov_v1",
+      "sentinel": "__W_GAMMA_PANCOV_C2__ PASS"
+    },
+    "W_delta": {
+      "marker": "p16-INK4a (CDKN2A senescence marker, public open-access aging research literature)",
+      "construct_topology": "scaffold + binding-loop module set",
+      "module_count": 4,
+      "file": "_python_bridge/module/weave_senolytic_construct_candidate.py",
+      "witness_schema": "raw_77_c2_weave_senolytic_v1",
+      "sentinel": "__W_DELTA_SENOLYTIC_C2__ PASS"
+    }
+  },
+  "verification_method": "Each cell invokes weave_composition.weave_compose(target_class=<disease>) with P=10, N=50, seed=42. Pipeline returns P×N+1 = 501 rows per cell run. Wrapper records 1 additional C2-summary row. PASS = pass_evaluation.overall_pass=true (6/6 deterministic gates).",
+  "raw_91_c3_disclose": [
+    "Module sequences are public-database-anchored placeholders that demonstrate the design step's input format. NOT clinically validated, NOT a regulatory submission, NOT a wet-lab proposal.",
+    "Pipeline PASS verifies infrastructure correctness, not biological/clinical efficacy of any specific construct.",
+    "Each cell at IN-SILICO grade only. C3+ (wet-lab → IND → clinical) out-of-repo."
+  ],
+  "raw_47_cross_repo": "Imports weave_composition (F-TP5-b PASS, cycle 24 C0b) without modification (R2 preserved).",
+  "raw_9_hexa_only": "python stdlib only across all 4 cells",
+  "raw_77_append_only": true
+}

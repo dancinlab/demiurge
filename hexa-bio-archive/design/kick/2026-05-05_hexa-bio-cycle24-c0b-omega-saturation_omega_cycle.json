@@ -1,0 +1,79 @@
+{
+  "schema": "omega_cycle.witness_v1",
+  "ts": "2026-05-05T00:00:00Z",
+  "cycle": 24,
+  "phase": "c0b-4-verb-numerical-mvp-saturation-v1.1.0-candidate",
+  "topic": "C0b 4-verb numerical MVP simulators all PASS (4/4) → v1.1.0 candidate. Tetrahedron numerical companion to spec is now wired across composition / actuation / catalysis / assembly axes.",
+  "verdict": "PASS (formalism), TERMINAL-NEUTRAL",
+  "verdict_detail": "All four verbs (WEAVE / NANOBOT / RIBOZYME / VIROCAPSID) ship Python stdlib-only numerical MVP simulators that internally PASS their respective n=6 invariant + per-verb physics-constraint tests. Each emits witness rows to state/discovery_absorption/registry.jsonl under its raw_77 schema. HEXA dispatcher pattern (verb/module/verb.hexa) consistent across all 4 with HEXA_BIO_WITH_NUMPY=1 opt-in gate. Total ~3500 LOC new across 4 Python bridges + 4 HEXA module extensions + 4 test files. v1.1.0 release candidate.",
+  "verdict_terminal_caveat": "v1.1.0 is FORMALISM/INFRASTRUCTURE closure — internal consistency demonstrations, not real-world therapeutic efficacy. 16-cell matrix (4 verb × 4 disease class, terminal goal per .roadmap.hexa_bio §0) remains 0/16 cells filled. C2 in-silico per-cell candidate design NOT STARTED. C3+ (wet-lab, IND, phase I) explicitly out-of-repo. v1.1.0 ≠ medical progress.",
+  "track_a_per_verb_summary": {
+    "F-VIROCAPSID-3 (cage assembly calibration)": {
+      "verdict": "PASS",
+      "yield_t10000": 0.8546,
+      "target": 0.85,
+      "kick": "design/kick/2026-05-05_hexa-virocapsid-mvp-c0b-cycle24_omega_cycle.json"
+    },
+    "F-RB-4 (hammerhead 12-nt 4-state kinetics)": {
+      "verdict": "PASS 6/6",
+      "kcat_KM_M-1s-1": 8.33e4,
+      "eigen_hammes_margin_orders": 4.08,
+      "kick": "design/kick/2026-05-05_hexa-ribozyme-mvp-c0b-cycle24_omega_cycle.json"
+    },
+    "F-NB-4 (4-state 12-vertex DNA-origami actuation)": {
+      "verdict": "PASS 6/6",
+      "work_per_cycle_kT": 50.0,
+      "j2_speedup": 24.0,
+      "kick": "design/kick/2026-05-05_hexa-nanobot-mvp-c0b-cycle24_omega_cycle.json"
+    },
+    "F-TP5-b (weave_compose end-to-end)": {
+      "verdict": "PASS 6/6",
+      "P": 10,
+      "N": 50,
+      "registry_rows_per_run": 501,
+      "kick": "design/kick/2026-05-05_hexa-weave-mvp-c0b-cycle24_omega_cycle.json"
+    }
+  },
+  "track_b_omega_saturation_status": {
+    "formal_axis": "PARTIAL — WEAVE has lean4 sorry-free Foundation (cycle 7-8), other 3 verbs lack mechanical layer; aggregate not Ω-saturated",
+    "physical_axis": "PARTIAL — Landauer accounting present in WEAVE (heat_budget_kT gate); other 3 verbs have implicit physics floors (Brownian kT for NB, Eigen-Hammes for RB, Zlotnick stiffness for VC)",
+    "computational_axis": "PARTIAL — all 4 stdlib raw 9; no Π^p_2 NP solver; J₂=24 quotient implemented for VIROCAPSID + NANOBOT, deferred for RIBOZYME (L4 stretch)",
+    "tri_axis_joint": "C0b satisfies infrastructure-saturation; full tri-axis Ω-saturation (per WEAVE 2026-04-28 closure pattern) remains future work for the other 3 verbs"
+  },
+  "track_c_witnesses_emitted": {
+    "registry_rows_added_this_cycle": 506,
+    "schemas": {
+      "raw_77_virocapsid_calibration_v1": 1,
+      "raw_77_ribozyme_kinetics_v1": 2,
+      "raw_77_nanobot_actuation_v1": 2,
+      "raw_77_weave_compose_v1": 501
+    },
+    "registry_path": "state/discovery_absorption/registry.jsonl"
+  },
+  "raw_91_c3_disclose": [
+    "v1.1.0 candidate = formalism-prereq closure, NOT terminal-goal progress. Per user-validated reframe (memory/feedback_goal_framing.md): formalism is correctness machinery, not destination.",
+    "16-cell matrix (4 verb × {α AML / β SCD / γ pan-cov / δ senolytic}) — terminal goal — has 0/16 cells filled. C2 in-silico per-cell candidate design phase NOT STARTED.",
+    "Out-of-repo handoffs (C3+) explicitly deferred per (R6) hexa-bio scope.",
+    "F-NB-5 sister-axis full PASS still PARTIAL — canon canonical-side fix is out-of-repo dependency.",
+    "Cycle 24 work bundled 6 omega-cycle kicks (this + 4 per-verb + 1 C0a sister-axis closure + 1 roadmap-restructure).",
+    "Pure HEXA migration (hexa-lang upstream stdlib/optim + math) feasible PoC NOT executed — agent classifier refused on virus-related framing terms; deferred."
+  ],
+  "raw_71_falsifiers": [
+    {"id": "F-CYCLE24-V110-CANDIDATE-1", "condition": "v1.1.0 release tag pushed without all 4 raw_138 sentinels green in regression run", "deadline": "2026-07-28", "status": "preregistered"},
+    {"id": "F-CYCLE24-MEDICAL-OVERCLAIM-1", "condition": "any kick or release note conflates formalism PASS with therapeutic efficacy claim within 90d", "deadline": "2026-08-04", "status": "preregistered"},
+    {"id": "F-CYCLE24-C2-START-1", "condition": "C2 in-silico 16-cell matrix not started by 2026-09-28 (would slip terminal-goal trajectory)", "deadline": "2026-09-28", "status": "preregistered"}
+  ],
+  "downstream_consumers": [
+    "canon (canonical biology axis ledger — these 6 kicks should mirror to ~/core/canon/design/kick/ via separate session)",
+    "papers/hexa-weave-formal-mechanical-w2-2026-04-28.md (cite hooks for C0b closure)",
+    "Zenodo deposit prep (cycle-24 closure aggregate as DOI-eligible artifact)"
+  ],
+  "next_cycle_25_candidate_topics": [
+    "C2 entry: α=AML × first verb cell (e.g., RIBOZYME R·α: FLT3-ITD mRNA cleavage candidate ribozyme design)",
+    "F-NB-5 cross-repo handshake (separate session in ~/core/canon/)",
+    "C0c F-NB-2 / F-RB-2 n=30 Bayesian audit corpus build",
+    "WEAVE Π^p_2 verifier upgrade from stub toward true NP-solver path",
+    "VIROCAPSID multi-T (T=3 CCMV / T=4 HBV) preset re-derivation (V-R2 stretch)"
+  ],
+  "raw_77_append_only": true
+}

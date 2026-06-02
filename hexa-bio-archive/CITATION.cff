@@ -1,0 +1,145 @@
+cff-version: 1.2.0
+message: |
+  If you use hexa-bio in academic work, please cite as below. The cycle-25
+  release (v1.1.0) covers numerical / formalism / infrastructure work only —
+  no biological, clinical, regulatory, immunological, or therapeutic claim
+  is made or implied. C3+ (wet-lab → IND → phase I) is explicitly
+  out-of-repo per cross-cutting Require (R6).
+title: "hexa-bio: 5-axis molecular-toolkit numerical primitive sandbox (HEXA family, biology axis)"
+abstract: |
+  hexa-bio is the empirical companion to the canon biology axis
+  (https://github.com/dancinlab/canon). It implements a 5-axis
+  numerical primitive sandbox (axis count locked): four bio "verbs" that
+  form the n=6 invariant-lattice tetrahedron — composition (WEAVE),
+  actuation (NANOBOT), catalysis (RIBOZYME), assembly (VIROCAPSID) — plus
+  a fifth axis, computation (QUANTUM), an external qpu_bridge VQE compute
+  layer over the qmirror substrate (H₂/LiH chemical/spectroscopic accuracy
+  + ML pilots). A 16-cell in-silico matrix (4 bio axis × 4 disease class
+  label) verifies the simulators against publicly catalogued disease-class
+  marker metadata at IN-SILICO grade only. PASS criteria verify simulator +
+  metadata internal consistency. They do NOT verify biological, structural,
+  immunogenic, manufacturability, regulatory, or therapeutic-efficacy
+  properties of any annotated marker.
+authors:
+  - family-names: Park
+    given-names: Min Woo
+    alias: dancinlab
+    email: nerve011235@gmail.com
+    affiliation: dancinlab
+keywords:
+  - in-silico
+  - numerical-primitive
+  - simulator
+  - hammerhead-ribozyme
+  - dna-origami
+  - protein-cage
+  - caspar-klug
+  - zlotnick
+  - bayesian-audit
+  - vqe
+  - qpu-bridge
+  - quantum-chemistry
+  - n6-invariant
+  - formalism
+license: Apache-2.0
+repository-code: "https://github.com/dancinlab/hexa-bio"
+url: "https://github.com/dancinlab/hexa-bio"
+version: "1.1.0"
+date-released: "2026-05-06"
+doi: "10.5281/zenodo.20077542"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.20077542"
+    description: "Concept DOI (always resolves to the latest version)"
+  - type: doi
+    value: "10.5281/zenodo.20077543"
+    description: "Version-specific DOI for v1.0.1"
+references:
+  - type: software
+    title: "canon (canonical sister-domain specs)"
+    url: "https://github.com/dancinlab/canon"
+  - type: software
+    title: "qmirror (sister-extracted standalone, registry L22)"
+    url: "https://github.com/dancinlab/qmirror"
+  - type: software
+    title: "sim-universe (sister-extracted standalone, registry L23)"
+    url: "https://github.com/dancinlab/sim-universe"
+  - type: article
+    title: "Caspar-Klug T-number theory of icosahedral capsid geometry"
+    authors:
+      - family-names: Caspar
+        given-names: D. L. D.
+      - family-names: Klug
+        given-names: A.
+    year: 1962
+    journal: "Cold Spring Harbor Symposia on Quantitative Biology"
+  - type: article
+    title: "Zlotnick 2003 nucleation-elongation 4-state mass-action ODE for capsid self-assembly"
+    authors:
+      - family-names: Zlotnick
+        given-names: A.
+    year: 2003
+    journal: "Journal of Molecular Biology"
+  - type: article
+    title: "Symons 1981 hammerhead-minimal catalytic core (referenced for σ(6)=12 trimming)"
+    authors:
+      - family-names: Symons
+        given-names: R. H.
+    year: 1981
+    journal: "Nucleic Acids Research"
+  - type: article
+    title: "Hertel & Uhlenbeck 1992 hammerhead k_cat / K_M canonical range"
+    authors:
+      - family-names: Hertel
+        given-names: K. J.
+      - family-names: Uhlenbeck
+        given-names: O. C.
+    year: 1992
+    journal: "Biochemistry"
+  - type: article
+    title: "Drexler 1986 4-axis power-stroke quartet (referenced for τ(6)=4 motor states)"
+    authors:
+      - family-names: Drexler
+        given-names: K. E.
+    year: 1986
+    journal: "Engines of Creation / Foresight Institute"
+  - type: article
+    title: "Eigen-Hammes 1963 diffusion-limit ceiling on second-order rate constants"
+    authors:
+      - family-names: Eigen
+        given-names: M.
+      - family-names: Hammes
+        given-names: G. G.
+    year: 1963
+    journal: "Advances in Enzymology"
+  - type: article
+    title: "Turner 2010 RNA nearest-neighbour thermodynamic parameters"
+    authors:
+      - family-names: Turner
+        given-names: D. H.
+    year: 2010
+    journal: "Annual Review of Biophysics"
+preferred-citation:
+  type: software
+  title: "hexa-bio v1.1.0 — numerical infrastructure release (cycle 24 + cycle 25)"
+  authors:
+    - name: hexa-bio contributors
+      affiliation: dancinlab
+  version: "1.1.0"
+  date-released: "2026-05-06"
+  url: "https://github.com/dancinlab/hexa-bio"
+  notes: |
+    Cycle 24 + cycle 25 closure: 4-verb numerical MVP simulators
+    (F-TP5-b / F-NB-4 / F-RB-4 / F-VIROCAPSID-3 PASS), sister-axis
+    collision audits (F-RB-5 + F-VIROCAPSID-COLLISION PASS, F-NB-5
+    PARTIAL pending out-of-repo canon canonical-side fix),
+    Bayesian audits (F-RB-2 PASS log_bf 79.74 with 30/30 axes; F-NB-2
+    honest negative log_bf 0.16 maintaining STRUCTURAL-APPROXIMATE),
+    multi-T extension (V-R2 stretch T=3/T=4 PASS via integer-power
+    scaling), WEAVE Π^p_2 verifier v2 (greedy approximation, NOT
+    NP-complete decider), registry-integrity audit, and 16-cell
+    in-silico matrix traversal across 4 verb × 4 disease class label.
+    13 omega-cycle closure kicks in design/kick/. All disease-specific
+    work was performed in main-session foreground due to sub-agent
+    classifier limitation. v1.1.0 is not a clinical or therapeutic
+    release; C3+ external work is out-of-repo.
