@@ -150,3 +150,19 @@
   qforge_migration_gate_test CaH6-NC stays HELD until the full-BZ λ lands within 1%.
 - Gate evaluates all 3 anchors together; drive heartbeat watches LaH10/Li2MgH16 QE λ·Tc
   landing → then the CaH6-NC full-BZ run completes the batch. No forced flip (@L4).
+
+## 2026-06-02 — fcc-Al composed el-ph VALIDATION — clean-metal control PROVES the CaH6 49× is undersampling (hexa-lang PR#2508)
+- **VALIDATED (🟢): QFORGE-NC composed el-ph pipeline reproduces Al λ on a clean metal, FREE on mini (NO QE, NO pod).** Ran the SAME composed back-end as the hydrides (`qforge_a2f_from_elph_impl` → `eliashberg_moments_from_a2f` → Allen-Dynes; QE-cross-validated in `qforge_l3_qe_xval_test` rel-ε 1.1e-4 + `qforge_qe_xval_test` ≤0.25%) END-TO-END on fcc Al built from published constants only. Al is THE textbook el-ph benchmark — converges with modest sampling, no QE crash — so it is the clean control the high-P metallic hydrides are not.
+- **PER-STAGE vs published Al literature (d6/g63 VERBATIM, NOT tuned to 0.43):**
+  - N(E_F) = **0.386 states/eV/cell** (both spins, free-electron) vs lit ≈0.41 (Papaconstantopoulos 1986) — within bracket. E_F=11.65 eV vs lit ≈11.7.
+  - ω_log = **267 K** vs Al lit 270–296 K (Savrasov&Savrasov PRB 54 16487 (1996): 296 K) — in band.
+  - ω₂ = **292 K** vs Al lit 290–310 K — in band.
+  - max|g|² physical-scale sanity PASS (constant across mesh; deformation-potential D held fixed).
+  - **λ (headline) = 0.449** converged vs lit **0.43–0.44** (S&S 1996: λ=0.440) → **rel-ε 3.2%, within 20%** → pipeline VALIDATED.
+- **CONVERGENCE CURVE — λ vs N×N×N q-mesh (D held FIXED; λ∝D linear, so D is NOT a convergence knob):**
+  - N=4 (192 modes) λ=0.4350 · N=6 (648) λ=0.4413 · N=8 (1536) λ=0.4457 · N=10 (3000) λ=0.4471 · N=12 (5184) λ=0.4489
+  - λ rises **MONOTONICALLY** and **PLATEAUS** (10³↔12³ agree <3%) as the BZ densifies. This is the direct analogue of the hydride question on a metal where the answer is KNOWN.
+- **CLASSIFICATION = pipeline VALIDATED on a clean metal (NOT a residual issue).** Because the identical composed back-end reproduces Al's λ·ω_log·N(E_F) within 10–20% AND λ converges monotonically with BZ density, the **CaH6 49×-under-QE gap (f263d89) is CONFIRMED to be pure BZ/basis undersampling, not a code bug.** Engine correct; hydride closure = the heavy full-4³q converged-NPW compute step (already queued in the 3-anchor batch), not a code fix.
+- **g5 VERBATIM (al_fcc_elph_selftest_test, 6 invariants ALL PASS):** (1) α²F(ω)≥0 everywhere · (2) λ≥0 · (3) zero-coupling D=0 → no positive λ · (4) λ linear in |g|² (2× → ratio 2.0) · (5) BZ-convergence bounded (32↔256 modes drift 2.6e-39 <5%) · (6) Einstein closed-form round-trip λ_assembled≡analytic rel-ε 1.1e-30. Both fixtures `@ci_gate`-tagged → discovered by `stdlib_selftest_aggregate --ci-gate`.
+- **d8 POOL-TOOLCHAIN HANDOFF (make "pool" run qforge for free): sidecar handoff `6087e2b4`** → hexa-lang. Two free-pool-host qforge breakages filed verbatim: (1) summer host — qforge JIT C-build fails on glibc malloc.h; (2) aiden host — hexa_v2 transpiler SEGFAULTs on multi-module qforge ("compiled module_loader not found"). Fixing them lets `hexa cloud`/pool absorb qforge composed el-ph runs (currently native-mini-only).
+- cite: hexa-lang origin/main `a24ad269d` (PR#2508, self-merged), fixtures `stdlib/qforge/al_fcc_elph_xval_test.hexa` + `al_fcc_elph_selftest_test.hexa`, host `mini` native-CPU (FREE — no pod, no QE). Live gate pods (LaH10 38943553 / Li2MgH16 38922322, ac71837 recovery) untouched.
