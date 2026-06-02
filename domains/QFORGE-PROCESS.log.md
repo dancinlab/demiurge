@@ -159,3 +159,34 @@ QE el-ph gate anchors recovered end-to-end via `hexa cloud {exec,nohup}` (g8 —
 
 - **Gate impact**: 2/3 QFORGE-migration cross-val anchors — LaH10 back on track to terminal λ·Tc; Li2MgH16 needs ONE parameter-tuned re-run (recipe A). DYN=0 → λ on neither yet.
 - **g8 compliance**: all pod access via `hexa cloud exec/nohup` (bare pod-id conn resolves vast API → ssh proxy). No raw ssh, no raw vastai. No new pods rented — resumed on the existing alive pods. rtsc-discovery pods + `~/.hx/src` untouched.
+
+## 2026-06-02 — rtsc-discovery FLEET RECOVER-THEN-TEARDOWN (14/14 harvested + destroyed · ~$84/day leak STOPPED · g8 hexa-cloud only)
+
+Executed the teardown recommended by the fleet inspection above (user authorized "전부 회수"). Each of the 14 IDLE-LEAK pods: HARVEST partials → VERIFY local copy non-empty → TEARDOWN. One at a time, idempotent. **Transport note**: `hexa cloud copy-from` (scp) AND `--resume` (rsync) both exit 1 over the vast.ai proxy endpoint (`ssh8.vast.ai`) — the proxy blocks the scp/rsync subsystem but accepts interactive ssh. Worked around with `tar -czf - harvest_partial *.in | base64` over the WORKING `hexa cloud run` channel, decoded + extracted locally. All harvests landed to `exports/rtsc/<candidate>/harvest_partial/` (+ vc-relax/scf/ph `.in` for full re-runnability). Teardown via `hexa cloud down <id> --force` (cross-project guard needs --force — pods are untracked orphans in this repo's ledger), each "destroyed (confirmed)"; post-checked none resolve on vast.
+
+```
+pod        candidate  harvest_partial (files)               bytes(harvest_partial)  teardown
+---------  ---------  ------------------------------------  ----------------------  -----------------
+38950641   BaAuH3     7  (5 dyn / 2 elph / ph.out)          ~155 KB                 ✅ destroyed
+38950897   H3S        11 (6 dyn / 4 elph / ph.out)          ~220 KB                 ✅ destroyed
+38951764   CeH9       3  (2 dyn / ph.out)                   ~115 KB                 ✅ destroyed
+38952197   LaBH8      3  (2 dyn / ph.out)                   ~32 KB                  ✅ destroyed
+38952382   LaBeH8     5  (3 dyn / 1 elph / ph.out)          ~188 KB                 ✅ destroyed
+38952686   LuH10      3  (2 dyn / ph.out)                   ~55 KB                  ✅ destroyed
+38954037   ScBeH8     3  (2 dyn / ph.out)                   ~36 KB                  ✅ destroyed
+38954231   ThH10      3  (2 dyn / ph.out)                   ~37 KB                  ✅ destroyed
+38954402   ScH9       9  (5 dyn / 3 elph / ph.out)          ~458 KB                 ✅ destroyed
+38954645   SrPtH3     11 (6 dyn / 4 elph / ph.out)          ~366 KB                 ✅ destroyed
+38955010   YAuH3      11 (6 dyn / 4 elph / ph.out)          ~372 KB                 ✅ destroyed
+38955211   YBeH8      3  (2 dyn / ph.out)                   ~41 KB                  ✅ destroyed
+38955371   YH9        4  (2 dyn / ph.out / scf.out)         ~551 KB                 ✅ destroyed
+38955554   YSbH6      6  (2 dyn / 1 elph / ph.out/scf.out)  ~1.3 MB (+refresh.tgz)  ✅ destroyed
+---------  ---------  ------------------------------------  ----------------------  -----------------
+TOTAL: 14/14 harvested non-empty + verified · 14/14 destroyed (confirmed) · 0 left UP
+```
+
+- **Verification of partials**: harvest dyn/elph counts MATCH the inspection's per-pod readings — ScH9 5dyn/3elph ✅, YAuH3 6dyn/4elph ✅, SrPtH3 6/4 ✅, H3S 6/4 ✅, BaAuH3 5/2 ✅ (incl. the trailing empty `dynN`). Closest-to-terminal candidates' work fully preserved.
+- **Cost**: ~$84/day idle-billing leak is now **STOPPED** — all 14 billing meters off.
+- **HONESTY (d6 / d_defer_no_delete)**: tearing down the POD ≠ deleting the CANDIDATE. All 14 candidates STAY in the pool — see `exports/rtsc/DEFERRED.md` (2026-06-02 RECOVER-THEN-TEARDOWN block) with per-candidate retry recipes. Each is re-fireable from `exports/rtsc/<candidate>/harvest_partial` (resume) or from scratch per the per-class recipe. ThH10 still needs d6 param-tuning (DFPT diverged), not a plain re-fire.
+- **Guardrails honored**: gate anchors 38943553 / 38922322 (ac71837 owns) · 38704336 · @anima/@edge/@wt-h874 · the 4 runpod ghosts were NOT touched — only the 14 rtsc-discovery pods.
+- **g8 compliance**: all access via `hexa cloud {run,down}` (bare pod-id → vast proxy). No raw ssh, no raw vastai.

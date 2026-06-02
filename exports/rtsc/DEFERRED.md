@@ -144,3 +144,37 @@ note: LaH10 (sibling gate anchor) is UNAFFECTED — its prior pod 38704336 is al
 **Closest-to-terminal (most harvestable, prioritize resume)**: ScH9 (5dyn/3elph), YAuH3 (6/4), SrPtH3 (6/4), H3S (6/4), BaAuH3 (4/2).
 **Param-tune required (NOT a plain resume)**: ThH10 — DFPT numerically diverged (d6 first-principles tuning, not a re-fire).
 **NONE deleted** (d_defer_no_delete) — all 14 stay in the pool; the live billing pods are the leak (see PROCESS log).
+
+### 2026-06-02 — RECOVER-THEN-TEARDOWN complete (all 14 pods destroyed, ~$84/day leak STOPPED)
+
+All 14 `rtsc-discovery` pods above were **harvested then torn down** to stop the
+idle-billing leak. The teardown removed only the **POD** (the billing meter) —
+**every candidate REMAINS in the pool** with its retry recipe in the table above.
+Each candidate's partials were pulled to `exports/rtsc/<candidate>/harvest_partial/`
+(plus the `vc-relax.in`/`scf.in`/`ph.in` so it is fully re-runnable). Harvest used
+`tar | base64` over the working `hexa cloud run` channel because the vast.ai proxy
+endpoint blocks `scp`/`rsync` (both exited 1; the interactive ssh exec works).
+
+| candidate | pod | harvested (files in harvest_partial) | teardown |
+|---|---|---|---|
+| BaAuH3 | 38950641 | 7 (5 dyn / 2 elph / ph.out) | ✅ destroyed |
+| H3S | 38950897 | 11 (6 dyn / 4 elph / ph.out) | ✅ destroyed |
+| CeH9 | 38951764 | 3 (2 dyn / ph.out) | ✅ destroyed |
+| LaBH8 | 38952197 | 3 (2 dyn / ph.out) | ✅ destroyed |
+| LaBeH8 | 38952382 | 5 (3 dyn / 1 elph / ph.out) | ✅ destroyed |
+| LuH10 | 38952686 | 3 (2 dyn / ph.out) | ✅ destroyed |
+| ScBeH8 | 38954037 | 3 (2 dyn / ph.out) | ✅ destroyed |
+| ThH10 | 38954231 | 3 (2 dyn / ph.out) | ✅ destroyed |
+| ScH9 | 38954402 | 9 (5 dyn / 3 elph / ph.out) | ✅ destroyed |
+| SrPtH3 | 38954645 | 11 (6 dyn / 4 elph / ph.out) | ✅ destroyed |
+| YAuH3 | 38955010 | 11 (6 dyn / 4 elph / ph.out) | ✅ destroyed |
+| YBeH8 | 38955211 | 3 (2 dyn / ph.out) | ✅ destroyed |
+| YH9 | 38955371 | 4 (2 dyn / ph.out / scf.out) | ✅ destroyed |
+| YSbH6 | 38955554 | 6 (2 dyn / 1 elph / ph.out / scf.out / refresh.tgz) | ✅ destroyed |
+
+**Re-fire path**: each candidate stays in the table above — re-fire from its DEFERRED
+recipe (resume from `exports/rtsc/<candidate>/harvest_partial`, or re-run from scratch
+per the per-class note). 14/14 destroyed, confirmed via `hexa cloud down --force`
+("destroyed (confirmed)") + post-check that none resolve on vast. Protected pods
+(gate anchors 38943553/38922322, 38704336, @anima/@edge/@wt-h874, 4 runpod ghosts)
+were NOT touched.
