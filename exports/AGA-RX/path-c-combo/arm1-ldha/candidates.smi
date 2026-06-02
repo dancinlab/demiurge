@@ -1,0 +1,18 @@
+# ARM 1 — LDHA-selective metabolic inhibitor candidate set (AGA-RX PATH C)
+# Format: SMILES <tab> name <tab> rationale
+# All SMILES verified via PubChem (CID in rationale). The LEAD is GSK2837808A,
+# a literature LDHA/LDHB dual inhibitor with strong LDHA potency — used here as
+# the selectivity anchor; the screen explores scaffolds biased toward the LDHA
+# mobile-loop (Arg105) + nicotinamide-adjacent sub-pocket that differs from LDHB.
+#
+# Selectivity is scored OFF-DECK: dock each row vs BOTH ldha (vina_dock_ldha.conf)
+# and ldhb (vina_dock_ldhb.conf); report dG_LDHA, dG_LDHB, and gap=dG_LDHA-dG_LDHB.
+
+COC1=NC(=NC=C1C2=CC3=NC=C(C(=C3C=C2)NC4=CC(=CC(=C4)C(=O)O)OC5=CC(=CC(=C5)F)F)S(=O)(=O)NC6CC6)OC	GSK2837808A	LEAD_LDHA_inhibitor_CID71533725_quinoline_difluorophenoxy_cyclopropylsulfamoyl_carboxylate
+C1=C2C(=C3C(=CC(=C(O3)O)O)OC2=O)C(=C(C1=O)O)O	galloflavin	NADH-competitive_LDH_inhibitor_CID135483971_polyphenol_pyranone
+CCCC1=C(C(=C(C2=C1C=C(C(=C2)CC3=CC=CC=C3)C)C(=O)O)O)O	FX-11	NADH-pocket_LDHA_inhibitor_CID10498042_dihydroxynaphthoic_acid
+OC(=O)C(=O)N	oxamate	pyruvate-mimic_substrate-site_anchor_CID974_positive-control_warhead_geometry
+OC(=O)c1ccc(cc1)NC(=N)N	4-guanidinobenzoic_acid	guanidinium-to-His192/Asp194_+_carboxylate-to-Arg168_substrate-mimetic_probe
+OC(=O)c1cc(O)c(O)c(O)c1	gallic_acid	catechol/galloyl_Hbond-rich_NADH-adjacent_fragment_probe
+OC(=O)C(O)c1ccc(O)cc1	4-hydroxymandelic_acid	alpha-hydroxy-acid_lactate-product-mimic_substrate-site_probe
+O=C(O)c1ccc2[nH]c(=O)c(O)c2c1	hydroxy-oxindole-carboxylate	bicyclic_carboxylate_loop-Arg105-reach_scaffold_probe

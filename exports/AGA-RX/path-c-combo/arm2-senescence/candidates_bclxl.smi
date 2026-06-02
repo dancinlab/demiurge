@@ -1,0 +1,17 @@
+# ARM 2 — BCL-xL BH3-groove senolytic candidate set (AGA-RX PATH C)
+# Format: SMILES <tab> name <tab> rationale
+# All SMILES verified via PubChem (CID in rationale). The LEAD is WEHI-539, the
+# co-crystallized BCL-xL-selective BH3 mimetic in 3ZLR (X0B); re-docking it is the
+# self-consistency / box-validation positive control. The set spans navitoclax-like
+# fragments and BCL-xL-selective senolytics (A-1331852, A-1155463).
+#
+# A BH3-groove binder must (a) drop an acyl-sulfonamide / carboxylate to salt-bridge
+# Arg139, and (b) fill the P2/P4 hydrophobic pockets (Phe97/Phe105/Phe146).
+
+C1CC2=C(C=C(C=C2)C3=NC(=C(S3)CCCOC4=CC=C(C=C4)CN)C(=O)O)C(=NNC5=NC6=CC=CC=C6S5)C1	WEHI-539	LEAD_co-crystal_X0B_BCLxL-selective_BH3-mimetic_CID71297207_thiazole-carboxylate_benzothiazolylhydrazone
+CC1(CCC(=C(C1)CN2CCN(CC2)C3=CC=C(C=C3)C(=O)NS(=O)(=O)C4=CC(=C(C=C4)NC(CCN5CCOCC5)CSC6=CC=CC=C6)S(=O)(=O)C(F)(F)F)C7=CC=C(C=C7)Cl)C	navitoclax	BCL2/BCL-xL_dual_senolytic_ABT-263_CID24978538_acylsulfonamide_Arg139_anchor
+CC1=C(C=NN1CC23CC4CC(C2)CC(C4)C3)C5=C(N=C(C=C5)N6CCC7=C(C6)C(=CC=C7)C(=O)NC8=NC9=CC=CC=C9S8)C(=O)O	A-1331852	BCL-xL-SELECTIVE_senolytic_CID71565985_adamantyl-pyrazole_benzothiazole-amide
+CN(C)CC#CC1=CC(=C(C=C1)OCCCC2=C(N=C(S2)N3CCC4=C(C3)C(=CC=C4)C(=O)NC5=NC6=CC=CC=C6S5)C(=O)O)F	A-1155463	BCL-xL-SELECTIVE_BH3-mimetic_CID59447577_thiazole-carboxylate_dimethylaminobutynyl
+OC(=O)c1ccc(cc1)NS(=O)(=O)c1ccccc1	N-phenylsulfonyl-aminobenzoate	acylsulfonamide_Arg139-anchor_fragment_probe
+O=C(O)c1ccc2[nH]ccc2c1	indole-6-carboxylic_acid	flat-aromatic_P2-pocket_+_carboxylate_anchor_fragment_probe
+OC(=O)c1ccc(cc1)-c1ccccc1	biphenyl-4-carboxylic_acid	biaryl_P2/P4_hydrophobic-fill_+_carboxylate_fragment_probe
