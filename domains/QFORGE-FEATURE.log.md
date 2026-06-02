@@ -224,3 +224,36 @@
   - `pb_fcc_elph_selftest PASS` — (1) α²F≥0 (400 bins) · (2) λ≥0 (4.36e-23) · (3) zero-coupling→no-positive-λ (-1.0) · (4) λ linear in |g|² (ratio 2.0) · (5) BZ-convergence bounded (32↔256 drift 5.88e-39 <5%) · (6) Einstein round-trip rel-ε 1.57e-29.
 - **CLASSIFICATION = pipeline VALIDATED across the weak→strong λ range.** Three clean elemental metals (λ 0.44→1.19→1.55) all within 3–4% of literature λ + all monotone-converge/plateau → QFORGE-NC el-ph engine is CORRECT independent of coupling strength.
 - cite: hexa-lang origin/main `729eeba1c` (PR#2512 self-merged squash) + PR#2513 (Pb, self-merged), fixtures `stdlib/qforge/nb_bcc_elph_xval_test.hexa` · `nb_bcc_elph_selftest_test.hexa` · `pb_fcc_elph_xval_test.hexa` · `pb_fcc_elph_selftest_test.hexa`, all `@ci_gate`-tagged. Host `mini` native-CPU (FREE — no pod, no QE, no-rent strategy confirmed). Live gate pods (LaH10 38943553 resume / Li2MgH16 38922322) + other running agents untouched.
+
+## 2026-06-02 — FEATURE BRICK: Allen-Dynes f1·f2 strong-coupling correction factors — g5 GATE LANDED (CaH6 critical path) · hexa-lang PR#2517
+
+- **BRICK:** the full Allen-Dynes 1975 (PRB 12 905) Tc form's strong-coupling f1(λ,μ\*) + spectral-shape f2(λ, ω̄₂/ω_log, μ\*) correction factors, on the **CaH6 gate critical path** (λ≈4.4 deep strong-coupling — exactly where the plain f1=f2=1 McMillan/Allen-Dynes Tc UNDERESTIMATES; without f1·f2 the QFORGE-vs-QE Tc would disagree at high λ for a NON-physics reason).
+- **FINDING (honest, d6):** the f1·f2 factors were ALREADY fully implemented in `stdlib/material/sim.hexa : allen_dynes_tc` (lines 87-103) AND in the verify-CLI recompute `_allen_dynes_full` — bit-identical to the brief's formulas. What was MISSING was the **dedicated g5 verification gate** asserting their two published limits + the documented CaH6 lift. So the brick shipped = the g5 gate (`stdlib/qforge/allen_dynes_f1f2_selftest.hexa`, 143 lines, pure-additive), NOT a re-implementation.
+- **FORMULAS (as implemented & asserted):** `f1 = [1 + (λ/Λ1)^(3/2)]^(1/3)`, `Λ1 = 2.46(1+3.8μ*)`; `f2 = 1 + [(ω̄₂/ω_log − 1)·λ²]/[λ² + Λ2²]`, `Λ2 = 1.82(1+6.3μ*)(ω̄₂/ω_log)`; `Tc = f1·f2·(ω_log/1.2)·exp[−1.04(1+λ)/(λ − μ*(1+0.62λ))]`.
+- **g5 selftest VERBATIM (13/13 PASS — numerical identity, NO LLM judge):**
+  ```
+  PASS weak λ=0.01 f1·f2→1 (got 1.00009)
+  PASS weak λ=0.10 f1·f2→1 (got 1.00297)
+  PASS weak λ=0.05 Tc_full=McMillan (got 8.19209e-08)
+  PASS AD asymptote coef closed-form (got 0.187795)
+  PASS AD asymptote λ=1e6 Tc/asy→1 (got 0.999999)
+  PASS AD asymptote coef ≈ 0.18 (got 0.187795)
+  PASS CaH6 Tc_plain (McMillan) (got 185.666)
+  PASS CaH6 Tc_full (f1·f2) (got 293.096)
+  PASS CaH6 lift factor f1·f2 (got 1.57862)
+  PASS CaH6 f1 > 1 (strong-coupling lift) (got 1.35057 > 1.0)
+  PASS CaH6 f2 > 1 (spectral-shape lift) (got 1.16885 > 1.0)
+  PASS CaH6 f1 ≈ 1.3506 (got 1.35057)
+  PASS CaH6 f2 ≈ 1.1689 (got 1.16885)
+  allen_dynes_f1f2_selftest PASS
+  ```
+- **`hexa verify` tier verdict VERBATIM (the numerical identity, NOT LLM-judged):**
+  ```
+  verify --expr allen_dynes_full(4.376,900.0,1170.0,0.1)=293.096
+    calc   = 293.096  ≈ expected 293.096  (|Δ|=0.0 ≤ ε=1e-9)
+    tier   = 🟢 SUPPORTED-NUMERICAL  (hexa-native libm-class recompute, TECS-L n6-rep Tier2)
+  ```
+- **PUBLISHED REFERENCE CHECKED (honest, d6):** (1) **weak-coupling limit** — at λ=0.01, f1·f2=1.00009 → 1 (corrections inert, backward compatible); (2) **Allen-Dynes 1975 strong-coupling ASYMPTOTE** — λ→∞ ⇒ Tc → 0.18·√λ·ω̄₂; the EXACT large-λ coefficient of this form is `exp(−1.04)/(1.2·√2.46)=0.187795…` ≈ the textbook-quoted **0.18** (a genuine closed published reference, NOT fabricated), with numerical convergence Tc/(coef·√λ·ω̄₂)=0.999999 pinned at λ=1e6. I did NOT find a specific tabulated f1/f2 PAIR for CaH6-exact params in Allen-Dynes Table I (their tabulated cases are λ≲2); so the CaH6-class f1/f2 are verified by **internal numerical identity (🟢, ε=1e-9) + the published λ→∞ asymptote**, not a "matches Table I" claim.
+- **CaH6-class Tc LIFT (the gate physics restored):** for λ=4.376, ω_log=900 K, ω̄₂/ω_log=1.3, μ*=0.1 → **f1=1.3506, f2=1.1689** (both >1) ⇒ **Tc_plain (f1=f2=1, McMillan ω_log/1.2) = 185.7 K → Tc_full (f1·f2) = 293.1 K**, a **≈1.58× strong-coupling lift**. This is precisely the high-λ Tc the plain form drops and that the QFORGE-vs-QE gate needs to agree on.
+- **SCOPE:** pure-additive g5 gate (1 new file, 1 concern). Existing `qforge_l0_selftest` (the AD/Tc path) stays GREEN. Pre-existing `qforge_l1` (Eliashberg Matsubara ME-anchor) FAIL + `qforge_l3` clang build error are on origin/main, UNTOUCHED by this change (confirmed: `git diff` = the single new file only).
+- cite: hexa-lang **PR#2517** (`qforge-ad-f1f2-selftest`, squash-merge **4b86df33cda42bc029ed9edbfa58ed340cd3dad0**), file `stdlib/qforge/allen_dynes_f1f2_selftest.hexa` (`@ci_gate`-tagged). Isolated FRESH worktree off origin/main `a7f145cdf` (d9 — `~/.hx/src` untouched, worktree removed post-merge). Host `mini` native-CPU (FREE — no pod, no rent). Live gate pods (LaH10 38943553 / Li2MgH16 38922322) + other agents untouched.
