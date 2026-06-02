@@ -115,3 +115,35 @@
   total wall_s=1080  stages=4  malformed=0  unpaired=0
   ```
   Reading: with this single dispatcher write, every finished deck leaves a self-explanatory bottleneck table next to its outputs — `ph:q2` is the slowest stage (44% of wall), the two per-q DFPT stages together are 82% of total wall, confirming the el-ph (DFPT) stage class is the campaign bottleneck right at the point of harvest, with zero manual analysis.
+
+## 2026-06-02 — rtsc-discovery FLEET INSPECTION (14 pods one-by-one · g8 hexa-cloud only) — all IDLE-LEAK, 0 terminal λ
+- **Trigger**: read-mostly health+harvest sweep of every @demiurge vast pod. Enumerated via `hexa cloud reconcile` (21 pods: 14 rtsc-discovery + 2 gates + cuda-link-verify + 4 RunPod GHOSTs `(hexa-cloud rent)` left untouched). Gate anchors (38943553 LaH10 · 38922322 Li2MgH16) report-only — recovery owned by agent ac71837.
+- **Probe transport**: `hexa cloud run <id> -- bash -lc "echo <b64> | base64 -d | bash"` (the inline argv tripped cloud_run's C-comment heuristic on `;`/`%%%`/`//`; base64 wrapper is the clean workaround — note for hexa-lang if probes recur).
+- **Fleet verdict**: **14/14 rtsc-discovery = IDLE-LEAK**. Pattern is uniform — `vc-relax` reached `JOB DONE` on 2026-06-01, the el-ph chain (`ph.x` DFPT, `ldisp .true. nq 4×4×4`, `electron_phonon='simple'`, `tr2_ph 1d-14`) launched, advanced a few q/reps, then **died** (signal-18 suspend · MPI exit 1 · "Run is not recoverable starting from scratch" · numerical divergence). Live workdir then reset (newest file = `relax.out`); partial dyn+elph **preserved in `<deck>/harvest_partial/`**. Procs DEAD, ~0–1% CPU on all 14 → **billing for zero compute**. **0 candidates reached terminal λ/Tc** (no q2r/matdyn/lambda anywhere) → nothing to harvest into the ledger this sweep.
+
+  ```text
+  pod        candidate  nat  proc(pw/ph)  dyn(live/harvest)  verdict      note
+  ---------  ---------  ---  -----------  -----------------  -----------  --------------------------------
+  38950641   BaAuH3      5    0/0          0/4(+2elph)        IDLE-LEAK    DFPT killed rep#3
+  38950897   H3S         4    0/0          0/6(+4elph)        IDLE-LEAK    "not recoverable"; H3S xval anchor
+  38951764   CeH9       20    0/0          0/2                IDLE-LEAK    signal-18; 20-atom→GPU
+  38952197   LaBH8      10    0/0          0/2                IDLE-LEAK    iter#73 slow-converge, killed
+  38952382   LaBeH8     10    0/0          0/3(+1elph)        IDLE-LEAK    "not recoverable"
+  38952686   LuH10      11    0/0          0/2                IDLE-LEAK    MPI exit 1
+  38954037   ScBeH8     10    0/0          0/2                IDLE-LEAK    "not recoverable"
+  38954231   ThH10      11    0/0          0/2                CRASHED⚠     DFPT DIVERGED (Fermi −7145, ddv 1.6E3) → PARAM-TUNE
+  38954402   ScH9       10    0/0          0/5(+3elph)        IDLE-LEAK    signal-18; closest-to-terminal
+  38954645   SrPtH3      5    0/0          0/6(+4elph)        IDLE-LEAK    "not recoverable"
+  38955010   YAuH3       5    0/0          0/6(+4elph)        IDLE-LEAK    rep#4 conv then killed; near-terminal
+  38955211   YBeH8      10    0/0          0/2                IDLE-LEAK    "not recoverable"
+  38955371   YH9        20    0/0          0/2                IDLE-LEAK    signal-18; uptime 1454h(~60d) OLDEST
+  38955554   YSbH6       8    0/0          0/2(+1elph)        IDLE-LEAK    MPI_ABORT exit 1
+  ---------  ---------  ---  -----------  -----------------  -----------  --------------------------------
+  GATES (report-only · ac71837 owns recovery):
+  38943553   LaH10      —    0/9          0(_ph0 wip)        RUNNING      DFPT live, writing dvscf ✅
+  38922322   Li2MgH16   —    0/0          0                  CRASHED      ph.out MPI exit 2 → ac71837 resume
+  ```
+
+- **Summary counts**: 14 rtsc-discovery = **0 RUNNING · 1 CRASHED-divergence (ThH10) · 13 IDLE-LEAK** (the other 13 are technically "crashed-then-idle" — proc dead, work harvested, pod billing idle) · **0 STUCK · 0 terminal-λ harvested**. Gates: 1 RUNNING (LaH10) · 1 CRASHED (Li2MgH16, ac71837).
+- **Cost exposure**: 14 idle vast GPU pods. Uptimes 38h–1454h; idle (post-crash) since ~2026-06-01. At a nominal ~$0.25/GPU-hr, 14 idle pods ≈ **~$3.5/hr (~$84/day) burning for zero compute** — the dominant fleet waste. Recommend parent **teardown all 14 after harvest_partial pull** (work is preserved on-pod; pull dyn/elph via `hexa cloud copy-from <id> <deck>/harvest_partial …` first, then `hexa cloud down`). Did NOT autonomously tear down — these have preserved partial work (not zero-work orphans), so teardown is the parent's call once harvest_partial is copied off.
+- **Action ranking (urgency)**: (1) **harvest_partial pull + teardown all 14** (stop the ~$84/day leak) — pull first, biggest $ win; (2) **ThH10 param-tune** (d6: DFPT diverged, needs alpha_mix/nmix_ph/degauss tuning, NOT a plain re-fire); (3) **resume near-terminal candidates on GPU** (ScH9 5dyn/3elph · YAuH3 6/4 · SrPtH3 6/4 · H3S 6/4) from `harvest_partial`; (4) re-fire the rest from dyn0 per DEFERRED recipe (sizing d7/d11: ≤8-atom→Vast CPU/pool, ≥10-atom dense-q→GPU). All 14 stay in the pool (d_defer_no_delete) — see `exports/rtsc/DEFERRED.md` 2026-06-02 block.

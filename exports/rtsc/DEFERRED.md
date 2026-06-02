@@ -110,3 +110,36 @@ Decks built but never fired (no .dft_detach.state / relax.out), reviewed for fir
 | ~~**Li2MgH16**~~ **✅ RESOLVED 2026-06-01 → RUNNING (pod 38922322 @ 79.112.108.70, offer 29302413)** | ✓ | ✅ FIX LANDED + re-fired clean — relax DETACHED on the pod | QFORGE migration-gate anchor (needs terminal QE λ·Tc). The scp-255 loop was a **tooling blocker, NOT physics**: the `--direct` bare-IP endpoint of offer **28919799** (host 116.101.122.173) answered the reachability probe but refused scp (255), and a re-fire (even `--query "direct_port_count>=2"`) deterministically re-picked it (confirmed ×3: 38917013/38917304/38917745, all clean teardowns). **FIXED AT SOURCE** — hexa-lang PR#2451 (fix **a**: scp DIRECT→PROXY single-retry fallback via `vast_ssh_endpoint`, winning transport pinned + stamped for `--resume`) + PR#2453 (fix **c**: durable TTL'd cross-invocation offer-blacklist `~/.hx/cloud/offer-blacklist.json`, the rent search EXCLUDES blacklisted offers). Installed to `~/.hx/{src,bin}/stdlib`; `hexa cloud dft-run` recompiles clean (RC=0). Re-fire `hexa cloud dft-run exports/rtsc/decks/Li2MgH16 --detach` (2026-06-01) picked a DIFFERENT offer (29302413, host 79.112.108.70 — NOT 28919799), `reachability OK` → **upload OK** (no scp-255 on this direct-capable host) → provision OK → pseudo OK → **relax LAUNCHED detached** (pid 1047) → DETACH OK (no teardown). `--resume` reaches the pod via the stamped endpoint and reports relax STILL RUNNING. **Status: RUNNING (relax), not yet terminal** — poll `hexa cloud dft-run exports/rtsc/decks/Li2MgH16 --resume` to advance relax→scf→ph(DFPT 2×2×2 q)→harvest λ·ω_log·Tc. No terminal QE λ·Tc fabricated (d6). d8 inbox patch (hexa-lang/inbox/patches/dft-run-direct-endpoint-scp255.md) is RESOLVED by these two PRs. |
 
 note: LaH10 (sibling gate anchor) is UNAFFECTED — its prior pod 38704336 is alive (adopted, project=demiurge) and its phonon DFPT is RUNNING; poll `hexa cloud dft-run exports/rtsc/decks/LaH10 --resume` for terminal harvest.
+
+## 2026-06-02 — rtsc-discovery fleet inspection (14 pods, all IDLE-LEAK · DFPT crashed mid-q) — fleet sweep by agent (coordination w/ ac71837 on gates)
+
+> **Class**: all 14 `rtsc-discovery` pods are **IDLE-LEAK** — relax `JOB DONE`
+> on 2026-06-01, then the el-ph (`ph.x` DFPT, 4×4×4 q, `electron_phonon='simple'`,
+> `tr2_ph=1.0d-14`) launched, ran partway, and **died** (signal-18 suspend / MPI
+> exit 1 / "Run is not recoverable starting from scratch" / numerical divergence).
+> Each pod's live workdir was reset (newest file = `relax.out`, `scf.out`/`out/_ph0`
+> mostly gone) BUT partial dyn+elph files were preserved in `<deck>/harvest_partial/`.
+> **NO candidate reached terminal λ/Tc** (no q2r/matdyn/lambda anywhere). Procs DEAD,
+> ~0–1% CPU → billing for nothing. These are **technical fails → DEFER, never delete**
+> (d_defer_no_delete). Retry recipe is per-class below.
+
+| candidate | pod | nat | harvest (dyn/elph) | ph.out terminal state | reason | retry recipe | priority |
+|---|---|---|---|---|---|---|---|
+| BaAuH3 | 38950641 | 5 | 4/2 | DFPT iterating rep#3, killed | el-ph DFPT killed mid-rep (pod idle since 1Jun) | resume ph from `harvest_partial` dyn1–4+elph (recover dir) on a fresh pod; small cell → pool/Vast CPU OK (d7) | mid |
+| H3S | 38950897 | 4 | 6/4 | "Run is not recoverable from scratch" | DFPT q-loop interrupted, .save lost | re-fire ph 4×4×4 from scratch (4-atom — cheap); cross-val anchor (H3S ~203K known) | high |
+| CeH9 | 38951764 | 20 | 2/0 | signal 18 (suspended), only 2 dyn | 20-atom el-ph killed early; large cell | ≥20-atom dense-q → **GPU pod** (d7); resume from dyn0/dyn1 | mid |
+| LaBH8 | 38952197 | 10 | 2/0 | iter#73 slow-converging, killed | DFPT SCF slow-converging (alpha_mix 0.3), killed before q2 | lower `tr2_ph→1d-12`, `alpha_mix 0.3`, more maxiter; GPU; resume dyn0 | mid |
+| LaBeH8 | 38952382 | 10 | 3/1 | "not recoverable" | DFPT interrupted after q1 elph | re-fire from dyn0; 10-atom → GPU pod | mid |
+| LuH10 | 38952686 | 11 | 2/0 | MPI exit 1 (mpirun abort) | el-ph MPI process aborted | inspect rep that aborted; re-fire GPU; LuH10-N falsifier axis (see above) | mid |
+| ScBeH8 | 38954037 | 10 | 2/0 | "not recoverable" | DFPT interrupted | re-fire from scratch; GPU | low |
+| **ThH10** | **38954231** | 11 | 2/0 | **DIVERGED** — Fermi shift −7.1456E+03, ddv_scf 1.638E+03, roots not converged | **numerical instability (NOT just a kill)** — metallic DFPT diverging | **PARAM-TUNE before re-fire**: add `alpha_mix=0.3`, `nmix_ph`, finer SCF, possibly larger `degauss`/`nbnd`; this is the d6 wall-class case (canary candidate per prior DEFERRED row) | **PARAM-TUNE** |
+| ScH9 | 38954402 | 10 | 5/3 | signal 18 (suspended) | el-ph killed after q3 elph (most progress of the 10-atom set) | resume from `harvest_partial` (5 dyn / 3 elph) on GPU — closest to terminal | high |
+| SrPtH3 | 38954645 | 5 | 6/4 | "not recoverable" | DFPT done thru q4 SCF then killed | re-fire from dyn0 (5-atom cheap); 6 dyn already harvested | mid |
+| YAuH3 | 38955010 | 5 | 6/4 | "not recoverable" (rep#4 converged then killed) | el-ph near-complete, killed at rep4 | resume from `harvest_partial` (6 dyn / 4 elph) — closest to terminal of the 5-atom set | high |
+| YBeH8 | 38955211 | 10 | 2/0 | "not recoverable" | DFPT interrupted after q1 | re-fire from scratch; GPU | low |
+| YH9 | 38955371 | 20 | 2/0 | signal 18; pod uptime 1454h (~60d) | 20-atom el-ph killed early; **oldest pod by far** | ≥20-atom → GPU; resume dyn0; teardown this host after harvest (60d uptime) | mid |
+| YSbH6 | 38955554 | 8 | 2/1 | MPI_ABORT exit 1 | el-ph MPI abort after q1 elph | inspect aborting rep; re-fire GPU from dyn0 | low |
+
+**Closest-to-terminal (most harvestable, prioritize resume)**: ScH9 (5dyn/3elph), YAuH3 (6/4), SrPtH3 (6/4), H3S (6/4), BaAuH3 (4/2).
+**Param-tune required (NOT a plain resume)**: ThH10 — DFPT numerically diverged (d6 first-principles tuning, not a re-fire).
+**NONE deleted** (d_defer_no_delete) — all 14 stay in the pool; the live billing pods are the leak (see PROCESS log).
