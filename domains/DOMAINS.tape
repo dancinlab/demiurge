@@ -23,6 +23,7 @@
 @domain LPA           := "domains/CARDIO+/LPA.md"
 @domain NOREFLOW      := "domains/CARDIO+/NOREFLOW.md"
 @domain HERPES        := "domains/HERPES.md"
+@domain AGA-RX        := "domains/AGA-RX.md"
 @domain TTR           := "domains/TTR.md"
 @domain TTR-CREAM     := "domains/TTR-CREAM.md"
 @domain TTR-LAC       := "domains/TTR-LAC.md"

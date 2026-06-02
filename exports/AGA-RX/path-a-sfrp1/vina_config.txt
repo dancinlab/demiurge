@@ -1,0 +1,23 @@
+# AutoDock Vina docking config — WAY-316606 into the SFRP1 CRD Wnt-binding groove
+# Receptor : SFRP1_CRD_receptor.pdbqt  (CRD res 32-180 carved from AF-Q8N474-F1, mean pocket pLDDT 92.7)
+# Ligand   : WAY-316606.pdbqt          (PubChem CID 16727102, C18H19F3N2O4S2, MW 448.5)
+# Pocket   : conserved Frizzled-CRD Wnt lipid/PPI groove
+#            aromatic cluster F146 F147 F149 Y150 W151 + W97 Y127 W131 (SFRP1 numbering)
+#            homologous to FZD8 Y48/I95/L97/N143-Y151 (PMC4683279)
+
+receptor = SFRP1_CRD_receptor.pdbqt
+ligand   = WAY-316606.pdbqt
+
+# Grid box — centroid of the core aromatic groove, 24 A cube covers the shallow PPI groove
+center_x = 8.6
+center_y = 3.1
+center_z = 2.9
+size_x   = 24
+size_y   = 24
+size_z   = 24
+
+exhaustiveness = 32
+num_modes      = 20
+energy_range   = 4
+seed           = 42
+cpu            = 8
