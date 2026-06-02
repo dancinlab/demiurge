@@ -1,4 +1,4 @@
-BaAuH3 phonon + electron-phonon 4x4x4 q (RTSC A10 · SrAuH3 A-site Ba-variant · perovskite-hydride)
+BaAuH3 phonon + electron-phonon 4x4x4 q (RTSC A10 - SrAuH3 A-site Ba-variant - perovskite-hydride)
 &inputph
   search_sym = .false.
   prefix = 'baauh3'

@@ -1,5 +1,5 @@
 &control
-  ! CaB3C3 — Pm-3n (#223) boron-carbon sodalite clathrate, 14-atom cubic
+  ! CaB3C3 - Pm-3n (#223) boron-carbon sodalite clathrate, 14-atom cubic
   !   cell (2 Ca + 6 B + 6 C). MgB2-like sigma-bonded covalent SC, NO hydrogen.
   ! AMBIENT-stability gate: vc-relax @ press=0.0 kbar -> ph -> no imaginary modes.
   ! nosym GUARD: ordered B/C decoration lowers symmetry below the Pm-3n parent.

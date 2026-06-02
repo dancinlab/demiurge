@@ -1,4 +1,4 @@
-CaB3C3 DFPT phonon + el-ph 2x2x2 q (Pm-3n B-C clathrate · ambient-stability gate)
+CaB3C3 DFPT phonon + el-ph 2x2x2 q (Pm-3n B-C clathrate - ambient-stability gate)
 &inputph
   prefix = 'cab3c3_amb'
   outdir = './out'

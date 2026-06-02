@@ -1,4 +1,4 @@
-CaAuH3 phonon + electron-phonon 4x4x4 q (RTSC A11 · SrAuH3 Ca-variant · perovskite-hydride)
+CaAuH3 phonon + electron-phonon 4x4x4 q (RTSC A11 - SrAuH3 Ca-variant - perovskite-hydride)
 &inputph
   prefix = 'caauh3'
   outdir = '/home/aiden/rtsc_caauh3/out'
