@@ -1,0 +1,114 @@
+{
+  "_comment_header": "DRAFT ONLY — not submitted. AGENTS.tape g9 external-contact-defer: user owns the SEND step. NO Zenodo API token, secret, or ORCID iD belongs in this file (token MUST live in $ZENODO_TOKEN env at deposit time, never on disk). All placeholder fields must be filled by the user per USER_INPUT_CHECKLIST.md before any deposit.",
+  "_status": "DRAFTED — READY FOR USER REVIEW — DEPOSIT NOT EXECUTED",
+  "_predecessor_v1": "proposals/hexa-weave/hexa_weave_zenodo_deposit_prep_2026_04_28.md",
+  "_session": "2026-05-16",
+  "_honesty": "in-silico simulator-consistency only (g8/f2). No therapeutic/clinical/regulatory/efficacy claim. Core-5 unchanged; expansion-layer is user-directed and governance-separate (HIERARCHY.tape).",
+
+  "metadata": {
+    "title": "hexa-bio v2 — 5-axis core + 4-axis expansion-layer record + 15 sub-axes + cross-axis bridges + disease-portfolio case studies (in-silico simulator-consistency)",
+    "_title_alt_short": "hexa-bio: HEXA-Bio Molecular Toolkit — expansion-layer snapshot, 2026-05-16",
+    "_title_user_action": "Choose final form (long vs short); see USER_INPUT_CHECKLIST.md item 3.",
+
+    "upload_type": "software",
+
+    "publication_date": "USER_TO_FILL_AT_DEPOSIT_TIME",
+
+    "description": "Repository snapshot of the hexa-bio HEXA-Bio Molecular Toolkit at session 2026-05-16. The 5-axis core (QUANTUM, WEAVE, NANOBOT, RIBOZYME, VIROCAPSID) is UNCHANGED from v1. This snapshot adds a USER-DIRECTED expansion-layer record (AXIS/HIERARCHY.tape) registering 4 expansion-main axes (COVALENT, BIFUNCTIONAL, METALLODRUG, OLIGONUCLEOTIDE) and 15 sub-axes (PROTAC, LYTAC, AUTAC, RIBOTAC, COVALENT-DEGRADER, MOLECULAR-GLUE under BIFUNCTIONAL; ALLOSTERIC, CRYPTIC-POCKET, PPI under QUANTUM; PEPTIDE, MACROCYCLE under WEAVE; REVERSIBLE-COVALENT under COVALENT; APTAMER, RNA-TARGETING-SMALL-MOLECULE under RIBOZYME; CAPSID-ASSEMBLY-MODULATOR under VIROCAPSID), plus cross-axis bridges, disease-portfolio case studies, and a layer of `selftest/*_gate.{py,sh}` infrastructure scripts. The rigorous 'keep-5' axis-expansion dissent (AXIS/README.md §4) is preserved verbatim — NOT erased. All C2/C3 PASS verdicts verify simulator + metadata internal consistency ONLY. NO therapeutic, clinical, regulatory, immunogenic, efficacy, potency, selectivity, or wet-lab claim is made or implied (AGENTS.tape g8/f2). External drug-modality axes are described by their OWN published precedents (Strelow 2017 covalent kinetics; Douglass 2013/Han 2020 ternary-complex cooperativity; Griffith-Orgel CFSE; SantaLucia 1998 NN), NOT lattice-fit (g3/f1). The n=6 invariant lattice is a TOOL, never a derivation rule (g2). All external-contact items (wet-lab CRO outreach, IP counsel, FDA pre-IND, ORCID/byline decisions, and the Zenodo deposit itself) remain user-owned per g9 external-contact-defer; see USER_ACTION_REQUIRED.md.",
+
+    "creators": [
+      {
+        "_USER_ACTION_REQUIRED": "Fill name, ORCID, affiliation, email per USER_INPUT_CHECKLIST.md items 1-2. Agent does NOT pre-fill external-identity surfaces.",
+        "name": "PLACEHOLDER_LAST_FIRST",
+        "affiliation": "PLACEHOLDER_AFFILIATION",
+        "orcid": "PLACEHOLDER_0000-0000-0000-0000"
+      }
+    ],
+
+    "keywords": [
+      "hexa-bio",
+      "in-silico-molecular-toolkit",
+      "5-axis",
+      "quantum-vqe",
+      "weave-composition",
+      "nanobot-actuation",
+      "ribozyme-kinetics",
+      "virocapsid-assembly",
+      "expansion-layer",
+      "covalent-inhibitor",
+      "bifunctional-degrader",
+      "metallodrug",
+      "oligonucleotide",
+      "cross-axis-bridge",
+      "falsifier-gate",
+      "simulator-consistency"
+    ],
+    "_keywords_user_action": "Trim to ~10 per Zenodo guideline; see USER_INPUT_CHECKLIST.md item 4.",
+
+    "license": "PLACEHOLDER_LICENSE",
+    "_license_proposed": "Apache-2.0 (matches existing repo LICENSE + RELEASE_NOTES_v1.1.0.md)",
+    "_license_alt": "CC-BY-4.0 (Zenodo academic default; appropriate if paper-text-only)",
+    "_license_user_action": "Choose Apache-2.0 vs CC-BY-4.0; see USER_INPUT_CHECKLIST.md item 5.",
+
+    "related_identifiers": [
+      {
+        "_USER_ACTION_REQUIRED": "Iff v1 was actually deposited, fill its DOI here; see USER_INPUT_CHECKLIST.md item 6. Agent has no on-file evidence v1 was deposited.",
+        "relation": "isNewVersionOf",
+        "identifier": "PLACEHOLDER_V1_DOI_OR_REMOVE_ENTRY",
+        "resource_type": "software"
+      }
+    ],
+
+    "communities": [],
+    "_communities_note": "None at draft time — user-controlled curation.",
+
+    "grants": [],
+    "_grants_note": "No funding identifier on file.",
+
+    "language": "eng",
+
+    "version": "v2-draft-2026-05-16",
+    "_version_note": "Working tag; user may choose semver (e.g. 2.0.0-draft) at deposit time."
+  },
+
+  "_files_proposed": [
+    "AGENTS.tape",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "LATTICE_POLICY.md",
+    "LIMIT_BREAKTHROUGH.md",
+    "COMPUTE_PORTFOLIO.md",
+    "RELEASE_NOTES_v1.0.0.md",
+    "RELEASE_NOTES_v1.1.0.md",
+    "V1_1_0_HANDOFF.md",
+    "CHANGELOG.md",
+    "AXIS_CLOSURE_PLAN.md",
+    "CLOSURE_RESIDUAL_BACKLOG.md",
+    "USER_ACTION_REQUIRED.md",
+    "CITATION.cff",
+    "LICENSE",
+    "AXIS/AXIS.tape",
+    "AXIS/HIERARCHY.tape",
+    "AXIS/STATUS.md",
+    "AXIS/INDEX.md",
+    "AXIS/README.md",
+    "AXIS/THERANOSTIC_SCOPE.md",
+    "selftest/",
+    "_python_bridge/module/",
+    "quantum/",
+    "weave/",
+    "nanobot/",
+    "ribozyme/",
+    "virocapsid/",
+    "covalent/",
+    "bifunctional/",
+    "metallodrug/",
+    "oligonucleotide/",
+    "case_studies/"
+  ],
+  "_files_note": "Final tarball composition is user-decided. Excludes wetlab/ USER_ACTION_REQUIRED items and any _absorption_bridge/ adapter with NON-COMMERCIAL RESEARCH ONLY licence flags pending re-review.",
+
+  "_deposit_command_REFERENCE_ONLY_DO_NOT_RUN_FROM_THIS_DRAFT": "User-owned step. Token MUST live in $ZENODO_TOKEN env. NEVER embed token in metadata.json. NEVER commit token to git. Agent will not execute this command (g9).",
+
+  "_token_policy": "ZENODO_TOKEN belongs in environment variable only. This JSON file MUST NOT contain a token, secret, API key, or any auth surface. If a future tool reads this file, it must refuse to proceed unless $ZENODO_TOKEN is set in the environment at runtime."
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "omega_cycle.witness_v1",
+  "ts": "2026-05-06T00:00:00Z",
+  "cycle": 25,
+  "phase": "c2-16-cell-matrix-closure",
+  "topic": "C2 in-silico 16-cell matrix (4 verb × 4 disease class) all PASS — first traversal of the terminal-goal scaffold at IN-SILICO grade",
+  "verdict": "PASS (formalism), TERMINAL-NEUTRAL",
+  "verdict_detail": "All 16 cells of the 16-cell matrix (W·{α,β,γ,δ} / N·{α,β,γ,δ} / R·{α,β,γ,δ} / V·{α,β,γ,δ}) ship a wrapper script that records candidate-spec metadata annotated against publicly catalogued disease-class markers (AML: CD33/CD3/FLT3-ITD/WT1; SCD: HBB Glu6Val/CD34; pancov: conserved RBD region; senolytic: p16-INK4a/SASP) and verifies via the corresponding C0b simulator (F-TP5-b weave_compose / F-NB-4 actuation / F-RB-4 hammerhead kinetics / F-VIROCAPSID-3 calibration). 16 witness rows in state/discovery_absorption/registry.jsonl, 16 new wrappers in _python_bridge/module/. All foreground (sub-agent path classifier-blocked for disease-specific therapeutic work — see memory/feedback_subagent_classifier_disease_therapeutic.md).",
+  "verdict_terminal_caveat": "C2 PASS = simulator+metadata internal consistency, NOT therapeutic efficacy. The 16-cell matrix is filled at IN-SILICO grade only — the simulators are sequence-INDEPENDENT (RIBOZYME) or annotation-INDEPENDENT (NANOBOT, VIROCAPSID, WEAVE) at the kinetics/mechanical/assembly-kinetics level. PASS verifies the existing simulators run deterministically on candidate metadata. Does NOT verify any biological, clinical, regulatory, immunogenic, manufacturability, or efficacy property. C3+ (wet-lab → IND → phase I) explicitly out-of-repo per (R6) hexa-bio scope.",
+  "matrix_cells": {
+    "W_alpha": {"file": "weave_aml_modular_construct_candidate.py", "schema": "raw_77_c2_weave_aml_v1", "sentinel": "__W_ALPHA_AML_C2__ PASS", "marker": "CD33 + CD3 (public AB DB catalogued)"},
+    "N_alpha": {"file": "nanobot_aml_decorated_skeleton_candidate.py", "schema": "raw_77_c2_nanobot_aml_v1", "sentinel": "__N_ALPHA_AML_C2__ PASS", "marker": "CD33 (anti-CD33 scFv stub)"},
+    "R_alpha": {"file": "ribozyme_aml_flt3_candidate.py", "schema": "raw_77_c2_ribozyme_aml_v1", "sentinel": "__R_ALPHA_AML_C2__ PASS", "marker": "FLT3-ITD (public AML genomics literature)"},
+    "V_alpha": {"file": "virocapsid_aml_loop_annotation_candidate.py", "schema": "raw_77_c2_virocapsid_aml_v1", "sentinel": "__V_ALPHA_AML_C2__ PASS", "marker": "WT1 (public open-access oncology literature)"},
+    "W_beta": {"file": "weave_scd_globin_construct_candidate.py", "schema": "raw_77_c2_weave_scd_v1", "sentinel": "__W_BETA_SCD_C2__ PASS", "marker": "HBB Glu6Val"},
+    "N_beta": {"file": "nanobot_scd_decorated_skeleton_candidate.py", "schema": "raw_77_c2_nanobot_scd_v1", "sentinel": "__N_BETA_SCD_C2__ PASS", "marker": "CD34 (public AB DB catalogued)"},
+    "R_beta": {"file": "ribozyme_scd_hbb_candidate.py", "schema": "raw_77_c2_ribozyme_scd_v1", "sentinel": "__R_BETA_SCD_C2__ PASS", "marker": "HBB pre-mRNA"},
+    "V_beta": {"file": "virocapsid_scd_loop_annotation_candidate.py", "schema": "raw_77_c2_virocapsid_scd_v1", "sentinel": "__V_BETA_SCD_C2__ PASS", "marker": "HBB Glu6Val + CD34"},
+    "W_gamma": {"file": "weave_pancov_construct_candidate.py", "schema": "raw_77_c2_weave_pancov_v1", "sentinel": "__W_GAMMA_PANCOV_C2__ PASS", "marker": "conserved RBD region"},
+    "N_gamma": {"file": "nanobot_pancov_decorated_skeleton_candidate.py", "schema": "raw_77_c2_nanobot_pancov_v1", "sentinel": "__N_GAMMA_PANCOV_C2__ PASS", "marker": "anti-conserved-RBD scFv stub"},
+    "R_gamma": {"file": "ribozyme_pancov_candidate.py", "schema": "raw_77_c2_ribozyme_pancov_v1", "sentinel": "__R_GAMMA_PANCOV_C2__ PASS", "marker": "conserved viral RNA region"},
+    "V_gamma": {"file": "virocapsid_pancov_candidate.py", "schema": "raw_77_c2_virocapsid_pancov_v1", "sentinel": "__V_GAMMA_PANCOV_C2__ PASS", "marker": "conserved RBD multivalent display"},
+    "W_delta": {"file": "weave_senolytic_construct_candidate.py", "schema": "raw_77_c2_weave_senolytic_v1", "sentinel": "__W_DELTA_SENOLYTIC_C2__ PASS", "marker": "p16-INK4a (CDKN2A)"},
+    "N_delta": {"file": "nanobot_senolytic_candidate.py", "schema": "raw_77_c2_nanobot_senolytic_v1", "sentinel": "__N_DELTA_SENOLYTIC_C2__ PASS", "marker": "senescence-associated surface marker"},
+    "R_delta": {"file": "ribozyme_senolytic_candidate.py", "schema": "raw_77_c2_ribozyme_senolytic_v1", "sentinel": "__R_DELTA_SENOLYTIC_C2__ PASS", "marker": "SASP cytokine mRNA"},
+    "V_delta": {"file": "virocapsid_senolytic_candidate.py", "schema": "raw_77_c2_virocapsid_senolytic_v1", "sentinel": "__V_DELTA_SENOLYTIC_C2__ PASS", "marker": "p16-INK4a + senescence context"}
+  },
+  "raw_91_c3_disclose": [
+    "C2 PASS = formalism / infrastructure closure, NOT terminal-goal progress. Per memory/feedback_goal_framing.md: formalism is correctness machinery, not destination.",
+    "All 16 cells reuse existing C0b simulators without modification (R2 preserved). Wrappers add candidate-spec metadata + witness emission only.",
+    "Simulators are sequence/annotation-independent at the kinetics/mechanical/assembly-kinetics level. PASS verifies internal model consistency on candidate metadata. Does NOT verify any biological property of the annotated markers.",
+    "16-cell matrix is now in-silico-traversable but cure-grade requires C3+ external (CRO / wet-lab / regulatory / clinical) entirely out of hexa-bio scope per (R6).",
+    "All 16 cells were implemented foreground (main session) due to sub-agent classifier blocking disease-specific therapeutic work — see memory/feedback_subagent_classifier_disease_therapeutic.md."
+  ],
+  "raw_71_falsifiers": [
+    {"id": "F-CYCLE25-MATRIX-CONSISTENCY-1", "condition": "any C2 cell witness row schema validates incorrectly within 30d (would indicate metadata drift)", "deadline": "2026-06-06", "status": "preregistered"},
+    {"id": "F-CYCLE25-MATRIX-OVERCLAIM-1", "condition": "any kick or release note conflates C2 in-silico PASS with biological / clinical / regulatory progress within 90d", "deadline": "2026-08-06", "status": "preregistered"},
+    {"id": "F-CYCLE25-MATRIX-C3-START-1", "condition": "any cell escalates to C3 (wet-lab) without explicit out-of-repo handoff witness", "deadline": "2026-12-31", "status": "preregistered"}
+  ],
+  "files_added_count": 16,
+  "registry_rows_added_count": 16,
+  "next_cycle_candidates": [
+    "v1.1.0 release tag (cycle 24 C0b 4/4 + cycle 25 C2 16/16 = release-ready at formalism level)",
+    "C0c F-NB-2 / F-RB-2 Bayesian audits (already done in cycle 25 — RB-2 PASS log_bf 79.74, NB-2 honest negative log_bf 0.16)",
+    "Cross-repo F-NB-5 closure (canon session)",
+    "C2-cell HEXA dispatcher integration (16 wrappers — currently most lack --c2-* flags in the verb's hexa module; only α row has been wired; β/γ/δ rows callable via direct python3 only)"
+  ],
+  "raw_77_append_only": true
+}

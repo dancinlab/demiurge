@@ -1,0 +1,62 @@
+{
+  "schema": "omega_cycle.witness_v1",
+  "ts": "2026-05-06T00:00:00Z",
+  "cycle": 25,
+  "phase": "c2-v-row-closure",
+  "topic": "VIROCAPSID C2 row closure — 4 disease-class cage candidates verified via F-VIROCAPSID-3 calibration tool",
+  "verdict": "PASS (formalism), TERMINAL-NEUTRAL",
+  "verdict_detail": "VIROCAPSID row of the 16-cell matrix complete. Each cell wraps virocapsid_calibration.calibrate_one(ref_system='stnv', mode='verify') with a candidate-spec metadata dict providing surface-loop / internal-cargo annotation slots derived from publicly catalogued disease-class markers. Simulator PASS is annotation-INDEPENDENT — verifies cage assembly-kinetics stability (yield ≥ 0.85 at t=10000s, mass conservation) at the cycle-24 calibrated stability corner.",
+  "cells": {
+    "V_alpha": {
+      "marker": "WT1 (public open-access oncology research literature)",
+      "annotation_slot": "surface-loop peptide annotation: RMFPNAPYL (sequence-level metadata only, modeled_by_simulator=False)",
+      "file": "_python_bridge/module/virocapsid_aml_loop_annotation_candidate.py",
+      "witness_schema": "raw_77_c2_virocapsid_aml_v1",
+      "sentinel": "__V_ALPHA_AML_C2__ PASS"
+    },
+    "V_beta": {
+      "marker": "HBB Glu6Val + CD34 (HSC tropism context)",
+      "annotation_slot": "surface-loop tropism + internal-cargo annotation (sequence-level metadata only)",
+      "file": "_python_bridge/module/virocapsid_scd_loop_annotation_candidate.py",
+      "witness_schema": "raw_77_c2_virocapsid_scd_v1",
+      "sentinel": "__V_BETA_SCD_C2__ PASS"
+    },
+    "V_gamma": {
+      "marker": "conserved coronavirus envelope-protein RBD region (multivalent display context)",
+      "annotation_slot": "surface-loop multivalent display annotation (60-fold metadata)",
+      "file": "_python_bridge/module/virocapsid_pancov_candidate.py",
+      "witness_schema": "raw_77_c2_virocapsid_pancov_v1",
+      "sentinel": "__V_GAMMA_PANCOV_C2__ PASS"
+    },
+    "V_delta": {
+      "marker": "p16-INK4a + senescence-associated marker context",
+      "annotation_slot": "surface-loop tropism + internal-cargo annotation (sequence-level metadata only)",
+      "file": "_python_bridge/module/virocapsid_senolytic_candidate.py",
+      "witness_schema": "raw_77_c2_virocapsid_senolytic_v1",
+      "sentinel": "__V_DELTA_SENOLYTIC_C2__ PASS"
+    }
+  },
+  "common_settings": {
+    "cage_class": "T=1 60-subunit icosahedral polyhedron",
+    "t_number": 1,
+    "n_cp_per_cage": 60,
+    "n_pent_per_cage": 12,
+    "primary_integrator": "backward_euler",
+    "calibrated_params": {"K12": 1.0e-6, "K21": 1.0e-4, "K_CLOSE": 1.0e-7, "K_OPEN": 1.0e-14},
+    "verify_t_end_s": 10000.0,
+    "verify_yield": 0.8546,
+    "target_yield": 0.85
+  },
+  "verification_method": "Each cell invokes virocapsid_calibration.calibrate_one(ref_system='stnv', mode='verify'). Returns dict with verify_yield_at_t10000, mass_drift_rel, finite_ok. PASS = yield in [0.85, 1.02] AND mass_drift_rel ≤ 1e-2 AND finite_ok.",
+  "raw_91_c3_disclose": [
+    "Annotation slots are sequence-level metadata fields. The simulator does NOT model peptide-MHC interaction, conformational rearrangement, immune presentation, or any biological process.",
+    "Marker references are PUBLIC OPEN-ACCESS LITERATURE CATALOGUED entities only.",
+    "PASS verifies cage primitive's assembly-kinetics stability under STNV-calibrated rate constants (existing C0b deliverable).",
+    "Multivalent display count (60 for V·γ) is structural metadata only — no immunogenicity/efficacy claim.",
+    "Multi-T extension (V-R2 stretch, T=3 CCMV / T=4 HBV) closed in cycle 25 separately (kick: 2026-05-05_hexa-bio-cycle24-c0b-omega-saturation does not yet reflect; multi-T scaling integer powers 4/11 verified at yield 0.85+).",
+    "Downstream layers (formulation, delivery, regulatory, clinical) are explicitly out-of-repo per (R6) hexa-bio scope."
+  ],
+  "raw_47_cross_repo": "Imports virocapsid_calibration (F-VIROCAPSID-3 PASS, cycle 24 C0b) without modification (R2 preserved).",
+  "raw_9_hexa_only": "python stdlib only across all 4 cells",
+  "raw_77_append_only": true
+}

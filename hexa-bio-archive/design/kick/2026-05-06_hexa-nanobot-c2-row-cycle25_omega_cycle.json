@@ -1,0 +1,59 @@
+{
+  "schema": "omega_cycle.witness_v1",
+  "ts": "2026-05-06T00:00:00Z",
+  "cycle": 25,
+  "phase": "c2-n-row-closure",
+  "topic": "NANOBOT C2 row closure — 4 disease-class candidates verified via F-NB-4 actuation simulator",
+  "verdict": "PASS (formalism), TERMINAL-NEUTRAL",
+  "verdict_detail": "NANOBOT row of the 16-cell matrix complete. Each cell wraps nanobot_actuation_simulation.run_actuation() with a candidate-spec metadata dict annotating one vertex (vertex 0) of the 12-vertex truncated icosahedron skeleton with a publicly catalogued surface-marker scFv stub. Simulator PASS is decoration-INDEPENDENT — verifies mechanical/thermodynamic invariants (work_per_cycle ≥ 10 kT, J₂=24 quotient ≥10× speedup, σ=12, τ=4, no thermal collapse).",
+  "cells": {
+    "N_alpha": {
+      "marker": "CD33 (public AB DB catalogued anti-CD33 scFv stub)",
+      "vertex_0_ligand": "lintuzumab-class scFv stub, illustrative 1e-9 M affinity",
+      "file": "_python_bridge/module/nanobot_aml_decorated_skeleton_candidate.py",
+      "witness_schema": "raw_77_c2_nanobot_aml_v1",
+      "sentinel": "__N_ALPHA_AML_C2__ PASS"
+    },
+    "N_beta": {
+      "marker": "CD34 (public AB DB catalogued anti-CD34 scFv stub)",
+      "vertex_0_ligand": "anti-CD34 scFv stub, illustrative 1e-9 M affinity",
+      "file": "_python_bridge/module/nanobot_scd_decorated_skeleton_candidate.py",
+      "witness_schema": "raw_77_c2_nanobot_scd_v1",
+      "sentinel": "__N_BETA_SCD_C2__ PASS"
+    },
+    "N_gamma": {
+      "marker": "anti-conserved-RBD scFv (public AB DB catalogued)",
+      "vertex_0_ligand": "broadly-binding anti-RBD scFv stub, illustrative 1e-9 M affinity",
+      "file": "_python_bridge/module/nanobot_pancov_decorated_skeleton_candidate.py",
+      "witness_schema": "raw_77_c2_nanobot_pancov_v1",
+      "sentinel": "__N_GAMMA_PANCOV_C2__ PASS"
+    },
+    "N_delta": {
+      "marker": "senescence-associated surface marker (public AB DB catalogued)",
+      "vertex_0_ligand": "anti-senescence-marker scFv stub",
+      "file": "_python_bridge/module/nanobot_senolytic_candidate.py",
+      "witness_schema": "raw_77_c2_nanobot_senolytic_v1",
+      "sentinel": "__N_DELTA_SENOLYTIC_C2__ PASS"
+    }
+  },
+  "common_settings": {
+    "skeleton": "truncated_icosahedron",
+    "n_vertices": 12,
+    "motor_states": 4,
+    "n_cycles_default": 10000,
+    "T_kelvin_default": 310.0,
+    "payload_slot_all_cells": "unspecified-placeholder-no-molecule-modeled"
+  },
+  "verification_method": "Each cell invokes nanobot_actuation_simulation.run_actuation(n_cycles=10000, T_kelvin=310, skeleton='truncated_icosahedron', seed=42). Pipeline returns full result dict with pass_evaluation.overall_pass. PASS = 6/6 deterministic criteria (productive cycles ≥ threshold, work ≥ 10·kT, σ=12, τ=4, J₂ speedup ≥ 10×, master identity).",
+  "raw_91_c3_disclose": [
+    "vertex 0 ligand is a stub label — actual antibody-receptor kinetics not modeled.",
+    "Affinity 1e-9 M is illustrative literature value.",
+    "Payload slot is unspecified placeholder — no molecule modeled, no biological action implied.",
+    "PASS verifies mechanical/thermodynamic properties under decoration topology, not in-vivo distribution / pharmacokinetics / immunogenicity / efficacy.",
+    "F-NB-5 sister-axis collision remains PARTIAL pending canon canonical-side closure (out-of-repo).",
+    "F-NB-2 Bayesian audit (cycle 25, separate kick) returned honest negative — log_bf 0.16, STRUCTURAL-APPROXIMATE preserved for NANOBOT."
+  ],
+  "raw_47_cross_repo": "Imports nanobot_actuation_simulation (F-NB-4 PASS, cycle 24 C0b) without modification (R2 preserved).",
+  "raw_9_hexa_only": "python stdlib only across all 4 cells",
+  "raw_77_append_only": true
+}
