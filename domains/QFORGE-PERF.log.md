@@ -742,3 +742,51 @@ OVER-inflates it. The converged BZ-integrated N(E_F)≈13.1 replaces both.
 **Ship:** hexa-lang `qforge_pwm_set_kvec` setter (scf_pw.hexa) + `cah6_kmesh_nef_probe.hexa`
 fixture — PR pending self-merge. Pool: aiden (FREE, worktree /home/aiden/qf-xval-wt off
 origin/main d437f3fb). NEVER ran on mac. λ-vs-kmesh recompose running next.
+
+## 2026-06-02 — KNOB #1 λ-vs-kmesh RECOMPOSED: dense MP k-mesh DID NOT close the gap — it OVERSHOT (λ Γ→6³: 1.15→3.45, now +52% ABOVE QE 2.27, was −49% below)
+
+**The composed λ was recomputed with the BZ-integrated N(E_F) (+ matched self-consistent
+E_F) at each MP mesh, all other bricks held (same converged ρ, screened ΔV[d], ω band[a],
+off-diag[b]). λ-vs-kmesh + N(E_F)-vs-kmesh, VERBATIM (`cah6_compose_kmesh_lambda.hexa`,
+NPW=64, SCF etot=2.74425, Anderson screen converged, ω_log=1030 K):**
+```
+kmesh      E_F        N(E_F)      λ          (ω_log=1030.18 K all rows)
+Γ OLD      1.10718    19.9471    (1.1545)   ← old gate, E_F=HOMO eigenvalue convention
+1x1x1      1.15774     1.30528   15.927     ← proper-E_F Γ: tiny N(E_F) → huge λ (1/N(E_F) blowup)
+2x2x2      1.06941    17.0049     1.69507
+4x4x4      1.05394    13.5808     3.15917
+6x6x6      1.05217    13.0909     3.45443
+```
+isolated bare λ=16.42 · isolated screened λ=17.84 · BARE-COMPOSED a+b+c λ=3.48 (≈ all-4
+3.45 → screening [d] barely moves λ here, ‖ΔV_scr‖/‖ΔV_bare‖=0.985).
+
+**FINDING (d6, the headline): dense k-mesh did NOT close the gap to QE 2.27 — it OVERSHOT.**
+λ converges from 2³→4³→6³ = 1.70→3.16→3.45 toward a plateau ≈3.45 (Δλ(4³→6³)=0.295≈9%,
+not yet <1% — still rising slightly). **rel-ε vs QE 2.27 = 0.522** (now +52% ABOVE, vs the
+Γ-only gate's −49% below). So the Γ-only N(E_F) was NOT a benign underestimate that, once
+fixed, lands on 2.27 — fixing it moves λ PAST 2.27. The composed QFORGE λ at converged k is
+**3.45**, and Allen-Dynes Tc(λ=3.45, ω_log=1030 K, μ*=0.10–0.13) ≈ **188–196 K**.
+
+**WHY IT OVERSHOOTS — the next residual is LOCALIZED.** With N(E_F) and E_F now BZ-converged,
+the remaining over-estimate sits in the COUPLING side, not the DOS side: the |g_mn|² is built
+from the Γ-point manifold states only (the el-ph matrix elements are NOT k-resolved — every
+δ(ε_k−E_F)δ(ε_{k+q}−E_F) pair reuses the same Γ ψ_m), AND the phonon band[a] is BARE
+force-constants (un-screened FC — no β knob, screening the dynamical matrix would HARDEN ω
+and LOWER λ). Both push λ UP vs a fully k-resolved, screened-phonon QE calc. The Γ-only
+N(E_F) under-count had been ACCIDENTALLY cancelling part of this coupling over-count → the
+old λ=1.15 was a two-error near-miss; fixing one error (DOS) exposes the other (coupling).
+
+**CLASSIFICATION (d6, @L4 NO forced flip): k-mesh CONVERGED (λ plateau ≈3.45, N(E_F)≈13.1) ·
+🟠 λ OUTSIDE tol of 2.27 (now ABOVE) → HONEST converged value + rel-ε, HELD.** Dense k-mesh
+closed the DOS gap but the composed λ does NOT land on 2.27 — it overshoots to 3.45. This is
+a valid d6 finding: the engine's DOS integration is now correct; the residual is the
+Γ-only |g_mn| coupling + bare (un-screened) phonon FC. NEVER tuned toward 2.27. 3-anchor
+flip stays the USER's gate. **Named next residuals (d2, ranked):** (1) k-resolved |g_mn|
+(build ψ_m at each MP k, not just Γ — the dominant coupling over-count); (2) screened-FC β
+knob in qforge_force_constant (un-screened ω hardens → λ drops); (3) anharmonic/SSCHA ω
+renormalization (CaH6's H-sublattice is strongly anharmonic — QE 2.27 used harmonic ω; SSCHA
+typically LOWERS λ further). NPW was held at 64 (eig0 plateau already confirmed PR#2536).
+
+**Ship:** hexa-lang — `qforge_pwm_set_kvec` NSCF setter (scf_pw.hexa, 12 lines) +
+`cah6_kmesh_nef_probe.hexa` + `cah6_compose_kmesh_lambda.hexa` fixtures. PR pending self-merge.
+Pool: aiden (FREE, /home/aiden/qf-xval-wt off origin/main d437f3fb). NEVER ran on mac.
