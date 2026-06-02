@@ -710,3 +710,35 @@ NEVER tuned toward 2.27. 3-anchor flip stays the user's gate.
 2 probes + compose/screened/etot/offdiag/fdg/mermin xval). Pool: QE cross-val on **summer**
 (/home/summer/micromamba/envs/qe/bin/pw.x, QE-7.5, FREE pool — NO pod rented), QFORGE on
 **aiden** (worktree /home/aiden/qf-xval-wt off origin/main). NEVER ran on mac.
+
+## 2026-06-02 — KNOB #1 (dense Monkhorst-Pack k-mesh) WIRED + MEASURED: N(E_F) BZ-integral converges ≈13.1 (Γ-only was a ~10× underestimate)
+
+**The #1 suspect (Γ-only N(E_F)) is now MEASURED on a real MP mesh.** Both primitives
+ALREADY EXISTED in qforge — `qforge_mp_grid` (mpgrid.hexa, full BZ MP mesh) and
+`qforge_dos_nef` (dos_nef.hexa, weighted band-sum DOS). The only missing piece was an
+NSCF k-point hook: I added `qforge_pwm_set_kvec` (scf_pw.hexa, <15 lines) so the band
+structure can be re-solved at any MP k on the CONVERGED Γ ρ (the G-basis is shared
+across k; only the kinetic |k+G|² diag + KB k+G q-vectors change — standard NSCF).
+
+**Probe `cah6_kmesh_nef_probe.hexa` (NPW=64, converged Γ SCF etot=2.74425 iters=21 —
+matches the gate exactly). N(E_F) vs MP k-mesh, self-consistent E_F over the full mesh
+(uniform weights → flat-evals Fermi bisection, target nk·nelec), VERBATIM:**
+```
+kmesh    nk    E_F       N(E_F)
+1x1x1     1   1.15774    1.30528
+2x2x2     8   1.06941   17.0049
+4x4x4    64   1.05385   13.5792
+6x6x6   216   1.05198   13.1256
+```
+**N(E_F) CONVERGES to ≈13.1** (Δ(4³→6³)=0.45 ≈ 3.4%); E_F stabilizes at 1.052.
+
+**KEY FINDING — the Γ-only sample was unphysical, BOTH ways.** (i) With a PROPER smeared
+Fermi level the Γ point gives N(E_F)=1.31 (a 10× UNDER-estimate of the converged BZ
+integral 13.1 — a single k cannot resolve the Fermi surface). (ii) The OLD gate value
+N(E_F)=19.95 came from evaluating the Gaussian-DOS at E_F=evals[7] (the HOMO eigenvalue,
+NOT a smeared Fermi level) where a band sits almost on top of E_F → a δ-peak that
+OVER-inflates it. The converged BZ-integrated N(E_F)≈13.1 replaces both.
+
+**Ship:** hexa-lang `qforge_pwm_set_kvec` setter (scf_pw.hexa) + `cah6_kmesh_nef_probe.hexa`
+fixture — PR pending self-merge. Pool: aiden (FREE, worktree /home/aiden/qf-xval-wt off
+origin/main d437f3fb). NEVER ran on mac. λ-vs-kmesh recompose running next.
