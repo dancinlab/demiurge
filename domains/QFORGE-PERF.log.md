@@ -281,3 +281,53 @@ dvscf-DFPT 만 가속(el-ph 최종은 CPU)하려는 *실험적* 경로 — 즉�
   `hexa run` to auto-prefer build/runtime.a when self/runtime.c is a stale/shim mismatch.
 - **Result**: ✅ the free pool (summer + aiden) can now run qforge. Per-stage QFORGE validation is FREE.
 - Scope kept: pi5-akida (ARM) + ghost (macOS) out of scope. Live gate pods + running agents untouched.
+
+## 2026-06-02 — REAL-CELL SCF monotonicity: grid-coupling diagnosed + fixed (FDG screening); V_ext residual ruled in
+
+**TRUE WALL #1 (demiurge 8ffac91): real-cell CaH6 Mermin-F NON-monotone in NPW.** Baseline
+diagnostic (cah6_realcell_mermin_monotone_check) VERBATIM: 48→−37.0803, 64→−28.6118 (531 iters!),
+96→−52.7852 Ha · `monotone=false` · |ΔF|_last(64→96)=24.1734 Ha · no plateau.
+
+**Diagnosed mechanism = GRID-COUPLING, not the energy functional (instrumented, not guessed).**
+New probe `cah6_grid_coupling_probe.hexa` (deterministic, no SCF): the fixture staged the in-loop
+V_H FFT grid as `(nx,ny,nz)=(1,1,NPW)`; core_fft requires EACH axis pow2, so
+`qforge_vhartree_from_rho` returns `[]` (Hartree SILENTLY DROPPED) for NPW∈{48,96} but is APPLIED
+for NPW∈{64,128}. The screening Hamiltonian thus CHANGES KIND across the sweep — pure grid-coupling.
+Second coupling: the SCF `rho` (len n=NPW) is the G-SPACE occupation Σocc·|c(G_i)|² (density-matrix
+G-diagonal), NOT a real-space ρ(r), so feeding it pointwise to V_xc moves the screening per-NPW.
+The 531-iter NPW=64 baseline (vs 3 iters fixed) confirms the basis-coupled screening was a
+limit-cycle pathology.
+
+**FIX (breakthrough path #1 — decouple ρ/V_xc from the PW count).** The assembler can only carry
+the G=0 (spatial-average) screening on the diagonal it accepts; the basis-INDEPENDENT G=0 screening
+of a charge-neutral cell is the uniform-electron-gas LDA shift V_xc(ρ̄), ρ̄=nelec/Ω (⟨V_H⟩=0 by the
+neutral gauge). ρ̄ does NOT depend on NPW → identical diagonal shift for every NPW → the remaining
+energy is the kinetic+V_ext+V_NL Rayleigh-Ritz functional. New `qforge_scf_pw_h_multi_smeared_fdg`
++ `qforge_vscr_diag_fdg`; legacy entries reset `PW_FDG_ON=false` (regression-pinned). hexa-lang
+PR#2522. `hexa verify`: V_xc(ρ̄)==V_x+V_c_PW92=−0.545534 Ha PASS (numerical identity).
+
+**FIXED curve (cah6_realcell_fdg_monotone_check, VERBATIM):** 48→−27.1583, 64→−31.6172,
+96→−47.0657, 128→−60.0395 Ha — ALL converge in **3 iters**. `Mermin F basis-monotone over the
+REAL cell = true` · |ΔF|_last(96→128)=12.9738 Ha. **MONOTONICITY ACHIEVED (false→true); the scatter
+is gone.** PLATEAU is NOT reached — F keeps descending.
+
+**HONEST residual (d6): a SECOND, deeper wall in V_ext itself, ruled IN.** Probe
+`cah6_bare_eig_probe.hexa`: the lowest eigenvalue of the BARE (T+V_ext, NO screening) Hamiltonian
+dives UNBOUNDED with NPW (−9.15→−11.38→−15.60→−17.64→−22.96 Ha over 48→64→96→128→180), with the
+other bands ~0. Probe `cah6_vlocg_probe.hexa`: V_loc(G) form factor DECAYS correctly (→0 by |G|~4)
+— so the form factor is sound. Root of the residual: the assembler does NOT apply the documented
+Ry→Ha ½ factor (vloc.hexa returns Ry; kinetic is Ha) AND the small-G ionic well + structure-factor
+amplification keep binding a deeper spurious state as the basis grows. This is a separate
+<200-line concern (and risks the QE cross-val anchors) → handed off, NOT papered over.
+
+**g5 VERBATIM (success criterion: grid-coupling monotonicity):**
+```
+── VERDICT (d6 VERBATIM) ──
+Mermin F basis-monotone over the REAL cell = true
+|ΔF| last step (NPW=96→128) = 12.9738 Ha  (plateau if small)
+```
+Mechanism: grid-coupling RULED IN + FIXED (monotone). Plateau RULED OUT pending the V_ext
+units/structure-factor fix (next concrete path, d2).
+
+**Selftests GREEN (no regression):** scf · scf_pw (the edited file) · scf_mermin_monotone (synthetic
+gate, untouched by FDG) · assembler all PASS. Host: mini native-CPU (FREE, no rent).
