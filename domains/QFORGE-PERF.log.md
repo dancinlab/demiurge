@@ -251,3 +251,33 @@ dvscf-DFPT 만 가속(el-ph 최종은 CPU)하려는 *실험적* 경로 — 즉�
   (achieved 0.0259 ÷ 0.140 ≈ 0.19×). ⚡ H_apply GPU-GEMM stays open.
 - Next knob: wire forge_dispatch_matmul to a real cuBLAS/NVPTX backend, re-bench.
 - `hexa cloud down 38986330 --force` → destroyed (confirmed), registry closed.
+
+## 2026-06-02 — FREE pool qforge UNBLOCKED — summer + aiden both PASS (per-stage validation now free, no rent)
+- **Goal**: make qforge RUN on free pool linux hosts (summer · aiden) so per-stage
+  QFORGE validation is free. Both hosts could NOT run qforge this session. FIXED both.
+- **Root cause (BOTH hosts)**: STALE gitignored *generated* artifacts after `git pull`.
+  `self/runtime.c` · `self/runtime_core.c` · `build/hexat`(`hexa_v2`) are generated +
+  gitignored (".c-graduation: tracked .c = 0", #2065); `git pull` never refreshes them.
+  Both clones were far behind origin/main (summer #2261 / 218 behind · aiden #2211 / 268 behind).
+  - summer VERBATIM: `runtime_core.c:2267 error: call to undeclared function 'hxlcl_backtrace_symbols_fd'`
+    + `runtime_core.c:6060 error: call to undeclared function 'hxlcl_longjmp'` (glibc 2.39 / clang 18,
+    C99 implicit-decl = error) + `runtime.c:11878 fatal error: 'native/crypto_blowfish.c' file not found`.
+    JIT recompiled the STALE 588KB self/runtime.c that mismatches current source. (NOT a malloc.h issue.)
+  - aiden VERBATIM: `[1/2] .../build/hexat <flat>.hexa ...c` → `Segmentation fault (core dumped)`
+    → `transpile failed — C file not produced`. STALE build/hexat(hexa_v2) SEGV on multi-module qforge.
+- **Fix (host-side, reversible; NO hexa-lang code bug — current origin/main builds+runs clean on mini)**:
+  per host: `git stash -u` + `git pull origin main` (fresh stdlib incl. metallic_a2f_selftest) ·
+  download edge prebuilt `releases/edge/hexa-linux-x86_64.tar.gz` · install its `hexa` + `build/{hexat,
+  hexa_module_loader,runtime.a}` · point the hexa entrypoint at the edge binary · set
+  `HEXA_PREBUILT_RUNTIME=<repo>/build/runtime.a` via the hexa WRAPPER (reliable under sidecar
+  non-login non-interactive shells) so the JIT links the prebuilt runtime.a (the .c-graduation seam)
+  instead of recompiling the stale self/runtime.c. stash restored on both.
+- **VERIFY VERBATIM (sidecar pool on <host>, plain `hexa`, parent env unset — wrapper supplies it)**:
+  - summer: `qforge_dfpt_selftest PASS` · `metallic_a2f_selftest PASS`
+  - aiden:  `qforge_dfpt_selftest PASS` · `metallic_a2f_selftest PASS`
+  (both selftests exercise multi-module `use` load AND the C-JIT path.)
+- **d8 handoff**: `sidecar handoff add hexa-lang` id **ab8b16ff** — request `hx install`/`hexa selfcheck`/
+  pull-hook to refresh-or-invalidate stale generated self/*.c + build/ transpiler on update, and
+  `hexa run` to auto-prefer build/runtime.a when self/runtime.c is a stale/shim mismatch.
+- **Result**: ✅ the free pool (summer + aiden) can now run qforge. Per-stage QFORGE validation is FREE.
+- Scope kept: pi5-akida (ARM) + ghost (macOS) out of scope. Live gate pods + running agents untouched.
