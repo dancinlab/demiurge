@@ -521,3 +521,47 @@ non-variational energy would emit an unfenced number (d6 forbids). NEVER tuned t
 commit c36ab552 → branch qforge-kb-nonlocal-wire → **PR#2527 MERGED** (origin/main HEAD 0845d98f).
 Deck UPFs scp'd to aiden `~/qf-kb-wt/_deck/CaH6_NC/pseudo/`. Cache-bust recipe used (clear
 build/artifacts + ~/.hx/cache, `// cachebust` line, run from worktree CWD). NEVER ran on mac.
+
+## 2026-06-02 — STEP 1 DONE: variational total-energy functional implemented (qforge_scf_smeared_dc + scf_etot.hexa)
+
+**Implemented (the d2-path-#2 fix, the diagnosed root cause from ccb6cc1):** the smeared SCF reported
+`e_total = Σocc·ε − σ·S` = the bare BAND-ENERGY SUM (minus Mermin entropy), NOT the variational
+Kohn-Sham total energy. The band sum double-counts the Hartree+xc that V_H,V_xc already fold into each
+εᵢ and omits the ion-ion Ewald constant. Implemented the variational functional
+
+  E_tot = Σ_i occ_i·ε_i − σ·S − ½∫V_H·ρ + (E_xc[ρ] − ∫V_xc·ρ) + E_ewald
+
+across three hexa-lang stdlib sites (g4, <200 lines, reuses existing primitives — d4/d19):
+- **NEW `stdlib/qforge/scf_etot.hexa` (170 lines):** the variational corrections, all pure.
+  · `qforge_ex_lda` / `qforge_exc_point` — LDA-x energy density ε_x=¾V_x + PW92 ε_c (reuses
+    screening.qforge_vx_lda + correlation.qforge_ec_pw92).
+  · `qforge_edc_uniform(ρ̄,nelec,xc_mode)` — the FDG (uniform-gas G=0) xc DOUBLE-COUNT correction
+    = nelec·(ε_xc(ρ̄) − V_xc(ρ̄)); the Hartree double-count = 0 in the neutral G=0 gauge.
+  · `qforge_ewald(a1..3,b1..3,pos,q,Ω,η,nshell)` — the ion-ion EWALD/Madelung constant, standard
+    real+recip+self+background split, reuses core/special.erfc_fn.
+- **`scf.hexa`:** added `qforge_scf_smeared_dc(...,e_dc)` carrying the precomputed double-count+Ewald
+  scalar (added to e_total after the entropy term). `qforge_scf_smeared` now DELEGATES with e_dc=0.0
+  → bit-identical to the prior band-sum behaviour (regression pin).
+- **`scf_pw.hexa`:** added `qforge_scf_pw_h_multi_smeared_fdg_etot(...,e_ewald)` — same FDG staging,
+  but computes e_dc = qforge_edc_uniform(ρ̄,nelec,xc) + e_ewald and drives qforge_scf_smeared_dc.
+
+**g5 VERIFICATION (VERBATIM):**
+- NEW `scf_etot_selftest`: `ALL_PASS`. Ewald is η-INDEPENDENT (the hallmark of a correct Ewald split):
+  single q=1 cubic L=5 → E(η=.30)=−0.28373 = E(η=.45)=−0.28373; two q=1 sep 2.5 →
+  E(.30)=−0.586645 ≈ E(.50)=−0.586647 (Δ~1e-6). xc double-count edc(ρ̄=0.05,nelec=10,x-only)=0.906959
+  matches analytic nelec·(−¼)V_x=0.906958.
+- REGRESSION `scf_selftest`: `qforge_scf_selftest PASS` — incl. "(D)(d) backward-compat: same E_total"
+  (delegation bit-identical) + σ=0 reproduces the bare band sum.
+- REGRESSION `scf_mermin_monotone_selftest`: `qforge_scf_mermin_monotone_selftest PASS` — incl. the
+  synthetic-spectrum "F PLATEAUS at the basis limit (|ΔF_last|<1e-3)" pin still holds.
+
+**HONEST NOTE (d6, the predicted outcome to re-verify in step 2):** in the FDG path ALL e_dc terms
+(ρ̄-based xc double-count + Ewald) are NPW-INDEPENDENT constants, so they shift E_tot(NPW) by a
+constant WITHOUT changing |ΔE| between NPW steps. The variational E_tot will therefore plateau iff the
+remaining Rayleigh-Ritz band sum plateaus on its own — i.e. step 2 will localize whether the residual
+is the layer-1 eigenvalue dive (the deep-bare-well bound state) rather than the energy-functional
+definition. Step 2 (re-run cah6_realcell_mermin_monotone with E_tot) is next.
+
+**Pool host: aiden** (FREE; summer GPU-saturated). Fresh worktree /home/aiden/qf-etot-wt off
+origin/main 0845d98f, branch qforge-variational-etot. Cache-bust recipe (clear build/artifacts +
+~/.hx/cache, // cachebust line, HEXA_STDLIB_ROOT + worktree CWD). NEVER ran on mac. hexa-lang PR next.
