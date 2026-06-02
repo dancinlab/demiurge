@@ -356,3 +356,82 @@ the QE cross-val xval fixtures are d6/g63 REPORTING fixtures (print λ + rel-ε,
 **Ship:** hexa-lang `qforge-vext-units` (fresh worktree off origin/main #9be00dab) → commit 02674f7e →
 **PR#2525 MERGED** (merge commit 74d69d69; origin/main now carries `_QF_VEXT_RY2HA` ×3). Build+suite ran
 on summer (FREE pool, no rent) — never on the mac Darwin /tmp-guard. Step 2 (plateau re-verify) next.
+
+## 2026-06-02 — V_ext ½ fix STEP 2 plateau RE-VERIFY (pool summer) · 🟠 plateau NOT reached, deeper cause RULED IN
+
+**Scope reconciliation (no duplicate ship):** the V_ext Ry→Ha ½ fix was already shipped as **PR#2525**
+(origin/main HEAD = `74d69d69`, `_QF_VEXT_RY2HA` ×3). This session did NOT re-ship — it independently
+re-derived the identical fix (confirming PR#2525 is correct + d4-canonical) and executed the OPEN
+**step 2 (plateau re-verify)** that PR#2525 deferred. No new hexa-lang PR (step-1 already merged).
+
+**⚠ Pool toolchain gotcha (the wall behind aa3c488 + my early null-result):** on summer, `hexa run`
+caches the JIT-compiled object **keyed on the FIXTURE file hash, NOT the stdlib source hash**. A pure
+stdlib edit (even setting `_QF_VEXT_RY2HA=0.0`) leaves the run byte-identical — the cached object with
+the OLD inlined assembler is reused. `HEXA_STDLIB_ROOT` is **ignored** by the wrapper (`hexa` =
+`core/hexa-lang/hexa` shim → `hxv2`, install-relative stdlib). **Working recipe:** symlink
+`core/hexa-lang/stdlib → <fixed-worktree>/stdlib`, clear `build/artifacts/*` + `~/.hx/cache/*`, AND
+append a unique `// cachebust <ns>` line to the fixture so its hash changes → forces full recompile
+incl. stdlib. Proof: `_QF_VEXT_RY2HA=0.0` + cachebust → bare eig0 = 0.0 (pure kinetic, V_ext truly off).
+
+**Full qforge selftest suite on summer (fix compiled in): 41 PASS / 2 FAIL / 0 ERR.** Both FAILs
+(`orchestrator_selftest` chain Tc=216922 K vs 344 K; `qforge_l1_selftest` ME-Tc saturation) +
+`qforge_l3_qe_xval_test` (λ_QFORGE≈8.9e5) are **PRE-EXISTING on pristine origin/main** — VERIFIED by
+`git stash` revert giving byte-identical failures. They are a separate λ-assembly/Tc-formula blowup
+(λ→~1e6 on a real-cell α²F path), NOT caused by the V_ext fix. **Headline QE anchor
+`qforge_qe_xval_test` PASS** (Nb·CaH6·H3S Allen-Dynes Tc rel-ε=0.0); `qforge_l3_selftest`,
+`scf_pw_selftest`, `orchestrator_pw_selftest`, `dfpt*`, `screening*`, `realcell_phonon` all PASS. The
+½ fix introduces **ZERO regressions**.
+
+**bare_eig_probe (T+V_ext, no screening) — VERBATIM, fix compiled (½):**
+```
+NPW   eig0      eig1      eig2
+48    -4.2473   0.0       2.78e-17
+64    -5.31781  0.0       6.58e-33
+96    -7.36525  -0.0788   -0.0227
+128   -8.30818  -1.09821  0.0
+180   -10.8637  -3.01789  -2.93696
+```
+Pre-fix was −9.15→−22.96. The ½ **exactly halves** every eig0 (−4.25→−10.86) — confirms the unit bug
+was real (V_ext was 2× too deep) — **but the eigenvalue STILL dives unbounded with NPW.** The ½
+corrects the magnitude, NOT the divergence.
+
+**FDG Mermin-F plateau test (cah6_realcell_fdg_monotone_check) — VERDICT VERBATIM, fix compiled:**
+```
+NPW   n_used  conv  iters   F=Mermin etot (Ha)
+48    48    true  3    -17.3437
+64    64    true  3    -19.4847
+96    96    true  3    -23.9188
+128   128   true  3    -29.9925
+── VERDICT (d6 VERBATIM) ──
+Mermin F basis-monotone over the REAL cell = true
+|ΔF| last step (NPW=96→128) = 6.07369 Ha  (plateau if small)
+```
+Pre-fix |ΔF|_last = 12.9738 Ha → post-fix 6.0737 Ha (**exactly halved**). **monotone=true but |ΔF| is
+still LARGE — PLATEAU NOT REACHED.** F keeps descending at half the prior rate.
+
+**CLASSIFICATION (d6, @L4 no forced flip): 🟠 plateau NOT reached → HONEST RESIDUAL, HELD.** Gate-
+decision measurement (step 3: screened λ + Tc + rel-ε vs QE 2.27) is gated on the plateau and was NOT
+run — running it on a non-converged SCF would emit an unfenced number (d6 forbids). NEVER tuned toward
+any target.
+
+**Deeper cause RULED IN (the honest residual, d2 next paths):** the form factor is sound (vlocg_probe:
+V_loc(G) decays →0 by |G|~4-8, finite G=0 head 0.416 Ry Ca / 0.0026 Ry H — NOT a G→0 Coulomb
+divergence). The dive is a **spurious deep bound state of the BARE LOCAL well that the growing PW basis
+resolves ever deeper**. Concrete breakthrough paths:
+- **(1) KB nonlocal core-repulsion missing in the bare probe.** `cah6_bare_eig_probe` sets
+  `nprojs=[0,0]` — it omits the KB projector block whose repulsive core-orthogonalization normally
+  CANCELS the deep local attraction in a norm-conserving PP. A bare *local-only* well is EXPECTED to
+  bind deeper as the basis grows. Re-run the probe WITH the KB nonlocal block (full H) — if eig0
+  converges, the "wall" is a probe artifact and the SCF residual lives elsewhere.
+- **(2) SCF descent (FDG) = the real residual.** The FDG SCF includes screening but still descends
+  6 Ha. Suspect the G=0 / spatial-average screening gauge (the FDG `V_xc(ρ̄)` diagonal shift) does not
+  scale with the deepening occupied manifold as NPW grows → energy not bounded below. Audit whether the
+  Mermin-F includes the −½∫V_H ρ double-count correction and the ion-ion Ewald constant (a basis-
+  independent shift that, if omitted, lets F drift with the basis-resolved density).
+- **(3) Davidson resolving a non-physical core state.** As NPW grows the solver may converge onto an
+  increasingly core-localized eigenstate (no PAW/core cutoff). Add a core-energy floor / project out
+  states below a physical valence-band threshold, or use a higher `ecutrho`-equivalent G=0 smoothing.
+
+**Pool host: summer** (linux, FREE, no rent, no pod ops). Build+all runs on summer via
+`sidecar pool on summer`. mini Darwin /tmp-guard avoided. Verification worktrees removed; install
+toolchain restored byte-clean (`_QF` count 0, runtime.a in place).
