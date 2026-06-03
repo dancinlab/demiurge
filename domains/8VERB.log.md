@@ -2,6 +2,16 @@
 
 Append-only history sister of `8VERB.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-04 — afg: pure-hexa stack #9 + #12 + #18 landed (domain-catalog · project-store · cellrun-engine KEYSTONE)
+
+Three foreground branches, all hexa-native (Swift untouched), on the funnel base.
+
+- [x] #9 PR-domain-catalog → hexa-lang **PR#2645 MERGED**: `domain_catalog.hexa` (232L) — `dc_enumerate`/`dc_resolve`/`dc_section6_lines`/`dc_shelf_groups`. §6 parse mirrors Swift `IngredientShelf`: section-detect (`## ` header containing "Design options", break on next `## `), line form `- <verb>: <g>=a/b/c ; ...`, verb matched by `koreanLabel.hasPrefix(token)` (해석→해석⟲), `[multi]` regex strip+flag, no dedup/sort. Infra (no verb) → 1 self-check cell → 35 GREEN. compose/list-shelf parity → #10/#11.
+- [x] #12 PR-project-store → hexa-lang **PR#2646 MERGED**: `project_store.hexa` (230L) + `list-projects`/`show-project`. 7-verb `Verb` spine reproduced index-for-index — koreanLabel 명세·구조·설계·해석⟲·합성·검증·인계, plain 무엇을·어떻게·설계·점검·만들기·검증·넘기기. Store = `~/Library/Application Support/lab.dancin.demiurge/projects/<uuid>/manifest.json` (NO env override), createdAt-sorted, `created_at`=Swift `Date.description` not ISO. 5 cells → 40 GREEN. mutation (new/advance/retreat) → #13.
+- [x] #18 PR-cellrun-engine → hexa-lang **PR#2647 MERGED (KEYSTONE)**: `action <verb> <domain>` HAPPY path unblocked. KEY FINDING: Swift `CellrunDispatch` was already a thin wrapper spawning `hexa run stdlib/cockpit/cellrun.hexa` — the engine is ALREADY hexa-native (canonical home, full manifest parser+substrate spawn+g3 gate). So `cellrun.hexa` (83L) DELEGATES to it (d3, no ~190L re-author). Generic dispatch untouched (d4). manifest-missing→rc2→wrapped exit1 byte≡Swift (incl. the blank line between `[cellrun]` banner and `---`). 1 cell → 41 GREEN.
+- [x] honest scope: cellrun rc=0 record-emit HAPPY path runs a python/ngspice substrate (host-dependent `python3.13` resolution) → NOT byte-deterministic; parity cell uses the host-independent manifest-missing path; substrate-present success-line scoped to follow-up.
+- [ ] NEXT runnable: #10 compose · #11 list-shelf (on #9) · #13 project-mutate (on #12) · #14 operate · #15 backend · #16 owner · #17 llm · #19 action --compose/--converge (on #18) → then #20 synthesize→QFORGE (@L6, needs #18 ✅).
+
 ## 2026-06-04 — `all fg go`: pure-hexa stack #6 + #7 + #8 landed (list-kinds · show-record · gates)
 
 Three foreground branches, all hexa-native (Swift untouched), all on the #5 RecordLoader base.
