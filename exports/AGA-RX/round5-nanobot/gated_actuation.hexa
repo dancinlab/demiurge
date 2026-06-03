@@ -1,0 +1,333 @@
+#!hexa strict
+//
+// AGA-RX round5-nanobot — DPC-STIMULUS-GATED actuation simulation.
+//
+// MINIMAL FAITHFUL PORT (d6/g63 honest) of the INHERITED hexa-bio NANOBOT
+// actuation engine:
+//   hexa-lang/stdlib/bio/nanobot/module/actuation_simulation.hexa
+//   (F-NB-4 4-state 12-vertex DNA-origami actuator · σ6=12 / τ6=4 / φ6=2 / J2=24)
+//
+// WHY A PORT (not `use`): the canonical stdlib module FAILS to compile under the
+// current selfhost codegen — its helper `fn isfinite(...)` collides with C's
+// <math.h> `isfinite` macro (10 clang errors). That is a hexa-lang compiler bug
+// (handoff to hexa-lang/inbox per d8), NOT a domain-logic defect. This port
+// renames the helper `is_finite_v` and reuses the EXACT inherited physics:
+//   - energy ladder DE_S0_S1=1.0 / S1_S3=0.5 / S3_S0=0.2 / S2_S3=0.5 kT,
+//     back-slip barrier DE_S0_S2 = ln(24) = 3.178 kT (Drexler power-stroke quartet)
+//   - Stokes drag gamma = 6 pi eta r, r=5nm, 310K water eta=6.93e-4
+//   - work per productive cycle = 50 kT (margin ~5x above 10 kT Brownian floor)
+//   - 4-state Gillespie CTMC (S0_idle/S1_fwd/S2_back/S3_reset)
+//   - overdamped Langevin pose SDE with Box-Muller Gaussian noise
+//   - in-tree glibc LCG PRNG
+//
+// THE NANOBOT GATE LAYER (the round-5 contribution — the AGA-RX delivery axis):
+//   phi(6)=2 open/closed clamp is keyed to the DPC microenvironment stimulus.
+//   The forward-stroke (= payload-RELEASE) channel S0->S1 is GATED by a Hill
+//   switch theta(stimulus) in [0,1]. CLOSED (theta~0) suppresses release during
+//   transit; OPEN (theta~1) at the dermal papilla fires release.
+//   Two interchangeable stimulus chemistries (manifest-selected, d4):
+//     "ph"       — scalp follicle pH gradient 5(duct) -> 7(bulb/DPC). Gate = a
+//                  pH-sensitive ionizable lipid (imidazole / DOPE-class);
+//                  protonated+caged at pH5, neutral+open at pH7.
+//       theta_pH(pH) = 1 / (1 + 10^(n*(pKa - pH)))   (Henderson-Hasselbalch-Hill)
+//     "esterase" — follicle/sebaceous-enriched esterase (carboxylesterase /
+//                  cholesterol esterase). Gate = an ester-cleavable lipid anchor;
+//                  intact ester = closed clamp, cleaved = open release.
+//       theta_E([E]) = [E]^n / (Km^n + [E]^n)        (Michaelis-Hill saturation)
+//   The gate modulates the EFFECTIVE forward barrier:
+//       DE_S0_S1_eff = DE_S0_S1_base + LATCH_KT * (1 - theta)
+//   so a closed latch (theta=0) adds LATCH_KT to the release barrier (suppresses
+//   productive cycles); an open latch (theta=1) restores the inherited barrier.
+
+let SIGMA_6 = 12
+let TAU_6 = 4
+let PHI_6 = 2
+let J2 = 24
+
+let KB_J = 1.380649e-23
+let T_DEFAULT = 310.0
+let ETA_WATER_310K = 6.93e-4
+let R_ACTUATOR_M = 5.0e-9
+
+let DE_S0_S1_KT = 1.0
+let DE_S1_S3_KT = 0.5
+let DE_S3_S0_KT = 0.2
+let DE_S2_S3_KT = 0.5
+let DE_S0_S2_KT = 3.1780538303479458
+
+let OMEGA_ATTEMPT = 1.0e6
+let DT_CYCLE_S = 1.0e-3
+let STROKE_M = 4.0e-9
+
+let PI_CONST = 3.141592653589793
+
+let S0_IDLE = 0
+let S1_FWD = 1
+let S2_BACK = 2
+let S3_RESET = 3
+
+// Gate latch height (kT). A fully-closed latch raises the release barrier by
+// this much over the inherited base; chosen so closed actuation collapses to
+// near-zero while open recovers the inherited PASS.
+let LATCH_KT = 6.0
+
+// ---------------- math helpers ----------------
+// renamed from inherited `isfinite` to dodge the <math.h> macro collision.
+fn is_finite_v(v: float) -> bool {
+    if v != v { return false }
+    if v > 1.0e308 { return false }
+    if v < 0.0 - 1.0e308 { return false }
+    return true
+}
+
+fn pow_f(base: float, ex: float) -> float {
+    return exp(ex * log(base))
+}
+
+fn stokes_drag(r_m: float, eta: float) -> float { return 6.0 * PI_CONST * eta * r_m }
+
+// ---------------- LCG PRNG (glibc multiplier) ----------------
+fn rng_new(seed: int) {
+    let mut s = seed
+    if s < 0 { s = 0 - s }
+    if s == 0 { s = 42 }
+    let r = []
+    r.push(s); r.push(0.0); r.push(0)
+    return r
+}
+fn rng_next_u32(rng) -> int {
+    let s = rng[0]
+    let next = (s * 1103515245 + 12345) % 2147483648
+    rng[0] = next
+    return next
+}
+fn rng_uniform(rng) -> float { return to_float(rng_next_u32(rng)) / 2147483648.0 }
+fn rng_uniform_open(rng) -> float {
+    let mut u = rng_uniform(rng)
+    if u <= 0.0 { u = 1.0e-12 }
+    if u >= 1.0 { u = 1.0 - 1.0e-12 }
+    return u
+}
+fn rng_gauss(rng) -> float {
+    if rng[2] == 1 { rng[2] = 0; return rng[1] }
+    let u1 = rng_uniform_open(rng)
+    let u2 = rng_uniform_open(rng)
+    let mag = sqrt(0.0 - 2.0 * log(u1))
+    let g0 = mag * cos(2.0 * PI_CONST * u2)
+    let g1 = mag * sin(2.0 * PI_CONST * u2)
+    rng[1] = g1; rng[2] = 1
+    return g0
+}
+
+// ---------------- gate trigger ----------------
+fn theta_ph(pH: float, pKa: float, n: float) -> float {
+    let t = pow_f(10.0, n * (pKa - pH))
+    return 1.0 / (1.0 + t)
+}
+fn theta_esterase(conc: float, Km: float, n: float) -> float {
+    if conc <= 0.0 { return 0.0 }
+    let cn = pow_f(conc, n)
+    let kn = pow_f(Km, n)
+    return cn / (kn + cn)
+}
+
+// ---------------- 4-state Gillespie rate matrix (gated) ----------------
+fn build_rate_matrix(omega: float, de_s0_s1_eff: float) {
+    let Q = []
+    let mut qi = 0
+    while qi < 4 {
+        let r = []; r.push(0.0); r.push(0.0); r.push(0.0); r.push(0.0)
+        Q.push(r); qi = qi + 1
+    }
+    let k01 = omega * exp(0.0 - de_s0_s1_eff)
+    let k13 = omega * exp(0.0 - DE_S1_S3_KT)
+    let k02 = omega * exp(0.0 - DE_S0_S2_KT)
+    let k23 = omega * exp(0.0 - DE_S2_S3_KT)
+    let k30 = omega * exp(0.0 - DE_S3_S0_KT)
+    let rev = exp(0.0 - 2.0)
+    Q[S0_IDLE][S1_FWD] = k01
+    Q[S1_FWD][S3_RESET] = k13
+    Q[S0_IDLE][S2_BACK] = k02
+    Q[S2_BACK][S3_RESET] = k23
+    Q[S3_RESET][S0_IDLE] = k30
+    Q[S1_FWD][S0_IDLE] = k01 * rev
+    Q[S2_BACK][S0_IDLE] = k02 * rev
+    Q[S3_RESET][S1_FWD] = k13 * rev
+    Q[S3_RESET][S2_BACK] = k23 * rev
+    Q[S0_IDLE][S3_RESET] = k30 * rev
+    let mut i = 0
+    while i < 4 {
+        let mut s = 0.0
+        let mut j = 0
+        while j < 4 { if j != i { s = s + Q[i][j] } j = j + 1 }
+        Q[i][i] = 0.0 - s
+        i = i + 1
+    }
+    return Q
+}
+
+fn gillespie_step(state: int, Q, rng) {
+    let mut total = 0.0
+    let mut j = 0
+    while j < 4 { if j != state { let r = Q[state][j]; if r > 0.0 { total = total + r } } j = j + 1 }
+    if total <= 0.0 { return [state, 1.0e6] }
+    let u1 = rng_uniform_open(rng)
+    let dwell = 0.0 - log(u1) / total
+    let u2 = rng_uniform(rng) * total
+    let mut cum = 0.0
+    let mut k = 0
+    let mut last_j = state
+    while k < 4 {
+        if k != state {
+            let r = Q[state][k]
+            if r > 0.0 { cum = cum + r; last_j = k; if u2 <= cum { return [k, dwell] } }
+        }
+        k = k + 1
+    }
+    return [last_j, dwell]
+}
+
+fn state_force_N(state: int, kT_J: float) -> float {
+    let W_target = 50.0 * kT_J
+    let F_fwd = W_target / STROKE_M
+    if state == S1_FWD { return F_fwd }
+    if state == S2_BACK { return 0.0 - F_fwd }
+    return 0.0
+}
+fn langevin_step(x_m: float, force_N: float, dt_s: float, kT_J: float, gamma: float, rng) -> float {
+    let drift = (force_N / gamma) * dt_s
+    let var_term = 2.0 * kT_J * dt_s / gamma
+    let mut sigma = 0.0
+    if var_term > 0.0 { sigma = sqrt(var_term) }
+    let xi = rng_gauss(rng)
+    return x_m + drift + sigma * xi
+}
+
+// ---------------- gated actuation runner ----------------
+fn run_gated(theta: float, n_cycles: int, seed: int) {
+    let kT_J = KB_J * T_DEFAULT
+    let gamma = stokes_drag(R_ACTUATOR_M, ETA_WATER_310K)
+    let de_eff = DE_S0_S1_KT + LATCH_KT * (1.0 - theta)
+    let Q = build_rate_matrix(OMEGA_ATTEMPT, de_eff)
+    let rng = rng_new(seed)
+
+    let mut state = S0_IDLE
+    let mut pose_x_m = 0.0
+    let mut cycle_count = 0
+    let mut productive = 0
+    let mut backslip = 0
+    let mut work_sum = 0.0
+    let mut work_n = 0
+    let mut via_S1 = false
+    let mut via_S2 = false
+    let mut finite_ok = true
+
+    let mut c = 0
+    while c < n_cycles {
+        let step = gillespie_step(state, Q, rng)
+        let next_state = step[0]
+        let dwell = step[1]
+        let mut dt_s = dwell
+        if dt_s > DT_CYCLE_S { dt_s = DT_CYCLE_S }
+        let F = state_force_N(state, kT_J)
+        pose_x_m = langevin_step(pose_x_m, F, dt_s, kT_J, gamma, rng)
+        if !is_finite_v(pose_x_m) { finite_ok = false }
+
+        if next_state == S1_FWD && state == S0_IDLE { via_S1 = true; via_S2 = false }
+        else if next_state == S2_BACK && state == S0_IDLE { via_S2 = true; via_S1 = false }
+        else if next_state == S0_IDLE && state == S3_RESET {
+            if via_S1 {
+                productive = productive + 1
+                work_sum = work_sum + 50.0 * kT_J
+                work_n = work_n + 1
+            } else if via_S2 { backslip = backslip + 1 }
+            via_S1 = false; via_S2 = false
+            cycle_count = cycle_count + 1
+        }
+        state = next_state
+        c = c + 1
+    }
+
+    let mut work_kT = 0.0
+    if work_n > 0 { work_kT = (work_sum / to_float(work_n)) / kT_J }
+    let denom = productive + backslip
+    let mut act_frac = 0.0
+    if denom > 0 { act_frac = to_float(productive) / to_float(denom) }
+
+    let r = {}
+    r["theta"] = theta
+    r["de_eff_kT"] = de_eff
+    r["productive"] = productive
+    r["backslip"] = backslip
+    r["total_cycles"] = cycle_count
+    r["actuation_fraction"] = act_frac
+    r["work_per_cycle_kT"] = work_kT
+    r["finite_ok"] = finite_ok
+    return r
+}
+
+fn emit_row(label: string, stim: string, r) {
+    println("ROW " + label
+        + " stimulus=" + stim
+        + " theta=" + to_string(r["theta"])
+        + " de_eff_kT=" + to_string(r["de_eff_kT"])
+        + " productive=" + to_string(r["productive"])
+        + " backslip=" + to_string(r["backslip"])
+        + " act_frac=" + to_string(r["actuation_fraction"])
+        + " work_kT=" + to_string(r["work_per_cycle_kT"])
+        + " finite_ok=" + to_string(r["finite_ok"]))
+}
+
+fn main() {
+    let mut n_cycles = 4000
+    let mut seed = 42
+    let av = args()
+    let mut i = 0
+    while i < len(av) {
+        let a = av[i]
+        if a == "--cycles" { if i + 1 < len(av) { n_cycles = to_int(av[i + 1]); i = i + 1 } }
+        else if a == "--seed" { if i + 1 < len(av) { seed = to_int(av[i + 1]); i = i + 1 } }
+        i = i + 1
+    }
+
+    println("=== AGA-RX NANOBOT GATED ACTUATION (n6 sigma12/tau4/phi2/J2-24 inherited) ===")
+    println("n_cycles=" + to_string(n_cycles) + " seed=" + to_string(seed)
+        + " LATCH_KT=" + to_string(LATCH_KT) + " T=310K")
+
+    // --- pH gate sweep (scalp follicle duct->bulb gradient 5.0 -> 7.0) ---
+    let pKa = 6.0
+    let n_ph = 1.5
+    println("--- pH GATE: ionizable lipid pKa=" + to_string(pKa) + " Hill_n=" + to_string(n_ph) + " ---")
+    let ph_pts = [5.0, 5.5, 6.0, 6.5, 7.0]
+    let mut p = 0
+    while p < len(ph_pts) {
+        let pH = ph_pts[p]
+        let th = theta_ph(pH, pKa, n_ph)
+        let r = run_gated(th, n_cycles, seed + p)
+        emit_row("pH=" + to_string(pH), "ph", r)
+        p = p + 1
+    }
+
+    // --- esterase gate sweep ([E] relative to follicle-enriched baseline) ---
+    let Km = 1.0
+    let n_e = 2.0
+    println("--- ESTERASE GATE: ester-anchor Km=" + to_string(Km) + " Hill_n=" + to_string(n_e) + " ---")
+    let e_pts = [0.1, 0.3, 1.0, 3.0, 10.0]
+    let mut e = 0
+    while e < len(e_pts) {
+        let conc = e_pts[e]
+        let th = theta_esterase(conc, Km, n_e)
+        let r = run_gated(th, n_cycles, seed + 100 + e)
+        emit_row("E=" + to_string(conc), "esterase", r)
+        e = e + 1
+    }
+
+    // --- closed vs open reference (ungated inherited = theta forced 1.0) ---
+    println("--- REFERENCE: fully-closed (theta=0) vs fully-open (theta=1, = inherited ungated) ---")
+    let r_closed = run_gated(0.0, n_cycles, seed)
+    emit_row("CLOSED", "ref", r_closed)
+    let r_open = run_gated(1.0, n_cycles, seed)
+    emit_row("OPEN", "ref", r_open)
+
+    println("__AGA_NANOBOT_GATE__ DONE")
+}

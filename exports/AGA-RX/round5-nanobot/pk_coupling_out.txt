@@ -1,0 +1,16 @@
+=== DPC-targeted release: GATED vs UNGATED (2-compartment duct->DPC pass) ===
+payload descends the follicular duct (transit, low stimulus) -> arrives at DPC (high stimulus).
+
+--- pH gate ---
+  z1.0_lam1.0: gated DPC-release= 31.7%  ungated=  3.6%  gated/ungated= 8.9x  (en-route leak gated=3.4% vs ungated=89.1%)
+  z1.5_lam1.0: gated DPC-release= 19.2%  ungated=  2.2%  gated/ungated= 8.9x  (en-route leak gated=3.4% vs ungated=89.1%)
+  z1.0_lam2.0: gated DPC-release= 52.2%  ungated=  5.9%  gated/ungated= 8.9x  (en-route leak gated=3.4% vs ungated=89.1%)
+
+--- esterase gate ---
+  z1.0_lam1.0: gated DPC-release= 32.3%  ungated=  3.6%  gated/ungated= 9.1x  (en-route leak gated=2.0% vs ungated=89.1%)
+  z1.5_lam1.0: gated DPC-release= 19.6%  ungated=  2.2%  gated/ungated= 9.1x  (en-route leak gated=2.0% vs ungated=89.1%)
+  z1.0_lam2.0: gated DPC-release= 53.3%  ungated=  5.9%  gated/ungated= 9.1x  (en-route leak gated=2.0% vs ungated=89.1%)
+
+=== DPC-targeting FIDELITY = released-at-DPC / total-released ===
+  pH: gated fidelity=90.4%  vs ungated=3.8%  (lift x23.5)
+  esterase: gated fidelity=94.3%  vs ungated=3.8%  (lift x24.5)

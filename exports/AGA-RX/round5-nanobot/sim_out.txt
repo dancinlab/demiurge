@@ -1,0 +1,18 @@
+=== AGA-RX NANOBOT GATED ACTUATION (n6 sigma12/tau4/phi2/J2-24 inherited) ===
+n_cycles=4000 seed=42 LATCH_KT=6.0 T=310K
+--- pH GATE: ionizable lipid pKa=6.0 Hill_n=1.5 ---
+ROW pH=5.0 stimulus=ph theta=0.0306534 de_eff_kT=6.81608 productive=14 backslip=401 act_frac=0.0337349 work_kT=50.0 finite_ok=true
+ROW pH=5.5 stimulus=ph theta=0.15098 de_eff_kT=6.09412 productive=17 backslip=408 act_frac=0.04 work_kT=50.0 finite_ok=true
+ROW pH=6.0 stimulus=ph theta=0.5 de_eff_kT=4.0 productive=153 backslip=361 act_frac=0.297665 work_kT=50 finite_ok=true
+ROW pH=6.5 stimulus=ph theta=0.84902 de_eff_kT=1.90588 productive=633 backslip=181 act_frac=0.777641 work_kT=50 finite_ok=true
+ROW pH=7.0 stimulus=ph theta=0.969347 de_eff_kT=1.18392 productive=820 backslip=101 act_frac=0.890337 work_kT=50 finite_ok=true
+--- ESTERASE GATE: ester-anchor Km=1.0 Hill_n=2.0 ---
+ROW E=0.1 stimulus=esterase theta=0.00990099 de_eff_kT=6.94059 productive=8 backslip=399 act_frac=0.019656 work_kT=50.0 finite_ok=true
+ROW E=0.3 stimulus=esterase theta=0.0825688 de_eff_kT=6.50459 productive=13 backslip=407 act_frac=0.0309524 work_kT=50.0 finite_ok=true
+ROW E=1.0 stimulus=esterase theta=0.5 de_eff_kT=4.0 productive=151 backslip=358 act_frac=0.29666 work_kT=50 finite_ok=true
+ROW E=3.0 stimulus=esterase theta=0.9 de_eff_kT=1.6 productive=749 backslip=152 act_frac=0.831299 work_kT=50 finite_ok=true
+ROW E=10.0 stimulus=esterase theta=0.990099 de_eff_kT=1.05941 productive=834 backslip=97 act_frac=0.895811 work_kT=50 finite_ok=true
+--- REFERENCE: fully-closed (theta=0) vs fully-open (theta=1, = inherited ungated) ---
+ROW CLOSED stimulus=ref theta=0.0 de_eff_kT=7.0 productive=11 backslip=404 act_frac=0.026506 work_kT=50.0 finite_ok=true
+ROW OPEN stimulus=ref theta=1.0 de_eff_kT=1.0 productive=829 backslip=101 act_frac=0.891398 work_kT=50 finite_ok=true
+__AGA_NANOBOT_GATE__ DONE
