@@ -2,6 +2,20 @@
 
 Append-only history sister of `8VERB.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-04 — pure-hexa stack #3 (PR-verify-record) landed → hexa-lang PR#2638 (open, parent review)
+
+Corrected-surface resume after the Swift halt. Bare `verify <path|id>`
+provenance/claim-gate check ported hexa-native into `stdlib/demi/`, NOT Swift.
+
+- [x] `stdlib/demi/verify_record.hexa` NEW (189 code lines, <200 g4) + `handlers.hexa` bare-path route (generic dispatch untouched, d4) + 5 parity cells in `demi_selftest.hexa` (@L7 — cell in the SAME PR).
+- [x] Swift reference reproduced live (`cockpit/.build/release/DemiurgeCLI`): valid record path/id → 6 `[OK]` rc0 · missing → `Record file not found` rc1 · outside exports → invariant-a refusal rc1 · inconsistent → `REJECTED` (stderr-first) + `[FAIL]` rc1.
+- [x] parity verdict VERBATIM (g5): GOLDEN `@ci_gate` ALL-GREEN — `verify/record-{ok-path,ok-id,reject,missing,outside}` byte≡golden, `demi_parity_selftest PASS [12/12]`; LIVE `DEMI_SWIFT_BIN` cross-check = all 5 verify cells `PASS (byte ≡ Swift)`.
+- [x] bug caught+fixed mid-build: `json_object_get_str` doesn't split on `.` → added `_vr_path_str` (json_object_get_path + to_string) for dotted provenance paths.
+- [ ] KNOWN-NOISE (not this PR): the selftest header line shows FAIL due to 3 PRE-EXISTING `discover` cells — prebuilt Swift binary is May-25, predates the discover verb (#2602); GOLDEN cells green. Follow-up = rebuild `cockpit/.build` or treat discover GOLDEN as authoritative.
+- [ ] PR#2638 left UNMERGED (parent review per plan; pr-cycle auto-merge blocked by `selfhost-gates-summary` required check).
+- [ ] toolchain footgun for the rest of the stack: installed `hexa` resolves `stdlib/demi/*` from FIXED root `/Users/mini/hexa-sh/stdlib/` + `~/.hexa-cache/hexa_run.*` keyed on ENTRY file only (imported-module edits need cache nuke). Overlay+restore used; hexa-sh left clean (d9).
+- [ ] NEXT runnable: stack #4 (PR-atlas owner-gated refusal) or #5 (PR-record-loader, shared base for list-*/show/gate).
+
 ## 2026-06-03 — REORDER: Swift 폐기 FIRST (user directive) — Family-A Swift PRs SUPERSEDED
 
 User directive mid-`/afg`: "swift 폐기먼저 해야돼" + "도메인에 반드시 기록". The

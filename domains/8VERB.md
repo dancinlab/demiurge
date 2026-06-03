@@ -65,6 +65,8 @@ ALL-GREEN. synthesize→QFORGE and verify-gate re-home as rows in that 28-PR sta
 - [~] ~~PR4~~ SUPERSEDED → **PR-verify-record (stack #3)** + verify-passthrough (✅ MERGED hexa-lang #2602): `verify --expr|rubric` → `hexa verify` kernel verbatim already done; bare `verify <path|id>` record/claim-gate is #3.
 - [ ] FOUNDATION+PROOF ✅ landed hexa-lang (PR#2597 + #2602 = rows 1-2): `stdlib/demi/` manifest-driven generic dispatch (d4) + per-verb parity smoke (`demi_selftest.hexa` @ci_gate); discover + verify-passthrough cells byte≡Swift
 - [ ] pure-hexa stack PRs #3–#19 — RecordLoader · list-*/show/gate · DomainCatalog/compose · ProjectStore · operate/backend/owner · llm · cellrun-engine (each <200 lines, own parity cell, g4)
+  - [x] #3 PR-verify-record ✅ hexa-lang PR#2638 (open, parent review) — bare `verify <path|id>` provenance/claim-gate, 5 parity cells byte≡Swift (GOLDEN + live)
+  - [ ] #4–#19 remaining (NEXT runnable: #4 atlas-refusal or #5 record-loader)
 - [ ] geometry exporters hexa-native (@L3, stack #21–#25): HtsCoilGeometry · STL/USD emit · emit/export-component — golden-file parity vs Swift bytes
 - [ ] **PR-parity-gate-all-green (stack #26, @L2 GATE)** — every verb's parity cell ALL-GREEN; NO Swift deletion before this is green
 - [ ] **PR-bin-flip (stack #27, demiurge repo, @L5)** — `bin/demiurge cli` flips `exec swift run DemiurgeCLI` → `hexa run stdlib/demi/demi_cli.hexa`, keep `--swift` explicit fallback
