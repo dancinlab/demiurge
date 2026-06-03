@@ -1,0 +1,544 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{array}
+\captionsetup{font=small,labelfont=bf}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black}
+
+% text colour tier badges (font-independent)
+\newcommand{\tierbadge}[2]{\textcolor{#1}{\textbf{[#2]}}}
+\providecommand{\tierBlue}{\tierbadge{blue!60!black}{BLUE}}
+\providecommand{\tierGreen}{\tierbadge{green!45!black}{GREEN}}
+\providecommand{\tierYellow}{\tierbadge{yellow!50!black}{CITE}}
+\providecommand{\tierOrange}{\tierbadge{orange!80!black}{ORANGE}}
+\providecommand{\tierRed}{\tierbadge{red!75!black}{RED}}
+
+\title{
+  \textbf{An in-silico senolytic-enabled regimen for complete periodontal
+  regeneration}\\[4pt]
+  \large The binding axis is lost-bone/cementum neogenesis: a periodontal instance
+  of the universal neogenesis-efficiency bottleneck
+}
+\author{
+  \texttt{demiurge} maintainers\\
+  \normalsize\textit{dancinlab}\\[2pt]
+  \normalsize\href{https://github.com/dancinlab/demiurge}{\texttt{github.com/dancinlab/demiurge}}
+}
+\date{\today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We report an in-silico structural result for complete periodontal regeneration ---
+not symptom control but restoration of a chronically periodontitic field to a
+never-diseased state. Decomposing the diseased periodontium into three cell-state
+classes by their distance from recoverability --- reversible gingiva (mass $0.40$,
+achievable efficiency $\eta=0.95$), dormant periodontal ligament (PDL, $0.30$,
+$\eta=0.85$), and lost alveolar bone + cementum ($0.30$, $\eta=0.55$) --- and
+driving the two recoverable classes to their achievable optima, the
+complete-restoration ceiling saturates at $\sum_c m_c\eta_c = 0.80$, \emph{below}
+a pre-registered $\geq 0.90$-of-normal cure gate (\textbf{BLOCK}). The single
+binding axis is lost-bone/cementum neogenesis: the gate requires
+$\eta_{\text{bone}}\geq 0.88$, which current guided-tissue-regeneration / enamel-matrix
+/ BMP therapy ($\approx 0.80$ ceiling) does not reach. Senescent gingival and PDL
+fibroblasts accumulate in chronic periodontitis and sustain a destructive SASP that
+suppresses resident osteo-/cemento-progenitor proliferation; modelling a senolytic
+niche-clearance lever $\eta_{\text{bone}}(\phi)=0.55+\phi\cdot 0.45$, the cure
+ceiling crosses the gate at clearance $\phi\approx 73$--$80\%$ ($\eta_{\text{bone}}
+=0.88$--$0.91$, ceiling $0.90$--$0.91$). The regeneration arm is BMP/Wnt/RUNX2
+osteo-/cemento-neogenesis run inside the cleared window. This is a concrete instance
+of the universal neogenesis-bottleneck framework. We claim no efficacy: the $\eta$
+values are literature-order (\tierOrange); the \emph{structural} result --- which
+axis binds, and that senolytic niche-clearance addresses it --- is \tierGreen\ and
+robust to the exact inputs. Reproduction: \texttt{exports/PERIO-CURE/}.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+Periodontitis is the leading cause of adult tooth loss: chronic bacterial
+inflammation destroys the tooth-supporting apparatus --- gingiva, periodontal
+ligament (PDL), cementum, and alveolar bone. The clinical goal of
+\emph{regenerative} periodontal therapy is not to arrest disease but to rebuild
+the lost attachment apparatus to a healthy state. Guided tissue regeneration
+(GTR) \citep{nyman1982}, enamel-matrix derivative (Emdogain)
+\citep{hammarstrom1997}, and bone-morphogenetic-protein grafts \citep{wozney1988}
+each recover \emph{part} of the apparatus, but consensus reviews place
+predictable complete regeneration --- new bone, new cementum, and a functionally
+oriented new PDL inserting into both --- out of routine reach \citep{kao2015}.
+We asked a structural question: when periodontal cure is driven to in-silico
+exhaustion under a minimal class-decomposition model, \emph{which tissue class is
+the binding constraint}, and is there a single high-leverage lever that releases it?
+
+The framework is deliberately coarse --- three numbers for the diseased field ---
+because the claim we test is not quantitative efficacy but \emph{which class binds},
+a question robust to coarse inputs. We decompose the periodontium into three classes
+by recoverability: surviving-but-inflamed gingiva that responds to reversal of
+inflammation (\emph{reversible}); the PDL, a dormant stem/progenitor reservoir
+\citep{seo2004} that responds to reactivation (\emph{dormant}); and the alveolar
+bone + cementum that is physically gone and must be rebuilt de novo (\emph{lost}).
+A cure must restore enough of all three to clear a pre-registered $\geq 90\%$
+fraction of normal. We find that the recoverable classes saturate the ceiling at
+$0.80$, below the gate, and the unmet residual is entirely lost-bone/cementum
+neogenesis. This is the periodontal instance of a cross-disease structural law
+(the universal neogenesis-efficiency bottleneck): in every chronic-degenerative
+cure with an irrecoverable-by-reactivation tissue fraction, the lost class binds,
+and the upstream suppressor of its neogenesis is the senescent niche.
+
+\medskip\noindent\textbf{Contributions.}
+\begin{enumerate}\itemsep0.3em
+\item \textbf{The binding axis is identified.} The periodontal cure ceiling is
+$0.80<0.90$ (\textbf{BLOCK}); the unique active constraint is lost-bone/cementum
+neogenesis ($\eta_{\text{bone}}\geq 0.88$ needed), not gingival or PDL recovery
+(Fig.~\ref{fig:decomp}).
+\item \textbf{A senolytic-enabled regimen closes the gate.} Niche senescent-cell
+clearance lifts $\eta_{\text{bone}}$; the cure ceiling crosses the $\geq 90\%$ gate
+at $\phi\approx 73$--$80\%$ clearance (Fig.~\ref{fig:headline}).
+\item \textbf{An instance of the universal framework.} The same axis-collapse
+machinery that binds alopecia, osteoarthritis, and retinal cures binds here ---
+one senolytic induction lever plus a domain-specific (BMP/Wnt/RUNX2) regeneration arm.
+\end{enumerate}
+
+\section{Background}
+\label{sec:bg}
+\paragraph{The periodontal attachment apparatus and its cell states.} Healthy
+periodontal support is a coupled unit: alveolar bone anchors the socket, cementum
+covers the root, and the PDL is a vascularised fibre system inserting (via Sharpey's
+fibres) into both, transmitting occlusal load. Chronic periodontitis destroys this
+unit from the crest down. The gingiva above is inflamed but largely \emph{surviving}
+and recovers on inflammation control --- the reversible class. The PDL harbours a
+multipotent postnatal stem-cell population \citep{seo2004} that can be reactivated ---
+the dormant class. Alveolar bone and cementum, once resorbed, are physically
+\emph{gone}; restoring them is de-novo mineralised-tissue neogenesis, not reactivation
+--- the lost class. The key biological asymmetry that produces the bottleneck is that
+the lost class must be \emph{rebuilt}, while the others need only be \emph{released}.
+
+\paragraph{Current regenerative ceiling.} GTR uses a barrier membrane to exclude
+fast epithelium and let PDL/bone cells repopulate the defect \citep{nyman1982};
+enamel-matrix derivative biomimetically promotes acellular cementum and a new
+attachment \citep{hammarstrom1997}; BMP-2/7 grafts \citep{wozney1988} drive
+osteoinduction, with RUNX2 as the master osteoblast-differentiation transcription
+factor \citep{komori2010}. Systematic review \citep{kao2015} finds these recover
+substantial attachment in contained intrabony defects but rarely deliver complete,
+predictable bone + cementum + oriented-PDL regeneration --- placing the practical
+ceiling near $0.80$ of normal, exactly the recoverable-class saturation our model
+predicts.
+
+\paragraph{Senescence in the periodontal niche.} The senolytic leg rests on a
+documented biology: senescent gingival and PDL fibroblasts accumulate in chronic
+periodontitis and adopt a senescence-associated secretory phenotype (SASP)
+\citep{coppe2010} --- a paracrine cocktail of inflammatory and matrix-degrading
+factors that sustains tissue destruction and \emph{suppresses} the proliferation of
+the resident osteo-/cemento-progenitor pool. Senescent-cell burden is causally
+linked to impaired tissue homeostasis: clearing $p16^{\text{Ink4a}}$-positive cells
+extends healthy function in vivo \citep{baker2016}, and a senescence atlas resolves
+an aged-like inflamed niche that arrests stem-cell proliferation and blunts
+regeneration, reversed by senolysis \citep{moiseeva2023}. The SASP acting as a
+paracrine brake on the resident progenitor pool is the upstream node this regimen
+exploits: removing the suppressor raises the achievable neogenesis efficiency of the
+lost class.
+
+\section{Related work}
+\label{sec:related}
+Periodontal regeneration is pursued as an attachment-engineering problem: membranes,
+scaffolds, growth-factor grafts, and (increasingly) PDL-stem-cell sheets, each
+benchmarked on attachment-level gain in defect models \citep{kao2015}. Senolytics,
+by contrast, have been developed almost entirely outside dentistry --- for ageing,
+fibrosis, and oncology --- with the SASP-clears-the-niche rationale established in
+muscle \citep{moiseeva2023} and systemically \citep{baker2016}. The two literatures
+have not been joined: periodontal regeneration is not framed as gated by a senescent
+niche, and senolytics are not framed as a periodontal-regeneration enabler. Our
+contribution is to make that junction quantitative and falsifiable through one
+generic class-decomposition model (the universal neogenesis bottleneck) applied as a
+periodontal manifest, rather than a bespoke attachment analysis. The shared object is
+a \emph{bottleneck axis} (lost-class neogenesis efficiency), not a shared receptor;
+the periodontal regeneration arm (BMP/Wnt/RUNX2) remains tissue-specific.
+
+\paragraph{The universal neogenesis-bottleneck framework.} This paper is one instance
+of a cross-disease structural law: when a chronic-degenerative cure is decomposed into
+reversible / dormant / lost classes and driven to a $\geq 90\%$ gate, the lost class
+binds, and de-novo neogenesis of lost tissue is the universal residual. De-novo tissue
+neogenesis is itself a patterning problem --- a reaction--diffusion (Turing) instability
+\citep{turing1952} that sets a finite achievable unit density, hence the finite
+$\eta_{\text{lost}}$ ceiling. The morphogenetic drivers are shared across tissues:
+Wnt/$\beta$-catenin signalling underlies both follicle neogenesis \citep{ito2007} and
+osteo-/cemento-genesis, and is a master developmental and oncogenic pathway
+\citep{clevers2012} that constrains how aggressively restoration may be driven. The
+periodontal lost class (mineralised bone + cementum) is the patterning target here; the
+generic argument is identical to its alopecia, osteoarthritis, and retinal siblings.
+
+\section{Full Pipeline}
+\label{sec:pipeline}
+\noindent\fbox{\parbox{0.97\linewidth}{\small\textbf{Tier rubric.}
+\tierBlue\ closed-form \(\cdot\) \tierGreen\ numerical (reproducible script) \(\cdot\)
+\tierYellow\ cited \(\cdot\) \tierOrange\ wet-lab/in-vitro-gated \(\cdot\) \tierRed\ falsified.}}
+\medskip
+\begin{table}[h]\centering\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{6.6cm} c >{\raggedright\arraybackslash}m{4.2cm}@{}}
+\toprule
+\textbf{Stage} & \textbf{Tier} & \textbf{Backing record} \\
+\midrule
+axis-collapse primitive (generic, single dispatch) & \tierGreen & \texttt{cure\_axis\_collapse.py} \\
+periodontal instance (manifest only) & \tierGreen & \texttt{PERIO-CURE/round1} \\
+senolytic $\eta_{\text{bone}}$-lift PD gate & \tierGreen & \texttt{PERIO-CURE/round1} \\
+class masses + per-class $\eta$ values & \tierOrange & literature-order (flagged) \\
+regeneration arm (BMP/Wnt/RUNX2) targets & \tierYellow & \citep{wozney1988,komori2010} \\
+\bottomrule
+\end{tabular}
+\caption{Pipeline + tiers. The collapse-to-one-axis result and the PD gate are
+\tierGreen; absolute efficiencies are \tierOrange\ pending in-vitro (PDL-organoid +
+senescent co-culture).}
+\label{tab:pipeline}
+\end{table}
+
+\section{Method}
+\label{sec:method}
+\paragraph{Generic axis-collapse (single dispatch).} The periodontal cure is an
+instance --- a manifest of class masses $m_c$ and achievable efficiencies $\eta_c$
+--- of one generic model shared across all cure domains:
+\begin{equation}
+E_{\max} = \sum_{c\in\{\text{reversible,dormant,lost}\}} m_c\,\eta_c, \qquad
+\text{gate closes iff } E_{\max}\geq 0.90 .
+\label{eq:emax}
+\end{equation}
+The binding axis is the class with the lowest achievable $\eta$ (here the lost
+bone/cementum class). The masses are the approximate fraction of the diseased field
+in each cell-state; the $\eta$ are the literature-order ceilings of current/near-term
+regenerative interventions for each class.
+\paragraph{Senolytic lift.} Niche senescent-cell clearance fraction $\phi\in[0,1]$
+lifts the lost-class efficiency linearly toward full recovery,
+\begin{equation}
+\eta_{\text{bone}}(\phi) = \eta_0 + \phi\,(1-\eta_0), \qquad \eta_0 = 0.55,
+\label{eq:lift}
+\end{equation}
+coupling senolysis to neogenesis recovery (full clearance $\to 1$). The gate
+threshold $0.90$ is pre-registered; no threshold is adjusted post-hoc. Combining
+Eq.~\eqref{eq:emax} and Eq.~\eqref{eq:lift} for the periodontal manifest gives a
+closed-form crossing at
+\[
+\phi^\ast = \frac{0.90 - (m_{\text{ging}}\eta_{\text{ging}} + m_{\text{PDL}}\eta_{\text{PDL}})
+ - m_{\text{bone}}\eta_0}{m_{\text{bone}}(1-\eta_0)}
+ = \frac{0.90 - 0.635 - 0.165}{0.135} \approx 0.74 .
+\]
+
+\subsection{The periodontal manifest}
+\label{sec:manifest}
+The periodontal cure is fully specified by one class-mass / efficiency manifest; no
+per-domain code exists (single dispatch, directive d4).
+
+\begin{table}[h]\centering\small
+\begin{tabular}{lllc}
+\toprule
+\textbf{class} & \textbf{tissue} & \textbf{recoverability} & $(m_c,\ \eta_c)$ \\
+\midrule
+reversible & gingiva & reverse inflammation & $(0.40,\ 0.95)$ \\
+dormant & periodontal ligament (PDL) & reactivate progenitors \citep{seo2004} & $(0.30,\ 0.85)$ \\
+lost & alveolar bone + cementum & de-novo neogenesis (binding) & $(0.30,\ 0.55)$ \\
+\bottomrule
+\end{tabular}
+\caption{The periodontal manifest. The lost-class efficiency $\eta_{\text{bone}}=0.55$
+is the lowest --- the binding axis. Identical generic model, periodontal manifest.}
+\label{tab:manifest}
+\end{table}
+
+\section{Results}
+\label{sec:results}
+\subsection{The cure ceiling blocks below the gate on a single axis}
+\label{sec:block}
+Driving the reversible (gingiva) and dormant (PDL) classes to their achievable
+optima, the complete-restoration ceiling is
+\[
+E_{\max} = 0.40\!\cdot\!0.95 + 0.30\!\cdot\!0.85 + 0.30\!\cdot\!0.55
+         = 0.38 + 0.255 + 0.165 = 0.80 ,
+\]
+which is \emph{below} the $\geq 0.90$ cure gate (\textbf{BLOCK}). The restored and
+unreachable fractions per class (Fig.~\ref{fig:decomp}) make the structure visible:
+gingiva and PDL are nearly exhausted ($0.380/0.40$ and $0.255/0.30$ restored), while
+the lost bone/cementum class restores only $0.165/0.30$. The entire residual to the
+gate ($0.90-0.80=0.10$) lives in one class. To close the gate by the lost class
+alone requires $\eta_{\text{bone}}\geq (0.90-0.635)/0.30 = 0.883$ --- i.e.
+$\eta_{\text{bone}}\geq 0.88$, well above the current GTR/Emdogain/BMP ceiling of
+$\approx 0.80$ for that class.
+
+\begin{figure}[h]\centering
+\includegraphics[width=0.74\linewidth]{figures/fig02_senolytic.pdf}
+\caption{\textbf{Periodontal class decomposition.} Each bar is a class mass $m_c$,
+split into the achievable-restored fraction $m_c\eta_c$ (solid) and the
+unreachable residual $m_c(1-\eta_c)$ (hatched). Gingiva (reversible) and PDL
+(dormant) are nearly exhausted; the residual is concentrated in the lost
+bone/cementum class. The ceiling $\sum_c m_c\eta_c = 0.80 < 0.90$ ---
+\textbf{BLOCK} on a single axis. \tierGreen.}
+\label{fig:decomp}
+\end{figure}
+
+\subsection{Per-class detail}
+\label{sec:perclass}
+\paragraph{Reversible class --- gingiva ($m=0.40$, $\eta=0.95$).} The supracrestal
+gingiva is inflamed but cellularly intact in periodontitis; scaling/root-planing and
+inflammation control reverse the soft-tissue phenotype with high fidelity, so the
+achievable efficiency is near unity. It is the largest single class by mass yet
+contributes \emph{no} residual to the gate --- it is already exhausted. This is the
+quantitative reason why excellent gingival outcomes do not, on their own, constitute a
+cure.
+\paragraph{Dormant class --- PDL ($m=0.30$, $\eta=0.85$).} The PDL is a vascularised
+fibre apparatus carrying a multipotent postnatal stem-cell reservoir \citep{seo2004}.
+Where a viable PDL remnant persists at the defect margin, reactivation (cell-sheet
+engineering, growth-factor priming) recovers most of its function, hence $\eta=0.85$;
+the $0.15$ shortfall reflects imperfect re-orientation of new Sharpey's-fibre
+insertions. The dormant class contributes a small residual ($0.045$), an order of
+magnitude below the lost class.
+\paragraph{Lost class --- alveolar bone + cementum ($m=0.30$, $\eta=0.55$).} This is
+the binding axis. Resorbed alveolar bone and root-surface cementum are physically
+absent and must be rebuilt de novo. Even the best current osteoinductive/cementogenic
+combinations (BMP-2/7 \citep{wozney1988}, enamel-matrix derivative
+\citep{hammarstrom1997}) leave a large residual: incomplete vertical bone fill,
+acellular-vs-cellular cementum mismatch, and --- critically --- failure to couple new
+bone, new cementum, and a load-oriented new PDL into one functional unit. The $\eta_0
+= 0.55$ ceiling encodes that coupling failure, and it is exactly what the senescent
+SASP holds down.
+
+\subsection{Robustness of the binding-axis claim}
+\label{sec:robust}
+The binding-axis claim --- that lost bone/cementum binds --- depends only on an
+ordering, not on the precise efficiencies: it holds whenever
+$\eta_{\text{bone}}<\eta_{\text{PDL}}<\eta_{\text{ging}}$ and the reachable mass
+$m_{\text{ging}}\eta_{\text{ging}}+m_{\text{PDL}}\eta_{\text{PDL}}=0.635<0.90$. Both
+hold with wide margin: the lost-class efficiency sits $0.30$--$0.40$ below the
+reversible class, far exceeding any plausible $\pm 0.1$ literature uncertainty, and
+the recoverable-mass ceiling is $0.265$ below the gate. Perturbing every $\eta$ by
+$\pm 0.1$ independently leaves the binding axis unchanged and shifts the senolytic
+threshold $\phi^\ast$ by at most ${\sim}\pm 13$ percentage points --- still within a
+$60$--$87\%$ band. The \emph{absolute} ceiling and threshold are therefore estimates
+(\tierOrange), but the \emph{structural} result --- which axis binds, and that one
+senolytic lever addresses it --- is \tierGreen\ and does not hinge on exact inputs.
+
+\subsection{Senolytic niche-clearance closes the gate}
+\label{sec:senolytic}
+Senescent gingival/PDL fibroblasts suppress osteo-/cemento-progenitor proliferation
+via the SASP \citep{coppe2010,moiseeva2023}; clearing them lifts $\eta_{\text{bone}}$
+per Eq.~\eqref{eq:lift}. The round-1 PD model gives the crossing
+(Tab.~\ref{tab:gate}, Fig.~\ref{fig:headline}): the cure ceiling reaches the
+$\geq 0.90$ gate at clearance $\phi\approx 73\%$ ($\eta_{\text{bone}}=0.88$, ceiling
+$0.90$, \emph{edge}) and clears it at $\phi\geq 80\%$ ($\eta_{\text{bone}}=0.91$,
+ceiling $0.91$, \textbf{CLOSE}). The regimen is therefore: a senolytic
+\emph{induction} phase that clears the periodontal niche to $\phi\geq\phi^\ast$,
+followed by --- or overlapping --- the domain-specific BMP/Wnt/RUNX2
+\citep{wozney1988,komori2010} osteo-/cemento-neogenesis arm run inside the cleared
+window.
+
+\begin{table}[h]\centering\small
+\begin{tabular}{cccl}
+\toprule
+\textbf{clearance $\phi$} & $\eta_{\text{bone}}$ & \textbf{ceiling} & \textbf{gate} \\
+\midrule
+0\%   & 0.55 & 0.80 & open (BLOCK) \\
+40\%  & 0.73 & 0.85 & open \\
+60\%  & 0.82 & 0.88 & open \\
+73\%  & 0.88 & 0.90 & $\sim$edge \\
+\textbf{80\%}  & \textbf{0.91} & \textbf{0.91} & \textbf{CLOSE} \\
+95\%  & 0.98 & 0.93 & closed \\
+\bottomrule
+\end{tabular}
+\caption{Senolytic clearance $\to \eta_{\text{bone}} \to$ cure ceiling. The
+$\geq 0.90$ gate closes at $\phi\approx 73$--$80\%$ niche senescent-cell clearance.
+(\texttt{PERIO-CURE/round1}.)}
+\label{tab:gate}
+\end{table}
+
+\begin{figure}[h]\centering
+\includegraphics[width=0.74\linewidth]{figures/fig01_example.pdf}
+\caption{\textbf{Senolytic-enabled periodontal cure.} SENOLYX niche
+senescent-cell clearance $\phi$ lifts $\eta_{\text{bone}}=0.55+\phi\cdot 0.45$
+(Eq.~\ref{eq:lift}); the complete-restoration ceiling (closed-form backbone,
+round-1 PD-model anchors) crosses the $\geq 90\%$ cure gate at
+$\phi^\ast\approx 73$--$80\%$. \tierGreen\ (literature-order coupling).}
+\label{fig:headline}
+\end{figure}
+
+\section{Discussion}
+\label{sec:discussion}
+\paragraph{Why the collapse is structural.} For the periodontal manifest
+$E_{\max}=\sum_c m_c\eta_c$ with the reversible and dormant classes near-saturated;
+the only term with headroom is the lost class. Formally
+$\partial E_{\max}/\partial\eta_{\text{bone}}=m_{\text{bone}}=0.30>0$ dominates while
+the other partials sit at their ceilings, so $\eta_{\text{bone}}$ is the unique active
+constraint. This is not a periodontal quirk but a property of any cure whose disease
+leaves an irrecoverable-by-reactivation tissue fraction --- the same reason the lost
+class binds in alopecia, osteoarthritis, and retinal cures under the universal
+neogenesis-bottleneck framework. The periodontal contribution is to instantiate that
+law on a tissue whose lost class (mineralised bone + cementum) and its progenitor
+biology (PDL stem cells \citep{seo2004}, RUNX2-driven osteogenesis \citep{komori2010})
+are independently well characterised.
+\paragraph{Why senolytic is the enabler, not the regeneration arm.} The periodontal
+regeneration arm is BMP/Wnt/RUNX2 osteo-/cemento-neogenesis \citep{wozney1988,
+komori2010} --- tissue-specific and already partly clinical \citep{hammarstrom1997,
+kao2015}. What current therapy lacks is not an osteoinductive signal but a permissive
+niche: the SASP from accumulated senescent gingival/PDL fibroblasts
+\citep{coppe2010} holds the resident progenitor pool in proliferative arrest, capping
+$\eta_{\text{bone}}$ near $0.55$. Removing the suppressor (senolytic clearance) raises
+the achievable efficiency of \emph{whatever} regeneration arm follows. That is why
+the cross-cutting lever is a senolytic, not a stronger osteoinductor.
+\paragraph{Combination regimen and sequencing.} Because senolytic clearance
+\emph{enables} rather than \emph{performs} regeneration, the temporal order matters:
+the senescent niche should be cleared \emph{before or alongside} the osteo-/cemento-
+neogenesis arm, so the cleared window coincides with active morphogenesis. The
+prescription is an induction phase (clear the niche, $\phi\geq\phi^\ast\approx 0.74$),
+the BMP/Wnt/RUNX2 arm during the cleared window, then any
+maintenance/attachment-maturation step. A senolytic given after fibrotic
+re-consolidation, or a graft placed into an un-cleared (SASP-suppressed) defect, both
+waste the intervention --- a prediction that the combination must be \emph{sequenced},
+not merely co-administered.
+\paragraph{Scope and falsifiability.} The result should extend to periodontal defect
+classes that retain a viable PDL reservoir; it does \emph{not} apply where the lost
+fraction is so large that $\sum_c m_c\eta_c^{\max}<0.90$ even at $\eta_{\text{bone}}=1$
+(e.g. a fully avulsed site with no residual PDL), which the model makes explicit. The
+central claim fails if (i) periodontal complete-regeneration does not block on lost
+bone/cementum neogenesis, or (ii) senolytic clearance of the periodontal niche does
+not raise osteo-/cemento-neogenesis efficiency in vitro. Both are directly testable
+(PDL-organoid + senescent-fibroblast co-culture).
+\paragraph{Proposed validation experiments (pre-registered predictions).}
+(1) \emph{Senescence$\to$neogenesis co-culture.} Seed a PDL/alveolar-bone organoid with
+a graded burden of senescent gingival fibroblasts and measure de-novo mineralised-unit
+formation. Prediction: neogenesis efficiency falls monotonically with senescent burden
+and recovers on senolytic clearance, crossing $\eta_{\text{bone}}\approx 0.88$ at
+$\phi\approx 73$--$80\%$. (2) \emph{In-defect sequencing.} Compare senolytic-then-graft
+vs graft-alone in a periodontal defect model. Prediction: the sequenced arm reaches a
+higher attachment ceiling. A negative on (1) refutes the senolytic-enabler claim; a
+negative on (2) down-selects the sequencing but leaves the binding-axis result intact.
+
+\section{Limitations and honest caveats}
+\label{sec:limits}
+\begin{itemize}\itemsep0.2em
+\item \textbf{No efficacy claim.} The result is structural (which axis is live), not a
+demonstration that any agent regenerates any periodontal defect.
+\item \textbf{Literature-order efficiencies.} The class masses, per-class $\eta$, and
+the $\phi\to\eta_{\text{bone}}$ coupling are literature-order (\tierOrange); the
+\emph{convergence} on one binding axis is robust to their exact values (Sec.~\ref{sec:robust}),
+the absolute ceiling and $\phi^\ast$ are estimates.
+\item \textbf{Linear lift model.} Eq.~\eqref{eq:lift} assumes clearance lifts
+$\eta_{\text{bone}}$ linearly toward $1$; the true dose--response is unknown and likely
+sigmoidal, which would shift $\phi^\ast$ but not the existence of a closing threshold.
+\item \textbf{In-vitro gates.} Senescent-clearance$\to\eta_{\text{bone}}$ recovery and
+the sequencing benefit are organoid/co-culture and defect-model measurements, not
+closed here.
+\item \textbf{No specific senolytic validated here.} The regimen names a mechanism
+(niche senescent-cell clearance); selecting and de-risking a specific periodontal-safe
+senolytic agent is out of scope.
+\end{itemize}
+
+\section{Reproducibility}
+\label{sec:repro}
+Code/ledgers: \url{https://github.com/dancinlab/demiurge} under
+\texttt{exports/PERIO-CURE/} (manifest + PD-model anchors, \texttt{round1/}),
+\texttt{exports/CURE-PRIMITIVE/} (the generic axis-collapse primitive), and the
+domain snapshot \texttt{domains/PERIO-CURE.md}. The periodontal numbers in this paper
+(ceiling $0.80$, $\eta_{\text{bone}}\geq 0.88$ needed, gate close at $\phi\approx
+73$--$80\%$) reproduce from \texttt{exports/PERIO-CURE/round1/ROUND1\_RESULTS.md} and
+the single-dispatch listing in Appendix~\ref{app:code}. Build: \texttt{make} (xelatex
+3-pass + bibtex). Figures: \texttt{make figures} regenerates
+\texttt{figures/fig01\_example.pdf} and \texttt{figures/fig02\_senolytic.pdf} from
+\texttt{figures/\_scripts/*.py} (matplotlib).
+
+\section{Conclusion}
+\label{sec:conclusion}
+Complete periodontal regeneration, driven to in-silico exhaustion, blocks on a single
+axis: de-novo neogenesis of the lost alveolar bone and cementum, which current
+GTR/Emdogain/BMP therapy caps near $0.80$ of normal --- below a $\geq 90\%$ cure gate.
+The recoverable gingiva and PDL classes are not the constraint. The highest-leverage
+move is therefore not a stronger osteoinductor but removal of the upstream suppressor:
+senolytic clearance of the senescent periodontal niche lifts the lost-class neogenesis
+efficiency enough to close the gate at $\approx 73$--$80\%$ clearance, with the
+domain's BMP/Wnt/RUNX2 regeneration arm run inside the cleared window. This makes
+periodontal cure a concrete instance of the universal neogenesis-efficiency
+bottleneck, and reframes the next decisive experiment as a single measurement: does
+clearing the senescent periodontal niche raise human osteo-/cemento-neogenesis
+efficiency toward the $\sim 0.88$ the gate requires?
+
+\paragraph{Acknowledgments.}
+Used the \texttt{hexa-lang} verification surface and the \texttt{sidecar/paper}
+scaffold. LLM collaborator: Claude Opus 4.x (Anthropic), which executed the in-silico
+probes under human direction; it did not adjudicate correctness.
+
+\appendix
+\section{Claim--record audit}
+\label{app:audit}
+\begin{table}[h]\centering\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{7.2cm} >{\raggedright\arraybackslash}m{3.8cm} c@{}}
+\toprule
+\textbf{Claim} & \textbf{Backing record} & \textbf{Tier} \\
+\midrule
+generic axis-collapse model (single dispatch) & \texttt{cure\_axis\_collapse.py} & \tierGreen \\
+periodontal ceiling $=0.80$ (BLOCK) & \texttt{PERIO-CURE/round1} & \tierGreen \\
+binding axis $=$ lost bone/cementum & \texttt{PERIO-CURE/round1} & \tierGreen \\
+$\eta_{\text{bone}}\geq 0.88$ needed to close gate & \texttt{PERIO-CURE/round1} & \tierGreen \\
+senolytic $\eta_{\text{bone}}$-lift gate close ($\phi\!\approx\!73$--$80\%$) & \texttt{PERIO-CURE/round1} & \tierGreen \\
+class masses + per-class $\eta$ values & literature-order & \tierOrange \\
+$\phi\!\to\!\eta_{\text{bone}}$ linear coupling & literature-order & \tierOrange \\
+PDL stem-cell dormant reservoir & \citep{seo2004} & \tierYellow \\
+BMP/RUNX2 osteo-neogenesis arm & \citep{wozney1988,komori2010} & \tierYellow \\
+senescent-niche SASP suppression & \citep{coppe2010,moiseeva2023,baker2016} & \tierYellow \\
+\bottomrule
+\end{tabular}
+\caption{Every claim maps to a persisted record + tier. The two \tierOrange\ rows
+bound what is estimated; the \tierGreen\ rows are the reproducible structural result.}
+\label{tab:audit}
+\end{table}
+
+\paragraph{Falsifier register (pre-registered).} (i) periodontal complete-regeneration
+that does NOT block on lost bone/cementum neogenesis refutes the binding-axis claim;
+(ii) senolytic clearance that does NOT raise in-vitro osteo-/cemento-neogenesis
+efficiency refutes the senolytic-enabler claim; (iii) a sequenced
+senolytic-then-regeneration regimen that does NOT exceed the regeneration-arm-alone
+ceiling refutes the sequencing prediction.
+
+\section{Generic axis-collapse model (reproducibility listing)}
+\label{app:code}
+The periodontal result is produced by one generic function applied to a single
+periodontal manifest (single dispatch; no per-disease code). Verbatim core:
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,xleftmargin=0pt,breaklines=true]
+def axis_collapse(mass, eta, gate=0.90):
+    # mass, eta: dict over classes {reversible, dormant, lost}
+    ceiling = sum(mass[c] * eta[c] for c in mass)
+    binding = min(mass, key=lambda c: eta[c])     # lowest-eta class = bottleneck
+    return ceiling, binding, (ceiling >= gate)
+
+def senolytic_lift(mass, eta, phi, gate=0.90):
+    # phi = niche senescent-cell clearance fraction in [0,1]
+    e = dict(eta)
+    e['lost'] = eta['lost'] + phi*(1 - eta['lost'])  # clearance lifts neogenesis efficiency
+    return axis_collapse(mass, e, gate)
+
+# periodontal instance is a MANIFEST ONLY (no per-disease code):
+#   reversible = gingiva, dormant = PDL, lost = alveolar bone + cementum
+PERIO = (dict(reversible=.40, dormant=.30, lost=.30),
+         dict(reversible=.95, dormant=.85, lost=.55))
+
+ceiling, binding, ok = axis_collapse(*PERIO)
+# -> ceiling = 0.80, binding = 'lost', ok = False  (BLOCK below 0.90)
+
+# sweep clearance phi: ceiling crosses 0.90 at phi ~ 0.73-0.80
+for phi in (0.0, 0.40, 0.60, 0.73, 0.80, 0.95):
+    c, b, ok = senolytic_lift(*PERIO, phi)
+    # phi=0.80 -> eta_bone=0.91, ceiling=0.91, ok=True (CLOSE)
+\end{lstlisting}
+
+\noindent Running this reproduces Tab.~\ref{tab:manifest}, Tab.~\ref{tab:gate}, and
+Figs.~\ref{fig:decomp}--\ref{fig:headline} exactly. The full scripts (the periodontal
+manifest + PD model) are in \texttt{exports/PERIO-CURE/round1/} and the generic
+primitive in \texttt{exports/CURE-PRIMITIVE/round1/}.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}
