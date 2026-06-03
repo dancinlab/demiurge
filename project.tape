@@ -79,6 +79,12 @@
   do   = "QFORGE GPU accel self-controlled (hexa eigen/fft) — no QE-7.2 dep · NEXUS c7 RTSC<-QFORGE"
   dont = "perpetual external-QE dep · absorbed on un-cross-val'd QFORGE result · engine swap w/o the gate"
 
+@D d_qforge_xval_archive := "QE run → keep the QFORGE cross-val artifacts · drop heavy scratch" :: governance [required active]
+  do   = "QE run → git the LIGHT set in exports/rtsc/<cand>/: *.dynN · *.elph.N · ph.out · scf.out"
+  do   = "this set = QFORGE cross-val ground-truth — per-mode λ/α²F recompute + screening-gap calibration"
+  do   = "drop HEAVY scratch (out/*.wfc · _ph0/*.dvscf) — GB-scale · regenerable · not a xval input"
+  dont = "discard dyn/elph/a2f artifacts (forces a re-paid QE run to close gate) · git the GB scratch"
+
 @D d17 := "cost-bearing fire — dispatch autonomously, no user gate" :: governance [required active]
   do   = "validated deck (d16 free dry-run passed) → fire full-campaign rent autonomously · parallel"
   do   = "state estimated cost in one line, then fire — no user consult / approval / confirm"
