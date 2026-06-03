@@ -29,3 +29,10 @@ motivated as one leg), but IVD is where the "one senolytic, many cures" thesis r
 limit — a valuable boundary marker, not a clean 5th win.
 g63: masses/η literature-order; the boundary STRUCTURE (senolytic insufficient; aggressive
 3-agent needed) is robust to the exact values.
+
+## spec — IVD degeneration biology (lit-grounded, d18)
+- NP-MSC become senescent under ACIDIC culture (pH 6.6) with ↑SASP, cell-cycle arrest (ASIC1/3).
+- SASP-driven catabolism → cartilage ENDPLATE CALCIFICATION + matrix loss (avascular worsens).
+- 2024–25: autophagy (DEPTOR/mTORC1) + epigenetic reprogramming of senescent NP cells validate
+  the senolytic/senomorphic rationale. Acidic pH is BOTH the senescence DRIVER and the NANOBOT
+  delivery GATE (dual use).
