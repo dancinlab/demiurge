@@ -1,0 +1,15 @@
+=== R3 senescent heterogeneity: monotherapy vs cocktail clearance ceiling ===
+ BCL-xL-dependent frac r mono clearance cocktail clearance             ≥60% gate?
+                   50%             45%                85%   mono FAIL / cocktail ok
+                   60%             54%                86%   mono FAIL / cocktail ok
+                   70%             63%                87%   mono ok / cocktail ok
+                   80%             72%                88%   mono ok / cocktail ok
+                   90%             81%                89%   mono ok / cocktail ok
+
+FINDING: if the BCL-xL-dependent fraction r < ~0.67, MONOTHERAPY clearance falls below the
+60% the cure gate requires (mono ceiling = r·0.90). A 2-axis COCKTAIL (BCL-xL + non-BCL
+e.g. MCL-1/FOXO4-DRI) restores clearance ≥60% across the whole r range — senescent
+heterogeneity makes a COCKTAIL necessary when the resistant fraction is large.
+⇒ SENOLYX should be a 2-axis cocktail, not BCL-xL monotherapy, for niches with low r.
+g63: r and per-axis kill are literature-order; the structural point (heterogeneity →
+cocktail when r low) is robust. The non-BCL-xL 2nd axis is the R1 NEW target to add.
