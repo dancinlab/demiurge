@@ -15,4 +15,5 @@
 @paper sample-nb-bcs-absorbed           := "./PAPERS/sample-nb-bcs-absorbed"
 @paper aga-cure-insilico-axis-collapse := "./PAPER/aga-cure-insilico-axis-collapse"
 @paper universal-neogenesis-bottleneck-senolytic := "./PAPER/universal-neogenesis-bottleneck-senolytic"
-@paper retina-cure-photoreceptor-regen := "./PAPER/retina-cure-photoreceptor-regen"
+@paper perio-cure-regen                 := "./PAPER/perio-cure-regen"
+@paper retina-cure-photoreceptor-regen  := "./PAPER/retina-cure-photoreceptor-regen"
