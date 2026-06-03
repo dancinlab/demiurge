@@ -37,6 +37,11 @@
   do   = "small cells (4-7 atoms) → pool ubu-1/2 free · batch → Vast.ai CPU · ≥20 atoms / dense k → GPU pod"
   dont = "RunPod CPU pods (8-vCPU ceiling) · Vast.ai CPU-only rentals (use GPU offers) · GPU on small cells"
 
+@D d_pool_fixed := "free-pool fire host = summer (fixed) — no round-robin" :: governance [required active]
+  do   = "free-pool QE jobs fire on summer only (-np 4 plain, g9) — aiden round-robin disabled"
+  do   = "in-flight aiden ScH9 finishes naturally; no NEW aiden dispatch (d_defer_no_delete)"
+  dont = "round-robin summer/aiden · fire new free-pool work on aiden · kill the in-flight ScH9"
+
 @D d8 := "Vast.ai trouble → hexa-lang inbox" :: governance [required active]
   do   = "Vast finding → `hexa-lang/inbox/patches/<slug>.md` so `hexa cloud` absorbs upstream"
   dont = "paper-over a Vast-discovered `hexa cloud` gap inside the campaign"
