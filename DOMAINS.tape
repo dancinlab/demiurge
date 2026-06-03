@@ -23,3 +23,4 @@
 @domain CO2-CAPTURE  := "domains/CO2-CAPTURE.md"
 @domain GREEN-NH3    := "domains/GREEN-NH3.md"
 @domain SENOLYX := "domains/SENOLYX.md"
+@domain PERIO-CURE := "domains/PERIO-CURE.md"
