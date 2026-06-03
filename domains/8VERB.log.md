@@ -2,6 +2,16 @@
 
 Append-only history sister of `8VERB.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-04 — CONSTRAINT recorded: 3D geometry = SEPARATE-FILE LOADING, NO hardcoding (user directive)
+
+User directive (verbatim intent): "3d 등 하드코딩 안됨" + "별도파일 로딩으로 3d 가 되어야함".
+Binding constraint on the upcoming 3D PRs (#21 HtsCoilGeometry · #22 STL · #23 USD · #24/#25 export/emit-component):
+
+- [ ] 3D geometry MUST load from an EXTERNAL geometry spec/manifest file at runtime. The `.hexa` source carries the GENERIC emitter ONLY — no per-shape / per-instance geometry constants embedded in code.
+- [ ] d4 (manifest-only): add / rename / remove a shape = a new/edited spec FILE, zero code edit. d3 (data-not-code): geometry data lives in a loadable file, never in the source.
+- [ ] @L7 parity cell for #21+ must PROVE a file-only shape swap (no recompile) changes the emitted STL/USD bytes — not just byte≡Swift on one fixed shape.
+- [x] recorded in 8VERB.md (geometry milestone sub-constraint + §6 shelf "3D geometry source" → LOCKED (c) separate-file). NOTE: this may require adapting the Swift `HtsCoilGeometry` parity target — Swift hardcodes geometry; the hexa port must be file-driven AND still byte-match the reference shape, so the reference shape's params become the FIRST spec file.
+
 ## 2026-06-04 — afg: pure-hexa stack #10 + #11 + #13 + #19 landed (compose · list-shelf · project-mutate · action-fanout)
 
 Four foreground branches, all hexa-native (Swift untouched). MID-RUN: switched the cross-repo work to a STABLE dedicated worktree `/Users/mini/dancinlab/hexa-lang-demiwork` + registered it + the hexa-lang repo in `.claude/settings.local.json additionalDirectories` (user: "별도 폴더에서 해줘 자꾸 폴더사용승인 메시지뜬다") — per-PR /tmp worktrees were re-triggering folder-approval prompts; now one pre-approved folder, popups gone.
