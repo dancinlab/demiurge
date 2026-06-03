@@ -71,7 +71,10 @@ ALL-GREEN. synthesize→QFORGE and verify-gate re-home as rows in that 28-PR sta
   - [x] #6 PR-list-kinds ✅ hexa-lang PR#2641 — `list-all/records/decisions/rfcs/domains` over RecordLoader (+rl_stubs for decision/rfc/domain); 10 cells (5 verb × populated+empty) byte≡Swift → 26/26 GREEN
   - [x] #7 PR-show-record ✅ hexa-lang PR#2642 — `show <path>` record+provenance dump (load-by-path, `show:` prefix rc2); 4 cells (ok/outside/missing/decode) → 30/30 GREEN
   - [x] #8 PR-gates ✅ hexa-lang PR#2643 — `list-gates`+`gate-summary` (MeasurementGate.allCases group + %.1f summary); strict decode-skip parity (54→52, 2 router files skip like Swift `guard case .success`); 4 cells → 34/34 GREEN
-  - [ ] #9–#19 remaining (NEXT runnable: #9 domain-catalog · #12 project-store · #14 operate · #17 llm · #18 cellrun-engine)
+  - [x] #9 PR-domain-catalog ✅ hexa-lang PR#2645 — `DomainCatalog`+`IngredientShelf` (domains/<d>.md §6 parse: section-detect·`[multi]` strip·verb-prefix 해석→해석⟲), base for compose/shelf; +1 self-check → 35 GREEN
+  - [x] #12 PR-project-store ✅ hexa-lang PR#2646 — `ProjectStore`+`Verb`/`Project` model + `list-projects`/`show-project`; 7-verb spine index-for-index byte≡, createdAt sort + 4 progress marks; 5 cells → 40 GREEN
+  - [x] #18 PR-cellrun-engine ✅ hexa-lang PR#2647 (KEYSTONE) — `action <verb> <domain>` HAPPY path unblocked; cellrun engine already hexa-native (`stdlib/cockpit/cellrun.hexa`) → demi DELEGATES (d3, no re-author); manifest-missing→rc1 byte≡; 1 cell → 41 GREEN
+  - [ ] #10/#11 compose/list-shelf (on #9) · #13 project-mutate (on #12) · #14 operate · #15 backend · #16 owner · #17 llm · #19 action --compose/--converge (on #18) — then #20 synthesize→QFORGE
 - [ ] geometry exporters hexa-native (@L3, stack #21–#25): HtsCoilGeometry · STL/USD emit · emit/export-component — golden-file parity vs Swift bytes
 - [ ] **PR-parity-gate-all-green (stack #26, @L2 GATE)** — every verb's parity cell ALL-GREEN; NO Swift deletion before this is green
 - [ ] **PR-bin-flip (stack #27, demiurge repo, @L5)** — `bin/demiurge cli` flips `exec swift run DemiurgeCLI` → `hexa run stdlib/demi/demi_cli.hexa`, keep `--swift` explicit fallback
