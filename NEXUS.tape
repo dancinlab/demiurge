@@ -161,3 +161,5 @@
   edge = "chondral neogenesis bottleneck → SENOLYX η_neo-lift (clearance ≥78%)"
 @reuse RETINA-CURE reused[CURE-PRIMITIVE,SENOLYX]
   edge = "photoreceptor neogenesis bottleneck → SENOLYX η_neo-lift (clearance ≥72%); UBX1325 retina-validated"
+@reuse IVD-CURE reused[CURE-PRIMITIVE,SENOLYX]
+  edge = "FIRST BOUNDARY case — senolytic necessary-but-not-sufficient; needs 3-agent (senolytic+cells+endplate-nutrition), closes only marginally (0.91 @95% clearance)"

@@ -26,3 +26,4 @@
 @domain PERIO-CURE := "domains/PERIO-CURE.md"
 @domain OA-CURE := "domains/OA-CURE.md"
 @domain RETINA-CURE := "domains/RETINA-CURE.md"
+@domain IVD-CURE := "domains/IVD-CURE.md"

@@ -1,0 +1,21 @@
+=== IVD-CURE axis-collapse (CURE-PRIMITIVE) ===
+  reversible_NP_AF       mass=0.30 eta_max=0.85
+  dormant_progenitor     mass=0.15 eta_max=0.60
+  lost_NP_AF_endplate    mass=0.55 eta_max=0.30
+  best-achievable (no senolytic) = 0.51 → gate 0.9: BLOCK
+  BINDING AXIS = lost NP/AF/endplate neogenesis (η=0.30) — lowest of all 5 domains
+
+=== #548 boundary test: ceiling at η_lost=1.0 (perfect neogenesis) = 0.90 ===
+  ✗ BOUNDARY CASE: even η_lost=1.0 gives 0.90 < 0.9 — NO senolytic dose closes the gate.
+    Reason: small dormant reserve (0.15) + low reversible mass → reachable ceiling too low.
+    → IVD falls OUTSIDE the cross-cutting senolytic claim (#548 predicted this boundary).
+    Even then, additional requirement on reversible-class η: would need >1 → structurally blocked.
+
+HONEST VERDICT (d6):
+ • IVD fits the SAME structural frame (binding axis = lost-tissue neogenesis) — yes, attackable in-concept.
+ • BUT IVD is the hardest/boundary case: avascular + endplate calcification (nutrition barrier) +
+   scarce NP-progenitor reserve. Senescence IS heavily implicated (NP-cell SASP well documented),
+   so SENOLYX is well-motivated — but a senolytic ALONE may not close the gate without ALSO
+   (a) restoring endplate nutrition (de-calcification/vascular access) and (b) supplying exogenous
+   progenitors (cell therapy), because the endogenous dormant reserve is too small.
+ • This makes IVD the test that SHARPENS the #548 boundary: senolytic is necessary, not sufficient.
