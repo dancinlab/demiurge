@@ -13,6 +13,16 @@ Five foreground branches, all hexa-native (Swift untouched), all in the dedicate
 - [x] **#20 PR-synthesize-qforge → PR#2662 MERGED (@L6 KEYSTONE)**: `action synthesize rtsc --deck <deck>` → spawns `hexa qforge run <deck>`, passes stdout/stderr/rc VERBATIM. d4 thin forwarding cell (atlas/verify pattern); generic dispatch untouched. @L6/d6 HONESTY: HELD migration gate surfaces as-is — NO agreement assertion, NO fabricated λ/Tc, missing-hexa→127. 5 cells (forward HELD-gate rc1 + 4 error paths) byte≡Swift → 108 GREEN. Live-converged happy-path (deck WITH harvested DFPT → real λ·Tc) deferred until the QFORGE↔QE cross-val gate OPENS (that IS the gated migration work, HELD).
 - [ ] NEXT: #17b (llm network) · #21-25 3D (⚠ separate-file loading / NO hardcoding — @L3 updated + §6 locked) → #26 parity-gate-ALL-GREEN (@L2 — the Swift-deletion gate) → #27 bin-flip → #28 swift-delete.
 
+## 2026-06-04 — afg: 3D stack #21 + #24 + #25 landed (geometry SSOT · export-component · emit-component) — separate-file, NO hardcode
+
+Three foreground 3D branches, all hexa-native, all honoring @L3 (file-driven geometry, NO hardcode). MID-RUN the global+project config was flipped to bypassPermissions + bare-tool allowlist (Bash/Read/Edit/Write/WebSearch/WebFetch) to kill recurring prompts.
+
+- [x] #21 PR-htscoil-geometry → **hexa-lang PR#2665 MERGED** (the @L3 ARCHITECTURE): `geometry.hexa` (583L generic loader + USDA/STL builders, ZERO geometry constants) + spec files `geometry/bipv_5layer_v0.geo.json` + `hts_solenoid_proxy_v1.geo.json`. Schema: `component`(layers[] render styles) / `hts_coil`(rings[]). @L3 parity cell `geometry/@L3-file-swap` PROVES a spec-only edit (no recompile) changes emitted geometry. Builder .usda(42478B)/.stl(11697B) byte≡ Swift `export-component`. → 110 GREEN. NOTE: builders (#22/#23) ABSORBED here (SSOT's only byte-comparable output IS the exporter).
+- [x] #24 PR-export-component → **hexa-lang PR#2670 MERGED**: `export-component usda|stl` wired → `geo_load_component`+`geo_usda`/`geo_stl` (#21 reuse, d3, no hardcode). Output-path = `pwd -P` physical-cwd resolve (matches Swift symlink-resolve); stdout 2-line + written bytes byte≡Swift; 4 cells → 114 GREEN.
+- [x] #25 PR-emit-component → **hexa-lang PR#2674 MERGED**: `emit-component` → `.usda`+`.usdz`+`ComponentRecord.procedural` json under `exports/component/geometry/`. procedural-fallback path (no freecadcmd on host). .usda + record JSON byte≡Swift (minus nondeterministic `produced_at_utc`); `.usdz` raw zip bytes nondeterministic (abs-path + mtime) → STRUCTURE-asserted (unzips, 1 entry, uncompressed len == .usda byte count), honest scope. FreeCAD parametric path out-of-scope (host has no kernel). 1 cell → 115 GREEN.
+- [x] #22/#23 builders absorbed into #21 (no separate PR — would be redundant).
+- [ ] NEXT: #17b (llm key/test/ask network) · value-flags (--producer) → **#26 PR-parity-gate-ALL-GREEN (@L2 GATE — no Swift deletion before this)** → #27 bin-flip (bin/demiurge → hexa) → #28 swift-delete (cockpit/ removal).
+
 ## 2026-06-04 — CONSTRAINT recorded: 3D geometry = SEPARATE-FILE LOADING, NO hardcoding (user directive)
 
 User directive (verbatim intent): "3d 등 하드코딩 안됨" + "별도파일 로딩으로 3d 가 되어야함".
