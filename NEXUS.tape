@@ -157,3 +157,7 @@
 @reuse SENOLYX reused[CURE-PRIMITIVE]
   provides = "η_neo-lift (niche senescent clearance) to AGA-CURE · periodontal · OA-cartilage · retinal"
   edge = "CURE-PRIMITIVE identified the universal η_neo bottleneck → SENOLYX is the cross-cutting drug that lifts it"
+@reuse OA-CURE reused[CURE-PRIMITIVE,SENOLYX]
+  edge = "chondral neogenesis bottleneck → SENOLYX η_neo-lift (clearance ≥78%)"
+@reuse RETINA-CURE reused[CURE-PRIMITIVE,SENOLYX]
+  edge = "photoreceptor neogenesis bottleneck → SENOLYX η_neo-lift (clearance ≥72%); UBX1325 retina-validated"
