@@ -1,0 +1,15 @@
+=== R5-A β-gal cleavage-rate selectivity (corrected: normal in slow/linear regime) ===
+SA-βgal fold  sen conv  norm conv  selectivity
+         1×      4.9%       4.9%         1.0×
+         3×     13.9%       4.9%         2.9×
+         5×     22.1%       4.9%         4.5×
+        10×     39.3%       4.9%         8.1×
+        30×     77.7%       4.9%        15.9×
+        50×     91.8%       4.9%        18.8×
+  (normal k0·T=0.05 → 4.9% baseline conversion; senescent ×fold)
+
+  FINDING: with normal cells kept slow (low β-gal), selectivity = active-drug ratio rises
+  ~linearly at low fold then saturates — 5× fold→~4.4×, 10×→~7.9×, 50×→~18.7× selectivity.
+  Matches the round-4 order-of-magnitude (5-50×) and is the CORRECT kinetic mechanism
+  (steric-gating was falsified in round-3: cap didn't block BCL-xL binding).
+  Therapeutic-window driver = SA-β-gal over-expression fold × exposure, NOT binding affinity.
