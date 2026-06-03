@@ -9,3 +9,8 @@
 - [x] verify: BOUNDARY 검증 — η_lost=1.0서도 ceiling=0.90 턱걸이 → senolytic 단독 게이트 불가 (#548 경계조건 실증) g5
 - [x] design: 3제 병용 요건 — SENOLYX(좀비청소)+exogenous progenitor(세포치료)+종판 탈석회/영양복구 정량
 - [ ] axis: SENOLYX·CURE-PRIMITIVE reused[] — 범용 프레임의 첫 BOUNDARY 인스턴스 (NEXUS)
+- [x] axis ⚛️ QUANTUM: pocket-VQE 정밀 ΔG — 디스크 senolytic 표적(BCL-xL 재사용)+이화효소(ADAMTS5/MMP13) (3제 senolytic leg 정밀화)
+- [x] axis 🧶 WEAVE: 자기조립 주입형 하이드로겔/cage — 수핵(NP) 부피복원 + 이식세포 담체 scaffold (3제 cell-therapy leg)
+- [x] axis 🤖 NANOBOT: 디스크内 pH(~6.5 산성)/효소 게이트 트리거-방출 — 퇴행디스크 산성 미세환경 활용 국소방출 (AGA-RX NANOBOT pH게이트 재사용)
+- [x] axis ✂️ RIBOZYME: siRNA/ribozyme — NP 이화/SASP 유전자(ADAMTS5·MMP13·IL-6) knockdown (기질분해+노화분비 동시억제)
+- [x] axis 🦠 VIROCAPSID: AAV 동화 페이로드(TGF-β/GDF5/SOX9) → NP세포 형질도입 — 소실기질 신생 구동 (3제 regen leg)
