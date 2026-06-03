@@ -1,0 +1,15 @@
+=== DC9 integrated re-gate — 5yr restored vs E_max (the one residual knob) ===
+ E_max  5yr-restored  ≥90% gate
+  0.70         0.657       open
+  0.80         0.750       open
+  0.85         0.797       open
+  0.90         0.844       open
+  0.95         0.891       open
+  1.00         0.938      CLOSE
+
+→ ≥90% cure gate CLOSES iff E_max ≥ 0.959
+  with the round-4 mechanism+timing+delivery picks fully wired, the integrated
+  regimen reaches 0.938 (5yr) at full E_max — clears ≥90%.
+  RESIDUAL: the gate is now a SINGLE-parameter question — measure E_max ≥ 0.96.
+  Everything else (mechanism, sequencing, lock timing, delivery cargo-fit) is
+  in-silico resolved; E_max is the sole wet-lab determinant (matches AGA-RX D5 Sobol 98.6%).

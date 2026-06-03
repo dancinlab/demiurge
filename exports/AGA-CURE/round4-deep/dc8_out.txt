@@ -1,0 +1,12 @@
+=== DC8 arm④ inducer activator:inhibitor ratio sweep ===
+ a (act)  b (inh) ratio a/b     k*^2 wavelen(mm) density/cm2     regime
+    0.05     0.50      0.10    0.394       0.559         320     NATIVE
+    0.10     0.50      0.20    0.315       0.625         256     NATIVE
+    0.10     1.00      0.10    0.349       0.594         283     NATIVE
+    0.20     1.00      0.20    0.261       0.686         212     NATIVE
+    0.10     1.50      0.07    0.309       0.630         252     NATIVE
+    0.05     1.20      0.04    0.382       0.568         311     NATIVE
+    0.15     0.90      0.17    0.302       0.638         246     NATIVE
+    0.10     2.00      0.05    0.232       0.728         189     NATIVE
+→ best inducer ratio: a=0.1 b=1.5 (a/b=0.07) → 252/cm² (native window 150-400)
+  interpretation: low activator:inhibitor ratio → discrete spots; high ratio → confluent plaque (ectopic over-patterning).

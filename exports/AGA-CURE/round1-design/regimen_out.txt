@@ -1,0 +1,13 @@
+=== AGA-CURE 4-arm combination regimen — '있는→없는' conversion (200k MC) ===
+baseline bald density ≈ 62/cm^2 (25% of never-bald 250)
+final coverage vs never-bald: mean=78.7%  median=79.3%  90%CI=[65.6, 89.6]%
+P(CURE gate① ≥90% terminal density restored) = 4.3%
+P(≥70% restored, strong cosmetic)            = 87.2%
+
+per-arm marginal (coverage drop if arm removed):
+  −arm② 되돌리기       :  17.4%p loss → 61.3%
+  −arm① 깨우기        :  11.4%p loss → 67.3%
+  −arm④ 신생(T3)     :  11.4%p loss → 67.3%
+  −arm③ 잠금         :  37.3%p loss → 41.4%
+
+sequencing: ④prep(verteporfin)→②③Wnt-restore+neogenesis(band)→①reactivate→③lock. arm④ matters most where fT3 large (very-late Norwood); arms①② carry the reversible majority.
