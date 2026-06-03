@@ -2,6 +2,17 @@
 
 Append-only history sister of `8VERB.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-04 — `all fg go`: pure-hexa stack #4 + #5 landed (atlas-refusal · record-loader)
+
+Two foreground branches the prior turn offered, both hexa-native (Swift untouched).
+
+- [x] #4 PR-atlas → hexa-lang **PR#2639 MERGED** (squash into stack branch): `atlas` flipped manifest `subprocess`→`local`; `handler_atlas` classifies read (lookup/stats/hash/dump → verbatim forward) vs write (register/append-witness/pr) — write w/o `DEMIURGE_OWNER` REFUSED stderr `owner op (사장실 · M20)` rc2, with owner → forward. Generic dispatch untouched (d4). 3 parity cells (GOLDEN+live).
+- [x] #5 PR-record-loader → hexa-lang **PR#2640 MERGED**: hexa-native `RecordLoader`+`ArtifactRegistry` (`record_loader.hexa`, 244L) — exports-root resolve (`$DEMIURGE_REPO/exports` else `<cwd>/../exports`), `rl_enumerate`/`rl_load_by_id`/`rl_load_by_path`/`rl_resolve` mirroring Swift, invariant-a path guard (outside + `..`-escape refused). Refactored `verify_record.hexa` onto it (224→123L, d3 dedup) — its 5 cells stayed byte-green. Loader `@ci_gate` self-check added.
+- [x] parity verdict VERBATIM (g5): `demi_parity_selftest PASS` — **17/17 cells GREEN** (4 discover/action + 3 verify-passthrough + 5 verify-record + 3 atlas + 1 loader self-check + 1 live-forward). No discover stale-binary noise this run.
+- [x] runtime finding (for the stack): in-process `setenv()` is a no-op stub (`hxlcl_setenv`) — env-dependent cells must spawn a child `hexa run` with the env set at child startup (verify cells + loader cell both use this).
+- [x] stack topology: all sub-PRs squash-merge INTO branch `demi-stack3-verify-record` (now #3+#4+#5); that branch → main = PR#2638 (OPEN, the funnel PR). pr-cycle harness hook auto-merges each sub-PR into its base — linear stack preserved, reported honestly.
+- [ ] NEXT runnable: #6 list-kinds · #7 show-record · #8 gates — all build on the #5 `RecordLoader` base.
+
 ## 2026-06-04 — pure-hexa stack #3 (PR-verify-record) landed → hexa-lang PR#2638 (open, parent review)
 
 Corrected-surface resume after the Swift halt. Bare `verify <path|id>`
