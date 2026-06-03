@@ -18,3 +18,4 @@
 - [x] DEEP R7 인과모델(/gap F4 top-1 폐쇄): SASP-Hill 억압 do-연산자 개입 + young/old 반사실 + 구별실험(Hill 기울기 n>0) — 청소→재생 연관을 falsifiable 인과가설로 전환
 - [x] DEEP R8 3축 landscape(/gap top-2+F2 폐쇄): HSP90(geldanamycin −4.91, Vina 거대고리 과소평가=F8 단일툴 gap 자기실증) 3번째 축 추가 → 3축 칵테일 74% 청소, triple-resistant 닫음, 잔여 10%=면역 adjunct
 - [x] DEEP R9 교차툴 재점수(/gap top-3 F8 해소): HSP90 geldanamycin Vina −4.91 vs MM-GBSA −66.5 — Vina가 거대고리 과소평가 확정(단일툴 아티팩트), 3번째 축은 강결합. 절대값 FEP[GPU]는 이월
+- [ ] DEEP R10 FEP 절대 ΔG (이월·GPU): HSP90 geldanamycin ABFE — perses/OpenFE deck + 거대고리 FF 파라미터 → vast.ai GPU pod ~12–24h·$15–35, deck 로컬 dry-run 후 d17 발사. MM-GBSA(R9)가 부호/방향은 이미 해소; 절대값 정밀화만 잔여
