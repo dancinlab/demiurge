@@ -15,3 +15,4 @@
 - [x] DEEP R5-A β-gal 절단속도 선택성 모델: Michaelis-Menten 프로드러그→활성 전환, senescent SA-βgal Km/kcat·노출시간 적분 → 활성약 AUC 선택비(sen:normal) 정량 (round-3 입체게이팅 반증의 동역학 후속)
 - [x] DEEP R5-B CRBN-PROTAC 설계+도킹: A-1155463 워헤드 + linker + CRBN리간드(pomalidomide), BCL-xL(4QVX) + CRBN(4CI1) 양단 도킹 → 삼원복합체 타당성 (혈소판회피 NOVEL leg)
 - [x] DEEP R6 이질성→칵테일: BCL-xL 의존분율 r<0.67시 단독요법 청소<60%(cure게이트 fail) → 2-축 칵테일(BCL-xL A-1155463 + MCL-1 S63845 −8.18) 필요; 브레인스토밍 고갈
+- [x] DEEP R7 인과모델(/gap F4 top-1 폐쇄): SASP-Hill 억압 do-연산자 개입 + young/old 반사실 + 구별실험(Hill 기울기 n>0) — 청소→재생 연관을 falsifiable 인과가설로 전환
