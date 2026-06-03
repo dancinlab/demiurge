@@ -1,6 +1,7 @@
 # AGA-CURE — current state
 
-@goal: 남성형 탈모 완전-복원 CURE — "탈모 있는 사람을 없는 사람으로". 유지/완만한 역전(SoC·AGA-RX)을 넘어 모든 미니어처화 모낭의 terminal 밀도 완전 복원 + 재발 영구 차단(disease-modifying). 4-arm 조합: ①깨우기(HFSC 재활성) ②되돌리기(Wnt복원, AGA-RX 상속) ③영구잠금(AAV anti-DKK1, AGA-RX VIROCAPSID 상속) ④신생(de novo neogenesis 완전소실부). in-silico 완치 게이트(terminal 밀도 100% 복원 + 재발 0) → wet-lab. 종료점 없는 frontier
+@goal: 남성형 탈모를 "있는 사람→없는 사람"으로 만드는 완전복원 disease-modifying 완치 — 4-arm(①깨우기 ②되돌리기 ③영구잠금 ④신생)으로 terminal 밀도 100% 복원 + 중단 후 재발 0. non-wet-lab 게이트(기전·시퀀싱·전달·안전·영구성·신생) 전부 in-silico 종결까지 d1/d5/d6/d19
+
 @title: 🌱 AGA-CURE — "탈모 완치 (있는→없는 완전복원)"
 
 (edit me — describe current state in completed-form; no history, no changelog inside this file)
