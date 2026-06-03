@@ -52,15 +52,34 @@ exposure so the `synthesize` verb can drive QFORGE without dropping to `hexa`:
 
 - [x] DISCOVERY: enumerate the current `demiurge cli` 25-subcommand verb/flag/exit surface + the 8-verb→handler→hexa-native target table + the QFORGE-via-verb wiring spec → `drafts/8verb-cli-wiring-plan.md` (parity spec for the port)
 - [x] PR1 — discover wired as ordered stage #0 in `usage()`/`operate list` (not orthogonal phanes pass-through; behavior unchanged) — landed in main tree (af85101), @ci_gate PASS (swift build · `--help` 0/8 ladder · discover-no-phanes still exit 2)
-- [ ] PR2/PR3 — `demiurge cli action synthesize rtsc --deck <deck> [--engine qforge]` drives QFORGE el-ph via HexaBridge (`qforge run` @L2 / `dft-run --engine qforge` @L3) with no `hexa` drop; gap report verbatim (d6)
-- [ ] PR4 — verify verb surfaces the QFORGE→QE migration gate (CaH6·LaH10·Li2MgH16) via `hexa qforge gate`, verdict verbatim (no asserted agreement)
-- [ ] all 8 verbs dispatch through ONE generic path (d4 — manifest-driven cell, no per-verb hardcoding in the generic layer)
+### REORDER 2026-06-03 — Swift 폐기 FIRST (user directive): do NOT extend the Swift surface
+
+The Family-A Swift PRs (PR2/PR3/PR4 below) are **SUPERSEDED** — building on
+`cockpit/Sources/DemiurgeCLI/main.swift` only adds code that gets deleted. The
+canonical path is now `drafts/demi-cli-pure-hexa-native-plan.md` (status=active,
+mode=auto complete-forced): strip Swift COMPLETELY → pure hexa-native under
+`stdlib/demi/` (hexa-lang), then delete `cockpit/` after the parity gate is
+ALL-GREEN. synthesize→QFORGE and verify-gate re-home as rows in that 28-PR stack.
+
+- [~] ~~PR2/PR3~~ SUPERSEDED → **PR-synthesize-qforge (stack #20)** in pure-hexa plan: `action synthesize rtsc --deck <deck>` → `hexa qforge run <deck>` subprocess, output VERBATIM (d6, HELD gate ≠ agreement). Lands hexa-native in `stdlib/demi/`, NOT Swift.
+- [~] ~~PR4~~ SUPERSEDED → **PR-verify-record (stack #3)** + verify-passthrough (✅ MERGED hexa-lang #2602): `verify --expr|rubric` → `hexa verify` kernel verbatim already done; bare `verify <path|id>` record/claim-gate is #3.
+- [ ] FOUNDATION+PROOF ✅ landed hexa-lang (PR#2597 + #2602 = rows 1-2): `stdlib/demi/` manifest-driven generic dispatch (d4) + per-verb parity smoke (`demi_selftest.hexa` @ci_gate); discover + verify-passthrough cells byte≡Swift
+- [ ] pure-hexa stack PRs #3–#19 — RecordLoader · list-*/show/gate · DomainCatalog/compose · ProjectStore · operate/backend/owner · llm · cellrun-engine (each <200 lines, own parity cell, g4)
+  - [x] #3 PR-verify-record ✅ hexa-lang PR#2638 (open, parent review) — bare `verify <path|id>` provenance/claim-gate, 5 parity cells byte≡Swift (GOLDEN + live)
+  - [ ] #4–#19 remaining (NEXT runnable: #4 atlas-refusal or #5 record-loader)
+- [ ] geometry exporters hexa-native (@L3, stack #21–#25): HtsCoilGeometry · STL/USD emit · emit/export-component — golden-file parity vs Swift bytes
+- [ ] **PR-parity-gate-all-green (stack #26, @L2 GATE)** — every verb's parity cell ALL-GREEN; NO Swift deletion before this is green
+- [ ] **PR-bin-flip (stack #27, demiurge repo, @L5)** — `bin/demiurge cli` flips `exec swift run DemiurgeCLI` → `hexa run stdlib/demi/demi_cli.hexa`, keep `--swift` explicit fallback
+- [ ] **PR-swift-delete (stack #28, demiurge repo, @L2)** — delete `cockpit/Sources/DemiurgeCLI` + `DemiurgeCore` + Package.swift CLI target (24k LOC) AFTER #26 green; web GUI (Next.js + react-three-fiber) UNTOUCHED (@L4)
+
+#### original Family-A milestones (kept for trace; do NOT pursue on Swift)
+- [ ] ~~PR2/PR3 — synthesize→QFORGE via HexaBridge on the Swift surface~~ (superseded above)
+- [ ] ~~PR4 — verify verb gate readout on the Swift surface~~ (superseded above)
+- [ ] all 8 verbs dispatch through ONE generic path (d4) — now realized by the `stdlib/demi/` manifest dispatcher
 - [ ] `demiurge cli` ⇄ web GUI ⇄ web-bridge: every verb reachable on all three surfaces
-- [ ] per-verb parity smoke (@ci_gate) script — Swift-parity until hexa-native migration lands
-- [ ] hexa-native CLI re-home (Family B, PR5–PR9): 8 verbs as `hexa demi …` stdlib subcommands; Swift retired only after per-verb parity (demi-cli-hexa-native-plan)
 
 ## §6 shelf — design options
 
-- CLI home: (a) keep Swift DemiurgeCLI as the surface until hexa-native parity · (b) hexa-native first, Swift frozen — LOCKED (b) per demi-cli-hexa-native-plan.
+- CLI home: (a) keep Swift DemiurgeCLI as the surface until hexa-native parity · (b) hexa-native first, Swift frozen · (c) **Swift 폐기 FIRST — strip Swift COMPLETELY, pure hexa-native, delete `cockpit/` after parity gate** — LOCKED (c) 2026-06-03 per `demi-cli-pure-hexa-native-plan.md` (user directive: do not extend the Swift surface).
 - discover placement: (a) ordered stage #0 · (b) orthogonal continuous lane (d_discovery) — 8VERB picks (a) for the ladder, (b) stays as the always-on discovery reflex.
 - QFORGE engine select: (a) `qforge run` direct · (b) `dft-run --engine qforge` dispatch — both, per qforge-production-migration-plan @L2/@L3.
