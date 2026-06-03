@@ -16,3 +16,6 @@
 @paper aga-cure-insilico-axis-collapse := "./PAPER/aga-cure-insilico-axis-collapse"
 @paper universal-neogenesis-bottleneck-senolytic := "./PAPER/universal-neogenesis-bottleneck-senolytic"
 @paper aga-cure-4arm-restoration       := "./PAPER/aga-cure-4arm-restoration"
+@paper perio-cure-regen                 := "./PAPER/perio-cure-regen"
+@paper retina-cure-photoreceptor-regen  := "./PAPER/retina-cure-photoreceptor-regen"
+@paper oa-cure-cartilage-regen          := "./PAPER/oa-cure-cartilage-regen"
