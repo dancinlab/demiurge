@@ -26,3 +26,4 @@
 - [x] DEEP DC11 후성유전편집 특이성: locus-targeted Cas12f 메틸화 off-target — gRNA seed 미스매치 허용 vs 게놈 유사부위 수 → on:off 특이성비
 - [x] DEEP DC12 후성유전 마크 유전성: dCas9/Cas12f 메틸화 마크가 HFSC 자기재생 분열에 걸쳐 50년 유지되나 — 분열당 유지율 vs 마크소실 → DC3 영구화 가정 falsify-test
 - [x] DEEP DC13 E_max 임상앵커: wet-lab 전용 주장 반증 — Van Neste 용량반응에서 현행 2-arm 천장 E_max≈0.59(생물학적, 섬유화25% 일치) 역산, 잔차=arm④ 신생효율(in-vitro 오가노이드 브래킷)
+- [x] DEEP DC14 arm④ 신생효율 브래킷: DC13 산술오류 정정(0.37>0.25, arm④만으론 게이트 불가) — ≥0.96은 η_react≳0.95+η_neo≳0.84 동시필요, 인간 신생효율 49%론 최대 0.87, 병목=신생효율 49→84%

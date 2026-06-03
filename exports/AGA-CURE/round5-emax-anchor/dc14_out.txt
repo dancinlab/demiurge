@@ -1,0 +1,28 @@
+=== DC14 arm④ neogenesis efficiency bracket ===
+  reachable mass (mini+dorm) = 0.75; fibrosed mass = 0.25
+  current ceiling 0.59 ⇒ implied η_react(current drugs) = 0.79
+
+  [DC13 CORRECTION] arm④ alone, η_neo=1.0, η_react held at current 0.79:
+     max ceiling = 0.59 + 0.25*1.0 = 0.84  < gate 0.96
+     ⇒ DC13 'lift 0.37 within 0.25 headroom' was WRONG (0.37 > 0.25).
+     Even PERFECT neogenesis cannot close the gate from the current ceiling alone.
+
+  feasibility frontier: 0.75*η_react + 0.25*η_neo >= 0.96
+   η_react min η_neo needed  feasible vs literature η_neo∈[0.17,0.49] human / ~1.0 mouse-embryo
+      0.79             1.47  IMPOSSIBLE (η_neo>1)
+      0.85             1.29  IMPOSSIBLE (η_neo>1)
+      0.90             1.14  IMPOSSIBLE (η_neo>1)
+      0.95             0.99  needs η_neo≥0.99 > human-lit 0.49 → only mouse-embryo regime
+      1.00             0.84  needs η_neo≥0.84 > human-lit 0.49 → only mouse-embryo regime
+
+  FINDING (honest, tightens DC9/DC13):
+   • The ≥0.96 gate is NOT reachable by arm④ neogenesis alone (corrects DC13).
+   • It requires arms①② reactivation efficacy η_react ≳ 0.95 (cure-grade mechanisms,
+     ABOVE the current-drug 0.79) AND arm④ η_neo near the top of its range.
+   • Human in-vitro neogenesis today (organoid invagination 17–49%, Kim 2024) is
+     BELOW what a low-η_react path would need; ~100% is only mouse-embryonic.
+   • So the residual is a TWO-number in-vitro target, not one: (η_react→0.95, η_neo→high).
+   • A softer gate (≥0.90) loosens this: 0.75*0.90+0.25*0.49=0.80; still needs η_react≈0.95.
+   • Best-case ceiling (η_react=1.0, η_neo=0.49 human-lit) = 0.87
+     ⇒ with TODAY's human neogenesis efficiency, max restoration ≈ 0.87 (< 0.96 gate).
+     The gate's bottleneck is η_neo: human neogenesis must rise 0.49→~0.84 to clear 0.96.
