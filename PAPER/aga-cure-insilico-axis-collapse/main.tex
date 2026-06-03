@@ -60,7 +60,7 @@ cure. We asked, purely in silico, whether a four-arm complete-restoration progra
 follicles, (3) permanently locking the corrected state, and (4) de-novo follicle
 neogenesis in fibrosed regions --- can reach a pre-registered $\geq 90\%$
 restoration-and-no-relapse cure gate, and which design variable controls that
-gate. Across twelve deterministic probes (DC1--DC12) we score each design axis
+gate. Across fourteen deterministic probes (DC1--DC14) we score each design axis
 (mechanism choice, dosing sequence, lock timing, delivery cargo-fit, neogenesis
 spacing) and propagate the single unmeasured efficacy parameter $E_{max}$. The
 headline finding is negative and structural: once every in-silico axis is
@@ -71,19 +71,25 @@ unknown: published minoxidil/finasteride dose-response data anchor the
 current two-arm ceiling at $E_{max}\approx 0.59$--$0.80$ of normal productivity ---
 a \emph{biological}, not pharmacological, plateau that coincides exactly with the
 $25\%$ fully-fibrosed follicle fraction those drugs cannot reach. The cure gate
-therefore reduces further, to a single \emph{in-vitro}-bracketable quantity: the
-arm-4 neogenesis conversion efficiency on that fibrosed fraction. Along the way three candidate mechanisms are falsified:
+therefore reduces to a two-number \emph{in-vitro} target --- reactivation efficacy
+$\eta_{\text{react}}{\to}0.95$ and neogenesis efficiency $\eta_{\text{neo}}{\to}0.84$
+--- both bracketable on organoid platforms. We further show (DC14) that with
+\emph{today's} human neogenesis efficiency ($\leq 0.49$) the achievable ceiling is
+only $\approx 0.87 < 0.96$: the gate is bottlenecked by the neogenesis-efficiency
+gap, not by any missing mechanism. Along the way three candidate mechanisms are falsified:
 adeno-associated-virus (AAV) episomal delivery cannot provide lifetime
 relapse-zero permanence (cure-fit $0.14$; the episome dilutes over ${\sim}8$ yr
 $\ll 50$ yr); the two highest-\emph{potency} Wnt-restoration mechanisms
 (GSK3$\beta$ inhibition, Wnt agonism) are ruled out of a chronic-use roster on
 oncogenic-safety grounds (so potency is \emph{not} the binding axis); and the
 epigenetic permanence lock is fidelity-sensitive --- it fails below a DNMT1
-maintenance fidelity of ${\sim}0.97$. We claim no positive efficacy: $E_{max}$
-itself is a wet-lab measurement, and several estimates are order-of-magnitude
-(\tierOrange / \tierGreen). The contribution is the deterministic reduction of a
-large design space to a single falsifiable experiment. Reproduction artifacts are
-in \texttt{companion/} (DC1--DC12 scripts and result ledgers).
+maintenance fidelity of ${\sim}0.97$. We claim no positive efficacy: the residual
+arm-4 efficiency is an in-vitro measurement, and several estimates are
+order-of-magnitude (\tierOrange / \tierGreen). The contribution is the
+deterministic reduction of a large design space to a two-number, in-vitro-bounded
+target with a single dominant bottleneck. Reproduction artifacts are in
+\texttt{companion/} and \texttt{exports/AGA-CURE/} (DC1--DC14 scripts and result
+ledgers).
 \end{abstract}
 
 \section{Introduction}
@@ -127,7 +133,7 @@ $E_{max}$ is not a from-scratch unknown: existing minoxidil/finasteride
 dose-response pins the current two-arm ceiling at $\approx 0.59$
 \citep{vanneste2020}, a biological plateau matching the $25\%$ fibrosed follicle
 fraction, so the residual narrows to one in-vitro-bracketable quantity.
-\item \textbf{A reproducible reduction pipeline.} Thirteen deterministic probes
+\item \textbf{A reproducible reduction pipeline.} Fourteen deterministic probes
 with pre-registered thresholds and a single balanced aggregator (geometric mean)
 take a multi-axis cure-design question down to one in-vitro measurement, with every
 step persisted for independent re-run.
@@ -164,7 +170,7 @@ single-AAV cargo ceiling is ${\sim}4.7$ kb \citep{wu2010}, which --- as DC7 show
 \section{Full Pipeline}
 \label{sec:pipeline}
 
-The path from question to verified reduction is twelve deterministic probes
+The path from question to verified reduction is fourteen deterministic probes
 (DC1--DC12), each tier-tagged under the rubric below. ``Backing record'' is the
 persisted artifact that makes the stage independently re-runnable
 (\texttt{companion/} script + result ledger).
@@ -198,6 +204,7 @@ DC10 & cumulative multi-modal safety                     & \tierGreen & \texttt{
 DC11 & epigenetic-edit specificity (order-of-magnitude)  & \tierOrange& \texttt{dc1011\_safety\_spec.py} \\
 DC12 & epigenetic-mark heritability (falsify-test)       & \tierGreen & \texttt{dc12\_mark\_heritability.py} \\
 DC13 & $E_{max}$ clinical anchor (existing-drug dose-resp.)& \tierYellow& \texttt{dc13\_emax\_clinical\_anchor.py} \\
+DC14 & neogenesis-efficiency bracket (corrects DC13)      & \tierGreen & \texttt{dc14\_neogenesis\_bracket.py} \\
 \bottomrule
 \end{tabular}
 \caption{Pipeline DC1--DC12. The honest stance is that \tierOrange\ does not
@@ -542,17 +549,62 @@ gate requires lifting it to $0.96$.}
 reversal address the miniaturised ($0.45$) and dormant ($0.30$) classes ---
 $0.75$ of follicles --- but cannot touch the fully-fibrosed class ($0.25$), whose
 dermal-papilla niche is lost. The current ceiling is therefore not a tuning
-coincidence; it is the $25\%$ fibrosed mass made visible. The required cure lift
-$0.96-0.59 = 0.37$ lies within arm-4's headroom (regenerating that $0.25$ plus
-removing relapse via arm-3). Consequently the residual is not ``measure $E_{max}$
-from scratch'' but the narrower ``measure the arm-4 neogenesis conversion
-efficiency on the fibrosed fraction,'' which is bracketable \emph{in vitro} on
-hair-follicle organoid drug-testing platforms \citep{vitroDrugTest2023}, and whose
-cycle dynamics are captured by established follicular-automaton models
-\citep{halloy2000} --- not a whole-animal endpoint. We therefore retract the
-``irreducibly wet-lab'' framing: $E_{max}$ is clinically anchored and the residual
-is in-vitro bracketable. (\tierYellow: the anchor is a cited clinical value; the
-arm-4 efficiency remains \tierOrange\ pending the in-vitro readout.)
+coincidence; it is the $25\%$ fibrosed mass made visible. The residual is
+therefore not ``measure $E_{max}$ from scratch'' but the narrower question of the
+arm-4 neogenesis conversion efficiency on the fibrosed fraction, bracketable
+\emph{in vitro} on hair-follicle organoid drug-testing platforms
+\citep{vitroDrugTest2023}, with cycle dynamics captured by established
+follicular-automaton models \citep{halloy2000} --- not a whole-animal endpoint.
+We therefore retract the ``irreducibly wet-lab'' framing: $E_{max}$ is clinically
+anchored and the residual is in-vitro bracketable. (\tierYellow: the anchor is a
+cited clinical value; the arm-4 efficiency remains \tierOrange\ pending the
+in-vitro readout.) DC14 (below) bounds that efficiency and corrects a naive
+headroom estimate.
+
+\subsection{The neogenesis-efficiency bottleneck (DC14)}
+\label{sec:dc14}
+
+A naive reading of DC13 is that the $0.96-0.59 = 0.37$ lift ``fits in'' arm-4's
+fibrosed fraction. It does not: $0.37 > 0.25$, so even a perfect arm-4
+($\eta_{\text{neo}}=1$) applied to the fibrosed mass, with reactivation held at
+the current-drug level, reaches only $0.59 + 0.25 = 0.84 < 0.96$. The gate cannot
+close on neogenesis alone. Decomposing the ceiling as
+\begin{equation}
+E_{max} = \underbrace{0.75}_{\text{reachable}}\,\eta_{\text{react}}
+        + \underbrace{0.25}_{\text{fibrosed}}\,\eta_{\text{neo}},
+\end{equation}
+the current drugs sit at $\eta_{\text{react}}=0.59/0.75=0.79$, $\eta_{\text{neo}}=0$.
+The $\geq 0.96$ gate then demands the joint frontier in Table~\ref{tab:dc14}.
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{ccl}
+\toprule
+$\eta_{\text{react}}$ & min $\eta_{\text{neo}}$ for $0.96$ & verdict \\
+\midrule
+0.79 (current) & 1.47 & impossible ($\eta_{\text{neo}}>1$) \\
+0.90 & 1.14 & impossible \\
+0.95 & 0.99 & mouse-embryo regime only \\
+1.00 & 0.84 & mouse-embryo regime only \\
+\bottomrule
+\end{tabular}
+\caption{DC14 feasibility frontier. Human in-vitro neogenesis efficiency is
+$0.17$--$0.49$ \citep{vitroDrugTest2023}; only mouse-embryonic organoids reach
+${\sim}1.0$. The gate needs $\eta_{\text{react}}\gtrsim 0.95$ \emph{and}
+$\eta_{\text{neo}}\gtrsim 0.84$ simultaneously.}
+\label{tab:dc14}
+\end{table}
+
+\noindent\textbf{Finding.} With today's human neogenesis efficiency
+($\eta_{\text{neo}}\leq 0.49$) and even perfect reactivation, the achievable
+ceiling is $0.75\cdot 1.0 + 0.25\cdot 0.49 = \mathbf{0.87} < 0.96$: the gate
+\emph{cannot} close at present. The bottleneck is unambiguously
+$\eta_{\text{neo}}$, which must rise from ${\sim}0.49$ to ${\sim}0.84$. The
+residual is thus a \emph{two}-number in-vitro target,
+$(\eta_{\text{react}}{\to}0.95,\ \eta_{\text{neo}}{\to}0.84)$, dominated by the
+neogenesis-efficiency gap --- a sharper, and more pessimistic, statement than DC13
+alone. This is the honest close: the cure is not blocked by an unknown mechanism,
+but by a quantified efficiency shortfall in human follicle neogenesis.
 
 \section{Discussion}
 \label{sec:discussion}
@@ -606,11 +658,14 @@ quantity: the anagen efficacy ceiling $E_{max}$, which must reach $0.96$ for the
 $\geq 90\%$ cure gate to close. That quantity is not an open wet-lab unknown ---
 existing minoxidil/finasteride dose-response anchors the current two-arm ceiling at
 $E_{max}\approx 0.59$, a biological plateau set by the $25\%$ fibrosed follicle
-fraction --- so the residual narrows to one in-vitro-bracketable number: the arm-4
-neogenesis conversion efficiency on that fraction. The most important next step is
-therefore not a mechanism screen but a single organoid-platform measurement of
-arm-4 neogenesis efficiency. The negative result is the contribution: a large
-design space reduced, deterministically, to one falsifiable, in-vitro question.
+fraction --- so the residual narrows to a two-number in-vitro target
+$(\eta_{\text{react}}{\to}0.95,\ \eta_{\text{neo}}{\to}0.84)$, dominated by the
+neogenesis-efficiency gap. DC14 sharpens this to a pessimistic but actionable
+statement: at today's human neogenesis efficiency ($\leq 0.49$) the ceiling caps at
+$\approx 0.87$, so the single most important next step is an organoid-platform
+program to raise human follicle-neogenesis efficiency from ${\sim}0.49$ toward
+${\sim}0.84$. The negative result is the contribution: a large design space reduced,
+deterministically, to one falsifiable, in-vitro bottleneck.
 
 % =========================================================================
 \paragraph{Acknowledgments.}
@@ -643,6 +698,7 @@ delivery: Cas12f single-AAV ($0.766$)                          & \texttt{dc67\_s
 neogenesis density robust ($189$--$320$\,cm$^{-2}$)            & \texttt{dc8\_inducer\_ratio.py} & \tierGreen \\
 \textbf{collapse: gate $\Leftrightarrow E_{max}\geq 0.96$}      & \texttt{dc9\_integrated\_regate.py} & \tierGreen \\
 $E_{max}$ current anchor $0.59$ (clinical)                      & \texttt{dc13\_emax\_clinical\_anchor.py} & \tierYellow \\
+neogenesis bottleneck: ceiling $\leq 0.87$ today (η$_{\text{neo}}{\leq}0.49$) & \texttt{dc14\_neogenesis\_bracket.py} & \tierGreen \\
 cumulative AE $0.228<0.30$                                      & \texttt{dc1011\_safety\_spec.py}& \tierGreen \\
 editor specificity (order-of-magnitude)                         & \texttt{dc1011\_safety\_spec.py}& \tierOrange \\
 F3: epigenetic lock fidelity-sensitive ($f\geq 0.98$)          & \texttt{dc12\_mark\_heritability.py} & \tierGreen \\
