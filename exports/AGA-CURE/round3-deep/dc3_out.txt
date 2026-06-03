@@ -1,0 +1,13 @@
+=== arm③ 영구화 7-기전 — durability × risk × relapse-0 fit ===
+mechanism                  dur(yr) self-renew  risk  relapse-0?  cure-fit*
+epigenetic edit (dCas9)         15       True  0.30        True       0.77
+synthetic bistable              30       True  0.45        True       0.61
+CRISPR KO (AR/SRD5A2)           50       True  0.55        True       0.45
+cell replace (iPSC DPC)         50       True  0.60        True       0.40
+integrating (lenti/TB)          50       True  0.65        True       0.35
+AAV episomal ★현재                 8      False  0.20       False       0.14
+senolytic 1x                     3      False  0.10       False       0.06
+
+* cure-fit = relapse-0-eff × (1−risk) × reversibility-bonus (higher=better balance of permanence+safety)
+→ best balance: epigenetic edit (dCas9) (fit 0.77) — durable Wnt-on/DKK1-off memory; lower risk, no DNA cut; durability less certain
+verdict: 현재 AAV episomal은 안전하나 dilution으로 relapse-0 미달(8yr<50). 균형 최적 = 후성유전 편집(durable+reversible+저risk). 최강 영구 = CRISPR KO/통합(relapse-0 확실하나 비가역+mutagenesis). → arm③ 권고: 후성유전 편집 1차 + CRISPR KO를 강력옵션, 세놀리틱은 단독 아닌 병용 prep.

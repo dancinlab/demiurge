@@ -1,0 +1,8 @@
+/Users/mini/dancinlab/demiurge/exports/AGA-CURE/round3-deep/dc1_spectral.py:13: RuntimeWarning: overflow encountered in multiply
+  ru=gamma*(a-u+u*u*v); rv=gamma*(b-u*u*v)     # reaction (explicit)
+/private/tmp/aga-dock-tc/mamba/envs/dock/lib/python3.11/site-packages/numpy/fft/_pocketfft.py:101: RuntimeWarning: invalid value encountered in fft
+  return ufunc(a, fct, axes=[(axis,), (), (axis,)], out=out)
+/Users/mini/dancinlab/demiurge/exports/AGA-CURE/round3-deep/dc1_spectral.py:14: RuntimeWarning: invalid value encountered in multiply
+  u=np.real(np.fft.ifft2(Lu*np.fft.fft2(u+dt*ru)))
+/Users/mini/dancinlab/demiurge/exports/AGA-CURE/round3-deep/dc1_spectral.py:15: RuntimeWarning: invalid value encountered in multiply
+  v=np.real(np.fft.ifft2(Lv*np.fft.fft2(v+dt*rv)))
