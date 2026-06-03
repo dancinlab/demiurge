@@ -15,3 +15,4 @@
 @paper sample-nb-bcs-absorbed           := "./PAPERS/sample-nb-bcs-absorbed"
 @paper aga-cure-insilico-axis-collapse := "./PAPER/aga-cure-insilico-axis-collapse"
 @paper universal-neogenesis-bottleneck-senolytic := "./PAPER/universal-neogenesis-bottleneck-senolytic"
+@paper aga-cure-4arm-restoration       := "./PAPER/aga-cure-4arm-restoration"
