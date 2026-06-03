@@ -154,3 +154,6 @@
 @N n3 := "cross-repo scope policy (g68)" :: note [active]
   rule = "ONLY 4 declared bidirectional peers (hexa-lang, anima, phanes, echoes). other cross-repo consumers are unidirectional and live at the source repo's NEXUS.tape."
   ssot = "hexa-lang NEXUS.tape n2.scope_rule — hub records hub<->peer only; peer-mesh is peer-side."
+@reuse SENOLYX reused[CURE-PRIMITIVE]
+  provides = "η_neo-lift (niche senescent clearance) to AGA-CURE · periodontal · OA-cartilage · retinal"
+  edge = "CURE-PRIMITIVE identified the universal η_neo bottleneck → SENOLYX is the cross-cutting drug that lifts it"

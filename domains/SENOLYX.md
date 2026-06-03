@@ -8,7 +8,7 @@
 - [x] spec: NOVEL 표적 — 재생-niche 노화 섬유아세포 SELECTIVE 청소 (혈소판독성 BCL-xL 회피 + niche 특이성)
 - [x] structure: BCL-xL(3ZLR)·BCL-2 포켓 확보 + 결합포켓 정의
 - [x] design: NOVEL senolytic 후보 in-silico 도킹 + MM-GBSA (AGA-RX 스택 + 뚫은 env 재사용)
-- [ ] analyze: ADMET + niche-선택성 off-target(혈소판 BCL-xL 독성 회피) 스크린
-- [ ] verify: η_neo-lift PD 게이트 — niche 청소→신생효율 0.49→0.84 회복 in-silico (CURE-PRIMITIVE 연결) g5
-- [ ] handoff: IND 초안 + 범용-완치 병용(AGA/치주/연골/망막) 전략 + IP
-- [ ] axis: CURE-PRIMITIVE reused[] — 4 완치도메인 공통 η_neo 병목을 SENOLYX가 푼다 (NEXUS edge)
+- [x] analyze: ADMET + niche-선택성 off-target(혈소판 BCL-xL 독성 회피) 스크린
+- [x] verify: η_neo-lift PD 게이트 — niche 청소→신생효율 0.49→0.84 회복 in-silico (CURE-PRIMITIVE 연결) g5
+- [x] handoff: IND 초안 + 범용-완치 병용(AGA/치주/연골/망막) 전략 + IP
+- [x] axis: CURE-PRIMITIVE reused[] — 4 완치도메인 공통 η_neo 병목을 SENOLYX가 푼다 (NEXUS edge)
