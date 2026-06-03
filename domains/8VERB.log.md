@@ -2,6 +2,17 @@
 
 Append-only history sister of `8VERB.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-04 — afg: pure-hexa stack #14+#15+#16+#17a+#20 landed (operate·backend·owner·llm·synthesize→QFORGE @L6)
+
+Five foreground branches, all hexa-native (Swift untouched), all in the dedicated worktree. MID-RUN friction fix: folder-approval was confirmed already-trusted via `/add-dir`; recurring Bash-command prompts addressed by a broad prefix allowlist in `.claude/settings.local.json` (cd·hexa·git·gh·cp·export·test·tail·rm-temp/cache `:*`).
+
+- [x] #14 PR-operate → **PR#2655 MERGED**: `operate list|audit` + `operation_registry.hexa` (17-op DATA manifest, d4 no name-branch) + owner/expert gate. 8 cells → 77 GREEN.
+- [x] #15 PR-backend → **PR#2656 MERGED**: `backend list|current` + `backend_resolver.hexa` (local + `DEMIURGE_BACKEND`, `ssh:` prefix strip, pool hosts owner-gated from ~/.pool/pool.json). 10 cells → 87 GREEN.
+- [x] #16 PR-owner → **PR#2657 MERGED**: `owner` status surface (env-only `DEMIURGE_OWNER`, locked/unlocked, reuses #14 owner helpers d3). 2 cells → 89 GREEN.
+- [x] #17a PR-llm → **PR#2661 MERGED**: `llm list|use|mode|model` + `llm_settings.hexa` (byte-identical `~/.demiurge/llm.json` write w/ sortedKeys+pretty+empty-`{}` quirk, 0700/0600 perms, keychain keySource probe). 14 cells → 103 GREEN. #17b (`key|key-rm|test|ask` = live Keychain SecItemAdd + HTTPS LLMBridge) scoped out (@L7 no-fake-network); their deterministic error paths ARE byte≡.
+- [x] **#20 PR-synthesize-qforge → PR#2662 MERGED (@L6 KEYSTONE)**: `action synthesize rtsc --deck <deck>` → spawns `hexa qforge run <deck>`, passes stdout/stderr/rc VERBATIM. d4 thin forwarding cell (atlas/verify pattern); generic dispatch untouched. @L6/d6 HONESTY: HELD migration gate surfaces as-is — NO agreement assertion, NO fabricated λ/Tc, missing-hexa→127. 5 cells (forward HELD-gate rc1 + 4 error paths) byte≡Swift → 108 GREEN. Live-converged happy-path (deck WITH harvested DFPT → real λ·Tc) deferred until the QFORGE↔QE cross-val gate OPENS (that IS the gated migration work, HELD).
+- [ ] NEXT: #17b (llm network) · #21-25 3D (⚠ separate-file loading / NO hardcoding — @L3 updated + §6 locked) → #26 parity-gate-ALL-GREEN (@L2 — the Swift-deletion gate) → #27 bin-flip → #28 swift-delete.
+
 ## 2026-06-04 — CONSTRAINT recorded: 3D geometry = SEPARATE-FILE LOADING, NO hardcoding (user directive)
 
 User directive (verbatim intent): "3d 등 하드코딩 안됨" + "별도파일 로딩으로 3d 가 되어야함".
