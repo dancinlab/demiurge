@@ -16,3 +16,4 @@
 - [x] DEEP R5-B CRBN-PROTAC 설계+도킹: A-1155463 워헤드 + linker + CRBN리간드(pomalidomide), BCL-xL(4QVX) + CRBN(4CI1) 양단 도킹 → 삼원복합체 타당성 (혈소판회피 NOVEL leg)
 - [x] DEEP R6 이질성→칵테일: BCL-xL 의존분율 r<0.67시 단독요법 청소<60%(cure게이트 fail) → 2-축 칵테일(BCL-xL A-1155463 + MCL-1 S63845 −8.18) 필요; 브레인스토밍 고갈
 - [x] DEEP R7 인과모델(/gap F4 top-1 폐쇄): SASP-Hill 억압 do-연산자 개입 + young/old 반사실 + 구별실험(Hill 기울기 n>0) — 청소→재생 연관을 falsifiable 인과가설로 전환
+- [x] DEEP R8 3축 landscape(/gap top-2+F2 폐쇄): HSP90(geldanamycin −4.91, Vina 거대고리 과소평가=F8 단일툴 gap 자기실증) 3번째 축 추가 → 3축 칵테일 74% 청소, triple-resistant 닫음, 잔여 10%=면역 adjunct
