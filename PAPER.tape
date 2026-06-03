@@ -16,3 +16,4 @@
 @paper aga-cure-insilico-axis-collapse := "./PAPER/aga-cure-insilico-axis-collapse"
 @paper universal-neogenesis-bottleneck-senolytic := "./PAPER/universal-neogenesis-bottleneck-senolytic"
 @paper perio-cure-regen                 := "./PAPER/perio-cure-regen"
+@paper oa-cure-cartilage-regen          := "./PAPER/oa-cure-cartilage-regen"
