@@ -90,6 +90,12 @@
   do   = "drop HEAVY scratch (out/*.wfc · _ph0/*.dvscf) — GB-scale · regenerable · not a xval input"
   dont = "discard dyn/elph/a2f artifacts (forces a re-paid QE run to close gate) · git the GB scratch"
 
+@D d_qe_latest_then_qforge := "QE = latest version only · archive QE data · QFORGE takes over at gate" :: governance [required active]
+  do   = "QE el-ph runs use the LATEST QE (conda-forge qe 7.x) — NOT apt distro 6.7"
+  do   = "archive every QE run's light xval data (per d_qforge_xval_archive) — kept for QFORGE"
+  do   = "QFORGE migration gate ALL_PASS → QFORGE = engine (d_qforge_engine) · QE retires to cross-val ref"
+  dont = "run QE from apt (stale 6.7) · discard QE data · keep QE as engine after QFORGE gate passes"
+
 @D d17 := "cost-bearing fire — dispatch autonomously, no user gate" :: governance [required active]
   do   = "validated deck (d16 free dry-run passed) → fire full-campaign rent autonomously · parallel"
   do   = "state estimated cost in one line, then fire — no user consult / approval / confirm"
