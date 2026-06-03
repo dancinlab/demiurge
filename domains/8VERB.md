@@ -74,7 +74,11 @@ ALL-GREEN. synthesize→QFORGE and verify-gate re-home as rows in that 28-PR sta
   - [x] #9 PR-domain-catalog ✅ hexa-lang PR#2645 — `DomainCatalog`+`IngredientShelf` (domains/<d>.md §6 parse: section-detect·`[multi]` strip·verb-prefix 해석→해석⟲), base for compose/shelf; +1 self-check → 35 GREEN
   - [x] #12 PR-project-store ✅ hexa-lang PR#2646 — `ProjectStore`+`Verb`/`Project` model + `list-projects`/`show-project`; 7-verb spine index-for-index byte≡, createdAt sort + 4 progress marks; 5 cells → 40 GREEN
   - [x] #18 PR-cellrun-engine ✅ hexa-lang PR#2647 (KEYSTONE) — `action <verb> <domain>` HAPPY path unblocked; cellrun engine already hexa-native (`stdlib/cockpit/cellrun.hexa`) → demi DELEGATES (d3, no re-author); manifest-missing→rc1 byte≡; 1 cell → 41 GREEN
-  - [ ] #10/#11 compose/list-shelf (on #9) · #13 project-mutate (on #12) · #14 operate · #15 backend · #16 owner · #17 llm · #19 action --compose/--converge (on #18) — then #20 synthesize→QFORGE
+  - [x] #10 PR-compose ✅ hexa-lang PR#2649 — `compose <domain>`+`DomainComposer` (Kahn topo · 단일/구성형/메타/결합); 5 cells → 46 GREEN (353 code-line, >200 — DAG parser+graph, one cohesive concern, honest)
+  - [x] #11 PR-list-shelf ✅ hexa-lang PR#2651 — `list-shelf <domain>` §6 group render; 3 cells → 49 GREEN (dup-race: deferred to a pre-pushed equivalent branch, d9)
+  - [x] #13 PR-project-mutate ✅ hexa-lang PR#2652 — `project new|advance|retreat`; manifest JSON byte-identical (sortedKeys+pretty, 359B), uuid/time structural-only (honest); 12 cells → 60 GREEN
+  - [x] #19 PR-action-compose-converge ✅ hexa-lang PR#2654 — `action --compose/--converge` fan-out (runComposite/runConvergent); 9 cells → 69 GREEN; substrate-present success path scoped to follow-up
+  - [ ] remaining: #14 operate · #15 backend · #16 owner · #17 llm · value-flags (--producer/--deck) → **#20 synthesize→QFORGE** (@L6, #18✅ unblocked) → #21-25 3D → #26 parity-gate-ALL-GREEN(@L2) → #27 bin-flip → #28 swift-delete
 - [ ] geometry exporters hexa-native (@L3, stack #21–#25): HtsCoilGeometry · STL/USD emit · emit/export-component — golden-file parity vs Swift bytes
 - [ ] **PR-parity-gate-all-green (stack #26, @L2 GATE)** — every verb's parity cell ALL-GREEN; NO Swift deletion before this is green
 - [ ] **PR-bin-flip (stack #27, demiurge repo, @L5)** — `bin/demiurge cli` flips `exec swift run DemiurgeCLI` → `hexa run stdlib/demi/demi_cli.hexa`, keep `--swift` explicit fallback

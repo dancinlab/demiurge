@@ -2,6 +2,17 @@
 
 Append-only history sister of `8VERB.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-04 — afg: pure-hexa stack #10 + #11 + #13 + #19 landed (compose · list-shelf · project-mutate · action-fanout)
+
+Four foreground branches, all hexa-native (Swift untouched). MID-RUN: switched the cross-repo work to a STABLE dedicated worktree `/Users/mini/dancinlab/hexa-lang-demiwork` + registered it + the hexa-lang repo in `.claude/settings.local.json additionalDirectories` (user: "별도 폴더에서 해줘 자꾸 폴더사용승인 메시지뜬다") — per-PR /tmp worktrees were re-triggering folder-approval prompts; now one pre-approved folder, popups gone.
+
+- [x] #10 PR-compose → hexa-lang **PR#2649 MERGED**: `compose <domain>` + `DomainComposer` (`domain_composer.hexa`, INDEX.demi DAG parse + Kahn topo + cluster union). Classes 단일/구성형/메타(통합) + ` · 결합` cross-discipline. 5 cells → 46 GREEN. NOTE g4: 353 code-line (>200) — DAG parser+graph is one indivisible concern; agent kept it cohesive rather than fake-split (honest).
+- [x] #11 PR-list-shelf → hexa-lang **PR#2651 MERGED**: `list-shelf <domain>` renders §6 groups (per-stage `<n>. <korean>:` + `title (multi) = a/b/c`). 3 cells → 49 GREEN. dup-race: a prior agent had pushed an equivalent branch w/o a PR — verified ALL-GREEN + opened the PR for it instead of clobbering (d9).
+- [x] #13 PR-project-mutate → hexa-lang **PR#2652 MERGED**: `project new|advance|retreat`. Manifest JSON byte-identical (`.sortedKeys`+`.prettyPrinted`, 359B, ISO8601 Z, uppercase UUID). advance/retreat clamp at handoff/specify (rc0, no write). Only uuid+createdAt are structural (run-owned, NOT faked, @L7); all else byte≡ incl. rewritten manifest bytes. Extended INDEX.demi parser with `keywords` for domain-infer parity. 12 cells → 60 GREEN.
+- [x] #19 PR-action-compose-converge → hexa-lang **PR#2654 MERGED**: `action <verb> <domain> --compose|--converge` (runComposite/runConvergent fan-out across the constituent stack). Delegates to #18 cellrun + #10 composer (d3). KEY: cellrun-routed cells tag ok/skip never gap; converge deterministic→fixpoint iter2. 9 cells → 69 GREEN. substrate-present success path (📸 records, rc0) host-dependent → honest follow-up.
+- [x] tooling: stable worktree recipe locked — `DEMI_HEXA_ENTRY`/`HEXA_LANG`=demiwork, `rm -rf ~/.hexa-cache/*` before each test (ENTRY-keyed cache); cold-cache one-off `rc=-1` race on unrelated cells clears on warm re-run.
+- [ ] NEXT runnable: #14 operate · #15 backend · #16 owner · #17 llm · value-flags (--producer/--deck) → then **#20 synthesize→QFORGE** (@L6, unblocked by #18).
+
 ## 2026-06-04 — afg: pure-hexa stack #9 + #12 + #18 landed (domain-catalog · project-store · cellrun-engine KEYSTONE)
 
 Three foreground branches, all hexa-native (Swift untouched), on the funnel base.
