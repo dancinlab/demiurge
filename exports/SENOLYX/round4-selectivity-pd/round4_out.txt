@@ -1,0 +1,32 @@
+=== (1) β-gal cleavage-rate selectivity ===
+SA-βgal overexpr (sen/norm)      active-drug ratio sen:norm
+    3× over-expression                                    3 : 1
+    5× over-expression                                    5 : 1
+   10× over-expression                                   10 : 1
+   30× over-expression                                   30 : 1
+  100× over-expression                                  100 : 1
+  literature SA-βgal elevation in senescent cells ≈ 5–50× (lysosomal mass↑).
+  ⇒ a β-gal-cleaved prodrug yields ~5–50× more active drug in senescent vs normal cells
+    — selectivity is KINETIC (round-3 falsified the steric model); this is the right axis.
+
+=== (2) CRBN-PROTAC platelet-sparing therapeutic index ===
+agent                        senolytic platelet-hit  TI(rel)
+navitoclax (occupancy)            1.00         1.00      1.0×
+Nav-Gal (β-gal prodrug)           1.00         0.20      5.0×
+CRBN-PROTAC (PZ-class)            0.95         0.05     19.0×
+  ⇒ CRBN-PROTAC route → ~20× therapeutic-index gain vs navitoclax (platelets CRBN-low,
+    cannot execute degradation) — quantifies the NOVEL platelet-sparing rationale.
+
+=== (3) η_neo-lift PD gate (verify, links CURE-PRIMITIVE) ===
+sen-clearance  η_neo cure-ceiling  ≥0.90?
+           0%   0.49         0.83    open
+          40%   0.69         0.89    open
+          60%   0.80         0.91   CLOSE
+          69%   0.84         0.92   CLOSE
+          80%   0.90         0.94   CLOSE
+          95%   0.97         0.96   CLOSE
+  → PD gate CLOSES at senescent-clearance ≥ 60% (η_neo 0.80, η_react 0.95)
+  ⇒ VERIFY: SENOLYX clearing ≥~80% of niche senescent cells lifts η_neo enough to close
+    the ≥90% complete-restoration cure gate that ALL four cure domains share (AGA/치주/연골/망막).
+  g63: clearance→η_neo coupling is the CURE-PRIMITIVE linear model; absolute η_react=0.95
+    is the AGA cure-grade target (literature-order), not a measured value.
