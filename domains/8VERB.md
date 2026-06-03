@@ -68,7 +68,10 @@ ALL-GREEN. synthesize→QFORGE and verify-gate re-home as rows in that 28-PR sta
   - [x] #3 PR-verify-record ✅ — bare `verify <path|id>` provenance/claim-gate, 5 parity cells byte≡Swift (GOLDEN + live). Stack branch `demi-stack3-verify-record` → main = PR#2638 (OPEN, accumulates #3+#4+#5)
   - [x] #4 PR-atlas ✅ hexa-lang PR#2639 (squash-merged into stack branch) — `atlas` owner-gated write-verb refusal (register/append-witness/pr → rc2 w/o DEMIURGE_OWNER), 3 parity cells
   - [x] #5 PR-record-loader ✅ hexa-lang PR#2640 (merged) — hexa-native `RecordLoader`+`ArtifactRegistry` (exports/** enumerate·load-by-id·invariant-a guard), shared base for #6-#8; refactored verify_record onto it (224→123, d3). 17 cells ALL-GREEN
-  - [ ] #6–#19 remaining (NEXT runnable: #6 list-kinds · #7 show-record · #8 gates — all on the #5 RecordLoader base)
+  - [x] #6 PR-list-kinds ✅ hexa-lang PR#2641 — `list-all/records/decisions/rfcs/domains` over RecordLoader (+rl_stubs for decision/rfc/domain); 10 cells (5 verb × populated+empty) byte≡Swift → 26/26 GREEN
+  - [x] #7 PR-show-record ✅ hexa-lang PR#2642 — `show <path>` record+provenance dump (load-by-path, `show:` prefix rc2); 4 cells (ok/outside/missing/decode) → 30/30 GREEN
+  - [x] #8 PR-gates ✅ hexa-lang PR#2643 — `list-gates`+`gate-summary` (MeasurementGate.allCases group + %.1f summary); strict decode-skip parity (54→52, 2 router files skip like Swift `guard case .success`); 4 cells → 34/34 GREEN
+  - [ ] #9–#19 remaining (NEXT runnable: #9 domain-catalog · #12 project-store · #14 operate · #17 llm · #18 cellrun-engine)
 - [ ] geometry exporters hexa-native (@L3, stack #21–#25): HtsCoilGeometry · STL/USD emit · emit/export-component — golden-file parity vs Swift bytes
 - [ ] **PR-parity-gate-all-green (stack #26, @L2 GATE)** — every verb's parity cell ALL-GREEN; NO Swift deletion before this is green
 - [ ] **PR-bin-flip (stack #27, demiurge repo, @L5)** — `bin/demiurge cli` flips `exec swift run DemiurgeCLI` → `hexa run stdlib/demi/demi_cli.hexa`, keep `--swift` explicit fallback

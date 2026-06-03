@@ -2,6 +2,16 @@
 
 Append-only history sister of `8VERB.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-04 — `all fg go`: pure-hexa stack #6 + #7 + #8 landed (list-kinds · show-record · gates)
+
+Three foreground branches, all hexa-native (Swift untouched), all on the #5 RecordLoader base.
+
+- [x] #6 PR-list-kinds → hexa-lang **PR#2641 MERGED**: `list-all/records/decisions/rfcs/domains`. `record_loader.hexa` +274 (`rl_stubs(kind)` for decision/rfc/domain; f1f2 path-scan kept so #5 loader cell stays `[]` for non-f1f2 — additive). `_list_render` mirrors Swift `list(kind:)` byte-for-byte (decisions from `design.md` `### Decision N`, rfcs from `proposals/rfc_*.md`, domains from `domains/*.md`+matter pointer, id-pad alignment). 10 cells → **26/26 GREEN** (live Swift arm).
+- [x] #7 PR-show-record → hexa-lang **PR#2642 MERGED**: `show <path>` typed-field + provenance dump. Uses load-BY-PATH only (not resolve-by-id), `show:` prefix + exit 2 on failure (vs verify's `verify:`/exit1) → `_show_err` re-derives. 4 cells (ok/outside/missing/decode; Foundation decode tail env-owned, head+rc asserted) → **30/30 GREEN**.
+- [x] #8 PR-gates → hexa-lang **PR#2643 MERGED**: `list-gates` (group by `measurement_gate` in MeasurementGate.allCases) + `gate-summary` (per-gate %.1f + absorbed tallies). KEY parity: both Swift verbs `guard case .success` → SKIP undecodable records; added strict `rl_f1f2_decodes()` so hexa skips the same 2 `router_*_pnr_sky130hd.json` (missing traffic/sim_commit_hash) → total 54→52 matches Swift (OPEN=49 CLOSED=3 absorbed=3/49). 4 cells → **34/34 GREEN**.
+- [x] toolchain recipe nailed down (for #9+): imports resolve relative to ENTRY tree (`DEMI_HEXA_ENTRY` for child `hexa run`); gen3 `~/.hexa-cache/` is keyed on ENTRY file ONLY → `rm -rf ~/.hexa-cache/*` before EACH build/test or you test a stale binary (imported-handler edits silently ignored). No hexa-sh mutation needed.
+- [ ] NEXT runnable: #9 domain-catalog (DomainCatalog+IngredientShelf, base for shelf/compose) · #12 project-store · #14 operate · #17 llm · #18 cellrun-engine (unblocks the `action` HAPPY path → synthesize→QFORGE #20).
+
 ## 2026-06-04 — `all fg go`: pure-hexa stack #4 + #5 landed (atlas-refusal · record-loader)
 
 Two foreground branches the prior turn offered, both hexa-native (Swift untouched).
