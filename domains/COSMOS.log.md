@@ -2,6 +2,14 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — 6-band rung restored via `.demi` facets.rung (data-driven)
+
+User picked ① 완성도: restore the 6-band ladder (원자·물질·바이오·화학·칩·시스템) the `.demi` way, not a hardcoded classifier.
+
+- [x] LANDED `feat/8verb-cosmos` `eae83c00`(data) + `020b36ac`(code): added `facets.rung` to all 20 INDEX.demi `[id]` sections (matter→materials · bio→bio · chem→chem · chip/firmware/sscb/rtsc/brain/aura/component/bot→chip · energy/grid/mobility/scope/space/cern/antimatter/fusion/ufo→system). cosmos `resolveRung(d.rung ?? SCALE_TO_RUNG[d.scale])` prefers the explicit facet, falls back to scale mapping (molecular→materials, device/component→chip, system→system). `Rung` union restored to 6 {atom,materials,bio,chem,chip,system}; ladder Y-bands 6 (atom −15 → system +15); 3D default shapes atom→lattice/materials→supercell/bio→helix/chem→molecule/chip→die/system→orbit (existing primitives). i18n 5 locales (ko 원자·물질·바이오·화학·칩·시스템).
+- [x] HONEST: `atom` band is EMPTY — no atom-scale node in INDEX.demi today; none fabricated. (qubit/hex-n6 are not INDEX.demi nodes.) build exit 0 · TypeScript clean · cosmos.test ✓ (facets.rung=bio→bio not lumped · scale-only fallback · rtsc dotted-key→chip · ufo=system · matter=materials) · geometry-3d-parse ✓. Fixed a stale `RUNG_Y.molecular` spine ref mid-build.
+- [ ] NEXT: bio/chem faithful-3D (§9.1) — the real data (AGA-RX SFRP1·SENOLYX BCL-xL) is for PRODUCT domains NOT in INDEX.demi's 20 nodes; needs a node-set decision (register products into INDEX.demi vs attach representative structure to the bio/chem category nodes).
+
 ## 2026-06-05 — PIVOT: COSMOS rebased onto the `.demi` SSOT (§10) — directive "우리는 .demi잖아"
 
 User directive: ".demi 기준으로 모두 작동되게". Investigated `.demi` and found it is the repo's canonical machine-readable domain SSOT — this SUPERSEDES the DOMAINS.tape/@link/<D>.md sourcing patchwork (incl. the membership filter + NEXUS→@link I'd just landed). Documented `.demi`-canonical architecture as `COSMOS.md` §10; implementation dispatched.
