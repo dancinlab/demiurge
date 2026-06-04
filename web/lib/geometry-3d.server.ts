@@ -5,9 +5,15 @@
 // handlers (e.g. to resolve a descriptor server-side and pass it to
 // DomainModel3D as a prop, avoiding a client fetch round-trip).
 //
-// Resolution priority (8VERB D5): (1) external file on disk → (2) derived
-// procedural → (3) stylized symbol. (2)+(3) reuse the pure `deriveDescriptor`
-// from the client-safe module so both paths share one fallback.
+// Resolution priority (8VERB D5 · AUTO-PROMOTION):
+//   (1) hand-authored web/public/models/<DOMAIN>/model.3d.json  — highest (override)
+//   (2) AUTO-PARSED faithful descriptor from domains/<DOMAIN>.md — if doc has
+//       enough REAL structural numbers (parseDescriptorFromDisk); IN-MEMORY, no
+//       JSON written to disk at request time
+//   (3) derived procedural → (4) stylized symbol — the prior rung-typed default
+// (3)+(4) reuse the pure `deriveDescriptor` from the client-safe module so both
+// paths share one fallback. A domain auto-promotes the MOMENT its doc carries
+// numbers, with ZERO new files (CLAUDE.md d1/d5/d10).
 
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -18,6 +24,8 @@ import {
   type DescriptorSource,
   type Model3DDescriptor,
 } from "@/lib/geometry-3d";
+import { parseDescriptorFromDisk } from "@/lib/geometry-3d-parse.server";
+import type { DomainEntry } from "@/lib/domains";
 
 // (1) read web/public/models/<DOMAIN>/model.3d.json from disk. null if absent.
 async function readExternalDescriptor(
@@ -41,8 +49,15 @@ async function readExternalDescriptor(
 
 export async function loadDescriptor(
   src: DescriptorSource,
+  entry?: Pick<DomainEntry, "mdPath">,
 ): Promise<Model3DDescriptor> {
+  // (1) hand-authored JSON wins — lets us override the auto-parse.
   const external = await readExternalDescriptor(src.name);
   if (external) return external;
+  // (2) auto-parsed faithful descriptor from the domain doc (in-memory). Only
+  //     promotes when the doc yields ≥1 real structural number for the rung.
+  const parsed = await parseDescriptorFromDisk(src, entry);
+  if (parsed) return parsed;
+  // (3)+(4) rung-typed derived / stylized default (prior behavior).
   return deriveDescriptor(src);
 }
