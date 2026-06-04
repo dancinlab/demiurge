@@ -15,23 +15,11 @@
 # hexa-native is the only CLI path.
 set -euo pipefail
 
-# Resolve through the hx shim symlink chain (~/.hx/bin/demiurge →
-# ~/.hx/packages/demiurge/bin/demiurge, and the packages/demiurge dir
-# is itself a symlink to the real repo) so REPO is the actual checkout.
-SOURCE="${BASH_SOURCE[0]}"
-while [ -L "$SOURCE" ]; do
-  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-done
-REPO="$(cd -P "$(dirname "$SOURCE")/.." && pwd)"
-
-# Installed hexa-native demi CLI. Default path = hexa (per @L5: full per-verb
-# parity met). Derive the stdlib home from $HOME (NOT a hardcoded user-absolute
-# path); DEMIURGE_HEXA_STDLIB overrides it for non-standard installs. There is
-# no `hexa demi` subcommand and `hexa run` resolves relative paths against cwd,
-# so an absolute install path is required for cwd-independence.
-DEMI_CLI="${DEMIURGE_HEXA_STDLIB:-$HOME/hexa-sh/stdlib/demi}/demi_cli.hexa"
+# The demi CLI is reached through the first-class `hexa demi` subcommand
+# (hexa-lang PR #2684): it forwards argv to stdlib/demi/demi_cli.hexa,
+# resolving the stdlib from the hexa INSTALL ROOT (cwd-independent). This
+# shim therefore needs NO absolute stdlib path / $HOME derivation / repo
+# symlink resolution — `hexa demi` is fully path-free.
 
 case "${1:-}" in
   cli)
@@ -44,8 +32,9 @@ case "${1:-}" in
       echo "demiurge cli: --swift removed — Swift CLI deleted in the hexa-native migration (see 8VERB); hexa-native is now the only path" >&2
       exit 2
     fi
-    # Default (and only) path: the installed hexa-native CLI (cwd-independent via $DEMI_CLI).
-    exec hexa run "$DEMI_CLI" "$@"
+    # Default (and only) path: the first-class `hexa demi` subcommand —
+    # resolves the demi CLI from the install root (path-free, cwd-independent).
+    exec hexa demi "$@"
     ;;
   ""|-h|--help|help)
     cat <<'USAGE'
@@ -55,10 +44,11 @@ demiurge — universal hexa-native technical-design architecture program
                                   / list-rfcs / list-domains / show <path> / …)
   demiurge --help                 this help
 
-The CLI is the hexa-native demi CLI (hexa-lang stdlib/demi) — the only path.
+The CLI is the hexa-native demi CLI, reached via the first-class `hexa demi`
+subcommand (hexa-lang stdlib/demi) — the only path. It resolves the stdlib
+from the hexa install root, so this shim is path-free (no DEMIURGE_HEXA_STDLIB).
 The legacy Swift DemiurgeCLI was deleted in the hexa-native migration (8VERB
-stack #28); `cli --swift` / DEMIURGE_CLI=swift now hard-error. Set
-DEMIURGE_HEXA_STDLIB to override the stdlib home.
+stack #28); `cli --swift` / DEMIURGE_CLI=swift now hard-error.
 
 The user surface is the web GUI (Next.js · Cloud Run); the CLI is the
 AI-agent + web-bridge surface (design.md D34). The macOS SwiftUI cockpit
