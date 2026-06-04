@@ -253,14 +253,54 @@ function extractChip(text: string, hits: Hit[], seen: Set<string>): void {
 }
 
 // ── rung → shape + minimum-evidence policy ────────────────────────────────────
+// §10: the `.demi` `facets.scale` is the rung (4 canonical scales). A scale can
+// span MULTIPLE faithful shapes — molecular covers matter (lattice/supercell),
+// bio (helix) and chem (molecule); we run every candidate extractor for the scale
+// and pick the shape that yields the most promoting hits. CANDIDATE_SHAPES lists
+// the shapes (in priority order) each scale may promote to; the per-shape default
+// (RUNG_SHAPE) is the stylized fallback shape when no doc number promotes.
+const CANDIDATE_SHAPES: Record<Rung, ProceduralShape[]> = {
+  molecular: ["lattice", "supercell", "helix", "molecule"],
+  device: ["die"],
+  component: ["die", "coil"],
+  system: ["coil"],
+};
+
 const RUNG_SHAPE: Record<Rung, ProceduralShape> = {
-  atom: "lattice",
-  materials: "supercell",
-  bio: "helix",
-  chem: "molecule",
-  chip: "die",
+  molecular: "supercell",
+  device: "die",
+  component: "coil",
   system: "coil",
 };
+
+// Run every extractor relevant to a scale (a shape's structural numbers) into a
+// shared hit set. molecular runs lattice + bio + chem; device/component run chip;
+// system runs the coil/system extractor.
+function extractForRung(
+  rung: Rung,
+  text: string,
+  hits: Hit[],
+  seen: Set<string>,
+  weak: string[],
+): void {
+  switch (rung) {
+    case "molecular":
+      extractLattice(text, hits, seen);
+      extractBio(text, hits, seen, weak);
+      extractChem(text, hits, seen);
+      break;
+    case "device":
+      extractChip(text, hits, seen);
+      break;
+    case "component":
+      extractChip(text, hits, seen);
+      extractSystem(text, hits, seen);
+      break;
+    case "system":
+      extractSystem(text, hits, seen);
+      break;
+  }
+}
 
 // The KEYS that, for a given shape, constitute REAL structural evidence. A doc
 // promotes only when it yields ≥1 of these. Counts/derived params alone (e.g. a
@@ -353,41 +393,32 @@ export function parseDocToDescriptor(
   src: DescriptorSource,
   relPath = `domains/${src.name}.md`,
 ): ProceduralDescriptor | null {
-  const rung: Rung = src.rung ?? "materials";
-  const shape = RUNG_SHAPE[rung];
+  const rung: Rung = src.rung ?? "molecular";
 
   const hits: Hit[] = [];
   const seen = new Set<string>();
   const weak: string[] = [];
-
-  switch (rung) {
-    case "atom":
-      extractLattice(text, hits, seen);
-      break;
-    case "materials":
-      extractLattice(text, hits, seen);
-      break;
-    case "bio":
-      extractBio(text, hits, seen, weak);
-      break;
-    case "chem":
-      extractChem(text, hits, seen);
-      break;
-    case "chip":
-      extractChip(text, hits, seen);
-      break;
-    case "system":
-      extractSystem(text, hits, seen);
-      break;
-  }
+  extractForRung(rung, text, hits, seen, weak);
 
   const hitMap = new Map(hits.map((h) => [h.key, h.value]));
-  const promoteKeys = PROMOTE_KEYS[shape];
-  const promotingHits = hits.filter((h) => promoteKeys.includes(h.key));
-  if (promotingHits.length === 0) return null; // honest: no real numbers → stylized
 
-  const params = toParams(shape, hitMap);
-  if (Object.keys(params).length === 0) return null;
+  // Pick the candidate shape (in priority order) that the doc actually promotes —
+  // a scale may span several shapes (molecular = lattice/supercell/helix/molecule).
+  // First shape with ≥1 promoting hit AND a non-empty param bag wins; none → stylized.
+  let shape: ProceduralShape | null = null;
+  let promotingHits: Hit[] = [];
+  let params: Record<string, number> = {};
+  for (const cand of CANDIDATE_SHAPES[rung]) {
+    const ph = hits.filter((h) => PROMOTE_KEYS[cand].includes(h.key));
+    if (ph.length === 0) continue;
+    const p = toParams(cand, hitMap);
+    if (Object.keys(p).length === 0) continue;
+    shape = cand;
+    promotingHits = ph;
+    params = p;
+    break;
+  }
+  if (!shape) return null; // honest: no real numbers → stylized
 
   // Provenance: fold every promoting hit into params.src, exactly like the
   // hand-authored descriptors ("relPath:line (matched text)").
@@ -412,28 +443,18 @@ export function parseDocToDescriptor(
 
 // Inspect-only: full parse result (hits + weak hints) for the audit/report pass.
 export function inspectDoc(text: string, src: DescriptorSource): ParseResult {
-  const rung: Rung = src.rung ?? "materials";
-  const shape = RUNG_SHAPE[rung];
+  const rung: Rung = src.rung ?? "molecular";
   const hits: Hit[] = [];
   const seen = new Set<string>();
   const weak: string[] = [];
-  switch (rung) {
-    case "atom":
-    case "materials":
-      extractLattice(text, hits, seen);
+  extractForRung(rung, text, hits, seen, weak);
+  // Report the candidate shape the doc best promotes (else the stylized default).
+  let shape: ProceduralShape = RUNG_SHAPE[rung];
+  for (const cand of CANDIDATE_SHAPES[rung]) {
+    if (hits.some((h) => PROMOTE_KEYS[cand].includes(h.key))) {
+      shape = cand;
       break;
-    case "bio":
-      extractBio(text, hits, seen, weak);
-      break;
-    case "chem":
-      extractChem(text, hits, seen);
-      break;
-    case "chip":
-      extractChip(text, hits, seen);
-      break;
-    case "system":
-      extractSystem(text, hits, seen);
-      break;
+    }
   }
   return {
     shape,

@@ -1,40 +1,56 @@
 // cosmos.ts — the Domain Cosmos composition graph (8VERB Cosmos design SSOT).
 //
-// Pure, server-safe data module (no UI). Assembles, manifest-driven (d4 — no
-// per-domain dispatch hardcoding beyond a small classification table), the full
-// cosmos graph the GUI renders:
+// Pure, server-safe data module (no UI). Assembles the full cosmos graph the GUI
+// renders, rebased onto the `.demi` SSOT (COSMOS.md §10). The prior patchwork
+// (DOMAINS.tape roster · `@link` edges · `<D>.md` prose-parse · matter ledger)
+// is RETIRED — everything now reads from `.demi`:
 //
-//   listDomains() (DOMAINS.tape roster + per-domain .md snapshot)   ── nodes
-//   DOMAINS.tape  @link <from> --<verb>--> <to> rows (§7.1)         ── edges
-//   classifyRung()                                                  ── §2 ladder
-//   deriveState()                                                   ── §4 verify state
+//   INDEX.demi `[<id>]` sections   ── nodes (membership by CONSTRUCTION: no
+//                                      exclude list; tooling/meta domains simply
+//                                      aren't in INDEX.demi)
+//   INDEX.demi `prerequisites`     ── composition/decompose edges (D82 direct
+//                                      prereqs; transitive closure via decompose)
+//   INDEX.demi `facets.scale`      ── the rung (§2 ladder · 4 canonical scales)
+//   <id>.demi `[cell.<verb>]`      ── verify-state (gate_default / absorbed_default)
 //
 // Verification state is HONEST (§4 · d6 · d_paper_*): a node is only painted
-// 🟢/🔵 when a real verified signal exists; absence of signal → ⚪ "unverified".
-// We NEVER upgrade a projection / partial / candidate into a proven badge.
+// 🟢/🔵 when a real verified signal exists in its `.demi` cells (a CLOSED gate or
+// an absorbed=true cell). All-OPEN / all-false cells → ⚪ "unverified". We NEVER
+// upgrade from progress — `.demi` gate/absorbed flags ARE the proof signal.
 
 // NOTE (SSR/bundling): this module is imported by BOTH server pages and client
 // components (CosmosScene needs the PURE functions `decompose` · `STATE_BADGE`
-// + the types). So the fs-bound deps (node:fs · node:path · matter ledger ·
-// domains roster) are loaded LAZILY inside the async server-only functions
-// (readLinkEdges · buildCosmos) — never at module top level — so this file
-// stays client-safe (no `node:fs` in the browser chunk). Types are erased, so
-// the type-only imports below are bundler-free.
-import type { DomainEntry } from "@/lib/domains";
-import type { AttestationRow } from "@/lib/matter";
+// + the types). The fs reads live in cosmos.server.ts / demi.server.ts and are
+// never pulled in here, so this file stays client-safe (no `node:fs` in the
+// browser chunk). The `.demi` parse types below are type-only (bundler-free).
+import type { DemiDomain, DemiManifest } from "@/lib/demi";
 
-// ── §2 scale ladder ──────────────────────────────────────────────────────────
-// SIX rungs the user named: 원자 → 물질 → 바이오 → 화학 → 칩 → 시스템. Each is its
-// own Y-band in the /cosmos vertical scale ladder. "materials" was previously the
-// catch-all for materials·bio·chem; it is now split so bio (단백질·세포·유전자) and
-// chem (분자·촉매·반응) read as distinct scale rungs with their own 3D vocabulary.
-export type Rung =
-  | "atom"
-  | "materials"
-  | "bio"
-  | "chem"
-  | "chip"
-  | "system";
+// ── §2 / §10 scale ladder — the `.demi` `facets.scale` IS the rung ────────────
+// COSMOS.md §10: "the scale IS the rung". The canonical `.demi` `facets.scale`
+// has exactly FOUR values (molecular · device · component · system); we adopt
+// them directly as the Rung union — the SIMPLEST FAITHFUL mapping (no keyword
+// classifier, no invented 6-rung split). molecular is the bottom band (matter ·
+// chem · bio live here in INDEX.demi), system the top apex. A finer split, if
+// ever wanted, is added in INDEX.demi facets (data-driven · d4), never a
+// hardcoded cosmos keyword table.
+export type Rung = "molecular" | "device" | "component" | "system";
+
+// All four scales are 1:1 rungs — kept as an explicit map so an unknown / empty
+// scale degrades to a SINGLE honest default ("system", the INDEX.demi default per
+// DomainLoader.project) rather than crashing the ladder. The faithful mapping:
+//   molecular → molecular · device → device · component → component · system → system
+const SCALE_TO_RUNG: Record<string, Rung> = {
+  molecular: "molecular",
+  device: "device",
+  component: "component",
+  system: "system",
+};
+
+// scaleToRung — map a `.demi` `facets.scale` string onto the Rung union. Unknown
+// or empty → "system" (INDEX.demi's own default for a record with no facets.scale).
+export function scaleToRung(scale: string): Rung {
+  return SCALE_TO_RUNG[scale] ?? "system";
+}
 
 // ── §4 verification-state model ────────────────────────────────────────────
 // verified-formal 🔵 · verified 🟢 · needs-verify 🟡 · unverified ⚪ · falsified 🔴
@@ -63,16 +79,17 @@ export type CosmosNode = {
   progress?: { done: number; total: number };
 };
 
-// A reuse / composition edge (DOMAINS.tape @link row · §7.1).
-// `from` provides the primitive; `to` reuses it (provides → reused_by). For the
-// downward composition view (§1 UFO tree), a parent system reuses its children,
-// so an edge from=child(provider) → to=parent(consumer); decompose() walks the
-// reused_by side downward.
+// A composition edge (INDEX.demi `prerequisites` · §10). The prerequisite is the
+// CHILD (a constituent the parent is COMPOSED of); the parent is the consumer.
+// CosmosEdge keeps from=PROVIDER(child), to=CONSUMER(parent): for `[ufo]
+// prerequisites = [fusion, antimatter, rtsc]`, three edges {from:fusion,to:ufo}
+// … so decompose() walks children = providers of a consumer (edge.to === node,
+// child = edge.from) downward, unchanged.
 export type EdgeTier = "tier-1" | "tier-2" | "tier-3" | "candidate" | "unknown";
 
 export type CosmosEdge = {
-  from: string; // provider domain (provides[])
-  to: string; // consumer domain (reused_by)
+  from: string; // provider domain (the prerequisite / child)
+  to: string; // consumer domain (the dependent / parent)
   primitive?: string;
   tier?: EdgeTier;
   evidence?: string;
@@ -80,199 +97,21 @@ export type CosmosEdge = {
 
 export type CosmosGraph = { nodes: CosmosNode[]; edges: CosmosEdge[] };
 
-// ── §7 cosmos membership — inclusion / exclusion (d4: ONE manifest set) ──────
-// A cosmos node is a physical MATERIAL / DEVICE / SYSTEM (something you could
-// build or measure). Tooling / infra / process-tracking / meta / CLI-web-surface
-// domains are NOT nodes — left unfiltered they leak in as bogus `materials` nodes
-// (classifyRung honest-default) and re-enter via composition edges (NOVEL-TOOL as
-// a provider). EXCLUDE-by-name from a single exported const so add/remove is
-// data-only (no per-call branching). Names are UPPERCASE roster tokens.
+// ── §4 verify-state derivation from `.demi` cells — HONEST (§10) ──────────────
+// The `<id>.demi` verb cells ARE the verify-state SSOT (replaces the prose-parse +
+// matter ledger). Per cell:
+//   gate_default = CLOSED      → a real measurement gate passed  → "verified"
+//   absorbed_default = true    → an absorption claim (gate still OPEN by default)
+//                                → "verified" (matches the prior matter-ledger
+//                                  `absorbed===true → verified` honesty rule)
+//   gate OPEN + absorbed false → no proof signal                → contributes ⚪
+// A domain with NO cells (missing `<id>.demi`) → "unverified" (honest). We NEVER
+// infer verified from progress — only a CLOSED gate or absorbed=true cell upgrades.
 //
-// Category-C (non-material · audited from the full DOMAINS.tape roster):
-//   meta / goal-tracking / process : 8VERB COSMOS DEMIURGE GOAL XPRIZE ABSORPTION INBOX
-//   tooling / infra / EDA / data   : NOVEL-TOOL POOL CLI+COCKPIT HEXA-PORT YOSYS NUMB MP
-//   compute engine + process       : QFORGE QFORGE-PROCESS QFORGE-PERF QFORGE-FEATURE
-// Default-include posture: anything NOT in this set stays a node (new science
-// domains appear with zero code edits). Only the named set is removed — an
-// ambiguous name is KEPT (honesty · §7).
-export const COSMOS_EXCLUDE: ReadonlySet<string> = new Set([
-  // meta / goal-tracking / process
-  "8VERB",
-  "COSMOS",
-  "DEMIURGE",
-  "GOAL",
-  "XPRIZE",
-  "ABSORPTION",
-  "INBOX",
-  // tooling / infra / EDA / data
-  "NOVEL-TOOL",
-  "POOL",
-  "CLI+COCKPIT",
-  "HEXA-PORT",
-  "YOSYS",
-  "NUMB",
-  "MP",
-  // compute engine + its process domains
-  "QFORGE",
-  "QFORGE-PROCESS",
-  "QFORGE-PERF",
-  "QFORGE-FEATURE",
-]);
-
-// isCosmosDomain — true when `name` is a cosmos node (NOT in COSMOS_EXCLUDE).
-// Defensive: any name starting with `QFORGE` is excluded (covers future
-// QFORGE-* process spin-offs without a manifest edit).
-export function isCosmosDomain(name: string): boolean {
-  const up = name.toUpperCase();
-  if (up.startsWith("QFORGE")) return false;
-  return !COSMOS_EXCLUDE.has(up);
-}
-
-// ── §3 reuse edges — DOMAINS.tape @link parser (§7.1: NEXUS.tape RETIRED) ─────
-// The old `@X e<n> :: reuse-edge` lattice (NEXUS.tape) is RETIRED. The cross-
-// domain reuse / composition graph now rides INSIDE DOMAINS.tape as @link rows:
-//
-//   @link <from> --<verb>--> <to>   # <evidence>
-//
-// These were migrated from NEXUS.tape with the consumer (old `reused_by`) as the
-// `<from>` and the provider (old `provides`) as the `<to>`, joined by `--reuses-->`.
-// So in @link space, `from` = the CONSUMER and `to` = the PROVIDER it reuses.
-//
-// CosmosEdge keeps its original semantics (`from` = provider, `to` = consumer),
-// so we SWAP when mapping: edge.from = link.<to> (provider), edge.to = link.<from>
-// (consumer). decompose() walks children = providers of a consumer (edge.to ===
-// node, child = edge.from) unchanged. The link verb (reuses/uses/refines/…) is
-// recorded; tier defaults to "tier-1" (a migrated edge is a real reuse link) and
-// the evidence string after `#` is preserved.
-
-// A roster-style domain token: UPPERCASE start, then [A-Z0-9+_-], e.g.
-// RTSC · HEX-N6 · AGA-CURE · CLI+COCKPIT.
-const DOMAIN_TOKEN_RE = /^[A-Z][A-Z0-9+_-]*$/;
-
-// Pure DOMAINS.tape @link parser — takes the file TEXT (no I/O), so it is
-// client-safe and unit-testable. The fs READ lives in cosmos.server.ts
-// (readLinkEdges). Lines NOT matching the `@link A --verb--> B` shape (including
-// `@domain` roster rows, `@V`, comments) are ignored.
-export function parseLinkEdges(text: string): CosmosEdge[] {
-  const edges: CosmosEdge[] = [];
-  // @link <from> --<verb>--> <to>   # <evidence>
-  // <verb> = a lowercase token (reuses · uses · refines · provides …).
-  const linkRe = /^@link\s+(\S+)\s+--([a-z][a-z-]*)-->\s+(\S+)\s*(?:#\s*(.*))?$/gm;
-  for (const m of text.matchAll(linkRe)) {
-    const linkFrom = m[1]; // CONSUMER in @link space
-    const verb = m[2];
-    const linkTo = m[3]; // PROVIDER in @link space
-    const evidence = m[4]?.trim() || undefined;
-
-    // Only domain↔domain edges (skip lowercase stdlib paths like stdlib/material).
-    if (!DOMAIN_TOKEN_RE.test(linkFrom) || !DOMAIN_TOKEN_RE.test(linkTo)) continue;
-    if (linkFrom === linkTo) continue;
-
-    // CosmosEdge: from = PROVIDER, to = CONSUMER (swap from @link orientation).
-    edges.push({
-      from: linkTo,
-      to: linkFrom,
-      tier: "tier-1",
-      evidence: evidence ? `${verb} · ${evidence}` : verb,
-    });
-  }
-  return edges;
-}
-
-// ── §2 rung classification — manifest table + keyword fallback (d4) ──────────
-// Known anchors per §2; a generic keyword fallback covers everything else. NO
-// per-domain branching beyond this single table — add/rename/remove is table-only.
-const RUNG_BY_NAME: Record<string, Rung> = {
-  // ① 원자 ATOM — particles / quanta / lattice primitives.
-  "HEX-N6": "atom",
-  QUBIT: "atom",
-  SRR: "atom",
-  // ② 물질 MATERIALS — bulk solids / lattices / device-feedstock materials.
-  RTSC: "materials",
-  PEROVSKITE: "materials",
-  GRAPHENE: "materials",
-  METAMATERIAL: "materials",
-  AEROGEL: "materials",
-  SPINTRONIC: "materials",
-  MEMRISTOR: "materials",
-  // ③ 바이오 BIO — proteins / cells / genes / therapeutics.
-  "AGA-RX": "bio",
-  "AGA-CURE": "bio",
-  "GENE-EDIT": "bio",
-  "RNA-THERAPY": "bio",
-  ORGANOID: "bio",
-  "PROTEIN-FOLD": "bio",
-  SENOLYX: "bio",
-  "OA-CURE": "bio",
-  "PERIO-CURE": "bio",
-  "RETINA-CURE": "bio",
-  "IVD-CURE": "bio",
-  // ④ 화학 CHEM — molecules / catalysts / reactions.
-  ELECTROCAT: "chem",
-  PHOTOREDOX: "chem",
-  "CO2-CAPTURE": "chem",
-  "GREEN-NH3": "chem",
-  // ⑤ 칩·상위구조 CHIP — devices / metasurfaces / trap assemblies.
-  CLOAK: "chip",
-  ANTIMATTER: "chip",
-  CERN: "chip",
-  NEUROMORPHIC: "chip",
-  PHOTONIC: "chip",
-  // ⑥ 시스템 SYSTEM — assembled bodies / full pipelines.
-  UFO: "system",
-  WORMHOLE: "system",
-  WARP: "system",
-  FUSION: "system",
-  "DIM-JUMP": "system",
-  "DIM-USE": "system",
-};
-
-// Keyword fallback — runs only when a domain is absent from RUNG_BY_NAME. Generic
-// (matches on the domain name + its goal text), so new domains classify without a
-// code edit when their language is conventional.
-// Ordering is significant — first regex to match wins. bio/chem are listed BEFORE
-// materials so a therapeutic / catalysis domain lands in its specific rung; the
-// "-CURE" therapeutic family is bio (a treatment), NOT a "system" vehicle.
-const RUNG_KEYWORDS: Array<{ rung: Rung; re: RegExp }> = [
-  { rung: "bio", re: /(-CURE\b|CURE\b|완치|치료|therap|치료제|drug|약물|약\b|gene|유전|protein|단백|peptide|펩타이드|cell|세포|organoid|오가노이드|senolyt|노화|residue|잔기|sequence|서열|antibody|항체|capsid|캡시드|mRNA|siRNA|RNA|DNA|모낭|탈모)/i },
-  { rung: "chem", re: /(catalys|촉매|electrocat|전기촉매|photoredox|광촉매|molecule|분자|reaction|반응|synthesis route|합성|CO2|capture|포집|NH3|암모니아|Tafel|overpotential|과전압|Faradaic)/i },
-  { rung: "system", re: /(시스템|system|비행체|추진|craft|vehicle|drive|propuls|tokamak|토카막|reactor|반응로|warp|워프|wormhole|웜홀|fusion|핵융합)/i },
-  { rung: "chip", re: /(chip|칩|device|소자|trap|트랩|metasurface|메타표면|circuit|회로|accelerator|가속|crossbar|크로스바|neuromorph|뉴로모픽|photonic|포토닉|die|wafer|웨이퍼)/i },
-  { rung: "atom", re: /(atom|원자|lattice|격자|qubit|큐비트|quantum|양자|primitive)/i },
-  { rung: "materials", re: /(material|물질|재료|metamaterial|메타물질|aerogel|에어로젤|graphene|그래핀|perovskite|페로브스카이트|superconduct|초전도|spintronic|memristor)/i },
-];
-
-export function classifyRung(name: string, doc?: { goal?: string | null }): Rung {
-  const up = name.toUpperCase();
-  if (RUNG_BY_NAME[up]) return RUNG_BY_NAME[up];
-
-  const hay = `${name} ${doc?.goal ?? ""}`;
-  for (const { rung, re } of RUNG_KEYWORDS) {
-    if (re.test(hay)) return rung;
-  }
-  // Honest default: a bulk research artifact with no other signal → materials
-  // (the broadest, lowest-commitment rung); it carries no proven-ness claim.
-  return "materials";
-}
-
-// ── §4 verify-state derivation — HONEST mapping ──────────────────────────────
-// Sources, strongest → weakest:
-//   1. matter.ts ledger rows associated with the domain (absorbed flag + verdict
-//      tier) — the canonical attestation/verdict SSOT.
-//   2. NEXUS edge evidence markers on edges this domain *provides* (🔵/🟢/🔴).
-//   3. nothing → "unverified" ⚪ (never inferred from progress alone — progress is
-//      activity, not proof).
-// We NEVER upgrade: a partial / 🟠 / candidate maps to needs-verify at best.
-
-const FORMAL_RE = /SUPPORTED-FORMAL|🔵|formal|closed-form|identity/i;
-const SUPPORTED_RE = /SUPPORTED-NUMERICAL|🟢|GATE_CLOSED|PASS\b|ALL_PASS/i;
-const FALSIFIED_RE = /FALSIFIED|🔴|CLOSED-negative|REFUTED/i;
-const PARTIAL_RE = /INCONCLUSIVE|🟠|🟡|partial|citation|needs-verify|MISSING-INPUT/i;
-
-// Rank for picking the strongest honest verdict among several signals. Note:
-// falsified does NOT outrank verified here — a domain with one falsified path and
-// other verified paths is still "verified" overall; only an *all-falsified* /
-// load-bearing falsification is surfaced by the caller (decompose rollup).
+// Rank picks the strongest honest verdict across cells. (No `.demi` field yet
+// expresses a FORMAL closed-form (🔵) or a FALSIFIED (🔴) gate; those states stay
+// in the union for forward-compat + the decompose rollup, but a cell cannot
+// currently emit them — honesty: we only surface what `.demi` actually asserts.)
 const STATE_RANK: Record<VerifyState, number> = {
   unverified: 0,
   falsified: 1,
@@ -285,175 +124,97 @@ function strongest(a: VerifyState, b: VerifyState): VerifyState {
   return STATE_RANK[a] >= STATE_RANK[b] ? a : b;
 }
 
-function ledgerState(rows: AttestationRow[]): VerifyState | null {
-  if (rows.length === 0) return null;
-  let best: VerifyState | null = null;
-  for (const r of rows) {
-    let s: VerifyState | null = null;
-    const v = r.verdict ?? "";
-    if (FORMAL_RE.test(v)) s = "verified-formal";
-    else if (r.absorbed === true || SUPPORTED_RE.test(v)) s = "verified";
-    else if (FALSIFIED_RE.test(v)) s = "falsified";
-    else if (PARTIAL_RE.test(v) || r.absorbed === false) s = "needs-verify";
-    if (s) best = best ? strongest(best, s) : s;
+// cellsToState — derive the honest node VerifyState from its `.demi` verb cells.
+// ALL cells OPEN + absorbed=false (or NO cells) → "unverified" ⚪. A single
+// CLOSED gate or absorbed=true cell upgrades to "verified" 🟢.
+export function cellsToState(cells: DemiManifest["cells"]): VerifyState {
+  if (cells.length === 0) return "unverified";
+  let best: VerifyState = "unverified";
+  for (const c of cells) {
+    let s: VerifyState = "unverified";
+    if (c.gateDefault.toUpperCase() === "CLOSED") s = "verified";
+    else if (c.absorbedDefault === true) s = "verified";
+    best = strongest(best, s);
   }
   return best;
 }
 
-// Associate ledger rows to a domain. The ledger is keyed by *material* (compound)
-// not domain; we attach a material row to a domain when the material/compound/
-// family string contains the domain name, or (for the superconductor campaign)
-// when the domain is RTSC — its compounds (LaH10, CaH6, Nb, MgB2, YBCO…) live in
-// the material ledger. Generic substring match keeps this manifest-free.
-function rowsForDomain(name: string, ledger: AttestationRow[]): AttestationRow[] {
-  const up = name.toUpperCase();
-  const direct = ledger.filter((r) =>
-    [r.material, r.compound, r.family].some(
-      (s) => typeof s === "string" && s.toUpperCase().includes(up),
-    ),
-  );
-  if (direct.length > 0) return direct;
-  // RTSC owns the superconductor material campaign ledger.
-  if (up === "RTSC") return ledger;
-  return [];
-}
-
-// Evidence-marker fallback: scan the badge glyphs in edge evidence for edges this
-// domain PROVIDES (it is the trust anchor). 🔵 > 🟢 > (🟡/⚪) — never upgrade.
-function edgeProvidedState(name: string, edges: CosmosEdge[]): VerifyState | null {
-  const up = name.toUpperCase();
-  const mine = edges.filter((e) => e.from.toUpperCase() === up);
-  if (mine.length === 0) return null;
-  let best: VerifyState | null = null;
-  for (const e of mine) {
-    const blob = `${e.primitive ?? ""} ${e.evidence ?? ""}`;
-    let s: VerifyState | null = null;
-    if (FORMAL_RE.test(blob)) s = "verified-formal";
-    else if (SUPPORTED_RE.test(blob)) s = "verified";
-    else if (FALSIFIED_RE.test(blob)) s = "falsified";
-    else if (e.tier === "candidate") s = "needs-verify";
-    if (s) best = best ? strongest(best, s) : s;
-  }
-  return best;
-}
-
-export function deriveState(
-  domain: DomainEntry,
-  opts?: { ledger?: AttestationRow[]; edges?: CosmosEdge[] },
-): VerifyState {
-  const ledger = opts?.ledger ?? [];
-  const edges = opts?.edges ?? [];
-
-  const fromLedger = ledgerState(rowsForDomain(domain.name, ledger));
-  if (fromLedger) return fromLedger;
-
-  const fromEdges = edgeProvidedState(domain.name, edges);
-  if (fromEdges) return fromEdges;
-
-  // No proof signal → unverified (honest). Progress/goal alone never imply 🟢.
-  return "unverified";
-}
-
-// ── icon + alias from the domain @title head (§ d10: icon · NAME · alias) ─────
-// listDomains() already extracts `title` (e.g. "🛸 UFO — 통합 비행체(직접개발)").
-// We split it into a leading emoji icon + the trailing alias. Generic — no per-
-// domain table.
+// ── icon + label from the `.demi` `label` field (§ d10: icon · NAME · alias) ──
+// INDEX.demi `label` is a short display string (e.g. "UFO·디스크 추진", "초전도 코일").
+// The `.demi` label carries no leading emoji by convention, so the cosmos uses
+// the label as the human alias and lets the renderer pick a default glyph. We
+// still split a leading emoji defensively (a future label MAY carry one).
 const LEADING_EMOJI =
   /^([\p{Extended_Pictographic}←-⇿⌀-➿️‍]+)/u;
 
-function parseTitle(
-  title: string | null,
-  name: string,
-): { icon?: string; alias?: string } {
-  if (!title) return {};
-  const t = title.trim();
+function parseLabel(label: string): { icon?: string; alias?: string } {
+  const t = label.trim();
+  if (t.length === 0) return {};
   const em = t.match(LEADING_EMOJI);
   const icon = em ? em[1].trim() : undefined;
-  // alias = the human phrase after the "— " (em dash) or "- " separator.
-  const dash = t.split(/\s+[—–-]\s+/);
-  const alias = dash.length > 1 ? dash.slice(1).join(" — ").trim() : undefined;
-  void name;
-  return { icon: icon || undefined, alias: alias || undefined };
+  const rest = icon ? t.slice(em![0].length).trim() : t;
+  return { icon: icon || undefined, alias: rest || undefined };
 }
 
-// ── assembleCosmos — pure graph assembly from already-loaded inputs ──────────
-// Client-safe (no I/O): the server entry buildCosmos() (cosmos.server.ts) reads
-// the roster / NEXUS / ledger off disk and calls this. Keeping assembly pure
-// lets it be unit-tested and keeps cosmos.ts free of node:fs.
-export function assembleCosmos(
-  domains: DomainEntry[],
-  edges: CosmosEdge[],
-  ledger: AttestationRow[],
-): CosmosGraph {
-  // §7 membership filter (d4): drop Category-C (tooling / meta / process) domains
-  // at the SOURCE so every downstream view (overview · decompose · /d/<D> ·
-  // /api/cosmos/targets) inherits it. Filter the roster BEFORE building nodes, AND
-  // drop any edge whose endpoint is excluded — else a Category-C name (e.g.
-  // NOVEL-TOOL as a provider) re-enters as a synthesized node via a composition
-  // edge below.
-  domains = domains.filter((d) => isCosmosDomain(d.name));
-  edges = edges.filter((e) => isCosmosDomain(e.from) && isCosmosDomain(e.to));
-
-  // Roster names (uppercase) for edge sanity — keep every edge (an endpoint may be
-  // a primitive-only domain not in the curated web roster, e.g. HEX-N6/SRR), but
-  // surface a node for every edge endpoint too so the graph has no dangling refs.
-  const byName = new Map<string, DomainEntry>();
-  for (const d of domains) byName.set(d.name.toUpperCase(), d);
-
-  const nodes: CosmosNode[] = domains.map((d) => {
-    const { icon, alias } = parseTitle(d.title, d.name);
-    return {
-      name: d.name,
-      icon,
-      alias,
-      rung: classifyRung(d.name, { goal: d.goal }),
-      state: deriveState(d, { ledger, edges }),
-      goal: d.goal ?? undefined,
-      progress: d.progress ?? undefined,
-    };
-  });
-
-  // Synthesize lightweight nodes for edge endpoints missing from the roster so the
-  // composition tree (decompose) can render a leaf even when it is a bare
-  // primitive domain. State derived from edges only; rung from keyword fallback.
-  const present = new Set(nodes.map((n) => n.name.toUpperCase()));
-  const extraNames = new Set<string>();
-  for (const e of edges) {
-    for (const end of [e.from, e.to]) {
-      if (!present.has(end.toUpperCase())) extraNames.add(end);
+// ── prereqEdges — INDEX.demi `prerequisites` → CosmosEdge[] (§10) ─────────────
+// For each domain, each prerequisite `p` yields an edge {from:p, to:domain}
+// (provider=prereq/child, consumer=domain/parent). Self-edges and edges whose
+// endpoint is not an INDEX.demi node are dropped (by-construction membership —
+// an unknown prereq id has no node, so the graph has no dangling refs).
+export function prereqEdges(domains: DemiDomain[]): CosmosEdge[] {
+  const known = new Set(domains.map((d) => d.id.toLowerCase()));
+  const edges: CosmosEdge[] = [];
+  for (const d of domains) {
+    for (const p of d.prerequisites) {
+      if (p === d.id) continue;
+      if (!known.has(p.toLowerCase())) continue; // membership by construction
+      edges.push({ from: p, to: d.id, tier: "tier-1", evidence: "prerequisite" });
     }
   }
-  for (const name of extraNames) {
-    const stub: DomainEntry = {
-      name,
-      mdPath: "",
-      logPath: "",
-      goal: null,
-      title: null,
-      progress: null,
+  return edges;
+}
+
+// ── assembleCosmos — pure graph assembly from already-loaded `.demi` inputs ────
+// Client-safe (no I/O): the server entry buildCosmos() (cosmos.server.ts) reads
+// INDEX.demi + each <id>.demi off disk and calls this. Keeping assembly pure lets
+// it be unit-tested and keeps cosmos.ts free of node:fs.
+//
+// `manifests` maps a domain id → its parsed `<id>.demi` cells (empty if missing).
+// Node membership IS the INDEX.demi `[<id>]` set (no exclude list); edges ARE the
+// `prerequisites` (no @link); rung IS `facets.scale`; state IS the cell gate/absorbed.
+export function assembleCosmos(
+  domains: DemiDomain[],
+  manifests: Record<string, DemiManifest>,
+): CosmosGraph {
+  const edges = prereqEdges(domains);
+
+  const nodes: CosmosNode[] = domains.map((d) => {
+    const { icon, alias } = parseLabel(d.label);
+    const cells = manifests[d.id]?.cells ?? [];
+    return {
+      name: d.id,
+      icon,
+      alias,
+      rung: scaleToRung(d.scale),
+      state: cellsToState(cells),
+      goal: d.label || undefined,
     };
-    nodes.push({
-      name,
-      rung: classifyRung(name),
-      state: deriveState(stub, { ledger, edges }),
-    });
-    present.add(name.toUpperCase());
-  }
+  });
 
   nodes.sort((a, b) => a.name.localeCompare(b.name));
   return { nodes, edges };
 }
 
 // ── decompose — downward composition tree (§1 D2 focus sub-constellation) ─────
-// Given a target (e.g. UFO), follow reuse edges DOWNWARD: target is a CONSUMER
-// (edge.to), its children are the PROVIDERS (edge.from) it reuses. Recurse on each
-// child, guarding against cycles. Roll up an overall state per §4:
-//   any ⚪ leaf → target 🟡 (needs-verify); all 🟢/🔵 → target 🟢; any 🔴 on a
-//   load-bearing edge is flagged (surfaced via `falsifiedEdge`).
+// Given a target (e.g. ufo), follow prerequisite edges DOWNWARD: target is a
+// CONSUMER (edge.to), its children are the PROVIDERS / prerequisites (edge.from)
+// it is composed of. Recurse on each child, guarding against cycles. Roll up an
+// overall state per §4: any ⚪ leaf → target 🟡 (needs-verify); all 🟢/🔵 → 🟢; a
+// 🔴 on a load-bearing edge is flagged (surfaced via `hasFalsified`).
 
 export type CosmosTree = {
   node: CosmosNode;
-  /** the edge by which the PARENT reuses this node (undefined for the root). */
+  /** the edge by which the PARENT is composed of this node (undefined for root). */
   via?: CosmosEdge;
   children: CosmosTree[];
   /** rolled-up state for this subtree (the node + all descendants). */
@@ -468,7 +229,6 @@ export type Decomposition = {
 };
 
 function rollupState(self: VerifyState, children: CosmosTree[]): VerifyState {
-  // No children → the node's own state is the rollup.
   if (children.length === 0) return self;
   const states = [self, ...children.map((c) => c.rollup)];
   if (states.some((s) => s === "falsified")) {
@@ -503,10 +263,10 @@ export function decompose(
     const up = nodeName.toUpperCase();
     const node =
       byName.get(up) ??
-      ({ name: nodeName, rung: "materials", state: "unverified" } as CosmosNode);
+      ({ name: nodeName, rung: "molecular", state: "unverified" } as CosmosNode);
 
-    // children = providers this node reuses (edge.to === node, child = edge.from),
-    // skipping already-visited names (cycle guard) and self-edges.
+    // children = prerequisites this node is composed of (edge.to === node, child =
+    // edge.from), skipping already-visited names (cycle guard) and self-edges.
     const childEdges = graph.edges.filter(
       (e) => e.to.toUpperCase() === up && e.from.toUpperCase() !== up,
     );

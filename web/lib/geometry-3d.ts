@@ -173,15 +173,15 @@ export function qubitDescriptor(): ProceduralDescriptor {
 }
 
 // Rung → a generic default shape when nothing more specific is known. Each of
-// the SIX rungs reads visually distinct (atom→lattice · material→supercell ·
-// bio→helix · chem→molecule · chip→die · system→coil).
+// the FOUR `.demi` scales reads visually distinct (§10 — facets.scale IS the
+// rung): molecular→supercell (matter/chem/bio lattice) · device→die (chip) ·
+// component→coil (sub-assembly) · system→orbit (full body). Shape primitives are
+// unchanged — only the rung keys moved to the canonical 4-scale set.
 const RUNG_DEFAULT_SHAPE: Record<Rung, ProceduralShape> = {
-  atom: "lattice",
-  materials: "supercell",
-  bio: "helix",
-  chem: "molecule",
-  chip: "die",
-  system: "coil",
+  molecular: "supercell",
+  device: "die",
+  component: "coil",
+  system: "orbit",
 };
 
 // Generic default param bags per shape (still DATA, not renderer-inline). These
@@ -241,7 +241,7 @@ function deriveProcedural(src: DescriptorSource): ProceduralDescriptor {
     };
   }
 
-  const rung = src.rung ?? "materials";
+  const rung = src.rung ?? "molecular";
   const shape = RUNG_DEFAULT_SHAPE[rung];
   // A rung-typed fallback carries NO real structural numbers → stylized (D3).
   return {
@@ -254,13 +254,13 @@ function deriveProcedural(src: DescriptorSource): ProceduralDescriptor {
 
 // ── (3) stylized symbol placeholder (D3 hybrid — no data → honest stub) ───────
 function symbolDescriptor(rung: Rung): ProceduralDescriptor {
+  // rung index: molecular 0 · device 1 · component 2 · system 3 (the 4 `.demi`
+  // scales, bottom→top of the ladder).
   const RUNG_NUM: Record<Rung, number> = {
-    atom: 0,
-    materials: 1,
-    bio: 2,
-    chem: 3,
-    chip: 4,
-    system: 5,
+    molecular: 0,
+    device: 1,
+    component: 2,
+    system: 3,
   };
   return {
     kind: "procedural",
@@ -288,7 +288,7 @@ export function isStylizedDescriptor(d?: Model3DDescriptor): boolean {
 export function deriveDescriptor(src: DescriptorSource): Model3DDescriptor {
   const up = src.name.toUpperCase();
   if (DERIVED_PARAMS[up] || src.rung) return deriveProcedural(src);
-  return symbolDescriptor(src.rung ?? "materials");
+  return symbolDescriptor(src.rung ?? "molecular");
 }
 
 // CLIENT path — fetch the public descriptor over HTTP, fall back to derived /
@@ -763,23 +763,19 @@ export function buildCoil(params: Record<string, number | string>): BuiltModel {
 }
 
 // buildSymbol — the D3 stylized placeholder. A rung-keyed primitive so the
-// shape itself signals scale (atom→tetra · materials→cube · chip→octa ·
-// system→icosa) while honestly reading as "no data".
+// shape itself signals scale (molecular→cube · device→octa · component→dodeca ·
+// system→torusKnot) while honestly reading as "no data".
 export function buildSymbol(params: Record<string, number | string>): BuiltModel {
-  // rung index: atom 0 · materials 1 · bio 2 · chem 3 · chip 4 · system 5.
-  const rung = Math.round(num(params, "rung", 1));
+  // rung index: molecular 0 · device 1 · component 2 · system 3 (4 `.demi` scales).
+  const rung = Math.round(num(params, "rung", 0));
   const geo =
     rung <= 0
-      ? new THREE.TetrahedronGeometry(0.9) // atom
+      ? new THREE.BoxGeometry(1.2, 1.2, 1.2) // molecular
       : rung === 1
-        ? new THREE.BoxGeometry(1.2, 1.2, 1.2) // materials
+        ? new THREE.OctahedronGeometry(1) // device
         : rung === 2
-          ? new THREE.OctahedronGeometry(1) // bio
-          : rung === 3
-            ? new THREE.DodecahedronGeometry(0.95) // chem
-            : rung === 4
-              ? new THREE.IcosahedronGeometry(1, 0) // chip
-              : new THREE.TorusKnotGeometry(0.6, 0.22, 64, 8); // system
+          ? new THREE.DodecahedronGeometry(0.95) // component
+          : new THREE.TorusKnotGeometry(0.6, 0.22, 64, 8); // system
   return {
     parts: [{ geometry: geo, position: [0, 0, 0], role: "symbol" }],
     bound: 1.6,
@@ -860,7 +856,7 @@ export function overviewShapeFor(src: DescriptorSource): OverviewShape {
     return { shape: "throat", stylized: true };
   if (/orbit|trap|loop|ring/.test(goal)) return { shape: "orbit", stylized: true };
 
-  const rung = src.rung ?? "materials";
+  const rung = src.rung ?? "molecular";
   return { shape: RUNG_DEFAULT_SHAPE[rung], stylized: true };
 }
 

@@ -12,12 +12,11 @@ import { getMessages, t, type Messages } from "@/lib/i18n";
 import type { Rung, VerifyState } from "@/lib/cosmos";
 import type { CosmosI18n, SurfaceI18n } from "@/lib/cosmos-i18n";
 
+// §10: the 4 canonical `.demi` `facets.scale` rungs.
 const RUNG_KEY: Record<Rung, string> = {
-  atom: "app_gui.cosmos_rung_atom",
-  materials: "app_gui.cosmos_rung_materials",
-  bio: "app_gui.cosmos_rung_bio",
-  chem: "app_gui.cosmos_rung_chem",
-  chip: "app_gui.cosmos_rung_chip",
+  molecular: "app_gui.cosmos_rung_molecular",
+  device: "app_gui.cosmos_rung_device",
+  component: "app_gui.cosmos_rung_component",
   system: "app_gui.cosmos_rung_system",
 };
 
@@ -31,11 +30,9 @@ const STATE_KEY: Record<VerifyState, string> = {
 
 function rungLabels(m: Messages): Record<Rung, string> {
   return {
-    atom: t(m, RUNG_KEY.atom),
-    materials: t(m, RUNG_KEY.materials),
-    bio: t(m, RUNG_KEY.bio),
-    chem: t(m, RUNG_KEY.chem),
-    chip: t(m, RUNG_KEY.chip),
+    molecular: t(m, RUNG_KEY.molecular),
+    device: t(m, RUNG_KEY.device),
+    component: t(m, RUNG_KEY.component),
     system: t(m, RUNG_KEY.system),
   };
 }

@@ -7,11 +7,11 @@
 // generic path, no per-domain branching; geometry of the focused node comes
 // from the P2 descriptor layer, never hardcoded — @L10).
 //
-// Layout (D1): every domain is a node placed on a VERTICAL rung axis, SIX bands
-//   원자(atom) bottom → 물질(material) → 바이오(bio) → 화학(chem) → 칩(chip) →
-//   시스템(system) top.
+// Layout (D1): every domain is a node placed on a VERTICAL rung axis, FOUR bands
+//   (§10 — the `.demi` facets.scale IS the rung): 분자(molecular) bottom →
+//   소자(device) → 부품(component) → 시스템(system) top.
 // State (§4) is encoded by node color (STATE_ACCENT) + a floating badge.
-// Edges (DOMAINS.tape @link reuse graph · §7.1) are drawn as connectors.
+// Edges (INDEX.demi prerequisites · §10) are drawn as connectors.
 //
 // Focus (D2): clicking a node (or a parent setting focusTarget) calls
 // decompose(target, graph) — the target's composition sub-tree is lit, the rest
@@ -82,23 +82,15 @@ const OVERVIEW_GLYPH_FALLBACK_THRESHOLD = 60;
 const GLYPH_BOUND = 0.42;
 const GLYPH_BOUND_FOCUSED = 0.7;
 
-// ── §2 scale ladder — rung → vertical Y (atom bottom → system top) ────────────
-// SIX bands, evenly spaced 4 units apart (원자 → 물질 → 바이오 → 화학 → 칩 → 시스템).
-const RUNG_ORDER: Rung[] = [
-  "atom",
-  "materials",
-  "bio",
-  "chem",
-  "chip",
-  "system",
-];
+// ── §2/§10 scale ladder — rung → vertical Y (molecular bottom → system top) ───
+// FOUR `.demi` `facets.scale` bands, evenly spaced 6 units apart
+// (분자 molecular → 소자 device → 부품 component → 시스템 system).
+const RUNG_ORDER: Rung[] = ["molecular", "device", "component", "system"];
 const RUNG_Y: Record<Rung, number> = {
-  atom: -10,
-  materials: -6,
-  bio: -2,
-  chem: 2,
-  chip: 6,
-  system: 10,
+  molecular: -9,
+  device: -3,
+  component: 3,
+  system: 9,
 };
 
 // Filter chips (D6). A chip narrows which nodes are HIGHLIGHTED; non-matching
@@ -524,7 +516,7 @@ function ScaleLadder({ rungLabel }: { rungLabel: Record<Rung, string> }) {
       ))}
       {/* the vertical spine */}
       <mesh position={[-14, 0, 0]}>
-        <boxGeometry args={[0.03, RUNG_Y.system - RUNG_Y.atom + 2, 0.03]} />
+        <boxGeometry args={[0.03, RUNG_Y.system - RUNG_Y.molecular + 2, 0.03]} />
         <meshBasicMaterial color="#5a534c" />
       </mesh>
     </group>
