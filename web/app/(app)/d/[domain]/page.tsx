@@ -23,6 +23,7 @@ import { getMessages, t } from "@/lib/i18n";
 import { getCosmosI18n } from "@/lib/cosmos-i18n.server";
 import { VERBS } from "@/lib/verbs";
 import { DomainModel3D } from "@/components/DomainModel3D";
+import { MolViewer } from "@/components/MolViewer";
 import { WorkButton } from "@/components/cosmos/WorkButton";
 
 export const dynamic = "force-dynamic";
@@ -98,19 +99,40 @@ export default async function DomainDetailPage({
       </header>
 
       <div className="grid gap-5 md:grid-cols-2">
-        {/* ── 3D model (descriptor-driven; faithful where data exists, §D3) ── */}
+        {/* ── 3D model — real fold via Mol* when the node names a structure
+             (§9.1b: facets.uniprot/pdb), else the procedural DomainModel3D ── */}
         <section className="space-y-2">
           <h2 className="text-sm font-medium text-ink">{d("detail_model_heading")}</h2>
           <div className="h-72 w-full overflow-hidden rounded-xl border border-hairline bg-[#16130f]">
-            <DomainModel3D
-              domain={node.name}
-              rung={node.rung}
-              goal={node.goal}
-              state={node.state}
-              noDataLabel={i18n.modelNoData}
-              errorLabel={i18n.modelError}
-            />
+            {node.structure ? (
+              <MolViewer source={node.structure.source} id={node.structure.id} />
+            ) : (
+              <DomainModel3D
+                domain={node.name}
+                rung={node.rung}
+                goal={node.goal}
+                state={node.state}
+                noDataLabel={i18n.modelNoData}
+                errorLabel={i18n.modelError}
+              />
+            )}
           </div>
+          {node.structure &&
+            (node.structure.source === "alphafold" ? (
+              <p className="text-xs text-muted">
+                실제 단백질 접힘 구조 — 색은 예측 신뢰도(pLDDT) ·{" "}
+                <span className="text-body">
+                  {node.structure.id} · AlphaFold DB · CC-BY
+                </span>
+              </p>
+            ) : (
+              <p className="text-xs text-muted">
+                실험으로 풀린 실제 단백질 구조 ·{" "}
+                <span className="text-body">
+                  PDB {node.structure.id} · RCSB PDB · CC0
+                </span>
+              </p>
+            ))}
         </section>
 
         {/* ── composition tree (decompose) ─────────────────────────────────── */}
