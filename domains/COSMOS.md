@@ -149,6 +149,73 @@ chem (molecule) ← molecular formula → atom count + bonds
   `.log.md` + `exports/<D>/`, but the geometry parser reads `<D>.md` for a STRUCTURAL number; if those numbers
   exist they should be surfaced into `<D>.md` (or a descriptor) to trigger promotion. Open milestone below.
 
+## §9.1 Research (2026-06-05 · web + arxiv + AlphaFold) — how to fill faithful bio/chem 3D
+Three parallel research threads (structural-data sourcing · web-3D viewer · arxiv/licensing). All numbers below
+were verified against LIVE APIs, not transcribed from docs. This is the actionable plan for the §9 milestone.
+
+### (a) Per-domain promotion table — real entities + structural numbers (groundable NOW)
+The bio domains DO cite real PDB/UniProt ids in their `.log.md`/`exports/` — they just never reached `<D>.md`.
+Resolve the count via the APIs in (c) and write it into `<D>.md` (or a descriptor) to auto-promote:
+```
+domain     entity (id)                       structural number          shape (rung)
+─────────────────────────────────────────────────────────────────────────────────────
+AGA-RX     SFRP1  (UniProt Q8N474)           residues 314 → ~87 turns   helix      ✅now
+AGA-RX     Dkk1–LRP6 (PDB 3S2K)              3 chains · 1298 res         helix×3    ✅now
+AGA-RX     AR-LBD (PDB 2AM9, off-target)     266 res · 2403 atoms        helix      ✅now
+AGA-RX     WAY-316606 (PubChem 16727102)     C18H19F3N2O4S2 · 29 heavy   molecule   ✅now
+SENOLYX    BCL-xL (PDB 3ZLR)                 290 res · 2 chains          helix      ✅now
+SENOLYX    BCL-xL/PROTAC (4QVX·4CI1)+ligands per-PDB via RCSB; CID/ligand molecule   ✅now
+AGA-CURE   (reuses AGA-RX targets)           reuse SFRP1/Dkk1            helix      reuse
+IVD-CURE   (reuses SENOLYX BCL-xL)           reuse 3ZLR                  helix      reuse
+OA/PERIO/RETINA-CURE  η_neo modeling, no own PDB → choose a pathway target first   needs-target
+GENE-EDIT·RNA-THERAPY·ORGANOID·PROTEIN-FOLD  generic samplers, NO entity → honest ⚪ (do not invent)
+ELECTROCAT·PHOTOREDOX·CO2-CAPTURE·GREEN-NH3  generic chem samplers, NO formula → honest ⚪
+```
+Real-id source files: `domains/AGA-RX.log.md` (Q8N474·3S2K·2AM9·6Q0D), `domains/SENOLYX.md/.log.md` (3ZLR·4QVX·4CI1).
+
+### (b) Faithful-3D rendering — viewer + integration (AlphaFold-grade)
+AlphaFold DB's own GUI = **Mol\*** (molstar). Recommendation = HYBRID (the WebGL-context split is the real trap —
+browsers cap ~8 contexts, no cross-context sharing; the cosmos overview already owns one R3F canvas):
+```
+COSMOS overview (R3F scene)  → keep NATIVE R3F meshes (CA-trace tube / low-poly ribbon · atoms+bonds).
+                               Faithful-LITE, lives IN the existing canvas, NO 2nd WebGL context.
+/d/<domain> detail page      → mount Mol* (pdbe-molstar, MIT) in its OWN canvas, dynamic import ssr:false.
+                               Real fold + pLDDT confidence coloring (built-in) = the AlphaFold-DB UX.
+chem detail                  → Mol* reads SDF too; 3Dmol.js (BSD-3, lighter) if bundle-tight.
+```
+- Today's `web/components/StructureViewer.tsx` is a CSS-3D PLACEHOLDER (its own comment says so) — Mol* replaces it.
+- Data feed: protein mmCIF `alphafold.ebi.ac.uk/files/AF-<UNIPROT>-F1-model_v4.cif` (pLDDT in B-factor) or RCSB
+  `files.rcsb.org/download/<PDBID>.cif`; molecule SDF from PubChem `record_type=3d`. Proxy via a Next route handler
+  (`app/api/structure/route.ts`) to dodge CORS + cache. Dispose viewer on unmount (`plugin.dispose()`).
+- AVOID: `molstar-react` (stale 2023) · NGL (RCSB-removed 2024). Wrap `pdbe-molstar` yourself (~30-line client cmp).
+
+### (c) API endpoints (verified live)
+```
+RCSB entry   GET data.rcsb.org/rest/v1/core/entry/{PDB}      → deposited_atom_count · *_polymer_monomer_count(res) · *_instance_count(chains)
+RCSB chain   GET data.rcsb.org/rest/v1/core/polymer_entity/{PDB}/{N}  → entity_poly.rcsb_sample_sequence_length
+AlphaFold    GET alphafold.ebi.ac.uk/api/prediction/{UNIPROT} → uniprotEnd(res) · cifUrl/pdbUrl
+UniProt      GET rest.uniprot.org/uniprotkb/{ACC}.json?fields=length → sequence.length(res)
+PubChem      GET pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{CID}/property/MolecularFormula,HeavyAtomCount/JSON
+download     files.rcsb.org/download/{PDB}.cif · alphafold.ebi.ac.uk/files/AF-{ACC}-F1-model_v4.cif · pug .../SDF?record_type=3d
+```
+
+### (d) Licensing (LOAD-BEARING for a product GUI)
+- **AlphaFold DB structures = CC-BY-4.0 → product-safe WITH attribution** ("AlphaFold DB, EMBL-EBI/DeepMind"). PDB = CC0.
+- **AlphaFold 3 model+weights = NON-COMMERCIAL only** → COSMOS must CONSUME pre-computed AlphaFold DB structures,
+  NEVER run AF3 inference in-product. Viewers Mol*/NGL = MIT · 3Dmol.js = BSD-3 (all clean).
+
+### (e) NOVEL probe — prose→structure resolver cascade (worth a milestone, frontier but real)
+When a domain has no PDB, generate a flagged-illustrative structure instead of a fake placeholder:
+```
+1 known protein   → AlphaFold DB / PDB mmCIF          (faithful)
+2 sequence-only   → ESMFold on-demand                 (faithful)
+3 prose-only bio  → ESM3 / RFdiffusion representative  (⚠ flag "generated · illustrative")
+4 prose-only chem → text→graph diffusion (3M-Diffusion) (⚠ flag "generated · illustrative")
+```
+Tiers 3–4 MUST be visibly flagged generated (never shown as experimental) — honesty (d6). Refs: AlphaFold3
+Nature 2024 (s41586-024-07487-w) · AF-DB NAR 2024 (gkad1011) · ESMFold Science 2023 (ade2574) · RFdiffusion
+Nature 2023 (s41586-023-06415-8) · Mol* NAR 2021 (W431) · 3M-Diffusion arXiv:2403.07179 · ProteinGPT arXiv:2408.11363.
+
 ## Milestones
 - [x] P0 design — perfected spec (D1–D7) → this architecture
 - [x] P1 cosmos data — `web/lib/cosmos.ts` (graph + rung + verify-state) · 87b88c86
@@ -164,7 +231,9 @@ chem (molecule) ← molecular formula → atom count + bonds
 - [x] overview hover highlight — pointer-over a node lifts tint 40%→white + scale ×1.22 (instanced) / ×1.18 + emissive 0.7 (glyph fallback) + label→white, via existing zero-rebuild instanced buffers (setColorAt/setMatrixAt); onPointerMove re-targets per-instance; both render paths; click→focus/layout/badge intact. · SHA d38f5907
 - [ ] **cosmos membership filter (§7) — `isCosmosDomain()` + `COSMOS_EXCLUDE` const** — EXCLUDE the 20 non-material/meta/tooling domains (8VERB·COSMOS·DEMIURGE·NOVEL-TOOL·POOL·QFORGE*·YOSYS·…) inside `assembleCosmos()`; drop edges to excluded endpoints; cosmos.test.ts asserts they are absent + RTSC present. ⚠ HIGHEST PRIORITY — currently they leak in as bogus `materials` nodes
 - [ ] **NEXUS→DOMAINS @link migration (§7.1)** — `NEXUS.tape` RETIRED: (a) code — cosmos reads `@link` rows from `DOMAINS.tape`, not `NEXUS.tape` (`readLinkEdges`/`parseLinkEdges`); (b) data — migrate the `NEXUS.tape` `reuse-edge` rows to `@link <reused_by> --reuses--> <provides>  # evidence` in `DOMAINS.tape` so decomposition survives. Reference `hexa-lang`/`anima` DOMAINS.tape format
-- [ ] faithful bio/chem 3D — surface real STRUCTURAL counts (residues/formula) from bio progress (`AGA-RX`/`SENOLYX`/CURE-family `.log.md`+`exports/`) into their `<D>.md` or a descriptor → auto-promotes via the live parser (§9). Today honestly stylized — no extractable count in `<D>.md` yet
+- [ ] faithful bio/chem 3D — **research DONE (§9.1)**; surface the resolved counts into `<D>.md`: AGA-RX (SFRP1 314res · WAY-316606 C18H19F3N2O4S2/29) · SENOLYX (BCL-xL 3ZLR 290res) → auto-promote via live parser. Generic samplers (GENE-EDIT/chem) stay honest ⚪ (no entity to invent)
+- [ ] Mol\* faithful viewer on `/d/<domain>` (§9.1b) — replace CSS-3D `StructureViewer.tsx` placeholder with `pdbe-molstar` (MIT) in its own canvas (dynamic ssr:false), fed AlphaFold-DB/RCSB mmCIF via a `app/api/structure` proxy; cosmos overview stays native R3F meshes (avoid 2nd WebGL context). Attribution: AlphaFold DB CC-BY (§9.1d)
+- [ ] NOVEL prose→structure resolver cascade (§9.1e) — AlphaFold-DB → ESMFold → ESM3/RFdiffusion (flagged "generated·illustrative") → text→graph for chem; tiers 3–4 visibly flagged generated (d6 honesty)
 - [ ] deploy gate — push main → Cloud Run ONLY on explicit user approval (d_deploy)
 
 ## §6 shelf — design options / deferred
