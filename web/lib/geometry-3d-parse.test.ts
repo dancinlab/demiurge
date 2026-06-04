@@ -38,12 +38,13 @@ function main(): void {
   const grSrc: DescriptorSource = { name: "GRAPHENE", rung: "molecular" };
   assert(parseDocToDescriptor(sampler, grSrc) === null, "number-free doc → null (stylized)");
 
-  // 2. molecular doc WITH a lattice constant → faithful lattice descriptor.
+  // 2. molecular doc WITH a lattice constant → faithful supercell descriptor
+  // (supercell is the first molecular candidate — bulk crystal, carries nx).
   const matDoc = "spec: cubic cell, lattice constant a = 3.61 Å, 2x2x2 supercell\n";
   const matSrc: DescriptorSource = { name: "TESTMAT", rung: "molecular" };
   const mat = parseDocToDescriptor(matDoc, matSrc);
   assert(mat !== null, "molecular doc with a=3.61Å promotes");
-  assert(mat!.shape === "lattice", "molecular lattice constant → lattice shape");
+  assert(mat!.shape === "supercell", "molecular lattice constant → supercell shape");
   assert(mat!.params.a === 3.61, "extracted a=3.61");
   assert(mat!.params.nx === 2, "extracted nx=2 from 2x2x2");
   assert(isStylizedDescriptor(mat!) === false, "auto-parsed faithful is NOT stylized");

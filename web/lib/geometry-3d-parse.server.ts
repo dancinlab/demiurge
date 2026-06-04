@@ -259,8 +259,11 @@ function extractChip(text: string, hits: Hit[], seen: Set<string>): void {
 // and pick the shape that yields the most promoting hits. CANDIDATE_SHAPES lists
 // the shapes (in priority order) each scale may promote to; the per-shape default
 // (RUNG_SHAPE) is the stylized fallback shape when no doc number promotes.
+// Priority: supercell (bulk crystal · carries nx supercell repeat) before lattice
+// (SRR/metamaterial · sigma/phi), then bio (helix) and chem (molecule). A matter
+// doc with a lattice constant promotes to the same faithful supercell as before.
 const CANDIDATE_SHAPES: Record<Rung, ProceduralShape[]> = {
-  molecular: ["lattice", "supercell", "helix", "molecule"],
+  molecular: ["supercell", "lattice", "helix", "molecule"],
   device: ["die"],
   component: ["die", "coil"],
   system: ["coil"],

@@ -215,11 +215,15 @@ export function parseDomainDemi(text: string): DemiManifest {
   for (let i = 0; i < lines.length; i++) {
     const raw = lines[i];
 
-    // Inside a multi-line list literal — accumulate raw until the closing `]`.
+    // Inside a multi-line list literal — accumulate until the closing `]`. Each
+    // caveat sits on its own line; join with a SPACE (not newline) so the
+    // space/tab-only trim in splitList cleans each entry (a left-over newline
+    // would survive the trim and corrupt the quote-strip). The accumulation must
+    // NOT strip `#` — caveat text may contain `#` inside a quoted string.
     if (inList) {
       const closeIdx = raw.indexOf("]");
       if (closeIdx < 0) {
-        listBuf += raw + "\n";
+        listBuf += raw + " ";
         continue;
       }
       listBuf += raw.slice(0, closeIdx);
@@ -271,7 +275,7 @@ export function parseDomainDemi(text: string): DemiManifest {
         // so stripComment on the OPENING line only is acceptable; the inner
         // lines are taken raw (above) to preserve any `#` inside quotes.
         inList = true;
-        listBuf = trim(val).slice(1) + "\n";
+        listBuf = trim(val).slice(1) + " ";
       }
     }
   }
