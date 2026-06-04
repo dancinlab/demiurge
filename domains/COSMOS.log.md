@@ -2,6 +2,14 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — all-go: overview per-rung 3D + auto-promotion pipeline
+
+User "all go" on the two next-candidates. Foreground-sequential (shared worktree d9), worktree `/tmp/cosmos-wt`.
+
+- [x] #1 overview per-rung 3D → **`275d5b75`**: constellation nodes now draw their rung-typed shape (atom=lattice·materials=supercell·bio=helix·chem=molecule·chip=die·system=coil; faithful HEX-N6/RTSC/QUBIT keep real shape) instead of generic spheres. Perf: `InstancedMesh` grouped-by-shape (≤6 draw calls, not ~37), low-poly merged unit geometry per shape (`overviewParamsForShape`+`mergeBuiltModelToUnit`), per-instance verify-state color. Guard `OVERVIEW_GLYPH_FALLBACK_THRESHOLD=60` (>60 nodes OR `hardwareConcurrency<4` → sphere glyph) + per-shape merge-fail fallback. Click→focus/hover/Y-band layout intact, labels+badges unchanged. build+tsc GREEN. caveat: fps not browser-measured (static analysis ≤6 draws + per-node Html badges = the cost at density); hover-tint is follow-up.
+- [x] #2 auto-promotion pipeline → **`5fcf71e6`**: `geometry-3d-parse.server.ts` (`parseDocToDescriptor` pure + disk wrapper) scans `domains/<D>.md` for real structural numbers by rung (lattice a/b/c·σ·τ·φ triple · residue/seq→helix turns · chain→strands · formula→atom count · R/D/H/κ/winding → coil) each with matched-line+lineno provenance. Resolver priority in `geometry-3d.server.ts`: (1) hand-authored json → (2) in-memory auto-parsed faithful → (3) rung stylized. Faithful coverage AUTO-grows from docs, zero new files. HONEST: audited all 177 docs → only RTSC (`a=2.984` `rtsc.md:983`) + UFO (`D=6.0m` `ufo.md:48`) carry clean geometry, both already hand-authored at priority-1 → 0 NEW net promotions (the honest result; parser independently re-derived UFO's numbers, validating it). Fixed 2 false positives mid-build (software "N-layer", `σ·τ=48` product) by requiring crystal context / full triple. 19/19 parser tests + build GREEN.
+- [ ] caveat: no unit-test framework (Playwright e2e only) → parser test runs via a tiny ESM resolve hook; tsc typecheck is the primary green gate.
+
 ## 2026-06-05 — 6-rung scale ladder + per-rung 3D vocabulary (atom·material·bio·chem·chip·system)
 
 User: cosmos must span 원자·물질·바이오·화학·칩·시스템 — bio & chem rungs were missing. Foreground agent, worktree `/tmp/cosmos-wt`.
