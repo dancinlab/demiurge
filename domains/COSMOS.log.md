@@ -2,6 +2,13 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — bg: overview hover highlight
+
+User "bg go" on the hover follow-up. Background agent in its OWN isolated worktree (`/tmp/cosmos-hover-wt` off origin/feat/8verb-cosmos) so the running preview on `/tmp/cosmos-wt` was untouched; fast-forward push to the shared branch.
+
+- [x] Hover affordance → **`d38f5907`** (ff `5fcf71e6..d38f5907`, single file `CosmosScene.tsx`): pointer-over a node = tint lerp 40%→white + scale ×1.22 (instanced rung-shape path, via existing `setColorAt`/`setMatrixAt`+needsUpdate, zero rebuild) / brighten + scale ×1.18 + emissiveIntensity 0.7 + opacity 1 (sphere-glyph fallback) + hovered label → pure white, slightly larger. Hover state lifted into `Scene`, one `onHoverName` feeds both paths; added `onPointerMove` on the instanced mesh so moving between instances of the SAME mesh re-targets (R3F `onPointerOver` only fires on mesh enter). Restores on pointer-out. build + `tsc --noEmit` GREEN.
+- [ ] caveat: not browser/fps-verified (shared dev server intentionally untouched); correctness build/type-verified, per-instance zero-rebuild path = no expected perf regression. Agent cleaned its worktree+branch.
+
 ## 2026-06-05 — all-go: overview per-rung 3D + auto-promotion pipeline
 
 User "all go" on the two next-candidates. Foreground-sequential (shared worktree d9), worktree `/tmp/cosmos-wt`.
