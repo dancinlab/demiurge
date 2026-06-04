@@ -32,15 +32,18 @@ function main(): void {
   // 1. Empty / number-free doc → null (stays stylized — honest).
   const sampler =
     "# 🧱 GRAPHENE\n@goal: verify claims\n## 측정 클레임\n- carrier mobility\n- quantum Hall\n";
-  const grSrc: DescriptorSource = { name: "GRAPHENE", rung: "materials" };
+  // §10: matter/chem/bio all live on the `molecular` scale; the parser runs every
+  // candidate extractor for the scale and promotes to the first shape whose
+  // structural numbers are present (lattice → supercell → helix → molecule).
+  const grSrc: DescriptorSource = { name: "GRAPHENE", rung: "molecular" };
   assert(parseDocToDescriptor(sampler, grSrc) === null, "number-free doc → null (stylized)");
 
-  // 2. material doc WITH a lattice constant → faithful supercell descriptor.
+  // 2. molecular doc WITH a lattice constant → faithful lattice descriptor.
   const matDoc = "spec: cubic cell, lattice constant a = 3.61 Å, 2x2x2 supercell\n";
-  const matSrc: DescriptorSource = { name: "TESTMAT", rung: "materials" };
+  const matSrc: DescriptorSource = { name: "TESTMAT", rung: "molecular" };
   const mat = parseDocToDescriptor(matDoc, matSrc);
-  assert(mat !== null, "material doc with a=3.61Å promotes");
-  assert(mat!.shape === "supercell", "material → supercell shape");
+  assert(mat !== null, "molecular doc with a=3.61Å promotes");
+  assert(mat!.shape === "lattice", "molecular lattice constant → lattice shape");
   assert(mat!.params.a === 3.61, "extracted a=3.61");
   assert(mat!.params.nx === 2, "extracted nx=2 from 2x2x2");
   assert(isStylizedDescriptor(mat!) === false, "auto-parsed faithful is NOT stylized");
@@ -51,7 +54,7 @@ function main(): void {
 
   // 3. bio doc with residue count → helix with turns derived from real residues.
   const bioDoc = "## structure\nThe target protein is 144 residues long (PDB 1ABC).\n";
-  const bioSrc: DescriptorSource = { name: "TESTBIO", rung: "bio" };
+  const bioSrc: DescriptorSource = { name: "TESTBIO", rung: "molecular" };
   const bio = parseDocToDescriptor(bioDoc, bioSrc);
   assert(bio !== null, "bio doc with 144 residues promotes");
   assert(bio!.shape === "helix", "bio → helix shape");
@@ -64,7 +67,7 @@ function main(): void {
   // 3b. bio doc with ONLY a PDB id (no counts) → null (PDB alone never promotes).
   const pdbOnly = "## structure\nWe used the crystal structure PDB 6XYZ.\n";
   assert(
-    parseDocToDescriptor(pdbOnly, { name: "TESTPDB", rung: "bio" }) === null,
+    parseDocToDescriptor(pdbOnly, { name: "TESTPDB", rung: "molecular" }) === null,
     "PDB id alone (no counts) → null (stays stylized, honest)",
   );
 
@@ -73,7 +76,7 @@ function main(): void {
   assert(sumFormula("H3S") === 4, "sumFormula H3S = 4");
   assert(sumFormula("In") === 0, "sumFormula of a non-formula token = 0");
   const chemDoc = "molecular formula C6H12O6 (glucose) with 24 atoms\n";
-  const chem = parseDocToDescriptor(chemDoc, { name: "TESTCHEM", rung: "chem" });
+  const chem = parseDocToDescriptor(chemDoc, { name: "TESTCHEM", rung: "molecular" });
   assert(chem !== null && chem.shape === "molecule", "chem doc with atom count promotes");
 
   // 5. system doc with a real radius → coil.

@@ -1,25 +1,27 @@
-// cosmos.ts smoke test — pure-logic sanity over the live repo tree.
+// cosmos.test.ts — pure-logic sanity over the live `.demi` SSOT (COSMOS.md §10).
 //
 // Run (from web/, with tsx installed):  npx tsx lib/cosmos.test.ts
 // Or with Node ≥22 native TS stripping + a tiny '@/' alias loader:
 //   node --experimental-strip-types --import=<loader>.mjs lib/cosmos.test.ts
 // Set DEMIURGE_DATA_ROOT to the demiurge repo root if cwd isn't under it.
-// Exits non-zero on any failed assertion. Intentionally tiny — verifies the
-// module imports, the graph assembles, and the §2/§4 invariants hold; not a
-// coverage suite. (Build typecheck is the primary gate; this is a runtime sanity.)
+// Exits non-zero on any failed assertion. Verifies the `.demi` rebase: nodes =
+// INDEX.demi sections (membership by construction), edges = prerequisites, rung =
+// facets.scale, verify-state = <id>.demi cell gate/absorbed.
 
 import {
+  assembleCosmos,
   decompose,
-  classifyRung,
-  parseLinkEdges,
-  isCosmosDomain,
-  COSMOS_EXCLUDE,
+  scaleToRung,
+  cellsToState,
+  prereqEdges,
   STATE_BADGE,
   type CosmosGraph,
   type Rung,
   type VerifyState,
 } from "./cosmos";
-import { buildCosmos, readLinkEdges } from "./cosmos.server";
+import { parseIndexDemi, parseDomainDemi, type DemiManifest } from "./demi";
+import { buildCosmos } from "./cosmos.server";
+import { readIndexDemi, readDomainDemi } from "./demi.server";
 
 function assert(cond: unknown, msg: string): void {
   if (!cond) {
@@ -30,7 +32,7 @@ function assert(cond: unknown, msg: string): void {
   console.log(`✓ ${msg}`);
 }
 
-const RUNGS: Rung[] = ["atom", "materials", "bio", "chem", "chip", "system"];
+const RUNGS: Rung[] = ["molecular", "device", "component", "system"];
 const STATES: VerifyState[] = [
   "verified-formal",
   "verified",
@@ -40,103 +42,183 @@ const STATES: VerifyState[] = [
 ];
 
 async function main(): Promise<void> {
-  // 0. parseLinkEdges parses a sample `@link A --reuses--> B  # ev` row (§7.1).
-  // CosmosEdge keeps from=PROVIDER, to=CONSUMER, so the @link orientation swaps:
-  // `@link RTSC --reuses--> NOVEL-TOOL` ⇒ from=NOVEL-TOOL (provider), to=RTSC.
-  const sample = parseLinkEdges(
-    "@domain RTSC := \"domains/rtsc.md\"\n" +
-      "@link RTSC --reuses--> NOVEL-TOOL  # current_loop_offaxis · PR #168\n" +
-      "@link UFO --reuses--> FUSION       # triple_product\n" +
-      "@link QFORGE --reuses--> stdlib/qforge  # lowercase target skipped\n",
+  // 0. parseIndexDemi parses a `[id]` section with scalars + dotted keys + lists.
+  const sampleIndex = parseIndexDemi(
+    "# comment line\n" +
+      "[ufo]\n" +
+      'label = "UFO·디스크 추진"  # trailing comment\n' +
+      'canvas_mode = "cohort"\n' +
+      "prerequisites = [fusion, antimatter, rtsc]\n" +
+      'facets.scale = "system"\n' +
+      'keywords = ["ufo", "uap"]\n' +
+      "\n" +
+      "[rtsc]\n" +
+      'label = "초전도 코일"\n' +
+      "prerequisites = []\n" +
+      'facets.scale = "device"\n',
   );
-  assert(sample.length === 2, "parseLinkEdges yields 2 domain↔domain edges (skips lowercase)");
-  const sampleEdge = sample.find((e) => e.from === "NOVEL-TOOL" && e.to === "RTSC");
-  assert(!!sampleEdge, "parseLinkEdges: @link RTSC --reuses--> NOVEL-TOOL → {from:NOVEL-TOOL,to:RTSC}");
+  assert(sampleIndex.length === 2, "parseIndexDemi yields 2 records");
+  const ufoRec = sampleIndex.find((d) => d.id === "ufo");
+  assert(!!ufoRec, "parseIndexDemi finds [ufo] section");
+  assert(ufoRec!.label === "UFO·디스크 추진", "label parsed (comment stripped)");
+  assert(ufoRec!.scale === "system", "facets.scale dotted key parsed");
   assert(
-    !!sampleEdge && /current_loop_offaxis/.test(sampleEdge.evidence ?? ""),
-    "parseLinkEdges preserves the evidence string after #",
+    JSON.stringify(ufoRec!.prerequisites) ===
+      JSON.stringify(["fusion", "antimatter", "rtsc"]),
+    "prerequisites list parsed",
+  );
+  assert(
+    JSON.stringify(ufoRec!.keywords) === JSON.stringify(["ufo", "uap"]),
+    "keywords list parsed",
   );
 
-  // 0b. §7 membership predicate — Category-C excluded, science kept.
-  for (const name of COSMOS_EXCLUDE) {
-    assert(!isCosmosDomain(name), `isCosmosDomain(${name}) === false (Category-C)`);
-  }
-  assert(!isCosmosDomain("QFORGE-FUTURE"), "isCosmosDomain QFORGE* prefix excluded");
-  assert(isCosmosDomain("RTSC"), "isCosmosDomain(RTSC) === true (science domain)");
-
-  // 1. @link edges parse from the live DOMAINS.tape and resolve domain endpoints.
-  const edges = await readLinkEdges();
-  assert(edges.length > 0, "readLinkEdges yields ≥1 edge");
-  assert(
-    edges.every((e) => e.from && e.to),
-    "every edge has from + to domains",
+  // 0b. parseDomainDemi parses cell sections + multi-line scope_caveats.
+  const sampleCells = parseDomainDemi(
+    "# header comment\n" +
+      "[cell.specify]\n" +
+      "gate_default      = OPEN\n" +
+      "absorbed_default  = false\n" +
+      "scope_caveats     = [\n" +
+      '  "first caveat",\n' +
+      '  "second caveat with a # inside a quote",\n' +
+      "]\n" +
+      "\n" +
+      "[cell.verify]\n" +
+      "gate_default      = OPEN\n" +
+      "absorbed_default  = true\n",
   );
-  // The seed UFO ← {ANTIMATTER, FUSION} edges must be present after migration.
+  assert(sampleCells.cells.length === 2, "parseDomainDemi yields 2 cells");
+  const sp = sampleCells.cells.find((c) => c.verb === "specify");
+  assert(!!sp && sp.gateDefault === "OPEN", "specify cell gate=OPEN");
+  assert(!!sp && sp.absorbedDefault === false, "specify cell absorbed=false");
+  assert(!!sp && sp.caveats.length === 2, "multi-line scope_caveats parsed (2 entries)");
+  const vf = sampleCells.cells.find((c) => c.verb === "verify");
+  assert(!!vf && vf.absorbedDefault === true, "verify cell absorbed=true parsed");
+
+  // 1. scaleToRung — the 4 canonical scales map 1:1; unknown → system.
+  assert(scaleToRung("molecular") === "molecular", "scaleToRung molecular");
+  assert(scaleToRung("device") === "device", "scaleToRung device");
+  assert(scaleToRung("component") === "component", "scaleToRung component");
+  assert(scaleToRung("system") === "system", "scaleToRung system");
+  assert(scaleToRung("") === "system", "scaleToRung empty → system (honest default)");
+
+  // 2. cellsToState — HONEST: all-OPEN/false → unverified; absorbed/CLOSED → verified.
+  assert(cellsToState([]) === "unverified", "no cells → unverified ⚪");
   assert(
-    edges.some((e) => e.to === "UFO" && e.from === "FUSION"),
-    "FUSION → UFO reuse edge parsed (migrated @link)",
+    cellsToState([{ verb: "specify", gateDefault: "OPEN", absorbedDefault: false, caveats: [] }]) ===
+      "unverified",
+    "all GATE_OPEN + absorbed=false → unverified ⚪",
+  );
+  assert(
+    cellsToState([
+      { verb: "specify", gateDefault: "OPEN", absorbedDefault: false, caveats: [] },
+      { verb: "verify", gateDefault: "OPEN", absorbedDefault: true, caveats: [] },
+    ]) === "verified",
+    "an absorbed=true cell upgrades to verified 🟢",
+  );
+  assert(
+    cellsToState([{ verb: "verify", gateDefault: "CLOSED", absorbedDefault: false, caveats: [] }]) ===
+      "verified",
+    "a CLOSED gate cell upgrades to verified 🟢",
   );
 
-  // 2. classifyRung honors the manifest table.
-  assert(classifyRung("HEX-N6") === "atom", "HEX-N6 → atom (manifest)");
-  assert(classifyRung("RTSC") === "materials", "RTSC → materials (manifest)");
-  assert(classifyRung("PROTEIN-FOLD") === "bio", "PROTEIN-FOLD → bio (manifest)");
-  assert(classifyRung("ELECTROCAT") === "chem", "ELECTROCAT → chem (manifest)");
-  assert(classifyRung("CLOAK") === "chip", "CLOAK → chip (manifest)");
-  assert(classifyRung("UFO") === "system", "UFO → system (manifest)");
-  // keyword fallback (no manifest entry): a "-CURE" therapeutic → bio, not system.
+  // 3. prereqEdges — INDEX.demi prerequisites → edges {from:prereq, to:domain},
+  // dropping any prereq not present as a node (membership by construction).
+  const edges = prereqEdges(sampleIndex);
+  // sampleIndex has ufo→[fusion,antimatter,rtsc] but only rtsc is a node here, so
+  // only the rtsc→ufo edge survives.
   assert(
-    classifyRung("SKIN-CURE", { goal: "완치 치료제 개발" }) === "bio",
-    "unlisted -CURE therapeutic → bio (keyword)",
+    edges.length === 1 && edges[0].from === "rtsc" && edges[0].to === "ufo",
+    "prereqEdges drops prereqs with no node (rtsc→ufo survives, fusion/antimatter dropped)",
   );
 
-  // 3. buildCosmos assembles a well-typed graph.
+  // 4. buildCosmos assembles a well-typed graph from the LIVE INDEX.demi.
   const graph: CosmosGraph = await buildCosmos();
-  assert(graph.nodes.length > 0, "buildCosmos yields ≥1 node");
+  assert(graph.nodes.length > 0, "buildCosmos yields ≥1 node from INDEX.demi");
   assert(
     graph.nodes.every((n) => RUNGS.includes(n.rung)),
-    "every node rung ∈ ladder",
+    "every node rung ∈ {molecular,device,component,system}",
   );
   assert(
     graph.nodes.every((n) => STATES.includes(n.state)),
     "every node state ∈ verify-state set",
   );
-  // every edge endpoint has a node (no dangling refs).
-  const names = new Set(graph.nodes.map((n) => n.name.toUpperCase()));
+  const names = new Set(graph.nodes.map((n) => n.name.toLowerCase()));
+
+  // membership BY CONSTRUCTION: ufo present; a tooling/meta name (8VERB) absent
+  // (it is simply NOT in INDEX.demi — no exclude list needed).
+  assert(names.has("ufo"), "INDEX.demi node `ufo` present");
+  assert(names.has("rtsc"), "INDEX.demi node `rtsc` present");
+  assert(!names.has("8verb"), "tooling name 8VERB absent (not in INDEX.demi)");
+  assert(!names.has("cosmos"), "meta name COSMOS absent (not in INDEX.demi)");
+  assert(!names.has("qforge"), "compute-engine name QFORGE absent (not in INDEX.demi)");
+
+  // rung of `ufo` = its facets.scale = system.
+  const ufoNode = graph.nodes.find((n) => n.name.toLowerCase() === "ufo")!;
+  assert(ufoNode.rung === "system", "ufo rung = facets.scale (system)");
+
+  // every edge endpoint has a node (no dangling refs — prereqs filtered to nodes).
   assert(
     graph.edges.every(
-      (e) => names.has(e.from.toUpperCase()) && names.has(e.to.toUpperCase()),
+      (e) => names.has(e.from.toLowerCase()) && names.has(e.to.toLowerCase()),
     ),
-    "no dangling edge endpoints (stub nodes synthesized)",
+    "no dangling edge endpoints (prereqs restricted to INDEX.demi nodes)",
   );
 
-  // §7 membership filter — every COSMOS_EXCLUDE name is ABSENT from the graph
-  // (neither a roster node nor re-entering via a composition edge endpoint), and
-  // the known science domain RTSC IS present.
-  for (const ex of COSMOS_EXCLUDE) {
-    assert(!names.has(ex.toUpperCase()), `Category-C ${ex} absent from cosmos nodes (§7)`);
+  // 5. ufo prerequisites edges include antimatter, fusion, rtsc (the §10 assertion).
+  const ufoChildren = new Set(
+    graph.edges.filter((e) => e.to === "ufo").map((e) => e.from),
+  );
+  assert(ufoChildren.has("antimatter"), "ufo prereq edge ← antimatter");
+  assert(ufoChildren.has("fusion"), "ufo prereq edge ← fusion");
+  assert(ufoChildren.has("rtsc"), "ufo prereq edge ← rtsc");
+
+  // 6. a domain whose live <id>.demi cells are ALL GATE_OPEN reads unverified ⚪.
+  // cloak.demi (all 7 cells GATE_OPEN + absorbed=false) — but cloak is NOT in
+  // INDEX.demi, so assert directly on its parsed manifest (verify-state derivation).
+  const cloakCells = await readDomainDemi("cloak");
+  if (cloakCells.cells.length > 0) {
+    assert(
+      cellsToState(cloakCells.cells) === "unverified",
+      "all-GATE_OPEN domain (cloak.demi) → unverified ⚪",
+    );
+  } else {
+    console.log("· (cloak.demi not on disk in this tree — skipping live all-OPEN check)");
   }
-  assert(
-    graph.edges.every((e) => isCosmosDomain(e.from) && isCosmosDomain(e.to)),
-    "no edge endpoint is a Category-C domain (§7 edge filter)",
-  );
-  assert(names.has("RTSC"), "science domain RTSC present in cosmos nodes (§7)");
+  // And on a LIVE INDEX.demi node with all-OPEN cells: ufo.demi is all GATE_OPEN.
+  const ufoCells = await readDomainDemi("ufo");
+  if (ufoCells.cells.length > 0) {
+    assert(
+      cellsToState(ufoCells.cells) === "unverified",
+      "ufo.demi (all GATE_OPEN) → ufo node unverified ⚪",
+    );
+    assert(ufoNode.state === "unverified", "live ufo node state = unverified ⚪ (honest)");
+  }
 
-  // 4. decompose(UFO) builds a downward tree with a rolled-up state.
-  const d = decompose("UFO", graph);
-  assert(d !== null, "decompose(UFO) resolves");
+  // 7. decompose(ufo) builds a downward tree with a rolled-up state.
+  const d = decompose("ufo", graph);
+  assert(d !== null, "decompose(ufo) resolves");
   if (d) {
-    assert(d.root.name === "UFO", "decomposition root = UFO");
-    assert(d.tree.children.length > 0, "UFO decomposes into ≥1 child");
+    assert(d.root.name === "ufo", "decomposition root = ufo");
+    assert(d.tree.children.length > 0, "ufo decomposes into ≥1 child");
     assert(STATES.includes(d.tree.rollup), "rollup state is honest ∈ set");
   }
-  // unknown target → null.
-  assert(decompose("NOPE-NOT-A-DOMAIN", graph) === null, "unknown target → null");
+  assert(decompose("nope-not-a-domain", graph) === null, "unknown target → null");
 
-  // 5. badge map is total.
+  // 8. badge map is total.
   assert(
     STATES.every((s) => typeof STATE_BADGE[s] === "string"),
     "STATE_BADGE total over states",
+  );
+
+  // sanity: readIndexDemi + assembleCosmos round-trip equals buildCosmos node count.
+  const liveIndex = await readIndexDemi();
+  const manifests: Record<string, DemiManifest> = {};
+  for (const dd of liveIndex) manifests[dd.id] = await readDomainDemi(dd.id);
+  const reassembled = assembleCosmos(liveIndex, manifests);
+  assert(
+    reassembled.nodes.length === graph.nodes.length,
+    "assembleCosmos round-trip = buildCosmos node count",
   );
 
   console.log("\nALL cosmos smoke checks passed.");
