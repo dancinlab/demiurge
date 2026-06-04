@@ -1,0 +1,48 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'ybeh8'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  verbosity       = 'high'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav           = 2                ! FCC, Fm-3m (SG 225) - AcBeH8/LaBeH8 prototype
+  celldm(1)       = 9.4500           ! REPLACE with relaxed celldm(1) from vc-relax.out
+  nat             = 10               ! 1 Y + 1 Be + 8 H
+  ntyp            = 3
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.           ! guard - keep symmetry off through scf->ph for consistency
+  occupations     = 'smearing'
+  smearing        = 'mp'             ! Methfessel-Paxton - metallic hydride (d15)
+  degauss         = 0.01             ! d15 small-gap SCF aid (smear 0.01)
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400             ! d15 maxiter 400
+/
+ATOMIC_SPECIES
+  Y  88.9059   Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Be   9.0122  Be.pbe-n-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! REPLACE the positions below with the RELAXED ATOMIC_POSITIONS from vc-relax.out
+ATOMIC_POSITIONS crystal
+  Y   0.0000000   0.0000000   0.0000000
+  Be   0.5000000   0.5000000   0.5000000
+  H    0.1200000   0.1200000   0.1200000
+  H   -0.1200000  -0.1200000  -0.1200000
+  H    0.6200000   0.6200000   0.3800000
+  H    0.3800000   0.3800000   0.6200000
+  H    0.6200000   0.3800000   0.6200000
+  H    0.3800000   0.6200000   0.3800000
+  H    0.3800000   0.6200000   0.6200000
+  H    0.6200000   0.3800000   0.3800000
+
+K_POINTS automatic
+  12 12 12  0 0 0

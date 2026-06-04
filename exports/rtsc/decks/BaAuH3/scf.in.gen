@@ -1,0 +1,48 @@
+&control
+  !   vc-relax.out (CELL_PARAMETERS / ATOMIC_POSITIONS final block) BEFORE running this.
+  ! electron_phonon='simple' needs a DENSE k-mesh for the double-delta EPC integral ->
+  !   16x16x16 here (denser than the 12^3 relax mesh).
+  calculation = 'scf'
+  prefix = 'baauh3'
+  outdir = '/home/aiden/rtsc_baauh3/out'
+  pseudo_dir = '/home/aiden/rtsc_baauh3/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'low'
+/
+&system
+  ibrav = 0
+  nat = 5
+  ntyp = 3
+  ecutwfc = 80.0
+  ecutrho = 640.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  ! d15 small-gap SCF aids (metallic perovskite).
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+
+ATOMIC_SPECIES
+  Ba 137.327 Ba.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Au 196.967 Au.pbe-n-rrkjus_psl.1.0.0.UPF
+  H  1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+CELL_PARAMETERS (angstrom)
+  4.01102   1.35169e-07   -4.91525e-08
+  1.35169e-07   4.01103   -1.22881e-08
+  -4.91525e-08   -1.22881e-08   4.01102
+ATOMIC_POSITIONS (crystal)
+Ba            0.5000042644        0.5000033880        0.4999996178
+Au           -0.0000010120       -0.0000008323        0.0000001074
+H             0.4999988655       -0.0000008435        0.0000000958
+H            -0.0000010592        0.4999991316        0.0000000957
+H            -0.0000010587       -0.0000008438        0.5000000834
+K_POINTS automatic
+  16 16 16 0 0 0
+
+

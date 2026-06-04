@@ -1,0 +1,15 @@
+YH10 phonon + electron-phonon 2x2x2 q (Fm-3m sodalite clathrate - LaH10-prototype)
+&inputph
+  prefix              = 'yh10_300'
+  outdir              = './out'
+  fildyn              = 'yh10_300.dyn'
+  fildvscf            = 'dvscf'
+  ldisp               = .true.
+  nq1                 = 2, nq2 = 2, nq3 = 2  ! 2x2x2 - 11-atom metallic single-pod feasible
+  tr2_ph              = 1.0d-14
+  electron_phonon     = 'simple'     ! Allen-Dynes Tc from lambda/omega_log
+  el_ph_sigma         = 0.005
+  el_ph_nsigma        = 10
+  recover             = .true.       ! checkpoint-safe / resumable
+  max_seconds         = 504000       ! preflight floor (11-atom metallic)
+/

@@ -1,0 +1,50 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'yh6'
+  outdir          = './out'
+  verbosity       = 'high'
+  pseudo_dir      = './pseudo'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav = 0
+  nat             = 7                ! 1 Y (2a) + 6 H (12d) per BCC-primitive
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Y   88.9059  Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! YH6 sodalite: Y @ 2a (0,0,0), H @ 12d (1/4,1/2,0) and symmetry-equivalents (H24 cage).
+! BCC-primitive representation; vc-relax refines.
+
+CELL_PARAMETERS (angstrom)
+  1.85951   1.6924   1.80674
+  -1.71394   1.78341   1.86183
+  -1.80677   -1.78909   1.76658
+ATOMIC_POSITIONS (crystal)
+Y            -0.0729825311       -0.0199585760       -0.0100632292
+H             0.1770227233        0.4800347709       -0.2600836211
+H             0.4270074271        0.2299611426        0.2399677257
+H             0.1770505232        0.2300613340        0.4899222366
+H             0.6770178026        0.4800641033        0.2399270586
+H             0.4270171742       -0.2700504113        0.7400083148
+H            -0.3229199227        0.7299916317        0.4899775987
+K_POINTS automatic
+  16 16 16  0 0 0
+
+

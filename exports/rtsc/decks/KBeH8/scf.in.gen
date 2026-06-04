@@ -1,0 +1,52 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'kbeh8'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  verbosity       = 'high'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav = 0
+  nat             = 10               ! 1 K + 1 Be + 8 H
+  ntyp            = 3
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.           ! guard — keep symmetry off through scf->ph for consistency
+  occupations     = 'smearing'
+  smearing        = 'mp'             ! Methfessel-Paxton — metallic hydride (d15)
+  degauss         = 0.01             ! d15 small-gap SCF aid (smear 0.01)
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400             ! d15 maxiter 400
+/
+ATOMIC_SPECIES
+  K   39.098   K.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Be   9.0122  Be.pbe-n-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+
+CELL_PARAMETERS (angstrom)
+  -4.21303   1.44278   4.21303
+  -1.44278   4.21304   4.21303
+  -4.21304   4.21304   1.44278
+ATOMIC_POSITIONS (crystal)
+K            -0.0000001763        0.0000001024        0.0000000746
+Be            0.4999998616        0.5000000410        0.5000000977
+H             0.1278762946        0.1278780693        0.1278811011
+H            -0.1278769761       -0.1278779315       -0.1278805577
+H             0.7222256291        0.7222259862        0.2039533738
+H             0.2777745619        0.2777740372        0.7960461577
+H             0.7222258215        0.2039516786        0.7222270622
+H             0.2777743223        0.7960481280        0.2777728613
+H             0.2039511859        0.7222262677        0.7222270997
+H             0.7960494756        0.2777736213        0.2777727296
+K_POINTS automatic
+  12 12 12  0 0 0
+
+

@@ -1,0 +1,51 @@
+{
+  "harvest": "RTSC el-ph pipeline-validation (KNOWN-material anchors)",
+  "pod": "37868501",
+  "host": "ssh6.vast.ai:28500",
+  "harvested_utc": "2026-05-29",
+  "mode": "READ-ONLY copy-from + exec-read (no pod lifecycle ops)",
+  "qe_mode": "electron_phonon='simple', el_ph_nsigma=10 (sigma 0.005..0.050 Ry)",
+  "decks": [
+    {
+      "deck": "mgb2_pure",
+      "material": "MgB2",
+      "grid": "6x6x6",
+      "q_irr_total": 28,
+      "q_irr_done": 14,
+      "lambda": null,
+      "omega_log": null,
+      "Tc_AD_mu010": null,
+      "Tc_AD_mu013": null,
+      "broadening_used": "n/a (no aggregate)",
+      "known_Tc_K": 39,
+      "known_lambda": 0.87,
+      "known_omega_log_meV": "60-70",
+      "delta": "n/a",
+      "lambda_x_run": false,
+      "run_state": "ph.resume.out STILL RUNNING (ph.x active, ~50% of q-grid)",
+      "verdict_tier": "INCONCLUSIVE",
+      "pipeline_trust": "PARTIAL/PENDING — DFPT incomplete (14/28 q), no lambda.x aggregate; cannot validate yet",
+      "verdict_file": ".verdicts/rtsc-validation/mgb2_pure.txt"
+    },
+    {
+      "deck": "nb3al",
+      "material": "Nb3Al",
+      "grid": "4x4x4",
+      "q_irr_total": 10,
+      "q_irr_done": 1,
+      "lambda": null,
+      "omega_log": null,
+      "Tc_AD_mu010": null,
+      "Tc_AD_mu013": null,
+      "broadening_used": "n/a (no aggregate)",
+      "known_Tc_K": 18,
+      "delta": "n/a",
+      "lambda_x_run": false,
+      "run_state": "ph.resume.out STILL RUNNING (ph.x active, on q2 of 10)",
+      "verdict_tier": "INCONCLUSIVE",
+      "pipeline_trust": "PENDING — DFPT barely started (1/10 q), no aggregate; cannot validate yet",
+      "verdict_file": ".verdicts/rtsc-validation/nb3al.txt"
+    }
+  ],
+  "note": "Premise of 'TWO terminal JOB DONE jobs' was based on the per-invocation JOB DONE marker in ph.out, which QE writes at each checkpoint, NOT at q-grid completion. Both decks have a live ph.resume.out continuing the grid. No total lambda/omega_log/Tc exists for either => Allen-Dynes Tc recompute not applicable; not fabricated (d6)."
+}

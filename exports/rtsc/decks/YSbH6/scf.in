@@ -1,0 +1,42 @@
+&control
+  calculation = 'scf'
+  prefix = 'ysbh6'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  verbosity = 'high'
+  tstress = .true.
+  tprnfor = .true.
+/
+&system
+  ibrav = 1
+  celldm(1) = 9.20    ! REPLACE with relaxed value from vc-relax.out
+  nat = 8
+  ntyp = 3
+  ecutwfc = 80.0
+  ecutrho = 640.0
+  nosym = .true.
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Y 88.906  Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Sb 121.760 Sb.pbe-n-rrkjus_psl.1.0.0.UPF
+  H  1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+! REPLACE positions below with relaxed ATOMIC_POSITIONS from vc-relax.out
+ATOMIC_POSITIONS crystal
+  Y 0.00 0.00 0.00
+  Sb 0.50 0.50 0.50
+  H  0.25 0.00 0.50
+  H  0.75 0.00 0.50
+  H  0.50 0.25 0.00
+  H  0.50 0.75 0.00
+  H  0.00 0.50 0.25
+  H  0.00 0.50 0.75
+K_POINTS automatic
+  16 16 16 0 0 0

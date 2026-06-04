@@ -1,0 +1,49 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'labh8'
+  outdir          = './out'
+  verbosity       = 'high'
+  pseudo_dir      = './pseudo'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav           = 2                ! FCC, Fm-3m (SG 225) - LaBH8 ternary (Di Cataldo 2021, BH8 cage)
+  celldm(1)       = 9.8000           ! REPLACE with relaxed celldm(1) from vc-relax.out
+  nat             = 10               ! 1 La (4a) + 1 B (4b) + 8 H (32f BH8 clathrate cage), Z=1
+  ntyp            = 3
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  La  138.905   La.pbe-spfn-rrkjus_psl.1.0.0.UPF
+  B   10.811   B.pbe-n-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! BH8 clathrate cage: La @ 4a (0,0,0), B @ 4b (1/2,1/2,1/2), H @ 32f (xxx, x~0.12).
+! fcc-primitive; vc-relax refines the 32f free coordinate (LaBH8 = low-P ternary superhydride).
+ATOMIC_POSITIONS crystal
+  La   0.0000000   0.0000000   0.0000000
+  B    0.5000000   0.5000000   0.5000000
+  H    0.1200000   0.1200000   0.1200000
+  H   -0.1200000  -0.1200000  -0.1200000
+  H    0.6200000   0.6200000   0.3800000
+  H    0.3800000   0.3800000   0.6200000
+  H    0.6200000   0.3800000   0.6200000
+  H    0.3800000   0.6200000   0.3800000
+  H    0.3800000   0.6200000   0.6200000
+  H    0.6200000   0.3800000   0.3800000
+
+K_POINTS automatic
+  12 12 12  0 0 0

@@ -1,0 +1,103 @@
+// RTSC novel-batch deck emitter — one-shot driver over stdlib/deck gen_deck.
+// d3: library (gen_deck/emit_rtsc) lives in hexa-lang; this thin driver lives
+// in demiurge and only builds DeckSpecs + writes files. No emit logic here.
+//
+// Candidates (responsibly-sourced structures only; un-sourceable SKIPPED):
+//   H3S    Im-3m (im3m_group17)        — VALIDATION ANCHOR, Drozdov 2015 Tc=203K @200GPa
+//   ThH10  Fm-3m sodalite              — Th clathrate, Semenok-family predicted high-Tc
+//   LuH10  Fm-3m sodalite (LaH10-like) — Lu-H-N FALSIFIER, Fang/Errea 2307.10699 Tc=286K @175GPa pred
+//
+// SKIPPED (structure not responsibly emittable with current cubic prototypes):
+//   ThH9    P6_3/mmc hexagonal 30-atom — no hex prototype in generator (d6 no fabrication)
+//   CaYH12  ternary 2-metal sodalite   — exact Wyckoff ordering unsourced (d6)
+//   C-S-H   dilute C in Im-3m H3S      — needs 16+ atom supercell; folds into H3S anchor
+//
+// Pseudo coverage (d13, all verified on PSlibrary psl.1.0.0):
+//   S  -> S.pbe-n-rrkjus_psl.1.0.0.UPF
+//   Th -> Th.pbe-spfn-rrkjus_psl.1.0.0.UPF   (actinide COVERED)
+//   Lu -> Lu.pbe-spdn-rrkjus_psl.1.0.0.UPF   (lanthanide COVERED)
+//   H  -> H.pbe-rrkjus_psl.1.0.0.UPF
+
+import "stdlib/deck/gen.hexa"
+import "stdlib/io.hexa"
+
+fn _emit(domain: string, slug: string, spec: DeckSpec) {
+    let files = gen_deck(domain, spec)
+    let dir = "exports/" + domain + "/decks/" + slug + "/"
+    let mut i = 0
+    while i < len(files) {
+        let f = files[i]
+        let ok = write_text(dir + f.path, f.content)
+        println("  " + dir + f.path + "  " + (if ok { "OK" } else { "FAIL" }))
+        i = i + 1
+    }
+    println("emitted " + slug + " (" + to_string(len(files)) + " files)")
+}
+
+fn main() {
+    // ── H3S — VALIDATION ANCHOR (Im-3m, Drozdov 2015 Tc=203K @ ~155-200 GPa) ──
+    let h3s = deck_spec_new()
+    spec_set(h3s, "prototype", "im3m_group17")
+    spec_set(h3s, "prefix", "h3s")
+    spec_set(h3s, "x_site_symbol", "S")
+    spec_set(h3s, "x_site_mass", "32.06")
+    spec_set(h3s, "x_site_upf", "S.pbe-n-rrkjus_psl.1.0.0.UPF")
+    spec_set(h3s, "celldm_bohr", "5.60")
+    spec_set(h3s, "a_conv_ang", "2.96")
+    spec_set(h3s, "pressure_kbar", "2000.0")
+    spec_set(h3s, "pressure_comment", "200 GPa (Drozdov Nature 2015 Tc=203K; Im-3m SG229 VALIDATION ANCHOR)")
+    spec_set(h3s, "ecutwfc", "80")
+    spec_set(h3s, "ecutrho", "800")
+    spec_set(h3s, "k_grid", "16 16 16")
+    spec_set(h3s, "degauss", "0.02")
+    spec_set(h3s, "mixing_beta", "0.3")
+    spec_set(h3s, "nq", "4")
+    _emit("rtsc", "H3S_anchor", h3s)
+
+    // ── ThH10 — Th clathrate (Fm-3m sodalite, predicted high-Tc) ──
+    let thh10 = deck_spec_new()
+    spec_set(thh10, "prototype", "sodalite_im3m_yh10")
+    spec_set(thh10, "prefix", "thh10")
+    spec_set(thh10, "m_site_symbol", "Th")
+    spec_set(thh10, "m_site_mass", "232.038")
+    spec_set(thh10, "m_site_upf", "Th.pbe-spfn-rrkjus_psl.1.0.0.UPF")
+    spec_set(thh10, "celldm_bohr", "9.60")
+    spec_set(thh10, "a_conv_ang", "5.08")
+    spec_set(thh10, "h32f_x", "0.3750000")
+    spec_set(thh10, "pressure_kbar", "1000.0")
+    spec_set(thh10, "pressure_comment", "100 GPa (ThH10 Fm-3m clathrate, Semenok-family; predicted Tc 160-241K)")
+    spec_set(thh10, "ecutwfc", "80")
+    spec_set(thh10, "ecutrho", "800")
+    spec_set(thh10, "k_grid", "12 12 12")
+    spec_set(thh10, "degauss", "0.02")
+    spec_set(thh10, "mixing_beta", "0.3")
+    spec_set(thh10, "nq", "4")
+    _emit("rtsc", "ThH10_clathrate", thh10)
+
+    // ── LuH10 — Lu-H-N FALSIFIER (Fm-3m LaH10-like; Fang/Errea 2307.10699 Tc=286K @175GPa pred) ──
+    // HONEST STRUCTURAL ASSUMPTION: the Dias 2023 294K Lu-N-H phase is DISPUTED;
+    // the parent is most likely LuH2 (CaF2) per Liu 2303.06554, NOT a high-Tc phase.
+    // This deck tests the LaH10-like LuH10 metastable template Fang predicts at 286K@175GPa
+    // — a metastable HIGH-pressure phase, NOT the near-ambient claim. A DFT el-ph that
+    // fails to reproduce 286K is a valid 🔴 closed-negative (d_paper_negative_ok).
+    let luh10 = deck_spec_new()
+    spec_set(luh10, "prototype", "sodalite_im3m_yh10")
+    spec_set(luh10, "prefix", "luh10")
+    spec_set(luh10, "m_site_symbol", "Lu")
+    spec_set(luh10, "m_site_mass", "174.967")
+    spec_set(luh10, "m_site_upf", "Lu.pbe-spdn-rrkjus_psl.1.0.0.UPF")
+    spec_set(luh10, "celldm_bohr", "9.30")
+    spec_set(luh10, "a_conv_ang", "4.92")
+    spec_set(luh10, "h32f_x", "0.3750000")
+    spec_set(luh10, "pressure_kbar", "1750.0")
+    spec_set(luh10, "pressure_comment", "175 GPa (LaH10-like LuH10 metastable; Fang/Errea arXiv 2307.10699 pred Tc=286K — FALSIFIER target)")
+    spec_set(luh10, "ecutwfc", "80")
+    spec_set(luh10, "ecutrho", "800")
+    spec_set(luh10, "k_grid", "12 12 12")
+    spec_set(luh10, "degauss", "0.02")
+    spec_set(luh10, "mixing_beta", "0.3")
+    spec_set(luh10, "nq", "4")
+    _emit("rtsc", "LuH10_falsifier", luh10)
+
+    println("DONE novel-batch: 3 decks emitted (H3S anchor + ThH10 + LuH10 falsifier)")
+}
