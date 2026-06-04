@@ -59,3 +59,8 @@
 - PR#2688 (`stdlib/qforge/checkpoint.hexa`, 204L): crash-resilient per-q checkpoint primitive — `qforge_checkpoint_write`(temp→flush→atomic rename, done-marker last) · `qforge_checkpoint_read`(length-prefix + adler32 검증 → {ok,payload}) · `qforge_resume_scan`(dir,nq → {done_q[],next_q}). generic payload-bytes(d4). g5: `qforge_checkpoint_selftest PASS` 16/16 — 적대적 (a)truncated→reject no-crash · (b)bad-checksum→reject no-crash · (c)interrupted-write→not-done · (d)완료q보존.
 - PR#2691 (base=pr1; `scf.hexa`+122 · `realcell_qmesh.hexa`+92 · integration selftest 197): opt-in 배선 `qforge_scf_resumable`·`qforge_qmesh_dispersion_resumable` — resume_dir=="" → 기존 함수 위임(0-diff regression-pin), else per-q checkpoint skip/clean-recompute. g5: `qforge_checkpoint_integration_selftest PASS` 13/13 (I-DFPT corrupt q1/q2 → resume skip q0/q3·recompute q1/q2·nq==4 no-crash·ω==clean ≤직렬화floor 1e-6) + `qforge_scf_selftest PASS` regression.
 - 둘 다 DRAFT (사용자 리뷰 후 머지) · origin/main 미접촉(resilience 커밋 0). 머지 시 QFORGE.md 마일스톤 `[x]` flip. 정직(d6): ω round-trip은 to_string 6자리 직렬화 정밀도(~1e-6 rel, 물리·λ 무의미) — bit-exact codec은 follow-up.
+
+## 2026-06-04 — end-to-end 앵커 (자체 |g| vs QE) 자동트리거 등록
+
+- 사용자 결정: 라우팅 전환(3-앵커 L3 게이트 ALL_PASS)과 QE 완전대체는 별개 단계로 분리. true QFORGE-only(QE 0-의존)는 앞쪽 절반(자체 SCF→DFPT→|g|)도 QE와 1% 일치해야 성립 — 현 게이트는 QE의 |g|를 어셈블러에 먹여 뒤쪽(λ·Tc)만 검증.
+- 자동 트리거 잡아둠: 3-앵커 terminal+L3 ALL_PASS 도달 시 → CaH6에서 QFORGE 자체 |g| vs QE |g| end-to-end 앵커 1개 자동발사. 통과=QE 완전졸업, 갭잔존=d6/g6 정직 blocker(screening/correlation Hartree+LDA x+c, production-migration @L5). QFORGE.md 마일스톤 등록.
