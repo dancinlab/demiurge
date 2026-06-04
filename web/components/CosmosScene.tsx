@@ -25,9 +25,17 @@
 
 "use client";
 
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, type ThreeEvent } from "@react-three/fiber";
 import { Html, OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
 import {
@@ -41,6 +49,11 @@ import {
 } from "@/lib/cosmos";
 import type { CosmosI18n } from "@/lib/cosmos-i18n";
 import { DomainModel3D } from "@/components/DomainModel3D";
+import {
+  overviewGeometryForShape,
+  overviewShapeFor,
+  type ProceduralShape,
+} from "@/lib/geometry-3d";
 
 // ── palette (WebGL can't read CSS vars — hex direct, synced w/ DomainModel3DR3F)
 const STATE_ACCENT: Record<VerifyState, string> = {
@@ -54,6 +67,20 @@ const STATE_ACCENT: Record<VerifyState, string> = {
 const DIM = "#3a3530";
 const EDGE = "#6b6258";
 const EDGE_LIT = "#f4c5a8";
+
+// ── overview rung-shape glyphs (perf-tuned) ──────────────────────────────────
+// The overview draws each node as its RUNG-TYPED 3D shape (a compact, low-poly
+// merged silhouette), grouped into ONE InstancedMesh per shape kind so ~30+
+// nodes stay at one draw call per shape (≤ the count of distinct shapes, not the
+// node count). PERFORMANCE GUARD: above this node count (or no WebGL2 / low
+// hardware-concurrency heuristic) we fall back to the lightweight sphere glyph
+// for ALL nodes — the rung-typed silhouette is the nicety, honest state + click
+// are the contract and must never jank.
+const OVERVIEW_GLYPH_FALLBACK_THRESHOLD = 60;
+// World-space radius each rung-shape glyph is scaled to fit (matches the sphere
+// glyph footprint so layout/labels are unaffected). Highlighted nodes scale up.
+const GLYPH_BOUND = 0.42;
+const GLYPH_BOUND_FOCUSED = 0.7;
 
 // ── §2 scale ladder — rung → vertical Y (atom bottom → system top) ────────────
 // SIX bands, evenly spaced 4 units apart (원자 → 물질 → 바이오 → 화학 → 칩 → 시스템).
@@ -201,6 +228,179 @@ function NodeGlyph({
         </span>
       </Html>
     </group>
+  );
+}
+
+// ── verify-state tint as a THREE.Color (per-instance color source) ───────────
+const STATE_COLOR: Record<VerifyState, THREE.Color> = {
+  "verified-formal": new THREE.Color("#7fb3d5"),
+  verified: new THREE.Color("#86b97a"),
+  "needs-verify": new THREE.Color("#e8c46a"),
+  unverified: new THREE.Color("#c4b5a5"),
+  falsified: new THREE.Color("#d98a8a"),
+};
+const DIM_COLOR = new THREE.Color(DIM);
+
+// Low-power heuristic + WebGL capability check → should we even attempt the
+// rung-shape glyphs? Coarse (navigator.hardwareConcurrency) but cheap; the real
+// guard is the node-count threshold. SSR-safe (returns true under no `window`,
+// decided again client-side).
+function canRenderShapeGlyphs(nodeCount: number): boolean {
+  if (nodeCount > OVERVIEW_GLYPH_FALLBACK_THRESHOLD) return false;
+  if (typeof navigator !== "undefined") {
+    const cores = navigator.hardwareConcurrency;
+    if (typeof cores === "number" && cores > 0 && cores < 4) return false;
+  }
+  return true;
+}
+
+// One InstancedMesh for ALL nodes that share a rung shape. Per-instance matrix
+// (position + highlight scale) and per-instance color (verify-state tint, dimmed
+// when not highlighted). instanceId picking drives click + hover. The merged,
+// unit-bounded geometry is built ONCE per shape (shared). Stylized nodes are
+// rendered slightly translucent (D3 honesty: no-data shapes never read as solid
+// faithful geometry); the ⚪/🟡 badge + label are drawn separately per node.
+function RungShapeInstances({
+  shape,
+  placed,
+  geometry,
+  highlightOf,
+  focusedUp,
+  onPick,
+  onHoverName,
+}: {
+  shape: ProceduralShape;
+  placed: Placed[]; // already filtered to this shape
+  geometry: THREE.BufferGeometry;
+  highlightOf: (up: string) => boolean;
+  focusedUp: string | null;
+  onPick: (name: string) => void;
+  onHoverName: (name: string | null) => void;
+}) {
+  const ref = useRef<THREE.InstancedMesh>(null);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  // Any stylized node in this shape group → render the whole instanced mesh as
+  // translucent (a shape group is homogeneous in stylization for fallback rungs;
+  // faithful registered domains are solid). Per-shape, not per-instance, keeps a
+  // single material (one draw call).
+  const anyStylized = useMemo(
+    () =>
+      placed.some(
+        (p) => overviewShapeFor({ name: p.node.name, rung: p.node.rung, goal: p.node.goal }).stylized,
+      ),
+    [placed],
+  );
+
+  // Ensure the per-instance color buffer exists at first compile so three
+  // injects the instancing-color shader chunk (otherwise a buffer added later
+  // via setColorAt may not recompile the program on some paths).
+  useLayoutEffect(() => {
+    const mesh = ref.current;
+    if (!mesh) return;
+    if (!mesh.instanceColor) {
+      mesh.instanceColor = new THREE.InstancedBufferAttribute(
+        new Float32Array(placed.length * 3).fill(1),
+        3,
+      );
+    }
+  }, [placed.length]);
+
+  // Write matrices + colors whenever the highlight/focus inputs change.
+  useLayoutEffect(() => {
+    const mesh = ref.current;
+    if (!mesh) return;
+    placed.forEach((p, i) => {
+      const up = p.node.name.toUpperCase();
+      const hl = highlightOf(up);
+      const focused = focusedUp === up;
+      const s = (focused ? GLYPH_BOUND_FOCUSED : GLYPH_BOUND) * (hl ? 1 : 0.82);
+      dummy.position.set(...p.pos);
+      dummy.scale.setScalar(s);
+      dummy.rotation.set(0, (i % 8) * 0.4, 0); // slight deterministic yaw variety
+      dummy.updateMatrix();
+      mesh.setMatrixAt(i, dummy.matrix);
+      const col = hl ? STATE_COLOR[p.node.state] : DIM_COLOR;
+      mesh.setColorAt(i, col);
+    });
+    mesh.instanceMatrix.needsUpdate = true;
+    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+  }, [placed, geometry, highlightOf, focusedUp, dummy]);
+
+  if (placed.length === 0) return null;
+
+  return (
+    <instancedMesh
+      ref={ref}
+      args={[geometry, undefined, placed.length]}
+      onClick={(e: ThreeEvent<MouseEvent>) => {
+        e.stopPropagation();
+        const id = e.instanceId;
+        if (id == null) return;
+        onPick(placed[id].node.name);
+      }}
+      onPointerOver={(e: ThreeEvent<PointerEvent>) => {
+        e.stopPropagation();
+        const id = e.instanceId;
+        if (id == null) return;
+        document.body.style.cursor = "pointer";
+        onHoverName(placed[id].node.name);
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = "auto";
+        onHoverName(null);
+      }}
+    >
+      <meshStandardMaterial
+        roughness={0.55}
+        metalness={0.05}
+        transparent={anyStylized}
+        opacity={anyStylized ? 0.85 : 1}
+      />
+    </instancedMesh>
+  );
+}
+
+// Per-node label + state badge overlay (kept separate from the instanced meshes
+// so honesty UI — the ⚪/🟡 badge — is unchanged from the sphere-glyph era).
+function NodeLabels({
+  placed,
+  highlightOf,
+  focusedUp,
+}: {
+  placed: Placed[];
+  highlightOf: (up: string) => boolean;
+  focusedUp: string | null;
+}) {
+  return (
+    <>
+      {placed.map((p) => {
+        const up = p.node.name.toUpperCase();
+        const hl = highlightOf(up);
+        const r = focusedUp === up ? GLYPH_BOUND_FOCUSED : GLYPH_BOUND;
+        return (
+          <group key={up} position={p.pos}>
+            <Text
+              position={[0, r + 0.5, 0]}
+              fontSize={0.42}
+              color={hl ? "#ece8e3" : "#7a726a"}
+              anchorX="center"
+              anchorY="bottom"
+              outlineWidth={0.012}
+              outlineColor="#1a1714"
+            >
+              {`${p.node.icon ?? ""}${p.node.icon ? " " : ""}${p.node.name}`}
+            </Text>
+            <Html position={[r + 0.2, r + 0.2, 0]} center distanceFactor={14}>
+              <span
+                style={{ fontSize: 18, userSelect: "none", pointerEvents: "none" }}
+              >
+                {STATE_BADGE[p.node.state]}
+              </span>
+            </Html>
+          </group>
+        );
+      })}
+    </>
   );
 }
 
@@ -362,6 +562,63 @@ function Scene({
     ? placed.find((p) => p.node.name.toUpperCase() === focusUp)?.node ?? null
     : null;
 
+  // highlight rule: in focus mode the lit (decomposition) set wins; else the
+  // active filter governs. Shared by both the instanced and fallback paths.
+  const highlightOf = useCallback(
+    (up: string) => {
+      if (focusActive) return litNames.has(up);
+      const node = placed.find((p) => p.node.name.toUpperCase() === up)?.node;
+      return node ? nodeMatches(node, filter, buildable) : false;
+    },
+    [focusActive, litNames, placed, filter, buildable],
+  );
+
+  // PERF guard: rung-shape glyphs only below the node-count threshold AND on
+  // non-low-power hardware; otherwise fall back to the lightweight sphere glyphs.
+  const useShapeGlyphs = useMemo(
+    () => canRenderShapeGlyphs(placed.length),
+    [placed.length],
+  );
+
+  // Group nodes by their (synchronously-resolved) rung shape → one InstancedMesh
+  // per shape kind. Each shape's merged unit geometry is built ONCE here.
+  const shapeGroups = useMemo(() => {
+    if (!useShapeGlyphs) return [];
+    const by = new Map<ProceduralShape, Placed[]>();
+    for (const p of placed) {
+      const { shape } = overviewShapeFor({
+        name: p.node.name,
+        rung: p.node.rung,
+        goal: p.node.goal,
+      });
+      (by.get(shape) ?? by.set(shape, []).get(shape)!).push(p);
+    }
+    const out: { shape: ProceduralShape; placed: Placed[]; geometry: THREE.BufferGeometry }[] =
+      [];
+    for (const [shape, nodes] of by) {
+      const geometry = overviewGeometryForShape(shape, 1); // unit; scaled per-instance
+      if (geometry) out.push({ shape, placed: nodes, geometry });
+    }
+    return out;
+  }, [useShapeGlyphs, placed]);
+
+  // Dispose merged geometries when the group set changes / on unmount.
+  useEffect(() => {
+    return () => {
+      for (const g of shapeGroups) g.geometry.dispose();
+    };
+  }, [shapeGroups]);
+
+  // Nodes that landed in a successful shape group (the rest fall back to sphere).
+  const glyphedNames = useMemo(() => {
+    const s = new Set<string>();
+    for (const g of shapeGroups)
+      for (const p of g.placed) s.add(p.node.name.toUpperCase());
+    return s;
+  }, [shapeGroups]);
+
+  const noop = useCallback(() => {}, []);
+
   return (
     <>
       <ambientLight intensity={0.5} />
@@ -376,21 +633,53 @@ function Scene({
         focusActive={focusActive}
       />
 
-      {placed.map((p) => {
-        const up = p.node.name.toUpperCase();
-        const matchFilter = nodeMatches(p.node, filter, buildable);
-        // highlight rule: in focus mode, lit set wins; else filter governs.
-        const highlighted = focusActive ? litNames.has(up) : matchFilter;
-        return (
-          <NodeGlyph
-            key={up}
-            placed={p}
-            highlighted={highlighted}
-            focused={focusUp === up}
-            onClick={onPick}
+      {/* OVERVIEW glyphs — rung-typed instanced shapes (perf path) + labels;
+          any node not covered by a shape group falls back to a sphere glyph. */}
+      {useShapeGlyphs ? (
+        <>
+          {shapeGroups.map((g) => (
+            <RungShapeInstances
+              key={g.shape}
+              shape={g.shape}
+              placed={g.placed}
+              geometry={g.geometry}
+              highlightOf={highlightOf}
+              focusedUp={focusUp}
+              onPick={onPick}
+              onHoverName={noop}
+            />
+          ))}
+          <NodeLabels
+            placed={placed.filter((p) => glyphedNames.has(p.node.name.toUpperCase()))}
+            highlightOf={highlightOf}
+            focusedUp={focusUp}
           />
-        );
-      })}
+          {placed
+            .filter((p) => !glyphedNames.has(p.node.name.toUpperCase()))
+            .map((p) => (
+              <NodeGlyph
+                key={p.node.name.toUpperCase()}
+                placed={p}
+                highlighted={highlightOf(p.node.name.toUpperCase())}
+                focused={focusUp === p.node.name.toUpperCase()}
+                onClick={onPick}
+              />
+            ))}
+        </>
+      ) : (
+        placed.map((p) => {
+          const up = p.node.name.toUpperCase();
+          return (
+            <NodeGlyph
+              key={up}
+              placed={p}
+              highlighted={highlightOf(up)}
+              focused={focusUp === up}
+              onClick={onPick}
+            />
+          );
+        })
+      )}
 
       {focusedNode && (
         <FocusModel

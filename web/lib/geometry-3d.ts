@@ -16,6 +16,7 @@
 // descriptor/params — never a `if (domain === "HEX-N6")` branch (d4).
 
 import * as THREE from "three";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import type { Rung } from "@/lib/cosmos";
 
 // ── descriptor union ─────────────────────────────────────────────────────────
@@ -827,4 +828,148 @@ export function buildProcedural(d: ProceduralDescriptor): BuiltModel {
   }
   if (d.label) model.label = d.label;
   return model;
+}
+
+// ── OVERVIEW (constellation) shape resolution + low-poly merged geometry ──────
+// The Domain Cosmos OVERVIEW draws ~30+ nodes at once. We can't run the full
+// async descriptor resolver (disk / HTTP) per node and can't afford the full
+// detail of the focus builders. This block provides:
+//   (a) overviewShapeFor() — a PURE, SYNCHRONOUS resolution of a node → the
+//       rung-typed shape kind (+ stylized flag), mirroring deriveProcedural's
+//       priority (registered domain → goal keyword → rung default) WITHOUT I/O.
+//   (b) low-poly param presets per shape (fewer beads / segments / cells).
+//   (c) mergeBuiltModelToUnit() — merge a BuiltModel's solid (mesh) parts into a
+//       SINGLE BufferGeometry, recentred + scaled to a unit bound, so the whole
+//       rung silhouette renders as ONE instanced draw call per shape kind.
+// `cell`/edge (LineSegments) parts are dropped here — they don't survive triangle
+// merging and read as noise at constellation scale; the solid parts carry the
+// silhouette. The focus view keeps the full, edge-inclusive model unchanged.
+
+export type OverviewShape = { shape: ProceduralShape; stylized: boolean };
+
+// PURE synchronous shape pick (no disk/HTTP). Used by the overview only, where
+// per-node async resolution would jank. Faithful registered domains keep their
+// real shape (stylized=false); rung/goal fallbacks are stylized=true (D3).
+export function overviewShapeFor(src: DescriptorSource): OverviewShape {
+  const up = src.name.toUpperCase();
+  const reg = DERIVED_PARAMS[up];
+  if (reg) return { shape: reg.shape, stylized: reg.stylized === true };
+
+  const goal = (src.goal ?? "").toLowerCase();
+  if (/throat|wormhole|metric|surface.?of.?revolution/.test(goal))
+    return { shape: "throat", stylized: true };
+  if (/orbit|trap|loop|ring/.test(goal)) return { shape: "orbit", stylized: true };
+
+  const rung = src.rung ?? "materials";
+  return { shape: RUNG_DEFAULT_SHAPE[rung], stylized: true };
+}
+
+// Reduced-segment / reduced-count params for a constellation glyph. These keep
+// the silhouette readable while slashing triangle + part counts vs the focus
+// builders (e.g. helix 3→2 turns @ 4/turn; supercell single cell; coil 8 stubs).
+function overviewParamsForShape(
+  shape: ProceduralShape,
+): Record<string, number | string> {
+  switch (shape) {
+    case "lattice":
+      return { sigma: 6, tau: 4, phi: 1, rings: 1, a: 1 };
+    case "supercell":
+      return { a: 1, b: 1, c: 1, nx: 1, ny: 1, nz: 1 };
+    case "metacell":
+      return { ring: 1, gap: 0.25, splits: 2, depth: 0.2 };
+    case "helix":
+      return { turns: 2, perTurn: 4, radius: 1, pitch: 1.1, strands: 2 };
+    case "molecule":
+      return { atoms: 4, bondLen: 1.0, branch: 3 };
+    case "die":
+      return { rows: 3, cols: 3, pitch: 0.55, pad: 0.34, depth: 0.18 };
+    case "coil":
+      return { radius: 2, windings: 8, pairGap: 1.4, tube: 0.2 };
+    case "throat":
+      return { b0: 1, height: 3.2, segments: 16 };
+    case "orbit":
+      return { radius: 2, bodies: 3 };
+    case "symbol":
+    default:
+      return defaultParamsForShape(shape);
+  }
+}
+
+// Merge a BuiltModel's SOLID parts into one geometry, recentred to the origin and
+// scaled so the model's bound ≈ `targetBound`. Returns null if nothing mergeable
+// (caller falls back to a sphere glyph). The caller owns disposal/caching.
+export function mergeBuiltModelToUnit(
+  model: BuiltModel,
+  targetBound = 1,
+): THREE.BufferGeometry | null {
+  const solids = model.parts.filter((p) => p.role !== "cell");
+  if (solids.length === 0) return null;
+
+  const geos: THREE.BufferGeometry[] = [];
+  for (const part of solids) {
+    // Skip non-indexed edge/line geometries that can't be triangle-merged.
+    const g = part.geometry.index
+      ? part.geometry.clone()
+      : part.geometry.clone();
+    // Only merge geometries that expose a triangle 'position' attribute.
+    if (!g.getAttribute("position")) continue;
+    g.translate(part.position[0], part.position[1], part.position[2]);
+    geos.push(g);
+  }
+  if (geos.length === 0) return null;
+
+  let merged: THREE.BufferGeometry | null = null;
+  try {
+    merged = mergeGeometries(geos, false);
+  } catch {
+    merged = null;
+  }
+  // mergeGeometries can return null if attribute sets mismatch — drop normals to
+  // retry on a position-only merge (silhouette only; lighting is approximate).
+  if (!merged) {
+    const posOnly = geos.map((g) => {
+      const p = new THREE.BufferGeometry();
+      p.setAttribute("position", g.getAttribute("position"));
+      const idx = g.getIndex();
+      if (idx) p.setIndex(idx);
+      return p;
+    });
+    try {
+      merged = mergeGeometries(posOnly, false);
+    } catch {
+      merged = null;
+    }
+    posOnly.forEach((p) => p.dispose());
+  }
+  for (const g of geos) g.dispose();
+  if (!merged) return null;
+
+  if (!merged.getAttribute("normal")) merged.computeVertexNormals();
+
+  // Recentre + scale to the requested bound.
+  merged.computeBoundingSphere();
+  const bs = merged.boundingSphere;
+  if (bs) {
+    merged.translate(-bs.center.x, -bs.center.y, -bs.center.z);
+    const r = bs.radius || model.bound || 1;
+    const s = targetBound / r;
+    merged.scale(s, s, s);
+  }
+  merged.computeBoundingSphere();
+  return merged;
+}
+
+// Convenience: build the low-poly, unit-bounded merged geometry for one rung
+// shape kind (one per shape — shared across all nodes of that shape). Returns
+// null if the merge fails (→ sphere-glyph fallback).
+export function overviewGeometryForShape(
+  shape: ProceduralShape,
+  targetBound = 1,
+): THREE.BufferGeometry | null {
+  const model = buildProcedural({
+    kind: "procedural",
+    shape,
+    params: overviewParamsForShape(shape),
+  });
+  return mergeBuiltModelToUnit(model, targetBound);
 }
