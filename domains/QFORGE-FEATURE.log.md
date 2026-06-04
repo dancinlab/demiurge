@@ -315,3 +315,8 @@
   ```
   The (I−L)x=b linear-solve identity is verified hexa-native NUMERICAL (🟢) vs an independent direct (I−L)⁻¹b reference (|Δ|=4.97e-14), incl. the no-NaN guarantee on a near-singular (spectral-radius→1⁻) fixture. All pre-existing cases A–F stay GREEN.
 - cite: hexa-lang **PR#2520** (`screening-anderson-cah6`, squash-merge **69733b2ec82e74d3c39315dcb31581d88e457eb0**), files `stdlib/qforge/screening_anderson.hexa` (+ generic `qforge_anderson_fixed_point`) · `screening_anderson_selftest.hexa` (+ cases G/G'). FRESH worktree off origin/main `8af2073` (d9 — `~/.hx/src` STALE #2497 untouched; HEXA_STDLIB_ROOT → worktree). `scf.hexa` + realcell driver NOT touched (sibling WALL#1). Host `mini` native-CPU (FREE — no pod, no rent). Live gate pods + other agents untouched.
+
+## 2026-06-05 — memory-per-rank wall + QE-architecture dissolution map registered
+- OBSERVED (d6): dft-run d11 OOM clamps `-np` to 6 on Li2MgH16 (38 atoms · ~1.6M PW · ~10 GiB/rank); a 64-vCPU/128-GiB pod (39485092) was NO faster than the old 6-core pod → torn down (wasted rent). Bottleneck = MEMORY-per-rank, NOT cores.
+- REGISTERED 2 engine-feature milestones: (1) memory-per-rank wall escape via GPU-VRAM-resident/streaming DFPT (assembler GPU PROVEN #27/#35 38-42× parity 2.46e-14; DFPT-solve GPU-residency = remaining lift); (2) "QE scaling walls are architecture, not physics" dissolution map — core-ceiling→GPU(proven) · memory-clamp→GPU-VRAM(assembler proven) · split→native q/irrep(designed #34/#2709).
+- HONEST (d_qforge_migration_routing): dissolution speeds the 14 POST-gate candidates; gate anchors stay on QE (answer-key, circular otherwise).
