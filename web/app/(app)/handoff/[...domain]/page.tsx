@@ -1,11 +1,13 @@
-// /handoff/[...domain] — handoff verb completed-form.
-// Slot = real downloadable dossier (HandoffDossier client component).
+// /handoff/[...domain] — handoff verb completed-form (§6 3D-first surface).
+// Surface = 인증서 (certificate card + 검증완료 stamp + 3D node) wrapping the
+// REAL downloadable dossier (HandoffDossier — [⬇ 받기] inside).
 // catch-all [...domain] so nested meta/sub ids (e.g. CARDIO+/DAPTPGX) route as
 // path segments; flat ids (RTSC) arrive as a 1-element array. Joined with "/".
 // i18n resolved server-side (getMessages/t) and passed down as props.
 
 import { VerbShell } from "@/components/VerbShell";
 import { HandoffDossier } from "@/components/HandoffDossier";
+import { VerbSurfaceSection } from "@/components/verb-surfaces/VerbSurfaceSection";
 import { getMessages, t } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
@@ -38,7 +40,13 @@ export default async function Page({
       verb="handoff"
       domain={domain}
       statusByVerb={{}}
-      slot={<HandoffDossier domain={domain} i18n={dossierI18n} />}
+      slot={
+        <VerbSurfaceSection
+          verb="handoff"
+          domain={domain}
+          dossier={<HandoffDossier domain={domain} i18n={dossierI18n} />}
+        />
+      }
     />
   );
 }

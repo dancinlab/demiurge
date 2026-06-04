@@ -13,9 +13,12 @@ import { listDomains } from "@/lib/domains";
 import { readMatterLedger } from "@/lib/matter";
 import {
   assembleCosmos,
+  decompose,
   parseNexusEdges,
   type CosmosEdge,
   type CosmosGraph,
+  type CosmosNode,
+  type Decomposition,
 } from "@/lib/cosmos";
 
 const NEXUS_PATH_PARTS = ["NEXUS.tape"] as const;
@@ -39,4 +42,22 @@ export async function buildCosmos(): Promise<CosmosGraph> {
     readMatterLedger(),
   ]);
   return assembleCosmos(domains, edges, ledger);
+}
+
+// resolveCosmosNode — resolve ONE focused node + its decomposition from the full
+// graph. The verb pages (P4) carry a focused domain-node; this is the SSOT lookup
+// they all share (d4: single generic path — match on the leaf segment, no per-
+// domain branch). `id` may be the nested route id ("CARDIO+/DAPTPGX") or a flat
+// name ("RTSC"); we match the LEAF (last "/" segment), case-insensitive.
+export async function resolveCosmosNode(id: string): Promise<{
+  node: CosmosNode | null;
+  graph: CosmosGraph;
+  decomposition: Decomposition | null;
+}> {
+  const graph = await buildCosmos();
+  const leaf = (id.split("/").pop() ?? id).toUpperCase();
+  const node =
+    graph.nodes.find((n) => n.name.toUpperCase() === leaf) ?? null;
+  const decomposition = node ? decompose(node.name, graph) : null;
+  return { node, graph, decomposition };
 }
