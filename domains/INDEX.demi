@@ -146,6 +146,30 @@ facets.hostility = "macos-clean"
 substrate_ssot = "~/core/hexa-bio/"
 keywords = ["생물", "bio", "단백질", "protein", "dna", "rna", "drug", "molecule"]
 
+# Bio PRODUCTs (built on the [bio] category) — faithful α-helix 3D from real
+# structural counts (descriptor web/public/models/<ID>/model.3d.json). No
+# <id>.demi verb-cell yet → honest ⚪ unverified (a faithful shape ≠ a verdict).
+
+[aga-rx]
+label = "탈모 치료제 발굴"
+canvas_mode = "cohort"
+prerequisites = ["bio"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+keywords = ["탈모", "발모", "hair", "sfrp1", "wnt"]
+
+[senolyx]
+label = "노화세포 제거제"
+canvas_mode = "cohort"
+prerequisites = ["bio"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+keywords = ["노화", "senolytic", "bcl-xl", "항노화"]
+
 # ─────────────────────────────────────────────────────────────────
 # System tier
 # ─────────────────────────────────────────────────────────────────
