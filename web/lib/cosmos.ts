@@ -23,7 +23,8 @@
 // + the types). The fs reads live in cosmos.server.ts / demi.server.ts and are
 // never pulled in here, so this file stays client-safe (no `node:fs` in the
 // browser chunk). The `.demi` parse types below are type-only (bundler-free).
-import type { DemiDomain, DemiManifest } from "@/lib/demi";
+import type { DemiDomain, DemiManifest, DemiStructureRef } from "@/lib/demi";
+export type { DemiStructureRef } from "@/lib/demi";
 
 // ── §2 / §10 scale ladder — the layperson 6-band rung, data-driven via `.demi` ─
 // COSMOS.md §10: the intended LAYPERSON ladder is SIX bands —
@@ -102,6 +103,14 @@ export type CosmosNode = {
   state: VerifyState;
   goal?: string;
   progress?: { done: number; total: number };
+  /**
+   * Real-structure reference (INDEX.demi `facets.uniprot`/`facets.pdb` · §9.1b).
+   * Present only on the few domains that name an actual experimental/predicted
+   * structure; the /d/<domain> detail page renders the ACTUAL fold via Mol* when
+   * set, else falls back to the procedural DomainModel3D. Absent (undefined) on
+   * the vast majority of nodes — honest.
+   */
+  structure?: DemiStructureRef;
 };
 
 // A composition edge (INDEX.demi `prerequisites` · §10). The prerequisite is the
@@ -224,6 +233,8 @@ export function assembleCosmos(
       rung: resolveRung(d.rung, d.scale),
       state: cellsToState(cells),
       goal: d.label || undefined,
+      // §9.1b real-structure ref (undefined when no facets.uniprot/pdb — most nodes).
+      structure: d.structure ?? undefined,
     };
   });
 

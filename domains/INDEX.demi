@@ -158,6 +158,7 @@ facets.scale = "molecular"
 facets.rung = "bio"
 facets.cluster = ["bio", "chem", "life"]
 facets.hostility = "macos-clean"
+facets.uniprot = "Q8N474"   # SFRP1 — AlphaFold-DB entry (real predicted fold)
 keywords = ["탈모", "발모", "hair", "sfrp1", "wnt"]
 
 [senolyx]
@@ -168,6 +169,7 @@ facets.scale = "molecular"
 facets.rung = "bio"
 facets.cluster = ["bio", "chem", "life"]
 facets.hostility = "macos-clean"
+facets.pdb = "3ZLR"   # BCL-xL — experimental RCSB entry (solved structure)
 keywords = ["노화", "senolytic", "bcl-xl", "항노화"]
 
 # ─────────────────────────────────────────────────────────────────

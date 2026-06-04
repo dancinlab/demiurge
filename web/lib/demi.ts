@@ -37,7 +37,21 @@ export type DemiDomain = {
   keywords: string[];
   /** direct prerequisites = the composition/decompose edges (D82). */
   prerequisites: string[];
+  /**
+   * facets.uniprot / facets.pdb — OPTIONAL real-structure reference (§9.1b).
+   * When present, the cosmos node carries a `structure` ref so the /d/<domain>
+   * detail page renders its ACTUAL fold via Mol* (AlphaFold-DB or RCSB) instead
+   * of the procedural R3F model. `null` when neither facet is present (most
+   * domains have no real structure — honest). `facets.uniprot` → AlphaFold,
+   * `facets.pdb` → experimental RCSB; if both are present, uniprot wins.
+   */
+  structure: DemiStructureRef | null;
 };
+
+/** A real-structure reference parsed from `facets.uniprot` / `facets.pdb`. */
+export type DemiStructureRef =
+  | { source: "alphafold"; id: string }
+  | { source: "pdb"; id: string };
 
 // ── one parsed <id>.demi verb cell ───────────────────────────────────────────
 export type DemiCell = {
@@ -129,9 +143,16 @@ export function parseIndexDemi(text: string): DemiDomain[] {
   let curCanvas = "";
   let curKeywords: string[] = [];
   let curPrereqs: string[] = [];
+  let curUniprot = "";
+  let curPdb = "";
 
   const flush = (): void => {
     if (have && curLabel.length > 0) {
+      // facets.uniprot (AlphaFold) takes precedence over facets.pdb (RCSB) when
+      // both are present; neither → null (no real structure, the honest default).
+      let structure: DemiStructureRef | null = null;
+      if (curUniprot.length > 0) structure = { source: "alphafold", id: curUniprot };
+      else if (curPdb.length > 0) structure = { source: "pdb", id: curPdb };
       out.push({
         id: curId,
         label: curLabel,
@@ -140,6 +161,7 @@ export function parseIndexDemi(text: string): DemiDomain[] {
         canvasMode: curCanvas,
         keywords: curKeywords,
         prerequisites: curPrereqs,
+        structure,
       });
     }
   };
@@ -169,6 +191,8 @@ export function parseIndexDemi(text: string): DemiDomain[] {
       curCanvas = "";
       curKeywords = [];
       curPrereqs = [];
+      curUniprot = "";
+      curPdb = "";
       continue;
     }
     // key = value
@@ -181,6 +205,8 @@ export function parseIndexDemi(text: string): DemiDomain[] {
     else if (key === "canvas_mode") curCanvas = unquote(val);
     else if (key === "facets.scale") curScale = unquote(val);
     else if (key === "facets.rung") curRung = unquote(val);
+    else if (key === "facets.uniprot") curUniprot = unquote(val);
+    else if (key === "facets.pdb") curPdb = unquote(val);
     else if (key === "prerequisites") {
       if (isList(val)) curPrereqs = splitList(listInner(val));
     } else if (key === "keywords") {
