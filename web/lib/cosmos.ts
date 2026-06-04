@@ -80,6 +80,54 @@ export type CosmosEdge = {
 
 export type CosmosGraph = { nodes: CosmosNode[]; edges: CosmosEdge[] };
 
+// ── §7 cosmos membership — inclusion / exclusion (d4: ONE manifest set) ──────
+// A cosmos node is a physical MATERIAL / DEVICE / SYSTEM (something you could
+// build or measure). Tooling / infra / process-tracking / meta / CLI-web-surface
+// domains are NOT nodes — left unfiltered they leak in as bogus `materials` nodes
+// (classifyRung honest-default) and re-enter via composition edges (NOVEL-TOOL as
+// a provider). EXCLUDE-by-name from a single exported const so add/remove is
+// data-only (no per-call branching). Names are UPPERCASE roster tokens.
+//
+// Category-C (non-material · audited from the full DOMAINS.tape roster):
+//   meta / goal-tracking / process : 8VERB COSMOS DEMIURGE GOAL XPRIZE ABSORPTION INBOX
+//   tooling / infra / EDA / data   : NOVEL-TOOL POOL CLI+COCKPIT HEXA-PORT YOSYS NUMB MP
+//   compute engine + process       : QFORGE QFORGE-PROCESS QFORGE-PERF QFORGE-FEATURE
+// Default-include posture: anything NOT in this set stays a node (new science
+// domains appear with zero code edits). Only the named set is removed — an
+// ambiguous name is KEPT (honesty · §7).
+export const COSMOS_EXCLUDE: ReadonlySet<string> = new Set([
+  // meta / goal-tracking / process
+  "8VERB",
+  "COSMOS",
+  "DEMIURGE",
+  "GOAL",
+  "XPRIZE",
+  "ABSORPTION",
+  "INBOX",
+  // tooling / infra / EDA / data
+  "NOVEL-TOOL",
+  "POOL",
+  "CLI+COCKPIT",
+  "HEXA-PORT",
+  "YOSYS",
+  "NUMB",
+  "MP",
+  // compute engine + its process domains
+  "QFORGE",
+  "QFORGE-PROCESS",
+  "QFORGE-PERF",
+  "QFORGE-FEATURE",
+]);
+
+// isCosmosDomain — true when `name` is a cosmos node (NOT in COSMOS_EXCLUDE).
+// Defensive: any name starting with `QFORGE` is excluded (covers future
+// QFORGE-* process spin-offs without a manifest edit).
+export function isCosmosDomain(name: string): boolean {
+  const up = name.toUpperCase();
+  if (up.startsWith("QFORGE")) return false;
+  return !COSMOS_EXCLUDE.has(up);
+}
+
 // ── §3 reuse edges — NEXUS.tape parser ───────────────────────────────────────
 // Parse `@X e<n> := "..." :: reuse-edge [tier-N ...]` blocks (provides → reused_by
 // + primitive + evidence) AND `@X c<n> := "..." :: reuse-candidate [...]` blocks
@@ -396,6 +444,15 @@ export function assembleCosmos(
   edges: CosmosEdge[],
   ledger: AttestationRow[],
 ): CosmosGraph {
+  // §7 membership filter (d4): drop Category-C (tooling / meta / process) domains
+  // at the SOURCE so every downstream view (overview · decompose · /d/<D> ·
+  // /api/cosmos/targets) inherits it. Filter the roster BEFORE building nodes, AND
+  // drop any edge whose endpoint is excluded — else a Category-C name (e.g.
+  // NOVEL-TOOL as a provider) re-enters as a synthesized node via a composition
+  // edge below.
+  domains = domains.filter((d) => isCosmosDomain(d.name));
+  edges = edges.filter((e) => isCosmosDomain(e.from) && isCosmosDomain(e.to));
+
   // Roster names (uppercase) for edge sanity — keep every edge (an endpoint may be
   // a primitive-only domain not in the curated web roster, e.g. HEX-N6/SRR), but
   // surface a node for every edge endpoint too so the graph has no dangling refs.
