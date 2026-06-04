@@ -13,6 +13,14 @@ Five foreground branches, all hexa-native (Swift untouched), all in the dedicate
 - [x] **#20 PR-synthesize-qforge → PR#2662 MERGED (@L6 KEYSTONE)**: `action synthesize rtsc --deck <deck>` → spawns `hexa qforge run <deck>`, passes stdout/stderr/rc VERBATIM. d4 thin forwarding cell (atlas/verify pattern); generic dispatch untouched. @L6/d6 HONESTY: HELD migration gate surfaces as-is — NO agreement assertion, NO fabricated λ/Tc, missing-hexa→127. 5 cells (forward HELD-gate rc1 + 4 error paths) byte≡Swift → 108 GREEN. Live-converged happy-path (deck WITH harvested DFPT → real λ·Tc) deferred until the QFORGE↔QE cross-val gate OPENS (that IS the gated migration work, HELD).
 - [ ] NEXT: #17b (llm network) · #21-25 3D (⚠ separate-file loading / NO hardcoding — @L3 updated + §6 locked) → #26 parity-gate-ALL-GREEN (@L2 — the Swift-deletion gate) → #27 bin-flip → #28 swift-delete.
 
+## 2026-06-04 — ENDGAME: funnel merged to hexa-lang main + #27 bin-flip → hexa default (demiurge PR#574)
+
+User picked ① (full endgame sequence). Prerequisite resolved + entrypoint flipped; #28 (24k delete) user-gated next.
+
+- [x] FUNNEL MERGE: hexa-lang **PR#2638 squash-merged → main** (the whole demi stack #3-#26, 16 files, 127 parity cells now live on hexa-lang main). hexa-sh install fast-forwarded 12 commits → full demi (geometry.hexa present). Verified: `hexa run /Users/mini/hexa-sh/stdlib/demi/demi_cli.hexa list-gates` works from /tmp (cwd-independent). This was the gating prerequisite — #27 bin-flip would have pointed at a foundation-only CLI before it.
+- [x] #27 PR-bin-flip → **demiurge PR#574 MERGED** (@L5): `bin/demiurge` `cli` path default flipped `exec swift run DemiurgeCLI` → `exec hexa run "$DEMI_CLI"` where `DEMI_CLI=${DEMIURGE_HEXA_STDLIB:-$HOME/hexa-sh/stdlib/demi}/demi_cli.hexa`. `--swift` flag (token-stripped) + `DEMIURGE_CLI=swift` env both still route to legacy `swift run DemiurgeCLI` (cockpit/ intact until #28). +31/-17. Verified from /tmp: hexa default `list-gates` OK + swift fallback OK. HONEST finding: no `hexa demi` subcommand, `hexa run` resolves relative paths against cwd (not stdlib-root) → an absolute path is required for cwd-independence; used `$HOME`-derived + env override to avoid literal `/Users/mini` hardcode. Follow-up: an upstream `hexa demi` subcommand would make it fully path-free.
+- [ ] #28 PR-swift-delete (@L2, USER-GATED) — delete cockpit/Sources/DemiurgeCLI + DemiurgeCore + Package.swift CLI target (~24k LOC) + retire the dead `--swift` fallback (cockpit gone → fallback must error gracefully, not silently). web GUI (Next.js+react-three-fiber) UNTOUCHED (@L4). Paused for explicit user go (24k irreversible-ish mass delete).
+
 ## 2026-06-04 — afg: #17b + value-flags + #26 GATE landed — @L2 UNLOCKED (Swift deletion permitted)
 
 Three foreground branches, hexa-native, the verb surface CLOSED + the @L2 gate locked.
