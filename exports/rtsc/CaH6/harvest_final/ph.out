@@ -1,0 +1,98 @@
+
+     Program PHONON v.6.7MaX starts on  3Jun2026 at 23:11:51 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI), running on     7 processors
+
+     MPI processes distributed on     1 nodes
+     R & G space division:  proc/nbgrp/npool/nimage =       7
+     Reading input from ph.in
+
+     Reading xml data from directory:
+
+     ./out/cah6.save/
+     Message from routine read_pp_mesh:
+     mesh size missing, using the one in header
+     Message from routine read_pp_mesh:
+     mesh size missing, using the one in header
+
+     IMPORTANT: XC functional enforced from input :
+     Exchange-correlation= PBE
+                           (   1   4   3   4   0   0   0)
+     Any further DFT definition will be discarded
+     Please, verify this is what you really want
+
+
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min         109     109     37                 1921     1921     395
+     Max         110     110     38                 1922     1922     398
+     Sum         769     769    265                13451    13451    2779
+
+     Reading collected, re-writing distributed wavefunctions
+
+     Saving dvscf to file. Distribute only q points, not irreducible represetations.
+ end of file reached, closing tag not found
+warning: file closed at level 1 with tag Root open
+ end of file reached, closing tag not found
+warning: file closed at level 1 with tag Root open
+        8 /   8 q-points for this run, from  1 to  8:
+       N       xq(1)         xq(2)         xq(3) 
+       1   0.000000000   0.000000000   0.000000000
+       2   0.000078930   0.433038171  -0.432879088
+       3   0.432894116  -0.433030656  -0.000081430
+       4   0.432973047   0.000007515  -0.432960518
+       5  -0.432983052   0.000072657  -0.432963010
+       6  -0.432904122   0.433110828  -0.865842098
+       7  -0.000088936  -0.432957999  -0.433044441
+       8  -0.000010005   0.000080172  -0.865923528
+
+
+     Calculation of q =    0.0000000   0.0000000   0.0000000
+     Message from routine ph_restart_set_filename :
+     cannot open file for reading or writing
+ end of file reached, closing tag not found
+warning: file closed at level 1 with tag Root open
+ end of file reached, closing tag not found
+warning: file closed at level 1 with tag Root open
+ end of file reached, tag PARTIAL_EL_PHON not found
+At line 965 of file xmltools.f90
+Fortran runtime error: Sequential READ or WRITE not allowed after EOF marker, possibly use REWIND or BACKSPACE
+
+Error termination. Backtrace:
+#0  0x7f559a9bf960 in ???
+#1  0x7f559a9c04d9 in ???
+#2  0x7f559a9c110f in ???
+#3  0x7f559ac1796d in ???
+#4  0x566dd9fd4a2a in ???
+#5  0x566dd9fd5413 in ???
+#6  0x566dd9fd6946 in ???
+#7  0x566dd9b51dd5 in ???
+#8  0x566dd9b5e0ab in ???
+#9  0x566dd9b35b55 in ???
+#10  0x566dd9b02a6e in ???
+#11  0x566dd9afc191 in ???
+#12  0x566dd9afbffe in ???
+#13  0x7f559a690d8f in ???
+#14  0x7f559a690e3f in ???
+#15  0x566dd9afc02d in ???
+#16  0xffffffffffffffff in ???
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[8403,1],0]
+  Exit code:    2
+--------------------------------------------------------------------------

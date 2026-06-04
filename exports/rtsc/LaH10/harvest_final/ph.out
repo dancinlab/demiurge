@@ -1,0 +1,123 @@
+
+     Program PHONON v.6.7MaX starts on  4Jun2026 at  2:44:34 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI), running on     9 processors
+
+     MPI processes distributed on     1 nodes
+     R & G space division:  proc/nbgrp/npool/nimage =       9
+     Reading input from ph.in
+
+     Reading xml data from directory:
+
+     ./out/lah10.save/
+     file La.pbe-spfn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  4F renormalized
+
+     IMPORTANT: XC functional enforced from input :
+     Exchange-correlation= PBE
+                           (   1   4   3   4   0   0   0)
+     Any further DFT definition will be discarded
+     Please, verify this is what you really want
+
+
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min         255     102     32                 8110     2054     364
+     Max         256     103     33                 8113     2057     366
+     Sum        2299     925    295                73001    18499    3287
+
+     Reading collected, re-writing distributed wavefunctions
+
+     Saving dvscf to file. Distribute only q points, not irreducible represetations.
+ end of file reached, closing tag not found
+warning: file closed at level 1 with tag Root open
+ end of file reached, closing tag not found
+warning: file closed at level 1 with tag Root open
+        5 /   8 q-points for this run, from  4 to  8:
+       N       xq(1)         xq(2)         xq(3) 
+       1   0.000000000   0.000000000   0.000000000
+       2   0.353552172  -0.353550134   0.353543026
+       3  -0.353544486  -0.353548961  -0.353547793
+       4   0.000007686  -0.707099095  -0.000004767
+       5   0.353550420   0.353543026  -0.353550134
+       6   0.707102592  -0.000007108  -0.000007108
+       7   0.000005935  -0.000005935  -0.707097927
+       8   0.353558107  -0.353556069  -0.353554901
+
+
+     Calculation of q =    0.0000077  -0.7070991  -0.0000048
+
+     Bands found: reading from ./out/_ph0/lah10.q_4/
+
+     Reading xml data from directory:
+
+     ./out/_ph0/lah10.q_4/lah10.save/
+     Message from routine qexsd_readschema :
+     input info not found or not readable in xml file
+     Message from routine readpp:
+     file ./out/_ph0/lah10.q_4/lah10.save/La.pbe-spfn-rrkjus_psl.1.0.0.UPF not found
+     Message from routine readpp:
+     file ./out/_ph0/lah10.q_4/lah10.save/H.pbe-rrkjus_psl.1.0.0.UPF not found
+     file La.pbe-spfn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  4F renormalized
+
+     IMPORTANT: XC functional enforced from input :
+     Exchange-correlation= PBE
+                           (   1   4   3   4   0   0   0)
+     Any further DFT definition will be discarded
+     Please, verify this is what you really want
+
+
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min         255     102     34                 8110     2054     423
+     Max         256     103     35                 8113     2057     428
+     Sum        2299     925    313                73001    18499    3839
+
+     read_file_new: Wavefunctions not in collected format?!?
+     read_file: Wavefunctions in collected format not available
+ end of file reached, closing tag not found
+warning: file closed at level 1 with tag Root open
+ end of file reached, closing tag not found
+warning: file closed at level 1 with tag Root open
+ end of file reached, tag PARTIAL_EL_PHON not found
+At line 965 of file xmltools.f90
+Fortran runtime error: Sequential READ or WRITE not allowed after EOF marker, possibly use REWIND or BACKSPACE
+
+Error termination. Backtrace:
+#0  0x7f7d1dda1960 in ???
+#1  0x7f7d1dda24d9 in ???
+#2  0x7f7d1dda310f in ???
+#3  0x7f7d1dff996d in ???
+#4  0x5648fef31a2a in ???
+#5  0x5648fef32413 in ???
+#6  0x5648fef33946 in ???
+#7  0x5648feaaedd5 in ???
+#8  0x5648feabb0ab in ???
+#9  0x5648fea92b55 in ???
+#10  0x5648fea5fa6e in ???
+#11  0x5648fea59191 in ???
+#12  0x5648fea58ffe in ???
+#13  0x7f7d1da72d8f in ???
+#14  0x7f7d1da72e3f in ???
+#15  0x5648fea5902d in ???
+#16  0xffffffffffffffff in ???
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[32305,1],0]
+  Exit code:    2
+--------------------------------------------------------------------------
