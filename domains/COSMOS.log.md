@@ -2,6 +2,16 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — PIVOT: COSMOS rebased onto the `.demi` SSOT (§10) — directive "우리는 .demi잖아"
+
+User directive: ".demi 기준으로 모두 작동되게". Investigated `.demi` and found it is the repo's canonical machine-readable domain SSOT — this SUPERSEDES the DOMAINS.tape/@link/<D>.md sourcing patchwork (incl. the membership filter + NEXUS→@link I'd just landed). Documented `.demi`-canonical architecture as `COSMOS.md` §10; implementation dispatched.
+
+- [x] **Discovery**: `domains/INDEX.demi` (230 lines, D83) = "canonical machine-readable 19-domain graph", loaded by the hexa demi CLI (`stdlib/demi/domain_catalog.hexa` + `domain_composer.hexa`, ported DemiParser→DomainLoader). Each `[<id>]` carries `prerequisites=[...]` (composition graph, D82), `facets.scale` (rung ∈ molecular·device·component·system), `canvas_mode`, `keywords`, `label`. Per-domain `domains/<id>.demi` (cellrun Phase-A dialect) carries `[cell.<verb>]` sections with `gate_default`/`absorbed_default` = the HONEST verify-state SSOT.
+- [x] **Mapping decided (§10)**: node membership ← INDEX.demi `[id]` presence (by-construction, no exclude list) · composition edges ← `prerequisites` (RETIRES NEXUS→@link) · rung ← `facets.scale` · verify-state ← cell gate flags (RETIRES prose-parse + matter ledger) · 8-verb surface ← `<id>.demi` cells.
+- [x] **Honest deltas recorded**: (1) node-set CHANGES from ~50 DOMAINS.tape product domains to ~19 INDEX.demi category domains (cleaner composition cosmos; product domains out-of-graph until registered in INDEX.demi — data, no code). (2) rung is 4 (`facets.scale`), not the earlier ad-hoc 6 (원자·물질·바이오·화학·칩·시스템); a finer split = add `facets.rung` to INDEX.demi (data-driven), not a hardcoded keyword table. User picked ① 완성도 = full re-base.
+- [x] **Superseded**: the membership filter (`c229f2c7`) + NEXUS→@link (`d87a2185`) landed but are now moot under §10 — marked superseded in COSMOS.md milestones (kept on branch, harmless; §10 replaces the whole sourcing).
+- [ ] NEXT (implementation this turn): `web/lib/demi.ts`(+.server) parses INDEX.demi + `<id>.demi`; `buildCosmos()` reads `.demi`; retire COSMOS_EXCLUDE/readLinkEdges/prose-state; cosmos.test.ts asserts ufo→antimatter/fusion/rtsc prereqs + 8VERB absent + rung=scale. Isolated worktree, build-green, no deploy.
+
 ## 2026-06-05 — IMPL membership filter + NEXUS→@link landed · bio/chem faithful-3D research (web+arxiv+AlphaFold)
 
 Two parts this turn: (1) implemented the two §7/§7.1 fixes on `feat/8verb-cosmos`; (2) ran 3 parallel research threads to fill the bio/chem faithful-3D path, written into `COSMOS.md` §9.1.

@@ -216,6 +216,59 @@ Tiers 3–4 MUST be visibly flagged generated (never shown as experimental) — 
 Nature 2024 (s41586-024-07487-w) · AF-DB NAR 2024 (gkad1011) · ESMFold Science 2023 (ade2574) · RFdiffusion
 Nature 2023 (s41586-023-06415-8) · Mol* NAR 2021 (W431) · 3M-Diffusion arXiv:2403.07179 · ProteinGPT arXiv:2408.11363.
 
+## §10 `.demi`-CANONICAL data layer ⚠ SUPERSEDES the §7/§7.1/§9 sourcing patchwork
+**Directive (2026-06-05): "우리는 .demi잖아 — .demi 기준으로 모두 작동되게."** The COSMOS data layer is rebased
+onto the `.demi` SSOT. `.demi` is the repo's canonical machine-readable domain format (TOML-ish, loaded by the
+hexa `demi` CLI via `stdlib/demi/domain_catalog.hexa` + `domain_composer.hexa` — the ported DemiParser→DomainLoader).
+This RETIRES the ad-hoc sources cosmos used: DOMAINS.tape roster · `@link` edges · `<D>.md` prose-parse · matter
+ledger. Everything below reads from `.demi`.
+
+### Two `.demi` tiers cosmos reads
+```
+domains/INDEX.demi          THE graph SSOT (D83 · "canonical machine-readable 19-domain graph"):
+  [<id>] sections           = the cosmos NODES (membership solved by construction —
+                              tooling/meta domains are simply NOT in INDEX.demi, so COSMOS_EXCLUDE retires)
+  prerequisites = [...]      = the cosmos COMPOSITION EDGES (D82 direct-prereq; transitive closure computed)
+                              — REPLACES the retired NEXUS→@link migration entirely (prerequisites IS the graph)
+  facets.scale = "..."       = the cosmos RUNG (canonical) ∈ molecular · device · component · system
+  canvas_mode · keywords · label  = presentation hints (3D mode · search · display name)
+
+domains/<id>.demi           per-domain VERB-CELL manifest (cellrun Phase-A dialect):
+  [cell.<verb>] sections     = the 8-verb surface (specify·structure·design·analyze·synthesize·verify·handoff)
+  gate_default / absorbed_default = the HONEST verify-state SSOT (GATE_OPEN+absorbed=false → ⚪/🟡;
+                              flips only on a real gate PASS) — REPLACES prose-parse + matter ledger
+  scope_caveats              = honest caveats per cell (surface verbatim, never hide)
+```
+
+### Mapping `.demi` → cosmos model
+| cosmos concept | `.demi` source | note |
+|---|---|---|
+| node membership | `INDEX.demi` `[<id>]` present | by construction — no exclude list |
+| composition/decompose edges | `INDEX.demi` `prerequisites` | direct prereqs + transitive closure (D82) |
+| rung / scale ladder | `INDEX.demi` `facets.scale` | molecular·device·component·system (4, canonical) |
+| verify-state ⚪🟡🟢🔵🔴 | `<id>.demi` cell `gate_default`/`absorbed_default` | honest gate, not prose |
+| 8 verb surfaces | `<id>.demi` `[cell.<verb>]` | substrate/script/record_kind/caveats |
+| faithful 3D geometry | `<id>.demi` (or descriptor) | geometry data stays external (d4·@L10) |
+
+### Honest deltas vs the prior design (must reconcile)
+- **Node set CHANGES**: INDEX.demi = ~19 high-level category domains (matter·chem·bio·chip·fusion·ufo…), NOT the
+  ~50 product domains (AGA-RX·SENOLYX·QUBIT·GRAPHENE) of the DOMAINS.tape roster. The cosmos becomes the clean
+  19-node composition graph (ufo→antimatter/fusion/rtsc · fusion→antimatter/rtsc). Product/science domains that
+  carry their own `<id>.demi` but are absent from INDEX.demi are out-of-graph until registered in INDEX.demi (one
+  `[<id>]` section — data, no code).
+- **Rung is 4, not 6**: `.demi` `facets.scale` = molecular·device·component·system. The earlier 원자·물질·바이오·화학·칩·시스템 6-rung is NOT the `.demi` canonical. If a finer split is wanted, ADD it to `INDEX.demi` facets
+  (e.g. `facets.rung`) — data-driven (d4), never a hardcoded cosmos keyword table. classifyRung keyword fallback retires.
+- **bio/chem 3D (§9.1) still applies** but now keyed off the `.demi` node + its cells; the AlphaFold/PDB data path
+  is unchanged, it just attaches to the `.demi`-sourced node.
+
+### Implementation (cosmos code)
+- New `web/lib/demi.ts` (+ `.server.ts`): parse `INDEX.demi` (section + `key = value` + `key.sub` + `[list]`) and
+  `<id>.demi` (cell sections), mirroring `stdlib/demi/domain_catalog.hexa`. `buildCosmos()` reads `.demi`, not
+  DOMAINS.tape/NEXUS/<D>.md. Keep `CosmosNode`/`CosmosEdge` shape stable; map prereq→edge, facets.scale→rung,
+  cell gate→VerifyState. RETIRE `COSMOS_EXCLUDE`/`isCosmosDomain`/`readLinkEdges`/`parseLinkEdges`/prose verify-state.
+- cosmos.test.ts: assert INDEX.demi `[ufo]` node exists with prereqs antimatter/fusion/rtsc; a tooling name (8VERB)
+  is absent (not in INDEX.demi); rung = facets.scale; an all-GATE_OPEN domain reads ⚪.
+
 ## Milestones
 - [x] P0 design — perfected spec (D1–D7) → this architecture
 - [x] P1 cosmos data — `web/lib/cosmos.ts` (graph + rung + verify-state) · 87b88c86
@@ -229,8 +282,8 @@ Nature 2023 (s41586-023-06415-8) · Mol* NAR 2021 (W431) · 3M-Diffusion arXiv:2
 - [x] overview per-rung 3D — constellation nodes render their rung-typed shape (not just on focus) via `InstancedMesh` grouped-by-shape + low-poly merged geometry; perf guard `OVERVIEW_GLYPH_FALLBACK_THRESHOLD=60` (>60 nodes OR `hardwareConcurrency<4` → sphere glyph); per-shape merge-fail fallback; verify-state tint + badge intact. · SHA 275d5b75
 - [x] auto-promotion pipeline — `geometry-3d-parse.server.ts` scans `domains/<D>.md` for real structural numbers (lattice a/b/c · residues→helix turns · formula→atoms · radii/windings) w/ file:line provenance; resolver priority: hand-authored json → auto-parsed faithful → rung stylized. Faithful coverage now auto-grows from docs, zero new files. Honest: 0 NEW promotions today (only RTSC `a=2.984` rtsc.md:983 + UFO D=6.0m ufo.md:48 qualify, both already hand-authored); ~170 stub docs stay stylized. 19/19 parser tests. · SHA 5fcf71e6
 - [x] overview hover highlight — pointer-over a node lifts tint 40%→white + scale ×1.22 (instanced) / ×1.18 + emissive 0.7 (glyph fallback) + label→white, via existing zero-rebuild instanced buffers (setColorAt/setMatrixAt); onPointerMove re-targets per-instance; both render paths; click→focus/layout/badge intact. · SHA d38f5907
-- [ ] **cosmos membership filter (§7) — `isCosmosDomain()` + `COSMOS_EXCLUDE` const** — EXCLUDE the 20 non-material/meta/tooling domains (8VERB·COSMOS·DEMIURGE·NOVEL-TOOL·POOL·QFORGE*·YOSYS·…) inside `assembleCosmos()`; drop edges to excluded endpoints; cosmos.test.ts asserts they are absent + RTSC present. ⚠ HIGHEST PRIORITY — currently they leak in as bogus `materials` nodes
-- [ ] **NEXUS→DOMAINS @link migration (§7.1)** — `NEXUS.tape` RETIRED: (a) code — cosmos reads `@link` rows from `DOMAINS.tape`, not `NEXUS.tape` (`readLinkEdges`/`parseLinkEdges`); (b) data — migrate the `NEXUS.tape` `reuse-edge` rows to `@link <reused_by> --reuses--> <provides>  # evidence` in `DOMAINS.tape` so decomposition survives. Reference `hexa-lang`/`anima` DOMAINS.tape format
+- [ ] **⚠ HIGHEST — `.demi`-canonical data layer (§10)** — rebase `buildCosmos()` onto `INDEX.demi` (nodes + `prerequisites` edges + `facets.scale` rung) + `<id>.demi` (8-verb cells + `gate_default`/`absorbed_default` verify-state). RETIRE `COSMOS_EXCLUDE`/`isCosmosDomain`/`readLinkEdges`/prose verify-state. cosmos.test.ts: ufo prereqs antimatter/fusion/rtsc · 8VERB absent · rung=facets.scale
+- [x] ~~membership filter (§7)~~ + ~~NEXUS→@link (§7.1)~~ — LANDED (`c229f2c7`·`d87a2185`) but SUPERSEDED by §10: INDEX.demi membership is by-construction (no exclude list) and `prerequisites` IS the graph (no @link). These were the right fix for the DOMAINS.tape sourcing; §10 replaces that sourcing wholesale
 - [ ] faithful bio/chem 3D — **research DONE (§9.1)**; surface the resolved counts into `<D>.md`: AGA-RX (SFRP1 314res · WAY-316606 C18H19F3N2O4S2/29) · SENOLYX (BCL-xL 3ZLR 290res) → auto-promote via live parser. Generic samplers (GENE-EDIT/chem) stay honest ⚪ (no entity to invent)
 - [ ] Mol\* faithful viewer on `/d/<domain>` (§9.1b) — replace CSS-3D `StructureViewer.tsx` placeholder with `pdbe-molstar` (MIT) in its own canvas (dynamic ssr:false), fed AlphaFold-DB/RCSB mmCIF via a `app/api/structure` proxy; cosmos overview stays native R3F meshes (avoid 2nd WebGL context). Attribution: AlphaFold DB CC-BY (§9.1d)
 - [ ] NOVEL prose→structure resolver cascade (§9.1e) — AlphaFold-DB → ESMFold → ESM3/RFdiffusion (flagged "generated·illustrative") → text→graph for chem; tiers 3–4 visibly flagged generated (d6 honesty)
