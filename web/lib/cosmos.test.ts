@@ -11,12 +11,15 @@
 import {
   decompose,
   classifyRung,
+  parseLinkEdges,
+  isCosmosDomain,
+  COSMOS_EXCLUDE,
   STATE_BADGE,
   type CosmosGraph,
   type Rung,
   type VerifyState,
 } from "./cosmos";
-import { buildCosmos, readNexusEdges } from "./cosmos.server";
+import { buildCosmos, readLinkEdges } from "./cosmos.server";
 
 function assert(cond: unknown, msg: string): void {
   if (!cond) {
@@ -37,17 +40,41 @@ const STATES: VerifyState[] = [
 ];
 
 async function main(): Promise<void> {
-  // 1. NEXUS edges parse and resolve domain endpoints.
-  const edges = await readNexusEdges();
-  assert(edges.length > 0, "readNexusEdges yields ≥1 edge");
+  // 0. parseLinkEdges parses a sample `@link A --reuses--> B  # ev` row (§7.1).
+  // CosmosEdge keeps from=PROVIDER, to=CONSUMER, so the @link orientation swaps:
+  // `@link RTSC --reuses--> NOVEL-TOOL` ⇒ from=NOVEL-TOOL (provider), to=RTSC.
+  const sample = parseLinkEdges(
+    "@domain RTSC := \"domains/rtsc.md\"\n" +
+      "@link RTSC --reuses--> NOVEL-TOOL  # current_loop_offaxis · PR #168\n" +
+      "@link UFO --reuses--> FUSION       # triple_product\n" +
+      "@link QFORGE --reuses--> stdlib/qforge  # lowercase target skipped\n",
+  );
+  assert(sample.length === 2, "parseLinkEdges yields 2 domain↔domain edges (skips lowercase)");
+  const sampleEdge = sample.find((e) => e.from === "NOVEL-TOOL" && e.to === "RTSC");
+  assert(!!sampleEdge, "parseLinkEdges: @link RTSC --reuses--> NOVEL-TOOL → {from:NOVEL-TOOL,to:RTSC}");
+  assert(
+    !!sampleEdge && /current_loop_offaxis/.test(sampleEdge.evidence ?? ""),
+    "parseLinkEdges preserves the evidence string after #",
+  );
+
+  // 0b. §7 membership predicate — Category-C excluded, science kept.
+  for (const name of COSMOS_EXCLUDE) {
+    assert(!isCosmosDomain(name), `isCosmosDomain(${name}) === false (Category-C)`);
+  }
+  assert(!isCosmosDomain("QFORGE-FUTURE"), "isCosmosDomain QFORGE* prefix excluded");
+  assert(isCosmosDomain("RTSC"), "isCosmosDomain(RTSC) === true (science domain)");
+
+  // 1. @link edges parse from the live DOMAINS.tape and resolve domain endpoints.
+  const edges = await readLinkEdges();
+  assert(edges.length > 0, "readLinkEdges yields ≥1 edge");
   assert(
     edges.every((e) => e.from && e.to),
     "every edge has from + to domains",
   );
-  // The seed UFO ← {ANTIMATTER, FUSION} edges (e4/e5/e6) must be present.
+  // The seed UFO ← {ANTIMATTER, FUSION} edges must be present after migration.
   assert(
     edges.some((e) => e.to === "UFO" && e.from === "FUSION"),
-    "FUSION → UFO reuse edge parsed",
+    "FUSION → UFO reuse edge parsed (migrated @link)",
   );
 
   // 2. classifyRung honors the manifest table.
@@ -82,6 +109,18 @@ async function main(): Promise<void> {
     ),
     "no dangling edge endpoints (stub nodes synthesized)",
   );
+
+  // §7 membership filter — every COSMOS_EXCLUDE name is ABSENT from the graph
+  // (neither a roster node nor re-entering via a composition edge endpoint), and
+  // the known science domain RTSC IS present.
+  for (const ex of COSMOS_EXCLUDE) {
+    assert(!names.has(ex.toUpperCase()), `Category-C ${ex} absent from cosmos nodes (§7)`);
+  }
+  assert(
+    graph.edges.every((e) => isCosmosDomain(e.from) && isCosmosDomain(e.to)),
+    "no edge endpoint is a Category-C domain (§7 edge filter)",
+  );
+  assert(names.has("RTSC"), "science domain RTSC present in cosmos nodes (§7)");
 
   // 4. decompose(UFO) builds a downward tree with a rolled-up state.
   const d = decompose("UFO", graph);

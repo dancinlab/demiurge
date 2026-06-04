@@ -11,7 +11,7 @@
 //   원자(atom) bottom → 물질(material) → 바이오(bio) → 화학(chem) → 칩(chip) →
 //   시스템(system) top.
 // State (§4) is encoded by node color (STATE_ACCENT) + a floating badge.
-// Edges (NEXUS) are drawn as connectors.
+// Edges (DOMAINS.tape @link reuse graph · §7.1) are drawn as connectors.
 //
 // Focus (D2): clicking a node (or a parent setting focusTarget) calls
 // decompose(target, graph) — the target's composition sub-tree is lit, the rest

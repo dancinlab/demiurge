@@ -13,7 +13,7 @@
 // [domain] is a single dynamic segment (flat names like UFO / RTSC). Nested
 // meta ids (CARDIO+/DAPTPGX) reach the verb pages via the [...domain] catch-all
 // there; this detail surface keys on the leaf name (resolveCosmosNode handles
-// both forms). force-dynamic — the graph reads NEXUS/roster/ledger off disk.
+// both forms). force-dynamic — the graph reads DOMAINS.tape/ledger off disk.
 
 import Link from "next/link";
 import { notFound } from "next/navigation";

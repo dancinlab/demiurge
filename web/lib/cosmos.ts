@@ -5,7 +5,7 @@
 // cosmos graph the GUI renders:
 //
 //   listDomains() (DOMAINS.tape roster + per-domain .md snapshot)   ── nodes
-//   NEXUS.tape  @X e<n>/c<n> reuse edges                            ── edges
+//   DOMAINS.tape  @link <from> --<verb>--> <to> rows (§7.1)         ── edges
 //   classifyRung()                                                  ── §2 ladder
 //   deriveState()                                                   ── §4 verify state
 //
@@ -17,7 +17,7 @@
 // components (CosmosScene needs the PURE functions `decompose` · `STATE_BADGE`
 // + the types). So the fs-bound deps (node:fs · node:path · matter ledger ·
 // domains roster) are loaded LAZILY inside the async server-only functions
-// (readNexusEdges · buildCosmos) — never at module top level — so this file
+// (readLinkEdges · buildCosmos) — never at module top level — so this file
 // stays client-safe (no `node:fs` in the browser chunk). Types are erased, so
 // the type-only imports below are bundler-free.
 import type { DomainEntry } from "@/lib/domains";
@@ -63,7 +63,7 @@ export type CosmosNode = {
   progress?: { done: number; total: number };
 };
 
-// A reuse / composition edge (NEXUS.tape @X e<n> reuse-edge or @X c<n> candidate).
+// A reuse / composition edge (DOMAINS.tape @link row · §7.1).
 // `from` provides the primitive; `to` reuses it (provides → reused_by). For the
 // downward composition view (§1 UFO tree), a parent system reuses its children,
 // so an edge from=child(provider) → to=parent(consumer); decompose() walks the
@@ -128,113 +128,54 @@ export function isCosmosDomain(name: string): boolean {
   return !COSMOS_EXCLUDE.has(up);
 }
 
-// ── §3 reuse edges — NEXUS.tape parser ───────────────────────────────────────
-// Parse `@X e<n> := "..." :: reuse-edge [tier-N ...]` blocks (provides → reused_by
-// + primitive + evidence) AND `@X c<n> := "..." :: reuse-candidate [...]` blocks
-// (marked tier:"candidate"). A reuse-edge whose id starts with `c` but is tagged
-// `reuse-edge` (e.g. c7/c8 in the live file) keeps its declared tier.
+// ── §3 reuse edges — DOMAINS.tape @link parser (§7.1: NEXUS.tape RETIRED) ─────
+// The old `@X e<n> :: reuse-edge` lattice (NEXUS.tape) is RETIRED. The cross-
+// domain reuse / composition graph now rides INSIDE DOMAINS.tape as @link rows:
 //
-// Domain extraction: the block's `provides`/`reused_by` fields are free-form prose
-// ("ANTIMATTER (6) trap — ...", "CLOAK Phase A ⓸ ..."). We pull the leading
-// UPPERCASE domain token (the roster name) from each. This is the SSOT shape the
-// design (§3) prescribes: edge tier = trust of the LINK, node state = trust of the
-// DOMAIN.
+//   @link <from> --<verb>--> <to>   # <evidence>
+//
+// These were migrated from NEXUS.tape with the consumer (old `reused_by`) as the
+// `<from>` and the provider (old `provides`) as the `<to>`, joined by `--reuses-->`.
+// So in @link space, `from` = the CONSUMER and `to` = the PROVIDER it reuses.
+//
+// CosmosEdge keeps its original semantics (`from` = provider, `to` = consumer),
+// so we SWAP when mapping: edge.from = link.<to> (provider), edge.to = link.<from>
+// (consumer). decompose() walks children = providers of a consumer (edge.to ===
+// node, child = edge.from) unchanged. The link verb (reuses/uses/refines/…) is
+// recorded; tier defaults to "tier-1" (a migrated edge is a real reuse link) and
+// the evidence string after `#` is preserved.
 
-// Leading roster-style domain token: UPPERCASE start, then [A-Z0-9+_-], e.g.
-// RTSC · HEX-N6 · AGA-CURE · CARDIO+ . Stops at the first lowercase/space/paren.
-const DOMAIN_TOKEN = /([A-Z][A-Z0-9+_-]*)/;
+// A roster-style domain token: UPPERCASE start, then [A-Z0-9+_-], e.g.
+// RTSC · HEX-N6 · AGA-CURE · CLI+COCKPIT.
+const DOMAIN_TOKEN_RE = /^[A-Z][A-Z0-9+_-]*$/;
 
-// Tokens that look like a domain name but are NOT (provenance/library noise).
-// e13 "stdlib/math (PR #1949)" would otherwise yield the bogus domain "PR".
-const NON_DOMAIN_TOKENS = new Set(["PR", "PRs", "OEIS", "LOC", "TODO", "WIP", "TL"]);
-
-function leadingDomain(text: string | undefined): string | null {
-  if (!text) return null;
-  // A provider/consumer that begins with a lowercase library path (stdlib/math,
-  // compiler/atlas) is a stdlib primitive, not a roster domain — no domain edge.
-  if (/^[a-z]/.test(text.trim())) return null;
-  const m = text.match(DOMAIN_TOKEN);
-  if (!m) return null;
-  if (NON_DOMAIN_TOKENS.has(m[1])) return null;
-  return m[1];
-}
-
-function parseTier(tags: string): EdgeTier {
-  const m = tags.match(/tier-([123])/);
-  if (m) return `tier-${m[1]}` as EdgeTier;
-  return "unknown";
-}
-
-// Read the `key = "value"` (or `key = value`) body fields of one block.
-function blockField(body: string, key: string): string | undefined {
-  // quoted form first
-  const q = body.match(new RegExp(`^\\s*${key}\\s*=\\s*"([^"]*)"`, "m"));
-  if (q) return q[1].trim();
-  const u = body.match(new RegExp(`^\\s*${key}\\s*=\\s*(.+)$`, "m"));
-  return u ? u[1].trim() : undefined;
-}
-
-// Pure NEXUS.tape parser — takes the file TEXT (no I/O), so it is client-safe
-// and unit-testable. The fs READ lives in cosmos.server.ts (readNexusEdges).
-export function parseNexusEdges(text: string): CosmosEdge[] {
+// Pure DOMAINS.tape @link parser — takes the file TEXT (no I/O), so it is
+// client-safe and unit-testable. The fs READ lives in cosmos.server.ts
+// (readLinkEdges). Lines NOT matching the `@link A --verb--> B` shape (including
+// `@domain` roster rows, `@V`, comments) are ignored.
+export function parseLinkEdges(text: string): CosmosEdge[] {
   const edges: CosmosEdge[] = [];
+  // @link <from> --<verb>--> <to>   # <evidence>
+  // <verb> = a lowercase token (reuses · uses · refines · provides …).
+  const linkRe = /^@link\s+(\S+)\s+--([a-z][a-z-]*)-->\s+(\S+)\s*(?:#\s*(.*))?$/gm;
+  for (const m of text.matchAll(linkRe)) {
+    const linkFrom = m[1]; // CONSUMER in @link space
+    const verb = m[2];
+    const linkTo = m[3]; // PROVIDER in @link space
+    const evidence = m[4]?.trim() || undefined;
 
-  // Split into @X blocks: a header line `@X <id> := "..." :: <kind> [<tags>]`
-  // followed by indented body lines until the next top-level token.
-  const headerRe =
-    /^@X\s+([a-zA-Z]+\d+)\s*:=\s*"[^"]*"\s*::\s*(reuse-edge|reuse-candidate)\s*\[([^\]]*)\]/gm;
+    // Only domain↔domain edges (skip lowercase stdlib paths like stdlib/material).
+    if (!DOMAIN_TOKEN_RE.test(linkFrom) || !DOMAIN_TOKEN_RE.test(linkTo)) continue;
+    if (linkFrom === linkTo) continue;
 
-  const matches = [...text.matchAll(headerRe)];
-  for (let i = 0; i < matches.length; i++) {
-    const m = matches[i];
-    const id = m[1];
-    const kind = m[2];
-    const tags = m[3];
-    const bodyStart = m.index! + m[0].length;
-    const bodyEnd = i + 1 < matches.length ? matches[i + 1].index! : text.length;
-    const body = text.slice(bodyStart, bodyEnd);
-
-    const provides = blockField(body, "provides");
-    const reusedBy = blockField(body, "reused_by");
-    const primitive = blockField(body, "primitive");
-    const evidence = blockField(body, "evidence");
-
-    const from = leadingDomain(provides);
-    const to = leadingDomain(reusedBy);
-
-    // candidate blocks (reuse-candidate) often have only a `note` — no provides/
-    // reused_by domains. We still keep them when both endpoints resolve; else skip
-    // (no node pair to connect). reuse-candidate ⇒ tier "candidate" regardless of
-    // any [tier-N] tag (the LINK is unproven by definition).
-    if (!from || !to) continue;
-
-    const tier: EdgeTier = kind === "reuse-candidate" ? "candidate" : parseTier(tags);
+    // CosmosEdge: from = PROVIDER, to = CONSUMER (swap from @link orientation).
     edges.push({
-      from,
-      to,
-      primitive: primitive ?? undefined,
-      tier,
-      evidence: evidence ?? undefined,
+      from: linkTo,
+      to: linkFrom,
+      tier: "tier-1",
+      evidence: evidence ? `${verb} · ${evidence}` : verb,
     });
   }
-
-  // Also fold the `@reuse <DOMAIN> reused[...]` short-form edges (AGA-CURE, OA-CURE,
-  // …) appended at the tail of NEXUS.tape. Form:
-  //   @reuse <CONSUMER> reused[<PROVIDER>,<PROVIDER>...]
-  // consumer reuses each provider → edge from=provider → to=consumer.
-  const reuseShortRe = /^@reuse\s+([A-Z][A-Z0-9+_-]*)\s+reused\[([^\]]*)\]/gm;
-  for (const m of text.matchAll(reuseShortRe)) {
-    const consumer = m[1];
-    const providers = m[2]
-      .split(",")
-      .map((s) => leadingDomain(s.trim()))
-      .filter((s): s is string => !!s);
-    for (const provider of providers) {
-      if (provider === consumer) continue;
-      edges.push({ from: provider, to: consumer, tier: "tier-1" });
-    }
-  }
-
   return edges;
 }
 

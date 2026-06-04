@@ -2,7 +2,7 @@
 //
 // 8VERB §1 D1 (LOCKED): the app's spine is ONE 3D world showing ALL domains as
 // a constellation, positioned by RUNG on a vertical scale axis (원자 bottom →
-// 시스템 top), state encoded by color/badge, NEXUS reuse edges drawn as
+// 시스템 top), state encoded by color/badge, DOMAINS.tape @link reuse edges drawn as
 // connectors. Clicking a node focuses its composition sub-tree (D2 decompose);
 // filter chips (D6) dim non-matching nodes; a scale ladder (§2) labels the axis.
 //
@@ -11,7 +11,7 @@
 // (owned by (app)/layout.tsx); this main area is OUTPUT-only (no input box).
 //
 // SSR-safe split (d4 · one generic path): this SERVER component calls
-// buildCosmos() (node:fs reads of NEXUS.tape + DOMAINS.tape + the verdict
+// buildCosmos() (node:fs reads of DOMAINS.tape roster + @link graph + the verdict
 // ledger) and hands the plain graph to CosmosStage, which mounts the R3F scene
 // client-only via next/dynamic(ssr:false). three never executes server-side.
 //
