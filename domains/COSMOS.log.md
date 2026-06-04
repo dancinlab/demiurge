@@ -2,6 +2,17 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — 6-rung scale ladder + per-rung 3D vocabulary (atom·material·bio·chem·chip·system)
+
+User: cosmos must span 원자·물질·바이오·화학·칩·시스템 — bio & chem rungs were missing. Foreground agent, worktree `/tmp/cosmos-wt`.
+
+- [x] Rung model extended 4→6: `atom · materials · bio · chem · chip · system` (Y −10..10 bands). `classifyRung()` manifest keyword/roster-driven (d4, no per-domain hardcode). bio (10): GENE-EDIT·RNA-THERAPY·ORGANOID·PROTEIN-FOLD·SENOLYX·AGA-CURE·OA-CURE·PERIO-CURE·RETINA-CURE·IVD-CURE (+`-CURE` keyword fallback). chem (4): ELECTROCAT·PHOTOREDOX·CO2-CAPTURE·GREEN-NH3.
+- [x] New 3D shape primitives in `geometry-3d.ts`: `helix`(bio α/double-helix) · `molecule`(chem ball-and-stick) · `die`(chip pad-grid wafer) · `coil`(system Helmholtz pair). `buildSymbol` rung-glyph map → 6 rungs. Added `stylized` flag + single-source `isStylizedDescriptor()` (badge layer + renderer both delegate).
+- [x] System 3 retrofit orbit→`coil` keeping real numbers+provenance (FUSION R=1.280m/a=0.424m/AR=2.99 `fusion.md:140` · UFO D=6.0m/H=1.6m/×6 `ufo.md:48` · ANTIMATTER B=5T/U₀=10V/d=5mm `antimatter.md:11`).
+- [x] HONEST: NO faithful bio/chem 3D — those docs are template stubs with no extractable structural numbers (AGA-RX/SENOLYX cite PDB IDs 3ZLR/4QVX but no raw residue/atom counts; AAV T-number generic). They render rung-typed STYLIZED 3D (helix/molecule), desaturated + ⚪/🟡 "데이터없음/검증필요" badge. No numbers invented. Fidelity=data-presence ≠ verify badge.
+- [x] build GREEN (`npm run build` ✓); cosmos smoke test 20/20 incl. new bio/chem classification + `-CURE`→bio. Commits `e55a365e` (6-rung model + i18n 5 locales + CosmosScene) + `de2c66a4` (primitives + 3 descriptors), pushed (56cc3973..de2c66a4). NO PR/merge/deploy (d_deploy). next.config.ts dev-only allowedDevOrigins left uncommitted.
+- [ ] caveat: overview constellation keeps lightweight sphere glyphs per node (perf); rung-typed 3D shape renders on FOCUS (node click) via FocusModel — reachable per rung, not all ~30 at once.
+
 ## 2026-06-05 — real per-domain 3D data: faithful models beyond HEX-N6/RTSC (ANTIMATTER·FUSION·UFO)
 
 Resumed the rate-limit-stalled milestone (foreground, isolated worktree `/tmp/cosmos-wt`).
