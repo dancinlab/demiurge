@@ -13,6 +13,16 @@ Five foreground branches, all hexa-native (Swift untouched), all in the dedicate
 - [x] **#20 PR-synthesize-qforge → PR#2662 MERGED (@L6 KEYSTONE)**: `action synthesize rtsc --deck <deck>` → spawns `hexa qforge run <deck>`, passes stdout/stderr/rc VERBATIM. d4 thin forwarding cell (atlas/verify pattern); generic dispatch untouched. @L6/d6 HONESTY: HELD migration gate surfaces as-is — NO agreement assertion, NO fabricated λ/Tc, missing-hexa→127. 5 cells (forward HELD-gate rc1 + 4 error paths) byte≡Swift → 108 GREEN. Live-converged happy-path (deck WITH harvested DFPT → real λ·Tc) deferred until the QFORGE↔QE cross-val gate OPENS (that IS the gated migration work, HELD).
 - [ ] NEXT: #17b (llm network) · #21-25 3D (⚠ separate-file loading / NO hardcoding — @L3 updated + §6 locked) → #26 parity-gate-ALL-GREEN (@L2 — the Swift-deletion gate) → #27 bin-flip → #28 swift-delete.
 
+## 2026-06-04 — ✅ ALL CLOSURE: hexa demi activated + bin path-free (PR#2684·#578) — zero residual
+
+Post-completion polish, all closed per user "잔여 모두 진행".
+
+- [x] `hexa demi` subcommand → hexa-lang **PR#2684 MERGED** to main: first-class `hexa demi <verb>` forwards argv to `stdlib/demi/demi_cli.hexa`, resolving stdlib from the install root (cwd-independent — fixes the `hexa run <relative>` cwd-bind that forced the abs path in #27). Registered in `self/main.hexa:7399`.
+- [x] ACTIVATED on installed toolchain: `~/.hx/bin/hexa.real` delegates subcommands to a native dispatch binary compiled from `self/main.hexa` → rebuilt via the LIGHT path `hexa build self/main.hexa -o <out>` (~10s, NOT the 3.5h selfhost fixpoint), backed up old delegate (`.bak-predemi`), codesigned per install.sh. Also fixed stale `~/.hx/src` stdlib (reset to main 30ec908, had no demi). Verified from /tmp via installed `hexa`: `hexa demi list-gates` (4 gate groups, rc0) + `hexa demi operate list` (rc0). pre-merge `unknown subcommand 'demi'` gone.
+- [x] bin/demiurge PATH-FREE → demiurge **PR#578 MERGED**: `exec hexa run "$DEMI_CLI" …` → `exec hexa demi "$@"`; dropped `$DEMI_CLI` derivation + `DEMIURGE_HEXA_STDLIB` override + `BASH_SOURCE` REPO-resolve (only fed the deleted Swift path). `--swift` hard-error intact. origin/main:bin/demiurge confirmed zero abs-path refs. Verified /tmp: `demiurge cli list-gates` rc0 · `--swift` rc2.
+- [x] plan @L flipped `status: landed` + @L1~7 ✅ LANDED banner (plan-guard advisory cleared on next ship).
+- [x] CLOSURE DASHBOARD: demiurge open PRs(mine)=0 · hexa-lang demi open PRs=0 · /tmp/wt-* leftover=0 · hexa-sh clean (pre-existing build_selfhost only) · funnel #2638 + all sub-PRs + #2684 MERGED. Local rad-domains-radguard tree has untracked 8VERB.md/log shadows = already-landed-on-main content (authoritative on main; not committed to the shared branch — safe). NOTHING dangling. 8VERB fully done + closed.
+
 ## 2026-06-04 — 🏁 #28 swift-delete → MIGRATION COMPLETE (demiurge PR#576): Swift fully scrapped
 
 User ① go. Terminal step landed — the original "Swift 폐기 FIRST" directive is now fully realized.

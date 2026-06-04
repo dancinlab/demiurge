@@ -96,7 +96,13 @@ ALL-GREEN. synthesize→QFORGE and verify-gate re-home as rows in that 28-PR sta
 
 ## ✅ 8VERB COMPLETE — Swift fully scrapped, pure hexa-native CLI
 
-The whole `demiurge cli` surface (25 subcommands + 8-verb ladder + QFORGE-via-synthesize) runs hexa-native from `stdlib/demi/`; Swift `cockpit/` CLI/Core deleted (23.4k LOC); `bin/demiurge` calls `hexa run`. @L1-7 all satisfied; 127/127 parity cells GREEN (gate #26, coverage-locked). Web GUI untouched. @goal MET via the pure-hexa path (demi-cli-pure-hexa-native-plan), superseding the original Swift Family-A.
+The whole `demiurge cli` surface (25 subcommands + 8-verb ladder + QFORGE-via-synthesize) runs hexa-native from `stdlib/demi/`; Swift `cockpit/` CLI/Core deleted (23.4k LOC); `bin/demiurge` calls `hexa demi` (path-free). @L1-7 all satisfied; 127/127 parity cells GREEN (gate #26, coverage-locked). Web GUI untouched. @goal MET via the pure-hexa path (demi-cli-pure-hexa-native-plan), superseding the original Swift Family-A.
+
+### polish residuals — ✅ ALL CLOSED 2026-06-04
+- [x] `hexa demi` first-class subcommand ✅ hexa-lang PR#2684 (merged main) — forwards argv to demi CLI, resolves stdlib from install-root (cwd-independent); activated on installed toolchain via light `hexa build self/main.hexa` (~10s, NOT the 3.5h selfhost ladder) + `~/.hx/src` stdlib sync. Verified `hexa demi list-gates|operate list` via installed hexa.
+- [x] bin/demiurge PATH-FREE ✅ demiurge PR#578 — flipped `exec hexa run "$DEMI_CLI"` → `exec hexa demi "$@"`; dropped all `DEMIURGE_HEXA_STDLIB`/`$HOME`-abs-path/`BASH_SOURCE` machinery; `--swift` hard-error kept. No hardcoded path remains.
+- [x] plan @L → `status: landed` + @L1~7 ✅ LANDED (plan-guard advisory cleared)
+- closure dashboard: 0 open PRs (mine, both repos) · 0 leftover worktrees · hexa-sh clean · `demiurge cli`=hexa-only path. NOTHING dangling.
 - [ ] geometry exporters hexa-native (@L3, stack #21–#25): HtsCoilGeometry · STL/USD emit · emit/export-component — golden-file parity vs Swift bytes
   - ⚠ **3D CONSTRAINT (user directive 2026-06-04): NO hardcoding — 3D MUST be driven by SEPARATE-FILE LOADING.** Geometry (coil params · component spec · mesh) loads from an EXTERNAL geometry spec/manifest file at runtime; the .hexa source carries the generic emitter ONLY, never per-shape/per-instance geometry constants. d4 (manifest-only: add/rename a shape = new spec file, no code edit) + d3 (data lives in a loadable file, not in code). A parity cell must prove a shape swapped via file-only (no recompile) changes the emitted STL/USD.
 - [ ] **PR-parity-gate-all-green (stack #26, @L2 GATE)** — every verb's parity cell ALL-GREEN; NO Swift deletion before this is green
