@@ -14,6 +14,8 @@ import {
   type SurfaceNode,
 } from "@/components/verb-surfaces/VerbSurfaces";
 import { resolveCosmosNode } from "@/lib/cosmos.server";
+import { makeSurfaceI18n } from "@/lib/cosmos-i18n.server";
+import { getMessages } from "@/lib/i18n";
 import type { VerbId } from "@/lib/verbs";
 import type { ReactNode } from "react";
 
@@ -27,7 +29,11 @@ export async function VerbSurfaceSection({
   /** handoff only — the real downloadable dossier client component. */
   dossier?: ReactNode;
 }) {
-  const { node, decomposition } = await resolveCosmosNode(domain);
+  const [{ node, decomposition }, messages] = await Promise.all([
+    resolveCosmosNode(domain),
+    getMessages(),
+  ]);
+  const surfaceI18n = makeSurfaceI18n(messages);
 
   // composition children = the providers this node reuses → its "parts".
   const parts: SurfaceNode["parts"] = decomposition
@@ -59,7 +65,12 @@ export async function VerbSurfaceSection({
   return (
     <div className="space-y-4">
       <CarriedCandidate domain={domain} verb={verb} />
-      <VerbSurfaceClient verb={verb} node={surfaceNode} dossier={dossier} />
+      <VerbSurfaceClient
+        verb={verb}
+        node={surfaceNode}
+        i18n={surfaceI18n}
+        dossier={dossier}
+      />
     </div>
   );
 }

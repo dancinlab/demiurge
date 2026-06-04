@@ -43,6 +43,12 @@ export type DomainModel3DProps = {
   state?: VerifyState;
   /** override the `data-scene` marker (legacy compat, e.g. "JosephsonScene"). */
   sceneName?: string;
+  /** D3 honesty badge copy — shown when the model is a stylized symbol (no real
+   *  geometry data) so the user is never misled into reading it as faithful.
+   *  i18n-resolved by the parent; falls back to a neutral default. */
+  noDataLabel?: string;
+  /** copy shown if the (glb) model errors out while loading. */
+  errorLabel?: string;
 };
 
 // A coarse CSS-3D fallback: project a descriptor (or a default) to a few atoms
@@ -77,6 +83,12 @@ function fallbackAtoms(descriptor?: Model3DDescriptor): Atom3D[] {
   ];
 }
 
+// A resolved descriptor is "stylized" (D3: no faithful geometry data) when it is
+// the symbol placeholder — i.e. resolution fell through to the rung-keyed glyph.
+function isStylized(d?: Model3DDescriptor): boolean {
+  return d?.kind === "procedural" && d.shape === "symbol";
+}
+
 export function DomainModel3D({
   domain,
   descriptor,
@@ -84,10 +96,13 @@ export function DomainModel3D({
   goal,
   state,
   sceneName = "DomainModel3D",
+  noDataLabel,
+  errorLabel,
 }: DomainModel3DProps) {
   const [resolved, setResolved] = useState<Model3DDescriptor | undefined>(
     descriptor,
   );
+  const [loadFailed, setLoadFailed] = useState(false);
 
   // Client-side descriptor resolution when none was supplied as a prop.
   useEffect(() => {
@@ -96,12 +111,14 @@ export function DomainModel3D({
       return;
     }
     let live = true;
+    setLoadFailed(false);
     loadDescriptorClient({ name: domain, rung, goal })
       .then((d) => {
         if (live) setResolved(d);
       })
       .catch(() => {
         /* keep undefined → fallback symbol via R3F default */
+        if (live) setLoadFailed(true);
       });
     return () => {
       live = false;
@@ -127,12 +144,15 @@ export function DomainModel3D({
   }
 
   // Client: real R3F once a descriptor is resolved; CSS-3D until then.
+  // D3 honesty: a stylized symbol fallback (or a load failure) is badged so the
+  // user is never misled into reading a placeholder as faithful geometry.
+  const stylized = isStylized(resolved);
   return (
     <div
       data-scene={sceneName}
       data-domain={domain}
-      data-mode={resolved ? "r3f" : "resolving"}
-      className="h-full w-full"
+      data-mode={loadFailed ? "error" : resolved ? "r3f" : "resolving"}
+      className="relative h-full w-full"
     >
       {resolved ? (
         <DomainModel3DR3F descriptor={resolved} state={state} />
@@ -141,6 +161,16 @@ export function DomainModel3D({
           atoms={fallbackAtoms(descriptor)}
           caption={`${domain} · resolving…`}
         />
+      )}
+      {loadFailed && errorLabel && (
+        <span className="pointer-events-none absolute left-2 top-2 rounded bg-danger/80 px-1.5 py-0.5 text-[10px] font-medium text-white">
+          ⚠ {errorLabel}
+        </span>
+      )}
+      {!loadFailed && stylized && noDataLabel && (
+        <span className="pointer-events-none absolute left-2 top-2 rounded bg-black/55 px-1.5 py-0.5 text-[10px] text-stone-200">
+          ⚪ {noDataLabel}
+        </span>
       )}
     </div>
   );

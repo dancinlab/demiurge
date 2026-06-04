@@ -16,6 +16,11 @@
 // decompose(target, graph) — the target's composition sub-tree is lit, the rest
 // dims; the focused node renders the FULL P2 DomainModel3D (faithful geometry),
 // the wide overview uses lightweight glyph meshes for performance (~37 nodes).
+//
+// P6 hardening: all copy via the i18n prop (NO literal strings); a keyboard-
+// accessible node list under the canvas is the text alternative for the WebGL
+// view (a11y); filter chips are a labelled toggle group; the focus banner +
+// dolly controls carry aria-labels.
 
 "use client";
 
@@ -33,6 +38,7 @@ import {
   type Rung,
   type VerifyState,
 } from "@/lib/cosmos";
+import type { CosmosI18n } from "@/lib/cosmos-i18n";
 import { DomainModel3D } from "@/components/DomainModel3D";
 
 // ── palette (WebGL can't read CSS vars — hex direct, synced w/ DomainModel3DR3F)
@@ -55,12 +61,6 @@ const RUNG_Y: Record<Rung, number> = {
   materials: -2,
   chip: 2,
   system: 6,
-};
-const RUNG_LABEL: Record<Rung, string> = {
-  atom: "원자",
-  materials: "물질·바이오·화학",
-  chip: "칩·상위구조",
-  system: "시스템",
 };
 
 // Filter chips (D6). A chip narrows which nodes are HIGHLIGHTED; non-matching
@@ -250,7 +250,7 @@ function EdgeLines({
 }
 
 // ── scale-ladder rung guides + labels (D2/D3 axis) ────────────────────────────
-function ScaleLadder() {
+function ScaleLadder({ rungLabel }: { rungLabel: Record<Rung, string> }) {
   return (
     <group>
       {RUNG_ORDER.map((r) => (
@@ -262,7 +262,7 @@ function ScaleLadder() {
             anchorX="left"
             anchorY="middle"
           >
-            {RUNG_LABEL[r]}
+            {rungLabel[r]}
           </Text>
           {/* faint rung plane edge */}
           <mesh rotation={[Math.PI / 2, 0, 0]}>
@@ -281,7 +281,15 @@ function ScaleLadder() {
 }
 
 // ── focused-node faithful model (P2 DomainModel3D in an Html overlay) ─────────
-function FocusModel({ node }: { node: CosmosNode }) {
+function FocusModel({
+  node,
+  noDataLabel,
+  errorLabel,
+}: {
+  node: CosmosNode;
+  noDataLabel: string;
+  errorLabel: string;
+}) {
   const pos = RUNG_Y[node.rung];
   return (
     <Html
@@ -305,6 +313,8 @@ function FocusModel({ node }: { node: CosmosNode }) {
           rung={node.rung}
           goal={node.goal}
           state={node.state}
+          noDataLabel={noDataLabel}
+          errorLabel={errorLabel}
         />
       </div>
     </Html>
@@ -320,6 +330,9 @@ function Scene({
   focusTarget,
   litNames,
   onPick,
+  rungLabel,
+  modelNoData,
+  modelError,
 }: {
   graph: CosmosGraph;
   placed: Placed[];
@@ -328,6 +341,9 @@ function Scene({
   focusTarget: string | null;
   litNames: Set<string>;
   onPick: (name: string) => void;
+  rungLabel: Record<Rung, string>;
+  modelNoData: string;
+  modelError: string;
 }) {
   const focusActive = !!focusTarget;
   const focusUp = focusTarget?.toUpperCase() ?? null;
@@ -341,7 +357,7 @@ function Scene({
       <directionalLight position={[8, 10, 8]} intensity={0.8} />
       <directionalLight position={[-6, -4, -6]} intensity={0.3} />
 
-      <ScaleLadder />
+      <ScaleLadder rungLabel={rungLabel} />
       <EdgeLines
         graph={graph}
         placed={placed}
@@ -365,7 +381,13 @@ function Scene({
         );
       })}
 
-      {focusedNode && <FocusModel node={focusedNode} />}
+      {focusedNode && (
+        <FocusModel
+          node={focusedNode}
+          noDataLabel={modelNoData}
+          errorLabel={modelError}
+        />
+      )}
 
       <OrbitControls
         enablePan
@@ -387,10 +409,12 @@ const FIRST_VERB = "discover";
 export function CosmosScene({
   graph,
   initialFocus,
+  i18n,
 }: {
   graph: CosmosGraph;
   /** P5 URL deeplink: initial focused node from /cosmos?target=<DOMAIN>. */
   initialFocus?: string | null;
+  i18n: CosmosI18n;
 }) {
   const router = useRouter();
   const [filter, setFilter] = useState<CosmosFilter | null>(null);
@@ -449,37 +473,44 @@ export function CosmosScene({
       null
     : null;
 
+  const rungLabel = i18n.rung;
+
   return (
     <div className="relative h-full w-full">
       {/* ── filter toggles (D6) — dim non-matching, never hard-hide ───────── */}
-      <div className="pointer-events-auto absolute left-3 top-3 z-10 flex flex-wrap gap-2">
+      <div
+        role="group"
+        aria-label={i18n.filterGroupAria}
+        className="pointer-events-auto absolute left-3 top-3 z-10 flex flex-wrap gap-2"
+      >
         <FilterChip
-          label="검증됨"
+          label={i18n.filterVerified}
           active={filter === "verified"}
           onClick={() => setFilter((f) => (f === "verified" ? null : "verified"))}
         />
         <FilterChip
-          label="검증필요"
+          label={i18n.filterNeedsVerify}
           active={filter === "needs-verify"}
           onClick={() =>
             setFilter((f) => (f === "needs-verify" ? null : "needs-verify"))
           }
         />
         <FilterChip
-          label="지금 만들 수 있는 것"
+          label={i18n.filterBuildable}
           active={filter === "buildable"}
           onClick={() => setFilter((f) => (f === "buildable" ? null : "buildable"))}
         />
       </div>
 
       {/* ── scale-ladder dolly buttons (§3) ──────────────────────────────── */}
-      <div className="pointer-events-auto absolute right-3 top-3 z-10 flex flex-col gap-1.5 text-xs">
+      <div className="pointer-events-auto absolute right-3 top-3 z-10 flex max-w-[40%] flex-col gap-1.5 text-xs">
         <button
           onClick={() => setCameraKey((k) => k + 1)}
-          className="rounded bg-black/55 px-2 py-1 text-stone-200 hover:bg-black/75"
-          title="시스템 쪽으로 (더 크게)"
+          className="rounded bg-black/55 px-2 py-1 text-stone-200 hover:bg-black/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orb-peach"
+          title={i18n.biggerTitle}
+          aria-label={i18n.biggerTitle}
         >
-          ↑ 더 크게
+          {i18n.bigger}
         </button>
         {RUNG_ORDER.slice()
           .reverse()
@@ -487,40 +518,43 @@ export function CosmosScene({
             <button
               key={r}
               onClick={() => setCameraKey((k) => k + 1)}
-              className="rounded bg-black/40 px-2 py-1 text-left text-stone-300 hover:bg-black/65"
+              className="rounded bg-black/40 px-2 py-1 text-left text-stone-300 hover:bg-black/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orb-peach"
             >
-              {RUNG_LABEL[r]}
+              {rungLabel[r]}
             </button>
           ))}
         <button
           onClick={() => setCameraKey((k) => k + 1)}
-          className="rounded bg-black/55 px-2 py-1 text-stone-200 hover:bg-black/75"
-          title="원자 쪽으로 (더 작게)"
+          className="rounded bg-black/55 px-2 py-1 text-stone-200 hover:bg-black/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orb-peach"
+          title={i18n.smallerTitle}
+          aria-label={i18n.smallerTitle}
         >
-          ↓ 더 작게
+          {i18n.smaller}
         </button>
       </div>
 
       {/* ── focus banner (D2) — carried target + rollup badge ────────────── */}
       {focusedNode && decomposition && (
-        <div className="pointer-events-auto absolute bottom-3 left-3 z-10 max-w-sm rounded-lg bg-black/65 p-3 text-stone-100">
+        <div className="pointer-events-auto absolute bottom-3 left-3 z-10 max-w-[min(24rem,90vw)] rounded-lg bg-black/65 p-3 text-stone-100">
           <div className="flex items-center gap-2 text-sm font-medium">
-            <span>{focusedNode.icon}</span>
+            <span aria-hidden>{focusedNode.icon}</span>
             <span>{focusedNode.name}</span>
-            <span>{STATE_BADGE[decomposition.tree.rollup]}</span>
+            <span title={i18n.state[decomposition.tree.rollup]}>
+              {STATE_BADGE[decomposition.tree.rollup]}
+            </span>
             {focusedNode.alias && (
               <span className="text-xs text-stone-400">— {focusedNode.alias}</span>
             )}
           </div>
           <div className="mt-1.5 flex flex-wrap gap-1.5 text-xs">
             {decomposition.tree.children.length === 0 && (
-              <span className="text-stone-400">하위 도메인 없음 (말단 노드)</span>
+              <span className="text-stone-400">{i18n.leafNoChildren}</span>
             )}
             {decomposition.tree.children.map((c) => (
               <span
                 key={c.node.name}
                 className="rounded bg-white/10 px-1.5 py-0.5"
-                title={c.via?.primitive ?? undefined}
+                title={c.via?.primitive ?? i18n.state[c.rollup]}
               >
                 {STATE_BADGE[c.rollup]} {c.node.name}
               </span>
@@ -533,22 +567,22 @@ export function CosmosScene({
               onClick={() =>
                 router.push(`/${FIRST_VERB}/${encodeURIComponent(focusedNode.name)}`)
               }
-              className="rounded-full bg-orb-peach px-3 py-1 text-xs font-medium text-black hover:opacity-90"
+              className="rounded-full px-3 py-1 text-xs font-medium hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-orb-peach"
               style={{ background: "#f4c5a8", color: "#000" }}
             >
-              작업하기 ▶
+              {i18n.work}
             </button>
             <button
               onClick={() => router.push(`/d/${encodeURIComponent(focusedNode.name)}`)}
-              className="rounded-full bg-white/10 px-3 py-1 text-xs text-stone-200 hover:bg-white/20"
+              className="rounded-full bg-white/10 px-3 py-1 text-xs text-stone-200 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orb-peach"
             >
-              상세 보기
+              {i18n.detail}
             </button>
             <button
               onClick={() => setFocusTarget(null)}
-              className="text-xs text-stone-400 underline hover:text-stone-200"
+              className="text-xs text-stone-400 underline hover:text-stone-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orb-peach"
             >
-              전체 보기로 돌아가기
+              {i18n.backToAll}
             </button>
           </div>
         </div>
@@ -558,6 +592,8 @@ export function CosmosScene({
         key={cameraKey}
         camera={{ position: [0, 0, 30], fov: 45 }}
         className="bg-[#16130f]"
+        aria-label={i18n.canvasAria}
+        role="img"
       >
         <Suspense fallback={null}>
           <Scene
@@ -568,9 +604,58 @@ export function CosmosScene({
             focusTarget={focusTarget}
             litNames={litNames}
             onPick={onPick}
+            rungLabel={rungLabel}
+            modelNoData={i18n.modelNoData}
+            modelError={i18n.modelError}
           />
         </Suspense>
       </Canvas>
+
+      {/* ── a11y text alternative (P6 §4): a keyboard-reachable node list. The
+          WebGL canvas is pointer-only; this list lets a keyboard / screen-reader
+          user focus any node (same onPick) and read its honest state. Visually
+          condensed but never hidden from AT. ──────────────────────────────── */}
+      <details className="pointer-events-auto absolute bottom-3 right-3 z-10 max-h-[60%] w-56 max-w-[80vw] overflow-auto rounded-lg bg-black/70 text-xs text-stone-200">
+        <summary className="cursor-pointer select-none px-3 py-2 font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-orb-peach">
+          {i18n.nodelistHeading}
+        </summary>
+        <ul className="space-y-0.5 px-2 pb-2">
+          {RUNG_ORDER.map((r) => {
+            const rows = graph.nodes.filter((n) => n.rung === r);
+            if (rows.length === 0) return null;
+            return (
+              <li key={r}>
+                <p className="px-1 pt-1 text-[10px] uppercase tracking-wide text-stone-400">
+                  {rungLabel[r]}
+                </p>
+                <ul>
+                  {rows.map((n) => {
+                    const up = n.name.toUpperCase();
+                    const active = focusTarget?.toUpperCase() === up;
+                    return (
+                      <li key={up}>
+                        <button
+                          onClick={() => onPick(n.name)}
+                          aria-pressed={active}
+                          aria-label={`${n.name} — ${i18n.state[n.state]}`}
+                          className={
+                            "flex w-full items-center gap-1.5 rounded px-1 py-0.5 text-left hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orb-peach " +
+                            (active ? "bg-white/15" : "")
+                          }
+                        >
+                          <span aria-hidden>{STATE_BADGE[n.state]}</span>
+                          {n.icon && <span aria-hidden>{n.icon}</span>}
+                          <span className="font-mono">{n.name}</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            );
+          })}
+        </ul>
+      </details>
     </div>
   );
 }
@@ -587,7 +672,8 @@ function FilterChip({
   return (
     <button
       onClick={onClick}
-      className={`rounded-full px-3 py-1 text-xs transition ${
+      aria-pressed={active}
+      className={`rounded-full px-3 py-1 text-xs transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-orb-peach ${
         active
           ? "bg-orb-peach text-black"
           : "bg-black/45 text-stone-200 hover:bg-black/70"

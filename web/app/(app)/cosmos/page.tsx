@@ -14,9 +14,14 @@
 // buildCosmos() (node:fs reads of NEXUS.tape + DOMAINS.tape + the verdict
 // ledger) and hands the plain graph to CosmosStage, which mounts the R3F scene
 // client-only via next/dynamic(ssr:false). three never executes server-side.
+//
+// P6 hardening: all copy via i18n (app_gui.cosmos_*); honest empty/load-error
+// states; a keyboard-accessible node list as the canvas text alternative.
 
-import { STATE_BADGE } from "@/lib/cosmos";
+import { STATE_BADGE, type CosmosGraph } from "@/lib/cosmos";
 import { buildCosmos } from "@/lib/cosmos.server";
+import { fmt } from "@/lib/cosmos-i18n";
+import { getCosmosI18n } from "@/lib/cosmos-i18n.server";
 import { CosmosStage } from "@/components/CosmosStage";
 
 export const dynamic = "force-dynamic";
@@ -27,7 +32,38 @@ export default async function CosmosPage({
   // P5 URL deeplink: /cosmos?target=<DOMAIN> → initial focused node.
   searchParams: Promise<{ target?: string }>;
 }) {
-  const [graph, sp] = await Promise.all([buildCosmos(), searchParams]);
+  const i18n = await getCosmosI18n();
+
+  // Honest load-failure state (P6 §2): if the graph can't be read off disk we
+  // show a clear error panel, never a blank canvas presented as "success".
+  let graph: CosmosGraph | null = null;
+  let loadError = false;
+  try {
+    graph = await buildCosmos();
+  } catch {
+    loadError = true;
+  }
+  const sp = await searchParams;
+
+  if (loadError || !graph) {
+    return (
+      <div className="space-y-4">
+        <header className="space-y-1">
+          <h1 className="font-display text-2xl font-light tracking-tight text-ink">
+            {i18n.title}
+          </h1>
+        </header>
+        <div
+          role="alert"
+          className="rounded-xl border border-danger/30 bg-danger/5 p-6 text-sm text-danger"
+        >
+          <p className="font-medium">{i18n.loadErrorTitle}</p>
+          <p className="mt-1 text-danger/80">{i18n.loadErrorBody}</p>
+        </div>
+      </div>
+    );
+  }
+
   const rawTarget = sp.target ?? null;
   // Resolve the deeplink target to a real node name (case-insensitive); ignore
   // an unknown target so a stale link just opens the full cosmos.
@@ -40,38 +76,61 @@ export default async function CosmosPage({
     (n) => n.state === "verified" || n.state === "verified-formal",
   ).length;
 
+  // Honest empty state (P6 §2): zero nodes → say so plainly, no empty 3D stage.
+  if (graph.nodes.length === 0) {
+    return (
+      <div className="space-y-4">
+        <header className="space-y-1">
+          <h1 className="font-display text-2xl font-light tracking-tight text-ink">
+            {i18n.title}
+          </h1>
+          <p className="max-w-prose text-sm text-muted">{i18n.intro}</p>
+        </header>
+        <div className="rounded-xl border border-hairline bg-canvas-soft p-6 text-sm text-muted">
+          <p className="font-medium text-ink">{i18n.emptyTitle}</p>
+          <p className="mt-1">{i18n.emptyBody}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       <header className="space-y-1">
         <h1 className="font-display text-2xl font-light tracking-tight text-ink">
-          🌌 도메인 코스모스
+          {i18n.title}
         </h1>
-        <p className="max-w-prose text-sm text-muted">
-          원자부터 시스템까지, 지금까지 다룬 모든 분야를 하나의 별자리로 봅니다.
-          빛나는 노드는 이미 검증된 것, 흐린 노드는 아직 더 필요한 것. 노드를
-          누르면 그것이 무엇으로 이루어지는지 펼쳐집니다. (만들고 싶은 것은 왼쪽
-          채팅으로 말해 보세요.)
-        </p>
+        <p className="max-w-prose text-sm text-muted">{i18n.intro}</p>
         <div className="flex flex-wrap gap-3 pt-1 text-xs text-muted">
-          <span>{graph.nodes.length}개 도메인</span>
+          <span>{fmt(i18n.domainsCount, { n: graph.nodes.length })}</span>
           <span>·</span>
           <span>
-            {STATE_BADGE.verified} 검증됨 {verified}
+            {STATE_BADGE.verified} {fmt(i18n.verifiedCount, { n: verified })}
           </span>
           <span>·</span>
-          <span>{graph.edges.length}개 재사용 연결 (NEXUS)</span>
+          <span>{fmt(i18n.edgesCount, { n: graph.edges.length })}</span>
         </div>
       </header>
 
-      <CosmosStage graph={graph} initialFocus={initialFocus} />
+      <CosmosStage graph={graph} initialFocus={initialFocus} i18n={i18n} />
 
       {/* legend — honest state vocabulary (§4) */}
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
-        <span>{STATE_BADGE["verified-formal"]} 검증됨(엄밀)</span>
-        <span>{STATE_BADGE.verified} 검증됨</span>
-        <span>{STATE_BADGE["needs-verify"]} 검증필요</span>
-        <span>{STATE_BADGE.unverified} 미검증</span>
-        <span>{STATE_BADGE.falsified} 반증됨</span>
+        <span>
+          {STATE_BADGE["verified-formal"]} {i18n.state["verified-formal"]}
+        </span>
+        <span>
+          {STATE_BADGE.verified} {i18n.state.verified}
+        </span>
+        <span>
+          {STATE_BADGE["needs-verify"]} {i18n.state["needs-verify"]}
+        </span>
+        <span>
+          {STATE_BADGE.unverified} {i18n.state.unverified}
+        </span>
+        <span>
+          {STATE_BADGE.falsified} {i18n.state.falsified}
+        </span>
       </div>
     </div>
   );
