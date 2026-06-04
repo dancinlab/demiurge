@@ -24,6 +24,8 @@ import {
 import { parseIndexDemi, parseDomainDemi, type DemiManifest } from "./demi";
 import { buildCosmos } from "./cosmos.server";
 import { readIndexDemi, readDomainDemi } from "./demi.server";
+import { loadDescriptor } from "./geometry-3d.server";
+import { isStylizedDescriptor } from "./geometry-3d";
 
 function assert(cond: unknown, msg: string): void {
   if (!cond) {
@@ -255,6 +257,31 @@ async function main(): Promise<void> {
     STATES.every((s) => typeof STATE_BADGE[s] === "string"),
     "STATE_BADGE total over states",
   );
+
+  // 8b. bio PRODUCT nodes (AGA-RX · SENOLYX) — registered in INDEX.demi as
+  // children of [bio], rung=bio, carrying a FAITHFUL (non-symbol) helix descriptor
+  // built from real residue counts. Honest: no <id>.demi cell → ⚪ unverified.
+  for (const prod of ["aga-rx", "senolyx"]) {
+    const node = graph.nodes.find((n) => n.name.toLowerCase() === prod);
+    assert(!!node, `INDEX.demi bio product node \`${prod}\` present`);
+    assert(node!.rung === "bio", `${prod} rung = bio (facets.rung)`);
+    // a prerequisite edge bio → product (bio is the parent in the composition graph)
+    const fromBio = graph.edges.some((e) => e.to === prod && e.from === "bio");
+    assert(fromBio, `${prod} has a prerequisite edge from bio`);
+    // honest verify-state: no <id>.demi verb-cell → ⚪ unverified (faithful 3D ≠ verdict)
+    assert(node!.state === "unverified", `${prod} reads ⚪ unverified (no fabricated gate)`);
+    // FAITHFUL 3D: the resolved descriptor is a real helix, NOT the stylized symbol
+    // fallback. loadDescriptor reads web/public/models/<ID>/model.3d.json.
+    const desc = await loadDescriptor({ name: node!.name, rung: node!.rung });
+    assert(
+      desc.kind === "procedural" && desc.shape === "helix",
+      `${prod} resolves a procedural helix descriptor`,
+    );
+    assert(
+      !isStylizedDescriptor(desc),
+      `${prod} descriptor is FAITHFUL (non-symbol, not stylized)`,
+    );
+  }
 
   // sanity: readIndexDemi + assembleCosmos round-trip equals buildCosmos node count.
   const liveIndex = await readIndexDemi();
