@@ -19,7 +19,7 @@ export function JosephsonScene() {
     <DomainModel3D
       domain="QUBIT"
       descriptor={qubitDescriptor()}
-      rung="molecular"
+      rung="atom"
       state="verified"
       sceneName="JosephsonScene"
     />

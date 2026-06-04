@@ -26,6 +26,12 @@ export type DemiDomain = {
   label: string;
   /** facets.scale ∈ molecular · device · component · system (default "system"). */
   scale: string;
+  /**
+   * facets.rung — OPTIONAL finer-split layperson band (§10): one of
+   * atom · materials · bio · chem · chip · system. "" when absent (cosmos then
+   * falls back to mapping `scale`). Data-driven (d4 · INDEX.demi), not a classifier.
+   */
+  rung: string;
   /** canvas_mode presentation hint (3D mode), "" if absent. */
   canvasMode: string;
   keywords: string[];
@@ -119,6 +125,7 @@ export function parseIndexDemi(text: string): DemiDomain[] {
   let curId = "";
   let curLabel = "";
   let curScale = "system";
+  let curRung = "";
   let curCanvas = "";
   let curKeywords: string[] = [];
   let curPrereqs: string[] = [];
@@ -129,6 +136,7 @@ export function parseIndexDemi(text: string): DemiDomain[] {
         id: curId,
         label: curLabel,
         scale: curScale,
+        rung: curRung,
         canvasMode: curCanvas,
         keywords: curKeywords,
         prerequisites: curPrereqs,
@@ -157,6 +165,7 @@ export function parseIndexDemi(text: string): DemiDomain[] {
       curId = headerId;
       curLabel = "";
       curScale = "system";
+      curRung = "";
       curCanvas = "";
       curKeywords = [];
       curPrereqs = [];
@@ -171,6 +180,7 @@ export function parseIndexDemi(text: string): DemiDomain[] {
     if (key === "label") curLabel = unquote(val);
     else if (key === "canvas_mode") curCanvas = unquote(val);
     else if (key === "facets.scale") curScale = unquote(val);
+    else if (key === "facets.rung") curRung = unquote(val);
     else if (key === "prerequisites") {
       if (isList(val)) curPrereqs = splitList(listInner(val));
     } else if (key === "keywords") {

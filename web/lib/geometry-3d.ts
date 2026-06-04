@@ -173,14 +173,16 @@ export function qubitDescriptor(): ProceduralDescriptor {
 }
 
 // Rung → a generic default shape when nothing more specific is known. Each of
-// the FOUR `.demi` scales reads visually distinct (§10 — facets.scale IS the
-// rung): molecular→supercell (matter/chem/bio lattice) · device→die (chip) ·
-// component→coil (sub-assembly) · system→orbit (full body). Shape primitives are
-// unchanged — only the rung keys moved to the canonical 4-scale set.
+// the SIX layperson bands (§10) reads visually distinct, reusing the existing
+// shape primitives: atom→lattice · materials→supercell · bio→helix · chem→
+// molecule · chip→die · system→orbit (full body). Shape primitives are unchanged
+// — only the rung keys moved to the 6-band ladder.
 const RUNG_DEFAULT_SHAPE: Record<Rung, ProceduralShape> = {
-  molecular: "supercell",
-  device: "die",
-  component: "coil",
+  atom: "lattice",
+  materials: "supercell",
+  bio: "helix",
+  chem: "molecule",
+  chip: "die",
   system: "orbit",
 };
 
@@ -241,7 +243,7 @@ function deriveProcedural(src: DescriptorSource): ProceduralDescriptor {
     };
   }
 
-  const rung = src.rung ?? "molecular";
+  const rung = src.rung ?? "materials";
   const shape = RUNG_DEFAULT_SHAPE[rung];
   // A rung-typed fallback carries NO real structural numbers → stylized (D3).
   return {
@@ -254,13 +256,15 @@ function deriveProcedural(src: DescriptorSource): ProceduralDescriptor {
 
 // ── (3) stylized symbol placeholder (D3 hybrid — no data → honest stub) ───────
 function symbolDescriptor(rung: Rung): ProceduralDescriptor {
-  // rung index: molecular 0 · device 1 · component 2 · system 3 (the 4 `.demi`
-  // scales, bottom→top of the ladder).
+  // rung index: atom 0 · materials 1 · bio 2 · chem 3 · chip 4 · system 5 (the 6
+  // layperson bands, bottom→top of the ladder).
   const RUNG_NUM: Record<Rung, number> = {
-    molecular: 0,
-    device: 1,
-    component: 2,
-    system: 3,
+    atom: 0,
+    materials: 1,
+    bio: 2,
+    chem: 3,
+    chip: 4,
+    system: 5,
   };
   return {
     kind: "procedural",
@@ -288,7 +292,7 @@ export function isStylizedDescriptor(d?: Model3DDescriptor): boolean {
 export function deriveDescriptor(src: DescriptorSource): Model3DDescriptor {
   const up = src.name.toUpperCase();
   if (DERIVED_PARAMS[up] || src.rung) return deriveProcedural(src);
-  return symbolDescriptor(src.rung ?? "molecular");
+  return symbolDescriptor(src.rung ?? "materials");
 }
 
 // CLIENT path — fetch the public descriptor over HTTP, fall back to derived /
@@ -856,7 +860,7 @@ export function overviewShapeFor(src: DescriptorSource): OverviewShape {
     return { shape: "throat", stylized: true };
   if (/orbit|trap|loop|ring/.test(goal)) return { shape: "orbit", stylized: true };
 
-  const rung = src.rung ?? "molecular";
+  const rung = src.rung ?? "materials";
   return { shape: RUNG_DEFAULT_SHAPE[rung], stylized: true };
 }
 

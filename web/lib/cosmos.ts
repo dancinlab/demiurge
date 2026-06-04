@@ -25,24 +25,40 @@
 // browser chunk). The `.demi` parse types below are type-only (bundler-free).
 import type { DemiDomain, DemiManifest } from "@/lib/demi";
 
-// ── §2 / §10 scale ladder — the `.demi` `facets.scale` IS the rung ────────────
-// COSMOS.md §10: "the scale IS the rung". The canonical `.demi` `facets.scale`
-// has exactly FOUR values (molecular · device · component · system); we adopt
-// them directly as the Rung union — the SIMPLEST FAITHFUL mapping (no keyword
-// classifier, no invented 6-rung split). molecular is the bottom band (matter ·
-// chem · bio live here in INDEX.demi), system the top apex. A finer split, if
-// ever wanted, is added in INDEX.demi facets (data-driven · d4), never a
-// hardcoded cosmos keyword table.
-export type Rung = "molecular" | "device" | "component" | "system";
+// ── §2 / §10 scale ladder — the layperson 6-band rung, data-driven via `.demi` ─
+// COSMOS.md §10: the intended LAYPERSON ladder is SIX bands —
+//   atom(원자) · materials(물질) · bio(바이오) · chem(화학) · chip(칩) · system(시스템)
+// The canonical `.demi` `facets.scale` has only FOUR coarse values
+// (molecular · device · component · system) and LUMPS materials/bio/chem into
+// `molecular`. To restore the finer ladder WITHOUT a hardcoded keyword classifier
+// (d4 — data, not code), INDEX.demi carries an OPTIONAL `facets.rung` per node
+// (one of the 6 bands). cosmos PREFERS `facets.rung` and falls back to mapping
+// `facets.scale` when it is absent. atom is the bottom band, system the apex.
+export type Rung = "atom" | "materials" | "bio" | "chem" | "chip" | "system";
 
-// All four scales are 1:1 rungs — kept as an explicit map so an unknown / empty
-// scale degrades to a SINGLE honest default ("system", the INDEX.demi default per
-// DomainLoader.project) rather than crashing the ladder. The faithful mapping:
-//   molecular → molecular · device → device · component → component · system → system
+// The valid 6-band set (membership check for an INDEX.demi `facets.rung` value).
+export const RUNG_VALUES: readonly Rung[] = [
+  "atom",
+  "materials",
+  "bio",
+  "chem",
+  "chip",
+  "system",
+];
+
+function isRung(v: string): v is Rung {
+  return (RUNG_VALUES as readonly string[]).includes(v);
+}
+
+// SCALE_TO_RUNG — the FALLBACK mapping from a coarse `.demi` `facets.scale` onto
+// the 6-band rung, used ONLY when a node carries no explicit `facets.rung`. The
+// coarse `molecular` scale lumps materials/bio/chem together, so it maps to the
+// most generic of those (`materials`); device/component → `chip`; system → `system`.
+// (A node that wants bio/chem precision adds `facets.rung = "bio"` in INDEX.demi.)
 const SCALE_TO_RUNG: Record<string, Rung> = {
-  molecular: "molecular",
-  device: "device",
-  component: "component",
+  molecular: "materials",
+  device: "chip",
+  component: "chip",
   system: "system",
 };
 
@@ -50,6 +66,15 @@ const SCALE_TO_RUNG: Record<string, Rung> = {
 // or empty → "system" (INDEX.demi's own default for a record with no facets.scale).
 export function scaleToRung(scale: string): Rung {
   return SCALE_TO_RUNG[scale] ?? "system";
+}
+
+// resolveRung — the canonical rung resolution (§10 finer-split): PREFER an explicit
+// `facets.rung` (if present AND a valid 6-band value), else fall back to mapping
+// the coarse `facets.scale`. `rung` is OPTIONAL per node (data-driven · d4), so a
+// node with no/invalid `facets.rung` degrades cleanly through SCALE_TO_RUNG.
+export function resolveRung(rung: string | undefined, scale: string): Rung {
+  if (rung && isRung(rung)) return rung;
+  return scaleToRung(scale);
 }
 
 // ── §4 verification-state model ────────────────────────────────────────────
@@ -195,7 +220,8 @@ export function assembleCosmos(
       name: d.id,
       icon,
       alias,
-      rung: scaleToRung(d.scale),
+      // §10 finer-split: PREFER the explicit `facets.rung`, else map `facets.scale`.
+      rung: resolveRung(d.rung, d.scale),
       state: cellsToState(cells),
       goal: d.label || undefined,
     };
@@ -263,7 +289,7 @@ export function decompose(
     const up = nodeName.toUpperCase();
     const node =
       byName.get(up) ??
-      ({ name: nodeName, rung: "molecular", state: "unverified" } as CosmosNode);
+      ({ name: nodeName, rung: "materials", state: "unverified" } as CosmosNode);
 
     // children = prerequisites this node is composed of (edge.to === node, child =
     // edge.from), skipping already-visited names (cycle guard) and self-edges.

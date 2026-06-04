@@ -263,16 +263,20 @@ function extractChip(text: string, hits: Hit[], seen: Set<string>): void {
 // (SRR/metamaterial · sigma/phi), then bio (helix) and chem (molecule). A matter
 // doc with a lattice constant promotes to the same faithful supercell as before.
 const CANDIDATE_SHAPES: Record<Rung, ProceduralShape[]> = {
-  molecular: ["supercell", "lattice", "helix", "molecule"],
-  device: ["die"],
-  component: ["die", "coil"],
+  atom: ["lattice", "supercell"],
+  materials: ["supercell", "lattice"],
+  bio: ["helix"],
+  chem: ["molecule"],
+  chip: ["die", "coil"],
   system: ["coil"],
 };
 
 const RUNG_SHAPE: Record<Rung, ProceduralShape> = {
-  molecular: "supercell",
-  device: "die",
-  component: "coil",
+  atom: "lattice",
+  materials: "supercell",
+  bio: "helix",
+  chem: "molecule",
+  chip: "die",
   system: "coil",
 };
 
@@ -287,15 +291,19 @@ function extractForRung(
   weak: string[],
 ): void {
   switch (rung) {
-    case "molecular":
+    case "atom":
       extractLattice(text, hits, seen);
+      break;
+    case "materials":
+      extractLattice(text, hits, seen);
+      break;
+    case "bio":
       extractBio(text, hits, seen, weak);
+      break;
+    case "chem":
       extractChem(text, hits, seen);
       break;
-    case "device":
-      extractChip(text, hits, seen);
-      break;
-    case "component":
+    case "chip":
       extractChip(text, hits, seen);
       extractSystem(text, hits, seen);
       break;
@@ -396,7 +404,7 @@ export function parseDocToDescriptor(
   src: DescriptorSource,
   relPath = `domains/${src.name}.md`,
 ): ProceduralDescriptor | null {
-  const rung: Rung = src.rung ?? "molecular";
+  const rung: Rung = src.rung ?? "materials";
 
   const hits: Hit[] = [];
   const seen = new Set<string>();
@@ -446,7 +454,7 @@ export function parseDocToDescriptor(
 
 // Inspect-only: full parse result (hits + weak hints) for the audit/report pass.
 export function inspectDoc(text: string, src: DescriptorSource): ParseResult {
-  const rung: Rung = src.rung ?? "molecular";
+  const rung: Rung = src.rung ?? "materials";
   const hits: Hit[] = [];
   const seen = new Set<string>();
   const weak: string[] = [];

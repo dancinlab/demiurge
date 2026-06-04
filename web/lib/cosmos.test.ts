@@ -12,9 +12,11 @@ import {
   assembleCosmos,
   decompose,
   scaleToRung,
+  resolveRung,
   cellsToState,
   prereqEdges,
   STATE_BADGE,
+  RUNG_VALUES,
   type CosmosGraph,
   type Rung,
   type VerifyState,
@@ -32,7 +34,7 @@ function assert(cond: unknown, msg: string): void {
   console.log(`✓ ${msg}`);
 }
 
-const RUNGS: Rung[] = ["molecular", "device", "component", "system"];
+const RUNGS: Rung[] = [...RUNG_VALUES];
 const STATES: VerifyState[] = [
   "verified-formal",
   "verified",
@@ -55,13 +57,19 @@ async function main(): Promise<void> {
       "[rtsc]\n" +
       'label = "초전도 코일"\n' +
       "prerequisites = []\n" +
-      'facets.scale = "device"\n',
+      'facets.scale = "device"\n' +
+      'facets.rung = "chip"\n',
   );
   assert(sampleIndex.length === 2, "parseIndexDemi yields 2 records");
   const ufoRec = sampleIndex.find((d) => d.id === "ufo");
   assert(!!ufoRec, "parseIndexDemi finds [ufo] section");
   assert(ufoRec!.label === "UFO·디스크 추진", "label parsed (comment stripped)");
   assert(ufoRec!.scale === "system", "facets.scale dotted key parsed");
+  // facets.rung is OPTIONAL: ufo has none (→ "" — cosmos falls back to scale);
+  // rtsc carries an explicit facets.rung = "chip".
+  assert(ufoRec!.rung === "", "facets.rung absent → empty (scale-fallback)");
+  const rtscRec = sampleIndex.find((d) => d.id === "rtsc");
+  assert(!!rtscRec && rtscRec!.rung === "chip", "facets.rung dotted key parsed (rtsc → chip)");
   assert(
     JSON.stringify(ufoRec!.prerequisites) ===
       JSON.stringify(["fusion", "antimatter", "rtsc"]),
@@ -95,12 +103,39 @@ async function main(): Promise<void> {
   const vf = sampleCells.cells.find((c) => c.verb === "verify");
   assert(!!vf && vf.absorbedDefault === true, "verify cell absorbed=true parsed");
 
-  // 1. scaleToRung — the 4 canonical scales map 1:1; unknown → system.
-  assert(scaleToRung("molecular") === "molecular", "scaleToRung molecular");
-  assert(scaleToRung("device") === "device", "scaleToRung device");
-  assert(scaleToRung("component") === "component", "scaleToRung component");
-  assert(scaleToRung("system") === "system", "scaleToRung system");
+  // 1. scaleToRung — the coarse 4 `.demi` scales map onto the 6-band ladder as the
+  // FALLBACK (molecular→materials, device/component→chip, system→system); unknown → system.
+  assert(scaleToRung("molecular") === "materials", "scaleToRung molecular → materials");
+  assert(scaleToRung("device") === "chip", "scaleToRung device → chip");
+  assert(scaleToRung("component") === "chip", "scaleToRung component → chip");
+  assert(scaleToRung("system") === "system", "scaleToRung system → system");
   assert(scaleToRung("") === "system", "scaleToRung empty → system (honest default)");
+
+  // 1b. resolveRung — PREFER an explicit valid facets.rung; else map facets.scale.
+  assert(resolveRung("bio", "molecular") === "bio", "resolveRung prefers explicit facets.rung=bio");
+  assert(resolveRung("atom", "device") === "atom", "resolveRung prefers explicit facets.rung=atom");
+  assert(
+    resolveRung("", "molecular") === "materials",
+    "resolveRung empty facets.rung → scale fallback (molecular→materials)",
+  );
+  assert(
+    resolveRung(undefined, "device") === "chip",
+    "resolveRung undefined facets.rung → scale fallback (device→chip)",
+  );
+  assert(
+    resolveRung("garbage", "system") === "system",
+    "resolveRung invalid facets.rung → scale fallback (ignored, system→system)",
+  );
+  assert(
+    RUNG_VALUES.length === 6 &&
+      RUNG_VALUES.includes("atom") &&
+      RUNG_VALUES.includes("materials") &&
+      RUNG_VALUES.includes("bio") &&
+      RUNG_VALUES.includes("chem") &&
+      RUNG_VALUES.includes("chip") &&
+      RUNG_VALUES.includes("system"),
+    "RUNG_VALUES is the 6-band ladder",
+  );
 
   // 2. cellsToState — HONEST: all-OPEN/false → unverified; absorbed/CLOSED → verified.
   assert(cellsToState([]) === "unverified", "no cells → unverified ⚪");
@@ -137,7 +172,7 @@ async function main(): Promise<void> {
   assert(graph.nodes.length > 0, "buildCosmos yields ≥1 node from INDEX.demi");
   assert(
     graph.nodes.every((n) => RUNGS.includes(n.rung)),
-    "every node rung ∈ {molecular,device,component,system}",
+    "every node rung ∈ {atom,materials,bio,chem,chip,system}",
   );
   assert(
     graph.nodes.every((n) => STATES.includes(n.state)),
@@ -153,9 +188,19 @@ async function main(): Promise<void> {
   assert(!names.has("cosmos"), "meta name COSMOS absent (not in INDEX.demi)");
   assert(!names.has("qforge"), "compute-engine name QFORGE absent (not in INDEX.demi)");
 
-  // rung of `ufo` = its facets.scale = system.
+  // rung resolution off the LIVE INDEX.demi (facets.rung preferred): ufo → system,
+  // matter → materials (facets.rung="materials"), bio → bio (facets.rung="bio").
   const ufoNode = graph.nodes.find((n) => n.name.toLowerCase() === "ufo")!;
-  assert(ufoNode.rung === "system", "ufo rung = facets.scale (system)");
+  assert(ufoNode.rung === "system", "ufo rung = system (facets.rung)");
+  const matterNode = graph.nodes.find((n) => n.name.toLowerCase() === "matter");
+  assert(!!matterNode && matterNode!.rung === "materials", "matter rung = materials (facets.rung)");
+  const bioNode = graph.nodes.find((n) => n.name.toLowerCase() === "bio");
+  assert(!!bioNode && bioNode!.rung === "bio", "bio rung = bio (facets.rung, not lumped molecular)");
+  // every live node's rung ∈ the 6-band ladder.
+  assert(
+    graph.nodes.every((n) => RUNG_VALUES.includes(n.rung)),
+    "every live node rung ∈ 6-band ladder",
+  );
 
   // every edge endpoint has a node (no dangling refs — prereqs filtered to nodes).
   assert(
