@@ -89,6 +89,9 @@
   do   = "this set = QFORGE cross-val ground-truth — per-mode λ/α²F recompute + screening-gap calibration"
   do   = "drop HEAVY scratch (out/*.wfc · _ph0/*.dvscf) — GB-scale · regenerable · not a xval input"
   dont = "discard dyn/elph/a2f artifacts (forces a re-paid QE run to close gate) · git the GB scratch"
+# RTSC xval 2026-06-04 — CaH6 first gate anchor el-ph TERMINAL (8 q-point · dyn+elph complete)
+# 4-anchor light set archived local exports/rtsc/<cand>/harvest_final/ · git d42e46fa · QFORGE ground-truth
+# gate 1/3 terminal · LaH10·Li2MgH16·ScH9 in-flight (partial co-archived) · exec record of d_qforge_xval_archive
 
 @D d_qe_latest_then_qforge := "QE = latest version only · archive QE data · QFORGE takes over at gate" :: governance [required active]
   do   = "QE el-ph runs use the LATEST QE (conda-forge qe 7.x) — NOT apt distro 6.7"
@@ -97,10 +100,10 @@
   dont = "run QE from apt (stale 6.7) · discard QE data · keep QE as engine after QFORGE gate passes"
 
 @D d_qforge_migration_routing := "gate-anchors finish on QE · everything else → QFORGE after gate" :: governance [required active]
-  do   = "in-flight gate anchors (CaH6·LaH10·Li2MgH16) FINISH on QE — they are QFORGE's cross-val ground-truth"
-  do   = "all OTHER unfinished/candidate/mid-saved RTSC el-ph → run on QFORGE once migration gate ALL_PASS"
-  do   = "mid-saved QE partials = compare-reference only · QFORGE recomputes from scratch (own SCF·DFPT)"
-  dont = "swap a gate anchor to QFORGE (kills the cross-val answer-key) · resume QFORGE from a QE scratch"
+  do   = "in-flight gate anchors (CaH6·LaH10·Li2MgH16) FINISH on QE = QFORGE cross-val ground-truth"
+  do   = "all OTHER unfinished/candidate/mid-saved RTSC el-ph → run on QFORGE after gate ALL_PASS"
+  do   = "mid-saved QE partials = compare-reference only · QFORGE recomputes from scratch"
+  dont = "swap a gate anchor to QFORGE (kills the answer-key) · resume QFORGE from a QE scratch"
 
 @D d17 := "cost-bearing fire — dispatch autonomously, no user gate" :: governance [required active]
   do   = "validated deck (d16 free dry-run passed) → fire full-campaign rent autonomously · parallel"
