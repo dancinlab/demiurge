@@ -74,7 +74,8 @@ analyze⟲=problem-glow+고치기 · synth=powered-on model+progress · verify=�
 - [x] P5 wiring — chat→focus + `?target=` deeplink + `/d/[domain]` + node→work-page nav · 89eceb62
 - [x] P6 completeness hardening — conformance audit (D1–D7 PASS) + i18n `app_gui.*` (5 locales) + empty/error/load states + D3 "데이터없음" badge + a11y (keyboard node list, aria) + responsive + 2D-orphan cleanup · 3ad7a698·2520a8cb
 - [x] real per-domain 3D data — faithful 3D extended beyond HEX-N6/RTSC/QUBIT to ANTIMATTER·FUSION·UFO via external `model.3d.json` descriptors parsed from real doc numbers (Penning B=5T/U₀=10V/d=5mm · FreeGS R=1.280m/a=0.424m/AR=2.99 · lenticular D=6.0m/H=1.6m/×6 solenoid). NO .ts hardcode (d4·@L10). Domains with no structural numbers (GRAPHENE·PEROVSKITE·… starter scaffolds) honestly stay ⚪ symbols. Fidelity=data-presence, NOT verify-badge. · SHA 56cc3973
-- [ ] more faithful 3D — extend coverage as domains gain structural data; needs a torus/coil-pair primitive (current 3 map to `orbit` schematic, not CAD mesh)
+- [x] 6-rung scale ladder + per-rung 3D vocabulary — Rung extended to 원자·물질·바이오·화학·칩·시스템 (classifyRung manifest, d4); new shape primitives `helix`(bio) · `molecule`(chem) · `die`(chip) · `coil`(system); system 3 retrofit orbit→coil; data-less nodes render rung-typed STYLIZED 3D + ⚪/🟡 "데이터없음" badge (no fabricated numbers). · SHA de2c66a4
+- [ ] faithful bio/chem 3D — blocked until a bio/chem domain doc carries extractable structural numbers (residue/atom counts, formula); today they are honestly rung-typed stylized (AGA-RX/SENOLYX cite PDB IDs but no raw counts)
 - [ ] deploy gate — push main → Cloud Run ONLY on explicit user approval (d_deploy)
 
 ## §6 shelf — design options / deferred
