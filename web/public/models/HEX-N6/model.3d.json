@@ -1,0 +1,12 @@
+{
+  "kind": "procedural",
+  "shape": "lattice",
+  "label": "n=6 honeycomb (σ=12·τ=4·φ=2)",
+  "params": {
+    "sigma": 12,
+    "tau": 4,
+    "phi": 2,
+    "rings": 2,
+    "a": 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "procedural",
+  "shape": "supercell",
+  "label": "H₃X cubic supercell (Im-3m · a≈3.6 Å)",
+  "params": {
+    "a": 3.6,
+    "b": 3.6,
+    "c": 3.6,
+    "nx": 2,
+    "ny": 2,
+    "nz": 2
+  }
+}
