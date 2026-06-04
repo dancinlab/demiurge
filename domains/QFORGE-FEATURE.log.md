@@ -320,3 +320,8 @@
 - OBSERVED (d6): dft-run d11 OOM clamps `-np` to 6 on Li2MgH16 (38 atoms · ~1.6M PW · ~10 GiB/rank); a 64-vCPU/128-GiB pod (39485092) was NO faster than the old 6-core pod → torn down (wasted rent). Bottleneck = MEMORY-per-rank, NOT cores.
 - REGISTERED 2 engine-feature milestones: (1) memory-per-rank wall escape via GPU-VRAM-resident/streaming DFPT (assembler GPU PROVEN #27/#35 38-42× parity 2.46e-14; DFPT-solve GPU-residency = remaining lift); (2) "QE scaling walls are architecture, not physics" dissolution map — core-ceiling→GPU(proven) · memory-clamp→GPU-VRAM(assembler proven) · split→native q/irrep(designed #34/#2709).
 - HONEST (d_qforge_migration_routing): dissolution speeds the 14 POST-gate candidates; gate anchors stay on QE (answer-key, circular otherwise).
+
+## 2026-06-05 — memory-per-rank wall escape CLOSED (GPU-resident DFPT solve)
+- GPU Sternheimer (DFPT linear-response) kernel: REAL on-device parity on NVIDIA B200 sm_100, max_rel_err 3.02e-16 (≈machine ε), CG 3 iters. PR#2737 (draft). 5 @gpu_kernels (H-matvec·shift·AXPY·XPAY·P_c) keep CG vectors in VRAM all iterations; only scalar α/β/residual on host (honest remainder, d6). nvptx_emit codegen reused 0-diff (d3).
+- WITH the α²F assembler GPU (#2733, 38-42×) this CLOSES the memory-per-rank wall: both the el-ph assembly AND the DFPT solve are GPU-VRAM-resident → per-rank CPU RAM clamp escaped. The 3-wall QE dissolution map (split #2730 · memory #2733+#2737 · Amdahl=GPU-data-parallel) is now all-PROVEN.
+- pod 39490251 (B200) torn down after harvest. RTSC anchors untouched.
