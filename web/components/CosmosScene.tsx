@@ -175,16 +175,25 @@ function NodeGlyph({
   placed,
   highlighted,
   focused,
+  hovered,
   onClick,
+  onHoverName,
 }: {
   placed: Placed;
   highlighted: boolean;
   focused: boolean;
+  hovered: boolean;
   onClick: (name: string) => void;
+  onHoverName: (name: string | null) => void;
 }) {
   const { node, pos } = placed;
-  const color = highlighted ? STATE_ACCENT[node.state] : DIM;
-  const r = focused ? 0.55 : 0.34;
+  const baseColor = highlighted ? STATE_ACCENT[node.state] : DIM;
+  // Hover affordance (sphere path): brighten toward white + a slight scale-up,
+  // and lift emissive so the node reads as "hot" against the dim/lit scheme.
+  const color = hovered
+    ? new THREE.Color(baseColor).lerp(new THREE.Color("#ffffff"), 0.4).getStyle()
+    : baseColor;
+  const r = (focused ? 0.55 : 0.34) * (hovered ? 1.18 : 1);
   return (
     <group position={pos}>
       <mesh
@@ -195,26 +204,28 @@ function NodeGlyph({
         onPointerOver={(e) => {
           e.stopPropagation();
           document.body.style.cursor = "pointer";
+          onHoverName(node.name);
         }}
         onPointerOut={() => {
           document.body.style.cursor = "auto";
+          onHoverName(null);
         }}
       >
         <sphereGeometry args={[r, 20, 20]} />
         <meshStandardMaterial
           color={color}
           emissive={color}
-          emissiveIntensity={highlighted ? 0.35 : 0.04}
+          emissiveIntensity={hovered ? 0.7 : highlighted ? 0.35 : 0.04}
           roughness={0.5}
           transparent
-          opacity={highlighted ? 1 : 0.45}
+          opacity={hovered ? 1 : highlighted ? 1 : 0.45}
         />
       </mesh>
       {/* label + state badge — only readable when highlighted */}
       <Text
         position={[0, r + 0.5, 0]}
         fontSize={0.42}
-        color={highlighted ? "#ece8e3" : "#7a726a"}
+        color={hovered ? "#ffffff" : highlighted ? "#ece8e3" : "#7a726a"}
         anchorX="center"
         anchorY="bottom"
         outlineWidth={0.012}
@@ -240,6 +251,14 @@ const STATE_COLOR: Record<VerifyState, THREE.Color> = {
   falsified: new THREE.Color("#d98a8a"),
 };
 const DIM_COLOR = new THREE.Color(DIM);
+const WHITE = new THREE.Color("#ffffff");
+// Per-instance hover boost: scale-up factor + how far to lerp the tint toward
+// white (the "hot" affordance — reads cleanly over both the lit verify-tint and
+// the dimmed DIM_COLOR scheme).
+const HOVER_SCALE = 1.22;
+const HOVER_LERP = 0.4;
+// Scratch color reused per-instance write (no per-frame allocation).
+const TMP_COLOR = new THREE.Color();
 
 // Low-power heuristic + WebGL capability check → should we even attempt the
 // rung-shape glyphs? Coarse (navigator.hardwareConcurrency) but cheap; the real
@@ -266,6 +285,7 @@ function RungShapeInstances({
   geometry,
   highlightOf,
   focusedUp,
+  hoveredUp,
   onPick,
   onHoverName,
 }: {
@@ -274,6 +294,7 @@ function RungShapeInstances({
   geometry: THREE.BufferGeometry;
   highlightOf: (up: string) => boolean;
   focusedUp: string | null;
+  hoveredUp: string | null;
   onPick: (name: string) => void;
   onHoverName: (name: string | null) => void;
 }) {
@@ -313,18 +334,26 @@ function RungShapeInstances({
       const up = p.node.name.toUpperCase();
       const hl = highlightOf(up);
       const focused = focusedUp === up;
-      const s = (focused ? GLYPH_BOUND_FOCUSED : GLYPH_BOUND) * (hl ? 1 : 0.82);
+      const hovered = hoveredUp === up;
+      let s = (focused ? GLYPH_BOUND_FOCUSED : GLYPH_BOUND) * (hl ? 1 : 0.82);
+      if (hovered) s *= HOVER_SCALE; // hover affordance: slight scale-up
       dummy.position.set(...p.pos);
       dummy.scale.setScalar(s);
       dummy.rotation.set(0, (i % 8) * 0.4, 0); // slight deterministic yaw variety
       dummy.updateMatrix();
       mesh.setMatrixAt(i, dummy.matrix);
-      const col = hl ? STATE_COLOR[p.node.state] : DIM_COLOR;
-      mesh.setColorAt(i, col);
+      const base = hl ? STATE_COLOR[p.node.state] : DIM_COLOR;
+      if (hovered) {
+        // brighten the tint toward white so the hovered node reads as "hot"
+        TMP_COLOR.copy(base).lerp(WHITE, HOVER_LERP);
+        mesh.setColorAt(i, TMP_COLOR);
+      } else {
+        mesh.setColorAt(i, base);
+      }
     });
     mesh.instanceMatrix.needsUpdate = true;
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
-  }, [placed, geometry, highlightOf, focusedUp, dummy]);
+  }, [placed, geometry, highlightOf, focusedUp, hoveredUp, dummy]);
 
   if (placed.length === 0) return null;
 
@@ -343,6 +372,14 @@ function RungShapeInstances({
         const id = e.instanceId;
         if (id == null) return;
         document.body.style.cursor = "pointer";
+        onHoverName(placed[id].node.name);
+      }}
+      // pointer-move so moving BETWEEN instances of the SAME mesh re-targets the
+      // hovered node (onPointerOver only fires on mesh enter, not per-instance).
+      onPointerMove={(e: ThreeEvent<PointerEvent>) => {
+        e.stopPropagation();
+        const id = e.instanceId;
+        if (id == null) return;
         onHoverName(placed[id].node.name);
       }}
       onPointerOut={() => {
@@ -366,23 +403,26 @@ function NodeLabels({
   placed,
   highlightOf,
   focusedUp,
+  hoveredUp,
 }: {
   placed: Placed[];
   highlightOf: (up: string) => boolean;
   focusedUp: string | null;
+  hoveredUp: string | null;
 }) {
   return (
     <>
       {placed.map((p) => {
         const up = p.node.name.toUpperCase();
         const hl = highlightOf(up);
+        const hovered = hoveredUp === up;
         const r = focusedUp === up ? GLYPH_BOUND_FOCUSED : GLYPH_BOUND;
         return (
           <group key={up} position={p.pos}>
             <Text
               position={[0, r + 0.5, 0]}
-              fontSize={0.42}
-              color={hl ? "#ece8e3" : "#7a726a"}
+              fontSize={hovered ? 0.46 : 0.42}
+              color={hovered ? "#ffffff" : hl ? "#ece8e3" : "#7a726a"}
               anchorX="center"
               anchorY="bottom"
               outlineWidth={0.012}
@@ -562,6 +602,14 @@ function Scene({
     ? placed.find((p) => p.node.name.toUpperCase() === focusUp)?.node ?? null
     : null;
 
+  // Hover affordance state (lifted here so BOTH render paths — instanced rung
+  // shapes + sphere-glyph fallback — share one hovered node). Stored uppercased
+  // to match the highlight/focus keys.
+  const [hoveredUp, setHoveredUp] = useState<string | null>(null);
+  const onHoverName = useCallback((name: string | null) => {
+    setHoveredUp(name ? name.toUpperCase() : null);
+  }, []);
+
   // highlight rule: in focus mode the lit (decomposition) set wins; else the
   // active filter governs. Shared by both the instanced and fallback paths.
   const highlightOf = useCallback(
@@ -617,8 +665,6 @@ function Scene({
     return s;
   }, [shapeGroups]);
 
-  const noop = useCallback(() => {}, []);
-
   return (
     <>
       <ambientLight intensity={0.5} />
@@ -645,26 +691,33 @@ function Scene({
               geometry={g.geometry}
               highlightOf={highlightOf}
               focusedUp={focusUp}
+              hoveredUp={hoveredUp}
               onPick={onPick}
-              onHoverName={noop}
+              onHoverName={onHoverName}
             />
           ))}
           <NodeLabels
             placed={placed.filter((p) => glyphedNames.has(p.node.name.toUpperCase()))}
             highlightOf={highlightOf}
             focusedUp={focusUp}
+            hoveredUp={hoveredUp}
           />
           {placed
             .filter((p) => !glyphedNames.has(p.node.name.toUpperCase()))
-            .map((p) => (
-              <NodeGlyph
-                key={p.node.name.toUpperCase()}
-                placed={p}
-                highlighted={highlightOf(p.node.name.toUpperCase())}
-                focused={focusUp === p.node.name.toUpperCase()}
-                onClick={onPick}
-              />
-            ))}
+            .map((p) => {
+              const up = p.node.name.toUpperCase();
+              return (
+                <NodeGlyph
+                  key={up}
+                  placed={p}
+                  highlighted={highlightOf(up)}
+                  focused={focusUp === up}
+                  hovered={hoveredUp === up}
+                  onClick={onPick}
+                  onHoverName={onHoverName}
+                />
+              );
+            })}
         </>
       ) : (
         placed.map((p) => {
@@ -675,7 +728,9 @@ function Scene({
               placed={p}
               highlighted={highlightOf(up)}
               focused={focusUp === up}
+              hovered={hoveredUp === up}
               onClick={onPick}
+              onHoverName={onHoverName}
             />
           );
         })
