@@ -1,0 +1,14 @@
+{
+  "kind": "procedural",
+  "shape": "helix",
+  "label": "BCL-xL α-helix (290 res · 2 chains · PDB 3ZLR)",
+  "params": {
+    "residues": 290,
+    "turns": 81,
+    "perTurn": 4,
+    "radius": 1,
+    "pitch": 1.2,
+    "strands": 2,
+    "src": "PDB 3ZLR (BCL-xL) · 290 res · 2 chains → 290/3.6 ≈ 81 α-helix turns · COSMOS.md §9.1a"
+  }
+}

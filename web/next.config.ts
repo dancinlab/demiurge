@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
     "/**": [
       "../DOMAINS.tape",
       "../domains/*.md",
+      "../domains/*.demi",
+      "../domains/INDEX.demi",
       "../*.md",
     ],
   },
