@@ -329,3 +329,7 @@
 ## 2026-06-05 — frontier feature backlog brainstormed to depletion + registered (13)
 - Post-wall-dissolution frontier across 5 axes (성능·자원·속도·패러다임·NOVEL): production orchestrator · converged-CaH6 full-BZ xval (now GPU-tractable) · mixed-precision tensor-core matvec · fused CG kernel · multi-GPU q/k sharding · out-of-core ψ streaming · anisotropic Migdal-Eliashberg · autodiff ∂Tc/∂structure · anharmonic phonons (SSCHA) · quantum nuclear effects · inverse Tc design loop · pressure-Tc(P) sweep · Tc uncertainty quantification.
 - NOVEL highlights (RTSC-relevant): anharmonic + NQE close known hydride-Tc accuracy gaps QE-DFPT skips; AD inverse-design + Tc(P) sweep target the PRESSURE bottleneck (turn QFORGE evaluator→designer). Deduped against the merged wall-dissolution set.
+
+## 2026-06-05 — reconcile: 7 milestones SHIPPED+MERGED → [x] (14 open = frontier)
+- Flipped: NVPTX kernels #2712/#2717 · q-star symmetry #2700/#2729 · dft-run salvage #2459 · proxy-fallback #2451 · orphan-guard #2721 · telemetry emit #2702 · production orchestrator #2742 (@L1/@L2). Plus @L3 --engine route #2748 (migration plan, not a FEATURE checkbox).
+- REMAINING (14) = frontier, NOT no-pod-agent-closeable: dissolution-map (gate=campaign anchor) · resume-bank (object-store infra) · converged-CaH6 full-BZ (campaign GPU) · GPU-tier×4 (mixed-prec·fused-CG·multi-GPU·out-of-core — need GPU rent) · research-tier×7 (anisotropic-Eliashberg·autodiff·anharmonic·NQE·inverse-design·Tc(P)·UQ).

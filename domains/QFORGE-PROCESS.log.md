@@ -241,3 +241,7 @@ TOTAL: 14/14 harvested non-empty + verified · 14/14 destroyed (confirmed) · 0 
 ## 2026-06-05 — process optimization backlog brainstormed + registered (8)
 - end-to-end deck→Tc ledger · GPU-vs-CPU per-stage cost model · auto-sizing dispatcher (RAM-clamp aware) · per-kernel roofline profiler · cost-per-Tc economics · multi-pod q-split runtime orchestrator · convergence early-stop predictor · closed-loop autonomous candidate selection (expected-Tc, not FIFO).
 - Seeded by this session's observed waste (2 RAM-clamp rents, Picard-NaN/recover-EOF pod-hours) → auto-sizing + early-stop directly address them.
+
+## 2026-06-05 — reconcile: 12 milestones SHIPPED+MERGED → [x] (1 open)
+- This session (hexa-lang main): deck→Tc ledger #2739 · GPU/CPU cost #2741 · auto-sizing #2751 · roofline #2745 · cost-per-Tc #2744 · early-stop #2740 · closed-loop #2747. Earlier-merged: per-stage timing #2702/#2703 · cost-driver #2706 · parallel-q #2709 · GPU lever #2717 · sizing-table #582.
+- REMAINING (1): multi-pod q-split runtime orchestrator — pod-coupled (real N-pod dispatch, not no-pod-agent-closeable).
