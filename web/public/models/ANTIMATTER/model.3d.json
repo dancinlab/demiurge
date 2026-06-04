@@ -1,0 +1,13 @@
+{
+  "kind": "procedural",
+  "shape": "orbit",
+  "label": "Penning trap · ring electrode (B=5T · U₀=10V · d=5mm)",
+  "params": {
+    "radius": 2,
+    "bodies": 3,
+    "B_tesla": 5,
+    "U0_volt": 10,
+    "d_mm": 5,
+    "src": "domains/antimatter.md:11 (Penning 3-freq: axial·cyclotron·magnetron)"
+  }
+}
