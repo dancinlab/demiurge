@@ -41,3 +41,15 @@
 - 두 호스트 total energy bit-identical → 설치 일관성 확인. Si.pz-vbc.UPF pseudo fetch from pseudopotentials.quantum-espresso.org (smoke deck @ ~/qe_smoke/).
 - 디스크: summer 44G free · aiden 14G free (99% 사용 — qe env ~2.6GB 수용했으나 여유 빠듯, 대형 outdir는 모니터 필요).
 - 결과: **FREE pool이 이제 QE el-ph reference 계산 실행 가능** (d7 small-cell 4-7원자 pool-free 경로에 부합). 미래 dft-run/recipe는 위 invocation으로 summer/aiden 타게팅 가능.
+
+## 2026-06-03 — FEATURE + PROCESS bricks merged to hexa-lang main
+
+- FEATURE (PR#2586, `kmesh_elph.hexa`): real k-mesh el-ph BZ scattering sum — walks (k,k+q)×(m,n)×ν channels into the L3 α²F assembler. g5 `qforge_kmesh_elph_selftest PASS` (flat-band nk-invariance · Γ-limit=analytic Einstein rel-ε 6.5e-5 · BZ λ>Γ-collapse · off-diag |g_mn| raises λ). 2 new files, 0-diff to existing, no regression.
+- PROCESS (PR#2587, `telemetry_cli.hexa`): `hexa qforge telemetry {report|regress|rollup}` CLI subverb over harvested `.dft_telemetry.jsonl` — surfaces the #2477/#2483/#2487 observability stack on the command line. g5 `qforge_cli_telemetry_selftest PASS` (14/14). READ-ONLY, missing-file→rc1 (d6, no phantom report).
+- @L5/d6 HONEST: neither brick closes the CaH6 λ gate. kmesh_elph supplies BZ-summation MACHINERY only; real CaH6 λ closure stays compute-gated (converged 4×4×4q SCF) + the screening/correlation accuracy gap (Hartree+LDA x+c) remains a separate front-end limit. Migration gate CaH6-NC = HELD (1/3); no forced flip; nothing tuned toward QE λ. PR2503-audit residual (Γ-only BZ-sampling) now has its machinery; the heavy converged run is the named next compute step.
+
+## 2026-06-04 — recover-EOF crash family 실증 → QFORGE resume crash-resilience milestone 등록
+
+- INCIDENT: 4개 게이트 앵커(CaH6·LaH10·Li2MgH16·ScH9)가 QE ph.x `recover=.true.` 단일경로 재개의 손상 recover scratch(EOF marker) 맹목 replay로 전부 crash-loop(self-resume 8/8 소진, mpirun exit-2 / `Sequential READ after EOF`). salvage = `recover=.false.`+`start_q=<첫 미완>` 재개로 4/4 무손실 복구(완료 dyn skip, 손상 q만 clean 재계산).
+- MILESTONE 등록(QFORGE.md `## 진행 milestones`): QFORGE 자체 DFPT/SCF resume은 이 모드가 구조적으로 불가능해야 함 — (1) per-q atomic done-marker (2) 미완 q만 clean 재계산, 손상 blob replay 금지 (3) checkpoint 무결성 검증(truncation/EOF→자동 재계산 fallback). selftest = 의도적 truncated checkpoint 주입→crash 없이 재계산 PASS.
+- 근거 handoff: hexa-lang `fc2331a3`(QE 측 no-recover fallback 갭). QFORGE는 그 갭을 애초에 갖지 않도록 설계 — QE의 부서지는 재개를 답습하지 않음. d6: 부분결과 silent 사용 금지.
