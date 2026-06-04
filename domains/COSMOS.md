@@ -12,7 +12,7 @@ the whole project; the CLI verb pipeline itself stays in 8VERB.
 > → each node shows verified/needs-verify → drive each to verified via the 8 verbs`.
 
 ## The three pillars (all backed by existing repo data)
-1. **Composition** — a target (UFO) is built from internal sub-domains; edges read from `NEXUS.tape`.
+1. **Composition** — a target (UFO) is built from internal sub-domains; edges read from the **`DOMAINS.tape` connection graph** (`@link` rows · see §7.1 — `NEXUS.tape` is RETIRED).
 2. **Scale ladder** — sub-domains span 원자(atom) → 물질·바이오·화학 → 칩·상위구조 → 시스템.
 3. **Verification state** — every node carries a verdict (absorbed flag + g5 tier) = verified vs needs-verify. Honest (d6): ⚪/🟡/🔴 never painted 🟢.
 
@@ -47,7 +47,7 @@ Rollup: any ⚪ child → target 🟡; all 🟢/🔵 → 🟢.
 ```
 web/lib/cosmos.ts        composition graph: types (Rung·VerifyState·CosmosNode·CosmosEdge·CosmosGraph),
                          parseNexusEdges · classifyRung (d4 manifest) · deriveState (honest) · decompose()
-web/lib/cosmos.server.ts fs reader: readNexusEdges · buildCosmos · resolveCosmosNode (NEXUS+DOMAINS+verdict ledger)
+web/lib/cosmos.server.ts fs reader: readNexusEdges⚠RETIRE→readLinkEdges · buildCosmos · resolveCosmosNode (DOMAINS @link + roster + verdict ledger)
 web/lib/geometry-3d.ts   Model3DDescriptor (procedural|glb) + builders (lattice·supercell·metacell·orbit·throat·junction·symbol)
 web/lib/geometry-3d.server.ts  server disk resolver for descriptors
 web/components/DomainModel3D.tsx  generic SSR-safe R3F model (glb via useGLTF | procedural | stylized symbol), tinted by state
@@ -65,6 +65,90 @@ web/components/AssistChat.tsx  chat → demiurge:focus event (target matched vs 
 discover=3D candidate gallery · spec=계약서 카드 · structure=3D assembly · design=model+inspector ·
 analyze⟲=problem-glow+고치기 · synth=powered-on model+progress · verify=대조 저울+badge stamp · handoff=인증서+다운로드.
 
+## §7 Cosmos membership — WHO is a node (inclusion / exclusion) ⚠ IMPLEMENT BEFORE DEPLOY
+The node-set today = the ENTIRE `DOMAINS.tape` roster (`listDomains()` → `assembleCosmos()`), with
+**NO exclusion filter**. The roster mixes real science domains with NON-material tooling / meta / process
+domains — and those leak in as bogus nodes (`classifyRung` honest-default → `materials`). They MUST be excluded.
+
+**Rule** — a cosmos node = a physical **material / device / system** (something you could build or measure).
+EXCLUDE anything that is tooling, infra, process-tracking, meta, or a CLI/web surface. Implement as a single
+predicate `isCosmosDomain(name)` in `web/lib/cosmos.ts` (d4 — one manifest set, NO per-call branching), applied
+inside `assembleCosmos()` so every downstream view (overview · decompose · `/d/<D>` · `/api/cosmos/targets`) is
+filtered at the source.
+
+**Category C — EXCLUDE from cosmos** (non-material · audited from the 70-row full roster):
+```
+8VERB · COSMOS · DEMIURGE · GOAL · XPRIZE · ABSORPTION · INBOX        ← meta / goal-tracking / process
+NOVEL-TOOL · POOL · CLI+COCKPIT · HEXA-PORT · YOSYS · NUMB · MP       ← tooling / infra / EDA / data
+QFORGE · QFORGE-PROCESS · QFORGE-PERF · QFORGE-FEATURE                ← compute engine + its process domains
+```
+- These are EXCLUDE-by-name. Keep the set in ONE exported const (`COSMOS_EXCLUDE`) so add/remove is data-only.
+- Default-include posture for everything else: a roster domain NOT in `COSMOS_EXCLUDE` stays a node (so new
+  science domains appear with zero code edits). When the line is genuinely ambiguous, KEEP it (honesty — do
+  not silently drop a real domain); only the named non-material set is removed.
+- Provenance: full roster `domains/DOMAINS.tape` (70 rows) · curated web roster root `DOMAINS.tape` (29 rows,
+  already contains the leakers `8VERB`·`COSMOS`).
+- A cosmos.test.ts case MUST assert: every `COSMOS_EXCLUDE` name is absent from `buildCosmos()` nodes, and a
+  known science domain (RTSC) is present.
+- **Edge endpoints inherit the filter** — the connection graph (§7.1) references Category-C names as providers
+  (e.g. `NOVEL-TOOL --provides--> RTSC`). When building decomposition, DROP any edge whose endpoint is excluded
+  (or its node is filtered), so a Category-C tooling domain never re-enters via a composition edge.
+
+### §7.1 Connection graph — `NEXUS.tape` RETIRED → `DOMAINS.tape @link` (g67/g68)
+`NEXUS.tape` (the old `@X … :: reuse-edge` lattice, 260 lines) is **RETIRED**. The cross-domain reuse /
+composition graph now rides INSIDE `DOMAINS.tape` as `@link` rows (canonical reference: `hexa-lang/DOMAINS.tape`,
+also `anima`). Format (g3-minimal):
+```
+@link <from> --<verb>--> <to>    # <evidence>
+   intra-repo cross-domain = g67   ·   cross-project star = g68
+   e.g.  @link RTSC --reuses--> NOVEL-TOOL   # current_loop_offaxis · PR #168
+```
+These lines ride along harmlessly — `domain list` ignores non-`@domain` rows. **Cosmos migration (2 parts):**
+1. **Code** — retire `readNexusEdges`/`parseNexusEdges`/`NEXUS_PATH_PARTS` in `cosmos.server.ts`+`cosmos.ts`;
+   read `@link <from> --<verb>--> <to>  # evidence` from `DOMAINS.tape` instead (rename → `readLinkEdges`/
+   `parseLinkEdges`). Keep the empty-on-missing fallback. Update `cosmos.test.ts` fixtures NEXUS→`@link`.
+2. **Data** — the composition edges in `NEXUS.tape` must be MIGRATED to `@link` rows in `DOMAINS.tape` (else
+   decomposition goes empty after retirement). The `@X reuse-edge` `provides`→`reused_by` pairs map directly:
+   `@link <reused_by> --reuses--> <provides-domain>  # <evidence>`. This is a data migration, not a cosmos-only
+   concern — coordinate with the repo-wide NEXUS retirement (g67 SSOT is now `DOMAINS.tape`).
+
+## §8 GUI-implementation guardrails (read before touching cosmos code — anti-mistake checklist)
+```
+[ ] node membership — apply isCosmosDomain() in assembleCosmos(); NEVER render a Category-C name (§7)
+[ ] honesty (d6)    — fidelity(3D shape detail) ≠ verify-badge. A faithful model NEVER implies "verified".
+                      ⚪/🟡/🔴 are derived ONLY from the verdict ledger / NEXUS markers — never from progress%.
+[ ] no fabrication  — a faithful 3D needs a REAL number from the doc (file:line). No number → stylized + ⚪ badge.
+                      Do NOT invent lattice/residue/atom counts to "fill" a shape.
+[ ] geometry=data   — all geometry lives in external descriptors / parsed doc numbers (d4·@L10·D5). NEVER
+                      hardcode per-shape constants in .ts source.
+[ ] rung manifest   — classify via the RUNG_BY_NAME table + keyword fallback (d4). Add a domain = edit the
+                      table, not a new branch. bio/chem keywords run BEFORE materials (a -CURE is bio, not system).
+[ ] reuse, no dup   — extend the existing primitives (lattice·supercell·helix·molecule·die·coil·orbit·symbol);
+                      do NOT add a parallel renderer. SSE=LiveTail, cards=LibraryGallery already exist.
+[ ] edges = @link   — NEXUS.tape is RETIRED (§7.1). Read composition edges from DOMAINS.tape `@link` rows, NOT
+                      NEXUS.tape. Drop edges whose endpoint is a Category-C name.
+[ ] no deploy       — localdev branch only; main→Cloud Run is user-approval-gated (d_deploy). Never auto-push main.
+[ ] shared worktree — land via an isolated `/tmp` worktree + PR (d9); the dev preview tree is shared, do not
+                      stage/commit there.
+[ ] build-green     — `npm run build` + cosmos.test.ts must pass before claiming done; paste the result.
+```
+
+## §9 Bio/Chem data audit (faithful-3D candidates · honest status)
+Most bio/chem domains are PROSE STUBS — they cite outcomes/PDB ids but carry NO raw structural counts, so they
+stay rung-typed STYLIZED (helix / molecule) + ⚪/🟡 "데이터없음/검증필요" badge. They AUTO-promote to faithful the
+moment a real number lands (pipeline `geometry-3d-parse.server.ts` is live). What "real number" means per rung:
+```
+bio  (helix)    ← residue count / sequence length → helix turns · chain count → strands
+chem (molecule) ← molecular formula → atom count + bonds
+```
+- Today: 0 net bio/chem promotions — no bio/chem doc has a clean extractable count (PDB id alone is insufficient
+  by design; it names a structure but gives no count to build from). This is the HONEST state, not a gap to paper over.
+- To promote a real bio/chem domain: add the count to its `domains/<D>.md` (e.g. "residues: 214", a bare formula),
+  OR hand-author `web/public/models/<D>/model.3d.json`. Then it renders faithful automatically.
+- The user reports real progress in some bio domains (AGA-RX/SENOLYX/CURE family) — that progress is in
+  `.log.md` + `exports/<D>/`, but the geometry parser reads `<D>.md` for a STRUCTURAL number; if those numbers
+  exist they should be surfaced into `<D>.md` (or a descriptor) to trigger promotion. Open milestone below.
+
 ## Milestones
 - [x] P0 design — perfected spec (D1–D7) → this architecture
 - [x] P1 cosmos data — `web/lib/cosmos.ts` (graph + rung + verify-state) · 87b88c86
@@ -78,7 +162,9 @@ analyze⟲=problem-glow+고치기 · synth=powered-on model+progress · verify=�
 - [x] overview per-rung 3D — constellation nodes render their rung-typed shape (not just on focus) via `InstancedMesh` grouped-by-shape + low-poly merged geometry; perf guard `OVERVIEW_GLYPH_FALLBACK_THRESHOLD=60` (>60 nodes OR `hardwareConcurrency<4` → sphere glyph); per-shape merge-fail fallback; verify-state tint + badge intact. · SHA 275d5b75
 - [x] auto-promotion pipeline — `geometry-3d-parse.server.ts` scans `domains/<D>.md` for real structural numbers (lattice a/b/c · residues→helix turns · formula→atoms · radii/windings) w/ file:line provenance; resolver priority: hand-authored json → auto-parsed faithful → rung stylized. Faithful coverage now auto-grows from docs, zero new files. Honest: 0 NEW promotions today (only RTSC `a=2.984` rtsc.md:983 + UFO D=6.0m ufo.md:48 qualify, both already hand-authored); ~170 stub docs stay stylized. 19/19 parser tests. · SHA 5fcf71e6
 - [x] overview hover highlight — pointer-over a node lifts tint 40%→white + scale ×1.22 (instanced) / ×1.18 + emissive 0.7 (glyph fallback) + label→white, via existing zero-rebuild instanced buffers (setColorAt/setMatrixAt); onPointerMove re-targets per-instance; both render paths; click→focus/layout/badge intact. · SHA d38f5907
-- [ ] faithful bio/chem 3D — now AUTO-promotes the moment a bio/chem doc gains extractable numbers (residue/atom counts, formula) — pipeline live; today still stylized (docs are prose stubs, no raw counts; PDB id alone insufficient by design)
+- [ ] **cosmos membership filter (§7) — `isCosmosDomain()` + `COSMOS_EXCLUDE` const** — EXCLUDE the 20 non-material/meta/tooling domains (8VERB·COSMOS·DEMIURGE·NOVEL-TOOL·POOL·QFORGE*·YOSYS·…) inside `assembleCosmos()`; drop edges to excluded endpoints; cosmos.test.ts asserts they are absent + RTSC present. ⚠ HIGHEST PRIORITY — currently they leak in as bogus `materials` nodes
+- [ ] **NEXUS→DOMAINS @link migration (§7.1)** — `NEXUS.tape` RETIRED: (a) code — cosmos reads `@link` rows from `DOMAINS.tape`, not `NEXUS.tape` (`readLinkEdges`/`parseLinkEdges`); (b) data — migrate the `NEXUS.tape` `reuse-edge` rows to `@link <reused_by> --reuses--> <provides>  # evidence` in `DOMAINS.tape` so decomposition survives. Reference `hexa-lang`/`anima` DOMAINS.tape format
+- [ ] faithful bio/chem 3D — surface real STRUCTURAL counts (residues/formula) from bio progress (`AGA-RX`/`SENOLYX`/CURE-family `.log.md`+`exports/`) into their `<D>.md` or a descriptor → auto-promotes via the live parser (§9). Today honestly stylized — no extractable count in `<D>.md` yet
 - [ ] deploy gate — push main → Cloud Run ONLY on explicit user approval (d_deploy)
 
 ## §6 shelf — design options / deferred

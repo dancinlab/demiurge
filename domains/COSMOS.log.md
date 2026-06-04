@@ -2,6 +2,17 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — DOC-prep: membership rule + NEXUS retirement + bio/chem audit + GUI guardrails (no code)
+
+User: "도메인 폴더에 관련 아닌것들도 있어 — NOVEL-TOOL 이런거 물질 아닐꺼야" + "GUI 구현 실수 안 하게 문서 잘 처리해둬" + "NEXUS.tape 폐기 — DOMAINS.tape 으로만 정리, anima/hexa-lang 참고". Documentation-only turn — NO GUI code touched. All findings written into `COSMOS.md` (§7·§7.1·§8·§9) as the SSOT the implementation agent reads first.
+
+- [x] **Membership leak (§7)** — ground-truthed on `feat/8verb-cosmos` (tip d38f5907): node-set = ENTIRE `DOMAINS.tape` roster via `listDomains()`→`assembleCosmos()`, **NO exclusion filter**. Non-material/meta/tooling domains LEAK as bogus `materials` nodes (`classifyRung` honest-default). Confirmed leakers in curated root tape: `8VERB`,`COSMOS`. Full `domains/DOMAINS.tape` (70 rows) adds `NOVEL-TOOL·POOL·DEMIURGE·QFORGE{,-PROCESS,-PERF,-FEATURE}·YOSYS·CLI+COCKPIT·ABSORPTION·GOAL·XPRIZE·INBOX·HEXA-PORT·NUMB·MP`. Wrote the inclusion RULE + named `COSMOS_EXCLUDE` set (20) + `isCosmosDomain()` predicate spec + test contract. Fix = HIGHEST-priority milestone.
+- [x] **NEXUS.tape RETIRED (§7.1)** — per user + commons g70-guard hint. The old `NEXUS.tape` (260-line `@X … :: reuse-edge` lattice) is retired; the cross-domain reuse/composition graph now rides INSIDE `DOMAINS.tape` as `@link <from> --<verb>--> <to>  # evidence` rows (canonical ref = `hexa-lang/DOMAINS.tape` g67 intra + g68 cross-project; `anima` same). Cosmos currently reads `NEXUS.tape` (`readNexusEdges`/`parseNexusEdges`/`NEXUS_PATH_PARTS` + refs in cosmos.ts/.server.ts/.test.ts/cosmos page/d-page). Documented the 2-part migration: (a) code → read `@link` from DOMAINS.tape; (b) data → migrate NEXUS reuse-edges to `@link` rows (demiurge DOMAINS.tape currently has ZERO `@link` rows, so decomposition would go empty if NEXUS vanishes before the data migration). Also flagged: NEXUS edges reference Category-C `NOVEL-TOOL` as a provider → edge endpoints must inherit the §7 exclude filter.
+- [x] **§8 GUI guardrails** — anti-mistake checklist (membership · fidelity≠badge honesty · no-fabrication · geometry=data · rung manifest · reuse-no-dup · edges=@link · no-deploy · shared-worktree-PR · build-green).
+- [x] **§9 Bio/Chem audit** — most bio/chem docs are prose stubs with NO raw structural counts (PDB id ≠ buildable count) → honestly stay stylized helix/molecule + ⚪ badge, auto-promote when a real residue/formula count lands. User notes real bio progress (AGA-RX/SENOLYX/CURE) lives in `.log.md`+`exports/`; to promote, surface a structural count into `<D>.md` or a descriptor. Documented per-rung trigger (bio=residues→turns, chem=formula→atoms).
+- [x] Added 3 open milestones: membership filter (⚠ highest) · NEXUS→@link migration · surface bio/chem counts.
+- [ ] NEXT (implementation, separate turn, isolated `/tmp` worktree PR · build-green · no deploy): §7 filter + §7.1 NEXUS→@link migration are the two REAL fixes (non-material leak + retired-SSOT read). bio/chem promotion is data-entry, lower priority.
+
 ## 2026-06-05 — bg: overview hover highlight
 
 User "bg go" on the hover follow-up. Background agent in its OWN isolated worktree (`/tmp/cosmos-hover-wt` off origin/feat/8verb-cosmos) so the running preview on `/tmp/cosmos-wt` was untouched; fast-forward push to the shared branch.
