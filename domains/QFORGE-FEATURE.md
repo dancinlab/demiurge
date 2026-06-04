@@ -41,6 +41,31 @@ icon 🧰 · name QFORGE-FEATURE · alias "기능 위시리스트" (capability b
 
 - [x] **3-anchor cross-val harness (CaH6·LaH10·Li2MgH16) one-shot DONE** (hexa-lang **PR#2473** MERGED, `qforge_migration_gate_test.hexa` @ci_gate PASS). Fixture-driven (`fixtures/migration_gate_anchors.hexa`) — ingests per-anchor QE-ref {λ,Tc}, computes the QFORGE-NC side live (`mcmillan_tc`, d3/d19 reuse, 0-diff), compares each at the L3 g5 bar (rel-ε ≤ 1%), emits per-anchor PASS/FAIL + aggregate ALL_PASS/HELD. **honest state (d6/@L6)**: CaH6 terminal (Tc rel-ε 1.4e-4, λ rel-ε 0) · LaH10·Li2MgH16 explicit PENDING placeholders → **aggregate HELD** (1/3 terminal; zero fabrication). Auto-promotes to ALL_PASS fixture-only when the two pending anchors' real QE-DFPT λ·Tc land (no gate-logic change, d4).
 
+## frontier features (post-wall-dissolution · 성능·자원·속도·패러다임·NOVEL · brainstormed 2026-06-05)
+
+### 통합 · production (proven kernels → one engine)
+- [ ] **end-to-end QFORGE production orchestrator** — compose SCF→DFPT(Sternheimer GPU)→el-ph |g|→α²F(GPU)→Eliashberg→Tc into one `hexa qforge run <deck>`. **why**: every kernel is proven in isolation; production needs the single dispatch path (@L1/@L2 migration plan). **gate**: `hexa qforge run` on a fixture deck emits λ·Tc end-to-end with zero QE calls.
+- [ ] **converged-CaH6 full-BZ λ cross-val (now GPU-tractable)** — the [~] metallic-SCF gated piece: the HEAVY 16×16×16 k + 4×4×4 q converged run that was compute-blocked is now feasible on the GPU-resident SCF+Sternheimer+assembler stack. **why**: closes the migration gate's last physics step. **gate**: GPU full-BZ CaH6 → λ rel-ε ≤ 1% vs QE 4.376.
+
+### 성능 (performance)
+- [ ] **mixed-precision tensor-core matvec (TF32/FP32 + FP64 refine)** — the Sternheimer/SCF dense-matvec hotpath on Blackwell tensor cores with iterative FP64 refinement. **why**: matvec-bound kernel; tensor cores ≫ FP64-FMA peak. **gate**: H-matvec ≥5× the current FP64 kernel at the same converged |Δψ⟩ accuracy.
+- [ ] **fused Sternheimer CG kernel (5 launches → fewer)** — combine the per-iteration @gpu_kernels (matvec·shift·AXPY·XPAY·proj). **why**: small-cell CG is launch-bound. **gate**: same parity, ≥1.5× iteration throughput.
+
+### 자원 (resource)
+- [ ] **multi-GPU q/k sharding** — split q-points (parallel-q #2709) or k-points across N GPUs, each VRAM-resident. **why**: combine the split lever with GPU residency for cells beyond one GPU. **gate**: 2-GPU split-λ ≡ 1-GPU λ (Δ=0), ~2× wall.
+- [ ] **out-of-core wavefunction streaming (cells > VRAM)** — tile/stream ψ blocks through VRAM for cells exceeding 183 GiB. **why**: removes the single-GPU VRAM ceiling for huge supercells. **gate**: a synthetic cell > VRAM completes via streaming, parity vs in-core.
+
+### 패러다임 (paradigm)
+- [ ] **anisotropic Migdal-Eliashberg gap equations** — solve k-resolved Δ(k,ω) instead of the isotropic McMillan/Allen-Dynes Tc estimate. **why**: McMillan is a 1-parameter fit; anisotropic ME is the rigorous multi-band Tc. **gate**: isotropic limit reproduces Allen-Dynes Tc; anisotropic gives band-resolved Δ.
+- [ ] **autodiff through the el-ph pipeline (∂Tc/∂structure)** — reverse-mode AD from Tc back to atomic positions/cell. **why**: enables gradient-based inverse design vs blind screening. **gate**: finite-difference ∂Tc/∂a matches the AD gradient to g5.
+
+### NOVEL
+- [ ] **anharmonic phonons for hydrides (SSCHA-style)** — beyond harmonic DFPT; H zero-point + anharmonicity shift hydride Tc by tens of K. **why**: harmonic DFPT mis-predicts hydride Tc — anharmonicity is physically essential, a frontier QE-DFPT doesn't address natively. **gate**: anharmonic ω(q,ν) moves CaH6/H3S Tc toward experiment vs harmonic.
+- [ ] **quantum nuclear effects (path-integral) for H** — light-H zero-point motion is huge; treat nuclei quantum-mechanically. **why**: classical-nucleus DFPT understates H delocalization → Tc error. **gate**: NQE-corrected Tc moves toward experiment on a hydride anchor.
+- [ ] **inverse Tc design loop (AD gradient-ascent on structure)** — use the autodiff gradient to optimize a candidate structure FOR high Tc at fixed/lower pressure. **why**: turns QFORGE from an evaluator into a DESIGNER — the RTSC end-goal. **gate**: one gradient-ascent step provably raises predicted Tc on a seed structure.
+- [ ] **pressure–Tc(P) sweep automation** — auto-sweep Tc vs pressure to map the lower-pressure frontier. **why**: the RTSC bottleneck is PRESSURE not Tc; Tc(P) curves locate the ambient-pressure target. **gate**: a Tc(P) curve for CaH6 reproduces the known ~150–170 GPa optimum.
+- [ ] **Tc uncertainty quantification (error bars from convergence)** — propagate k/q-mesh + cutoff convergence into Tc ± σ. **why**: an honest Tc needs an error bar; bare numbers hide convergence risk (d6). **gate**: Tc ± σ where σ shrinks monotonically with mesh density.
+
 ## notes
 - migration default-flip remains **HELD** — NOT on correlation-XC (DONE PR#2402) nor on the harness machinery (DONE PR#2473), and the real-q metallic λ ASSEMBLER now landed (DONE hexa-lang PR#2476); what remains is the converged-CaH6 QFORGE-vs-QE λ cross-val over a real DFPT q-mesh AND the two PENDING anchors (LaH10·Li2MgH16) carrying real terminal QE-DFPT λ·Tc. The gate auto-promotes to ALL_PASS when those land. d6/@L4 — no forced flip, no fabricated numbers.
 - bugs/defects do NOT go here — they go to `hexa-lang/inbox/patches/` (d8). This file is forward features only.

@@ -34,6 +34,14 @@ vc-relax ──▶ scf(k-mesh) ──▶ ph.x DFPT ─────────�
 - [ ] parallel-q dispatch design — split a 2×2×2 q-grid across N pods, collect dynN, run lambda.x on the union
 - [ ] GPU accel lever quantified — NVPTX el-ph kernel CPU-parity g5 → measured speedup vs CPU-first vast offer
 - [ ] resource-sizing table — atoms → {PW basis, per-rank GiB, _ph0 GB, walltime} from observed runs (anchor: LaH10 11at, Li2MgH16 38at)
+- [ ] end-to-end pipeline ledger (deck→Tc single entry) — one record per full run: deck · commit · pod · per-stage wall/RAM/GPU · final λ·Tc — why: telemetry emits per-stage but no unified deck→Tc record — gate: a completed run → one queryable JSONL with all stages + result
+- [ ] GPU-vs-CPU per-stage cost model — extend the #2706 cost-driver with the GPU kernels (assembler always · Sternheimer above N_basis · SCF?) — why: blind GPU offload wastes launch overhead on tiny stages — gate: a measured crossover table (stage × size → CPU|GPU)
+- [ ] auto-sizing dispatcher — predict {RAM/rank, cores, GPU-VRAM, walltime} from the sizing table and auto-pick the pod --query — why: manual --query guessing wasted 2 rents this session (RAM-clamp) — gate: predicted -np matches the observed clamp within ±1 on the 4 anchors
+- [ ] per-kernel roofline profiler — each GPU kernel vs Blackwell peak (α²F exp-bound 138 GFLOP/s · Sternheimer matvec-bound) — why: #2717 found the α²F exp-bound by hand; automate it — gate: roofline per kernel with the binding resource named
+- [ ] cost-per-Tc economics metric — $ and wall-time per converged Tc per candidate — why: free-pool vs paid-GPU tradeoff is ad-hoc — gate: ledger columns $/Tc + wall/Tc per harvested candidate
+- [ ] multi-pod q-split runtime orchestrator — lab-dispatch wiring of parallel-q (#2709 is the primitive): fan a q-grid across N pods, monitor, collect dynN, union→λ — why: #2709 proved the math, the runtime dispatch isn't wired — gate: a real 2-pod q-split run unions to the same λ as 1-pod
+- [ ] convergence early-stop predictor — detect non-converging/diverging runs early (residual trend) and abort to save compute — why: Picard-NaN + recover-EOF crashes burned pod-hours before detection — gate: flags a known-divergent run ≥2× sooner than walltime
+- [ ] closed-loop autonomous candidate selection — lab-auto picks the NEXT candidate by expected-Tc/cost (not FIFO) — why: current campaign is hand-seeded; a closed loop maximizes discovery rate — gate: the selector orders a candidate pool by an expected-Tc score with a stated prior
 
 ## 설계 SSOT
 - pipeline = hexa-lang stdlib/cloud/dft_dispatch.hexa (vc-relax→scf→ph→lambda chain) · QE 7.x ph.x DFPT

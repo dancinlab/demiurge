@@ -325,3 +325,7 @@
 - GPU Sternheimer (DFPT linear-response) kernel: REAL on-device parity on NVIDIA B200 sm_100, max_rel_err 3.02e-16 (≈machine ε), CG 3 iters. PR#2737 (draft). 5 @gpu_kernels (H-matvec·shift·AXPY·XPAY·P_c) keep CG vectors in VRAM all iterations; only scalar α/β/residual on host (honest remainder, d6). nvptx_emit codegen reused 0-diff (d3).
 - WITH the α²F assembler GPU (#2733, 38-42×) this CLOSES the memory-per-rank wall: both the el-ph assembly AND the DFPT solve are GPU-VRAM-resident → per-rank CPU RAM clamp escaped. The 3-wall QE dissolution map (split #2730 · memory #2733+#2737 · Amdahl=GPU-data-parallel) is now all-PROVEN.
 - pod 39490251 (B200) torn down after harvest. RTSC anchors untouched.
+
+## 2026-06-05 — frontier feature backlog brainstormed to depletion + registered (13)
+- Post-wall-dissolution frontier across 5 axes (성능·자원·속도·패러다임·NOVEL): production orchestrator · converged-CaH6 full-BZ xval (now GPU-tractable) · mixed-precision tensor-core matvec · fused CG kernel · multi-GPU q/k sharding · out-of-core ψ streaming · anisotropic Migdal-Eliashberg · autodiff ∂Tc/∂structure · anharmonic phonons (SSCHA) · quantum nuclear effects · inverse Tc design loop · pressure-Tc(P) sweep · Tc uncertainty quantification.
+- NOVEL highlights (RTSC-relevant): anharmonic + NQE close known hydride-Tc accuracy gaps QE-DFPT skips; AD inverse-design + Tc(P) sweep target the PRESSURE bottleneck (turn QFORGE evaluator→designer). Deduped against the merged wall-dissolution set.
