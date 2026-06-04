@@ -13,6 +13,15 @@ Five foreground branches, all hexa-native (Swift untouched), all in the dedicate
 - [x] **#20 PR-synthesize-qforge → PR#2662 MERGED (@L6 KEYSTONE)**: `action synthesize rtsc --deck <deck>` → spawns `hexa qforge run <deck>`, passes stdout/stderr/rc VERBATIM. d4 thin forwarding cell (atlas/verify pattern); generic dispatch untouched. @L6/d6 HONESTY: HELD migration gate surfaces as-is — NO agreement assertion, NO fabricated λ/Tc, missing-hexa→127. 5 cells (forward HELD-gate rc1 + 4 error paths) byte≡Swift → 108 GREEN. Live-converged happy-path (deck WITH harvested DFPT → real λ·Tc) deferred until the QFORGE↔QE cross-val gate OPENS (that IS the gated migration work, HELD).
 - [ ] NEXT: #17b (llm network) · #21-25 3D (⚠ separate-file loading / NO hardcoding — @L3 updated + §6 locked) → #26 parity-gate-ALL-GREEN (@L2 — the Swift-deletion gate) → #27 bin-flip → #28 swift-delete.
 
+## 2026-06-04 — 🏁 #28 swift-delete → MIGRATION COMPLETE (demiurge PR#576): Swift fully scrapped
+
+User ① go. Terminal step landed — the original "Swift 폐기 FIRST" directive is now fully realized.
+
+- [x] #28 PR-swift-delete → **demiurge PR#576 MERGED** (@L2 terminal): `git rm -r cockpit/Sources/DemiurgeCLI + DemiurgeCore + Tests/DemiurgeCoreTests + Package.swift` = **145 files / 23,442 Swift LOC** deleted. Surgical: Package.swift defined ONLY those targets (no other product) → whole file removed, but `cockpit/` dir KEPT for 19 tracked non-Swift assets (exports/sscb, references/*.png, scripts/*.py+release.hexa, README, test-3d*.sh — pre-existing dead CockpitApp artifacts, out of @L2 scope, untouched).
+- [x] `--swift` fallback RETIRED: both `cli --swift` and `DEMIURGE_CLI=swift` now hard-error exit2 (`--swift removed — Swift CLI deleted in the hexa-native migration … hexa-native is now the only path`), NO dead `swift run` attempt. Default hexa path untouched.
+- [x] VERIFY (3): hexa default `demiurge cli list-gates` → 4 gate groups rc0 ✅ · `--swift`→error exit2 (not build) ✅ · `git status -- web/` empty (@L4 web GUI untouched, `web/lib/cli.ts` only refs gitignored .build dev-fallback behind hexa primary) ✅. deletion-sanity D-count = intended-only (146 files, +16/−23457), 0 unrelated.
+- [x] **8VERB GOAL MET**: every `demiurge cli` verb is hexa-native byte≡ the (now-deleted) Swift reference; Swift CLI/Core gone; `bin/demiurge`→`hexa run`. Pure-hexa-native CLI achieved end-to-end. @L1(stdlib/demi home)·@L2(parity-gate green then delete)·@L3(3D file-driven)·@L4(web untouched)·@L5(bin-flip)·@L6(synthesize→QFORGE verbatim)·@L7(per-verb parity) ALL satisfied. 28-PR stack DONE (#22/#23 absorbed into #21).
+
 ## 2026-06-04 — ENDGAME: funnel merged to hexa-lang main + #27 bin-flip → hexa default (demiurge PR#574)
 
 User picked ① (full endgame sequence). Prerequisite resolved + entrypoint flipped; #28 (24k delete) user-gated next.
