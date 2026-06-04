@@ -1,14 +1,16 @@
 {
   "kind": "procedural",
-  "shape": "orbit",
+  "shape": "coil",
   "label": "Tokamak torus (FreeGS eq · R=1.280m · a=0.424m · AR=2.99 · κ=1.358)",
   "params": {
     "radius": 3.02,
-    "bodies": 1,
+    "tube": 1.0,
+    "pairGap": 1.358,
+    "windings": 18,
     "R_major_m": 1.28,
     "a_minor_m": 0.424,
     "aspect_ratio": 2.99,
     "elongation": 1.358,
-    "src": "domains/fusion.md:140 (FreeGS 0.8.2 free-boundary equilibrium)"
+    "src": "domains/fusion.md:140 (FreeGS 0.8.2 free-boundary eq: R=1.280 a=0.424 AR=2.99 κ=1.358); coil.radius∝AR, coil.tube∝1/AR, coil.pairGap=κ (elongation)"
   }
 }

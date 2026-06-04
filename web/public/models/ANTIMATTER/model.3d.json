@@ -1,13 +1,15 @@
 {
   "kind": "procedural",
-  "shape": "orbit",
-  "label": "Penning trap · ring electrode (B=5T · U₀=10V · d=5mm)",
+  "shape": "coil",
+  "label": "Penning trap · ring + endcap electrodes (B=5T · U₀=10V · d=5mm)",
   "params": {
     "radius": 2,
-    "bodies": 3,
+    "tube": 0.22,
+    "pairGap": 2.5,
+    "windings": 12,
     "B_tesla": 5,
     "U0_volt": 10,
     "d_mm": 5,
-    "src": "domains/antimatter.md:11 (Penning 3-freq: axial·cyclotron·magnetron)"
+    "src": "domains/antimatter.md:11 (Penning 3-freq axial·cyclotron·magnetron, B=5T U₀=10V d=5mm); coil-pair = the two endcap electrodes about the ring (pairGap = d-set characteristic axial gap)"
   }
 }

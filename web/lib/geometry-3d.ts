@@ -28,6 +28,10 @@ export type ProceduralShape =
   | "orbit"
   | "throat"
   | "junction"
+  | "helix" // bio rung — protein α-helix / double-helix
+  | "molecule" // chem rung — ball-and-stick molecule
+  | "die" // chip rung — die / wafer circuit grid
+  | "coil" // system rung — torus / coil-pair assembly
   | "symbol";
 
 export type ProceduralDescriptor = {
@@ -36,6 +40,15 @@ export type ProceduralDescriptor = {
   params: Record<string, number | string>;
   /** optional human label surfaced in the viewer caption. */
   label?: string;
+  /**
+   * D3 honesty flag: TRUE ⇒ this is a rung-TYPED STYLIZED shape with NO faithful
+   * structural numbers (a generic helix / molecule / die / coil derived purely
+   * from the rung). The renderer desaturates it and the surface shows the
+   * "데이터 없음 / 검증필요" badge — exactly like the legacy `symbol` placeholder,
+   * but 3D-richer. FALSE/absent ⇒ the params carry real data (faithful). This is
+   * independent of the verify badge: fidelity reflects DATA-PRESENCE only.
+   */
+  stylized?: boolean;
 };
 
 export type GlbDescriptor = {
@@ -77,7 +90,13 @@ export function validateDescriptor(d: unknown): Model3DDescriptor | null {
       o.params && typeof o.params === "object"
         ? (o.params as Record<string, number | string>)
         : {};
-    return { kind: "procedural", shape, params, label: asString(o.label) };
+    return {
+      kind: "procedural",
+      shape,
+      params,
+      label: asString(o.label),
+      stylized: o.stylized === true || undefined,
+    };
   }
   return null;
 }
@@ -90,6 +109,10 @@ function isShape(s: unknown): s is ProceduralShape {
     s === "orbit" ||
     s === "throat" ||
     s === "junction" ||
+    s === "helix" ||
+    s === "molecule" ||
+    s === "die" ||
+    s === "coil" ||
     s === "symbol"
   );
 }
@@ -148,43 +171,84 @@ export function qubitDescriptor(): ProceduralDescriptor {
   );
 }
 
-// Rung → a generic default shape when nothing more specific is known.
+// Rung → a generic default shape when nothing more specific is known. Each of
+// the SIX rungs reads visually distinct (atom→lattice · material→supercell ·
+// bio→helix · chem→molecule · chip→die · system→coil).
 const RUNG_DEFAULT_SHAPE: Record<Rung, ProceduralShape> = {
   atom: "lattice",
   materials: "supercell",
-  chip: "metacell",
-  system: "orbit",
+  bio: "helix",
+  chem: "molecule",
+  chip: "die",
+  system: "coil",
 };
+
+// Generic default param bags per shape (still DATA, not renderer-inline). These
+// are GENERIC numbers (turn count, sphere count) chosen for a recognizable
+// silhouette — NOT measured structural values. A rung-typed fallback built from
+// these is flagged `stylized: true` (D3 honesty) by deriveProcedural.
+function defaultParamsForShape(shape: ProceduralShape): Record<string, number | string> {
+  switch (shape) {
+    case "lattice":
+      return { sigma: 6, tau: 4, phi: 2, rings: 1, a: 1 };
+    case "supercell":
+      return { a: 3, b: 3, c: 3, nx: 1, ny: 1, nz: 1 };
+    case "metacell":
+      return { ring: 1, gap: 0.2, splits: 2, depth: 0.2 };
+    case "helix":
+      // generic α-helix: turns·residuesPerTurn·radius·pitch (no real residue count)
+      return { turns: 3, perTurn: 6, radius: 1, pitch: 1.2, strands: 1 };
+    case "molecule":
+      // generic ball-and-stick: a small branched motif (no real formula)
+      return { atoms: 5, bondLen: 1.1, branch: 3 };
+    case "die":
+      // generic die / wafer grid: rows·cols pads + bond-wire ring (no real pitch)
+      return { rows: 4, cols: 4, pitch: 0.55, pad: 0.32, depth: 0.18 };
+    case "coil":
+      // generic torus / coil-pair: ring radius · winding count (no real geometry)
+      return { radius: 2, windings: 16, pairGap: 1.4, tube: 0.18 };
+    case "throat":
+      return { b0: 1, height: 4, segments: 48 };
+    case "orbit":
+    default:
+      return { radius: 2, bodies: 3 };
+  }
+}
 
 function deriveProcedural(src: DescriptorSource): ProceduralDescriptor {
   const up = src.name.toUpperCase();
   if (DERIVED_PARAMS[up]) return DERIVED_PARAMS[up];
 
-  // A couple of generic goal-keyword hints (still manifest-free of names).
+  // A couple of generic goal-keyword hints (still manifest-free of names). These
+  // shape the silhouette from the GOAL prose, not from measured numbers, so they
+  // are stylized too.
   const goal = (src.goal ?? "").toLowerCase();
   if (/throat|wormhole|metric|surface.?of.?revolution/.test(goal)) {
     return {
       kind: "procedural",
       shape: "throat",
-      params: { b0: 1, height: 4, segments: 48 },
+      params: defaultParamsForShape("throat"),
+      stylized: true,
     };
   }
   if (/orbit|trap|loop|ring/.test(goal)) {
-    return { kind: "procedural", shape: "orbit", params: { radius: 2, bodies: 3 } };
+    return {
+      kind: "procedural",
+      shape: "orbit",
+      params: defaultParamsForShape("orbit"),
+      stylized: true,
+    };
   }
 
   const rung = src.rung ?? "materials";
   const shape = RUNG_DEFAULT_SHAPE[rung];
-  // Sensible default params per shape (still data, not renderer-inline).
-  const params: Record<string, number | string> =
-    shape === "lattice"
-      ? { sigma: 6, tau: 4, phi: 2, rings: 1, a: 1 }
-      : shape === "supercell"
-        ? { a: 3, b: 3, c: 3, nx: 1, ny: 1, nz: 1 }
-        : shape === "metacell"
-          ? { ring: 1, gap: 0.2, splits: 2, depth: 0.2 }
-          : { radius: 2, bodies: 3 };
-  return { kind: "procedural", shape, params };
+  // A rung-typed fallback carries NO real structural numbers → stylized (D3).
+  return {
+    kind: "procedural",
+    shape,
+    params: defaultParamsForShape(shape),
+    stylized: true,
+  };
 }
 
 // ── (3) stylized symbol placeholder (D3 hybrid — no data → honest stub) ───────
@@ -192,15 +256,27 @@ function symbolDescriptor(rung: Rung): ProceduralDescriptor {
   const RUNG_NUM: Record<Rung, number> = {
     atom: 0,
     materials: 1,
-    chip: 2,
-    system: 3,
+    bio: 2,
+    chem: 3,
+    chip: 4,
+    system: 5,
   };
   return {
     kind: "procedural",
     shape: "symbol",
     params: { rung: RUNG_NUM[rung] },
     label: "stylized symbol (데이터 없음 / 검증필요)",
+    stylized: true,
   };
+}
+
+// A descriptor is "stylized" (D3: no faithful structural numbers) when it is the
+// rung-keyed symbol placeholder OR a rung-typed generic shape carrying the
+// `stylized` flag. Both must show the ⚪ "데이터 없음 / 검증필요" badge and render
+// desaturated — a stylized shape MUST NEVER imply verified/measured geometry.
+export function isStylizedDescriptor(d?: Model3DDescriptor): boolean {
+  if (!d || d.kind !== "procedural") return false;
+  return d.stylized === true || d.shape === "symbol";
 }
 
 // ── derivation fallback (steps 2→3, shared by server + client resolvers) ──────
@@ -501,19 +577,208 @@ export function buildJunction(params: Record<string, number | string>): BuiltMod
   return { parts, bound: Math.max(padW, gap + 1.6) * 0.75 };
 }
 
+// buildHelix — BIO rung: a protein α-helix (strands=1) or double-helix
+// (strands=2). `turns` full turns, `perTurn` backbone beads per turn, `radius`
+// the helix radius, `pitch` the rise per turn. Beads = backbone "residues",
+// thin cylinders = the inter-strand rungs of a double-helix. Generic — reads as
+// "a protein / nucleic-acid coil" without claiming a specific residue count
+// unless the descriptor params carry real numbers.
+export function buildHelix(params: Record<string, number | string>): BuiltModel {
+  const turns = Math.max(1, num(params, "turns", 3));
+  const perTurn = Math.max(3, Math.round(num(params, "perTurn", 6)));
+  const radius = num(params, "radius", 1);
+  const pitch = num(params, "pitch", 1.2);
+  const strands = Math.max(1, Math.min(2, Math.round(num(params, "strands", 1))));
+
+  const parts: BuiltPart[] = [];
+  const beadGeo = new THREE.SphereGeometry(0.16 * radius, 14, 14);
+  const total = Math.round(turns * perTurn);
+  const totalH = turns * pitch;
+  // backbone strand point at step i, strand s (s=0 or s=1 phase-shifted by π)
+  const ptAt = (i: number, s: number): [number, number, number] => {
+    const t = (i / perTurn) * Math.PI * 2 + s * Math.PI;
+    const y = (i / total) * totalH - totalH / 2;
+    return [Math.cos(t) * radius, y, Math.sin(t) * radius];
+  };
+
+  for (let s = 0; s < strands; s++) {
+    for (let i = 0; i <= total; i++) {
+      parts.push({
+        geometry: beadGeo,
+        // accent every turn start to read the helical period
+        role: i % perTurn === 0 ? "accent" : "node",
+        position: ptAt(i, s),
+      });
+    }
+  }
+  // base-pair rungs for a double helix (connect the two strands)
+  if (strands === 2) {
+    const rungGeo = new THREE.CylinderGeometry(0.04 * radius, 0.04 * radius, radius * 2, 6);
+    for (let i = 0; i <= total; i += 1) {
+      const a = ptAt(i, 0);
+      const b = ptAt(i, 1);
+      parts.push({
+        geometry: rungGeo,
+        position: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2],
+        role: "bond",
+      });
+    }
+  }
+  return { parts, bound: Math.max(radius * 1.8, totalH / 2 + 0.5) };
+}
+
+// buildMolecule — CHEM rung: a ball-and-stick molecule. A central atom with
+// `branch` substituent atoms, plus `atoms` total spread on a small shell (a
+// recognizable branched motif). `bondLen` sets the bond length. Generic — no
+// specific formula is implied unless the descriptor carries one.
+export function buildMolecule(params: Record<string, number | string>): BuiltModel {
+  const atoms = Math.max(2, Math.round(num(params, "atoms", 5)));
+  const bondLen = num(params, "bondLen", 1.1);
+  const branch = Math.max(1, Math.round(num(params, "branch", 3)));
+
+  const parts: BuiltPart[] = [];
+  const coreGeo = new THREE.SphereGeometry(0.34, 18, 18);
+  const subGeo = new THREE.SphereGeometry(0.24, 16, 16);
+  const bondGeo = new THREE.CylinderGeometry(0.07, 0.07, bondLen, 8);
+
+  // central atom
+  parts.push({ geometry: coreGeo, position: [0, 0, 0], role: "accent" });
+
+  // place (atoms-1) substituents on a fibonacci-ish sphere for an even spread;
+  // the first `branch` of them are emphasised "functional" sites.
+  const sub = atoms - 1;
+  const positions: Array<[number, number, number]> = [];
+  for (let i = 0; i < sub; i++) {
+    const phi = Math.acos(1 - (2 * (i + 0.5)) / sub);
+    const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+    const x = Math.cos(theta) * Math.sin(phi) * bondLen;
+    const y = Math.cos(phi) * bondLen;
+    const z = Math.sin(theta) * Math.sin(phi) * bondLen;
+    positions.push([x, y, z]);
+  }
+  positions.forEach((p, i) => {
+    parts.push({
+      geometry: subGeo,
+      position: p,
+      role: i < branch ? "node" : "bond",
+    });
+    parts.push({
+      geometry: bondGeo,
+      position: [p[0] / 2, p[1] / 2, p[2] / 2],
+      role: "bond",
+    });
+  });
+  return { parts, bound: bondLen * 1.6 };
+}
+
+// buildDie — CHIP rung: a die / wafer with a `rows`×`cols` pad grid on a
+// substrate, a bond-wire ring around the perimeter, and a raised central core.
+// `pitch` is the pad-to-pad spacing, `pad` the pad size, `depth` the substrate
+// thickness. Generic circuit-grid silhouette — no real feature size implied
+// unless the descriptor carries one.
+export function buildDie(params: Record<string, number | string>): BuiltModel {
+  const rows = Math.max(1, Math.round(num(params, "rows", 4)));
+  const cols = Math.max(1, Math.round(num(params, "cols", 4)));
+  const pitch = num(params, "pitch", 0.55);
+  const pad = num(params, "pad", 0.32);
+  const depth = num(params, "depth", 0.18);
+
+  const parts: BuiltPart[] = [];
+  const w = cols * pitch;
+  const h = rows * pitch;
+  // substrate die
+  parts.push({
+    geometry: new THREE.BoxGeometry(w + pitch, depth, h + pitch),
+    position: [0, -depth, 0],
+    role: "cell",
+  });
+  // pad grid
+  const padGeo = new THREE.BoxGeometry(pad, depth * 0.6, pad);
+  const ox = (w - pitch) / 2;
+  const oz = (h - pitch) / 2;
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      parts.push({
+        geometry: padGeo,
+        position: [i * pitch - ox, depth * 0.1, j * pitch - oz],
+        role: "node",
+      });
+    }
+  }
+  // raised central core (the active logic block) — the single accent
+  parts.push({
+    geometry: new THREE.BoxGeometry(w * 0.35, depth * 1.6, h * 0.35),
+    position: [0, depth * 0.6, 0],
+    role: "accent",
+  });
+  // perimeter wire-bond ring
+  const ring = new THREE.EdgesGeometry(
+    new THREE.BoxGeometry(w + pitch, depth * 1.2, h + pitch),
+  );
+  parts.push({ geometry: ring, position: [0, 0, 0], role: "cell" });
+
+  return { parts, bound: Math.max(w, h) * 0.85 };
+}
+
+// buildCoil — SYSTEM rung: a coil-pair / torus assembly. A main torus ring of
+// `radius` wound with `windings` short stub segments, plus a SECOND torus
+// offset by `pairGap` (a Helmholtz-style coil pair / poloidal+toroidal hint).
+// `tube` is the torus tube radius. Generic confinement-coil silhouette — used
+// for the system rung default and, with real numbers, for faithful tokamak /
+// trap / solenoid-array descriptors.
+export function buildCoil(params: Record<string, number | string>): BuiltModel {
+  const radius = num(params, "radius", 2);
+  const windings = Math.max(3, Math.round(num(params, "windings", 16)));
+  const pairGap = num(params, "pairGap", 1.4);
+  const tube = num(params, "tube", 0.18);
+
+  const parts: BuiltPart[] = [];
+  const torusGeo = new THREE.TorusGeometry(radius, tube, 12, 64);
+  // two coaxial coils forming the pair (top + bottom), rotated flat (XZ plane)
+  for (const sign of [-1, 1]) {
+    parts.push({
+      geometry: torusGeo,
+      position: [0, (sign * pairGap) / 2, 0],
+      role: "ring",
+    });
+  }
+  // winding stubs around the upper coil to read it as "wound", not a bare ring
+  const stubGeo = new THREE.BoxGeometry(tube * 2.2, tube * 2.2, tube * 3.2);
+  for (let i = 0; i < windings; i++) {
+    const t = (i / windings) * Math.PI * 2;
+    parts.push({
+      geometry: stubGeo,
+      position: [Math.cos(t) * radius, pairGap / 2, Math.sin(t) * radius],
+      role: i % 4 === 0 ? "accent" : "node",
+    });
+  }
+  // central confined body (plasma / trapped particle / payload)
+  parts.push({
+    geometry: new THREE.IcosahedronGeometry(Math.max(0.3, radius * 0.22), 1),
+    position: [0, 0, 0],
+    role: "body",
+  });
+  return { parts, bound: Math.max(radius + tube, pairGap / 2 + 0.4) * 1.2 };
+}
+
 // buildSymbol — the D3 stylized placeholder. A rung-keyed primitive so the
 // shape itself signals scale (atom→tetra · materials→cube · chip→octa ·
 // system→icosa) while honestly reading as "no data".
 export function buildSymbol(params: Record<string, number | string>): BuiltModel {
+  // rung index: atom 0 · materials 1 · bio 2 · chem 3 · chip 4 · system 5.
   const rung = Math.round(num(params, "rung", 1));
   const geo =
     rung <= 0
-      ? new THREE.TetrahedronGeometry(0.9)
+      ? new THREE.TetrahedronGeometry(0.9) // atom
       : rung === 1
-        ? new THREE.BoxGeometry(1.2, 1.2, 1.2)
+        ? new THREE.BoxGeometry(1.2, 1.2, 1.2) // materials
         : rung === 2
-          ? new THREE.OctahedronGeometry(1)
-          : new THREE.IcosahedronGeometry(1, 0);
+          ? new THREE.OctahedronGeometry(1) // bio
+          : rung === 3
+            ? new THREE.DodecahedronGeometry(0.95) // chem
+            : rung === 4
+              ? new THREE.IcosahedronGeometry(1, 0) // chip
+              : new THREE.TorusKnotGeometry(0.6, 0.22, 64, 8); // system
   return {
     parts: [{ geometry: geo, position: [0, 0, 0], role: "symbol" }],
     bound: 1.6,
@@ -542,6 +807,18 @@ export function buildProcedural(d: ProceduralDescriptor): BuiltModel {
       break;
     case "junction":
       model = buildJunction(d.params);
+      break;
+    case "helix":
+      model = buildHelix(d.params);
+      break;
+    case "molecule":
+      model = buildMolecule(d.params);
+      break;
+    case "die":
+      model = buildDie(d.params);
+      break;
+    case "coil":
+      model = buildCoil(d.params);
       break;
     case "symbol":
     default:

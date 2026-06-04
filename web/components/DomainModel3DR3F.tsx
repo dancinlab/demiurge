@@ -13,6 +13,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import {
   buildProcedural,
+  isStylizedDescriptor,
   type Model3DDescriptor,
   type BuiltPart,
 } from "@/lib/geometry-3d";
@@ -102,7 +103,10 @@ function ProceduralModel({
 }) {
   const model = useMemo(() => buildProcedural(descriptor), [descriptor]);
   const accent = STATE_ACCENT[state ?? "unverified"];
-  const stylized = descriptor.shape === "symbol";
+  // Stylized (D3: no faithful numbers) → desaturate + make translucent. Covers
+  // both the legacy `symbol` glyph AND rung-typed generic shapes (the `stylized`
+  // flag). Faithful descriptors (real params) render solid.
+  const stylized = isStylizedDescriptor(descriptor);
   return (
     <group>
       {model.parts.map((part, i) =>

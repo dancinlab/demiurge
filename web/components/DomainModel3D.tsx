@@ -13,6 +13,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import {
+  isStylizedDescriptor,
   loadDescriptorClient,
   type Model3DDescriptor,
 } from "@/lib/geometry-3d";
@@ -84,9 +85,12 @@ function fallbackAtoms(descriptor?: Model3DDescriptor): Atom3D[] {
 }
 
 // A resolved descriptor is "stylized" (D3: no faithful geometry data) when it is
-// the symbol placeholder — i.e. resolution fell through to the rung-keyed glyph.
+// the symbol placeholder OR a rung-typed generic shape carrying the `stylized`
+// flag (helix/molecule/die/coil derived purely from the rung, no real numbers).
+// Both cases must show the ⚪ "데이터 없음 / 검증필요" badge. Delegated to the
+// single source of truth in lib/geometry-3d.
 function isStylized(d?: Model3DDescriptor): boolean {
-  return d?.kind === "procedural" && d.shape === "symbol";
+  return isStylizedDescriptor(d);
 }
 
 export function DomainModel3D({

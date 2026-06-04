@@ -1,14 +1,16 @@
 {
   "kind": "procedural",
-  "shape": "orbit",
-  "label": "Lenticular disc OML (D=6.0m · H=1.6m · ×6 solenoid array · ×3 CMG)",
+  "shape": "coil",
+  "label": "Lenticular disc OML · ×6 equiangular solenoid array (D=6.0m · H=1.6m · ×3 CMG)",
   "params": {
-    "radius": 3.75,
-    "bodies": 6,
+    "radius": 3.0,
+    "tube": 0.3,
+    "pairGap": 1.6,
+    "windings": 6,
     "D_diameter_m": 6.0,
     "H_height_m": 1.6,
     "solenoids": 6,
     "cmg_gyros": 3,
-    "src": "domains/ufo.md:48 (verb-2 structure: lenticular OML + 6-solenoid equiangular array)"
+    "src": "domains/ufo.md:48 (verb-2 structure: lenticular OML D=6.0m H=1.6m + RTSC ×6 equiangular solenoid array + ×3 gyro CMG); coil.radius=D/2, coil.pairGap=H, coil.windings=6 (the 6-solenoid array)"
   }
 }
