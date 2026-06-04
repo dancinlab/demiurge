@@ -2,6 +2,21 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — IMPL membership filter + NEXUS→@link landed · bio/chem faithful-3D research (web+arxiv+AlphaFold)
+
+Two parts this turn: (1) implemented the two §7/§7.1 fixes on `feat/8verb-cosmos`; (2) ran 3 parallel research threads to fill the bio/chem faithful-3D path, written into `COSMOS.md` §9.1.
+
+- [x] **IMPL §7 membership filter** → `feat/8verb-cosmos` `c229f2c7`: `COSMOS_EXCLUDE` set (20 Category-C names) + `isCosmosDomain()` in `cosmos.ts`, applied in `assembleCosmos()` (domains + edge endpoints). The 8VERB·COSMOS·NOVEL-TOOL·POOL·QFORGE*·YOSYS·… leak is closed.
+- [x] **IMPL §7.1 NEXUS→@link** → `d87a2185`: cosmos reads `@link <from> --<verb>--> <to>` from root `DOMAINS.tape` (`readLinkEdges`/`parseLinkEdges`), NOT `NEXUS.tape`; 24 `@link` rows migrated from NEXUS into `DOMAINS.tape` under a g67 header. BUILD_EXIT=0 · TEST_EXIT=0 "ALL cosmos smoke checks passed" (exclude-absent + RTSC-present + no Category-C edge endpoint + parseLinkEdges). Caveats: 1 lowercase-stdlib provider edge (e13) + conceptual c1–c6 not mapped (no domain pair); NEXUS.tape not deleted (repo-wide retirement separate). DOMAINS.tape tape-lsp `@domain`/`@link` "unknown @d" lint = pre-existing roster-convention noise (hexa-lang/anima same), non-blocking.
+- [x] **RESEARCH (§9.1)** — 3 parallel agents, all cited, APIs verified LIVE:
+  - (a) Structural data: bio domains DO carry real ids in `.log.md`/`exports/` — AGA-RX (SFRP1 UniProt Q8N474=314 res · Dkk1-LRP6 PDB 3S2K · AR-LBD 2AM9 · WAY-316606 PubChem CID 16727102=C18H19F3N2O4S2/29 heavy) · SENOLYX (BCL-xL PDB 3ZLR=290 res). Honest gaps: GENE-EDIT/RNA-THERAPY/ORGANOID/PROTEIN-FOLD + all 4 chem are generic "sampler" stubs with NO entity → stay ⚪ (do not invent).
+  - (b) Viewer: AlphaFold DB's GUI = Mol* (molstar). HYBRID design — keep cosmos overview as native R3F meshes (avoid 2nd WebGL context, browsers cap ~8), mount Mol*/`pdbe-molstar` (MIT) on `/d/<domain>` in its own canvas (dynamic ssr:false) with pLDDT coloring. Replaces the CSS-3D `StructureViewer.tsx` placeholder. 3Dmol.js (BSD-3) lighter chem fallback. Avoid molstar-react (stale)/NGL (RCSB-removed).
+  - (c) APIs verified: RCSB `data.rcsb.org/rest/v1/core/entry/{PDB}` · AlphaFold `alphafold.ebi.ac.uk/api/prediction/{ACC}` + `/files/AF-{ACC}-F1-model_v4.cif` · UniProt `rest.uniprot.org` · PubChem PUG REST `+ SDF?record_type=3d`.
+  - (d) **Licensing (load-bearing)**: AlphaFold DB structures = CC-BY-4.0 → product-safe WITH attribution; PDB = CC0; AF3 weights = NON-COMMERCIAL → COSMOS CONSUMES pre-computed AF-DB, never runs AF3. Viewers MIT/BSD = clean.
+  - (e) NOVEL probe: prose→structure resolver cascade (AF-DB → ESMFold → ESM3/RFdiffusion → text→graph diffusion); tiers 3–4 flagged "generated·illustrative" (d6). Refs: AF3 Nature 2024 · ESMFold Science 2023 · RFdiffusion Nature 2023 · Mol* NAR 2021 · 3M-Diffusion arXiv:2403.07179 · ProteinGPT arXiv:2408.11363.
+- [x] Updated milestones: bio/chem promotion (research done, surface counts) · Mol* viewer on detail page · NOVEL resolver cascade.
+- [ ] NEXT (implementation, separate turns): surface AGA-RX/SENOLYX counts into `<D>.md` (cheapest win → auto-promote) · then Mol* detail viewer · then resolver cascade. Isolated `/tmp` worktree PR · build-green · no deploy.
+
 ## 2026-06-05 — DOC-prep: membership rule + NEXUS retirement + bio/chem audit + GUI guardrails (no code)
 
 User: "도메인 폴더에 관련 아닌것들도 있어 — NOVEL-TOOL 이런거 물질 아닐꺼야" + "GUI 구현 실수 안 하게 문서 잘 처리해둬" + "NEXUS.tape 폐기 — DOMAINS.tape 으로만 정리, anima/hexa-lang 참고". Documentation-only turn — NO GUI code touched. All findings written into `COSMOS.md` (§7·§7.1·§8·§9) as the SSOT the implementation agent reads first.
