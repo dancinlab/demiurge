@@ -344,3 +344,10 @@
 - fused-CG #2767 MERGED — ≥1.5× throughput gate MET (best 9.28× via on-device reduction + CUDA-graph + parallel proj_out · parity 2.04e-13) → flipped [x].
 - multi-pod q-split runtime #2765 MERGED (PROCESS) — runtime wired, Δ=0 union≡single (local 2-proc sim, $0); real multi-pod (network/requeue/straggler) named-remaining → flipped [x].
 - STILL OPEN (2): converged-CaH6 full-BZ (keystone unblocked; needs production DFPT bundle threading + converged GPU run → migration gate vs QE 4.376) · dissolution-map (chains off converged-CaH6).
+
+## 2026-06-05 — converged-CaH6 migration gate: HONEST NEAR-MISS (#2768, gate 1% NOT met)
+- DFPT-bundle threading DONE: qforge_pw_frontend_phonons threads real qforge_dynmat∘qforge_dfpt (Sternheimer FC Φ → BZ ω(q,ν) over 4³ MP q-mesh) into qpw_deck_with_phonons, replacing the Γ-Einstein placeholder.
+- CONVERGED RUN (summer free RTX5070, ecutwfc=80Ry n(PW)=645, 4³q, ~30min, $0): QFORGE λ=4.13647 vs QE answer-key 4.376 → rel-ε=5.47% (Tc_AD=381.5K Tc_ME=412.1K ω_log=1370.5K). Basis convergence closed ~85% of the original 200× miss (npw16 λ=0.609 → full-shell λ=4.14).
+- GATE (≤1%): NOT MET — honest near-miss, NOT faked to 4.376 (d6/@L5). Residual 5.47% = the screening-functional gap: QFORGE el-ph |g|² is the BARE matrix element (Hartree+LDA-exch, no correlation-XC); QE uses ε⁻¹-screened |g|².
+- NAMED BREAKTHROUGH (d2): Anderson/Broyden screened-FC/ΔV β-knob (screening_anderson.hexa) — un-damped Picard screening diverges on converged metallic ρ (d15-class). This is the ONE remaining step to close the migration gate.
+- converged-CaH6 stays [ ] (gate unmet) · dissolution stays [ ] (chains off — needs λ within 1%). Filed hexa-run cache dep-graph staleness bug → inbox/patches (d8).
