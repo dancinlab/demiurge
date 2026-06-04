@@ -36,6 +36,44 @@ function storageKey(domain: string): string {
   return `demiurge.chat.${domain || "_global"}`;
 }
 
+// ── P5: chat → cosmos focus (8VERB Cosmos D4 window-event layer) ──────────────
+// A light client-side target extractor: scan the user's message for a known
+// cosmos domain name (fetched from /api/cosmos/targets). If one is found, we
+// dispatch a `demiurge:focus` { detail: { target } } window event — CosmosScene
+// (the main /cosmos page) listens for it and focuses that node IN PLACE (no
+// page nav). If nothing matches, this is a no-op and the chat sends normally.
+//
+// Matching is case-insensitive and prefers the LONGEST matching name so that
+// "DIM-JUMP" wins over a bare "DIM" substring. Names are matched with word-ish
+// boundaries (not embedded inside a longer alnum run) so "RTSC" doesn't match
+// "ARTSCAPE". Korean/English copy in the message is irrelevant — we only look
+// for the canonical UPPERCASE identifier the roster uses.
+function extractTarget(text: string, names: string[]): string | null {
+  if (names.length === 0) return null;
+  const hay = text.toUpperCase();
+  let best: string | null = null;
+  for (const name of names) {
+    const up = name.toUpperCase();
+    const i = hay.indexOf(up);
+    if (i < 0) continue;
+    // reject a match embedded in a longer alphanumeric token (e.g. RTSC inside
+    // "RTSCALE") — domain tokens use [A-Z0-9+_-]; require a non-token boundary.
+    const before = i > 0 ? hay[i - 1] : "";
+    const after = i + up.length < hay.length ? hay[i + up.length] : "";
+    const isTok = (c: string) => /[A-Z0-9+]/.test(c);
+    if (isTok(before) || isTok(after)) continue;
+    if (!best || up.length > best.length) best = name;
+  }
+  return best;
+}
+
+function dispatchFocus(target: string): void {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(
+    new CustomEvent("demiurge:focus", { detail: { target } }),
+  );
+}
+
 function loadHistory(domain: string): Msg[] {
   if (typeof window === "undefined") return [];
   try {
@@ -165,12 +203,31 @@ export function AssistChat({
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  // P5: cosmos node-name roster for chat→focus target extraction (fetched once).
+  const targetNames = useRef<string[]>([]);
   // 모션 정책 = lib/motion 의 RESPECT_REDUCED_MOTION 단일 토글에 위임.
   const reduced = useEffectiveReducedMotion();
 
   useEffect(() => {
     setMsgs(loadHistory(domain));
   }, [domain]);
+
+  // P5: load the cosmos target roster once (chat→focus). Best-effort — on
+  // failure target extraction simply no-ops and the chat still works normally.
+  useEffect(() => {
+    let live = true;
+    fetch("/api/cosmos/targets")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { targets?: { name: string }[] } | null) => {
+        if (live && d?.targets) targetNames.current = d.targets.map((t) => t.name);
+      })
+      .catch(() => {
+        /* roster unavailable → extractTarget no-ops */
+      });
+    return () => {
+      live = false;
+    };
+  }, []);
 
   function persist(next: Msg[]): void {
     setMsgs(next);
@@ -184,6 +241,12 @@ export function AssistChat({
     const userMsg: Msg = { role: "user", text: prompt, ts: Date.now() };
     const afterUser = [...msgs, userMsg];
     persist(afterUser);
+
+    // P5: if the message names a known cosmos domain, focus it IN PLACE (D4
+    // window-event layer). Fires immediately — independent of the LLM reply.
+    const target = extractTarget(prompt, targetNames.current);
+    if (target) dispatchFocus(target);
+
     setBusy(true);
     try {
       const fullPrompt = buildPrompt(locale, domain, msgs, prompt);

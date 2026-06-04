@@ -24,10 +24,17 @@ const CosmosScene = dynamic(
   },
 );
 
-export function CosmosStage({ graph }: { graph: CosmosGraph }) {
+export function CosmosStage({
+  graph,
+  initialFocus,
+}: {
+  graph: CosmosGraph;
+  /** P5 URL deeplink: /cosmos?target=<DOMAIN> → initial focused node. */
+  initialFocus?: string | null;
+}) {
   return (
     <div className="h-[calc(100vh-7rem)] min-h-[520px] w-full overflow-hidden rounded-xl border border-stone-800">
-      <CosmosScene graph={graph} />
+      <CosmosScene graph={graph} initialFocus={initialFocus} />
     </div>
   );
 }

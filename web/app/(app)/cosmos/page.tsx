@@ -21,8 +21,20 @@ import { CosmosStage } from "@/components/CosmosStage";
 
 export const dynamic = "force-dynamic";
 
-export default async function CosmosPage() {
-  const graph = await buildCosmos();
+export default async function CosmosPage({
+  searchParams,
+}: {
+  // P5 URL deeplink: /cosmos?target=<DOMAIN> → initial focused node.
+  searchParams: Promise<{ target?: string }>;
+}) {
+  const [graph, sp] = await Promise.all([buildCosmos(), searchParams]);
+  const rawTarget = sp.target ?? null;
+  // Resolve the deeplink target to a real node name (case-insensitive); ignore
+  // an unknown target so a stale link just opens the full cosmos.
+  const initialFocus = rawTarget
+    ? graph.nodes.find((n) => n.name.toUpperCase() === rawTarget.toUpperCase())?.name ??
+      null
+    : null;
 
   const verified = graph.nodes.filter(
     (n) => n.state === "verified" || n.state === "verified-formal",
@@ -51,7 +63,7 @@ export default async function CosmosPage() {
         </div>
       </header>
 
-      <CosmosStage graph={graph} />
+      <CosmosStage graph={graph} initialFocus={initialFocus} />
 
       {/* legend — honest state vocabulary (§4) */}
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">

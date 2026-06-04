@@ -20,6 +20,7 @@
 "use client";
 
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Canvas } from "@react-three/fiber";
 import { Html, OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
@@ -377,10 +378,26 @@ function Scene({
   );
 }
 
+// First incomplete verb for a node → the verb work-page to push into.
+// We can't read per-domain milestone status here (client), so default to the
+// pipeline head `discover` (D4: "作업하기 → router.push('/discover/<domain>')").
+const FIRST_VERB = "discover";
+
 // ── the public scene component (mounted client-only via CosmosStage) ──────────
-export function CosmosScene({ graph }: { graph: CosmosGraph }) {
+export function CosmosScene({
+  graph,
+  initialFocus,
+}: {
+  graph: CosmosGraph;
+  /** P5 URL deeplink: initial focused node from /cosmos?target=<DOMAIN>. */
+  initialFocus?: string | null;
+}) {
+  const router = useRouter();
   const [filter, setFilter] = useState<CosmosFilter | null>(null);
-  const [focusTarget, setFocusTarget] = useState<string | null>(null);
+  // Seed focus from the URL deeplink (?target=) so refresh/share is stable.
+  const [focusTarget, setFocusTarget] = useState<string | null>(
+    initialFocus || null,
+  );
   const [cameraKey, setCameraKey] = useState(0); // bump to dolly to a rung
 
   const placed = useMemo(() => layout(graph.nodes), [graph.nodes]);
@@ -416,6 +433,16 @@ export function CosmosScene({ graph }: { graph: CosmosGraph }) {
     window.addEventListener("demiurge:focus", h as EventListener);
     return () => window.removeEventListener("demiurge:focus", h as EventListener);
   }, []);
+
+  // P5 URL deeplink sync — reflect the focused node into ?target= (shallow,
+  // no navigation) so the address bar is shareable + refresh-safe.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    if (focusTarget) url.searchParams.set("target", focusTarget);
+    else url.searchParams.delete("target");
+    window.history.replaceState(window.history.state, "", url.toString());
+  }, [focusTarget]);
 
   const focusedNode = focusTarget
     ? graph.nodes.find((n) => n.name.toUpperCase() === focusTarget.toUpperCase()) ??
@@ -499,12 +526,31 @@ export function CosmosScene({ graph }: { graph: CosmosGraph }) {
               </span>
             ))}
           </div>
-          <button
-            onClick={() => setFocusTarget(null)}
-            className="mt-2 text-xs text-stone-400 underline hover:text-stone-200"
-          >
-            전체 보기로 돌아가기
-          </button>
+          {/* P5 node→work-page nav (D4 page-routing layer): REAL page nav into
+              the node's first verb work-page; browser back returns to /cosmos. */}
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <button
+              onClick={() =>
+                router.push(`/${FIRST_VERB}/${encodeURIComponent(focusedNode.name)}`)
+              }
+              className="rounded-full bg-orb-peach px-3 py-1 text-xs font-medium text-black hover:opacity-90"
+              style={{ background: "#f4c5a8", color: "#000" }}
+            >
+              작업하기 ▶
+            </button>
+            <button
+              onClick={() => router.push(`/d/${encodeURIComponent(focusedNode.name)}`)}
+              className="rounded-full bg-white/10 px-3 py-1 text-xs text-stone-200 hover:bg-white/20"
+            >
+              상세 보기
+            </button>
+            <button
+              onClick={() => setFocusTarget(null)}
+              className="text-xs text-stone-400 underline hover:text-stone-200"
+            >
+              전체 보기로 돌아가기
+            </button>
+          </div>
         </div>
       )}
 
