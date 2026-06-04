@@ -49,7 +49,7 @@ icon 🧰 · name QFORGE-FEATURE · alias "기능 위시리스트" (capability b
 
 ### 성능 (performance)
 - [x] **mixed-precision tensor-core matvec (TF32/FP32 + FP64 refine)** — the Sternheimer/SCF dense-matvec hotpath on Blackwell tensor cores with iterative FP64 refinement. **why**: matvec-bound kernel; tensor cores ≫ FP64-FMA peak. **gate**: H-matvec ≥5× the current FP64 kernel at the same converged |Δψ⟩ accuracy.
-- [ ] **fused Sternheimer CG kernel (5 launches → fewer)** — combine the per-iteration @gpu_kernels (matvec·shift·AXPY·XPAY·proj). **why**: small-cell CG is launch-bound. **gate**: same parity, ≥1.5× iteration throughput.
+- [x] **fused Sternheimer CG kernel (5 launches → fewer)** — combine the per-iteration @gpu_kernels (matvec·shift·AXPY·XPAY·proj). **why**: small-cell CG is launch-bound. **gate**: same parity, ≥1.5× iteration throughput.
 
 ### 자원 (resource)
 - [ ] **multi-GPU q/k sharding** — split q-points (parallel-q #2709) or k-points across N GPUs, each VRAM-resident. **why**: combine the split lever with GPU residency for cells beyond one GPU. **gate**: 2-GPU split-λ ≡ 1-GPU λ (Δ=0), ~2× wall.

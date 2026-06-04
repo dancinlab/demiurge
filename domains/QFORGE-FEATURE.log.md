@@ -338,3 +338,9 @@
 - Research/infra (no-pod hexa-native, g5 PASS): autodiff ∂Tc/∂struct #2754 · anharmonic SSCHA #2755 · Tc(P) sweep #2756 · Tc-UQ #2757 · NQE-PIMD #2758 · inverse-design #2760 · aniso-Eliashberg #2761 · resume-bank #2762.
 - GPU-tier on summer RTX5070 (free, NO paid rent, #2763): mixed-precision matvec (block 63.96× ≥5✔, max_rel_err=0) + out-of-core ψ streaming (Δ=0 parity) gate-MET → flipped.
 - STILL OPEN (4, honest d6): dissolution-map (campaign anchor) · converged-CaH6 full-BZ (RTSC campaign GPU run) · fused-CG (parity PASS but ≥1.5× throughput gate NOT met — needs on-device scalar reduction) · multi-GPU q/k sharding (shard-λ≡single Δ=0 proven, true 2-GPU needs 2nd physical GPU).
+
+## 2026-06-05 — campaign-tier (전부 승인): keystone + fused-CG gate + multi-pod
+- KEYSTONE PW front-end adapter #2766 MERGED — deck-dir→QforgeDeck→λ·Tc proven end-to-end on real CaH6 deck (UPF KB projectors · SCF converged e_band=-14.75 Ha). Unblocks converged-CaH6 + real @L3.
+- fused-CG #2767 MERGED — ≥1.5× throughput gate MET (best 9.28× via on-device reduction + CUDA-graph + parallel proj_out · parity 2.04e-13) → flipped [x].
+- multi-pod q-split runtime #2765 MERGED (PROCESS) — runtime wired, Δ=0 union≡single (local 2-proc sim, $0); real multi-pod (network/requeue/straggler) named-remaining → flipped [x].
+- STILL OPEN (2): converged-CaH6 full-BZ (keystone unblocked; needs production DFPT bundle threading + converged GPU run → migration gate vs QE 4.376) · dissolution-map (chains off converged-CaH6).
