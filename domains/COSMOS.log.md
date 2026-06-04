@@ -2,6 +2,16 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — bio PRODUCT nodes AGA-RX·SENOLYX registered + faithful α-helix 3D
+
+User picked ① 완성도: register the §9.1 bio products into INDEX.demi so they appear as real bio nodes with faithful 3D.
+
+- [x] LANDED `feat/8verb-cosmos` 3 commits (tip `6595148a`): registered `[aga-rx]`("탈모 치료제 발굴") + `[senolyx]`("노화세포 제거제") in `domains/INDEX.demi` — `facets.scale=molecular`, `facets.rung=bio`, `prerequisites=["bio"]` (children of the bio category node), keywords. Node count 20→22.
+- [x] faithful descriptors `web/public/models/AGA-RX/model.3d.json` + `SENOLYX/model.3d.json` (UPPERCASE dirs — resolver does `.toUpperCase()`): `procedural`/`helix` from REAL residue counts — SFRP1 314 res→87 turns (UniProt Q8N474) · BCL-xL 290 res→81 turns·2 strands (PDB 3ZLR), each with a `src` provenance string. Faithful-BY-DIMENSION (real helix size), NOT the experimental fold (real fold via Mol* = §9.1b follow-up).
+- [x] HONEST: both nodes read ⚪ unverified — no `<id>.demi` verb-cell, no fabricated gate/absorbed. A faithful 3D shape is NOT a verified verdict (d6). Generic sampler domains (GENE-EDIT/RNA/chem) still have no entity → stay ⚪ stylized (not invented).
+- [x] DEPLOY FIX: `web/next.config.ts` `outputFileTracingIncludes` now bundles `../domains/*.demi` + `../domains/INDEX.demi` (was `*.md` only) — Cloud Run standalone build will carry the `.demi` SSOT. build exit 0 · cosmos.test ✓ (aga-rx/senolyx present · rung=bio · prereq edge→bio · faithful non-symbol descriptor · ⚪ unverified).
+- [ ] NEXT (optional): Mol* real-fold viewer on `/d/<domain>` (§9.1b) · register more bio products (CURE family) or chem when a real entity/formula exists · enrich a chem product descriptor (WAY-316606 molecule).
+
 ## 2026-06-05 — 6-band rung restored via `.demi` facets.rung (data-driven)
 
 User picked ① 완성도: restore the 6-band ladder (원자·물질·바이오·화학·칩·시스템) the `.demi` way, not a hardcoded classifier.
