@@ -33,7 +33,7 @@ vc-relax ──▶ scf(k-mesh) ──▶ ph.x DFPT ─────────�
 - [ ] dominant per-q DFPT cost driver identified (irrep count × iter × |G+k| basis size) — measured, not guessed
 - [ ] parallel-q dispatch design — split a 2×2×2 q-grid across N pods, collect dynN, run lambda.x on the union
 - [ ] GPU accel lever quantified — NVPTX el-ph kernel CPU-parity g5 → measured speedup vs CPU-first vast offer
-- [ ] resource-sizing table — atoms → {PW basis, per-rank GiB, _ph0 GB, walltime} from observed runs (anchor: LaH10 11at, Li2MgH16 38at)
+- [ ] resource-sizing table — atoms → {PW basis, per-rank GiB, _ph0 GB, walltime} from observed runs (anchor: LaH10 11at, Li2MgH16 38at) — WIP: gate-anchor rows (CaH6·LaH10·Li2MgH16·ScH9) being folded from harvest_final/ (2026-06-05)
 
 ## 설계 SSOT
 - pipeline = hexa-lang stdlib/cloud/dft_dispatch.hexa (vc-relax→scf→ph→lambda chain) · QE 7.x ph.x DFPT
