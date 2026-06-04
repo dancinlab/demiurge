@@ -333,3 +333,8 @@
 ## 2026-06-05 — reconcile: 7 milestones SHIPPED+MERGED → [x] (14 open = frontier)
 - Flipped: NVPTX kernels #2712/#2717 · q-star symmetry #2700/#2729 · dft-run salvage #2459 · proxy-fallback #2451 · orphan-guard #2721 · telemetry emit #2702 · production orchestrator #2742 (@L1/@L2). Plus @L3 --engine route #2748 (migration plan, not a FEATURE checkbox).
 - REMAINING (14) = frontier, NOT no-pod-agent-closeable: dissolution-map (gate=campaign anchor) · resume-bank (object-store infra) · converged-CaH6 full-BZ (campaign GPU) · GPU-tier×4 (mixed-prec·fused-CG·multi-GPU·out-of-core — need GPU rent) · research-tier×7 (anisotropic-Eliashberg·autodiff·anharmonic·NQE·inverse-design·Tc(P)·UQ).
+
+## 2026-06-05 — all-go frontier round: 10 milestones SHIPPED+MERGED → [x] (4 open)
+- Research/infra (no-pod hexa-native, g5 PASS): autodiff ∂Tc/∂struct #2754 · anharmonic SSCHA #2755 · Tc(P) sweep #2756 · Tc-UQ #2757 · NQE-PIMD #2758 · inverse-design #2760 · aniso-Eliashberg #2761 · resume-bank #2762.
+- GPU-tier on summer RTX5070 (free, NO paid rent, #2763): mixed-precision matvec (block 63.96× ≥5✔, max_rel_err=0) + out-of-core ψ streaming (Δ=0 parity) gate-MET → flipped.
+- STILL OPEN (4, honest d6): dissolution-map (campaign anchor) · converged-CaH6 full-BZ (RTSC campaign GPU run) · fused-CG (parity PASS but ≥1.5× throughput gate NOT met — needs on-device scalar reduction) · multi-GPU q/k sharding (shard-λ≡single Δ=0 proven, true 2-GPU needs 2nd physical GPU).
