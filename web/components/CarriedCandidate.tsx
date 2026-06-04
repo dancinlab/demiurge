@@ -12,23 +12,9 @@
 
 import Link from "next/link";
 import { resolveCosmosNode } from "@/lib/cosmos.server";
-import { STATE_BADGE, type Rung, type VerifyState } from "@/lib/cosmos";
+import { STATE_BADGE, type VerifyState } from "@/lib/cosmos";
+import { getCosmosI18n } from "@/lib/cosmos-i18n.server";
 import { VERBS, type VerbId } from "@/lib/verbs";
-
-const RUNG_LABEL: Record<Rung, string> = {
-  atom: "원자",
-  materials: "물질·바이오·화학",
-  chip: "칩·상위구조",
-  system: "시스템",
-};
-
-const STATE_LABEL: Record<VerifyState, string> = {
-  "verified-formal": "검증됨(formal)",
-  verified: "검증됨",
-  "needs-verify": "검증필요",
-  unverified: "미검증",
-  falsified: "반증됨",
-};
 
 export async function CarriedCandidate({
   domain,
@@ -37,7 +23,12 @@ export async function CarriedCandidate({
   domain: string;
   verb: VerbId;
 }) {
-  const { node, decomposition } = await resolveCosmosNode(domain);
+  const [{ node, decomposition }, i18n] = await Promise.all([
+    resolveCosmosNode(domain),
+    getCosmosI18n(),
+  ]);
+  const RUNG_LABEL = i18n.rung;
+  const STATE_LABEL: Record<VerifyState, string> = i18n.state;
 
   // the node's carried verify badge — prefer the rolled-up subtree state when a
   // decomposition exists (a system node's badge reflects its parts), else the
@@ -54,9 +45,9 @@ export async function CarriedCandidate({
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         <Link
           href="/cosmos"
-          className="shrink-0 rounded-control px-2 py-0.5 text-xs text-muted hover:bg-surface-strong hover:text-ink"
+          className="shrink-0 rounded-control px-2 py-0.5 text-xs text-muted hover:bg-surface-strong hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary"
         >
-          ← cosmos
+          {i18n.carriedBack}
         </Link>
         <span className="text-xl leading-none" aria-hidden>
           {icon}
