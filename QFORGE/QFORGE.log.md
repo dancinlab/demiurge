@@ -53,3 +53,9 @@
 - INCIDENT: 4개 게이트 앵커(CaH6·LaH10·Li2MgH16·ScH9)가 QE ph.x `recover=.true.` 단일경로 재개의 손상 recover scratch(EOF marker) 맹목 replay로 전부 crash-loop(self-resume 8/8 소진, mpirun exit-2 / `Sequential READ after EOF`). salvage = `recover=.false.`+`start_q=<첫 미완>` 재개로 4/4 무손실 복구(완료 dyn skip, 손상 q만 clean 재계산).
 - MILESTONE 등록(QFORGE.md `## 진행 milestones`): QFORGE 자체 DFPT/SCF resume은 이 모드가 구조적으로 불가능해야 함 — (1) per-q atomic done-marker (2) 미완 q만 clean 재계산, 손상 blob replay 금지 (3) checkpoint 무결성 검증(truncation/EOF→자동 재계산 fallback). selftest = 의도적 truncated checkpoint 주입→crash 없이 재계산 PASS.
 - 근거 handoff: hexa-lang `fc2331a3`(QE 측 no-recover fallback 갭). QFORGE는 그 갭을 애초에 갖지 않도록 설계 — QE의 부서지는 재개를 답습하지 않음. d6: 부분결과 silent 사용 금지.
+
+## 2026-06-04 — recover-EOF resilience 구현 SHIP (hexa-lang PR#2688+#2691, draft·g5 PASS)
+
+- PR#2688 (`stdlib/qforge/checkpoint.hexa`, 204L): crash-resilient per-q checkpoint primitive — `qforge_checkpoint_write`(temp→flush→atomic rename, done-marker last) · `qforge_checkpoint_read`(length-prefix + adler32 검증 → {ok,payload}) · `qforge_resume_scan`(dir,nq → {done_q[],next_q}). generic payload-bytes(d4). g5: `qforge_checkpoint_selftest PASS` 16/16 — 적대적 (a)truncated→reject no-crash · (b)bad-checksum→reject no-crash · (c)interrupted-write→not-done · (d)완료q보존.
+- PR#2691 (base=pr1; `scf.hexa`+122 · `realcell_qmesh.hexa`+92 · integration selftest 197): opt-in 배선 `qforge_scf_resumable`·`qforge_qmesh_dispersion_resumable` — resume_dir=="" → 기존 함수 위임(0-diff regression-pin), else per-q checkpoint skip/clean-recompute. g5: `qforge_checkpoint_integration_selftest PASS` 13/13 (I-DFPT corrupt q1/q2 → resume skip q0/q3·recompute q1/q2·nq==4 no-crash·ω==clean ≤직렬화floor 1e-6) + `qforge_scf_selftest PASS` regression.
+- 둘 다 DRAFT (사용자 리뷰 후 머지) · origin/main 미접촉(resilience 커밋 0). 머지 시 QFORGE.md 마일스톤 `[x]` flip. 정직(d6): ω round-trip은 to_string 6자리 직렬화 정밀도(~1e-6 rel, 물리·λ 무의미) — bit-exact codec은 follow-up.
