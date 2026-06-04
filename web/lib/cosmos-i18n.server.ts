@@ -15,6 +15,8 @@ import type { CosmosI18n, SurfaceI18n } from "@/lib/cosmos-i18n";
 const RUNG_KEY: Record<Rung, string> = {
   atom: "app_gui.cosmos_rung_atom",
   materials: "app_gui.cosmos_rung_materials",
+  bio: "app_gui.cosmos_rung_bio",
+  chem: "app_gui.cosmos_rung_chem",
   chip: "app_gui.cosmos_rung_chip",
   system: "app_gui.cosmos_rung_system",
 };
@@ -31,6 +33,8 @@ function rungLabels(m: Messages): Record<Rung, string> {
   return {
     atom: t(m, RUNG_KEY.atom),
     materials: t(m, RUNG_KEY.materials),
+    bio: t(m, RUNG_KEY.bio),
+    chem: t(m, RUNG_KEY.chem),
     chip: t(m, RUNG_KEY.chip),
     system: t(m, RUNG_KEY.system),
   };

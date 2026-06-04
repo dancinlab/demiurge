@@ -7,8 +7,9 @@
 // generic path, no per-domain branching; geometry of the focused node comes
 // from the P2 descriptor layer, never hardcoded — @L10).
 //
-// Layout (D1): every domain is a node placed on a VERTICAL rung axis
-//   원자(atom) bottom → 물질(materials) → 칩(chip) → 시스템(system) top.
+// Layout (D1): every domain is a node placed on a VERTICAL rung axis, SIX bands
+//   원자(atom) bottom → 물질(material) → 바이오(bio) → 화학(chem) → 칩(chip) →
+//   시스템(system) top.
 // State (§4) is encoded by node color (STATE_ACCENT) + a floating badge.
 // Edges (NEXUS) are drawn as connectors.
 //
@@ -55,12 +56,22 @@ const EDGE = "#6b6258";
 const EDGE_LIT = "#f4c5a8";
 
 // ── §2 scale ladder — rung → vertical Y (atom bottom → system top) ────────────
-const RUNG_ORDER: Rung[] = ["atom", "materials", "chip", "system"];
+// SIX bands, evenly spaced 4 units apart (원자 → 물질 → 바이오 → 화학 → 칩 → 시스템).
+const RUNG_ORDER: Rung[] = [
+  "atom",
+  "materials",
+  "bio",
+  "chem",
+  "chip",
+  "system",
+];
 const RUNG_Y: Record<Rung, number> = {
-  atom: -6,
-  materials: -2,
-  chip: 2,
-  system: 6,
+  atom: -10,
+  materials: -6,
+  bio: -2,
+  chem: 2,
+  chip: 6,
+  system: 10,
 };
 
 // Filter chips (D6). A chip narrows which nodes are HIGHLIGHTED; non-matching
@@ -590,7 +601,7 @@ export function CosmosScene({
 
       <Canvas
         key={cameraKey}
-        camera={{ position: [0, 0, 30], fov: 45 }}
+        camera={{ position: [0, 0, 38], fov: 45 }}
         className="bg-[#16130f]"
         aria-label={i18n.canvasAria}
         role="img"

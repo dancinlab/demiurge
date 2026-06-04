@@ -24,8 +24,17 @@ import type { DomainEntry } from "@/lib/domains";
 import type { AttestationRow } from "@/lib/matter";
 
 // ── §2 scale ladder ──────────────────────────────────────────────────────────
-// 원자 / 물질·바이오·화학 / 칩·상위구조 / 시스템.
-export type Rung = "atom" | "materials" | "chip" | "system";
+// SIX rungs the user named: 원자 → 물질 → 바이오 → 화학 → 칩 → 시스템. Each is its
+// own Y-band in the /cosmos vertical scale ladder. "materials" was previously the
+// catch-all for materials·bio·chem; it is now split so bio (단백질·세포·유전자) and
+// chem (분자·촉매·반응) read as distinct scale rungs with their own 3D vocabulary.
+export type Rung =
+  | "atom"
+  | "materials"
+  | "bio"
+  | "chem"
+  | "chip"
+  | "system";
 
 // ── §4 verification-state model ────────────────────────────────────────────
 // verified-formal 🔵 · verified 🟢 · needs-verify 🟡 · unverified ⚪ · falsified 🔴
@@ -189,7 +198,7 @@ const RUNG_BY_NAME: Record<string, Rung> = {
   "HEX-N6": "atom",
   QUBIT: "atom",
   SRR: "atom",
-  // ② 물질·바이오·화학 MATERIALS.
+  // ② 물질 MATERIALS — bulk solids / lattices / device-feedstock materials.
   RTSC: "materials",
   PEROVSKITE: "materials",
   GRAPHENE: "materials",
@@ -197,23 +206,30 @@ const RUNG_BY_NAME: Record<string, Rung> = {
   AEROGEL: "materials",
   SPINTRONIC: "materials",
   MEMRISTOR: "materials",
-  "AGA-RX": "materials",
-  "GENE-EDIT": "materials",
-  "RNA-THERAPY": "materials",
-  ORGANOID: "materials",
-  "PROTEIN-FOLD": "materials",
-  ELECTROCAT: "materials",
-  PHOTOREDOX: "materials",
-  "CO2-CAPTURE": "materials",
-  "GREEN-NH3": "materials",
-  SENOLYX: "materials",
-  // ③ 칩·상위구조 CHIP — devices / metasurfaces / trap assemblies.
+  // ③ 바이오 BIO — proteins / cells / genes / therapeutics.
+  "AGA-RX": "bio",
+  "AGA-CURE": "bio",
+  "GENE-EDIT": "bio",
+  "RNA-THERAPY": "bio",
+  ORGANOID: "bio",
+  "PROTEIN-FOLD": "bio",
+  SENOLYX: "bio",
+  "OA-CURE": "bio",
+  "PERIO-CURE": "bio",
+  "RETINA-CURE": "bio",
+  "IVD-CURE": "bio",
+  // ④ 화학 CHEM — molecules / catalysts / reactions.
+  ELECTROCAT: "chem",
+  PHOTOREDOX: "chem",
+  "CO2-CAPTURE": "chem",
+  "GREEN-NH3": "chem",
+  // ⑤ 칩·상위구조 CHIP — devices / metasurfaces / trap assemblies.
   CLOAK: "chip",
   ANTIMATTER: "chip",
   CERN: "chip",
   NEUROMORPHIC: "chip",
   PHOTONIC: "chip",
-  // ④ 시스템 SYSTEM — assembled bodies / full pipelines.
+  // ⑥ 시스템 SYSTEM — assembled bodies / full pipelines.
   UFO: "system",
   WORMHOLE: "system",
   WARP: "system",
@@ -225,11 +241,16 @@ const RUNG_BY_NAME: Record<string, Rung> = {
 // Keyword fallback — runs only when a domain is absent from RUNG_BY_NAME. Generic
 // (matches on the domain name + its goal text), so new domains classify without a
 // code edit when their language is conventional.
+// Ordering is significant — first regex to match wins. bio/chem are listed BEFORE
+// materials so a therapeutic / catalysis domain lands in its specific rung; the
+// "-CURE" therapeutic family is bio (a treatment), NOT a "system" vehicle.
 const RUNG_KEYWORDS: Array<{ rung: Rung; re: RegExp }> = [
-  { rung: "system", re: /(-CURE$|CURE\b|시스템|system|비행체|추진|craft|vehicle|drive|propuls)/i },
-  { rung: "chip", re: /(chip|칩|device|소자|trap|트랩|metasurface|메타표면|circuit|회로|accelerator|가속)/i },
+  { rung: "bio", re: /(-CURE\b|CURE\b|완치|치료|therap|치료제|drug|약물|약\b|gene|유전|protein|단백|peptide|펩타이드|cell|세포|organoid|오가노이드|senolyt|노화|residue|잔기|sequence|서열|antibody|항체|capsid|캡시드|mRNA|siRNA|RNA|DNA|모낭|탈모)/i },
+  { rung: "chem", re: /(catalys|촉매|electrocat|전기촉매|photoredox|광촉매|molecule|분자|reaction|반응|synthesis route|합성|CO2|capture|포집|NH3|암모니아|Tafel|overpotential|과전압|Faradaic)/i },
+  { rung: "system", re: /(시스템|system|비행체|추진|craft|vehicle|drive|propuls|tokamak|토카막|reactor|반응로|warp|워프|wormhole|웜홀|fusion|핵융합)/i },
+  { rung: "chip", re: /(chip|칩|device|소자|trap|트랩|metasurface|메타표면|circuit|회로|accelerator|가속|crossbar|크로스바|neuromorph|뉴로모픽|photonic|포토닉|die|wafer|웨이퍼)/i },
   { rung: "atom", re: /(atom|원자|lattice|격자|qubit|큐비트|quantum|양자|primitive)/i },
-  { rung: "materials", re: /(material|물질|재료|drug|약|gene|유전|protein|단백|cell|세포|catalyst|촉매|molecule|분자|superconduct|초전도)/i },
+  { rung: "materials", re: /(material|물질|재료|metamaterial|메타물질|aerogel|에어로젤|graphene|그래핀|perovskite|페로브스카이트|superconduct|초전도|spintronic|memristor)/i },
 ];
 
 export function classifyRung(name: string, doc?: { goal?: string | null }): Rung {

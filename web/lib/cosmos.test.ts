@@ -27,7 +27,7 @@ function assert(cond: unknown, msg: string): void {
   console.log(`✓ ${msg}`);
 }
 
-const RUNGS: Rung[] = ["atom", "materials", "chip", "system"];
+const RUNGS: Rung[] = ["atom", "materials", "bio", "chem", "chip", "system"];
 const STATES: VerifyState[] = [
   "verified-formal",
   "verified",
@@ -53,8 +53,15 @@ async function main(): Promise<void> {
   // 2. classifyRung honors the manifest table.
   assert(classifyRung("HEX-N6") === "atom", "HEX-N6 → atom (manifest)");
   assert(classifyRung("RTSC") === "materials", "RTSC → materials (manifest)");
+  assert(classifyRung("PROTEIN-FOLD") === "bio", "PROTEIN-FOLD → bio (manifest)");
+  assert(classifyRung("ELECTROCAT") === "chem", "ELECTROCAT → chem (manifest)");
   assert(classifyRung("CLOAK") === "chip", "CLOAK → chip (manifest)");
   assert(classifyRung("UFO") === "system", "UFO → system (manifest)");
+  // keyword fallback (no manifest entry): a "-CURE" therapeutic → bio, not system.
+  assert(
+    classifyRung("SKIN-CURE", { goal: "완치 치료제 개발" }) === "bio",
+    "unlisted -CURE therapeutic → bio (keyword)",
+  );
 
   // 3. buildCosmos assembles a well-typed graph.
   const graph: CosmosGraph = await buildCosmos();
