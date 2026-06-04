@@ -2,6 +2,16 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — Mol* real-fold viewer on /d/<domain> (§9.1b) — landed (agent died on rate-limit AFTER pushing)
+
+User picked ① 완성도: AlphaFold-grade real protein fold on the detail page. The dispatched agent pushed its work to `feat/8verb-cosmos` then hit a SERVER-WIDE rate-limit (not usage cap) before reporting; I verified + landed from the orphaned worktree.
+
+- [x] LANDED `feat/8verb-cosmos` `babf1fa4`(facets→node.structure parse) + `aeb5c126`(Mol* viewer + route + dep). Added `pdbe-molstar@^3.12.0` (MIT). `web/components/MolViewer.tsx` (dynamic `ssr:false` wrapper) + `MolstarInner.tsx` (mounts molstar in a ref div, loads structure, AlphaFold/pLDDT preset, disposes on cleanup) + `web/app/api/structure/route.ts` (server proxy: alphafold `AF-<id>-F1-model_v4.cif` · pdb `<id>.cif`, strict id regex SSRF guard, cache header, 502 on upstream fail).
+- [x] `.demi`-canonical structure ref (§10): INDEX.demi `[aga-rx] facets.uniprot="Q8N474"` (SFRP1, AlphaFold-DB) + `[senolyx] facets.pdb="3ZLR"` (BCL-xL, RCSB experimental); `demi.ts` parses → `node.structure = {source:"alphafold"|"pdb", id}`. `/d/[domain]/page.tsx`: renders `<MolViewer>` when `node.structure` present (+ CC-BY/CC0 attribution caption + layperson "실제 단백질 접힘 · 색=예측 신뢰도(pLDDT)" note), else the existing R3F `DomainModel3D`. Overview unchanged (no 2nd WebGL context).
+- [x] VERIFIED from the orphaned worktree (`/tmp/cosmos-mol-wt`, tip aeb5c126, pdbe-molstar installed): `npm run build` BUILD_EXIT=0 "✓ Compiled successfully" + "✓ Generating static pages (38/38)" — the `dynamic ssr:false` import did NOT break SSR/static gen. cosmos.test TEST_EXIT=0. Browser-only bar: the actual 3D fold render needs a real WebGL browser (user confirms in-preview); headless verifies build + route + facet-parse.
+- [x] HONEST: only aga-rx (alphafold) + senolyx (pdb) carry a structure ref → only they show Mol*; all other nodes keep the existing R3F model. AlphaFold prediction shown WITH pLDDT confidence coloring (not presented as experimentally solved). AGA-RX = AlphaFold predicted; SENOLYX 3ZLR = experimental. CC-BY (AlphaFold) / CC0 (PDB) attribution rendered.
+- [ ] NEXT (optional): chem molecule viewer (WAY-316606 SDF via 3Dmol/Mol*) · CURE-family registration · bundle-size check on the molstar dep.
+
 ## 2026-06-05 — bio PRODUCT nodes AGA-RX·SENOLYX registered + faithful α-helix 3D
 
 User picked ① 완성도: register the §9.1 bio products into INDEX.demi so they appear as real bio nodes with faithful 3D.
