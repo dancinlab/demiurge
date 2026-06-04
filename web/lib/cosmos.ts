@@ -13,11 +13,15 @@
 // 🟢/🔵 when a real verified signal exists; absence of signal → ⚪ "unverified".
 // We NEVER upgrade a projection / partial / candidate into a proven badge.
 
-import fs from "node:fs/promises";
-import path from "node:path";
-import { repoDataRoot } from "@/lib/data-root";
-import { listDomains, type DomainEntry } from "@/lib/domains";
-import { readMatterLedger, type AttestationRow } from "@/lib/matter";
+// NOTE (SSR/bundling): this module is imported by BOTH server pages and client
+// components (CosmosScene needs the PURE functions `decompose` · `STATE_BADGE`
+// + the types). So the fs-bound deps (node:fs · node:path · matter ledger ·
+// domains roster) are loaded LAZILY inside the async server-only functions
+// (readNexusEdges · buildCosmos) — never at module top level — so this file
+// stays client-safe (no `node:fs` in the browser chunk). Types are erased, so
+// the type-only imports below are bundler-free.
+import type { DomainEntry } from "@/lib/domains";
+import type { AttestationRow } from "@/lib/matter";
 
 // ── §2 scale ladder ──────────────────────────────────────────────────────────
 // 원자 / 물질·바이오·화학 / 칩·상위구조 / 시스템.
@@ -79,8 +83,6 @@ export type CosmosGraph = { nodes: CosmosNode[]; edges: CosmosEdge[] };
 // design (§3) prescribes: edge tier = trust of the LINK, node state = trust of the
 // DOMAIN.
 
-const NEXUS_PATH_PARTS = ["NEXUS.tape"] as const;
-
 // Leading roster-style domain token: UPPERCASE start, then [A-Z0-9+_-], e.g.
 // RTSC · HEX-N6 · AGA-CURE · CARDIO+ . Stops at the first lowercase/space/paren.
 const DOMAIN_TOKEN = /([A-Z][A-Z0-9+_-]*)/;
@@ -115,15 +117,9 @@ function blockField(body: string, key: string): string | undefined {
   return u ? u[1].trim() : undefined;
 }
 
-export async function readNexusEdges(): Promise<CosmosEdge[]> {
-  const p = path.join(repoDataRoot(), ...NEXUS_PATH_PARTS);
-  let text: string;
-  try {
-    text = await fs.readFile(p, "utf8");
-  } catch {
-    return [];
-  }
-
+// Pure NEXUS.tape parser — takes the file TEXT (no I/O), so it is client-safe
+// and unit-testable. The fs READ lives in cosmos.server.ts (readNexusEdges).
+export function parseNexusEdges(text: string): CosmosEdge[] {
   const edges: CosmosEdge[] = [];
 
   // Split into @X blocks: a header line `@X <id> := "..." :: <kind> [<tags>]`
@@ -370,14 +366,15 @@ function parseTitle(
   return { icon: icon || undefined, alias: alias || undefined };
 }
 
-// ── buildCosmos — assemble the full graph ────────────────────────────────────
-export async function buildCosmos(): Promise<CosmosGraph> {
-  const [domains, edges, ledger] = await Promise.all([
-    listDomains(),
-    readNexusEdges(),
-    readMatterLedger(),
-  ]);
-
+// ── assembleCosmos — pure graph assembly from already-loaded inputs ──────────
+// Client-safe (no I/O): the server entry buildCosmos() (cosmos.server.ts) reads
+// the roster / NEXUS / ledger off disk and calls this. Keeping assembly pure
+// lets it be unit-tested and keeps cosmos.ts free of node:fs.
+export function assembleCosmos(
+  domains: DomainEntry[],
+  edges: CosmosEdge[],
+  ledger: AttestationRow[],
+): CosmosGraph {
   // Roster names (uppercase) for edge sanity — keep every edge (an endpoint may be
   // a primitive-only domain not in the curated web roster, e.g. HEX-N6/SRR), but
   // surface a node for every edge endpoint too so the graph has no dangling refs.

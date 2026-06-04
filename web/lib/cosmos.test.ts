@@ -9,15 +9,14 @@
 // coverage suite. (Build typecheck is the primary gate; this is a runtime sanity.)
 
 import {
-  buildCosmos,
   decompose,
-  readNexusEdges,
   classifyRung,
   STATE_BADGE,
   type CosmosGraph,
   type Rung,
   type VerifyState,
 } from "./cosmos";
+import { buildCosmos, readNexusEdges } from "./cosmos.server";
 
 function assert(cond: unknown, msg: string): void {
   if (!cond) {
