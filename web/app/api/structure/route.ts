@@ -30,7 +30,10 @@ function idValid(source: string, id: string): boolean {
 
 function upstreamUrl(source: string, id: string): string | null {
   if (source === "alphafold") {
-    return `https://alphafold.ebi.ac.uk/files/AF-${id}-F1-model_v4.cif`;
+    // Fallback template — the model version bumps over time (v4→v6→…); the GET
+    // handler resolves the REAL cifUrl from the prediction API first, and only
+    // falls back to this template (current latest = v6) if that lookup fails.
+    return `https://alphafold.ebi.ac.uk/files/AF-${id}-F1-model_v6.cif`;
   }
   if (source === "pdb") {
     return `https://files.rcsb.org/download/${id}.cif`;
@@ -67,9 +70,29 @@ export async function GET(req: Request): Promise<Response> {
       headers: { Accept: "chemical/x-cif, chemical/x-mdl-sdfile, text/plain, */*" },
     });
 
+  // AlphaFold: resolve the ACTUAL current cifUrl from the prediction API (the
+  // model version bumps over time, e.g. v4→v6) — fall back to the template url.
+  let fetchUrl = url;
+  if (source === "alphafold") {
+    try {
+      const pred = await fetch(`https://alphafold.ebi.ac.uk/api/prediction/${id}`, {
+        cache: "force-cache",
+      });
+      if (pred.ok) {
+        const arr = (await pred.json()) as Array<{ cifUrl?: string }>;
+        const cifUrl = arr?.[0]?.cifUrl;
+        if (typeof cifUrl === "string" && cifUrl.startsWith("https://alphafold.ebi.ac.uk/")) {
+          fetchUrl = cifUrl;
+        }
+      }
+    } catch {
+      /* keep the template url */
+    }
+  }
+
   let upstream: Response;
   try {
-    upstream = await doFetch(url);
+    upstream = await doFetch(fetchUrl);
     // PubChem: not every CID has a precomputed 3D conformer → fall back to 2D.
     if (source === "pubchem" && upstream.status === 404) {
       upstream = await doFetch(
