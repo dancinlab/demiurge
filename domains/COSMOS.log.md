@@ -2,6 +2,15 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — BUILD BLOCKER RESOLVED: pdbe-molstar → 3Dmol.js (production build green)
+
+User picked ① 완성도: swap to 3Dmol.js. Done INLINE (rate-limit storm — no agents).
+
+- [x] LANDED `feat/8verb-cosmos` `05f7e452`: `npm uninstall pdbe-molstar` (drops `molstar@5.8 → h264-mp4-encoder@1.0.12`, the `require("fs")` culprit) + `npm install 3dmol@2.5.5` (BSD-3). Rewrote `components/MolstarInner.tsx` to a 3Dmol.js mount: `$3Dmol.createViewer` → fetch from the SAME `/api/structure` proxy → `addModel(data, "cif"|"sdf")` → style per source (alphafold = cartoon coloured by B-factor=pLDDT confidence · pdb = spectrum cartoon · pubchem = ball-and-stick molecule) → zoomTo/render; `clear()` + innerHTML reset on cleanup. `MolViewer.tsx` (dynamic ssr:false) + `route.ts` proxy + `demi.ts` facets all UNCHANGED.
+- [x] VERIFIED: a FRESH `next build` now exits 0 — "✓ Compiled successfully 2.3s · ✓ Generating static pages (38/38)", NO h264/`Can't resolve 'fs'` error (grepped clean). cosmos.test exit 0. Preview molecule SDF API `?source=pubchem&id=16727102` → HTTP 200 (real WAY-316606 SDF proxied). `/d/WAY-316606` route 307 (login gate).
+- [x] Honest: filename `MolstarInner.tsx` is now a misnomer (it's 3Dmol, not Mol*) — kept to avoid churn; comments updated. pLDDT colouring is approximated via 3Dmol's B-factor gradient (roygb 50–90), not Mol*'s exact 4-band AlphaFold legend — same data channel, simpler legend. The production build is now deploy-capable (the §9.1b viewer goal met with the lighter lib).
+- [ ] NEXT: browser-confirm the 3Dmol render (protein fold + molecule) in-preview; then optionally a pLDDT legend + deploy-prep.
+
 ## 2026-06-05 — chem molecule viewer + CURE registration LANDED · ⚠ surfaced a real build blocker (molstar→h264)
 
 User picked ① 완성도: chem molecule viewer + CURE family. The dispatched agents BOTH died on a server-wide rate-limit storm (0 tokens) → I did the work INLINE in foreground (resilience protocol: stop fan-out, sequential commit-per-unit).
