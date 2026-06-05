@@ -907,3 +907,25 @@ NPW held at 64 (eig0 plateau confirmed PR#2536). Pool: aiden FREE. NEVER ran on 
     direct dense-DFPT λ = 150734 · Wannier-interp λ = 247395 · rel-ε = 0.64 (does NOT reproduce).
   ⇒ exactness is CONDITIONAL on short-rangedness; a polar-Fröhlich tail needs a larger coarse mesh or polar subtraction (exactly as EPW does). Verdict: coarse→dense g-interp is EXACT for short-ranged g(R) — g5 박제.
 - 5/5 g5 checks PASS · metallic_a2f regression PASS (no regression). honest scope: synthetic g (real DFPT |g| NOT run; CaH6/LaH10 real-cell cross-val remains separately GATED). Milestone flipped [x] 🟢bench-VERIFIED.
+
+## 2026-06-06 — equivariant GNN phonons (MACE-class) — TRACTABLE-SLIVER g5 VERIFIED, milestone [ ] kept ⚪ (PR#2811 draft)
+- 🧠 LANE C paradigm 🔬research-probe. Honest verdict ⚪ research-grounded: a full trained MACE/NequIP phonon surrogate needs a training stack + DFT phonon dataset = OUT of scope (docs-only/CPU-only/no-rent). The TRACTABLE sliver — the defining correctness property of these models — was implemented + g5-verified.
+- New bench driver `bench/qforge/equivariant_edge_feature.hexa` (hexa-lang, worktree off origin/main, no stdlib/qforge edit d3): E(3)-equivariant edge-feature kernel, 3 heads, verifying feature(R·r) == D_l(R)·feature(r) under a generic O(3) rotation.
+  - (l=1) vector message m_ij = f(|r|)·r̂  → D_1(R) = R (radial f is an O(3) scalar)
+  - (l=1) real spherical harmonic Y_1(r̂) [y,z,x basis] → D_1(R) (permuted R)
+  - (l=2) real spherical harmonic Y_2(r̂) [5 d-harmonics] → D_2(R) Wigner — the HARD test; D_2 built from Cartesian R by the exact l=2-irrep linear identity [Y_2(R·b_k)]·[Y_2(b_k)]^{-1} (5 probe dirs + Gauss-Jordan inv) so the check does NOT assume its answer.
+  - improper-rotation (det=-1, parity, full O(3)) + negative control (fixed-axis r_z² non-equivariant feature MUST fail).
+- g5 VERBATIM (HEXA_LANG=. hexa run bench/qforge/equivariant_edge_feature.hexa):
+    === E(3)-equivariant edge-feature kernel — equivariance g5 ===
+    test edge r_ij = [0.7, -0.4, 1.3]   |r| = 1.52971
+    orthogonality |R^T R - I|_max = 2.22045e-16
+    [l=1 vector msg ]  |feat(Rr) - R·feat(r)|_max = 1.11022e-16
+    [l=1 real-SH    ]  |Y1(Rr) - D1(R)·Y1(r)|_max = 1.11022e-16
+    [l=2 real-SH    ]  |Y2(Rr) - D2(R)·Y2(r)|_max = 3.33067e-15
+    [l=2 O(3)improper] |Y2(Pr) - D2(P)·Y2(r)|_max = 1.89107e-15
+    [neg control    ]  non-equivariant feat residual = 0.523285 (MUST be large)
+    max equivariance error over all heads = 3.33067e-15
+    VERDICT_EQUIVARIANCE=MATCH max_err=3.33067e-15 neg_control=0.523285
+- d6 HONEST: the verified kernel is the equivariance PRIMITIVE (geometric scaffolding the learnable layers sit on). NOT done = Clebsch-Gordan tensor-product message passing + learnable radial basis + energy/Hessian readout + DFT phonon dataset + held-out falsifier (GNN α²F == DFPT α²F ∧ Tc MAE) + autodiff-Hessian Φ. Milestone stays [ ] ⚪ research-grounded — verified equivariance kernel + grounded design = valid ⚪, NOT a false GATE_CLOSED.
+- Companion design `bench/qforge/equivariant_gnn_phonon_design.md` (goal · why-equivariance-is-load-bearing · what-verified · what-not-done · path-to-close · lit).
+- Lit: Batatia MACE NeurIPS 2022 arXiv:2206.07697 · Batzner NequIP Nat.Commun. 13 2453 (2022) · MACE-MP arXiv:2401.00096 · Geiger-Smidt e3nn arXiv:2207.09453 · Gibson BETE-NET arXiv:2401.16611.
