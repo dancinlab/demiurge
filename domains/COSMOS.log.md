@@ -2,6 +2,15 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — PUBLIC /sample showcase (no login) + AlphaFold version fix
+
+User: "그냥 샘플페이지 만들어줘 · 이것저것 샘플로 다양하게 볼수있는" — everything was behind the `/signin` gate (middleware PROTECTED regex), so nothing was viewable without an account.
+
+- [x] LANDED `feat/8verb-cosmos` `062bbe58`(page)+`af860758`(AF fix): `web/app/sample/page.tsx` — a PUBLIC showcase (`/sample` is NOT in the middleware PROTECTED regex → ungated; `/api/*` is excluded from middleware too). One scrollable gallery: ① the 6-band rung 3D shapes (atom lattice · materials supercell · bio helix · chem molecule · chip die · system coil) via `DomainModel3D` (stylized ⚪); ② the 3 REAL structures via `MolViewer`/3Dmol — AGA-RX SFRP1 (AlphaFold), SENOLYX BCL-xL (PDB 3ZLR), WAY-316606 drug molecule (PubChem SDF). Tailwind tokens fixed (`bg-card`→`bg-surface`).
+- [x] AlphaFold version fix `af860758`: the proxy used `model_v4.cif` but AlphaFold DB moved to **v6** (v4/v5 now 404). The `/api/structure` alphafold path now resolves the REAL `cifUrl` from the prediction API `…/api/prediction/<id>` (origin-checked) and falls back to a v6 template — robust to future version bumps.
+- [x] VERIFIED live: `/sample` → HTTP 200 (public, no login) · all 3 structure sources 200 (alphafold Q8N474 · pdb 3ZLR · pubchem 16727102) · build exit 0 (39 static pages incl `○ /sample`). Browser confirms the actual 3D render.
+- [ ] NEXT (optional): add an OrbitControls hint / per-card loading shimmer; link `/sample` from the marketing page; deploy.
+
 ## 2026-06-05 — BUILD BLOCKER RESOLVED: pdbe-molstar → 3Dmol.js (production build green)
 
 User picked ① 완성도: swap to 3Dmol.js. Done INLINE (rate-limit storm — no agents).
