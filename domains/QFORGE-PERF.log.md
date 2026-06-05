@@ -856,3 +856,19 @@ NPW held at 64 (eig0 plateau confirmed PR#2536). Pool: aiden FREE. NEVER ran on 
 
 ## 2026-06-06 — adaptive q-grid sampling CLOSED (#2801, inline-built under throttle storm)
 - qforge_aq_adaptive: generic 1-D adaptive quadrature over q-axis, curvature-driven bisection (refine the nesting peak, leave flat coarse). g5 (fair off-grid sharp peak q0=0.372 w=0.008): λ_adaptive=0.242812 (0.11% vs dense 0.242539) at nq=36; uniform needs nq=81 = 2.25× q-saving; coarse-uniform(41)=8.6% off. ALL PASS. Built inline in main loop (sub-agent dispatch storm-blocked).
+
+## 2026-06-06 — EPW-style Wannier |g| q-interpolation CLOSED (PR#2802 draft)
+- New module `stdlib/qforge/wannier_ginterp.hexa` (hexa-lang, worktree off origin/main): q-axis EPW Fourier pair — forward `g(R)=(1/N_q)Σ_q g(q)e^{-i2πq·R}`, inverse `g(q')=Σ_R g(R)e^{+i2πq'·R}`. Coarse-q DFPT |g| → real-space g(R) → inverse to ANY dense q (no new DFPT). |g|² interpolated as |interp(g)|² (square AFTER interp — EPW-correct order, g is band-limited, |g|² is not).
+- d19 reuse: qforge_mp_grid (mesh) + qforge_metallic_lambda_mesh (a2f→λ, the SAME driver the direct dense run uses ⇒ any λ diff = interpolation error alone). Zero physics re-implemented.
+- EPW cite: Noffsinger·Giustino·Malone·Park·Louie·Cohen 2010, Comput. Phys. Commun. 181, 2140 (arXiv:1005.4418); Giustino-Cohen-Louie 2007 PRB 76 165108; Giustino 2017 RMP 89 015003 Eq.78-82. Interpolation exact when g(R) decayed at coarse-mesh Wigner-Seitz boundary (short-ranged).
+- g5 VERBATIM (`stdlib/qforge/wannier_ginterp_selftest.hexa`, synthetic short-range g(q)=Σ_R c_R e^{i2πq·R}, R∈{000:1, 100:0.4, 010:0.3, 001:0.2}):
+    coarse-nq=64 (4×4×4) → dense-nq=512 (8×8×8), rbox=1
+    direct dense-DFPT λ   = 127592
+    Wannier-interp     λ   = 127592
+    rel-ε (interp vs dense) = 1.14e-16   ← machine precision, EXACT
+    coarse-only λ = 126541 (rel-Δ vs dense = 0.82% ⇒ real interpolation, dense samples NEW q)
+    round-trip max|g_interp(q_c)−g_true(q_c)| = 3.33e-16; g(R) recovers planted c(000)=1.0, c(100)=0.4 exactly, |c(110)|=8.6e-17 (~0, short-range fingerprint)
+- d6 NEG control (honest): long-range g(R) with an |R|=3 term, coarse 3×3×3 (rbox=1) → aliased:
+    direct dense-DFPT λ = 150734 · Wannier-interp λ = 247395 · rel-ε = 0.64 (does NOT reproduce).
+  ⇒ exactness is CONDITIONAL on short-rangedness; a polar-Fröhlich tail needs a larger coarse mesh or polar subtraction (exactly as EPW does). Verdict: coarse→dense g-interp is EXACT for short-ranged g(R) — g5 박제.
+- 5/5 g5 checks PASS · metallic_a2f regression PASS (no regression). honest scope: synthetic g (real DFPT |g| NOT run; CaH6/LaH10 real-cell cross-val remains separately GATED). Milestone flipped [x] 🟢bench-VERIFIED.

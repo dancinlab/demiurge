@@ -82,7 +82,7 @@ seed-from-zero 매 candidate       →    MLIP/Δ-ML pre-screen + transfer acros
 
 ## ── 🧮 LANE B · algorithmic (hardware-AGNOSTIC) ──
 
-- [ ] **EPW-style Wannier |g| interpolation** 🧮algorithmic 🔬research-probe — **dense per-q DFPT 를 회피**: coarse-q DFPT 로 el-ph |g| 계산 → Wannier gauge 변환 → generalized Fourier 로 dense (k,q) interpolate (arxiv 1005.4418 · 1604.03525 · npj 2023). field 의 단일 최대 el-ph 속도향상 · 29-pod teardown 을 유발한 dense-DFPT 를 직접 죽임. falsifier: interpolated λ·Tc == dense-DFPT λ·Tc (LaH10·CaH6 cross-val) ∧ DFPT q-count Δ (coarse 4³ vs dense). **= priority #1**.
+- [x] **EPW-style Wannier |g| interpolation** 🧮algorithmic 🟢bench-VERIFIED — **dense per-q DFPT 를 회피**: coarse-q DFPT |g| → real-space g(R) (forward DFT) → inverse DFT 로 ANY dense q (Wannier interp · arxiv 1005.4418 Noffsinger-Giustino CPC 181 2140 · Giustino 2017 RMP Eq.78-82). **q-축 Fourier pair** 구현(`stdlib/qforge/wannier_ginterp.hexa` · PR#2802 draft) — q 가 DFPT-당-1-run 비용 축이라 q-interp 이 dense-DFPT killer. **g5 (synthetic short-range g(q)=Σ_R c_R e^{i2πq·R}): coarse-nq=64(4³) → dense-nq=512(8³), rbox=1 · direct dense-DFPT λ=127592 · Wannier-interp λ=127592 · rel-ε=1.14e-16 (기계정밀 EXACT)** · coarse-only λ=126541 (rel-Δ 0.82% = 실제 interp) · round-trip 3.3e-16 · g(R) 박힌 c_R 정확복원. **d6 NEG control**: long-range g(R)(|R|=3) on too-coarse 3³(rbox=1) → rel-ε=0.64 (재현 실패 — exactness 는 short-range 조건부, polar-Fröhlich tail 은 mesh 확대/polar-subtraction 필요 = EPW 방식). 즉 **coarse→dense interp 은 g(R) short-range 일 때 exact** 임을 g5 박제. honest scope: synthetic g 검증(실 DFPT |g| 미실행) — CaH6/LaH10 실셀 cross-val 은 별도 GATED. 5/5 g5 PASS · metallic_a2f regression PASS. **= priority #1.**
 - [ ] **Chebyshev-filtered subspace iter (CheFSI)** 🧮algorithmic 🔬research-probe — Davidson 의 O(N³) 명시적 eigenvector 계산 회피 — 저차 Chebyshev 다항식으로 occupied subspace 정제 (arxiv cond-mat/0703239 · Saad/Zhou). 중간 SCF iter 는 정확 고유벡터 불필요. falsifier: 수렴 ρ == Davidson ρ ∧ matvec-count Δ.
 - [x] **better SCF preconditioner + mixing** 🧮algorithmic 🟢bench-VERIFIED — linear mixing → Pulay/Broyden DIIS(arxiv 1803.01763). DIIS density mixer(`qforge_anderson_next` · mixing.hexa)는 이미 SCF 드라이버에 배선됨(`qforge_scf_smeared` `and_depth>0` 분기 · 첫 iter linear fallback). **g5 driver-level 게이트 추가**(hexa-lang `scf_diis_speedup_selftest.hexa` · PR#2794 draft): 같은 드라이버·같은 금속 셀(ρ-피드백 charge-slosh + E_F 근접퇴화 + Fermi-Dirac smearing)·같은 β/σ/시작점에서 linear(and_depth=0) vs DIIS(and_depth=5). **측정: linear 58 → DIIS 16 iter (3.6× 절감) · 같은 고정점**(|ΔE_tot|=1.10e-9<1e-8 · max|Δρ|=7.66e-10<1e-7)·둘 다 수렴. falsifier(SCF iter-count Δ ∧ 수렴값 불변) PASS. **honest scope**: docs-bench 드라이버 iter-count 검증(GPU/wall-time 아님) · TPA kinetic preconditioner 부분은 미구현(별 항목). 고gain(g=2.4)에선 linear 발산(400 iter cap) DIIS 18 iter — 더 강한 win이나 "같은 고정점" 앵커가 깨져 g=1.2 사용(둘 다 수렴 apples-to-apples).
 - [x] **k/q symmetry reduction + Γ-only fast path** 🧮algorithmic 🟢bench-needed ✅CLOSED-FORM — irreducible BZ wedge 는 **정확** (λ=Σ_q w_q λ_q 가 star-sum 복원에 불변 · 근사 아님). q-count 천장 = 결정 점군 위수: LaH10(Fm-3m)·CaH6(Im-3m) 입방정 Oh → **|G|=48×** (Γ-only → q-count=1). **verdict: `.verdicts/qforge-perf-roofline/symmetry-48.txt` (🟢)**.
@@ -137,9 +137,12 @@ terminal 상태       건수   항목
                             (bench §2/§7 — speedup 비율의 분모, GPU-Δ 게시 시 close)
 ⛔ GATED-GPU         4    H_apply/Davidson/Sternheimer/cuFFT GPU-GEMM
                             → blocker: GPU pod (전부 STOPPING) · trigger: pod READY
-⛔ GATED-IMPL        4    EPW-Wannier · CheFSI · randomized · adaptive-q
+⛔ GATED-IMPL        2    CheFSI · randomized
                             → blocker: SCF-context Ritz bound / 연구급 구현 ·
                             trigger: docs-only bench-driver OR 엔진 owner 구현
+✅ closed-measured  +2    EPW-Wannier |g| q-interp (g5 coarse 64→dense 512
+                            rel-ε=1.14e-16 EXACT · NEG-ctrl rel-ε=0.64 d6 ·
+                            PR#2802 🟢) · adaptive-q (#2801 위 closed)
 ⛔ GATED-RESEARCH    6    🧠 LANE C 전부 → blocker: ML 학습 infra + GPU + 연구 ·
                             trigger: 별도 ML 도메인 (CLM-KOSMOS 류)
 ─────────────────   ────
