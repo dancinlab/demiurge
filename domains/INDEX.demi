@@ -172,6 +172,75 @@ facets.hostility = "macos-clean"
 facets.pdb = "3ZLR"   # BCL-xL — experimental RCSB entry (solved structure)
 keywords = ["노화", "senolytic", "bcl-xl", "항노화"]
 
+# CHEM PRODUCT — a real small molecule (the AGA-RX lead compound), rendered as a
+# real 3D ball-and-stick from its PubChem SDF (facets.pubchem → /api/structure).
+[way-316606]
+label = "탈모 후보물질 (WAY-316606)"
+canvas_mode = "cohort"
+prerequisites = ["aga-rx"]
+facets.scale = "molecular"
+facets.rung = "chem"
+facets.cluster = ["chem", "bio"]
+facets.hostility = "macos-clean"
+facets.pubchem = "16727102"   # WAY-316606 · C18H19F3N2O4S2 · 29 heavy atoms (§9.1a)
+keywords = ["way-316606", "분자", "molecule", "sfrp1 inhibitor", "탈모"]
+
+# CURE-family PRODUCTs (built on a bio source). Structure ref ONLY where §9.1
+# gives REAL data — AGA-CURE reuses AGA-RX's SFRP1 fold, IVD-CURE reuses
+# SENOLYX's BCL-xL. OA/PERIO/RETINA-CURE have NO own PDB (η_neo modeling) → NO
+# structure facet → honest generic bio 3D + ⚪ unverified (none invented).
+[aga-cure]
+label = "탈모 완치"
+canvas_mode = "cohort"
+prerequisites = ["aga-rx"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+facets.uniprot = "Q8N474"   # reuses AGA-RX SFRP1 fold
+keywords = ["탈모", "완치", "cure", "wnt", "sfrp1"]
+
+[ivd-cure]
+label = "디스크 완치"
+canvas_mode = "cohort"
+prerequisites = ["senolyx"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+facets.pdb = "3ZLR"   # reuses SENOLYX BCL-xL (senolytic axis)
+keywords = ["디스크", "ivd", "추간판", "완치", "senolytic"]
+
+[oa-cure]
+label = "관절염 완치"
+canvas_mode = "cohort"
+prerequisites = ["bio"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+keywords = ["관절염", "골관절염", "oa", "연골", "완치"]
+
+[perio-cure]
+label = "잇몸 완치"
+canvas_mode = "cohort"
+prerequisites = ["bio"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+keywords = ["잇몸", "치주", "perio", "완치"]
+
+[retina-cure]
+label = "망막 완치"
+canvas_mode = "cohort"
+prerequisites = ["bio"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+keywords = ["망막", "retina", "müller", "재생", "완치"]
+
 # ─────────────────────────────────────────────────────────────────
 # System tier
 # ─────────────────────────────────────────────────────────────────
