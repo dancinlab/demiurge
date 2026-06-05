@@ -125,11 +125,18 @@ export default async function DomainDetailPage({
                   {node.structure.id} · AlphaFold DB · CC-BY
                 </span>
               </p>
-            ) : (
+            ) : node.structure.source === "pdb" ? (
               <p className="text-xs text-muted">
                 실험으로 풀린 실제 단백질 구조 ·{" "}
                 <span className="text-body">
                   PDB {node.structure.id} · RCSB PDB · CC0
+                </span>
+              </p>
+            ) : (
+              <p className="text-xs text-muted">
+                실제 분자 구조 (공-막대 모형) ·{" "}
+                <span className="text-body">
+                  PubChem CID {node.structure.id} · public domain
                 </span>
               </p>
             ))}

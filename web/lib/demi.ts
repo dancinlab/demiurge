@@ -48,10 +48,13 @@ export type DemiDomain = {
   structure: DemiStructureRef | null;
 };
 
-/** A real-structure reference parsed from `facets.uniprot` / `facets.pdb`. */
+/** A real-structure reference parsed from `facets.uniprot` / `facets.pdb` /
+ *  `facets.pubchem`. protein folds (alphafold/pdb, mmCIF) · small molecule
+ *  (pubchem CID, SDF). */
 export type DemiStructureRef =
   | { source: "alphafold"; id: string }
-  | { source: "pdb"; id: string };
+  | { source: "pdb"; id: string }
+  | { source: "pubchem"; id: string };
 
 // ── one parsed <id>.demi verb cell ───────────────────────────────────────────
 export type DemiCell = {
@@ -145,14 +148,17 @@ export function parseIndexDemi(text: string): DemiDomain[] {
   let curPrereqs: string[] = [];
   let curUniprot = "";
   let curPdb = "";
+  let curPubchem = "";
 
   const flush = (): void => {
     if (have && curLabel.length > 0) {
-      // facets.uniprot (AlphaFold) takes precedence over facets.pdb (RCSB) when
-      // both are present; neither → null (no real structure, the honest default).
+      // Structure precedence (a node carries ONE ref): protein folds first —
+      // facets.uniprot (AlphaFold) > facets.pdb (RCSB) > facets.pubchem (small
+      // molecule SDF). None → null (no real structure, the honest default).
       let structure: DemiStructureRef | null = null;
       if (curUniprot.length > 0) structure = { source: "alphafold", id: curUniprot };
       else if (curPdb.length > 0) structure = { source: "pdb", id: curPdb };
+      else if (curPubchem.length > 0) structure = { source: "pubchem", id: curPubchem };
       out.push({
         id: curId,
         label: curLabel,
@@ -193,6 +199,7 @@ export function parseIndexDemi(text: string): DemiDomain[] {
       curPrereqs = [];
       curUniprot = "";
       curPdb = "";
+      curPubchem = "";
       continue;
     }
     // key = value
@@ -207,6 +214,7 @@ export function parseIndexDemi(text: string): DemiDomain[] {
     else if (key === "facets.rung") curRung = unquote(val);
     else if (key === "facets.uniprot") curUniprot = unquote(val);
     else if (key === "facets.pdb") curPdb = unquote(val);
+    else if (key === "facets.pubchem") curPubchem = unquote(val);
     else if (key === "prerequisites") {
       if (isList(val)) curPrereqs = splitList(listInner(val));
     } else if (key === "keywords") {

@@ -10,15 +10,23 @@
 //
 // Upstream URLs (COSMOS.md §9.1b/c):
 //   alphafold → https://alphafold.ebi.ac.uk/files/AF-<ID>-F1-model_v4.cif
-//               (pLDDT confidence is in the B-factor column)
-//   pdb       → https://files.rcsb.org/download/<ID>.cif
+//               (pLDDT confidence is in the B-factor column · viewer format=cif)
+//   pdb       → https://files.rcsb.org/download/<ID>.cif (viewer format=cif)
+//   pubchem   → https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/<CID>/SDF
+//               ?record_type=3d (small molecule · viewer format=sdf · 3D→2D fallback)
 //
-// Resp: 200 text/plain (mmCIF body) on success · 400 on a bad source/id ·
+// Resp: 200 text/plain (mmCIF / SDF body) on success · 400 on a bad source/id ·
 //       502 on an upstream failure (network or non-2xx).
 
-// id allow-list: 4–10 alphanumerics (covers a 4-char PDB code + a UniProt
-// accession like Q8N474 / A0A0B4J2F0). No dots, slashes, or path chars → SSRF-safe.
+// id allow-lists (SSRF-safe — no dots/slashes/path chars, slotted into a fixed
+// template): protein id = 4–10 alphanumerics (4-char PDB code · UniProt accession
+// like Q8N474 / A0A0B4J2F0); pubchem CID = 1–9 digits.
 const ID_RE = /^[A-Za-z0-9]{4,10}$/;
+const CID_RE = /^[0-9]{1,9}$/;
+
+function idValid(source: string, id: string): boolean {
+  return source === "pubchem" ? CID_RE.test(id) : ID_RE.test(id);
+}
 
 function upstreamUrl(source: string, id: string): string | null {
   if (source === "alphafold") {
@@ -26,6 +34,9 @@ function upstreamUrl(source: string, id: string): string | null {
   }
   if (source === "pdb") {
     return `https://files.rcsb.org/download/${id}.cif`;
+  }
+  if (source === "pubchem") {
+    return `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${id}/SDF?record_type=3d`;
   }
   return null;
 }
@@ -35,27 +46,36 @@ export async function GET(req: Request): Promise<Response> {
   const source = searchParams.get("source") ?? "";
   const id = searchParams.get("id") ?? "";
 
-  if (!ID_RE.test(id)) {
-    return Response.json(
-      { error: "invalid id (expected 4–10 alphanumerics)" },
-      { status: 400 },
-    );
-  }
   const url = upstreamUrl(source, id);
   if (!url) {
     return Response.json(
-      { error: "invalid source (expected 'alphafold' or 'pdb')" },
+      { error: "invalid source (expected 'alphafold', 'pdb', or 'pubchem')" },
+      { status: 400 },
+    );
+  }
+  if (!idValid(source, id)) {
+    return Response.json(
+      { error: "invalid id (protein: 4–10 alphanumerics · pubchem CID: 1–9 digits)" },
       { status: 400 },
     );
   }
 
-  let upstream: Response;
-  try {
-    upstream = await fetch(url, {
+  const doFetch = (u: string): Promise<Response> =>
+    fetch(u, {
       // Structures are immutable — cache aggressively at the Next data layer.
       cache: "force-cache",
-      headers: { Accept: "chemical/x-cif, text/plain, */*" },
+      headers: { Accept: "chemical/x-cif, chemical/x-mdl-sdfile, text/plain, */*" },
     });
+
+  let upstream: Response;
+  try {
+    upstream = await doFetch(url);
+    // PubChem: not every CID has a precomputed 3D conformer → fall back to 2D.
+    if (source === "pubchem" && upstream.status === 404) {
+      upstream = await doFetch(
+        `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${id}/SDF?record_type=2d`,
+      );
+    }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return Response.json({ error: `upstream fetch failed: ${msg}` }, { status: 502 });

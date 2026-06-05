@@ -19,9 +19,15 @@
 import { useEffect, useRef } from "react";
 
 export type MolViewerProps = {
-  source: "alphafold" | "pdb";
+  source: "alphafold" | "pdb" | "pubchem";
   id: string;
 };
+
+// The body format Mol* must parse per source: protein folds = mmCIF, small
+// molecule (pubchem) = SDF.
+function viewerFormat(source: MolViewerProps["source"]): "cif" | "sdf" {
+  return source === "pubchem" ? "sdf" : "cif";
+}
 
 // Prebuilt pdbe-molstar stylesheet (matches the installed major version). Loaded
 // once, lazily, on the client — keeps the controls/canvas styled without routing
@@ -61,7 +67,7 @@ export default function MolstarInner({ source, id }: MolViewerProps) {
         await viewer.render(el, {
           customData: {
             url: `/api/structure?source=${source}&id=${encodeURIComponent(id)}`,
-            format: "cif",
+            format: viewerFormat(source),
             binary: false,
           },
           // pLDDT confidence colouring — only meaningful for an AlphaFold model.
@@ -97,7 +103,11 @@ export default function MolstarInner({ source, id }: MolViewerProps) {
       ref={containerRef}
       className="relative h-full w-full"
       role="img"
-      aria-label={`${id} 단백질 3D 구조 (${source === "alphafold" ? "AlphaFold 예측" : "실험 구조"})`}
+      aria-label={
+        source === "pubchem"
+          ? `PubChem CID ${id} 분자 3D 구조`
+          : `${id} 단백질 3D 구조 (${source === "alphafold" ? "AlphaFold 예측" : "실험 구조"})`
+      }
     />
   );
 }
