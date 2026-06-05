@@ -2,6 +2,16 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — chem molecule viewer + CURE registration LANDED · ⚠ surfaced a real build blocker (molstar→h264)
+
+User picked ① 완성도: chem molecule viewer + CURE family. The dispatched agents BOTH died on a server-wide rate-limit storm (0 tokens) → I did the work INLINE in foreground (resilience protocol: stop fan-out, sequential commit-per-unit).
+
+- [x] LANDED `feat/8verb-cosmos` 3 commits: `6aac5615`(molecule viewer infra) + `7bcf1c5e`(INDEX.demi data) + test commit. (a) `web/app/api/structure/route.ts` extended: `source=pubchem&id=<CID>` → PubChem `SDF?record_type=3d` (3D→2D fallback, CID regex `^[0-9]{1,9}$`); (b) `demi.ts` parses `facets.pubchem` → `node.structure={source:"pubchem",id}` (precedence uniprot>pdb>pubchem); (c) `MolstarInner` loads SDF format for pubchem; (d) `/d/[domain]` molecule caption + PubChem CID/public-domain attribution.
+- [x] INDEX.demi data (nodes 22→28): `[way-316606]` chem node (`facets.pubchem="16727102"`, prereq=aga-rx — AGA-RX's lead compound C18H19F3N2O4S2; PubChem CID serves 3D SDF HTTP 200, verified by direct curl). CURE family REAL-DATA-ONLY: `[aga-cure]`(facets.uniprot Q8N474, reuse AGA-RX) · `[ivd-cure]`(facets.pdb 3ZLR, reuse SENOLYX) · `[oa-cure]`/`[perio-cure]`/`[retina-cure]` (NO structure facet → honest ⚪, none invented — η_neo modeling has no PDB per §9.1).
+- [x] cosmos.test exit 0 (way-316606 pubchem CID · aga-cure alphafold Q8N474 · ivd-cure pdb 3ZLR · oa/perio/retina-cure NO structure + ⚪). The molecule + CURE LOGIC is verified.
+- [x] ⚠ **SURFACED a real BUILD BLOCKER (NOT from the chem work)**: a FRESH `npm ci`/`npm install` then `next build` fails — `Module not found: Can't resolve 'fs'` from `h264-mp4-encoder@1.0.12`, pulled by `pdbe-molstar@3.12 → molstar@5.8 → h264-mp4-encoder` (bare `require("fs")` in the CLIENT bundle, Turbopack can't resolve). REPRODUCES on the Mol* tip `aeb5c126` with the same fresh node_modules → it's the **Mol* dependency** (prior turn), not the chem data; the earlier "build exit 0" was a stale/cached install. `next dev` (preview) is unaffected. FIX: (a) swap `pdbe-molstar`→`3dmol` (BSD-3 · §9.1b's named lighter alt · no molstar/h264 · reads PDB/mmCIF + SDF) — RECOMMENDED, fixes build + lighter; or (b) browser `fs:false` fallback for the molstar chunk. MUST fix before deploy.
+- [ ] NEXT: resolve the build blocker (recommend 3Dmol.js swap) so the production build + Mol*/molecule render both work, THEN deploy-prep.
+
 ## 2026-06-05 — Mol* real-fold viewer on /d/<domain> (§9.1b) — landed (agent died on rate-limit AFTER pushing)
 
 User picked ① 완성도: AlphaFold-grade real protein fold on the detail page. The dispatched agent pushed its work to `feat/8verb-cosmos` then hit a SERVER-WIDE rate-limit (not usage cap) before reporting; I verified + landed from the orphaned worktree.
