@@ -853,3 +853,6 @@ NPW held at 64 (eig0 plateau confirmed PR#2536). Pool: aiden FREE. NEVER ran on 
 ## 2026-06-06 — 2 shipped perf wins registered closed (this session)
 - #2787 fft_native in-place butterfly: O(n²·log n)→O(1) alloc/FFT. Removed the converged el-ph OOM root (RSS 4-5GB→508MB) + large speedup. ALL FFT users benefit (signal·qforge). g5 fft3 selftest ALL PASS (round-trip 8.88e-16, byte-identical).
 - #2786 FFT-Poisson scratch-buffer reuse: per-fold/per-band Ntot grid alloc → module scratch (distinct REAL0/1 to avoid psi·dpsi alias). correctness-neutral (smoke byte-identical).
+
+## 2026-06-06 — adaptive q-grid sampling CLOSED (#2801, inline-built under throttle storm)
+- qforge_aq_adaptive: generic 1-D adaptive quadrature over q-axis, curvature-driven bisection (refine the nesting peak, leave flat coarse). g5 (fair off-grid sharp peak q0=0.372 w=0.008): λ_adaptive=0.242812 (0.11% vs dense 0.242539) at nq=36; uniform needs nq=81 = 2.25× q-saving; coarse-uniform(41)=8.6% off. ALL PASS. Built inline in main loop (sub-agent dispatch storm-blocked).
