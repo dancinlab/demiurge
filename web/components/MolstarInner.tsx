@@ -56,10 +56,19 @@ export default function MolstarInner({ source, id }: MolViewerProps) {
         };
         if (disposed) return;
 
-        const res = await fetch(
-          `/api/structure?source=${source}&id=${encodeURIComponent(id)}`,
-        );
-        if (!res.ok) throw new Error(`structure proxy ${res.status}`);
+        // Source URLs. For pubchem, prefer a COMMITTED static SDF
+        // (`/structures/pubchem-<CID>.sdf`) so production never depends on the
+        // PubChem PUG REST endpoint — which 503-rate-limits Cloud Run's shared
+        // egress IP. Fall back to the /api/structure proxy for un-committed CIDs.
+        const proxyUrl = `/api/structure?source=${source}&id=${encodeURIComponent(id)}`;
+        let res: Response;
+        if (source === "pubchem") {
+          res = await fetch(`/structures/pubchem-${encodeURIComponent(id)}.sdf`);
+          if (!res.ok) res = await fetch(proxyUrl);
+        } else {
+          res = await fetch(proxyUrl);
+        }
+        if (!res.ok) throw new Error(`structure fetch ${res.status}`);
         const data = await res.text();
         if (disposed) return;
 
