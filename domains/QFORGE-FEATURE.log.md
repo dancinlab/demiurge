@@ -357,3 +357,7 @@
 - SCREENED CaH6 λ=5.05165 vs QE 4.376 → rel-ε=15.44% (worse than bare 4.137). HONEST: NOT faked. Diagnosis (d6) — the λ shift is NOT screening: witness = 0 Anderson iters · ‖ΔV_scr‖/‖ΔV_bare‖=1.0 (at n=645 the coefficient-space screening correction fell below the 1e-8 seed → screened==bare; λ change was phonon ω_log RMS-anchor variance 1370→1118K, a single-cell artifact).
 - TWO findings: (1) the Anderson β-knob IS metallic-stable (n=16: ratio=1.82·conv·‖res‖=7.9e-8·120iter — reproduces FFT-Poisson exactly); (2) the coefficient-space diagonal screening does NOT scale to converged basis. WALL LOCALIZED (d2): needs pow2-padded real-space FFT Poisson V_H[Δρ] (scf_pw.hexa:88 non-pow2 wall) → registered as named milestone.
 - summer RTX5070 hexa toolchain BROKEN (runtime.o cache-miss, clang18/glibc2.39 reject malloc shim) — filed inbox/patches/runtime-malloc-macro-clang18-glibc239.md (d8); run routed to mini. NO paid rent. RTSC anchors read-only.
+
+## 2026-06-05 — dissolution-map CLOSED (#2773): 3/3 QE walls → proven levers
+- Checkable artifact (dissolution_map_selftest.hexa, g5 PASS): wall→lever→pr→metric→status table. DFPT core-ceiling→GPU mixed-prec #2764 (63.96×·Δ=0) · memory-clamp→out-of-core ψ #2764 (cells>VRAM Δ=0) · monolithic-q→parallel-q+multi-pod #2730/#2765 (Δ=0). 7 PRs confirmed merged on main.
+- λ-accuracy sub-gate (5.47%, >1%) ROUTES → pow2-FFT-Poisson + converged-CaH6 (separate open, pr=0, no over-claim, d6). d_qforge_migration_routing: anchors finish on QE.
