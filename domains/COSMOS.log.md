@@ -2,6 +2,17 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — HIGH-QUALITY rung 3D shapes (RTSC-coil grade) + web-research-backed R3F look
+
+User: 단별 3D 퀄리티를 과거 Swift RTSC 코일(HtsCoilGeometry) 수준으로 + web research. Web-research agent (cited) → R3F high-quality recipes; impl agent landed it.
+
+- [x] RESEARCH (cited): R3F/three.js polish recipes — shared look-good base (drei `Environment preset="studio"` IBL + ACES tone map + `ContactShadows` + `Bounds`/`Center` auto-frame), nested-translucent-shells (depthWrite:false + ascending renderOrder + spaced radii + ONE `MeshTransmissionMaterial` hero), `HelixCurve extends THREE.Curve`→`TubeGeometry` windings, `InstancedMesh` lattices, vertex-color ribbons, `RoundedBox` die, perf (frameloop demand · WebGL ~8-16 context cap · drei 10.x = R3F9/React19 line). Sources: three.js TubeGeometry/transparency, drei Environment/MeshTransmissionMaterial/Instances docs.
+- [x] RTSC reference confirmed: Swift `HtsCoilGeometry` (git history blob) + `hts_solenoid_proxy_v1.geo.json` = 6 concentric rings (bore #2A2A2A op0.15 · support #7A7A7A · HTS REBCO #D4A53A · jacket #B87333 · shield #C0C0C0 op0.45 · cryostat #5C7A99 op0.25), 120 turns, 200mm.
+- [x] LANDED `feat/8verb-cosmos` `247e4297`(geometry+scene) + `798a6d5e`(lazy-mount). `web/lib/geometry-3d.ts`: coil→6 translucent shells + dense 120-turn `TubeGeometry` REBCO winding + ONE `MeshTransmissionMaterial` cryostat; helix→smooth ribbon-tube + N→C vertex gradient (+double-helix base-pairs); molecule→32×32 spheres + CPK element colors + oriented bonds; lattice/supercell→instanced + quaternion-oriented bonds; die→`RoundedBox` metallic + gold pad grid; junction/orbit higher-seg + physical clearcoat. `BuiltModel` extended with optional material hints (no domain-name branching, d4). New `DomainModel3DR3F.tsx` scene: Environment studio + ambient+key(castShadow)+fill + ContactShadows + Bounds/Center + OrbitControls(damping, autoRotate hover-gated) + AdaptiveDpr.
+- [x] PERF (9-card /sample): `DomainModel3D` lazy-mounts its `<Canvas>` via IntersectionObserver (rootMargin 300px) + unmounts far-offscreen → live WebGL contexts track on-screen cards (under the cap); `frameloop="demand"` + hover-gated autoRotate = off-screen cards ~0 rAF; CSS-3D placeholder until mount. CosmosScene overview glyphs also pick up oriented/scaled bonds (no IBL/shadow added to the many-node canvas).
+- [x] VERIFIED: fresh `npm run build` exit 0 (39 pages, `/sample` builds) · cosmos.test exit 0 · geometry-3d-parse exit 0 · `tsc --noEmit` clean. drei helpers all present in 10.7.7. Browser-only: actual pixel quality confirmed in-preview.
+- [ ] NEXT (optional): a pLDDT legend on protein cards; `<View>`-based single-canvas if card count grows; deploy.
+
 ## 2026-06-05 — PUBLIC /sample showcase (no login) + AlphaFold version fix
 
 User: "그냥 샘플페이지 만들어줘 · 이것저것 샘플로 다양하게 볼수있는" — everything was behind the `/signin` gate (middleware PROTECTED regex), so nothing was viewable without an account.
