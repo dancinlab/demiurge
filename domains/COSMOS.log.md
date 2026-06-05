@@ -2,6 +2,16 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-05 — 🚀 DEPLOYED to production (demiurge.dancinlab.org) + overview back to round glyphs
+
+User: 배포 + 별자리는 원으로 다시 (per-rung overview shapes too busy). Both done.
+
+- [x] Overview simplification `f4709cfa`: `canRenderShapeGlyphs()` forced → false, so the cosmos overview constellation renders SIMPLE round sphere glyphs again (per-rung 3D shapes made the wide view too busy). Detail surfaces (/d/<domain>, /sample DomainModel3D cards) KEEP the high-quality RTSC-grade shapes. build exit 0.
+- [x] MERGED `feat/8verb-cosmos` → `main` via PR #597 (merge commit, NOT squash — preserved 34-commit history; mergeable=CLEAN, only 2 intentional deletions = old 2D JosephsonR3F/SlotViewers). main tip `019caabf`.
+- [x] DEPLOYED: `gcloud builds submit --config cloudbuild.yaml --project dancinlab --substitutions=_REGION=us-central1,_SERVICE=demiurge-web` (Docker → Artifact Registry → Cloud Run). Build `95e161eb` = SUCCESS. New Cloud Run revision **demiurge-web-00043-d4z** at https://demiurge.dancinlab.org (also https://demiurge-web-2n7kup3fpa-uc.a.run.app).
+- [x] LIVE smoke: `/` 200 · `/sample` (public) 200 · structure proxy alphafold Q8N474 200 (1.4s) · pdb 3ZLR 200 (1.5s).
+- [ ] ⚠ PROD ISSUE (non-fatal · 1 of 9 sample cards): `/api/structure?source=pubchem` → 502 because PubChem PUG REST returns **503** for the Cloud Run shared egress IP (rate-limits UA-less / shared-IP requests). Proteins are fine; only the WAY-316606 chem MOLECULE card fails. FIX = commit the WAY-316606 3D SDF as a STATIC asset (`web/public/models/…`) so the molecule viewer never hits PubChem at runtime (+ optional UA header/retry on the proxy). Needs a follow-up redeploy.
+
 ## 2026-06-05 — HIGH-QUALITY rung 3D shapes (RTSC-coil grade) + web-research-backed R3F look
 
 User: 단별 3D 퀄리티를 과거 Swift RTSC 코일(HtsCoilGeometry) 수준으로 + web research. Web-research agent (cited) → R3F high-quality recipes; impl agent landed it.
