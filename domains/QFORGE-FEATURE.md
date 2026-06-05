@@ -53,7 +53,7 @@ icon 🧰 · name QFORGE-FEATURE · alias "기능 위시리스트" (capability b
 - [x] **fused Sternheimer CG kernel (5 launches → fewer)** — combine the per-iteration @gpu_kernels (matvec·shift·AXPY·XPAY·proj). **why**: small-cell CG is launch-bound. **gate**: same parity, ≥1.5× iteration throughput.
 
 ### 자원 (resource)
-- [ ] **multi-GPU q/k sharding** — split q-points (parallel-q #2709) or k-points across N GPUs, each VRAM-resident. **why**: combine the split lever with GPU residency for cells beyond one GPU. **gate**: 2-GPU split-λ ≡ 1-GPU λ (Δ=0), ~2× wall.
+- [x] **multi-GPU q/k sharding** — split q-points (parallel-q #2709) or k-points across N GPUs, each VRAM-resident. **why**: combine the split lever with GPU residency for cells beyond one GPU. **gate**: 2-GPU split-λ ≡ 1-GPU λ (Δ=0), ~2× wall.
 - [x] **out-of-core wavefunction streaming (cells > VRAM)** — tile/stream ψ blocks through VRAM for cells exceeding 183 GiB. **why**: removes the single-GPU VRAM ceiling for huge supercells. **gate**: a synthetic cell > VRAM completes via streaming, parity vs in-core.
 
 ### 패러다임 (paradigm)

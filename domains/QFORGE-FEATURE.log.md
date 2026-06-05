@@ -365,3 +365,6 @@
 ## 2026-06-05 — LaH10 2nd-anchor cross-val (#2774): QFORGE a2f→λ TAIL = QE to 1e-7
 - QFORGE el-ph→λ tail reproduces QE BZ-summed λ on real harvested LaH10 elph to rel-ε 4.75e-7 (λ=4.31566, Tc_McMillan 292.5K). CaH6 tail was 1.65e-7. BOTH anchors ~1e-7 → the a2f/λ/Tc tail is VALIDATED on real data.
 - Honest (d6): this is the L3 TAIL anchor (QE screened elph → λ), NOT the full-engine gate. The ONLY remaining gap is the |g|² ENGINE (bare→screened, = pow2-FFT-Poisson screening, in flight). migration_gate_anchors LaH10 status left PENDING — no false flip.
+
+## 2026-06-05 — multi-GPU q/k sharding CLOSED real 2-GPU (#2775)
+- 2× RTX A4000 (vast ~$0.5, torn down): shard0→dev0 · shard1→dev1 each VRAM-resident, host reduce. 2-GPU shard-λ ≡ 1-GPU single-λ Δ=0.000e+00 bit-for-bit (Nq=4096 & 16384). speedup 1.92-1.95× (near-ideal 2×; <2.0 = PCIe/no-NVLink, honest d6). GATE PASS-2GPU. RTSC anchors untouched.
