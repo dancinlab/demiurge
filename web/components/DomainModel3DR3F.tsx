@@ -4,13 +4,27 @@
 // of hardcoded junction meshes, it mounts a `BuiltModel` produced by the
 // data-driven builders in lib/geometry-3d (procedural) OR a glb via useGLTF.
 //
-// Geometry is NEVER inline here (d · @L10) — it arrives as a descriptor.
+// Geometry is NEVER inline here (d · @L10) — it arrives as a descriptor. The
+// SCENE (lighting · IBL · shadows · tone-map · framing) lives here, and parts
+// may carry optional MATERIAL HINTS (color/material/opacity/renderOrder…) so a
+// faithful model (the RTSC-solenoid-grade coil) reaches "look good" quality
+// WITHOUT the renderer ever branching on a domain name.
 
 "use client";
 
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
+import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import {
+  OrbitControls,
+  useGLTF,
+  Environment,
+  ContactShadows,
+  Bounds,
+  Center,
+  MeshTransmissionMaterial,
+  AdaptiveDpr,
+} from "@react-three/drei";
 import {
   buildProcedural,
   isStylizedDescriptor,
@@ -20,7 +34,8 @@ import {
 import type { VerifyState } from "@/lib/cosmos";
 
 // ElevenLabs 팔레트 (WebGL material 은 CSS var 을 못 읽어 hex 직접 — JosephsonR3F
-// 와 동기). 무채색 웜 뉴트럴 + 단일 파스텔(orb-peach) accent.
+// 와 동기). 무채색 웜 뉴트럴 + 단일 파스텔(orb-peach) accent. Used ONLY when a
+// part carries no explicit `color` hint (legacy role-palette fallback).
 const C = {
   node: "#d6d3d1", // hairline-strong (warm stone)
   bond: "#a8a29e", // muted-soft
@@ -63,9 +78,11 @@ function roleColor(role: BuiltPart["role"], accent: string): string {
   }
 }
 
-// A single procedural part. Cylinders default to a Y-up axis; for "bond" parts
-// the builder centres them but does not orient — we keep them as short stubs
-// (orientation refinement is out of scope; bonds read as connective accents).
+// One procedural part → a mesh. Reads optional MATERIAL HINTS from the part
+// (data-driven), falling back to the role palette. Three material tiers:
+//   standard    → opaque metal (winding · pads · bonds)
+//   physical    → translucent/clearcoat shells + glossy atoms (cheap)
+//   transmission→ ONE hero glass shell (drei MeshTransmissionMaterial, FBO cost)
 function Part({
   part,
   accent,
@@ -75,19 +92,90 @@ function Part({
   accent: string;
   stylized: boolean;
 }) {
-  const color = roleColor(part.role, accent);
-  const wire = part.role === "cell"; // EdgesGeometry → render as lines
+  const baseColor = part.color ?? roleColor(part.role, accent);
+  const wire = part.role === "cell" && !part.color; // legacy EdgesGeometry → lines
+
+  const quaternion = useMemo(
+    () =>
+      part.quaternion ? new THREE.Quaternion(...part.quaternion) : undefined,
+    [part.quaternion],
+  );
+  const scale = part.scale;
+
+  // stylized desaturation (D3) applies ONLY to legacy hint-less parts; a faithful
+  // part that explicitly carries opacity/material keeps its authored look.
+  const transparent = part.transparent ?? (stylized && !part.color);
+  const opacity = part.opacity ?? (stylized && !part.color ? 0.55 : 1);
+
+  if (wire) {
+    // legacy edge/line part (EdgesGeometry) — render as line segments.
+    return (
+      <lineSegments position={part.position} geometry={part.geometry}>
+        <lineBasicMaterial color={baseColor} />
+      </lineSegments>
+    );
+  }
+
+  const mat = part.material ?? (stylized && !part.color ? "standard" : "standard");
+  const castShadow = !transparent;
+  const receiveShadow = !transparent;
+
   return (
-    <mesh position={part.position} geometry={part.geometry}>
-      {wire ? (
-        <lineBasicMaterial color={color} />
+    <mesh
+      position={part.position}
+      quaternion={quaternion}
+      scale={scale}
+      geometry={part.geometry}
+      renderOrder={part.renderOrder ?? 0}
+      castShadow={castShadow}
+      receiveShadow={receiveShadow}
+    >
+      {mat === "transmission" ? (
+        // ONE hero glass shell (cryostat OVC). Cheap-ish samples/resolution.
+        <MeshTransmissionMaterial
+          samples={6}
+          resolution={256}
+          backside
+          transmission={0.92}
+          thickness={0.6}
+          roughness={0.18}
+          ior={1.25}
+          chromaticAberration={0.02}
+          color={baseColor}
+          transparent
+          opacity={opacity}
+          depthWrite={false}
+          side={THREE.DoubleSide}
+        />
+      ) : mat === "physical" ? (
+        <meshPhysicalMaterial
+          color={baseColor}
+          metalness={part.metalness ?? (part.role === "accent" ? 0.5 : 0.2)}
+          roughness={part.roughness ?? 0.4}
+          clearcoat={part.clearcoat ?? 0}
+          clearcoatRoughness={0.3}
+          transmission={part.transmission ?? 0}
+          emissive={part.emissive ?? "#000000"}
+          emissiveIntensity={part.emissiveIntensity ?? 0}
+          transparent={transparent}
+          opacity={opacity}
+          depthWrite={part.depthWrite ?? !transparent}
+          side={part.doubleSide ? THREE.DoubleSide : THREE.FrontSide}
+          vertexColors={!!part.geometry.getAttribute("color")}
+        />
       ) : (
         <meshStandardMaterial
-          color={color}
-          roughness={part.role === "accent" ? 0.4 : 0.7}
-          transparent={stylized}
-          opacity={stylized ? 0.55 : 1}
-          wireframe={stylized && part.role === "symbol"}
+          color={baseColor}
+          metalness={part.metalness ?? (part.role === "accent" ? 0.3 : 0.1)}
+          roughness={part.roughness ?? (part.role === "accent" ? 0.4 : 0.6)}
+          emissive={part.emissive ?? "#000000"}
+          emissiveIntensity={part.emissiveIntensity ?? 0}
+          transparent={transparent}
+          opacity={opacity}
+          depthWrite={part.depthWrite ?? !transparent}
+          side={part.doubleSide ? THREE.DoubleSide : THREE.FrontSide}
+          wireframe={stylized && part.role === "symbol" && !part.color}
+          vertexColors={!!part.geometry.getAttribute("color")}
         />
       )}
     </mesh>
@@ -109,17 +197,9 @@ function ProceduralModel({
   const stylized = isStylizedDescriptor(descriptor);
   return (
     <group>
-      {model.parts.map((part, i) =>
-        // EdgesGeometry parts are LineSegments, not meshes — render via a
-        // dedicated primitive so three mounts them correctly.
-        part.role === "cell" ? (
-          <lineSegments key={i} position={part.position} geometry={part.geometry}>
-            <lineBasicMaterial color={roleColor("cell", accent)} />
-          </lineSegments>
-        ) : (
-          <Part key={i} part={part} accent={accent} stylized={stylized} />
-        ),
-      )}
+      {model.parts.map((part, i) => (
+        <Part key={i} part={part} accent={accent} stylized={stylized} />
+      ))}
     </group>
   );
 }
@@ -147,22 +227,65 @@ export function DomainModel3DR3F({
   descriptor: Model3DDescriptor;
   state?: VerifyState;
 }) {
+  // hover-gated autoRotate: with frameloop="demand" + many cards on /sample, an
+  // off-screen / unhovered card costs ~0 (no rAF loop). Hovering re-enables the
+  // continuous spin (and the demand loop) only for the focused card.
+  const [hovered, setHovered] = useState(false);
+
   return (
     <Canvas
-      camera={{ position: [4, 3, 5], fov: 45 }}
+      dpr={[1, 1.5]}
+      shadows
+      gl={{ antialias: true, alpha: true }}
+      camera={{ fov: 35, position: [3, 2, 4] }}
+      frameloop="demand"
       className="h-full w-full rounded bg-canvas-soft dark:bg-canvas"
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
     >
-      <ambientLight intensity={0.45} />
-      <directionalLight position={[5, 5, 5]} intensity={0.9} />
-      <directionalLight position={[-4, 2, -3]} intensity={0.35} />
+      <AdaptiveDpr pixelated />
+      {/* key + fill + ambient (recipe). Key casts shadows. */}
+      <ambientLight intensity={0.35} />
+      <directionalLight
+        position={[5, 8, 5]}
+        intensity={1.4}
+        castShadow
+        shadow-mapSize={[1024, 1024]}
+        shadow-bias={-0.0002}
+      />
+      <directionalLight position={[-4, 2, -3]} intensity={0.5} />
+
       <Suspense fallback={null}>
-        {descriptor.kind === "glb" ? (
-          <GlbModel url={descriptor.url} state={state} />
-        ) : (
-          <ProceduralModel descriptor={descriptor} state={state} />
-        )}
+        {/* clean neutral metal reflections on dark; do NOT set as background */}
+        <Environment preset="studio" environmentIntensity={0.8} />
+        <Bounds fit clip observe margin={1.2}>
+          <Center>
+            {descriptor.kind === "glb" ? (
+              <GlbModel url={descriptor.url} state={state} />
+            ) : (
+              <ProceduralModel descriptor={descriptor} state={state} />
+            )}
+          </Center>
+        </Bounds>
       </Suspense>
-      <OrbitControls enablePan={false} enableZoom={true} />
+
+      <ContactShadows
+        position={[0, -1, 0]}
+        opacity={0.55}
+        scale={8}
+        blur={2.6}
+        far={4}
+        resolution={512}
+      />
+
+      <OrbitControls
+        enableDamping
+        dampingFactor={0.08}
+        enablePan={false}
+        enableZoom
+        autoRotate={hovered}
+        autoRotateSpeed={0.6}
+      />
     </Canvas>
   );
 }
