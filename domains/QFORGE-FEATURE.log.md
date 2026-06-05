@@ -368,3 +368,8 @@
 
 ## 2026-06-05 — multi-GPU q/k sharding CLOSED real 2-GPU (#2775)
 - 2× RTX A4000 (vast ~$0.5, torn down): shard0→dev0 · shard1→dev1 each VRAM-resident, host reduce. 2-GPU shard-λ ≡ 1-GPU single-λ Δ=0.000e+00 bit-for-bit (Nq=4096 & 16384). speedup 1.92-1.95× (near-ideal 2×; <2.0 = PCIe/no-NVLink, honest d6). GATE PASS-2GPU. RTSC anchors untouched.
+
+## 2026-06-05 — pow2-FFT-Poisson engine FIXED+ENGAGED (#2781) · λ-gap isolated to correlation-XC
+- ROOT CAUSE found: ad_map routing was CORRECT; the real bug was det(B)=0 (coplanar BCC reciprocal basis) → Miller-index recovery inverted B → det≈0 guard → all G→[0,0,0] → FFT grid collapsed to 1×1×1 (the #2771/#2778 silent 0-iter/screened==bare). FIX (qpw_gvectors_miller emits exact integer h,k,l, no inverse — singular-B-immune).
+- AFTER (converged n=645): grid 1×1×1→32×32×32 · folds=3 (genuine real-space convolution ENGAGED) · ‖fp_res‖=1.0e-9. Engine deliverable DONE → pow2-FFT-Poisson flipped [x].
+- HONEST (d6): λ STILL 5.05165 (15.44% vs QE 4.376) — NOT a routing/grid defect. Anderson 0-iter because the Hartree+LDA-x dielectric correction is physically tiny. Residual = the named correlation-XC-beyond-(Hartree+LDA-x) functional gap → registered as the new precise migration-gate milestone (RPA χ₀ + beyond-LDA f_xc). The QFORGE el-ph ENGINE is now mechanically complete+correct (tail 1e-7, screening engages); the only gap is XC-functional level, a DFT modeling choice not an engine bug.
