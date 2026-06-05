@@ -361,3 +361,7 @@
 ## 2026-06-05 — dissolution-map CLOSED (#2773): 3/3 QE walls → proven levers
 - Checkable artifact (dissolution_map_selftest.hexa, g5 PASS): wall→lever→pr→metric→status table. DFPT core-ceiling→GPU mixed-prec #2764 (63.96×·Δ=0) · memory-clamp→out-of-core ψ #2764 (cells>VRAM Δ=0) · monolithic-q→parallel-q+multi-pod #2730/#2765 (Δ=0). 7 PRs confirmed merged on main.
 - λ-accuracy sub-gate (5.47%, >1%) ROUTES → pow2-FFT-Poisson + converged-CaH6 (separate open, pr=0, no over-claim, d6). d_qforge_migration_routing: anchors finish on QE.
+
+## 2026-06-05 — LaH10 2nd-anchor cross-val (#2774): QFORGE a2f→λ TAIL = QE to 1e-7
+- QFORGE el-ph→λ tail reproduces QE BZ-summed λ on real harvested LaH10 elph to rel-ε 4.75e-7 (λ=4.31566, Tc_McMillan 292.5K). CaH6 tail was 1.65e-7. BOTH anchors ~1e-7 → the a2f/λ/Tc tail is VALIDATED on real data.
+- Honest (d6): this is the L3 TAIL anchor (QE screened elph → λ), NOT the full-engine gate. The ONLY remaining gap is the |g|² ENGINE (bare→screened, = pow2-FFT-Poisson screening, in flight). migration_gate_anchors LaH10 status left PENDING — no false flip.
