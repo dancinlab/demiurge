@@ -1,5 +1,40 @@
 # QFORGE-PERF — append-only step log
 
+## 2026-06-06 — 🧠 differentiable-DFT reverse-mode LR — TAIL g5 VERIFIED + HEAD grounded (⚪)
+
+🧠 LANE C `differentiable-DFT reverse-mode LR` 를 ⚪ research-grounded verdict 로 진척
+(PR#2810 draft · hexa-lang `bench/qforge/adjoint_a2f_lambda_tc.hexa` + `adjoint_dfpt_design.md`).
+docs/bench-only(stdlib/qforge 미편집 d3) · CPU-only no-rent.
+
+**TAIL g5 VERIFIED** — 닫힌-형 α²F→λ→Tc tail 의 reverse-mode (adjoint) gradient 를
+중심차분(FD) vs 성분별 검증 (verbatim):
+```
+forward:  lambda = 1.56107  omega_log(K) = 0.0283383  Tc(K) = 0.00332921
+max rel-eps  dLambda/d(a2f)  adjoint vs FD = 1.15331e-09
+max rel-eps  dTc/d(a2f)      adjoint vs FD = 6.59225e-09
+VERDICT_ADJOINT_A2F=MATCH
+```
+- ∂λ/∂α²F[i] — trapezoid λ=2∫α²F/ω quadrature 의 정확 reverse-mode adjoint(신규 piece;
+  DFPT 출력 α²F 가 대수 tail 로 넘어가는 경계). rel-ε 1.15e-9.
+- ∂Tc/∂α²F[i] — full 2-path 체인(λ + ω_log pullback), g5-검증된 ∂Tc/∂λ·∂Tc/∂ω_log 를
+  `stdlib/qforge/dtc_dstruct` 에서 재사용(d3, no fork). rel-ε 6.59e-9. λ=1.561 strong-coupling ·
+  ω̄₂ baseline-pin 으로 2-path tight 검증(ω̄₂ path 는 동일형 quadrature pullback, design 에 named).
+- 무회귀: `dtc_dstruct_selftest` PASS (재사용 모듈 unbroken).
+
+**어느 piece 가 미분가능**: Tc(λ,ω_log) Allen-Dynes 대수 ✅ · λ·ω_log quadrature ← α²F ✅(이 PR) ·
+α²F ← |g|²·ε(assembler bilinear) 해석적 미분가능 · **Sternheimer LR + SCF fixed-point = adjoint
+필요(HEAD)**.
+
+**HEAD 미닫힘(d6 정직)** — full differentiable-DFT(SCF + Sternheimer fixed-point 통과 adjoint)는
+대형 paradigm build. `adjoint_dfpt_design.md` 에 grounded design: Sternheimer adjoint =
+self-adjoint projected-CG 동일 solve(M†=M, qforge_sternheimer 재사용) · SCF adjoint =
+implicit-function-theorem / Neumann no-unroll(I−J_ρ^T)z=ρ̄, DIIS dielectric J_ρ 재사용 ·
+2n+1 정리(Giustino RMP89 §IV). Sternheimer-call 미제거 → falsifier 절반 → 마일스톤 **[ ] 유지**.
+
+citations: Giustino RMP89 015003(2017)·Gonze-Vigneron PRB39 13120(1989)·Baroni RMP73 515(2001)·
+Herbst-Levitt npj s41524-025-01880-3(2025·arxiv 2509.07785)·Blondel NeurIPS2022(JAXopt)·
+Christianson OMS3 311(1994)·Carbotte RMP62 1027(1990)·Allen-Dynes PRB12 905(1975).
+
 ## 2026-06-06 — DIIS-mixing 마일스톤 CLOSED (driver-level g5 · linear 58 → DIIS 16 iter)
 
 "better SCF preconditioner + mixing" 마일스톤(linear mixing → Pulay/Broyden DIIS) 닫음.
