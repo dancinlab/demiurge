@@ -27,6 +27,7 @@ label = "칩 설계"
 canvas_mode = "chip"
 prerequisites = []
 facets.scale = "device"
+facets.rung = "chip"
 facets.cluster = ["physical", "engineering"]
 facets.hostility = "macos-clean"
 keywords = ["칩", "반도체", "chip", "soc", "asic", "프로세서", "cpu", "gpu", "noc"]
@@ -36,6 +37,7 @@ label = "펌웨어"
 canvas_mode = "cohort"
 prerequisites = ["chip"]
 facets.scale = "device"
+facets.rung = "chip"
 facets.cluster = ["engineering"]
 facets.hostility = "macos-clean"
 keywords = ["펌웨어", "firmware", "embedded", "mcu", "zephyr", "qemu"]
@@ -45,6 +47,7 @@ label = "솔리드스테이트 차단기"
 canvas_mode = "cohort"
 prerequisites = ["chip", "brain"]
 facets.scale = "device"
+facets.rung = "chip"
 facets.cluster = ["engineering", "physical"]
 facets.hostility = "macos-clean"
 keywords = ["차단기", "sscb", "interrupter", "차단"]
@@ -54,6 +57,7 @@ label = "초전도 코일"
 canvas_mode = "cohort"
 prerequisites = []
 facets.scale = "device"
+facets.rung = "chip"
 facets.cluster = ["physical"]
 facets.hostility = "macos-partial"
 substrate_ssot = "~/core/hexa-rtsc/"
@@ -64,6 +68,7 @@ label = "뇌·신경"
 canvas_mode = "cohort"
 prerequisites = ["bio"]
 facets.scale = "device"
+facets.rung = "chip"
 facets.cluster = ["life", "sensing"]
 facets.hostility = "macos-clean"
 substrate_ssot = "~/core/hexa-brain/"
@@ -74,6 +79,7 @@ label = "청각 웨어러블 BCI"
 canvas_mode = "cohort"
 prerequisites = ["rtsc", "chip", "brain", "bio", "firmware"]
 facets.scale = "component"
+facets.rung = "chip"
 facets.cluster = ["sensing", "life", "engineering"]
 facets.hostility = "macos-partial"
 substrate_ssot = "~/core/hexa-aura/"
@@ -88,6 +94,7 @@ label = "부품 설계"
 canvas_mode = "component"
 prerequisites = ["chip", "space"]
 facets.scale = "component"
+facets.rung = "chip"
 facets.cluster = ["engineering", "physical"]
 facets.hostility = "macos-clean"
 keywords = ["부품", "component", "기구", "케이스", "enclosure", "패키지", "heatsink", "방열"]
@@ -97,6 +104,7 @@ label = "로봇"
 canvas_mode = "cohort"
 prerequisites = ["mobility"]
 facets.scale = "component"
+facets.rung = "chip"
 facets.cluster = ["engineering"]
 facets.hostility = "macos-clean"
 keywords = ["로봇", "robot", "bot", "매니퓰레이터", "구동", "actuator"]
@@ -110,6 +118,7 @@ label = "물질·재료"
 canvas_mode = "matter"
 prerequisites = []
 facets.scale = "molecular"
+facets.rung = "materials"
 facets.cluster = ["matter", "physical"]
 facets.hostility = "macos-clean"
 substrate_ssot = "~/core/hexa-matter/"
@@ -120,6 +129,7 @@ label = "화학·반응"
 canvas_mode = "cohort"
 prerequisites = ["matter"]
 facets.scale = "molecular"
+facets.rung = "chem"
 facets.cluster = ["chem", "matter"]
 facets.hostility = "macos-clean"
 substrate_ssot = "~/core/hexa-chem/"
@@ -130,10 +140,106 @@ label = "생물·분자"
 canvas_mode = "cohort"
 prerequisites = ["chem", "matter"]
 facets.scale = "molecular"
+facets.rung = "bio"
 facets.cluster = ["bio", "chem", "life"]
 facets.hostility = "macos-clean"
 substrate_ssot = "~/core/hexa-bio/"
 keywords = ["생물", "bio", "단백질", "protein", "dna", "rna", "drug", "molecule"]
+
+# Bio PRODUCTs (built on the [bio] category) — faithful α-helix 3D from real
+# structural counts (descriptor web/public/models/<ID>/model.3d.json). No
+# <id>.demi verb-cell yet → honest ⚪ unverified (a faithful shape ≠ a verdict).
+
+[aga-rx]
+label = "탈모 치료제 발굴"
+canvas_mode = "cohort"
+prerequisites = ["bio"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+facets.uniprot = "Q8N474"   # SFRP1 — AlphaFold-DB entry (real predicted fold)
+keywords = ["탈모", "발모", "hair", "sfrp1", "wnt"]
+
+[senolyx]
+label = "노화세포 제거제"
+canvas_mode = "cohort"
+prerequisites = ["bio"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+facets.pdb = "3ZLR"   # BCL-xL — experimental RCSB entry (solved structure)
+keywords = ["노화", "senolytic", "bcl-xl", "항노화"]
+
+# CHEM PRODUCT — a real small molecule (the AGA-RX lead compound), rendered as a
+# real 3D ball-and-stick from its PubChem SDF (facets.pubchem → /api/structure).
+[way-316606]
+label = "탈모 후보물질 (WAY-316606)"
+canvas_mode = "cohort"
+prerequisites = ["aga-rx"]
+facets.scale = "molecular"
+facets.rung = "chem"
+facets.cluster = ["chem", "bio"]
+facets.hostility = "macos-clean"
+facets.pubchem = "16727102"   # WAY-316606 · C18H19F3N2O4S2 · 29 heavy atoms (§9.1a)
+keywords = ["way-316606", "분자", "molecule", "sfrp1 inhibitor", "탈모"]
+
+# CURE-family PRODUCTs (built on a bio source). Structure ref ONLY where §9.1
+# gives REAL data — AGA-CURE reuses AGA-RX's SFRP1 fold, IVD-CURE reuses
+# SENOLYX's BCL-xL. OA/PERIO/RETINA-CURE have NO own PDB (η_neo modeling) → NO
+# structure facet → honest generic bio 3D + ⚪ unverified (none invented).
+[aga-cure]
+label = "탈모 완치"
+canvas_mode = "cohort"
+prerequisites = ["aga-rx"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+facets.uniprot = "Q8N474"   # reuses AGA-RX SFRP1 fold
+keywords = ["탈모", "완치", "cure", "wnt", "sfrp1"]
+
+[ivd-cure]
+label = "디스크 완치"
+canvas_mode = "cohort"
+prerequisites = ["senolyx"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+facets.pdb = "3ZLR"   # reuses SENOLYX BCL-xL (senolytic axis)
+keywords = ["디스크", "ivd", "추간판", "완치", "senolytic"]
+
+[oa-cure]
+label = "관절염 완치"
+canvas_mode = "cohort"
+prerequisites = ["bio"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+keywords = ["관절염", "골관절염", "oa", "연골", "완치"]
+
+[perio-cure]
+label = "잇몸 완치"
+canvas_mode = "cohort"
+prerequisites = ["bio"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+keywords = ["잇몸", "치주", "perio", "완치"]
+
+[retina-cure]
+label = "망막 완치"
+canvas_mode = "cohort"
+prerequisites = ["bio"]
+facets.scale = "molecular"
+facets.rung = "bio"
+facets.cluster = ["bio", "chem", "life"]
+facets.hostility = "macos-clean"
+keywords = ["망막", "retina", "müller", "재생", "완치"]
 
 # ─────────────────────────────────────────────────────────────────
 # System tier
@@ -144,6 +250,7 @@ label = "에너지"
 canvas_mode = "cohort"
 prerequisites = ["grid"]
 facets.scale = "system"
+facets.rung = "system"
 facets.cluster = ["engineering", "physical"]
 facets.hostility = "macos-clean"
 keywords = ["에너지", "배터리", "energy", "태양", "solar", "전력", "발전", "원자로"]
@@ -153,6 +260,7 @@ label = "AI 데이터센터·전력망"
 canvas_mode = "cohort"
 prerequisites = ["cern", "rtsc"]
 facets.scale = "system"
+facets.rung = "system"
 facets.cluster = ["engineering", "physical"]
 facets.hostility = "macos-clean"
 keywords = ["데이터센터", "grid", "데이터", "서버", "랙", "fabric"]
@@ -162,6 +270,7 @@ label = "자율주행"
 canvas_mode = "cohort"
 prerequisites = ["fusion"]
 facets.scale = "system"
+facets.rung = "system"
 facets.cluster = ["engineering"]
 facets.hostility = "macos-blocked"
 keywords = ["자율주행", "mobility", "자동차", "차량", "자율", "운전"]
@@ -171,6 +280,7 @@ label = "망원경·광학"
 canvas_mode = "cohort"
 prerequisites = ["space"]
 facets.scale = "system"
+facets.rung = "system"
 facets.cluster = ["physical", "sensing"]
 facets.hostility = "macos-clean"
 keywords = ["망원경", "scope", "거울", "광학", "telescope"]
@@ -180,6 +290,7 @@ label = "우주·항공"
 canvas_mode = "cohort"
 prerequisites = []
 facets.scale = "system"
+facets.rung = "system"
 facets.cluster = ["physical", "engineering"]
 facets.hostility = "macos-clean"
 substrate_ssot = "~/core/hexa-space/"
@@ -190,6 +301,7 @@ label = "가속기·입자"
 canvas_mode = "cohort"
 prerequisites = ["chip"]
 facets.scale = "system"
+facets.rung = "system"
 facets.cluster = ["physical"]
 facets.hostility = "macos-clean"
 substrate_ssot = "~/core/hexa-cern/"
@@ -200,6 +312,7 @@ label = "반물질·트랩"
 canvas_mode = "cohort"
 prerequisites = ["matter", "space"]
 facets.scale = "system"
+facets.rung = "system"
 facets.cluster = ["physical"]
 facets.hostility = "macos-clean"
 substrate_ssot = "~/core/hexa-antimatter/"
@@ -210,6 +323,7 @@ label = "핵융합"
 canvas_mode = "cohort"
 prerequisites = ["antimatter", "cern", "energy", "rtsc"]
 facets.scale = "system"
+facets.rung = "system"
 facets.cluster = ["physical"]
 facets.hostility = "macos-partial"
 substrate_ssot = "~/core/hexa-fusion/"
@@ -224,6 +338,7 @@ label = "UFO·디스크 추진"
 canvas_mode = "cohort"
 prerequisites = ["fusion", "antimatter", "rtsc"]
 facets.scale = "system"
+facets.rung = "system"
 facets.cluster = ["physical", "propulsion"]
 facets.hostility = "macos-clean"
 substrate_ssot = "~/core/hexa-ufo/"

@@ -103,7 +103,7 @@ export default async function AppLayout({
           폰트는 랜딩 SiteHeader 100% 동일(시스템 산세리프·font-black·22px·-0.04em·노랑 닷). */}
       <div className="shrink-0 p-2">
         <Link
-          href="/dashboard"
+          href="/cosmos"
           aria-label="demiurge — home"
           className="mb-0.5 flex items-center px-2 py-1.5 hover:opacity-80"
         >

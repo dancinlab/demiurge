@@ -1,9 +1,10 @@
-// /analyze/[...domain] — slot = analyze-specific Q12 viewer.
+// /analyze/[...domain] — slot = §6 3D-first verb surface (DomainModel3D-centric).
+// Problem parts glow red/amber ON the 3D model + a [고치기] re-scan affordance.
 // catch-all [...domain] so nested meta/sub ids (e.g. CARDIO+/DAPTPGX) route as
 // path segments; flat ids (RTSC) arrive as a 1-element array. Joined with "/".
 
 import { VerbShell } from "@/components/VerbShell";
-import { pickSlot } from "@/components/slots/SlotViewers";
+import { VerbSurfaceSection } from "@/components/verb-surfaces/VerbSurfaceSection";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export default async function Page({ params }: { params: Promise<{ domain: strin
       verb="analyze"
       domain={domain}
       statusByVerb={{}}
-      slot={pickSlot("analyze", domain)}
+      slot={<VerbSurfaceSection verb="analyze" domain={domain} />}
     />
   );
 }

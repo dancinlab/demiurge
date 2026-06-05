@@ -1,9 +1,10 @@
-// /synth/[...domain] — slot = synth-specific Q12 viewer.
+// /synth/[...domain] — slot = §6 3D-first verb surface (DomainModel3D-centric).
+// The 3D model "powers on" (animate) + a progress strip per §6.
 // catch-all [...domain] so nested meta/sub ids (e.g. CARDIO+/DAPTPGX) route as
 // path segments; flat ids (RTSC) arrive as a 1-element array. Joined with "/".
 
 import { VerbShell } from "@/components/VerbShell";
-import { pickSlot } from "@/components/slots/SlotViewers";
+import { VerbSurfaceSection } from "@/components/verb-surfaces/VerbSurfaceSection";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export default async function Page({ params }: { params: Promise<{ domain: strin
       verb="synth"
       domain={domain}
       statusByVerb={{}}
-      slot={pickSlot("synth", domain)}
+      slot={<VerbSurfaceSection verb="synth" domain={domain} />}
     />
   );
 }

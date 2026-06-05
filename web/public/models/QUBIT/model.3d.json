@@ -1,0 +1,13 @@
+{
+  "kind": "procedural",
+  "shape": "junction",
+  "label": "Josephson junction (QUBIT)",
+  "params": {
+    "padW": 3.5,
+    "padH": 0.18,
+    "padD": 2.2,
+    "gap": 0.9,
+    "barrierR": 0.5,
+    "barrierH": 0.08
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "procedural",
+  "shape": "helix",
+  "label": "SFRP1 α-helix (314 res · UniProt Q8N474)",
+  "params": {
+    "residues": 314,
+    "turns": 87,
+    "perTurn": 4,
+    "radius": 1,
+    "pitch": 1.2,
+    "strands": 1,
+    "src": "UniProt Q8N474 (SFRP1) · length 314 → 314/3.6 ≈ 87 α-helix turns · COSMOS.md §9.1a"
+  }
+}

@@ -9,7 +9,7 @@ import type { NextRequest } from "next/server";
 // Routes under /(app) that require a session.
 // library/matter are no longer first-class routes (#6b) — they redirect to
 // /dashboard (still gated). Kept here so the redirect itself stays behind auth.
-const PROTECTED = /^\/(dashboard|spec|structure|design|analyze|synth|verify|handoff|discover|library|matter|admin|account)(\/.*)?$/;
+const PROTECTED = /^\/(cosmos|d|dashboard|spec|structure|design|analyze|synth|verify|handoff|discover|library|matter|admin|account)(\/.*)?$/;
 
 const ACTIVE_COOKIE = "demiurge.active.domain";
 
