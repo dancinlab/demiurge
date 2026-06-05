@@ -261,12 +261,12 @@ const TMP_COLOR = new THREE.Color();
 // guard is the node-count threshold. SSR-safe (returns true under no `window`,
 // decided again client-side).
 function canRenderShapeGlyphs(nodeCount: number): boolean {
-  if (nodeCount > OVERVIEW_GLYPH_FALLBACK_THRESHOLD) return false;
-  if (typeof navigator !== "undefined") {
-    const cores = navigator.hardwareConcurrency;
-    if (typeof cores === "number" && cores > 0 && cores < 4) return false;
-  }
-  return true;
+  // The overview constellation deliberately uses SIMPLE round glyphs (circles /
+  // spheres) — per-rung 3D shapes made the wide view too busy. Detail surfaces
+  // (/d/<domain>, /sample cards via DomainModel3D) keep the high-quality shapes.
+  // Returning false everywhere forces the lightweight sphere-glyph path.
+  void nodeCount;
+  return false;
 }
 
 // One InstancedMesh for ALL nodes that share a rung shape. Per-instance matrix
