@@ -1,5 +1,37 @@
 # QFORGE-PERF — append-only step log
 
+## 2026-06-06 — DIIS-mixing 마일스톤 CLOSED (driver-level g5 · linear 58 → DIIS 16 iter)
+
+"better SCF preconditioner + mixing" 마일스톤(linear mixing → Pulay/Broyden DIIS) 닫음.
+배경: Pulay/DIIS density mixer(`qforge_anderson_next` · stdlib/qforge/mixing.hexa)와 SCF
+드라이버 배선(`qforge_scf_smeared` `and_depth>0` 분기 · 첫 iter linear fallback)은 이미
+origin/main 에 존재. 빠진 것 = 마일스톤 acceptance인 **driver-level head-to-head 게이트**
+(DIIS가 같은 고정점을 FEWER iter에 도달함을 실드라이버로 증명).
+
+추가: hexa-lang `stdlib/qforge/scf_diis_speedup_selftest.hexa` (g5 · PR#2794 draft, base main).
+같은 `qforge_scf_smeared` 드라이버 · 같은 ρ-의존 금속 셀(Hartree-like charge-slosh 피드백 +
+E_F 근접퇴화쌍 + Fermi-Dirac smearing) · 같은 β=0.3/σ=0.2/시작점에서 linear(and_depth=0) vs
+DIIS(and_depth=5). 유일한 차이 = 믹서 → iter gap은 DIIS 단독 기여(d6).
+
+verbatim 결과:
+```
+    [iters] linear=58  DIIS=16   (β=0.3, σ=0.2, gain=1.2)
+    [E_tot] linear=3.52945  DIIS=3.52945   |Δ|=1.0993e-09
+PASS (C) linear-mixing SCF converged
+PASS (C) DIIS-mixing SCF converged
+PASS (A) DIIS E_tot == linear E_tot (same fixed point) (Δ=1.0993e-09)
+PASS (A) max|ρ_diis − ρ_linear| < 1e-7 (same density · 7.66414e-10)
+PASS (B) DIIS iters < linear iters (16 < 58)
+qforge_scf_diis_speedup_selftest PASS
+```
+
+측정: **linear 58 → DIIS 16 iter (3.6× 절감) · 같은 고정점**(|ΔE_tot|=1.10e-9<1e-8 ·
+max|Δρ|=7.66e-10<1e-7) · 둘 다 수렴. d6 정직: 실측 iter 감소. 고gain(g=2.4)에선 linear
+발산(400 iter cap)/DIIS 18 iter — 더 강한 win이나 "같은 고정점" 앵커가 깨져 g=1.2 사용
+(둘 다 수렴 apples-to-apples). honest scope: docs-bench 드라이버 iter-count(GPU/wall 아님) ·
+TPA kinetic preconditioner 미구현(별 항목). 무회귀: mixing_selftest PASS. closure-status
+GATED-IMPL(5→4) → closed-measured(1→2), 7 closed + 4 grounded + 10 gated.
+
 ## 2026-06-01 — 도메인 생성 (el-ph 가속 백로그 시드 · depletion brainstorm)
 
 hexa-native QFORGE el-ph 엔진(stdlib/qforge · SCF·DFPT·λ·Tc · d_qforge_engine canonical,

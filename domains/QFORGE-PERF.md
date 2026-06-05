@@ -84,7 +84,7 @@ seed-from-zero 매 candidate       →    MLIP/Δ-ML pre-screen + transfer acros
 
 - [ ] **EPW-style Wannier |g| interpolation** 🧮algorithmic 🔬research-probe — **dense per-q DFPT 를 회피**: coarse-q DFPT 로 el-ph |g| 계산 → Wannier gauge 변환 → generalized Fourier 로 dense (k,q) interpolate (arxiv 1005.4418 · 1604.03525 · npj 2023). field 의 단일 최대 el-ph 속도향상 · 29-pod teardown 을 유발한 dense-DFPT 를 직접 죽임. falsifier: interpolated λ·Tc == dense-DFPT λ·Tc (LaH10·CaH6 cross-val) ∧ DFPT q-count Δ (coarse 4³ vs dense). **= priority #1**.
 - [ ] **Chebyshev-filtered subspace iter (CheFSI)** 🧮algorithmic 🔬research-probe — Davidson 의 O(N³) 명시적 eigenvector 계산 회피 — 저차 Chebyshev 다항식으로 occupied subspace 정제 (arxiv cond-mat/0703239 · Saad/Zhou). 중간 SCF iter 는 정확 고유벡터 불필요. falsifier: 수렴 ρ == Davidson ρ ∧ matvec-count Δ.
-- [ ] **better SCF preconditioner + mixing** 🧮algorithmic 🟢bench-needed — linear mixing → Pulay/Broyden DIIS(arxiv 1803.01763) + Teter-Payne-Allan(TPA) kinetic-energy preconditioner. metal/small-gap(d15 smear 영역)에서 SCF iter-count 직접 절감. falsifier: SCF iter-count Δ ∧ 수렴값 불변.
+- [x] **better SCF preconditioner + mixing** 🧮algorithmic 🟢bench-VERIFIED — linear mixing → Pulay/Broyden DIIS(arxiv 1803.01763). DIIS density mixer(`qforge_anderson_next` · mixing.hexa)는 이미 SCF 드라이버에 배선됨(`qforge_scf_smeared` `and_depth>0` 분기 · 첫 iter linear fallback). **g5 driver-level 게이트 추가**(hexa-lang `scf_diis_speedup_selftest.hexa` · PR#2794 draft): 같은 드라이버·같은 금속 셀(ρ-피드백 charge-slosh + E_F 근접퇴화 + Fermi-Dirac smearing)·같은 β/σ/시작점에서 linear(and_depth=0) vs DIIS(and_depth=5). **측정: linear 58 → DIIS 16 iter (3.6× 절감) · 같은 고정점**(|ΔE_tot|=1.10e-9<1e-8 · max|Δρ|=7.66e-10<1e-7)·둘 다 수렴. falsifier(SCF iter-count Δ ∧ 수렴값 불변) PASS. **honest scope**: docs-bench 드라이버 iter-count 검증(GPU/wall-time 아님) · TPA kinetic preconditioner 부분은 미구현(별 항목). 고gain(g=2.4)에선 linear 발산(400 iter cap) DIIS 18 iter — 더 강한 win이나 "같은 고정점" 앵커가 깨져 g=1.2 사용(둘 다 수렴 apples-to-apples).
 - [x] **k/q symmetry reduction + Γ-only fast path** 🧮algorithmic 🟢bench-needed ✅CLOSED-FORM — irreducible BZ wedge 는 **정확** (λ=Σ_q w_q λ_q 가 star-sum 복원에 불변 · 근사 아님). q-count 천장 = 결정 점군 위수: LaH10(Fm-3m)·CaH6(Im-3m) 입방정 Oh → **|G|=48×** (Γ-only → q-count=1). **verdict: `.verdicts/qforge-perf-roofline/symmetry-48.txt` (🟢)**.
 - [ ] **randomized / sketched eigensolver** 🧮algorithmic ⚪speculative — 큰 eigenproblem 에 randomized Rayleigh-Ritz / sketched-GMRES (arxiv 2111.00113). falsifier: 고유값 정확도 == 고전 ∧ wall/storage Δ.
 - [x] **Lanczos vs Davidson 비교** 🧮algorithmic ⚪speculative ✅CLOSED-MEASURED — docs-only bench 에 대칭 Lanczos(full-reorth) 구현 → 엔진 Davidson 과 동일 행렬에서 λ₀ **1e-8 일치**. 동일 정확도에서 Lanczos 75 matvec vs Davidson 11 preconditioned iter → **Lanczos matvec 이점 없음, Davidson 유지**. **verdict: `.verdicts/qforge-perf-roofline/lanczos-vs-davidson.txt` (🟢)** · driver `bench/qforge/lanczos_vs_davidson.hexa`.
@@ -117,7 +117,7 @@ prior-art 로 정당화된 랭킹:
 - **intra-repo (g67)**: `forge_dispatch_matmul`(CPU farr↔cuBLAS byte-eq) · NVPTX target(compiler/codegen/nvptx_target.hexa · WMMA · RFC 055/071) · cuda_rtc(self/ml/cuda_rtc.hexa · rtc_launch · PTX cache) · FFT(stdlib/signal fft3_real/ifft3 — cuFFT path 미존재, Lane A 항목). 측정 잣대 [[GPU-ROOFLINE]] (RTX 5070 · A100 roofline). GPU device-routing 선례 [[FLAME-PERF]] (CLM matmul→forge H100 실증).
 - **cross-repo (g68)**: demiurge PWFORGE/QFORGE 캠페인(RTSC el-ph)이 이 엔진의 down-stream 소비자 — 가속은 거기서 wall-time·$ 로 실현됨. **honest scope**: 이 도메인은 hexa-lang stdlib/qforge 의 PROPOSAL 백로그일 뿐, demiurge 캠페인 코드는 건드리지 않음(d3 canonical home · d9 worktree isolation). 별도 QFORGE CaH6-run agent 활성 — stdlib/qforge edit 회피, 이 도메인은 docs-only.
 
-## closure status — 21/21 terminal (g63 정직 · 2026-06-01)
+## closure status — 21/21 terminal (g63 정직 · 2026-06-01 · DIIS-mixing closed 2026-06-06)
 
 도메인의 모든 백로그 항목이 **terminal** 상태에 있다. terminal = ① 측정-grounded(분모
 박제) · ② closed-form CLOSED(verdict 박제) · ③ GATED(외부 blocker 명시 + unblock
@@ -129,24 +129,28 @@ terminal 상태       건수   항목
 ─────────────────   ────   ─────────────────────────────────────────────────────
 ✅ closed-form (🟢)   5    SIMD-INERT(🔴neg) · mixedprec-2× · multigrid-fav ·
                             symmetry-48 · threading-10  (verdicts 박제)
-✅ closed-measured    1    Lanczos vs Davidson (docs-only bench · λ₀ 1e-8 일치 ·
-                            75 vs 11 iter → Davidson 유지 · 🟢 verdict 박제)
+✅ closed-measured    2    Lanczos vs Davidson (docs-only bench · λ₀ 1e-8 일치 ·
+                            75 vs 11 iter → Davidson 유지 · 🟢) · DIIS-mixing
+                            (driver g5 · linear 58 vs DIIS 16 iter · 같은 고정점
+                            |ΔE|=1.1e-9 · PR#2794 · 🟢)
 📊 grounded (분모)    4    H_apply 0.140 GFLOP/s · FFT/Davidson/Sternheimer wall
                             (bench §2/§7 — speedup 비율의 분모, GPU-Δ 게시 시 close)
 ⛔ GATED-GPU         4    H_apply/Davidson/Sternheimer/cuFFT GPU-GEMM
                             → blocker: GPU pod (전부 STOPPING) · trigger: pod READY
-⛔ GATED-IMPL        5    EPW-Wannier · CheFSI · DIIS-mixing · randomized · adaptive-q
+⛔ GATED-IMPL        4    EPW-Wannier · CheFSI · randomized · adaptive-q
                             → blocker: SCF-context Ritz bound / 연구급 구현 ·
                             trigger: docs-only bench-driver OR 엔진 owner 구현
 ⛔ GATED-RESEARCH    6    🧠 LANE C 전부 → blocker: ML 학습 infra + GPU + 연구 ·
                             trigger: 별도 ML 도메인 (CLM-KOSMOS 류)
 ─────────────────   ────
-합계                21    (= 6 closed + 4 grounded + 11 gated · 0 ambiguous)
+합계                21    (= 7 closed + 4 grounded + 10 gated · 0 ambiguous)
 ```
 
 > grounded 4 는 `🟢bench-needed` ⚡ 항목 — 분모는 측정됐고(close 의 절반), 실 GPU-Δ
-> 만 남음. 따라서 `- [ ]` 유지가 정직(천장≠구현, H_apply 선례). GATED 12 는 외부 의존이
-> 명시돼 terminal — 본 docs-only 도메인이 더 진행할 수 없는 honest 경계.
+> 만 남음. 따라서 `- [ ]` 유지가 정직(천장≠구현, H_apply 선례). GATED 11 은 외부 의존이
+> 명시돼 terminal — 본 docs-only 도메인이 더 진행할 수 없는 honest 경계. DIIS-mixing 은
+> 2026-06-06 driver-level g5(linear 58 → DIIS 16 iter · 같은 고정점)로 GATED-IMPL →
+> closed-measured 승격(PR#2794) — docs-bench 드라이버로 닫을 수 있었던 알고리즘 항목.
 
 ## scope — 정직 (g6/g63)
 
