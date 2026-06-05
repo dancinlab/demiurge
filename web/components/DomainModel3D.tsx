@@ -10,7 +10,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import {
   isStylizedDescriptor,
@@ -108,6 +108,30 @@ export function DomainModel3D({
   );
   const [loadFailed, setLoadFailed] = useState(false);
 
+  // WebGL-context budget: each R3F <Canvas> is its own context, and browsers cap
+  // ~8-16 with no cross-context sharing. On a many-card page (e.g. /sample = 6
+  // rung cards + 3 structure viewers = 9 contexts) we lazy-mount the Canvas only
+  // when the card scrolls near the viewport, and UNMOUNT it when it scrolls far
+  // away — so the live-context count tracks what's actually on screen, never the
+  // full card count. Until then a cheap CSS-3D placeholder fills the slot. The
+  // observer uses a generous rootMargin so the canvas is ready just before
+  // entry (no pop-in).
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setInView(true); // no IO support → mount eagerly (correctness over budget)
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => setInView(entries.some((e) => e.isIntersecting)),
+      { rootMargin: "300px 0px", threshold: 0.01 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   // Client-side descriptor resolution when none was supplied as a prop.
   useEffect(() => {
     if (descriptor) {
@@ -151,19 +175,31 @@ export function DomainModel3D({
   // D3 honesty: a stylized symbol fallback (or a load failure) is badged so the
   // user is never misled into reading a placeholder as faithful geometry.
   const stylized = isStylized(resolved);
+  // R3F (real WebGL context) only when resolved AND scrolled into view; else the
+  // cheap CSS-3D placeholder. data-mode exposes the gate for QA.
+  const showR3F = resolved && inView;
   return (
     <div
+      ref={rootRef}
       data-scene={sceneName}
       data-domain={domain}
-      data-mode={loadFailed ? "error" : resolved ? "r3f" : "resolving"}
+      data-mode={
+        loadFailed
+          ? "error"
+          : !resolved
+            ? "resolving"
+            : inView
+              ? "r3f"
+              : "offscreen"
+      }
       className="relative h-full w-full"
     >
-      {resolved ? (
+      {showR3F ? (
         <DomainModel3DR3F descriptor={resolved} state={state} />
       ) : (
         <StructureViewer
-          atoms={fallbackAtoms(descriptor)}
-          caption={`${domain} · resolving…`}
+          atoms={fallbackAtoms(descriptor ?? resolved)}
+          caption={`${domain} · ${resolved ? "scroll to view" : "resolving…"}`}
         />
       )}
       {loadFailed && errorLabel && (
