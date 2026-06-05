@@ -351,3 +351,9 @@
 - GATE (≤1%): NOT MET — honest near-miss, NOT faked to 4.376 (d6/@L5). Residual 5.47% = the screening-functional gap: QFORGE el-ph |g|² is the BARE matrix element (Hartree+LDA-exch, no correlation-XC); QE uses ε⁻¹-screened |g|².
 - NAMED BREAKTHROUGH (d2): Anderson/Broyden screened-FC/ΔV β-knob (screening_anderson.hexa) — un-damped Picard screening diverges on converged metallic ρ (d15-class). This is the ONE remaining step to close the migration gate.
 - converged-CaH6 stays [ ] (gate unmet) · dissolution stays [ ] (chains off — needs λ within 1%). Filed hexa-run cache dep-graph staleness bug → inbox/patches (d8).
+
+## 2026-06-05 — screening-XC closure: honest NEGATIVE + wall localized (#2770, gate NOT met)
+- Built qforge_pw_frontend_phonons_scr: self-consistent SCREENED ΔV via qforge_screened_dv_columns_anderson (Dyson ΔV_scr=ΔV_bare+v_c·χ₀·ΔV_scr, GMRES on (I−L)x, metallic-stable where ‖L‖>1).
+- SCREENED CaH6 λ=5.05165 vs QE 4.376 → rel-ε=15.44% (worse than bare 4.137). HONEST: NOT faked. Diagnosis (d6) — the λ shift is NOT screening: witness = 0 Anderson iters · ‖ΔV_scr‖/‖ΔV_bare‖=1.0 (at n=645 the coefficient-space screening correction fell below the 1e-8 seed → screened==bare; λ change was phonon ω_log RMS-anchor variance 1370→1118K, a single-cell artifact).
+- TWO findings: (1) the Anderson β-knob IS metallic-stable (n=16: ratio=1.82·conv·‖res‖=7.9e-8·120iter — reproduces FFT-Poisson exactly); (2) the coefficient-space diagonal screening does NOT scale to converged basis. WALL LOCALIZED (d2): needs pow2-padded real-space FFT Poisson V_H[Δρ] (scf_pw.hexa:88 non-pow2 wall) → registered as named milestone.
+- summer RTX5070 hexa toolchain BROKEN (runtime.o cache-miss, clang18/glibc2.39 reject malloc shim) — filed inbox/patches/runtime-malloc-macro-clang18-glibc239.md (d8); run routed to mini. NO paid rent. RTSC anchors read-only.
