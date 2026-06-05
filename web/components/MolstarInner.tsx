@@ -1,20 +1,19 @@
 "use client";
 
-// MolstarInner — the actual pdbe-molstar (Mol*) mount (COSMOS.md §9.1b).
+// MolViewerInner — the 3Dmol.js structure mount (COSMOS.md §9.1b).
 //
 // Loaded ONLY via MolViewer's `dynamic(ssr:false)` boundary — never imported on
-// the server (molstar touches window/WebGL at module scope). It:
-//   1. mounts a PDBeMolstarPlugin on a useRef <div> in useEffect,
+// the server (3Dmol touches window/WebGL at module scope). It:
+//   1. creates a $3Dmol viewer on a useRef <div> in useEffect,
 //   2. feeds the structure from OUR proxy `/api/structure?source=…&id=…`
-//      (server-side mmCIF fetch — dodges CORS + caches; pLDDT is in the B-factor
-//      column of an AlphaFold mmCIF),
-//   3. applies `alphafoldView` (the built-in pLDDT confidence colouring) for an
-//      alphafold source, plain cartoon for an experimental pdb source,
-//   4. disposes the inner Mol* PluginContext on cleanup (no leaked WebGL context).
+//      (server-side mmCIF / SDF fetch — dodges CORS + caches),
+//   3. styles per source: alphafold → cartoon coloured by B-factor (pLDDT
+//      confidence) · pdb → cartoon spectrum · pubchem → ball-and-stick molecule,
+//   4. clears the viewer/canvas on cleanup (no leaked WebGL context).
 //
-// We import from `pdbe-molstar/lib/viewer` (NOT the package root) on purpose: the
-// root entry pulls a `.scss` import that Next's bundler does not process for a
-// dependency. We load the prebuilt CSS via a CDN <link> on mount instead.
+// We use 3Dmol.js (BSD-3) instead of pdbe-molstar/Mol*: Mol* pulls
+// molstar → h264-mp4-encoder, whose bare `require("fs")` breaks the Next/Turbopack
+// production build. 3Dmol has no such transitive dep and loads PDB/mmCIF + SDF.
 
 import { useEffect, useRef } from "react";
 
@@ -23,26 +22,10 @@ export type MolViewerProps = {
   id: string;
 };
 
-// The body format Mol* must parse per source: protein folds = mmCIF, small
+// The body format 3Dmol must parse per source: protein folds = mmCIF, small
 // molecule (pubchem) = SDF.
 function viewerFormat(source: MolViewerProps["source"]): "cif" | "sdf" {
   return source === "pubchem" ? "sdf" : "cif";
-}
-
-// Prebuilt pdbe-molstar stylesheet (matches the installed major version). Loaded
-// once, lazily, on the client — keeps the controls/canvas styled without routing
-// the package's .scss through the Next bundler.
-const PDBE_CSS_HREF =
-  "https://cdn.jsdelivr.net/npm/pdbe-molstar@3.3.0/build/pdbe-molstar.css";
-
-function ensurePdbeCss(): void {
-  if (typeof document === "undefined") return;
-  if (document.getElementById("pdbe-molstar-css")) return;
-  const link = document.createElement("link");
-  link.id = "pdbe-molstar-css";
-  link.rel = "stylesheet";
-  link.href = PDBE_CSS_HREF;
-  document.head.appendChild(link);
 }
 
 export default function MolstarInner({ source, id }: MolViewerProps) {
@@ -52,31 +35,53 @@ export default function MolstarInner({ source, id }: MolViewerProps) {
     const el = containerRef.current;
     if (!el) return;
 
-    ensurePdbeCss();
-
     let disposed = false;
-    // The plugin instance, captured for cleanup. Typed loosely because we
-    // import the module dynamically below (keeps it out of the server graph).
-    let viewer: { plugin?: { dispose?: () => void } } | null = null;
+    // The viewer instance, captured for cleanup. Typed loosely — the module is
+    // imported dynamically below (keeps it out of the server graph).
+    let viewer: { clear?: () => void } | null = null;
 
     (async () => {
       try {
-        const { PDBeMolstarPlugin } = await import("pdbe-molstar/lib/viewer");
+        // 3dmol's package main is a UMD build; default-or-namespace interop.
+        const mod = (await import("3dmol")) as unknown as Record<string, unknown>;
+        const $3Dmol = (mod.default ?? mod) as {
+          createViewer: (el: HTMLElement, cfg: Record<string, unknown>) => {
+            addModel: (data: string, fmt: string) => void;
+            setStyle: (sel: Record<string, unknown>, style: Record<string, unknown>) => void;
+            zoomTo: () => void;
+            render: () => void;
+            clear: () => void;
+            resize: () => void;
+          };
+        };
         if (disposed) return;
-        viewer = new PDBeMolstarPlugin();
-        await viewer.render(el, {
-          customData: {
-            url: `/api/structure?source=${source}&id=${encodeURIComponent(id)}`,
-            format: viewerFormat(source),
-            binary: false,
-          },
-          // pLDDT confidence colouring — only meaningful for an AlphaFold model.
-          alphafoldView: source === "alphafold",
-          bgColor: { r: 22, g: 19, b: 15 }, // match the detail-card #16130f panel
-          hideControls: true,
-          sequencePanel: false,
-          landscape: true,
-        });
+
+        const res = await fetch(
+          `/api/structure?source=${source}&id=${encodeURIComponent(id)}`,
+        );
+        if (!res.ok) throw new Error(`structure proxy ${res.status}`);
+        const data = await res.text();
+        if (disposed) return;
+
+        const v = $3Dmol.createViewer(el, { backgroundColor: 0x16130f });
+        viewer = v;
+        v.addModel(data, viewerFormat(source));
+        if (source === "pubchem") {
+          // small molecule — ball-and-stick.
+          v.setStyle({}, { stick: { radius: 0.15 }, sphere: { scale: 0.28 } });
+        } else if (source === "alphafold") {
+          // colour the cartoon by B-factor = pLDDT confidence (high→blue).
+          v.setStyle(
+            {},
+            { cartoon: { colorscheme: { prop: "b", gradient: "roygb", min: 50, max: 90 } } },
+          );
+        } else {
+          // experimental fold — rainbow spectrum cartoon.
+          v.setStyle({}, { cartoon: { color: "spectrum" } });
+        }
+        v.zoomTo();
+        v.render();
+        v.resize();
       } catch (err) {
         // Surface load failures honestly in-canvas rather than crashing the page.
         if (!disposed && el) {
@@ -84,14 +89,15 @@ export default function MolstarInner({ source, id }: MolViewerProps) {
             '<div style="display:flex;height:100%;align-items:center;justify-content:center;color:#a89f93;font-size:12px;padding:8px;text-align:center">3D 구조를 불러오지 못했습니다.</div>';
         }
         // eslint-disable-next-line no-console
-        console.error("[MolstarInner] render failed:", err);
+        console.error("[MolViewerInner] render failed:", err);
       }
     })();
 
     return () => {
       disposed = true;
       try {
-        viewer?.plugin?.dispose?.();
+        viewer?.clear?.();
+        if (el) el.innerHTML = "";
       } catch {
         /* best-effort cleanup */
       }
