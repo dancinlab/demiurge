@@ -817,3 +817,7 @@ is BARE (un-screened) FC; screening hardens ω → lowers λ. (3) **anharmonic/S
 renormalization (CaH6 H-sublattice strongly anharmonic; QE 2.27 is harmonic; SSCHA lowers λ).
 All three push λ DOWN from 3.45 toward 2.27 — physically consistent with the overshoot sign.
 NPW held at 64 (eig0 plateau confirmed PR#2536). Pool: aiden FREE. NEVER ran on mac.
+
+## 2026-06-06 — 2 shipped perf wins registered closed (this session)
+- #2787 fft_native in-place butterfly: O(n²·log n)→O(1) alloc/FFT. Removed the converged el-ph OOM root (RSS 4-5GB→508MB) + large speedup. ALL FFT users benefit (signal·qforge). g5 fft3 selftest ALL PASS (round-trip 8.88e-16, byte-identical).
+- #2786 FFT-Poisson scratch-buffer reuse: per-fold/per-band Ntot grid alloc → module scratch (distinct REAL0/1 to avoid psi·dpsi alias). correctness-neutral (smoke byte-identical).
