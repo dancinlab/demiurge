@@ -237,3 +237,10 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - STILL beats baseline massively: anchor sequential = ~6h/q × 4 = ~24h for q5-q8 (the "~4day" figure was full-8q-from-scratch). Shards do 16 windows in parallel → ~3.5h vs ~24h = ~7× speedup.
 - Shards CANNOT be re-parallelized mid-flight (ph.x np fixed at launch). Future optimization: np=16 on the higher-core pods would ~halve per-rep wall.
 - master.sh phase-1 cap = 48 rounds × ~6min ≈ 4.8h — adequate for the ~3.5h finish.
+
+## 2026-06-07 — heal v3: mutex-deadlock fix + independent provisioners
+- heal_par2 DEADLOCKED: one pod (q8-s2) went unreachable mid-upload while holding the mkdir-mutex → blocked all other uploads. Root cause: shared lock + no per-upload timeout.
+- Plus recurring vast key-injection flakiness (publickey-denied on running pods, survives reboot) + 2 pods self-terminated (KR/CN budget hosts).
+- FIX: prov_one.sh = fully independent per-pod provisioner, NO shared mutex, timeout 600s on scp + size-verify + 1 retry (handles truncation directly). Launched 6 independent (q6-s4, q8-s1, q5-s2, q7-s3, q8-s2, q5-s3) — all reached "qe kicked"/uploading cleanly.
+- Total pods churned: 16 orig + 8 (heal1) + 3 (heal2) + 2 (heal3) + 1 (q5-s3 self-term replace) = lots of vast flakiness; net 16 live shards. allmap.txt rebuilt with current endpoints; master reads it each round.
+- Anchor 39610026 untouched throughout (self-computing q5).
