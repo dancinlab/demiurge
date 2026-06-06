@@ -267,3 +267,8 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - Multiple harness-kill events (session date-change/skill-reload) killed monitoring helpers + a master relaunch wrapper, but master.sh CORE process survives each (forked, keeps polling master.out — confirmed updating at 04:32:54). Pods UNAFFECTED throughout (SSH OK, leader q7-s4 at 25/27).
 - Architecture proven background-resilient: the 16 nohup'd pod-side ph.x runs are the durable compute; local master.sh = restartable driver that polls allmap → assembles each q (recover) → harvests. Even total local death is recoverable from allmap.txt + pod phsave state.
 - Watcher b225csduh now monitors master.out progress (no extra SSH) → notifies at assembly/all-16. First q-point assembly-ready ~05:00-05:30; full ~05:30-06:00.
+
+## 2026-06-07 04:40 — FIRST SHARD DONE (q7-s4 irr88-114 JOB DONE)
+- q7-s4 (27 reps, irr88-114) = first shard to finish. START epoch 1780765006 (~Jun7 01:57 KST) → JOB DONE 04:40 KST = ~2h43min/shard (21min init + 27 reps × ~5.4min). Matches the honest ~3h/shard estimate.
+- All other 15 shards still computing. master.sh polling (will register done=1 next poll ~04:44).
+- Achieved-walltime data point: a single irr-window (27 reps) = ~2.7h on a budget np=8 pod. The anchor does 114 reps/q sequentially (~6h/q). So 4 parallel irr-shards/q ≈ same ~2.7h wall for a full q (vs 6h sequential) = ~2.2× per-q speedup from irr-split alone; ×4 q in parallel = the full campaign in ~3h vs the anchor's ~24h for q5-q8.
