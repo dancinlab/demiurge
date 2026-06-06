@@ -257,3 +257,8 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - Dispatch wall: ~02:00 first fires → 03:13 all 16 = ~73min to get all 16 lit (dominated by vast infra flakiness, NOT compute). Healthy 8 already ~70min into compute by then.
 - master.sh polling all 16; auto-assembles+harvests on completion. Anchor 39610026 untouched.
 - Pod churn total: ~30 rentals (16 final-live + ~14 destroyed-flaky). All flaky destroyed (no leak); teardown of the 16 live happens post-harvest.
+
+## 2026-06-07 03:29 — master driver restart (background-resilient)
+- Local master.sh orchestrator was killed by harness; RESTARTED via harness background. Pod-side shards UNAFFECTED (nohup'd ph.x runs independently) — confirmed q7-s4 at 15/27, q6-s2 at 11/29 still computing post-restart.
+- Architecture is background-resilient: pods carry the compute autonomously; the local driver only polls+assembles+harvests and is fully restartable from allmap.txt + the pods' phsave state.
+- Progress @03:24: q7-s4 leads (15/27), q6-s2 11/29, q6-s3, q6-s1, q5-s1 mid; late heal pods (q5-s2/s3, q8-s1/s2) still in init. ETA all-16-done ~06:00-06:30.
