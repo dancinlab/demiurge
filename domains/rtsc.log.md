@@ -250,3 +250,10 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - Final 2 (q5-s2 irr30-58, q5-s3 irr59-87) hit repeated vast flakiness (key-injection denial, network truncation, slow loaders) → churned through several pods (d_defer_no_delete), now provisioning SERIALLY on fresh pods 39765517/39765520 (no upload competition since other 14 done uploading).
 - FALLBACK: anchor 39610026 is independently computing ALL of q5 → guaranteed source for q5 irr30-87 if the 2 shards keep failing.
 - master.sh polling all 16 via updated allmap.txt; will auto-assemble+harvest on completion.
+
+## 2026-06-07 03:13 — ALL 16 SHARDS COMPUTING (dispatch complete)
+- All 16 q5-q8 irr-windows firing on QE 7.5, recover=.false., np=8 npool=4, electron_phonon='simple' (matches anchor ph.in exactly). 0 x_q errors across all 16.
+- Final 2 (q5-s2,q5-s3) succeeded on high-reliability pods (rel≥0.999) after destroying flaky predecessors. q5-s2 needed a QE-install retry (conda IncompleteRead network truncation on first attempt — common vast issue).
+- Dispatch wall: ~02:00 first fires → 03:13 all 16 = ~73min to get all 16 lit (dominated by vast infra flakiness, NOT compute). Healthy 8 already ~70min into compute by then.
+- master.sh polling all 16; auto-assembles+harvests on completion. Anchor 39610026 untouched.
+- Pod churn total: ~30 rentals (16 final-live + ~14 destroyed-flaky). All flaky destroyed (no leak); teardown of the 16 live happens post-harvest.
