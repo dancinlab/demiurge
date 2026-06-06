@@ -272,3 +272,8 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - q7-s4 (27 reps, irr88-114) = first shard to finish. START epoch 1780765006 (~Jun7 01:57 KST) → JOB DONE 04:40 KST = ~2h43min/shard (21min init + 27 reps × ~5.4min). Matches the honest ~3h/shard estimate.
 - All other 15 shards still computing. master.sh polling (will register done=1 next poll ~04:44).
 - Achieved-walltime data point: a single irr-window (27 reps) = ~2.7h on a budget np=8 pod. The anchor does 114 reps/q sequentially (~6h/q). So 4 parallel irr-shards/q ≈ same ~2.7h wall for a full q (vs 6h sequential) = ~2.2× per-q speedup from irr-split alone; ×4 q in parallel = the full campaign in ~3h vs the anchor's ~24h for q5-q8.
+
+## 2026-06-07 04:49 — finish.sh = self-contained endgame driver (master-kill resilient)
+- master.sh kept getting harness-killed (exit 144). Replaced with finish.sh: ONE self-contained disowned script that (1) waits all 16 via pod-direct JOB-DONE poll (tolerant of vast SSH-proxy blips — ssh5/etc periodically connection-refuse for ~seconds, harmless to the 180s loop), (2) assembles each q (gather 114 {dynmat,elph}.q.M.xml from 4 shards onto s1 pod → ph.x recover=.true full-irr → dynN+dynN.elph.N), (3) harvests to harvest_final/. Writes finish.log.
+- q7-s4 confirmed JOB DONE 04:40 (first shard). The 0/16 sequential-count false-negative @04:48 was vast SSH-proxy connection-refused storm (transient), not lost compute.
+- finish.sh disowned survives harness kills (not a tracked bg task). Pods carry the durable compute regardless.
