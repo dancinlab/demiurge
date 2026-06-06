@@ -230,3 +230,10 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - COMPLETE 16-shard allmap built: q5-q8 × {s1:1-29, s2:30-58, s3:59-87, s4:88-114}.
 - MASTER orchestrator (master.sh) launched as single long driver: phase1 wait-all-16-JOB-DONE (2h cap) → phase2 assemble each q (assemble_q.sh: gather 114 {dynmat,elph}.q.M.xml from 4 shards onto q's s1 pod, ph.x recover=.true. full-irr → dynN+dynN.elph.N) → phase3 harvest dyn5-8+elph5-8 → exports/rtsc/Li2MgH16/harvest_final/.
 - ANCHOR 39610026 untouched (self-computing q5 as independent cross-check).
+
+## 2026-06-07 — HONEST timing: budget CPU pods ~6min/rep (d6)
+- Measured q7-s4 (np=8 budget pod, load=8 fully saturated): ~21min q-init + ~6min/rep (10-11 SCF iters × ~35s). For 27-29 reps/shard → ~3-3.5h/shard wall.
+- This is SLOWER than the 2-3h target — the budget GPU-host CPUs (np=8) are ~2-3× slower than the anchor's Xeon node (np=32). 38-atom DFPT at 60Ry is genuinely heavy. NO faking (d6/@L5): real achieved walltime will be ~3-3.5h.
+- STILL beats baseline massively: anchor sequential = ~6h/q × 4 = ~24h for q5-q8 (the "~4day" figure was full-8q-from-scratch). Shards do 16 windows in parallel → ~3.5h vs ~24h = ~7× speedup.
+- Shards CANNOT be re-parallelized mid-flight (ph.x np fixed at launch). Future optimization: np=16 on the higher-core pods would ~halve per-rep wall.
+- master.sh phase-1 cap = 48 rounds × ~6min ≈ 4.8h — adequate for the ~3.5h finish.
