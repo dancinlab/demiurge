@@ -223,3 +223,10 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - REAL per-shard timing (q7-s4, np=8): q-init (k+q bands) = ~1265s (~21min) FLOOR, then ~110s/rep wall. 27 reps → ~71min total/shard. The 21-min init floor (not ~5min) VALIDATES k=4 over k=8 (more shards wouldn't beat the per-shard init floor — d6).
 - Estimated shard-campaign wall ≈ 70-90min + heal-stagger. Still << ~4-day sequential anchor baseline (anchor alone needs ~6h × 4 = 24h for q5-q8; full 8q from scratch was the ~4day figure).
 - Serial heal blocked on slow-loading CN/KR pods → switched to heal_par.sh: parallel provision (SSH-wait + QE-install concurrent), mkdir-mutex'd uploads (one 595M scp at a time = no uplink contention, the root cause of the 6 truncations).
+
+## 2026-06-07 — heal recovery v2 + master orchestrator launched
+- 3 heal pods unrecoverable (q5-s2 CN + q5-s3 KR stuck "loading" >10min; q7-s3 publickey-denied) → destroyed + re-rented fast Quebec-CA offers (d_defer_no_delete).
+- 7 unfired heal pods (4 interrupted-good + 3 new) → heal_par2.sh (parallel provision, mkdir-mutex uploads).
+- COMPLETE 16-shard allmap built: q5-q8 × {s1:1-29, s2:30-58, s3:59-87, s4:88-114}.
+- MASTER orchestrator (master.sh) launched as single long driver: phase1 wait-all-16-JOB-DONE (2h cap) → phase2 assemble each q (assemble_q.sh: gather 114 {dynmat,elph}.q.M.xml from 4 shards onto q's s1 pod, ph.x recover=.true. full-irr → dynN+dynN.elph.N) → phase3 harvest dyn5-8+elph5-8 → exports/rtsc/Li2MgH16/harvest_final/.
+- ANCHOR 39610026 untouched (self-computing q5 as independent cross-check).
