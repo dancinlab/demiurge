@@ -2,6 +2,45 @@
 
 Spec at [`./RTSC.md`](./RTSC.md). Log entries below preserve session-by-session evolution; the spec file holds only the current confirmed state.
 
+## 2026-06-02T07:43 — absorbed drafts/post-gate-14particle-qforge-batch.md
+
+---
+slug: post-gate-14particle-qforge-batch
+created: 2026-06-02
+trigger: CaH6-NC migration gate CLOSES (lane A real-cell SCF stabilized → screened λ measured → 3-anchor cross-val begins)
+status: ARMED (waiting on gate)
+---
+
+## Decision (user pick ① 완성도, 2026-06-02)
+When the CaH6-NC migration gate closes (QFORGE engine validated: real-cell SCF
+basis-stable + finite screened λ + CaH6/LaH10/Li2MgH16 λ·Tc cross-val), fire the
+**14 recovered partial-harvest candidates through QFORGE in one FREE batch**
+(pool/mini, no rent) — NOT via paid QE re-run.
+
+## The 14 partials (exports/rtsc/<cand>/harvest_partial/)
+BaAuH3 · CeH9 · H3S · LaBeH8 · LaBH8 · LuH10 · ScBeH8 · ScH9 · SrPtH3 · ThH10 ·
+YAuH3 · YBeH8 · YH9 · YSbH6
+- all are PARTIAL_EL_PHON (el-ph linear-response partial/done, λ·Tc finish pending)
+- preserved in DEFERRED.md + RTSC_LEDGER.jsonl (status: deferred · d_defer_no_delete)
+
+## Why gate-gated (not now)
+- QFORGE not yet production-trustworthy: real-cell SCF basis-unstable (lane A in flight),
+  screened ΔV path just unblocked (PR#2520) but unmeasured on stable SCF.
+- d_qforge_engine: no absorbed=true on an un-cross-val'd QFORGE result.
+- QE-now path = GPU rent cost + the QE-6.7 el-ph restart bug class (the LaH10/Li2MgH16 wall).
+
+## Fire recipe (when gate closes)
+1. Re-anchor done (PR#2521): gate target now λ≈2.27@170GPa, not 4.376.
+2. For each of the 14: feed its preserved structure + el-ph partial into the QFORGE
+   production orchestrator (hexa qforge run <deck> — the qforge-production-migration-plan
+   @L1/@L2 deliverable) on FREE pool/mini, parallel slots (d_parallel_fire).
+3. g5 each composed λ·Tc; atlas-register 🟢; scoreboard rollup.
+4. Fallback if gate never closes: QE 7.5 re-run (DEFERRED.md retry recipes A/B/C) under d17.
+
+## Pointer
+DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anchor d3c0fde.
+
+
 ## Log
 
 - **2026-05-27 KST** — **🧱 SUPERLATTICE cell-design protocol LANDED (P2 · compute-free design doc · mgb2_mgh2 실패 교훈 → 5-step commensurate stacking)**. `RTSC/protocols/SUPERLATTICE_CELL_DESIGN.md` (~164 lines). **motivation**: 역할분리 가설("딱딱한 stabilizer 층이 H soft-mode 클램프 + 강결합 H층 제공")의 첫 검증셀 **mgb2_mgh2 가 🔴** (Γ **−1373 cm⁻¹ × 2 · −1362** · `mgb2h(−1373×2)` precedent — labeh8 entry 가 clean closed-negative 사례로 인용) — 진단: (a) **on-top Mg** H placement 비현실적 (양이온 potential 극대·반발), (b) MgB₂↔MgH₂ in-plane **commensurability 미검토** (strain→soft mode), (c) c-축 arbitrary 2배 (LCM 주기 무시). **정직 분리**: 가설 **미반증** — 셀이 나빴음 (셀 결함 ≠ 가설 결함, d6). 5 deferred 후보 (lah_bn · cah6_b · h3as_h3o · mgb2_h3s · h3as_h3o_h3s) blind-dispatch 금지 → 셀-설계 protocol 선행. **5-step protocol**: (1) sub-layer 독립 안정화 (각 층 단독 vc-relax → in-plane lattice 추출) · (2) 2D commensurate lattice-match (ε_lattice <2% PASS / 2-5% supercell AMBER / ≥5% REJECT) · (3) interstitial H placement (on-top Mg 금지 → (a) electrostatic 최소점 (b) bond-length 휴리스틱 H–H>0.8Å·H–metal~1.5-2.0Å (c) 검증된 안정 hydride motif 차용 — 우선순위 (c)>(a)>(b)) · (4) stacking commensurability (c_super=LCM · AA vs AB registry 에너지 비교) · (5) stability pre-check gate (vc-relax→Γ-phonon→hard<−50 즉시 🔴 · full el-ph 전 차단 · AMBER 시 h3as R3m displaced-seed escape · **ω_log 보존 게이트** = stabilizer 가 ω_log 안 깎으면서 클램프해야 N5 bottleneck 미상속). **5-후보 cell-design table** (DFT 미실행 · ε·Tc·위험 = 입력 추정 verify-grade 아님): lah_bn (BN stiff frame + LaH_x · ε~10-15% supercell 필수) · cah6_b (B sheet + CaH₆ clathrate motif · 가압 필요) · h3as_h3o (h3as R3m clamp + h3o 강λ source · 가설 가장 직접 시험 · h3o anharmonic soft 상속 위험) · mgb2_h3s (mgb2_mgh2 정정 재시도 — H-rich 를 H₃S motif 로 · BETE-NET trustworthy) · h3as_h3o_h3s (3-layer · atoms 최대 d11 위험 · h3as_h3o PROCEED 후에만). **dispatch 우선순위 권고**: 1) cah6_b/h3as_h3o (measured-stable motif → step3 위험 최저) > 2) mgb2_h3s > 3) lah_bn (ε 큼) > 4) h3as_h3o_h3s (3-layer 최후). **record schema**: `superlattice_design` JSON block (step1-5 산출물 + `validation_log` 동반). **gate 위치**: VALIDATION_FIRST.md gate 4 (stability_pre_check) 의 *셀-구성 선행* — 입력 셀이 naive 하면 gate 4 가 매번 🔴 만 찍음 (mgb2_mgh2 가 정확히 그 경우). cost **$0** (doc only · DFT 다음 round). R4 absorbed=false 영구 (d5/d6). governance d1·d2·d6·d11·d13·d16·d17. branch `cycle-superlattice-design`. artifacts: `RTSC/protocols/SUPERLATTICE_CELL_DESIGN.md` + RTSC.md milestone cross-ref + 본 log entry.
@@ -158,3 +197,10 @@ Spec at [`./RTSC.md`](./RTSC.md). Log entries below preserve session-by-session 
   - **돌파경로 (d2)**: (1) h3o SSCHA 양자보정으로 imaginary renormalize · (2) H₃As variable-cell relax (Pnma 등 저대칭 ground state 후보) · (3) M8 압력축 <50→<100 GPa 완화 · (4) clathrate / cage motif 확장. 우선순위는 남은 H₃X(h3br/h3p/h3n) 결과 본 뒤 결정.
   - **가동중**: vast (h3br · h3p · h3n DFT 모니터 대기) + ubu-2 (SrAuH₃ redundant cross-check, 끝나면 monitor가 Mg₂IrH₆ chain advance) + vast (M5 NWChem c01 별 트랙, healthy).
   - **side effects (off-domain side fixes that unblocked verify)**: hexa-lang atlas 4-PR 시리즈 (#831 collapse → #846 invert → #853 help-sync → #859 generic register-by-verify-delegation, atlas_cli 0.5→0.8.0) + sidecar atlas skill #125 — single calc home (verify_cli) + embedded.gen.hexa SSOT 확립, 새 verify-able fn은 verify_cli 한 곳만 수정으로 atlas 자동 흡수.
+
+## 2026-06-07 — Li2MgH16 gate anchor q5-q8 2-level GRID dispatch (START)
+- Anchor pod 39610026 (vast RTX_3090) LIVE on q4 rep 113/114 (CURRENT_Q=4, CURRENT_IU=1). UNTOUCHED. q1-q3 elph DONE.
+- System: 38 atoms (Li4Mg2H32 cell wrong — actually Li2MgH16 ×2 fu = nat=38), 114 irreps/q, 8 q-points, QE 7.5 conda env, ecutwfc=60/ecutrho=480, k 8x8x8.
+- Per-q wall ~6h sequential → 4 remaining q (q5-q8) = ~24h+ remaining on anchor alone (~1 day, not 4 — anchor already on q4).
+- SHARED SCF: out/li2mgh16.save=621M + phsave control/patterns (all 8 patterns.N.xml exist) → stage tarball 568M (NOT 19G; q1-4 elph/dvscf NOT needed for fresh q5-8). Pulled local.
+- SHARD PLAN: 16 shards = 4 q (q5,q6,q7,q8) × 4 irr-shards (~29 irreps each). k=4 chosen over k=8: small per-q floor (~5min) means k=8 (26min/shard) vs k=4 (50min/shard) both << 2-3h goal; k=4 = far less 32-pod orchestration/recover fragility at same goal-fit. Walltime-min past floor favors robustness.
