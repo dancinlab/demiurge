@@ -218,3 +218,8 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - BROKEN 8 destroyed (d_defer_no_delete: technical fail, re-rented not abandoned) → 8 fresh pods re-rented, provisioned SERIALLY (heal_serial.sh, one scp at a time = no contention): q5-s2/s3/s4, q6-s4, q7-s1/s3, q8-s1/s2.
 - Per-rep rate ~2-3min after ~6min q-init → ~29 irr/shard ≈ 60-90min. Fits 2-3h goal.
 - elph='simple' confirmed working on shards (recover=.false. path, no x_q error).
+
+## 2026-06-07 — timing recalibration + heal v2 (parallel+mutex)
+- REAL per-shard timing (q7-s4, np=8): q-init (k+q bands) = ~1265s (~21min) FLOOR, then ~110s/rep wall. 27 reps → ~71min total/shard. The 21-min init floor (not ~5min) VALIDATES k=4 over k=8 (more shards wouldn't beat the per-shard init floor — d6).
+- Estimated shard-campaign wall ≈ 70-90min + heal-stagger. Still << ~4-day sequential anchor baseline (anchor alone needs ~6h × 4 = 24h for q5-q8; full 8q from scratch was the ~4day figure).
+- Serial heal blocked on slow-loading CN/KR pods → switched to heal_par.sh: parallel provision (SSH-wait + QE-install concurrent), mkdir-mutex'd uploads (one 595M scp at a time = no uplink contention, the root cause of the 6 truncations).
