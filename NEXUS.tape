@@ -163,3 +163,8 @@
   edge = "photoreceptor neogenesis bottleneck → SENOLYX η_neo-lift (clearance ≥72%); UBX1325 retina-validated"
 @reuse IVD-CURE reused[CURE-PRIMITIVE,SENOLYX]
   edge = "FIRST BOUNDARY case — senolytic necessary-but-not-sufficient; needs 3-agent (senolytic+cells+endplate-nutrition), closes only marginally (0.91 @95% clearance)"
+
+@X c9 := "QFORGE bio-FEP engine -> {SENOLYX·AGA-CURE·IVD-CURE·OA-CURE·PERIO-CURE·RETINA-CURE} (planned compute engine)" :: reuse-edge [tier-2 candidate active]
+  note  = "QFORGE universal multi-scale 확장(2026-06-07): bio scale = native MD/FEP(ABFE·RBFE·HREX·MBAR) + QM-derived FF. 4 CURE 도메인 + SENOLYX의 docking/FEP/ΔΔG 계산엔진이 QFORGE-native로 흡수 예정. materials c7(QFORGE->RTSC) 패턴 복제."
+  gate  = "PENDING — bio scale 미구현. M-B1(native MD) -> M-B2/B3(FEP) 핵심경로. 게이트: QFORGE FEP ΔΔG vs openmm/openfe + 실험 ΔΔG(redox-matched) g5-agree시 verified-edge 승격. SENOLYX R12(17-AAG<->17-AG)가 첫 cross-val 앵커."
+  scope = "intra-project(g67). 동기: bio 외부의존 3대 실패모드 실증(B1 FF 2.2x over-spread · B3 openfe 무한대기 · B4 vast CUDA-PTX 소멸; QFORGE.log.md 2026-06-07). QFORGE-native가 materials에서 QE 걷어낸 것과 동형으로 제거."
