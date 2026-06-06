@@ -125,11 +125,6 @@
   do   = "finding = Δ vs baseline OR a closed-negative ruling out an axis"
   dont = "paper for a bookkeeping closure · known identity · unverified prediction · 🟠 residual"
 
-@D d_paper_negative_ok := "closed-negative findings are publishable" :: workflow [required active]
-  do   = "a 🔴 FALSIFIED record that deterministically rules out a path is a valid paper"
-  do   = "frame as a negative result — the falsifier + the ruled-out space (e.g. an axis ⊥ the target)"
-  dont = "treat a closed-negative as a non-finding · bury a falsification · publish 🟠 as if closed"
-
 @D d_paper_format := "paper sections — hypothesis · method · measurement · finding" :: workflow [required active]
   do   = "§hypothesis (falsifier) · §method · §measurement · §finding (Δ OR ruled-out axis)"
   do   = "commons g51 — compile ≥10 pages + ≥1 fal.ai figure"
@@ -170,3 +165,18 @@
   do   = "web deploy (push main → Cloud Run demiurge.dancinlab.org) ONLY on explicit user approval"
   do   = "scope = web GUI surface ONLY — compute/campaign autonomy (d17) unaffected"
   dont = "auto-merge/push/deploy web changes per tweak without approval"
+
+@D d_parallel_first := "parallel-first — minimize wall-clock, never run independent work serially" :: governance [required active]
+  do   = "default to parallel fan-out — independent tasks run concurrently, not one-at-a-time"
+  do   = "pick the partition that MINIMIZES walltime, not the one that's simplest to launch"
+  do   = "scale fan-out width to the work (N independent units → N workers), bounded by the real floor"
+  dont = "run independent units serially when they can fan out · accept a long serial walltime by default"
+  dont = "add workers past the floor where fixed cost (setup·collect) dominates — waste, not speed"
+
+@D d_qforge_parallel := "QFORGE/compute campaigns — GRID-parallel to the walltime floor" :: governance [required active]
+  do   = "QE/QFORGE el-ph: split q (start_q/last_q) AND representations (start_irr/last_irr) across pods"
+  do   = "share one converged SCF out/ to all shards (skip per-pod SCF regen) — collapse the fixed floor"
+  do   = "size shards so each ≫ SCF+collect floor (~2-3h realistic min); recover/collect to assemble"
+  do   = "a long single-pod sequential el-ph run = a bug to parallelize, not a wait to endure"
+  dont = "run an 8-q el-ph serially on one pod when q×irr GRID finishes in hours · leave walltime on table"
+  dont = "add shards below the floor (SCF/transfer/collect dominates) — report the floor honestly (d6)"
