@@ -262,3 +262,8 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - Local master.sh orchestrator was killed by harness; RESTARTED via harness background. Pod-side shards UNAFFECTED (nohup'd ph.x runs independently) — confirmed q7-s4 at 15/27, q6-s2 at 11/29 still computing post-restart.
 - Architecture is background-resilient: pods carry the compute autonomously; the local driver only polls+assembles+harvests and is fully restartable from allmap.txt + the pods' phsave state.
 - Progress @03:24: q7-s4 leads (15/27), q6-s2 11/29, q6-s3, q6-s1, q5-s1 mid; late heal pods (q5-s2/s3, q8-s1/s2) still in init. ETA all-16-done ~06:00-06:30.
+
+## 2026-06-07 04:33 — compute progressing; drivers resilient through harness kills
+- Multiple harness-kill events (session date-change/skill-reload) killed monitoring helpers + a master relaunch wrapper, but master.sh CORE process survives each (forked, keeps polling master.out — confirmed updating at 04:32:54). Pods UNAFFECTED throughout (SSH OK, leader q7-s4 at 25/27).
+- Architecture proven background-resilient: the 16 nohup'd pod-side ph.x runs are the durable compute; local master.sh = restartable driver that polls allmap → assembles each q (recover) → harvests. Even total local death is recoverable from allmap.txt + pod phsave state.
+- Watcher b225csduh now monitors master.out progress (no extra SSH) → notifies at assembly/all-16. First q-point assembly-ready ~05:00-05:30; full ~05:30-06:00.
