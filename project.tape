@@ -37,11 +37,6 @@
   do   = "small cells (4-7 atoms) → pool ubu-1/2 free · batch → Vast.ai CPU · ≥20 atoms / dense k → GPU pod"
   dont = "RunPod CPU pods (8-vCPU ceiling) · Vast.ai CPU-only rentals (use GPU offers) · GPU on small cells"
 
-@D d_pool_fixed := "free-pool fire host = summer (fixed) — no round-robin" :: governance [required active]
-  do   = "free-pool QE jobs fire on summer only (-np 4 plain, g9) — aiden round-robin disabled"
-  do   = "in-flight aiden ScH9 finishes naturally; no NEW aiden dispatch (d_defer_no_delete)"
-  dont = "round-robin summer/aiden · fire new free-pool work on aiden · kill the in-flight ScH9"
-
 @D d8 := "Vast.ai trouble → hexa-lang inbox" :: governance [required active]
   do   = "Vast finding → `hexa-lang/inbox/patches/<slug>.md` so `hexa cloud` absorbs upstream"
   dont = "paper-over a Vast-discovered `hexa cloud` gap inside the campaign"
@@ -77,33 +72,6 @@
 @D d16 := "deck syntax-validate FREE on pool before rent" :: governance [required active]
   do   = "build deck + 1-iter dry-run on pool free → catch directive/basis errors before paid rent"
   dont = "discover NWChem syntax errors on a billing pod — every iteration is wasted $"
-
-@D d_qforge_engine := "RTSC el-ph engine = QFORGE (hexa-native) · QE = cross-val reference" :: governance [required active]
-  do   = "RTSC el-ph (SCF·DFPT·λ·Tc) canonical engine = QFORGE (hexa-lang stdlib/qforge · g5 · atlas)"
-  do   = "QE = cross-val reference; full migration when QFORGE vs QE λ·Tc g5-agree (LaH10·CaH6·Li2MgH16)"
-  do   = "QFORGE GPU accel self-controlled (hexa eigen/fft) — no QE-7.2 dep · NEXUS c7 RTSC<-QFORGE"
-  dont = "perpetual external-QE dep · absorbed on un-cross-val'd QFORGE result · engine swap w/o the gate"
-
-@D d_qforge_xval_archive := "QE run → keep the QFORGE cross-val artifacts · drop heavy scratch" :: governance [required active]
-  do   = "QE run → git the LIGHT set in exports/rtsc/<cand>/: *.dynN · *.elph.N · ph.out · scf.out"
-  do   = "this set = QFORGE cross-val ground-truth — per-mode λ/α²F recompute + screening-gap calibration"
-  do   = "drop HEAVY scratch (out/*.wfc · _ph0/*.dvscf) — GB-scale · regenerable · not a xval input"
-  dont = "discard dyn/elph/a2f artifacts (forces a re-paid QE run to close gate) · git the GB scratch"
-# RTSC xval 2026-06-04 — CaH6 first gate anchor el-ph TERMINAL (8 q-point · dyn+elph complete)
-# 4-anchor light set archived local exports/rtsc/<cand>/harvest_final/ · git d42e46fa · QFORGE ground-truth
-# gate 1/3 terminal · LaH10·Li2MgH16·ScH9 in-flight (partial co-archived) · exec record of d_qforge_xval_archive
-
-@D d_qe_latest_then_qforge := "QE = latest version only · archive QE data · QFORGE takes over at gate" :: governance [required active]
-  do   = "QE el-ph runs use the LATEST QE (conda-forge qe 7.x) — NOT apt distro 6.7"
-  do   = "archive every QE run's light xval data (per d_qforge_xval_archive) — kept for QFORGE"
-  do   = "QFORGE migration gate ALL_PASS → QFORGE = engine (d_qforge_engine) · QE retires to cross-val ref"
-  dont = "run QE from apt (stale 6.7) · discard QE data · keep QE as engine after QFORGE gate passes"
-
-@D d_qforge_migration_routing := "gate-anchors finish on QE · everything else → QFORGE after gate" :: governance [required active]
-  do   = "in-flight gate anchors (CaH6·LaH10·Li2MgH16) FINISH on QE = QFORGE cross-val ground-truth"
-  do   = "all OTHER unfinished/candidate/mid-saved RTSC el-ph → run on QFORGE after gate ALL_PASS"
-  do   = "mid-saved QE partials = compare-reference only · QFORGE recomputes from scratch"
-  dont = "swap a gate anchor to QFORGE (kills the answer-key) · resume QFORGE from a QE scratch"
 
 @D d17 := "cost-bearing fire — dispatch autonomously, no user gate" :: governance [required active]
   do   = "validated deck (d16 free dry-run passed) → fire full-campaign rent autonomously · parallel"
@@ -196,14 +164,6 @@
   do   = "keep repo-root NEXUS.tape (cross-domain reuse graph) current"
   dont = "rebuild a sibling domain's verified primitive · leave a reuse edge off NEXUS.tape"
   dont = "link domains across repos — intra-project only"
-
-@D d_defer_no_delete := "technical/resource failure → DEFER · never delete from the candidate pool" :: governance [required active]
-  do   = "OOM · infra · endpoint-fail · walltime → status=deferred · keep the candidate in the pool"
-  do   = "track deferrals durably in exports/<domain>/DEFERRED.md + the campaign run-state ledger"
-  do   = "retry recipe per deferral — lower cutoff · coarser k/q-grid · npool · bigger RAM"
-  do   = "stop auto-retrying a confirmed OOM-class on the SAME deck — flag for parameter-tuning"
-  dont = "DELETE / abandon a candidate for a TECHNICAL fail — only a 🔴 FALSIFIED verdict (g63) closes one"
-  dont = "leave a deferred candidate in an ephemeral /tmp note that vanishes on reboot"
 
 @D d_deploy := "web GUI surface ONLY — local hot-reload work mode · deploy gated on user approval" :: governance [required active]
   do   = "web GUI: iterate live in localdev git tree (~/core/demiurge-localdev/web · next dev Fast Refresh)"

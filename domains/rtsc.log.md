@@ -204,3 +204,10 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - Per-q wall ~6h sequential → 4 remaining q (q5-q8) = ~24h+ remaining on anchor alone (~1 day, not 4 — anchor already on q4).
 - SHARED SCF: out/li2mgh16.save=621M + phsave control/patterns (all 8 patterns.N.xml exist) → stage tarball 568M (NOT 19G; q1-4 elph/dvscf NOT needed for fresh q5-8). Pulled local.
 - SHARD PLAN: 16 shards = 4 q (q5,q6,q7,q8) × 4 irr-shards (~29 irreps each). k=4 chosen over k=8: small per-q floor (~5min) means k=8 (26min/shard) vs k=4 (50min/shard) both << 2-3h goal; k=4 = far less 32-pod orchestration/recover fragility at same goal-fit. Walltime-min past floor favors robustness.
+
+## 2026-06-07 — Li2MgH16 shards FIRED + anchor advanced to q5
+- VALIDATION (d16): bare start_q/last_q + ldisp=.true. + recover=.true. → QE 7.5 Fortran error "Attempting to allocate already allocated variable x_q". FIX: recover=.false. for fresh-q shard (reads control_ph.xml grid + patterns, computes window). Validated: q5 init OK, irr-window honored (reps 3-114 "Not done in this run").
+- 16 shard pods rented (vast, CPU-only QE on cheap GPU hosts; vast has NO pure-CPU offers). Cost ~$0.07-0.14/hr each, eff 10-28 cores. EST TOTAL ~$3.5 (≤$5 @2.5h).
+- Shard split: 114 irr / 4 = 1-29,30-58,59-87,88-114 per q × {q5,q6,q7,q8} = 16 shards. recover=.false., np=8 npool=4, electron_phonon='simple' (matches anchor ph.in EXACTLY).
+- Shared SCF: 568M stage (li2mgh16.save + control_ph.xml + patterns.1-8.xml) → no per-pod SCF regen.
+- ANCHOR 39610026: FINISHED q4 (dyn4+elph.4 written 16:36), STATUS now CURRENT_Q=5 — anchor self-advancing q5→q8 sequentially (=4day baseline). UNTOUCHED. Shards will beat it; anchor = independent q5 cross-check.
