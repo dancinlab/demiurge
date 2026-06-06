@@ -211,3 +211,10 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - Shard split: 114 irr / 4 = 1-29,30-58,59-87,88-114 per q × {q5,q6,q7,q8} = 16 shards. recover=.false., np=8 npool=4, electron_phonon='simple' (matches anchor ph.in EXACTLY).
 - Shared SCF: 568M stage (li2mgh16.save + control_ph.xml + patterns.1-8.xml) → no per-pod SCF regen.
 - ANCHOR 39610026: FINISHED q4 (dyn4+elph.4 written 16:36), STATUS now CURRENT_Q=5 — anchor self-advancing q5→q8 sequentially (=4day baseline). UNTOUCHED. Shards will beat it; anchor = independent q5 cross-check.
+
+## 2026-06-07 — shards running + 8-pod heal (bandwidth-contention recovery)
+- 16-way parallel scp saturated local uplink → 6 pods got truncated stage (330-420M vs 595M) + 5 pods had SSH key-injection failures (publickey denied even after reboot, host template issue).
+- HEALTHY 8 shards (full 595M stage, 8×ph.x, producing elph.q.M.xml + dynmat.q.M.xml per irrep): q5-s1, q6-s1/s2/s3, q7-s2/s4, q8-s3/s4. Verified q7-s4 at 4 reps / 3 elph done.
+- BROKEN 8 destroyed (d_defer_no_delete: technical fail, re-rented not abandoned) → 8 fresh pods re-rented, provisioned SERIALLY (heal_serial.sh, one scp at a time = no contention): q5-s2/s3/s4, q6-s4, q7-s1/s3, q8-s1/s2.
+- Per-rep rate ~2-3min after ~6min q-init → ~29 irr/shard ≈ 60-90min. Fits 2-3h goal.
+- elph='simple' confirmed working on shards (recover=.false. path, no x_q error).
