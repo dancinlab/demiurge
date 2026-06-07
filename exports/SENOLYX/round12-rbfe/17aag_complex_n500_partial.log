@@ -1,0 +1,44 @@
+Warning on use of the timeseries module: If the inherent timescales of the system are long compared to those being analyzed, this statistical inefficiency may be an underestimate.  The estimate presumes the use of many statistically independent samples.  Tests should be performed to assess whether this condition is satisfied.   Be cautious in the interpretation of the data.
+
+****** PyMBAR will use 64-bit JAX! *******
+* JAX is currently set to 32-bit bitsize *
+* which is its default.                  *
+*                                        *
+* PyMBAR requires 64-bit mode and WILL   *
+* enable JAX's 64-bit mode when called.  *
+*                                        *
+* This MAY cause problems with other     *
+* Uses of JAX in the same code.          *
+******************************************
+
+=== SENOLYX R10 ABFE geldanamycin/HSP90 (SMOKE=False) ===
+/workspace/r12leg/mm/envs/fep/lib/python3.11/site-packages/openff/interchange/components/interchange.py:1119: FutureWarning: `torch.distributed.reduce_op` is deprecated, please use `torch.distributed.ReduceOp` instead
+  if isinstance(obj, functools._lru_cache_wrapper) and obj.__module__.startswith("openff.interchange"):
+complex: 297446 atoms, ligand 85, anchor CA [4]
+[complex] restraint r0=6.73 rwell=6.88 nm  Veff=1430.390 nm^3  SSC=4.00 kcal/mol
+[complex] pre-equilibrating coupled state (25000 steps)...
+[complex] equilibration done
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+[complex] resuming from /workspace/r12leg/abfe_complex.nc
+Traceback (most recent call last):
+  File "/workspace/r12leg/abfe_hsp90.py", line 278, in <module>
+    main()
+  File "/workspace/r12leg/abfe_hsp90.py", line 250, in main
+    dG_c, ddG_c, ssc = run_leg("complex", csys, ctop, cpos, clig, anchor=anchor)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/r12leg/abfe_hsp90.py", line 217, in run_leg
+    sampler = multistate.ReplicaExchangeSampler.from_storage(reporter)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/r12leg/mm/envs/fep/lib/python3.11/site-packages/openmmtools/multistate/multistatesampler.py", line 286, in from_storage
+    reporter.open(mode='r')
+  File "/workspace/r12leg/mm/envs/fep/lib/python3.11/site-packages/openmmtools/multistate/multistatereporter.py", line 308, in open
+    self._storage_analysis = self._open_dataset_robustly(self._storage_analysis_file_path,
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/r12leg/mm/envs/fep/lib/python3.11/site-packages/openmmtools/multistate/multistatereporter.py", line 421, in _open_dataset_robustly
+    return netcdf.Dataset(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "src/netCDF4/_netCDF4.pyx", line 2521, in netCDF4._netCDF4.Dataset.__init__
+  File "src/netCDF4/_netCDF4.pyx", line 2158, in netCDF4._netCDF4._ensure_nc_success
+OSError: [Errno -101] NetCDF:[complex] sampler.run (110 iters)...
+omplex.nc'
