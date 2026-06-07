@@ -14,12 +14,13 @@ Warning on use of the timeseries module: If the inherent timescales of the syste
 === SENOLYX R10 ABFE geldanamycin/HSP90 (SMOKE=False) ===
 /workspace/r12leg/mm/envs/fep/lib/python3.11/site-packages/openff/interchange/components/interchange.py:1119: FutureWarning: `torch.distributed.reduce_op` is deprecated, please use `torch.distributed.ReduceOp` instead
   if isinstance(obj, functools._lru_cache_wrapper) and obj.__module__.startswith("openff.interchange"):
-solvent: 2023 atoms, ligand 85
-[solvent] pre-equilibrating coupled state (25000 steps)...
-[solvent] equilibration done
+complex: 288228 atoms, ligand 78, anchor CA [4]
+[complex] restraint r0=6.73 rwell=6.88 nm  Veff=1430.651 nm^3  SSC=4.00 kcal/mol
+[complex] pre-equilibrating coupled state (25000 steps)...
+[complex] equilibration done
 Warning: The openmmtools.multistate API is experimental and may change in future releases
 Warning: The openmmtools.multistate API is experimental and may change in future releases
-[solvent] sampler.create...
+[complex] sampler.create...
 Please cite the following:
 
         Friedrichs MS, Eastman P, Vaidyanathan V, Houston M, LeGrand S, Beberg AL, Ensign DL, Bruns CM, and Pande VS. Accelerating molecular dynamic simulations on graphics processing unit. J. Comput. Chem. 30:864, 2009. DOI: 10.1002/jcc.21209
@@ -28,17 +29,4 @@ Please cite the following:
         Eastman P and Pande VS. Constant constraint matrix approximation: A robust, parallelizable constraint method for molecular simulations. J. Chem. Theor. Comput. 6:434, 2010. DOI: 10.1021/ct900463w
         Chodera JD and Shirts MR. Replica exchange and expanded ensemble simulations as Gibbs multistate: Simple improvements for enhanced mixing. J. Chem. Phys., 135:194110, 2011. DOI:10.1063/1.3660669
         
-[solvent] sampler.minimize...
-[solvent] sampler.run (500 iters)...
-[solvent] sampling complete, analyzing...
-Warning: The openmmtools.multistate API is experimental and may change in future releases
-
-******* JAX 64-bit mode is now on! *******
-*     JAX is now set to 64-bit mode!     *
-*   This MAY cause problems with other   *
-*      uses of JAX in the same code.     *
-******************************************
-
-[solvent] dG_decouple = 64.65 +/- 0.37 kcal/mol  (ssc=0.00)
-=== LEG solvent: dG_decouple = 64.65 +/- 0.37 ===
-  wall = 1.17 h
+[complex] sampler.minimize...
