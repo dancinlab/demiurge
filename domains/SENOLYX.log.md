@@ -2,6 +2,20 @@
 
 Append-only history sister of `SENOLYX.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-08T06:10Z — R12 RBFE box-blowup FIX (289k→31k) + small-box 4-leg N=500 (ΔΔG=−1.42±0.99 vs exp −1.9, dir correct)
+
+> NOTE: this run RESOLVES the co-agent's 05:50Z "complex leg 미완" failure below. Their N=500 complex legs died on vast because they ran the OLD 289k box (297446 atom HREX ~80 iter/h → too slow, pods died mid-run). The box fix (31,166 atom, ~170 iter/h) let all 4 legs finish. Their solvent legs (72.97 / 64.65) cross-validate ours (72.53 / 63.21) — same high-branch.
+
+- [x] **ROOT CAUSE of 289k blow-up (diagnosed on a live r12c pod, separate python, prod.log untouched)**: the staged `kos_pose.sdf` ligand conformer is centered at the **origin (0,0,0)**, while the PDBFixer-built protein is centered at **(6.9, −2.9, 6.4) nm** — a **9.82 nm centroid separation**. `modeller.add(lig)` merges a ligand floating 9.8 nm from the protein → combined molecular extent = 9.43×5.49×9.04 nm (vs protein's true 4.5×4.7×5.6 nm). `addSolvent(padding=1.0)` then builds a CUBE sized to the largest axis (9.43) + 2×pad → **14.33 nm cube → 288,231 atoms**, almost all empty bulk water spanning the gap. Worse, the displaced ligand never sees the protein → the "complex" leg was physically a 2nd solvent leg (dG_complex≈dG_solvent → silently-wrong ABFE). Recentering-to-origin does NOT fix it (the lig↔protein gap persists); confirmed via diag script (both as-is and recentered give 288k cube).
+- [x] **FIX (R12-smallbox)**: translate the ligand centroid onto the protein centroid (HSP90 N-domain ATP/geldanamycin pocket ≈ geometric center), recenter the protein+ligand assembly to the origin, then solvate with an **explicit rectangular box = molecular extent + 2×1.0 nm shell per axis** (≥nonbondedCutoff=1.0 nm on every axis), `addSolvent(boxSize=...)` instead of `padding=`. Result: box **6.52×6.69×7.63 nm, 31,166 atoms (288,231→31,166 = 9.3× reduction), 9,217 waters**, restraint **r0=0.39 nm** (ligand now IN the pocket, in protein contact — not bulk). Fixed deck saved to /tmp/r12_a100_stage/abfe_hsp90.py.
+- [x] **d16 free SMOKE validation** (N_ITER=1, complex leg, on a fresh H100): box-fix applied, 31,106 atoms, sampler.create→minimize→run→analyze closed, NO Traceback, GPU active. Green → fired prod.
+- [x] **STEP 4 — fired 4 fresh H100/H200** (cuda≥12.4, cpu_ghz>3.0), labels r12d-{agc,ags,aagc,aags}, single-fire LEG=<leg> N_ITER=500 nohup. IDs 39911872(agc)·39911875(ags)·39911877(aagc)·39911883(aags). bzip2+micromamba+cuda12.4 pin bootstrap.
+- [x] **per-leg dG_decouple harvest (smallbox N=500)**: 17AG complex **58.12±0.44** ssc −0.21 (wall 2.96h) · 17AG solvent **72.53±0.42** (0.49h) · 17AAG complex **47.38±0.61** ssc −0.21 (4.07h) · 17AAG solvent **63.21±0.48** (1.14h). 4 prod logs → exports/SENOLYX/round12-rbfe/smallbox/*_smallbox.log.
+- [x] **ABFE 조립** (=dG_solvent−dG_complex+ssc): ABFE(17AG)=72.53−58.12−0.21=**+14.20** · ABFE(17AAG)=63.21−47.38−0.21=**+15.62**.
+- [x] **ΔΔG = ABFE(17AG)−ABFE(17AAG) = −1.42 ± 0.99 kcal/mol** (err=√Σ4leg²) vs **exp −1.9**: **부호 일치·방향 correct (17AG binds tighter)**, 편차 0.48 = **0.49σ** (이전 #604 −0.75/1.8σ보다 개선·수렴).
+- [x] **measured speedup**: complex leg ~4× (289k baseline 50 iter/h → smallbox ~170 iter/h; HREX 20-window swap이 CPU-bound 병목이라 atom-ratio 9.3× 만큼은 안 나옴 — 정직 보고 d6), solvent leg ~20× (~1000 iter/h). 당초 "~1h ~8x" 목표는 solvent엔 초과달성·complex엔 미달(HREX 병목).
+- [ ] **🟠 magnitude unreliable (g6/g63 정직, 위조 없음)**: 절대 ABFE가 양수(+14~+16, 비물리적). solvent leg이 prompt 경고대로 run-to-run 불안정(6.55 vs 72.97 bistable) — 이번 4-leg는 둘 다 high-branch(72.53/63.21)로 landing → 절대 크기 무의미. **ΔΔG(상대FEP·공유 ansamycin 코어 FF오차 상쇄)만 신뢰**; 방향성 종결, definitive 크기는 R12-GOLD(solvent λ-window 조밀화+iter↑)로 이월.
+
 ## 2026-06-08T05:50Z — R12 RBFE N_ITER=500 수렴-푸시 시도 (vast 불안정으로 complex leg 미완 · R12 OPEN 유지)
 
 목적: 직전 N_ITER=110 run(ΔΔG=−0.75±0.64, magnitude ~exp의 40% 과소수렴 의심)을 **N_ITER=500 per-leg 4×H100**로 재실행해 수렴된 magnitude 확보, R12 종결 시도. 동일 검증된 파이프라인(deck LEG-split + N_ITER env, bootstrap cuda12.4 pin + bzip2). cost no object.

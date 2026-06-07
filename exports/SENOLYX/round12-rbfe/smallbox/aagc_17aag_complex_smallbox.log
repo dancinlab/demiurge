@@ -1,0 +1,46 @@
+Warning on use of the timeseries module: If the inherent timescales of the system are long compared to those being analyzed, this statistical inefficiency may be an underestimate.  The estimate presumes the use of many statistically independent samples.  Tests should be performed to assess whether this condition is satisfied.   Be cautious in the interpretation of the data.
+
+****** PyMBAR will use 64-bit JAX! *******
+* JAX is currently set to 32-bit bitsize *
+* which is its default.                  *
+*                                        *
+* PyMBAR requires 64-bit mode and WILL   *
+* enable JAX's 64-bit mode when called.  *
+*                                        *
+* This MAY cause problems with other     *
+* Uses of JAX in the same code.          *
+******************************************
+
+=== SENOLYX R10 ABFE geldanamycin/HSP90 (SMOKE=False) ===
+[complex] box-fix: extent=[4.51710415 4.68662898 5.62288451] -> box=[6.51710415 6.68662898 7.62288451] nm
+/workspace/r12leg/mm/envs/fep/lib/python3.11/site-packages/openff/interchange/components/interchange.py:1119: FutureWarning: `torch.distributed.reduce_op` is deprecated, please use `torch.distributed.ReduceOp` instead
+  if isinstance(obj, functools._lru_cache_wrapper) and obj.__module__.startswith("openff.interchange"):
+complex: 31113 atoms, ligand 85, anchor CA [2712]
+[complex] restraint r0=0.39 rwell=0.54 nm  Veff=1.167 nm^3  SSC=-0.21 kcal/mol
+[complex] pre-equilibrating coupled state (25000 steps)...
+[complex] equilibration done
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+[complex] sampler.create...
+Please cite the following:
+
+        Friedrichs MS, Eastman P, Vaidyanathan V, Houston M, LeGrand S, Beberg AL, Ensign DL, Bruns CM, and Pande VS. Accelerating molecular dynamic simulations on graphics processing unit. J. Comput. Chem. 30:864, 2009. DOI: 10.1002/jcc.21209
+        Eastman P and Pande VS. OpenMM: A hardware-independent framework for molecular simulations. Comput. Sci. Eng. 12:34, 2010. DOI: 10.1109/MCSE.2010.27
+        Eastman P and Pande VS. Efficient nonbonded interactions for molecular dynamics on a graphics processing unit. J. Comput. Chem. 31:1268, 2010. DOI: 10.1002/jcc.21413
+        Eastman P and Pande VS. Constant constraint matrix approximation: A robust, parallelizable constraint method for molecular simulations. J. Chem. Theor. Comput. 6:434, 2010. DOI: 10.1021/ct900463w
+        Chodera JD and Shirts MR. Replica exchange and expanded ensemble simulations as Gibbs multistate: Simple improvements for enhanced mixing. J. Chem. Phys., 135:194110, 2011. DOI:10.1063/1.3660669
+        
+[complex] sampler.minimize...
+[complex] sampler.run (500 iters)...
+[complex] sampling complete, analyzing...
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+
+******* JAX 64-bit mode is now on! *******
+*     JAX is now set to 64-bit mode!     *
+*   This MAY cause problems with other   *
+*      uses of JAX in the same code.     *
+******************************************
+
+[complex] dG_decouple = 47.38 +/- 0.61 kcal/mol  (ssc=-0.21)
+=== LEG complex: dG_decouple = 47.38 +/- 0.61 ssc = -0.21 ===
+  wall = 4.07 h
