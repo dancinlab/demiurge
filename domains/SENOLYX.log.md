@@ -23,3 +23,15 @@ Append-only history sister of `SENOLYX.md`. Each entry starts with `## <ISO time
 - [ ] **🟠 PRELIMINARY/미해결(g6/g63 정직)**: N_ITER=110 complex = 공격적 fast 샘플링(walltime-min 목적) → magnitude 과소수렴 의심(ΔΔG 크기가 exp의 ~40%; stat ±는 짧은 run 내부 노이즈만 반영, 계통적 미수렴 미포함). 편차>1σ + 미수렴으로 R12 OPEN 유지. **gold cross-check = summer 1000-iter 17AG full**(독립 backstop, 본 캠페인과 무관히 진행 중). 수렴 확인 후 종결.
 - [x] **teardown**: 4 H100 전부 destroy(39879210·39879212·39879213·39880705) + 초기 broken aags(39879215) destroy. 비용 ~**$4.85**. RTSC anchor(39610026)·co-agent pod 무접촉.
 
+
+## 2026-06-08 — R12 CLOSED-DIRECTIONAL (N=500 smallbox-31k clean path)
+ΔΔG = −1.42 ± 0.99 kcal/mol vs exp −1.9 (cb600224w) → 부호 ✓, |err|=0.48, 0.5σ.
+4 leg dG_decouple (31113-atom box, per-leg 4×H100):
+- 17AG  complex 58.12±0.44 (ssc −0.21) · solvent 72.53±0.42 → ABFE(17AG)=14.20
+- 17AAG complex 47.38±0.61 (ssc −0.21) · solvent 63.21±0.48 → ABFE(17AAG)=15.62
+방향성+정량 모두 exp와 0.5σ 일치 (N=110 −0.75±0.64 대비 개선). 절대 ABFE(+14/+16)는
+비물리적 = R11 단일포즈 거대고리-퀴논 ABFE 절대값 무효 한계 그대로; 오차상쇄된 ΔΔG만 유의.
+핵심 fix: 289k-atom box-blowup(addSolvent 과용매 ~9.3×) 진단·수정 → 31k clean path가 결과 산출
+(289k 경로는 complex leg 소실 INCOMPLETE, PR#606). 17AAG complex는 gremlin double-invoke 환경서
+완료 500-iter prod.log LEG선(canonical)으로 회수. definitive(repeat≥3)는 R12-GOLD/summer 추적.
+logs: exports/SENOLYX/round12-rbfe/smallbox/{17AG,17AAG}_{complex,solvent}.log + 17AAG_complex.nc
