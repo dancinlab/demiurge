@@ -18,7 +18,7 @@
 | **FEATURE** | ✅ **STRICT** | 6 capabilities QE-`ph.x` lacks, each a `PASS` selftest: autodiff ∂Tc (AD==FD **rel ≤1.7e-9**) · isotropic Migdal-Eliashberg gap · in-engine SSCHA anharmonicity · NQE path-integral · inverse-Tc design (seed 0.49 K→**193.9 K**) · GPU-native NVPTX kernels (Davidson **45–61×** / cuFFT **6.9–7.8×** / α²F **38–42×**) + single-engine `qforge_run` (6 stages, one toolchain) | 1 **aspirational** row honestly fenced — anisotropic k-resolved Δ(k,ω) `available=false` (structured, no Fermi-surface input fed); **EPW already has aniso-ME → NO superiority claim there**. 2 named-remaining hooks (adjoint-DFPT ∂Tc/∂τ; ab-initio force/potential coupling) validated at interface only |
 | **SPEED** | ✅ **at el-ph cell sizes** | Davidson VᵀHV **51.9–63.8×** (n=1024/2048) · block-GEMM matvec **60.5×** (NRHS=256) · Sternheimer CG solve **8.33×** (on-device reduction) · α²F assembler **38–42×** (cited sm_120). 8–64× per stage on RTX 3090, all parity gates PASS at machine ε | **LOSES at small cells / lone matvecs** — Davidson **0.033× @ n=256** (GPU ~30× slower), single GEMV **1.64×** (BW-bound, ~2× cap). Win is **size-gated, crossover n≈512** — honest, not inflated |
 | **SCALE** | ✅ **STRICT** | Streams a **32 GiB matrix (1.36× VRAM) that OOMs in-core** on a 24 GiB GPU, with only **0.50 GiB resident (1.6% of full)**; **50 GiB (2.12× VRAM) at 0.63 GiB resident (1.2%)** — resident footprint **size-independent**. Escapes QE's **~10 GiB/MPI-rank wall** (`-np` clamped to ~6 on Li2MgH16) | demo is the streaming `H·v` **primitive** on synthetic H (the kernel proving the memory model), not a full converged Li2MgH16 DFPT q-point end-to-end — that is the cited 97 GiB Blackwell production run (PR#2737, CG parity 3.02e-16) |
-| **ACCURACY** (vs EXPERIMENT) | ✅ **via anharmonic physics QE lacks — FROM-SCRATCH** | H3S @200 GPa (measured **203 K**, Drozdov 2015), isotropic-ME μ*=0.16 both sides: QE/QForge-harmonic Tc=**223.0 K (err 9.8%)** → **QForge-FROM-SCRATCH SSCHA** (own `qforge_sscha_freq` loop: H-modes harden +5.9%, λ 2.64→2.354) Tc=**216.4 K (err 6.6%)** — **beats harmonic vs experiment by 6.6 K** via beyond-harmonic SSCHA physics QE-`ph.x` structurally cannot produce; magnitude now **QForge-computed, not the Errea 194 K quote** | from-scratch shift is **GENTLER** than literature −30% (Tc_ME ∈ [208,220] K over physical `g`, never 194 K); ONE scalar (H-well quartic `g`) still literature-grounded — the ⟨∂²V/∂R²⟩ DFT force-sampler is the named hook, **sized + NOT honestly runnable today** (V_NL-incomplete real-cell SCF, summer GPU busy). Harmonic-vs-harmonic QForge **MATCHES** QE (hybrid **rel-ε 1e-7**) |
+| **ACCURACY** (vs EXPERIMENT) | ✅ **via anharmonic physics QE lacks — FROM-SCRATCH** | H3S @200 GPa (measured **203 K**, Drozdov 2015), isotropic-ME μ*=0.16 both sides: QE/QForge-harmonic Tc=**223.0 K (err 9.8%)** → **QForge-FROM-SCRATCH SSCHA** (own `qforge_sscha_freq` loop: H-modes harden +5.9%, λ 2.64→2.354) Tc=**216.4 K (err 6.6%)** — **beats harmonic vs experiment by 6.6 K** via beyond-harmonic SSCHA physics QE-`ph.x` structurally cannot produce; magnitude now **QForge-computed, not the Errea 194 K quote** | from-scratch shift is **GENTLER** than literature −30% (Tc_ME ∈ [208,220] K over physical `g`, never 194 K); ONE scalar (H-well quartic `g`) still literature-grounded — the ⟨∂²V/∂R²⟩ DFT force-sampler is the named hook, **sized + NOT honestly runnable today** (real-cell SCF now V_NL-COMPLETE + bound, but from-scratch bare CaH6 λ is screened-vertex-limited = 20.04, 357.9% off QE; summer GPU busy). Harmonic-vs-harmonic QForge **MATCHES** QE (hybrid **rel-ε 1e-7**) |
 
 **Provenance.** FEATURE: `mini` (Apple M4) · `~/.hx/src` HEAD `00c30935` · 2026-06-08 · native-CPU, NO pod (GPU rows cite measured on-device verdicts in QFORGE-PERF + hexa-lang `.verdicts/`). SPEED+SCALE: vast.ai pod **40077437** · 1× RTX 3090 (sm_86, 23.6 GiB) · CUDA 12.4 · 2026-06-08 · repo HEAD `1ffe3b90` · **COST ~$0.06** · pod destroyed post-run · **anchor pod 39610026 NOT touched.** ACCURACY (FROM-SCRATCH): `mini` (M4) · hexa-lang `stdlib/qforge/h3s_sscha_fromscratch.hexa` HEAD `85b5511a5` · 2026-06-09 · native-CPU, NO pod · own `qforge_sscha_freq` loop converged · verdict `.verdicts/qforge-h3s-sscha-fromscratch/`.
 
@@ -27,7 +27,9 @@
 ## FEATURE axis — capabilities QE-`ph.x`/EPW lacks
 
 > The strong, real axis: does QFORGE *do* something QE can't. SEPARATE from the
-> NUMERICAL-accuracy migration gate (CaH6 λ ≤1% — currently HELD at 15.4%,
+> NUMERICAL-accuracy migration gate (CaH6 λ ≤1% — HELD; from-scratch bare full-basis
+> λ on the now-V_NL-bound SCF = 20.0374, 357.9% off QE 4.376 — the screened ε⁻¹ vertex,
+> NOT the SCF eigenstates, is the residual; verdict `.verdicts/qforge-cah6-vnl-bound-rerun/`,
 > tracked in `QFORGE-FEATURE.md` / `rtsc.md`); a feature is present + g5-verified
 > as machinery even where that absolute λ is not yet at 1%.
 
@@ -195,7 +197,9 @@ delocalization driving the hardening; `sscha_selftest`+`nqe_pimd_selftest` PASS.
 ONE literature-grounded scalar remaining is the H-well quartic anharmonicity `g`
 (robust over [0.04,0.20]); the ab-initio ⟨∂²V/∂R²⟩ DFT force-sampler that would replace
 it is the named-remaining engine hook (sized + found NOT honestly runnable today —
-V_NL-incomplete real-cell PW SCF + summer GPU busy; see verdict). Note: the prior
+real-cell PW SCF now V_NL-COMPLETE + bound, but from-scratch bare CaH6 λ is screened-
+vertex-limited = 20.04, 357.9% off QE [`.verdicts/qforge-cah6-vnl-bound-rerun/`] + summer
+GPU busy; see verdict). Note: the prior
 table's 250 K / 194 K were NOT reproducible from QForge's own AD kernel at these inputs
 (it yields 183 K / 137 K) — corrected here to QForge's own verbatim kernel output.
 
@@ -216,7 +220,9 @@ correction QE-ph.x's harmonic DFPT structurally cannot produce, with the magnitu
 anharmonicity range it lands Tc_ME ∈ [208,220] K, never 194 K (QForge's loop is softer);
 (2) ONE scalar (the H-well quartic `g`) is still literature-grounded, not from a DFT
 force sample — the ⟨∂²V/∂R²⟩ sampler is the named engine hook, **sized and found NOT
-honestly runnable today** (V_NL-incomplete real-cell PW SCF, 15.4% off on CaH6 λ; summer
+honestly runnable today** (real-cell PW SCF now V_NL-COMPLETE + bound, but from-scratch
+bare CaH6 λ is screened-vertex-limited = 20.04, 357.9% off QE [the V_NL bound eigenstates
+move λ AWAY from QE, not toward — `.verdicts/qforge-cah6-vnl-bound-rerun/`]; summer
 GPU 1.5 GiB-free/busy — firing would burn $ for an untrustworthy magnitude); (3) the
 Allen-Dynes fit runs colder (183→177 K) but same direction. **Harmonic-vs-harmonic
 QForge MATCHES QE (hybrid rel-ε 1e-7); the accuracy edge over QE is the anharmonic axis,
@@ -242,11 +248,16 @@ Tc; the direction AND magnitude are QForge-internal on both Tc kernels (ME 216.4
 177.2 K), robust over the physical anharmonicity range (Tc_ME ∈ [208,220] K). **Honest
 residual:** ONE literature-grounded scalar remains — the H-well quartic `g` — because
 the ab-initio ⟨∂²V/∂R²⟩ DFT force-sampler (`curvature_average` hook) was **sized and
-found NOT honestly runnable today** (d11): QForge's real-cell PW SCF is V_NL-incomplete
-and 15.4% off QE on CaH6 λ, and summer's GPU is busy (1.5 GiB free) — a 100-config
-32-atom paid campaign would burn $ for a number the engine cannot yet trust. So the
-full-zero-literature closure is a **named engine milestone (V_NL-complete + QE-converged
-PW SCF), NOT a superiority gap.** Verbatim finding: QForge's own SSCHA gives a GENTLER
-correction than Errea (never reaches 194 K) — reported as-is, not tuned to match.
+found NOT honestly runnable today** (d11): QForge's real-cell PW SCF is now V_NL-COMPLETE
++ bound, but the from-scratch bare full-basis CaH6 λ on that bound SCF = **20.0374, 357.9%
+off QE 4.376** (the V_NL structure-factor fix moves λ AWAY from QE, not toward — the bound
+eigenstates over-weight soft DFPT modes that the bare un-screened vertex amplifies), and
+summer's GPU is busy (1.5 GiB free) — a 100-config 32-atom paid campaign would burn $ for a
+number the engine cannot yet trust. So the full-zero-literature closure is a **named engine
+milestone — the residual is now the SCREENED ε⁻¹ vertex (not V_NL/SCF eigenstates), NOT a
+superiority gap.** Verbatim finding: QForge's own SSCHA gives a GENTLER correction than
+Errea (never reaches 194 K) — reported as-is, not tuned to match. CaH6 bare gate re-run on
+the bound SCF: `.verdicts/qforge-cah6-vnl-bound-rerun/` (λ=20.04; hybrid xval still
+rel-ε=1.65e-7 PASS).
 
 All numbers pasted from selftest / pod stdout / verified-kernel output; all parity gates PASS at machine precision; nothing tuned, nothing inflated. Tier g5/measured.
