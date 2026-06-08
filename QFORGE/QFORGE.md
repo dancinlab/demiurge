@@ -31,6 +31,63 @@
    전 구간 hexa-native · g5 verbatim · atlas fold
 ```
 
+## ⭐ ENGINE STATUS — QFORGE가 실제로 무엇을 할 수 있나 (the honest SSOT)
+
+> **"QFORGE는 셋업됐다 — 정확히 무엇이 되고 무엇이 안 되는가"의 단일 SSOT** (d6/@L5 정직).
+> 엔진 결정의 ②(production 모드)+④(from-scratch 차폐정점)축을 여기서 종결한다.
+> 측정값은 전부 g5-verified·verbatim — 강제 없음(d6). 두 PRODUCTION 모드 + 한 수렴-중 모드.
+
+### ✅ 모드 (a) — bare full-basis vertex (QFORGE-only, QE 모먼트 0-의존)
+- **무엇**: QFORGE 자체 SCF→DFPT→el-ph |g|² (bare ∂V_bare 정점, 차폐 OFF) → α²F → λ.
+- **정확도**: **CaH6 λ = 4.13647 · rel-ε 5.47%** vs QE 4.376 (`qforge-lane1-basis-sweep`,
+  npw_cap=0 full ecut shell n=645). **QE 모먼트 없이** 얻는 self-consistent from-scratch
+  추정 — 단순·견고한 production rough-screening 모드.
+- **용도**: 빠른 rough λ 스크리닝(~5.5% band). 게이트-급(<1%)은 아님 — 모드 (b) 사용.
+
+### ✅ 모드 (b) — hybrid (QE |g|² → QFORGE L3 assembler), gate-grade
+- **무엇**: 실 QE DFPT el-ph 하베스트(`.elph` = per-mode λ(q,ν)+ω(q,ν))를 QFORGE의
+  검증된 α²F→λ→Tc **어셈블러**(`qforge_gaussian_delta` deposit + `qforge_a2f_lambda`
+  적분기 + Allen-Dynes/McMillan)에 먹임. driver = `sim/qforge_hybrid_lambda_tc.hexa`.
+- **정확도**: **CaH6 rel-ε 1.65e-7 · LaH10 rel-ε 4.75e-7** (`qforge_cah6_qe_xval_test`/
+  `qforge_lah10_qe_xval_test`, σ_ph→0 단조수렴 ng=8000). **QE DFPT 모먼트가 있으면
+  언제든 gate-grade λ/Tc** — 후보 검증의 production 경로.
+- **정직 스코프(d6)**: 이건 from-scratch 엔진이 **아니다** — QE |g|²/DFPT를 입력으로
+  **여전히 필요**로 한다(DFPT를 대체하지 않음). *검증된 λ/Tc 어셈블러*다. 병목은
+  어셈블러가 아니라 DFPT(후보 dispatch — 비용·user-deferred). cf. `QFORGE/HYBRID_VALIDATION.md`.
+
+### 🟢 모드 (c) — from-scratch SCREENED vertex — R7 ENHANCES past bare (수렴 중, gate 미달)
+- **무엇**: QFORGE 자체 self-consistent 차폐 정점(Woodbury Dyson ε⁻¹ + LIVE local-field
+  f_xc[ρ(r)] convolution) — QE에서 완전 독립한 from-scratch el-ph |g|².
+- **R7 전환 (2026-06-08, d6 — prior "CLOSED-NEGATIVE" 판정을 REVERSE)**: R6가 명명한
+  마지막 死채널(공간변화 f_xc[ρ(r)] local-field, folds=0)을 R7이 engage 하자
+  **차폐가 7라운드 만에 처음으로 bare 4.137을 돌파**. **VERBATIM: λ=4.1518 vs QE 4.376,
+  rel-ε=5.12% — bare baseline 자체 거리(5.47%)도 beat**. f_xc-LIVE 검증: folds=24
+  local-ALDA-folds=24 xc-pts=27648 ("ENGAGED — f_xc[ρ(r)]"). Tc(AD)=386.65K · Tc(ME)=415.75K.
+- **7-round λ 궤적(verbatim, `.verdicts/`)**:
+
+  | round | 시도 | CaH6 λ | rel-ε vs QE 4.376 | verdict dir |
+  |-------|------|--------|-------------------|-------------|
+  | bare baseline | 차폐 OFF (= 모드 a) | 4.13647 | **5.47%** | `qforge-lane1-basis-sweep` |
+  | r3 Lindhard | density-norm + static Lindhard ε(q) | 2.924 | 33% | `.verdicts/qforge-cah6-lindhard` |
+  | r4 norm | Ntot²/Ω density-norm | 2.806 | 36% | `.verdicts/qforge-cah6-rpa-chi0-r4` |
+  | r5 dvscf exact | Woodbury low-rank χ₀ + RPA Adler-Wiser | 3.094 | 29% | `.verdicts/qforge-cah6-dvscf-r5` |
+  | r6 phonon-scr | screened phonon (capped) | 3.063 | 30% | `.verdicts/qforge-cah6-phonon-scr-r6` |
+  | **r7 +live f_xc** | **+ live local-field f_xc[ρ(r)]** | **4.1518** | **5.12%** | `.verdicts/qforge-cah6-fxc-localfield-r7` ← **bare 최초 돌파** |
+
+- **상태(d6 honest)**: R7은 차폐가 *감쇠가 아니라 enhance* 함을 실증 — R5/R6 enhancement
+  가설 CONFIRMED, 누락 물리는 dead local-field f_xc였다. **게이트(≤1%)는 아직 NOT MET**
+  (5.12% > 1%, 비-flip · 4.376 강제 안 함). 잔여 5.12% = LDA-vs-QE XC-functional 차이
+  (QFORGE는 LDA-x+PW92-c ALDA로 차폐; QE의 |g|²는 full ε⁻¹). **R8이 GGA f_xc를 테스트 중.**
+  이 모드는 **CLOSED 아님 — 수렴 중**; gap을 R3-R6 ~30%에서 ~6× 줄여 5.12%까지 끌어내림.
+- **현 production 게이트**: 후보 Tc는 여전히 모드 (b) hybrid(1.65e-7)로 — R7이 gate를
+  넘기 전까진 (b)가 gate-grade. (a)는 rough 스크리닝.
+
+### 결정 요약 (한 줄)
+> **QFORGE는 작동한다 — (a) bare-vertex QFORGE-only ≈5.5%(rough λ 스크리닝) + (b)
+> hybrid QE-moment→assembler 1e-7(gate-grade λ/Tc)이 두 production 모드. (c) from-scratch
+> SCREENED vertex는 R7에서 bare를 돌파(λ=4.1518, 5.12% < bare 5.47%) — CLOSED 아님,
+> gate ≤1% 미달이나 수렴 중(R8 = GGA f_xc).** 후보 Tc의 현 게이트 = QE DFPT dispatch(비용).
+
 ## 빌드 전략 — bottom-up (검증된 상단부터, d2/d6 정직)
 완성도 우선 위→아래: 이미 닫힌 식(Allen-Dynes)부터 hexa-native로 내려가며 QE와 cross-validate.
 
@@ -61,3 +118,27 @@
 
 ## 설계 SSOT
 - QFORGE/DESIGN.md (아키텍처 + 다축 브레인스토밍: 성능·자원·속도·아이디어·패러다임 / 참고: hexa-cli·타 stdlib·arxiv)
+
+## 🌐 universal multi-scale 확장 축 (원자·물질·바이오·화학·칩·시스템) — 2026-06-07
+QFORGE를 materials 전용에서 전 스케일 hexa-native 제일원리 엔진으로 확장. 공통코어(평면파 DFT + 선형응답 DFPT + stdlib/autograd·flame ML 스택) 위에 스케일별 front-end + g5 verify-adapter. demiurge 7-verb 파이프 결.
+
+scale ladder (각 = front-end -> core -> verify-adapter):
+```
+atoms      QM(GFN2/DFT 단분자·전하·토션·conformer)   <- verify: QM ref           [신규]
+materials  DFT el-ph SCF·DFPT·λ·Tc                    <- verify: QE el-ph         DONE (NEXUS c7, GATE CLOSED)
+bio        MD/FEP: ABFE·RBFE·docking·MM-GBSA          <- verify: 실험 ΔΔG(redox-matched)  [최우선 신규]
+chem       reaction: TS·NEB·반응경로·촉매              <- verify: 고-level QM/실험   [신규]
+chip       device: 밴드·수송·열(TCAD)                  <- verify: 측정/TCAD ref      [신규]
+system     multi-scale 결합: QM/MM·CG·연속체            <- verify: 하위스케일 일관성   [신규]
+```
+why hexa-native universal (논거): bio 스케일 캠페인(SENOLYX RBFE, 2026-06-06~07)이 외부의존 3대 실패모드를 실증 — (1) FF 부정확(openff-2.1.0이 거대고리 형태에너지 2.2x over-spread, RMSE 75 kcal/mol, 용매-강건; ABFE가 geldanamycin/HSP90 ~5.7 over-bind) (2) 엔진 provisioning(openfe conda-solve 무한대기) (3) GPU CUDA 불일치(vast 3-pod 전부 CUDA_ERROR_UNSUPPORTED_PTX_VERSION 222 -> 소멸). materials에서 QE를 걷어낸 것과 동형(同型)으로, QFORGE-native가 이 실패모드를 원천제거. 상세 병목 = QFORGE.log.md 2026-06-07 항목.
+
+- [ ] atoms: GFN2-xtb/DFT 단분자 엔진(전하·토션·conformer 에너지) hexa-native + g5 (외부 xtb 대체)
+- [ ] bio: native alchemical FEP (hybrid-topology RBFE · HREX · MBAR) — 외부 openfe/openmm/openmmtools 제거
+- [ ] bio: QM-derived FF (GFN2/DFT 전하·토션 refit + 거대고리 인지) — openff 거대고리 부정확 해결(R11 입증)
+- [ ] bio: native explicit-solvent MD (el-ph FFT/eigen 커널 재사용 GPU 가속) — RTX5070 ABFE ~5h/leg 가속
+- [ ] chem: NEB/TS 반응경로 엔진 (DFPT 선형응답 재사용)
+- [ ] chip: 밴드·수송·열 front-end (SCF 전자구조 재사용)
+- [ ] system: QM/MM·CG 결합 드라이버 (스케일 bridge)
+- [ ] axis: NEXUS edge QFORGE->{SENOLYX·AGA-CURE·IVD-CURE·…} (bio 엔진 의존, materials c7 패턴 복제)
+- [ ] verify-adapter 일반화: scale별 cross-val ref 표준화 (materials=QE · bio=실험ΔΔG · chem=QM · chip=TCAD)
