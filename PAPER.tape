@@ -14,3 +14,6 @@
 @paper rtsc-dft-h3s-textbook-2026-05-22 := "./PAPERS/rtsc-dft-h3s-textbook-2026-05-22"
 @paper sample-nb-bcs-absorbed           := "./PAPERS/sample-nb-bcs-absorbed"
 @paper qforge-allen-dynes-tc-lift       := "./PAPERS/qforge-allen-dynes-tc-lift"
+@paper qforge-screened-vertex-localfield-fxc := "./PAPERS/qforge-screened-vertex-localfield-fxc"
+@paper aga-cure-insilico-axis-collapse := "./PAPER/aga-cure-insilico-axis-collapse"
+@paper universal-neogenesis-bottleneck-senolytic := "./PAPER/universal-neogenesis-bottleneck-senolytic"
