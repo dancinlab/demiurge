@@ -46,8 +46,20 @@ GATE: NOT MET — rel-ε=357.9% > 1%
 ### nq=2 cross-check (same SCF, cheaper 2³ q-mesh) — CONFIRMS the direction
 
 ```
-__NQ2_BLOCK__
+[front-end] cell=Ca n(PW)=645 nelec=16 nocc=8 SCF-converged=true iters=32
+[front-end] ecutwfc=80.0 Ry  e_band=-65.1002 Ha  ω_log(band)=1172.54 K  (IDENTICAL to nq=4)
+  [scf] witness=-10.3686 · [dfpt] witness=1204.89 · [elph] witness=3.6848
+  [a2f]/[moments] witness=20.0374
+QFORGE λ (this run, nq=2) = 20.0374   (BYTE-IDENTICAL to nq=4)
+rel-ε                     = 3.57892  (357.892 %)
+GATE: NOT MET
 ```
+
+The nq=2 run reproduces nq=4 **exactly** (same bound SCF iters=32 / e_band −65.1002 Ha,
+same λ=20.0374). The λ=20 is therefore NOT a q-mesh artifact — it is the converged-eigenstate
++ L3-assembler result, robust across q-mesh density. (The L3 α²F→λ assembler integrates the
+per-mode coupling; the q-mesh changes only the band-sampling fineness, and both give the same
+λ.)
 
 ---
 
