@@ -116,4 +116,20 @@ cd ~/dancinlab/hexa-lang && export HEXA_LANG=$(pwd) HEXA_MAC_BUILD_OK=1
 hexa run stdlib/qforge/h3s_sscha_fromscratch.hexa
 ```
 
+## g5 gates (deterministic, network-free)
+
+```
+GATE 1  qforge_sscha_selftest PASS          (machinery: harmonic limit · hardening ·
+                                              T-trend · F[Φ] monotone · hook named)
+GATE 2  h3s_sscha_fromscratch               converged=true · iters=10 ·
+                                              max_domega=3.83e-13 · F[Φ] monotone ·
+                                              both kernels reproduce anharmonic→exp
+        hexa verify --fence  → ⚪ SPECULATION-FENCED (honest: machinery g5-PASS +
+                                              verbatim run; one scalar lit-grounded,
+                                              not a fully-closed ab-initio measurement)
+```
+
+Both deterministic gates PASS; the fence is the HONEST tier for an intermediate whose
+loop+kernels are QForge's own but whose single `g` scalar is not yet from a DFT sample.
+
 Sources: Errea et al. 2016 Nature 532:81 (arXiv:1502.02832); Drozdov 2015 Nature 525:73.
