@@ -383,3 +383,8 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
      (xc_mode=3, 14/14 unit PASS) — pow2 basis서 λ 악화(n16 0.61→0.08·n64 0.0083→0.0034), 수렴 n=645
      basis는 pow2-FFT 벽이 GGA 차단(645→len0). 벽 = PBE-functional 레벨 + (1,1,n) 1-D 밀도표현 확정,
      XC-함수 아님. flip 금지·하이브리드 production. `.verdicts/qforge-pbe-scf-cah6/`" -->
+
+## 2026-06-10 · 3-D 실공간 SCF ρ(r) 재구축 — pow2벽 RESOLVED, 더깊은 root=diagonal assembler (0-pod, d6)
+- **1-D (1,1,n) 밀도 root 해소 + pow2-FFT 벽 RESOLVED**: 진짜 3-D ρ(r) pow2-pad cube(n=645→32³) 구현(`stdlib/qforge/scf_pw_realspace.hexa`, hexa-lang PR #3003) → PBE V_xc[ρ,∇ρ]가 물리 n=645서 **처음 수렴**(e_band=−61.79). 각 축 spectral ∇ρ. g5 10/10 + scf_pw_selftest 20/20 회귀 PASS.
+- **VERBATIM: LDA(1,1,n) λ=0.609302 → PBE-3D n=645 λ=1.43e-88 ≈ 0** (ω_log=1224.7K·Tc=0). "3-D가 닫는다" 가설 반대방향 FALSIFIED.
+- **더 깊은 root 재진단(d6)**: 벽은 밀도표현 아니라 **DIAGONAL-only assembler** — local V_scr(r)의 공간평균 V̄만 대각 기여, el-ph 차폐는 **OFF-DIAGONAL V(G_a−G_b)**에 사는데 assembler가 버림(offdiag RMS/|V̄|: V_scr=5.56·V_xc=0.69·V_H=4.8e15). 옛 λ=0.609는 비물리 per-G 대각 artifact. 게이트 NOT MET·하이브리드(1.65e-7) production·dispatch=qe. **다음 레버(d2 大형)=dense off-diagonal V_scr(G_a−G_b) 행렬 assembler**(3-D ρ(r)가 그 입력). 부산물: fft3 in-place mutation 버그 + install-shadowing 수정. cost=$0.
