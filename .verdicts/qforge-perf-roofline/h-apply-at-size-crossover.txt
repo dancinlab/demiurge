@@ -1,0 +1,56 @@
+verify  (QFORGE-PERF C1 — H_apply GPU-GEMM at-size honest closure · d6)
+  claim    = QFORGE dense H_apply matvec (v↦H·v, assembler.hexa qforge_h_apply_forge
+             GPU-GEMM seam) is NOT faster than the scalar CPU path at small/at-size n
+             because the per-call host-stage + full H[n×n] H2D transfer dominates the
+             O(n²) arithmetic. The MEASURED, H2D-inclusive crossover (cpu/gpu first >1)
+             is n≈4096; below it the scalar CPU path wins. The adaptive size-dispatch
+             (qforge_h_apply_adaptive · size_dispatch.hexa) routes CPU below crossover /
+             GPU above → wall = min(CPU,GPU) at EVERY size = parity (never slower than
+             QE's CPU path), element-identical result. GPU-GEMM wins only at n ≳ 4096.
+  tier     = 🟢 CLOSED-MEASURED  (on-silicon medians + element-parity g5 PASS · d6 honest)
+
+  ── MEASURED at-size crossover (RTX 5070 · summer free pool · CUDA 12.0 · 2026-06-09)
+     tool/gpu_qforge_size_dispatch.cu · per-call H·v wall INCL. H2D re-stage · median-of-500:
+
+     n      cpu_ms    gpu_ms(restage)   cpu/gpu (=speedup)   route
+     256    0.0260    2.2143            0.012×   GPU LOSES   CPU
+     512    0.1158    0.4536            0.255×   GPU LOSES   CPU
+     1024   0.5004    1.6901            0.296×   GPU LOSES   CPU
+     2048   1.9753    2.2587            0.875×   GPU LOSES   CPU
+     4096   7.8716    4.4375            1.774×   GPU WINS     GPU   ← crossover
+     6144  18.2873    8.7841            2.082×   GPU WINS     GPU
+     8192  34.1321   15.2363            2.240×   GPU WINS     GPU
+
+  ── crossover = n≈4096  (cpu/gpu first crosses 1.0 between n=2048 0.875× and n=4096 1.774×;
+     log-log interpolation of the calibrated (256,0.012×)→(8192,2.240×) anchors → n=4810)
+
+  ── d6 HONEST: the kernel-only roofline (h-apply-membound.txt: GEMV mem-ceiling
+     139.88 fp64 / 279.76 fp32 GFLOP/s, AI 0.25–0.5 ≪ ridge 60.96) predicted a
+     crossover ≈n=512 EXCLUDING transfer. The H2D-inclusive crossover of the ACTUAL
+     shipping seam (re-marshals the full H[n×n] every call) is n≈4096 — ~8× higher.
+     The single-GEMV NOT-FASTER-at-size result is GPU-intrinsic (launch + farr-marshal
+     + H2D/D2H floor over a memory-bound matvec), NOT a fixable bug. We do NOT claim a
+     small-cell GPU win (that would violate the roofline). tensor-roof opens only when
+     the matvec is BATCHED into a GEMM (Davidson VᵀHV: measured 45–61× @ n≥1024, separate
+     [x]). A once-staged GPU-RESIDENT seam (H staged once, reused across CG/Davidson iters)
+     pushes the crossover lower — that is the B2 resident-seam lever, an unmerged engine
+     change, deliberately OUT of this milestone's scope.
+
+  ── PRACTICAL SOLUTION (parity, never slower): qforge_h_apply_adaptive routes the dense
+     v↦H·v per call — scalar CPU below n≈4096 (NO farr marshal, NO launch, NO H2D),
+     GPU-GEMM at/above. Wall = min(CPU,GPU) at every n → QForge ≥ QE at ALL sizes.
+     Result element-identical either path (same Σ_j H[i,j]·v[j] FP64 order).
+
+  ── g5 GATE (deterministic · network-free · CPU build):
+     stdlib/qforge/qforge_size_dispatch_selftest.hexa → "qforge_size_dispatch_selftest PASS"
+       (a) n=256   → CPU  (measured 0.012× = GPU slower → QForge takes CPU = parity)
+       (b) n=8192  → GPU  (measured 2.240× over CPU single-core matvec)
+       (c) crossover n≈4096 (interpolated 4810, band 2048..6144)
+       (d) davidson_vthv + sternheimer_cg share the matvec H2D floor (route identically)
+       (e) modeled=false (d6 — on-silicon RTX 5070 medians, not a proxy)
+       (f) GUARD — unknown kernel → valid=false, routes CPU
+       (g) PARITY — qforge_h_apply_adaptive ≡ qforge_h_apply element-wise (max|Δ|=0.0)
+       (h) MONOTONE — speedup non-decreasing in n (no cross-size inversion)
+
+  VERDICT = NOT-FASTER-at-size (GPU-intrinsic, d6 honest) RESOLVED to PARITY via adaptive
+            size-dispatch; GPU-GEMM win measured at n ≳ 4096. CLOSED-MEASURED 🟢.

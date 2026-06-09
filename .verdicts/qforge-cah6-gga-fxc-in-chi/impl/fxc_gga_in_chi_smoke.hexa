@@ -1,0 +1,88 @@
+// stdlib/qforge/fxc_gga_in_chi_smoke.hexa
+//
+// GGA f_xc-IN-χ smoke (A2 round) — validates the GGA(PBE) Dyson kernel flavor on a tiny
+// synthetic cell. Builds ε THREE ways on the same cell: (A) RPA (v_c only), (B) ALDA
+// f_xc-in-χ, (C) GGA f_xc-in-χ. Asserts: GGA engages (folds>0, ‖f_xc‖>0, |∇ρ| witness),
+// and GGA's screened column DIFFERS from BOTH RPA and ALDA (the gradient kernel acted).
+// Cheap (CPU, seconds) — the syntax/logic gate before the expensive CaH6 run.
+//
+// Run: HEXA_LANG="$PWD" hexa run --no-sentinel stdlib/qforge/fxc_gga_in_chi_smoke.hexa
+
+use "stdlib/qforge/screening_pwfft"
+
+fn main() {
+    println("=== GGA f_xc-IN-χ (PBE Dyson kernel) smoke ===")
+    let a = 4.0
+    let twopi = 6.28318530717958647692
+    let bb = twopi / a
+    let b1 = [bb, 0.0, 0.0]
+    let b2 = [0.0, bb, 0.0]
+    let b3 = [0.0, 0.0, bb]
+    let miller = [0.0,0.0,0.0,  1.0,0.0,0.0,  -1.0,0.0,0.0,  0.0,1.0,0.0,  0.0,-1.0,0.0]
+    let n = 5
+    let mut gvecs: [float] = []
+    let mut i = 0
+    while i < n {
+        gvecs.push(miller[i*3]*bb) ; gvecs.push(miller[i*3+1]*bb) ; gvecs.push(miller[i*3+2]*bb)
+        i = i + 1
+    }
+    if !qpwfft_stage_miller(gvecs, miller, b1, b2, b3, 0.0) { println("FAIL — stage") ; return }
+    let omega = a * a * a
+    qpwfft_enable_local_alda(omega, 2)
+
+    let occ = [[0.7, 0.4, 0.3, 0.2, 0.1], [0.2, 0.6, 0.1, 0.5, 0.3]]
+    let cond = [[0.1, 0.5, 0.6, 0.2, 0.4], [0.3, 0.2, 0.4, 0.5, 0.6]]
+    let eps_occ  = [-0.40, -0.30]
+    let eps_cond = [ 0.50,  0.80]
+    let bare = [[0.5, 0.3, 0.2, 0.4, 0.1]]
+
+    // (A) RPA.
+    qpwfft_set_fxc_in_chi(false) ; qpwfft_set_fxc_gga(false)
+    qpwfft_eps_reset()
+    let scr_rpa = qpwfft_eps_matrix_screen(occ, cond, eps_occ, eps_cond, bare, omega)
+    if len(scr_rpa) != 1 { println("FAIL — RPA build") ; return }
+
+    // (B) ALDA f_xc-in-χ.
+    qpwfft_set_fxc_in_chi(true) ; qpwfft_set_fxc_gga(false)
+    qpwfft_eps_reset()
+    let scr_alda = qpwfft_eps_matrix_screen(occ, cond, eps_occ, eps_cond, bare, omega)
+    if len(scr_alda) != 1 { println("FAIL — ALDA build") ; return }
+    println("ALDA: folds=" + to_string(qpwfft_fxc_chi_folds())
+            + " ‖f_xc‖/‖v_c‖=" + to_string(qpwfft_fxc_chi_norm()))
+
+    // (C) GGA f_xc-in-χ.
+    qpwfft_set_fxc_in_chi(true) ; qpwfft_set_fxc_gga(true)
+    qpwfft_eps_reset()
+    let scr_gga = qpwfft_eps_matrix_screen(occ, cond, eps_occ, eps_cond, bare, omega)
+    if len(scr_gga) != 1 { println("FAIL — GGA build") ; return }
+    println("GGA : folds=" + to_string(qpwfft_fxc_chi_folds())
+            + " ‖f_xc‖/‖v_c‖=" + to_string(qpwfft_fxc_chi_norm())
+            + " mean|∇ρ|/ρ=" + to_string(qpwfft_fxc_gga_gradmean()))
+
+    // diffs.
+    let mut d_ra = 0.0 ; let mut d_ga = 0.0 ; let mut nrm = 0.0
+    let mut j = 0
+    while j < n {
+        let dra = scr_gga[0][j] - scr_rpa[0][j]
+        let dga = scr_gga[0][j] - scr_alda[0][j]
+        d_ra = d_ra + dra * dra ; d_ga = d_ga + dga * dga
+        nrm = nrm + scr_rpa[0][j] * scr_rpa[0][j]
+        j = j + 1
+    }
+    let rel_ra = if nrm > 0.0 { sqrt(d_ra / nrm) } else { 0.0 }
+    let rel_ga = if nrm > 0.0 { sqrt(d_ga / nrm) } else { 0.0 }
+    println("‖GGA−RPA‖/‖RPA‖ = " + to_string(rel_ra) + "   ‖GGA−ALDA‖/‖RPA‖ = " + to_string(rel_ga))
+
+    let mut pass = true
+    if qpwfft_fxc_chi_folds() <= 0 { println("FAIL — GGA folds==0") ; pass = false }
+    if qpwfft_fxc_chi_norm() <= 0.0 { println("FAIL — GGA ‖f_xc‖==0") ; pass = false }
+    if qpwfft_fxc_gga_gradmean() <= 0.0 { println("FAIL — |∇ρ| witness==0 (spectral grad dead)") ; pass = false }
+    if rel_ra < 1.0e-9 { println("FAIL — GGA==RPA") ; pass = false }
+    if rel_ga < 1.0e-9 { println("FAIL — GGA==ALDA (gradient kernel did nothing)") ; pass = false }
+    if qpwfft_eps_pivot() <= 0.0 { println("FAIL — GGA ε singular") ; pass = false }
+
+    if pass {
+        println("PASS — GGA f_xc-in-χ builds, engages (|∇ρ| spectral grad alive), differs from RPA AND ALDA.")
+    } else { println("SMOKE FAILED") }
+    println("=== DONE ===")
+}
