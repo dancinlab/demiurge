@@ -393,3 +393,9 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - 3-D ρ(r) SCF(PR#3003) 위 off-diagonal vertex g_mn=∫ψ*_m·∂V_scr·ψ_n dr 구현(`stdlib/qforge/elph_vscr_realspace.hexa` NEW, g5 6/6 PASS, realspace 8/8 회귀). branch `qforge-3d-realspace-scf`.
 - **VERBATIM: ∂V_bare(물리 el-ph 장)로 diagonal-only Σ|g|²=2.1e-57(기계영, ∂V_bare는 G=0 없어 V̄=0) → off-diag가 5.4e-24로 ×2.6e33 들어올림** = diagonal-truncation이 λ→0(1.43e-88)의 정확한 root임 증명, off-diag fix = NECESSARY. Hermitian(잔차~1e-22). **단 λ_full=2.98e-61 여전히 ≈0 = NOT SUFFICIENT.**
 - **잔여 재배치(d6)**: 더는 diagonal-truncation 아님 → el-ph 정규화(Γ-only Fermi double-δ N(E_F) + bare-vs-ε⁻¹-screened 인자 + 변위진폭) = named 남은 레버. n=645 full-basis=0-pod interpreter d11-intractable(Davidson ψ회복 벽), 구조적 결론(diag=0·off-diag ×2.6e33)은 basis-무관·n=51 측정. 게이트 HELD·하이브리드(1.65e-7) production. cost=$0.
+
+## 2026-06-10 · el-ph 정규화 층 — +51 orders 도약, 물리 완성·잔여=mesh 수렴 (0-pod, d6)
+- off-diag |g|²(전 라운드) 위에 el-ph 정규화 3개 배선(`stdlib/qforge/elph_normalization.hexa` NEW, g5 9/9 PASS, branch `qforge-elph-normalization` origin push): (a) ε⁻¹ 차폐 ∂V_scr=∂V_bare+V_H[Δρ]+f_xc[ρ]Δρ(‖∂V_scr‖/‖∂V_bare‖=132.7 robust under ρ-floor) · (b) 실 N(E_F)=159.6 states/Ha(dos_nef, 1.0 아님) · (c) 변위진폭 √(ℏ/2Mω).
+- **★2번째 root 발견**: cube ψ(r)가 UN-NORMALIZED(∫|ψ|²dr=1.2e-7, ifft 1/Ntot 때문) → PW ψ=ψ_ifft·(Ntot/√Ω)로 ∫|ψ|²=0.953≈1 복원. 모든 g_mn이 ~22 orders 작았음.
+- **VERBATIM(n=51 d11-tractable)**: λ ladder rung0(bare/n_ef=1)=5.81e-42 → rung2(SCREENED/realN(E_F)/amp)=**9.26e-10**. = 정규화+ψ-norm이 λ **+51 orders 도약**(off-diag 2.98e-61 → 9.26e-10), 61-order 갭 중 51 닫음.
+- **≤1%? NO, rel-ε 100%(~9.5 orders 남음, 4.376 강제 안함)**. **잔여 질적 전환**: 더는 diagonal/scale/screening/N(E_F)/amplitude 아님(전부 배선) → **Γ-only 1-k점 vs QE 수렴 full-BZ k×q mesh** = 물리 갭 아니라 샘플링/수렴(d11-intractable 0-pod, GPU pod/native 필요). 게이트 HELD·하이브리드(1.65e-7) production. d2 경로: 수렴 k×q mesh · Wannier-interp FS(`wannier_ginterp.hexa` 존재) · tetrahedron FS 적분. cost=$0.
