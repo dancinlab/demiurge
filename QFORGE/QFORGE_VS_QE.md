@@ -127,7 +127,7 @@ The small-cell loss above (Davidson **0.033× @ n=256**, single GEMV **1.64×**,
 **HONEST floors (d6):**
 - The H2D-inclusive crossover is **n≈4096**, NOT the kernel-only n≈512 — re-staging the full H[n×n] over PCIe every call keeps the GPU losing through n=2048; it first wins at n≈4096. The dispatcher is calibrated to the **measured** n≈4096 crossover so it never routes GPU into a loss.
 - The residual at/below crossover is **exactly the CPU wall (1.000×)** — not a sub-µs penalty: the route decision (table build + one log-linear interp) is sub-noise (local bench: n=256 adaptive 1.620 s vs scalar 1.660 s, within ±0.05 s jitter).
-- **Next lever (flagged, not yet merged):** a **GPU-resident** seam staging H **once** (reused across Davidson/CG iters) measured **cpu/resid 3–43×** even at n≤2048 — but needs an engine change to keep H device-resident across iterations. Recorded in the verdict, NOT used for the conservative shipping calibration.
+- **Next lever — MERGED (B2, no engine change):** the **GPU-resident** seam staging H **once** (reused across Davidson/CG iters, transfer=v only) is now SHIPPED in `stdlib/qforge/assembler.hexa` (`qforge_h_apply_resident_open / _resident / _resident_close`, branch `qforge-gpu-resident-seam` 44a447f1). The earlier "needs an engine change" note is **superseded** — the residency machinery already exists in the runtime (`farr_to_device` + the RFC 056 §6.1 `_h2d` H2D-skip, byte-eq F-RFC056-BYTEEQ-PRESERVE), so the lever is expressible by hoisting the H farr handle out of the per-call body. Correctness: resident ≡ scalar/forge, max\|Δ\| ≤ 8e-15 (selftest `h_resident_selftest` 4/4). CPU-build bench (`bench/qforge/h_resident_bench.hexa`, matvecs/H=30 — the Davidson/CG reuse pattern): resident **8.6–9.3×** over the restage seam and **10.4–11.2×** over scalar at n=256..2048 (host-marshal proxy for the eliminated H2D); ≈1.0× at matvecs=1 (reuse-gated, honest). **SPEED parity→win promotion PENDING** — the real RTX 5070 H2D ratio is not yet measured (summer sshd overloaded/unreachable across 5 backoff attempts; 0-POD task, no paid fallback). The CPU result strongly predicts a small-cell GPU win (the eliminated H2D is exactly the n≈4096 crossover cause), but per d6 the parity ceiling for tiny-n GPU **holds until the on-silicon resident-GPU-vs-CPU ratio is recorded**. Verdict: `.verdicts/qforge-gpu-resident-seam/VERDICT.md`.
 
 Verdict: `hexa-lang/.verdicts/qforge-size-dispatch/F-QFORGE-SIZE-DISPATCH.txt` (🟢 SUPPORTED-MEASURED).
 
@@ -141,7 +141,7 @@ Verdict: `hexa-lang/.verdicts/qforge-size-dispatch/F-QFORGE-SIZE-DISPATCH.txt` (
 | Sternheimer CG solve | ~1× (fuse-only) | **8.33×** | n/a | **≥1.0×** | on-device reduction; adaptive routes CPU at tiny n |
 | α²F assembler | — | **38–42×** (cited sm_120) | n/a | **≥1.0×** | parallel BZ-sum; size-gated by stage_dispatch |
 
-**With the adaptive size-dispatch, QFORGE is ≥ QE (CPU) at ALL measured sizes** — the small-cell loss is **CLOSED** (n=256 0.033× → **1.000×** parity), and the win still appears at el-ph cell sizes (**1.77–2.24×** restage-seam @ n≥4096; **51.9–63.8×** Davidson VᵀHV / **60.5×** block-GEMM at large n on the batched path). The dispatcher routes the faster of {CPU, GPU} per call → **never slower than QE's CPU path**, while keeping every large-cell win. The honest floor: the H2D-inclusive crossover is n≈4096 (not 512), and the small-cell win is **parity, not a speedup** — QForge stops *losing*, it does not *beat* QE at tiny n (that needs the not-yet-merged GPU-resident seam).
+**With the adaptive size-dispatch, QFORGE is ≥ QE (CPU) at ALL measured sizes** — the small-cell loss is **CLOSED** (n=256 0.033× → **1.000×** parity), and the win still appears at el-ph cell sizes (**1.77–2.24×** restage-seam @ n≥4096; **51.9–63.8×** Davidson VᵀHV / **60.5×** block-GEMM at large n on the batched path). The dispatcher routes the faster of {CPU, GPU} per call → **never slower than QE's CPU path**, while keeping every large-cell win. The honest floor: the H2D-inclusive crossover is n≈4096 (not 512), and the small-cell win is **parity, not a speedup** — QForge stops *losing*, it does not yet *beat* QE at tiny n. The **GPU-resident seam that breaks this parity is now MERGED** (B2, `assembler.hexa` `qforge_h_apply_resident*`, no engine change — reuses the runtime RFC 056 H2D-skip): on CPU it is **8.6–9.3×** over the restage seam when H is reused across Davidson/CG iters (matvecs≥30), and resident≡scalar (max\|Δ\|≤8e-15). The tiny-n **GPU** parity→win promotion is **PENDING the real RTX 5070 H2D measurement** (summer overloaded/unreachable; 0-POD, no paid fallback) — the lever is in place and CPU-proven, the on-silicon GPU ratio is the only remaining gate.
 
 ---
 
@@ -295,3 +295,45 @@ re-run **λ=20.04** (`.verdicts/qforge-cah6-vnl-bound-rerun/`); QForge's own SSC
 than Errea (never reaches 194 K) — reported as-is, not tuned to match.
 
 All numbers pasted from selftest / pod stdout / verified-kernel output; all parity gates PASS at machine precision; nothing tuned, nothing inflated. Tier g5/measured.
+
+---
+
+## 2026-06-11 — GPU pod converged-NPW + q≠Γ sweep (the d2 "GPU-gated" lever, executed)
+
+The 0-pod accuracy loop's final named residual was "converged k×q mesh, GPU-pod-gated"
+(d11-intractable 0-pod). **Executed on vast.ai RTX 3090** (instance 40418055, 2.82 hr,
+**$0.65**, ≤$10 cap; pod destroyed at end — confirmed). VERBATIM, 4.376 NEVER forced:
+
+**NPW-convergence at Γ (screened all-4 compose):**
+
+| NPW | λ (all-4 screened) | rel-ε vs QE 4.376 | wall (CPU, single-thread) |
+|-----|--------------------|-------------------|---------------------------|
+| 64  | 1.1545             | 0.736             | 94 s                      |
+| 128 | 3.5020             | 0.200             | 426 s                     |
+| 256 | 0.8756             | 0.800             | 1543 s                    |
+| 512 | NOT-LANDED         | —                 | >1h22m CPU-intractable, killed |
+
+λ is **NON-MONOTONIC** (1.15 → 3.50 → 0.88) — it does NOT converge to 4.376. NPW64 & NPW256
+reproduce the 0-pod values exactly (deterministic engine; GPU-independent confirmation). The
+NPW128 spike (3.50, closest) is a |G|-shell basis-cut accident, NOT claimed.
+
+**q≠Γ at NPW256:** Γ 0.8756 → q(0.5,0,0) **0.4114** → q(0.25,0.25,0) **0.4962** — both q≠Γ
+points LOWER λ. q-sampling does not enhance the vertex (refutes the "Γ acoustic-sum-rule head
+suppression" hypothesis; re-confirms the 0-pod q≠Γ-lowers-λ result).
+
+**HONEST GPU reality (d6/@L5):** GPU utilization = **0%** the entire run. The hexa-lang release
+`hexa build` compiles the compose path to the **CPU FP64 baseline** (`hexa_farr_matmul`), NOT
+the NVPTX/cuFFT kernels (those fire only on a CUDA-built hexa, which the shipping release is
+not). The NVPTX Davidson/Sternheimer/Poisson kernels exist + are byte-eq-validated on-device
+(B200 parity 3e-16), but wiring CUDA codegen into the release toolchain is a hexa-lang task,
+not reachable in-campaign. The pod's value was the 192-core/220GB host breaking the 0-pod
+walltime wall (NPW256 + q-points landed), not GPU acceleration.
+
+**Verdict:** OUTCOME 2 — the converged-mesh el-ph is now tractable, but from-scratch λ does NOT
+reach the ≤1% gate, and the basis sweep is non-monotonic. This **re-confirms the g2-audit root**:
+the residual is a **vertex-magnitude deficit** in ⟨ψ|∂V_scr/∂u|ψ⟩, NOT a basis/k×q-mesh sampling
+deficit (the Anderson-screened ΔV here gives ‖ΔV_scr‖/‖ΔV_bare‖ ≈ 1.0, not enhancing). **Gate NOT
+flipped; hybrid (QE |g|² → QForge L3, rel-ε 1.65e-7) remains production.** Full data:
+`.verdicts/qforge-converged-kxq-gpu/`. d2 (still open, CUDA-build-hexa-gated): true GPU-resident
+dense k×q el-ph sum (current compose is single-k Γ-vertex), screened-FC β-knob, self-consistent
+DFPT ∂V_scf/∂u.

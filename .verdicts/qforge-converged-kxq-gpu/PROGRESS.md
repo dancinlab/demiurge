@@ -35,3 +35,10 @@ QE λ_BZ=4.376 and reaches ≤1%. d6 VERBATIM — 4.376 NEVER forced.
 - d16 smoke NPW=16 PASS: SCF conv (27 it), Anderson screen conv, ω band 24 modes, N(E_F)=19.95,
   λ_all4=0.4077 (rel-ε 0.907). Pipeline runs end-to-end natively on pod.
 - Sweep launched (durable nohup PID 3682): NPW {64,128,256,512,1024} at Γ + q≠Γ at NPW256.
+
+## 2026-06-11 — COMPLETE
+- Landed: NPW {64,128,256} Γ + q{X,XY}@256. NPW512 CPU-intractable (killed at teardown).
+- λ NON-MONOTONIC (1.15→3.50→0.88); q≠Γ LOWERS λ. Gate HELD (residual = vertex magnitude).
+- GPU util 0% (release build = CPU-only; NVPTX needs CUDA-built hexa — see VERDICT §4).
+- Pod 40418055 DESTROYED (confirmed, active instances: none). Cost $0.65.
+- Deliverables: VERDICT.md, COST.md, sweep_results.tsv, qsweep_results.tsv, QFORGE/QFORGE_VS_QE.md §2026-06-11, rtsc.log.md entry.
