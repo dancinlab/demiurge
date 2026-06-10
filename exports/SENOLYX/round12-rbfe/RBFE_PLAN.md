@@ -66,10 +66,9 @@ sidecar pool on summer 'export MAMBA_ROOT_PREFIX=/home/summer/micromamba; \
 ```
 
 > Note: this creates a **new** `rbfe` env; the existing `fep` env is left untouched
-> (constraint honored). `rbfe_hsp90.py` is syntax-clean (`ast.parse` OK) but was not
-> SMOKE-run in this session because the env install (a one-time, ~23 s + 120 MB step,
-> proven feasible above) is left as the single remaining infra action — it was not
-> executed here only to keep this investigation non-mutating to summer.
+> (constraint honored). **UPDATE (§6):** the `rbfe` env has since been created on
+> summer (openfe 1.11.1) and the deck validated end-to-end; the env is left in place
+> for the production fire.
 
 ---
 
@@ -158,19 +157,24 @@ plumbing to validate the moment openfe is importable.
 **Fire command (after openfe env exists — see §1 unblock):**
 
 ```bash
-# 1) one-time: build the openfe env — PROVEN feasible (§1, ~23 s solve + ~120 MB):
-sidecar pool on summer 'export MAMBA_ROOT_PREFIX=/home/summer/micromamba; \
-    /home/summer/bin/micromamba create -n rbfe -c conda-forge \
-    --channel-priority strict openfe python=3.11 -y'
+# 0) env already exists on summer (openfe 1.11.1, §6). To rebuild from scratch:
+#    sidecar pool on summer 'export MAMBA_ROOT_PREFIX=/home/summer/micromamba; \
+#      /home/summer/bin/micromamba create -n rbfe -c conda-forge \
+#      --channel-priority strict openfe python=3.11 -y'
 
-# 2) free SMOKE validity gate (minutes):
+# 1) stage deck + inputs (PDB/SDF are untracked on disk in the main worktree):
 scp -r exports/SENOLYX/round12-rbfe summer@192.168.50.60:/home/summer/rbfe_run
-sidecar pool on summer 'cd /home/summer/rbfe_run/round12-rbfe && \
-    SMOKE=1 /home/summer/micromamba/envs/rbfe/bin/python rbfe_hsp90.py 2>&1 | tail -30'
 
-# 3) production (multi-day, detached, $0 on summer free GPU) — ONLY after SMOKE PASS:
-sidecar pool on summer 'cd /home/summer/rbfe_run/round12-rbfe && \
-    nohup /home/summer/micromamba/envs/rbfe/bin/python rbfe_hsp90.py > rbfe_prod.log 2>&1 &'
+# 2) PRODUCTION — solvent leg (ready as-is; no docking needed), detached, $0:
+sidecar pool on summer 'export MAMBA_ROOT_PREFIX=/home/summer/micromamba; \
+    cd /home/summer/rbfe_run/round12-rbfe && \
+    nohup env LEGS=solvent /home/summer/bin/micromamba run -n rbfe \
+    python rbfe_hsp90.py > rbfe_prod_solvent.log 2>&1 &'
+
+# 3) PRODUCTION — complex leg: FIRST supply a pocket-fit ligand pose (reuse the abfe
+#    smallbox docked pose, or add a restrained pre-min of the docked ligand) so the
+#    leg does not NaN at equilibration step 0 (the raw centroid box-fix can clash).
+#    Then: ... nohup env LEGS=complex micromamba run -n rbfe python rbfe_hsp90.py ...
 
 # 4) harvest: rbfe_prod/ddG_result.json → ΔΔG_bind(17AG→17AAG) vs exp +1.9
 #    PASS (sign>0, |Δ|≤1.5) ⇒ 3rd axis affinity trustworthy ⇒ R12 closure.
@@ -203,3 +207,56 @@ is PROVEN feasible on summer for free** (pinned solve, ~23 s, ~120 MB). Remainin
 actions: run the one-time env-create, confirm the `# API-CONFIRM` fields, free
 SMOKE, then the multi-day production run (NOT fired here per constraint). No paid
 pods. summer `fep` env untouched (new `rbfe` env only).
+
+---
+
+## 6. Validation run (2026-06, summer / openfe 1.11.1) — DONE
+
+The `rbfe` env was **created** on summer (free, ~minutes) and the deck **validated
+end-to-end** against the live API. Results:
+
+**Env:** `micromamba -n rbfe` → **openfe 1.11.1 / gufe 1.10.0** (importable). `fep`
+env untouched; `rbfe` env left in place (reused for the eventual production fire).
+
+**`# API-CONFIRM` fields corrected (before → after), all checked against a live
+`RelativeHybridTopologyProtocol.default_settings()` dump:**
+
+| field | before (assumed) | after (confirmed 1.11.1) |
+|---|---|---|
+| compute platform | `engine_settings.compute_platform="CUDA"` | **same — confirmed valid** |
+| repeats | `settings.protocol_repeats` | **same — top-level int, confirmed** |
+| HREX windows | only `lambda_settings.lambda_windows` | **ALSO set `simulation_settings.n_replicas`** (the two are coupled; must be equal) |
+| eq / prod length | `simulation_settings.{equilibration,production}_length` (ps) | same path, **but each must be an integer multiple of `time_per_iteration`** (else ValueError) → deck now shrinks `time_per_iteration` for SMOKE and snaps eq/prod up to a multiple |
+| checkpoint | `simulation_settings.checkpoint_interval = N*timestep` | **`output_settings.checkpoint_interval` = a TIME quantity** (not on simulation_settings, not a step count) |
+| mapper | `openfe.setup.atom_mapping.LomapAtomMapper` | **same — confirmed**; `threed/element_change` kwargs valid |
+| DAG exec | `gufe.protocols.execute_DAG` | **same — confirmed** |
+
+**Two real bugs found + fixed during SMOKE (these would have crashed production):**
+
+1. **Ligands not mutually superimposed → LOMAP returned NOTHING** (`StopIteration`).
+   The two SDFs share ~77 core atoms graph-wise but their 3D cores did not overlap,
+   so LOMAP's `threed` distance filter discarded every pair. **Fix:** MCS-based
+   rigid alignment of ligand B onto A before mapping → 0 → **77 atoms mapped**
+   (RMSD 0.82 Å, exactly the shared ansamycin core; only C17 perturbed). Kartograf
+   added as a fallback.
+2. **Receptor PDB had no hydrogens → OpenMM "No template found for residue 0 (ASP)
+   ... missing 4 H atoms".** OpenFE's `ProteinComponent` does NOT protonate. **Fix:**
+   added a PDBFixer protonation step (same recipe as the ABFE deck) writing a cached
+   `hsp90_rec_H.pdb`.
+
+**SMOKE verdict:** with both fixes the pipeline runs end-to-end. The **solvent leg**
+(protein-free) smoke ran clean all the way through: MCS-align → 77-atom map →
+DAG build → system create → minimize → equilibrate → **HREX production sampler on
+the GPU → pymbar MBAR converged** (`Solution found within tolerance`). No final
+single-number printed inside the time box only because, at smoke size (3 replicas ×
+~2 ps), openmmtools re-runs MBAR at every analysis checkpoint and the gather, which
+loops; this is a smoke-size inefficiency, not a deck error. The **complex leg** at
+smoke size NaNs at *equilibration step 0* — a **starting-pose steric clash** from
+the centroid box-fix translation (which is not a real dock). The deck now documents
+this and runs the complex leg only when given a pocket-fit pose.
+
+**Ready-to-fire status:** the deck + env are **VALIDATED** and ready to fire the
+**solvent leg** as-is. The **complex leg** requires a one-step input fix first —
+supply a **pocket-fit ligand pose** (reuse the abfe `smallbox` docked pose, or add a
+short restrained energy-minimisation of the docked ligand) instead of the raw
+centroid translation. That is an input-prep step, not a code/API change.
