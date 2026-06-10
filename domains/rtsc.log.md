@@ -404,3 +404,8 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - Blöchl 1994 linear-tetrahedron FS 적분기(`stdlib/qforge/tetra_fs.hexa` NEW, g5 9/9 PASS) + dense-FS α²F(`fs_dense_a2f.hexa`) + CaH6 측정(QE 실 band, 16³ MP 2052 irr k-pts, 0-pod no per-k SCF). branch `qforge-wannier-tetra-fs` origin push.
 - **VERBATIM: dense-FS λ=4.10e-9 (Γ-only 9.26e-10 × 4.43× FS보정) — 여전히 ~9 orders 부족**. tetra VALIDATED: 수렴 N(E_F)=2.450 vs QE 2.484 st/spin/Ry(rel-ε 1.37%, σ-stable). 단 Γ-only N(E_F)도 이미 2.93(O(1)·near-converged) → FS-mesh 정밀화가 λ 거의 안 올림(<1 order).
 - **FS-mesh 축 = CLOSED-NEGATIVE(배제)**: el-ph 정규화 라운드가 투영한 ~5e9 FS-mesh 기여는 틀림. **진짜 ~9-order 잔여 = |g(k,k+q)|² 절대 행렬요소 크기**(FS 샘플 아님). GPU pod 불필요 — 다음 = |g|² vs QE 단일숫자 audit(0-pod). 게이트 HELD·하이브리드(1.65e-7) production. cost=$0.
+
+## 2026-06-10 · |g|² vs QE 단일숫자 audit — VERTEX-MAGNITUDE 결핍 (단위 아님), 원인=screened ΔV unwired (0-pod, d6)
+- CaH6 Γ mode7 |g|² QForge vs QE term별(`g2_audit.py`, verdict `.verdicts/qforge-g2-audit/`). QE ref: <|g|²>=λω/2N=1.316e-2 Ry²=|g|=1560.6 meV(γ cross-check ratio 1.0000 정확).
+- **QForge term 전부 CORRECT+적용**(amp2=ℏ/2Mω · 질량 1822.9 · ω 3.16e5 K/Ha · Ry² 0.25). **잔여 = VERTEX-MAGNITUDE 결핍, 단위 slip 아님**: QE 필요 bare |g_mn|=0.236 Ha/bohr(평범 deformation potential), QForge 산출 ~7.2e-6 = ~3.3e4× 작음(제곱이 단위곱과 우연 일치 = 이전 라운드 오도원인).
+- **원인 짚힘·고칠 수 있음(d2)**: (1) ★compose가 BARE ΔV 먹임 — RPA ε⁻¹가 metallic-H vertex 강화(Sternheimer 라운드 ‖∂V_scr‖/‖∂V_bare‖=132.7 측정), **screened_dv brick #2494 존재하나 compose에 UNWIRED** · (2) PW basis 수렴(n=51 ≪ QE 70Ry ~10³ PW) · (3) q≠Γ(Γ서 ΔG=0 head→0 acoustic sum rule 억제). 게이트 HELD·하이브리드(1.65e-7) production. 4.376 강제 안함. cost=$0.
