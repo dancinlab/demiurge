@@ -399,3 +399,8 @@ DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anc
 - **★2번째 root 발견**: cube ψ(r)가 UN-NORMALIZED(∫|ψ|²dr=1.2e-7, ifft 1/Ntot 때문) → PW ψ=ψ_ifft·(Ntot/√Ω)로 ∫|ψ|²=0.953≈1 복원. 모든 g_mn이 ~22 orders 작았음.
 - **VERBATIM(n=51 d11-tractable)**: λ ladder rung0(bare/n_ef=1)=5.81e-42 → rung2(SCREENED/realN(E_F)/amp)=**9.26e-10**. = 정규화+ψ-norm이 λ **+51 orders 도약**(off-diag 2.98e-61 → 9.26e-10), 61-order 갭 중 51 닫음.
 - **≤1%? NO, rel-ε 100%(~9.5 orders 남음, 4.376 강제 안함)**. **잔여 질적 전환**: 더는 diagonal/scale/screening/N(E_F)/amplitude 아님(전부 배선) → **Γ-only 1-k점 vs QE 수렴 full-BZ k×q mesh** = 물리 갭 아니라 샘플링/수렴(d11-intractable 0-pod, GPU pod/native 필요). 게이트 HELD·하이브리드(1.65e-7) production. d2 경로: 수렴 k×q mesh · Wannier-interp FS(`wannier_ginterp.hexa` 존재) · tetrahedron FS 적분. cost=$0.
+
+## 2026-06-10 · Wannier-interp FS + tetrahedron — FS-mesh 잔여 가설 CLOSED-NEGATIVE, 잔여=|g|² 절대크기 (0-pod, d6)
+- Blöchl 1994 linear-tetrahedron FS 적분기(`stdlib/qforge/tetra_fs.hexa` NEW, g5 9/9 PASS) + dense-FS α²F(`fs_dense_a2f.hexa`) + CaH6 측정(QE 실 band, 16³ MP 2052 irr k-pts, 0-pod no per-k SCF). branch `qforge-wannier-tetra-fs` origin push.
+- **VERBATIM: dense-FS λ=4.10e-9 (Γ-only 9.26e-10 × 4.43× FS보정) — 여전히 ~9 orders 부족**. tetra VALIDATED: 수렴 N(E_F)=2.450 vs QE 2.484 st/spin/Ry(rel-ε 1.37%, σ-stable). 단 Γ-only N(E_F)도 이미 2.93(O(1)·near-converged) → FS-mesh 정밀화가 λ 거의 안 올림(<1 order).
+- **FS-mesh 축 = CLOSED-NEGATIVE(배제)**: el-ph 정규화 라운드가 투영한 ~5e9 FS-mesh 기여는 틀림. **진짜 ~9-order 잔여 = |g(k,k+q)|² 절대 행렬요소 크기**(FS 샘플 아님). GPU pod 불필요 — 다음 = |g|² vs QE 단일숫자 audit(0-pod). 게이트 HELD·하이브리드(1.65e-7) production. cost=$0.
