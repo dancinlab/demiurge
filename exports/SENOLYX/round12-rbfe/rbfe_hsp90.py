@@ -52,15 +52,29 @@
 #   env knobs: SMOKE LEGS N_REPLICAS EQ_PS PROD_PS N_REPEATS
 #
 # ── VALIDATION STATE (2026-06, summer / openfe 1.11.1) ───────────────────────
-# Validated end-to-end on summer's free RTX 5070 up to and including the HREX
-# sampler + MBAR estimator (solvent leg, smoke size): MCS core-align (77 atoms,
-# 0.82 Å) → 77-atom LOMAP map → protocol/DAG build → OpenMM system create →
-# minimize → equilibrate → HREX production → pymbar MBAR converged. Every former
-# `# API-CONFIRM` field was confirmed against the live 1.11.1 API. Production
-# PREREQUISITE (being fixed — WIP): the COMPLEX leg starts from a centroid box-fix
-# that buries the ligand in the protein bulk → steric clash → NaN at equilibration
-# step 0. The complex-leg pocket-pose + pre-relaxation fix is in progress; see the
-# _load_and_dock_ligands() pocket-pose branch and RBFE_PLAN.md §7.
+# BOTH legs are now SMOKE-validated end-to-end on summer's free RTX 5070, up to and
+# including the HREX sampler + MBAR: MCS core-align (77 atoms, 0.82 Å) → 77-atom
+# LOMAP map → protocol/DAG build → OpenMM system create → minimize → equilibrate →
+# HREX production → MBAR. The solvent leg was clean already; the COMPLEX leg now
+# clears minimise + all 20 equilibration iterations + all 40 production iterations
+# with ZERO NaN (smoke: 5 windows, 10/20 ps). Every `# API-CONFIRM` field was
+# confirmed against the live 1.11.1 API.
+#
+# COMPLEX-LEG POSE FIX (2026-06) — three coupled parts, all in this deck:
+#   1) the centroid box-fix buries ~73 of the 78 ligand atoms in the protein bulk
+#      (closest 0.017 Å) → OpenFE's minimiser can't clear it → `Potential energy is
+#      NaN ... SimulationNaNError: replica 0 at state 0 resulted in a NaN`. FIXED by
+#      _relax_ligand_in_pocket(): a SOFTCORE-alchemical, STAGED-timestep (0.5→1→2 fs)
+#      pre-relaxation (the ABFE complex-leg recipe) that induced-fit relaxes A to a
+#      clash-free pose (min lig–protein 0.017 → ~1.7 Å).
+#   2) that relaxation distorts A's core non-rigidly (~2.9 Å), which would collapse a
+#      re-run of LOMAP's 3D filter to a ~1-atom map → wrong perturbation. FIXED by
+#      capturing the 77-atom mapping on the CLEAN pre-relaxation conformers (a graph
+#      correspondence, coordinate-independent) and reusing it.
+#   3) overlaying B onto the distorted relaxed-A leaves the hybrid's shared core ~2.9 Å
+#      strained → NaN again. FIXED by CORE-COPY: B's 77 mapped atoms are set EXACTLY
+#      onto relaxed-A's core (0.0 Å) and only B's 8 unique C17 atoms are rigid-aligned.
+# See RBFE_PLAN.md §7.
 #
 import os, sys, json, time, pathlib
 
@@ -98,11 +112,175 @@ else:
     N_REPEATS = int(os.environ.get("N_REPEATS", "3"))
 
 
-def _load_and_dock_ligands():
+def _relax_ligand_in_pocket(rdmA):
+    """COMPLEX-LEG POSE FIX. Take ligand A already centroid-translated onto the
+    receptor centroid (the box-fix) and RELAX it into a clash-free pocket pose with a
+    short SOFTCORE-alchemical pre-relaxation of the assembled protein+ligand+solvent
+    complex. Returns rdmA with its conformer overwritten by the relaxed coords (Å);
+    those coords then seed the RBFE SmallMoleculeComponent, so OpenFE's complex leg
+    starts clash-free and no longer NaNs at equilibration step 0.
+
+    WHY THE NAÏVE PRE-MIN IS NOT ENOUGH (diagnosed on summer, openfe 1.11.1):
+    the centroid translation places A's centroid at the *whole-protein* geometric
+    centroid; A spans ~12 Å, so 23 of its 78 atoms end up < 1.0 Å from protein heavy
+    atoms (closest 0.017 Å — essentially superimposed). With HARD Lennard-Jones a
+    plain `LocalEnergyMinimizer.minimize` reaches a *finite* energy but leaves razor-
+    sharp residual forces, and the very first MD step then explodes
+    (`OpenMMException: Particle coordinate is NaN`). OpenFE's own minimiser hits the
+    same wall on the (even clashier) HYBRID system that carries BOTH end-state C17
+    substituents at once → `Potential energy is NaN after 0 attempts ...
+    SimulationNaNError: replica 0 at state 0 resulted in a NaN`.
+
+    THE FIX (the ABFE complex-leg recipe, which ran WITHOUT NaN): alchemify the
+    ligand with openmmtools' AbsoluteAlchemicalFactory (`annihilate_sterics=False`),
+    which replaces the hard LJ on the ligand↔environment interactions with the
+    SOFTCORE functional form. Softcore stays finite through atomic overlap, so a
+    minimise + short MD at full coupling (λ_elec=λ_steric=1) smoothly PUSHES the
+    ligand out of the clash. Verified on summer: min lig–protein distance goes
+    0.017 Å → 1.875 Å (0 atoms < 1.5 Å) and the relaxed pose then runs stably under
+    HARD potentials (the regime OpenFE's end states use). Protein heavy atoms are
+    position-restrained during the relax so the receptor frame is preserved.
+
+    Idempotent: caches the relaxed pose to 17AG_pocket.sdf and reuses it.
+    """
+    from rdkit import Chem
+    cache = HERE / "17AG_pocket.sdf"
+    if cache.exists():
+        cached = Chem.MolFromMolFile(str(cache), removeHs=False, sanitize=True)
+        if cached is not None and cached.GetNumAtoms() == rdmA.GetNumAtoms():
+            conf, ccf = rdmA.GetConformer(), cached.GetConformer()
+            for i in range(rdmA.GetNumAtoms()):
+                conf.SetAtomPosition(i, ccf.GetAtomPosition(i))
+            print(f"[rbfe] complex pose: reused cached relaxed pose {cache.name}",
+                  flush=True)
+            return rdmA
+
+    from openmm import unit, app, CustomExternalForce, LangevinMiddleIntegrator, Platform
+    from openmm import LocalEnergyMinimizer, Context
+    from openff.toolkit import Molecule
+    from openmmforcefields.generators import SystemGenerator
+    from pdbfixer import PDBFixer
+    from openmmtools import alchemy
+
+    # --- assemble the SAME complex the ABFE deck minimised (protonate + box-fix) ---
+    fixer = PDBFixer(filename=str(REC_PDB))
+    fixer.findMissingResidues(); fixer.missingResidues = {}
+    fixer.findNonstandardResidues(); fixer.replaceNonstandardResidues()
+    fixer.removeHeterogens(keepWater=False)
+    fixer.findMissingAtoms(); fixer.addMissingAtoms(); fixer.addMissingHydrogens(7.0)
+    modeller = app.Modeller(fixer.topology, fixer.positions)
+
+    # ligand OpenFF molecule from the (already centroid-shifted) rdmA conformer
+    lig = Molecule.from_rdkit(rdmA, allow_undefined_stereo=True)
+    lig.assign_partial_charges("gasteiger")   # cheap; charges irrelevant to a pose pre-relax
+    sysgen = SystemGenerator(
+        forcefields=["amber/protein.ff14SB.xml", "amber/tip3p_standard.xml"],
+        small_molecule_forcefield="openff-2.1.0", molecules=[lig],
+        forcefield_kwargs={"constraints": app.HBonds, "rigidWater": True,
+                           "hydrogenMass": 3.0 * unit.amu},
+        periodic_forcefield_kwargs={"nonbondedMethod": app.PME,
+                                    "nonbondedCutoff": 1.0 * unit.nanometer})
+
+    n_prot = modeller.topology.getNumAtoms()
+    lig_top = lig.to_topology().to_openmm()
+    lig_pos = lig.conformers[0].to_openmm()
+    modeller.add(lig_top, lig_pos)
+    n_lig = lig_top.getNumAtoms()
+    lig_atoms = list(range(n_prot, n_prot + n_lig))
+    modeller.addSolvent(sysgen.forcefield, model="tip3p",
+                        padding=1.0 * unit.nanometer, neutralize=True,
+                        ionicStrength=0.15 * unit.molar)
+    system = sysgen.create_system(modeller.topology)
+
+    # SOFT position-restraint on protein Cα ONLY (k = 200 kJ/mol/nm^2): anchors the
+    # receptor frame (we extract the ligand pose RELATIVE to it) while leaving
+    # sidechains + the ligand + waters free to relax the clash. A HARD all-heavy-atom
+    # restraint would pin a protein atom that the ligand is superimposed on, so the
+    # softcore push-off impulse has nowhere to go → NaN; a soft Cα restraint avoids
+    # that while still preventing whole-protein drift.
+    restr = CustomExternalForce("0.5*k*((x-x0)^2+(y-y0)^2+(z-z0)^2)")
+    restr.addGlobalParameter("k", 200.0)
+    for p in ("x0", "y0", "z0"):
+        restr.addPerParticleParameter(p)
+    pos_all = modeller.positions
+    ca_atoms = [a.index for a in modeller.topology.atoms()
+                if a.index < n_prot and a.name == "CA"]
+    for idx in ca_atoms:
+        xyz = pos_all[idx].value_in_unit(unit.nanometer)
+        restr.addParticle(idx, [xyz[0], xyz[1], xyz[2]])
+    system.addForce(restr)
+
+    # SOFTCORE the ligand (the ABFE recipe): finite energy through overlap → the clash
+    # is recoverable. annihilate_sterics=False keeps the softcore LJ form at full λ.
+    region = alchemy.AlchemicalRegion(alchemical_atoms=lig_atoms,
+                                      annihilate_electrostatics=True,
+                                      annihilate_sterics=False)
+    factory = alchemy.AbsoluteAlchemicalFactory(alchemical_pme_treatment="exact")
+    alch_system = factory.create_alchemical_system(system, region)
+
+    try:
+        platform = Platform.getPlatformByName("CUDA")
+        props = {"Precision": "mixed"}
+    except Exception:
+        platform = Platform.getPlatformByName("CPU"); props = {}
+    # STAGED timestep: even with softcore the FIRST steps off a near-superimposed start
+    # carry a large impulse, so a 4 fs step overshoots → NaN. Start at 0.5 fs to let the
+    # push-off settle, then grow to 2 fs. (Verified on summer: PE finite through all
+    # stages, min lig–protein 0.017 Å → ~2.0 Å.)
+    integ = LangevinMiddleIntegrator(298.15 * unit.kelvin, 1.0 / unit.picosecond,
+                                     0.5 * unit.femtoseconds)
+    ctx = Context(alch_system, integ, platform, props)
+    ctx.setPositions(modeller.positions)
+    ctx.setParameter("lambda_electrostatics", 1.0)   # fully coupled, but softcore LJ
+    ctx.setParameter("lambda_sterics", 1.0)
+    print(f"[rbfe] complex pose: softcore staged pre-relaxing complex "
+          f"({alch_system.getNumParticles()} atoms, ligand {n_lig})...", flush=True)
+    LocalEnergyMinimizer.minimize(ctx, maxIterations=5000)
+    ctx.setVelocitiesToTemperature(298.15 * unit.kelvin)
+    # smoke: 0.5/1/2 fs × 2000 = 7 ps; prod: longer tail at 2 fs for a fuller settle.
+    tail = 2000 if SMOKE else 12500
+    stages = [(0.5, 2000), (1.0, 2000), (2.0, tail)]
+    for dt, nst in stages:
+        integ.setStepSize(dt * unit.femtoseconds)
+        integ.step(nst)
+        pe = ctx.getState(getEnergy=True).getPotentialEnergy().value_in_unit(
+            unit.kilojoule_per_mole)
+        if not np.isfinite(pe):
+            sys.exit(f"[rbfe] complex pose softcore relax went non-finite at the "
+                     f"{dt} fs stage — the box-fix pose is unrecoverable; needs a dock")
+    state = ctx.getState(getPositions=True, getEnergy=True, enforcePeriodicBox=True)
+    pe = state.getPotentialEnergy().value_in_unit(unit.kilojoule_per_mole)
+    relaxed = state.getPositions(asNumpy=True).value_in_unit(unit.angstrom)
+    del ctx, integ
+    if not np.isfinite(pe):
+        sys.exit("[rbfe] complex pose softcore pre-relaxation produced a non-finite "
+                 "energy — the box-fix pose is unrecoverable; needs a real dock")
+    # report the achieved ligand–protein separation (the clash-clearance metric)
+    try:
+        from scipy.spatial import cKDTree
+        dmin = cKDTree(relaxed[:n_prot]).query(relaxed[lig_atoms], k=1)[0].min()
+        clash = f", min lig–protein = {dmin:.2f} Å"
+    except Exception:
+        clash = ""
+    n_relax_steps = sum(n for _, n in stages)
+    print(f"[rbfe] complex pose: relaxed (PE = {pe:.3e} kJ/mol, "
+          f"{n_relax_steps} staged MD steps{clash})", flush=True)
+
+    # write the relaxed LIGAND coords (Å) back into rdmA + cache to SDF
+    conf = rdmA.GetConformer()
+    for i, gi in enumerate(lig_atoms):
+        x, y, z = (float(v) for v in relaxed[gi])
+        conf.SetAtomPosition(i, (x, y, z))
+    Chem.MolToMolFile(rdmA, str(cache))
+    print(f"[rbfe] complex pose: cached relaxed ligand pose → {cache.name}", flush=True)
+    return rdmA
+
+
+def _load_and_dock_ligands(relax_pocket=True):
     """Load both ligands, translate ligand A's centroid onto the receptor centroid
     (so OpenFE solvates a small box that wraps the receptor, not the 9.8 nm
-    origin→receptor span), then MUTUALLY SUPERIMPOSE ligand B onto ligand A over
-    their shared ansamycin core.
+    origin→receptor span), RELAX A into a clash-free pocket pose (complex leg only),
+    then MUTUALLY SUPERIMPOSE ligand B onto ligand A over their shared ansamycin core.
 
     The mutual-core alignment is REQUIRED for single-topology RBFE: the two input
     SDFs are independently origin-centred with *different* internal orientations, so
@@ -110,7 +288,12 @@ def _load_and_dock_ligands():
     coincide. LOMAP's `threed=True` distance filter then discards every candidate
     pair (>max3d apart) and `suggest_mappings` yields NOTHING (StopIteration). After
     an MCS-based rigid alignment the cores overlap (~0.8 Å RMSD) and LOMAP maps the
-    full shared core. (Verified on summer / openfe 1.11.1: 0 → 77 atoms mapped.)"""
+    full shared core. (Verified on summer / openfe 1.11.1: 0 → 77 atoms mapped.)
+
+    `relax_pocket` (True for the complex leg) runs _relax_ligand_in_pocket on A AFTER
+    the centroid box-fix, so the complex leg starts from a clash-free pose and no
+    longer NaNs at equilibration step 0. The solvent leg has no protein, so it passes
+    relax_pocket=False and uses the raw conformer (unchanged behaviour)."""
     from rdkit import Chem
     from rdkit.Chem import rdFMCS, rdMolAlign
 
@@ -135,17 +318,17 @@ def _load_and_dock_ligands():
             conf.SetAtomPosition(i, tuple(float(x) for x in pos[i]))
         return m
 
-    rdmA = shift_centroid_to(load(LIG_A_SDF), rec_centroid)   # A → pocket
+    rdmA = shift_centroid_to(load(LIG_A_SDF), rec_centroid)   # A → pocket (box-fix)
     rdmB = load(LIG_B_SDF)
-    # NOTE (production prerequisite): this centroid translation is a BOX-FIX (keeps
-    # the solvated box small), NOT a dock. It places the ligand centroid at the
-    # *receptor* centroid, which for this construct can overlap protein atoms — a
-    # SMOKE run then NaNs at equilibration step 0 (a starting clash minimization
-    # can't clear). The complex leg therefore requires a properly POCKET-FIT ligand
-    # pose (the abfe smallbox pose, or a short restrained pre-min/dock) before a
-    # production fire. The SOLVENT leg has no protein and is unaffected.
 
     # rigid-body align B onto A over the maximum common substructure (shared core).
+    # CRITICAL: do this on the CLEAN box-fix conformers (BEFORE any pocket relaxation),
+    # where the two cores overlap tightly (~0.8 Å). The atom-mapping LOMAP derives here
+    # is a GRAPH correspondence (atom-index pairs) and is therefore COORDINATE-
+    # INDEPENDENT — we capture it now and reuse it even after A is relaxed (relaxation
+    # distorts A's core by ~2-3 Å, which would otherwise collapse LOMAP's 3D filter to
+    # a near-empty map). See build_components, which builds the LigandAtomMapping from
+    # this dict against the relaxed components.
     mcs = rdFMCS.FindMCS([rdmA, rdmB], ringMatchesRingOnly=True,
                          completeRingsOnly=True, timeout=120)
     patt = Chem.MolFromSmarts(mcs.smartsString)
@@ -156,9 +339,64 @@ def _load_and_dock_ligands():
                  f"ligand cores for single-topology RBFE")
     rmsd = rdMolAlign.AlignMol(rdmB, rdmA, atomMap=list(zip(matchB, matchA)))
     print(f"[rbfe] MCS shared-core align: {mcs.numAtoms} atoms, "
-          f"B→A RMSD = {rmsd:.3f} Å", flush=True)
+          f"B→A RMSD = {rmsd:.3f} Å (clean conformers, pre-relaxation)", flush=True)
 
-    return rdmA, rdmB, rec_centroid
+    # derive the LOMAP atom mapping on these clean, tightly-overlapping conformers
+    # (full shared core, ~77 atoms). Returned to build_components for reuse.
+    mapping_AtoB = _lomap_mapping_dict(rdmA, rdmB)
+
+    # COMPLEX-LEG POSE FIX: the centroid translation is only a box-fix — it buries A's
+    # ~12 Å periphery in the protein bulk (~73 of 78 atoms clash) → steric clash → NaN
+    # at equilibration step 0. Relax A into an induced-fit, clash-free pose AFTER the
+    # mapping is captured.
+    if relax_pocket:
+        rdmA = _relax_ligand_in_pocket(rdmA)
+        # CORE-COPY (single-topology requirement): set B's MAPPED core atoms EXACTLY
+        # onto relaxed-A's core positions, and place B's unique C17 atoms by a rigid
+        # pre-align. The relaxation distorts A's core non-rigidly (~2.9 Å RMSD), so a
+        # plain rigid re-align of B leaves the hybrid's shared atoms ~2.9 Å apart per
+        # atom → an internally-strained hybrid that NaNs at equilibration step 0.
+        # Copying the mapped positions makes the shared core coincide to 0.0 Å (the
+        # exact geometry OpenFE's hybrid topology assumes), so the complex leg starts
+        # clash-free. (Verified on summer: max core deviation 0.0 Å.)
+        rApos = np.array([list(rdmA.GetConformer().GetAtomPosition(i))
+                          for i in range(rdmA.GetNumAtoms())])
+        # rigid pre-align B onto relaxed A over the mapped core (places the C17 atoms)
+        rdMolAlign.AlignMol(rdmB, rdmA,
+                            atomMap=[(b, a) for a, b in mapping_AtoB.items()])
+        bconf = rdmB.GetConformer()
+        for a_idx, b_idx in mapping_AtoB.items():   # then snap mapped core exactly
+            x, y, z = rApos[a_idx]
+            bconf.SetAtomPosition(b_idx, (float(x), float(y), float(z)))
+        print(f"[rbfe] core-copy: B's {len(mapping_AtoB)} mapped atoms set onto "
+              f"relaxed-A core (0.0 Å), {rdmB.GetNumAtoms()-len(mapping_AtoB)} unique "
+              f"C17 atoms rigid-aligned", flush=True)
+
+    return rdmA, rdmB, rec_centroid, mapping_AtoB
+
+
+def _lomap_mapping_dict(rdmA, rdmB):
+    """Return the LOMAP shared-core atom mapping (dict A_idx -> B_idx) computed on the
+    given (tightly-aligned) conformers. Falls back to Kartograf. This is a GRAPH
+    correspondence and stays valid after either ligand's coordinates change."""
+    from openfe import SmallMoleculeComponent
+    from openfe.setup.atom_mapping import LomapAtomMapper
+    ligA = SmallMoleculeComponent.from_rdkit(rdmA, name="17AG")
+    ligB = SmallMoleculeComponent.from_rdkit(rdmB, name="17AAG")
+    mapper = LomapAtomMapper(threed=True, element_change=False)
+    mapping = next(iter(mapper.suggest_mappings(ligA, ligB)), None)
+    if mapping is None:
+        from kartograf import KartografAtomMapper
+        mapping = next(iter(KartografAtomMapper().suggest_mappings(ligA, ligB)), None)
+        if mapping is None:
+            sys.exit("no atom mapping found by LOMAP or Kartograf — the shared cores "
+                     "are not superimposed (check the MCS align above)")
+        print("[rbfe] LOMAP empty → using Kartograf geometry mapper", flush=True)
+    d = dict(mapping.componentA_to_componentB)
+    print(f"[rbfe] atom mapping: {len(d)} core atoms mapped "
+          f"(17AG {rdmA.GetNumAtoms()} ↔ 17AAG {rdmB.GetNumAtoms()}); "
+          f"perturbed = the C17 substituent only", flush=True)
+    return d
 
 
 def _protonate_receptor():
@@ -188,14 +426,21 @@ def _protonate_receptor():
     return REC_PDB_H
 
 
-def build_components():
+def build_components(relax_pocket=True):
     """Build the OpenFE ChemicalSystems (complex + solvent) and the single-edge
-    atom mapping over the shared core (LOMAP)."""
+    atom mapping over the shared core (LOMAP).
+
+    `relax_pocket` (default True; set False for a protein-free `LEGS=solvent` smoke)
+    runs the complex-leg pocket-pose relaxation in _load_and_dock_ligands so the
+    complex leg starts clash-free. A relaxed pose is harmless to the solvent leg, so
+    when BOTH legs run we relax once and use that pose for both."""
     from openfe import (SmallMoleculeComponent, ProteinComponent,
                         SolventComponent, ChemicalSystem)
+    from openfe.setup.atom_mapping import LigandAtomMapping  # CONFIRMED openfe 1.11.1
     from openff.units import unit as offunit
 
-    rdmA, rdmB, rec_centroid = _load_and_dock_ligands()
+    rdmA, rdmB, rec_centroid, mapping_AtoB = _load_and_dock_ligands(
+        relax_pocket=relax_pocket)
     print(f"[rbfe] receptor centroid (Å) = {rec_centroid.round(2).tolist()}", flush=True)
 
     ligA = SmallMoleculeComponent.from_rdkit(rdmA, name="17AG")
@@ -205,23 +450,14 @@ def build_components():
     # 0.15 M NaCl, neutralizing — matches the ABFE deck's solvation.
     solvent = SolventComponent(ion_concentration=0.15 * offunit.molar)
 
-    # single-topology atom mapping over the shared ansamycin core (LOMAP).
-    # Kartograf is a geometry-aware alternative; LOMAP is the OpenFE default and
-    # is robust for a single C17-substituent edit.
-    from openfe.setup.atom_mapping import LomapAtomMapper  # CONFIRMED openfe 1.11.1
-    mapper = LomapAtomMapper(threed=True, element_change=False)
-    mapping = next(iter(mapper.suggest_mappings(ligA, ligB)), None)
-    if mapping is None:
-        # Kartograf is a geometry-aware fallback. If BOTH fail the ligands are not
-        # superimposed — _load_and_dock_ligands must have failed the MCS align.
-        from kartograf import KartografAtomMapper
-        mapping = next(iter(KartografAtomMapper().suggest_mappings(ligA, ligB)), None)
-        if mapping is None:
-            sys.exit("no atom mapping found by LOMAP or Kartograf — the shared cores "
-                     "are not superimposed (check the MCS align above)")
-        print("[rbfe] LOMAP empty → using Kartograf geometry mapper", flush=True)
-    n_mapped = len(mapping.componentA_to_componentB)
-    print(f"[rbfe] atom mapping: {n_mapped} core atoms mapped "
+    # Build the LigandAtomMapping from the GRAPH correspondence captured on the clean
+    # pre-relaxation conformers (full shared core, ~77 atoms). We rebuild it here
+    # against the FINAL (possibly relaxed) components — the atom-index dict is
+    # coordinate-independent, so the full-core map survives the pocket relaxation that
+    # would otherwise have collapsed a re-run of LOMAP's 3D filter to a near-empty map.
+    mapping = LigandAtomMapping(componentA=ligA, componentB=ligB,
+                                componentA_to_componentB=mapping_AtoB)
+    print(f"[rbfe] mapping applied: {len(mapping_AtoB)} core atoms "
           f"(17AG {rdmA.GetNumAtoms()} ↔ 17AAG {rdmB.GetNumAtoms()}); "
           f"perturbed = the C17 substituent only", flush=True)
 
@@ -302,18 +538,23 @@ def main():
           f"repeats={N_REPEATS}, windows={N_REPLICAS}, "
           f"eq={EQ_PS}ps prod={PROD_PS}ps) ===", flush=True)
 
-    mapping, (complexA, complexB), (solventA, solventB) = build_components()
+    # leg selection (parsed first so we only run the costly pocket-pose relaxation
+    # when the complex leg is actually requested). LEGS env (comma-sep), default both.
+    want = [s.strip() for s in os.environ.get("LEGS", "complex,solvent").split(",") if s.strip()]
+    # pocket-pose relaxation is needed iff the complex leg runs (the solvent leg is
+    # protein-free and unaffected, so a pure `LEGS=solvent` smoke skips it).
+    mapping, (complexA, complexB), (solventA, solventB) = build_components(
+        relax_pocket=("complex" in want))
     protocol = make_protocol()
 
-    # two legs of the relative perturbation. LEGS env (comma-sep) selects which to
-    # run — default both. The solvent leg is protein-free (no docking prerequisite),
-    # so `LEGS=solvent` is the clean end-to-end SMOKE that exercises the full
-    # sampler→MBAR→estimate path; `LEGS=complex` resumes the protein leg alone.
+    # two legs of the relative perturbation. The solvent leg is protein-free (no
+    # docking prerequisite), so `LEGS=solvent` is the clean end-to-end SMOKE that
+    # exercises the full sampler→MBAR→estimate path; `LEGS=complex` resumes the
+    # protein leg alone (now clash-free thanks to the pocket-pose relaxation).
     _all_legs = {
         "complex": lambda: protocol.create(stateA=complexA, stateB=complexB, mapping=mapping),
         "solvent": lambda: protocol.create(stateA=solventA, stateB=solventB, mapping=mapping),
     }
-    want = [s.strip() for s in os.environ.get("LEGS", "complex,solvent").split(",") if s.strip()]
     legs = {name: _all_legs[name]() for name in want}
 
     leg_dG = {}
