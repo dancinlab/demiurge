@@ -22,3 +22,13 @@
 @domain PHOTOREDOX   := "domains/PHOTOREDOX.md"
 @domain CO2-CAPTURE  := "domains/CO2-CAPTURE.md"
 @domain GREEN-NH3    := "domains/GREEN-NH3.md"
+@domain 8VERB := "domains/8VERB.md"
+@domain AGA-RX := "domains/AGA-RX.md"
+@domain AGA-CURE := "domains/AGA-CURE.md"
+@domain SENOLYX := "domains/SENOLYX.md"
+@domain PERIO-CURE := "domains/PERIO-CURE.md"
+@domain OA-CURE := "domains/OA-CURE.md"
+@domain RETINA-CURE := "domains/RETINA-CURE.md"
+@domain IVD-CURE := "domains/IVD-CURE.md"
+@domain COSMOS := "domains/COSMOS.md"
+QFORGE-PAW	domains/QFORGE-PAW.md
