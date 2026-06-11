@@ -523,10 +523,40 @@ def make_protocol():
     # value — so even a SMOKE writes a checkpoint, and production checkpoints often.
     settings.output_settings.checkpoint_interval = tpi_ps * offunit.picosecond
 
-    # HMR + 4 fs timestep (matches the ABFE deck). CONFIRMED both fields exist and
-    # already default to 4 fs / H-mass 3.0 amu in openfe 1.11.1; set explicitly.
-    settings.integrator_settings.timestep = 4 * offunit.femtosecond
-    settings.forcefield_settings.hydrogen_mass = 3.0
+    # ── COMPLEX-LEG NaN FIX (production HREX first-propagation blow-up) ──────────
+    # SYMPTOM: the complex leg NaN'd on iteration0 / replica0 / state0 (the fully-
+    # coupled 17AG end state) at step 250 of the first 625-step move. The saved
+    # nan-error-log state showed KineticEnergy ≈ 1.03e6 kJ/mol (eq KE for this box
+    # is ~tens of thousands) — i.e. an integrator energy explosion, NOT a bad start
+    # pose (the softcore pose pre-relax + core-copy already cleared the step-0 clash).
+    # ROOT CAUSE: 4 fs + HMR (H-mass 3.0) is at the edge of LangevinMiddle stability;
+    # on the hybrid complex the residual strain in the perturbed C17 region pushes it
+    # over → overshoot → NaN on the FIRST propagation. The solvent leg (no protein,
+    # less strain) survives 4 fs, which is exactly why only the complex leg blew up.
+    #
+    # FIX — applied in two empirically-driven escalations:
+    #
+    # (1) timestep 4 fs → 2 fs. This CLEARED the replica-0/state-0 (fully-coupled end
+    #     state) blow-up: at 2 fs that window survived. But a SECOND NaN then appeared
+    #     at replica5/state5 — the MIDDLE alchemical window (lambda_sterics_core=0.5,
+    #     KE≈9.6e5 kJ/mol) during equilibration iteration 1. That is a softcore
+    #     INTERMEDIATE-WINDOW instability: where the unique-atom sterics are half
+    #     decoupled, the softcore LJ is at its steepest and a 2 fs step still overshoots
+    #     on the strained complex hybrid.
+    #
+    # (2) drop further to 1 fs AND soften the alchemical region (softcore_alpha
+    #     0.85 → 0.9). 1 fs gives the full stability margin for the strained complex
+    #     hybrid; the larger softcore_alpha flattens the LJ singularity in the
+    #     half-decoupled intermediate windows (the exact place the 2 fs run blew up).
+    #     Keep HMR (H-mass 3.0, trivially stable at 1 fs) + the Gapsys softcore form.
+    #     Deeper minimisation (1000 → 5000 steps) drives out C17 strain pre-dynamics.
+    # Cost: 1 fs ~4x the original 4 fs step count (≈3-6 days) — the price of a stable
+    # complex hybrid. The driver runs it detached + @reboot-resumable on the free GPU.
+    settings.integrator_settings.timestep = 1 * offunit.femtosecond  # 4→2→1 fs (2 fs still NaN'd at mid-window)
+    settings.forcefield_settings.hydrogen_mass = 3.0                  # keep HMR (trivially stable @ 1 fs)
+    settings.alchemical_settings.softcore_alpha = 0.9                 # was 0.85 — soften mid-window LJ singularity
+    # deeper minimisation: drive out the C17-region strain before any dynamics.
+    settings.simulation_settings.minimization_steps = 5000           # was 1000 (default)
 
     return RelativeHybridTopologyProtocol(settings)
 
