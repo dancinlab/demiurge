@@ -124,7 +124,9 @@ openmmtools HREX replica exchange + MBAR under the hood).
 | equilibration | 1 ns | 10 ps | `EQ_PS` |
 | production / replica | 5 ns | 20 ps | `PROD_PS` |
 | repeats (uncertainty) | 3 | 1 | `N_REPEATS` |
-| timestep / HMR | 4 fs / H-mass 3.0 amu | same | (deck, best-effort) |
+| timestep / HMR | **1 fs** / H-mass 3.0 amu | same | (deck) — see NaN fix below |
+| softcore_alpha | **0.9** (was 0.85) | same | (deck) — soften mid-window LJ |
+| minimisation | 5000 steps (was 1000 default) | same | (deck) — drive out C17 strain |
 | solvent | TIP3P, 0.15 M NaCl, neutralized | same | — |
 | platform | CUDA, mixed precision | same | — |
 | legs | complex (HSP90 pocket) + solvent (water) | same | — |
@@ -150,9 +152,42 @@ plumbing to validate the moment openfe is importable.
 
 - **SMOKE** (validity only): ~minutes on summer's RTX 5070.
 - **Production**: 2 legs × 11 windows × 3 repeats × ~5 ns. On a single RTX 5070 the
-  realistic estimate is **~1–2 days** wall (HREX over 11 replicas, two legs,
-  3 repeats). This is a multi-day run and is therefore **NOT fired here** (per the
-  task constraint). It is resumable from the per-leg `.nc` checkpoints.
+  realistic estimate is **~3–6 days** wall (HREX over 11 replicas, two legs,
+  3 repeats). The 1 fs timestep (down from 4 fs, see the NaN fix below) ~4× the
+  step count vs the original 4 fs estimate, hence ~3–6 days. Resumable from the
+  per-leg `.nc` checkpoints; the FREE summer RTX 5070 driver (`run_rbfe.sh`) runs it
+  detached + @reboot-resumable, so the multi-day wall is not foreground-held.
+
+### Complex-leg production-HREX NaN fix (4 fs → 2 fs → 1 fs + softer softcore)
+
+The first production run cleared setup + the earlier OOM + the earlier eq-step-0
+clash (softcore pose pre-relax + 77-atom core-copy), reached the HREX sampler, then
+NaN'd on the **complex leg**. The fix was applied in two empirically-driven steps,
+each diagnosed from the saved `nan-error-logs/...state.xml`:
+
+**(1) 4 fs → 2 fs.** The first NaN was at `iteration0 / replica0 / state0` (the
+fully-coupled 17AG end state) — step 250 of the first move, with
+`KineticEnergy ≈ 1.03e6 kJ/mol` (eq KE for this ~31k-atom box is ~tens of thousands),
+i.e. an **integrator energy explosion**, not a bad start pose. The solvent leg (no
+protein, far less strain) survived 4 fs — which is why only the protein-bound complex
+hybrid blew up. Root cause: **4 fs + HMR (H-mass 3.0)** sits at the edge of
+LangevinMiddle stability; residual C17-region strain pushed the first propagation
+over → overshoot → NaN. Dropping to **2 fs CLEARED replica 0** (the end state then
+survived).
+
+**(2) 2 fs → 1 fs + softcore_alpha 0.85 → 0.9.** At 2 fs a *second* NaN appeared, now
+at `iteration0 / replica5 / state5` — the **middle alchemical window**
+(`lambda_sterics_core = 0.5`, `KE ≈ 9.6e5 kJ/mol`) during equilibration iteration 1.
+That is a softcore **intermediate-window** instability: where the unique-atom sterics
+are half-decoupled, the softcore LJ is at its steepest and a 2 fs step still overshoots
+on the strained complex hybrid. Fix: drop further to **1 fs** (full stability margin)
+**and soften the alchemical region** (`alchemical_settings.softcore_alpha` 0.85 → 0.9,
+flattening the LJ singularity in exactly the half-decoupled windows that blew up).
+HMR (H-mass 3.0) and the Gapsys softcore form are kept; minimisation is deepened
+(1000 → 5000 steps) to relax C17 strain before any dynamics.
+
+All other production science settings are unchanged (11 windows, 1 ns eq,
+5 ns/replica, 3 repeats, both legs, CUDA mixed precision).
 
 **Fire command (after openfe env exists — see §1 unblock):**
 
