@@ -9,10 +9,13 @@ icon 🏗️ · name QFORGE-PAW · alias "QE급 바닥상태 엔진" (ground-sta
 - 비유: 엔진의 "연료+점화플러그" 자체를 정품으로 교체 (지금은 호환부품 NC+LDA라 출력이 다름)
 - 비교: off-diag assembler = 조립법(닫힘·×1.06) · QFORGE-PAW = 부품 자체(QE-grade PBE+PAW augmentation)
 
-- [ ] round-1 — NOVEL probe + arxiv/web deep-research lit-grounding: PAW/USPP el-ph deformation-potential ∂V/∂u 이론 + QForge 통합 설계 (d18)
-- [ ] PAW/USPP 의사퍼텐셜 augmentation charge 지원 (NC 너머 — Q_ij(r) 보강전하 · D_ij 비국소항)
-- [ ] PBE-converged ground-state SCF (QE의 GGA 함수자에 정렬 — band/DOS/ρ 출발점 일치)
-- [ ] PAW-augmented deformation potential ∂V_scf/∂u (보강전하 포함 el-ph vertex)
-- [ ] CaH6 |g(Γ,ν)| vs QE 단일숫자 재현 — g2-audit의 ~3.3e4×(이전 NC) 결핍이 PAW로 닫히나
-- [ ] CaH6 λ ≤1% vs QE 4.376 → 마이그레이션 게이트 flip + dispatch=qforge
+> **round-1 재구성 (2026-06-12)**: ~3.3e4× 결핍은 ARTIFACT(n=51+q=Γ+bare)였고 pseudo-type은 magnitude 레버가 아님(NC=PAW off-core, arXiv:2507.06749). 실 culprit = **LDA→PBE in SCF**(un-tried). 타깃 4.376은 under-converged outlier → **~2.69**(PNAS 2012)로 재앵커. 경로 = Route B(풀 PAW 회피). 풀 USPP/PAW는 B1-B3 미달시 fallback.
+
+- [x] round-1 — lit-grounding DONE (d18): ~3.3e4×=artifact · pseudo는 레버 아님 · culprit=PBE-SCF · 타깃 재앵커 ~2.69 · 경로 Route B. draft `drafts/qforge-paw-round1-design.md`
+- [ ] **B1 — LDA→PBE ground-state SCF** (최대 λ-레버·최소변경, manifest `xc="pbe"`, `qforge_h_pbe`/`correlation_pbe.hexa` 존재·SCF서 미실행) → CaH6 λ 재측정
+- [ ] **B2 — 빠진 비국소 ∂V_NL/∂u** (`dvnl_du.hexa`: Σ|∂β⟩D⟨β|, NC·무augmentation) — round-2 첫 brick: ∂β_i(q)/∂u_d=−iG_d·β_i(q) + g5(Hermiticity<1e-10·finite-diff<1e-6) on `projector_selftest.hexa` l=0
+- [ ] **타깃 재앵커** — CaH6 수렴 λ 기준 4.376→**~2.69**(PNAS 2012 PAW+PBE+QE·수렴 lit 1.6-2.7) 교정 후 게이트 측정
+- [ ] **B3 — augmentation-density overlay** ∂ρ_aug/∂u (일반화 고유문제 회피, B1·B2 미달시)
+- [ ] CaH6 λ ≤1% vs 재앵커 타깃 → 마이그레이션 게이트 flip + dispatch=qforge
 - [ ] LaH10 · Li2MgH16 2·3차 앵커 λ ≤1% (3-물질 삼각측량 완결)
+- [ ] Route A — 풀 USPP/PAW overlap-S/Q_ij 재구축 (B1-B3 전부 미달시만)
