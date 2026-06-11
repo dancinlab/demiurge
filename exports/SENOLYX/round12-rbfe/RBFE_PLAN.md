@@ -255,8 +255,88 @@ smoke size NaNs at *equilibration step 0* — a **starting-pose steric clash** f
 the centroid box-fix translation (which is not a real dock). The deck now documents
 this and runs the complex leg only when given a pocket-fit pose.
 
-**Ready-to-fire status:** the deck + env are **VALIDATED** and ready to fire the
-**solvent leg** as-is. The **complex leg** requires a one-step input fix first —
-supply a **pocket-fit ligand pose** (reuse the abfe `smallbox` docked pose, or add a
-short restrained energy-minimisation of the docked ligand) instead of the raw
-centroid translation. That is an input-prep step, not a code/API change.
+**Ready-to-fire status (as of §6):** the deck + env are **VALIDATED** and ready to
+fire the **solvent leg** as-is. The **complex leg** requires a one-step input fix
+first — see §7, where it is now **FIXED + validated**.
+
+---
+
+## 7. Complex-leg pose fix (2026-06, summer / openfe 1.11.1) — DONE
+
+The §6 residual (complex leg NaNs at equilibration step 0) is **closed**. Both legs
+are now SMOKE-validated end-to-end.
+
+**Diagnosis (verbatim, reproduced at the default smoke 5 windows / 10 ps eq):**
+
+```
+INFO:   minimizing systems
+INFO:   equilibrating systems
+INFO:   Equilibration iteration 1/20
+WARNING:  Potential energy is NaN after 0 attempts of integration with move
+          LangevinDynamicsMove Attempting a restart...
+...
+openmmtools.multistate.utils.SimulationNaNError: Propagating replica 0 at state 0
+resulted in a NaN!
+```
+
+**Root cause:** the centroid box-fix places the ligand centroid at the *whole-protein*
+geometric centroid. The 78-atom, ~12 Å ligand is then almost entirely buried —
+measured on summer, **73 of 78 ligand atoms sit < 2.5 Å from protein heavy atoms**
+(closest 0.017 Å, essentially superimposed). OpenFE's pre-production minimiser cannot
+clear an overlap this deep on the (even clashier) hybrid system that carries BOTH
+end-state C17 substituents, so equilibration iteration 1 blows up. This is a
+starting-clash NaN, NOT an API error (confirmed: the solvent leg and a tiny 3-window
+complex smoke both run; only the deep-clash default/production complex start NaNs).
+
+**Fix — three coupled parts, all inside `rbfe_hsp90.py` (no new inputs, no dock tool):**
+
+1. **Softcore-alchemical, staged-timestep pre-relaxation** (`_relax_ligand_in_pocket`).
+   The ligand is alchemified with openmmtools' `AbsoluteAlchemicalFactory`
+   (`annihilate_sterics=False`), whose softcore LJ stays finite through atomic
+   overlap, so a minimise + short MD at full coupling can *push the ligand out of the
+   clash* (the same recipe the ABFE complex leg used without NaN). The first MD steps
+   off a near-superimposed start carry a large impulse, so the timestep is **staged
+   0.5 → 1 → 2 fs** (a flat 4 fs overshoots → NaN). Protein Cα atoms get a SOFT
+   (k = 200 kJ/mol/nm²) restraint to anchor the receptor frame. Result: min
+   lig–protein distance **0.017 Å → ~1.7 Å**, and the relaxed pose runs stably under
+   hard potentials. Cached to `17AG_pocket.sdf` (idempotent).
+
+2. **Coordinate-independent mapping.** The relaxation distorts A's core non-rigidly
+   (~2.9 Å RMSD), which would collapse a re-run of LOMAP's 3D filter (`max3d = 1.0 Å`)
+   to a ~1-atom map (wrong: it would perturb 77 atoms instead of just C17). So the
+   **77-atom LOMAP mapping is captured on the CLEAN pre-relaxation conformers** (where
+   the cores overlap to 0.82 Å) — a graph correspondence that is coordinate-
+   independent — and rebuilt as a `LigandAtomMapping` against the relaxed components.
+
+3. **Core-copy.** Overlaying B onto the distorted relaxed-A leaves the hybrid's shared
+   core ~2.9 Å strained per atom → NaN again. So **B's 77 mapped core atoms are set
+   EXACTLY onto relaxed-A's core positions (0.0 Å deviation, verified)** and only B's
+   8 unique C17 (allylamino) atoms are placed by a rigid pre-align. The hybrid's
+   shared core then coincides exactly — the geometry OpenFE's hybrid topology assumes.
+
+**SMOKE verdict (complex leg, default smoke 5 windows / 10 ps eq / 20 ps prod):**
+77-atom core map (0.82 Å, clean conformers) → core-copy (0.0 Å) → minimise → **all 20
+equilibration iterations** → **all 40 HREX production iterations** → MBAR, with
+**ZERO NaN anywhere in the log**. The complex leg now STARTS and SAMPLES stably. (As
+at §6, no final single number is printed inside the smoke time box because at smoke
+size openmmtools re-runs MBAR at every analysis checkpoint and loops — a smoke-size
+inefficiency, not a deck error; magnitude is meaningless at smoke size anyway.)
+
+**Ready-to-fire status:** the deck + `rbfe` env are now **FULLY VALIDATED for BOTH
+legs** — the complex leg no longer needs any external pose/dock input. The fire
+command is unchanged from §4 except the complex-leg leg now runs as-is:
+
+```bash
+# stage deck + inputs to summer
+scp -r exports/SENOLYX/round12-rbfe summer@192.168.50.60:/home/summer/rbfe_run
+
+# PRODUCTION — both legs (complex leg self-relaxes its pose on first run, ~minutes;
+# the pose is cached to 17AG_pocket.sdf for resumes), detached, $0:
+sidecar pool on summer 'export MAMBA_ROOT_PREFIX=/home/summer/micromamba; \
+    cd /home/summer/rbfe_run/round12-rbfe && \
+    nohup /home/summer/bin/micromamba run -n rbfe python rbfe_hsp90.py \
+    > rbfe_prod.log 2>&1 &'
+# harvest: rbfe_prod/ddG_result.json → ΔΔG_bind(17AG→17AAG) vs exp +1.9
+```
+
+*Production is multi-day on a single RTX 5070 and is NOT fired here (task constraint).*
