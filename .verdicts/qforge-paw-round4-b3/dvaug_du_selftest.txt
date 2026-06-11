@@ -1,0 +1,11 @@
+PASS (Z) NC-zero anchor: qaug≡0 ⇒ ∂V_aug≡0 (max=0.0)
+PASS (Z') NC-zero apply ⇒ zero vertex (max=0.0)
+PASS (SR) co-located augmentation self-vertex < 1e-15 (max=1.0842e-19, finite Q_ij) — translational invariance
+    [SR'] |S|=0.000120736 |A|=0.000181103 |B|=0.000301839 |S+A+B|=5.20226e-21
+PASS (SR') three terms each O(1e-4), |S|+|A|+|B| > 1e-5 (real cancellation)
+PASS (A) analytic == FD derivative < 1e-9 (max abs diff=1.0842e-13)
+PASS (C) all ∂V_aug entries finite
+PASS (D) bad dir → []
+PASS (D) qaug size mismatch → []
+PASS (D) apply size mismatch → []
+qforge_dvaug_du_selftest PASS

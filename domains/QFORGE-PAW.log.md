@@ -40,3 +40,23 @@
 - **게이트 HELD**(flip 안 함·2.69/4.376 강제 없음 d6): hybrid(rel-ε 1.65e-7) production·dispatch=QE 유지. ω가 phonon 측에서 닫히며 NC 틀 내 named DFT 레버(functional·off-diag·basis·FS-mesh·f_xc·∂V_NL·**ω**) **전부 소진**. un-probed 단 하나 = B3 augmentation overlay ∂ρ_aug/∂u(arXiv:2507.06749 NC≈PAW off-core로 작을 것 예상).
 - **next**: round-4 = B3 ∂ρ_aug/∂u(유일 남은 레버). B3도 작으면 → **HONEST TERMINAL**: from-scratch-vs-QE |g| 환원불가·하이브리드 영구 production. ⚠ phonon ω 재audit 금지(CLOSED-NEG).
 - **DELIVER**: 재현 스크립트 `.verdicts/qforge-paw-round3-omega/omega_audit.py`(QE dyn 파싱+QForge 앵커 비교) · verdict `.verdicts/qforge-paw-round3-omega/VERDICT.md`. cost=$0.
+
+## 2026-06-12 · round-4 B3 augmentation-density overlay ∂ρ_aug/∂u — Δλ(B3)=0.0 EXACT · 🏁 HONEST TERMINAL (d6 VERBATIM, 0-pod, $0)
+- **동기**: round-1…3가 |g| 측 모든 다른 명명 레버 배제(B1 PBE-SCF Δλ=−0.915·B2 ∂V_NL/∂u Δλ=−0.003·off-diag ×1.06·basis non-monotonic·FS-mesh 1.37%·f_xc-in-χ ALDA CLOSED-NEG·phonon ω 0.67%일치 CLOSED-NEG) 후 **유일 남은 un-probed 레버 = PAW/USPP augmentation overlay** ∂ρ_aug/∂u=∂[Σ_ij Q_ij⟨ψ|β_i⟩⟨β_j|ψ⟩]/∂u (NC가 구조적으로 못 만드는 항, Q_ij≡0). lit(arXiv:2507.06749) B3 작을 것 예측.
+- **구현(g1 hexa-native·g4 stacked·d4-generic)**: `stdlib/qforge/dvaug_du.hexa` — `qforge_dvaug_du_block(r,rab,betas,ls,qaug,nproj,omega,tau,qvecs,dir)`가 L=0 monopole augmentation el-ph 정점 도함수를 B2 phased-projector 기계(`qforge_proj_radial`, d19) 재사용해 separable overlay로 조립: ∂V_aug[a,b]=Σ_ij(same-l)(4π/Ω)Q̃_ij(|q_a−q_b|)·∂/∂u_d[exp(−iΔq·τ)β_i*(q_a)β_j(q_b)], ∂(phase)/∂u_d=−i q_d(B2의 ★ 항등식). 원소/구조 무관, Q_ij(r) 주입(NC⇒zeros⇒정확 0).
+- **g5 selftest VERBATIM** (`.verdicts/qforge-paw-round4-b3/dvaug_du_selftest.txt`):
+  - (Z) NC-zero anchor: qaug≡0 ⇒ ∂V_aug≡0 (max=0.0)
+  - (SR) co-located self-vertex < 1e-15 (max=1.0842e-19, finite Q_ij) — 병진불변
+  - (SR') |S|=0.000120736 |A|=0.000181103 |B|=0.000301839 |S+A+B|=5.20226e-21 (유한항 실제 소거, 입력소멸 아님)
+  - (A) analytic == FD derivative < 1e-9 (max abs diff=1.0842e-13) · (C) finite · (D) guards
+  - → `qforge_dvaug_du_selftest PASS`
+- **CaH6 측정 VERBATIM** (`.verdicts/qforge-paw-round4-b3/cah6_b3_measurement.txt`):
+  - `[deck] Ca pseudo_type=NC is_us=false is_paw=false ⇒ Q_ij augmentation: NONE (NC)`
+  - `[SCF PBE] conv=true iters=3 etot=-3.58942`
+  - `[B3] ∂V_aug block max|entry| = 0.0 (NC deck Q_ij≡0 ⇒ structural 0)`
+  - B1+B2 λ=**0.743699** → B1+B2+B3 λ=**0.743699** ⇒ **Δλ(B3) = 0.0**
+  - λ_full vs 재앵커 2.69 rel-ε=0.723532 · `VERDICT: gate HELD`
+- **★FINDING — Δλ(B3)=0.0 EXACT**: lit "작음"(<수%) 예측을 **초과** — 작은 게 아니라 정확히 0, 두 독립·중첩 이유로: (1) **구조적 0(입력)** — 프로덕션 CaH6 deck=ONCV-NC(Ca z_valence=10=3s²3p⁶ semicore 명시 valence), NC는 augmentation charge 無, Q_ij(r)≡0 ⇒ ∂V_aug max=0.0. (2) **sum-rule 0(연산자)** — Q_ij 유한이라도 동일중심 augmentation self-vertex가 병진불변으로 소멸: 세 phase 도함수(∂Q̃·∂β_i*·∂β_j) 모두 같은 움직이는 중심 τ를 타 −i[(q_a−q_b)−q_a+q_b]_d=0. selftest서 유한 Gaussian Q_ij로 시연(각 O(1e-4)이나 합 5.2e-21). bare augmentation 정점 기여는 pseudo type 무관 0; 비영(非零)은 ∂ρ_aug의 SCF 재screening 응답(Hartree/XC, higher-order)뿐이고 이 0이 상한.
+- **🏁 HONEST TERMINAL — |g| 측 명명된 DFT 레버 8개 전부 소진**: B1·B2·off-diag·basis·FS-mesh·f_xc·ω·B3 모두 닫힘. 잔차(λ_full=0.743699 vs 재앵커 2.69, rel-ε=0.724)=**환원불가 from-scratch(NC+LDA)-vs-QE-PBE 정점 크기차** — SCF함수자도·KB비국소도·augmentation도·basis/mesh도·FS sampling도·phonon ω도 아님.
+- **캠페인 최종 honest 판정(d6/@L5)**: from-scratch(NC+LDA) |g|는 명명 DFT 레버 내 QE-PBE 대비 환원불가 · 하이브리드(QE |g|²→QForge L3, rel-ε 1.65e-7) **영구 production** · 마이그레이션 **dispatch=qe** · 게이트 HELD(2.69/4.376 강제 절대 없음).
+- **DELIVER**: impl `stdlib/qforge/{dvaug_du,dvaug_du_selftest}.hexa` + 측정 `stdlib/qforge/fixtures/cah6_paw_round4_b3_xval.hexa` (stacked PR on qforge-paw-round2) · verdict `.verdicts/qforge-paw-round4-b3/VERDICT.md`. cost=$0.
