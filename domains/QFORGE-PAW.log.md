@@ -12,3 +12,20 @@
 - **통합 최소경로 Route B**(풀 USPP 재구축 회피): B1(LDA→PBE SCF, manifest xc="pbe", 최대 λ-레버·최소변경) → B2(`dvnl_du.hexa`: 현재 **빠진** 비국소 ∂V_NL/∂u=Σ|∂β⟩D⟨β|, NC·무augmentation) → λ 재앵커 → B3(augmentation-density overlay ∂ρ_aug/∂u). Route A(풀 overlap-S/Q_ij)는 B1-B3 미달시만.
 - **round-2 첫 스텝**: `dvnl_du.hexa` brick1 = 단일방향 ∂β_i(q)/∂u_d=−iG_d·β_i(q) + g5(Hermiticity<1e-10·finite-diff vs analytic Gaussian<1e-6) on `projector_selftest.hexa` l=0. `projector.hexa` 재사용(d19), 0-pod.
 - DOI: 10.1073/pnas.1118168109(CaH6 λ2.69 앵커) · 10.1103/PhysRevB.64.235118(Dal Corso USPP-DFPT) · 10.1103/PhysRevB.73.235101(PAW-DFPT) · arXiv:2507.06749(NC≈PAW off-core). draft `drafts/qforge-paw-round1-design.md`.
+
+## 2026-06-12 · round-2 B1+B2 측정 — 가설 반증(PBE-SCF가 λ를 내림), B2 무시 수준 (d6 VERBATIM, 0-pod, $0)
+- **impl(g1 hexa-native, g5 PASS VERBATIM, PR hexa-lang `qforge-paw-round2` 3 stacked)**:
+  - B2 brick-1 `dvnl_du.hexa` — ∂β_i(q)/∂u_d=−i q_d β_i(q) (구조인자 위상 미분, `qforge_proj_radial` 재사용 d19). selftest: (A)FD-vs-analytic<1e-6 (B)Hermiticity ∂β(−q)=conj(∂β(q)) **max=0.0** (C)Γ-head=0 (A')explicit rel 1.1e-11.
+  - B2 brick-2 `dvnl_du_block.hexa` — 전체 ⟨q_a|∂V_NL/∂u|q_b⟩=Σ_ij D_ij[conj(∂β_i)β_j+conj(β_i)∂β_j] + apply. selftest: (A)Hermitian max=0.0 (B)FD(phased V_NL)-vs-analytic **max rel 1.45e-10** (C)apply==explicit (D)Σ_a Re∂V[a,a]=0 (2e-18).
+  - B1 배선: SCF가 xc_mode=3 RS3D(`qforge_vxc_pbe_3d` 3-D GGA V_xc[ρ,∇ρ]) 경로로 PBE 바닥상태 구동(기존 미실행). ⚠ `qforge_h_of_rho_multi`가 모듈 전역(PW_XCMODE/PW_RS3D_ON/captured ψ) 읽음 → 각 flavor SCF 직후 즉시 λ 빌드(staging 정합).
+- **측정 VERBATIM**(`fixtures/cah6_paw_round2_b1b2_xval.hexa`, NPW=64, 4 configs/1 cell, bare-composed 단일 ω₀+real N(E_F), band·N(E_F) 동일 → Δλ가 |g|² 변화만 격리):
+  - (0) BASELINE LDA-SCF+∂V_loc        λ=**1.65742**
+  - (1) B1       PBE-SCF+∂V_loc        λ=**0.742514**  Δλ(B1)=**−0.914903**
+  - (2) B2       LDA-SCF+∂V_loc+∂V_NL  λ=**1.65433**   Δλ(B2)=**−0.00309022**
+  - (3) B1+B2    PBE-SCF+∂V_loc+∂V_NL  λ=**0.743699**
+  - SCF 물리성 확인(둘 다 비퇴화 금속 manifold): LDA conv 21it etot=2.74425 e_F=1.107 spread=3.01 · PBE conv 3it etot=−3.58942(Δetot=−6.33) e_F=0.782 eps[0]=−2.275 spread=3.07.
+- **★FINDING(outcome 3, 가설 반증)**: B1(PBE-SCF)는 λ를 QE쪽으로 **올리지 않고 내림**(1.657→0.743, Δλ=−0.915) — PBE가 well을 깊게 파고 E_F를 끌어내려 N(E_F)·FS |g|²/ω 감소. round-1의 "잔차=LDA→PBE SCF" 랭킹 **반증**. B2(∂V_NL/∂u)는 −0.0031(~0.19%)로 무시·약음(2507.06749의 NC≈PAW off-core 일치).
+- **게이트 HELD**(flip 안 함): λ_full=0.743699 vs 재앵커 2.69 rel-ε=**0.7235**(vs 4.376: 0.8301). 4.376/2.69 강제 절대 없음(d6). hybrid(rel-ε 1.65e-7) production 유지·dispatch=qforge 미flip.
+- **닫힌 것**: 잔차는 SCF XC함수자(LDA vs PBE)도 KB 비국소 정점도 아님. 기존 CLOSED-NEG(f_xc-in-χ ALDA·off-diag ×1.06·basis·FS-mesh)와 합쳐 **NC 틀 내 모든 named 바닥상태/정점 DFT 레버 소진**. 잔차=더 깊은 NC-vs-PAW core/augmentation 또는 phonon-side magnitude.
+- **next(이 negative가 예측 못 함)**: B3 augmentation overlay ∂ρ_aug/∂u(round-1이 남긴 유일 PAW 레버·일반화 고유문제 회피·예상 작음) · 수렴 screened ΔV+real q-resolved ω(q,ν)(β knob 게이트 d2). ⚠ B1(PBE-SCF)·f_xc-in-χ 재시도 금지(둘 다 CLOSED-NEG).
+- verdict: `.verdicts/qforge-paw-round2/VERDICT.md`. 로그: `/tmp/wt-paw2/round2_measure{,_probe}.log`. cost=$0.
