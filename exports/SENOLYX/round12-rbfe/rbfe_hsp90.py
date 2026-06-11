@@ -57,10 +57,10 @@
 # 0.82 Å) → 77-atom LOMAP map → protocol/DAG build → OpenMM system create →
 # minimize → equilibrate → HREX production → pymbar MBAR converged. Every former
 # `# API-CONFIRM` field was confirmed against the live 1.11.1 API. Production
-# PREREQUISITE: the COMPLEX leg needs a pocket-FIT ligand pose — the centroid
-# translation below is only a box-fix and can start with a steric clash (NaN at
-# equilibration step 0). Supply the abfe smallbox pose (or a restrained pre-min)
-# for the complex leg before the multi-day fire. See RBFE_PLAN.md §6.
+# PREREQUISITE (being fixed — WIP): the COMPLEX leg starts from a centroid box-fix
+# that buries the ligand in the protein bulk → steric clash → NaN at equilibration
+# step 0. The complex-leg pocket-pose + pre-relaxation fix is in progress; see the
+# _load_and_dock_ligands() pocket-pose branch and RBFE_PLAN.md §7.
 #
 import os, sys, json, time, pathlib
 
