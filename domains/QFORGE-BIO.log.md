@@ -511,3 +511,27 @@ Bond graph → atom_types[] → amber.hexa: real-ligand structural link SEALED.
 
 ### 산출
 - stacked PR: hexa-lang **#3105** (topology.hexa + topology_selftest.hexa, base=`qforge-bio-r10-pme` R11 tip). 머지=사용자. 0-POD·$0(local g5). branch `qforge-bio-r12-topology` (origin push, isolation 아닌 직접 체크아웃 — 인-세션 /afg 모드).
+
+## R13 — 좌표→결합 perception (raw 구조 front-end 완성) · 2026-06-13
+
+R12 topology.hexa 는 결합 GRAPH 를 입력받지만, raw 구조파일(PDB/xyz/도킹포즈)은 원소+3D좌표만 있고 명시적 bonds 가 없음. R13 이 그 갭을 메워 raw 좌표에서 결합그래프를 인식 → "구조파일 한 장 → ΔG" 전 경로 완성. `stdlib/chem/ff/bondperception.hexa`(신규, d4-generic). **인-세션 실행**(main 루프 직접 Write/Bash, 서브에이전트 아님).
+
+방법: 거리기반 perception — `d(i,j) ≤ r_cov(i)+r_cov(j)+tol` (Cordero 2008 단일결합 공유반경, tol 0.4Å = OpenBabel/RDKit 표준 slack). 구조: `coords+elements ──▶ perceive_bonds ──▶ bonds ──▶ topology(R12) ──▶ amber(R11)`.
+
+### selftest VERBATIM (`hexa run stdlib/chem/ff/bondperception_selftest.hexa` · 0-pod · $0 · 첫 실행 클린)
+```
+  ok : a_methane_coords   bonds=4 (exp 4, H-H absent) types=[c3, hc, hc, hc, hc]
+  ok : b_water_coords   bonds=2 (exp 2) types=[OW, HW, HW]
+  ok : c_ethene_coords   bonds=5 (exp 5: C=C +4 C-H) types=[c2, c2, ha, ha, ha, ha]
+  ok : d_nonbond_rejected   O···O @3.0Å bonds=0 (exp 0, cutoff=1.72Å)
+  ok : e_end_to_end_amber_neutral   Σq(CH4 from raw coords→bonds→types→amber)=-6.93889e-18 (integer-neutral)
+ALL PASS — stdlib/chem/ff coordinate → bond perception 5/5
+Raw coords → bonds → GAFF types → amber: full structure front-end SEALED.
+```
+
+### 봉인 판정 (d6/@L5)
+- 핵심 입증: 실 Cartesian 좌표가 데모 분자에서 올바른 연결(메탄 4결합·H-H 부재, 에텐 C=C 를 1엣지로, 물 2결합)을 산출하고, 비결합(O···O@3.0Å > cutoff 1.72Å)을 정확히 거부. 그 그래프가 topology(R12)→amber(R11)로 흘러 raw좌표→amber 전하중성(Σq(CH4)=−6.9e-18).
+- **raw 구조 front-end 봉인 ⇒ bio code-brick 레인 완전 소진**. structure파일→bonds→types→FF→solvate→sampling→estimator 전 경로가 hexa-native. 정직 scope: 거리기반 single-edge 그래프(결합차수·방향족·formal charge 추론 없음 — downstream 확장). SENOLYX −16.64 까지 남은 건 코드 0, **순수 compute**(실 ligand→abfe_demo 풀체인 + nsw≫3000 = d17 GPU)뿐.
+
+### 산출
+- stacked PR: hexa-lang **#3109** (bondperception.hexa + bondperception_selftest.hexa, base=`qforge-bio-r10-pme` — R12 가 pr-cycle 훅으로 R10-pme 에 self-merge+브랜치삭제돼 R13 base 를 살아있는 스택 tip 으로 지정). 머지=사용자. 0-POD·$0(local g5). branch `qforge-bio-r13-bondperception`.
