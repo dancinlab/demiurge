@@ -591,3 +591,67 @@ raw real molecule → real GAFF/TIP3P FF → ΔG full chain SEALED · R9 toy gra
 
 ### 산출
 - stacked PR: hexa-lang **#3115** (capstone_methane_hyd.hexa + capstone_selftest.hexa, base=`qforge-bio-r13-bondperception`). 베이스 스택 R12/R13 origin push 완료(미존재였음). 머지=사용자. 0-POD·$0(local g5). branch `qforge-bio-r14-capstone`.
+
+
+---
+
+## R15 — full solute-solvent 비결합 합 (single-site → 전체 다체합)
+
+**목표**: R14 capstone 의 정직 갭 해소 — 메탄-물 상호작용을 1개 effective C···OW soft-core site(config=[r])로 축약했던 것을 **전체 비결합 합**(solute 전 원자 × explicit 물 shell 전 원자)으로 확장. 핵심 누락 = CH4 5원자 전체(c3+4 hc) × multi-water cavity 항.
+
+**구현** (`stdlib/chem/fep/capstone_full_nonbonded.hexa`, d4-generic·d3-재사용):
+- `build_water_shell(n,r,seed)` — Fibonacci-sphere 격자에 R6 `tip3p_molecule`(실 OW/HW 기하·charge) 명시 shell.
+- `build_pair_table(ff,inc_coul)` — solute 각 원자 × {OW,HW} 의 실 LB-combine ε/σ/q 사전계산(amber.hexa `lb_epsilon`/`lb_sigma`). HW 는 ε=0 → LJ 무, charge-only(TIP3P 규약).
+- `full_nonbonded_energy` — Σ_{i solute} Σ_{j solvent} U_sc(r_ij,λ). **hot-path = forward-only 닫힌형 soft-core**(autograd tape 우회): 다체합이 HREX+MBAR 에서 수천회 호출되어 pair-당 tape 빌드가 병목 → 동일 Beutler 닫힌형을 float 로 직접계산. autograd 경로는 `full_nonbonded_dudlam`(TI dU/dλ)에 유지.
+- `run_hydration_full(ff,opts)` — geo_coords(generic) + shell + table → `run_abfe`(R5 HREX + R4 MBAR) → ΔG_hyd. λ-block decouple 1→0.
+
+**g5 VERBATIM** (`capstone_full_nonbonded_selftest.hexa`, 0-pod·8 waters·80 sweeps):
+```
+── (a) full-sum wiring: explicit water shell + Σ all pairs finite ──
+    shell: 24 solvent atoms (8 waters)  types[0..3]=OW,HW,HW,OW
+    n_pairs = 120  U_full(λ=1) = -0.893051 kcal/mol  dU/dλ(λ=0.5) = -0.695738
+    fast closed-form vs R3 autograd-tape sum: |Δ| = 1.11022e-16 (must be <1e-9 — identical physics)
+  ok : (a) full-sum wiring: shell built + Σ all pairs finite + fast==tape, NaN-0 ... fast_vs_tape=1.11022e-16
+── (b) ΔG shift: full nonbonded sum vs R14 single-site (same seed) ──
+    single-site ΔG_hyd = -0.242031 kcal/mol  (R14 model)
+    full-sum    ΔG_hyd = -1.1149 kcal/mol  (8 waters, 120 pairs)
+    ΔG shift (full − single) = -0.872873 kcal/mol
+  ok : (b) ΔG shift: full-sum vs single-site both finite + real shift (cavity present) shift=-0.872873
+── (c) λ-endpoint safety: full sum finite with a solute atom on a water ──
+      U(λ=0)=0.0  U(λ=0.5)=39.5412  U(λ=1)=3.21901e+21
+      dU/dλ(λ=0)=14.3579  dU/dλ(λ=1)=3.21901e+21
+  ok : (c) λ-endpoint safety: full-sum U & dU/dλ finite at r→0, λ=0 decoupled U(λ=0)=0.0
+── (d) determinism: same seed ⇒ bit-identical full-sum ΔG ──
+    ΔG run#1=-1.1149  ΔG run#2=-1.1149  |Δ|=0.0
+  ok : (d) determinism |Δ|=0.0
+── (e) exp anchor: |full-sum ΔG − +2.0| verbatim (stat band vs systematic) ──
+    full-sum  MBAR ΔG = -1.1149   indep TI ΔG = -1.10513   (converged=true)
+    statistical band |MBAR − TI| = 0.00977049 kcal/mol
+    exp anchor ΔG_hyd(CH4) ≈ 2.0 kcal/mol
+    |full-sum − exp|   = 3.1149 kcal/mol
+    |single-site − exp| = 2.24203 kcal/mol  (R14)
+  ok : (e) exp anchor: full-sum ΔG finite + converged + MBAR≈TI band reported |full−exp|=3.1149 band=0.00977049
+
+PASS: full-nonbonded 5/5
+full solute×solvent nonbonded sum → ΔG_hyd SEALED · R14 single-site widened.
+```
+
+### 봉인 판정 (d6/@L5)
+- **다체합 배선 입증**: 8 waters · 24 solvent atoms · 120 pairs · U_full(λ=1)=−0.893 kcal/mol · NaN0. **fast 닫힌형 == R3 autograd-tape 합 |Δ|=1.11e-16**(머신 eps) → forward-only hot-path 가 동일 Beutler soft-core 물리임을 입증(성능 우회가 물리 변경 아님).
+- **ΔG 이동 측정**: full-sum ΔG=−1.115 vs single-site ΔG=−0.242, **shift=−0.873 kcal/mol**. 다체 cavity 항(H 부피 + 명시 shell)이 numerically 실재(non-zero shift).
+- **λ엔드포인트**: 다체합 r→0(C 가 물-O 위)에서도 U/dU/dλ 유한·U(λ=0)=0 exact(전 block decouple). λ=1·r=0.05 의 U=3.2e21 = bare LJ r⁻¹² 근접(유한, <1e290).
+- **결정론**: 고정 seed bit-exact |Δ|=0.0.
+- **추정자 일치**: MBAR=−1.115 vs 독립 TI=−1.105, **통계밴드 |MBAR−TI|=0.0098 kcal/mol** 수렴.
+
+### 정직 핵심결과 (d6/@L5 최우선 — 강제 절대 금지)
+**다체합이 single-site 보다 물리적으로 옳음**(cavity 실재·두 독립추정자 0.01 일치)에도 불구하고, ΔG 는 **+2.0(hydrophobic exp anchor) 으로가 아니라 −방향(더 음수)으로 이동 → 잔차가 오히려 증가**(|full−exp|=3.115 > |single−exp|=2.242). 이것이 정직한 측정결과이며 강제로 +2.0 에 맞추지 않음.
+- **원인 진단**: 유한 explicit water shell(8 waters) + **PME 장거리정전 무** + **주기 cavity-형성(work) 항 무** → 인력 solute-water dispersion 이 과대평가되고, 메탄을 net-hydrophobic 으로 만드는 주기적 cavity penalty(빈 공동 형성 비용)가 미포착. single-site 는 우연히 작은 인력만 가져 +2.0 에 더 가까웠을 뿐(under-counting), full-sum 은 더 많은 인력 물을 명시적으로 포함해 더 음수가 됨.
+- **결론**: 물리적으로 더 옳은 모델이 **반드시** exp 에 더 가까운 것은 아니다(유한·비주기 시스템의 계통편향). 다체합은 R14 single-site 의 reduced-model 가정을 제거(physical improvement)했으나, 정량 parity 는 **주기경계+PME**가 추가로 필요함을 실증.
+
+### round-16 다음
+1. **주기 PME box** — 유한 shell → 주기 입방박스 + R10 `pme.hexa` 장거리정전(이미 봉인). cavity-형성 work 항이 주기경계에서 자연발생 → ΔG 부호/크기 교정 기대.
+2. **neighbor-list / cell-list 효율** — O(N²) 다체합(120 pairs@8 waters → 수천 pairs@bulk box)을 O(N) 로. 현 forward-only hot-path 도 bulk box 에선 cutoff+cell-list 필수(d17 GPU 전 단계).
+3. **긴샘플(d17)** — 통계밴드는 이미 0.01 로 작으나, 주기+PME 전환 후 nsw≫ 로 계통수렴 확인.
+
+### 산출
+- stacked PR: hexa-lang **#TBD** (capstone_full_nonbonded.hexa + capstone_full_nonbonded_selftest.hexa, base=`qforge-bio-r14-capstone`). 머지=사용자. 0-POD·$0(local g5). branch `qforge-bio-r15-fullnonbonded`. DOMAINS.tape 미접촉.
