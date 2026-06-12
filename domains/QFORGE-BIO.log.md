@@ -310,3 +310,47 @@ PASS: shake 9/9
 ### 산출 (인프라 GAP 인벤토리)
 - stacked PR: hexa-lang **#3092** (R7 shake.hexa + shake_selftest.hexa, base=`qforge-bio-r6-solvate-l1`=R6 스택 tip=#3088). 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-r7-shake`.
 - **GAP 인벤토리 갱신**: ✅R2 force · ✅R3 soft-core · ✅R4 MBAR · ✅R5 HREX · ✅R6 solvation/TIP3P · ✅**R7 SHAKE/RATTLE constraint**. end-to-end ABFE 까지 미봉인 2조각 = ① **thermostat** (Langevin/Nosé-Hoover — NVE 진공 → NVT 평형 ⟨KE⟩=3/2NkT; R7 구속이 선행조건 충족 ⇒ **이제 개통**) ② **PME** (ewald recip 의 fft3 가속, O(N²)→O(N log N) — 효율). **권장 R8 = thermostat** (구속이 rigid 결합을 고정한 지금, NVT 평형 샘플링이 ABFE production 의 다음 필수; PME 는 대형계 효율 레이어).
+
+## 2026-06-12 · R8 brick (d1/d6) — Langevin thermostat (NVT 앙상블) ✅ g5 PASS 8/8
+
+### 무엇 (native 용매-FEP MD 의 마지막 물리조각)
+R7 까지 적분기는 NVE(보존계) — 에너지가 고정. 실 alchemical FEP 는 canonical(NVT) 앙상블 = 고정온도 평형을 샘플링해야 함. Langevin 열욕 결합 `m dv/dt = F − γ·m·v + √(2γ m k_B T)·η` 이 마찰항(−γmv)+랜덤힘(√…η)으로 온도를 잡고, fluctuation-dissipation theorem(FDT)을 만족시켜 ⟨KE⟩=(3/2)Nk_BT 로 구동. R7 구속이 rigid 결합을 고정한 지금 thermostat 개통(구속 후 열욕 = 비구속 DOF 에만 작용).
+
+### 구현 (`stdlib/chem/md/langevin.hexa`, d4-generic 신규)
+- **적분기 = BAOAB splitting** (Leimkuhler-Matthews 2013): `B-A-O-A-B` — half-kick·half-drift·OU열욕·half-drift·half-kick. configurational-sampling 최적 순서.
+- **O-step = 정확 Ornstein-Uhlenbeck 속도갱신**: `v ← c1·v + c2·√(k_BT/m)·ξ`, `c1=exp(−γΔt)`, `c2=√(1−exp(−2γΔt))`. full Δt 의 정확 OU 전파자라 dt 무관하게 Maxwell-Boltzmann 샘플 → **FDT 구성적 만족**.
+- **가우시안 ξ = Box-Muller**, R5 HREX 가 쓴 **동일 결정론 LCG**(Numerical Recipes) 위에서 — explicit state threading·재현가능·syscall 0.
+- **d4-generic**: T·γ·dt·mass 전부 파라미터, 이름 하드코딩 0. 단일-입자 O-step 루프 하나가 자유기체·조화우물·rigid TIP3P 물·임의 N 입자망 전부 구동.
+- **SHAKE/RATTLE 양립** (`langevin_step_constrained`): 각 A drift 후 SHAKE(위치), O 열욕 후·마지막 B kick 후 RATTLE(속도) → 강체결합 고정·열욕은 비구속 DOF 에만.
+
+### selftest VERBATIM (`hexa run stdlib/chem/md/langevin_selftest.hexa`)
+```
+== langevin selftest (QFORGE-BIO R8 · NVT thermostat) ==
+  ok : a-free  ⟨T⟩→T_target (equipartition, free gas) T_target=2.0 ⟨T⟩=1.9787 rel=0.0106496 (N=64, 2000 steps)
+  ok : a-harm  ⟨T⟩→T_target (equipartition, harmonic well) T_target=2.0 ⟨T⟩=2.0083 rel=0.00415212 (N=64, 2000 steps)
+  ok : b  FDT ⟨x²⟩=k_BT/k (Boltzmann, 1-D well) ⟨x²⟩=0.201402 analytic=0.2 rel=0.00700967 (N=256, 20000 steps)
+  ok : c  Maxwell-Boltzmann ⟨v²⟩=3k_BT/m ⟨v²⟩=3.03165 analytic=3.0 rel=0.0105488 (m=2, N=128, 1500 steps)
+  ok : d1 γ→0 recovers NVE (energy conserved) c1=1.0 c2=0.0 E0=0.45 Ef=0.45 drift=4.28027e-09
+  ok : d2 γ large over-damped (fast re-thermalise) T_target=2.0 T(γ=200,5stp)=1.92982 T(γ=1,5stp)=0.0937691
+  ok : e-geom rigid water bond preserved under Langevin rOH0=0.9572 worst|Δr_OH|=5.22309e-11 (tol 1e-6, 3000 steps)
+  ok : e-temp rigid water reaches T_target (6 DOF) T_target=2.0 ⟨T⟩(6dof)=1.94935 rel=0.0253235
+
+PASS: langevin 8/8
+```
+
+### 봉인 확정 (5축)
+- **(a) 평형온도**: 자유기체+조화우물 BAOAB 다중스텝 후 time-avg ⟨T⟩ → 목표 T=2.0. free rel=1.06% · harmonic rel=0.42% < 5%. equipartition ⟨KE⟩=(3/2)Nk_BT 수렴 확정.
+- **(b) FDT/정상분포**: 1-D 조화우물 ⟨x²⟩=0.2014 vs Boltzmann k_BT/k=0.2 (rel 0.70%). 256-osc 앙상블·20000 step. 위치 정상분포가 Boltzmann.
+- **(c) Maxwell-Boltzmann 속도**: ⟨v²⟩=3.0317 vs 3k_BT/m=3.0 (rel 1.05%, m=2 로 /m 스케일 검증). 속도 2차모멘트 일치.
+- **(d) γ극한**: ① γ→0 — c1=1·c2=0 (O-step=항등)·BAOAB→velocity-Verlet, 조화진동 E drift=4.3e-9 → **NVE 정확 복귀**. ② γ=200 과감쇠 — cold 시작 5 step 만에 T=1.93(≈목표) vs γ=1 은 T=0.094 → 강마찰 빠른 재열평형 확인.
+- **(e) SHAKE 양립**: rigid TIP3P 물 + constrained BAOAB 3000 step → worst |Δr_OH|=5.2e-11 < 1e-6 (**결합 안 깨짐**) AND ⟨T⟩(6 DOF)=1.949 vs 2.0 (rel 2.53%). 구속+열욕 동시 성립.
+
+### 정직 노트 (d6/@L5)
+- 첫 draft 의 (b) ⟨x²⟩ 는 단일 1-D 진동자 1궤적이라 18.8% 저샘플 FAIL — γ=5 진동자의 긴 위치 자기상관 때문. 숫자/tol 강제 대신 **256-osc 독립앙상블 + 작은 dt(0.002, BAOAB O(dt²) 이산화바이어스 축소)** 로 샘플링 보강 → rel 0.70%. 통계 수정이지 tol 핵 아님.
+- 모든 통계검증(a·b·c·e)은 고정 결정론 LCG seed + 유한샘플 ⇒ ~5% band = 정직한 통계 노이즈 바닥(더 타이트하면 샘플링노이즈 false-negative). **온도 강제 0** — 열욕이 구동.
+- 통계검증은 결정론적이라 재실행 시 동일 숫자(seed 고정). 단위계는 reduced(k_B=1).
+
+### 산출 (인프라 GAP 인벤토리)
+- stacked PR: hexa-lang **#3097** (langevin.hexa +355 · langevin_selftest.hexa +436, base=`qforge-bio-r7-shake`=R7 스택 tip). MERGED into R7 branch. 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-r8-langevin`.
+- **GAP 인벤토리 갱신**: ✅R2 force · ✅R3 soft-core · ✅R4 MBAR · ✅R5 HREX · ✅R6 solvation/TIP3P · ✅R7 SHAKE/RATTLE · ✅**R8 Langevin thermostat (NVT)**. ⇒ **native 용매-FEP MD 물리스택 = 완성**. 남은 미봉인 = **PME** (ewald recip 의 fft3 가속, O(N²)→O(N log N)) — 정확성이 아니라 **효율 레이어**뿐. 물리 정합성은 전부 봉인.
+- **end-to-end ABFE 데모 가능성**: 물리조각 전부 봉인됨(force·softcore·MBAR·HREX·solvation·constraint·NVT) ⇒ **소형계(rigid water + 단순 solute) ABFE 풀체인 데모 = 이제 가능**. 다음 마일스톤 = R4-next end-to-end ABFE re-derive (SENOLYX −16.64 앵커 parity) — 현 O(N²) ewald 로 소형계는 직접가능, 대형 단백질-리간드 production 은 PME 필요(효율). **권장 R9 = ① end-to-end ABFE 소형 데모(풀체인 통합검증) 또는 ② PME(대형계 효율 개통).**

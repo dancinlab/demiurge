@@ -33,11 +33,11 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 🟡 / ⚪ GAP (없음 — 신설 대상):
 - ✅R3 soft-core λ-coupling (Beutler) — `stdlib/chem/fep/softcore.hexa` (g5 PASS) · 🟡 λ-schedule · 하이브리드 토폴로지
 - PME (Ewald 의 FFT 가속판 — 현 ewald 는 O(N²) 직접합)
-- Langevin/Nosé-Hoover thermostat (현 verlet 은 NVE 진공)
+- ✅R8 Langevin thermostat (NVT) — `stdlib/chem/md/langevin.hexa` (g5 PASS 8/8) · BAOAB+OU O-step · FDT 만족 · SHAKE 양립 · **native 용매-FEP MD 물리스택 완성**
 - ✅R5 HREX (Hamiltonian replica exchange) swap — `stdlib/chem/fep/hrex.hexa` (g5 PASS 5/5) · R3 ladder ↔ R4 MBAR 직접연결
 - ✅R4 MBAR/BAR estimator (Shirts-Chodera) — `stdlib/chem/fep/mbar.hexa` (g5 PASS 5/5)
 - ✅R6 TIP3P 물 + solvation box builder — `stdlib/chem/solvate/tip3p.hexa` (g5 PASS 10/10) · 실계 인프라 봉인
-- ✅R7 SHAKE/RATTLE 강체구속 — `stdlib/chem/md/shake.hexa` (g5 PASS 9/9) · rigid-MD 정합성 봉인 · thermostat 선행조건 충족
+- ✅R7 SHAKE/RATTLE 강체구속 — `stdlib/chem/md/shake.hexa` (g5 PASS 9/9) · rigid-MD 정합성 봉인 · thermostat 선행조건 충족 ✅(R8 개통)
 - neighbor list / cell list (효율 레이어, 후속)
 - QM-derived FF (GFN2/DFT 전하·토션 refit · 거대고리 인지)
 
@@ -47,11 +47,11 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 - [x] R3-brick: soft-core λ-energy 닫힌형 (Beutler 1994) — endpoint 비특이성 + dU/dλ autograd g5 ✅ PASS 5/5 (λ=1 회복 |ΔU|=0·dU/dλ ag==an 3.55e-15; PR hexa-lang#3078←#3079)
 - [x] R4-brick: MBAR/BAR estimator (Shirts-Chodera 2008) — soft-core u_kn → ΔG 닫힘. g5 ✅ PASS 5/5 (자기일관 res 9.4e-13 · BAR==MBAR(K=2) 2.2e-13 · Zwanzig 8.9e-16 · 해석 ½ln(k1/k0) 3.1e-4 kT · gauge 0.0; PR hexa-lang#3080)
 - [ ] R3: PME = ewald recip 의 fft3 가속 — 직접합 vs FFT < 1e-8 parity g5
-- [ ] R3: Langevin integrator — 평형 ⟨KE⟩ = (3/2)NkT equipartition g5
+- [x] R8-brick: Langevin thermostat (NVT) — BAOAB(Leimkuhler-Matthews) + 정확 OU O-step `v←c1·v+c2·√(kT/m)·ξ`. g5 ✅ PASS 8/8 (평형온도 free rel=1.06%·harm 0.42% · FDT ⟨x²⟩=0.2014 vs 0.2 · M-B ⟨v²⟩=3.032 vs 3.0 · γ→0 NVE E-drift 4.3e-9·γ=200 과감쇠 · SHAKE양립 |Δr_OH|=5.2e-11·⟨T⟩6dof=1.949; PR hexa-lang#3097). **native 용매-FEP MD 물리스택 완성 — 남은=PME 효율레이어뿐**
 - [x] R5-brick: HREX (Hamiltonian replica-exchange) 샘플링 — 인접 λ-rung config swap, Metropolis P=min(1,e^−Δ). g5 ✅ PASS 5/5 (detailed-balance resid 1.11e-16 · Metropolis bit-exact 0.0 · 정상분포 swap-점유 0.91193 vs 해석 0.912136 within 6σ · MBAR소비 |HREX−analytic|=2.2e-3 kT·|HREX−direct|=9.7e-3 · 혼합 accept 87.5%·5/5 round-trip; PR hexa-lang#R5)
 - [x] R6-brick: TIP3P 물 + solvation box builder — 닫힌형 단분자 기하 + d4-generic 격자충전 + overlap 제거 + 중성. g5 ✅ PASS 10/10 (rOH |Δr|=2.2e-16·∠HOH |Δθ|=1.4e-14 · 밀도 1.00417 g/cm³ rel 0.72% · Σq=0.0 exact · overlap 216→208 min_dist 3.838Å≥2.4 · PBC LJ−60.26+Coul−133.13 유한 NaN0; PR hexa-lang#3088←#3089)
 - [x] R7-brick: SHAKE/RATTLE 강체구속 (Ryckaert 1977 · Andersen 1983 RATTLE) — 위치제약 σ_k=|r_ij|²−d_k²=0 Lagrange 반복 + 속도제약 ṙ·r=0. d4-generic Constraint{i,j,d} 리스트. g5 ✅ PASS 9/9 (제약충족 |r-d|=3.54e-9·SHAKE 30iter converged·RATTLE ṙ·r=7.92e-13·NVE drift 1.53e-3 dt-반감 ratio 1.998/1.999 O(dt)선형 누설0·기하 rOH|Δ|=3.99e-9·∠HOH|Δ|=6.08e-7; PR hexa-lang#3092)
-- [ ] R4-next: end-to-end ABFE re-derive SENOLYX 앵커(−16.64) parity (HREX+softcore+MBAR 풀체인)
+- [ ] R4-next: end-to-end ABFE re-derive SENOLYX 앵커(−16.64) parity (HREX+softcore+MBAR+NVT 풀체인) — R8 후 물리조각 전부 봉인 ⇒ 소형계 풀체인 데모 **가능**
 - [ ] R5: QM-derived FF (GFN2 전하 refit) — R11 거대고리 2.2× 과대전개 해소 측정
 
 ## verify-ref / falsifier
