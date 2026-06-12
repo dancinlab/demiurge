@@ -82,3 +82,5 @@
 @domain COSME-BABY    := "domains/COSME-BABY.md"
 @domain COSME-BODY    := "domains/COSME-BODY.md"
 @domain COSME-BOOSTER := "domains/COSME-BOOSTER.md"
+QFORGE-BIO	domains/QFORGE-BIO.md
+QFORGE-PAW	domains/QFORGE-PAW.md

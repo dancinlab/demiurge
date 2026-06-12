@@ -31,4 +31,3 @@
 @domain RETINA-CURE := "domains/RETINA-CURE.md"
 @domain IVD-CURE := "domains/IVD-CURE.md"
 @domain COSMOS := "domains/COSMOS.md"
-QFORGE-PAW	domains/QFORGE-PAW.md
