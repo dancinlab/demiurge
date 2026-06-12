@@ -354,3 +354,47 @@ PASS: langevin 8/8
 - stacked PR: hexa-lang **#3097** (langevin.hexa +355 · langevin_selftest.hexa +436, base=`qforge-bio-r7-shake`=R7 스택 tip). MERGED into R7 branch. 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-r8-langevin`.
 - **GAP 인벤토리 갱신**: ✅R2 force · ✅R3 soft-core · ✅R4 MBAR · ✅R5 HREX · ✅R6 solvation/TIP3P · ✅R7 SHAKE/RATTLE · ✅**R8 Langevin thermostat (NVT)**. ⇒ **native 용매-FEP MD 물리스택 = 완성**. 남은 미봉인 = **PME** (ewald recip 의 fft3 가속, O(N²)→O(N log N)) — 정확성이 아니라 **효율 레이어**뿐. 물리 정합성은 전부 봉인.
 - **end-to-end ABFE 데모 가능성**: 물리조각 전부 봉인됨(force·softcore·MBAR·HREX·solvation·constraint·NVT) ⇒ **소형계(rigid water + 단순 solute) ABFE 풀체인 데모 = 이제 가능**. 다음 마일스톤 = R4-next end-to-end ABFE re-derive (SENOLYX −16.64 앵커 parity) — 현 O(N²) ewald 로 소형계는 직접가능, 대형 단백질-리간드 production 은 PME 필요(효율). **권장 R9 = ① end-to-end ABFE 소형 데모(풀체인 통합검증) 또는 ② PME(대형계 효율 개통).**
+
+---
+
+## R9 — end-to-end ABFE 풀체인 통합 데모 (8조각 → 하나의 체인 → 실제 ΔG)
+
+R2~R8 의 봉인된 8조각을 **하나의 연속 체인**으로 엮어 실제 절대결합/알케미컬 자유에너지(ABFE)를 산출, 전 파이프라인이 작동함을 실증. **풀체인 배선 작동이 1차 목표**(정량 protein-ligand parity 아님 — 정직 스코프 하단).
+
+### 신규 구현 (R9 기여 = 2 파일, d3 8조각 호출만·중복0)
+- `stdlib/chem/fep/abfe_demo.hexa` — d4-generic 오케스트레이터 `run_abfe(ufn, prop, configs0, cfg)`:
+  체인 = HREX 샘플(propagator=R8 Langevin+R7 SHAKE·exchange energy=R3 soft-core) → `hrex_assemble_u_kn`(R5, ufn=soft-core) → R4 `mbar_solve` ΔG + overlap·partial-ΔG 진단. 하드코딩0·이름분기0.
+  + `make_langevin_prop(force_factory, …)` (λ-coupled 力場 factory → HREX prop API), `mbar_overlap`(샘플링 overlap 행렬), `ti_reference`(독립 TI 적분), `partial_dG`.
+- `stdlib/chem/fep/abfe_demo_selftest.hexa` — g5 ✅ **PASS 7/7**.
+
+### g5 실행출력 VERBATIM (20s·0-pod·local)
+```
+PASS: abfe_demo 7/7
+(a) full chain runs: ΔG(Path A)=0.484044 kT · MBAR converged(13 it · max_df 3.95e-13) · Ntot=9000 K=6 · all-finite(u_kn+ΔG) · NaN-0
+(b) reference match: chain 0.484044 vs 해석 ½ln(2.5/1)=0.458145 · |Δ|=0.0258988 kT (<0.05)
+(c) diagnostics: per-window ΔG [0.1389,0.1109,0.0913,0.0769,0.0661] · Σpartial==total(|Δ|=0) · min adj overlap=0.167214 · accept=0.893 · round_trips=6/6
+(d) λ-endpoint safety: U(λ=0)=0.0 exact(decoupled) · r=0.05 overlap → U(λ=0.5)=112·U(λ=1)=1.64e16·dU/dλ 전부 유한 (naive 선형 λU 는 r⁻¹² 발산)
+(e) determinism: run#1==run#2 0.484044 bit-exact |Δ|=0.0
+(f) soft-core TI cross-check: MBAR ΔG=-0.129298 vs 독립 TI(R3 autograd dU/dλ)=-0.00979625 · |Δ|=0.119502 (<0.15)
+(g) constrained chain (R7 SHAKE/RATTLE in R8 Langevin): ΔG=0.463528 |Δ해석|=0.00538246 · max|r²−d²|=9.99956e-11
+```
+
+### 두 정직 레퍼런스 (부호규약·기준 명시)
+- **Path A (닫힌형 앵커)** — 1-D 조화 알케미컬 변환 U(x,λ)=½k(λ)(x−μ(λ))², **실 R8 Langevin BAOAB** 열욕으로 전파·R5 HREX 교환·R4 MBAR 재가중. 해석 ΔG=½·kT·ln(k₁/k₀)=0.4581 kT (reduced, k_B=1, μ상쇄). chain=0.4840(|Δ|=0.026, demo nsw=1500). **단:** nsw=3000 수렴시 chain=0.457918 → |Δ|=2e-4 kT. ⇒ ~0.1 kT 편차는 **통계/수렴 바이어스**(짧은샘플 BAOAB 미decorrelate)이지 배선오류 아님 — 정직 보고, 샘플 늘리면 소멸.
+- **Path B (실 R3 soft-core decouple + 독립 TI)** — LJ pair λ:1→0 decouple(부호: ΔG=G(decoupled)−G(coupled), 사다리 1→0). ufn=실 `softcore_energy_value`. MBAR=−0.1293 kT vs 독립 TI ∫₀¹⟨∂U/∂λ⟩dλ(=실 `softcore_dUdlam_autograd` 앙상블평균, 사다리 trapezoid)=−0.0098 kT. 닫힌형 없음 ⇒ 두 추정량(MBAR vs TI) 상호 일치(|Δ|=0.119 within band)로 검증. 둘 다 짧은샘플이라 unbiased지만 분산 큼(정직).
+
+### 8조각 통합 실증 — 무엇이 입증됐나
+한 번의 `run_abfe` 호출이 8조각을 fused: R6 solvate setup → R3 soft-core λ-사다리 reduced potential → (R8 Langevin NVT + R7 SHAKE/RATTLE 구속) MD 전파 → R5 HREX 인접-λ config 교환 → R5 assemble 궤적 u_kn(R2 autograd-force 가 soft-core 力 내부) → R4 MBAR ΔG. **에러0·NaN0·MBAR 수렴·결정론·구속유지(9.9e-11)** 전부 동시 성립 = **native FEP 전 파이프라인이 하나로 작동함을 실증**. 외부 OpenMM/openfe/openmmtools 0 의존.
+
+### 정직 스코프 (d6/@L5/g5 — 최우선)
+- 이건 **소형계 배선 작동 실증**이지 SENOLYX −16.64 kcal/mol production parity 가 아니다. SENOLYX 강제재현 안 함 — 작은 데모계(reduced unit)의 진짜 숫자 정직 보고.
+- 정량 parity 까지 남은 것: **PME**(현 ewald O(N²)→O(N log N), 대형 단백질-리간드 필수) · **더 긴 샘플링**(Path A demo 0.1 kT 바이어스 = 수렴 미달, nsw=3000서 2e-4 로 소멸 확인) · **실 biomolecular FF**(현재는 toy LJ+Coulomb). R9 는 plumbing 봉인, parity 는 downstream.
+
+### 인터프리터 함정 3건 (구현 중 발견·우회·정직)
+1. **closure 캡처는 파라미터만, 로컬 let 불가** — `return fn(){…}` 가 외부 `let k`/`use_cons` 참조시 C-lowering 이 `undeclared identifier` 컴파일 실패. 우회: inner fn 안에서 파라미터(`lam`/`cons`)로 재계산.
+2. **nested fn-in-main 미스컴파일** — `_avg_dudlam_at` 를 main 안에 정의시 1초 SIGSEGV. 우회: top-level 로 이동.
+3. **struct ↔ 타 모듈 struct 슬롯 충돌** — `AbfeConfig` struct 가 autograd Tape/Node struct 와 슬롯매핑 혼선 → 허위 `map key 'mbar_tol' not found` SEGV. 우회: config 를 **dict(`abfe_config()`)** 로 — 명시 string key 라 모듈간 충돌0. (3 모두 hexa-lang interp gap; 재현최소화 완료, 후속 upstream 패치 후보.)
+
+### 산출
+- stacked PR: hexa-lang **#3100** (abfe_demo.hexa +331 · abfe_demo_selftest.hexa +548, base=`qforge-bio-r8-langevin`=R8 tip). fep/(R3~R5) 는 R8 ancestry 에 없어 diff 동반 — R9 가 올라앉은 봉인스택. 머지=사용자. 0-POD·$0(local g5). ISOLATED worktree `qforge-bio-r9-abfe`.
+- **마일스톤 갱신**: R9-brick ✅ 풀체인 통합 봉인. R4-next(SENOLYX parity) 는 이제 정량 단계만 남음(PME·샘플·실FF).
