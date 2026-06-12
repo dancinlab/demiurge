@@ -24,7 +24,7 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 - `stdlib/chem/md/ewald.hexa` — Ewald real+recip+self 정전 (tolerance-driven α/kmax 자동, 입방박스)
 - `stdlib/chem/md/bonded.hexa` — harmonic bond/angle + Fourier dihedral
 - `stdlib/chem/md/pbc.hexa` — 최소-이미지 (입방+직교)
-- `stdlib/signal/core_fft.hexa` — `fft3`/`ifft3`/`fft3_real` (3D FFT) ⇒ **PME reciprocal 직결**
+- `stdlib/signal/core_fft.hexa` — `fft3`/`ifft3`/`fft3_real` (실 radix-2 3D FFT) ⇒ **PME reciprocal 직결 ✅사용됨(R10)**
 - `stdlib/autograd.hexa` — tape 역모드 autograd (ag_add/mul/pow/sin/cos/exp/backward/grad) ⇒ **힘 = −∂E/∂x**
 - `stdlib/qforge/screening_pwfft.hexa` — pow2-padded real-space FFT-Poisson (PME 설계 참조)
 - `stdlib/qforge/nqe_pimd.hexa` — ring-polymer 경로적분 MD (양자 핵효과 — 정확 HO 검증식 보유)
@@ -32,7 +32,7 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 
 🟡 / ⚪ GAP (없음 — 신설 대상):
 - ✅R3 soft-core λ-coupling (Beutler) — `stdlib/chem/fep/softcore.hexa` (g5 PASS) · 🟡 λ-schedule · 하이브리드 토폴로지
-- PME (Ewald 의 FFT 가속판 — 현 ewald 는 O(N²) 직접합)
+- ✅R10 PME (Smooth Particle-Mesh Ewald) — `stdlib/chem/md/pme.hexa` (g5 PASS 5/5) · 직접합 parity 5.76e-7 · 힘 FD 3.8e-11 · 실 fft3 연동 · **물리스택 마지막 조각 봉인 → native FEP MD 물리 100% 완성 · 대형계 언블록**
 - ✅R8 Langevin thermostat (NVT) — `stdlib/chem/md/langevin.hexa` (g5 PASS 8/8) · BAOAB+OU O-step · FDT 만족 · SHAKE 양립 · **native 용매-FEP MD 물리스택 완성**
 - ✅R5 HREX (Hamiltonian replica exchange) swap — `stdlib/chem/fep/hrex.hexa` (g5 PASS 5/5) · R3 ladder ↔ R4 MBAR 직접연결
 - ✅R4 MBAR/BAR estimator (Shirts-Chodera) — `stdlib/chem/fep/mbar.hexa` (g5 PASS 5/5)
@@ -46,13 +46,13 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 - [x] R2-brick: LJ+Coulomb 힘 = autograd 역모드 vs 해석적/finite-diff < 1e-6 (g5) — 첫 native brick ✅ PASS 5/5 (a=1.78e-15·b=2.46e-9; PR hexa-lang#3076)
 - [x] R3-brick: soft-core λ-energy 닫힌형 (Beutler 1994) — endpoint 비특이성 + dU/dλ autograd g5 ✅ PASS 5/5 (λ=1 회복 |ΔU|=0·dU/dλ ag==an 3.55e-15; PR hexa-lang#3078←#3079)
 - [x] R4-brick: MBAR/BAR estimator (Shirts-Chodera 2008) — soft-core u_kn → ΔG 닫힘. g5 ✅ PASS 5/5 (자기일관 res 9.4e-13 · BAR==MBAR(K=2) 2.2e-13 · Zwanzig 8.9e-16 · 해석 ½ln(k1/k0) 3.1e-4 kT · gauge 0.0; PR hexa-lang#3080)
-- [ ] R3: PME = ewald recip 의 fft3 가속 — 직접합 vs FFT < 1e-8 parity g5
+- [x] R10-brick: **PME = ewald recip 의 fft3 가속** (Smooth PME, Essmann 1995) — 전하 B-spline mesh → fft3 → recip 커널 곱 → inverse fft3. real/self/중성은 ewald.hexa verbatim 재사용(d3), fft3 는 core_fft.hexa verbatim(d19·실 radix-2, naive 아님). g5 ✅ **PASS 5/5** (32³·order6): 직접합 parity |Δ|=5.76e-7·전에너지 parity 5.76e-7·힘 vs FD 12성분 max 3.82e-11·translation gauge 4.23e-8·scaling 단조수렴 g8/o4 1.6e-2→g32/o6 5.8e-7; PR hexa-lang#3101. **물리스택 마지막 조각 봉인 → native FEP MD 물리 100% 완성 · O(N²) 정전병목 제거 · 대형 단백질-리간드계 언블록**
 - [x] R8-brick: Langevin thermostat (NVT) — BAOAB(Leimkuhler-Matthews) + 정확 OU O-step `v←c1·v+c2·√(kT/m)·ξ`. g5 ✅ PASS 8/8 (평형온도 free rel=1.06%·harm 0.42% · FDT ⟨x²⟩=0.2014 vs 0.2 · M-B ⟨v²⟩=3.032 vs 3.0 · γ→0 NVE E-drift 4.3e-9·γ=200 과감쇠 · SHAKE양립 |Δr_OH|=5.2e-11·⟨T⟩6dof=1.949; PR hexa-lang#3097). **native 용매-FEP MD 물리스택 완성 — 남은=PME 효율레이어뿐**
 - [x] R5-brick: HREX (Hamiltonian replica-exchange) 샘플링 — 인접 λ-rung config swap, Metropolis P=min(1,e^−Δ). g5 ✅ PASS 5/5 (detailed-balance resid 1.11e-16 · Metropolis bit-exact 0.0 · 정상분포 swap-점유 0.91193 vs 해석 0.912136 within 6σ · MBAR소비 |HREX−analytic|=2.2e-3 kT·|HREX−direct|=9.7e-3 · 혼합 accept 87.5%·5/5 round-trip; PR hexa-lang#R5)
 - [x] R6-brick: TIP3P 물 + solvation box builder — 닫힌형 단분자 기하 + d4-generic 격자충전 + overlap 제거 + 중성. g5 ✅ PASS 10/10 (rOH |Δr|=2.2e-16·∠HOH |Δθ|=1.4e-14 · 밀도 1.00417 g/cm³ rel 0.72% · Σq=0.0 exact · overlap 216→208 min_dist 3.838Å≥2.4 · PBC LJ−60.26+Coul−133.13 유한 NaN0; PR hexa-lang#3088←#3089)
 - [x] R7-brick: SHAKE/RATTLE 강체구속 (Ryckaert 1977 · Andersen 1983 RATTLE) — 위치제약 σ_k=|r_ij|²−d_k²=0 Lagrange 반복 + 속도제약 ṙ·r=0. d4-generic Constraint{i,j,d} 리스트. g5 ✅ PASS 9/9 (제약충족 |r-d|=3.54e-9·SHAKE 30iter converged·RATTLE ṙ·r=7.92e-13·NVE drift 1.53e-3 dt-반감 ratio 1.998/1.999 O(dt)선형 누설0·기하 rOH|Δ|=3.99e-9·∠HOH|Δ|=6.08e-7; PR hexa-lang#3092)
 - [x] R9-brick: **end-to-end ABFE 풀체인 통합 데모** — 8조각(R2~R8)을 하나의 연속 체인으로 엮어 실제 ΔG 산출. `abfe_demo.hexa`(d4-generic 오케스트레이터: solvate→softcore-ladder→HREX(Langevin+SHAKE)→u_kn→MBAR ΔG, 하드코딩0·8조각 호출만·d3). g5 ✅ **PASS 7/7** (20s·0-pod): Path A 조화 알케미컬 chain ΔG=0.4840 vs 해석 ½ln(2.5)=0.4581 |Δ|=0.0259 kT(<0.05)·nsw=3000 수렴시 |Δ|=2e-4 · Path B 실 soft-core LJ decouple MBAR=−0.1293 vs 독립 TI(R3 autograd dU/dλ)=−0.0098 |Δ|=0.1195(<0.15) · λ엔드포인트 U(λ=0)=0 exact·r=0.05 overlap U/dU/dλ 유한 · 결정론 bit-exact · 구속체인 SHAKE ΔG=0.4635 |Δ|=0.0054 max|r²−d²|=9.9e-11 · overlap 0.167·accept 0.893·round_trips 6/6 · NaN-0; PR hexa-lang#3100. **풀체인 native FEP 작동 실증 확정 — 8조각 통합 봉인**
-- [ ] R4-next: end-to-end ABFE re-derive SENOLYX 앵커(−16.64) parity (HREX+softcore+MBAR+NVT 풀체인) — R9 가 풀체인 배선 실증 ✅ ⇒ 남은=정량 parity(PME·더긴샘플·실FF)
+- [ ] R4-next: end-to-end ABFE re-derive SENOLYX 앵커(−16.64) parity (HREX+softcore+MBAR+NVT+**PME** 풀체인) — R9 배선 ✅ + R10 PME ✅ ⇒ 남은=정량 parity(더긴샘플·실 biomolecular FF; 물리스택은 완성)
 - [ ] R5: QM-derived FF (GFN2 전하 refit) — R11 거대고리 2.2× 과대전개 해소 측정
 
 ## verify-ref / falsifier

@@ -398,3 +398,54 @@ PASS: abfe_demo 7/7
 ### 산출
 - stacked PR: hexa-lang **#3100** (abfe_demo.hexa +331 · abfe_demo_selftest.hexa +548, base=`qforge-bio-r8-langevin`=R8 tip). fep/(R3~R5) 는 R8 ancestry 에 없어 diff 동반 — R9 가 올라앉은 봉인스택. 머지=사용자. 0-POD·$0(local g5). ISOLATED worktree `qforge-bio-r9-abfe`.
 - **마일스톤 갱신**: R9-brick ✅ 풀체인 통합 봉인. R4-next(SENOLYX parity) 는 이제 정량 단계만 남음(PME·샘플·실FF).
+
+## 2026-06-13 · R10 — PME (Smooth Particle-Mesh Ewald) · 물리스택 마지막 조각 봉인
+
+### 무엇을 했나
+현 `stdlib/chem/md/ewald.hexa` 의 reciprocal 합은 O(N²·K³) 직접합 — 대형 단백질-리간드 불가. PME (Essmann 1995, smooth PME) 로 교체: 전하를 B-spline mesh 에 보간 → **fft3 한 번** → reciprocal 커널 곱 → inverse fft3 → 에너지·힘. O(N + K log K). 물리스택의 **유일한 미봉인 조각** 완성.
+
+### 재사용 (d3/d19 — 중복 금지)
+- real-space erfc·self-energy·중성보정·α/kmax 자동추론: `ewald.hexa` 에서 **verbatim 재사용** (reciprocal 만 FFT 가속)
+- 3D FFT: `stdlib/signal/core_fft.hexa` 의 `fft3`/`ifft3` **verbatim 재사용** — materials QFORGE el-ph FFT-Poisson 이 쓰는 **실 radix-2 brick**. **naive DFT 아님 = 실 FFT 연동.**
+- (α, kmax) 를 직접 Ewald 와 공유 ⇒ 두 경로는 B-spline 이산화 차이만 남는 동일 절단합.
+
+### 신규 구현
+- `stdlib/chem/md/pme.hexa` (422줄, d4-generic): cardinal B-spline M_n(u) 재귀 + 미분 dM/du + Euler-spline 고유값 |b(m)|²(Essmann 4.4) + 전하격자 spread + fft3 forward + reciprocal C(m)·B(m)|F[Q]|² 합 + force(convolution + B-spline 미분). 격자크기·order·β·kmax 전부 파라메트릭, 전하셋만 instance datum.
+- `stdlib/chem/md/pme_selftest.hexa` (185줄, @ci_gate): 5체크.
+
+### g5 selftest VERBATIM (`hexa run stdlib/chem/md/pme_selftest.hexa` · 32³ grid · order 6)
+```
+PME selftest — Smooth Particle-Mesh Ewald (QFORGE-BIO R10)
+  L=10.0 alpha=0.657869 kmax=8 grid=32^3 order=6
+
+  ok : a_recip_parity   PME=0.560128 direct=0.560127 |Δ|=5.75901e-07
+  ok : b_total_parity   PME=-0.368681 Ewald=-0.368681 |Δ|=5.75901e-07
+  ok : c_force_match_fd   max|F_analytic − F_FD| over 12 components = 3.82328e-11
+  ok : d_translation_gauge_invariance   E0=-0.368681 max|E(shift)−E0|=4.23173e-08
+  scaling ladder |Δ|:  g8/o4=0.0158684  g16/o4=0.000981921  g16/o6=5.22065e-05  g32/o6=5.75901e-07
+  ok : e_scaling_convergence_monotone   grid/order refine ⇒ |Δ| strictly decreasing toward direct sum
+
+ALL PASS — stdlib/chem/md PME (Smooth Particle-Mesh Ewald) 5/5
+PME == direct Ewald to B-spline discretisation; FFT-accelerated reciprocal sum SEALED.
+```
+
+### 다섯 체크 의미
+- (a) **직접합 parity**: PME recip == 직접 Ewald recip, |Δ|=5.76e-7 (≪1e-4). FFT 경로가 직접합과 동일 물리.
+- (b) **전에너지 parity**: real+PME recip+self+중성 == Ewald 총합, |Δ|=5.76e-7.
+- (c) **힘 일치**: PME recip force == recip 에너지 중심차분, 12성분 max|Δ|=3.82e-11 (≪1e-3, 사실상 정확).
+- (d) **중성계 불변성**: 비격자 벡터 translation 후 전에너지 불변 |Δ|=4.23e-8 (gauge).
+- (e) **scaling 수렴**: 격자/order ↑ → |Δ| 단조감소 (g8/o4 1.6e-2 → g32/o6 5.8e-7). PME 가 직접합으로 수렴 입증.
+
+### 봉인 판정 (d6/@L5 — 정직)
+- **PME 봉인 ✅** — 실 fft3 연동(naive DFT 아님), 직접합 parity 5.76e-7, 힘 FD 일치 3.8e-11. discretisation 오차이지 버그 아님(scaling 단조수렴이 증명).
+- **native FEP MD 물리스택 100% 완성** — R2(힘)·R3(soft-core)·R4(MBAR)·R5(HREX)·R6(TIP3P)·R7(SHAKE)·R8(Langevin)·R9(ABFE 풀체인) + R10(PME) ⇒ O(N²) 정전 병목 제거, **대형 단백질-리간드계 언블록**.
+- 정량 parity 까지 남은 것 (물리 아닌 단계): 더 긴 샘플링 · 실 biomolecular FF(현 toy LJ+Coulomb) · SENOLYX −16.64 production 재현. R10 은 효율/물리 봉인, parity 는 downstream.
+
+### 인터프리터 함정 (구현 중 발견·d8 handoff 기록)
+1. **floor() 는 float 반환** — `gx0=floor(ux)`(float)로 한 fn 에서 spread, 다른 fn 에서 `to_int(floor(ux))`로 force 시 같은 격자를 `(g0-j)%K` 인덱싱하면 grid index desync → 힘 ~0 (energy parity 는 멀쩡). 우회: spread/force 둘 다 `to_int(floor())` 로 통일. (root-cause: floor→int 격자원점 관용구 표준화 or % 타입일관성 — handoff 기록)
+2. **private(_prefix) fn 은 'use' 모듈서 호출 가능** — 격리버그 아님, 접근제어 없음 확인(selftest 가 `_pme_bspline` 직접 검증에 의존). 가시성 계약 문서화 handoff.
+3. (R9 기지 재확인) **struct-slot 충돌** — 도메인 struct 가 autograd struct 와 슬롯명 공유시 허위 'map key not found'. R9 dict 우회. root-cause handoff.
+→ 3건 `sidecar handoff add hexa-lang` 기록 (id eb7f3073·17b823a6·fcd72679).
+
+### 산출
+- stacked PR: hexa-lang **#3101** (pme.hexa +422 · pme_selftest.hexa +185, R10 변경=이 2파일만). base=`main` (R9 가 머지됐으나 bio R2~R9 스택이 아직 main 미착륙 → diff 에 미착륙 ancestor 동반, 스택 착륙시 PME 2파일로 collapse). 머지=사용자. 0-POD·$0(local g5). ISOLATED branch `qforge-bio-r10-pme`.
