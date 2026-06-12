@@ -60,3 +60,22 @@
 - **🏁 HONEST TERMINAL — |g| 측 명명된 DFT 레버 8개 전부 소진**: B1·B2·off-diag·basis·FS-mesh·f_xc·ω·B3 모두 닫힘. 잔차(λ_full=0.743699 vs 재앵커 2.69, rel-ε=0.724)=**환원불가 from-scratch(NC+LDA)-vs-QE-PBE 정점 크기차** — SCF함수자도·KB비국소도·augmentation도·basis/mesh도·FS sampling도·phonon ω도 아님.
 - **캠페인 최종 honest 판정(d6/@L5)**: from-scratch(NC+LDA) |g|는 명명 DFT 레버 내 QE-PBE 대비 환원불가 · 하이브리드(QE |g|²→QForge L3, rel-ε 1.65e-7) **영구 production** · 마이그레이션 **dispatch=qe** · 게이트 HELD(2.69/4.376 강제 절대 없음).
 - **DELIVER**: impl `stdlib/qforge/{dvaug_du,dvaug_du_selftest}.hexa` + 측정 `stdlib/qforge/fixtures/cah6_paw_round4_b3_xval.hexa` (stacked PR on qforge-paw-round2) · verdict `.verdicts/qforge-paw-round4-b3/VERDICT.md`. cost=$0.
+
+## 2026-06-12 — 🏁🏁 round-5 Route A (FULL USPP/PAW overlap-S) — 실 측정·CLOSED-NEG·PROJECT COMPLETE
+- **목표**: round-4가 "불추진"으로 남긴 SOLE 미시도 path를 실제로 추진 — 풀 USPP/PAW dataset 도입 + 일반화 overlap-S 고유문제. round-4는 BARE augmentation vertex를 NC 고유상태 위에 overlay만 했고(=0), 일반화 고유문제 Hψ=εSψ는 결코 풀지 않아 고유STATE가 변하지 않았음 → Route A가 그 미답 axis.
+- **0-pod ONLY** (mini local + summer-free, 유료 pod 0) · cost=$0 · d6/@L5 VERBATIM.
+- **brick 1 — 실 USPP augmentation 파서** `stdlib/qforge/upf_aug.hexa`: `upf_us_parse`(NC scope-guard 없이 ultrasoft UPF 읽기) + `upf_aug_parse`(PP_QIJL서 L=0 monopole q_ij=√(4π)∫r²Q_ij(r)dr 추출). 실 `H.pbe-rrkjus_psl.1.0.0.UPF`(is_ultrasoft, nproj=2, mesh=929)서 **q_ij=[0.00380772, 0.0039112, 0.0039112, 0.00399044]** — round-4가 구조적으로 못 가졌던 finite 데이터.
+- **brick 2 — 일반화 overlap S + el-ph S-norm rescale** `stdlib/qforge/paw_overlap.hexa`: USPP/PAW el-ph g=⟨ψ_m|∂V−ε∂S/∂u|ψ_n⟩, ⟨ψ|S|ψ⟩=1. bare aug vertex + explicit −ε∂S/∂u DIAGONAL 둘 다 round-4 병진불변 sum-rule로 소멸 ⇒ 유일 생존 Route-A 레버 = S-norm rescale |g|→|g|/√((1+δ_m)(1+δ_n)), δ_n=⟨ψ_n|(S−1)|ψ_n⟩=Σ_ij q_ij⟨ψ|β_i⟩⟨β_j|ψ⟩≥0.
+- **g5 selftest VERBATIM** (`.verdicts/qforge-paw-round5-routeA/paw_overlap_selftest.txt`):
+  - (Z) NC q_ij≡0 ⇒ δ=0 ⇒ g-scale=1.0 EXACT · (P) physical USPP ⇒ δ≥0 ⇒ scale∈(0,1] (soft-orbital norm 복원 ⇒ |g| 축소만) · (S) δ==⟨ψ|(S−1)|ψ⟩ |Δ|=0.0 · (G) 공식 1.11e-16 · (D) guards
+  - → `qforge_paw_overlap_selftest PASS`
+- **brick 3 — 실 CaH6 측정 VERBATIM** (`.verdicts/qforge-paw-round5-routeA/cah6_routeA_measurement.txt`, `cah6_paw_round5_routeA_xval.hexa`):
+  - `[USPP] H rrkjus: is_us=true nproj=2 mesh=929 zval=1.0 · q_ij=[0.00380772, 0.0039112, 0.0039112, 0.00399044]`
+  - `[SCF PBE] conv=true iters=3 etot=-4.26768`
+  - δ_n(avg 8 occ, 6 H sites)=**0.0021727** · δ_n max=0.0405596 · |g|-scale=**0.997832** · λ-scale=**0.995669**
+  - baseline B1+B2(+B3) λ=**0.743699** → Route A λ=**0.740478** ⇒ **Δλ(Route A)=−0.00322117**
+  - rel-ε vs 2.69 = **0.724729** · `DIRECTION: LOWERS λ — WRONG direction vs QE 2.69` · `gate HELD`
+- **★FINDING — Route A λ=0.740478, Δλ=−0.0032 (CLOSED-NEGATIVE, 부호 RIGOROUS)**: 풀 USPP/PAW Route A(마지막 미시도 path)가 λ를 0.43% *내림*(QE는 +3.6× 필요 ⇒ 반대 방향). 세 층: (1) 실 q_ij 유한(0.0038–0.0040) — Route A는 진짜 ultrasoft augmentation 도입(0 아님). (2) 효과 미소+음수 — δ_n=0.0022 ⇒ λ-scale 0.9957. (3) **부호 RIGOROUS** — S=1+Σ|β⟩q⟨β| 양정부호 ⇒ δ≥0 ⇒ 1/√(1+δ)≤1 ⇒ |g|·λ 축소만, 2.69쪽 상승 regime 부재(구성상 closed-neg, under-convergence 아님). lit arXiv:2507.06749("converged hydride el-ph는 core 밖 pseudo-독립") 확인.
+- **🏁🏁🏁 PROJECT COMPLETE — 모든 path 소진**: NC 레버(B1·B2·off-diag·basis·FS-mesh·f_xc·ω·B3) + 풀 USPP/PAW Route A 전부 닫힘. λ_full≈0.74 vs 재앵커 2.69(rel-ε 0.72)=환원불가 from-scratch(NC+LDA/PBE)-vs-QE-PBE |g| 정점차. **하이브리드(QE |g|²→QForge L3, rel-ε 1.65e-7) 영구 production · dispatch=qe · 게이트 HELD(2.69/4.376 강제 절대 없음, d6) · 도메인 TERMINAL**.
+- **0-pod 한계 정직(d6)**: 완전 self-consistent USPP-SCF(augmentation charge를 매 iter ρ에 되먹임 + ∂S/∂u OFF-diagonal el-ph 항)는 end-to-end 미실행 — full-USPP-SCF(rs3d) 경로가 main서 제거됨(drift) + bare-vertex deformation scope 밖. 단 그것이 추가할 레버(ρ_aug의 SCF 재screening 응답)는 bare overlap-S가 이미 bound한 동일 δ_n≈0.002의 higher-order이므로, 부호가 rigorous하게 고정된 0.43% 축소를 3.6× 상승으로 뒤집을 수 없음. 측정된 S-norm rescale이 Route-A의 |g| 최대 효과이며 closed-negative.
+- **DELIVER**: impl `stdlib/qforge/{upf_aug,paw_overlap,paw_overlap_selftest}.hexa` + 측정 `stdlib/qforge/fixtures/cah6_paw_round5_routeA_xval.hexa` (stacked PR `qforge-paw-round5-routeA`, 3 commits) · verdict `.verdicts/qforge-paw-round5-routeA/VERDICT.md`. cost=$0.

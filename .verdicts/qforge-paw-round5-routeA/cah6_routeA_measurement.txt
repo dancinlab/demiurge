@@ -1,0 +1,25 @@
+=== QFORGE-PAW round-5 — Route A (USPP/PAW overlap-S) on real CaH6 ===
+[USPP] H rrkjus: is_us=true nproj=2 mesh=929 zval=1.0
+[USPP] aug.ok=true — USPP L=0 augmentation: 2 projectors, finite q_ij extracted
+[USPP] q_ij = [0.00380772, 0.0039112, 0.0039112, 0.00399044]
+[SCF PBE]  conv=true iters=3 etot=-4.26768
+
+══ Route A MEASUREMENT (USPP overlap-S norm rescale; VERBATIM d6) ══
+δ_n (avg over 8 occ states, 6 H sites) = 0.0021727
+δ_n max state                                  = 0.0405596
+|g|-scale = 1/√((1+δ)(1+δ))                     = 0.997832
+λ-scale   = |g|-scale²                          = 0.995669
+
+baseline  B1+B2(+B3)  PBE-SCF NC                λ = 0.743699
+Route A   + USPP overlap-S norm rescale         λ = 0.740478
+Δλ(Route A) = -0.00322117
+
+Route A λ vs re-anchor ~2.69 (PNAS 2012): rel-ε = 0.724729
+Route A λ vs textbook  4.376            : rel-ε = 0.830787
+
+DIRECTION: Route A LOWERS λ (Δλ≤0) — WRONG direction vs QE 2.69
+           S is positive-definite ⇒ δ≥0 ⇒ |g| can ONLY shrink (rigorous sign).
+VERDICT: gate HELD — Route A λ=0.740478 outside 1% of 2.69. Augmentation overlap-S is a 0.433129% effect (lit 2507.06749: small).
+         ⇒ ALL paths (NC levers + full USPP/PAW Route A) EXHAUSTED.
+         hybrid (QE |g|²→L3, rel-ε 1.65e-7) PERMANENT production · dispatch=qe (d6).
+=== DONE ===
