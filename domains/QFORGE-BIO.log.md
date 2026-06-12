@@ -66,3 +66,57 @@
 ### 산출
 - stacked PR: hexa-lang#3076 (L1 impl, base=main) ← #3077 (L2 selftest, merged into L1). 머지=사용자. 0-POD·$0 (local g5).
 - 다음 brick (R3 후보): soft-core λ-energy 닫힌형 (Beutler 1994) — λ=0/1 endpoint 비특이성 g5. autograd-force 봉인을 직접 소비 (soft-core U 만 tape 에 쓰면 dU/dλ·force 자동).
+
+## 2026-06-12 · R3-brick ✅ SEALED — Beutler soft-core + dU/dλ autograd = alchemical 코어
+
+### 감사 (round-2 봉인 소비 가능성 확인)
+- `stdlib/chem/md/forces_autograd.hexa` (#3076 merged·origin/main): U_total 를 autograd tape 로 빌드(스칼라=[1]-Tensor) → `ag_backward` → F_i=−∂U/∂x_i. 손미분 0줄. → **energy 닫힌식만 tape 에 쓰면 force 자동** 봉인 확인.
+- `stdlib/autograd.hexa`: `ag_var/const · ag_add/sub/neg/mul · ag_pow(handle, 상수지수) · ag_backward · ag_grad/value`. ⚠ division primitive 없음 → r⁻ⁿ 은 `ag_pow(base, 음수상수)`. base 는 임의 tape 식 가능 ⇒ soft-core 분모 (α(1−λ)²+(r/σ)⁶) 전체가 미분가능.
+- **핵심 확장 가능성 확인**: λ 를 `ag_var` 로 leaf 에 넣으면, coord leaf 와 동일하게 같은 reverse pass 가 ∂U/∂λ 를 공급 → dU/dλ 도 autograd. 손-dU/dλ 불필요.
+
+### 구현 (신규, d4-generic)
+- `stdlib/chem/fep/softcore.hexa` (218줄, 코드 ~120) — **energy-only**. U_sc^LJ = 4ε·λⁿ·[D⁻²−D⁻¹], D=α_LJ(1−λ)²+(r/σ)⁶ ; U_sc^C = λᵐ·k_e·q₁q₂/(α_C(1−λ)²+r²)^(1/2). λ·coord 모두 tape VARIABLE leaf → 한 reverse pass 가 force + dU/dλ 둘 다.
+  - `softcore_energy_autograd` (U+coords+lam 핸들 반환) · `softcore_force_autograd` (F=−∂U/∂x) · `softcore_dUdlam_autograd` (∂U/∂λ) · `softcore_energy_value` (forward).
+  - λ·α_LJ·α_C·n·m = generic param dict (`_p_get` 디폴트 α=0.5·n=m=1). 이름하드코딩·인스턴스분기 無 (d4). 선형결합 = α=0,n=m=1 로 동일 경로.
+
+### g5 selftest VERBATIM (`hexa run`, exit 0)
+- `stdlib/chem/fep/softcore_selftest.hexa` (285줄):
+```
+── softcore selftest (Beutler λ-coupled LJ+Coulomb) ──
+  fixture: eps=0.65 sigma=3.15 q1=0.84 q2=-0.42 alpha_lj=0.5 alpha_c=0.5 n=1.0 m=1.0
+  [overlap r=0.0001, λ=0.3]
+    softcore: U=-19.8975  max|F|=0.0121259
+    plainLJ : U=2.48142e+54  max|F|=2.9777e+59
+  ok : (a) endpoint non-singular (λ<1,r→0) softcore |U|=19.8975 finite vs plain |U|=2.48142e+54
+  [λ=1] U_sc=-15.3709 U_plain=-15.3709
+        F_sc=[-3.34922,-1.67461,-1.15935,3.34922,1.67461,1.15935]
+        F_pl=[-3.34922,-1.67461,-1.15935,3.34922,1.67461,1.15935]
+  ok : (b) λ=1 == plain LJ+Coulomb |ΔU|=0.0 max|ΔF|=2.66454e-15
+  ok : (c) λ=0 ⇒ U_sc=0 (decoupled) U=-0.0 max|F|=0.0
+    λ=0.15  dU/dλ_ag=-16.0663  dU/dλ_an=-16.0663  |Δ|=0.0
+    λ=0.4  dU/dλ_ag=-15.4949  dU/dλ_an=-15.4949  |Δ|=1.77636e-15
+    λ=0.65  dU/dλ_ag=-14.8244  dU/dλ_an=-14.8244  |Δ|=0.0
+    λ=0.9  dU/dλ_ag=-14.9674  dU/dλ_an=-14.9674  |Δ|=3.55271e-15
+  ok : (d) dU/dλ autograd == analytic max|Δ| over λ-grid=3.55271e-15
+  [λ=0.5] F_ag=[-0.0763858,-0.0381929,-0.0264412,0.0763858,0.0381929,0.0264412]
+            F_fd=[-0.0763858,-0.0381929,-0.0264412,0.0763858,0.0381929,0.0264412]
+  ok : (e) F=−∂U/∂x autograd == finite-diff max|Δ|=4.64306e-10
+
+PASS: softcore 5/5
+```
+
+### 봉인 확정
+- **(a) endpoint 비특이성**: λ=0.3·r=1e-4 에서 soft-core U=−19.9·F=0.012 유한 ; 동일 r 의 plain LJ 는 U=2.48e54·F=2.98e59 로 발산. soft-core 가 r→0 특이점을 제거함 봉인.
+- **(b) λ=1 회복**: soft-core == plain LJ+Coulomb, |ΔU|=0.0·max|ΔF|=2.66e-15 (<1e-9). 원래 포텐셜 정확 회복.
+- **(c) λ=0 decouple**: U_sc=0·F=0 정확.
+- **(d) dU/dλ autograd == analytic**: λ-grid(0.15·0.4·0.65·0.9) 전체 max|Δ|=3.55e-15 (<1e-6). **round-2 force-봉인을 λ leaf 로 확장 — 연금술 그래디언트도 autograd.**
+- **(e) force == finite-diff**: max|Δ|=4.64e-10 (<1e-6).
+- ⇒ **soft-core + dU/dλ autograd = alchemical 코어 봉인 확정.** TI 적분의 ⟨dU/dλ⟩ integrand 가 손미분 없이 native 로 공급되고, endpoint 발산이 제거됨. FEP 의 두 핵심 난제(특이성·연금술 그래디언트)가 한 봉인으로 닫힘.
+
+### 정직 노트 (d6/@L5)
+- 첫 실행에서 5/5 PASS — FAIL→수정 사이클 없음 (round-2 와 달리 falsifier 임계값이 처음부터 물리적으로 타당).
+- soft-core 는 단쌍·진공. neighbor-list·PBC·물상자·λ-schedule·decorrelation 은 후속 round (앵커 ΔΔG parity 는 R4+). 본 brick 은 알케미컬 *코어 수식*의 봉인이며 end-to-end ΔG 아님 — 명시.
+
+### 산출
+- stacked PR: hexa-lang#3078 (L1 impl, base=main) ← #3079 (L2 selftest, base=L1). 머지=사용자. 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-softcore-l1/l2`.
+- 다음 brick (R4 후보): **HREX** (Hamiltonian replica-exchange swap, detailed-balance g5) — soft-core λ-사다리 위 인접 λ 교환 · **MBAR/BAR** (Shirts-Chodera, 가우시안 작업분포 닫힌형 ΔG g5, dU/dλ·U_kn 행렬 소비) · **PME** (ewald recip 의 fft3 가속, 직접합 parity). 권장 우선순위 = MBAR (soft-core dU/dλ 를 직접 소비하는 estimator — TI/FEP 적분을 닫는 다음 논리 단계).

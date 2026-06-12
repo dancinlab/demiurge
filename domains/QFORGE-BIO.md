@@ -31,7 +31,7 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 - `stdlib/qforge/nvptx_*_kernel.hexa` — NVPTX GPU 커널 (summer RTX5070 sm_120 검증) ⇒ MD GPU 가속 참조
 
 🟡 / ⚪ GAP (없음 — 신설 대상):
-- soft-core λ-coupling (Beutler) · λ-schedule · 하이브리드 토폴로지
+- ✅R3 soft-core λ-coupling (Beutler) — `stdlib/chem/fep/softcore.hexa` (g5 PASS) · 🟡 λ-schedule · 하이브리드 토폴로지
 - PME (Ewald 의 FFT 가속판 — 현 ewald 는 O(N²) 직접합)
 - Langevin/Nosé-Hoover thermostat (현 verlet 은 NVE 진공)
 - HREX (Hamiltonian replica exchange) swap
@@ -42,7 +42,7 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 ## 마일스톤
 - [x] R1: native FEP/MD 최소경로 설계 + lit-grounding + 첫 verify-able brick 명시 (이 라운드, 설계만)
 - [x] R2-brick: LJ+Coulomb 힘 = autograd 역모드 vs 해석적/finite-diff < 1e-6 (g5) — 첫 native brick ✅ PASS 5/5 (a=1.78e-15·b=2.46e-9; PR hexa-lang#3076)
-- [ ] R2: soft-core λ-energy 닫힌형 (Beutler) — λ=0/1 endpoint 비특이성 g5
+- [x] R3-brick: soft-core λ-energy 닫힌형 (Beutler 1994) — endpoint 비특이성 + dU/dλ autograd g5 ✅ PASS 5/5 (λ=1 회복 |ΔU|=0·dU/dλ ag==an 3.55e-15; PR hexa-lang#3078←#3079)
 - [ ] R2: MBAR 해석적 2-state(=BAR) 검증 — 가우시안 작업분포 닫힌형 ΔG g5
 - [ ] R3: PME = ewald recip 의 fft3 가속 — 직접합 vs FFT < 1e-8 parity g5
 - [ ] R3: Langevin integrator — 평형 ⟨KE⟩ = (3/2)NkT equipartition g5
