@@ -478,3 +478,36 @@ ALL PASS — stdlib/chem/ff AMBER/GAFF real-FF loader 10/10
 
 ### 산출
 - stacked PR: hexa-lang **#3104** (amber.hexa + amber_selftest.hexa +536, base=`qforge-bio-r10-pme`). pr-cycle 훅이 stacked leaf 를 R10 브랜치로 self-merge(squash 44c881f40 on R10 575bbd4c6). R10 #3101 + R2~R10 스택은 사용자 main 머지 대기. 0-POD·$0. ISOLATED branch `qforge-bio-r11-ff` (create→commit→push→remove).
+
+## R12 — ligand topology 빌더 (결합그래프 → GAFF atom-typing) · 2026-06-13
+
+물리스택(R2~R10) + 실FF 입력(R11) 완성 후, 실 ligand 를 풀체인에 주입하려면 분자 구조를 GAFF atom-type 으로 인식하는 한 조각이 더 필요. amber.hexa 는 `atom_types[]`(per-atom GAFF 타입 배열)를 소비하지만 그걸 분자에서 PRODUCE 하는 게 없었음 — R12 가 그 구조링크. `stdlib/chem/ff/topology.hexa`(신규, d4-generic): 결합그래프(원소+연결) → 각 원자 GAFF 타입. **인-세션 실행**(서브에이전트 아님, main 루프가 직접 Write/Bash).
+
+구조: `structure(원소+bonds) ──▶ [topology.hexa] ──▶ atom_types[] ──▶ amber.hexa`
+
+### perception 규칙 (subset, 정직 d6)
+원소 + 연결차수(혼성화 proxy, 명시적 결합차수 없음) + 이웃환경:
+- C deg-4 → c3(sp³) · C deg-3 → c2(sp²)
+- H on sp³-C → hc · H on sp²-C → ha
+- O deg-2·2×H → OW(물) · O deg-2·1×H+heavy → oh(하이드록실)
+- H on 물-O → HW · H on 하이드록실-O → ho
+풀 GAFF SMARTS(고리·방향족·결합차수·formal charge) perception 은 **안 함** — downstream 확장. d4-generic: 원소+차수+이웃원소만 키, 분자이름 비분기·bonds=데이터.
+
+### selftest VERBATIM (`hexa run stdlib/chem/ff/topology_selftest.hexa` · 0-pod · $0 · 첫 실행 클린)
+```
+  ok : a_methane_ch4   [c3, hc, hc, hc, hc] (exp [c3, hc, hc, hc, hc])
+  ok : b_water_h2o   [OW, HW, HW] (exp [OW, HW, HW])
+  ok : c_methanol_ch3oh   [c3, hc, hc, hc, oh, ho] (exp [c3, hc, hc, hc, oh, ho])
+  ok : d_ethene_c2h4   [c2, c2, ha, ha, ha, ha] (exp [c2, c2, ha, ha, ha, ha])
+  ok : e_graph_degree_neighbours   deg(C)=4 deg(H)=1 H-neighbours(C)=4
+  ok : f_integrate_amber_neutral   Σq(CH4 via perceived types)=-6.93889e-18 Σq(H2O)=0.0 (both integer-neutral)
+ALL PASS — stdlib/chem/ff topology → GAFF atom-typing 6/6
+Bond graph → atom_types[] → amber.hexa: real-ligand structural link SEALED.
+```
+
+### 봉인 판정 (d6/@L5)
+- 핵심 입증: 연결 그래프가 올바른 GAFF `atom_types[]` 를 산출하고, 그게 amber.hexa(R11)로 흘러 분자 전하 보존(Σq(CH4)=−6.9e-18·Σq(H2O)=0). 메탄올의 하이드록실 H(ho) vs 물 H(HW)를 O의 H-개수로 정확 구분(둘 다 H-on-O 인데 환경으로 분기).
+- **구조 링크 봉인 ⇒ bio code-brick 레인 소진**. structure→FF→sampling→estimator 전 경로가 hexa-native. SENOLYX −16.64 까지 남은 건 코드가 아니라 **순수 compute**(실 ligand topology→abfe_demo 풀체인 + nsw≫3000 긴 샘플링 = d17 GPU 영역).
+
+### 산출
+- stacked PR: hexa-lang **#3105** (topology.hexa + topology_selftest.hexa, base=`qforge-bio-r10-pme` R11 tip). 머지=사용자. 0-POD·$0(local g5). branch `qforge-bio-r12-topology` (origin push, isolation 아닌 직접 체크아웃 — 인-세션 /afg 모드).
