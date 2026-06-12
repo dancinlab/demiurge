@@ -40,8 +40,8 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 - QM-derived FF (GFN2/DFT 전하·토션 refit · 거대고리 인지)
 
 ## 마일스톤
-- [ ] R1: native FEP/MD 최소경로 설계 + lit-grounding + 첫 verify-able brick 명시 (이 라운드, 설계만)
-- [ ] R2-brick: LJ+Coulomb 힘 = autograd 역모드 vs 해석적/finite-diff < 1e-6 (g5) — 첫 native brick
+- [x] R1: native FEP/MD 최소경로 설계 + lit-grounding + 첫 verify-able brick 명시 (이 라운드, 설계만)
+- [x] R2-brick: LJ+Coulomb 힘 = autograd 역모드 vs 해석적/finite-diff < 1e-6 (g5) — 첫 native brick ✅ PASS 5/5 (a=1.78e-15·b=2.46e-9; PR hexa-lang#3076)
 - [ ] R2: soft-core λ-energy 닫힌형 (Beutler) — λ=0/1 endpoint 비특이성 g5
 - [ ] R2: MBAR 해석적 2-state(=BAR) 검증 — 가우시안 작업분포 닫힌형 ΔG g5
 - [ ] R3: PME = ewald recip 의 fft3 가속 — 직접합 vs FFT < 1e-8 parity g5
