@@ -8,7 +8,7 @@
 - NAME: QFORGE-BIO
 - alias: 결합엔진 — "리간드가 단백질에 얼마나 세게 붙는지를 외부 라이브러리 없이 직접 계산하는 엔진"
 - parent: QFORGE (`stdlib/qforge/`) · sibling scale: materials(el-ph, ✅DONE) · atoms · chem · chip · system
-- canonical home (d3): `stdlib/chem/md/` (MD 코어) + 신설 `stdlib/chem/fep/` (알케미컬 레이어) + `stdlib/chem/md/estimator/` (MBAR/BAR)
+- canonical home (d3): `stdlib/chem/md/` (MD 코어) + 신설 `stdlib/chem/fep/` (알케미컬 레이어) + `stdlib/chem/md/estimator/` (MBAR/BAR) + 신설 `stdlib/chem/solvate/` (TIP3P 용매박스)
 
 ## why (실증된 외부의존 3대 실패)
 SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
@@ -36,7 +36,8 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 - Langevin/Nosé-Hoover thermostat (현 verlet 은 NVE 진공)
 - ✅R5 HREX (Hamiltonian replica exchange) swap — `stdlib/chem/fep/hrex.hexa` (g5 PASS 5/5) · R3 ladder ↔ R4 MBAR 직접연결
 - ✅R4 MBAR/BAR estimator (Shirts-Chodera) — `stdlib/chem/fep/mbar.hexa` (g5 PASS 5/5)
-- neighbor list / cell list · TIP3P 물 · solvation box builder
+- ✅R6 TIP3P 물 + solvation box builder — `stdlib/chem/solvate/tip3p.hexa` (g5 PASS 10/10) · 실계 인프라 봉인
+- neighbor list / cell list (효율 레이어, 후속)
 - QM-derived FF (GFN2/DFT 전하·토션 refit · 거대고리 인지)
 
 ## 마일스톤
@@ -47,6 +48,7 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 - [ ] R3: PME = ewald recip 의 fft3 가속 — 직접합 vs FFT < 1e-8 parity g5
 - [ ] R3: Langevin integrator — 평형 ⟨KE⟩ = (3/2)NkT equipartition g5
 - [x] R5-brick: HREX (Hamiltonian replica-exchange) 샘플링 — 인접 λ-rung config swap, Metropolis P=min(1,e^−Δ). g5 ✅ PASS 5/5 (detailed-balance resid 1.11e-16 · Metropolis bit-exact 0.0 · 정상분포 swap-점유 0.91193 vs 해석 0.912136 within 6σ · MBAR소비 |HREX−analytic|=2.2e-3 kT·|HREX−direct|=9.7e-3 · 혼합 accept 87.5%·5/5 round-trip; PR hexa-lang#R5)
+- [x] R6-brick: TIP3P 물 + solvation box builder — 닫힌형 단분자 기하 + d4-generic 격자충전 + overlap 제거 + 중성. g5 ✅ PASS 10/10 (rOH |Δr|=2.2e-16·∠HOH |Δθ|=1.4e-14 · 밀도 1.00417 g/cm³ rel 0.72% · Σq=0.0 exact · overlap 216→208 min_dist 3.838Å≥2.4 · PBC LJ−60.26+Coul−133.13 유한 NaN0; PR hexa-lang#3088←#3089)
 - [ ] R4-next: end-to-end ABFE re-derive SENOLYX 앵커(−16.64) parity (HREX+softcore+MBAR 풀체인)
 - [ ] R5: QM-derived FF (GFN2 전하 refit) — R11 거대고리 2.2× 과대전개 해소 측정
 

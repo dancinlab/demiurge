@@ -223,3 +223,51 @@ PASS: hrex 5/5
 ### 산출 (인프라 GAP 인벤토리)
 - stacked PR: hexa-lang R5-L1 (hrex.hexa, base=R4 `qforge-bio-mbar-l1`) + R5-L2 (hrex_selftest.hexa, base=R5-L1). 머지=사용자. 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-r5-hrex`.
 - **남은 인프라 (R6 다음 우선순위)**: ✅R2 force · ✅R3 soft-core · ✅R5 HREX · ✅R4 MBAR/BAR 봉인 완료. 미봉인 = ① **solvation box builder + TIP3P 물** (end-to-end ABFE 더블디커플링의 마지막 핵심 인프라 — 앵커 parity 직결) ② **PME** (ewald recip 의 fft3 가속, 직접합 parity) ③ **thermostat** (Langevin/Nosé-Hoover — 현 verlet NVE 진공 → NVT 평형). **권장 R6 = solvation box + TIP3P** (샘플링·추정·force·λ 가 모두 봉인된 지금, end-to-end SENOLYX −16.64 parity 로 가는 유일한 미충족 조각이 *용매화된 실계*; PME·thermostat 은 그 위 정밀도/효율 레이어).
+
+## 2026-06-12 · R6 — solvation box builder + TIP3P 물 모델 (실계 인프라 봉인)
+
+### 스캔 (d19 atlas-first, 기존 stdlib 재사용)
+- `stdlib/chem/md/pbc.hexa` 최소-이미지 (입방+직교) 보유 — solvate_box 가 동일 floor-기반 wrap 재사용
+- `stdlib/chem/md/lennard_jones.hexa` ε/σ LJ 6-12 + `lj_system_energy` — TIP3P O-사이트 LJ 직결 (MdParticle 변환)
+- `stdlib/chem/md/ewald.hexa` `EwaldCharge{x,y,z,q}` + `ewald_total_energy(charges,L,tol)` — TIP3P 전하 periodic Coulomb 직결
+- 격자채우기 유틸 무 (grep 무매치) → 신설 대상. TIP3P 단분자 기하·박스충전 유틸 0 → 신설.
+
+### 구현 — `stdlib/chem/solvate/tip3p.hexa` (신규, d4-generic, 325줄)
+- `SolvAtom{x,y,z,q,eps,sigma,mass,is_o}` — 통일 원자 레코드 (O는 LJ+전하, H는 전하만)
+- `tip3p_molecule(ox,oy,oz)` — 닫힌형 기하: O 원점, H₁/H₂ 를 xy-평면에 ±θ/2 대칭배치 ⇒ rOH·∠HOH 정의상 정확
+- `solvate_box(solute, L, target_density, overlap_cut)` — **단일 generic 경로**: 밀도→분자수→nearest n³ 격자→셀중심 O배치→3-사이트 overlap reject→용질 뒤 append. 이름/카운트 하드코딩 0
+- 진단: `box_water_count` · `box_density`(g/cm³) · `box_total_charge` · `min_solute_water_distance`(min-image)
+- 컷오프내 물 분자 전체삭제(rigid 3-site clash) · 모든 거리 입방 min-image
+
+### g5 selftest — `stdlib/chem/solvate/tip3p_selftest.hexa` (10/10 PASS, VERBATIM)
+```
+  ok : a1 r(O-H) exact built=0.9572 def=0.9572 |Δr|=2.22045e-16
+  ok : a2 ∠(H-O-H) exact built=104.52 def=104.52 |Δθ|=1.42109e-14
+  ok : a3 second O-H equal rOH2=0.9572
+  ok : b density ~0.997 g/cm³ (±5%) ρ=1.00417 g/cm³  N=216  rel=0.00719316
+  ok : c total charge Σq=0 Σq=0.0
+  ok : c2 per-molecule Σq=0 molΣq=0.0
+  ok : d overlap removed (min_dist≥cut) min_dist=3.83764 Å  cut=2.4 Å  (waters=208)
+  ok : e1 LJ energy finite E_LJ=-60.2636 kcal/mol (O-sites=216)
+  ok : e2 Coulomb (Ewald) energy finite E_coul=-133.127 (charges=648)
+  ok : e3 total PBC energy finite (no NaN) E_pbc=-193.391
+
+PASS: tip3p 10/10
+```
+
+### 봉인 확정
+- **(a) TIP3P 기하**: 닫힌형 H 배치로 rOH·∠HOH 기계영 정확 (|Δr|=2.2e-16 Å, |Δθ|=1.4e-14°). 두 번째 O-H 도 동일.
+- **(b) 밀도**: L=18.6Å·target 0.997 → nearest 격자 6³=216분자, 실현 밀도 1.00417 g/cm³ = target 대비 +0.72% (±5% 격자충전 허용오차 내). **격자충전 오차이지 버그 아님** — n³ 양자화로 정확히 0.997 을 못 맞추나 6³ 가 가장 가까운 큐브.
+- **(c) 중성**: rigid 물 0.834−2×0.417=0 ⇒ 박스 Σq=0.0 정확 (|Σq|<1e-12, 실제 bit-0). 분자단위도 0.0.
+- **(d) overlap 제거**: 박스중심 중성 2원자 용질 주위 컷오프 2.4Å → 물 216→208 (8분자 삭제), 잔존 최소 용질-물 거리 3.838Å ≥ 2.4 (클래시 0).
+- **(e) PBC 에너지 유한**: 채운 박스의 LJ(O-사이트 216, 기존 lj_system_energy)=−60.26·Coulomb(648전하, 기존 ewald_total_energy)=−133.13·합 −193.39 kcal/mol — 전부 유한·NaN 0 ⇒ 클래시 없는 실계.
+- ⇒ **solvation box = 실계 인프라 봉인. end-to-end ABFE 경로 개통.** 봉인 체인 = R2 force · R3 soft-core · R4 MBAR · R5 HREX · **R6 solvation/TIP3P**. 외부 openmm/openmmtools 의 WaterBox·Modeller 없이 native 용매화가 hexa-native.
+
+### 정직 노트 (d6/@L5)
+- 밀도 강제 0 — 실 측정 1.00417 verbatim. n³ 양자화는 격자충전 본질적 한계(±5% 허용); 연속 packing(jitter+density-match) 은 정밀도 레이어, 후속.
+- 진공→이제 명시 용매박스. TIP3P 는 rigid 가정만 채움(SHAKE constraint 강제는 R7); 본 brick 은 *기하·충전·overlap·중성·PBC유한* 봉인이지 동역학 production 아님 — 명시.
+- 모든 좌표 결정론(격자), 합성·재현가능. 앵커는 TIP3P 정의값(rOH·∠HOH·전하)·물밀도 0.997.
+
+### 산출 (인프라 GAP 인벤토리)
+- stacked PR: hexa-lang **#3088** (R6-L1 tip3p.hexa, base=main) + **#3089** (R6-L2 tip3p_selftest.hexa, base=#3088). 머지=사용자. 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-r6-solvate`.
+- **GAP 인벤토리 갱신**: ✅R2 force · ✅R3 soft-core · ✅R4 MBAR · ✅R5 HREX · ✅**R6 solvation box+TIP3P**. 미봉인 = ① **PME** (ewald recip 의 fft3 가속, O(N²)→O(N log N), 직접합 parity) ② **thermostat** (Langevin/Nosé-Hoover — 현 verlet NVE 진공 → NVT 평형 ⟨KE⟩=3/2NkT) ③ **SHAKE/RATTLE constraint** (rigid 물 결합길이 고정 — 현 TIP3P 는 기하 생성만, 동역학중 강체구속 미적용). **권장 R7 = SHAKE constraint** (force·λ·sampling·estimator·solvation 봉인된 지금, 실 NVT MD 궤적이 rigid 물을 깨지 않으려면 결합구속이 thermostat 보다 선행 — PME 는 효율, SHAKE 는 정확도 필수).
