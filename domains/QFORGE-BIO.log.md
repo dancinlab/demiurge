@@ -449,3 +449,32 @@ PME == direct Ewald to B-spline discretisation; FFT-accelerated reciprocal sum S
 
 ### 산출
 - stacked PR: hexa-lang **#3101** (pme.hexa +422 · pme_selftest.hexa +185, R10 변경=이 2파일만). base=`main` (R9 가 머지됐으나 bio R2~R9 스택이 아직 main 미착륙 → diff 에 미착륙 ancestor 동반, 스택 착륙시 PME 2파일로 collapse). 머지=사용자. 0-POD·$0(local g5). ISOLATED branch `qforge-bio-r10-pme`.
+
+## R11 — 실 biomolecular FF 로더 (AMBER/GAFF) · 2026-06-13
+
+물리스택 100% 완성(R10) 후, 정량 parity 의 유일 입력 언블록 = 실 FF 파라미터. toy LJ+Coulomb → AMBER/GAFF 실 분자 파라미터. `stdlib/chem/ff/amber.hexa`(신규, d4-generic): literature 파라미터 DB(TIP3P Jorgensen 1983 · GAFF c3/hc/oh/ho Wang 2004) + prmtop 이 구동하는 표준 AMBER 매핑(Rmin/2↔σ · ε/Rmin↔A/B coef · A/B→ε/σ · Lorentz-Berthelot combining · 대칭 type-pair bonded lookup → 기존 `BondTerm`/`AngleTerm`/LJ/charge 항). 실 FF 숫자가 기존 물리 항에 흘러들어 literature 레퍼런스를 재현.
+
+### selftest VERBATIM (`hexa run stdlib/chem/ff/amber_selftest.hexa` · 0-pod · $0)
+```
+  ok : a_parse_map_real_params   q_OW=-0.834 q_HW=0.417 σ_OW=3.15057 ε_OW=0.1521 c3-hc k=337.3 r0=1.0969 (max|Δ|<1e-6)
+  ok : b1_water_equilibrium_bonded_zero   U_bonded(eq geom) = 0.0 (ref 0, analytic)
+  ok : b2_coulomb_pair_known   U_coul(-0.834,+0.417 @2Å)=-57.7422 kcal/mol (ref -57.7422, k=332.0637)
+  ok : b3_lj_welldepth_known   U_LJ(OW-OW @Rmin)=-0.1521 (ref -ε=-0.1521)
+  ok : c1_bond_halfk_dr2   U=0.06746 ref=½·337.3·(0.02)²=0.06746
+  ok : c2_angle_halfk_dtheta2   U=0.0492875 ref=½·39.43·(0.05)²=0.0492875
+  ok : d1_lorentz_berthelot   σ_ij=3.27512 (=(σ_OW+σ_c3)/2) ε_ij=0.128995 (=√(ε_OW·ε_c3))
+  ok : d2_acoef_bcoef_roundtrip   A=581923 B=595.014 → ε=0.1521 σ=3.15057 (|Δε|=0.0 |Δσ|=4.44089e-16)
+  ok : e1_methane_neutral   Σq(CH4)=-6.93889e-18 |Σq−round|=6.93889e-18
+  ok : e2_water_neutral   Σq(H2O)=0.0 |Σq−round|=0.0
+ALL PASS — stdlib/chem/ff AMBER/GAFF real-FF loader 10/10
+```
+
+### 봉인 판정 (d6/@L5 — 정직)
+- **scope = literature 테이블 + 표준 매핑, prmtop 전체 파일 파서 아님** (R11 charter 옵션 ii). 입증한 것: 실 FF 숫자가 기존 `bonded.hexa`/`lennard_jones.hexa`/charge 항에 흘러들어 literature 레퍼런스 재현(Coulomb 상수 332.0637 · A/B↔ε/σ round-trip 4.4e-16 · TIP3P σ 1e-3 내). d4-generic — atom type·분자·파라미터 전부 DATA, 분자 추가=테이블 편집만.
+- **정량 parity 까지 진짜 남은 것 = LONGER SAMPLING 뿐**. 물리스택(R2~R10) + 실FF 입력(R11) 둘 다 완성. SENOLYX −16.64 경로 = R11 실 FF 를 `abfe_demo.hexa` 풀체인에 실 ligand topology + 충분한 HREX sweep(nsw≫3000)으로 주입. 물리·입력 gap 0, 남은건 walltime.
+
+### 인터프리터 함정 (d8 handoff)
+- **cross-module float-literal 정밀도 gap(~4e-6)**: `use` 모듈 fn 본문 내 float 리터럴이 main 파일 동일 리터럴 대비 정밀도 저하. repro: 모듈 `pub fn conv(r)=(2.0*r)/1.122462048309373` 가 in-main 동일식과 `conv(1.7682)`서 4.22683e-06 차. module-const vs module-inline-literal 은 정확 일치 ⇒ cross-module 리터럴 lowering 문제. 우회: 동일정밀도 in-module 비교 + published TIP3P σ 1e-3 물리 앵커. `sidecar handoff add hexa-lang` id 043569f7.
+
+### 산출
+- stacked PR: hexa-lang **#3104** (amber.hexa + amber_selftest.hexa +536, base=`qforge-bio-r10-pme`). pr-cycle 훅이 stacked leaf 를 R10 브랜치로 self-merge(squash 44c881f40 on R10 575bbd4c6). R10 #3101 + R2~R10 스택은 사용자 main 머지 대기. 0-POD·$0. ISOLATED branch `qforge-bio-r11-ff` (create→commit→push→remove).
