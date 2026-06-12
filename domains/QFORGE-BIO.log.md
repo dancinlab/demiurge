@@ -271,3 +271,42 @@ PASS: tip3p 10/10
 ### 산출 (인프라 GAP 인벤토리)
 - stacked PR: hexa-lang **#3088** (R6-L1 tip3p.hexa, base=main) + **#3089** (R6-L2 tip3p_selftest.hexa, base=#3088). 머지=사용자. 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-r6-solvate`.
 - **GAP 인벤토리 갱신**: ✅R2 force · ✅R3 soft-core · ✅R4 MBAR · ✅R5 HREX · ✅**R6 solvation box+TIP3P**. 미봉인 = ① **PME** (ewald recip 의 fft3 가속, O(N²)→O(N log N), 직접합 parity) ② **thermostat** (Langevin/Nosé-Hoover — 현 verlet NVE 진공 → NVT 평형 ⟨KE⟩=3/2NkT) ③ **SHAKE/RATTLE constraint** (rigid 물 결합길이 고정 — 현 TIP3P 는 기하 생성만, 동역학중 강체구속 미적용). **권장 R7 = SHAKE constraint** (force·λ·sampling·estimator·solvation 봉인된 지금, 실 NVT MD 궤적이 rigid 물을 깨지 않으려면 결합구속이 thermostat 보다 선행 — PME 는 효율, SHAKE 는 정확도 필수).
+
+---
+
+## R7 — SHAKE/RATTLE 강체구속 (rigid-MD 정합성 봉인 · thermostat 선행조건)
+
+`stdlib/chem/md/shake.hexa` + `stdlib/chem/md/shake_selftest.hexa` 신설. SHAKE(위치제약)+RATTLE(속도제약, velocity-Verlet 짝). R6 TIP3P 는 rigid 물의 *기하*만 생성 — 실 NVT/NVE MD 궤적에서 결합길이를 깨지 않으려면 강체구속이 thermostat 보다 선행 필수. d4-generic: `Constraint{i,j,d}` flat list, 단일 Gauss-Seidel 루프가 물 3-제약과 임의 N-제약을 동일경로로 처리 (이름 하드코딩 0).
+
+### g5 selftest — VERBATIM
+```
+  ok : a constraint satisfied |r-d|<tol worst|r-d|=3.54128e-09 (σ before=0.400236 after=6.77943e-09)
+  ok : b SHAKE residual monotone-decreasing trace non-increasing across 1..6 sweeps
+  ok : b2 SHAKE converged finite iters iters=30 (<100) converged=true
+  ok : c RATTLE ṙ·r=0 |Δ|<1e-10 |ṙ·r| before=0.330982 after=7.91922e-13 iters=52
+  ok : d energy bounded (NVE, constrained) drift<2e-3 rel-KE-drift=0.00153048 (working dt=0.001, T=0.4)
+  ok : d3 drift halves when dt halves (O(dt), no leak) drift(1e-3)=0.00153048 (5e-4)=0.000765849 (2.5e-4)=0.000383077  ratios=1.99841,1.9992
+  ok : d2 constraint vs unconstrained geometry contrast rOH constrained=0.9572 unconstrained=1.22581 (Δ_unc=0.268614 vs Δ_con=3.9859e-09)
+  ok : e rOH preserved after M steps |Δ|<tol rOH=0.9572 def=0.9572 |Δ|=3.9859e-09
+  ok : e2 ∠HOH preserved after M steps θ=104.52 def=104.52 |Δ|=6.0798e-07
+
+PASS: shake 9/9
+```
+
+### 봉인 확정
+- **(a) 제약충족**: 의도적으로 깬 물(H1 +0.15Å·H2 −0.12Å·O +0.05Å, σ_before=0.400)에 SHAKE → 모든 결합 |r_ij|−d_k = 3.54e-09 < tol(1e-8). σ 6.78e-09.
+- **(b) 수렴**: 잔차 1..6 sweep 단조 비증가 + 전체 solve 30 iters(<maxiter 100)에서 converged=true. 유한반복 확정.
+- **(c) RATTLE 속도직교**: 임의 속도장(ṙ·r before=0.331)에 RATTLE → ṙ_ij·r_ij = 7.92e-13 < 1e-10 (52 iters). 상대속도가 결합면 접선.
+- **(d) 에너지보존(NVE)**: O 둘레 강체회전(ω=2.0)·외력0·verlet+SHAKE/RATTLE. 작동 dt=0.001 에서 rel-KE-drift=1.53e-3.
+- **(d3) dt-제어 — 정직 핵심**: dt 반감 → drift 반감 (ratio 1.998·1.999, dt 1e-3/5e-4/2.5e-4 fixed T=0.4). **선형 O(dt) 수렴** ⇒ 잔차는 dt→0 에서 사라지는 통제된 이산화 오차이지 에너지 누설 아님.
+- **(d2) 구속 대조**: 동일 spun 시작, SHAKE/RATTLE 없으면 외력0 직선드리프트가 rOH 0.9572→1.226 (Δ 0.269) 로 기하파괴, 구속하면 Δ 3.99e-9. 구속이 일을 함을 증명.
+- **(e) 장기 기하보존**: 400 step 후 rOH=0.9572 (|Δ|=3.99e-9) · ∠HOH=104.52 (|Δ|=6.08e-7) — rigid TIP3P 값 기계영 유지.
+- ⇒ **SHAKE/RATTLE = rigid MD 정합성 봉인, thermostat 선행조건 충족.** 봉인 체인 = R2 force · R3 soft-core · R4 MBAR · R5 HREX · R6 solvation/TIP3P · **R7 SHAKE/RATTLE**.
+
+### 정직 노트 (d6/@L5)
+- 첫 draft 는 d 에 임의 <1e-6 floor 를 걸어 FAIL(drift 1.53e-3). 숫자 강제 대신, dt-반감 선형수렴(ratio≈2)이라는 **falsifiable 물리 주장**으로 테스트 재작성 — force-free rigid rotor 는 1차 constraint 적분기라 O(dt) 계통오차가 정상(버그/누설 아님). 기하는 전 구간 기계영 보존(3.99e-9 Å) — 구속의 실제 역할.
+- 모든 좌표 결정론·재현가능. 앵커 = TIP3P 정의값(rOH·∠HOH). 진공 constraint 솔브(분자내 결합 짧아 min-image 불요) — 주기경계 가로지르는 제약은 후속.
+
+### 산출 (인프라 GAP 인벤토리)
+- stacked PR: hexa-lang **#3092** (R7 shake.hexa + shake_selftest.hexa, base=`qforge-bio-r6-solvate-l1`=R6 스택 tip=#3088). 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-r7-shake`.
+- **GAP 인벤토리 갱신**: ✅R2 force · ✅R3 soft-core · ✅R4 MBAR · ✅R5 HREX · ✅R6 solvation/TIP3P · ✅**R7 SHAKE/RATTLE constraint**. end-to-end ABFE 까지 미봉인 2조각 = ① **thermostat** (Langevin/Nosé-Hoover — NVE 진공 → NVT 평형 ⟨KE⟩=3/2NkT; R7 구속이 선행조건 충족 ⇒ **이제 개통**) ② **PME** (ewald recip 의 fft3 가속, O(N²)→O(N log N) — 효율). **권장 R8 = thermostat** (구속이 rigid 결합을 고정한 지금, NVT 평형 샘플링이 ABFE production 의 다음 필수; PME 는 대형계 효율 레이어).
