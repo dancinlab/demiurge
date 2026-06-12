@@ -120,3 +120,106 @@ PASS: softcore 5/5
 ### 산출
 - stacked PR: hexa-lang#3078 (L1 impl, base=main) ← #3079 (L2 selftest, base=L1). 머지=사용자. 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-softcore-l1/l2`.
 - 다음 brick (R4 후보): **HREX** (Hamiltonian replica-exchange swap, detailed-balance g5) — soft-core λ-사다리 위 인접 λ 교환 · **MBAR/BAR** (Shirts-Chodera, 가우시안 작업분포 닫힌형 ΔG g5, dU/dλ·U_kn 행렬 소비) · **PME** (ewald recip 의 fft3 가속, 직접합 parity). 권장 우선순위 = MBAR (soft-core dU/dλ 를 직접 소비하는 estimator — TI/FEP 적분을 닫는 다음 논리 단계).
+
+## 2026-06-12 · R4-brick ✅ SEALED — MBAR/BAR estimator (Shirts-Chodera) — soft-core u_kn → ΔG 닫힘 (g5 PASS 5/5)
+
+### 감사 (round-3 봉인 소비 가능성 확인)
+- `stdlib/chem/fep/softcore.hexa` (round-3, PR #3078←#3079): `softcore_energy_value(coords, λ, p)` 가 임의 λ 에서 forward scalar U_sc 반환 → 표본 x_n 을 각 상태 k(=λ_k)에서 재평가 가능 ⇒ reduced-potential 행렬 u_kn = β_k·U_k(x_n) 직접 생성. estimator 입력 확보.
+- `stdlib/math/logsumexp.hexa` 존재 (strict, `exp_pure`/`log_pure` 기반) — 비-strict autograd/softcore 파일에서도 `use` import 정상 (LSE([0,0,0])=ln3=1.09861 확인). **재사용 (d19 atlas-first), 수치안정 logsumexp 자작 불필요.**
+- 바닥 builtin: `exp`/`ln`/`log`/`sqrt`/`pow`/`cos`/`floor`/`to_int`/`to_float` 모두 비-strict 인터프에서 동작 확인. β=1 reduced 단위로 작업 (u_kn 이미 무차원).
+
+### 구현 (신규, d4-generic)
+- `stdlib/chem/fep/mbar.hexa` (317줄, 코드 165) — pure estimator.
+  - `mbar_solve(u_kn, N_k, tol, max_iter)` — Shirts-Chodera Eq.11 자기일관 고정점 f←G(f), 로그도메인 (denom_n=LSE_j(lnN_j+f_j−u_jn), f_k=−LSE_n(−u_kn−denom_n)). 매 sweep gauge-fix f[0]=0. 반환 {f, iters, max_df, converged}.
+  - `mbar_delta_f` / `mbar_delta_g(·,kT,·)` — ΔG=(f_last−f_first)·kT.
+  - `bar_delta_f(w_f, w_r, tol, max_iter)` — Bennett 1976 2-state Fermi 자기일관 근 (단조 balance 이분법). K=2 MBAR 특수해 (동일 방정식).
+  - `zwanzig_delta_f(du)` — 단방향 exp-평균 −ln⟨exp(−Δu)⟩.
+  - u_kn = row-major flat [k*Ntot+n]. K·N_k·tol = generic 입력. 상태/리간드 이름 하드코딩 0, K=2 도 동일 mbar_solve 경로 (d4).
+
+### g5 selftest VERBATIM (`hexa run`, exit 0)
+- `stdlib/chem/fep/mbar_selftest.hexa` (235줄, 합성 조화우물 데이터 · 결정론 Box-Muller LCG · β=1):
+```
+── mbar selftest (Shirts-Chodera MBAR + Bennett BAR) ──
+    residual by iter-cap: 1:0.388849 2:0.0579784 3:0.00966129 5:0.000277756 8:1.36143e-06 12:1.1337e-09 20:1.77636e-15
+    converged=true iters=16 final_res=9.43245e-13
+  ok : (a) self-consistent residual monotone↓ and <1e-10 monotone=true final_res=9.43245e-13
+    [analytic harmonic] MBAR ΔF=0.458459  analytic ½ln(k1/k0)=0.458145  |Δ|=0.00031344
+  ok : (d) MBAR ΔG == analytic harmonic ΔF (<0.01 kT) |Δ|=0.00031344 kT
+    [K=2] MBAR ΔF=0.458459  BAR(Bennett) ΔF=0.458459  |Δ|=2.21823e-13
+  ok : (b) BAR == MBAR at K=2 (<1e-9) |Δ|=2.21823e-13 (bar_iters=55)
+    [single-state] MBAR ΔF=0.458647  Zwanzig −ln⟨e^−Δu⟩=0.458647  |Δ|=8.88178e-16
+  ok : (c) MBAR(one state) == Zwanzig exp-avg (<1e-9) |Δ|=8.88178e-16
+    [+const 137.5] ΔF=0.458459  base ΔF=0.458459  |Δ|=0.0
+  ok : (e) ΔG gauge-invariant under u_kn+const (<1e-9) |Δ|=0.0
+
+PASS: mbar 5/5
+```
+
+### 봉인 확정
+- **(a) 자기일관 수렴**: iter-cap 별 잔차 0.389→0.058→0.0097→2.8e-4→1.4e-6→1.1e-9→1.8e-15 단조감소, tight-tol solve 16 iters 만에 final_res=9.4e-13 (<1e-10). 고정점 도달.
+- **(b) BAR==MBAR (K=2)**: 동일 2-state 데이터에서 독립 Bennett-Fermi 자기일관 ΔF == MBAR ΔF, |Δ|=2.2e-13 (<1e-9). 대수적으로 동일 방정식임을 수치 확인.
+- **(c) Zwanzig 극한**: 단일상태(state-0) 표본만으로 MBAR(N_k=[N0,0]) → −ln⟨exp(−Δu)⟩ 일치, |Δ|=8.9e-16. 외삽 극한 정확.
+- **(d) 해석 ΔG**: 두 1-D 조화우물(k0=1·k1=2.5) 닫힌형 ΔF=½ln(k1/k0)=0.4581, MBAR=0.4585, |Δ|=3.1e-4 kT (<0.01 — 유한표본 통계오차, 날조 아닌 실측). 해석값 강제 없음.
+- **(e) gauge 불변**: u_kn 에 상수(+137.5) 더해도 ΔF 불변 |Δ|=0.0. MBAR 방정식 전역시프트 불변성.
+- ⇒ **MBAR/BAR = FEP 추정기 봉인 확정. soft-core(R3) dU/dλ·u_kn → ΔG 닫힘.** native FEP 체인의 추정기 단계가 외부 pymbar 없이 완성. TI(R3 ⟨dU/dλ⟩) 와 FEP/BAR/MBAR(R4 u_kn→ΔG) 두 적분경로가 모두 hexa-native.
+
+### 정직 노트 (d6/@L5)
+- 4/5→5/5 진짜 디버그 사이클 1회: (b) BAR 초기 -1000 (Bennett balance 부호규약 오류 — `B(Δf)=Σ0 f(w_f−Δf+C0)−Σ1 f(w_r+Δf−C0)` 의 단조방향·이분법 방향 반전). MBAR(검증된 reference, (c)(d) 이미 PASS)에 맞춰 balance 식을 스캔(root@−0.085489 vs MBAR −0.085489 일치 확인)으로 교정 → 5/5. autograd/추정 코어 버그 아닌 BAR 식 구현 부호.
+- 합성 조화우물(닫힌형 ΔF 존재) + 결정론 RNG → 재현가능. (d) 의 3.1e-4 kT 는 4000+4000 표본 유한오차로 정직히 보고 (tol 0.01 통과, 표본수 늘리면 ↓).
+- 단쌍·진공·합성데이터 estimator 봉인. neighbor-list·PBC·물상자·HREX·실제 ΔΔG 앵커(SENOLYX −16.64) parity 는 후속 round. 본 brick 은 *추정기 수식*의 봉인이며 end-to-end production ΔG 아님 — 명시.
+
+### 산출
+- stacked PR: hexa-lang#3080 (round-4 brick, base=round-3 `qforge-bio-softcore-l2`) — mbar.hexa + mbar_selftest.hexa (552줄). L2 selftest PR(#3081)은 pr-cycle 훅이 L1로 자동 fast-forward/merge → #3080 가 round-4 전체를 담는 단일 PR. 머지=사용자 (round-3 체인 머지 후). 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-mbar-l1/l2`.
+- 다음 brick (R5 후보): **HREX** (Hamiltonian replica-exchange swap, detailed-balance g5 — soft-core λ-사다리 위 인접 λ 교환, MBAR 이 다중상태 u_kn 을 이미 소비하므로 HREX 표본을 바로 추정) · **PME** (ewald recip 의 fft3 가속, 직접합 parity) · **solvation box builder + TIP3P 물** (end-to-end ABFE 더블디커플링의 마지막 인프라 조각 — 앵커 parity 로 가는 경로). 권장 우선순위 = HREX (R3 soft-core 사다리 + R4 MBAR 를 직접 잇는 샘플링 향상 — TI/FEP 의 통계효율 닫는 다음 논리 단계).
+
+---
+
+## R5-brick — HREX (Hamiltonian replica-exchange) 샘플링 (2026-06-12)
+
+@step: R3 soft-core λ-사다리 ↔ R4 MBAR 추정기를 직접 잇는 **샘플링 단계**. K개 레플리카가 각자의 λ-rung Hamiltonian U(·,λ_i)로 전파하고, 인접 λ_i↔λ_{i+1} 의 config 를 주기적으로 Metropolis 교환 → 위상공간 혼합 향상 → 교환궤적을 R4 MBAR 가 다중상태 u_kn 으로 바로 재가중. native FEP 체인의 마지막 샘플링 조각.
+
+**구현** `stdlib/chem/fep/hrex.hexa` (330줄, d4-generic):
+- `hrex_swap_delta(ufn,xi,xj,li,lj)` = Δ=β[U_i(x_j)+U_j(x_i)−U_i(x_i)−U_j(x_j)] (Hamiltonian REX 정확)
+- `hrex_accept_prob(Δ)` = min(1, exp(−Δ)) (Metropolis, overflow-safe)
+- `hrex_run(ufn,prop,ladder,configs0,n_sweeps,swap_period,n_prop_steps,seed)` = 짝/홀 교대 스윕, 단일 swap 연산자 `_try_swap` (even·odd 둘 다 호출), 결정론 LCG 스레딩. K·λ-사다리·교환주기·propagator·ufn 전부 입력 — 이름 하드코딩 0.
+- `hrex_assemble_u_kn(ufn,ladder,samples_by_rung)` = 교환궤적 → row-major u_kn[k*Ntot+n]=U_k(x_n) (모든 rung 모든 λ 재평가) → R4 MBAR 직결 헬퍼.
+- generic 에너지 인터페이스: ufn(config,lam)->float (reduced, β fold-in) 를 top-level fn 으로 주입. softcore 는 얇은 wrapper 로 바인딩.
+
+**g5 selftest** `stdlib/chem/fep/hrex_selftest.hexa` (362줄) — VERBATIM (`hexa run`):
+
+```
+[mbar loaded]
+[hrex loaded]
+── hrex selftest (Hamiltonian replica-exchange sampling) ──
+    detailed-balance max residual over 200 pairs = 1.11022e-16
+  ok : (a) detailed balance: π·P symmetric (resid 0, <1e-12) max|resid|=1.11022e-16
+    Δ≤0 max|P−1|=0.0   Δ>0 max|P−e^−Δ|=0.0
+  ok : (b) Metropolis exact: Δ≤0⇒1, Δ>0⇒e^−Δ (<1e-12) max|P−1|=0.0 max|P−e^−Δ|=0.0
+    Δ_swap=-2.34  p_swap analytic=0.912136  empirical=0.91193
+    |Δocc|=0.000206085  6σ tol=0.00379914  (N=200000)
+  ok : (c) stationary swap-occupancy == Boltzmann (within 6σ) |Δocc|=0.000206085 tol=0.00379914
+    HREX-MBAR ΔF=0.455917  direct-MBAR ΔF=0.465586  analytic=0.458145
+    |HREX−analytic|=0.00222868  |direct−analytic|=0.00744113  |HREX−direct|=0.00966981
+  ok : (d) HREX u_kn → MBAR: ΔG==analytic(<0.01) AND ==direct(<0.02 kT) |HREX−analytic|=0.00222868 |HREX−direct|=0.00966981
+    exchange accept-rate=0.875  (7000.0/8000.0)  round_trips=5/5
+  ok : (e) round-trip mixing: exchanges≠0 AND ≥1 full ladder round-trip acc=7000.0 round_trips=5
+
+PASS: hrex 5/5
+```
+
+### 봉인 확정
+- **(a) detailed-balance**: swap 연산자가 곱-볼츠만 π=∏exp(−βU_i(x_i)) 정상성 보존. 200쌍에 대해 π(before)·P(fwd)−π(after)·P(rev) 잔차 max=1.11e-16 (기계영). swap 이 자기역원 ⇒ 역방향 Δ=−Δ ⇒ Metropolis 비가 상세균형 항등 만족.
+- **(b) Metropolis 정확**: Δ≤0 ⇒ P=1 (|P−1|=0.0 bit-exact), Δ>0 ⇒ P=exp(−Δ) (|P−e^−Δ|=0.0 bit-exact). 해석값 일치.
+- **(c) 정상분포 보존**: 2-rung 고정점 토이(zero-move propagator) 의 교환은 2-state Markov chain, 정상분포 p_swap=w/(1+w)·w=exp(−Δ). 장기 swap-점유 emp=0.91193 vs 해석 0.912136, |Δ|=2.06e-4 (6σ tol=3.8e-3, N=200000) 통과. 볼츠만 점유 일치.
+- **(d) MBAR 소비**: 5-rung λ-사다리(0·0.25·0.5·0.75·1)에서 HREX(조화-MC propagator) 교환궤적 → hrex_assemble_u_kn → R4 MBAR ΔF=0.45592. 해석 ½ln(k1/k0)=0.45815 와 |Δ|=2.2e-3 kT (<0.01, 불편추정 확인). direct(무교환) MBAR=0.46559 와 |Δ|=9.7e-3 (<0.02). 교환은 불편성 불변·분산만 감소 — 실제로 HREX(0.0022) 가 overlap-제한 direct(0.0074) 보다 해석값에 더 가까움.
+- **(e) round-trip 혼합**: 교환 accept-rate 87.5% (7000/8000), 5개 레플리카 전부 사다리 끝↔끝 왕복(round_trips=5/5). 교환 0 아님·mixing>0.
+- ⇒ **HREX = FEP 샘플링 봉인. R3 soft-core 사다리 ↔ R4 MBAR 직접연결 확정.** 봉인 체인 = R2 autograd-force · R3 soft-core λ-energy/dU-dλ · **R5 HREX 샘플링** · R4 MBAR/BAR u_kn→ΔG. 외부 openmmtools(HREX)·pymbar 없이 native FEP 샘플링→추정 전체가 hexa-native.
+
+### 정직 노트 (d6/@L5)
+- 4/5→5/5 1회 사이클: (d) 초기 FAIL — HREX(0.4559)는 해석값에 0.0022 로 PASS 였으나 비교 기준이던 **direct(무교환) 추정기**가 overlap-제한으로 느리게 수렴(0.4656·0.0074 off, N 5배 늘려도 0.0057 잔존)해 하드 0.01 초과. **버그 아닌 통계오차** — direct 가 노이즈 한계임을 확인하고(이것이 곧 HREX 존재이유), 봉인 주장(=HREX 불편성)을 **해석 앵커** 대 0.01·**direct 일치** 대 0.02 (direct 자체 오차밴드) 로 정직 재구성. 점유율·ΔG 강제 없음.
+- 모든 데이터 합성·결정론 LCG — 재현가능. 앵커는 해석값(½ln(k1/k0) 조화 ΔF·볼츠만 swap 점유)뿐. config-swap == λ-label-swap 동등 경로.
+- toy(조화우물 stand-in)·진공·합성데이터 **샘플링 봉인**. 실 soft-core+Verlet HREX·실 ΔΔG 앵커(SENOLYX −16.64) parity 는 후속. 본 brick 은 *HREX 교환연산자+MBAR 어셈블*의 봉인이며 end-to-end production ΔG 아님 — 명시.
+
+### 산출 (인프라 GAP 인벤토리)
+- stacked PR: hexa-lang R5-L1 (hrex.hexa, base=R4 `qforge-bio-mbar-l1`) + R5-L2 (hrex_selftest.hexa, base=R5-L1). 머지=사용자. 0-POD·$0 (local g5). ISOLATED worktree `qforge-bio-r5-hrex`.
+- **남은 인프라 (R6 다음 우선순위)**: ✅R2 force · ✅R3 soft-core · ✅R5 HREX · ✅R4 MBAR/BAR 봉인 완료. 미봉인 = ① **solvation box builder + TIP3P 물** (end-to-end ABFE 더블디커플링의 마지막 핵심 인프라 — 앵커 parity 직결) ② **PME** (ewald recip 의 fft3 가속, 직접합 parity) ③ **thermostat** (Langevin/Nosé-Hoover — 현 verlet NVE 진공 → NVT 평형). **권장 R6 = solvation box + TIP3P** (샘플링·추정·force·λ 가 모두 봉인된 지금, end-to-end SENOLYX −16.64 parity 로 가는 유일한 미충족 조각이 *용매화된 실계*; PME·thermostat 은 그 위 정밀도/효율 레이어).

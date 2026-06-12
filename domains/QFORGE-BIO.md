@@ -34,8 +34,8 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 - ✅R3 soft-core λ-coupling (Beutler) — `stdlib/chem/fep/softcore.hexa` (g5 PASS) · 🟡 λ-schedule · 하이브리드 토폴로지
 - PME (Ewald 의 FFT 가속판 — 현 ewald 는 O(N²) 직접합)
 - Langevin/Nosé-Hoover thermostat (현 verlet 은 NVE 진공)
-- HREX (Hamiltonian replica exchange) swap
-- MBAR/BAR estimator (Shirts-Chodera)
+- ✅R5 HREX (Hamiltonian replica exchange) swap — `stdlib/chem/fep/hrex.hexa` (g5 PASS 5/5) · R3 ladder ↔ R4 MBAR 직접연결
+- ✅R4 MBAR/BAR estimator (Shirts-Chodera) — `stdlib/chem/fep/mbar.hexa` (g5 PASS 5/5)
 - neighbor list / cell list · TIP3P 물 · solvation box builder
 - QM-derived FF (GFN2/DFT 전하·토션 refit · 거대고리 인지)
 
@@ -43,10 +43,11 @@ SENOLYX RBFE 캠페인(2026-06-06~07)이 외부 스택 3대 실패를 실증:
 - [x] R1: native FEP/MD 최소경로 설계 + lit-grounding + 첫 verify-able brick 명시 (이 라운드, 설계만)
 - [x] R2-brick: LJ+Coulomb 힘 = autograd 역모드 vs 해석적/finite-diff < 1e-6 (g5) — 첫 native brick ✅ PASS 5/5 (a=1.78e-15·b=2.46e-9; PR hexa-lang#3076)
 - [x] R3-brick: soft-core λ-energy 닫힌형 (Beutler 1994) — endpoint 비특이성 + dU/dλ autograd g5 ✅ PASS 5/5 (λ=1 회복 |ΔU|=0·dU/dλ ag==an 3.55e-15; PR hexa-lang#3078←#3079)
-- [ ] R2: MBAR 해석적 2-state(=BAR) 검증 — 가우시안 작업분포 닫힌형 ΔG g5
+- [x] R4-brick: MBAR/BAR estimator (Shirts-Chodera 2008) — soft-core u_kn → ΔG 닫힘. g5 ✅ PASS 5/5 (자기일관 res 9.4e-13 · BAR==MBAR(K=2) 2.2e-13 · Zwanzig 8.9e-16 · 해석 ½ln(k1/k0) 3.1e-4 kT · gauge 0.0; PR hexa-lang#3080)
 - [ ] R3: PME = ewald recip 의 fft3 가속 — 직접합 vs FFT < 1e-8 parity g5
 - [ ] R3: Langevin integrator — 평형 ⟨KE⟩ = (3/2)NkT equipartition g5
-- [ ] R4: HREX swap detailed-balance + end-to-end ABFE re-derive SENOLYX 앵커(−16.64) parity
+- [x] R5-brick: HREX (Hamiltonian replica-exchange) 샘플링 — 인접 λ-rung config swap, Metropolis P=min(1,e^−Δ). g5 ✅ PASS 5/5 (detailed-balance resid 1.11e-16 · Metropolis bit-exact 0.0 · 정상분포 swap-점유 0.91193 vs 해석 0.912136 within 6σ · MBAR소비 |HREX−analytic|=2.2e-3 kT·|HREX−direct|=9.7e-3 · 혼합 accept 87.5%·5/5 round-trip; PR hexa-lang#R5)
+- [ ] R4-next: end-to-end ABFE re-derive SENOLYX 앵커(−16.64) parity (HREX+softcore+MBAR 풀체인)
 - [ ] R5: QM-derived FF (GFN2 전하 refit) — R11 거대고리 2.2× 과대전개 해소 측정
 
 ## verify-ref / falsifier
