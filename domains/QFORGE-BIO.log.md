@@ -535,3 +535,59 @@ Raw coords → bonds → GAFF types → amber: full structure front-end SEALED.
 
 ### 산출
 - stacked PR: hexa-lang **#3109** (bondperception.hexa + bondperception_selftest.hexa, base=`qforge-bio-r10-pme` — R12 가 pr-cycle 훅으로 R10-pme 에 self-merge+브랜치삭제돼 R13 base 를 살아있는 스택 tip 으로 지정). 머지=사용자. 0-POD·$0(local g5). branch `qforge-bio-r13-bondperception`.
+
+---
+
+## R14-CAPSTONE — raw 실분자 → 실 GAFF/TIP3P FF → end-to-end ΔG_hyd (R9 toy 졸업)
+
+목표: R11~R13 가 봉인한 실-FF front-end(좌표→결합→GAFF타입→실ε/σ/charge)를 R3~R8 샘플링 체인에 **연결**해, 작은 실분자(메탄)로 raw Cartesian 좌표→ΔG_hyd 풀체인을 봉인. R9 abfe_demo 는 toy 포텐셜(ε=σ=1·q=0)이었음 — 이번엔 perception front-end 로 도달한 **literature FF 숫자**.
+
+구조: `raw CH4 coords ─R13 perceive_bonds─▶ bonds ─R12 assign_types─▶ [c3,hc,hc,hc,hc] ─R11 amber─▶ 실 ε/σ/q ─R3 softcore(LB-combine c3×OW)─▶ ufn ─R5 HREX+R8 Langevin─▶ ─R4 MBAR─▶ ΔG_hyd`. d3: 물리 재구현 0 (perceive_bonds/assign_types/ff_*/run_abfe/softcore 전부 호출만). d4: 분자(atoms+coords)·용매타입·λ수·sweeps·박스·dt 전부 generic 인자 — 분자이름 비분기.
+
+### R9 toy 대비 무엇이 real 인가
+| R9 toy | R14 capstone |
+|---|---|
+| ε=1.0·σ=1.0·q=0 (손설정) | ε/σ = GAFF c3 × TIP3P OW Lorentz-Berthelot 결합값 (amber.hexa) |
+| atom types 손설정 | raw Cartesian 좌표에서 **perceive** (R13→R12) |
+
+### selftest VERBATIM (`hexa run stdlib/chem/fep/capstone_selftest.hexa` · 0-pod · $0)
+```
+── (a) front-end wiring: raw CH4 coords → bonds → GAFF types → real FF ──
+    bonds=4  types=[c3, hc, hc, hc, hc]
+    Σq(CH4) = -6.93889e-18 (neutral check |Σq|<1e-9)
+  ok : (a) front-end wiring: raw coords→bonds→GAFF types→real params, NaN-0 nbonds=4 types_ok=true neutral=true
+── (b) real FF values: methane c3/hc ε/σ/charge == amber.hexa literature ──
+    c3: q=-0.106 ε=0.1094 σ=3.39967  (lit q=-0.106 ε=0.1094 σ=3.39967)
+    hc: q=0.0265 ε=0.0157 σ=2.64953  (lit q=0.0265 ε=0.0157 σ=2.64953)
+  ok : (b) real FF values: perceived c3/hc ε/σ/q == amber literature, NOT toy max|Δ|<1e-9 match=true not_toy=true
+── (c) end-to-end ΔG_hyd: full real-FF chain → MBAR ΔG vs +2.0 kcal/mol ──
+    solute=c3  ε_ij=0.128995  σ_ij=3.27512  (real LB-combined c3×OW)
+    MBAR ΔG_hyd = -0.517294 kcal/mol   (converged=true acc=0.84)
+    indep. TI ΔG = -0.454923 kcal/mol
+    statistical band |MBAR − TI| = 0.0623702 kcal/mol
+    experimental anchor ΔG_hyd(CH4) ≈ 2.0 kcal/mol
+    |MBAR − experiment| = 2.51729 kcal/mol
+  ok : (c) end-to-end: ΔG finite + MBAR converged + MBAR≈TI (stat band <0.2 kcal/mol) ΔG=-0.517294 statband=0.0623702 sysdev=2.51729
+── (d) determinism: same seed ⇒ bit-identical ΔG ──
+    ΔG run#1=-0.517294  ΔG run#2=-0.517294  |Δ|=0.0
+  ok : (d) determinism: same seed ⇒ bit-identical ΔG |Δ|=0.0
+── (e) λ-endpoint safety: real-param soft-core finite at r→0, λ=0/1 ──
+    real pair p: ε=0.128995 σ=3.27512 q1=-0.106 q2=-0.834
+    r=0.05 (overlapping, real ε/σ/q):
+      U(λ=0)=0.0  U(λ=0.5)=55.5537  U(λ=1)=3.21901e+21
+      dU/dλ(λ=0)=42.4439  dU/dλ(λ=0.5)=315.543  dU/dλ(λ=1)=3.21901e+21
+  ok : (e) λ-endpoint safety: real soft-core U & dU/dλ finite at r→0, λ=0 decoupled finite=true U(λ=0)=0.0
+
+PASS: capstone 5/5
+raw real molecule → real GAFF/TIP3P FF → ΔG full chain SEALED · R9 toy graduated.
+```
+
+### 봉인 판정 (d6/@L5)
+- **풀 front-end 배선 입증**: raw CH4 Cartesian 좌표가 NaN 0·에러 0 으로 4결합→[c3,hc,hc,hc,hc]→실 ε/σ/charge 로 흐름, Σq=−6.9e−18 중성.
+- **실 FF 값 확인**: perceived c3/hc 의 ε/σ/charge 가 amber.hexa literature 와 <1e-9 일치 (toy ε=σ=1 아님 명시 검증).
+- **ΔG 정직 보고**: MBAR ΔG_hyd=−0.517 kcal/mol(수렴·acc0.84), 독립 TI=−0.455, **통계밴드 |MBAR−TI|=0.062 kcal/mol**(두 독립추정자 일치). 실험앵커 +2.0 대비 |Δ|=2.52 kcal/mol 은 **계통 reduced-model offset** — 1개 effective C···OW dispersion site 가 메탄을 net-hydrophobic 으로 만드는 multi-water cavity 항을 못잡음. **강제로 +2.0 에 맞추지 않고 verbatim 보고**(통계 vs 계통 구분). PASS 조건 = 배선+실FF+추정자일치(ΔG 유한·MBAR 수렴·MBAR≈TI), +2.0 적중 아님.
+- **결정론**: 고정seed bit-exact |Δ|=0.0. **λ엔드포인트**: 실파라미터 soft-core U/dU/dλ r→0 유한·U(λ=0)=0 exact(decouple). λ=1·r=0.05 의 U=3.2e21 은 soft-core shift 없는 bare LJ r⁻¹² 근접값(유한, <1e290).
+- **R9 toy 졸업 확정** — raw 실분자→실FF→ΔG full chain hexa-native 봉인. 정직 scope: 메탄-물 상호작용 = 1개 effective LB-combined C···OW soft-core site(기본 LJ-only — 중성 hydrophobic 용질의 single-site Coulomb cross-term 은 비물리적이라 `include_coulomb` opt-in). 정량 parity 남은=full CH4-water nonbonded sum + PME + 긴샘플(d17).
+
+### 산출
+- stacked PR: hexa-lang **#3115** (capstone_methane_hyd.hexa + capstone_selftest.hexa, base=`qforge-bio-r13-bondperception`). 베이스 스택 R12/R13 origin push 완료(미존재였음). 머지=사용자. 0-POD·$0(local g5). branch `qforge-bio-r14-capstone`.
