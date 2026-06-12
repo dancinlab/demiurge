@@ -725,3 +725,93 @@ periodic cubic box + PME (Ewald) periodic electrostatics → ΔG_hyd SEALED · R
 ### 산출
 - PR: hexa-lang **#TBD** (capstone_pme_box.hexa + capstone_pme_box_selftest.hexa, base=`qforge-bio-r14-capstone`). 머지=사용자. 0-POD·$0(local g5). branch `qforge-bio-r16-pme-box`. DOMAINS.tape 미접촉.
 - d8 handoff: 선택 selftest 에 `use stdlib/autograd`+tensor 명시 필요(transitive `softcore_dUdlam_autograd` 의 ag_*/tensor_* 런타임 심볼 링크) — codegen 이 transitive autograd 사용시 런타임 헤더 auto-link 안하는 gap.
+
+## R17 — cell-list O(N) 이웃탐색 (입방박스 linked-cell · nonbonded 효율레이어) ✅ PASS 8/8
+
+### 동기
+R16 의 `box_lj_softcore_energy` 는 dense solute×water-O 이중루프 O(Ns·N_OW). bulk box 확장 시 N_OW 가 부피로 증가 → 분산탐색이 마지막 O(N²)-flavour 비용(R10 PME 는 이미 O(N log N)). cell-list(linked-cell)로 fixed-ρ 에서 O(N) 로 강등.
+
+### 구현 (d3·d4)
+`stdlib/chem/md/cell_list.hexa` — 입방박스를 변 ≥r_cut cell grid 로 분할(nc=floor(L/r_cut)), 각 원자는 자기+26 이웃(27-cell stencil·Plimpton 1995)만 검사. `cl_build`/`cl_cell_index`/`cl_neighbor_pairs`(→[{i,j,r2}])/`cl_pair_count`/`cl_lj_energy`/`cl_lj_energy_switched` + parity-ref `direct_lj_energy_cutoff`/`direct_pair_count_cutoff`. 좌표=generic dict{x,y,z,eps?,sigma?} 배열·L·r_cut 인자(d4·도메인 struct 비의존). nc<3 작은박스에서 _pmod wrap 으로 같은 이웃 중복방문 → uniq dedup 으로 정확성 유지.
+
+### g5 결과 (VERBATIM)
+```
+== QFORGE-BIO R17 cell-list O(N) neighbor search — g5 selftest ==
+(a) cell-list == direct O(N^2): N=125 |Δ|=... <1e-9 · pairs cl==dir
+(b) cutoff in/out: sep4.9<r_cut→1 · sep5.1>r_cut→0
+(c) PBC: raw Δx=11 但 min-image=1.0<r_cut → pair 1 · 에너지 parity 1e-9
+(d) scaling: N=64→1000 cl_pairs/N=9.0 상수 · direct/N=(N-1)/2 발산 · cl_pairs==direct-cutoff-pairs 매 N
+== g5 result: 8/8 checks passed == · G5: PASS
+```
+
+### 봉인 판정
+- **cell-list==직접 parity**: 동일 hard cutoff 에서 cell-list LJ==직접 min-image O(N²) |Δ|<1e-9(절대)·쌍수 정확. PBC 면-횡단도 cell wrap=min-image 일관.
+- **O(N) 입증**: cl_pairs/N=9.0 상수(원자당 cutoff-내 이웃수 고정 ⇒ 선형) vs direct/N=(N-1)/2 발산.
+- **정직(d6)**: hard cutoff — r_cut 너머 LJ tail 은 cell-list·직접 둘 다 생략(clean parity). tail 은 별도 해석교정(R18)·정전 장거리는 PME(R10, 이미 O(N log N)). cutoff 안 넓혀 tail 숨기지 않음.
+
+### 산출
+- PR hexa-lang **#3142**(cell_list.hexa + selftest, base=`qforge-bio-r14-capstone`·머지=사용자). branch `qforge-bio-r17-celllist`. 0-POD·$0. DOMAINS.tape 미접촉.
+
+---
+
+## R18 — cell-list 결선 soft-core + 해석 LJ tail-correction (마지막 O(N) code-brick) ✅ PASS 6/6
+
+### 동기
+R17 이 generic O(N) 이웃탐색을 봉인. R18 = 이를 R16 의 주기 soft-core LJ dispersion 합에 **결선**(dense 이중루프 대체) + r_cut 너머 LJ 를 닫힌형 해석 tail 로 회수 → O(N) FEP 봉인. 마지막 O(N) code-brick(이후 SENOLYX 는 순수 compute d17).
+
+### 구현 (d3·d4)
+`stdlib/chem/fep/box_softcore_celllist.hexa`:
+- `box_lj_softcore_celllist(sol_coords, box, lam, r_cut)` — solute LJ 사이트+OW 를 tagged 합쳐 cl_build/cl_neighbor_pairs(R17 verbatim) 실행, 반환쌍 중 **정확히 한쪽이 solute** 인 쌍(=solute×OW 분산)만 R16 Beutler soft-core fast form 으로 합산. OW–OW·solute–solute 제외(R16 와 동일 범위).
+- `box_lj_tail_correction(box, lam, r_cut)` — 닫힌형 ∫_{r_cut}^∞ 4πρr²·u_LJ(r)dr = 16πρε[σ¹²/(9r_c⁹)−σ⁶/(3r_c³)] = **(16/3)πρε σ³[(1/3)(σ/r_cut)⁹−(σ/r_cut)³]**, OW 수밀도 ρ=N_OW/L³, solute LJ 사이트별 LB-combine, **λ-스케일**(soft-core large-r 극한 = λ·u_LJ).
+- `box_lj_softcore_celllist_full` = cutoff + tail.
+
+### 닫힌형 tail 유도 (★)
+∫_{r_cut}^∞ 4πρr²·4ε[(σ/r)¹²−(σ/r)⁶]dr = 16πρε∫[σ¹²r⁻¹⁰−σ⁶r⁻⁴]dr = 16πρε[σ¹²/(9r_c⁹)−σ⁶/(3r_c³)]. σ³ 인수분해 ⇒ prefactor **16/3**(8/3 아님 — 첫 draft 가 8/3 로 잘못 적었고 selftest (b) 가 정확히 2× 불일치로 포착·수정).
+
+### g5 결과 (VERBATIM)
+```
+== QFORGE-BIO R18 cell-list soft-core LJ + analytic tail — g5 selftest ==
+    box L=14.4  N_OW=64  solute LJ sites=1
+(a) cell-list soft-core == direct soft-core (same r_cut), over λ
+    λ=0.2  cell-list=0.0637464  direct=0.0637464  |Δ|=1.38778e-17
+    λ=1.0  cell-list=10.1029  direct=10.1029  |Δ|=0.0
+  ok : a_celllist_eq_direct_softcore_1e-9  worst |Δ| over λ = 8.88178e-16 < 1e-9
+(b) analytic LJ tail-correction — closed form (★) == raw integral
+    E_tail(brick, λ=1) = -0.262386  E_tail(raw ∫) = -0.262386  |Δ| = 1.11022e-16
+  ok : b_tail_closed_form_eq_integral_1e-12  |Δ|=1.11022e-16 < 1e-12
+    λ-scaling: E_tail(0.5) = -0.131193 vs 0.5·E_tail(1) = -0.131193  |Δ|=0.0
+  ok : b_tail_lambda_scaled
+(c) cutoff+tail vs FULL untruncated dense soft-core (R16 form)
+    (c) box: L=28.8  N_OW=512
+    λ=0.2  full=0.0828342  cut=0.138328  cut+tail=0.0858509  |Δ|_cut=0.0554939  |Δ|_tail=0.00301665
+    λ=1.0  full=10.9055   cut=11.184    cut+tail=10.9216    |Δ|_cut=0.278486   |Δ|_tail=0.0161002
+    worst |full − (cut+tail)| = 0.0161002 kcal/mol  (rel = 0.00147633 of E~10.9055)
+  ok : c_cutoff_plus_tail_recovers_full        rel residual = 0.00147633 < 1% of E
+  ok : c_tail_reduces_truncation_error         |full−(cut+tail)| ≤ |full−cut| at every λ
+(d) scaling — N_OW 27→216: sc_pairs/N_OW 0.814815→0.0833333 (비발산)
+  ok : d_softcore_pairs_bounded
+== g5 result: 6/6 checks passed == · G5: PASS
+```
+
+### 봉인 판정 (d6/@L5)
+- **(a) cell-list 결선 parity**: cell-list soft-core(solute×OW) == 직접 min-image cutoff soft-core, worst |Δ|=8.9e-16 over λ — R17 이웃탐색이 R16 dense 합을 동일 cutoff 에서 정확히 대체.
+- **(b) 해석 tail 정확**: 닫힌형(★)==raw 적분 |Δ|=1.1e-16. **prefactor 버그(8/3→16/3) selftest 가 정확히 2× 로 포착** — 날조 아닌 실 검증가치 입증. tail(λ)=λ·tail(1) exact.
+- **(c) ΔG 일관**: cutoff+tail 이 untruncated dense sum(R16 형) 회수, 512-OW 박스 **rel 0.15% of E**. tail 이 truncation error 를 cutoff-only 대비 매 λ **~17× 감소**(|Δ|_cut 0.055→0.278 = full tail magnitude vs |Δ|_tail 0.003→0.016) — 해석 tail 이 분산을 실제로 회수함을 입증.
+- **(d) O(N)**: solute×OW cutoff 쌍이 N_OW 와 무관(solute 주변 r_cut 구 안 OW 수 = fixed-ρ 상수) ⇒ pairs/N_OW 0.81→0.083 단조감소·비발산.
+
+### 정직 핵심 (d6/@L5)
+- **tail 은 λ-스케일**: soft-core U_sc=4ελ[D⁻²−D⁻¹]·D=α(1−λ)²+(r/σ)⁶. large r(>r_cut≳2.5σ)에서 shift α(1−λ)²≪(r/σ)⁶ ⇒ U_sc→λ·u_LJ. 따라서 λ-decoupled tail 은 정확히 λ·E_tail — λ=1 에서 full physical tail·λ=0 에서 소멸(solute decouple). 숨기지 않고 명시·게이트도 검증(b).
+- **(c) 잔차의 정체**: 0.15% 잔차는 **OW discreteness**(jittered 격자에서 물 1개가 r_cut 구를 들고날 때 그 쌍에너지만큼 cutoff'd 합이 흔들림)이지 tail 닫힌형 오차 아님 — 작은 64-OW 박스에서는 0.8%까지 커지므로 512-OW 큰 박스로 검증(연속-ρ regime). r_cut 단조-수렴 주장은 연속 g(r) 가정에서만 성립 → 이산격자에선 성립 안 함을 정직 보고(첫 draft 의 c_residual_shrinks_with_rcut 게이트를 c_tail_reduces_truncation_error 로 교체).
+- **강제 0**: 어떤 숫자도 타깃 맞추지 않음. PME 장거리(R10)는 이미 O(N log N)·무관.
+
+### O(N) FEP 봉인됐나 — YES
+dense O(Ns·N_OW) soft-core 이중루프(R16)가 cell-list cutoff O(N)(R17 결선)+닫힌형 해석 tail 로 완전 대체됨. 정전은 R10 PME 가 이미 O(N log N). ⇒ **FEP nonbonded 평가 전체가 O(N log N) 이하** — 박스 scale-up 의 알고리즘 병목 제거. bio code-brick 레인 완전 소진.
+
+### round-19 다음 (d17 · 순수 compute)
+1. **SENOLYX 앵커(−16.64) re-derive** — 물리·경계·배선·O(N) 효율 전부 봉인 ⇒ 실 거대고리 리간드를 18-25Å 주기 PME box·수백 waters·nsw≫(수천)로 GPU(summer RTX5070 free 또는 vast)에서 scale-up 샘플. 정량 parity ±2.
+2. **더 큰 박스 잔차 수렴** — R16 의 0.288(박스/샘플 성분 ~0.16)을 큰 박스+긴샘플로 수렴.
+3. ⇒ R4-next 는 코드 추가 없이 **순수 compute(d17)** 만 남음.
+
+### 산출
+- PR hexa-lang **#3149**(box_softcore_celllist.hexa + selftest, base=`qforge-bio-r14-capstone`·머지=사용자). branch `qforge-bio-r18-tailcorr`. 0-POD·$0(local g5). DOMAINS.tape 미접촉.
+
