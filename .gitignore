@@ -9,3 +9,7 @@ __pycache__/
 .claude/*
 !.claude/skills/
 drafts/
+
+# large data artifacts — kept on disk / summer originals, never in git (>100MB)
+*_checkpoint.nc
+*_stage.tgz
