@@ -27,6 +27,11 @@
 @domain OA-CURE := "domains/OA-CURE.md"
 @domain RETINA-CURE := "domains/RETINA-CURE.md"
 @domain IVD-CURE := "domains/IVD-CURE.md"
+@domain QFORGE-ATOMS  := "domains/QFORGE-ATOMS.md"
+@domain QFORGE-MOLSCF := "domains/QFORGE-MOLSCF.md"
+@domain QFORGE-CHIP   := "domains/QFORGE-CHIP.md"
+@domain QFORGE-CHEM   := "domains/QFORGE-CHEM.md"
+@domain QFORGE-SYSTEM := "domains/QFORGE-SYSTEM.md"
 
 # --- cross-domain connection graph (g67 · migrated from retired NEXUS.tape) ---
 # Carrier (g3 minimal): @link <from> --<verb>--> <to>   # <evidence>
@@ -50,6 +55,11 @@
 # candidate reuse-edges tagged reuse-edge (NEXUS c7/c8) — QFORGE/PWFORGE filtered out of cosmos at runtime
 @link RTSC --reuses--> QFORGE           # QFORGE hexa-native SCF·DFPT·λ·Tc engine (QE cross-val ref) · GATE A+L3 PASS PR#2362/#2380
 @link QFORGE --reuses--> PWFORGE        # plane-wave H assembler cell->H_of_rho front-end · M1-M6 PR#2407-#2414
+# QFORGE multi-scale d19 reuse lattice (one engine, six scales · NEXUS e16-e20)
+@link QFORGE-ATOMS --reuses--> QFORGE-MOLSCF   # S·ERI+V·rhf·md_shell·uhf·rohf core (atoms r10-r28) · NEXUS e16
+@link QFORGE-CHEM --reuses--> QFORGE           # materials DFPT qforge_phonons Γ-Hessian for TS-Hessian/dimer (chem r3/r4) · NEXUS e18
+@link QFORGE-SYSTEM --reuses--> QFORGE         # scf_etot QM + chem/md MM (LJ·bonded·ewald·pme) QM/MM bridge (system r1-r8) · NEXUS e19
+@link QFORGE-CHIP --reuses--> QFORGE           # materials DFPT ω(q) + kinetic_diag → band H(k)·phonon-Landauer κ (chip r3/r4) · NEXUS e20
 # @reuse short-form (NEXUS tail · CURE family)
 @link AGA-CURE --reuses--> AGA-RX       # non-AR Wnt-restore drug stack + 5-axis modality → cure arms · 2026-06-03 domain split
 @link SENOLYX --reuses--> CURE-PRIMITIVE   # η_neo-lift (niche senescent clearance) universal bottleneck lift
