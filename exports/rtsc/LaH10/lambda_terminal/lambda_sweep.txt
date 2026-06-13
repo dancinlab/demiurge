@@ -1,0 +1,22 @@
+=== per-q parse summary ===
+q1: nmodes=33 broadenings=10 sum_lam(0.005)=18.5465 DOS(0.005)=4.030418
+q2: nmodes=33 broadenings=10 sum_lam(0.005)=0.0123 DOS(0.005)=4.030346
+q3: nmodes=33 broadenings=10 sum_lam(0.005)=0.0125 DOS(0.005)=4.030346
+q4: nmodes=33 broadenings=10 sum_lam(0.005)=4.9484 DOS(0.005)=4.030346
+q5: nmodes=33 broadenings=10 sum_lam(0.005)=0.0123 DOS(0.005)=4.030346
+q6: nmodes=33 broadenings=10 sum_lam(0.005)=4.9519 DOS(0.005)=4.030346
+q7: nmodes=33 broadenings=10 sum_lam(0.005)=4.9469 DOS(0.005)=4.030346
+q8: nmodes=33 broadenings=10 sum_lam(0.005)=0.0117 DOS(0.005)=4.030346
+
+=== lambda / omega_log / Tc sweep over broadening ===
+broad(Ry)    lambda   wlog(K)  Tc_AD(K) Tc_McM(K)
+    0.005    4.1803   1887.28    384.00    384.00
+     0.01    4.3157   1423.68    292.49    292.49
+    0.015    4.9847   1118.78    239.23    239.23
+     0.02    4.5634   1036.03    216.33    216.33
+    0.025    3.8748   1014.36    201.41    201.41
+     0.03    3.3927   1008.60    190.92    190.92
+    0.035    3.0783   1006.59    183.16    183.16
+     0.04    2.8741   1005.56    177.49    177.49
+    0.045    2.7446   1005.26    173.61    173.61
+     0.05    2.6652   1006.13    171.27    171.27

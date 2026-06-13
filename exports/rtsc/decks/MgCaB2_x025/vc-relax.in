@@ -1,13 +1,13 @@
 &control
-  ! A25 Mg(1-x)Ca(x)B2, x=0.25 — Ca-doped MgB2 (BCS-side AMBIENT-pressure RTSC candidate).
-  ! GOAL: push past MgB2's 39K BCS ceiling by Ca substitution — tune the boron sigma-band
+  ! A25 Mg(1-x)Ca(x)B2, x=0.25 - Ca-doped MgB2 (BCS-side AMBIENT-pressure RTSC candidate).
+  ! GOAL: push past MgB2's 39K BCS ceiling by Ca substitution - tune the boron sigma-band
   !   filling / lattice (a, c) of the AlB2-prototype honeycomb boron layer.
   ! Anchor: pure MgB2 P6/mmm (AlB2 prototype #191), a=3.086 Ang (5.832 Bohr), c/a=1.1418
   !   (Akimitsu 2001 measured, Tc=39K). VERIFIED baseline in this repo:
   !   exports/material_verdict/mgb2_budko2001_v1/ (McMillan/Allen-Dynes Tc consistency PASS).
   ! Supercell: 2x2x1 of the primitive = 4 metal + 8 B = 12 atoms. Replace 1 Mg -> Ca => x=0.25.
   ! Composition: Mg0.75 Ca0.25 B2  (1 Ca + 3 Mg + 8 B).
-  ! PRESSURE: AMBIENT (press=0.0, 1 atm). This is a DOPING study, NOT a high-P clathrate —
+  ! PRESSURE: AMBIENT (press=0.0, 1 atm). This is a DOPING study, NOT a high-P clathrate -
   !   the only pressure-axis-free line in the pilot, complementary to the high-P hydrides.
   ! ibrav=0 with explicit CELL_PARAMETERS for the 2x2x1 hexagonal supercell vectors.
   ! cell_dofree='all' lets a + c both relax under press=0 (no symmetry constraint imposed).
@@ -34,7 +34,7 @@
   ecutrho = 600.0
   nosym = .true.
   occupations = 'smearing'
-  smearing = 'mp'              ! Methfessel-Paxton — clean metal (d15)
+  smearing = 'mp'              ! Methfessel-Paxton - clean metal (d15)
   degauss = 0.02
 /
 &electrons
@@ -49,7 +49,7 @@
 /
 &cell
   cell_dynamics = 'bfgs'
-  press = 0.0                  ! AMBIENT (1 atm) — doping study, not high-P
+  press = 0.0                  ! AMBIENT (1 atm) - doping study, not high-P
   press_conv_thr = 0.5
   cell_dofree = 'all'         ! relax a + c (supercell vectors free)
 /

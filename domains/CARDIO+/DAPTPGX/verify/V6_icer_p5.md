@@ -22,7 +22,7 @@ let s4_st_per100 = pm_n * pm_st_post_deesc + nonpm_n * st_clopi_nm + im * 0.008 
 
 ## 2. V6 sim asset
 
-`/Users/ghost/core/demiurge/DAPTPGX/sims/v6_recompute.hexa` (153 lines · V5 base + P5 단일 patch · §4 line 129 + §5 line 170 양쪽 적용).
+`/Users/mini/dancinlab/demiurge/DAPTPGX/sims/v6_recompute.hexa` (153 lines · V5 base + P5 단일 patch · §4 line 129 + §5 line 170 양쪽 적용).
 
 ## 3. exec status — pool-route 차단 (honest)
 

@@ -8,9 +8,9 @@
 
 ### Path 1 — `tool/build_hexa_verify.sh` (SUCCESS)
 ```
-$ cd /Users/ghost/core/hexa-lang && bash tool/build_hexa_verify.sh
-[build_hexa_verify] src=/Users/ghost/core/hexa-lang/tool/verify_cli.hexa
-[build_hexa_verify] out=/Users/ghost/core/hexa-lang/bin/hexa-verify
+$ cd /Users/mini/dancinlab/hexa-lang && bash tool/build_hexa_verify.sh
+[build_hexa_verify] src=/Users/mini/dancinlab/hexa-lang/tool/verify_cli.hexa
+[build_hexa_verify] out=/Users/mini/dancinlab/hexa-lang/bin/hexa-verify
 === Building tool/verify_cli.hexa -> bin/hexa-verify ===
   [flat] module_loader → /tmp/.hexa-runtime/hexa_build_expanded.1779607403998851000.tmp.hexa
   [1/2] self/native/hexa_v2 ... build/artifacts/hexa-verify.c 2>&1
@@ -18,9 +18,9 @@ $ cd /Users/ghost/core/hexa-lang && bash tool/build_hexa_verify.sh
 OK: build/artifacts/hexa-verify.c
   [2/2] clang -O2 ... -o bin/hexa-verify.tmp.54049
     (2 unrelated runtime.h block-comment warnings)
-OK: built /Users/ghost/core/hexa-lang/bin/hexa-verify
+OK: built /Users/mini/dancinlab/hexa-lang/bin/hexa-verify
 [build_hexa_verify] smoke: no-arg banner
-[build_hexa_verify] OK -> /Users/ghost/core/hexa-lang/bin/hexa-verify
+[build_hexa_verify] OK -> /Users/mini/dancinlab/hexa-lang/bin/hexa-verify
 ```
 → **선행 agent 보고된 `_sigma_k / _gamma0_*` 링커 미스 = 사라짐** (PR #709 후 self-symbol 정합 회복으로 추정). hexa build pipeline 정상 종결, smoke banner 통과.
 
@@ -32,8 +32,8 @@ $ bash tool/build_hexa_atlas.sh
 ... [warn] @phase × 15 (3926/3946/.../7588) ...
 OK: build/artifacts/hexa-atlas.c
   [2/2] clang -O2 ... -o bin/hexa-atlas
-OK: built /Users/ghost/core/hexa-lang/bin/hexa-atlas
-[build_hexa_atlas] OK -> /Users/ghost/core/hexa-lang/bin/hexa-atlas
+OK: built /Users/mini/dancinlab/hexa-lang/bin/hexa-atlas
+[build_hexa_atlas] OK -> /Users/mini/dancinlab/hexa-lang/bin/hexa-atlas
 ```
 
 | artifact | mtime | size |

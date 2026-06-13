@@ -1,0 +1,18 @@
+LaBH8 electron-phonon 2x2x2 q (RTSC ternary - Fm-3m BH8 cage, low-P ~50 GPa angle, Di Cataldo 2021)
+&inputph
+  prefix              = 'labh8'
+  outdir              = './out'
+  fildyn              = 'labh8.dyn'
+  fildvscf            = 'dvscf'
+  ldisp               = .true.
+  nq1                 = 2
+  nq2                 = 2
+  nq3                 = 2
+  tr2_ph              = 1.0d-14
+  electron_phonon     = 'simple'
+  el_ph_sigma         = 0.005
+  el_ph_nsigma        = 10
+  recover             = .true.
+  alpha_mix(1)        = 0.3
+  max_seconds         = 504000
+/

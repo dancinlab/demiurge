@@ -1,0 +1,55 @@
+{
+  "record_kind": "cloak_specify_record",
+  "domain": "CLOAK",
+  "cell": "integrated-cloak-sheet (1m² 음굴절 메타-시트 시제품)",
+  "verb": "1/7 specify (명세 · 무엇을)",
+  "iso_stamp": "2026-05-29",
+  "produced_by": "AUTHORED (manual) — demiurge 7-verb spine Phase C verb-1. Phase A 6/6 LANDED + Phase B 4/4 LANDED 위에 시제품 사양 봉인. 본 record 는 doc-only · stdlib 신규 없음.",
+  "source_refs": {
+    "domain_md": "domains/cloak.md §Phase C verb-1 specify",
+    "phase_a_ledger": "exports/cloak/verify/V4_final_tier_ledger.md",
+    "phase_b_dossier": "exports/cloak/design/phase_b_metacell.md",
+    "ufo_pattern": "domains/UFO/spec/integrated-vehicle-spec.md (style reference · smaller scope)",
+    "merged_prs": ["#1934 stdlib/srr/lc_resonance.hexa", "#1936 stdlib/cloak/veselago.hexa", "#1938 tool/verify_cli + atlas/calc_dispatch", "#1943 stdlib/rtsc/plasma_freq.hexa"]
+  },
+  "target_spec": {
+    "form_factor": "1 m² 시트 시제품 (얇은 다층 필름 → 강체 패널 또는 가요 시트 · 두께 sopfr=5 nm 코어 + 적층 σ=12 층)",
+    "target_band_octave": 8,
+    "target_band_window": "RF (sub-GHz) → 가시광 (~500 THz) · σ-τ=8 octave (φ=2 적층으로 σ=12 oct 확장 가능)",
+    "target_rcs_m2": 1e-6,
+    "target_rcs_tier": "Mk.II (스텔스 항공 grade · F-22/B-2 대비 σ-τ 8 oct 균질 cloak)",
+    "target_pitch_nm": 10,
+    "target_pitch_derivation": "σ - φ = 12 - 2 = 10 nm (HEX-N6 lattice · atlas n6-bt-749 · Smith 2000 λ/10 효유효매질 한계)",
+    "target_q_factor": 48,
+    "target_q_derivation": "Q = σ · τ = 12 · 4 = 48 (Pendry 1999 Lorentz Q · PR #1934 F7 μ_re=-1999.26 7/7 PASS)",
+    "lss_budget": {
+      "power_w_per_m2": 5,
+      "channels": 12,
+      "ai_control": "σ=12 채널 ON/OFF AI 제어 (대역 선택적 cloak/transparent · §Phase B-4)",
+      "thermal_drift_k": "±2 K (RT-SC 박막 동작 범위)"
+    },
+    "payload_kg": 0.4,
+    "payload_breakdown": "RT-SC 박막 0.2 kg/m² + Hex-SRR 패턴층 0.1 kg/m² + AI 제어 보드 0.1 kg/m² (Mk.II 등급 추정)"
+  },
+  "applications": [
+    {"#": 1, "name": "군사 스텔스 도색", "band": "X-band σ-τ~σ GHz", "scale": "144 m² · ~$72K (σ²=144)", "tier": "Mk.II"},
+    {"#": 2, "name": "건축 스마트 창", "band": "가시광+IR", "scale": "n=6 m² 창문 단위 · ~$3K", "tier": "Mk.II→III"},
+    {"#": 3, "name": "의료 MRI 방음", "band": "64-128 MHz RF", "scale": "J₂=24 m² 방 · σ-φ=10 dB 감쇠", "tier": "Mk.I"},
+    {"#": 4, "name": "5G/전자파 차단 가전", "band": "σ-τ=8 oct 선택", "scale": "1 m² 시트 · 대역별 ON/OFF", "tier": "Mk.II"},
+    {"#": 5, "name": "박물관 유물 보존 진열장", "band": "UV+가시광 차단", "scale": "유리창 단위 · σ=12 년 내구", "tier": "Mk.II"}
+  ],
+  "acceptance_gates": [
+    "음굴절 polynomial PASS — Veselago n_eff=-√(εμ)<0 (PR #1936 F3 ε=-2,μ=-3 → n=-√6=-2.44949 7/7 PASS) ✅",
+    "Drude ε<0 PASS — RT-SC ω_p=5.64e15 rad/s · Re{ε(0.5·ω*)}=-3.0 (PR #1943 F6+F7 7/7 PASS) ✅",
+    "Lorentz μ<0 PASS — Q=48 · μ_re=-1999.26 (PR #1934 F7 7/7 PASS) ✅",
+    "λ/10 셀 피치 PASS — σ-φ=10 nm (HEX-N6 🔵 + Smith 2000 + atlas n6-bt-749) ✅",
+    "downstream (out of clean-room): 무반향 챔버 RCS · VNA Q-factor · SEM 셀 피치 · 광대역 spectrum — 모두 wet-lab oracle (@D d5 invariant per d_paper_significance)"
+  ],
+  "scope_caveats": [
+    "Mk.II 등급 (10⁻⁶ m² RCS · σ-φ=10 nm pitch · $500/m²) 시제품 사양 — Mk.III~V 는 falsifier/사고실험 (cloak.md Phase D)",
+    "메타셀 effective-medium 가정 — k ≪ 2π/a 장-파장 근사 · 단파장 외삽 위험 (@D d6 V4 ledger §8)",
+    "measurement_gate = GATE_OPEN 영구 — specify 는 illustrative spec dossier, absorption claim 아님 (g3 · @D d5 invariant)"
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

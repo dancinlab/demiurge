@@ -11,6 +11,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <NextThemes
       attribute="class"
+      forcedTheme="light"
       defaultTheme="light"
       enableSystem={false}
       storageKey="demiurge-theme-3"

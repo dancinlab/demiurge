@@ -1982,7 +1982,7 @@ in-progress)**
     threshold 0.05 · would_pass=true · absorbed=false. 명시 STUB ·
     NOT real NREL MIDC data — real fetch + pvlib stack 은 G29 scope.
   - **Multi-repo discipline**: hexa-lang 측 작업은 별도 worktree
-    (`/Users/ghost/core/hexa-lang-g28` 임시 · origin/main 기반 ·
+    (`/Users/mini/dancinlab/hexa-lang-g28` 임시 · origin/main 기반 ·
     branch `g28-measured-oracle-producer`). 다른 세션의 rfc006-yosys-
     abc-map-script-order branch (`~/core/hexa-lang`) 미접촉 — 양
     session 의 git index 완전 분리.

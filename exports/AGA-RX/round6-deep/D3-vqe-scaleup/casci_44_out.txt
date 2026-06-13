@@ -1,0 +1,7 @@
+[ANCHOR water dimer] HF int=127.41  CASCI(4,4) int=128.56 kcal/mol  (lit De ~ -5.0; CASCI(4,4)/6-31G(d) qualitative, BSSE-uncorrected)
+   active space (4e,4o) = 8 spin-orbitals → 8 qubits (6 after parity+symmetry taper); CASCI=FCI-in-AS=UCCSD-VQE-exact for this AS
+
+[PATH-B salt bridge methylguanidinium(+)···formate(−)] R(N···O)~2.8A, approx (unoptimized) geom
+   HF int=-26.7  CASCI(4,4) int=-16.1 kcal/mol   correlation contribution=10.7
+   (Coulomb-dominated charged contact ≫ neutral H-bond; gas-phase, no solvent → magnitude not net ΔG_bind)
+__AGA_RX_QUANTUM_44__ DONE

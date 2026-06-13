@@ -1,0 +1,53 @@
+&control
+  ! STEP 1 for Li2CuH6: variable-cell relax to settle the lattice (a unknown — lit estimate only).
+  ! After this, read relaxed celldm(1)/positions into scf.in before SCF+ph.x.
+  calculation = 'vc-relax'
+  prefix = 'li2cuh6'
+  outdir = '/home/aiden/rtsc_li2cuh6/out'
+  pseudo_dir = '/home/aiden/rtsc_li2cuh6/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  nstep = 200
+  forc_conv_thr = 1.0d-4
+  etot_conv_thr = 1.0d-5
+/
+&system
+  ibrav = 2
+  celldm(1) = 11.3400000
+  nat = 9
+  ntyp = 3
+  ecutwfc = 80
+  ecutrho = 800
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.7
+  electron_maxstep = 200
+/
+&ions
+  ion_dynamics = 'bfgs'
+/
+&cell
+  cell_dynamics = 'bfgs'
+  press_conv_thr = 0.5
+/
+
+ATOMIC_SPECIES
+  Li 6.941   Li.pbe-s-rrkjus_psl.1.0.0.UPF
+  Cu 63.546  Cu.pbe-dn-rrkjus_psl.1.0.0.UPF
+  H  1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Cu 0.000000 0.000000 0.000000
+  Li 0.250000 0.250000 0.250000
+  Li 0.750000 0.750000 0.750000
+  H  0.240000 0.000000 0.000000
+  H  0.760000 0.000000 0.000000
+  H  0.000000 0.240000 0.000000
+  H  0.000000 0.760000 0.000000
+  H  0.000000 0.000000 0.240000
+  H  0.000000 0.000000 0.760000
+K_POINTS automatic
+  16 16 16 0 0 0

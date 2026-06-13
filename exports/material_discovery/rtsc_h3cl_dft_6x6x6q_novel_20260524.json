@@ -51,8 +51,8 @@
   "r4_invariant": "absorbed=false · gate_type=simulation-only-prediction · domain=material. R4 Pattern 1 + Pattern 2 preserved. §9.15 FAIL framed as scientific finding (under-convergence caveat), not impossibility.",
   "provenance": {
     "dft_run_host": "pool:ubu-1 (conda QE 7.5)",
-    "result_txt": "/Users/ghost/etc/rtsc-results/h3cl/result.txt",
-    "alignn_predict_json": "/Users/ghost/etc/rtsc-results/h3cl/alignn_predict.json",
+    "result_txt": "/Users/mini/etc/rtsc-results/h3cl/result.txt",
+    "alignn_predict_json": "/Users/mini/etc/rtsc-results/h3cl/alignn_predict.json",
     "capture_date": "2026-05-23"
   },
   "citations": [

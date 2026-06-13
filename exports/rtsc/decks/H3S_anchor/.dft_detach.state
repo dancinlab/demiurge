@@ -1,0 +1,9 @@
+phase=relax
+instance_id=38950897
+host=67.182.226.160
+port=17766
+identity=/Users/mini/.ssh/id_vast_anima
+np=4
+walltime_h=12
+relax_name=vc-relax.in
+deck=exports/rtsc/decks/H3S_anchor

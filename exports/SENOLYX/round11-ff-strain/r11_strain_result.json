@@ -1,0 +1,12 @@
+{
+  "smiles": "CO[C@H]1C=CC=C(C)C(=O)NC2=CC(=O)C(NCCN(C)C)=C(C[C@@H](C)C[C@H](OC)[C@H](O)[C@@H](C)C=C(C)[C@@H]1OC(N)=O)C2=O",
+  "n_atoms": 92,
+  "strain_MM": 231.08185040607998,
+  "strain_QM": 149.1005150364217,
+  "DDelta": -81.98133536965827,
+  "e_mm_bound": 292.5001871258486,
+  "e_mm_min": 61.4183367197686,
+  "e_qm_bound": -85946.55220845531,
+  "e_qm_opt": -86095.65272349173,
+  "verdict": "FF OVER-penalizes strain by 82.0 -> would UNDER-bind from this term; overbind is elsewhere (pose/interaction)"
+}

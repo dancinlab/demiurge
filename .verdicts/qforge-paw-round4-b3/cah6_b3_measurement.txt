@@ -1,0 +1,17 @@
+=== QFORGE-PAW round-4 — B3 (∂ρ_aug/∂u augmentation overlay) on real CaH6 ===
+[deck] Ca pseudo_type=NC is_us=false is_paw=false ⇒ Q_ij augmentation: NONE (NC)
+[B2] H KB projectors: nproj=2
+[SCF PBE]  conv=true iters=3 etot=-3.58942
+    [B3] ∂V_aug block max|entry| = 0.0 (NC deck Q_ij≡0 ⇒ structural 0)
+
+══ B3 MEASUREMENT (bare-composed, single ω₀, real N(E_F); VERBATIM d6) ══
+B1+B2     PBE-SCF + ∂V_loc+∂V_NL          λ = 0.743699
+B1+B2+B3  +∂V_aug (augmentation overlay)  λ = 0.743699
+Δλ(B3) = 0.0
+
+B1+B2+B3 λ_full vs re-anchor ~2.69 (PNAS 2012): rel-ε = 0.723532
+FINDING: Δλ(B3) ≈ 0 — augmentation overlay structurally absent (NC deck Q_ij≡0)
+         + co-located self-vertex sum-rule collapse (dvaug_du_selftest).
+         ⇒ ALL named DFT levers on |g| now EXHAUSTED. HONEST TERMINAL.
+VERDICT: gate HELD — λ_full=0.743699 outside 1% of 2.69 (residual = irreducible from-scratch NC+LDA vs QE-PBE |g|, d6)
+=== DONE ===

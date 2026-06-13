@@ -1,0 +1,12 @@
+PASS (Z) NC q_ij≡0 ⇒ δ=0 (δ=0.0)
+PASS (Z') NC ⇒ g-scale = 1.0 EXACT
+    [M] δ_n(real H q_ij) = 0.000941142  |g|-scale = 0.99906  λ-scale = 0.99812
+PASS (P) physical USPP q_ij ⇒ δ ≥ 0 (δ=0.000941142)
+PASS (P') g-scale ∈ (0,1] (soft-orbital norm restored ⇒ |g| shrinks)
+PASS (S) δ == ⟨ψ|(S−1)|ψ⟩ (|Δ|=0.0)
+PASS (G) g-scale == 1/√((1+δm)(1+δn)) (|Δ|=1.11022e-16)
+PASS (G') g-scale = s(δm)·s(δn) (norm factors compose)
+PASS (D) δ size mismatch → 0.0
+PASS (D') beta_psi size mismatch → 0.0
+PASS (D'') snorm(δ≤0) = 1.0
+qforge_paw_overlap_selftest PASS

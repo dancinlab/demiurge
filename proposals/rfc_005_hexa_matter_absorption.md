@@ -65,7 +65,7 @@ tree. Pending user pick before content lands.
 - the result is filed in `PLAN.md` with cited numbers.
 
 > **GATE MET 2026-05-18 (g3 — cited, honest).** Run from the
-> absorbed tree `/Users/ghost/core/demiurge/domains/matter/`, local
+> absorbed tree `/Users/mini/dancinlab/demiurge/domains/matter/`, local
 > host, via the tree's own canonical scoreboard `selftest/run_all.sh`:
 > **selftest 38/38 GREEN, 0 FAIL** · **parity 29/29 GREEN, 0 skipped**
 > · `verify/run_all.hexa` **4/4** · `verify/spec_presence.hexa`

@@ -1,0 +1,3133 @@
+
+     Program PWSCF v.6.7MaX starts on 31May2026 at 13:18:57 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI), running on     5 processors
+
+     MPI processes distributed on     1 nodes
+     R & G space division:  proc/nbgrp/npool/nimage =       5
+     Reading input from vc-relax.in
+
+     Current dimensions of program PWSCF are:
+     Max number of different atomic species (ntypx) = 10
+     Max number of k-points (npk) =  40000
+     Max angular momentum in pseudopotentials (lmaxx) =  3
+     file Y.pbe-spn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  4S renormalized
+
+     Subspace diagonalization in iterative solution of the eigenvalue problem:
+     a serial algorithm will be used
+
+
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min         472     237     69                17280     6109     987
+     Max         473     237     70                17285     6111     990
+     Sum        2361    1185    349                86407    30551    4945
+
+
+
+     bravais-lattice index     =            1
+     lattice parameter (alat)  =       6.8019  a.u.
+     unit-cell volume          =     314.6956 (a.u.)^3
+     number of atoms/cell      =            5
+     number of atomic types    =            3
+     number of electrons       =        25.00
+     number of Kohn-Sham states=           17
+     kinetic-energy cutoff     =      80.0000  Ry
+     charge density cutoff     =     640.0000  Ry
+     scf convergence threshold =      1.0E-10
+     mixing beta               =       0.3000
+     number of iterations used =            8  plain     mixing
+     energy convergence thresh.=      1.0E-05
+     force convergence thresh. =      1.0E-04
+     press convergence thresh. =      5.0E-01
+     Exchange-correlation= PBE
+                           (   1   4   3   4   0   0   0)
+     nstep                     =          200
+
+
+     celldm(1)=   6.801900  celldm(2)=   0.000000  celldm(3)=   0.000000
+     celldm(4)=   0.000000  celldm(5)=   0.000000  celldm(6)=   0.000000
+
+     crystal axes: (cart. coord. in units of alat)
+               a(1) = (   1.000000   0.000000   0.000000 )  
+               a(2) = (   0.000000   1.000000   0.000000 )  
+               a(3) = (   0.000000   0.000000   1.000000 )  
+
+     reciprocal axes: (cart. coord. in units 2 pi/alat)
+               b(1) = (  1.000000  0.000000  0.000000 )  
+               b(2) = (  0.000000  1.000000  0.000000 )  
+               b(3) = (  0.000000  0.000000  1.000000 )  
+
+
+     PseudoPot. # 1 for Y  read from file:
+     ./pseudo/Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+     MD5 check sum: d801e27cd54ae79b7791715f927f78c5
+     Pseudo is Ultrasoft + core correction, Zval = 11.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.2.2
+     Using radial grid of 1223 points,  6 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+                l(5) =   2
+                l(6) =   2
+     Q(r) pseudized with 0 coefficients 
+
+
+     PseudoPot. # 2 for Au read from file:
+     ./pseudo/Au.pbe-n-rrkjus_psl.1.0.0.UPF
+     MD5 check sum: 36a5134bc4f0d73a839546df15754897
+     Pseudo is Ultrasoft + core correction, Zval = 11.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.3
+     Using radial grid of 1279 points,  6 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+                l(5) =   2
+                l(6) =   2
+     Q(r) pseudized with 0 coefficients 
+
+
+     PseudoPot. # 3 for H  read from file:
+     ./pseudo/H.pbe-rrkjus_psl.1.0.0.UPF
+     MD5 check sum: 9e615844a0e642e0aee8526d0d0f65f7
+     Pseudo is Ultrasoft, Zval =  1.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.3MaX
+     Using radial grid of  929 points,  2 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+     Q(r) pseudized with 0 coefficients 
+
+
+     atomic species   valence    mass     pseudopotential
+        Y             11.00    88.90600     Y ( 1.00)
+        Au            11.00   196.96700     Au( 1.00)
+        H              1.00     1.00800     H ( 1.00)
+
+     No symmetry found
+
+
+
+   Cartesian axes
+
+     site n.     atom                  positions (alat units)
+         1           Y   tau(   1) = (   0.5000000   0.5000000   0.5000000  )
+         2           Au  tau(   2) = (   0.0000000   0.0000000   0.0000000  )
+         3           H   tau(   3) = (   0.5000000   0.0000000   0.0000000  )
+         4           H   tau(   4) = (   0.0000000   0.5000000   0.0000000  )
+         5           H   tau(   5) = (   0.0000000   0.0000000   0.5000000  )
+
+     number of k points=   868  Methfessel-Paxton smearing, width (Ry)=  0.0200
+
+     Number of k-points >= 100: set verbosity='high' to print them.
+
+     Dense  grid:    86407 G-vectors     FFT dimensions: (  60,  60,  60)
+
+     Smooth grid:    30551 G-vectors     FFT dimensions: (  40,  40,  40)
+
+     Estimated max dynamical RAM per process >     248.11 MB
+
+     Estimated total dynamical RAM >       1.21 GB
+
+     Initial potential from superposition of free atoms
+
+     starting charge   24.99578, renormalised to   25.00000
+     Starting wfcs are   25 randomized atomic wfcs
+
+     total cpu time spent up to now is       11.8 secs
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-02,  avg # of iterations =  2.1
+
+     total cpu time spent up to now is       33.0 secs
+
+     total energy              =    -172.28745676 Ry
+     estimated scf accuracy    <       0.48333697 Ry
+
+     iteration #  2     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.93E-03,  avg # of iterations =  2.3
+
+     total cpu time spent up to now is       54.5 secs
+
+     total energy              =    -172.37148477 Ry
+     estimated scf accuracy    <       0.04510390 Ry
+
+     iteration #  3     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.80E-04,  avg # of iterations =  5.2
+
+     total cpu time spent up to now is       82.8 secs
+
+     total energy              =    -172.37565689 Ry
+     estimated scf accuracy    <       0.01035779 Ry
+
+     iteration #  4     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.14E-05,  avg # of iterations =  3.7
+
+     total cpu time spent up to now is      108.6 secs
+
+     total energy              =    -172.37749840 Ry
+     estimated scf accuracy    <       0.00127377 Ry
+
+     iteration #  5     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     ethr =  5.10E-06,  avg # of iterations =  6.3
+
+     total cpu time spent up to now is      140.8 secs
+
+     total energy              =    -172.37782888 Ry
+     estimated scf accuracy    <       0.00079120 Ry
+
+     iteration #  6     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  3.16E-06,  avg # of iterations =  2.3
+
+     total cpu time spent up to now is      160.4 secs
+
+     total energy              =    -172.37792673 Ry
+     estimated scf accuracy    <       0.00007106 Ry
+
+     iteration #  7     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.84E-07,  avg # of iterations =  3.0
+
+     total cpu time spent up to now is      182.9 secs
+
+     total energy              =    -172.37793579 Ry
+     estimated scf accuracy    <       0.00001353 Ry
+
+     iteration #  8     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  5.41E-08,  avg # of iterations =  3.6
+
+     total cpu time spent up to now is      209.5 secs
+
+     total energy              =    -172.37793593 Ry
+     estimated scf accuracy    <       0.00000743 Ry
+
+     iteration #  9     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.97E-08,  avg # of iterations =  3.4
+
+     total cpu time spent up to now is      233.1 secs
+
+     total energy              =    -172.37793853 Ry
+     estimated scf accuracy    <       0.00000101 Ry
+
+     iteration # 10     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.05E-09,  avg # of iterations =  2.9
+
+     total cpu time spent up to now is      255.8 secs
+
+     total energy              =    -172.37793867 Ry
+     estimated scf accuracy    <       0.00000023 Ry
+
+     iteration # 11     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  9.25E-10,  avg # of iterations =  2.9
+
+     total cpu time spent up to now is      279.3 secs
+
+     total energy              =    -172.37793874 Ry
+     estimated scf accuracy    <       0.00000005 Ry
+
+     iteration # 12     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.18E-10,  avg # of iterations =  3.0
+
+     total cpu time spent up to now is      302.2 secs
+
+     total energy              =    -172.37793870 Ry
+     estimated scf accuracy    <       0.00000009 Ry
+
+     iteration # 13     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.18E-10,  avg # of iterations =  2.9
+
+     total cpu time spent up to now is      326.1 secs
+
+     total energy              =    -172.37793872 Ry
+     estimated scf accuracy    <          2.4E-10 Ry
+
+     iteration # 14     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  9.73E-13,  avg # of iterations =  7.2
+
+     total cpu time spent up to now is      372.1 secs
+
+     total energy              =    -172.37793872 Ry
+     estimated scf accuracy    <          7.7E-10 Ry
+
+     iteration # 15     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  9.73E-13,  avg # of iterations =  1.1
+
+     total cpu time spent up to now is      390.7 secs
+
+     total energy              =    -172.37793872 Ry
+     estimated scf accuracy    <          1.2E-09 Ry
+
+     iteration # 16     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  9.73E-13,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is      408.5 secs
+
+     total energy              =    -172.37793872 Ry
+     estimated scf accuracy    <          8.7E-10 Ry
+
+     iteration # 17     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  9.73E-13,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is      430.1 secs
+
+     total energy              =    -172.37793872 Ry
+     estimated scf accuracy    <          2.5E-10 Ry
+
+     iteration # 18     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  9.73E-13,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is      447.6 secs
+
+     total energy              =    -172.37793872 Ry
+     estimated scf accuracy    <          1.5E-10 Ry
+
+     iteration # 19     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  5.86E-13,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is      467.0 secs
+
+     End of self-consistent calculation
+
+     Number of k-points >= 100: set verbosity='high' to print the bands.
+
+     the Fermi energy is    15.3780 ev
+
+!    total energy              =    -172.37793872 Ry
+     estimated scf accuracy    <          5.5E-12 Ry
+     smearing contrib. (-TS)   =      -0.00069980 Ry
+     internal energy E=F+TS    =    -172.37723892 Ry
+
+     The total energy is F=E-TS. E is the sum of the following terms:
+     one-electron contribution =      -1.52077702 Ry
+     hartree contribution      =      19.39857064 Ry
+     xc contribution           =     -52.42891490 Ry
+     ewald contribution        =    -137.82611765 Ry
+
+     convergence has been achieved in  19 iterations
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+
+     atom    1 type  1   force =    -0.00000000    0.00000000   -0.00000000
+     atom    2 type  2   force =     0.00000002   -0.00000003   -0.00000003
+     atom    3 type  3   force =    -0.00000001    0.00000001    0.00000001
+     atom    4 type  3   force =    -0.00000001    0.00000001    0.00000001
+     atom    5 type  3   force =    -0.00000001    0.00000001    0.00000001
+
+     Total force =     0.000000     Total SCF correction =     0.000000
+     SCF correction compared to forces is large: reduce conv_thr to get better values
+
+
+     Computing stress (Cartesian axis) and pressure
+
+          total   stress  (Ry/bohr**3)                   (kbar)     P=      253.10
+   0.00172053  -0.00000000   0.00000000          253.10       -0.00        0.00
+  -0.00000000   0.00172053   0.00000000           -0.00      253.10        0.00
+   0.00000000   0.00000000   0.00172053            0.00        0.00      253.10
+
+
+     BFGS Geometry Optimization
+     Energy error            =      0.0E+00
+     Gradient error          =      3.1E-08
+     Cell gradient error     =      1.4E-03
+
+
+     number of scf cycles    =   1
+     number of bfgs steps    =   0
+
+     enthalpy new            =    -172.2709758457 Ry
+
+     new trust radius        =       0.1224601279 bohr
+     new conv_thr            =            1.0E-10 Ry
+
+     new unit-cell volume =    348.41933 a.u.^3 (    51.63042 Ang^3 )
+     density =      9.29151 g/cm^3
+
+CELL_PARAMETERS (alat=  6.80190000)
+   1.034515907  -0.000000000   0.000000003
+  -0.000000000   1.034515912   0.000000002
+   0.000000003   0.000000002   1.034515901
+
+ATOMIC_POSITIONS (crystal)
+Y             0.5000000000        0.5000000003        0.4999999998
+Au            0.0000000027       -0.0000000046       -0.0000000040
+H             0.4999999991        0.0000000015        0.0000000014
+H            -0.0000000009        0.5000000011        0.0000000014
+H            -0.0000000009        0.0000000016        0.5000000014
+
+
+
+     Writing output data file ./out/yauh3.save/
+     NEW-OLD atomic charge density approx. for the potential
+     extrapolated charge   27.41935, renormalised to   25.00000
+
+     total cpu time spent up to now is      478.3 secs
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  1.00E-06,  avg # of iterations = 18.3
+
+     total cpu time spent up to now is      582.6 secs
+
+     total energy              =    -171.74077942 Ry
+     estimated scf accuracy    <       0.74638928 Ry
+
+     iteration #  2     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.99E-03,  avg # of iterations =  3.9
+
+     total cpu time spent up to now is      611.6 secs
+
+     total energy              =    -172.45225061 Ry
+     estimated scf accuracy    <       0.66581214 Ry
+
+     iteration #  3     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.66E-03,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is      628.9 secs
+
+     total energy              =    -172.40261221 Ry
+     estimated scf accuracy    <       0.24617212 Ry
+
+     iteration #  4     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  9.85E-04,  avg # of iterations =  1.6
+
+     total cpu time spent up to now is      647.7 secs
+
+     total energy              =    -172.41932461 Ry
+     estimated scf accuracy    <       0.04425855 Ry
+
+     iteration #  5     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.77E-04,  avg # of iterations =  2.6
+
+     total cpu time spent up to now is      667.4 secs
+
+     total energy              =    -172.40722486 Ry
+     estimated scf accuracy    <       0.03684532 Ry
+
+     iteration #  6     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.47E-04,  avg # of iterations =  2.6
+
+     total cpu time spent up to now is      689.1 secs
+
+     total energy              =    -172.41592072 Ry
+     estimated scf accuracy    <       0.00142657 Ry
+
+     iteration #  7     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     ethr =  5.71E-06,  avg # of iterations =  9.2
+
+     total cpu time spent up to now is      722.6 secs
+
+     total energy              =    -172.41809757 Ry
+     estimated scf accuracy    <       0.01090334 Ry
+
+     iteration #  8     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  5.71E-06,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is      739.4 secs
+
+     total energy              =    -172.41351531 Ry
+     estimated scf accuracy    <       0.00988611 Ry
+
+     iteration #  9     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  5.71E-06,  avg # of iterations =  4.0
+
+     total cpu time spent up to now is      766.6 secs
+
+     total energy              =    -172.41575386 Ry
+     estimated scf accuracy    <       0.00022440 Ry
+
+     iteration # 10     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  8.98E-07,  avg # of iterations =  2.3
+
+     total cpu time spent up to now is      787.8 secs
+
+     total energy              =    -172.41576678 Ry
+     estimated scf accuracy    <       0.00003942 Ry
+
+     iteration # 11     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.58E-07,  avg # of iterations =  2.7
+
+     total cpu time spent up to now is      809.6 secs
+
+     total energy              =    -172.41577733 Ry
+     estimated scf accuracy    <       0.00000808 Ry
+
+     iteration # 12     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  3.23E-08,  avg # of iterations =  3.4
+
+     total cpu time spent up to now is      832.2 secs
+
+     total energy              =    -172.41577931 Ry
+     estimated scf accuracy    <       0.00002738 Ry
+
+     iteration # 13     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  3.23E-08,  avg # of iterations =  1.2
+
+     total cpu time spent up to now is      851.4 secs
+
+     total energy              =    -172.41577261 Ry
+     estimated scf accuracy    <       0.00002316 Ry
+
+     iteration # 14     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  3.23E-08,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is      874.1 secs
+
+     total energy              =    -172.41577180 Ry
+     estimated scf accuracy    <       0.00000583 Ry
+
+     iteration # 15     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.33E-08,  avg # of iterations =  5.2
+
+     total cpu time spent up to now is      906.7 secs
+
+     total energy              =    -172.41577776 Ry
+     estimated scf accuracy    <       0.00002756 Ry
+
+     iteration # 16     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.33E-08,  avg # of iterations =  1.2
+
+     total cpu time spent up to now is      924.0 secs
+
+     total energy              =    -172.41577336 Ry
+     estimated scf accuracy    <       0.00001565 Ry
+
+     iteration # 17     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.33E-08,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is      943.5 secs
+
+     total energy              =    -172.41577175 Ry
+     estimated scf accuracy    <       0.00000495 Ry
+
+     iteration # 18     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.98E-08,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is      963.3 secs
+
+     total energy              =    -172.41577249 Ry
+     estimated scf accuracy    <       0.00000026 Ry
+
+     iteration # 19     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.04E-09,  avg # of iterations =  6.0
+
+     total cpu time spent up to now is      998.4 secs
+
+     total energy              =    -172.41577267 Ry
+     estimated scf accuracy    <       0.00000107 Ry
+
+     iteration # 20     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.04E-09,  avg # of iterations =  4.0
+
+     total cpu time spent up to now is     1026.2 secs
+
+     total energy              =    -172.41577283 Ry
+     estimated scf accuracy    <          8.9E-09 Ry
+
+     iteration # 21     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  3.57E-11,  avg # of iterations =  4.6
+
+     total cpu time spent up to now is     1053.9 secs
+
+     total energy              =    -172.41577284 Ry
+     estimated scf accuracy    <          3.2E-09 Ry
+
+     iteration # 22     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.29E-11,  avg # of iterations =  1.1
+
+     total cpu time spent up to now is     1069.9 secs
+
+     total energy              =    -172.41577284 Ry
+     estimated scf accuracy    <          1.2E-09 Ry
+
+     iteration # 23     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.75E-12,  avg # of iterations =  3.8
+
+     total cpu time spent up to now is     1092.8 secs
+
+     total energy              =    -172.41577284 Ry
+     estimated scf accuracy    <          5.3E-10 Ry
+
+     iteration # 24     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.12E-12,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     1111.8 secs
+
+     End of self-consistent calculation
+
+     Number of k-points >= 100: set verbosity='high' to print the bands.
+
+     the Fermi energy is    13.6379 ev
+
+!    total energy              =    -172.41577284 Ry
+     estimated scf accuracy    <          8.4E-12 Ry
+     smearing contrib. (-TS)   =      -0.00114499 Ry
+     internal energy E=F+TS    =    -172.41462785 Ry
+
+     The total energy is F=E-TS. E is the sum of the following terms:
+     one-electron contribution =      -8.21011561 Ry
+     hartree contribution      =      21.22673169 Ry
+     xc contribution           =     -52.20359925 Ry
+     ewald contribution        =    -133.22764468 Ry
+
+     convergence has been achieved in  24 iterations
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+
+     atom    1 type  1   force =    -0.00000002    0.00000000    0.00000001
+     atom    2 type  2   force =     0.00000012    0.00000003   -0.00000003
+     atom    3 type  3   force =    -0.00000003   -0.00000001    0.00000001
+     atom    4 type  3   force =    -0.00000004   -0.00000001    0.00000001
+     atom    5 type  3   force =    -0.00000004   -0.00000001    0.00000000
+
+     Total force =     0.000000     Total SCF correction =     0.000000
+     SCF correction compared to forces is large: reduce conv_thr to get better values
+
+
+     Computing stress (Cartesian axis) and pressure
+
+          total   stress  (Ry/bohr**3)                   (kbar)     P=       90.02
+   0.00061191  -0.00000000   0.00000000           90.02       -0.00        0.00
+  -0.00000000   0.00061191   0.00000000           -0.00       90.02        0.00
+   0.00000000   0.00000000   0.00061191            0.00        0.00       90.02
+
+     Energy error            =      2.6E-02
+     Gradient error          =      1.2E-07
+     Cell gradient error     =      2.7E-04
+
+
+     number of scf cycles    =   2
+     number of bfgs steps    =   1
+
+     enthalpy old            =    -172.2709758457 Ry
+     enthalpy new            =    -172.2973475167 Ry
+
+     CASE: enthalpy_new < enthalpy_old
+
+     new trust radius        =       0.0332813613 bohr
+     new conv_thr            =            1.0E-12 Ry
+
+     new unit-cell volume =    357.82108 a.u.^3 (    53.02361 Ang^3 )
+     density =      9.04738 g/cm^3
+
+CELL_PARAMETERS (alat=  6.80190000)
+   1.043738540  -0.000000011   0.000000006
+  -0.000000011   1.043738568   0.000000010
+   0.000000006   0.000000010   1.043738581
+
+ATOMIC_POSITIONS (crystal)
+Y             0.4999999954        0.5000000003        0.5000000018
+Au            0.0000000266        0.0000000008       -0.0000000094
+H             0.4999999936        0.0000000001        0.0000000028
+H            -0.0000000076        0.4999999988        0.0000000027
+H            -0.0000000079        0.0000000001        0.5000000020
+
+
+
+     Writing output data file ./out/yauh3.save/
+     NEW-OLD atomic charge density approx. for the potential
+     extrapolated charge   25.65676, renormalised to   25.00000
+
+     total cpu time spent up to now is     1123.7 secs
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  1.00E-06,  avg # of iterations = 12.5
+
+     total cpu time spent up to now is     1187.8 secs
+
+     total energy              =    -172.37588268 Ry
+     estimated scf accuracy    <       0.04909877 Ry
+
+     iteration #  2     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.96E-04,  avg # of iterations =  3.3
+
+     total cpu time spent up to now is     1215.6 secs
+
+     total energy              =    -172.42118994 Ry
+     estimated scf accuracy    <       0.04828026 Ry
+
+     iteration #  3     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.93E-04,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     1232.6 secs
+
+     total energy              =    -172.42020176 Ry
+     estimated scf accuracy    <       0.01340255 Ry
+
+     iteration #  4     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  5.36E-05,  avg # of iterations =  1.3
+
+     total cpu time spent up to now is     1249.2 secs
+
+     total energy              =    -172.42052954 Ry
+     estimated scf accuracy    <       0.00340934 Ry
+
+     iteration #  5     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.36E-05,  avg # of iterations =  3.0
+
+     total cpu time spent up to now is     1270.2 secs
+
+     total energy              =    -172.42053683 Ry
+     estimated scf accuracy    <       0.00174254 Ry
+
+     iteration #  6     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  6.97E-06,  avg # of iterations =  2.2
+
+     total cpu time spent up to now is     1287.2 secs
+
+     total energy              =    -172.42037584 Ry
+     estimated scf accuracy    <       0.00103878 Ry
+
+     iteration #  7     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     ethr =  4.16E-06,  avg # of iterations =  3.4
+
+     total cpu time spent up to now is     1306.0 secs
+
+     total energy              =    -172.42030552 Ry
+     estimated scf accuracy    <       0.00031710 Ry
+
+     iteration #  8     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  1.27E-06,  avg # of iterations =  4.7
+
+     total cpu time spent up to now is     1331.5 secs
+
+     total energy              =    -172.42044371 Ry
+     estimated scf accuracy    <       0.00001583 Ry
+
+     iteration #  9     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  6.33E-08,  avg # of iterations =  4.3
+
+     total cpu time spent up to now is     1354.3 secs
+
+     total energy              =    -172.42044856 Ry
+     estimated scf accuracy    <       0.00002822 Ry
+
+     iteration # 10     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  6.33E-08,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     1370.5 secs
+
+     total energy              =    -172.42044441 Ry
+     estimated scf accuracy    <       0.00002907 Ry
+
+     iteration # 11     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  6.33E-08,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     1387.0 secs
+
+     total energy              =    -172.42044065 Ry
+     estimated scf accuracy    <       0.00001824 Ry
+
+     iteration # 12     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  6.33E-08,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     1404.1 secs
+
+     total energy              =    -172.42043768 Ry
+     estimated scf accuracy    <       0.00000733 Ry
+
+     iteration # 13     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.93E-08,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     1423.9 secs
+
+     total energy              =    -172.42043922 Ry
+     estimated scf accuracy    <       0.00000035 Ry
+
+     iteration # 14     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.40E-09,  avg # of iterations =  4.7
+
+     total cpu time spent up to now is     1448.9 secs
+
+     total energy              =    -172.42043937 Ry
+     estimated scf accuracy    <       0.00000033 Ry
+
+     iteration # 15     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.33E-09,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     1468.4 secs
+
+     total energy              =    -172.42043967 Ry
+     estimated scf accuracy    <       0.00000044 Ry
+
+     iteration # 16     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.33E-09,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     1488.0 secs
+
+     total energy              =    -172.42043923 Ry
+     estimated scf accuracy    <       0.00000125 Ry
+
+     iteration # 17     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.33E-09,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     1507.7 secs
+
+     total energy              =    -172.42043939 Ry
+     estimated scf accuracy    <       0.00000021 Ry
+
+     iteration # 18     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  8.40E-10,  avg # of iterations =  1.2
+
+     total cpu time spent up to now is     1524.2 secs
+
+     total energy              =    -172.42043935 Ry
+     estimated scf accuracy    <       0.00000041 Ry
+
+     iteration # 19     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  8.40E-10,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     1540.2 secs
+
+     total energy              =    -172.42043923 Ry
+     estimated scf accuracy    <       0.00000030 Ry
+
+     iteration # 20     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  8.40E-10,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     1558.9 secs
+
+     total energy              =    -172.42043927 Ry
+     estimated scf accuracy    <       0.00000003 Ry
+
+     iteration # 21     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.19E-10,  avg # of iterations =  2.1
+
+     total cpu time spent up to now is     1577.5 secs
+
+     total energy              =    -172.42043926 Ry
+     estimated scf accuracy    <       0.00000003 Ry
+
+     iteration # 22     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.09E-10,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     1599.1 secs
+
+     total energy              =    -172.42043926 Ry
+     estimated scf accuracy    <          7.8E-09 Ry
+
+     iteration # 23     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  3.13E-11,  avg # of iterations =  4.8
+
+     total cpu time spent up to now is     1627.8 secs
+
+     total energy              =    -172.42043926 Ry
+     estimated scf accuracy    <          1.9E-10 Ry
+
+     iteration # 24     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  7.79E-13,  avg # of iterations =  4.8
+
+     total cpu time spent up to now is     1653.8 secs
+
+     total energy              =    -172.42043926 Ry
+     estimated scf accuracy    <          1.0E-10 Ry
+
+     iteration # 25     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.09E-13,  avg # of iterations =  2.8
+
+     total cpu time spent up to now is     1678.1 secs
+
+     total energy              =    -172.42043926 Ry
+     estimated scf accuracy    <          2.2E-12 Ry
+
+     iteration # 26     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     1696.3 secs
+
+     total energy              =    -172.42043926 Ry
+     estimated scf accuracy    <          6.1E-12 Ry
+
+     iteration # 27     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     1712.5 secs
+
+     End of self-consistent calculation
+
+     Number of k-points >= 100: set verbosity='high' to print the bands.
+
+     the Fermi energy is    13.2063 ev
+
+!    total energy              =    -172.42043926 Ry
+     estimated scf accuracy    <          2.1E-13 Ry
+     smearing contrib. (-TS)   =      -0.00116438 Ry
+     internal energy E=F+TS    =    -172.41927488 Ry
+
+     The total energy is F=E-TS. E is the sum of the following terms:
+     one-electron contribution =      -9.93289862 Ry
+     hartree contribution      =      21.71297713 Ry
+     xc contribution           =     -52.14893146 Ry
+     ewald contribution        =    -132.05042194 Ry
+
+     convergence has been achieved in  27 iterations
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+
+     atom    1 type  1   force =     0.00000000    0.00000000   -0.00000001
+     atom    2 type  2   force =     0.00000000   -0.00000000    0.00000002
+     atom    3 type  3   force =     0.00000001   -0.00000000   -0.00000000
+     atom    4 type  3   force =    -0.00000001    0.00000000   -0.00000000
+     atom    5 type  3   force =    -0.00000001   -0.00000000   -0.00000001
+
+     Total force =     0.000000     Total SCF correction =     0.000000
+     SCF correction compared to forces is large: reduce conv_thr to get better values
+
+
+     Computing stress (Cartesian axis) and pressure
+
+          total   stress  (Ry/bohr**3)                   (kbar)     P=       56.72
+   0.00038559  -0.00000000   0.00000000           56.72       -0.00        0.00
+  -0.00000000   0.00038559   0.00000000           -0.00       56.72        0.00
+   0.00000000   0.00000000   0.00038559            0.00        0.00       56.72
+
+     Energy error            =      1.5E-03
+     Gradient error          =      1.5E-08
+     Cell gradient error     =      4.6E-05
+
+
+     number of scf cycles    =   3
+     number of bfgs steps    =   2
+
+     enthalpy old            =    -172.2973475167 Ry
+     enthalpy new            =    -172.2988183529 Ry
+
+     CASE: enthalpy_new < enthalpy_old
+
+     new trust radius        =       0.0068952867 bohr
+     new conv_thr            =            1.0E-12 Ry
+
+     new unit-cell volume =    359.78112 a.u.^3 (    53.31406 Ang^3 )
+     density =      8.99809 g/cm^3
+
+CELL_PARAMETERS (alat=  6.80190000)
+   1.045640828  -0.000000014   0.000000009
+  -0.000000014   1.045640875   0.000000013
+   0.000000009   0.000000013   1.045640890
+
+ATOMIC_POSITIONS (crystal)
+Y             0.4999999959        0.5000000005        0.5000000007
+Au            0.0000000283        0.0000000010       -0.0000000068
+H             0.4999999956       -0.0000000001        0.0000000027
+H            -0.0000000097        0.4999999988        0.0000000027
+H            -0.0000000101       -0.0000000001        0.5000000007
+
+
+
+     Writing output data file ./out/yauh3.save/
+     NEW-OLD atomic charge density approx. for the potential
+     extrapolated charge   25.13617, renormalised to   25.00000
+
+     total cpu time spent up to now is     1723.8 secs
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-06,  avg # of iterations =  5.5
+
+     total cpu time spent up to now is     1758.8 secs
+
+     total energy              =    -172.41939160 Ry
+     estimated scf accuracy    <       0.00193026 Ry
+
+     iteration #  2     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  7.72E-06,  avg # of iterations =  3.4
+
+     total cpu time spent up to now is     1787.1 secs
+
+     total energy              =    -172.42115033 Ry
+     estimated scf accuracy    <       0.00200071 Ry
+
+     iteration #  3     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  7.72E-06,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     1803.6 secs
+
+     total energy              =    -172.42114544 Ry
+     estimated scf accuracy    <       0.00048922 Ry
+
+     iteration #  4     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.96E-06,  avg # of iterations =  1.5
+
+     total cpu time spent up to now is     1821.5 secs
+
+     total energy              =    -172.42115610 Ry
+     estimated scf accuracy    <       0.00013709 Ry
+
+     iteration #  5     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  5.48E-07,  avg # of iterations =  1.9
+
+     total cpu time spent up to now is     1840.3 secs
+
+     total energy              =    -172.42115813 Ry
+     estimated scf accuracy    <       0.00007298 Ry
+
+     iteration #  6     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.92E-07,  avg # of iterations =  1.4
+
+     total cpu time spent up to now is     1858.4 secs
+
+     total energy              =    -172.42113482 Ry
+     estimated scf accuracy    <       0.00005152 Ry
+
+     iteration #  7     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.06E-07,  avg # of iterations =  3.2
+
+     total cpu time spent up to now is     1881.8 secs
+
+     total energy              =    -172.42115169 Ry
+     estimated scf accuracy    <       0.00000105 Ry
+
+     iteration #  8     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  4.21E-09,  avg # of iterations =  5.7
+
+     total cpu time spent up to now is     1915.1 secs
+
+     total energy              =    -172.42115287 Ry
+     estimated scf accuracy    <       0.00000526 Ry
+
+     iteration #  9     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.21E-09,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     1932.5 secs
+
+     total energy              =    -172.42115210 Ry
+     estimated scf accuracy    <       0.00000302 Ry
+
+     iteration # 10     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.21E-09,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     1953.1 secs
+
+     total energy              =    -172.42115212 Ry
+     estimated scf accuracy    <       0.00000091 Ry
+
+     iteration # 11     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  3.64E-09,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     1970.4 secs
+
+     total energy              =    -172.42115209 Ry
+     estimated scf accuracy    <       0.00000044 Ry
+
+     iteration # 12     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.78E-09,  avg # of iterations =  1.8
+
+     total cpu time spent up to now is     1989.2 secs
+
+     total energy              =    -172.42115207 Ry
+     estimated scf accuracy    <       0.00000023 Ry
+
+     iteration # 13     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  9.13E-10,  avg # of iterations =  2.7
+
+     total cpu time spent up to now is     2009.7 secs
+
+     total energy              =    -172.42115209 Ry
+     estimated scf accuracy    <       0.00000007 Ry
+
+     iteration # 14     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.65E-10,  avg # of iterations =  3.6
+
+     total cpu time spent up to now is     2031.2 secs
+
+     total energy              =    -172.42115209 Ry
+     estimated scf accuracy    <       0.00000003 Ry
+
+     iteration # 15     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.30E-10,  avg # of iterations =  3.7
+
+     total cpu time spent up to now is     2052.9 secs
+
+     total energy              =    -172.42115210 Ry
+     estimated scf accuracy    <          5.7E-09 Ry
+
+     iteration # 16     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.27E-11,  avg # of iterations =  3.4
+
+     total cpu time spent up to now is     2074.6 secs
+
+     total energy              =    -172.42115210 Ry
+     estimated scf accuracy    <          2.4E-09 Ry
+
+     iteration # 17     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  9.55E-12,  avg # of iterations =  3.4
+
+     total cpu time spent up to now is     2096.5 secs
+
+     total energy              =    -172.42115210 Ry
+     estimated scf accuracy    <          1.3E-10 Ry
+
+     iteration # 18     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  5.20E-13,  avg # of iterations =  5.8
+
+     total cpu time spent up to now is     2130.4 secs
+
+     total energy              =    -172.42115210 Ry
+     estimated scf accuracy    <          5.7E-10 Ry
+
+     iteration # 19     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  5.20E-13,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     2150.4 secs
+
+     total energy              =    -172.42115210 Ry
+     estimated scf accuracy    <          1.7E-10 Ry
+
+     iteration # 20     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  5.20E-13,  avg # of iterations =  1.5
+
+     total cpu time spent up to now is     2168.5 secs
+
+     total energy              =    -172.42115210 Ry
+     estimated scf accuracy    <          6.5E-11 Ry
+
+     iteration # 21     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.59E-13,  avg # of iterations =  2.8
+
+     total cpu time spent up to now is     2189.5 secs
+
+     total energy              =    -172.42115210 Ry
+     estimated scf accuracy    <          6.0E-12 Ry
+
+     iteration # 22     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  3.8
+
+     total cpu time spent up to now is     2211.3 secs
+
+     End of self-consistent calculation
+
+     Number of k-points >= 100: set verbosity='high' to print the bands.
+
+     the Fermi energy is    13.1190 ev
+
+!    total energy              =    -172.42115210 Ry
+     estimated scf accuracy    <          7.9E-15 Ry
+     smearing contrib. (-TS)   =      -0.00116434 Ry
+     internal energy E=F+TS    =    -172.41998775 Ry
+
+     The total energy is F=E-TS. E is the sum of the following terms:
+     one-electron contribution =     -10.28499820 Ry
+     hartree contribution      =      21.81312381 Ry
+     xc contribution           =     -52.13792661 Ry
+     ewald contribution        =    -131.81018676 Ry
+
+     convergence has been achieved in  22 iterations
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+
+     atom    1 type  1   force =     0.00000001    0.00000000   -0.00000001
+     atom    2 type  2   force =    -0.00000003   -0.00000000    0.00000001
+     atom    3 type  3   force =     0.00000002   -0.00000000   -0.00000000
+     atom    4 type  3   force =    -0.00000000    0.00000000   -0.00000000
+     atom    5 type  3   force =    -0.00000000   -0.00000000   -0.00000000
+
+     Total force =     0.000000     Total SCF correction =     0.000000
+     SCF correction compared to forces is large: reduce conv_thr to get better values
+
+
+     Computing stress (Cartesian axis) and pressure
+
+          total   stress  (Ry/bohr**3)                   (kbar)     P=       50.30
+   0.00034196  -0.00000000   0.00000000           50.30       -0.00        0.00
+  -0.00000000   0.00034196   0.00000000           -0.00       50.30        0.00
+   0.00000000   0.00000000   0.00034196            0.00        0.00       50.30
+
+     Energy error            =      4.7E-05
+     Gradient error          =      2.5E-08
+     Cell gradient error     =      2.1E-06
+
+
+     number of scf cycles    =   4
+     number of bfgs steps    =   3
+
+     enthalpy old            =    -172.2988183529 Ry
+     enthalpy new            =    -172.2988649778 Ry
+
+     CASE: enthalpy_new < enthalpy_old
+
+     new trust radius        =       0.0003288298 bohr
+     new conv_thr            =            1.0E-12 Ry
+
+     new unit-cell volume =    359.87468 a.u.^3 (    53.32793 Ang^3 )
+     density =      8.99575 g/cm^3
+
+CELL_PARAMETERS (alat=  6.80190000)
+   1.045731439  -0.000000016   0.000000013
+  -0.000000016   1.045731512   0.000000016
+   0.000000013   0.000000016   1.045731522
+
+ATOMIC_POSITIONS (crystal)
+Y             0.4999999980        0.5000000006        0.4999999999
+Au            0.0000000243        0.0000000008       -0.0000000049
+H             0.4999999981       -0.0000000002        0.0000000026
+H            -0.0000000100        0.4999999990        0.0000000025
+H            -0.0000000104       -0.0000000002        0.4999999999
+
+
+
+     Writing output data file ./out/yauh3.save/
+     NEW-OLD atomic charge density approx. for the potential
+     extrapolated charge   25.00650, renormalised to   25.00000
+
+     total cpu time spent up to now is     2223.3 secs
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-06,  avg # of iterations =  2.0
+
+     Threshold (ethr) on eigenvalues was too large:
+     Diagonalizing with lowered threshold
+
+     Davidson diagonalization with overlap
+     ethr =  1.48E-08,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     2266.1 secs
+
+     total energy              =    -172.42118042 Ry
+     estimated scf accuracy    <       0.00000390 Ry
+
+     iteration #  2     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.56E-08,  avg # of iterations =  3.8
+
+     total cpu time spent up to now is     2293.9 secs
+
+     total energy              =    -172.42118399 Ry
+     estimated scf accuracy    <       0.00000412 Ry
+
+     iteration #  3     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.56E-08,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     2312.2 secs
+
+     total energy              =    -172.42118400 Ry
+     estimated scf accuracy    <       0.00000098 Ry
+
+     iteration #  4     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  3.93E-09,  avg # of iterations =  1.7
+
+     total cpu time spent up to now is     2331.3 secs
+
+     total energy              =    -172.42118404 Ry
+     estimated scf accuracy    <       0.00000027 Ry
+
+     iteration #  5     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.10E-09,  avg # of iterations =  1.8
+
+     total cpu time spent up to now is     2352.1 secs
+
+     total energy              =    -172.42118406 Ry
+     estimated scf accuracy    <       0.00000020 Ry
+
+     iteration #  6     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  8.17E-10,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     2371.1 secs
+
+     total energy              =    -172.42118407 Ry
+     estimated scf accuracy    <       0.00000023 Ry
+
+     iteration #  7     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  8.17E-10,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     2388.3 secs
+
+     total energy              =    -172.42118397 Ry
+     estimated scf accuracy    <       0.00000023 Ry
+
+     iteration #  8     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  8.17E-10,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     2407.6 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <       0.00000001 Ry
+
+     iteration #  9     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.52E-11,  avg # of iterations =  4.6
+
+     total cpu time spent up to now is     2435.6 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          2.7E-09 Ry
+
+     iteration # 10     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.09E-11,  avg # of iterations =  2.7
+
+     total cpu time spent up to now is     2459.9 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          2.7E-09 Ry
+
+     iteration # 11     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.09E-11,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     2482.4 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          2.6E-09 Ry
+
+     iteration # 12     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.06E-11,  avg # of iterations =  2.5
+
+     total cpu time spent up to now is     2503.9 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          1.0E-09 Ry
+
+     iteration # 13     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.12E-12,  avg # of iterations =  1.2
+
+     total cpu time spent up to now is     2520.7 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          1.4E-09 Ry
+
+     iteration # 14     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.12E-12,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     2538.6 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          1.6E-09 Ry
+
+     iteration # 15     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.12E-12,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     2554.7 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          1.4E-09 Ry
+
+     iteration # 16     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.12E-12,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     2570.8 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          1.3E-09 Ry
+
+     iteration # 17     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.12E-12,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     2587.0 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          6.0E-10 Ry
+
+     iteration # 18     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.39E-12,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     2607.5 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          2.1E-11 Ry
+
+     iteration # 19     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  4.6
+
+     total cpu time spent up to now is     2638.3 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          2.8E-11 Ry
+
+     iteration # 20     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     2656.0 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          2.9E-11 Ry
+
+     iteration # 21     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  4.0
+
+     total cpu time spent up to now is     2684.2 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          1.0E-10 Ry
+
+     iteration # 22     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  4.0
+
+     total cpu time spent up to now is     2714.1 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          4.3E-12 Ry
+
+     iteration # 23     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  2.1
+
+     total cpu time spent up to now is     2735.2 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          2.3E-11 Ry
+
+     iteration # 24     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  1.9
+
+     total cpu time spent up to now is     2755.0 secs
+
+     total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          1.1E-12 Ry
+
+     iteration # 25     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     2772.8 secs
+
+     End of self-consistent calculation
+
+     Number of k-points >= 100: set verbosity='high' to print the bands.
+
+     the Fermi energy is    13.1148 ev
+
+!    total energy              =    -172.42118401 Ry
+     estimated scf accuracy    <          9.3E-14 Ry
+     smearing contrib. (-TS)   =      -0.00116431 Ry
+     internal energy E=F+TS    =    -172.42001970 Ry
+
+     The total energy is F=E-TS. E is the sum of the following terms:
+     one-electron contribution =     -10.30174360 Ry
+     hartree contribution      =      21.81789119 Ry
+     xc contribution           =     -52.13740360 Ry
+     ewald contribution        =    -131.79876369 Ry
+
+     convergence has been achieved in  25 iterations
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+
+     atom    1 type  1   force =     0.00000001   -0.00000000   -0.00000000
+     atom    2 type  2   force =    -0.00000004    0.00000001    0.00000002
+     atom    3 type  3   force =     0.00000002   -0.00000000   -0.00000000
+     atom    4 type  3   force =     0.00000001   -0.00000000   -0.00000000
+     atom    5 type  3   force =     0.00000000   -0.00000000   -0.00000001
+
+     Total force =     0.000000     Total SCF correction =     0.000000
+     SCF correction compared to forces is large: reduce conv_thr to get better values
+
+
+     Computing stress (Cartesian axis) and pressure
+
+          total   stress  (Ry/bohr**3)                   (kbar)     P=       50.00
+   0.00033990  -0.00000000   0.00000000           50.00       -0.00        0.00
+  -0.00000000   0.00033990   0.00000000           -0.00       50.00        0.00
+   0.00000000   0.00000000   0.00033990            0.00        0.00       50.00
+
+     Energy error            =      1.2E-07
+     Gradient error          =      4.1E-08
+     Cell gradient error     =      9.2E-09
+
+
+     bfgs converged in   5 scf cycles and   4 bfgs steps
+     (criteria: energy <  1.0E-05 Ry, force <  1.0E-04Ry/Bohr, cell <  5.0E-01kbar)
+
+     End of BFGS Geometry Optimization
+
+     Final enthalpy =    -172.2988650969 Ry
+
+     File ./out/yauh3.bfgs deleted, as requested
+Begin final coordinates
+     new unit-cell volume =    359.87468 a.u.^3 (    53.32793 Ang^3 )
+     density =      8.99575 g/cm^3
+
+CELL_PARAMETERS (alat=  6.80190000)
+   1.045731439  -0.000000016   0.000000013
+  -0.000000016   1.045731512   0.000000016
+   0.000000013   0.000000016   1.045731522
+
+ATOMIC_POSITIONS (crystal)
+Y             0.4999999980        0.5000000006        0.4999999999
+Au            0.0000000243        0.0000000008       -0.0000000049
+H             0.4999999981       -0.0000000002        0.0000000026
+H            -0.0000000100        0.4999999990        0.0000000025
+H            -0.0000000104       -0.0000000002        0.4999999999
+End final coordinates
+
+
+
+     Writing output data file ./out/yauh3.save/
+
+     Final scf calculation at the relaxed structure.
+     The G-vectors are recalculated for the final unit cell
+     Results may differ from those at the preceding step.
+
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min         517     260     74                19677     6977    1098
+     Max         517     262     75                19677     6978    1101
+     Sum        2585    1305    373                98385    34889    5497
+
+
+
+     bravais-lattice index     =            1
+     lattice parameter (alat)  =       6.8019  a.u.
+     unit-cell volume          =     359.8747 (a.u.)^3
+     number of atoms/cell      =            5
+     number of atomic types    =            3
+     number of electrons       =        25.00
+     number of Kohn-Sham states=           17
+     kinetic-energy cutoff     =      80.0000  Ry
+     charge density cutoff     =     640.0000  Ry
+     scf convergence threshold =      1.0E-12
+     mixing beta               =       0.3000
+     number of iterations used =            8  plain     mixing
+     press convergence thresh. =      5.0E-01
+     Exchange-correlation= PBE
+                           (   1   4   3   4   0   0   0)
+
+     celldm(1)=   6.801900  celldm(2)=   0.000000  celldm(3)=   0.000000
+     celldm(4)=   0.000000  celldm(5)=   0.000000  celldm(6)=   0.000000
+
+     crystal axes: (cart. coord. in units of alat)
+               a(1) = (   1.045731  -0.000000   0.000000 )  
+               a(2) = (  -0.000000   1.045732   0.000000 )  
+               a(3) = (   0.000000   0.000000   1.045732 )  
+
+     reciprocal axes: (cart. coord. in units 2 pi/alat)
+               b(1) = (  0.956268  0.000000 -0.000000 )  
+               b(2) = (  0.000000  0.956268 -0.000000 )  
+               b(3) = ( -0.000000 -0.000000  0.956268 )  
+
+
+     PseudoPot. # 1 for Y  read from file:
+     ./pseudo/Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+     MD5 check sum: d801e27cd54ae79b7791715f927f78c5
+     Pseudo is Ultrasoft + core correction, Zval = 11.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.2.2
+     Using radial grid of 1223 points,  6 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+                l(5) =   2
+                l(6) =   2
+     Q(r) pseudized with 0 coefficients 
+
+
+     PseudoPot. # 2 for Au read from file:
+     ./pseudo/Au.pbe-n-rrkjus_psl.1.0.0.UPF
+     MD5 check sum: 36a5134bc4f0d73a839546df15754897
+     Pseudo is Ultrasoft + core correction, Zval = 11.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.3
+     Using radial grid of 1279 points,  6 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+                l(5) =   2
+                l(6) =   2
+     Q(r) pseudized with 0 coefficients 
+
+
+     PseudoPot. # 3 for H  read from file:
+     ./pseudo/H.pbe-rrkjus_psl.1.0.0.UPF
+     MD5 check sum: 9e615844a0e642e0aee8526d0d0f65f7
+     Pseudo is Ultrasoft, Zval =  1.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.3MaX
+     Using radial grid of  929 points,  2 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+     Q(r) pseudized with 0 coefficients 
+
+
+     atomic species   valence    mass     pseudopotential
+        Y             11.00    88.90600     Y ( 1.00)
+        Au            11.00   196.96700     Au( 1.00)
+        H              1.00     1.00800     H ( 1.00)
+
+     No symmetry found
+
+
+
+   Cartesian axes
+
+     site n.     atom                  positions (alat units)
+         1           Y   tau(   1) = (   0.5228657   0.5228658   0.5228658  )
+         2           Au  tau(   2) = (   0.0000000   0.0000000  -0.0000000  )
+         3           H   tau(   3) = (   0.5228657  -0.0000000   0.0000000  )
+         4           H   tau(   4) = (  -0.0000000   0.5228658   0.0000000  )
+         5           H   tau(   5) = (  -0.0000000   0.0000000   0.5228658  )
+
+     number of k points=   868  Methfessel-Paxton smearing, width (Ry)=  0.0200
+
+     Number of k-points >= 100: set verbosity='high' to print them.
+
+     Dense  grid:    98385 G-vectors     FFT dimensions: (  60,  60,  60)
+
+     Smooth grid:    34889 G-vectors     FFT dimensions: (  45,  45,  45)
+
+     Estimated max dynamical RAM per process >     281.62 MB
+
+     Estimated total dynamical RAM >       1.38 GB
+
+     Initial potential from superposition of free atoms
+
+     starting charge   24.99578, renormalised to   25.00000
+     Starting wfcs are   25 randomized atomic wfcs
+
+     total cpu time spent up to now is     2797.1 secs
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     c_bands:  3 eigenvalues not converged
+     c_bands:  5 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  5 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  4 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  2 eigenvalues not converged
+     c_bands:  3 eigenvalues not converged
+     ethr =  1.00E-06,  avg # of iterations = 19.9
+
+     total cpu time spent up to now is     2949.6 secs
+
+     total energy              =    -172.31694075 Ry
+     estimated scf accuracy    <       0.51793737 Ry
+
+     iteration #  2     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.07E-03,  avg # of iterations =  2.0
+
+     total cpu time spent up to now is     2974.7 secs
+
+     total energy              =    -172.41488325 Ry
+     estimated scf accuracy    <       0.05892965 Ry
+
+     iteration #  3     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.36E-04,  avg # of iterations =  1.7
+
+     total cpu time spent up to now is     2999.0 secs
+
+     total energy              =    -172.41747210 Ry
+     estimated scf accuracy    <       0.01034150 Ry
+
+     iteration #  4     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.14E-05,  avg # of iterations =  4.5
+
+     total cpu time spent up to now is     3033.2 secs
+
+     total energy              =    -172.42029766 Ry
+     estimated scf accuracy    <       0.00207142 Ry
+
+     iteration #  5     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  8.29E-06,  avg # of iterations =  6.4
+
+     total cpu time spent up to now is     3074.9 secs
+
+     total energy              =    -172.41807786 Ry
+     estimated scf accuracy    <       0.01700351 Ry
+
+     iteration #  6     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  8.29E-06,  avg # of iterations =  4.5
+
+     total cpu time spent up to now is     3111.8 secs
+
+     total energy              =    -172.42122463 Ry
+     estimated scf accuracy    <       0.00005968 Ry
+
+     iteration #  7     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.39E-07,  avg # of iterations =  5.8
+
+     total cpu time spent up to now is     3144.2 secs
+
+     total energy              =    -172.42125907 Ry
+     estimated scf accuracy    <       0.00000606 Ry
+
+     iteration #  8     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.42E-08,  avg # of iterations =  3.8
+
+     total cpu time spent up to now is     3171.0 secs
+
+     total energy              =    -172.42126037 Ry
+     estimated scf accuracy    <       0.00000125 Ry
+
+     iteration #  9     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  5.00E-09,  avg # of iterations =  3.2
+
+     total cpu time spent up to now is     3197.8 secs
+
+     total energy              =    -172.42126052 Ry
+     estimated scf accuracy    <       0.00000004 Ry
+
+     iteration # 10     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.41E-10,  avg # of iterations =  5.8
+
+     total cpu time spent up to now is     3239.4 secs
+
+     total energy              =    -172.42126054 Ry
+     estimated scf accuracy    <       0.00000005 Ry
+
+     iteration # 11     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.41E-10,  avg # of iterations =  2.4
+
+     total cpu time spent up to now is     3268.6 secs
+
+     total energy              =    -172.42126055 Ry
+     estimated scf accuracy    <          7.5E-09 Ry
+
+     iteration # 12     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  3.00E-11,  avg # of iterations =  1.4
+
+     total cpu time spent up to now is     3290.9 secs
+
+     total energy              =    -172.42126055 Ry
+     estimated scf accuracy    <          2.6E-10 Ry
+
+     iteration # 13     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.05E-12,  avg # of iterations =  4.8
+
+     total cpu time spent up to now is     3323.8 secs
+
+     total energy              =    -172.42126055 Ry
+     estimated scf accuracy    <          1.2E-10 Ry
+
+     iteration # 14     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  4.93E-13,  avg # of iterations =  3.6
+
+     total cpu time spent up to now is     3354.4 secs
+
+     total energy              =    -172.42126055 Ry
+     estimated scf accuracy    <          8.4E-11 Ry
+
+     iteration # 15     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  3.36E-13,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     3378.0 secs
+
+     total energy              =    -172.42126055 Ry
+     estimated scf accuracy    <          5.4E-11 Ry
+
+     iteration # 16     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  2.14E-13,  avg # of iterations =  2.4
+
+     total cpu time spent up to now is     3403.3 secs
+
+     total energy              =    -172.42126055 Ry
+     estimated scf accuracy    <          8.2E-12 Ry
+
+     iteration # 17     ecut=    80.00 Ry     beta= 0.30
+     Davidson diagonalization with overlap
+     ethr =  1.00E-13,  avg # of iterations =  1.0
+
+     total cpu time spent up to now is     3426.2 secs
+
+     End of self-consistent calculation
+
+     Number of k-points >= 100: set verbosity='high' to print the bands.
+
+     the Fermi energy is    13.1148 ev
+
+!    total energy              =    -172.42126055 Ry
+     estimated scf accuracy    <          4.2E-13 Ry
+     smearing contrib. (-TS)   =      -0.00116434 Ry
+     internal energy E=F+TS    =    -172.42009621 Ry
+
+     The total energy is F=E-TS. E is the sum of the following terms:
+     one-electron contribution =     -10.30179933 Ry
+     hartree contribution      =      21.81783147 Ry
+     xc contribution           =     -52.13736466 Ry
+     ewald contribution        =    -131.79876369 Ry
+
+     convergence has been achieved in  17 iterations
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+
+     atom    1 type  1   force =     0.00000001    0.00000000   -0.00000001
+     atom    2 type  2   force =    -0.00000002    0.00000001    0.00000002
+     atom    3 type  3   force =     0.00000001   -0.00000000   -0.00000000
+     atom    4 type  3   force =    -0.00000000   -0.00000000   -0.00000000
+     atom    5 type  3   force =    -0.00000000   -0.00000000   -0.00000001
+
+     Total force =     0.000000     Total SCF correction =     0.000000
+     SCF correction compared to forces is large: reduce conv_thr to get better values
+
+
+     Computing stress (Cartesian axis) and pressure
+
+          total   stress  (Ry/bohr**3)                   (kbar)     P=       50.05
+   0.00034020  -0.00000000   0.00000000           50.05       -0.00        0.00
+  -0.00000000   0.00034021   0.00000000           -0.00       50.05        0.00
+   0.00000000   0.00000000   0.00034021            0.00        0.00       50.05
+
+
+     Writing output data file ./out/yauh3.save/
+
+     init_run     :     23.73s CPU     26.41s WALL (       2 calls)
+     electrons    :   2988.82s CPU   3343.55s WALL (       6 calls)
+     update_pot   :      6.91s CPU      6.93s WALL (       4 calls)
+     forces       :     21.67s CPU     22.38s WALL (       6 calls)
+     stress       :     37.97s CPU     39.03s WALL (       6 calls)
+
+     Called by init_run:
+     wfcinit      :     20.20s CPU     22.78s WALL (       2 calls)
+     potinit      :      1.00s CPU      1.01s WALL (       2 calls)
+     hinit0       :      2.34s CPU      2.38s WALL (       2 calls)
+
+     Called by electrons:
+     c_bands      :   2650.75s CPU   2940.48s WALL (     135 calls)
+     sum_band     :    330.39s CPU    389.38s WALL (     135 calls)
+     v_of_rho     :      1.69s CPU      2.04s WALL (     140 calls)
+     newd         :      5.86s CPU     11.68s WALL (     140 calls)
+     mix_rho      :      0.24s CPU      0.27s WALL (     135 calls)
+
+     Called by c_bands:
+     init_us_2    :     40.87s CPU     42.67s WALL (  246512 calls)
+     cegterg      :   2539.45s CPU   2827.13s WALL (  117180 calls)
+
+     Called by *egterg:
+     cdiaghg      :    102.97s CPU    106.06s WALL (  468685 calls)
+     h_psi        :   1569.23s CPU   1839.36s WALL (  474761 calls)
+     s_psi        :    178.87s CPU    183.43s WALL (  474761 calls)
+     g_psi        :     15.14s CPU     15.34s WALL (  355845 calls)
+
+     Called by h_psi:
+     h_psi:calbec :    198.69s CPU    226.56s WALL (  474761 calls)
+     vloc_psi     :   1189.36s CPU   1422.46s WALL (  474761 calls)
+     add_vuspsi   :    175.27s CPU    184.35s WALL (  474761 calls)
+
+     General routines
+     calbec       :    290.49s CPU    328.19s WALL (  617981 calls)
+     fft          :      1.77s CPU      2.08s WALL (    1963 calls)
+     ffts         :      0.07s CPU      0.08s WALL (     275 calls)
+     fftw         :   1296.69s CPU   1549.69s WALL (12813896 calls)
+     interpolate  :      0.12s CPU      0.14s WALL (     140 calls)
+
+     Parallel routines
+     fft_scatt_xy :     92.67s CPU    109.70s WALL (12816134 calls)
+     fft_scatt_yz :    722.04s CPU    871.45s WALL (12816134 calls)
+
+     PWSCF        :  51m20.45s CPU  57m20.39s WALL
+
+
+   This run was terminated on:  14:16:18  31May2026            
+
+=------------------------------------------------------------------------------=
+   JOB DONE.
+=------------------------------------------------------------------------------=

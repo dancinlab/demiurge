@@ -1,0 +1,14 @@
+LaB3C3 DFPT phonon + el-ph 2x2x2 q (Pm-3n B-C clathrate - ambient-stability gate)
+&inputph
+  prefix = 'lab3c3_amb'
+  outdir = './out'
+  fildyn = './lab3c3_amb.dyn'
+  fildvscf = 'lab3c3_amb.dvscf'
+  ldisp = .true.
+  nq1 = 2, nq2 = 2, nq3 = 2
+  tr2_ph = 1.0d-14
+  recover = .true.
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+/

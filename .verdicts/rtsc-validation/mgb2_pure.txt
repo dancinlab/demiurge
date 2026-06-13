@@ -1,0 +1,34 @@
+RTSC el-ph PIPELINE-VALIDATION HARVEST — MgB2 (mgb2_pure)
+Pod 37868501 · ssh6.vast.ai:28500 · harvested 2026-05-29 (READ-ONLY)
+Known anchor: Tc ≈ 39 K, λ ≈ 0.87, ω_log ≈ 60–70 meV
+
+VERDICT TIER: 🟠 INCONCLUSIVE — el-ph DFPT NOT COMPLETE, NO AGGREGATE λ/ω_log/Tc EXISTS YET.
+
+=== WHY (verbatim evidence) ===
+
+ph.in (electron_phonon='simple', 6×6×6 q, 10-σ scan 0.005–0.050 Ry):
+  ldisp=.true. nq1=nq2=nq3=6 ; electron_phonon='simple'
+  el_ph_sigma=0.005 ; el_ph_nsigma=10 ; recover=.true. ; max_seconds=100000
+
+mgb2_pure.dyn0 grid header:
+   6   6   6
+  28                ← 28 IRREDUCIBLE q-points required
+
+dyn-file completeness (nonzero=done, 0-byte=in-flight):
+  dyn1..dyn14 = nonzero (DONE)   dyn15 = 0 bytes (IN PROGRESS)
+  → 14 of 28 irreducible q-points complete (~50%).
+
+Run state:
+  ph.out         line 4501 "JOB DONE."  ← FIRST invocation checkpoint only (partial-grid; QE writes JOB DONE per invocation, NOT per grid)
+  ph.resume.out  JOB DONE count = 0      ← resume STILL RUNNING; tail = "Representation # 2 mode # 2 / Self-consistent Calculation"
+  ps aux         ph.x (8 ranks, ~43% CPU, 530+ min CPU) ACTIVELY RUNNING under `timeout 85500 mpirun -np 8 ph.x`
+
+Aggregate post-processing:
+  NO lambda.x / a2F / *.freq aggregate present → "NONE (no lambda.x post-processing run)"
+  The per-q mgb2_pure.dynN.elph.N files hold PARTIAL per-q-point per-mode λ(ν,q) only.
+  Total λ = Σ_q w_q Σ_ν λ(ν,q) and ω_log require ALL 28 q-points + a separate lambda.x step. Neither exists.
+
+PARSED METRICS: λ = N/A · ω_log = N/A · Tc_AD = N/A (no aggregate produced).
+Tc RECOMPUTE: NOT APPLICABLE — no real (λ, ω_log) to feed; fabricating inputs to hit 39 K would violate d6. Skipped honestly.
+
+The "STOP 1" + prterun "Exit code: 1" after the ph.out JOB DONE is a benign MPI teardown artifact of the FIRST invocation, not a crash of the science.

@@ -8,7 +8,7 @@
 
 | 항목 | 값 |
 |---|---|
-| simulation 자산 | `/Users/ghost/core/demiurge/DAPTPGX/sims/v3_recompute.hexa` |
+| simulation 자산 | `/Users/mini/dancinlab/demiurge/DAPTPGX/sims/v3_recompute.hexa` |
 | 호스트 | pool mini (macOS, hexa binary 정상). ubu-1 hexa binary 누락 → d8 inbox patch 후속 필요 |
 | 실행 명령 | `scp v3_recompute.hexa mini:/tmp/ && ssh mini 'hexa run /tmp/v3_recompute.hexa'` |
 | 로컬 ad-hoc python | **금지** (memory feedback_demiurge_assets_simulation_mandatory) |

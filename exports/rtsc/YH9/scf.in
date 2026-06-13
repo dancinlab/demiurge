@@ -1,0 +1,59 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'yh9'
+  outdir = './out'
+  verbosity       = 'high'
+  pseudo_dir = './pseudo'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav           = 4                ! hexagonal, P6_3/mmc (SG 194) — YH9 H29 clathrate (Kong 2021, 243K@201GPa)
+  celldm(1)       = 6.7700           ! REPLACE with relaxed celldm(1) from vc-relax.out
+  celldm(3)       = 1.4936           ! c/a ~ 5.543/3.711 (CeH9 ratio @100GPa; vc-relax refines)
+  nat             = 20               ! 2 Y (2d) + 2 H (2b) + 4 H (4f) + 12 H (12k) = YH9 (Z=2)
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Y   88.9059  Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! YH9 P6_3/mmc H29-cage clathrate (CeH9-isostructural transfer, drafts/wave3b-coords.md):
+!   Y  2d (2/3,1/3,1/4); H 2b (0,0,1/4); H 4f (1/3,2/3,z) z=0.1499; H 12k (x,2x,z) x=0.1565 z=0.4404
+ATOMIC_POSITIONS crystal
+  Y    0.6666667   0.3333333   0.2500000
+  Y    0.3333333   0.6666667   0.7500000
+  H    0.0000000   0.0000000   0.2500000
+  H    0.0000000   0.0000000   0.7500000
+  H    0.3333333   0.6666667   0.1499000
+  H    0.6666667   0.3333333   0.8501000
+  H    0.3333333   0.6666667   0.6499000
+  H    0.6666667   0.3333333   0.3501000
+  H    0.1565000   0.3130000   0.4404000
+  H    0.6870000   0.8435000   0.4404000
+  H    0.8435000   0.6870000   0.4404000
+  H    0.8435000   0.1565000   0.5596000
+  H    0.3130000   0.1565000   0.5596000
+  H    0.1565000   0.8435000   0.5596000
+  H    0.1565000   0.3130000   0.9404000
+  H    0.6870000   0.8435000   0.9404000
+  H    0.8435000   0.6870000   0.9404000
+  H    0.8435000   0.1565000   0.0596000
+  H    0.3130000   0.1565000   0.0596000
+  H    0.1565000   0.8435000   0.0596000
+
+K_POINTS automatic
+  12 12 8  0 0 0

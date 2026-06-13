@@ -1,0 +1,60 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'ca2snh18'
+  outdir          = './out'
+  verbosity       = 'high'
+  pseudo_dir      = './pseudo'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav           = 2                ! FCC, Fm-3m (SG 225) - Ca2SnH18 18-H clathrate
+  celldm(1)       = 10.00           ! REPLACE with relaxed celldm(1) from vc-relax.out
+  nat             = 21               ! 2 Ca + 1 Sn + 18 H per fcc-primitive (Z=1 f.u. Ca2SnH18)
+  ntyp            = 3
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Ca  40.078  Ca.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Sn  118.710  Sn.pbe-dn-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! Ca2SnH18 Fm-3m clathrate: M @ 4a (0,0,0), A-pair @ 8c (1/4,1/4,1/4)+(3/4,3/4,3/4),
+!   H18 sodalite-like cage around the metal framework. fcc-primitive; vc-relax refines H positions.
+ATOMIC_POSITIONS crystal
+  Sn   0.0000000   0.0000000   0.0000000
+  Ca   0.2500000   0.2500000   0.2500000
+  Ca   0.7500000   0.7500000   0.7500000
+  H    0.3750000   0.3750000   0.3750000
+  H    0.6250000   0.6250000   0.6250000
+  H    0.1250000   0.1250000   0.1250000
+  H    0.8750000   0.8750000   0.8750000
+  H    0.3750000   0.3750000   0.6250000
+  H    0.6250000   0.6250000   0.3750000
+  H    0.3750000   0.6250000   0.3750000
+  H    0.6250000   0.3750000   0.6250000
+  H    0.6250000   0.3750000   0.3750000
+  H    0.3750000   0.6250000   0.6250000
+  H    0.1250000   0.1250000   0.3750000
+  H    0.8750000   0.8750000   0.6250000
+  H    0.1250000   0.3750000   0.1250000
+  H    0.8750000   0.6250000   0.8750000
+  H    0.3750000   0.1250000   0.1250000
+  H    0.6250000   0.8750000   0.8750000
+  H    0.5000000   0.5000000   0.0000000
+  H    0.0000000   0.5000000   0.5000000
+
+K_POINTS automatic
+  12 12 12  0 0 0

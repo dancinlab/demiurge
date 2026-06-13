@@ -1,0 +1,72 @@
+&CONTROL
+  calculation     = 'vc-relax'
+  prefix          = 'y2cdh18'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ibrav           = 2                ! FCC, Fm-3m (SG 225) - Y2CdH18 18-H clathrate
+  celldm(1)       = 10.15           ! a_conv ~5.37 A @ 250 GPa (heavy ternary 18-H; vc-relax refines)
+  nat             = 21               ! 2 Y + 1 Cd + 18 H per fcc-primitive (Z=1 f.u. Y2CdH18)
+  ntyp            = 3
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  press           = 2500.0           ! target 250 GPa  (QE press unit = kbar; 250 GPa = 2500.0 kbar)
+  press_conv_thr  = 0.5
+  cell_dofree     = 'all'
+/
+! FALLBACK: if dynamic instability persists, re-run with press = 3000.0 (300 GPa).
+ATOMIC_SPECIES
+  Y  88.9059  Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Cd  112.411  Cd.pbe-n-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! Y2CdH18 Fm-3m clathrate: M @ 4a (0,0,0), A-pair @ 8c (1/4,1/4,1/4)+(3/4,3/4,3/4),
+!   H18 sodalite-like cage around the metal framework. fcc-primitive; vc-relax refines H positions.
+ATOMIC_POSITIONS crystal
+  Cd   0.0000000   0.0000000   0.0000000
+  Y   0.2500000   0.2500000   0.2500000
+  Y   0.7500000   0.7500000   0.7500000
+  H    0.3750000   0.3750000   0.3750000
+  H    0.6250000   0.6250000   0.6250000
+  H    0.1250000   0.1250000   0.1250000
+  H    0.8750000   0.8750000   0.8750000
+  H    0.3750000   0.3750000   0.6250000
+  H    0.6250000   0.6250000   0.3750000
+  H    0.3750000   0.6250000   0.3750000
+  H    0.6250000   0.3750000   0.6250000
+  H    0.6250000   0.3750000   0.3750000
+  H    0.3750000   0.6250000   0.6250000
+  H    0.1250000   0.1250000   0.3750000
+  H    0.8750000   0.8750000   0.6250000
+  H    0.1250000   0.3750000   0.1250000
+  H    0.8750000   0.6250000   0.8750000
+  H    0.3750000   0.1250000   0.1250000
+  H    0.6250000   0.8750000   0.8750000
+  H    0.5000000   0.5000000   0.0000000
+  H    0.0000000   0.5000000   0.5000000
+
+K_POINTS automatic
+  12 12 12  0 0 0

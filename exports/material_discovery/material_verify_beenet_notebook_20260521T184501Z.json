@@ -195,7 +195,7 @@
   "model": {
     "variant": "CSO",
     "version": "BETE-NET CSO 0.1.0 (Gibson et al. 2025)",
-    "weights_root": "/Users/ghost/local/bete-net/BETE-NET/CSO/",
+    "weights_root": "/Users/mini/local/bete-net/BETE-NET/CSO/",
     "primary_citation": "arxiv:2401.16611"
   },
   "scope_caveats": [

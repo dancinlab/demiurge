@@ -1,0 +1,955 @@
+
+     Program PHONON v.6.7MaX starts on  1Jun2026 at  0:59: 0 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI), running on     9 processors
+
+     MPI processes distributed on     1 nodes
+     R & G space division:  proc/nbgrp/npool/nimage =       9
+     Reading input from ph.in
+     Message from routine ph_restart_set_filename :
+     cannot open file for reading or writing
+     Message from routine ph_restart_set_filename :
+     cannot open file for reading or writing
+     Run is not recoverable starting from scratch
+
+     Reading xml data from directory:
+
+     ./out/scbeh8.save/
+     file Sc.pbe-spn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3S 3P renormalized
+
+     IMPORTANT: XC functional enforced from input :
+     Exchange-correlation= PBE
+                           (   1   4   3   4   0   0   0)
+     Any further DFT definition will be discarded
+     Please, verify this is what you really want
+
+
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min         408     162     50                13424     3399     588
+     Max         409     163     51                13425     3402     590
+     Sum        3675    1465    451               120823    30613    5295
+
+
+     Check: negative core charge=   -0.000001
+     Reading collected, re-writing distributed wavefunctions
+
+
+     Dynamical matrices for ( 2, 2, 2)  uniform grid of q-points
+     (   8 q-points):
+       N         xq(1)         xq(2)         xq(3) 
+       1   0.000000000   0.000000000   0.000000000
+       2   0.448705318  -0.448705318   0.583084164
+       3  -0.583084164  -0.448705318  -0.448705318
+       4  -0.134378846  -0.897410635   0.134378846
+       5   0.448705318   0.583084164  -0.448705318
+       6   0.897410635   0.134378846   0.134378846
+       7  -0.134378846   0.134378846  -0.897410635
+       8   0.314326471  -0.314326471  -0.314326471
+
+     Saving dvscf to file. Distribute only q points, not irreducible represetations.
+
+     Calculation of q =    0.0000000   0.0000000   0.0000000
+
+     ScBeH8 electron-phonon 2x2x2 q (RTSC BeH8-family — Sc variant of AcBeH8 l
+
+     bravais-lattice index     =            0
+     lattice parameter (alat)  =       9.4584  a.u.
+     unit-cell volume          =     316.0860 (a.u.)^3
+     number of atoms/cell      =           10
+     number of atomic types    =            3
+     kinetic-energy cut-off    =      80.0000  Ry
+     charge density cut-off    =     800.0000  Ry
+     convergence threshold     =      1.0E-14
+     beta                      =       0.3000
+     number of iterations used =            4
+     Exchange-correlation= PBE
+                           (   1   4   3   4   0   0   0)
+
+
+     celldm(1)=    9.45844  celldm(2)=    0.00000  celldm(3)=    0.00000
+     celldm(4)=    0.00000  celldm(5)=    0.00000  celldm(6)=    0.00000
+
+     crystal axes: (cart. coord. in units of alat)
+               a(1) = ( -0.6918  0.2072  0.6918 )  
+               a(2) = ( -0.2072  0.6918  0.6918 )  
+               a(3) = ( -0.6918  0.6918  0.2072 )  
+
+     reciprocal axes: (cart. coord. in units 2 pi/alat)
+               b(1) = ( -0.8974 -1.1662  0.8974 )  
+               b(2) = (  1.1662  0.8974  0.8974 )  
+               b(3) = ( -0.8974  0.8974 -1.1662 )  
+
+
+     Atoms inside the unit cell: 
+
+     Cartesian axes
+
+     site n.  atom      mass           positions (alat units)
+        1     Sc  44.9559   tau(    1) = (    0.00000   -0.00000    0.00000  )
+        2     Be   9.0122   tau(    2) = (   -0.79535    0.79535    0.79535  )
+        3     H    1.0080   tau(    3) = (   -0.20900    0.20900    0.20900  )
+        4     H    1.0080   tau(    4) = (    0.20900   -0.20900   -0.20900  )
+        5     H    1.0080   tau(    5) = (   -0.81641    0.81641    1.05793  )
+        6     H    1.0080   tau(    6) = (   -0.77429    0.77429    0.53278  )
+        7     H    1.0080   tau(    7) = (   -1.05793    0.81641    0.81641  )
+        8     H    1.0080   tau(    8) = (   -0.53277    0.77429    0.77429  )
+        9     H    1.0080   tau(    9) = (   -0.81641    1.05793    0.81641  )
+       10     H    1.0080   tau(   10) = (   -0.77429    0.53277    0.77429  )
+
+     Computing dynamical matrix for 
+                    q = (   0.0000000   0.0000000   0.0000000 )
+
+      2 Sym.Ops. (with q -> -q+G )
+
+
+     G cutoff = 1812.8804  (  13425 G-vectors)     FFT grid: ( 90, 90, 90)
+     G cutoff =  725.1521  (   3400 G-vectors)  smooth grid: ( 54, 54, 54)
+
+     number of k points=   868  Methfessel-Paxton smearing, width (Ry)=  0.0100
+
+     PseudoPot. # 1 for Sc read from file:
+     ./pseudo/Sc.pbe-spn-rrkjus_psl.1.0.0.UPF
+     MD5 check sum: f739f74c200e509e5c24cbe053202ee5
+     Pseudo is Ultrasoft + core correction, Zval = 11.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.2.2
+     Using radial grid of 1173 points,  6 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+                l(5) =   2
+                l(6) =   2
+     Q(r) pseudized with 0 coefficients 
+
+
+     PseudoPot. # 2 for Be read from file:
+     ./pseudo/Be.pbe-n-rrkjus_psl.1.0.0.UPF
+     MD5 check sum: 4cdd19bfc6f73cbf9d5a541ec8c1e79e
+     Pseudo is Ultrasoft + core correction, Zval =  2.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.3MaX
+     Using radial grid of 1041 points,  4 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+     Q(r) pseudized with 0 coefficients 
+
+
+     PseudoPot. # 3 for H  read from file:
+     ./pseudo/H.pbe-rrkjus_psl.1.0.0.UPF
+     MD5 check sum: 3f4114867bd07edc7f1424d066fc1888
+     Pseudo is Ultrasoft, Zval =  1.0
+     Generated using &quot;atomic&quot; code by A. Dal Corso  v.6.3MaX
+     Using radial grid of  929 points,  2 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+     Q(r) pseudized with 0 coefficients 
+
+
+     Mode symmetry, C_1 (1)     point group:
+
+
+     Atomic displacements:
+     There are   30 irreducible representations
+
+     Representation     1      1 modes -  To be done
+
+     Representation     2      1 modes -  To be done
+
+     Representation     3      1 modes -  To be done
+
+     Representation     4      1 modes -  To be done
+
+     Representation     5      1 modes -  To be done
+
+     Representation     6      1 modes -  To be done
+
+     Representation     7      1 modes -  To be done
+
+     Representation     8      1 modes -  To be done
+
+     Representation     9      1 modes -  To be done
+
+     Representation    10      1 modes -  To be done
+
+     Representation    11      1 modes -  To be done
+
+     Representation    12      1 modes -  To be done
+
+     Representation    13      1 modes -  To be done
+
+     Representation    14      1 modes -  To be done
+
+     Representation    15      1 modes -  To be done
+
+     Representation    16      1 modes -  To be done
+
+     Representation    17      1 modes -  To be done
+
+     Representation    18      1 modes -  To be done
+
+     Representation    19      1 modes -  To be done
+
+     Representation    20      1 modes -  To be done
+
+     Representation    21      1 modes -  To be done
+
+     Representation    22      1 modes -  To be done
+
+     Representation    23      1 modes -  To be done
+
+     Representation    24      1 modes -  To be done
+
+     Representation    25      1 modes -  To be done
+
+     Representation    26      1 modes -  To be done
+
+     Representation    27      1 modes -  To be done
+
+     Representation    28      1 modes -  To be done
+
+     Representation    29      1 modes -  To be done
+
+     Representation    30      1 modes -  To be done
+
+
+
+     Alpha used in Ewald sum =   2.8000
+     PHONON       :   1m35.70s CPU   1m49.14s WALL
+
+
+
+     Representation #   1 mode #   1
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =    -3.6233E-06     0.0000E+00
+
+      iter #   1 total cpu time :   228.6 secs   av.it.:  15.2
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  2.423E-06
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.5467E-06     0.0000E+00
+
+      iter #   2 total cpu time :   387.4 secs   av.it.:  22.5
+      thresh= 1.557E-04 alpha_mix =  0.300 |ddv_scf|^2 =  1.901E-07
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.7213E-06     0.0000E+00
+
+      iter #   3 total cpu time :   549.2 secs   av.it.:  23.0
+      thresh= 4.360E-05 alpha_mix =  0.300 |ddv_scf|^2 =  1.637E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.7876E-06     0.0000E+00
+
+      iter #   4 total cpu time :   713.5 secs   av.it.:  23.7
+      thresh= 1.279E-05 alpha_mix =  0.300 |ddv_scf|^2 =  6.384E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.5380E-06     0.0000E+00
+
+      iter #   5 total cpu time :   879.5 secs   av.it.:  24.1
+      thresh= 2.527E-06 alpha_mix =  0.300 |ddv_scf|^2 =  2.567E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.9631E-06     0.0000E+00
+
+      iter #   6 total cpu time :  1042.1 secs   av.it.:  23.5
+      thresh= 5.067E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.378E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.6417E-06     0.0000E+00
+
+      iter #   7 total cpu time :  1209.6 secs   av.it.:  24.3
+      thresh= 1.838E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.662E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.0382E-06     0.0000E+00
+
+      iter #   8 total cpu time :  1376.3 secs   av.it.:  24.1
+      thresh= 4.077E-08 alpha_mix =  0.300 |ddv_scf|^2 =  1.319E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.5559E-06     0.0000E+00
+
+      iter #   9 total cpu time :  1542.6 secs   av.it.:  24.0
+      thresh= 1.148E-08 alpha_mix =  0.300 |ddv_scf|^2 =  1.319E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #   2 mode #   2
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.4784E-06     0.0000E+00
+
+      iter #   1 total cpu time :  1670.0 secs   av.it.:  15.2
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  2.423E-06
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.2264E-06     0.0000E+00
+
+      iter #   2 total cpu time :  1827.1 secs   av.it.:  22.5
+      thresh= 1.557E-04 alpha_mix =  0.300 |ddv_scf|^2 =  1.901E-07
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.2678E-06     0.0000E+00
+
+      iter #   3 total cpu time :  1986.9 secs   av.it.:  23.0
+      thresh= 4.360E-05 alpha_mix =  0.300 |ddv_scf|^2 =  1.637E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.3477E-06     0.0000E+00
+
+      iter #   4 total cpu time :  2152.1 secs   av.it.:  23.7
+      thresh= 1.279E-05 alpha_mix =  0.300 |ddv_scf|^2 =  6.384E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.6521E-06     0.0000E+00
+
+      iter #   5 total cpu time :  2320.1 secs   av.it.:  24.1
+      thresh= 2.527E-06 alpha_mix =  0.300 |ddv_scf|^2 =  2.567E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.5700E-06     0.0000E+00
+
+      iter #   6 total cpu time :  2484.6 secs   av.it.:  23.5
+      thresh= 5.067E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.378E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.6499E-06     0.0000E+00
+
+      iter #   7 total cpu time :  2654.0 secs   av.it.:  24.3
+      thresh= 1.838E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.662E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.5533E-06     0.0000E+00
+
+      iter #   8 total cpu time :  2822.5 secs   av.it.:  24.1
+      thresh= 4.077E-08 alpha_mix =  0.300 |ddv_scf|^2 =  1.324E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.6701E-06     0.0000E+00
+
+      iter #   9 total cpu time :  2989.6 secs   av.it.:  24.0
+      thresh= 1.151E-08 alpha_mix =  0.300 |ddv_scf|^2 =  1.316E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #   3 mode #   3
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =     8.9865E-06     0.0000E+00
+
+      iter #   1 total cpu time :  3118.0 secs   av.it.:  15.2
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  2.423E-06
+
+     Pert. #  1: Fermi energy shift (Ry) =     7.3923E-06     0.0000E+00
+
+      iter #   2 total cpu time :  3276.3 secs   av.it.:  22.5
+      thresh= 1.557E-04 alpha_mix =  0.300 |ddv_scf|^2 =  1.901E-07
+
+     Pert. #  1: Fermi energy shift (Ry) =     6.0984E-06     0.0000E+00
+
+      iter #   3 total cpu time :  3437.5 secs   av.it.:  23.0
+      thresh= 4.360E-05 alpha_mix =  0.300 |ddv_scf|^2 =  1.637E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =     6.2304E-06     0.0000E+00
+
+      iter #   4 total cpu time :  3603.2 secs   av.it.:  23.7
+      thresh= 1.279E-05 alpha_mix =  0.300 |ddv_scf|^2 =  6.384E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =     6.0460E-06     0.0000E+00
+
+      iter #   5 total cpu time :  3771.2 secs   av.it.:  24.1
+      thresh= 2.527E-06 alpha_mix =  0.300 |ddv_scf|^2 =  2.567E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =     6.6469E-06     0.0000E+00
+
+      iter #   6 total cpu time :  3936.0 secs   av.it.:  23.5
+      thresh= 5.067E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.378E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =     6.2058E-06     0.0000E+00
+
+      iter #   7 total cpu time :  4105.3 secs   av.it.:  24.3
+      thresh= 1.838E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.662E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =     6.7517E-06     0.0000E+00
+
+      iter #   8 total cpu time :  4274.1 secs   av.it.:  24.2
+      thresh= 4.077E-08 alpha_mix =  0.300 |ddv_scf|^2 =  1.322E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =     6.0878E-06     0.0000E+00
+
+      iter #   9 total cpu time :  4442.4 secs   av.it.:  24.1
+      thresh= 1.150E-08 alpha_mix =  0.300 |ddv_scf|^2 =  1.322E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #   4 mode #   4
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.9386E-07     0.0000E+00
+
+      iter #   1 total cpu time :  4533.0 secs   av.it.:   9.3
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  3.315E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.3719E-07     0.0000E+00
+
+      iter #   2 total cpu time :  4686.2 secs   av.it.:  21.7
+      thresh= 1.821E-05 alpha_mix =  0.300 |ddv_scf|^2 =  3.561E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.7579E-07     0.0000E+00
+
+      iter #   3 total cpu time :  4840.0 secs   av.it.:  21.8
+      thresh= 5.967E-06 alpha_mix =  0.300 |ddv_scf|^2 =  7.734E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.1724E-07     0.0000E+00
+
+      iter #   4 total cpu time :  4999.3 secs   av.it.:  22.7
+      thresh= 2.781E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.326E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =    -7.7472E-08     0.0000E+00
+
+      iter #   5 total cpu time :  5160.0 secs   av.it.:  22.9
+      thresh= 7.298E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.247E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.2114E-07     0.0000E+00
+
+      iter #   6 total cpu time :  5322.5 secs   av.it.:  23.1
+      thresh= 5.699E-08 alpha_mix =  0.300 |ddv_scf|^2 =  6.300E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.2110E-07     0.0000E+00
+
+      iter #   7 total cpu time :  5488.5 secs   av.it.:  23.7
+      thresh= 2.510E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.463E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #   5 mode #   5
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =     1.4780E-06     0.0000E+00
+
+      iter #   1 total cpu time :  5579.2 secs   av.it.:   9.3
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  3.315E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =     9.9504E-07     0.0000E+00
+
+      iter #   2 total cpu time :  5732.5 secs   av.it.:  21.7
+      thresh= 1.821E-05 alpha_mix =  0.300 |ddv_scf|^2 =  3.561E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =     7.1648E-07     0.0000E+00
+
+      iter #   3 total cpu time :  5885.3 secs   av.it.:  21.8
+      thresh= 5.967E-06 alpha_mix =  0.300 |ddv_scf|^2 =  7.734E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =     7.1049E-07     0.0000E+00
+
+      iter #   4 total cpu time :  6043.2 secs   av.it.:  22.7
+      thresh= 2.781E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.326E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =     5.0798E-07     0.0000E+00
+
+      iter #   5 total cpu time :  6202.2 secs   av.it.:  22.9
+      thresh= 7.298E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.249E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =     7.5959E-07     0.0000E+00
+
+      iter #   6 total cpu time :  6362.7 secs   av.it.:  23.1
+      thresh= 5.700E-08 alpha_mix =  0.300 |ddv_scf|^2 =  6.302E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =     5.8042E-07     0.0000E+00
+
+      iter #   7 total cpu time :  6527.7 secs   av.it.:  23.7
+      thresh= 2.510E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.463E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #   6 mode #   6
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.0142E-06     0.0000E+00
+
+      iter #   1 total cpu time :  6617.4 secs   av.it.:   9.3
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  3.315E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =    -3.1002E-07     0.0000E+00
+
+      iter #   2 total cpu time :  6770.3 secs   av.it.:  21.7
+      thresh= 1.821E-05 alpha_mix =  0.300 |ddv_scf|^2 =  3.561E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.0418E-07     0.0000E+00
+
+      iter #   3 total cpu time :  6922.7 secs   av.it.:  21.8
+      thresh= 5.967E-06 alpha_mix =  0.300 |ddv_scf|^2 =  7.734E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.2484E-07     0.0000E+00
+
+      iter #   4 total cpu time :  7080.2 secs   av.it.:  22.7
+      thresh= 2.781E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.326E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =     5.3575E-08     0.0000E+00
+
+      iter #   5 total cpu time :  7239.3 secs   av.it.:  22.9
+      thresh= 7.298E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.249E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.5790E-07     0.0000E+00
+
+      iter #   6 total cpu time :  7400.0 secs   av.it.:  23.1
+      thresh= 5.700E-08 alpha_mix =  0.300 |ddv_scf|^2 =  6.303E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =    -3.7789E-08     0.0000E+00
+
+      iter #   7 total cpu time :  7564.1 secs   av.it.:  23.7
+      thresh= 2.511E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.463E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #   7 mode #   7
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.6554E-02     0.0000E+00
+
+      iter #   1 total cpu time :  7653.6 secs   av.it.:   9.2
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  1.605E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =    -6.3197E-03     0.0000E+00
+
+      iter #   2 total cpu time :  7819.8 secs   av.it.:  23.7
+      thresh= 1.267E-05 alpha_mix =  0.300 |ddv_scf|^2 =  1.433E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =    -8.4132E-03     0.0000E+00
+
+      iter #   3 total cpu time :  7986.7 secs   av.it.:  23.8
+      thresh= 3.786E-06 alpha_mix =  0.300 |ddv_scf|^2 =  3.449E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.3491E-03     0.0000E+00
+
+      iter #   4 total cpu time :  8154.1 secs   av.it.:  23.8
+      thresh= 1.857E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.280E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.0911E-03     0.0000E+00
+
+      iter #   5 total cpu time :  8326.4 secs   av.it.:  24.6
+      thresh= 7.266E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.327E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.0111E-03     0.0000E+00
+
+      iter #   6 total cpu time :  8500.7 secs   av.it.:  25.0
+      thresh= 1.824E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.665E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.0936E-03     0.0000E+00
+
+      iter #   7 total cpu time :  8665.7 secs   av.it.:  23.4
+      thresh= 4.080E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.833E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.1597E-03     0.0000E+00
+
+      iter #   8 total cpu time :  8837.5 secs   av.it.:  24.6
+      thresh= 2.198E-08 alpha_mix =  0.300 |ddv_scf|^2 =  3.003E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #   8 mode #   8
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =     2.6550E-02     0.0000E+00
+
+      iter #   1 total cpu time :  8927.3 secs   av.it.:   9.2
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  1.605E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =     6.3176E-03     0.0000E+00
+
+      iter #   2 total cpu time :  9093.5 secs   av.it.:  23.7
+      thresh= 1.267E-05 alpha_mix =  0.300 |ddv_scf|^2 =  1.434E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =     8.4117E-03     0.0000E+00
+
+      iter #   3 total cpu time :  9260.3 secs   av.it.:  23.8
+      thresh= 3.786E-06 alpha_mix =  0.300 |ddv_scf|^2 =  3.449E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =     5.3475E-03     0.0000E+00
+
+      iter #   4 total cpu time :  9425.6 secs   av.it.:  23.9
+      thresh= 1.857E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.280E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.0894E-03     0.0000E+00
+
+      iter #   5 total cpu time :  9595.9 secs   av.it.:  24.7
+      thresh= 7.266E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.326E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.0095E-03     0.0000E+00
+
+      iter #   6 total cpu time :  9768.1 secs   av.it.:  24.9
+      thresh= 1.824E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.664E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.0920E-03     0.0000E+00
+
+      iter #   7 total cpu time :  9932.8 secs   av.it.:  23.4
+      thresh= 4.080E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.833E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.1581E-03     0.0000E+00
+
+      iter #   8 total cpu time : 10104.8 secs   av.it.:  24.6
+      thresh= 2.198E-08 alpha_mix =  0.300 |ddv_scf|^2 =  2.985E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #   9 mode #   9
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =     2.6554E-02     0.0000E+00
+
+      iter #   1 total cpu time : 10195.1 secs   av.it.:   9.2
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  1.605E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =     6.3210E-03     0.0000E+00
+
+      iter #   2 total cpu time : 10361.7 secs   av.it.:  23.7
+      thresh= 1.267E-05 alpha_mix =  0.300 |ddv_scf|^2 =  1.434E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =     8.4143E-03     0.0000E+00
+
+      iter #   3 total cpu time : 10528.7 secs   av.it.:  23.8
+      thresh= 3.786E-06 alpha_mix =  0.300 |ddv_scf|^2 =  3.449E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =     5.3500E-03     0.0000E+00
+
+      iter #   4 total cpu time : 10696.0 secs   av.it.:  23.9
+      thresh= 1.857E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.280E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.0921E-03     0.0000E+00
+
+      iter #   5 total cpu time : 10868.6 secs   av.it.:  24.7
+      thresh= 7.266E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.326E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.0120E-03     0.0000E+00
+
+      iter #   6 total cpu time : 11042.9 secs   av.it.:  24.9
+      thresh= 1.824E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.666E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.0946E-03     0.0000E+00
+
+      iter #   7 total cpu time : 11207.4 secs   av.it.:  23.4
+      thresh= 4.081E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.833E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.1607E-03     0.0000E+00
+
+      iter #   8 total cpu time : 11380.2 secs   av.it.:  24.6
+      thresh= 2.198E-08 alpha_mix =  0.300 |ddv_scf|^2 =  2.990E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #  10 mode #  10
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =     2.6554E-02     0.0000E+00
+
+      iter #   1 total cpu time : 11469.2 secs   av.it.:   9.2
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  1.605E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =     6.3196E-03     0.0000E+00
+
+      iter #   2 total cpu time : 11633.2 secs   av.it.:  23.7
+      thresh= 1.267E-05 alpha_mix =  0.300 |ddv_scf|^2 =  1.433E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =     8.4130E-03     0.0000E+00
+
+      iter #   3 total cpu time : 11798.2 secs   av.it.:  23.8
+      thresh= 3.786E-06 alpha_mix =  0.300 |ddv_scf|^2 =  3.449E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =     5.3487E-03     0.0000E+00
+
+      iter #   4 total cpu time : 11963.5 secs   av.it.:  23.9
+      thresh= 1.857E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.280E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.0908E-03     0.0000E+00
+
+      iter #   5 total cpu time : 12133.7 secs   av.it.:  24.6
+      thresh= 7.266E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.326E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.0107E-03     0.0000E+00
+
+      iter #   6 total cpu time : 12305.4 secs   av.it.:  24.9
+      thresh= 1.824E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.665E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.0933E-03     0.0000E+00
+
+      iter #   7 total cpu time : 12468.3 secs   av.it.:  23.4
+      thresh= 4.081E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.833E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =     4.1593E-03     0.0000E+00
+
+      iter #   8 total cpu time : 12640.4 secs   av.it.:  24.6
+      thresh= 2.198E-08 alpha_mix =  0.300 |ddv_scf|^2 =  3.002E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #  11 mode #  11
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.6555E-02     0.0000E+00
+
+      iter #   1 total cpu time : 12730.8 secs   av.it.:   9.2
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  1.605E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =    -6.3207E-03     0.0000E+00
+
+      iter #   2 total cpu time : 12897.2 secs   av.it.:  23.7
+      thresh= 1.267E-05 alpha_mix =  0.300 |ddv_scf|^2 =  1.434E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =    -8.4147E-03     0.0000E+00
+
+      iter #   3 total cpu time : 13063.9 secs   av.it.:  23.8
+      thresh= 3.786E-06 alpha_mix =  0.300 |ddv_scf|^2 =  3.449E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.3504E-03     0.0000E+00
+
+      iter #   4 total cpu time : 13231.2 secs   av.it.:  23.9
+      thresh= 1.857E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.280E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.0924E-03     0.0000E+00
+
+      iter #   5 total cpu time : 13404.0 secs   av.it.:  24.7
+      thresh= 7.266E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.326E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.0124E-03     0.0000E+00
+
+      iter #   6 total cpu time : 13578.5 secs   av.it.:  24.9
+      thresh= 1.824E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.665E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.0949E-03     0.0000E+00
+
+      iter #   7 total cpu time : 13743.3 secs   av.it.:  23.4
+      thresh= 4.080E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.833E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.1610E-03     0.0000E+00
+
+      iter #   8 total cpu time : 13915.7 secs   av.it.:  24.6
+      thresh= 2.198E-08 alpha_mix =  0.300 |ddv_scf|^2 =  2.986E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #  12 mode #  12
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.6552E-02     0.0000E+00
+
+      iter #   1 total cpu time : 14005.8 secs   av.it.:   9.2
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  1.605E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =    -6.3186E-03     0.0000E+00
+
+      iter #   2 total cpu time : 14171.7 secs   av.it.:  23.7
+      thresh= 1.267E-05 alpha_mix =  0.300 |ddv_scf|^2 =  1.434E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =    -8.4120E-03     0.0000E+00
+
+      iter #   3 total cpu time : 14338.8 secs   av.it.:  23.8
+      thresh= 3.786E-06 alpha_mix =  0.300 |ddv_scf|^2 =  3.449E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =    -5.3477E-03     0.0000E+00
+
+      iter #   4 total cpu time : 14505.5 secs   av.it.:  23.8
+      thresh= 1.857E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.280E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.0898E-03     0.0000E+00
+
+      iter #   5 total cpu time : 14676.8 secs   av.it.:  24.7
+      thresh= 7.266E-07 alpha_mix =  0.300 |ddv_scf|^2 =  3.326E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.0097E-03     0.0000E+00
+
+      iter #   6 total cpu time : 14849.6 secs   av.it.:  24.9
+      thresh= 1.824E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.666E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.0923E-03     0.0000E+00
+
+      iter #   7 total cpu time : 15013.5 secs   av.it.:  23.4
+      thresh= 4.081E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.833E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =    -4.1584E-03     0.0000E+00
+
+      iter #   8 total cpu time : 15184.9 secs   av.it.:  24.6
+      thresh= 2.198E-08 alpha_mix =  0.300 |ddv_scf|^2 =  2.991E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #  13 mode #  13
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =     2.1451E-02     0.0000E+00
+
+      iter #   1 total cpu time : 15273.7 secs   av.it.:   9.0
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  2.295E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.8354E-03     0.0000E+00
+
+      iter #   2 total cpu time : 15439.0 secs   av.it.:  23.6
+      thresh= 1.515E-05 alpha_mix =  0.300 |ddv_scf|^2 =  2.236E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =     3.5138E-03     0.0000E+00
+
+      iter #   3 total cpu time : 15606.4 secs   av.it.:  24.0
+      thresh= 4.729E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.932E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =     2.1676E-03     0.0000E+00
+
+      iter #   4 total cpu time : 15778.6 secs   av.it.:  24.8
+      thresh= 2.436E-06 alpha_mix =  0.300 |ddv_scf|^2 =  2.435E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =     1.9793E-03     0.0000E+00
+
+      iter #   5 total cpu time : 15951.3 secs   av.it.:  24.8
+      thresh= 4.935E-07 alpha_mix =  0.300 |ddv_scf|^2 =  2.690E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =     1.8873E-03     0.0000E+00
+
+      iter #   6 total cpu time : 16125.3 secs   av.it.:  25.1
+      thresh= 1.640E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.778E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =     1.9420E-03     0.0000E+00
+
+      iter #   7 total cpu time : 16291.1 secs   av.it.:  23.9
+      thresh= 4.217E-08 alpha_mix =  0.300 |ddv_scf|^2 =  5.783E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =     1.9712E-03     0.0000E+00
+
+      iter #   8 total cpu time : 16462.3 secs   av.it.:  24.7
+      thresh= 2.405E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.665E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #  14 mode #  14
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.1448E-02     0.0000E+00
+
+      iter #   1 total cpu time : 16551.3 secs   av.it.:   9.0
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  2.295E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =     2.8374E-03     0.0000E+00
+
+      iter #   2 total cpu time : 16716.5 secs   av.it.:  23.6
+      thresh= 1.515E-05 alpha_mix =  0.300 |ddv_scf|^2 =  2.236E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =    -3.5121E-03     0.0000E+00
+
+      iter #   3 total cpu time : 16884.4 secs   av.it.:  24.0
+      thresh= 4.729E-06 alpha_mix =  0.300 |ddv_scf|^2 =  5.932E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.1661E-03     0.0000E+00
+
+      iter #   4 total cpu time : 17056.7 secs   av.it.:  24.8
+      thresh= 2.436E-06 alpha_mix =  0.300 |ddv_scf|^2 =  2.435E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.9778E-03     0.0000E+00
+
+      iter #   5 total cpu time : 17229.5 secs   av.it.:  24.9
+      thresh= 4.934E-07 alpha_mix =  0.300 |ddv_scf|^2 =  2.690E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.8858E-03     0.0000E+00
+
+      iter #   6 total cpu time : 17404.3 secs   av.it.:  25.1
+      thresh= 1.640E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.778E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.9405E-03     0.0000E+00
+
+      iter #   7 total cpu time : 17570.9 secs   av.it.:  23.9
+      thresh= 4.217E-08 alpha_mix =  0.300 |ddv_scf|^2 =  5.783E-14
+
+     Pert. #  1: Fermi energy shift (Ry) =    -1.9697E-03     0.0000E+00
+
+      iter #   8 total cpu time : 17741.6 secs   av.it.:  24.7
+      thresh= 2.405E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.663E-15
+
+     End of self-consistent calculation
+
+     Convergence has been achieved 
+
+
+     Representation #  15 mode #  15
+
+     Self-consistent Calculation
+
+     Pert. #  1: Fermi energy shift (Ry) =    -2.7313E-02     0.0000E+00
+
+      iter #   1 total cpu time : 17838.5 secs   av.it.:  10.4
+      thresh= 1.000E-02 alpha_mix =  0.300 |ddv_scf|^2 =  4.530E-08
+
+     Pert. #  1: Fermi energy shift (Ry) =     1.1399E-02     0.0000E+00
+
+      iter #   2 total cpu time : 18002.3 secs   av.it.:  23.6
+      thresh= 2.128E-05 alpha_mix =  0.300 |ddv_scf|^2 =  4.340E-09
+
+     Pert. #  1: Fermi energy shift (Ry) =     1.5897E-03     0.0000E+00
+
+      iter #   3 total cpu time : 18166.6 secs   av.it.:  23.5
+      thresh= 6.588E-06 alpha_mix =  0.300 |ddv_scf|^2 =  6.056E-10
+
+     Pert. #  1: Fermi energy shift (Ry) =     2.2916E-03     0.0000E+00
+
+      iter #   4 total cpu time : 18338.4 secs   av.it.:  24.7
+      thresh= 2.461E-06 alpha_mix =  0.300 |ddv_scf|^2 =  3.398E-11
+
+     Pert. #  1: Fermi energy shift (Ry) =     2.3839E-03     0.0000E+00
+
+      iter #   5 total cpu time : 18511.6 secs   av.it.:  25.0
+      thresh= 5.829E-07 alpha_mix =  0.300 |ddv_scf|^2 =  4.227E-12
+
+     Pert. #  1: Fermi energy shift (Ry) =     2.5230E-03     0.0000E+00
+
+      iter #   6 total cpu time : 18687.1 secs   av.it.:  25.3
+      thresh= 2.056E-07 alpha_mix =  0.300 |ddv_scf|^2 =  1.482E-13
+
+     Pert. #  1: Fermi energy shift (Ry) =     2.4690E-03     0.0000E+00
+
+      iter #   7 total cpu time : 18850.3 secs   av.it.:  23.4
+      thresh= 3.850E-08 alpha_mix =  0.300 |ddv_scf|^2 =  4.878E-14

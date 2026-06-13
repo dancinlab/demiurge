@@ -49,7 +49,7 @@ handoff 입력 = verify의 verdict-attached 산출. 출력 = (a) cross-project i
 
 **handoff route**: cross-project to hexa-lang
 ```bash
-ls /Users/ghost/core/demiurge/archive/session-notes/daptpgx-pgx-*.md
+ls /Users/mini/dancinlab/demiurge/archive/session-notes/daptpgx-pgx-*.md
 # → 6 notes 작성 (M11 agent)
 ```
 
@@ -75,9 +75,9 @@ cockpit display: `target_repo` + `status` 필드를 dashboard에 표시 — 어�
 
 **handoff route**: cross-project to hexa-lang (CLI 실제 실행):
 ```bash
-cp /Users/ghost/core/demiurge/archive/session-notes/patches/hexa-lang-stdlib-bio-stats.md \
+cp /Users/mini/dancinlab/demiurge/archive/session-notes/patches/hexa-lang-stdlib-bio-stats.md \
    ~/core/hexa-lang/inbox/patches/daptpgx-stdlib-bio-stats-2026-05-25.md
-cp /Users/ghost/core/demiurge/archive/session-notes/patches/hexa-atlas-pgx-kind-extension.md \
+cp /Users/mini/dancinlab/demiurge/archive/session-notes/patches/hexa-atlas-pgx-kind-extension.md \
    ~/core/hexa-lang/inbox/patches/daptpgx-atlas-pgx-kind-2026-05-25.md
 ls ~/core/hexa-lang/inbox/patches/daptpgx-*
 # → 2 patches landed in hexa-lang/inbox/patches/

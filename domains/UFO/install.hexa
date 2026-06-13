@@ -1,7 +1,7 @@
 // install.hexa — hx build hook for hexa-ufo.
 //
 // Invoked by `hx install hexa-ufo` (hexa-lang package manager) right after
-// the GitHub checkout (or symlink from /Users/ghost/core/hexa-ufo) lands in
+// the GitHub checkout (or symlink from /Users/mini/dancinlab/hexa-ufo) lands in
 // $HX_PKG_DIR. hx passes:
 //   HX_PKG_DIR     — absolute path to the package root
 //   HX_BIN_DIR     — ~/.hx/bin

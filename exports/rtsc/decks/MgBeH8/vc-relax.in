@@ -10,15 +10,15 @@
   nstep           = 200
 /
 &SYSTEM
-  ibrav           = 2                ! FCC, Fm-3m (SG 225) — AcBeH8/LaBeH8 prototype
+  ibrav           = 2                ! FCC, Fm-3m (SG 225) - AcBeH8/LaBeH8 prototype
   celldm(1)       = 8.5132           ! a_conv = 4.505 A (Mg variant, 15% contraction vs AcBeH8 ~5.30 A start guess)
   nat             = 10               ! 1 Mg + 1 Be + 8 H (BeH8 clathrate cage, 1 f.u./primitive)
   ntyp            = 3
   ecutwfc         = 80
   ecutrho         = 800
-  nosym           = .true.           ! guard — avoids checkallsym crash (cf. sc2be2h6 campaign)
+  nosym           = .true.           ! guard - avoids checkallsym crash (cf. sc2be2h6 campaign)
   occupations     = 'smearing'
-  smearing        = 'mp'             ! Methfessel-Paxton — metallic hydride (d15)
+  smearing        = 'mp'             ! Methfessel-Paxton - metallic hydride (d15)
   degauss         = 0.01             ! d15 small-gap SCF aid (smear 0.01)
 /
 &ELECTRONS
@@ -37,7 +37,7 @@
   press_conv_thr  = 0.5
   cell_dofree     = 'all'
 /
-! FALLBACK: if dynamic instability persists, re-run with press = 500.0 (50 GPa) — see RUNBOOK.md.
+! FALLBACK: if dynamic instability persists, re-run with press = 500.0 (50 GPa) - see RUNBOOK.md.
 ATOMIC_SPECIES
   Mg  24.305   Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF
   Be   9.0122  Be.pbe-n-rrkjus_psl.1.0.0.UPF

@@ -2,11 +2,6 @@
 
 Append-only history sister of `COSMOS.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
-## 2026-06-05 — molecule SDF static fix REDEPLOYED (9/9 cards live)
-
-- [x] `1bc274cf` (PR #599): WAY-316606 molecule served from committed static `web/public/structures/pubchem-16727102.sdf` (48 atoms/50 bonds, V2000) — MolstarInner loads it first for pubchem, proxy fallback for un-committed CIDs. No runtime PubChem dependency → the Cloud Run 503 is gone.
-- [x] REDEPLOYED: Cloud Build `f5263a5c` SUCCESS → Cloud Run revision **demiurge-web-00044-tdv**. LIVE verify: `/structures/pubchem-16727102.sdf` 200 · alphafold/pdb 200 · `/sample` 200 → all 9 sample cards work in production. COSMOS web GUI fully live at demiurge.dancinlab.org.
-
 ## 2026-06-05 — 🚀 DEPLOYED to production (demiurge.dancinlab.org) + overview back to round glyphs
 
 User: 배포 + 별자리는 원으로 다시 (per-rung overview shapes too busy). Both done.

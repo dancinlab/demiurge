@@ -2,6 +2,295 @@
 
 Append-only history sister of `8VERB.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-04T12:08 — absorbed drafts/8verb-cosmos-design.md
+
+---
+slug: 8verb-cosmos-design
+mode: manual
+status: active
+created: 2026-06-04
+supersedes: 8verb-web-visual-main (the flat 2D per-verb redesign — folded in as the "verb surface" layer here)
+---
+
+# 8VERB Web GUI — "Domain Cosmos" Design Document
+
+> The layperson-facing demiurge web GUI. A user tells the chat *"I want to build a UFO,"*
+> and the GUI reveals the **composition** of that target — the internal sub-domains it needs,
+> from a single **atom** up to the full **system** — each marked **verified ✅ / needs-verification 🟡**,
+> all rendered as **real 3D** (not flat diagrams), and **progressively developed** to completion
+> through the 8-verb pipeline.
+
+This document is the SSOT for the redesign. It is to be perfected BEFORE any further build.
+
+---
+
+## 0. The one-sentence vision
+
+`chat: "make X" → reveal X's internal domain composition (atom→system) → each node shows verified/needs-verify → drive each to verified via the 8 verbs → X becomes "built"`.
+
+Three pillars, all confirmed to already exist in the data (see §7):
+1. **Composition** — a target (UFO) is built from internal sub-domains (NEXUS reuse graph).
+2. **Scale ladder** — those sub-domains span atom → materials/bio/chem → chip/structure → system.
+3. **Verification state** — every node carries a verdict (absorbed / g5 tier) = verified vs needs-verify.
+
+---
+
+## 1. User journey (the UFO worked example)
+
+```
+요리선생(chat, 좌측)                 메인영역(우측, 출력 전용)
+─────────────────                  ──────────────────────────
+"UFO 만들고 싶어"            ──▶   🛸 UFO (시스템) 3D 떠오름
+                                   └─ "이걸 만들려면 이런 게 필요해요" 구성 펼침
+                                          │
+        ┌──────────────── 구성 트리 (atom→system) ────────────────┐
+        │ 🛸 UFO  [시스템]                              🟡 검증필요   │
+        │ ├─ 🌀 WORMHOLE  [시스템/시공간]               ⚪ 미검증     │
+        │ ├─ 🫥 CLOAK     [칩/메타물질]                 🟢 검증됨     │
+        │ │   └─ 🔩 HEX-N6 [원자/격자]                  🔵 검증됨(formal)│
+        │ ├─ 🧲 ANTIMATTER trap [칩/자석]               🟢 검증됨×3   │
+        │ │   └─ 🌡️ RTSC   [물질/초전도]                🟢 검증됨(부분)│
+        │ └─ ☀️ FUSION    [시스템/추진]                 🟢 검증됨     │
+        └──────────────────────────────────────────────────────────┘
+"WORMHOLE부터 검증해줘"     ──▶   그 노드로 진입 → 8-verb 파이프라인 가동
+                                   (discover→…→verify→handoff, 이미 만든 verb 화면들)
+                                   verify 통과 → 노드가 ⚪→🟢 으로 점등
+                                   모든 노드 🟢 → UFO 🟡→🟢 "건조 완료"
+```
+
+Layperson reading: *"To build a flying saucer you need a wormhole, a cloak, an antimatter trap,
+and a fusion drive. The cloak and fusion drive are proven; the wormhole still needs work.
+Let's prove the wormhole."* — no jargon required to grasp the shape.
+
+---
+
+## 2. The Cosmos model — scale ladder (원자 → 시스템)
+
+Every domain sits at one rung. The GUI's spine is this ladder; zooming in/out moves between rungs.
+
+```
+ rung            한 줄                         대표 도메인 (실재)
+ ───────────────────────────────────────────────────────────────────────
+ ① 원자 ATOM      원자·격자·양자 단위           HEX-N6 · QUBIT · SRR
+ ② 물질/바이오/    재료·분자·세포               RTSC · PEROVSKITE · GRAPHENE · METAMATERIAL
+    화학 M·B·C                                  AGA-RX · GENE-EDIT · PROTEIN-FOLD · ELECTROCAT · CO2-CAPTURE
+ ③ 칩/상위구조     소자·메타표면·트랩 어셈블리    CLOAK · ANTIMATTER · CERN · NEUROMORPHIC · MEMRISTOR
+ ④ 시스템 SYSTEM   완성 결합체                  UFO · WORMHOLE · WARP · FUSION · 위성/우주선 · *-CURE 치료체계
+```
+
+- A SYSTEM-rung domain (UFO) decomposes DOWNWARD through the rungs to ATOM (HEX-N6).
+- Visual metaphor: a **vertical "scale elevator"** on one side; the 3D stage shows the
+  currently-focused rung's model, with "↑ 더 크게 / ↓ 더 작게" to climb the ladder.
+- This directly answers "원자부터 시스템까지 아울러야해."
+
+---
+
+## 3. Composition & reuse (where the tree comes from)
+
+The decomposition tree is NOT invented by the LLM — it is read from **NEXUS.tape** (the verified
+cross-domain reuse graph) + each domain's `reused[]`/`provides[]` edges. Confirmed edges:
+
+```
+UFO ──reuses──▶ ANTIMATTER.ioffe_loop_bz      (Stage-1 hover · 🟢 ×3)
+UFO ──reuses──▶ FUSION.triple_product          (Stage-2 cruise · 🟢 |Δ|=0)
+UFO ──reuses──▶ ANTIMATTER.pair_threshold      (Stage-3 orbital · 🟢 |Δ|=0)
+UFO ──stage-5─▶ WORMHOLE                        (⚪ unproven)
+CLOAK ─reuses─▶ HEX-N6 lattice anchors          (🔵 10/11 · σ·φ·τ)
+WARP ──reuses─▶ HEX-N6 σ=12                      (⚪ physics unproven)
+WORMHOLE reuses HEX-N6 σ=12                       (⚪)
+RTSC ──reuses──▶ NOVEL-TOOL current_loop_offaxis (tier-2)
+ANTIMATTER reuses RTSC getdp solenoid + current_loop (tier-2)
+```
+
+- **Edge tier = trust of the LINK** (e1..e9 carry tier-1/2 + evidence pointers).
+- **Node state = trust of the DOMAIN** (absorbed flag + g5 verdicts in the domain doc).
+- The GUI renders edges as the 3D "assembly connectors" and nodes as the 3D models.
+- Rule (d19/g67): intra-project edges only; never cross-repo in this graph.
+
+---
+
+## 4. Verification-state model (검증됨 / 검증필요)
+
+Reuse the EXISTING truth signals — do NOT invent a new status scheme.
+
+| GUI badge | source signal | meaning (layperson) |
+|-----------|---------------|---------------------|
+| 🟢 검증됨 | `absorbed=true` OR g5 🟢 SUPPORTED-NUMERICAL | "증명됨 — 믿어도 됨" |
+| 🔵 검증됨(엄밀) | g5 🔵 SUPPORTED-FORMAL (closed-form/identity) | "수학적으로 확정" |
+| 🟡 검증필요 | partial / 🟠 INCONCLUSIVE / 🟡 citation-only | "거의 다 됐고 확인만 남음" |
+| ⚪ 미검증 | absorbed=false / no verdict / TODO | "아직 안 해봄" |
+| 🔴 반증됨 | g5 🔴 CLOSED-negative / FALSIFIED | "막힌 길 (확정)" |
+
+- A target's overall state = rollup of its leaves (all 🟢/🔵 → target 🟢; any ⚪ → 🟡; any 🔴 on a load-bearing edge → flag).
+- "검증된것들 / 검증필요한것들" = simply a filter/legend over the same tree.
+- Honesty rule (d6/g5/d_paper_*): NEVER paint ⚪/🟡 as 🟢. WORMHOLE stays ⚪ ("PERMANENT absorbed=false")
+  even inside a pretty 3D — the badge tells the truth.
+
+---
+
+## 5. 3D-first visualization (the regression to fix)
+
+**Problem found:** the prior build flattened everything to 2D SVG (NodeGraphCanvas) and kept real 3D
+only for QUBIT. The user wants real 3D everywhere, like the RTSC-coil / Josephson scene.
+
+**Direction:**
+- The main stage is a **real R3F (three.js) 3D canvas**, reusing the JosephsonR3F SSR-safe pattern
+  (`next/dynamic` ssr:false + CSS-3D fallback).
+- Each domain has a **3D model** appropriate to its rung:
+  - ATOM: lattice/crystal/qubit-junction (HEX-N6 honeycomb, QUBIT junction).
+  - MATERIALS: supercell (RTSC H₃X cell from lattice params), molecule/pocket (AGA-RX).
+  - CHIP: metasurface unit cell (CLOAK Hex-SRR), trap assembly (ANTIMATTER).
+  - SYSTEM: the assembled body (UFO craft, wormhole throat surface-of-revolution).
+- **Cross-scale zoom**: dolly from a 100 m system down to a 1.6e-34 m wormhole throat / 10 nm cell —
+  the "원자→시스템" elevator is literally a camera move + model swap.
+
+### 5.1 HARD rule — geometry from EXTERNAL files, never hardcoded (@L3 / d "별도파일")
+
+```
+domain doc / data  ──parse──▶  geometry descriptor (JSON)  ──load──▶  R3F mesh
+                                web/public/models/<DOMAIN>/*.glb        (useGLTF)
+                                OR domains/<DOMAIN>.3d.json (params)     OR procedural-from-params
+```
+- Heavy meshes → `.glb` under `web/public/models/<DOMAIN>/` (or a GCS bucket via `NEXT_PUBLIC_3D_ASSET_BUCKET`).
+- Parametric models (lattices, metacells) → a `<DOMAIN>.3d.json` descriptor (lattice consts, ring gaps,
+  σ·τ·φ) that a generic builder turns into a mesh at runtime. Params live in the descriptor, NOT in code.
+- Even Josephson must migrate off hardcoded primitives → a descriptor/glb (closes the @L10 `!hardcode` lock).
+
+### 5.2 Infra to add (gap from inventory §7)
+- `web/public/models/` asset dir + `useGLTF` loader wrapper.
+- `lib/geometry-3d.ts` — load descriptor → BufferGeometry/group (generic, manifest-driven per d4).
+- `lib/cosmos.ts` — read NEXUS.tape + DOMAINS.tape + per-domain absorbed/verdicts → the composition tree + node states.
+
+---
+
+## 6. The 8 verbs, reframed onto the cosmos
+
+The 8 verbs do NOT disappear — they become the **operations on a focused node** of the cosmos.
+The prior per-verb surfaces are kept but re-skinned 3D-first and driven by chat + the tree.
+
+| verb | on a focused domain-node | 3D surface |
+|------|--------------------------|------------|
+| discover | find candidate domains/materials for the target | 3D gallery of candidate models orbiting |
+| specify | target + 합격선 for THIS node | contract card pinned to the 3D node |
+| structure | the node's internal parts | **3D model assembly** (parts in 3D, was 2D graph) |
+| design | fill the parts' real values | 3D model + inspector (click a part in 3D) |
+| analyze⟲ | check the model | problem parts glow red ON THE 3D MODEL |
+| synthesize | run it (QFORGE/sim) | the 3D model "powers on" / fields animate |
+| verify | measure vs reference | result badge stamps onto the node; ⚪→🟢 |
+| handoff | ship the node + roll up to parent | node clicks into the parent assembly; certificate |
+
+- The earlier flat designs (계약서 카드, 대조 저울, 인증서) survive as the 2D overlays ON TOP of the
+  3D stage — but the spine is now the 3D cosmos, not a flat node graph.
+
+---
+
+## 7. Data backing & gaps (from the §0 inventory)
+
+### Already exists (reuse)
+- Real 3D: `JosephsonR3F` (R3F + OrbitControls, SSR-safe) — the pattern to generalize.
+- three@0.169 · @react-three/fiber@9.6 · @react-three/drei@10.7 — loaders/controls available.
+- Data libs: `domains.ts` (roster+progress), `matter.ts` (attestation/verdict ledger),
+  `trajectory.ts` (log→timeline), `phanes.ts` (discover tree). NEXUS.tape (reuse edges).
+- Domain docs WITH geometry-capable data: RTSC (lattice/pressure/phonon), HEX-N6 (σ·τ·φ lattice),
+  CLOAK (Hex-SRR metacell params), AGA-RX (pockets/poses), WORMHOLE (throat metric).
+
+### Gaps (must build)
+1. No per-domain 3D loading infra (no `public/models/`, no `useGLTF` wrapper, no descriptor schema).
+2. No `cosmos.ts` (NEXUS+roster+verdict → tree+states) — the composition data isn't assembled for the UI yet.
+3. No data→geometry parsers (domain docs hold lattice/pocket data but nothing extracts it to 3D).
+4. Prior build is 2D where it should be 3D (NodeGraphCanvas 2D; only QUBIT is R3F).
+5. CSS-3D `StructureViewer` is a dead-end placeholder for real crystal/assembly models.
+
+---
+
+## 8. Progressive-development direction ("이런식으로 발전")
+
+The cosmos is not static — it is the project's living dashboard. A target evolves:
+
+```
+⚪ pick target (UFO)
+   │  discover → specify → structure → design → analyze⟲ → synthesize → verify
+   ▼            (run per leaf node, chat-driven, 3D surfaces)
+🟡 some leaves 🟢, some ⚪      ← honest mixed state, visible on the tree
+   │  keep driving ⚪ leaves through the 8 verbs (or /cycle autonomously)
+   ▼
+🟢 all leaves verified → target rolls up to 🟢 "built (in-silico)"  ← d1/d5/d19 closure
+   │  handoff → atlas fold · paper · NEXUS edge · user dossier download
+   ▼
+🛸 the target joins the verified cosmos; its primitives become reusable edges for the NEXT target
+```
+
+- This is the same OUROBOROS the backend already runs (discover lane, /cycle, atlas absorb) —
+  the GUI just makes it visible + layperson-drivable from the chat.
+- "발전시켜나가는 방향" = the tree fills with 🟢 over time; new targets reuse proven leaves.
+
+---
+
+## 9. Open design decisions (resolve next, sbs manual — one at a time)
+
+- D1 — landing screen: ✅ **LOCKED = (a) full cosmos** — the app opens on ALL domains as a live
+  3D constellation (verified nodes glow). Chat + click drive focus/decompose from there.
+  (Layperson on-ramp: the constellation itself is the "what can I build?" answer; the chat is the input.)
+- D2 — composition tree shape: ✅ **LOCKED = (a) focus sub-constellation** — picking a target
+  lights its sub-domains' edges within the SAME 3D cosmos (others dim), arranged on a VERTICAL
+  scale axis (atom at bottom → system at top). One 3D world shows composition + scale ladder at once.
+  (Optional later: a toggle to overlay a 2D tree panel for accessibility.)
+- D3 — 3D model fidelity: ✅ **LOCKED = (c) hybrid** — render a faithful model where structural data
+  exists (HEX-N6 lattice, RTSC supercell, CLOAK metacell), else a stylized 3D symbol + a "데이터 없음 /
+  검증필요" badge. Fidelity itself signals data-maturity, reinforcing the honesty rule (§4 · d6): a node
+  with no data CANNOT masquerade as a faithful proven model.
+- D4 — chat→build wiring + navigation: ✅ **LOCKED = 3-layer composite** (page routing ⊕ window event ⊕ URL):
+  - **Pages (Next App Router)** — `/` = 🌌 MAIN PAGE = cosmos constellation (D1). `/d/<DOMAIN>` = a
+    domain's composition/verify detail page. `/<verb>/<domain>` (existing routes) = the node's 8-verb
+    work pages. Node "작업하기" → `router.push("/<verb>/<domain>")`; browser back → cosmos. (REAL page nav.)
+  - **Window event** — inside the main page, chat "UFO 비춰" → `demiurge:focus {target}` (generalize the
+    stubbed `demiurge:discover`); cosmos focuses IN PLACE (no nav, fast/smooth).
+  - **URL** — `/?target=UFO` (deep-link focus) + `/d/UFO` route param: shareable · refresh-safe.
+  Rationale: covers a real MAIN PAGE + node→work-page navigation + in-place chat focus + share links,
+  while reusing the existing verb routes. Chat is the primary driver; clicks/links navigate.
+- D5 — 3D asset strategy: ✅ **LOCKED = procedural-first + glb escape-hatch + bucket-when-heavy** (priority order):
+  (1) **procedural** — numeric/parametric models (HEX-N6 lattice from σ·τ·φ, RTSC supercell from lattice
+  consts, orbits) generated at runtime from a `<DOMAIN>.3d.json` descriptor (or parsed domain doc) →
+  lightweight, reflects domain numbers directly; (2) **glb** — complex hand-made meshes (craft, protein
+  pocket) loaded via `useGLTF` from `web/public/models/<DOMAIN>/*.glb`; (3) **GCS bucket**
+  (`NEXT_PUBLIC_3D_ASSET_BUCKET`) only when glb assets grow heavy. All three satisfy "geometry = external
+  data/file, never hardcoded" (d · @L10) — the descriptor IS external data.
+- D6 — default view / filter: ✅ **LOCKED = (a) show ALL + filter toggles** — default shows the FULL
+  cosmos (every node, state encoded by color/fidelity per §3-5), with filter toggles `[검증됨]` `[검증필요]`
+  `[지금 만들 수 있는 것 (deps all 🟢)]`. Preserves the whole-cosmos view + exploration, lets the user
+  focus, and never hides nodes by default (honesty — no silent omission). Faceted-filter convention.
+- D7 — first build slice: ✅ **LOCKED = generic-infra + UFO end-to-end vertical slice** (가+나) —
+  build the GENERIC path (P1 `cosmos.ts` data + P2 3D loader/descriptor + filters), then EXERCISE it
+  end-to-end through ONE reference target (UFO: discover→…→handoff) so the single generic path (d4) is
+  proven on a real instance, not hand-wired. Remaining domains then extend by manifest/descriptor only
+  (no per-domain code). Demo impact (UFO) + d4 compliance + flow validation in one slice.
+
+---
+
+## 10. Phased roadmap (after the doc is locked)
+
+1. **P0 docs** (this file) — perfect the design. ← we are here.
+2. **P1 cosmos data** — `lib/cosmos.ts` (NEXUS+roster+verdict → tree+states). No UI yet; unit-testable.
+3. **P2 3D infra** — `public/models/` + `useGLTF` wrapper + descriptor schema + generalize JosephsonR3F → generic loader.
+4. **P3 scale ladder + composition tree** — the 3D spine (UFO worked example end-to-end).
+5. **P4 verbs-on-node** — re-skin the 8 verb surfaces 3D-first onto a focused node.
+6. **P5 chat wiring** — `demiurge:build` event; 요리선생 drives the cosmos.
+7. **P6 polish + i18n + token-conform**, then preview → approve → deploy (d_deploy).
+
+Each Pn lands on the existing `feat/8verb-web-visual` branch (or a fresh branch off main), localdev only,
+NO deploy without explicit approval.
+
+---
+
+## Constraints carried (non-negotiable)
+- 8-verb canonical names kept (no friendly renames).
+- Real 3D, geometry EXTERNAL-FILE-loaded, never hardcoded (d "별도파일" · @L10).
+- Layperson-first, visual-first; chat is the only input (main area = output).
+- Honest verdicts: ⚪/🟡/🔴 never shown as 🟢 (d6/g5).
+- Span 원자→시스템 (the scale ladder is the spine).
+- NO deploy / PR / push-to-main without explicit user approval (d_deploy).
+
+
 ## 2026-06-04 — afg: pure-hexa stack #14+#15+#16+#17a+#20 landed (operate·backend·owner·llm·synthesize→QFORGE @L6)
 
 Five foreground branches, all hexa-native (Swift untouched), all in the dedicated worktree. MID-RUN friction fix: folder-approval was confirmed already-trusted via `/add-dir`; recurring Bash-command prompts addressed by a broad prefix allowlist in `.claude/settings.local.json` (cd·hexa·git·gh·cp·export·test·tail·rm-temp/cache `:*`).

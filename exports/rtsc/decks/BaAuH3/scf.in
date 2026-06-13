@@ -1,5 +1,5 @@
 &control
-  ! A10 BaAuH3 — post-relax SCF. MUST read the relaxed celldm(1) + positions from the
+  ! A10 BaAuH3 - post-relax SCF. MUST read the relaxed celldm(1) + positions from the
   !   vc-relax.out (CELL_PARAMETERS / ATOMIC_POSITIONS final block) BEFORE running this.
   !   The celldm(1) below is the START guess and is overwritten in the RUNBOOK step.
   ! electron_phonon='simple' needs a DENSE k-mesh for the double-delta EPC integral ->

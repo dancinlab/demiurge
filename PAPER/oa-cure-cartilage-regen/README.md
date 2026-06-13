@@ -1,19 +1,7 @@
-# oa-cure-cartilage-regen — OA-CURE
+# <slug> — paper title placeholder
 
-> **An in-silico senolytic-enabled regimen for osteoarthritic cartilage regeneration.**
-> OA is the hardest of the four senolytic-closable degenerative cures: lost
-> fibrillated-cartilage class η=0.40 (lowest of the four), best-achievable ceiling
-> 0.68 → ≥0.90 gate BLOCK on chondral neogenesis. SENOLYX niche senescent-cell
-> clearance lifts η_lost and closes the gate at ~78% clearance; cartilage is
-> avascular, so intra-articular delivery is the secondary binding axis. Instance of
-> the universal-neogenesis-bottleneck framework. Status: draft v1 (10pp, lint ✓,
-> tectonic clean). No efficacy claimed; η are literature-order (d6/g63).
-> Source artifacts: `exports/OA-CURE/`, `exports/CURE-PRIMITIVE/round1/`,
-> `domains/OA-CURE.md`.
->
-> Build with `tectonic main.tex` (the Makefile xelatex pin still works for
-> `make figures` / `make pages`). Figures regenerate via
-> `figures/_scripts/{fig01_senolytic_oa,fig02_classdecomp}.py`.
+> One-line framing of the paper. Replace this block with paper-specific
+> notes (status · target length · companion records / data).
 
 ## Source layout
 

@@ -1,0 +1,59 @@
+{
+  "record_kind": "cloak_handoff_record",
+  "domain": "CLOAK",
+  "cell": "integrated-cloak-foundry-package (EUV mask + ALD recipe + RCS bench + cert tracks)",
+  "verb": "7/7 handoff (인계 · 누구에게 무엇을)",
+  "iso_stamp": "2026-05-29",
+  "produced_by": "AUTHORED (manual) — demiurge 7-verb spine Phase C verb-7. 7-verb 파이프라인 종착. 외부 foundry 패키지 + 측정 protocol + 인증 트랙 봉인. downstream wet-lab measurement_gate 가 OPEN 인 채로 인계 (@D d5 invariant).",
+  "source_refs": {
+    "domain_md": "domains/cloak.md §Phase C verb-7 handoff",
+    "specify_record": "exports/cloak/specify/integrated_cloak_specify_2026-05-29.json",
+    "structure_record": "exports/cloak/structure/integrated_cloak_structure_2026-05-29.json",
+    "design_dossier": "exports/cloak/design/integrated_cloak_design_2026-05-29.json",
+    "analyze_record": "exports/cloak/analyze/integrated_cloak_analyze_2026-05-29.json",
+    "synthesize_record": "exports/cloak/synthesize/integrated_cloak_synthesize_2026-05-29.json",
+    "verify_record": "exports/cloak/verify/integrated_cloak_verify_2026-05-29.json"
+  },
+  "deliverables": [
+    {"#": 1, "item": "EUV mask GDS-II drawing", "format": "GDS-II / OASIS", "content": "n=6 hexagonal lattice · pitch 10 nm · Hex-SRR unit cell · 1 m² 시트 dose map", "status": "downstream tape-out"},
+    {"#": 2, "item": "ALD recipe PDF", "format": "PDF dossier", "content": "10-step recipe (sopfr=5 nm stack · TMA/TDMAT/TDMAH precursor) + temp/pressure timing", "status": "this record §ald_recipe_steps (synthesize)"},
+    {"#": 3, "item": "BOM Excel/CSV", "format": "xlsx · csv", "content": "7-item BOM × σ²=144 m² 시스템 quantity + supplier class", "status": "this record §bom (synthesize)"},
+    {"#": 4, "item": "Firmware spec", "format": "Markdown + Verilog ref", "content": "σ=12 채널 AI 제어 board · FPGA + ML 추론 · band ON/OFF protocol", "status": "skeleton · downstream firmware dev"},
+    {"#": 5, "item": "RCS bench protocol", "format": "PDF · IEEE STD 1502", "content": "무반향 챔버 RCS 측정 · σ-τ=8 oct 광대역 스윕 · VNA Q-factor probe", "status": "downstream wet-lab"}
+  ],
+  "foundry_capabilities_required": [
+    {"capability": "High-NA EUV lithography", "spec": "ASML EXE:5000 또는 동급 · NA=0.55 · resolution ≤ 8 nm", "vendor_class": "TSMC / Intel Fab / Samsung Foundry"},
+    {"capability": "ALD multilayer deposition", "spec": "Al₂O₃ · TiO₂ · HfO₂ · 1 nm/cycle · ≥ 6-inch wafer chamber", "vendor_class": "ASM International / Beneq / Picosun"},
+    {"capability": "hBN single-crystal substrate", "spec": "6-inch CVD-grown hBN · roughness < 0.5 nm RMS", "vendor_class": "2D Semi / HQ Graphene"},
+    {"capability": "EUV mask tape-out service", "spec": "Multibeam Mask Writer · 13.5 nm exposure · LWR < 1 nm", "vendor_class": "Toppan · HOYA · Photronics"},
+    {"capability": "Ar+ ion mill etch", "spec": "200-500 eV · in-situ SEM monitoring · Hex-SRR 1 nm linewidth", "vendor_class": "Veeco · Oxford Instruments"}
+  ],
+  "cert_tracks": [
+    {"standard": "MIL-STD-461G", "scope": "전자기 적합성 (EMI/EMC) · 군사 스텔스 도색 application 1", "phase": "Mk.II 시제품 단계"},
+    {"standard": "FAA Pt.25", "scope": "민항기 등급 · UFO Stage-cloak (HEXA-CLOAK 5축 부수축) cross-link", "phase": "Mk.III 단계 (downstream)"},
+    {"standard": "IEEE STD 1502", "scope": "RCS measurement protocol · 무반향 챔버 표준", "phase": "downstream wet-lab"},
+    {"standard": "IEC 62443", "scope": "AI 제어 board cybersecurity · σ=12 채널 ON/OFF · firmware", "phase": "Mk.II firmware dev"},
+    {"standard": "ISO/IEC 27001", "scope": "stealth-tech 정보보안 (군사 application 보호)", "phase": "ongoing"}
+  ],
+  "gate_open": true,
+  "measurement_gate": "downstream RCS chamber + VNA + SEM + broadband spectrum (@D d5 invariant 영구 OPEN — demiurge 는 측정을 originate 하지 않음)",
+  "honest_caveats": [
+    "메타셀 effective-medium 가정 — k ≪ 2π/a 장-파장 근사 · 단파장 (가시광 λ < 60 nm) 외삽 위험 (@D d6 V4 ledger §8)",
+    "단파장 외삽 위험 — 가시광 영역 σ-τ=8 oct 가정은 closed-form 도출, 실측 광대역 VNA 측정 필요",
+    "제작 yield 미지 — Mk.II $500/m² · 90% yield 는 추정 · 실제 foundry quote + 실측 yield 의존 (@D d6 honest)",
+    "PR #1938 runtime blocker — `hexa verify --expr` 7-fn verdict verbatim 인용은 toolchain rebuild 후 가능 (현 self-test PASS verbatim 으로 대체)",
+    "absorbed=true (V4) 는 비-wet-lab gate PASS — 실제 stealth 효과 입증은 downstream wet-lab confirmation (@D d5 d1)",
+    "downstream wet-lab 의존성 — foundry handoff 후의 모든 측정/yield/cert/스텔스 효과는 demiurge clean-room 외부"
+  ],
+  "pipeline_completion_summary": {
+    "verb_1_specify": "exports/cloak/specify/integrated_cloak_specify_2026-05-29.json — Mk.II 시제품 사양",
+    "verb_2_structure": "exports/cloak/structure/integrated_cloak_structure_2026-05-29.json — 8-stage 공정 체인",
+    "verb_3_design": "exports/cloak/design/integrated_cloak_design_2026-05-29.json — Drude·Lorentz·Veselago closed-form",
+    "verb_4_analyze": "exports/cloak/analyze/integrated_cloak_analyze_2026-05-29.json — FDTD retrieval plan",
+    "verb_5_synthesize": "exports/cloak/synthesize/integrated_cloak_synthesize_2026-05-29.json — BOM + EUV mask + ALD recipe",
+    "verb_6_verify": "exports/cloak/verify/integrated_cloak_verify_2026-05-29.json — V4 ledger mirror absorbed=true",
+    "verb_7_handoff": "this record — foundry package + cert tracks + downstream wet-lab gate_open=true"
+  },
+  "gate": "OPEN (downstream wet-lab measurement_gate)",
+  "absorbed": false
+}

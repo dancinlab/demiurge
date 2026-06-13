@@ -1,0 +1,59 @@
+{
+  "record_kind": "cloak_synthesize_record",
+  "domain": "CLOAK",
+  "cell": "integrated-cloak-bom-recipe (BOM + EUV mask + ALD multilayer recipe)",
+  "verb": "5/7 synthesize (합성 · 무엇으로 어떻게 만드는가)",
+  "iso_stamp": "2026-05-29",
+  "produced_by": "AUTHORED (manual) — demiurge 7-verb spine Phase C verb-5. σ²=144 m² 시스템 (1 m² × 144 단위 셀) BOM + EUV mask 패턴 ref + ALD 다층 recipe. 본 record 는 foundry handoff 직전 합성 사양 봉인.",
+  "source_refs": {
+    "domain_md": "domains/cloak.md §Phase C verb-5 synthesize",
+    "structure_record": "exports/cloak/structure/integrated_cloak_structure_2026-05-29.json (8-stage 공정)",
+    "design_dossier": "exports/cloak/design/integrated_cloak_design_2026-05-29.json (Drude · Lorentz · Veselago params)",
+    "phase_b_dossier": "exports/cloak/design/phase_b_metacell.md §3 sopfr=5 nm 필름"
+  },
+  "bom": [
+    {"#": 1, "item": "RT-SC target (MgB₂ pressed disk 또는 CVD Graphene roll)", "spec": "n_e ≥ 1e28 m⁻³ · 99.99% purity · 박막 두께 5 nm 증착용", "quantity_per_m2": "0.2 g", "quantity_total_144m2": "28.8 g", "supplier_class": "Sigma-Aldrich / 2D Semi"},
+    {"#": 2, "item": "hBN substrate (hexagonal Boron Nitride)", "spec": "6-inch wafer · 단결정 · roughness < 0.5 nm RMS · CVD grown", "quantity_per_m2": "1 wafer (6-inch ≈ 0.018 m²)", "quantity_total_144m2": "8000 wafers", "supplier_class": "2D Semi / HQ Graphene"},
+    {"#": 3, "item": "Ag connector (interconnect)", "spec": "99.999% purity · sputter target · linewidth 1 nm patterning", "quantity_per_m2": "0.05 g", "quantity_total_144m2": "7.2 g", "supplier_class": "Kurt J. Lesker"},
+    {"#": 4, "item": "Au connector (alternative · Ag 산화 회피)", "spec": "99.999% · ALD precursor (Me3AuPMe3)", "quantity_per_m2": "0.05 g", "quantity_total_144m2": "7.2 g", "supplier_class": "Strem Chemicals"},
+    {"#": 5, "item": "EUV resist (high-NA 호환)", "spec": "13.5 nm light · sensitivity ≤ 30 mJ/cm² · LWR < 1 nm", "quantity_per_m2": "10 mL", "quantity_total_144m2": "1.44 L", "supplier_class": "JSR / Inpria"},
+    {"#": 6, "item": "ALD precursors (TMA, H₂O, TDMAT)", "spec": "Al₂O₃ + TiO₂ + HfO₂ multilayer · 1 nm/cycle", "quantity_per_m2": "30 cycles ≈ 5 nm stack", "quantity_total_144m2": "4320 cycles total", "supplier_class": "Strem / Sigma-Aldrich"},
+    {"#": 7, "item": "Ar+ ion mill etch gas", "spec": "99.999% Ar · ion energy 200-500 eV · Hex-SRR 패터닝", "quantity_per_m2": "scfm equiv", "quantity_total_144m2": "process-dependent", "supplier_class": "Praxair / Air Liquide"}
+  ],
+  "euv_mask_pattern": {
+    "mask_file_ref": "(downstream foundry handoff · GDS-II format · TBD post tape-out)",
+    "pattern_summary": "n=6 hexagonal lattice · pitch 10 nm · unit cell = Hex-SRR (r_o=5nm · r_i=3nm · gap=1nm · linewidth=1nm)",
+    "mask_writer": "Multibeam Mask Writer (MBMW) · 13.5 nm EUV exposure",
+    "stepper": "ASML EXE:5000 (High-NA EUV · NA=0.55 · resolution ≤ 8 nm)",
+    "yield_target": "≥ 90% (Mk.II 등급 · defect density < 0.1/cm²)"
+  },
+  "ald_recipe_steps": [
+    {"step": 1, "name": "substrate prep", "duration_min": 10, "params": "hBN wafer clean · O₂ plasma 30s · base pressure < 1e-7 Torr"},
+    {"step": 2, "name": "RT-SC seed layer", "duration_min": 5, "params": "MgB₂ sputter 1 nm · Ar 5 mTorr · 100W DC"},
+    {"step": 3, "name": "ALD layer-1 (Al₂O₃)", "duration_min": 8, "params": "TMA pulse 0.1s · purge 5s · H₂O pulse 0.1s · purge 5s · 200°C · 1 nm"},
+    {"step": 4, "name": "ALD layer-2 (TiO₂)", "duration_min": 10, "params": "TDMAT pulse 0.5s · purge 10s · H₂O pulse 0.1s · purge 5s · 200°C · 1 nm"},
+    {"step": 5, "name": "ALD layer-3 (HfO₂)", "duration_min": 12, "params": "TDMAH pulse 1s · purge 15s · H₂O pulse 0.1s · purge 5s · 250°C · 1 nm"},
+    {"step": 6, "name": "ALD layer-4 (Al₂O₃)", "duration_min": 8, "params": "(반복 layer-1) · 1 nm"},
+    {"step": 7, "name": "ALD layer-5 (RT-SC cap)", "duration_min": 5, "params": "MgB₂ sputter 1 nm · 총 sopfr=5 nm 완성"},
+    {"step": 8, "name": "EUV expose + develop", "duration_min": 30, "params": "13.5 nm · 30 mJ/cm² · TMAH develop"},
+    {"step": 9, "name": "Ar+ ion mill", "duration_min": 20, "params": "200 eV · etch through 5-layer stack · Hex-SRR 패턴 노출"},
+    {"step": 10, "name": "Ag/Au interconnect lift-off", "duration_min": 15, "params": "sputter 5 nm Ag · acetone lift-off · linewidth 1 nm"}
+  ],
+  "estimated_cost_usd_per_m2": 500,
+  "cost_breakdown": {
+    "materials": "$150/m² (RT-SC target + hBN substrate + Ag/Au + precursors + resist)",
+    "tool_amortization": "$200/m² (EUV stepper rent + ALD chamber + ion mill)",
+    "labor_qa": "$100/m² (cleanroom labor + SEM QA + electrical test)",
+    "yield_loss": "$50/m² (≈10% loss · Mk.II 등급)",
+    "total": "$500/m² · 144 m² = $72,000 시스템 가격 (Mk.II 군사 스텔스 도색 등급)"
+  },
+  "scope_caveats": [
+    "BOM 수량 = closed-form 추정 — 실제 foundry quote 의존 (downstream)",
+    "EUV mask GDS-II file ref = TBD · 본 record 는 패턴 spec 만 정의 · 실제 tape-out 은 verb-7 handoff",
+    "ALD recipe = template — 실제 foundry tool (ASM International · Beneq · Picosun) tuning 필요",
+    "yield 90% = Mk.II 등급 추정 · 실측 yield = downstream wet-lab 측정 (@D d6 honest)",
+    "measurement_gate = GATE_OPEN — synthesize record 는 BOM/recipe dossier · absorbed claim 아님 (g3)"
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

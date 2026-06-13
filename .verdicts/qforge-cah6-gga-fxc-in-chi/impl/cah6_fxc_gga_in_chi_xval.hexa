@@ -1,0 +1,112 @@
+// stdlib/qforge/fixtures/cah6_fxc_gga_in_chi_xval.hexa
+//
+// QFORGE MIGRATION-GATE — converged-CaH6 full-BZ λ with the FULL ε(G,G') MATRIX AND the
+// GGA(PBE) f_xc-IN-χ Dyson kernel. The A2 round: the ALDA f_xc-in-χ round over-screened
+// (LDA exchange kernel f_x=−⅓(3/π)^⅓ρ^−⅔ < 0 → (v_c+f_xc) over-screening → λ=3.41513,
+// 21.96% BELOW QE 4.376, WORSE than RPA's 14.25%). The named next lever (ALDA's sign
+// did NOT predict it): GGA f_xc^GGA = ∂²e_xc^PBE/∂ρ²|_{∇ρ} — the PBE xc kernel carrying
+// the |∇ρ| gradient via F_x(s) (exchange) and H(t) (correlation), evaluated on the
+// H-cage high-gradient density by spectral differentiation (FFT·iG·IFFT) of ρ(r).
+//
+// ε_{i,j} = δ − v_c(i)·χ⁰_{i,j} − Σ_k f_xc^GGA(G_i−G_k)·χ⁰_{k,j}.
+//
+// Reports the new screened CaH6 λ vs QE 4.376 VERBATIM (d6 — NOT forced to 4.376).
+//
+// args: <deck_dir> <npw_cap> <nq> [<ncond>]   (ncond = #conduction bands in χ⁰; default 8)
+// Run: HEXA_MEM_CAP_MB=12288 HEXA_LANG="$PWD" hexa run --no-sentinel \
+//        stdlib/qforge/fixtures/cah6_fxc_gga_in_chi_xval.hexa <deck> 0 2 8
+
+use "stdlib/qforge/pw_frontend"
+use "stdlib/qforge/qforge_run"
+use "stdlib/material/sim"
+
+let QE_LAMBDA: float = 4.376
+
+fn _abs(x: float) -> float { if x < 0.0 { return -x } return x }
+
+fn main() {
+    let av = args()
+    let deck_dir = if len(av) > 1 { av[1] } else {
+        "/Users/mini/dancinlab/demiurge/exports/rtsc/decks/CaH6_NC" }
+    let npw_cap = if len(av) > 2 { to_int(av[2]) } else { 0 }
+    let nq      = if len(av) > 3 { to_int(av[3]) } else { 2 }
+    let ncond   = if len(av) > 4 { to_int(av[4]) } else { 8 }
+
+    println("=== QFORGE MIGRATION GATE — CaH6 full-BZ λ · GGA(PBE) f_xc-IN-χ (d6 VERBATIM) ===")
+    println("deck=" + deck_dir + "  npw_cap=" + to_string(npw_cap)
+            + "  q-mesh=" + to_string(nq) + "³ MP  ncond(χ⁰)=" + to_string(ncond))
+    println("vertex=SCREENED · ε=δ−(v_c+f_xc^GGA)·χ⁰ (GGA(PBE) f_xc-in-χ, ∂²e_xc^PBE/∂ρ²)")
+
+    // ── FLIP full-ε + f_xc-in-χ + the GGA kernel flavor (A2) ──
+    qpwd_set_full_epsilon(true, ncond)
+    qpwd_set_fxc_in_chi(true)
+    qpwd_set_fxc_gga(true)
+
+    let sigma = 0.02
+    let fe = qforge_pw_frontend_phonons_scr(deck_dir, npw_cap, 1, sigma, nq,
+                                            true, 0.3, 5, 6)
+    if !fe.ok {
+        println("DEFER — front-end failed: " + fe.error)
+        println("=== DONE (DEFER) ===")
+        return
+    }
+    println("[front-end] cell=" + fe.geom.species[0] + " n(PW)=" + to_string(fe.n)
+            + " nelec=" + to_string(fe.nelec) + " nocc=" + to_string(fe.nocc)
+            + " SCF-converged=" + to_string(fe.converged) + " iters=" + to_string(fe.iters))
+    println("[front-end] ecutwfc=" + to_string(fe.geom.ecutwfc) + " Ry  e_band="
+            + to_string(fe.e_band) + " Ha")
+    println("[front-end] f_xc-in-χ ON=" + to_string(qpwd_fxc_in_chi_on())
+            + " GGA ON=" + to_string(qpwd_fxc_gga_on())
+            + " mean|∇ρ|/ρ=" + to_string(qpwd_fxc_gga_gradmean()))
+    println("[front-end] note: " + fe.note)
+
+    let res = qforge_run_tol(qpw_h_apply, fe.deck, 1.0e-8, 600)
+    if res.ok != 1 {
+        println("DEFER — qforge_run failed: " + res.err)
+        println("=== DONE (DEFER) ===")
+        return
+    }
+
+    println("── qforge_run stage trace ──")
+    let mut si = 0
+    while si < res.stages.len() {
+        let st = res.stages[si]
+        println("  [" + st.name + "] ok=" + to_string(st.ok) + " witness="
+                + to_string(st.witness) + " — " + st.note)
+        si = si + 1
+    }
+
+    let lam = res.lambda
+    let rel = (lam - QE_LAMBDA) / QE_LAMBDA
+    let arel = _abs(rel)
+    println("")
+    println("════════════ λ VERDICT — GGA(PBE) f_xc-IN-χ (d6 VERBATIM) ════════════")
+    println("convergence params : ecutwfc=" + to_string(fe.geom.ecutwfc) + " Ry · npw_cap="
+            + to_string(npw_cap) + " · n(PW)=" + to_string(fe.n) + " · q-mesh=" + to_string(nq)
+            + "³ MP · sigma=" + to_string(sigma) + " Ha · xc-kernel=PBE-GGA")
+    println("vertex             : SCREENED · ε=δ−(v_c+f_xc^GGA)·χ⁰ (off-diag local-field, ncond=" + to_string(ncond) + ")")
+    println("BARE baseline λ    = 4.13647  (prior converged run #2768, rel-ε=5.47%)")
+    println("RPA(v_c only) λ    = 3.75221  (full-ε, rel-ε=14.25%)")
+    println("ALDA f_xc-in-χ λ   = 3.41513  (LDA xc kernel, rel-ε=21.96% — OVER-screened)")
+    println("QFORGE λ (GGA·this)= " + to_string(lam))
+    println("QE answer-key λ    = " + to_string(QE_LAMBDA) + "  (CaH6 gate anchor, QE cross-val)")
+    println("rel-ε              = " + to_string(arel) + "  (" + to_string(arel * 100.0) + " %)")
+    println("Δλ vs ALDA 3.41513 = " + to_string(lam - 3.41513))
+    println("Δλ vs RPA 3.75221  = " + to_string(lam - 3.75221))
+    println("QFORGE ω_log       = " + to_string(res.omega_log) + " K")
+    println("QFORGE Tc (Allen-Dynes) = " + to_string(res.tc) + " K")
+    println("QFORGE Tc (Eliashberg)  = " + to_string(res.tc_me) + " K")
+    println("screening_note     : " + res.screening_note)
+    if arel <= 0.01 {
+        println("GATE: MET — GGA f_xc-IN-χ brings CaH6 λ within 1% of QE 4.376 ✅ — THE WALL BREAKS")
+    } else {
+        println("GATE: NOT MET — rel-ε=" + to_string(arel * 100.0) + "% > 1% (HONEST FINDING, d6)")
+        let dir = if lam > 3.41513 { "TOWARD QE (GGA softens ALDA over-screening — correct direction)" }
+                  else { "still BELOW ALDA (GGA did not relieve over-screening)" }
+        println("DIRECTION vs ALDA  : " + dir)
+        println("DIAGNOSIS: residual = the now-truly-irreducible blocker (from-scratch LDA-PW SCF /")
+        println("  NC pseudopotential / conduction-band χ⁰ truncation). VERBATIM, not forced to 4.376.")
+    }
+    println("═══════════════════════════════════════════════════════════════════════════════")
+    println("=== DONE ===")
+}

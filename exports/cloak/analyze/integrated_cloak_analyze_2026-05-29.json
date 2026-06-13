@@ -1,0 +1,59 @@
+{
+  "record_kind": "cloak_analyze_record",
+  "domain": "CLOAK",
+  "cell": "integrated-cloak-fdtd-retrieval (FDTD S-parameter + ε(ω) μ(ω) retrieval plan)",
+  "verb": "4/7 analyze (해석 · 수렴은 어디까지)",
+  "iso_stamp": "2026-05-29",
+  "produced_by": "AUTHORED (manual) — demiurge 7-verb spine Phase C verb-4. 본 record 는 FDTD/HFSS 수렴 계획 + verify atoms cross-check 의 analytical layer. 실제 FDTD 수치 실행 (CST/MEEP rent) 은 downstream pool/cloud — gate_open=true.",
+  "source_refs": {
+    "domain_md": "domains/cloak.md §Phase C verb-4 analyze (FDTD/HFSS Maxwell + ε<0 ∧ μ<0)",
+    "phase_a_ledger": "exports/cloak/verify/V4_final_tier_ledger.md §1 4-PR substrate · §2 carrier 합성",
+    "design_dossier": "exports/cloak/design/integrated_cloak_design_2026-05-29.json (closed-form 파라미터 input)",
+    "merged_prs": ["#1934", "#1936", "#1938", "#1943"]
+  },
+  "convergence_targets": {
+    "grid_points_per_wavelength_ppw": 20,
+    "ppw_rationale": "Smith 2000 retrieval 권고 (PPW ≥ 20 → S-param 1% accuracy at λ_min ≈ 60 nm 가시광)",
+    "time_steps_target": 200000,
+    "time_steps_rationale": "Courant-Friedrichs-Lewy CFL 안정성 · τ_decay = Q/ω₀ ≈ 8.5 fs · 충분한 decay 시뮬레이션",
+    "abs_relerr_target": 1e-3,
+    "absorbing_boundary": "PML (Perfectly Matched Layer) 10-cell thickness",
+    "domain_size": "10·a × 10·a × 5·a (a = pitch = 10 nm) — Bloch periodic 횡방향 · PML 종방향"
+  },
+  "retrieval_method": {
+    "name": "Smith 2000 S-parameter retrieval",
+    "citation": "Smith DR et al. PRB 65, 195104 (2002) · 'Determination of effective permittivity and permeability of metamaterials from reflection and transmission coefficients'",
+    "steps": [
+      "FDTD/HFSS 로 S₁₁(ω) (반사) · S₂₁(ω) (투과) 추출",
+      "impedance z = √((1+S₁₁)² − S₂₁²) / ((1−S₁₁)² − S₂₁²)",
+      "refractive index n = (1/k·d) · cos⁻¹((1−S₁₁²+S₂₁²)/(2·S₂₁))",
+      "ε(ω) = n/z · μ(ω) = n·z (Veselago 음굴절 가지 선택)"
+    ],
+    "branch_disambiguation": "ε<0 ∧ μ<0 가지 — Im{n} → 0 한계 + 인과율 (Kramers-Kronig) 강제"
+  },
+  "verify_atoms_cited": [
+    {"name": "lc_resonance", "stdlib": "stdlib/srr/lc_resonance.hexa", "pr": 1934, "tier": "🟢", "role": "ω₀ closed-form anchor"},
+    {"name": "srr_filling_factor", "stdlib": "stdlib/srr/lc_resonance.hexa", "pr": 1934, "tier": "🟢", "role": "F = π·r²/a² Pendry 1999"},
+    {"name": "lorentz_mu_re", "stdlib": "stdlib/srr/lc_resonance.hexa", "pr": 1934, "tier": "🟢", "role": "μ_re(ω) Lorentz 가지 · F7 PASS"},
+    {"name": "plasma_freq_drude", "stdlib": "stdlib/rtsc/plasma_freq.hexa", "pr": 1943, "tier": "🟢", "role": "ω_p closed-form · F7 RT-SC anchor PASS"},
+    {"name": "drude_eps_re", "stdlib": "stdlib/rtsc/plasma_freq.hexa", "pr": 1943, "tier": "🟢", "role": "Re{ε(ω)} Drude 가지 · F6 PASS"},
+    {"name": "drude_eps_zero_crossing", "stdlib": "stdlib/rtsc/plasma_freq.hexa", "pr": 1943, "tier": "🟢", "role": "ε(ω*)=0 zero-crossing identification"},
+    {"name": "veselago_n_eff", "stdlib": "stdlib/cloak/veselago.hexa", "pr": 1936, "tier": "🟢", "role": "n_eff=-√(εμ) 합성 · F3 cloak case PASS"}
+  ],
+  "cross_check_plan": {
+    "step_1": "FDTD 결과 retrieve ε(ω) → PR #1943 plasma_freq_drude 와 비교 · rel_err < 1e-3 expected",
+    "step_2": "FDTD 결과 retrieve μ(ω) → PR #1934 lorentz_mu_re 와 비교 · rel_err < 1e-3 expected",
+    "step_3": "retrieved n_eff = -√(εμ) → PR #1936 veselago_n_eff 와 비교 · 음실수 가지 일치",
+    "step_4": "RCS scattering cross-section σ_rcs(θ) → 목표 10⁻⁶ m² (Mk.II) 검증",
+    "step_5": "광대역 σ-τ=8 oct 스윕 → Q=48 ± 10% (D-CLOAK-1 보편성)"
+  },
+  "scope_caveats": [
+    "FDTD/HFSS 자체는 downstream pool/cloud — CST Studio · MEEP · Lumerical 등 외부 EM solver 의존 (@D d7 GPU pod 등급)",
+    "본 record = analytical layer (수렴 계획 + verify atom cross-check 매트릭스) · 실제 numerical sweep 미실행",
+    "absorbed=false GATE_OPEN — FDTD 수치 수렴은 후속 라운드 (pool ubu-1/2 free 또는 vast.ai GPU pod) 의존",
+    "효유효매질 가정 — k ≪ 2π/a 장-파장 영역 검증만 신뢰 (단파장 외삽 위험 · @D d6)",
+    "measurement_gate = GATE_OPEN 영구 — analyze record 는 doc-only · g3 invariant"
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

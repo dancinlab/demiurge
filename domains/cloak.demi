@@ -1,0 +1,133 @@
+# cloak.demi — verb-cell manifest for the cloak (electromagnetic stealth /
+# negative-index metamaterial / transformation-optics) domain
+# SSOT scripts in ~/core/hexa-lang/stdlib/cloak/ (NOT YET WIRED — stub)
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("cloak", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+#
+# Citations (anchored, not repeated per-cell — see domains/cloak.md):
+#   - Veselago, V. G. (1968) Sov. Phys. Usp. 10, 509 — negative refraction.
+#   - Pendry et al. (2006) Science 312, 1780 — transformation optics cloak.
+#   - Smith et al. (2000) PRL 84, 4184 — split-ring metamaterial.
+#   - Schurig et al. (2006) Science 314, 977 — microwave carpet cloak.
+#   - UFO/CLOAK.md (in-tree, this repo) — Mk.I~V roadmap + 19-hypothesis ledger.
+#
+# Domain caveat (applies to every cell):
+# cloak cells in this initial registration are STUB skeletons —
+# stdlib/cloak/<verb>.py producers DO NOT EXIST yet. cellrun
+# dispatch will return rc=2 honest-skip until verb producers land.
+# ALL cells stay GATE_OPEN / absorbed=false (g3 / d5).
+
+# --- STUB: specify (cloak target-spec skeleton) -----------------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/cloak/specify.py
+record_kind       = cloak_specify_record
+output_dir        = exports/cloak/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Cloak target-spec skeleton (RCS target / band / cell-pitch / cost) — TEMPLATE.",
+  "F-22/B-2/F-35 reference RCS classes only — no engineering deliverable claim.",
+  "measurement_gate = GATE_OPEN permanently — specify is illustrative, not an absorption claim (g3).",
+]
+
+# --- STUB: structure (Hex-SRR + n=6 lattice geometry skeleton) --------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/cloak/structure.py
+record_kind       = cloak_structure_record
+output_dir        = exports/cloak/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Hex-SRR cell + n=6 hexagonal lattice + sopfr-layer stack geometry skeleton — TEMPLATE.",
+  "Real EUV-mask + ALD multilayer drawings live in foundry deliverables, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- STUB: design (Drude + Lorentz parameter dossier) -----------------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/cloak/design.py
+record_kind       = cloak_design_record
+output_dir        = exports/cloak/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Drude ε(ω) + Lorentz μ(ω) closed-form parameter dossier skeleton — TEMPLATE.",
+  "Q=σ·τ=48 / cell-pitch σ-φ=10nm targets remain UNVERIFIED until V2/V3 push lands.",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- STUB: analyze (FDTD/HFSS Maxwell + ε<0 ∧ μ<0 sim skeleton) -------------
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/cloak/analyze.py
+record_kind       = cloak_analyze_record
+output_dir        = exports/cloak/analyze
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "FDTD / HFSS / MEEP electromagnetic sim skeleton (Maxwell + negative-index media) — TEMPLATE.",
+  "Real cloak FDTD convergence + grid/order study DEFERRED to a real producer (pool/cloud).",
+  "absorbed=true requires hexa-native re-derivation + open-solver parity, not stub.",
+]
+
+# --- STUB: synthesize (BOM + EUV-mask + multilayer recipe) ------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/cloak/synthesize.py
+record_kind       = cloak_synthesize_record
+output_dir        = exports/cloak/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "BOM + EUV-mask layout + ALD multilayer recipe skeleton (8-step process chain) — TEMPLATE.",
+  "Real EUV-mask tape-out lives in foundry tooling, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize bundle is not an absorption claim (g3).",
+]
+
+# --- STUB: verify (UFO/CLOAK.md 19-hypothesis re-derive skeleton) -----------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/cloak/verify.py
+record_kind       = cloak_verify_record
+output_dir        = exports/cloak/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Re-derive UFO/CLOAK.md 19-hypothesis (H-CLK-1~12 + D-CLOAK-1~3 + TP-CLOAK-1~7) via hexa verify.",
+  "V1 inventory / V2 closed-form (🔵) / V3 numerical (🟢) / V4 ledger — ALL DEFERRED to real producer.",
+  "absorbed=true requires `hexa verify --expr` verdict verbatim (g5) + atlas fold, not stub.",
+]
+
+# --- STUB: handoff (foundry-package skeleton) -------------------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/cloak/handoff.py
+record_kind       = cloak_handoff_record
+output_dir        = exports/cloak/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Foundry handoff package skeleton (EUV-mask + ALD-recipe + multilayer-spec + RCS-bench plan) — TEMPLATE.",
+  "Real production tape-out / radiation-safety / RCS-chamber bench-time = downstream confirmation.",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]

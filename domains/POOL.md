@@ -114,7 +114,7 @@ its `provenance` block:
   "provenance": {
     "pool_host": "ubu-2",
     "pool_command": "pool on ubu-2 -- bash -lc '...'",
-    "pool_cli_path": "/Users/ghost/.hx/bin/pool",
+    "pool_cli_path": "/Users/mini/.hx/bin/pool",
     "remote_workdir": "~/gate_v3_pool/",
     "host_uname": "Linux x86_64",
     "primary_refs": [...]
@@ -239,7 +239,7 @@ constitution Principle I "Minimal — Single File, Zero Deps".)
 
 - **Repo**: `~/core/pool/` (separate repo · MIT license · single-file
   Python CLI).
-- **Installed shim**: `/Users/ghost/.hx/bin/pool` → symlink to
+- **Installed shim**: `/Users/mini/.hx/bin/pool` → symlink to
   `~/.hx/packages/pool/bin/pool`.
 - **State file**: `~/.pool/pool.json` (host roster · single JSON ·
   override via `POOL_STATE=<path>`).

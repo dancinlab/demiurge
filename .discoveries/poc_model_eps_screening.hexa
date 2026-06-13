@@ -1,0 +1,88 @@
+// PoC — model dielectric ε(q) screening vs QFORGE's Hartree-diagonal kernel.
+//
+// Discovery lane (d18/d2/d_discovery): does a STATIC LINDHARD / THOMAS-FERMI
+// model ε(q), with an LDA local-field factor G(q), capture the el-ph screening
+// that QFORGE's self-consistent (V_H+f_xc)[Δρ] Dyson loop is meant to produce —
+// at a FRACTION of the cost (a closed-form per-G multiply, no Sternheimer SCF)?
+//
+// CaH6 uniform-gas params (from stdlib/qforge/fixtures/cah6_fdg_tail_probe.hexa):
+//   a=6.4640 bohr, BCC Ω=a³/2, nelec=16 → ρ̄=nelec/Ω, k_F=(3π²ρ̄)^(1/3).
+//
+// We compare, for a sweep of |G|=q, the SCREENING FACTOR applied to a bare
+// Coulomb perturbation v_c(q)=4π/q²:
+//   (A) QFORGE diagonal-Hartree response factor in the el-ph vertex is the
+//       FULL response (ε⁻¹) built self-consistently; the LIMIT it should match
+//       at long wavelength is the RPA dielectric ε_RPA(q).
+//   (B) Thomas-Fermi:   ε_TF(q) = 1 + k_TF²/q²,  k_TF² = 4 k_F/π  (Hartree a.u.)
+//   (C) static Lindhard: ε_L(q) = 1 + (k_TF²/q²)·F(x),  x=q/2k_F,
+//       F(x) = 1/2 + (1−x²)/(4x)·ln|(1+x)/(1−x)|   (the Lindhard correction fn)
+//   (D) Hubbard local-field: ε_H(q)=1 + (k_TF²/q²)·F(x)/(1 − G_H(q)·(k_TF²/q²)F(x)/...)
+//       — we use the simple Hubbard G_H(q)=q²/(2(q²+k_F²)) exchange local field.
+// The screened vertex ∝ 1/ε(q); we report 1/ε for each model across q to see how
+// far apart TF (the cheapest) and Lindhard (still closed-form) are from each other
+// and where the el-ph-relevant q (≈ phonon-bridging 2k_F nesting) sits.
+
+let PI: float = 3.14159265358979323846
+
+fn lindhard_F(x: float) -> float {
+    // F(x) = 1/2 + (1−x²)/(4x)·ln|(1+x)/(1−x)|; x→0 → 1; x=1 → 1/2.
+    if x < 1.0e-6 { return 1.0 }
+    let ax = if x < 0.0 { -x } else { x }
+    let num = 1.0 + ax
+    let den = 1.0 - ax
+    let r = num / den
+    let ar = if r < 0.0 { -r } else { r }       // ln|(1+x)/(1−x)| — abs handles x>1
+    let lr = if ar > 0.0 { ln(ar) } else { 0.0 }
+    // singularity exactly at x=1 (den→0): F(1)=1/2 (the ln term vanishes ·0).
+    let aden = if den < 0.0 { -den } else { den }
+    if aden < 1.0e-9 { return 0.5 }
+    // valid for x<1 AND x>1 (ln|·| handles both branches; x>1 → log of a ratio
+    // <0 in magnitude, abs already taken). The Lindhard correction is continuous.
+    return 0.5 + (1.0 - ax * ax) / (4.0 * ax) * lr
+}
+
+fn main() {
+    // CaH6 uniform-gas density.
+    let a = 6.4640
+    let omega = a * a * a * 0.5          // BCC primitive cell volume (bohr³)
+    let nelec = 16.0
+    let rho_bar = nelec / omega          // bohr⁻³
+    let kf = pow(3.0 * PI * PI * rho_bar, 1.0 / 3.0)
+    let ktf2 = 4.0 * kf / PI             // Thomas-Fermi k_TF² (Hartree a.u.)
+    println("=== model-ε screening PoC · CaH6 uniform-gas ===")
+    println("rho_bar = " + to_string(rho_bar) + " bohr^-3")
+    println("k_F     = " + to_string(kf) + " bohr^-1")
+    println("k_TF    = " + to_string(sqrt(ktf2)) + " bohr^-1  (k_TF² = " + to_string(ktf2) + ")")
+    println("2k_F    = " + to_string(2.0 * kf) + " bohr^-1  (nesting / max phonon-q scale)")
+    println("")
+    println("  q[1/bohr]   x=q/2kF   1/eps_TF   1/eps_Lind   F(x)    rel.diff(TF vs Lind)")
+    // sweep q from a soft long-wave value up past 2k_F.
+    let qs = [0.3, 0.6, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 5.0]
+    let mut i = 0
+    let mut max_reldiff = 0.0
+    while i < len(qs) {
+        let q = qs[i]
+        let q2 = q * q
+        let x = q / (2.0 * kf)
+        let fx = lindhard_F(x)
+        let eps_tf = 1.0 + ktf2 / q2
+        let eps_l  = 1.0 + (ktf2 / q2) * fx
+        let inv_tf = 1.0 / eps_tf
+        let inv_l  = 1.0 / eps_l
+        let rd = if inv_l > 0.0 { (inv_tf - inv_l) / inv_l } else { 0.0 }
+        let ard = if rd < 0.0 { -rd } else { rd }
+        if ard > max_reldiff { max_reldiff = ard }
+        println("  " + to_string(q) + "    " + to_string(x) + "   "
+            + to_string(inv_tf) + "   " + to_string(inv_l) + "   "
+            + to_string(fx) + "   " + to_string(rd))
+        i = i + 1
+    }
+    println("")
+    println("MAX |1/eps_TF − 1/eps_Lind| / (1/eps_Lind) over the sweep = " + to_string(max_reldiff))
+    // verdict gate: is TF within 1% of Lindhard everywhere relevant (q≲2kF)?
+    if max_reldiff < 0.01 {
+        println("VERDICT: TF ≈ Lindhard to <1% — cheap TF would suffice")
+    } else {
+        println("VERDICT: TF and Lindhard DIVERGE >1% — model choice matters (q-dependence non-trivial)")
+    }
+}

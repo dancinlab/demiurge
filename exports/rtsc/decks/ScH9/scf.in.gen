@@ -1,0 +1,53 @@
+&control
+  !   the vc-relax.out (CELL_PARAMETERS / ATOMIC_POSITIONS final block) BEFORE running this.
+  ! electron_phonon='simple' needs a DENSE k-mesh for the double-delta EPC integral ->
+  !   denser than the relax mesh (16x16x12 hexagonal).
+  calculation = 'scf'
+  prefix = 'sch9'
+  outdir = '/home/aiden/rtsc_sch9/out'
+  pseudo_dir = '/home/aiden/rtsc_sch9/pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'low'
+/
+&system
+  ibrav = 0
+  nat = 10
+  ntyp = 2
+  ecutwfc = 80.0
+  ecutrho = 640.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  ! d15 small-gap SCF aids (metallic superhydride).
+  conv_thr = 1.0d-12
+  mixing_beta = 0.3
+  mixing_mode = 'plain'
+  electron_maxstep = 400
+/
+
+ATOMIC_SPECIES
+  Sc 44.956 Sc.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H  1.008  H.pbe-rrkjus_psl.1.0.0.UPF
+
+CELL_PARAMETERS (angstrom)
+  2.82792   0.0234663   -0.362718
+  -1.47189   2.463   -0.0997468
+  -0.905533   -0.550575   4.04067
+ATOMIC_POSITIONS (crystal)
+Sc           -0.1047933475       -0.1553796352       -0.1222069944
+H             0.7397168391        0.2902247642        0.1220413519
+H             0.2714176685        0.1347084629        0.3338081923
+H             0.3428717214        0.5910753905        0.0274624197
+H             0.7138244043        0.9505593544        0.4050657475
+H             0.4684113851        0.4573539717        0.4103293623
+H            -0.0080430669        0.6288582554        0.2848460688
+H             0.4533834563        0.1202341159        0.7167954972
+H             0.1860089827        0.7353340291        0.5666373122
+H             0.9372019571        0.2470312909        0.5552210423
+K_POINTS automatic
+  16 16 12 0 0 0
+
+

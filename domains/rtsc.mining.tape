@@ -139,7 +139,7 @@
 @D promo_log := "Phase B execution results 2026-05-29" :: log [active]
   do = "E33 atlas register: 'verify-atlas atlas-fixed-point = Cooper-Kramers T-squared closure' folded via hexa atlas register --from-drill (mk9 default · rounds=1 default)"
   do = "E33 stream: 625 candidates_captured + 600+ folded nodes (@P seed + @P/@L evo/closure/ouroboros/meta) — fold-pass verbatim observed in first invocation [promoted -> atlas:smash_l217_verify-atlas_atl]"
-  do = "E34 -> RTSC.md milestone: 'h3o SSCHA x2 surgery x x18 ZPE 동시 작동 직접 증명' inserted at /Users/ghost/core/demiurge/domains/rtsc.md before measured-oracle row [promoted -> milestone]"
+  do = "E34 -> RTSC.md milestone: 'h3o SSCHA x2 surgery x x18 ZPE 동시 작동 직접 증명' inserted at /Users/mini/dancinlab/demiurge/domains/rtsc.md before measured-oracle row [promoted -> milestone]"
   do = "E35 -> existing #1909 milestone covers YH10 227K extrapolation [noted: existing]"
   do = "E40 -> NEXUS.tape e15 edge added: 'RTSC mining lens machinery -> NUCLEAR 298-120 campaign' (tier-1 active, mining lens + 5D map + edge graph reuse) [promoted -> NEXUS edge]"
   do = "E42 atlas register: 'mining lens self-application = meta-ouroboros' (pending follow-up register run after E33 completes)"

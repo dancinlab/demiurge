@@ -1,5 +1,5 @@
 &control
-  ! A25 Mg0.75Ca0.25B2 — post-relax SCF. MUST read the relaxed CELL_PARAMETERS +
+  ! A25 Mg0.75Ca0.25B2 - post-relax SCF. MUST read the relaxed CELL_PARAMETERS +
   !   ATOMIC_POSITIONS from vc-relax.out (final block) BEFORE running this. The vectors
   !   and positions below are the START guess and are overwritten in the RUNBOOK step.
   ! electron_phonon='simple' needs a DENSE k-mesh for the double-delta EPC integral ->

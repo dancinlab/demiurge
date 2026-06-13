@@ -1,0 +1,33 @@
+RTSC el-ph PIPELINE-VALIDATION HARVEST — Nb3Al (nb3al)
+Pod 37868501 · ssh6.vast.ai:28500 · harvested 2026-05-29 (READ-ONLY)
+Known anchor: Tc ≈ 18 K (A15 BETE-NET anchor)
+
+VERDICT TIER: 🟠 INCONCLUSIVE — el-ph DFPT BARELY STARTED, NO AGGREGATE λ/ω_log/Tc EXISTS.
+
+=== WHY (verbatim evidence) ===
+
+ph.in (electron_phonon='simple', 4×4×4 q, 10-σ scan 0.005–0.050 Ry):
+  ldisp=.true. nq1=nq2=nq3=4 ; electron_phonon='simple'
+  el_ph_sigma=0.005 ; el_ph_nsigma=10 ; recover=.true. ; max_seconds=100000
+
+nb3al.dyn0 grid header:
+   4   4   4
+  10                ← 10 IRREDUCIBLE q-points required
+
+dyn-file completeness:
+  dyn1 = 31838 bytes + dyn1.elph.1 (DONE)   dyn2 = 0 bytes (IN PROGRESS)
+  → 1 of 10 irreducible q-points complete (~10%).
+
+Run state:
+  ph.out         "JOB DONE." present  ← FIRST invocation checkpoint only (q1 batch); NOT grid completion
+  ph.resume.out  JOB DONE count = 0    ← resume STILL RUNNING; tail = SCF iter #7 on q2, cpu 73692 s
+  ps aux         ph.x ranks ACTIVELY RUNNING (shared pod with mgb2_pure)
+
+Aggregate post-processing:
+  NO lambda.x / a2F aggregate present.
+  Only nb3al.dyn1.elph.1 (1 q-point) exists — verbatim head shows per-mode λ(ν,Γ) at σ=0.005 Ry,
+  e.g. lambda(13)= 1.7358  gamma= 2405.47 GHz ; DOS=107.90 states/spin/Ry at Ef=15.693 eV.
+  These are SINGLE-q partials, NOT the BZ-summed total.
+
+PARSED METRICS: λ = N/A · ω_log = N/A · Tc_AD = N/A (no aggregate; only 1/10 q done).
+Tc RECOMPUTE: NOT APPLICABLE — no real (λ, ω_log); will not fabricate toward 18 K (d6). Skipped honestly.

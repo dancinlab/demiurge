@@ -8,15 +8,15 @@
   tprnfor         = .true.
 /
 &SYSTEM
-  ibrav           = 2                ! FCC, Fm-3m (SG 225) — AcBeH8/LaBeH8 prototype
+  ibrav           = 2                ! FCC, Fm-3m (SG 225) - AcBeH8/LaBeH8 prototype
   celldm(1)       = 8.5132           ! REPLACE with relaxed celldm(1) from vc-relax.out (final CELL_PARAMETERS / "new lattice")
   nat             = 10               ! 1 Mg + 1 Be + 8 H
   ntyp            = 3
   ecutwfc         = 80
   ecutrho         = 800
-  nosym           = .true.           ! guard — keep symmetry off through scf->ph for consistency
+  nosym           = .true.           ! guard - keep symmetry off through scf->ph for consistency
   occupations     = 'smearing'
-  smearing        = 'mp'             ! Methfessel-Paxton — metallic hydride (d15)
+  smearing        = 'mp'             ! Methfessel-Paxton - metallic hydride (d15)
   degauss         = 0.01             ! d15 small-gap SCF aid (smear 0.01)
 /
 &ELECTRONS

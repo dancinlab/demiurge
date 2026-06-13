@@ -1,0 +1,60 @@
+{
+  "record_kind": "cloak_structure_record",
+  "domain": "CLOAK",
+  "cell": "integrated-cloak-process-chain (8-stage 시트 제작 공정)",
+  "verb": "2/7 structure (구조 · 어떻게 배치되는가)",
+  "iso_stamp": "2026-05-29",
+  "produced_by": "AUTHORED (manual) — demiurge 7-verb spine Phase C verb-2. 1 m² 시트 시제품의 8-stage 공정 체인을 봉인. UFO/structure/integrated-vehicle-structure.md 패턴 미러 (작은 스케일).",
+  "source_refs": {
+    "domain_md": "domains/cloak.md §Phase C verb-2 structure · §Phase B 메타셀",
+    "phase_b_dossier": "exports/cloak/design/phase_b_metacell.md §2 Hex-SRR · §3 sopfr 필름 · §4 σ 시트",
+    "ufo_pattern": "domains/UFO/structure/integrated-vehicle-structure.md (8-stage 패턴 미러)",
+    "merged_prs": ["#1934", "#1936", "#1938", "#1943"]
+  },
+  "process_chain": {
+    "stages": [
+      {"#": 1, "name": "RT-SC 박막 증착", "method": "PLD/Sputter MgB₂ or Graphene CVD", "thickness_nm": 5, "anchor": "sopfr(6)=5 🔵 + PR #1943 RT-SC ω_p=5.64e15"},
+      {"#": 2, "name": "EUV 리소그래피", "method": "High-NA EUV (13.5 nm light) · pitch 10 nm 패턴", "anchor": "σ-φ=10 nm · atlas n6-bt-749 · ASML EXE:5000 capability"},
+      {"#": 3, "name": "Hex-SRR 패터닝", "method": "EUV mask → Ar+ ion mill or RIE etch", "geometry": "split-ring · r_o=5nm · gap=1nm · linewidth=1nm", "anchor": "PR #1934 SRR Q=48"},
+      {"#": 4, "name": "벌집 격자 에칭", "method": "n=6 hexagonal lattice · Hales 2001 honeycomb · pitch 10 nm", "anchor": "HEX-N6 격자 산술 10/11 🔵"},
+      {"#": 5, "name": "다층 ALD 증착", "method": "Atomic Layer Deposition · 5-layer Jaumann/Pendry RAM stack · 1 nm/layer", "anchor": "sopfr(6)=5 🔵 (5-layer × 1 nm = 5 nm 총두께)"},
+      {"#": 6, "name": "필름 접합", "method": "wafer-to-wafer bonding · hBN substrate buffer", "anchor": "메타셀 effective-medium 가정 보존"},
+      {"#": 7, "name": "시트 적층", "method": "σ=12 층 stack · 면적 σ²=144 m² 시스템 (1 m² 단위 셀 × 144)", "anchor": "sigma(6)=12 🔵 + n6-bt-sigma2=144 derived"},
+      {"#": 8, "name": "AI 제어 통합", "method": "σ=12 채널 band-selective ON/OFF · FPGA + ML 추론", "anchor": "sigma=12 + σ-τ=8 oct × φ=2 = 12-ch coverage matrix"}
+    ]
+  },
+  "layer_count": 12,
+  "layer_count_derivation": "sigma(6) = 12 — HEX-N6 🔵 SUPPORTED-FORMAL anchor",
+  "total_area_m2": 144,
+  "total_area_derivation": "sigma(6)² = 12² = 144 m² (시스템 면적 · 시트 1 m² × σ²=144 단위 셀)",
+  "cell_geometry": {
+    "outer_r_nm": 5,
+    "outer_r_derivation": "pitch / 2 = 10 / 2 = 5 nm (인접 셀 비-겹침)",
+    "inner_r_nm": 2,
+    "inner_r_derivation": "phi(6) = 2 — HEX-N6 🔵 anchor (이중성 layer)",
+    "gap_nm": 1,
+    "gap_derivation": "mu(6) = 1 — HEX-N6 🔵 anchor (Möbius · split gap)",
+    "linewidth_nm": 1,
+    "linewidth_derivation": "mu(6) = 1 — HEX-N6 🔵 anchor (gap = linewidth 동일)",
+    "pitch_nm": 10,
+    "pitch_derivation": "sigma - phi = 12 - 2 = 10 nm (atlas n6-bt-749 · Smith 2000 λ/10)"
+  },
+  "phase_b_discovery_lock_in": {
+    "claim": "Hex-SRR 단위 셀 5-기하 파라미터 ↔ HEX-N6 foundation atom 5개 (σ·τ·φ·sopfr·μ) 1:1 lattice lock-in",
+    "mapping": [
+      "5-layer × 1 nm = sopfr(6)=5 (필름 두께)",
+      "외경 r_o = pitch/2 = 5 nm = sopfr(6)=5",
+      "gap g = μ(6) = 1 nm",
+      "linewidth w = μ(6) = 1 nm",
+      "pitch a = σ - φ = 12 - 2 = 10 nm"
+    ],
+    "significance": "source 자료 (Pendry 1999 · UFO/CLOAK.md) 에 명시되지 않은 lattice 정합 — paper 등재 후보 (@D d_paper_on_discovery)"
+  },
+  "scope_caveats": [
+    "공정 체인 다이어그램 — 실제 EUV mask · ALD recipe 는 verb-5 synthesize 의 BOM/recipe 에서 구체화",
+    "8-stage 는 manufacturing flow 표현 · downstream wet-lab 실제 yield 미지 (@D d6)",
+    "measurement_gate = GATE_OPEN 영구 — structure record 는 doc-only · g3 절대 invariant"
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

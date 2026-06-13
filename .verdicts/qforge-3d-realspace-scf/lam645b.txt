@@ -1,0 +1,3 @@
+PBE-3D n=645 phonons start...
+phonons FE ok=true err=
+PBE-3D n645: lambda=1.42677e-88 omega_log=1224.67 Tc=0.0 Vbar=-0.397786

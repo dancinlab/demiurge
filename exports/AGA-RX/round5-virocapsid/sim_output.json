@@ -1,0 +1,90 @@
+{
+  "axis": "VIROCAPSID",
+  "domain": "AGA-RX",
+  "round": 5,
+  "inherited_substrate": "/Users/mini/dancinlab/hexa-lang/stdlib/bio/virocapsid/module/zlotnick_ode.py",
+  "aav_reference": {
+    "T_number": 1,
+    "n_VP_subunits": 60,
+    "outer_diameter_nm": 26.0,
+    "ssDNA_packaging_limit_kb": 4.7,
+    "scAAV_limit_kb": 2.4
+  },
+  "geometry_caspar_klug": {
+    "T": 1,
+    "subunits": 60,
+    "pentamers": 12,
+    "hexamers": 0,
+    "capsomers": 12,
+    "vertices_5fold": 12,
+    "sigma6": 12,
+    "sigma6_structural_exact": true,
+    "diameter_nm": 26.0
+  },
+  "assembly_kinetics_inherited": {
+    "N": 12,
+    "M0": 1.0,
+    "k_assoc": 50.0,
+    "k_diss": 0.5,
+    "t_end": 60.0,
+    "dt": 0.001,
+    "n_steps": 60000,
+    "M_final": 0.009194871894026319,
+    "intermediates_mass": 0.2320837910035428,
+    "C_final": 0.06322677809186944,
+    "yield_fraction": 0.7587213371024333,
+    "mass_conservation_error": 2.4424906541753444e-15
+  },
+  "payload": {
+    "primary_cassette_kb": 0.626,
+    "primary_fits_ssAAV": true,
+    "alt_cassette_kb": 1.62,
+    "alt_fits_ssAAV": true,
+    "ssAAV_limit_kb": 4.7,
+    "headroom_primary_kb": 4.074,
+    "detail": {
+      "primary_pol3_shRNA": {
+        "elements_bp": {
+          "5' ITR": 145,
+          "Pol III promoter (U6 or H1) for shRNA": 250,
+          "anti-DKK1 shRNA hairpin (or pri-miR scaffold)": 80,
+          "Pol III terminator (TTTTT)": 6,
+          "Reporter/marker option: U6-driven, none needed": 0,
+          "3' ITR": 145
+        },
+        "total_bp": 626,
+        "total_kb": 0.626
+      },
+      "alt_polii_miR_or_transgene": {
+        "elements_bp": {
+          "5' ITR": 145,
+          "DPC-leaning promoter (e.g. compact CMV/CBh ~250-800 bp)": 500,
+          "miR-embedded anti-DKK1 (intronic) OR Wnt mini-transgene": 700,
+          "polyA (SV40 short)": 130,
+          "3' ITR": 145
+        },
+        "total_bp": 1620,
+        "total_kb": 1.62
+      },
+      "ssAAV_limit_kb": 4.7,
+      "scAAV_limit_kb": 2.4
+    }
+  },
+  "durability": {
+    "modality": "one-time AAV episomal gene therapy",
+    "dpc_pool_halflife_days": 540.0,
+    "expression_halflife_days": 540.0,
+    "topical_washout_to_reversal_days": 90.0,
+    "topical_redose_interval_days": 1.0,
+    "durability_factor_vs_daily_topical": 540.0,
+    "expression_retained_1yr": 0.6259,
+    "expression_retained_2yr": 0.3918,
+    "expression_retained_5yr": 0.0961,
+    "thesis": "AAV episome persists in quiescent slow-turnover DPC for ~the cell pool lifetime; a single intradermal dose substitutes for ~hundreds of daily topical applications and is intrinsically reversal-RESISTANT (no benefit loss on 'stopping' \u2014 there is nothing to stop)."
+  },
+  "honest_c3": {
+    "geometry_tier": "STRUCTURAL-EXACT (\u03c36=12 Caspar-Klug invariant, T=1)",
+    "kinetics_tier": "SMOKE-substrate (deterministic ODE; NOT wet-lab titer)",
+    "key_wet_lab_risk": "AAV-to-DPC tropism \u2014 OUT OF IN-SILICO SCOPE; must be confirmed by transduction assay in dermal papilla cells. No in-silico tropism claim is made."
+  }
+}

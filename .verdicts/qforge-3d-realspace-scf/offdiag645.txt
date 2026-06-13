@@ -1,0 +1,4 @@
+n=645 PBE-3D SCF conv=true e_band=-61.7889
+V_H:  Vbar(diag)=0.0 offdiag_rms/|Vbar|=4.82432e+15
+V_xc: offdiag_rms/|Vbar|=0.693407
+V_scr: offdiag_rms/|Vbar|=5.56254

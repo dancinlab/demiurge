@@ -1,0 +1,16 @@
+CaH6 electron-phonon 2x2x2 q (Im-3m sodalite - NC-vs-NC M6 anchor)
+&inputph
+  prefix              = 'cah6'
+  outdir              = './out'
+  fildyn              = './cah6.dyn'
+  fildvscf            = 'dvscf'
+  ldisp               = .true.
+  nq1                 = 2, nq2 = 2, nq3 = 2  ! 2x2x2 - 7-atom single-pod feasible
+  tr2_ph              = 1.0d-14
+  electron_phonon     = 'simple'
+  el_ph_sigma         = 0.005
+  el_ph_nsigma        = 10
+  recover             = .true.
+  alpha_mix(1)        = 0.3
+  max_seconds         = 504000
+/

@@ -1,50 +1,29 @@
 &control
-  ! B08 LaY_H10 — dual-metal (La+Y) ordered Fm-3m clathrate (RTSC Wave-2, direct YH10 family).
-  ! Anchor: LaH10 / YH10 sodalite clathrate, Fm-3m (SG 225). YH10 = the VERIFIED line
-  !   (Tc=227.5K@250GPa, #1909); LaH10 = Tc~250K@~170GPa (exptl). Dual-metal alloy aims to
-  !   combine LaH10's lower-P stability with YH10's high Tc on the same H32 clathrate cage.
-  ! Substitution: order La + Y 0.5/0.5 on the 2 metal sites of a 2-f.u. cell.
-  ! Cell: 2 formula units (1 La + 1 Y + 20 H = 22 atoms). This is the PHYSICALLY HONEST
-  !   ordered dual-metal cell. See RUNBOOK for the 11-atom VCA single-pod fallback.
-  ! Lattice: a 2x1x1 ordering of the Fm-3m primitive along the cubic [100] gives a
-  !   tetragonal supercell hosting La at one metal site, Y at the other. ibrav=6 (sc tetragonal).
-  ! Pressure: 250 GPa (=2500 kbar) — the YH10-anchor stabilization regime (#1909).
-  !   For a LaH10-like lower-P run re-run with press=1700.0 (170 GPa) — see RUNBOOK fallback.
   calculation = 'vc-relax'
-  prefix = 'layh10'
-  outdir = '/home/aiden/rtsc_layh10/out'
-  pseudo_dir = '/home/aiden/rtsc_layh10/pseudo'
+  prefix = 'lay_h10'
+  outdir = './out'
+  pseudo_dir = './pseudo'
   tprnfor = .true.
   tstress = .true.
   forc_conv_thr = 1.0d-4
   etot_conv_thr = 1.0d-5
-  nstep = 300
+  nstep = 200
   verbosity = 'low'
 /
 &system
-  ! ibrav=6 simple tetragonal (a, c) — 2x1x1 ordered supercell of the Fm-3m primitive.
-  !   celldm(1)=a in Bohr, celldm(3)=c/a (=2.0 for the doubled axis).
-  ! START: YH10 Fm-3m a~5.10 Ang @250GPa; primitive ~3.6 Ang; doubled c -> celldm(3)=2.0.
-  !   celldm(1)=6.80 Bohr (=3.60 Ang). vc-relax FINDS the true a, c/a, H-cage.
-  ! La (4f, r=1.17 Ang) + Y (1.04 Ang) ordered on the 2 metal sites.
-  ! nosym=.true. guard for the lowered-symmetry ordered supercell under stress.
-  ibrav = 6
-  celldm(1) = 6.80
-  celldm(3) = 2.00
+  ibrav = 0
   nat = 22
   ntyp = 3
-  ecutwfc = 90.0
-  ecutrho = 720.0
+  ecutwfc = 70.0
+  ecutrho = 560.0
   nosym = .true.
   occupations = 'smearing'
   smearing = 'mp'
   degauss = 0.02
 /
 &electrons
-  ! d15 small-gap SCF aids (metallic superhydride + La 4f near E_F): tight conv + low mixing.
   conv_thr = 1.0d-10
-  mixing_beta = 0.3
-  mixing_mode = 'local-TF'
+  mixing_beta = 0.4
   electron_maxstep = 400
 /
 &ions
@@ -54,39 +33,38 @@
   cell_dynamics = 'bfgs'
   press = 2500.0
   press_conv_thr = 0.5
-  cell_dofree = 'all'
 /
 
 ATOMIC_SPECIES
   La 138.905 La.pbe-spfn-rrkjus_psl.1.0.0.UPF
-  Y  88.906  Y.pbe-spn-rrkjus_psl.1.0.0.UPF
-  H  1.008   H.pbe-rrkjus_psl.1.0.0.UPF
-! Ordered dual-metal H32-clathrate START coords (fractional, tetragonal supercell).
-! La at lower metal site (z~0), Y at upper metal site (z~0.5); 20 H tile the two stacked
-! sodalite cages. These are a physically-motivated START guess — vc-relax RELAXES them to
-! the true Fm-3m-derived clathrate minimum (exact Wyckoff set emerges from the relaxation).
+  Y 88.906 Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H 1.008 H.pbe-rrkjus_psl.1.0.0.UPF
 ATOMIC_POSITIONS crystal
-  La 0.000000 0.000000 0.000000
-  Y  0.000000 0.000000 0.500000
-  H  0.250000 0.000000 0.060000
-  H  0.000000 0.250000 0.060000
-  H  0.750000 0.000000 0.060000
-  H  0.000000 0.750000 0.060000
-  H  0.250000 0.250000 0.190000
-  H  0.750000 0.750000 0.190000
-  H  0.250000 0.750000 0.190000
-  H  0.750000 0.250000 0.190000
-  H  0.500000 0.250000 0.310000
-  H  0.250000 0.500000 0.310000
-  H  0.250000 0.000000 0.560000
-  H  0.000000 0.250000 0.560000
-  H  0.750000 0.000000 0.560000
-  H  0.000000 0.750000 0.560000
-  H  0.250000 0.250000 0.690000
-  H  0.750000 0.750000 0.690000
-  H  0.250000 0.750000 0.690000
-  H  0.750000 0.250000 0.690000
-  H  0.500000 0.250000 0.810000
-  H  0.250000 0.500000 0.810000
+  La 0.0000000000 0.0000000000 0.0000000000
+  H  0.2500000000 0.2500000000 0.1250000000
+  H  0.7500000000 0.7500000000 0.3750000000
+  H  0.3750000000 0.3750000000 0.1875000000
+  H  0.3750000000 0.3750000000 0.4375000000
+  H  0.3750000000 0.8750000000 0.1875000000
+  H  0.8750000000 0.3750000000 0.1875000000
+  H  0.6250000000 0.6250000000 0.0625000000
+  H  0.6250000000 0.6250000000 0.3125000000
+  H  0.6250000000 0.1250000000 0.3125000000
+  H  0.1250000000 0.6250000000 0.3125000000
+  Y  0.0000000000 0.0000000000 0.5000000000
+  H  0.2500000000 0.2500000000 0.6250000000
+  H  0.7500000000 0.7500000000 0.8750000000
+  H  0.3750000000 0.3750000000 0.6875000000
+  H  0.3750000000 0.3750000000 0.9375000000
+  H  0.3750000000 0.8750000000 0.6875000000
+  H  0.8750000000 0.3750000000 0.6875000000
+  H  0.6250000000 0.6250000000 0.5625000000
+  H  0.6250000000 0.6250000000 0.8125000000
+  H  0.6250000000 0.1250000000 0.8125000000
+  H  0.1250000000 0.6250000000 0.8125000000
+CELL_PARAMETERS angstrom
+  0.0000000000 2.4650000000 2.4650000000
+  2.4650000000 0.0000000000 2.4650000000
+  4.9300000000 4.9300000000 0.0000000000
 K_POINTS automatic
-  10 10 6 0 0 0
+  8 8 8 0 0 0

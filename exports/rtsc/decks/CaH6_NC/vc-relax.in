@@ -1,0 +1,56 @@
+&CONTROL
+  calculation     = 'vc-relax'
+  prefix          = 'cah6'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ibrav           = 3                ! BCC primitive, Im-3m (SG 229) - CaH6 sodalite
+  celldm(1)       = 6.4640           ! START a_conv ~ 3.42 A @ 170 GPa; vc-relax FINDS true a
+  nat             = 7                ! 1 Ca (2a) + 6 H (12d) per BCC-primitive
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 320             ! NC norm-conserving: 4x ecutwfc ratio
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'             ! Methfessel-Paxton - metallic hydride (d15)
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  press           = 1700.0          ! target 170 GPa (QE press = kbar)
+  press_conv_thr  = 0.5
+  cell_dofree     = 'all'
+/
+ATOMIC_SPECIES
+  Ca  40.078   Ca_ONCV_PBE_sr.upf
+  H    1.008   H_ONCV_PBE_sr.upf
+
+! CaH6 sodalite: Ca @ 2a (0,0,0), H @ 12d (1/4,1/2,0) + sym-equiv (H24 cage).
+! BCC-primitive fractional coords (reuse of verified YH6 12d set - d19).
+ATOMIC_POSITIONS crystal
+  Ca   0.0000000   0.0000000   0.0000000
+  H    0.2500000   0.5000000   0.0000000
+  H    0.5000000   0.0000000   0.2500000
+  H    0.0000000   0.2500000   0.5000000
+  H    0.7500000   0.5000000   0.0000000
+  H    0.5000000   0.0000000   0.7500000
+  H    0.0000000   0.7500000   0.5000000
+
+K_POINTS automatic
+  16 16 16  0 0 0

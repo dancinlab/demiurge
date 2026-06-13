@@ -1,0 +1,9 @@
+phase=phon
+instance_id=39247634
+host=161.184.141.187
+port=42510
+identity=/Users/mini/.ssh/id_vast_anima
+np=7
+walltime_h=12
+relax_name=vc-relax.in
+deck=exports/rtsc/decks/CaH6_NC

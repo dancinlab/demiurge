@@ -51,8 +51,8 @@
   "r4_invariant": "absorbed=false · gate_type=simulation-only-prediction · domain=material. R4 preserved.",
   "provenance": {
     "dft_run_host": "vast.ai pod 37329507 (group-14-to-17 serial chain)",
-    "result_txt": "/Users/ghost/etc/rtsc-results/h3f/result.txt",
-    "alignn_predict_json": "/Users/ghost/etc/rtsc-results/h3f/alignn_predict.json",
+    "result_txt": "/Users/mini/etc/rtsc-results/h3f/result.txt",
+    "alignn_predict_json": "/Users/mini/etc/rtsc-results/h3f/alignn_predict.json",
     "capture_date": "2026-05-23"
   },
   "citations": [

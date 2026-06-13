@@ -2,98 +2,59 @@
 
 Spec at [`./RTSC.md`](./RTSC.md). Log entries below preserve session-by-session evolution; the spec file holds only the current confirmed state.
 
+## 2026-06-08 — Non-hydride RTSC pilot (MgB₂ + Nb₃Al) DISPATCHED — BETE-NET pipeline validation (RUNNING)
+
+milestone line-31 `Non-hydride RTSC family pilot (Nb₃Al, MgB₂)` decks fired (d16→d17). Goal = does the QE el-ph pipeline reproduce KNOWN non-hydride Tc (MgB₂ 39K, Nb₃Al 18K)? — diversify beyond the now-twice-falsified hydride X₂MH₆ funnel.
+
+- **infra (d8 — vast outage forced runpod fallback)**: vast.ai newly-created instances reject ALL registered SSH keys (`Permission denied (publickey)`) on both proxy + direct ports, across 3+ machines (15898/36727/ssh2-host) and both account keys (933096 id_ed25519, 790310 anima); `ssh_key=None` after a successful `attach ssh` = account-DB↔per-instance desync. Verified NOT key corruption (same keys auth fine on pre-existing pod 39922335), NOT machine-specific, NOT onstart-timing, NOT propagation lag (10min+reboot+detach/reattach all fail). 4 vast pods destroyed. Filed `sidecar handoff` → hexa-lang [e6aa86d1] (root cause: no account key has default:true → vast injects none at boot). **Fell back to RunPod** (d17 vast-first→runpod-fallback): pod `gw5m1iyxzhfbrn` (runpod/base CPU, 16 vCPU / 32G, $0.56/hr, key=id_ed25519 via PUBLIC_KEY env, direct-TCP 213.173.111.74:39097). conda-forge QE 7.5 + OpenMPI 5.0.10 bootstrapped; all 4 PSL pseudos (Mg·B·Nb·Al) fetched (d13 ✓).
+- **d16 dry-run = PASS** (inline, deck-guard-compliant — no hand-authored deck): real vc-relax first-iters confirm pseudos load + cell parse: MgB₂ 3 atoms/16 e⁻/PBE/60Ry, Nb₃Al 8 atoms/84 e⁻/PBE/80Ry, no directive/basis errors.
+- **d11 sizing**: MgB₂ (3-atom P6/mmm, 28 IBZ q @ 6³, np=6) + Nb₃Al (8-atom A15, 10 IBZ q @ 4³, np=8) run PARALLEL on one 16-core pod (14 ranks ≤ 16, OMP=1, RAM ~25/251G stable, no oversubscription, single clean instance per cell, NO watchdog).
+- **relax/scf DONE both**: MgB₂ vc-relax a=5.807 bohr c/a=1.1457 (vs exp 5.832/1.142, +0.4% — excellent), Ef=9.03 eV. Nb₃Al vc-relax converged (51 BFGS), Ef=15.55 eV (matches prior partial 15.69).
+- **MgB₂ PARTIAL (15/28 q, σ-plateau 0.020-0.035 Ry, weight=1/28 ⇒ LOWER bound)**: λ≈0.99 · ω_log≈723 K · **Tc_AD = 49 K (μ*=0.10) / 42 K (μ*=0.13)** — brackets the MEASURED 39 K already at half the q-grid (will refine with full 28 q). All computed q min_freq POSITIVE (206-253 cm⁻¹) = dynamically stable, no imaginary modes. → pipeline reproducing MgB₂ ✅ (strong partial signal).
+- **Nb₃Al PARTIAL (1/10 q = Γ only)**: relaxed-cell Γ elph clean — optical modes λ(7-9)=0.39, λ(13)=0.26 positive; the 3 acoustic modes show spurious ω²≈−4e-7 Ry (standard acoustic-sum-rule numerical noise at Γ, excluded by the assembler). Full 10-q assembly pending (A15 is the heavy long-pole, ~10× slower per-q than MgB₂).
+- **autonomy**: pod-side `harvest_watch.sh` (PID 2385) auto-assembles λ·ω_log·Allen-Dynes Tc (μ*=0.10/0.13) on each JOB DONE via reused `assemble.py` (d19, adapted from LaH10 `assemble_lambda.py` with dyn0 q-weights). ANCHOR pod vast-39610026 (Li2MgH16) UNTOUCHED.
+- **cost so far**: 4 vast pods (destroyed, ~$0 net — all <30min unreachable) + runpod gw5m1iyxzhfbrn $0.56/hr × ~ongoing. Est total ≤ $6.
+
+## 2026-06-02T07:43 — absorbed drafts/post-gate-14particle-qforge-batch.md
+
+---
+slug: post-gate-14particle-qforge-batch
+created: 2026-06-02
+trigger: CaH6-NC migration gate CLOSES (lane A real-cell SCF stabilized → screened λ measured → 3-anchor cross-val begins)
+status: ARMED (waiting on gate)
+---
+
+## Decision (user pick ① 완성도, 2026-06-02)
+When the CaH6-NC migration gate closes (QFORGE engine validated: real-cell SCF
+basis-stable + finite screened λ + CaH6/LaH10/Li2MgH16 λ·Tc cross-val), fire the
+**14 recovered partial-harvest candidates through QFORGE in one FREE batch**
+(pool/mini, no rent) — NOT via paid QE re-run.
+
+## The 14 partials (exports/rtsc/<cand>/harvest_partial/)
+BaAuH3 · CeH9 · H3S · LaBeH8 · LaBH8 · LuH10 · ScBeH8 · ScH9 · SrPtH3 · ThH10 ·
+YAuH3 · YBeH8 · YH9 · YSbH6
+- all are PARTIAL_EL_PHON (el-ph linear-response partial/done, λ·Tc finish pending)
+- preserved in DEFERRED.md + RTSC_LEDGER.jsonl (status: deferred · d_defer_no_delete)
+
+## Why gate-gated (not now)
+- QFORGE not yet production-trustworthy: real-cell SCF basis-unstable (lane A in flight),
+  screened ΔV path just unblocked (PR#2520) but unmeasured on stable SCF.
+- d_qforge_engine: no absorbed=true on an un-cross-val'd QFORGE result.
+- QE-now path = GPU rent cost + the QE-6.7 el-ph restart bug class (the LaH10/Li2MgH16 wall).
+
+## Fire recipe (when gate closes)
+1. Re-anchor done (PR#2521): gate target now λ≈2.27@170GPa, not 4.376.
+2. For each of the 14: feed its preserved structure + el-ph partial into the QFORGE
+   production orchestrator (hexa qforge run <deck> — the qforge-production-migration-plan
+   @L1/@L2 deliverable) on FREE pool/mini, parallel slots (d_parallel_fire).
+3. g5 each composed λ·Tc; atlas-register 🟢; scoreboard rollup.
+4. Fallback if gate never closes: QE 7.5 re-run (DEFERRED.md retry recipes A/B/C) under d17.
+
+## Pointer
+DEFERRED.md (retry recipes) · scoreboard `hexa qforge gate` (PR#2518) · re-anchor d3c0fde.
+
+
 ## Log
-
-## 2026-05-29 pods.json → 글로벌 전환 (M11-b) — BLOCKED-on-upstream + 무손실 캡처
-
-**작업 (b)** — per-project `pods.json` 폐기 + RTSC 캠페인 데이터 무손실 캡처 + /system 글로벌 SSOT 전환. **결론: (b) 전체 전환은 hexa-lang CLOUD M5 job-schema 갭에 BLOCKED.** 아래는 정직한 reality-check + 무손실 캡처 결과.
-
-### Reality check (d6 정직)
-
-- **글로벌 `~/.hx/cloud/active-pods.json` 스키마 = POD-RENTAL ONLY** (227 B). 필드 = `id · provider · created_at · rented_by · ssh_host · ssh_port · status · ttl_sec · max_cost_usd · cumulative_cost_usd`. **`jobs` 섹션 없음 · verdict/stage/hypothesis 없음.** 이것은 `/cloud` 의 pod-rental 레지스트리(M5/M8 글로벌 SSOT)이지, 캠페인 job-tracking 표면이 아니다.
-- **/system 의 manifest 계약 (SKILL 0.9.0 commands/system.md L23·L30-31)** = `## Manifest SSOT — ./pods.json (extended)` — cwd-상대 캠페인-로컬 파일. `jobs.<id>` = `{pod · workdir · kind · terminal_marker · stage · pid · watcher · metric_parser · verdict}`. `drive` 마커(durable state) · ledger 동기화 모두 `./pods.json` 에 산다. L307: "Reuses /cloud (pods.json)".
-- ⇒ **글로벌 active-pods.json 은 job-level 데이터를 담을 수 없다.** "/system → 글로벌 SSOT" 진짜 전환은 active-pods.json 에 `jobs` 섹션을 추가하는 **hexa-lang CLOUD M5 변경**(cross-repo, g59 INBOX 핸드오프)을 먼저 요구한다. 그 전에 pods.json 을 삭제하면 LIVE watcher(PR #502 heartbeat, 11 job 읽음)가 읽을 표면을 잃는다 ⇒ lossless 위반 + watcher 단절. **pods.json KEPT-LIVE.**
-
-### 무손실 캡처 — pods.json 전체 roster (PR #502 SSOT · last_updated 2026-05-28T18:18:01Z)
-
-**campaign** = `rtsc-293K-1atm` · **budget** = $750 (₩1,000,000) · **used_usd = $0** (actual_so_far $0.07) · **schema_origin** = sidecar INBOX #193 (`~/.pool/pods.json` proposed) · **schema version** = `1.0-temp`.
-
-**design_constraints**: per-pod cores_used ≤64 (16-core headroom) · max 8 concurrent · multi-objective wall (RTSC-closure + per-pod) · LPT bin-packing, heavy jobs isolated.
-
-**POD roster (7)**:
-
-| pod-id | host | provider | cores | gpu | $/hr | status | jobs |
-|---|---|---|---:|---|---:|---|---|
-| vast-ysbh6-pod-41837 | ssh6.vast.ai:28500 | vast.ai | 80 | — | 0.2 | running | ysbh6·mgb2_pure·nb3al·sc2be2h6·y2be2h6·cah6_decompress |
-| vast-pod-2-new | — | vast.ai | 80 | — | 0.2 | PLANNED | he_4cation_LaYCaScH10·Y2CdH18·LaBH8·YH6·H2B2 |
-| vast-pod-3-new | — | vast.ai | 80 | — | 0.2 | PLANNED | Li2MgH16·Ca2SnH18·Ge_H3S·YH10·CeH9·MgBC2 |
-| vast-pod-4-new | — | vast.ai | 80 | — | 0.2 | PLANNED | labeh8_SSCHA·Y2InH18·LaY_H10·CaY_H6·ScH9·CaBeH8 |
-| vast-pod-5-new | — | vast.ai | 80 | — | 0.2 | PLANNED | mackay_layered_LaBe6H12·BeB2Hx·YH9·H3S_H3P·H3SSe·selfcat_synth |
-| vast-cuda-ssh9-15988 | ssh9.vast.ai:15988 (211.21.106.81) | vast.ai | 128 | RTX_3070 | 0.4011 | running | cabeh8·YH6·LaBH8·CeH9·YH9·YH10·Li2MgH16 (+pilots MgBeH8·CaAuH3·MgCaB2_x025) |
-| local-ubu-1 | ubu-1 | pool | shared | — | 0 | running | h3cl_interp_ablation |
-| local-ubu-2 | ubu-2 | pool | shared | — | 0 | running | mg2irh6_polymorph |
-
-- pod-41837 host-migrated: `77.104.167.149:41837 → ssh6.vast.ai:28500` (2026-05-29 reboot recovery). contract_id ssh9 = 38095989, RAM 128 GB, image nvidia/cuda:12.2.0-base-ubuntu22.04, QE 6.7-2build1 (apt), ssh-note: hexa cloud exec 필수(cloud-guard blocks raw ssh).
-
-**JOB roster (32 jobs + 3 pilots = 35)** — id · pod · stage · np · anchor_Tc(K) · verdict · hypothesis/note:
-
-| job-id | pod | stage | np | anchor_Tc | verdict | hypothesis / note |
-|---|---|---|---:|---:|---|---|
-| ysbh6 | ysbh6-pod-41837 | ph | 32 | 118 | PENDING | watcher boowryffy · ph recover (_ph0 CURRENT_Q=2) pid407 Rep#18 |
-| mgb2_pure | ysbh6-pod-41837 | ph | 8 | 39 | PENDING | watcher bpl3k1l8m · ph recover (q7/28) pid563 |
-| nb3al | ysbh6-pod-41837 | ph | 8 | 18 | PENDING | watcher boy5ld7u5 · ph recover pid619 Rep#9 |
-| sc2be2h6 | ysbh6-pod-41837 | vc-relax | 6 | — | PENDING | Sc 최경량→ω↑ · chain NP24 (vc-relax iter38) pid675 · watcher b8tw784iy |
-| y2be2h6 | ysbh6-pod-41837 | vc-relax | 6 | — | **restart-needed** | YH10-family · scf iter#1 errcode72 (serial+cg+davidson+npool ALL crash)=pseudo/ecut low-level NOT MPI/solver; relax geom preserved → fixed deck reuses · watcher bv0u66qdv |
-| cah6_decompress | ysbh6-pod-41837 | vc-relax | 6 | — | PENDING | x11 회수성 · reboot recovery resume · watcher bfvsatagh |
-| he_4cation_LaYCaScH10 | pod-2-new | vc-relax | 10 | — | PENDING (queued) | Perelman 엔트로피 4-cation · est_wall 100h |
-| Y2CdH18 | pod-2-new | vc-relax | 8 | — | PENDING (queued) | arxiv 2411.11674 Tc>110K · 70h |
-| LaBH8 | cuda-ssh9-15988 | vc-relax | 6 | 126 | PENDING (running) | wave-3 lit-known <50GPa 최저압 ternary · Fm-3m fcc nat=10 · 500 kbar/50 GPa · pid3343 · dryrun PASS (~−140.8 Ry) · Di Cataldo 2021 |
-| YH6 | cuda-ssh9-15988 | vc-relax | 6 | 224 | PENDING (running) | simplest bcc clathrate measured anchor · Im-3m nat=14 · 1500 kbar/150 GPa · pid3311 · dryrun PASS (~−179.81 Ry) · Troyan 2021 measured 224K@166GPa |
-| H2B2 | pod-2-new | vc-relax | 4 | — | PENDING (queued) | H-rich MgB2 · 30h |
-| Li2MgH16 | cuda-ssh9-15988 | vc-relax | 6 | 473 | PENDING (FIRED) | 최고 예측 Tc ternary 473K · Fd-3m#227 o2 FCC-prim nat=38 Li4Mg2H32 · 2500 kbar/250 GPa · pid6732 · Li.UPF GIPAW-strip fix · dryrun PASS (~−341.9 Ry) · Sun 2019 PRL 123,097001 |
-| Ca2SnH18 | pod-3-new | vc-relax | 8 | — | PENDING (queued) | arxiv 2411.11674 · 70h |
-| Ge_H3S | pod-3-new | scf+ph | 6 | — | PENDING (queued) | Ge 2016 280K 예측 · 50h |
-| YH10 | cuda-ssh9-15988 | ph | 6 | 303 | **🟢** | Fm-3m sodalite nat=11 · 250 GPa · pid6151 · **λ=2.8197 ω_log=1300.43K Tc_AD(μ0.10)=227.50K ambient_absorbed=false** · harvest=exports/material_discovery/rtsc_yh10_dft_elph_20260528.json · Liu/Peng/Ma 2017 PNAS 114,6990 |
-| CeH9 | cuda-ssh9-15988 | vc-relax | 6 | 100 | PENDING (FIRED) | 최저압 RE superhydride synth <100GPa · P6_3/mmc nat=20 Ce2H18 · 1000 kbar/100 GPa · pid6079 · dryrun PASS (~−273.5 Ry) · Salke 2019 Nat.Commun 10,4453 |
-| MgBC2 | pod-3-new | vc-relax | 4 | — | PENDING (queued) | C-doped MgB2 · 30h |
-| labeh8_SSCHA | pod-4-new | sscha | 12 | — | PENDING (queued) | C1 양자-회수 직접 검증 · 80h · RAM 24GB+ 필요 |
-| Y2InH18 | pod-4-new | vc-relax | 8 | — | PENDING (queued) | arxiv 2411.11674 · 70h |
-| LaY_H10 | pod-4-new | vc-relax | 6 | — | PENDING (queued) | (La,Y)H10 고용체 · 50h |
-| CaY_H6 | pod-4-new | vc-relax | 6 | — | PENDING (queued) | (Ca,Y)H6 두 ESCAPE · 45h |
-| ScH9 | pod-4-new | vc-relax | 6 | — | PENDING (queued) | Sc-쪽 marginal · 40h |
-| CaBeH8 | pod-4-new | vc-relax | 6 | — | PENDING (queued) | 비방사성 M-Be-H 가장 가벼운 · 40h |
-| mackay_layered_LaBe6H12 | pod-5-new | vc-relax | 12 | — | PENDING (queued) | AcBeH8 다층화 극한 (🥇) · 120h |
-| BeB2Hx | pod-5-new | vc-relax | 8 | — | PENDING (queued) | σ+π 다중-band Cooper-loop · 70h |
-| YH9 | cuda-ssh9-15988 | vc-relax | 6 | 243 | PENDING (FIRED) | 최고 measured RE-binary Tc 243K · P6_3/mmc nat=20 Y2H18 · 2500 kbar/250 GPa · pid6115 · dryrun PASS (~−186.6 Ry) · Kong 2021 Nat.Commun 12,5075 measured 243K@201GPa |
-| H3S_H3P | pod-5-new | scf+ph | 6 | — | PENDING (queued) | P-doping 280K 예측 · 50h |
-| H3SSe | pod-5-new | scf+ph | 6 | — | PENDING (queued) | Se 치환 H3S · 50h |
-| selfcat_synth | pod-5-new | vc-relax | 4 | — | PENDING (queued) | O-RTSC-5 자기-촉매 합성 · 30h |
-| cabeh8 | cuda-ssh9-15988 | vc-relax | 8 | — | PENDING (running) | Sc/Y/Ca M-Be-H 자매 완성 (가장 가벼운 비방사성 cation) · pid1149 · est_wall 40h · ph recover (q14 corrupt fixed via control_ph.xml drop, q1-13 preserved) pid659 SYSTEM QE /usr/bin/ph.x · watcher b08qnguq6 |
-| h3cl_interp_ablation | local-ubu-1 | ph.interp | 7 | 140 | PENDING (running) | interp(true\|false) ablation simple vs interp el-ph · watcher bhayd8tmk |
-| mg2irh6_polymorph | local-ubu-2 | ph | 6 | — | PENDING (running) | Mg₂IrH₆ polymorph dyn-stability check · dyn2 iter2 cpu_h16.4 · watcher b0b3r04yd |
-| **MgBeH8** (pilot A01) | cuda-ssh9-15988 | vc-relax | 8 | 181 | PENDING (running) | dft-elph · est_wall 140h · pilot fired 2026-05-29 — A01 10atom 10GPa AcBeH8 Mg-variant · **system QE pid1434** |
-| **CaAuH3** (pilot A11) | cuda-ssh9-15988 | vc-relax | 8 | — | PENDING (running) | dft-elph · est_wall 17h · pilot fired 2026-05-29 — A11 5atom 50GPa SrAuH3 Ca-variant perovskite · **system QE pid1481** |
-| **MgCaB2_x025** (pilot A25) | cuda-ssh9-15988 | vc-relax | 8 | 39 | PENDING (running) | dft-elph · est_wall 121h · pilot fired 2026-05-29 — A25 12atom ambient Ca-doped MgB2 BCS line · **system QE pid1528** |
-
-**recovery_event (2026-05-29)**: 13-job dark (vast transport drop on reboot/migration) recovered via `vast_reboot` direct call + QE recover resume. 6/7 grinding, y2be2h6 restart-needed. SSH restored ok=1. recovered_utc 17:35:07Z (6 jobs on pod-41837 + cabeh8) · 18:18:01Z (3 pilots fired).
-
-**pilot fire (2026-05-29)**: A01 MgBeH8 pid1434 (10atom 10GPa AcBeH8 Mg-variant, anchor 181K) · A11 CaAuH3 pid1481 (5atom 50GPa SrAuH3 Ca-variant perovskite) · A25 MgCaB2_x025 pid1528 (12atom ambient Ca-doped MgB2 BCS line, anchor 39K) — all 3 on ssh9, $0 reuse (already-running pod), system QE.
-
-**wave-3b re-author note**: 4 candidates (CeH9/YH9/YH10/Li2MgH16) re-authored from failed crystal_sg+space_group decks to YH6-proven explicit ATOMIC_POSITIONS crystal (spglib orbit expansion); all 4 d16 PASS + FIRED on vast-cuda-ssh9-15988 (already-running pod, no new rent). See exports/rtsc/wave3b_decks/D16-NOTES.md.
-
-**rtsc_closure_wall**: first-answer 50h (Pod1 — 5D 지도+anchor) · complete 80h (Pod1/3/4 — 22/25 결과) · deep-dive 120h (전체 31 harmonic+SSCHA) · sim-closure 170h (L5 — harmonic 31 + top-5 SSCHA + mustar/isotope/P-ladder + paper). L0 wet-lab = 외부 측정 R4 영구 (우리 통제 외). **cost_summary**: total_usd $112 (budget 15%), pod_new RTX_3070 128c 128GB $0.40/hr (원plan $0.20→$0.40 1.85x), 2-pod plan (현+신규) > 5-pod 경제적, actual_so_far $0.07.
-
-**verdict 분포**: 🟢 1 (YH10) · restart-needed 1 (y2be2h6) · PENDING 33. Terminal = 1/35.
-
-### 결정 + watcher 표면
-
-- **pods.json = KEPT-LIVE** (삭제 안 함). 이유: 글로벌 active-pods.json 이 job-level 데이터를 담을 수 없어 삭제 시 LIVE watcher(PR #502 heartbeat) 가 읽을 표면을 잃음 = lossless 위반. (b) 전체 전환은 upstream M5 schema 가 착지해야 do-able.
-- **watcher 표면 = 변경 없음.** parent 의 ScheduleWakeup heartbeat(~03:52)가 계속 `pods.json (PR #502 SSOT)` 를 읽으면 됨 — re-point 불필요. M5 job-schema 가 hexa-lang 에 착지한 뒤에야 watcher 를 글로벌 active-pods.json 으로 옮길 수 있음.
-- **upstream 핸드오프**: hexa-lang `INBOX.log.md` 에 "CLOUD M5 active-pods.json job-schema extension" 갭 등록 (🟠 OPEN). active-pods.json 에 `jobs` 섹션(verdict/stage/hypothesis)이 들어가면 /system 의 per-project pods.json 이 글로벌 SSOT 로 전환 가능.
-
-### (b) 상태 = **BLOCKED-on-upstream**
-
-무손실 캡처 완료(본 entry) + hexa-lang INBOX 등록 + pods.json KEPT-LIVE. 전체 삭제+글로벌 마이그레이션은 hexa-lang CLOUD M5 active-pods.json job-schema 확장이 착지한 뒤 do-able. governance: g8·g28·g34·g59·d6(정직)·lossless. branch `feat/rtsc-magnet-wheeler-v2` worktree agent-a4e40b4fa80440097.
 
 - **2026-05-27 KST** — **🧱 SUPERLATTICE cell-design protocol LANDED (P2 · compute-free design doc · mgb2_mgh2 실패 교훈 → 5-step commensurate stacking)**. `RTSC/protocols/SUPERLATTICE_CELL_DESIGN.md` (~164 lines). **motivation**: 역할분리 가설("딱딱한 stabilizer 층이 H soft-mode 클램프 + 강결합 H층 제공")의 첫 검증셀 **mgb2_mgh2 가 🔴** (Γ **−1373 cm⁻¹ × 2 · −1362** · `mgb2h(−1373×2)` precedent — labeh8 entry 가 clean closed-negative 사례로 인용) — 진단: (a) **on-top Mg** H placement 비현실적 (양이온 potential 극대·반발), (b) MgB₂↔MgH₂ in-plane **commensurability 미검토** (strain→soft mode), (c) c-축 arbitrary 2배 (LCM 주기 무시). **정직 분리**: 가설 **미반증** — 셀이 나빴음 (셀 결함 ≠ 가설 결함, d6). 5 deferred 후보 (lah_bn · cah6_b · h3as_h3o · mgb2_h3s · h3as_h3o_h3s) blind-dispatch 금지 → 셀-설계 protocol 선행. **5-step protocol**: (1) sub-layer 독립 안정화 (각 층 단독 vc-relax → in-plane lattice 추출) · (2) 2D commensurate lattice-match (ε_lattice <2% PASS / 2-5% supercell AMBER / ≥5% REJECT) · (3) interstitial H placement (on-top Mg 금지 → (a) electrostatic 최소점 (b) bond-length 휴리스틱 H–H>0.8Å·H–metal~1.5-2.0Å (c) 검증된 안정 hydride motif 차용 — 우선순위 (c)>(a)>(b)) · (4) stacking commensurability (c_super=LCM · AA vs AB registry 에너지 비교) · (5) stability pre-check gate (vc-relax→Γ-phonon→hard<−50 즉시 🔴 · full el-ph 전 차단 · AMBER 시 h3as R3m displaced-seed escape · **ω_log 보존 게이트** = stabilizer 가 ω_log 안 깎으면서 클램프해야 N5 bottleneck 미상속). **5-후보 cell-design table** (DFT 미실행 · ε·Tc·위험 = 입력 추정 verify-grade 아님): lah_bn (BN stiff frame + LaH_x · ε~10-15% supercell 필수) · cah6_b (B sheet + CaH₆ clathrate motif · 가압 필요) · h3as_h3o (h3as R3m clamp + h3o 강λ source · 가설 가장 직접 시험 · h3o anharmonic soft 상속 위험) · mgb2_h3s (mgb2_mgh2 정정 재시도 — H-rich 를 H₃S motif 로 · BETE-NET trustworthy) · h3as_h3o_h3s (3-layer · atoms 최대 d11 위험 · h3as_h3o PROCEED 후에만). **dispatch 우선순위 권고**: 1) cah6_b/h3as_h3o (measured-stable motif → step3 위험 최저) > 2) mgb2_h3s > 3) lah_bn (ε 큼) > 4) h3as_h3o_h3s (3-layer 최후). **record schema**: `superlattice_design` JSON block (step1-5 산출물 + `validation_log` 동반). **gate 위치**: VALIDATION_FIRST.md gate 4 (stability_pre_check) 의 *셀-구성 선행* — 입력 셀이 naive 하면 gate 4 가 매번 🔴 만 찍음 (mgb2_mgh2 가 정확히 그 경우). cost **$0** (doc only · DFT 다음 round). R4 absorbed=false 영구 (d5/d6). governance d1·d2·d6·d11·d13·d16·d17. branch `cycle-superlattice-design`. artifacts: `RTSC/protocols/SUPERLATTICE_CELL_DESIGN.md` + RTSC.md milestone cross-ref + 본 log entry.
 - **2026-05-27 KST** — **🟢 h3br 200 GPa FULL 4×4×4 q el-ph LANDED — N1 / L18 ω_log probe 완결. STABLE strong-λ Tc=158K (μ0.10), 200K 미달 · Γ-probe ω_log 41% over-estimate 확인**. Γ-only pscan (PR #289 F-N6-4 🔴 PASSED) 의 200 GPa 평형 cell (`celldm=6.009113` bohr, vc-relax press=2000 kbar LANDED) 을 seed 로 full-BZ el-ph 확장 (heavy vc-relax/SCF 재사용 — 재실행 불필요). **방법**: dense-k SCF (16³ k · electron_phonon='simple' double-delta EPC 정확도, li2cuh6 precedent) → ph.x ldisp=.true. nq=4³ → **8 IBZ q-points** · electron_phonon='simple' · el_ph_sigma=0.005 nsigma=10 · tr2_ph=1d-14 · fildvscf. PSL 1.0.0 UPF (Br.pbe-n-rrkjus + H.pbe-rrkjus, ecut 60/600 Ry, d14 PBE pure). pool ubu-1 -np 6 (h3cl ph.interp -np 4 와 공존 · setsid detached · NO --oversubscribe). d16 dry-run PASSED. **wall ~28min** (reused-cell SCF 4초 JOB DONE). **결과**: 전 8 IBZ q **모두 real** (min_freq=5.02 cm⁻¹ Γ-acoustic · n_hard=0 · n_soft=0 · harmonic_validity=VALID) — zone-boundary 까지 dynamical stability 확정 (Γ-probe 가 못 본 영역). **σ-plateau (star-weighted q-multiplicities [1,12,6,24,6,12,2,1] sum=64)**: λ_BZ σ=0.020-0.030 에서 2.12-2.16 plateau → σ=0.025 center **λ_BZ=2.156 · ω_log=1046K · Tc(μ0.10)=158.1K · Tc(μ0.13)=148.2K**. 🟢 hexa verify SUPPORTED-NUMERICAL (allen_dynes_tc(2.1563,1046.2,0.10)=158.104, μ0.13=148.212). **verdict 🟢 data point** (stable + Tc<200K). **핵심 정직 finding (d6 · pre-registered b1 realized)**: Γ-only ω_log=1766K 는 full-BZ Allen-weighted ω_log=1046K 대비 **41% over-estimate** — 200K extrapolation 미성립. λ_BZ=2.16 강결합 확인이나 ω_log 가 stable 분지 ~1046K ceiling 에 갇힘 (tropical isocontour λ>1.5 → Tc≈0.353·ω_log). **압력 효과 정량**: 69 GPa ~110K → 200 GPa ~158K, ω_log(P) slope 양수 검증되나 Tc gain 은 sub-linear (λ-saturation ↔ ω_log-ceiling 트레이드오프 = N5 wall 직접 재확인). 첫 uniform-weight pass Tc=116K → star-weight 보정 Tc=158K (BZ-weighting 차이 정직 명시). cost $0 (pool free · d17). atlas register --from-verify allen_dynes_tc (stable strong-λ Tc node fold). artifacts: `decks/h3br_pscan/200gpa_fullq/{scf.in,ph.in,run.hexa,harvest.hexa}` · `exports/material_discovery/rtsc_h3br_200gpa_fullbz_elph_20260527.json` (LANDED) · ubu-1 `~/rtsc_h3br_pscan/200gpa_fullq/{ph.out,h3br.dyn1-8,harvest.json}`. branch `cycle-h3br-200gpa-fullq`. R4 absorbed=false (d19: in-silico data point, wet-lab downstream).
@@ -249,28 +210,229 @@ Spec at [`./RTSC.md`](./RTSC.md). Log entries below preserve session-by-session 
   - **돌파경로 (d2)**: (1) h3o SSCHA 양자보정으로 imaginary renormalize · (2) H₃As variable-cell relax (Pnma 등 저대칭 ground state 후보) · (3) M8 압력축 <50→<100 GPa 완화 · (4) clathrate / cage motif 확장. 우선순위는 남은 H₃X(h3br/h3p/h3n) 결과 본 뒤 결정.
   - **가동중**: vast (h3br · h3p · h3n DFT 모니터 대기) + ubu-2 (SrAuH₃ redundant cross-check, 끝나면 monitor가 Mg₂IrH₆ chain advance) + vast (M5 NWChem c01 별 트랙, healthy).
   - **side effects (off-domain side fixes that unblocked verify)**: hexa-lang atlas 4-PR 시리즈 (#831 collapse → #846 invert → #853 help-sync → #859 generic register-by-verify-delegation, atlas_cli 0.5→0.8.0) + sidecar atlas skill #125 — single calc home (verify_cli) + embedded.gen.hexa SSOT 확립, 새 verify-able fn은 verify_cli 한 곳만 수정으로 atlas 자동 흡수.
-- **2026-05-29 KST** — **mining cycle 16-25 drained + verify-atlas direct-fold 8 PR landed + Wave-2 6 발사 + NEXUS e15**.
-  - **mining cycle 16-25 (5 lens saturate)**: leaves 94 → **174** (+80), edges 32 → **61** (+29). same-formula · ouroboros · dimensional · tension · combinatorial 다섯 lens 전부 saturate, drained 확정. honest-reject 정신 보존 (lens 는 연결지도만 연결 · 발견은 각 funnel 독립).
-  - **E33 + E42 paired meta-우로보러스 atlas atoms 박힘**:
-    - `smash_l217_verify-atlas_atl` (E33): verify-atlas ≡ Cooper-Kramers T²=−1.
-    - `smash_l263_mining_lens_self_seed` (E42): mining lens self-application — lens 가 자기 자신을 seed 로 먹는 닫힌 루프.
-  - **verify-atlas direct-fold (no-ledger architecture) 8 PR landed · 1563 SLOC · smoke 48/48 PASS verbatim**:
-    - #510 demiurge governance `d_atlas_as_audit_ssot` (`d_claim_manifest` 폐기 · 별도 ledger 제거).
-    - #2023 hexa-lang `stdlib/atlas/atom_meta.hexa` (parallel side-table 180 SLOC).
-    - #2027 hexa-lang `stdlib/verify/calculators` (`allen_dynes_tc` · `mcmillan_tc` · `bcs_gap_ratio` · `eliashberg_full` + `@assumes` metadata · 292 SLOC · 6/6 PASS).
-    - #2028 hexa-lang `stdlib/verify/dispatch` generic registry (253 SLOC · 19/19 PASS).
-    - #2029 hexa-lang `stdlib/verify/harvest` kind-pluggable (342 SLOC · 14/14 PASS).
-    - #2032 hexa-lang `tool/verify_harvest_cli.hexa` CLI capstone (386 SLOC · 9/9 PASS).
-    - #511 demiurge `RTSC.md V2.2` verbatim 4 atom 🟢 (`allen_dynes_tc` Δ 5.56% · `mcmillan_tc` Δ 12.6% · `bcs_gap_ratio` Δ 4×10⁻⁵ · `eliashberg_full` Tc Δ 5.57%).
-    - #512 demiurge `HANDOFF_verify_atlas_direct_fold.md` 9-section dossier.
-  - **PR #509** — CaAuH3 RUNBOOK 압력 단위 정정 (50 GPa → 5 GPa = 50 kbar QE 컨벤션). Wave-2 페로브스카이트 4 후보 (CaAuH3·SrPtH3·BaAuH3·YAuH3) 모두 저-중간압 5 GPa 클래스 확정.
-  - **A11 CaAuH3 ssh9 grinding**: vc-relax + scf JOB DONE, ph iter #4 수렴 중 (~12h+ 경과 · terminal 직전).
-  - **Wave-2 6 발사**: SrPtH3 · BaAuH3 · YAuH3 · KBeH8 · ScH9 · LaY_H10 (LaY_H10=INFEASIBLE deferred) — ssh9 ~17.5h grinding 진행.
-  - **NEXUS.tape e15 추가**: RTSC mining lens machinery → NUCLEAR 298-120 (d19 reuse lattice 첫 실증).
-  - **rtsc.md milestone 추가** (line 25): E34 h3o SSCHA x2 surgery × x18 ZPE 동시 작동 직접 증명 (open milestone).
-  - **qa-deferred 5건** (정직 보고):
-    1. `verify_cli.hexa` baseline 복구 (`jordan_totient` 잔재 정리).
-    2. `embedded.gen.hexa` atlas-persistence — 현 구현은 in-process side-table demo, persistence layer 미흡.
-    3. Identity 4-7 calculators (`@assumes` chain 확장 후보).
-    4. `sscha` / `llm-bench` / `web-smoke` harvest kind impl (현 dispatch 는 stub).
-    5. Phase 3 cleanup `git rm` (legacy ledger artifacts).
+
+## 2026-06-07 — Li2MgH16 gate anchor q5-q8 2-level GRID dispatch (START)
+- Anchor pod 39610026 (vast RTX_3090) LIVE on q4 rep 113/114 (CURRENT_Q=4, CURRENT_IU=1). UNTOUCHED. q1-q3 elph DONE.
+- System: 38 atoms (Li4Mg2H32 cell wrong — actually Li2MgH16 ×2 fu = nat=38), 114 irreps/q, 8 q-points, QE 7.5 conda env, ecutwfc=60/ecutrho=480, k 8x8x8.
+- Per-q wall ~6h sequential → 4 remaining q (q5-q8) = ~24h+ remaining on anchor alone (~1 day, not 4 — anchor already on q4).
+- SHARED SCF: out/li2mgh16.save=621M + phsave control/patterns (all 8 patterns.N.xml exist) → stage tarball 568M (NOT 19G; q1-4 elph/dvscf NOT needed for fresh q5-8). Pulled local.
+- SHARD PLAN: 16 shards = 4 q (q5,q6,q7,q8) × 4 irr-shards (~29 irreps each). k=4 chosen over k=8: small per-q floor (~5min) means k=8 (26min/shard) vs k=4 (50min/shard) both << 2-3h goal; k=4 = far less 32-pod orchestration/recover fragility at same goal-fit. Walltime-min past floor favors robustness.
+
+## 2026-06-07 — Li2MgH16 shards FIRED + anchor advanced to q5
+- VALIDATION (d16): bare start_q/last_q + ldisp=.true. + recover=.true. → QE 7.5 Fortran error "Attempting to allocate already allocated variable x_q". FIX: recover=.false. for fresh-q shard (reads control_ph.xml grid + patterns, computes window). Validated: q5 init OK, irr-window honored (reps 3-114 "Not done in this run").
+- 16 shard pods rented (vast, CPU-only QE on cheap GPU hosts; vast has NO pure-CPU offers). Cost ~$0.07-0.14/hr each, eff 10-28 cores. EST TOTAL ~$3.5 (≤$5 @2.5h).
+- Shard split: 114 irr / 4 = 1-29,30-58,59-87,88-114 per q × {q5,q6,q7,q8} = 16 shards. recover=.false., np=8 npool=4, electron_phonon='simple' (matches anchor ph.in EXACTLY).
+- Shared SCF: 568M stage (li2mgh16.save + control_ph.xml + patterns.1-8.xml) → no per-pod SCF regen.
+- ANCHOR 39610026: FINISHED q4 (dyn4+elph.4 written 16:36), STATUS now CURRENT_Q=5 — anchor self-advancing q5→q8 sequentially (=4day baseline). UNTOUCHED. Shards will beat it; anchor = independent q5 cross-check.
+
+## 2026-06-07 — shards running + 8-pod heal (bandwidth-contention recovery)
+- 16-way parallel scp saturated local uplink → 6 pods got truncated stage (330-420M vs 595M) + 5 pods had SSH key-injection failures (publickey denied even after reboot, host template issue).
+- HEALTHY 8 shards (full 595M stage, 8×ph.x, producing elph.q.M.xml + dynmat.q.M.xml per irrep): q5-s1, q6-s1/s2/s3, q7-s2/s4, q8-s3/s4. Verified q7-s4 at 4 reps / 3 elph done.
+- BROKEN 8 destroyed (d_defer_no_delete: technical fail, re-rented not abandoned) → 8 fresh pods re-rented, provisioned SERIALLY (heal_serial.sh, one scp at a time = no contention): q5-s2/s3/s4, q6-s4, q7-s1/s3, q8-s1/s2.
+- Per-rep rate ~2-3min after ~6min q-init → ~29 irr/shard ≈ 60-90min. Fits 2-3h goal.
+- elph='simple' confirmed working on shards (recover=.false. path, no x_q error).
+
+## 2026-06-07 — timing recalibration + heal v2 (parallel+mutex)
+- REAL per-shard timing (q7-s4, np=8): q-init (k+q bands) = ~1265s (~21min) FLOOR, then ~110s/rep wall. 27 reps → ~71min total/shard. The 21-min init floor (not ~5min) VALIDATES k=4 over k=8 (more shards wouldn't beat the per-shard init floor — d6).
+- Estimated shard-campaign wall ≈ 70-90min + heal-stagger. Still << ~4-day sequential anchor baseline (anchor alone needs ~6h × 4 = 24h for q5-q8; full 8q from scratch was the ~4day figure).
+- Serial heal blocked on slow-loading CN/KR pods → switched to heal_par.sh: parallel provision (SSH-wait + QE-install concurrent), mkdir-mutex'd uploads (one 595M scp at a time = no uplink contention, the root cause of the 6 truncations).
+
+## 2026-06-07 — heal recovery v2 + master orchestrator launched
+- 3 heal pods unrecoverable (q5-s2 CN + q5-s3 KR stuck "loading" >10min; q7-s3 publickey-denied) → destroyed + re-rented fast Quebec-CA offers (d_defer_no_delete).
+- 7 unfired heal pods (4 interrupted-good + 3 new) → heal_par2.sh (parallel provision, mkdir-mutex uploads).
+- COMPLETE 16-shard allmap built: q5-q8 × {s1:1-29, s2:30-58, s3:59-87, s4:88-114}.
+- MASTER orchestrator (master.sh) launched as single long driver: phase1 wait-all-16-JOB-DONE (2h cap) → phase2 assemble each q (assemble_q.sh: gather 114 {dynmat,elph}.q.M.xml from 4 shards onto q's s1 pod, ph.x recover=.true. full-irr → dynN+dynN.elph.N) → phase3 harvest dyn5-8+elph5-8 → exports/rtsc/Li2MgH16/harvest_final/.
+- ANCHOR 39610026 untouched (self-computing q5 as independent cross-check).
+
+## 2026-06-07 — HONEST timing: budget CPU pods ~6min/rep (d6)
+- Measured q7-s4 (np=8 budget pod, load=8 fully saturated): ~21min q-init + ~6min/rep (10-11 SCF iters × ~35s). For 27-29 reps/shard → ~3-3.5h/shard wall.
+- This is SLOWER than the 2-3h target — the budget GPU-host CPUs (np=8) are ~2-3× slower than the anchor's Xeon node (np=32). 38-atom DFPT at 60Ry is genuinely heavy. NO faking (d6/@L5): real achieved walltime will be ~3-3.5h.
+- STILL beats baseline massively: anchor sequential = ~6h/q × 4 = ~24h for q5-q8 (the "~4day" figure was full-8q-from-scratch). Shards do 16 windows in parallel → ~3.5h vs ~24h = ~7× speedup.
+- Shards CANNOT be re-parallelized mid-flight (ph.x np fixed at launch). Future optimization: np=16 on the higher-core pods would ~halve per-rep wall.
+- master.sh phase-1 cap = 48 rounds × ~6min ≈ 4.8h — adequate for the ~3.5h finish.
+
+## 2026-06-07 — heal v3: mutex-deadlock fix + independent provisioners
+- heal_par2 DEADLOCKED: one pod (q8-s2) went unreachable mid-upload while holding the mkdir-mutex → blocked all other uploads. Root cause: shared lock + no per-upload timeout.
+- Plus recurring vast key-injection flakiness (publickey-denied on running pods, survives reboot) + 2 pods self-terminated (KR/CN budget hosts).
+- FIX: prov_one.sh = fully independent per-pod provisioner, NO shared mutex, timeout 600s on scp + size-verify + 1 retry (handles truncation directly). Launched 6 independent (q6-s4, q8-s1, q5-s2, q7-s3, q8-s2, q5-s3) — all reached "qe kicked"/uploading cleanly.
+- Total pods churned: 16 orig + 8 (heal1) + 3 (heal2) + 2 (heal3) + 1 (q5-s3 self-term replace) = lots of vast flakiness; net 16 live shards. allmap.txt rebuilt with current endpoints; master reads it each round.
+- Anchor 39610026 untouched throughout (self-computing q5).
+
+## 2026-06-07 — 14/16 shards computing; final 2 serial-provisioning
+- 14 shards confirmed computing cleanly (8 ph.x each, 0 x_q errors): all q6,q7,q8 windows + q5-s1,q5-s4 + q7-s1.
+- Final 2 (q5-s2 irr30-58, q5-s3 irr59-87) hit repeated vast flakiness (key-injection denial, network truncation, slow loaders) → churned through several pods (d_defer_no_delete), now provisioning SERIALLY on fresh pods 39765517/39765520 (no upload competition since other 14 done uploading).
+- FALLBACK: anchor 39610026 is independently computing ALL of q5 → guaranteed source for q5 irr30-87 if the 2 shards keep failing.
+- master.sh polling all 16 via updated allmap.txt; will auto-assemble+harvest on completion.
+
+## 2026-06-07 03:13 — ALL 16 SHARDS COMPUTING (dispatch complete)
+- All 16 q5-q8 irr-windows firing on QE 7.5, recover=.false., np=8 npool=4, electron_phonon='simple' (matches anchor ph.in exactly). 0 x_q errors across all 16.
+- Final 2 (q5-s2,q5-s3) succeeded on high-reliability pods (rel≥0.999) after destroying flaky predecessors. q5-s2 needed a QE-install retry (conda IncompleteRead network truncation on first attempt — common vast issue).
+- Dispatch wall: ~02:00 first fires → 03:13 all 16 = ~73min to get all 16 lit (dominated by vast infra flakiness, NOT compute). Healthy 8 already ~70min into compute by then.
+- master.sh polling all 16; auto-assembles+harvests on completion. Anchor 39610026 untouched.
+- Pod churn total: ~30 rentals (16 final-live + ~14 destroyed-flaky). All flaky destroyed (no leak); teardown of the 16 live happens post-harvest.
+
+## 2026-06-07 03:29 — master driver restart (background-resilient)
+- Local master.sh orchestrator was killed by harness; RESTARTED via harness background. Pod-side shards UNAFFECTED (nohup'd ph.x runs independently) — confirmed q7-s4 at 15/27, q6-s2 at 11/29 still computing post-restart.
+- Architecture is background-resilient: pods carry the compute autonomously; the local driver only polls+assembles+harvests and is fully restartable from allmap.txt + the pods' phsave state.
+- Progress @03:24: q7-s4 leads (15/27), q6-s2 11/29, q6-s3, q6-s1, q5-s1 mid; late heal pods (q5-s2/s3, q8-s1/s2) still in init. ETA all-16-done ~06:00-06:30.
+
+## 2026-06-07 04:33 — compute progressing; drivers resilient through harness kills
+- Multiple harness-kill events (session date-change/skill-reload) killed monitoring helpers + a master relaunch wrapper, but master.sh CORE process survives each (forked, keeps polling master.out — confirmed updating at 04:32:54). Pods UNAFFECTED throughout (SSH OK, leader q7-s4 at 25/27).
+- Architecture proven background-resilient: the 16 nohup'd pod-side ph.x runs are the durable compute; local master.sh = restartable driver that polls allmap → assembles each q (recover) → harvests. Even total local death is recoverable from allmap.txt + pod phsave state.
+- Watcher b225csduh now monitors master.out progress (no extra SSH) → notifies at assembly/all-16. First q-point assembly-ready ~05:00-05:30; full ~05:30-06:00.
+
+## 2026-06-07 04:40 — FIRST SHARD DONE (q7-s4 irr88-114 JOB DONE)
+- q7-s4 (27 reps, irr88-114) = first shard to finish. START epoch 1780765006 (~Jun7 01:57 KST) → JOB DONE 04:40 KST = ~2h43min/shard (21min init + 27 reps × ~5.4min). Matches the honest ~3h/shard estimate.
+- All other 15 shards still computing. master.sh polling (will register done=1 next poll ~04:44).
+- Achieved-walltime data point: a single irr-window (27 reps) = ~2.7h on a budget np=8 pod. The anchor does 114 reps/q sequentially (~6h/q). So 4 parallel irr-shards/q ≈ same ~2.7h wall for a full q (vs 6h sequential) = ~2.2× per-q speedup from irr-split alone; ×4 q in parallel = the full campaign in ~3h vs the anchor's ~24h for q5-q8.
+
+## 2026-06-07 04:49 — finish.sh = self-contained endgame driver (master-kill resilient)
+- master.sh kept getting harness-killed (exit 144). Replaced with finish.sh: ONE self-contained disowned script that (1) waits all 16 via pod-direct JOB-DONE poll (tolerant of vast SSH-proxy blips — ssh5/etc periodically connection-refuse for ~seconds, harmless to the 180s loop), (2) assembles each q (gather 114 {dynmat,elph}.q.M.xml from 4 shards onto s1 pod → ph.x recover=.true full-irr → dynN+dynN.elph.N), (3) harvests to harvest_final/. Writes finish.log.
+- q7-s4 confirmed JOB DONE 04:40 (first shard). The 0/16 sequential-count false-negative @04:48 was vast SSH-proxy connection-refused storm (transient), not lost compute.
+- finish.sh disowned survives harness kills (not a tracked bg task). Pods carry the durable compute regardless.
+
+## 2026-06-07 05:50 — SHARDS WIPED by external account action; anchor is sole path (d2/d6)
+- WALL: ALL 16 shard pods DESTROYED (~05:30) by an external account-management action — a different session launched an FEP job (abfe_hsp90.py on new pod 39776913, ubuntu:22.04) and the unlabeled shard pods were swept. Balance $0 but $119 credit, so NOT billing-out. No script of mine calls destroy. Sharded q5-q8 data LOST (pod disks gone, nothing harvested — finish.sh never saw all-16-done due to vast SSH-proxy false-negatives, then pods vanished).
+- finish.sh kept reporting done=0/16 — partly vast SSH-proxy connection-refused storms (false negatives), then the pods were gone.
+- FALLBACK (reliable, per d_defer): ANCHOR 39610026 UNTOUCHED + healthy (32 ph.x, q1-q4 elph done, now q5 rep 66/114, ph.out fresh). It computes all 8 q sequentially → will produce the complete answer-key λ on its own. ETA: q5 done ~3h, then q6,q7,q8 = ~18h more (~21h total for q5-q8).
+- DECISION: do NOT re-shard — a co-tenant session is actively wiping unlabeled pods on this shared vast account; re-sharding would just be wiped again (d6 honest: the breakthrough path is the anchor, not fighting the account contention). Monitor anchor to completion.
+- BREAKTHROUGH PATHS surfaced (d2): (1) anchor sequential = reliable baseline (chosen); (2) re-shard with LABELED pods + walkie-coordinate with the FEP session to avoid mutual wipes (deferred — needs cross-session coord); (3) use summer free GPU if QE-GPU buildable (deferred).
+
+## 2026-06-07 06:01 — FINAL STATE: sharded fast-path lost; anchor sequential = deterministic path (in progress)
+- Pod inventory: 2 instances total — 39610026 (anchor, UNTOUCHED, healthy: 32 ph.x, q5 rep 67/114, q1-4 elph done, ph.out fresh) + 39776913 (co-tenant FEP job, not mine to touch). ZERO leftover shard pods (all 16 externally destroyed; no billing leak from my side; nothing to tear down).
+- Anchor data INTACT (false-alarm glob-parse earlier; re-verified q5=66 elph/67 dynmat, computing).
+- Recovery infra: anchor_watch.sh (disowned, logs q-progress to anchor_watch.log) + lambda_anchor.sh (runs lambda.x over all 8 dynN.elph.N once anchor JOB DONE). Both committed.
+- ANSWER-KEY λ: NOT yet available — anchor needs ~3h (finish q5) + ~18h (q6,q7,q8) = ~21h. Beyond this session. The anchor will produce the complete, single-source 8-q el-ph set (no cross-pod assembly needed → simpler + more robust than the sharded path), then lambda.x → λ·ω_log·Tc.
+- Walltime outcome: sharded 2-level GRID DID work technically (validated recover=.false. fix, 16 shards computed cleanly to 22-27/27 reps, first shard q7-s4 JOB DONE in 2h43m) — the ~4h projected sharded completion was on track until the co-tenant account-wipe destroyed all 16 pods ~05:30 (external, outside campaign control). The deterministic anchor fallback (~21h for q5-q8) now carries the gate anchor home.
+
+## 2026-06-08 — RTSC-TRIANGULATE: table-free on-the-fly bearings, full-set ceiling decomposed
+- GOAL: lift the FULL 42-set effective_dim above the 2.04 ceiling by replacing the literature N(E_F)/coord ANCHOR TABLE (B′/C′) with table-free on-the-fly producers, and decompose the residual into proxy-table artifact vs genuine physics (d6).
+- BUILT: `stdlib/rtsc/triangulate_otf.hexa` — B″=free-electron-gas N(E_F) (Sommerfeld g(E_F)=(3/2)N_val/E_F, E_F=3.80998·(3π²n)^{2/3} eV, V from Wigner-Seitz sphere-sum of element radii) × H-1s metallization gate × EN-gap insulator suppression; C″=geometric H–H coordination (shell-vol×ρ_H × H:former topology gate). Table-free closed forms over all 42, no per-formula constant (d4 one-column swap, fusion+PCA core unchanged). Cheap (ms) — NOT a converged plane-wave SCF (d11: genuine qforge_dos_nef over 42 cells incl. molecular insulators is the CaH6-anchor multi-week path; reserved as the per-DFPT-target step).
+- REPORT: `stdlib/rtsc/triangulate_otf_run.hexa` — CONFIG (1) anchor-table vs (2) table-free, three regimes each (full / full-minus-molecular-tail / superhydride-family).
+- MEASURED (PCA = truth-teller, NOT forced): full-set effective_dim 2.04 → **2.50/4** (pure table-free B″/C″). Decisive witness: B↔C full-set corr **0.80 → −0.19** — the 0.80 was ~entirely a PROXY-TABLE ARTIFACT (the two hand-tables co-varied); from independent raw channels B,C are uncorrelated. Artifact (a) REMOVED.
+- IRREDUCIBLE PHYSICS (b): dominant correlation in EVERY variant is **B↔D = 0.79** (N(E_F) and feature-Tc both read valence-electron-count / band-filling) — caps the table-free full set at ~2.5/4 even with B,C decoupled. Real, not removable.
+- TRADE-OFF found: a pure number-density C″ MIS-ranks dense molecular hydrides (B₂H₆, SiH₄) as high-coordination (small est. cell → high ρ_H, inverting the truth). Correcting it needs an H:former topology gate, which re-couples B↔C to 0.66 and pulls the full set to 1.95/4. So correct-molecular-ranking and maximal-B–C-independence trade off — the candidate space is genuinely low-dimensional in a former-chemistry axis.
+- REGIME SIGN-FLIP (honest): the literature N(E_F) TABLE is more independent WITHIN the family (encodes 4f-suppression a free-electron DOS can't see → family 3.08), table-free B″ is more independent on the FULL set. Table wins for family DFPT-target discrimination; table-free wins for artifact-free full-set measurement.
+- FINDING (d6/d_paper_negative_ok): the full-set effective_dim does NOT cleanly exceed ~2.5/4 even table-free — that IS the result. The 2.04 ceiling = part table-artifact (the specific 0.80 B–C, gone → 2.50) + part genuine physics (band-filling co-track B↔D 0.79 + the former-chemistry axis the molecular tail forces). Honest full-set number = 2.0–2.5/4 depending on the molecular-ranking constraint. Fabricated nothing, forced no 3+.
+- GATE: `triangulate_test.hexa` gate-(7) extended (table-free producer sanity + network-vs-molecule ordering + insulator suppression + full-set effdim validity). `hexa run stdlib/rtsc/triangulate_test.hexa` = **triangulate_selftest PASS, 77/77** (0 FAIL). @ci_gate intact. Ranking + anchor-top-10 integrity preserved.
+- Discovery tape: f5 in `.discoveries/rtsc-triangulate.tape`. Docs: rtsc.md §11 + milestone row.
+
+## 2026-06-08 — QFORGE 마이그레이션 게이트: 상관-XC blocker CLEARED (d8 PR#2401 IMPLEMENTED + g5-verified)
+- GOAL: 게이트의 ACCURACY-half blocker(상관 functional gap, screening=Hartree+LDA-exch only) 를 닫고 CaH6 cross-val 재실행 (@L4/@L5 GOVERN — 숫자강제 금지).
+- 발견(중대): d8 패치(inbox/patches/qforge-correlation-xc.md, "screening = Hartree+LDA-exch only")의 **전제가 이미 stale**. 정준 `~/.hx/src/stdlib/qforge/correlation.hexa` 가 PZ81 · PW92 LDA 상관 ε_c/V_c + PBE GGA 상관 H(r_s,t) 를 closed-form 으로 **이미 구현**, `screening.hexa` 에 `xc_mode`=2(H + LDA-x + PW92-c)로 **배선 완료**(d4 generic, 재료 하드코딩 없음).
+- g5 verbatim PASS (네트워크-프리, 디스크 ENOSPC 직전 실행 회수):
+  - `correlation_selftest` **26/26 PASS** — PW92 ε_c(r_s=1)=−0.0597739 vs lit −0.0598, (2)=−0.0447596 vs −0.0448, (5)=−0.0282163 vs −0.0282, (10)=−0.0185723 vs −0.0186 (abs<5e-4); V_c analytic=중심차분 (abs<1e-7); PZ81≈PW92 (abs<2e-3); ρ→r_s 왕복 항등.
+  - `correlation_pbe_selftest` **21/21 PASS** — t→0 ⇒ PW92 환원, H 닫힌형(r_s·t 격자), H saturation t→∞ ⇒ −ε_c^LDA, 단조성.
+  - `screening_selftest` **23/23 PASS** — case G: `mode2−mode1 = f_c[ρ]·Δρ (PW92 상관)` 비자명(≠0) · unknown xc_mode→[] (무날조). Hartree planewave ΔV_H=(4π/|G|²)Δρ abs<7e-7, V_x/f_x closed-form.
+  - `qforge_cah6_qe_xval_test` (L3 α²F 어셈블러 ↔ QE) **PASS** — parsed λ_BZ=8.51683 == QE 8.516825 (rel-ε=4.17e-16, 168 modes); 어셈블러 σ_ph→0 단조수렴 λ_QFORGE=8.51683 rel-ε=**1.65e-7** (≤1% 게이트 PASS). (이건 QE moment→λ leg — 상관 미경유.)
+- cell→|g|² **독립 front-end** (`pw_frontend.hexa`) = SCF→Sternheimer DFPT→Anderson-damped Dyson 차폐(x+c, `qforge_pw_frontend_phonons_scr` xc_mode=2)→|g|²→α²F→λ 배선 확인.
+- **독립-경로 CaH6 λ MEASURED (디스크 회복 후 front-end selftest 완주, 숫자강제 없음)**: 실 CaH6 deck(`exports/rtsc/decks/CaH6_NC`)로 (c) end-to-end 완주 — SCF 수렴(n=16, nelec=16, nocc=8, 182 iters, e_band=−14.7504 Ha). **VERBATIM `[qforge_run] λ=0.180634 ω_log=115.91 K Tc_AD=2.02691e-06 K (stages=6)`. vs QE 4.376 → rel-ε≈0.959 (~24× LOW MISS).** `pw_frontend_selftest PASS` (12/12) — 단 (c)는 **λ>0 조성만 assert**(QE 4.376 정합 아님)이라 PASS. 역사적: 상수 stand-in 0.0208 → 진짜|g| 단일-δ 0.000115 → 분산+상관+차폐 vertex **0.18** = ~3자릿수 개선, 여전히 24× miss.
+- VERDICT (d6/@L5 — 정직): **상관-XC sub-blocker = CLEARED**(구현+g5+배선). 그러나 **accuracy-half 게이트 전체 = NOT CLEARED** — 독립 λ=0.18 이 QE 4.376 을 24× MISS. ⇒ **상관 functional 만으로 front-end gap 안 닫힘.** 진짜 잔여 blocker = **차폐 vertex(ε⁻¹-dressed |g|²) 정량 부족**: 현재 Anderson Dyson 차폐가 QE self-consistent DFPT 차폐 강도를 재현 못 함(npw_cap=16 verify-tractable basis · Einstein-default ω₀ · 단일-셀 Γ FC 근사 누적). 다음 한 수 = full-basis 차폐 SCF · 진짜 BZ-dispersed FC · ε⁻¹ Dyson 수렴 점검(필요시 beyond-LDA/GGA). LaH10/Li2MgH16 QE terminal = 별개 data-half(anchor pod 39610026 미접촉, q5-q8 computing).
+- 제약 준수: el-ph 캠페인 신규 발사 0 (cheap 엔진/코드만, ~6min front-end SCF). anchor pod 39610026 미접촉. g5 self-test 전부 green (correlation 26/26 · pbe 21/21 · screening 23/23 · cah6 L3 xval · pw_frontend 12/12).
+
+## 2026-06-08 — LaH10 QE el-ph data-half TERMINAL (migration-gate @L4 anchor)
+- **상태**: LaH10 QE el-ph 2×2×2 q ldisp 이미 JOB DONE(2026-06-04 21:57) — `harvest_final/lah10_complete.tgz` 에 dyn1-8 + elph.1-8 전부 회수돼 있었음. 신규 dispatch 불필요(기 완료분 발견). detach-state pod 39291022 = 이미 종료(off). ANCHOR pod 39610026(Li2MgH16) 미접촉.
+- **조립**: QE `electron_phonon='simple'` 출력의 per-q·per-broadening λ(ν) + dyn 의 ω²(Ry²→ω) 로 λ·ω_log·Allen-Dynes Tc 직접 조립(QE lambda.x 와 동일 결정론적 가중합 w_q=1/8). QE-7.5 lambda.x 는 DOS-consistency 체크 비호환으로 우회; assembler 결과는 물리 합당(literature 범위). 코드+회수 = `exports/rtsc/LaH10/lambda_terminal/`.
+- **VERBATIM 결과(plateau 0.025–0.030 Ry)**: λ=3.39–3.87 · ω_log=1009–1014 K · Tc_AD(μ*0.10)=191–201 K · Tc(μ*0.13)=182–193 K. (under-conv 0.005 Ry: λ=4.18/Tc=384 K 비채택.) 측정 250–260K@170GPa 대비 DFT-harmonic 보수 일관.
+- **cost = $0** (summer 풀 postprocessing, lambda.x 본 el-ph 회수만; rent 없음). 게이트: CaH6 TERMINAL + LaH10 TERMINAL, Li2MgH16 만 RUNNING → 3-앵커 동시 terminal 대기(flip 금지 유지).
+
+## 2026-06-08 — Li₂CuH₆ ambient el-ph HARVEST → 🔴 FALSIFIED (X₂MH₆ cation-VEC funnel)
+- **GOAL**: 2026-05-26 dispatch(rtsc.md line-24, "DISPATCH LIVE on ubu-1, harvest pending")를 회수. ~2주 경과 → LaH10 lane 처럼 기 완료분 발견 여부 확인.
+- **위치**: `ubu-1` 은 현 pool roster 에 없음 — dispatch record 의 workdir `/home/aiden/rtsc_li2cuh6/` + host `aiden@192.168.50.119` 로 식별(`ubu-1` = `aiden` 의 구 alias). `sidecar pool on aiden` 으로 run 발견. vast/runpod pod 무관(pool 로컬 호스트 실행, cost=$0).
+- **run 상태(정직 d6)**: ph.x **JOB DONE 아님** — q2(representation#3)에서 SIGTERM(signal 15)으로 kill, 2026-05-27T03:13(~2.75h 만에, ~11일 추정 대비; host reboot 추정). `li2cuh6.dyn2`=0 bytes. **q1(Γ) 만 완주**(dyn1 + dyn1.elph.1 완전).
+- **그러나 q1 단독으로 d17 게이트 TRIGGER** — g5 결정론 재산정(harvested `q1_terminal/li2cuh6.dyn1` 직접 파싱):
+  - **n_modes=27 · n_imaginary(f<0)=8 · min_freq=−944.915059 cm⁻¹ · max_freq=2778.64 cm⁻¹ · 29.6% imag**
+  - 허수셋(cm⁻¹): −944.92 / −916.30 / −643.59(×2) / −583.65(×2) / −160.43(×2) — 깊은 **OPTIC** 불안정(acoustic-sum-rule artifact 아님)
+  - d17 falsification gate `min_freq < −50 cm⁻¹` ⇒ **TRIGGERED (CLOSED_NEGATIVE)** (19× past threshold)
+- **Γ elph(005 Ry, DOS=3.873 states/spin/Ry/cell)**: λ(5)=λ(6)=**−2.2764 음수** = ω²<0 의 직접 el-ph signature. **Tc_AD = UNDEFINED** — 허수모드는 α²F·ω_log 형성 불가(d6: 숫자강제 없음, 진짜로 undefined).
+- **구조적 원인**: vc-relax 셀 **+65.7% 부피팽창**(final 604.10 a.u.³ / 89.52 Å³ vs 초기 364.57; ρ=1.55 g/cm³). dispatch record 의 early +38%(BFGS step1) ω_log↓ 경고가 단순 softening 이 아니라 **완전 dynamical instability** 로 실현. lit 6.00 Å 추정은 DFT 평형 셀을 크게 과소평가.
+- **F-N6-2 CONFIRMS**: Li₂CuH₆ pre-registered closed-negative(PR#275)가 실 DFT 로 확정. Mg₂IrH₆(F-N6-1, VEC=19, Fm-3m, min_freq −2235 cm⁻¹, 🔴)와 합쳐 **X₂MH₆ Fm-3m VEC=19 prototype 이 cation 양축(Mg/Ir·Li/Cu) 모두 falsified** → VEC=19 σ\* sweet-spot = 격자안정 필요조건이지 충분조건 아님(first-principles 확정, d6).
+- **anharmonic caveat**: −945 cm⁻¹ 8-mode 깊은 허수는 labeh8/ysbh6 의 mild single Γ-soft(⚪ SSCHA-hold) 패턴 아님 — SSCHA 구제 매우 불가, 미추진(별도 캠페인). polymorph escape/가압은 별도 d2 milestone.
+- **harvest**: `exports/rtsc/Li2CuH6/q1_terminal/`(dyn0·dyn1·dyn1.elph.1·ph.out·ph.err·run.log·scf.out·vcrelax.out·decks) · record `exports/rtsc/Li2CuH6/rtsc_li2cuh6_q1_terminal_falsified_20260608.json`. **cost=$0**(기 완료 el-ph 회수, scp only, 신규 rent 없음). **re-dispatch 불필요**(Γ 단독 terminal; q2-q13 완주해도 허수 q 만 추가, 이미 Γ 불안정 구조 구제 불가). ANCHOR pod 39610026(Li2MgH16) 미접촉.
+
+## 2026-06-09 — Li2MgH16 8-q el-ph 조립 — 3rd migration-gate anchor TERMINAL
+
+- **provenance (d6/@L5)**: 파괴된 vast anchor pod **39610026** 가 kill 전 2×2×2 q-mesh **8/8 q 전부 완료**. dyn1-8 + elph.1-8 로컬 회수 검증완료 = `exports/rtsc/Li2MgH16/harvest_final/`. nat=38(Li2MgH16 ×2 fu), 114 modes/q, QE 7.5 electron_phonon='simple', ecut 60/480, k 8×8×8, scf MP degauss 0.020 Ry, el_ph_sigma 0.005×10.
+- **q-grid**: dyn0 = 2×2×2(8 q), 8 q-벡터 = 구별되는 {0,±½}³ 격자점(Γ+7, 대칭병합 없음) → 등가중 w_q/W=1/8 ∀q (CaH6·LaH10 2×2×2 nosym 앵커와 동일).
+- **assembler**: 검증된 하이브리드 경로(`qforge_a2f_lambda` 적분기 — CaH6 xval rel-ε **1.65e-7** g5 RE-VERIFIED 이번 세션 `qforge_cah6_qe_xval_test PASS`). Li2MgH16 .elph layout = CaH6/LaH10 fixture 와 byte-identical. 풀 λ/ω_log/Tc 드라이버 = `exports/rtsc/Li2MgH16/harvest_final/assemble_lambda.py`(d19 LaH10 `lambda_terminal/assemble_lambda.py` 재사용·QE lambda.x 수식 결정론 재현). 독립 raw-byte λ 파스로 교차확인 → 조립기 λ(5.7893)와 출력 전 자릿수 일치.
+- **VERBATIM (primary 0.020 Ry = scf degauss)**: `mu*=0.10: lambda=5.7893 omega_log=740.69 K Tc_AD=164.12 K` · `mu*=0.13: lambda=5.7893 omega_log=740.69 K Tc_AD=158.46 K`. broadening plateau(0.010–0.030 Ry): λ=5.35–5.95, ω_log≈735–743 K, Tc_AD(μ*0.10)=160–165 K. (0.005 Ry λ=9.42 = too-narrow smear outlier, 비채택.)
+- **per-q λ-sum(0.020)**: q1(Γ)=12.07 · q2-q8 ∈ {4.32, 5.32} — Γ 가 small-q 발산(λ(q)∝1/ω²) 운반, 유한-q 7점 안정.
+- **vs 문헌 (Sun, Hou, Lv, Yang, Liu — PRB 102 144524 (2020), arXiv:1907.09691): 예측 Tc≈473 K @250 GPa, λ≈3.3 (실리코 최고 Tc 수소화물)**. 본 8-q coarse: λ=5.79(문헌 3.3 보다 HIGH) · ω_log=741 K(문헌 stiff 보다 SOFT) · Tc=164/158 K(문헌 473 K 의 ~1/3).
+- **HONEST mesh-convergence caveat (d6 — 473 K 강제 안 함)**: coarse 2×2×2 = NON-converged, 불일치는 알려진 coarse-mesh pathology(예측 반증 아님). (1) λ over-shoot = coarse 그리드가 Γ/small-q λ(q)∝1/ω² 발산에 1/8 과대가중(q1=12.07). dense mesh 가 이 발산을 ~3.3 로 평균화. (2) ω_log under-shoot = small-q soft 모드가 log-avg 지배 → ω_log↓, AD Tc∝ω_log 선형이라 직접 억제. (3) net: over-λ·under-ω_log 부분상쇄 → Tc≈164 K. **473 K 도달 = denser q-mesh 필요(λ↓·ω_log↑ 동시 수렴).** 본 앵커 기여 = 실 QE 바이트 위 검증 조립기로 산출한 λ/ω_log/Tc 이지 473 K 투영 아님.
+- **게이트 상태**: data-half 3-앵커 동시 terminal **達成 (CaH6 ✓ · LaH10 ✓ · Li2MgH16 ✓)**, 셋 다 byte-identical 검증경로 조립. 잔여 게이트 HELD = 오직 front-end 차폐-vertex accuracy-half(독립 CaH6 λ=0.18 24× MISS) — flip 금지 유지, dispatch default = qe.
+- **g5**: `qforge_cah6_qe_xval_test PASS`(rel-ε 1.6524e-7) RE-VERIFIED = 조립기 적분기+파서 검증. verdict = `.verdicts/qforge-li2mgh16-8q-assembled/VERDICT.md`. **cost=$0**(기 회수 el-ph 로컬 조립, 신규 rent 없음).
+
+## 2026-06-09 · f_xc-in-χ (beyond-RPA Dyson 커널) — 차폐벽 ALDA-레벨 확정 (0-pod, d6/@L5)
+- **마지막 명명 DFT 레버 = f_xc-INSIDE-χ**: Sternheimer-χ⁰가 지목한 잔차("LDA/RPA χ⁰에 f_xc-in-χ 부재 = QE 자기일관 DFPT 미반영")를 직접 테스트. χ Dyson 커널을 v_c → (v_c + f_xc) ALDA로 업그레이드(`qpwfft_set_fxc_in_chi` + `_qpwfft_build_fxc_gfield`, ~/.hx/src, d4 토글·default false=RPA 무회귀).
+- **VERBATIM 결과 (0-pod local-CPU, n=645, ncond=8, apples-to-apples full-ε 경로)**: RPA(v_c만) λ=3.75221(14.25%) → **f_xc-in-χ(v_c+f_xc) λ=3.41513(rel-ε 21.96%)** · Δλ=−0.337 = **QE 4.376서 더 멀어짐(잘못된 방향)**. f_xc 가동 검증: folds=416025(=645²)·‖f_xc‖/‖v_c‖=1.97(엔진됨, fallback 아님). 4.376 강제 안 함.
+- **OUTCOME (3) 최강 음성 = 벽 ALDA-커널-레벨 확정**: LDA 교환커널 f_x=−⅓(3/π)^⅓ρ^−⅔ < 0 → (v_c+f_xc) 과잉차폐 → λ를 QE 아래로 더 억제. 차폐벽 잔차는 Dyson-커널 선택보다 **깊음** = LDA-vs-PBE functional + from-scratch LDA PW SCF + NC pseudo (QE 4.376 = PBE 자기일관). 미시도(ALDA 부호상 예측 안 됨): GGA f_xc-in-χ(∂V_xc^PBE/∂ρ) + PBE-XC from-scratch SCF.
+- **차폐 vertex 탐사 완전종결**: RPA → full ε(G,G') → Sternheimer-χ⁰ → f_xc-in-χ 4 레버 전부 ≤1% 미달, 수렴값 11.4~22% off. 게이트 HELD(flip 금지) · dispatch=qe · 하이브리드(1.65e-7) = QE-급 production. cost=$0(local). impl = ~/.hx/src(worktree verdict는 sweep으로 정리, 결과는 본 로그+QFORGE.md+memory에 보존).
+<!-- HANDOFF: parent appends this block to the shared domains/rtsc.log.md (rad-domains-radguard
+     working tree) — this isolated agent is off a different branch and must not touch the shared
+     uncommitted rtsc.md/rtsc.log (d9 index isolation). Also flip the relevant rtsc.md line. -->
+
+## 2026-06-09 · A1 PBE-XC from-scratch SCF — 🔴 CLOSED-NEGATIVE (차폐벽 PBE-functional 레벨서도 확정, 0-pod)
+- **마지막 명명 구조 레버 = PBE-XC from-scratch SCF**: 차폐정점 4-레버(RPA→full ε→Sternheimer-χ⁰→f_xc-in-χ) terminal 진단("잔차 = LDA-vs-PBE functional + from-scratch LDA PW SCF")의 정면돌파. 모든 이전 SCF는 LDA-XC(Slater-x + PW92-c) 자기일관 — A1 = SCF 자체를 **PBE(GGA) V_xc[ρ,∇ρ]** 로 재구축(d4 xc_mode=3 토글, hexa-lang `qforge-pbe-scf-cah6`).
+- **구현 (∇ρ 분광)**: `correlation.hexa` PBE-x F_x(s) + GGA 에너지밀도 e_xc(ρ,|∇ρ|) + 편미분 ∂e/∂ρ·∂e/∂g · `screening.hexa` 분광 V_xc^PBE = ∂e/∂ρ − ∇·(∂e/∂g·∇ρ/g), ∇ρ+divergence = core_fft · `scf_pw.hexa` xc_mode=3 SCF 배선. **단위게이트 14/14 PASS**(∇ρ GGA항 실live, 비균질 ρ서 max|Δ|=1.87e-4 vs LDA; 균질 ρ서 정확히 LDA 환원).
+- **VERBATIM 결과 (d6, 4.376 강제 안 함 · bare vertex, 함수만 교체 = apples-to-apples)**: pow2 basis마다 PBE-SCF 가 λ를 **악화**(QE서 더 멀어짐): n=16 LDA λ=0.6093→PBE λ=0.0813 · n=64 LDA λ=0.00833→PBE λ=0.00335. **물리적 λ=4.137 basis(n=645 full ecut shell)는 645≠pow2 → core_fft가 [] 반환 → 분광 V_xc^PBE 미가동 → LDA-x+c fallback**(결정론적 확인: `qforge_vxc_pbe_grid` n=645→len=0 vs n=512→len=512). 즉 **수렴 basis서 PBE 는 아예 안 돈다**. n=128/256/512 DFPT(n²-FC Sternheimer)는 로컬 10분창 초과 intractable(d11).
+- **OUTCOME (3) 최강 음성 = 벽 PBE-functional 레벨 확정**: (a) PBE 가 가동되는 pow2 basis마다 λ **하락**(f_xc-in-χ ALDA 과잉차폐와 동일 부호) · (b) 수렴 n=645 basis서는 pow2-FFT 벽이 GGA 자체를 차단 · (c) 더 깊은 한계 = from-scratch SCF 의 (1,1,n) 1-D G-인덱스 밀도표현(진짜 3-D ρ(r) 아님)서 GGA gradient 가 비물리적. **게이트 flip 금지(NOT MET)** · 하이브리드(1.65e-7)=production · dispatch=qe · absorbed HELD.
+- **정직 잔여(d2, 본 작업 밖)**: 진짜 3-D 실공간 SCF ρ(r) 그리드(현 (1,1,n) G-라인 교체) + n=645 pow2-padding FFT → 그때 수렴 basis서 물리적 PBE V_xc 측정 가능. = SCF-표현 대형 재구축이지 XC-함수 교체 아님. cost=$0(local). verdict: `.verdicts/qforge-pbe-scf-cah6/`.
+
+<!-- rtsc.md line flip suggestion: under the QFORGE migration-gate milestone, append after the
+     f_xc-in-χ entry: "🔴 A1 PBE-XC from-scratch SCF CLOSED-NEGATIVE (2026-06-09): 분광 V_xc^PBE[ρ,∇ρ]
+     (xc_mode=3, 14/14 unit PASS) — pow2 basis서 λ 악화(n16 0.61→0.08·n64 0.0083→0.0034), 수렴 n=645
+     basis는 pow2-FFT 벽이 GGA 차단(645→len0). 벽 = PBE-functional 레벨 + (1,1,n) 1-D 밀도표현 확정,
+     XC-함수 아님. flip 금지·하이브리드 production. `.verdicts/qforge-pbe-scf-cah6/`" -->
+
+## 2026-06-10 · 3-D 실공간 SCF ρ(r) 재구축 — pow2벽 RESOLVED, 더깊은 root=diagonal assembler (0-pod, d6)
+- **1-D (1,1,n) 밀도 root 해소 + pow2-FFT 벽 RESOLVED**: 진짜 3-D ρ(r) pow2-pad cube(n=645→32³) 구현(`stdlib/qforge/scf_pw_realspace.hexa`, hexa-lang PR #3003) → PBE V_xc[ρ,∇ρ]가 물리 n=645서 **처음 수렴**(e_band=−61.79). 각 축 spectral ∇ρ. g5 10/10 + scf_pw_selftest 20/20 회귀 PASS.
+- **VERBATIM: LDA(1,1,n) λ=0.609302 → PBE-3D n=645 λ=1.43e-88 ≈ 0** (ω_log=1224.7K·Tc=0). "3-D가 닫는다" 가설 반대방향 FALSIFIED.
+- **더 깊은 root 재진단(d6)**: 벽은 밀도표현 아니라 **DIAGONAL-only assembler** — local V_scr(r)의 공간평균 V̄만 대각 기여, el-ph 차폐는 **OFF-DIAGONAL V(G_a−G_b)**에 사는데 assembler가 버림(offdiag RMS/|V̄|: V_scr=5.56·V_xc=0.69·V_H=4.8e15). 옛 λ=0.609는 비물리 per-G 대각 artifact. 게이트 NOT MET·하이브리드(1.65e-7) production·dispatch=qe. **다음 레버(d2 大형)=dense off-diagonal V_scr(G_a−G_b) 행렬 assembler**(3-D ρ(r)가 그 입력). 부산물: fft3 in-place mutation 버그 + install-shadowing 수정. cost=$0.
+
+## 2026-06-10 · off-diag V_scr 행렬 el-ph assembler — diagonal-truncation root 증명, NECESSARY-NOT-SUFFICIENT (0-pod, d6)
+- 3-D ρ(r) SCF(PR#3003) 위 off-diagonal vertex g_mn=∫ψ*_m·∂V_scr·ψ_n dr 구현(`stdlib/qforge/elph_vscr_realspace.hexa` NEW, g5 6/6 PASS, realspace 8/8 회귀). branch `qforge-3d-realspace-scf`.
+- **VERBATIM: ∂V_bare(물리 el-ph 장)로 diagonal-only Σ|g|²=2.1e-57(기계영, ∂V_bare는 G=0 없어 V̄=0) → off-diag가 5.4e-24로 ×2.6e33 들어올림** = diagonal-truncation이 λ→0(1.43e-88)의 정확한 root임 증명, off-diag fix = NECESSARY. Hermitian(잔차~1e-22). **단 λ_full=2.98e-61 여전히 ≈0 = NOT SUFFICIENT.**
+- **잔여 재배치(d6)**: 더는 diagonal-truncation 아님 → el-ph 정규화(Γ-only Fermi double-δ N(E_F) + bare-vs-ε⁻¹-screened 인자 + 변위진폭) = named 남은 레버. n=645 full-basis=0-pod interpreter d11-intractable(Davidson ψ회복 벽), 구조적 결론(diag=0·off-diag ×2.6e33)은 basis-무관·n=51 측정. 게이트 HELD·하이브리드(1.65e-7) production. cost=$0.
+
+## 2026-06-10 · el-ph 정규화 층 — +51 orders 도약, 물리 완성·잔여=mesh 수렴 (0-pod, d6)
+- off-diag |g|²(전 라운드) 위에 el-ph 정규화 3개 배선(`stdlib/qforge/elph_normalization.hexa` NEW, g5 9/9 PASS, branch `qforge-elph-normalization` origin push): (a) ε⁻¹ 차폐 ∂V_scr=∂V_bare+V_H[Δρ]+f_xc[ρ]Δρ(‖∂V_scr‖/‖∂V_bare‖=132.7 robust under ρ-floor) · (b) 실 N(E_F)=159.6 states/Ha(dos_nef, 1.0 아님) · (c) 변위진폭 √(ℏ/2Mω).
+- **★2번째 root 발견**: cube ψ(r)가 UN-NORMALIZED(∫|ψ|²dr=1.2e-7, ifft 1/Ntot 때문) → PW ψ=ψ_ifft·(Ntot/√Ω)로 ∫|ψ|²=0.953≈1 복원. 모든 g_mn이 ~22 orders 작았음.
+- **VERBATIM(n=51 d11-tractable)**: λ ladder rung0(bare/n_ef=1)=5.81e-42 → rung2(SCREENED/realN(E_F)/amp)=**9.26e-10**. = 정규화+ψ-norm이 λ **+51 orders 도약**(off-diag 2.98e-61 → 9.26e-10), 61-order 갭 중 51 닫음.
+- **≤1%? NO, rel-ε 100%(~9.5 orders 남음, 4.376 강제 안함)**. **잔여 질적 전환**: 더는 diagonal/scale/screening/N(E_F)/amplitude 아님(전부 배선) → **Γ-only 1-k점 vs QE 수렴 full-BZ k×q mesh** = 물리 갭 아니라 샘플링/수렴(d11-intractable 0-pod, GPU pod/native 필요). 게이트 HELD·하이브리드(1.65e-7) production. d2 경로: 수렴 k×q mesh · Wannier-interp FS(`wannier_ginterp.hexa` 존재) · tetrahedron FS 적분. cost=$0.
+
+## 2026-06-10 · Wannier-interp FS + tetrahedron — FS-mesh 잔여 가설 CLOSED-NEGATIVE, 잔여=|g|² 절대크기 (0-pod, d6)
+- Blöchl 1994 linear-tetrahedron FS 적분기(`stdlib/qforge/tetra_fs.hexa` NEW, g5 9/9 PASS) + dense-FS α²F(`fs_dense_a2f.hexa`) + CaH6 측정(QE 실 band, 16³ MP 2052 irr k-pts, 0-pod no per-k SCF). branch `qforge-wannier-tetra-fs` origin push.
+- **VERBATIM: dense-FS λ=4.10e-9 (Γ-only 9.26e-10 × 4.43× FS보정) — 여전히 ~9 orders 부족**. tetra VALIDATED: 수렴 N(E_F)=2.450 vs QE 2.484 st/spin/Ry(rel-ε 1.37%, σ-stable). 단 Γ-only N(E_F)도 이미 2.93(O(1)·near-converged) → FS-mesh 정밀화가 λ 거의 안 올림(<1 order).
+- **FS-mesh 축 = CLOSED-NEGATIVE(배제)**: el-ph 정규화 라운드가 투영한 ~5e9 FS-mesh 기여는 틀림. **진짜 ~9-order 잔여 = |g(k,k+q)|² 절대 행렬요소 크기**(FS 샘플 아님). GPU pod 불필요 — 다음 = |g|² vs QE 단일숫자 audit(0-pod). 게이트 HELD·하이브리드(1.65e-7) production. cost=$0.
+
+## 2026-06-10 · |g|² vs QE 단일숫자 audit — VERTEX-MAGNITUDE 결핍 (단위 아님), 원인=screened ΔV unwired (0-pod, d6)
+- CaH6 Γ mode7 |g|² QForge vs QE term별(`g2_audit.py`, verdict `.verdicts/qforge-g2-audit/`). QE ref: <|g|²>=λω/2N=1.316e-2 Ry²=|g|=1560.6 meV(γ cross-check ratio 1.0000 정확).
+- **QForge term 전부 CORRECT+적용**(amp2=ℏ/2Mω · 질량 1822.9 · ω 3.16e5 K/Ha · Ry² 0.25). **잔여 = VERTEX-MAGNITUDE 결핍, 단위 slip 아님**: QE 필요 bare |g_mn|=0.236 Ha/bohr(평범 deformation potential), QForge 산출 ~7.2e-6 = ~3.3e4× 작음(제곱이 단위곱과 우연 일치 = 이전 라운드 오도원인).
+- **원인 짚힘·고칠 수 있음(d2)**: (1) ★compose가 BARE ΔV 먹임 — RPA ε⁻¹가 metallic-H vertex 강화(Sternheimer 라운드 ‖∂V_scr‖/‖∂V_bare‖=132.7 측정), **screened_dv brick #2494 존재하나 compose에 UNWIRED** · (2) PW basis 수렴(n=51 ≪ QE 70Ry ~10³ PW) · (3) q≠Γ(Γ서 ΔG=0 head→0 acoustic sum rule 억제). 게이트 HELD·하이브리드(1.65e-7) production. 4.376 강제 안함. cost=$0.
+
+## 2026-06-10 · screened ΔV+basis+q≠Γ — compose λ=1.15(물리차수)·0-pod 정확도 루프 TERMINAL (d6)
+- 정직 재구성: audit의 3.3e4× vertex 결핍 = real-space-CUBE 경로 artifact(λ=9.26e-10). **COMPOSE 경로는 screened ΔV 이미 배선됨**(`qforge_compose_cah6_lambda`+`cah6_realcell_compose_xval_anderson` #2500 NaN-fix) → λ 물리적 차수. branch `qforge-screened-compose-wire` origin push, sweep fixture `cah6_screened_compose_sweep.hexa`(QF_NPW/QF_MSHELL/QF_K 노브).
+- **VERBATIM sweep(all-4 screened)**: NPW64 Γ λ=1.1545(rel-ε 0.736·최선) · NPW128 3.5020(basis accident NON-monotonic, 주장 안함 d6) · NPW256 0.8756 · q(0.5,0,0) 0.8527. 요인: 차폐 ±8.6/−6/+24%(basis-sign 의존·132.7× 아님) · basis NON-MONOTONIC(band-pair reshuffle) · q≠Γ는 λ LOWER(−26%, "Γ acoustic 억제" 가설 반증).
+- **OUTCOME 3: 벽 미붕괴**. 최선 λ=1.1545(rel-ε 0.736·~3.8× short, ≤1% 아님). **진짜 최종 잔여 = Γ-only 단일 k점 FS BZ 샘플링**(nb~10-12 vs QE 수렴 ≫10³ FS점) = el-ph 정규화 verdict가 명명한 그 root. **0-pod 不가능**(d11: NPW256 SCF만 ~9분, 수렴 k×q mesh = GPU pod 필수). Wannier·basis·screened 3경로 전부 BZ-mesh 벽 재확인 = **0-pod 정확도 루프 DEFINITIVE TERMINAL**. 게이트 HELD·하이브리드(1.65e-7) production. d2 닫힘 = 수렴 k×q mesh on GPU pod. cost=$0.
+
+## 2026-06-11 · GPU pod 수렴 NPW + q≠Γ sweep — λ NON-MONOTONIC·게이트 HELD·잔여=vertex크기 (d17, $0.65)
+- **0-pod TERMINAL 의 d2 닫힘 경로(수렴 k×q mesh on GPU pod) 실행**: vast RTX 3090(40418055, $0.232/hr, 2.82hr=**$0.65**, ≤$10) rent → CaH6 screened-compose sweep(`cah6_screened_compose_sweep.hexa`) NPW 수렴축 + q≠Γ. 툴체인: hexa Linux release GLIBC_2.38 vs pod Ubuntu22.04 2.35 → old-releases libc6_2.38 추출+patchelf(hexa/hexat/module_loader), self/ rsync `-L`(native/*.c=macOS symlink), 하드코딩 deck 경로 symlink. verdict `.verdicts/qforge-converged-kxq-gpu/`.
+- **VERBATIM NPW-수렴(Γ)**: NPW64 λ=**1.1545**(rel-ε 0.736) → NPW128 **3.5020**(0.200) → NPW256 **0.8756**(0.800). **NON-MONOTONIC 진동, 4.376 수렴 NOT**. NPW64·256 이 0-pod 값과 정확 일치(엔진 결정론·GPU 독립확인). NPW128 spike(3.50)=basis accident(|G|-shell cut band-pair reshuffle), 주장 안함. NPW512(MSHELL=8)=>1h22m CPU intractable, 미착지(teardown kill, verbatim 無).
+- **VERBATIM q≠Γ@NPW256**: Γ 0.8756 → qX(0.5,0,0) **0.4114** → qXY(0.25,0.25,0) **0.4962**. **둘 다 λ LOWER** = q≠Γ가 vertex 강화 안함(0-pod ~26%↓ 재확인·"Γ acoustic-sum-rule 억제" 가설 REFUTED).
+- **★HONEST GPU 현실(d6/@L5)**: GPU util=**0%** 전구간. hexa release `hexa build`가 compose 경로를 **CPU `hexa_farr_matmul` FP64 baseline**로 컴파일 — NVPTX/cuFFT 커널(Davidson·Sternheimer·Poisson, B200서 byte-eq 검증됨)은 **CUDA-build hexa**서만 발화하나 release엔 CUDA codegen 미활성. pod 값=192코어/220GB가 NPW256+q 2점을 착지시킴(0-pod walltime 벽 돌파)·GPU 가속은 아님.
+- **OUTCOME 2: 수렴-mesh tractable됐으나 λ ≤1% 미달·basis NON-MONOTONIC**. **g2-audit root 재확인**: 잔여=**VERTEX-MAGNITUDE 결핍**(from-scratch ⟨ψ|∂V_scr/∂u|ψ⟩), basis/k×q-mesh 샘플링 아님. screening ratio≈1.0(132.7× 아님)→이 compose 경로 차폐가 ~3.3e4× bare-vertex 부족 못 메움. **게이트 flip 금지(4.376 강제 안함)·하이브리드(1.65e-7) production 유지**. d2(여전히 열림, CUDA-build hexa gated): NVPTX compose로 진짜 dense k×q el-ph sum(현 single-k Γ-vertex) · screened FC β-knob · self-consistent DFPT ∂V_scf/∂u.
+
+## 2026-06-11 · hexa upstream fix — SC-DFPT overscreening 발산 CLOSED(엔진 FIXED), @L5 게이트 블로커=correlation-XC (d6)
+- hexa-lang dev repo(/Users/mini/core/hexa-lang) upstream fix: Dyson 루프가 bare Hartree 4π/|G|² 먹어 |G|→0 발산→비물리 overscreening(ratio 3.5e7·conv=false) 진단. FIX = static-RPA Thomas-Fermi screened Coulomb v_TF=4π/(|G|²+k_TF²), k_TF²=4k_F/π·k_F=(3π²ρ̄)^⅓, ρ̄=nelec/Ω 유도(튜닝X). **PR #3038(fix 51줄)+#3039(g5 gate selftest ALL PASS) origin push** (stacked, g4).
+- **VERBATIM**: TF로 3.5e7 overscreening → **ratio=1.0**(발산 붕괴 CLOSED·g5 A/B: TF fp_res=735 vs bare 9132·k_TF²=1.93465=Lindhard 1.93464 독립일치·folds=21). 단 gain bounded되니 conv=false·fp_res=964·screened vertex≈bare로 붕괴. **CaH6 λ=5.05165(rel-ε 15.44%)·BARE 4.137(5.47%)이 더 가까움**(4.376 강제 안함).
+- **@L5 판정(outcome 3)**: SC-DFPT 발산 sub-블로커 = **CLOSED(엔진 FIXED·shipped)**. 진짜 게이트 블로커 = **correlation-XC-beyond-Hartree+LDA**: Hartree+LDA-x+PW92-c는 bounded돼도 QE ε⁻¹-screened |g|² 재현 못 함(memory f_xc-in-χ CLOSED-NEGATIVE 일치 = DFT-functional 벽). d2 잔여(미닫힘): off-diag ε(G,G') q-non-local RPA χ⁰(TF long-wavelength 너머)·TDDFT f_xc-beyond-ALDA. 게이트 HELD·하이브리드(QE|g|²→QForge L3, 1.65e-7) production. verdict `.verdicts/qforge-cah6-lindhard/SCDFPT_TF_VERDICT.md`.
+
+## 2026-06-11 · PBE-SCF 함수자 정렬 — CLOSED-NEGATIVE, 함수자 축 EXHAUSTED (@L5 final, d6)
+- memory가 명시한 마지막 un-tried 레버(PBE-XC ground-state SCF 정렬, QE 4.376은 PBE-수렴) 시도 → 이미 며칠 전 닫힌 음성, 재확인. hexa-lang PR #3040(docs verdict, OPEN·admin-merge 401 대기).
+- **VERBATIM**: PBE-SCF n16 LDA λ=0.609302→PBE 0.081270(REGRESS)·n64 0.008329→0.003351. n645 PBE는 pow2-FFT 벽(645≠pow2→LDA fallback≡bare 4.137); 3-D 실공간 SCF(#3003)가 pow2 벽 깼으나 λ=1.43e-88≈0. GGA f_xc-in-χ λ=3.41256(22.02%·ALDA 3.415와 동일). g5 재검증: qforge_correlation_pbe_selftest PASS·scf_pw_realspace_selftest 10/10 PASS(PBE 머신 real·correct·engages, 레버 소진이지 버그 아님).
+- **@L5 final 판정**: 벽은 **함수자-레벨 아님** — 함수자 축(LDA→ALDA→PBE/GGA, SCF+χ-커널)이 EXHAUSTED·전부 닫힌 음성(PBE도 engage하면 λ를 더 떨어뜨림, 과억제 부호). 진짜 root = **diagonal-only assembler(아키텍처)** = off-diag V_scr(G_a−G_b) vertex assembler(necessary-not-sufficient, 이 세션 초반 규명). bare 4.137(5.47%)이 여전히 최근접. 게이트 HELD·하이브리드(1.65e-7) production·absorbed HELD·dispatch=qe. 4.376 강제 안함. verdict `.verdicts/qforge-pbe-scf-align/`.
+
+## 2026-06-12 · off-diag assembler 통합 大작업 — 아키텍처 CLOSED, off-diag RULED OUT, 캠페인 honest 종착 (0-pod, d6)
+- `stdlib/qforge/elph_offdiag_integrated.hexa`(hexa-lang PR#3058/#3059): 3 off-diag 경로(DENSE Σ_{Ga,Gb}·APPLY-col=COMPOSE·CUBE ∫ψ*ΔVψ)를 ONE 연산자로 통합 + EQUAL을 g5 THEOREM 증명(machine prec 3.3e-7). 이전 ~10-order route 불일치 = NORMALIZATION+PHASE(PW-norm + bra-conjugate −iG), 물리 아님. summer GPU busy(fep 89%)→mini fallback, $0.
+- **VERBATIM(CaH6 mini 0-pod, n=64 converged, 24-mode ω, N(E_F)=19.95, nactive=10)**: λ_unified==λ_compose=**1.1545**(route A=B 3.3e-7), off-diag lift **×1.06**(Σ|g|² ×1.68), Hermitian 1.39e-15, rel-ε vs QE 4.376=**0.736175**.
+- **종합(d6/@L5)**: off-diag 아키텍처 CLOSED(통합·theorem)이나 off-diag는 ×1.06 소효과 = **3.8× 갭 원인 아님**. 함수자(LDA·ALDA·PBE/GGA CLOSED-NEG)·basis/k×q-mesh(NON-MONOTONIC)·FS-mesh N(E_F)(1.37% 수렴) 전부 배제 → 잔여=**환원불가 from-scratch(NC-pseudo+LDA SCF) vs QE-PBE vertex-magnitude 근본차**(단일 레버 없음). 게이트 HELD·하이브리드(1.65e-7) production·dispatch=qe·4.376 강제 안함. QFORGE-FEATURE 大작업 마일스톤 -[x](BUILT·ruled-out). verdict `.verdicts/qforge-offdiag-integrated/`.

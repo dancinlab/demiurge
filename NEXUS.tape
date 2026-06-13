@@ -63,49 +63,59 @@
   reused_by = "UFO Stage-3 orbital — γ-rocket I_sp = c/g 광자천장 verify (🟢 |Δ|=0.0 ×3)"
   evidence  = "UFO/verify/stage3-orbital-gamma.md · UFO.log R1 (#237)"
 
-@X e7 := "NUCLEAR n11_island_cell_checked -> RTSC+NUCLEAR (meta funnel finding)" :: reuse-edge [tier-2 active]
-  provides  = "NUCLEAR (n11_island_cell_checked island funnel)"
-  primitive = "(c)-gate island_weight composite scorer — accelerator-priority SHE shortlist"
-  reused_by = "RTSC+NUCLEAR §F4 (meta-domain elemental-funnel · PARALLEL lane, NOT a supply merge)"
-  finding   = "N12: 298-120 (deformed-magic N=178) composite 0.545 = funnel TOP · OUT-ranks entire N11 G4 cohort (N11 top 295-119=0.046). N13: chain-daughter calibration (292-Lv 0.3725 top) confirms 298-120 stands as the novel-element headline."
-  evidence  = "exports/nuclear_discovery/n12_funnel/2026-05-28T18-37-27Z + n13_funnel/2026-05-28T19-20-02Z · NUCLEAR PR #504 + N13"
-  invariant = "absorbed=false 영구 (R4) · sim PASS = accelerator beam-time hint, NEVER a discovery · meta bridge §6.1 honest-rejects 초중핵→RTSC-bulk supply (벽=생산량) — this is the parallel-funnel reflection, not a coupling"
+@X e7 := "HEX-N6 lattice anchors -> CLOAK" :: reuse-edge [tier-1 active]
+  provides  = "HEX-N6 (n=6 lattice substrate primitive)"
+  primitive = "sigma·tau·phi·sopfr·mu·is_perfect·aliquot·omega_big·liouville·sigma_2 at n=6 (10/11 🔵)"
+  reused_by = "CLOAK Phase A ⓸ σ-φ=10 cell pitch · ⓺ σ-τ=8 octave bandwidth · Phase B 5-기하 ↔ 5-atom 1:1 lock-in"
+  evidence  = "exports/cloak/verify/V3_phase_a_completion.md + exports/cloak/design/phase_b_metacell.md"
 
-# ── QFORGE multi-scale d19 reuse lattice (the "one engine, six scales" core) ──
-# atoms/chem/system consume the MOLSCF molecular-SCF core + materials DFPT + flame matmul.
-# These cross-LANE reuse edges ARE the universal-axis thesis: one generic atom-centered /
-# linear-response path, instance = basis-set + geometry manifest only (d4). g5-gated, PySCF/
-# Crawford/literature-anchored. Implementation home (d3) = hexa-lang stdlib/qforge/<scale>/.
+@X e8 := "HEX-N6 -> WARP" :: reuse-edge [tier-1 active]
+  provides  = "HEX-N6"
+  primitive = "sigma=12 + n=6 lattice anchors"
+  reused_by = "WARP Alcubierre δ=1/σ=1/12 + R=n=6 bubble radius (lattice arithmetic only · physics UNPROVEN ⚪)"
+  evidence  = "domains/warp.md Phase A"
 
-@X e16 := "QFORGE-MOLSCF molecular-SCF core -> QFORGE-ATOMS" :: reuse-edge [tier-1 active]
-  provides  = "QFORGE-MOLSCF (molecular ab-initio SCF front-end)"
-  primitive = "gaussian_integrals S · coulomb_integrals ERI+V · rhf (rhf_scf) · md_shell (p/d/f MD integrals) · uhf (DIIS + open-shell) · rohf (spin-pure)"
-  reused_by = "QFORGE-ATOMS — real-STO overlap (r10) · true Roothaan RHF force consuming ERI+V (r11) · p/d-shell force via md_shell (r13/14) · DIIS-accel cc-pVTZ RHF (r24) · UHF-reference UMP2/UCCSD/UCCSD(T) (r25-27) · spin-pure ROHF-CCSD(T) ⟨S²⟩ exact (r28)"
-  evidence  = "hexa-lang qforge-atoms r10-r28 (#3162·#3168·#3174·#3178·#3228·#3232·#3234·#3235·#3237) — atoms stdlib consumes molscf brick verbatim"
+@X e9 := "HEX-N6 -> WORMHOLE" :: reuse-edge [tier-1 active]
+  provides  = "HEX-N6"
+  primitive = "sigma=12 anchor"
+  reused_by = "WORMHOLE Morris-Thorne throat b₀=ℓ_Pl·σ (Planck-scale lattice scaling · physics UNPROVEN ⚪)"
+  evidence  = "domains/wormhole.md Phase A"
 
-@X e17 := "stdlib/flame matmul -> QFORGE-ATOMS CC tensor contractions" :: reuse-edge [tier-1 active]
-  provides  = "stdlib/flame (native matmul)"
-  primitive = "flame matmul (4-index AO->MO transform + CC tensor contraction routing)"
-  reused_by = "QFORGE-ATOMS — CC accel (r20, 13×) · spatial-orbital CCSD (r21, 41×, cc-pVDZ CCSD live 18.6s) · spatial (T) (r22, cc-pVDZ CCSD(T) live 24s)"
-  evidence  = "hexa-lang qforge-atoms r20-r22 (#3208·#3213·#3216) — cc_accel/ccsd_rhf/ccsd_t_rhf route through flame"
+@X e10 := "HEX-N6 -> DIM-JUMP" :: reuse-edge [tier-1 active]
+  provides  = "HEX-N6"
+  primitive = "n=6 + J_2(6)=24 (Calabi-Yau / bosonic ladder anchors)"
+  reused_by = "DIM-JUMP Kaluza-Klein 4D→6D→10D→11D→24D→26D ladder (lattice arithmetic · physics UNPROVEN ⚪)"
+  evidence  = "domains/dim-jump.md Phase A"
 
-@X e18 := "materials qforge_phonons (DFPT) -> QFORGE-CHEM TS-Hessian" :: reuse-edge [tier-1 active]
-  provides  = "QFORGE materials DFPT linear-response (qforge_phonons · dfpt.hexa · dfpt_response.hexa)"
-  primitive = "Γ-point Hessian / lowest-eigenmode from DFPT linear response"
-  reused_by = "QFORGE-CHEM — TS-Hessian saddle 1-neg-eigenvalue (r3, DFPT reused at the TS coordinate, thin layer) · dimer/eigenvector-following minimum-mode following (r4)"
-  evidence  = "hexa-lang qforge-chem r3/r4 (ts_hessian.hexa · dimer.hexa) g5 32/32 + dimer PASS"
+@X e11 := "HEX-N6 -> DIM-USE" :: reuse-edge [tier-1 active]
+  provides  = "HEX-N6"
+  primitive = "tau(6)=4 + sigma·phi=24 composition"
+  reused_by = "DIM-USE τ=4 cycle + (σ-φ)²=100c composite identity (lattice arithmetic · physics UNPROVEN ⚪)"
+  evidence  = "domains/dim-use.md Phase A"
 
-@X e19 := "QFORGE SCF core + chem/md MM -> QFORGE-SYSTEM QM/MM bridge" :: reuse-edge [tier-1 active]
-  provides  = "QFORGE scf/scf_etot (QM) + stdlib/chem/md (MM: lennard_jones · bonded · ewald · pme) + assembler qforge_assemble_h (V_ext SCF hook)"
-  primitive = "E_QM(scf_etot) · E_MM(lennard_jones/bonded) · E_QM-MM electrostatic (ewald/pme) · V_ext 1-electron hook"
-  reused_by = "QFORGE-SYSTEM — QM/MM partition algebra (r1) · electrostatic embedding V_ext (r3) · link-atom H-cap reusing r3 V_ext (r4) · CG-MARTINI (r5)"
-  evidence  = "hexa-lang qforge-system round1/3/4/8 (qmmm.hexa · embed_electrostatic.hexa · link_atom.hexa · cg_martini.hexa) g5 PASS"
+@X e12 := "RTSC plasma_freq + SRR lc_resonance + Veselago carrier -> CLOAK meta" :: reuse-edge [tier-3 active]
+  provides  = "RTSC (Drude ε<0 via plasma_freq_drude PR #1943) + SRR (Lorentz μ<0 via lc_resonance/lorentz_mu_re PR #1934) + Veselago carrier (n=-√(εμ) PR #1936)"
+  primitive = "3-stage composition: ε<0 (PR #1943) · μ<0 (PR #1934) · n<0 (PR #1936)"
+  reused_by = "CLOAK Phase A ⓵⓶⓷ + Phase C verb-3 design dossier (n_eff = -√(εμ) < 0 cloak active)"
+  evidence  = "exports/cloak/verify/V4_final_tier_ledger.md §2"
 
-@X e20 := "materials DFPT el-ph coeff -> QFORGE-CHIP thermal/band feed" :: reuse-edge [tier-2 active]
-  provides  = "QFORGE materials (DFPT el-ph · SCF plane-wave H(k) · dfpt/realcell_phonon ω(q))"
-  primitive = "kinetic_diag (T(k) shared band/SCF) · DFPT ω(q,ν) phonon channels · thermal-quantum g₀ · (frontier) Callaway B_U/B_iso ab-initio coeff feed"
-  reused_by = "QFORGE-CHIP — SCF-fed band H(k) (r3, real qforge_kinetic_diag) · phonon-Landauer κ via DFPT ω(q) (r4) · absolute-κ ab-initio coeff feed (named frontier, r11 verify-adapter)"
-  evidence  = "hexa-lang qforge-chip r3/r4 (band_scf.hexa · phonon_kappa.hexa) g5 PASS · r11 verify-adapter names the B_U/B_iso DFPT feed frontier"
+@X e13 := "stdlib/math exp + boltzmann_absorption_floor -> CLOAK" :: reuse-edge [tier-2 active]
+  provides  = "stdlib/math (PR #1949)"
+  primitive = "exp_neg_one + boltzmann_absorption_floor (1 - 1/e = 0.6321205588285577)"
+  reused_by = "CLOAK Phase A ⓹ Boltzmann transmission floor (Lambert-Beer 1-1/e absorption per MFP)"
+  evidence  = "PR #1949 (hexa-lang) + exports/cloak/verify/V4 §3.5"
+
+@X e14 := "CLOAK veselago_n_eff -> UFO Stage-cloak" :: reuse-edge [tier-2 active]
+  provides  = "CLOAK (Phase A ⓷ + carrier composition)"
+  primitive = "veselago_n_eff(eps_re, mu_re) — sign-aware n=±√(εμ) cloak switch"
+  reused_by = "UFO Stage-cloak — EM 가시성 차단 (RCS 10⁻⁶ m² target · Mk.II)"
+  evidence  = "UFO Phase B HEXA-CLOAK 흡수 + PR #1936"
+
+@X e15 := "RTSC mining lens machinery -> NUCLEAR 298-120 campaign" :: reuse-edge [tier-1 active]
+  provides  = "RTSC (mining lens · ouroboros lens · 5D survival map · edge graph · combinatorial lens · island_weight rank)"
+  primitive = "mining lens machinery (same-formula · ouroboros · dimensional · tension · combinatorial) + 5D map template + edge graph aggregation"
+  reused_by = "NUCLEAR 298-120 — transmutation campaign (cross-domain edge first node via combinatorial lens + island_weight rank)"
+  evidence  = "domains/rtsc.mining.md cycle 17 E40 + NUCLEAR cross-domain edge documented"
 
 # ── 2. provides[] registry (per-domain offered primitives · atlas fn) ──
 
@@ -134,28 +144,51 @@
   primitives = "ufo_isp_fuel_ratio · ufo_rocket_beta · ufo_gl_derating · ufo_mli_shield (R1 실물리) · ufo_lattice_sigma_pow · ufo_warp_composite · ufo_lattice_master (R2 n6-lattice formal · 물리 ⚪-fenced)"
   note       = "folded to hexa-lang atlas (@F verified-ufo_*-num · substrate hub g68) — recompute-resolvable · PR #1222 (R1) #1244 (R2)"
 
-@X p7 := "NUCLEAR provides" :: provides [active]
-  domain     = "NUCLEAR"
-  primitives = "n11_island_cell_checked (install-FREE (c)-gate: NC1 Viola-Seaborg · NC2 Royer · C1 α⊕SF total · C2 island_weight 2-D Gaussian) · sf_consensus (C3 Ren-Xu/Hoffman · C4 Zdeb-Warda-Pomorski) · n11_alpha_cell (VS+Royer consensus)"
-  note       = "stdlib/nuclear/sim.hexa (@D d3 home) · α-kernels 🟢 SUPPORTED-NUMERICAL (hexa-lang #960) · anchor smoke 4/4 (test/nuclear_r4_anchor_smoke.hexa) · absorbed=false 영구 (R4)"
+@X p7 := "HEX-N6 provides" :: provides [active]
+  domain     = "HEX-N6 (n=6 lattice substrate primitive)"
+  primitives = "sigma · sigma_2 · tau · phi · mu · sopfr · is_perfect · aliquot · omega_big · liouville · jordan_totient at n=6 (10/11 🔵 LANDED · J_2 calc gap closing via separate PR)"
+  note       = "all atoms 🔵 SUPPORTED-FORMAL via hexa verify --expr mini · atlas idempotent skip @D g69 · OEIS A000203/A000005/A000010/A001414/A002819 family"
 
-@X p8 := "QFORGE-MOLSCF provides (universal-axis SCF core)" :: provides [active]
-  domain     = "QFORGE-MOLSCF (molecular ab-initio SCF front-end · stdlib/qforge/molscf)"
-  primitives = "gaussian_integrals (S) · coulomb_integrals (ERI+V) · md_integrals/md_shell (s/p/d/f McMurchie-Davidson) · rhf · uhf (DIIS) · rohf (spin-pure) · scf_robust (Fermi smearing+GWH) · casci · fci (general N-e) · casscf · nevpt2 / nevpt2_srsi (full 8-class SC-NEVPT2)"
-  note       = "method-complete (single-ref RHF/UHF/ROHF/robust-SCF + multiref static CASCI/CASSCF + dynamic 8-class SC-NEVPT2) · PySCF 2.13.1-anchored · the d19 core reused by atoms/chem/system (e16/e18/e19)"
+@X p8 := "SRR provides" :: provides [active]
+  domain     = "SRR (Split-Ring Resonator primitive)"
+  primitives = "lc_resonance(L,C) · srr_filling_factor(r,a) · lorentz_mu_re(F,w,w0,gamma)"
+  note       = "PR #1934 · 7/7 self-test PASS · mu<0 branch supplier for Veselago composition (CLOAK 부품 2)"
 
-@X p9 := "QFORGE-ATOMS provides (single-reference gold standard)" :: provides [active]
-  domain     = "QFORGE-ATOMS (molecular wavefunction methods · stdlib/qforge/atoms)"
-  primitives = "GFN-xTB stack (eeq/d4_disp/eht_scc/lowdin/harris_foulkes) · real_overlap · rhf_force(_gen/_pd) (fully-analytic s/p/d) · geom_opt (BFGS) · mp2/ccsd/ccsd_t (Crawford-anchored) · ccsd_rhf/ccsd_t_rhf (flame-accel) · ump2/uccsd/uccsd_t · rohf_ccsd_t (spin-pure) · CBS extrapolation"
-  note       = "single-reference method lattice COMPLETE (both shells, gold-standard, CBS) · consumes MOLSCF core (e16) + flame matmul (e17)"
+@X p9 := "CLOAK provides" :: provides [active]
+  domain     = "CLOAK (meta-carrier · n_eff=-√(εμ)<0)"
+  primitives = "veselago_n_eff (sign-aware) + composition of {RTSC plasma_freq_drude · SRR lc_resonance/lorentz_mu_re · HEX-N6 lattice · stdlib/math exp_neg_one}"
+  note       = "Phase A 6/6 + Phase B 4/4 + Phase C 7/7 LANDED · absorbed=true V4 §6.1 · 5-기하 ↔ HEX-N6 5-atom 1:1 lock-in 발견 candidate"
 
 # ── 3. candidate edges (conceptual · no code reuse yet) ──
 
 @X c1 := "CERN accelerator <-> ANTIMATTER deceleration/generation" :: reuse-candidate [proposed draft]
   note = "shared relativistic kinematics + deceleration ladder — unverified"
 
-@X c2 := "NUCLEAR <-> RTSC+NUCLEAR" :: reuse-candidate [promoted active]
-  note = "meta-domain (+) composition — PROMOTED to verified finding edge e7 (NUCLEAR N12 island funnel -> RTSC+NUCLEAR §F4 parallel lane). Composition stays PARALLEL: meta bridge §6.1 honest-rejects 초중핵→RTSC-bulk supply (벽=생산량)."
+@X c2 := "NUCLEAR <-> RTSC+NUCLEAR" :: reuse-candidate [proposed draft]
+  note = "meta-domain (+) composition"
+
+@X c3 := "WARP + WORMHOLE <-> ANTIMATTER exotic E_neg" :: reuse-candidate [proposed draft]
+  note = "WARP/WORMHOLE both need exotic matter / WEC-NEC violation source; ANTIMATTER as candidate negative-energy substrate (unverified · physics UNPROVEN ⚪)"
+
+@X c4 := "DIM-JUMP <-> CERN LHC" :: reuse-candidate [proposed draft]
+  note = "DIM-JUMP compactification radius bounded by LHC 1e-19 m (실측 anchor); CERN domain supplies experimental ceiling for F-DIM-1 falsifier"
+
+@X c5 := "DIM-USE <-> DIM-JUMP" :: reuse-candidate [proposed draft]
+  note = "DIM-USE τ=4 cycle requires DIM-JUMP precondition (must enter the extra dimension first before navigating); sequential dependency UFO Stage-6 → Stage-7"
+
+@X c6 := "RTSC <-> RADGUARD" :: reuse-candidate [proposed draft]
+  note  = "방사성 초수소화물(ThH10/AcH10) 후보 → RADGUARD 3축(제어/제거/결박) 안전성 참조"
+  scope = "intra-project (g67); conceptual edge, no code reuse yet"
+
+@X c7 := "QFORGE el-ph engine -> RTSC (canonical compute engine)" :: reuse-edge [tier-1 active]
+  note  = "QFORGE(hexa-native SCF·DFPT·λ·Tc, stdlib/qforge) = RTSC 캠페인 계산엔진. QE = cross-val reference."
+  gate  = "GATE A PASS (L0 Tc ↔ QE 12/12, rel-ε≤2.5e-3, PR#2362) + GATE L3 PASS (α²F assembler ↔ QE el-ph, YH10 4×4×4-q .elph verbatim, λ rel-ε=9.76e-5≪1%, hexa-lang PR#2380). FULL MIGRATION GATE CLOSED — QFORGE α²F 어셈블러 QE-validated."
+  scope = "intra-project (g67); engine dependency RTSC←QFORGE (QFORGE.md SSOT). L0 Tc + L3 α²F layer 검증완료 (full migration green) → verified-edge 승격."
+
+@X c8 := "PWFORGE plane-wave H assembler -> QFORGE (cell->H_of_rho front-end)" :: reuse-candidate [tier-2 active]
+  note  = "PWFORGE(평면파 해밀토니안 조립기 · domains/PWFORGE.md) = QFORGE SCF 가 소비하는 H_of_rho 입구. S(G)·V_loc->V_ext·kinetic·KB-projector -> H_of_rho closure."
+  gate  = "front-end LIVE + engine-chain blocker B CLOSED — M1~M5 landed+g5-green (PR#2407~#2411). 2026-06-01: M6 PP-input blocker CLOSED (ONCV NC Ca+H d13-검증 + CaH6_NC deck emit). **M5.5+M5.6+PR3 landed+g5-green (hexa-lang PR#2412·#2413·#2414)**: 실 self-consistent ρ-loop(scf_pw.hexa, V_H+V_xc 매-iter 갱신) + Sternheimer→|g|² atoms-경로(elph_scf.hexa, Hellmann-Feynman frozen-phonon FD 독립검증) + atoms→Tc in-repo orchestrator(orchestrator_pw.hexa). **독립 atoms→|g|² 경로 LIVE** — QE dvscf 모멘트 경계 미사용. cell→H assembly + atoms→Tc chain 둘 다 CLOSED. **잔존 blocker A 만**: compute-dispatch(hexa cloud cloud_cli mac cache-GC race + 풀-다운, d8 patch, 별도 에이전트) → QE-NC ref → CaH6 NC-vs-NC cross-val. M6 미종결(A 대기) · gate HELD on #2+M6(A). M6 g5 통과 시 reuse-edge 승격."
+  scope = "intra-project (g67); QFORGE migration blocker #1 의 cell->H front-end 절반. d4 generic dispatch (H_of_rho = caller closure) · d6 no forced number. stdlib/qforge SSOT (d3)."
 
 # ── 4. usage protocol (atlas-first · @D g67 / d19) ──
 
@@ -172,15 +205,16 @@
   ANTIMATTER --ioffe_loop_bz · pair_threshold · rel_kinetic--> UFO (Stage-1 hover · Stage-3 γ-rocket)
   FUSION --triple_product (J·B·V)----------------> UFO (Stage-2 MHD cruise)
   UFO --provides (7 atom)--> hexa-lang atlas (isp/beta/gl/mli · lattice σ^k/(σ−φ)²/σ·φ)
-  NUCLEAR --n11_island_cell_checked (N12: 298-120=0.545 top)--> RTSC+NUCLEAR §F4 (PARALLEL lane · NOT supply merge · §6.1 honest-reject)
 
-  QFORGE — one engine, six scales (d19 multi-scale reuse lattice):
-  QFORGE-MOLSCF (molecular SCF core: S · ERI+V · rhf · md_shell · uhf · rohf · casci/casscf/nevpt2)
-          --gaussian_integrals/coulomb_integrals/rhf/md_shell/uhf/rohf--> QFORGE-ATOMS (e16)
-  stdlib/flame matmul --CC tensor contractions (13-41×)-----------------> QFORGE-ATOMS (e17)
-  materials DFPT (qforge_phonons) --Γ-Hessian / lowest-eigenmode--------> QFORGE-CHEM TS-Hessian/dimer (e18)
-  QFORGE scf_etot + chem/md (LJ·bonded·ewald·pme) --QM/MM partition-----> QFORGE-SYSTEM bridge (e19)
-  materials DFPT ω(q) + kinetic_diag --band H(k) · phonon-Landauer κ----> QFORGE-CHIP (e20)
+  HEX-N6 (n=6 lattice substrate · 10/11 🔵)
+          --sigma/tau/phi/sopfr/mu/J₂/...--+--> CLOAK (Phase A ⓸⓺ + Phase B 5-기하 1:1 lock-in)
+                                            +--> WARP (Alcubierre δ=1/σ R=n)
+                                            +--> WORMHOLE (Morris-Thorne b₀=ℓ_Pl·σ)
+                                            +--> DIM-JUMP (KK 4D→26D ladder)
+                                            +--> DIM-USE (τ-cycle + (σ-φ)²=100c)
+  RTSC plasma_freq + SRR lc_resonance + Veselago --3-stage compose--> CLOAK (n_eff=-√(εμ)<0)
+  stdlib/math exp_neg_one (PR #1949) -----------> CLOAK Phase A ⓹ (1-1/e=0.6321)
+  CLOAK veselago_n_eff --------------------------> UFO Stage-cloak (RCS 10⁻⁶ m²)
   GRAPH
 
 # ── 5. cross-repo bidirectional peers (g68) — declared 2026-05-28 ──
@@ -208,12 +242,24 @@
 @N n3 := "cross-repo scope policy (g68)" :: note [active]
   rule = "ONLY 4 declared bidirectional peers (hexa-lang, anima, phanes, echoes). other cross-repo consumers are unidirectional and live at the source repo's NEXUS.tape."
   ssot = "hexa-lang NEXUS.tape n2.scope_rule — hub records hub<->peer only; peer-mesh is peer-side."
+
+# AGA-CURE ← AGA-RX (intra-project reuse, 2026-06-03 domain split)
+@reuse AGA-CURE reused[AGA-RX]   := "WAY-316606/SFRP1 · Dkk1-LRP6 3S2K · PATH-C LDHA/senolytic · VIROCAPSID AAV-antiDKK1 · RIBOZYME siRNA · WEAVE/NANOBOT delivery · follicular-PK"
+@reuse AGA-RX    provides[AGA-CURE] := "non-AR Wnt-restore drug stack + 5-axis modality → cure arms ①되돌리기 ②깨우기 ③영구잠금"
+
 @reuse SENOLYX reused[CURE-PRIMITIVE]
   provides = "η_neo-lift (niche senescent clearance) to AGA-CURE · periodontal · OA-cartilage · retinal"
   edge = "CURE-PRIMITIVE identified the universal η_neo bottleneck → SENOLYX is the cross-cutting drug that lifts it"
+
 @reuse OA-CURE reused[CURE-PRIMITIVE,SENOLYX]
   edge = "chondral neogenesis bottleneck → SENOLYX η_neo-lift (clearance ≥78%)"
 @reuse RETINA-CURE reused[CURE-PRIMITIVE,SENOLYX]
   edge = "photoreceptor neogenesis bottleneck → SENOLYX η_neo-lift (clearance ≥72%); UBX1325 retina-validated"
+
 @reuse IVD-CURE reused[CURE-PRIMITIVE,SENOLYX]
   edge = "FIRST BOUNDARY case — senolytic necessary-but-not-sufficient; needs 3-agent (senolytic+cells+endplate-nutrition), closes only marginally (0.91 @95% clearance)"
+
+@X c9 := "QFORGE bio-FEP engine -> {SENOLYX·AGA-CURE·IVD-CURE·OA-CURE·PERIO-CURE·RETINA-CURE} (planned compute engine)" :: reuse-edge [tier-2 candidate active]
+  note  = "QFORGE universal multi-scale 확장(2026-06-07): bio scale = native MD/FEP(ABFE·RBFE·HREX·MBAR) + QM-derived FF. 4 CURE 도메인 + SENOLYX의 docking/FEP/ΔΔG 계산엔진이 QFORGE-native로 흡수 예정. materials c7(QFORGE->RTSC) 패턴 복제."
+  gate  = "PENDING — bio scale 미구현. M-B1(native MD) -> M-B2/B3(FEP) 핵심경로. 게이트: QFORGE FEP ΔΔG vs openmm/openfe + 실험 ΔΔG(redox-matched) g5-agree시 verified-edge 승격. SENOLYX R12(17-AAG<->17-AG)가 첫 cross-val 앵커."
+  scope = "intra-project(g67). 동기: bio 외부의존 3대 실패모드 실증(B1 FF 2.2x over-spread · B3 openfe 무한대기 · B4 vast CUDA-PTX 소멸; QFORGE.log.md 2026-06-07). QFORGE-native가 materials에서 QE 걷어낸 것과 동형으로 제거."

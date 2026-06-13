@@ -133,7 +133,7 @@ demiurge cli list-domains  →  Domains (21):
 
 ```
 gate: PR #658 mergedAt != null  AND  hexa-lang main rebuild includes 5 new fns
-trigger: V2 agent fan-out  →  /Users/ghost/core/demiurge/NOREFLOW/verify/V2_formal_identities.md
+trigger: V2 agent fan-out  →  /Users/mini/dancinlab/demiurge/NOREFLOW/verify/V2_formal_identities.md
 action:  per-row  →  hexa verify --expr <fn> <n> <v>  →  verbatim verdict block paste
 follow: atlas register --from-verify <fn> <n> <v> --auto-pr   (per @D g_atlas_binary_builtin)
 ```

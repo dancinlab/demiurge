@@ -1,0 +1,64 @@
+&control
+  ! SrB3C3 - Pm-3n (#223) boron-carbon sodalite clathrate, 14-atom cubic
+  !   cell (2 Sr + 6 B + 6 C). MgB2-like sigma-bonded covalent SC, NO hydrogen.
+  ! AMBIENT-stability gate: vc-relax @ press=0.0 kbar -> ph -> no imaginary modes.
+  ! nosym GUARD: ordered B/C decoration lowers symmetry below the Pm-3n parent.
+  calculation = 'vc-relax'
+  prefix = 'srb3c3_amb'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  etot_conv_thr = 1.0d-6
+  nstep = 200
+  verbosity = 'low'
+/
+&system
+  ibrav = 1
+  celldm(1) = 8.957
+  nat = 14
+  ntyp = 3
+  ecutwfc = 70.0
+  ecutrho = 560.0
+  nosym = .true.
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.3
+  electron_maxstep = 400
+/
+&ions
+  ion_dynamics = 'bfgs'
+/
+&cell
+  cell_dynamics = 'bfgs'
+  press = 0.0
+  press_conv_thr = 0.5
+  cell_dofree = 'all'
+/
+
+ATOMIC_SPECIES
+  Sr 87.62 Sr.pbe-spn-rrkjus_psl.1.0.0.UPF
+  B  10.811  B.pbe-n-rrkjus_psl.1.0.0.UPF
+  C  12.011  C.pbe-n-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Sr 0.0000000  0.0000000  0.0000000
+  Sr 0.5000000  0.5000000  0.5000000
+  B  0.2500000  0.0000000  0.5000000
+  B  0.7500000  0.0000000  0.5000000
+  B  0.0000000  0.5000000  0.2500000
+  B  0.0000000  0.5000000  0.7500000
+  B  0.5000000  0.2500000  0.0000000
+  B  0.5000000  0.7500000  0.0000000
+  C  0.2500000  0.5000000  0.0000000
+  C  0.7500000  0.5000000  0.0000000
+  C  0.0000000  0.2500000  0.5000000
+  C  0.0000000  0.7500000  0.5000000
+  C  0.5000000  0.0000000  0.2500000
+  C  0.5000000  0.0000000  0.7500000
+K_POINTS automatic
+  8 8 8 0 0 0

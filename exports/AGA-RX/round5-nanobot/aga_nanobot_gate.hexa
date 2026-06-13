@@ -1,0 +1,527 @@
+#!hexa strict
+//
+// AGA-RX · NANOBOT axis (round-5) — pH/enzyme-GATED release switch sim
+//
+// Builds the DPC-microenvironment GATE on top of the INHERITED (d19) hexa-bio
+// nanobot actuation core (`hexa-bio-archive/nanobot/module/actuation_simulation.hexa`,
+// F-NB-4 4-state 12-vertex DNA-origami actuator, σ(6)=12). The inherited core's
+// 4-state Gillespie CTMC + overdamped Langevin SDE + octahedral pose
+// canonicalization is PORTED VERBATIM here (only the local `isfinite` fn is
+// renamed `hx_isfinite` — it collided with the C-backend `isfinite` macro under
+// AOT clang; a hexa-lang transpiler bug, flagged to the inbox, d8). The model is
+// unchanged; this is a name-only port fix.
+//
+// NEW round-5 design layer (this file ADDS, on top of the inherited core):
+//   * gate_open_prob(pH, enzyme)  — Hill-function latch open-probability keyed to
+//     the DPC follicle microenvironment (pH 5->7 gradient + protease/esterase).
+//   * The latch GATES the actuator: the forward-stroke (cargo-door open) rate is
+//     scaled by gate_open_prob, so payload is HELD in transit (acidic, low-enzyme
+//     skin surface / infundibulum) and RELEASED at the DPC bulb (neutral pH +
+//     follicular protease/esterase). This is the manifest of the FORMULATION.md
+//     "pH- or enzyme-gated release at the DPC".
+//   * release_kinetics()  — couples the gated actuation fraction to the AGA-RX
+//     follicular PK (t_lag, C(z)=C_surf*exp(-z/lambda) from round3-admet-pk),
+//     giving gated-vs-ungated DPC retention.
+//
+// hexa stdlib only (R5 raw-9). Run: hexa run aga_nanobot_gate.hexa
+//
+
+// ---------------------------------------------------------------------------
+// n6 invariant constants (inherited)
+// ---------------------------------------------------------------------------
+let SIGMA_6 = 12
+let TAU_6 = 4
+let PHI_6 = 2
+let J2 = 24
+
+// ---------------------------------------------------------------------------
+// Physical constants (SI) (inherited)
+// ---------------------------------------------------------------------------
+let KB_J = 1.380649e-23
+let T_DEFAULT = 310.0
+let ETA_WATER_310K_DEFAULT = 6.93e-4
+let R_ACTUATOR_M = 5.0e-9
+
+// Energy ladder (kT-units) (inherited)
+let DE_S0_S1_KT = 1.0
+let DE_S1_S3_KT = 0.5
+let DE_S3_S0_KT = 0.2
+let DE_S2_S3_KT = 0.5
+let DE_S0_S2_KT = 3.1780538303479458
+
+let OMEGA_ATTEMPT = 1.0e6
+let DT_CYCLE_S = 1.0e-3
+let STROKE_M = 4.0e-9
+let PI_CONST = 3.141592653589793
+
+let S0_IDLE = 0
+let S1_FWD = 1
+let S2_BACK = 2
+let S3_RESET = 3
+
+// ---------------------------------------------------------------------------
+// NEW — DPC microenvironment GATE constants
+// ---------------------------------------------------------------------------
+// Skin-surface / infundibulum (transit) vs DPC-bulb (target) microenvironment.
+// pH: skin surface ~4.5-5.5 (acid mantle), dermal-papilla/bulb ~7.0-7.4 (dermal).
+//   => the pH 5 -> 7 gradient is the primary trigger axis.
+// Enzyme: follicular sheath / DPC region carries esterase + protease activity
+//   (sebaceous/follicular esterases, cathepsin-class proteases); transit
+//   compartments are comparatively low. Normalized stimulus E in [0,1].
+let PH_TRANSIT = 5.0          // acid mantle / infundibulum (CLOSED env)
+let PH_DPC = 7.2              // dermal papilla bulb (OPEN env)
+// Real pH-responsive DNA/peptide latches (i-motif, histidine-clasp, pH-low-
+// insertion-peptide) switch sharply over <1 pH unit. Midpoint set at pH 6.5
+// (just above the transit acid-mantle band, below the dermal target) with a
+// steep cooperativity so the switch is essentially shut at pH 5 and open at 7.2.
+// Modeled as a Hill in proton concentration H=10^-pH (the physical trigger),
+// NOT in pH directly — protonation is set by [H+], giving a true sigmoid that
+// reaches ~0 at acidic pH.
+let PH_MIDPOINT = 6.5         // latch half-open pH (i-motif/His-clasp band)
+let PH_HILL_N = 4.0           // latch cooperativity (steep, multi-protonation)
+let ENZ_TRANSIT = 0.10        // normalized esterase/protease activity in transit
+let ENZ_DPC = 0.90            // normalized activity at the DPC follicular sheath
+let ENZ_K50 = 0.55            // enzyme half-cleavage activity (above transit band)
+let ENZ_HILL_N = 4.0          // enzyme-cleavage cooperativity (multi-cut latch)
+// Gate logic: latch opens if (pH switch) OR (enzyme cleaves) — an OR seam keeps
+// the design robust (either DPC cue suffices). Combined open-prob below.
+
+// ---------------------------------------------------------------------------
+// Math helpers (inherited; isfinite -> hx_isfinite for C-backend collision)
+// ---------------------------------------------------------------------------
+fn fabs(x: float) -> float { if x < 0.0 { return 0.0 - x } return x }
+fn fmax(a: float, b: float) -> float { if a > b { return a } return b }
+fn fmin(a: float, b: float) -> float { if a < b { return a } return b }
+
+fn hx_isfinite(v: float) -> bool {
+    if v != v { return false }
+    if v > 1.0e308 { return false }
+    if v < 0.0 - 1.0e308 { return false }
+    return true
+}
+
+fn stokes_drag(r_m: float, eta: float) -> float {
+    return 6.0 * PI_CONST * eta * r_m
+}
+
+fn pow_f(base: float, n: float) -> float {
+    // x^n = exp(n*ln x), x>0
+    if base <= 0.0 { return 0.0 }
+    return exp(n * log(base))
+}
+
+// ---------------------------------------------------------------------------
+// In-tree LCG PRNG (inherited verbatim)
+// ---------------------------------------------------------------------------
+fn rng_new(seed: int) {
+    let mut s = seed
+    if s < 0 { s = 0 - s }
+    if s == 0 { s = 42 }
+    let r = []
+    r.push(s); r.push(0.0); r.push(0)
+    return r
+}
+fn rng_next_u32(rng) -> int {
+    let s = rng[0]
+    let next = (s * 1103515245 + 12345) % 2147483648
+    rng[0] = next
+    return next
+}
+fn rng_uniform(rng) -> float {
+    let n = rng_next_u32(rng)
+    return to_float(n) / 2147483648.0
+}
+fn rng_uniform_open(rng) -> float {
+    let mut u = rng_uniform(rng)
+    if u <= 0.0 { u = 1.0e-12 }
+    if u >= 1.0 { u = 1.0 - 1.0e-12 }
+    return u
+}
+fn rng_gauss(rng) -> float {
+    if rng[2] == 1 { rng[2] = 0; return rng[1] }
+    let u1 = rng_uniform_open(rng)
+    let u2 = rng_uniform_open(rng)
+    let mag = sqrt(0.0 - 2.0 * log(u1))
+    let g0 = mag * cos(2.0 * PI_CONST * u2)
+    let g1 = mag * sin(2.0 * PI_CONST * u2)
+    rng[1] = g1; rng[2] = 1
+    return g0
+}
+
+// ---------------------------------------------------------------------------
+// Skeleton geometry: 12-vertex icosahedron (inherited; σ(6)=12)
+// ---------------------------------------------------------------------------
+fn icosahedron_12vertex() {
+    let phi_v = (1.0 + sqrt(5.0)) / 2.0
+    let raw = []
+    let mut s1i = 0
+    while s1i < 2 {
+        let mut s1 = 1.0
+        if s1i == 0 { s1 = 0.0 - 1.0 }
+        let mut s2i = 0
+        while s2i < 2 {
+            let mut s2 = 1.0
+            if s2i == 0 { s2 = 0.0 - 1.0 }
+            raw.push([0.0, s1 * 1.0, s2 * phi_v])
+            raw.push([s1 * 1.0, s2 * phi_v, 0.0])
+            raw.push([s2 * phi_v, 0.0, s1 * 1.0])
+            s2i = s2i + 1
+        }
+        s1i = s1i + 1
+    }
+    let nrm = sqrt(1.0 + phi_v * phi_v)
+    let out = []
+    let mut i = 0
+    while i < len(raw) {
+        let v = raw[i]
+        out.push([v[0] / nrm, v[1] / nrm, v[2] / nrm])
+        i = i + 1
+    }
+    return out
+}
+
+// ---------------------------------------------------------------------------
+// NEW — DPC microenvironment gate open-probability
+// ---------------------------------------------------------------------------
+// pH switch: Hill in proton-vs-target; opens as pH rises 5 -> 7 (deprotonation
+// of a pH-responsive latch, e.g. a histidine-rich / imidazole staple or an
+// acid-labile-INVERSE design). Modeled as sigmoid on pH around PH_MIDPOINT.
+fn ph_open_prob(pH: float) -> float {
+    // Hill in PROTON concentration H = 10^-pH (the physical protonation trigger).
+    // Latch is HELD by protons (acidic = closed); opens as [H+] falls.
+    //   p_open = Kn / (Kn + H^n),  K = 10^-mid,  n = cooperativity.
+    // This is a true sigmoid in pH: ~0 at acidic transit pH, ~1 at neutral target.
+    let H = pow_f(10.0, 0.0 - pH)
+    let K = pow_f(10.0, 0.0 - PH_MIDPOINT)
+    let Hn = pow_f(H, PH_HILL_N)
+    let Kn = pow_f(K, PH_HILL_N)
+    return Kn / (Kn + Hn)
+}
+// enzyme cleavage: Hill in normalized esterase/protease activity E in [0,1].
+// A protease/esterase-cleavable strut (e.g. ester linker / peptide latch) is
+// cut once activity exceeds ENZ_K50.
+fn enzyme_cleave_prob(E: float) -> float {
+    let a = pow_f(E, ENZ_HILL_N)
+    let b = pow_f(ENZ_K50, ENZ_HILL_N)
+    return a / (a + b)
+}
+// Combined latch open-probability — OR seam: open if pH-switch OR enzyme-cleave.
+// p_open = 1 - (1-p_pH)*(1-p_enz)
+fn gate_open_prob(pH: float, E: float) -> float {
+    let p_ph = ph_open_prob(pH)
+    let p_enz = enzyme_cleave_prob(E)
+    return 1.0 - (1.0 - p_ph) * (1.0 - p_enz)
+}
+
+// ---------------------------------------------------------------------------
+// Markov 4-state Gillespie rate matrix (inherited) — NOW gate-modulated.
+// The forward (cargo-door OPEN) stroke S0->S1 is scaled by gate_open: when the
+// latch is shut (transit), the productive open-stroke is suppressed; the
+// back/idle channels are unchanged so cargo stays held.
+// ---------------------------------------------------------------------------
+fn build_rate_matrix(omega: float, gate_open: float) {
+    let Q = []
+    let mut qi = 0
+    while qi < 4 {
+        let r = []
+        r.push(0.0); r.push(0.0); r.push(0.0); r.push(0.0)
+        Q.push(r)
+        qi = qi + 1
+    }
+    // gate scales the S0->S1 productive (door-open) attempt frequency.
+    let g = fmax(1.0e-6, gate_open)
+    let k01 = omega * g * exp(0.0 - DE_S0_S1_KT)
+    let k13 = omega * exp(0.0 - DE_S1_S3_KT)
+    let k02 = omega * exp(0.0 - DE_S0_S2_KT)
+    let k23 = omega * exp(0.0 - DE_S2_S3_KT)
+    let k30 = omega * exp(0.0 - DE_S3_S0_KT)
+    let rev = exp(0.0 - 2.0)
+    Q[S0_IDLE][S1_FWD] = k01
+    Q[S1_FWD][S3_RESET] = k13
+    Q[S0_IDLE][S2_BACK] = k02
+    Q[S2_BACK][S3_RESET] = k23
+    Q[S3_RESET][S0_IDLE] = k30
+    Q[S1_FWD][S0_IDLE] = k01 * rev
+    Q[S2_BACK][S0_IDLE] = k02 * rev
+    Q[S3_RESET][S1_FWD] = k13 * rev
+    Q[S3_RESET][S2_BACK] = k23 * rev
+    Q[S0_IDLE][S3_RESET] = k30 * rev
+    let mut i = 0
+    while i < 4 {
+        let mut s = 0.0
+        let mut j = 0
+        while j < 4 {
+            if j != i { s = s + Q[i][j] }
+            j = j + 1
+        }
+        Q[i][i] = 0.0 - s
+        i = i + 1
+    }
+    return Q
+}
+
+fn gillespie_step(state: int, Q, rng) {
+    let mut total = 0.0
+    let mut j = 0
+    while j < 4 {
+        if j != state {
+            let r = Q[state][j]
+            if r > 0.0 { total = total + r }
+        }
+        j = j + 1
+    }
+    if total <= 0.0 { return [state, 1.0e6] }
+    let u1 = rng_uniform_open(rng)
+    let dwell = 0.0 - log(u1) / total
+    let u2 = rng_uniform(rng) * total
+    let mut cum = 0.0
+    let mut k = 0
+    let mut last_j = state
+    while k < 4 {
+        if k != state {
+            let r = Q[state][k]
+            if r > 0.0 {
+                cum = cum + r
+                last_j = k
+                if u2 <= cum { return [k, dwell] }
+            }
+        }
+        k = k + 1
+    }
+    return [last_j, dwell]
+}
+
+// ---------------------------------------------------------------------------
+// Langevin overdamped pose update (inherited)
+// ---------------------------------------------------------------------------
+fn state_force_N(state: int, kT_J: float) -> float {
+    let W_target = 50.0 * kT_J
+    let F_fwd = W_target / STROKE_M
+    if state == S1_FWD { return F_fwd }
+    if state == S2_BACK { return 0.0 - F_fwd }
+    return 0.0
+}
+fn langevin_step(x_m: float, force_N: float, dt_s: float, kT_J: float, gamma: float, rng) -> float {
+    let drift = (force_N / gamma) * dt_s
+    let var_term = 2.0 * kT_J * dt_s / gamma
+    let mut sigma = 0.0
+    if var_term > 0.0 { sigma = sqrt(var_term) }
+    let xi = rng_gauss(rng)
+    return x_m + drift + sigma * xi
+}
+
+// ---------------------------------------------------------------------------
+// Gated actuation runner — returns actuation fraction at a given (pH, enzyme).
+// actuation_fraction = productive (door-open) cycles / resolved cycles. This is
+// the fraction of the cargo that the latch lets out under the given env.
+// ---------------------------------------------------------------------------
+fn run_gated_actuation(n_cycles: int, T_kelvin: float, seed: int, pH: float, E: float) {
+    let rng = rng_new(seed)
+    let gate_open = gate_open_prob(pH, E)
+    let vertices = icosahedron_12vertex()
+    let sigma_ok = len(vertices) == SIGMA_6
+    let kT_J = KB_J * T_kelvin
+    let gamma = stokes_drag(R_ACTUATOR_M, ETA_WATER_310K_DEFAULT)
+    let Q = build_rate_matrix(OMEGA_ATTEMPT, gate_open)
+    let tau_ok = len(Q) == TAU_6
+
+    let mut state = S0_IDLE
+    let mut pose_x_m = 0.0
+    let mut cycle_count = 0
+    let mut productive_cycles = 0
+    let mut backslip_cycles = 0
+    let mut cycle_via_S1 = false
+    let mut cycle_via_S2 = false
+    let mut finite_ok = true
+
+    let mut c = 0
+    while c < n_cycles {
+        let step_res = gillespie_step(state, Q, rng)
+        let next_state = step_res[0]
+        let dwell_s = step_res[1]
+        let mut dwell_capped = dwell_s
+        if dwell_capped > DT_CYCLE_S { dwell_capped = DT_CYCLE_S }
+        let F_state = state_force_N(state, kT_J)
+        pose_x_m = langevin_step(pose_x_m, F_state, dwell_capped, kT_J, gamma, rng)
+        if !hx_isfinite(pose_x_m) { finite_ok = false }
+
+        if next_state == S1_FWD && state == S0_IDLE {
+            cycle_via_S1 = true; cycle_via_S2 = false
+        } else if next_state == S2_BACK && state == S0_IDLE {
+            cycle_via_S2 = true; cycle_via_S1 = false
+        } else if next_state == S0_IDLE && state == S3_RESET {
+            if cycle_via_S1 { productive_cycles = productive_cycles + 1 }
+            else if cycle_via_S2 { backslip_cycles = backslip_cycles + 1 }
+            cycle_via_S1 = false; cycle_via_S2 = false
+            cycle_count = cycle_count + 1
+        }
+        state = next_state
+        c = c + 1
+    }
+
+    let mut act_frac = 0.0
+    let total_resolved = productive_cycles + backslip_cycles
+    if total_resolved > 0 {
+        act_frac = to_float(productive_cycles) / to_float(total_resolved)
+    }
+
+    let r = {}
+    r["pH"] = pH
+    r["enzyme"] = E
+    r["gate_open_prob"] = gate_open
+    r["n_cycles"] = cycle_count
+    r["productive_cycles"] = productive_cycles
+    r["backslip_cycles"] = backslip_cycles
+    r["actuation_fraction"] = act_frac
+    r["sigma_ok"] = sigma_ok
+    r["tau_ok"] = tau_ok
+    r["finite_ok"] = finite_ok
+    return r
+}
+
+// ---------------------------------------------------------------------------
+// NEW — release kinetics coupled to AGA-RX follicular PK (round3-admet-pk)
+// C(z) = C_surf * exp(-z/lambda).
+// ---------------------------------------------------------------------------
+fn pk_depth_fraction(z_mm: float, lambda_mm: float) -> float {
+    return exp(0.0 - z_mm / lambda_mm)
+}
+
+fn main() {
+    let n_cycles = 10000
+    let seed = 42
+    let T = T_DEFAULT
+
+    println("=== AGA-RX NANOBOT pH/enzyme-GATED release sim ===")
+    println("inherited core: hexa-bio nanobot 4-state CTMC + Langevin (sigma6=12), gate-modulated")
+    println("")
+
+    // --- gate open-probability scan across the pH 5->7 gradient ---
+    println("[1] Gate open-probability across DPC microenvironment cues")
+    println("  pH      p_pH     E       p_enz    p_open(OR)")
+    let ph_grid = [5.0, 5.5, 6.0, 6.2, 6.5, 7.0, 7.2]
+    let enz_grid = [0.10, 0.10, 0.30, 0.50, 0.60, 0.80, 0.90]
+    let mut i = 0
+    while i < len(ph_grid) {
+        let ph = ph_grid[i]
+        let e = enz_grid[i]
+        let pp = ph_open_prob(ph)
+        let pe = enzyme_cleave_prob(e)
+        let po = gate_open_prob(ph, e)
+        println("  " + to_string(ph) + "    " + to_string(pp) + "   " + to_string(e) + "    " + to_string(pe) + "   " + to_string(po))
+        i = i + 1
+    }
+    println("")
+
+    // --- transit (CLOSED env) vs DPC (OPEN env) gated actuation ---
+    println("[2] Gated actuation fraction: TRANSIT (closed) vs DPC (open)")
+    let r_transit = run_gated_actuation(n_cycles, T, seed, PH_TRANSIT, ENZ_TRANSIT)
+    let r_dpc = run_gated_actuation(n_cycles, T, seed, PH_DPC, ENZ_DPC)
+    println("  TRANSIT  pH=" + to_string(PH_TRANSIT) + " E=" + to_string(ENZ_TRANSIT)
+        + "  gate_open=" + to_string(r_transit["gate_open_prob"])
+        + "  productive=" + to_string(r_transit["productive_cycles"])
+        + "  act_frac=" + to_string(r_transit["actuation_fraction"]))
+    println("  DPC      pH=" + to_string(PH_DPC) + " E=" + to_string(ENZ_DPC)
+        + "  gate_open=" + to_string(r_dpc["gate_open_prob"])
+        + "  productive=" + to_string(r_dpc["productive_cycles"])
+        + "  act_frac=" + to_string(r_dpc["actuation_fraction"]))
+
+    let act_transit = r_transit["actuation_fraction"]
+    let act_dpc = r_dpc["actuation_fraction"]
+    // ON/OFF observable = productive (door-open) RELEASE RATE = productive cycles
+    // per fixed wall-clock budget. The gate throttles the S0->S1 attempt freq, so
+    // the release RATE (count of door-open cycles over the same n_macro_steps) is
+    // the physically released-cargo proxy — NOT the productive/backslip ratio
+    // (that ratio is gate-insensitive because both numerator & denom scale).
+    let prod_transit = to_float(r_transit["productive_cycles"])
+    let prod_dpc = to_float(r_dpc["productive_cycles"])
+    let mut gating_ratio = 0.0
+    if prod_transit > 0.0 { gating_ratio = prod_dpc / prod_transit }
+    println("  productive(release) cycles: transit=" + to_string(r_transit["productive_cycles"])
+        + " DPC=" + to_string(r_dpc["productive_cycles"]))
+    println("  ON/OFF release-rate ratio (DPC/transit) = " + to_string(gating_ratio))
+    println("")
+
+    // --- trigger threshold: pH at which gate crosses 50% open (transit enzyme) ---
+    println("[3] Trigger threshold (gate crosses 0.5 open, enzyme held at transit level)")
+    let mut ph_scan = 5.0
+    let mut ph_thresh = 0.0
+    let mut found = false
+    while ph_scan <= 7.4 {
+        let po = gate_open_prob(ph_scan, ENZ_TRANSIT)
+        if !found && po >= 0.5 { ph_thresh = ph_scan; found = true }
+        ph_scan = ph_scan + 0.05
+    }
+    println("  pH trigger threshold (50% open) = " + to_string(ph_thresh))
+    let mut e_scan = 0.0
+    let mut e_thresh = 0.0
+    let mut efound = false
+    while e_scan <= 1.0 {
+        let po = gate_open_prob(PH_TRANSIT, e_scan)
+        if !efound && po >= 0.5 { e_thresh = e_scan; efound = true }
+        e_scan = e_scan + 0.01
+    }
+    println("  enzyme trigger threshold (50% open @ pH5) = " + to_string(e_thresh))
+    println("")
+
+    // --- release kinetics coupled to AGA-RX follicular PK (round3) ---
+    println("[4] DPC release fraction = PK depth-survival x gate actuation")
+    println("  (z_DP=1.5 mm worst-corner; lambda_foll bracket from round3-admet-pk PK.md 3b)")
+    let z_dp = 1.5
+    let lambda_grid = [0.5, 1.0, 2.0]
+    // releasable fraction = gate-throttled release rate normalized to the ungated
+    // ceiling (the DPC open-env release count is taken as the ~fully-open ceiling).
+    let rel_rate_transit = prod_transit / prod_dpc   // fraction of max released in transit
+    let rel_rate_dpc = 1.0                            // DPC env ~ open ceiling
+    println("  lambda(mm)  C(DP)/Csurf  relrate@DPC  released@DPC  leaked_in_transit  DPC/transit_gain")
+    let mut li = 0
+    while li < len(lambda_grid) {
+        let lam = lambda_grid[li]
+        let depth_frac = pk_depth_fraction(z_dp, lam)
+        // gated carrier: payload survives to depth z_dp, then releases at DPC env
+        let released_dpc = depth_frac * rel_rate_dpc
+        // ungated/leaky carrier: a non-gated NE dumps at the transit release rate
+        // BEFORE reaching the DPC (no depth-gating) => lost en route
+        let leaked_transit = rel_rate_transit
+        let mut gain = 0.0
+        if leaked_transit > 0.0 { gain = released_dpc / leaked_transit }
+        println("  " + to_string(lam) + "        " + to_string(depth_frac)
+            + "      " + to_string(rel_rate_dpc) + "      " + to_string(released_dpc)
+            + "      " + to_string(leaked_transit) + "      " + to_string(gain))
+        li = li + 1
+    }
+    println("")
+
+    // --- n6 invariant + PASS gates ---
+    let master_identity_ok = (SIGMA_6 * PHI_6 == J2) && (6 * TAU_6 == J2)
+    let pass_sigma = r_dpc["sigma_ok"]
+    let pass_tau = r_dpc["tau_ok"]
+    let pass_finite = r_dpc["finite_ok"]
+    let pass_gating = gating_ratio >= 5.0
+    let pass_transit_shut = r_transit["gate_open_prob"] < 0.05
+    let pass_dpc_open = r_dpc["gate_open_prob"] > 0.95
+
+    let mut pass_count = 0
+    if pass_sigma { pass_count = pass_count + 1 }
+    if pass_tau { pass_count = pass_count + 1 }
+    if pass_finite { pass_count = pass_count + 1 }
+    if master_identity_ok { pass_count = pass_count + 1 }
+    if pass_gating { pass_count = pass_count + 1 }
+    if pass_transit_shut { pass_count = pass_count + 1 }
+    if pass_dpc_open { pass_count = pass_count + 1 }
+
+    println("[5] PASS gates")
+    println("  sigma6=12 vertices ........ " + to_string(pass_sigma))
+    println("  tau6=4 motor states ....... " + to_string(pass_tau))
+    println("  Langevin finite ........... " + to_string(pass_finite))
+    println("  master identity 12*2=24=6*4 " + to_string(master_identity_ok))
+    println("  transit gate shut (<0.05) . " + to_string(pass_transit_shut) + " (" + to_string(r_transit["gate_open_prob"]) + ")")
+    println("  DPC gate open (>0.95) ..... " + to_string(pass_dpc_open) + " (" + to_string(r_dpc["gate_open_prob"]) + ")")
+    println("  ON/OFF gating >=5x ........ " + to_string(pass_gating) + " (" + to_string(gating_ratio) + ")")
+    println("  pass_count = " + to_string(pass_count) + "/7")
+
+    let overall = pass_count == 7
+    let mut sentinel = "__AGA_NANOBOT_GATE__ FAIL"
+    if overall { sentinel = "__AGA_NANOBOT_GATE__ PASS" }
+    println(sentinel)
+}

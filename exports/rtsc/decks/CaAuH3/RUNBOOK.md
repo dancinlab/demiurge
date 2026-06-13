@@ -10,8 +10,8 @@ A-site 양이온을 Sr → Ca (더 가벼움) 로 바꿔 페로브스카이트-�
 - **구조**: ibrav=1 simple cubic, nat=5, ntyp=3 — Ca @ A-site (½,½,½), Au @ B-site (0,0,0),
   H @ 3개 face-center → Au-H 팔면체 골격.
 - **격자 START**: celldm(1)=6.8361 Bohr (=3.618 Å, SrAuH3 ×0.945, ~5.5% 수축). vc-relax 가 진짜 a 를 찾음.
-  Ca(1.00Å) < Sr(1.18Å) → ~5-7% 수축 예상, 5 GPa 하에서 목표 ~3.4-3.5 Å 로 더 수축 전망.
-- **압력**: vc-relax `press=50.0` (단위 = **kbar** → **5 GPa**, QE 컨벤션). 페로브스카이트는 저-중간압에서 안정인 경우 많음.
+  Ca(1.00Å) < Sr(1.18Å) → ~5-7% 수축 예상, 50 GPa 하에서 목표 ~3.4-3.5 Å 로 더 수축 전망.
+- **압력**: vc-relax `press=50.0` GPa (페로브스카이트는 중간압에서 안정인 경우 많음).
   ⚠ **ambient 안정성 테스트**는 vc-relax.in 의 `press` 를 `0.0` (1 atm) 으로 바꿔 재실행.
 
 ---
@@ -80,7 +80,7 @@ for f in Ca.pbe-spn-rrkjus_psl.1.0.0.UPF \
   ls -l "$SRC/pseudo/$f" || { echo "MISSING_PSEUDO: $f"; exit 1; }
 done
 
-# 1) vc-relax — 격자/위치 완화 (press=50 kbar = 5 GPa, QE 단위 컨벤션). 진짜 celldm 을 찾는다.
+# 1) vc-relax — 격자/위치 완화 (press=50 GPa). 진짜 celldm 을 찾는다.
 timeout 6h mpirun -np $NP --bind-to none pw.x -in vc-relax.in > vc-relax.out 2>&1
 grep -q "JOB DONE" vc-relax.out || { echo "VCRELAX_FAIL"; exit 1; }
 
@@ -121,7 +121,7 @@ echo "JOB DONE"
 
 - λ_BZ 는 이 런 전까지 미측정 → Tc 는 추정뿐이었음. full-BZ Allen-weighted ω_log 가 진실값.
 - plateau 강요 금지 — 정직한 sigma-plateau 또는 under-converged 로 보고.
-- 허수 모드가 나오면 5 GPa(=50 kbar) 에서 비안정 → 압력 스윕(다른 press) 또는 ambient(press=0) 재시도.
+- 허수 모드가 나오면 50 GPa 에서 비안정 → 압력 스윕(다른 press) 또는 ambient(press=0) 재시도.
 
 ---
 

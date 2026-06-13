@@ -20,7 +20,7 @@ V3 §4 결론: V3 v1 simplified S4 model이 M8 §3 detail과 다른 가정 4개�
 
 ## 2. V5 sim 작성 (hexa-native, project.tape 준수)
 
-- 위치: `/Users/ghost/core/demiurge/DAPTPGX/sims/v5_recompute.hexa`
+- 위치: `/Users/mini/dancinlab/demiurge/DAPTPGX/sims/v5_recompute.hexa`
 - 작성 원칙:
   - **demiurge `project.tape` g0** — V3 패턴 재활용 (println / let / while / 단순 산술만 사용, hexa libm sqrt 회피)
   - **@D d6** — patch 4종 외 V3 baseline 가정 (st_clopi_nm=0.005, st_clopi_pm=0.015, qaly_baseline=0.85 등) 변경 금지 — 4 patch isolation으로 effect size 직접 측정
@@ -31,12 +31,12 @@ V3 §4 결론: V3 v1 simplified S4 model이 M8 §3 detail과 다른 가정 4개�
 
 ## 3. pool 실행
 
-- `pool` wrapper: `hexa build /Users/ghost/.hx/packages/pool/bin/pool.hexa` 컴파일 에러 (`use of undeclared identifier 'ks'` at line 707) — d8 inbox handoff 조건 (V3 §9 동일 항목, 미해소)
+- `pool` wrapper: `hexa build /Users/mini/.hx/packages/pool/bin/pool.hexa` 컴파일 에러 (`use of undeclared identifier 'ks'` at line 707) — d8 inbox handoff 조건 (V3 §9 동일 항목, 미해소)
 - 우회: direct SSH `scp + ssh mini 'hexa run /tmp/v5_recompute.hexa'`
 - mini host: `hexa 0.1.0-dispatch` 정상
 
 ```bash
-scp /Users/ghost/core/demiurge/DAPTPGX/sims/v5_recompute.hexa mini:/tmp/v5_recompute.hexa
+scp /Users/mini/dancinlab/demiurge/DAPTPGX/sims/v5_recompute.hexa mini:/tmp/v5_recompute.hexa
 ssh mini 'hexa run /tmp/v5_recompute.hexa'
 ```
 
@@ -232,5 +232,5 @@ V5 P4 = PM×HBR cell 1회 PFT 가정 (₩547,560). M5 §8 실제는 monthly 모�
 
 | 파일 | 위치 | 크기 (추정) |
 |---|---|---|
-| V5 sim source | `/Users/ghost/core/demiurge/DAPTPGX/sims/v5_recompute.hexa` | ~170 line |
-| V5 verify doc | `/Users/ghost/core/demiurge/DAPTPGX/verify/V5_icer_reconcile.md` | ~150 line |
+| V5 sim source | `/Users/mini/dancinlab/demiurge/DAPTPGX/sims/v5_recompute.hexa` | ~170 line |
+| V5 verify doc | `/Users/mini/dancinlab/demiurge/DAPTPGX/verify/V5_icer_reconcile.md` | ~150 line |

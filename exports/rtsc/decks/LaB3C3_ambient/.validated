@@ -1,0 +1,7 @@
+validated=2026-06-01T01:34:29Z
+
+host=mini
+
+method=structural-sanity
+gate=d16 (pool lacks QE/pw.x — structural-sanity per prior-deck convention: nat==positions==14, ntyp==species==3, 2M+6B+6C ordered framework, namelists complete, PSL-1.0.0 pseudos resolvable on QE server)
+deck=exports/rtsc/decks/LaB3C3_ambient

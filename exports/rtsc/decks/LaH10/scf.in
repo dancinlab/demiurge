@@ -1,0 +1,49 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'lah10'
+  outdir          = './out'
+  verbosity       = 'high'
+  pseudo_dir      = './pseudo'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav           = 2                ! FCC primitive, Fm-3m (SG 225) - LaH10 sodalite clathrate
+  celldm(1)       = 9.6400           ! REPLACE with relaxed celldm(1) from vc-relax.out
+  nat             = 11               ! 1 La (4a) + 2 H (8c) + 8 H (32f) per fcc-primitive (Z=1 f.u.)
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  La  138.905   La.pbe-spfn-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! LaH10 sodalite: La @ 4a (0,0,0), H @ 8c (1/4,1/4,1/4), H @ 32f (x,x,x) x~0.375 (H32 clathrate cage).
+! fcc-primitive representation; vc-relax refines the 32f free coordinate.
+ATOMIC_POSITIONS crystal
+  La   0.0000000   0.0000000   0.0000000
+  H    0.2500000   0.2500000   0.2500000
+  H    0.7500000   0.7500000   0.7500000
+  H    0.3750000   0.3750000   0.3750000
+  H    0.6250000   0.6250000   0.6250000
+  H    0.3750000   0.3750000   0.6250000
+  H    0.6250000   0.6250000   0.3750000
+  H    0.3750000   0.6250000   0.3750000
+  H    0.6250000   0.3750000   0.6250000
+  H    0.6250000   0.3750000   0.3750000
+  H    0.3750000   0.6250000   0.6250000
+
+K_POINTS automatic
+  12 12 12  0 0 0

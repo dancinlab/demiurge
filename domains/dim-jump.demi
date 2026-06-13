@@ -1,0 +1,90 @@
+# dim-jump.demi — verb-cell manifest for the DIM-JUMP (Kaluza-Klein
+# dimensional-ladder propulsion) domain. UFO Stage-6 elevation.
+# SSOT scripts in ~/core/hexa-lang/stdlib/dim_jump/ (NOT YET WIRED — stub)
+#
+# Citations: Kaluza-Klein dimensional reduction (standard text);
+# UFO/dimjump/hexa-*.md — in-tree spec + F-DIM-{1,2,3} preregister.
+#
+# Domain caveat: All cells ⚪ SPECULATION-FENCED. Compactification radius
+# < 1e-19 m per LHC bound; no detector for KK modes exists.
+
+[cell.specify]
+substrate = python3
+script = stdlib/dim_jump/specify.py
+record_kind = dim_jump_specify_record
+output_dir = exports/dim-jump/specify
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Dimensional-jump spec skeleton (target dimension · compactification scale) — TEMPLATE.",
+  "F-DIM-{1,2,3} all OPEN; UNPROVEN at v1.0.0.",
+]
+
+[cell.structure]
+substrate = python3
+script = stdlib/dim_jump/structure.py
+record_kind = dim_jump_structure_record
+output_dir = exports/dim-jump/structure
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "4D→6D→10D→11D→24D→26D ladder skeleton — TEMPLATE.",
+  "Calabi-Yau 6D / superstring 10D / M-theory 11D / bosonic 26D references only.",
+]
+
+[cell.design]
+substrate = python3
+script = stdlib/dim_jump/design.py
+record_kind = dim_jump_design_record
+output_dir = exports/dim-jump/design
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "KK mode quantization parameter dossier — symbolic only.",
+  "No hexa-native CY-manifold solver in stdlib.",
+]
+
+[cell.analyze]
+substrate = python3
+script = stdlib/dim_jump/analyze.py
+record_kind = dim_jump_analyze_record
+output_dir = exports/dim-jump/analyze
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Gravitational anomaly (ADD/RS) detection skeleton — DEFERRED.",
+  "LHC bound 1e-19 m is the strongest current constraint.",
+]
+
+[cell.synthesize]
+substrate = python3
+script = stdlib/dim_jump/synthesize.py
+record_kind = dim_jump_synthesize_record
+output_dir = exports/dim-jump/synthesize
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Dimensional-jump apparatus BOM skeleton — TEMPLATE. Apparatus UNAVAILABLE.",
+]
+
+[cell.verify]
+substrate = python3
+script = stdlib/dim_jump/verify.py
+record_kind = dim_jump_verify_record
+output_dir = exports/dim-jump/verify
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "F-DIM-{1,2,3} preregister monotone state check — all OPEN at v1.0.0.",
+]
+
+[cell.handoff]
+substrate = python3
+script = stdlib/dim_jump/handoff.py
+record_kind = dim_jump_handoff_record
+output_dir = exports/dim-jump/handoff
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Theoretical-physics paper handoff skeleton; experimental apparatus N/A.",
+]

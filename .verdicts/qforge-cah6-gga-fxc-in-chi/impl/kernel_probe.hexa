@@ -1,0 +1,47 @@
+use "stdlib/qforge/screening"
+use "stdlib/qforge/correlation"
+
+fn main() {
+    // CaH6 physical density ~0.117 bohr^-3 (from aldafloor verdict). Probe ALDA vs GGA
+    // kernel sign/magnitude at a few (rho, grad) representative of the H-cage.
+    println("=== ALDA vs GGA f_xc kernel pointwise (CaH6 cage densities) ===")
+    let rhos = [0.05, 0.117, 0.3, 0.6]
+    // GGA pieces (reproduced from screening_pwfft helpers for the probe).
+    let pi = 3.14159265358979323846
+    let kappa = 0.8040 ; let mu = 0.2195149727645171
+    let mut i = 0
+    while i < 4 {
+        let rho = rhos[i]
+        // ALDA: f_x_lda + f_c_pw92
+        let alda = qforge_fx_lda(rho) + qforge_fc_pw92(rho)
+        // GGA pieces at two gradients (s small and s~1).
+        let mut g = 0
+        while g < 2 {
+            let s_target = if g == 0 { 0.2 } else { 1.5 }
+            let kf = pow(3.0*pi*pi*rho, 1.0/3.0)
+            let grad = s_target * 2.0 * kf * rho   // invert s = grad/(2 kf rho)
+            // central 2nd diff of e_xc^PBE density
+            let third = 1.0/3.0
+            let h = rho*1.0e-4
+            let mut vals = [0.0,0.0,0.0]
+            let mut kk = 0
+            while kk < 3 {
+                let rr = if kk==0 { rho+h } else if kk==1 { rho } else { rho-h }
+                let exl = -0.75*pow(3.0/pi,third)*pow(rr,third)
+                let kfr = pow(3.0*pi*pi*rr,third)
+                let s = grad/(2.0*kfr*rr)
+                let fx = 1.0+kappa-kappa/(1.0+mu*s*s/kappa)
+                let ex = exl*fx
+                let ec = qforge_ec_pbe_from_rho(rr, grad)
+                vals[kk] = rr*(ex+ec)
+                kk = kk+1
+            }
+            let gga = (vals[0]-2.0*vals[1]+vals[2])/(h*h)
+            println("rho="+to_string(rho)+" s~"+to_string(s_target)
+                +"  ALDA f_xc="+to_string(alda)+"  GGA f_xc="+to_string(gga)
+                +"  GGA/ALDA="+to_string(gga/alda))
+            g = g+1
+        }
+        i = i+1
+    }
+}

@@ -1,0 +1,56 @@
+&CONTROL
+  ! Im-3m (SG 229) BCC H3O - isostructural to Im-3m H3S.
+  ! X @ 2a (0,0,0), H @ 6b (1/2,0,0) - H midway between body-centered X.
+  ! START celldm(1)=4.89945 Bohr (~2.59 A). vc-relax FINDS true a @ 150 GPa.
+  calculation     = 'vc-relax'
+  prefix          = 'h3o'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ibrav           = 3                ! BCC primitive, Im-3m (SG 229) - H3S prototype
+  celldm(1)       = 4.89945           ! a_conv ~ 2.59 A
+  nat             = 4                ! 1 O + 3 H (BCC primitive, 1 f.u.)
+  ntyp            = 2
+  ecutwfc         = 65
+  ecutrho         = 650
+  nosym           = .true.           ! guard - avoids checkallsym crash
+  occupations     = 'smearing'
+  smearing        = 'mp'             ! Methfessel-Paxton - metallic hydride (d15)
+  degauss         = 0.02             ! d15 small-gap SCF aid
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.7
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400             ! d15 maxiter 400
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  press           = 1500.0          ! target 150 GPa
+  press_conv_thr  = 0.5
+  cell_dofree     = 'all'
+/
+ATOMIC_SPECIES
+  O  15.999   O.pbe-n-rrkjus_psl.1.0.0.UPF
+  H   1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! Im-3m H3O: O @ 2a (0,0,0), H @ 6b (1/2,0,0)/(0,1/2,0)/(0,0,1/2).
+! BCC-primitive fractional coords (3 H at the cubic face-midpoints).
+ATOMIC_POSITIONS crystal
+  O  0.0000000   0.0000000   0.0000000
+  H   0.5000000   0.0000000   0.0000000
+  H   0.0000000   0.5000000   0.0000000
+  H   0.0000000   0.0000000   0.5000000
+
+K_POINTS automatic
+  24 24 24  0 0 0

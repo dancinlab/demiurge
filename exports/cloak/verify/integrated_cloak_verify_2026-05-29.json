@@ -1,0 +1,72 @@
+{
+  "record_kind": "cloak_verify_record",
+  "domain": "CLOAK",
+  "cell": "integrated-cloak-verify-rollup (V4 ledger re-reference + Phase B/C wrap)",
+  "verb": "6/7 verify (검증 · 무엇이 닫혔는가)",
+  "iso_stamp": "2026-05-29",
+  "produced_by": "AUTHORED (manual) — demiurge 7-verb spine Phase C verb-6. 본 record 는 V4 final tier ledger 의 absorbed=true 판정을 7-verb 파이프 verb-6 슬롯에 봉인 — recompute 하지 않고 source ledger pointer 만 유지 (@D d_paper_sections record mirror 패턴).",
+  "source_refs": {
+    "domain_md": "domains/cloak.md §Phase C verb-6 verify · §Phase E absorbed 판정",
+    "v4_ledger_path": "exports/cloak/verify/V4_final_tier_ledger.md",
+    "v1_path": "exports/cloak/verify/V1_claim_inventory.md",
+    "v3_path": "exports/cloak/verify/V3_phase_a_completion.md",
+    "phase_b_path": "exports/cloak/design/phase_b_metacell.md"
+  },
+  "v4_ledger_path": "exports/cloak/verify/V4_final_tier_ledger.md",
+  "v4_summary": {
+    "total_verdicts": 52,
+    "tier_breakdown": {
+      "blue_supported_formal": 5,
+      "green_supported_numerical": 21,
+      "yellow_supported_by_citation": 12,
+      "orange_insufficient_deferred": 7,
+      "white_speculation_fenced": 7
+    },
+    "absorbed_judgment": "absorbed=TRUE (2026-05-28)",
+    "absorbed_basis": "Phase A 6/6 LANDED · 메타 carrier 3-단계 합성 7/7+7/7+7/7 self-test PASS · HEX-N6 10/11 🔵 · ⓹ ⚪ honest fence 비-차단 (transcendental calc gap)"
+  },
+  "phase_a_milestones_landed": 6,
+  "phase_a_breakdown": [
+    {"#": "⓵", "name": "Drude ε(ω)", "tier": "🟢", "anchor": "PR #1943 7/7 PASS · RT-SC ω_p=5.64146e15"},
+    {"#": "⓶", "name": "Lorentz μ(ω)", "tier": "🟢", "anchor": "PR #1934 7/7 PASS · μ_re=-1999.26"},
+    {"#": "⓷", "name": "Veselago n_eff", "tier": "🟢", "anchor": "PR #1936 7/7 PASS · n=-√6=-2.44949"},
+    {"#": "⓸", "name": "셀 피치 λ/10", "tier": "🔵+🟡", "anchor": "HEX-N6 σ-φ=10 nm · Smith 2000 · atlas n6-bt-749"},
+    {"#": "⓹", "name": "투과율 1-1/e", "tier": "🟡+⚪", "anchor": "Lambert-Beer + exp_neg_one calc gap honest fence"},
+    {"#": "⓺", "name": "대역폭 σ-τ=8 oct", "tier": "🔵+🟡", "anchor": "HEX-N6 σ-τ=8 · atlas n6-bt-748"}
+  ],
+  "phase_b_milestones_landed": 4,
+  "phase_b_breakdown": [
+    {"name": "Hex-SRR 셀 Q=σ·τ=48", "tier": "🔵", "anchor": "n6-bt-762 sigma_tau=48 + Pendry 1999"},
+    {"name": "sopfr=5 nm 필름 stack", "tier": "🔵+🟡", "anchor": "sopfr(6)=5 + Jaumann/Pendry RAM stack"},
+    {"name": "σ=12 시트 σ²=144 m²", "tier": "🔵", "anchor": "sigma(6)=12 + n6-bt-sigma2=144 derived"},
+    {"name": "σ=12 채널 AI 운용", "tier": "🔵", "anchor": "sigma=12 + σ-τ=8 oct × φ=2"}
+  ],
+  "substrate_prs": [1934, 1936, 1938, 1943],
+  "substrate_pr_detail": {
+    "1934": "stdlib/srr/lc_resonance.hexa · 7/7 PASS · F7 μ_re=-1999.26 < 0",
+    "1936": "stdlib/cloak/veselago.hexa · 7/7 PASS · F3 n=-√6=-2.44949",
+    "1938": "tool/verify_cli.hexa + compiler/atlas/calc_dispatch.hexa · wire-up (toolchain rebuild 대기)",
+    "1943": "stdlib/rtsc/plasma_freq.hexa · 7/7 PASS · F7 ω_p=5.64146e15 rad/s"
+  },
+  "absorbed": true,
+  "absorbed_invariant": "@D d5 — 全 non-wet-lab gate PASS · 실측 RCS·VNA·SEM·광대역 spectrum 은 downstream confirmation, absorbed 와 무관",
+  "hex_n6_anchors_landed": 10,
+  "hex_n6_remaining_gap": 1,
+  "hex_n6_gap_detail": "J₂(6)=24 (Jordan totient) — calc-system gap · atlas @P n6-j2 carry 🟡 · 작동에 비-차단",
+  "j2_calc_gap": true,
+  "exp_calc_gap_status": "follow-up PR pending (CLOAK ⓹ ⚪→🟢) — stdlib/math/exp.hexa 신규 + verify_cli _recompute_float 확장 시 1-1/e 🟢 transition · 현재 honest fence 유지 (g3)",
+  "downstream_confirmation_required": [
+    "무반향 챔버 RCS 측정 (TP-CLOAK-3 · σ·J₂=288배 감쇠 실측)",
+    "VNA Q-factor 측정 (TP-CLOAK-1 · Q=48±10%)",
+    "SEM 셀 피치 (TP-CLOAK-4 · σ-φ=10 nm 실측)",
+    "광대역 spectrum (TP-CLOAK-2 · σ-τ=8 oct 실측)"
+  ],
+  "scope_caveats": [
+    "absorbed=true 는 V4 ledger §6.1 의 재인용 · 본 record 는 7-verb 슬롯 mirror (recompute 아님)",
+    "absorbed=true ⇔ 비-wet-lab gate PASS 정의 (@D d5) — 실제 메타물질 제작/측정은 downstream",
+    "lattice 산술 일치 ≠ 물리 인과 — σ-φ=10 nm 등은 격자 산술 + Smith 2000 별도 물리 증거 결합",
+    "메타셀 effective-medium 가정 — k ≪ 2π/a 장-파장 근사 · 단파장 영역 외삽 위험 (@D d6)"
+  ],
+  "gate": "CLOSED (verify-side, non-wet-lab)",
+  "downstream_gate": "OPEN (wet-lab measurement)"
+}

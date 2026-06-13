@@ -1,0 +1,45 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'h3s'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  verbosity       = 'high'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav = 0
+  nat             = 4                ! 1 S + 3 H
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.           ! keep symmetry off through scf->ph for consistency
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.02
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  S  32.06   S.pbe-n-rrkjus_psl.1.0.0.UPF
+  H   1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+! REPLACE positions below with relaxed ATOMIC_POSITIONS from vc-relax.out
+
+CELL_PARAMETERS (angstrom)
+  1.53188   1.92558   1.53188
+  -1.53188   1.53188   1.92558
+  -1.92558   -1.53188   1.53188
+ATOMIC_POSITIONS (crystal)
+S             0.0000000003       -0.0000000005       -0.0000000003
+H             0.5000000000        0.0000000005        0.0000000004
+H            -0.0000000005        0.4999999999        0.0000000001
+H             0.0000000002        0.0000000001        0.4999999998
+K_POINTS automatic
+  16 16 16  0 0 0
+
+

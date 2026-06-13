@@ -1,27 +1,14 @@
-LaY_H10 phonon + electron-phonon 2x2x2 q (RTSC B08 · LaH10/YH10 dual-metal · Fm-3m clathrate · direct YH10 family)
+LaY_H10 el-ph 2x2x2 q (RTSC clathrate electron_phonon=simple)
 &inputph
-  prefix = 'layh10'
-  outdir = '/home/aiden/rtsc_layh10/out'
-  fildyn = '/home/aiden/rtsc_layh10/layh10.dyn'
-  fildvscf = 'layh10.dvscf'
-  ! ldisp + 2x2x2 q-mesh (nq=8). NOTE: this 22-atom ordered cell is large -> even nq=8 is a
-  !   ~994h single-pod job (preflight). ph.x MUST run as a split-q / start_q-last_q multi-pod
-  !   campaign (one q-irrep group per pod) OR drop to the 11-atom VCA cell (see RUNBOOK).
-  !   recover=.true. + per-q start_q/last_q is the path; the deck below is the full-q template.
+  prefix = 'lay_h10'
+  outdir = './out'
+  fildyn = './lay_h10.dyn'
+  fildvscf = 'lay_h10.dvscf'
   ldisp = .true.
   nq1 = 2, nq2 = 2, nq3 = 2
   tr2_ph = 1.0d-14
   recover = .true.
-  ! 'simple' el-ph: double-delta EPC, swept over el_ph_nsigma broadenings.
-  ! Harvest reads the sigma-plateau lambda (NOT the monotone-broadening tail).
   electron_phonon = 'simple'
   el_ph_sigma = 0.005
   el_ph_nsigma = 10
-  alpha_mix(1) = 0.3
-  ! preflight #1885: 22 atoms · nq=8 · metallic -> est 993.8h, floor 1490.7h (SPLIT-Q REQUIRED).
-  ! 11-atom VCA fallback: est 124.2h, floor 186.3h (single-pod feasible) -> max_seconds=670824.
-  max_seconds = 670824
-  ! For the split-q multi-pod run, uncomment + set per pod (e.g. pod-1: 1,4 · pod-2: 5,8):
-  ! start_q = 1
-  ! last_q  = 4
 /

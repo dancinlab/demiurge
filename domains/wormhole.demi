@@ -1,0 +1,89 @@
+# wormhole.demi — verb-cell manifest for the WORMHOLE (Morris-Thorne
+# traversable space-hole propulsion) domain. UFO Stage-5 elevation.
+# SSOT scripts in ~/core/hexa-lang/stdlib/wormhole/ (NOT YET WIRED — stub)
+#
+# Citations: Morris & Thorne (1988) Am. J. Phys. 56, 395 — original
+# traversable wormhole; UFO/wormhole/hexa-*.md — in-tree spec + F-WORM-{1,2,3}.
+#
+# Domain caveat: All cells ⚪ SPECULATION-FENCED. Throat operates at
+# Planck-scale (b₀ ~ ℓ_Pl · σ ≈ 1.94e-34 m); no apparatus exists.
+
+[cell.specify]
+substrate = python3
+script = stdlib/wormhole/specify.py
+record_kind = wormhole_specify_record
+output_dir = exports/wormhole/specify
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Traversable wormhole spec skeleton (throat b₀ · in/out region distance) — TEMPLATE.",
+  "F-WORM-{1,2,3} all OPEN; UNPROVEN at v1.0.0.",
+]
+
+[cell.structure]
+substrate = python3
+script = stdlib/wormhole/structure.py
+record_kind = wormhole_structure_record
+output_dir = exports/wormhole/structure
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "b₀ = ℓ_Pl · σ throat-radius lattice geometry — TEMPLATE.",
+  "Planck-scale apparatus = OUT of scope.",
+]
+
+[cell.design]
+substrate = python3
+script = stdlib/wormhole/design.py
+record_kind = wormhole_design_record
+output_dir = exports/wormhole/design
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Morris-Thorne metric closed-form parameter dossier — symbolic only.",
+  "Shape b(r) + redshift Φ(r) closed-form; no numerical recompute path.",
+]
+
+[cell.analyze]
+substrate = python3
+script = stdlib/wormhole/analyze.py
+record_kind = wormhole_analyze_record
+output_dir = exports/wormhole/analyze
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Einstein field equation + NEC violation check skeleton — DEFERRED.",
+]
+
+[cell.synthesize]
+substrate = python3
+script = stdlib/wormhole/synthesize.py
+record_kind = wormhole_synthesize_record
+output_dir = exports/wormhole/synthesize
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Throat-engineering BOM skeleton — TEMPLATE. Exotic matter source UNAVAILABLE.",
+]
+
+[cell.verify]
+substrate = python3
+script = stdlib/wormhole/verify.py
+record_kind = wormhole_verify_record
+output_dir = exports/wormhole/verify
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "F-WORM-{1,2,3} preregister monotone state check — all OPEN at v1.0.0.",
+]
+
+[cell.handoff]
+substrate = python3
+script = stdlib/wormhole/handoff.py
+record_kind = wormhole_handoff_record
+output_dir = exports/wormhole/handoff
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Theoretical-physics paper handoff skeleton; lab apparatus N/A.",
+]

@@ -1,0 +1,170 @@
+{
+    "anchor": {
+        "name": "H2_STO3G_2q_anchor",
+        "n_qubits": 2,
+        "depth": 1,
+        "n_params": 6,
+        "n_pauli_terms": 5,
+        "n_restart": 8,
+        "energy_Ha": -1.8572750302021312,
+        "ref_energy_ha": -1.8572750298604888,
+        "delta_vs_ref_uHa": -0.0003416424920743566,
+        "n_iter": 90,
+        "converged": true,
+        "restart_energies": [
+            -1.8572750302020216,
+            -1.8572750302019283,
+            -1.8572750302021002,
+            -1.8572750302021312,
+            -1.8572750302020713,
+            -1.8572750302020395,
+            -1.8572750302020895,
+            -1.8572750302020895
+        ],
+        "wall_seconds": 0.07031679153442383
+    },
+    "saltbridge": {
+        "scan": [
+            {
+                "R": 2.8,
+                "E_complex_Ha": -1.1786848258802525,
+                "dE_int_Ha": -0.028684825880252562,
+                "dE_int_kcal": -17.999999999898872,
+                "dE_int_kcal_target": -18.0,
+                "delta_vs_analytic_uHa": -0.004761629979199711,
+                "converged": true,
+                "wall_s": 0.061968326568603516
+            },
+            {
+                "R": 2.9,
+                "E_complex_Ha": -1.1775661513710554,
+                "dE_int_Ha": -0.027566151371055447,
+                "dE_int_kcal": -17.29802114705538,
+                "dE_int_kcal_target": -17.29802114715268,
+                "delta_vs_analytic_uHa": -0.0051140056633869335,
+                "converged": true,
+                "wall_s": 0.062056779861450195
+            },
+            {
+                "R": 3.0,
+                "E_complex_Ha": -1.1750501695989315,
+                "dE_int_Ha": -0.025050169598931582,
+                "dE_int_kcal": -15.719218748636347,
+                "dE_int_kcal_target": -15.71921874872462,
+                "delta_vs_analytic_uHa": -0.00519383869246326,
+                "converged": true,
+                "wall_s": 0.061985015869140625
+            },
+            {
+                "R": 3.0999999999999996,
+                "E_complex_Ha": -1.1719888514483385,
+                "dE_int_Ha": -0.02198885144833862,
+                "dE_int_kcal": -13.798212606211104,
+                "dE_int_kcal_target": -13.79821260631587,
+                "delta_vs_analytic_uHa": -0.006662310036986696,
+                "converged": true,
+                "wall_s": 0.06155800819396973
+            },
+            {
+                "R": 3.1999999999999997,
+                "E_complex_Ha": -1.168860874236933,
+                "dE_int_Ha": -0.018860874236933167,
+                "dE_int_kcal": -11.835377271598082,
+                "dE_int_kcal_target": -11.83537727172202,
+                "delta_vs_analytic_uHa": -0.04562428213006342,
+                "converged": true,
+                "wall_s": 0.060729265213012695
+            },
+            {
+                "R": 3.3,
+                "E_complex_Ha": -1.1659183288482122,
+                "dE_int_Ha": -0.015918328848212315,
+                "dE_int_kcal": -9.988902162500736,
+                "dE_int_kcal_target": -9.988902162608856,
+                "delta_vs_analytic_uHa": -0.40429474346126426,
+                "converged": true,
+                "wall_s": 0.06025099754333496
+            },
+            {
+                "R": 3.4,
+                "E_complex_Ha": -1.1632784736548019,
+                "dE_int_Ha": -0.013278473654801948,
+                "dE_int_kcal": -8.332368018647626,
+                "dE_int_kcal_target": -8.332368018755663,
+                "delta_vs_analytic_uHa": -2.779938628849621,
+                "converged": true,
+                "wall_s": 0.059298038482666016
+            },
+            {
+                "R": 3.5,
+                "E_complex_Ha": -1.1609806358582548,
+                "dE_int_Ha": -0.010980635858254928,
+                "dE_int_kcal": -6.890453031599088,
+                "dE_int_kcal_target": -6.890453031688408,
+                "delta_vs_analytic_uHa": -14.411477127662664,
+                "converged": true,
+                "wall_s": 0.06044507026672363
+            },
+            {
+                "R": 3.5999999999999996,
+                "E_complex_Ha": -1.1590210992806382,
+                "dE_int_Ha": -0.009021099280638323,
+                "dE_int_kcal": -5.660825264495132,
+                "dE_int_kcal_target": -5.660825264607765,
+                "delta_vs_analytic_uHa": -56.53186898002538,
+                "converged": true,
+                "wall_s": 0.05854487419128418
+            },
+            {
+                "R": 3.6999999999999997,
+                "E_complex_Ha": -1.1573741619490394,
+                "dE_int_Ha": -0.007374161949039504,
+                "dE_int_kcal": -4.6273564858325935,
+                "dE_int_kcal_target": -4.627356485943133,
+                "delta_vs_analytic_uHa": -170.84278667622854,
+                "converged": true,
+                "wall_s": 0.058177947998046875
+            },
+            {
+                "R": 3.8,
+                "E_complex_Ha": -1.1560045652517592,
+                "dE_int_Ha": -0.006004565251759297,
+                "dE_int_kcal": -3.7679215827301538,
+                "dE_int_kcal_target": -3.7679215827887873,
+                "delta_vs_analytic_uHa": -406.237926266817,
+                "converged": true,
+                "wall_s": 0.05809307098388672
+            },
+            {
+                "R": 3.9,
+                "E_complex_Ha": -1.1548745897588815,
+                "dE_int_Ha": -0.0048745897588815534,
+                "dE_int_kcal": -3.0588512555615504,
+                "dE_int_kcal_target": -3.0588512556092247,
+                "delta_vs_analytic_uHa": -775.0821009067099,
+                "converged": true,
+                "wall_s": 0.05655097961425781
+            },
+            {
+                "R": 4.0,
+                "E_complex_Ha": -1.1539478956928662,
+                "dE_int_Ha": -0.003947895692866243,
+                "dE_int_kcal": -2.4773419496373617,
+                "dE_int_kcal_target": -2.4773419497613114,
+                "delta_vs_analytic_uHa": -1210.7575766577838,
+                "converged": true,
+                "wall_s": 0.05626702308654785
+            }
+        ],
+        "min_row": {
+            "R": 2.8,
+            "E_complex_Ha": -1.1786848258802525,
+            "dE_int_Ha": -0.028684825880252562,
+            "dE_int_kcal": -17.999999999898872,
+            "dE_int_kcal_target": -18.0,
+            "delta_vs_analytic_uHa": -0.004761629979199711,
+            "converged": true,
+            "wall_s": 0.061968326568603516
+        }
+    }
+}

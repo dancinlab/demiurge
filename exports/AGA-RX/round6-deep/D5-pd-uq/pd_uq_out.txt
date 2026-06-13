@@ -1,0 +1,13 @@
+anagen gain% vs vehicle: mean=8.89  median=8.87  90%CI=[4.08, 13.77]  min=1.13 max=14.39
+theta (occupancy): median=0.997  5th=0.946  (near-saturated except low-λ corner)
+
+Variance contribution (freeze→Δvar/base, larger = more influential):
+  E_max       :  98.6%
+  lambda_foll :  -0.4%
+  z_DP        :   0.3%
+  Kd          :   0.1%
+  Csurf       :   0.0%
+
+P(gain ≥ 9%  [finasteride floor]) = 48.8%
+P(gain ≥ 12% [minoxidil band])    = 20.9%
+P(gain ≥ 6%  [clinically meaningful]) = 76.9%

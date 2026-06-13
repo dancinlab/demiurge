@@ -12,8 +12,8 @@ producer 단에서 **하드코드된 literal `false`** (런타임 flip 아님)�
 ## (a) 문구 parity 표 (demiurge 문서)
 
 검증 출처:
-- NUCLEAR.md §1·§3.0·§3.1·§7 (`/Users/ghost/core/demiurge/NUCLEAR.md`)
-- RTSC.md §8.8·§8.9·§8.10·§9.10 (`/Users/ghost/core/demiurge/RTSC.md`)
+- NUCLEAR.md §1·§3.0·§3.1·§7 (`/Users/mini/dancinlab/demiurge/NUCLEAR.md`)
+- RTSC.md §8.8·§8.9·§8.10·§9.10 (`/Users/mini/dancinlab/demiurge/RTSC.md`)
 
 | 불변식 축 | NUCLEAR 문구 | RTSC 문구 | 판정 |
 |---|---|---|---|
@@ -41,7 +41,7 @@ producer 단에서 **하드코드된 literal `false`** (런타임 flip 아님)�
 
 ## (b) Producer 하드코드 체크 결과 (hexa-lang code)
 
-저장소: `/Users/ghost/core/hexa-lang` (branch HEAD `9b0a01a1`).
+저장소: `/Users/mini/dancinlab/hexa-lang` (branch HEAD `9b0a01a1`).
 
 > ⚠ 위치 주의: NUCLEAR.md §6.3 Phase 5 가 인용한 `stdlib/nuclear/{n8_fusion_evap,n9_shell_model,n10_abinitio}_adapter.py`
 > (PR #907/#913/#917)는 main 체크아웃의 `stdlib/nuclear/` 에 **없음** — 현재 worktree

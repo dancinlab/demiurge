@@ -1,0 +1,40 @@
+=== AGA-RX NANOBOT pH/enzyme-GATED release sim ===
+inherited core: hexa-bio nanobot 4-state CTMC + Langevin (sigma6=12), gate-modulated
+
+[1] Gate open-probability across DPC microenvironment cues
+  pH      p_pH     E       p_enz    p_open(OR)
+  5.0    9.99999e-07   0.1    0.00109163   0.00109263
+  5.5    9.999e-05   0.1    0.00109163   0.00119151
+  6.0    0.00990099   0.3    0.0813202   0.090416
+  6.2    0.0593509   0.5    0.405828   0.441092
+  6.5    0.5   0.6    0.586144   0.793072
+  7.0    0.990099   0.8    0.817392   0.998192
+  7.2    0.998418   0.9    0.877601   0.999806
+
+[2] Gated actuation fraction: TRANSIT (closed) vs DPC (open)
+  TRANSIT  pH=5.0 E=0.1  gate_open=0.00109263  productive=15  act_frac=0.0143403
+  DPC      pH=7.2 E=0.9  gate_open=0.999806  productive=2071  act_frac=0.884665
+  productive(release) cycles: transit=15 DPC=2071
+  ON/OFF release-rate ratio (DPC/transit) = 138.067
+
+[3] Trigger threshold (gate crosses 0.5 open, enzyme held at transit level)
+  pH trigger threshold (50% open) = 6.5
+  enzyme trigger threshold (50% open @ pH5) = 0.55
+
+[4] DPC release fraction = PK depth-survival x gate actuation
+  (z_DP=1.5 mm worst-corner; lambda_foll bracket from round3-admet-pk PK.md 3b)
+  lambda(mm)  C(DP)/Csurf  relrate@DPC  released@DPC  leaked_in_transit  DPC/transit_gain
+  0.5        0.0497871      1.0      0.0497871      0.00724288      6.87393
+  1.0        0.22313      1.0      0.22313      0.00724288      30.8068
+  2.0        0.472367      1.0      0.472367      0.00724288      65.2181
+
+[5] PASS gates
+  sigma6=12 vertices ........ true
+  tau6=4 motor states ....... true
+  Langevin finite ........... true
+  master identity 12*2=24=6*4 true
+  transit gate shut (<0.05) . true (0.00109263)
+  DPC gate open (>0.95) ..... true (0.999806)
+  ON/OFF gating >=5x ........ true (138.067)
+  pass_count = 7/7
+__AGA_NANOBOT_GATE__ PASS

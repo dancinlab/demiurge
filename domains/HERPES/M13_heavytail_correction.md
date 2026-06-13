@@ -297,7 +297,7 @@ idealized halving MC (n=10000, seed=2027) 의 cycle distribution:
 
 ### §4.1 M5_crispr.md §6.5 — corrected formula box
 
-- **file**: `/Users/ghost/core/demiurge/HERPES/M5_crispr.md`
+- **file**: `/Users/mini/dancinlab/demiurge/HERPES/M5_crispr.md`
 - **line**: §6.5 (line 290-298, "99% per-neuron 효율도 sterilizing 부족")
 - **patch**:
   - 기존 `R_total_optimistic ≈ 2.49 × 10³` 다음에 callout 박스 추가:
@@ -310,7 +310,7 @@ idealized halving MC (n=10000, seed=2027) 의 cycle distribution:
 
 ### §4.2 M6_shock.md §8.2 — cycle math 갱신
 
-- **file**: `/Users/ghost/core/demiurge/HERPES/M6_shock.md`
+- **file**: `/Users/mini/dancinlab/demiurge/HERPES/M6_shock.md`
 - **line**: §8.2 (line 303-316, $N$ cycles 표)
 - **patch**:
   - 기존 표 위에 callout: "M13 §3 의 corrected $R_0 = 6.9 \times 10^3$ (heavy-tail deep-latent subset) 을 적용할 경우 cycle 수에 **+1.5 (idealized) / +2.0 (realistic p=0.4)** 추가 — 본 표는 $N_{\text{total}} = 1.25 \times 10^5$ 의 전체 reservoir 기준이며 heavy-tail subset cycle 은 §8.3 ceiling 과 별도로 평가."
@@ -323,7 +323,7 @@ idealized halving MC (n=10000, seed=2027) 의 cycle distribution:
 
 ### §4.3 M10_clinical_protocol.md §11.4 — Arm S realistic 갱신
 
-- **file**: `/Users/ghost/core/demiurge/HERPES/M10_clinical_protocol.md`
+- **file**: `/Users/mini/dancinlab/demiurge/HERPES/M10_clinical_protocol.md`
 - **line**: §11.4 (line 485-492, "Realistic case")
 - **patch**:
   - 기존 `realistic body 8 · tail 22 cycles ⇒ 통합 10-15 cycles` → **`realistic body 9 · tail 23 cycles ⇒ 통합 13-18 cycles`** (M13 §3.4).
@@ -333,14 +333,14 @@ idealized halving MC (n=10000, seed=2027) 의 cycle distribution:
 
 ### §4.4 M10_clinical_protocol.md §3.3 — 사이클 수 결정 트리
 
-- **file**: `/Users/ghost/core/demiurge/HERPES/M10_clinical_protocol.md`
+- **file**: `/Users/mini/dancinlab/demiurge/HERPES/M10_clinical_protocol.md`
 - **line**: 153
 - **patch**:
   - `→ best-case (low tail) ~5 cycle · realistic 10-15 cycle · heavy-tail dominant ~25 cycle` → **`→ best-case (low tail) ~5 cycle · realistic 13-18 cycle · heavy-tail dominant ~25 cycle`**.
 
 ### §4.5 M11_sensitivity_sweep.md §4.3 — Arm S cycle baseline 표기
 
-- **file**: `/Users/ghost/core/demiurge/HERPES/M11_sensitivity_sweep.md`
+- **file**: `/Users/mini/dancinlab/demiurge/HERPES/M11_sensitivity_sweep.md`
 - **line**: 178 (`Baseline (×1, ×1) | **19.77** | —`)
 - **patch**:
   - baseline 19.77 cycles 가 R₀=2500 가정에서 계산되었다면, R₀=6906 propagation 시 baseline 이 **~21.8** 으로 이동. 단 M11 sweep 의 axis 는 chromatin Markov rate 자체 → R₀ 변화는 sweep 의 input parameter 가 아닌 **out-of-sweep additive shift** → M11 §4.3 표 하단에 footnote:
@@ -348,7 +348,7 @@ idealized halving MC (n=10000, seed=2027) 의 cycle distribution:
 
 ### §4.6 M12_falsifier_protocol.md §2.4 — F-I-4 threshold 재검토
 
-- **file**: `/Users/ghost/core/demiurge/HERPES/M12_falsifier_protocol.md`
+- **file**: `/Users/mini/dancinlab/demiurge/HERPES/M12_falsifier_protocol.md`
 - **line**: 115-123 (F-I-4)
 - **patch**:
   - 기존 threshold `median > 25 (n≥6)` 는 M10 §11.4 의 **`realistic 10-15 cycles`** 에 대한 ~70% margin. M13 §3.4 corrected `realistic 13-18 cycles` 하에서 margin 은 ~40% (25 - 18 = 7 cycle margin) — **여전히 falsifier 발화 안 함, threshold 재설정 불필요**.

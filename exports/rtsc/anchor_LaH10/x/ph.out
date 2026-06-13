@@ -1,0 +1,91 @@
+
+     Program PHONON v.6.7MaX starts on  2Jun2026 at  5:42:49 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI), running on     9 processors
+
+     MPI processes distributed on     1 nodes
+     R & G space division:  proc/nbgrp/npool/nimage =       9
+     Reading input from ph.in
+
+     Reading xml data from directory:
+
+     ./out/lah10.save/
+     file La.pbe-spfn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  4F renormalized
+
+     IMPORTANT: XC functional enforced from input :
+     Exchange-correlation= PBE
+                           (   1   4   3   4   0   0   0)
+     Any further DFT definition will be discarded
+     Please, verify this is what you really want
+
+
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min         255     102     32                 8110     2054     364
+     Max         256     103     33                 8113     2057     366
+     Sum        2299     925    295                73001    18499    3287
+
+     Reading collected, re-writing distributed wavefunctions
+
+     Saving dvscf to file. Distribute only q points, not irreducible represetations.
+        8 /   8 q-points for this run, from  1 to  8:
+       N       xq(1)         xq(2)         xq(3) 
+       1   0.000000000   0.000000000   0.000000000
+       2   0.353552172  -0.353550134   0.353543026
+       3  -0.353544486  -0.353548961  -0.353547793
+       4   0.000007686  -0.707099095  -0.000004767
+       5   0.353550420   0.353543026  -0.353550134
+       6   0.707102592  -0.000007108  -0.000007108
+       7   0.000005935  -0.000005935  -0.707097927
+       8   0.353558107  -0.353556069  -0.353554901
+
+
+     Calculation of q =    0.0000000   0.0000000   0.0000000
+     Message from routine ph_restart_set_filename :
+     cannot open file for reading or writing
+ end of file reached, closing tag not found
+warning: file closed at level 1 with tag Root open
+ end of file reached, closing tag not found
+warning: file closed at level 1 with tag Root open
+At line 965 of file xmltools.f90
+Fortran runtime error: Sequential READ or WRITE not allowed after EOF marker, possibly use REWIND or BACKSPACE
+
+Error termination. Backtrace:
+ end of file reached, tag PARTIAL_EL_PHON not found
+#0  0x7053aa4a4960 in ???
+#1  0x7053aa4a54d9 in ???
+#2  0x7053aa4a610f in ???
+#3  0x7053aa6fc96d in ???
+#4  0x631945064a2a in ???
+#5  0x631945065413 in ???
+#6  0x631945066946 in ???
+#7  0x631944be1dd5 in ???
+#8  0x631944bee0ab in ???
+#9  0x631944bc5b55 in ???
+#10  0x631944b92a6e in ???
+#11  0x631944b8c191 in ???
+#12  0x631944b8bffe in ???
+#13  0x7053aa175d8f in ???
+#14  0x7053aa175e3f in ???
+#15  0x631944b8c02d in ???
+#16  0xffffffffffffffff in ???
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[20580,1],0]
+  Exit code:    2
+--------------------------------------------------------------------------

@@ -1,0 +1,3 @@
+=== n=645 SCF-only test (the rebuild's claim: 3-D works where (1,1,n) pow2 wall blocked) ===
+PBE-3D n=645 SCF start...
+PBE-3D n=645: ok=true n=645 conv=true iters=3 e_band=-61.7889 Vbar=-0.397786 cube=32

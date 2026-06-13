@@ -1,14 +1,7 @@
-# perio-cure-regen — An in-silico senolytic-enabled regimen for complete periodontal regeneration
+# <slug> — paper title placeholder
 
-> Complete periodontal regeneration blocks below a >=90% cure gate on a single
-> binding axis: lost alveolar-bone/cementum neogenesis (ceiling Sum m_c eta_c = 0.80).
-> Senolytic niche senescent-cell clearance lifts eta_bone = 0.55 + phi*0.45, closing
-> the gate at phi ~ 73-80%. A periodontal instance of the universal
-> neogenesis-bottleneck framework.
->
-> Status: draft v1 (10pp · lint 9/9 · tectonic clean). No efficacy claimed;
-> eta values literature-order (honest g63). Source: `exports/PERIO-CURE/round1/`,
-> `exports/CURE-PRIMITIVE/round1/`, `domains/PERIO-CURE.md`.
+> One-line framing of the paper. Replace this block with paper-specific
+> notes (status · target length · companion records / data).
 
 ## Source layout
 

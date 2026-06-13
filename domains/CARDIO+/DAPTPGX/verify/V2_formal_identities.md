@@ -222,8 +222,8 @@ toolchain의 두 한계 (promoter parser bug · bio-stat fn 부재) 각각에 �
 
 | path | target_kind | 흡수 후 효과 |
 |---|---|---|
-| `/Users/ghost/core/demiurge/archive/session-notes/patches/hexa-lang-stdlib-bio-stats.md` | stdlib-extension (verify --expr 분기 + stdlib/bio/stats/*) | 8 bio-stat fn 추가 → DAPTPGX 10+ claim 🟡→🔵 round-trip 가능 |
-| `/Users/ghost/core/demiurge/archive/session-notes/patches/hexa-atlas-pgx-kind-extension.md` | atlas-spec-extension (promoter parser fix + 9 K kind documentation) | 4 staged shard promote 정상화 → DAPTPGX 4 atom 🔵 escalation |
+| `/Users/mini/dancinlab/demiurge/archive/session-notes/patches/hexa-lang-stdlib-bio-stats.md` | stdlib-extension (verify --expr 분기 + stdlib/bio/stats/*) | 8 bio-stat fn 추가 → DAPTPGX 10+ claim 🟡→🔵 round-trip 가능 |
+| `/Users/mini/dancinlab/demiurge/archive/session-notes/patches/hexa-atlas-pgx-kind-extension.md` | atlas-spec-extension (promoter parser fix + 9 K kind documentation) | 4 staged shard promote 정상화 → DAPTPGX 4 atom 🔵 escalation |
 
 ### 5.2 d2 breakthrough paths — 2 patch 흡수 후 예상 경로
 
@@ -301,12 +301,12 @@ toolchain의 두 한계 (promoter parser bug · bio-stat fn 부재) 각각에 �
 
 ## 10. cross-reference
 
-- V1 inventory: `/Users/ghost/core/demiurge/DAPTPGX/verify/V1_claim_inventory.md`
-- V3 numerical: `/Users/ghost/core/demiurge/DAPTPGX/verify/V3_numerical_recompute.md`
-- V3 sim asset: `/Users/ghost/core/demiurge/DAPTPGX/sims/v3_recompute.hexa`
+- V1 inventory: `/Users/mini/dancinlab/demiurge/DAPTPGX/verify/V1_claim_inventory.md`
+- V3 numerical: `/Users/mini/dancinlab/demiurge/DAPTPGX/verify/V3_numerical_recompute.md`
+- V3 sim asset: `/Users/mini/dancinlab/demiurge/DAPTPGX/sims/v3_recompute.hexa`
 - inbox patches (작성):
-  - `/Users/ghost/core/demiurge/archive/session-notes/patches/hexa-lang-stdlib-bio-stats.md`
-  - `/Users/ghost/core/demiurge/archive/session-notes/patches/hexa-atlas-pgx-kind-extension.md`
+  - `/Users/mini/dancinlab/demiurge/archive/session-notes/patches/hexa-lang-stdlib-bio-stats.md`
+  - `/Users/mini/dancinlab/demiurge/archive/session-notes/patches/hexa-atlas-pgx-kind-extension.md`
 - staged shards (toolchain blocker 해결 시 promote 대상):
   - `/tmp/daptpgx-staging/atlas.append.witness-1779575080000-CYP2C19-kor-PM-freq.n6`
   - `/tmp/daptpgx-staging/atlas.append.witness-1779575093000-CYP2C19-kor-IM_plus_PM-freq.n6`

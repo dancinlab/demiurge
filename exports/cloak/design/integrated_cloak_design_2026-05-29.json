@@ -1,0 +1,60 @@
+{
+  "record_kind": "cloak_design_record",
+  "domain": "CLOAK",
+  "cell": "integrated-cloak-parameter-dossier (closed-form 파라미터 봉인)",
+  "verb": "3/7 design (설계 · 어떤 값으로)",
+  "iso_stamp": "2026-05-29",
+  "produced_by": "AUTHORED (manual) — demiurge 7-verb spine Phase C verb-3. Phase A 폐형해 + Phase B 메타셀 위에 4 hexa-lang substrate (Drude · Lorentz · Veselago · Pendry) closed-form 파라미터 dossier 봉인. 본 record 는 4 PR self-test verbatim 재인용 + Pendry 1999 filling factor closed-form.",
+  "source_refs": {
+    "domain_md": "domains/cloak.md §Phase C verb-3 design",
+    "phase_a_ledger": "exports/cloak/verify/V4_final_tier_ledger.md §2 메타 carrier 3-단계 합성",
+    "phase_b_dossier": "exports/cloak/design/phase_b_metacell.md §2 Hex-SRR 셀 설계",
+    "merged_prs": ["#1934 SRR Lorentz", "#1936 Veselago", "#1938 verify-cli wire-up", "#1943 RTSC Drude"]
+  },
+  "drude_params": {
+    "carrier_density_n_e_m3": 1e28,
+    "carrier_density_source": "RT-SC 박막 (MgB₂ or Graphene) — UFO/CLOAK.md §3 D-CLOAK-1 보편성",
+    "omega_p_rad_s": 5.64146e15,
+    "omega_p_formula": "ω_p = √(n_e · e² / (ε₀ · m_e))",
+    "omega_p_verdict": "🟢 PR #1943 F7 self-test PASS (rel_err 2.59e-4 vs CODATA)",
+    "omega_star_rad_s": 2.5e15,
+    "epsilon_re_at_half_omega_star": -3.0,
+    "epsilon_branch_verdict": "🟢 PR #1943 F6 self-test PASS (Re{ε(0.5·ω*)}=-3.0 음실수 실증)"
+  },
+  "lorentz_params": {
+    "q_factor": 48,
+    "q_derivation": "Q = ω₀/Γ = σ(6) · τ(6) = 12 · 4 = 48 (HEX-N6 🔵 lattice + Pendry 1999)",
+    "q_atlas": "@C n6-bt-762 sigma_tau=48",
+    "omega_zero_formula": "ω₀ = 1/√(L · C)",
+    "filling_factor_F": 0.7853981633974483,
+    "filling_factor_formula": "F = π · r_o² / a² = π · (5/10)² = π/4 ≈ 0.7854 (Pendry 1999 PRL 76, 4773)",
+    "gamma_estimate_rad_s": 1.175e14,
+    "gamma_derivation": "Γ ≈ ω₀ / Q (가시광 ω₀ ≈ 5.64e15 / 48 = 1.175e14 rad/s)",
+    "mu_re_branch_verdict": "🟢 PR #1934 F7 self-test PASS (μ_re(ω/ω₀=1.0001) = -1999.26 < 0 실증)"
+  },
+  "veselago_composition": {
+    "n_eff_formula": "n_eff = -√(ε · μ) when ε<0 ∧ μ<0",
+    "n_eff_cloak_demand": -77.45,
+    "n_eff_cloak_derivation": "-√(|−3.0| · |−1999.26|) = -√(5997.78) ≈ -77.45 (음굴절 active)",
+    "n_eff_integer_case_test": -2.44949,
+    "n_eff_integer_test_derivation": "ε=-2, μ=-3 → n = -√6 = -2.449489743",
+    "veselago_verdict": "🟢 PR #1936 F3 self-test PASS (cloak case integer 검증)",
+    "branch_sign_invariant": "음실수 가지 (lower half-plane) — Veselago 1968 Sov.Phys.Usp. 10, 509"
+  },
+  "mk_roadmap": [
+    {"mk": "Mk.I", "year": "2026-30", "band_oct": "τ=4 (μW~GHz)", "rcs_m2": 1e-3, "pitch_nm": 100, "cost_usd_per_m2": 5000, "tier": "🟡 citation feasibility"},
+    {"mk": "Mk.II", "year": "2030-40", "band_oct": "σ-τ=8", "rcs_m2": 1e-6, "pitch_nm": 10, "cost_usd_per_m2": 500, "tier": "🟢 closed-form designed (this dossier)"},
+    {"mk": "Mk.III", "year": "2040-55", "band_oct": "σ=12 (가시광)", "rcs_m2": 1e-8, "pitch_nm": 1, "cost_usd_per_m2": 50, "tier": "🟠 deferred (next-gen lithography)"},
+    {"mk": "Mk.IV", "year": "2055-80", "band_oct": "J₂=24", "rcs_m2": 1e-10, "pitch_nm": "atomic", "cost_usd_per_m2": 5, "tier": "⚪ falsifier (J₂ calc gap)"},
+    {"mk": "Mk.V", "year": "2080+", "band_oct": "J₂·φ=48 (X-ray)", "rcs_m2": 0, "pitch_nm": "quantum", "cost_usd_per_m2": null, "tier": "⚪ 사고실험"}
+  ],
+  "design_intent": "Mk.II 시제품 closed-form 파라미터 dossier — 모든 핵심 상수가 (a) HEX-N6 🔵 lattice anchor 의 1-step composition OR (b) merged hexa-lang substrate 7/7 self-test PASS 의 verbatim 재인용.",
+  "scope_caveats": [
+    "closed-form 파라미터 ≠ FDTD/HFSS 수치 수렴 — verb-4 analyze 에서 retrieval cross-check",
+    "Drude/Lorentz/Veselago 는 effective-medium 가정 — 단파장 (λ < 10·a) 영역 외삽 위험",
+    "Mk.III~V cost 표는 citation/사고실험 — 실제 비용은 downstream foundry quote 의존",
+    "measurement_gate = GATE_OPEN — design dossier 는 doc-only · absorbed claim 아님 (@D d5 invariant)"
+  ],
+  "gate": "OPEN",
+  "absorbed": false
+}

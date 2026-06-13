@@ -467,10 +467,10 @@ atlas append-witness --kind X --id Astrolabe.USC.proprietary \
 
 ## §13. cross-reference
 
-- M11 (caller 인벤토리, 5-tool 비교 표): `/Users/ghost/core/demiurge/archive/session-notes/daptpgx-cyp-callers.md`
-- M7 (POC genotyping + EMR CDS workflow): `/Users/ghost/core/demiurge/DAPTPGX/M7_map.md` §6, §8
-- M1 (한국 allele 빈도 — caller 검증의 ground truth): `/Users/ghost/core/demiurge/DAPTPGX/M1_allele.md` §3
-- M5 (POC PFT + genotyping panel): `/Users/ghost/core/demiurge/DAPTPGX/M5_pft.md` §8
+- M11 (caller 인벤토리, 5-tool 비교 표): `/Users/mini/dancinlab/demiurge/archive/session-notes/daptpgx-cyp-callers.md`
+- M7 (POC genotyping + EMR CDS workflow): `/Users/mini/dancinlab/demiurge/DAPTPGX/M7_map.md` §6, §8
+- M1 (한국 allele 빈도 — caller 검증의 ground truth): `/Users/mini/dancinlab/demiurge/DAPTPGX/M1_allele.md` §3
+- M5 (POC PFT + genotyping panel): `/Users/mini/dancinlab/demiurge/DAPTPGX/M5_pft.md` §8
 - hexa-lang stdlib target: `~/core/hexa-lang/stdlib/bio/pgx/caller/{pypgx,pharmcat,aldy,router}.hexa` (별도 absorb 라운드)
 - atlas K-prefix: `X` (tool reference) — §10.2 5개 witness 등록
 - gap F8 cross-tool-consistency: M13 본 milestone이 직접 응답 (literature audit + spec, 한국 cohort 실측은 Path A 별도)

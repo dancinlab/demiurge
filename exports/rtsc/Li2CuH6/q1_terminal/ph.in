@@ -1,0 +1,14 @@
+Li2CuH6 electron-phonon 4x4x4 q (demiurge RTSC cation-VEC funnel · ambient X2MH6 VEC=19)
+&inputph
+  prefix = 'li2cuh6'
+  outdir = '/home/aiden/rtsc_li2cuh6/out'
+  fildyn = '/home/aiden/rtsc_li2cuh6/li2cuh6.dyn'
+  fildvscf = 'li2cuh6.dvscf'
+  ldisp = .true.
+  nq1 = 4, nq2 = 4, nq3 = 4
+  tr2_ph = 1.0d-14
+  recover = .true.
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+/

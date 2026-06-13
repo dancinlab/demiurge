@@ -1,0 +1,63 @@
+&CONTROL
+  ! Fm-3m (SG 225) sodalite clathrate ThH10 — LaH10 prototype.
+  ! Th @ 4a (0,0,0), H @ 8c (1/4,1/4,1/4), H @ 32f (x,x,x) x~0.3750000.
+  ! START celldm(1)=9.60 Bohr (~5.08 A). vc-relax FINDS true a @ 100 GPa (ThH10 Fm-3m clathrate, Semenok-family; predicted Tc 160-241K).
+  calculation     = 'vc-relax'
+  prefix          = 'thh10'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ibrav           = 2                ! FCC primitive, Fm-3m (SG 225) — LaH10/YH10 sodalite
+  celldm(1)       = 9.60           ! a_conv ~ 5.08 A
+  nat             = 11               ! 1 Th + 10 H (fcc primitive, 1 f.u.)
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.           ! guard — avoids checkallsym crash
+  occupations     = 'smearing'
+  smearing        = 'mp'             ! Methfessel-Paxton — metallic hydride (d15)
+  degauss         = 0.02             ! d15 small-gap SCF aid
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400             ! d15 maxiter 400
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  press           = 1000.0          ! target 100 GPa (ThH10 Fm-3m clathrate, Semenok-family; predicted Tc 160-241K)
+  press_conv_thr  = 0.5
+  cell_dofree     = 'all'
+/
+ATOMIC_SPECIES
+  Th  232.038   Th.pbe-spfn-rrkjus_psl.1.0.0.UPF
+  H   1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! Fm-3m sodalite: Th @ 4a (0,0,0), H @ 8c (1/4,1/4,1/4),
+! H @ 32f (x,x,x) with x~0.3750000 (H32 cage). fcc-primitive: 1 Th + 2(8c) + 8(32f) = 11 atoms.
+ATOMIC_POSITIONS crystal
+  Th  0.0000000   0.0000000   0.0000000
+  H   0.2500000   0.2500000   0.2500000
+  H   0.7500000   0.7500000   0.7500000
+  H   0.3750000   0.3750000   0.3750000
+  H  -0.3750000  -0.3750000  -0.3750000
+  H   0.3750000   0.3750000  -0.3750000
+  H  -0.3750000  -0.3750000   0.3750000
+  H   0.3750000  -0.3750000   0.3750000
+  H  -0.3750000   0.3750000  -0.3750000
+  H  -0.3750000   0.3750000   0.3750000
+  H   0.3750000  -0.3750000  -0.3750000
+
+K_POINTS automatic
+  12 12 12  0 0 0

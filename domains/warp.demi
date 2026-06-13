@@ -1,0 +1,97 @@
+# warp.demi — verb-cell manifest for the WARP (Alcubierre space-folding
+# propulsion) domain. UFO Stage-4 stage independent domain elevation.
+# SSOT scripts in ~/core/hexa-lang/stdlib/warp/ (NOT YET WIRED — stub)
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+#
+# Citations: Alcubierre, M. (1994) Class. Quantum Grav. 11, L73 — original
+# warp metric; UFO/warp/hexa-*.md — in-tree spec + 13-falsifier preregister.
+#
+# Domain caveat: WARP cells are ALL ⚪ SPECULATION-FENCED at v1.0.0 —
+# exotic-matter / WEC-NEC-violation wet-lab apparatus does not exist.
+# Lattice arithmetic (δ=1/σ · R=n · σ·φ=24) is derive-able from HEX-N6
+# 🔵 anchors but DOES NOT prove the physics (g3 honest fence).
+
+[cell.specify]
+substrate = python3
+script = stdlib/warp/specify.py
+record_kind = warp_specify_record
+output_dir = exports/warp/specify
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Warp drive target spec skeleton (payload · v_eff · exotic E_neg budget) — TEMPLATE.",
+  "F-WARP-{1,2,3} falsifier preregister all OPEN; UNPROVEN at v1.0.0.",
+  "measurement_gate = GATE_OPEN permanently — apparatus does not exist (g3).",
+]
+
+[cell.structure]
+substrate = python3
+script = stdlib/warp/structure.py
+record_kind = warp_structure_record
+output_dir = exports/warp/structure
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Bubble δ=1/σ + R=n=6 geometry skeleton — TEMPLATE.",
+  "Lattice derive from HEX-N6 sigma(6)=12 🔵 + n=6 🔵 — arithmetic only.",
+]
+
+[cell.design]
+substrate = python3
+script = stdlib/warp/design.py
+record_kind = warp_design_record
+output_dir = exports/warp/design
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Alcubierre 1994 metric closed-form parameter dossier — symbolic only.",
+  "Exotic matter E_neg budget = OPEN; no laboratory source.",
+]
+
+[cell.analyze]
+substrate = python3
+script = stdlib/warp/analyze.py
+record_kind = warp_analyze_record
+output_dir = exports/warp/analyze
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Einstein field equation symbolic check (Alcubierre stress-energy) — DEFERRED.",
+  "No hexa-native GR solver in current stdlib.",
+]
+
+[cell.synthesize]
+substrate = python3
+script = stdlib/warp/synthesize.py
+record_kind = warp_synthesize_record
+output_dir = exports/warp/synthesize
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Drive component BOM skeleton — TEMPLATE only.",
+  "Exotic matter source UNAVAILABLE; entire BOM is gated.",
+]
+
+[cell.verify]
+substrate = python3
+script = stdlib/warp/verify.py
+record_kind = warp_verify_record
+output_dir = exports/warp/verify
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "F-WARP-{1,2,3} preregister state check (monotone OPEN→CONFIRMED|DEMOTED).",
+  "All 3 falsifiers OPEN at v1.0.0 — no apparatus exists (g3).",
+]
+
+[cell.handoff]
+substrate = python3
+script = stdlib/warp/handoff.py
+record_kind = warp_handoff_record
+output_dir = exports/warp/handoff
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Theoretical-physics paper handoff skeleton — TEMPLATE.",
+  "Lab-apparatus handoff = N/A (apparatus does not exist).",
+]

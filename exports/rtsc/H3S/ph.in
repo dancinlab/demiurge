@@ -1,0 +1,14 @@
+H3S phonon + electron-phonon 4x4x4 q (Im-3m BCC hydride · H3S-prototype)
+&inputph
+  prefix              = 'h3s'
+  outdir = './out'
+  fildyn              = 'h3s.dyn'
+  fildvscf            = 'dvscf'
+  ldisp               = .true.
+  nq1                 = 4, nq2 = 4, nq3 = 4
+  tr2_ph              = 1.0d-14
+  electron_phonon     = 'simple'     ! Allen-Dynes Tc from lambda/omega_log
+  el_ph_sigma         = 0.005
+  el_ph_nsigma        = 10           ! sigma scan -> plateau search for lambda
+  recover             = .true.       ! checkpoint-safe / resumable
+/

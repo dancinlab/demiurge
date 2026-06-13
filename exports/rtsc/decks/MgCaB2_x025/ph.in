@@ -1,4 +1,4 @@
-MgCaB2 x=0.25 phonon + electron-phonon 2x2x1 q (RTSC A25 · Ca-doped MgB2 · AMBIENT BCS line)
+MgCaB2 x=0.25 phonon + electron-phonon 2x2x1 q (RTSC A25 - Ca-doped MgB2 - AMBIENT BCS line)
 &inputph
   prefix = 'mgcab2_x025'
   outdir = '/home/aiden/rtsc_mgcab2_x025/out'
@@ -13,7 +13,7 @@ MgCaB2 x=0.25 phonon + electron-phonon 2x2x1 q (RTSC A25 · Ca-doped MgB2 · AMB
   ldisp = .true.
   nq1 = 2, nq2 = 2, nq3 = 1
   tr2_ph = 1.0d-14
-  recover = .true.            ! checkpoint-safe — undersized walltime loses 0 work
+  recover = .true.            ! checkpoint-safe - undersized walltime loses 0 work
   ! 'simple' el-ph: double-delta EPC, swept over el_ph_nsigma broadenings.
   ! Harvest reads the sigma-plateau lambda (NOT the monotone-broadening tail).
   electron_phonon = 'simple'

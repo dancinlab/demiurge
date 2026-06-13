@@ -1,0 +1,54 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'labh8'
+  outdir          = './out'
+  verbosity       = 'high'
+  pseudo_dir      = './pseudo'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav = 0
+  nat             = 10               ! 1 La (4a) + 1 B (4b) + 8 H (32f BH8 clathrate cage), Z=1
+  ntyp            = 3
+  ecutwfc         = 80
+  ecutrho         = 800
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  La  138.905   La.pbe-spfn-rrkjus_psl.1.0.0.UPF
+  B   10.811   B.pbe-n-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+! BH8 clathrate cage: La @ 4a (0,0,0), B @ 4b (1/2,1/2,1/2), H @ 32f (xxx, x~0.12).
+! fcc-primitive; vc-relax refines the 32f free coordinate (LaBH8 = low-P ternary superhydride).
+
+CELL_PARAMETERS (angstrom)
+  -2.83849   -0.379314   2.83849
+  0.379297   2.83848   2.83848
+  -2.8385   2.8385   -0.379319
+ATOMIC_POSITIONS (crystal)
+La           -0.0000000013       -0.0000000035       -0.0000000035
+B             0.5000000016        0.4999999993        0.4999999995
+H             0.2347651502        0.2347674360        0.2347644656
+H            -0.2347651533       -0.2347674387       -0.2347644681
+H             0.7008617609        0.7008624869        0.3734039605
+H             0.2991382324        0.2991375163        0.6265960485
+H             0.7008617909        0.3734041979        0.7008615235
+H             0.2991382082        0.6265958122        0.2991384744
+H             0.3734040497        0.7008624954        0.7008615249
+H             0.6265959608        0.2991374981        0.2991384747
+K_POINTS automatic
+  12 12 12  0 0 0
+
+

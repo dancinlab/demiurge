@@ -2,7 +2,6 @@
 # Figure 1: 5-lab Nb tunneling measurements vs BCS prediction.
 # Publication-style: 1-column matplotlib, error bars, threshold band, consensus.
 import math
-import os
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
@@ -70,8 +69,6 @@ ax.legend(loc="lower left", fontsize=8, frameon=False)
 ax.grid(axis="x", linestyle=":", linewidth=0.5, alpha=0.5)
 
 plt.tight_layout()
-# Output beside the figures/ dir (parent of this _scripts/ dir); override via FIG_OUT_DIR.
-_fig_dir = os.environ.get("FIG_OUT_DIR", os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-out = os.path.join(_fig_dir, "fig01_measurement_panel.pdf")
+out = "/Users/mini/dancinlab/demiurge/PAPERS/sample-nb-bcs-absorbed/figures/fig01_measurement_panel.pdf"
 plt.savefig(out, bbox_inches="tight", pad_inches=0.05)
 print(f"[fig01] wrote {out}  rel_err={rel:.4f}%  consensus={mean:.4f}+/-{sigma:.4f}")

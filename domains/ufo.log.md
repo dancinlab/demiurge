@@ -2,6 +2,19 @@
 
 Append-only history sister of `UFO.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-05-29 — 🛸 Stage-4~7 추진 사다리 4-도메인 독립 격상 (공간 접기 + 차원 도약 + 차원 활용)
+
+> trigger: 사용자 directive "ufo 에 있던 추진 단계별도 도메인 생성필요한데 · 공간 접기 등등". UFO 통합 캐리어의 Stage-1~3 (RTSC · FUSION · ANTIMATTER) 은 기존 도메인 재사용. Stage-4~7 (warp · wormhole · dim-jump · dim-use) 은 그동안 `UFO/{warp,wormhole,dimjump,dimuse}/hexa-*.md` in-tree spec + F-WARP/WORM/DIM/USE-{*} 13-falsifier preregister 로만 존재했음 — 독립 도메인 격상으로 sibling 가시화.
+
+- [x] 🌀 WARP — Alcubierre 공간 접기(δ=1/σ R=n=6) → `domains/warp.md` + `.log.md` + `.demi` (HEX-N6 σ=12 🔵 derive · F-WARP-{1,2,3} OPEN UNPROVEN · ⚪ baseline · @D d2 breakthrough path 명시)
+- [x] 🕳️ WORMHOLE — Morris-Thorne 공간 구멍(b₀=ℓ_Pl·σ throat) → `domains/wormhole.md` + log + demi (HEX-N6 σ=12 × Planck length anchor · F-WORM-{1,2,3} OPEN · WARP sibling 과 exotic matter source 공유)
+- [x] 🌌 DIM-JUMP — Kaluza-Klein 차원 도약(4D→6D→10D→11D→24D→26D 사다리) → `domains/dim-jump.md` + log + demi (HEX-N6 n=6 = 6D Calabi-Yau · J₂=24 = 24D bosonic · F-DIM-{1,2,3} OPEN · CERN LHC 한계 1e-19 m cross-link)
+- [x] ♾️ DIM-USE — τ=4 cycle + (σ-φ)²=100c composite identity → `domains/dim-use.md` + log + demi (HEX-N6 tau(6)=4 + sigma·phi=24 🔵 derive · F-USE-{1,2,3,4} OPEN · DIM-JUMP 선행 stage 의존)
+- [x] DOMAINS.tape 〔물리/소재〕 섹션에 4 행 등록 (`DIM-JUMP` · `DIM-USE` · `WARP` · `WORMHOLE`)
+- [x] honest framing — 全 Stage-4~7 도메인 ⚪ SPECULATION-FENCED baseline · F-WARP/WORM/DIM/USE-{*} 13-falsifier preregister 全 OPEN UNPROVEN · n=6 격자 산술 일치만 🔵 derive (산술 ≠ 물리 인과 g5) · "불가능" framing 금지 @D d6 · breakthrough path candidate 명시 @D d2 (exotic matter / Planck-scale apparatus / 후속 가속기)
+
+cross-link refresh: UFO Phase A `Stage-4~7` 항목 → 독립 도메인 진입점 추가 (이 log entry 참조). cloak.log.md 의 misplaced UFO 4-domain entry 는 제거됨 (CLOAK 도메인 의 부수축이 아니라 UFO 의 추진 stage 라서 ufo.log.md 가 정확한 SSOT).
+
 ## 2026-05-26 — 🛸 V2 atlas atom-fold 캠페인 R1·R2 — UFO closed-form 7개 hexa-lang 아틀라스 흡수 (🟢 ×7 verbatim · PR #1222·#1244)
 
 > absorbed=TRUE 이후 후속 — CERN·ANTIMATTER 식 atom 캠페인. UFO 의 magnitude-safe·formal-exact closed-form 을 hexa-lang verify recompute dispatch (`tool/verify_cli.hexa::_recompute_float` + `compiler/atlas/calc_dispatch.hexa::calc_is_float_fn`) 에 등록 → recompute-resolvable atom 흡수 (`@F verified-ufo_*-num`).

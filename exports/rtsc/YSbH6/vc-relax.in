@@ -1,0 +1,57 @@
+&control
+  ! A15-type ternary hydride — YSbH6 (Cr3Si motif, cubic Pm-3).
+  ! Y + Sb on the 2a bcc sites (Pm-3n->Pm-3 since A!=B);
+  !   H6 forms the A15 6c chains. START celldm(1)=9.20 Bohr; vc-relax FINDS a.
+  calculation = 'vc-relax'
+  prefix = 'ysbh6'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  etot_conv_thr = 1.0d-5
+  nstep = 200
+  verbosity = 'low'
+/
+&system
+  ! ibrav=1 simple cubic; 8-atom A15 cell (1 Y + 1 Sb + 6 H).
+  ibrav = 1
+  celldm(1) = 9.20
+  nat = 8
+  ntyp = 3
+  ecutwfc = 80.0
+  ecutrho = 640.0
+  nosym = .true.
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+&ions
+  ion_dynamics = 'bfgs'
+/
+&cell
+  cell_dynamics = 'bfgs'
+  press = 500.0
+  press_conv_thr = 0.5
+/
+
+ATOMIC_SPECIES
+  Y 88.906  Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Sb 121.760 Sb.pbe-n-rrkjus_psl.1.0.0.UPF
+  H  1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Y 0.00 0.00 0.00
+  Sb 0.50 0.50 0.50
+  H  0.25 0.00 0.50
+  H  0.75 0.00 0.50
+  H  0.50 0.25 0.00
+  H  0.50 0.75 0.00
+  H  0.00 0.50 0.25
+  H  0.00 0.50 0.75
+K_POINTS automatic
+  12 12 12 0 0 0

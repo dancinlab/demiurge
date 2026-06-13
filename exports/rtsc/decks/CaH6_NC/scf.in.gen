@@ -1,0 +1,48 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'cah6'
+  outdir          = './out'
+  verbosity       = 'high'
+  pseudo_dir      = './pseudo'
+  tstress         = .true.
+  tprnfor         = .true.
+/
+&SYSTEM
+  ibrav = 0
+  nat             = 7
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 320
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Ca  40.078   Ca_ONCV_PBE_sr.upf
+  H    1.008   H_ONCV_PBE_sr.upf
+
+
+CELL_PARAMETERS (angstrom)
+  1.72836   1.72749   1.72844
+  -1.72811   1.72816   1.72848
+  -1.72837   -1.72815   1.72816
+ATOMIC_POSITIONS (crystal)
+Ca           -0.0004167741        0.0000625121       -0.0009087462
+H             0.2496023450        0.5001725705       -0.2509621771
+H             0.4995901630        0.2500668706        0.2491359179
+H             0.2495377073        0.2500955061        0.4988801974
+H             0.7496351101        0.4999747103        0.2491533852
+H             0.4995853529       -0.2499455318        0.7490946945
+H            -0.2504316893        0.7500010397        0.4992539693
+K_POINTS automatic
+  16 16 16  0 0 0
+
+

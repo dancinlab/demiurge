@@ -42,7 +42,7 @@ ICER   = Cost / QALY        [KRW per QALY]
 
 ```
 $ pool list
-error: `hexa build /Users/ghost/.hx/packages/pool/bin/pool.hexa` failed (compile error)
+error: `hexa build /Users/mini/.hx/packages/pool/bin/pool.hexa` failed (compile error)
   build/artifacts/...c:707:54: error: use of undeclared identifier 'ks'
 ```
 → pool CLI 자체가 빌드 깨짐 (hexa-lang 상류 회귀). ssh ubu-2 직접 dispatch.
