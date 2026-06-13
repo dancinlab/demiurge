@@ -1,0 +1,17 @@
+guide seeds (mRNA 7-mer target site, DNA):
+  DKK1_g971    guide5'=UAUAAAAGGAGUUCACUGC  seed_site=CTTTTAT
+  DKK1_cds539  guide5'=UUUUGCAGUAAUUCCCGGG  seed_site=CTGCAAA
+  SRD5A2_1427  guide5'=UCAUCAACUAAGACACUGC  seed_site=GTTGATG
+  SFRP1_3006   guide5'=UUUAUCAGGAUAACUCUCC  seed_site=CTGATAA
+  AR_2857      guide5'=UUGAAGAAGACCUUGCAGC  seed_site=TTCTTCA
+
+scanned 205792 transcripts (Ensembl GRCh38 cDNA r111)
+per-guide seed-driven off-target transcript count (7-mer exact, miRNA-like seed):
+  DKK1_g971   :  28659 transcripts (13.93%)  [HIGH]
+  DKK1_cds539 :  34517 transcripts (16.77%)  [HIGH]
+  SRD5A2_1427 :  21372 transcripts (10.39%)  [HIGH]
+  SFRP1_3006  :  19327 transcripts (9.39%)  [HIGH]
+  AR_2857     :  44670 transcripts (21.71%)  [HIGH]
+
+note: 7-mer seed match in ANY transcript region = upper-bound off-target pool; true risk needs 3'UTR-restricted + expression-weighting (siSPOTR/GESS). Random 7-mer expectation ~ ntx*(1/4)^7 baseline.
+random-7mer baseline per transcript ~ 6.10e-05; expected hits if no structure ≈ 18005 (1.5kb avg)

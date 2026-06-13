@@ -1,0 +1,16 @@
+=== DC12 epigenetic-mark heritability over HFSC divisions ===
+  DNMT1 fidelity f=0.950 → per-site survival f^25=0.277 → P(mark silencing@50yr)=0.155
+  DNMT1 fidelity f=0.980 → per-site survival f^25=0.603 → P(mark silencing@50yr)=0.832
+  DNMT1 fidelity f=0.990 → per-site survival f^25=0.778 → P(mark silencing@50yr)=0.984
+  DNMT1 fidelity f=0.995 → per-site survival f^25=0.882 → P(mark silencing@50yr)=0.999
+  DNMT1 fidelity f=0.999 → per-site survival f^25=0.975 → P(mark silencing@50yr)=1.000
+
+  natural DNMT1 maintenance fidelity ≈ 0.96-0.99 per CpG/division (literature).
+  → at f=0.99, M=8, m=4: mark robustly survives 25 stem divisions (50yr).
+  → at f=0.95: marginal — supports a RE-DOSE / booster design, or pairing with a
+     self-reinforcing edit (recruit endogenous DNMT to make the mark self-propagating).
+
+  FINDING: DC3 epigenetic-lock permanence HOLDS for quiescent HFSC (few divisions/50yr)
+  at physiological DNMT1 fidelity, BUT is fidelity-sensitive — a self-reinforcing
+  (CpG-island-spreading) edit or periodic booster removes the f<0.97 risk.
+  (g63: maintenance-fidelity values are literature-order estimates, not hexa-verified.)

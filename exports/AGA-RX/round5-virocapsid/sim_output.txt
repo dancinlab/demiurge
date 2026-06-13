@@ -1,0 +1,14 @@
+
+=== AAV capsid spec (AGA-RX VIROCAPSID, round 5) ===
+  T-number              = 1  (icosahedral)
+  subunits              = 60 VP
+  pentamers / vertices  = 12 / 12  (σ6=12)
+  hexamers              = 0
+  diameter              = 26.0 nm
+  σ(6)=12 STRUCTURAL-EXACT = True
+  assembly yield (substrate) = 0.7587
+  mass_conservation_error    = 2.44e-15
+  primary cassette 0.626 kb  fits 4.7kb ssAAV = True
+  durability factor vs daily topical = 540.0x
+
+__AGA_RX_VIROCAPSID__ PASS

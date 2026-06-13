@@ -1,0 +1,538 @@
+{
+  "version": "1.0",
+  "last_updated_utc": "2026-06-04T04:35:00Z",
+  "pods": {
+    "37868501": {
+      "host": "ssh6.vast.ai:28500",
+      "provider": "vast",
+      "note": "EXISTING \\u2014 Wave-1 (do not touch)"
+    },
+    "38095989": {
+      "host": "ssh9.vast.ai:15988",
+      "provider": "vast",
+      "note": "EXISTING \\u2014 A11 CaAuH3 flagship wave (do not touch; perovskite scf-done workdirs live here)"
+    },
+    "38367660": {
+      "host": "ssh9.vast.ai:17660",
+      "provider": "vast",
+      "cores": 192,
+      "note": "EXISTING wave3 pod (9 jobs np=6) + 8 NEW bin-packed RTSC jobs np=6 each \\u2014 102 ranks <= 192 cores, no oversubscription"
+    },
+    "38382692": {
+      "host": "ssh8.vast.ai:22692",
+      "provider": "vast",
+      "cores": 192,
+      "owner": "rtsc-parallel-fire",
+      "registered_utc": "2026-05-29T10:24:00Z",
+      "note": "NEW \\u2014 Li2MgH16 SOLO dedicated pod. micromamba QE 7.5. np=12, OMP=1. Shortest-walltime spec (nq 2x2x2, ecut 60, 250 GPa)."
+    },
+    "38384813": {
+      "host": "ssh6.vast.ai:24812",
+      "provider": "vast",
+      "owner": "rtsc-wave3b-1",
+      "registered_utc": "2026-05-29T10:41:09Z",
+      "note": "wave3b fire pod \\u2014 RTX PRO 6000 Blackwell 256-core, QE 7.5 conda-forge, 11 RTSC el-ph jobs PARALLEL (np=6 each, 66 ranks <= 256 cores, OMP/MKL/OPENBLAS=1, NO oversubscription, NO sequential chain)"
+    },
+    "38444699": {
+      "host": "ssh7.vast.ai",
+      "provider": "vast",
+      "registered_utc": "2026-05-29T18:00:55Z"
+    },
+    "4528": {
+      "host": "root@ssh6.vast.ai",
+      "registered_utc": "2026-05-30T07:38:15Z"
+    },
+    "4590": {
+      "host": "root@ssh6.vast.ai",
+      "registered_utc": "2026-05-30T07:38:57Z"
+    },
+    "38754569": {
+      "host": "ssh3.vast.ai",
+      "provider": "vast",
+      "registered_utc": "2026-05-31T10:56:43Z"
+    },
+    "38832": {
+      "host": "root@194.14.47.19",
+      "registered_utc": "2026-05-31T16:22:00Z"
+    },
+    "1448": {
+      "host": "root@185.99.66.48",
+      "registered_utc": "2026-05-31T16:22:14Z"
+    },
+    "1522": {
+      "host": "root@107.205.138.127",
+      "registered_utc": "2026-05-31T16:22:17Z"
+    },
+    "1471": {
+      "host": "root@93.91.156.99",
+      "registered_utc": "2026-05-31T16:22:20Z"
+    },
+    "38864503": {
+      "provider": "vast",
+      "owner": "rtsc-mb3c3-ambient-fire",
+      "registered_utc": "2026-06-01T17:40:00Z",
+      "note": "NEW \\u2014 SrB3C3_ambient dedicated CPU-first pod (dph<0.6). 14-atom B-C clathrate. np=9. vc-relax\\u2192scf\\u2192ph(nq 2x2x2) detached."
+    },
+    "38864512": {
+      "provider": "vast",
+      "owner": "rtsc-mb3c3-ambient-fire",
+      "registered_utc": "2026-06-01T17:40:00Z",
+      "note": "NEW \\u2014 CaB3C3_ambient dedicated CPU-first pod (dph<0.6). 14-atom B-C clathrate. np=9. vc-relax\\u2192scf\\u2192ph(nq 2x2x2) detached."
+    },
+    "38864515": {
+      "provider": "vast",
+      "owner": "rtsc-mb3c3-ambient-fire",
+      "registered_utc": "2026-06-01T17:40:00Z",
+      "note": "NEW \\u2014 LaB3C3_ambient dedicated CPU-first pod (dph<0.6). 14-atom B-C clathrate. np=9. vc-relax\\u2192scf\\u2192ph(nq 2x2x2) detached."
+    },
+    "38986330": {
+      "host": "ssh4.vast.ai",
+      "provider": "vast",
+      "registered_utc": "2026-06-01T19:02:42Z"
+    },
+    "2309": {
+      "host": "root@ssh7.vast.ai",
+      "registered_utc": "2026-06-02T05:02:28Z"
+    },
+    "2483": {
+      "host": "root@ssh7.vast.ai",
+      "registered_utc": "2026-06-02T05:04:20Z"
+    },
+    "2952": {
+      "host": "root@ssh7.vast.ai",
+      "registered_utc": "2026-06-02T05:06:08Z"
+    },
+    "2282": {
+      "host": "root@ssh8.vast.ai",
+      "registered_utc": "2026-06-02T05:06:16Z"
+    },
+    "2422": {
+      "host": "root@ssh8.vast.ai",
+      "registered_utc": "2026-06-02T05:08:30Z"
+    },
+    "2626": {
+      "host": "root@ssh8.vast.ai",
+      "registered_utc": "2026-06-02T05:11:03Z"
+    },
+    "3120": {
+      "host": "root@ssh7.vast.ai",
+      "registered_utc": "2026-06-02T05:12:36Z"
+    }
+  },
+  "jobs": {
+    "rtsc-li2mgh16-solo": {
+      "pod": "38773054",
+      "dir": "/root/decks/Li2MgH16",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "spec": "38-atom FCC primitive Fd-3m, nq=2x2x2, ecut=60, press=2500kbar(250GPa), np=12",
+      "started_utc": "2026-05-29T10:35:30Z",
+      "verdict": "PENDING",
+      "note": "SOLO headline RT-SC candidate",
+      "workdir": "exports/rtsc/decks/Li2MgH16"
+    },
+    "rtsc-baauh3-fire": {
+      "pod": "38772574",
+      "dir": "/root/decks/BaAuH3",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "spec": "5-atom Pm-3m perovskite, nq=4x4x4, ecut=80, press=50GPa, np=6",
+      "started_utc": "2026-05-29T10:31:23Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/BaAuH3"
+    },
+    "rtsc-srpth3-fire": {
+      "pod": "38772758",
+      "dir": "/root/decks/SrPtH3",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "spec": "5-atom Pm-3m perovskite, nq=4x4x4, ecut=80, press=50GPa, np=6",
+      "started_utc": "2026-05-29T10:29:50Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/SrPtH3"
+    },
+    "rtsc-yauh3-fire": {
+      "pod": "38770822",
+      "dir": "/root/decks/YAuH3",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "spec": "5-atom Pm-3m perovskite, nq=4x4x4, ecut=80, press=50GPa, np=6",
+      "started_utc": "2026-05-29T10:31:26Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/YAuH3"
+    },
+    "rtsc-kbeh8-fire": {
+      "pod": "38698513",
+      "dir": "/root/decks/KBeH8",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "spec": "10-atom BeH8 clathrate, nq=2x2x2, ecut=80, press=10GPa, np=6",
+      "started_utc": "2026-05-29T10:29:57Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/KBeH8"
+    },
+    "rtsc-mgbeh8-fire": {
+      "pod": "38706447",
+      "dir": "/root/decks/MgBeH8",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "spec": "10-atom BeH8 clathrate, nq=2x2x2, ecut=80, press=10GPa, np=6",
+      "started_utc": "2026-05-29T10:30:09Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/MgBeH8"
+    },
+    "rtsc-sch9-fire": {
+      "pod": "38770609",
+      "dir": "/root/decks/ScH9",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "spec": "10-atom hexagonal clathrate, nq=2x2x2, ecut=80, press=150GPa, np=6",
+      "started_utc": "2026-05-29T10:30:12Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/ScH9"
+    },
+    "rtsc-ceh9-fire": {
+      "pod": "38770476",
+      "dir": "/root/decks/CeH9",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "spec": "20-atom P6_3/mmc clathrate (Salke2019 coords, ASE orbit), nq=2x2x2, ecut=70, press=100GPa, np=6",
+      "started_utc": "2026-05-29T10:30:15Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/CeH9"
+    },
+    "rtsc-wave3b-LaBeH8": {
+      "pod": "38704334",
+      "dir": "/root/decks/LaBeH8",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "pid": 1028,
+      "np": 6,
+      "pressure_gpa": 20,
+      "started_utc": "2026-05-29T10:48:00Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/LaBeH8"
+    },
+    "rtsc-wave3b-ScBeH8": {
+      "pod": "38706448",
+      "dir": "/root/decks/ScBeH8",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "pid": 1074,
+      "np": 6,
+      "pressure_gpa": 50,
+      "started_utc": "2026-05-29T10:48:00Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/ScBeH8"
+    },
+    "rtsc-wave3b-YBeH8": {
+      "pod": "38709876",
+      "dir": "/root/decks/YBeH8",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "pid": 1120,
+      "np": 6,
+      "pressure_gpa": 50,
+      "started_utc": "2026-05-29T10:48:00Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/YBeH8"
+    },
+    "rtsc-wave3b-LaBH8": {
+      "pod": "38822976",
+      "dir": "/root/decks/LaBH8",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "pid": 1212,
+      "np": 6,
+      "pressure_gpa": 50,
+      "started_utc": "2026-05-29T10:48:00Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/LaBH8"
+    },
+    "rtsc-wave3b-LaH10": {
+      "pod": "38704336",
+      "dir": "/root/decks/LaH10",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "pid": 1258,
+      "np": 6,
+      "pressure_gpa": 250,
+      "started_utc": "2026-05-29T10:48:00Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/LaH10"
+    },
+    "rtsc-wave3b-YH6": {
+      "pod": "38709875",
+      "dir": "/root/decks/YH6",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "pid": 1304,
+      "np": 6,
+      "pressure_gpa": 166,
+      "started_utc": "2026-05-29T10:48:00Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/YH6"
+    },
+    "rtsc-wave3b-YH9": {
+      "pod": "38709877",
+      "dir": "/root/decks/YH9",
+      "kind": "dft-elph",
+      "stage": "vc-relax",
+      "pid": 1350,
+      "np": 6,
+      "pressure_gpa": 250,
+      "started_utc": "2026-05-29T10:48:00Z",
+      "verdict": "PENDING",
+      "workdir": "exports/rtsc/decks/YH9"
+    },
+    "rtsc-h3s-anchor": {
+      "pod": "38713334",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "phonon",
+      "verdict": "PENDING",
+      "note": "re-pointed keep-twin (9 q-pts) \\u00b7 consolidation",
+      "workdir": "exports/rtsc/decks/H3S_anchor"
+    },
+    "rtsc-ysbh6": {
+      "pod": "38823546",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "backlog re-fire \\u00b7 relax done, awaiting scf+ph",
+      "workdir": "exports/rtsc/decks/YSbH6"
+    },
+    "rtsc-thh10": {
+      "pod": "38814083",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "backlog canary \\u00b7 relax done, awaiting scf+ph",
+      "workdir": "exports/rtsc/decks/ThH10_clathrate"
+    },
+    "rtsc-mgcab2": {
+      "pod": "38815084",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "backlog \\u00b7 relax done, awaiting scf+ph",
+      "workdir": "exports/rtsc/decks/MgCaB2_x025"
+    },
+    "rtsc-luh10": {
+      "pod": "38815086",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "backlog falsifier \\u00b7 relax done, awaiting scf+ph",
+      "workdir": "exports/rtsc/decks/LuH10_falsifier"
+    },
+    "rtsc-srb3c3": {
+      "pod": "38864503",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "NOVEL MB3C3 Pm-3n B-C clathrate \\u00b7 AMBIENT-target (press=0) \\u00b7 relax detached \\u00b7 primary gate=DFPT no-imag-modes",
+      "workdir": "exports/rtsc/decks/SrB3C3_ambient"
+    },
+    "rtsc-cab3c3": {
+      "pod": "38864512",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "NOVEL MB3C3 Pm-3n B-C clathrate \\u00b7 AMBIENT-target (press=0) \\u00b7 relax detached \\u00b7 primary gate=DFPT no-imag-modes",
+      "workdir": "exports/rtsc/decks/CaB3C3_ambient"
+    },
+    "rtsc-lab3c3": {
+      "pod": "38864515",
+      "dir": "/root/deck",
+      "kind": "dft-elph",
+      "stage": "relax",
+      "verdict": "PENDING",
+      "note": "NOVEL MB3C3 Pm-3n B-C clathrate \\u00b7 AMBIENT-target (press=0) \\u00b7 relax detached \\u00b7 primary gate=DFPT no-imag-modes",
+      "workdir": "exports/rtsc/decks/LaB3C3_ambient"
+    },
+    "rent-1780340562-ssh4-vast-ai": {
+      "pod": "38986330",
+      "dir": "/Users/mini/dancinlab/demiurge",
+      "kind": "rent",
+      "stage": "rented",
+      "started_utc": "2026-06-01T19:02:42Z",
+      "verdict": "PENDING"
+    },
+    "rtsc-li2mgh16-resume": {
+      "pod": "3120",
+      "dir": "/Users/mini/dancinlab/demiurge",
+      "stage": "running",
+      "pid": 3120,
+      "started_utc": "2026-06-02T05:12:36Z",
+      "verdict": "DEFERRED",
+      "verdict_utc": "2026-06-02T05:14:18Z"
+    },
+    "rtsc-lah10-resume": {
+      "pod": "2626",
+      "dir": "/Users/mini/dancinlab/demiurge",
+      "stage": "running",
+      "pid": 2626,
+      "started_utc": "2026-06-02T05:11:03Z",
+      "verdict": "PENDING"
+    },
+    "sch9-elph-aiden": {
+      "pod": "aiden",
+      "surface": "pool",
+      "workdir": "~/rtsc_sch9",
+      "kind": "rtsc-dft-elph",
+      "terminal_marker": "CHAIN_DONE",
+      "stage": "ph",
+      "metric_parser": "allen_dynes_tc",
+      "verdict": "DEFERRED",
+      "note": "STALLED \u2014 ph q1 iter#2 frozen (cpu 38269s identical across hours, proc alive). aiden \uc815\uccb4/wedge \uc758\uc2ec. \ubb34\ub8cc \ud6c4\ubcf4\u00b7\uac8c\uc774\ud2b8 \ube44\ud06c\ub9ac\ud2f0\uceec. d_defer_no_delete: .nc \ubcf4\uc874, \uc7ac\uc2dc\uc791\uc740 \uc0ac\uc6a9\uc790 \ud310\ub2e8.",
+      "watcher": "bfma5e83v"
+    },
+    "cah6-gate-vast": {
+      "pod": "39247634",
+      "surface": "vast",
+      "host": "161.184.141.187:42510",
+      "workdir": "/root/deck",
+      "kind": "rtsc-dft-elph-gate",
+      "deck": "exports/rtsc/decks/CaH6_NC",
+      "stage": "ph-salvage-q6",
+      "verdict": "PENDING",
+      "note": "SALVAGE: q1-5 dyn+elph DONE+harvested. recover EOF (corrupt elph recover xml) -> recover=.false. start_q=6 last_q=8, q6 scratch removed. ph.x ALIVE recomputing q6. dft-run-corrupt-phonon-recover-salvage recipe.",
+      "watcher": "b1vk5tnsd",
+      "pid": 1786,
+      "log": "/root/deck/.phon.detach.log",
+      "endpoint": "161.184.141.187:42510",
+      "qe_version": "6.7 (apt)"
+    },
+    "baauh3-elph-summer": {
+      "pod": "summer",
+      "surface": "pool",
+      "workdir": "~/rtsc_baauh3",
+      "kind": "rtsc-dft-elph",
+      "terminal_marker": "JOB DONE",
+      "stage": "ph",
+      "verdict": "PENDING",
+      "watcher": "bhvd8valx"
+    },
+    "lah10-gate-vast": {
+      "pod": "39291022",
+      "surface": "pod",
+      "endpoint": "154.42.3.36:25026",
+      "workdir": "/root/deck",
+      "deck": "exports/rtsc/decks/LaH10",
+      "kind": "rtsc-dft-elph-gate",
+      "stage": "ph-salvage-q4",
+      "pid": 1055,
+      "qe_version": "6.7 (apt)",
+      "verdict": "PENDING",
+      "note": "SALVAGE: q1-3 dyn+elph DONE+harvested. dyn4 EMPTY (crash q). recover EOF (corrupt elph recover xml). q4 scratch+q4 phsave records removed (bak /root/deck_q4_bak), recover=.false. start_q=4 last_q=8 (np=9) reusing SCF. ph.x ALIVE recomputing q4."
+    },
+    "li2mgh16-gate-vast": {
+      "pod": "39291033",
+      "surface": "pod",
+      "endpoint": "141.0.85.200:42852",
+      "workdir": "/root/deck",
+      "deck": "exports/rtsc/decks/Li2MgH16",
+      "kind": "rtsc-dft-elph-gate",
+      "stage": "ph-salvage-q1",
+      "pid": 1221,
+      "qe_version": "6.7 (apt)",
+      "verdict": "PENDING",
+      "note": "SALVAGE: dyn1 was EMPTY (q1 never flushed) but SCF intact. recover EOF (corrupt elph recover xml, CURRENT_Q=1). _ph0 cleared (phsave backed up /root/deck_phsave_bak), recover=.false. start_q=1 last_q=8 reusing SCF (np=6). ph.x ALIVE on q1 (114 reps)."
+    },
+    "sch9-gate-vast": {
+      "pod": "39309987",
+      "surface": "pod",
+      "endpoint": "154.42.3.18:17635",
+      "workdir": "/root/deck",
+      "deck": "exports/rtsc/decks/ScH9",
+      "kind": "rtsc-dft-elph",
+      "stage": "scf-ph",
+      "pid": 1054,
+      "qe_version": "6.7 (apt)",
+      "verdict": "PENDING",
+      "note": "relax DONE \u2192 scf+ph chain detached 2026-06-04 \u00b7 QE6.7 \u00b7 re-fire"
+    }
+  },
+  "drive": {
+    "on": true,
+    "budget_cap_usd": 5,
+    "max_pods": 0,
+    "policy": "no-new-paid-rent; auto harvest->verdict->resume(CaH6 relax->scf->ph on already-rented pod) + free-pool re-fire; 14-cand paid fan-out GATED on first terminal lambda.Tc + explicit budget",
+    "heartbeat_s": 1800,
+    "engaged_utc": "2026-06-03",
+    "watched": [
+      "sch9-elph-aiden",
+      "baauh3-elph-summer",
+      "cah6-gate-vast"
+    ],
+    "harvest_policy": "ON EVERY TERMINAL (ph JOB DONE): harvest LIGHT xval set (*.dynN\u00b7*.elph.N\u00b7a2F\u00b7ph.out\u00b7scf.out\u00b7relax.out) \u2192 exports/rtsc/<cand>/harvest_final/ BEFORE teardown \u2014 for QFORGE cross-val (user standing instruction 2026-06-04 \u00b7 d_qforge_xval_archive). NEVER teardown a pod before its light set is local. Drop heavy scratch (*.wfc\u00b7*.dvscf)."
+  },
+  "budget": {
+    "cap_usd": 150,
+    "spent_usd": null,
+    "cap_set_utc": "2026-06-01",
+    "cap_note": "halt re-dispatch on breach (g64); does NOT teardown running pods"
+  },
+  "pools": {
+    "balance": "summer-fixed",
+    "next": "summer",
+    "hosts": {
+      "summer": {
+        "surface": "pool",
+        "mpi_slots": 4,
+        "fire": "-np 4 plain",
+        "note": "BaAuH3 el-ph in-flight (~/rtsc_baauh3)",
+        "qe": "verified 2026-06-03 (pw.x+ph.x, mpirun -np 4 OK, 12c)",
+        "dispatch": "ACTIVE (fixed) \u2014 all new free-pool QE fires here"
+      },
+      "aiden": {
+        "surface": "pool",
+        "mpi_slots": 4,
+        "fire": "-np 4 plain",
+        "note": "ScH9 el-ph in-flight (~/rtsc_sch9, -np 4 plain, scf started 2026-06-03)",
+        "qe": "verified 2026-06-03 (pw.x+ph.x, mpirun -np 4 OK, 12c)",
+        "dispatch": "DISABLED \u2014 summer-fixed policy; in-flight ScH9 finishes, NO new aiden dispatch"
+      }
+    },
+    "note": "pool fire host PINNED to summer (user 2026-06-03). aiden round-robin disabled; in-flight aiden ScH9 finishes naturally, no NEW aiden dispatch (d_defer_no_delete). -np 4 plain (g9)."
+  },
+  "queue": [
+    {
+      "id": "LaH10-gate",
+      "kind": "rtsc-dft-elph-gate",
+      "status": "queued",
+      "priority": "high",
+      "note": "QFORGE gate anchor \u2014 harvest partial (exit 2, dyn1-3+elph1/2); needs terminal el-ph \u2192 fills migration_gate_anchors LaH10 fixture"
+    },
+    {
+      "id": "Li2MgH16-gate",
+      "kind": "rtsc-dft-elph-gate",
+      "status": "queued",
+      "priority": "high",
+      "note": "QFORGE gate anchor \u2014 harvest partial (exit 2, dyn0-1); needs terminal el-ph \u2192 fills Li2MgH16 fixture"
+    }
+  ],
+  "watch": {
+    "armed_utc_jobs": [
+      "sch9-elph-aiden",
+      "baauh3-elph-summer",
+      "cah6-gate-vast"
+    ],
+    "debounce": "exit-code-aware",
+    "poll_s": 300,
+    "cap_h": 8,
+    "logs": {
+      "sch9": "/tmp/lab-watch-sch9.out",
+      "baauh3": "/tmp/lab-watch-baauh3.out",
+      "cah6": "/tmp/lab-watch-cah6.out"
+    }
+  },
+  "qe_version_note": "all 3 gate anchors on QE 6.7 (apt distro). Gate=engine-reproduction is version-internal-consistent (VALID). YH10 L3 ref fixture=QE7.5. For literature-grade absolute \u03bb\u00b7Tc, re-provision QE 7.x (d8 gap filed)."
+}

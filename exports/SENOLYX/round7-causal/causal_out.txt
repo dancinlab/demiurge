@@ -1,0 +1,25 @@
+=== R7 causal model: η_neo as SASP-Hill-repressed progenitor output ===
+baseline aged niche b0=0.8 → η_neo=0.27  (suppressed; matches ~0.49 human floor)
+
+--- do(clearance φ): INTERVENTION (senolytic removes senescent cells) ---
+clearance φ residual b   η_neo
+         0%       0.80    0.27
+        40%       0.48    0.49
+        60%       0.32    0.67
+        80%       0.16    0.86
+        95%       0.04    0.94
+
+--- COUNTERFACTUAL falsifier: clear senescence in YOUNG vs OLD tissue ---
+  young: η pre=0.85 → post-clear=0.93  (lift +0.08)
+  old  : η pre=0.20 → post-clear=0.71  (lift +0.51)
+
+PREDICTIONS (pre-registered, distinguish causal vs confound):
+ • CAUSAL model: clearance lifts η_neo in BOTH young & old (young lift small only because
+   young burden already low — but ANY senescent burden cleared → proportional de-repression).
+ • CONFOUND-only model: clearance gives ZERO lift once you control for age (η set by d(A)).
+ • DISTINGUISHING EXPERIMENT (in-vitro, falsifiable): co-culture progenitors + GRADED senescent
+   burden at FIXED age; measure neogenesis. Causal predicts monotone η↑ as burden↓ (slope>0);
+   confound predicts FLAT (slope≈0). The Hill slope n>0 is the falsifiable signature.
+ • This converts the load-bearing 'clearance→regen' assumption from literature-ASSOCIATION
+   to a MECHANISTIC causal hypothesis with a pre-registered refutation test (g63 honest:
+   Hill params k_S/K/n literature-order; the do-operator STRUCTURE is the contribution).

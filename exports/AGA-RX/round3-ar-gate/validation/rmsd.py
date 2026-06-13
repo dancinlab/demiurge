@@ -17,7 +17,7 @@ def read_pdb_heavy(path):
 
 def read_pdbqt_model(path, model=1):
     cur=0; P=[]; want=(model is not None)
-    started = not want
+    started = not want; in_flex=False
     for ln in open(path):
         if ln.startswith("MODEL"):
             cur=int(ln.split()[1]); started=(cur==model); 
@@ -26,21 +26,17 @@ def read_pdbqt_model(path, model=1):
         if ln.startswith("ENDMDL"):
             if want and cur==model: break
             continue
+        if ln.startswith("BEGIN_RES"):   # flex-receptor side chains start here
+            in_flex=True; continue
+        if ln.startswith("END_RES"):
+            in_flex=False; continue
+        if in_flex: continue              # skip flexible-residue atoms (ligand only)
         if ln.startswith(("ATOM","HETATM")) and (started or not want):
-            el=ln[77:79].strip() or ln[12:16].strip()[0]
-            # strip AD types
-            el=''.join([c for c in el if c.isalpha()])[:2]
-            if el.upper().startswith("H") and el.upper() not in ("HG","HF","HO","HE","HS"):
-                # AD pdbqt: column 77-79 holds AD atom type; treat polar H types
-                pass
-            P.append((float(ln[30:38]),float(ln[38:46]),float(ln[46:54]),el.upper(),ln[77:79].strip()))
-    # filter hydrogens by AD type
-    out=[]
-    for x,y,z,el,ad in P:
-        ad=ad.upper()
-        if ad in ("H","HD","HS"): continue
-        out.append((x,y,z,el if el and el[0].isalpha() else ad[0]))
-    return out
+            ad = ln.split()[-1].upper()           # AutoDock atom type = last token
+            if ad in ("H","HD","HS"): continue     # skip all hydrogens
+            elem = ad[0]                           # heavy-atom element from AD type
+            P.append((float(ln[30:38]),float(ln[38:46]),float(ln[46:54]),elem))
+    return P
 
 def rmsd_match(native, pose):
     # group by element, assign min-cost within element via Hungarian, sum

@@ -1,0 +1,58 @@
+Warning on use of the timeseries module: If the inherent timescales of the system are long compared to those being analyzed, this statistical inefficiency may be an underestimate.  The estimate presumes the use of many statistically independent samples.  Tests should be performed to assess whether this condition is satisfied.   Be cautious in the interpretation of the data.
+********* JAX NOT FOUND *********
+ PyMBAR can run faster with JAX  
+ But will work fine without it   
+Either install with pip or conda:
+      pip install pymbar[jax]     
+               OR                
+      conda install pymbar       
+*********************************
+=== SENOLYX R10 ABFE geldanamycin/HSP90 (SMOKE=False) ===
+/home/summer/micromamba/envs/fep/lib/python3.11/site-packages/openff/interchange/components/interchange.py:1119: FutureWarning: `torch.distributed.reduce_op` is deprecated, please use `torch.distributed.ReduceOp` instead
+  if isinstance(obj, functools._lru_cache_wrapper) and obj.__module__.startswith("openff.interchange"):
+/home/summer/micromamba/envs/fep/lib/python3.11/site-packages/openff/interchange/smirnoff/_create.py:151: PresetChargesAndVirtualSitesWarning: Preset charges were provided (via `charge_from_molecules`) alongside a force field that includes virtual site parameters. Note that virtual sites will be applied charges from the force field and cannot be given preset charges. Virtual sites may also affect the charges of their orientation atoms, even if those atoms are given preset charges.
+  warnings.warn(
+complex: 50647 atoms, ligand 92, anchor CA [688]
+[complex] restraint r0=0.59 rwell=0.74 nm  Veff=2.555 nm^3  SSC=0.26 kcal/mol
+[complex] pre-equilibrating coupled state (25000 steps)...
+[complex] equilibration done
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+[complex] sampler.create...
+Please cite the following:
+        Friedrichs MS, Eastman P, Vaidyanathan V, Houston M, LeGrand S, Beberg AL, Ensign DL, Bruns CM, and Pande VS. Accelerating molecular dynamic simulations on graphics processing unit. J. Comput. Chem. 30:864, 2009. DOI: 10.1002/jcc.21209
+        Eastman P and Pande VS. OpenMM: A hardware-independent framework for molecular simulations. Comput. Sci. Eng. 12:34, 2010. DOI: 10.1109/MCSE.2010.27
+        Eastman P and Pande VS. Efficient nonbonded interactions for molecular dynamics on a graphics processing unit. J. Comput. Chem. 31:1268, 2010. DOI: 10.1002/jcc.21413
+        Eastman P and Pande VS. Constant constraint matrix approximation: A robust, parallelizable constraint method for molecular simulations. J. Chem. Theor. Comput. 6:434, 2010. DOI: 10.1021/ct900463w
+        Chodera JD and Shirts MR. Replica exchange and expanded ensemble simulations as Gibbs multistate: Simple improvements for enhanced mixing. J. Chem. Phys., 135:194110, 2011. DOI:10.1063/1.3660669
+        
+[complex] sampler.minimize...
+[complex] sampler.run (1000 iters)...
+[complex] sampling complete, analyzing...
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+[complex] dG_decouple = 55.53 +/- 0.36 kcal/mol  (ssc=0.26)
+solvent: 2540 atoms, ligand 92
+[solvent] pre-equilibrating coupled state (25000 steps)...
+[solvent] equilibration done
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+[solvent] sampler.create...
+Please cite the following:
+        Friedrichs MS, Eastman P, Vaidyanathan V, Houston M, LeGrand S, Beberg AL, Ensign DL, Bruns CM, and Pande VS. Accelerating molecular dynamic simulations on graphics processing unit. J. Comput. Chem. 30:864, 2009. DOI: 10.1002/jcc.21209
+        Eastman P and Pande VS. OpenMM: A hardware-independent framework for molecular simulations. Comput. Sci. Eng. 12:34, 2010. DOI: 10.1109/MCSE.2010.27
+        Eastman P and Pande VS. Efficient nonbonded interactions for molecular dynamics on a graphics processing unit. J. Comput. Chem. 31:1268, 2010. DOI: 10.1002/jcc.21413
+        Eastman P and Pande VS. Constant constraint matrix approximation: A robust, parallelizable constraint method for molecular simulations. J. Chem. Theor. Comput. 6:434, 2010. DOI: 10.1021/ct900463w
+        Chodera JD and Shirts MR. Replica exchange and expanded ensemble simulations as Gibbs multistate: Simple improvements for enhanced mixing. J. Chem. Phys., 135:194110, 2011. DOI:10.1063/1.3660669
+        
+[solvent] sampler.minimize...
+[solvent] sampler.run (1000 iters)...
+[solvent] sampling complete, analyzing...
+Warning: The openmmtools.multistate API is experimental and may change in future releases
+[solvent] dG_decouple = 38.64 +/- 0.34 kcal/mol  (ssc=0.00)
+================================================================
+=== dG_bind (ABFE, double-decoupling + MBAR) = -16.64 +/- 0.49 kcal/mol ===
+  complex decouple = 55.53 +/- 0.36
+  solvent decouple = 38.64 +/- 0.34
+  restraint std-state correction = 0.26
+  cross-tool: Vina -4.91 | MM-GBSA -66.49 | exp(Kd~1.2uM) ~ -8.1
+  wall = 4.95 h

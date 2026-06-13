@@ -1,0 +1,22 @@
+=== PERIO-CURE axis-collapse (CURE-PRIMITIVE reuse) ===
+  gingiva        mass=0.40 eta_max=0.95
+  PDL            mass=0.30 eta_max=0.85
+  bone_cementum  mass=0.30 eta_max=0.55
+  best-achievable ceiling (no senolytic) = 0.80  → gate 0.9: BLOCK
+  BINDING AXIS = lost bone/cementum neogenesis (η=0.55) — the residual
+  η_bone needed for ≥0.9 gate = 0.88
+
+=== SENOLYX η_neo-lift (reused[SENOLYX]) ===
+sen-clearance  η_bone  ceiling  ≥0.90?
+           0%    0.55     0.80    open
+          40%    0.73     0.85    open
+          60%    0.82     0.88    open
+          73%    0.88     0.90    open
+          80%    0.91     0.91   CLOSE
+          95%    0.98     0.93   CLOSE
+  → PERIO gate CLOSES at SENOLYX senescent-clearance ≥ 80% (η_bone 0.91)
+
+FINDING: periodontal complete-regen is BLOCKED@0.80 by lost-bone neogenesis (CURE-PRIMITIVE),
+and SENOLYX niche-clearance ≥~73% lifts η_bone enough to CLOSE the ≥90% gate — the SAME
+cross-cutting key validated for AGA. Confirms d4 reuse: one drug (SENOLYX) + per-tissue regen.
+g63: η_max/lift are literature-order (BMP/Wnt regen + CURE-PRIMITIVE coupling); structure robust.

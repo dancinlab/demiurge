@@ -1,0 +1,9 @@
+phase=phon
+instance_id=39291033
+host=141.0.85.200
+port=42852
+identity=/Users/mini/.ssh/id_vast_anima
+np=6
+walltime_h=12
+relax_name=vc-relax.in
+deck=exports/rtsc/decks/Li2MgH16

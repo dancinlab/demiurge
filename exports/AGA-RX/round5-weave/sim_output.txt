@@ -1,0 +1,82 @@
+========================================================================
+AGA-RX · WEAVE axis (round-5) — self-assembling delivery cage
+inherits hexa-bio WEAVE/VIROCAPSID Zlotnick + Caspar-Klug sandbox
+========================================================================
+[inherit] imported from /Users/mini/dancinlab/hexa-bio/_python_bridge/module
+[inherit] RT=0.6160 kcal/mol  weak-contact band=[-1.5,-4.5]  kinetic-trap threshold=-5.0 kcal/mol/contact
+
+--- payloads ---
+  WAY-316606 (small molecule, SFRP1 antagonist): MW 448 Da  -> V ~ 0.538 nm^3
+  siRNA duplex (21 bp, RIBOZYME-axis arm): MW ~13860 Da  -> 5.88 nm long x 2.4 nm dia  -> V ~ 26.60 nm^3
+
+--- candidate cages (Caspar-Klug geometry, inherited) ---
+    T  subunits  pent   hex  D_out/nm  D_in/nm   V_in/nm^3  #WAY(10%)  #siRNA(20%)
+    1        60    12     0      20.0     15.6        1988        370         14.9
+    3       180    12    20      34.6     30.2       14481       2694        108.9
+    4       240    12    30      40.0     35.6       23624       4394        177.6
+
+--- CHOICE: T=1 (60-subunit icosahedral cage) ---
+  outer dia 20.0 nm | inner dia 15.6 nm | interior 1988 nm^3
+  WAY-316606 capacity (10% fill): ~370 molecules / cage  (payload 0.538 nm^3 << interior 1988 nm^3 -> ROOMY)
+  siRNA (one 21-bp rod, 5.9 nm) fits in T=1 inner 15.6 nm? YES -> single duplex feasible; for siRNA prefer T=3 headroom
+
+--- assembly numbers (inherited Zlotnick mean-field equilibrium) ---
+  engineered per-contact dG = -4.00 kcal/mol  (band [-1.5,-4.5], trap if <= -5.0)
+  net per-subunit dG_net = -3.000 kcal/mol
+  pseudo-critical concentration c* = 7.6744e-03  (dimensionless, 1 M std-state)
+  assembly K = 1.3030e+02
+  kinetic-trap flag: False  (FALSE = error-correcting, anneals to closed shell)
+  cooperative assembled fraction (yield) vs total subunit conc:
+    c_total =     0.5*c*  (3.8372e-03)  ->  f_assembled = 0.0002
+    c_total = 1*c* (=0.5)  (7.6744e-03)  ->  f_assembled = 0.5000
+    c_total =       2*c*  (1.5349e-02)  ->  f_assembled = 0.9998
+    c_total =       5*c*  (3.8372e-02)  ->  f_assembled = 1.0000
+    c_total =      10*c*  (7.6744e-02)  ->  f_assembled = 1.0000
+  -> DEPLOY at c_total = 5*c* = 3.8372e-02: yield f = 1.0000
+     (Zlotnick hysteresis: assemble at high flux, the closed cage persists when diluted below c* for topical deployment)
+
+--- delivery fit (inherited AGA-RX TTR-LAC/A1,A3 follicular PK) ---
+  SC-diffusion lag t_lag = h^2/(6D) = 694 min (~11.6 h) -> this is the INTER-FOLLICULAR SC
+    bound (h=50 um, D=1e-10), the route the cage AVOIDS. It is
+    reported as the slow comparator, NOT the operative path.
+  trans-follicular SHUNT (operative): the cage moves down the open
+    follicular lumen (sebum-filled infundibulum) by Brownian +
+    convective transport, bypassing the SC rate-limiting diffusion;
+    follicular accumulation is reported on the order of minutes-hours
+    for nano-sized carriers vs the 12 h SC bound above.
+  trans-follicular shunt route: the 20 nm cage travels the
+    follicular infundibulum LUMEN to the DPC bulb at 3 mm
+    -- this BYPASSES the inter-follicular stratum corneum (the SC
+    barrier that would give f=1.93e-22 if it had to cross).
+  10-40 nm cages are within the reported follicular-targeting size
+    optimum (~40 nm peaks follicular accumulation; <10 nm leak,
+    >100 nm excluded) -> T=1 (20 nm) is in-band.
+
+  surface chemistry for follicular targeting:
+    * neutral/slightly-anionic PEG-ylated exterior -> sebum-compatible,
+      reduces protein-corona aggregation in the shunt
+    * size tuned to ~20-40 nm (T=1..T=3) follicular-accumulation window
+    * NANOBOT-axis aptamer-AND lock on the cage seam (Douglas/Bachelet/
+      Church 2012 logic-gated cargo door): opens only at the DPC
+      (marker-AND) -> gated release, no premature payload dump.
+
+========================================================================
+VERDICT (in-silico simulator-consistency + design feasibility)
+========================================================================
+  CAGE SPEC: T=1 icosahedral, 60 subunits (12 pentamers + 0 hexamers), Euler V-E+F=2 ok=True
+    outer dia 20 nm | inner 16 nm | interior 1988 nm^3
+  PAYLOAD: WAY-316606 (MW 448, 0.538 nm^3) — ~370 copies/cage at 10% fill (or 1 siRNA duplex)
+  ASSEMBLY: g_contact=-4.0 kcal/mol -> c*=7.674e-03, yield f=1.000 at 5*c*, NO kinetic trap
+  DELIVERY: trans-follicular SHUNT to DPC bulb (3 mm) via the open follicular lumen,
+    bypassing the 12 h SC-diffusion bound; size in follicular-accumulation window
+  PAIRS WITH NANOBOT: aptamer-AND gated seam -> DPC-marker-triggered release
+
+  [honesty/d6/g63] Zlotnick equilibrium + Caspar-Klug geometry are the
+  INHERITED, self-verified primitives (run verbatim). Diameter
+  calibration (sqrt(T) scaling on a literature T=1 anchor), payload
+  volume (1.2 A^3/Da), capacity fill-fractions, and PK reuse are NEW
+  design-layer estimates -> tier = in-silico DESIGN FEASIBILITY, NOT a
+  wet-lab / structural / clinical claim. T=1 cage diameter & yield are
+  consistent with engineered-protein-cage literature magnitudes.
+
+__AGA_WEAVE_CAGE__ PASS

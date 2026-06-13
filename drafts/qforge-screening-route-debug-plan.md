@@ -1,7 +1,7 @@
 ---
 slug: qforge-screening-route-debug
 mode: auto (4-axis: complete forced ← recommend-default)
-status: active
+status: done
 auto-weights: complete-forced
 created: 2026-06-05
 ---

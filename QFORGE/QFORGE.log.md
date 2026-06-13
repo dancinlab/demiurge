@@ -64,3 +64,61 @@
 
 - 사용자 결정: 라우팅 전환(3-앵커 L3 게이트 ALL_PASS)과 QE 완전대체는 별개 단계로 분리. true QFORGE-only(QE 0-의존)는 앞쪽 절반(자체 SCF→DFPT→|g|)도 QE와 1% 일치해야 성립 — 현 게이트는 QE의 |g|를 어셈블러에 먹여 뒤쪽(λ·Tc)만 검증.
 - 자동 트리거 잡아둠: 3-앵커 terminal+L3 ALL_PASS 도달 시 → CaH6에서 QFORGE 자체 |g| vs QE |g| end-to-end 앵커 1개 자동발사. 통과=QE 완전졸업, 갭잔존=d6/g6 정직 blocker(screening/correlation Hartree+LDA x+c, production-migration @L5). QFORGE.md 마일스톤 등록.
+
+## 2026-06-07 — universal multi-scale 확장 축 + bio-scale 병목 상세기록 (SENOLYX RBFE 캠페인 도출)
+
+QFORGE를 materials 전용 -> 전 스케일(원자·물질·바이오·화학·칩·시스템) hexa-native 엔진으로 확장. 이 기록의 모든 병목은 SENOLYX RBFE 캠페인(2026-06-06~07, geldanamycin/HSP90 senolytic)에서 외부도구로 bio-scale을 돌리다 실증된 것 — QFORGE-native가 풀어야 할 요구사항이다.
+
+### A. bio-scale 병목 7종 (외부의존 실패모드 — QFORGE-native가 원천제거 대상)
+
+| # | 병목 | 정량/근거 | 외부도구 | QFORGE-native 해법 |
+|---|------|-----------|----------|--------------------|
+| B1 | 거대고리 FF 부정확 | openff-2.1.0이 geldanamycin 형태에너지 지형을 GFN2 대비 2.2x over-spread(274 vs 125 kcal/mol), RMSE 75.5, Spearman 0.80; 용매(ALPB) screening 1.05x로 불변=진공 인공물 아님 | openff Sage | QM-derived 전하/토션(GFN2/DFT) native refit + 거대고리 인지 |
+| B2 | 단일포즈 ABFE 절대값 무효 | ABFE −16.64±0.49(수렴) vs 실험 −8.1~−10.9 -> ~5.7 over-bind; 원인=B1(FF) | openmmtools ABFE | 상대(RBFE)로 우회 + QM-corrected FF; 절대정확 필요시 GFN2 endpoint 보정 |
+| B3 | RBFE 엔진 provisioning 실패 | openfe conda-solve가 "Resolving Environment" 단계서 무한대기(15min+ 무진전) | openfe(conda-forge) | native alchemical FEP(hybrid-topology·HREX·MBAR) -> 외부 openfe 제거 |
+| B4 | GPU CUDA-PTX 불일치 | vast 3-pod 전부 CUDA_ERROR_UNSUPPORTED_PTX_VERSION(222): conda openmm cuda-version(12.9/13.3) > 호스트 드라이버(12.8/13.2); 재설치 트리거로 pod 소멸 | conda openmm CUDA | QFORGE 자체 GPU(hexa eigen/fft, no openmm/CUDA-toolkit dep) — d8 hexa-lang/535ab138 |
+| B5 | MD throughput | ABFE complex leg ~5h+/RTX5070(20-win·1000iter·4ns/win); 2-ABFE RBFE ~10h | openmm CUDA | el-ph FFT/eigen GPU 커널을 MD에 재사용 |
+| B6 | 실험 앵커 취약 | 문헌 Kd 1.2µM은 pre-equilibrium(slow tight-binding); 평형 9nM(−10.9) -> over-bind 8.5->5.7 재앵커 | — | verify-adapter가 redox/protonation-matched congeneric ΔΔG 강제(계통오차 상쇄) |
+| B7 | env 취약성 | summer fep env가 micromamba(miniforge 아님) 경로, reboot간 toolchain 깨짐; xtb 별도설치 필요 | conda/micromamba | QFORGE self-contained(외부 conda env 무) |
+
+### B. materials-scale 병목 (기존, 참고 — 동형 패턴)
+- 상관-XC gap: screening=Hartree+LDA-exch only -> production 정확도 블로커시 정직 보고(d6).
+- pool toolchain(summer) 깨짐 이력 · pow2 FFT-Poisson screening 벽(CaH6 λ=4.137, QE 대비 5.47% off).
+=> bio도 동일: 외부의존(QE<->openff) 걷어내기 = QFORGE 정체성.
+
+### C. 스케일 확장 마일스톤 (상세 · 진행가능 단위 · 각 = front-end -> core -> verify)
+
+#### atoms (QM 단분자)
+- [ ] M-A1 GFN2-xtb 등가 tight-binding 단분자 엔진(hexa-native) — 전하·토션·conformer 상대에너지; verify: xtb/DFT ref g5. (SENOLYX R11이 외부 xtb로 한 일 = native화)
+- [ ] M-A2 DFT 단분자 SCF — 전자구조·ESP 전하(RESP); verify: NWChem/QE 분자. 재사용: materials SCF(주기경계 -> 분자 클러스터).
+
+#### bio (MD/FEP) — 최우선 (캠페인이 수요 입증)
+- [ ] M-B1 native explicit-solvent MD: LangevinMiddle + PME + 강체물 — verify: openmm 에너지/force 일치 g5. (el-ph FFT를 PME에 재사용)
+- [ ] M-B2 alchemical factory: soft-core λ(elec/sterics) hybrid-topology — verify: openmmtools ABFE/RBFE 수치 일치.
+- [ ] M-B3 HREX replica-exchange + MBAR estimator — verify: pymbar 일치; 수렴진단(overlap matrix·forward/reverse).
+- [ ] M-B4 QM-derived FF 파이프(M-A1 연결): GFN2 전하·토션 refit -> B1 거대고리 부정확 해결; verify: GFN2 conformer 지형 재현.
+- [ ] M-B5 atom-mapping(Kartograf 등가, 기하기반) — 거대고리 substituent perturbation; verify: 매핑 정합.
+- [ ] M-B6 docking + MM-GBSA front-end (AGA-RX/SENOLYX 스택 흡수). 검증쌍 표준: redox/protonation-matched congeneric ΔΔG (17-AAG<->17-AG hydroquinone ΔΔG_exp −0.65, cb600224w).
+
+#### chem (반응)
+- [ ] M-C1 NEB/string TS 탐색(DFPT 선형응답·force 재사용) — verify: 실험/CCSD(T) 장벽.
+- [ ] M-C2 반응경로 IRC + 촉매 turnover.
+
+#### chip (소자)
+- [ ] M-D1 밴드구조·effective mass front-end(materials SCF 재사용).
+- [ ] M-D2 수송(NEGF/Boltzmann) + 자기발열(열전); verify: TCAD/측정.
+
+#### system (multi-scale)
+- [ ] M-S1 QM/MM 결합 드라이버(bio active-site QM + 환경 MM).
+- [ ] M-S2 coarse-grain/연속체 bridge(스케일 일관성 verify).
+
+#### 공통 인프라
+- [ ] M-X1 verify-adapter 일반화: scale별 cross-val ref 플러그인(materials=QE · bio=실험ΔΔG · chem=QM · chip=TCAD) — hexa verify g5 통일.
+- [ ] M-X2 NEXUS edge QFORGE->{SENOLYX·AGA-CURE·IVD-CURE·OA-CURE·…}(bio 엔진 의존; materials c7 패턴 복제).
+- [ ] M-X3 self-contained GPU 배포(B4 해결): no 외부 openmm/CUDA-toolkit; hexa eigen/fft + PTX 호스트 드라이버 자동매칭.
+
+### D. 진행 우선순위 (d2 breakthrough-path)
+1. bio가 최고가치(4 CURE 도메인 + SENOLYX 즉시 소비; 캠페인이 수요·병목 다 입증).
+2. M-B1(native MD) -> M-B2/B3(FEP) 가 핵심경로; M-A1(QM)이 M-B4(FF교정) 선결.
+3. materials c7(GATE CLOSED)가 템플릿: front-end+core+verify 3분할 + QE자리에 scale별 ref.
+4. 각 마일스톤 g5 verify + atlas fold (d_atlas_as_audit_ssot).

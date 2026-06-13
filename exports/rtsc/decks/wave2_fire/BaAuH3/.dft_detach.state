@@ -1,0 +1,9 @@
+phase=relax
+instance_id=38569202
+host=52.32.147.192
+port=40070
+identity=/Users/mini/.ssh/id_vast_anima
+np=96
+walltime_h=12
+relax_name=vc-relax.in
+deck=wave2_fire/BaAuH3

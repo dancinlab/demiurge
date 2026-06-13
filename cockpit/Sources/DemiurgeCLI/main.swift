@@ -44,6 +44,18 @@ func usage() {
     print("""
     demiurge — Demiurge cockpit CLI (read-only)
 
+    8-VERB LADDER (ordered pipeline · 8VERB):
+      0/8 discover    발견   discover <objective>      (phanes-bridged head)
+      1/8 specify     명세   action specify <domain>
+      2/8 structure   구조   action structure <domain>
+      3/8 design      설계   action design <domain>
+      4/8 analyze⟲    해석   action analyze <domain> [--converge]
+      5/8 synthesize  합성   action synthesize <domain>
+      6/8 verify      검증   verify <path|id>
+      7/8 handoff     인계   action handoff <domain>
+      (discover is ordered stage 0 of the 8 — head of the pipeline, not an
+       orthogonal pass-through; the canonical 7-verb spine follows it.)
+
     USAGE:
       demiurge list-all                List artifacts of all kinds
       demiurge list-records            List F1F2 records under ../exports/
@@ -66,6 +78,11 @@ func usage() {
                                        stack, topo foundation→apex.
                                        --converge (M15): analyze ⟲ loop
                                        — re-run until outcome fixpoint.
+      demiurge action synthesize rtsc --deck <deck>
+                                       8VERB · synthesize verb drives QFORGE
+                                       el-ph DIRECTLY (@L2) — forwards to
+                                       `hexa qforge run <deck>`; verdict
+                                       verbatim (g5), gap report honest (d6).
       demiurge discover <objective> [--verifier <path>] [--rounds N] [--json]
                                        8-verb head — phanes-bridged
                                        autonomous discovery (objective +
@@ -277,6 +294,28 @@ func parseVerbArg(_ s: String) -> Verb? {
     case "handoff", "인계":              return .handoff
     default: return nil
     }
+}
+
+/// `action synthesize rtsc --deck <deck>` — the QFORGE el-ph synthesize
+/// cell (8VERB Family A · PR2 · @L2 direct chain). The `synthesize` verb
+/// drives QFORGE DIRECTLY through the EXISTING HexaBridge forward — the
+/// SAME shape `verify --expr` / `atlas` already use: argv is built and
+/// `hexa qforge run <deck>` is spawned, with stdout+stderr surfaced
+/// VERBATIM (@D g5 — demiurge never re-judges; the stdlib QFORGE kernel
+/// owns the verdict). NO kernel reimpl in Swift.
+///
+/// @L5 / @D d6 honesty: the QFORGE output is pasted as-is. When a deck has
+/// no harvested DFPT el-ph dataset, `_qf_run` reports the front-end gap
+/// honestly (exit 1, no fabricated Tc) and the CLI surfaces THAT unchanged.
+/// The held migration gate is NEVER presented as production-validated
+/// agreement. `hexa` = hx dependency (M18); missing → ran=false → 127.
+func cliSynthesizeRtsc(_ deck: String) -> Int32 {
+    print("action: \(Verb.synthesize.koreanLabel) (\(Verb.synthesize.plain)) "
+          + "· domain=rtsc · engine=qforge · deck=\(deck) — qforge run…")
+    let r = HexaBridge.run(["qforge", "run", deck])
+    print(r.text, terminator: r.text.hasSuffix("\n") ? "" : "\n")
+    print("---")
+    return r.ran ? r.exitCode : 127
 }
 
 /// `demiurge action <verb> [domain]` — dispatch a θ-2 action through
@@ -581,6 +620,12 @@ func operate(_ args: [String]) -> Int32 {
     let owner = args.contains("--owner") || OperationRegistry.ownerModeEnabled
     switch sub {
     case "list":
+        // 8VERB — `discover` is ordered stage 0 of the 8-verb ladder (head of
+        // the pipeline alongside the canonical 7-verb spine specify→handoff),
+        // not an orthogonal pass-through. Label only; routing unchanged.
+        print("8-verb ladder: 0/8 discover → 1/8 specify → 2/8 structure → "
+              + "3/8 design → 4/8 analyze⟲ → 5/8 synthesize → 6/8 verify → 7/8 handoff")
+        print("")
         for tier in OperationTier.allCases {
             let rows = OperationRegistry.visible(ownerMode: owner)
                 .filter { $0.tier == tier }
@@ -953,6 +998,34 @@ func discoverCmd(_ args: [String]) -> Int32 {
     }
 }
 
+/// Take a value-flag's value out of `args`, validating it. d4-generic:
+/// driven by the `flag` name the caller passes — no per-flag branch. If
+/// `flag` is absent → returns nil (the flag is optional). If present but
+/// its value is missing (end-of-args) OR itself looks like another flag
+/// (`--*`), emits a clear `flag <X> needs a value, got '<token>'` (or
+/// `…got end-of-args`) to stderr and exits 2 — instead of silently
+/// swallowing the next flag as the value (the `--producer --compose`
+/// class of bug, mirror of hexa cloud's `--port --insecure` → `Bad port`).
+/// On success removes BOTH the flag and its value from `args` and returns
+/// the value.
+func takeValueFlag(_ args: inout [String], _ flag: String) -> String? {
+    guard let idx = args.firstIndex(of: flag) else { return nil }
+    guard idx + 1 < args.count else {
+        FileHandle.standardError.write(
+            Data("error: flag \(flag) needs a value, got end-of-args\n".utf8))
+        exit(2)
+    }
+    let value = args[idx + 1]
+    if value == "--" || value.hasPrefix("--") {
+        FileHandle.standardError.write(
+            Data("error: flag \(flag) needs a value, got '\(value)'\n".utf8))
+        exit(2)
+    }
+    args.remove(at: idx + 1)
+    args.remove(at: idx)
+    return value
+}
+
 let args = CommandLine.arguments
 
 guard args.count >= 2 else {
@@ -1011,17 +1084,34 @@ case "action":
     // ProducerRegistry alternatives (e.g. cern + analyze →
     // xsuite-tracking | pylhe).
     var actionArgs = Array(args.dropFirst(2))
-    var producerArg: String? = nil
-    if let pIdx = actionArgs.firstIndex(of: "--producer"),
-       pIdx + 1 < actionArgs.count {
-        producerArg = actionArgs[pIdx + 1]
-        actionArgs.remove(at: pIdx + 1)
-        actionArgs.remove(at: pIdx)
-    }
+    // --producer is a value-flag; route through the shared validator so a
+    // missing/flag-as-value (`--producer --compose`) errors cleanly instead
+    // of swallowing the next flag as the producer name.
+    let producerArg: String? = takeValueFlag(&actionArgs, "--producer")
+    // `--deck <deck>` (8VERB Family A · PR2 · @L2) — the QFORGE el-ph
+    // synthesize cell. Same value-flag validator as --producer (so
+    // `--deck --foo` errors cleanly). When present on `synthesize rtsc`
+    // it forwards DIRECTLY to `hexa qforge run <deck>` via HexaBridge —
+    // verdict verbatim (g5), gap report honest (@L5 / d6). Other (verb,
+    // domain) pairings with --deck are an honest usage error (exit 2);
+    // the existing component/cellrun synthesize path is unaffected.
+    let deckArg: String? = takeValueFlag(&actionArgs, "--deck")
     // `--compose` (M15) — run the verb across the domain's constituent
     // (prerequisite) stack, topo-ordered foundation→apex, instead of the
     // single (verb, domain) cell.
-    if let vIdx = actionArgs.firstIndex(of: "--converge") {
+    if let deck = deckArg {
+        let dVerb = actionArgs.first ?? ""
+        let dDomain = actionArgs.count >= 2 ? actionArgs[1] : nil
+        if parseVerbArg(dVerb) == .synthesize, dDomain == "rtsc" {
+            exitCode = cliSynthesizeRtsc(deck)
+        } else {
+            FileHandle.standardError.write(Data(
+                ("action --deck: only 'synthesize rtsc --deck <deck>' "
+                 + "drives QFORGE el-ph (@L2). got verb='\(dVerb)' "
+                 + "domain='\(dDomain ?? "")'.\n").utf8))
+            exitCode = 2
+        }
+    } else if let vIdx = actionArgs.firstIndex(of: "--converge") {
         actionArgs.remove(at: vIdx)
         let vVerb = actionArgs.first ?? ""
         let vDomain = actionArgs.count >= 2 ? actionArgs[1] : nil

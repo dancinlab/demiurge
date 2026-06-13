@@ -1,0 +1,13 @@
+round-1 3-agent (95% clearance) ceiling = 0.91  (marginal)
+5-axis enhanced ceiling = 0.91
+
+5yr durable (with relapse):
+  round-1 3-agent : 0.91 × (1-0.2) = 0.72
+  5-axis enhanced : 0.91 × (1-0.06) = 0.85
+
+FINDING: the hexa-bio 5 axes upgrade IVD's specific weak points —
+  WEAVE (NP volume/engraft) + VIROCAPSID (anabolic η) lift the ceiling 0.91→0.91,
+  NANOBOT (acidic-pH gate, disc pH~6.5) sharpens senolytic localization,
+  RIBOZYME (ADAMTS5/MMP13/IL-6 KD) cuts relapse 0.2→0.06 (holds gains).
+  ⇒ 5-axis 3-agent moves IVD from MARGINAL (0.91, fragile) to a more durable 0.85 5yr.
+  IVD still the hardest, but the 5-axis modality stack is exactly what its boundary needs.

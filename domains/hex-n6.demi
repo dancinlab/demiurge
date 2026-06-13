@@ -1,0 +1,133 @@
+# hex-n6.demi — verb-cell manifest for the HEX-N6 (n=6 hexagonal lattice
+# primitive · honeycomb arithmetic substrate) domain
+# CLOAK meta-domain decomposition: 부품 3 of 3 (RTSC + SRR + HEX-N6 → CLOAK).
+# SSOT scripts in ~/core/hexa-lang/stdlib/hex_n6/ (NOT YET WIRED — stub)
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("hex-n6", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+#
+# Citations (anchored, not repeated per-cell — see domains/hex-n6.md):
+#   - Hales, T. C. (2001) Discrete Comput. Geom. 25, 1 — honeycomb conjecture.
+#   - atlas @P n6-{sigma,n,phi,j2,tau} (foundation atoms · embedded.gen.hexa).
+#   - OEIS — A000203 (σ) · A000005 (τ) · A000010 (φ) · A001414 (sopfr).
+#
+# Domain caveat (applies to every cell):
+# hex-n6 is a PRIMITIVE arithmetic substrate (not an engineering deliverable
+# domain like CLOAK or SRR). Its absorbed criterion is satisfied by
+# closed-form lattice identity verify (Phase A) — no wet-lab / no external
+# measurement gate. cells below are STUB consumers for downstream domains
+# that want to register lattice-anchored facts via cellrun.
+
+# --- STUB: specify (n=6 lattice claim manifest) -----------------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/hex_n6/specify.py
+record_kind       = hex_n6_specify_record
+output_dir        = exports/hex-n6/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "n=6 lattice claim manifest (which lattice identity is to be checked) — TEMPLATE.",
+  "Phase A 🔵 anchors (sigma/tau/phi/sopfr/is_perfect/aliquot at n=6) already LANDED via hexa verify --expr.",
+  "Real specify producer would enumerate ALL closed-form identities a consumer domain wants resolved.",
+]
+
+# --- STUB: structure (lattice geometry classification) ----------------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/hex_n6/structure.py
+record_kind       = hex_n6_structure_record
+output_dir        = exports/hex-n6/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Lattice geometry classification (hexagonal / honeycomb / triangular / kagome / diamond / cubic) — TEMPLATE.",
+  "Hales 2001 honeycomb-conjecture is the math foundation, not re-derived here.",
+  "measurement_gate = GATE_OPEN permanently — structure classification is bookkeeping (g3).",
+]
+
+# --- STUB: design (lattice-anchored derived constants table) ----------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/hex_n6/design.py
+record_kind       = hex_n6_design_record
+output_dir        = exports/hex-n6/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Lattice-anchored derived constants table (σ·τ=48 / σ-τ=8 / σ-φ=10 / σ²=144) — TEMPLATE.",
+  "Constants are deterministic derivations from Phase A 🔵 anchors (sigma·tau·phi at n=6).",
+  "measurement_gate = GATE_OPEN permanently — design is arithmetic bookkeeping (g3).",
+]
+
+# --- STUB: analyze (consumer-domain lattice-fit audit) ----------------------
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/hex_n6/analyze.py
+record_kind       = hex_n6_analyze_record
+output_dir        = exports/hex-n6/analyze
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Audit a consumer domain's claimed-vs-lattice constants (e.g. F-22 RCS = 10^(-τ) lattice fit) — TEMPLATE.",
+  "Result distinguishes EXACT (산술 일치) from CLOSE (오차 허용) from MISS — does NOT prove physical causation (g3).",
+  "Arithmetic coincidence is NOT physical evidence — separate honesty in §1/V1 of cloak.md.",
+]
+
+# --- STUB: synthesize (atlas-fold candidate compiler) -----------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/hex_n6/synthesize.py
+record_kind       = hex_n6_synthesize_record
+output_dir        = exports/hex-n6/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Compile a set of lattice-anchored verified facts into atlas-fold candidates — TEMPLATE.",
+  "Real synthesize would invoke `hexa atlas register --from-verify ...` per fact.",
+  "atlas SSOT = compiler/atlas/embedded.gen.hexa (g69 idempotent skip on duplicate).",
+]
+
+# --- STUB: verify (closed-form lattice identity re-derive) ------------------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/hex_n6/verify.py
+record_kind       = hex_n6_verify_record
+output_dir        = exports/hex-n6/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Re-derive Phase A 🔵 anchors (sigma/tau/phi/sopfr/is_perfect/aliquot at n=6) via hexa verify --expr.",
+  "All 6/7 anchors already LANDED (2026-05-28 mini); J₂(6)=24 only 🟠 (calc-system gap, atlas 🟡).",
+  "absorbed=true for Phase A 부분 (closed-form lattice closed); J₂ closure DEFERRED to verify_cli.hexa extension.",
+]
+
+# --- STUB: handoff (consumer-domain lattice-anchor publication) -------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/hex_n6/handoff.py
+record_kind       = hex_n6_handoff_record
+output_dir        = exports/hex-n6/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Publish lattice-anchored facts to consumer domains (CLOAK / SRR / RTSC / UFO / ...) — TEMPLATE.",
+  "Real handoff produces a NEXUS.tape edge row (provides[] = lattice anchor, reused[] = consumer).",
+  "measurement_gate = GATE_OPEN permanently — handoff is reuse-graph bookkeeping (g3).",
+]

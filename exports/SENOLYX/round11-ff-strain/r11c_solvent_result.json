@@ -1,0 +1,12 @@
+{
+  "spread_qm_vac": 121.17077944274934,
+  "spread_qm_alpb": 126.83023230341496,
+  "spread_mm": 273.83886002225006,
+  "compress": 1.0467064162390702,
+  "rmse_mmvac_qmvac": 75.52947783240991,
+  "rmse_mmvac_qmalpb": 74.4540642664592,
+  "bound_mm": 88.6628089479677,
+  "bound_qv": 21.41365502876579,
+  "bound_qa": 23.98231255087012,
+  "verdict": "divergence ROBUST to solvent (RMSE still 74 kcal/mol) -> FF deficiency real in solution -> cause-\u2460 STANDS as overbind contributor"
+}

@@ -1,0 +1,50 @@
+{
+  "material": "Li2CuH6",
+  "structure": "Fm-3m (K2PtCl6 prototype), 9-atom primitive cell (1 Cu + 2 Li + 6 H)",
+  "pressure_GPa": 0.0,
+  "ambient_target": true,
+  "VEC": 19,
+  "lit_prediction_K": 86,
+  "lit_prediction_source": "S2542529324000506 ScienceDirect (RULE-PREDICTED, NOT measured)",
+  "supersedes_record": "exports/material_discovery/rtsc_li2cuh6_dispatch_live_20260526.json",
+  "harvest_date_utc": "2026-06-08",
+  "harvest_context": "RTSC cycle-bg drain — harvest of the 2026-05-26 ambient el-ph dispatch on pool host aiden (formerly aliased ubu-1). ~2 weeks elapsed. Run located at aiden:/home/aiden/rtsc_li2cuh6/.",
+  "run_status": "PH INCOMPLETE — ph.x killed by SIGTERM (signal 15) at q2 (representation #3) on 2026-05-27T03:13, after only ~2.75h (vs ~11d estimate). Likely host reboot / external kill. q1 (Gamma) COMPLETED with full dyn1 + dyn1.elph.1. q2-q13 never ran (li2cuh6.dyn2 = 0 bytes).",
+  "verdict": "FALSIFIED_CLOSED_NEGATIVE",
+  "verdict_basis_d17": "d17 partial-q protocol: 'lock 🔴 CLOSED_NEGATIVE at first q with min_freq < -50 cm^-1'. q1 (Gamma) alone satisfies this with min_freq = -944.92 cm^-1 (19x past the -50 threshold). No further DFPT needed.",
+  "vc_relax": {
+    "initial_volume_au3": 364.57,
+    "final_relaxed_volume_au3": 604.096,
+    "final_relaxed_volume_Ang3": 89.518,
+    "volume_expansion_pct": 65.7,
+    "final_density_g_cm3": 1.548,
+    "fermi_energy_eV": 5.3487,
+    "note": "Massive +65.7% volume expansion past the lit 6.00 A estimate. DFT equilibrium Fm-3m cell is far larger than assumed; cage is structurally unstable at its own ambient-pressure equilibrium. The early-warning omega_log-down signal (cation_VEC_rule §2.3) is borne out catastrophically as full dynamical instability, not merely softened phonons."
+  },
+  "gamma_phonons_cm1": {
+    "n_modes": 27,
+    "n_imaginary": 8,
+    "pct_imaginary": 29.6,
+    "min_freq_cm1": -944.915059,
+    "imaginary_set_cm1": [-944.915, -916.304, -643.592, -643.592, -583.653, -583.653, -160.432, -160.432],
+    "max_freq_cm1": 2778.639,
+    "note": "8/27 modes hard-imaginary at Gamma. These are OPTIC instabilities (-944/-916/-643/-583 cm^-1), not acoustic-sum-rule artifacts. Mirrors the Mg2IrH6 ambient falsification pattern (min_freq -2235 cm^-1, 48% imag)."
+  },
+  "elph_gamma": {
+    "DOS_states_spin_Ry_cell_at_Ef_005Ry": 3.873371,
+    "per_mode_lambda_unphysical": "lambda(5)=lambda(6) = -2.2764 (NEGATIVE) — direct el-ph signature of the imaginary modes (omega^2 < 0). Per-mode lambda for imaginary branches is meaningless.",
+    "note": "Allen-Dynes Tc is MATHEMATICALLY UNDEFINED: omega_log and alpha2F cannot be formed when omega is imaginary. No real Tc exists for the ambient Fm-3m structure."
+  },
+  "lambda": "UNDEFINED (imaginary modes)",
+  "omega_log_K": "UNDEFINED (imaginary modes)",
+  "Tc_AD_K": "UNDEFINED (imaginary modes — d6: NOT forced to a number)",
+  "falsifier_link": "F-N6-2 (Li2CuH6) — CONFIRMS the pre-registered closed-negative. Combined with Mg2IrH6 (F-N6-1, also VEC=19, also Fm-3m, also FALSIFIED), the X2MH6 Fm-3m prototype at VEC=19 is now falsified across BOTH cation choices (Mg/Ir and Li/Cu) — the VEC=19 sigma* sweet-spot is a NECESSARY but NOT SUFFICIENT condition for ambient lattice stability (first-principles confirmed, d6).",
+  "honesty_d6": "Real DFT numbers pasted verbatim, no fabrication. Tc NOT predicted — it is undefined because the structure is dynamically unstable. The 86 K lit prediction (PREDICTED-by-others, not measured) is ruled out at the harmonic-DFT level: there is no stable ambient Fm-3m structure to be a 86 K superconductor.",
+  "anharmonic_caveat": "Imaginary modes this deep (-945 cm^-1, 8 modes) are NOT mild Gamma-soft (cf. labeh8/ysbh6 ⚪ pattern, which had single mild soft modes). SSCHA anharmonic rescue is very unlikely to stabilize a -945 cm^-1 optic instability spanning 8 modes; not pursued (would be a new campaign). If a polymorph escape is desired, that is a separate low-symmetry / soft-mode-condensation milestone (d2 path #2), not this Fm-3m verdict.",
+  "compute_cost_USD": 0.0,
+  "compute_host": "pool aiden (192.168.50.119, formerly aliased ubu-1) — el-ph was already run; this harvest = $0 postprocessing, no new rent.",
+  "harvested_artifacts_local": "exports/rtsc/Li2CuH6/q1_terminal/ (li2cuh6.dyn0, li2cuh6.dyn1, li2cuh6.dyn1.elph.1, ph.out, ph.err, run.log, scf.out, vcrelax.out, relax.in, scf.in, scf_relaxed.in, ph.in, run.sh)",
+  "re_dispatch_needed": false,
+  "re_dispatch_rationale": "NO re-run needed. q1 (Gamma) alone is terminal per d17 — min_freq -945 cm^-1 falsifies ambient Fm-3m. Completing q2-q13 would only add more imaginary q-points; it cannot rescue a structure already unstable at Gamma. The full 4x4x4 grid would cost ~$0 on the free pool but yields zero new information for the verdict.",
+  "schema_version": "v1_q1_terminal_falsified"
+}

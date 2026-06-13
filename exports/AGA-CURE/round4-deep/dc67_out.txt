@@ -1,0 +1,17 @@
+=== DC6 4-arm sequencing — discrete-time gain model (t in months) ===
+order                                     restored  relapse    wnt    FINAL
+②→①→④→③ (rev,wake,neo,lock)                  0.995     0.05   1.00    0.567
+①→②→④→③ (wake,rev,neo,lock)                  0.994     0.05   1.00    0.567
+③ first (lock,rev,wake,neo)                  0.992     0.05   1.00    0.565
+④ first (neo,rev,wake,lock)                  0.996     0.05   1.00    0.568
+all-concurrent then lock                     0.995     0.05   1.00    0.567
+→ best sequence: ④ first (neo,rev,wake,lock) (final restored-after-relapse 0.568)
+
+=== DC7 arm③ epigenetic-editor delivery — 5 routes ===
+route                           cargo  tropism  durab  safety   FIT
+single-AAV dCas9-KRAB            0.15   0.70   0.80   0.65   0.483
+dual-AAV split-intein            0.75   0.70   0.80   0.60   0.709
+CasMINI / Cas12f (~1.6kb)        0.90   0.70   0.78   0.70   0.766
+LNP-mRNA (transient editor)      0.85   0.55   0.75   0.80   0.728
+polymer nanoparticle             0.70   0.45   0.70   0.65   0.615
+→ best delivery: CasMINI / Cas12f (~1.6kb) (0.766)

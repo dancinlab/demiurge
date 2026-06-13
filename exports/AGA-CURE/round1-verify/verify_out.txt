@@ -1,0 +1,8 @@
+=== AGA-CURE verify — cure-model identity checks (deterministic, g5-fallback tier 🟢 SUPPORTED-NUMERICAL) ===
+  [PASS] Bliss P in [0,1] & P>=max(p1,p2)
+  [PASS] coverage monotone↑ in all 4 arm efficacies
+  [PASS] arm④ neogenesis: threshold + non-monotone band (Gray-Scott)
+  [PASS] arm③ durability is the top marginal lever
+
+4/4 checks PASS
+__AGA_CURE_VERIFY__ ALL_PASS

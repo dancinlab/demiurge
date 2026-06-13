@@ -1,0 +1,4 @@
+aagc 17AAG complex: dG_decouple = 30.18 +/- 0.42 ssc = 4.12  [captured by monitor b9p9eop6t r15, before prod.log was clobbered by a redundant relaunch]
+agc 17AG complex: dG_decouple = 31.45 +/- 0.39 ssc = 4.00  [monitor b9p9eop6t r17]
+aags 17AAG solvent: dG_decouple = 5.91 +/- 0.18  [monitor b9p9eop6t r22]
+ags 17AG solvent: dG_decouple = 6.55 +/- 0.21  [monitor b9p9eop6t r-final]

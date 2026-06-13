@@ -1,0 +1,18 @@
+=== R8 triple-axis senolytic coverage (vs senescent heterogeneity) ===
+  mono BCL-xL              clearance =   40%  (FAIL)
+  2-axis BCL-xL+MCL-1      clearance =   60%  (≥60% gate ok)
+  3-axis +HSP90            clearance =   74%  (≥60% gate ok)
+  (subset fractions bclxl/mcl1/hsp90/residual = [0.45, 0.25, 0.2, 0.1]; residual 10% = truly
+   multi-resistant tail no single small-molecule axis covers → immune/CAR-T adjunct.)
+
+FINDING: 3-axis (BCL-xL+MCL-1+HSP90) clearance = 0.45·0.90+0.25·0.80+0.20·0.70 = 0.745 →
+clears the BCL-xL+MCL-1-resistant HSP90-addicted subset, leaving only a ~10% truly-
+multi-resistant tail (immune-clearance adjunct). Covers the /gap F2 triple-resistant gap.
+
+DOCKING (g63, /gap F8 single-tool gap MANIFESTS here):
+  BCL-xL A-1155463 −7.35 · MCL-1 S63845 −8.18 · HSP90 geldanamycin −4.91
+  HSP90 score is WEAK in Vina — geldanamycin is a 19-rotatable-bond macrocyclic ansamycin
+  whose true affinity is sub-µM; Vina systematically under-scores macrocycles. This is
+  exactly the cross-tool gap /gap flagged (F8): the HSP90 axis needs FEP/MM-GBSA or a
+  macrocycle-aware engine to score properly, NOT Vina. Mechanism (HSP90 senolytic) is
+  literature-validated regardless of the docking number.

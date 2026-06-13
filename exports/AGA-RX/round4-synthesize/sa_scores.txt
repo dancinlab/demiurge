@@ -1,0 +1,13 @@
+AGA-RX round4 SYNTHESIZE — rdkit SA_score + physchem  (rdkit 2026.03.2; SA_Score contrib)
+compound                          MW  cLogP   TPSA HBD HBA RotB Rings    SA   QED
+----------------------------------------------------------------------------------------------------
+WAY-316606 (LEAD)              448.5   2.57   92.3   2   5    5     3  2.46  0.73
+A1 3-pyridyl swap              449.5   1.96  105.2   2   6    5     3  2.64  0.72
+A2 4-aminoTHP cap              449.5   3.00   89.5   1   5    5     3  2.41  0.76
+A3 saccharin-bicycle           406.5   1.42  100.6   1   6    3     4  2.65  0.83
+
+SA_score: 1=very easy ... 10=very hard. Easiest-first ranking:
+  1. A2 4-aminoTHP cap            SA=2.41
+  2. WAY-316606 (LEAD)            SA=2.46
+  3. A1 3-pyridyl swap            SA=2.64
+  4. A3 saccharin-bicycle         SA=2.65

@@ -1,0 +1,91 @@
+# dim-use.demi — verb-cell manifest for the DIM-USE (dim-cycle navigation
+# τ=4 + composite identity (σ-φ)²=100c) domain. UFO Stage-7 elevation.
+# SSOT scripts in ~/core/hexa-lang/stdlib/dim_use/ (NOT YET WIRED — stub)
+#
+# Citations: UFO/dimuse/hexa-*.md — in-tree spec + F-USE-{1,2,3,4}
+# preregister; alien_index chain 🛸6→🛸ABSOLUTE (UFO meta-closure-nav).
+#
+# Domain caveat: All cells ⚪ SPECULATION-FENCED. DIM-USE depends on
+# DIM-JUMP (dim-shift must precede dim-use). Composite identity 100c
+# is lattice-arithmetical (12-2=10, 10²=100) — DOES NOT prove FTL.
+
+[cell.specify]
+substrate = python3
+script = stdlib/dim_use/specify.py
+record_kind = dim_use_specify_record
+output_dir = exports/dim-use/specify
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Dim-cycle navigation spec skeleton (target cycle count τ · composite (σ-φ)²) — TEMPLATE.",
+  "F-USE-{1,2,3,4} all OPEN; UNPROVEN at v1.0.0.",
+]
+
+[cell.structure]
+substrate = python3
+script = stdlib/dim_use/structure.py
+record_kind = dim_use_structure_record
+output_dir = exports/dim-use/structure
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "τ=4 cycle skeleton on 6D CY manifold — TEMPLATE.",
+  "Lattice derive from HEX-N6 tau(6)=4 🔵 + sigma·phi=24 🔵 (arithmetic only).",
+]
+
+[cell.design]
+substrate = python3
+script = stdlib/dim_use/design.py
+record_kind = dim_use_design_record
+output_dir = exports/dim-use/design
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Composite identity (σ-φ)²=100 dossier — symbolic.",
+  "100c FTL interpretation = symbolic only; honest fence ⚪.",
+]
+
+[cell.analyze]
+substrate = python3
+script = stdlib/dim_use/analyze.py
+record_kind = dim_use_analyze_record
+output_dir = exports/dim-use/analyze
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "τ-mode mixing analysis skeleton — DEFERRED.",
+  "Requires DIM-JUMP substrate (sibling sub-domain).",
+]
+
+[cell.synthesize]
+substrate = python3
+script = stdlib/dim_use/synthesize.py
+record_kind = dim_use_synthesize_record
+output_dir = exports/dim-use/synthesize
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Cycle-engine BOM skeleton — TEMPLATE. Apparatus UNAVAILABLE.",
+]
+
+[cell.verify]
+substrate = python3
+script = stdlib/dim_use/verify.py
+record_kind = dim_use_verify_record
+output_dir = exports/dim-use/verify
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "F-USE-{1,2,3,4} preregister monotone state check — all OPEN at v1.0.0.",
+]
+
+[cell.handoff]
+substrate = python3
+script = stdlib/dim_use/handoff.py
+record_kind = dim_use_handoff_record
+output_dir = exports/dim-use/handoff
+gate_default = OPEN
+absorbed_default = false
+scope_caveats = [
+  "Theoretical-physics paper handoff skeleton; experimental apparatus N/A.",
+]

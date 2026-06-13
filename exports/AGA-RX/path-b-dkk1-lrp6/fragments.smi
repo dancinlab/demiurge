@@ -1,0 +1,18 @@
+# Fragment / drug-like probe set — AGA-RX PATH B
+# Each mimics a key DKK1-CRD2 contact pharmacophore feature that engages the
+# LRP6 PE3 acidic/aromatic funnel. SMILES <tab> name <tab> rationale
+#
+# DKK1 engages via: (a) a basic finger (Arg/Lys guanidinium/ammonium) forming
+# salt bridges to LRP6 D811/D830/D831/E663/E708/D878; (b) aromatic/hydrophobic
+# packing against W767/Y706/F836/W850. A small molecule that occupies this
+# funnel must present a cationic/H-bond-donor warhead toward the acidic cluster
+# plus a flat aromatic to stack on the Trp/Tyr walls.
+
+NC(=N)NCCc1ccccc1                          phenethyl-guanidine        Arg-mimetic_guanidinium_to_acidic_cluster+phenyl_for_Trp_stack
+NC(=N)Nc1ccc(O)cc1                          4-hydroxyphenylguanidine   guanidinium_salt-bridge+phenol_Hbond_to_Asp
+Nc1ccc(cc1)C(=N)N                           4-aminobenzamidine         benzamidine_warhead_classic_Asp_salt-bridge
+OC(=O)c1ccc(cc1)NC(=N)N                     4-guanidinobenzoic_acid    bidentate_guanidinium+carboxylate_to_Arg792
+NCCc1c[nH]c2ccccc12                         tryptamine                 indole_pi-stack_on_Trp767+amine_to_acidic
+c1ccc2c(c1)cccc2C(=O)NCCN                   naphthyl-ethylenediamine   bicyclic_aromatic_funnel-fill+diamine_anchor
+NC(=N)Nc1ccc2ccccc2c1                       2-naphthylguanidine        extended_aromatic+guanidinium_dual_pharmacophore
+Oc1ccc(cc1)CCNC(=N)N                        tyramine-guanidine_hybrid  Tyr706-like_phenol+guanidinium_DKK1_mimic

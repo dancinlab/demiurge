@@ -12,3 +12,5 @@
 39757489 q7-s4 ssh5.vast.ai 37488
 39757492 q8-s1 ssh6.vast.ai 37492
 39757495 q8-s2 ssh9.vast.ai 37494
+39757496 q8-s3 ssh9.vast.ai 37496
+39757498 q8-s4 ssh1.vast.ai 37498

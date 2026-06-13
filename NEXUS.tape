@@ -242,3 +242,24 @@
 @N n3 := "cross-repo scope policy (g68)" :: note [active]
   rule = "ONLY 4 declared bidirectional peers (hexa-lang, anima, phanes, echoes). other cross-repo consumers are unidirectional and live at the source repo's NEXUS.tape."
   ssot = "hexa-lang NEXUS.tape n2.scope_rule — hub records hub<->peer only; peer-mesh is peer-side."
+
+# AGA-CURE ← AGA-RX (intra-project reuse, 2026-06-03 domain split)
+@reuse AGA-CURE reused[AGA-RX]   := "WAY-316606/SFRP1 · Dkk1-LRP6 3S2K · PATH-C LDHA/senolytic · VIROCAPSID AAV-antiDKK1 · RIBOZYME siRNA · WEAVE/NANOBOT delivery · follicular-PK"
+@reuse AGA-RX    provides[AGA-CURE] := "non-AR Wnt-restore drug stack + 5-axis modality → cure arms ①되돌리기 ②깨우기 ③영구잠금"
+
+@reuse SENOLYX reused[CURE-PRIMITIVE]
+  provides = "η_neo-lift (niche senescent clearance) to AGA-CURE · periodontal · OA-cartilage · retinal"
+  edge = "CURE-PRIMITIVE identified the universal η_neo bottleneck → SENOLYX is the cross-cutting drug that lifts it"
+
+@reuse OA-CURE reused[CURE-PRIMITIVE,SENOLYX]
+  edge = "chondral neogenesis bottleneck → SENOLYX η_neo-lift (clearance ≥78%)"
+@reuse RETINA-CURE reused[CURE-PRIMITIVE,SENOLYX]
+  edge = "photoreceptor neogenesis bottleneck → SENOLYX η_neo-lift (clearance ≥72%); UBX1325 retina-validated"
+
+@reuse IVD-CURE reused[CURE-PRIMITIVE,SENOLYX]
+  edge = "FIRST BOUNDARY case — senolytic necessary-but-not-sufficient; needs 3-agent (senolytic+cells+endplate-nutrition), closes only marginally (0.91 @95% clearance)"
+
+@X c9 := "QFORGE bio-FEP engine -> {SENOLYX·AGA-CURE·IVD-CURE·OA-CURE·PERIO-CURE·RETINA-CURE} (planned compute engine)" :: reuse-edge [tier-2 candidate active]
+  note  = "QFORGE universal multi-scale 확장(2026-06-07): bio scale = native MD/FEP(ABFE·RBFE·HREX·MBAR) + QM-derived FF. 4 CURE 도메인 + SENOLYX의 docking/FEP/ΔΔG 계산엔진이 QFORGE-native로 흡수 예정. materials c7(QFORGE->RTSC) 패턴 복제."
+  gate  = "PENDING — bio scale 미구현. M-B1(native MD) -> M-B2/B3(FEP) 핵심경로. 게이트: QFORGE FEP ΔΔG vs openmm/openfe + 실험 ΔΔG(redox-matched) g5-agree시 verified-edge 승격. SENOLYX R12(17-AAG<->17-AG)가 첫 cross-val 앵커."
+  scope = "intra-project(g67). 동기: bio 외부의존 3대 실패모드 실증(B1 FF 2.2x over-spread · B3 openfe 무한대기 · B4 vast CUDA-PTX 소멸; QFORGE.log.md 2026-06-07). QFORGE-native가 materials에서 QE 걷어낸 것과 동형으로 제거."

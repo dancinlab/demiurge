@@ -1,0 +1,8 @@
+=== arm④ de novo neogenesis — Gray-Scott RD (v-spots = follicle primordia) ===
+patch 0.41 cm^2 · never-bald vertex ref ~200-300 terminal/cm^2
+  F(Wnt/regen drive)=0.010: primordia=   0  density=   0.0/cm^2  CV=0.00  [decay (no neogenesis)]
+  F(Wnt/regen drive)=0.022: primordia=   0  density=   0.0/cm^2  CV=0.00  [decay (no neogenesis)]
+  F(Wnt/regen drive)=0.030: primordia= 119  density= 290.5/cm^2  CV=1.01  [PATTERN→primordia]
+  F(Wnt/regen drive)=0.040: primordia=  33  density=  80.6/cm^2  CV=0.71  [PATTERN→primordia]
+  F(Wnt/regen drive)=0.055: primordia=   3  density=   7.3/cm^2  CV=0.61  [PATTERN→primordia]
+THRESHOLD: low F → spots decay (no neogenesis); a mid-F band sustains/multiplies spots = new follicle primordia → arm④ pushes the T3 field into this band (Wnt agonism + verteporfin YAP-block to remove the fibrotic damping).

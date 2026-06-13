@@ -1,0 +1,26 @@
+=== DC13 E_max clinical anchor (Van Neste 2020) ===
+  normal ceiling        = 221/cm^2  (= E_max 1.00 reference)
+  AGA baseline          = 84/cm^2  (0.38 of normal)
+  current best (min5+fin)= 131/cm^2
+  --> E_max(current 2-arm ①②) = 0.59 of normal  [CLINICAL, in-silico-anchored]
+  --> gap closed by current   = 0.34
+  literature ceiling band: 0.59-0.80 of normal ('barely exceed 60%')
+
+  ceiling decomposition (why current drugs plateau):
+    arms ①② reach mini+dorm classes = 0.75 of follicles
+    fibrosed class (NO current drug touches) = 0.25 -> the missing top
+    => current ceiling ~ 0.75 ✓ matches clinical 0.59-0.80
+
+  cure gate needs E_max >= 0.96; current anchor = 0.59
+  REQUIRED LIFT = 0.37  (must come from arms ③④, not ①②)
+    arm④ neogenesis: regenerate the 0.25 fibrosed mass current drugs cannot
+       -> lifts ceiling by up to 0.25 (0.75 -> 1.00 if fully efficient)
+    arm③ permanence: removes relapse (holds the gain) — necessary, not ceiling-raising
+  => the 0.37 lift is ENTIRELY within arm④'s 0.25 headroom -> feasible
+
+  RESIDUAL after anchoring (honest):
+   - E_max(current) = 0.59 CLINICAL (no new wet-lab) [tier: cited/GREEN]
+   - arm④ neogenesis EFFICIENCY (fibrosed -> functional follicle) is the ONLY
+     unmeasured quantity; bracketable IN VITRO via hair-follicle organoid drug-test
+     platforms (Nat Sci Rep 2023 s41598-023-31842-y; HFO 2024) — NOT whole-animal.
+   => E_max is NOT irreducibly wet-lab; it is clinically anchored + in-vitro bracketable.

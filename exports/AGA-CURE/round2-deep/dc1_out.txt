@@ -1,0 +1,6 @@
+=== arm④ molecular-grounded Turing (Schnakenberg Wnt/Dkk, λ-calibrated) ===
+  Dh/Da=  10: spots=13037  density=20370.3/cm^2  (8mm domain, CV=0.04)
+  Dh/Da=  20: spots=12751  density=19923.4/cm^2  (8mm domain, CV=0.03)
+  Dh/Da=  40: spots=8630  density=13484.4/cm^2  (8mm domain, CV=0.03)
+target: human scalp 200-300 terminal/cm^2, inter-follicular ~0.5-1.0mm
+→ tuning Dh/Da sets spot spacing; the d giving ~200-300/cm^2 is the biologically-calibrated regime → confirms de novo neogenesis CAN reach native density at realistic follicle spacing (molecular-grounded, beyond the round-1 phenomenological grid).

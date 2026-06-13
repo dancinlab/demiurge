@@ -1,0 +1,15 @@
+baseline best (senolytic only, η_lost→1): 0.90  (BOUNDARY, =gate edge)
+
+=== IVD 3-agent: SENOLYX + cell-therapy + endplate-nutrition ===
+ senolytic clearance  η_lost  ceiling  ≥0.90?
+                 0%    0.55     0.76    open
+                40%    0.73     0.82    open
+                60%    0.82     0.85    open
+                80%    0.91     0.88    open
+                95%    0.98     0.91   CLOSE
+
+FINDING: senolytic ALONE = boundary (0.90 edge, fragile). With the 3-agent combo
+(cell therapy engrafts 20% of lost mass + endplate nutrition raises η ceilings),
+the gate closes robustly at senolytic clearance ≥ 95% — well above the edge.
+⇒ IVD IS curable in-concept, but uniquely requires a 3-AGENT regimen, not senolytic alone.
+  This is the framework's first 'necessary-but-not-sufficient' senolytic case (#548 boundary).

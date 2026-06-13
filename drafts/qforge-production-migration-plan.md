@@ -206,6 +206,17 @@ Decision: **dispatch default stays `qe`. NO flip.** Two follow-on work items now
 sized for the next d8 inbox patch: (1) cell→H_of_rho front-end (S(G), V_loc,
 nonlocal projectors), (2) LaH10/Li2MgH16 QE refs to terminal. Plan stays `active`.
 
+**R7 UPDATE (2026-06-08) — from-scratch screened-vertex search TERMINAL for CaH6,
+gate stays HELD (REINFORCES @L4/@L5, no flip).** The last dead screening channel
+(local-field f_xc[ρ(r)]·Δρ) was ENGAGED at the full n=645 basis (pow2-FFT-Poisson
+folds=24). CaH6 screened λ=4.1518 vs QE 4.376 → rel-ε=5.12333% (g5 🟢 V8 verifier).
+First of 7 channels to CROSS bare (Δλ=+0.0153 vs needed +0.239), but the ≤1% gate
+is UNREACHED — the residual 5.12% IS the @L5 LDA-vs-QE screening-functional gap, now
+DEFINITIVELY isolated (all from-scratch channels exhausted). HYBRID (QE |g|² → L3
+assembler, xval 1.65e-7) is the final production routing for CaH6-class hydrides.
+Verdict: .verdicts/qforge-cah6-fxc-localfield-r7/VERDICT.md (worktree branch
+qforge-cah6-fxc-localfield-r7). No @L drift: R7 keeps the gate HELD-honest.
+
 ## front-end-stack
 
 The cell→H_of_rho plane-wave Hamiltonian front-end (blocker #1's structural gap,

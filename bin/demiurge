@@ -7,8 +7,9 @@
 # the web GUI (Next.js · Cloud Run, demiurge.dancinlab.org). Swift is
 # CLI-only; this shim is the headless / AI-agent surface.
 #
-#   demiurge cli <args...>  run DemiurgeCLI (list-records / show / …)
-#   demiurge                this help
+#   demiurge cli <args...>          hexa-native CLI (list-records / show / …)
+#   demiurge cli --swift <args...>  legacy Swift DemiurgeCLI fallback
+#   demiurge                        this help
 set -euo pipefail
 
 # Resolve through the hx shim symlink chain (~/.hx/bin/demiurge →
@@ -22,19 +23,41 @@ while [ -L "$SOURCE" ]; do
 done
 REPO="$(cd -P "$(dirname "$SOURCE")/.." && pwd)"
 
+# Installed hexa-native demi CLI. Default path = hexa (per @L5: full per-verb
+# parity met). Derive the stdlib home from $HOME (NOT a hardcoded user-absolute
+# path); DEMIURGE_HEXA_STDLIB overrides it for non-standard installs. There is
+# no `hexa demi` subcommand and `hexa run` resolves relative paths against cwd,
+# so an absolute install path is required for cwd-independence.
+DEMI_CLI="${DEMIURGE_HEXA_STDLIB:-$HOME/hexa-sh/stdlib/demi}/demi_cli.hexa"
+
 case "${1:-}" in
   cli)
     shift
-    cd "$REPO/cockpit"
-    exec swift run DemiurgeCLI "$@"
+    # Legacy Swift fallback — explicit only: `cli --swift …` or DEMIURGE_CLI=swift.
+    # Keep functional during migration; NEVER a silent regression.
+    if [ "${1:-}" = "--swift" ]; then
+      shift
+      cd "$REPO/cockpit"
+      exec swift run DemiurgeCLI "$@"
+    elif [ "${DEMIURGE_CLI:-}" = "swift" ]; then
+      cd "$REPO/cockpit"
+      exec swift run DemiurgeCLI "$@"
+    fi
+    # Default: the installed hexa-native CLI (cwd-independent via $DEMI_CLI).
+    exec hexa run "$DEMI_CLI" "$@"
     ;;
   ""|-h|--help|help)
     cat <<'USAGE'
 demiurge — universal hexa-native technical-design architecture program
 
-  demiurge cli <args...>  run DemiurgeCLI (list-records / list-decisions
-                          / list-rfcs / list-domains / show <path> / …)
-  demiurge --help         this help
+  demiurge cli <args...>          hexa-native CLI (list-records / list-decisions
+                                  / list-rfcs / list-domains / show <path> / …)
+  demiurge cli --swift <args...>  legacy Swift DemiurgeCLI (migration fallback)
+  demiurge --help                 this help
+
+The CLI defaults to the hexa-native demi CLI (hexa-lang stdlib/demi). The
+legacy Swift binary remains reachable via `cli --swift` or DEMIURGE_CLI=swift
+during migration. Set DEMIURGE_HEXA_STDLIB to override the stdlib home.
 
 The user surface is the web GUI (Next.js · Cloud Run); the CLI is the
 AI-agent + web-bridge surface (design.md D34). The macOS SwiftUI cockpit

@@ -1,0 +1,132 @@
+# srr.demi — verb-cell manifest for the SRR (Split-Ring Resonator) domain
+# CLOAK meta-domain decomposition: 부품 2 of 3 (RTSC + SRR + HEX-N6 → CLOAK).
+# SSOT scripts in ~/core/hexa-lang/stdlib/srr/ (NOT YET WIRED — stub)
+# Generic dispatcher: ~/core/hexa-lang/stdlib/cockpit/cellrun.hexa
+# Demiurge witness: ActionDispatch → CellrunDispatch.run("srr", verb)
+#
+# Format: cellrun.hexa Phase A dialect — [cell.<verb>] section headers,
+# key=value lines, scope_caveats as multi-line [ "...", "..." ] array.
+#
+# Citations (anchored, not repeated per-cell — see domains/srr.md):
+#   - Pendry, J. B. (1999) IEEE TMTT 47, 2075 — original SRR Lorentz μ(ω).
+#   - Smith et al. (2000) PRL 84, 4184 — first left-handed metamaterial.
+#   - Schurig et al. (2006) Science 314, 977 — microwave carpet cloak SRR.
+#   - UFO/CLOAK.md (in-tree, this repo) — H-CLK-1~12 lattice hypotheses.
+#
+# Domain caveat (applies to every cell):
+# srr cells in this initial registration are STUB skeletons —
+# stdlib/srr/<verb>.py producers DO NOT EXIST yet. cellrun
+# dispatch will return rc=2 honest-skip until verb producers land.
+# ALL cells stay GATE_OPEN / absorbed=false (g3 / d5).
+
+# --- STUB: specify (SRR target-spec skeleton) -------------------------------
+[cell.specify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/srr/specify.py
+record_kind       = srr_specify_record
+output_dir        = exports/srr/specify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "SRR target-spec skeleton (band / Q-factor target / loss budget / pitch) — TEMPLATE.",
+  "Q=σ·τ=48 target inherits from n=6 lattice anchor (HEX-N6 sibling domain).",
+  "measurement_gate = GATE_OPEN permanently — specify is illustrative, not an absorption claim (g3).",
+]
+
+# --- STUB: structure (Hex-SRR geometry skeleton) ----------------------------
+[cell.structure]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/srr/structure.py
+record_kind       = srr_structure_record
+output_dir        = exports/srr/structure
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Hex-SRR geometry skeleton (outer-r · inner-r · gap-g · linewidth-w) — TEMPLATE.",
+  "Real EUV mask layout + side-conductor patterning lives in foundry deliverables.",
+  "measurement_gate = GATE_OPEN permanently — structure skeleton is not an absorption claim (g3).",
+]
+
+# --- STUB: design (Pendry 1999 closed-form parameter dossier) ---------------
+[cell.design]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/srr/design.py
+record_kind       = srr_design_record
+output_dir        = exports/srr/design
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Pendry 1999 closed-form parameters (ω₀=1/√(LC), F=π·r²/a², Q=ω₀/Γ) skeleton — TEMPLATE.",
+  "Q=σ·τ=48 target remains UNVERIFIED until V2/V3 push lands.",
+  "measurement_gate = GATE_OPEN permanently — design scaffolding is not an absorption claim (g3).",
+]
+
+# --- STUB: analyze (FDTD/HFSS S-parameter retrieval skeleton) ---------------
+[cell.analyze]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/srr/analyze.py
+record_kind       = srr_analyze_record
+output_dir        = exports/srr/analyze
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "FDTD / HFSS / MEEP S-parameter extraction + ε(ω)/μ(ω) retrieval skeleton — TEMPLATE.",
+  "Real FDTD convergence (grid/order study) DEFERRED to a real producer (pool/cloud).",
+  "absorbed=true requires hexa-native re-derivation + open-solver parity, not stub.",
+]
+
+# --- STUB: synthesize (EUV mask + side-conductor recipe) --------------------
+[cell.synthesize]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/srr/synthesize.py
+record_kind       = srr_synthesize_record
+output_dir        = exports/srr/synthesize
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "EUV mask layout + side-conductor patterning recipe skeleton — TEMPLATE.",
+  "Real EUV mask tape-out lives in foundry tooling, not this cell.",
+  "measurement_gate = GATE_OPEN permanently — synthesize bundle is not an absorption claim (g3).",
+]
+
+# --- STUB: verify (Q=σ·τ=48 + ω₀=1/√(LC) re-derive skeleton) ---------------
+[cell.verify]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/srr/verify.py
+record_kind       = srr_verify_record
+output_dir        = exports/srr/verify
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "Re-derive Pendry 1999 ω₀ closed-form + Q=σ·τ=48 lattice anchor via hexa verify.",
+  "V1 inventory / V2 closed-form (🔵) / V3 numerical (🟢) / V4 ledger — ALL DEFERRED to real producer.",
+  "absorbed=true requires `hexa verify --expr` verdict verbatim (g5) + atlas fold, not stub.",
+]
+
+# --- STUB: handoff (VNA bench plan skeleton) --------------------------------
+[cell.handoff]
+substrate         = python3
+python_candidates = python3.13, python3.12, python3
+script            = stdlib/srr/handoff.py
+record_kind       = srr_handoff_record
+output_dir        = exports/srr/handoff
+required_deps     = python3
+gate_default      = OPEN
+absorbed_default  = false
+scope_caveats     = [
+  "VNA bench plan skeleton (Q-measure · |S11|/|S21| sweep · ε/μ retrieval protocol) — TEMPLATE.",
+  "Real VNA bench-time + accredited-lab gates = downstream confirmation.",
+  "measurement_gate = GATE_OPEN permanently — handoff bundle is scaffolding, not an absorption claim (g3).",
+]
