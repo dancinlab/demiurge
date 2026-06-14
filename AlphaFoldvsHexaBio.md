@@ -1,3 +1,5 @@
+> 📍 SSOT: [ARCHITECTURE.md](ARCHITECTURE.md) · governance [CLAUDE.md](CLAUDE.md)
+
 # 🧬 AlphaFold vs hexa-bio — "the world's structure-prediction oracle" vs "a 5-axis in-silico molecular-design substrate"
 
 > Comprehensive, **honest** head-to-head of **AlphaFold 3** (DeepMind/Isomorphic Labs, Abramson et al., *Nature* 2024 — the de-facto reference for biomolecular structure prediction) against **hexa-bio** — which is **two complementary surfaces**: (1) the `stdlib/bio` + `stdlib/chem` + `stdlib/protein-fold` family inside hexa-lang, driven by demiurge's CURE/RX domains; **and (2) the standalone `~/core/hexa-bio/` substrate repo** — a **5-axis molecular toolkit** (QUANTUM · WEAVE · NANOBOT · RIBOZYME · VIROCAPSID) on the n=6 invariant lattice (`dancinlab/hexa-bio` v1.0.0, registry L24). *The prior revision of this doc looked only at the protein-fold/`stdlib` surface and entirely missed surface (2) — this revision adds it.*

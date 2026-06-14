@@ -1,3 +1,5 @@
+> 📍 SSOT: [ARCHITECTURE.md](ARCHITECTURE.md) · governance [CLAUDE.md](CLAUDE.md)
+
 # Demiurge CHARTER
 
 > Standalone repo `~/core/demiurge`. Authoritative scope/governance.

@@ -3,7 +3,11 @@
   "profile": "hardcore",
   "stack": [],
   "lockdown": {
-    "files": [],
+    "files": [
+      "bin/demiurge",
+      "cli/demiurge_cli.hexa",
+      "web/middleware.ts"
+    ],
     "fromMarkdown": "CLAUDE.md",
     "onEditReminder": "L0 file edited — update CHANGELOG + issue tracker in the same change."
   },
@@ -34,6 +38,25 @@
     "AGENTS.md",
     "README.md"
   ],
+  "docs": {
+    "architecture": "ARCHITECTURE.md",
+    "log": "CHANGELOG.md",
+    "scratchDir": "scripts/scratch",
+    "scopeDirs": [
+      ""
+    ],
+    "allow": [
+      "README.md",
+      "CHANGELOG.md",
+      "ARCHITECTURE.md",
+      "CLAUDE.md",
+      "AGENTS.md",
+      "LICENSE",
+      "CONTRIBUTING.md",
+      "SECURITY.md",
+      "DOMAIN_AUDIT.md"
+    ]
+  },
   "ledger": {
     "staleSec": 1800
   }

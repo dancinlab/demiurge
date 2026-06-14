@@ -1,3 +1,5 @@
+> 📍 SSOT: [ARCHITECTURE.md](ARCHITECTURE.md) · governance [CLAUDE.md](CLAUDE.md)
+
 # ARCH — historical log
 
 Spec at [`./ARCH.md`](./ARCH.md). Log entries below preserve session-by-session evolution; the spec file holds only the current confirmed state.

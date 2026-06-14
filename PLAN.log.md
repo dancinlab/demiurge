@@ -1,3 +1,5 @@
+> 📍 SSOT: [ARCHITECTURE.md](ARCHITECTURE.md) · governance [CLAUDE.md](CLAUDE.md)
+
 # PLAN — historical log
 
 Spec at [`./PLAN.md`](./PLAN.md). Log entries below preserve session-by-session evolution (progress / measured-distance / cockpit κ-phase build log); the spec file holds only the current forward roadmap.

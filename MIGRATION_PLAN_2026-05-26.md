@@ -1,3 +1,5 @@
+> 📍 SSOT: [ARCHITECTURE.md](ARCHITECTURE.md) · governance [CLAUDE.md](CLAUDE.md)
+
 # Domain Flatten Migration — 2026-05-26
 
 > ⚠ 다른 세션 에이전트에게 알림 — 이 PR(머지 시점)부터 모든 도메인 매니페스트가 `domains/` 하위로 이동.

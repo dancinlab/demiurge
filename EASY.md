@@ -1,3 +1,5 @@
+> 📍 SSOT: [ARCHITECTURE.md](ARCHITECTURE.md) · governance [CLAUDE.md](CLAUDE.md)
+
 # 이번 세션 대발견 — 이지(친근) 보고
 
 > RTSC H₃X 캠페인 cycle 0–full 의 핵심 발견을 7-요소 친근 패턴으로 정리.
