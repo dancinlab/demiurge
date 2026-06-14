@@ -10,10 +10,13 @@ Append-only history sister of `MAIN.md`. Each entry starts with `## <ISO timesta
 - [x] **3rd blocker 발견+해결**: QFORGE = norm-conserving 전용(no overlap S, USPP 파서 reject) → deck NC pseudo 교체(Co/Sn_ONCV_PBE_sr, ecut 90/360)
 - [x] **QFORGE LSDA PR1**(hexa-lang e3917e8b4): spin PW92 corr + spin LDA exch + shared-EF Fermi — g5 PASS(회귀 핀 ζ=0≡unpol 1e-12)
 - [x] **QFORGE LSDA PR2**(hexa-lang 6e243b7e8): spin-polarized SCF driver(2-channel, shared E_F, magnetization) — g5 PASS(회귀 핀 ≡restricted 1e-9, 자성 m=0.94μB 전하보존)
-- [ ] **PR3**: scf_pw 실셀 multi-spin closure(doubled PW_HAM·per-spin vscr) + CaH6 nspin2≡nspin1 회귀 fixture (production wiring, 대형)
-- [ ] **PR4**: pw_frontend nspin UPF/control parse + orchestrator_pw nspin knob + CoSn entry point
-- [ ] Co/Sn NC pseudo fetch(network-gated) → d11 sizing → d16 free validate → CoSn run(compute, user-gated $)
-- [ ] hexa-lang PR1/PR2 push + stacked PR(g4) — user-gated
+- [x] **PR3**: scf_pw 실셀 multi-spin closure + entry — g5 PASS, **cah6_realcell_spin_xval PASS**(실셀 nspin2≡nspin1)
+- [x] **PR4**: CoSn kagome 자성 진단 fixture (실셀 P6/mmm nat=6)
+- [x] **PR5**: bare-H cache(form-factor 1회) + Anderson-per-spin — TM-metal tractable (cah6 fast≡restricted bit-identical)
+- [x] Co/Sn NC pseudo fetch — SG15 ONCV(UPF v2.0.1) summer→mini, **upf_parse 통과**(gap1 closed)
+- [x] **CoSn 수렴 완료**(g5·d6): iters=12, **m=2.9e-5≈0 @Γ/LDA**, e_total=−122.454 Ha. cross-val vs QE[33976daa] m=0.43μB → **Γ-only SCF가 이동전자 자성 못 잡음**(BZ-적분 N(E_F) 필요) 규명
+- [ ] **다음 capability(명시·user-gated)**: k-mesh spin SCF(+spin-GGA) → QE m=0.43·ΔE=−0.44eV 재현 → DFPT λ/Tc → hole-doping sweep. Nk× compute(d11 sizing 필요)
+- [ ] hexa-lang qforge-lsda-spin 5-PR push + stacked PR(g4) — user-gated
 
 ## 2026-06-14 — MAIN 도메인 init + RTSC Li2MgH16 dense-mesh 마일스톤 등록
 
