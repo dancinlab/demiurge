@@ -1,3 +1,5 @@
+> 📍 SSOT: [ARCHITECTURE.md](ARCHITECTURE.md) · governance [CLAUDE.md](CLAUDE.md)
+
 # HANDOFF — historical log
 
 Spec at [`./HANDOFF.md`](./HANDOFF.md). Log entries below preserve session-by-session evolution; the spec file holds only the current confirmed state (cold-readable RESUME).

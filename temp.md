@@ -1,3 +1,5 @@
+> 📍 SSOT: [ARCHITECTURE.md](ARCHITECTURE.md) · governance [CLAUDE.md](CLAUDE.md)
+
 # RTSC reconcile — 재부팅 후 이어서 (2026-05-30)
 
 ## 왜 재부팅

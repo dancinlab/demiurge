@@ -6,6 +6,16 @@ For the full audit trail, see `git log`.
 
 ---
 
+## 2026-06-15
+
+### harness — perfect harness-standard setup (architecture SSOT + CLAUDE.md)
+
+- **`.harness-engine` submodule** bumped to `harness-hardcore` tip (`docs.scopeDirs` support).
+- **`ARCHITECTURE.md`** rewritten as the real architecture SSOT (English) — overview, component map, data flow, governance/verify sections (replacing the Korean stub).
+- **`CLAUDE.md`** converted from a `project.tape` symlink to a real harness-standard markdown: project blurb + `## Structure` tree (per-node descriptions) + governance summary + `## Harness` section + quick-reference links. `project.tape` preserved as the governance SSOT.
+- **`harness.config.json`** tuned — `lockdown.files` (bin/demiurge · cli/demiurge_cli.hexa · web/middleware.ts), added a `docs` block (`architecture`/`log`/`scratchDir`/`scopeDirs:[""]`/`allow`) so single-doc discipline applies to repo-root `.md` only.
+- **Root scattered docs** given a one-line SSOT quickref pointer; `DOMAIN_AUDIT.md` allow-listed. `harness docs check` → `docs: ok` (0 quickref / 0 scatter / 0 CLAUDE-MD violations).
+
 ## 2026-05-25
 
 ### CLI+COCKPIT — LLM 연결 모듈 (D38) + 진행바 정리 + 7-verb 전 도메인 캠페인

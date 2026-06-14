@@ -1,3 +1,5 @@
+> 📍 SSOT: [ARCHITECTURE.md](ARCHITECTURE.md) · governance [CLAUDE.md](CLAUDE.md)
+
 # 🔨 QFORGE vs QE — "직접 만든 초전도 계산엔진" vs Quantum ESPRESSO
 
 > Comprehensive head-to-head of **QFORGE** (the hexa-native plane-wave DFT / DFPT electron–phonon engine, `stdlib/qforge`) against **Quantum ESPRESSO (QE)**, the de-facto reference for first-principles superconductivity (electron–phonon λ → Eliashberg/McMillan Tc).
