@@ -15,8 +15,9 @@ Append-only history sister of `MAIN.md`. Each entry starts with `## <ISO timesta
 - [x] **PR5**: bare-H cache(form-factor 1회) + Anderson-per-spin — TM-metal tractable (cah6 fast≡restricted bit-identical)
 - [x] Co/Sn NC pseudo fetch — SG15 ONCV(UPF v2.0.1) summer→mini, **upf_parse 통과**(gap1 closed)
 - [x] **CoSn 수렴 완료**(g5·d6): iters=12, **m=2.9e-5≈0 @Γ/LDA**, e_total=−122.454 Ha. cross-val vs QE[33976daa] m=0.43μB → **Γ-only SCF가 이동전자 자성 못 잡음**(BZ-적분 N(E_F) 필요) 규명
-- [ ] **다음 capability(명시·user-gated)**: k-mesh spin SCF(+spin-GGA) → QE m=0.43·ΔE=−0.44eV 재현 → DFPT λ/Tc → hole-doping sweep. Nk× compute(d11 sizing 필요)
-- [ ] hexa-lang qforge-lsda-spin 5-PR push + stacked PR(g4) — user-gated
+- [x] **k-mesh spin SCF 구현+검증(PR6)**: qforge_scf_pw_kmesh_spin + 가중 Fermi · g5 cah6 kmesh(Γ)≡fast PASS · **CoSn 2×2×2(8k) 수렴: m=7.9e-7≈0** → Γ-only 미샘플링 배제, 원인=LDA 함수로 좁힘
+- [ ] **다음 capability(명시·user-gated, 대형)**: **spin-GGA(PBE) XC** → LDA가 소거한 약자성 moment 회복 → QE m=0.43 재현. PW GGA = |∇ρ| FFT machinery(core_fft 존재) + spin-PBE x+c + GGA 전위 ∇·항 + (dense-k flat-band DOS). d11 sizing·user-go 대기. 단독으론 0.43 미보장(dense-k 동반 필요, compute-heavy)
+- [ ] hexa-lang qforge-lsda-spin 6-PR push + stacked PR(g4) — user-gated
 
 ## 2026-06-14 — MAIN 도메인 init + RTSC Li2MgH16 dense-mesh 마일스톤 등록
 
