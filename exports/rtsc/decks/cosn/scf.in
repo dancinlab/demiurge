@@ -1,0 +1,43 @@
+&control
+  calculation = 'scf'
+  prefix = 'cosn'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+/
+&system
+  ! CoSn — hexagonal P6/mmm (No.191). Co kagome net at z=0 (Wyckoff 3f), Sn 1a(z=0)+2d(z=1/2).
+  ! a=5.279 Ang=9.9760 Bohr, c/a=0.8068. anima handoff [8e6ad1b2] / RTSC_12,14,16.
+  ! Goal: confirm kagome FLAT BAND + ΔE vs E_F; nspin=2 = magnetism DIAGNOSTIC (expect non-mag clean base).
+  ibrav = 4
+  celldm(1) = 9.9760
+  celldm(3) = 0.80680
+  nat = 6
+  ntyp = 2
+  ecutwfc = 90
+  ecutrho = 360
+  nspin = 2
+  starting_magnetization(1) = 0.3
+  starting_magnetization(2) = 0.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Co 58.933  Co_ONCV_PBE_sr.upf
+  Sn 118.71  Sn_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS crystal
+  Co 0.500000 0.000000 0.000000
+  Co 0.000000 0.500000 0.000000
+  Co 0.500000 0.500000 0.000000
+  Sn 0.000000 0.000000 0.000000
+  Sn 0.333333 0.666667 0.500000
+  Sn 0.666667 0.333333 0.500000
+K_POINTS automatic
+  12 12 12 0 0 0

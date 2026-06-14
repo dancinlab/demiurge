@@ -31,3 +31,4 @@
 @domain RETINA-CURE := "domains/RETINA-CURE.md"
 @domain IVD-CURE := "domains/IVD-CURE.md"
 @domain COSMOS := "domains/COSMOS.md"
+@domain MAIN := "./MAIN.md"
