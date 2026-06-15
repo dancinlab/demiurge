@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### SENOLYX R12(HSP90) — 🧱 close-negative 확정 종결 (K=5 ensemble 10/10)
+- R12 RBFE + R12-GOLD 마일스톤 CLOSED-NEGATIVE flip. K=5 ensemble 10/10 완주: ΔΔG=+3.13±2.83 (exp −1.9, |err|=5.03, 부호 반대 FAIL). ensemble 평균화로도 sign 불변 → R10b(절대 overbind)·R11(기계론 FF결함)·R12(상대 RBFE) 3개 독립라인이 "거대고리 안사마이신엔 범용 FF 부적합" 확증 (tune-to-green 불가, c9/d6 정직 terminal).
+- vast 6-pod 회수(결과 seen.prog 10/10 + RESULT_FINAL_10of10.txt 보존 후 destroy, 비용정지). R13 후보검증(MCL1 양성 유지)만 open으로 잔존.
+
 ### RTSC no-cooling — 정공도핑 CoSn 🔴 FALSIFY → CoSn rigid-doping 양방향 CLOSED (dead-end 확정)
 - **정공도핑 CoSn flat-band 정렬 게이트체크 🔴 FALSIFY** (4점 tot_charge 양수 jellium scan, summer 무료풀 -np6, $0): 정공도핑이 E_F를 내리지만(~−0.06 eV/+0.2홀) **kagome flat band이 더 빨리 내려가** ΔE = E_flat − E_F가 오히려 더 깊어짐 — −0.445(control) → −0.481 → −0.512 → −0.544 eV (slope ~−0.165 eV/hole). flat band이 E_F에서 **멀어짐**. 게다가 자성 단조 상승 0.09→0.33→0.48→0.63 μB(~+0.45홀에서 게이트 0.5 돌파).
 - **CoSn rigid-doping 양방향 CLOSED**: 전자도핑(−0.445→−0.585, −0.23 eV/e⁻)과 정공도핑(−0.165 eV/hole) **둘 다 flat band을 더 깊게** 민다. 이전 전자도핑 행이 추천한 정공 각도(c16 돌파)를 진짜로 시도 → 정직한 terminal 벽. **원인**: CoSn kagome flat band은 Co-3d manifold에 묶여 rigid 도핑이 E_F를 움직여도 d-유래 flat band이 함께(더 깊게) 따라가, 도핑으로 flat band을 독립적으로 E_F에 올릴 수 없음. "CoSn을 도핑해 E_F에 맞춘다" 축 전체 CLOSED.

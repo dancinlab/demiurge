@@ -2,6 +2,13 @@
 
 Append-only history sister of `SENOLYX.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-16 (2) — R12 close-negative 확정 종결 + pod 회수
+
+- [x] R12 K=5 ensemble 10/10 완주: 17AG ABFE 25.02±2.06 · 17AAG 21.88±1.95 → **ΔΔG=+3.13±2.83 (exp −1.9, |err|=5.03, 부호 ❌ FAIL)**.
+- [x] R12 + R12-GOLD 마일스톤 🧱 CLOSED-NEGATIVE flip — ensemble로도 sign 불변 = R10b·R11·R12 3독립라인 "거대고리 안사마이신 범용FF 부적합" 확증. tune-to-green 불가(c9/d6).
+- [x] vast 6-pod 회수(결과 seen.prog 10/10·RESULT_FINAL_10of10.txt 보존 후 destroy) — 비용정지. R13 5-pod·watcher 무중단.
+- [ ] R13(후보 결합)만 잔존 open: MCL1 3rd rep + BCLXL/CRBN 완료 대기.
+
 ## 2026-06-16 — vast 재가동 + R12 ensemble + R13 후보 전수 ABFE + 하니스 하드닝
 
 - [x] B4(PTX-222) 근본해결: conda `cuda-version=12.6` 선핀 → vast RTX_4090 가동 (이전 "vast 비가용·summer 단독" 무효화). host CUDA 13.0 < conda기본 13.3 충돌이 진짜 원인.
