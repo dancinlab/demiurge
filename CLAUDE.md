@@ -165,6 +165,13 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - ⛔ run an 8-q el-ph serially on one pod when q×irr GRID finishes in hours · leave walltime on table
 - ⛔ add shards below the floor (SCF/transfer/collect dominates) — report the floor honestly (d6)
 
+### d_qforge_fix — QFORGE upstream fix·개선 — 즉시해결 우선 · 장기지연 시 QE 병행(동시)
+
+- ✅ QFORGE upstream fix/개선이 **바로 해결 가능**하면 즉시 고치고 진행(우회·미루기 금지)
+- ✅ fix가 **오래 걸리는(장기)** 경우 → QE로 대체해 캠페인을 **계속 전진**시키되, QFORGE fix도 **바로 함께(병행)** 진행 — 둘을 동시에 굴린다(QE production + QFORGE fix in-flight)
+- ✅ QE 대체는 임시 우회가 아니라 정직한 production reference (d_qforge_parallel·migration gate와 일관) — 결과는 QE-grade로 박제, QFORGE는 게이트 후 absorb
+- ⛔ QFORGE fix가 길다고 캠페인을 멈춰 세우기 · QE 대체만 하고 QFORGE fix를 뒤로 미뤄 잊기 · 바로 고칠 수 있는 걸 우회로 덮기
+
 ## 워크플로우 (workflow)
 
 PAPER auto-generation flow — atlas-as-audit-SSOT lineage (`research result → hexa verify pass → atlas atom direct fold → /paper`).

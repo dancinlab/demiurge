@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-15
 
+### 거버넌스 — d_qforge_fix 추가 (QFORGE upstream fix: 즉시해결 우선 · 장기 시 QE 병행)
+- **CLAUDE.md `## 거버넌스`** 에 `d_qforge_fix` 신설(`d_qforge_parallel` 뒤): QFORGE upstream fix/개선이 **바로 해결 가능하면 즉시 고치고 진행**, **오래 걸리면 QE로 대체해 캠페인을 계속 전진시키되 QFORGE fix도 바로 함께(병행) 진행**(둘 동시). QE 대체는 임시우회가 아닌 정직한 production reference(migration gate 일관). 금지: fix 길다고 멈춤·QE만 하고 fix 미뤄 잊기·바로 고칠 걸 우회로 덮기.
+
 ### SENOLYX — 재사용 ABFE 하니스 6-실패모드 하드닝 (라이브 캠페인 무중단)
 - **대상** — `exports/SENOLYX/round13-abfe-allcand/` (재사용 ABFE GPU fan-out 하니스). R12(HSP90)/R13(후보) 라이브 캠페인에서 **실측으로 터진 6개 실패모드**를 근본 차단(c1). 코드/문서 전용 — 새 pod 렌트 0, 가동중 11 pod + watcher 무중단.
 - **① bound-pose 기본화** — `abfe_cand.py`가 clash-free 공결정 bound pose `lig_<RESN>_bound.sdf`(extract_pose.py 산출, ideal 컨포머 대신)를 우선 사용 + bound일 땐 recenter 생략(좁은 그루브 포켓 NaN 차단). **전 3타깃 bound SDF 생성**(3CQ/70R/EF2) — summer `fep` env(rdkit 2025.09.5)에서 extract_pose.py 실행해 로컬 적재(전부 BOUND_OK). SDF 부재 시 ideal+centroid graceful fallback.
