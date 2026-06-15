@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### SENOLYX — vast 재가동 + R12 ensemble + R13 후보 전수 ABFE (🟢 MCL-1/S63845 결합 계산 확증)
+- **B4(PTX-222) 근본해결** — conda `cuda-version=12.6` 선핀(host CUDA 13.0 < conda기본 13.3 충돌이 원인)으로 vast RTX_4090 다중 pod 가동. 이전 "vast 비가용·summer 단독" 가정 무효화.
+- **R12(HSP90) K=5 ensemble 재가동** — bistability 평균화. 잠정 ΔΔG≈+2.3 (exp −1.9, 부호 ❌) → ensemble로도 안 뒤집힘 = R10b·R11 "거대고리 범용FF 부적합" **확증 방향**(close-negative 수렴중, 17AAG 완료시 확정).
+- **R13 신설 — 후보 전수 ABFE 검증**: 일반화 deck `abfe_cand.py`(TARGET→수용체/리간드/포켓) + co-crystal 실측 bound-pose(`extract_pose.py`, rdkit). 🟢 **MCL-1/S63845 ABFE=−14.18±1.67 (n=2/3) vs 실험 ~−13 → |err|~1.2 일치 = 후보 결합력 첫 계산 확증**(일반약물형이라 ABFE 신뢰가능). BCLXL(3CQ NaN충돌→bound-pose fix)·CRBN 진행중.
+- **재사용 ABFE 하니스 10-실패모드 하드닝** (PR #631 6모드 + #637 F7~F10) — SSOT=`exports/SENOLYX/round13-abfe-allcand/README.md`. 도메인 SSOT(SENOLYX.md/.log.md) 현행화. campaign 무인 가동중(watcher 2개).
+
 ### RTSC — 전자도핑 CoSn 정렬 검증 🔴 FALSIFY (방향 반증 + 정공도핑 새 각도)
 - **삼각측량 v2 1순위 CLOSED-negative(정렬축)** — CoSn `tot_charge` jellium 도핑 스캔(Δn=0/0.2/0.4/0.6, 4점 SCF 전부 수렴, vast 32-core $0.35). Control Δn=0이 CoSn −0.445 eV 정확 재현(셋업 검증 ✅). **실측: 전자도핑이 flat band를 E_F에서 더 깊게**(−0.44→−0.59 eV, slope −0.23 eV/e⁻) — rigid-band 예측(+0.97 eV/d-e)과 **반대 방향**. N=2 CoSn-vs-MoSn 기울기가 d-밴드중심 화학과 전자수를 혼동 → 도핑 다이얼로는 반증. |ΔE|<0.10 도핑점 없음.
 - **부분 성공 + 새 각도(c16)** — 자성은 통과(m 0.09→0.00 by Δn=0.2, 전자도핑이 CoSn itinerant 자성 제거 ✅, 일석이조의 한 마리). 데이터가 명확히 시사: **정공(hole)도핑**(tot_charge=+)이면 E_F를 flat band 쪽으로 내림 → CoSn 폐기 전 싼 2점 정공 스캔이 다음 각도. caveat: jellium=rigid-band-with-screening proxy(실 dopant 아님)지만 단조 wrong-direction이 명확해 substitutional 확인 불요. 박제 `exports/rtsc/cosn_edope_gatecheck.json` + deck + `RTSC_LEDGER.jsonl` CoSn-edope FALSIFIED.

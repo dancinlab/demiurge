@@ -2,6 +2,15 @@
 
 Append-only history sister of `SENOLYX.md`. Each entry starts with `## <ISO timestamp> — <header>` (newest on top); body = `- [x]` (done) / `- [ ]` (pending) checkbox tasks.
 
+## 2026-06-16 — vast 재가동 + R12 ensemble + R13 후보 전수 ABFE + 하니스 하드닝
+
+- [x] B4(PTX-222) 근본해결: conda `cuda-version=12.6` 선핀 → vast RTX_4090 가동 (이전 "vast 비가용·summer 단독" 무효화). host CUDA 13.0 < conda기본 13.3 충돌이 진짜 원인.
+- [x] R12를 K=5 ensemble로 재구성(run_ens.sh) — vast 6-pod 10셀. 잠정 ABFE(17AG)=25.02±2.06, ΔΔG≈+2.3 (exp −1.9 부호 ❌) → close-negative 수렴중(R10b·R11 FF-부적합 진단 확증 방향). 17AAG solvent leg 마무리중.
+- [x] R13 신설 — 후보 전수 ABFE 검증, 일반화 deck(abfe_cand.py) + co-crystal bound-pose(extract_pose.py, rdkit). vast 5-pod 9셀.
+- [x] 🟢 R13 MCL-1/S63845 ABFE=−14.18±1.67 (n=2/3) vs 실험 ~−13 → |err|~1.2 일치 = **후보 결합력 첫 계산 확증** (positive). BCLXL(3CQ NaN충돌→bound-pose fix)·CRBN 진행중.
+- [x] ABFE 하니스 10-실패모드 하드닝 main 머지: PR #631(6모드: bound-pose·harvest-stdin·copy-verify·retry-resume·ssh-alive·orphan-reap) + PR #637(F7 단일발사·F8 watcher재무장·F9 harvest영속병합·F10 완주auto-down). SSOT=round13 README.
+- [ ] R12 ΔΔG 확정(17AAG 완료 대기) · R13 BCLXL/CRBN 완료 + MCL1 3rd rep → 후보별 결합 확정. watcher 무인 수확중.
+
 ## 2026-06-07T04:35 — R12 B5 bottleneck quantified (summer RTX 5070 HREX throughput)
 
 Empirical timing of the R12 ΔΔG validation run on summer (only reliable GPU — vast blocked by
