@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
 # R13 harvest: pull ENS_RESULT from all pods, ensemble-average ABFE per TARGET.
 # Exit 0 + writes RESULT.txt when all 9 cells done; exit 2 if partial.
+#
+# PERSIST-MERGE (failure-mode #9): combined.prog is THIS poll's fresh pull. The
+# durable seen-store seen.prog ACCUMULATES every ENS_RESULT line ever observed. We
+# only ever APPEND newly-pulled ENS_RESULT lines into seen.prog (never truncate it),
+# and the tally/aggregate reads from seen.prog. So a transient SSH blip that returns
+# 0 lines this poll can NEVER un-count a cell that already finished — the count is
+# monotone non-decreasing and the watcher reliably reaches the final N/N. dedup
+# keep-last per (lig,rep) is handled in python (a resumed rep's newer ENS_RESULT
+# wins, because seen.prog preserves source order and python keeps the LAST match).
 set -uo pipefail
 cd "$(dirname "$0")"
-COMBINED=combined.prog; : > "$COMBINED"
+COMBINED=combined.prog; SEEN=seen.prog; : > "$COMBINED"; touch "$SEEN"
 awk -F'\t' '$6=="running" && $4!="-"{print $4"\t"$5}' cand_pods.tsv | sort -u | while IFS=$'\t' read -r HOST PORT; do
   # WHY </dev/null : ssh (under `hexa cloud exec`) inherits and DRAINS the parent
   # shell's stdin. Inside this `while read` loop that stdin IS the awk pipe, so an
@@ -13,8 +22,11 @@ awk -F'\t' '$6=="running" && $4!="-"{print $4"\t"$5}' cand_pods.tsv | sort -u | 
   hexa cloud exec root@$HOST --port $PORT --insecure -- \
     'grep -h "ENS_RESULT" /workspace/r13cand/cell_*.log 2>/dev/null' </dev/null 2>/dev/null >> "$COMBINED"
 done
-echo "harvested $(grep -c ENS_RESULT "$COMBINED" 2>/dev/null || echo 0) ENS_RESULT lines"
-python3 - "$COMBINED" <<'PYEOF'
+# persist-merge: append only the freshly-pulled ENS_RESULT lines into the durable
+# seen-store (never truncate seen.prog), so a blip cannot regress the tally.
+grep -h "ENS_RESULT" "$COMBINED" 2>/dev/null >> "$SEEN" || true
+echo "harvested $(grep -c ENS_RESULT "$SEEN" 2>/dev/null || echo 0) ENS_RESULT lines"
+python3 - "$SEEN" <<'PYEOF'
 import sys, re, math
 rows={}
 pat=re.compile(r"ENS_RESULT lig=(\S+) rep=(\d+) dG_complex=(\S+) dG_solvent=(\S+) ssc=(\S+) dG_bind=(\S+)")

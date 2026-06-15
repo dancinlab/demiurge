@@ -8,6 +8,14 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### SENOLYX — ABFE 하니스 추가 4-실패모드(F7~F10) 하드닝 (라이브 캠페인 무중단)
+- **대상** — `exports/SENOLYX/round13-abfe-allcand/` (+ `round12-rbfe/` 의 watch.sh/harvest.sh). PR #631이 막은 6개 너머, 24h 무인 캠페인의 ④analyze가 발굴한 **추가 4개 실패모드**를 근본 차단(c1). 코드/문서 전용 — 새 pod 렌트 0, 가동중 11 pod + watcher 2개(watch.sh PID 49500 · watch_cand.sh PID 18186) 무중단. live watcher가 매 폴 새로 실행하는 watch*.sh/harvest*.sh는 편집 후 `bash -n` + harvest 라이브 dry-run(여전히 `done_cells=N/9` 집계)으로 무파손 확인.
+- **F7 단일 발사 entry** — `fire_cell.sh <r12\|r13> <CELL...>` 신규 = production 셀 발사/재개의 **유일 sanctioned 경로**. manifest에서 셀→pod 해석 후 retry-resume 러너(`runcells_*.sh`)로만 발사(≤4회 재시도·per-rep `.nc` 재개). 근본원인=발사경로 2개(러너 vs 수동 `python &`)였고 수동분(17AG/0·MCL1:0)이 "terminate called" minimize abort에 영구 사망. bare `python &` 금지를 README+헤더 주석에 명시.
+- **F8 watcher 자동 재무장** — `watch_cand.sh`/`watch.sh`가 고정 poll cap 대신 "전 셀 done OR 무진행 `STALL_HOURS`(기본 12h)"까지 지속, per-arm 예산 만료 시 셀 미완이면 **자가 재실행**(`exec "$0" "$@"`). R12 watch.sh가 7.5h에 self-exit해 무감시로 돌던 사고 차단. 진짜 완주/stall 시 clean exit.
+- **F9 harvest 영속 병합** — `harvest_cand.sh`·`round12-rbfe/harvest.sh`가 매 폴 truncate하던 것을 폐기하고, 관측한 `ENS_RESULT`를 영속 store `seen.prog`에 **append-merge(절대 truncate 안 함)** 후 거기서 집계. transient SSH blip이 완료셀 카운트를 깎던 사고(관측 5→4) 차단 — 카운트가 monotone 비감소가 되어 watcher가 최종 N/N에 반드시 도달. dedup keep-last(재개 rep의 최신 ENS_RESULT 우선)는 python에 유지.
+- **F10 완주 시 auto-down** — watcher가 전 셀 done(harvest exit 0) 확인 시 결과 보존 후 `recover.sh reap --apply` 자동 호출(비용정지). 안전장치: **확정 완주에만** 발동(부분/blip 절대 금지), reap는 두 manifest에 모두 없는 `senolyx-*` orphan만 destroy — RTSC(41001569)+manifest pod 절대 불일치(기존 reap 가드 검증).
+- **문서** — README 발사규약(fire_cell.sh 유일 경로)+10-방지표(6+F7~F10), ARCHITECTURE round13 줄 6→10 방지 갱신.
+
 ### RTSC — 🟢 LaRu3Si2 flat-band 게이트 PASS (캠페인 최초 통과 · 방법론 검증)
 - **🟢 GATE PASS (사전등록 게이트, goalpost 이동 없음 c9)** — 폴백 #1 LaRu3Si2(Ru-kagome, CeCo3B2-유도)가 **두 조건 동시 통과**: 실측 **ΔE_flatband=−0.055 eV**(55 meV, <0.10 게이트) + **m=0.00 μB**(start_mag 1.54→0 붕괴 = 진짜 비자성, <0.5 게이트). vc-relax a=5.7175Å c=3.5732Å(실험 +0.7%), E_total=−645.935 Ry(20-iter 2.5e-11), Ru-4d kagome flat band(band34, 면내 대역폭 0.365 eV) mean 16.0115 eV vs E_F 16.0669 eV. **CoSn(−0.44+자성)·CsV3Sb5(+0.92)·MoSn(−2.38) 세 실패모드를 처음으로 동시 격파** + 실측 Tc=7K 실존 SC. 비용 $0.30(vast RTX4090 #41060369 전용코어, GPU-QE 부재→CPU 가속 정직 caveat), 포드 down, vast#1 무영향.
 - **정직 프레이밍(c9)** — 이 🟢는 **flat-band-at-E_F "설계 게이트"** 통과(설계 가능성 입증)지, **상온 달성 아님**(Tc=7K는 극저온). 의미 = ① 게이트 방법론이 작동(실패 4 거른 뒤 진짜 통과 1) ② flat-band SC 실존 anchor 확보 → DFPT로 "flat band→coupling→Tc" 사슬 정량검증 발판 ③ 도핑/압력으로 Tc 끌어올릴 설계 출발점. 문헌(arXiv) Ru-dz² +0.1eV 위 vs 본 relaxed-PBE 55meV 아래 — 부호 다름·크기 일치(둘 다 |ΔE|<0.1).
