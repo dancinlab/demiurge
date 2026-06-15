@@ -58,7 +58,7 @@ docs / manifests / records only — never duplicated implementation.
 | `exports/` | Pipeline output records (chip NoC f1/f2, chain seams, per-domain results). |
 | `exports/SENOLYX/round13-abfe-allcand/` | Reusable, hardened ABFE compute harness (vast GPU fan-out: rent→copy-verify→runcells→harvest→watch→recover/reap). SSOT = its `README.md`; hardened against 6 live-campaign failure modes (bound-pose default · harvest stdin · copy-verify · retry-resume-only · ssh-blip alive-gate · orphan reap). |
 | `PAPER/`, `PAPERS/` | Generated papers (atlas-atom-gated; one slug per terminal discovery). |
-| `.discoveries/` | `/kick` · `/gap` discovery log tapes (`<slug>.tape`). Active RTSC frontier (2026-06-15): no-cooling flat-band-at-E_F lead = **MoSn** (kagome CoSn-type) — lattice SECURED via vc-relax (a=5.606 Å, c/a=0.848, stable in CoSn-type), gate measurement (flat-band ΔE + magnetism) BLOCKED on Mo-4d high-ecut PW compute wall (same class as CoSn Co-3d); breakthrough = GPU davidson pod. Gate 🟡 PENDING (not falsified). |
+| `.discoveries/` | `/kick` · `/gap` discovery log tapes (`<slug>.tape`). Active RTSC frontier (2026-06-15): no-cooling flat-band-at-E_F track — **MoSn** 🔴 FALSIFIED (measured m=0.00 μB non-magnetic, but flat band ΔE=−2.38 eV ≫ 0.2 eV gate: Co→Mo killed magnetism yet pushed the flat band deeper than CoSn's −0.44 eV). Next fallback = **LaRu3Si2** (Ru-kagome, real ambient Tc=7K, flat band reported closer to E_F) → LaCoSi. |
 | `.verdicts/` | Verify-gate verdict records. |
 | `.harness/` | Repo-local harness rule configs (enforcement / keywords / severity). |
 | `.harness-engine/` | The `dancinlab/harness` engine, pinned as a git submodule (branch `harness-hardcore`). |
