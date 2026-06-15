@@ -96,3 +96,16 @@ CoSn·CsV3Sb5 실측 2건 + RbOs2O6·CsOs2O6 queued(deck ready) 2건을 demiurge
 
 ---
 **인계 완료 후 anima**: RTSC 신규 발사 중단, demiurge가 flat-band 축 소유. anima `RTSC/` = 동결 아카이브 + 본 핸드오프 포인터.
+
+---
+## 7. FOLD (2026-06-15) — RTSC_29 RbOs₂O₆ 실측 착지 (anima 마지막 fire 중 1건)
+
+anima aiden에서 RbOs₂O₆ 실 QE DFT 완주(§4 in-flight #2 → 측정 완료). **캠페인이 못 찾던 ΔE 레버를 처음 깸:**
+
+- **ΔE_flat = +0.377 eV** (Os-5d band43, disp **0.048 eV** 매우 평탄) — CoSn(−0.44)·CsV3Sb5(+0.92)보다 **둘 다 얕음 = ΔE 축 첫 승리.**
+- 게다가 **O-2p/Os-5d 혼성 manifold(band38–40)가 사실상 E_F에 붙음**(|ΔE|<0.07 eV, band39가 E_F 교차) — 3종 중 E_F 최근접 flat band.
+- **그러나 ideal-cell PBE에서 자성**(Os seed 0.3→~5–5.8 μB, 자성解가 비자성解보다 2.2 eV 아래) — CsV3Sb5의 깨끗한 붕괴와 반대.
+  - **정직 caveat(중요)**: 실제 RbOs₂O₆는 **실험적으로 비자성 6.3 K 초전도체**. 이상적 고대칭 셀 + SOC 미반영 + rattling 왜곡 미반영의 **PBE over-magnetization 아티팩트일 가능성이 높음** — 진짜 자성 증거 아님.
+- **판정 🟠/🔴**: 이 계산 그대로면 kagome보다 깨끗한 base 아님. 단 **자성이 아티팩트로 확인되면(가능성 높음) 지금까지 최고의 base.**
+
+**demiurge 다음 액션(§5 갱신)**: RbOs₂O₆를 **non-PBE(SCAN/hybrid) / SOC 포함 / rattling-distorted 셀**로 재계산해 자성 모멘트가 사라지는지 확인. 사라지면 → flat-band-AT-E_F + 비자성 + 상압 = **무냉각 RTSC 1순위 후보로 승격.** (E_Fermi=−0.4290 eV(USPP 내부 zero), E=−644.802 Ry; 안정 SCF recipe = local-TF β=0.2 + ndim=12 + degauss 0.025; 출처 anima `RTSC/hypotheses/RTSC_29_rbos2o6-dft.md` PR#2087.)
