@@ -19,8 +19,8 @@
 > PASS** (campaign-first: measured ΔE=−0.055 eV AND m=0.00 μB, beats all 3
 > failure modes; flat-band-at-E_F DESIGN gate — not room-temp, real Tc=7K) →
 > next DFPT λ/Tc (q=3 in flight). MoSn 🔴 (ΔE=−2.38). CoSn rigid-doping 🔴 양방향
-> CLOSED (전자·정공 둘 다 flat band 더 깊어짐; 정공은 자성도 깨움). QFORGE L3
-> assembler demonstrated end-to-end on real QE el-ph (YH6). See CHANGELOG.md.
+> CLOSED. 삼각측량 v3: 도핑축 죽음 → 새 lane = CeCo3B2-type 4d/5d-kagome 패밀리
+> 스윕(LaRu3Si2 형제). QFORGE L3 assembler end-to-end on real QE (YH6). See CHANGELOG.md.
 > historical at `HANDOFF.log.md`), `DESIGN.md` for the decision audit trail.
 > Family: **typed-interface consumer** (not absorber) of `hexa-lang`,
 > the **sole SSOT** for reusable stdlib / tools / absorbed modules
