@@ -8,6 +8,15 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-15
 
+### SENOLYX — 재사용 ABFE 하니스 6-실패모드 하드닝 (라이브 캠페인 무중단)
+- **대상** — `exports/SENOLYX/round13-abfe-allcand/` (재사용 ABFE GPU fan-out 하니스). R12(HSP90)/R13(후보) 라이브 캠페인에서 **실측으로 터진 6개 실패모드**를 근본 차단(c1). 코드/문서 전용 — 새 pod 렌트 0, 가동중 11 pod + watcher 무중단.
+- **① bound-pose 기본화** — `abfe_cand.py`가 clash-free 공결정 bound pose `lig_<RESN>_bound.sdf`(extract_pose.py 산출, ideal 컨포머 대신)를 우선 사용 + bound일 땐 recenter 생략(좁은 그루브 포켓 NaN 차단). **전 3타깃 bound SDF 생성**(3CQ/70R/EF2) — summer `fep` env(rdkit 2025.09.5)에서 extract_pose.py 실행해 로컬 적재(전부 BOUND_OK). SDF 부재 시 ideal+centroid graceful fallback.
+- **② harvest stdin 보호** — `harvest_cand.sh`·`round12-rbfe/harvest.sh`의 `while read`+ssh 루프에 `</dev/null` 유지 + WHY 주석(ssh가 루프 stdin pipe를 삼켜 첫 pod만 집계되던 버그).
+- **③ fanout copy-verify** — `fanout_cand.sh`(+ `fanout_ens.sh`)가 copy-to 후 ssh `test -f`로 원격 존재 확인, 재시도≤3, 필수파일 누락이면 그 pod **발사 abort + manifest에 COPY_FAIL**(doomed runcells 방지).
+- **④ retry-resume 전용** — `runcells_cand.sh` 상단에 "production cell은 이 retry-resume 래퍼 경유 필수, 맨 `python &` 금지"(R12 17AG/0 수동셀 死의 원인) 명시. 래퍼는 ≤4회 재시도하며 per-rep `.nc`에서 resume.
+- **⑤ ssh-blip alive-gate ⑥ orphan reap** — 신규 `recover.sh`: `alive <host> <port> <id>`=ssh실패 시 `hexa cloud alive`로 RUNNING 확인(GONE/STOPPED만 死 판정·blip은 무동작) · `reap [--apply]`=두 manifest(ens_pods.tsv/cand_pods.tsv)에 없는 `senolyx-*` 소유 live pod만 리포트/destroy(RTSC 41001569·manifest pod 절대 불가). dry-run 검증: 11 manifest pod 전부 보호, orphan 0.
+- **검증(c2)** — 6 @L assert 전부 grep PASS · `harvest_cand.sh` 정상 집계(0/9, 라이브 watcher와 일치=셀 진행중) · live 13 vast pod 무중단 · 박제 `README.md`(SSOT) + `ARCHITECTURE.md` 등재.
+
 ### QFORGE — engine현행화 + QE↔QFORGE 정직 분담 cross-val
 - **honest division** — 이번 RTSC 세션의 全 production DFT(RbOs2O6 자성·ScH9/MgH6/ScH6/YH6 DFPT·CsOs2O6·CaH10/SrH10)는 **QE(Quantum ESPRESSO)로만** 실행 — QFORGE migration gate HELD. QE = production reference, QFORGE = canonical-engine(게이트 후 absorbed).
 - **hybrid assembler g5 RE-verify ✅ PASS** — CaH6 QE|g|² → QFORGE L3 어셈블러(`stdlib/qforge/assembler.hexa`, `qforge_cah6_qe_xval_test`): λ_QFORGE=8.51682640 vs QE λ_BZ=8.516825, **rel-ε=1.647e-7 ≤1% gate**(LaH10 4.74e-7 corroborate) = 어셈블러 즉시-사용 gate-grade 재확인.
