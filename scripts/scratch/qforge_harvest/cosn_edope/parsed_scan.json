@@ -1,0 +1,162 @@
+[
+  {
+    "dn": 0.0,
+    "tot_charge": 0.0,
+    "E_F_eV": 16.6482,
+    "magnetization_uB": 0.09,
+    "scf_converged": true,
+    "scf_jobdone": true,
+    "dE_flatband_eV": -0.4448,
+    "flatband_band_index": 44,
+    "flatband_dispersion_eV": 0.1884,
+    "flatband_mean_eV": 16.2034,
+    "flattest_band_disp_eV": 0.0,
+    "low_disp_bands_nearEF": [
+      {
+        "band": 45,
+        "disp": 0.26200000000000045,
+        "mean": 16.309529166666668
+      },
+      {
+        "band": 44,
+        "disp": 0.1883999999999979,
+        "mean": 16.203372916666666
+      },
+      {
+        "band": 43,
+        "disp": 0.5067000000000004,
+        "mean": 16.04181875
+      },
+      {
+        "band": 42,
+        "disp": 0.5222000000000016,
+        "mean": 15.982279166666666
+      },
+      {
+        "band": 41,
+        "disp": 0.5605000000000011,
+        "mean": 15.355370833333334
+      }
+    ]
+  },
+  {
+    "dn": 0.2,
+    "tot_charge": -0.2,
+    "E_F_eV": 16.7268,
+    "magnetization_uB": 0.0,
+    "scf_converged": true,
+    "scf_jobdone": true,
+    "dE_flatband_eV": -0.4633,
+    "flatband_band_index": 44,
+    "flatband_dispersion_eV": 0.192,
+    "flatband_mean_eV": 16.2635,
+    "flattest_band_disp_eV": 0.0,
+    "low_disp_bands_nearEF": [
+      {
+        "band": 45,
+        "disp": 0.29070000000000107,
+        "mean": 16.378860416666665
+      },
+      {
+        "band": 44,
+        "disp": 0.19200000000000017,
+        "mean": 16.263510416666666
+      },
+      {
+        "band": 43,
+        "disp": 0.5280999999999985,
+        "mean": 16.10891875
+      },
+      {
+        "band": 42,
+        "disp": 0.5483000000000011,
+        "mean": 16.041164583333334
+      },
+      {
+        "band": 41,
+        "disp": 0.5644000000000009,
+        "mean": 15.394383333333332
+      }
+    ]
+  },
+  {
+    "dn": 0.4,
+    "tot_charge": -0.4,
+    "E_F_eV": 16.8134,
+    "magnetization_uB": 0.0,
+    "scf_converged": true,
+    "scf_jobdone": true,
+    "dE_flatband_eV": -0.5111,
+    "flatband_band_index": 44,
+    "flatband_dispersion_eV": 0.1934,
+    "flatband_mean_eV": 16.3023,
+    "flattest_band_disp_eV": 0.0001,
+    "low_disp_bands_nearEF": [
+      {
+        "band": 45,
+        "disp": 0.28669999999999973,
+        "mean": 16.415491666666668
+      },
+      {
+        "band": 44,
+        "disp": 0.1933999999999969,
+        "mean": 16.302254166666668
+      },
+      {
+        "band": 43,
+        "disp": 0.5317999999999987,
+        "mean": 16.139935416666667
+      },
+      {
+        "band": 42,
+        "disp": 0.5499000000000009,
+        "mean": 16.076452083333333
+      },
+      {
+        "band": 41,
+        "disp": 0.5592000000000006,
+        "mean": 15.419002083333334
+      }
+    ]
+  },
+  {
+    "dn": 0.6,
+    "tot_charge": -0.6,
+    "E_F_eV": 16.9183,
+    "magnetization_uB": 0.0,
+    "scf_converged": true,
+    "scf_jobdone": true,
+    "dE_flatband_eV": -0.5848,
+    "flatband_band_index": 44,
+    "flatband_dispersion_eV": 0.1936,
+    "flatband_mean_eV": 16.3335,
+    "flattest_band_disp_eV": 0.0001,
+    "low_disp_bands_nearEF": [
+      {
+        "band": 45,
+        "disp": 0.2673999999999985,
+        "mean": 16.439120833333334
+      },
+      {
+        "band": 44,
+        "disp": 0.1936,
+        "mean": 16.333537500000002
+      },
+      {
+        "band": 43,
+        "disp": 0.5280000000000005,
+        "mean": 16.1559625
+      },
+      {
+        "band": 42,
+        "disp": 0.5391999999999992,
+        "mean": 16.101220833333333
+      },
+      {
+        "band": 41,
+        "disp": 0.5622000000000007,
+        "mean": 15.438854166666665
+      }
+    ]
+  }
+]
