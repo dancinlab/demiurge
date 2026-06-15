@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 # SENOLYX R12-ens harvest: pull ENS_RESULT from all pods, aggregate ensemble ΔΔG.
 # Exit 0 + writes RESULT.txt when all 10 cells done; exit 2 if still partial.
+#
+# PERSIST-MERGE (failure-mode #9): combined.prog is THIS poll's fresh pull; the
+# durable seen-store seen.prog ACCUMULATES every ENS_RESULT ever observed. We only
+# APPEND newly-pulled ENS_RESULT into seen.prog (never truncate) and tally from it,
+# so a transient SSH blip returning 0 lines can NEVER un-count a finished cell — the
+# count is monotone non-decreasing and the watcher reliably reaches the final N/N.
+# dedup keep-last per (lig,rep) stays in python (a resumed rep's newer line wins).
 set -uo pipefail
 cd "$(dirname "$0")"
 COMBINED=combined.prog
+SEEN=seen.prog
 : > "$COMBINED"
+touch "$SEEN"
 # unique pods (host port) from manifest, skipping RENT_FAIL rows
 awk -F'\t' '$6=="running" && $4!="-"{print $4"\t"$5}' ens_pods.tsv | sort -u | while IFS=$'\t' read -r HOST PORT; do
   # WHY </dev/null : ssh (under `hexa cloud exec`) inherits and DRAINS the parent
@@ -15,10 +24,13 @@ awk -F'\t' '$6=="running" && $4!="-"{print $4"\t"$5}' ens_pods.tsv | sort -u | w
   hexa cloud exec root@$HOST --port $PORT --insecure -- \
     'grep -h "ENS_RESULT" /workspace/r12ens/cell_*.log 2>/dev/null' </dev/null 2>/dev/null >> "$COMBINED"
 done
+# persist-merge: append only freshly-pulled ENS_RESULT into the durable seen-store
+# (never truncate seen.prog) so a blip cannot regress the tally. (failure-mode #9)
+grep -h "ENS_RESULT" "$COMBINED" 2>/dev/null >> "$SEEN" || true
 # dedup: keep last ENS_RESULT per (lig,rep) handled in python
-N=$(grep -c "ENS_RESULT" "$COMBINED" 2>/dev/null || echo 0)
+N=$(grep -c "ENS_RESULT" "$SEEN" 2>/dev/null || echo 0)
 echo "harvested $N ENS_RESULT lines"
-python3 - "$COMBINED" <<'PYEOF'
+python3 - "$SEEN" <<'PYEOF'
 import sys, re, math
 rows={}
 pat=re.compile(r"ENS_RESULT lig=(\S+) rep=(\d+) dG_complex=(\S+) dG_solvent=(\S+) ssc=(\S+) dG_bind=(\S+)")
