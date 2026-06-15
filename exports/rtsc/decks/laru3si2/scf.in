@@ -1,0 +1,45 @@
+&control
+  calculation = 'scf'
+  prefix = 'laru3si2'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+/
+&system
+  ! LaRu3Si2 -- hexagonal P6/mmm (No.191) CeCo3B2-type. Ru kagome z=1/2 (3g), La 1a, Si 2c honeycomb z=0.
+  ! celldm SET FROM vc-relax OUTPUT (RELAXED: a=5.7175 Ang, c=3.5732 Ang, +0.7% vs exptl).
+  ! Gate: confirm Ru-kagome FLAT BAND + dE vs E_F; nspin=2 = magnetism DIAGNOSTIC (CONFIRMED non-magnetic, m=0).
+  ibrav = 4
+  celldm(1) = 10.80445
+  celldm(3) = 0.62496
+  nat = 6
+  ntyp = 3
+  ecutwfc = 90
+  ecutrho = 360
+  nspin = 2
+  starting_magnetization(1) = 0.0
+  starting_magnetization(2) = 0.1
+  starting_magnetization(3) = 0.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  La 138.905  La_ONCV_PBE_sr.upf
+  Ru 101.07   Ru_ONCV_PBE_sr.upf
+  Si 28.0855  Si_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS crystal
+  La 0.000000 0.000000 0.000000
+  Ru 0.500000 0.000000 0.500000
+  Ru 0.000000 0.500000 0.500000
+  Ru 0.500000 0.500000 0.500000
+  Si 0.333333 0.666667 0.000000
+  Si 0.666667 0.333333 0.000000
+K_POINTS automatic
+  12 12 12 0 0 0
