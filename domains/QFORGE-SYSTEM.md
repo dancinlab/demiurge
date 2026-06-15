@@ -67,3 +67,14 @@ identity). The full multi-scale coupling (real SCF↔MM electrostatic embedding,
 large multi-round build — rounds 2-5 are OPEN, not done. The partition algebra is engine-agnostic
 (toy energies stand in for any callback), so the identity is proven for ALL inputs; what is NOT yet
 wired is the real qforge-SCF/chem-md coupling (round-2+). No fabricated coupling results.
+
+### engine-status note (2026-06-15)
+
+The E_QM core this bridge reuses (`stdlib/qforge/{scf,scf_etot,assembler}`) is governed by the
+QFORGE ENGINE STATUS SSOT (`QFORGE/QFORGE.md` §⭐). Honest standing as of 2026-06-15: the RTSC
+session ran **all production DFT on QE (Quantum ESPRESSO)** — the QFORGE migration gate is HELD. The
+hybrid λ/Tc assembler (mode b) RE-verified gate-grade this date (CaH6 rel-ε **1.647e-7**); the
+from-scratch screened-vertex track (mode c) is HELD (R8 GGA f_xc CLOSED-NEGATIVE, DFT f_xc levers
+spent); the QFORGE-LSDA spin-DFT engine (mode d) is brick-g5-verified but real-cell magnetic moments
+(RbOs2O6 Os-5d) are compute-walled → QE-production / QFORGE-gated. So a real-SCF round-2+ coupling
+inherits the same NC/PW basis cost wall on transition-metal/5d inner regions (d6/@L5 honest).

@@ -47,7 +47,10 @@
 ### ✅ 모드 (b) — hybrid (QE |g|² → QFORGE L3 assembler), gate-grade
 - **무엇**: 실 QE DFPT el-ph 하베스트(`.elph` = per-mode λ(q,ν)+ω(q,ν))를 QFORGE의
   검증된 α²F→λ→Tc **어셈블러**(`qforge_gaussian_delta` deposit + `qforge_a2f_lambda`
-  적분기 + Allen-Dynes/McMillan)에 먹임. driver = `sim/qforge_hybrid_lambda_tc.hexa`.
+  적분기 + Allen-Dynes/McMillan)에 먹임. 어셈블러 = `~/.hx/src/stdlib/qforge/assembler.hexa`
+  (+ `elph.hexa` `qforge_a2f_from_elph`); g5 RE-verify driver = `qforge_cah6_qe_xval_test.hexa`
+  / `qforge_lah10_qe_xval_test.hexa`. (구 `sim/qforge_hybrid_lambda_tc.hexa` 경로는 부재 —
+  실 어셈블러는 stdlib/qforge, hexa-native compile-home = ~/.hx/src.)
 - **정확도**: **CaH6 rel-ε 1.65e-7 · LaH10 rel-ε 4.75e-7** (`qforge_cah6_qe_xval_test`/
   `qforge_lah10_qe_xval_test`, σ_ph→0 단조수렴 ng=8000). **QE DFPT 모먼트가 있으면
   언제든 gate-grade λ/Tc** — 후보 검증의 production 경로.
@@ -77,16 +80,61 @@
 - **상태(d6 honest)**: R7은 차폐가 *감쇠가 아니라 enhance* 함을 실증 — R5/R6 enhancement
   가설 CONFIRMED, 누락 물리는 dead local-field f_xc였다. **게이트(≤1%)는 아직 NOT MET**
   (5.12% > 1%, 비-flip · 4.376 강제 안 함). 잔여 5.12% = LDA-vs-QE XC-functional 차이
-  (QFORGE는 LDA-x+PW92-c ALDA로 차폐; QE의 |g|²는 full ε⁻¹). **R8이 GGA f_xc를 테스트 중.**
-  이 모드는 **CLOSED 아님 — 수렴 중**; gap을 R3-R6 ~30%에서 ~6× 줄여 5.12%까지 끌어내림.
+  (QFORGE는 LDA-x+PW92-c ALDA로 차폐; QE의 |g|²는 full ε⁻¹).
+- **R8 (GGA f_xc-in-χ) = COMPLETE · CLOSED-NEGATIVE (2026-06-08 verbatim, status-checked
+  2026-06-15)**: PBE f_xc^GGA = ∂²e_xc^PBE/∂ρ²|_{∇ρ} (|∇ρ| spectral grad live, witness
+  mean=1.089) 를 full-cell CaH6(n_PW=645, ecut 80 Ry)에 engage. **λ_GGA = 3.41256 ·
+  rel-ε 22.02% vs QE 4.376 — Δλ vs ALDA = −0.00257(gradient kernel 사실상 NO 차이) ·
+  GATE NOT MET**. 진단: 잔여 갭은 f_xc flavor(ALDA↔GGA)가 아니라 **from-scratch LDA-PW
+  SCF**(QE 4.376은 PBE self-consistent end-to-end)이다 — DFT f_xc 레버는 소진. verdict
+  `.verdicts/qforge-cah6-gga-fxc-in-chi/`. **R7(5.12%)이 차폐-vertex 최저 거리이며 이는
+  bare(5.47%)를 돌파했으나 ≤1% 게이트는 미달; from-scratch 차폐-vertex 트랙은 HELD**
+  (모든 DFT f_xc 레버 소진, 다음 레버 = from-scratch PBE-SCF로 별도 대형작업).
+  이 모드는 R3-R6 ~30%에서 ~6× 줄여 5.12%까지 끌어내렸으나 gate 미달로 production 아님.
 - **현 production 게이트**: 후보 Tc는 여전히 모드 (b) hybrid(1.65e-7)로 — R7이 gate를
   넘기 전까진 (b)가 gate-grade. (a)는 rough 스크리닝.
+
+### 🧲 모드 (d) — QFORGE-LSDA 자성 엔진 (nspin=2 spin-DFT) — 빌드+brick g5, 모먼트 compute-walled
+- **무엇**: QFORGE 자체 nspin=2 spin-polarized SCF (V_xc spin-split LDA/PW92 + spin-GGA PBE)
+  → 자기 모먼트 m. CoSn kagome 트랙에서 빌드·검증됨.
+- **brick 검증 (g5 PASS, 2026-06-15)**: `qforge_scf_spin_selftest`·`qforge_scf_pw_spin_selftest`·
+  `qforge_smearing_spin_selftest`·`qforge_xc_spin_selftest`·`qforge_pbe_spin_selftest` 全 PASS
+  (V_xc^↑<V_xc^↓ for ρ↑>ρ↓ · spin-GGA enhancement · spin-bisection E_F). 엔진은 작동.
+- **모먼트 compute-wall (d6 정직)**: 실 셀 자기-모먼트 SCF는 TM-d/5d PW 비용에 막힘.
+  CoSn(Co-3d, npw≥120) = ~580s/iter, npw=80(ecut~4Ry)에서만 tractable → 과소해상으로
+  m≈0(QE m=0.43 미재현, 物理 아닌 basis wall). **RbOs2O6(Os-5d, 9-atom, ecut 70/560 Ry,
+  77 val e⁻)은 CoSn 보다 무거워 동일/악화 wall** → mini 로컬에서 honest-skip(아래 cross-val).
 
 ### 결정 요약 (한 줄)
 > **QFORGE는 작동한다 — (a) bare-vertex QFORGE-only ≈5.5%(rough λ 스크리닝) + (b)
 > hybrid QE-moment→assembler 1e-7(gate-grade λ/Tc)이 두 production 모드. (c) from-scratch
 > SCREENED vertex는 R7에서 bare를 돌파(λ=4.1518, 5.12% < bare 5.47%) — CLOSED 아님,
-> gate ≤1% 미달이나 수렴 중(R8 = GGA f_xc).** 후보 Tc의 현 게이트 = QE DFPT dispatch(비용).
+> gate ≤1% 미달·R8(GGA f_xc) CLOSED-NEGATIVE 로 DFT f_xc 레버 소진·트랙 HELD. (d)
+> QFORGE-LSDA 자성 = brick g5-PASS, 실셀 모먼트는 TM-5d PW compute-wall.** 후보 Tc·자성의
+> 현 게이트 = QE(DFPT |g|² + nspin=2 모먼트) — QFORGE 어셈블러는 즉시-사용 gate-grade.
+
+### 📅 2026-06-15 cross-val — RTSC 세션 QE↔QFORGE 정직 분담 (g5 verbatim)
+> 이번 RTSC 세션의 全 DFT(RbOs2O6 자성·ScH9/MgH6/ScH6/YH6 DFPT·CsOs2O6·CaH10/SrH10)는
+> **QE(Quantum ESPRESSO)로만** 돌았다 — QFORGE migration gate 는 HELD. 이날 cross-val 로
+> QFORGE 의 두 검증가능 조각을 박았다.
+
+1. **hybrid assembler g5 RE-verify (모드 b) — ✅ PASS**. CaH6 QE |g|² 앵커
+   (`exports/.../rtsc_cah6_*` 동일 캠페인의 terminal `.elph`)를 어셈블러에 RE-feed:
+   parsed λ_BZ=8.516825 == QE (rel-ε 6.26e-16, 168 modes) · 어셈블러 λ_QFORGE=8.51682640
+   @ ng=8000 σ_ph→0 단조수렴 **rel-ε = 1.647e-7 ≤ 1% gate (g5 threshold 2.5e-3 도 통과)**.
+   LaH10 corroborate rel-ε 4.74e-7. → **어셈블러 즉시-사용 gate-grade 재확인**.
+   verdict `.verdicts/qforge-xval/cah6-assembler-reverify/`.
+2. **QFORGE-LSDA 자성 cross-val — RbOs2O6/CsOs2O6 — ⏸ HONEST-SKIP (compute-wall)**.
+   목표 = QFORGE nspin=2 SCF 가 QE 모먼트(RbOs2O6 SOC ~3-4μB·rattling ~2μB·nspin=2 ideal
+   ~5μB / CsOs2O6 ~1.8μB)와 같은 부호·차수 재현하나? **brick(spin-LDA/GGA V_xc·E_F·
+   smearing)은 g5 全 PASS — 엔진은 검증됨.** 그러나 실 모먼트 SCF는 Os-5d PW compute-wall:
+   9-atom·ecut 70/560 Ry·77 val e⁻ 는 이미 m≈0 으로 과소해상되는 CoSn(Co-3d npw≥120,
+   ~580s/iter) 보다 무겁다 → mini 로컬에서 강제 시 intractable 또는 날조-급 spurious m≈0.
+   c9 정직: **모먼트는 QE-production / QFORGE-gated(미재현)** — 날조 0. breakthrough = GPU
+   davidson · reduced-basis(LCAO/PAW) · 실 HPC. verdict `.verdicts/qforge-xval/rbos2o6-mag/`.
+3. **from-scratch 차폐정점 next-lever(R8 GGA f_xc) — status-only**: COMPLETE · CLOSED-NEGATIVE
+   (λ_GGA=3.41256, rel-ε 22.02%; Δλ vs ALDA −0.00257 = 무차이). DFT f_xc 레버 소진, 잔여 갭
+   = from-scratch PBE-SCF(별도 대형작업). 모드 (c) 트랙 HELD. (실행 아님 · 기존 verdict 점검만.)
 
 ## 빌드 전략 — bottom-up (검증된 상단부터, d2/d6 정직)
 완성도 우선 위→아래: 이미 닫힌 식(Allen-Dynes)부터 hexa-native로 내려가며 QE와 cross-validate.
