@@ -87,3 +87,17 @@ Modes 1–6 shipped in PR #631; modes 7–10 were surfaced by the 24h unattended
 | 8 | R12 ran UNWATCHED after its watcher self-exited at a fixed 7.5h budget | Fixed poll cap exited even while cells were still completing | `watch_cand.sh` / `watch.sh` loop until all-done OR no-progress for `STALL_HOURS`; on hitting the per-arm budget while cells remain they **re-exec themselves** (`exec "$0" "$@"`). Clean exit only on true completion or stall. |
 | 9 | Count regressed (5→4) on a transient SSH blip → watcher could miss the final N/N | `harvest_*.sh` truncated `combined.prog` every poll, so a pod's blip dropped its finished cells' `ENS_RESULT` that poll | **Persist-merge**: append freshly-pulled `ENS_RESULT` into a durable `seen.prog` (never truncated) and tally from it. The count is monotone non-decreasing; dedup keep-last per cell stays in python. |
 | 10 | Pods kept billing after the campaign finished | No completion → teardown link | On **confirmed full completion** (harvest exit 0 = all cells) the watcher calls `recover.sh reap --apply` (auto-down). Guarded: only on full completion (never partial/blip), and reap only touches `senolyx-*` orphans absent from BOTH manifests (RTSC + manifest pods safe). |
+
+## 운영자(드라이버) 실수 방지 — operator gotchas
+
+위 표(F1~F10)는 **컴퓨트 파이프라인**의 실패모드. 아래는 캠페인을 **모는 사람/에이전트가 반복한 운영 실수**와 그 차단책. 상태확인·발사·커밋 때 이걸 따른다.
+
+| # | 운영 실수 (반복 관찰) | 근본원인 | 차단 |
+|---|------------------------|----------|------|
+| D1 | 상태확인 루프가 첫 pod만 조회 / `flag --port needs a value` | `while read` 안 ssh가 stdin 잠식(M1) · `set -- $hp` arg-split(M2) · macOS bash 3.2엔 `mapfile`/`${x,,}` 없음 | **`probe.sh <manifest> <workdir>` 만 쓴다**. heredoc-fed 루프 + ssh `</dev/null` + 명시 필드분리로 셋 다 차단. 손으로 while-read+ssh 루프 짜지 말 것. |
+| D2 | `Read` 없이 `Edit` → 툴 에러 | 순서 누락 | 모든 파일 Edit 전 반드시 Read. |
+| D3 | `commit` 없이 `pr-cycle` → 빈 브랜치, gh 실패 | stage≠commit | pr-cycle 전 반드시 `git commit`. (stage만으론 부족) |
+| D4 | 한 leg가 결정론적으로 minimize abort 반복(예: MCL1:0 4회+) | resume·fresh-.nc 둘 다 그 pod에선 안 풀림 = 환경 결정론 | **K회(≤4) 실패하면 무한 retry 금지** — (a) 그 rep을 다른 pod로 재발사 OR (b) ensemble n−1 수용(이미 n≥2 양성이면 충분). 한 stuck rep이 캠페인을 막지 않게. |
+| D5 | 머지한 watcher 신코드가 라이브에 미적용 | watcher는 in-memory 루프라 파일 재편집 무시 | watcher 코드 머지 후엔 watcher를 **재시작**해야 신코드 적용(F8 auto-rearm 포함). |
+
+**상태확인 표준**: `bash probe.sh <manifest> <workdir>` (pod별 leg/proc/gpu) + `bash harvest*.sh`(누적 결과). SSH-blip 행은 죽음 아님 — `hexa cloud alive <id>`가 RUNNING이면 무시(F5).
