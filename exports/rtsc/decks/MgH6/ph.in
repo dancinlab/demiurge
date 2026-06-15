@@ -1,0 +1,16 @@
+MgH6 sodalite el-ph 2x2x2 q (triangulate #3, Tc~263K predicted)
+&inputph
+  prefix = 'mgh6'
+  outdir = './out'
+  fildyn = 'mgh6.dyn'
+  fildvscf = 'mgh6.dvscf'
+  ldisp = .true.
+  nq1 = 2, nq2 = 2, nq3 = 2
+  tr2_ph = 1.0d-14
+  recover = .true.
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+  alpha_mix(1) = 0.3
+  max_seconds = 86400
+/

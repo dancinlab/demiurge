@@ -1,0 +1,41 @@
+&control
+  calculation = 'scf'
+  prefix = 'yh6'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'low'
+/
+&system
+  ! YH6 Im-3m sodalite (SG229), Troyan 2021 measured 224K@166GPa. Y 2a, H 12d (no free coords).
+  ! a_eff = 6.756 a.u. from relaxed V=154.17 a.u.^3 (a^3/2) @166GPa (relax.out).
+  ibrav = 3
+  celldm(1) = 6.756
+  nat = 7
+  ntyp = 2
+  ecutwfc = 80.0
+  ecutrho = 800.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.3
+  mixing_mode = 'plain'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Y   88.9059  Y.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Y    0.0000000   0.0000000   0.0000000
+  H    0.2500000   0.5000000   0.0000000
+  H    0.5000000   0.0000000   0.2500000
+  H    0.0000000   0.2500000   0.5000000
+  H    0.7500000   0.5000000   0.0000000
+  H    0.5000000   0.0000000   0.7500000
+  H    0.0000000   0.7500000   0.5000000
+K_POINTS automatic
+  16 16 16 0 0 0

@@ -1,0 +1,57 @@
+&CONTROL
+  calculation     = 'vc-relax'
+  prefix          = 'srh10'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ! SrH10 SCREENING — reconstructed by ANALOGY to LaH10/YH10 Fm-3m (SG225) clathrate
+  ! (high-Tc SrH10 R-3m was hand-constructed, NO published cell/coords; Tanaka PRB96,100502).
+  ! Isostructural-template screen: does the MH10 clathrate hold for Sr at pressure?
+  ibrav           = 2
+  celldm(1)       = 9.0000
+  nat             = 11
+  ntyp            = 2
+  ecutwfc         = 80
+  ecutrho         = 640
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.02
+/
+&ELECTRONS
+  conv_thr        = 1.0d-9
+  mixing_beta     = 0.3
+  mixing_mode     = 'plain'
+  electron_maxstep = 400
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  press           = 3000.0
+  press_conv_thr  = 0.5
+  cell_dofree     = 'all'
+/
+ATOMIC_SPECIES
+  Sr  87.62    Sr.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Sr   0.0000000   0.0000000   0.0000000
+  H    0.2500000   0.2500000   0.2500000
+  H    0.7500000   0.7500000   0.7500000
+  H    0.3750000   0.3750000   0.3750000
+  H    0.6250000   0.6250000   0.6250000
+  H    0.3750000   0.3750000   0.6250000
+  H    0.6250000   0.6250000   0.3750000
+  H    0.3750000   0.6250000   0.3750000
+  H    0.6250000   0.3750000   0.6250000
+  H    0.6250000   0.3750000   0.3750000
+  H    0.3750000   0.6250000   0.6250000
+K_POINTS automatic
+  12 12 12 0 0 0

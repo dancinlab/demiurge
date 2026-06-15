@@ -1,0 +1,45 @@
+&CONTROL
+  calculation = "scf"
+  prefix      = "rbos2o6_rat2"
+  outdir      = "./out_rat2"
+  pseudo_dir  = "./pseudo"
+  verbosity   = "high"
+  tprnfor     = .true.
+  tstress     = .false.
+/
+&SYSTEM
+  ibrav        = 2
+  celldm(1)    = 19.1845
+  nat          = 9
+  ntyp         = 3
+  ecutwfc      = 70.0
+  ecutrho      = 560.0
+  occupations  = "smearing"
+  smearing     = "mp"
+  degauss      = 0.025
+  nspin        = 2
+  starting_magnetization(2) = 0.3
+/
+&ELECTRONS
+  conv_thr        = 1.0d-6
+  mixing_beta     = 0.2
+  mixing_mode     = "local-TF"
+  mixing_ndim     = 12
+  electron_maxstep = 300
+/
+ATOMIC_SPECIES
+  Rb   85.468  Rb.pbe-spn-rrkjus_psl.1.0.0.UPF
+  Os  190.230  Os.pbe-spn-rrkjus_psl.1.0.0.UPF
+  O    15.999  O.pbe-n-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Rb   0.705000  0.345000  0.405000
+  Os   0.000000  0.000000  0.000000
+  Os   0.500000  0.500000  0.500000
+  O    0.700000  0.920000  0.325000
+  O    0.055000  0.325000  0.305000
+  O    0.695000  0.305000  0.950000
+  O    0.305000  0.075000  0.670000
+  O    0.950000  0.695000  0.670000
+  O    0.325000  0.670000  0.055000
+K_POINTS automatic
+  6 6 6 0 0 0
