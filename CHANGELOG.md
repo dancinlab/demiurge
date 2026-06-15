@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### RTSC — 전자도핑 CoSn 정렬 검증 🔴 FALSIFY (방향 반증 + 정공도핑 새 각도)
+- **삼각측량 v2 1순위 CLOSED-negative(정렬축)** — CoSn `tot_charge` jellium 도핑 스캔(Δn=0/0.2/0.4/0.6, 4점 SCF 전부 수렴, vast 32-core $0.35). Control Δn=0이 CoSn −0.445 eV 정확 재현(셋업 검증 ✅). **실측: 전자도핑이 flat band를 E_F에서 더 깊게**(−0.44→−0.59 eV, slope −0.23 eV/e⁻) — rigid-band 예측(+0.97 eV/d-e)과 **반대 방향**. N=2 CoSn-vs-MoSn 기울기가 d-밴드중심 화학과 전자수를 혼동 → 도핑 다이얼로는 반증. |ΔE|<0.10 도핑점 없음.
+- **부분 성공 + 새 각도(c16)** — 자성은 통과(m 0.09→0.00 by Δn=0.2, 전자도핑이 CoSn itinerant 자성 제거 ✅, 일석이조의 한 마리). 데이터가 명확히 시사: **정공(hole)도핑**(tot_charge=+)이면 E_F를 flat band 쪽으로 내림 → CoSn 폐기 전 싼 2점 정공 스캔이 다음 각도. caveat: jellium=rigid-band-with-screening proxy(실 dopant 아님)지만 단조 wrong-direction이 명확해 substitutional 확인 불요. 박제 `exports/rtsc/cosn_edope_gatecheck.json` + deck + `RTSC_LEDGER.jsonl` CoSn-edope FALSIFIED.
+
 ### SENOLYX — ABFE 하니스 추가 4-실패모드(F7~F10) 하드닝 (라이브 캠페인 무중단)
 - **대상** — `exports/SENOLYX/round13-abfe-allcand/` (+ `round12-rbfe/` 의 watch.sh/harvest.sh). PR #631이 막은 6개 너머, 24h 무인 캠페인의 ④analyze가 발굴한 **추가 4개 실패모드**를 근본 차단(c1). 코드/문서 전용 — 새 pod 렌트 0, 가동중 11 pod + watcher 2개(watch.sh PID 49500 · watch_cand.sh PID 18186) 무중단. live watcher가 매 폴 새로 실행하는 watch*.sh/harvest*.sh는 편집 후 `bash -n` + harvest 라이브 dry-run(여전히 `done_cells=N/9` 집계)으로 무파손 확인.
 - **F7 단일 발사 entry** — `fire_cell.sh <r12\|r13> <CELL...>` 신규 = production 셀 발사/재개의 **유일 sanctioned 경로**. manifest에서 셀→pod 해석 후 retry-resume 러너(`runcells_*.sh`)로만 발사(≤4회 재시도·per-rep `.nc` 재개). 근본원인=발사경로 2개(러너 vs 수동 `python &`)였고 수동분(17AG/0·MCL1:0)이 "terminate called" minimize abort에 영구 사망. bare `python &` 금지를 README+헤더 주석에 명시.

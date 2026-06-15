@@ -1,0 +1,48 @@
+&control
+  calculation = 'bands'
+  prefix = 'cosn'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+/
+&system
+  ! flat-band measurement path Γ–K–M–Γ–A. Kagome Co-3d flat band along K–M; report ΔE = E_flat − E_F.
+  ! tot_charge MUST match the scf run (jellium-doped charge state).
+  ibrav = 4
+  celldm(1) = 9.9760
+  celldm(3) = 0.80680
+  nat = 6
+  ntyp = 2
+  tot_charge = __TOTCHG__
+  ecutwfc = 90
+  ecutrho = 360
+  nspin = 2
+  starting_magnetization(1) = 0.3
+  starting_magnetization(2) = 0.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+  nbnd = 80
+/
+&electrons
+  conv_thr = 1.0d-6
+  diagonalization = 'david'
+  diago_david_ndim = 4
+  diago_full_acc = .false.
+/
+ATOMIC_SPECIES
+  Co 58.933  Co_ONCV_PBE_sr.upf
+  Sn 118.71  Sn_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS crystal
+  Co 0.500000 0.000000 0.000000
+  Co 0.000000 0.500000 0.000000
+  Co 0.500000 0.500000 0.000000
+  Sn 0.000000 0.000000 0.000000
+  Sn 0.333333 0.666667 0.500000
+  Sn 0.666667 0.333333 0.500000
+K_POINTS crystal_b
+  5
+  0.0000 0.0000 0.0000 12   ! Gamma
+  0.3333 0.3333 0.0000 12   ! K
+  0.5000 0.0000 0.0000 12   ! M
+  0.0000 0.0000 0.0000 12   ! Gamma
+  0.0000 0.0000 0.5000 1    ! A
