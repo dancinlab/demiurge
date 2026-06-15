@@ -1,0 +1,21 @@
+{
+  "material": "CoSn (hole-doped, kagome CoSn-type)",
+  "probe": "flat-band-at-E_F alignment via QE tot_charge POSITIVE jellium (hole doping = remove electrons)",
+  "verdict": "FALSIFIED",
+  "verdict_tier": "🔴 CLOSED-negative",
+  "gate": "|deltaE|<0.10 eV AND m<0.5 uB -> promote; deltaE>0.2 OR m>0.5 -> falsify",
+  "method": "QE 7.5 pw.x scf(nspin=2) + bands(Gamma-K-M-Gamma-A) + bands.x; PBE ONCV SG15; ecutwfc=90 ecutrho=360 Ry; MP smearing degauss=0.02; tot_charge jellium background. Flat-band deltaE = (kagome flat band, band-44, k-mean) - E_F via validated parser parse_flatband_dE.py (control reproduces known CoSn deltaE=-0.445 to 4 decimals).",
+  "host": "summer (local pool, RTX5070 box, free) -np 6; lean per-point out/ cleanup (disk-bound)",
+  "scan": [
+    {"dp_holes": 0.0, "tot_charge": 0.0, "E_F_eV": 16.6482, "deltaE_eV": -0.4451, "m_uB": 0.09, "note": "control - reproduces CoSn -0.44 baseline"},
+    {"dp_holes": 0.2, "tot_charge": 0.2, "E_F_eV": 16.5876, "deltaE_eV": -0.4814, "m_uB": 0.33},
+    {"dp_holes": 0.4, "tot_charge": 0.4, "E_F_eV": 16.5252, "deltaE_eV": -0.5119, "m_uB": 0.48},
+    {"dp_holes": 0.6, "tot_charge": 0.6, "E_F_eV": 16.4631, "deltaE_eV": -0.5443, "m_uB": 0.63}
+  ],
+  "finding": "Hole doping lowers E_F (~-0.06 eV per +0.2 holes) BUT the kagome flat band drops FASTER, so deltaE = E_flat - E_F goes MORE negative (-0.445 -> -0.544). Flat band moves AWAY from E_F, not toward it. Slope ~-0.165 eV/hole. Combined with the electron-doped scan (deltaE -0.445 -> -0.585, slope -0.23 eV/e-), BOTH rigid-doping directions push the CoSn flat band deeper. Additionally hole doping monotonically wakes competing magnetism (m 0.09 -> 0.63, crossing the 0.5 gate near +0.45 holes).",
+  "why": "In CoSn the kagome flat band is tied to the Co-3d manifold; rigid-band carrier doping shifts E_F but the d-derived flat band tracks with it (and deeper), so doping cannot independently bring the flat band onto E_F. The 'dope CoSn to E_F' axis is closed on BOTH dials.",
+  "rules_out": "the entire rigid-band-doping route to flat-band-at-E_F on CoSn-type kagome (electron AND hole).",
+  "controls": "Dp=0 control reproduces the undoped CoSn deltaE=-0.445 and m=0.09 -> setup + parser validated; refutation trustworthy (no tune-to-green).",
+  "cost_usd": 0.0,
+  "evidence_dir": "scripts/scratch/qforge_harvest/cosn_hdope/ (scf.out + cosn_bands.dat per point + parse_flatband_dE.py)"
+}
