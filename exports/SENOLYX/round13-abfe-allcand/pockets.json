@@ -1,0 +1,35 @@
+{
+  "BCLXL": {
+    "pdb": "4QVX",
+    "lig": "3CQ",
+    "chain": "A",
+    "center": [
+      -19.19,
+      3.78,
+      5.75
+    ],
+    "natoms": 47
+  },
+  "CRBN": {
+    "pdb": "4CI1",
+    "lig": "EF2",
+    "chain": "B",
+    "center": [
+      -1.66,
+      6.02,
+      13.4
+    ],
+    "natoms": 19
+  },
+  "MCL1": {
+    "pdb": "5LOF",
+    "lig": "70R",
+    "chain": "A",
+    "center": [
+      -13.25,
+      11.16,
+      -5.79
+    ],
+    "natoms": 57
+  }
+}
