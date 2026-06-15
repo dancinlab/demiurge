@@ -20,6 +20,9 @@ For the full audit trail, see `git log`.
 - **⑤ ssh-blip alive-gate ⑥ orphan reap** — 신규 `recover.sh`: `alive <host> <port> <id>`=ssh실패 시 `hexa cloud alive`로 RUNNING 확인(GONE/STOPPED만 死 판정·blip은 무동작) · `reap [--apply]`=두 manifest(ens_pods.tsv/cand_pods.tsv)에 없는 `senolyx-*` 소유 live pod만 리포트/destroy(RTSC 41001569·manifest pod 절대 불가). dry-run 검증: 11 manifest pod 전부 보호, orphan 0.
 - **검증(c2)** — 6 @L assert 전부 grep PASS · `harvest_cand.sh` 정상 집계(0/9, 라이브 watcher와 일치=셀 진행중) · live 13 vast pod 무중단 · 박제 `README.md`(SSOT) + `ARCHITECTURE.md` 등재.
 
+### RTSC — 삼각측량 v2 (실측 ΔE 기반): 전자도핑 CoSn = 데이터 기반 신규 리드
+- **데이터 기반 재삼각측량** — 이번 세션 누적 **실측 flat-band ΔE**(CsV3Sb5 +0.92·V3d³ / RbOs2O6 ~0·Os5d⁶자성 / CoSn −0.44·Co3d⁷자성 / MoSn −2.38·Mo4d⁵비자성)로 CoSn-type 같은구조 rigid-band 기울기 산출 = **+0.97 eV/d-전자**(d-전자↑ → flat band이 E_F로 상승). **1순위 = 전자도핑 CoSn(~0.4 e⁻/f.u.)** → 예측 ΔE≈−0.05eV(E_F 정렬) + 같은 도핑이 CoSn 약한 itinerant 자성(원래 블로커)도 억제 가능 = **일석이조**. 막연한 신규탐색을 **기보유 CoSn deck의 도핑 다이얼**로 전환. caveat(c9): N=2 같은구조 기울기라 정확한 x는 실제 도핑 scf 스캔 확정 — closed 아님, c16 돌파 각도. 박제 `scripts/scratch/triangulate_flatband_dE_v2.py` + `RTSC_LEDGER.jsonl`.
+
 ### RTSC — MoSn flat-band 게이트체크 종결: 벽 돌파 후 🔴 FALSIFY (CLOSED-negative)
 - **벽 돌파 + 게이트 종결 🔴 FALSIFY** — Mo-4d PW 벽을 vast 전용코어 포드(RTX 4090 #41056723, 128 core, ~6s/iter = summer 무료코어 대비 >150× — 단 conda-forge QE에 CUDA 빌드 없어 GPU offload 아닌 전용-CPU 가속, 정직 caveat)로 돌파. **실측(fit 없음)**: 자성 **m=0.00 μB**(Co→Mo가 CoSn 자성 제거, 3.96→0 수렴 = 가설대로 PASS 절반) · **ΔE_flatband=−2.38 eV**(Mo-4d kagome flat band 36-38이 E_F보다 2.4 eV 아래, E_F=15.642 eV, 16-iter 2.5e-11 Ry 수렴). |ΔE|=2.38≫0.2 eV → **게이트 FALSIFY**. 통찰: Co→Mo(4d⁵<3d⁷)가 자성은 죽였지만 flat band를 CoSn(−0.44)보다 **더 깊이** 밀어냄 — kagome에서 flat band를 E_F로 올리려면 d-전자 증가/전자도핑 필요(반대 방향). 비용 $0.12, 포드 down, vast#1 무영향. 폴백→LaRu3Si2.
 
