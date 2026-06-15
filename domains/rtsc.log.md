@@ -11,6 +11,12 @@ Spec at [`./RTSC.md`](./RTSC.md). Log entries below preserve session-by-session 
 - **(3) from-scratch 차폐정점 R8(GGA f_xc-in-χ) — status-only**. 점검만(실행 아님): COMPLETE · **CLOSED-NEGATIVE** (full-cell CaH6 n_PW=645 ecut 80 Ry, |∇ρ| spectral grad live witness=1.089) — **λ_GGA=3.41256 · rel-ε 22.02% vs QE 4.376 · Δλ vs ALDA=−0.00257**(gradient kernel 사실상 무차이). 진단: 잔여 갭은 f_xc flavor 가 아니라 from-scratch LDA-PW SCF(QE=PBE self-consistent). **DFT f_xc 레버 소진** → 모드(c) from-scratch 차폐-vertex 트랙 HELD(R7 5.12% 가 최저, ≤1% 미달). verdict `.verdicts/qforge-cah6-gga-fxc-in-chi/`.
 - **doc 현행화**: `QFORGE/QFORGE.md` §⭐ENGINE STATUS(모드 d QFORGE-LSDA 자성 추가 · R8 CLOSED-NEGATIVE 반영 · 어셈블러 실경로 정정 · §📅 2026-06-15 cross-val 블록) · `domains/QFORGE-SYSTEM.md` engine-status note · `domains/rtsc.md` milestone cross-link · `RTSC_LEDGER.jsonl` QFORGE-XVAL 주석 · `CHANGELOG.md`. cost=$0(mini local). 게이트 변동 없음(HELD 유지, flip 안 함, 숫자 강제 0).
 
+### 2026-06-15 (후속) — YH6 QFORGE harvest + 함대 안정성 진단 + flat-band 신규 후보 발굴
+
+- **YH6 QFORGE-L3 harvest** 🔴 CLOSED-NEGATIVE(데이터 월) — 완주 QE DFPT(4 q-pt)를 canonical QFORGE 어셈블러로 harvest. **엔진 무결 입증**(per-mode λ가 QE를 rel-ε~1e-5 재현 → canonical 엔진 실물 end-to-end 첫 작동, migration-gate 마일스톤). 벽=입력 셀(44/84 허수모드 ω²<0 + Γ-acoustic 발산), Tc 날조 0. 박제 `exports/rtsc/qforge_yh6_harvest.json`. PR #628.
+- **함대 안정성 진단(근본원인 c1)** — MgH6도 동일 패턴 확정(34 hard 허수, min −1554 cm⁻¹). triangulate 고압 하이드라이드 deck이 **미완화 발사** → 물리적 Tc 불가. FIX: tight vc-relax + 포논 안정성 사전점검 후 el-ph. ScH9 완주 시 동일 점검. PR #629.
+- **flat-band-at-E_F 신규 후보 발굴(d18 round-1)** — flat band가 E_F에(|ΔE|<0.1eV)+비자성+앰비언트인 host 7종 발굴(CoSn/CsV3Sb5 두 실패모드 동시 돌파). top-3: **MoSn**(kagome CoSn-type, 기보유 deck/엔진) · **LaRu3Si2**(Ru-kagome 실측 Tc 7K) · **LaCoSi**(NOVEL electride ΔE +33meV). MoSn 게이트(선등록): |ΔE|<0.10eV AND m<0.5μB → 🟢 DFPT 승격. 박제 `.discoveries/flatband-at-ef-candidates-20260615.tape`.
+
 ## 2026-06-08 — Non-hydride RTSC pilot (MgB₂ + Nb₃Al) DISPATCHED — BETE-NET pipeline validation (RUNNING)
 
 milestone line-31 `Non-hydride RTSC family pilot (Nb₃Al, MgB₂)` decks fired (d16→d17). Goal = does the QE el-ph pipeline reproduce KNOWN non-hydride Tc (MgB₂ 39K, Nb₃Al 18K)? — diversify beyond the now-twice-falsified hydride X₂MH₆ funnel.
