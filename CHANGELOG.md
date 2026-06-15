@@ -17,6 +17,11 @@ For the full audit trail, see `git log`.
 - **MgH6 안정성 점검 + 함대 진단(근본원인) 🔴 CLOSED-NEGATIVE → PROCESS-FIX** — YH6 harvest가 표면화한 문제를 MgH6에서 확정: 두 Im-3m 고압 하이드라이드 DFPT가 **동역학 불안정 셀**로 발사됨(YH6 hard 허수모드 41개 min −1618 cm⁻¹; MgH6 34개 min −1554 cm⁻¹ — 음향 아닌 진짜 광학 불안정). 앞선 "naive λ가 Γ-발산에 오염"은 더 깊은 문제(셀 자체 불안정)를 가리고 있었음. **근본원인(c1)**: triangulate 고압 하이드라이드 deck이 미완화 발사. **FIX**(향후 全 고압 하이드라이드 deck): ① 목표압에서 tight vc-relax(force 1e-4·stress 0.5 kbar), ② el-ph 생산런 前 포논 동역학 안정성 사전점검(`matdyn asr='crystal'`, 허수모드 0 확인), ③ 그 후 ≥4×4×4-q. ScH9(진행중) 완주 시 동일 점검. 증거 `scripts/scratch/qforge_harvest/{yh6,mgh6}/*_freqs_cm1.txt`.
 - **박제** — `QFORGE/QFORGE.md` §⭐ENGINE STATUS(모드 d 자성 추가 + §📅 2026-06-15 cross-val) · `domains/QFORGE-SYSTEM.md` engine-status note · `domains/rtsc.{md,log.md}` 정직 분담 cross-link · `.verdicts/qforge-xval/{cah6-assembler-reverify,rbos2o6-mag}/` · `RTSC_LEDGER.jsonl` cross-val 주석.
 
+### RTSC — flat-band-at-E_F 신규 후보 발굴 (d18 discovery round-1)
+- **목표** — no-cooling/앰비언트 flat-band SC: flat band가 **E_F에 정확히**(|ΔE|<0.1eV) + **비자성** + 앰비언트 안정인 host 발굴 = 캠페인의 확정된 두 실패모드(ΔE-오프셋: CoSn −0.44/CsV3Sb5 +0.92; 경쟁자성: RbOs2O6 robust ~3-5μB) 동시 돌파.
+- **7 후보 (전부 실인용 또는 speculation-fence, c9)** — top-3: **① MoSn**(kagome CoSn-type, 비자성+FB-near-EF 예측, CoSn 가족이라 deck/엔진 기보유) · **② LaRu3Si2**(Ru-kagome 비자성 실측 Tc 7K, set 최고) · **③ LaCoSi**(NOVEL electride ΔE +33meV로 가장 얕음+상자성). 빈 레인 정직보고: Lieb line-graph(앰비언트 intermetallic SC 부재, cold-atom만).
+- **MoSn 게이트(falsifiable, 선등록)** — QE/QFORGE scf+bands+projwfc nspin=2(≤9-atom 앰비언트, ecut~65/650, 풀-프리/CPU): **|ΔE|<0.10eV AND m<0.5μB → 🟢 DFPT λ/Tc 승격** / ΔE>0.2eV OR m>0.5μB → 🔴 HfSn→LaRu3Si2→LaCoSi 폴백. 박제 `.discoveries/flatband-at-ef-candidates-20260615.tape` + `RTSC_LEDGER.jsonl` 후보 행.
+
 ### RTSC — flat-band pivot + triangulate narrowing + multi-host DFPT sweep
 - **RbOs₂O₆ 자성 battery** — anima ideal-PBE ~5μB가 아티팩트인지 검증: SOC(full-rel) ~3-4μB(quench 안 함)·rattling ~2μB·강한rattling ~2-4μB = **PBE robust 자성, static 레버로 제거 불가**(브리프 "SOC가 죽인다" 부분 반증). 비자성 강제 nspin=1 DFPT in-flight = 결정타. decks `exports/rtsc/decks/anima_rbos2o6/scf_{soc,rattle,rattle2,nm}.in`.
 - **삼각측량 5-bearing narrowing** — coupling 4-bearing에 상압근접+측정안정성 추가 재랭킹(`scripts/scratch/triangulate_rerank_stability.py`). no-cooling shortlist YH9·CaH6·LaH10·ScH9·YH10·ScH6·YH6(10→7); MgH6·CaH10·SrH10 압력축 추락.
