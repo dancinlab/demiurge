@@ -14,6 +14,12 @@
 > microkernel port 31/31 parity bit-exact). g3 honest — see
 > `PLAN.log.md` for measured distance (κ-phase archive, PLAN.md 2026-05-22
 > 흡수), `CHARTER.md` for mission/scope (HANDOFF.md 2026-05-22 흡수 —
+>
+> RTSC frontier (2026-06-16): no-cooling flat-band track — MoSn 🔴 FALSIFIED
+> (m=0 but ΔE=−2.38 eV), 삼각측량 v2 (measured-ΔE) → data-driven lead =
+> **electron-doped CoSn** (~0.4 e⁻ predicted to align flat band to E_F +
+> quench magnetism); LaRu3Si2 gate-check in flight. QFORGE L3 assembler
+> demonstrated end-to-end on real QE el-ph (YH6). See CHANGELOG.md.
 > historical at `HANDOFF.log.md`), `DESIGN.md` for the decision audit trail.
 > Family: **typed-interface consumer** (not absorber) of `hexa-lang`,
 > the **sole SSOT** for reusable stdlib / tools / absorbed modules
