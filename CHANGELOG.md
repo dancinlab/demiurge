@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### SENOLYX ABFE — 운영자(드라이버) 실수 방지 (demi 7-verb · probe.sh + 런북 + 메모리)
+- 캠페인을 모는 동안 반복한 **에이전트-측 운영 실수 5종**(D1~D5)을 근본 차단. F1~F10이 컴퓨트 파이프라인이라면 이건 드라이버 워크플로우.
+- **`probe.sh <manifest> <workdir>` 신규** — heredoc-fed 루프 + ssh `</dev/null` + 명시 필드분리 + bash-3.2 호환. 손으로 짠 `while read`+ssh 루프가 매번 (a)stdin 잠식→첫 pod만 (b)`set -- $hp` arg-split (c)`mapfile` 부재로 깨지던 것 차단. R13 9셀 전수 폴링으로 검증(c2).
+- 런북(round13 README "운영자 실수 방지"): D2 Read前Edit · D3 commit前pr-cycle · D4 leg가 K회 결정론적 abort 시 무한retry 금지(다른 pod 재발사 OR n−1 수용; R13 MCL1:0이 solvent서 4회+ 결정론 사망) · D5 watcher 코드 머지 후 재시작 필요.
+- 메모리 `senolyx-abfe-ops-gotchas` 등재(cross-session 차단).
+
 ### SENOLYX R12(HSP90) — 🧱 close-negative 확정 종결 (K=5 ensemble 10/10)
 - R12 RBFE + R12-GOLD 마일스톤 CLOSED-NEGATIVE flip. K=5 ensemble 10/10 완주: ΔΔG=+3.13±2.83 (exp −1.9, |err|=5.03, 부호 반대 FAIL). ensemble 평균화로도 sign 불변 → R10b(절대 overbind)·R11(기계론 FF결함)·R12(상대 RBFE) 3개 독립라인이 "거대고리 안사마이신엔 범용 FF 부적합" 확증 (tune-to-green 불가, c9/d6 정직 terminal).
 - vast 6-pod 회수(결과 seen.prog 10/10 + RESULT_FINAL_10of10.txt 보존 후 destroy, 비용정지). R13 후보검증(MCL1 양성 유지)만 open으로 잔존.
