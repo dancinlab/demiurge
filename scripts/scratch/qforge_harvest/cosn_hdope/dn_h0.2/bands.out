@@ -1,0 +1,211 @@
+
+     Program PWSCF v.7.5 starts on 16Jun2026 at  3:13:49 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+         "P. Giannozzi et al., J. Chem. Phys. 152 154105 (2020);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI & OpenMP), running on       6 processor cores
+     Number of MPI processes:                 6
+     Threads/MPI process:                     1
+
+     MPI processes distributed on     1 nodes
+     5477 MiB available memory on the printing compute node when the environment starts
+
+     Reading input from bands.in
+
+     Current dimensions of program PWSCF are:
+     Max number of different atomic species (ntypx) = 10
+     Max number of k-points (npk) =  40000
+     Max angular momentum in pseudopotentials (lmaxx) =  4
+
+     Atomic positions and unit cell read from directory:
+     ./out/cosn.save/
+
+
+     R & G space division:  proc/nbgrp/npool/nimage =       6
+     Subspace diagonalization in iterative solution of the eigenvalue problem:
+     a serial algorithm will be used
+
+
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min         413     413    111                13347    13347    1899
+     Max         414     414    113                13348    13348    1901
+     Sum        2479    2479    673                80083    80083   11401
+
+     Using Slab Decomposition
+
+
+
+     bravais-lattice index     =            4
+     lattice parameter (alat)  =       9.9760  a.u.
+     unit-cell volume          =     693.6907 (a.u.)^3
+     number of atoms/cell      =            6
+     number of atomic types    =            2
+     number of electrons       =        92.80
+     number of Kohn-Sham states=           80
+     kinetic-energy cutoff     =      90.0000  Ry
+     charge density cutoff     =     360.0000  Ry
+     Exchange-correlation= PBE
+                           (   1   4   3   4   0   0   0)
+
+     celldm(1)=   9.976000  celldm(2)=   0.000000  celldm(3)=   0.806800
+     celldm(4)=   0.000000  celldm(5)=   0.000000  celldm(6)=   0.000000
+
+     crystal axes: (cart. coord. in units of alat)
+               a(1) = (   1.000000   0.000000   0.000000 )  
+               a(2) = (  -0.500000   0.866025   0.000000 )  
+               a(3) = (   0.000000   0.000000   0.806800 )  
+
+     reciprocal axes: (cart. coord. in units 2 pi/alat)
+               b(1) = (  1.000000  0.577350 -0.000000 )  
+               b(2) = (  0.000000  1.154701  0.000000 )  
+               b(3) = (  0.000000 -0.000000  1.239465 )  
+
+
+     PseudoPot. # 1 for Co read from file:
+     ./pseudo/Co_ONCV_PBE_sr.upf
+     MD5 check sum: 04640e31e65e5bce9f0417487be359f7
+     Pseudo is Norm-conserving, Zval = 17.0
+     Generated using ONCVPSP code by D. R. Hamann
+     Using radial grid of  602 points,  6 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+                l(5) =   2
+                l(6) =   2
+
+     PseudoPot. # 2 for Sn read from file:
+     ./pseudo/Sn_ONCV_PBE_sr.upf
+     MD5 check sum: 6680f7ee4d83b53e0fcd4167fcb72813
+     Pseudo is Norm-conserving, Zval = 14.0
+     Generated using ONCVPSP code by D. R. Hamann
+     Using radial grid of  602 points,  6 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+                l(4) =   1
+                l(5) =   2
+                l(6) =   2
+
+     atomic species   valence    mass     pseudopotential
+     Co               17.00    58.93300     Co( 1.00)
+     Sn               14.00   118.71000     Sn( 1.00)
+
+     Starting magnetic structure 
+     atomic species   magnetization
+     Co              0.300
+     Sn              0.000
+
+     24 Sym. Ops., with inversion, found
+
+
+
+   Cartesian axes
+
+     site n.     atom                  positions (alat units)
+         1        Co     tau(   1) = (   0.5000000   0.0000000   0.0000000  )
+         2        Co     tau(   2) = (  -0.2500000   0.4330127   0.0000000  )
+         3        Co     tau(   3) = (   0.2500000   0.4330127   0.0000000  )
+         4        Sn     tau(   4) = (   0.0000000   0.0000000   0.0000000  )
+         5        Sn     tau(   5) = (  -0.0000005   0.5773506   0.4034000  )
+         6        Sn     tau(   6) = (   0.5000005   0.2886748   0.4034000  )
+
+     number of k points=    49  Methfessel-Paxton smearing, width (Ry)=  0.0200
+                       cart. coord. in units 2pi/alat
+        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.0204082
+        k(    2) = (   0.0277750   0.0481077   0.0000000), wk =   0.0204082
+        k(    3) = (   0.0555500   0.0962154   0.0000000), wk =   0.0204082
+        k(    4) = (   0.0833250   0.1443231   0.0000000), wk =   0.0204082
+        k(    5) = (   0.1111000   0.1924308   0.0000000), wk =   0.0204082
+        k(    6) = (   0.1388750   0.2405386   0.0000000), wk =   0.0204082
+        k(    7) = (   0.1666500   0.2886463   0.0000000), wk =   0.0204082
+        k(    8) = (   0.1944250   0.3367540   0.0000000), wk =   0.0204082
+        k(    9) = (   0.2222000   0.3848617   0.0000000), wk =   0.0204082
+        k(   10) = (   0.2499750   0.4329694   0.0000000), wk =   0.0204082
+        k(   11) = (   0.2777500   0.4810771   0.0000000), wk =   0.0204082
+        k(   12) = (   0.3055250   0.5291848   0.0000000), wk =   0.0204082
+        k(   13) = (   0.3333000   0.5772925   0.0000000), wk =   0.0204082
+        k(   14) = (   0.3471917   0.5532411   0.0000000), wk =   0.0204082
+        k(   15) = (   0.3610833   0.5291896   0.0000000), wk =   0.0204082
+        k(   16) = (   0.3749750   0.5051382   0.0000000), wk =   0.0204082
+        k(   17) = (   0.3888667   0.4810867   0.0000000), wk =   0.0204082
+        k(   18) = (   0.4027583   0.4570353   0.0000000), wk =   0.0204082
+        k(   19) = (   0.4166500   0.4329838   0.0000000), wk =   0.0204082
+        k(   20) = (   0.4305417   0.4089324   0.0000000), wk =   0.0204082
+        k(   21) = (   0.4444333   0.3848809   0.0000000), wk =   0.0204082
+        k(   22) = (   0.4583250   0.3608295   0.0000000), wk =   0.0204082
+        k(   23) = (   0.4722167   0.3367780   0.0000000), wk =   0.0204082
+        k(   24) = (   0.4861083   0.3127266   0.0000000), wk =   0.0204082
+        k(   25) = (   0.5000000   0.2886751   0.0000000), wk =   0.0204082
+        k(   26) = (   0.4583333   0.2646189   0.0000000), wk =   0.0204082
+        k(   27) = (   0.4166667   0.2405626   0.0000000), wk =   0.0204082
+        k(   28) = (   0.3750000   0.2165064   0.0000000), wk =   0.0204082
+        k(   29) = (   0.3333333   0.1924501   0.0000000), wk =   0.0204082
+        k(   30) = (   0.2916667   0.1683938   0.0000000), wk =   0.0204082
+        k(   31) = (   0.2500000   0.1443376   0.0000000), wk =   0.0204082
+        k(   32) = (   0.2083333   0.1202813   0.0000000), wk =   0.0204082
+        k(   33) = (   0.1666667   0.0962250   0.0000000), wk =   0.0204082
+        k(   34) = (   0.1250000   0.0721688   0.0000000), wk =   0.0204082
+        k(   35) = (   0.0833333   0.0481125   0.0000000), wk =   0.0204082
+        k(   36) = (   0.0416667   0.0240563   0.0000000), wk =   0.0204082
+        k(   37) = (   0.0000000   0.0000000   0.0000000), wk =   0.0204082
+        k(   38) = (   0.0000000   0.0000000   0.0516444), wk =   0.0204082
+        k(   39) = (   0.0000000   0.0000000   0.1032887), wk =   0.0204082
+        k(   40) = (   0.0000000   0.0000000   0.1549331), wk =   0.0204082
+        k(   41) = (   0.0000000   0.0000000   0.2065774), wk =   0.0204082
+        k(   42) = (   0.0000000   0.0000000   0.2582218), wk =   0.0204082
+        k(   43) = (   0.0000000   0.0000000   0.3098661), wk =   0.0204082
+        k(   44) = (   0.0000000   0.0000000   0.3615105), wk =   0.0204082
+        k(   45) = (   0.0000000   0.0000000   0.4131549), wk =   0.0204082
+        k(   46) = (   0.0000000   0.0000000   0.4647992), wk =   0.0204082
+        k(   47) = (   0.0000000   0.0000000   0.5164436), wk =   0.0204082
+        k(   48) = (   0.0000000   0.0000000   0.5680879), wk =   0.0204082
+        k(   49) = (   0.0000000   0.0000000   0.6197323), wk =   0.0204082
+
+     Dense  grid:    80083 G-vectors     FFT dimensions: (  64,  64,  50)
+
+     Estimated max dynamical RAM per process >      35.41 MB
+
+     Estimated total dynamical RAM >     212.44 MB
+     Generating pointlists ...
+     new r_m :   0.2046 (alat units)  2.0413 (a.u.) for type    1
+     new r_m :   0.2046 (alat units)  2.0413 (a.u.) for type    2
+
+     The potential is recalculated from file :
+     ./out/cosn.save/charge-density
+
+     Starting wfcs are random
+
+     Band Structure Calculation
+     Davidson diagonalization with overlap
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     Error in routine davcio (10):
+     error writing file "./out/cosn.wfc1"
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+     stopping ...
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 1 in communicator MPI_COMM_WORLD
+  Proc: [[18999,1],1]
+  Errorcode: 1
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+prterun has exited due to process rank 0 with PID 0 on node summer-B650M-K calling
+"abort". This may have caused other processes in the application to be
+terminated by signals sent by prterun (as reported here).
+--------------------------------------------------------------------------
+ 

@@ -1,0 +1,44 @@
+&control
+  calculation = 'scf'
+  prefix = 'cosn'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+/
+&system
+  ! CoSn electron-doped via QE tot_charge jellium (negative tot_charge = ADD electrons).
+  ! Δn = -tot_charge electrons/f.u. ; jellium compensating background (rigid-band-with-screening proxy).
+  ! ibrav=4, a=9.9760 bohr c/a=0.8068. Co kagome 3f + Sn 1a/2d. nspin=2, start_mag(Co)=0.3 diagnostic.
+  ibrav = 4
+  celldm(1) = 9.9760
+  celldm(3) = 0.80680
+  nat = 6
+  ntyp = 2
+  tot_charge = __TOTCHG__
+  ecutwfc = 90
+  ecutrho = 360
+  nspin = 2
+  starting_magnetization(1) = 0.3
+  starting_magnetization(2) = 0.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Co 58.933  Co_ONCV_PBE_sr.upf
+  Sn 118.71  Sn_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS crystal
+  Co 0.500000 0.000000 0.000000
+  Co 0.000000 0.500000 0.000000
+  Co 0.500000 0.500000 0.000000
+  Sn 0.000000 0.000000 0.000000
+  Sn 0.333333 0.666667 0.500000
+  Sn 0.666667 0.333333 0.500000
+K_POINTS automatic
+  12 12 12 0 0 0

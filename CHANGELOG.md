@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### RTSC no-cooling — 정공도핑 CoSn 🔴 FALSIFY → CoSn rigid-doping 양방향 CLOSED (dead-end 확정)
+- **정공도핑 CoSn flat-band 정렬 게이트체크 🔴 FALSIFY** (4점 tot_charge 양수 jellium scan, summer 무료풀 -np6, $0): 정공도핑이 E_F를 내리지만(~−0.06 eV/+0.2홀) **kagome flat band이 더 빨리 내려가** ΔE = E_flat − E_F가 오히려 더 깊어짐 — −0.445(control) → −0.481 → −0.512 → −0.544 eV (slope ~−0.165 eV/hole). flat band이 E_F에서 **멀어짐**. 게다가 자성 단조 상승 0.09→0.33→0.48→0.63 μB(~+0.45홀에서 게이트 0.5 돌파).
+- **CoSn rigid-doping 양방향 CLOSED**: 전자도핑(−0.445→−0.585, −0.23 eV/e⁻)과 정공도핑(−0.165 eV/hole) **둘 다 flat band을 더 깊게** 민다. 이전 전자도핑 행이 추천한 정공 각도(c16 돌파)를 진짜로 시도 → 정직한 terminal 벽. **원인**: CoSn kagome flat band은 Co-3d manifold에 묶여 rigid 도핑이 E_F를 움직여도 d-유래 flat band이 함께(더 깊게) 따라가, 도핑으로 flat band을 독립적으로 E_F에 올릴 수 없음. "CoSn을 도핑해 E_F에 맞춘다" 축 전체 CLOSED.
+- **대조 검증**: Δp=0 control이 미도핑 CoSn ΔE=−0.445/m=0.09 정확 재현(band-44 검출 파서 `parse_flatband_dE.py`가 4자리까지 일치) → 셋업·파서 검증, 반증 신뢰 가능(tune-to-green 없음). 박제 `exports/rtsc/cosn_hdope_gatecheck.json` + `scripts/scratch/qforge_harvest/cosn_hdope/`.
+- **인프라**: 재사용 vast 파드(load 507 과점유 junk 호스트)에서 SCF 19분 무진전 → d7대로 작은 셀(6원자)을 무료 로컬풀 summer로 이전(1iter 1분20초). junk 파드 41001569 파괴(cah10/srh10 vcrelax 보존 후). 캠페인 표준 lead = **LaRu3Si2 🟢 (DFPT λ/Tc q=3 in flight)**.
+
 ### SENOLYX — vast 재가동 + R12 ensemble + R13 후보 전수 ABFE (🟢 MCL-1/S63845 결합 계산 확증)
 - **B4(PTX-222) 근본해결** — conda `cuda-version=12.6` 선핀(host CUDA 13.0 < conda기본 13.3 충돌이 원인)으로 vast RTX_4090 다중 pod 가동. 이전 "vast 비가용·summer 단독" 가정 무효화.
 - **R12(HSP90) K=5 ensemble 재가동** — bistability 평균화. 잠정 ΔΔG≈+2.3 (exp −1.9, 부호 ❌) → ensemble로도 안 뒤집힘 = R10b·R11 "거대고리 범용FF 부적합" **확증 방향**(close-negative 수렴중, 17AAG 완료시 확정).
