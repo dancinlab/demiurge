@@ -8,6 +8,13 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-15
 
+### QFORGE — engine현행화 + QE↔QFORGE 정직 분담 cross-val
+- **honest division** — 이번 RTSC 세션의 全 production DFT(RbOs2O6 자성·ScH9/MgH6/ScH6/YH6 DFPT·CsOs2O6·CaH10/SrH10)는 **QE(Quantum ESPRESSO)로만** 실행 — QFORGE migration gate HELD. QE = production reference, QFORGE = canonical-engine(게이트 후 absorbed).
+- **hybrid assembler g5 RE-verify ✅ PASS** — CaH6 QE|g|² → QFORGE L3 어셈블러(`stdlib/qforge/assembler.hexa`, `qforge_cah6_qe_xval_test`): λ_QFORGE=8.51682640 vs QE λ_BZ=8.516825, **rel-ε=1.647e-7 ≤1% gate**(LaH10 4.74e-7 corroborate) = 어셈블러 즉시-사용 gate-grade 재확인.
+- **QFORGE-LSDA 자성 cross-val ⏸ HONEST-SKIP** — RbOs2O6/CsOs2O6 nspin=2 SCF 목표(QE ~3-5μB / ~1.8μB 재현?). spin-DFT brick(V_xc·E_F·smearing·spin-GGA) g5 全PASS 이나 실 모먼트 SCF는 Os-5d high-ecut PW compute-wall(9-atom·ecut 70/560 Ry·77 val e⁻ ≥ CoSn Co-3d wall) → mini 강제 시 intractable/spurious m≈0 → QE-production/QFORGE-gated, 날조 0(c9).
+- **from-scratch 차폐정점 R8(GGA f_xc) status-only** — COMPLETE·CLOSED-NEGATIVE(λ_GGA=3.41256, rel-ε 22.02%; Δλ vs ALDA −0.00257 무차이) → DFT f_xc 레버 소진, 모드(c) 트랙 HELD.
+- **박제** — `QFORGE/QFORGE.md` §⭐ENGINE STATUS(모드 d 자성 추가 + §📅 2026-06-15 cross-val) · `domains/QFORGE-SYSTEM.md` engine-status note · `domains/rtsc.{md,log.md}` 정직 분담 cross-link · `.verdicts/qforge-xval/{cah6-assembler-reverify,rbos2o6-mag}/` · `RTSC_LEDGER.jsonl` cross-val 주석.
+
 ### RTSC — flat-band pivot + triangulate narrowing + multi-host DFPT sweep
 - **RbOs₂O₆ 자성 battery** — anima ideal-PBE ~5μB가 아티팩트인지 검증: SOC(full-rel) ~3-4μB(quench 안 함)·rattling ~2μB·강한rattling ~2-4μB = **PBE robust 자성, static 레버로 제거 불가**(브리프 "SOC가 죽인다" 부분 반증). 비자성 강제 nspin=1 DFPT in-flight = 결정타. decks `exports/rtsc/decks/anima_rbos2o6/scf_{soc,rattle,rattle2,nm}.in`.
 - **삼각측량 5-bearing narrowing** — coupling 4-bearing에 상압근접+측정안정성 추가 재랭킹(`scripts/scratch/triangulate_rerank_stability.py`). no-cooling shortlist YH9·CaH6·LaH10·ScH9·YH10·ScH6·YH6(10→7); MgH6·CaH10·SrH10 압력축 추락.
