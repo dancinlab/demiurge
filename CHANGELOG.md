@@ -17,7 +17,10 @@ For the full audit trail, see `git log`.
 - **⑤ ssh-blip alive-gate ⑥ orphan reap** — 신규 `recover.sh`: `alive <host> <port> <id>`=ssh실패 시 `hexa cloud alive`로 RUNNING 확인(GONE/STOPPED만 死 판정·blip은 무동작) · `reap [--apply]`=두 manifest(ens_pods.tsv/cand_pods.tsv)에 없는 `senolyx-*` 소유 live pod만 리포트/destroy(RTSC 41001569·manifest pod 절대 불가). dry-run 검증: 11 manifest pod 전부 보호, orphan 0.
 - **검증(c2)** — 6 @L assert 전부 grep PASS · `harvest_cand.sh` 정상 집계(0/9, 라이브 watcher와 일치=셀 진행중) · live 13 vast pod 무중단 · 박제 `README.md`(SSOT) + `ARCHITECTURE.md` 등재.
 
-### RTSC — MoSn flat-band 게이트체크: 격자 확보 · 측정은 Mo-4d PW 벽 (🟡 PENDING)
+### RTSC — MoSn flat-band 게이트체크 종결: 벽 돌파 후 🔴 FALSIFY (CLOSED-negative)
+- **벽 돌파 + 게이트 종결 🔴 FALSIFY** — Mo-4d PW 벽을 vast 전용코어 포드(RTX 4090 #41056723, 128 core, ~6s/iter = summer 무료코어 대비 >150× — 단 conda-forge QE에 CUDA 빌드 없어 GPU offload 아닌 전용-CPU 가속, 정직 caveat)로 돌파. **실측(fit 없음)**: 자성 **m=0.00 μB**(Co→Mo가 CoSn 자성 제거, 3.96→0 수렴 = 가설대로 PASS 절반) · **ΔE_flatband=−2.38 eV**(Mo-4d kagome flat band 36-38이 E_F보다 2.4 eV 아래, E_F=15.642 eV, 16-iter 2.5e-11 Ry 수렴). |ΔE|=2.38≫0.2 eV → **게이트 FALSIFY**. 통찰: Co→Mo(4d⁵<3d⁷)가 자성은 죽였지만 flat band를 CoSn(−0.44)보다 **더 깊이** 밀어냄 — kagome에서 flat band를 E_F로 올리려면 d-전자 증가/전자도핑 필요(반대 방향). 비용 $0.12, 포드 down, vast#1 무영향. 폴백→LaRu3Si2.
+
+### RTSC — MoSn flat-band 게이트체크: 격자 확보 · 측정은 Mo-4d PW 벽 (🟡 PENDING→위에서 종결)
 - **격자 확보 ✅** — MoSn(CoSn-type, Co→Mo)을 vc-relax: **a=5.606 Å, c/a=0.848**(BFGS 수렴, 엔탈피 −773.357 Ry). CoSn(5.279 Å)보다 a 6%↑ = Mo 금속반경 1.39 Å>Co 1.25 Å 일관 → CoSn-type 셀에서 **안정 완화**(좋은 신호). pseudo: SG15 ONCV PBE-1.2 Mo(z=14 semicore)+Sn. d16 free dry-run PASS.
 - **게이트 측정 차단 🟡 PENDING** — flat-band ΔE + 자성 m은 nspin=2 ecut90/360 SCF 필요한데 summer 무료코어에서 **>16분/iter**(84 e⁻·Mo-4d·50k×2spin, 4-config 재현) = 문서화된 CoSn Co-3d PW 벽과 동류. ΔE·m **미측정** → 날조 없이 honest PENDING(green/red 아님, c9/d6). 무료 SCF는 summer에서 계속 grinding(완료 워처 무장).
 - **돌파(d2/d7)** — ① ecut90 nspin=2 SCF용 GPU davidson pod(dense-k 전이금속→GPU) · ② 저-ecut 진단 SCF로 m-부호+E_F 빠르게 · ③ summer 무료런 완주 대기. 박제 `exports/rtsc/decks/mosn/`(검증된 deck) + `exports/rtsc/mosn_flatband_gatecheck.json` + `RTSC_LEDGER.jsonl` MoSn 행.
