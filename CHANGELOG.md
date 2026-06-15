@@ -6,6 +6,13 @@ For the full audit trail, see `git log`.
 
 ---
 
+## 2026-06-16
+
+### RTSC — 🟢 LaRu3Si2 flat-band 게이트 PASS (캠페인 최초 통과 · 방법론 검증)
+- **🟢 GATE PASS (사전등록 게이트, goalpost 이동 없음 c9)** — 폴백 #1 LaRu3Si2(Ru-kagome, CeCo3B2-유도)가 **두 조건 동시 통과**: 실측 **ΔE_flatband=−0.055 eV**(55 meV, <0.10 게이트) + **m=0.00 μB**(start_mag 1.54→0 붕괴 = 진짜 비자성, <0.5 게이트). vc-relax a=5.7175Å c=3.5732Å(실험 +0.7%), E_total=−645.935 Ry(20-iter 2.5e-11), Ru-4d kagome flat band(band34, 면내 대역폭 0.365 eV) mean 16.0115 eV vs E_F 16.0669 eV. **CoSn(−0.44+자성)·CsV3Sb5(+0.92)·MoSn(−2.38) 세 실패모드를 처음으로 동시 격파** + 실측 Tc=7K 실존 SC. 비용 $0.30(vast RTX4090 #41060369 전용코어, GPU-QE 부재→CPU 가속 정직 caveat), 포드 down, vast#1 무영향.
+- **정직 프레이밍(c9)** — 이 🟢는 **flat-band-at-E_F "설계 게이트"** 통과(설계 가능성 입증)지, **상온 달성 아님**(Tc=7K는 극저온). 의미 = ① 게이트 방법론이 작동(실패 4 거른 뒤 진짜 통과 1) ② flat-band SC 실존 anchor 확보 → DFPT로 "flat band→coupling→Tc" 사슬 정량검증 발판 ③ 도핑/압력으로 Tc 끌어올릴 설계 출발점. 문헌(arXiv) Ru-dz² +0.1eV 위 vs 본 relaxed-PBE 55meV 아래 — 부호 다름·크기 일치(둘 다 |ΔE|<0.1).
+- **다음** — LaRu3Si2 → DFPT el-ph(λ/Tc) 승격(측정 Tc=7K + 모드선택 kagome-phonon 재현). 박제 `exports/rtsc/decks/laru3si2/`(검증 deck, La/Ru/Si SG15 ONCV) + `exports/rtsc/laru3si2_flatband_gatecheck.json` + `RTSC_LEDGER.jsonl` GATE_PASS + `scripts/scratch/qforge_harvest/laru3si2/`.
+
 ## 2026-06-15
 
 ### 거버넌스 — d_qforge_fix 추가 (QFORGE upstream fix: 즉시해결 우선 · 장기 시 QE 병행)
