@@ -1,0 +1,54 @@
+&control
+  calculation = 'vc-relax'
+  prefix = 'mosn'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  forc_conv_thr = 1.0d-4
+  etot_conv_thr = 1.0d-5
+  nstep = 200
+/
+&system
+  ! MoSn CoSn-type kagome, P6/mmm (No.191). Mo kagome net at z=0 (Wyckoff 3f); Sn 1a(z=0)+2d(z=1/2).
+  ! Wyckoff 3f/1a/2d have NO free internal params -> vc-relax only adjusts cell (a, c/a).
+  ! STARTING GUESS (lattice NOT known a priori): a~5.5 Ang ~= 10.394 Bohr, c/a~0.80.
+  !   (Mo metallic radius 1.39 Ang > Co 1.25 Ang -> larger than CoSn a=5.279 Ang). RELAX to DFT eq.
+  ibrav = 4
+  celldm(1) = 10.3937
+  celldm(3) = 0.80000
+  nat = 6
+  ntyp = 2
+  ecutwfc = 90
+  ecutrho = 360
+  nspin = 2
+  starting_magnetization(1) = 0.3
+  starting_magnetization(2) = 0.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+&ions
+  ion_dynamics = 'bfgs'
+/
+&cell
+  cell_dynamics = 'bfgs'
+  press_conv_thr = 0.5
+/
+ATOMIC_SPECIES
+  Mo 95.95   Mo_ONCV_PBE_sr.upf
+  Sn 118.71  Sn_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS crystal
+  Mo 0.500000 0.000000 0.000000
+  Mo 0.000000 0.500000 0.000000
+  Mo 0.500000 0.500000 0.000000
+  Sn 0.000000 0.000000 0.000000
+  Sn 0.333333 0.666667 0.500000
+  Sn 0.666667 0.333333 0.500000
+K_POINTS automatic
+  12 12 12 0 0 0
