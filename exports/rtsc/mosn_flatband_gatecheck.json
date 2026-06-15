@@ -1,0 +1,17 @@
+{
+  "material": "MoSn",
+  "structure": "CoSn-type kagome, P6/mmm (No.191), ibrav=4, nat=6 (Mo 3f kagome z=0; Sn 1a z=0 + 2d z=1/2)",
+  "relaxed_a_Ang": 5.606,
+  "c_over_a": 0.848,
+  "relaxed_c_Ang": 4.753,
+  "celldm1_bohr": 10.59396,
+  "ecut": "vc-relax 60/240 Ry @ 4x4x4 k (lattice find); scf+bands 90/360 Ry @ 8x8x8 k (E_F, bands). NC SG15 ONCV PBE-1.2 (Mo,Sn z_valence=14)",
+  "dE_flatband_eV": null,
+  "magnetization_uB": null,
+  "n_ef": null,
+  "gate_verdict": "PENDING (lattice SECURED; magnetism+E_F measurement BLOCKED on PW compute wall)",
+  "evidence_cmd": "summer:~/rtsc/mosn  micromamba run -n qe mpirun -np 4 pw.x -in {vc-relax,scf,bands}.in  (vc-relax JOB DONE; Final enthalpy=-773.357 Ry; BFGS converged)",
+  "pod": "summer (192.168.50.60, pool-free QE, -np 4)",
+  "cost_usd": 0.0,
+  "notes": "LATTICE SECURED via vc-relax (real QE: BFGS converged, Final enthalpy -773.357 Ry): relaxed a=5.606 Ang, c/a=0.848 (vs CoSn a=5.279/c-a=0.807 -> Mo ~6% larger, physically consistent w/ Mo radius 1.39>Co 1.25 Ang). MEASUREMENT SCF (nspin=2, ecut 90/360, 8x8x8) hits a hard real-time PW compute wall on summer's free shared cores: the first full-ecut Davidson (84 e-, Mo 4d) takes >14 min/iter, a full SCF = hours -- same class as the documented CoSn Co-3d PW wall. Pre-registered gate (c9): PASS |dE|<0.10 AND m<0.5; FALSIFY dE>0.2 OR m>0.5; INCONCLUSIVE 0.1<=|dE|<=0.2 AND m<0.5. Breakthrough paths (d2): (1) GPU davidson pod for the ecut-90 nspin=2 SCF; (2) reduced-basis/lower-ecut diagnostic SCF for m+E_F sign; (3) let the free autonomous run grind to completion (in-flight)."
+}

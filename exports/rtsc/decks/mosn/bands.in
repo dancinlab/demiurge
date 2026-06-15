@@ -1,0 +1,44 @@
+&control
+  calculation = 'bands'
+  prefix = 'mosn'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+/
+&system
+  ! flat-band measurement path: Gamma-K-M-Gamma-A. Kagome flat band sits along K-M; report dE = E_flat - E_F.
+  ! celldm SET FROM vc-relax OUTPUT (same as scf.in).
+  ibrav = 4
+  celldm(1) = 10.59396
+  celldm(3) = 0.84778
+  nat = 6
+  ntyp = 2
+  ecutwfc = 90
+  ecutrho = 360
+  nspin = 2
+  starting_magnetization(1) = 0.3
+  starting_magnetization(2) = 0.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+  nbnd = 80
+/
+&electrons
+  conv_thr = 1.0d-9
+/
+ATOMIC_SPECIES
+  Mo 95.95   Mo_ONCV_PBE_sr.upf
+  Sn 118.71  Sn_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS crystal
+  Mo 0.500000 0.000000 0.000000
+  Mo 0.000000 0.500000 0.000000
+  Mo 0.500000 0.500000 0.000000
+  Sn 0.000000 0.000000 0.000000
+  Sn 0.333333 0.666667 0.500000
+  Sn 0.666667 0.333333 0.500000
+K_POINTS crystal_b
+  5
+  0.0000 0.0000 0.0000 40   ! Gamma
+  0.3333 0.3333 0.0000 40   ! K
+  0.5000 0.0000 0.0000 40   ! M
+  0.0000 0.0000 0.0000 40   ! Gamma
+  0.0000 0.0000 0.5000 1    ! A

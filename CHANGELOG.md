@@ -17,6 +17,11 @@ For the full audit trail, see `git log`.
 - **⑤ ssh-blip alive-gate ⑥ orphan reap** — 신규 `recover.sh`: `alive <host> <port> <id>`=ssh실패 시 `hexa cloud alive`로 RUNNING 확인(GONE/STOPPED만 死 판정·blip은 무동작) · `reap [--apply]`=두 manifest(ens_pods.tsv/cand_pods.tsv)에 없는 `senolyx-*` 소유 live pod만 리포트/destroy(RTSC 41001569·manifest pod 절대 불가). dry-run 검증: 11 manifest pod 전부 보호, orphan 0.
 - **검증(c2)** — 6 @L assert 전부 grep PASS · `harvest_cand.sh` 정상 집계(0/9, 라이브 watcher와 일치=셀 진행중) · live 13 vast pod 무중단 · 박제 `README.md`(SSOT) + `ARCHITECTURE.md` 등재.
 
+### RTSC — MoSn flat-band 게이트체크: 격자 확보 · 측정은 Mo-4d PW 벽 (🟡 PENDING)
+- **격자 확보 ✅** — MoSn(CoSn-type, Co→Mo)을 vc-relax: **a=5.606 Å, c/a=0.848**(BFGS 수렴, 엔탈피 −773.357 Ry). CoSn(5.279 Å)보다 a 6%↑ = Mo 금속반경 1.39 Å>Co 1.25 Å 일관 → CoSn-type 셀에서 **안정 완화**(좋은 신호). pseudo: SG15 ONCV PBE-1.2 Mo(z=14 semicore)+Sn. d16 free dry-run PASS.
+- **게이트 측정 차단 🟡 PENDING** — flat-band ΔE + 자성 m은 nspin=2 ecut90/360 SCF 필요한데 summer 무료코어에서 **>16분/iter**(84 e⁻·Mo-4d·50k×2spin, 4-config 재현) = 문서화된 CoSn Co-3d PW 벽과 동류. ΔE·m **미측정** → 날조 없이 honest PENDING(green/red 아님, c9/d6). 무료 SCF는 summer에서 계속 grinding(완료 워처 무장).
+- **돌파(d2/d7)** — ① ecut90 nspin=2 SCF용 GPU davidson pod(dense-k 전이금속→GPU) · ② 저-ecut 진단 SCF로 m-부호+E_F 빠르게 · ③ summer 무료런 완주 대기. 박제 `exports/rtsc/decks/mosn/`(검증된 deck) + `exports/rtsc/mosn_flatband_gatecheck.json` + `RTSC_LEDGER.jsonl` MoSn 행.
+
 ### QFORGE — engine현행화 + QE↔QFORGE 정직 분담 cross-val
 - **honest division** — 이번 RTSC 세션의 全 production DFT(RbOs2O6 자성·ScH9/MgH6/ScH6/YH6 DFPT·CsOs2O6·CaH10/SrH10)는 **QE(Quantum ESPRESSO)로만** 실행 — QFORGE migration gate HELD. QE = production reference, QFORGE = canonical-engine(게이트 후 absorbed).
 - **hybrid assembler g5 RE-verify ✅ PASS** — CaH6 QE|g|² → QFORGE L3 어셈블러(`stdlib/qforge/assembler.hexa`, `qforge_cah6_qe_xval_test`): λ_QFORGE=8.51682640 vs QE λ_BZ=8.516825, **rel-ε=1.647e-7 ≤1% gate**(LaH10 4.74e-7 corroborate) = 어셈블러 즉시-사용 gate-grade 재확인.
