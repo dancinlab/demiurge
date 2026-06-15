@@ -1,0 +1,49 @@
+&control
+  calculation = 'scf'
+  prefix = 'sch6'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'low'
+/
+&system
+  ! ScH6 P6_3/mmc (SG194), a=3.429 c=4.284 A @130GPa (Abe PRB96,144108 2017;
+  ! H 12k relaxed x=0.166 z=0.369 from Hou/Errea arXiv:2107.08669). Sc 2d, H 12k.
+  ibrav = 4
+  celldm(1) = 6.4800
+  celldm(3) = 1.24935
+  nat = 14
+  ntyp = 2
+  ecutwfc = 80.0
+  ecutrho = 640.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.3
+  mixing_mode = 'plain'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Sc 44.956 Sc.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H   1.008 H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Sc   0.333333   0.666667   0.750000
+  Sc   0.666667   0.333333   0.250000
+  H    0.166000   0.332000   0.369000
+  H    0.668000   0.834000   0.369000
+  H    0.166000   0.834000   0.369000
+  H    0.834000   0.668000   0.869000
+  H    0.332000   0.166000   0.869000
+  H    0.834000   0.166000   0.869000
+  H    0.834000   0.668000   0.631000
+  H    0.332000   0.166000   0.631000
+  H    0.834000   0.166000   0.631000
+  H    0.166000   0.332000   0.131000
+  H    0.668000   0.834000   0.131000
+  H    0.166000   0.834000   0.131000
+K_POINTS automatic
+  12 12 10 0 0 0

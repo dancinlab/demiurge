@@ -1,0 +1,41 @@
+&control
+  calculation = 'scf'
+  prefix = 'mgh6'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'low'
+/
+&system
+  ! MgH6 sodalite Im-3m (SG229), isostructural to CaH6. Mg 2a(0,0,0), H 12d(1/4,1/2,0).
+  ! a_conv = 3.111 A @ 300 GPa (Feng/Zhang/Gao RSC Adv 5,59292 2015). No free internal coords.
+  ibrav = 3
+  celldm(1) = 5.879
+  nat = 7
+  ntyp = 2
+  ecutwfc = 80.0
+  ecutrho = 640.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.3
+  mixing_mode = 'plain'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Mg 24.305 Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF
+  H   1.008 H.pbe-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Mg   0.0000000   0.0000000   0.0000000
+  H    0.2500000   0.5000000   0.0000000
+  H    0.5000000   0.0000000   0.2500000
+  H    0.0000000   0.2500000   0.5000000
+  H    0.7500000   0.5000000   0.0000000
+  H    0.5000000   0.0000000   0.7500000
+  H    0.0000000   0.7500000   0.5000000
+K_POINTS automatic
+  16 16 16 0 0 0

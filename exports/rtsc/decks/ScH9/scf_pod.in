@@ -1,0 +1,46 @@
+&control
+  calculation = 'scf'
+  prefix = 'sch9'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'low'
+/
+&system
+  ibrav = 0
+  celldm(1) = 5.20
+  nat = 10
+  ntyp = 2
+  ecutwfc = 80.0
+  ecutrho = 640.0
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.3
+  mixing_mode = 'plain'
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Sc 44.956 Sc.pbe-spn-rrkjus_psl.1.0.0.UPF
+  H  1.008  H.pbe-rrkjus_psl.1.0.0.UPF
+CELL_PARAMETERS (alat= 5.20000000)
+   1.027689657   0.008527858  -0.131815010
+  -0.534898746   0.895077856  -0.036248877
+  -0.329078829  -0.200083951   1.468414116
+ATOMIC_POSITIONS (crystal)
+  Sc  -0.1047933475  -0.1553796352  -0.1222069944
+  H    0.7397168391   0.2902247642   0.1220413519
+  H    0.2714176685   0.1347084629   0.3338081923
+  H    0.3428717214   0.5910753905   0.0274624197
+  H    0.7138244043   0.9505593544   0.4050657475
+  H    0.4684113851   0.4573539717   0.4103293623
+  H   -0.0080430669   0.6288582554   0.2848460688
+  H    0.4533834563   0.1202341159   0.7167954972
+  H    0.1860089827   0.7353340291   0.5666373122
+  H    0.9372019571   0.2470312909   0.5552210423
+K_POINTS automatic
+  16 16 12 0 0 0

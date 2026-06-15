@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-15
 
+### RTSC — flat-band pivot + triangulate narrowing + multi-host DFPT sweep
+- **RbOs₂O₆ 자성 battery** — anima ideal-PBE ~5μB가 아티팩트인지 검증: SOC(full-rel) ~3-4μB(quench 안 함)·rattling ~2μB·강한rattling ~2-4μB = **PBE robust 자성, static 레버로 제거 불가**(브리프 "SOC가 죽인다" 부분 반증). 비자성 강제 nspin=1 DFPT in-flight = 결정타. decks `exports/rtsc/decks/anima_rbos2o6/scf_{soc,rattle,rattle2,nm}.in`.
+- **삼각측량 5-bearing narrowing** — coupling 4-bearing에 상압근접+측정안정성 추가 재랭킹(`scripts/scratch/triangulate_rerank_stability.py`). no-cooling shortlist YH9·CaH6·LaH10·ScH9·YH10·ScH6·YH6(10→7); MgH6·CaH10·SrH10 압력축 추락.
+- **micro-exp DFPT 스윕** (`exports/sweep/rtsc-flatband-tri-20260615/`) — ScH9·MgH6·ScH6 DFPT + CsOs2O6 자성 + 재구성 클라스레이트 CaH10·SrH10 vc-relax(둘 다 수렴, isostructural-template 정직태깅). 8 DFT/4 host(vast×2+summer+aiden).
+- **RTSC_LEDGER 정합화** — provider-GONE 30잡 running→deferred(d_defer_no_delete) + 발사 6행 추가.
+
 ### harness — perfect harness-standard setup (architecture SSOT + CLAUDE.md)
 
 - **`.harness-engine` submodule** bumped to `harness-hardcore` tip (`docs.scopeDirs` support).

@@ -109,3 +109,16 @@ anima aiden에서 RbOs₂O₆ 실 QE DFT 완주(§4 in-flight #2 → 측정 완�
 - **판정 🟠/🔴**: 이 계산 그대로면 kagome보다 깨끗한 base 아님. 단 **자성이 아티팩트로 확인되면(가능성 높음) 지금까지 최고의 base.**
 
 **demiurge 다음 액션(§5 갱신)**: RbOs₂O₆를 **non-PBE(SCAN/hybrid) / SOC 포함 / rattling-distorted 셀**로 재계산해 자성 모멘트가 사라지는지 확인. 사라지면 → flat-band-AT-E_F + 비자성 + 상압 = **무냉각 RTSC 1순위 후보로 승격.** (E_Fermi=−0.4290 eV(USPP 내부 zero), E=−644.802 Ry; 안정 SCF recipe = local-TF β=0.2 + ndim=12 + degauss 0.025; 출처 anima `RTSC/hypotheses/RTSC_29_rbos2o6-dft.md` PR#2087.)
+
+---
+## 8. FOLD (2026-06-15) — demiurge RbOs₂O₆ 자성 battery: "SOC가 아티팩트 죽인다" 가설 부분 반증
+
+§7이 명명한 다음 액션(non-PBE/SOC/rattling로 자성 사라지나?)을 demiurge가 실측:
+
+- **SOC**(full-relativistic noncolin+lspinorb, rel pseudo z=9/16/6) → 모멘트 ~3-4μB로 **원래 5μB 회복** = **SOC가 quench 안 함**(§7의 핵심 기대 falsify).
+- **rattling 왜곡**(Rb off-center ~0.35Å) → ~2μB. **강한 rattling(~0.57Å)** → ~2-4μB(수렴하며 회복).
+- **세 static 레버 전부 모멘트 억제하나 0 미달** = ideal-cell 아티팩트가 아니라 **PBE-레벨 robust 자성**(flat-band-at-E_F의 경쟁 자성 불안정 = §1 병목의 실현).
+- **SCAN 불가**(QE7.5 빌드 libxc 부재); 함수자 테스트는 PBE0 hybrid(고가)만 남음.
+- **판정 갱신 🟠→🟠/🔴-leaning**: "자성=쉬운 아티팩트, 1순위 승격" 시나리오는 약해짐. 실험(비자성 6.3K SC)과의 괴리 = PBE over-magnetization(flat-band/near-Stoner). **결정타 = 비자성 강제 nspin=1 DFPT**(vast 진행중): 안정 phonon+λ면 파이프라인 검증+flat-band 기여, imag phonon이면 비자성 상태 불안정=강한 negative.
+- **CsOs₂O₆**(§2 ②) 동형 검증 발사(nspin=2): 오스메이트족이 일반적으로 PBE-자성인지 확인 중(초기 ~0.59μB).
+- 출처: `domains/rtsc.log.md` 2026-06-15 entry · decks `exports/rtsc/decks/anima_rbos2o6/scf_{soc,rattle,rattle2,nm}.in`.

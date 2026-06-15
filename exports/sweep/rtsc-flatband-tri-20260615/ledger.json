@@ -1,0 +1,53 @@
+{
+  "batch_id": "rtsc-flatband-tri-20260615",
+  "mode": "local-pool",
+  "host": "aiden",
+  "kind": "dft (flat-band magnetism screen + dft-elph)",
+  "budget": "local-hours (free pool host)",
+  "created": "2026-06-15",
+  "scope": "RTSC triangulate + flat-band candidates (verified structures); MgH6/ScH9 excluded (firing elsewhere)",
+  "candidates": [
+    {
+      "id": "csos2o6-mag",
+      "kind": "scf-nspin2",
+      "host": "aiden",
+      "inputs": "exports/rtsc/decks/anima_csos2o6/scf_mag.in",
+      "parser": "grep 'total magnetization' tail",
+      "state": "running",
+      "verdict": "PENDING",
+      "note": "beta-pyrochlore osmate #2 (exp 3.3K SC). Q: does it PBE-over-magnetize like RbOs2O6 (~3-5uB) or stay nonmagnetic? 77 e-."
+    },
+    {
+      "id": "sch6-dftelph",
+      "kind": "dft-elph",
+      "host": "aiden",
+      "inputs": "exports/rtsc/decks/ScH6/{scf,ph}.in",
+      "parser": "lambda from ph.out (el_ph simple sigma-plateau)",
+      "state": "running",
+      "verdict": "PENDING",
+      "note": "triangulate #8. P6_3/mmc (Abe/Errea), a=3.429 c=4.284 @130GPa, H 12k x=0.166 z=0.369. 14-atom, 2x2x2 q."
+    },
+    {
+      "id": "cah10-screen",
+      "kind": "dft-vc-relax(reconstructed)",
+      "host": "vast41001569",
+      "inputs": "exports/rtsc/decks/CaH10_screen/vc-relax.in",
+      "parser": "enthalpy + stability from vcrelax.out",
+      "state": "running",
+      "verdict": "PENDING",
+      "note": "RECONSTRUCTED by analogy to LaH10/YH10 Fm-3m clathrate (NO published CaH10 CIF). vc-relax @250GPa screens if the MH10 cage holds for Ca. HONEST: isostructural template, not a literature structure."
+    },
+    {
+      "id": "srh10-screen",
+      "kind": "dft-vc-relax(reconstructed)",
+      "host": "vast41001569",
+      "inputs": "exports/rtsc/decks/SrH10_screen/vc-relax.in",
+      "parser": "enthalpy + stability from vcrelax.out",
+      "state": "running",
+      "verdict": "PENDING",
+      "note": "RECONSTRUCTED by analogy to LaH10/YH10 Fm-3m clathrate (high-Tc SrH10 R-3m was hand-constructed, no published cell). vc-relax @300GPa. HONEST: isostructural template screen."
+    }
+  ],
+  "excluded": [],
+  "note_update": "2026-06-15: CaH10/SrH10 NOT skipped \u2014 run as reconstructed-clathrate vc-relax screening per user (micro \ub77c\ub3c4 \ud574\ubd10). Honestly tagged isostructural-template, not literature CIF."
+}

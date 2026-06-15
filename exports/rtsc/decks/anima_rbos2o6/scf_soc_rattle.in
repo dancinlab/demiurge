@@ -1,0 +1,46 @@
+&CONTROL
+  calculation = "scf"
+  prefix      = "rbos2o6_socrat"
+  outdir      = "./out_socrat"
+  pseudo_dir  = "./pseudo_soc"
+  verbosity   = "high"
+  tprnfor     = .true.
+  tstress     = .false.
+/
+&SYSTEM
+  ibrav        = 2
+  celldm(1)    = 19.1845
+  nat          = 9
+  ntyp         = 3
+  ecutwfc      = 70.0
+  ecutrho      = 560.0
+  occupations  = "smearing"
+  smearing     = "mp"
+  degauss      = 0.025
+  noncolin     = .true.
+  lspinorb     = .true.
+  starting_magnetization(2) = 0.3
+/
+&ELECTRONS
+  conv_thr        = 1.0d-6
+  mixing_beta     = 0.2
+  mixing_mode     = "local-TF"
+  mixing_ndim     = 12
+  electron_maxstep = 250
+/
+ATOMIC_SPECIES
+  Rb   85.468  Rb.rel-pbe-spn-rrkjus_psl.1.0.0.UPF
+  Os  190.230  Os.rel-pbe-spn-rrkjus_psl.1.0.0.UPF
+  O    15.999  O.rel-pbe-n-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Rb   0.660000  0.360000  0.390000
+  Os   0.000000  0.000000  0.000000
+  Os   0.500000  0.500000  0.500000
+  O    0.690000  0.930000  0.318000
+  O    0.062000  0.318000  0.312000
+  O    0.688000  0.312000  0.938000
+  O    0.312000  0.068000  0.682000
+  O    0.938000  0.688000  0.682000
+  O    0.318000  0.682000  0.062000
+K_POINTS automatic
+  6 6 6 0 0 0
