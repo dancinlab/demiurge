@@ -57,7 +57,7 @@ docs / manifests / records only — never duplicated implementation.
 | `proposals/` | Absorption / seam / cockpit design RFCs (`rfc_001..012`). |
 | `exports/` | Pipeline output records (chip NoC f1/f2, chain seams, per-domain results). |
 | `PAPER/`, `PAPERS/` | Generated papers (atlas-atom-gated; one slug per terminal discovery). |
-| `.discoveries/` | `/kick` · `/gap` discovery log tapes (`<slug>.tape`). |
+| `.discoveries/` | `/kick` · `/gap` discovery log tapes (`<slug>.tape`). Active RTSC frontier (2026-06-15): no-cooling flat-band-at-E_F lead = **MoSn** (kagome CoSn-type, predicted non-magnetic + flat band near E_F — first candidate beating both confirmed failure modes ΔE-offset + competing magnetism), gate-check queued. |
 | `.verdicts/` | Verify-gate verdict records. |
 | `.harness/` | Repo-local harness rule configs (enforcement / keywords / severity). |
 | `.harness-engine/` | The `dancinlab/harness` engine, pinned as a git submodule (branch `harness-hardcore`). |
