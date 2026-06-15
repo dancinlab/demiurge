@@ -9,7 +9,7 @@
       "web/middleware.ts"
     ],
     "fromMarkdown": "CLAUDE.md",
-    "onEditReminder": "L0 file edited — update CHANGELOG + issue tracker in the same change."
+    "onEditReminder": "L0 file edited \u2014 update CHANGELOG + issue tracker in the same change."
   },
   "enforcementFile": ".harness/enforcement.json",
   "keywordsFile": ".harness/keywords.json",
@@ -39,6 +39,7 @@
     "README.md"
   ],
   "docs": {
+    "enforce": "warn",
     "architecture": "ARCHITECTURE.md",
     "log": "CHANGELOG.md",
     "scratchDir": "scripts/scratch",
@@ -54,7 +55,8 @@
       "LICENSE",
       "CONTRIBUTING.md",
       "SECURITY.md",
-      "DOMAIN_AUDIT.md"
+      "DOMAIN_AUDIT.md",
+      "MAIN.md"
     ]
   },
   "ledger": {

@@ -81,6 +81,14 @@
             "command": "[ -x .harness-engine/bin/harness ] && bash .harness-engine/bin/harness recommend inject || true"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -x .harness-engine/bin/harness ] && bash .harness-engine/bin/harness worktree gc || true"
+          }
+        ]
       }
     ]
   }
