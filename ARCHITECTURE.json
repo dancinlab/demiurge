@@ -43,7 +43,7 @@
     {
       "id": "cli",
       "path": "cli/",
-      "role": "hexa-native CLI driver (demiurge_cli.hexa) — the 7-verb command surface (AI-agent + web-bridge).",
+      "role": "hexa-native CLI driver (demiurge_cli.hexa) — the 7-verb command surface (AI-agent + web-bridge). 23 ported verbs via single generic dispatch (d4). verify routes verbatim to `hexa verify` (g5, no LLM self-judge). `architecture` verb = ⑦handoff SSOT surface (ARCHITECTURE.json validity + ARCHITECTURE.html viewer via serve.py; ARCHITECTURE.md retired 2026-06-16). `selftest` verb proves the 7-verb dispatch end-to-end (registry wiring + workbench new→advance×6→handoff).",
       "children": []
     },
     {

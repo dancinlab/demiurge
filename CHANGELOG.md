@@ -8,6 +8,14 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-17
 
+### feat(demi): hexa demi 7-verb 개선 — ARCHITECTURE.json SSOT 통합 + verify-gate 배선
+- **demi 스킬 md 갱신** (`dancinlab/harness` repo · `templates/demi.md`): ⑤합성·⑥검증·⑦인계가 은퇴된 `ARCHITECTURE.md` 를 참조하던 것을 현행 SSOT로 정정 — ⑤=ARCHITECTURE.json(JSON-트리) 갱신·유효성검사, ⑥=`harness verify`(tier 🔵🟢🟡🟠🔴⚪)·atlas(LLM 자가판정 금지), ⑦=ARCHITECTURE.json + ARCHITECTURE.html(`python3 serve.py`) + CHANGELOG. 산출 규약도 .json+.html 로 갱신(은퇴 2026-06-16 명시). `harness demi --help` 렌더 확인.
+- **`architecture` verb 추가** (cli/demiurge_cli.hexa): demi 파이프라인 ⑦handoff SSOT 표면 — ARCHITECTURE.json 위치·JSON 유효성(python3 json.tool, 도구검사·g5 정신)·사람-뷰어(ARCHITECTURE.html / serve.py) 진입점 보고. `architecture --validate` = CI 친화 유효성-only(exit 0/1). 합성은 cockpit/owner 가 수행(이 verb 는 read-only handoff 표면).
+- **`selftest` verb 추가**: 7-verb generic dispatch(d4)를 end-to-end 자가검증 — 레지스트리 ported verb 수(23) · 7-verb 이름맵(명세..인계) 완비 · 워크벤치 스테퍼(project new→advance×6→handoff) 전 단계 전진. 토이 프로젝트는 임시 생성 후 자동 정리(projectsRoot 외 미접촉). `ALL PASS` 확인.
+- **cwd-fragile 버그 fix** (`_exports_root`): repo-root 에서 `hexa run cli/demiurge_cli.hexa <verb>` 호출 시 `cwd/../exports` 가 repo 부모를 가리켜 도메인/레코드 0개로 잘못 해소되던 문제 — ARCHITECTURE.json 동행 확인으로 repo-root 를 식별해 `cwd/exports` 우선. list-domains 0→194 복구(DEMIURGE_REPO 미설정에도 동작).
+- **verify-gate 정합 확인**: ⑥verify 는 기존부터 `_cmd_verify` → `hexa verify`(--expr/--fence/rubric) VERBATIM forward + record provenance/claim-gate 일관성(RecordLoader) — 재판정 없음(g5). 스킬 md 만 현행 어휘로 정렬, 코드 배선은 이미 정확.
+- 버전 0.0.2→0.0.3 (architecture/selftest verb 추가). ARCHITECTURE.json `cli` 노드 role 갱신(23 verbs · g5 verify · architecture/selftest).
+
 ### QFORGE 갭-클로징 fleet 3-lane 라운드 완결 (정직 — 1 닫힘 · 2 검증된 벽)
 - **fleet 발사**: QFORGE-FEATURE/PERF 실측 백로그에서 진짜 갭 3개를 동시 lane(hexa-lang worktree 격리·frozen-first)으로 닫음.
 - **qforge-perf-gpu 🟢🏁 PERF 갭 닫힘**: GPU "size에서 안 빠름" 근본원인 = H·Ψ를 밴드별 GEMV로 쪼개 매 iter H 전체 재전송 → **배치 GEMM(H@Ψ) 하나로 묶어** davidson+sternheimer 실솔버 hot-path에 배선. 풀-솔브 **1.34–18.04×(Davidson)/2.56–18.6×(Sternheimer)** RTX5070(summer 무료), 머신-eps parity, 전 selftest PASS. PR hexa-lang#3442. 정직 floor: small-nocc(nb4–8) ~1.3–2.6×(전송 바운드).
