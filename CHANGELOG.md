@@ -8,6 +8,13 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-17
 
+### hexa deck 검증기 — RTSC vc-relax/el-ph 트러블 가드 3종 추가 (G08·G09·G10)
+- `d_deck_always`(hexa deck = self-improving 덱규율 SSOT — 매 트러블슈팅이 새 가드)에 따라, 최근 RTSC 캠페인에서 겪었으나 아직 가드가 없던 QE 덱 실패모드 3개를 `sim/deck_lint.hexa`에 박제(가드 7→10).
+  - **G08 `vcrelax_convergence`** (WARN · d6): `vc-relax` 덱이 `etot_conv_thr`/`forc_conv_thr`/`press_conv_thr` 중 하나라도 빠지면 경고. QE 기본 임계값은 셀을 under-relaxed로 남겨 → matdyn 허수모드 다발(이번 세션 YH6 41·MgH6 34개) → 물리적 Tc 무효.
+  - **G09 `elph_needs_relaxed_cell`** (WARN · d6): el-ph(`electron_phonon=`) ph.in 덱이 같은 디렉토리에 `relax.in`/`vc-relax.in`/`scf.in` 흔적도 없고 RUNBOOK에 relax 언급도 없으면 경고. **G06과 별개 축** — G06=동적안정 *검증*(q2r→matdyn) 존재 여부, G09=el-ph가 도는 셀이 *완화*됐는지 전제 확인.
+  - **G10 `kgrid_zero`** (FAIL): `K_POINTS automatic` 메시가 0×…(손편집으로 nk 라인 0/공백)면 실제 k-메시 없음 → QE 에러 없이 엉터리 에너지. (코드 읽다 발견한 명백한 미커버 실패모드.)
+- 각 가드: `all_guards()` push + `_guard_catalogue()` 행 + `_self_test()` good PASS + broken WARN/FAIL 케이스. self-test 14/14 green(`hexa run sim/deck_lint.hexa --self-test` → `# deck_lint self-test PASS`). 문서 `sim/DECK_LINT.md` 카탈로그 표 + `ARCHITECTURE.json` deck-lint role 갱신.
+
 ### QFORGE fleet verdict raw 기록 박제 (c5 보존 — pbe-scf 🧱 + magmom 🧱)
 - QFORGE 갭 fleet 라운드(#653)의 두 lane verdict raw 기록이 `.verdicts/`에 미커밋으로 남아 있던 걸 박제(c5). 결론은 이미 #653 CHANGELOG/ARCHITECTURE.json에 반영됨 — 이번은 PREDICTION/VERDICT 원문 보존.
   - `.verdicts/qforge-cah6-pbe-scf-vertex/` — 🔴🧱 from-scratch gate-grade 확정벽: 3-D PBE 바닥상태는 계산 성공(wiring bug fix·singular-BCC miller fix)이나 진짜 잔여=엔진 메모리모델(farr↔val-arena)·near-degenerate 점유다양체 SIGSEGV + gate-grade ecut mini OOM. λ 날조 0(d6). production=하이브리드 1.65e-7 유지.

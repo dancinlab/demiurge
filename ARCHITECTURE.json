@@ -91,7 +91,7 @@
         {
           "id": "deck-lint",
           "path": "sim/deck_lint.hexa",
-          "role": "`hexa deck` VALIDATOR — a self-improving GUARD REGISTRY for QE/DFT el-ph input decks. Static lint (no rent) of the hard-won deck discipline: G01 bands verbosity='high' @ #k>=100 · G02 zero mass · G03 wrong element mass · G04 pseudo-not-found (d13) · G05 d15 SCF aids · G06 d6 el-ph stability gate · G07 QE-FoX non-ASCII crash. Each new deck trouble = ONE new guard fn + ONE all_guards() line (the deck-discipline SSOT · d_deck_always). Complements the hexa-lang stdlib/deck builder (gen.hexa) + the dft_run d16 dry-run gate (which it precedes). Run: `hexa run sim/deck_lint.hexa <deck.in|deck-dir>`; `--self-test` is the @ci_gate. Doc = sim/DECK_LINT.md."
+          "role": "`hexa deck` VALIDATOR — a self-improving GUARD REGISTRY for QE/DFT el-ph input decks. Static lint (no rent) of the hard-won deck discipline: G01 bands verbosity='high' @ #k>=100 · G02 zero mass · G03 wrong element mass · G04 pseudo-not-found (d13) · G05 d15 SCF aids · G06 d6 el-ph stability gate · G07 QE-FoX non-ASCII crash · G08 vc-relax tight convergence (d6 under-relax→imag modes) · G09 el-ph needs relaxed cell (d6) · G10 zeroed K_POINTS mesh. Each new deck trouble = ONE new guard fn + ONE all_guards() line (the deck-discipline SSOT · d_deck_always). Complements the hexa-lang stdlib/deck builder (gen.hexa) + the dft_run d16 dry-run gate (which it precedes). Run: `hexa run sim/deck_lint.hexa <deck.in|deck-dir>`; `--self-test` is the @ci_gate. Doc = sim/DECK_LINT.md."
         }
       ]
     },
