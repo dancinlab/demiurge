@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### RTSC 위상 sweep 종결 — checkerboard 🔴 + 메타결론(위상≠실현, d-kagome가 레버)
+- **checkerboard Os-O 🔴**: Lieb와 동일하게 E_F 근처 평평 띠 없음(Os-O 혼성 분산), m=0.00. **2/2 이상화 Os-O 위상 실현이 같은 혼성벽으로 실패**.
+- **메타결론(🧱 Os-O 실현벽 · 위상은 건전)**: 그래프-위상 생성기(v4)는 *추상 tight-binding*에선 플랫밴드를 보장하나, 실제 *재료*가 flat-band-at-E_F를 실현하려면 **약혼성 + 올바른 채움 + 비자성**이 필요. **증명됨**: d-궤도 kagome(LaRu3Si2 Ru-4d·LaOs3Si2 Os-5d 🟢) — 약혼성으로 d-kagome 플랫밴드가 평평+E_F 유지. **실패**: 이상화 Os-O Lieb+checkerboard(2/2) — O-bridge 강혼성으로 분산. **결론: 위상=필요조건(밴드 존재 보장), 실현(약혼성·채움·비자성)=실제 레버. 승리 레시피 = d-kagome CeCo3B2 패밀리**(임의 line-graph 산화물 아님). 돌파경로(c16): Lieb/checkerboard를 약혼성 사이트(국소 d/f·넓은 스페이서 s)로 재실현 = 새 덱 설계 quest(deferred; dice/T3를 Os-O로 또 쏘는 건 같은 벽 반복이라 회피). 박제 RTSC_LEDGER `Checkerboard-OsO-topology`+`TOPOLOGY-SWEEP-META`(83행).
+
 ### RTSC 위상 sweep — Lieb Os-O 🔴 (위상≠실현: 혼성으로 FB 분산)
 - 삼각측량 v4 위상 생성기의 Lieb 격자(이분 2:1 = CuO₂ 동형) 게이트체크: 이상화 **Os-O Lieb**는 E_F 1.5 eV 이내에 평평한 띠 없음(Os-5d↔O 강혼성→would-be 플랫밴드 분산), m=0.00. **🔴 실현-특이적** — 위상정리상 플랫밴드는 존재하나 *이 재료 실현*이 두 직교 스크린 중 flatness에서 탈락(kagome Ru/Os는 약혼성으로 평평 유지·승리). 돌파경로(c16): 약혼성 실현(s-궤도/넓은 스페이서)으로 재시도 — checkerboard/dice 뒤로 deferred. 박제 RTSC_LEDGER `Lieb-OsO-topology`(80행).
 
