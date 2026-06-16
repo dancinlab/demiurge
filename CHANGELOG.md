@@ -8,6 +8,15 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### 전 캠페인 결과 ARCHITECTURE.json 통합 — JSON 트리 = 단일 항해 SSOT (c4·c5·c9)
+- **무압 wave 병합**: `rtsc-ambient-wave-20260616` `--no-ff` 병합(충돌 0) — 무압 동적안정 verdict 6건(Mg2IrH6·Li2CuH6 🔴 + AcBeH8·CaB3C3·LaB3C3 🟠 in-flight) + QFORGE-fs ambient lane + RTSC_LEDGER 6행 + scratch. `RTSC_LEDGER.jsonl` 91행 JSON-검증 PASS.
+- **`ARCHITECTURE.json` 통합 인덱스화(c5: raw 기록은 보존, JSON은 종합 index+summary)**:
+  - `campaigns.RTSC.branches` 를 (a) flat-band-at-E_F 패밀리(승자 LaRu3Si2 🟢 ΔE=−0.055/m=0/실Tc7K · LaOs3Si2 🟢 완화ΔE=+0.089/m=0; 패자 LaRh3Si2 🔴 d⁸오버슛 · MoSn/CoSn-edope/CoSn-hdope 🔴 · CsV3Sb5 🔴 · RbOs2O6 🟠; d⁷=승자/d⁸=오버슛 bracket; 메타=위상 필요조건·약혼성 d-kagome 레버; v2refuted/v3/v4/topology-sweep 삼각측량) (b) DFPT λ/Tc — LaRu3Si2+LaOs3Si2 IN-FLIGHT(q-grid 가동, 'flat-band→λ?' 테스트 pending) (c) 무압 초수소화물(X₂MH₆ Fm-3m 🔴 2/2 + AcBeH8/CaB3C3/LaB3C3 🟠 + QFORGE-fs lane 🟠 BLOCKED-upstream) (d) 전략(ω_log천장 λ-레퍼런스·상온=cRPA-DMFT 별도레버)로 구조화.
+  - `campaigns.MATH-SPECTRA` 1D 완전차트 확장(probe1-6 verdict 전사) · lane 🏁.
+  - `engines.QFORGE` 에 `fleet_2026_06_16` 추가: **perf-gpu 🟢🏁**(block-GEMM H·Ψ → davidson/sternheimer 1.34–18.6× RTX5070, machine-eps parity, PR hexa-lang#3442; 정직floor=nb4-8 ~1.3-2.6× transfer-bound) · **magmom 🧱**(KB-nonlocal 진단정정: CoSn m≈0 = k-sampling Stoner 벽, PW cutoff 아님 → GPU-davidson 레버, PR hexa-lang#3447) · **pbe-scf 🟠 in-flight(process-split)**(3-D-PBE ground state COMPUTES, in-process λ SIGSEGV farr↔val-arena, 최종레버=process-split). migration_gate=HELD, production=mode-(b) hybrid 1.65e-7.
+  - 최상위 `results_index` 신설 — 주요 발견 → raw 기록 경로(RTSC_LEDGER material행·exports/rtsc/*.json·exports/math-spectra/*.json·.verdicts/qforge-*/) 포인터 맵. `updated`=2026-06-16.
+- **`ARCHITECTURE.html` 뷰어 최소패치**(제네릭 유지): `fleet_2026_06_16` lane 렌더 + 캠페인 branch `verdict`/`note`/`qforge_fs_lane` 렌더 + 최상위 `results_index` 재귀 렌더러. JSON·`<script>` JS 문법 둘 다 검증 PASS. 정직(c9): 실측 verdict만 전사, in-flight=pending 표기.
+
 ### ARCHITECTURE 단일문서 마이그레이션 — `.md` 산문 → `.json` 트리 SSOT + `.html` 뷰어 (c4)
 - **`ARCHITECTURE.md` 은퇴(git rm) → `ARCHITECTURE.json`(JSON 트리 SSOT · AI/툴 파싱) + `ARCHITECTURE.html`(자족 collapsible-tree 뷰어, inline CSS+JS) + `serve.py`(정적 서버 :8765 + 브라우저 자동 오픈)**. c4의 "`.json` 트리 채택" 경로. 전사 누락 0(원문 5개 헤딩 전부 nodes/overview/data_flow/governance로 매핑, 18 top-level·23 total 노드 + QFORGE 4모드 + RTSC frontier + MATH-SPECTRA 전사 후 자체대조).
 - `harness.config.json` `docs.architecture` `ARCHITECTURE.md`→`ARCHITECTURE.json` 갱신(+`docs.allow`에 `.html` 추가) — c14 doc-gate 정합. `CLAUDE.md` ARCHITECTURE 포인터 5곳(트리노드·single-doc·harness docs·quick-ref) `.json`/`.html`로 전환.

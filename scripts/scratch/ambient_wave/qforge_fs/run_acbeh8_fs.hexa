@@ -1,0 +1,39 @@
+// QFORGE from-scratch λ (rough screening band) — AcBeH8 ambient P=0.
+// Engine: atoms->UPF->PW front-end (qforge_pw_frontend) -> qforge_run_tol -> λ/ω_log/Tc.
+// HONEST (c9/d6): Hartree+LDA-exchange screening only (~5% rough screening band, NOT
+// gate-grade). npw_cap is the tractability lever (the CoSn PW-wall risk for f/d cells).
+// Starting (un-relaxed) geometry — first rough screen; relaxed-cell rerun when QE vc-relax lands.
+use "stdlib/qforge/pw_frontend"
+use "stdlib/qforge/qforge_run"
+use "stdlib/qforge/screening_pwfft"
+
+fn main() {
+    let deck_dir = "/Users/mini/dancinlab/demiurge/scripts/scratch/ambient_wave/qforge_fs/AcBeH8_deck"
+    // npw_cap sweep: start small (tractable), report convergence honestly.
+    let caps = [16, 32, 64]
+    let mut ci = 0
+    while ci < len(caps) {
+        let cap = caps[ci]
+        println("=== AcBeH8 QFORGE-fs npw_cap=" + to_string(cap) + " xc=1(H+LDAx+PW92c) ===")
+        let fe = qforge_pw_frontend(deck_dir, cap, 1, 0.02, 1236.4)
+        if !fe.ok {
+            println("FRONTEND_FAIL cap=" + to_string(cap) + ": " + fe.error)
+            ci = ci + 1
+            continue
+        }
+        println("[fe] cell=" + fe.geom.species[0] + " n=" + to_string(fe.n)
+                + " nelec=" + to_string(fe.nelec) + " nocc=" + to_string(fe.nocc)
+                + " conv=" + to_string(fe.converged) + " iters=" + to_string(fe.iters)
+                + " e_band=" + to_string(fe.e_band))
+        let res = qforge_run_tol(qpw_h_apply, fe.deck, 1.0e-8, 600)
+        if res.ok == 1 {
+            println("[QFORGE-fs] cap=" + to_string(cap) + " lambda=" + to_string(res.lambda)
+                    + " omega_log=" + to_string(res.omega_log) + " K Tc_AD=" + to_string(res.tc) + " K")
+        } else {
+            println("[QFORGE-fs] cap=" + to_string(cap) + " RUN_FAIL: " + res.err)
+        }
+        println("[note] " + res.screening_note)
+        ci = ci + 1
+    }
+    println("ACBEH8_QFORGE_FS_DONE")
+}

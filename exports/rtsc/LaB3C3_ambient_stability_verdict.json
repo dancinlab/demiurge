@@ -1,0 +1,23 @@
+{
+  "id": "RTSC-AMBIENT-LaB3C3",
+  "material": "LaB3C3",
+  "formula": "LaB3C3",
+  "pressure_GPa": 0,
+  "nat": 14,
+  "prototype": "Pm-3n (#223) MB3C3 boron-carbon clathrate, La trivalent e-doping",
+  "stages_done": [
+    "vc-relax (in-flight)"
+  ],
+  "verdict_tier": "\ud83d\udfe0 IN-FLIGHT (stability-gate)",
+  "verdict": "PENDING",
+  "imaginary_mode_count": null,
+  "lambda": null,
+  "Tc_K": null,
+  "qforge_xval": null,
+  "deck_path": "exports/rtsc/decks/LaB3C3_ambient",
+  "pod": "41194736 (ssh3.vast.ai:34736)",
+  "cost_usd": "vast CPU ~$0.13/hr",
+  "frozen_prediction": "BORDERLINE @ 0 GPa (La 3+ e-dopes B-C sigma/pi -> potentially higher lambda, but larger cation strains cage). No Tc claimed pre-DFT. FALSIFIER: hard imaginary modes -> \ud83d\udd34.",
+  "date": "2026-06-16",
+  "note": "QE stability-gate lane FIRED (vc-relax->scf->ph DFPT no-elph->q2r->matdyn->count imag modes). el-ph deferred until 0 imaginary modes confirmed (FLEET-DIAGNOSTIC lesson). QFORGE from-scratch parallel lane (light hydride/B-C, pw_frontend ibrav-fix landed) running separately."
+}

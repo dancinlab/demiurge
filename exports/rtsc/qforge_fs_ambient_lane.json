@@ -1,0 +1,22 @@
+{
+  "id": "RTSC-QFORGE-FS-AMBIENT",
+  "lane": "QFORGE from-scratch λ (rough screening band) — ambient light-hydride/B-C",
+  "engine": "stdlib/qforge pw_frontend (atoms→UPF→PW SCF) → qforge_run_tol → λ/ω_log/Tc",
+  "candidates": ["AcBeH8 (ibrav=2 FCC)", "CaB3C3 (ibrav=1 SC)", "LaB3C3 (ibrav=1 SC)"],
+  "status": "🔴 BLOCKED (upstream geometry-parser gap + concurrent-edit collision)",
+  "lambda_qforge_fs": null,
+  "verdict_tier": "🟠 BLOCKED — honest, NOT a result (d6)",
+  "root_cause": [
+    "qpw_parse_geometry supports ONLY ibrav=3 (BCC-prim); ambient cells are ibrav=1 (SC) / 2 (FCC)",
+    "pre-existing WIP: qforge_scf_pw_h_multi_smeared_rs3d called but undefined",
+    "pre-existing WIP: qpwfft_ktf2_from_density/qpwfft_enable_tf transitive-import flatten gap",
+    "concurrent process reverts ~/.hx/src edits within seconds (shared-compile-home edit-war, d3/d9)"
+  ],
+  "fix_status": "PATCH WRITTEN + VERIFIED CORRECT (parse test PASSED once: AcBeH8 FCC Omega=251.134=a^3/4, vectors exact) but cannot hold in contended ~/.hx/src; must land via hexa-lang PR from clean clone",
+  "fix_record": "scripts/scratch/ambient_wave/QFORGE_FS_BLOCKER_handoff.md",
+  "qforge_qe_xval": "N/A (QFORGE-fs produced no λ; nothing to cross-validate against QE yet)",
+  "decision": "d_qforge_fix — long fix → QE production lane is the reference and advancing; QFORGE-fs deferred to upstream PR (do NOT stall the campaign)",
+  "deck_staged": "scripts/scratch/ambient_wave/qforge_fs/AcBeH8_deck/ (scf.in + 3 UPFs ready for rerun post-merge)",
+  "cost_usd": 0.0,
+  "date": "2026-06-16"
+}

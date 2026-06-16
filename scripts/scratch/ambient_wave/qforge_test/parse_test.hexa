@@ -1,0 +1,9 @@
+use "stdlib/qforge/pw_frontend"
+fn main() {
+    let g = qpw_parse_geometry("scripts/scratch/ambient_wave/qforge_test/AcBeH8")
+    if !g.ok { println("PARSE_FAIL: " + g.error) ; return }
+    println("PARSE_OK ibrav=2(FCC) a=" + to_string(g.a) + " omega=" + to_string(g.omega))
+    println("nspec=" + to_string(g.nspec) + " species[0]=" + g.species[0])
+    println("a1=" + to_string(g.a1[0]) + "," + to_string(g.a1[1]) + "," + to_string(g.a1[2]))
+    println("b2=" + to_string(g.b2[0]) + "," + to_string(g.b2[1]) + "," + to_string(g.b2[2]))
+}
