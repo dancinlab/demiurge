@@ -24,6 +24,14 @@ For the full audit trail, see `git log`.
 - **Lieb↔cuprate 다리**: Lieb 격자 = CuO₂면 위상동형 → 플랫밴드 트랙과 기존 고온초전도가 한 그래프에서 만남. 첫 위상 게이트체크 = **Os-O Lieb 평면**(4d/5d로 3d-자성 회피) summer에 QUEUED(vc-relax 코어 비면 자동 시작, 자체로깅). LaOs3Si2 GREEN vc-relax 확정도 진행 중.
 - 박제: RTSC_LEDGER TRIANGULATE-V4(74행) + 생성기 스크립트 + Lieb 덱(`sib_work/lieb_oso2/`).
 
+### RTSC 위상 게이트체크 — CHECKERBOARD 격자 (선그래프 L(정사각) = 2D 파이로클로/카고메 사촌) BUILT + QUEUED
+- **위상**: 체커보드 = 정사각격자의 **선그래프** L(square) = 카고메(L(벌집))의 2D 사촌(2D 파이로클로). 정리-1 선그래프 플랫밴드 — CLS는 정사각 plaquette 위, −2t. Lieb 덱(이분 정리-2)에 이어 같은 lane 라운드 2의 **선그래프 트랙** 첫 미검증 위상.
+- **실현(Os-O 평면)**: 선그래프 사이트 = 정사각격자 결합 중점 → Os 두 부격자를 모서리 중심 `(1/2,0,0)`·`(0,1/2,0)`에, O 가교 리간드를 코너 `(0,0,0)`·셀중심 `(1/2,1/2,0)`에 (교차 plaquette 결합 = 체커보드 구분점). 4원자/셀(2 Os + 2 O). **비자성-안정 5d Os** 선택(3d Co/Fe 자성 회피, 카고메·Lieb Os-O와 동일 논리) — `Os/O_ONCV_PBE_sr.upf` SG15 재사용(fetch 없음).
+- **덱**: Lieb 덱 정확 미러 — `ibrav=6`, a≈3.80Å, 큰 c 진공(2D), `ecutwfc=80/ecutrho=320`, `12×12×1`, `nspin=2`, MP smear. **screen-first: scf+bands만, vc-relax 없음**(GREEN시에만 승격, 카고메/Lieb 형제와 동일). verbosity='high'(#k≥100 per-k 고유값 필수). 게이트: ΔE~0(|ΔE|<0.10 GREEN) AND 비자성(m<0.5).
+- **정직 caveat(🟠)**: 이상화 고정 기하(Os-O=1.9Å, 무이완) → ΔE 근사. 1st-pass 위상 DESIGN 게이트(선그래프 플랫밴드가 비자성 5d 실현에서 E_F에 오나?), 상온예측 아님.
+- **머신 부하 가드(d_qforge_parallel·d7)**: summer 6코어가 LaOs3Si2 vc-relax 실행 중 + Lieb 게이트 대기열. fire 스크립트는 **vc-relax DONE AND Lieb DONE AND `pgrep pw.x==0`** 까지 30초 폴링(~6h) 후 시작 — 대기열 3번째(vc-relax→Lieb→checkerboard), 오버서브스크립션 없음. detached setsid, 자체로깅 `~/checkerboard.log`.
+- 산출물: `scripts/scratch/qforge_harvest/checkerboard_fire.sh`(가드 fire) + `checkerboard_deck_note.md` + summer `~/sib_work/checkerboard_oso2/`(덱 구문검증 통과, d16).
+
 ### RTSC no-cooling flat-band — CeCo3B2형 형제 게이트체크 (LaOs3Si2 🟢 / LaRh3Si2 🔴) + summer 디스크 38G 회수
 - **삼각측량 v3 레인 검증**: 도핑축 죽음 후 연 "CeCo3B2형 R-T₃-X₂ 4d/5d-kagome 패밀리 스윕"의 첫 형제 2개를 **무료 summer 풀**에서 게이트체크(고정 LaRu3Si2 격자·치환만·1차 스크린, c9 근사 caveat).
   - **LaOs3Si2 (Os 5d⁷) 🟢 GATE PASS** — ΔE=+0.039 eV(E_F 위 39 meV) AND m=0.00 μB. **2번째 플랫밴드-at-E_F 승자**(LaRu3Si2 ΔE=−0.055 다음), 5d가 4d만큼 작동하고 |ΔE|는 오히려 더 작음. → per-sibling vc-relax + DFPT 승격 대상.
