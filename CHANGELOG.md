@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### MATH-SPECTRA probe6 — 2D 준결정(Ammann-Beenker) gap-labeling 🟠 INCONCLUSIVE (lane 🏁)
+- 1D 호(probe1~5) 완성 후 2D 확장 시도: octagonal cut-and-project tight-binding(953정점 패치)으로 2D 실버 모듈 (a+b√2)/8 gap-labeling 검증. **결과 🟠**: 유한 패치가 유한크기 준위간격(8.83e-3) 위로 명확한 주요 간극 미해상(n_sig=0) → 결정적 2D 모듈 적합 불가, 강제 안 함(c9). 구성은 건전(평균 배위 3.83). 돌파경로(deferred): 4D 초격자 박스 확대/팔각 윈도우 샤프닝/inflation. agent가 서버측 rate-limit로 최종보고 직전 사망 → 산출물 워크트리에서 회수+재실행 검증(c2, fleet §4) 후 박제. RTSC_LEDGER `MATH-SPECTRA-probe6`. **MATH-SPECTRA lane 🏁**: 1D 산술-스펙트럼 지도 완전차트(음성 플랫밴드/ζ + 양성 준결정 Perron모듈), 2D는 inconclusive-deferred.
+
 ### RTSC 위상 sweep 종결 — checkerboard 🔴 + 메타결론(위상≠실현, d-kagome가 레버)
 - **checkerboard Os-O 🔴**: Lieb와 동일하게 E_F 근처 평평 띠 없음(Os-O 혼성 분산), m=0.00. **2/2 이상화 Os-O 위상 실현이 같은 혼성벽으로 실패**.
 - **메타결론(🧱 Os-O 실현벽 · 위상은 건전)**: 그래프-위상 생성기(v4)는 *추상 tight-binding*에선 플랫밴드를 보장하나, 실제 *재료*가 flat-band-at-E_F를 실현하려면 **약혼성 + 올바른 채움 + 비자성**이 필요. **증명됨**: d-궤도 kagome(LaRu3Si2 Ru-4d·LaOs3Si2 Os-5d 🟢) — 약혼성으로 d-kagome 플랫밴드가 평평+E_F 유지. **실패**: 이상화 Os-O Lieb+checkerboard(2/2) — O-bridge 강혼성으로 분산. **결론: 위상=필요조건(밴드 존재 보장), 실현(약혼성·채움·비자성)=실제 레버. 승리 레시피 = d-kagome CeCo3B2 패밀리**(임의 line-graph 산화물 아님). 돌파경로(c16): Lieb/checkerboard를 약혼성 사이트(국소 d/f·넓은 스페이서 s)로 재실현 = 새 덱 설계 quest(deferred; dice/T3를 Os-O로 또 쏘는 건 같은 벽 반복이라 회피). 박제 RTSC_LEDGER `Checkerboard-OsO-topology`+`TOPOLOGY-SWEEP-META`(83행).

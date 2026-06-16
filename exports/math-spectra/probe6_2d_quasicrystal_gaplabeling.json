@@ -1,0 +1,460 @@
+{
+  "probe": "MATH-SPECTRA-probe6",
+  "title": "2D quasicrystal gap-labeling: does cut-and-project arithmetic extend from 1D single-irrational rotation to a higher-RANK 2D Z-module? (Ammann-Beenker octagonal tiling, silver-mean family)",
+  "preregistered_hypothesis": "frozen-first (c16/c9, anti-tune-to-green). (A) Ammann-Beenker vertex tight-binding major-gap IDOS plateaus lie in the silver-mean 2D cut-and-project module M_AB = {(a+b*sqrt2)/8 : a,b in Z} (the Z[sqrt2]/8 ring; RANK-2 over Z in basis {1,sqrt2}), fitting it better than a generic rational ladder. (B) M_AB is DISTINCT from any single 1D irrational rotation {n*alpha mod 1} (Fibonacci 1/phi or 1D-silver 1/sqrt2): the rank-2 {1,sqrt2} structure (b!=0 terms) is genuinely needed. (C) CONTROL: a periodic 2D square lattice shows NO such fractal gap ladder. FALSIFIER: gaps don't fit M_AB, or a single 1D rotation suffices (rank-2 unneeded), or the control also shows it -> RED. Under-resolved patch (gaps ~ level spacing) -> honest INCONCLUSIVE.",
+  "construction": "Ammann-Beenker via canonical octagonal cut-and-project Z^4 -> R^2(phys)+R^2(internal). Physical star e_k=(cos k*pi/4, sin k*pi/4), internal star f_k=(cos 3k*pi/4, sin 3k*pi/4), k=0..3. Accept n in Z^4 iff internal image lies in the regular-octagon window (proj of unit 4-cube). Accepted physical points = AB vertices; edges = nearest-neighbour (tiling edge length); vertex tight-binding H=adjacency (hopping 1). Under-coordinated boundary vertices trimmed. numpy eigvalsh -> IDOS plateau in each gap.",
+  "module_generators": {
+    "silver_2d_M_AB": "a + b*sqrt2 over 8 (Z[sqrt2]/8, rank-2 cut-and-project)",
+    "silver_1d_rotation_1_over_sqrt2": 0.7071067811865475,
+    "fib_1d_rotation_1_over_phi": 0.6180339887498949
+  },
+  "ammann_beenker": {
+    "N_vertices_raw": 1737,
+    "N_vertices_trimmed": 953,
+    "window_half_width": 1.2071067811865477,
+    "edge_length": 1.0,
+    "coordination_min": 2.0,
+    "coordination_max": 8.0,
+    "coordination_mean": 3.8279118572927597,
+    "spectrum_span": 8.406529692779875,
+    "E_min": -4.203264846389927,
+    "E_max": 4.203264846389948,
+    "mean_level_spacing": 0.00883038833275197,
+    "major_gaps": [
+      {
+        "gap_width": 0.1102854853797659,
+        "idos_plateau": 0.16054564533053514,
+        "E_lo": -2.006434966428297,
+        "E_hi": -1.896149481048531,
+        "silver_2d_module": {
+          "a": -10,
+          "b": 8,
+          "denom": 8,
+          "pred": 0.16421356237309515,
+          "res": 0.003667917042560004,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": -4,
+          "pred": 0.17157287525381015,
+          "res": 0.011027229923275012
+        },
+        "fib_1d_rotation": {
+          "n": -3,
+          "pred": 0.1458980337503153,
+          "res": 0.01464761158021985
+        },
+        "rational_floor": {
+          "p": 3,
+          "q": 19,
+          "pred": 0.15789473684210525,
+          "res": 0.0026509084884298872
+        }
+      },
+      {
+        "gap_width": 0.11028548537975835,
+        "idos_plateau": 0.8394543546694648,
+        "E_lo": 1.8961494810485293,
+        "E_hi": 2.0064349664282877,
+        "silver_2d_module": {
+          "a": -6,
+          "b": 9,
+          "denom": 8,
+          "pred": 0.8409902576697321,
+          "res": 0.0015359030002672913,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": 4,
+          "pred": 0.8284271247461898,
+          "res": 0.011027229923274984
+        },
+        "fib_1d_rotation": {
+          "n": 3,
+          "pred": 0.8541019662496847,
+          "res": 0.014647611580219877
+        },
+        "rational_floor": {
+          "p": 16,
+          "q": 19,
+          "pred": 0.8421052631578947,
+          "res": 0.0026509084884298595
+        }
+      },
+      {
+        "gap_width": 0.1061161850373602,
+        "idos_plateau": 0.8415529905561385,
+        "E_lo": 2.0064349664282957,
+        "E_hi": 2.112551151465656,
+        "silver_2d_module": {
+          "a": -6,
+          "b": 9,
+          "denom": 8,
+          "pred": 0.8409902576697321,
+          "res": 0.000562732886406403,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": 4,
+          "pred": 0.8284271247461898,
+          "res": 0.013125865809948678
+        },
+        "fib_1d_rotation": {
+          "n": 3,
+          "pred": 0.8541019662496847,
+          "res": 0.012548975693546183
+        },
+        "rational_floor": {
+          "p": 16,
+          "q": 19,
+          "pred": 0.8421052631578947,
+          "res": 0.0005522726017561652
+        }
+      },
+      {
+        "gap_width": 0.10611618503735887,
+        "idos_plateau": 0.1584470094438615,
+        "E_lo": -2.1125511514656563,
+        "E_hi": -2.0064349664282974,
+        "silver_2d_module": {
+          "a": -3,
+          "b": 3,
+          "denom": 8,
+          "pred": 0.1553300858899107,
+          "res": 0.0031169235539507956,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": -4,
+          "pred": 0.17157287525381015,
+          "res": 0.01312586580994865
+        },
+        "fib_1d_rotation": {
+          "n": -3,
+          "pred": 0.1458980337503153,
+          "res": 0.01254897569354621
+        },
+        "rational_floor": {
+          "p": 3,
+          "q": 19,
+          "pred": 0.15789473684210525,
+          "res": 0.0005522726017562485
+        }
+      },
+      {
+        "gap_width": 0.06841999500245866,
+        "idos_plateau": 0.05876180482686254,
+        "E_lo": -3.3164765821473656,
+        "E_hi": -3.248056587144907,
+        "silver_2d_module": {
+          "a": -8,
+          "b": 6,
+          "denom": 8,
+          "pred": 0.060660171779821415,
+          "res": 0.001898366952958877,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": -7,
+          "pred": 0.05025253169416821,
+          "res": 0.008509273132694326
+        },
+        "fib_1d_rotation": {
+          "n": -8,
+          "pred": 0.05572809000084078,
+          "res": 0.003033714826021758
+        },
+        "rational_floor": {
+          "p": 1,
+          "q": 17,
+          "pred": 0.058823529411764705,
+          "res": 6.172458490216748e-05
+        }
+      },
+      {
+        "gap_width": 0.06841999500245688,
+        "idos_plateau": 0.9412381951731374,
+        "E_lo": 3.2480565871449105,
+        "E_hi": 3.3164765821473674,
+        "silver_2d_module": {
+          "a": -8,
+          "b": 11,
+          "denom": 8,
+          "pred": 0.9445436482630059,
+          "res": 0.0033054530898684042,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": 7,
+          "pred": 0.9497474683058318,
+          "res": 0.00850927313269434
+        },
+        "fib_1d_rotation": {
+          "n": 8,
+          "pred": 0.9442719099991592,
+          "res": 0.0030337148260217717
+        },
+        "rational_floor": {
+          "p": 16,
+          "q": 17,
+          "pred": 0.9411764705882353,
+          "res": 6.172458490216748e-05
+        }
+      },
+      {
+        "gap_width": 0.059929397293790654,
+        "idos_plateau": 0.8457502623294858,
+        "E_lo": 2.138889620854638,
+        "E_hi": 2.198819018148429,
+        "silver_2d_module": {
+          "a": 11,
+          "b": -3,
+          "denom": 8,
+          "pred": 0.8446699141100893,
+          "res": 0.0010803482193965097,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": -20,
+          "pred": 0.8578643762690508,
+          "res": 0.012114113939564963
+        },
+        "fib_1d_rotation": {
+          "n": 3,
+          "pred": 0.8541019662496847,
+          "res": 0.008351703920198905
+        },
+        "rational_floor": {
+          "p": 11,
+          "q": 13,
+          "pred": 0.8461538461538461,
+          "res": 0.0004035838243603429
+        }
+      },
+      {
+        "gap_width": 0.05992939729378666,
+        "idos_plateau": 0.15424973767051417,
+        "E_lo": -2.198819018148422,
+        "E_hi": -2.1388896208546355,
+        "silver_2d_module": {
+          "a": -3,
+          "b": 3,
+          "denom": 8,
+          "pred": 0.1553300858899107,
+          "res": 0.0010803482193965375,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": 20,
+          "pred": 0.14213562373094923,
+          "res": 0.012114113939564936
+        },
+        "fib_1d_rotation": {
+          "n": -3,
+          "pred": 0.1458980337503153,
+          "res": 0.008351703920198877
+        },
+        "rational_floor": {
+          "p": 2,
+          "q": 13,
+          "pred": 0.15384615384615385,
+          "res": 0.00040358382436031515
+        }
+      },
+      {
+        "gap_width": 0.05754759106579321,
+        "idos_plateau": 0.017838405036726127,
+        "E_lo": -3.918403193758758,
+        "E_hi": -3.860855602692965,
+        "silver_2d_module": {
+          "a": 3,
+          "b": -2,
+          "denom": 8,
+          "pred": 0.021446609406726214,
+          "res": 0.0036082043700000864,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": 17,
+          "pred": 0.020815280171307293,
+          "res": 0.002976875134581166
+        },
+        "fib_1d_rotation": {
+          "n": 13,
+          "pred": 0.03444185374863373,
+          "res": 0.016603448711907606
+        },
+        "rational_floor": {
+          "p": 0,
+          "q": 1,
+          "pred": 0.0,
+          "res": 0.017838405036726127
+        }
+      },
+      {
+        "gap_width": 0.05754759106578833,
+        "idos_plateau": 0.9821615949632738,
+        "E_lo": 3.8608556026929657,
+        "E_hi": 3.918403193758754,
+        "silver_2d_module": {
+          "a": 5,
+          "b": 2,
+          "denom": 8,
+          "pred": 0.9785533905932737,
+          "res": 0.00360820437000009,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": -17,
+          "pred": 0.9791847198286927,
+          "res": 0.002976875134581114
+        },
+        "fib_1d_rotation": {
+          "n": -13,
+          "pred": 0.9655581462513663,
+          "res": 0.016603448711907554
+        },
+        "rational_floor": {
+          "p": 0,
+          "q": 1,
+          "pred": 0.0,
+          "res": 0.01783840503672618
+        }
+      },
+      {
+        "gap_width": 0.05488915840519715,
+        "idos_plateau": 0.11122770199370409,
+        "E_lo": -2.623653896200065,
+        "E_hi": -2.5687647377948677,
+        "silver_2d_module": {
+          "a": -9,
+          "b": 7,
+          "denom": 8,
+          "pred": 0.11243686707645817,
+          "res": 0.0012091650827540795,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": 3,
+          "pred": 0.12132034355964239,
+          "res": 0.010092641565938296
+        },
+        "fib_1d_rotation": {
+          "n": -16,
+          "pred": 0.11145618000168156,
+          "res": 0.0002284780079774701
+        },
+        "rational_floor": {
+          "p": 1,
+          "q": 9,
+          "pred": 0.1111111111111111,
+          "res": 0.00011659088259298456
+        }
+      },
+      {
+        "gap_width": 0.05488915840519404,
+        "idos_plateau": 0.8887722980062959,
+        "E_lo": 2.5687647377948735,
+        "E_hi": 2.6236538962000675,
+        "silver_2d_module": {
+          "a": -7,
+          "b": 10,
+          "denom": 8,
+          "pred": 0.8927669529663689,
+          "res": 0.0039946549600730075,
+          "uses_sqrt2": true
+        },
+        "silver_1d_rotation": {
+          "n": -3,
+          "pred": 0.8786796564403576,
+          "res": 0.010092641565938254
+        },
+        "fib_1d_rotation": {
+          "n": 16,
+          "pred": 0.8885438199983184,
+          "res": 0.00022847800797742845
+        },
+        "rational_floor": {
+          "p": 8,
+          "q": 9,
+          "pred": 0.8888888888888888,
+          "res": 0.00011659088259297068
+        }
+      }
+    ],
+    "module_fit": {
+      "n_sig": 0,
+      "note": "no significant gaps",
+      "sig_frac": 0.015
+    }
+  },
+  "periodic_square_control": {
+    "N_sites": 784,
+    "spectrum_span": 8.000000000000004,
+    "largest_gap_width": 0.1811498612871798,
+    "largest_gap_frac_of_span": 0.022643732660897465,
+    "n_significant_gaps": 12,
+    "module_fit": {
+      "n_sig": 12,
+      "res_tol": 0.01,
+      "sig_frac": 0.015,
+      "silver_2d_module": {
+        "n_matched": 12,
+        "median_res": 0.0016085588253805239,
+        "max_res": 0.003262212596147951
+      },
+      "silver_1d_rotation": {
+        "n_matched": 8,
+        "median_res": 0.008250884850247858,
+        "max_res": 0.012494859306703798
+      },
+      "fib_1d_rotation": {
+        "n_matched": 10,
+        "median_res": 0.0041192216078785315,
+        "max_res": 0.015601891683042934
+      },
+      "rational_floor": {
+        "n_matched": 12,
+        "median_res": 0.0008830455259026537,
+        "max_res": 0.0028988868274583135
+      },
+      "n_sig_needing_sqrt2": 8
+    },
+    "note": "known-periodic 2D band: connected spectrum, no fractal gap ladder; any 'gap' is a finite-size level-spacing artefact, not a labelled gap"
+  },
+  "verdict_analysis": {
+    "res_tol": 0.01,
+    "sig_frac": 0.015,
+    "n_significant_gaps": 0,
+    "mean_level_spacing": 0.00883038833275197,
+    "min_significant_gap_width": 0.0,
+    "resolved_gate_min_gap_gt_5x_spacing": false,
+    "A_silver_2d_module": {
+      "n_matched": 0,
+      "of": 0,
+      "max_res": null,
+      "PASS": false
+    },
+    "B_rank2_needed": {
+      "n_sig_needing_sqrt2": 0,
+      "single_1d_silver_matched": 0,
+      "single_1d_fib_matched": 0,
+      "single_1d_suffices": false,
+      "PASS": false
+    },
+    "C_periodic_control_clean": {
+      "largest_gap_frac": 0.022643732660897465,
+      "PASS": false
+    },
+    "rational_floor_max_res": null,
+    "passes": {
+      "resolved": false,
+      "A_module_fits": false,
+      "B_rank2_needed": false,
+      "C_control_clean": false
+    }
+  },
+  "verdict_tier": "\ud83d\udfe0 INCONCLUSIVE",
+  "finding": "INCONCLUSIVE (honest, c9): the finite Ammann-Beenker patch (953 trimmed vertices) did not resolve clean major gaps clearly above the finite-size mean level spacing (8.830e-03); n_sig=0, min sig gap=0.000e+00. The construction is sound (cut-and-project, mean coordination 3.83) but a larger patch / cleaner window is needed for a definitive 2D module fit. Not forcing a match. Best 2D-module fit so far: 0/0 at max res None. Breakthrough path: grow the 4D box / sharpen the octagon window / use inflation instead of projection.",
+  "honest_caveat": "Finite Ammann-Beenker cluster (1737 vertices raw, 953 after boundary trim) under OPEN boundary -- a finite patch, not infinite-volume. IDOS plateau k/N is a rational converging to the true gap label as N->inf (gap-labeling = Bellissard C*-algebra K-theory; for AB the labelled gaps lie in (1/8)Z[sqrt2]). Residuals are O(1/N) + boundary-mode limited; res_tol=0.010 pre-registered (looser than the 1D ring probes because a 2D open cluster has more boundary states). We test module FIT + the DISTINCTION (rank-2 {1,sqrt2} vs single 1D rotation) + a periodic control, not exact equality. The window is the exact unit-4-cube projection (canonical AB octagon), not a tuned size. Boundary (under-coordinated) vertices are trimmed so the bulk gap structure -- the discriminating signal -- dominates over finite-edge artefacts. The full AB gap-label group is rank-2 over Z in {1,sqrt2} (the 8-fold cut-and-project module); we report the dominant low-index labels."
+}

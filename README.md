@@ -25,8 +25,7 @@
 > ΔE=+0.260 overshoot → d⁷=승자/d⁸=overshoot로 채움축 bracket 확정.** 삼각측량
 > v4: 플랫밴드=그래프 성질(선그래프+이분불균형 정리) → 위상 후보생성기 전환,
 > Lieb=CuO₂면 동형(플랫밴드↔cuprate 다리). Os-O Lieb+checkerboard 🔴(2/2 혼성분산) → 메타결론: 위상=필요조건·실현(약혼성 d-kagome)=레버.
-> **MATH-SPECTRA 도메인 신설(병렬 트랙): probe1 — ζ영점=GUE vs 카고메=Poisson+δ
-> 플랫밴드 → "RH영점=격자스펙트럼" 순진한 다리 정직 falsified(수치, 증명 아님).** QFORGE L3
+> **MATH-SPECTRA 도메인(병렬 트랙) 1D 완전차트: 음성(ζ↔격자 다리 falsified·플랫밴드 CLS=유계 gcd) + 양성(준결정 gap-labeling=치환별 Perron 모듈, 피보나치 Z+Zα·은비 Z+Z/√2·주기배가 dyadic·Thue-Morse 비단일). 2D Ammann-Beenker 🟠(패치부족).** QFORGE L3
 > assembler end-to-end on real QE (YH6). See CHANGELOG.md.
 > historical at `HANDOFF.log.md`), `DESIGN.md` for the decision audit trail.
 > Family: **typed-interface consumer** (not absorber) of `hexa-lang`,
