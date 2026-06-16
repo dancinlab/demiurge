@@ -28,3 +28,4 @@ SSOT 결과 = exports/math-spectra/<probe>.json + RTSC_LEDGER 동위 MATH 행.
 - 힐베르트-폴리아: RH 영점 = 자기수반 연산자 고유값 (추측)
 - 몽고메리-오들리츠코: ζ 영점 간격 = GUE = 양자카오스 해밀토니안 간격
 - 우리 RTSC: 플랫밴드 = 인접행렬 CLS (선그래프·이분불균형 정리, 삼각측량 v4)
+- [x] M8 2D 준결정(Ammann-Beenker) gap-labeling — 🟠 유한패치 미해상(더 큰 패치 deferred)
