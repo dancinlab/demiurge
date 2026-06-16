@@ -8,6 +8,11 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### MATH-SPECTRA probe2 — 플랫밴드 CLS 중복도의 정수론 구조 탐색 (M4, 🔴 정수론 부재 + 🟢 정리 검증)
+- **사전등록(frozen-first, c16·c9, 로컬 무료)**: kagome/checkerboard/Lieb/pyrochlore 격자를 L×L(×L) 주기경계 토러스로 numpy 인접행렬 정확대각화(`eigvalsh`, tol 1e-9), 플랫레벨 중복도 μ(L) 수열 산출 + 선그래프·Lieb 정리 대조.
+- **결과(정수 수열)**: kagome μ=L²+1 (=벌집 base graph 1차 베티수 E−V+1) 단일 2차다항식 — **선그래프 플랫밴드 정리 검증**; pyrochlore μ=2L³+1 (=다이아몬드 base 베티수) 단일 3차다항식 — **3D 검증**; checkerboard μ=L²(홀 L)/L²+1(짝 L), Lieb μ=L²(홀 L)/L²+2(짝 L) — **mod-2 패리티 분할**(Sutherland |N_A−N_B|=L²는 홀 L에서만 성립). 플랫매니폴드↔분산밴드 간격 깨끗(검증).
+- **정직 판정(🔴 closed-negative on number theory + 🟢 theorem verified)**: CLS 중복도는 전부 L에 대한 **초등 저차다항식**(차수=격자차원) = 정확한 그래프 불변량(순환공간 차원=베티수 / 이분 부격자 불균형). checkerboard·Lieb은 추가로 **mod-2 commensurability** 보정항(짝 L 토러스에 확장상태 +1~2개)을 가지나 이는 **초등(경계/정합)**이지 산술이 아님 — 나눗셈/모듈러형식/소수분포 구조 없음, 소수 L과 일반 홀수 L 구별 불가. **숨은 정수론 없음**. 박제 `exports/math-spectra/probe2_cls_multiplicity.json`, RTSC_LEDGER `MATH-SPECTRA-probe2`. M4 종결.
+
 ### MATH-SPECTRA 도메인 신설 — 스펙트럼 보편성 probe (ζ영점 ↔ 플랫밴드) + ScH9 정직 종결
 - **신규 도메인 `domains/MATH-SPECTRA.md`** ("스펙트럼 탐정") — 수학·물리 교차 스펙트럼 패턴을 자체 수치탐색·검증. 매니페스트-only(d4). 사용자 요청(리만가설 동위선상 일자배치류 자체 수학 탐색)으로 신설, RTSC와 **병렬 트랙**.
 - **probe 1 (사전등록·frozen-first, c16·c9, 로컬 무료)**: ζ영점 vs 플랫밴드 인접행렬 스펙트럼.
