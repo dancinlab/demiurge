@@ -24,7 +24,8 @@ demiurge/
 ├─ .verdicts/          — verify-gate verdict records
 ├─ .harness/           — repo-local harness rule configs (enforcement / keywords / severity)
 ├─ .harness-engine/    — dancinlab/harness engine, pinned as a git submodule (harness-hardcore)
-├─ ARCHITECTURE.md     — architecture SSOT (update-in-place)
+├─ ARCHITECTURE.json   — architecture SSOT (JSON tree · AI/tool-parse; humans view ARCHITECTURE.html via `python3 serve.py`) — ARCHITECTURE.md 은퇴(2026-06-16 · c4 JSON-트리 채택)
+├─ ARCHITECTURE.html   — static tree viewer over ARCHITECTURE.json (serve.py = 정적 서버 + 브라우저 자동 오픈)
 └─ CHANGELOG.md        — append-only change log
 ```
 
@@ -235,7 +236,7 @@ PAPER auto-generation flow — atlas-as-audit-SSOT lineage (`research result →
 
 ### Single-doc discipline
 
-- ✅ architecture goes in `ARCHITECTURE.md` (update-in-place); history in `CHANGELOG.md` (append-only); scratch under `scripts/scratch/`
+- ✅ architecture goes in `ARCHITECTURE.json` (JSON-tree SSOT · AI/tool-parse; humans view `ARCHITECTURE.html` via `python3 serve.py`); history in `CHANGELOG.md` (append-only); scratch under `scripts/scratch/` — `ARCHITECTURE.md` 은퇴(2026-06-16 · c4 JSON-트리 채택)
 
 ## Harness
 
@@ -251,7 +252,7 @@ Run any harness command via the bundled wrapper:
 
 ```bash
 bash .harness-engine/bin/harness <cmd>
-#   docs check     single-doc discipline (ARCHITECTURE.md SSOT + CHANGELOG.md log + quickref)
+#   docs check     single-doc discipline (ARCHITECTURE.json SSOT + CHANGELOG.md log + quickref)
 #   docs status    CLAUDE-MD discipline + scatter/quickref counts
 #   lint           staged-L0 + freshness + changelog convergence
 #   audit          6-axis self-scorecard
@@ -261,13 +262,13 @@ Config lives in **`harness.config.json`** (profile `hardcore`):
 - `lockdown.files` — core source files that emit an L0-edit reminder on change.
 - `lint.changelog` — staged code changes require `CHANGELOG.md` to be staged too.
 - `lint.protectedBranches` — `main` / `master` (no direct commits).
-- `docs` — `architecture=ARCHITECTURE.md`, `log=CHANGELOG.md`, `scratchDir=scripts/scratch`, and `scopeDirs:[""]` (scatter/quickref discipline applies to repo-root `.md` only, so the large research / domain document corpus under subdirectories is exempt).
+- `docs` — `architecture=ARCHITECTURE.json`, `log=CHANGELOG.md`, `scratchDir=scripts/scratch`, and `scopeDirs:[""]` (scatter/quickref discipline applies to repo-root `.md` only, so the large research / domain document corpus under subdirectories is exempt).
 
 The harness hooks are wired into `.claude/settings.json` (PreToolUse / PostToolUse / UserPromptSubmit / SessionStart), each guarded with `[ -x .harness-engine/bin/harness ] && … || true` so the repo stays usable when the submodule is uninitialized.
 
 ## Quick reference
 
-- Architecture SSOT — [ARCHITECTURE.md](ARCHITECTURE.md)
+- Architecture SSOT — [ARCHITECTURE.json](ARCHITECTURE.json) (JSON 트리 · 사람은 [ARCHITECTURE.html](ARCHITECTURE.html) 뷰어로 — `python3 serve.py`)
 - Governance SSOT — this file (`## 거버넌스 (governance)` · `## 워크플로우 (workflow)`)
 - Project overview — [README.md](README.md)
 - Change log — [CHANGELOG.md](CHANGELOG.md)

@@ -8,6 +8,18 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### ARCHITECTURE 단일문서 마이그레이션 — `.md` 산문 → `.json` 트리 SSOT + `.html` 뷰어 (c4)
+- **`ARCHITECTURE.md` 은퇴(git rm) → `ARCHITECTURE.json`(JSON 트리 SSOT · AI/툴 파싱) + `ARCHITECTURE.html`(자족 collapsible-tree 뷰어, inline CSS+JS) + `serve.py`(정적 서버 :8765 + 브라우저 자동 오픈)**. c4의 "`.json` 트리 채택" 경로. 전사 누락 0(원문 5개 헤딩 전부 nodes/overview/data_flow/governance로 매핑, 18 top-level·23 total 노드 + QFORGE 4모드 + RTSC frontier + MATH-SPECTRA 전사 후 자체대조).
+- `harness.config.json` `docs.architecture` `ARCHITECTURE.md`→`ARCHITECTURE.json` 갱신(+`docs.allow`에 `.html` 추가) — c14 doc-gate 정합. `CLAUDE.md` ARCHITECTURE 포인터 5곳(트리노드·single-doc·harness docs·quick-ref) `.json`/`.html`로 전환.
+
+### QFORGE ENGINE STATUS 확인 — from-scratch 전 파이프라인 구현·검증 실재 (정정 c9)
+- 코드 직접 확인(`stdlib/qforge/` + `QFORGE/QFORGE.md`): **from-scratch SCF(`scf_pw.hexa`)→DFPT(`dfpt.hexa`·`sternheimer`)→el-ph(`elph.hexa`)→Tc(`eliashberg.hexa`) 전 구간 구현**, al_fcc/nb_bcc/pb_fcc el-ph xval PASS. 4모드: (a) bare-vertex from-scratch CaH6 rel-ε 5.47%(rough 스크리닝) · (b) hybrid QE|g|→어셈블러 1.6e-7(gate-grade) · (c) screened R7 5.12%(bare 돌파·gate미달·HELD) · (d) LSDA 자성 brick-PASS·모먼트 compute-wall. **"from-scratch=벽"은 부정확** — gate(<1%) 미달일 뿐, ~5% rough-screening은 작동.
+
+### RTSC 상온 분기 — 패밀리=λ-레퍼런스 / 상온=별도 레버 + 무압 초수소화물 lane 발사
+- **전략 분기(① 완성도)**: CeCo3B2 kagome 패밀리(LaRu3Si2·LaOs3Si2, 무거운 Ru/Os/Si)는 ω_log 천장으로 상온 후보 아님 → flat-band→λ **레퍼런스로 완주**. 상온은 (A)경량원자 ω_log↑ + (B)flat-band 전자상관 두 레버로 분기.
+- **새-substrate 두-레버 후보맵**(`.discoveries/ambient-tc-levers.tape`, 무료 스코핑 🏁): Lever A(LiBC/MgB2류·경량 kagome) 무료 발사가능하나 phonon 천장 ~100K↓; Lever B(flat-band 상관)가 진짜 상온 후보지만 cRPA/DMFT 메서드 빌드 필요(현재 막힘). 정직 박제.
+- **무압 초수소화물 완주 lane 발사**(QE front-end + QFORGE from-scratch 병행, Vast 자율): BeH8/BH8·B-C 클라스레이트·X2MH6 partial 8후보. 게이트순서=vc-relax→matdyn 동적안정→생존자만 el-ph(FLEET-DIAGNOSTIC 교훈). **초기 결과: Li2CuH6·Mg2IrH6 🔴 ambient-dynamically-unstable**(Fm-3m 1atm 허수모드 ~−2230cm⁻¹, "H 케이지가 압력을 원함" 벽 2/2 실증); AcBeH8(293K@1atm)·CaB3C3·LaB3C3 ⏳ 계산 중.
+
 ### MATH-SPECTRA probe6 — 2D 준결정(Ammann-Beenker) gap-labeling 🟠 INCONCLUSIVE (lane 🏁)
 - 1D 호(probe1~5) 완성 후 2D 확장 시도: octagonal cut-and-project tight-binding(953정점 패치)으로 2D 실버 모듈 (a+b√2)/8 gap-labeling 검증. **결과 🟠**: 유한 패치가 유한크기 준위간격(8.83e-3) 위로 명확한 주요 간극 미해상(n_sig=0) → 결정적 2D 모듈 적합 불가, 강제 안 함(c9). 구성은 건전(평균 배위 3.83). 돌파경로(deferred): 4D 초격자 박스 확대/팔각 윈도우 샤프닝/inflation. agent가 서버측 rate-limit로 최종보고 직전 사망 → 산출물 워크트리에서 회수+재실행 검증(c2, fleet §4) 후 박제. RTSC_LEDGER `MATH-SPECTRA-probe6`. **MATH-SPECTRA lane 🏁**: 1D 산술-스펙트럼 지도 완전차트(음성 플랫밴드/ζ + 양성 준결정 Perron모듈), 2D는 inconclusive-deferred.
 ### RTSC LaOs3Si2 DFPT λ/Tc 발사 — 2번째 평탄밴드 승자 e-ph 승격 (summer 무료풀, FIRED·미수확)

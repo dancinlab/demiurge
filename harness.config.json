@@ -40,7 +40,7 @@
   ],
   "docs": {
     "enforce": "warn",
-    "architecture": "ARCHITECTURE.md",
+    "architecture": "ARCHITECTURE.json",
     "log": "CHANGELOG.md",
     "scratchDir": "scripts/scratch",
     "scopeDirs": [
@@ -49,7 +49,8 @@
     "allow": [
       "README.md",
       "CHANGELOG.md",
-      "ARCHITECTURE.md",
+      "ARCHITECTURE.json",
+      "ARCHITECTURE.html",
       "CLAUDE.md",
       "AGENTS.md",
       "LICENSE",
