@@ -1,0 +1,56 @@
+FROZEN-FIRST PREDICTION — qforge-pbe-scf-vertex lane
+Date: 2026-06-16 (pre-run, before any λ measured) · author: fleet lane qforge-pbe-scf
+Honesty: d6/c9 — this prediction is written BEFORE running; it will NOT be edited post-hoc.
+
+=== TASK RESTATEMENT ===
+Wire QFORGE's self-consistent PBE ground state (density/orbitals) into the from-scratch
+screened-vertex el-ph |g|² for CaH6, and test whether the from-scratch λ closes from
+rel-ε ~5% toward ≤1% vs QE λ=4.376. (NOT f_xc-in-χ — that was R8, closed-negative.)
+
+=== WHAT I FOUND ON READING THE CODE (the load-bearing context the task brief did not have) ===
+The task brief states "from-scratch PBE-SCF" is the "named next lever, not yet tried."
+THIS IS NOT ACCURATE. A full self-consistent PBE V_xc SCF was ALREADY built and run on
+2026-06-09 (verdict .verdicts/qforge-pbe-scf-cah6/VERDICT.md, hexa-lang branch
+qforge-pbe-scf-cah6). That round:
+  - Added xc_mode=3 = spectral PBE V_xc[ρ,∇ρ] (F_x(s) enhancement + GGA gradient term)
+    self-consistently into the SCF (correlation.hexa + screening.hexa + scf_pw.hexa).
+  - Unit-gated 14/14 (GGA term PROVEN live, max|Δ|=1.87e-4, not a fallback).
+  - Confirmed PBE moves the SCF ground state: n=16 e_band -14.75→-14.95 Ha, n=64 -22.08→-24.49.
+  - VERBATIM λ RESULT: PBE-SCF REGRESSES λ on every pow2 grid where GGA engages
+    (n=16: 0.61→0.08, n=64: 0.0083→0.0034) — same over-screening SIGN as ALDA f_xc-in-χ.
+  - At the physical converged basis n(PW)=645, PBE CANNOT ENGAGE: 645≠pow2 → core_fft
+    returns [] → spectral V_xc falls back to LDA → PBE-645 ≡ LDA-645 = the 4.137 baseline.
+  - Named residual: the SCF density is a degenerate (1,1,n) G-INDEX LINE, not a physical
+    3-D ρ(r); a GGA gradient on a 1-D proxy is unphysical. Closing needs a TRUE 3-D
+    real-space SCF density grid + pow2-padded FFT at n=645.
+
+The genuinely NEW thing since that verdict: gga_scf.hexa (built 2026-06-15) IS a true
+3-D real-space spin-GGA SCF on a cubic (nx,ny,nz) grid — it resolves residual point (3).
+BUT it was built for the CoSn magnetism problem and is consumed by NOTHING in the el-ph /
+DFPT / vertex path. The CaH6 vertex path (pw_frontend.qforge_pw_frontend_phonons_scr →
+qforge_scf_pw_h_multi_smeared) still runs the (1,1,n) G-line SCF.
+
+=== HYPOTHESIS / PREDICTION ===
+PRIMARY (high confidence): re-running PBE-SCF into the EXISTING (1,1,n) vertex path will
+NOT close the gate. It is the same xc_mode=3 path already shown to (a) regress λ where it
+engages and (b) fall back to LDA at n=645. Predicted: rel-ε stays ~5% (LDA-equivalent at
+n=645) or REGRESSES at any pow2 cap. I do NOT expect ≤1%.
+
+SECONDARY (the real open question, lower confidence): wiring the 3-D gga_scf ground state
+into the vertex would test residual (3) honestly. My prediction even there is GUARDED-
+NEGATIVE: the el-ph |g|² regression under PBE has the SAME SIGN as ALDA over-screening
+across BOTH the f_xc-in-χ axis (R8) and the (1,1,n) PBE-SCF axis (2026-06-09). Two
+independent functional levers pushing λ the WRONG way is strong evidence the residual is
+NOT the XC functional of the ground state. I predict the 3-D PBE vertex also does not
+reach ≤1%, and likely also regresses or stays flat.
+
+EXPECTED VERDICT TIER: 🔴 CLOSED-NEGATIVE (functional-of-ground-state axis now exhausted
+across f_xc-in-χ AND (1,1,n) PBE-SCF, with 3-D PBE-SCF either confirming the same sign or
+being a multi-week SCF-representation+DFPT rebuild that is out of scope for a vertex-wiring
+round). Honest residual = the from-scratch NC-pseudo+KS-orbital vertex magnitude itself,
+which the off-diag-integrated round (line 14) already independently called "irreducible …
+no single closeable lever." Hybrid (QE |g|² → QForge L3, 1.65e-7) stays production.
+
+FALSIFIER: if a PBE-self-consistent ground state (1,1,n OR 3-D) fed into the screened
+vertex yields CaH6 λ with rel-ε ≤ 1% vs 4.376, this prediction is FALSIFIED and the gate
+from-scratch path UNBLOCKS (🟢).
