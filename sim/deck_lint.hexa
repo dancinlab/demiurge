@@ -1,0 +1,779 @@
+// sim/deck_lint.hexa — `hexa deck` VALIDATOR (the deck-discipline SSOT lint).
+//
+// @version 0.1.0
+// @capabilities [cli]
+//
+// WHAT THIS IS
+// ------------
+// A SELF-IMPROVING GUARD REGISTRY for QE / DFT electron-phonon input decks.
+// The deck BUILDER already exists (hexa-lang stdlib/deck/gen.hexa — the 빵틀
+// emitter). What did NOT exist is a VALIDATOR that bakes in the hard-won
+// deck discipline so the bug-prone hand-written `.in` decks of this RTSC
+// campaign can never reach a billing pod again (d16 — syntax/lint FREE
+// before paid rent).
+//
+// THE SELF-IMPROVING WORKFLOW (the whole point — d_deck_always)
+// -------------------------------------------------------------
+//   trouble happens  →  encode the prevention as a NEW GUARD here.
+//
+//   Each guard is one pure function `fn guard_<slug>(d: Deck) -> Finding`.
+//   Register it in `all_guards()` with ONE line. The lint runner runs every
+//   registered guard against a deck and prints PASS / WARN / FAIL.  A deck
+//   bug is therefore never just fixed in one deck — its prevention is stamped
+//   into the tool, so the NEXT deck (and every sweep sibling) inherits the
+//   guard. This file is the deck-discipline SSOT.
+//
+// SEED GUARDS (this session's real deck bugs — CHANGELOG / RTSC_LEDGER)
+// --------------------------------------------------------------------
+//   G01 bands_verbosity   bands `verbosity='high'` MISSING when total #k >= 100
+//                         (QE omits eigenvalues -> flat-band dE unreadable).
+//                         Real culprit: exports/rtsc/decks/cosn/bands.in.
+//   G02 atomic_mass_zero  an ATOMIC_SPECIES mass of 0 / blank (typo -> QE NaN
+//                         phonon, silent garbage).
+//   G03 atomic_mass_wrong a known element's mass off the periodic value
+//                         (this session: Os written wrong-row, etc.).
+//   G04 pseudo_missing    a pseudopotential file named in ATOMIC_SPECIES that
+//                         is NOT present in the deck's pseudo/ dir (d13 element
+//                         coverage -- UPF-not-found = pod start crash).
+//   G05 d15_scf_aids      a metal / small-gap SCF (smearing occupations) that
+//                         omits the d15 convergence aids (degauss + a robust
+//                         mixing_beta + a generous electron_maxstep) -> SCF
+//                         non-convergence burns pod hours.
+//   G06 ph_stability_gate a ph.x el-ph deck (electron_phonon=) that ships
+//                         WITHOUT the q2r->matdyn imaginary-mode gate recorded
+//                         (d6 -- el-ph on a dynamically-unstable cell = waste).
+//   G07 ascii_only        a non-ASCII byte in a `.in` (em-dash etc.) crashes
+//                         QE 6.7 FoX XML parser (SIGABRT). Mirror of the
+//                         stdlib deck_push sanitizer, as a READ-side check.
+//
+// To add a guard:  write fn guard_<slug>(d) -> Finding ; add it to all_guards().
+//
+// RUN
+// ---
+//   hexa run sim/deck_lint.hexa <deck.in> [<deck2.in> ...]
+//   hexa run sim/deck_lint.hexa --guards        # list registered guards
+//   hexa run sim/deck_lint.hexa --self-test     # built-in good/broken cases
+//
+// Exit 0 = all decks PASS (WARNs allowed). Exit 1 = a FAIL guard tripped.
+
+// ── severities ────────────────────────────────────────────────────────
+//   PASS = guard satisfied · WARN = advisory · FAIL = blocks dispatch.
+let SEV_PASS = 0
+let SEV_WARN = 1
+let SEV_FAIL = 2
+
+struct Finding {
+    id:   str,    // guard id (G01 ...)
+    sev:  int,    // SEV_*
+    msg:  str,    // human one-liner
+}
+
+fn finding(id: str, sev: int, msg: str) -> Finding {
+    return Finding { id: id, sev: sev, msg: msg }
+}
+
+// A parsed-enough deck: the raw text + the file path (for pseudo-dir checks)
+// + a lowercased copy for case-insensitive directive matching.
+struct Deck {
+    path:  str,
+    raw:   str,
+    lc:    str,
+}
+
+fn deck_load(path: str) -> Deck {
+    let raw = read_file(path)
+    return Deck { path: path, raw: raw, lc: raw.to_lower() }
+}
+
+fn deck_from_text(path: str, raw: str) -> Deck {
+    return Deck { path: path, raw: raw, lc: raw.to_lower() }
+}
+
+// ── small text helpers (no map type in hexa; line scans) ───────────────
+
+fn _lines(s: str) -> [str] { return s.split("\n") }
+
+// is `s` (lowercased) carrying directive `name` set at all? QE decks pad the
+// key/`=` with arbitrary whitespace for alignment ("degauss        = 0.02"),
+// so we scan line-by-line: a line whose first whitespace-token is `name` and
+// which contains an `=` is a set directive. (case-insensitive via deck.lc.)
+fn _has_directive(lc: str, name: str) -> bool {
+    let ls = _lines(lc)
+    let mut i = 0
+    while i < len(ls) {
+        let toks = _ws_tokens(ls[i])
+        if len(toks) >= 1 {
+            // first token may be "name" or "name=" or "name(1)" etc.
+            let t0 = toks[0]
+            if t0 == name || t0.starts_with(name + "=") || t0.starts_with(name + "(") {
+                if ls[i].contains("=") { return true }
+            }
+            // or "name = val" where name is a clean leading token
+            if t0 == name && len(toks) >= 2 {
+                if toks[1] == "=" || toks[1].starts_with("=") { return true }
+            }
+        }
+        i = i + 1
+    }
+    return false
+}
+
+// the calculation type token, lowercased ('scf' / 'bands' / 'vc-relax' / ...);
+// "" if not a pw.x deck (e.g. a ph.in has no `calculation =`).
+fn _calc_type(lc: str) -> str {
+    let ls = _lines(lc)
+    let mut i = 0
+    while i < len(ls) {
+        let line = ls[i].trim()
+        if line.contains("calculation") && line.contains("=") {
+            // grab text after the first '
+            let q = line.index_of("'")
+            if q >= 0 {
+                let rest = line.substring(q + 1, len(line))
+                let q2 = rest.index_of("'")
+                if q2 >= 0 { return rest.substring(0, q2) }
+            }
+        }
+        i = i + 1
+    }
+    return ""
+}
+
+// strict non-negative integer parse: "40" -> 40, "0.5"/"x"/"" -> -1.
+fn _parse_int(s: str) -> int {
+    if len(s) == 0 { return -1 }
+    let mut n = 0
+    let mut i = 0
+    while i < len(s) {
+        let c = s.byte_at(i)
+        if c < 48 || c > 57 { return -1 }
+        n = n * 10 + (c - 48)
+        i = i + 1
+    }
+    return n
+}
+
+// extract the leading non-negative INTEGER tokens from a whitespace line,
+// stopping at the first token that is not a clean integer (so floats / the
+// "! comment" tail are ignored). Used for k-mesh lines and band-path npts.
+fn _num_tokens(line: str) -> [int] {
+    let out: [int] = []
+    // cut an inline comment first
+    let mut l = line
+    let bang = l.index_of("!")
+    if bang >= 0 { l = l.substring(0, bang) }
+    let parts = _ws_tokens(l)
+    let mut i = 0
+    while i < len(parts) {
+        let v = _parse_int(parts[i])
+        if v >= 0 { out.push(v) }
+        i = i + 1
+    }
+    return out
+}
+
+// total number of k-points the deck will compute, for the verbosity gate.
+//   K_POINTS automatic:  nk1*nk2*nk3   (first numeric line under the card)
+//   K_POINTS crystal_b:  sum of the trailing per-segment counts (band path)
+//   K_POINTS crystal / tpiba / gamma: the explicit count on the line after.
+// returns -1 when the deck has no K_POINTS card (e.g. a ph.in).
+fn _total_kpoints(raw: str) -> int {
+    let ls = _lines(raw)
+    let mut i = 0
+    let mut card = -1
+    let mut mode = ""
+    while i < len(ls) {
+        let line = ls[i].trim().to_lower()
+        if line.starts_with("k_points") {
+            card = i
+            mode = line
+            break
+        }
+        i = i + 1
+    }
+    if card < 0 { return -1 }
+
+    if mode.contains("gamma") { return 1 }
+
+    if mode.contains("automatic") {
+        // next non-empty line: nk1 nk2 nk3 sk1 sk2 sk3
+        let mut j = card + 1
+        while j < len(ls) {
+            let t = ls[j].trim()
+            if len(t) > 0 {
+                let toks = _num_tokens(t)
+                if len(toks) >= 3 { return toks[0] * toks[1] * toks[2] }
+                return -1
+            }
+            j = j + 1
+        }
+        return -1
+    }
+
+    // explicit list (crystal / crystal_b / tpiba / tpiba_b): line after card
+    // is the COUNT of k entries. For *_b (band path) the real point count is
+    // the SUM of the trailing per-segment weights; for a plain list it is the
+    // entry count itself.
+    let mut j = card + 1
+    let mut count_line = -1
+    while j < len(ls) {
+        let t = ls[j].trim()
+        if len(t) > 0 { count_line = j; break }
+        j = j + 1
+    }
+    if count_line < 0 { return -1 }
+    let nentries_toks = _num_tokens(ls[count_line].trim())
+    if len(nentries_toks) < 1 { return -1 }
+    let nentries = nentries_toks[0]
+
+    if mode.contains("_b") {
+        // sum trailing per-segment counts on the nentries data lines
+        let mut sum = 0
+        let mut k = count_line + 1
+        let mut seen = 0
+        while k < len(ls) && seen < nentries {
+            let mut dt = ls[k].trim()
+            // cut an inline "! label" tail (band-path lines often label the
+            // high-symmetry point, e.g. "0.5 0.0 0.0 40   ! M")
+            let bang = dt.index_of("!")
+            if bang >= 0 { dt = dt.substring(0, bang).trim() }
+            if len(dt) > 0 {
+                // a band-path line is: kx ky kz npts -> LAST token is npts.
+                // the coords are floats (rejected by _num_tokens), so take the
+                // last whitespace token directly and parse it as the count.
+                let dtoks = _ws_tokens(dt)
+                if len(dtoks) >= 4 {
+                    let npts = _parse_int(dtoks[len(dtoks) - 1])
+                    if npts > 0 { sum = sum + npts }
+                }
+                seen = seen + 1
+            }
+            k = k + 1
+        }
+        if sum > 0 { return sum }
+        return nentries
+    }
+    return nentries
+}
+
+// ── periodic-table reference masses (d13-style coverage for G02/G03) ──
+// element symbols + standard atomic weights (IUPAC) the campaign uses.
+// Single source for the mass-sanity guard; add a row to cover a new element.
+fn _ref_symbols() -> [str] {
+    return ["H","Li","Be","B","C","N","O","F","Mg","Al","Si","P","S","Cl","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Sr","Y","Zr","Nb","Mo","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Ba","La","Ce","Os","Ir","Pt","Au","Pb","Ac","Th"]
+}
+fn _ref_masses() -> [str] {
+    return ["1.008","6.94","9.0122","10.811","12.011","14.007","15.999","18.998","24.305","26.982","28.085","30.974","32.06","35.45","40.078","44.956","47.867","50.942","51.996","54.938","55.845","58.933","58.693","63.546","65.38","87.62","88.906","91.224","92.906","95.95","101.07","102.91","106.42","107.87","112.41","114.82","118.71","121.76","137.33","138.91","140.12","190.23","192.22","195.08","196.97","207.2","227.0","232.04"]
+}
+
+// index of a symbol in the ref table; -1 if not covered.
+fn _ref_index(sym: str) -> int {
+    let syms = _ref_symbols()
+    let mut i = 0
+    while i < len(syms) {
+        if syms[i] == sym { return i }
+        i = i + 1
+    }
+    return -1
+}
+
+// parse a decimal mass to tenths-of-amu integer ("58.933" -> 589). -1 on junk.
+fn _x10(s: str) -> int {
+    let t = s.trim()
+    let dot = t.index_of(".")
+    if dot < 0 {
+        let whole = _parse_int(t)
+        if whole < 0 { return -1 }
+        return whole * 10
+    }
+    let intpart = _parse_int(t.substring(0, dot))
+    if intpart < 0 { return -1 }
+    let frac = t.substring(dot + 1, len(t))
+    if len(frac) == 0 { return intpart * 10 }
+    let firstdig = frac.byte_at(0)
+    if firstdig < 48 || firstdig > 57 { return intpart * 10 }
+    return intpart * 10 + (firstdig - 48)
+}
+
+// "are these the same element's mass" to 0.1 amu (covers 58.933 vs 58.9332).
+fn _mass_matches(got: str, want: str) -> bool {
+    let g = got.trim()
+    let w = want.trim()
+    if g == w { return true }
+    let gv = _x10(g)
+    let wv = _x10(w)
+    if gv < 0 || wv < 0 { return false }
+    let d = gv - wv
+    if d < 0 { return -d <= 1 }
+    return d <= 1
+}
+
+// split a line on whitespace into non-empty tokens (space + tab tolerant).
+fn _ws_tokens(line: str) -> [str] {
+    let norm = line.replace("\t", " ")
+    let parts = norm.split(" ")
+    let out: [str] = []
+    let mut i = 0
+    while i < len(parts) {
+        let p = parts[i].trim()
+        if len(p) > 0 { out.push(p) }
+        i = i + 1
+    }
+    return out
+}
+
+// ATOMIC_SPECIES rows as [symbol, mass, upf]; [] if no card. Tolerant of
+// blank lines + an inline "! comment" tail.
+fn _species_rows(raw: str) -> [[str]] {
+    let out: [[str]] = []
+    let ls = _lines(raw)
+    let mut i = 0
+    let mut inblk = false
+    while i < len(ls) {
+        let t = ls[i].trim()
+        let tl = t.to_lower()
+        if tl.starts_with("atomic_species") { inblk = true; i = i + 1; continue }
+        if inblk {
+            if len(t) == 0 { i = i + 1; continue }
+            // a new card / namelist ends the block
+            if tl.starts_with("atomic_positions") || tl.starts_with("k_points")
+               || tl.starts_with("cell_parameters") || tl.starts_with("&")
+               || tl.starts_with("/") {
+                break
+            }
+            // cut inline comment
+            let mut row = t
+            let bang = row.index_of("!")
+            if bang >= 0 { row = row.substring(0, bang) }
+            let parts = _ws_tokens(row)
+            if len(parts) >= 3 {
+                let r: [str] = [parts[0], parts[1], parts[2]]
+                out.push(r)
+            }
+        }
+        i = i + 1
+    }
+    return out
+}
+
+// ── GUARDS — each is a pure (Deck) -> Finding. ADD ONE PER TROUBLE. ──────
+
+// G01 — `verbosity='high'` required when total #k >= 100 on an EIGENVALUE-
+// REPORTING run (bands / nscf). QE writes per-k eigenvalues to stdout only
+// when verbosity is high once the k-set is large; a band-path / dense-nscf
+// deck without it loses the flat-band dE. relax/scf don't report per-k
+// eigenvalues, so the gate is scoped to bands/nscf (no false alarm on relax).
+fn guard_bands_verbosity(d: Deck) -> Finding {
+    let calc = _calc_type(d.lc)
+    let nk = _total_kpoints(d.raw)
+    if calc == "" && nk < 0 {
+        return finding("G01", SEV_PASS, "not a pw.x deck -- verbosity gate n/a")
+    }
+    if calc != "bands" && calc != "nscf" {
+        return finding("G01", SEV_PASS, "calc='" + calc + "' does not report per-k eigenvalues -- verbosity gate n/a")
+    }
+    if nk < 100 {
+        return finding("G01", SEV_PASS, "total #k=" + str(nk) + " < 100 -- verbosity not required")
+    }
+    let has = d.lc.contains("verbosity") && d.lc.contains("high")
+    if has {
+        return finding("G01", SEV_PASS, "#k=" + str(nk) + " >= 100 and verbosity='high' present")
+    }
+    return finding("G01", SEV_FAIL,
+        "calc='" + calc + "' #k=" + str(nk) + " >= 100 but verbosity='high' MISSING -- QE will OMIT eigenvalues (add verbosity='high' to &control)")
+}
+
+// G02 — no ATOMIC_SPECIES mass may be zero / blank.
+fn guard_atomic_mass_zero(d: Deck) -> Finding {
+    let rows = _species_rows(d.raw)
+    if len(rows) == 0 {
+        return finding("G02", SEV_PASS, "no ATOMIC_SPECIES card -- mass gate n/a")
+    }
+    let mut i = 0
+    while i < len(rows) {
+        let m = rows[i][1]
+        let v = _x10(m)
+        if v <= 0 {
+            return finding("G02", SEV_FAIL,
+                "ATOMIC_SPECIES '" + rows[i][0] + "' has mass '" + m + "' (zero/blank -> NaN phonons)")
+        }
+        i = i + 1
+    }
+    return finding("G02", SEV_PASS, str(len(rows)) + " species all have non-zero mass")
+}
+
+// G03 — a covered element's mass must match the periodic value.
+fn guard_atomic_mass_wrong(d: Deck) -> Finding {
+    let rows = _species_rows(d.raw)
+    if len(rows) == 0 {
+        return finding("G03", SEV_PASS, "no ATOMIC_SPECIES card -- mass-value gate n/a")
+    }
+    let mut i = 0
+    let mut uncovered = ""
+    while i < len(rows) {
+        let sym = rows[i][0]
+        let m = rows[i][1]
+        let ix = _ref_index(sym)
+        if ix < 0 {
+            if len(uncovered) > 0 { uncovered = uncovered + "," }
+            uncovered = uncovered + sym
+        } else {
+            let want = _ref_masses()[ix]
+            if !_mass_matches(m, want) {
+                return finding("G03", SEV_FAIL,
+                    "element '" + sym + "' mass '" + m + "' != periodic " + want + " (wrong-mass typo)")
+            }
+        }
+        i = i + 1
+    }
+    if len(uncovered) > 0 {
+        return finding("G03", SEV_WARN,
+            "element(s) [" + uncovered + "] not in mass table -- add a _ref_symbols/_ref_masses row to cover")
+    }
+    return finding("G03", SEV_PASS, "all covered element masses match periodic values")
+}
+
+// pseudo_dir directive value; default "./pseudo".
+fn _pseudo_dir(raw: str) -> str {
+    let ls = _lines(raw)
+    let mut i = 0
+    while i < len(ls) {
+        let line = ls[i].trim()
+        let ll = line.to_lower()
+        if ll.contains("pseudo_dir") && line.contains("=") {
+            let q = line.index_of("'")
+            if q >= 0 {
+                let rest = line.substring(q + 1, len(line))
+                let q2 = rest.index_of("'")
+                if q2 >= 0 { return rest.substring(0, q2) }
+            }
+        }
+        i = i + 1
+    }
+    return "./pseudo"
+}
+
+// G04 — every UPF named in ATOMIC_SPECIES must exist in the deck's pseudo/ dir.
+fn guard_pseudo_missing(d: Deck) -> Finding {
+    let rows = _species_rows(d.raw)
+    if len(rows) == 0 {
+        return finding("G04", SEV_PASS, "no ATOMIC_SPECIES card -- pseudo gate n/a")
+    }
+    let dir = _deck_dir(d.path)
+    let pdir = _pseudo_dir(d.raw)
+    let base = _join(dir, pdir)
+    let mut missing = ""
+    let mut i = 0
+    while i < len(rows) {
+        let upf = rows[i][2]
+        let full = _join(base, upf)
+        if !file_exists(full) {
+            if len(missing) > 0 { missing = missing + ", " }
+            missing = missing + upf
+        }
+        i = i + 1
+    }
+    if len(missing) > 0 {
+        return finding("G04", SEV_WARN,
+            "pseudo file(s) not found under " + base + ": " + missing + " (stage them before dispatch -- d13)")
+    }
+    return finding("G04", SEV_PASS, "all " + str(len(rows)) + " pseudopotential files present in " + base)
+}
+
+// G05 — a metal / small-gap SCF must carry the d15 convergence aids.
+fn guard_d15_scf_aids(d: Deck) -> Finding {
+    let calc = _calc_type(d.lc)
+    let is_pw = calc != "" || _total_kpoints(d.raw) >= 0
+    if !is_pw {
+        return finding("G05", SEV_PASS, "not a pw.x deck -- d15 aids n/a")
+    }
+    if !d.lc.contains("smearing") {
+        return finding("G05", SEV_PASS, "fixed occupations (no smearing) -- d15 aids n/a")
+    }
+    let mut miss = ""
+    if !_has_directive(d.lc, "degauss") { miss = miss + "degauss " }
+    if !_has_directive(d.lc, "mixing_beta") { miss = miss + "mixing_beta " }
+    if !_has_directive(d.lc, "electron_maxstep") { miss = miss + "electron_maxstep " }
+    if len(miss) > 0 {
+        return finding("G05", SEV_WARN,
+            "metal/small-gap SCF missing d15 aids: " + miss.trim()
+            + " (smear+robust mixing_beta+generous electron_maxstep -> reliable convergence)")
+    }
+    return finding("G05", SEV_PASS, "d15 SCF aids present (degauss + mixing_beta + electron_maxstep)")
+}
+
+// G06 — a ph.x el-ph deck must be GATED on dynamical stability (d6).
+fn guard_ph_stability_gate(d: Deck) -> Finding {
+    if !d.lc.contains("electron_phonon") {
+        return finding("G06", SEV_PASS, "not an el-ph ph.in -- stability gate n/a")
+    }
+    let dir = _deck_dir(d.path)
+    let has_q2r    = file_exists(_join(dir, "q2r.in"))
+    let has_matdyn = file_exists(_join(dir, "matdyn.in"))
+    let runbook    = _read_or_empty(_join(dir, "RUNBOOK.md"))
+    let noted = runbook.to_lower().contains("imaginary") || runbook.to_lower().contains("matdyn")
+    if has_q2r || has_matdyn || noted {
+        return finding("G06", SEV_PASS,
+            "el-ph deck has the d6 stability gate (q2r/matdyn step present)")
+    }
+    return finding("G06", SEV_WARN,
+        "el-ph (electron_phonon=) deck with NO q2r.in/matdyn.in/RUNBOOK imaginary-mode gate -- "
+        + "add the q2r->matdyn step and verify 0 imaginary modes BEFORE firing el-ph (d6)")
+}
+
+// G07 — a `.in` must be pure ASCII (em-dash etc. crashes QE 6.7 FoX SIGABRT).
+fn guard_ascii_only(d: Deck) -> Finding {
+    if !d.path.ends_with(".in") {
+        return finding("G07", SEV_PASS, "not a .in file -- ASCII gate n/a")
+    }
+    let n = len(d.raw)
+    let mut i = 0
+    while i < n {
+        if d.raw.byte_at(i) > 0x7F {
+            return finding("G07", SEV_FAIL,
+                "non-ASCII byte at offset " + str(i) + " -- QE 6.7 FoX XML parser SIGABRTs (run it through sanitize_ascii)")
+        }
+        i = i + 1
+    }
+    return finding("G07", SEV_PASS, "deck is pure ASCII")
+}
+
+// ── path helpers ────────────────────────────────────────────────────────
+
+fn _deck_dir(path: str) -> str {
+    let slash = _last_index(path, "/")
+    if slash < 0 { return "." }
+    return path.substring(0, slash)
+}
+fn _last_index(s: str, ch: str) -> int {
+    let mut idx = -1
+    let mut i = 0
+    while i < len(s) {
+        if s.substring(i, i + 1) == ch { idx = i }
+        i = i + 1
+    }
+    return idx
+}
+fn _join(a: str, b: str) -> str {
+    if b.starts_with("/") { return b }
+    let mut bb = b
+    if bb.starts_with("./") { bb = bb.substring(2, len(bb)) }
+    if a == "." || len(a) == 0 { return bb }
+    if a.ends_with("/") { return a + bb }
+    return a + "/" + bb
+}
+fn _read_or_empty(path: str) -> str {
+    if !file_exists(path) { return "" }
+    return read_file(path)
+}
+
+// ── registry (d4 — ONE place; add a guard = one line) ────────────────────
+
+fn all_guards(d: Deck) -> [Finding] {
+    let out: [Finding] = []
+    out.push(guard_bands_verbosity(d))
+    out.push(guard_atomic_mass_zero(d))
+    out.push(guard_atomic_mass_wrong(d))
+    out.push(guard_pseudo_missing(d))
+    out.push(guard_d15_scf_aids(d))
+    out.push(guard_ph_stability_gate(d))
+    out.push(guard_ascii_only(d))
+    return out
+}
+
+fn _guard_catalogue() -> [str] {
+    return [
+        "G01 bands_verbosity   bands verbosity='high' required when total #k >= 100",
+        "G02 atomic_mass_zero  no ATOMIC_SPECIES mass may be zero/blank",
+        "G03 atomic_mass_wrong covered element mass must match the periodic value",
+        "G04 pseudo_missing    every named UPF must exist in the pseudo dir (d13)",
+        "G05 d15_scf_aids      metal/small-gap SCF carries degauss+mixing_beta+maxiter (d15)",
+        "G06 ph_stability_gate el-ph deck gated on q2r->matdyn imaginary-mode check (d6)",
+        "G07 ascii_only        .in deck is pure ASCII (QE FoX crash prevention)"
+    ]
+}
+
+// ── runner ───────────────────────────────────────────────────────────────
+
+fn _sev_tag(sev: int) -> str {
+    if sev == SEV_FAIL { return "FAIL" }
+    if sev == SEV_WARN { return "WARN" }
+    return "PASS"
+}
+
+// lint one deck; returns the worst severity seen (0 PASS / 1 WARN / 2 FAIL).
+fn lint_deck(d: Deck) -> int {
+    println("== deck lint: " + d.path)
+    let fs = all_guards(d)
+    let mut worst = SEV_PASS
+    let mut i = 0
+    while i < len(fs) {
+        let f = fs[i]
+        println("   [" + _sev_tag(f.sev) + "] " + f.id + " " + f.msg)
+        if f.sev > worst { worst = f.sev }
+        i = i + 1
+    }
+    println("   --> " + _sev_tag(worst))
+    return worst
+}
+
+// ── self-test (network-free; embedded good + broken decks) ───────────────
+
+fn _self_test() {
+    println("# deck_lint self-test")
+    let mut fails = 0
+
+    // good bands deck: 161 k-points AND verbosity='high' -> G01 PASS
+    let good_bands = "&control\n  calculation = 'bands'\n  verbosity = 'high'\n/\n&system\n/\nATOMIC_SPECIES\n  Co 58.933 Co.upf\nK_POINTS crystal_b\n  3\n  0.0 0.0 0.0 80\n  0.5 0.0 0.0 80\n  0.0 0.0 0.5 1\n"
+    let gd = deck_from_text("good_bands.in", good_bands)
+    let g01_good = guard_bands_verbosity(gd)
+    if g01_good.sev != SEV_PASS { println("  FAIL self: G01 good-bands expected PASS got " + _sev_tag(g01_good.sev)); fails = fails + 1 }
+    else { println("  ok: G01 good bands (verbosity present, #k>=100) PASS") }
+
+    // broken bands deck: 161 k-points, NO verbosity -> G01 FAIL (the cosn bug)
+    let bad_bands = "&control\n  calculation = 'bands'\n/\n&system\n/\nATOMIC_SPECIES\n  Co 58.933 Co.upf\nK_POINTS crystal_b\n  3\n  0.0 0.0 0.0 80\n  0.5 0.0 0.0 80\n  0.0 0.0 0.5 1\n"
+    let bd = deck_from_text("bad_bands.in", bad_bands)
+    let g01_bad = guard_bands_verbosity(bd)
+    if g01_bad.sev != SEV_FAIL { println("  FAIL self: G01 bad-bands expected FAIL got " + _sev_tag(g01_bad.sev)); fails = fails + 1 }
+    else { println("  ok: G01 CAUGHT missing verbosity at #k>=100 (FAIL)") }
+
+    // mass=0 -> G02 FAIL
+    let mass0 = "&control\n  calculation='scf'\n/\nATOMIC_SPECIES\n  Co 0.0 Co.upf\n  Sn 118.71 Sn.upf\nK_POINTS automatic\n  4 4 4 0 0 0\n"
+    let m0 = deck_from_text("mass0.in", mass0)
+    let g02 = guard_atomic_mass_zero(m0)
+    if g02.sev != SEV_FAIL { println("  FAIL self: G02 expected FAIL got " + _sev_tag(g02.sev)); fails = fails + 1 }
+    else { println("  ok: G02 CAUGHT zero mass (FAIL)") }
+
+    // wrong Co mass (12.011 carbon's, vs 58.933) -> G03 FAIL
+    let masswrong = "&control\n  calculation='scf'\n/\nATOMIC_SPECIES\n  Co 12.011 Co.upf\nK_POINTS automatic\n  4 4 4 0 0 0\n"
+    let mw = deck_from_text("masswrong.in", masswrong)
+    let g03 = guard_atomic_mass_wrong(mw)
+    if g03.sev != SEV_FAIL { println("  FAIL self: G03 expected FAIL got " + _sev_tag(g03.sev)); fails = fails + 1 }
+    else { println("  ok: G03 CAUGHT wrong element mass (FAIL)") }
+
+    // correct masses -> G03 PASS
+    let massok = "&control\n  calculation='scf'\n/\nATOMIC_SPECIES\n  Co 58.933 Co.upf\n  Sn 118.71 Sn.upf\nK_POINTS automatic\n  4 4 4 0 0 0\n"
+    let mok = deck_from_text("massok.in", massok)
+    let g03ok = guard_atomic_mass_wrong(mok)
+    if g03ok.sev != SEV_PASS { println("  FAIL self: G03 ok expected PASS got " + _sev_tag(g03ok.sev)); fails = fails + 1 }
+    else { println("  ok: G03 correct masses PASS") }
+
+    // smearing SCF with no aids -> G05 WARN
+    let noaids = "&control\n  calculation='scf'\n/\n&system\n  occupations='smearing'\n  smearing='mp'\n/\n&electrons\n/\nATOMIC_SPECIES\n  Mg 24.305 Mg.upf\nK_POINTS automatic\n  4 4 4 0 0 0\n"
+    let na = deck_from_text("noaids.in", noaids)
+    let g05 = guard_d15_scf_aids(na)
+    if g05.sev != SEV_WARN { println("  FAIL self: G05 expected WARN got " + _sev_tag(g05.sev)); fails = fails + 1 }
+    else { println("  ok: G05 CAUGHT missing d15 SCF aids (WARN)") }
+
+    // el-ph ph.in with no gate -> G06 WARN
+    let elph = "&inputph\n  prefix='x'\n  ldisp=.true.\n  electron_phonon='simple'\n/\n"
+    let ep = deck_from_text("/tmp/__deck_lint_nodir__/ph.in", elph)
+    let g06 = guard_ph_stability_gate(ep)
+    if g06.sev != SEV_WARN { println("  FAIL self: G06 expected WARN got " + _sev_tag(g06.sev)); fails = fails + 1 }
+    else { println("  ok: G06 CAUGHT el-ph deck with no stability gate (WARN)") }
+
+    // non-ASCII .in -> G07 FAIL (em-dash U+2014, embedded literally)
+    let nonascii = "&control\n  ! MgB2 — pilot\n  calculation='scf'\n/\n"
+    let nax = deck_from_text("nonascii.in", nonascii)
+    let g07 = guard_ascii_only(nax)
+    if g07.sev != SEV_FAIL { println("  FAIL self: G07 expected FAIL got " + _sev_tag(g07.sev)); fails = fails + 1 }
+    else { println("  ok: G07 CAUGHT non-ASCII byte (FAIL)") }
+
+    if fails > 0 { println("# self-test FAILED (" + str(fails) + ")"); exit(1) }
+    println("# deck_lint self-test PASS")
+}
+
+// ── main ──────────────────────────────────────────────────────────────────
+
+fn _usage() {
+    println("hexa deck lint — QE/DFT deck-discipline validator (self-improving guard registry)")
+    println("  hexa run sim/deck_lint.hexa <deck.in> [<deck2.in> ...]   lint deck file(s)")
+    println("  hexa run sim/deck_lint.hexa <deck-dir/>                  lint every *.in in a dir")
+    println("  hexa run sim/deck_lint.hexa --guards                     list registered guards")
+    println("  hexa run sim/deck_lint.hexa --self-test                  run built-in good/broken cases")
+}
+
+// is `path` a directory? (file_exists is true for dirs too; list_dir on a
+// regular file returns empty, so we treat a non-empty list_dir AND a non-.in
+// path as a directory. cheap + good enough for the CLI.)
+fn _is_dir(path: str) -> bool {
+    if path.ends_with(".in") { return false }
+    let xs = list_dir(path)
+    return len(xs) > 0
+}
+
+// the `.in` deck files directly under `dir` (sorted by list_dir order).
+fn _in_files(dir: str) -> [str] {
+    let out: [str] = []
+    let xs = list_dir(dir)
+    let mut i = 0
+    while i < len(xs) {
+        if xs[i].ends_with(".in") { out.push(_join(dir, xs[i])) }
+        i = i + 1
+    }
+    return out
+}
+
+fn main() {
+    let av = args()
+    if len(av) < 2 { _usage(); return }
+    let first = av[1]
+
+    if first == "--guards" || first == "guards" {
+        println("# registered deck-lint guards (add a guard = one fn + one all_guards() line):")
+        let cat = _guard_catalogue()
+        let mut i = 0
+        while i < len(cat) { println("  " + cat[i]); i = i + 1 }
+        return
+    }
+    if first == "--self-test" || first == "self-test" {
+        _self_test()
+        return
+    }
+    if first == "--help" || first == "-h" || first == "help" {
+        _usage(); return
+    }
+
+    // expand any directory argument to its *.in deck files, then lint each;
+    // exit 1 if ANY deck hits a FAIL.
+    let targets: [str] = []
+    let mut a = 1
+    while a < len(av) {
+        let path = av[a]
+        if _is_dir(path) {
+            let ins = _in_files(path)
+            if len(ins) == 0 { println("(no *.in deck files under " + path + ")") }
+            let mut j = 0
+            while j < len(ins) { targets.push(ins[j]); j = j + 1 }
+        } else {
+            targets.push(path)
+        }
+        a = a + 1
+    }
+
+    let mut worst = SEV_PASS
+    let mut i = 0
+    while i < len(targets) {
+        let path = targets[i]
+        if !file_exists(path) {
+            println("== deck lint: " + path)
+            println("   [FAIL] -- file not found")
+            worst = SEV_FAIL
+            i = i + 1
+            continue
+        }
+        let d = deck_load(path)
+        let w = lint_deck(d)
+        if w > worst { worst = w }
+        i = i + 1
+    }
+    if worst == SEV_FAIL {
+        println("RESULT: FAIL — do NOT dispatch (fix the FAIL guard(s) first · d16)")
+        exit(1)
+    }
+    if worst == SEV_WARN {
+        println("RESULT: WARN — review advisories, then dispatch is allowed")
+        return
+    }
+    println("RESULT: PASS — deck(s) clear the discipline gates")
+}

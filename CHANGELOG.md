@@ -8,6 +8,14 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-17
 
+### `hexa deck` 검증기 MVP — 덱규율 self-improving 가드 레지스트리 (`sim/deck_lint.hexa`)
+- 이번 세션 손작성 QE 덱 버그 다발(verbosity·mass·pseudo·d15·d6)을 코드로 박제하는 **검증기**를 신설. 빌더(빵틀 `hexa-lang stdlib/deck/gen.hexa`)는 이미 있었고, 없던 건 *내용 규율 린터* — 그 갭을 채움.
+- **self-improving 설계(핵심)**: 덱 트러블 발생 → 재발방지 가드를 한 줄(`fn guard_<slug>` + `all_guards()` push)로 추가하는 확장형 레지스트리. `--self-test` 가 good/broken 케이스로 각 가드 검증(@ci_gate). README(`sim/DECK_LINT.md`)에 "새 트러블 → 새 가드" 워크플로우 명시. 덱규율 SSOT.
+- **시드 가드 7개**: G01 bands `verbosity='high'`@#k≥100(FAIL) · G02 zero mass(FAIL) · G03 wrong element mass(FAIL) · G04 pseudo-not-found(WARN·d13) · G05 d15 SCF aids(WARN) · G06 el-ph 동적안정 게이트(WARN·d6) · G07 QE-FoX non-ASCII 크래시(FAIL).
+- **검증(c2 — 자가판정 아님, 출력)**: ① 실버그 `exports/rtsc/decks/cosn/bands.in` 린트 → **G01 FAIL 정확 포착**(band-path 161 k-points 계산: 40×4+1, verbosity 누락) + 보너스 G07(Γ–K–M 주석 non-ASCII) 적발. ② 클린 덱 `CaH6_NC/scf.in` → all-PASS(pseudo 2개 staged 확인). ③ `--self-test` 9-단언 PASS. ④ G01 scope=bands/nscf 한정(relax/scf 오탐 0 · c9 정직).
+- d4 generic(후보명 하드코딩 0 · QE directive/card 키잉) · pure+network-free(read_file/file_exists/list_dir만). dft_run d16 dry-run 게이트의 *앞단*(더 싼 정적 게이트). 진입점 `hexa run sim/deck_lint.hexa <deck.in|deck-dir>`.
+- ARCHITECTURE.json `sim` 노드에 `deck-lint` 자식 등록.
+
 ### `d_demi_always` 거버넌스 추가 — 모든 설계·아키텍처는 `hexa demi` 7-verb 경유 (필수)
 - CLAUDE.md 거버넌스에 `d_demi_always` 추가: 설계/아키텍처/도메인 구조 작업은 항상 `hexa demi`(명세→구조→설계→해석⟲→합성→검증→인계) 경유. 합성⑤=ARCHITECTURE.json(SSOT) · 검증⑥=harness verify · 인계⑦=ARCHITECTURE.json/.html. 실행("어떻게")=`/sbs` / 상류 설계("무엇을")=demi. (hexa demi 7-verb 개선 자체는 별도 PR 진행.)
 
