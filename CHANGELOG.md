@@ -6,6 +6,16 @@ For the full audit trail, see `git log`.
 
 ---
 
+## 2026-06-17
+
+### QFORGE 갭-클로징 fleet 3-lane 라운드 완결 (정직 — 1 닫힘 · 2 검증된 벽)
+- **fleet 발사**: QFORGE-FEATURE/PERF 실측 백로그에서 진짜 갭 3개를 동시 lane(hexa-lang worktree 격리·frozen-first)으로 닫음.
+- **qforge-perf-gpu 🟢🏁 PERF 갭 닫힘**: GPU "size에서 안 빠름" 근본원인 = H·Ψ를 밴드별 GEMV로 쪼개 매 iter H 전체 재전송 → **배치 GEMM(H@Ψ) 하나로 묶어** davidson+sternheimer 실솔버 hot-path에 배선. 풀-솔브 **1.34–18.04×(Davidson)/2.56–18.6×(Sternheimer)** RTX5070(summer 무료), 머신-eps parity, 전 selftest PASS. PR hexa-lang#3442. 정직 floor: small-nocc(nb4–8) ~1.3–2.6×(전송 바운드).
+- **qforge-magmom 🧱 벽 재국소화(정정)**: CoSn m≈0이 모호했던 진짜 원인 = 모든 fixture가 LOCAL-only 의사퍼텐셜(KB 비국소 projector OFF, Co d-채널 미결합). KB-nonlocal 켜니 d-shell 결합되나 Γ 모먼트 여전히 ≈0 → **진짜 벽=k-샘플링(BZ-적분 Stoner), PW-cutoff 아님**; finite-k davidson 처리량이 천장 → GPU-davidson이 레버(perf lane이 인프라 제공). PR hexa-lang#3447. memory [[qforge-cosn-co3d-pw-compute-wall]] 정정.
+- **qforge-pbe-scf 🧱 from-scratch gate-grade = 확정벽**: ≤1% 게이트를 모든 DFT-함수 레버로 미달(R7 screened 5.12% 최저·R8 GGA f_xc closed-neg·PBE-SCF 퇴행). 3-D-PBE 바닥상태는 계산 성공(residual-3 해결, singular-BCC miller 버그 fix). process-split(gga_scf→H 체크포인트→2nd 프로세스 vertex)이 farr/val-arena 힙충돌은 우회했으나 λ 여전히 미측정 — **두 벽**: ① 3-D-PBE near-degenerate 점유다양체 → Sternheimer projected-CG SIGSEGV(QE식 축퇴처리 필요) ② gate-grade ecut(n≈645) mini OOM ~10GB. λ 날조 0(d6). production=모드(b) 하이브리드 1.65e-7 유지·migration_gate HELD. branch hexa-lang `qforge/pbe-scf-vertex`(2ae4e7aff, 미머지).
+- **ARCHITECTURE.json**: `engines.QFORGE.fleet_2026_06_16` 3-lane 종결 상태로 갱신(pbe-scf in-flight→🧱), `updated`=2026-06-17.
+- RTSC 컴퓨트 lane(LaRu3Si2/LaOs3Si2 DFPT λ/Tc · 무압 3포드 안정성)은 별도 in-flight — 착륙 시 별도 폴드.
+
 ## 2026-06-16
 
 ### 전 캠페인 결과 ARCHITECTURE.json 통합 — JSON 트리 = 단일 항해 SSOT (c4·c5·c9)
