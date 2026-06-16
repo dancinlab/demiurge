@@ -8,6 +8,11 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### MATH-SPECTRA probe3 — 플랫밴드 CLS 중복도의 mod-q / gcd(L,q) 정합성 일반화 (M5, 🔴 정수론 부재 종결·전 플랫밴드족)
+- **사전등록(frozen-first, c16·c9, 로컬 무료)**: probe2 의 mod-2 패리티가 고불균형·r:1 격자에서 mod-q / gcd(L,q) 로 일반화되는가? dice/T₃(허브+림), 일반 Lieb-n(n=2,3,4 변 삽입), 장식·세분 checkerboard 를 L×L 주기경계 토러스로 numpy 정확대각화(`eigvalsh`, tol 1e-9), μ(L,n) 산출. **예측: 유계 gcd 정합성(≤q 개 유한상수), 심층 산술 부재(모듈러형식·소수민감성 없음) → 🔴 negative.**
+- **결과(정수 수열)**: dice/T₃ μ=[1,4,13,16,25,40,49,64,85,100,121,148] (q_min=3 잔여류 분할, 3류 모두 선두항 L² 공유, 오프셋 {0,0,4} 유계); Lieb-2 μ=[0,2,0,6,…] (q_min=2: 홀 L→0 영모드 없음, 짝 L→2L−2 — **체인길이 n 과 무관한 mod-2**); Lieb-3 μ=L²+2 단일 2차(q_min=1, 정합성 불필요); Lieb-4 μ=[0,2,0,6,…] **Lieb-2 와 동일 mod-2** (a-priori n+1 주기는 지배하지 않음 확인); 장식 checkerboard μ=[2,8,10,16,…] (플랫레벨 −1/+1 교대, q_min=2 양 패리티 4L+{0,−2}).
+- **정직 판정(🔴 closed-negative · 전 플랫밴드족 종결)**: 모든 격자에서 μ(L) 은 단일 초등다항식이거나 **최소주기 q_min** 의 잔여류 분할(각 류 동일·소실 선두항의 초등다항식, **유계 상수 오프셋** = L mod q_min 의 주기함수 = gcd(L,q_min) 의 함수). 구별류 ≤ q_min (L-성장 없음), 소수 L 은 일반 coprime-to-q_min 류와 구별 불가(**소수 무신호**). **정직 정정 vs 사전등록**: 지배주기는 격자의 **기하·이분 주기 q_min**(이분체인은 체인길이 무관 2, dice 는 3)이지 순진한 a-priori 체인주기 n+1 이 아님 — mod-q 정합성 **성격은 정확히 예측**, 특정 q 만 기하적. probe2 mod-2 패리티의 일반화일 뿐, 더 깊은 것 없음. **선그래프+이분불균형 전 플랫밴드족의 숨은 정수론 질문 종결.** 박제 `exports/math-spectra/probe3_modq_structure.json`, RTSC_LEDGER `MATH-SPECTRA-probe3`. M5 종결. (재사용: probe2 `build_adjacency` 일반 디스패치·`count_flat`·`_exact_poly`, d19)
+
 ### MATH-SPECTRA probe2 — 플랫밴드 CLS 중복도의 정수론 구조 탐색 (M4, 🔴 정수론 부재 + 🟢 정리 검증)
 - **사전등록(frozen-first, c16·c9, 로컬 무료)**: kagome/checkerboard/Lieb/pyrochlore 격자를 L×L(×L) 주기경계 토러스로 numpy 인접행렬 정확대각화(`eigvalsh`, tol 1e-9), 플랫레벨 중복도 μ(L) 수열 산출 + 선그래프·Lieb 정리 대조.
 - **결과(정수 수열)**: kagome μ=L²+1 (=벌집 base graph 1차 베티수 E−V+1) 단일 2차다항식 — **선그래프 플랫밴드 정리 검증**; pyrochlore μ=2L³+1 (=다이아몬드 base 베티수) 단일 3차다항식 — **3D 검증**; checkerboard μ=L²(홀 L)/L²+1(짝 L), Lieb μ=L²(홀 L)/L²+2(짝 L) — **mod-2 패리티 분할**(Sutherland |N_A−N_B|=L²는 홀 L에서만 성립). 플랫매니폴드↔분산밴드 간격 깨끗(검증).
