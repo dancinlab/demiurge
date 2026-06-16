@@ -1,0 +1,22 @@
+{
+  "material": "LaOs3Si2",
+  "_status": "FIRED — DFPT el-ph running on summer FREE pool; numbers below to be filled at harvest",
+  "structure": "CeCo3B2-type Os-kagome, hexagonal P6/mmm (No.191), ibrav=4, nat=6 ntyp=3 (La 1a triangular z=0; Os 3g KAGOME z=1/2; Si 2c honeycomb z=0). 2nd flat-band-at-E_F winner (GREEN).",
+  "relaxed_lattice": {"alat_bohr": 10.59910, "c_over_a": 0.66989, "dE_eV": 0.089, "m_uB": 0.00, "source": "per-sibling vc-relax CONFIRMED"},
+  "method": "QE DFPT (ph.x) electron_phonon='simple' double-delta a2F; PBE NC ONCV (La/Os z16/Si); ecutwfc=90 ecutrho=360 Ry; MP smearing degauss=0.02 Ry; nspin=1 (NM ground state confirmed by gate, m=0). Os mass=190.23 (real).",
+  "qmesh": "2x2x2 (ldisp, Gamma-centered irreducible set) — matches LaRu3Si2 reference",
+  "kmesh": {"scf": "12x12x12", "elph_fine_double_delta": "16x16x16"},
+  "stability_precheck": "q2r (zasr=crystal) -> matdyn (asr=crystal) at 8 commensurate q-pts -> scan laos3si2.freq for imaginary modes BEFORE trusting Tc (d6).",
+  "n_ef": null,
+  "lambda": null,
+  "omega_log_K": null,
+  "tc_ad_mu010_K": null,
+  "tc_ad_mu013_K": null,
+  "imaginary_modes": null,
+  "dominant_modes": null,
+  "compare_laru3si2": "head-to-head at SAME 2x2x2 q / 16^3 k to test: does flat-band-at-E_F -> anomalously high lambda?",
+  "host": "summer (FREE pool, no GPU rent), np 6 --bind-to none, OMP=1",
+  "log": "summer:~/laos3si2_dfpt.log",
+  "cost_usd": 0,
+  "caveats": ["2x2x2 q is coarse; absolute Tc is grid-limited — the LaRu3Si2 same-grid comparison is the load-bearing result.", "honest (c9): a modest kagome-value lambda is a valid finding, not a failure."]
+}

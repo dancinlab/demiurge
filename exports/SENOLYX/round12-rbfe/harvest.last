@@ -1,0 +1,5 @@
+harvested 215 ENS_RESULT lines
+17AG (n=5): complex=47.41±2.06 solvent=72.64±0.09 ssc=-0.21 -> ABFE=25.02±2.06
+17AAG (n=5): complex=41.78±1.94 solvent=63.87±0.17 ssc=-0.21 -> ABFE=21.88±1.95
+ΔΔG = +3.13 ± 2.83  (exp -1.9; sign WRONG)
+|err vs exp| = 5.03  ->  R12 FAIL (gate |err|<=1.5)

@@ -10,6 +10,10 @@ For the full audit trail, see `git log`.
 
 ### MATH-SPECTRA probe6 — 2D 준결정(Ammann-Beenker) gap-labeling 🟠 INCONCLUSIVE (lane 🏁)
 - 1D 호(probe1~5) 완성 후 2D 확장 시도: octagonal cut-and-project tight-binding(953정점 패치)으로 2D 실버 모듈 (a+b√2)/8 gap-labeling 검증. **결과 🟠**: 유한 패치가 유한크기 준위간격(8.83e-3) 위로 명확한 주요 간극 미해상(n_sig=0) → 결정적 2D 모듈 적합 불가, 강제 안 함(c9). 구성은 건전(평균 배위 3.83). 돌파경로(deferred): 4D 초격자 박스 확대/팔각 윈도우 샤프닝/inflation. agent가 서버측 rate-limit로 최종보고 직전 사망 → 산출물 워크트리에서 회수+재실행 검증(c2, fleet §4) 후 박제. RTSC_LEDGER `MATH-SPECTRA-probe6`. **MATH-SPECTRA lane 🏁**: 1D 산술-스펙트럼 지도 완전차트(음성 플랫밴드/ζ + 양성 준결정 Perron모듈), 2D는 inconclusive-deferred.
+### RTSC LaOs3Si2 DFPT λ/Tc 발사 — 2번째 평탄밴드 승자 e-ph 승격 (summer 무료풀, FIRED·미수확)
+- **2번째 flat-band-at-E_F 승자 LaOs3Si2(🟢 vc-relax 확정: alat=10.59910 bohr, c/a=0.66989, ΔE=+0.089, m=0.00)를 DFPT el-ph로 승격** — LaRu3Si2 DFPT 레시피 미러. 질문: flat-band-at-E_F → 이상고 λ인가? (정직 c9: kagome 수준 modest λ도 유효 결과).
+- **레시피**: scf nspin=1(NM 확정, m=0 → 비스핀이 정확+저렴) 12×12×12 k, ecutwfc=90/ecutrho=360, MP degauss=0.02, conv 1e-12 → ph.x electron_phonon='simple' 2×2×2 q(LaRu3Si2 동일격자) + 16³ fine-k 더블델타 → q2r → **matdyn asr='crystal' 동역학 안정성 사전점검(d6/ScH9·YH6 교훈: 허수모드 0 확인 후에야 λ/Tc 신뢰)** → lambda.x Allen-Dynes Tc(μ*=0.10/0.13). Os 질량 실제값 190.23 보정.
+- **d16 무료 dry-run PASS**(summer 1-iter pw.x: 6원자/41 KS state, ecut=90 정상 SCF). **summer 무료풀에 setsid 디태치 발사**(np 6 --bind-to none, pw.x=0이던 idle 노드 전체 점유, GPU rent 없음, $0). 자기로깅 `~/laos3si2_dfpt.log`. **수확 대기**: λ/Tc·안정성 점검 결과는 el-ph 완료 후 별도 라운드. 덱 박제 `exports/rtsc/decks/laos3si2_dfpt/`, JSON `exports/rtsc/laos3si2_dft_elph.json`(FIRED status), fire/note `scripts/scratch/qforge_harvest/laos3si2_dfpt_{fire.sh,note.md}`.
 
 ### RTSC 위상 sweep 종결 — checkerboard 🔴 + 메타결론(위상≠실현, d-kagome가 레버)
 - **checkerboard Os-O 🔴**: Lieb와 동일하게 E_F 근처 평평 띠 없음(Os-O 혼성 분산), m=0.00. **2/2 이상화 Os-O 위상 실현이 같은 혼성벽으로 실패**.
