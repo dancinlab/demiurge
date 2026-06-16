@@ -173,12 +173,13 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - ✅ QE 대체는 임시 우회가 아니라 정직한 production reference (d_qforge_parallel·migration gate와 일관) — 결과는 QE-grade로 박제, QFORGE는 게이트 후 absorb
 - ⛔ QFORGE fix가 길다고 캠페인을 멈춰 세우기 · QE 대체만 하고 QFORGE fix를 뒤로 미뤄 잊기 · 바로 고칠 수 있는 걸 우회로 덮기
 
-### d_demi_always — 모든 설계·아키텍처 작업은 `hexa demi` 7-verb 척추를 통과 (필수)
+### d_deck_always — 모든 컴퓨트 입력덱은 `hexa deck`(빌더+검증)을 통과 (필수)
 
-- ✅ "무엇을/어떤 구조로 만들지"(설계·아키텍처·도메인 구조·새 컴포넌트/도메인 추가) 작업은 **항상 `hexa demi`(= `harness demi`)** 7-verb 파이프라인으로 진행 — 명세→구조→설계→해석⟲→합성→검증→인계
-- ✅ 합성(⑤)은 **ARCHITECTURE.json**(JSON-트리 SSOT) 갱신, 검증(⑥)은 `harness verify`(티어 루브릭) 경유, 인계(⑦)는 ARCHITECTURE.json/.html(`python3 serve.py`)
-- ✅ raw curl/임시 메모/애드혹 설계문서 대신 demi 척추 우선 (commons c12 `harness demi` 강제와 일관) — 실행("어떻게")은 `/sbs`, 상류 설계("무엇을")는 `hexa demi`
-- ⛔ 설계 결정을 demi 척추 밖에서 굳히기 · ARCHITECTURE.md(은퇴) 산문에 합성 · ⑥ 검증을 LLM 자가판정으로 대체
+- ✅ DFT/QE el-ph 컴퓨트 입력덱(scf · ph · vc-relax · bands · matdyn 등)은 **항상 `hexa deck`(빌드+검증)** 으로 생성/검증 — 손수 `.in` 작성 금지(이번 세션 손작성 버그 다발: bands verbosity='high' 누락[#k≥100]·원자질량 오기[Os 190.23]·vc-relax 미수렴·d15 SCF aids 누락)
+- ✅ `hexa deck` 은 hard-won 덱규율을 코드로 박제: 정확한 원자질량/의사퍼텐셜(d13 element 커버 grep) · bands verbosity='high'(#k≥100) · 금속/소갭 SCF aids(d15: smear+damp+lshift) · **d16 1-iter dry-run 검증 FREE on pool 후 발사** · DFPT el-ph 전 **d6 동적안정 사전체크**(matdyn 허수모드 0)
+- ✅ 덱은 `decks/`(루트 입력덱) · `exports/rtsc/decks/` 에 박제(c5 보존) · raw curl/애드혹 손작성 대신 `hexa deck` 우선(commons c12 harness-first 일관)
+- ✅ **트러블슈팅 발생 시 → 그 예방처리(가드/체크/기본값)를 `hexa deck`에 즉시 박제** — 덱 관련 버그·실패를 한 번 겪으면 그 재발방지 규칙을 도구에 코드로 넣어 **같은 버그 재발 0** (hexa deck = self-improving 덱규율 SSOT; 매 트러블슈팅이 새 가드를 낳는다)
+- ⛔ 검증 안 된 손작성 덱을 billing 포드에 발사(d16 위반) · 원자질량/pseudo/verbosity/SCF-aid 누락된 덱 · 동적불안정 셀에 el-ph 발사(FLEET-DIAGNOSTIC 낭비) · **덱 버그를 일회성으로 고치고 `hexa deck`에 가드 안 박기**(재발 방치)
 
 ## 워크플로우 (workflow)
 
