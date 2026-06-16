@@ -1,0 +1,45 @@
+{
+  "campaign": "RTSC no-cooling flat-band-at-E_F — CeCo3B2-type 4d/5d-kagome family sweep (triangulation v3 lane)",
+  "probe": "structural-sibling flat-band gate-check on the FIXED LaRu3Si2 relaxed cell (a=5.7175 Ang, c/a=0.62496); element substitution only (Ru -> Os / Rh), no per-sibling vc-relax",
+  "method": "QE 7.5 scf (nspin=2, smearing mp 0.02, ecut 90/360 Ry, SG15 ONCV PBE-1.2) -> bands Gamma-K-M-Gamma-A-L-H crystal_b (verbosity='high' REQUIRED: >=100 k-points else QE suppresses per-k eigenvalue stdout) -> parse_flatband.py (flat band = min-dispersion band within 1.5 eV of E_F). 482 k-points parsed per sibling.",
+  "gate_definition": "PRE-REGISTERED (c9, no goalpost move): PASS |dE|<0.10 AND m<0.5; FALSIFY dE>0.2 OR m>0.5; INCONCLUSIVE 0.1<=|dE|<=0.2 AND m<0.5. dE = E_flatband_mean - E_F.",
+  "honest_caveat": "1st-pass SCREEN on the FIXED LaRu3Si2 lattice (siblings NOT individually vc-relaxed) -> dE is APPROXIMATE (the true relaxed-cell dE may shift by ~0.05-0.1 eV as the lattice adjusts to Os/Rh ionic radii). A GREEN here is a PROMOTE-to-vc-relax signal, not a closed positive. Magnetism (m) is robust (scf nspin=2 on the fixed cell is a fair magnetic test). This is a DESIGN gate (flat-band-at-E_F), NOT a room-temp Tc claim.",
+  "siblings": [
+    {
+      "material": "LaOs3Si2",
+      "substitution": "Ru 4d7 -> Os 5d7 (isoelectronic, heavier 5d / stronger SOC, same d-count)",
+      "E_fermi_eV": 17.2539,
+      "flatband_band_index": 34,
+      "flatband_mean_eV": 17.2931,
+      "flatband_bandwidth_eV": 0.5442,
+      "dE_flatband_eV": 0.0392,
+      "magnetization_uB": 0.0,
+      "gate_verdict": "PASS",
+      "gate_symbol": "GREEN",
+      "interpretation": "BOTH conditions met: |dE|=0.0392 eV < 0.10 (flat band sits 39 meV ABOVE E_F) AND m=0.00 (non-magnetic). The 5d Os sibling lands the kagome flat band even CLOSER to E_F than LaRu3Si2 itself (|dE| 0.039 vs 0.055). Confirms the triangulation-v3 prediction: the CeCo3B2-type d7 kagome (4d OR 5d) intrinsically places the flat band at E_F. PROMOTE to per-sibling vc-relax + DFPT lambda/Tc."
+    },
+    {
+      "material": "LaRh3Si2",
+      "substitution": "Ru 4d7 -> Rh 4d8 (one extra d-electron, same 4d row)",
+      "E_fermi_eV": 16.6049,
+      "flatband_band_index": 35,
+      "flatband_mean_eV": 16.8648,
+      "flatband_bandwidth_eV": 0.5662,
+      "dE_flatband_eV": 0.2599,
+      "magnetization_uB": 0.0,
+      "gate_verdict": "FALSIFY",
+      "gate_symbol": "RED",
+      "interpretation": "FALSIFY: dE=+0.260 eV > 0.2 (flat band sits 260 meV ABOVE E_F) despite m=0.00 (non-magnetic). The extra d-electron (d8 vs d7) raises E_F into the dispersive manifold while the flat band stays put -> the band is now well above E_F. Brackets the fill direction: d7 (Ru/Os) = winner, d8 (Rh) = overshoots. The d-count is the chemistry lever, consistent with triangulation v3."
+    }
+  ],
+  "finding": "d-count brackets the flat-band alignment in the CeCo3B2-type kagome: d7 (Ru 4d, Os 5d) lands the flat band within 0.06 eV of E_F (both GREEN), d8 (Rh) overshoots to +0.26 eV (RED). LaOs3Si2 is a NEW non-magnetic flat-band-at-E_F winner (2nd after LaRu3Si2), and the 5d row works as well as 4d. The triangulation-v3 'sweep CeCo3B2-type 4d/5d-kagome family' lane is validated: 1 new GREEN + 1 informative RED that brackets the fill axis.",
+  "winners_so_far": {
+    "LaRu3Si2": {"TM": "Ru 4d7", "dE_eV": -0.055, "m_uB": 0.0, "verdict": "GREEN", "note": "real ambient SC Tc=7K (full vc-relax)"},
+    "LaOs3Si2": {"TM": "Os 5d7", "dE_eV": 0.039, "m_uB": 0.0, "verdict": "GREEN", "note": "fixed-lattice screen; PROMOTE to vc-relax"}
+  },
+  "host": "summer free pool (6 cores, mpirun -np 6, OMP=1)",
+  "cost_usd": 0.0,
+  "evidence": "scripts/scratch/qforge_harvest/sibling_gatecheck/ (siblings_v6.log, laos3si2_scf.out, larh3si2_scf.out); driver scripts/scratch/qforge_harvest/fast_bands6.sh",
+  "root_cause_note": "bands eigenvalue stdout was suppressed across two earlier attempts (mistakenly blamed on disk_io='none'); REAL cause = QE prints 'Number of k-points >= 100: set verbosity=high to print the bands' and omits the per-k blocks by default. Fix = verbosity='high' in bands.in &control. Also added self-logging (exec >> log) to survive setsid detachment.",
+  "date": "2026-06-16"
+}

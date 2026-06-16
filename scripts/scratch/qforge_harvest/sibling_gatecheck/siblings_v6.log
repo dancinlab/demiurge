@@ -1,0 +1,30 @@
+#### V6 laos3si2 2026. 06. 16. (화) 09:32:21 KST ####
+-- scf laos3si2 --
+     absolute magnetization    =     0.00 Bohr mag/cell
+-- bands laos3si2 (verbosity high) --
+JOBDONE=1 kpts=482
+== laos3si2 GATE ==
+E_F = 17.2539 eV ; parsed nk=482 kpoints, nb=80 bands
+
+--- flat-band candidates (bandwidth<0.6 eV, within 1.5 eV of E_F) ---
+ band   mean_eV   bw_eV  dE=mean-EF
+   34   17.2931  0.5442      0.0392
+
+>>> SELECTED Ru-kagome flat band: band#34, mean=17.2931 eV, bandwidth=0.5442 eV, dE = +0.0392 eV
+>>> |dE| = 0.0392 eV -> gate (dE axis): PASS (GREEN)
+#### V6 larh3si2 2026. 06. 16. (화) 09:57:43 KST ####
+-- scf larh3si2 SKIP (out/ exists) --
+     absolute magnetization    =     0.00 Bohr mag/cell
+-- bands larh3si2 (verbosity high) --
+JOBDONE=1 kpts=482
+== larh3si2 GATE ==
+E_F = 16.6049 eV ; parsed nk=482 kpoints, nb=80 bands
+
+--- flat-band candidates (bandwidth<0.6 eV, within 1.5 eV of E_F) ---
+ band   mean_eV   bw_eV  dE=mean-EF
+   37   17.4875  0.4329      0.8826
+   35   16.8648  0.5662      0.2599
+
+>>> SELECTED Ru-kagome flat band: band#35, mean=16.8648 eV, bandwidth=0.5662 eV, dE = +0.2599 eV
+>>> |dE| = 0.2599 eV -> gate (dE axis): FALSIFY (RED, dE>0.2)
+=== V6 DONE 2026. 06. 16. (화) 10:11:42 KST ===
