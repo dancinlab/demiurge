@@ -173,6 +173,13 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - ✅ QE 대체는 임시 우회가 아니라 정직한 production reference (d_qforge_parallel·migration gate와 일관) — 결과는 QE-grade로 박제, QFORGE는 게이트 후 absorb
 - ⛔ QFORGE fix가 길다고 캠페인을 멈춰 세우기 · QE 대체만 하고 QFORGE fix를 뒤로 미뤄 잊기 · 바로 고칠 수 있는 걸 우회로 덮기
 
+### d_demi_always — 모든 설계·아키텍처 작업은 `hexa demi` 7-verb 척추를 통과 (필수)
+
+- ✅ "무엇을/어떤 구조로 만들지"(설계·아키텍처·도메인 구조·새 컴포넌트/도메인 추가) 작업은 **항상 `hexa demi`(= `harness demi`)** 7-verb 파이프라인으로 진행 — 명세→구조→설계→해석⟲→합성→검증→인계
+- ✅ 합성(⑤)은 **ARCHITECTURE.json**(JSON-트리 SSOT) 갱신, 검증(⑥)은 `harness verify`(티어 루브릭) 경유, 인계(⑦)는 ARCHITECTURE.json/.html(`python3 serve.py`)
+- ✅ raw curl/임시 메모/애드혹 설계문서 대신 demi 척추 우선 (commons c12 `harness demi` 강제와 일관) — 실행("어떻게")은 `/sbs`, 상류 설계("무엇을")는 `hexa demi`
+- ⛔ 설계 결정을 demi 척추 밖에서 굳히기 · ARCHITECTURE.md(은퇴) 산문에 합성 · ⑥ 검증을 LLM 자가판정으로 대체
+
 ## 워크플로우 (workflow)
 
 PAPER auto-generation flow — atlas-as-audit-SSOT lineage (`research result → hexa verify pass → atlas atom direct fold → /paper`).

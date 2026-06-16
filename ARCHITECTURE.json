@@ -379,7 +379,8 @@
           ],
           "in_flight": "AcBeH8 (Fm-3m BeH8 clathrate, vast 41193096) · CaB3C3 (Pm-3n B-C clathrate, NO hydrogen, vast 41193571) · LaB3C3 (Pm-3n, La e-doped, vast 41194736) — all 🟠 IN-FLIGHT QE stability-gate (vc-relax→scf→ph no-elph→q2r→matdyn→count imaginary modes); el-ph deferred until 0 imaginary modes confirmed. CaB3C3 = best ambient-stability bet (covalent B-C σ framework, no soft H cage).",
           "anchors": "CaH6 (255K) · LaH10 · Li2MgH16 (8-q coarse: λ=5.79 · ω_log=741K · Tc_AD≈158–164K, UNDER-CONVERGED vs literature 473K, d6 honest not forced) — terminal QE el-ph feeding the QFORGE mode-(b) assembler. H3S (195K) · YH10 (216K, λ=2.82, Tc 215.9/227.5K) all HIGH-PRESSURE, NOT ambient.",
-          "qforge_fs_lane": "QFORGE from-scratch λ lane (AcBeH8/CaB3C3/LaB3C3) 🟠 BLOCKED (upstream): qpw_parse_geometry only supports ibrav=3, ambient cells are ibrav=1/2; patch WRITTEN+VERIFIED but cannot hold in contended ~/.hx/src → must land via hexa-lang PR. d_qforge_fix: QE production lane is the advancing reference; QFORGE-fs deferred to upstream PR, NOT a result."
+          "qforge_fs_lane": "QFORGE from-scratch λ lane (AcBeH8/CaB3C3/LaB3C3) 🟠 BLOCKED (upstream): qpw_parse_geometry only supports ibrav=3, ambient cells are ibrav=1/2; patch WRITTEN+VERIFIED but cannot hold in contended ~/.hx/src → must land via hexa-lang PR. d_qforge_fix: QE production lane is the advancing reference; QFORGE-fs deferred to upstream PR, NOT a result.",
+          "ambient_clathrate_3_update_2026_06_17": "AcBeH8·CaB3C3·LaB3C3 동적안정 게이트 🟠 INCONCLUSIVE-deferred: vc-relax 렌트-포드 미수렴 + 재개 2회 사망 → 안정성 미판정(날조X c9), 3포드 down(idle 과금 중단). X₂MH₆(mg2irh6·li2cuh6) 🔴 ambient-unstable 별도 확정. 돌파=견고한 vc-relax 재시도."
         },
         "d_strategic": {
           "title": "(d) strategic standing",
