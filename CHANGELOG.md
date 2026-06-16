@@ -8,6 +8,11 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### RTSC LaOs3Si2 DFPT λ/Tc 발사 — 2번째 평탄밴드 승자 e-ph 승격 (summer 무료풀, FIRED·미수확)
+- **2번째 flat-band-at-E_F 승자 LaOs3Si2(🟢 vc-relax 확정: alat=10.59910 bohr, c/a=0.66989, ΔE=+0.089, m=0.00)를 DFPT el-ph로 승격** — LaRu3Si2 DFPT 레시피 미러. 질문: flat-band-at-E_F → 이상고 λ인가? (정직 c9: kagome 수준 modest λ도 유효 결과).
+- **레시피**: scf nspin=1(NM 확정, m=0 → 비스핀이 정확+저렴) 12×12×12 k, ecutwfc=90/ecutrho=360, MP degauss=0.02, conv 1e-12 → ph.x electron_phonon='simple' 2×2×2 q(LaRu3Si2 동일격자) + 16³ fine-k 더블델타 → q2r → **matdyn asr='crystal' 동역학 안정성 사전점검(d6/ScH9·YH6 교훈: 허수모드 0 확인 후에야 λ/Tc 신뢰)** → lambda.x Allen-Dynes Tc(μ*=0.10/0.13). Os 질량 실제값 190.23 보정.
+- **d16 무료 dry-run PASS**(summer 1-iter pw.x: 6원자/41 KS state, ecut=90 정상 SCF). **summer 무료풀에 setsid 디태치 발사**(np 6 --bind-to none, pw.x=0이던 idle 노드 전체 점유, GPU rent 없음, $0). 자기로깅 `~/laos3si2_dfpt.log`. **수확 대기**: λ/Tc·안정성 점검 결과는 el-ph 완료 후 별도 라운드. 덱 박제 `exports/rtsc/decks/laos3si2_dfpt/`, JSON `exports/rtsc/laos3si2_dft_elph.json`(FIRED status), fire/note `scripts/scratch/qforge_harvest/laos3si2_dfpt_{fire.sh,note.md}`.
+
 ### RTSC 위상 sweep 종결 — checkerboard 🔴 + 메타결론(위상≠실현, d-kagome가 레버)
 - **checkerboard Os-O 🔴**: Lieb와 동일하게 E_F 근처 평평 띠 없음(Os-O 혼성 분산), m=0.00. **2/2 이상화 Os-O 위상 실현이 같은 혼성벽으로 실패**.
 - **메타결론(🧱 Os-O 실현벽 · 위상은 건전)**: 그래프-위상 생성기(v4)는 *추상 tight-binding*에선 플랫밴드를 보장하나, 실제 *재료*가 flat-band-at-E_F를 실현하려면 **약혼성 + 올바른 채움 + 비자성**이 필요. **증명됨**: d-궤도 kagome(LaRu3Si2 Ru-4d·LaOs3Si2 Os-5d 🟢) — 약혼성으로 d-kagome 플랫밴드가 평평+E_F 유지. **실패**: 이상화 Os-O Lieb+checkerboard(2/2) — O-bridge 강혼성으로 분산. **결론: 위상=필요조건(밴드 존재 보장), 실현(약혼성·채움·비자성)=실제 레버. 승리 레시피 = d-kagome CeCo3B2 패밀리**(임의 line-graph 산화물 아님). 돌파경로(c16): Lieb/checkerboard를 약혼성 사이트(국소 d/f·넓은 스페이서 s)로 재실현 = 새 덱 설계 quest(deferred; dice/T3를 Os-O로 또 쏘는 건 같은 벽 반복이라 회피). 박제 RTSC_LEDGER `Checkerboard-OsO-topology`+`TOPOLOGY-SWEEP-META`(83행).
