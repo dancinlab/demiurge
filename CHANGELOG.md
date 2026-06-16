@@ -16,6 +16,11 @@ For the full audit trail, see `git log`.
 - d4 generic(후보명 하드코딩 0 · QE directive/card 키잉) · pure+network-free(read_file/file_exists/list_dir만). dft_run d16 dry-run 게이트의 *앞단*(더 싼 정적 게이트). 진입점 `hexa run sim/deck_lint.hexa <deck.in|deck-dir>`.
 - ARCHITECTURE.json `sim` 노드에 `deck-lint` 자식 등록.
 
+### 정정: `d_demi_always` → `d_deck_always` (사용자 정정 — demi 아닌 deck 의도)
+- 직전 `d_demi_always`(설계는 hexa demi)는 사용자 단어 착오 기반 → **`d_deck_always`로 교체**: 모든 컴퓨트 입력덱(QE scf/ph/vc-relax/bands)은 `hexa deck`(빌더+검증) 경유, 손작성 `.in` 금지. 세션 덱버그(verbosity='high' 누락·Os질량 오기·vc-relax 미수렴·d15 aids 누락·불안정셀 el-ph)를 도구에 박제.
+- **self-improving 규칙**: 트러블슈팅 발생 시 그 예방처리(가드/체크)를 hexa deck에 즉시 박제 → 같은 버그 재발 0. (hexa deck 빌더+검증 MVP 구축은 별도 PR 진행.)
+- 잘못된 타깃 demi 개선 PR #656 닫음(미머지, 브랜치 보존) · agent worktree 제거.
+
 ### `d_demi_always` 거버넌스 추가 — 모든 설계·아키텍처는 `hexa demi` 7-verb 경유 (필수)
 - CLAUDE.md 거버넌스에 `d_demi_always` 추가: 설계/아키텍처/도메인 구조 작업은 항상 `hexa demi`(명세→구조→설계→해석⟲→합성→검증→인계) 경유. 합성⑤=ARCHITECTURE.json(SSOT) · 검증⑥=harness verify · 인계⑦=ARCHITECTURE.json/.html. 실행("어떻게")=`/sbs` / 상류 설계("무엇을")=demi. (hexa demi 7-verb 개선 자체는 별도 PR 진행.)
 
