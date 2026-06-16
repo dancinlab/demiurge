@@ -8,6 +8,14 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### RTSC no-cooling flat-band — CeCo3B2형 형제 게이트체크 (LaOs3Si2 🟢 / LaRh3Si2 🔴) + summer 디스크 38G 회수
+- **삼각측량 v3 레인 검증**: 도핑축 죽음 후 연 "CeCo3B2형 R-T₃-X₂ 4d/5d-kagome 패밀리 스윕"의 첫 형제 2개를 **무료 summer 풀**에서 게이트체크(고정 LaRu3Si2 격자·치환만·1차 스크린, c9 근사 caveat).
+  - **LaOs3Si2 (Os 5d⁷) 🟢 GATE PASS** — ΔE=+0.039 eV(E_F 위 39 meV) AND m=0.00 μB. **2번째 플랫밴드-at-E_F 승자**(LaRu3Si2 ΔE=−0.055 다음), 5d가 4d만큼 작동하고 |ΔE|는 오히려 더 작음. → per-sibling vc-relax + DFPT 승격 대상.
+  - **LaRh3Si2 (Rh 4d⁸) 🔴 FALSIFY** — ΔE=+0.260 eV(>0.2) m=0.00. d⁸(전자 +1)이 E_F를 분산 매니폴드로 밀어올려 플랫밴드가 +0.26 eV 위로. **채움축 bracket 확정: d⁷=승자, d⁸=overshoot** → d-count가 화학 레버(v3 확증).
+  - 박제: `exports/rtsc/cosn_sibling_gatecheck.json` + RTSC_LEDGER 2행(73행) + 증거 `scripts/scratch/qforge_harvest/sibling_gatecheck/`.
+- **근본수정 3단(c1·c16)**: bands 고유값 stdout 누락 — disk_io=none(헛다리)·깨끗한 bands(헛다리) 거쳐 **진짜 원인 = QE의 "k점 ≥100이면 verbosity=high 없이 고유값 출력 생략"** 발견 → `verbosity='high'` 주입. + setsid detach 로그유실은 스크립트 **자체 로깅(`exec >> log`)**으로 해결. 드라이버 `scripts/scratch/qforge_harvest/fast_bands6.sh`.
+- **summer 디스크 정리**: 100%(5.7G)→96%(43G), **누적 38G 회수**. 내 RTSC 컴퓨트 스크래치의 QE 파동함수 out/(재생성 가능)만 삭제(.out/.in 증거 보존) + pycache/재생성 캐시. 타 캠페인(anima 310G·bg 148G·rbfe 138G) 미터치(cross-project 보호).
+
 ### SENOLYX ABFE — 운영자(드라이버) 실수 방지 (demi 7-verb · probe.sh + 런북 + 메모리)
 - 캠페인을 모는 동안 반복한 **에이전트-측 운영 실수 5종**(D1~D5)을 근본 차단. F1~F10이 컴퓨트 파이프라인이라면 이건 드라이버 워크플로우.
 - **`probe.sh <manifest> <workdir>` 신규** — heredoc-fed 루프 + ssh `</dev/null` + 명시 필드분리 + bash-3.2 호환. 손으로 짠 `while read`+ssh 루프가 매번 (a)stdin 잠식→첫 pod만 (b)`set -- $hp` arg-split (c)`mapfile` 부재로 깨지던 것 차단. R13 9셀 전수 폴링으로 검증(c2).
