@@ -1,23 +1,23 @@
 {
-  "id": "RTSC-AMBIENT-CaB3C3",
-  "material": "CaB3C3",
-  "formula": "CaB3C3",
-  "pressure_GPa": 0,
-  "nat": 14,
-  "prototype": "Pm-3n (#223) MB3C3 boron-carbon clathrate (MgB2-like covalent, NO hydrogen)",
-  "stages_done": [
-    "vc-relax (in-flight)"
-  ],
-  "verdict_tier": "\ud83d\udfe0 IN-FLIGHT (stability-gate)",
-  "verdict": "PENDING",
-  "imaginary_mode_count": null,
-  "lambda": null,
-  "Tc_K": null,
-  "qforge_xval": null,
-  "deck_path": "exports/rtsc/decks/CaB3C3_ambient",
-  "pod": "41193571 (ssh3.vast.ai:33570)",
-  "cost_usd": "vast CPU ~$0.13/hr",
-  "frozen_prediction": "BORDERLINE-to-STABLE @ 0 GPa (covalent B-C sigma framework, no soft H cage; Zhu/Strobel arXiv:1708.03483 recoverable toward 1 atm). Best ambient-stability bet of the set. No Tc claimed pre-DFT. FALSIFIER: hard imaginary modes (<-50 cm-1) -> \ud83d\udd34.",
-  "date": "2026-06-16",
-  "note": "QE stability-gate lane FIRED (vc-relax->scf->ph DFPT no-elph->q2r->matdyn->count imag modes). el-ph deferred until 0 imaginary modes confirmed (FLEET-DIAGNOSTIC lesson). QFORGE from-scratch parallel lane (light hydride/B-C, pw_frontend ibrav-fix landed) running separately."
+ "id": "RTSC-AMBIENT-CaB3C3",
+ "material": "CaB3C3",
+ "formula": "CaB3C3",
+ "pressure_GPa": 0,
+ "nat": 14,
+ "prototype": "Pm-3n (#223) MB3C3 boron-carbon clathrate (MgB2-like covalent, NO hydrogen)",
+ "stages_done": [
+  "vc-relax (stalled — not converged on rented infra)"
+ ],
+ "verdict_tier": "🟠 INCONCLUSIVE (deferred)",
+ "verdict": "AMBIENT stability INCONCLUSIVE — vc-relax did not converge to JOB DONE on the rented vast pod (BFGS stalled mid-relaxation, gradient high); two agent resume attempts died on infra/API errors. Pod DOWNED 2026-06-17 to stop idle cost. NOT a stability verdict (neither stable nor unstable established) — honest deferred (c9), NOT faked. Breakthrough path: more robust vc-relax (tighter mixing/more BFGS steps / variable-cell damped-MD) on a fresh pod, or local free-pool when available.",
+ "imaginary_mode_count": null,
+ "lambda": null,
+ "Tc_K": null,
+ "qforge_xval": null,
+ "deck_path": "exports/rtsc/decks/CaB3C3_ambient",
+ "pod": "41193571 (downed)",
+ "cost_usd": "vast CPU ~$0.13/hr",
+ "frozen_prediction": "BORDERLINE-to-STABLE @ 0 GPa (covalent B-C sigma framework, no soft H cage; Zhu/Strobel arXiv:1708.03483 recoverable toward 1 atm). Best ambient-stability bet of the set. No Tc claimed pre-DFT. FALSIFIER: hard imaginary modes (<-50 cm-1) -> 🔴.",
+ "date": "2026-06-16",
+ "note": "QE stability-gate lane FIRED (vc-relax->scf->ph DFPT no-elph->q2r->matdyn->count imag modes). el-ph deferred until 0 imaginary modes confirmed (FLEET-DIAGNOSTIC lesson). QFORGE from-scratch parallel lane (light hydride/B-C, pw_frontend ibrav-fix landed) running separately."
 }

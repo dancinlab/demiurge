@@ -1,23 +1,23 @@
 {
-  "id": "RTSC-AMBIENT-AcBeH8",
-  "material": "AcBeH8",
-  "formula": "AcBeH8",
-  "pressure_GPa": 0,
-  "nat": 10,
-  "prototype": "Fm-3m (SG225) BeH8 clathrate, Ac guest",
-  "stages_done": [
-    "vc-relax (in-flight)"
-  ],
-  "verdict_tier": "\ud83d\udfe0 IN-FLIGHT (stability-gate)",
-  "verdict": "PENDING",
-  "imaginary_mode_count": null,
-  "lambda": null,
-  "Tc_K": null,
-  "qforge_xval": null,
-  "deck_path": "exports/rtsc/decks/AcBeH8_ambient",
-  "pod": "41193096 (ssh9.vast.ai:33096)",
-  "cost_usd": "vast CPU 72-core ~$0.13/hr",
-  "frozen_prediction": "LIKELY UNSTABLE @ 0 GPa (H-cage wants pressure; source arXiv:2411.19028 reports Tc 181K only @ 10 GPa). FALSIFIER: 0 imaginary modes @ 0 GPa over 2x2x2 q-grid -> survives -> el-ph.",
-  "date": "2026-06-16",
-  "note": "QE stability-gate lane FIRED (vc-relax->scf->ph DFPT no-elph->q2r->matdyn->count imag modes). el-ph deferred until 0 imaginary modes confirmed (FLEET-DIAGNOSTIC lesson). QFORGE from-scratch parallel lane (light hydride/B-C, pw_frontend ibrav-fix landed) running separately."
+ "id": "RTSC-AMBIENT-AcBeH8",
+ "material": "AcBeH8",
+ "formula": "AcBeH8",
+ "pressure_GPa": 0,
+ "nat": 10,
+ "prototype": "Fm-3m (SG225) BeH8 clathrate, Ac guest",
+ "stages_done": [
+  "vc-relax (stalled — not converged on rented infra)"
+ ],
+ "verdict_tier": "🟠 INCONCLUSIVE (deferred)",
+ "verdict": "AMBIENT stability INCONCLUSIVE — vc-relax did not converge to JOB DONE on the rented vast pod (BFGS stalled mid-relaxation, gradient high); two agent resume attempts died on infra/API errors. Pod DOWNED 2026-06-17 to stop idle cost. NOT a stability verdict (neither stable nor unstable established) — honest deferred (c9), NOT faked. Breakthrough path: more robust vc-relax (tighter mixing/more BFGS steps / variable-cell damped-MD) on a fresh pod, or local free-pool when available.",
+ "imaginary_mode_count": null,
+ "lambda": null,
+ "Tc_K": null,
+ "qforge_xval": null,
+ "deck_path": "exports/rtsc/decks/AcBeH8_ambient",
+ "pod": "41193096 (downed)",
+ "cost_usd": "vast CPU 72-core ~$0.13/hr",
+ "frozen_prediction": "LIKELY UNSTABLE @ 0 GPa (H-cage wants pressure; source arXiv:2411.19028 reports Tc 181K only @ 10 GPa). FALSIFIER: 0 imaginary modes @ 0 GPa over 2x2x2 q-grid -> survives -> el-ph.",
+ "date": "2026-06-16",
+ "note": "QE stability-gate lane FIRED (vc-relax->scf->ph DFPT no-elph->q2r->matdyn->count imag modes). el-ph deferred until 0 imaginary modes confirmed (FLEET-DIAGNOSTIC lesson). QFORGE from-scratch parallel lane (light hydride/B-C, pw_frontend ibrav-fix landed) running separately."
 }

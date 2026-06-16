@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-17
 
+### `d_demi_always` 거버넌스 추가 — 모든 설계·아키텍처는 `hexa demi` 7-verb 경유 (필수)
+- CLAUDE.md 거버넌스에 `d_demi_always` 추가: 설계/아키텍처/도메인 구조 작업은 항상 `hexa demi`(명세→구조→설계→해석⟲→합성→검증→인계) 경유. 합성⑤=ARCHITECTURE.json(SSOT) · 검증⑥=harness verify · 인계⑦=ARCHITECTURE.json/.html. 실행("어떻게")=`/sbs` / 상류 설계("무엇을")=demi. (hexa demi 7-verb 개선 자체는 별도 PR 진행.)
+
+### 무압 클라스레이트 3종 안정성 게이트 — 🟠 INCONCLUSIVE-deferred + 포드 down (정직·비용규율)
+- AcBeH8(293K@1atm BeH8)·CaB3C3·LaB3C3 동적안정 게이트: vc-relax가 렌트 vast 포드(41193096/41193571/41194736)에서 **미수렴**(BFGS stall mid-relax) + 재개 에이전트 2회 인프라/API 사망 → **안정성 미판정**(stable도 unstable도 미확립). 3포드 **down**(`--force`, idle 과금 수시간 출혈 중단). 정직 deferred(c9, 날조 0) — 돌파=견고한 vc-relax(damped-MD/타이트 mixing) 재시도. X₂MH₆ Fm-3m(mg2irh6·li2cuh6)는 별도 🔴 ambient-unstable 확정 유지. RTSC_LEDGER 93행.
+
 ### QFORGE 갭-클로징 fleet 3-lane 라운드 완결 (정직 — 1 닫힘 · 2 검증된 벽)
 - **fleet 발사**: QFORGE-FEATURE/PERF 실측 백로그에서 진짜 갭 3개를 동시 lane(hexa-lang worktree 격리·frozen-first)으로 닫음.
 - **qforge-perf-gpu 🟢🏁 PERF 갭 닫힘**: GPU "size에서 안 빠름" 근본원인 = H·Ψ를 밴드별 GEMV로 쪼개 매 iter H 전체 재전송 → **배치 GEMM(H@Ψ) 하나로 묶어** davidson+sternheimer 실솔버 hot-path에 배선. 풀-솔브 **1.34–18.04×(Davidson)/2.56–18.6×(Sternheimer)** RTX5070(summer 무료), 머신-eps parity, 전 selftest PASS. PR hexa-lang#3442. 정직 floor: small-nocc(nb4–8) ~1.3–2.6×(전송 바운드).
