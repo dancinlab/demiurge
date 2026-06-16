@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### RTSC LaOs3Si2 🟢 vc-relax 확정 — 1차스크린 GREEN이 완전완화 후에도 GREEN
+- 고정 LaRu3Si2 격자 1차스크린(ΔE=+0.039 🟢)을 **per-sibling vc-relax**로 확정: Os 반지름으로 셀 완전완화(alat=10.599 bohr, c/a=0.670) 후 재게이트 → **ΔE=+0.0886 eV(여전히 <0.10 GREEN), m=0.00 비자성, 밴드폭 0.544→0.411 eV(더 평평)**. 1차근사 GREEN이 격자완화에도 살아남음 — LaOs3Si2(Os 5d⁷ CeCo3B2)는 견고한 **2번째 플랫밴드-at-E_F 승자**(LaRu3Si2 다음), 5d가 4d만큼 작동 확정. 박제: RTSC_LEDGER `LaOs3Si2-vcrelax`(79행) + `scripts/scratch/qforge_harvest/sibling_gatecheck/laos3si2_vcrelax.log`. 다음(비용게이트): DFPT λ/Tc 승격(vast rent OR summer 무료 슬롯, go 필요).
+
 ### MATH-SPECTRA probe3 — 플랫밴드 CLS 중복도의 mod-q / gcd(L,q) 정합성 일반화 (M5, 🔴 정수론 부재 종결·전 플랫밴드족)
 - **사전등록(frozen-first, c16·c9, 로컬 무료)**: probe2 의 mod-2 패리티가 고불균형·r:1 격자에서 mod-q / gcd(L,q) 로 일반화되는가? dice/T₃(허브+림), 일반 Lieb-n(n=2,3,4 변 삽입), 장식·세분 checkerboard 를 L×L 주기경계 토러스로 numpy 정확대각화(`eigvalsh`, tol 1e-9), μ(L,n) 산출. **예측: 유계 gcd 정합성(≤q 개 유한상수), 심층 산술 부재(모듈러형식·소수민감성 없음) → 🔴 negative.**
 - **결과(정수 수열)**: dice/T₃ μ=[1,4,13,16,25,40,49,64,85,100,121,148] (q_min=3 잔여류 분할, 3류 모두 선두항 L² 공유, 오프셋 {0,0,4} 유계); Lieb-2 μ=[0,2,0,6,…] (q_min=2: 홀 L→0 영모드 없음, 짝 L→2L−2 — **체인길이 n 과 무관한 mod-2**); Lieb-3 μ=L²+2 단일 2차(q_min=1, 정합성 불필요); Lieb-4 μ=[0,2,0,6,…] **Lieb-2 와 동일 mod-2** (a-priori n+1 주기는 지배하지 않음 확인); 장식 checkerboard μ=[2,8,10,16,…] (플랫레벨 −1/+1 교대, q_min=2 양 패리티 4L+{0,−2}).
