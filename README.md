@@ -18,7 +18,12 @@
 > RTSC frontier (2026-06-16): no-cooling flat-band track — **LaRu3Si2 🟢 GATE
 > PASS** (campaign-first: measured ΔE=−0.055 eV AND m=0.00 μB, beats all 3
 > failure modes; flat-band-at-E_F DESIGN gate — not room-temp, real Tc=7K) →
-> next DFPT λ/Tc (q=3 in flight). MoSn 🔴 (ΔE=−2.38). CoSn rigid-doping 🔴 양방향
+> **DFPT λ/Tc 수확(2026-06-17): 🔴 2×2×2 동적불안정** — 허수모드 11개(비-Γ 진짜
+> 소프트 6개, min −77 cm⁻¹) → 절대 λ/Tc 신뢰불가(d6). NAIVE(lambda.x 관례) λ=−0.34/Tc=0;
+> PHYSICAL(허수제외) λ=1.64·ω_log=56.3K·Tc(μ*0.10)=6.96K·Tc(μ*0.13)=6.40K(실측7K 일치하나
+> 11모드 폐기 소프트상한). flat-band→λ 답: 큰 el-ph 드라이브 정황(λ~1.6)이나 같은
+> 소프트함이 거친 q-격자 불안정화 → 4×4×4 q로 아티팩트vs CDW 판별 필요. LaOs3Si2
+> head-to-head PENDING. MoSn 🔴 (ΔE=−2.38). CoSn rigid-doping 🔴 양방향
 > CLOSED. 삼각측량 v3: 도핑축 죽음 → 새 lane = CeCo3B2-type 4d/5d-kagome 패밀리
 > 스윕(LaRu3Si2 형제). **형제 게이트체크 착지(2026-06-16, 고정격자 1차스크린): LaOs3Si2
 > (Os 5d⁷) 🟢 ΔE=+0.039 m=0.00 = 2번째 flat-band-at-E_F 승자 [vc-relax 확정: 완화 ΔE=+0.089<0.10 GREEN 유지] · LaRh3Si2 (Rh 4d⁸) 🔴

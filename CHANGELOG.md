@@ -16,6 +16,16 @@ For the full audit trail, see `git log`.
 - **ARCHITECTURE.json**: `engines.QFORGE.fleet_2026_06_16` 3-lane 종결 상태로 갱신(pbe-scf in-flight→🧱), `updated`=2026-06-17.
 - RTSC 컴퓨트 lane(LaRu3Si2/LaOs3Si2 DFPT λ/Tc · 무압 3포드 안정성)은 별도 in-flight — 착륙 시 별도 폴드.
 
+### RTSC 핵심 수확 — LaRu3Si2 DFPT λ/Tc (flat-band→λ 테스트) · 🔴 2×2×2 동적불안정 (정직 d6/c9)
+- **수확**: vast 포드 41069486에서 LaRu3Si2 DFPT el-ph(QE 7.5 ph.x `electron_phonon='simple'`, 2×2×2 q 4-irreducible, 16³ fine-k, PHONON WALL 22h59m, WRAPPER_EXIT=0) 완주 수확. DOS(E_F)=35.4078 states/spin/Ry, E_F=16.1099 eV.
+- **안정성 FIRST(d6 게이트)**: dyn1~4 전 주파수 스캔 → **허수모드 11개**. dyn1(Γ): 3개(−29.7/−29.7/−21.0 cm⁻¹)=음향-Γ ASR 아티팩트(설명가능). **dyn2/3/4(비-Γ q): 6개 진짜 소프트모드** — dyn2 q=(0,0,−0.800) −77.1/−70.2/−70.2, dyn3 −44.2/−35.5, dyn4 −61.5 cm⁻¹. **min freq −77.14 cm⁻¹**. ph.x가 각 허수모드에 lambda(ν)<0 출력(과제가 짚은 lambda(1)=−0.1241@dyn4 = q4 진짜 소프트모드, **음향-Γ 아티팩트 아님**). → **🔴 동적불안정 = 절대 λ/Tc 신뢰불가**.
+- **λ/ω_log/Tc 조립**(lambda.x가 'simple' 모드 per-q DOS 6번째 소수점 드리프트(35.407786 vs 35.407780)로 `inconsistent DOS(Ef) read` abort → lambda.x 동일 Allen-Dynes 알고리즘을 q-star 가중(w=[1,1,3,3])으로 직접 조립):
+  - **NAIVE(lambda.x 관례, 전 모드 합)**: λ=**−0.339**(허수모드가 −1.98 기여, 비물리), Tc=0 — 불안정 격자가 무의미한 Tc를 주는 이유.
+  - **PHYSICAL(허수모드 제외, 안정 7모드만)**: λ=**1.639**, ω_log=**56.3 K**(39.15 cm⁻¹), **Tc(μ*0.10)=6.96 K · Tc(μ*0.13)=6.40 K** — 실측 7K와 일치하나 11모드 폐기 = 소프트 상한, 수렴값 아님.
+- **flat-band→λ 답(정직 c9/d6)**: PHYSICAL λ=1.64는 강결합 영역(flat-band N(E_F)=35.4 부스트 일관)이고 Tc~7K가 실재료와 일치 → flat band가 큰 el-ph 드라이브를 만든다는 정황. 그러나 **같은 소프트함이 2×2×2 거친 q-그리드에서 kagome 격자를 불안정화** → 'flat-band → 비정상 고-λ' 깨끗한 주장은 아직 미성립. 소프트모드는 kagome 금속의 거친-q 그리드-앨리어싱 가능성.
+- **돌파경로(d2)**: 4×4×4 q DFPT로 소프트모드 경화(아티팩트→λ~1.6 신뢰) vs 잔존(진짜 CDW) 판별. QFORGE xval은 보류(불안정 손상 데이터 조립은 정보 무가치).
+- **폴드**: `exports/rtsc/laru3si2_dft_elph.json`(전사 verbatim) · `RTSC_LEDGER.jsonl` LaRu3Si2-DFPT 행 추가(92행 검증) · `ARCHITECTURE.json` `campaigns.RTSC.branches.b_dfpt_lambda_tc` LaRu3Si2 PENDING→수확결과(LaOs3Si2 head-to-head 여전히 PENDING). 포드 SAVE_POD 유지.
+
 ## 2026-06-16
 
 ### 전 캠페인 결과 ARCHITECTURE.json 통합 — JSON 트리 = 단일 항해 SSOT (c4·c5·c9)
