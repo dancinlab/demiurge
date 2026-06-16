@@ -1,0 +1,14 @@
+acbeh8_amb STABILITY-GATE phonon (DFPT, no el_ph) 2x2x2 q
+&inputph
+  prefix              = 'acbeh8_amb'
+  outdir              = './out'
+  fildyn              = 'acbeh8_amb.dyn'
+  ldisp               = .true.
+  nq1                 = 2
+  nq2                 = 2
+  nq3                 = 2
+  tr2_ph              = 1.0d-14
+  recover             = .true.
+  alpha_mix(1)        = 0.3
+  max_seconds         = 80000
+/

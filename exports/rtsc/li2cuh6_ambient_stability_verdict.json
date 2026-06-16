@@ -1,0 +1,23 @@
+{
+  "id": "RTSC-AMBIENT-li2cuh6",
+  "material": "Li2CuH6",
+  "formula": "Li2CuH6",
+  "pressure_GPa": 0,
+  "nat": 9,
+  "prototype": "Fm-3m X2MH6 (K2PtCl6-type), Cu d10",
+  "stages_done": ["vc-relax", "scf", "ph-DFPT q1-q2 (partial)"],
+  "verdict_tier": "🔴 CLOSED-NEGATIVE",
+  "verdict": "ambient-dynamically-unstable",
+  "imaginary_mode_count": "8 hard-imaginary modes; failed dynamical-stability gate 1 of 5",
+  "min_freq_cm1": -944.915,
+  "lambda": null,
+  "Tc_K": null,
+  "qforge_xval": null,
+  "deck_path": "decks/li2cuh6",
+  "pod": "none (promoted from existing data, NO new compute)",
+  "cost_usd": 0.0,
+  "frozen_prediction": "LIKELY UNSTABLE (prediction matched: cation-VEC=19 sweet-spot hypothesis FALSIFIED 2/2 with Mg2IrH6 at the dynamical-stability gate)",
+  "source_record": "exports/material_discovery/rtsc_li2cuh6_partial2q_elph_20260527.json",
+  "note": "TERMINAL promotion of an already-decided physics result (2nd X2MH6 Fm-3m falsification after Mg2IrH6). cation chemistry != lattice stability; K2PtCl6 Fm-3m prototype itself ambient-unstable. Breakthrough paths: P>0 scan, alternative prototype.",
+  "date": "2026-06-16"
+}
