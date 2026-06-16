@@ -1,16 +1,36 @@
 {
   "title": "demiurge — Architecture SSOT (JSON tree)",
-  "updated": "2026-06-16",
+  "updated": "2026-06-17",
   "ssot_note": "JSON=SSOT (AI/tool parse); humans view ARCHITECTURE.html. Prose mirror = ARCHITECTURE.md. Faithful transcription of ARCHITECTURE.md + README.md + CLAUDE.md + QFORGE/QFORGE.md — no invented nodes/numbers (commons c9).",
   "overview": "demiurge is a universal, hexa-native technical-design architecture program: it drives any engineering system through one 7-verb pipeline, with each field plugged in as a manifest-only domain (single generic dispatch, no per-domain code — governance d4). It is the meta-conductor: chip, accelerator, superconductor, spacecraft, and BCI 'desks' all live in one building. Two surfaces sit on the same pipeline: a Next.js web GUI (human surface) and a hexa-native CLI (AI-agent surface). Reusable implementation is owned by the sibling hexa-lang repo — demiurge is a typed-interface consumer, never an absorber (d3).",
-  "pipeline": ["spec", "structure", "design", "analyze⟲", "synthesize", "verify", "handoff"],
+  "pipeline": [
+    "spec",
+    "structure",
+    "design",
+    "analyze⟲",
+    "synthesize",
+    "verify",
+    "handoff"
+  ],
   "pipeline_note": "One generic 7-verb dispatch (manifest-driven, d4). CLI (cli/) and web GUI (web/) both traverse the same path.",
   "meta_conductor_chain": {
     "note": "rfc_004 §4 — typed seam contracts between passes. Upstream = hexa-lang (d17).",
     "chain": [
-      {"pass": "materials", "kind": "matter (upstream = hexa-lang)", "seam_out": "rfc_007 (materials→chip)"},
-      {"pass": "chip", "kind": "lead, deep", "seam_out": "rfc_008 (chip→component)"},
-      {"pass": "component", "kind": "D21 top-level — FEM/EM/thermal", "seam_out": null}
+      {
+        "pass": "materials",
+        "kind": "matter (upstream = hexa-lang)",
+        "seam_out": "rfc_007 (materials→chip)"
+      },
+      {
+        "pass": "chip",
+        "kind": "lead, deep",
+        "seam_out": "rfc_008 (chip→component)"
+      },
+      {
+        "pass": "component",
+        "kind": "D21 top-level — FEM/EM/thermal",
+        "seam_out": null
+      }
     ]
   },
   "nodes": [
@@ -74,9 +94,21 @@
       "path": "QFORGE/",
       "role": "Quantum-forge compute campaign (DFT electron-phonon, GRID-parallel) workspace. Engine-status SSOT = QFORGE/QFORGE.md §⭐. Honest standing (2026-06-15): QE = production reference, QFORGE migration gate HELD.",
       "children": [
-        {"id": "QFORGE-PROCESS", "path": "domains/", "role": "el-ph pipeline process metrology / bottleneck (run-time observation)."},
-        {"id": "QFORGE-PERF", "path": "domains/", "role": "GPU / algorithmic acceleration backlog (roofline · bench)."},
-        {"id": "QFORGE-FEATURE", "path": "domains/", "role": "Feature backlog to a standalone engine (correlation-XC · NVPTX · …)."}
+        {
+          "id": "QFORGE-PROCESS",
+          "path": "domains/",
+          "role": "el-ph pipeline process metrology / bottleneck (run-time observation)."
+        },
+        {
+          "id": "QFORGE-PERF",
+          "path": "domains/",
+          "role": "GPU / algorithmic acceleration backlog (roofline · bench)."
+        },
+        {
+          "id": "QFORGE-FEATURE",
+          "path": "domains/",
+          "role": "Feature backlog to a standalone engine (correlation-XC · NVPTX · …)."
+        }
       ]
     },
     {
@@ -148,13 +180,34 @@
     "Output = records under exports/ / .verdicts/; a terminal verified discovery becomes a paper under PAPER(S)/<slug> (gated: terminal verdict + significance)."
   ],
   "governance": [
-    {"id": "d3/d15/d17", "rule": "Implementation lives in one canonical home (hexa-lang); demiurge consumes only."},
-    {"id": "d4", "rule": "Single generic dispatch; instances are manifests, never hardcoded names in the generic layer."},
-    {"id": "d1/d5/d19", "rule": "Drive every non-wet-lab step to completed-form; absorbed=true ⇔ all non-wet-lab gates PASS."},
-    {"id": "d17", "rule": "Validated decks fire compute campaigns autonomously (no user gate on cost-bearing rent)."},
-    {"id": "d_deploy", "rule": "Web-GUI deploy stays user-approval-gated; compute autonomy unaffected."},
-    {"id": "d_parallel_first / d_qforge_parallel", "rule": "Parallel-first; GRID-parallel compute to the walltime floor."},
-    {"id": "d6", "rule": "First-principles physics breaks the ML training-distribution wall; never force a target number / present under-converged value (honest)."}
+    {
+      "id": "d3/d15/d17",
+      "rule": "Implementation lives in one canonical home (hexa-lang); demiurge consumes only."
+    },
+    {
+      "id": "d4",
+      "rule": "Single generic dispatch; instances are manifests, never hardcoded names in the generic layer."
+    },
+    {
+      "id": "d1/d5/d19",
+      "rule": "Drive every non-wet-lab step to completed-form; absorbed=true ⇔ all non-wet-lab gates PASS."
+    },
+    {
+      "id": "d17",
+      "rule": "Validated decks fire compute campaigns autonomously (no user gate on cost-bearing rent)."
+    },
+    {
+      "id": "d_deploy",
+      "rule": "Web-GUI deploy stays user-approval-gated; compute autonomy unaffected."
+    },
+    {
+      "id": "d_parallel_first / d_qforge_parallel",
+      "rule": "Parallel-first; GRID-parallel compute to the walltime floor."
+    },
+    {
+      "id": "d6",
+      "rule": "First-principles physics breaks the ML training-distribution wall; never force a target number / present under-converged value (honest)."
+    }
   ],
   "engines": {
     "QFORGE": {
@@ -214,7 +267,7 @@
       },
       "universal_axis": "Multi-scale extension (atoms · materials · bio · chem · chip · system) on a common core (plane-wave DFT + linear-response DFPT + stdlib/autograd·flame ML) with per-scale front-end + g5 verify-adapter (2026-06-07). materials = DONE (QE el-ph, GATE CLOSED); others new.",
       "fleet_2026_06_16": {
-        "note": "Three concurrent QFORGE-fleet lanes (2026-06-16). migration_gate = HELD throughout (production stays mode-(b) hybrid 1.65e-7).",
+        "note": "Three QFORGE-fleet lanes (2026-06-16/17) — ROUND COMPLETE: perf-gpu 🟢🏁 closed, magmom 🧱 (lever=GPU-davidson identified), pbe-scf 🧱 (from-scratch gate-grade confirmed wall). migration_gate=HELD throughout (production mode-(b) hybrid 1.65e-7).",
         "lanes": [
           {
             "id": "qforge-perf-gpu",
@@ -234,9 +287,9 @@
           {
             "id": "qforge-pbe-scf",
             "title": "from-scratch gate-grade PBE-SCF (process-split round)",
-            "status": "🟠 IN-FLIGHT (process-split)",
-            "detail": "From-scratch gate-grade (≤1%): R7 screened 5.12% best, R8 GGA f_xc-in-χ closed-neg, PBE-SCF regresses; 3-D-PBE ground state now COMPUTES (residual-3 resolved) but in-process λ SIGSEGVs (farr↔val-arena memory-model collision); final lever = process-split (gga_scf→H checkpoint→2nd process vertex). NOT terminal. Production stays mode-(b) hybrid 1.65e-7.",
-            "record": ".verdicts/qforge-pbe-scf-cah6/ · .verdicts/qforge-pbe-scf-align/ · .verdicts/qforge-3d-realspace-scf/ · .verdicts/qforge-cah6-gga-fxc-in-chi/"
+            "status": "🧱 WALL confirmed (terminal · lane depleted)",
+            "detail": "From-scratch gate-grade (≤1%) = CONFIRMED WALL on mini. Levers tried: R7 screened 5.12% (best), R8 GGA f_xc-in-χ closed-neg, PBE-SCF regresses, 3-D-PBE-vertex. The process-split (gga_scf→H checkpoint→2nd process vertex) DID sidestep the farr/val-arena heap collision (P1 writes 3-D-PBE H, P2 reads+davidson succeed), but λ STILL not measurable — TWO terminal walls: (1) numerics — 3-D-PBE ground state has a near-degenerate occupied manifold → Sternheimer projected-CG P_c(H−εₙ)P_c SIGSEGVs on the degenerate subspace (needs QE-style degenerate-subspace handling, non-trivial DFPT change); (2) compute — gate-grade ecut (n≈645) OOM-kills P1 (~10GB on mini). λ NOT forced (small-basis energy not converged −11.05→−15.12 Ha n16→n32, physically meaningless). Production stays mode-(b) hybrid 1.65e-7; migration_gate HELD.",
+            "record": ".verdicts/qforge-cah6-pbe-scf-vertex/ · .verdicts/qforge-pbe-scf-cah6/ · .verdicts/qforge-3d-realspace-scf/ · PR-branch hexa-lang qforge/pbe-scf-vertex (commit 2ae4e7aff, process-split checkpoint) · NOT merged (walled)"
           }
         ],
         "migration_gate": "HELD"
@@ -257,15 +310,43 @@
         "a_flat_band_at_EF": {
           "title": "(a) flat-band-at-E_F family — no-cooling DESIGN gate (not room-temp). Gate (pre-registered c9): PASS |ΔE|<0.10 eV AND m<0.5 μB; FALSIFY ΔE>0.2 OR m>0.5; ΔE=E_flatband_mean−E_F.",
           "winners": [
-            {"host": "LaRu3Si2 (Ru 4d⁷)", "verdict": "🟢 GATE PASS", "detail": "campaign-first: measured ΔE=−0.055 eV (Ru-kagome band 34, in-plane bw 0.365 eV) AND m=0.00 μB — beats all 3 failure modes simultaneously; real ambient Tc=7K. CeCo3B2-type P6/mmm, vc-relaxed a=5.7175 Å c/a=0.625. Next = DFPT λ/Tc promotion."},
-            {"host": "LaOs3Si2 (Os 5d⁷)", "verdict": "🟢 GATE PASS (vc-relax CONFIRMED)", "detail": "2nd winner: fixed-cell screen ΔE=+0.039 survives full relaxation (per-sibling vc-relax: relaxed ΔE=+0.089<0.10, m=0.00, bw 0.544→0.411 eV). 5d works as well as 4d."}
+            {
+              "host": "LaRu3Si2 (Ru 4d⁷)",
+              "verdict": "🟢 GATE PASS",
+              "detail": "campaign-first: measured ΔE=−0.055 eV (Ru-kagome band 34, in-plane bw 0.365 eV) AND m=0.00 μB — beats all 3 failure modes simultaneously; real ambient Tc=7K. CeCo3B2-type P6/mmm, vc-relaxed a=5.7175 Å c/a=0.625. Next = DFPT λ/Tc promotion."
+            },
+            {
+              "host": "LaOs3Si2 (Os 5d⁷)",
+              "verdict": "🟢 GATE PASS (vc-relax CONFIRMED)",
+              "detail": "2nd winner: fixed-cell screen ΔE=+0.039 survives full relaxation (per-sibling vc-relax: relaxed ΔE=+0.089<0.10, m=0.00, bw 0.544→0.411 eV). 5d works as well as 4d."
+            }
           ],
           "falsified": [
-            {"host": "LaRh3Si2 (Rh 4d⁸)", "verdict": "🔴 FALSIFY", "detail": "ΔE=+0.260 eV (260 meV above E_F), m=0.00; d⁸ overshoots E_F. d-count brackets the fill axis (d⁷=winner, d⁸=overshoot)."},
-            {"host": "MoSn (Mo 4d⁵ kagome)", "verdict": "🔴 FALSIFY", "detail": "ΔE=−2.38 eV (kagome flat band 2.4 eV BELOW E_F), m=0.00. Non-magnetic (Co→Mo killed magnetism) but flat band far from E_F."},
-            {"host": "CoSn (rigid e-/h-doping)", "verdict": "🔴 CLOSED both dials", "detail": "e-dope ΔE −0.445→−0.585 (slope −0.23 eV/e⁻) AND h-dope −0.445→−0.544; both push the Co-3d kagome flat band DEEPER from E_F; hole doping wakes magnetism m→0.63. 'Dope CoSn to E_F' axis MEASURED-dead/exhausted."},
-            {"host": "CsV3Sb5", "verdict": "🔴", "detail": "flat band +0.92 eV (overshoot failure mode)."},
-            {"host": "RbOs2O6", "verdict": "🟠", "detail": "flat-band-at-E_F WINS ΔE axis but PBE-magnetic robust (competing-order bottleneck); nonmag-DFPT pending."}
+            {
+              "host": "LaRh3Si2 (Rh 4d⁸)",
+              "verdict": "🔴 FALSIFY",
+              "detail": "ΔE=+0.260 eV (260 meV above E_F), m=0.00; d⁸ overshoots E_F. d-count brackets the fill axis (d⁷=winner, d⁸=overshoot)."
+            },
+            {
+              "host": "MoSn (Mo 4d⁵ kagome)",
+              "verdict": "🔴 FALSIFY",
+              "detail": "ΔE=−2.38 eV (kagome flat band 2.4 eV BELOW E_F), m=0.00. Non-magnetic (Co→Mo killed magnetism) but flat band far from E_F."
+            },
+            {
+              "host": "CoSn (rigid e-/h-doping)",
+              "verdict": "🔴 CLOSED both dials",
+              "detail": "e-dope ΔE −0.445→−0.585 (slope −0.23 eV/e⁻) AND h-dope −0.445→−0.544; both push the Co-3d kagome flat band DEEPER from E_F; hole doping wakes magnetism m→0.63. 'Dope CoSn to E_F' axis MEASURED-dead/exhausted."
+            },
+            {
+              "host": "CsV3Sb5",
+              "verdict": "🔴",
+              "detail": "flat band +0.92 eV (overshoot failure mode)."
+            },
+            {
+              "host": "RbOs2O6",
+              "verdict": "🟠",
+              "detail": "flat-band-at-E_F WINS ΔE axis but PBE-magnetic robust (competing-order bottleneck); nonmag-DFPT pending."
+            }
           ],
           "triangulation": {
             "v2_refuted": "v2 doping-dial premise (electron-dope CoSn ~0.4 e⁻/f.u. → flat band to E_F) REFUTED by measurement (e-dope/h-dope both deeper, wrong direction).",
@@ -282,8 +363,16 @@
         "c_ambient_superhydride": {
           "title": "(c) ambient / high-P superhydride branch (dynamical-stability gate then DFPT λ/Tc via QE)",
           "falsified": [
-            {"host": "Mg2IrH6 (X₂MH₆ Fm-3m)", "verdict": "🔴 CLOSED-negative", "detail": "ambient-dynamically-unstable: 48.1% of modes hard-imaginary across q1–q5, rep min freq ~−2230 cm⁻¹. 160K X₂MH₆ cation-VEC rule FALSIFIED at the dynamical-stability gate. absorbed=true (non-wet-lab gate decided)."},
-            {"host": "Li2CuH6 (X₂MH₆ Fm-3m, Cu d¹⁰)", "verdict": "🔴 CLOSED-negative", "detail": "ambient-dynamically-unstable: 8 hard-imaginary modes, min −944.9 cm⁻¹. 2nd X₂MH₆ Fm-3m falsification (cation-VEC sweet-spot 2/2 dead). K2PtCl6 Fm-3m prototype itself ambient-unstable. absorbed=true."}
+            {
+              "host": "Mg2IrH6 (X₂MH₆ Fm-3m)",
+              "verdict": "🔴 CLOSED-negative",
+              "detail": "ambient-dynamically-unstable: 48.1% of modes hard-imaginary across q1–q5, rep min freq ~−2230 cm⁻¹. 160K X₂MH₆ cation-VEC rule FALSIFIED at the dynamical-stability gate. absorbed=true (non-wet-lab gate decided)."
+            },
+            {
+              "host": "Li2CuH6 (X₂MH₆ Fm-3m, Cu d¹⁰)",
+              "verdict": "🔴 CLOSED-negative",
+              "detail": "ambient-dynamically-unstable: 8 hard-imaginary modes, min −944.9 cm⁻¹. 2nd X₂MH₆ Fm-3m falsification (cation-VEC sweet-spot 2/2 dead). K2PtCl6 Fm-3m prototype itself ambient-unstable. absorbed=true."
+            }
           ],
           "in_flight": "AcBeH8 (Fm-3m BeH8 clathrate, vast 41193096) · CaB3C3 (Pm-3n B-C clathrate, NO hydrogen, vast 41193571) · LaB3C3 (Pm-3n, La e-doped, vast 41194736) — all 🟠 IN-FLIGHT QE stability-gate (vc-relax→scf→ph no-elph→q2r→matdyn→count imaginary modes); el-ph deferred until 0 imaginary modes confirmed. CaB3C3 = best ambient-stability bet (covalent B-C σ framework, no soft H cage).",
           "anchors": "CaH6 (255K) · LaH10 · Li2MgH16 (8-q coarse: λ=5.79 · ω_log=741K · Tc_AD≈158–164K, UNDER-CONVERGED vs literature 473K, d6 honest not forced) — terminal QE el-ph feeding the QFORGE mode-(b) assembler. H3S (195K) · YH10 (216K, λ=2.82, Tc 215.9/227.5K) all HIGH-PRESSURE, NOT ambient.",
