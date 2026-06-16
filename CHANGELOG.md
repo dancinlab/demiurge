@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### RTSC 위상 sweep — Lieb Os-O 🔴 (위상≠실현: 혼성으로 FB 분산)
+- 삼각측량 v4 위상 생성기의 Lieb 격자(이분 2:1 = CuO₂ 동형) 게이트체크: 이상화 **Os-O Lieb**는 E_F 1.5 eV 이내에 평평한 띠 없음(Os-5d↔O 강혼성→would-be 플랫밴드 분산), m=0.00. **🔴 실현-특이적** — 위상정리상 플랫밴드는 존재하나 *이 재료 실현*이 두 직교 스크린 중 flatness에서 탈락(kagome Ru/Os는 약혼성으로 평평 유지·승리). 돌파경로(c16): 약혼성 실현(s-궤도/넓은 스페이서)으로 재시도 — checkerboard/dice 뒤로 deferred. 박제 RTSC_LEDGER `Lieb-OsO-topology`(80행).
+
 ### RTSC LaOs3Si2 🟢 vc-relax 확정 — 1차스크린 GREEN이 완전완화 후에도 GREEN
 - 고정 LaRu3Si2 격자 1차스크린(ΔE=+0.039 🟢)을 **per-sibling vc-relax**로 확정: Os 반지름으로 셀 완전완화(alat=10.599 bohr, c/a=0.670) 후 재게이트 → **ΔE=+0.0886 eV(여전히 <0.10 GREEN), m=0.00 비자성, 밴드폭 0.544→0.411 eV(더 평평)**. 1차근사 GREEN이 격자완화에도 살아남음 — LaOs3Si2(Os 5d⁷ CeCo3B2)는 견고한 **2번째 플랫밴드-at-E_F 승자**(LaRu3Si2 다음), 5d가 4d만큼 작동 확정. 박제: RTSC_LEDGER `LaOs3Si2-vcrelax`(79행) + `scripts/scratch/qforge_harvest/sibling_gatecheck/laos3si2_vcrelax.log`. 다음(비용게이트): DFPT λ/Tc 승격(vast rent OR summer 무료 슬롯, go 필요).
 
