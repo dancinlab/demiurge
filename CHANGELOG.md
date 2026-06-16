@@ -8,6 +8,15 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### MATH-SPECTRA 도메인 신설 — 스펙트럼 보편성 probe (ζ영점 ↔ 플랫밴드) + ScH9 정직 종결
+- **신규 도메인 `domains/MATH-SPECTRA.md`** ("스펙트럼 탐정") — 수학·물리 교차 스펙트럼 패턴을 자체 수치탐색·검증. 매니페스트-only(d4). 사용자 요청(리만가설 동위선상 일자배치류 자체 수학 탐색)으로 신설, RTSC와 **병렬 트랙**.
+- **probe 1 (사전등록·frozen-first, c16·c9, 로컬 무료)**: ζ영점 vs 플랫밴드 인접행렬 스펙트럼.
+  - H1 ✅ ζ영점 임계선 위(max|Re−½|=0.00, 수치) — "동위선상 일자배치" 재현.
+  - H2 ✅ ζ영점 간격 = GUE (KS 0.058 ≪ Poisson 0.340; GUE 대조군 0.033으로 파이프라인 검증) — 몽고메리-오들리츠코 재현(검증용, c2).
+  - H3 ✅ 카고메 = 플랫밴드 정확히 1/3(=0.333 이론) 델타 DOS + 분산부 Poisson(적분가능, KS 0.118).
+  - **정직 판정(🔴 closed-negative)**: "RH영점 = 우리 격자 스펙트럼" 순진한 다리 **거짓** — ζ는 카오스(GUE), 주기 플랫밴드 격자는 적분가능. RH/힐베르트-폴리아 다리는 카오스 연산자 필요. → M4 신규질문: 플랫밴드 CLS 중복도의 정수론 구조. 박제 `exports/math-spectra/probe1_spectral_universality.json`.
+- **ScH9 DFPT 정직 종결(🔴)**: el-ph가 q6에서 크래시(STOP 1, 5/8q만) — q6 음향모드 허수(−16 cm⁻¹) = under-relaxed/동역학 불안정 셀 → 물리적 λ/Tc 없음. YH6/MgH6과 같은 수소화물 벽(ARCHITECTURE 기록). 돌파경로(c16): target-P tight vc-relax → matdyn asr 안정성 사전검사 → 허수모드 0 확인 후 el-ph 재발사. 파드는 RbOs2O6 동거로 유지.
+
 ### RTSC 삼각측량 v4 — 그래프-위상 후보 생성기 (화학 추측 → 정리 기반) + Lieb↔cuprate 다리
 - **교차도메인 동형 통찰**: 플랫밴드-at-E_F는 "물질의 성질"이 아니라 **그래프(연결망)의 성질** — 두 정리가 후보를 *보장*한다. (1) **선그래프 정리**: L(G)는 −2t에 플랫밴드를 반드시 가짐 (카고메=L(벌집)·파이로클로=L(다이아몬드)·체커보드=L(정사각)). (2) **이분 부격자 불균형(Lieb-Sutherland)**: |N_A−N_B| 개의 영에너지 플랫밴드 (Lieb·dice/T3). 같은 고유값 문제가 광결정·냉원자·LC회로·역학메타·휘켈MO(유기 폴리라디칼·삼각글렌·지그재그 그래핀)에 동일 출현.
 - **후보 생성 전환**: 화학 추측 → 정리 enumeration + 두 직교 스크린(ΔE~0 AND 비자성)으로 거름. `scripts/scratch/flatband_graph_topology_candidates.py`.

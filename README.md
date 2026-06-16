@@ -24,7 +24,9 @@
 > (Os 5d⁷) 🟢 ΔE=+0.039 m=0.00 = 2번째 flat-band-at-E_F 승자 · LaRh3Si2 (Rh 4d⁸) 🔴
 > ΔE=+0.260 overshoot → d⁷=승자/d⁸=overshoot로 채움축 bracket 확정.** 삼각측량
 > v4: 플랫밴드=그래프 성질(선그래프+이분불균형 정리) → 위상 후보생성기 전환,
-> Lieb=CuO₂면 동형(플랫밴드↔cuprate 다리), Os-O Lieb 게이트체크 QUEUED. QFORGE L3
+> Lieb=CuO₂면 동형(플랫밴드↔cuprate 다리), Os-O Lieb 게이트체크 QUEUED.
+> **MATH-SPECTRA 도메인 신설(병렬 트랙): probe1 — ζ영점=GUE vs 카고메=Poisson+δ
+> 플랫밴드 → "RH영점=격자스펙트럼" 순진한 다리 정직 falsified(수치, 증명 아님).** QFORGE L3
 > assembler end-to-end on real QE (YH6). See CHANGELOG.md.
 > historical at `HANDOFF.log.md`), `DESIGN.md` for the decision audit trail.
 > Family: **typed-interface consumer** (not absorber) of `hexa-lang`,

@@ -1,0 +1,31 @@
+{
+  "domain": "MATH-SPECTRA",
+  "probe": "spectral universality bridge (Riemann zeta zeros vs flat-band adjacency spectra)",
+  "method": "mpmath zetazero(1..300) + unfold by rho(t)~(1/2pi)log(t/2pi); kagome 3-site Bloch H(k) on 48x48 grid (6912 eigs); KS-distance classifier vs GUE Wigner surmise & Poisson; independent GUE random-matrix positive control",
+  "preregistered_hypotheses": {
+    "H1": "zeta nontrivial zeros lie on Re(s)=1/2",
+    "H2": "zeta zero unfolded spacings ~ GUE (Montgomery-Odlyzko), not Poisson",
+    "H3": "periodic kagome lattice is integrable -> dispersive spacings NOT GUE + a flat (delta-DOS) level => naive 'RH-zeros == lattice-spectrum' bridge is FALSE"
+  },
+  "results": {
+    "H1_max_abs_Re_minus_half": 0.0,
+    "H1_verdict": "ON critical line (numerical, 7 sampled zeros incl n=300)",
+    "H2_zeta_KS_GUE": 0.058,
+    "H2_zeta_KS_Poisson": 0.340,
+    "H2_zeta_class": "GUE",
+    "control_GUE_KS_GUE": 0.033,
+    "control_GUE_class": "GUE (pipeline validated)",
+    "H3_kagome_flatband_fraction": 0.333,
+    "H3_kagome_flatband_theory": 0.3333,
+    "H3_kagome_dispersive_KS_GUE": 0.193,
+    "H3_kagome_dispersive_KS_Poisson": 0.118,
+    "H3_kagome_dispersive_class": "Poisson (integrable)"
+  },
+  "verdict_tier": "🔴 CLOSED-negative (naive bridge falsified) + 🟢 positive sub-findings (zeta=GUE, kagome flat band=1/3 delta exactly)",
+  "finding": "zeta zeros are GUE (quantum-chaotic universality); the kagome dispersive spectrum is Poisson (integrable) and the flat band is a macroscopic delta level. The naive 'RH zeros == our flat-band lattice spectrum' identification is FALSE. The genuine shared object is spectral-universality theory; the RH/Hilbert-Polya link requires a CHAOTIC self-adjoint operator, which a periodic flat-band lattice is not. Opens M4: do flat-band CLS multiplicities carry number-theoretic structure?",
+  "honest_caveat": "numerical classification, NOT a proof; RH itself untouched. zeta=GUE is the known Montgomery-Odlyzko result reproduced as a verification of method (c2), not a new claim.",
+  "host": "mini local (scripts/scratch/mathvenv, free)",
+  "cost_usd": 0.0,
+  "evidence": "scripts/scratch/math_spectra/probe1_spectral_universality.py",
+  "date": "2026-06-16"
+}
