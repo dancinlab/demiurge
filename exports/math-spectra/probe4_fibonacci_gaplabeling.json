@@ -1,0 +1,444 @@
+{
+  "probe": "MATH-SPECTRA-probe4",
+  "title": "Fibonacci-chain gap-labeling number theory (POSITIVE bookend)",
+  "alpha_inverse_golden": 0.6180339887498949,
+  "preregistered_hypothesis": "frozen-first (c16/c9): IDOS in each MAJOR gap of the Fibonacci hopping chain clusters at {n*alpha mod 1} for small integer n (alpha=(sqrt5-1)/2), residual<0.01, and n*alpha beats the best rational p/q in every gap; PERIODIC control (single cosine band) shows NO alpha-labeled internal gaps and RANDOM control shows no clean gaps. Predicted GREEN if confirmed vs both controls.",
+  "model": "off-diagonal Fibonacci hopping ring (A->AB,B->A; t_A=1, t_B=0.5)",
+  "fibonacci": {
+    "N_sites": 1597,
+    "word_prefix": "ABAABABAABAABABAABABAABAABABAABAABABAABA",
+    "t_A": 1.0,
+    "t_B": 0.5,
+    "major_gaps": [
+      {
+        "gap_width": 0.5784601170708852,
+        "idos_plateau": 0.38196618659987475,
+        "E_lo": -0.8939596467015933,
+        "E_hi": -0.31549952963070815,
+        "matched_n": -1,
+        "predicted_n_alpha_mod1": 0.3819660112501051,
+        "residual_n_alpha": 1.7534976964883597e-07,
+        "best_rational_p_q": [
+          3,
+          8
+        ],
+        "residual_rational": 0.006966186599874746
+      },
+      {
+        "gap_width": 0.578452446384896,
+        "idos_plateau": 0.6180338134001252,
+        "E_lo": 0.31550350755799117,
+        "E_hi": 0.8939559539428872,
+        "matched_n": 1,
+        "predicted_n_alpha_mod1": 0.6180339887498949,
+        "residual_n_alpha": 1.7534976970434712e-07,
+        "best_rational_p_q": [
+          5,
+          8
+        ],
+        "residual_rational": 0.006966186599874802
+      },
+      {
+        "gap_width": 0.23316236750926156,
+        "idos_plateau": 0.7639323731997495,
+        "E_lo": 1.1366379514907758,
+        "E_hi": 1.3698003190000374,
+        "matched_n": -2,
+        "predicted_n_alpha_mod1": 0.7639320225002102,
+        "residual_n_alpha": 3.5069953929767195e-07,
+        "best_rational_p_q": [
+          7,
+          9
+        ],
+        "residual_rational": 0.013845404578028297
+      },
+      {
+        "gap_width": 0.23315376682672695,
+        "idos_plateau": 0.23606762680025048,
+        "E_lo": -1.3697965894850077,
+        "E_hi": -1.1366428226582808,
+        "matched_n": 2,
+        "predicted_n_alpha_mod1": 0.2360679774997898,
+        "residual_n_alpha": 3.506995393254275e-07,
+        "best_rational_p_q": [
+          2,
+          9
+        ],
+        "residual_rational": 0.01384540457802827
+      },
+      {
+        "gap_width": 0.12308853464793995,
+        "idos_plateau": 0.47213525360050096,
+        "E_lo": -0.1709348129211803,
+        "E_hi": -0.04784627827324034,
+        "matched_n": 4,
+        "predicted_n_alpha_mod1": 0.4721359549995796,
+        "residual_n_alpha": 7.01399078650855e-07,
+        "best_rational_p_q": [
+          5,
+          11
+        ],
+        "residual_rational": 0.01758979905504643
+      },
+      {
+        "gap_width": 0.123064178008668,
+        "idos_plateau": 0.5278647463994991,
+        "E_lo": 0.04785937238356765,
+        "E_hi": 0.17092355039223564,
+        "matched_n": -4,
+        "predicted_n_alpha_mod1": 0.5278640450004204,
+        "residual_n_alpha": 7.013990787063662e-07,
+        "best_rational_p_q": [
+          6,
+          11
+        ],
+        "residual_rational": 0.017589799055046318
+      },
+      {
+        "gap_width": 0.07154171170451407,
+        "idos_plateau": 0.8541014402003757,
+        "E_lo": 1.467858304870863,
+        "E_hi": 1.5394000165753772,
+        "matched_n": 3,
+        "predicted_n_alpha_mod1": 0.8541019662496847,
+        "residual_n_alpha": 5.260493090020191e-07,
+        "best_rational_p_q": [
+          6,
+          7
+        ],
+        "residual_rational": 0.0030414169424813897
+      },
+      {
+        "gap_width": 0.07153111855056338,
+        "idos_plateau": 0.1458985597996243,
+        "E_lo": -1.53939500862244,
+        "E_hi": -1.4678638900718766,
+        "matched_n": -3,
+        "predicted_n_alpha_mod1": 0.1458980337503153,
+        "residual_n_alpha": 5.260493090020191e-07,
+        "best_rational_p_q": [
+          1,
+          7
+        ],
+        "residual_rational": 0.0030414169424814452
+      }
+    ],
+    "span": 3.297716821625424,
+    "occupied_measure": 0.9515765145634356,
+    "occupied_fraction": 0.2885561635624036
+  },
+  "control_periodic": {
+    "control": "periodic_all_equal_hopping",
+    "N_sites": 1597,
+    "major_gaps": [
+      {
+        "gap_width": 0.00786872663166057,
+        "idos_plateau": 0.4996869129618034,
+        "E_lo": -0.005901543070588098,
+        "E_hi": 0.0019671835610724727,
+        "matched_n": 4,
+        "predicted_n_alpha_mod1": 0.4721359549995796,
+        "residual_n_alpha": 0.027550957962223788,
+        "best_rational_p_q": [
+          1,
+          2
+        ],
+        "residual_rational": 0.0003130870381966022
+      },
+      {
+        "gap_width": 0.007868696181172984,
+        "idos_plateau": 0.5009392611145899,
+        "E_lo": 0.001967183561072489,
+        "E_hi": 0.009835879742245474,
+        "matched_n": -4,
+        "predicted_n_alpha_mod1": 0.5278640450004204,
+        "residual_n_alpha": 0.026924783885830528,
+        "best_rational_p_q": [
+          1,
+          2
+        ],
+        "residual_rational": 0.0009392611145898622
+      },
+      {
+        "gap_width": 0.007868635280319856,
+        "idos_plateau": 0.49843456480901693,
+        "E_lo": -0.013770178350908555,
+        "E_hi": -0.0059015430705886985,
+        "matched_n": 4,
+        "predicted_n_alpha_mod1": 0.4721359549995796,
+        "residual_n_alpha": 0.026298609809437323,
+        "best_rational_p_q": [
+          1,
+          2
+        ],
+        "residual_rational": 0.0015654351909830666
+      },
+      {
+        "gap_width": 0.007868543929331138,
+        "idos_plateau": 0.5021916092673764,
+        "E_lo": 0.0098358797422472,
+        "E_hi": 0.01770442367157834,
+        "matched_n": -4,
+        "predicted_n_alpha_mod1": 0.5278640450004204,
+        "residual_n_alpha": 0.025672435733044008,
+        "best_rational_p_q": [
+          1,
+          2
+        ],
+        "residual_rational": 0.002191609267376382
+      },
+      {
+        "gap_width": 0.00786842212856506,
+        "idos_plateau": 0.4971822166562304,
+        "E_lo": -0.021638600479474253,
+        "E_hi": -0.013770178350909193,
+        "matched_n": 4,
+        "predicted_n_alpha_mod1": 0.4721359549995796,
+        "residual_n_alpha": 0.025046261656650803,
+        "best_rational_p_q": [
+          1,
+          2
+        ],
+        "residual_rational": 0.0028177833437695865
+      },
+      {
+        "gap_width": 0.007868269878490198,
+        "idos_plateau": 0.5034439574201628,
+        "E_lo": 0.01770442367157982,
+        "E_hi": 0.025572693550070018,
+        "matched_n": -4,
+        "predicted_n_alpha_mod1": 0.5278640450004204,
+        "residual_n_alpha": 0.0244200875802576,
+        "best_rational_p_q": [
+          1,
+          2
+        ],
+        "residual_rational": 0.003443957420162791
+      },
+      {
+        "gap_width": 0.007868087179699015,
+        "idos_plateau": 0.49592986850344395,
+        "E_lo": -0.0295066876591742,
+        "E_hi": -0.021638600479475186,
+        "matched_n": 4,
+        "predicted_n_alpha_mod1": 0.4721359549995796,
+        "residual_n_alpha": 0.02379391350386434,
+        "best_rational_p_q": [
+          1,
+          2
+        ],
+        "residual_rational": 0.004070131496556051
+      },
+      {
+        "gap_width": 0.007867874032894368,
+        "idos_plateau": 0.5046963055729493,
+        "E_lo": 0.025572693550072082,
+        "E_hi": 0.03344056758296645,
+        "matched_n": -4,
+        "predicted_n_alpha_mod1": 0.5278640450004204,
+        "residual_n_alpha": 0.02316773942747108,
+        "best_rational_p_q": [
+          1,
+          2
+        ],
+        "residual_rational": 0.004696305572949311
+      }
+    ],
+    "span": 3.999996130188837,
+    "occupied_measure": 3.999996130188837,
+    "occupied_fraction": 1.0
+  },
+  "control_random": {
+    "control": "random_iid_hopping",
+    "N_sites": 1597,
+    "major_gaps": [
+      {
+        "gap_width": 0.02480974839486949,
+        "idos_plateau": 0.9993738259236068,
+        "E_lo": 1.6762537536730793,
+        "E_hi": 1.7010635020679488,
+        "matched_n": 0,
+        "predicted_n_alpha_mod1": 0.0,
+        "residual_n_alpha": 0.0006261740763932044,
+        "best_rational_p_q": [
+          0,
+          1
+        ],
+        "residual_rational": 0.0006261740763932044
+      },
+      {
+        "gap_width": 0.024809748394859943,
+        "idos_plateau": 0.0006261740763932373,
+        "E_lo": -1.7010635020679412,
+        "E_hi": -1.6762537536730813,
+        "matched_n": 0,
+        "predicted_n_alpha_mod1": 0.0,
+        "residual_n_alpha": 0.0006261740763932373,
+        "best_rational_p_q": [
+          1,
+          1
+        ],
+        "residual_rational": 0.0006261740763932044
+      },
+      {
+        "gap_width": 0.02416470574918317,
+        "idos_plateau": 0.0012523481527864746,
+        "E_lo": -1.6762537536730813,
+        "E_hi": -1.652089047923898,
+        "matched_n": 0,
+        "predicted_n_alpha_mod1": 0.0,
+        "residual_n_alpha": 0.0012523481527864746,
+        "best_rational_p_q": [
+          0,
+          1
+        ],
+        "residual_rational": 0.0012523481527864746
+      },
+      {
+        "gap_width": 0.02416470574917917,
+        "idos_plateau": 0.9987476518472135,
+        "E_lo": 1.6520890479239,
+        "E_hi": 1.6762537536730793,
+        "matched_n": 0,
+        "predicted_n_alpha_mod1": 0.0,
+        "residual_n_alpha": 0.00125234815278652,
+        "best_rational_p_q": [
+          0,
+          1
+        ],
+        "residual_rational": 0.00125234815278652
+      },
+      {
+        "gap_width": 0.01438477426143181,
+        "idos_plateau": 0.003757044458359424,
+        "E_lo": -1.6171091438273992,
+        "E_hi": -1.6027243695659674,
+        "matched_n": 0,
+        "predicted_n_alpha_mod1": 0.0,
+        "residual_n_alpha": 0.003757044458359424,
+        "best_rational_p_q": [
+          0,
+          1
+        ],
+        "residual_rational": 0.003757044458359424
+      },
+      {
+        "gap_width": 0.014384774261431144,
+        "idos_plateau": 0.9962429555416406,
+        "E_lo": 1.602724369565968,
+        "E_hi": 1.6171091438273992,
+        "matched_n": 0,
+        "predicted_n_alpha_mod1": 0.0,
+        "residual_n_alpha": 0.0037570444583594487,
+        "best_rational_p_q": [
+          0,
+          1
+        ],
+        "residual_rational": 0.0037570444583594487
+      },
+      {
+        "gap_width": 0.0139329989929029,
+        "idos_plateau": 0.9968691296180339,
+        "E_lo": 1.6171091438273992,
+        "E_hi": 1.6310421428203021,
+        "matched_n": 0,
+        "predicted_n_alpha_mod1": 0.0,
+        "residual_n_alpha": 0.003130870381966133,
+        "best_rational_p_q": [
+          0,
+          1
+        ],
+        "residual_rational": 0.003130870381966133
+      },
+      {
+        "gap_width": 0.013932998992896906,
+        "idos_plateau": 0.0031308703819661866,
+        "E_lo": -1.6310421428202961,
+        "E_hi": -1.6171091438273992,
+        "matched_n": 0,
+        "predicted_n_alpha_mod1": 0.0,
+        "residual_n_alpha": 0.0031308703819661866,
+        "best_rational_p_q": [
+          1,
+          1
+        ],
+        "residual_rational": 0.003130870381966133
+      }
+    ],
+    "span": 3.40212700413589,
+    "occupied_measure": 3.40212700413589,
+    "occupied_fraction": 1.0
+  },
+  "cantor_signature": {
+    "fibonacci_vs_N": [
+      {
+        "N": 89,
+        "span": 3.2972594763402134,
+        "occupied_fraction": 0.24527320087339835,
+        "n_bands_gapfrac1pct": 18
+      },
+      {
+        "N": 233,
+        "span": 3.2976583061679916,
+        "occupied_fraction": 0.28567711268662754,
+        "n_bands_gapfrac1pct": 16
+      },
+      {
+        "N": 610,
+        "span": 3.2977162157806923,
+        "occupied_fraction": 0.2881331782212691,
+        "n_bands_gapfrac1pct": 16
+      },
+      {
+        "N": 1597,
+        "span": 3.297716821625424,
+        "occupied_fraction": 0.2885561635624036,
+        "n_bands_gapfrac1pct": 16
+      },
+      {
+        "N": 4181,
+        "span": 3.2977176948886138,
+        "occupied_fraction": 0.2885999698753432,
+        "n_bands_gapfrac1pct": 16
+      }
+    ],
+    "periodic_reference": {
+      "N": 4181,
+      "occupied_fraction": 1.0
+    },
+    "note": "occupied_fraction (occupied band measure / total span) DECREASES with N for Fibonacci (spectrum thinning toward zero-measure Cantor set) but stays ~O(1) for the periodic chain."
+  },
+  "verdict_analysis": {
+    "n_significant_fib_gaps": 8,
+    "n_fib_gaps_matched_n_alpha_res<0.01": 8,
+    "n_fib_gaps_alpha_beats_rational": 8,
+    "matched_n_labels": [
+      -4,
+      -3,
+      -2,
+      -1,
+      1,
+      2,
+      3,
+      4
+    ],
+    "max_residual_among_matched": 7.013990787063662e-07,
+    "periodic_n_significant_gaps": 0,
+    "periodic_no_alpha_labeled_gaps": true,
+    "periodic_n_rational_res<0.005": 0,
+    "random_n_significant_gaps": 0,
+    "random_no_clean_gaps": true,
+    "controls_differ_from_fibonacci": true,
+    "cantor_occupied_fraction_decreasing": false,
+    "cantor_occupied_fractions": [
+      0.24527320087339835,
+      0.28567711268662754,
+      0.2881331782212691,
+      0.2885561635624036,
+      0.2885999698753432
+    ]
+  },
+  "verdict_tier": "\ud83d\udfe2 CONFIRMED",
+  "finding": "POSITIVE: Fibonacci-chain gap IDOS values are pinned to the module {n*alpha mod 1} (alpha=1/phi). 8 of 8 significant major gaps match a small-|n| gap-labeling integer with residual<0.01 (labels n=[-4, -3, -2, -1, 1, 2, 3, 4]); n*alpha beats the best rational p/q in 8/8 gaps (residuals ~1e-7, i.e. exact to the 1/N finite-size floor). CONTROLS: the PERIODIC chain is a single cosine band with NO internal gaps to label (0 significant gaps) and the RANDOM chain has no clean large gaps (0) -- neither reproduces the alpha-labeled gap ladder. Number theory (the Z+Z*alpha cut-and-project module / gap-labeling theorem) is GENUINELY present in this aperiodic spectrum -- the honest POSITIVE bookend to the flat-band negative (probe2/3).",
+  "honest_caveat": "Finite Fibonacci approximant N=1597 (F_k) under PBC; IDOS plateau read as (#eigs<=E_lo)/N so it is a rational k/N that CONVERGES to {n*alpha} as N->inf (gap-labeling is an infinite-volume / C*-algebra K-theory statement). Residuals are O(1/N)-limited, not exact at finite N; we test convergence/clustering, not exact equality. Hopping ratio t_A/t_B=2 chosen for clearly resolved gaps; the labeling module Z+Z*alpha is independent of that ratio. The Cantor (zero-measure) secondary signature is INCONCLUSIVE here: the crude gap-thresholded occupied_fraction proxy is non-monotone over the computed N window (it plateaus ~0.29, not ->0), a known limitation of band-counting at a fixed 1%-of-span gap threshold; the true Fibonacci spectrum is zero-measure Cantor by theory but is NOT demonstrated by this proxy. The verdict is therefore NOT gated on the Cantor proxy -- it rests solely on the gap-labeling (Z+Z*alpha) match, which is unambiguous (residuals ~1e-7, alpha beats rational in 8/8 gaps). The periodic control (occupied_fraction=1.0) cleanly contrasts."
+}
