@@ -26,7 +26,9 @@
 > v4: 플랫밴드=그래프 성질(선그래프+이분불균형 정리) → 위상 후보생성기 전환,
 > Lieb=CuO₂면 동형(플랫밴드↔cuprate 다리). Os-O Lieb+checkerboard 🔴(2/2 혼성분산) → 메타결론: 위상=필요조건·실현(약혼성 d-kagome)=레버.
 > **MATH-SPECTRA 도메인(병렬 트랙) 1D 완전차트: 음성(ζ↔격자 다리 falsified·플랫밴드 CLS=유계 gcd) + 양성(준결정 gap-labeling=치환별 Perron 모듈, 피보나치 Z+Zα·은비 Z+Z/√2·주기배가 dyadic·Thue-Morse 비단일). 2D Ammann-Beenker 🟠(패치부족).** QFORGE L3
-> assembler end-to-end on real QE (YH6). See CHANGELOG.md.
+> assembler end-to-end on real QE (YH6).
+>
+> 상온 분기(2026-06-16): 패밀리=ω_log천장으로 λ-레퍼런스 완주 / 상온=별도 레버(경량 ω_log↑ · flat-band 전자상관). **무압 초수소화물 lane**(QE+QFORGE from-scratch 병행): Li2CuH6·Mg2IrH6 🔴 ambient-dynamically-unstable, AcBeH8(293K@1atm)·B-C클라스레이트 ⏳. **QFORGE ENGINE STATUS 확인**: from-scratch 전구간(SCF→DFPT→el-ph→Tc) 구현·검증(al/nb/pb xval), bare-vertex ~5.5% rough-screening 작동. **ARCHITECTURE 단일문서 마이그레이션**: ARCHITECTURE.md 은퇴 → ARCHITECTURE.json(SSOT)+ARCHITECTURE.html(뷰어·`python3 serve.py`). See CHANGELOG.md.
 > historical at `HANDOFF.log.md`), `DESIGN.md` for the decision audit trail.
 > Family: **typed-interface consumer** (not absorber) of `hexa-lang`,
 > the **sole SSOT** for reusable stdlib / tools / absorbed modules

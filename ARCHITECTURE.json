@@ -1,0 +1,271 @@
+{
+  "title": "demiurge — Architecture SSOT (JSON tree)",
+  "updated": "2026-06-16",
+  "ssot_note": "JSON=SSOT (AI/tool parse); humans view ARCHITECTURE.html. Prose mirror = ARCHITECTURE.md. Faithful transcription of ARCHITECTURE.md + README.md + CLAUDE.md + QFORGE/QFORGE.md — no invented nodes/numbers (commons c9).",
+  "overview": "demiurge is a universal, hexa-native technical-design architecture program: it drives any engineering system through one 7-verb pipeline, with each field plugged in as a manifest-only domain (single generic dispatch, no per-domain code — governance d4). It is the meta-conductor: chip, accelerator, superconductor, spacecraft, and BCI 'desks' all live in one building. Two surfaces sit on the same pipeline: a Next.js web GUI (human surface) and a hexa-native CLI (AI-agent surface). Reusable implementation is owned by the sibling hexa-lang repo — demiurge is a typed-interface consumer, never an absorber (d3).",
+  "pipeline": ["spec", "structure", "design", "analyze⟲", "synthesize", "verify", "handoff"],
+  "pipeline_note": "One generic 7-verb dispatch (manifest-driven, d4). CLI (cli/) and web GUI (web/) both traverse the same path.",
+  "meta_conductor_chain": {
+    "note": "rfc_004 §4 — typed seam contracts between passes. Upstream = hexa-lang (d17).",
+    "chain": [
+      {"pass": "materials", "kind": "matter (upstream = hexa-lang)", "seam_out": "rfc_007 (materials→chip)"},
+      {"pass": "chip", "kind": "lead, deep", "seam_out": "rfc_008 (chip→component)"},
+      {"pass": "component", "kind": "D21 top-level — FEM/EM/thermal", "seam_out": null}
+    ]
+  },
+  "nodes": [
+    {
+      "id": "bin",
+      "path": "bin/demiurge",
+      "role": "hx package entry point — headless / AI-agent CLI shim dispatching to cli/ (Swift DemiurgeCLI legacy fallback).",
+      "children": []
+    },
+    {
+      "id": "cli",
+      "path": "cli/",
+      "role": "hexa-native CLI driver (demiurge_cli.hexa) — the 7-verb command surface (AI-agent + web-bridge).",
+      "children": []
+    },
+    {
+      "id": "web",
+      "path": "web/",
+      "role": "Next.js web GUI (human surface, deployed to Cloud Run demiurge.dancinlab.org). Domain-plugin UI over the pipeline. Deploy gated on user approval (d_deploy).",
+      "children": []
+    },
+    {
+      "id": "cockpit",
+      "path": "cockpit/",
+      "role": "Swift DemiurgeCLI + DemiurgeCore library + transient exports/references (macOS SwiftUI cockpit GUI scrapped 2026-05-27).",
+      "children": []
+    },
+    {
+      "id": "stdlib",
+      "path": "stdlib/",
+      "role": "Local discover shims only; canonical reusable implementation lives in hexa-lang (d3).",
+      "children": []
+    },
+    {
+      "id": "domains",
+      "path": "domains/",
+      "role": "Manifest-only domain maps (<DOMAIN>.md snapshot + <DOMAIN>.log.md log + .demi decks) — one file per pluggable engineering field. 40+ internal domains; roster = domains/DOMAINS.tape (web-curated subset = DOMAINS.tape).",
+      "children": [
+        {
+          "id": "MATH-SPECTRA",
+          "path": "domains/MATH-SPECTRA.md",
+          "role": "Pure-math exploration domain '스펙트럼 탐정' (2026-06-16) — hunts cross-domain spectral patterns (Riemann ζ zeros ↔ random-matrix GUE ↔ flat-band adjacency spectra / Hilbert-Pólya). 1D arc fully charted; numerical verification, not proof (c9).",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "decks",
+      "path": "decks/",
+      "role": "Concrete compute input decks (DFT / QE el-ph cells: mgb2_pure, nb3al, h3br_pscan, …).",
+      "children": []
+    },
+    {
+      "id": "sim",
+      "path": "sim/",
+      "role": "Simulation drivers / readout watchers (.hexa).",
+      "children": []
+    },
+    {
+      "id": "QFORGE",
+      "path": "QFORGE/",
+      "role": "Quantum-forge compute campaign (DFT electron-phonon, GRID-parallel) workspace. Engine-status SSOT = QFORGE/QFORGE.md §⭐. Honest standing (2026-06-15): QE = production reference, QFORGE migration gate HELD.",
+      "children": [
+        {"id": "QFORGE-PROCESS", "path": "domains/", "role": "el-ph pipeline process metrology / bottleneck (run-time observation)."},
+        {"id": "QFORGE-PERF", "path": "domains/", "role": "GPU / algorithmic acceleration backlog (roofline · bench)."},
+        {"id": "QFORGE-FEATURE", "path": "domains/", "role": "Feature backlog to a standalone engine (correlation-XC · NVPTX · …)."}
+      ]
+    },
+    {
+      "id": "proposals",
+      "path": "proposals/",
+      "role": "Absorption / seam / cockpit design RFCs (rfc_001..012).",
+      "children": []
+    },
+    {
+      "id": "exports",
+      "path": "exports/",
+      "role": "Pipeline output records (chip NoC f1/f2, chain seams, per-domain results).",
+      "children": [
+        {
+          "id": "SENOLYX-abfe-harness",
+          "path": "exports/SENOLYX/round13-abfe-allcand/",
+          "role": "Reusable hardened ABFE compute harness (vast GPU fan-out: rent→copy-verify→fire_cell→harvest→watch→recover/reap). Hardened against 10 live-campaign failure modes. SSOT = its README.md.",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "PAPER",
+      "path": "PAPER/ · PAPERS/",
+      "role": "Generated papers (atlas-atom-gated; one slug per terminal discovery). Roster = PAPER.tape.",
+      "children": []
+    },
+    {
+      "id": "discoveries",
+      "path": ".discoveries/",
+      "role": "/kick · /gap discovery log tapes (<slug>.tape). Carries the active RTSC frontier.",
+      "children": []
+    },
+    {
+      "id": "verdicts",
+      "path": ".verdicts/",
+      "role": "Verify-gate verdict records.",
+      "children": []
+    },
+    {
+      "id": "harness-cfg",
+      "path": ".harness/",
+      "role": "Repo-local harness rule configs (enforcement / keywords / severity).",
+      "children": []
+    },
+    {
+      "id": "harness-engine",
+      "path": ".harness-engine/",
+      "role": "dancinlab/harness engine, pinned as a git submodule (branch harness-hardcore). Wrapper: bash .harness-engine/bin/harness <docs check|docs status|lint|audit>.",
+      "children": []
+    },
+    {
+      "id": "ARCHITECTURE.md",
+      "path": "ARCHITECTURE.md",
+      "role": "Architecture prose SSOT (update-in-place). This JSON tree mirrors it.",
+      "children": []
+    },
+    {
+      "id": "CHANGELOG.md",
+      "path": "CHANGELOG.md",
+      "role": "Append-only change log (dated decisions).",
+      "children": []
+    }
+  ],
+  "data_flow": [
+    "Input = a domain manifest (domains/<DOMAIN>.md) and/or a compute deck (decks/<cell>). Adding/renaming/removing a variant is manifest-only (d4).",
+    "Pipeline = the generic 7-verb dispatch, driven from cli/ (CLI surface) or web/ (GUI surface) — both traverse the same path.",
+    "Verification = hexa verify gates; a passing result is folded directly into the atlas atom (embedded.gen.hexa, the audit SSOT — no intermediate ledger files, d_atlas_as_audit_ssot).",
+    "Output = records under exports/ / .verdicts/; a terminal verified discovery becomes a paper under PAPER(S)/<slug> (gated: terminal verdict + significance)."
+  ],
+  "governance": [
+    {"id": "d3/d15/d17", "rule": "Implementation lives in one canonical home (hexa-lang); demiurge consumes only."},
+    {"id": "d4", "rule": "Single generic dispatch; instances are manifests, never hardcoded names in the generic layer."},
+    {"id": "d1/d5/d19", "rule": "Drive every non-wet-lab step to completed-form; absorbed=true ⇔ all non-wet-lab gates PASS."},
+    {"id": "d17", "rule": "Validated decks fire compute campaigns autonomously (no user gate on cost-bearing rent)."},
+    {"id": "d_deploy", "rule": "Web-GUI deploy stays user-approval-gated; compute autonomy unaffected."},
+    {"id": "d_parallel_first / d_qforge_parallel", "rule": "Parallel-first; GRID-parallel compute to the walltime floor."},
+    {"id": "d6", "rule": "First-principles physics breaks the ML training-distribution wall; never force a target number / present under-converged value (honest)."}
+  ],
+  "engines": {
+    "QFORGE": {
+      "icon": "🔨",
+      "name": "QFORGE — 양자 대장간 (hexa-native first-principles el-ph engine)",
+      "goal": "Remove the external QE dependency; compute element→electronic structure→phonon→el-ph λ→Allen-Dynes/Eliashberg Tc end-to-end natively. Results g5 verbatim-verified + atlas-folded. RTSC ← QFORGE (NEXUS reuse edge).",
+      "status_ssot": "QFORGE/QFORGE.md §⭐ ENGINE STATUS",
+      "honest_standing": "QE = production reference; QFORGE migration gate HELD (2026-06-15). Two PRODUCTION modes (a, b) + one converging-but-gate-unmet mode (c) + a magnetism mode (d).",
+      "modes": [
+        {
+          "id": "a",
+          "title": "bare full-basis vertex (QFORGE-only, 0 QE-moment dependence)",
+          "status": "✅ production (rough screening)",
+          "what": "QFORGE's own SCF→DFPT→el-ph |g|² (bare ∂V_bare vertex, screening OFF) → α²F → λ.",
+          "accuracy": "CaH6 λ = 4.13647 · rel-ε 5.47% vs QE 4.376 (npw_cap=0 full ecut shell n=645). Self-consistent from-scratch estimate WITHOUT QE moments.",
+          "use": "Fast rough λ screening (~5.5% band). Not gate-grade (<1%) — use mode (b)."
+        },
+        {
+          "id": "b",
+          "title": "hybrid (QE |g|² → QFORGE L3 assembler), gate-grade",
+          "status": "✅ production (gate-grade λ/Tc)",
+          "what": "Feed real QE DFPT el-ph harvest (.elph = per-mode λ(q,ν)+ω(q,ν)) into QFORGE's verified α²F→λ→Tc assembler (qforge_gaussian_delta + qforge_a2f_lambda + Allen-Dynes/McMillan). Assembler = ~/.hx/src/stdlib/qforge/assembler.hexa.",
+          "accuracy": "CaH6 rel-ε 1.65e-7 · LaH10 rel-ε 4.75e-7 (σ_ph→0 monotone convergence ng=8000).",
+          "honest_scope": "NOT a from-scratch engine — still needs QE |g|²/DFPT as input (does not replace DFPT). It is the verified λ/Tc assembler. Bottleneck = DFPT (candidate dispatch — cost, user-deferred)."
+        },
+        {
+          "id": "c",
+          "title": "from-scratch SCREENED vertex (Woodbury Dyson ε⁻¹ + live local-field f_xc[ρ(r)])",
+          "status": "🟢 converging, gate NOT MET — track HELD",
+          "what": "QFORGE's own self-consistent screened vertex, fully independent of QE.",
+          "frontier": "R7 (2026-06-08) broke past the bare baseline for the first time: λ=4.1518 vs QE 4.376, rel-ε=5.12% < bare 5.47%. R8 (GGA f_xc-in-χ) COMPLETE · CLOSED-NEGATIVE (λ_GGA=3.41256, rel-ε 22.02%; Δλ vs ALDA −0.00257 = no difference). DFT f_xc lever exhausted; residual gap = from-scratch LDA-PW SCF (QE is PBE self-consistent). Next lever = from-scratch PBE-SCF (separate large effort).",
+          "gate": "≤1% NOT MET (5.12% > 1%); not flipped, 4.376 not forced (d6)."
+        },
+        {
+          "id": "d",
+          "title": "QFORGE-LSDA magnetism engine (nspin=2 spin-DFT)",
+          "status": "🧲 brick g5-PASS, real-cell moment compute-walled",
+          "what": "QFORGE's own nspin=2 spin-polarized SCF (V_xc spin-split LDA/PW92 + spin-GGA PBE) → magnetic moment m.",
+          "bricks": "All g5 PASS (qforge_scf_spin_selftest, qforge_scf_pw_spin_selftest, qforge_smearing_spin_selftest, qforge_xc_spin_selftest, qforge_pbe_spin_selftest). Engine works.",
+          "wall": "Real-cell moment SCF blocked by TM-d/5d PW cost. CoSn (Co-3d, npw≥120) ≈580s/iter; only npw=80 tractable → under-resolved m≈0 (QE m=0.43 not reproduced — basis wall, not physics). RbOs2O6 (Os-5d, 9-atom) heavier → honest-skip on mini local. Breakthrough = GPU davidson / reduced-basis (LCAO/PAW) / real HPC."
+        }
+      ],
+      "layers": {
+        "note": "Bottom-up build (completeness-first, top-down L0…L5). All engine layers DONE.",
+        "L0": "Allen-Dynes/McMillan Tc layer — reused atoms, qforge_l0_selftest PASS (Nb anchor ∈ [9.9,13]K).",
+        "L1": "Eliashberg gap-equation solver (μ*) — qforge_l1_selftest 11/11 PASS.",
+        "L2": "a2F(ω) integrator (eliashberg_moments_from_a2f) — λ·ω_log·ω₂.",
+        "L3": "α²F(ω) ASSEMBLER (double-δ BZ sum) — qforge_l3_selftest 13/13 PASS; QE-validated (YH10 rel-ε 9.76e-5, CaH6 1.65e-7).",
+        "L4": "DFPT phonons (dynmat assembler + phonon solver) — dfpt_selftest 11/11 PASS.",
+        "L5": "Plane-wave SCF building blocks 5/5 (3D FFT · UPF parser · MP grid · Davidson · Sternheimer) all DONE + g5 PASS.",
+        "integrations": "KS-SCF driver (scf.hexa) · Sternheimer→force-constant adapter · real Hartree+XC screening kernel (Hartree + LDA x+c, PW92 + PBE-GGA correlation) · metallic real-cell SCF convergence (smearing + Anderson mixing, CaH6 converged true)."
+      },
+      "migration_gate": {
+        "data_half": "3/3 TERMINAL (CaH6 · LaH10 · Li2MgH16 QE el-ph assembled). qforge_migration_gate_test CaH6 rel-ε 1.4e-4 PASS.",
+        "accuracy_half": "front-end QFORGE-own |g| accuracy (independent CaH6 λ=0.18, 24× MISS — screened-vertex gap). Separate end-to-end milestone.",
+        "verdict": "HELD — routing-switch (gate ALL_PASS) and full QE replacement (end-to-end |g| within 1%) are distinct stages."
+      },
+      "universal_axis": "Multi-scale extension (atoms · materials · bio · chem · chip · system) on a common core (plane-wave DFT + linear-response DFPT + stdlib/autograd·flame ML) with per-scale front-end + g5 verify-adapter (2026-06-07). materials = DONE (QE el-ph, GATE CLOSED); others new."
+    },
+    "QE": {
+      "name": "Quantum ESPRESSO (external Fortran, 30-yr verified)",
+      "role": "Current PRODUCTION reference for candidate Tc + magnetism. All RTSC-session DFT (RbOs2O6 magnetism · ScH9/MgH6/ScH6/YH6 DFPT · CsOs2O6 · CaH10/SrH10) ran QE-only (2026-06-15). QFORGE assembler is immediately-usable gate-grade on top of QE |g|².",
+      "production_prereq": "High-P hydride el-ph runs MUST pass a dynamical-stability pre-check (tight vc-relax at target P → matdyn asr='crystal' → confirm 0 imaginary phonon modes) BEFORE the el-ph production run (2026-06-15 fleet diagnostic, c1)."
+    }
+  },
+  "campaigns": {
+    "RTSC": {
+      "name": "RTSC — room-temperature superconductor candidate campaign",
+      "engine": "QFORGE (RTSC ← QFORGE NEXUS edge)",
+      "frontier_date": "2026-06-16",
+      "branches": {
+        "flat_band_at_EF": {
+          "title": "no-cooling flat-band-at-E_F track (DESIGN gate, not room-temp)",
+          "winners": [
+            {"host": "LaRu3Si2 (Ru 4d⁷)", "verdict": "🟢 GATE PASS", "detail": "campaign-first: measured ΔE=−0.055 eV AND m=0.00 μB — beats all 3 failure modes; real ambient Tc=7K. Next = DFPT λ/Tc promotion (q=3 in flight)."},
+            {"host": "LaOs3Si2 (Os 5d⁷)", "verdict": "🟢 GATE PASS (vc-relax CONFIRMED)", "detail": "2nd winner: fixed-cell ΔE=+0.039 survives full relaxation (relaxed ΔE=+0.0886<0.10, m=0.00, bandwidth 0.544→0.411 eV). 5d works as well as 4d."}
+          ],
+          "falsified": [
+            {"host": "LaRh3Si2 (Rh 4d⁸)", "verdict": "🔴 FALSIFY", "detail": "ΔE=+0.260 eV, d⁸ overshoots E_F. d-count brackets the fill axis (d⁷=winner, d⁸=overshoot)."},
+            {"host": "MoSn", "verdict": "🔴", "detail": "ΔE=−2.38."},
+            {"host": "CoSn (rigid-doping)", "verdict": "🔴 CLOSED both dials", "detail": "electron −0.445→−0.585 AND hole −0.445→−0.544 push the kagome flat band DEEPER from E_F; hole doping also wakes magnetism m→0.63. 'Dope CoSn to E_F' axis exhausted."},
+            {"host": "CsV3Sb5 / RbOs2O6", "verdict": "🔴/🟠"}
+          ],
+          "triangulation": {
+            "v3": "doping axis MEASURED-dead → new lane = sweep the CeCo3B2-type R-T₃-X₂ 4d/5d-kagome family (chemistry/lattice axis = 3.30 eV span, the real lever).",
+            "v4": "flat-band-at-E_F is a GRAPH property — two theorems generate hosts (line-graph: kagome=L(honeycomb)·pyrochlore=L(diamond)·checkerboard=L(square); bipartite imbalance: Lieb·dice/T3). Gate by two orthogonal screens (ΔE~0 AND non-magnetic). Bridge: Lieb=CuO₂-plane isomorph → links flat-band track to cuprate HTS.",
+            "topology_sweep": "CONCLUDED — Lieb Os-O 🔴 + checkerboard Os-O 🔴 (2/2 idealized Os-O realizations disperse the theorem flat band via O-bridge hybridization). Meta-finding (🧱 Os-O-realization wall): topology = necessary; realization (weak-hybridization d-kagome CeCo3B2) = the actual lever."
+          }
+        },
+        "ambient_superhydride": {
+          "title": "ambient / high-P superhydride branch (DFPT λ/Tc via QE)",
+          "in_flight": "LaRu3Si2 DFPT λ/Tc (q=3) · ScH9 DFPT (🔴 crashed q6, dynamical instability).",
+          "anchors": "CaH6 · LaH10 · Li2MgH16 terminal QE el-ph (feed QFORGE assembler). Li2MgH16 8-q coarse: λ=5.79 · ω_log=741K · Tc_AD≈158-164K — UNDER-CONVERGED vs literature 473K (d6 honest, not forced)."
+        }
+      },
+      "ledger": "RTSC_LEDGER.jsonl (repo root)"
+    },
+    "MATH-SPECTRA": {
+      "name": "MATH-SPECTRA — '스펙트럼 탐정' pure-math exploration (parallel track)",
+      "frontier_date": "2026-06-16",
+      "question": "Where does arithmetic live in spectra? (Riemann ζ zeros ↔ random-matrix GUE ↔ flat-band adjacency spectra / Hilbert-Pólya)",
+      "findings": {
+        "negative": "probe1 ζ↔lattice bridge FALSIFIED (ζ=GUE vs lattice=Poisson+δ); probe2/3 flat-band CLS counts = bounded gcd-commensurability, no deep arithmetic.",
+        "positive": "probe4 Fibonacci gap-labeling Z+Zα; probe5 substitution-specific Perron-frequency modules (silver→Z+Z/√2, period-doubling→dyadic, Thue-Morse→non-single-module).",
+        "open": "probe6 2D Ammann-Beenker 🟠 inconclusive (finite patch)."
+      },
+      "scope": "1D arc fully charted; numerical verification, not proof (c9)."
+    }
+  },
+  "related_repos": {
+    "hexa-lang": "~/core/hexa-lang — the sole SSOT for stdlib / tools / absorptions (d15/d17). demiurge consumes only.",
+    "hexa-star": "~/core/hexa-* (hexa-chip / hexa-space / hexa-component / …) — NOT SSOT; canonical stdlib home is hexa-lang/<domain>."
+  }
+}
