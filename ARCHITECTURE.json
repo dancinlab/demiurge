@@ -357,8 +357,11 @@
         },
         "b_dfpt_lambda_tc": {
           "title": "(b) DFPT λ/Tc promotion of the flat-band winners — the 'flat-band → anomalous λ?' test",
-          "in_flight": "LaRu3Si2 DFPT λ/Tc (QE ph.x, 2×2×2 q, 16³ el-ph k; vast pod) AND LaOs3Si2 DFPT (summer FREE pool, same q/k for head-to-head) — BOTH IN-FLIGHT, λ/ω_log/Tc PENDING (numbers not yet harvested, d6).",
-          "verdict": "🟠 PENDING — the central open question of the campaign (does flat-band-at-E_F yield anomalously high λ?) is not yet answered."
+          "in_flight": "LaOs3Si2 DFPT (summer FREE pool, same 2x2x2 q / 16^3 k for head-to-head) — STILL PENDING (numbers not yet harvested, d6).",
+          "verdict": "🟠 LaRu3Si2 HARVESTED but UNSTABLE at 2x2x2 (lambda/Tc untrustworthy as absolute; physical-bound lambda~1.6 Tc~7K). LaOs3Si2 head-to-head still PENDING. Central question (flat-band -> anomalous lambda?) PARTIALLY answered: large el-ph drive present but coupled to lattice instability; needs denser-q confirmation.",
+          "LaRu3Si2_result": "HARVESTED 2026-06-17 (vast pod 41069486, QE 7.5 ph.x el-ph 'simple', 2x2x2 q, 16^3 k, DOS(Ef)=35.408 states/spin/Ry). 🔴 DYNAMICALLY UNSTABLE: 11 imaginary modes, 6 GENUINE non-Gamma soft modes down to -77 cm-1 (min -77.14 at q=(0,0,-0.800)) -> absolute lambda/Tc UNTRUSTWORTHY (d6 gate). NAIVE (lambda.x convention, all modes) lambda=-0.34/Tc=0 (imaginary modes contribute -1.98). PHYSICAL (imaginary dropped) lambda=1.64, omega_log=56.3 K, Tc(mu*0.10)=6.96K, Tc(mu*0.13)=6.40K — matches measured 7K but discards 11 modes (soft UPPER BOUND, NOT converged).",
+          "flat_band_answer": "PARTIAL/HONEST (c9/d6): physical-only lambda=1.64 IS strong-coupling (large flat-band N(Ef)=35.4 boost) AND its Tc~7K matches the real material, suggesting the flat band DOES drive a large el-ph — but the SAME softness destabilizes the kagome lattice on the coarse 2x2x2 q-grid, so the clean 'flat-band -> anomalously high lambda' claim is NOT yet established. Soft modes are likely grid-aliasing (common for kagome metals on coarse q).",
+          "breakthrough_path": "(d2) 4x4x4 q-grid DFPT to decide: soft modes HARDEN (artifact -> trust lambda~1.6, flat-band confirmed as lambda booster) vs PERSIST (real CDW instability). QFORGE cross-val deferred (assembling corrupted unstable data adds no info)."
         },
         "c_ambient_superhydride": {
           "title": "(c) ambient / high-P superhydride branch (dynamical-stability gate then DFPT λ/Tc via QE)",
