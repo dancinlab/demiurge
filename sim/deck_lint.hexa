@@ -46,6 +46,19 @@
 //                         QE 6.7 FoX XML parser (SIGABRT). Mirror of the
 //                         stdlib deck_push sanitizer, as a READ-side check.
 //
+// LATER GUARDS (RTSC vc-relax / el-ph troubles — no guard existed)
+// ----------------------------------------------------------------
+//   G08 vcrelax_convergence a vc-relax deck without tight etot/forc/press
+//                         _conv_thr -> under-relaxed cell -> matdyn imaginary
+//                         modes (this session: YH6 41, MgH6 34) -> no Tc (d6).
+//   G09 elph_needs_relaxed_cell an el-ph (electron_phonon=) deck with NO
+//                         relax/vc-relax/scf sibling + no RUNBOOK relax note ->
+//                         el-ph must run on a RELAXED cell (d6). DISTINCT from
+//                         G06 (G06 = stability VERIFICATION set up; G09 = the
+//                         cell was RELAXED first).
+//   G10 kgrid_zero        a K_POINTS automatic mesh of 0x.. (zeroed nk line) ->
+//                         no real k-mesh -> garbage energies, no QE error.
+//
 // To add a guard:  write fn guard_<slug>(d) -> Finding ; add it to all_guards().
 //
 // RUN
@@ -538,6 +551,81 @@ fn guard_ascii_only(d: Deck) -> Finding {
     return finding("G07", SEV_PASS, "deck is pure ASCII")
 }
 
+// G08 — a vc-relax deck must carry TIGHT convergence criteria (d6).
+// RTSC bug: an under-relaxed vc-relax cell ships residual stress/forces ->
+// the el-ph DFPT on it returns a forest of imaginary matdyn modes (YH6 41,
+// MgH6 34) -> no physical Tc. The fix is to never accept QE's loose default
+// thresholds on a vc-relax: require at least one of etot/forc/press _conv_thr
+// to be explicitly tightened. Non-vc-relax decks are n/a.
+fn guard_vcrelax_convergence(d: Deck) -> Finding {
+    let calc = _calc_type(d.lc)
+    if calc != "vc-relax" {
+        return finding("G08", SEV_PASS, "calc='" + calc + "' is not vc-relax -- convergence gate n/a")
+    }
+    let has_etot  = _has_directive(d.lc, "etot_conv_thr")
+    let has_forc  = _has_directive(d.lc, "forc_conv_thr")
+    let has_press = _has_directive(d.lc, "press_conv_thr")
+    let mut miss = ""
+    if !has_etot  { miss = miss + "etot_conv_thr " }
+    if !has_forc  { miss = miss + "forc_conv_thr " }
+    if !has_press { miss = miss + "press_conv_thr " }
+    if len(miss) > 0 {
+        return finding("G08", SEV_WARN,
+            "vc-relax missing tight convergence: " + miss.trim()
+            + "-- QE defaults leave the cell UNDER-RELAXED -> matdyn imaginary modes -> el-ph invalid (d6)")
+    }
+    return finding("G08", SEV_PASS, "vc-relax carries etot+forc+press _conv_thr (tight relaxation)")
+}
+
+// G09 — an el-ph (electron_phonon=) deck must be PRECEDED by a relaxed cell (d6).
+// This is a DIFFERENT axis from G06: G06 asks whether the dynamical-STABILITY
+// verification (q2r->matdyn) is set up; G09 asks whether the cell the el-ph
+// runs ON was ever relaxed. el-ph on an un-relaxed (raw experimental / guessed)
+// cell carries residual stress straight into the phonons. We accept any of:
+// a relax/vc-relax/scf deck sibling in the same dir, or a RUNBOOK that mentions
+// 'relax'/'vc-relax'/'relaxed'. Absence of BOTH -> WARN.
+fn guard_elph_needs_relaxed_cell(d: Deck) -> Finding {
+    if !d.lc.contains("electron_phonon") {
+        return finding("G09", SEV_PASS, "not an el-ph ph.in -- relaxed-cell precondition n/a")
+    }
+    let dir = _deck_dir(d.path)
+    let has_relax    = file_exists(_join(dir, "relax.in"))
+    let has_vcrelax  = file_exists(_join(dir, "vc-relax.in")) || file_exists(_join(dir, "vcrelax.in"))
+    let has_scf      = file_exists(_join(dir, "scf.in"))
+    let runbook      = _read_or_empty(_join(dir, "RUNBOOK.md")).to_lower()
+    let noted = runbook.contains("relax") || runbook.contains("relaxed")
+    if has_relax || has_vcrelax || has_scf || noted {
+        return finding("G09", SEV_PASS,
+            "el-ph deck has a relaxed-cell precondition (relax/vc-relax/scf sibling or RUNBOOK note)")
+    }
+    return finding("G09", SEV_WARN,
+        "el-ph (electron_phonon=) deck with NO relax.in/vc-relax.in/scf.in sibling and no RUNBOOK relax note -- "
+        + "el-ph must run on a RELAXED cell (vc-relax -> stability) not a raw/guessed one (d6)")
+}
+
+// G10 — a pw.x K_POINTS automatic mesh of 0×… is a degenerate grid (no k-mesh).
+// A hand-edited deck with a blanked / zeroed nk line silently computes a single
+// (or empty) k-point -> wrong occupations/energies with no QE error. Scoped to
+// the 'automatic' card (explicit lists carry their own count). vc-relax/scf/
+// bands/nscf all need a real mesh.
+fn guard_kgrid_zero(d: Deck) -> Finding {
+    let calc = _calc_type(d.lc)
+    let is_pw = calc != "" || _total_kpoints(d.raw) >= 0
+    if !is_pw {
+        return finding("G10", SEV_PASS, "not a pw.x deck -- k-grid gate n/a")
+    }
+    if !d.lc.contains("k_points") || !d.lc.contains("automatic") {
+        return finding("G10", SEV_PASS, "no K_POINTS automatic card -- k-grid gate n/a")
+    }
+    let nk = _total_kpoints(d.raw)
+    if nk <= 0 {
+        return finding("G10", SEV_FAIL,
+            "K_POINTS automatic mesh is degenerate (nk1*nk2*nk3=" + str(nk)
+            + ") -- a zeroed/blank nk line computes no real k-mesh -> garbage energies")
+    }
+    return finding("G10", SEV_PASS, "K_POINTS automatic mesh is non-degenerate (#k=" + str(nk) + ")")
+}
+
 // ── path helpers ────────────────────────────────────────────────────────
 
 fn _deck_dir(path: str) -> str {
@@ -578,6 +666,9 @@ fn all_guards(d: Deck) -> [Finding] {
     out.push(guard_d15_scf_aids(d))
     out.push(guard_ph_stability_gate(d))
     out.push(guard_ascii_only(d))
+    out.push(guard_vcrelax_convergence(d))
+    out.push(guard_elph_needs_relaxed_cell(d))
+    out.push(guard_kgrid_zero(d))
     return out
 }
 
@@ -589,7 +680,10 @@ fn _guard_catalogue() -> [str] {
         "G04 pseudo_missing    every named UPF must exist in the pseudo dir (d13)",
         "G05 d15_scf_aids      metal/small-gap SCF carries degauss+mixing_beta+maxiter (d15)",
         "G06 ph_stability_gate el-ph deck gated on q2r->matdyn imaginary-mode check (d6)",
-        "G07 ascii_only        .in deck is pure ASCII (QE FoX crash prevention)"
+        "G07 ascii_only        .in deck is pure ASCII (QE FoX crash prevention)",
+        "G08 vcrelax_convergence vc-relax carries tight etot/forc/press _conv_thr (d6 under-relax->imag modes)",
+        "G09 elph_needs_relaxed_cell el-ph deck preceded by a relaxed cell (relax/vc-relax/scf sibling · d6)",
+        "G10 kgrid_zero        K_POINTS automatic mesh is non-degenerate (no zeroed nk line)"
     ]
 }
 
@@ -678,6 +772,41 @@ fn _self_test() {
     let g07 = guard_ascii_only(nax)
     if g07.sev != SEV_FAIL { println("  FAIL self: G07 expected FAIL got " + _sev_tag(g07.sev)); fails = fails + 1 }
     else { println("  ok: G07 CAUGHT non-ASCII byte (FAIL)") }
+
+    // vc-relax WITHOUT tight convergence thresholds -> G08 WARN (the YH6/MgH6 bug)
+    let vcrelax_loose = "&control\n  calculation='vc-relax'\n/\n&system\n/\n&electrons\n/\n&ions\n/\n&cell\n/\nATOMIC_SPECIES\n  Y 88.906 Y.upf\n  H 1.008 H.upf\nK_POINTS automatic\n  8 8 8 0 0 0\n"
+    let vcl = deck_from_text("vcrelax_loose.in", vcrelax_loose)
+    let g08 = guard_vcrelax_convergence(vcl)
+    if g08.sev != SEV_WARN { println("  FAIL self: G08 expected WARN got " + _sev_tag(g08.sev)); fails = fails + 1 }
+    else { println("  ok: G08 CAUGHT vc-relax with loose convergence (WARN)") }
+
+    // vc-relax WITH tight convergence -> G08 PASS
+    let vcrelax_tight = "&control\n  calculation='vc-relax'\n  etot_conv_thr=1.0d-5\n  forc_conv_thr=1.0d-4\n/\n&cell\n  press_conv_thr=0.05\n/\nATOMIC_SPECIES\n  Y 88.906 Y.upf\nK_POINTS automatic\n  8 8 8 0 0 0\n"
+    let vct = deck_from_text("vcrelax_tight.in", vcrelax_tight)
+    let g08ok = guard_vcrelax_convergence(vct)
+    if g08ok.sev != SEV_PASS { println("  FAIL self: G08 ok expected PASS got " + _sev_tag(g08ok.sev)); fails = fails + 1 }
+    else { println("  ok: G08 vc-relax with tight convergence PASS") }
+
+    // el-ph deck with NO relax/scf sibling and no RUNBOOK -> G09 WARN
+    let elph_noprep = "&inputph\n  prefix='x'\n  ldisp=.true.\n  electron_phonon='simple'\n/\n"
+    let epn = deck_from_text("/tmp/__deck_lint_no_relax_dir__/ph.in", elph_noprep)
+    let g09 = guard_elph_needs_relaxed_cell(epn)
+    if g09.sev != SEV_WARN { println("  FAIL self: G09 expected WARN got " + _sev_tag(g09.sev)); fails = fails + 1 }
+    else { println("  ok: G09 CAUGHT el-ph deck with no relaxed-cell precondition (WARN)") }
+
+    // K_POINTS automatic with a zeroed nk line -> G10 FAIL
+    let kzero = "&control\n  calculation='scf'\n/\nATOMIC_SPECIES\n  Co 58.933 Co.upf\nK_POINTS automatic\n  0 0 0 0 0 0\n"
+    let kz = deck_from_text("kzero.in", kzero)
+    let g10 = guard_kgrid_zero(kz)
+    if g10.sev != SEV_FAIL { println("  FAIL self: G10 expected FAIL got " + _sev_tag(g10.sev)); fails = fails + 1 }
+    else { println("  ok: G10 CAUGHT degenerate (zeroed) K_POINTS mesh (FAIL)") }
+
+    // K_POINTS automatic with a real mesh -> G10 PASS
+    let kok = "&control\n  calculation='scf'\n/\nATOMIC_SPECIES\n  Co 58.933 Co.upf\nK_POINTS automatic\n  4 4 4 0 0 0\n"
+    let kk = deck_from_text("kok.in", kok)
+    let g10ok = guard_kgrid_zero(kk)
+    if g10ok.sev != SEV_PASS { println("  FAIL self: G10 ok expected PASS got " + _sev_tag(g10ok.sev)); fails = fails + 1 }
+    else { println("  ok: G10 non-degenerate mesh PASS") }
 
     if fails > 0 { println("# self-test FAILED (" + str(fails) + ")"); exit(1) }
     println("# deck_lint self-test PASS")

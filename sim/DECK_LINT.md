@@ -64,6 +64,9 @@ crash or silent-garbage result; `WARN` for a "you probably forgot X".
 | G05 | `d15_scf_aids` | a metal/small-gap (`occupations='smearing'`) SCF missing `degauss`+`mixing_beta`+`electron_maxstep` | WARN | d15 |
 | G06 | `ph_stability_gate` | an el-ph (`electron_phonon=`) deck with NO `q2r.in`/`matdyn.in`/RUNBOOK imaginary-mode gate — never fire el-ph on a dynamically-unstable cell | WARN | d6 |
 | G07 | `ascii_only` | a non-ASCII byte in a `.in` (em-dash · Å · Γ …) that crashes QE 6.7's FoX XML parser (SIGABRT) | FAIL | — |
+| G08 | `vcrelax_convergence` | a `vc-relax` deck missing tight `etot_conv_thr`/`forc_conv_thr`/`press_conv_thr` — QE defaults leave the cell **under-relaxed** → a forest of matdyn imaginary modes (this session: YH6 41, MgH6 34) → no physical Tc | WARN | d6 |
+| G09 | `elph_needs_relaxed_cell` | an el-ph (`electron_phonon=`) deck with NO `relax.in`/`vc-relax.in`/`scf.in` sibling and no RUNBOOK relax note — el-ph must run on a **relaxed** cell, not a raw/guessed one (distinct axis from G06: G06 = stability *verification* exists, G09 = the cell was *relaxed*) | WARN | d6 |
+| G10 | `kgrid_zero` | a `K_POINTS automatic` mesh of `0×…` (a hand-blanked/zeroed nk line) — computes no real k-mesh → garbage energies with no QE error | FAIL | — |
 
 ## Usage
 
