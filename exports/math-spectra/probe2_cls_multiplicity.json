@@ -1,0 +1,573 @@
+{
+  "domain": "MATH-SPECTRA",
+  "probe": "flat-band CLS multiplicity / degeneracy vs L (line-graph + bipartite lattices, PBC)",
+  "method": "exact tight-binding adjacency on L^d torus (numpy eigvalsh), count flat-level multiplicity with tol 1e-9; verify vs line-graph flat-band theorem (mu=E-V+1 base-graph Betti) and Lieb/Sutherland bipartite imbalance (mu=|N_A-N_B|)",
+  "preregistered_expectation": "CLS multiplicities are SIMPLE polynomials in L (linear in cell count) = elementary graph invariant (cycle-space dim / sublattice imbalance). Pre-registered NEGATIVE on hidden number theory (frozen-first, c16). RESULT vs prereg: confirmed NEGATIVE, with one refinement not anticipated \u2014 two lattices (checkerboard, Lieb) show a clean L-parity (mod-2) split, an elementary commensurability term, still no deep number theory.",
+  "parity_structure_found": true,
+  "tolerance": 1e-09,
+  "lattices": {
+    "kagome": {
+      "description": "line graph of honeycomb",
+      "kind": "line",
+      "flat_level": -2.0,
+      "L_values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "degeneracy_sequence": [
+        2,
+        5,
+        10,
+        17,
+        26,
+        37,
+        50,
+        65,
+        82,
+        101,
+        122,
+        145
+      ],
+      "total_sites": [
+        3,
+        12,
+        27,
+        48,
+        75,
+        108,
+        147,
+        192,
+        243,
+        300,
+        363,
+        432
+      ],
+      "min_gap_to_dispersive": [
+        6.0,
+        2.0,
+        1.267949,
+        0.763932,
+        0.502788,
+        0.354249,
+        0.26249,
+        0.202067,
+        0.16025,
+        0.130145,
+        0.107767,
+        0.090687
+      ],
+      "betti_b1_base_graph": [
+        2,
+        5,
+        10,
+        17,
+        26,
+        37,
+        50,
+        65,
+        82,
+        101,
+        122,
+        145
+      ],
+      "closed_form_fit": {
+        "form": "single",
+        "degree": 2,
+        "coeffs_hi_to_lo": [
+          1.0,
+          -0.0,
+          1.0
+        ]
+      }
+    },
+    "checkerboard": {
+      "description": "line graph of square",
+      "kind": "line",
+      "flat_level": -2.0,
+      "L_values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "degeneracy_sequence": [
+        1,
+        5,
+        9,
+        17,
+        25,
+        37,
+        49,
+        65,
+        81,
+        101,
+        121,
+        145
+      ],
+      "total_sites": [
+        2,
+        8,
+        18,
+        32,
+        50,
+        72,
+        98,
+        128,
+        162,
+        200,
+        242,
+        288
+      ],
+      "min_gap_to_dispersive": [
+        8.0,
+        4.0,
+        2.0,
+        2.0,
+        0.763932,
+        1.0,
+        0.396125,
+        0.585786,
+        0.24123,
+        0.381966,
+        0.162028,
+        0.267949
+      ],
+      "betti_b1_base_graph": [
+        2,
+        5,
+        10,
+        17,
+        26,
+        37,
+        50,
+        65,
+        82,
+        101,
+        122,
+        145
+      ],
+      "closed_form_fit": {
+        "form": "parity_split_mod2",
+        "odd_L": {
+          "degree": 2,
+          "coeffs_hi_to_lo": [
+            1.0,
+            -0.0,
+            0.0
+          ]
+        },
+        "even_L": {
+          "degree": 2,
+          "coeffs_hi_to_lo": [
+            1.0,
+            -0.0,
+            1.0
+          ]
+        }
+      }
+    },
+    "Lieb": {
+      "description": "bipartite imbalance 2:1",
+      "kind": "bipartite",
+      "flat_level": 0.0,
+      "L_values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "degeneracy_sequence": [
+        1,
+        6,
+        9,
+        18,
+        25,
+        38,
+        49,
+        66,
+        81,
+        102,
+        121,
+        146
+      ],
+      "total_sites": [
+        3,
+        12,
+        27,
+        48,
+        75,
+        108,
+        147,
+        192,
+        243,
+        300,
+        363,
+        432
+      ],
+      "min_gap_to_dispersive": [
+        2.828427,
+        2.0,
+        1.414214,
+        1.414214,
+        0.874032,
+        1.0,
+        0.629384,
+        0.765367,
+        0.491151,
+        0.618034,
+        0.402527,
+        0.517638
+      ],
+      "betti_b1_base_graph": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "closed_form_fit": {
+        "form": "parity_split_mod2",
+        "odd_L": {
+          "degree": 2,
+          "coeffs_hi_to_lo": [
+            1.0,
+            -0.0,
+            0.0
+          ]
+        },
+        "even_L": {
+          "degree": 2,
+          "coeffs_hi_to_lo": [
+            1.0,
+            -0.0,
+            2.0
+          ]
+        }
+      }
+    },
+    "pyrochlore": {
+      "description": "line graph of diamond (3D)",
+      "kind": "line",
+      "flat_level": -2.0,
+      "L_values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "degeneracy_sequence": [
+        3,
+        17,
+        55,
+        129,
+        251,
+        433,
+        687,
+        1025
+      ],
+      "total_sites": [
+        4,
+        32,
+        108,
+        256,
+        500,
+        864,
+        1372,
+        2048
+      ],
+      "min_gap_to_dispersive": [
+        8.0,
+        2.0,
+        1.354249,
+        0.837722,
+        0.557021,
+        0.394449,
+        0.293123,
+        0.226058
+      ],
+      "betti_b1_base_graph": [
+        3,
+        17,
+        55,
+        129,
+        251,
+        433,
+        687,
+        1025
+      ],
+      "closed_form_fit": {
+        "form": "single",
+        "degree": 3,
+        "coeffs_hi_to_lo": [
+          2.0,
+          -0.0,
+          0.0,
+          1.0
+        ]
+      }
+    }
+  },
+  "closed_form_verification": {
+    "kagome": {
+      "mu == b1 (E-V+1)": true,
+      "mu == b1 - 1": false,
+      "mu == b1 + 1": false
+    },
+    "pyrochlore": {
+      "mu == b1 (E-V+1)": true,
+      "mu == b1 - 1": false,
+      "mu == b1 + 1": false
+    },
+    "checkerboard": {
+      "mu == b1 (E-V+1) (all L)": false,
+      "mu == L^2 (odd L) / L^2+1 (even L) [=b1 at even L]": true,
+      "expected_b1": [
+        2,
+        5,
+        10,
+        17,
+        26,
+        37,
+        50,
+        65,
+        82,
+        101,
+        122,
+        145
+      ],
+      "expected_parity": [
+        1,
+        5,
+        9,
+        17,
+        25,
+        37,
+        49,
+        65,
+        81,
+        101,
+        121,
+        145
+      ]
+    },
+    "Lieb": {
+      "mu == |N_A - N_B| == L^2 (all L)": false,
+      "mu == L^2 (odd L) / L^2+2 (even L)": true,
+      "expected_L2": [
+        1,
+        4,
+        9,
+        16,
+        25,
+        36,
+        49,
+        64,
+        81,
+        100,
+        121,
+        144
+      ],
+      "expected_parity": [
+        1,
+        6,
+        9,
+        18,
+        25,
+        38,
+        49,
+        66,
+        81,
+        102,
+        121,
+        146
+      ]
+    }
+  },
+  "number_theory_probe": {
+    "kagome": {
+      "first_differences": [
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23
+      ],
+      "second_differences": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "prime_L_values": {
+        "2": 5,
+        "3": 10,
+        "5": 26,
+        "7": 50,
+        "11": 122
+      },
+      "closed_form": "single",
+      "structure_class": "elementary polynomial",
+      "deeper_than_parity_anomaly": false
+    },
+    "checkerboard": {
+      "first_differences": [
+        4,
+        4,
+        8,
+        8,
+        12,
+        12,
+        16,
+        16,
+        20,
+        20,
+        24
+      ],
+      "second_differences": [
+        0,
+        4,
+        0,
+        4,
+        0,
+        4,
+        0,
+        4,
+        0,
+        4
+      ],
+      "prime_L_values": {
+        "2": 5,
+        "3": 9,
+        "5": 25,
+        "7": 49,
+        "11": 121
+      },
+      "closed_form": "parity_split_mod2",
+      "structure_class": "mod-2 parity (two elementary polynomials by L parity)",
+      "deeper_than_parity_anomaly": false
+    },
+    "Lieb": {
+      "first_differences": [
+        5,
+        3,
+        9,
+        7,
+        13,
+        11,
+        17,
+        15,
+        21,
+        19,
+        25
+      ],
+      "second_differences": [
+        -2,
+        6,
+        -2,
+        6,
+        -2,
+        6,
+        -2,
+        6,
+        -2,
+        6
+      ],
+      "prime_L_values": {
+        "2": 6,
+        "3": 9,
+        "5": 25,
+        "7": 49,
+        "11": 121
+      },
+      "closed_form": "parity_split_mod2",
+      "structure_class": "mod-2 parity (two elementary polynomials by L parity)",
+      "deeper_than_parity_anomaly": false
+    },
+    "pyrochlore": {
+      "first_differences": [
+        14,
+        38,
+        74,
+        122,
+        182,
+        254,
+        338
+      ],
+      "second_differences": [
+        24,
+        36,
+        48,
+        60,
+        72,
+        84
+      ],
+      "prime_L_values": {
+        "2": 17,
+        "3": 55,
+        "5": 251,
+        "7": 687
+      },
+      "closed_form": "single",
+      "structure_class": "elementary polynomial",
+      "deeper_than_parity_anomaly": false
+    }
+  },
+  "number_theory_verdict": "NEGATIVE on deep number theory \u2014 every CLS-multiplicity sequence is an elementary low-degree polynomial in L (degree = lattice dimension), in two cases SPLIT BY THE PARITY OF L (mod-2). kagome (mu=L^2+1=base-graph first Betti number E-V+1) and pyrochlore (mu=2L^3+1=base diamond Betti) are single exact polynomials matching the line-graph flat-band theorem. checkerboard (mu=L^2 odd L, L^2+1 even L) and Lieb (mu=L^2 odd L, L^2+2 even L) carry a mod-2 COMMENSURABILITY correction: the bipartite/loop structure wraps the torus differently for even vs odd L, adding 1-2 extended states. This parity is a real combinatorial structure but is ELEMENTARY (boundary/commensurability, not arithmetic): no divisibility, modular-form, or prime-distribution pattern \u2014 prime L is indistinguishable from generic odd L. CLS counts = elementary graph invariant (cycle-space dim / sublattice imbalance) + an L-parity boundary term. NO hidden number theory; the only modular structure is trivial mod-2 commensurability.",
+  "flat_manifold_clean_gap": true,
+  "verdict_tier": "\ud83d\udd34 CLOSED-negative (number-theory question) + \ud83d\udfe2 closed-form theorem VERIFIED",
+  "finding": "Flat-band CLS multiplicities are elementary polynomials in L matching exact graph invariants. kagome: mu(L)=[2, 5, 10, 17, 26, 37, 50, 65, 82, 101, 122, 145] (single); checkerboard: mu(L)=[1, 5, 9, 17, 25, 37, 49, 65, 81, 101, 121, 145] (parity_split_mod2); pyrochlore: mu(L)=[3, 17, 55, 129, 251, 433, 687, 1025] (single); Lieb: mu(L)=[1, 6, 9, 18, 25, 38, 49, 66, 81, 102, 121, 146] (parity_split_mod2). NEGATIVE on deep number theory \u2014 every CLS-multiplicity sequence is an elementary low-degree polynomial in L (degree = lattice dimension), in two cases SPLIT BY THE PARITY OF L (mod-2). kagome (mu=L^2+1=base-graph first Betti number E-V+1) and pyrochlore (mu=2L^3+1=base diamond Betti) are single exact polynomials matching the line-graph flat-band theorem. checkerboard (mu=L^2 odd L, L^2+1 even L) and Lieb (mu=L^2 odd L, L^2+2 even L) carry a mod-2 COMMENSURABILITY correction: the bipartite/loop structure wraps the torus differently for even vs odd L, adding 1-2 extended states. This parity is a real combinatorial structure but is ELEMENTARY (boundary/commensurability, not arithmetic): no divisibility, modular-form, or prime-distribution pattern \u2014 prime L is indistinguishable from generic odd L. CLS counts = elementary graph invariant (cycle-space dim / sublattice imbalance) + an L-parity boundary term. NO hidden number theory; the only modular structure is trivial mod-2 commensurability.",
+  "honest_caveat": "Numerical confirmation of EXACT tight-binding multiplicities on finite tori, matched to known flat-band theorems (line-graph Betti / Lieb imbalance). This is a verification + a clean NEGATIVE on number theory, not a new theorem. The 'extended-state' torus correction (mu vs b1 may differ by a small constant) is reported exactly as found.",
+  "host": "mini local (scripts/scratch/mathvenv, free)",
+  "cost_usd": 0.0,
+  "evidence": "scripts/scratch/math_spectra/probe2_cls_multiplicity.py",
+  "date": "2026-06-16"
+}
