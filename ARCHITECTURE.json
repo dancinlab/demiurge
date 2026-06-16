@@ -162,7 +162,7 @@
       "name": "QFORGE — 양자 대장간 (hexa-native first-principles el-ph engine)",
       "goal": "Remove the external QE dependency; compute element→electronic structure→phonon→el-ph λ→Allen-Dynes/Eliashberg Tc end-to-end natively. Results g5 verbatim-verified + atlas-folded. RTSC ← QFORGE (NEXUS reuse edge).",
       "status_ssot": "QFORGE/QFORGE.md §⭐ ENGINE STATUS",
-      "honest_standing": "QE = production reference; QFORGE migration gate HELD (2026-06-15). Two PRODUCTION modes (a, b) + one converging-but-gate-unmet mode (c) + a magnetism mode (d).",
+      "honest_standing": "QE = production reference; QFORGE migration gate HELD (2026-06-16). Two PRODUCTION modes (a, b) + one converging-but-gate-unmet mode (c) + a magnetism mode (d). 2026-06-16 fleet: PERF gap CLOSED (mode-b/d hot path GPU-accelerated 🟢🏁), magmom diagnosis corrected (k-sampling Stoner wall, not PW cutoff 🧱), from-scratch PBE-SCF in-flight (process-split).",
       "modes": [
         {
           "id": "a",
@@ -185,8 +185,8 @@
           "title": "from-scratch SCREENED vertex (Woodbury Dyson ε⁻¹ + live local-field f_xc[ρ(r)])",
           "status": "🟢 converging, gate NOT MET — track HELD",
           "what": "QFORGE's own self-consistent screened vertex, fully independent of QE.",
-          "frontier": "R7 (2026-06-08) broke past the bare baseline for the first time: λ=4.1518 vs QE 4.376, rel-ε=5.12% < bare 5.47%. R8 (GGA f_xc-in-χ) COMPLETE · CLOSED-NEGATIVE (λ_GGA=3.41256, rel-ε 22.02%; Δλ vs ALDA −0.00257 = no difference). DFT f_xc lever exhausted; residual gap = from-scratch LDA-PW SCF (QE is PBE self-consistent). Next lever = from-scratch PBE-SCF (separate large effort).",
-          "gate": "≤1% NOT MET (5.12% > 1%); not flipped, 4.376 not forced (d6)."
+          "frontier": "R7 (2026-06-08) broke past the bare baseline for the first time: λ=4.1518 vs QE 4.376, rel-ε=5.12% < bare 5.47%. R8 (GGA f_xc-in-χ) COMPLETE · CLOSED-NEGATIVE (λ_GGA=3.41256, rel-ε 22.02%; Δλ vs ALDA −0.00257 = no difference). DFT f_xc lever exhausted; residual gap = from-scratch LDA-PW SCF (QE is PBE self-consistent). Next lever = from-scratch PBE-SCF. 2026-06-16 process-split round (qforge-pbe-scf): 3-D-PBE ground state now COMPUTES (residual-3 resolved), but in-process λ SIGSEGVs (farr↔val-arena memory-model collision); final lever = process-split (gga_scf→H checkpoint→2nd-process vertex). Status = in-flight (process-split), NOT terminal.",
+          "gate": "≤1% NOT MET (5.12% > 1%); not flipped, 4.376 not forced (d6). Production stays mode-(b) hybrid 1.65e-7."
         },
         {
           "id": "d",
@@ -194,7 +194,7 @@
           "status": "🧲 brick g5-PASS, real-cell moment compute-walled",
           "what": "QFORGE's own nspin=2 spin-polarized SCF (V_xc spin-split LDA/PW92 + spin-GGA PBE) → magnetic moment m.",
           "bricks": "All g5 PASS (qforge_scf_spin_selftest, qforge_scf_pw_spin_selftest, qforge_smearing_spin_selftest, qforge_xc_spin_selftest, qforge_pbe_spin_selftest). Engine works.",
-          "wall": "Real-cell moment SCF blocked by TM-d/5d PW cost. CoSn (Co-3d, npw≥120) ≈580s/iter; only npw=80 tractable → under-resolved m≈0 (QE m=0.43 not reproduced — basis wall, not physics). RbOs2O6 (Os-5d, 9-atom) heavier → honest-skip on mini local. Breakthrough = GPU davidson / reduced-basis (LCAO/PAW) / real HPC."
+          "wall": "Real-cell moment SCF compute-walled. 2026-06-16 reduced-basis (KB-nonlocal) round CORRECTED the diagnosis: CoSn m≈0 was ambiguous because projectors were OFF (local-only PP); with KB-nonlocal projectors the d-shell binds but the moment is still ≈0 → the REAL wall is k-sampling (BZ-integrated Stoner criterion), NOT the PW cutoff. Finite-k davidson throughput is the ceiling → GPU-davidson is the lever (now unblocked by the 2026-06-16 perf lane). PR hexa-lang#3447. QE m=0.43 remains the trustworthy reference."
         }
       ],
       "layers": {
@@ -212,7 +212,35 @@
         "accuracy_half": "front-end QFORGE-own |g| accuracy (independent CaH6 λ=0.18, 24× MISS — screened-vertex gap). Separate end-to-end milestone.",
         "verdict": "HELD — routing-switch (gate ALL_PASS) and full QE replacement (end-to-end |g| within 1%) are distinct stages."
       },
-      "universal_axis": "Multi-scale extension (atoms · materials · bio · chem · chip · system) on a common core (plane-wave DFT + linear-response DFPT + stdlib/autograd·flame ML) with per-scale front-end + g5 verify-adapter (2026-06-07). materials = DONE (QE el-ph, GATE CLOSED); others new."
+      "universal_axis": "Multi-scale extension (atoms · materials · bio · chem · chip · system) on a common core (plane-wave DFT + linear-response DFPT + stdlib/autograd·flame ML) with per-scale front-end + g5 verify-adapter (2026-06-07). materials = DONE (QE el-ph, GATE CLOSED); others new.",
+      "fleet_2026_06_16": {
+        "note": "Three concurrent QFORGE-fleet lanes (2026-06-16). migration_gate = HELD throughout (production stays mode-(b) hybrid 1.65e-7).",
+        "lanes": [
+          {
+            "id": "qforge-perf-gpu",
+            "title": "PERF gap — block-GEMM H·Ψ on GPU",
+            "status": "🟢🏁 CLOSED",
+            "detail": "PERF gap CLOSED — block-GEMM H·Ψ wired into davidson + sternheimer; full-solve speedup 1.34–18.04× (Davidson) / 2.56–18.6× (Sternheimer) on RTX 5070, machine-eps parity. PR hexa-lang#3442.",
+            "honest_floor": "small-nocc (nb 4–8) capped ~1.3–2.6× by per-iter host↔device transfer (d6 honest floor).",
+            "record": ".verdicts/qforge-perf-roofline/ · .verdicts/qforge-converged-kxq-gpu/ · PR hexa-lang#3442"
+          },
+          {
+            "id": "qforge-magmom",
+            "title": "reduced-basis (KB-nonlocal) magnetism round",
+            "status": "🧱 WALL re-localized",
+            "detail": "Corrected diagnosis: CoSn m≈0 was ambiguous because projectors were OFF (local-only PP); with KB-nonlocal d-shell binds but moment still ≈0 → real wall = k-sampling (BZ-integrated Stoner), NOT PW cutoff. Finite-k davidson throughput is the ceiling → GPU-davidson is the lever (unblocked by the perf lane). PR hexa-lang#3447.",
+            "record": "RTSC_LEDGER QFORGE-XVAL row · PR hexa-lang#3447 · qforge-cosn-co3d-pw-compute-wall (memory)"
+          },
+          {
+            "id": "qforge-pbe-scf",
+            "title": "from-scratch gate-grade PBE-SCF (process-split round)",
+            "status": "🟠 IN-FLIGHT (process-split)",
+            "detail": "From-scratch gate-grade (≤1%): R7 screened 5.12% best, R8 GGA f_xc-in-χ closed-neg, PBE-SCF regresses; 3-D-PBE ground state now COMPUTES (residual-3 resolved) but in-process λ SIGSEGVs (farr↔val-arena memory-model collision); final lever = process-split (gga_scf→H checkpoint→2nd process vertex). NOT terminal. Production stays mode-(b) hybrid 1.65e-7.",
+            "record": ".verdicts/qforge-pbe-scf-cah6/ · .verdicts/qforge-pbe-scf-align/ · .verdicts/qforge-3d-realspace-scf/ · .verdicts/qforge-cah6-gga-fxc-in-chi/"
+          }
+        ],
+        "migration_gate": "HELD"
+      }
     },
     "QE": {
       "name": "Quantum ESPRESSO (external Fortran, 30-yr verified)",
@@ -226,42 +254,104 @@
       "engine": "QFORGE (RTSC ← QFORGE NEXUS edge)",
       "frontier_date": "2026-06-16",
       "branches": {
-        "flat_band_at_EF": {
-          "title": "no-cooling flat-band-at-E_F track (DESIGN gate, not room-temp)",
+        "a_flat_band_at_EF": {
+          "title": "(a) flat-band-at-E_F family — no-cooling DESIGN gate (not room-temp). Gate (pre-registered c9): PASS |ΔE|<0.10 eV AND m<0.5 μB; FALSIFY ΔE>0.2 OR m>0.5; ΔE=E_flatband_mean−E_F.",
           "winners": [
-            {"host": "LaRu3Si2 (Ru 4d⁷)", "verdict": "🟢 GATE PASS", "detail": "campaign-first: measured ΔE=−0.055 eV AND m=0.00 μB — beats all 3 failure modes; real ambient Tc=7K. Next = DFPT λ/Tc promotion (q=3 in flight)."},
-            {"host": "LaOs3Si2 (Os 5d⁷)", "verdict": "🟢 GATE PASS (vc-relax CONFIRMED)", "detail": "2nd winner: fixed-cell ΔE=+0.039 survives full relaxation (relaxed ΔE=+0.0886<0.10, m=0.00, bandwidth 0.544→0.411 eV). 5d works as well as 4d."}
+            {"host": "LaRu3Si2 (Ru 4d⁷)", "verdict": "🟢 GATE PASS", "detail": "campaign-first: measured ΔE=−0.055 eV (Ru-kagome band 34, in-plane bw 0.365 eV) AND m=0.00 μB — beats all 3 failure modes simultaneously; real ambient Tc=7K. CeCo3B2-type P6/mmm, vc-relaxed a=5.7175 Å c/a=0.625. Next = DFPT λ/Tc promotion."},
+            {"host": "LaOs3Si2 (Os 5d⁷)", "verdict": "🟢 GATE PASS (vc-relax CONFIRMED)", "detail": "2nd winner: fixed-cell screen ΔE=+0.039 survives full relaxation (per-sibling vc-relax: relaxed ΔE=+0.089<0.10, m=0.00, bw 0.544→0.411 eV). 5d works as well as 4d."}
           ],
           "falsified": [
-            {"host": "LaRh3Si2 (Rh 4d⁸)", "verdict": "🔴 FALSIFY", "detail": "ΔE=+0.260 eV, d⁸ overshoots E_F. d-count brackets the fill axis (d⁷=winner, d⁸=overshoot)."},
-            {"host": "MoSn", "verdict": "🔴", "detail": "ΔE=−2.38."},
-            {"host": "CoSn (rigid-doping)", "verdict": "🔴 CLOSED both dials", "detail": "electron −0.445→−0.585 AND hole −0.445→−0.544 push the kagome flat band DEEPER from E_F; hole doping also wakes magnetism m→0.63. 'Dope CoSn to E_F' axis exhausted."},
-            {"host": "CsV3Sb5 / RbOs2O6", "verdict": "🔴/🟠"}
+            {"host": "LaRh3Si2 (Rh 4d⁸)", "verdict": "🔴 FALSIFY", "detail": "ΔE=+0.260 eV (260 meV above E_F), m=0.00; d⁸ overshoots E_F. d-count brackets the fill axis (d⁷=winner, d⁸=overshoot)."},
+            {"host": "MoSn (Mo 4d⁵ kagome)", "verdict": "🔴 FALSIFY", "detail": "ΔE=−2.38 eV (kagome flat band 2.4 eV BELOW E_F), m=0.00. Non-magnetic (Co→Mo killed magnetism) but flat band far from E_F."},
+            {"host": "CoSn (rigid e-/h-doping)", "verdict": "🔴 CLOSED both dials", "detail": "e-dope ΔE −0.445→−0.585 (slope −0.23 eV/e⁻) AND h-dope −0.445→−0.544; both push the Co-3d kagome flat band DEEPER from E_F; hole doping wakes magnetism m→0.63. 'Dope CoSn to E_F' axis MEASURED-dead/exhausted."},
+            {"host": "CsV3Sb5", "verdict": "🔴", "detail": "flat band +0.92 eV (overshoot failure mode)."},
+            {"host": "RbOs2O6", "verdict": "🟠", "detail": "flat-band-at-E_F WINS ΔE axis but PBE-magnetic robust (competing-order bottleneck); nonmag-DFPT pending."}
           ],
           "triangulation": {
-            "v3": "doping axis MEASURED-dead → new lane = sweep the CeCo3B2-type R-T₃-X₂ 4d/5d-kagome family (chemistry/lattice axis = 3.30 eV span, the real lever).",
-            "v4": "flat-band-at-E_F is a GRAPH property — two theorems generate hosts (line-graph: kagome=L(honeycomb)·pyrochlore=L(diamond)·checkerboard=L(square); bipartite imbalance: Lieb·dice/T3). Gate by two orthogonal screens (ΔE~0 AND non-magnetic). Bridge: Lieb=CuO₂-plane isomorph → links flat-band track to cuprate HTS.",
-            "topology_sweep": "CONCLUDED — Lieb Os-O 🔴 + checkerboard Os-O 🔴 (2/2 idealized Os-O realizations disperse the theorem flat band via O-bridge hybridization). Meta-finding (🧱 Os-O-realization wall): topology = necessary; realization (weak-hybridization d-kagome CeCo3B2) = the actual lever."
+            "v2_refuted": "v2 doping-dial premise (electron-dope CoSn ~0.4 e⁻/f.u. → flat band to E_F) REFUTED by measurement (e-dope/h-dope both deeper, wrong direction).",
+            "v3": "two-axis separation by real data: DOPING axis MEASURED-dead (CoSn e-dope −0.23, h-dope −0.165 eV/carrier) → CLOSED; CHEMISTRY/LATTICE axis = real lever (~3.30 eV span CsV3Sb5..MoSn, ~30× the doping lever). New lane = sweep the CeCo3B2-type R-T₃-X₂ 4d/5d-kagome family.",
+            "v4": "flat-band-at-E_F is a GRAPH-TOPOLOGY property — two exact theorems generate hosts (line-graph: kagome=L(honeycomb)·pyrochlore=L(diamond)·checkerboard=L(square); bipartite sublattice imbalance: Lieb·dice/T3). Gate each by two orthogonal screens (ΔE~0 AND non-magnetic). Bridge: Lieb=CuO₂-plane isomorph → links flat-band track to cuprate HTS.",
+            "topology_sweep": "CONCLUDED — Lieb Os-O (idealized) 🔴 + checkerboard Os-O (idealized) 🔴 (2/2 idealized Os-O realizations disperse the theorem flat band via O-bridge hybridization). Meta-finding (🧱 Os-O-realization wall): topology = necessary-not-sufficient; realization (weak-hybridization d-kagome CeCo3B2) = the actual lever."
           }
         },
-        "ambient_superhydride": {
-          "title": "ambient / high-P superhydride branch (DFPT λ/Tc via QE)",
-          "in_flight": "LaRu3Si2 DFPT λ/Tc (q=3) · ScH9 DFPT (🔴 crashed q6, dynamical instability).",
-          "anchors": "CaH6 · LaH10 · Li2MgH16 terminal QE el-ph (feed QFORGE assembler). Li2MgH16 8-q coarse: λ=5.79 · ω_log=741K · Tc_AD≈158-164K — UNDER-CONVERGED vs literature 473K (d6 honest, not forced)."
+        "b_dfpt_lambda_tc": {
+          "title": "(b) DFPT λ/Tc promotion of the flat-band winners — the 'flat-band → anomalous λ?' test",
+          "in_flight": "LaRu3Si2 DFPT λ/Tc (QE ph.x, 2×2×2 q, 16³ el-ph k; vast pod) AND LaOs3Si2 DFPT (summer FREE pool, same q/k for head-to-head) — BOTH IN-FLIGHT, λ/ω_log/Tc PENDING (numbers not yet harvested, d6).",
+          "verdict": "🟠 PENDING — the central open question of the campaign (does flat-band-at-E_F yield anomalously high λ?) is not yet answered."
+        },
+        "c_ambient_superhydride": {
+          "title": "(c) ambient / high-P superhydride branch (dynamical-stability gate then DFPT λ/Tc via QE)",
+          "falsified": [
+            {"host": "Mg2IrH6 (X₂MH₆ Fm-3m)", "verdict": "🔴 CLOSED-negative", "detail": "ambient-dynamically-unstable: 48.1% of modes hard-imaginary across q1–q5, rep min freq ~−2230 cm⁻¹. 160K X₂MH₆ cation-VEC rule FALSIFIED at the dynamical-stability gate. absorbed=true (non-wet-lab gate decided)."},
+            {"host": "Li2CuH6 (X₂MH₆ Fm-3m, Cu d¹⁰)", "verdict": "🔴 CLOSED-negative", "detail": "ambient-dynamically-unstable: 8 hard-imaginary modes, min −944.9 cm⁻¹. 2nd X₂MH₆ Fm-3m falsification (cation-VEC sweet-spot 2/2 dead). K2PtCl6 Fm-3m prototype itself ambient-unstable. absorbed=true."}
+          ],
+          "in_flight": "AcBeH8 (Fm-3m BeH8 clathrate, vast 41193096) · CaB3C3 (Pm-3n B-C clathrate, NO hydrogen, vast 41193571) · LaB3C3 (Pm-3n, La e-doped, vast 41194736) — all 🟠 IN-FLIGHT QE stability-gate (vc-relax→scf→ph no-elph→q2r→matdyn→count imaginary modes); el-ph deferred until 0 imaginary modes confirmed. CaB3C3 = best ambient-stability bet (covalent B-C σ framework, no soft H cage).",
+          "anchors": "CaH6 (255K) · LaH10 · Li2MgH16 (8-q coarse: λ=5.79 · ω_log=741K · Tc_AD≈158–164K, UNDER-CONVERGED vs literature 473K, d6 honest not forced) — terminal QE el-ph feeding the QFORGE mode-(b) assembler. H3S (195K) · YH10 (216K, λ=2.82, Tc 215.9/227.5K) all HIGH-PRESSURE, NOT ambient.",
+          "qforge_fs_lane": "QFORGE from-scratch λ lane (AcBeH8/CaB3C3/LaB3C3) 🟠 BLOCKED (upstream): qpw_parse_geometry only supports ibrav=3, ambient cells are ibrav=1/2; patch WRITTEN+VERIFIED but cannot hold in contended ~/.hx/src → must land via hexa-lang PR. d_qforge_fix: QE production lane is the advancing reference; QFORGE-fs deferred to upstream PR, NOT a result."
+        },
+        "d_strategic": {
+          "title": "(d) strategic standing",
+          "note": "The RTSC family is an ω_log-bound λ-reference (light-atom phonon ceiling ~100K limits the conventional-BCS room-temp path). Room-temp needs a SEPARATE lever: flat-band correlation enhancement requires cRPA-DMFT (NOT in the current stack). Flat-band-at-E_F track is a DESIGN gate (no-cooling band-structure target), distinct from the high-P hydride high-Tc track."
         }
       },
-      "ledger": "RTSC_LEDGER.jsonl (repo root)"
+      "ledger": "RTSC_LEDGER.jsonl (repo root, 91 rows — per-candidate verdict SSOT)"
     },
     "MATH-SPECTRA": {
       "name": "MATH-SPECTRA — '스펙트럼 탐정' pure-math exploration (parallel track)",
       "frontier_date": "2026-06-16",
       "question": "Where does arithmetic live in spectra? (Riemann ζ zeros ↔ random-matrix GUE ↔ flat-band adjacency spectra / Hilbert-Pólya)",
+      "status": "🏁 lane closed — 1D arithmetic-spectrum complete chart.",
       "findings": {
-        "negative": "probe1 ζ↔lattice bridge FALSIFIED (ζ=GUE vs lattice=Poisson+δ); probe2/3 flat-band CLS counts = bounded gcd-commensurability, no deep arithmetic.",
-        "positive": "probe4 Fibonacci gap-labeling Z+Zα; probe5 substitution-specific Perron-frequency modules (silver→Z+Z/√2, period-doubling→dyadic, Thue-Morse→non-single-module).",
-        "open": "probe6 2D Ammann-Beenker 🟠 inconclusive (finite patch)."
+        "negative_1": "probe1 ζ↔lattice bridge FALSIFIED 🔴: ζ zeros = GUE (quantum-chaotic) vs lattice dispersive = Poisson (integrable) + flat band = macroscopic δ level. Naive 'RH zeros == flat-band lattice spectrum' is FALSE.",
+        "negative_2": "probe2/3 flat-band CLS multiplicities = elementary polynomials in L (closed-form theorem VERIFIED) with at most a BOUNDED gcd(L,q) commensurability offset → no deep arithmetic in CLS counts.",
+        "positive_4": "probe4 🟢 CONFIRMED: Fibonacci-chain gap IDOS pinned to module Z+Zα (α=1/φ); 8/8 major gaps match small-|n| gap-labeling integer, n·α beats best rational in 8/8.",
+        "positive_5": "probe5 🟢 CONFIRMED: arithmetic is SUBSTITUTION-SPECIFIC, set by the Perron letter frequency — silver-mean→Z+Z/√2, period-doubling→dyadic, Thue-Morse→non-single-module. Not generic aperiodicity.",
+        "open_6": "probe6 2D Ammann-Beenker 🟠 INCONCLUSIVE (finite 953-vertex patch did not resolve clean major gaps above finite-size spacing; construction sound)."
       },
-      "scope": "1D arc fully charted; numerical verification, not proof (c9)."
+      "scope": "1D arc fully charted (ζ↔lattice bridge falsified; flat-band CLS=bounded gcd; quasicrystal gap-labeling=Perron modules); 2D patch-limited. Numerical verification, not proof (c9)."
+    }
+  },
+  "results_index": {
+    "note": "Pointer map: each major consolidated finding → its raw provenance record (c5 — raw files STAY; this JSON is the navigable index). RTSC_LEDGER rows keyed by `material`; exports/*.json and .verdicts/*/ are verbatim records.",
+    "RTSC": {
+      "ledger": "RTSC_LEDGER.jsonl (repo root, 91 rows; per-material verdict SSOT)",
+      "flat_band_gatechecks": {
+        "LaRu3Si2 🟢": "exports/rtsc/laru3si2_flatband_gatecheck.json (ΔE=−0.055, m=0) · RTSC_LEDGER material=LaRu3Si2",
+        "LaOs3Si2 🟢 / LaRh3Si2 🔴": "exports/rtsc/cosn_sibling_gatecheck.json (LaOs3Si2 screen ΔE=+0.039 PASS; LaRh3Si2 ΔE=+0.260 FALSIFY) · RTSC_LEDGER material=LaOs3Si2,LaRh3Si2",
+        "MoSn 🔴": "exports/rtsc/mosn_flatband_gatecheck.json (ΔE=−2.38) · RTSC_LEDGER material=MoSn",
+        "CoSn e-dope 🔴": "exports/rtsc/cosn_edope_gatecheck.json (ΔE −0.445→−0.585) · RTSC_LEDGER material=CoSn-edope",
+        "CoSn h-dope 🔴": "exports/rtsc/cosn_hdope_gatecheck.json (ΔE −0.445→−0.544, m→0.63) · RTSC_LEDGER material='CoSn (hole-doped)'"
+      },
+      "dft_elph_in_flight": {
+        "LaRu3Si2": "exports/rtsc/laru3si2_dft_elph.json (DFPT IN_PROGRESS, λ/Tc pending)",
+        "LaOs3Si2": "exports/rtsc/laos3si2_dft_elph.json (DFPT FIRED summer, λ/Tc pending)"
+      },
+      "ambient_stability_verdicts": {
+        "Mg2IrH6 🔴": "exports/rtsc/mg2irh6_ambient_stability_verdict.json (ambient-dynamically-unstable)",
+        "Li2CuH6 🔴": "exports/rtsc/li2cuh6_ambient_stability_verdict.json (ambient-dynamically-unstable)",
+        "AcBeH8 🟠": "exports/rtsc/AcBeH8_ambient_stability_verdict.json (IN-FLIGHT vast 41193096)",
+        "CaB3C3 🟠": "exports/rtsc/CaB3C3_ambient_stability_verdict.json (IN-FLIGHT vast 41193571)",
+        "LaB3C3 🟠": "exports/rtsc/LaB3C3_ambient_stability_verdict.json (IN-FLIGHT vast 41194736)",
+        "QFORGE-fs lane 🟠": "exports/rtsc/qforge_fs_ambient_lane.json (BLOCKED upstream; handoff scripts/scratch/ambient_wave/QFORGE_FS_BLOCKER_handoff.md)"
+      },
+      "hydride_anchors": "exports/rtsc/CaH6/ · anchor_LaH10/ · anchor_Li2MgH16/ · YH9/ · ScH9/ · qforge_yh6_harvest.json (high-P el-ph; feed QFORGE assembler)",
+      "discoveries": ".discoveries/rtsc-triangulate.tape · flatband-at-ef-candidates-20260615.tape · ambient-tc-levers.tape · screening-xc-breakthrough-{1,2,3}.tape · rtsc-yh10-dft-elph.tape · rtsc-caauh3-dft-elph.tape",
+      "sweeps": "exports/sweep/rtsc-flatband-tri-20260615/ledger.json · rtsc-n5funnel-sweep-2026-05-25/ · rtsc-nonhydride-pilot-2026-05-27/ · rtsc-mbeh-escape-2026-05-27/"
+    },
+    "MATH-SPECTRA": {
+      "probes": "exports/math-spectra/probe1_spectral_universality.json (ζ↔lattice 🔴) · probe2_cls_multiplicity.json (🔴+theorem) · probe3_modq_structure.json (🔴) · probe4_fibonacci_gaplabeling.json (🟢) · probe5_substitution_gaplabeling.json (🟢) · probe6_2d_quasicrystal_gaplabeling.json (🟠)",
+      "domain": "domains/MATH-SPECTRA.md"
+    },
+    "QFORGE": {
+      "engine_status_ssot": "QFORGE/QFORGE.md §⭐ ENGINE STATUS",
+      "fleet_2026_06_16": {
+        "perf-gpu 🟢🏁": "PR hexa-lang#3442 · .verdicts/qforge-perf-roofline/ · .verdicts/qforge-converged-kxq-gpu/VERDICT.md",
+        "magmom 🧱": "PR hexa-lang#3447 · RTSC_LEDGER QFORGE-XVAL row",
+        "pbe-scf 🟠": ".verdicts/qforge-pbe-scf-cah6/VERDICT.md · qforge-pbe-scf-align/ · qforge-3d-realspace-scf/VERDICT.md · qforge-cah6-gga-fxc-in-chi/VERDICT.md"
+      },
+      "mode_c_rounds": ".verdicts/qforge-cah6-fxc-localfield-r7/ (R7 5.12%) · qforge-cah6-gga-fxc-in-chi/ (R8 closed-neg) · qforge-screened-compose/ · qforge-lindhard/",
+      "mode_b_xval": ".verdicts/qforge-xval/ · qforge-li2mgh16-8q-assembled/ · QFORGE/fixtures (yh10_elph, cah6_elph via hexa-lang)",
+      "perf_history": ".verdicts/qforge-perf-roofline/ · qforge-gpu-resident-seam/ · qforge-g2-audit/"
     }
   },
   "related_repos": {

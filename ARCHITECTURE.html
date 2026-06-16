@@ -196,6 +196,10 @@ function renderEngines(engines) {
       Object.entries(e.layers).forEach(([lk, lv]) => { if (lk !== "note") card.appendChild(el("div","small", lk + ": " + lv)); });
     }
     if (e.universal_axis) card.appendChild(el("div","small","universal axis: " + e.universal_axis));
+    if (e.fleet_2026_06_16 && e.fleet_2026_06_16.lanes) {
+      const fk = el("div","kv"); fk.appendChild(el("span","k","fleet 2026-06-16: ")); fk.appendChild(document.createTextNode("migration gate " + (e.fleet_2026_06_16.migration_gate || ""))); card.appendChild(fk);
+      e.fleet_2026_06_16.lanes.forEach(l => { const d = el("div","small"); d.innerHTML = "<b>" + esc(l.title) + "</b> " + esc(l.status) + " — " + esc(l.detail || ""); card.appendChild(d); if (l.honest_floor) card.appendChild(el("div","small","  floor: " + l.honest_floor)); });
+    }
     grid.appendChild(card);
   });
   sec.appendChild(grid);
@@ -219,6 +223,9 @@ function renderCampaigns(camps) {
       if (b.triangulation) Object.entries(b.triangulation).forEach(([tk,tv]) => md.appendChild(el("div","small", tk + ": " + tv)));
       if (b.in_flight) md.appendChild(el("div","small","in-flight: " + b.in_flight));
       if (b.anchors) md.appendChild(el("div","small","anchors: " + b.anchors));
+      if (b.qforge_fs_lane) md.appendChild(el("div","small","QFORGE-fs lane: " + b.qforge_fs_lane));
+      if (b.verdict) md.appendChild(el("div","small","verdict: " + b.verdict));
+      if (b.note) md.appendChild(el("div","small", b.note));
       card.appendChild(md);
     });
     if (c.findings) { const md = el("div","mode"); Object.entries(c.findings).forEach(([fk,fv]) => md.appendChild(el("div","small", fk + ": " + fv))); card.appendChild(md); }
@@ -227,6 +234,29 @@ function renderCampaigns(camps) {
     grid.appendChild(card);
   });
   sec.appendChild(grid);
+  return sec;
+}
+
+function renderResultsIndex(ri) {
+  const sec = el("section");
+  sec.appendChild(el("h2", null, "Results index (finding → raw record)"));
+  if (ri.note) sec.appendChild(el("div","sub", ri.note));
+  function walk(obj, depth) {
+    const wrap = el("div");
+    Object.entries(obj).forEach(([k, v]) => {
+      if (k === "note") return;
+      if (typeof v === "string") {
+        const r = el("div", "kv"); r.style.marginLeft = (depth*14) + "px";
+        r.appendChild(el("span","nid", k + ": ")); r.appendChild(document.createTextNode(v));
+        wrap.appendChild(r);
+      } else if (v && typeof v === "object") {
+        const h = el("div","small"); h.style.marginLeft = (depth*14) + "px"; h.innerHTML = "<b>" + esc(k) + "</b>";
+        wrap.appendChild(h); wrap.appendChild(walk(v, depth+1));
+      }
+    });
+    return wrap;
+  }
+  sec.appendChild(walk(ri, 0));
   return sec;
 }
 
@@ -246,6 +276,7 @@ fetch('./ARCHITECTURE.json')
     const gv = renderList("Governance", d.governance, g => { const f = document.createDocumentFragment(); const b = el("span","nid",g.id); f.appendChild(b); f.appendChild(document.createTextNode(" — " + g.rule)); return f; }); if (gv) app.appendChild(gv);
     if (d.engines) app.appendChild(renderEngines(d.engines));
     if (d.campaigns) app.appendChild(renderCampaigns(d.campaigns));
+    if (d.results_index) app.appendChild(renderResultsIndex(d.results_index));
     if (d.related_repos) { const s = el("section"); s.appendChild(el("h2",null,"Related repos")); Object.entries(d.related_repos).forEach(([k,v]) => { const r = el("div","kv"); r.appendChild(el("span","nid",k)); r.appendChild(document.createTextNode(" — " + v)); s.appendChild(r); }); app.appendChild(s); }
   })
   .catch(e => {
