@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-17
 
+### SENOLYX 캠페인 → ARCHITECTURE.json SSOT 정리 (R12 close-negative + R13 후보 ABFE)
+- 신약(senolytic/표적분해) 캠페인 SENOLYX가 아키텍처 SSOT(JSON 트리)에 빠져 있던 걸 채움 — `campaigns.SENOLYX` + `results_index.SENOLYX` 신설. `.html` 뷰어는 `fetch('./ARCHITECTURE.json')` 동적 렌더라 자동 표시(재생성 불필요).
+- **R12 HSP90 ΔΔG**: 🔴 close-negative 박제 — ΔΔG=+3.13±2.83 vs exp −1.9 (K=5 앙상블), R10b/R11/R12 3개 독립선이 affinity-precision 벽 일치. 메인 senolytic 파이프라인은 양성 유지, HSP90 정밀도 sub-axis만 음성.
+- **R13 후보 ABFE 검증**(openmmtools 이중탈결합, vast GPU, K-앙상블 · 하니스 `exports/SENOLYX/round13-abfe-allcand/`): MCL1/S63845 ✅ −16.78±2.77 (3/3, 실험 −13 일치) · BCLXL/3CQ ⚠️ −29.28±0.71 (3/3, 재현되는 계통 과대결합 — 부호OK·세기 2× · c9 정직 플래그) · CRBN/EF2 🔵 −1.53 (1/3 진행중, IMiD µM 약결합 방향 일치, 세기판정 보류).
+- 결과 영구저장 = `round13-abfe-allcand/seen.prog`(persist-merge), 도메인 SSOT = `domains/SENOLYX.md`. CRBN 3/3 완주 시 최종 per-후보 판정 + pod reap 별도 사이클.
+
 ### `hexa deck` 검증기 MVP — 덱규율 self-improving 가드 레지스트리 (`sim/deck_lint.hexa`)
 - 이번 세션 손작성 QE 덱 버그 다발(verbosity·mass·pseudo·d15·d6)을 코드로 박제하는 **검증기**를 신설. 빌더(빵틀 `hexa-lang stdlib/deck/gen.hexa`)는 이미 있었고, 없던 건 *내용 규율 린터* — 그 갭을 채움.
 - **self-improving 설계(핵심)**: 덱 트러블 발생 → 재발방지 가드를 한 줄(`fn guard_<slug>` + `all_guards()` push)로 추가하는 확장형 레지스트리. `--self-test` 가 good/broken 케이스로 각 가드 검증(@ci_gate). README(`sim/DECK_LINT.md`)에 "새 트러블 → 새 가드" 워크플로우 명시. 덱규율 SSOT.
