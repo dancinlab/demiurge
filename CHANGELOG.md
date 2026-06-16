@@ -8,6 +8,13 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-16
 
+### RTSC 삼각측량 v4 — 그래프-위상 후보 생성기 (화학 추측 → 정리 기반) + Lieb↔cuprate 다리
+- **교차도메인 동형 통찰**: 플랫밴드-at-E_F는 "물질의 성질"이 아니라 **그래프(연결망)의 성질** — 두 정리가 후보를 *보장*한다. (1) **선그래프 정리**: L(G)는 −2t에 플랫밴드를 반드시 가짐 (카고메=L(벌집)·파이로클로=L(다이아몬드)·체커보드=L(정사각)). (2) **이분 부격자 불균형(Lieb-Sutherland)**: |N_A−N_B| 개의 영에너지 플랫밴드 (Lieb·dice/T3). 같은 고유값 문제가 광결정·냉원자·LC회로·역학메타·휘켈MO(유기 폴리라디칼·삼각글렌·지그재그 그래핀)에 동일 출현.
+- **후보 생성 전환**: 화학 추측 → 정리 enumeration + 두 직교 스크린(ΔE~0 AND 비자성)으로 거름. `scripts/scratch/flatband_graph_topology_candidates.py`.
+- **역방향 일관성 검증(c9)**: 파이로클로 RbOs2O6는 ΔE~0(정리 정확)이고 탈락은 *자성 축*뿐 → 위상 생성기는 플랫밴드를 정확히 주고 자성은 별개 스크린(CeCo3B2 d⁷ 승자들이 통과한 같은 두 관문).
+- **Lieb↔cuprate 다리**: Lieb 격자 = CuO₂면 위상동형 → 플랫밴드 트랙과 기존 고온초전도가 한 그래프에서 만남. 첫 위상 게이트체크 = **Os-O Lieb 평면**(4d/5d로 3d-자성 회피) summer에 QUEUED(vc-relax 코어 비면 자동 시작, 자체로깅). LaOs3Si2 GREEN vc-relax 확정도 진행 중.
+- 박제: RTSC_LEDGER TRIANGULATE-V4(74행) + 생성기 스크립트 + Lieb 덱(`sib_work/lieb_oso2/`).
+
 ### RTSC no-cooling flat-band — CeCo3B2형 형제 게이트체크 (LaOs3Si2 🟢 / LaRh3Si2 🔴) + summer 디스크 38G 회수
 - **삼각측량 v3 레인 검증**: 도핑축 죽음 후 연 "CeCo3B2형 R-T₃-X₂ 4d/5d-kagome 패밀리 스윕"의 첫 형제 2개를 **무료 summer 풀**에서 게이트체크(고정 LaRu3Si2 격자·치환만·1차 스크린, c9 근사 caveat).
   - **LaOs3Si2 (Os 5d⁷) 🟢 GATE PASS** — ΔE=+0.039 eV(E_F 위 39 meV) AND m=0.00 μB. **2번째 플랫밴드-at-E_F 승자**(LaRu3Si2 ΔE=−0.055 다음), 5d가 4d만큼 작동하고 |ΔE|는 오히려 더 작음. → per-sibling vc-relax + DFPT 승격 대상.
