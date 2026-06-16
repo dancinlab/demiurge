@@ -8,6 +8,11 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-17
 
+### QFORGE fleet verdict raw 기록 박제 (c5 보존 — pbe-scf 🧱 + magmom 🧱)
+- QFORGE 갭 fleet 라운드(#653)의 두 lane verdict raw 기록이 `.verdicts/`에 미커밋으로 남아 있던 걸 박제(c5). 결론은 이미 #653 CHANGELOG/ARCHITECTURE.json에 반영됨 — 이번은 PREDICTION/VERDICT 원문 보존.
+  - `.verdicts/qforge-cah6-pbe-scf-vertex/` — 🔴🧱 from-scratch gate-grade 확정벽: 3-D PBE 바닥상태는 계산 성공(wiring bug fix·singular-BCC miller fix)이나 진짜 잔여=엔진 메모리모델(farr↔val-arena)·near-degenerate 점유다양체 SIGSEGV + gate-grade ecut mini OOM. λ 날조 0(d6). production=하이브리드 1.65e-7 유지.
+  - `.verdicts/qforge-magmom-kb-nonlocal/` — 🧱 CoSn 모먼트 벽 재국소화: 모든 fixture가 LOCAL-only pseudo(KB 비국소 projector OFF)였던 게 m≈0 모호함의 원인. KB-nonlocal ON에도 Γ 모먼트 ≈0 → 진짜 벽=k-샘플링(BZ-적분 Stoner), 레버=GPU-davidson.
+
 ### SENOLYX 캠페인 → ARCHITECTURE.json SSOT 정리 (R12 close-negative + R13 후보 ABFE)
 - 신약(senolytic/표적분해) 캠페인 SENOLYX가 아키텍처 SSOT(JSON 트리)에 빠져 있던 걸 채움 — `campaigns.SENOLYX` + `results_index.SENOLYX` 신설. `.html` 뷰어는 `fetch('./ARCHITECTURE.json')` 동적 렌더라 자동 표시(재생성 불필요).
 - **R12 HSP90 ΔΔG**: 🔴 close-negative 박제 — ΔΔG=+3.13±2.83 vs exp −1.9 (K=5 앙상블), R10b/R11/R12 3개 독립선이 affinity-precision 벽 일치. 메인 senolytic 파이프라인은 양성 유지, HSP90 정밀도 sub-axis만 음성.
