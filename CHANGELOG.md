@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### QFORGE screening 배선 — '인터페이스 불일치' 주장 철회 (c2/c9 정정)
+- 직전(같은 날, PR #669) "screening 배선 인터페이스 불일치, fix 필요" 주장을 **철회**합니다 — 더 깊이 읽으니(`screening_anderson.hexa:132-146`, pw_frontend가 실제 부르는 변형) **FFT-Poisson 배선이 이미 완료**돼 있음: 루프가 `if qpwfft_is_on() { dvscr = qpwfft_dvscr_from_dpsi(states, dpsi_cols) }`로 자체 δψ(`dpsi_all`)를 언팩해 FFT 커널로 라우팅(diagonal은 fallback). 제 오류 = base 변형(`screened_dv.hexa`)+호출부 인자만 보고 `_anderson` 내부 라우팅을 놓침.
+- 즉 screening은 **engage 함**(R7: λ=4.1518·5.12%<bare 5.47%). 진짜 잔여 게이트 갭 = (a)from-scratch PBE-SCF 정확도(f_xc CLOSED-NEGATIVE·SIGSEGV·process-split 필요) (b)converged n=645 OOM — 둘 다 배선 swap보다 어려움. **교훈(c2)**: verify-before-done이 이미 있는 코드의 중복 작성을 막음(실제 호출 변형을 읽어라, sibling 말고). ARCHITECTURE.json mode(c) `screening_wiring` + 메모리 재정정.
+
 ### QFORGE mode(c) screening 배선 갭 코드검증 + fix 착수 (d_qforge_fix 병행)
 - "QFORGE 안 쓰는 이유" 규명 → 코드 정독(c2): QFORGE 마이그레이션 게이트 HELD인 진짜 이유 = converged-basis screening 미작동. **근본원인 = 인터페이스 불일치**(2026-06-05 메모리의 '한 줄 배선' 진단은 오진, 정정함): Anderson Dyson 루프(`pw_frontend.hexa:~1115`)가 밀도공간 closure `qpwd_drho_to_dvscf(drho:[float])`(converged n=645서 0)를 호출하는데, staged FFT-Poisson 커널 `qpwfft_dvscr_from_dpsi(psis,dpsi)`(`screening_pwfft.hexa:372`)는 파동함수공간(δψ) 입력 → drop-in swap 불가.
 - **fix 착수**(유저 ① 선택·d_qforge_fix 병행): 격리 worktree서 Δρ↔δψ 어댑터(또는 루프 δψ화)→FFT 커널 배선→`pwfft_folds>0`+λ가 bare 4.137서 이탈 확인→고RAM 포드서 converged λ(n=645 OOM 2차벽). RTSC 4×4×4(vast 41382613 사이징·QE production)와 **동시 진행**. ARCHITECTURE.json mode(c) `screening_wiring_2026_06_18` 박제 + 메모리 정정.
