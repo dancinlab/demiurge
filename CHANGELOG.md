@@ -8,6 +8,14 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-17
 
+### hexa cloud 운영(클라우드 디스패치) — 트러블슈팅·upstream fix·정리 한 세션
+- **hexa-lang upstream fix (PR #3477 MERGED)**: `hexa cloud run/exec/script` 가 vast/runpod SSH 프록시의 전송-잘림(간헐)으로 `bash: -c: option requires an argument`·`rm: missing operand` 간헐 실패하던 것을 `_ssh_capture_retry`(no-exit-marker 감지 시 backoff 자동 재시도)로 흡수. (참고: `hexa cloud` 는 별도 precompiled 바이너리 `~/.hx/bin/bin/hexa-cloud` — stdlib/cloud 편집은 `hexa run tool/build_hexa_cloud.hexa --install` 재빌드해야 라이브; ~/.hx/src 복사만으론 안 됨.)
+- **auto-adopt 폐기 (PR #3486 SHIP → #3489 REVERT)**: `cloud pods` 가 orphan 을 사후 입양·라벨 추정하게 했으나 **잘못된 레이어** — 올바른 건 **배포(rent) 순간 무조건 라벨링**(이미 `_resolve_project`@repo + `_resolve_purpose` 로 line 1406/1454 unconditional). hexa cloud 가 자기가 배포 안 한 외부 포드를 사후 주워담는 건 역할 아님 → revert. orphan 은 surface(경고)만, 사람이 `cloud reap`/`attribute`.
+- **vast 정리(d17 빌링 차단)**: 41069486(LaOs3Si2 가속) 🧱 40G 디스크벽(q당 el-ph 스크래치 >40G, ruled out) teardown · 40992986(RbOs2O6 nonmag DFPT) 🔴 **발산**(ddv_scf 8.9e25→4.0e29 폭증·49h·dyn1 0B = 비자성강제→DFPT 발산, 실바닥상태 자성) teardown. 증거 `scripts/scratch/rbos2o6_nonmag_diverge/`.
+
+### RTSC LaOs3Si2 DFPT — summer 재부팅 → recover-resume (q4)
+- LaOs3Si2 head-to-head(vs LaRu3Si2 λ1.64·Tc7K) 의 q4 el-ph(rep#12/16 iter#7 ddv 1.4e-11 **정상수렴 중**)가 summer 재부팅(`up 2min`)에 ph.x 쓸려나감 — **크래시 아님, 인프라 재부팅(c16-(c))**. q1·q2·q3 dyn.elph + out/_ph0 체크포인트 디스크 생존 → `recover=.true.` 추가 + ph.x 만 재발사(`run_elph.sh` 의 `rm -rf out` 회피, `scripts/scratch/laos3si2_vast/summer_q4_resume.sh` 박제). 6랭크 재개. 완주 시 4 q collect → 동적안정 체크 → λ/ω_log/Tc.
+
 ### 도메인 .md 전부 은퇴 → ARCHITECTURE.json `domains[]` SSOT 통합 (c4 단일문서)
 - `domains/` 아래 **576개 .md(13만 줄)** 를 8개 병렬 요약 agent로 **126 논리도메인 → 144 구조화 엔트리**(`{id·alias·goal·status·key_verdicts·milestones·source_paths·notes}`)로 압축해 `ARCHITECTURE.json` 신규 `domains[]` 블록에 통합. **.log.md 117개 폐기**. 본문은 git history(`source_paths`)에 보존.
 - 정직 보존(c9): status 분포 active 56·stub 32·🟢26·🟠21·🧱4·🔴2·DRAINED2·🔵1 — FALSIFIED/closed-negative/stub 그대로(QFORGE-PAW🔴·QFORGE from-scratch🧱·SENOLYX R12🧱·UFO Stage4~7 ⚪UNPROVEN·AURA medical UNPROVEN 등).

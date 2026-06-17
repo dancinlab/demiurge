@@ -1,0 +1,27 @@
+LaOs3Si2 DFPT electron-phonon (Os-kagome flat-band-at-E_F winner; does flat band -> high lambda?)
+&inputph
+  prefix = 'laos3si2'
+  outdir = './out'
+  fildyn = 'laos3si2.dyn'
+  fildvscf = 'dvscf'
+  ! --- el-ph: 'simple' = double-delta a2F on a fine k-mesh (la2F-compatible) ---
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+  ! fine k-mesh for the double-delta el-ph integration (el-ph needs dense k)
+  nk1 = 16
+  nk2 = 16
+  nk3 = 16
+  k1 = 0
+  k2 = 0
+  k3 = 0
+  ! --- phonon q-grid : 2x2x2 (Gamma-centered irreducible set), matches LaRu3Si2 reference ---
+  ldisp = .true.
+  nq1 = 2
+  nq2 = 2
+  nq3 = 2
+  ! convergence / smearing matched to scf
+  tr2_ph = 1.0d-14
+  alpha_mix(1) = 0.4
+  trans = .true.
+/
