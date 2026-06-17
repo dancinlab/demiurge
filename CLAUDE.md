@@ -13,7 +13,7 @@ demiurge/
 ├─ web/                — Next.js web GUI (human surface, deployed to Cloud Run)
 ├─ cockpit/            — Swift DemiurgeCLI + DemiurgeCore library + transient exports/references
 ├─ stdlib/             — local discover shims (canonical reusable code lives in hexa-lang, d3)
-├─ domains/            — manifest-only domain maps (<DOMAIN>.md + .log.md + .demi decks)
+├─ domains/            — `.demi` compute decks + sim/tape rosters (도메인 요약 .md/.log.md 은퇴 2026-06-17 → ARCHITECTURE.json `domains[]` SSOT, 원본은 git history)
 ├─ decks/              — concrete compute input decks (DFT / QE el-ph cells)
 ├─ sim/                — simulation drivers / readout watchers (.hexa)
 ├─ QFORGE/             — quantum-forge DFT electron-phonon compute campaign workspace

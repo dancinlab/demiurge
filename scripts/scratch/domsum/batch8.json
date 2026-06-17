@@ -1,0 +1,391 @@
+[
+  {
+    "id": "ABSORPTION",
+    "alias": "외부 도구 흡수 가이드",
+    "goal": "외부 라이브러리·도구를 demiurge ①~⑤ 영역(stdlib/domain-map/record/workflow/honesty)으로 배치하는 분류+절차; 모든 producer는 결국 hexa-native로 포팅되어야 absorbed=true",
+    "status": "active",
+    "key_verdicts": [
+      "제1원칙: substrate(Python/shell wrapper)는 임시 stepping-stone, absorbed=true는 hexa-native 자체측정 parity PASS 시에만",
+      "①a 커널 13개 landed on hexa-lang (fem·mc_transport·circuit·graph·orbital·wave_optics·noc_sim·logic_synth·plasma·neural·signal_proc·urdf·solar); cfd·ode_pde planned",
+      "Stage4 absorbed=true 도달: matter+analyze · chip+analyze(Leighton) · chip+verify(booksim 12/12 GREEN) · sscb VDMOS DC(C3M0021120K 1.08%/2.15% 재현, D71)",
+      "Stage3 parity통과·absorbed=false(g3): fusion+analyze(plasma_metrics 9/9) — 입력이 textbook ITER ref라 honest 멈춤",
+      "흡수 ROI 우선순위: 즉시 sscb/scope/cern/component · fast aura/space/fusion · 중간 rtsc(FiQuS) · 보류 antimatter실측/Geant4/ufo"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/ABSORPTION.md", "domains/ABSORPTION.log.md"],
+    "notes": "흡수 가이드 문서(메타); milestone 체크리스트 아닌 producer 흡수표 형태"
+  },
+  {
+    "id": "COSMOS",
+    "alias": "도메인 우주 (web GUI 아키텍처)",
+    "goal": "demiurge web GUI: 일반인이 chat에 타겟 입력 → 3D Domain Cosmos가 atom→system 구성+검증상태(정직)로 펼쳐짐 → 8 verb로 각 sub-domain을 verified까지 구동",
+    "status": "active",
+    "key_verdicts": [
+      "🟢 .demi-canonical data layer LANDED: buildCosmos()가 INDEX.demi+<id>.demi 읽음, COSMOS_EXCLUDE/NEXUS@link/prose-state 은퇴, 노드 25→20→28",
+      "honest verify-state 모델: 🔵formal/🟢verified/🟡needs-verify/⚪unverified/🔴falsified — fidelity(3D detail)≠verify-badge, 숫자없으면 stylized+⚪",
+      "✅ 빌드 블로커 해소: pdbe-molstar→3Dmol.js@2.5.5(BSD-3) 교체, molstar→h264-mp4-encoder require('fs') Turbopack 실패 제거, fresh next build exit 0(38p)",
+      "faithful bio/chem 3D: AGA-RX(SFRP1 314res→87turns)·SENOLYX(BCL-xL 3ZLR 290res) helix descriptor + Mol*/3Dmol 실제 fold, AlphaFold CC-BY/PDB CC0",
+      "branch feat/8verb-cosmos · localdev NOT deployed (d_deploy 게이트)"
+    ],
+    "milestones": {"done": 18, "total": 20, "open": ["NOVEL prose→structure resolver cascade(§9.1e, AlphaFold-DB→ESMFold→ESM3/RFdiffusion flagged generated)", "deploy gate — push main→Cloud Run 사용자 승인 시에만"]},
+    "source_paths": ["domains/COSMOS.md", "domains/COSMOS.log.md"],
+    "notes": "web GUI 살아있는 아키텍처 SSOT; CLI verb 파이프는 8VERB 도메인 소관"
+  },
+  {
+    "id": "HANDOFF-verify-atlas-direct-fold",
+    "alias": "verify-atlas 직접흡수 (no-ledger)",
+    "goal": "hexa verify --harvest 한 번에 metric→calculator→tier→atlas atom direct fold; 시스템 전체 영구 verdict 파일 = embedded.gen.hexa 단 1개",
+    "status": "🟢",
+    "key_verdicts": [
+      "6 PR land(1438 SLOC) · smoke 48/48 PASS verbatim (calculators 6/6 · dispatch 19/19 · harvest 14/14 · CLI 9/9)",
+      "Phase1 hexa-lang 5 PR(#2023·2027·2028·2029·2032) + Phase2 demiurge #511 RTSC V2.2 verbatim replay(atoms 4)",
+      "공개 CLI: hexa run tool/verify_harvest_cli.hexa --harvest --kind <dft-elph|sscha|llm-bench|web-smoke> --fn ...",
+      "deferred: omega_log_moment·beenet_grid_bins·migdal_ratio·lambda_eliashberg calculator 부재(🟠) · sscha/llm-bench/web-smoke STUB · legacy exports cleanup",
+      "tool/verify_cli.hexa baseline broken(jordan_totient) → 독립 entry로 우회"
+    ],
+    "milestones": {"done": 6, "total": 6, "open": []},
+    "source_paths": ["domains/HANDOFF_verify_atlas_direct_fold.md"],
+    "notes": "2026-05-29 완료 handoff 기록; 거버넌스 d_atlas_as_audit_ssot 신설 동반"
+  },
+  {
+    "id": "MET-LAB-EXTENSION-2026-05-27",
+    "alias": "met lab 확장 (conformer+docking)",
+    "goal": "η 10 추가 COSME 도메인 conformer(Stokes-Einstein D@298K) + ε TPASTE gingipain PDB · ζ INSECT OR/Orco PDB 후보 매핑 (다음 turn ε·ζ docking 실행)",
+    "status": "🟠",
+    "key_verdicts": [
+      "η: 10 도메인 화합물 conformer 산출(Linalool D=5.92e-10 · Ceramide_NP D=2.40e-10 · Resveratrol·Bakuchiol 등)",
+      "ε TPASTE: 4RBM(CKC active HET, ★docking 우선) · 6IO1(PMP) · 3LD2(COA) gingipain 후보",
+      "ζ INSECT: 6C71(NCT·FAD flavoprotein active site ★) docking 가능, 단 mosquito OR direct binding 검증 필요",
+      "FAIL(RDKit 영역 외): IronOxide·TiO2·Mica(MAKEUP inorganic, DFT 필요)",
+      "정직 한계: 4RBM CKC가 catalytic site인지 · 6C71이 Orco direct binding인지 미확정"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": ["ε·ζ receptor prep + Vina docking 실제 실행"]},
+    "source_paths": ["domains/MET-LAB-EXTENSION-2026-05-27.md"],
+    "notes": "QD/COSME 약물-타겟 docking 세션 기록(날짜기반 1회 산출물)"
+  },
+  {
+    "id": "METAMATERIAL",
+    "alias": "메타물질",
+    "goal": "메타물질 핵심 측정 클레임(sub-λ 인공구조 광·음향 제어: negative index·cloak·sub-λ imaging)을 8-verb 파이프라인으로 verify 5-tier 판정",
+    "status": "stub",
+    "key_verdicts": ["측정 클레임: negative index · acoustic/optical cloak · sub-λ imaging", "범용 연구영역 starter-inventory sampler (특정 브랜드 검증 비목표)"],
+    "milestones": {"done": 0, "total": 6, "open": ["spec SSOT 등재", "structure 의존트리", "design 3안", "analyze SSE", "verify 5-tier", "handoff 한/영"]},
+    "source_paths": ["domains/METAMATERIAL.md"],
+    "notes": "starter-inventory 스텁(모든 milestone 미착수)"
+  },
+  {
+    "id": "NOVEL-TOOL",
+    "alias": "새 도구 발굴 (NOVEL primitive)",
+    "goal": "NOVEL급 cross-check tool / stdlib-promotable primitive / atlas-foldable verifier의 지속 발굴·구현·흡수 — 발견→stdlib 캐노니컬화→thin wrapper→atlas 등록",
+    "status": "active",
+    "key_verdicts": [
+      "NOVEL-VERIFIER 스키마 명문화: pre-falsifier 2개(이미 stdlib有 · scipy 1줄 trivial) + brainstorm triad(claim·proof·severity·scipy_grep·stdlib_grep·arxiv_ref)",
+      "magnet primitive stdlib promotion: Wheeler · solenoid_endleakage · mutual_M_coaxial · current_loop_offaxis_B(모든 coil Green fn building block)",
+      "elliptic_K_E AGM stdlib 신규 — mutual_M·loop_offaxis·A_phi cascade unblock",
+      "RTSC stability↔coupling wall 정량자 2개: lambda_anharm_suppress + stability_coupling_margin 🟢 SUPPORTED-NUMERICAL(h3o S=0.4034·CaH₆ m=0.5)",
+      "m3e-ks2 KS two-sample distribution-free primitive stdlib 신규"
+    ],
+    "milestones": {"done": 9, "total": 9, "open": []},
+    "source_paths": ["domains/NOVEL-TOOL.md"],
+    "notes": "발견 엔진 도메인; 표기된 milestone 전부 [x] (round-1 done, round-2 진행여지)"
+  },
+  {
+    "id": "PHOTONIC",
+    "alias": "광집적회로",
+    "goal": "광집적회로(photonic IC·optical compute) 측정 클레임(insertion loss·modulation BW·MZI weight precision)을 8-verb로 verify 5-tier 판정",
+    "status": "stub",
+    "key_verdicts": ["측정 클레임: insertion loss · modulation BW · MZI weight precision", "범용 연구영역 starter-inventory sampler"],
+    "milestones": {"done": 0, "total": 6, "open": ["spec", "structure", "design", "analyze", "verify", "handoff"]},
+    "source_paths": ["domains/PHOTONIC.md"],
+    "notes": "starter-inventory 스텁"
+  },
+  {
+    "id": "PHOTOREDOX",
+    "alias": "광산화환원 촉매",
+    "goal": "visible-light photoredox 측정 클레임(양자수율·turnover number·C-H 활성화 선택성)을 8-verb로 verify 5-tier 판정",
+    "status": "stub",
+    "key_verdicts": ["측정 클레임: 양자수율 · turnover number · C-H 활성화 선택성", "범용 연구영역 starter-inventory sampler"],
+    "milestones": {"done": 0, "total": 6, "open": ["spec", "structure", "design", "analyze", "verify", "handoff"]},
+    "source_paths": ["domains/PHOTOREDOX.md"],
+    "notes": "starter-inventory 스텁"
+  },
+  {
+    "id": "QFORGE-PAW",
+    "alias": "QE급 바닥상태 엔진 (PAW/USPP)",
+    "goal": "QFORGE from-scratch ground-state를 QE-grade로 정렬해 el-ph vertex |g| 크기가 QE 재현 — NC+LDA를 USPP/PAW + PBE-converged SCF로 교체; RTSC migration gate의 마지막 레버",
+    "status": "🔴",
+    "key_verdicts": [
+      "🏁🏁🏁 PROJECT COMPLETE/TERMINAL: NC 레버 8개 + 풀 USPP/PAW Route A 전부 CLOSED — from-scratch dispatch flip 경로 없음",
+      "B1 PBE-SCF: CaH6 λ 1.657→0.743(Δ=-0.915, 가설 반증·λ 내림) · B2 dvnl_du Δλ=-0.003(약음) · B3 ∂ρ_aug/∂u Δλ=0.0 EXACT(NC Q_ij≡0 + sum-rule)",
+      "round-3 phonon ω audit CLOSED-NEG: QForge ω₀=859.3 vs QE ω_log=853.6 cm⁻¹ 0.67% 일치, gap 방향 반대 → ω는 주범 아님",
+      "round-5 Route A 풀 USPP/PAW(실 H rrkjus q_ij): S-norm rescale δ_n=0.0022 → λ=0.740478 Δλ=-0.0032(λ 내림, 부호 RIGOROUS S 양정부호⇒δ≥0), arXiv:2507.06749 일치",
+      "잔차 λ_full=0.743699 vs 재앵커 2.69(rel-ε 0.724) = 환원불가 NC+LDA-vs-QE-PBE 정점차; 하이브리드(1.65e-7) 영구 production · dispatch=qe · 게이트 HELD(2.69/4.376 강제없음, d6)"
+    ],
+    "milestones": {"done": 9, "total": 11, "open": ["~~CaH6 λ≤1% flip~~ 미달 확정 moot", "~~LaH10·Li2MgH16 앵커~~ from-scratch 종료로 moot"]},
+    "source_paths": ["domains/QFORGE-PAW.md"],
+    "notes": "QFORGE engine 자식; CLOSED-NEGATIVE 다수(재시도 금지) — TERMINAL 도메인"
+  },
+  {
+    "id": "QUBIT",
+    "alias": "큐비트",
+    "goal": "큐비트(trapped-ion·초전도 게이트 fidelity) 측정 클레임(2-qubit gate fidelity·T1/T2·readout error)을 8-verb로 verify 5-tier 판정",
+    "status": "stub",
+    "key_verdicts": ["측정 클레임: 2-qubit gate fidelity · T1/T2 coherence · readout error", "범용 연구영역 starter-inventory sampler"],
+    "milestones": {"done": 0, "total": 6, "open": ["spec", "structure", "design", "analyze", "verify", "handoff"]},
+    "source_paths": ["domains/QUBIT.md"],
+    "notes": "starter-inventory 스텁 (COSMOS web 데모 Q14′ = QUBIT Willow 정렬 별개)"
+  },
+  {
+    "id": "RAD-REMOVE",
+    "alias": "방사능 소멸",
+    "goal": "방사능을 핵 수준에서 실제 제거 — 핵변환(transmutation: 중성자흡수→안정핵종·ADS) · 동위원소 선택 · 붕괴 대기; in-silico σ·transmutation chain·붕괴계통 계산",
+    "status": "stub",
+    "key_verdicts": ["화학으로는 불가 — 방사능은 핵 성질이라 핵 과정만 실제 제거", "vs RAD-CTRL(노출관리)·RAD-BIND(화학고정) — REMOVE만 방사능 자체↓", "RADGUARD 우산 하위, 인접 NUCLEAR"],
+    "milestones": {"done": 0, "total": 5, "open": ["동위원소 선택 카탈로그+α/β/γ 프로파일", "핵변환 경로 σ(E)·burn-up", "ADS 변환효율 closed-form", "붕괴 대기 A(t)=A₀e^(−λt)", "RTSC 연계 동위원소 선택성"]},
+    "source_paths": ["domains/RAD-REMOVE.md"],
+    "notes": "스텁(milestone 전부 미착수)"
+  },
+  {
+    "id": "SPEC-DEEP-2026-05-27",
+    "alias": "TOP3 도메인 spec 정밀분석",
+    "goal": "TOP3(COSME-SCALP · QD-LENS · QD-PAD/ECOPAD) spec 단계 정밀 — 시판 TOP-N 매트릭스 + 차별 가설 정량화 + 측정 USP + CRO 견적 + 진입 ROI",
+    "status": "🟢",
+    "key_verdicts": [
+      "COSME-SCALP: 6대 자동허가 정량 → 심사자료 면제(1-3개월) · 차별 24주 모근 +15%(시판 +5% 대비) · ROI ★★★★★",
+      "QD-LENS-COLOR: 컬러렌즈 전용 화이트스페이스(한국 USD 3.4억) · 1,000-2,000만·3-4개월 · 최단진입 ROI ★★★★",
+      "QD-ECOPAD: VOC 84종 ≤일반 1/3 + 생분해 180일 + 비건 · 1,500-3,000만·2-3개월 · mid-price 9-11k 슬롯",
+      "통합 즉시진입 ~3,000-6,500만/3-4개월; 다음 단계 structure(활성성분 first-principles)+design(처방)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": ["structure: 활성성분 매트릭스 확정", "design: 처방 설계 3 도메인 동시", "CRO/OEM 견적 RFQ"]},
+    "source_paths": ["domains/SPEC-DEEP-2026-05-27.md"],
+    "notes": "날짜기반 spec 정밀분석 산출물; STRUCTURE-DESIGN-2026-05-27이 후속 단계"
+  },
+  {
+    "id": "STRUCTURE-DESIGN-2026-05-27",
+    "alias": "TOP3 structure+design 정밀",
+    "goal": "TOP3(SCALP·LENS·PAD/ECOPAD) structure(활성성분 first-principles 매트릭스) + design(처방 설계 3 pilot 후보) — SPEC-DEEP 후속 단계",
+    "status": "🟢",
+    "key_verdicts": [
+      "SCALP: Pilot A 자동허가 BASIC(자료면제·1-3개월) → B PLUS(카페인0.5%+Procapil3%·나노에멀젼·24주 +10%p) → C 엑소좀(마이크로바이옴)",
+      "LENS: Pilot B 컬러렌즈 전용(PHMB+EDTA+토코페롤·색차 ΔE≤2.0) = 화이트스페이스 우선",
+      "ECOPAD: Pilot B 셀룰로오스 SAP+유기농코튼+PLA(생분해 180일·VOC 1/3·비건) = 친환경 mid-price",
+      "통합 즉시진입 ~3,000-6,500만/3-4개월; 다음 CRO RFQ·OEM 견적·처방 lock-down·GMP 시제품"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": ["CRO 견적 RFQ(KTR·KCL·KOTITI 등)", "OEM 견적(코스맥스·알콘·해피문데이급)", "처방 lock-down", "GMP 시제품(synthesize)"]},
+    "source_paths": ["domains/STRUCTURE-DESIGN-2026-05-27.md"],
+    "notes": "날짜기반 structure+design 산출물(RND-STDLIB 참조)"
+  },
+  {
+    "id": "COSME",
+    "alias": "화장품 라인업 (17 제품 도메인 컨테이너)",
+    "goal": "한국 화장품법상 화장품·기능성화장품 라인업을 도메인 단위로 진행 — 모든 자식이 PLAYBOOK 7-verb first-principles 정공법(spec→handoff) + 시판 head-to-head 차별 가설 정량 + 측정 검증",
+    "status": "stub",
+    "key_verdicts": [
+      "17 자식 도메인 init 완료, 전부 spec 단계 스텁(모든 7-verb milestone [ ] 미착수)",
+      "임팩트 우선순위 TOP5: MASK · AMPOULE · SUN · EXOSOME · DERM (🔥🔥🔥🔥🔥); SCALP=6대 자동허가 자료면제 최적 ROI",
+      "QD/(의약외품) vs COSME/(화장품) 분리: 신고제 1-2개월 vs 품목허가 / 시너지 번들(HSHAMPOO+SCALP·MWASH+MENS·PAD+ACNE)",
+      "차별 가설 예: MASK 함침+20%/TEWL-20% · SUN White cast-50% · SCALP 24주 모근+15% · BABY TEWL-20%+KC통과",
+      "⚠ 진입 경계: MAKEUP(브랜드 록인 후순위) · BOOSTER(화장품vs의료기기 분류 확정 선행) · FOOT(살리실산→QD 이전 검토)"
+    ],
+    "milestones": {"done": 0, "total": 17, "open": ["17개 자식(MASK·AMPOULE·SUN·EXOSOME·DERM·MENS·SCALP·VEGAN·BABY·ACNE·EYE·FRAGRANCE·BODY·NAIL·FOOT·MAKEUP·BOOSTER) 전부 spec 단계 스텁"]},
+    "source_paths": [
+      "domains/COSME/README.md", "domains/COSME/PLAYBOOK.md",
+      "domains/COSME/COSME-MASK.md", "domains/COSME/COSME-AMPOULE.md", "domains/COSME/COSME-SUN.md",
+      "domains/COSME/COSME-EXOSOME.md", "domains/COSME/COSME-DERM.md", "domains/COSME/COSME-MENS.md",
+      "domains/COSME/COSME-SCALP.md", "domains/COSME/COSME-VEGAN.md", "domains/COSME/COSME-BABY.md",
+      "domains/COSME/COSME-ACNE.md", "domains/COSME/COSME-EYE.md", "domains/COSME/COSME-FRAGRANCE.md",
+      "domains/COSME/COSME-BODY.md", "domains/COSME/COSME-NAIL.md", "domains/COSME/COSME-FOOT.md",
+      "domains/COSME/COSME-MAKEUP.md", "domains/COSME/COSME-BOOSTER.md"
+    ],
+    "notes": "19파일을 본체+17제품으로 묶음; 17제품 모두 동일 PLAYBOOK 템플릿 spec-stub(차별가설·측정지표·바운더리만 채워짐)"
+  },
+  {
+    "id": "NUMB",
+    "alias": "범용 빠른 마취 크림",
+    "goal": "procedure-agnostic 토픽 마취 크림 — onset ≤20min(target)/≤10min(stretch) · 8+ indication 한 제형 커버 · LAST 안전 envelope·소아 정합 · OTC(저농도)↔Rx(고농도+epi) 듀얼 SKU; measured-oracle PASS까지 absorbed=false",
+    "status": "🟢",
+    "key_verdicts": [
+      "non-wet-lab 게이트 100% closed(8/8: G1-G7+V3) · absorbed=FALSE 유지(@D d5, wet-lab 12개 OPEN 0/12 측정만 남음)",
+      "정직 차별: onset 혁신 아님(Rx는 Pliaglis 동급) — 진짜 가치는 ①소아 prilocaine-free 100× safe(EMLA MetHb wall 제거) ②OTC/Rx 듀얼채널 ③8 indication 매핑 ④epi headroom(LAST margin 273×)",
+      "verify 87 claim: 🔵12·🟢20·🟡36·🟠15·🔴3·⚪1; non-wet-lab PASS 68/71=95.8%(🔴 closed-negative 포함시 71/71=100% verified-closed)",
+      "NOVEL N1/N6/N7 'onset 가속' 일관 🔴 FALSIFIED — a·K_sc·f_free는 J_ss prefactor, t_lag 무관 → depth/duration이지 onset 아님(honest)",
+      "wet-lab 진입점 Phase0 in-vitro $2,650(DSC+Franz+HPLC, 12게이트 중 8 touch); G5 epi 산화 25.7mo가 진짜 24mo 게이트, lid amide t90 ~17,700년(NOT shelf-limiter)"
+    ],
+    "milestones": {"done": 16, "total": 17, "open": ["NUMB measured-oracle — wet-lab handoff 명세 완료, absorbed=false 유지(측정만 남음)"]},
+    "source_paths": [
+      "domains/NUMB.md", "domains/NUMB/README.md",
+      "domains/NUMB/research/G1_indication_map.md", "domains/NUMB/research/G2_regulatory_pathway.md",
+      "domains/NUMB/research/G3_pediatric_LAST.md", "domains/NUMB/research/G4_sku_split.md",
+      "domains/NUMB/research/G5_packaging_stability.md", "domains/NUMB/research/G6_compatibility.md",
+      "domains/NUMB/research/G7_user_guide.md", "domains/NUMB/research/N1_phase_change_peelfilm.md",
+      "domains/NUMB/research/N5_Mg_multimodal.md", "domains/NUMB/research/N6_ion_pair_eutectic.md",
+      "domains/NUMB/research/N7_pH_gradient.md", "domains/NUMB/research/V_verify_ledger.md",
+      "domains/NUMB/research/oracle_handoff.md"
+    ],
+    "notes": "TTR-LAC track A 스핀오프; 13 research 파일(G1-7·N1/5/6/7·V·oracle)을 본체로 흡수 — G/N milestone 전부 done, oracle만 wet-lab 대기"
+  },
+  {
+    "id": "TTR-LAC",
+    "alias": "레이저 마취·지움 크림",
+    "goal": "레이저 타투제거 세션용 국소 크림 — (A) 마취 onset 더 빠르고·깊고·확실하게 (B) 세션당 잉크 제거율↑/패스수↓; measured-oracle PASS까지 absorbed=false",
+    "status": "🟢",
+    "key_verdicts": [
+      "양 트랙 CONDITIONAL-GO · absorbed=false(O1-O4 4 wet-lab oracle 미충족) · 🔴 0건",
+      "track A 마취: hexa-LAC v1(lid+tet 7+7% eutectic+linoleic 5%+EtOH 20%+epi 1:200k+HPC peel-film) D~20× → onset 2.8-11min(thin-SC ≤20min·일반 ≤30min honest) · LAST Cmax 18 ng/mL 273× margin",
+      "track B 제거: PFD frosting clearing(RI 1.313 매칭) + rhein 토픽 β=0.50 → 모델 fold-cut 4.94×, carbon-25% floor 적용 honest 3.83×(~1.5세션·2.4mo)",
+      "verify: 38 claim → 🔵8·🟢13·🟡11·🟠6·⚪1·🔴0; V2 52/52 closed-form identity PASS · V3 13/13 checksum PASS",
+      "최약 고리 LB-6 β_topical=0.50(rhein 토픽) — M8 ex-vivo on real tattoo 1순위 wet-lab 게이트"
+    ],
+    "milestones": {"done": 8, "total": 9, "open": ["LAC measured-oracle — 프로토콜 설계 완료(O1-O5 falsifiable), wet-lab 실행 deferred, absorbed=false"]},
+    "source_paths": [
+      "domains/TTR-LAC.md",
+      "domains/TTR-LAC/research/A1_anesthesia_baseline.md", "domains/TTR-LAC/research/A2_A3_accel_depth.md",
+      "domains/TTR-LAC/research/A4_candidate_LAST.md", "domains/TTR-LAC/research/A5_franz_pk.md",
+      "domains/TTR-LAC/research/B1_laser_ratelimit.md", "domains/TTR-LAC/research/B2_frosting_clear.md",
+      "domains/TTR-LAC/research/B3_topical_r_down.md", "domains/TTR-LAC/research/B4_integrated_protocol.md",
+      "domains/TTR-LAC/research/LAC_measured_oracle.md", "domains/TTR-LAC/verify/V1_claim_inventory.md",
+      "domains/TTR-LAC/verify/V2_formal_identities.md", "domains/TTR-LAC/verify/V3_numerical_recompute.md",
+      "domains/TTR-LAC/verify/V4_tier_ledger.md"
+    ],
+    "notes": "A1-A5·B1-B4 research + V1-V4 verify를 본체로 흡수; track A가 NUMB로 스핀오프"
+  },
+  {
+    "id": "TTR-MN",
+    "alias": "타투 지우개 패치 (microneedle)",
+    "goal": "자가 적용 dissolving microneedle patch — 주 1회 × 4.5개월(v3) 누적 잉크 90%+ 제거(density 1000/cm²+triple cascade) · 흉터 없음 · FDA combination product; measured-oracle PASS까지 absorbed=false",
+    "status": "🟠",
+    "key_verdicts": [
+      "design phase 11/11 완료(이론+시뮬), wet-lab(M8 ex-vivo $6k)·in-vivo(M9 $350k)·FDA IND·Phase1 미착수 → 종이 설계만, 구매가능 2-5년 후(정직)",
+      "@goal v3: 5yr→1yr(v2)→4.5개월; (1-x)^N≤0.1로 N=19 cycle × per-cycle x≈12%(density 1000+AzoR+DyP+CeO₂ triple cascade)",
+      "v1 M4-M9+oracle milestone [x](설계완료) · v3 골화 5개 milestone [ ](M7v2 density 1000 array·M3v2 triple cascade·M8v2·M9v2·oracle PASS)",
+      "verify V1-V4 [x] 완료(needle penetration force·plume Fick·dissolution kinetics·polymer swelling)",
+      "vs 레이저: 총비용 $1,040 vs $2,400-6,000 · 통증 거의없음 vs 강함 · 다운타임 0 vs 1-2주 · 색상잉크 강함(F5 효소)"
+    ],
+    "milestones": {"done": 11, "total": 16, "open": ["M7-MN v2 density 1000/cm² array", "M3-MN v2 triple cascade payload", "M8-MN v2 ex-vivo 4.5개월", "M9-MN v2 in-vivo 격일 cohort", "TTR-MN v3 measured-oracle PASS"]},
+    "source_paths": ["domains/TTR-MN.md", "domains/TTR-MN/summary_layperson.md"],
+    "notes": "TTR base 자식; v1 설계+verify done, v3 4.5개월 단축 path는 wet-lab 대기"
+  },
+  {
+    "id": "WEB_GUI_DESIGN",
+    "alias": "demiurge Web GUI+CLI 설계 결정",
+    "goal": "/sbs full 16라운드 disambiguation 결과 — 다음 세션이 이 문서만으로 web GUI+CLI 청사진 복원; Web GUI(회원 구독자) + CLI(고객+AI) 동일 uid 인증·Firestore 적재",
+    "status": "active",
+    "key_verdicts": [
+      "16 결정(Q1-Q18): 좌측 2컬럼(8verb tree+AI 요리선생 항상펼침) · Firestore DB · R3F 3D · 결제 single-active 스위치(stripe⟷lemonsqueezy) · GPU multi-priority(vast/runpod/vertex)",
+      "분류 5 카테고리×20 도메인(ATOM3·MATTER7·CHIP2·BIO4·CHEMISTRY4) — SYSTEM 17 폐기(2026-05-28)",
+      "데모 1건 = QUBIT(Google Willow 정렬) sign-up 직후 사전적재 · 무료 공개 도메인 라이브러리(PUBLIC_DOMAINS.tape, founder 등록·게스트 view·회원 fork)",
+      "9-step stacked PR plan ~1,510 LOC(stdlib-matrix-index ✅작성 · api-gateway·provider-registry·common-components·8verb-pages·r3f-viewer·qubit-demo-seed·payment-switch · system-domains dropped)",
+      "XPRIZE 정렬: Vertex AI Gemini ≥1 · GCP 5제품 · stripe active 매출증빙 · 2026-08-17 Devpost 제출"
+    ],
+    "milestones": {"done": 1, "total": 9, "open": ["api-gateway", "provider-registry", "common-components", "8-verb-pages", "r3f-viewer", "qubit-demo-seed", "payment-switch"]},
+    "source_paths": ["domains/WEB_GUI_DESIGN.md"],
+    "notes": "설계 결정 SSOT 문서; COSMOS(3D 우주)와 별개의 web 청사진 — landing 무변경 guard"
+  },
+  {
+    "id": "XPRIZE",
+    "alias": "구글 Gemini 90일 사업 대회",
+    "goal": "dancinlab 단일 엔트리(demiurge)를 Build with Gemini XPRIZE 2026 출전 — 90일 빌드(2026-05-19~08-17) + 실매출 증빙 + Vertex AI Gemini ≥1 + GCP ≥1 + 08-17 제출 + 09-25 LA 결승 finalist 5팀 + Top-5 상금($100K~$500K)",
+    "status": "active",
+    "key_verdicts": [
+      "Track A demiurge 단독 출전(Professional Services·②AI-Native Ops); Track B phanes 분리 폐기(2026-05-27, discover 8th verb로 흡수)",
+      "GCP dancinlab 프로젝트 생성(2026-05-27) · Vertex AI+Cloud Run+Firebase+Firestore+Storage 5제품",
+      "DEMIURGE-GOOGLE-NATIVE: 모든 외부의존을 Google 자사로 처음부터 구축 → 인수 시 0-day 전환(코드 0줄), 인수 매력도↑",
+      "심사 3축 ⅓씩(Business Viability·AI-Native Ops·Category Impact); 강점 ②AI-Native, 약점 ①매출 → ③임팩트 narrative로 보완",
+      "상금: 1위 $500K · 2위 $200K · 3-5위 각 $100K · runner-up/카테고리상 각 $50K; 최소 $100K"
+    ],
+    "milestones": {"done": 2, "total": 9, "open": ["A3 web-foundation(06-09)", "A4 web-7verb-surface(06-30)", "A5 web-realtime+auth(07-21)", "A6 web-deploy+first-revenue(08-04)", "A7 데모영상", "A8 repo 심사공유", "A9 Devpost 제출(08-17)"]},
+    "source_paths": ["domains/XPRIZE.md"],
+    "notes": "대회 출전 메타 도메인; Track B closed, Track C/D 인프라·결승 + Google-native 후속 milestone"
+  },
+  {
+    "id": "brain",
+    "alias": "이식형 신경 인터페이스 (Neuralink-class)",
+    "goal": "implantable neural interface 공개면 도구맵 — electrode-array layout + interconnect/ASIC + hermetic package + EM/thermal 안전 dossier + FDA design-control",
+    "status": "stub",
+    "key_verdicts": [
+      "shallow public-surface map; 6개 도메인 중 proprietary gap 최대 — regulatory-grade implant safety sim 오픈 등가물 없음",
+      "verify/simulate 상용 독점: Sim4Life(FDA-approved MDDT MRIxViP) · COMSOL — open EM-bio-thermal implant simulator 미존재",
+      "substrate: hexa-lang stdlib/brain + sibling ~/core/hexa-brain (born hexa-native)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": ["public-surface map만 존재(7-verb 도구맵 + design options shelf)"]},
+    "source_paths": ["domains/brain.md"],
+    "notes": "공개면 도구맵 스텁(milestone 체크박스 없음, 7-verb tool table 형태)"
+  },
+  {
+    "id": "cloak",
+    "alias": "투명망토 (음굴절 메타물질)",
+    "goal": "빛(가시광·레이더)이 물체를 우회하게 만드는 음굴절률(n<0) 메타물질 — Drude·Lorentz·Veselago verify로 cloak 클레임을 8-verb 파이프라인으로 닫기",
+    "status": "active",
+    "key_verdicts": [
+      "원리: ε<0 AND μ<0 동시 → n=-√(εμ); 3부품 조합(RT-SC 박막 ε<0 · SRR Q=48 μ<0 · n=6 육각격자 피치 10nm)",
+      "현재 V1 ✅ (3-atom n=6 lattice anchor LANDED, 3🔵), 다음 V2 push(Veselago·Drude plasma_freq·Lorentz Q=48 closed-form)",
+      "Phase A-E 전부 0%(verify anchor만 확보); RCS 목표 10⁻⁶~10⁻⁸ m² · 비용 목표 $500/m²",
+      "응용: 군사 스텔스 · 스마트 창문 · MRI 방음 · UFO Stage-cloak(EM 가시성 차단)"
+    ],
+    "milestones": {"done": 0, "total": 5, "open": ["Phase A Drude·Lorentz·Veselago verify", "Phase B 메타셀 n=6 설계", "Phase C 7-verb 파이프", "Phase D Mk.I~V 진화", "Phase E absorbed 판정"]},
+    "source_paths": ["domains/cloak.easy.md"],
+    "notes": "easy(일반인) snapshot; source=domains/UFO/CLOAK.md(~990줄·19가설); cloak.md/.log.md가 정식 snapshot"
+  },
+  {
+    "id": "component",
+    "alias": "부품/패키지/시스템 설계",
+    "goal": "주어진 die에 대한 package+board+enclosure 정의 — substrate/bump/pin-out·PDN·thermal·SI-clean routing + system BOM + thermal/EM dossier (chip→component rfc_008 seam)",
+    "status": "stub",
+    "key_verdicts": [
+      "shallow public-surface map; chain의 3번째 7-verb pass(chip→component typed seam)",
+      "open stack(Elmer·openEMS·CalculiX·OpenFOAM·KiCad·FreeCAD)이 물리 개별 커버하나 통합 signoff flow는 proprietary(ANSYS/Cadence/Siemens급)",
+      "biggest gap: production-grade SI/PI+thermal+mechanical 통합 co-design 환경(턴키 OSS 부재)",
+      "substrate: hexa-lang stdlib/component + stdlib/kernels/fem (born hexa-native)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": ["public-surface map만 존재(7-verb 도구맵 + design options shelf)"]},
+    "source_paths": ["domains/component.md"],
+    "notes": "공개면 도구맵 스텁; ABSORPTION 표상 component synthesize(FreeCAD)·verify(gmsh+scikit-fem) GATE_OPEN absorbed=false"
+  },
+  {
+    "id": "mobility",
+    "alias": "stage-5 자율주행 플랫폼",
+    "goal": "SAE L5 AV 플랫폼 spec — perception+localization+planning+control + 센서퓨전(camera+lidar+radar+IMU) + AUTOSAR + ODD + dual ISO 26262/ISO 21448 SOTIF 안전 case",
+    "status": "stub",
+    "key_verdicts": [
+      "shallow public-surface map(Cohort 2); VERIFY 게이트가 dominant proprietary surface — ISO 26262+21448 SOTIF + UN R157 ALKS",
+      "open full-stack(Apollo Apache-2.0·Autoware ROS2)은 algorithm+integration 커버하나 safety-tooling+HIL 하드웨어 surface는 도달 못함",
+      "biggest gap: ISO 26262+21448 safety-case tooling + traceable work-product mgmt(medini·DOORS·qualified codegen 전부 proprietary) — Cohort-1 SPECIFY+VERIFY gap 구체화",
+      "substrate: hexa-lang stdlib/mobility + sibling ~/core/hexa-mobility"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": ["public-surface map만 존재(7-verb 도구맵 + design options shelf)"]},
+    "source_paths": ["domains/mobility.md"],
+    "notes": "공개면 도구맵 스텁; ABSORPTION 표상 mobility analyze(osmnx) GATE_OPEN absorbed=false"
+  },
+  {
+    "id": "rtsc",
+    "alias": "상온초전도체 사냥",
+    "goal": "상온(293K)×일반압(1기압)에서 초전도인 물질을 컴퓨터로 먼저 찾기 — 5축 5D 지도(m-sign·ω_log·μ*·동적안정·압력) 동시 만족 + 4중 절단 메커니즘",
+    "status": "active",
+    "key_verdicts": [
+      "R4 absorbed=false 영구 — 측정값 wet-lab PASS까지 closure 안 됨",
+      "알려진 물질 각자 1-2축 빠짐: CaH₆(215K, ⑤압력만 ✗ 150GPa) · labeh8(117K, ②ω_log만 ✗) · H₃S(203K, ①⑤ ✗)",
+      "4중 절단: ①M-Be-H precompressor ②ZPE quantum cap ③SSCHA 고정점 ④chemical surgery(soft-mode에 cation)",
+      "분석 누적 rtsc.mining: 15 사이클·~94 leaf·32 edge; Cycle 13 Cooper-Kramers ouroboros 발견",
+      "8개 DFT 동시 진행(ubu-1/2+vast 80c); 주력 CaH₆ 감압게이트·sc2be2h6 vc-relax"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": ["V2 push(Veselago/Drude류 아님 — RTSC closed-form anchor 확장) · mining 누적 자기수정 진행중"]},
+    "source_paths": ["domains/rtsc.easy.md"],
+    "notes": "easy(일반인 5분) snapshot; rtsc.md/.mining.md/.mining.tape가 정식 누적(15 사이클)"
+  },
+  {
+    "id": "WORMHOLE",
+    "alias": "공간 구멍 (웜홀 통과 추진)",
+    "goal": "Morris-Thorne 1988 traversable 웜홀 공간 통과 추진을 7-verb로 spec→handoff — b₀=ℓ_Pl·σ 격자 anchor + F-WORM-{1,2,3} falsifier preregister; UFO Stage-5 독립 도메인 격상",
+    "status": "stub",
+    "key_verdicts": [
+      "absorbed=false PERMANENT — Planck-scale throat substrate · exotic matter wet-lab 부재 · wet-lab 부재→⚪ honest baseline",
+      "격자 anchor: b₀=ℓ_Pl·σ=1.616e-35m × 12 = 1.94e-34m (throat radius), R_throat ∝ σ",
+      "F-WORM 13-falsifier 전부 OPEN/UNPROVEN: F1 stable throat b'(r₀)<1 · F2 NEC violation Planck-bounded · F3 traversable signal in→out finite proper time",
+      "산술 ≠ 물리 명시: V2 🔵는 b₀=ℓ_Pl·σ 격자 산술 only, V3 ⚪ honest fence(Planck-scale apparatus 부재)",
+      "cross-domain reuse: HEX-N6 sigma(6)=12 · UFO Stage-5 · WARP exotic matter source"
+    ],
+    "milestones": {"done": 0, "total": 11, "open": ["Phase A metric lattice 4개", "Phase B F-WORM 3 falsifier", "Phase C 7-verb", "Phase D absorbed 판정", "V1-V3 verify"]},
+    "source_paths": ["domains/wormhole.md"],
+    "notes": "UFO Stage-5 격상 스텁; 모든 milestone [ ] 미착수, 물리 UNPROVEN 정직 표기"
+  }
+]
