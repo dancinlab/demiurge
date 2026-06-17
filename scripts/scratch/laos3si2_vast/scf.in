@@ -1,0 +1,44 @@
+&control
+  calculation = 'scf'
+  prefix = 'laos3si2'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+/
+&system
+  ! LaOs3Si2 -- hexagonal P6/mmm (No.191) CeCo3B2-type. Os kagome z=1/2 (3g), La 1a, Si 2c honeycomb z=0.
+  ! 2nd flat-band-at-E_F winner (GREEN). RELAXED cell from vc-relax: alat=10.59910 bohr, c/a=0.66989, dE=+0.089, m=0.00.
+  ! nspin=1 : NM ground state CONFIRMED by gate (m=0.00 uB) -> non-spin-pol el-ph (correct + cheaper). Mirrors LaRu3Si2 elph scf.
+  ! MP smearing degauss=0.02 Ry held identical to LaRu3Si2 reference for el-ph double-delta consistency.
+  ! Os mass = real 190.23 (DFPT phonon freqs depend on mass; the relaxed-cell scf placeholder 100.0 is corrected here).
+  ibrav = 4
+  celldm(1) = 10.59910
+  celldm(3) = 0.66989
+  nat = 6
+  ntyp = 3
+  ecutwfc = 90
+  ecutrho = 360
+  nspin = 1
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  La 138.905  La_ONCV_PBE_sr.upf
+  Os 190.23   Os_ONCV_PBE_sr.upf
+  Si 28.0855  Si_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS crystal
+  La 0.000000 0.000000 0.000000
+  Os 0.500000 0.000000 0.500000
+  Os 0.000000 0.500000 0.500000
+  Os 0.500000 0.500000 0.500000
+  Si 0.333333 0.666667 0.000000
+  Si 0.666667 0.333333 0.000000
+K_POINTS automatic
+  12 12 12 0 0 0
