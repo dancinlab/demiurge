@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-17
 
+### RTSC LaOs3Si2 DFPT el-ph 완주 + LaRu3Si2 head-to-head 확정 (flat-band→λ)
+- LaOs3Si2 2×2×2 DFPT el-ph가 summer 무료풀(915G, vast 40G는 q당 스크래치>40G로 ruled out)에서 **완주**. summer가 동시 RT-NATIVE 경합으로 ~6회 재부팅했으나 **QE `recover=.true.` 자가치유**(`scripts/scratch/laos3si2_vast/summer_q4_resume.sh` + recover 카운트 전진추적 모니터)로 진행 보존하며 완료 — 비용 $0.
+- 수확(`harvest_lambda_tc.py`, q-star 가중 Allen-Dynes, 허수제외): 4 irreducible q(w=1,1,3,3), 18모드, 10 broadening. **🔴 동적불안정**(가중 허수모드 24개, LaRu3Si2의 6개보다 많음; Γ도 5개 허수).
+- **head-to-head 정직 정정(c9)**: LaRu3Si2 보고값 λ=1.64는 **σ=0.05 Ry**(el_ph index 10)에서 조립된 것 → **같은 σ로 맞춰 비교**. matched σ=0.05: **LaRu3Si2(Ru 4d) λ=1.64·Tc~7K가 LaOs3Si2(Os 5d) λ=0.81·Tc~4-5K를 이김**. Os의 높은 ω_log(109 vs 56K)는 더 많은 soft mode 제외의 인공. **Os 치환은 flat-band el-ph를 강화 못 함** — 4d Ru가 더 강한 coupler. flat-band→λ 가설은 정성적 지지(둘다 강결합)되나 깨끗한 고-Tc는 미확립(둘다 2×2×2 불안정, d6). 다음 레버=승자 LaRu3Si2의 4×4×4 q(artifact vs CDW 판별).
+- 박제: `exports/rtsc/laos3si2_dft_elph.json`(전 broadening sweep + matched 비교) · `ARCHITECTURE.json` b_dfpt_lambda_tc verdict 갱신 · raw harvest tar `scripts/scratch/laos3si2_vast/harvest/`.
+
 ### hexa cloud 운영(클라우드 디스패치) — 트러블슈팅·upstream fix·정리 한 세션
 - **hexa-lang upstream fix (PR #3477 MERGED)**: `hexa cloud run/exec/script` 가 vast/runpod SSH 프록시의 전송-잘림(간헐)으로 `bash: -c: option requires an argument`·`rm: missing operand` 간헐 실패하던 것을 `_ssh_capture_retry`(no-exit-marker 감지 시 backoff 자동 재시도)로 흡수. (참고: `hexa cloud` 는 별도 precompiled 바이너리 `~/.hx/bin/bin/hexa-cloud` — stdlib/cloud 편집은 `hexa run tool/build_hexa_cloud.hexa --install` 재빌드해야 라이브; ~/.hx/src 복사만으론 안 됨.)
 - **auto-adopt 폐기 (PR #3486 SHIP → #3489 REVERT)**: `cloud pods` 가 orphan 을 사후 입양·라벨 추정하게 했으나 **잘못된 레이어** — 올바른 건 **배포(rent) 순간 무조건 라벨링**(이미 `_resolve_project`@repo + `_resolve_purpose` 로 line 1406/1454 unconditional). hexa cloud 가 자기가 배포 안 한 외부 포드를 사후 주워담는 건 역할 아님 → revert. orphan 은 surface(경고)만, 사람이 `cloud reap`/`attribute`.
