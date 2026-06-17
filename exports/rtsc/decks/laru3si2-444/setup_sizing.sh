@@ -2,8 +2,15 @@
 # LaRu3Si2 4x4x4 sizing + d16 free dry-run on summer (FREE pool).
 # SCF (fresh) -> ph.x init (prints the full irreducible q-list = sharding size)
 #             -> d16 dry-run (q1 irr1 only, catches deck/basis errors before paid rent).
-set -uo pipefail
 D=/home/summer/laru3si2_444
+# self-detach: launch via `bash <abspath>` (simple argv, no mangling); re-exec in background.
+if [ "${BG:-}" != "1" ]; then
+  cd "$D" || exit 2
+  BG=1 nohup bash "$0" > sizing.log 2>&1 &
+  echo "launched sizing pid=$!"
+  exit 0
+fi
+set -uo pipefail
 QE=/home/summer/micromamba/envs/qe/bin
 cd "$D" || { echo "no deck dir"; exit 2; }
 export OMP_NUM_THREADS=1

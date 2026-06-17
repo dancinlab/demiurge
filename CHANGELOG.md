@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC LaRu3Si2 4×4×4 사이징 — summer 무료풀 → vast 안정 포드 에스컬레이션 (c16-(c) 인프라벽)
+- 4×4×4 사이징(SCF+ph.x init으로 irreducible q수 확인)을 summer 무료풀에서 시도했으나 **3연속 SCF 발사 실패**(scf.out 0바이트·출력 없이 죽음·메모리 19G여유라 OOM 아님·동시 RT-NATIVE 세션 간섭+flaky transport 의심). 정직 진단(c9·c1): 직전 자가치유 모니터가 transient proc-gone을 오판해 `rm -rf out`으로 SCF 진척을 반복 삭제하던 역효과도 있었음(→passive로 교체).
+- summer가 이 작업엔 신뢰불가 substrate로 확정(c16-(c)) → **vast 안정 포드 41382613(≥120G·@demiurge)로 이전**(d17 비용자율·~$0.4/hr). 디스크 preflight 가드(방금 hexa-lang 머지)가 ≥100G 강제 — 첫 실전. micromamba+QE(conda-forge) 설치 후 SCF+ph.x init 자동발사(체인 모니터). q수 확정 후 production el-ph는 가드 박힌 hexa deck `run_resume.sh`로 발사. 덱·포드 스크립트 박제(`exports/rtsc/decks/laru3si2-444/`).
+
 ### QFORGE 병목개선 — POLAR (Fröhlich) Wannier |g| q-보간 (dense-per-q 레버를 극성물질로 확장)
 - QFORGE 병목 매핑: **dense-per-q DFPT = #1 el-ph 비용**(29-pod teardown의 진짜 원인). #1 속도레버 = EPW식 Wannier |g| q-보간(`stdlib/qforge/wannier_ginterp`, coarse-q → 실공간 g(R) → dense-q 재보간)인데 **단거리 g(R)만 정확** — 자체 g5가 neg-control로 "장거리(극성) g(R)=coarse aliasing→보간 λ 미재현"을 박제(d6 gap). 이게 극성 산화물 후보(Os/Co metal-oxide, magmom k-벽 중첩)에서 레버를 막던 구멍.
 - **hexa-lang PR#3510** — 신규 `stdlib/qforge/wannier_ginterp_polar.hexa` + `..._selftest.hexa`(@ci_gate). EPW 범위분리(Verdi-Giustino, PRL 115 176401): 닫힌형 `g_L(q)`를 보간 전 빼서 잔차 단거리화(정확 보간)→dense q'서 해석적 복원(`qforge_g_to_real_polar`·`qforge_g_at_q_polar`·`qforge_g2_at_q_polar`·`qforge_wann_lambda_dense_polar`).
