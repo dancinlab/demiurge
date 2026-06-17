@@ -8,6 +8,13 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### QFORGE M4 fleet — from-scratch λ 벽 정밀 재분류 (3벽 모두 LOCAL-fixable·포드 불필요)
+- 유저 "fleet으로 진행"에 따라 M4(from-scratch 차폐정점 λ 벽 돌파)를 병렬 다중에이전트 fleet(3레인)으로 굴림 → 모두 high-confidence 근본원인 + 안전 해법(결과 박제: `state/qforge-m4-fleet/FLEET_FINDINGS.json`). **핵심 반전(c9 재분류)**: 직전 "고RAM 포드 필요" 추정이 틀림 — 3벽 전부 **무료 로컬 수정** 가능.
+  - **(A) 툴체인(#1 블로커)**: 로컬 ~/.hx가 main #3362(hexa_arr_f64_* 선언)보다 21h stale → 모든 hexa 빌드 실패. RT-NATIVE churn 아님(설치본 HEAD 자체가 stale). 해법=**격리 prefix 설치 `HX_HOME=~/.hx-m4`**(공유 ~/.hx 무손상·zero blast). ~/.hx 재동기화 금지(RT-NATIVE 102 dirty 파일 파괴·c17/c7).
+  - **(B) SIGSEGV root**: Sternheimer-CG 버그 아님(crash-safe). 진짜 root=`davidson.hexa:185-191` collapse-and-restart가 near-degenerate manifold서 basis 축소(m<nbands) 후에도 nbands Ritz 행 패킹→evecs stale 행→`qforge_run.hexa:178-186` 언팩→`st_project_out` occ[j][i] 경계초과. 해법=collapse 후 evecs 재정규화/cull. 이번 세션 sternheimer.hexa len-guard는 backstop.
+  - **(C) OOM**: n≈645 ~10GB은 할당 churn(하드 floor 아님) — `screening_pwfft.hexa`가 매 fold 새 Ntot grid 할당(L329-339·416-439·457) + `screening_anderson` push-before-cap. 해법=모듈버퍼 재사용 refactor(~4-6GB 절감·로컬 n=645 cap16 가능·수치변화 0).
+- ARCHITECTURE.json `from_scratch_wall` 정밀화(모호한 "non-trivial DFPT"→정확한 file:line+로컬해법). 실행순서=툴체인→davidson→OOM refactor→CaH6 small λ측정. 거버넌스 c17(upstream 직접고침·격리 worktree) 적용 — hexa-lang-wt-pbescf 워크트리서 작업.
+
 ### QFORGE/QE 마이그레이션 아키텍쳐 통합 관리 + d_qforge_migration_routing 거버넌스 (유저지시)
 - 유저 지시("QFORGE/QE 아키텍쳐 제대로 관리 + 최대한 마이그레이션 성공 + QFORGE 전환")에 따라 흩어져 있던 마이그레이션 상태(honest_standing·modes·migration_gate·fleet lanes·screening_wiring)를 **ARCHITECTURE.json `migration_gate` 단일 SSOT**로 통합: `boundary`(전환됨=L0-L5 어셈블러 전체가 native QFORGE gate-grade[CaH6 1.65e-7] / QE잔존=DFPT front-end |g|²·포논·nspin 모먼트만) · `from_scratch_wall`(2 deep walls + named breakthrough levers) · `roadmap`(M1✅ M2✅ M3🧱 M4⏳ M5⏳) · `routing_rule`.
 - **정직한 전환 상태(c9)**: stage-1(λ/Tc 어셈블리 전체)은 **이미 QFORGE로 전환·gate-grade** = production mode-(b) hybrid. stage-2(from-scratch front-end |g|)는 **확정 terminal 벽** — process-split이 farr/val-arena 힙충돌은 우회했으나 (1)Sternheimer degenerate-subspace SIGSEGV (2)gate-grade ecut OOM 2벽 잔존. 즉 "최대 마이그레이션"=어셈블러 전환 완료, front-end는 M4 레버(degenerate-subspace Sternheimer OR 고RAM 포드)로 돌파 시도.
