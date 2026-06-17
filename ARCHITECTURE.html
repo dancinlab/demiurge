@@ -260,6 +260,26 @@ function renderResultsIndex(ri) {
   return sec;
 }
 
+function renderDomains(dom) {
+  const sec = el("section");
+  sec.appendChild(el("h2", null, "Domains (" + (dom.count || (dom.entries||[]).length) + " — folded from domains/*.md)"));
+  if (dom.note) sec.appendChild(el("div","sub", dom.note));
+  (dom.entries || []).forEach(e => {
+    const card = el("div","kv"); card.style.margin = "6px 0"; card.style.paddingLeft = "4px";
+    const head = el("div"); head.innerHTML = "<b>" + esc(e.status || "") + " " + esc(e.id) + "</b>"
+      + (e.alias ? " <span class='sub'>" + esc(e.alias) + "</span>" : "");
+    card.appendChild(head);
+    if (e.goal) card.appendChild(el("div","small", esc(e.goal)));
+    const m = e.milestones || {};
+    if (m.total) card.appendChild(el("div","small", "milestones " + (m.done||0) + "/" + m.total
+      + (m.open && m.open.length ? "  · open: " + esc(m.open.join(" · ")) : "")));
+    (e.key_verdicts || []).forEach(v => { const r = el("div","small"); r.style.marginLeft="12px"; r.textContent = "• " + v; card.appendChild(r); });
+    if (e.notes) card.appendChild(el("div","sub", esc(e.notes)));
+    sec.appendChild(card);
+  });
+  return sec;
+}
+
 fetch('./ARCHITECTURE.json')
   .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
   .then(d => {
@@ -277,6 +297,7 @@ fetch('./ARCHITECTURE.json')
     if (d.engines) app.appendChild(renderEngines(d.engines));
     if (d.campaigns) app.appendChild(renderCampaigns(d.campaigns));
     if (d.results_index) app.appendChild(renderResultsIndex(d.results_index));
+    if (d.domains) app.appendChild(renderDomains(d.domains));
     if (d.related_repos) { const s = el("section"); s.appendChild(el("h2",null,"Related repos")); Object.entries(d.related_repos).forEach(([k,v]) => { const r = el("div","kv"); r.appendChild(el("span","nid",k)); r.appendChild(document.createTextNode(" — " + v)); s.appendChild(r); }); app.appendChild(s); }
   })
   .catch(e => {

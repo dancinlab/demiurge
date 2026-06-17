@@ -1,0 +1,338 @@
+[
+  {
+    "id": "8VERB",
+    "alias": "8단계 사다리",
+    "goal": "demiurge cli가 8개 verb를 ordered stage로 노출 + 모든 연산(QFORGE el-ph·deck·cloud·atlas·paper)이 verb를 통해 CLI-도달 — per-verb parity smoke + QFORGE-via-CLI run으로 측정",
+    "status": "🟢",
+    "key_verdicts": [
+      "✅ 8VERB COMPLETE — Swift 완전 폐기, pure hexa-native CLI (stdlib/demi/)",
+      "#28 PR-swift-delete: cockpit Swift CLI/Core 145파일/23,442 LOC 삭제, web GUI(Next.js+r3f) UNTOUCHED",
+      "127/127 parity 셀 GREEN (gate #26 coverage-locked): 21 verb full-byte-parity · 3 honest-scoped · 2 surface-divergent(--version/--help)",
+      "discover가 ordered stage #0로 승격(orthogonal phanes 아님), synthesize verb가 QFORGE run 구동(#20 PR HELD gate verbatim, λ/Tc 날조 없음 d6)",
+      "3D geometry 별도파일 로딩 LOCKED(d3/d4) — .usda/.stl 빌더 byte≡Swift, file-only shape swap parity cell PASS"
+    ],
+    "milestones": {"done": 28, "total": 35, "open": ["geometry exporters hexa-native @L3(일부 잔여 stack #21-25 polish)", "demiurge cli ⇄ web GUI ⇄ web-bridge 모든 verb 3-surface 도달", "8 verb slot 실 데이터 wiring"]},
+    "source_paths": ["domains/8VERB.md"],
+    "notes": "Swift→hexa-native 마이그레이션 완료 도메인; @goal MET via pure-hexa 경로(Swift Family-A supersede)"
+  },
+  {
+    "id": "AURA",
+    "alias": "✨ hexa-aura 측두골 BCI 클립",
+    "goal": "측두골(mastoid) 클립 한 쌍이 RT-SC 나노코일로 피질(A1·V1·S1·M1)을 비침습 read/write — 18개 웨어러블을 0개로 수렴. n=6 invariant lattice σ(6)·φ(6)=n·τ(6)=J₂=24. 4-pillar substrate(clip·coil·cortex·safety) + RSC verify surface",
+    "status": "🟠",
+    "key_verdicts": [
+      "v1.0.0 RELEASED(2026-05-10) verdict=SPEC_FIRST_RSC — 19/19 green-core RSC 스크립트 PASS · 100% bookkeeping closure(green-core)",
+      "F-AURA-1/2/3/4 (15 sub-ID) 전부 OPEN — monotone OPEN→CONFIRMED|DEMOTED, silent retract 금지; medical-device 클레임(audio·AR·haptic·watchdog·FDA) STRICTLY UNPROVEN",
+      "🔴 단일 깨질 수 있는 외부 의존 = hexa-rtsc(상온초전도체 실재 여부 미해결); falsify 시 F-AURA-2 DEMOTED",
+      "LIMIT_BREAKTHROUGH(Wave M): L2 RT-SC ambient(2026 LK-99 미재현)=핵심 honesty caveat · L6 비침습 structured-percept write=미해결 연구프론티어 · HARD walls L1/L3/L4/L5/L8/L10(physics/safety/regulatory)",
+      "post-v1.0.0 Cycle 3-6: §A.6.1 stage A-D code-layer halves(9 FEM-tier 스크립트 green-gate deferred·firmware sim/hdl skeleton) — depth NOT closure, sat-1/STOP/15-sub-ID-OPEN 불변"
+    ],
+    "milestones": {"done": 12, "total": 18, "open": ["§1 canon ✦KR 2-doc restore(owner-pending)", "§2 hexa-mind/hexa-senses 인지·감각 verb split(owner-pending)", "v1.1.0 coil↔hexa-rtsc / cortex↔hexa-brain cross-verify", "v1.2.0 safety FDA/KFDA regulatory-pathway", "T4 hardware(phantom-skull→cadaver→NHP→FDA, RSC 밖)"]},
+    "source_paths": ["domains/AURA/README.md", "domains/AURA/INDEX.md", "domains/AURA/TODO.md", "domains/AURA/LIMIT_BREAKTHROUGH.md", "domains/AURA/CHANGELOG.md", "domains/AURA/RELEASE_NOTES_v1.0.0.md", "domains/AURA/DEPENDENCIES.md", "domains/AURA/IMPORTED_FROM_CANON.md", "domains/AURA/TAPE-AUDIT.md", "domains/AURA/LATTICE_POLICY.md", "domains/AURA/CLAUDE.md", "domains/AURA/docs/numerics_methodology.md", "domains/AURA/docs/neuro.md", "domains/AURA/docs/brain-computer-interface.md", "domains/AURA/docs/hexa-neuromorphic.md", "domains/AURA/docs/l9-field-photon-neuro.md", "domains/AURA/docs/neuroscience.md", "domains/AURA/papers/n6-brain-computer-interface-paper.md", "domains/AURA/papers/n6-hexa-earphone-paper.md"],
+    "notes": "전체 서브디렉토리(docs·papers·verify·pillars) AURA 본체로 흡수; 격자=조직어휘일 뿐 물리도출 아님(LATTICE_POLICY real-limits-first)"
+  },
+  {
+    "id": "HANDOFF",
+    "alias": "demiurge Web GUI + CLI 인계(9-step)",
+    "goal": "demiurge Web GUI(Next.js) + CLI 빌드를 다음 세션이 이어받을 수 있게 인계 — 18 PR(PR#388~#406) merge 상태 + 설계 SSOT + API surface + 다음 우선순위(idle slate)",
+    "status": "active",
+    "key_verdicts": [
+      "총 18 PR(PR#388~#406) merge · ~2,500 LOC · 0 비용 · 0 GPU — handoff 모드 자율 fire",
+      "8-verb 페이지(VerbShell + 8 dynamic [domain] route) + R3F viewer(StructureViewer·QUBIT Josephson) + payment switch(stripe⟷lemonsqueezy) + i18n 5 locale",
+      "알려진 한계: PR#4가 기존 verb 449 LOC를 placeholder 25 LOC로 대체(실 viewer 복원 필요) · R3F 미설치(npm install 1줄) · tape parser 17-type single-line만",
+      "다음 우선순위(idle slate): npm install+lockfile · 8 verb slot 실 데이터 wiring · discover phanes 바이너리 빌드/배포(현 stub fallback) · /matter ledger paper 링크"
+    ],
+    "milestones": {"done": 18, "total": 25, "open": ["npm install + R3F 실동작", "8 verb slot 실 데이터 wiring(현 stub)", "discover phanes 바이너리 빌드", "fork history bridge", "mobile R3F 터치 테스트"]},
+    "source_paths": ["domains/HANDOFF.md"],
+    "notes": "2026-05-28 세션 인계 문서; web GUI surface는 d_deploy 게이트(배포는 사용자 승인) 적용"
+  },
+  {
+    "id": "MATH-SPECTRA",
+    "alias": "🔢 스펙트럼 탐정(eigenvalue pattern hunter)",
+    "goal": "수학·물리 교차 스펙트럼 패턴 자체 탐색·검증 — 리만 ζ 영점 ↔ 랜덤행렬 보편성(GUE) ↔ 응집물질 인접행렬 스펙트럼(플랫밴드 CLS·힐베르트-폴리아)의 공식 동형 추적. 정직(c9): 수치탐색이지 정리증명 아님, RH 증명 금지",
+    "status": "🟢",
+    "key_verdicts": [
+      "🔴 플랫밴드 CLS 오프셋 = 격자 기하주기 q_min 유한·유계 정합항(gcd(L,q_min)), 소수 무신호 — 정수론 부재 종결(전 플랫밴드족, probe2/3)",
+      "🟢 M6 피보나치(준결정) 사슬 gap-labeling CONFIRMED: 주요 8개 간극 IDOS가 {n·α mod 1}(α=1/φ) 모듈에 전부 매칭(잔차≤7e-7); 비주기 스펙트럼엔 정수론이 진짜로 산다",
+      "🟢 M7 치환사슬 CONFIRMED: gap-label 모듈 생성원 = 치환의 Perron 글자빈도(아벨화), 일반 비주기성 아님 — silver-mean Z+Z(1/√2)·period-doubling dyadic Z[1/2]·Thue-Morse 단일무리회전 붕괴안함(falsifier 충족)",
+      "where-arithmetic-lives 지도 완성 🏁 — 산술의 집=Perron 데이터, 비주기성 자체 아님",
+      "🟠 M8 2D 준결정(Ammann-Beenker) gap-labeling — 유한패치 미해상(더 큰 패치 deferred)"
+    ],
+    "milestones": {"done": 7, "total": 8, "open": ["M8 2D 준결정 Ammann-Beenker(유한패치 미해상, deferred)"]},
+    "source_paths": ["domains/MATH-SPECTRA.md"],
+    "notes": "manifest-only 도메인; probe=로컬 numpy/scipy/mpmath(무료); SSOT=exports/math-spectra/<probe>.json"
+  },
+  {
+    "id": "OA-CURE",
+    "alias": "🦵 골관절염 연골 완전재생",
+    "goal": "골관절염 소실 연골 완전재생 disease-modifying 완치 — CURE-PRIMITIVE 병목(섬유화연골 신생 η=0.40 최난도) + SENOLYX η_neo-lift(≥78% 청소)로 ≥90% 게이트. 무혈관→전달 binding axis. d1/d5/d19",
+    "status": "active",
+    "key_verdicts": [
+      "✅ design: CURE-PRIMITIVE 축붕괴 — 병목=섬유화연골 신생 η0.40(4도메인 중 최난) + 무혈관 전달 보정",
+      "✅ verify: SENOLYX η_neo-lift PD — 청소 ≥78%→게이트 CLOSE (SENOLYX reused) g5"
+    ],
+    "milestones": {"done": 2, "total": 4, "open": ["spec: OA 연골재생 생물학 + 조직클래스 분해", "axis: SENOLYX·CURE-PRIMITIVE reused[] NEXUS edge"]},
+    "source_paths": ["domains/OA-CURE.md"],
+    "notes": "범용 η_neo 병목의 OA 인스턴스; SENOLYX·CURE-PRIMITIVE reuse"
+  },
+  {
+    "id": "ORGANOID",
+    "alias": "🧬 오가노이드",
+    "goal": "오가노이드 연구영역 핵심 측정 클레임(3D 줄기세포 organoid 모델)을 demiurge 8-verb 파이프라인으로 검증 가능한 형태로 닫는다 — verify 5-tier 판정",
+    "status": "stub",
+    "key_verdicts": [
+      "측정 클레임 타겟: maturation marker timeline · vascularization · 기능 assay",
+      "비-목표: 특정 타사 브랜드 제품 검증 아님 — 범용 연구영역 측정 클레임 한정(starter-inventory sampler)"
+    ],
+    "milestones": {"done": 0, "total": 6, "open": ["측정 클레임 SSOT 등재(spec)", "의존 트리 결정(structure)", "trade-off 3안(design)", "SSE 라이브 분석(analyze)", "hexa verify 5-tier 판정", "한/영 사이드바이사이드 handoff"]},
+    "source_paths": ["domains/ORGANOID.md"],
+    "notes": "starter-inventory sampler stub — 모든 milestone 미착수"
+  },
+  {
+    "id": "PEROVSKITE",
+    "alias": "🧱 페로브스카이트 태양전지",
+    "goal": "페로브스카이트 태양전지 연구영역 핵심 측정 클레임(metal-halide perovskite 광전 효율·안정성)을 demiurge 8-verb 파이프라인으로 검증 가능한 형태로 닫는다 — verify 5-tier 판정",
+    "status": "stub",
+    "key_verdicts": [
+      "측정 클레임 타겟: PCE @ AM1.5G · MPP 24h light/heat 안정성 · bandgap tuning",
+      "비-목표: 특정 타사 브랜드 제품 검증 아님 — 범용 연구영역 측정 클레임 한정"
+    ],
+    "milestones": {"done": 0, "total": 6, "open": ["측정 클레임 SSOT 등재(spec)", "의존 트리 결정(structure)", "trade-off 3안(design)", "SSE 라이브 분석(analyze)", "hexa verify 5-tier 판정", "한/영 사이드바이사이드 handoff"]},
+    "source_paths": ["domains/PEROVSKITE.md"],
+    "notes": "starter-inventory sampler stub — 모든 milestone 미착수"
+  },
+  {
+    "id": "PWFORGE",
+    "alias": "🧱 평면파 해밀토니안 조립기(cell→H)",
+    "goal": "QFORGE의 SCF가 소비하는 빠진 cell→H_of_rho 평면파 Hamiltonian front-end 구축 — 원자위치+UPF로부터 S(G)·V_loc(G)→V_ext·kinetic|k+G|²/2·KB 비국소 projector→H_of_rho closure. 독립 atoms→SCF→|g|²→λ→Tc QFORGE-only 경로의 마지막 구조 blocker",
+    "status": "active",
+    "key_verdicts": [
+      "✅ front-end LIVE + engine-chain blocker B CLOSED — M1~M5 全 landed+g5-green(hexa-lang PR#2407~#2411), XC 항 landed(#2402·#2405)",
+      "✅ M5.5(self-consistent ρ-loop)·M5.6(Sternheimer→|g|² atoms-경로)·orchestrator(PR3) landed g5-green — 독립 atoms→|g|² 경로 LIVE(QE dvscf 경계 없음, Hellmann-Feynman frozen-phonon FD 검증)",
+      "✅ M5.7/M5.8 DONE: aperiodic ground-state Hartree V_H[ρ] wire-in(#2423·#2426) + Fermi smearing+Anderson mixing(#2437·#2438·#2440) → 실 CaH6 셀 CONVERGES(converged=true·86 iters·e_total=-14.9469 Ha·λ=0.0208)",
+      "🔴 정직 잔차(d6): CaH6 λ=0.0208은 INDEPENDENT QFORGE-NC engine output — cross-val 아님·production 아님·absorbed 아님(Γ-only Einstein coarse·QE λ=4.376과 무관)",
+      "gate 상태: blocker #1 assembly+chain CLOSED · M6 QE-NC cross-val HELD on dispatch · gate 전체 HELD on blocker #2(LaH10·Li2MgH16 QE terminal) — d_qforge_engine no forced flip"
+    ],
+    "milestones": {"done": 8, "total": 9, "open": ["M6 CaH6 독립 cross-val(QE-NC ref harvest + QFORGE-NC↔QE-NC λ·Tc 대조, pod 정리됨 deferred)"]},
+    "source_paths": ["domains/PWFORGE.md"],
+    "notes": "코드 SSOT=hexa-lang stdlib/qforge/; QFORGE migration-gate blocker #1 front-end half closes"
+  },
+  {
+    "id": "QFORGE-MOLSCF",
+    "alias": "🧬 분자 ab-initio 개통(molecular SCF front-end)",
+    "goal": "QFORGE 범용 엔진에 atom-centered Gaussian/STO 분자 SCF front-end 신설 — 주기 평면파 밖 유한 분자/원자/클러스터를 위한 Roothaan RHF(FC=SCε) 경로. s→p/d/f 각운동량 적분→Fock→SCF→force(autograd) 공통코어 재사용(d19). g5 anchor=Szabo&Ostlund/PySCF",
+    "status": "🟢",
+    "key_verdicts": [
+      "method-class COMPLETE(round-16): single-ref(RHF·UHF·ROHF·robust-SCF) + multiref STATIC(CASCI·CASSCF) + multiref DYNAMIC(full 8-class SC-NEVPT2) 전부 PySCF-anchored, NO 남은 method-class gap",
+      "brick 1-9: s/p/d/f 각운동량 McMurchie-Davidson 적분 — H₂O/STO-3G E=-74.9618 Ha(|Δ|4.6e-5)·ScH all-electron E vs PySCF VERBATIM·전이금속 Sc 3d Mulliken 실engage",
+      "brick 12 robust-SCF: 스티프 TiO ³Σ⁻(30e all-electron) — bare H_core STALLS(‖e‖0.034) vs GWH+Fermi anneal CONVERGES(‖e‖4.5e-8, 43 it); slow anneal 바닥상태 E=-913.528982 WALL BROKEN(정직 d6)",
+      "brick 16 SC-NEVPT2: H₄ CAS(2,2) 6-class == PySCF mrpt.NEVPT |Δ|<5e-5; DYNAMIC-corr recovery FCI gap의 85%",
+      "brick 19(round-16): 4-RDM 두 클래스 Sr/Si — r15 '6.5 irreducible residual'는 MISDIAGNOSED(실제는 dm4 build pair-order transposition), one-line fix 후 H₆ CAS(4,4) Sr |Δ|=2.37e-8·Si 1.31e-8·8-class total |Δ|=2.39e-7"
+    ],
+    "milestones": {"done": 18, "total": 19, "open": ["round-17(named): 2nd-order Newton MCSCF(CASSCF tight conv, 현재 |Δ|=4.67e-4 steepest-descent stall) · direct-CI Davidson(CAS(10,10) Cr₂) · cumulant-4-RDM CAS(8,8)+ · PC-NEVPT2/CASPT2 — 전부 within-class refinement, NO method gap. brick 6 분자 force autograd 미완"]},
+    "source_paths": ["domains/QFORGE-MOLSCF.md"],
+    "notes": "16 round/19 brick, atoms·chem·system 3-scale 공통 분자 SCF blocker 해소(handoff b143b899); single generic atom-centered 경로(d4)"
+  },
+  {
+    "id": "QFORGE-PERF",
+    "alias": "🚀 큐포지 가속기(el-ph accelerator backlog)",
+    "goal": "hexa-native QFORGE el-ph 엔진을 두 벽 너머로 가속 — (1)하드웨어 벽: QE el-ph(λ·a²F) GPU 미포팅(electron_phonon='simple' GPU crash) (2)알고리즘 벽: O(N³)대각화+dense per-q DFPT. 3 LANE(⚡hardware·🧮algorithmic·🧠paradigm). 각 아이디어=PROPOSAL, 실 bench roofline+Δ로 닫기 전엔 closed 아님",
+    "status": "🟢",
+    "key_verdicts": [
+      "baseline 박제(mini M4): qforge_h_apply v↦H·v 0.140 GFLOP/s(평탄=memory-bound 지문) · RTX5070 roof fp64 139.88/fp32 279.76 GFLOP/s → 단일 GEMV >2000× 주장 roofline 위배",
+      "⚡ Davidson VᵀHV GPU-GEMM(RTX A5000 실측): n=1024 45.8× · n=2048 61.0× — batch-GEMM이 tensor-roof 열어 K1 단일-GEMV가 못한 win 달성; cuFFT Poisson 6.9-7.8× · Sternheimer GPU-resident parity 3e-16",
+      "🔴 H_apply 단일 GEMV GPU-GEMM CLOSED-NEGATIVE 실측(correct-but-not-faster, d6 강제승리 거부, wall Δ<1) · SIMD band-loop CLOSED-NEGATIVE(memory-bound wall 불변, speedup 1.0)",
+      "🧮 EPW-Wannier |g| q-interp g5 EXACT(coarse 64→dense 512 rel-ε 1.14e-16) + NEG-ctrl rel-ε 0.64(d6) = dense-DFPT killer #1 · CheFSI/randomized-eig/DIIS-mixing/adaptive-q 전부 docs-bench g5 MATCH",
+      "🧠 LANE C: differentiable-DFT IFT(no-unroll) adjoint·equivariant GNN trained-equivariant·Δ-ML(35.7× vs linear)·MLIP(force=−∇E autodiff)·active-learning(1.25×)·transfer(58× warm vs cold) 전부 🟢bench-VERIFIED(synthetic target, real-DFT dataset 잔여)"
+    ],
+    "milestones": {"done": 21, "total": 21, "open": []},
+    "source_paths": ["domains/QFORGE-PERF.md"],
+    "notes": "21/21 terminal(8 closed + 4 grounded + 9 gated, 0 ambiguous); docs-only 도메인 100% closure; GATED ⚡항목은 GPU pod READY 시 closed-grounded→closed-measured 승격. 부모=QFORGE"
+  },
+  {
+    "id": "QFORGE-BIO",
+    "alias": "🧬 결합엔진(알케미컬 FEP/MD)",
+    "goal": "QFORGE multi-scale 축의 bio front-end — 외부 openfe/openmm/openmmtools를 hexa-native alchemical FEP/MD로 완전 대체. 6스케일 중 bio. verify-ref=실험 ΔΔG. materials(el-ph)가 QE를 걷어낸 것과 동형으로 bio가 OpenMM 스택을 걷어낸다",
+    "status": "🟢",
+    "key_verdicts": [
+      "물리스택 100% 완성: R2 LJ+Coulomb autograd force · R3 soft-core(Beutler) · R4 MBAR/BAR · R10 PME(Smooth, fft3 가속) · R8 Langevin(BAOAB) · R5 HREX · R6 TIP3P solvation · R7 SHAKE/RATTLE 전부 g5 PASS",
+      "R16 주기 입방박스+PME가 cavity-work 잔차 실제 교정: 메탄 ΔG_hyd 잔차 |R15−exp|=2.869 → |R16−exp|=0.288 붕괴(10×), +2.0 실험앵커로 +방향 접근(강제 아님 d6)",
+      "R14 capstone: raw 실분자→실 GAFF FF→end-to-end ΔG 풀체인 봉인 — 메탄 c3/hc 실 ε/σ/q == amber.hexa literature <1e-9(toy ε=σ=1 졸업)",
+      "R17/R18 cell-list O(N) 이웃탐색 결선 + 해석 LJ tail-correction(truncation error ~17× 감소) — O(N) FEP 봉인, bio code-brick 레인 완전 소진",
+      "외부의존 3대 실패 실증(SENOLYX RBFE): openff-2.1.0 거대고리 2.2× 과대전개(RMSE 75.5)·openfe conda 무한대기·CUDA PTX 불일치"
+    ],
+    "milestones": {"done": 17, "total": 20, "open": ["R4-next: end-to-end ABFE re-derive SENOLYX 앵커(-16.64) parity — 남은=순수 compute(더 큰 박스+LONGER SAMPLING d17 GPU)", "R5: QM-derived FF(GFN2 전하 refit) — R11 거대고리 2.2× 과대전개 해소"]},
+    "source_paths": ["domains/QFORGE-BIO.md"],
+    "notes": "코드 SSOT=stdlib/chem/{md,fep,solvate,ff}; 0-POD only(mini local+summer RTX5070); 외부 -16.64는 verify 앵커일 뿐 hexa-native 아님(명시 유지). 부모=QFORGE"
+  },
+  {
+    "id": "RETINA-CURE",
+    "alias": "👁 망막 광수용체 복원",
+    "goal": "망막 변성(dry-AMD/RP) 소실 광수용체 복원 disease-modifying 완치 — CURE-PRIMITIVE 병목(광수용체 신생 η=0.45, 최대소실질량 0.40) + SENOLYX η_neo-lift(≥72% 청소)로 ≥90% 게이트. 뮐러글리아 리프로그래밍 arm. d1/d5/d19",
+    "status": "active",
+    "key_verdicts": [
+      "✅ design: CURE-PRIMITIVE 축붕괴 — 병목=광수용체 신생 η0.45(소실질량 0.40 최대) + 글리아 리프로그래밍 arm",
+      "✅ verify: SENOLYX η_neo-lift PD — 청소 ≥72%→게이트 CLOSE(SENOLYX reused; UBX1325 국소 senolytic 선례) g5"
+    ],
+    "milestones": {"done": 2, "total": 4, "open": ["spec: 망막 광수용체 재생 생물학 + 조직클래스 분해", "axis: SENOLYX·CURE-PRIMITIVE reused[] NEXUS edge"]},
+    "source_paths": ["domains/RETINA-CURE.md"],
+    "notes": "범용 η_neo 병목의 망막 인스턴스; SENOLYX·CURE-PRIMITIVE reuse"
+  },
+  {
+    "id": "TTR-CREAM",
+    "alias": "잉크제거 크림(rub-on, no needles)",
+    "goal": "진짜 cream/gel/lotion 형태(rub-on, no needles)로 잉크 90%+ 제거 — 흉터 없음, OTC-grade 안전성. measured-oracle PASS까지 absorbed=false. SC barrier 돌파가 핵심 wall",
+    "status": "active",
+    "key_verdicts": [
+      "✅ SC barrier 돌파 메커니즘 short-list — chemical permeation enhancer·CPP·SC lipid 분해효소·iontophoresis 보조(first-principles depth-gap)",
+      "핵심 wall: cream-only 도달 깊이(50-150 μm) vs 잉크 거주(500-2000 μm)의 first-principles gap",
+      "track=cream-only(M4 microneedle 결과 비활용); parent=TTR.md 공유 base inventory"
+    ],
+    "milestones": {"done": 1, "total": 7, "open": ["진피 도달 wall 정량화(cream-only depth gap, breakthrough path ≥3)", "M3-CREAM 활성성분(cream-friendly constraint)", "M5-CREAM 잉크-활성분자 MD/QM", "M7-CREAM 제형 설계", "M8-CREAM ex-vivo 돼지피부 PoC(≥30% goal)", "M9-CREAM in-vivo", "CREAM measured-oracle PASS→absorbed=true"]},
+    "source_paths": ["domains/TTR-CREAM.md"],
+    "notes": "verify 별도 V1-V4 ledger(🔵/🟢/🟡/🟠 tier) 전부 미착수; 대부분 wet-lab deferred"
+  },
+  {
+    "id": "cern",
+    "alias": "🔬 가속기 도장(입자가속기·빔물리 7-verb)",
+    "goal": "입자가속기/빔물리 7-verb 파이프라인을 테이블탑(레이저-플라스마) 기준으로 demiurge clean-room 내 완전 구동 — closed-form + 1-D linear PIC parity까지 hexa-native. LHC급(Geant4-MC·measured-ring) 및 GPU-heavy(비선형 blowout)는 wet-lab/external-data dependency로 downstream 분리",
+    "status": "🟢",
+    "key_verdicts": [
+      "✅ CERN tabletop 기준 구현 완료(2026-05-25) — RF 축 4-cell closed-form/algorithm closure + tabletop(plasma-wakefield) cold-linear closed-form + 1-D linear PIC parity(FBPIC Δ=3.56%)",
+      "Bethe-Bloch Stage 5 보정 본해(#1296·#243): Sternheimer 밀도효과+AZ shell+Bloch L2+Barkas L1(antiproton) — mean |Δ| 6.25%→4.39%(30% closure)·mid-plateau 91-98% 닫힘·4 verify atom 🟢",
+      "Xsuite FODO twiss absorbed=true(ALGORITHM closure 한정, β_x_max rel err 2.7e-14) · pylhe LHE absorbed=false GATE_OPEN 영구(합성 kinematics)",
+      "2-D 비선형 blowout PIC sweep 무료 CPU $0로 당겨 완료: a0={0.5,2.0,4.0}→E_z={1.70,73.62,405.64}GV/m blowout 전이 재현",
+      "downstream(scope 외 dependency, 도메인 미완성 아님): measured-ring optics deck(LHC/FCC-ee licensing) · design-grade GPU 수렴 sweep · Stage 6 ICRU-49 저에너지 보정"
+    ],
+    "milestones": {"done": 7, "total": 8, "open": ["measured-ring deck ingest(sourced LHC/FCC-ee/SPS, downstream deck licensing)"]},
+    "source_paths": ["domains/cern.md"],
+    "notes": "코드 SSOT=hexa-lang stdlib/cern/(d3); demiurge=cockpit producer+record+export만; specify/architect/design/handoff = honest stub(rc=2). sibling=~/core/hexa-cern"
+  },
+  {
+    "id": "chip",
+    "alias": "칩 설계(deep domain)",
+    "goal": "칩 설계 7-verb deep domain — canonical 맵은 HANDOFF.md §5 + rfc_001에 거주. 이 파일은 D100-minimal skeleton(substrate-line + D82 graph record), 7-verb tool map 비복제(g3 single-SSOT)",
+    "status": "active",
+    "key_verdicts": [
+      "deep domain — substrate가 demiurge 도메인 중 최대 stdlib footprint span",
+      "substrate: hexa-lang stdlib/kernels/{circuit,logic_synth,noc_sim}/ + stdlib/{vhdl,yosys,booksim,hal}/ + sibling ~/core/hexa-chip/(born hexa-native+sibling extension)",
+      "D82 graph: prereq=[], facets={scale:device, cluster:[physical,engineering], hostility:macos-clean}"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/chip.md"],
+    "notes": "포인터 skeleton — canonical 7-verb 맵은 HANDOFF.md §5/rfc_001_chip_domain.md가 SSOT, 이 파일은 D100 substrate-line만"
+  },
+  {
+    "id": "matter",
+    "alias": "물질/소재 toolkit(POINTER)",
+    "goal": "재료 toolkit은 이미 hexa-lang stdlib로 완전 흡수됨(stdlib/mol·crystal·mlff, selftest 38/38) — demiurge는 포인터만 보유(소비, NOT absorbed here). 재료합성 chain stage는 typed-interface seam으로 hexa-lang 흡수물 consuming",
+    "status": "DRAINED",
+    "key_verdicts": [
+      "D17(supersedes D12/D13/D14/rfc_005): hexa-lang=SSOT, demiurge=pointer — 중복 사본(469파일/8MB)은 2026-05-18 git rm'd(git history 복구 가능)",
+      "재료 toolkit 이미 hexa-lang stdlib에 흡수 완료(stdlib/PLAN.md: hexa-matter 6모듈 완전이관, .py 제거, selftest 38/38)",
+      "dancinlab/hexa-matter rename/delete는 demiurge action 아님 — disposition은 hexa-lang 소유, CANCELLED from demiurge side"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/matter/README.md"],
+    "notes": "POINTER만 — 실 SSOT=hexa-lang/stdlib/PLAN.md; demiurge는 consumer(D15)"
+  },
+  {
+    "id": "scope",
+    "alias": "우주망원경(분할거울)",
+    "goal": "우주망원경/분할거울 7-verb shallow public-surface clean-room 맵 — JWST 18-segment 1.32m beryllium hexagonal mirror(n=6 invariant) 참조. POPPY/WebbPSF 진영 위 cell, 광학 prescription은 Code V/Zemax 지배",
+    "status": "stub",
+    "key_verdicts": [
+      "shallow public-surface map(Cohort 2, D6); substrate=hexa-lang stdlib/scope/ + stdlib/kernels/wave_optics/ + sibling ~/core/hexa-scope/",
+      "biggest open-source gap: Code V/Zemax parity의 fully-open tolerancing 광학설계 suite(POPPY는 physical-optics propagation/PSF만, ray-trace prescription 비대체)",
+      "NASA-open 스택(GMAT/OpenMDAO) Cohort-1 space.md와 공유, system-engineering 레벨 smallest proprietary gap 상속"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/scope.md"],
+    "notes": "shallow public-surface 도구맵 stub — design options shelf(거울 단일/분할·분할수 7/18/36·소재 베릴륨/유리세라믹)"
+  },
+  {
+    "id": "RTSC-magnet",
+    "alias": "🧲 자석 청사진 그리기(초전도 자석)",
+    "goal": "발견될 상온초전도체로 코일 감을 때 자기장 모양을 미리 계산하는 시뮬레이션 데크 — RTSC 본체(DFT 발견)와 별개의 응용 substrate. solenoid/pancake 2 코일모양 데크 + Wheeler 해석해 cross-check(g5 cross-tool-consistency)",
+    "status": "active",
+    "key_verdicts": [
+      "GetDP FEM(axisymmetric A-φ) ⨯ Wheeler 해석해 B(z) 2-도구 교차검증 = g5 cross-tool consistency",
+      "2 코일모양: solenoid(탑형, MRI/가속기 보어) · pancake(디스크형, 양자컴 큐비트/NMR 평면)",
+      "NEXUS reuse(g67): RTSC magnet substrate → UFO 6-coil 60° array · NUCLEAR fusion confinement · QUBIT z-axis · ANTIMATTER trap(current_loop_offaxis reuse d19) = 4 도메인 재사용",
+      "Wheeler verifier = paper monograph appendix F 핵심 검증축"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/rtsc-magnet.easy.md"],
+    "notes": "easy-style 설명 문서; RTSC 본체(DFT 발견 ▓▓▓▓░░ 47%)와 별개의 응용 트랙; getdp 데크는 domains/RTSC/magnet/getdp/"
+  },
+  {
+    "id": "RTSC-candidates",
+    "alias": "RTSC 차기 wave 후보 풀(brainstorm 고갈)",
+    "goal": "RTSC 캠페인 차기 wave 발사 후보 전체 목록 — 8 라운드 brainstorm으로 surface·mechanism·bracket-tag 3-test depletion까지 saturate. cost/risk 양축 우선순위, 발사 시 슬롯 선택",
+    "status": "active",
+    "key_verdicts": [
+      "총 후보 풀 55개(A 신아이디어 40 + B 기존 manifest queue 15) · 5 메커니즘 카테고리 depletion(precompressor·perovskite·pnictogen·twisted·topology)",
+      "🏁 DEPLETED at R8 — surface dedup(전 신아이디어가 R1-8 bracket-tag 변종으로 환원)·mechanism dedup·no new bracket-tag",
+      "참조 verdict: YH₁₀ Tc 227.5K@250GPa(#486, atlas folded #1909) · 현 active 16잡",
+      "⭐ 발사 추천: 🥇 단순 substitution(MgBeH8·SrPtH3·CaAuH3) · 🥈 $0 pod 재사용(Mg(1-x)CaxB2·H2B2·ScH9) · 🥉 신메커니즘(TBL-YH3·Kagome-H3·LaH10 quench)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/rtsc.candidates.md"],
+    "notes": "후보 카탈로그 문서(milestone 체크박스 없음); 발사 운영메모(cloud preflight·deck 표준 vc-relax→scf→ph·pseudo d13)"
+  },
+  {
+    "id": "PHASE3-MD-PLAN",
+    "alias": "🧬 LENS·ECOPAD 분자동역학 plan",
+    "goal": "Phase 3 LENS·ECOPAD 분자동역학 plan + 실측 환경 평가 + cloud GPU 경로 — ubu-1 CPU 4-core 환경에서 진짜 long MD(100ns) 부적합, cloud GPU pod 필요(정직 보고)",
+    "status": "active",
+    "key_verdicts": [
+      "정직 환경평가: ubu-1=CPU 4-core only(GROMACS/LAMMPS 미설치, OpenMM 8.5.1 Python API만) → OpenMM CPU 짧은 시뮬(10-100ps) 가능, 100ns long MD=cloud GPU pod 필요",
+      "QD-LENS: PHMB-각막세포막 binding MD(POPC bilayer+PHMB+5000 water, 100ns NPT@310K, V100 6-12h $6) · Acanthamoeba protease docking(ubu-1 CPU 무료)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": ["PHMB-각막막 100ns MD(cloud GPU)", "Acanthamoeba protease docking(ubu-1 CPU)"]},
+    "source_paths": ["domains/PHASE3-MD-PLAN-2026-05-27.md"],
+    "notes": "2026-05-27 계획 문서(milestone 체크박스 없음); cloud GPU 경로는 PHASE3D plan으로"
+  },
+  {
+    "id": "PHASE3D-CLOUD-GPU-MD-PLAN",
+    "alias": "🌩️ Cloud GPU MD plan(Vast.ai/RunPod)",
+    "goal": "Cloud GPU pod 본격 100ns MD plan — 실제 $10-15 rent 전 사용자 confirm 필요(⚠ 실제 $$$ 외부 발생 작업). LENS PHMB-각막막 MD + ECOPAD 셀룰로오스 SAP swelling MD",
+    "status": "active",
+    "key_verdicts": [
+      "⚠ 실제 $$$ 외부발생 — Vast.ai V100 $0.30-0.50/h × 12-24h, 총 예상 $5-15(OOM 시 비용 낭비), 사용자 confirm 필수",
+      "provider 비교: Vast.ai $0.30-0.50/h(최저) vs RunPod $0.79-1.20/h(GROMACS 이미지·안정)",
+      "LENS PHMB-각막막 MD(100ns NPT@310K, CHARMM36+CGenFF, V100 6-12h $4-6) · ECOPAD 셀룰로오스 SAP swelling MD"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": ["LENS PHMB-각막막 100ns MD", "ECOPAD 셀룰로오스 SAP swelling MD"]},
+    "source_paths": ["domains/PHASE3D-CLOUD-GPU-MD-PLAN-2026-05-27.md"],
+    "notes": "2026-05-27 계획 문서(milestone 체크박스 없음); 이 문서는 사용자 confirm 게이트 명시(d17 이전 작성)"
+  },
+  {
+    "id": "QD-ECOPAD-MET-LAB",
+    "alias": "🌱 ECOPAD met lab(RDKit conformer + 확산)",
+    "goal": "환경 의존 없는 in silico(force field 불요) — RDKit MMFF conformer + Stokes-Einstein diffusion 추정으로 ECOPAD ligand 분자특성 산출. 셀룰로오스 SAP swelling 가속 가설(글리세린+lactic acid) 검증",
+    "status": "active",
+    "key_verdicts": [
+      "실측(ubu-1 CPU, 2.0s wall, 8 분자×10 conformer×MMFF minimize): Cellobiose(흡수체 본체 가장 큼·느림 D 4.85e-10) · ★Glycerin/LacticAcid(가장 작고 빠름 R_g~1.9Å D~9.8e-10, swelling 가속)",
+      "Stokes-Einstein D=kT/(6πη·r_h)@298K로 8 ECOPAD 처방분자 확산계수 산출(Chitosan 양이온 항균·Terpinen-4-ol 항균 lipophilic)",
+      "가설(Maurer 2012 정합): 글리세린+lactic acid가 셀룰로오스 SAP swelling 가속"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/QD-ECOPAD-MET-LAB-2026-05-27.md"],
+    "notes": "2026-05-27 실측 보고서(milestone 체크박스 없음); force field 불요 RDKit 우회"
+  },
+  {
+    "id": "QD-ECOPAD-RND-DEEP",
+    "alias": "🌱 ECOPAD R&D Deep(web/arxiv research)",
+    "goal": "외부 web/arxiv research 기반 ECOPAD R&D — KAIST Inertia LABOCELL™ 벤치마크 + 셀룰로오스 분자 시뮬 + 외음부 마이크로바이옴 안정성 모델",
+    "status": "active",
+    "key_verdicts": [
+      "직접 경쟁자 Inertia(KAIST FemTech 2021) Prism Pads — LABOCELL™ 식물성 셀룰로오스 흡수체(특허)·사탕수수 PLA → 벤치마크+차별점(특허 우회) 필요",
+      "셀룰로오스 SAP first-principles(arxiv 1212.2426 Maurer 2012): 표면 수소결합 reconstruct·물 mobility↓·pure water만으론 swelling 불충분 → 친수성 보조(글리세린·xylitol·CMC) 가속",
+      "외음부 마이크로바이옴 안정성 모델(arxiv 2206.10221 Greugny 2022)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/QD-ECOPAD-RND-DEEP-2026-05-27.md"],
+    "notes": "2026-05-27 외부 research 보고서(milestone 체크박스 없음); WebSearch+WebFetch+arxiv 기반"
+  }
+]

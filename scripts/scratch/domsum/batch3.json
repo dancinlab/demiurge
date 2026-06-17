@@ -1,0 +1,50 @@
+[
+  {
+    "id": "TTR",
+    "alias": "타투제거 약물 설계 (아밀로이드증 아님 — 잉크 분해 cream+MN 패밀리)",
+    "goal": "타투제거 약물 설계 base inventory (cream + MN 두 track 공유) — 잉크 90%+ 제거, 흉터 없음, FDA-grade 안전성 · measured-oracle PASS 까지 absorbed=false",
+    "status": "🟠",
+    "key_verdicts": [
+      "단일 session(2026-05-24) design sprint 으로 TTR base + TTR-MN + TTR-CREAM 전체 design+verify phase closed · 226 claim 전수 ledger · 🔴 FALSIFIED 0건",
+      "TTR-MN 92-claim: 🔵 40(44% all PASS) · 🟢 26 · 🟡 14 · 🟠 8 → PASS rate 77/92 = 84% (🔵 closed-form 40/40 100%)",
+      "TTR base 49-claim: 🔵 22(100% PASS) · 🟢 10(5 PASS+2 discrepancy+3 GPU-defer) · 🟡 15 · 🟠 4 → 27/49 = 55%",
+      "TTR-CREAM 85-claim: 🔵 35 · 🟢 22 · 🟡 18 · 🟠 10 → 57/85 = 67% (cream wet-lab gate 비율↑); CREAM-α passive 정직 40%(원래 90% claim과 차이), 90%는 CREAM-γ clinic만",
+      "honest disclosure: cascade synergy 가정 2.5× → mass-action 실측 1.71×(31% overestimate); M6 TI claim C6.2/C6.3 closed-form↔MC 8-18 OoM discrepancy(qualitative ordering만 valid); Vina AzoR ΔG -5.35~-5.38 vs closed-form -7",
+      "absorbed=true per @D d5(non-wet-lab gate PASS) 로 design-level flip 주장 — 단 TTR.md @goal 은 measured-oracle PASS까지 absorbed=false 명시 · Phase 1 wet-lab(~$5.5M) downstream 미수행이라 🟠 INCONCLUSIVE(종이상 plan)",
+      "실제 free pool docking run(2026-05-25, AutoDock Vina): DyP+azo -7.30 · DyP+Cu-Pc -7.18(벽 안료 결합 → DyP-engineered path 지지) · AzoR+azo -5.38 kcal/mol; CeO₂ NP carve Ce43O56(99원자 r=6.7Å); GPU MD/DFT(반응 ΔG·Ea·ROS) 스테이지 미발사",
+      "10 product SKU portfolio(MN v3/v4/v5-A/B/C/D/E + CREAM α/β/γ/δ) · timeline 2주~5년 · $450~$15k · v5-E AAV6 gene therapy paradigm(5-7yr R&D $65-100M)"
+    ],
+    "milestones": {
+      "done": 10,
+      "total": 14,
+      "open": [
+        "활성성분 in-silico screening(M3) — TTR-CREAM track open(MN 완료)",
+        "잉크-활성분자 MD/QM(M5) — TTR-CREAM track open(MN 완료)",
+        "제형+합성 validation(M7) — TTR-CREAM track open(MN 완료)",
+        "ex-vivo→in-vivo→measured-oracle(M8/M9/M10) wet-lab — 전 SKU 미수행(~$5.5M funded execution downstream)",
+        "GPU pod DFT/TD-DFT defer(C1.11 TiO₂ · C1.12 Fe₂O₃ · C2.18 Cu-Pc φ ~$135) 미실행",
+        "atlas n6 staging(~80 entries) 실제 dispatch 미수행"
+      ]
+    },
+    "source_paths": [
+      "domains/TTR.md",
+      "domains/TTR/research/INDEX.md",
+      "domains/TTR/research/mn_v6_final_92_claim_ledger.md",
+      "domains/TTR/research/family_closure_summary.md",
+      "domains/TTR/research/session_end_consolidation.md",
+      "domains/TTR/research/absorbed_true_land.md",
+      "domains/TTR/research/cream_v1_to_v4_consolidated.md",
+      "domains/TTR/research/simulation_validation.md",
+      "domains/TTR/research/v5_integration_ledger.md",
+      "domains/TTR/research/non_wetlab_all_closure.md",
+      "domains/TTR/research/m5_harness/docking_results.md",
+      "domains/TTR/research/vina_docking_results.md",
+      "domains/TTR/verify/V1_claim_inventory.md",
+      "domains/TTR/verify/V2_formal_identities.md",
+      "domains/TTR/verify/V3_numerical_recompute.md",
+      "domains/TTR/verify/V4_tier_ledger.md",
+      "domains/TTR/research/ (base M1-M6 · MN v1-v5 · CREAM M1-M10 · commercial/IP/CDMO/Pre-IND/Phase1 — 59 files)"
+    ],
+    "notes": "TTR family(base+MN+CREAM) 단일 도메인으로 묶음; 59 research 파일은 design+verify ledger+v5 R&D+commercial layer로, 핵심 = 226-claim verify(84%/67%/55% PASS, FALSIFIED 0), synergy 1.71× 및 TI 8-18 OoM honest disclosure, wet-lab/임상 전부 미수행(🟠 종이상 design-absorbed)."
+  }
+]

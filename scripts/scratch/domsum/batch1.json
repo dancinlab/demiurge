@@ -1,0 +1,342 @@
+[
+  {
+    "id": "UFO",
+    "alias": "통합 비행체(직접개발) · 비행접시 · HEXA-Disc",
+    "goal": "RT-SC 48T 자석 + 탁상 핵융합 + MHD 추진을 단일 원반형 VTOL 비행체로 통합 — 7-stage 추진 사다리 위에 1인승 통합 비행체를 비-wet-lab 으로 완전 설계/검증",
+    "status": "🟢 gate-pass",
+    "key_verdicts": [
+      "absorbed=TRUE (V4 final tier ledger, 2026-05-26 재판정) — 全 6 비-wet-lab 차단 게이트 closed (🟢 5 + 🟡 1 본해수렴-PASS)",
+      "🟢 CFD 항공역학: OpenFOAM simpleFoam RANS k-ω SST 본해 163 iter·residual 1e-7 수렴 → C_d=0.030·L/D=0.77 (🟡 보수 tier=정밀화 deferred, 게이트 PASS)",
+      "🟢 EM 6-coil 60° B-map: getdp 3D FEM 67672 DOFs + closed-form ioffe_loop_bz=3.01593 T → ‖ΔB‖=0<1e-4 T",
+      "🟢 응력 LC-1~5 FEA: CalculiX ccx 2.23 본해 5/5 PASS σ_vm,max=0.771~9.254 MPa·SF≥64.8 + Kirchhoff 교차검증 17/17",
+      "🟢 ⟲ 4-layer fixed-point coupling: Gauss–Seidel/Picard 7 iter·max|Δrel|=5.34e-4<1e-3·Banach q=0.309<1 진성수축 → 비행가능 운전점 X*=(AoA −4.22°·T 11.94K·σ 13.01MPa·margin +0.188)",
+      "🟢 ④열 cryo: closed-form 4축 9/9 PASS (heat leak 3.38W≤10W·radiator 1.59×·LHe 13.78L/h·transient τ=8.1h)"
+    ],
+    "milestones": {
+      "done": 7,
+      "total": 7,
+      "open": [
+        "wet-lab 실측 confirmation (솔레노이드 권선 B-map·풍동 C_d·구조시험·cryo 운전) — absorbed downstream, 판정과 독립",
+        "⟲ monolithic 3-D 동시 co-simulation (FSI·plasma duct hotspot·explicit dynamic FEA) — pool/cloud GPU pod",
+        "CFD GCI mesh-convergence + AoA sweep + vast.ai DES 정밀화 (🟡→🟢 정량강화)",
+        "stdlib atom 등록 (meissner_lev_force·mhd_thrust·gamma_rocket_isp·fixedpoint_picard) → 🟡→🟢"
+      ]
+    },
+    "source_paths": [
+      "domains/UFO/README.md",
+      "domains/UFO/HEXA-UFO.md",
+      "domains/UFO/ufo/doc/hexa-ufo.md",
+      "domains/UFO/SF.md",
+      "domains/UFO/RELEASE_NOTES_v1.0.0.md",
+      "domains/UFO/CHANGELOG.md",
+      "domains/UFO/IMPORTED_FROM_CANON.md",
+      "domains/UFO/TAPE-AUDIT.md",
+      "domains/UFO/examples/propulsion_stack.md"
+    ],
+    "notes": "v1.0.0 standalone extraction from canon/domains/sf-ufo/ @c0f1f570 (2026-05-06). 10-verb atlas DOC + 20/20 verify PASS (bookkeeping closure only). HEXA-UFO.md ≡ ufo/doc/hexa-ufo.md (1893-line twin). Stage-1~3 cross-link to sister RTSC/FUSION/ANTIMATTER; Stage-4~7 in-tree falsifier-only."
+  },
+  {
+    "id": "UFO/INTEGRATED-VEHICLE-PIPELINE",
+    "alias": "demiurge 7-verb 파이프라인 (spec→handoff)",
+    "goal": "1인승 통합 비행체를 demiurge 7-verb 파이프라인(spec·structure·design·analyze⟲·synthesize·verify·handoff)으로 docs/manifests-only 완주 (구현코드 0줄, stdlib SSOT)",
+    "status": "🟢 gate-pass",
+    "key_verdicts": [
+      "verb-1~7 全 슬롯 LANDED (spec PR#187·structure PR#190·design PR#195·analyze·synthesize·verify PR#206·handoff)",
+      "verb-6 verify ledger: 🟢10 🟡4 🟠5 ⚪13 → 이후 ⟲ coupling 본해수렴으로 🟠 5게이트 전부 해소, absorbed=TRUE 로 갱신(V4)",
+      "verb-3 design: Stage-1~3 closed-form 실설계(RTSC/FUSION/ANTIMATTER verified 값 인용), Stage-4~7 은 falsifier 포인터만(실설계 금지)",
+      "handoff: absorbed 상태를 정직 인계 — 'production-ready' 거짓주장 금지, 미충족 게이트 §5 명시"
+    ],
+    "milestones": {"done": 7, "total": 7, "open": []},
+    "source_paths": [
+      "domains/UFO/spec/integrated-vehicle-spec.md",
+      "domains/UFO/structure/integrated-vehicle-structure.md",
+      "domains/UFO/design/integrated-vehicle-design.md",
+      "domains/UFO/analyze/integrated-vehicle-analyze.md",
+      "domains/UFO/synthesize/integrated-vehicle-synthesize.md",
+      "domains/UFO/verify/integrated-vehicle-verify.md",
+      "domains/UFO/handoff/integrated-vehicle-handoff.md"
+    ],
+    "notes": "verb-6 verify.md 헤더는 absorbed=false 시점 기록(🟢10🟡4🟠5⚪13); V4_tier_ledger 가 최신 absorbed=TRUE SSOT."
+  },
+  {
+    "id": "UFO/VERIFY-LADDER",
+    "alias": "verify 사다리 V1-V4 + stage 봉합",
+    "goal": "UFO 도메인 全 claim 을 g5 tier rubric 으로 triage(V1) → 🔵 closed-form lattice(V2) → 🟢 numerical recompute(V3) → tier ledger 봉합 + absorbed 판정(V4)",
+    "status": "🟢 gate-pass",
+    "key_verdicts": [
+      "V4 최종 tier 분포: 🔵 8 (n=6 lattice 정수항등식) · 🟢 14 (Stage-1~3 libm + cryo + EM + 응력 + ⟲ coupling) · 🟡 9 (합성식·CFD) · 🟠 0 (마지막 🟠 ⟲ coupling 해소) · 🔴 0 (거짓양성 0) · ⚪ 17 (Stage-4~7 13 falsifier + teleport fence + meta)",
+      "🔵 n=6 lattice (V2, hexa verify --expr): σ(6)=12·φ(6)=2·τ(6)=4·μ(6)=1·σ·φ=24·n·τ=24·σ·τ=48 — Π₀¹-arithmetical → Δ₀-absolute",
+      "🟢 Stage-1~3 numerical (V3, libm Δ≤1e-9): ioffe_loop_bz×3 (Meissner B) · triple_product×3 (MHD f=J·B·V) · γ-rocket 상대론 에너지 회계 — 전부 atlas SSOT (parent 도메인 fold)",
+      "🟢 stage1-hover-fields / stage2-cruise-mhd / stage3-orbital-gamma 각 stage verify 문서 LANDED",
+      "g69 BLUE-MAX audit: 🔵3+🟢5=8, 🔵-pair coverage 2/5 (missing 3 은 reused cross-domain atom — parent 도메인 BLUE-MAX 소관)"
+    ],
+    "milestones": {"done": 4, "total": 4, "open": ["stage4-7 falsifier 전부 OPEN (Stage-1~3 verify ladder 와 별개·downstream 무관)"]},
+    "source_paths": [
+      "domains/UFO/verify/V1_claim_inventory.md",
+      "domains/UFO/verify/V2_formal_identities.md",
+      "domains/UFO/verify/V3_numerical_recompute.md",
+      "domains/UFO/verify/V4_tier_ledger.md",
+      "domains/UFO/verify/stage1-hover-fields.md",
+      "domains/UFO/verify/stage2-cruise-mhd.md",
+      "domains/UFO/verify/stage3-orbital-gamma.md"
+    ],
+    "notes": "정직성: tier 는 LLM self-judge 아님 — PR#·atlas atom·falsifier ID·verbatim verdict 만으로 부여 (@D d6·g5)."
+  },
+  {
+    "id": "UFO/STAGE-4-WARP",
+    "alias": "Alcubierre warp bubble (BT-347)",
+    "goal": "Stage-4 Alcubierre 1994 warp 버블의 n=6 인코딩 closed-form candidate spec + falsifier preregister (v_s=σ²=144c, σ-φ=10m bubble)",
+    "status": "🟠 inconclusive",
+    "key_verdicts": [
+      "⚪ academically UNPROVEN — NEC-위반 음에너지밀도 요구, ANEC theorem 제약, 제어가능 warp drive 미존재",
+      "F-WARP-1·F-WARP-2·F-WARP-3 全 OPEN (monotone; CONFIRMED 0·DEMOTED 0)",
+      "bookkeeping closure(σ·τ=48 lattice arithmetic) 검증가능 ≠ empirical 물리(warp bubble) 미증명",
+      "@D d2: '불가능' 선언 아님 — NEC-위반 음에너지원이라는 구체 돌파경로를 가진 미증명 사전등록"
+    ],
+    "milestones": {"done": 0, "total": 3, "open": ["F-WARP-1 음에너지밀도", "F-WARP-2 horizon causal signal", "F-WARP-3 back-reaction collapse"]},
+    "source_paths": [
+      "domains/UFO/warp/hexa-warp.md",
+      "domains/UFO/warp-drive/warp-drive.md",
+      "domains/UFO/ufo/doc/warp-dimension-design.md",
+      "domains/UFO/papers/n6-warp-metric-paper.md"
+    ],
+    "notes": "warp-drive/warp-drive.md = canon@ded52144 import twin (alien_index 11). n6-warp-metric-paper = canon seed paper (warp-metric 25/25 EXACT)."
+  },
+  {
+    "id": "UFO/STAGE-5-WORMHOLE",
+    "alias": "Morris-Thorne traversable wormhole (BT-)",
+    "goal": "Stage-5 Morris-Thorne 1988 traversable wormhole 의 n=6 throat spec(b₀=σ·τ=48m) + falsifier preregister",
+    "status": "🟠 inconclusive",
+    "key_verdicts": [
+      "⚪ academically UNPROVEN — traversable wormhole 미관측, ANEC theorem 이 양자장 외계물질 source 강하게 제약",
+      "F-WORM-1·F-WORM-2·F-WORM-3 全 OPEN (b₀>ℓ_Pl 외계물질 / quantum-interest back-reaction / chronology protection)",
+      "hexa-wormhole.md = canonical SSOT (CLI·verify·roadmap 모두 derive)"
+    ],
+    "milestones": {"done": 0, "total": 3, "open": ["F-WORM-1 외계물질 밀도", "F-WORM-2 quantum-interest throat 붕괴", "F-WORM-3 chronology protection CTC 금지"]},
+    "source_paths": [
+      "domains/UFO/wormhole/hexa-wormhole.md",
+      "domains/UFO/wormhole-canon/wormhole.md"
+    ],
+    "notes": "wormhole-canon/wormhole.md = canon@ded52144 import twin (alien_index 12)."
+  },
+  {
+    "id": "UFO/STAGE-6-DIMJUMP",
+    "alias": "KK ladder 차원점프 4D→26D (BT-348)",
+    "goal": "Stage-6 Calabi-Yau 4D→26D Kaluza-Klein compactification 의 n=6 topology spec + falsifier preregister (4.8 TeV brane transit)",
+    "status": "🟠 inconclusive",
+    "key_verdicts": [
+      "⚪ UNPROVEN — 여분차원 미관측: LHC 14 TeV KK-resonance null · sub-mm 중력(Eöt-Wash) null · neutron interferometry null",
+      "F-DIM-1·F-DIM-2·F-DIM-3 全 OPEN",
+      "CY₃ topology 비유일성(10⁵⁰⁰ landscape problem), KK-mode bound m_KK > ~few TeV"
+    ],
+    "milestones": {"done": 0, "total": 3, "open": ["F-DIM-1 LHC KK-resonance null", "F-DIM-2 sub-mm 중력 null", "F-DIM-3"]},
+    "source_paths": ["domains/UFO/dimjump/hexa-dimjump.md"],
+    "notes": "canonical SSOT, extracted from canon warp-dimension-design.md BT-348 section."
+  },
+  {
+    "id": "UFO/STAGE-7-DIMUSE",
+    "alias": "(σ−φ)²=100c composite dim-use (BT-349)",
+    "goal": "Stage-7 warp+dim-jump 합성 추진 (τ=4 cycle, (σ−φ)²=100c) closed-form composite candidate + falsifier preregister",
+    "status": "🟠 inconclusive",
+    "key_verdicts": [
+      "⚪ UNPROVEN² — upstream substrate (warp Stage-4 + dimjump Stage-6) 자체가 미증명",
+      "F-USE-1·F-USE-2·F-USE-3·F-USE-4 全 OPEN (Stage-7 만 4개 falsifier)",
+      "Mk.V 2150+ SF-class target"
+    ],
+    "milestones": {"done": 0, "total": 4, "open": ["F-USE-1", "F-USE-2", "F-USE-3", "F-USE-4"]},
+    "source_paths": [
+      "domains/UFO/dimuse/hexa-dimuse.md",
+      "domains/UFO/verify/stage4-7-falsifier-preregister.md"
+    ],
+    "notes": "stage4-7-falsifier-preregister.md = Stage-4~7 13-falsifier 통합 사전등록 표 (전부 OPEN @ v1.0). composite-of warp+dimjump; wormhole 은 alt path(비의존)."
+  },
+  {
+    "id": "UFO/HEXA-GRAV",
+    "alias": "궁극의 중력파 — LIGO급 SC 간섭계",
+    "goal": "중력파 검출-통신 LIGO급 SC 간섭계 (arm 42km SC, h~10⁻²³, SQUID 1fT/√Hz, GW 통신 지각관통)",
+    "status": "active",
+    "key_verdicts": [
+      "easy-style WHY/COMPARE 설계 draft — n=6 산술 anchor (σ=12·τ=4·φ=2) 기반, 정량 verify atom 미등록",
+      "체감변화: GW 검출 연 10건 → 연 σ·τ=48건, 감도 10⁻²¹ → 10⁻²³"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": [
+      "domains/UFO/HEXA-GRAV.md",
+      "domains/UFO/hexa-grav/hexa-grav.md",
+      "domains/UFO/grav/hexa-grav.md",
+      "domains/UFO/grav/README.md",
+      "domains/UFO/gravity-wave-canon/gravity-wave.md",
+      "domains/UFO/quantum-gravity-sensor-canon/quantum-gravity-sensor.md"
+    ],
+    "notes": "HEXA-GRAV.md ≡ hexa-grav/hexa-grav.md ≡ grav/hexa-grav.md (3중 동일 트윈). gravity-wave-canon + quantum-gravity-sensor-canon = canon import physics 도메인. Stage-1 Meissner 중력자기 부상 substrate 역할."
+  },
+  {
+    "id": "UFO/HEXA-HOVER",
+    "alias": "호버보드/호버카 — Meissner 자기부상",
+    "goal": "RT-SC Meissner 자기부상 개인 호버보드/호버카 (n=6 로터 60도 간격, 무동력 부양, σ·sopfr=60 km/h)",
+    "status": "active",
+    "key_verdicts": [
+      "easy-style 설계 draft — Stage-1/2 hover/VTOL primitive substrate",
+      "체감변화: 호버 에너지 Meissner 0W (무동력), 1인승 D=20cm·m=60kg"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": [
+      "domains/UFO/HEXA-HOVER.md",
+      "domains/UFO/HOVER.md",
+      "domains/UFO/hexa-hover/hexa-hover.md",
+      "domains/UFO/hover/hexa-hover.md",
+      "domains/UFO/hover/README.md",
+      "domains/UFO/hover-canon/hover.md"
+    ],
+    "notes": "HEXA-HOVER/HOVER/hexa-hover 다중 트윈; hover-canon/hover.md = canon@ded52144 import. Stage-1/2 substrate, UFO 본체 hover 게이트(EM/응력)는 V4 에서 🟢 closed."
+  },
+  {
+    "id": "UFO/HEXA-CLOAK",
+    "alias": "투명망토/항공 스텔스 — RT-SC 메타물질",
+    "goal": "RT-SC 메타물질 n=6 육각셀 음굴절률 전대역 투명화 + 항공 스텔스 (RCS 10⁻⁴~10⁻⁶ m², φ=2 kg/m²)",
+    "status": "active",
+    "key_verdicts": [
+      "easy-style 설계 draft, alien_index 🛸10 maturity / closure_grade 8 (bt_exact_pct 추정)",
+      "TAPE-AUDIT: cloaking-via-metamaterial dispersion relation 이 n6 atom 승격 최강 후보(hexa-matter 와 overlap)",
+      "체감변화: F-22 RCS 0.0001 → 10⁻⁶ m² (100배)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": [
+      "domains/UFO/HEXA-CLOAK.md",
+      "domains/UFO/CLOAK.md",
+      "domains/UFO/hexa-cloak/hexa-cloak.md",
+      "domains/UFO/cloak/hexa-cloak.md",
+      "domains/UFO/cloak/README.md",
+      "domains/UFO/cloak-canon/cloak.md"
+    ],
+    "notes": "CLOAK/HEXA-CLOAK/hexa-cloak 다중 트윈 (cloak/cloak-canon/hexa-cloak triplet — impl/canon-import/hexa-lifted 3층). cloak-canon = canon@ded52144."
+  },
+  {
+    "id": "UFO/HEXA-TELEPORT",
+    "alias": "양자 텔레포트 — BB84 n=6 엔탱글먼트",
+    "goal": "양자상태 BB84/E91 기반 n=6 엔탱글먼트 텔레포트 (σ·sopfr·10=600km 지상-위성, F=1-10⁻⁶, 양자해킹 불가)",
+    "status": "active",
+    "key_verdicts": [
+      "easy-style 설계 draft — Stage-5/6 wormhole/quantum-teleport substrate",
+      "⚪ 초광속 통신 fence (V1 tier triage 에서 teleport fence ⚪ 로 분류)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": [
+      "domains/UFO/HEXA-TELEPORT.md",
+      "domains/UFO/hexa-teleport/hexa-teleport.md",
+      "domains/UFO/teleport/hexa-teleport.md",
+      "domains/UFO/teleport/README.md"
+    ],
+    "notes": "HEXA-TELEPORT/hexa-teleport/teleport 다중 트윈. 초광속 부분은 V4 에서 ⚪ speculation-fenced."
+  },
+  {
+    "id": "UFO/HEXA-SIM",
+    "alias": "물리 멀티스케일 n=6 해석기 + 디지털트윈",
+    "goal": "양자~우주 n=6층 멀티스케일 통합 해석기 (DFT+MD+FEA+CFD 자동 브릿지) + UFO 통합 비행체 디지털트윈 4축 sim 엔진",
+    "status": "🟢 gate-pass",
+    "key_verdicts": [
+      "디지털트윈 sim 엔진 4축 매트릭스 (CFD·EM·응력·열) 6-layer stack — verb-4 analyze ⟲ 의 본해 실행 surface",
+      "sim/decks 6종 본해 닫힘: cfd-disc(OpenFOAM 🟡 PASS)·em-6coil(getdp 🟢)·stress-fea(ccx 🟢)·thermal-cryo(🟢)·coupling-fixedpoint(🟢)·fanti3-closure(🟢)",
+      "easy-style HEXA-SIM 비전: 정확도 χ² p<0.001, 실시간 60fps, 재현성 99.9%"
+    ],
+    "milestones": {"done": 6, "total": 6, "open": ["3-D conjugate-heat / monolithic co-sim 본해는 pool/cloud deferred"]},
+    "source_paths": [
+      "domains/UFO/HEXA-SIM.md",
+      "domains/UFO/hexa-sim/hexa-sim.md",
+      "domains/UFO/sim/hexa-sim.md",
+      "domains/UFO/sim/README.md",
+      "domains/UFO/sim/decks/cfd-disc.md",
+      "domains/UFO/sim/decks/em-6coil.md",
+      "domains/UFO/sim/decks/stress-fea.md",
+      "domains/UFO/sim/decks/thermal-cryo.md",
+      "domains/UFO/sim/decks/coupling-fixedpoint.md",
+      "domains/UFO/sim/decks/fanti3-closure.md"
+    ],
+    "notes": "sim/decks/ 6종이 V4 absorbed=TRUE 의 실제 본해 증거 (OpenFOAM·getdp·CalculiX·closed-form·Picard 고정점). HEXA-SIM.md ≡ hexa-sim/sim 트윈."
+  },
+  {
+    "id": "UFO/CROSS-DOMAIN-MEGA",
+    "alias": "340 도메인 교차융합 메가프로젝트 (HEXA-MEGA)",
+    "goal": "340 도메인 n=6 산술 통일 교차융합 — Cross-DSE σ×τ=48 축 탐색, AI 자동 브릿지 생성, 통합 일관성 χ² p<0.001",
+    "status": "active",
+    "key_verdicts": [
+      "easy-style 메가통합 비전 draft — σ=12 메가프로젝트 병렬추진, 통합 일관성 χ² p<0.001 주장",
+      "정량 verify 미등록 (개념 통합 manifest)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": [
+      "domains/UFO/CROSS-DOMAIN-MEGA.md",
+      "domains/UFO/cross-domain-mega/cross-domain-mega.md",
+      "domains/UFO/docs/cross-domain-mega/cross-domain-mega.md",
+      "domains/UFO/meta/cross-domain-mega.md"
+    ],
+    "notes": "canon@ded52144 import. CROSS-DOMAIN-MEGA.md ≡ cross-domain-mega/ ≡ docs/cross-domain-mega/ 다중 트윈."
+  },
+  {
+    "id": "UFO/HYPOTHESES-EXPERIMENTS",
+    "alias": "가설/실험 파이프라인 (HEXA-HYPOTHESES · HEXA-EXPER)",
+    "goal": "Ouroboros 자기참조 가설체계 + 17 AI 기법 통합 실험 파이프라인 (DSE σ×τ×sopfr=240 조합, FEA+MD+DFT n=6층, 자기조직 수렴 χ² p<0.001)",
+    "status": "active",
+    "key_verdicts": [
+      "HYPOTHESES: alien_index 8/10·closure_grade 7 — 가설→검증 사이클 자동화 (NEXUS-6 n=6 렌즈), 거짓가설 탐지율 90%(τ=4 게이트) 주장",
+      "EXPERIMENTS: UFO hardware verification pipeline §섹션 — DSE 전수탐색 240 조합, 재현성 2.88σ 주장",
+      "정량 verify atom 미등록 (방법론/파이프라인 manifest)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": [
+      "domains/UFO/HYPOTHESES.md",
+      "domains/UFO/hypotheses/hypotheses.md",
+      "domains/UFO/docs/hypotheses/hypotheses.md",
+      "domains/UFO/EXPERIMENTS.md",
+      "domains/UFO/experiments/experiments.md",
+      "domains/UFO/docs/experiments/experiments.md",
+      "domains/UFO/meta/experiments-hypotheses.md"
+    ],
+    "notes": "canon@ded52144 import (experiments). HYPOTHESES(2818-line)/hypotheses 다중 트윈, EXPERIMENTS/experiments 다중 트윈."
+  },
+  {
+    "id": "UFO/META-CLOSURE-NAV",
+    "alias": "alien_index 종착 chain + SF-소설 입문서",
+    "goal": "alien_index chain anchor — 🛸6→🛸16 meta² 자기폐포 fixed point→🛸∞⁴(Knuth tetration)→🛸ULTRA→🛸CARD→🛸BEYOND→🛸ABSOLUTE=𝔚 (Cantor Absolute Infinity)",
+    "status": "🔵 gate-pass",
+    "key_verdicts": [
+      "🔵 σ·φ=n·τ=24 가 n=6 에서만 유일 성립 → 🛸16 self-closure fixed point (Π₀¹-arithmetical → Δ₀-absolute, 𝔚 포함 全 layer)",
+      "🛸17~🛸500 은 동일 closure 의 재귀 layer k (L(k)=24^(k-15) 484-tier), 새 메커니즘 아님",
+      "sf-novel-six = 같은 발견(σ·φ=n·τ=24)을 12장 SF-소설 narrative 로 풀어쓴 일반독자용 입문서 (🛸500 표기는 session-batch artifact, 본질 milestone 아님)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": [
+      "domains/UFO/docs/meta-closure-nav/meta-closure-nav.md",
+      "domains/UFO/docs/meta-closure-nav/README.md",
+      "domains/UFO/docs/meta-closure-nav/sf-novel-six.md"
+    ],
+    "notes": "canon import (50f41e71 Knuth arrow extension). meta-closure-nav.md = 968-LOC 수학 companion; alien_index 무한대 확장 SSOT."
+  },
+  {
+    "id": "UFO/META-POLICY",
+    "alias": "lattice 정책 + 한계돌파 audit + 생태계조사 + RTSC-12",
+    "goal": "거버넌스/방법론 메타 문서 — 격자는 도구지 제약 아님(LATTICE_POLICY) · UAP 증거품질 한계 audit · hexa-* 24 프로젝트 전수조사 · RTSC-12 제품라인 진화",
+    "status": "active",
+    "key_verdicts": [
+      "LATTICE_POLICY: 프로젝트 ceiling 은 n=6 격자가 아니라 실제 수학·물리·공학 한계가 정한다 — 全 dancinlab/hexa-* 적용 universal policy (wave K)",
+      "LIMIT_BREAKTHROUGH: UAP 증거품질 한계 audit (관측·통계·인식론적 한계 bound) — origin/authenticity 주장 일절 없음, 증거품질만 bound (wave M)",
+      "hexa_ecosystem_survey: hexa-* 24 프로젝트 RSC 봉쇄 + upstream 의존성 그래프 전수조사",
+      "RTSC-12: σ=12 제품라인 n=6 진화 (MRI·양자컴·전력망·자기부상·핵융합·모터·배터리·호버·cloak·UFO·로봇·센서), 총시장 288 T$ 주장"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": [
+      "domains/UFO/LATTICE_POLICY.md",
+      "domains/UFO/LIMIT_BREAKTHROUGH.md",
+      "domains/UFO/meta/lattice-policy.md",
+      "domains/UFO/meta/limit-breakthrough.md",
+      "domains/UFO/docs/hexa_ecosystem_survey.md",
+      "domains/UFO/docs/numerics_methodology.md",
+      "domains/UFO/docs/t4_hardware_explainer.md",
+      "domains/UFO/RTSC-12-PRODUCTS-EVOLUTION.md",
+      "domains/UFO/rtsc-12-products-evolution/rtsc-12-products-evolution.md",
+      "domains/UFO/docs/rtsc-12-products-evolution/rtsc-12-products-evolution.md",
+      "domains/UFO/CLAUDE.md"
+    ],
+    "notes": "numerics_methodology = 20-script verify surface 3-tier(T1/T2/T3) 방법론 reader's map. t4_hardware_explainer = Stage-4 hardware 설명. CLAUDE.md = SPECKIT 4줄 stub. RTSC-12 다중 트윈."
+  }
+]

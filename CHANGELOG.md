@@ -8,6 +8,11 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-17
 
+### 도메인 .md 전부 은퇴 → ARCHITECTURE.json `domains[]` SSOT 통합 (c4 단일문서)
+- `domains/` 아래 **576개 .md(13만 줄)** 를 8개 병렬 요약 agent로 **126 논리도메인 → 144 구조화 엔트리**(`{id·alias·goal·status·key_verdicts·milestones·source_paths·notes}`)로 압축해 `ARCHITECTURE.json` 신규 `domains[]` 블록에 통합. **.log.md 117개 폐기**. 본문은 git history(`source_paths`)에 보존.
+- 정직 보존(c9): status 분포 active 56·stub 32·🟢26·🟠21·🧱4·🔴2·DRAINED2·🔵1 — FALSIFIED/closed-negative/stub 그대로(QFORGE-PAW🔴·QFORGE from-scratch🧱·SENOLYX R12🧱·UFO Stage4~7 ⚪UNPROVEN·AURA medical UNPROVEN 등).
+- 총 **693개 .md/.log.md 삭제**(`git rm`). `domains/` 잔존 = `.demi` 컴퓨트덱 + `.hexa` + `.tape` 로스터 + UFO sim 덱. `ARCHITECTURE.html` 뷰어에 `renderDomains` 추가(status·goal·milestone 표시). CLAUDE.md 구조설명 현행화. 배치/단편 `scripts/scratch/`(c5).
+
 ### hexa deck 검증기 — RTSC vc-relax/el-ph 트러블 가드 3종 추가 (G08·G09·G10)
 - `d_deck_always`(hexa deck = self-improving 덱규율 SSOT — 매 트러블슈팅이 새 가드)에 따라, 최근 RTSC 캠페인에서 겪었으나 아직 가드가 없던 QE 덱 실패모드 3개를 `sim/deck_lint.hexa`에 박제(가드 7→10).
   - **G08 `vcrelax_convergence`** (WARN · d6): `vc-relax` 덱이 `etot_conv_thr`/`forc_conv_thr`/`press_conv_thr` 중 하나라도 빠지면 경고. QE 기본 임계값은 셀을 under-relaxed로 남겨 → matdyn 허수모드 다발(이번 세션 YH6 41·MgH6 34개) → 물리적 Tc 무효.

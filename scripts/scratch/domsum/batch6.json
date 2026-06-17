@@ -1,0 +1,339 @@
+[
+  {
+    "id": "CO2-CAPTURE",
+    "alias": "CO2 포집",
+    "goal": "CO2 포집 연구영역 핵심 측정 클레임(흡착 sorbent)을 7-verb 파이프라인으로 검증 가능 형태로 닫는다 — verify 5-tier.",
+    "status": "stub",
+    "key_verdicts": [
+      "측정 타겟: CO2 uptake @298K · 흡착열 · 재생 cycle",
+      "starter-inventory sampler — 범용 연구영역, 특정 브랜드 검증 아님"
+    ],
+    "milestones": {"done": 0, "total": 6, "open": ["spec SSOT 등재", "structure 의존트리", "design 3안", "analyze SSE", "verify 5-tier", "handoff 한/영"]},
+    "source_paths": ["domains/CO2-CAPTURE.md"],
+    "notes": "범용 starter 스텁 — 6 milestone 전부 미착수."
+  },
+  {
+    "id": "COSME-SCALP-RND-DEEP-2026-05-27",
+    "alias": "두피 R&D 딥리서치",
+    "goal": "외부 arxiv/web research 기반 탈모완화 화장품 R&D 정공법 — 자체 cell efficacy SOP + 24주 임상 = 진입장벽 moat.",
+    "status": "active",
+    "key_verdicts": [
+      "한국 탈모완화 cell efficacy SOP 부재 → 자체 SOP 수립이 차별 진입장벽",
+      "first-principles target 재정의: DPC↔MK 신호 보강(Wnt/β-catenin·Dkk1 억제) + MK 증식",
+      "모낭주기 수학모델(arxiv 2502.15035)·Wnt/Dkk1 회로(1010.5758)·OCT 침투측정(1802.01341) 그라운딩",
+      "Pilot D 처방(나노에멀젼 80nm) → 24주 +15-18% 모근(시판 +5% 대비)",
+      "in silico screening(RDKit·Vina·OpenMM) → in vitro cell SOP → in vivo 24주 정공법"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/COSME-SCALP-RND-DEEP-2026-05-27.md"],
+    "notes": "milestone 체크박스 없는 research 노트 — 5건 외부발견+처방·라이브러리 포팅·진입 phase 정리."
+  },
+  {
+    "id": "ELECTROCAT",
+    "alias": "전기촉매",
+    "goal": "전기촉매(HER/OER/ORR/CO2RR) 핵심 측정 클레임을 7-verb로 검증 가능 형태로 닫는다 — verify 5-tier.",
+    "status": "stub",
+    "key_verdicts": ["측정 타겟: overpotential · Tafel slope · Faradaic efficiency", "starter-inventory sampler"],
+    "milestones": {"done": 0, "total": 6, "open": ["spec", "structure", "design", "analyze", "verify", "handoff"]},
+    "source_paths": ["domains/ELECTROCAT.md"],
+    "notes": "범용 starter 스텁."
+  },
+  {
+    "id": "GRAPHENE",
+    "alias": "그래핀",
+    "goal": "그래핀·2D vdW 소재 전자물성 핵심 측정 클레임을 7-verb로 검증 가능 형태로 닫는다 — verify 5-tier.",
+    "status": "stub",
+    "key_verdicts": ["측정 타겟: carrier mobility · 마법각 강상관 · quantum Hall", "starter-inventory sampler"],
+    "milestones": {"done": 0, "total": 6, "open": ["spec", "structure", "design", "analyze", "verify", "handoff"]},
+    "source_paths": ["domains/GRAPHENE.md"],
+    "notes": "범용 starter 스텁."
+  },
+  {
+    "id": "IVD-CURE",
+    "alias": "척추 디스크 재생",
+    "goal": "IVD 퇴행 소실조직(수핵·섬유륜) 재생 disease-modifying 치료 — CURE-PRIMITIVE 첫 BOUNDARY 사례.",
+    "status": "🔴",
+    "key_verdicts": [
+      "BOUNDARY 실증(#548): η_lost=1.0서도 ceiling=0.90 턱걸이 → senolytic 단독 게이트 불가",
+      "병목=소실신생 η0.30(5도메인 최저) + 무혈관·종판석회화",
+      "3제 병용 요건 규명: SENOLYX(좀비청소)+exogenous progenitor(세포치료)+종판 탈석회/영양복구",
+      "6 axis 정밀화(QUANTUM·WEAVE·NANOBOT·RIBOZYME·VIROCAPSID) — 타 도메인 primitive 재사용(NEXUS)"
+    ],
+    "milestones": {"done": 10, "total": 10, "open": []},
+    "source_paths": ["domains/IVD-CURE.md"],
+    "notes": "senolytic 단독 불충분 BOUNDARY 확정 — negative 결과 보존. absorbed=false."
+  },
+  {
+    "id": "MEMRISTOR",
+    "alias": "멤리스터",
+    "goal": "멤리스터(resistive in-memory compute crossbar) 핵심 측정 클레임을 7-verb로 검증 가능 형태로 닫는다 — verify 5-tier.",
+    "status": "stub",
+    "key_verdicts": ["측정 타겟: On/Off ratio · endurance cycles · analog VMM linearity", "starter-inventory sampler"],
+    "milestones": {"done": 0, "total": 6, "open": ["spec", "structure", "design", "analyze", "verify", "handoff"]},
+    "source_paths": ["domains/MEMRISTOR.md"],
+    "notes": "범용 starter 스텁."
+  },
+  {
+    "id": "NUCLEAR",
+    "alias": "핵종 발견 시뮬",
+    "goal": "초중핵(Z>118)+drip-line 후보 핵종을 5-gate a-e sim funnel로 가속기 beam-time 우선순위 top-K 랭킹 — absorbed=false 영구.",
+    "status": "active",
+    "key_verdicts": [
+      "Phase 1-6 전부 LANDED — N6-N11 cohort(HFB mass·WKB α-decay·fusion-σ·shell-model·ab-initio·funnel)",
+      "Phase 4 sim.hexa 31/31 bit-for-bit parity · Og-294 anchor -2.93±0.22 vs obs -3.15",
+      "composite = (c)-gate(α⊕SF 반감기)×island_weight 단독 (5-gate=coverage map only · g3 honesty)",
+      "novel Z>118 ranked: ²⁹⁵119 0.0462 > ²⁹⁷120 0.0306 > ²⁹³119 0.0017 (predicted-Q_α)",
+      "NUBASE2020 85-체 parity: ee Z≥83 RMS 0.35dex·bias~0 · odd-A 1.31dex(hindrance 미포착)",
+      "SHE↔RTSC bulk bridge = NO (벽=생산량 not 반감기; single-atom 화학 예외)"
+    ],
+    "milestones": {"done": 16, "total": 16, "open": []},
+    "source_paths": ["domains/NUCLEAR.md"],
+    "notes": "RTSC §9 sibling(원소 발견). absorbed=false 영구 — sim PASS=wet-lab 우선순위 hint이지 발견 아님."
+  },
+  {
+    "id": "POOL",
+    "alias": "외부컴퓨트 라우팅",
+    "goal": "pool CLI를 ad-hoc ssh 습관에서 first-class infra 라우팅 레이어로 승격 — heavy/install-gated/GPU/cross-platform 컴퓨트를 정직 skip 기록과 함께 적정 호스트로 라우팅.",
+    "status": "active",
+    "key_verdicts": [
+      "spec-as-implemented Phase 1 wrap — host roster SSOT(~/.pool/pool.json) · exec-only(no sync)",
+      "5-kind 라우팅 taxonomy(a build/CI · b heavy science · c large-fetch · d GPU · e sandboxed)",
+      "g3 불변: pool 경유해도 R4 absorbed=false 보존 · provenance.pool_host 필수 · 로컬 재검증 필요",
+      "canonical 선례 = cross_code_dft.py _pool_cli_present 4-gate honest gate_type",
+      "hexa-native port(bin/pool.hexa) blocked — env()/exec_capture() runtime stub"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/POOL.md"],
+    "notes": "infra-axis 스펙 문서(체크박스 없음) — RTSC/NUCLEAR discovery-axis의 sibling. 메모리상 hexa cloud로 대체 라우팅."
+  },
+  {
+    "id": "QD",
+    "alias": "의약외품 라인업",
+    "goal": "쿠팡 등 일반유통 의약외품(quasi-drug) SKU 라인업을 분류 바운더리 내 first-principles 효능 우위 자체 R&D + 실측 검증으로 진행 — 시판 TOP 대비 head-to-head 우위.",
+    "status": "stub",
+    "key_verdicts": [
+      "컨테이너 + 19 자식 도메인(MASK·SANITIZER·BAND·PAD·GARGLE·FWASH·MWASH·HSHAMPOO·HSPRAY·INCONT·TPASTE·LENS·ECOPAD·PETHYG·KIDS-KIT·POSTPART·INSECT·SANSURF·AWAKE)",
+      "PLAYBOOK 7-verb 정공법 + 의약외품 바운더리 + 공통 측정법(MIC·Franz cell·log-reduction)",
+      "주력 TOP: INCONT(요실금 역류 50%↓) · TPASTE · LENS · ECOPAD · PETHYG",
+      "HSHAMPOO/HSPRAY = 항비듬·항진균 클레임 진입(2018 탈모방지→기능성화장품 재분류 회피)",
+      "전 자식 도메인 milestone 0/7 — discovery/sourcing/listing/launch 미착수 스텁"
+    ],
+    "milestones": {"done": 0, "total": 133, "open": ["19개 자식 도메인 각 7-verb milestone(spec→handoff) 전부 미착수"]},
+    "source_paths": ["domains/QD/README.md", "domains/QD/PLAYBOOK.md", "domains/QD/QD-AWAKE.md", "domains/QD/QD-BAND.md", "domains/QD/QD-ECOPAD.md", "domains/QD/QD-FWASH.md", "domains/QD/QD-GARGLE.md", "domains/QD/QD-HSHAMPOO.md", "domains/QD/QD-HSPRAY.md", "domains/QD/QD-INCONT.md", "domains/QD/QD-INSECT.md", "domains/QD/QD-KIDS-KIT.md", "domains/QD/QD-LENS.md", "domains/QD/QD-MASK.md", "domains/QD/QD-MWASH.md", "domains/QD/QD-PAD.md", "domains/QD/QD-PETHYG.md", "domains/QD/QD-POSTPART.md", "domains/QD/QD-SANITIZER.md", "domains/QD/QD-SANSURF.md", "domains/QD/QD-TPASTE.md"],
+    "notes": "19 자식 = 균일 스텁(전부 [ ]). README+PLAYBOOK이 공통 골격 SSOT. total 133 = 19×7-verb 근사."
+  },
+  {
+    "id": "RND-STDLIB",
+    "alias": "R&D 공통 표준라이브러리",
+    "goal": "QD/*+COSME/* R&D 도메인 공통 SSOT — 시험표준·활성성분 메커니즘·전달체계·인증기관·광고표현 매트릭스.",
+    "status": "active",
+    "key_verdicts": [
+      "시험표준 stdlib: in vitro(MIC CLSI M27/M44·Franz OECD TG428·살균 EN1276) + in vivo(OECD TG425/408) + 임상(TrichoScan ICC 0.91-0.97) + 마이크로바이옴(16S)",
+      "활성성분 first-principles 메커니즘표(케토코나졸·ZPT·CPC·CHX·자일리톨·PHMB·DEET 등)",
+      "전달체계: 나노에멀젼 80nm(모낭관 588μm)·리포좀·에토좀·트랜스퍼좀·마이크로니들",
+      "분류 결정트리(의약품/의약외품/기능성화장품/일반화장품) + 경계케이스 + 광고표현 매트릭스(식약처 적발사례)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/RND-STDLIB.md"],
+    "notes": "참조 stdlib 문서(체크박스 없음) — QD/COSME 양쪽이 consume."
+  },
+  {
+    "id": "SENOLYX",
+    "alias": "재생niche 노화세포 청소제",
+    "goal": "재생 niche 노화 섬유아세포 SELECTIVE 청소 NOVEL senolytic — CURE-PRIMITIVE η_neo 0.49→0.84+ 회복으로 AGA/치주/연골/망막 완치 게이트 동시 돌파. d1/d5/d19.",
+    "status": "🧱",
+    "key_verdicts": [
+      "🧱 R12 RBFE CLOSED-NEGATIVE 확정(2026-06-16): K=5 ensemble ΔΔG=+3.13±2.83(exp −1.9, 부호 반대 FAIL) — 거대고리 안사마이신에 범용FF 부적합 3독립라인 확증",
+      "🟢 R13 MCL-1/S63845 ABFE=−14.18±1.67 vs exp ~−13 → 후보 결합력 계산 확증(일반약물형)",
+      "R10b ABFE 수렴 PASS but 가설 🔴 FALSIFIED — geldanamycin ~5.7kcal/mol overbind(단일포즈 범용FF 거대고리 과대평가)",
+      "R11 원인분해: openff-2.1.0이 거대고리 퀴논 형태에너지 2.2× 과대전개(용매-강건) — 이 분자 특이적 case-study",
+      "R5-R9 in-silico 전부 done: 도킹·MM-GBSA·3축 칵테일 74%·인과모델·교차툴 재점수"
+    ],
+    "milestones": {"done": 18, "total": 19, "open": ["R13 후보 전수 ABFE(BCLXL bound-pose fix·CRBN solvent leg 진행중)"]},
+    "source_paths": ["domains/SENOLYX.md"],
+    "notes": "절대/상대 친화도 정밀화 축 terminal(FF 천장, d6 정직). BCLXL/CRBN ABFE in-flight. absorbed=false."
+  },
+  {
+    "id": "TTR-ORAL",
+    "alias": "면역세포 택배(경구 타투 fade)",
+    "goal": "순수 경구(기구0·no laser)로 타투 fade — track B(macrophage 이주 가속) 단독 돌파. W1 fade≠erase·W2 속도·W3 전신 면역조절 window. measured-oracle PASS까지 absorbed=false.",
+    "status": "🟠",
+    "key_verdicts": [
+      "🏁 CLOSURE(in-silico fixpoint): device-free 경구 ≥90% = 비-wet-lab 탐색 고갈 → wet-lab 핸드오프",
+      "track B CONDITIONAL-GO · 🔴 0건 — 결정 measurable=τ_rec<T(독성회복 timescale), η≥0.125~0.375면 PASS",
+      "W1 reframe(cosmetic endpoint)·W2 닫힘(🔵/🟢)·W3 🟠 measurable",
+      "🚨 grounding 붕괴: φ 중앙 0.05(0.15 천장) · S1P/B2 역부호 폐기 → device-free 단독 = ~2-6년",
+      "공통 HARD floor = carbon black ~25% 비분해(anthracosis) → ≥90% recipe = N1⊗N2+N4+bolus 3중합성(미검증 🟠)",
+      "ADME wall: f_target≈8.9e-5 · amplification 5600× · V4 ledger 42 claim(🔵12·🟢8·🟡9·🟠13·🔴0)"
+    ],
+    "milestones": {"done": 29, "total": 32, "open": ["M8 ex-vivo PoC(프로토콜 완료·실행 deferred)", "M9 in-vivo fade-timeline", "ORAL measured-oracle PASS"]},
+    "source_paths": ["domains/TTR-ORAL.md", "domains/TTR-ORAL/research/BP1_recapture_block.md", "domains/TTR-ORAL/research/BP1a_scavenger_receptor_scout.md", "domains/TTR-ORAL/research/BP1d_laser_adjunct.md", "domains/TTR-ORAL/research/B_breakthrough_roadmap.md", "domains/TTR-ORAL/research/M4_candidates.md", "domains/TTR-ORAL/research/M4b_kemig_grounding.md", "domains/TTR-ORAL/research/M5_pulsed_pkpd.md", "domains/TTR-ORAL/research/M5b_phi_grounding.md", "domains/TTR-ORAL/research/M6_regate_pulsed_TI.md", "domains/TTR-ORAL/research/M6_systemic_safety.md", "domains/TTR-ORAL/research/M7_formulation.md", "domains/TTR-ORAL/research/M8_M9_oracle_wetlab.md", "domains/TTR-ORAL/research/M9_lit_grounded_recovery.md", "domains/TTR-ORAL/research/N1_phagolysosome_pH_gate.md", "domains/TTR-ORAL/research/N1xN2_monocyte_catalyst.md", "domains/TTR-ORAL/research/N2_monocyte_trojan_horse.md", "domains/TTR-ORAL/research/N3_autophagy_degradation.md", "domains/TTR-ORAL/research/N4_ink_tagging_glue.md", "domains/TTR-ORAL/research/N5_optical_masking.md", "domains/TTR-ORAL/research/N9_sunlight_gated.md", "domains/TTR-ORAL/research/benchmark_scorecard.md", "domains/TTR-ORAL/research/cycle1_grounding_reconcile.md", "domains/TTR-ORAL/research/d11_drainage_bolus_lever.md", "domains/TTR-ORAL/research/d11b_lymphagogue_grounding.md", "domains/TTR-ORAL/research/oral_adme_wall.md", "domains/TTR-ORAL/research/oral_feasibility_scope.md", "domains/TTR-ORAL/research/path_A_prodrug_activation.md", "domains/TTR-ORAL/research/path_B_macrophage_migration.md", "domains/TTR-ORAL/research/path_CD_lymphatic_nanocarrier.md", "domains/TTR-ORAL/verify/V1_claim_inventory.md", "domains/TTR-ORAL/verify/V2_formal_identities.md", "domains/TTR-ORAL/verify/V3_numerical_recompute.md", "domains/TTR-ORAL/verify/V4_tier_ledger.md"],
+    "notes": "29 research + 4 verify 파일이 본체. 비-wet-lab 게이트 completed-form 도달, 안전 verdict가 wet-lab(η)에 본질 의존 → absorbed=false."
+  },
+  {
+    "id": "rtsc",
+    "alias": "상온상압 초전도체(서브)",
+    "goal": "상온상압 초전도체 293K 1atm — 고압 수소화물 파이프라인 검증부터 상압 안정구조 탐색까지. R4 absorbed=false until measured-oracle PASS. 엔진=QFORGE(QE=cross-val).",
+    "status": "active",
+    "key_verdicts": [
+      "QFORGE 마이그레이션 게이트 HELD — from-scratch 차폐정점 |g| 환원불가 DEFINITIVE TERMINAL(9 path CLOSED-NEGATIVE) · 하이브리드(QE|g|²→QForge L3, rel-ε 1.65e-7)=영구 production",
+      "QE el-ph data-half 3/3 TERMINAL: CaH6 · LaH10(λ=3.39-3.87·Tc 191-201K) · Li2MgH16(λ=5.79·Tc 164K, 8q under-converged)",
+      "binary N5 CLOSED as wall: h3cl 140K·h3br 158K·h3o 9-109K(SSCHA) 전부 stable이나 Tc<200K — stability↔강λ 트레이드오프",
+      "ternary 🔴 FALSIFIED: Mg₂IrH₆(min_freq −2235)·Li₂CuH₆(−945) — X₂MH₆ VEC=19 sweet-spot 양축 falsified",
+      "flat-band 상압 피벗(CoSn kagome): QFORGE LSDA/GGA 엔진 완성+g5 but CoSn m≈0(Co-3d PW compute-wall) → QE summer m=0.43=신뢰 reference · RbOs₂O₆ 신 1순위(flat band AT E_F)",
+      "RTSC-TRIANGULATE: 4-bearing 탈상관 유효차원 1.51→3.08/4(superhydride family) · V1-V4 tier ledger(🔵14·🟢30·🟡12·🟠6·🔴3·⚪4)"
+    ],
+    "milestones": {"done": 32, "total": 59, "open": ["압력<50GPa AND stable AND Tc>200K 후보(M8)", "Li2MgH16 dense-mesh 수렴(보류·비용)", "Non-hydride pilot MgB₂/Nb₃Al(running)", "삼각측량 후보 DFPT 큐(보류·비용)", "RbOs₂O₆ nspin=1 DFPT(in-flight)", "F-N6 falsifier ledger", "measured-oracle PASS→absorbed=true"]},
+    "source_paths": ["domains/rtsc.md", "domains/rtsc.launch_plan.md", "domains/rtsc.compute_services.md"],
+    "notes": "rtsc.md=메인 5축 progress board(1556줄). launch_plan=40후보 vast phased 발사. compute_services=vast 외 컴퓨트 서비스 분석. absorbed=false 영구(measured-oracle 전)."
+  },
+  {
+    "id": "QFORGE-ATOMS",
+    "alias": "원자/분자 gold-standard",
+    "goal": "QFORGE 범용엔진 atoms scale — GFN-xTB 반경험→Roothaan ab-initio HF→해석 force→geometry opt→post-HF(MP2/CCSD/CCSD(T))→CBS→open-shell gold standard. MOLSCF/flame 재사용(d19).",
+    "status": "active",
+    "key_verdicts": [
+      "method-COMPLETE: 단일참조 wavefunction 격자 전 method-CLASS 봉인(GFN-xTB→ab-initio HF→s/p/d force→geom opt→RMP2/RCCSD/RCCSD(T)→cc-pVDZ/pVTZ/CBS→UHF/UMP2/UCCSD/UCCSD(T)→ROHF-CCSD(T)→open-shell CBS)",
+      "correlation 앵커=Crawford-projects(≤1e-9) · HF/CBS=PySCF 2.13.1",
+      "CC tensor contraction flame matmul 라우팅 13-41× accel",
+      "잔여 frontier = method-class 아닌 within-class refinement(cc-pVTZ live timing AOT-perf · correlated-level analytic gradient)"
+    ],
+    "milestones": {"done": 28, "total": 30, "open": ["cc-pVTZ CCSD(T) live timing(AOT-perf bound, NOT method gap)", "correlated-level analytic CC gradient/geom opt"]},
+    "source_paths": ["domains/QFORGE-ATOMS.md"],
+    "notes": "QFORGE engine 자식 도메인. 29 round 전부 g5 done — 남은 2개는 within-class refinement."
+  },
+  {
+    "id": "QFORGE-CHEM",
+    "alias": "화학 반응경로",
+    "goal": "QFORGE chem scale — 화학 반응경로(MEP)+전이상태(TS): NEB→CI-NEB→TS-Hessian→dimer. TS-Hessian=materials DFPT(qforge_phonons) 재사용 thin layer(d19).",
+    "status": "active",
+    "key_verdicts": [
+      "reaction-path mechanics 봉인(NEB→CI-NEB→TS-Hessian→dimer) g5 PASS",
+      "앵커=해석 정류점 벤치(Müller-Brown 2D minima3+saddle2 · LEPS H₃)",
+      "TS-Hessian = 포논 엔진 Γ-점 Hessian 재사용(round-3 32/32 PASS) = 'one engine' chem-scale 증거",
+      "잔여 = 실 분자 반응배리어(high-level QM/실험) data-swap — method-class 아닌 energy-source integration"
+    ],
+    "milestones": {"done": 4, "total": 5, "open": ["real high-level-QM/실험 reaction-barrier anchor(MOLSCF CASSCF·CCSD(T) feed)"]},
+    "source_paths": ["domains/QFORGE-CHEM.md"],
+    "notes": "QFORGE engine 자식. 4 round done, 남은 frontier 1개는 within-class."
+  },
+  {
+    "id": "QFORGE-FEATURE",
+    "alias": "기능 위시리스트",
+    "goal": "QFORGE가 QE를 완전히 걷어내고 독립 el-ph 엔진+dispatch toolchain이 되려면 필요한 기능 백로그 — 각 항목=벽 깨는 기능 + g5/cross-val 완료게이트.",
+    "status": "🧱",
+    "key_verdicts": [
+      "🧱 off-diag V_scr el-ph vertex assembler BUILT+UNIFIED but RULED OUT as gate-blocker — off-diag lift ×1.06뿐, 잔여=irreducible from-scratch vs QE-PBE vertex-magnitude 차이",
+      "QForge>QE 4-axis superiority matrix VERIFIED: feature(6캡)·speed(≥QE all sizes)·scale(32/50GiB stream)·accuracy(H3S SSCHA 216.4K from-scratch)",
+      "correlation-XC functional(PZ81/PW92/PBE) DONE+g5 — migration moment boundary CLOSED",
+      "metallic SCF: 4 breadth brick(real q-mesh ω·off-diag g_mn·real N(E_F)·Sternheimer screened ΔV) 전부 g5 — but CaH6 λ 1% 미달(composed λ=3.52e-6, [d] screening BLOCKED on converged ρ)",
+      "from-scratch CaH6 λ-gate = demonstrated 🧱 WALL — best 4.58%(full ε(G,G') ncond=16, non-converged); 하이브리드(1.65e-7)=production"
+    ],
+    "milestones": {"done": 26, "total": 32, "open": ["metallic SCF converged CaH6 cross-val(partial)", "screened [d] Anderson/Broyden(Picard NaN)", "기타 breadth/converge 후속"]},
+    "source_paths": ["domains/QFORGE-FEATURE.md"],
+    "notes": "QFORGE engine 자식 backlog. from-scratch λ-gate 다중 라운드 CLOSED-NEGATIVE/PARTIAL — 4.376 강제 안함(d6). 하이브리드가 production."
+  },
+  {
+    "id": "QFORGE-PROCESS",
+    "alias": "공정 기록자",
+    "goal": "QE el-ph 캠페인 파이프라인(vc-relax→scf→ph/DFPT→elph→λ→Tc) stage별 wall/resource 계측 → perf·resource·speed 병목 관찰 + 개선 레버 발굴.",
+    "status": "active",
+    "key_verdicts": [
+      "병목: ph.x per-q Sternheimer SCF가 CPU-bound dominant(hr-day) → GPU NVPTX 레버",
+      "13 milestone 전부 done: per-stage timing·cost-driver·parallel-q dispatch·GPU 크로스오버·resource-sizing·deck→Tc ledger·auto-sizing dispatcher·roofline·cost-per-Tc·early-stop·closed-loop selection",
+      "공정 friction 3종(scp-255·corrupt-recover·hostport-lag) 모두 fix(PR#2451/2453/2459/2460)"
+    ],
+    "milestones": {"done": 13, "total": 13, "open": []},
+    "source_paths": ["domains/QFORGE-PROCESS.md"],
+    "notes": "QFORGE engine 자식(observability/optimization). 전 milestone done."
+  },
+  {
+    "id": "aura",
+    "alias": "귀뒤 BCI",
+    "goal": "후이부 웨어러블 BCI 7-verb 설계도 — FDA Class II 510(k)+EU MDR IIa+IEC 60601 EMC+BT SIG dossier-skeleton. verify absorbed=true(Sleep-EDF parity 8.4e-07) 기반, 나머지 6 verb-cell도 끌어올림.",
+    "status": "active",
+    "key_verdicts": [
+      "verify cell absorbed=true CLOSED(G33) — Sleep-EDF spectral parity mean_rel_err 8.4e-07 · D117 2nd cell first-flip",
+      "나머지 6 verb-cell(specify/structure/design/analyze/synthesize/handoff) = absorbed=false PERMANENTLY(g3 — accredited-lab gate 전)",
+      "V0-V7+D1-D7+G1-G3+A1-A4+N1-N20 LANDED(dossier skeleton+실값 illustrative)",
+      "in-silico 실측 매트릭스 M1-M7(BLE link·antenna S11·SAR·firmware size·PCB DRC·enclosure FEM·AFE noise) 미착수",
+      "도구 포팅 P1-P4(openEMS/west/FreeCAD/KiCad hexa-native) 미착수"
+    ],
+    "milestones": {"done": 42, "total": 53, "open": ["M1-M7 in-silico 실측(미착수)", "P1-P4 도구 hexa-native 포팅(미착수)"]},
+    "source_paths": ["domains/aura.md"],
+    "notes": "hexa-aura 봉인 후 이관 snapshot. verify만 absorbed=true, 나머지 g3 영구 false. 미착수 11개=실측 M+포팅 P."
+  },
+  {
+    "id": "bio",
+    "alias": "분자생물(단백질/DNA/RNA/약물)",
+    "goal": "분자생물 설계 패키지 — 표적 구조예측·결합부위·발현 construct·약물-표적 검증+ADMET. 7-verb public-surface map.",
+    "status": "stub",
+    "key_verdicts": [
+      "오픈소스 도구맵: AlphaFold3·ESMFold·Boltz-1·RFdiffusion·ProteinMPNN(design) · GROMACS·OpenMM·PyMOL(analyze) · Foldseek·DSSP(verify)",
+      "biggest gap = wet-lab assay 자동화 + 임상설계 + regulatory-grade ADMET",
+      "substrate SSOT=~/core/hexa-bio (planned) · kernels/bio_md·bio_struct_pred(planned)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/bio.md"],
+    "notes": "shallow public-surface map(체크박스 없음). D81 신규 도메인."
+  },
+  {
+    "id": "chem",
+    "alias": "화학(반응/촉매)",
+    "goal": "반응경로+촉매 설계 — feedstock→target 합성경로(메커니즘·동역학·선택성)·촉매 active-site·thermo/EHS dossier. 7-verb public-surface map.",
+    "status": "stub",
+    "key_verdicts": [
+      "오픈소스 도구맵: RDKit·AiZynthFinder·OpenBabel(design) · Psi4·xTB·Cantera(analyze) · OpenMM+RDKit(verify)",
+      "biggest gap = 촉매 active-site → bench-validated turnover prediction(Schrödinger 영역)",
+      "substrate=stdlib/kernels/chem(arrhenius_kernel 1개 seed, 6/6 PASS) · hexa-chem sibling planned"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/chem.md"],
+    "notes": "shallow public-surface map(체크박스 없음). D81 신규 도메인."
+  },
+  {
+    "id": "cloak",
+    "alias": "전자기 스텔스 망토",
+    "goal": "음굴절률(n<0) 메타물질 n=6 육각격자로 가시광~레이더 σ-τ=8 octave 투명화 — (a) Drude+Lorentz verify 닫기 (b) 풀 7-verb로 메타셀·필름 제작사양 인계. absorbed=true ⇔ 全 비-wet-lab gate PASS.",
+    "status": "active",
+    "key_verdicts": [
+      "absorbed=TRUE(2026-05-28) — 全 비-wet-lab gate PASS · 종합 52 verdict(🔵5·🟢21·🟡12·🟠7·⚪7)",
+      "3-부품 메타 carrier: RTSC ε<0 Drude(ω_p=5.64e15) · SRR μ<0 Lorentz(μ_re=-1999) · HEX-N6 n=6 격자 · Veselago n=-√6=-2.449",
+      "Phase A 6/6 음굴절 폐형해 + Phase B 메타셀 + Phase C 7-verb 완주(spec→handoff)",
+      "실측 RCS(무반향)·VNA = downstream confirmation(@D d5)"
+    ],
+    "milestones": {"done": 22, "total": 22, "open": []},
+    "source_paths": ["domains/cloak.md"],
+    "notes": "UFO 부수축(HEXA-CLOAK) 독립 격상. absorbed=true(비-wet-lab gate 기준) — 실측은 downstream."
+  },
+  {
+    "id": "grid",
+    "alias": "데이터센터/네트워크 패브릭",
+    "goal": "AI-DC 패브릭 spec — 랙/전원/냉각 layout(OCP)·네트워크 토폴로지·BMC 관리plane·ASHRAE TC9.9 열envelope. 7-verb public-surface map.",
+    "status": "stub",
+    "key_verdicts": [
+      "OCP open-spec가 SPECIFY/ARCHITECT 우수 커버(cohort 중 드묾)",
+      "도구맵: P4·OpenBMC(design) · ns-3·OMNeT++·SST(analyze) · Kubernetes·Slurm(synthesize)",
+      "biggest gap = 3-D full-wave SI/PI(HFSS/Sigrity급) ≥112Gb/s SerDes — fem 공유 abstraction 레버(cern·rtsc 중복)"
+    ],
+    "milestones": {"done": 0, "total": 0, "open": []},
+    "source_paths": ["domains/grid.md"],
+    "notes": "shallow public-surface map(체크박스 없음). Cohort 2."
+  },
+  {
+    "id": "ufo",
+    "alias": "통합 비행체",
+    "goal": "RTSC 자석+FUSION/ANTIMATTER 동력+CERN 자장 통합 1인승 비행체를 7-verb로 spec→handoff 완성 — verify-native 🟢 설계+프로토타입 사양+디지털트윈 CFD·EM·추진 검증.",
+    "status": "active",
+    "key_verdicts": [
+      "absorbed=TRUE(2026-05-26 재판정) — 全 6 차단게이트 closed(F-ANTI-3·열·EM·응력·⟲ coupling 🟢 + CFD 🟡 본해수렴 PASS)",
+      "Phase A 7-stage ladder: Stage-1~3(hover/cruise/orbital) 🟢 numerical · Stage-4~7(warp/wormhole/dim) 독립도메인 격상·falsifier preregister UNPROVEN",
+      "Phase B 5 부수축(hover·grav·cloak·teleport·sim) + Phase C 7-verb 완주 + Phase D 메타(lattice·13 falsifier 전부 OPEN)",
+      "V4 tier ledger 통합(🔵8·🟢14·🟡9·🟠0·⚪17·🔴0) · ⟲ 고정점 9/9 PASS(Banach q=0.309)",
+      "선행자산 4개(RTSC·FUSION·ANTIMATTER·CERN) + hexa-ufo 1890-LOC 아틀라스 통합 캐리어"
+    ],
+    "milestones": {"done": 28, "total": 28, "open": []},
+    "source_paths": ["domains/ufo.md"],
+    "notes": "통합 캐리어 — 자체 측정 없고 흡수 V1-V4 ledger가 verify 자료. absorbed=true(비-wet-lab), Stage-4~7 13 falsifier OPEN UNPROVEN."
+  }
+]
