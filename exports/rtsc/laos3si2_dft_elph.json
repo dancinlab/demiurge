@@ -1,22 +1,55 @@
 {
   "material": "LaOs3Si2",
-  "_status": "FIRED — DFPT el-ph running on summer FREE pool; numbers below to be filled at harvest",
-  "structure": "CeCo3B2-type Os-kagome, hexagonal P6/mmm (No.191), ibrav=4, nat=6 ntyp=3 (La 1a triangular z=0; Os 3g KAGOME z=1/2; Si 2c honeycomb z=0). 2nd flat-band-at-E_F winner (GREEN).",
+  "_status": "HARVESTED 2026-06-17 — DFPT el-ph DONE on summer FREE pool (915G disk; vast 40G ruled out by el-ph scratch >40G/q). Run survived ~6 summer reboots via QE recover=.true. self-heal (scripts/scratch/laos3si2_vast/summer_q4_resume.sh). VERDICT: dynamically UNSTABLE at 2x2x2 q -> lambda/Tc UNTRUSTWORTHY as absolute (d6 gate), AND a WEAKER el-ph coupler than LaRu3Si2 at matched broadening.",
+  "structure": "CeCo3B2-type Os-kagome, hexagonal P6/mmm (No.191), ibrav=4, nat=6 ntyp=3 (La 1a triangular z=0; Os 3g KAGOME z=1/2; Si 2c honeycomb z=0). Os 5d^7 isoelectronic to Ru 4d^7 (LaRu3Si2 sibling). 2nd flat-band-at-E_F winner.",
   "relaxed_lattice": {"alat_bohr": 10.59910, "c_over_a": 0.66989, "dE_eV": 0.089, "m_uB": 0.00, "source": "per-sibling vc-relax CONFIRMED"},
-  "method": "QE DFPT (ph.x) electron_phonon='simple' double-delta a2F; PBE NC ONCV (La/Os z16/Si); ecutwfc=90 ecutrho=360 Ry; MP smearing degauss=0.02 Ry; nspin=1 (NM ground state confirmed by gate, m=0). Os mass=190.23 (real).",
-  "qmesh": "2x2x2 (ldisp, Gamma-centered irreducible set) — matches LaRu3Si2 reference",
+  "method": "QE 7.5 DFPT (ph.x) electron_phonon='simple' double-delta a2F; PBE NC ONCV; ecutwfc=90 ecutrho=360 Ry; MP smearing degauss=0.02 Ry; nspin=1 (NM ground state, m=0, dE=+0.089). Os mass=190.23. Same 2x2x2 q / 16^3 fine k as LaRu3Si2 for head-to-head.",
+  "qmesh": "2x2x2 (ldisp, Gamma-centered irreducible set, 4 irreducible q; star multiplicities w=[1,1,3,3], total=8)",
   "kmesh": {"scf": "12x12x12", "elph_fine_double_delta": "16x16x16"},
-  "stability_precheck": "q2r (zasr=crystal) -> matdyn (asr=crystal) at 8 commensurate q-pts -> scan laos3si2.freq for imaginary modes BEFORE trusting Tc (d6).",
-  "n_ef": null,
-  "lambda": null,
-  "omega_log_K": null,
-  "tc_ad_mu010_K": null,
-  "tc_ad_mu013_K": null,
-  "imaginary_modes": null,
-  "dominant_modes": null,
-  "compare_laru3si2": "head-to-head at SAME 2x2x2 q / 16^3 k to test: does flat-band-at-E_F -> anomalously high lambda?",
-  "host": "summer (FREE pool, no GPU rent), np 6 --bind-to none, OMP=1",
-  "log": "summer:~/laos3si2_dfpt.log",
+  "DOS_Ef_states_per_spin_Ry_at_smallest_broadening": 42.691,
+  "Ef_eV": 17.10,
+  "el_ph_nsigma": 10,
+  "el_ph_sigma_Ry": 0.005,
+  "stability": {
+    "verdict": "DYNAMICALLY UNSTABLE (MORE than LaRu3Si2)",
+    "n_imaginary_modes_weighted": 24,
+    "per_q": {
+      "dyn1_Gamma_w1": "5/18 imaginary, min -92.1 cm-1 (incl non-acoustic soft modes at Gamma)",
+      "dyn2_w1": "4/18 imaginary, min -110.4 cm-1",
+      "dyn3_w3": "3/18 imaginary, min -52.2 cm-1",
+      "dyn4_w3": "2/18 imaginary, min -98.6 cm-1"
+    },
+    "detail": "Weighted imaginary-mode count = 5*1+4*1+3*3+2*3 = 24 mode-q instances imaginary (vs LaRu3Si2 11 raw / 6 genuine non-Gamma). Even Gamma carries 5 imaginary modes. The Os-kagome lattice at 2x2x2 is MORE softened than Ru. Per-mode lambda(nu)<0 for every imaginary mode (signature of imaginary omega^2 in lambda=gamma/(pi N(Ef) omega^2))."
+  },
+  "broadening_sweep_physical_imag_dropped": [
+    {"sigma_Ry": 0.005, "lambda_naive": 2.685, "lambda_physical": 3.478, "omega_log_K": 80.03, "Tc_mu010_K": 15.29, "Tc_mu013_K": 14.61},
+    {"sigma_Ry": 0.010, "lambda_naive": 1.692, "lambda_physical": 2.321, "omega_log_K": 84.19, "Tc_mu010_K": 13.30, "Tc_mu013_K": 12.52},
+    {"sigma_Ry": 0.015, "lambda_naive": 1.144, "lambda_physical": 1.725, "omega_log_K": 88.91, "Tc_mu010_K": 11.45, "Tc_mu013_K": 10.58},
+    {"sigma_Ry": 0.020, "lambda_naive": 0.836, "lambda_physical": 1.410, "omega_log_K": 93.16, "Tc_mu010_K": 9.99, "Tc_mu013_K": 9.05},
+    {"sigma_Ry": 0.025, "lambda_naive": 0.633, "lambda_physical": 1.216, "omega_log_K": 96.95, "Tc_mu010_K": 8.82, "Tc_mu013_K": 7.84},
+    {"sigma_Ry": 0.030, "lambda_naive": 0.488, "lambda_physical": 1.084, "omega_log_K": 100.26, "Tc_mu010_K": 7.86, "Tc_mu013_K": 6.86},
+    {"sigma_Ry": 0.035, "lambda_naive": 0.378, "lambda_physical": 0.988, "omega_log_K": 103.11, "Tc_mu010_K": 7.05, "Tc_mu013_K": 6.04},
+    {"sigma_Ry": 0.040, "lambda_naive": 0.291, "lambda_physical": 0.915, "omega_log_K": 105.54, "Tc_mu010_K": 6.36, "Tc_mu013_K": 5.35},
+    {"sigma_Ry": 0.045, "lambda_naive": 0.221, "lambda_physical": 0.857, "omega_log_K": 107.60, "Tc_mu010_K": 5.77, "Tc_mu013_K": 4.77},
+    {"sigma_Ry": 0.050, "lambda_naive": 0.163, "lambda_physical": 0.811, "omega_log_K": 109.41, "Tc_mu010_K": 5.27, "Tc_mu013_K": 4.28}
+  ],
+  "head_to_head_MATCHED_sigma_0p05_Ry": {
+    "note": "LaRu3Si2's canonical lambda=1.64 was assembled at el_ph index 10 = 0.050 Ry (laru3si2_dft_elph.json evidence_cmd n==10). FAIR comparison uses the SAME broadening for BOTH.",
+    "LaRu3Si2": {"lambda_physical": 1.64, "omega_log_K": 56.3, "Tc_mu010_K": 6.96, "Tc_mu013_K": 6.40, "imag_modes": "6 genuine non-Gamma"},
+    "LaOs3Si2": {"lambda_physical": 0.811, "omega_log_K": 109.41, "Tc_mu010_K": 5.27, "Tc_mu013_K": 4.28, "imag_modes": "24 weighted"},
+    "verdict": "At matched sigma=0.05 Ry, LaOs3Si2 (Os 5d) is a WEAKER el-ph coupler than LaRu3Si2 (Ru 4d): lambda 0.81 vs 1.64, Tc(phys) 4.3-5.3K vs 6.4-7.0K. Os has HIGHER omega_log (109 vs 56 K) but the larger value is partly an artifact of excluding MORE soft modes (24 vs 6). Heavier Os does not stiffen the el-ph; the 4d->5d substitution REDUCES the flat-band-driven coupling."
+  },
+  "compare_laru3si2": "head-to-head at SAME 2x2x2 q / 16^3 k: flat-band-at-E_F gives large el-ph drive in BOTH siblings, but Ru (4d) > Os (5d) at matched broadening. Os trades coupling for stiffer phonons, net LOWER Tc.",
+  "lambda_flatband_question": "flat-band -> large el-ph drive is present in BOTH siblings (both physical lambda > 0.8 with large N(Ef)~40), but Os WEAKENS it relative to Ru at matched broadening. The flat-band->lambda hypothesis is SUPPORTED qualitatively (kagome flat band boosts el-ph) but the 4d Ru is the stronger coupler. Both lattices are dynamically unstable at 2x2x2 (Os more so), so absolute numbers are soft upper bounds (d6).",
+  "validation_verdict": "🔴 DYNAMICALLY UNSTABLE at 2x2x2 (24 weighted imaginary modes, more than LaRu3Si2) -> absolute lambda/Tc UNTRUSTWORTHY (d6). Head-to-head (matched sigma=0.05): LaOs3Si2 LOSES to LaRu3Si2 (lambda 0.81 vs 1.64, Tc 4-5K vs 7K). Os substitution does NOT enhance the flat-band superconductor. REQUIRES 4x4x4 q to decide artifact-vs-CDW for both, but the relative ranking (Ru > Os) holds at fixed grid+broadening.",
+  "engine": "QE 7.5 ph.x (DFPT |g|, electron_phonon='simple') + direct Allen-Dynes assembly (lambda.x-equivalent, q-star weighted, imaginary dropped). assembler = scripts/scratch/laos3si2_vast/harvest/harvest_lambda_tc.py",
+  "pod": "summer FREE pool (915G disk, QE micromamba env). Survived ~6 reboots (concurrent RT-NATIVE load) via QE recover self-heal. raw harvest tar = scripts/scratch/laos3si2_vast/harvest/laos3si2_elph_harvest.tgz",
   "cost_usd": 0,
-  "caveats": ["2x2x2 q is coarse; absolute Tc is grid-limited — the LaRu3Si2 same-grid comparison is the load-bearing result.", "honest (c9): a modest kagome-value lambda is a valid finding, not a failure."]
+  "evidence_cmd": "python3 scripts/scratch/laos3si2_vast/harvest/harvest_lambda_tc.py (parses the 4 dyn.elph + 4 dyn files in the harvest tar)",
+  "caveats": [
+    "DYNAMICALLY UNSTABLE at 2x2x2 (d6): 24 weighted imaginary modes (more than LaRu3Si2's 6 genuine) -> absolute Tc untrustworthy; soft upper bound only.",
+    "head-to-head MUST be at matched broadening: at sigma=0.05 Ry (LaRu3Si2's reference) LaOs3Si2 lambda=0.81 < LaRu3Si2 1.64 -> Os is the WEAKER coupler. A mismatched-broadening read (LaOs 0.02 vs LaRu 0.05) falsely inverts this.",
+    "LaOs3Si2 higher omega_log (109 vs 56 K) is partly an artifact of dropping MORE soft modes (24 vs 6), not a genuine phonon-hardening advantage.",
+    "honest (c9/d6): the Ru>Os ranking at fixed grid+broadening is the robust finding; absolute Tc for either needs 4x4x4 q to settle artifact-vs-CDW."
+  ]
 }
