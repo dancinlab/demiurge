@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### QFORGE mode(c) screening 배선 갭 코드검증 + fix 착수 (d_qforge_fix 병행)
+- "QFORGE 안 쓰는 이유" 규명 → 코드 정독(c2): QFORGE 마이그레이션 게이트 HELD인 진짜 이유 = converged-basis screening 미작동. **근본원인 = 인터페이스 불일치**(2026-06-05 메모리의 '한 줄 배선' 진단은 오진, 정정함): Anderson Dyson 루프(`pw_frontend.hexa:~1115`)가 밀도공간 closure `qpwd_drho_to_dvscf(drho:[float])`(converged n=645서 0)를 호출하는데, staged FFT-Poisson 커널 `qpwfft_dvscr_from_dpsi(psis,dpsi)`(`screening_pwfft.hexa:372`)는 파동함수공간(δψ) 입력 → drop-in swap 불가.
+- **fix 착수**(유저 ① 선택·d_qforge_fix 병행): 격리 worktree서 Δρ↔δψ 어댑터(또는 루프 δψ화)→FFT 커널 배선→`pwfft_folds>0`+λ가 bare 4.137서 이탈 확인→고RAM 포드서 converged λ(n=645 OOM 2차벽). RTSC 4×4×4(vast 41382613 사이징·QE production)와 **동시 진행**. ARCHITECTURE.json mode(c) `screening_wiring_2026_06_18` 박제 + 메모리 정정.
+
 ### RTSC LaRu3Si2 4×4×4 사이징 — summer 무료풀 → vast 안정 포드 에스컬레이션 (c16-(c) 인프라벽)
 - 4×4×4 사이징(SCF+ph.x init으로 irreducible q수 확인)을 summer 무료풀에서 시도했으나 **3연속 SCF 발사 실패**(scf.out 0바이트·출력 없이 죽음·메모리 19G여유라 OOM 아님·동시 RT-NATIVE 세션 간섭+flaky transport 의심). 정직 진단(c9·c1): 직전 자가치유 모니터가 transient proc-gone을 오판해 `rm -rf out`으로 SCF 진척을 반복 삭제하던 역효과도 있었음(→passive로 교체).
 - summer가 이 작업엔 신뢰불가 substrate로 확정(c16-(c)) → **vast 안정 포드 41382613(≥120G·@demiurge)로 이전**(d17 비용자율·~$0.4/hr). 디스크 preflight 가드(방금 hexa-lang 머지)가 ≥100G 강제 — 첫 실전. micromamba+QE(conda-forge) 설치 후 SCF+ph.x init 자동발사(체인 모니터). q수 확정 후 production el-ph는 가드 박힌 hexa deck `run_resume.sh`로 발사. 덱·포드 스크립트 박제(`exports/rtsc/decks/laru3si2-444/`).
