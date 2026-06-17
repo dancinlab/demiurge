@@ -1,4 +1,4 @@
-MCL1 (n=2/3): ABFE_dG_bind = -14.18 +/- 1.67 kcal/mol   [exp: S63845 Kd~0.19nM (~ -13)]
-BCLXL: 0/3 reps
-CRBN: 0/3 reps
-done_cells=2/9
+MCL1 (n=3/3): ABFE_dG_bind = -16.78 +/- 2.77 kcal/mol   [exp: S63845 Kd~0.19nM (~ -13)]
+BCLXL (n=3/3): ABFE_dG_bind = -29.28 +/- 0.71 kcal/mol   [exp: 3CQ BH3 inhibitor]
+CRBN (n=2/3): ABFE_dG_bind = -1.66 +/- 0.14 kcal/mol   [exp: IMiD Kd~uM]
+done_cells=8/9

@@ -1,9 +1,9 @@
 MCL1	0	41099239	ssh3.vast.ai	19238	running
-MCL1	1	41020091	ssh1.vast.ai	20090	running
-CRBN	0	41020091	ssh1.vast.ai	20090	running
-MCL1	2	41020313	ssh7.vast.ai	20312	running
-CRBN	1	41020313	ssh7.vast.ai	20312	running
-BCLXL	0	41021371	ssh8.vast.ai	21370	running
+MCL1	1	41020091	ssh1.vast.ai	20090	done
+CRBN	0	41020091	ssh1.vast.ai	20090	done
+MCL1	2	41020313	ssh7.vast.ai	20312	done
+CRBN	1	41020659	ssh5.vast.ai	20658	running
+BCLXL	0	41021371	ssh8.vast.ai	21370	done
 CRBN	2	41020659	ssh5.vast.ai	20658	running
-BCLXL	1	41021371	ssh8.vast.ai	21370	running
-BCLXL	2	41021371	ssh8.vast.ai	21370	running
+BCLXL	1	41021371	ssh8.vast.ai	21370	done
+BCLXL	2	41021371	ssh8.vast.ai	21370	done
