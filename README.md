@@ -26,7 +26,7 @@
 > head-to-head 완주(2026-06-17, summer 무료풀·QE recover 자가치유로 ~6 리부팅 생존·$0):
 > matched σ=0.05 Ry서 LaRu3Si2(Ru 4d, λ=1.64·Tc~7K)가 LaOs3Si2(Os 5d, λ=0.81·Tc~4-5K)를
 > 이김 — Os 치환은 flat-band el-ph 강화 못함(4d Ru가 더 강한 coupler), 둘다 2×2×2 동적불안정
-> (LaOs 허수 24>LaRu 6, d6). 다음 레버=승자 LaRu3Si2 4×4×4 q.** MoSn 🔴 (ΔE=−2.38). CoSn rigid-doping 🔴 양방향
+> (LaOs 허수 24>LaRu 6, d6). **승자 LaRu3Si2 4×4×4 q DFPT 발사(2026-06-18): soft모드 경화(artifact→λ~1.6 신뢰) vs 잔존(CDW) 판별 — summer 무료 사이징+d16 후 vast ≥100G 병렬(d_qforge_parallel).** MoSn 🔴 (ΔE=−2.38). CoSn rigid-doping 🔴 양방향
 > CLOSED. 삼각측량 v3: 도핑축 죽음 → 새 lane = CeCo3B2-type 4d/5d-kagome 패밀리
 > 스윕(LaRu3Si2 형제). **형제 게이트체크 착지(2026-06-16, 고정격자 1차스크린): LaOs3Si2
 > (Os 5d⁷) 🟢 ΔE=+0.039 m=0.00 = 2번째 flat-band-at-E_F 승자 [vc-relax 확정: 완화 ΔE=+0.089<0.10 GREEN 유지] · LaRh3Si2 (Rh 4d⁸) 🔴

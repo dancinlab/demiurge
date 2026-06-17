@@ -1,0 +1,32 @@
+LaRu3Si2 DFPT electron-phonon 4x4x4 q (denser-q artifact-vs-CDW test; winner of 2x2x2 head-to-head)
+&inputph
+  prefix = 'laru3si2'
+  outdir = './out'
+  fildyn = 'laru3si2.dyn'
+  fildvscf = 'dvscf'
+  ! --- el-ph: 'simple' = double-delta a2F on a fine k-mesh (la2F-compatible) ---
+  electron_phonon = 'simple'
+  el_ph_sigma = 0.005
+  el_ph_nsigma = 10
+  ! fine k-mesh for the double-delta el-ph integration (identical to 2x2x2 run for comparability)
+  nk1 = 16
+  nk2 = 16
+  nk3 = 16
+  k1 = 0
+  k2 = 0
+  k3 = 0
+  ! --- phonon q-grid : 4x4x4 (Gamma-centered irreducible set) — denser than the 2x2x2 head-to-head ---
+  ldisp = .true.
+  nq1 = 4
+  nq2 = 4
+  nq3 = 4
+  ! recover for self-heal on free-pool reboots (LaOs3Si2 lesson)
+  recover = .true.
+  ! d_qforge_parallel SHARDING: per-pod set start_q/last_q (and optionally start_irr/last_irr) below.
+  ! start_q = <i>
+  ! last_q  = <j>
+  ! convergence / smearing matched to scf
+  tr2_ph = 1.0d-14
+  alpha_mix(1) = 0.4
+  trans = .true.
+/

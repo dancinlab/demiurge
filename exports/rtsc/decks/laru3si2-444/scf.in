@@ -1,0 +1,43 @@
+&control
+  calculation = 'scf'
+  prefix = 'laru3si2'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  tprnfor = .true.
+  tstress = .true.
+/
+&system
+  ! LaRu3Si2 -- hexagonal P6/mmm (No.191) CeCo3B2-type. Ru kagome 3g (flat-band layer).
+  ! RELAXED cell from gate-check vc-relax: a=5.7175 Ang, c=3.5732 Ang.
+  ! nspin=1 : NM ground state CONFIRMED by gate (m=0.00 uB) -> non-spin-pol el-ph (correct + cheap).
+  ! Methfessel-Paxton smearing matches gate scf; degauss=0.02 Ry held identical for el-ph double-delta.
+  ibrav = 4
+  celldm(1) = 10.80445
+  celldm(3) = 0.62496
+  nat = 6
+  ntyp = 3
+  ecutwfc = 90
+  ecutrho = 360
+  nspin = 1
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-12
+  mixing_beta = 0.4
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  La 138.905  La_ONCV_PBE_sr.upf
+  Ru 101.07   Ru_ONCV_PBE_sr.upf
+  Si 28.0855  Si_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS crystal
+  La 0.000000 0.000000 0.000000
+  Ru 0.500000 0.000000 0.500000
+  Ru 0.000000 0.500000 0.500000
+  Ru 0.500000 0.500000 0.500000
+  Si 0.333333 0.666667 0.000000
+  Si 0.666667 0.333333 0.000000
+K_POINTS automatic
+  12 12 12 0 0 0
