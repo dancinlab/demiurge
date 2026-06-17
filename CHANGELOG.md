@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### QFORGE 병목개선 — POLAR (Fröhlich) Wannier |g| q-보간 (dense-per-q 레버를 극성물질로 확장)
+- QFORGE 병목 매핑: **dense-per-q DFPT = #1 el-ph 비용**(29-pod teardown의 진짜 원인). #1 속도레버 = EPW식 Wannier |g| q-보간(`stdlib/qforge/wannier_ginterp`, coarse-q → 실공간 g(R) → dense-q 재보간)인데 **단거리 g(R)만 정확** — 자체 g5가 neg-control로 "장거리(극성) g(R)=coarse aliasing→보간 λ 미재현"을 박제(d6 gap). 이게 극성 산화물 후보(Os/Co metal-oxide, magmom k-벽 중첩)에서 레버를 막던 구멍.
+- **hexa-lang PR#3510** — 신규 `stdlib/qforge/wannier_ginterp_polar.hexa` + `..._selftest.hexa`(@ci_gate). EPW 범위분리(Verdi-Giustino, PRL 115 176401): 닫힌형 `g_L(q)`를 보간 전 빼서 잔차 단거리화(정확 보간)→dense q'서 해석적 복원(`qforge_g_to_real_polar`·`qforge_g_at_q_polar`·`qforge_g2_at_q_polar`·`qforge_wann_lambda_dense_polar`).
+- **g5 PASS(검증 출력)** — base gate의 장거리 neg-control fixture 그대로 재사용해 FAIL→PASS 뒤집음: `[plain]` rel-ε=0.679 🔴 → `[polar]` rel-ε=**3.4e-16** 🟢(dense λ 완전재현) · round-trip max|Δ|=5.6e-16 · fix-is-real Δrel=0.68. tune-to-green 아님.
+- **d6 정직 범위**: METHOD(빼기→보간→복원)만 박제. 실셀 `g_L`은 DFPT Born전하 Z*·ε∞ 쌍극자 vertex(포논 provider 공급). 검증물 `state/qforge-wannier-polar/`. QFORGE.md milestones 박제.
+
 ### RTSC LaRu3Si2 4×4×4 q DFPT 발사 — head-to-head 승자 정밀화 (soft모드 artifact vs CDW)
 - 2×2×2 head-to-head 승자 LaRu3Si2를 **4×4×4 q-grid DFPT**로 정밀화: 2×2×2서 physical λ=1.64는 허수모드(soft) 11개를 폐기한 상한이라, 더 촘촘한 q-격자에서 그 허수모드가 **경화(artifact → λ~1.6 신뢰)** vs **잔존(진짜 CDW 불안정)**인지 판별.
 - 덱 `exports/rtsc/decks/laru3si2-444/`(검증된 2×2×2 덱 재사용 + nq=4 한 파라미터 변경 + `recover=.true.` 자가치유 · d19·d_deck_always). summer 무료풀서 SCF + ph.x init **사이징**(irreducible q수 확인) + d16 free dry-run 진행 → q수 확정 후 **d_qforge_parallel** q-분할로 vast ≥100G 병렬 발사(d17·d11 disk sizing; vast 40G는 el-ph 스크래치>40G/q로 ruled out).

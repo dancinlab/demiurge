@@ -4,7 +4,10 @@
 *.log
 build/
 dist/
-state/
+# state/ is the single git-tracked artifact root (commons c5); only machine
+# auto-markers (hexa CLI execution fingerprints) and regenerable venvs are ignored.
+**/state/markers/
+state/mathvenv/
 __pycache__/
 .claude/*
 !.claude/skills/

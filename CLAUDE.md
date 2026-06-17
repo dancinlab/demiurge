@@ -21,7 +21,7 @@ demiurge/
 ├─ exports/            — pipeline output records (chip NoC f1/f2, chain seams, per-domain)
 ├─ PAPER/ · PAPERS/    — generated papers (atlas-atom-gated, one slug per terminal discovery)
 ├─ .discoveries/       — /kick · /gap discovery log tapes (<slug>.tape)
-├─ .verdicts/          — verify-gate verdict records
+├─ state/              — single git-tracked artifact root (commons c5): verdict records, scratch, experiment logs (flat `state/<id>`) — absorbed `.verdicts/` + `scripts/scratch/` 2026-06-18; machine markers `state/markers/` + venvs `state/mathvenv/` gitignored
 ├─ .harness/           — repo-local harness rule configs (enforcement / keywords / severity)
 ├─ .harness-engine/    — dancinlab/harness engine, pinned as a git submodule (harness-hardcore)
 ├─ ARCHITECTURE.json   — architecture SSOT (JSON tree · AI/tool-parse; humans view ARCHITECTURE.html via `python3 serve.py`) — ARCHITECTURE.md 은퇴(2026-06-16 · c4 JSON-트리 채택)
@@ -189,7 +189,7 @@ PAPER auto-generation flow — atlas-as-audit-SSOT lineage (`research result →
 
 - ✅ verify pass → atlas atom direct fold (assumes · recipe · provenance · falsifier meta)
 - ✅ audit index = `hexa atlas dump --json` (per-claim · per-domain · per-group queries)
-- ⛔ CLAIMS.tape · per-domain ledger · attestation JSON · .verdicts mirror · any intermediate index
+- ⛔ CLAIMS.tape · per-domain ledger · attestation JSON · state/ verdict mirror · any intermediate index
 
 ### d_claim_verify — every claim closed by an atlas atom (hexa verify pass · direct fold)
 
@@ -244,7 +244,7 @@ PAPER auto-generation flow — atlas-as-audit-SSOT lineage (`research result →
 
 ### Single-doc discipline
 
-- ✅ architecture goes in `ARCHITECTURE.json` (JSON-tree SSOT · AI/tool-parse; humans view `ARCHITECTURE.html` via `python3 serve.py`); history in `CHANGELOG.md` (append-only); scratch under `scripts/scratch/` — `ARCHITECTURE.md` 은퇴(2026-06-16 · c4 JSON-트리 채택)
+- ✅ architecture goes in `ARCHITECTURE.json` (JSON-tree SSOT · AI/tool-parse; humans view `ARCHITECTURE.html` via `python3 serve.py`); history in `CHANGELOG.md` (append-only); all work artifacts under `state/` (commons c5 · single artifact root) — `ARCHITECTURE.md` 은퇴(2026-06-16 · c4 JSON-트리 채택)
 
 ## Harness
 
@@ -270,7 +270,7 @@ Config lives in **`harness.config.json`** (profile `hardcore`):
 - `lockdown.files` — core source files that emit an L0-edit reminder on change.
 - `lint.changelog` — staged code changes require `CHANGELOG.md` to be staged too.
 - `lint.protectedBranches` — `main` / `master` (no direct commits).
-- `docs` — `architecture=ARCHITECTURE.json`, `log=CHANGELOG.md`, `scratchDir=scripts/scratch`, and `scopeDirs:[""]` (scatter/quickref discipline applies to repo-root `.md` only, so the large research / domain document corpus under subdirectories is exempt).
+- `docs` — `architecture=ARCHITECTURE.json`, `log=CHANGELOG.md`, `scratchDir=state`, and `scopeDirs:[""]` (scatter/quickref discipline applies to repo-root `.md` only, so the large research / domain document corpus under subdirectories is exempt).
 
 The harness hooks are wired into `.claude/settings.json` (PreToolUse / PostToolUse / UserPromptSubmit / SessionStart), each guarded with `[ -x .harness-engine/bin/harness ] && … || true` so the repo stays usable when the submodule is uninitialized.
 

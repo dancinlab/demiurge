@@ -42,7 +42,7 @@
     "enforce": "warn",
     "architecture": "ARCHITECTURE.json",
     "log": "CHANGELOG.md",
-    "scratchDir": "scripts/scratch",
+    "scratchDir": "state",
     "scopeDirs": [
       ""
     ],
