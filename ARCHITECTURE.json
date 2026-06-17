@@ -2806,6 +2806,7 @@
           "⚡ Davidson VᵀHV GPU-GEMM(RTX A5000 실측): n=1024 45.8× · n=2048 61.0× — batch-GEMM이 tensor-roof 열어 K1 단일-GEMV가 못한 win 달성; cuFFT Poisson 6.9-7.8× · Sternheimer GPU-resident parity 3e-16",
           "🔴 H_apply 단일 GEMV GPU-GEMM CLOSED-NEGATIVE 실측(correct-but-not-faster, d6 강제승리 거부, wall Δ<1) · SIMD band-loop CLOSED-NEGATIVE(memory-bound wall 불변, speedup 1.0)",
           "🧮 EPW-Wannier |g| q-interp g5 EXACT(coarse 64→dense 512 rel-ε 1.14e-16) + NEG-ctrl rel-ε 0.64(d6) = dense-DFPT killer #1 · CheFSI/randomized-eig/DIIS-mixing/adaptive-q 전부 docs-bench g5 MATCH",
+          "🧮 POLAR(Fröhlich) Wannier 확장 DONE 2026-06-18(hexa-lang PR#3510, wannier_ginterp_polar.hexa+selftest @ci_gate): EPW 범위분리(Verdi-Giustino PRL115 176401)로 위 NEG-ctrl(장거리 극성 g(R))을 FAIL→PASS 뒤집음 — plain rel-ε 0.679🔴 → polar rel-ε 3.4e-16🟢(dense λ 완전재현)·round-trip 5.6e-16·fix-is-real Δrel 0.68. dense-DFPT killer를 극성 산화물(Os/Co, magmom k-벽 중첩)로 확장. d6: METHOD만 박제, 실셀 g_L=DFPT Z*/ε∞ 쌍극자 vertex. state/qforge-wannier-polar/",
           "🧠 LANE C: differentiable-DFT IFT(no-unroll) adjoint·equivariant GNN trained-equivariant·Δ-ML(35.7× vs linear)·MLIP(force=−∇E autodiff)·active-learning(1.25×)·transfer(58× warm vs cold) 전부 🟢bench-VERIFIED(synthetic target, real-DFT dataset 잔여)"
         ],
         "milestones": {
