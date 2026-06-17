@@ -6,7 +6,11 @@ For the full audit trail, see `git log`.
 
 ---
 
-## 2026-06-17
+## 2026-06-18
+
+### RTSC LaRu3Si2 4×4×4 q DFPT 발사 — head-to-head 승자 정밀화 (soft모드 artifact vs CDW)
+- 2×2×2 head-to-head 승자 LaRu3Si2를 **4×4×4 q-grid DFPT**로 정밀화: 2×2×2서 physical λ=1.64는 허수모드(soft) 11개를 폐기한 상한이라, 더 촘촘한 q-격자에서 그 허수모드가 **경화(artifact → λ~1.6 신뢰)** vs **잔존(진짜 CDW 불안정)**인지 판별.
+- 덱 `exports/rtsc/decks/laru3si2-444/`(검증된 2×2×2 덱 재사용 + nq=4 한 파라미터 변경 + `recover=.true.` 자가치유 · d19·d_deck_always). summer 무료풀서 SCF + ph.x init **사이징**(irreducible q수 확인) + d16 free dry-run 진행 → q수 확정 후 **d_qforge_parallel** q-분할로 vast ≥100G 병렬 발사(d17·d11 disk sizing; vast 40G는 el-ph 스크래치>40G/q로 ruled out).
 
 ### RTSC LaOs3Si2 DFPT el-ph 완주 + LaRu3Si2 head-to-head 확정 (flat-band→λ)
 - LaOs3Si2 2×2×2 DFPT el-ph가 summer 무료풀(915G, vast 40G는 q당 스크래치>40G로 ruled out)에서 **완주**. summer가 동시 RT-NATIVE 경합으로 ~6회 재부팅했으나 **QE `recover=.true.` 자가치유**(`scripts/scratch/laos3si2_vast/summer_q4_resume.sh` + recover 카운트 전진추적 모니터)로 진행 보존하며 완료 — 비용 $0.
