@@ -268,9 +268,31 @@
         "integrations": "KS-SCF driver (scf.hexa) · Sternheimer→force-constant adapter · real Hartree+XC screening kernel (Hartree + LDA x+c, PW92 + PBE-GGA correlation) · metallic real-cell SCF convergence (smearing + Anderson mixing, CaH6 converged true)."
       },
       "migration_gate": {
+        "_role": "QE→QFORGE 전환의 단일 SSOT (consolidated 2026-06-18). Goal = remove the external QE dependency across el-ph→λ→Tc. TWO distinct stages: (1) routing-switch = gate ALL_PASS on the assembled path; (2) full QE replacement = from-scratch native |g| within ≤1% of QE on CaH6·LaH10·Li2MgH16.",
+        "status": "HELD (2026-06-18) — stage-1 (assembler) TRANSITIONED + gate-grade; stage-2 (from-scratch front-end |g|) = CONFIRMED terminal wall. Production candidate λ/Tc runs mode-(b) hybrid.",
+        "boundary": {
+          "transitioned_to_qforge": "The ENTIRE λ/Tc ASSEMBLY is native QFORGE + gate-grade (mode-b): L0 Allen-Dynes/McMillan · L1 Eliashberg(μ*) · L2 a2F moments · L3 α²F double-δ assembler · L4 DFPT dynmat+phonon solver · L5 PW-SCF bricks (3D-FFT·UPF·MP·Davidson·Sternheimer) — all g5-PASS, CaH6 rel-ε 1.65e-7 · LaH10 4.75e-7. Feed QE DFPT |g|² → QFORGE assembler → λ/Tc.",
+          "held_on_qe": "ONLY the DFPT FRONT-END — el-ph |g(k,q,ν)|² + phonons (ph.x DFPT) + nspin=2 magnetic moments. QFORGE's from-scratch screened vertex (mode a/c) is not yet gate-grade.",
+          "routing_rule": "d_qforge_migration_routing — gate anchors finish on QE; QFORGE absorbs each piece ONLY after it passes ≤1% vs QE (d5/d_qforge_fix). QE = honest production reference while HELD, NOT a workaround."
+        },
+        "from_scratch_wall": {
+          "status": "🧱 CONFIRMED terminal (mode-a/c front-end |g| — lane depleted 2026-06-17, re-verified 2026-06-18)",
+          "best_result": "mode-(c) screened vertex R7 λ=4.1518 rel-ε 5.12% (broke past bare 5.47%); ≤1% NOT met.",
+          "levers_exhausted": "R8 GGA f_xc-in-χ CLOSED-NEGATIVE (DFT f_xc lever spent); PBE-SCF regresses; 3-D-PBE vertex via process-split (gga_scf→H checkpoint→2nd process) sidesteps the farr/val-arena heap collision but λ STILL not measurable.",
+          "two_deep_walls": "(1) NUMERICS — 3-D-PBE near-degenerate occupied manifold → Sternheimer projected-CG P_c(H−εₙ)P_c SIGSEGVs on the degenerate block; needs QE-style degenerate-subspace DFPT (non-trivial). (2) COMPUTE — gate-grade ecut n≈645 OOM-kills (~10GB on mini). λ NOT forced (d6 — small-basis energy −11.05→−15.12 Ha n16→n32 unconverged).",
+          "breakthrough_levers": "(a) degenerate-subspace-safe Sternheimer (QE-style shift+deflate the degenerate block) — a hexa-lang DFPT change; (b) converged-basis on a high-RAM GPU pod (OOM=substrate, not ceiling — c16-(c)). Both NAMED, neither conceded (d2/c15).",
+          "record": "state/qforge-cah6-pbe-scf-vertex/VERDICT.md · hexa-lang branch qforge/pbe-scf-vertex (2ae4e7aff process-split, NOT merged·walled)"
+        },
+        "roadmap": [
+          "✅ M1 assembler gate-grade (L0-L5 all g5-PASS, CaH6 1.65e-7) — DONE · stage-1 transitioned",
+          "✅ M2 data-half 3/3 anchors (CaH6·LaH10·Li2MgH16 QE el-ph assembled) — DONE",
+          "🧱 M3 from-scratch screened |g| ≤1% — WALLED (5.12% best · 2 deep walls named)",
+          "⏳ M4 breakthrough either deep wall (degenerate-subspace Sternheimer OR high-RAM pod) → re-measure from-scratch λ vs QE",
+          "⏳ M5 on M4 PASS → stage-2 full QE replacement: QFORGE owns the DFPT front-end too"
+        ],
         "data_half": "3/3 TERMINAL (CaH6 · LaH10 · Li2MgH16 QE el-ph assembled). qforge_migration_gate_test CaH6 rel-ε 1.4e-4 PASS.",
-        "accuracy_half": "front-end QFORGE-own |g| accuracy (independent CaH6 λ=0.18, 24× MISS — screened-vertex gap). Separate end-to-end milestone.",
-        "verdict": "HELD — routing-switch (gate ALL_PASS) and full QE replacement (end-to-end |g| within 1%) are distinct stages."
+        "accuracy_half": "front-end QFORGE-own |g| accuracy (independent CaH6 λ=0.18, 24× MISS — screened-vertex gap). Separate end-to-end milestone (= from_scratch_wall above).",
+        "verdict": "HELD — stage-1 (assembler) transitioned + gate-grade; stage-2 (from-scratch front-end) terminal-walled with 2 named breakthrough levers. Maximal honest migration = mode-(b) hybrid is the QFORGE production path NOW (QE supplies DFPT |g| only)."
       },
       "universal_axis": "Multi-scale extension (atoms · materials · bio · chem · chip · system) on a common core (plane-wave DFT + linear-response DFPT + stdlib/autograd·flame ML) with per-scale front-end + g5 verify-adapter (2026-06-07). materials = DONE (QE el-ph, GATE CLOSED); others new.",
       "fleet_2026_06_16": {
