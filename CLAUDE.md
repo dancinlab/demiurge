@@ -173,6 +173,16 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - ✅ QE 대체는 임시 우회가 아니라 정직한 production reference (d_qforge_parallel·migration gate와 일관) — 결과는 QE-grade로 박제, QFORGE는 게이트 후 absorb
 - ⛔ QFORGE fix가 길다고 캠페인을 멈춰 세우기 · QE 대체만 하고 QFORGE fix를 뒤로 미뤄 잊기 · 바로 고칠 수 있는 걸 우회로 덮기
 
+### d_qforge_migration_routing — QE→QFORGE 전환은 piece-by-piece, 게이트(≤1% vs QE) 통과분만 absorb
+
+> 마이그레이션 SSOT = `ARCHITECTURE.json` QFORGE.migration_gate. 사람은 `QFORGE/QFORGE.md §⭐ ENGINE STATUS`.
+
+- ✅ 전환은 **조각 단위**(per-layer/per-piece) — 각 조각이 QE 대비 **≤1%** 통과(g5 검증)한 뒤에만 QFORGE가 absorb (d5)
+- ✅ **이미 전환됨**: λ/Tc **어셈블리 전체**(L0-L5: Allen-Dynes·Eliashberg·a2F·α²F·DFPT-solver·PW-SCF bricks) = native QFORGE gate-grade(CaH6 1.65e-7) → production = mode-(b) hybrid(QE |g|² → QFORGE assembler)
+- ✅ **QE 잔존(아직)**: DFPT **front-end |g|²** + 포논 + nspin=2 모먼트 — from-scratch 차폐정점(mode a/c)이 게이트 미달이라 HELD
+- ✅ gate anchor는 QE로 마감(정직한 production reference) · 벽은 **분류 후 named 레버로 돌파 시도**(c15·d2) — degenerate-subspace Sternheimer · 고RAM 포드(OOM=substrate)
+- ⛔ from-scratch λ를 4.376으로 강제(tune-to-green·d6) · 게이트 미통과분을 absorbed로 박제 · 벽을 천장으로 조기 확정(단일렌즈 1회 막힘=미완) · 마이그레이션 상태를 흩어진 노드로 방치(SSOT=migration_gate 1곳)
+
 ### d_deck_always — 모든 컴퓨트 입력덱은 `hexa deck`(빌더+검증)을 통과 (필수)
 
 - ✅ DFT/QE el-ph 컴퓨트 입력덱(scf · ph · vc-relax · bands · matdyn 등)은 **항상 `hexa deck`(빌드+검증)** 으로 생성/검증 — 손수 `.in` 작성 금지(이번 세션 손작성 버그 다발: bands verbosity='high' 누락[#k≥100]·원자질량 오기[Os 190.23]·vc-relax 미수렴·d15 SCF aids 누락)

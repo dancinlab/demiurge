@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### QFORGE/QE 마이그레이션 아키텍쳐 통합 관리 + d_qforge_migration_routing 거버넌스 (유저지시)
+- 유저 지시("QFORGE/QE 아키텍쳐 제대로 관리 + 최대한 마이그레이션 성공 + QFORGE 전환")에 따라 흩어져 있던 마이그레이션 상태(honest_standing·modes·migration_gate·fleet lanes·screening_wiring)를 **ARCHITECTURE.json `migration_gate` 단일 SSOT**로 통합: `boundary`(전환됨=L0-L5 어셈블러 전체가 native QFORGE gate-grade[CaH6 1.65e-7] / QE잔존=DFPT front-end |g|²·포논·nspin 모먼트만) · `from_scratch_wall`(2 deep walls + named breakthrough levers) · `roadmap`(M1✅ M2✅ M3🧱 M4⏳ M5⏳) · `routing_rule`.
+- **정직한 전환 상태(c9)**: stage-1(λ/Tc 어셈블리 전체)은 **이미 QFORGE로 전환·gate-grade** = production mode-(b) hybrid. stage-2(from-scratch front-end |g|)는 **확정 terminal 벽** — process-split이 farr/val-arena 힙충돌은 우회했으나 (1)Sternheimer degenerate-subspace SIGSEGV (2)gate-grade ecut OOM 2벽 잔존. 즉 "최대 마이그레이션"=어셈블러 전환 완료, front-end는 M4 레버(degenerate-subspace Sternheimer OR 고RAM 포드)로 돌파 시도.
+- 거버넌스 **`d_qforge_migration_routing`** 신설(CLAUDE.md) — piece-by-piece 전환·≤1% 통과분만 absorb·QE는 정직한 reference·벽은 named 레버로 돌파(c15/d2)·SSOT 1곳 강제.
+- ① process-split 로컬 재실행(P1)은 line298이 이미 박제한 벽을 재실험하던 것이라 중단 + 임시 ~/.hx/src 패치(runtime.h·runtime_core.c) **원복**(공유 RT-NATIVE 툴체인 복원·c10).
+
 ### QFORGE screening 배선 — '인터페이스 불일치' 주장 철회 (c2/c9 정정)
 - 직전(같은 날, PR #669) "screening 배선 인터페이스 불일치, fix 필요" 주장을 **철회**합니다 — 더 깊이 읽으니(`screening_anderson.hexa:132-146`, pw_frontend가 실제 부르는 변형) **FFT-Poisson 배선이 이미 완료**돼 있음: 루프가 `if qpwfft_is_on() { dvscr = qpwfft_dvscr_from_dpsi(states, dpsi_cols) }`로 자체 δψ(`dpsi_all`)를 언팩해 FFT 커널로 라우팅(diagonal은 fallback). 제 오류 = base 변형(`screened_dv.hexa`)+호출부 인자만 보고 `_anderson` 내부 라우팅을 놓침.
 - 즉 screening은 **engage 함**(R7: λ=4.1518·5.12%<bare 5.47%). 진짜 잔여 게이트 갭 = (a)from-scratch PBE-SCF 정확도(f_xc CLOSED-NEGATIVE·SIGSEGV·process-split 필요) (b)converged n=645 OOM — 둘 다 배선 swap보다 어려움. **교훈(c2)**: verify-before-done이 이미 있는 코드의 중복 작성을 막음(실제 호출 변형을 읽어라, sibling 말고). ARCHITECTURE.json mode(c) `screening_wiring` + 메모리 재정정.
