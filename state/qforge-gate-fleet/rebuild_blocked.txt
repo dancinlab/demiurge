@@ -1,0 +1,9 @@
+hexa #3620 로컬화 — self-host 빌드 벽 → release 폴링 전환 (2026-06-19)
+====================================================================
+#3620(989fedd6d·packed-f64 codegen fix)이 막던 QFORGE 3 레인 unblock 전제 = 로컬 hexa.real에 #3620 반영.
+self-host 로컬빌드 시도: rebuild 에이전트 407 tool-use 후 서버 rate-limit 중단·미완.
+  - 빌드경로 tool/selfhost_native_build_gate = "NEUTRAL no promoted self-host slot on this runner"(스왑 바이너리 미생성)
+  - hexa.real→hx-selfhost-cli(8KB dispatch 셰임·#3620 미반영). 백업 pre3620 없음·src 미동기(#3598).
+  → self-host 빌드 = 벽(c9). reliable 경로 = 다음 hexa-lang release(v0.241.6+·#3620포함).
+현 release: v0.241.5=819c091c2(#3616)까지 — #3620 미포함. CI 활발(#3620·3622·3623 흐름) → 다음 release 임박.
+3 레인 상태: 알고리즘 READY+보존(sternheimer PR#696·kgrid k-mesh인프라 PR#3346·phonon-fs PR#3619). release 후 install→재발사로 g5 검증.
