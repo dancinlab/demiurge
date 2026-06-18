@@ -1,0 +1,30 @@
+QFORGE gate-close fleet — phonon-fs R1 (2026-06-19) · ✅ g5 PASS (첫 신규역량)
+=============================================================================
+목표: from-scratch 포논 ω(q,ν) — el-ph 게이트의 마지막 QE 잔존 조각(포논)을 QFORGE-native로.
+
+g5 PASS: qforge_frozen_phonon_selftest 13/13 EXIT=0 (frozen-phonon 유한변위 Γ-포논 프론트엔드).
+  (1) FD Hessian이 Φ 정확복원: H[x0,x0]=2K·H[x0,x1]=−2K·H[x0,y0]=0
+  (2) ω_ac(Γ)=0.0·ω_opt(Γ)=1.73205==√(2K(1/M1+1/M2))=√3 (rel-ε<1e-5)
+  (3) bridge: frozen ω==analytic-DFPT ω(qforge_dynmat/qforge_phonons) 음향·광학 일치
+  (4) ASR 투영기: rigid-translation 열합→0  (5) du-비민감(조화 FD-exact)
+  검증=닫힌형 해석분산(2원자 사슬) 대조·mini 결정론·네트워크無.
+
+신규파일(d4-generic·셀=caller클로저·이름하드코딩0·d19 재사용):
+  stdlib/qforge/frozen_phonon.hexa — qforge_frozen_hessian/qforge_frozen_asr/qforge_frozen_phonons
+  stdlib/qforge/frozen_phonon_selftest.hexa — g5 게이트
+현상매핑(정직): QFORGE 포논코드 이미 상당량(dfpt.hexa qforge_dynmat/phonons g5검증·dfpt_response.hexa
+  qforge_force_constant·realcell_phonon.hexa). 빈칸=이 체인이 실셀로 QE와 대조된 적 없음(CaH6 xval은
+  QE ω²를 입력소비·L3 λ어셈블러만 검증). → 포논 ω는 여전히 QE.
+
+🧱 depletion 2건:
+1. 🧱 실셀 QE head-to-head(CaH6 Γ ω cm⁻¹) 미완 = COMPUTE 벽: frozen-phonon 실셀 ω는 변위기하마다
+   수렴SCF E를 O(dim²)회 호출 → mini PW SCF 고-ecut 비현실적(CoSn Co-3d PW 메모리벽). → 다음=포드잡.
+   QE타깃 박제: fixtures/cah6_elph/cah6.dyn1.elph.1 q=Γ ω²(Ry²) 21모드(음향~4.3e-8·최고광학3.16e-4 Ry²
+   ≈2807K≈1951cm⁻¹). RY2K=157887.51.
+2. 🧱 런타임코어버그(ING #28·cross-module): pub fn이 intra-module + cross-module pub fn 둘다 호출시
+   cross-module callee가 C서 undeclared emit→val-arena garbage tag→"cannot multiply non-numeric(tag1*tag16)".
+   기존 @ci_gate dfpt_response_selftest도 동일실패(내 코드 아님·컴파일러 코어회귀). 회피=caller가 자기모듈서
+   hessian→dynmat→phonons 조립(selftest 이방식·g5 PASS). 래퍼 qforge_frozen_phonons는 codegen fix후 동작.
+   → PR#3617 val-arena 버그와 같은 패밀리(cross-module forward-decl emission facet).
+
+다음라운드: 실셀 CaH6 frozen-phonon ω → QE ω²(Γ) verbatim 대조(rel-ε c2) = 포드잡(💰 비용게이트).
