@@ -8,6 +8,11 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC LaRu3Si2 4×4×4 — 사이징 완료(q=12) + el-ph PRODUCTION 발사 (디스크-안전 q-배치)
+- 사이징 확정: 4×4×4 그리드 **irreducible q-points = 12**(copy-from으로 truncation 우회 추출). SCF 완료·ph.x init 통과.
+- production 발사: vast 41411431(384코어·113G)서 `run_prod.sh` — el-ph scratch ~41G/q라 12q×41G=492G≫113G 디스크벽 → **2q 배치 + 배치간 `out/_ph0` 정리(elph.inp_lambda.<q>+dyn 저장 후)·recover=.true.** 로 디스크-안전 완주. self-guard(stale ph.x kill+_ph0 clean at launch). BATCH q1-2 가동(NP=64).
+- 전송 truncation 교훈: 인라인 `nohup …&` one-liner는 flaky 프록시에 잘려 발사 실패 → **짧은 `bash launch.sh`** 전송이 견고(+copy-from 파일전송이 인라인 grep보다 안정). 머지한 cloud 무결성 가드(#3552)의 실증. follow-up: q-배치 el-ph 러너 hexa deck 박제(d_deck_always).
+
 ### RTSC 4×4×4 — bzip2 fix 통함(pw.x 설치) + GUARD-2 false-negative 정정 (c2)
 - bzip2 보장 fix가 통해 micromamba 2.8.1 + qe env(pw.x·ph.x) **실제 설치 성공**. 단 fail-loud GUARD-2가 `pw.x -h`로 검증 → QE 바이너리엔 `-h` 도움말 플래그가 없어 비-0 종료 → 멀쩡한 설치를 "QE SETUP FAILED"로 오판(false-negative). fix=검증을 `which pw.x`(존재확인·exit0)로 교체 + env create 멱등(이미 있으면 skip). 재실행 → "QE SETUP DONE" 정직 출력 확인. 사이징 발사.
 
