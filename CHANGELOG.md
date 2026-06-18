@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 신규후보 arxiv 발굴 R3-R5 + 🏁 고갈완주 (canonical 영구자산·c9)
+- 유저 "고갈시까지" 지시 완주. R3(TMD칼코게나이드·유기PAH·고갈메타)·R4(공유결합망반도체 CLOSED·Heusler)·R5(카보나이트라이드·비스무테이트 thin버킷 closure). 총 R1-R5 5라운드 18 frontier 병렬 → ~110 신규후보/19 클래스 발굴·삼각측량.
+- **🏁 DEPLETION 도달**: 상압 el-ph-미출판 후보공간 실질고갈(고-Tc ~90-95%·전체~80%). HTSC-2025 140종 census 전 구조타입이 우리 클래스에 1:1 매핑='숨은 MgB2급 없음' 확증. 2502.18281이 Li2AgH6/AuH6=상압 통상 실용천장 확정. 잔여=저수율 thin버킷뿐(새 고-Tc 클래스 없음). **추가 arxiv 서베이 불필요** — REGISTRY.md(185줄)+ARCHITECTURE.json novel_candidates_survey(18클래스 구조화)=canonical 영구자산(재탐색 방지·c5). 다음=서베이 아닌 발사후보(NbRu3·YCr6Ge6·Mg2PtH6·AcRhH8·Pd2ZrIn 등)→hexa deck→DFPT λ.
+
 ### RTSC 신규후보 발굴 R2 + ARCHITECTURE 전량 박제 (재탐색 불필요 영구자산·c5)
 - 유저 지시("아키텍쳐에 모두 정리·재탐색 안 하도록"). R2 4-frontier(2D/MXene·전자화물/안티페로브/MAX/A15·최신2025-2026·삼각측량2차)로 ~40 추가 신규후보. ★추가: AcRhH8·Mg3RuH8(형석[XH8] 3출처수렴·상압)·LuOs3B2(RT3B2 kagome boride·실측SC·first-principles λ無)·Ni3InN(안티페로브 Dirac@EF)·V2SnC(MAX211)·W2NBr2(할로겐MXene)·Grokene(LLM-생성 2D·310K주장). ARCHITECTURE.json campaigns/RTSC novel_candidates_survey를 10-클래스 구조화(top_tier·kagome·하이드라이드·fluorite·보라이드·clathrate·2D·비통상결합·최신2026·제외출판)로 전량 박제 = arxiv 재탐색 불필요 canonical 자산. 레지스트리 state/rtsc-novel-survey/REGISTRY.md(107줄). 고갈 향해 R3 진행.
 

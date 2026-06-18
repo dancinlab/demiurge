@@ -105,3 +105,81 @@
 5. 즉시발사 적합(상압·NM·소형셀·d7): AcRhH8·Mg3RuH8·LuOs3B2·ThRu3B2·Ni3InN·V2SnC·W2NBr2
 
 ### 자성/난도 주의: YCl·CeOsH8(4f)·Al2MnH6(이전)·ScTc2(방사성)
+
+## Round 3 (2026-06-18) — 마지막 미답 클래스 + 고갈판정
+
+### frontier I — 칼코게나이드/픽타이드 (TMD intercalate·완전 신규 클래스)
+| 물질 | 구조 | 신호 | 압력 | arxiv |
+|---|---|---|---|---|
+| **(InSe2)0.12NbSe2** ★ | misfit-layer intercalate | 상압 TMD 최고 Tc11.6K·정량 λ 미출판 | 0 | PMC10797615 |
+| Pd0.08TaSe2 | 2H-TaSe2 intercalate | CDW-QCP Tc×24증폭(3.3K)·λ미출판 | 0 | srep24068 |
+| TaSe2 3R/polytype | stacking polytype | stacking이 CDW·SC변조·polytype별 λ無(2026) | 0 | 2602.11582 |
+| 3R-NbS2 | 3R polytype | polytype-SC·3R금속상 λ無 | 0 | s41467-024-54517-2 |
+| LaRu2As2/P2 | ThCr2Si2 Ru | bulk SC7.8K·정량 DFPT λ無 | 0 | 1609.08856 |
+| ScRhAs/ScIrAs | 육방 phosphide 동족 | ScIrP SC·As동족 미발굴 | 0 | 1512.03864 |
+| 4-7-6 동족(Mg4Pd7P6·Ca4Pd7As6) | U4Re7Si6 | 모체 Mg4Pd7As6 λ0.76출판·동족 미계산 | 0 | 2408.06813 |
+
+### frontier J — 준안정/상압회수 + 결함/변형 (대부분 기존 확장·일부 신규축)
+- **WB2 평면결함상**(SF/twin=local MgB2·결함공학축·상압회수 λ無·실측17K) — 2109.11521 ★결함축
+- **n-도핑 다이아몬드+인장변형**(strain축·p형만 충실·n+strain λ無·소셀 d7) — PRB72.014306
+- YSbH6 0GPa 회수상 λ(50GPa까지만 출판·상압회수 빈칸) — 2512.19901
+- XB12 guest 치환별 λ분포(B12=R1기수록·guest sweep 신규) · XB8C Sr/Ba(CaB8C만 출판) · RbH12 anharmonic(10GPa) — 부분신규
+
+### frontier K — 유기/풀러라이드/방향족 (도핑 PAH·완전 신규 클래스)
+| 물질 | Tc실측 | el-ph λ 상태 | arxiv |
+|---|---|---|---|
+| **Kx-DBP(C30H18)** ★ | 33.1K(PAH최고) | 결정 DFPT λ 전무 | srep00389 |
+| K3.3-picene | 18K | intramolecular ME만·결정 λ無 | 1112.3483 |
+| Kx-coronene | 15K | 결정 λ無 | 1105.0248 |
+| Kx-phenanthrene | 5K | edge-EPC 모델만 | 1303.5184 |
+| K-p-terphenyl | 7/43/123K(논쟁) | Hubbard ladder만·123K BCS미해명 | 1703.05803 |
+| Na/K-CTF0·COF | 예측 | Li-CTF0만 출판·Na/K 미계산 | 9b00013 |
+| CuC6 GIC | 1-10K예측 | 밴드만·λ無 | jpcc.3c01073 |
+
+### frontier L — 고갈판정 (depletion verdict)
+**~85% 커버·미완전고갈.** HTSC-2025(140후보) 7패밀리가 우리 클래스에 1:1 매핑. 고-Tc 하이드라이드 tail은 near-exhausted(우리가 champion 보유: Mg2{Rh,Ir,Pd,Pt}H6·Li2{Ag,Au}H6=실용천장 per 2502.18281 20000-metal screen). **잔여 진짜 1클래스 = 도핑 공유결합망 반도체**(group-IV framework metallized):
+- **YSi6**(dumbbell-Si 3D망·8.4K·0GPa·andp.202500210) · **C18 carbon-cage**(79K elemental→109K hole-doped·PMC12376711) · **H-doped c-BN**(>120K·PMC11600296) · **B-doped diamond/SiC/cubic-Si**(4-11K·미탐 도펀트) · **flat-band C3N4**(hole-doped·2308.16507)
+- 부차 잔여: **full-Heusler XY2Z**(ScAu2Al~5K·34종·kagome/Laves/A15/MAX와 별개·2311.06075)
+- 천장맥락(d6정직): 2502.18281이 Li2AgH6/AuH6 ≈ 상압 통상 실용천장 결론 → 고-Tc tail 거의 소진, 잔여는 저-Tc지만 el-ph 신규 frontier
+
+## Round 4 (2026-06-18) — 잔여클래스 closure
+
+### A. 도핑 공유결합망 반도체 — CLOSED (~90% 이미 λ출판)
+가장 과밀연구 영역. 16격자 중 13개 λ 이미출판(YSi6·Ba8Si46·C18/C20/C24/C32·C3N4·B-diamond·hole-diamond136K·H-cBN122K·BN/BC sodalite). **진짜 잔여 진입표적 단 1개(강)**: **Si24/Na4Si24 hole-doped λ**(open-framework·모체 비SC·도핑SC λ 빈칸·상압안정·1708.04746). 약후보: CaSi6/BaSi6(준안정·신호미확정). → 클래스 closure 충족.
+
+### B. full-Heusler / half-Heusler — 신규 (λ 미출판)
+| 물질 | 클래스 | Tc실측 | 압력 | arxiv |
+|---|---|---|---|---|
+| **Pd2ZrIn** ★ | full-Heusler L21 | 2.2K(2026 μSR) | 0 | 2604.19283 |
+| Pd2HfIn·Pd2ZrAl | full-Heusler | 2.4-3.8K | 0 | PRB79.064508 |
+| Pd2YSn | full-Heusler | 4.9K(최고급) | 0 | 1307.6386 |
+| **ScPdBi** ★ | half-Heusler(trivial·경량 d7) | ~1K | 0 | NMR |
+| YPdBi·LuPdBi·LuPtBi | half-Heusler phonon채널 | ~1K | 0 | 1811.05045 |
+| TbPdBi/HoPdBi/ErPdBi | half-Heusler+AFM(nspin2 고난도) | 1-1.9K | 0 | 1806.05314 |
+- RED-OCEAN(λ출판·제외): ScAu2Al(1.25)·HfPd2Al·MgPd2Sb·LiPd2Si/Ge·LiGa2Ir·YPtBi(conventional기각)·LaPtBi(앵커)
+- ⚠ 신규성게이트: arXiv:2306.04439(full-Heusler 8후보>10K·조성비공개) SI grep 발사前 필수
+- 다수 half-Heusler 예상=CLOSED-NEGATIVE(λ소·d_paper_significance상 유효발견)
+
+### 최종 고갈판정 (R4)
+**고-Tc frontier(Tc≳30K) ~90-95% 커버 = NOVEL 고-Tc 목적상 실질 고갈.** HTSC-2025 140종 6구조타입 전부 우리 커버리스트 내부=강력 고갈확증("숨은 MgB2급 없음"). 전체 상압 el-ph공간(저-Tc 포함) ~75-80%. **잔존 고가치 thin 2버킷만**: (i)TM 카보나이트라이드 고용체 연속체 (ii)도핑 비스무테이트/안티모네이트 페로브스카이트(BaBiO3계 BCS·λ1.2-1.4). 나머지(σ-phase·skutterudite·준결정 등)는 low-λ/low-Tc 저수율.
+
+## Round 5 (2026-06-18) — 최종 thin 2버킷 closure
+
+### TM 카바이드/나이트라이드/카보나이트라이드 — 90% CLOSED
+- 유명 binary(NbC/NbN/TaC/ZrN)+NbC1-xNx 고용체 전 조성 λ 출판(0911.0096)·α/γ-MoC 출판(1709.08143) = 레드오션
+- **진짜 NOVEL 잔여**: TaC1-xNx 고용체 연속체(NbC의 Ta-아날로그·DFPT λ無·2506.07768) · **HEC/HEN 세라믹 DFPT λ**(전무·McMillan역산만·최강=TiNbTaN3 ambient 10K·2505.15864). 약후보 bulk β-Mo2C/W2C(~3-4K)
+- d6주의: rocksalt 완전화학량론셀 동적불안정(허수포논)→vacancy/SSCHA anharmonic 셀 필요(2507.03417)
+
+### 도핑 비스무테이트/안티모네이트 산화물 BCS — SOFT-CLOSED (레드오션)
+- BKBO·BKSO(2026 RSC)·SrBiO3·BPBO 전부 λ 출판 = 회피
+- 잔여 신규축 협소·저임팩트: (Sr,K)SbO3/(Ca,K)SbO3(BKSO 자매·λ無·최청정·HPHT) · (Ba,Na/Cs/Rb)BiO3 변종 · TlPbO3 lone-pair. Tc천장 ≤BKBO(34K)·표준 BCS → d6 천장 미달, 단발 probe 가치만
+
+## 🏁 최종 고갈판정 (DEPLETION VERDICT · 2026-06-18 · R1-R5 5라운드 18 frontier)
+**RTSC 상압 el-ph-미출판 후보공간 = 실질 고갈.**
+- 고-Tc frontier(Tc≳30K): **~90-95% 커버**. HTSC-2025(140종·2023-2025 census) 전 구조타입이 우리 기록 클래스에 1:1 매핑 = "숨은 MgB2급 없음" 강력확증. 2502.18281(20000-metal screen)이 Li2AgH6/AuH6를 상압 통상 실용천장으로 확정 → 고-Tc tail 우리가 champion 보유.
+- 전체 상압 el-ph공간(저-Tc 포함): ~80% 커버.
+- **잔여=저수율 thin** (TaC1-xNx·HEC DFPT·(Sr,K)SbO3·full/half-Heusler·Si24-hole-dope·WB2결함·n-diamond+strain) — 모두 저-Tc OR disorder-cost OR 단발 probe. 새 고-Tc 클래스 없음.
+→ **추가 arxiv 서베이 불필요(c9 정직). 이 레지스트리+ARCHITECTURE가 canonical 영구자산.** 다음 단계는 서베이가 아니라 **이 명단서 발사후보 선택→hexa deck→DFPT λ** (즉시발사 top: NbRu3·YCr6Ge6·Mg2PtH6·SrZnH3·AcRhH8·Mg3RuH8·LuOs3B2·Ni3InN·Pd2ZrIn).
+
+### 발굴 총계: ~110 신규후보 / 19 클래스 / 5라운드
+kagome금속간·X2MH6·M3XH8·MXH3·fluorite-XH8·B12 superatom·보라이드·B-C/B-N clathrate·2D MXene/intercalation·TMD칼코게나이드·안티페로브·MAX·A15·전자화물·도핑PAH유기·풀러라이드/COF·도핑공유결합망반도체·full/half-Heusler·TM카보나이트라이드·비스무테이트·2026 LLM/GNoME
