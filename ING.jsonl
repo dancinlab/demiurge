@@ -49,3 +49,4 @@
 {"kind":"work","id":"34","ts":"2026-06-18T11:29:34.886Z","text":"RTSC 발사후보 SrZnH3 (MXH3 perovskite·종합4.2 최고): 이유=Tc107K listed 고Tc인데 사촌 SrAuH3만 논문독점·Zn멤버 미계산=신규+고Tc, 아주 작은 페로브스카이트셀·NM·상압=발사용이★5 가성비甲. 리스크=d6 동적안정 사전체크. arxiv 2506.03837·PRB111.134509"}
 {"kind":"work","id":"35","ts":"2026-06-18T11:29:36.797Z","text":"RTSC 발사후보 AcRhH8 (fluorite XH8·종합4.0): 이유=3출처 수렴(Adv.Sci·2507.19768·HTSC2025)=삼각측량 신뢰★5, 상압안정 Tc78K, 사촌 BaRhH8만 계산되고 Ac멤버 개별 λ無. NM·소셀(8-12원자). arxiv PMC12667446·2507.19768"}
 {"kind":"work","id":"36","ts":"2026-06-18T11:29:38.806Z","text":"RTSC 발사후보 Mg3RuH8 (M3XH8 fluorite·종합3.6): 이유=Mg3OsH8★(73K) 패밀리의 4d-Ru 자매, 29-stable family 중 Os만 Tc명시되고 Ru멤버 개별 λ無=빈칸. 상압·NM·소셀. arxiv 5c00513"}
+{"kind":"work","id":"37","ts":"2026-06-18T11:29:40.783Z","text":"RTSC 발사후보 LuOs3B2 (RT3B2 kagome boride·종합3.8): 이유=실측 SC Tc4.6K(패밀리 최고)인데 first-principles α²F/λ가 패밀리 전체 미출판(실험추정 λ만)=신규성★5+측정앵커, NM·상압·안정구조(d6 리스크 낮음). arxiv 2504.16412·2507.04693"}
