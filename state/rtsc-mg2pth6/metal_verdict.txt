@@ -17,3 +17,9 @@ deck: hexa deck x2mh6_antifluorite (hexa-lang PR#3603), ecut 60/600, k 12³ scf 
 참고: DOS(E_F) 1.61/cell = moderate(거대하지 않음) → moderate-coupling SC 예상.
 
 비용: $0 (summer 무료). 다음=el-ph DFPT(유료 GPU·~1-3일·d_qforge_parallel).
+
+=== vc-relax 완화 (2026-06-19, summer 무료·c2) ===
+bfgs 수렴(7 scf cycles·6 bfgs steps)·Total force=0.000076·P≈-0.13kbar
+셀: 12.585→12.410 bohr (a 6.66→6.57Å·~1.4% 수축)
+H 8면체: x 0.24→0.27278 (Pt-H 결합 완화)·Mg ¼¼¼/¾¾¾ 유지·Pt origin
+Final enthalpy=-1293.30 Ry. 다음=d6 동적안정(2×2×2 phonon-only).
