@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### 트러블슈팅 재발방지 원칙 + hexa cloud·deck 가드 (CLAUDE.md 최상위 박제)
+- 유저 지시로 CLAUDE.md **최상위에 원칙 박제**: 트러블슈팅은 손으로 우회하지 말고 그 예방 가드를 `hexa cloud`(포드·클라우드 레이어)·`hexa deck`(입력덱·런스크립트 레이어)에 코드로 박아 재발 0 (self-improving 도구 SSOT; d_deck_always[덱]+이 원칙[cloud] 한 쌍). c17대로 응용층=격리 worktree 직접fix→pr-cycle, 컴파일/런타임 코어=ING 인계.
+- 이번 세션 트러블슈팅 2건을 가드로 박제(hexa-lang PR #3547): (1) `hexa cloud rm` 비대화식 [y/N] EOF→조용한 cancel로 포드 생존+과금 누수 → LOUD "still alive+billing, --force 재실행" (2) `hexa deck` rtsc env `conda activate qe` 고정→micromamba 포드 마찰 → conda OR micromamba 자동감지. deck JIT 빌드+emit 검증, cloud 소스(재빌드는 f64 툴체인 대기).
+
 ### RTSC LaRu3Si2 4×4×4 사이징 — flaky 포드 교체 + 포그라운드 캡처 (v2)
 - vast 41382613이 세션 내내 SCF 무출력(scf.out 빈 채)·flaky 전송으로 진척 0 → `hexa cloud rm --force`로 destroy(과금정지). 근본추정: 자가-detach 사이징(`setup_sizing_vast.sh`)이 빈 sizing.log를 남겨 진짜 에러가 안 보였음.
 - 새 포드 vast 41411431(ssh4·≥120G·@demiurge) + **포그라운드 캡처 사이징**(`sizing_fg.sh` — 자가detach 제거, SCF/ph.x를 동기 실행해 출력 직접 캡처) 도입 → 다음 실패 시 진짜 에러 가시화. 체인 모니터 bpduy69ui(QE완료→fg사이징→q-list).
