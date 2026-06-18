@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### ARCHITECTURE.json — 평면/섹션 스키마 → 진짜 `children` 트리 (commons c4)
+- 기존 ARCHITECTURE.json은 c4가 금지하는 평면/섹션형(top-level `nodes`/`engines`/`campaigns`/`results_index`/`domains`/`governance`/`data_flow`…)이었고, 30여 셀이 ` · `/줄바꿈으로 다수 사실을 한 칸에 쌓아둠. → 무손실 **재구조화**: root 노드(`id:demiurge`·`role`·`updated`·`ssot_note`)+`children` 계층으로 변환. 각 top-level 섹션=자식 노드, 그 내용은 다시 자식으로 중첩; `· `로 이어붙인 긴 셀은 항목당 한 자식(`_join`에 원래 구분자 보존해 무손실 재결합 가능).
+- 무손실 검증: 원본 leaf 문자열 2714개 == 트리 leaf 2714개(verbatim, 누락·추가 0). dict-노드 377→3602, >250자 셀 32→26(나머지 26은 구분자(` · `/newline) 없는 단일-사실 산문 leaf — 문장 중간을 쪼개면 구조 날조라 분할 안 함). 최대깊이 15.
+- 결과/도메인 보존: RTSC 4분기·MATH-SPECTRA·SENOLYX 라운드·QFORGE 엔진/모드/fleet·results_index 포인터·domains 144 entries 전부 트리 노드로 보존.
+- ARCHITECTURE.html 뷰어를 범용 재귀 트리 렌더러로 교체(섹션-하드코딩 제거·`id`/`role`/`children`/`_join` 처리) → `python3 serve.py` 그대로 렌더 가능. `python3 -m json.tool` 통과.
+
 ### RTSC 4×4×4 el-ph — 멀티포드 q-분할 (d_qforge_parallel·walltime 절반)
 - 단일포드 walltime이 며칠로 드러나(el-ph 'simple'이 16³ k-격자를 매 DFPT-iter 재계산·~628s/iter) 유저 승인 후 멀티포드 분할: pod1(41411431)=q1-6, pod2(41453344 신규 ≥130G)=q7-12. 둘 다 NP=192+npool6, 2q-배치+배치간 _ph0 정리(디스크-안전).
 - SCF 공유: 838M `.save`+wfc를 GB로 flaky 프록시 통해 나르는 대신 **pod2 자체 SCF 재생성**(결정론적·수분 vs el-ph 시간단위라 무시가능, 전송 실패 리스크 0). pod2 부트스트랩=새 bzip2/fail-loud 가드(#3548)로 깔끔하게 QE SETUP DONE(거짓-DONE 0). pod2_run.sh(SCF→run_prod 7 12)+pod2_launch.sh(짧은 detached 발사). launch.sh q-범위 인자화.

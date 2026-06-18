@@ -83,34 +83,10 @@
 const el = (t, c, txt) => { const e = document.createElement(t); if (c) e.className = c; if (txt != null) e.textContent = txt; return e; };
 const esc = s => (s == null ? "" : String(s));
 
-function renderPipeline(steps, note) {
-  const sec = el("section");
-  sec.appendChild(el("h2", null, "Pipeline (7-verb generic dispatch)"));
-  const bar = el("div", "pipeline");
-  steps.forEach((s, i) => {
-    bar.appendChild(el("span", "step", s));
-    if (i < steps.length - 1) bar.appendChild(el("span", "arrow", "→"));
-  });
-  sec.appendChild(bar);
-  if (note) sec.appendChild(el("div", "note", note));
-  return sec;
-}
-
-function renderMetaChain(mc) {
-  if (!mc) return null;
-  const sec = el("section");
-  sec.appendChild(el("h2", null, "Meta-conductor chain"));
-  const bar = el("div", "pipeline");
-  mc.chain.forEach((p, i) => {
-    const step = el("span", "step", p.pass);
-    step.title = (p.kind || "") + (p.seam_out ? "  ▸ " + p.seam_out : "");
-    bar.appendChild(step);
-    if (i < mc.chain.length - 1) bar.appendChild(el("span", "arrow", "──▶"));
-  });
-  sec.appendChild(bar);
-  if (mc.note) sec.appendChild(el("div", "note", mc.note));
-  return sec;
-}
+// Generic recursive tree node renderer for the c4 root+children hierarchy.
+// A node is { id, role?, children?, _join?, ...other scalar attrs }.
+// Any scalar field other than id/role/_join is shown inline as "key: value".
+const META = { id: 1, role: 1, children: 1, _join: 1 };
 
 function makeNode(n) {
   const li = el("li", "node");
@@ -119,7 +95,15 @@ function makeNode(n) {
   row.appendChild(el("span", "toggle", hasKids ? "▾" : "·"));
   row.appendChild(el("span", "nid", esc(n.id)));
   if (n.path) row.appendChild(el("span", "npath", esc(n.path)));
-  row.appendChild(el("span", "nrole", "— " + esc(n.role)));
+  if (n.role != null && n.role !== "") row.appendChild(el("span", "nrole", "— " + esc(n.role)));
+  // surface any extra scalar attributes (e.g. _join, or legacy fields) inline
+  Object.keys(n).forEach(k => {
+    if (META[k] || k === "path") return;
+    const v = n[k];
+    if (v == null || typeof v === "object") return;
+    if (k === "_join") return; // join hint is structural, not display content
+    row.appendChild(el("span", "small", "  " + k + "=" + esc(v)));
+  });
   li.appendChild(row);
   if (hasKids) {
     const ul = el("ul");
@@ -133,172 +117,24 @@ function makeNode(n) {
   return li;
 }
 
-function renderTree(nodes) {
+function renderTree(root) {
   const sec = el("section");
-  sec.appendChild(el("h2", null, "Component tree (click to collapse/expand)"));
+  sec.appendChild(el("h2", null, "Architecture tree (click to collapse/expand)"));
   const ul = el("ul", "tree");
-  nodes.forEach(n => ul.appendChild(makeNode(n)));
+  (root.children || []).forEach(n => ul.appendChild(makeNode(n)));
   sec.appendChild(ul);
-  return sec;
-}
-
-function renderList(heading, items, fmt) {
-  if (!items || !items.length) return null;
-  const sec = el("section");
-  sec.appendChild(el("h2", null, heading));
-  const ul = el("ul", "tree");
-  items.forEach(it => {
-    const li = el("li", "node");
-    li.appendChild(el("div", "row", fmt(it)));
-    ul.appendChild(li);
-  });
-  sec.appendChild(ul);
-  return sec;
-}
-
-function renderEngines(engines) {
-  const sec = el("section");
-  sec.appendChild(el("h2", null, "Engines"));
-  const grid = el("div", "grid");
-  Object.entries(engines).forEach(([key, e]) => {
-    const card = el("div", "card");
-    card.appendChild(el("h3", null, (e.icon ? e.icon + " " : "") + (e.name || key)));
-    if (e.goal) card.appendChild(el("div", "sub", e.goal));
-    if (e.role) card.appendChild(el("div", "sub", e.role));
-    if (e.honest_standing) { const k = el("div", "kv"); k.appendChild(el("span", "k", "standing: ")); k.appendChild(document.createTextNode(e.honest_standing)); card.appendChild(k); }
-    if (e.production_prereq) { const k = el("div", "kv"); k.appendChild(el("span", "k", "prereq: ")); k.appendChild(document.createTextNode(e.production_prereq)); card.appendChild(k); }
-    if (e.modes) e.modes.forEach(m => {
-      const md = el("div", "mode " + m.id);
-      const h = el("h4");
-      h.appendChild(el("span", "badge", "mode " + m.id));
-      h.appendChild(document.createTextNode(" " + m.title));
-      md.appendChild(h);
-      md.appendChild(el("div", "verdict", m.status));
-      if (m.what) md.appendChild(el("div", null, m.what));
-      if (m.accuracy) md.appendChild(el("div", "small", "accuracy: " + m.accuracy));
-      if (m.use) md.appendChild(el("div", "small", "use: " + m.use));
-      if (m.honest_scope) md.appendChild(el("div", "small", "scope: " + m.honest_scope));
-      if (m.frontier) md.appendChild(el("div", "small", "frontier: " + m.frontier));
-      if (m.gate) md.appendChild(el("div", "small", "gate: " + m.gate));
-      if (m.bricks) md.appendChild(el("div", "small", "bricks: " + m.bricks));
-      if (m.wall) md.appendChild(el("div", "small", "wall: " + m.wall));
-      card.appendChild(md);
-    });
-    if (e.migration_gate) {
-      const k = el("div", "kv"); k.appendChild(el("span", "k", "migration gate: "));
-      k.appendChild(document.createTextNode(e.migration_gate.verdict || ""));
-      card.appendChild(k);
-      ["data_half","accuracy_half"].forEach(f => { if (e.migration_gate[f]) card.appendChild(el("div","small", f + ": " + e.migration_gate[f])); });
-    }
-    if (e.layers) {
-      const k = el("div", "kv"); k.appendChild(el("span","k","layers: "));
-      card.appendChild(k);
-      Object.entries(e.layers).forEach(([lk, lv]) => { if (lk !== "note") card.appendChild(el("div","small", lk + ": " + lv)); });
-    }
-    if (e.universal_axis) card.appendChild(el("div","small","universal axis: " + e.universal_axis));
-    if (e.fleet_2026_06_16 && e.fleet_2026_06_16.lanes) {
-      const fk = el("div","kv"); fk.appendChild(el("span","k","fleet 2026-06-16: ")); fk.appendChild(document.createTextNode("migration gate " + (e.fleet_2026_06_16.migration_gate || ""))); card.appendChild(fk);
-      e.fleet_2026_06_16.lanes.forEach(l => { const d = el("div","small"); d.innerHTML = "<b>" + esc(l.title) + "</b> " + esc(l.status) + " — " + esc(l.detail || ""); card.appendChild(d); if (l.honest_floor) card.appendChild(el("div","small","  floor: " + l.honest_floor)); });
-    }
-    grid.appendChild(card);
-  });
-  sec.appendChild(grid);
-  return sec;
-}
-
-function renderCampaigns(camps) {
-  const sec = el("section");
-  sec.appendChild(el("h2", null, "Campaigns"));
-  const grid = el("div", "grid");
-  Object.entries(camps).forEach(([key, c]) => {
-    const card = el("div", "card");
-    card.appendChild(el("h3", null, c.name || key));
-    if (c.frontier_date) card.appendChild(el("div", "sub", "frontier: " + c.frontier_date + (c.engine ? "  ·  engine: " + c.engine : "")));
-    if (c.question) card.appendChild(el("div", null, c.question));
-    if (c.branches) Object.values(c.branches).forEach(b => {
-      const md = el("div", "mode");
-      md.appendChild(el("h4", null, b.title));
-      (b.winners || []).forEach(w => { const d = el("div","small"); d.innerHTML = "<b>" + esc(w.host) + "</b> " + esc(w.verdict) + " — " + esc(w.detail || ""); md.appendChild(d); });
-      (b.falsified || []).forEach(w => { const d = el("div","small"); d.innerHTML = "<b>" + esc(w.host) + "</b> " + esc(w.verdict) + (w.detail ? " — " + esc(w.detail) : ""); md.appendChild(d); });
-      if (b.triangulation) Object.entries(b.triangulation).forEach(([tk,tv]) => md.appendChild(el("div","small", tk + ": " + tv)));
-      if (b.in_flight) md.appendChild(el("div","small","in-flight: " + b.in_flight));
-      if (b.anchors) md.appendChild(el("div","small","anchors: " + b.anchors));
-      if (b.qforge_fs_lane) md.appendChild(el("div","small","QFORGE-fs lane: " + b.qforge_fs_lane));
-      if (b.verdict) md.appendChild(el("div","small","verdict: " + b.verdict));
-      if (b.note) md.appendChild(el("div","small", b.note));
-      card.appendChild(md);
-    });
-    if (c.findings) { const md = el("div","mode"); Object.entries(c.findings).forEach(([fk,fv]) => md.appendChild(el("div","small", fk + ": " + fv))); card.appendChild(md); }
-    if (c.scope) card.appendChild(el("div","small","scope: " + c.scope));
-    if (c.ledger) card.appendChild(el("div","small","ledger: " + c.ledger));
-    grid.appendChild(card);
-  });
-  sec.appendChild(grid);
-  return sec;
-}
-
-function renderResultsIndex(ri) {
-  const sec = el("section");
-  sec.appendChild(el("h2", null, "Results index (finding → raw record)"));
-  if (ri.note) sec.appendChild(el("div","sub", ri.note));
-  function walk(obj, depth) {
-    const wrap = el("div");
-    Object.entries(obj).forEach(([k, v]) => {
-      if (k === "note") return;
-      if (typeof v === "string") {
-        const r = el("div", "kv"); r.style.marginLeft = (depth*14) + "px";
-        r.appendChild(el("span","nid", k + ": ")); r.appendChild(document.createTextNode(v));
-        wrap.appendChild(r);
-      } else if (v && typeof v === "object") {
-        const h = el("div","small"); h.style.marginLeft = (depth*14) + "px"; h.innerHTML = "<b>" + esc(k) + "</b>";
-        wrap.appendChild(h); wrap.appendChild(walk(v, depth+1));
-      }
-    });
-    return wrap;
-  }
-  sec.appendChild(walk(ri, 0));
-  return sec;
-}
-
-function renderDomains(dom) {
-  const sec = el("section");
-  sec.appendChild(el("h2", null, "Domains (" + (dom.count || (dom.entries||[]).length) + " — folded from domains/*.md)"));
-  if (dom.note) sec.appendChild(el("div","sub", dom.note));
-  (dom.entries || []).forEach(e => {
-    const card = el("div","kv"); card.style.margin = "6px 0"; card.style.paddingLeft = "4px";
-    const head = el("div"); head.innerHTML = "<b>" + esc(e.status || "") + " " + esc(e.id) + "</b>"
-      + (e.alias ? " <span class='sub'>" + esc(e.alias) + "</span>" : "");
-    card.appendChild(head);
-    if (e.goal) card.appendChild(el("div","small", esc(e.goal)));
-    const m = e.milestones || {};
-    if (m.total) card.appendChild(el("div","small", "milestones " + (m.done||0) + "/" + m.total
-      + (m.open && m.open.length ? "  · open: " + esc(m.open.join(" · ")) : "")));
-    (e.key_verdicts || []).forEach(v => { const r = el("div","small"); r.style.marginLeft="12px"; r.textContent = "• " + v; card.appendChild(r); });
-    if (e.notes) card.appendChild(el("div","sub", esc(e.notes)));
-    sec.appendChild(card);
-  });
   return sec;
 }
 
 fetch('./ARCHITECTURE.json')
   .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
   .then(d => {
-    document.getElementById("title").textContent = d.title || "demiurge — Architecture";
+    document.getElementById("title").textContent = d.role || d.title || "demiurge — Architecture";
     const meta = document.getElementById("meta");
     meta.innerHTML = "<b>updated</b> " + esc(d.updated) + "  ·  " + esc(d.ssot_note);
     const app = document.getElementById("app");
     app.innerHTML = "";
-    if (d.overview) { const s = el("section"); s.appendChild(el("h2", null, "Overview")); s.appendChild(el("div", null, d.overview)); app.appendChild(s); }
-    app.appendChild(renderPipeline(d.pipeline || [], d.pipeline_note));
-    const mc = renderMetaChain(d.meta_conductor_chain); if (mc) app.appendChild(mc);
-    if (d.nodes) app.appendChild(renderTree(d.nodes));
-    const df = renderList("Data flow", d.data_flow, x => x); if (df) app.appendChild(df);
-    const gv = renderList("Governance", d.governance, g => { const f = document.createDocumentFragment(); const b = el("span","nid",g.id); f.appendChild(b); f.appendChild(document.createTextNode(" — " + g.rule)); return f; }); if (gv) app.appendChild(gv);
-    if (d.engines) app.appendChild(renderEngines(d.engines));
-    if (d.campaigns) app.appendChild(renderCampaigns(d.campaigns));
-    if (d.results_index) app.appendChild(renderResultsIndex(d.results_index));
-    if (d.domains) app.appendChild(renderDomains(d.domains));
-    if (d.related_repos) { const s = el("section"); s.appendChild(el("h2",null,"Related repos")); Object.entries(d.related_repos).forEach(([k,v]) => { const r = el("div","kv"); r.appendChild(el("span","nid",k)); r.appendChild(document.createTextNode(" — " + v)); s.appendChild(r); }); app.appendChild(s); }
+    app.appendChild(renderTree(d));
   })
   .catch(e => {
     document.getElementById("app").innerHTML = "";
