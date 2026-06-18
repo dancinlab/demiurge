@@ -1679,6 +1679,55 @@
                   "role": "🏁 2026-06-18 DEPLETION(R1-R5·18 frontier): 상압 el-ph-미출판 후보공간 실질고갈. 고-Tc(≳30K)~90-95%·전체~80%. 잔여=저수율 thin(TaC1-xNx·HEC·(Sr,K)SbO3·Heusler·Si24-dope·WB2결함·n-diamond+strain)=저-Tc OR disorder-cost OR 단발probe. 새 고-Tc 클래스 없음. 추가 arxiv 서베이 불필요. 다음=발사후보→hexa deck→DFPT λ"
                 }
               ]
+            },
+            {
+              "id": "launch_candidates",
+              "children": [
+                {
+                  "id": "meta",
+                  "role": "2026-06-18 발사후보 9종 등록(점수·이유·리스크·arxiv). ING(harness ing)과 동기. 발사=hexa deck→d16 dry-run→DFPT λ(d_deck_always·d6). 점수=5축(신규·Tc·용이·삼각·안정)."
+                },
+                {
+                  "id": "SrZnH3",
+                  "role": "종합4.2(최고) · MXH3 perovskite · Tc107K listed · 이유=고Tc인데 사촌 SrAuH3만 논문독점·Zn멤버 미계산=신규+고Tc, 초소형셀·NM·상압=발사용이★5 가성비甲 · 리스크=d6 동적안정 사전체크 · arxiv 2506.03837·PRB111.134509"
+                },
+                {
+                  "id": "NbRu3",
+                  "role": "종합4.0 · kagome Cu3Au · Tc15K · 이유=129-compound kagome DB top-Tc인데 DB가 구조+DOS만·λ 0건=최청정 미개척, 비자성·비방사성·상압·소셀 · 리스크=kagome soft모드(d6 matdyn) · LaRu3Si2 트랙 재사용 · arxiv 1674-1056/adf041"
+                },
+                {
+                  "id": "Mg2PtH6",
+                  "role": "종합4.0 · X2MH6 Fm-3m · Tc78K(도핑>100K) · 이유=고Tc 본命, 사촌 Mg2IrH6(160K) 출판됐으나 Pt버전 full-BZ λ 미확정(λ_Γ만)=빈칸채우기, 소셀·NM·상압 · 주의=arXiv:2604.04151 기계산 여부 full-text 확인 · arxiv 2401.17024"
+                },
+                {
+                  "id": "AcRhH8",
+                  "role": "종합4.0 · fluorite XH8 · Tc78K상압 · 이유=3출처 수렴(Adv.Sci·2507.19768·HTSC2025)=삼각측량★5, 사촌 BaRhH8만 계산·Ac멤버 개별 λ無, NM·소셀8-12원자 · arxiv PMC12667446·2507.19768"
+                },
+                {
+                  "id": "Pd2ZrIn",
+                  "role": "종합4.0 · full-Heusler L21 · Tc2.2K(측정) · 이유=2026 μSR 측정SC확정인데 el-ph λ 미출판=신규+측정앵커, 4원자 초경량·NM·상압·구조검증=발사용이★5 안정★5(가장확실·쌈·d7 free) · 리스크=Tc낮음→방법검증앵커 최적·⚠2306.04439 SI grep 발사前 · arxiv 2604.19283"
+                },
+                {
+                  "id": "Mg3OsH8",
+                  "role": "종합3.8 · M3XH8 fluorite · Tc73K · 이유=29-stable family 최고Tc·5d-Os 개별 미실행(family-level만)=빈칸, 상압·NM·소셀 · arxiv 2506.03837·PMC12667446"
+                },
+                {
+                  "id": "LuOs3B2",
+                  "role": "종합3.8 · RT3B2 kagome boride · Tc4.6K(측정) · 이유=실측SC 패밀리최고인데 first-principles α²F/λ 패밀리전체 미출판(실험추정만)=신규★5+측정앵커, NM·상압·안정구조(d6리스크낮음) · arxiv 2504.16412·2507.04693"
+                },
+                {
+                  "id": "Ni3InN",
+                  "role": "종합3.8 · 안티페로브스카이트 · Tc~3-8K · 이유=Ni-3d high-DOS+Dirac@EF·MgCNi3 motif인데 el-ph 전무(phonon/transport만)=신규★5, 합성됨·동적안정·초소형셀·NM·상압=발사용이★5 · arxiv 2512.18195"
+                },
+                {
+                  "id": "Mg3RuH8",
+                  "role": "종합3.6 · M3XH8 fluorite · 이유=Mg3OsH8 패밀리 4d-Ru 자매, Os만 Tc명시·Ru멤버 개별 λ無=빈칸, 상압·NM·소셀 · arxiv 5c00513"
+                },
+                {
+                  "id": "YCr6Ge6",
+                  "role": "종합3.6 · kagome HfFe6Ge6 · Tc미측정(투기) · 이유=ARPES+DFT flat-band@EF 확정인데 el-ph DFPT 전무(plasmon/ARPES만)=신규★5, paramag·상압 · 리스크=Tc투기적·13원자셀·자성 borderline(collinear 사전체크) · arxiv 1906.07140"
+                }
+              ]
             }
           ]
         },

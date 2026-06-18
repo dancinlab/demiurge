@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 발사후보 9종 ARCHITECTURE 박제 (ING 동기·점수·이유·리스크·arxiv)
+- ING 등록 9후보(SrZnH3 4.2·NbRu3/Mg2PtH6/AcRhH8/Pd2ZrIn 4.0·Mg3OsH8/LuOs3B2/Ni3InN 3.8·Mg3RuH8/YCr6Ge6 3.6)를 ARCHITECTURE.json campaigns/RTSC launch_candidates 노드에 동일 박제(점수·이유·발사前 리스크·arxiv). ING↔ARCHITECTURE 동기.
+
 ### RTSC 후보 점수표 추가 (5축 채점 — 균형최고 SrZnH3 4.2·NbRu3/Mg2PtH6/AcRhH8 4.0)
 - 신규성·Tc잠재력·발사용이성·삼각측량·안정리스크 5축(1-5) 채점 → 종합. state/rtsc-novel-survey/REGISTRY.md 후보점수표 박제.
 
