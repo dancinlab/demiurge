@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### QFORGE QE-급化 계획 ING 등록 — migration_gate 닫기 (유료 el-ph→summer 무료 GPU)
+- 유저 지시: QFORGE>QE수준 올리는 계획 ING등록. 엔진상태 SSOT(QFORGE.md §ENGINE STATUS) 기반 구체화. 병목=from-scratch |g|²/DFPT 프론트엔드(어셈블러는 이미 1.65e-7 게이트급). best=mode(c) R7 5.12%(bare돌파·수렴중). 레버=q-의존 f_xc·degenerate Sternheimer·GPU-davidson(nspin2)·high-RAM·phonon from-scratch. piece-by-piece ≤1% g5 xval後 absorb(d_qforge_migration). 페이오프=summer RTX5070 무료 QFORGE-native el-ph(유료 GPU 불필요). ARCHITECTURE QFORGE.gate_close_plan + ING 박제.
+
 ### RTSC Mg2PtH6 vc-relax 완료 + d6 동적안정 LIVE (summer 무료·c2)
 - METAL 확정 후 ① 게이트경로(유저선택): vc-relax 무료완주(bfgs수렴·force0.000076·P≈0). 완화구조=셀12.585→12.410bohr(a6.66→6.57Å·1.4%수축)·H8면체 x0.24→0.273·Pt/Mg대칭유지. 완화 덱 재emit(hexa deck x2mh6·celldm12.410·h_x0.27278) 후 d6 2×2×2 phonon-only(recover·reboot-safe) summer 발사. 허수모드0(동적안정)이면 유료 GPU DFPT 게이트 통과. 여전히 $0. state/rtsc-mg2pth6/metal_verdict.txt.
 

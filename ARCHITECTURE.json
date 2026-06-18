@@ -1233,6 +1233,10 @@
                 {
                   "id": "migration_gate",
                   "role": "HELD"
+                },
+                {
+                  "id": "gate_close_plan",
+                  "role": "PLAN(ING): QFORGE el-ph 프론트엔드 QE-급(<1%)化 — migration_gate 닫기. 현 best=mode(c) screened-vertex R7 5.12%(bare돌파·f_xc-LIVE). 레버=(1)q-의존/이방성 f_xc+folds↑ (2)degenerate-subspace Sternheimer (3)GPU-davidson k-sampling(nspin2 moment·perf-gpu PR#3442 재사용) (4)high-RAM 포드(OOM) (5)phonon from-scratch ω(q,ν). 절차=piece-by-piece ≤1% g5 xval(CaH6/LaH10)後 absorb. 페이오프=summer RTX5070 무료 QFORGE-native el-ph→유료 vast GPU 불필요. 死채널=f_xc-in-χ ALDA(CLOSED-NEG). c17 ING인계."
                 }
               ]
             }
