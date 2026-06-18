@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 4×4×4 사이징 — 세션-장기 "SCF 무출력" 진짜근본원인 확정 + fail-loud fix (c1·c2)
+- 포그라운드 캡처(v2)가 진짜 뿌리를 노출: `pod_setup_qe.sh`가 (1) 포드에 **bzip2 부재**로 micromamba `.tar.bz2`를 `tar -xj` 해제 실패("bzip2: Cannot exec") → micromamba 미설치, (2) 그런데도 `echo "QE SETUP DONE"`을 **무조건 출력**(거짓 성공) → 와처가 DONE 보고 사이징 발사 → pw.x 없음 → scf.out 빈 채. 이것이 summer·vast 가로지른 세션-장기 "SCF 무출력" 미스터리의 단일 근인.
+- fix(c1 근본): `ensure_deps`로 bzip2/curl/tar apt 설치 보장(다운로드 전) + 설치 **검증 통과(pw.x 실행)시에만 "QE SETUP DONE", 아니면 "QE SETUP FAILED: <reason>" + exit 1**(거짓-DONE 박멸·fail-loud). 재발방지 원칙(트러블슈팅=도구개선) 일관 — 와처가 이제 거짓 DONE에 헛발사 안 함.
+
 ### 트러블슈팅 재발방지 원칙 + hexa cloud·deck 가드 (CLAUDE.md 최상위 박제)
 - 유저 지시로 CLAUDE.md **최상위에 원칙 박제**: 트러블슈팅은 손으로 우회하지 말고 그 예방 가드를 `hexa cloud`(포드·클라우드 레이어)·`hexa deck`(입력덱·런스크립트 레이어)에 코드로 박아 재발 0 (self-improving 도구 SSOT; d_deck_always[덱]+이 원칙[cloud] 한 쌍). c17대로 응용층=격리 worktree 직접fix→pr-cycle, 컴파일/런타임 코어=ING 인계.
 - 이번 세션 트러블슈팅 2건을 가드로 박제(hexa-lang PR #3547): (1) `hexa cloud rm` 비대화식 [y/N] EOF→조용한 cancel로 포드 생존+과금 누수 → LOUD "still alive+billing, --force 재실행" (2) `hexa deck` rtsc env `conda activate qe` 고정→micromamba 포드 마찰 → conda OR micromamba 자동감지. deck JIT 빌드+emit 검증, cloud 소스(재빌드는 f64 툴체인 대기).
