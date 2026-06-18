@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 신규후보 arxiv 발굴 Round 1 — 삼각측량 + ARCHITECTURE 박제 (고갈루프 진행중)
+- 유저 지시 "arxiv 물질조사+삼각측량+아키텍처 기록+고갈까지". Round1 4-frontier 병렬(고처리량 스크리닝 미개척·flat-band/kagome 비1:3:2·상압 하이드라이드/클라스레이트·삼각측량 메타)로 el-ph λ/Tc **미출판** 신규후보 ~30개 발굴. ★Tier-1(삼각측량 고신뢰·상압·clean): NbRu3(129-compound kagome DB top-Tc15K·λ전무·NM·비방사성)·YCr6Ge6(ARPES flat-band@EF·paramag)·Mg2PtH6(78K)·SrZnH3(107K listed)·Mg3OsH8(73K fluorite). 상압 white-space 풍부(B12 superatom·X2MH6·MXH3·보라이드·BeH8·B-N clathrate). 박제 state/rtsc-novel-survey/REGISTRY.md + ARCHITECTURE.json campaigns/RTSC. 고갈까지 라운드 지속.
+
 ### RTSC 선행연구 감사 미결 closure — arXiv:2503.20867 supplement 직접 grep
 - 미결이던 "428 SC 후보 supplement에 LaOs3Si2/LaRh3Si2 포함?" 을 PDF(23MB) 다운+pdftotext(10211줄) grep으로 확정. 리스트 포맷 A·B₂·C₃(C=kagome)로 LaSi2Os3/LaSi2Rh3 검색 = **0건**(미포함). 리스트 실리사이드는 전부 Ni-kagome(SmSi2Ni3 등). **결론**: 두 후보 = 2503.20867 대비 신규 확정. 단 미포함=안정성 필터 탈락 추정(우리 LaOs3Si2 2×2×2 동적불안정과 일치)→LaOs3Si2는 신규지만 confirmatory-negative, LaRh3Si2는 미계산 진짜 미개척. state/rtsc-prior-art-audit/AUDIT.md closure 박제.
 
