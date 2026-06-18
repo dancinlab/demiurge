@@ -1702,7 +1702,8 @@
                 {
                   "id": "Mg2PtH6",
                   "role": "종합4.0 · X2MH6 Fm-3m · Tc78K(도핑>100K) · 이유=고Tc 본命, 사촌 Mg2IrH6(160K) 출판됐으나 Pt버전 full-BZ λ 미확정(λ_Γ만)=빈칸채우기, 소셀·NM·상압 · 주의=arXiv:2604.04151 기계산 여부 full-text 확인 · arxiv 2401.17024",
-                  "prelaunch": "✅ CLEARED 생존 — Fm-3m nat9(prim)·NM·Pt 18e semicore(고ecut)·a~6.66Å seed. 2604.04151은 descriptor study·full-BZ λ 미출판 확인=신규. ⚠무도핑 stoichiometric 타깃(108K는 도핑=회피). d16 dry-run→vast/GPU"
+                  "prelaunch": "✅ CLEARED 생존 — Fm-3m nat9(prim)·NM·Pt 18e semicore(고ecut)·a~6.66Å seed. 2604.04151은 descriptor study·full-BZ λ 미출판 확인=신규. ⚠무도핑 stoichiometric 타깃(108K는 도핑=회피). d16 dry-run→vast/GPU",
+                  "compute": "🟢 2026-06-19 금속/반도체 게이트 PASS=METAL (summer 무료·c2): scf수렴 conv=1·DOS(E_F)=1.61 states/eV/cell·E_F=12.016eV. 무도핑 stoichiometric=진짜금속→phonon-SC LIVE. moderate DOS→moderate-coupling. 덱=x2mh6_antifluorite(PR#3603)·ecut60/600·psl USPP. 다음=el-ph DFPT λ/Tc(유료GPU~1-3일). state/rtsc-mg2pth6/metal_verdict.txt"
                 },
                 {
                   "id": "AcRhH8",

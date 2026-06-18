@@ -1,0 +1,19 @@
+RTSC Mg2PtH6 금속/반도체 게이트 — VERDICT: 🟢 METAL (2026-06-19, summer 무료)
+=========================================================================
+물질: Mg2PtH6 (X2MH6 K2PtCl6-type antifluorite, Fm-3m, 9-atom primitive)
+환경: summer 무료 QE(micromamba qe env), 6 MPI (--oversubscribe --bind-to none)
+pseudo: Mg.pbe-spnl-rrkjus / Pt.pbe-spfn-rrkjus(32e·4f14포함) / H.pbe-rrkjus (psl USPP)
+deck: hexa deck x2mh6_antifluorite (hexa-lang PR#3603), ecut 60/600, k 12³ scf / 20³ nscf
+
+결과 (c2 캡처):
+  scf rc=0 conv=1 (수렴)
+  nscf rc=0 (tetrahedra)
+  dos rc=0
+  Fermi energy E_F = 12.0158 eV
+  DOS(E_F) = 1.611 states/eV/cell  (E=12.012 nearest)
+
+판정: DOS(E_F)=1.61 > 0 → METAL (반도체 아님). 무도핑 stoichiometric Mg2PtH6
+      = 진짜 금속 → 무도핑 phonon-SC 후보 LIVE. el-ph DFPT λ/Tc 정당화됨.
+참고: DOS(E_F) 1.61/cell = moderate(거대하지 않음) → moderate-coupling SC 예상.
+
+비용: $0 (summer 무료). 다음=el-ph DFPT(유료 GPU·~1-3일·d_qforge_parallel).
