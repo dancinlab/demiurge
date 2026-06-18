@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### QFORGE magmom 레인 R1 (kgrid-moment) — 벽 재분류 🧱 substrate(런타임) · g5 FAIL · k-mesh 인프라 발견
+- magmom 벽 가설=k-sampling(BZ-Stoner)을 dense-k로 검증 시도. **k-sampling 레버는 이미 upstream 빌드됨**(d3 중복금지 확인): hexa-lang `stdlib/qforge/fixtures/`에 `cosn_kmesh_spin`(2×2×2)·`cosn_kmesh444_spin`(4×4×4)·`cosn_kb_kmesh_spin`(KB-on) + BZ-적분 spin SCF `qforge_scf_pw_kmesh_spin`(공유E_F·ρ_σ=Σ_k w_k Σ_b f|ψ|²·bare-H per-k캐시) 전부 존재(PR#3346) → 새 드라이버 안쓰고 정전 fixture 직접 실행. **그러나 moment 0건**: `~/.hx` hexa 런타임이 PW assemble 대형배열(n·n≥6400) 곱에서 메모리손상 hard-crash(`cannot multiply non-numeric operand tag3*tag0`·손상tag). **k-mesh 코드 아님=런타임 substrate 버그**: 커밋된 @ci_gate `scf_pw_selftest`·`scf_pw_spin_selftest`·Γ드라이버 `cosn_kagome_spin`도 동일크래시 verbatim재현(val-arena orphan 클래스; `~/.hx/bin/hexa`=54B shim→`hexa.real` stale빌드). g5=FAIL(substrate)·벽=🧱런타임 인터프리터(NOT k-sampling·NOT basis, k가설은 fix前 검증불가·미완 d2). 레버=①hexa core val-arena fix(인계)/clean 재빌드→기존 kmesh fixture 재실행 ②summer RTX5070 다른빌드 재시도 ③GPU-davidson(perf-gpu#3442) inner-가속(런타임정상화後). 산출=벽 정밀재분류(basis/k→런타임)+k-mesh 인프라 발견. QFORGE.md §모드(d) R1 기록.
+
 ### QFORGE QE-급化 계획 ING 등록 — migration_gate 닫기 (유료 el-ph→summer 무료 GPU)
 - 유저 지시: QFORGE>QE수준 올리는 계획 ING등록. 엔진상태 SSOT(QFORGE.md §ENGINE STATUS) 기반 구체화. 병목=from-scratch |g|²/DFPT 프론트엔드(어셈블러는 이미 1.65e-7 게이트급). best=mode(c) R7 5.12%(bare돌파·수렴중). 레버=q-의존 f_xc·degenerate Sternheimer·GPU-davidson(nspin2)·high-RAM·phonon from-scratch. piece-by-piece ≤1% g5 xval後 absorb(d_qforge_migration). 페이오프=summer RTX5070 무료 QFORGE-native el-ph(유료 GPU 불필요). ARCHITECTURE QFORGE.gate_close_plan + ING 박제.
 

@@ -104,6 +104,30 @@
   CoSn(Co-3d, npw≥120) = ~580s/iter, npw=80(ecut~4Ry)에서만 tractable → 과소해상으로
   m≈0(QE m=0.43 미재현, 物理 아닌 basis wall). **RbOs2O6(Os-5d, 9-atom, ecut 70/560 Ry,
   77 val e⁻)은 CoSn 보다 무거워 동일/악화 wall** → mini 로컬에서 honest-skip(아래 cross-val).
+- **R1 kgrid-moment 재진단 (2026-06-19, d6 정직 · g5 FAIL=SUBSTRATE)**: magmom 벽의 진짜
+  원인은 k-sampling(BZ-integrated Stoner)이라는 가설을 dense-k로 검증 시도. **k-sampling
+  레버는 이미 upstream에 빌드돼 있었다**(d3 — 중복작성 금지 확인): hexa-lang
+  `stdlib/qforge/fixtures/`에 `cosn_kmesh_spin`(2×2×2)·`cosn_kmesh444_spin`(4×4×4)·
+  `cosn_kb_kmesh_spin`(KB-nonlocal ON) 드라이버 + BZ-적분 spin SCF
+  `qforge_scf_pw_kmesh_spin`(공유 E_F · ρ_σ=Σ_k w_k Σ_b f|ψ|² · bare-H per-k 캐시) 전부
+  존재(PR#3346). 즉 "Γ-only→k-mesh로 Stoner moment를 끌어낸다"는 정확히 그 코드가 이미 있음.
+  → **새 드라이버를 쓰지 않고**(d3) 정전 fixture `cosn_kmesh444_spin`을 직접 실행.
+- **그러나 moment를 한 번도 읽지 못함 (substrate wall)**: `~/.hx`의 hexa 런타임이 PW assemble
+  대형 배열(n·n≥6400) 곱에서 **메모리 손상으로 hard-crash** — `cannot multiply non-numeric
+  operand (tag 3 * tag 0/3 · 손상 tag 1202590843)`. **magmom/k-mesh 코드 아닌 런타임 버그**:
+  커밋된 `@ci_gate` PW 셀프테스트(`scf_pw_selftest`·`scf_pw_spin_selftest`)와 Γ 드라이버
+  `cosn_kagome_spin`도 **동일 크래시 verbatim 재현**. 메모리 노트
+  `hexa-val-arena-orphans-large-loop-arrays`와 같은 클래스(루프 내 heap-promoted 대형배열
+  orphan). 참고: `~/.hx/bin/hexa`는 54B 셸 shim → `hexa.real` 바이너리가 stale/divergent
+  빌드(install qforge가 dev tree보다 앞섬). **g5 = FAIL(substrate)** — moment 수치 0건.
+- **벽 분류 = 🧱 substrate(런타임 인터프리터), NOT k-sampling·NOT basis** — k-sampling 가설은
+  런타임 fix 전까지 검증 불가(미완, 천장 아님 d2). **레버(다음 라운드)**: ① hexa core 런타임
+  val-arena fix(ING/hexa-lang 인계 — c17 컴파일/런타임 코어) 또는 `hexa.real` 클린 재빌드
+  → 기존 `cosn_kmesh444_spin`·`cosn_kb_kmesh_spin` 재실행으로 k-mesh moment 측정 ② summer
+  RTX5070(다른 빌드)서 동일 fixture 재시도 — 크래시 회피되면 거기서 moment 캡처 ③ GPU-davidson
+  (perf-gpu #3442 block-GEMM)은 런타임 정상화 후 inner H·Ψ 가속용. **요지: 이 라운드의 산출은
+  벽의 정밀 재분류(basis/k-sampling → 런타임 substrate) + 기존 k-mesh 인프라 발견** — moment
+  Δ는 런타임 fix가 선결.
 
 ### 결정 요약 (한 줄)
 > **QFORGE는 작동한다 — (a) bare-vertex QFORGE-only ≈5.5%(rough λ 스크리닝) + (b)
