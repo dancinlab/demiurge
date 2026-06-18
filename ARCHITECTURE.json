@@ -1685,47 +1685,59 @@
               "children": [
                 {
                   "id": "meta",
-                  "role": "2026-06-18 발사후보 9종 등록(점수·이유·리스크·arxiv). ING(harness ing)과 동기. 발사=hexa deck→d16 dry-run→DFPT λ(d_deck_always·d6). 점수=5축(신규·Tc·용이·삼각·안정)."
+                  "role": "2026-06-18 발사후보 9종 등록(점수·이유·리스크·arxiv). ING(harness ing)과 동기. 발사=hexa deck→d16 dry-run→DFPT λ(d_deck_always·d6). 점수=5축(신규·Tc·용이·삼각·안정).",
+                  "prelaunch": "2026-06-18 발사전 데스크체크(d11구조·d13 pseudo·신규성재확정·자성) 완료 7/9. ⚠중대정직(c9): 서베이가 'el-ph 미출판'으로 본 후보 대부분이 실은 출판됨(깊은 per-후보 체크가 JPCC/Adv.Sci/npj 논문 발견). 구조·pseudo·자성은 대부분 CLEAR·유일 블로커=신규성. 생존=Mg2PtH6(무도핑)+LuOs3B2(SSCHA비조화 피벗). Mg3RuH8·YCr6Ge6 진행중.",
+                  "prelaunch_summary": "2026-06-18 발사전 데스크체크(d11구조·d13 pseudo·신규성재확정·자성) 완료 7/9. ⚠중대정직(c9): 서베이가 'el-ph 미출판'으로 본 후보 대부분이 실은 출판됨(깊은 per-후보 체크가 JPCC/Adv.Sci/npj 논문 발견). 구조·pseudo·자성은 대부분 CLEAR·유일 블로커=신규성. 생존=Mg2PtH6(무도핑)+LuOs3B2(SSCHA비조화 피벗). Mg3RuH8·YCr6Ge6 진행중."
                 },
                 {
                   "id": "SrZnH3",
-                  "role": "종합4.2(최고) · MXH3 perovskite · Tc107K listed · 이유=고Tc인데 사촌 SrAuH3만 논문독점·Zn멤버 미계산=신규+고Tc, 초소형셀·NM·상압=발사용이★5 가성비甲 · 리스크=d6 동적안정 사전체크 · arxiv 2506.03837·PRB111.134509"
+                  "role": "종합4.2(최고) · MXH3 perovskite · Tc107K listed · 이유=고Tc인데 사촌 SrAuH3만 논문독점·Zn멤버 미계산=신규+고Tc, 초소형셀·NM·상압=발사용이★5 가성비甲 · 리스크=d6 동적안정 사전체크 · arxiv 2506.03837·PRB111.134509",
+                  "prelaunch": "🔴 FLAGGED 신규성탈락 — Pm-3m nat5·NM·pseudo OK(Zn 3d semicore)지만 λ1.94/Tc107K MXH3 카탈로그 이미 출판. 재현금지(앵커만)"
                 },
                 {
                   "id": "NbRu3",
-                  "role": "종합4.0 · kagome Cu3Au · Tc15K · 이유=129-compound kagome DB top-Tc인데 DB가 구조+DOS만·λ 0건=최청정 미개척, 비자성·비방사성·상압·소셀 · 리스크=kagome soft모드(d6 matdyn) · LaRu3Si2 트랙 재사용 · arxiv 1674-1056/adf041"
+                  "role": "종합4.0 · kagome Cu3Au · Tc15K · 이유=129-compound kagome DB top-Tc인데 DB가 구조+DOS만·λ 0건=최청정 미개척, 비자성·비방사성·상압·소셀 · 리스크=kagome soft모드(d6 matdyn) · LaRu3Si2 트랙 재사용 · arxiv 1674-1056/adf041",
+                  "prelaunch": "🔴 FLAGGED 신규성탈락 — Pm-3m L12 nat4·NM·pseudo OK지만 JPCC 2024(10.1021/acs.jpcc.4c05026) MRu3 Tc9.8K 이미 출판. 재현금지"
                 },
                 {
                   "id": "Mg2PtH6",
-                  "role": "종합4.0 · X2MH6 Fm-3m · Tc78K(도핑>100K) · 이유=고Tc 본命, 사촌 Mg2IrH6(160K) 출판됐으나 Pt버전 full-BZ λ 미확정(λ_Γ만)=빈칸채우기, 소셀·NM·상압 · 주의=arXiv:2604.04151 기계산 여부 full-text 확인 · arxiv 2401.17024"
+                  "role": "종합4.0 · X2MH6 Fm-3m · Tc78K(도핑>100K) · 이유=고Tc 본命, 사촌 Mg2IrH6(160K) 출판됐으나 Pt버전 full-BZ λ 미확정(λ_Γ만)=빈칸채우기, 소셀·NM·상압 · 주의=arXiv:2604.04151 기계산 여부 full-text 확인 · arxiv 2401.17024",
+                  "prelaunch": "✅ CLEARED 생존 — Fm-3m nat9(prim)·NM·Pt 18e semicore(고ecut)·a~6.66Å seed. 2604.04151은 descriptor study·full-BZ λ 미출판 확인=신규. ⚠무도핑 stoichiometric 타깃(108K는 도핑=회피). d16 dry-run→vast/GPU"
                 },
                 {
                   "id": "AcRhH8",
-                  "role": "종합4.0 · fluorite XH8 · Tc78K상압 · 이유=3출처 수렴(Adv.Sci·2507.19768·HTSC2025)=삼각측량★5, 사촌 BaRhH8만 계산·Ac멤버 개별 λ無, NM·소셀8-12원자 · arxiv PMC12667446·2507.19768"
+                  "role": "종합4.0 · fluorite XH8 · Tc78K상압 · 이유=3출처 수렴(Adv.Sci·2507.19768·HTSC2025)=삼각측량★5, 사촌 BaRhH8만 계산·Ac멤버 개별 λ無, NM·소셀8-12원자 · arxiv PMC12667446·2507.19768",
+                  "prelaunch": "🔴 FLAGGED 신규성탈락 — Fm-3m nat10·NM·Ac pseudo는 PseudoDojo 2023 actinide table(2309.02729)에 존재하나, Adv.Sci2025가 Ac멤버 Tc78K 개별 이미 출판. 재현금지"
                 },
                 {
                   "id": "Pd2ZrIn",
-                  "role": "종합4.0 · full-Heusler L21 · Tc2.2K(측정) · 이유=2026 μSR 측정SC확정인데 el-ph λ 미출판=신규+측정앵커, 4원자 초경량·NM·상압·구조검증=발사용이★5 안정★5(가장확실·쌈·d7 free) · 리스크=Tc낮음→방법검증앵커 최적·⚠2306.04439 SI grep 발사前 · arxiv 2604.19283"
+                  "role": "종합4.0 · full-Heusler L21 · Tc2.2K(측정) · 이유=2026 μSR 측정SC확정인데 el-ph λ 미출판=신규+측정앵커, 4원자 초경량·NM·상압·구조검증=발사용이★5 안정★5(가장확실·쌈·d7 free) · 리스크=Tc낮음→방법검증앵커 최적·⚠2306.04439 SI grep 발사前 · arxiv 2604.19283",
+                  "prelaunch": "🔴 FLAGGED 신규성탈락 — Fm-3m L21 nat4·NM·pool-free. 2306.04439 grep clean이나 Winterlik PRB85.174505(2012)+APd2M DFT el-ph+2026 μSR(2604.19283)=기지 ~2.2K SC. 재현금지"
                 },
                 {
                   "id": "Mg3OsH8",
-                  "role": "종합3.8 · M3XH8 fluorite · Tc73K · 이유=29-stable family 최고Tc·5d-Os 개별 미실행(family-level만)=빈칸, 상압·NM·소셀 · arxiv 2506.03837·PMC12667446"
+                  "role": "종합3.8 · M3XH8 fluorite · Tc73K · 이유=29-stable family 최고Tc·5d-Os 개별 미실행(family-level만)=빈칸, 상압·NM·소셀 · arxiv 2506.03837·PMC12667446",
+                  "prelaunch": "🔴 FLAGGED 신규성탈락 — Fm-3m nat12·NM·Os 5d 120Ry. JPCC 2025(5c00513)가 Mg3OsH8 dedicated Tc73K 명시 출판(family-level 아님·서베이 오판정정). 재현금지"
                 },
                 {
                   "id": "LuOs3B2",
-                  "role": "종합3.8 · RT3B2 kagome boride · Tc4.6K(측정) · 이유=실측SC 패밀리최고인데 first-principles α²F/λ 패밀리전체 미출판(실험추정만)=신규★5+측정앵커, NM·상압·안정구조(d6리스크낮음) · arxiv 2504.16412·2507.04693"
+                  "role": "종합3.8 · RT3B2 kagome boride · Tc4.6K(측정) · 이유=실측SC 패밀리최고인데 first-principles α²F/λ 패밀리전체 미출판(실험추정만)=신규★5+측정앵커, NM·상압·안정구조(d6리스크낮음) · arxiv 2504.16412·2507.04693",
+                  "prelaunch": "⚠️ FLAGGED→피벗생존 — P6/mmm nat6·NM·Lu-fsp 4f valence·≥100G디스크. 직선λ는 2507.04693이 λ1.96 출판+d6 허수모드(Γ·A·L). 단 출판λ1.96 vs 측정Tc4.6K 모순(불안정포논탓)→SSCHA/비조화 안정화 α²F로 λ-Tc 정합=미출판Δ(신규피벗)"
                 },
                 {
                   "id": "Ni3InN",
-                  "role": "종합3.8 · 안티페로브스카이트 · Tc~3-8K · 이유=Ni-3d high-DOS+Dirac@EF·MgCNi3 motif인데 el-ph 전무(phonon/transport만)=신규★5, 합성됨·동적안정·초소형셀·NM·상압=발사용이★5 · arxiv 2512.18195"
+                  "role": "종합3.8 · 안티페로브스카이트 · Tc~3-8K · 이유=Ni-3d high-DOS+Dirac@EF·MgCNi3 motif인데 el-ph 전무(phonon/transport만)=신규★5, 합성됨·동적안정·초소형셀·NM·상압=발사용이★5 · arxiv 2512.18195",
+                  "prelaunch": "🔴 FLAGGED 신규성탈락 — Pm-3m nat5·NM(Ni모먼트0·형제 Co3InN은 FM)·pseudo OK지만 InNNi3=npj 397-DFPT 데이터셋 포함+Uehara 2010 실험. 재현금지(strain 각도만 회생)"
                 },
                 {
                   "id": "Mg3RuH8",
-                  "role": "종합3.6 · M3XH8 fluorite · 이유=Mg3OsH8 패밀리 4d-Ru 자매, Os만 Tc명시·Ru멤버 개별 λ無=빈칸, 상압·NM·소셀 · arxiv 5c00513"
+                  "role": "종합3.6 · M3XH8 fluorite · 이유=Mg3OsH8 패밀리 4d-Ru 자매, Os만 Tc명시·Ru멤버 개별 λ無=빈칸, 상압·NM·소셀 · arxiv 5c00513",
+                  "prelaunch": "⏳ 발사전체크 진행중(백그라운드)"
                 },
                 {
                   "id": "YCr6Ge6",
-                  "role": "종합3.6 · kagome HfFe6Ge6 · Tc미측정(투기) · 이유=ARPES+DFT flat-band@EF 확정인데 el-ph DFPT 전무(plasmon/ARPES만)=신규★5, paramag·상압 · 리스크=Tc투기적·13원자셀·자성 borderline(collinear 사전체크) · arxiv 1906.07140"
+                  "role": "종합3.6 · kagome HfFe6Ge6 · Tc미측정(투기) · 이유=ARPES+DFT flat-band@EF 확정인데 el-ph DFPT 전무(plasmon/ARPES만)=신규★5, paramag·상압 · 리스크=Tc투기적·13원자셀·자성 borderline(collinear 사전체크) · arxiv 1906.07140",
+                  "prelaunch": "⏳ 발사전체크 진행중(백그라운드·Cr-3d 자성 바닥상태가 발사가부 결정)"
                 }
               ]
             }

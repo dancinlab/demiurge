@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 발사전 데스크체크 — ⚠중대정직: 서베이 신규성 과대평가 정정(c9·d_novel_only)
+- 9후보 발사전 게이트(d11·d13·신규성·자성) 7/9 완료. 깊은 per-후보 체크가 서베이(라운드1-5) 놓친 출판 발견 → 대부분 🔴재현(NbRu3 JPCC2024 9.8K·SrZnH3 MXH3 107K·Mg3OsH8 JPCC2025 73K·AcRhH8 Adv.Sci 78K·Pd2ZrIn Winterlik2012·Ni3InN npj397). 생존=Mg2PtH6(무도핑·2604.04151 descriptor확인)+LuOs3B2(SSCHA 비조화 정합 피벗). Mg3RuH8·YCr6Ge6 진행중. 구조·pseudo·자성은 대부분 CLEAR·유일블로커=신규성. ARCHITECTURE launch_candidates prelaunch 박제.
+
 ### RTSC 발사후보 9종 ARCHITECTURE 박제 (ING 동기·점수·이유·리스크·arxiv)
 - ING 등록 9후보(SrZnH3 4.2·NbRu3/Mg2PtH6/AcRhH8/Pd2ZrIn 4.0·Mg3OsH8/LuOs3B2/Ni3InN 3.8·Mg3RuH8/YCr6Ge6 3.6)를 ARCHITECTURE.json campaigns/RTSC launch_candidates 노드에 동일 박제(점수·이유·발사前 리스크·arxiv). ING↔ARCHITECTURE 동기.
 
