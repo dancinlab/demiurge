@@ -204,3 +204,18 @@ kagome금속간·X2MH6·M3XH8·MXH3·fluorite-XH8·B12 superatom·보라이드·
 | TiNbTaN3 | HEC | 5 | 3 | 2 | 3 | 3 | **3.2** | 10K(측정) |
 | Grokene | LLM-2D | 4 | 5 | 2 | 1 | 1 | **2.6** | 310K(미검증 복권) |
 종합판정: 균형최고=SrZnH3·NbRu3·Mg2PtH6·AcRhH8(4.0+). 안전앵커=Pd2ZrIn/LuOs3B2(측정SC·저Tc). 복권=Grokene(임팩트최고·신뢰최저).
+
+## 발사전 데스크체크 (2026-06-18) — ⚠ 중대정직(c9): 서베이 신규성 과대평가 정정
+구조(d11)·pseudo(d13)·자성은 대부분 CLEAR. 유일 블로커=신규성. 깊은 per-후보 체크가 서베이 놓친 출판 발견.
+| 후보 | 판정 | 신규성 게이트 |
+|---|---|---|
+| Mg2PtH6 | ✅ 생존 | 2604.04151=descriptor만·full-BZ λ 미출판 확인(무도핑 타깃) |
+| LuOs3B2 | ⚠ 피벗 | 직선λ 출판(2507.04693 λ1.96)+허수모드→SSCHA 비조화 정합만 신규 |
+| NbRu3 | 🔴 출판 | JPCC2024 MRu3 Tc9.8K |
+| SrZnH3 | 🔴 출판 | MXH3 카탈로그 λ1.94/Tc107K |
+| Mg3OsH8 | 🔴 출판 | JPCC2025 5c00513 dedicated Tc73K(서베이 'family-level' 오판) |
+| AcRhH8 | 🔴 출판 | Adv.Sci2025 Ac멤버 Tc78K |
+| Pd2ZrIn | 🔴 출판 | Winterlik2012+2026μSR 기지 2.2K(2306.04439엔 없으나 다른경로 기지) |
+| Ni3InN | 🔴 출판 | npj 397-DFPT 포함+Uehara2010 실험 |
+| Mg3RuH8·YCr6Ge6 | ⏳ | 진행중 |
+**교훈**: 라운드1-5 서베이의 'el-ph 미출판' 분류는 얕은 DB체크라 과대평가. 발사전 per-후보 깊은체크가 진짜 게이트. 생존=Mg2PtH6(무도핑)+LuOs3B2(SSCHA). 나머지=재현(앵커만).
