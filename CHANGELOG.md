@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 신규후보 발굴 R2 + ARCHITECTURE 전량 박제 (재탐색 불필요 영구자산·c5)
+- 유저 지시("아키텍쳐에 모두 정리·재탐색 안 하도록"). R2 4-frontier(2D/MXene·전자화물/안티페로브/MAX/A15·최신2025-2026·삼각측량2차)로 ~40 추가 신규후보. ★추가: AcRhH8·Mg3RuH8(형석[XH8] 3출처수렴·상압)·LuOs3B2(RT3B2 kagome boride·실측SC·first-principles λ無)·Ni3InN(안티페로브 Dirac@EF)·V2SnC(MAX211)·W2NBr2(할로겐MXene)·Grokene(LLM-생성 2D·310K주장). ARCHITECTURE.json campaigns/RTSC novel_candidates_survey를 10-클래스 구조화(top_tier·kagome·하이드라이드·fluorite·보라이드·clathrate·2D·비통상결합·최신2026·제외출판)로 전량 박제 = arxiv 재탐색 불필요 canonical 자산. 레지스트리 state/rtsc-novel-survey/REGISTRY.md(107줄). 고갈 향해 R3 진행.
+
 ### RTSC 신규후보 arxiv 발굴 Round 1 — 삼각측량 + ARCHITECTURE 박제 (고갈루프 진행중)
 - 유저 지시 "arxiv 물질조사+삼각측량+아키텍처 기록+고갈까지". Round1 4-frontier 병렬(고처리량 스크리닝 미개척·flat-band/kagome 비1:3:2·상압 하이드라이드/클라스레이트·삼각측량 메타)로 el-ph λ/Tc **미출판** 신규후보 ~30개 발굴. ★Tier-1(삼각측량 고신뢰·상압·clean): NbRu3(129-compound kagome DB top-Tc15K·λ전무·NM·비방사성)·YCr6Ge6(ARPES flat-band@EF·paramag)·Mg2PtH6(78K)·SrZnH3(107K listed)·Mg3OsH8(73K fluorite). 상압 white-space 풍부(B12 superatom·X2MH6·MXH3·보라이드·BeH8·B-N clathrate). 박제 state/rtsc-novel-survey/REGISTRY.md + ARCHITECTURE.json campaigns/RTSC. 고갈까지 라운드 지속.
 
