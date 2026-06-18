@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### 거버넌스 d_novel_only — 기지(旣知) 재현·검증 절대금지, 목표는 NOVEL 발견
+- CLAUDE.md `## 거버넌스` d18 뒤에 신규 지시 `d_novel_only` 추가: 모든 캠페인 목표는 미발견(NOVEL) 발견이며, 문헌·임상에 이미 알려진 결과를 똑같이 재현·검증하는 데 compute/시간을 쓰지 않는다. 착수 전 arxiv+web 신규성 확인(d18) → 이미 알려진 레드오션 표적(예: MCL1=S63845·AMG-176·AZD5991 임상)은 회피·피벗 대상. 기지값 대조는 방법-검증 1회 앵커로만 허용하고 성과로 박제 금지.
+- 계기: R13에서 MCL1 ABFE −16.78이 실측(−13)과 잘 맞았으나 이는 *발견*이 아니라 알려진 강결합제의 재현임을 사용자가 지적. d2·d6·d18·d_discovery·d_paper_significance와 한 묶음.
+
 ### SENOLYX R13 후보-ABFE 캠페인 마감 — 9/9 셀 완주 (3 표적 × 3 반복)
 - **CRBN rep1 complex leg 완주 → solvent leg → ENS_RESULT 기록**으로 마지막 셀(CRBN, 최대 ~389k 원자 복합체)이 닫혀 R13 전체 **9/9 done_cells** 완료. complex leg는 포드 재부팅을 `.nc` 체크포인트 재개(resume)로 수 차례 넘기며 ~0.24 MB/h로 누적, solvent leg는 작은 용매 박스라 ~3 MB/30min로 빠르게 마감.
 - **최종 ABFE (n=3/3, kcal/mol)**: MCL1 **−16.78 ± 2.77** (S63845 Kd~0.19nM ≈ −13, ✅ 강결합 일치) · BCLXL **−29.28 ± 0.71** (재현성 있는 과대결합 = 아티팩트 ⚠️) · CRBN **−2.54 ± 0.88** (IMiD Kd~µM ≈ −8, 🔵 약한 glue-class 결합 — 워헤드 표적보다 훨씬 얕음, E3 글루 방향과 부호·크기 일치).

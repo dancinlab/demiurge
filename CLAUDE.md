@@ -133,6 +133,13 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - ✅ round-1 fan-out includes >=1 NOVEL probe and >=1 arxiv+web deep-research search
 - ⛔ round-1 with only incremental milestones · skip lit grounding · defer NOVEL to later round
 
+### d_novel_only — 이미 알려진 것의 재현·검증 절대금지 · 목표는 NOVEL 발견
+
+- ✅ 모든 캠페인·라운드의 목표는 **NOVEL(미발견) 발견** — 문헌·임상에 이미 알려진 결과를 똑같이 다시 내는 일에 compute/시간을 쓰지 않는다
+- ✅ 표적·후보 착수 **전** arxiv+web으로 신규성을 먼저 확인(d18 lit grounding) — 이미 알려졌으면(예: MCL1 = S63845·AMG-176·AZD5991 임상 레드오션) 그 표적은 **재현 대상이 아니라 회피 대상**, 즉시 NOVEL 각도로 피벗
+- ✅ 기지값과의 대조가 필요하면 그건 **방법 검증용 1회 앵커**로만(파이프라인 정합성 확인) — 그 자체를 캠페인 산출/성과로 박제 금지. 진짜 결과는 항상 미지 영역의 Δ(새 표적·새 기전·새 물질·closed-negative)
+- ⛔ 이미 알려진 강결합/물성을 ABFE·DFT 등으로 "맞췄다"를 발견·성과로 보고 · 신규성 확인 없이 레드오션 표적에 풀 캠페인 발사 · NOVEL을 다음 라운드로 미루고 재현부터 하기 (d2·d6·d18·d_discovery·d_paper_significance와 한 묶음 — 발견 아니면 의미 없음)
+
 ### d19 — MATLAB-grade in-silico 100% closure · intra-domain reuse lattice
 
 > The tape carries two `@D d19` records (governance closure + reuse lattice); both are preserved here.
