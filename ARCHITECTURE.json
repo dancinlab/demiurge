@@ -1273,7 +1273,7 @@
             },
             {
               "id": "frontier_date",
-              "role": "2026-06-16"
+              "role": "2026-06-18 (prior-art audit + novel-candidate survey)"
             },
             {
               "id": "branches",
@@ -1594,6 +1594,14 @@
             {
               "id": "ledger",
               "role": "RTSC_LEDGER.jsonl (repo root, 91 rows — per-candidate verdict SSOT)"
+            },
+            {
+              "id": "prior_art_audit",
+              "role": "2026-06-18 선행연구 전수조사(c9·c13): 후보 대다수가 2022-2025 출판선행 — 재현=LaRu3Si2(arXiv:2503.22477·λ0.8·진짜CDW)·LaBeH8(PRL2022)·CaB3C3(PRB2024 상압48K)·Mg2IrH6(PRL2024 160K)·Li2CuH6·Li2MgH16. 방향오류=LaB3C3(반도체·e-도핑이 SC죽임). 신규(기존로스터)=LaOs3Si2·LaRh3Si2(2503.20867 428-supplement 미포함 grep확정)·MgBeH8·KBeH8·AcBeH8(상압). 4×4×4 캠페인 중단·포드teardown. SSOT=state/rtsc-prior-art-audit/AUDIT.md"
+            },
+            {
+              "id": "novel_candidates_survey",
+              "role": "2026-06-18 Round1 arxiv 신규후보 발굴+삼각측량(el-ph 미출판 타깃·고갈루프 진행중). ★Tier-1(상압·clean): NbRu3(kagome DB top-Tc15K·λ전무)·YCr6Ge6(ARPES flat-band·NM)·Mg2PtH6(78K)·SrZnH3(107K listed)·Mg3OsH8(73K). Tier-2: KB12/YB12/BaB12(B12 superatom)·Ti6Sb4/Pb4/Tl4(Ti kagome)·LuNb6Sn6·Ba(Pt3B2)2/TaMoB2(보라이드 λ_Γ만)·Mg2PdH6/Al2TcH6/ReH6·BaRhH8/BaIrH8(fluorite)·SrBeH8/YBeH8(BeH8 white-space)·MB5N5(B-N clathrate)·α-ATB4·hole-YB2·V2NS2. 검증대상(실측Tc·λ無): YOs2/ZrOs2/HfOs2 Laves. SSOT=state/rtsc-novel-survey/REGISTRY.md"
             }
           ]
         },
