@@ -8,6 +8,11 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 후보군 선행연구 전수조사 — 신규성 감사 (대부분 출판된 선행연구·c9·c14)
+- 유저 지시 arxiv 전수조사(4-family 병렬 리서치 에이전트). **LaRu3Si2가 arXiv:2503.22477(2025)로 이미 출판**(λ≈0.8·진짜 CDW)임을 발견해 진행 중이던 4×4×4 멀티포드 캠페인 중단(포드 reap teardown·과금정지) 후, 전 후보로 확대.
+- 결과: **대다수 후보가 2022-2025 출판 선행연구**. 재현=LaRu3Si2·LaBeH8(PRL2022)·CaB3C3(PRB2024 상압48K)·Mg2IrH6(PRL2024 상압160K)·Li2CuH6(2024 상압)·Li2MgH16. 방향오류=LaB3C3(반도체·e-도핑이 SC 죽임, 문헌은 hole-도핑). 신규여지=LaOs3Si2·LaRh3Si2(kagome·arXiv:2503.20867 428-supplement 확인 필요)·MgBeH8·KBeH8·AcBeH8 상압(물질은 10GPa 출판·상압은 신규·d6 안정성 사활). 감사 박제 state/rtsc-prior-art-audit/AUDIT.md.
+- cloud 운영 발견: `cloud rm --force`가 레지스트리를 프로바이더-destroy 前에 지워 destroy 실패 시 고아 빌링 포드 발생(41411431·41453344) → `cloud reap --apply`로 정리(dry-run서 SENOLYX 없음 확인 후 타깃). cloud 가드 follow-up 후보(rm은 provider-destroy 확인 後 forget).
+
 ### 거버넌스 d_novel_only — 기지(旣知) 재현·검증 절대금지, 목표는 NOVEL 발견
 - CLAUDE.md `## 거버넌스` d18 뒤에 신규 지시 `d_novel_only` 추가: 모든 캠페인 목표는 미발견(NOVEL) 발견이며, 문헌·임상에 이미 알려진 결과를 똑같이 재현·검증하는 데 compute/시간을 쓰지 않는다. 착수 전 arxiv+web 신규성 확인(d18) → 이미 알려진 레드오션 표적(예: MCL1=S63845·AMG-176·AZD5991 임상)은 회피·피벗 대상. 기지값 대조는 방법-검증 1회 앵커로만 허용하고 성과로 박제 금지.
 - 계기: R13에서 MCL1 ABFE −16.78이 실측(−13)과 잘 맞았으나 이는 *발견*이 아니라 알려진 강결합제의 재현임을 사용자가 지적. d2·d6·d18·d_discovery·d_paper_significance와 한 묶음.
