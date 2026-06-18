@@ -8,5 +8,7 @@ pkill -9 -f "ph.x"      2>/dev/null || true
 sleep 4
 cd /root/laru3si2_444 || exit 2
 rm -rf out/_ph0 2>/dev/null || true
-nohup bash /root/run_prod.sh 1 12 > /root/laru3si2_444/prod.log 2>&1 &
-echo "LAUNCHED run_prod pid=$!"
+# q-range args (SQ LQ) for d_qforge_parallel sharding — default full 1..12.
+SQ="${1:-1}"; LQ="${2:-12}"
+nohup bash /root/run_prod.sh "$SQ" "$LQ" > /root/laru3si2_444/prod.log 2>&1 &
+echo "LAUNCHED run_prod q$SQ..$LQ pid=$!"
