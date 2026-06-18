@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 4×4×4 production 코어 최적화 — NP=192 + npool=6 (384c 포드 활용)
+- 초기 발사가 NP=64로 384코어 중 17%만 사용 + npool 미사용(16³ k-격자 k-병렬 없음) → q1 단독 12 rep이 ~시간. ph_b1_2.out 확인=ph.x 정상 진행이나 느림(코어 미활용). fix: NP=192 + `-npool 6`(k-points 임베러싱 병렬 → 거의 공짜 ~3-6× 가속). recover는 rank-layout 고정이라 fresh 재시작(30분 q1 손실 vs 수시간 절약). launch.sh 짧은명령 재발사. npool 수용 검증은 다음 폴링(크래시 시 NP=64 fallback).
+
 ### RTSC LaRu3Si2 4×4×4 — 사이징 완료(q=12) + el-ph PRODUCTION 발사 (디스크-안전 q-배치)
 - 사이징 확정: 4×4×4 그리드 **irreducible q-points = 12**(copy-from으로 truncation 우회 추출). SCF 완료·ph.x init 통과.
 - production 발사: vast 41411431(384코어·113G)서 `run_prod.sh` — el-ph scratch ~41G/q라 12q×41G=492G≫113G 디스크벽 → **2q 배치 + 배치간 `out/_ph0` 정리(elph.inp_lambda.<q>+dyn 저장 후)·recover=.true.** 로 디스크-안전 완주. self-guard(stale ph.x kill+_ph0 clean at launch). BATCH q1-2 가동(NP=64).
