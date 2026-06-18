@@ -1,3 +1,4 @@
 [cloud] cloud_exec: ssh transport failure (exit 255) — host unreachable (connection refused / timeout / auth / changed host key). The pod may be alive and billing but not accepting SSH — a vast.ai/RunPod transport outage. Stop retrying; verify reachability or tear the pod down. · ssh stderr: ssh: connect to host ssh3.vast.ai port 19238: Connection refused
+ENS_RESULT lig=CRBN rep=1 dG_complex=143.1848 dG_solvent=135.8733 ssc=3.0203 dG_bind=-4.2912
 ENS_RESULT lig=CRBN rep=2 dG_complex=140.3418 dG_solvent=135.7937 ssc=3.0203 dG_bind=-1.5279
 [cloud] remote exit 0

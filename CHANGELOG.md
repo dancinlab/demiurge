@@ -8,6 +8,13 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### SENOLYX R13 후보-ABFE 캠페인 마감 — 9/9 셀 완주 (3 표적 × 3 반복)
+- **CRBN rep1 complex leg 완주 → solvent leg → ENS_RESULT 기록**으로 마지막 셀(CRBN, 최대 ~389k 원자 복합체)이 닫혀 R13 전체 **9/9 done_cells** 완료. complex leg는 포드 재부팅을 `.nc` 체크포인트 재개(resume)로 수 차례 넘기며 ~0.24 MB/h로 누적, solvent leg는 작은 용매 박스라 ~3 MB/30min로 빠르게 마감.
+- **최종 ABFE (n=3/3, kcal/mol)**: MCL1 **−16.78 ± 2.77** (S63845 Kd~0.19nM ≈ −13, ✅ 강결합 일치) · BCLXL **−29.28 ± 0.71** (재현성 있는 과대결합 = 아티팩트 ⚠️) · CRBN **−2.54 ± 0.88** (IMiD Kd~µM ≈ −8, 🔵 약한 glue-class 결합 — 워헤드 표적보다 훨씬 얕음, E3 글루 방향과 부호·크기 일치).
+- 결과 박제: `exports/SENOLYX/round13-abfe-allcand/RESULT.txt`(done_cells=9/9) + `seen.prog`/`combined.prog`(persist-merge 영구 저장). vast 포드 `41020659`(senolyx-r13-pod3) **reap**(destroy+forget·과금 차단), 잔존 SENOLYX 포드 0.
+- ARCHITECTURE.json lockstep: `campaigns.SENOLYX` 개요(9/9 complete)·`R13_candidate_ABFE.CRBN_EF2`(n 3/3·dG −2.54·verdict)·`results_index.SENOLYX.R13_CRBN` 갱신.
+- 다음(게이트): R13 마감 완료 → R14 후보(A=CRBN-PROTAC 삼원복합체+분해 · B=FOXO4-DRI · C=β-gal 정밀화 · D=BCL-2/BCL-W 확장)는 유저 지시 시 착수.
+
 ### ARCHITECTURE.json — 평면/섹션 스키마 → 진짜 `children` 트리 (commons c4)
 - 기존 ARCHITECTURE.json은 c4가 금지하는 평면/섹션형(top-level `nodes`/`engines`/`campaigns`/`results_index`/`domains`/`governance`/`data_flow`…)이었고, 30여 셀이 ` · `/줄바꿈으로 다수 사실을 한 칸에 쌓아둠. → 무손실 **재구조화**: root 노드(`id:demiurge`·`role`·`updated`·`ssot_note`)+`children` 계층으로 변환. 각 top-level 섹션=자식 노드, 그 내용은 다시 자식으로 중첩; `· `로 이어붙인 긴 셀은 항목당 한 자식(`_join`에 원래 구분자 보존해 무손실 재결합 가능).
 - 무손실 검증: 원본 leaf 문자열 2714개 == 트리 leaf 2714개(verbatim, 누락·추가 0). dict-노드 377→3602, >250자 셀 32→26(나머지 26은 구분자(` · `/newline) 없는 단일-사실 산문 leaf — 문장 중간을 쪼개면 구조 날조라 분할 안 함). 최대깊이 15.
