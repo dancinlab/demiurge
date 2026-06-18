@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### RTSC Mg2PtH6 vc-relax 완료 + d6 동적안정 LIVE (summer 무료·c2)
+- METAL 확정 후 ① 게이트경로(유저선택): vc-relax 무료완주(bfgs수렴·force0.000076·P≈0). 완화구조=셀12.585→12.410bohr(a6.66→6.57Å·1.4%수축)·H8면체 x0.24→0.273·Pt/Mg대칭유지. 완화 덱 재emit(hexa deck x2mh6·celldm12.410·h_x0.27278) 후 d6 2×2×2 phonon-only(recover·reboot-safe) summer 발사. 허수모드0(동적안정)이면 유료 GPU DFPT 게이트 통과. 여전히 $0. state/rtsc-mg2pth6/metal_verdict.txt.
+
 ### RTSC Mg2PtH6 금속/반도체 게이트 🟢 METAL (summer 무료·c2 검증)
 - hexa deck x2mh6_antifluorite(PR#3603) 덱으로 summer 무료 scf→nscf→dos 완주(c2: scf수렴·DOS rc=0). **DOS(E_F)=1.61 states/eV/cell·E_F=12.016eV → 금속**(반도체 아님). 무도핑 stoichiometric Mg2PtH6=진짜 금속 → 무도핑 phonon-SC 후보 LIVE, el-ph DFPT λ/Tc 정당화. moderate DOS→moderate-coupling 예상. 비용 $0. summer mpirun은 --oversubscribe --bind-to none 필요(pool-QE-recipe). state/rtsc-mg2pth6/metal_verdict.txt. 다음=el-ph DFPT(유료GPU).
 

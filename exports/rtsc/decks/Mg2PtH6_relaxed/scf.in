@@ -1,0 +1,43 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'mg2pth6'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  verbosity       = 'high'           ! print HOMO/LUMO + Fermi for metal/semiconductor verdict
+/
+&SYSTEM
+  ibrav           = 2                ! REPLACE celldm(1) with relaxed value from vc-relax.out
+  celldm(1)       = 12.410
+  nat             = 9
+  ntyp            = 3
+  ecutwfc         = 60
+  ecutrho         = 600
+  nosym           = .true.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr = 1.0d-10
+  mixing_beta = 0.3
+  electron_maxstep = 400
+/
+ATOMIC_SPECIES
+  Pt  195.084   Pt.pbe-spfn-rrkjus_psl.1.0.0.UPF
+  Mg  24.305   Mg.pbe-spnl-rrkjus_psl.1.0.0.UPF
+  H    1.008   H.upf
+
+! REPLACE positions with relaxed ATOMIC_POSITIONS from vc-relax.out
+ATOMIC_POSITIONS crystal
+  Pt   0.0000000   0.0000000   0.0000000   ! M @ 4a
+  Mg   0.2500000   0.2500000   0.2500000   ! X @ 8c
+  Mg   0.7500000   0.7500000   0.7500000   ! X @ 8c
+  H   -0.27278  0.27278  0.27278   ! H @ 24e octahedron (Mx^-1 of (x,0,0))
+  H   0.27278  -0.27278  -0.27278   ! (-x,0,0)
+  H   0.27278  -0.27278  0.27278   ! (0,x,0)
+  H   -0.27278  0.27278  -0.27278   ! (0,-x,0)
+  H   0.27278  0.27278  -0.27278   ! (0,0,x)
+  H   -0.27278  -0.27278  0.27278   ! (0,0,-x)
+
+K_POINTS automatic
+  12 12 12  0 0 0
