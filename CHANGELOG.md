@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 4×4×4 — bzip2 fix 통함(pw.x 설치) + GUARD-2 false-negative 정정 (c2)
+- bzip2 보장 fix가 통해 micromamba 2.8.1 + qe env(pw.x·ph.x) **실제 설치 성공**. 단 fail-loud GUARD-2가 `pw.x -h`로 검증 → QE 바이너리엔 `-h` 도움말 플래그가 없어 비-0 종료 → 멀쩡한 설치를 "QE SETUP FAILED"로 오판(false-negative). fix=검증을 `which pw.x`(존재확인·exit0)로 교체 + env create 멱등(이미 있으면 skip). 재실행 → "QE SETUP DONE" 정직 출력 확인. 사이징 발사.
+
 ### RTSC 4×4×4 사이징 — 세션-장기 "SCF 무출력" 진짜근본원인 확정 + fail-loud fix (c1·c2)
 - 포그라운드 캡처(v2)가 진짜 뿌리를 노출: `pod_setup_qe.sh`가 (1) 포드에 **bzip2 부재**로 micromamba `.tar.bz2`를 `tar -xj` 해제 실패("bzip2: Cannot exec") → micromamba 미설치, (2) 그런데도 `echo "QE SETUP DONE"`을 **무조건 출력**(거짓 성공) → 와처가 DONE 보고 사이징 발사 → pw.x 없음 → scf.out 빈 채. 이것이 summer·vast 가로지른 세션-장기 "SCF 무출력" 미스터리의 단일 근인.
 - fix(c1 근본): `ensure_deps`로 bzip2/curl/tar apt 설치 보장(다운로드 전) + 설치 **검증 통과(pw.x 실행)시에만 "QE SETUP DONE", 아니면 "QE SETUP FAILED: <reason>" + exit 1**(거짓-DONE 박멸·fail-loud). 재발방지 원칙(트러블슈팅=도구개선) 일관 — 와처가 이제 거짓 DONE에 헛발사 안 함.
