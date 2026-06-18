@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 선행연구 감사 미결 closure — arXiv:2503.20867 supplement 직접 grep
+- 미결이던 "428 SC 후보 supplement에 LaOs3Si2/LaRh3Si2 포함?" 을 PDF(23MB) 다운+pdftotext(10211줄) grep으로 확정. 리스트 포맷 A·B₂·C₃(C=kagome)로 LaSi2Os3/LaSi2Rh3 검색 = **0건**(미포함). 리스트 실리사이드는 전부 Ni-kagome(SmSi2Ni3 등). **결론**: 두 후보 = 2503.20867 대비 신규 확정. 단 미포함=안정성 필터 탈락 추정(우리 LaOs3Si2 2×2×2 동적불안정과 일치)→LaOs3Si2는 신규지만 confirmatory-negative, LaRh3Si2는 미계산 진짜 미개척. state/rtsc-prior-art-audit/AUDIT.md closure 박제.
+
 ### RTSC 후보군 선행연구 전수조사 — 신규성 감사 (대부분 출판된 선행연구·c9·c14)
 - 유저 지시 arxiv 전수조사(4-family 병렬 리서치 에이전트). **LaRu3Si2가 arXiv:2503.22477(2025)로 이미 출판**(λ≈0.8·진짜 CDW)임을 발견해 진행 중이던 4×4×4 멀티포드 캠페인 중단(포드 reap teardown·과금정지) 후, 전 후보로 확대.
 - 결과: **대다수 후보가 2022-2025 출판 선행연구**. 재현=LaRu3Si2·LaBeH8(PRL2022)·CaB3C3(PRB2024 상압48K)·Mg2IrH6(PRL2024 상압160K)·Li2CuH6(2024 상압)·Li2MgH16. 방향오류=LaB3C3(반도체·e-도핑이 SC 죽임, 문헌은 hole-도핑). 신규여지=LaOs3Si2·LaRh3Si2(kagome·arXiv:2503.20867 428-supplement 확인 필요)·MgBeH8·KBeH8·AcBeH8 상압(물질은 10GPa 출판·상압은 신규·d6 안정성 사활). 감사 박제 state/rtsc-prior-art-audit/AUDIT.md.

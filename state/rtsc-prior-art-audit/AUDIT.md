@@ -29,3 +29,10 @@
 
 ## 메타 결론
 demiurge RTSC 캠페인의 후보 대다수가 2022-2025 출판 선행연구. 진짜 신규 기여 여지 = (a) 미스크리닝 kagome 게스트/조성 (b) 상압 안정성(d6 matdyn) 정밀화 (c) MgBeH8/KBeH8 등 미탐색 BeH8 게스트. 단순 "이 물질 고-Tc"는 prior-art 포화.
+
+## 미결 closure (2026-06-18) — arXiv:2503.20867 supplement PDF 본문 직접 확인
+PDF(23MB) 다운+pdftotext(10211줄) grep. 후보리스트 포맷 = A·B₂·C₃(C=kagome 3-site). LaRu3Si2=LaSi2Ru3.
+- LaSi2Os3(=LaOs3Si2): **0건** → 3063-stable/428-SC 리스트 미포함
+- LaSi2Rh3(=LaRh3Si2): **0건** → 미포함
+- 리스트의 실리사이드 후보는 전부 **Ni-kagome**(SmSi2Ni3·TbSi2Ni3·DySi2Ni3) — Os/Rh/Ru kagome silicide 0개
+**결론**: LaOs3Si2·LaRh3Si2 = 2503.20867 대비 신규 확정. 단 미포함 사유는 안정성 필터 탈락 추정(우리 DFT LaOs3Si2 2×2×2 동적불안정과 일치) → LaOs3Si2는 신규지만 confirmatory-negative(불안정·LaRu3Si2보다 약결합). LaRh3Si2는 미계산 상태 = 진짜 미개척 1:3:2.
