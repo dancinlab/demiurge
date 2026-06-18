@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC LaRu3Si2 4×4×4 사이징 — flaky 포드 교체 + 포그라운드 캡처 (v2)
+- vast 41382613이 세션 내내 SCF 무출력(scf.out 빈 채)·flaky 전송으로 진척 0 → `hexa cloud rm --force`로 destroy(과금정지). 근본추정: 자가-detach 사이징(`setup_sizing_vast.sh`)이 빈 sizing.log를 남겨 진짜 에러가 안 보였음.
+- 새 포드 vast 41411431(ssh4·≥120G·@demiurge) + **포그라운드 캡처 사이징**(`sizing_fg.sh` — 자가detach 제거, SCF/ph.x를 동기 실행해 출력 직접 캡처) 도입 → 다음 실패 시 진짜 에러 가시화. 체인 모니터 bpduy69ui(QE완료→fg사이징→q-list).
+
 ### QFORGE M4 fleet — from-scratch λ 벽 정밀 재분류 (3벽 모두 LOCAL-fixable·포드 불필요)
 - 유저 "fleet으로 진행"에 따라 M4(from-scratch 차폐정점 λ 벽 돌파)를 병렬 다중에이전트 fleet(3레인)으로 굴림 → 모두 high-confidence 근본원인 + 안전 해법(결과 박제: `state/qforge-m4-fleet/FLEET_FINDINGS.json`). **핵심 반전(c9 재분류)**: 직전 "고RAM 포드 필요" 추정이 틀림 — 3벽 전부 **무료 로컬 수정** 가능.
   - **(A) 툴체인(#1 블로커)**: 로컬 ~/.hx가 main #3362(hexa_arr_f64_* 선언)보다 21h stale → 모든 hexa 빌드 실패. RT-NATIVE churn 아님(설치본 HEAD 자체가 stale). 해법=**격리 prefix 설치 `HX_HOME=~/.hx-m4`**(공유 ~/.hx 무손상·zero blast). ~/.hx 재동기화 금지(RT-NATIVE 102 dirty 파일 파괴·c17/c7).
