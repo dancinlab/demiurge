@@ -1,0 +1,53 @@
+&CONTROL
+  calculation     = 'vc-relax'
+  prefix          = 'mg2pth6'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ibrav           = 2                ! FCC, Fm-3m (SG 225) - K2PtCl6 antifluorite
+  celldm(1)       = 12.585           ! a_conv ~6.66 A (Mg2IrH6 a=6.655 seed)
+  nat             = 9                ! 1 Pt + 2 Mg + 6 H ([PtH6] octahedron)
+  ntyp            = 3
+  ecutwfc         = 90               ! Pt semicore - high ecut
+  ecutrho         = 360
+  nosym           = .true.           ! guard - avoid checkallsym crash
+  occupations     = 'smearing'
+  smearing        = 'mp'             ! d15 - metallic-case aid (if semiconductor, harmless)
+  degauss         = 0.01             ! d15 small-gap SCF aid
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  electron_maxstep = 400             ! d15 maxiter 400
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  cell_dofree     = 'all'
+/
+ATOMIC_SPECIES
+  Pt  195.084   Pt.upf
+  Mg  24.305   Mg.upf
+  H    1.008   H.upf
+
+ATOMIC_POSITIONS crystal
+  Pt   0.0000000   0.0000000   0.0000000   ! M @ 4a
+  Mg   0.2500000   0.2500000   0.2500000   ! X @ 8c
+  Mg   0.7500000   0.7500000   0.7500000   ! X @ 8c
+  H   -0.24  0.24  0.24   ! H @ 24e octahedron (Mx^-1 of (x,0,0))
+  H   0.24  -0.24  -0.24   ! (-x,0,0)
+  H   0.24  -0.24  0.24   ! (0,x,0)
+  H   -0.24  0.24  -0.24   ! (0,-x,0)
+  H   0.24  0.24  -0.24   ! (0,0,x)
+  H   -0.24  -0.24  0.24   ! (0,0,-x)
+
+K_POINTS automatic
+  12 12 12  0 0 0

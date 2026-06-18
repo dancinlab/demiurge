@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC Mg2PtH6 덱 빌드 — X2MH6 antifluorite 프로토타입 (hexa-lang PR#3603)
+- 생존후보 Mg2PtH6(무도핑) 발사 착수. hexa deck에 x2mh6_antifluorite 프로토타입 추가(K2PtCl6 Fm-3m 9원자·M@4a·X@8c·H@24e 8면체) + **금속/반도체 게이트**(scf→nscf tetrahedra→dos DOS(E_F) 판정→금속이면 ph). 무도핑 [PtH6]가 반도체일 위험(Mg2RuH6/OsH6 family) 대비 무료 DOS 게이트로 유료 DFPT go/no-go. deck_gen_smoke G1-G7 PASS. 덱 박제 exports/rtsc/decks/Mg2PtH6/. 다음=d16 dry-run+SCF DOS(무료).
+
 ### RTSC 발사전 체크 9/9 완료 — 생존 3+피벗1 (목표달성)
 - Mg3RuH8·YCr6Ge6 둘다 CLEARED(신규성 살아남음·YCr6Ge6 자성게이트 통과=상관상자성 nspin1). 최종: ✅생존=YCr6Ge6·Mg2PtH6·Mg3RuH8 + ⚠SSCHA피벗=LuOs3B2 / 🔴재현6종(앵커만). 구조·pseudo·자성 대부분 CLEAR·유일블로커=신규성. ARCHITECTURE 9/9 prelaunch 박제. 다음=생존후보 hexa deck→d16→d6→DFPT λ.
 
