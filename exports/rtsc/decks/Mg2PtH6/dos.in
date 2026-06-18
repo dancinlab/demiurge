@@ -1,0 +1,9 @@
+&DOS
+  prefix   = 'mg2pth6'
+  outdir   = './out'
+  fildos   = 'mg2pth6.dos'
+  DeltaE   = 0.01
+/
+! VERDICT: grep the Fermi energy in nscf.out, read mg2pth6.dos at E=E_F.
+!   DOS(E_F) > 0  - METAL  - proceed to ph.in el-ph DFPT.
+!   DOS(E_F) - 0 (gap) - SEMICONDUCTOR - undoped phonon-SC dead (closed-negative, d_paper_significance).

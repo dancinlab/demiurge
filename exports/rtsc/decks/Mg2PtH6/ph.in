@@ -1,0 +1,18 @@
+Mg2PtH6 electron-phonon 4x4x4 q (X2MH6 antifluorite - RUN ONLY IF metal per dos.in verdict)
+&inputph
+  prefix              = 'mg2pth6'
+  outdir              = './out'
+  fildyn              = 'mg2pth6.dyn'
+  fildvscf            = 'dvscf'
+  ldisp               = .true.
+  nq1                 = 4
+  nq2 = 4
+  nq3 = 4
+  tr2_ph              = 1.0d-14
+  electron_phonon     = 'simple'     ! Allen-Dynes Tc from lambda/omega_log
+  el_ph_sigma         = 0.005
+  el_ph_nsigma        = 10
+  recover             = .true.       ! checkpoint-safe / resumable
+  alpha_mix(1)        = 0.3
+  max_seconds         = 504000
+/
