@@ -1,0 +1,26 @@
+QFORGE gate-close fleet — sternheimer R1 (2026-06-19)
+=====================================================
+목표: degenerate-subspace Sternheimer DFPT 응답 정확도 → el-ph |g|² 게이트(<1%) 기여.
+
+발견:
+- occupied 근축퇴는 기존 st_project_out(2×Gram-Schmidt P_c)가 이미 처리(occ Δ1e-6→err2.8e-17·누설0).
+- conduction 근축퇴(εm≈εn 전도공간)가 진짜 벽: A=P_c(H−εn)P_c 거의특이→재귀잔차 드리프트→거짓수렴.
+
+개선(채택): TRUE-residual 종료판정 + 주기적 residual replacement(QE cgsolve 표준·시그니처불변·하위호환).
+검증(c2 실컴파일 바이너리·boxed-array 우회하니스):
+  conduction near-degen(Δ1e-7): 28→3 iter, 참잔차 1.9e-9→0
+  well-separated regression: 2 iter, err 0.0(machine·무회귀)
+  occupied near-degen(Δ1e-6): 2 iter, err 2.8e-17
+산출: hexa-lang worktree 커밋 e597e0a72 (branch qforge/sternheimer-degen-resreplace·3 files: sternheimer.hexa+selftest+ING). push/PR=user-gated.
+
+depletion:
+  🧱 α·P_v level-shift: occ는 이미 처리됨→load-bearing 아님(revert)
+  ✅ true-residual replacement: conduction 28→3·참잔차→0 실질개선(채택)
+  🧱 conduction dpsi 절대오차 0.0052@5e6: catastrophic-cancellation 정밀바닥(배정밀 한계·정직)
+
+★중대 substrate 블로커(c17 ING id=3): 리터럴 [float](packed-f64) 배열 + fn-value 호출경계 = 태그깨짐.
+  → 모든 matrix-free QFORGE selftest(sternheimer/davidson/dfpt_response) 컴파일OK·런타임死.
+  → from-scratch el-ph |g|² 게이트(<1%) g5 검증이 darwin-arm64서 공식 selftest로 불가(우회하니스로만 PASS).
+  → 컴파일/런타임 코어 버그 = c17 ING 인계(로컬fix 금지). fxc-vertex/kgrid-moment/phonon-fs도 동일 솔버라 공유벽 가능성.
+
+판정: 🧱 sternheimer 레인 — 알고리즘 개선 DONE(우회검증)이나 게이트 absorb는 코어 codegen버그(ING)에 막힘.
