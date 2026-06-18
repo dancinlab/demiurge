@@ -1687,7 +1687,7 @@
                   "id": "meta",
                   "role": "2026-06-18 발사후보 9종 등록(점수·이유·리스크·arxiv). ING(harness ing)과 동기. 발사=hexa deck→d16 dry-run→DFPT λ(d_deck_always·d6). 점수=5축(신규·Tc·용이·삼각·안정).",
                   "prelaunch": "2026-06-18 발사전 데스크체크(d11구조·d13 pseudo·신규성재확정·자성) 완료 7/9. ⚠중대정직(c9): 서베이가 'el-ph 미출판'으로 본 후보 대부분이 실은 출판됨(깊은 per-후보 체크가 JPCC/Adv.Sci/npj 논문 발견). 구조·pseudo·자성은 대부분 CLEAR·유일 블로커=신규성. 생존=Mg2PtH6(무도핑)+LuOs3B2(SSCHA비조화 피벗). Mg3RuH8·YCr6Ge6 진행중.",
-                  "prelaunch_summary": "2026-06-18 발사전 데스크체크(d11구조·d13 pseudo·신규성재확정·자성) 완료 7/9. ⚠중대정직(c9): 서베이가 'el-ph 미출판'으로 본 후보 대부분이 실은 출판됨(깊은 per-후보 체크가 JPCC/Adv.Sci/npj 논문 발견). 구조·pseudo·자성은 대부분 CLEAR·유일 블로커=신규성. 생존=Mg2PtH6(무도핑)+LuOs3B2(SSCHA비조화 피벗). Mg3RuH8·YCr6Ge6 진행중."
+                  "prelaunch_summary": "2026-06-18 발사전 데스크체크 9/9 완료. ⚠중대정직(c9): 서베이가 'el-ph 미출판'으로 본 후보 다수가 실은 출판(JPCC/Adv.Sci/npj). 구조·pseudo·자성은 대부분 CLEAR·유일블로커=신규성. ✅생존(진짜신규·발사가능)=YCr6Ge6·Mg2PtH6·Mg3RuH8 + ⚠피벗=LuOs3B2(SSCHA). 🔴재현(앵커만)=NbRu3·SrZnH3·Mg3OsH8·AcRhH8·Pd2ZrIn·Ni3InN. 다음=생존후보 hexa deck→d16 dry-run→d6 matdyn→DFPT λ."
                 },
                 {
                   "id": "SrZnH3",
@@ -1732,12 +1732,12 @@
                 {
                   "id": "Mg3RuH8",
                   "role": "종합3.6 · M3XH8 fluorite · 이유=Mg3OsH8 패밀리 4d-Ru 자매, Os만 Tc명시·Ru멤버 개별 λ無=빈칸, 상압·NM·소셀 · arxiv 5c00513",
-                  "prelaunch": "⏳ 발사전체크 진행중(백그라운드)"
+                  "prelaunch": "✅ CLEARED 생존 — Pm-3m nat12·NM·Ru 4d semicore·a미확정(figshare CIF pull 또는 self-relax). NOVEL확정(M3XH8서 Mg3OsH8만 Tc·Ru멤버 미출판·Mg3RuD3는 별물질). vast CPU batch"
                 },
                 {
                   "id": "YCr6Ge6",
                   "role": "종합3.6 · kagome HfFe6Ge6 · Tc미측정(투기) · 이유=ARPES+DFT flat-band@EF 확정인데 el-ph DFPT 전무(plasmon/ARPES만)=신규★5, paramag·상압 · 리스크=Tc투기적·13원자셀·자성 borderline(collinear 사전체크) · arxiv 1906.07140",
-                  "prelaunch": "⏳ 발사전체크 진행중(백그라운드·Cr-3d 자성 바닥상태가 발사가부 결정)"
+                  "prelaunch": "✅ CLEARED 생존(최강신규) — P6/mmm nat13·a5.169 c8.279 확정·Y/Cr semicore. NOVEL확정(el-ph/DFPT/Tc 출판ZERO·ARPES만). 자성게이트 통과=상관 상자성·장거리질서無·Cr itinerant 0.2μB→nspin=1 유효(nspin2 M→0 보험1회). vast GPU(nat13·SC 미측정=진짜 미지)"
                 }
               ]
             }

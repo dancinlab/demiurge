@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 발사전 체크 9/9 완료 — 생존 3+피벗1 (목표달성)
+- Mg3RuH8·YCr6Ge6 둘다 CLEARED(신규성 살아남음·YCr6Ge6 자성게이트 통과=상관상자성 nspin1). 최종: ✅생존=YCr6Ge6·Mg2PtH6·Mg3RuH8 + ⚠SSCHA피벗=LuOs3B2 / 🔴재현6종(앵커만). 구조·pseudo·자성 대부분 CLEAR·유일블로커=신규성. ARCHITECTURE 9/9 prelaunch 박제. 다음=생존후보 hexa deck→d16→d6→DFPT λ.
+
 ### RTSC 발사전 데스크체크 — ⚠중대정직: 서베이 신규성 과대평가 정정(c9·d_novel_only)
 - 9후보 발사전 게이트(d11·d13·신규성·자성) 7/9 완료. 깊은 per-후보 체크가 서베이(라운드1-5) 놓친 출판 발견 → 대부분 🔴재현(NbRu3 JPCC2024 9.8K·SrZnH3 MXH3 107K·Mg3OsH8 JPCC2025 73K·AcRhH8 Adv.Sci 78K·Pd2ZrIn Winterlik2012·Ni3InN npj397). 생존=Mg2PtH6(무도핑·2604.04151 descriptor확인)+LuOs3B2(SSCHA 비조화 정합 피벗). Mg3RuH8·YCr6Ge6 진행중. 구조·pseudo·자성은 대부분 CLEAR·유일블로커=신규성. ARCHITECTURE launch_candidates prelaunch 박제.
 

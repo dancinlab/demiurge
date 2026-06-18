@@ -219,3 +219,9 @@ kagome금속간·X2MH6·M3XH8·MXH3·fluorite-XH8·B12 superatom·보라이드·
 | Ni3InN | 🔴 출판 | npj 397-DFPT 포함+Uehara2010 실험 |
 | Mg3RuH8·YCr6Ge6 | ⏳ | 진행중 |
 **교훈**: 라운드1-5 서베이의 'el-ph 미출판' 분류는 얕은 DB체크라 과대평가. 발사전 per-후보 깊은체크가 진짜 게이트. 생존=Mg2PtH6(무도핑)+LuOs3B2(SSCHA). 나머지=재현(앵커만).
+
+## 발사전 체크 9/9 완료 (최종)
+✅생존(진짜신규): **YCr6Ge6**(el-ph출판ZERO·상관상자성nspin1·nat13 GPU) · **Mg2PtH6**(무도핑·2604.04151 descriptor만·nat9 Pt semicore) · **Mg3RuH8**(Ru멤버 미출판·nat12 CPU·CIF pull필요)
+⚠피벗: **LuOs3B2**(직선λ1.96 출판+허수모드→SSCHA 비조화 정합만 신규)
+🔴재현(앵커만): NbRu3(JPCC2024 9.8K)·SrZnH3(MXH3 107K)·Mg3OsH8(JPCC2025 73K)·AcRhH8(Adv.Sci 78K)·Pd2ZrIn(Winterlik2012)·Ni3InN(npj397)
+공통 발사절차: hexa deck(정확질량+semicore PP+d15 SCF aids·d_deck_always)→d16 free dry-run→d6 matdyn 동적안정→nspin2 M→0 보험→DFPT λ. 라우팅 d7: Mg2PtH6/Mg3RuH8 vast CPU·YCr6Ge6 vast GPU.
