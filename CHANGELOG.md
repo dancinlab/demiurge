@@ -6,6 +6,11 @@ For the full audit trail, see `git log`.
 
 ---
 
+## 2026-06-19
+
+### RTSC Mg2PtH6 금속/반도체 게이트 🟢 METAL (summer 무료·c2 검증)
+- hexa deck x2mh6_antifluorite(PR#3603) 덱으로 summer 무료 scf→nscf→dos 완주(c2: scf수렴·DOS rc=0). **DOS(E_F)=1.61 states/eV/cell·E_F=12.016eV → 금속**(반도체 아님). 무도핑 stoichiometric Mg2PtH6=진짜 금속 → 무도핑 phonon-SC 후보 LIVE, el-ph DFPT λ/Tc 정당화. moderate DOS→moderate-coupling 예상. 비용 $0. summer mpirun은 --oversubscribe --bind-to none 필요(pool-QE-recipe). state/rtsc-mg2pth6/metal_verdict.txt. 다음=el-ph DFPT(유료GPU).
+
 ## 2026-06-18
 
 ### RTSC Mg2PtH6 덱 빌드 — X2MH6 antifluorite 프로토타입 (hexa-lang PR#3603)
