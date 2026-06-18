@@ -1,0 +1,24 @@
+QFORGE gate-close fleet — kgrid-moment R1 (2026-06-19) · 🧱 substrate
+=====================================================================
+목표: denser-k GPU-davidson로 nspin2 moment → QE 0.43 수렴.
+결과: g5 FAIL(substrate)·moment 0건. 원인=magmom/k-mesh 물리 아닌 hexa 런타임 인터프리터 메모리손상.
+
+verbatim 크래시(3 독립 reproducer 동일):
+  scf_pw_selftest(@ci_gate) → cannot multiply non-numeric operand (tag 3*tag 3)
+  scf_pw_spin_selftest      → tag 1*tag 1202590843 (손상 tag)
+  cosn_kagome_spin(Γ)       → tag 3*tag 0
+  cosn_kmesh444_spin        → no moment(느린 nk=64 assemble→동일 크래시 클래스)
+PW assemble 대형배열(n·n≥6400) 곱에서 터짐. 메모리 hexa-val-arena-orphans-large-loop-arrays 동일 클래스.
++ ~/.hx/bin/hexa=54B 셸shim→hexa.real 바이너리 stale/divergent(install qforge가 dev tree보다 앞섬).
+
+★발견(d3): k-sampling 레버는 이미 upstream 빌드됨(PR#3346) — stdlib/qforge/fixtures/:
+  cosn_kmesh_spin(2×2×2)·cosn_kmesh444_spin(4×4×4)·cosn_kb_kmesh_spin(KB-nonlocal ON)
+  + BZ-적분 spin SCF qforge_scf_pw_kmesh_spin(공유E_F·ρ_σ=Σk wk Σb f|ψ|²·bare-H per-k캐시).
+  "Γ-only→k-mesh Stoner moment" 코드 정확히 존재. 직접실행→런타임 크래시. 중복드라이버 폐기(d3).
+
+벽 분류: 🧱 substrate(런타임 인터프리터)·NOT k-sampling·NOT basis. k-sampling 가설=미완(d2·런타임 fix前 검증불가).
+산출: QFORGE.md §모드(d) R1 + CHANGELOG, 커밋 00aaab73·branch worktree-agent-ac5693be26764bf66 push(pr-cycle 대기).
+다음: (1)hexa core val-arena fix(c17 ING) OR hexa.real clean 재빌드→기존 fixture 재실행 (2)summer RTX5070 다른빌드 재시도 (3)GPU-davidson은 런타임 정상화 後.
+
+★★수렴결론: sternheimer + kgrid-moment 2/3 레인이 **동일 hexa 런타임 val-arena 버그(packed-f64 대형배열 tag깨짐)** 확인.
+QFORGE gate-close fleet = 런타임 substrate에 균일 차단. 수치 알고리즘(sternheimer 개선·k-mesh 인프라)은 READY, 검증만 막힘.
