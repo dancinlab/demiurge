@@ -54,14 +54,21 @@ if [ ! -x "$MM" ] || ! "$MM" --version >/dev/null 2>&1; then
 fi
 echo "[setup] micromamba $("$MM" --version 2>/dev/null) OK"
 
-echo "[setup] creating qe env (qe + openmpi from conda-forge)..."
-"$MM" create -y -n qe -c conda-forge qe openmpi 2>&1 | tail -5
+# Idempotent: skip env create if pw.x is already resolvable in the qe env.
+if "$MM" run -n qe which pw.x >/dev/null 2>&1; then
+  echo "[setup] qe env already has pw.x — skipping create"
+else
+  echo "[setup] creating qe env (qe + openmpi from conda-forge)..."
+  "$MM" create -y -n qe -c conda-forge qe openmpi 2>&1 | tail -5
+fi
 echo "[setup] verify:"
 "$MM" run -n qe which pw.x ph.x 2>&1 || true
-# GUARD 2: only declare DONE when pw.x actually runs — never a false-DONE.
-if "$MM" run -n qe pw.x -h >/dev/null 2>&1; then
+# GUARD 2: declare DONE only when pw.x is RESOLVABLE in the env. QE binaries
+# have no `-h`/`--version` that exits 0 (a prior `pw.x -h` probe false-FAILED a
+# perfectly-installed QE), so `which pw.x` is the correct liveness check.
+if "$MM" run -n qe which pw.x >/dev/null 2>&1; then
   echo "=== QE SETUP DONE ==="
 else
-  echo "=== QE SETUP FAILED: pw.x not runnable after env create ==="
+  echo "=== QE SETUP FAILED: pw.x not found in qe env ==="
   exit 1
 fi
