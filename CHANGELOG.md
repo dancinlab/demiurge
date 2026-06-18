@@ -8,6 +8,10 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-18
 
+### RTSC 4×4×4 el-ph — 멀티포드 q-분할 (d_qforge_parallel·walltime 절반)
+- 단일포드 walltime이 며칠로 드러나(el-ph 'simple'이 16³ k-격자를 매 DFPT-iter 재계산·~628s/iter) 유저 승인 후 멀티포드 분할: pod1(41411431)=q1-6, pod2(41453344 신규 ≥130G)=q7-12. 둘 다 NP=192+npool6, 2q-배치+배치간 _ph0 정리(디스크-안전).
+- SCF 공유: 838M `.save`+wfc를 GB로 flaky 프록시 통해 나르는 대신 **pod2 자체 SCF 재생성**(결정론적·수분 vs el-ph 시간단위라 무시가능, 전송 실패 리스크 0). pod2 부트스트랩=새 bzip2/fail-loud 가드(#3548)로 깔끔하게 QE SETUP DONE(거짓-DONE 0). pod2_run.sh(SCF→run_prod 7 12)+pod2_launch.sh(짧은 detached 발사). launch.sh q-범위 인자화.
+
 ### RTSC 4×4×4 production 코어 최적화 — NP=192 + npool=6 (384c 포드 활용)
 - 초기 발사가 NP=64로 384코어 중 17%만 사용 + npool 미사용(16³ k-격자 k-병렬 없음) → q1 단독 12 rep이 ~시간. ph_b1_2.out 확인=ph.x 정상 진행이나 느림(코어 미활용). fix: NP=192 + `-npool 6`(k-points 임베러싱 병렬 → 거의 공짜 ~3-6× 가속). recover는 rank-layout 고정이라 fresh 재시작(30분 q1 손실 vs 수시간 절약). launch.sh 짧은명령 재발사. npool 수용 검증은 다음 폴링(크래시 시 NP=64 fallback).
 
