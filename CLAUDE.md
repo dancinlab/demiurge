@@ -4,6 +4,13 @@ demiurge is a universal, hexa-native technical-design architecture program: it d
 
 > Governance SSOT — this markdown file. The `@D d*` directive family (formerly in `project.tape`, retired 2026-06-15 · md 단일화) now lives in the **## Governance** section below; this file is authoritative.
 
+> 🛠️ **트러블슈팅 재발방지 = 도구(hexa cloud · hexa deck) 개선으로 박제 (최상위 원칙)**
+> 컴퓨트/포드/덱에서 트러블슈팅을 한 번 겪으면 — 그 자리에서 손으로 우회하지 말고 **그 예방 가드를
+> `hexa cloud`(포드·클라우드 레이어) 또는 `hexa deck`(입력덱·런스크립트 레이어)에 코드로 박아** 같은
+> 버그 재발을 0으로 만든다(self-improving 도구 = 규율 SSOT). c17대로 응용층(cloud·deck)은 **격리
+> worktree서 직접 fix → `harness pr-cycle`**, 컴파일/런타임 코어는 ING 인계. d_deck_always(덱)·이 원칙
+> (cloud)이 한 쌍. 매 트러블슈팅이 새 가드를 낳는다.
+
 ## Structure
 
 ```
