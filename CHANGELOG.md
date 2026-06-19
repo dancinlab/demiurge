@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### CURE-domain 게이트 정정 — clearance-% → η_neo functional (SENOLYX-AG pd-gate follow-on) + SENOLYX in-silico TERMINAL
+- SENOLYX 발견 in-silico TERMINAL 선언(종결식+SENOLYX-AG 설계+ρ 닫음·남은 make-or-break ρ는 wet-lab d5). follow-on: pd-gate가 falsify한 clearance-% 게이트를 5개 CURE-domain 노드서 η_neo functional로 정정(c4 update-in-place): RETINA η≥0.138(+4 ETDRS letters·UBX1325 anchor·🟢 PASS)·OA η≥0.069(연골 구조재생·단일용량 FAIL→depot+subtype+R_cap 돌파 d2)·PERIO η≥0.095(+1mm CAL·🟠 PASS*·SENOLYX-AG FIRST 표적). 근거=UBX0101 ~50%청소 전임상성공/인간OA실패·UBX1325 국소+subtype 성공 → clearance-%는 비단조 비예측.
+
 ### SENOLYX-AG R2 — make-or-break ρ + kill-axis 닫음 (in-silico SUPPORTED ~19×)
 - R2 결정적 fleet(rho-estimate·fsq-estimate) g5 PASS + S1 현실 ρ 재계산. ρ(추정·미측정): DPP4↔GLB1 0.10·PLAUR↔GLB1 0.20·PLAUR↔DPP4 0.30(worst). 3 distinct 조절허브(NF-κB·STAT1/HNF·TFEB)+GLB1 decorrelating leg → 3축 robustness SUPPORTED. kill-axis f_s/f_q ~1.6×(inferred·modest·healthy BCL-xL 항시발현 ceiling ~2-3×·인식 게이트가 selectivity 주동). **현실 총 선택성 = S1(3축)×f_s/f_q = ~13.5-26×(중앙 ~19×·최악 ρ서도 13.5×) = 설계 in-silico SUPPORTED**. make-or-break=ρ 미측정 → 단일 결정실험(3색 flow uPAR/DPP4/C12FDG-SA-β-gal pairwise ρ·wet-lab d5). NOVELTY=조합 미선례(d_novel_only). SSOT=state/senolyx-novel-andgate/.
 

@@ -1277,7 +1277,7 @@
             },
             {
               "id": "formula_discovery",
-              "role": "🎯🏁 FORMULA→MATERIAL DISCOVERY (2026-06-19, 3-lane fleet converged): applying the closing-formula recipe (Regime-II escape = narrow/flat-band + OFF-DIAGONAL bond-Peierls/SSH coupling + t~Ω light-bipolaron) → ★PRIMARY TARGET **Re6Se8Cl2 superatomic crystal**: already SC ~8K n-doped (Hc2>30T, mechanism unestablished), 2D-SSH applied only for single ACOUSTIC POLARON (arXiv:2401.14312) — bipolaron Tc UNCOMPUTED (d_novel_only gap), narrow W~300-400meV (optimal t~Ω), = concrete realization of the bipolaron theory's 'functional superatomic crystal'. FREE pipeline: DFT+Wannier downfold → ∂t/∂u 2.6THz cluster-twist bond-phonon → cRPA U → 2-body bipolaron solve → Tc. Recipe-pure light-atom alternatives: sp2-carbon N-Lieb COF, graphene Kekulé/TBG oSSH, rubrene. ANTI-PATTERNS (formula discriminator): A3C60 (Holstein JT false-escape); MgB2/B-diamond/SrB3C3/MB2C8 (bond-STRETCH but band-DIAGONAL = Regime I, NOT escape). HONEST(d6): tens-of-K NOVEL campaign, not room-Tc. SSOT state/fb-geom-lambda/FORMULA_DISCOVERY.md || FORMULA APPLIED (formula_tc_estimate.py): Regime-II Tc envelope η·Ω·g(t/Ω) — Re6Se8Cl2 2.9-8.7K REPRODUCES measured ~8K (VALIDATION ANCHOR, formula credible); same formula ranks recipe-pure light hosts higher: sp2C N-Lieb COF 74-223K (t/Ω0.5), graphene-Kekulé/oSSH 154-463K (t/Ω1.9, light-window optimal+high ω), MATBG 11-32K. HONEST(d6): high numbers are ENVELOPE upper-estimates not confirmed Tc (need step-4 QMC mass; known bond-bipolaron tens-of-K). Validated = ranking+8K anchor. Next: QMC pipeline Re6Se8Cl2(validate vs 8K)→sp2C COF. || STEP-4 SOLVER COMPUTED (bond-bipolaron/solver.py, g5 PASS): real 2-particle bond-SSH exact-diag solver built+validated — light-SSH (m**~1.5) vs Holstein self-trap (m** 1.85→113≈e^{g²}, 73x) reproduces Zhang/Berciu PRX (mechanism CONFIRMED). Computed Tc: sp2C N-Lieb COF 47K, MATBG 5.6K (compact pairs, defensible); Re6Se8Cl2 & graphene-Kekulé weak-bind→large pair→BEC-invalid. VERDICT: room-Tc CLOSED-NEGATIVE (computed tens-of-K, envelope 74-463K NOT reproduced — real 2-body solve corrects envelope down & inverts its ranking: high-t/Ω don't host compact 1D pairs); mechanism POSITIVE. HONEST(d6): 1D caps pair hopping → R2 = 2D solver + real Thouless-criterion Tc (named). TOP computed candidate = sp2C N-Lieb COF ~47K. state/fb-geom-lambda/bond-bipolaron/"
+              "role": "🎯🏁 FORMULA→MATERIAL DISCOVERY (2026-06-19, 3-lane fleet converged): applying the closing-formula recipe (Regime-II escape = narrow/flat-band + OFF-DIAGONAL bond-Peierls/SSH coupling + t~Ω light-bipolaron) → ★PRIMARY TARGET **Re6Se8Cl2 superatomic crystal**: already SC ~8K n-doped (Hc2>30T, mechanism unestablished), 2D-SSH applied only for single ACOUSTIC POLARON (arXiv:2401.14312) — bipolaron Tc UNCOMPUTED (d_novel_only gap), narrow W~300-400meV (optimal t~Ω), = concrete realization of the bipolaron theory's 'functional superatomic crystal'. FREE pipeline: DFT+Wannier downfold → ∂t/∂u 2.6THz cluster-twist bond-phonon → cRPA U → 2-body bipolaron solve → Tc. Recipe-pure light-atom alternatives: sp2-carbon N-Lieb COF, graphene Kekulé/TBG oSSH, rubrene. ANTI-PATTERNS (formula discriminator): A3C60 (Holstein JT false-escape); MgB2/B-diamond/SrB3C3/MB2C8 (bond-STRETCH but band-DIAGONAL = Regime I, NOT escape). HONEST(d6): tens-of-K NOVEL campaign, not room-Tc. SSOT state/fb-geom-lambda/FORMULA_DISCOVERY.md || FORMULA APPLIED (formula_tc_estimate.py): Regime-II Tc envelope η·Ω·g(t/Ω) — Re6Se8Cl2 2.9-8.7K REPRODUCES measured ~8K (VALIDATION ANCHOR, formula credible); same formula ranks recipe-pure light hosts higher: sp2C N-Lieb COF 74-223K (t/Ω0.5), graphene-Kekulé/oSSH 154-463K (t/Ω1.9, light-window optimal+high ω), MATBG 11-32K. HONEST(d6): high numbers are ENVELOPE upper-estimates not confirmed Tc (need step-4 QMC mass; known bond-bipolaron tens-of-K). Validated = ranking+8K anchor. Next: QMC pipeline Re6Se8Cl2(validate vs 8K)→sp2C COF. || STEP-4 SOLVER COMPUTED (bond-bipolaron/solver.py, g5 PASS): real 2-particle bond-SSH exact-diag solver built+validated — light-SSH (m**~1.5) vs Holstein self-trap (m** 1.85→113≈e^{g²}, 73x) reproduces Zhang/Berciu PRX (mechanism CONFIRMED). Computed Tc: sp2C N-Lieb COF 47K, MATBG 5.6K (compact pairs, defensible); Re6Se8Cl2 & graphene-Kekulé weak-bind→large pair→BEC-invalid. VERDICT: room-Tc CLOSED-NEGATIVE (computed tens-of-K, envelope 74-463K NOT reproduced — real 2-body solve corrects envelope down & inverts its ranking: high-t/Ω don't host compact 1D pairs); mechanism POSITIVE. HONEST(d6): 1D caps pair hopping → R2 = 2D solver + real Thouless-criterion Tc (named). TOP computed candidate = sp2C N-Lieb COF ~47K. state/fb-geom-lambda/bond-bipolaron/ || R2 2D real-mass TERMINAL (solver2d.py, g5 PASS): 2D solver reproduces R1 bit-for-bit (+bond-indexed phonon bug fixed); 2D mass LIGHTER (1D 1.38→ladder 1.18→2D 1.11). Computed un-capped Tc (real 2D mass, BKT-stiffness-limited): sp2C N-Lieb COF 42K, MATBG 4.4K (compact); graphene/Re6Se8Cl2 not-compact. ★TERMINAL room-Tc CLOSED-NEGATIVE end-to-end + NOVEL BOUND: compact pair ⇔ flat band ⇔ small t ⇔ small t** ⇔ small condensate stiffness — the flat band that binds the pair KILLS the superfluid stiffness, capping Tc at tens-of-K regardless of dimension. FINAL formula→material discovery: top candidate sp2C N-Lieb COF ≈42K; room-Tc closed-negative via this new structural tension. mechanism (off-diagonal→light bipolaron) confirmed."
             },
             {
               "id": "discovery_closing_formula",
@@ -1891,6 +1891,27 @@
                     {
                       "id": "r3",
                       "role": "🟢 SIGN PREDICTOR (r3, terminal): the SIGN of the kagome non-phonon Tc residual is predicted by vHS/flat-band PROXIMITY TO E_F at 6/6=100% (<=50 meV) — sign(lambda_nonphonon)=sign(50 meV - |pinned vHS offset from E_F|). Enhancers = vHS within ~30 meV of E_F (CsV3Sb5 -30, Cs(V,Ta)3Sb5 0 meV); suppressors = offset >=100 meV or no flat band (LaRu3Si2 +100, YRu3B2/LuRu3B2 +500). N(E_F) DOS MAGNITUDE FAILS (highest-DOS LaRu3Si2 is a suppressor) - channel is band ALIGNMENT (filling) not coupling strength. Causal: Cs(V,Ta)3Sb5 dialing vHS->E_F drives Tc 2.5->5.5 K. PAPER-GRADE."
+                    }
+                  ]
+                },
+                {
+                  "id": "FB-BIPOLARON-STIFFNESS-BOUND",
+                  "children": [
+                    {
+                      "id": "name",
+                      "role": "FB-BIPOLARON-STIFFNESS-BOUND — flat-band bipolaron Tc tension ('꽉 묶으면 못 흐른다')"
+                    },
+                    {
+                      "id": "status",
+                      "role": "🟢 computed (1D+2D exact-diag, g5 PASS) — new structural no-go-like bound"
+                    },
+                    {
+                      "id": "law",
+                      "role": "For bond-SSH (off-diagonal) bipolaron SC: compact pair ⇔ flat band ⇔ small hopping t ⇔ small pair hopping t** ⇔ small condensate (BKT) stiffness. The flat band that BINDS a compact light bipolaron simultaneously KILLS the superfluid stiffness (Tc ∝ t**·n), capping Tc at tens-of-K independent of dimensionality. Verified: 2D lighter mass (enh 1.11) barely raises Tc vs 1D; computed sp2C N-Lieb COF ≈42K, MATBG ≈4K."
+                    },
+                    {
+                      "id": "provenance",
+                      "role": "state/fb-geom-lambda/bond-bipolaron/{solver.py,solver2d.py,R2_RESULTS.md}; mechanism anchor Zhang/Berciu PRX 13,011010 reproduced (light-SSH vs Holstein e^{g²})"
                     }
                   ]
                 }
@@ -8283,7 +8304,7 @@
                 },
                 {
                   "id": "goal",
-                  "role": "골관절염 소실 연골 완전재생 disease-modifying 완치 — CURE-PRIMITIVE 병목(섬유화연골 신생 η=0.40 최난도) + SENOLYX η_neo-lift(≥78% 청소)로 ≥90% 게이트. 무혈관→전달 binding axis. d1/d5/d19"
+                  "role": "골관절염 소실 연골 완전재생 disease-modifying 완치 — CURE-PRIMITIVE 병목(섬유화연골 신생 η=0.40 최난도) + SENOLYX η_neo-lift로 ≥90% 게이트. ★게이트=η_neo functional ≥0.069(연골 구조재생·clearance-% 비예측 정정·SENOLYX-AG pd-gate): 단일용량 0.031 미달 → depot+subtype-AND-gate(0.099)+cartilage R_cap 0.40→0.70(0.173)로 CLOSE(d2). 무혈관→전달 binding axis. d1/d5/d19"
                 },
                 {
                   "id": "status",
@@ -8298,7 +8319,7 @@
                     },
                     {
                       "id": "key_verdicts[1]",
-                      "role": "✅ verify: SENOLYX η_neo-lift PD — 청소 ≥78%→게이트 CLOSE (SENOLYX reused) g5"
+                      "role": "⚠️정정 verify: SENOLYX η_neo-lift PD 게이트 = η_neo functional ≥0.069(clearance-% 비단조·비예측이라 정정·SENOLYX-AG pd-gate anchor UBX0101 FAIL). 단일용량 🔴 FAIL → depot+subtype-AND-gate+R_cap 돌파(d2)로 CLOSE (SENOLYX-AG reused) g5"
                     }
                   ]
                 },
@@ -8460,7 +8481,7 @@
                     },
                     {
                       "id": "key_verdicts[1]",
-                      "role": "verify ✅: ≥90% 재생 게이트 — SENOLYX 청소%→η_bone→게이트 PD 모델(SENOLYX reused) g5"
+                      "role": "⚠️정정 verify: ≥90% 재생 게이트 = η_neo functional ≥0.095(≥+1mm CAL/bone fill·clearance-% 비예측이라 η_neo로 정정·SENOLYX-AG pd-gate). SENOLYX-AG η 0.085-0.111 = 🟠 PASS*(p_dep≥0.75 필요). PERIO=SENOLYX-AG FIRST 표적(단일 CD81+ fibroblast subtype+pocket 국소). (SENOLYX-AG reused) g5"
                     }
                   ]
                 },
@@ -11058,7 +11079,7 @@
                 },
                 {
                   "id": "goal",
-                  "role": "망막 변성(dry-AMD/RP) 소실 광수용체 복원 disease-modifying 완치 — CURE-PRIMITIVE 병목(광수용체 신생 η=0.45, 최대소실질량 0.40) + SENOLYX η_neo-lift(≥72% 청소)로 ≥90% 게이트. 뮐러글리아 리프로그래밍 arm. d1/d5/d19"
+                  "role": "망막 변성(dry-AMD/RP) 소실 광수용체 복원 disease-modifying 완치 — CURE-PRIMITIVE 병목(광수용체 신생 η=0.45, 최대소실질량 0.40) + SENOLYX η_neo-lift로 ≥90% 게이트. ★게이트=η_neo functional ≥0.138(≥+4 ETDRS letters durable·UBX1325 anchor·clearance-% 정정·SENOLYX-AG pd-gate); SENOLYX-AG η 0.165-0.215 = 🟢 PASS. 뮐러글리아 리프로그래밍 arm. d1/d5/d19"
                 },
                 {
                   "id": "status",
@@ -11073,7 +11094,7 @@
                     },
                     {
                       "id": "key_verdicts[1]",
-                      "role": "✅ verify: SENOLYX η_neo-lift PD — 청소 ≥72%→게이트 CLOSE(SENOLYX reused; UBX1325 국소 senolytic 선례) g5"
+                      "role": "✅정정 verify: SENOLYX η_neo-lift PD 게이트 = η_neo functional ≥0.138(≥+4 ETDRS letters durable·UBX1325 국소 senolytic anchor·clearance-% 비예측이라 정정·SENOLYX-AG pd-gate). SENOLYX-AG 3축 AND-gate η 0.165-0.215 → 🟢 CLOSE (SENOLYX-AG reused) g5"
                     }
                   ]
                 },
