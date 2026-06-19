@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### HERPES + NUMB 논문 박제 (각 10p compile clean · d_paper_on_discovery)
+- 두 캠페인 arxiv-style 논문 신설(수동 스캐폴드·SENOLYX 프리앰블 미러·각 fal.ai/FLUX 표지). HERPES(herpes-sterilizing-cure): HSV sterilizing cure 설계 — §M13 재발 닫힌식 R=N·e^{μ+σ²/2}(1−εφ)(MC 0.084%)·UL30 dual-guide CRISPR off-target 0·M14 정직 negative(saddle-node 부재 h_c≈3.72)·delivery=make-or-break wet-lab(9건). NUMB(numb-topical-anesthetic): 토픽 마취 — onset 가속 N1/N6/N7 🔴 FALSIFIED(t_lag=h²/6D, 레버는 prefactor)·차별=소아 prilocaine-free 100×·OTC/Rx 듀얼·8적응증·LAST 273×·absorbed=false(wet-lab 0/12). 둘 다 10 pages·11 refs·TikZ+pgfplots·PAPER.tape 등록. d_paper_significance 충족(falsifier+measurement+finding 포함 closed-negative).
+
 ### SENOLYX-AG 논문 g51 완성(fal.ai 표지) + wet-lab 핸드오프 문서
 - ⓐ fal.ai/FLUX 표지 생성(figures/cover.png·1024×576·imagine 플러그인 미설치→fal API 직접 curl·queue+poll) → main.tex §title 삽입·재컴파일 11 pages clean → g51 완전충족(fal.ai 그림 + TikZ AND-gate). ⓑ HANDOFF_wetlab.md: make-or-break ρ 측정 프로토콜(3색 flow uPAR/DPP4/SA-β-gal 단일세포 공발현 ρ·PASS ρ≤0.3/FALSIFY ρ≥0.6·decision tree·d5 downstream). PAPER.md figures+compile 체크 완료.
 
