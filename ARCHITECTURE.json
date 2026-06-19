@@ -2107,7 +2107,7 @@
                 },
                 {
                   "id": "status",
-                  "role": "🟢 design-ready R1 (4 design-lens g5 PASS + S1 decisive computation run). In-silico design + verify pipeline closed; wet-lab = d5 downstream."
+                  "role": "🟢 design-ready + R2 closed (6 design-lens g5 PASS + S1 run). In-silico SUPPORTED: realistic total selectivity ~13.5-26× (median ~19×) robust across estimated ρ; make-or-break ρ inferred-low, decisive wet-lab experiment named. Wet-lab = d5 downstream."
                 },
                 {
                   "id": "construct",
@@ -2140,6 +2140,18 @@
                 {
                   "id": "provenance",
                   "role": "4 design-lens g5 PASS (construct-design🟢·niche-target🟢·compute-plan🟢·pd-gate🟢) + S1 run. Detail state/senolyx-novel-andgate/<lane>/FINDINGS.md + .discoveries/senolyx-ag-andgate-design.tape."
+                },
+                {
+                  "id": "r2_rho",
+                  "role": "R2 make-or-break ρ (axis independence): INFERRED (no senescence atlas publishes PLAUR/DPP4/GLB1 pairwise ρ). Estimates: DPP4↔GLB1 ~0.10 (best), PLAUR↔GLB1 ~0.20, PLAUR↔DPP4 ~0.30 (worst, grazes collapse line). Basis = 3 distinct master regulators (NF-κB/AP-1 uPAR · STAT1/HNF/OIS1 DPP4 [TGF-β-repressed] · TFEB GLB1) + single-cell marker discordance (GLB1∩p21 ~1-6% cells). GLB1 = orthogonal decorrelating 3rd leg → 3-axis robustness SUPPORTED (not falsified). Decisive experiment = 3-color flow (uPAR/DPP4/C12FDG-SA-β-gal) on senescent fibroblasts → measured pairwise ρ. Refs 10.1101/gad.302570.117 · 10.15252/embj.2022111241 · 10.1038/s41467-025-57047-7."
+                },
+                {
+                  "id": "r2_killaxis",
+                  "role": "R2 kill-axis f_s/f_q (BCL-xL, fibroblast): ~1.6× (1.3-2.6×), INFERRED, MODEST enabling term (NOT the selectivity driver — the recognition AND-gate is). Senescent cells route apoptotic dependency onto BCL-xL (Soto-Gamez 2024 10.1038/s41418-024-01431-1; expression unchanged, dependency shifts). HARD ceiling ~2-3× (healthy fibroblasts express BCL-xL constitutively → f_q floor 0.25-0.45). MCL-1i seals escape but COMPRESSES the differential (1.57→1.29) — selectivity must come from recognition gate. Break-even f_s/f_q≥1.30 (senescent has more buffer + less priming)."
+                },
+                {
+                  "id": "r2_final",
+                  "role": "FINAL VERDICT (R1+R2, in-silico, d6): realistic TOTAL selectivity = S1(3-axis recognition, ρ 0.1-0.3) × f_s/f_q(~1.6×) = ~13.5-26× (median ~19×), robust even at worst-case ρ — design SUPPORTED in-silico. Recognition AND-gate dominates; kill-axis is a modest multiplier. Single make-or-break = ρ (inferred-low, unmeasured) → resolved by one 3-color flow experiment (wet-lab, d5 downstream). FIRST target PERIO; OA only via depot+subtype+R_cap (d2); clearance-% gate → η_neo functional (correction recommended for CURE-domain nodes). NOVELTY = composition (all molecular pieces are published chemistry; the orthogonal 3-axis AND-gate + fibroblast-niche + local delivery is unprecedented, d_novel_only)."
                 }
               ]
             }

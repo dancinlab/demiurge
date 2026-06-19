@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### SENOLYX-AG R2 — make-or-break ρ + kill-axis 닫음 (in-silico SUPPORTED ~19×)
+- R2 결정적 fleet(rho-estimate·fsq-estimate) g5 PASS + S1 현실 ρ 재계산. ρ(추정·미측정): DPP4↔GLB1 0.10·PLAUR↔GLB1 0.20·PLAUR↔DPP4 0.30(worst). 3 distinct 조절허브(NF-κB·STAT1/HNF·TFEB)+GLB1 decorrelating leg → 3축 robustness SUPPORTED. kill-axis f_s/f_q ~1.6×(inferred·modest·healthy BCL-xL 항시발현 ceiling ~2-3×·인식 게이트가 selectivity 주동). **현실 총 선택성 = S1(3축)×f_s/f_q = ~13.5-26×(중앙 ~19×·최악 ρ서도 13.5×) = 설계 in-silico SUPPORTED**. make-or-break=ρ 미측정 → 단일 결정실험(3색 flow uPAR/DPP4/C12FDG-SA-β-gal pairwise ρ·wet-lab d5). NOVELTY=조합 미선례(d_novel_only). SSOT=state/senolyx-novel-andgate/.
+
 ### SENOLYX-AG NOVEL 설계 캠페인 착수 — fibroblast-niche 국소 직교 AND-gate senolytic (종결식 recipe 실행)
 - 종결식 TERMINAL 후 actionable recipe 실행 = NOVEL 설계 캠페인(d_novel_only·미선례). 4 design-lens(construct·niche·compute·pd) g5 PASS·수렴 + S1 결정적 계산 실행. WINNER=Gal-uPAR/DPP4-PROTAC(BCL-xL→CRBN PROTAC ± galacto-caged MCL-1i warhead·SA-β-gal cage·uPAR/DPP4 나노입자). **S1 결과(c2)**: 단일마커 0.92× anti-sel·2축 ~4×(ρ↑서 <2× 붕괴)·**3축 uPAR×DPP4×SA-β-gal 23.1×(box-min 4.34×·robust)** → 설계정정=robust 선택성엔 **3축 AND-gate 필요**, make-or-break=ρ(축 독립성). KILL=pan-senescent dependency(BCL-xL 주축+MCL-1·GPX4 fibroblast 불신뢰·친화도 아님). FIRST TARGET=PERIO(단일 CD81+ subtype+pocket 국소+직교쌍). η_neo PD(anchor UBX1325/UBX0101): RETINA🟢·AGA/PERIO🟠*·OA🔴(depot+subtype+R_cap 돌파). verify=ABFE-free 5-stage(S_total primary·reuse round5/7·ABFE→binary). DECISIVE NEXT(R2,zero-cost)=single-cell atlas서 ρ(PLAUR/DPP4↔GLB1)+f_s/f_q. SSOT=state/senolyx-novel-andgate/SENOLYX_AG_DESIGN_SPEC.md + ARCHITECTURE SENOLYX/SENOLYX-AG.
 

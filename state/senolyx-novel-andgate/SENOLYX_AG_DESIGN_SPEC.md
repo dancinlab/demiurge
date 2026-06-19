@@ -44,3 +44,13 @@ PLAUR(uPAR)↔GLB1(β-gal) [또는 DPP4↔GLB1] 독립계수 ρ + f_s/f_q from p
 | 2축 DPP4×SA-β-gal | 3.85× | 1.72× | YES (취약) | 19% |
 | **3축 uPAR×DPP4×SA-β-gal** | **23.1×** | **4.34×** | **NO (robust)** | 100% (median) |
 → **설계 정정: robust 선택성엔 3축 AND-gate 필요** (단일=anti-sel·2축=ρ↑서 붕괴·3축만 어떤 악조건서도 ≥2×). make-or-break 미지수 = ρ(축 독립성). DPP4×SA-β-gal이 uPAR×SA-β-gal보다 직교(다른 조절 허브)→낮은 ρ. DECISIVE NEXT: public single-cell atlas서 ρ(PLAUR↔GLB1)·ρ(DPP4↔GLB1) 추정 → 낮은 쌍 채택 + 3번째 축으로 보강.
+
+## R2 — make-or-break ρ + kill-axis 닫음 (FINAL)
+- ρ(추정·미측정): DPP4↔GLB1 0.10 · PLAUR↔GLB1 0.20 · PLAUR↔DPP4 0.30(worst). 3 distinct 조절허브(NF-κB·STAT1/HNF·TFEB) → 저 ρ. GLB1=직교 decorrelating leg → 3축 robustness SUPPORTED(붕괴선 이하).
+- kill-axis f_s/f_q ≈ 1.6×(1.3-2.6) INFERRED·modest. healthy BCL-xL 항시발현 → ceiling ~2-3×. MCL-1i=escape봉인이나 differential compress(selectivity는 인식 AND-gate가 담당).
+- **현실 총 선택성 = S1(3축,ρ0.1-0.3) × f_s/f_q(1.6×) = ~13.5-26× (중앙 ~19×)** — 최악 ρ서도 13.5× → 설계 SUPPORTED.
+## FINAL VERDICT (R1+R2, d6)
+SENOLYX-AG 설계 = **in-silico SUPPORTED**: 3축 직교 AND-gate(uPAR×DPP4×SA-β-gal) + BCL-xL/MCL-1 PROTAC warhead + 국소전달이 현실 ~19× 선택성·robust(추정 ρ 전 구간). 인식 게이트가 선택성 주동·kill-axis는 보조(~1.6×).
+- make-or-break = ρ (미측정·추정 저값) → **단일 결정실험으로 가부 확정: 3색 flow(uPAR/DPP4/C12FDG-SA-β-gal) senescent fibroblast pairwise ρ** (wet-lab d5 downstream).
+- FIRST=PERIO. OA는 depot+subtype+R_cap로만(d2). clearance-% 게이트 → η_neo functional 정정.
+- NOVELTY=조합(미선례): 분자조각 전부 출판화학, 직교 3축 AND-gate + fibroblast-niche + 국소 = unprecedented(d_novel_only).
