@@ -1,0 +1,73 @@
+### nvptx_happly_block (74.9x repro)
+[gpu] NVIDIA GeForce RTX 5070 sm_120
+n=2048 m=64
+ALL: PASS
+
+### davidson_block_e2e (solver hot path)
+[gpu] NVIDIA GeForce RTX 5070 sm_120
+n=1024 nbands=8
+  cpu_full_solve = 79.751 ms (8 it)   gpu_full_solve = 66.263 ms (8 it)   speedup = 1.204x
+  max|dLambda| = 4.440892e-16   tol=1e-7   PARITY: PASS
+n=1024 nbands=32
+  cpu_full_solve = 317.773 ms (7 it)   gpu_full_solve = 105.283 ms (7 it)   speedup = 3.018x
+  max|dLambda| = 7.105427e-15   tol=1e-7   PARITY: PASS
+n=1536 nbands=16
+  cpu_full_solve = 352.527 ms (7 it)   gpu_full_solve = 36.481 ms (7 it)   speedup = 9.663x
+  max|dLambda| = 5.329071e-15   tol=1e-7   PARITY: PASS
+n=2048 nbands=16
+  cpu_full_solve = 798.036 ms (8 it)   gpu_full_solve = 50.692 ms (8 it)   speedup = 15.743x
+  max|dLambda| = 3.552714e-15   tol=1e-7   PARITY: PASS
+ALL: PASS
+
+### sternheimer_block_e2e (DFPT response)
+[gpu] NVIDIA GeForce RTX 5070 sm_120
+n=1024 nb=4
+  cpu_full_solve = 225.181 ms   gpu_full_solve = 197.153 ms (99 blkit)   speedup = 1.142x
+  max|dDpsi| = 4.163336e-17   scalarConv=1   tol=1e-6   PARITY: PASS
+n=1024 nb=8
+  cpu_full_solve = 455.663 ms   gpu_full_solve = 216.926 ms (97 blkit)   speedup = 2.101x
+  max|dDpsi| = 6.938894e-17   scalarConv=1   tol=1e-6   PARITY: PASS
+n=1536 nb=6
+  cpu_full_solve = 1115.785 ms   gpu_full_solve = 189.975 ms (120 blkit)   speedup = 5.873x
+  max|dDpsi| = 5.551115e-17   scalarConv=1   tol=1e-6   PARITY: PASS
+n=2048 nb=8
+  cpu_full_solve = 3326.813 ms   gpu_full_solve = 352.573 ms (135 blkit)   speedup = 9.436x
+  max|dDpsi| = 4.163336e-17   scalarConv=1   tol=1e-6   PARITY: PASS
+ALL: PASS
+
+### ridge sweep
+# gpu_qforge_ridge — RIDGE corollary empirical validation (RTX 5070)
+# HBM_BW=594.12 GB/s  FP32_peak=34.11 TFLOP/s  measured_ridge=57.41 flop/byte
+# predicted nb_crossover (fp32) = 2*ridge = 114.8  (corollary said ~121.9)
+# nb     GFLOPs    AI(F/B)   HBM_pct   compute_pct   regime
+1         286.7    0.500    96.5%      0.8%      memory-bound
+4        1093.4    1.996    92.2%      3.2%      memory-bound
+16       4583.9    7.938    97.2%     13.4%      memory-bound
+ Time (%)  Total Time (ns)  Instances   Avg (ns)     Med (ns)    Min (ns)   Max (ns)   StdDev (ns)                                          Name                                        
+     64.3       12,301,506         13    946,269.7    820,742.0    411,588  1,641,229    496,356.5  void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1>(T1::Params)
+     27.5        5,255,466         15    350,364.4    207,042.0    205,985    821,127    246,962.4  void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_32x32_16x5_nn_align1>(T1::Params)
+      6.0        1,141,673          1  1,141,673.0  1,141,673.0  1,141,673  1,141,673          0.0  void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x64_16x4_nn_align1>(T1::Params)
+      2.3          443,108          1    443,108.0    443,108.0    443,108    443,108          0.0  void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_32x64_16x4_nn_align1>(T1::Params)
+[cloud] remote exit 0
+### FULL happly_block table (under RBFE contention)
+n=2048 m=8
+  CPU(m matvec)   =    29.2199 ms
+  GPU GEMV(m H2D) =    28.2649 ms   speedup(cpu/gemv) =   1.034x   [per-band seam=current]
+  GPU GEMM(1 H2D) =     3.5676 ms   speedup(cpu/gemm) =   8.190x   [batched=FIX]
+--
+n=2048 m=32
+  CPU(m matvec)   =   141.8915 ms
+  GPU GEMV(m H2D) =   118.9965 ms   speedup(cpu/gemv) =   1.192x   [per-band seam=current]
+  GPU GEMM(1 H2D) =     5.2954 ms   speedup(cpu/gemm) =  26.795x   [batched=FIX]
+--
+n=2048 m=64
+  CPU(m matvec)   =   318.7130 ms
+  GPU GEMV(m H2D) =   244.7460 ms   speedup(cpu/gemv) =   1.302x   [per-band seam=current]
+  GPU GEMM(1 H2D) =     4.3441 ms   speedup(cpu/gemm) =  73.367x   [batched=FIX]
+[cloud] remote exit 0
+
+### provenance: summer (192.168.50.60) RTX 5070 sm_120 · nvcc 12.0 · cuBLAS 12 · driver 580 · 2026-06-19
+### measured under RBFE-prod contention (pid 2565 rbfe_hsp90.py @100% util) — walls are lower bounds
+### nvidia-smi co-residency: bench pid 62051 held 674 MiB device mem alongside rbfe pid 2565 during ridge sweep
+### nsys cuBLAS dispatch: cutlass_80_tensorop_d884gemm_{64x32,32x32,64x64,32x64} = 30 FP64-tensor-op GEMM kernel instances, 19.1ms GPU time
+### hexa-lang PR #3663 (qforge/elph-block-wire-r2, stacked on #3659)
