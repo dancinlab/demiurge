@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### SENOLYX-AG 논문 박제 — PAPERS/senolyx-ag-selectivity (10p·compile clean)
+- d_paper_on_discovery: SENOLYX-AG 발견을 arxiv-style 논문으로 박제(paper CLI 미배포→수동 스캐폴드·RTSC 프리앰블 미러). 제목="Senolytic Selectivity Is a Differential-Dependency Quantity, Not a Binding Affinity — SENOLYX-AG". §hypothesis(H1-H4 pre-registered falsifier)·method(multi-lens fleet)·measurement(S1 AND-gate index·ρ·f_s/f_q·η_neo)·finding(2 ruled-out axes[affinity·clearance-%]+단일표적 천장 정리+3축 AND-gate Δ~19×). xelatex compile clean=10 pages·26 DOI refs·TikZ AND-gate fig. d_paper_significance 충족(falsifier+measurement+finding). PAPER.tape 등록. 잔여 체크박스: fal.ai 표지(imagine 도구 미배포).
+
 ### CURE-domain 게이트 정정 — clearance-% → η_neo functional (SENOLYX-AG pd-gate follow-on) + SENOLYX in-silico TERMINAL
 - SENOLYX 발견 in-silico TERMINAL 선언(종결식+SENOLYX-AG 설계+ρ 닫음·남은 make-or-break ρ는 wet-lab d5). follow-on: pd-gate가 falsify한 clearance-% 게이트를 5개 CURE-domain 노드서 η_neo functional로 정정(c4 update-in-place): RETINA η≥0.138(+4 ETDRS letters·UBX1325 anchor·🟢 PASS)·OA η≥0.069(연골 구조재생·단일용량 FAIL→depot+subtype+R_cap 돌파 d2)·PERIO η≥0.095(+1mm CAL·🟠 PASS*·SENOLYX-AG FIRST 표적). 근거=UBX0101 ~50%청소 전임상성공/인간OA실패·UBX1325 국소+subtype 성공 → clearance-%는 비단조 비예측.
 
