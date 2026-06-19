@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### SENOLYX-AG NOVEL 설계 캠페인 착수 — fibroblast-niche 국소 직교 AND-gate senolytic (종결식 recipe 실행)
+- 종결식 TERMINAL 후 actionable recipe 실행 = NOVEL 설계 캠페인(d_novel_only·미선례). 4 design-lens(construct·niche·compute·pd) g5 PASS·수렴 + S1 결정적 계산 실행. WINNER=Gal-uPAR/DPP4-PROTAC(BCL-xL→CRBN PROTAC ± galacto-caged MCL-1i warhead·SA-β-gal cage·uPAR/DPP4 나노입자). **S1 결과(c2)**: 단일마커 0.92× anti-sel·2축 ~4×(ρ↑서 <2× 붕괴)·**3축 uPAR×DPP4×SA-β-gal 23.1×(box-min 4.34×·robust)** → 설계정정=robust 선택성엔 **3축 AND-gate 필요**, make-or-break=ρ(축 독립성). KILL=pan-senescent dependency(BCL-xL 주축+MCL-1·GPX4 fibroblast 불신뢰·친화도 아님). FIRST TARGET=PERIO(단일 CD81+ subtype+pocket 국소+직교쌍). η_neo PD(anchor UBX1325/UBX0101): RETINA🟢·AGA/PERIO🟠*·OA🔴(depot+subtype+R_cap 돌파). verify=ABFE-free 5-stage(S_total primary·reuse round5/7·ABFE→binary). DECISIVE NEXT(R2,zero-cost)=single-cell atlas서 ρ(PLAUR/DPP4↔GLB1)+f_s/f_q. SSOT=state/senolyx-novel-andgate/SENOLYX_AG_DESIGN_SPEC.md + ARCHITECTURE SENOLYX/SENOLYX-AG.
+
 ### SENOLYX 선택성 종결식 R2 — escape 정량 + clearance-% 게이트 변수 정정 (TERMINAL)
 - R2 NOVEL-frontier fleet(andgate-number·backbone-coverage·nexus-payoff) g5 PASS. escape 항 문헌최초 정량: 직교 AND-gate S_total≈4×(1.4-11×)→전신 청소 ~7-28%@<5%harm(단일마커 0.5× anti-sel·3-marker 최소가용·값=ρ+곱셈누출 의존). 백본: pan-senescent 의존성 부재(best BCL+MCL p_dep0.65·dual BCL∪GPX4 0.73-0.85·잔존 15-35%); SA-β-gal=인식태그 not kill; GLS1 강등(EMBO 2026 재현실패). **2차 틀린-축 발견**: clearance-%→cure 전달함수 비단조·문헌미근거 — UBX0101 ~50%청소 전임상성공/인간OA실패·UBX1325 국소+subtype 성공 → η_neo=f(SASP subtype·국소·재축적), 72/78% 게이트=투영값(정정권고). CURE OA/PERIO/AGA 🔴·RETINA 🟠(precedent·국소). TERMINAL: 전신 broad senolytic CLOSED; 유일경로=국소전달+단일causal subtype+BCL/GPX4 직교 AND-gate(망막-class). NOVEL 캠페인=fibroblast-niche 국소 AND-gate senolytic(미선례·d_novel_only). SSOT=state/senolyx-selectivity-law/.
 
