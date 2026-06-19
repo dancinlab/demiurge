@@ -1,0 +1,7 @@
+PASS δ_σ(x, d/√2) == QE δ(x; d) for 7 degauss × 6 x — EXACT (≤1e-12)
+PASS inverse bridge round-trips to ≤1e-12
+── matched-σ table: QE degauss(Ry) → QFORGE σ_el(Ha) ──
+   QE degauss=0.015000000000000002 Ry  →  σ_el=0.005303300858899107 Ha  (= 0.0075000000000000009 Ha /√2)
+   QE degauss=0.020000000000000004 Ry  →  σ_el=0.0070710678118654773 Ha  (= 0.010000000000000002 Ha /√2)
+   QE degauss=0.025000000000000004 Ry  →  σ_el=0.008838834764831846 Ha  (= 0.012500000000000002 Ha /√2)
+qforge_qe_sigma_convention_test PASS
