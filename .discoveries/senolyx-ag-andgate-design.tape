@@ -12,3 +12,9 @@ SPEC → state/senolyx-novel-andgate/SENOLYX_AG_DESIGN_SPEC.md
 DECISIVE NEXT (zero-cost): PLAUR↔GLB1 (또는 DPP4↔GLB1) ρ + f_s/f_q from single-cell atlases + S1 모델 실행 = AND-gate 곱셈성 make-or-break.
 
 S1 실행(c2): 단일마커 0.92× anti-sel · 2축 ~4×(ρ↑서 <2× 붕괴) · 3축 uPAR×DPP4×SA-β-gal 23.1×(box-min 4.34×·robust). 설계정정=robust엔 3축 AND-gate 필요. make-or-break=ρ. script=state/senolyx-novel-andgate/s1_andgate_index.py.
+
+r2 (2026-06-19) — make-or-break ρ + kill-axis, 2-lens g5 PASS:
+- rho-estimate 🟠: ρ inferred 저값(DPP4↔GLB1 0.10·PLAUR↔GLB1 0.20·PLAUR↔DPP4 0.30); 3 distinct 허브(NF-κB/STAT1/TFEB)·GLB1 decorrelating leg → 3축 SUPPORTED. 결정실험=3색 flow ρ.
+- fsq-estimate 🟠: f_s/f_q ~1.6×(1.3-2.6) inferred modest; healthy BCL-xL 항시발현 ceiling ~2-3×; MCL-1i differential compress; 인식 AND-gate가 selectivity 주동.
+- 현실 총 선택성 = S1×f_s/f_q = ~13.5-26×(중앙 ~19×·최악 ρ서도 13.5×) = 설계 SUPPORTED.
+FINAL: SENOLYX-AG in-silico SUPPORTED(~19× robust); make-or-break ρ 미측정→3색 flow 단일실험으로 확정. FIRST=PERIO. d_novel_only 미선례 조합.
