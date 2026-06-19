@@ -2048,7 +2048,7 @@
                   "children": [
                     {
                       "id": "status",
-                      "role": "🔵 closing-formula CONVERGED (4-lens fleet g5 PASS 2026-06-19). Pivot from depleted affinity axis (FF ceiling) to selectivity LAW. SSOT=state/senolyx-selectivity-law/SENOLYX_SELECTIVITY_CLOSING_FORMULA.md + .discoveries/senolyx-selectivity-law.tape"
+                      "role": "🔵 closing-formula CONVERGED + R2 quantified (TERMINAL, 7-lens g5 PASS 2026-06-19). Pivot from depleted affinity axis (FF ceiling) to selectivity LAW; escape quantified + downstream gate corrected. SSOT=state/senolyx-selectivity-law/SENOLYX_SELECTIVITY_CLOSING_FORMULA.md + .discoveries/senolyx-selectivity-law.tape"
                     },
                     {
                       "id": "law1_selectivity",
@@ -2073,6 +2073,26 @@
                     {
                       "id": "provenance",
                       "role": "4-lens fleet g5 PASS: scap-law 🔵 · window-ceiling 🔵/🟠 · selectivity-escape 🟢 · senolytic-corpus 🟢/🟠. Detail: state/senolyx-selectivity-law/<lane>/FINDINGS.md."
+                    },
+                    {
+                      "id": "r2_number",
+                      "role": "R2 escape QUANTIFIED (lit-first): realistic orthogonal AND-gate (metabolic×surface×lysosomal) S_total ≈ 4× (median; 90% band 1.4–11×) → systemic clearance only ~7–28% of senescent cells at <5% healthy harm. Single marker net ANTI-selective ~0.5× (Hill co-opening); 2-marker marginal ~1.6×; 3-marker = minimum viable. Entire value rides on axis independence (ρ→0; ρ0.6 collapses to 1.5×) AND multiplicative (non-shared) leak. Model estimate, not measurement (🟠)."
+                    },
+                    {
+                      "id": "r2_backbone",
+                      "role": "R2 backbone: NO truly pan-senescent dependency exists (best BCL-xL+MCL-1 priming p_dep≈0.65; dual BCL∪GPX4 0.73–0.85; irreducible residual refractory 15–35%). SA-β-gal/lysosomal (p_dep≈0.92) is a near-universal RECOGNITION MARKER, not a kill mechanism. GLS1 demoted (EMBO Rep 2026 in-vivo reproducibility failure 10.1038/s44319-026-00740-5). DESIGN: kill backbone = pan-senescent DEPENDENCY (BCL-combo ± GPX4); AND-gate selectivity = non-lethal recognition tags (SA-β-gal + context)."
+                    },
+                    {
+                      "id": "r2_gate_correction",
+                      "role": "R2 GATE-VARIABLE CORRECTION (2nd wrong-axis, after affinity): the clearance% → η_neo → cure transfer function is NON-MONOTONE and NOT literature-grounded. UBX0101 ~50% clearance gave full preclinical OA regen yet human OA Ph2 FAILED; UBX1325 retina SUCCEEDED via LOCAL delivery + correct causal subtype (not higher clearance). η_neo-lift = f(SASP-driving SUBTYPE cleared · local burden relief · re-accumulation rate). ⚠️ The CURE-domain clearance-% gates (OA≥78%, RETINA≥72%, PERIO, AGA) in this tree are PROJECTIONS not literature-grounded — recommend replacing with a functional/PD η_neo endpoint. CURE PASS/FAIL given realistic f_clear: OA 🔴 · PERIO 🔴 · AGA 🔴 · RETINA 🟠 (precedent, local, not via clearance-%). Refs nm.4324 · joca.2021.02.077 · EVIDoa2400009."
+                    },
+                    {
+                      "id": "r2_verdict",
+                      "role": "TERMINAL VERDICT (R1+R2, d6): (1) selectivity ≠ affinity [closed] (2) clearance-% ≠ cure-predictor [closed] (3) single-target theorem-ceiling-bound; systemic broad senolytic = weak selectivity ~4× + low clearance ~7-28% + residual 15-35% = CLOSED. (4) ONLY viable route = LOCAL delivery + single dominant causal subtype + slow re-accumulation + orthogonal AND-gate on BCL/GPX4 backbone (SA-β-gal recognition tag) — retina-class niches only; clinically unproven."
+                    },
+                    {
+                      "id": "novel_frontier",
+                      "role": "NOVEL next campaign (d_novel_only, unprecedented — NOT a law-hunt, a design/compute task): a regenerative-niche-FIBROBLAST-selective, LOCAL-delivery, orthogonal AND-gate senolytic. No paper quantifies a 2-marker senescence selectivity factor; no fibroblast-niche local AND-gate senolytic exists (UBX1325 win is vascular-endothelial, not fibroblast). Niche myofibroblasts co-express BCL-2/xL/W (Aging Cell 2024 10.1111/acel.14229) → independently re-derives the AND-gate need."
                     }
                   ]
                 }

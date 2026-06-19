@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### SENOLYX 선택성 종결식 R2 — escape 정량 + clearance-% 게이트 변수 정정 (TERMINAL)
+- R2 NOVEL-frontier fleet(andgate-number·backbone-coverage·nexus-payoff) g5 PASS. escape 항 문헌최초 정량: 직교 AND-gate S_total≈4×(1.4-11×)→전신 청소 ~7-28%@<5%harm(단일마커 0.5× anti-sel·3-marker 최소가용·값=ρ+곱셈누출 의존). 백본: pan-senescent 의존성 부재(best BCL+MCL p_dep0.65·dual BCL∪GPX4 0.73-0.85·잔존 15-35%); SA-β-gal=인식태그 not kill; GLS1 강등(EMBO 2026 재현실패). **2차 틀린-축 발견**: clearance-%→cure 전달함수 비단조·문헌미근거 — UBX0101 ~50%청소 전임상성공/인간OA실패·UBX1325 국소+subtype 성공 → η_neo=f(SASP subtype·국소·재축적), 72/78% 게이트=투영값(정정권고). CURE OA/PERIO/AGA 🔴·RETINA 🟠(precedent·국소). TERMINAL: 전신 broad senolytic CLOSED; 유일경로=국소전달+단일causal subtype+BCL/GPX4 직교 AND-gate(망막-class). NOVEL 캠페인=fibroblast-niche 국소 AND-gate senolytic(미선례·d_novel_only). SSOT=state/senolyx-selectivity-law/.
+
 ### SENOLYX 선택성 종결식 — 법칙사냥 fleet 4-lens 수렴 (RTSC 종결식과 동형)
 - 유저 지시("같은 형식으로 SENOLYX 탐색·fleet로 수학 발견"): 친화도 정밀화 축이 terminal(🧱 FF 천장·affinity는 selectivity와 직교)임을 확인하고 RTSC와 동일하게 후보-친화도 사냥 → **선택성 종결식 사냥**으로 피벗. 4 렌즈 fleet(scap-law·window-ceiling·selectivity-escape·senolytic-corpus) 전부 g5 PASS·수렴. 종결식: (1)선택성 법칙 x*=(B−A)/(f·B)·Δx*>0(ΔG_bind 부재=ABFE 벽의 기전적 근원) (2)단일표적 천장 f_clear≤p_dep·F_b(SenePy no-universal-marker 정리) (3)탈출=직교축 곱셈 AND-gate S_total=∏S_i(조건부)+pan-senescent GLS1+PROTAC dose-decouple. 검증: navitoclax(최고친화도/최협창)이 affinity≠selectivity 확증, 우리 R13 BCLXL −29.28도 동일 교훈. 정직(d6): 임상 escape 미증명(전부 Ph2 miss). SSOT=state/senolyx-selectivity-law/SENOLYX_SELECTIVITY_CLOSING_FORMULA.md + ARCHITECTURE SENOLYX/LAWS + .discoveries/senolyx-selectivity-law.tape.
 
