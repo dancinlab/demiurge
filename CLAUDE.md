@@ -197,6 +197,13 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - ✅ gate anchor는 QE로 마감(정직한 production reference) · 벽은 **분류 후 named 레버로 돌파 시도**(c15·d2) — degenerate-subspace Sternheimer · 고RAM 포드(OOM=substrate)
 - ⛔ from-scratch λ를 4.376으로 강제(tune-to-green·d6) · 게이트 미통과분을 absorbed로 박제 · 벽을 천장으로 조기 확정(단일렌즈 1회 막힘=미완) · 마이그레이션 상태를 흩어진 노드로 방치(SSOT=migration_gate 1곳)
 
+### d_qforge_default — 컴퓨트 기본 엔진 = QFORGE (QE 대신) · 미전환 조각만 QE fallback
+
+- ✅ el-ph/DFT 컴퓨트의 **기본 엔진은 QFORGE-native** — gate-통과(≤1% vs QE) 조각은 항상 QFORGE 경로로 실행: L0-L5 λ/Tc 어셈블리·PW-SCF bricks·Sternheimer·**GPU block davidson**(RTX5070 실측·davidson/SCF/el-ph hot path 배선·c24). production = mode-(b) hybrid(QE |g|² → QFORGE assembler)도 QFORGE-native 산출을 기본으로 본다
+- ✅ **QE는 두 용도로만**: (a) 아직 gate-미통과 조각(from-scratch front-end |g|²·포논·nspin=2 moment)의 reference/fallback — d_qforge_migration_routing의 HELD 목록 (b) gate anchor 1회(정직한 production reference). 그 외 새 컴퓨트는 QFORGE 먼저 시도
+- ✅ 페이오프 = **summer RTX5070 무료 QFORGE-native el-ph → 유료 vast GPU 회피**. QFORGE가 막히면 즉시 QE 병행(d_qforge_fix)하되 QFORGE-native 전환을 함께 추진(미루지 않음)
+- ⛔ gate-통과 조각을 습관적으로 QE로 돌리기(QFORGE 기본 무시) · "QE가 익숙하니 QE로" 디폴트 · QFORGE를 실험취급하고 QE를 production취급(역전) · 미전환 조각을 QFORGE-native로 강제해 게이트 미달분 absorbed 박제(d6·migration_gate 위반)
+
 ### d_deck_always — 모든 컴퓨트 입력덱은 `hexa deck`(빌더+검증)을 통과 (필수)
 
 - ✅ DFT/QE el-ph 컴퓨트 입력덱(scf · ph · vc-relax · bands · matdyn 등)은 **항상 `hexa deck`(빌드+검증)** 으로 생성/검증 — 손수 `.in` 작성 금지(이번 세션 손작성 버그 다발: bands verbosity='high' 누락[#k≥100]·원자질량 오기[Os 190.23]·vc-relax 미수렴·d15 SCF aids 누락)
