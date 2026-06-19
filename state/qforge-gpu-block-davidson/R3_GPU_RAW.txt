@@ -1,0 +1,29 @@
+### R3 GPU raw — summer RTX5070 sm_120 · 2026-06-19 · RBFE-contended (pid2565 rbfe_hsp90.py @99% util, elapsed 8h55m, 7172MiB)
+
+### contended re-measure: happly_block n2048 m64 (R2/clean#3442 재현 확인)
+=== util 99%, free 4520 MiB (RBFE co-resident) ===
+n=2048 m=64
+  CPU(m matvec)   =   318.8872 ms
+  GPU GEMV(m H2D) =   210.7738 ms   speedup(cpu/gemv) =   1.513x   [per-band seam=current]
+  GPU GEMM(1 H2D) =     4.6292 ms   speedup(cpu/gemm) =  68.886x   [batched=FIX]
+  gemm vs gemv    =  45.531x faster   max_rel(gemm)=4.707e-11 gemv=2.817e-10 tol=1e-09  PARITY:PASS
+ALL: PASS
+
+# parity max_rel(gemm)=4.707e-11 = R2 + #3442 박제값 byte-identical (재현 확인)
+# speedup 68.9× = contention noise band (R2 73.4× · clean #3442 74.9×) — clean 윈도우는 RBFE 종료 후 watcher 자동포착
+
+### RBFE 진행 (clean 윈도우 게이트)
+pid 2565 python ~/rbfe-prod/rbfe_hsp90.py · elapsed 8h55m
+equilibration iteration 374/400 (equil 완료 ~14:36) + production 40 iterations 잔존 (rbfe_hsp90.py:58-59)
+→ GPU 수시간 contended · kill 거부 (합법 production job)
+
+### clean-repro watcher 무장
+summer ~/qforge_gpu_r2/clean_repro_watch.sh (setsid detach, pid 64242)
+조건: util<15% AND free>10000MiB 3샘플연속 → ./nvptx_happly_block clean → R3_CLEAN_REPRO.txt + CLEAN_REPRO_DONE emit
+최대 16h 폴(10s)
+
+### el-ph 배선 PR 상태
+#3659 qforge/block-davidson-wire — OPEN (production PW SCF block 배선)
+#3663 qforge/elph-block-wire-r2 — OPEN (orchestrator_pw + gga_scf block 배선, R2 GPU 실측 PASS)
+
+### provenance: summer (192.168.50.60) RTX 5070 sm_120 · nvcc 12.0 · cuBLAS 12 · driver 580.159.03 · CUDA 13.0
