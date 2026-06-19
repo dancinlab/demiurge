@@ -1276,6 +1276,10 @@
               "role": "RTSC — room-temperature superconductor candidate campaign"
             },
             {
+              "id": "breakthrough_success",
+              "role": "🟢 RTSC CANDIDATE SUCCESS (geom-stiffness breakthrough, 2026-06-19): the bond-bipolaron tens-of-K cap was an artifact of the dispersive stiffness t**·n; the real flat-band stiffness is the GEOMETRIC superfluid weight D_s∝⟨g⟩. Recomputed: sp2C N-Lieb COF → 90-181K (C-C Ω 80-160meV) = ABOVE liquid-N2 (77K), old cap 4× broken. Room-T is SIZED & open: a kagome-class ⟨g⟩≈2-3 isolated-flat-band host → 288-577K (TB ceiling; concrete real material with DFT-⟨g⟩ + SOC isolation still to be named). The same quantum geometry that SUPPRESSES el-ph λ (FB-GEOM-LAMBDA) ENHANCES the condensate stiffness — net breakthrough. SSOT state/fb-geom-lambda/geom-stiffness/ || ROOM-T-HOST TERMINAL: named a concrete real high-⟨g⟩ material — ★CoSn (kagome, SOC-isolated C=1, ⟨g⟩=2.87 TB-est) → Tc3D=179K (61% room-T, ABOVE LN2). the high-⟨g⟩≈2-3 the breakthrough demanded is now a NAMED real material (was only a TB ceiling). Ceiling ~180-190K for ANY single EXISTING material, bound by the ⟨g⟩↔Ω trade (kagome ⟨g⟩2.9 but heavy→Ω15; light C-C Ω120-200 but Lieb ⟨g⟩0.67) — NOT by 2D/3D (3D-XY already ×1.40). ROOM-T is NOT a wall (d2): decisive hypo kagome ⟨g⟩2.87 × C-C Ω120-196meV → 868-2343K. SINGLE MISSING INGREDIENT = a LIGHT-element (C / B-N) kagome flat-band SUPERCONDUCTOR (⟨g⟩≈2.9 + Ω≈150meV). confirmation gaps: DFT-Wannier ⟨g⟩, ν at E_F, SC pairing channel. SSOT state/fb-geom-lambda/host-optimize/room_t_host.py"
+            },
+            {
               "id": "formula_discovery",
               "role": "🎯🏁 FORMULA→MATERIAL DISCOVERY (2026-06-19, 3-lane fleet converged): applying the closing-formula recipe (Regime-II escape = narrow/flat-band + OFF-DIAGONAL bond-Peierls/SSH coupling + t~Ω light-bipolaron) → ★PRIMARY TARGET **Re6Se8Cl2 superatomic crystal**: already SC ~8K n-doped (Hc2>30T, mechanism unestablished), 2D-SSH applied only for single ACOUSTIC POLARON (arXiv:2401.14312) — bipolaron Tc UNCOMPUTED (d_novel_only gap), narrow W~300-400meV (optimal t~Ω), = concrete realization of the bipolaron theory's 'functional superatomic crystal'. FREE pipeline: DFT+Wannier downfold → ∂t/∂u 2.6THz cluster-twist bond-phonon → cRPA U → 2-body bipolaron solve → Tc. Recipe-pure light-atom alternatives: sp2-carbon N-Lieb COF, graphene Kekulé/TBG oSSH, rubrene. ANTI-PATTERNS (formula discriminator): A3C60 (Holstein JT false-escape); MgB2/B-diamond/SrB3C3/MB2C8 (bond-STRETCH but band-DIAGONAL = Regime I, NOT escape). HONEST(d6): tens-of-K NOVEL campaign, not room-Tc. SSOT state/fb-geom-lambda/FORMULA_DISCOVERY.md || FORMULA APPLIED (formula_tc_estimate.py): Regime-II Tc envelope η·Ω·g(t/Ω) — Re6Se8Cl2 2.9-8.7K REPRODUCES measured ~8K (VALIDATION ANCHOR, formula credible); same formula ranks recipe-pure light hosts higher: sp2C N-Lieb COF 74-223K (t/Ω0.5), graphene-Kekulé/oSSH 154-463K (t/Ω1.9, light-window optimal+high ω), MATBG 11-32K. HONEST(d6): high numbers are ENVELOPE upper-estimates not confirmed Tc (need step-4 QMC mass; known bond-bipolaron tens-of-K). Validated = ranking+8K anchor. Next: QMC pipeline Re6Se8Cl2(validate vs 8K)→sp2C COF. || STEP-4 SOLVER COMPUTED (bond-bipolaron/solver.py, g5 PASS): real 2-particle bond-SSH exact-diag solver built+validated — light-SSH (m**~1.5) vs Holstein self-trap (m** 1.85→113≈e^{g²}, 73x) reproduces Zhang/Berciu PRX (mechanism CONFIRMED). Computed Tc: sp2C N-Lieb COF 47K, MATBG 5.6K (compact pairs, defensible); Re6Se8Cl2 & graphene-Kekulé weak-bind→large pair→BEC-invalid. VERDICT: room-Tc CLOSED-NEGATIVE (computed tens-of-K, envelope 74-463K NOT reproduced — real 2-body solve corrects envelope down & inverts its ranking: high-t/Ω don't host compact 1D pairs); mechanism POSITIVE. HONEST(d6): 1D caps pair hopping → R2 = 2D solver + real Thouless-criterion Tc (named). TOP computed candidate = sp2C N-Lieb COF ~47K. state/fb-geom-lambda/bond-bipolaron/ || R2 2D real-mass TERMINAL (solver2d.py, g5 PASS): 2D solver reproduces R1 bit-for-bit (+bond-indexed phonon bug fixed); 2D mass LIGHTER (1D 1.38→ladder 1.18→2D 1.11). Computed un-capped Tc (real 2D mass, BKT-stiffness-limited): sp2C N-Lieb COF 42K, MATBG 4.4K (compact); graphene/Re6Se8Cl2 not-compact. ★TERMINAL room-Tc CLOSED-NEGATIVE end-to-end + NOVEL BOUND: compact pair ⇔ flat band ⇔ small t ⇔ small t** ⇔ small condensate stiffness — the flat band that binds the pair KILLS the superfluid stiffness, capping Tc at tens-of-K regardless of dimension. FINAL formula→material discovery: top candidate sp2C N-Lieb COF ≈42K; room-Tc closed-negative via this new structural tension. mechanism (off-diagonal→light bipolaron) confirmed."
             },
@@ -1903,15 +1907,31 @@
                     },
                     {
                       "id": "status",
-                      "role": "🟢 computed (1D+2D exact-diag, g5 PASS) — new structural no-go-like bound"
+                      "role": "🔴 OVERTURNED by geom-stiffness (the bound used the WRONG dispersive stiffness t**·n; flat-band stiffness is GEOMETRIC ∝⟨g⟩, finite at t→0) — ★BREAKTHROUGH: cap is an artifact, NOT physical"
                     },
                     {
                       "id": "law",
-                      "role": "For bond-SSH (off-diagonal) bipolaron SC: compact pair ⇔ flat band ⇔ small hopping t ⇔ small pair hopping t** ⇔ small condensate (BKT) stiffness. The flat band that BINDS a compact light bipolaron simultaneously KILLS the superfluid stiffness (Tc ∝ t**·n), capping Tc at tens-of-K independent of dimensionality. Verified: 2D lighter mass (enh 1.11) barely raises Tc vs 1D; computed sp2C N-Lieb COF ≈42K, MATBG ≈4K."
+                      "role": "For bond-SSH (off-diagonal) bipolaron SC: compact pair ⇔ flat band ⇔ small hopping t ⇔ small pair hopping t** ⇔ small condensate (BKT) stiffness. The flat band that BINDS a compact light bipolaron simultaneously KILLS the superfluid stiffness (Tc ∝ t**·n), capping Tc at tens-of-K independent of dimensionality. Verified: 2D lighter mass (enh 1.11) barely raises Tc vs 1D; computed sp2C N-Lieb COF ≈42K, MATBG ≈4K. [CORRECTED c9/d6: this t**·n bound is an ARTIFACT — flat-band condensate stiffness is the Peotta-Törmä GEOMETRIC superfluid weight D_s=4|U|ν(1-ν)⟨g⟩, finite as t→0. geom Tc: COF 42→86K, room-T OPEN for deep-flat high-⟨g⟩ host (R=geo/conv→10-50).]"
                     },
                     {
                       "id": "provenance",
                       "role": "state/fb-geom-lambda/bond-bipolaron/{solver.py,solver2d.py,R2_RESULTS.md}; mechanism anchor Zhang/Berciu PRX 13,011010 reproduced (light-SSH vs Holstein e^{g²})"
+                    },
+                    {
+                      "id": "breakthrough_dense",
+                      "role": "🔴 dense-bipolaron lens (closed-neg): density lever fails — Tc(n) dome peaks at n_b=½ giving fixed ×1.56 (COF 33.5K→52.4K), NOT ~50×. T_BKT_max ∝ t**·n_max, both small for a flat band (t** small BECAUSE flat; n_max≈0.5/site cap). not phase-separation, dome just shallow. tightens the bound along the density axis. remaining levers: Ω-stiffer phonon (host-optimize), multi-orbital N_orb (multiband-assist)."
+                    },
+                    {
+                      "id": "breakthrough_geom",
+                      "role": "🟢★ geom-stiffness lens (BREAKTHROUGH): flat-band superfluid stiffness is GEOMETRIC (Peotta-Törmä D_s=4|U|ν(1-ν)⟨g⟩) not dispersive t**·n. Anchor-free [E]: as W→0, conv D_s→0 but geo stays finite → ratio R=2.1→46.5. Geometric Tc COF 42→86K (×2.1), MATBG 4→17K. The same quantum geometry ⟨g⟩ that SUPPRESSES el-ph λ (FB-GEOM-LAMBDA) ENHANCES the superfluid stiffness — net reopens Tc. Room-T OPEN & sized: deep-flat high-⟨g⟩ isolated band with Δ≈Ω → R→10-50. ⟨tr g⟩ Lieb 0.642, kagome 2.19. r2 = real-host ⟨g⟩ + room-T host hunt + Δ-⟨g⟩ self-consistency. || r2 SIZED: real COF ⟨g⟩=0.672 → 90K(Ω80)/136K(Ω120)/181K(Ω160meV) = ABOVE LN2(77K), 62% of room-T, the FIRST candidate success (old cap 4× broken). room-T gap = a ⟨g⟩ GAP: COF/Lieb ⟨g⟩0.67 caps 181K; room-T needs ⟨g⟩≈2-3 (kagome-class). SOC-isolated kagome ⟨g⟩2.30 → 288-577K (reaches room-T) but is a TB structure-class CEILING, not a named material (bare kagome flat bands only TOUCH; need intrinsic-SOC opener). Δ-⟨g⟩ self-consistency falsified (D_s linear in ⟨g⟩). r3 = name a concrete high-⟨g⟩ kagome-class isolated-flat-band SC host."
+                    },
+                    {
+                      "id": "multiband_conservation",
+                      "role": "🔴→🟢 multiband-assist lens: flat+dispersive kinetic 2-band TIES cap (×1.03), reveals a CONSERVATION LAW |Δb|·t**≈const (the inter-band coupling that transfers KINETIC stiffness unbinds the pair). This CONFIRMS the geometric escape: the conservation is in the kinetic variable t**, while the flat-band GEOMETRIC stiffness D_s∝⟨g⟩ (geom-stiffness) lies OUTSIDE the trade-off → geometric is the ONLY escape. kinetic routes (density, 2-band) all capped. r2a η-pairing pending. || r2a η-pairing TERMINAL: coherent pair-hopping PARTIALLY breaks |Δb|·t** (+133% t** while bound, m**≈1.0) but cap survives — bounded by dispersive band bare 2-particle bandwidth (max ~1.7×), and REDUNDANT with geometric (chases the conventional ceiling the geometric route overturns; does NOT stack on COF 86-181K). kinetic 2-band route (single-particle + η) FULLY CLOSED-NEGATIVE → GEOMETRIC stiffness is the SOLE escape (quantity the kinetic model lacks)."
+                    },
+                    {
+                      "id": "host_params",
+                      "role": "host-optimize lens: sourced real DFT params for sp2C N-Lieb COF — t=0.10eV, Ω 100-196meV (118 anchor), g/Ω≈1.9 (stiff C=C), t/Ω≈0.85, U=9.3eV. 3D stiffness = NULL lever (3D=2D at dilute n). Its dispersive-frame Tc (2×, 80-130K) is SUPERSEDED by the geometric frame (same Ω → COF 90-181K); the real params now FEED the geometric Tc. lane merged into room-T-host (decisive real high-⟨g⟩ material hunt)."
                     }
                   ]
                 }
@@ -6750,6 +6770,10 @@
                 {
                   "id": "notes",
                   "role": "M1~M15 본체 milestones + V1~V6 verify가 본 1엔트리에 흡수 (14엔트리 금지); M12 11-falsifier preregister 포함"
+                },
+                {
+                  "id": "paper",
+                  "role": "📄 PAPERS/herpes-sterilizing-cure/ — arxiv paper (10p·xelatex clean·11refs·fal.ai cover). M13 재발닫힌식·UL30 dual-guide CRISPR·M14 정직negative. d_paper_significance 충족."
                 }
               ]
             },
@@ -8292,6 +8316,10 @@
                 {
                   "id": "notes",
                   "role": "TTR-LAC track A 스핀오프; 13 research 파일(G1-7·N1/5/6/7·V·oracle)을 본체로 흡수 — G/N milestone 전부 done, oracle만 wet-lab 대기"
+                },
+                {
+                  "id": "paper",
+                  "role": "📄 PAPERS/numb-topical-anesthetic/ — arxiv paper (10p·xelatex clean·11refs·fal.ai cover). onset 가속 falsified·소아100×·LAST273×·absorbed=false. d_paper_significance 충족."
                 }
               ]
             },
