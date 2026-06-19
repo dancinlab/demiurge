@@ -1,0 +1,14 @@
+---- result ----
+[matched-σ] FS double-delta σ_el=0.007071 Ha  ⇔  QE degauss=0.0099999 Ha = 0.0199998 Ry  (σ=d/√2 convention)
+[front-end] cell=Ca n(PW)=200 nelec=16 nocc=8 SCF-converged=true iters=9
+[front-end] ecutwfc=80.0 Ry  e_band=-56.6062 Ha
+[front-end] deck.name=Ca-pwfrontend-EINSTEIN-DEFAULT(omega0=1236.4K)+DFPT(production)
+[front-end] note: PRODUCTION DFPT: real Φ (Sternheimer FC, bare/@L5) + 2 optical mode(s), 16-pt ω(q,ν) band over 2³ MP q-mesh (q-flat ncells=1) · ω_log(band)=1235.98 K (vs single Einstein ω₀); el-ph |g|² = SCREENED ΔV_scr·ψ (Dyson ε⁻¹, Anderson β=0.3 m=5, TF k_TF²=1.93464 bohr⁻², POW2-FFT-POISSON grid=32x32x32 folds=21 local-ALDA-folds=21 last_err=0 (genuine RPA+ALDA local-field convolution ENGAGED — f_xc[ρ(r)])): 18 SCF iters · conv=false · ‖fp_res‖_max=292.901 · ‖ΔV_scr‖/‖ΔV_bare‖=1.0 (the @L5 screening-XC closure, H+x+c) [d6 VERBATIM]
+════════════════════ λ VERDICT (d6 VERBATIM — NOT tuned) ════════════════════
+convergence params : ecutwfc=80.0 Ry · npw_cap=200 · n(PW)=200 · q-mesh=2³ MP · sigma=0.02 Ha · xc=LDA-x+PW92-c
+BARE baseline λ    = 4.13647  (prior converged run #2768, rel-ε=5.47%)
+QFORGE λ (this run)= 4.11326e-44
+QE MATCHED-σ ref λ = 4.193  (QE 4×4×4 λ at degauss=0.0199998 Ry — true matched-σ, NOT tight 4.376)
+rel-ε              = 1.0  (100.0 %)
+GATE: NOT MET — rel-ε=100.0% > 1% (HONEST FINDING, d6)
+=== DONE ===
