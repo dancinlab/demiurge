@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### SENOLYX 선택성 종결식 — 법칙사냥 fleet 4-lens 수렴 (RTSC 종결식과 동형)
+- 유저 지시("같은 형식으로 SENOLYX 탐색·fleet로 수학 발견"): 친화도 정밀화 축이 terminal(🧱 FF 천장·affinity는 selectivity와 직교)임을 확인하고 RTSC와 동일하게 후보-친화도 사냥 → **선택성 종결식 사냥**으로 피벗. 4 렌즈 fleet(scap-law·window-ceiling·selectivity-escape·senolytic-corpus) 전부 g5 PASS·수렴. 종결식: (1)선택성 법칙 x*=(B−A)/(f·B)·Δx*>0(ΔG_bind 부재=ABFE 벽의 기전적 근원) (2)단일표적 천장 f_clear≤p_dep·F_b(SenePy no-universal-marker 정리) (3)탈출=직교축 곱셈 AND-gate S_total=∏S_i(조건부)+pan-senescent GLS1+PROTAC dose-decouple. 검증: navitoclax(최고친화도/최협창)이 affinity≠selectivity 확증, 우리 R13 BCLXL −29.28도 동일 교훈. 정직(d6): 임상 escape 미증명(전부 Ph2 miss). SSOT=state/senolyx-selectivity-law/SENOLYX_SELECTIVITY_CLOSING_FORMULA.md + ARCHITECTURE SENOLYX/LAWS + .discoveries/senolyx-selectivity-law.tape.
+
 ### QFORGE QE-급化 계획 ING 등록 — migration_gate 닫기 (유료 el-ph→summer 무료 GPU)
 - 유저 지시: QFORGE>QE수준 올리는 계획 ING등록. 엔진상태 SSOT(QFORGE.md §ENGINE STATUS) 기반 구체화. 병목=from-scratch |g|²/DFPT 프론트엔드(어셈블러는 이미 1.65e-7 게이트급). best=mode(c) R7 5.12%(bare돌파·수렴중). 레버=q-의존 f_xc·degenerate Sternheimer·GPU-davidson(nspin2)·high-RAM·phonon from-scratch. piece-by-piece ≤1% g5 xval後 absorb(d_qforge_migration). 페이오프=summer RTX5070 무료 QFORGE-native el-ph(유료 GPU 불필요). ARCHITECTURE QFORGE.gate_close_plan + ING 박제.
 

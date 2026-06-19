@@ -1,7 +1,7 @@
 {
   "id": "demiurge",
   "role": "demiurge — Architecture SSOT (JSON tree)",
-  "updated": "2026-06-17",
+  "updated": "2026-06-19",
   "ssot_note": "JSON=SSOT (AI/tool parse); humans view ARCHITECTURE.html. Prose mirror = ARCHITECTURE.md. Faithful transcription of ARCHITECTURE.md + README.md + CLAUDE.md + QFORGE/QFORGE.md — no invented nodes/numbers (commons c9).",
   "children": [
     {
@@ -1276,6 +1276,14 @@
               "role": "RTSC — room-temperature superconductor candidate campaign"
             },
             {
+              "id": "formula_discovery",
+              "role": "🎯🏁 FORMULA→MATERIAL DISCOVERY (2026-06-19, 3-lane fleet converged): applying the closing-formula recipe (Regime-II escape = narrow/flat-band + OFF-DIAGONAL bond-Peierls/SSH coupling + t~Ω light-bipolaron) → ★PRIMARY TARGET **Re6Se8Cl2 superatomic crystal**: already SC ~8K n-doped (Hc2>30T, mechanism unestablished), 2D-SSH applied only for single ACOUSTIC POLARON (arXiv:2401.14312) — bipolaron Tc UNCOMPUTED (d_novel_only gap), narrow W~300-400meV (optimal t~Ω), = concrete realization of the bipolaron theory's 'functional superatomic crystal'. FREE pipeline: DFT+Wannier downfold → ∂t/∂u 2.6THz cluster-twist bond-phonon → cRPA U → 2-body bipolaron solve → Tc. Recipe-pure light-atom alternatives: sp2-carbon N-Lieb COF, graphene Kekulé/TBG oSSH, rubrene. ANTI-PATTERNS (formula discriminator): A3C60 (Holstein JT false-escape); MgB2/B-diamond/SrB3C3/MB2C8 (bond-STRETCH but band-DIAGONAL = Regime I, NOT escape). HONEST(d6): tens-of-K NOVEL campaign, not room-Tc. SSOT state/fb-geom-lambda/FORMULA_DISCOVERY.md || FORMULA APPLIED (formula_tc_estimate.py): Regime-II Tc envelope η·Ω·g(t/Ω) — Re6Se8Cl2 2.9-8.7K REPRODUCES measured ~8K (VALIDATION ANCHOR, formula credible); same formula ranks recipe-pure light hosts higher: sp2C N-Lieb COF 74-223K (t/Ω0.5), graphene-Kekulé/oSSH 154-463K (t/Ω1.9, light-window optimal+high ω), MATBG 11-32K. HONEST(d6): high numbers are ENVELOPE upper-estimates not confirmed Tc (need step-4 QMC mass; known bond-bipolaron tens-of-K). Validated = ranking+8K anchor. Next: QMC pipeline Re6Se8Cl2(validate vs 8K)→sp2C COF."
+            },
+            {
+              "id": "discovery_closing_formula",
+              "role": "🧩🏁 RTSC MATERIAL-DISCOVERY CLOSING FORMULA — FINAL, 4-lens fleet converged (2026-06-19). TWO regimes split by Migdal param μ_M=λω_log/E_F (flat-band E_F→0 ⇒ μ_M large): REGIME I (adiabatic phonon, μ_M≪1): Tc ≤ 0.364·ω_log(W*)·Q_geom^{p/(1+2p)}, λ stability-limited (~4, an ⟨I²⟩/M lattice ceiling NOT a theorem) — room-Tc needs H-phonon ω_log≳69meV = exhausted hydride space (CLOSED, ext. corroborated Gao arXiv:2502.18281). REGIME II (light-bipolaron escape, μ_M≳1): Allen-Dynes breaks → real-space bipolaron condensation, Tc~a3·t**(m**) set by bipolaron MASS, ESCAPES ceiling (E=3.4-5.0) ONLY for LIGHT SSH/bond/Peierls (off-diagonal) bipolarons — Holstein (on-site) exp-heavy m**~e^{g²} = false escape. ★DISCOVERY RECIPE: to beat 0.364·ω_log(W*) engineer flat-band light-atom with BOND/PEIERLS (off-diagonal) el-ph coupling NOT Holstein. THREE lenses (cap-escape·route-nonconv·ceiling-escape) CONVERGE on bond-bipolaron; geometric superfluid-weight escape RULED OUT by no-go theorem arXiv:2604.04719. HONEST(d6): known bond-bipolaron Tc ~20-40K = NOVEL FP-computable campaign (DFT downfold→bond-Peierls+U→bipolaron QMC→Tc), NOT guaranteed room-Tc. SSOT state/fb-geom-lambda/RTSC_DISCOVERY_CLOSING_FORMULA.md"
+            },
+            {
               "id": "engine",
               "role": "QFORGE (RTSC ← QFORGE NEXUS edge)"
             },
@@ -1769,7 +1777,7 @@
             },
             {
               "id": "status",
-              "role": "🏁 lane closed — 1D arithmetic-spectrum complete chart."
+              "role": "🏁 1D arithmetic-spectrum lane closed · 🔵 ACTIVE law sub-track LAWS[] — flat-band quantum-geometry → physics laws (RTSC bridge, material space depleted → law discovery)."
             },
             {
               "id": "findings",
@@ -1793,6 +1801,98 @@
                 {
                   "id": "open_6",
                   "role": "probe6 2D Ammann-Beenker 🟠 INCONCLUSIVE (finite 953-vertex patch did not resolve clean major gaps above finite-size spacing; construction sound)."
+                }
+              ]
+            },
+            {
+              "id": "LAWS",
+              "role": "Discovered laws ledger (continuous law-discovery loop; material-candidate space DEPLETED 2026-06-19 → pivot to cross-family LAW discovery, d_novel_only). Each entry = a novel closed-form/invariant verified beyond the published per-family results.",
+              "children": [
+                {
+                  "id": "FB-GEOM-LAMBDA",
+                  "children": [
+                    {
+                      "id": "name",
+                      "role": "FB-GEOM-LAMBDA — flat-band geometric electron-phonon coupling law ('납작한 밴드는 모양이 결합을 깎는다')"
+                    },
+                    {
+                      "id": "date",
+                      "role": "2026-06-19 (round-3 landed)"
+                    },
+                    {
+                      "id": "status",
+                      "role": "🔵 lower bound (Welch) PROVEN + 🔑 determinant Q_geom=Q_diag+Q_phase (r8, r9 closing) · 🟡 empirical: geometric throttle REAL (~1/3 in kagome) but NON-discriminating vs non-geometric ⟨I²⟩ (fb-empirical closed-partial). Law = honest geometric-floor mechanism, not a λ predictor."
+                    },
+                    {
+                      "id": "law",
+                      "role": "lambda_FB = N(E_F)·g0^2·Q_geom/(M·w^2), with 1/N_band <= Q_geom <= 1. Q_geom = <|<u(k')|u(k)>|^2>_FS (FS Bloch-overlap, gauge-invariant). LOWER BOUND Q_geom >= 1/N_band is the WELCH bound (frame theory; tight-frame saturates)."
+                    },
+                    {
+                      "id": "claim",
+                      "role": "On a flat band at E_F the el-ph coupling factorizes into a divergent DOS part N(E_F)~1/W and a finite geometric coefficient Q_geom in (0,1]. Quantum geometry SUPPRESSES lambda: trivial band Q_geom→1 (max), geometrically nontrivial band Q_geom↓. (1-Q_geom) rises monotonically with the integrated quantum metric ∫tr g."
+                    },
+                    {
+                      "id": "novelty",
+                      "role": "OPPOSITE-SIGN companion to Peotta-Törmä (superfluid weight D_s ∝ ∫g, geometry ENHANCES stiffness). No published closed-form Q_geom el-ph lambda law tested across flat-band materials (X2MH6/kagome corpus). d_novel_only clean."
+                    },
+                    {
+                      "id": "evidence",
+                      "role": "[A] exact decomposition rel.err=0.0 (Holstein |g|^2=g0^2|<u(k')|u(k)>|^2) · [C] Q_geom→0.566 CONSTANT as Lieb band flattens (width-independent invariant) · [D] decisive: perfectly-flat 2-band d·σ, geometry-only tuning → trivial m=3 Q_geom=0.937 λ=0.937, max-winding m=0 Q_geom=0.500 λ=0.500 · corr(∫g,1−Q_geom)=+0.89 · R4 kagome flat band Q_geom=0.497 (LaRu3Si2/CsV3Sb5 type, ~50% suppression) · R5 Welch bound Q_geom>=1/N verified n=2..6, 2-band m=0 saturates 0.500=1/2. · R6 Welch bound UNIVERSAL across flat-band zoo (sawtooth/Lieb/kagome/d.sigma); CLS-support→Q_geom link FALSIFIED (closed-neg, non-monotonic); 2 model H flagged (dice same-f, checkerboard params)."
+                    },
+                    {
+                      "id": "honest_limits",
+                      "role": "d6: tight-binding Holstein only (NOT yet real-DFT validated); ∫g↔(1−Q_geom) monotonic not strictly linear (local metric vs global all-pairs overlap); bond/SSH phonons may add a separate vertex-geometry term"
+                    },
+                    {
+                      "id": "provenance",
+                      "role": "state/fb-geom-lambda/{lieb_probe.py,R3_VERDICT.json} · .discoveries/flatband-geometric-elph-law.tape · lit anchors: Peotta-Törmä NatCommun 6:8944, fundamental-limit arXiv:2407.12922, SISSO PRB100.174513"
+                    },
+                    {
+                      "id": "next",
+                      "role": "R7 fix dice/checkerboard H + identify what sets Q_geom (band-touching/singularity, Wannier obstruction, CP^(n-1) spread) — NOT CLS cardinality (R6 falsified) · then R-empirical real DFT λ-residual · /paper candidate"
+                    },
+                    {
+                      "id": "triad",
+                      "role": "Superconducting-coupling bound map: UPPER lambda<~4 (arXiv:2407.12922) · MIDDLE flat-band law (ours) · LOWER Welch bound Q_geom>=1/N_band (ours) · companion Peotta-Torma D_s>=|Chern| (stiffness, opposite sign)."
+                    },
+                    {
+                      "id": "empirical",
+                      "role": "🟡🏁 REAL-MATERIAL quantitative test (fb-empirical r1+r2, DEPLETED closed-partial): Q_geom extracted at real E_F — CsV3Sb5 0.446 · CaPd5 0.428 · LaRu3Si2 0.338, all near kagome floor 1/3 → ~60% el-ph overlap depletion REAL & quantified (explains why these flat-band SCs sit at λ≈0.25-0.8 not >1). BUT ratio R=λ_obs/[λ_Hopfield·Q_geom] spans 0.54-1.87 (outside ±0.3) and dividing out Q_geom does NOT collapse the cross-material scatter (CV 0.45→0.55). VERDICT: Q_geom is a real ~1/3 geometric THROTTLE but pinned near the floor family-wide = near-constant prefactor, NOT the controlling/discriminating variable — the factor-3.5 λ spread is dominated by non-geometric deformation potential ⟨I²⟩ (Ru-4d vs V-3d vs Pd-4d) + mode-selective phonons. Law DEMOTED from 'controls λ' to 'real but non-discriminating throttle' (d6 honest; paper-eligible closed-partial = ruled-out axis). corpus state/fb-geom-lambda/fb-empirical/"
+                    },
+                    {
+                      "id": "fb_geom",
+                      "role": "🔑🏁 Q_geom DETERMINANT closed-form PROVEN (fb-geom r7→r9, paper-grade): Q_geom = Q_diag + Q_phase, with Q_diag=<Σ_m w_m(k)w_m(k')>_{k,k'} (phase-blind orbital 2-point BZ correlator) and Q_phase=Σ_{a<b} 2|<conj(u_a)·u_b>_BZ|² (inter-orbital phase-coherence sum, one number per active orbital pair; vanishes iff every pair's relative phase fully decorrelates over BZ). CONFIRMED at machine precision: N_orb>2 generalization residual 2.2e-14%, topology-independence across Chern C∈{−2..+1} residual 2.2e-14% (r(Q_phase,Chern)=−0.006, r(Q_phase,decorrelation)=+1.000). Topology FALSIFIED as determinant (r7); the genuine determinant = orbital-weight 2-point floor + inter-orbital BZ phase decorrelation. lane DEPLETED, paper-grade."
+                    },
+                    {
+                      "id": "fb_ceiling",
+                      "role": "🏔️🏁 flat-band Tc CEILING (FINAL, lane depleted r1+r2): Tc_ceiling = 0.364·ω_log(W*), set by the EXTERNAL λ≲4 cap (arXiv:2407.12922), NOT the flat-band trade-off — in Allen-Dynes strong-coupling ω_log CANCELS so flatter is always hotter (no internal max). r2 killed the one load-bearing falsifier (A3 Mω²~ω_log²): a 2-branch model forcing coupling-phonon≠thermodynamic-ω_log gives 0/150 interior maxima — ω_log is λ-weighted so the soft acoustic branch re-asserts A3 self-consistently at small W. Quantum geometry LOWERS the ceiling by Q_geom^{p/(1+2p)} when phonons soften (371K Q=1 → 325K Lieb → 284K Welch-floor at p=0.5). PAPER-GRADE closed-form."
+                    }
+                  ]
+                },
+                {
+                  "id": "master_closing_formula",
+                  "role": "🧩🏁 MASTER CLOSING FORMULA (COMPLETE — all 4 fleet lanes converged): flat-band e-ph SC framed by — UPPER λ≲4 (2407.12922) · GEOM λ_FB=N(EF)g0²Q_geom/Mω² with Q_geom=Q_diag+Q_phase (PROVEN paper-grade) · LOWER Welch Q_geom≥1/N_band · CEILING Tc≤0.364·ω_log(W*)·Q_geom^{p/(1+2p)} · kagome NON-phonon sign law sign(Δ)=sign(50meV−|vHS offset from E_F|) (6/6, causal Ta-doping). Empirically Q_geom = real but NON-discriminating ~1/3 throttle (λ spread set by ⟨I²⟩, not geometry). Full: state/fb-geom-lambda/MASTER_CLOSING_FORMULA.md"
+                },
+                {
+                  "id": "TC-DESCRIPTOR",
+                  "children": [
+                    {
+                      "id": "name",
+                      "role": "TC-DESCRIPTOR — cross-family Tc unification hunt (does ONE closed-form descriptor span hydride+kagome+classic?)"
+                    },
+                    {
+                      "id": "status",
+                      "role": "🟢🏁 TERMINAL (r1🔴 power-law / r2🔴 exponential / r3🟢 signed two-term predictor FOUND) — paper-grade, lane depleted"
+                    },
+                    {
+                      "id": "r1",
+                      "role": "12-material cross-family corpus (H3S/LaH10/CaH6 · MgB2/Nb3Sn/NbN/NbC/Pb/Al · CsV3Sb5/LaRu3Si2/LuRu3B2). Candidate FoM Tc≈0.182·ω_log·√λ: RMSE_log10 0.38 vs Allen-Dynes 0.13 = ~3× WORSE. FoM constant varies 4.87× across families (hydride 0.104→classic 0.057→kagome 0.021), 10× within classic alone. Falsifier H1 fired: no single √λ power-law unifies Tc. Two walls: (1) √λ FoM = strong-coupling asymptote, can't bridge λ=0.4→2.5; (2) KAGOME 2nd wall — AD degrades (RMSE 0.07→0.23), e-ph reproduces only a FRACTION of kagome Tc → flat-band/vHS NON-PHONON channel. NOVEL angle: families need a different CHANNEL, not a different constant. honest: McMillan recovery near-tautological (same prefactor); kagome ω_log back-solved (flagged). corpus state/fb-geom-lambda/tc-law/"
+                    },
+                    {
+                      "id": "r3",
+                      "role": "🟢 SIGN PREDICTOR (r3, terminal): the SIGN of the kagome non-phonon Tc residual is predicted by vHS/flat-band PROXIMITY TO E_F at 6/6=100% (<=50 meV) — sign(lambda_nonphonon)=sign(50 meV - |pinned vHS offset from E_F|). Enhancers = vHS within ~30 meV of E_F (CsV3Sb5 -30, Cs(V,Ta)3Sb5 0 meV); suppressors = offset >=100 meV or no flat band (LaRu3Si2 +100, YRu3B2/LuRu3B2 +500). N(E_F) DOS MAGNITUDE FAILS (highest-DOS LaRu3Si2 is a suppressor) - channel is band ALIGNMENT (filling) not coupling strength. Causal: Cs(V,Ta)3Sb5 dialing vHS->E_F drives Tc 2.5->5.5 K. PAPER-GRADE."
+                    }
+                  ]
                 }
               ]
             },
@@ -1935,6 +2035,44 @@
                           ]
                         }
                       ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "LAWS",
+              "children": [
+                {
+                  "id": "SENOLYX-SELECTIVITY",
+                  "children": [
+                    {
+                      "id": "status",
+                      "role": "🔵 closing-formula CONVERGED (4-lens fleet g5 PASS 2026-06-19). Pivot from depleted affinity axis (FF ceiling) to selectivity LAW. SSOT=state/senolyx-selectivity-law/SENOLYX_SELECTIVITY_CLOSING_FORMULA.md + .discoveries/senolyx-selectivity-law.tape"
+                    },
+                    {
+                      "id": "law1_selectivity",
+                      "role": "SELECTIVITY LAW (affinity-orthogonal): kill occupancy x*=(B−A)/(f·B); selectivity exists ⟺ Δx*=(B_q−A_q)/(f_q·B_q)−(B_s−A_s)/(f_s·B_s)>0; lever f_s≫f_q. ΔG_bind ABSENT from Δx* → mechanistic root of the ABFE/RBFE wall (selectivity is a differential-dependency quantity, NOT a binding-affinity one). Soto-Gamez Cell Death Differ 2024 10.1038/s41418-024-01431-1."
+                    },
+                    {
+                      "id": "law2_ceiling",
+                      "role": "CEILING (single-target THEOREM): f_clear(T) ≤ p_dep(T)·F_b(D_tox); window closes when EC50_healthy(T) ≤ EC50_sen,tail(T) [navitoclax↔platelet BCL-xL]. SenePy 'no gene in every signature' ⇒ p_dep<1 ⇒ f_clear(single-agent)<1 necessarily; dose-escalation cannot recruit the refractory other-SCAP fraction. SenePy 10.1038/s41467-025-57047-7."
+                    },
+                    {
+                      "id": "law3_escape",
+                      "role": "ESCAPE (only mathematical route): S_total=∏S_i multiplicative AND-gate on ORTHOGONAL axes (metabolic GLS1 × surface uPAR × lysosomal SA-β-gal), valid only if axes independent (ρ→0; ρ0.6→25×collapses to 9.5×) AND ~zero leak (10% leak 80×→57×) AND toxicity tissues orthogonal. + pan-senescent GLS1 escapes the heterogeneity wall; PROTAC/glue decouples dose↔on-target tox. GLS1 Science 2021 10.1126/science.abb5916; PROTAC 10.1038/s41467-020-15838-0."
+                    },
+                    {
+                      "id": "recipe",
+                      "role": "DISCOVERY RECIPE: STOP optimizing absolute affinity (ABFE). Maximize differential dependency f_s/f_q, screened by selective-peptide BH3 profiling Δ (HRK/NOXA) not Kd; build a multiplicative AND-gate on ORTHOGONAL axes, on a PAN-SENESCENT backbone, with event-driven (PROTAC) pharmacology to decouple dose from healthy toxicity. NOVEL frontier (d_novel_only): no paper quantifies a 2-marker senescence selectivity factor."
+                    },
+                    {
+                      "id": "verdict",
+                      "role": "HONEST (d6): affinity axis CLOSED twice (FF ceiling + selectivity is affinity-orthogonal; our R13 BCLXL −29.28 huge-affinity = worst selectivity target = navitoclax lesson). Single-target monotherapy THEOREM-ceiling-bound. Escape EXISTS but CONDITIONAL (independence+leak+tox-orthogonality) and CLINICALLY UNPROVEN — every readout is a Ph2 miss (UBX0101, UBX1325 ASPIRE) or feasibility (D+Q, fisetin); NO approved senolytic. Usable window OPEN only via the conditional orthogonal-AND-gate route."
+                    },
+                    {
+                      "id": "provenance",
+                      "role": "4-lens fleet g5 PASS: scap-law 🔵 · window-ceiling 🔵/🟠 · selectivity-escape 🟢 · senolytic-corpus 🟢/🟠. Detail: state/senolyx-selectivity-law/<lane>/FINDINGS.md."
                     }
                   ]
                 }
