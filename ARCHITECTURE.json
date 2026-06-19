@@ -2173,6 +2173,10 @@
                 {
                   "id": "r2_final",
                   "role": "FINAL VERDICT (R1+R2, in-silico, d6): realistic TOTAL selectivity = S1(3-axis recognition, ρ 0.1-0.3) × f_s/f_q(~1.6×) = ~13.5-26× (median ~19×), robust even at worst-case ρ — design SUPPORTED in-silico. Recognition AND-gate dominates; kill-axis is a modest multiplier. Single make-or-break = ρ (inferred-low, unmeasured) → resolved by one 3-color flow experiment (wet-lab, d5 downstream). FIRST target PERIO; OA only via depot+subtype+R_cap (d2); clearance-% gate → η_neo functional (correction recommended for CURE-domain nodes). NOVELTY = composition (all molecular pieces are published chemistry; the orthogonal 3-axis AND-gate + fibroblast-niche + local delivery is unprecedented, d_novel_only)."
+                },
+                {
+                  "id": "paper",
+                  "role": "📄 PAPERS/senolyx-ag-selectivity/ — arxiv-style paper (10p·xelatex compile clean·26 refs·TikZ AND-gate fig). §hypothesis(H1-H4 falsifier)·method·measurement(S1·ρ·f_s/f_q·η_neo)·finding(2 ruled-out axes + 3축 AND-gate Δ). d_paper_significance 충족. PAPER.tape 등록. 잔여: fal.ai 표지(imagine 도구 미배포)."
                 }
               ]
             }
