@@ -1,0 +1,43 @@
+=== CaH6 el-ph ANSWER-KEY: lambda_BZ(sigma) from 8 QE .elph files ===
+W (sum of q-weights) = 8  (2x2x2 unreduced, w_q=1 each)
+nq = 8 q-points, 21 modes each, 10 broadenings
+
+ sigma(Ry)    lambda_BZ   DOS(Ef)avg
+--------------------------------------
+     0.005     15.28499       3.9518
+     0.010      8.51683       2.4839
+     0.015      7.79231       2.1976
+     0.020      6.39583       2.3347
+     0.025      5.23679       2.4885
+     0.030      4.57296       2.5127
+     0.035      4.17754       2.4789
+     0.040      3.91140       2.4433
+     0.045      3.72139       2.4209
+     0.050      3.58960       2.4082
+
+=== per-q sum_nu lambda at sigma=0.010 (scf-degauss primary) ===
+  q1: sum_nu lambda =   20.05960  DOS=2.4840
+  q2: sum_nu lambda =    7.30970  DOS=2.4839
+  q3: sum_nu lambda =    7.25250  DOS=2.4839
+  q4: sum_nu lambda =    7.38310  DOS=2.4839
+  q5: sum_nu lambda =    7.36890  DOS=2.4839
+  q6: sum_nu lambda =    7.22700  DOS=2.4839
+  q7: sum_nu lambda =    7.28620  DOS=2.4839
+  q8: sum_nu lambda =    4.24760  DOS=2.4839
+  -> lambda_BZ(0.010) = 8.516825
+
+=== KEY COMPARISON ===
+  lambda_BZ(sigma=0.010) = 8.51683   <- xval test 'QE 8.516825' anchor
+  lambda_BZ(sigma=0.020) = 6.39583   <- ph.out scf-degauss alt
+
+=== which sigma reproduces the '4.376' headline? ===
+  sigma=0.005: lambda_BZ=15.2850  (4.376 ratio=3.493)
+  sigma=0.010: lambda_BZ=8.5168  (4.376 ratio=1.946)
+  sigma=0.015: lambda_BZ=7.7923  (4.376 ratio=1.781)
+  sigma=0.020: lambda_BZ=6.3958  (4.376 ratio=1.462)
+  sigma=0.025: lambda_BZ=5.2368  (4.376 ratio=1.197)
+  sigma=0.030: lambda_BZ=4.5730  (4.376 ratio=1.045)
+  sigma=0.035: lambda_BZ=4.1775  (4.376 ratio=0.955)
+  sigma=0.040: lambda_BZ=3.9114  (4.376 ratio=0.894)
+  sigma=0.045: lambda_BZ=3.7214  (4.376 ratio=0.850)
+  sigma=0.050: lambda_BZ=3.5896  (4.376 ratio=0.820)
