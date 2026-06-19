@@ -7,3 +7,18 @@ self-host 로컬빌드 시도: rebuild 에이전트 407 tool-use 후 서버 rate
   → self-host 빌드 = 벽(c9). reliable 경로 = 다음 hexa-lang release(v0.241.6+·#3620포함).
 현 release: v0.241.5=819c091c2(#3616)까지 — #3620 미포함. CI 활발(#3620·3622·3623 흐름) → 다음 release 임박.
 3 레인 상태: 알고리즘 READY+보존(sternheimer PR#696·kgrid k-mesh인프라 PR#3346·phonon-fs PR#3619). release 후 install→재발사로 g5 검증.
+
+=== RESOLVED 2026-06-19 ===
+release v0.241.6(72fbbc8f·#3620포함) install → hexa v0.241.6 라이브 + src #3629 동기. 백업 hexa.real.bak-pre3620.
+검증(c2): scf_pw_selftest(kgrid 'tag 3*tag 3' 리프로듀서) → PASS 19/19(A-E)·cannot-multiply=0건·EXIT=0.
+→ substrate 벽 해소 확정. 3 QFORGE 레인(sternheimer/kgrid/phonon-fs) g5 unblock → 재발사.
+
+=== 전수검증(rebuild 에이전트 resume 완주) 2026-06-19 ===
+#3620 4개 리프로듀서 전부 1→0·EXIT0:
+  davidson_selftest    cannot-multiply 1→0 PASS
+  scf_pw_selftest      cannot-multiply 1→0 PASS
+  dfpt_response_selftest cannot-multiply 1→0 PASS  ← phonon-fs #28 cross-module도 #3620이 해소
+  sternheimer_selftest crash→PASS (병렬 15 assert ALL PASS 독립확인)
+self-host 빌드=redundant(설치본이 이미 fix 서빙)·스왑 미실시·백업 불필요. ~/.hx/src #3598→#3636 동기(codegen.hexa fix마커 PACKED-F64 TAG-PRESERVE 확인).
+부수발견: tool/build_selfhost.sh hexa_ld 링크갭 — main regen runtime_core.c가 rt_array_get_native/rt_map_*_native/rt_str_*를 native-asm 라우팅하나 hexa_ld가 array_core_native.o/map_core_native.o/rt_hi_native.o 미링크→Undefined symbols. 에이전트 로컬수정으로 stage1 통과확인(worktree cleaned·push안함).
+주의: kgrid-moment 에이전트 사용량 세션한도로 일시정지(컴파일러 무관).
