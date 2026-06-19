@@ -1166,15 +1166,19 @@
                         },
                         {
                           "id": "detail",
-                          "role": "PERF gap CLOSED — block-GEMM H·Ψ wired into davidson + sternheimer; full-solve speedup 1.34–18.04× (Davidson) / 2.56–18.6× (Sternheimer) on RTX 5070, machine-eps parity. PR hexa-lang#3442."
+                          "role": "block-GEMM H·Ψ GPU 경로가 davidson·Sternheimer·PW-SCF·el-ph hot path 전반에 배선된 가속층. 호출 seam: qforge_davidson_block / qforge_scf_block / qforge_scf_pw_h_block / orchestrator_pw qforge_atoms_to_tc_block / gga_scf gga_apply_block. block↔scalar 수치 동등(machine-eps, full-solve max|Δλ|=0.0). 미빌드(-DHEXA_CUDA 없음) 환경은 동일 코드가 CPU GEMM 폴백."
                         },
                         {
-                          "id": "honest_floor",
-                          "role": "small-nocc (nb 4–8) capped ~1.3–2.6× by per-iter host↔device transfer (d6 honest floor)."
+                          "id": "measured",
+                          "role": "RTX 5070(sm_120) 실측·진짜 cuBLAS FP64 텐서코어(스텁 아님): happly 74.9× · Davidson full-solve 1.34–18.04× · Sternheimer 2.56–18.6×, parity 4.7e-11. honest floor: small-nocc(nb 4–8) host↔device 전송으로 ~1.3–2.6× cap(d6)."
+                        },
+                        {
+                          "id": "deploy_status",
+                          "role": "커널·배선 = CLOSED. 실 production 셀(CaH6/LaH10) λ/Tc GPU 측정은 -DHEXA_CUDA selfhost 빌드 배포 대기(GPU-gate M*K>8192 통과·작아서 CPU폴백 아님). clean-GPU 재측정은 summer watcher 자동포착."
                         },
                         {
                           "id": "record",
-                          "role": "state/qforge-perf-roofline/ · state/qforge-converged-kxq-gpu/ · PR hexa-lang#3442"
+                          "role": "state/qforge-perf-roofline/ · state/qforge-converged-kxq-gpu/ · state/qforge-gpu-block-davidson/ · PR hexa-lang#3442(커널)·#3659#3663(배선)"
                         }
                       ]
                     },
@@ -1236,7 +1240,7 @@
                 },
                 {
                   "id": "gate_close_plan",
-                  "role": "PLAN(ING): QFORGE el-ph 프론트엔드 QE-급(<1%)化 — migration_gate 닫기. 현 best=mode(c) screened-vertex R7 5.12%(bare돌파·f_xc-LIVE). 레버=(1)q-의존/이방성 f_xc+folds↑ (2)degenerate-subspace Sternheimer (3)GPU-davidson k-sampling(nspin2 moment·perf-gpu PR#3442 재사용) (4)high-RAM 포드(OOM) (5)phonon from-scratch ω(q,ν). 절차=piece-by-piece ≤1% g5 xval(CaH6/LaH10)後 absorb. 페이오프=summer RTX5070 무료 QFORGE-native el-ph→유료 vast GPU 불필요. 死채널=f_xc-in-χ ALDA(CLOSED-NEG). c17 ING인계."
+                  "role": "PLAN(ING): QFORGE el-ph 프론트엔드 QE-급(<1%)化 — migration_gate 닫기. 역량: el-ph 평가가 QE와 동일한 explicit Gaussian σ_el 노출(qforge_pw_frontend_phonons_scr_sig·convention σ=degauss/√2 비트정합 ≤1e-12) → from-scratch가 QE와 1:1 matched-σ 비교 가능. 현 두 구조적 벽: (A) 차폐정점 — best mode(c) screened R7 5.12%(bare돌파·f_xc-LIVE)·f_xc-in-χ ALDA는 死채널(CLOSED-NEG); (B) Fermi-surface 샘플링 — qforge_run el-ph 샘플이 단일-Γ on-shell(eps_k=eps_kq=eps_occ·e_fermi=HOMO)이라 진짜 금속 E_F 교차가 없음 → matched-σ서 from-scratch λ 붕괴(|g|²=3.70 정상이나 FS double-δ가 σ에 ×10²⁹ 민감); 기존 4.137은 넓은 σ_el=0.05Ha 가림값이지 QE 동등 아님. 레버=(1)q-의존/이방성 f_xc+folds↑ (2)degenerate-subspace Sternheimer (3)★metallic FS 샘플링: 단일-Γ→실 k×q-mesh ε_k 분포(벽B) (4)GPU-davidson k-sampling(perf-gpu 재사용) (5)high-RAM 포드(OOM) (6)phonon from-scratch ω(q,ν). 절차=piece-by-piece ≤1% g5 xval(CaH6/LaH10)後 absorb. 페이오프=summer RTX5070 무료 QFORGE-native el-ph→유료 vast GPU 불필요. c17 ING인계."
                 }
               ]
             }
