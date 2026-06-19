@@ -8,6 +8,9 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-19
 
+### SENOLYX-AG 논문 g51 완성(fal.ai 표지) + wet-lab 핸드오프 문서
+- ⓐ fal.ai/FLUX 표지 생성(figures/cover.png·1024×576·imagine 플러그인 미설치→fal API 직접 curl·queue+poll) → main.tex §title 삽입·재컴파일 11 pages clean → g51 완전충족(fal.ai 그림 + TikZ AND-gate). ⓑ HANDOFF_wetlab.md: make-or-break ρ 측정 프로토콜(3색 flow uPAR/DPP4/SA-β-gal 단일세포 공발현 ρ·PASS ρ≤0.3/FALSIFY ρ≥0.6·decision tree·d5 downstream). PAPER.md figures+compile 체크 완료.
+
 ### SENOLYX-AG 논문 박제 — PAPERS/senolyx-ag-selectivity (10p·compile clean)
 - d_paper_on_discovery: SENOLYX-AG 발견을 arxiv-style 논문으로 박제(paper CLI 미배포→수동 스캐폴드·RTSC 프리앰블 미러). 제목="Senolytic Selectivity Is a Differential-Dependency Quantity, Not a Binding Affinity — SENOLYX-AG". §hypothesis(H1-H4 pre-registered falsifier)·method(multi-lens fleet)·measurement(S1 AND-gate index·ρ·f_s/f_q·η_neo)·finding(2 ruled-out axes[affinity·clearance-%]+단일표적 천장 정리+3축 AND-gate Δ~19×). xelatex compile clean=10 pages·26 DOI refs·TikZ AND-gate fig. d_paper_significance 충족(falsifier+measurement+finding). PAPER.tape 등록. 잔여 체크박스: fal.ai 표지(imagine 도구 미배포).
 
