@@ -2176,7 +2176,7 @@
                 },
                 {
                   "id": "paper",
-                  "role": "📄 PAPERS/senolyx-ag-selectivity/ — arxiv-style paper (10p·xelatex compile clean·26 refs·TikZ AND-gate fig). §hypothesis(H1-H4 falsifier)·method·measurement(S1·ρ·f_s/f_q·η_neo)·finding(2 ruled-out axes + 3축 AND-gate Δ). d_paper_significance 충족. PAPER.tape 등록. 잔여: fal.ai 표지(imagine 도구 미배포)."
+                  "role": "📄 PAPERS/senolyx-ag-selectivity/ — arxiv-style paper (11p·xelatex compile clean·26 refs·fal.ai/FLUX cover.png + TikZ AND-gate fig·g51 충족). §hypothesis(H1-H4 falsifier)·method·measurement(S1·ρ·f_s/f_q·η_neo)·finding(2 ruled-out axes + 천장 정리 + 3축 AND-gate Δ). d_paper_significance 충족. + HANDOFF_wetlab.md(make-or-break ρ 3색 flow 프로토콜·d5)."
                 }
               ]
             }
