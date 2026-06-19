@@ -1277,7 +1277,7 @@
             },
             {
               "id": "formula_discovery",
-              "role": "🎯🏁 FORMULA→MATERIAL DISCOVERY (2026-06-19, 3-lane fleet converged): applying the closing-formula recipe (Regime-II escape = narrow/flat-band + OFF-DIAGONAL bond-Peierls/SSH coupling + t~Ω light-bipolaron) → ★PRIMARY TARGET **Re6Se8Cl2 superatomic crystal**: already SC ~8K n-doped (Hc2>30T, mechanism unestablished), 2D-SSH applied only for single ACOUSTIC POLARON (arXiv:2401.14312) — bipolaron Tc UNCOMPUTED (d_novel_only gap), narrow W~300-400meV (optimal t~Ω), = concrete realization of the bipolaron theory's 'functional superatomic crystal'. FREE pipeline: DFT+Wannier downfold → ∂t/∂u 2.6THz cluster-twist bond-phonon → cRPA U → 2-body bipolaron solve → Tc. Recipe-pure light-atom alternatives: sp2-carbon N-Lieb COF, graphene Kekulé/TBG oSSH, rubrene. ANTI-PATTERNS (formula discriminator): A3C60 (Holstein JT false-escape); MgB2/B-diamond/SrB3C3/MB2C8 (bond-STRETCH but band-DIAGONAL = Regime I, NOT escape). HONEST(d6): tens-of-K NOVEL campaign, not room-Tc. SSOT state/fb-geom-lambda/FORMULA_DISCOVERY.md || FORMULA APPLIED (formula_tc_estimate.py): Regime-II Tc envelope η·Ω·g(t/Ω) — Re6Se8Cl2 2.9-8.7K REPRODUCES measured ~8K (VALIDATION ANCHOR, formula credible); same formula ranks recipe-pure light hosts higher: sp2C N-Lieb COF 74-223K (t/Ω0.5), graphene-Kekulé/oSSH 154-463K (t/Ω1.9, light-window optimal+high ω), MATBG 11-32K. HONEST(d6): high numbers are ENVELOPE upper-estimates not confirmed Tc (need step-4 QMC mass; known bond-bipolaron tens-of-K). Validated = ranking+8K anchor. Next: QMC pipeline Re6Se8Cl2(validate vs 8K)→sp2C COF."
+              "role": "🎯🏁 FORMULA→MATERIAL DISCOVERY (2026-06-19, 3-lane fleet converged): applying the closing-formula recipe (Regime-II escape = narrow/flat-band + OFF-DIAGONAL bond-Peierls/SSH coupling + t~Ω light-bipolaron) → ★PRIMARY TARGET **Re6Se8Cl2 superatomic crystal**: already SC ~8K n-doped (Hc2>30T, mechanism unestablished), 2D-SSH applied only for single ACOUSTIC POLARON (arXiv:2401.14312) — bipolaron Tc UNCOMPUTED (d_novel_only gap), narrow W~300-400meV (optimal t~Ω), = concrete realization of the bipolaron theory's 'functional superatomic crystal'. FREE pipeline: DFT+Wannier downfold → ∂t/∂u 2.6THz cluster-twist bond-phonon → cRPA U → 2-body bipolaron solve → Tc. Recipe-pure light-atom alternatives: sp2-carbon N-Lieb COF, graphene Kekulé/TBG oSSH, rubrene. ANTI-PATTERNS (formula discriminator): A3C60 (Holstein JT false-escape); MgB2/B-diamond/SrB3C3/MB2C8 (bond-STRETCH but band-DIAGONAL = Regime I, NOT escape). HONEST(d6): tens-of-K NOVEL campaign, not room-Tc. SSOT state/fb-geom-lambda/FORMULA_DISCOVERY.md || FORMULA APPLIED (formula_tc_estimate.py): Regime-II Tc envelope η·Ω·g(t/Ω) — Re6Se8Cl2 2.9-8.7K REPRODUCES measured ~8K (VALIDATION ANCHOR, formula credible); same formula ranks recipe-pure light hosts higher: sp2C N-Lieb COF 74-223K (t/Ω0.5), graphene-Kekulé/oSSH 154-463K (t/Ω1.9, light-window optimal+high ω), MATBG 11-32K. HONEST(d6): high numbers are ENVELOPE upper-estimates not confirmed Tc (need step-4 QMC mass; known bond-bipolaron tens-of-K). Validated = ranking+8K anchor. Next: QMC pipeline Re6Se8Cl2(validate vs 8K)→sp2C COF. || STEP-4 SOLVER COMPUTED (bond-bipolaron/solver.py, g5 PASS): real 2-particle bond-SSH exact-diag solver built+validated — light-SSH (m**~1.5) vs Holstein self-trap (m** 1.85→113≈e^{g²}, 73x) reproduces Zhang/Berciu PRX (mechanism CONFIRMED). Computed Tc: sp2C N-Lieb COF 47K, MATBG 5.6K (compact pairs, defensible); Re6Se8Cl2 & graphene-Kekulé weak-bind→large pair→BEC-invalid. VERDICT: room-Tc CLOSED-NEGATIVE (computed tens-of-K, envelope 74-463K NOT reproduced — real 2-body solve corrects envelope down & inverts its ranking: high-t/Ω don't host compact 1D pairs); mechanism POSITIVE. HONEST(d6): 1D caps pair hopping → R2 = 2D solver + real Thouless-criterion Tc (named). TOP computed candidate = sp2C N-Lieb COF ~47K. state/fb-geom-lambda/bond-bipolaron/"
             },
             {
               "id": "discovery_closing_formula",
@@ -2095,6 +2095,51 @@
                       "role": "NOVEL next campaign (d_novel_only, unprecedented — NOT a law-hunt, a design/compute task): a regenerative-niche-FIBROBLAST-selective, LOCAL-delivery, orthogonal AND-gate senolytic. No paper quantifies a 2-marker senescence selectivity factor; no fibroblast-niche local AND-gate senolytic exists (UBX1325 win is vascular-endothelial, not fibroblast). Niche myofibroblasts co-express BCL-2/xL/W (Aging Cell 2024 10.1111/acel.14229) → independently re-derives the AND-gate need."
                     }
                   ]
+                }
+              ]
+            },
+            {
+              "id": "SENOLYX-AG",
+              "children": [
+                {
+                  "id": "name",
+                  "role": "SENOLYX-AG — fibroblast-niche LOCAL orthogonal AND-gate senolytic (NOVEL design campaign executing the selectivity closing-formula recipe; d_novel_only — unprecedented). SSOT=state/senolyx-novel-andgate/SENOLYX_AG_DESIGN_SPEC.md"
+                },
+                {
+                  "id": "status",
+                  "role": "🟢 design-ready R1 (4 design-lens g5 PASS + S1 decisive computation run). In-silico design + verify pipeline closed; wet-lab = d5 downstream."
+                },
+                {
+                  "id": "construct",
+                  "role": "WINNER = Gal-uPAR/DPP4-PROTAC: BCL-xL→CRBN PROTAC (PZ15227) ± galacto-caged MCL-1i (S63845) warhead [KILL=pan-senescent dependency, p_dep 0.65-0.85; NOT affinity], β(1,4)-gal cage cleaved by SA-β-gal/GLB1 (gate1·Nav-Gal chem), inside uPAR/DPP4-Ab nanoparticle (gate2). Catalytic/event-driven decouples dose↔tox; CRBN low-platelet = built-in sparing. Refs 10.1038/s41467-020-15838-0 · 10.1111/acel.13142 · 10.1038/s41586-020-2403-9."
+                },
+                {
+                  "id": "andgate_logic",
+                  "role": "KILL ⟺ surface(uPAR/DPP4) AND lysosomal(SA-β-gal) AND local-delivery — recognition gates (non-lethal); kill = BCL/MCL dependency f_s/f_q. Orthogonal axes (surface-proteome vs lysosomal-biogenesis, different regulatory hubs) → multiplicative selectivity. AVOID SASP-co-regulated markers (IL-6R/MMP/B2M/NOTCH = non-independent → collapse)."
+                },
+                {
+                  "id": "s1_decisive",
+                  "role": "S1 AND-gate selectivity index (replaces ABFE; ratio-of-ratios → FF error cancels). RESULT (c2): single marker 0.92× ANTI-selective; 2-axis ~4× median but COLLAPSES <2× at ρ↑ (fragile); 3-axis uPAR×DPP4×SA-β-gal = 23× median, adverse-box-min 4.34×, NEVER <2× = ROBUST. DESIGN CORRECTION: robust selectivity REQUIRES a 3-axis AND-gate. Make-or-break unknown = ρ (axis independence); DPP4×SA-β-gal more orthogonal than uPAR×SA-β-gal. script state/senolyx-novel-andgate/s1_andgate_index.py."
+                },
+                {
+                  "id": "first_target",
+                  "role": "PERIO (치주) — uniquely satisfies single dominant CD81+ senescent fibroblast subtype + confined subgingival-pocket local delivery + real orthogonal pair (eLife 2024 10.7554/eLife.96908). RETINA = highest η but RPE/endothelial off-thesis; OA = AVOID first (UBX0101 Ph2 failed)."
+                },
+                {
+                  "id": "pd_gate",
+                  "role": "η_neo PD model (anchor-calibrated UBX1325 PASS/UBX0101 FAIL) replaces falsified clearance-% gate: η_neo=R_cap·S_relief·E_local·K_persist. Predicted (p_dep 0.65-0.85): RETINA 0.165-0.215🟢(gate 0.138) · AGA 0.108-0.141🟠*(0.121) · PERIO 0.085-0.111🟠*(0.095) · OA 0.025-0.033🔴(0.069·depot+subtype+R_cap=named breakthrough). RECOMMEND: retire CURE-domain clearance-% gates (OA≥78%·RETINA≥72%) → adopt η_neo functional floors (follow-on edit to OA/RETINA/PERIO/AGA-CURE domain nodes)."
+                },
+                {
+                  "id": "verify_pipeline",
+                  "role": "ABFE-free staged g5 pipeline (cheapest-decisive first, mini-free except S0): S1 AND-gate S_total(✅run) → S2 β-gal kinetics(reuse round5) → S3 f_s/f_q priming ODE → S4 local PK → S5 η_neo causal(reuse round7). S0 ABFE→binary caged-vs-free (GPU·reuse round13). PRIMARY readout = S_total not ABFE."
+                },
+                {
+                  "id": "decisive_next",
+                  "role": "DECISIVE zero-cost computation: estimate ρ(PLAUR↔GLB1) & ρ(DPP4↔GLB1) + f_s/f_q from public single-cell senescence atlases (Tabula Muris Senis / fibroblast SnC) → validates/kills multiplicative selectivity, picks the lowest-ρ orthogonal pair. = R2."
+                },
+                {
+                  "id": "provenance",
+                  "role": "4 design-lens g5 PASS (construct-design🟢·niche-target🟢·compute-plan🟢·pd-gate🟢) + S1 run. Detail state/senolyx-novel-andgate/<lane>/FINDINGS.md + .discoveries/senolyx-ag-andgate-design.tape."
                 }
               ]
             }
