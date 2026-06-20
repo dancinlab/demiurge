@@ -8,6 +8,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-20
 
+- **예측기→실물질 추출기 (tool/rtsc/screen_catalogue.py · MP API 라이브)** — '예측도구로 새후보 추출가능?' → 실증 가능. Materials Project 쿼리로 경원소 금속·안정 화합물 11종 추출(flat-band SC 후보 pre-filter): 로스터밖 ★ 7종(B13C2·Be4B·LiC6·Al23B50·LiBeB·LiC12·AlB2) + 기지 4(MgB2·LiB·C·B). 버그가드 박음(self-improving): MP API는 User-Agent 헤더 없으면 403(Cloudflare)→demiurge/1.0 UA 필수. 정직(d6): pre-filter일 뿐(경원소+금속+안정), flat-band@E_F·⟨g⟩·Ω 미확인·각 후보 arxiv SC-신규성 프로브 전 무주장(d_novel_only). 추출은 이름까지, 확정은 하류 compute+신규성게이트. SSOT=FBGEOM-PREDICTOR.
+
 - **예측기→추출기 확장 (tool/rtsc/extract_candidates.py)** — '예측도구로 새후보 추출가능?' → 가능(생성기 추가). flat-band 아키타입(kagome/Lieb/dice/checkerboard) 스캔+Chern·∫tr g·Q_geom from-scratch+설계박스 자동판정. 결과: 단순 1-flat-band 격자 전부 박스미달(Q_geom≤1 Welch천장·∫tr g≈Chern하한 2π|C|)→추출기가 L42 two-lever 벽을 생성기 쪽서 재유도(스칼라⟨g⟩≫1=다오비탈 d기하→연질Ω). 실물질 추출경로=출판 flat-band 카탈로그(Regnault Nature 2022 ~55k) 스크린(외부DB 필요·d_novel_only-clean if SC미연구). 한계:아키타입+설계스펙 추출이지 named물질 생성 아님. SSOT=FBGEOM-PREDICTOR 노드.
 
 - **biphenylene CLOSED-LITERATURE (무료체크→재현회피 d_novel_only)** — 유저 '① 무료 이용'으로 biphenylene 진행 시도. 무료 WebSearch lit-grounding(d18) 선행 결과 이미 출판: 재래식 el-ph SC Tc=6.2K(phonon-mediated·ω_log=1369K·Type-II Dirac 위상SC; Phys.Rev.B 104.235422/OSTI 1836234 + 알칼리bilayer 2025). 우리 DFPT 재계산=문헌재현(d_novel_only 하드규칙)→무료라도 발사취소·DOI 종결. 6.2K=room-T 아님. 후보 로스터 18종 전부 종결 확정(예측/캠페인판정/문헌). CANDIDATE-ROSTER biphenylene 항목 갱신.
