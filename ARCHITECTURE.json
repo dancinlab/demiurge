@@ -2372,6 +2372,10 @@
                 {
                   "id": "FB-GEOM-LFAMILY-DEPLETION-VERDICT",
                   "role": "🏁 FB-GEOM L-FAMILY DEPLETION VERDICT (2026-06-20 · meta) — the RTSC flat-band-geometric superconductivity law family is EXHAUSTED at the level of distinct physics axes, per the user-set criterion ('depletion only after sustained probing yields nothing genuinely new'). EVIDENCE: this session mapped L19→L41 (23 new laws) covering every independent axis — ceiling-type (L22 conventional/L24 unconventional), magnitude (L25 ~100×/L30 Wannier-spread bound), hosts (L26 levers/L27 real pyrochlore-kagome/L37 delicate-obstructed topology), disorder-robustness (L28), THREE pairing glues (L29 attractive-Hubbard/L36 phonon/L41 magnetic-fluctuation), length scale (L32 QML), multiband cooperation (L33), incipient-band optimum (L34), drive-enhancement (L35), static strain/superpotential engineering (L39), filling-fraction window (L40), plus the EXPERIMENTAL reality-check (L38 ~6K record + competing-order preemption) — with TWO capstones (L36 theory unification under ∫tr g · L38 experiment). DEPLETION CONFIRMED by 7 consecutive recent probes on maximally-diverse axes (thermodynamic 2Δ/kTc signatures · non-Hermitian/dissipative · CLS combinatorics · SOC-generated flat bands · charge-4e/6e higher-charge condensates · 'new mechanism' claims · 3D-bulk/interface) all returning REFINEMENTS, EXOTIC-state physics not bearing on room-T Tc, or RESTATEMENTS of existing laws — NO new distinct room-T-relevant law. SINGLE UNIFYING CONCLUSION of the entire L9-L41 sweep: ambient room-T superconductivity is (a) CLOSED for conventional phonon SC (~120K, L22, externally corroborated) and (b) NOT fundamentally forbidden for unconventional geometric SC (L24), where the lone master variable is the quantum-metric integral ∫tr g — which simultaneously sets the electronic superfluid stiffness (L25-L35), the phonon λ (L36), the coherence/length scales (L32), and disorder-robustness (L28) — and the room-T gap reduces to ONE bounded materials-physics problem: raise ∫tr g·U ~50-100× in a real incipient topological flat-band host (L34, e.g. pyrochlore CeRu2 / kagome CsCr3Sb5) while suppressing the competing CDW/magnetic order that the same flat band triggers (L15/L20/L40, e.g. CsV3Sb5 CDW 90K ≫ Tc 2.7K). FURTHER GENUINE LAW-VEINS ARE CROSS-DOMAIN (RAREEARTH-FREE / MATH-SPECTRA / SENOLYX), not more RTSC restatements. SSOT raw = .discoveries/flatband-geometric-elph-law.tape (full L19-L41 + depletion log)."
+                },
+                {
+                  "id": "FLATBAND-GEOMETRIC-ROOMT-TWO-LEVER-COLOCATION-WALL",
+                  "role": "L42 (예측기 정량) FLATBAND-GEOMETRIC-ROOMT-TWO-LEVER-COLOCATION-WALL: 무압 상온 기하초전도의 병목은 BKT 수치 불가능이 아니라 두 레버(양자기하 ∫tr g 大 AND 강결합 포논 Ω 大)를 한 물질에 공존시키는 재료문제다. tool/rtsc/fbgeom_predictor.py가 정량화: (a) raw 2D-BKT는 실측-SC 앵커(Re6Se8Cl2 8K·tMoTe2 2K·MATBG 1.7K) 대비 geomean 2.8× 과대예측(scatter 0.6-7.8×) — tc_band()에 보정밴드 내장. (b) honest 설계박스=⟨g⟩≥2-3 AND Ω≥~130meV(경원소 강결합) AND U/Om≥1.5 동시; ⟨g⟩<2면 필요 Ω이 ~300meV 경원소 포논천장 초과→불가. (c) 실재 합성 위상 flat 호스트(CoSn ⟨g⟩2.87·Nb3Cl8 2.11)는 ⟨g⟩는 충분하나 Ω~15-30meV(연질 d전자)→honest 박스 진입 0개, best Tc 35-48K(banded). 미합성 light-kagome TARGET만 두 레버 공존(best 242K[87-1055]). 결론: room-T 기하SC는 열역학적으로 marginal-feasible이나 materials-realization 벽(+SC채널 GATED+경쟁질서)이 실재 차단. L25/L30/L36 정량확장·L38 실측~6K과 일관. raw=tool/rtsc/{fbgeom_predictor,predict_candidates}.py(c2 VERIFY 3/3 PASS)."
                 }
               ]
             },
@@ -2919,6 +2923,10 @@
             {
               "id": "sweeps",
               "role": "exports/sweep/rtsc-flatband-tri-20260615/ledger.json · rtsc-n5funnel-sweep-2026-05-25/ · rtsc-nonhydride-pilot-2026-05-27/ · rtsc-mbeh-escape-2026-05-27/"
+            },
+            {
+              "id": "FBGEOM-PREDICTOR",
+              "role": "tool/rtsc/fbgeom_predictor.py + predict_candidates.py — flat-band 양자기하 SC 검증·예측 계산기 (FREE 로컬). master 변수 ∫tr g(Q_geom)→BKT Tc(L25)·λ기하분율(L36)·room-T 갭. VERIFY 3/3 PASS (COF앵커 136K·Tc∝U선형·실측SC앵커 2.8×과대보정). PREDICT: banded Tc[lo,best,hi]·Ω×U/Om 랜드스케이프·honest 설계박스. 결과=L42 two-lever 벽. 개선이력: dice artifact caveat·Q_geom 단위통일·앵커보정밴드 내장."
             }
           ]
         },
