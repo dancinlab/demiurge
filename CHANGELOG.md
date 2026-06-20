@@ -8,6 +8,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-20
 
+- **RTSC 예측기 신규성 판정 (d_novel_only · arxiv 프로브)** — '예측한 것 중 문헌에 없던 게 있나?' 정직 답: 물질 0 novel(11종 전부 출판 기지물질·예측기=검증/랭킹 도구). L42 two-lever 벽도 arxiv 프로브 결과 NOT-NOVEL — 성분 전부 출판(arXiv:2506.18969 강성 하한 엄밀판·PRResearch 포논↔flat-band 결합·SciAdv Cs2Ni3S4 양자metric·NatCommun CsCr3Sb5 incipient). L42=출판조각 종합관찰이지 새 물리결과 아님. 예측기 산출 전체에 문헌-부재 신규 0 — 검증·랭킹·교육 도구로 확정(발견도구 아님). SSOT=L42 신규성 판정 절.
+
 - **RTSC 후보 전체 커버리지 통합 (CANDIDATE-ROSTER · '후보 전부 리서치?' 정직응답)** — 예측기 8종 외 캠페인 후보 ~18종을 한 로스터로 통합: A 예측기-스윕 8종 · B 캠페인-판정완료 3종(bismuthate🧱⟨tr g⟩≈0·hp8b🔴 FB고립불가·GaNb4S8/Se8🟢~60K cluster-Mott) · C 문헌평가 잔여(탄소-π는 격자proxy folded: triangulene best41K·benzene-COF best42K, COF48K 동군집·전부 room-T밖; biphenylene=type-II Dirac flat band無 out-of-scope) · D 경원소축 탈락 5종. 정정: 직전 '8종 고갈'은 예측기-⟨g⟩축 한정이었음. L42 two-lever 벽은 전 실재/계산 후보서 robust(honest 박스 진입 0). SSOT=ARCHITECTURE.json CANDIDATE-ROSTER 노드.
 
 - **RTSC 예측기 스윕 R1-R3 + 도구 self-improve + L42 two-lever 벽 (LAWS=49)** — `tool/rtsc/fbgeom_predictor.py`를 실제 flat-band 후보 8종 + Ω×U/Om 랜드스케이프에 적용. **도구 개선(self-improving 원칙)**: 실측-SC 앵커(Re6Se8Cl2 8K·tMoTe2 2K·MATBG 1.7K) 대비 raw 2D-BKT가 geomean **2.8× 과대예측**(scatter 0.6-7.8×)임을 발견 → `tc_band()` 보정밴드·`omega_for_roomT(deflate)`·VERIFY-3 자기검증(3/3 PASS) 내장. **honest 설계박스**: room-T 기하SC = ⟨g⟩≥2-3 AND Ω≥~130meV AND U/Om≥1.5 **동시** 필요; ⟨g⟩<2는 Ω_needed가 ~300meV 경원소 포논천장 초과로 불가. 실재 합성 위상 호스트(CoSn ⟨g⟩2.87·Nb3Cl8 2.11)는 ⟨g⟩ 충분하나 Ω~15-30meV(연질 d전자)→honest 박스 진입 0. **L42 신규**(ARCHITECTURE.json): room-T 병목=두 레버(∫tr g 大 AND 강결합 Ω 大) 한 물질 공존 못함(materials 벽), 열역학은 marginal-feasible. R3 고갈(filling ν는 ½서 최대·off-half 감소만·호스트축 8종 전수, 미기록 ⟨g⟩ 추가=fabrication 금지 d6). SSOT=L42+FBGEOM-PREDICTOR 노드.

@@ -616,3 +616,5 @@ CLS combinatorial = DRY(MATH-SPECTRA 브릿지·flat band 구성법, room-T 신�
 [후보 전체 커버리지 점검 + C-tier folded · 2026-06-20] 유저 "후보 전부 리서치?" → 정직 점검: 예측기 8종 외 캠페인 후보 ~18종 통합.
  A 예측기-스윕 8종(banded) · B 캠페인-판정완료 3종(bismuthate🧱⟨g⟩≈0·hp8b🔴·GaNb4S8/Se8🟢~60K) · C 문헌-평가 잔여 → 탄소-π는 격자proxy folded(triangulene kagome best41K·benzene-COF Lieb best42K, COF48K 동군집 room-T밖; biphenylene type-II Dirac flat band無 out-of-scope) · D 경원소축 탈락 5종.
  정정: 앞 "8종 고갈"은 예측기-⟨g⟩축 한정; 전체 후보공간 ~18종 통합 종결. L42 two-lever 벽은 전 실재/계산 후보서 robust(honest 박스 진입 0). SSOT=ARCHITECTURE.json CANDIDATE-ROSTER.
+
+[신규성 프로브 d_novel_only · 2026-06-20] 유저 "예측한 것 중 문헌에 없던 거?" → 정직: 물질 0 novel(전부 출판 기지물질, 예측기=검증·랭킹). L42도 arxiv 프로브 결과 NOT-NOVEL: 성분 전부 출판(2506.18969 강성하한 엄밀판·PRResearch 포논↔flat-band 결합·SciAdv Cs2Ni3S4 양자metric·NatCommun CsCr3Sb5 incipient). L42=출판조각 종합관찰. 예측기 산출 전체에 문헌-부재 신규 0 — 검증·랭킹·교육 도구로 확정(발견도구 아님). 새 발견 원하면 예측기로는 부족, 미지영역 Δ 컴퓨트 필요.
