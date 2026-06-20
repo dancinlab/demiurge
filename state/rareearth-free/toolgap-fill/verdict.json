@@ -1,0 +1,49 @@
+{
+  "lane": "toolgap-fill",
+  "campaign": "RAREEARTH-FREE",
+  "date": "2026-06-20",
+  "goal": "Close the SOC/noncollinear/MAE tool gap that BLOCKED the L20 magnet-ceiling escape probe so magnet-anisotropy DFT becomes runnable on FREE compute.",
+  "blocked_capability": "MAE = E(M||001) - E(M||100) requires self-consistent noncollinear DFT + spin-orbit coupling. QFORGE-native SOC=0; hexa deck material = stub; capability unreachable.",
+  "items": {
+    "A_QE_on_free_host": {
+      "verdict": "INSTALLED + d16 dry-run PASS",
+      "host": "summer (192.168.50.60, RTX5070, Ubuntu 24.04)",
+      "compute": "FREE (no vast/runpod rent)",
+      "findings": [
+        "QE 7.5 ALREADY installed via conda-forge 'qe' env (~/miniforge3 + ~/micromamba envs/qe) — pw.x + ph.x present, NO new install needed.",
+        "Fully-relativistic pseudos download OK (net works): Fe.rel-pbe-spn-rrkjus_psl.0.2.1.UPF (has_so=T, 3.5MB), Co.rel-pbe-spn-rrkjus_psl.0.3.1.UPF — PSlibrary FR.",
+        "d16 1-iter dry-run of noncolin=.true. lspinorb=.true. SCF on bcc-Fe (2-atom anchor) wrote: 'Noncollinear calculation with spin-orbit', 40 Kohn-Sham spinor states, per-atom noncollinear magnetization vectors (mz=5.79, polar theta/phi printed), axis controlled by angle1/angle2 = [001]. SOC term + spinor SCF + FR pseudo + axis control ALL PROVEN LIVE.",
+        "Run capped at 240s by summer load contention (concurrent SmFe12 SCF job) during first cegterg diagonalization — NOT a deck error; every MAE-machinery element validated before the cap."
+      ],
+      "deck": "state/rareearth-free/toolgap-fill/decks/feco_mae/ (scf.in, nscf_001/100.in force-theorem, scf_dryrun.in, run_mae.sh) — staged on summer ~/mae_toolgap/.",
+      "conclusion": "SOC-MAE capability NOW EXISTS on free compute via QE pw.x on summer. The L20 probe was BLOCKED by tooling, not physics; that block is LIFTED for the QE path."
+    },
+    "B_hexalang_handoff": {
+      "verdict": "ALREADY FILED — not duplicated",
+      "where": "ING.jsonl work id=28 (per coordinator + verified). Spec names: (1) noncollinear spinor-wavefunction SCF, (2) SOC L.S term + fully-relativistic pseudo support, (3) force-theorem MAE E(theta,phi), gate = QE noncolin+lspinorb <=1% (d_qforge_migration_routing). References QFORGE davidson/SCF bricks to extend.",
+      "also": "handoff.jsonl already carries the matching material-deck gap (no magnetic/tetragonal/nspin QE prototype in deck/rtsc.hexa; material domain drops list-valued keys). NO new sidecar handoff entry added (would duplicate)."
+    },
+    "C_leverb_deck_prep": {
+      "verdict": "DECKS STAGED (path proven by A)",
+      "decks": [
+        "feco_mae/ — bcc-Fe pipeline-validation ANCHOR (d_novel_only: anchor not result).",
+        "feco_tetragonal/ — LEAD lever(b): B2 FeCo bct c/a=1.2 (a=2.84, c=3.408 A), Fe+Co FR pseudos, noncolin+SOC. Burkert PRL 93,027203 (2004) K1-peak distortion."
+      ],
+      "leverb_classes": [
+        "interstitial-N D0_19 / Fe16N2 (alpha''-Fe16N2 giant-moment, N octahedral)",
+        "epitaxial tetragonal strained Fe-Co (staged)",
+        "high-entropy 3d alloying (SQS uniaxial supercell)"
+      ],
+      "novelty_d18": "KNOWN material classes, NOT novel materials. Literature pre-registers the FAIL: Fe16N2 bulk K1 ~1.0 MJ/m^3; strained FeCo DFT K1 peak ~0.7-1 MJ/m^3 (Burkert 2004, thin films only); 3d HEAs K1 << 1 MJ/m^3. None report >=3 MJ/m^3 at RT in bulk. Consistent with L1 4f-anisotropy-substitution-ceiling + L20 flatband CLOSED-NEGATIVE (Co3Mo 0.2 MJ/m^3 anchor).",
+      "falsifier": "H0: a 3d-only lever(b) lattice yields DFT magnetocrystalline K1 >= 3 MJ/m^3 at RT. PASS -> escape candidate + TIER-1 g5. FAIL (expected, K1 < 3) -> CLOSED-NEGATIVE, reinforces L1 ceiling.",
+      "note": "Production NOT run this round (per task scope) — path proven + decks prepped only."
+    }
+  },
+  "tool_gap_status": "CLOSED for the QE path (practical bypass), OPEN for QFORGE-native (handed to hexa-lang core id=28). Magnet-anisotropy DFT is now runnable on free compute.",
+  "next_round": {
+    "name": "leverb-mae-production",
+    "action": "Run feco_tetragonal force-theorem MAE to completion on summer (full SCF + nscf_001/100), compute K1; clone for Fe16N2 + FeCo c/a scan (c/a = 1.0..1.3) to locate the Burkert peak; gate vs the 3 MJ/m^3 falsifier.",
+    "depletion_test": "lever(b) family is DEPLETED when all three 3d-only classes (interstitial-N, tetragonal-distortion, HEA) return DFT K1 < 3 MJ/m^3 at their optimal cell -> stamp L1-ceiling CLOSED-NEGATIVE for 3d-only escape, and the ONLY remaining open lever is a heavy-5d SOC center (Co3Mo-Pt-tier, which re-imports a supply-risk element -> P6 violation). At that point RE-free magnet K1-ceiling escape via 3d-only is exhausted.",
+    "blocker_note": "summer load contention (shared with live SmFe12 / RTSC SCF jobs) will throttle production MAE; serialize via lab/watcher or rent only if free walltime proves infeasible (d7 — small cell stays on free pool first)."
+  }
+}

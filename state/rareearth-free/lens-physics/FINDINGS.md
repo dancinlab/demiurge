@@ -1,0 +1,1 @@
+L20 magnet P1 SPLIT: (A) anisotropy magnitude = TRUE 4f physics ceiling (xi_4f 200meV vs xi_3d 60meV quenched, quadratic; 3d K1 1-2 MJ/m3). (B) Brown's paradox = process gap (NdFeB itself 20-25%). (C) L1_0 ordering = kinetics. escape=flat-band orbital un-quenching (Co3Mo kagome RT PMA), compute=GPU davidson cost-gated. '14% of H_A as wall'=category error.

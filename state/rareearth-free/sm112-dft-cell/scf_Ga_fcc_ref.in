@@ -1,0 +1,19 @@
+&CONTROL
+  calculation='scf'  prefix='Garef'  outdir='./out/'  pseudo_dir='./pseudo/'  verbosity='high'
+/
+&SYSTEM
+  ! fcc Ga 1-atom PROXY for elemental mu_Ga (real alpha-Ga is orthorhombic 8-atom;
+  ! proxy for tractable free-CPU reference; cancels in cross-candidate ranking, d6 noted).
+  ibrav=2  celldm(1)=8.50  nat=1  ntyp=1     ! a~4.5 Ang in bohr (approx)
+  ecutwfc=80.0  ecutrho=320.0
+  occupations='smearing' smearing='mv' degauss=0.02
+/
+&ELECTRONS
+  electron_maxstep=400  mixing_beta=0.4  conv_thr=1.0d-8
+/
+ATOMIC_SPECIES
+  Ga 69.72 Ga_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS (crystal)
+Ga 0.0 0.0 0.0
+K_POINTS (automatic)
+  16 16 16 0 0 0

@@ -1,0 +1,1 @@
+L19 P1-fail+P6-win missed path: P1 should be slice-relative, P6 multiplicative-discounts P1. ferrite ~40-50% by volume; GBD cuts Dy/Tb 40-70%; Ce-sub cuts Nd 50%. hard floor=EV traction/high-temp Hc/F-35.

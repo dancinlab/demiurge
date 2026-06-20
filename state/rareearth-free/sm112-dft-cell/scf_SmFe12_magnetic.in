@@ -1,0 +1,56 @@
+&CONTROL
+  calculation   = 'scf'
+  prefix        = 'SmFe12'
+  outdir        = './out/'
+  pseudo_dir    = './pseudo/'
+  verbosity     = 'high'
+  tprnfor       = .true.
+  tstress       = .true.
+/
+&SYSTEM
+  ibrav         = 7            ! body-centered tetragonal (I-centred) — ThMn12 I4/mmm
+  celldm(1)     = 16.06        ! a = 8.50 Ang in bohr (8.50/0.52918)
+  celldm(3)    = 0.5647        ! c/a = 4.80/8.50
+  nat           = 13           ! PRIMITIVE bct cell (Z=1 of SmFe12 = 1 Sm + 12 Fe)
+  ntyp          = 2
+  ecutwfc       = 80.0         ! ONCV norm-conserving; Fe 3d needs high cutoff
+  ecutrho       = 320.0
+  occupations   = 'smearing'   ! d15 — metal SCF aid
+  smearing      = 'mv'         ! Marzari-Vanderbilt cold smearing
+  degauss       = 0.02
+  nspin         = 2            ! spin-polarized — Fe sublattice moments
+  starting_magnetization(1) = 0.1   ! Sm (4f in core / open-core; small)
+  starting_magnetization(2) = 0.5   ! Fe — ferromagnetic init (~2 muB)
+/
+&ELECTRONS
+  electron_maxstep = 400       ! d15
+  mixing_mode   = 'local-TF'   ! metal-friendly
+  mixing_beta   = 0.3          ! d15
+  conv_thr      = 1.0d-7
+  diagonalization = 'david'
+/
+ATOMIC_SPECIES
+  Sm  150.36   Sm_4fcore_psl.UPF         ! pslibrary 1.0.0 USPP, 4f-in-core (open-core), z_val=11
+  Fe   55.845  Fe_ONCV_PBE_sr.upf        ! SG15 ONCV-PBE-sr v1.2, z_val=16
+! --- DFT+U on Fe 3d DROPPED (d6 honest): the SG15 Fe ONCV pseudo has number_of_wfc=0
+! (no PP_CHI atomic wavefunctions) → ortho-atomic Hubbard projector cannot be built
+! ("determine_hubbard_occ: no atomic wavefunctions" at d16 dry-run). U=1.0 eV is a
+! minor correction on metallic Fe; production runs as plain PBE-GGA, consistent ONCV set.
+! HUBBARD (ortho-atomic)
+! U Fe-3d 1.0
+ATOMIC_POSITIONS (crystal)
+Sm 0.000 0.000 0.000
+Fe 0.360 0.000 0.000
+Fe 0.640 0.000 0.000
+Fe 0.000 0.360 0.000
+Fe 0.000 0.640 0.000
+Fe 0.280 0.500 0.000
+Fe 0.720 0.500 0.000
+Fe 0.500 0.280 0.000
+Fe 0.500 0.720 0.000
+Fe 0.250 0.250 0.250
+Fe 0.750 0.250 0.250
+Fe 0.250 0.750 0.250
+Fe 0.750 0.750 0.250
+K_POINTS (automatic)
+  8 8 12 0 0 0

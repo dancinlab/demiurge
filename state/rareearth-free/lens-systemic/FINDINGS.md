@@ -1,0 +1,1 @@
+L18 elimination>substitution: EESM/induction/ferumoxytol/Phinesse ship; mechanism=factorize RE-lock property-product into control-space; caveat=criticality relocates (EESM->Cu+SiC, QD->In). elimination-feasibility corollary aligns with P6.

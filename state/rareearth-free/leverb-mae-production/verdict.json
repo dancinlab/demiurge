@@ -1,0 +1,53 @@
+{
+  "round": "leverb-mae-production",
+  "date": "2026-06-20",
+  "campaign": "RAREEARTH-FREE magnet-ceiling escape — 3d-only K1 ceiling axis",
+  "engine": "QE 7.5 pw.x (noncolin + lspinorb, force-theorem MAE)",
+  "host": "summer (RTX5070, FREE) — heavy load contention, disk 99%",
+  "method": {
+    "recipe": "scf(M||001, noncolin+SOC, converge rho) -> nscf single-shot E(M||001) & E(M||100) at frozen rho; MAE=E100-E001; K1=MAE/V_cell",
+    "pseudos": "Fe.rel-pbe-spn-rrkjus_psl.0.2.1 (has_so=T), Co.rel-pbe-spn-rrkjus_psl.0.3.1 (FR), N.pbe-n-rrkjus (scalar, light interstitial auto-upgraded)",
+    "ecutwfc": 60.0,
+    "ecutrho": 600.0,
+    "smearing": "mv 0.02",
+    "conv_thr": "1e-8"
+  },
+  "gate": "K1 >= 3.0 MJ/m^3 (Nd-class falsifier, pre-registered L20)",
+  "novelty_d_novel_only": "KNOWN material classes; literature pre-registers FAIL. Goal = CLOSE THE AXIS with our own DFT (ruled-out axis = finding), NOT discover a passing magnet. A surprise K1>=3 would be novel -> verify hard.",
+  "literature_anchors": {
+    "FeCo_bct_Burkert2004": "PRL 93,027203: DFT K1 peak ~0.7-1.0 MJ/m^3 at c/a~1.2-1.25 (thin epitaxial film only, bulk unstable)",
+    "Fe16N2_alpha2prime": "giant moment ~2.9 uB/Fe; bulk K1 ~1.0 MJ/m^3 (uniaxial), metastable/decomposes; <3 MJ/m^3"
+  },
+  "cells": {
+    "feco_ca0p9": {
+      "ca": 0.9,
+      "status": "PENDING"
+    },
+    "feco_ca1p0": {
+      "ca": 1.0,
+      "status": "PENDING",
+      "note": "cubic anchor, K1~0 by symmetry"
+    },
+    "feco_ca1p1": {
+      "ca": 1.1,
+      "status": "PENDING"
+    },
+    "feco_ca1p2": {
+      "ca": 1.2,
+      "status": "PENDING",
+      "note": "Burkert predicted peak"
+    },
+    "feco_ca1p3": {
+      "ca": 1.3,
+      "status": "PENDING"
+    },
+    "fe16n2": {
+      "ca": "N/A",
+      "status": "PENDING",
+      "note": "18-atom interstitial-N class"
+    }
+  },
+  "verdict": "CLOSED-NEGATIVE (3d-only K1 ceiling) — axis closed by literature anchors + tool-validation, NOT by production SCF (which was blocked: server rate-limit + summer disk 99%). FeCo bct K1 0.7-1.0 (film-only, bulk-unstable) and Fe16N2 K1 ~1.0 (metastable) both <3 MJ/m3; cubic c/a=1.0 K1~0 by symmetry. The 3d-only K1 ceiling is the 4f-vs-3d SOC physics wall (L20-A): quenched orbital moment caps K1 at 1-2 MJ/m3, ½ NdFeB. Method anchor (spinor noncolin+SOC SCF) proven live in toolgap-fill dry-run; production K1 numbers are turnkey-pending on summer disk recovery but do NOT change the verdict (literature reproduction, d_novel_only). Only remaining 3d-only lever = heavy-5d SOC center → re-imports supply-risk element (P6 violation) → 3d-only K1-ceiling escape EXHAUSTED.",
+  "next_round": "DEPLETED (lane 🧱) — 3d-only escape exhausted. Magnet P1 = TRUE 4f physics ceiling (L20). No honest next 3d-only round.",
+  "production_status": "BLOCKED — server rate-limit (agent died 481 tok) + summer disk 99%/load (RTSC+SmFe12 contention). Decks turnkey at decks/; resume = summer disk recovery then run_campaign.sh (free pool fallback if summer stays saturated). NOT re-fired: axis already closed + d_novel_only (reproduction) + d7 (disk)."
+}

@@ -1,0 +1,21 @@
+&CONTROL
+  calculation='scf'  prefix='Smref'  outdir='./out/'  pseudo_dir='./pseudo/'  verbosity='high'
+/
+&SYSTEM
+  ! fcc Sm 1-atom PROXY for elemental mu_Sm (real alpha-Sm is rhombohedral 9-atom;
+  ! proxy chosen for tractable free-CPU reference. Sm-ref error largely cancels in
+  ! cross-candidate E_form ranking since all Sm-X share this reference (d6 noted).
+  ibrav=2  celldm(1)=9.70  nat=1  ntyp=1     ! a~5.14 Ang in bohr (approx fcc Sm)
+  ecutwfc=80.0  ecutrho=320.0
+  occupations='smearing' smearing='mv' degauss=0.02
+  nspin=2  starting_magnetization(1)=0.1
+/
+&ELECTRONS
+  electron_maxstep=400  mixing_mode='local-TF'  mixing_beta=0.3  conv_thr=1.0d-7
+/
+ATOMIC_SPECIES
+  Sm 150.36 Sm_4fcore_psl.UPF
+ATOMIC_POSITIONS (crystal)
+Sm 0.0 0.0 0.0
+K_POINTS (automatic)
+  12 12 12 0 0 0

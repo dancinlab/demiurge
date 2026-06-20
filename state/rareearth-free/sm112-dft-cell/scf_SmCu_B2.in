@@ -1,0 +1,24 @@
+&CONTROL
+  calculation='scf'  prefix='SmCu'  outdir='./out/'  pseudo_dir='./pseudo/'
+  verbosity='high'  tprnfor=.true.  tstress=.true.
+/
+&SYSTEM
+  ibrav=1  celldm(1)=6.50      ! CsCl a~3.44 Ang in bohr
+  nat=2  ntyp=2
+  ecutwfc=80.0  ecutrho=320.0
+  occupations='smearing' smearing='mv' degauss=0.02
+  nspin=2
+  starting_magnetization(1)=0.1   ! Sm
+  starting_magnetization(2)=0.0   ! Cu (non-magnetic) — expect ZERO Fe-type moment
+/
+&ELECTRONS
+  electron_maxstep=400  mixing_mode='local-TF'  mixing_beta=0.3  conv_thr=1.0d-7
+/
+ATOMIC_SPECIES
+  Sm 150.36  Sm_4fcore_psl.UPF   ! pslibrary 1.0.0 USPP, 4f-in-core, z_val=11
+  Cu  63.55  Cu_ONCV_PBE_sr.upf   ! NEEDS Cu pseudo (not present locally)
+ATOMIC_POSITIONS (crystal)
+Sm 0.0 0.0 0.0
+Cu 0.5 0.5 0.5
+K_POINTS (automatic)
+  12 12 12 0 0 0
