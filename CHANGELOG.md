@@ -6,7 +6,65 @@ For the full audit trail, see `git log`.
 
 ---
 
+## 2026-06-20
+
+### P6 제외 재채점 — disjointness 정리 (L23)
+- 사용자 질문 'g6(P6) 제외 g5(P1-P5)까지 통과 후보?'에 정직 답변: P6 제외해도 {novel ∩ P1-P5 통과}=∅. P6는 유일/최후 빗장 아님(가설 반증) — PASS-set과 novel-set이 disjoint: P1-P5 통과는 전부 already-commercial(novelty 실패), genuinely novel은 P6 전에 P1/P2/P3/P5서 막힘. 메타법칙 L16 심화. 유일 잠재경로=flat-band이 novel을 P1-pass로 옮길 때(이미 CLOSED-NEGATIVE).
+
+
+### flat-band escape 검증 종결 (L20 갱신 · 자석 P1 천장 HARD 확정)
+- `go use free` flat-band orbital un-quenching DFT probe → 🧱 CLOSED-NEGATIVE: Co₃Mo kagome flat-band PMA 출판 Kueff=0.2 MJ/m³(≪3 threshold·FePt의 1/10), flat-band W→0만으론 ⟨L⟩ un-quench 부족, Pt-boost는 5d SOC(3d-only 위반). ⇒ 3d 퀜칭궤도 천장=TRUE 물리벽 HARD 확정, 자석 P1 escape 종결. 결론은 문헌 anchor가 결정(compute 벽 아님·d6 위조 0). 도구갭: SOC/noncollinear/MAE 엔진 부재 발견. 잔여 watch lever(b)=interstitial-N·tetragonal distortion·HEA.
+
+
+### 다각도 렌즈 fleet 완결 (L22 + 종합 verdict, LAWS 22)
+- metacritic red-team: 가장 강한 비-RE 반례 4종(SMM·형광체·통신·자석) 전부 메타법칙 반증 실패(반증 0)→L22 분리가능성 메타법칙 적대적 생존. 5렌즈 fleet 종합 verdict: 검증된 novel=메타법칙+4-way 확장(L18-L22), 물질대체 escape는 전부 벽, 전략 재정렬=substitution compute 강등·de-RE 실전경로(elimination+good-enough+secure-midstream) 승격. 잔여 미탐색=flat-band orbital un-quenching DFT(cost-gated). fleet teardown.
+
+
+### 다각도 렌즈 fleet — 메타법칙 3-way 확장 (L18·L19·L20)
+- 단일렌즈(production gate)가 못 본 '대체 아닌 다른 길'을 5렌즈 재검토로 발견: L18 elimination>substitution(EESM·ferumoxytol 배치·속성곱을 control-space로 factorize) · L19 P1-fail+P6-win missed path(P1 slice-relative·P6 multiplicative-discount·GBD/Ce intensity 절감) · L20 자석 P1 = 2층 분리(magnitude=TRUE 4f물리천장 / Brown's paradox·L1₀=process · flat-band escape un-depleted). metacritic 4 sub-probe(SMM·형광체·통신·자석) 전부 메타법칙 CONFIRM(반증 0).
+
+
+### L17 — P1-P6 통과 ∩ novel 교집합 부재 (goal '발견' = 검증된 closed-negative)
+- 비-자석 RE응용 6개(SOFC전해질·양성자전도체·NiMH·H2저장·형광체+자석) 전수 P1-P6 채점 → {ALL-PASS ∩ genuinely-undeployed}=∅. PASS면 already-commercial(KSF·AB2 Laves·CsH2PO4·SX), novel이면 P1(성능) 또는 P6(새 임계원소 의존)서 막힘. 메커니즘은 L16 메타법칙 예측과 일치(separable→상용/welded·trilemma→lock). near-miss: TiFe·CsPbBr3·BZI·NBT·Bi3+. '통과 후보 부재'가 검증된 결론(d6). goal 'P1-P6 통과 검증 발견' 충족(부재 자체가 답).
+
+
+### P1-P6 스코어보드 완주 + tetrataenite bulk-casting RETRACTED
+- RE-free 자석 11종 P1-P6 전수채점: 🔴 0/11 production-ready. 공통병목=parity-vs-supply 삼중딜레마(P1·P6). Ferrite 5/6 PASS(P1만 FAIL·저가 floor)·SmCo P6 FAIL(Sm+Co 이중 choke)·NdFeB 벤치 P6만 FAIL. escape corner 비어있음(180°C·벌크·풍부·non-中 동시충족 0).
+- ★신발견(L7 보강): L1₀-FeNi tetrataenite 2022 'bulk-casting breakthrough'가 2024 RETRACTED/재해석(XRD=(Fe,Ni)3P·TEM=산화 artifact, Houghton et al. Adv.Sci.) — P-assist 철회(2025)에 이은 두 번째 hype 철회. 벌크 입증 없음.
+
+
+### P1-P6 production PASS-GATE — RAREEARTH-FREE 캠페인 전용 임시 박제
+- 범용 강화(CLAUDE.md d_production_grade)는 되돌리고(범용 정의 유지), P1-P6 하드 PASS-GATE(ALL-AND·하나라도 FAIL/UNVERIFIED면 production-ready 차단)를 ARCHITECTURE.json RAREEARTH-FREE/PRODUCTION-CRITERIA 노드에만 임시로 박제. P1 성능패리티((BH)max/Hc@사용온도)·P2 안정성(상분해·독성)·P3 제조확장성(벌크/연속/수율)·P4 비용·P5 인증/시장·P6 공급망(새 단일소스 의존=자동FAIL) 각 PASS 임계+증거 명시. Sm-1-12 P-스코어보드: P1 FAIL(보자력 14%·병목)·P2 FAIL(1:12 metastable)·P3 FAIL(벌크 미확립)·P4/P6 WARN(Co·Sm 中-의존)·P5 FAIL → production-ready 아님.
+
+
+### 희토류 발견검증 fleet 완결 — LAWS 16건 (goal 발견검증까지 MET)
+- 3-escape 검증 fleet(gb-wetting-screen·metalaw-predict·sm112-dft-cell) 전수 착륙. L16 메타법칙 시장-retrodiction 강검증(시장 substituted/locked 경계=separable/welded 정렬·분리가능 케이스 전부 이미 상용대체[Gd→B/Hf·Ce→Fe·La→RE-free zeolite]·welded는 lock[fiber laser λ·clock]·cost-filter 정련). L13 보강: Sm-1-12 DFT 셋업검증(hexa deck ThMn12·QE 4덱·d16 dry-run REAL on summer pw.x v7.5·덱버그 2개 fix)·SmCu B2 lead 비강자성 GB후보(method)·SCF는 Sm/Fe/Cu pseudo 벽 정직 deferred(d6). gb-wetting top3 후보(Sm-Ga-Cu·SmCu·Sm-Cu-Al).
+- 검증된 novel 산출 2개: 분리가능성 메타법칙(12/12+시장 retrodiction) + 중희토류 돌파 escape(Sm-1-12 GB-wetting, 셋업검증). 도구버그: deck CLI JSON flat-scalar reader → hexa-lang 핸드오프.
+
+
+### RAREEARTH-FREE 희토류 대체+공급망 캠페인 완결 — LAWS 14건 (RTSC 동형 · 미국 중희토류 취약점 표적)
+- 희토류(REE) 대체를 RTSC 패턴으로 정리·14 발견법칙 박제. 미국 핵심취약점(中 99% Dy/Tb 정제·F-35 420kg·2025.4 수출통제) 표적. L1-L6(이방성 천장·분리가능성 메타법칙·12/12 falsification) · L7(tetrataenite RETRACTED 검증) · L8-L10(Gd→Mn Phase2·미상용 정직정정·ceria escape) · L11(고온보자력 4f 단일이온법칙: Dy/Tb-free=OPEN·fully RE-free=CLOSED) · L12(exchange-spring 벌크 33년 21MGOe 천장) · L13(★중희토류 돌파 최종판정: Sm-1-12 ThMn12=유일 OPEN escape·결정점=GB-wetting·우리 DFT+CALPHAD 기여가능) · L14(미드스트림 경제병목: 가장 빠른 탈중국=새물질 아닌 같은 미드스트림 재구축·SX TRL-9).
+- 종합: 중희토류 돌파는 물질대체(LOW·전략적)+미드스트림 buildout(FASTEST)+재활용(MEDIUM) 3-way. 물질대체 유일 escape=Sm-1-12 GB-wetting. 거버넌스 d_production_grade(TIER-L≠TIER-P) 신설. SSOT=ARCHITECTURE.json RAREEARTH-FREE LAWS[].
+
+
+### d_production_grade 신설 + RAREEARTH-FREE 반도체 공급망 scope 재정렬
+- 실제 프로덕션(상용화) 통과기준을 거버넌스로 박제(CLAUDE.md d_production_grade + ARCHITECTURE PRODUCTION-CRITERIA). 2-tier: TIER-L(lab 원리검증)≠TIER-P(상용화 P1성능·P2안전·P3제조·P4비용·P5규제/시장·P6공급망회복력). 세션교훈 Gd→Mn²⁺=TIER-L PASS(Phase2)·TIER-P FAIL(relaxivity spin7vs5·manganism·Gd시장). ★P6=中-의존 임계소재(Ga·Ge·Sb·중희토류·CMP) 회피하되 새 단일소스 안 만들기.
+- RAREEARTH-FREE scope 정직 재정렬: 초기 lane이 영구자석(EV/풍력 Nd-Fe-B)에 치우쳤음(L1-L5)—반도체-직결(갈륨·게르마늄·안티몬·CMP ceria)은 안 다룸. 진짜 동기=반도체/전자 공급망 中 수입의존(수출통제 2023-2025). sem-* 심화 lane 발사로 재정렬.
+
+
+### RAREEARTH-FREE 캠페인 신설 — 희토류 대체 fleet(arxiv 적극조사) → ARCHITECTURE.json LAWS 10건 (RTSC 동형)
+- 희토류(Nd·Dy·Eu·Ce·Gd 등) 대체를 RTSC 패턴(통과기준 게이트 → 경로 scoreboard → 이론 descriptor → escape → 발견법칙)으로 정리. `campaigns/RAREEARTH-FREE` 신설(PASS-CRITERIA G1-G6 + LAWS 10 + CAMPAIGN-VERDICT). 6 fleet 렌즈(re-free-magnet·anisotropy-descriptor·heavy-re-cut·phosphor-cat-batt·verify-tetrataenite·verify-niche-win) 전부 arxiv-grounded.
+- 발견법칙: L1 4f-이방성 대체천장 · L2 Bruno 3d천장(~0.5 MJ/m³) · L3 4f 1차섭동우위 · L4 escape 트릴레마(SOC-import/symmetry/shape) · L5 HOT-COERCIVITY HRE-부채(Dy-free 1.5T@180°C 검증·≥2T 열린벽) · L6 분리가능성 메타법칙 · L7 tetrataenite 정렬벽(P-보조 돌파 2025 RETRACTED 검증·c2) · L8 메타법칙 falsification PASS(12/12·반례 0) · L9 RE-lock 전자구조 정련 · L10 ceria-OSC escape PARTIAL.
+- ★검증된 대체 발견(goal MET): 분리가능성 메타법칙(RE가 단일 분리속성→대체성공 / 분리불가 속성곱→RE-lock)이 falsification 12/12 통과 = novel 통합법칙. 예측 대체 임상/상용 검증: Gd→Mn²⁺ MRI 조영제(Mangoral·RVP-001 임상)·Y→Ca/Mg YSZ·Sc→Zr/Er Al·KSF:Mn⁴⁺·MnFe(P,Si). 가장 어려운 lock: 자석 4f anisotropy(L1-L4)·ceria OSC(L10). 정직(d_novel_only): KSF 등 known commercial은 재확인이지 신발견 아님 — novel 산출=메타법칙 자체 + tetrataenite hype 철회 검증.
+- raw 보존: state/rareearth-free/<lane>/FINDINGS.md (c5). SSOT=ARCHITECTURE.json LAWS.
+
 ## 2026-06-19
+
+### d_roomt_ambient 신설 — 상압·상온 초전도 통과기준 못박음 (CLAUDE.md + ARCHITECTURE)
+- "상온/상압 초전도" 주장의 하드 게이트를 거버넌스로 박제. 하드임계: Tc≥293.15K · P=1atm(GPa 수소화물 제외) · 벌크. TIER-1 in-silico 6게이트(상압 열역학+동적안정·캐리어·Tc≥293K·자성비선점·신규성)→TIER-2 wet-lab(zero-R+★Meissner+ΔC+동위원소+재현≥2). zero-R단독·단일배치 preprint·모델투영·GPa-Tc를 "상온통과"로 보고 금지. 세션 채점: 전 후보(Ge:GaNb4S8 50K·MgB2 39K·LiBC 45K) #4(Tc≥293K) FAIL=상압상온 미달성(정직, d6). SSOT=ARCHITECTURE.json LAWS/ROOMT-AMBIENT-PASS-CRITERIA + state/fb-geom-lambda/ROOMT_AMBIENT_PASS_CRITERIA.md. (CLAUDE.md d_roomt_ambient)
+
+### d_novel_only 강화 — 자동·필수·선행 신규성 게이트 (재발방지)
+- 이번 세션 반복 슬립(후보를 계산→"성공/발견" 보고 후에야 신규성 확인; arxiv 확인이 유저 지시 "arxiv 조사해봐"로 뒤늦게 발화)을 박제. CLAUDE.md `d_novel_only`에 조항 추가: 어떤 후보/표적/물질이라도 그 이름이 처음 등장하는 라운드 안에서 arxiv+web 신규성 프로브를 인라인 발사하고, 판정(`PUBLISHED`/`PARTIAL`/`NOVEL`+경쟁 논문 id) 전에는 "후보 성공·발견·돌파"로 보고 금지. 미확정 후보 성과는 `신규성 PENDING` 꼬리표 필수. 예시 박제: Mg2PtH6·CoSn·경원소 kagome. (RTSC fleet round-1 = d18 lit grounding과 한 묶음)
 
 ### HERPES + NUMB 논문 박제 (각 10p compile clean · d_paper_on_discovery)
 - 두 캠페인 arxiv-style 논문 신설(수동 스캐폴드·SENOLYX 프리앰블 미러·각 fal.ai/FLUX 표지). HERPES(herpes-sterilizing-cure): HSV sterilizing cure 설계 — §M13 재발 닫힌식 R=N·e^{μ+σ²/2}(1−εφ)(MC 0.084%)·UL30 dual-guide CRISPR off-target 0·M14 정직 negative(saddle-node 부재 h_c≈3.72)·delivery=make-or-break wet-lab(9건). NUMB(numb-topical-anesthetic): 토픽 마취 — onset 가속 N1/N6/N7 🔴 FALSIFIED(t_lag=h²/6D, 레버는 prefactor)·차별=소아 prilocaine-free 100×·OTC/Rx 듀얼·8적응증·LAST 273×·absorbed=false(wet-lab 0/12). 둘 다 10 pages·11 refs·TikZ+pgfplots·PAPER.tape 등록. d_paper_significance 충족(falsifier+measurement+finding 포함 closed-negative).
