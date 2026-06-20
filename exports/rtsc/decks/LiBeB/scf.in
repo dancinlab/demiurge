@@ -1,0 +1,44 @@
+&CONTROL
+  calculation     = 'scf'
+  prefix          = 'libeb'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  tstress         = .true.
+  tprnfor         = .true.
+  verbosity       = 'high'           ! DOS/bands@E_F flat-band check
+/
+&SYSTEM
+  ibrav           = 0                ! general cell - REPLACE CELL_PARAMETERS/positions with RELAXED vc-relax.out
+  nat             = 6
+  ntyp            = 3
+  ecutwfc         = 60
+  ecutrho         = 480
+  nosym           = .false.
+  occupations     = 'smearing'
+  smearing        = 'mp'
+  degauss         = 0.01
+/
+&ELECTRONS
+  conv_thr        = 1.0d-12
+  mixing_beta     = 0.3
+  diagonalization = 'david'
+  electron_maxstep = 400
+/
+! REPLACE CELL_PARAMETERS + ATOMIC_POSITIONS below with the RELAXED blocks from vc-relax.out.
+CELL_PARAMETERS angstrom
+  3.66201209  0.00000000  -0.55509176
+  0.00000000  2.99866847  0.00000000
+  0.00531764  0.00000000  5.74522363
+ATOMIC_SPECIES
+  Li     6.941  Li.pbe-s-rrkjus_psl.1.0.0.UPF
+  Be    9.0122  Be.pbe-n-rrkjus_psl.1.0.0.UPF
+  B     10.811  B.pbe-n-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Li  0.22002543 0.25000000 0.33549533
+  Li  0.77997457 0.75000000 0.66450467
+  Be  0.35212102 0.25000000 0.88900660
+  Be  0.64787898 0.75000000 0.11099340
+  B   0.88241580 0.25000000 0.97333047
+  B   0.11758420 0.75000000 0.02666953
+K_POINTS automatic
+  16 16 16  0 0 0
