@@ -8,6 +8,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-20
 
+- **🔴 문헌-완료 캠페인 일괄 종료 (d_novel_only 집행 · 유저 '문헌완료 모두종료')** — 출판값 재현 캠페인을 SSOT서 종결하고 compute 중단. 종료: AcBeH8/CaB3C3/LaB3C3(vast·출판 클라스레이트 예측 재현)·LaRu3Si2/LaOs3Si2(출판 SC Tc 매칭→method-anchor만 보존)·FeCo bct K1+base SmFe12 K1(leverb 출판 자석·summer 가동 pw.x 종료 시도). ARCHITECTURE 5노드 🔴 CLOSED-LITERATURE + Sm112 스코어보드 compute-종료 박제 + ING #30. 유지=novel만(LiBeB·Sm112 Ga/Al 삼원계). 근거: d_novel_only 하드규칙(문헌 재현 compute 절대금지)+세션메모리(FeCo '종결이 정답'). summer load 57 주범이 이 재현잡이라 종료 시 novel LiBeB 발사 가능.
+
 - **🛠️ hexa deck general-cell 프로토타입 구현 → LiBeB deck-tooling 벽 해소 (self-improving)** — '이 세션 바로 진행'. hexa-lang stdlib/deck/rtsc.hexa에 `general` 프로토타입 추가(ibrav=0·CELL_PARAMETERS·MP/CIF import·d15 metallic SCF aids·_rtsc_lines `|`-split 헬퍼). 검증: byte-compat PASS(beh8 등 7 프로토타입 불변·deck_rtsc_bytecompat+deck_gen_smoke), general이 유효 LiBeB QE 덱 생성. hexa-lang PR#3730(selfhost-gates CI 대기·로컬 ~/.hx/src 적용됨). 데미우르지 bridge=tool/rtsc/build_deck.py(MP구조 fetch→general 덱). LiBeB 완전 turnkey 덱 박제(exports/rtsc/decks/LiBeB/·vc-relax/scf/ph/RUNBOOK·6원자 ambient). 파이프라인 end-to-end 완성(예측→추출→스크린→구조→덱빌더→turnkey덱·손-덱 0). LiBeB DFPT FIRE-READY(FREE summer·d16·go). c17대로 응용층(deck) 직접 fix.
 
 - **LiBeB DFPT 🧱 deck-tooling 벽 — hexa deck 일반셀 프로토타입 필요(hexa-lang ING)** — '진행' → LiBeB gate-1 PASS·구조 fetch 후 DFPT 덱서 막힘: hexa deck rtsc는 수소화물-clathrate 프로토타입만 생성(custom ibrav=0 spec 무시)→monoclinic LiBeB(P2₁/m·Li/Be/B) 일반셀 경로 없음. d_deck_always가 검증안된 손-덱 금지→손-덱 우회 안 함(self-improving). 명명된 fix=hexa deck 일반셀/CIF-import 프로토타입(MP structure→ibrav0 CELL_PARAMETERS+auto-pseudo)=hexa-lang 코어 개선(c17 ING 인계, hexa deck=precompiled binary). LiBeB DFPT lane은 이 개선 후 재개. 추출 파이프라인(예측→스크린→구조)은 작동·완성. ING id=29 갱신.

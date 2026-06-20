@@ -2693,7 +2693,7 @@
                 },
                 {
                   "id": "SCOREBOARD-Sm112",
-                  "role": "★Sm(Fe,Co)12 ThMn12 P-스코어보드(현재): P1 FAIL(Hc 14%·≥2T@180°C 미달·병목) · P2 FAIL(1:12 metastable) · P3 FAIL(벌크 양산 미확립) · P4 WARN(Co 함유) · P5 FAIL(Nd-Fe-B 시장) · P6 WARN(Sm·Co 中-의존, 단 Dy/Tb-free). ⇒ production-ready 아님. 첫 병목=P1 보자력. TIER-L조차 미완(SmCu DFT는 신규성 PUBLISHED, novel 잔여=Ga/Al 삼원계 in-flight).",
+                  "role": "★Sm(Fe,Co)12 ThMn12 P-스코어보드(현재): P1 FAIL(Hc 14%·≥2T@180°C 미달·병목) · P2 FAIL(1:12 metastable) · P3 FAIL(벌크 양산 미확립) · P4 WARN(Co 함유) · P5 FAIL(Nd-Fe-B 시장) · P6 WARN(Sm·Co 中-의존, 단 Dy/Tb-free). ⇒ production-ready 아님. 첫 병목=P1 보자력. TIER-L조차 미완(SmCu DFT는 신규성 PUBLISHED, novel 잔여=Ga/Al 삼원계 in-flight). 【문헌-재현 compute 종료 2026-06-20 (유저 '문헌완료 모두종료'·d_novel_only)】 summer 가동중이던 FeCo bct K1(leverb feco_ca0p9·문헌 사전등록 FAIL 0.7-1.0 재현) + base SmFe12 K1(scf_SmFe12_k446·출판 자석) pw.x 종료 — 출판값 재계산=금지. novel 잔여(Ga/Al 삼원계)만 미지 Δ로 유지.",
                   "children": []
                 },
                 {
@@ -2871,11 +2871,11 @@
               "children": [
                 {
                   "id": "LaRu3Si2",
-                  "role": "exports/rtsc/laru3si2_dft_elph.json (DFPT HARVESTED: physical λ=1.64 ω_log=56.3K Tc~7K @σ0.05; 🔴 unstable 2x2x2 — head-to-head WINNER)"
+                  "role": "🔴 CLOSED-LITERATURE-ANCHOR (d_novel_only): LaRu3Si2 = 출판 kagome SC Tc~7K 재현(physical λ=1.64 ω_log=56.3K Tc~7K 매칭). method-anchor로만 보존, 캠페인 종료(미지 Δ 아님)."
                 },
                 {
                   "id": "LaOs3Si2",
-                  "role": "exports/rtsc/laos3si2_dft_elph.json (DFPT HARVESTED on summer free: physical λ=0.81 ω_log=109K Tc~4-5K @σ0.05 matched; 🔴 unstable 24 imag — LOSES head-to-head; Os<Ru)"
+                  "role": "🔴 CLOSED-LITERATURE-ANCHOR (d_novel_only): LaOs3Si2 DFPT(λ=0.81 Tc~4-5K 매칭)·🔴 unstable·head-to-head LOSES. 확인계산 완료, 캠페인 종료. DFPT 승격 parked 취소."
                 },
                 {
                   "id": "CaB3C3_seam",
@@ -2900,15 +2900,15 @@
                 },
                 {
                   "id": "AcBeH8 🟠",
-                  "role": "exports/rtsc/AcBeH8_ambient_stability_verdict.json (IN-FLIGHT vast 41193096)"
+                  "role": "🔴 CLOSED-LITERATURE (d_novel_only · 유저 '문헌완료 모두종료' 2026-06-20): AcBeH8 무압 초수소화물 = 출판된 클라스레이트 예측의 재현(BeH8 cage 무압 SC는 문헌 DFT 예측). vast pod 41193096 teardown. compute 중단 — 진짜 Δ만 발사."
                 },
                 {
                   "id": "CaB3C3 🟠",
-                  "role": "exports/rtsc/CaB3C3_ambient_stability_verdict.json (IN-FLIGHT vast 41193571)"
+                  "role": "🔴 CLOSED-LITERATURE (d_novel_only · 유저 '문헌완료 모두종료' 2026-06-20): CaB3C3 = 출판 ~48K conv SC(역할에 이미 'not-a-discovery' 명시). vast pod 41193571 teardown. 재현 중단."
                 },
                 {
                   "id": "LaB3C3 🟠",
-                  "role": "exports/rtsc/LaB3C3_ambient_stability_verdict.json (IN-FLIGHT vast 41194736)"
+                  "role": "🔴 CLOSED-LITERATURE (d_novel_only · 유저 '문헌완료 모두종료' 2026-06-20): LaB3C3 B-C 클라스레이트 = 출판 예측 재현. vast pod 41194736 teardown. 재현 중단."
                 },
                 {
                   "id": "QFORGE-fs lane 🟠",
