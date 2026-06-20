@@ -628,3 +628,5 @@ CLS combinatorial = DRY(MATH-SPECTRA 브릿지·flat band 구성법, room-T 신�
 [★후보 신규성 프로브 · 2026-06-20] LiBeB·Be4B·Al23B50·LiC12=특정조성 SC문헌 부재(PENDING·열림)이나 기전 탐색완료(Be-B flat-band+vHs SC Phys.Rev.B·LiBeP·LiBC 출판)→incremental neighborhood. LiC6·AlB2·B13C2=기지 다연구. 결론: 추출 파이프라인 end-to-end OK(실 SC-미연구 후보 surface), 발견확정엔 flat-band@E_F+⟨g⟩/Ω/Tc DFT(FREE summer·go) 필요. 추출=완료, 발견=compute 단계. L42 동일.
 
 [★후보 DFT gate-1 + LiBeB 덱-ready · 2026-06-20] ① go(FREE summer). MP 전자구조 fetch(재현회피)→★4 전부 metallic·gap0·flat-band 적격=gate-1 PASS. 타당성: LiBeB 6원자 ✅프라임 FREE·Be4B10·LiC12 26·Al23B50 73🔴유료. LiBeB 구조 fetch+박제(exports/rtsc/decks/LiBeB/structure.json). 파이프라인 end-to-end 완성(예측→추출→스크린→구조→덱ready). 잔여=LiBeB DFPT el-ph(밴드flatness→동적안정→⟨g⟩/Ω/Tc)=멀티시간 async lane(summer·c19·go)→발견확정 단계. d_deck_always·d16 선행.
+
+[LiBeB DFPT 🧱 deck-tooling 벽 · 2026-06-20] "진행" → gate-1 PASS·구조 fetch 후 DFPT 덱서 막힘: hexa deck rtsc=수소화물 clathrate 프로토타입만(ibrav=2 fcc Be+H), custom ibrav=0 spec 무시→monoclinic LiBeB 일반셀 경로 없음. d_deck_always 손-덱 금지. fix=hexa deck 일반셀/CIF-import 프로토타입(hexa-lang 코어·c17 ING). 손-덱 우회 안 함. DFPT lane=hexa deck 개선 후 재개. 추출 파이프라인은 작동·완성.
