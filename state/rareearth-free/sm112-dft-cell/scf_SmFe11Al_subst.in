@@ -1,0 +1,52 @@
+&CONTROL
+  calculation   = 'scf'
+  prefix        = 'SmFe11Al'
+  outdir        = './out/'
+  pseudo_dir    = './pseudo/'
+  verbosity     = 'high'
+  tprnfor       = .true.
+  tstress       = .true.
+/
+&SYSTEM
+  ibrav         = 7            ! ThMn12 bct, ONE Fe(8i)->Al substituted = SmFe11Al
+  celldm(1)     = 16.06
+  celldm(3)    = 0.5647
+  nat           = 13
+  ntyp          = 3
+  ecutwfc       = 80.0
+  ecutrho       = 320.0
+  occupations   = 'smearing'
+  smearing      = 'mv'
+  degauss       = 0.02
+  nspin         = 2
+  starting_magnetization(1) = 0.1   ! Sm
+  starting_magnetization(2) = 0.5   ! Fe
+  starting_magnetization(3) = 0.0   ! Al
+/
+&ELECTRONS
+  electron_maxstep = 400
+  mixing_mode   = 'local-TF'
+  mixing_beta   = 0.3
+  conv_thr      = 1.0d-7
+  diagonalization = 'david'
+/
+ATOMIC_SPECIES
+  Sm  150.36   Sm_4fcore_psl.UPF
+  Fe   55.845  Fe_ONCV_PBE_sr.upf
+  Al   26.98   Al_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS (crystal)
+Sm 0.000 0.000 0.000
+Al 0.360 0.000 0.000
+Fe 0.640 0.000 0.000
+Fe 0.000 0.360 0.000
+Fe 0.000 0.640 0.000
+Fe 0.280 0.500 0.000
+Fe 0.720 0.500 0.000
+Fe 0.500 0.280 0.000
+Fe 0.500 0.720 0.000
+Fe 0.250 0.250 0.250
+Fe 0.750 0.250 0.250
+Fe 0.250 0.750 0.250
+Fe 0.750 0.750 0.250
+K_POINTS (automatic)
+  8 8 12 0 0 0

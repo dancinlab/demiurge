@@ -1,0 +1,20 @@
+&CONTROL
+  calculation='scf'  prefix='Fe'  outdir='./out/'  pseudo_dir='./pseudo/'
+  verbosity='high'  tprnfor=.true.  tstress=.true.
+/
+&SYSTEM
+  ibrav=3  celldm(1)=5.42      ! bcc Fe a=2.87 Ang in bohr
+  nat=1  ntyp=1
+  ecutwfc=80.0  ecutrho=320.0
+  occupations='smearing' smearing='mv' degauss=0.02
+  nspin=2  starting_magnetization(1)=0.7   ! FM Fe ~2.2 muB anchor
+/
+&ELECTRONS
+  electron_maxstep=400  mixing_mode='local-TF'  mixing_beta=0.3  conv_thr=1.0d-7
+/
+ATOMIC_SPECIES
+  Fe 55.845 Fe_ONCV_PBE_sr.upf
+ATOMIC_POSITIONS (crystal)
+Fe 0.0 0.0 0.0
+K_POINTS (automatic)
+  16 16 16 0 0 0

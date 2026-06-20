@@ -1,0 +1,1 @@
+L21 secure-midstream dominates substitution: SX=TRL-9, no science wall; wall=capital/margin/permitting. 2025 inflection: DoD $110/kg floor + EU €3B; Dy/Tb ex-China 4 lines first oxide 2025, Energy Fuels qualified into magnets. feedstock cap <1% EoL = logistical not scientific (recycling primary ~2035). cross-lens: demote substitution compute, promote secure-midstream primary.

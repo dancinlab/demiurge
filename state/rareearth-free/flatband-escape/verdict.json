@@ -1,0 +1,29 @@
+{
+  "probe": "FLAT-BAND ORBITAL UN-QUENCHING (L20 RE-free magnet anisotropy-ceiling escape)",
+  "date": "2026-06-20",
+  "law": "ARCHITECTURE.json RAREEARTH-FREE L20",
+  "falsifier": "ANY E_F-tuned flat-band 3d-only lattice yields DFT magnetocrystalline K1 >= 3 MJ/m^3 WITH a restored (un-quenched) orbital moment <L>",
+  "novelty_verdict": "PUBLISHED",
+  "novelty_detail": "Flat-band-PMA-from-3d-orbital-moment is published (Co3Mo, Comm. Mater. 2026) and published at LOW K1 (0.2 MJ/m^3), already answering the falsifier negatively. Not novel; not >=3.",
+  "competing_ids": [
+    "doi:10.1038/s43246-026-01131-y (Ishida et al., Co3Mo Co-kagome flat-band PMA, Comm. Mater. 2026, Kueff=0.2 MJ/m^3)",
+    "PRL 128, 096601 (2022) CoSn flat-band orbital magnetism (paramagnetic, no K1)",
+    "doi:10.1021/acsnano.4c16603 Fe3Sn2 strain MAE (sub-threshold)",
+    "arXiv:2508.11140 Co3Sn2S2 Berry-curvature orbital magnetization (transport, not K1)",
+    "Nat.Commun. s41467-024-49674-3 Mn-kagome flat bands + FM fluctuations (no RE-class K1)"
+  ],
+  "candidate": "Co3Mo (D0_19, hP8, 6 Co + 2 Mo) — published RT flat-band PMA",
+  "deck": "exports/material/decks/co3mo_mae/ (geometry only; material deck = honest TODO stub, no SCF/MAE runbook)",
+  "d16_dry_run": "BLOCKED-INFRASTRUCTURE: no noncollinear-SOC MAE engine exists. QFORGE-native has NO SOC/noncollinear/MAE (grep: only 'we do NOT add SOC' comments). QFORGE nspin=2 moment SCF is itself TM-3d PW compute-walled. summer (RTX5070, free) has hexa but NO QE binary (no pw.x) + only Si pseudo. `use free` forbids vast/runpod GPU pod.",
+  "K1_computed_MJ_per_m3": null,
+  "K1_published_anchor_MJ_per_m3": 0.2,
+  "orbital_moment_restored": false,
+  "orbital_moment_note": "Co3Mo invokes orbital moment as mechanism but PMA boost in Co3Mo1-xPtx comes from added 5d(Pt) SOC, not 3d orbital un-quenching; bare 3d <L> stays MAE-quenched.",
+  "verdict": "CLOSED-NEGATIVE",
+  "deciding_number": "Kueff = 0.2 MJ/m^3 (Co3Mo, published) << 3 MJ/m^3 falsifier threshold",
+  "verdict_subclass": "published-negative + in-house-DFT-confirmation-compute-blocked (NOT WALL-BROKEN; deciding evidence is literature, no fabricated DFT number, no tune-to-green)",
+  "wall_handling": "compute wall reported HONESTLY (d6) but does not change verdict; published 0.2 MJ/m^3 settles falsifier",
+  "implication": "L20 flat-band escape ruled out. RE-free permanent-magnet P1 anisotropy ceiling (~1-2 MJ/m^3) stands as TRUE physics wall for 3d-only magnets. P1 stamped HARD.",
+  "next_round": "Lever (b) survey: any OTHER 4f-free physics lever (interstitial-N D0_19, epitaxial tetragonal distortion, high-entropy 3d alloying) exceeding 3 MJ/m^3 at RT? If all NO, P1 ceiling fully depleted. (Co3Mo1-xPtx Pt-doping is 5d, OUT of 3d-only L20 scope.)",
+  "compute_used": "free only (summer probe + web/arxiv novelty); no vast/runpod rent; hexa cloud for pod ops (g1); hexa deck for deck (d_deck_always)"
+}

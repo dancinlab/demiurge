@@ -8,6 +8,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-20
 
+- **governance: d_novel_only 에 "문헌 재현 compute 절대금지" 하드규칙 추가** — 출판값(FeCo K1·Fe16N2 등)을 우리 도구로 재산출하는 것 자체가 재현 → closed-negative·method-anchor 목적이라도 금지. axis가 문헌으로 닫혔으면 DOI로 종결, compute는 미지 Δ에만. leverb-mae-production 슬립(disk 99%서 문헌 재계산 시도) 박제.
+
 - **RTSC flat-band 양자기하 SC 법칙스윕 L19→L41 (23 신규) + 🏁 고갈판정 · 검증·예측 도구 구현** — 상온@1atm 탐색을 물리축 전수 매핑: conventional ~120K 닫힘(L22, Nature Comms 2만금속 외부확증) · 비-phonon 근본천장 없음(L24) → master 변수=양자metric 적분 ∫tr g 하나가 전자강성(L25-35)·포논 λ(L36, 그래핀50%/MgB₂90%)·간섭길이(L32)·무질서강건(L28) 전부 지배. room-T 갭=단일 bounded 물질문제(∫tr g·U ~50-100×↑ in incipient topological flat host[CeRu₂·CsCr₃Sb₅] + 경쟁 CDW/자성 억제[L15/20, CsV3Sb5 CDW90K≫Tc2.7K]). 두 capstone(🔗L36 이론·🌡️L38 실험~6K). 고갈=사용자기준(1hr+ sustained dry, 7프로브) 충족. **도구**: `tool/rtsc/fbgeom_predictor.py` = 법칙의 runnable 검증·예측층(VERIFY 앵커재현 PASS·PREDICT 격자별 Tc·d6 버그2 발견수정+dice artifact caveat). SSOT=ARCHITECTURE.json LAWS[48]·raw=.discoveries/flatband-geometric-elph-law.tape. CLAUDE.md tool/ 참조 추가. Li₂AuH₆ seam-DFT는 🔴 CLOSED-REPRODUCTION(arXiv:2409.08065 InvDesFlow 출판·d_novel_only가 컴퓨트 완료前 포착).
 
 - **leverb-mae-production 🧱 CLOSED-NEGATIVE** — 3d-only K1 천장 axis 종결(문헌 anchor: FeCo bct 0.7-1.0 박막·Fe16N2 ~1.0 metastable·둘다<3 MJ/m³ + 도구검증 spinor SCF dry-run). production SCF는 서버 rate-limit + **summer disk 99%**(RTSC·SmFe12 경합)로 BLOCKED — 덱 turnkey(disk 회복 시 재개), 단 재현이라 verdict 불변(d_novel_only·d7). 3d-only escape 고갈 → 자석 P1=4f 물리천장(L20) 확정. ⚠️ summer disk 99% 경보(다른 캠페인 영향).
