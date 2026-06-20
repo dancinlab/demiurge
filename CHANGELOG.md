@@ -8,6 +8,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-20
 
+- **LiBeB DFPT 🧱 deck-tooling 벽 — hexa deck 일반셀 프로토타입 필요(hexa-lang ING)** — '진행' → LiBeB gate-1 PASS·구조 fetch 후 DFPT 덱서 막힘: hexa deck rtsc는 수소화물-clathrate 프로토타입만 생성(custom ibrav=0 spec 무시)→monoclinic LiBeB(P2₁/m·Li/Be/B) 일반셀 경로 없음. d_deck_always가 검증안된 손-덱 금지→손-덱 우회 안 함(self-improving). 명명된 fix=hexa deck 일반셀/CIF-import 프로토타입(MP structure→ibrav0 CELL_PARAMETERS+auto-pseudo)=hexa-lang 코어 개선(c17 ING 인계, hexa deck=precompiled binary). LiBeB DFPT lane은 이 개선 후 재개. 추출 파이프라인(예측→스크린→구조)은 작동·완성. ING id=29 갱신.
+
 - **★후보 DFT gate-1 PASS + LiBeB 덱-ready (FREE summer 경로)** — ① go. MP 전자구조 fetch(재현회피)로 ★4 전부 metallic·gap0·E_F 상태존재=gate-1 PASS. FREE 타당성(d7/d11): LiBeB 6원자 P2₁/m ✅프라임·Be4B10·LiC12 26·Al23B50 73🔴유료. LiBeB 구조 fetch+박제(exports/rtsc/decks/LiBeB/structure.json). 파이프라인 end-to-end 완성: 예측→추출→MP스크린→구조fetch→덱-ready. 잔여=LiBeB DFPT el-ph(밴드flatness→matdyn 동적안정→⟨g⟩/Ω/Tc)=멀티시간 async 컴퓨트 lane(summer FREE·c19 폴링·explicit go)→발견확정 단계. SSOT=FBGEOM-PREDICTOR.
 
 - **★후보 신규성 프로브 (d_novel_only)** — MP-추출 ★7종 중 LiBeB·Be4B·Al23B50·LiC12=특정조성 SC문헌 부재(novelty PENDING·열림)이나 기전은 탐색완료(Be-B flat-band+van Hove SC[Phys.Rev.B]·LiBeP[Tc17-34K]·LiBC 출판→incremental). LiC6·AlB2·B13C2=기지 다연구. 결론: 추출 파이프라인 end-to-end 작동(실 SC-미연구 후보 surface)이나 발견 확정엔 flat-band@E_F+⟨g⟩/Ω/Tc DFT(FREE summer·explicit go) 필요 = '추출 완료, 발견확정=compute 단계'. L42 two-lever 벽 동일 적용. SSOT=FBGEOM-PREDICTOR.
