@@ -8,6 +8,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-20
 
+- **🛠️ hexa deck general-cell 프로토타입 구현 → LiBeB deck-tooling 벽 해소 (self-improving)** — '이 세션 바로 진행'. hexa-lang stdlib/deck/rtsc.hexa에 `general` 프로토타입 추가(ibrav=0·CELL_PARAMETERS·MP/CIF import·d15 metallic SCF aids·_rtsc_lines `|`-split 헬퍼). 검증: byte-compat PASS(beh8 등 7 프로토타입 불변·deck_rtsc_bytecompat+deck_gen_smoke), general이 유효 LiBeB QE 덱 생성. hexa-lang PR#3730(selfhost-gates CI 대기·로컬 ~/.hx/src 적용됨). 데미우르지 bridge=tool/rtsc/build_deck.py(MP구조 fetch→general 덱). LiBeB 완전 turnkey 덱 박제(exports/rtsc/decks/LiBeB/·vc-relax/scf/ph/RUNBOOK·6원자 ambient). 파이프라인 end-to-end 완성(예측→추출→스크린→구조→덱빌더→turnkey덱·손-덱 0). LiBeB DFPT FIRE-READY(FREE summer·d16·go). c17대로 응용층(deck) 직접 fix.
+
 - **LiBeB DFPT 🧱 deck-tooling 벽 — hexa deck 일반셀 프로토타입 필요(hexa-lang ING)** — '진행' → LiBeB gate-1 PASS·구조 fetch 후 DFPT 덱서 막힘: hexa deck rtsc는 수소화물-clathrate 프로토타입만 생성(custom ibrav=0 spec 무시)→monoclinic LiBeB(P2₁/m·Li/Be/B) 일반셀 경로 없음. d_deck_always가 검증안된 손-덱 금지→손-덱 우회 안 함(self-improving). 명명된 fix=hexa deck 일반셀/CIF-import 프로토타입(MP structure→ibrav0 CELL_PARAMETERS+auto-pseudo)=hexa-lang 코어 개선(c17 ING 인계, hexa deck=precompiled binary). LiBeB DFPT lane은 이 개선 후 재개. 추출 파이프라인(예측→스크린→구조)은 작동·완성. ING id=29 갱신.
 
 - **★후보 DFT gate-1 PASS + LiBeB 덱-ready (FREE summer 경로)** — ① go. MP 전자구조 fetch(재현회피)로 ★4 전부 metallic·gap0·E_F 상태존재=gate-1 PASS. FREE 타당성(d7/d11): LiBeB 6원자 P2₁/m ✅프라임·Be4B10·LiC12 26·Al23B50 73🔴유료. LiBeB 구조 fetch+박제(exports/rtsc/decks/LiBeB/structure.json). 파이프라인 end-to-end 완성: 예측→추출→MP스크린→구조fetch→덱-ready. 잔여=LiBeB DFPT el-ph(밴드flatness→matdyn 동적안정→⟨g⟩/Ω/Tc)=멀티시간 async 컴퓨트 lane(summer FREE·c19 폴링·explicit go)→발견확정 단계. SSOT=FBGEOM-PREDICTOR.
