@@ -1,3 +1,12 @@
+# CHANGELOG
+
+## docs(arch): ARCHITECTURE.json → hexa-lang sections schema (lossless)
+
+Migrate design SSOT from {children}-tree to hexa-lang's {meta, sections[]→subsection→blocks}
+schema (commons c4). Deterministic lossless conversion (every scalar→prose, every nesting→
+subsection — all RTSC/RAREEARTH-FREE campaign LAWS preserved); architecture.html + serve.py
+set to the hexa sections-renderer.
+
 # Changelog
 
 Chronological log of notable changes. One section per ship batch, date-keyed. Decision gates tracked as `D<N>` in `DESIGN.log.md`; cycle phases as `κ-<N>`.

@@ -1,51 +1,49 @@
 #!/usr/bin/env python3
-"""Tiny static server for the demiurge architecture viewer (commons c4).
+"""serve.py — static server + browser auto-open for the architecture viewer.
 
-Serves the repo directory and opens ARCHITECTURE.html in the browser.
-The HTML viewer fetches ./ARCHITECTURE.json (the SSOT) over http.
+The architecture SSOT is ARCHITECTURE.json; humans read it through
+architecture.html. Browsers block fetch() over file://, so this serves the repo
+root over http:// and opens the viewer.
 
-Usage:
-    python3 serve.py [PORT]      # default port 8765
+    python3 serve.py            # serve on :8000, open architecture.html
+    python3 serve.py 9000       # custom port
 """
 import http.server
 import socketserver
-import os
 import sys
+import threading
 import webbrowser
+from pathlib import Path
 
-DEFAULT_PORT = 8765
-VIEWER = "ARCHITECTURE.html"
+ROOT = Path(__file__).resolve().parent
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
+PAGE = "architecture.html"
+
+
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *a, **kw):
+        super().__init__(*a, directory=str(ROOT), **kw)
+
+    def end_headers(self):
+        # never cache the SSOT / viewer during local editing
+        self.send_header("Cache-Control", "no-store")
+        super().end_headers()
+
+    def log_message(self, fmt, *args):
+        pass  # quiet
 
 
 def main():
-    port = DEFAULT_PORT
-    if len(sys.argv) > 1:
-        try:
-            port = int(sys.argv[1])
-        except ValueError:
-            print(f"invalid port {sys.argv[1]!r}; using {DEFAULT_PORT}")
-            port = DEFAULT_PORT
-
-    # serve the repo dir (this file's directory)
-    root = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(root)
-
-    handler = http.server.SimpleHTTPRequestHandler
     socketserver.TCPServer.allow_reuse_address = True
-
-    with socketserver.TCPServer(("127.0.0.1", port), handler) as httpd:
-        url = f"http://127.0.0.1:{port}/{VIEWER}"
-        print(f"demiurge architecture viewer serving {root}")
-        print(f"  → {url}")
-        print("  (SSOT = ARCHITECTURE.json; Ctrl-C to stop)")
-        try:
-            webbrowser.open(url)
-        except Exception:
-            pass
+    with socketserver.TCPServer(("127.0.0.1", PORT), Handler) as httpd:
+        url = f"http://127.0.0.1:{PORT}/{PAGE}"
+        print(f"[serve] architecture viewer → {url}")
+        print(f"[serve] SSOT: ARCHITECTURE.json   (Ctrl-C to stop)")
+        threading.Timer(0.6, lambda: webbrowser.open(url)).start()
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
-            print("\nstopped.")
+            print("\n[serve] stopped")
 
 
 if __name__ == "__main__":
