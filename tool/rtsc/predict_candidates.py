@@ -20,6 +20,12 @@ CANDS = [
     ("tMoTe2 (moire C=1)",         1.00, 10,  1.0, "real SC ~1-3K",     "PARTIAL"),
     ("sp2C N-Lieb COF",            0.672,120, 1.08,"proposed(no SC)",   "NOVEL"),
     ("Re6Se8Cl2 (real anchor)",    0.30, 11,  1.0, "real SC ~8K",       "PUBLISHED"),
+    # --- C-tier carbon-pi residuals, folded in via the computed lattice-model <g> (Q_geom proxy):
+    #     triangulene = carbon kagome (lattice <g>~0.49); benzene-COF = carbon Lieb (<g>~0.50);
+    #     Omega = C-C bond phonon ~150-160 meV. No fabricated per-material <g> — uses the TB lattice value.
+    ("triangulene 2D-kagome",      0.49, 150, 1.0, "proposed(no SC)",   "NOVEL"),
+    ("benzene-ethynylene COF",     0.50, 150, 1.0, "proposed(no SC)",   "NOVEL"),
+    # biphenylene network EXCLUDED here: type-II Dirac, NO isolated flat band -> geometric predictor N/A.
 ]
 
 def host_table_banded():

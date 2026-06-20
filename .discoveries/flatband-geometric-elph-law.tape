@@ -612,3 +612,7 @@ CLS combinatorial = DRY(MATH-SPECTRA 브릿지·flat band 구성법, room-T 신�
  R2(honest banded): light-kagome best 242K[87-1055]·CoSn 45K·Nb3Cl8 35K — 실재 합성호스트 honest 박스 진입 0. honest 설계박스=⟨g⟩≥2-3 AND Ω≥~130meV AND U/Om≥1.5 동시; ⟨g⟩<2면 Ω_needed>300meV 천장 초과 불가.
  R3 고갈확인: filling ν(L40)=4ν(1-ν) ½서 최대, off-half는 감소만→새 탈출구 0. 호스트축=기록된 ⟨g⟩ 8종 전수(미기록 ⟨g⟩ 추가=fabrication 금지 d6)→고갈.
  🏁 결론(L42 신규·LAWS49): room-T 기하SC 병목 = 두 레버(∫tr g 大 AND 강결합 Ω 大) 한 물질 공존 못함(materials 벽), 열역학은 marginal-feasible. 3라운드 수렴, 도구는 honest band로 영구개선. SSOT=ARCHITECTURE.json L42+FBGEOM-PREDICTOR.
+
+[후보 전체 커버리지 점검 + C-tier folded · 2026-06-20] 유저 "후보 전부 리서치?" → 정직 점검: 예측기 8종 외 캠페인 후보 ~18종 통합.
+ A 예측기-스윕 8종(banded) · B 캠페인-판정완료 3종(bismuthate🧱⟨g⟩≈0·hp8b🔴·GaNb4S8/Se8🟢~60K) · C 문헌-평가 잔여 → 탄소-π는 격자proxy folded(triangulene kagome best41K·benzene-COF Lieb best42K, COF48K 동군집 room-T밖; biphenylene type-II Dirac flat band無 out-of-scope) · D 경원소축 탈락 5종.
+ 정정: 앞 "8종 고갈"은 예측기-⟨g⟩축 한정; 전체 후보공간 ~18종 통합 종결. L42 two-lever 벽은 전 실재/계산 후보서 robust(honest 박스 진입 0). SSOT=ARCHITECTURE.json CANDIDATE-ROSTER.
