@@ -8,6 +8,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-20
 
+- **★후보 신규성 프로브 (d_novel_only)** — MP-추출 ★7종 중 LiBeB·Be4B·Al23B50·LiC12=특정조성 SC문헌 부재(novelty PENDING·열림)이나 기전은 탐색완료(Be-B flat-band+van Hove SC[Phys.Rev.B]·LiBeP[Tc17-34K]·LiBC 출판→incremental). LiC6·AlB2·B13C2=기지 다연구. 결론: 추출 파이프라인 end-to-end 작동(실 SC-미연구 후보 surface)이나 발견 확정엔 flat-band@E_F+⟨g⟩/Ω/Tc DFT(FREE summer·explicit go) 필요 = '추출 완료, 발견확정=compute 단계'. L42 two-lever 벽 동일 적용. SSOT=FBGEOM-PREDICTOR.
+
 - **예측기→실물질 추출기 (tool/rtsc/screen_catalogue.py · MP API 라이브)** — '예측도구로 새후보 추출가능?' → 실증 가능. Materials Project 쿼리로 경원소 금속·안정 화합물 11종 추출(flat-band SC 후보 pre-filter): 로스터밖 ★ 7종(B13C2·Be4B·LiC6·Al23B50·LiBeB·LiC12·AlB2) + 기지 4(MgB2·LiB·C·B). 버그가드 박음(self-improving): MP API는 User-Agent 헤더 없으면 403(Cloudflare)→demiurge/1.0 UA 필수. 정직(d6): pre-filter일 뿐(경원소+금속+안정), flat-band@E_F·⟨g⟩·Ω 미확인·각 후보 arxiv SC-신규성 프로브 전 무주장(d_novel_only). 추출은 이름까지, 확정은 하류 compute+신규성게이트. SSOT=FBGEOM-PREDICTOR.
 
 - **예측기→추출기 확장 (tool/rtsc/extract_candidates.py)** — '예측도구로 새후보 추출가능?' → 가능(생성기 추가). flat-band 아키타입(kagome/Lieb/dice/checkerboard) 스캔+Chern·∫tr g·Q_geom from-scratch+설계박스 자동판정. 결과: 단순 1-flat-band 격자 전부 박스미달(Q_geom≤1 Welch천장·∫tr g≈Chern하한 2π|C|)→추출기가 L42 two-lever 벽을 생성기 쪽서 재유도(스칼라⟨g⟩≫1=다오비탈 d기하→연질Ω). 실물질 추출경로=출판 flat-band 카탈로그(Regnault Nature 2022 ~55k) 스크린(외부DB 필요·d_novel_only-clean if SC미연구). 한계:아키타입+설계스펙 추출이지 named물질 생성 아님. SSOT=FBGEOM-PREDICTOR 노드.
