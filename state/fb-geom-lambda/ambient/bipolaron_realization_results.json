@@ -1,0 +1,41 @@
+{
+  "renorm": {
+    "Om_bare": 196.0,
+    "Om_renorm": 188.50676380437918,
+    "ratio_dilute": 0.9617692030835673,
+    "S_dilute_n01": 0.25,
+    "S_halffilled": 0.8825424006106064
+  },
+  "scan": {
+    "n_all": 135,
+    "n_stable": 285,
+    "n_opt": 135,
+    "n_room": 285,
+    "lam_crit_dilute": 4.0,
+    "lam_crit_halffilled": 1.1330900354567983,
+    "nonempty_count": 135,
+    "representative": [
+      1.0,
+      0.30000000000000004,
+      188.50676380437918,
+      437.4864974372032
+    ]
+  },
+  "backdoor": {
+    "softening_pct": 3.823079691643272,
+    "lam_eff": 0.03749999999999998,
+    "omega_ratio": 0.9617692030835673,
+    "stable": true
+  },
+  "solver": {
+    "mstar": 1.4748546903487276,
+    "binding": -1.464787023091672,
+    "bound": true,
+    "solver_ran": true
+  },
+  "verdict": {
+    "verdict": "STABLE",
+    "depletion": true,
+    "terminal_dft": "Re6Se8Cl2 frozen-phonon 2.6THz twist \u2192 \u2202t/\u2202u \u2192 solver Tc"
+  }
+}

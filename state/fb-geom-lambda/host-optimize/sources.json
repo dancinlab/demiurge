@@ -1,0 +1,96 @@
+{
+  "lane": "host-optimize / room-T-host (RTSC geometric flat-band stiffness, decisive round)",
+  "date": "2026-06-19",
+  "verify_bar": "c2 — >=3 sourced real high-<g> isolated-flat-band materials with their <g> (sourced or estimated, flagged), computed geometric Tc (2D & 3D), explicit room-T verdict for a REAL material. d6 — sourced <g> separated from estimates; flag where DFT-Wannier <g> is still needed.",
+  "key_provenance_caveat": "NO real material has a PUBLISHED scalar <tr g> for an isolated flat band. The rigorous bridge is the gauge-invariant Wannier spread: integral_BZ tr g d2k = Omega_I (arXiv:2405.06146). So every material <tr g> here is a TB-MODEL estimate matched to the material's ACTUAL band isolation, with the DFT-Wannier Omega_I flagged as the single missing confirmation. We do NOT tune any number to green (d6).",
+
+  "materials": [
+    {
+      "name": "CoSn",
+      "structure": "kagome metal (Co kagome layer), textbook ISOLATED flat band",
+      "flat_band_isolated": "YES — bare kagome quadratic-band-touching at Gamma is LIFTED by intrinsic SOC -> Chern/Z2-isolated flat band (the physically-correct gap-opener, not a fudge)",
+      "flat_band_width_meV": "out-of-plane d_xz/d_yz < 20 meV (sourced); in-plane ~120-200 meV",
+      "iso_gap_meV": "SOC gap 76-80 meV [SOURCED: Kang ARPES 80 meV; QGT paper 76+-5 meV]",
+      "distance_from_EF_eV": "~0.2-0.3 below E_F [SOURCED ARPES]",
+      "quantum_metric": "DIRECTLY MEASURED (only material in the set) but as a g(k) MAP, NO published scalar <tr g> [Kim et al Nat.Phys 21,110 (2025), arXiv:2412.17809]. Topological label Z2 != 0, nonzero. <g> USED HERE = 2.87 from a kagome+intrinsic-SOC TB model (Chern C=1, FHS-verified) = TB-ESTIMATE; DFT-Wannier Omega_I needed.",
+      "phonon_Omega_meV": "15 meV phonon flat band [SOURCED: Yin et al Nat.Commun 11,4464 (2020), arXiv:2007.00519], Eliashberg lambda = 1.9 [SOURCED, strong coupling]",
+      "superconductor": "NO — Pauli paramagnet, no SC to 0.1 K [SOURCED]. Best clean candidate platform (isolated topo flat band + measured quantum geometry + lambda=1.9).",
+      "sources": [
+        "https://www.nature.com/articles/s41467-020-17465-1",
+        "https://www.nature.com/articles/s41567-024-02678-8",
+        "https://www.nature.com/articles/s41467-020-17464-2",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC7417585/"
+      ]
+    },
+    {
+      "name": "Nb3Cl8",
+      "structure": "breathing-kagome cluster Mott insulator; single Nb3-cluster molecular-orbital flat band",
+      "flat_band_isolated": "YES — cleanest single well-isolated band in the set (breathing t!=t' removes the QBTP); Dirac cones gapped. half-filled AT E_F (monolayer)",
+      "flat_band_width_meV": "~100-200 meV [SOURCED]; inter-cluster t ~22-27 meV",
+      "iso_gap_meV": "Mott gap ~1.10-1.12 eV optical [SOURCED]; band isolation clean",
+      "distance_from_EF_eV": "flat band AT E_F (half-filled); lower Hubbard band ~1.1 eV below",
+      "quantum_metric": "NONE published. <g> USED HERE = 2.11 (bare breathing) / 2.11 (breathing+SOC TB) = TB-ESTIMATE; bare breathing band is C=0 (topologically trivial -> high <g> but NOT Chern-protected), DFT-Wannier Omega_I needed. Proxy: single molecular Wannier per cluster.",
+      "phonon_Omega_meV": "NOT published [FLAG — ESTIMATE ~20-40 meV from Nb-Cl cluster mode]. Debye genuinely absent from literature.",
+      "superconductor": "NO intrinsic SC (deep Mott, U~1.2 eV); pressure -> metal. proximity Josephson-diode work exists.",
+      "sources": [
+        "https://www.nature.com/articles/s41535-024-00619-5",
+        "https://arxiv.org/abs/2111.01583",
+        "https://arxiv.org/abs/2205.11462"
+      ]
+    },
+    {
+      "name": "tMoTe2 (twisted MoTe2)",
+      "structure": "moire flat band, near-IDEAL C=1 Chern band (FQAH at B=0)",
+      "flat_band_isolated": "YES — genuine isolated C=1 Chern band; bandwidths 8/15 meV @theta=3.15deg, gap 1.9-3.9 meV @1.89deg [SOURCED]",
+      "flat_band_width_meV": "8-15 meV [SOURCED]",
+      "iso_gap_meV": "1.9-3.9 meV [SOURCED]",
+      "distance_from_EF_eV": "tunable to E_F by gating (moire)",
+      "quantum_metric": "<tr g> >= |C| = 1 (rigorous trace bound, near-ideal so SATURATES) [SOURCED bound; trace-condition deviation T minimized near theta~3.2deg]. <g> USED HERE = 1.0 (ideal-Chern floor) = SOURCED-BOUND; TB Haldane model gives ~2.0 but the honest near-ideal value is the |C|=1 floor.",
+      "phonon_Omega_meV": "moire phonon / bandwidth scale ~8-15 meV [SOURCED bandwidth]",
+      "superconductor": "twisted WSe2 sibling: Tc~426 mK @5deg [SOURCED Nature 2024]; tMoTe2 hosts FQAH. SC exists in the family but very low Tc (Ω tiny).",
+      "sources": [
+        "https://www.nature.com/articles/s41535-025-00828-6",
+        "https://www.nature.com/articles/s41586-024-08381-1",
+        "https://link.aps.org/doi/10.1103/PhysRevLett.123.237002"
+      ]
+    },
+    {
+      "name": "Re6Se8Cl2",
+      "structure": "vdW superatomic crystal, quasi-flat cluster-MO valence band",
+      "flat_band_isolated": "quasi-flat (NOT framed as topologically isolated); bandwidth 120+-30 meV @70K narrowing to ~10 meV @300K (Holstein polaronic) [SOURCED]",
+      "flat_band_width_meV": "10-120 meV (T-dependent) [SOURCED]",
+      "iso_gap_meV": "bandgap 1.58 eV [SOURCED]",
+      "quantum_metric": "NONE published; proxy transfer integral J0=46 meV. NOT a Chern/topological flat band.",
+      "phonon_Omega_meV": "acoustic ~3.7 meV, optical ~11 meV; lambda~14 (very strong) [SOURCED arXiv:2401.14312]",
+      "superconductor": "YES — doping or pressure(>7.3 GPa) -> Tc~8-8.5 K [SOURCED]. First SC in a vdW superatomic crystal. Comparison anchor: a real flat-band-ish SC (but Tc set by lambda+low Ω, not geometric stiffness).",
+      "sources": [
+        "https://pubmed.ncbi.nlm.nih.gov/32065756/",
+        "https://arxiv.org/abs/2401.14312"
+      ]
+    }
+  ],
+
+  "theory_formulas": {
+    "flat_band_BCS_gap": "Delta = U sqrt(nu(1-nu)) [Peotta-Tormae Nat.Commun 6:8944 (2015); Liang et al PRB 95,024515 (2017)]; the quantum metric enters D_s, not Delta.",
+    "geometric_superfluid_weight": "D_s proportional to |U| nu(1-nu) integral_BZ tr g [ncomms9944; review arXiv:2308.08248]. linear in |U| (NOT a hopping J — band is flat).",
+    "2D_BKT": "kB Tc = (pi/2) D_s [energy convention; Nelson-Kosterlitz PRL 39,1201 (1977)] = (pi/8) D_s [charge convention; both correct].",
+    "3D_XY": "kB Tc_3D ~= J_s / K_c with K_c(3D XY) = 0.45420 [Janke PLA 148,306 (1990), arXiv:cond-mat/9305020] -> kB Tc_3D ~= 2.2018 J_s. vs 2D coefficient pi/2 = 1.5708. Identifying J_s = D_s -> 3D-over-2D coefficient gain = 2.2018/1.5708 = 1.402 (conservative; more once 2D vortex fluctuation-suppression included).",
+    "trace_bound": "tr g(k) >= |Omega(k)| pointwise -> (1/2pi) integral_BZ tr g >= |C|. nonzero D_s even for a perfectly flat band [ncomms9944; PRB 95,024515].",
+    "Wannier_bridge": "integral_BZ tr g = gauge-invariant Wannier spread Omega_I [arXiv:2405.06146] — the actionable route to a real-material scalar <tr g>.",
+    "kagome_Lieb_<g>_scale": "<tr g> ~ 1-3 (a2=1 units); Lieb O(1) exact [arXiv:1603.03237]; kagome estimated 1-3; our SOC-kagome TB gives 2.87."
+  },
+
+  "verdict": {
+    "best_real_material": "CoSn (kagome metal, SOC-isolated C=1 flat band)",
+    "best_real_<g>": 2.868,
+    "best_real_<g>_provenance": "TB kagome+intrinsic-SOC model (C=1 FHS-verified), matched to CoSn's real SOC-isolation mechanism. ESTIMATE — DFT-Wannier Omega_I is the missing scalar.",
+    "best_real_Omega_meV": 15.0,
+    "best_real_Tc2D_K": 128,
+    "best_real_Tc3D_K": 179,
+    "pct_room_T_3D": 61,
+    "reaches_room_T": false,
+    "ceiling_decomposition": "CoSn IS the high-<g> R2 said room-T needs (real kagome <g>=2.87), but kagome metals are HEAVY (Sn/Co) so the phonon caps at Omega~15 meV -> Tc caps ~180K. The light-atom COF reaches ~190K but its Lieb <g>=0.67 caps it. Room-T needs ONE material with BOTH kagome <g>~2.9 AND a light-atom (C / B-N) Omega~120-200 meV.",
+    "single_missing_ingredient": "a LIGHT-ELEMENT (carbon / boron-nitride) kagome (or breathing-kagome) lattice with an SOC/Chern-isolated flat band at E_F and a superconducting pairing channel. Combining CoSn-class <g>~2.9 with C-C-class Omega~120-200 meV gives Tc3D ~290-2340K (clears room-T).",
+    "3D_vs_2D": "going 3D (interlayer Josephson -> 3D-XY) raises Tc by x1.40 (coefficient ratio 2.20/1.571) over 2D-BKT — confirmed, but insufficient alone to lift any real material to room-T."
+  }
+}

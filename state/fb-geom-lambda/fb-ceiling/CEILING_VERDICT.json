@@ -1,0 +1,59 @@
+{
+  "id": "FB-GEOM-LAMBDA",
+  "lane": "fb-ceiling",
+  "round": "r1",
+  "date": "2026-06-19",
+  "verdict": "🔵 CLOSED-FORM Tc ceiling DERIVED · binding constraint = fundamental lambda-cap (not the trade-off) · geometry lowers the ceiling when phonons soften",
+  "g5": "PASS",
+  "question": "Does (a) lambda_FB=N(EF)g0^2 Q/(Mw^2),1/N<=Q<=1 + (b) lambda<~4 + (c) Tc=0.182 w_log sqrt(lambda) + (d) flat-band trade-off close to a Tc CEILING, and what sets it?",
+  "closed_form": {
+    "ceiling": "Tc_ceiling = 0.182 * sqrt(lambda_cap) * w_log(W*) = 0.364 * w_log(W*)",
+    "lambda_cap": 4.0,
+    "coefficient_0364": 0.364,
+    "saturation_width": "W* defined by lambda(W*)=lambda_cap; W* ~ Q_geom^(1/(1+2p))",
+    "geometry_dependence": "Tc_ceiling ~ w0 * Q_geom^(p/(1+2p)); p=phonon-softening exponent w_log=w0(W/W0)^p",
+    "set_by": "the phonon scale w_log evaluated at the saturation bandwidth W* (where lambda hits ~4)"
+  },
+  "key_analytic_result": "In the Allen-Dynes strong-coupling asymptote, w_log CANCELS: Tc ~ 0.182*sqrt(C*Q_geom/W), monotone in 1/W, NO internal maximum. The flat-band trade-off (d) ALONE does NOT close a ceiling (Tc would diverge as W->0). The BINDING bound is the EXTERNAL fundamental cap lambda<~4 (arXiv:2407.12922).",
+  "geometry_role": {
+    "demand": "Q_geom<1 forces N(EF) larger by 1/Q_geom (Welch) to reach the cap -> smaller saturation width W* (flatten MORE).",
+    "ceiling_value_p0": "if phonons do NOT soften (p=0): Tc_ceiling = 0.364*w0 is geometry-INDEPENDENT; geometry only sets HOW flat the band must be.",
+    "ceiling_value_psoften": "if phonons soften (p>0, generic): smaller W* => softer w_log(W*) => Tc_ceiling LOWERED by Q_geom^(p/(1+2p))."
+  },
+  "assumptions": [
+    "A1 N(EF)=n_band/W",
+    "A2 w_log=w0*(W/W0)^p, p>=0 (phonon softens as band flattens; p scanned 0,1/2,1)",
+    "A3 Hopfield lambda=n_band g0^2 Q/(W w_log^2) with stiffness M w^2 ~ w_log^2",
+    "A4 Q_geom W-independent in perfectly-flat limit (R3/R5), constant multiplier, 1/N<=Q<=1",
+    "A5 Allen-Dynes strong-coupling asymptote Tc=0.182 w_log sqrt(lambda)",
+    "lambda_cap~=4 (arXiv:2407.12922 instability bound)",
+    "mu* neglected in asymptote (monotone downward correction)"
+  ],
+  "numerical_sanity_check": {
+    "welch_floor_Q>=1/N_band": "PASS for all model lattices (d.sigma family, Lieb)",
+    "wlog_cancellation": "PASS numerically: uncapped Tc p-INDEPENDENT (236.14 K for p=0,1/2,1)",
+    "Tc_monotone_to_cap_then_frozen": "PASS (no internal max from trade-off alone)",
+    "geometric_demand_Wstar_vs_Q": "Q=1.0->W*=1.55, Q=0.5->W*=1.05, Q=0.334->W*=0.81 (W* ~ Q^(1/(1+2p)))",
+    "geometric_ceiling_lowering_p_half": "Tc_max 371K(Q=1) -> 325K(Q=0.566,Lieb) -> 284K(Q=0.334,Welch-floor n=3)"
+  },
+  "where_it_could_break_d6": [
+    "LOAD-BEARING: A3 stiffness identification M w^2 ~ w_log^2 is what makes w_log cancel. If the COUPLING phonon (in M w^2) differs from the thermodynamic w_log, cancellation is partial and an INTERNAL Tc(W) maximum from (d) alone CAN appear. This is the next falsifier.",
+    "A5 asymptote overestimates Tc near lambda=4 by ~10-20% (full f1*f2 + mu*); form Tc~w_log sqrt(lambda) and the cancellation are unaffected.",
+    "A4 constant Q_geom holds only in perfectly-flat limit; finite-W dispersion drifts Q->1, weakening the geometric lowering."
+  ],
+  "grounding": [
+    "arXiv:2407.12922 (Semenok-Altshuler-Yuzbashyan): lambda<~4 from electron-lattice instability; room-T phonon SC feasible only in hydrides",
+    "arXiv:2502.18281: Maximum Tc of conventional superconductors at ambient pressure (companion ceiling literature)",
+    "R5_VERDICT Welch bound Q_geom>=1/N_band; R3/R5 lieb_probe machinery"
+  ],
+  "next_round": {
+    "name": "r2 fb-ceiling-depletion: coupling-phonon vs thermodynamic-w_log SEPARATION test",
+    "rationale": "The ceiling's clean closed form rests entirely on A3 (M w^2 ~ w_log^2 => w_log cancels). If the el-ph COUPLING phonon omega_c differs from the THERMODYNAMIC omega_log (multi-branch / acoustic-vs-optical flat-band lattices), the cancellation is incomplete and the trade-off (d) ITSELF may generate an internal Tc(W) maximum -> a SECOND, geometry-set ceiling independent of the lambda-cap.",
+    "depletion_test": "On a 2-phonon-branch flat-band model (soft acoustic omega_a(W)=w0(W/W0)^p_a as coupling phonon + stiff optical omega_o as thermodynamic scale), scan W and ask: does d2(Tc)/dW2 produce an INTERIOR maximum at some W_opt>0 BEFORE lambda hits 4? If YES -> the trade-off closes a genuine geometry/phonon ceiling (NEW law, supersedes r1's 'cap is the only binding bound'). If NO (max still at the lambda-cap edge for all branch ratios) -> r1 ceiling is FINAL and the lane is DEPLETED: the only flat-band Tc ceiling is the fundamental lambda-cap one, value set by w_log(W*), geometry-lowered by Q^(p/(1+2p))."
+  },
+  "artifacts": [
+    "state/fb-geom-lambda/fb-ceiling/CEILING_DERIVATION.md",
+    "state/fb-geom-lambda/fb-ceiling/ceiling_probe.py",
+    "state/fb-geom-lambda/fb-ceiling/tradeoff_probe.py"
+  ]
+}

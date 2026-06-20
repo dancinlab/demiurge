@@ -1,0 +1,139 @@
+{
+  "curves": {
+    "C-C": {
+      "label": "C\u2013C (graphene E2g)",
+      "M_amu": 6.0055,
+      "d_ang": 1.42,
+      "omega_cut_meV": 0.4794402299925211,
+      "tc_peak_C20": 1.112684885766643,
+      "tc_peak_C32": 1.7802958172266288
+    },
+    "H-H": {
+      "label": "H\u2013H (metallic-H bond)",
+      "M_amu": 0.504,
+      "d_ang": 0.74,
+      "omega_cut_meV": 21.03615475965896,
+      "tc_peak_C20": 48.82070796621651,
+      "tc_peak_C32": 78.11313274594642
+    }
+  },
+  "peak_scan": [
+    {
+      "name": "H\u2013H (metallic-H bond)",
+      "M_red": 0.504,
+      "d": 0.74,
+      "omega_star_meV": 21.03615475965896,
+      "tc_C20": 48.82070796621651,
+      "tc_C32": 78.11313274594642,
+      "clears_293": false,
+      "note": "the lightest homonuclear bond"
+    },
+    {
+      "name": "C\u2013H stretch",
+      "M_red": 0.9299552961056917,
+      "d": 1.09,
+      "omega_star_meV": 5.25466779991001,
+      "tc_C20": 12.19503303003115,
+      "tc_C32": 19.51205284804984,
+      "clears_293": false,
+      "note": "X\u2013H reduced mass \u2248 m_H"
+    },
+    {
+      "name": "B\u2013H",
+      "M_red": 0.9220240311389405,
+      "d": 1.19,
+      "omega_star_meV": 4.446560133253763,
+      "tc_C20": 10.319576757255334,
+      "tc_C32": 16.511322811608533,
+      "clears_293": false,
+      "note": "borane-type B\u2013H"
+    },
+    {
+      "name": "B\u2013B (kagome borophene)",
+      "M_red": 5.405,
+      "d": 1.7,
+      "omega_star_meV": 0.3716779456789132,
+      "tc_C20": 0.8625901763316217,
+      "tc_C32": 1.3801442821305947,
+      "clears_293": false,
+      "note": "L? borophene 167 meV bond"
+    },
+    {
+      "name": "B\u2013C",
+      "M_red": 5.689448753341221,
+      "d": 1.56,
+      "omega_star_meV": 0.4193155290041458,
+      "tc_C20": 0.9731474797128217,
+      "tc_C32": 1.5570359675405145,
+      "clears_293": false,
+      "note": "MgB2-class"
+    },
+    {
+      "name": "C\u2013C (graphene E2g)",
+      "M_red": 6.0055,
+      "d": 1.42,
+      "omega_star_meV": 0.4794402299925211,
+      "tc_C20": 1.112684885766643,
+      "tc_C32": 1.7802958172266288,
+      "clears_293": false,
+      "note": "the C ceiling, 196 meV E2g"
+    },
+    {
+      "name": "C\u2013N",
+      "M_red": 6.466218656314858,
+      "d": 1.34,
+      "omega_star_meV": 0.5000349380714031,
+      "tc_C20": 1.1604810842761122,
+      "tc_C32": 1.8567697348417795,
+      "clears_293": false,
+      "note": "sp2 C\u2013N COF"
+    },
+    {
+      "name": "B\u2013N (h-BN E2g)",
+      "M_red": 6.101288229842447,
+      "d": 1.45,
+      "omega_star_meV": 0.45258774146424796,
+      "tc_C20": 1.0503656303902267,
+      "tc_C32": 1.6805850086243626,
+      "clears_293": false,
+      "note": "h-BN"
+    }
+  ],
+  "global_best": {
+    "name": "H\u2013H (metallic-H bond)",
+    "M_red": 0.504,
+    "d": 0.74,
+    "omega_star_meV": 21.03615475965896,
+    "tc_C20": 48.82070796621651,
+    "tc_C32": 78.11313274594642,
+    "clears_293": false,
+    "note": "the lightest homonuclear bond"
+  },
+  "hydrogen": {
+    "name": "H\u2013H (metallic-H bond)",
+    "M_red": 0.504,
+    "d": 0.74,
+    "omega_star_meV": 21.03615475965896,
+    "tc_C20": 48.82070796621651,
+    "tc_C32": 78.11313274594642,
+    "clears_293": false,
+    "note": "the lightest homonuclear bond"
+  },
+  "solver": {
+    "solver_ran": true,
+    "ed_first_bound_g": 0.2
+  },
+  "verdict": {
+    "global_peak_bond": "H\u2013H (metallic-H bond)",
+    "omega_star_meV": 21.03615475965896,
+    "M_red_amu": 0.504,
+    "d_ang": 0.74,
+    "tc_star_C20": 48.82070796621651,
+    "tc_star_C32": 78.11313274594642,
+    "clears_293": false,
+    "hydrogen_wins": true,
+    "spawns_candidate_class": null,
+    "novelty_gate": "n/a",
+    "law": "Omega*(M,d)=hbar/(2 M_red (g*d/2)^2) \u221d 1/(M_red d^2); Tc*=C_QMC\u00b7Omega*\u00b711.6"
+  }
+}

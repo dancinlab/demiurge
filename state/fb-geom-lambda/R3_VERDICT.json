@@ -1,0 +1,25 @@
+{
+  "id": "FB-GEOM-LAMBDA",
+  "round": 3,
+  "date": "2026-06-19",
+  "verdict": "🟢 SIGNAL — geometric el-ph law confirmed in tight-binding (model-level)",
+  "law": "lambda_FB = N(E_F) * g0^2 * Q_geom / (M w^2),  Q_geom = <|<u(k')|u(k)>|^2>_FS (FS-averaged Bloch overlap = quantum-geometric invariant)",
+  "evidence": {
+    "identity_exact": "[A] direct FS-double-sum lambda == N(EF) g0^2 Q_geom/Mw2 to rel.err=0.0 (exact decomposition, Holstein |g|^2=g0^2|<u(k')|u(k)>|^2)",
+    "geometric_invariant": "[C] as band flattens (tp->0, width->0) Q_geom->0.566 CONSTANT; divergence carried entirely by N(E_F)~1/W",
+    "decisive_isolation": "[D] perfectly flat band (width=0, N(EF) fixed), tune geometry only via 2-band d.sigma model: trivial m=3 -> int_g=0.001, Q_geom=0.937, lambda=0.937;  max-winding m=0 -> int_g=0.0115, Q_geom=0.500, lambda=0.500. Quantum geometry SUPPRESSES lambda.",
+    "correlation": "corr(int_tr_g, 1-Q_geom) = +0.89 (monotonic, not strictly linear)"
+  },
+  "novelty": "Peotta-Torma: superfluid weight D_s ∝ ∫g (geometry ENHANCES stiffness). This: el-ph lambda ∝ Q_geom, geometry SUPPRESSES coupling (opposite sign). No published closed-form Q_geom el-ph lambda law tested across flat-band materials (d_novel_only clean).",
+  "honest_limits_d6": [
+    "tight-binding Holstein model only — NOT yet validated on real DFT materials (kagome RTSC, Lieb realizations)",
+    "int_g <-> (1-Q_geom) is MONOTONIC not strictly linear (corr 0.89) — local metric vs global all-pairs overlap differ; closed-form Q_geom(int_g) not yet derived",
+    "Q_geom factorization is exact for Holstein (local density) coupling; bond/SSH phonons may add a separate vertex-geometry term (round-5)"
+  ],
+  "next_rounds": {
+    "R4": "real-material test — compute Q_geom from LaRu3Si2 / LaOs3Si2 DFT flat-band eigenvectors (our DFPT), check our lambda=1.64/0.81 consistent with N(EF)*Q_geom decomposition",
+    "R5": "derive closed-form Q_geom(int g) analytically (global-overlap vs local-metric bridge); extend to non-Holstein (SSH/bond) phonons",
+    "R6": "falsify across corpus: CsV3Sb5, XPd5, TBG — does measured lambda-residual track Q_geom?"
+  },
+  "artifact": "state/fb-geom-lambda/lieb_probe.py (reproducible)"
+}

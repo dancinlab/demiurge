@@ -1,0 +1,8 @@
+# arxiv novelty (lane-A, parent-persisted) · CoSn·Nb3Cl8 geometric flat-band SC · d_novel_only
+VERDICT: our synthesis (geometric superfluid weight D_s∝⟨g⟩ → named-material room-T Tc; CoSn ⟨g⟩2.87/Tc3D179K, Nb3Cl8 ⟨g⟩2.11) = NOVEL. ingredients published separately, the named-material Kelvin-Tc fusion is not.
+CoSn: QGT k-map published (arXiv:2412.17809, NatPhys 2024) but NO scalar ⟨tr g⟩, NO Tc. CoSn explicitly classed NON-superconducting / paramagnetic (arXiv:2605.24822, used as negative ref). → our scalar ⟨g⟩2.87 + 179K = NOVEL.
+  ⚠️ HONEST CAVEAT (d6): field's empirical read = CoSn paramagnetism suppresses SC. our claim must address why the bipolaron/geometric channel survives where conventional pairing is argued absent — substantive OPEN point, not a literature collision.
+Nb3Cl8: published Mott insulator / cluster-Mott / QSL (arXiv:2205.11462, NanoLett 2022; 2408.00145), molecular flat band + phonons known, but ZERO SC proposal (pressure→metal no SC; Nb3Br8 only a passive Mott barrier in Josephson-diode junctions). → flat-band SC = NOVEL.
+GENERAL: no published "D_s=4|U|ν(1-ν)⟨g⟩ → named real kagome material room-T Tc". named-material kagome SC predictions use conventional el-ph (2605.24822 MMSn Tc≈2.2K, 2503.20867 LaRu3Si2, 2505.14223 XPd5) — none geometric, none room-T.
+NEAREST COMPETITOR: arXiv:2209.00007 "Many-Body SC in Topological Flat Bands" (linear-|U| gap + topology-bounded superfluid weight) — same engine, model/TQC-level, NO named material, NO Kelvin Tc. our differentiator = named-material scalar ⟨g⟩ + explicit Tc.
+GROUNDING citations: 2412.17809 (CoSn QGT), 2203.11133+2308.08248 (Peotta-Törmä), 2209.00007 (TFB-SC), 2605.24822 (CoSn-not-SC).

@@ -1,0 +1,53 @@
+&CONTROL
+  calculation     = 'vc-relax'
+  prefix          = 'li2auh6'
+  outdir          = './out'
+  pseudo_dir      = './pseudo'
+  forc_conv_thr   = 1.0d-4
+  etot_conv_thr   = 1.0d-6
+  tstress         = .true.
+  tprnfor         = .true.
+  nstep           = 200
+/
+&SYSTEM
+  ibrav           = 2                ! FCC, Fm-3m (SG 225) - K2PtCl6 antifluorite (= Mg2PtH6 structure type)
+  celldm(1)       = 12.40            ! seed ~6.56 A (Li smaller than Mg; vc-relax finds true a). REPLACE w/ relaxed
+  nat             = 9                ! 1 Au + 2 Li + 6 H ([AuH6] octahedron)
+  ntyp            = 3
+  ecutwfc         = 90               ! Au 5d semicore - high ecut
+  ecutrho         = 360
+  nosym           = .true.           ! guard - avoid checkallsym crash
+  occupations     = 'smearing'
+  smearing        = 'mp'             ! d15 metallic-case aid
+  degauss         = 0.01             ! d15 small-gap SCF aid
+/
+&ELECTRONS
+  conv_thr        = 1.0d-10
+  mixing_beta     = 0.3
+  electron_maxstep = 400
+/
+&IONS
+  ion_dynamics    = 'bfgs'
+/
+&CELL
+  cell_dynamics   = 'bfgs'
+  cell_dofree     = 'all'
+/
+ATOMIC_SPECIES
+  Au  196.967   Au.pbe-n-rrkjus_psl.1.0.0.UPF
+  Li    6.941   Li.pbe-s-rrkjus_psl.1.0.0.UPF
+  H     1.008   H.pbe-rrkjus_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS crystal
+  Au   0.0000000   0.0000000   0.0000000   ! M @ 4a
+  Li   0.2500000   0.2500000   0.2500000   ! X @ 8c
+  Li   0.7500000   0.7500000   0.7500000   ! X @ 8c
+  H   -0.24  0.24  0.24    ! H @ 24e [AuH6] octahedron
+  H   0.24  -0.24  -0.24
+  H   0.24  -0.24  0.24
+  H   -0.24  0.24  -0.24
+  H   0.24  0.24  -0.24
+  H   -0.24  -0.24  0.24
+
+K_POINTS automatic
+  12 12 12  0 0 0

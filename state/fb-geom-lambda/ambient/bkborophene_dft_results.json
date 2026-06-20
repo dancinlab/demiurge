@@ -1,0 +1,174 @@
+{
+  "metric": {
+    "rows": [
+      [
+        10,
+        2.7755575615628914e-14,
+        35.91977401341287,
+        0.03988837946970029,
+        0.4979855941925515
+      ],
+      [
+        15,
+        2.7755575615628914e-14,
+        53.88576902303585,
+        0.03864572369394291,
+        0.49672171902848783
+      ],
+      [
+        20,
+        2.7755575615628914e-14,
+        71.85522417645387,
+        0.03776565718343822,
+        0.49386068801718414
+      ],
+      [
+        25,
+        2.7755575615628914e-14,
+        89.82769299715052,
+        0.0371392621520388,
+        0.4898574500021282
+      ],
+      [
+        30,
+        2.7755575615628914e-14,
+        107.80273719675861,
+        0.036715818767326464,
+        0.4850652349377002
+      ],
+      [
+        40,
+        2.7755575615628914e-14,
+        143.76883334605512,
+        0.036549171586335485,
+        0.47408697958638824
+      ],
+      [
+        50,
+        2.7755575615628914e-14,
+        179.8234816239743,
+        0.03685412192145474,
+        0.4624160124593069
+      ]
+    ],
+    "trg_perstep": 0.03776565718343822,
+    "trg_bz": 2.19,
+    "W_meV": 71.85522417645387,
+    "gap_meV": 2.7755575615628914e-14,
+    "Qgeom": 0.49386068801718414,
+    "t_eV": 0.075
+  },
+  "epc": {
+    "u0_pm": 4.811996826074615,
+    "dtdu_eV_per_A": 0.08823529411764706,
+    "g_ssh_eV": 0.0042458795524187775,
+    "g_holstein_eV": 0.0006368819328628166,
+    "holstein_frac": 0.15,
+    "offdiagonal_dominant": "True"
+  },
+  "doping": {
+    "U_Mott_over_Omega": 7.226999999999999,
+    "U_over_Omega": 2.0,
+    "metallic": true,
+    "survives_mott": true,
+    "g_star": 0.8,
+    "Omega_renorm_meV": 160.61545691495573,
+    "stable_dynamic": true,
+    "nu_half_reachable": true,
+    "lam_ssh": 0.3
+  },
+  "bipolaron": {
+    "solver_ran": true,
+    "mstar": 1.0772189053988306,
+    "binding": 0.601602517062684,
+    "bound": false,
+    "Omega_t": 2.141539425532743,
+    "g_t": 0.0566117273655837,
+    "U_t": 4.283078851065486,
+    "Tc_over_Omega": 0.06718953837538423,
+    "Tc_K": 0.0,
+    "g_threshold_t": 1.2,
+    "g_realistic_t": 0.0566117273655837,
+    "binding_scan": [
+      [
+        0.05,
+        0.6019491753468671
+      ],
+      [
+        0.1,
+        0.5982542907326613
+      ],
+      [
+        0.2,
+        0.5833336358812433
+      ],
+      [
+        0.5,
+        0.4729027687353806
+      ],
+      [
+        0.8,
+        0.24392649904098196
+      ],
+      [
+        1.0,
+        0.01131892843981852
+      ],
+      [
+        1.2,
+        -0.2921285485271712
+      ],
+      [
+        1.5,
+        -0.8796871690311345
+      ],
+      [
+        2.0,
+        -2.1190714491059577
+      ]
+    ],
+    "coupling_shortfall": 21.197021462544576,
+    "Tc_ceiling_K": {
+      "lo": 279.5672643061719,
+      "mid": 484.583258130698,
+      "hi": 820.0639752981043
+    }
+  },
+  "box": [
+    [
+      "1. <g> >= 0.8 (high-metric flat band)",
+      true,
+      "<g>~2.19"
+    ],
+    [
+      "2. Omega >= 160 meV (stiff light bond)",
+      true,
+      "B-B 167 meV"
+    ],
+    [
+      "3. 1-atm dynamically stable",
+      true,
+      "Om_ren 161 meV real"
+    ],
+    [
+      "4. nu ~ 1/2 reachable",
+      true,
+      "gate/field dope to -65 meV cVHS"
+    ],
+    [
+      "5. metallic, U/Om < U_Mott (not deep-Mott)",
+      true,
+      "U/Om 2.0 < 7.2"
+    ],
+    [
+      "6. OFF-DIAGONAL SSH TYPE (not Holstein)",
+      true,
+      "g_SSH > g_Holst x7"
+    ]
+  ],
+  "box_pass": 6,
+  "verdict": "CLOSED-NEGATIVE (terminal): the 6-criterion geometric TARGET BOX PASSES (box 6/6) BUT the bond-bipolaron is UNBOUND at BK-borophene's REALISTIC SSH coupling g/t=0.057. Binding needs g/t>=1.20 (~21x stronger). The STIFF light bond (high Omega=167meV) sits in a RELATIVELY WIDE band (t~75meV) so the DIMENSIONLESS coupling g/t is small -> no bound pair -> NO room-T bond-bipolaron. This is the SAME central tension upstream (flat-band heaviness vs stiff-bond lightness) re-surfacing as a g/t MAGNITUDE wall: the geometry is right, the coupling strength is not. BK-borophene is NOT a room-T bond-bipolaron host. Tc(realistic)=0 K (no bipolaron).",
+  "Tc_K_solver": 0.0,
+  "Tc_ceiling_hi_K": 820.0639752981043,
+  "g_over_t_universal": 0.0566117273655837
+}

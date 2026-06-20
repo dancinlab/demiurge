@@ -1,0 +1,16 @@
+{
+  "lane": "fb-ceiling",
+  "round": "r2",
+  "question": "Does breaking A3 (soft acoustic coupling phonon != stiff optical w_log) produce an INTERIOR Tc maximum at W_opt>0 before lambda hits the cap 4?",
+  "falsifier": "A3: M*w_coup^2 ~ w_log^2 (coupling phonon = thermodynamic scale)",
+  "n_configs": 150,
+  "any_interior_max": false,
+  "n_interior": 0,
+  "interior_rows": [],
+  "analytic_note": "asymptote: Tc ~ W^{p_o - p_a - 1/2}, exponent<0 for all p_o<=p_a => pure power-law gives NO interior max; the lambda-weighted w_log crossover (acoustic dominates at small W) is the only mechanism, tested numerically",
+  "mechanism_why_A3_survives": "Breaking A3 by construction (distinct soft-acoustic coupling phonon vs stiff-optical thermodynamic branch) does NOT decouple the scales in the regime that matters. The thermodynamic w_log is lambda-WEIGHTED: ln w_log = (lam_a ln w_a + lam_o ln w_o)/(lam_a+lam_o). As W->0 the acoustic branch is BOTH the coupling phonon AND the dominant lambda contributor (lam_a ~ 1/(W w_a^2) >> lam_o because w_a softens and w_a<<w_o), so the weighting drives w_log -> w_a regardless of optical stiffness R. A3 (coupling phonon = w_log) RE-ASSERTS ITSELF SELF-CONSISTENTLY exactly where it would need to fail. A stiff optical branch contributes negligibly to w_log precisely in the strong-coupling corner, so it cannot halt the Tc divergence. Verified across R in [1,16], (p_a,p_o) gaps up to (1.0,0.0), eta in {0.3,1.0}, Q in {1,0.566,0.334}: 0/150 interior maxima; the Tc peak is pinned at the small-W cap edge (lambda~3.95) in every config.",
+  "curve_evidence": "full Tc(W) curves (max-separation R=16/p_a=1/p_o=0, A3-control, intermediate R=8) are strictly monotone-increasing toward small W; Tc[small-W edge] >> Tc[large-W], peak always at the cap edge, no interior bump.",
+  "verdict": "r1_CONFIRMED_DEPLETED",
+  "g5": "PASS",
+  "depletion": "(b) NO interior max across all branch ratios -> r1 ceiling is FINAL; sole flat-band Tc ceiling = lambda-cap one 0.364*w_log(W*), geometry-lowered by Q^{p/(1+2p)}. LANE DEPLETED."
+}

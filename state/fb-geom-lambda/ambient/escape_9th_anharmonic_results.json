@@ -1,0 +1,162 @@
+{
+  "anchor": {
+    "g_over_t_per_bond": 0.0566,
+    "threshold": 1.2,
+    "shortfall": 21.20141342756184
+  },
+  "loopholes": {
+    "L1": {
+      "name": "L1 ANHARMONIC large-amplitude / double-well soft mode",
+      "gt_harmonic": 0.05661172736558371,
+      "gt_pure_quartic": 0.07359524557525883,
+      "quartic_boost": 1.3,
+      "double_well_scan": [
+        {
+          "umin_pm": 10,
+          "Delta_meV": 45.076047105414425,
+          "Omega_eff_meV": 19.272172470525412,
+          "gt_eff": 0.1176470588235294,
+          "meets_stiff_160": false,
+          "gt_x_thresh": 0.0980392156862745
+        },
+        {
+          "umin_pm": 20,
+          "Delta_meV": 180.3041884216577,
+          "Omega_eff_meV": 0.029619197045342143,
+          "gt_eff": 0.2352941176470588,
+          "meets_stiff_160": false,
+          "gt_x_thresh": 0.196078431372549
+        },
+        {
+          "umin_pm": 40,
+          "Delta_meV": 721.2167536866308,
+          "Omega_eff_meV": 1.6525085314978216e-13,
+          "gt_eff": 0.4705882352941176,
+          "meets_stiff_160": false,
+          "gt_x_thresh": 0.392156862745098
+        },
+        {
+          "umin_pm": 80,
+          "Delta_meV": 2884.867014746523,
+          "Omega_eff_meV": 1.6011256974433605e-58,
+          "gt_eff": 0.9411764705882352,
+          "meets_stiff_160": false,
+          "gt_x_thresh": 0.784313725490196
+        },
+        {
+          "umin_pm": 160,
+          "Delta_meV": 11539.468058986093,
+          "Omega_eff_meV": 1.4110821492632794e-238,
+          "gt_eff": 1.8823529411764703,
+          "meets_stiff_160": false,
+          "gt_x_thresh": 1.568627450980392
+        }
+      ],
+      "survivor": false,
+      "verdict": "COLLAPSES \u2014 pure quartic gives only an O(1) (~1.3\u00d7) prefactor, still 1/\u221a\u03a9; double-well buys large u_eff ONLY by softening the mode (\u03c9_tun \u226a 160 meV), which FAILS criterion-2. The high-\u03a9 and large-u_eff requirements are the SAME mode and trade off \u2014 g\u00b7(\u03a9-budget) conserved. NOT a real loophole.",
+      "plausibility": "LOW",
+      "boost_factor": 1.3
+    },
+    "L2": {
+      "name": "L2 NON-LINEAR / 2nd-order SSH (g2 u^2)",
+      "u0_over_d": 0.028305882352941177,
+      "g1_over_t": 0.056611764705882354,
+      "g2_over_t": 0.00240366892733564,
+      "g2_to_g1_ratio": 0.042458823529411764,
+      "scaling": "g2/t = 3(u0/d)^2 \u221d u0^2 \u221d 1/\u03a9 (STEEPER suppression than linear 1/\u221a\u03a9)",
+      "survivor": false,
+      "verdict": "COLLAPSES \u2014 2nd-order g2/t = 3(u0/d)^2 = 0.0024 is ~24\u00d7 smaller than the linear coupling and scales as 1/\u03a9 (steeper). Even with the linear term symmetry-forbidden, g2/t ~ 0.002 (~500\u00d7 short). Higher-order SSH makes the wall WORSE, not better.",
+      "plausibility": "VERY LOW",
+      "boost_factor": 0.042458823529411764
+    },
+    "L3": {
+      "name": "L3 MULTI-BOND / COORDINATION (kagome line-graph, Z=4)",
+      "g_bond_over_t": 0.0566,
+      "Z_full": 4,
+      "estimates": {
+        "per_bond (terminal verdict)": 0.0566,
+        "sqrt(Z_shared=2) incoherent": 0.08004448763031718,
+        "sqrt(Z_full=4) incoherent": 0.1132,
+        "Z_full=4 COHERENT (wrong/worst)": 0.2264
+      },
+      "crossings": {
+        "per_bond (terminal verdict)": {
+          "g_over_t": 0.0566,
+          "crosses_thresh": false,
+          "remaining_shortfall": 21.20141342756184
+        },
+        "sqrt(Z_shared=2) incoherent": {
+          "g_over_t": 0.08004448763031718,
+          "crosses_thresh": false,
+          "remaining_shortfall": 14.991663205368496
+        },
+        "sqrt(Z_full=4) incoherent": {
+          "g_over_t": 0.1132,
+          "crosses_thresh": false,
+          "remaining_shortfall": 10.60070671378092
+        },
+        "Z_full=4 COHERENT (wrong/worst)": {
+          "g_over_t": 0.2264,
+          "crosses_thresh": false,
+          "remaining_shortfall": 5.30035335689046
+        }
+      },
+      "best_honest_g_over_t": 0.1132,
+      "best_honest_shortfall": 10.60070671378092,
+      "coherent_worst_case_g_over_t": 0.2264,
+      "coherent_worst_case_shortfall": 5.30035335689046,
+      "physics": "Per-bond phonons are INDEPENDENT Einstein modes -> coordination enters the polaron self-energy as a SUM of squares -> g_eff = \u221aZ\u00b7g_bond (incoherent), NOT Z\u00b7g_bond. Kagome Z=4 -> \u00d72 boost -> g/t = 0.113. The mutual ATTRACTION flows through SHARED bonds only (Z_shared~1-3 for a plaquette pair), so the binding-relevant boost is \u2264 \u00d72. The threshold g*/t\u22481.2 was per-shared-bond.",
+      "survivor": false,
+      "verdict": "REAL but INSUFFICIENT \u2014 coordination IS a genuine factor the per-bond number missed: kagome Z=4 gives a \u221aZ=\u00d72 boost, g/t: 0.057 -> 0.113. The terminal verdict's per-bond 0.057 was an UNDER-estimate by ~2\u00d7. HOWEVER even the most generous (physically-too-strong COHERENT Z=4) estimate g/t=0.226 is still 5.3\u00d7 below the binding threshold 1.2. The \u221aZ=\u00d72 honest boost leaves a 10.6\u00d7 shortfall. The wall MOVES but does NOT break: 21\u00d7 -> ~11\u00d7 (honest) or ~5\u00d7 (worst-case). NO escape.",
+      "plausibility": "MEDIUM (real factor) but NON-ESCAPING",
+      "boost_factor": 2.0
+    },
+    "L4": {
+      "name": "L4 QUANTUM-NUCLEAR / isotope / path-integral",
+      "isotope_scan": {
+        "H (unphysical framework)": {
+          "M": 1.008,
+          "u0_boost": 3.2747834049302176,
+          "g_over_t": 0.1853527407190503
+        },
+        "Be": {
+          "M": 9.012,
+          "u0_boost": 1.095222243243345,
+          "g_over_t": 0.061989578967573324
+        },
+        "B (anchor)": {
+          "M": 10.81,
+          "u0_boost": 1.0,
+          "g_over_t": 0.0566
+        },
+        "C": {
+          "M": 12.011,
+          "u0_boost": 0.9486876860703107,
+          "g_over_t": 0.05369572303157959
+        }
+      },
+      "physical_framework_boost": 1.095222243243345,
+      "physical_g_over_t": 0.061989578967573324,
+      "survivor": false,
+      "verdict": "COLLAPSES \u2014 u0=\u221a(\u0127/2M\u03a9) is ALREADY the quantum (path-integral, harmonic) result; there is no extra quantum boost. The only lever is isotope mass (g/t \u221d 1/\u221aM). Restricted to physical stiff-FRAMEWORK formers (B/C/Be) it gives \u22641.1\u00d7. The 3.3\u00d7 'make it hydrogen' lands back in the exhausted hydride/Regime-I space and is an interstitial, not a kagome framework bond. No new scaling, no escape.",
+      "plausibility": "VERY LOW",
+      "boost_factor": 1.095222243243345
+    }
+  },
+  "combined": {
+    "honest_boosts": {
+      "anharmonic": 1.3,
+      "coordination": 2.0,
+      "isotope": 1.095222243243345
+    },
+    "stacked_g_over_t_honest": 0.16117290531569062,
+    "stacked_shortfall_honest": 7.445420169410923,
+    "crosses_threshold_honest": false,
+    "worst_case_g_over_t": 0.32234581063138124,
+    "worst_case_shortfall": 3.7227100847054615,
+    "crosses_threshold_worst": false,
+    "note": "Even multiplying ALL favorable boosts (anharmonic 1.3 \u00d7 coordination 2.0 \u00d7 isotope 1.1 = 2.9\u00d7) the realistic g/t reaches only 0.160, still 7.5\u00d7 below threshold 1.2. The physically-too-generous coherent-Z=4 stack reaches 0.321, still 3.7\u00d7 short. The 9th-law closure is ROBUST."
+  },
+  "any_escape": false,
+  "final_verdict": "CLOSURE ROBUST \u2014 all four loopholes fail; 9th law holds"
+}

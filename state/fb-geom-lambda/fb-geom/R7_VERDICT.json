@@ -1,0 +1,99 @@
+{
+  "id": "FB-GEOM-LAMBDA",
+  "round": 7,
+  "date": "2026-06-19",
+  "corrected_hamiltonians": {
+    "dice/T3*": {
+      "width": 2.994356446426533e-15,
+      "flat_below_1e-4": true,
+      "Q_geom": 0.5197278117548855
+    },
+    "checkerboard*": {
+      "width": 1.5543122344752192e-15,
+      "flat_below_1e-4": true,
+      "Q_geom": 0.5000001883801118
+    }
+  },
+  "zoo": [
+    {
+      "name": "dice/T3*",
+      "N_band": 3,
+      "width": 2.994356446426533e-15,
+      "Q_geom": 0.5197278117548855,
+      "welch_floor": 0.3333333333333333,
+      "touch_gap": 0.36986928520016615,
+      "fubini_study": 0.04377515688294084,
+      "berry_absF": 6.15776215911164,
+      "chern": 4.240739575284689e-16
+    },
+    {
+      "name": "checkerboard*",
+      "N_band": 2,
+      "width": 1.5543122344752192e-15,
+      "Q_geom": 0.5000001883801118,
+      "welch_floor": 0.5,
+      "touch_gap": 0.0,
+      "fubini_study": 0.039629066466294605,
+      "berry_absF": 2.0,
+      "chern": 2.0
+    },
+    {
+      "name": "Lieb",
+      "N_band": 3,
+      "width": 0.0,
+      "Q_geom": 0.5000003767602238,
+      "welch_floor": 0.3333333333333333,
+      "touch_gap": 1.7319121124709868e-16,
+      "fubini_study": 0.03962906646629462,
+      "berry_absF": 2.0,
+      "chern": 2.0
+    },
+    {
+      "name": "kagome(touch)",
+      "N_band": 3,
+      "width": 4.440892098500626e-15,
+      "Q_geom": 0.49297275015447944,
+      "welch_floor": 0.3333333333333333,
+      "touch_gap": 8.881784197001252e-16,
+      "fubini_study": 0.04435232366573016,
+      "berry_absF": 1.0,
+      "chern": 1.0
+    },
+    {
+      "name": "kagome(gap.02)",
+      "N_band": 3,
+      "width": 0.07291878289329112,
+      "Q_geom": 0.4936126579133373,
+      "welch_floor": 0.3333333333333333,
+      "touch_gap": 8.881784197001252e-16,
+      "fubini_study": 0.0440429007861322,
+      "berry_absF": 3.0,
+      "chern": 3.0
+    }
+  ],
+  "Q_geom_spread": {
+    "min": 0.49297275015447944,
+    "max": 0.5197278117548855,
+    "std": 0.009709728729734496
+  },
+  "determinant_correlations": {
+    "touch_gap (band-touching)": {
+      "vs_Qgeom": 0.9508532769680578,
+      "vs_supp_depth": -0.3809160840987116
+    },
+    "int|F| (Wannier/Berry)": {
+      "vs_Qgeom": 0.8961654149177403,
+      "vs_supp_depth": -0.357098165837448
+    },
+    "int_g (Fubini-Study CP^n)": {
+      "vs_Qgeom": 0.03440231787357411,
+      "vs_supp_depth": -0.6032318412494123
+    }
+  },
+  "winner": {
+    "determinant": "int_g (Fubini-Study CP^n)",
+    "pearson_r_vs_supp_depth": -0.6032318412494123,
+    "clean_predictor": false
+  },
+  "verdict": "HONEST NEGATIVE \u2014 no candidate (band-touching / Berry-Wannier / Fubini-Study) cleanly predicts Q_geom; flat-band Q_geom clusters ~0.50 independent of topology"
+}

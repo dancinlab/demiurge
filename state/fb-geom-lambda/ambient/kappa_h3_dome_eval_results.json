@@ -1,0 +1,124 @@
+{
+  "host": "kappa-H3(Cat-EDT-TTF)2  [O...H...O]- bridge",
+  "u0_ang": 0.13144998105585207,
+  "gt_harrison": 0.10730610698436904,
+  "dtdu_harrison_meV_per_ang": 32.6530612244898,
+  "S_needed_dome_peak": 5.032332410294786,
+  "S_needed_dome_onset": 3.541270955392627,
+  "g_star_central": 0.54,
+  "g_star_lo": 0.38,
+  "g_death": 1.2,
+  "Omega_OHO_meV": 120.0,
+  "t_meV": 40.0,
+  "tc_ceiling_C20_K": 278.496,
+  "tc_ceiling_C32_K": 445.5936,
+  "provenance": "TB-GRADE (published geometry + kappa-dimer t; from-scratch crystal DFPT PENDING)",
+  "S_actual_exp_overlap": [
+    {
+      "delta_ang": 0.3,
+      "S": 4.083333333333334,
+      "g_over_t": 0.438166603519507
+    },
+    {
+      "delta_ang": 0.4,
+      "S": 3.0625,
+      "g_over_t": 0.3286249526396302
+    },
+    {
+      "delta_ang": 0.5,
+      "S": 2.45,
+      "g_over_t": 0.2628999621117042
+    }
+  ],
+  "coupling_axis": "candidate PASS (dome onset reached, Omega in-band, Tc-ceiling 278-446 K)",
+  "carrier_axis": "CLOSES empirically (pressure -> charge-ordered insulator, not metal)",
+  "pressure_metallizes": false,
+  "only_surviving_lever": "carrier doping to nu~1/2 without triggering proton CO (untested, novel)",
+  "verdict": "REAL off-diag H-SSH host, framing-NOVEL; coupling clears dome but carrier/Mott gate CLOSES on empirical record; NOT a discovery; door=untested doping lever -> experimental handoff",
+  "rows": [
+    {
+      "S": 1.0,
+      "dtdu_meV_per_ang": 32.6530612244898,
+      "g_over_t": 0.10730610698436904,
+      "regime": "weak",
+      "on_dome": false,
+      "peak": false,
+      "tc_C20_K": 22.207549914285618,
+      "tc_C32_K": 35.53207986285699,
+      "clears_293": false,
+      "ed_binding_over_t": -0.0051257228015160194,
+      "ed_r_pair": 1.4952107645895905,
+      "ed_mstar": 1.0011189720622702
+    },
+    {
+      "S": 2.0,
+      "dtdu_meV_per_ang": 65.3061224489796,
+      "g_over_t": 0.21461221396873809,
+      "regime": "weak",
+      "on_dome": false,
+      "peak": false,
+      "tc_C20_K": 88.83019965714247,
+      "tc_C32_K": 142.12831945142796,
+      "clears_293": false,
+      "ed_binding_over_t": -0.02059943523898955,
+      "ed_r_pair": 1.4809475488480883,
+      "ed_mstar": 1.004523059654348
+    },
+    {
+      "S": 3.0,
+      "dtdu_meV_per_ang": 97.9591836734694,
+      "g_over_t": 0.32191832095310713,
+      "regime": "weak",
+      "on_dome": false,
+      "peak": false,
+      "tc_C20_K": 199.86794922857055,
+      "tc_C32_K": 319.7887187657129,
+      "clears_293": false,
+      "ed_binding_over_t": -0.04670371519175642,
+      "ed_r_pair": 1.4575404176522837,
+      "ed_mstar": 1.0103522311980158
+    },
+    {
+      "S": 5.0,
+      "dtdu_meV_per_ang": 163.26530612244898,
+      "g_over_t": 0.5365305349218452,
+      "regime": "DOME",
+      "on_dome": true,
+      "peak": true,
+      "tc_C20_K": 278.496,
+      "tc_C32_K": 445.5936,
+      "clears_293": true,
+      "ed_binding_over_t": -0.13271812114702097,
+      "ed_r_pair": 1.3860255024604504,
+      "ed_mstar": 1.0302578302354848
+    },
+    {
+      "S": 8.0,
+      "dtdu_meV_per_ang": 261.2244897959184,
+      "g_over_t": 0.8584488558749523,
+      "regime": "binding",
+      "on_dome": true,
+      "peak": false,
+      "tc_C20_K": 278.496,
+      "tc_C32_K": 445.5936,
+      "clears_293": true,
+      "ed_binding_over_t": -0.35553028005366905,
+      "ed_r_pair": 1.2364743956307667,
+      "ed_mstar": 1.085259216564855
+    },
+    {
+      "S": 12.0,
+      "dtdu_meV_per_ang": 391.8367346938776,
+      "g_over_t": 1.2876732838124285,
+      "regime": "localized",
+      "on_dome": false,
+      "peak": false,
+      "tc_C20_K": 241.86336093441096,
+      "tc_C32_K": 386.9813774950576,
+      "clears_293": false,
+      "ed_binding_over_t": -0.8470585949389271,
+      "ed_r_pair": 1.0367377669040247,
+      "ed_mstar": 1.2073705991642056
+    }
+  ]
+}

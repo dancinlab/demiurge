@@ -1,0 +1,146 @@
+{
+  "lane": "non-fermi-liquid-strange-metal-pairing",
+  "date": "2026-06-19T23:03:03.054358+00:00",
+  "kernel": "gamma-model (Abanov-Chubukov) = marginal-FL/SYK-Yukawa critical glue",
+  "tests": "T1 gamma-model upper bound (arXiv:2512.20009); T2a Planckian/stiffness cap; T2b precursor",
+  "constants": {
+    "KB_eV_per_K": 8.617333262e-05,
+    "ROOMT_K": 293.15,
+    "KB_ROOMT_eV": 0.025261712457552998
+  },
+  "task1_gamma_bound": [
+    {
+      "gamma": 0.5,
+      "tau_up": 8.874824453279942,
+      "Tc_over_g": 1.4124721808123304,
+      "regime": "MFL-ish/strange"
+    },
+    {
+      "gamma": 0.75,
+      "tau_up": 3.0756571619707205,
+      "Tc_over_g": 0.48950604058363034,
+      "regime": "MFL-ish/strange"
+    },
+    {
+      "gamma": 1.0,
+      "tau_up": 1.9999999999999998,
+      "Tc_over_g": 0.31830988618379064,
+      "regime": "marginal-FL/Planckian"
+    },
+    {
+      "gamma": 1.5,
+      "tau_up": 1.4184163815359117,
+      "Tc_over_g": 0.22574797848396014,
+      "regime": "FL-like (Migdal restored)"
+    },
+    {
+      "gamma": 2.0,
+      "tau_up": 1.2430516660539748,
+      "Tc_over_g": 0.19783781717110605,
+      "regime": "FL-like (Migdal restored)"
+    },
+    {
+      "gamma": 3.0,
+      "tau_up": 1.1240604455276249,
+      "Tc_over_g": 0.17889977623979966,
+      "regime": "FL-like (Migdal restored)"
+    }
+  ],
+  "task1_g_needed_for_roomT_eV": 0.07936201027374627,
+  "task1_Tc_vs_g": [
+    {
+      "g_meV": 50,
+      "Tc_max_K_gamma1": 184.69164212752864
+    },
+    {
+      "g_meV": 100,
+      "Tc_max_K_gamma1": 369.3832842550573
+    },
+    {
+      "g_meV": 130,
+      "Tc_max_K_gamma1": 480.1982695315745
+    },
+    {
+      "g_meV": 150,
+      "Tc_max_K_gamma1": 554.0749263825859
+    },
+    {
+      "g_meV": 200,
+      "Tc_max_K_gamma1": 738.7665685101146
+    },
+    {
+      "g_meV": 300,
+      "Tc_max_K_gamma1": 1108.1498527651718
+    }
+  ],
+  "task2a_stiffness_cap": [
+    {
+      "host": "HgBa2Ca2Cu3O8 (ambient record)",
+      "rho_s_meV": 130,
+      "Tc_stiffness_cap_K": 1357.7286202442335
+    },
+    {
+      "host": "YBCO optimal",
+      "rho_s_meV": 100,
+      "Tc_stiffness_cap_K": 1044.4066309571028
+    },
+    {
+      "host": "Bi2212 optimal",
+      "rho_s_meV": 90,
+      "Tc_stiffness_cap_K": 939.9659678613924
+    },
+    {
+      "host": "overdoped cuprate",
+      "rho_s_meV": 60,
+      "Tc_stiffness_cap_K": 626.6439785742616
+    }
+  ],
+  "empirical_anchor": [
+    {
+      "host": "HgBa2Ca2Cu3O8+d",
+      "Tc_lo_K": 134,
+      "Tc_hi_K": 138,
+      "note": "STRANGE METAL normal state; ambient RECORD; pseudogap/CDW below"
+    },
+    {
+      "host": "Tl2Ba2Ca2Cu3O10",
+      "Tc_lo_K": 125,
+      "Tc_hi_K": 128,
+      "note": "strange metal; ambient"
+    },
+    {
+      "host": "Bi2Sr2Ca2Cu3O10",
+      "Tc_lo_K": 110,
+      "Tc_hi_K": 110,
+      "note": "strange metal; ambient"
+    },
+    {
+      "host": "optimally-doped YBCO",
+      "Tc_lo_K": 92,
+      "Tc_hi_K": 93,
+      "note": "strange metal; T-linear rho Tc->600K"
+    },
+    {
+      "host": "CeCoIn5 (heavy-fermion QCP)",
+      "Tc_lo_K": 2.3,
+      "Tc_hi_K": 2.3,
+      "note": "Planckian strange metal at AFM QCP; Tc~2K"
+    },
+    {
+      "host": "magic-angle TBG",
+      "Tc_lo_K": 1.7,
+      "Tc_hi_K": 3.0,
+      "note": "strange metal; Tc~1.7-3K, correlated-insulator neighbor"
+    }
+  ],
+  "verdict": {
+    "escapes_quasiparticle_ceiling": true,
+    "but_substitutes_gamma_model_g_ceiling": true,
+    "Tc_bounded_by": "fixed O(0.2) fraction of the single critical-glue scale g",
+    "gamma1_cuprate_g130meV_Tc_K": 480.1982695315745,
+    "g_needed_for_293K_meV": 79.36201027374628,
+    "honest_caveat": "the gamma-model PREFACTOR bound (Tc<~0.2g) is LOOSE: at g~130meV it permits ~480K, so the prefactor ALONE does not forbid 293K. The binding closure is (2b) precursor + (2a) stiffness trade + the empirical fact that the actual ambient strange-metal record SATURATES at ~134-138K, not 480K. The bound says the SCALE is g; the precursor+trade say g cannot be pushed without the order it borders pre-empting and the condensate de-stiffening.",
+    "ruling": "5th realization of the master conservation (gamma-model g-scale + precursor + stiffness trade)",
+    "roomT_g5": "FAIL #4 (real ambient strange-metal record 134-138K; no 1-atm route exceeds it); closed-negative"
+  }
+}

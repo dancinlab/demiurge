@@ -1,0 +1,12 @@
+{
+  "id":"FB-GEOM-LAMBDA","round":6,"date":"2026-06-19",
+  "verdict":"🟢 Welch-bound UNIVERSAL across flat-band zoo · 🔴 CLS-support→Q_geom link FALSIFIED (closed-negative) · 🐛 2 model Hamiltonians flagged",
+  "welch_universal":"Q_geom >= 1/N_band holds for ALL tested flat-band lattices. Genuinely-flat (sawtooth 0.69, Lieb 0.566, kagome 0.497, d.sigma 0.50) all > 1/N, none trivial (Q=1).",
+  "cls_link_falsified":"Q_geom does NOT track CLS support size: N=2 CLS{1,2,4}->Q{0.50,0.69,0.50} non-monotonic. The MATH-SPECTRA CLS-integer structure does NOT determine the el-ph geometric suppression. Q_geom set by detailed band geometry, not CLS cardinality.",
+  "honest_model_bugs_d6":[
+    "dice/T3 returned Q_geom=1.000 (k-independent flat-band eigvec) — construction bug: both rims coupled to hub with the SAME f; real dice couples rims with distinct bond-phase structure (f differs). NOT physics.",
+    "checkerboard width=2.0 at tp=0.5 — not actually flat (wrong flat-band params); 'flat index' was just less-dispersive band. Needs correct planar-pyrochlore params."
+  ],
+  "R7_question":"If not CLS cardinality, what determines Q_geom? Candidates: band-touching/singularity structure (kagome flat band touches Dirac at Gamma), Wannier obstruction / fragile topology, or the Bloch-vector spread on CP^(n-1). Fix dice+checkerboard H first.",
+  "artifact":"state/fb-geom-lambda/R6_flatband_zoo.py"
+}

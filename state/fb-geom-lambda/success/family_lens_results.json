@@ -1,0 +1,223 @@
+{
+  "filling_sweep": [
+    {
+      "t": 0.5,
+      "bind_t": -3.096136025164485,
+      "m": 1.529292121768233,
+      "bO": 1.5480680125822426,
+      "tcbec": 0.05067704129044437,
+      "tcO": 0.05067704129044437,
+      "compact": true
+    },
+    {
+      "t": 0.7,
+      "bind_t": -2.1594471871153003,
+      "m": 1.5147375689311555,
+      "bO": 1.51161303098071,
+      "tcbec": 0.07162956952111571,
+      "tcO": 0.07162956952111571,
+      "compact": true
+    },
+    {
+      "t": 0.85,
+      "bind_t": -1.74938688230155,
+      "m": 1.4976584515182034,
+      "bO": 1.4869788499563175,
+      "tcbec": 0.08797065837437279,
+      "tcO": 0.08797065837437279,
+      "compact": true
+    },
+    {
+      "t": 1.0,
+      "bind_t": -1.4647870230916569,
+      "m": 1.4748546903451079,
+      "bO": 1.4647870230916569,
+      "tcbec": 0.10509509920854025,
+      "tcO": 0.10509509920854025,
+      "compact": true
+    },
+    {
+      "t": 1.15,
+      "bind_t": -1.256586136942614,
+      "m": 1.4477671210261225,
+      "bO": 1.445074057484006,
+      "tcbec": 0.12312062997650008,
+      "tcO": 0.12312062997650008,
+      "compact": true
+    },
+    {
+      "t": 1.3,
+      "bind_t": -1.098290492032886,
+      "m": 1.4182370060214495,
+      "bO": 1.427777639642752,
+      "tcbec": 0.14207780444628487,
+      "tcO": 0.14207780444628487,
+      "compact": true
+    },
+    {
+      "t": 1.6,
+      "bind_t": -0.8748810343197577,
+      "m": 1.3581995129176345,
+      "bO": 1.3998096549116124,
+      "tcbec": 0.1825946759966476,
+      "tcO": 0.1825946759966476,
+      "compact": false
+    },
+    {
+      "t": 2.0,
+      "bind_t": -0.6868732108565334,
+      "m": 1.2870093449465418,
+      "bO": 1.3737464217130668,
+      "tcbec": 0.24086849191672066,
+      "tcO": 0.24086849191672066,
+      "compact": false
+    }
+  ],
+  "sweet_spot": {
+    "t": 1.3,
+    "bind_t": -1.098290492032886,
+    "m": 1.4182370060214495,
+    "bO": 1.427777639642752,
+    "tcbec": 0.14207780444628487,
+    "tcO": 0.14207780444628487,
+    "compact": true
+  },
+  "tcO_anchor": 0.10509509920784937,
+  "anchor_Tc_K": 45.0,
+  "SCALE": 1.0542759141685791,
+  "members": [
+    {
+      "member": "Ge:GaNb4Se8",
+      "M": "Nb",
+      "X": "Se",
+      "k_scale": 1.0,
+      "omega_meV": 35.0,
+      "tcO_op": 0.10509509920784937,
+      "Tc_K": 45.0,
+      "nonmagnetic": true,
+      "viable_structure": true,
+      "note": "EMPIRICAL ANCHOR (45K onset, 1 batch, no Meissner)"
+    },
+    {
+      "member": "Ge:GaNb4S8",
+      "M": "Nb",
+      "X": "S",
+      "k_scale": 1.0,
+      "omega_meV": 46.83899485808096,
+      "tcO_op": 0.10509509920784937,
+      "Tc_K": 60.22156481753266,
+      "nonmagnetic": true,
+      "viable_structure": true,
+      "note": "ANION lens: lighter S -> higher Omega, same mechanism"
+    },
+    {
+      "member": "Ge:GaNb4Te8",
+      "M": "Nb",
+      "X": "Te",
+      "k_scale": 1.0,
+      "omega_meV": 31.18711834498956,
+      "tcO_op": 0.10509509920784937,
+      "Tc_K": 40.09772358641515,
+      "nonmagnetic": true,
+      "viable_structure": true,
+      "note": "ANION lens: heavier Te -> lower Omega (worse)"
+    },
+    {
+      "member": "Ge:GaTa4S8",
+      "M": "Ta",
+      "X": "S",
+      "k_scale": 1.0,
+      "omega_meV": 43.81840996916668,
+      "tcO_op": 0.10509509920784937,
+      "Tc_K": 56.33795567464287,
+      "nonmagnetic": true,
+      "viable_structure": true,
+      "note": "CLUSTER lens: 5d Ta nonmag + S; heavier M lowers Omega"
+    },
+    {
+      "member": "Ge:GaTa4Se8",
+      "M": "Ta",
+      "X": "Se",
+      "k_scale": 1.0,
+      "omega_meV": 30.840908107749215,
+      "tcO_op": 0.10509509920784937,
+      "Tc_K": 39.652596138534705,
+      "nonmagnetic": true,
+      "viable_structure": true,
+      "note": "CLUSTER lens: 5d Ta (SC@5.8K/11.5GPa real); lower Omega"
+    },
+    {
+      "member": "Ge:GaV4S8",
+      "M": "V",
+      "X": "S",
+      "k_scale": 1.0,
+      "omega_meV": 51.5519963220097,
+      "tcO_op": 0.10509509920784937,
+      "Tc_K": 66.2811381282982,
+      "nonmagnetic": false,
+      "viable_structure": false,
+      "note": "CLUSTER lens: V4 3d MAGNETIC+JT skyrmion host -> RULED OUT"
+    },
+    {
+      "member": "Ge:GaMo4S8",
+      "M": "Mo",
+      "X": "S",
+      "k_scale": 1.0,
+      "omega_meV": 46.64825163463668,
+      "tcO_op": 0.10509509920784937,
+      "Tc_K": 59.97632353024715,
+      "nonmagnetic": false,
+      "viable_structure": false,
+      "note": "FILLING/cluster: Mo4 exists but skyrmion/multiferroic -> NOT SC"
+    },
+    {
+      "member": "Ge:AlNb4S8?",
+      "M": "Nb",
+      "X": "S",
+      "k_scale": 1.25,
+      "omega_meV": 52.367588250216066,
+      "tcO_op": 0.10509509920784937,
+      "Tc_K": 67.32975632170637,
+      "nonmagnetic": true,
+      "viable_structure": false,
+      "note": "A-SITE lens (SPECULATIVE, unpublished): Al stiffens k +25%"
+    },
+    {
+      "member": "Ge:GaNb4S8*",
+      "M": "Nb",
+      "X": "S",
+      "k_scale": 1.0,
+      "omega_meV": 46.83899485808096,
+      "tcO_op": 0.14207780444628487,
+      "Tc_K": 81.41338439267233,
+      "nonmagnetic": true,
+      "viable_structure": true,
+      "note": "BEST COMBO: anion(S)+filling sweet-spot t/Om=1.30"
+    }
+  ],
+  "best_real": {
+    "member": "Ge:GaNb4S8*",
+    "M": "Nb",
+    "X": "S",
+    "k_scale": 1.0,
+    "omega_meV": 46.83899485808096,
+    "tcO_op": 0.14207780444628487,
+    "Tc_K": 81.41338439267233,
+    "nonmagnetic": true,
+    "viable_structure": true,
+    "note": "BEST COMBO: anion(S)+filling sweet-spot t/Om=1.30"
+  },
+  "best_speculative": {
+    "member": "Ge:AlNb4S8?",
+    "M": "Nb",
+    "X": "S",
+    "k_scale": 1.25,
+    "omega_meV": 52.367588250216066,
+    "tcO_op": 0.10509509920784937,
+    "Tc_K": 67.32975632170637,
+    "nonmagnetic": true,
+    "viable_structure": false,
+    "note": "A-SITE lens (SPECULATIVE, unpublished): Al stiffens k +25%"
+  },
+  "omega_S_over_Se": 1.3382569959451702
+}

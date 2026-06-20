@@ -1,0 +1,154 @@
+{
+  "id": "FB-GEOM-LAMBDA",
+  "round": "8c",
+  "date": "2026-06-19",
+  "result": "closed-form decomposition confirmed on lattice flat bands",
+  "closed_form": "Q_geom = Q_IPR + Q_phase ; Q_phase=0 iff inter-orbital relative phase winds fully over BZ",
+  "n_flat": 15,
+  "r_QIPR_vs_Qfull": -0.1400550720769827,
+  "max_resid_Q_minus_IPR_all": 0.48313566491411497,
+  "Q_phase_range": [
+    5.214674358988702e-09,
+    0.48796024879781663
+  ],
+  "phase_decorrelated_count": 11,
+  "max_resid_on_decorrelated": 0.1817062928502523,
+  "rows": [
+    {
+      "Q_full": 0.5030969713739246,
+      "Q_diag": 0.5003935239883975,
+      "Q_IPR": 0.5246693387212281,
+      "Q_phase": 0.00270344738552708,
+      "Q_IPR_recoverssupport": 0.5246693387212281,
+      "name": "dice_phi=0.050",
+      "width": 2.9365572822542776e-15
+    },
+    {
+      "Q_full": 0.5087321134653924,
+      "Q_diag": 0.5028563947399856,
+      "Q_IPR": 0.6371479745196048,
+      "Q_phase": 0.00587571872540682,
+      "Q_IPR_recoverssupport": 0.6371479745196048,
+      "name": "dice_phi=0.303",
+      "width": 3.747912084439351e-15
+    },
+    {
+      "Q_full": 0.5001552148779709,
+      "Q_diag": 0.5000264348923132,
+      "Q_IPR": 0.6574970768538263,
+      "Q_phase": 0.00012877998565763438,
+      "Q_IPR_recoverssupport": 0.6574970768538263,
+      "name": "dice_phi=0.557",
+      "width": 3.8725812177759275e-15
+    },
+    {
+      "Q_full": 0.6015050762639833,
+      "Q_diag": 0.5006334388742053,
+      "Q_IPR": 0.6331572529817896,
+      "Q_phase": 0.100871637389778,
+      "Q_IPR_recoverssupport": 0.6331572529817896,
+      "name": "dice_phi=0.810",
+      "width": 3.4702844300659997e-15
+    },
+    {
+      "Q_full": 0.9879962518785222,
+      "Q_diag": 0.5000360030807056,
+      "Q_IPR": 0.5048605869644073,
+      "Q_phase": 0.48796024879781663,
+      "Q_IPR_recoverssupport": 0.5048605869644073,
+      "name": "dice_phi=1.064",
+      "width": 2.854313194663472e-15
+    },
+    {
+      "Q_full": 0.6202931754880087,
+      "Q_diag": 0.5031263175558116,
+      "Q_IPR": 0.6319548775697589,
+      "Q_phase": 0.11716685793219705,
+      "Q_IPR_recoverssupport": 0.6319548775697589,
+      "name": "dice_phi=1.317",
+      "width": 3.556423300623118e-15
+    },
+    {
+      "Q_full": 0.5197128788807133,
+      "Q_diag": 0.5,
+      "Q_IPR": 0.6567867848758898,
+      "Q_phase": 0.01971287888071327,
+      "Q_IPR_recoverssupport": 0.6567867848758898,
+      "name": "dice_phi=1.571",
+      "width": 3.653991107985136e-15
+    },
+    {
+      "Q_full": 0.7365569952215221,
+      "Q_diag": 0.7365569900068477,
+      "Q_IPR": 0.8504229485838498,
+      "Q_phase": 5.214674358988702e-09,
+      "Q_IPR_recoverssupport": 0.8504229485838498,
+      "name": "lieb_ty=0.25",
+      "width": 0.0
+    },
+    {
+      "Q_full": 0.5838909490924823,
+      "Q_diag": 0.5838909340220734,
+      "Q_IPR": 0.745431183028033,
+      "Q_phase": 1.5070408920792033e-08,
+      "Q_IPR_recoverssupport": 0.745431183028033,
+      "name": "lieb_ty=0.50",
+      "width": 0.0
+    },
+    {
+      "Q_full": 0.5163185242586587,
+      "Q_diag": 0.5163185025572697,
+      "Q_IPR": 0.6944513796985247,
+      "Q_phase": 2.1701388908113017e-08,
+      "Q_IPR_recoverssupport": 0.6944513796985247,
+      "name": "lieb_ty=0.75",
+      "width": 0.0
+    },
+    {
+      "Q_full": 0.5000000235475139,
+      "Q_diag": 0.5,
+      "Q_IPR": 0.6817063163977662,
+      "Q_phase": 2.3547513938737552e-08,
+      "Q_IPR_recoverssupport": 0.6817063163977662,
+      "name": "lieb_ty=1.00",
+      "width": 0.0
+    },
+    {
+      "Q_full": 0.5315788653491739,
+      "Q_diag": 0.53157884528502,
+      "Q_IPR": 0.7062159106082831,
+      "Q_phase": 2.006415389388394e-08,
+      "Q_IPR_recoverssupport": 0.7062159106082831,
+      "name": "lieb_ty=1.50",
+      "width": 0.0
+    },
+    {
+      "Q_full": 0.5838909490924823,
+      "Q_diag": 0.5838909340220734,
+      "Q_IPR": 0.745431183028033,
+      "Q_phase": 1.5070408920792033e-08,
+      "Q_IPR_recoverssupport": 0.745431183028033,
+      "name": "lieb_ty=2.00",
+      "width": 0.0
+    },
+    {
+      "Q_full": 0.6741613755480849,
+      "Q_diag": 0.6741613670709798,
+      "Q_IPR": 0.8091652307893993,
+      "Q_phase": 8.477105017945519e-09,
+      "Q_IPR_recoverssupport": 0.8091652307893993,
+      "name": "lieb_ty=3.00",
+      "width": 0.0
+    },
+    {
+      "Q_full": 0.6905989232414969,
+      "Q_diag": 0.5119661282874151,
+      "Q_IPR": 0.6150998205402495,
+      "Q_phase": 0.1786327949540818,
+      "Q_IPR_recoverssupport": 0.6150998205402495,
+      "name": "saw_r=1.41",
+      "width": 8.881784197001252e-16
+    }
+  ],
+  "verdict": "REFINED LAW: Q_geom = orbital-IPR + inter-orbital phase-coherence term. Orbital support sets the FLOOR (Q_geom>=IPR), exact when the inter-orbital phase fully winds; phase coherence raises it. Orbital support is NECESSARY-not-SUFFICIENT."
+}

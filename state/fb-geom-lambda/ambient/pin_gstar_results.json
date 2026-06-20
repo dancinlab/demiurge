@@ -1,0 +1,175 @@
+{
+  "ed_radius_sweep": [
+    {
+      "g_over_t": 0.1,
+      "binding_over_t": -0.013355136730231365,
+      "r_pair": 1.4900705576958906,
+      "double_occ": 0.16931159376747762,
+      "mstar": 1.0055273810963037,
+      "bound": true
+    },
+    {
+      "g_over_t": 0.2,
+      "binding_over_t": -0.053676157240288624,
+      "r_pair": 1.4611206042832643,
+      "double_occ": 0.17704199762135503,
+      "mstar": 1.0223038259496222,
+      "bound": true
+    },
+    {
+      "g_over_t": 0.3,
+      "binding_over_t": -0.12168780250412237,
+      "r_pair": 1.4155917311413697,
+      "double_occ": 0.1892556894963367,
+      "mstar": 1.0508054317255637,
+      "bound": true
+    },
+    {
+      "g_over_t": 0.4,
+      "binding_over_t": -0.21847708975690683,
+      "r_pair": 1.357255445429904,
+      "double_occ": 0.20500460218560798,
+      "mstar": 1.0914640599819647,
+      "bound": true
+    },
+    {
+      "g_over_t": 0.5,
+      "binding_over_t": -0.34537537884108094,
+      "r_pair": 1.2906638025023824,
+      "double_occ": 0.22312001592422645,
+      "mstar": 1.1441496034065297,
+      "bound": true
+    },
+    {
+      "g_over_t": 0.6,
+      "binding_over_t": -0.5038796692871301,
+      "r_pair": 1.2204080321408897,
+      "double_occ": 0.24239963057237052,
+      "mstar": 1.2075651719677896,
+      "bound": true
+    },
+    {
+      "g_over_t": 0.7,
+      "binding_over_t": -0.6955170750129405,
+      "r_pair": 1.1505414703608952,
+      "double_occ": 0.26176325416158236,
+      "mstar": 1.278635840689009,
+      "bound": true
+    },
+    {
+      "g_over_t": 0.8,
+      "binding_over_t": -0.9211893958711208,
+      "r_pair": 1.0845680060076561,
+      "double_occ": 0.2802599435940678,
+      "mstar": 1.351917068824651,
+      "bound": true
+    },
+    {
+      "g_over_t": 0.9,
+      "binding_over_t": -1.1794817779103095,
+      "r_pair": 1.0257256081904387,
+      "double_occ": 0.29698679368244,
+      "mstar": 1.4197567168465866,
+      "bound": true
+    },
+    {
+      "g_over_t": 1.0,
+      "binding_over_t": -1.464787023091687,
+      "r_pair": 0.9765112272085047,
+      "double_occ": 0.31121044048093294,
+      "mstar": 1.4748546903600814,
+      "bound": true
+    },
+    {
+      "g_over_t": 1.2,
+      "binding_over_t": -2.0766484910289753,
+      "r_pair": 0.9077150681526006,
+      "double_occ": 0.33166556965415783,
+      "mstar": 1.5389722624600866,
+      "bound": true
+    },
+    {
+      "g_over_t": 1.5,
+      "binding_over_t": -2.955331607733026,
+      "r_pair": 0.8530750466552097,
+      "double_occ": 0.3487673688232667,
+      "mstar": 1.5644161047852454,
+      "bound": true
+    }
+  ],
+  "ed_binding_edge": 0.1,
+  "ed_compaction_halfpoint": 0.6,
+  "qmc_anchor": {
+    "g_peak_main": 0.7,
+    "g_peak_lo": 0.38,
+    "g_star_central": 0.54,
+    "lambda_peak_band": [
+      0.3,
+      0.5
+    ],
+    "lambda_mass_diverge": [
+      1.2,
+      1.5
+    ]
+  },
+  "h_peak_recompute": [
+    {
+      "tag": "strict (10th-law hard-code)",
+      "gstar": 1.2,
+      "omega_star_meV": 21.03615475965896,
+      "tc_C20": 48.82070796621651,
+      "tc_C32": 78.11313274594642,
+      "clears_293": false,
+      "omega_attainable": true
+    },
+    {
+      "tag": "QMC main peak (\u03c9/t=0.5)",
+      "gstar": 0.7,
+      "omega_star_meV": 61.82053643654878,
+      "tc_C20": 143.4731009619424,
+      "tc_C32": 229.55696153910785,
+      "clears_293": false,
+      "omega_attainable": true
+    },
+    {
+      "tag": "QMC central (pinned)",
+      "gstar": 0.54,
+      "omega_star_meV": 103.88224572671088,
+      "tc_C20": 241.0899158825506,
+      "tc_C32": 385.74386541208094,
+      "clears_293": true,
+      "omega_attainable": true
+    },
+    {
+      "tag": "QMC deep-adiabatic (\u03c9/t=0.2)",
+      "gstar": 0.38,
+      "omega_star_meV": 209.778828628178,
+      "tc_C20": 486.85470548027547,
+      "tc_C32": 778.9675287684407,
+      "clears_293": true,
+      "omega_attainable": true
+    },
+    {
+      "tag": "ED compaction half-point",
+      "gstar": 0.6,
+      "omega_star_meV": 84.14461903863584,
+      "tc_C20": 195.28283186486604,
+      "tc_C32": 312.45253098378566,
+      "clears_293": true,
+      "omega_attainable": true
+    }
+  ],
+  "verdict": {
+    "g_star_pinned": 0.54,
+    "ed_halfway_edge": 0.6,
+    "h_omega_star_meV": 103.88224572671088,
+    "h_tc_C20": 241.0899158825506,
+    "h_tc_C32": 385.74386541208094,
+    "reality_capped": false,
+    "verdict": "GRAZES_293",
+    "grazes_293": true,
+    "strict_gstar_was": 1.2,
+    "strict_is_death_edge": true,
+    "next_probe": "1-atm H-SSH host search (door real, host empty)"
+  }
+}

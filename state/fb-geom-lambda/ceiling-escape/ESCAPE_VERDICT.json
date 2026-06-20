@@ -1,0 +1,291 @@
+{
+  "lane": "ceiling-escape",
+  "ceiling": "Tc_ceiling = 0.364 * w_log(W*)  (bound by lambda<~4; AD strong-coupling)",
+  "ceiling_coefficient": 0.364,
+  "premises": {
+    "P1": "Allen-Dynes/Eliashberg phonon pairing (Migdal valid)",
+    "P2": "harmonic phonons soften as band flattens, w_log=w0(W/W0)^p, p>=0",
+    "P3": "single lambda-weighted thermodynamic w_log",
+    "P4": "pairing scale = w_log (no separate condensation scale)"
+  },
+  "candidates": [
+    {
+      "name": "C1_anharmonic_wlog_hardening",
+      "breaks": "P2 (p<0)",
+      "rows": [
+        {
+          "p": -1.0,
+          "Wstar": 1.0,
+          "wlog_at_Wstar_meV": 80.0,
+          "lam_at_Wstar": 46.875,
+          "Tc_full_K": 230.0,
+          "Tc_asym_K": 337.9,
+          "ceiling_K": 337.9,
+          "E_full": 0.6807,
+          "E_asym": 1.0
+        },
+        {
+          "p": -0.5,
+          "Wstar": 1.0,
+          "wlog_at_Wstar_meV": 80.0,
+          "lam_at_Wstar": 46.875,
+          "Tc_full_K": 230.0,
+          "Tc_asym_K": 337.9,
+          "ceiling_K": 337.9,
+          "E_full": 0.6807,
+          "E_asym": 1.0
+        },
+        {
+          "p": -0.2,
+          "Wstar": 1.0,
+          "wlog_at_Wstar_meV": 80.0,
+          "lam_at_Wstar": 46.875,
+          "Tc_full_K": 230.0,
+          "Tc_asym_K": 337.9,
+          "ceiling_K": 337.9,
+          "E_full": 0.6807,
+          "E_asym": 1.0
+        },
+        {
+          "p": 0.0,
+          "Wstar": 1.0,
+          "wlog_at_Wstar_meV": 80.0,
+          "lam_at_Wstar": 46.875,
+          "Tc_full_K": 230.0,
+          "Tc_asym_K": 337.9,
+          "ceiling_K": 337.9,
+          "E_full": 0.6807,
+          "E_asym": 1.0
+        },
+        {
+          "p": 0.5,
+          "Wstar": 1.0,
+          "wlog_at_Wstar_meV": 80.0,
+          "lam_at_Wstar": 46.875,
+          "Tc_full_K": 230.0,
+          "Tc_asym_K": 337.9,
+          "ceiling_K": 337.9,
+          "E_full": 0.6807,
+          "E_asym": 1.0
+        },
+        {
+          "p": 1.0,
+          "Wstar": 1.0,
+          "wlog_at_Wstar_meV": 80.0,
+          "lam_at_Wstar": 46.875,
+          "Tc_full_K": 230.0,
+          "Tc_asym_K": 337.9,
+          "ceiling_K": 337.9,
+          "E_full": 0.6807,
+          "E_asym": 1.0
+        }
+      ],
+      "max_E_asymptote": 1.0,
+      "anharmonic_wlog_boost_factor": 1.2,
+      "escape": false,
+      "note": "Hardening raises w_log(W*) (and hence the ceiling VALUE) but the ratio E=Tc/(0.364 w_log(W*)) is reparametrization-invariant: 0.364 = 0.182*sqrt(4) is fixed by the cap, not by w_log. SSCHA hardening (<=~20%) moves the ceiling UP, never lets Tc cross it. E<=1 for all p."
+    },
+    {
+      "name": "C2_gapped_acoustic_all_optical",
+      "breaks": "P2/P3 (no soft branch)",
+      "rows": [
+        {
+          "Q": "Q=1",
+          "p": 0.0,
+          "Wstar": 1.0,
+          "wlog_meV": 80.0,
+          "lam": 46.875,
+          "Tc_full_K": 230.0,
+          "ceiling_K": 337.9,
+          "E_full": 0.6807
+        },
+        {
+          "Q": "Q=0.566 Lieb",
+          "p": 0.0,
+          "Wstar": 1.0,
+          "wlog_meV": 80.0,
+          "lam": 26.531,
+          "Tc_full_K": 230.0,
+          "ceiling_K": 337.9,
+          "E_full": 0.6807
+        },
+        {
+          "Q": "Q=0.334 Welch n=3",
+          "p": 0.0,
+          "Wstar": 1.0,
+          "wlog_meV": 80.0,
+          "lam": 15.656,
+          "Tc_full_K": 230.0,
+          "ceiling_K": 337.9,
+          "E_full": 0.6807
+        }
+      ],
+      "max_E_full": 0.6807,
+      "escape": false,
+      "note": "Gapped-acoustic / all-optical (p=0) FIXES w_log = w_optical (stiffest scale, no softening). This makes the ceiling VALUE maximal and removes the geometric lowering Q^{p/(1+2p)} (=1 at p=0), i.e. it is the OPTIMAL material spectrum. But Tc still = 0.364 w_log at the cap: E<=1. The R2 'soft branch self-asserts' result was the WORST case; all-optical is the BEST case -- yet neither exceeds 0.364 w_log(W*). No escape; this is the ceiling-OPTIMIZING design, not an escape."
+    },
+    {
+      "name": "C3_geometric_superfluid_weight_BKT",
+      "breaks": "P1 (BKT not Allen-Dynes)",
+      "crossover_Cg_gbar": 0.2317,
+      "physical_prefactor_max": "Cg=1/(2pi)=0.159 (Peotta-Tormae / no-go bound)",
+      "rows": [
+        {
+          "gbar": 1.0,
+          "Cg": 0.1592,
+          "physical_prefactor": true,
+          "T_BKT_K": 232.1,
+          "ceiling_K": 337.9,
+          "E": 0.6868
+        },
+        {
+          "gbar": 1.0,
+          "Cg": 0.1,
+          "physical_prefactor": true,
+          "T_BKT_K": 145.8,
+          "ceiling_K": 337.9,
+          "E": 0.4315
+        },
+        {
+          "gbar": 1.0,
+          "Cg": 0.2,
+          "physical_prefactor": false,
+          "T_BKT_K": 291.7,
+          "ceiling_K": 337.9,
+          "E": 0.8631
+        },
+        {
+          "gbar": 1.0,
+          "Cg": 0.3,
+          "physical_prefactor": false,
+          "T_BKT_K": 437.5,
+          "ceiling_K": 337.9,
+          "E": 1.2946
+        },
+        {
+          "gbar": 0.566,
+          "Cg": 0.1592,
+          "physical_prefactor": true,
+          "T_BKT_K": 131.4,
+          "ceiling_K": 337.9,
+          "E": 0.3887
+        },
+        {
+          "gbar": 0.566,
+          "Cg": 0.1,
+          "physical_prefactor": true,
+          "T_BKT_K": 82.5,
+          "ceiling_K": 337.9,
+          "E": 0.2443
+        },
+        {
+          "gbar": 0.566,
+          "Cg": 0.2,
+          "physical_prefactor": false,
+          "T_BKT_K": 165.1,
+          "ceiling_K": 337.9,
+          "E": 0.4885
+        },
+        {
+          "gbar": 0.566,
+          "Cg": 0.3,
+          "physical_prefactor": false,
+          "T_BKT_K": 247.6,
+          "ceiling_K": 337.9,
+          "E": 0.7328
+        },
+        {
+          "gbar": 0.334,
+          "Cg": 0.1592,
+          "physical_prefactor": true,
+          "T_BKT_K": 77.5,
+          "ceiling_K": 337.9,
+          "E": 0.2294
+        },
+        {
+          "gbar": 0.334,
+          "Cg": 0.1,
+          "physical_prefactor": true,
+          "T_BKT_K": 48.7,
+          "ceiling_K": 337.9,
+          "E": 0.1441
+        },
+        {
+          "gbar": 0.334,
+          "Cg": 0.2,
+          "physical_prefactor": false,
+          "T_BKT_K": 97.4,
+          "ceiling_K": 337.9,
+          "E": 0.2883
+        },
+        {
+          "gbar": 0.334,
+          "Cg": 0.3,
+          "physical_prefactor": false,
+          "T_BKT_K": 146.1,
+          "ceiling_K": 337.9,
+          "E": 0.4324
+        }
+      ],
+      "max_E_unphysical_scan": 1.2946,
+      "max_E_physical": 0.6868,
+      "escape": false,
+      "nogo_source": "arXiv:2604.04719 (Zhou 2026, quantum-metric NO-GO): the geometric superfluid weight CANNOT exceed the Allen-Dynes phonon ceiling -- it is the SAME glue (U ~ lambda w_log), so T_BKT inherits the w_log scale. Escape would require Cg*gbar > 0.232; physical flat-band Peotta-Tormae prefactor Cg ~ 1/(2pi)=0.159 with gbar<=1 gives Cg*gbar<=0.159 < 0.232. NO escape. The geometric channel is a SEPARATE, generally LOWER bound (phase-stiffness), not an escape above w_log."
+    },
+    {
+      "name": "C4_bipolaron_BEC_crossover",
+      "breaks": "P1+P4 (Migdal-Eliashberg invalid)",
+      "rows": [
+        {
+          "model": "Holstein_heavy",
+          "detail": "m**/m0 = exp(2 g^2) ~ e^2 (g^2~1)",
+          "mass_ratio": 7.389,
+          "t_bipolaron_meV": 10.827,
+          "Tc_bp_K": 276.4,
+          "ceiling_K": 337.9,
+          "E": 0.818,
+          "escapes": false
+        },
+        {
+          "model": "Holstein_vheavy",
+          "detail": "m**/m0 = e^4 (stronger coupling)",
+          "mass_ratio": 54.598,
+          "t_bipolaron_meV": 1.465,
+          "Tc_bp_K": 37.4,
+          "ceiling_K": 337.9,
+          "E": 0.1107,
+          "escapes": false
+        },
+        {
+          "model": "SSH_light",
+          "detail": "m**/m0 ~ 1.8 (light bond bipolaron, PRX 13,011010)",
+          "mass_ratio": 1.8,
+          "t_bipolaron_meV": 44.444,
+          "Tc_bp_K": 1134.7,
+          "ceiling_K": 337.9,
+          "E": 3.3578,
+          "escapes": true
+        },
+        {
+          "model": "SSH_vlight",
+          "detail": "m**/m0 ~ 1.2 (very light, adiabatic instanton)",
+          "mass_ratio": 1.2,
+          "t_bipolaron_meV": 66.667,
+          "Tc_bp_K": 1702.1,
+          "ceiling_K": 337.9,
+          "E": 5.0366,
+          "escapes": true
+        }
+      ],
+      "any_escape": true,
+      "escape": true,
+      "note": "Holstein (density-coupled) bipolarons: m** ~ exp(g^2) -> heavy -> T_BEC << ceiling (E<<1, FALSE escape). SSH/BOND (Peierls, hopping-modulated) bipolarons: m** only WEAKLY enhanced (light & small) -> T_BEC ~ O(t**) ~ O(w_log) -> E>1 -> GENUINE ESCAPE. Sourced: PRX 13,011010 / arXiv:2210.14236 -- bond-bipolaron Tc 'generically and significantly exceeds the Migdal-Eliashberg upper bound', Tc -> O(Omega), exponentially larger than Holstein. The ceiling 0.364 w_log is an Allen-Dynes (Migdal-valid) statement; flat bands VIOLATE Migdal (E_F~W->0, lambda w/E_F not small) so they exit AD validity into the bipolaron regime where the bound does not apply."
+    }
+  ],
+  "escapes_found": [
+    "C4_bipolaron_BEC_crossover"
+  ],
+  "n_escapes": 1,
+  "depletion": "ESCAPE FOUND (terminal-breakthrough): C4 bipolaron/BEC-crossover BREAKS the ceiling. The bound 0.364 w_log(W*) is an Allen-Dynes (Migdal-valid) statement; flat bands drive E_F~W->0 so Migdal fails and pairing crosses to real-space bipolaron condensation, whose Tc = a3 * t** (t**=bipolaron hopping) is set by the bipolaron MASS, not w_log sqrt(lambda). LIGHT (SSH/bond/Peierls) bipolarons give Tc ~ O(w_log), EXCEEDING 0.364 w_log. C1/C2/C3 FAIL (ceiling holds / only ceiling-VALUE optimization). So the closing formula gains an ESCAPE TERM, gated by the Migdal validity boundary, NOT a single hard bound.",
+  "g5": "PASS"
+}

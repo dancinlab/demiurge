@@ -1,0 +1,69 @@
+{
+  "lane": "cap-escape",
+  "date": "2026-06-19",
+  "question": "Is the lambda <~ 4 cap (arXiv:2407.12922) truly fundamental, or can an assumption-breaking regime evade it to lift the effective room-Tc ceiling?",
+  "primary_source": {
+    "id": "arXiv:2407.12922",
+    "title": "Fundamental limits on the electron-phonon coupling and superconducting Tc",
+    "authors": "Semenok, Altshuler, Yuzbashyan",
+    "published": "Advanced Materials 2025 (10.1002/adma.202507013); arXiv Jul 2024, v2",
+    "url": "https://arxiv.org/html/2407.12922v2",
+    "extracted": {
+      "lambda_cap_mechanism": "KINETIC/THERMODYNAMIC ELECTRONIC instability: electronic specific heat C_el turns negative (or quasiparticle weight Z<0 over an energy range) when lambda exceeds threshold lambda*. NOT lattice softening.",
+      "lambda_star_einstein": 3.69,
+      "lambda_star_debye": 4.72,
+      "stability_parameter": "xi = max_T { integral g(omega/2piT) 2 alpha2F(omega)/omega domega } < 1 ;  lambda* = lambda/xi",
+      "tc_ceiling": "Tc < 0.18 sqrt(lambda <omega^2>) ; Tc < 0.32 omega_max (metastable) ; Tc < 0.20 omega_max (stable, xi_c=0.5)",
+      "absolute_bound": "Tc_stable < 600K/sqrt(A), Tc_metastable < 950K/sqrt(A), A=atomic mass of lightest element",
+      "empirical": "Tc_emp = 0.182 omega_log sqrt(lambda) = const (hydride data)",
+      "assumptions": [
+        "harmonic phonons (Eliashberg alpha2F) -- but bound claimed phonon-spectrum-agnostic, no softening required",
+        "Migdal / adiabaticity: omega_max/E_F << 1; 'results most robust when this ratio is small'",
+        "single-band Migdal-Eliashberg (multiband not explicitly forbidden)",
+        "bound is INDEPENDENT of phonon softening (distinguishes from Frohlich lambda0~0.5 lattice instability)",
+        "authors concede non-adiabatic (omega ~ bandwidth) regime requires 'significant modifications to the framework'"
+      ]
+    }
+  },
+  "follow_ups": [
+    {
+      "id": "arXiv:2409.19562",
+      "title": "Instability of metals with respect to strong electron-phonon interaction",
+      "authors": "Yuzbashyan, Altshuler, Patra",
+      "url": "https://arxiv.org/abs/2409.19562",
+      "role": "companion derivation of the electronic (negative C_el / Z<0) instability underpinning the cap"
+    },
+    {
+      "id": "arXiv:2506.19326",
+      "title": "Upper limit for superconducting transition temperature in electron-phonon superconductors: very strong coupling",
+      "authors": "M.V. Sadovskii",
+      "published": "J Supercond Nov Magn 2025 (10.1007/s10948-025-07076-6)",
+      "url": "https://arxiv.org/html/2506.19326v1",
+      "role": "CRITIQUE. (1) Tc=0.182 sqrt(lambda<omega^2>) grows monotonically/unbounded with lambda in very-strong-coupling -- lambda is not self-limiting. (2) Real limiter = LATTICE (Frohlich) instability at bare lambda0_c~0.5 where bare phonons go imaginary, NOT specific heat. (3) Cites Ref [32] which 'explicitly shown electronic specific heat in Eliashberg-McMillan theory remains positive for all parameters, at least until adiabatic approximation is valid' -- directly DISPUTES the negative-C_el cap mechanism. (4) Conclusion: 'within the stable metallic phase the effective pairing constant may acquire very large values', Tc* = 0.18 sqrt(N(0)<I^2>/M)."
+    },
+    {
+      "id": "PRX 13, 011010 (2023) / arXiv ref",
+      "title": "Bipolaronic high-temperature superconductivity",
+      "authors": "Zhang, Berciu, et al.",
+      "url": "https://phas.ubc.ca/~berciu/PAPERS/paper118.pdf",
+      "role": "ESCAPE ROUTE. Bond-SSH (Peierls) bipolarons are LIGHT and SMALL (weak mass enhancement, slide in degenerate manifold). Tc upper bound is EXPONENTIALLY larger than Holstein, and 'on the order of OR GREATER than typical M-E / McMillan upper bounds'. Pairing is real-space (bound pairs), bypassing the single-band adiabatic Eliashberg lambda entirely. Best at t/Omega ~ 1-2 (non-adiabatic), light atoms."
+    },
+    {
+      "id": "arXiv:2308.01961 / PRB 109 L220502",
+      "title": "Semiclassical theory of bipolaronic superconductivity in a bond-modulated electron-phonon model",
+      "url": "https://arxiv.org/abs/2308.01961",
+      "role": "supports bond-SSH bipolaron route; Tc engineering via stiffness/moire/light atoms"
+    },
+    {
+      "id": "SSCHA hydride corpus",
+      "title": "Quantum anharmonic enhancement: ScH6, H3Se, LaBH8 (SSCHA)",
+      "urls": ["https://arxiv.org/html/2408.10625", "https://arxiv.org/pdf/2107.08669", "https://arxiv.org/pdf/2206.07439"],
+      "role": "ANHARMONIC LENS. Anharmonicity renormalizes lambda (ScH6: +28% lambda, +16-18K Tc) and crucially STABILIZES lattices that are harmonically unstable -- letting a material physically EXIST at high lambda. But the cap is defined on the physical (anharmonic-renormalized) alpha2F, so anharmonicity moves the realizable point, it does not raise lambda* itself. It buys lattice-stability headroom toward, not past, lambda*."
+    },
+    {
+      "id": "non-adiabatic vertex corrections 2024-2025",
+      "title": "Beyond-Migdal vertex corrections, flat-band / low-carrier systems",
+      "role": "NON-ADIABATIC LENS. When omega ~ E_F (flat bands, low carrier density), Migdal small parameter omega/E_F is O(1); vertex corrections become O(1) and can be POSITIVE. The cap's own authors concede the framework needs 'significant modifications' here. lambda ceases to be the controlling pairing parameter."
+    }
+  ]
+}
