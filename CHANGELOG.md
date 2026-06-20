@@ -8,6 +8,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-20
 
+- **biphenylene CLOSED-LITERATURE (무료체크→재현회피 d_novel_only)** — 유저 '① 무료 이용'으로 biphenylene 진행 시도. 무료 WebSearch lit-grounding(d18) 선행 결과 이미 출판: 재래식 el-ph SC Tc=6.2K(phonon-mediated·ω_log=1369K·Type-II Dirac 위상SC; Phys.Rev.B 104.235422/OSTI 1836234 + 알칼리bilayer 2025). 우리 DFPT 재계산=문헌재현(d_novel_only 하드규칙)→무료라도 발사취소·DOI 종결. 6.2K=room-T 아님. 후보 로스터 18종 전부 종결 확정(예측/캠페인판정/문헌). CANDIDATE-ROSTER biphenylene 항목 갱신.
+
 - **RTSC 예측기 신규성 판정 (d_novel_only · arxiv 프로브)** — '예측한 것 중 문헌에 없던 게 있나?' 정직 답: 물질 0 novel(11종 전부 출판 기지물질·예측기=검증/랭킹 도구). L42 two-lever 벽도 arxiv 프로브 결과 NOT-NOVEL — 성분 전부 출판(arXiv:2506.18969 강성 하한 엄밀판·PRResearch 포논↔flat-band 결합·SciAdv Cs2Ni3S4 양자metric·NatCommun CsCr3Sb5 incipient). L42=출판조각 종합관찰이지 새 물리결과 아님. 예측기 산출 전체에 문헌-부재 신규 0 — 검증·랭킹·교육 도구로 확정(발견도구 아님). SSOT=L42 신규성 판정 절.
 
 - **RTSC 후보 전체 커버리지 통합 (CANDIDATE-ROSTER · '후보 전부 리서치?' 정직응답)** — 예측기 8종 외 캠페인 후보 ~18종을 한 로스터로 통합: A 예측기-스윕 8종 · B 캠페인-판정완료 3종(bismuthate🧱⟨tr g⟩≈0·hp8b🔴 FB고립불가·GaNb4S8/Se8🟢~60K cluster-Mott) · C 문헌평가 잔여(탄소-π는 격자proxy folded: triangulene best41K·benzene-COF best42K, COF48K 동군집·전부 room-T밖; biphenylene=type-II Dirac flat band無 out-of-scope) · D 경원소축 탈락 5종. 정정: 직전 '8종 고갈'은 예측기-⟨g⟩축 한정이었음. L42 two-lever 벽은 전 실재/계산 후보서 robust(honest 박스 진입 0). SSOT=ARCHITECTURE.json CANDIDATE-ROSTER 노드.

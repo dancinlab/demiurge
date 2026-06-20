@@ -618,3 +618,5 @@ CLS combinatorial = DRY(MATH-SPECTRA 브릿지·flat band 구성법, room-T 신�
  정정: 앞 "8종 고갈"은 예측기-⟨g⟩축 한정; 전체 후보공간 ~18종 통합 종결. L42 two-lever 벽은 전 실재/계산 후보서 robust(honest 박스 진입 0). SSOT=ARCHITECTURE.json CANDIDATE-ROSTER.
 
 [신규성 프로브 d_novel_only · 2026-06-20] 유저 "예측한 것 중 문헌에 없던 거?" → 정직: 물질 0 novel(전부 출판 기지물질, 예측기=검증·랭킹). L42도 arxiv 프로브 결과 NOT-NOVEL: 성분 전부 출판(2506.18969 강성하한 엄밀판·PRResearch 포논↔flat-band 결합·SciAdv Cs2Ni3S4 양자metric·NatCommun CsCr3Sb5 incipient). L42=출판조각 종합관찰. 예측기 산출 전체에 문헌-부재 신규 0 — 검증·랭킹·교육 도구로 확정(발견도구 아님). 새 발견 원하면 예측기로는 부족, 미지영역 Δ 컴퓨트 필요.
+
+[biphenylene 무료체크 → CLOSED-LITERATURE · 2026-06-20] 유저 "① 무료 이용"으로 biphenylene 진행. 무료 WebSearch 선행(d18 lit grounding) → 이미 출판: 재래식 el-ph SC Tc=6.2K(phonon-mediated·ω_log=1369K·Type-II Dirac 위상SC·strain↑; PRB 104.235422/OSTI 1836234 + 알칼리bilayer 2025). 우리 DFPT 재계산=문헌재현(d_novel_only 하드규칙)→무료라도 발사취소, DOI 종결. 6.2K=room-T 아님(L22↓). 결과: 후보 로스터 18종 전부 종결(예측·캠페인판정·문헌). 문헌-부재 신규 0 재확인.
