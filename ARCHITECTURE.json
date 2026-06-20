@@ -2930,7 +2930,7 @@
             },
             {
               "id": "FBGEOM-PREDICTOR",
-              "role": "tool/rtsc/fbgeom_predictor.py + predict_candidates.py — flat-band 양자기하 SC 검증·예측 계산기 (FREE 로컬). master 변수 ∫tr g(Q_geom)→BKT Tc(L25)·λ기하분율(L36)·room-T 갭. VERIFY 3/3 PASS (COF앵커 136K·Tc∝U선형·실측SC앵커 2.8×과대보정). PREDICT: banded Tc[lo,best,hi]·Ω×U/Om 랜드스케이프·honest 설계박스. 결과=L42 two-lever 벽. 개선이력: dice artifact caveat·Q_geom 단위통일·앵커보정밴드 내장."
+              "role": "tool/rtsc/fbgeom_predictor.py + predict_candidates.py — flat-band 양자기하 SC 검증·예측 계산기 (FREE 로컬). master 변수 ∫tr g(Q_geom)→BKT Tc(L25)·λ기하분율(L36)·room-T 갭. VERIFY 3/3 PASS (COF앵커 136K·Tc∝U선형·실측SC앵커 2.8×과대보정). PREDICT: banded Tc[lo,best,hi]·Ω×U/Om 랜드스케이프·honest 설계박스. 결과=L42 two-lever 벽. 개선이력: dice artifact caveat·Q_geom 단위통일·앵커보정밴드 내장. 【추출기 확장 tool/rtsc/extract_candidates.py】 채점기→생성기: flat-band 아키타입(kagome/Lieb/dice/checkerboard)을 스캔해 Chern·∫tr g·Q_geom from-scratch 산출, 설계박스 적중 자동판정. 결과: 단순 1-flat-band 격자는 박스 미달(Q_geom≤1 Welch천장·∫tr g는 Chern하한 2π|C|에 고정)→추출기가 L42 two-lever 벽을 생성기 쪽서 재유도(스칼라 ⟨g⟩≫1=다오비탈 d기하, 연질 Ω). 실물질 추출경로=출판 flat-band 카탈로그(Regnault Nature 2022 ~55k) 스크린→경원소+강결합 hit를 점수화(외부DB 필요·d_novel_only-clean if SC-미연구). 한계: 아키타입+설계스펙 추출이지 named 물질 생성 아님·⟨g⟩ 정규화 caveat(rigorous=arXiv:2506.18969)."
             }
           ]
         },
