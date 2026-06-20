@@ -1,0 +1,172 @@
+{
+  "lane": "metallic-hbond-ssh",
+  "probe": "doped-kappa-h3",
+  "L13_frac": 0.04,
+  "epsF_needed_293_eV": 0.6315710099965529,
+  "room_t_K": 293.15,
+  "kh3_transfers": {
+    "b1": 241.0,
+    "b2": 75.0,
+    "p": 40.0,
+    "W_4band": 312.0,
+    "tprime_over_t": 1.25,
+    "d_OO": 2.45,
+    "Omega_OHO": 120.0,
+    "U_over_WAB_lo": 1.5,
+    "U_over_WAB_hi": 2.5
+  },
+  "t_AB_meV": 57.5,
+  "W_AB_meV": 373.75,
+  "dome_onset": 0.38,
+  "dome_peak": 0.54,
+  "sweep": [
+    {
+      "delta": 0.05,
+      "U_over_WAB": 1.5,
+      "Z": 0.1,
+      "E_kin_meV": 1.8687500000000004,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": false,
+      "epsF_bare_eV": 0.0186875,
+      "epsF_coh_eV": 0.00186875,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.1,
+      "U_over_WAB": 1.5,
+      "Z": 0.2,
+      "E_kin_meV": 7.475000000000001,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": true,
+      "epsF_bare_eV": 0.037375,
+      "epsF_coh_eV": 0.007475,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.15,
+      "U_over_WAB": 1.5,
+      "Z": 0.3,
+      "E_kin_meV": 16.818749999999998,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": true,
+      "epsF_bare_eV": 0.0560625,
+      "epsF_coh_eV": 0.01681875,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.2,
+      "U_over_WAB": 1.5,
+      "Z": 0.4,
+      "E_kin_meV": 29.900000000000006,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": true,
+      "epsF_bare_eV": 0.07475,
+      "epsF_coh_eV": 0.0299,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.3,
+      "U_over_WAB": 1.5,
+      "Z": 0.6,
+      "E_kin_meV": 67.27499999999999,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": true,
+      "epsF_bare_eV": 0.112125,
+      "epsF_coh_eV": 0.067275,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.5,
+      "U_over_WAB": 1.5,
+      "Z": 1.0,
+      "E_kin_meV": 186.875,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": true,
+      "epsF_bare_eV": 0.186875,
+      "epsF_coh_eV": 0.186875,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.05,
+      "U_over_WAB": 2.5,
+      "Z": 0.1,
+      "E_kin_meV": 1.8687500000000004,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": false,
+      "epsF_bare_eV": 0.0186875,
+      "epsF_coh_eV": 0.00186875,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.1,
+      "U_over_WAB": 2.5,
+      "Z": 0.2,
+      "E_kin_meV": 7.475000000000001,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": true,
+      "epsF_bare_eV": 0.037375,
+      "epsF_coh_eV": 0.007475,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.15,
+      "U_over_WAB": 2.5,
+      "Z": 0.3,
+      "E_kin_meV": 16.818749999999998,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": true,
+      "epsF_bare_eV": 0.0560625,
+      "epsF_coh_eV": 0.01681875,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.2,
+      "U_over_WAB": 2.5,
+      "Z": 0.4,
+      "E_kin_meV": 29.900000000000006,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": true,
+      "epsF_bare_eV": 0.07475,
+      "epsF_coh_eV": 0.0299,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.3,
+      "U_over_WAB": 2.5,
+      "Z": 0.6,
+      "E_kin_meV": 67.27499999999999,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": true,
+      "epsF_bare_eV": 0.112125,
+      "epsF_coh_eV": 0.067275,
+      "L13_clears_293": false
+    },
+    {
+      "delta": 0.5,
+      "U_over_WAB": 2.5,
+      "Z": 1.0,
+      "E_kin_meV": 186.875,
+      "E_p_CO_meV": 5.334083333333334,
+      "metal_without_CO": true,
+      "epsF_bare_eV": 0.186875,
+      "epsF_coh_eV": 0.186875,
+      "L13_clears_293": false
+    }
+  ],
+  "ed_crosscheck": {
+    "g_over_t": 0.44,
+    "Omega_over_t": 2.0869565217391304,
+    "binding_over_t": -0.12724957520287106,
+    "bound": true,
+    "mstar": 1.0373441597463582
+  },
+  "best_epsF_metal_eV": 0.186875,
+  "best_epsF_any_eV": 0.186875,
+  "tc_L13_bestmetal_K": 86.7399,
+  "tc_L13_bestany_K": 86.7399,
+  "any_metal_without_CO": true,
+  "any_L13_clears": false,
+  "verdict": "CLOSED_L13_STIFFNESS",
+  "closing_axis": "L13 STIFFNESS CEILING \u2014 the doped narrow dimer-antibonding band (W_AB=0.37 eV) cannot supply eps_F>=0.63 eV at ANY doping; coherent eps_F maxes at 0.187 eV (Tc<= 87 K). Even ignoring CO, the band is too narrow for room-T stiffness.",
+  "provenance": "TB-grade on published kappa-H3 4-band DFT transfers (arXiv:1408.3162) + validated SSH-ED + L13(2505.02894) + QMC dome; doped-crystal DFPT PENDING (220-atom cell = days/OOM, NOT a free-box job; resume recipe at tail)."
+}

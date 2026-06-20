@@ -1,0 +1,14 @@
+{
+  "id":"FB-GEOM-LAMBDA","round":5,"date":"2026-06-19",
+  "verdict":"🔵 CLOSED-FORM bound proven — Q_geom >= 1/N_band is the Welch bound (frame theory)",
+  "result":{
+    "bound":"Q_geom = (1/M^2) sum_{k,k'} |<u(k)|u(k')>|^2  >=  1/N_band  (Welch bound; equality iff {|u(k)>} is a tight frame = uniform CP^{n-1} coverage)",
+    "physical":"flat-band el-ph lambda >= N(E_F) g0^2 / (N_band M w2). Quantum geometry suppresses Holstein coupling by AT MOST factor 1/N_band.",
+    "numerical":"Haar-random bands saturate 1/n for n=2..6 (0.5001,0.3336,0.2504,0.2004,0.1671); 2-band d.sigma m=0 saturates exactly 0.500=1/2; kagome 0.497, Lieb 0.566 sit above 1/3 floor"
+  },
+  "law_status_R3_R5":"λ_FB = N(E_F) g0^2 Q_geom / Mw2 with 1/N_band <= Q_geom <= 1; geometry SUPPRESSES coupling (opposite sign to Peotta-Torma stiffness enhancement). Exact decomposition + geometric-invariance + decisive isolation + kagome bridge + Welch lower bound all verified.",
+  "triad":"UPPER limit lambda<~4 (arXiv:2407.12922) · MIDDLE law (ours) · LOWER Welch bound 1/N_band (ours) · companion Peotta-Torma D_s>=|C|",
+  "honest_limits_d6":"full-law empirical claim still TB/model-level; R6 = corpus falsify on real DFT lambda-residuals (CsV3Sb5, XPd5, TBG, our LaRu3Si2 wavefunctions). Bound itself is rigorous (frame theory).",
+  "paper_ready":"d_paper_significance: falsifiable hypothesis (geometry suppresses flat-band lambda) + verified result (Welch bound) + finding (geometric floor 1/N) — paper-eligible after R6 empirical leg.",
+  "artifact":"state/fb-geom-lambda/R5_welch_bound.py"
+}

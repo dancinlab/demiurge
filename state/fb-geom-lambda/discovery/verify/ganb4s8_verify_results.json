@@ -1,0 +1,89 @@
+{
+  "structures": {
+    "GaNb4S8": {
+      "a": 9.95,
+      "d_NbNb": 2.86,
+      "d_NbX": 2.43,
+      "X": "S",
+      "Xmass": 32.06
+    },
+    "GaNb4Se8": {
+      "a": 10.41,
+      "d_NbNb": 2.91,
+      "d_NbX": 2.56,
+      "X": "Se",
+      "Xmass": 78.97
+    }
+  },
+  "omega": {
+    "S_cm": 300.0,
+    "Se_cm": 192.0,
+    "S_meV": 37.1952,
+    "Se_meV": 23.804928,
+    "ratio_measured": 1.5625,
+    "ratio_redmass": 1.3382511505363344,
+    "ratio_anionmass": 1.569456597433948
+  },
+  "deformation": {
+    "S": {
+      "name": "GaNb4S8",
+      "X": "S",
+      "Om_meV": 37.1952,
+      "mu": 23.835014003809036,
+      "d_NbX": 2.43,
+      "k": 32975.33436798878,
+      "dtdu_over_t": 0.8230452674897119,
+      "x_zp_rel": 0.033585270085661444,
+      "gOmega_rel": 0.0007431657203447607,
+      "lam_off_rel": 2.054273369233245e-05,
+      "dtdu_times_Omega_rel": 30.61333333333333
+    },
+    "Se": {
+      "name": "GaNb4Se8",
+      "X": "Se",
+      "Om_meV": 23.804928,
+      "mu": 42.68651132211595,
+      "d_NbX": 2.56,
+      "k": 24189.3616044322,
+      "dtdu_over_t": 0.78125,
+      "x_zp_rel": 0.03137048497231012,
+      "gOmega_rel": 0.0010295427646165231,
+      "lam_off_rel": 2.523223111386973e-05,
+      "dtdu_times_Omega_rel": 18.5976
+    },
+    "dtdu_times_Omega_ratio": 1.6460905349794237,
+    "lambda_off_ratio": 0.8141465413671033
+  },
+  "solver": {
+    "Se": {
+      "label": "GaNb4Se8 (anchor)",
+      "tOm": 1.0,
+      "gOm": 1.0,
+      "Om_meV": 23.804928,
+      "binding": -1.4647870230916764,
+      "mstar": 1.4748546903613566,
+      "tcbec": 0.1050950992073824,
+      "binding_O": 1.4647870230916764,
+      "tcO": 0.1050950992073824,
+      "bound": true
+    },
+    "S": {
+      "label": "GaNb4S8 (derived)",
+      "tOm": 0.64,
+      "gOm": 0.721840554745261,
+      "Om_meV": 37.1952,
+      "binding": -0.7781800398600942,
+      "mstar": 1.377487627264851,
+      "tcbec": 0.07201516589805763,
+      "binding_O": 0.7781800398600942,
+      "tcO": 0.07201516589805763,
+      "bound": true
+    },
+    "SCALE": 1.5500847974026313,
+    "Tc_Se_K": 45.0,
+    "Tc_S_K": 48.18080377102386
+  },
+  "verdict": "BACKED",
+  "backed": true,
+  "magnetism": "GaNb4S8 nonmagnetic spin-singlet (PASS)"
+}

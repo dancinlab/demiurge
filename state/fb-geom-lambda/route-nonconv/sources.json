@@ -1,0 +1,114 @@
+{
+  "lane": "route-nonconv",
+  "date": "2026-06-19",
+  "question": "Does any non-conventional pairing channel outside the el-ph formula break Tc<=0.364*omega_log (lambda<=4) at AMBIENT pressure + room Tc, and is it first-principles-computable?",
+  "el_ph_bound_ref": "arXiv:2407.12922",
+  "depletion_result": "branch_b_none_clears_bar",
+  "verdict": "CLOSED-negative; el-ph bound stands as operative ambient ceiling",
+  "breakthrough_lever_named": "bipolaronic_bond-Peierls_SSH_light_bipolaron (arXiv:2203.07380) - best beyond-el-ph angle, ambient, exact solver, open DFT downfolding loop; honest caveat: ~20-40K not room-Tc",
+  "g5": "PASS",
+  "channels": [
+    {
+      "id": 1,
+      "name": "Bipolaronic / beyond-Migdal strong coupling (bond-Peierls SSH light bipolaron)",
+      "predicted_Tc": "~20-40 K absolute (Tc/Omega~0.2 peak; 'several x' ME bound in Tc/Omega units); room-Tc NOT claimed",
+      "ambient_viable": "YES (t/Omega~1-2, not hydride; FeSe-class candidate suggestive, unconfirmed)",
+      "first_principles_tractable": "PARTIAL (bipolaron QMC exact+cheap; DFT->Peierls(dt/du)+U downfolding open, not done end-to-end)",
+      "escapes_el_ph_bound": "YES (Migdal-lambda framework breaks; knob=bipolaron mass m*, not lambda)",
+      "sources": [
+        {"id": "arXiv:2203.07380", "doi": "10.1103/PhysRevX.13.011010", "title": "Bipolaronic High-Temperature Superconductivity", "note": "anchor; bond-Peierls light bipolaron BEC; U enhances Tc"},
+        {"id": "arXiv:2308.13427", "title": "Cooper-Paired Bipolaronic Superconductors", "note": "tensor-network; fragmented condensate"},
+        {"id": "arXiv:2408.03266", "title": "Superconductivity of bipolarons from quadratic electron-phonon interaction (2025)", "note": "Tc/Omega several x linear; Tc~3.31 n_b/m*"},
+        {"id": "arXiv:2605.16625", "title": "Bipolaronic High-Tc SC from Phonon-Modulated Hopping: A Perspective (2026)", "note": "FeSe candidate, t/Omega~2-3 optimal window"},
+        {"id": "OSTI-2404898", "title": "Semiclassical theory of bipolaronic SC in bond-modulated model (Kim,Han,Sous 2024)", "note": "analytic backing"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Non-adiabatic / vertex corrections (Migdal-Eliashberg breakdown, PGS)",
+      "predicted_Tc": "No room-Tc; sign-conditional +-tens-%; real materials -30 to -40% (SUPPRESSION)",
+      "ambient_viable": "YES regime (fullerides, Li-hBN, STO) but corrections there are Tc-suppressing",
+      "first_principles_tractable": "YES first-order LOVC ab-initio (EPW-VASP, H3S npj)",
+      "escapes_el_ph_bound": "NO net gain; usually below naive ME",
+      "sources": [
+        {"id": "arXiv:2507.01897", "doi": "10.1038/s41524-025-01818-9", "title": "H3S vertex corrections first-principles (suppression)", "venue": "npj Comput Mater 2025"},
+        {"id": "PMC7418097", "title": "Li-hBN bilayer LOVC Eliashberg, ambient, ~40% Tc suppression (2020)"},
+        {"id": "arXiv:2510.25902", "title": "H3S/D3S nonadiabatic+anharmonic, strong Tc suppression (2025)"},
+        {"id": "arXiv:1911.12872", "doi": "PRB-102-024503", "title": "Full-bandwidth beyond-Migdal Eliashberg (sign-ambiguous)"},
+        {"id": "PRB-52-10516", "doi": "10.1103/PhysRevB.52.10516", "title": "Pietronero-Grimaldi-Strassler nonadiabatic SC I (1995)"},
+        {"id": "10.3390/sym15091632", "title": "Talantsev nonadiabaticity strength constant (descriptive metric, 2023)"}
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Flat-band geometric superfluid weight (Peotta-Toermae D_s ~ integral g)",
+      "predicted_Tc": "~1-10 K (interaction-bounded Tc<=U*<g>~meV; TBG measured 1-3 K)",
+      "ambient_viable": "YES (MATBG, kagome, Lieb) - strongest property",
+      "first_principles_tractable": "YES (quantum metric g(k) ground-state Wannier/DFT-computable, cheap, no DFPT |g|^2 wall; U/Delta needs cRPA+MF)",
+      "escapes_el_ph_bound": "DIFFERENT channel (sets stiffness/Tc not lambda) but RESCUE not enhancement; caps at meV scale",
+      "note": "Distinct from fleet's lambda-suppression result; geometric D_s rescues finite Tc from zero in flat band but absolute Tc still capped at U*<g>",
+      "sources": [
+        {"id": "Nat.Commun.6.8944", "doi": "10.1038/ncomms9944", "title": "Peotta & Toermae, Superfluidity in topologically nontrivial flat bands (2015)"},
+        {"id": "Nat.Rev.Phys.4.528", "doi": "10.1038/s42254-022-00466-y", "title": "Toermae,Peotta,Bernevig review (2022)"},
+        {"id": "Nature.614.440", "doi": "10.1038/s41586-022-05576-2", "title": "Tian et al. Dirac flat band SC via quantum geometry, MATBG Tc~2K (2023)"},
+        {"id": "Nature.638-2025", "doi": "10.1038/s41586-024-08494-7", "title": "Superfluid stiffness of MATBG (2025)"},
+        {"id": "PNAS.122-2025", "doi": "10.1073/pnas.2416726122", "title": "Jiang,Toermae,Barlas singular flat bands Tc enhancement (2025)"},
+        {"id": "arXiv:2409.13408", "title": "Quantum geometry in condensed matter review (2024)"},
+        {"id": "arXiv:2110.14663", "doi": "PRL-128-087002", "title": "Herzog-Arbeitman superfluid weight bounds (2022)"}
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Multi-gap / interband (Suhl-Matthias-Walker two-band)",
+      "predicted_Tc": "~1.5x factor (MgB2: 26K single -> 39K two-band); NOT order-of-magnitude",
+      "ambient_viable": "YES (MgB2 39K, Fe-based) none near room-Tc",
+      "first_principles_tractable": "YES but IS standard anisotropic Eliashberg/SCDFT (EPW) - inside el-ph machinery",
+      "escapes_el_ph_bound": "NO (phonon-mediated form, same mechanism, same ceiling); only escapes if interband boson is non-phonon (spin-fluct s+-, ferroelectric QCP)",
+      "sources": [
+        {"id": "cond-mat/0111182", "title": "Choi et al. anisotropic Eliashberg MgB2 Tc=39K"},
+        {"id": "cond-mat/0102499", "title": "Kong et al. MgB2 el-ph sigma-hole/E2g"},
+        {"id": "cond-mat/0211588", "title": "Bussmann-Holder et al. Tc enhancement two-band model"},
+        {"id": "arXiv:2106.14394", "title": "Bianconi/Perali resonant multigap room-Tc near Lifshitz (HIGH PRESSURE)"},
+        {"id": "arXiv:2606.18251", "title": "Saha,Ruhman,Klein interband coupling to ferroelectric QCP (2026, speculative)"}
+      ]
+    },
+    {
+      "id": "5a",
+      "name": "Plasmonic (Akashi-Arita SCDFT)",
+      "predicted_Tc": "~10-40 K class; enhancement +10-15% over phonon-only (Eliashberg over-counts; SCDFT corrects)",
+      "ambient_viable": "YES (STO, LiTi2O4, low-n metals)",
+      "first_principles_tractable": "YES mature ab-initio (RPA dyn-chi + SCDFT kernel); campaign-ready",
+      "escapes_el_ph_bound": "NO; modest top-up not new scale",
+      "sources": [
+        {"id": "arXiv:1401.1578", "title": "Akashi & Arita DFT for Plasmon-Assisted SC (PRL 111,057006)"},
+        {"id": "arXiv:2007.12886", "doi": "10.1103/PhysRevB.102.214508", "title": "Davydov,Sanna ab-initio plasmonic SC, Eliashberg vs SCDFT (+10-15%)"},
+        {"id": "arXiv:2601.18472", "title": "Plasmon-assisted SC in LiTi2O4 GW+EDMFT (2026)"}
+      ]
+    },
+    {
+      "id": "5b",
+      "name": "Excitonic (Little/Ginzburg revivals)",
+      "predicted_Tc": ">200 K CLAIMED (arXiv:2412.15003) - unreproduced, model-level, lowest credibility",
+      "ambient_viable": "candidate-only, no reproduced SC material",
+      "first_principles_tractable": "NO - model-only, no production exciton-SCDFT (needs GW-BSE pairing kernel)",
+      "escapes_el_ph_bound": "unproven",
+      "sources": [
+        {"id": "arXiv:2412.15003", "title": "Exciton-BEC SC above 200K (claim, unreproduced, 2024)"},
+        {"id": "Nat.Mater.15.1255", "doi": "10.1038/nmat4646", "title": "Exciton-polariton mediated SC (2016)"}
+      ]
+    },
+    {
+      "id": "5c",
+      "name": "Kohn-Luttinger (purely-repulsive)",
+      "predicted_Tc": "~0.15 K theory / 30-300 mK expt (milliKelvin)",
+      "ambient_viable": "YES (graphene/moire)",
+      "first_principles_tractable": "PARTIAL model-from-DFT (FRG/RPA-screened vertex); known mK answer",
+      "escapes_el_ph_bound": "NO; extreme high-omega exp-tiny-lambda_eff trap",
+      "sources": [
+        {"id": "PRB-105-075432", "doi": "10.1103/PhysRevB.105.075432", "title": "Kohn-Luttinger-like SC in rhombohedral trilayer graphene (2022)"},
+        {"id": "Nature.598.434", "doi": "arXiv:2106.07640", "title": "SC in rhombohedral trilayer graphene, mK anchor (2021)"},
+        {"id": "arXiv:2606.17205", "title": "Kohn-Luttinger SC in Flat Chern Bands (2026)"}
+      ]
+    }
+  ]
+}

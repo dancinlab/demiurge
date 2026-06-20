@@ -1,0 +1,127 @@
+{
+  "law": "FB-GEOM-LAMBDA",
+  "statement": "lambda_FB = N(E_F)*g0^2*Q_geom/(M*omega^2), Q_geom = FS-avg Bloch overlap in [1/N_band, 1]. PREDICTION: quantum geometry SUPPRESSES lambda -> a real flat-band SC shows lambda BELOW the naive Hopfield/Allen-Dynes value scaled from its (large) N(E_F).",
+  "lane": "fb-empirical",
+  "round": "r1",
+  "date": "2026-06-19",
+  "test_design": {
+    "naive_expectation": "Hopfield: lambda ~ N(E_F)*<I^2>/(M*<omega^2>). For a fixed coupling+phonon backbone, a flat-band material's large N(E_F) (van Hove / kagome flat band) should drive a LARGE lambda. The law predicts the OPPOSITE: Q_geom < 1 (Bloch states spread over many sublattice components reduce the FS-averaged el-ph matrix overlap), depleting lambda below the N(E_F)-naive value.",
+    "signature_present": "lambda noticeably BELOW what N(E_F) alone predicts; lambda DECOUPLED from N(E_F) (large N(E_F) but only moderate/weak lambda); lambda grows MUCH slower than N(E_F) under tuning.",
+    "signature_absent": "lambda tracks N(E_F) ~linearly (conventional Hopfield, Q_geom ~ 1).",
+    "control_group": "Conventional H-cage hydrides (X2MH6, M3XH8, AXH8): NO flat band, dispersive sigma/H-octahedra states (Q_geom ~ 1). Expect lambda LARGE and tracking N(E_F)."
+  },
+  "materials": [
+    {
+      "id": "CsV3Sb5",
+      "structure_type": "kagome (V kagome net, P6/mmm)",
+      "flat_band_near_Ef": "yes (V-3d flat band + multiple van Hove singularities at/near E_F)",
+      "lambda_DFT": 0.25,
+      "lambda_expt_ARPES": "0.45-0.6",
+      "omega_log": null,
+      "N_Ef": "large (multiple vHs from V-3d; not single number given)",
+      "Tc_K": 2.6,
+      "suppression_verdict": "PRESENT (strong). DFT lambda~0.25 is WEAK despite the large kagome flat-band/vHs N(E_F); naive Hopfield from that DOS would predict far higher lambda. The DFT lambda even UNDER-shoots experiment (ARPES 0.45-0.6) -- but vs the naive N(E_F) expectation, lambda is clearly SUPPRESSED (geometry + the small phonon-coupled fraction).",
+      "source": "Nat Commun s41467-023-37605-7 (2023); arXiv via PMC10082024",
+      "doi": "10.1038/s41467-023-37605-7"
+    },
+    {
+      "id": "CaPd5",
+      "structure_type": "kagome (Pd kagome, MPd5-type)",
+      "flat_band_near_Ef": "yes (topological electronic flat band AT E_F, Z2=1; phononic flat band too)",
+      "lambda_DFT": 0.557,
+      "omega_log": null,
+      "N_Ef": "large (flat band at E_F -> sharp DOS peak)",
+      "Tc_K": 4.25,
+      "suppression_verdict": "PRESENT. Electronic flat band sits AT E_F (huge N(E_F)) yet lambda is only MODERATE (0.557) and Tc only 4.25 K -- far below what a naive flat-band-DOS Hopfield estimate would give. lambda DECOUPLED from the flat-band DOS.",
+      "source": "npj Comput Mater s41524-025-01815-y / arXiv:2505.14223 (2025)",
+      "doi": "10.1038/s41524-025-01815-y"
+    },
+    {
+      "id": "SrPd5",
+      "structure_type": "kagome (Pd kagome, MPd5-type)",
+      "flat_band_near_Ef": "yes (flat band at E_F)",
+      "lambda_DFT": 0.494,
+      "omega_log": null,
+      "N_Ef": "large",
+      "Tc_K": 2.75,
+      "suppression_verdict": "PRESENT. Flat band at E_F, lambda only 0.494 -> moderate. Same decoupling as CaPd5.",
+      "source": "npj Comput Mater s41524-025-01815-y / arXiv:2505.14223 (2025)",
+      "doi": "10.1038/s41524-025-01815-y"
+    },
+    {
+      "id": "BaPd5",
+      "structure_type": "kagome (Pd kagome, MPd5-type)",
+      "flat_band_near_Ef": "yes (flat band at E_F)",
+      "lambda_DFT": 0.559,
+      "omega_log": null,
+      "N_Ef": "large",
+      "Tc_K": 3.35,
+      "suppression_verdict": "PRESENT. Flat band at E_F, lambda 0.559 -> moderate. Decoupled from large flat-band DOS.",
+      "source": "npj Comput Mater s41524-025-01815-y / arXiv:2505.14223 (2025)",
+      "doi": "10.1038/s41524-025-01815-y"
+    },
+    {
+      "id": "LaRu3Si2",
+      "structure_type": "kagome (Ru kagome, CeCo3B2-type P6/mmm)",
+      "flat_band_near_Ef": "yes (Ru-4d dx2-y2 kagome flat band ~55 meV of E_F; confirmed in repo gatecheck)",
+      "lambda_DFT": 0.635,
+      "lambda_repo_coarse": 1.64,
+      "omega_log": "moderate (mode-selective Ru-B3u phonons)",
+      "N_Ef_per_eV_uc_spin": 7.82,
+      "Tc_K": 6.6,
+      "tuning_test": {
+        "x0": {"N_Ef": 7.82, "lambda": 0.635, "Tc_K": 6.6},
+        "x007_Ge": {"N_Ef": 8.90, "lambda": 0.661, "Tc_K": 7.1},
+        "delta_N_pct": 13.8,
+        "delta_lambda_pct": 4.1
+      },
+      "suppression_verdict": "PRESENT (cleanest tuning evidence). Ge-doping RAISES N(E_F) by 13.8% but lambda by only 4.1% -- lambda grows ~3x SLOWER than N(E_F). The flat-band DOS does NOT translate into proportional lambda; coupling is MODE-SELECTIVE (only Ru-B3u phonons couple to the flat band), exactly the Q_geom<1 depletion the law predicts. NOTE: our repo's coarse-grid lambda=1.64 is a soft upper bound from a dynamically-UNSTABLE 2x2x2 q-grid (imaginary modes dropped) -- the published converged DFT value is 0.635.",
+      "source": "arXiv:2503.22477 (2025); repo exports/rtsc/laru3si2_dft_elph.json + laru3si2_flatband_gatecheck.json",
+      "doi": "arXiv:2503.22477"
+    },
+    {
+      "id": "LaOs3Si2",
+      "structure_type": "kagome (Os kagome, CeCo3B2-type, Os 5d isoelectronic to Ru 4d)",
+      "flat_band_near_Ef": "yes (Os-5d kagome flat band near E_F; repo sibling gatecheck)",
+      "lambda_repo_matched_sigma": 0.811,
+      "omega_log_K": 109.41,
+      "N_Ef_states_per_spin_Ry": 42.691,
+      "Tc_phys_K": "4.3-5.3 (repo physical-only, soft upper bound)",
+      "suppression_verdict": "PRESENT (relative). N(E_F)=42.7 states/spin/Ry is LARGER than LaRu3Si2's 35.4, yet matched-sigma lambda is LOWER (0.811 vs LaRu3Si2's 1.64 at the same coarse grid). Higher flat-band DOS -> LOWER lambda = anti-Hopfield, the suppression signature. (Both repo values are coarse-grid soft upper bounds, d6.)",
+      "source": "repo exports/rtsc/laos3si2_dft_elph.json (our DFPT, summer pool)",
+      "doi": "internal/demiurge"
+    },
+    {
+      "id": "Li2AuH6",
+      "structure_type": "CONTROL: conventional H-cage (Au-H octahedra, cubic 216-type, NO flat band)",
+      "flat_band_near_Ef": "no (van Hove peak at W but dispersive sigma/octahedral-breathing states; Q_geom ~ 1)",
+      "lambda_DFT": 2.84,
+      "omega_log": "~breathing mode 140 meV + Li 20-30 meV",
+      "N_Ef": "high (vHs peak at E_F)",
+      "Tc_K": 140,
+      "suppression_verdict": "ABSENT (expected -- this is the control). No flat band, lambda is HUGE (2.84) and tracks N(E_F)/coupling conventionally. Confirms that large N(E_F) WITHOUT a flat band gives large lambda. The contrast with the kagome flat-band cases is the whole point.",
+      "source": "arXiv:2501.12222 (2025), High-Tc in Li2AuH6 mediated by strong el-ph",
+      "doi": "arXiv:2501.12222"
+    },
+    {
+      "id": "X2MH6_family",
+      "structure_type": "CONTROL: conventional H-cage hydrides (Mg2IrH6 etc; fcc/Im-3m MH6 octahedra, NO flat band)",
+      "flat_band_near_Ef": "no (H-projected DOS at E_F drives lambda; dispersive)",
+      "lambda_DFT": "large (Mg2IrH6 Tc~160 K class)",
+      "Tc_K": "~160 (Mg2IrH6)",
+      "suppression_verdict": "ABSENT (expected control). Disentangling study (arXiv:2604.04151) finds Tc dominated by the ELECTRONIC contribution (H-projected DOS at E_F, X-H bond, ELF networking) -- lambda tracks N(E_F) conventionally, NO geometric suppression. Q_geom ~ 1.",
+      "source": "arXiv:2604.04151 (2026) X2MH6 disentangling; arXiv:2407.10889 Mg2IrH6 vs Ca2IrH6",
+      "doi": "arXiv:2604.04151"
+    },
+    {
+      "id": "M3XH8_AXH8_families",
+      "structure_type": "CONTROL: conventional ternary/fluorite H-cage (Mg3OsH8, AcRhH8 etc; NO flat band)",
+      "flat_band_near_Ef": "no",
+      "lambda_DFT": "large (ELF=0.073*lambda+0.138 correlation; H8-unit driven)",
+      "Tc_K": "Mg3OsH8 ~73; AcRhH8 ~78",
+      "suppression_verdict": "ABSENT (expected control). lambda set by H8-unit ELF/charge delocalization, tracks coupling conventionally. No flat band, no geometric depletion.",
+      "source": "J Phys Chem C 5c00513 (M3XH8); Adv Sci advs.202512696 (AXH8)",
+      "doi": "10.1021/acs.jpcc.5c00513 ; 10.1002/advs.202512696"
+    }
+  ]
+}

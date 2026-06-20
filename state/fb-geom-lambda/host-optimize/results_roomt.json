@@ -1,0 +1,214 @@
+{
+  "real_material_metric": {
+    "CoSn:kagome-SOC lso=0.1": {
+      "C": 0.9999999999999997,
+      "g_avg": 2.9351492814068307,
+      "width": 0.04675875010150987,
+      "iso_gap": 8.881784197001252e-16,
+      "emean": 2.026998386937754
+    },
+    "CoSn:kagome-SOC lso=0.15": {
+      "C": 1.0000000000000002,
+      "g_avg": 2.868240286559737,
+      "width": 0.09873316263936749,
+      "iso_gap": 8.881784197001252e-16,
+      "emean": 2.0584612871394783
+    },
+    "CoSn:kagome-SOC lso=0.2": {
+      "C": 0.9999999999999988,
+      "g_avg": 2.8233689791288508,
+      "width": 0.16502641167330134,
+      "iso_gap": 8.881784197001252e-16,
+      "emean": 2.099587275769061
+    },
+    "Nb3Cl8:breathing tp=0.5": {
+      "C": 0.0,
+      "g_avg": 2.139347162839654,
+      "width": 0.8676916772975891,
+      "iso_gap": 6.661338147750939e-16,
+      "emean": 1.586810075016391
+    },
+    "Nb3Cl8:breathing tp=0.6": {
+      "C": 0.0,
+      "g_avg": 2.1790133888232144,
+      "width": 1.009073740061827,
+      "iso_gap": 0.0,
+      "emean": 1.715401348523018
+    },
+    "Nb3Cl8:breathing tp=0.7": {
+      "C": 0.0,
+      "g_avg": 2.166731466451642,
+      "width": 1.1417163994106558,
+      "iso_gap": 8.881784197001252e-16,
+      "emean": 1.8470903936802092
+    },
+    "Nb3Cl8:breathing+SOC": {
+      "C": 4.594134539891746e-16,
+      "g_avg": 2.108346202990042,
+      "width": 1.4274209895858503,
+      "iso_gap": 0.0,
+      "emean": 1.69768995824331
+    },
+    "tMoTe2:haldane t2=0.35,m=0.0": {
+      "C": -9.895059008997609e-16,
+      "g_avg": 2.051291058125537,
+      "width": 2.975339595512988,
+      "iso_gap": 0.0493208089740237,
+      "emean": -1.8296583529522976
+    },
+    "tMoTe2:haldane t2=0.5,m=0.0": {
+      "C": -6.714504327534091e-16,
+      "g_avg": 2.025009402203282,
+      "width": 3.129740228073799,
+      "iso_gap": 0.06126902032884956,
+      "emean": -2.0088441172694624
+    },
+    "tMoTe2:haldane t2=0.3,m=0.2": {
+      "C": -9.188269079783492e-16,
+      "g_avg": 2.0059063489641176,
+      "width": 2.9022860877703924,
+      "iso_gap": 0.20874637580837785,
+      "emean": -1.8023540208251103
+    }
+  },
+  "tMoTe2_ideal_floor": 1.0,
+  "tc_table": [
+    {
+      "name": "CoSn (kagome-SOC flat band)",
+      "g_avg": 2.868240286559737,
+      "g_prov": "TB kagome-SOC (DFT-Wannier \u03a9_I needed)",
+      "Omega_meV": 15.0,
+      "Omega_prov": "phonon flat band 15 meV [SOURCED Yin NatCommun11,4464]",
+      "UoverO": 1.15,
+      "UoverO_prov": "geom-stiffness anchor (\u03bb=1.9 strong-coupling -> U/\u03a9\u22651.15, lower bound)",
+      "delta_O": 0.9738130953852556,
+      "tc2D_K": 77.41730582579582,
+      "tc3D_K": 108.51032059033368,
+      "pct_roomT_2D": 26.422288677746014,
+      "pct_roomT_3D": 37.0342391093289
+    },
+    {
+      "name": "CoSn strong-coupling (U/\u03a9=1.9)",
+      "g_avg": 2.868240286559737,
+      "g_prov": "TB kagome-SOC (DFT-Wannier \u03a9_I needed)",
+      "Omega_meV": 15.0,
+      "Omega_prov": "phonon flat band 15 meV [SOURCED]",
+      "UoverO": 1.9,
+      "UoverO_prov": "\u03bb=1.9 Eliashberg [SOURCED] -> stronger pairing scale",
+      "delta_O": 1.6089085923756397,
+      "tc2D_K": 127.90685310348871,
+      "tc3D_K": 179.2779209753339,
+      "pct_roomT_2D": 43.654216076276015,
+      "pct_roomT_3D": 61.187003745847754
+    },
+    {
+      "name": "Nb3Cl8 (breathing+SOC)",
+      "g_avg": 2.108346202990042,
+      "g_prov": "TB breathing+SOC (DFT-Wannier \u03a9_I needed; bare breathing is C=0/low-\u27e8g\u27e9)",
+      "Omega_meV": 30.0,
+      "Omega_prov": "Nb-Cl cluster mode ~30 meV [ESTIMATE \u2014 not published, FLAG]",
+      "UoverO": 1.15,
+      "UoverO_prov": "Mott U~1.2eV/W~0.15eV huge; conservative anchor U/\u03a9",
+      "delta_O": 0.8349083562664723,
+      "tc2D_K": 113.81367422274789,
+      "tc3D_K": 159.5245164597178,
+      "pct_roomT_2D": 38.84425741390713,
+      "pct_roomT_3D": 54.445227460654536
+    },
+    {
+      "name": "tMoTe2 (ideal C=1, \u27e8g\u27e9=floor 1.0)",
+      "g_avg": 1.0,
+      "g_prov": "|C|=1 trace-bound floor [SOURCED bound]",
+      "Omega_meV": 10.0,
+      "Omega_prov": "moir\u00e9 phonon/bandwidth ~8-15 meV [SOURCED tMoTe2 bandwidth]",
+      "UoverO": 1.15,
+      "UoverO_prov": "flat-band Hubbard anchor",
+      "delta_O": 0.575,
+      "tc2D_K": 17.994146954508405,
+      "tc3D_K": 25.221113470118777,
+      "pct_roomT_2D": 6.1413470834499675,
+      "pct_roomT_3D": 8.607888556354531
+    },
+    {
+      "name": "sp2C N-Lieb COF (R2 best, ref)",
+      "g_avg": 0.672,
+      "g_prov": "real \u03c0-TB [R2 SOURCED]",
+      "Omega_meV": 120.0,
+      "Omega_prov": "C-C bond phonon [SOURCED]",
+      "UoverO": 1.08,
+      "UoverO_prov": "R2 anchor",
+      "delta_O": 0.4426682730894547,
+      "tc2D_K": 136.27233489082457,
+      "tc3D_K": 191.00322064772251,
+      "pct_roomT_2D": 46.509329314274595,
+      "pct_roomT_3D": 65.18881250775513
+    }
+  ],
+  "room_t_recipe": [
+    {
+      "name": "CoSn kagome-\u27e8g\u27e9 \u00d7 CoSn \u03a9(15, strong)",
+      "g_avg": 2.868240286559737,
+      "Omega_meV": 15.0,
+      "UoverO": 1.9,
+      "tc2D_K": 127.90685310348871,
+      "tc3D_K": 179.2779209753339,
+      "status": "REAL (\u03a9 heavy-capped)",
+      "reaches_roomT": false
+    },
+    {
+      "name": "Lieb-COF \u27e8g\u27e9 \u00d7 C-C \u03a9(120)",
+      "g_avg": 0.672,
+      "Omega_meV": 120.0,
+      "UoverO": 1.08,
+      "tc2D_K": 136.27233489082457,
+      "tc3D_K": 191.00322064772251,
+      "status": "REAL (R2 best host)",
+      "reaches_roomT": false
+    },
+    {
+      "name": "HYPO: kagome \u27e8g\u27e92.87 \u00d7 C-C \u03a9(120meV)",
+      "g_avg": 2.868240286559737,
+      "Omega_meV": 120.0,
+      "UoverO": 1.15,
+      "tc2D_K": 619.3384466063666,
+      "tc3D_K": 868.0825647226694,
+      "status": "MISSING: light-atom kagome SC",
+      "reaches_roomT": true
+    },
+    {
+      "name": "HYPO: kagome \u27e8g\u27e92.87 \u00d7 C-C \u03a9(160meV)",
+      "g_avg": 2.868240286559737,
+      "Omega_meV": 160.0,
+      "UoverO": 1.15,
+      "tc2D_K": 825.7845954751555,
+      "tc3D_K": 1157.443419630226,
+      "status": "MISSING: light-atom kagome SC",
+      "reaches_roomT": true
+    },
+    {
+      "name": "HYPO: kagome \u27e8g\u27e92.87 \u00d7 C-C \u03a9(196,U/\u03a91.9)",
+      "g_avg": 2.868240286559737,
+      "Omega_meV": 196.0,
+      "UoverO": 1.9,
+      "tc2D_K": 1671.316213885586,
+      "tc3D_K": 2342.564834077696,
+      "status": "MISSING + strong-coupling",
+      "reaches_roomT": true
+    }
+  ],
+  "verdict": {
+    "best_material": "CoSn strong-coupling (U/\u03a9=1.9)",
+    "best_g": 2.868240286559737,
+    "best_Omega_meV": 15.0,
+    "best_tc2D_K": 127.90685310348871,
+    "best_tc3D_K": 179.2779209753339,
+    "pct_roomT_2D": 43.654216076276015,
+    "pct_roomT_3D": 61.187003745847754,
+    "room_t_K": 293.0,
+    "reaches_roomT_3D": false,
+    "gain_3D_over_2D": 1.401628737048836,
+    "ceiling_decomposition": "kagome real-material \u27e8g\u27e9\u22482.87 (CoSn, C=1 SOC-isolated) IS the high-\u27e8g\u27e9 R2 said room-T needs \u2014 but kagome metals are heavy (\u03a9\u224815meV) so Tc caps ~180K. COF has light \u03a9\u2248120meV but \u27e8g\u27e9\u22480.67 caps ~190K. Room-T needs ONE material with BOTH kagome \u27e8g\u27e9\u22482.9 AND a light-atom (C/B-N) \u03a9\u2248120-200meV \u2014 a LIGHT-ATOM KAGOME flat-band SC.",
+    "single_missing_ingredient": "a light-element (carbon/B-N) kagome (or breathing-kagome) lattice with an SOC/Chern-isolated flat band at E_F AND a superconducting pairing channel \u2014 combines CoSn-class \u27e8g\u27e9\u22482.9 with C-C-class \u03a9\u2248120-200meV -> Tc3D 290-577K (clears room-T).",
+    "missing_confirmation": "DFT-Wannier \u03a9_I -> scalar \u27e8tr g\u27e9 for the isolated flat band; \u03bd tuning to flat band at E_F; sourced phonon \u03a9 for Nb3Cl8; SC pairing channel (CoSn/Nb3Cl8 non-SC)"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "ref": {
+    "d": 1.65,
+    "M": 11.0,
+    "Omega": 160.0,
+    "u0": 0.034460778396745224,
+    "gt_harrison": 0.04177064048090331,
+    "thresh": 1.2
+  },
+  "classes": {
+    "C1_negU_SSH_critical": [
+      {
+        "window": "just-before (uc=2.5 u0)",
+        "uc_A": 0.0862,
+        "S": 1.667,
+        "gt": 0.0696,
+        "metal_margin": 1.5,
+        "reaches_1p2": false
+      },
+      {
+        "window": "near-edge (uc=1.5 u0)",
+        "uc_A": 0.0517,
+        "S": 3.0,
+        "gt": 0.1253,
+        "metal_margin": 0.5,
+        "reaches_1p2": false
+      },
+      {
+        "window": "at-edge (uc=1.1 u0)",
+        "uc_A": 0.0379,
+        "S": 11.0,
+        "gt": 0.4595,
+        "metal_margin": 0.1,
+        "reaches_1p2": false
+      }
+    ],
+    "C2_charge_transfer_crossover": [
+      {
+        "window": "broad (w=0.30A)",
+        "w_A": 0.3,
+        "S": 1.751,
+        "gt": 0.0731,
+        "cdw_pressure": 1.75,
+        "reaches_1p2": false
+      },
+      {
+        "window": "moderate (w=0.15A)",
+        "w_A": 0.15,
+        "S": 3.501,
+        "gt": 0.1463,
+        "cdw_pressure": 3.5,
+        "reaches_1p2": false
+      },
+      {
+        "window": "sharp (w=0.08A)",
+        "w_A": 0.08,
+        "S": 6.565,
+        "gt": 0.2742,
+        "cdw_pressure": 6.57,
+        "reaches_1p2": false
+      },
+      {
+        "window": "ultra-sharp (w=0.04A)",
+        "w_A": 0.04,
+        "S": 13.13,
+        "gt": 0.5485,
+        "cdw_pressure": 13.13,
+        "reaches_1p2": false
+      }
+    ],
+    "C3_lonepair_s2_breathing": {
+      "d_A": 2.2,
+      "M": 16.0,
+      "Omega_meV": 65.0,
+      "u0_A": 0.0448,
+      "gt_harrison": 0.0408,
+      "gt_measured_audit": 0.0465,
+      "S_vs_harrison": 1.141,
+      "note": "Omega SOFT (65meV) not stiff; even with S, soft mode fails box criterion-2 (Omega>=160meV)",
+      "reaches_1p2": false,
+      "metal_only_when_doped_away_from_CDW": true
+    }
+  },
+  "joint_window_C1": {
+    "required_S": 28.73,
+    "required_metal_margin": 0.0361,
+    "zpt_fraction_of_uc": 0.965,
+    "verdict": "margin so small the zero-point motion itself reaches the dimerization point -> no metal"
+  },
+  "joint_window_C2": {
+    "required_S": 28.73,
+    "required_width_A": 0.0183,
+    "pct_of_bond": 1.11,
+    "verdict": "width that sharp = a disproportionation step = CDW gap, not a metal"
+  },
+  "verdict": "CLOSES"
+}

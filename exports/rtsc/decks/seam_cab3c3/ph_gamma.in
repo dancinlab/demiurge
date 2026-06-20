@@ -1,0 +1,12 @@
+CaB3C3 Gamma-only DFPT phonon (cheap decisive Omega for seam G1 Omega/t)
+&inputph
+  prefix = 'cab3c3'
+  outdir = './out'
+  fildyn = './cab3c3_gamma.dyn'
+  tr2_ph = 1.0d-14
+  recover = .true.
+  ldisp = .false.
+  trans = .true.
+  epsil = .false.
+/
+0.0 0.0 0.0

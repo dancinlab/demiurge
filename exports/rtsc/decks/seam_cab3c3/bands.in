@@ -1,0 +1,57 @@
+&control
+  ! BANDS on the RELAXED Pm-3n CaB3C3 cell (post-scf). verbosity='high' MANDATORY
+  !   (>=100 k-points: d_deck_always). Extracts the B/C-manifold bandwidth t at E_F
+  !   for the seam G1 (Omega/t) + G2 (dressed eps_F) gates.
+  ! REPLACE celldm(1) with the relaxed value from vc-relax.out (dispatch greps it).
+  calculation = 'bands'
+  prefix = 'cab3c3'
+  outdir = './out'
+  pseudo_dir = './pseudo'
+  verbosity = 'high'
+/
+&system
+  ibrav = 1
+  celldm(1) = 8.957          ! REPLACE with relaxed celldm(1)
+  nat = 14
+  ntyp = 3
+  ecutwfc = 70.0
+  ecutrho = 560.0
+  nosym = .true.
+  nbnd = 48
+  occupations = 'smearing'
+  smearing = 'mp'
+  degauss = 0.02
+/
+&electrons
+  conv_thr = 1.0d-10
+  mixing_beta = 0.3
+  electron_maxstep = 400
+/
+
+ATOMIC_SPECIES
+  Ca 40.078 Ca.pbe-spn-rrkjus_psl.1.0.0.UPF
+  B  10.811  B.pbe-n-rrkjus_psl.1.0.0.UPF
+  C  12.011  C.pbe-n-rrkjus_psl.1.0.0.UPF
+ATOMIC_POSITIONS crystal
+  Ca 0.0000000  0.0000000  0.0000000
+  Ca 0.5000000  0.5000000  0.5000000
+  B  0.2500000  0.0000000  0.5000000
+  B  0.7500000  0.0000000  0.5000000
+  B  0.0000000  0.5000000  0.2500000
+  B  0.0000000  0.5000000  0.7500000
+  B  0.5000000  0.2500000  0.0000000
+  B  0.5000000  0.7500000  0.0000000
+  C  0.2500000  0.5000000  0.0000000
+  C  0.7500000  0.5000000  0.0000000
+  C  0.0000000  0.2500000  0.5000000
+  C  0.0000000  0.7500000  0.5000000
+  C  0.5000000  0.0000000  0.2500000
+  C  0.5000000  0.0000000  0.7500000
+K_POINTS crystal_b
+  6
+  0.000000 0.000000 0.000000 40   ! Gamma
+  0.500000 0.000000 0.000000 40   ! X
+  0.500000 0.500000 0.000000 40   ! M
+  0.000000 0.000000 0.000000 40   ! Gamma
+  0.500000 0.500000 0.500000 40   ! R
+  0.500000 0.000000 0.000000 1    ! X

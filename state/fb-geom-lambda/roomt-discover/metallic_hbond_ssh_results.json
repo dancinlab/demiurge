@@ -1,0 +1,133 @@
+{
+  "lane": "metallic-hbond-ssh",
+  "dome": {
+    "onset": 0.38,
+    "central": 0.54,
+    "peak": 0.7,
+    "death": 1.2
+  },
+  "room_t_K": 293.15,
+  "candidates": [
+    {
+      "name": "H_xMoO3 (hydrogen molybdenum bronze, x~0.3-1.7) -- METALLIC d-band, O-H...O bridge",
+      "cls": "proton-bronze (metallic mixed-valence oxide)",
+      "metallic": "YES at 1 atm (mixed-valence Mo5+/Mo6+; H-bronze is a known metallic/highly-conducting bronze for the blue/monoclinic phases; Fermi level in Mo 4d). LIT",
+      "mott": "NO -- wide Mo 4d band (W~2-3 eV), x non-integer -> off-half-filling, U/W<1. LIT/EST",
+      "symmetric": false,
+      "d_OO_ang": 2.7,
+      "Omega_meV": 110.0,
+      "t_meV": 300.0,
+      "u0_ang": 0.13729502746574168,
+      "g_over_t_harrison": 0.10170002034499383,
+      "g_over_t_exp_lo": 0.1716187843321771,
+      "g_over_t_exp_hi": 0.3051000610349815,
+      "rows": [
+        {
+          "delta": 0.45,
+          "g_over_t": 0.3051000610349815
+        },
+        {
+          "delta": 0.6,
+          "g_over_t": 0.22882504577623614
+        },
+        {
+          "delta": 0.8,
+          "g_over_t": 0.1716187843321771
+        }
+      ],
+      "reaches_dome_onset": false,
+      "reaches_dome_peak": false,
+      "tc_ceiling_K_C20": 255.28799999999998,
+      "tc_ceiling_K_C32": 408.4608,
+      "note": "Live carrier (metallic), but the bronze O-H...O is the WEAKER/LONGER asymmetric bond -> smaller dt/du than kappa-H3's short symmetric bridge. The inverse trade.",
+      "ed_crosscheck": {
+        "binding_over_t": -0.3416497449967286,
+        "bound": true,
+        "mstar_over_m0": 1.1360458990648172,
+        "Omega_over_t": 0.36666666666666664,
+        "g_over_t": 0.3051000610349815
+      }
+    },
+    {
+      "name": "H_xWO3 (hydrogen tungsten bronze, x~0.1-0.5) -- METALLIC 5d-band, O-H...O bridge",
+      "cls": "proton-bronze (metallic mixed-valence oxide)",
+      "metallic": "YES at 1 atm (E_F well in W 5d conduction band; classic metallic bronze, blue/colored, partially-filled 5d). LIT",
+      "mott": "NO -- wide W 5d band (W~3-4 eV), x continuous, U/W<<1. LIT",
+      "symmetric": false,
+      "d_OO_ang": 2.75,
+      "Omega_meV": 120.0,
+      "t_meV": 350.0,
+      "u0_ang": 0.13144998105585207,
+      "g_over_t_harrison": 0.09559998622243787,
+      "g_over_t_exp_lo": 0.16431247631981508,
+      "g_over_t_exp_hi": 0.2921110690130046,
+      "rows": [
+        {
+          "delta": 0.45,
+          "g_over_t": 0.2921110690130046
+        },
+        {
+          "delta": 0.6,
+          "g_over_t": 0.21908330175975346
+        },
+        {
+          "delta": 0.8,
+          "g_over_t": 0.16431247631981508
+        }
+      ],
+      "reaches_dome_onset": false,
+      "reaches_dome_peak": false,
+      "tc_ceiling_K_C20": 278.496,
+      "tc_ceiling_K_C32": 445.5936,
+      "note": "Most robustly metallic bronze (W5d wide band) -- but widest band = smallest g/t (strong-metal limit: the proton barely perturbs a 3-4 eV band).",
+      "ed_crosscheck": {
+        "binding_over_t": -0.3343694950848537,
+        "bound": true,
+        "mstar_over_m0": 1.1300628122992789,
+        "Omega_over_t": 0.34285714285714286,
+        "g_over_t": 0.2921110690130046
+      }
+    },
+    {
+      "name": "kappa-H3(Cat-EDT-TTF)2 doped off nu=1 (HYPOTHETICAL metallic route) -- short symmetric O-H-O",
+      "cls": "doped molecular conductor (escape route of the CLOSED Mott host)",
+      "metallic": "ONLY IF doped off nu=1 WITHOUT triggering CO -- UNDEMONSTRATED (the open lever). Adverse prior: every demonstrated perturbation -> CO insulator. EST/OPEN",
+      "mott": "YES at nu=1 (the closure); the doped-metal is the untested escape. LIT(closure)/OPEN(escape)",
+      "symmetric": true,
+      "d_OO_ang": 2.45,
+      "Omega_meV": 120.0,
+      "t_meV": 40.0,
+      "u0_ang": 0.13144998105585207,
+      "g_over_t_harrison": 0.10730610698436903,
+      "g_over_t_exp_lo": 0.26289996211170413,
+      "g_over_t_exp_hi": 0.4381666035195069,
+      "rows": [
+        {
+          "delta": 0.3,
+          "g_over_t": 0.4381666035195069
+        },
+        {
+          "delta": 0.4,
+          "g_over_t": 0.32862495263963015
+        },
+        {
+          "delta": 0.5,
+          "g_over_t": 0.26289996211170413
+        }
+      ],
+      "reaches_dome_onset": true,
+      "reaches_dome_peak": false,
+      "tc_ceiling_K_C20": 278.496,
+      "tc_ceiling_K_C32": 445.5936,
+      "note": "The strong-coupling reference: short symmetric bridge gives the big g/t -- but the narrow band is exactly why it Motts. Carrier axis CLOSED unless doped-without-CO.",
+      "ed_crosscheck": {
+        "binding_over_t": -0.08750122310226427,
+        "bound": true,
+        "mstar_over_m0": 1.0196676572932666,
+        "Omega_over_t": 3.0,
+        "g_over_t": 0.4381666035195069
+      }
+    }
+  ],
+  "provenance": "TB-grade on published bronze geometry + validated SSH-ED + QMC dome; from-scratch bronze DFPT PENDING (summer recipe at tail)."
+}

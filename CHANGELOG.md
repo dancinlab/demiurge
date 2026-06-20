@@ -8,6 +8,12 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-20
 
+- **RTSC flat-band 양자기하 SC 법칙스윕 L19→L41 (23 신규) + 🏁 고갈판정 · 검증·예측 도구 구현** — 상온@1atm 탐색을 물리축 전수 매핑: conventional ~120K 닫힘(L22, Nature Comms 2만금속 외부확증) · 비-phonon 근본천장 없음(L24) → master 변수=양자metric 적분 ∫tr g 하나가 전자강성(L25-35)·포논 λ(L36, 그래핀50%/MgB₂90%)·간섭길이(L32)·무질서강건(L28) 전부 지배. room-T 갭=단일 bounded 물질문제(∫tr g·U ~50-100×↑ in incipient topological flat host[CeRu₂·CsCr₃Sb₅] + 경쟁 CDW/자성 억제[L15/20, CsV3Sb5 CDW90K≫Tc2.7K]). 두 capstone(🔗L36 이론·🌡️L38 실험~6K). 고갈=사용자기준(1hr+ sustained dry, 7프로브) 충족. **도구**: `tool/rtsc/fbgeom_predictor.py` = 법칙의 runnable 검증·예측층(VERIFY 앵커재현 PASS·PREDICT 격자별 Tc·d6 버그2 발견수정+dice artifact caveat). SSOT=ARCHITECTURE.json LAWS[48]·raw=.discoveries/flatband-geometric-elph-law.tape. CLAUDE.md tool/ 참조 추가. Li₂AuH₆ seam-DFT는 🔴 CLOSED-REPRODUCTION(arXiv:2409.08065 InvDesFlow 출판·d_novel_only가 컴퓨트 완료前 포착).
+
+- **leverb-mae-production 🧱 CLOSED-NEGATIVE** — 3d-only K1 천장 axis 종결(문헌 anchor: FeCo bct 0.7-1.0 박막·Fe16N2 ~1.0 metastable·둘다<3 MJ/m³ + 도구검증 spinor SCF dry-run). production SCF는 서버 rate-limit + **summer disk 99%**(RTSC·SmFe12 경합)로 BLOCKED — 덱 turnkey(disk 회복 시 재개), 단 재현이라 verdict 불변(d_novel_only·d7). 3d-only escape 고갈 → 자석 P1=4f 물리천장(L20) 확정. ⚠️ summer disk 99% 경보(다른 캠페인 영향).
+
+- **toolgap-fill 착륙 → 자석 SOC/MAE 도구갭 QE경로 CLOSED** — summer QE 7.5 기존설치 확인(stale 가정 정정)·FR pseudo·noncolin+lspinorb spinor SCF dry-run이 SOC L·S·noncollinear 자화·축제어 live 증명. QFORGE-native SOC=OPEN→hexa-lang ING(qforge-soc-noncollinear-mae·hexa-lang#3719 merged) + demiurge ING#28. lever(b) 덱 turnkey(feco_tetragonal·Fe16N2). leverb-mae-production 발사(free·closed-negative 확정 목표). L20 보강.
+
 ### P6 제외 재채점 — disjointness 정리 (L23)
 - 사용자 질문 'g6(P6) 제외 g5(P1-P5)까지 통과 후보?'에 정직 답변: P6 제외해도 {novel ∩ P1-P5 통과}=∅. P6는 유일/최후 빗장 아님(가설 반증) — PASS-set과 novel-set이 disjoint: P1-P5 통과는 전부 already-commercial(novelty 실패), genuinely novel은 P6 전에 P1/P2/P3/P5서 막힘. 메타법칙 L16 심화. 유일 잠재경로=flat-band이 novel을 P1-pass로 옮길 때(이미 CLOSED-NEGATIVE).
 
