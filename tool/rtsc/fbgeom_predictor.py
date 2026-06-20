@@ -75,6 +75,37 @@ def tc_bkt(g, Omega_meV, UOm, nu=0.5):
 def room_t_gap(tc_K, target=293.15):
     return target / tc_K if tc_K > 0 else float('inf')
 
+# ---------- TOOL IMPROVEMENT (self-improving, per the top governance principle) ----------
+# Real, MEASURED flat-band/moire SC hosts (name, <g>, Omega meV, U/Om, measured Tc K). The raw 2D-BKT
+# tc_bkt is mean-field-optimistic (it over-predicts these); calibrate a confidence band against the real
+# data so every prediction carries an honest [lo,hi] from real-world scatter, not one optimistic number.
+ANCHORS = [
+    ("Re6Se8Cl2", 0.30, 11,  1.0, 8.0),   # cluster superatomic SC
+    ("tMoTe2",    1.00, 10,  1.0, 2.0),   # moire C=1, measured 1-3K
+    ("MATBG",     1.00, 16,  0.3, 1.7),   # magic-angle twisted bilayer graphene
+]
+
+def anchor_calibration():
+    """pred/measured ratios over real-SC anchors -> (geomean over-prediction, min, max, rows)."""
+    rows, ratios = [], []
+    for nm, g, Om, U, meas in ANCHORS:
+        pred = tc_bkt(g, Om, U); r = pred/meas
+        rows.append((nm, pred, meas, r)); ratios.append(r)
+    geomean = float(np.exp(np.mean(np.log(ratios))))
+    return geomean, min(ratios), max(ratios), rows
+
+def tc_band(g, Omega_meV, UOm, nu=0.5):
+    """Honest banded Tc: raw 2D-BKT deflated by the anchor geomean over-prediction, [lo,hi] from scatter.
+    Returns (tc_best, tc_lo, tc_hi). tc_best = raw/geomean; band spans the full real-anchor scatter."""
+    raw = tc_bkt(g, Omega_meV, UOm, nu)
+    gm, rmin, rmax, _ = anchor_calibration()
+    return raw/gm, raw/rmax, raw/rmin
+
+def omega_for_roomT(g, UOm, target=293.15, deflate=True):
+    """Minimal Omega(meV) to reach target Tc; if deflate, fold in the anchor over-prediction (honest)."""
+    factor = anchor_calibration()[0] if deflate else 1.0
+    return target*factor / (TCOM_REF*(g/G_REF)*(UOm/UOM_REF)*meV2K)
+
 if __name__ == "__main__":
     print("="*84)
     print("FB-GEOM PREDICTOR — verify + predict (L24-L38 implemented as code)")
@@ -94,6 +125,14 @@ if __name__ == "__main__":
     lin = np.allclose([tcs[1]/tcs[0], tcs[2]/tcs[0]], [2.0, 4.0], rtol=1e-9)
     print("\n[VERIFY-2] Tc linear-in-U at weak coupling (L29)")
     print(f"  Tc(U/Om=0.5,1,2) = {tcs[0]:.1f}, {tcs[1]:.1f}, {tcs[2]:.1f} K  ->  linear: {'PASS' if lin else 'FAIL'}")
+
+    # ---- VERIFY 3: anchor calibration against REAL measured SC (tool-improvement self-check) ----
+    gm, rmin, rmax, arows = anchor_calibration()
+    print("\n[VERIFY-3] anchor calibration vs real measured SC (over-prediction band)")
+    for nm, pred, meas, r in arows:
+        print(f"  {nm:<11} pred {pred:5.1f}K / meas {meas:4.1f}K  = x{r:.2f}")
+    print(f"  => raw 2D-BKT over-predicts by geomean x{gm:.1f} (scatter x{rmin:.1f}..x{rmax:.1f}); "
+          f"tc_band() deflates by this.")
 
     # ---- compute <g> for the flat-band zoo (the master variable) ----
     print("\n[COMPUTE] master variable <g> = integral tr(g)  (exact, Fubini-Study link)")

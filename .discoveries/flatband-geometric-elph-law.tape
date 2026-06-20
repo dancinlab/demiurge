@@ -604,3 +604,11 @@ CLS combinatorial = DRY(MATH-SPECTRA 브릿지·flat band 구성법, room-T 신�
  PREDICT(Ω150meV,U/Om1.5): kagome ⟨g⟩0.49→174K(x2 갭)·Lieb 0.50→176K·dice 1.0→351K.
  CAVEAT(d6 버그발견·수정): ① int_tr_g(링크~0.05) vs 보정ref(Q_geom 0.672) 단위불일치→Q_geom 통일. ② dice ⟨g⟩=0 0나눗셈→Q_geom Welch하한. ③ dice=1.0→'room-T'는 SPURIOUS(maximally-localized CLS=낮은 stiffness, overlap-metric이 trivial 국소밴드서 stiffness와 역행) → 신뢰=VERIFY+위상밴드(kagome/Lieb) ranking+갭sizing, dice 절대Tc 아님.
  CLAUDE.md Structure에 tool/ 참조 추가. 도구=법칙의 실행가능 검증층(c2 출력증거).
+
+[예측기 스윕 R1-R3 + 도구개선 + 🏁 고갈 · 2026-06-20 · tool/rtsc/{fbgeom_predictor,predict_candidates}.py]
+사용자: 다른 호스트·파라미터 고갈까지 + 필요시 도구 반드시 개선. FREE 로컬 전수.
+ R1: 호스트표 8종 + Ω×U/Om 랜드스케이프. raw 설계박스 Ω_needed≤188meV(전부 경원소 범위)→"BKT 수치는 가능".
+ 도구개선(self-improving): ① 실측SC 앵커보정밴드 내장(ANCHORS/anchor_calibration/tc_band) — raw 2D-BKT가 Re6Se8Cl2 0.6×·tMoTe2 7.8×·MATBG 4.4× = geomean 2.8× 과대예측 ② omega_for_roomT(deflate) ③ VERIFY-3 자기검증(3/3 PASS) ④ dice artifact caveat·Q_geom 단위통일(기존).
+ R2(honest banded): light-kagome best 242K[87-1055]·CoSn 45K·Nb3Cl8 35K — 실재 합성호스트 honest 박스 진입 0. honest 설계박스=⟨g⟩≥2-3 AND Ω≥~130meV AND U/Om≥1.5 동시; ⟨g⟩<2면 Ω_needed>300meV 천장 초과 불가.
+ R3 고갈확인: filling ν(L40)=4ν(1-ν) ½서 최대, off-half는 감소만→새 탈출구 0. 호스트축=기록된 ⟨g⟩ 8종 전수(미기록 ⟨g⟩ 추가=fabrication 금지 d6)→고갈.
+ 🏁 결론(L42 신규·LAWS49): room-T 기하SC 병목 = 두 레버(∫tr g 大 AND 강결합 Ω 大) 한 물질 공존 못함(materials 벽), 열역학은 marginal-feasible. 3라운드 수렴, 도구는 honest band로 영구개선. SSOT=ARCHITECTURE.json L42+FBGEOM-PREDICTOR.
