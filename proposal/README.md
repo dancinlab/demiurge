@@ -9,12 +9,12 @@
 
 | 제안 | 별칭 | easy 요약 | 정식 논문 PDF |
 |---|---|---|---|
-| 🧬 SENOLYX-AG | AND 조건 자물쇠 노화세포 청소제 | [SENOLYX-AG.easy.md](SENOLYX-AG.easy.md) | [main.pdf](../papers/senolyx-ag-selectivity/main.pdf) |
-| 🦠 HERPES | 숨은 본거지 제거 완치 설계 | [HERPES.easy.md](HERPES.easy.md) | [main.pdf](../papers/herpes-sterilizing-cure/main.pdf) |
-| ❤️ CARDIO+ | 스텐트 후 재발 방어 패키지 | [CARDIO+.easy.md](CARDIO+.easy.md) | [main.pdf](../papers/cardio-plus-postpci/main.pdf) |
-| ⚛️ CERN | 탁상 가속기 시뮬레이터 | [CERN.easy.md](CERN.easy.md) | [main.pdf](../papers/cern-accelerator/main.pdf) |
-| ☀️ FUSION | 핵융합 설계 6관문 체 | [FUSION.easy.md](FUSION.easy.md) | [main.pdf](../papers/hexa-fusion-7gate/main.pdf) |
-| 💉 NUMB | 한 통 만능 마취 크림 | [NUMB.easy.md](NUMB.easy.md) | [main.pdf](../papers/numb-topical-anesthetic/main.pdf) |
+| 🧬 SENOLYX-AG | AND 조건 자물쇠 노화세포 청소제 | [SENOLYX-AG.easy.md](SENOLYX-AG.easy.md) | [main.pdf](../PAPERS/senolyx-ag-selectivity/main.pdf) |
+| 🦠 HERPES | 숨은 본거지 제거 완치 설계 | [HERPES.easy.md](HERPES.easy.md) | [main.pdf](../PAPERS/herpes-sterilizing-cure/main.pdf) |
+| ❤️ CARDIO+ | 스텐트 후 재발 방어 패키지 | [CARDIO+.easy.md](CARDIO+.easy.md) | [main.pdf](../PAPERS/cardio-plus-postpci/main.pdf) |
+| ⚛️ CERN | 탁상 가속기 시뮬레이터 | [CERN.easy.md](CERN.easy.md) | [main.pdf](../PAPERS/cern-accelerator/main.pdf) |
+| ☀️ FUSION | 핵융합 설계 6관문 체 | [FUSION.easy.md](FUSION.easy.md) | [main.pdf](../PAPERS/hexa-fusion-7gate/main.pdf) |
+| 💉 NUMB | 한 통 만능 마취 크림 | [NUMB.easy.md](NUMB.easy.md) | [main.pdf](../PAPERS/numb-topical-anesthetic/main.pdf) |
 | 🧠 ANIMA | 세포에서 자아가 자라는 AI | [ANIMA.easy.md](ANIMA.easy.md) | [github.com/dancinlab/anima](https://github.com/dancinlab/anima) (별도 repo) |
 
 ---
@@ -34,4 +34,4 @@
 ## 출처
 
 - easy 요약 원본: `dancinlife/contribution` (private)
-- 정식 논문: demiurge `papers/<slug>/main.pdf` (ANIMA만 `github.com/dancinlab/anima`)
+- 정식 논문: demiurge `PAPERS/<slug>/main.pdf` (ANIMA만 `github.com/dancinlab/anima`)
