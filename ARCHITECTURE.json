@@ -1405,6 +1405,46 @@
       {
        "type": "prose",
        "text": "**korea_framework**: 최병옥(삼성서울병원) 세계적 K-CMT 코호트 + ENCell EN001 + 산정특례 + 식약처 희귀의약품."
+      },
+      {
+       "type": "subsection",
+       "title": "verification_status",
+       "blocks": [
+        {
+         "type": "prose",
+         "text": "**role**: 검증 수준 = TIER-L in-silico 상단 (설계+자가검산까지 · 습식 0%). 후보 10종 전부 status=DESIGN."
+        },
+        {
+         "type": "prose",
+         "text": "**done(in-repo)**: ① SMILES 4종 정량 audit(selftest/cmt_smiles_validation.py) ② falsifier 14/14 in-repo 게이트 ③ 라이브러리 랭킹(10novel+comparator, 5 subtype 커버 — 점수=설계-audit ordinal, 결합력 아님) ④ VQE 양자화학: 2e/2o pocket 5/5 chem-acc PASS · 4e/4o sub-tier · hd6-001 sub-µHa(71 nano-Ha)."
+        },
+        {
+         "type": "prose",
+         "text": "**NOT done**: 실제 결합력(ABFE)·선택성 패널(HDAC1/2/3·ClC-2/Kb·Cx26·R94Q)·BBB/Schwann/IT 침투·IP freedom-to-operate(sar1=Disarm/Lilly 영역 경고)·동물/IND/임상 — 전부 미착수. ⚠️ VQE PASS=작은 활성공간 화학정확도지 '결합/효능' 아님; 점수는 ordinal(d6)."
+        },
+        {
+         "type": "prose",
+         "text": "**competitive(comparator-only, d_novel_only)**: 현실 CMT 파이프라인 임상 진행중 — EN001(최병옥·삼성서울병원 Phase1)·NMD670(Phase2a)·AGT-100216(Phase1)·PXT3003(Phase3 2024 ONLS miss). hxq-cmt-*는 미합성 de-novo 설계라 동일선상 아님."
+        }
+       ]
+      },
+      {
+       "type": "subsection",
+       "title": "free_abfe_campaign",
+       "blocks": [
+        {
+         "type": "prose",
+         "text": "**role**: 2026-06-22 착수 — FREE(summer RTX5070 fep env, vast 미사용) 결합력 검증 캠페인. 하네스=exports/SENOLYX/round13-abfe-allcand 재사용. summer 단일 GPU → 순차 큐. 결과 SSOT=exports/CMT/RESULT.md (raw 보존). 모든 ΔG는 scaffold-placeholder 수준(최종분자 아님·d6)."
+        },
+        {
+         "type": "prose",
+         "text": "**ABFE 적용(소분자 4)**: HDAC6 hd6-001(✅ PDB 5EDU/6THV류)·SARM1 sar1-001(✅ 7NAK류)·ClC-1 clc1-001(🟠 cryo-EM 6COY, 포켓 정의 후)·MFN2 mfn2-001(🟠 6JFK, 포켓 정의 후). 파이프라인: PDB fetch→포켓→rdkit SDF→abfe_cand.py SMOKE→순차 production."
+        },
+        {
+         "type": "prose",
+         "text": "**ABFE N/A(모달리티 불일치)**: PMP22 siRNA/ASO·GJB1 fold-rescue·NRG1 Fc-fusion = 소분자 결합 아님 → 다른 free 검증 필요(siRNA=seed 상보성+off-target 전사체 스캔, fold-rescue=connexin cryo-EM 인터페이스 ΔΔG, Fc-fusion=ErbB 인터페이스 모델). ABFE 발사 안 함."
+        }
+       ]
       }
      ]
     },
