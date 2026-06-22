@@ -17,6 +17,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-22
 
+- **🔬 CMT arxiv+web 리서치 그라운딩 → flagship_CMT/research_grounding** — 병렬 리서치 에이전트(실인용). 캠페인 방향 교정: ⚠️ SARM1 포켓 오식별(7NAK 1QD=TIR 촉매부위지 ARM allosteric 아님·activation-paradox liability→7NAL/7LCZ 재표적)·⚠️ MFN2 포켓 오류(6JFK엔 HR2 없음·진짜 agonist는 HR1-HR2 interface→HR2 모델링)·ClC-1 unblock 레시피(POPC 이중층+K231/R421 포켓 도킹). 신규성 PARTIAL/red-ocean(표적별 경쟁약 직접충돌: HDAC6↔AGT-100216·ClC-1↔NMD670·SARM1↔ASHA-624·MFN2↔MiM111·PMP22↔DTx-1252/Ionis); 유일 진짜-열린축=GJB1/Cx32 소분자 fold-rescue. 어떤 hxq-cmt-*도 단독 발견 보고 금지(d_novel_only). REPORT=exports/CMT/research/.
+
 - **🧠 CMT FREE ABFE 1차 패스 완료 (summer free·실데이터)** — 구조 4/4 해결(HDAC6 5EDU·SARM1 7NAK·MFN2 6JFK·ClC-1 6COY) + trim_receptor 436k→16-33k atoms(d12). SMOKE 3/4 PASS(HDAC6·SARM1·MFN2), ClC-1 🔴 BLOCKED(minimize NaN·막 없음·돌파경로 명시 d2). HDAC6 production summer 가동중(GPU 83%)→실ΔG 대기, SARM1·MFN2 순차 큐. 비소분자 3종 ABFE N/A→모달리티별 free검증 문서화. 결과 SSOT=exports/CMT/(raw·abfe_cmt.py·trim_receptor.py). flagship_CMT/free_abfe_campaign + ING #108 갱신. scaffold-placeholder honesty(d6).
 
 - **🧠 CMT(삼성가 희귀병) 검증상태 + FREE ABFE 캠페인 ARCHITECTURE.json 정리** — flagship_CMT 노드에 `verification_status`(TIER-L in-silico 상단: VQE 2e/2o 5/5 chem-acc·falsifier 14/14·라이브러리 랭킹 done / 실제결합력·선택성·BBB·IP·임상 미착수 · 후보 10종 status=DESIGN · scaffold-placeholder honesty d6) + `free_abfe_campaign`(summer RTX5070 free, vast 미사용, round13 하네스 재사용) 박제. 소분자 4종(HDAC6·SARM1·ClC-1·MFN2) ABFE 큐, 비-소분자 3종(PMP22 siRNA/ASO·GJB1 fold-rescue·NRG1 Fc-fusion)은 ABFE N/A→모달리티별 free 검증 명시. 컴퓨트는 백그라운드 오케스트레이터가 summer 순차 실행 중, 결과 SSOT=exports/CMT/.
