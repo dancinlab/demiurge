@@ -1446,7 +1446,7 @@
         },
         {
          "type": "prose",
-         "text": "**production**: ✅ 20-window ABFE 완료 (summer free, rep0) — **HDAC6 dG_bind=−4.13**(cplx 106.75·solv 102.19·ssc 0.43) · **SARM1 dG_bind=−7.05**(교정 ARM-allosteric 7NAL 포켓·cplx 235.67·solv 228.28·ssc 0.34) · MFN2(교정 HR1-HR2) 진행중. 전부 **scaffold-placeholder SMILES·rep1개(K=1, stderr 없음)·red-ocean(HDAC6↔AGT-100216·SARM1↔ASHA-624)** → method-grade일 뿐 '발견' 아님(d6). 결합력 게이트 승격엔 K≥3 ensemble + 실분자(scaffold 탈피) 필요."
+         "text": "**production**: ✅ 20-window ABFE 완료 (summer free, rep0) — **HDAC6 dG_bind=−4.13**(cplx 106.75·solv 102.19·ssc 0.43) · **SARM1 dG_bind=−7.05**(교정 ARM-allosteric 7NAL 포켓·cplx 235.67·solv 228.28·ssc 0.34) · **MFN2 dG_bind=+2.11**(교정 HR1-HR2·R94Q allosteric·cplx 152.88·solv 155.47·ssc −0.47, 양수=약결합·4종 최약). 소분자 placeholder ABFE 4종 완료(GJB1 막ABFE만 진행중). 전부 **scaffold-placeholder SMILES·rep1개(K=1, stderr 없음)·red-ocean(HDAC6↔AGT-100216·SARM1↔ASHA-624)** → method-grade일 뿐 '발견' 아님(d6). 결합력 게이트 승격엔 K≥3 ensemble + 실분자(scaffold 탈피) 필요."
         },
         {
          "type": "prose",
