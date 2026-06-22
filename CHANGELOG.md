@@ -1,3 +1,7 @@
+## 2026-06-23
+
+- **🧬 MFN2 ABFE 완료 → dG_bind=+2.11 kcal/mol (교정 HR1-HR2 포켓) → 소분자 placeholder ABFE 4종 완결** — summer free, hxq-cmt-mfn2-001 20-window(cplx 152.88·solv 155.47·ssc −0.47). 양수=약결합, 4종 중 최약(SARM1 −7.05·HDAC6 −4.13·MFN2 +2.11·GJB1 막ABFE 진행중). 교정포켓(G-site→HR1-HR2 R94Q allosteric) 검증. 정직 d6: scaffold·K=1·red-ocean(MiM111) → method-grade·발견 아님. **실분자 K≥3 ABFE 자동발사 watcher**가 summer 빈 즉시 CX32L8_diaryl_ether_F rep0 발사(NaN-free 진입). flagship_CMT/free_abfe_campaign + CMT.easy.md 갱신. aiden GJB1 placeholder 클린런 4h44m 진행중.
+
 # CHANGELOG
 
 ## docs(arch): ARCHITECTURE.json → hexa-lang sections schema (lossless)
