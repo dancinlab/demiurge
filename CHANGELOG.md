@@ -17,6 +17,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-22
 
+- **🧬 GJB1 막(POPC) ABFE 머신러리 작동 (aiden free GPU·3개 치명벽 돌파)** — flagship_CMT/gjb1_fold_rescue + CMT.easy.md 갱신. FF 비호환 벽 돌파: CHARMM36 테이블-LJ(CustomNonbondedForce)를 표준 NonbondedForce로 폴드머지(σ=(a/b)^1/6·ε=b²/4a) → CHARMM 막 + OpenFF 리간드 1-4 스케일 충돌 회피 + openmmtools.alchemy 호환. 추가 가드 2개: addMembrane 비결정 NaN 12-retry, alchemy warmup 단계가드(NaN rollback). 빌드 -2.67M kJ 유한·SMOKE PASS(머신러리 검증, ΔG 아님). production in-flight, 실ΔG 멀티시간 REMD 대기(단일 GPU floor). FF-fix=재사용 deck-guard. raw=exports/CMT/gjb1/membrane_abfe/(abfe_membrane.py·RESULT.md). 정직: scaffold SMILES·monomer·신규성 PARTIAL — discovery 아님.
+
 - **🌊 CMT.easy.md 레드오션 아이콘 정정(🔴→🌊)** — 레드오션(경쟁약 존재·신규성 낮음)은 *실패가 아닌데* 🔴라 실패처럼 보이던 표기를 🌊로 교체(7건). 🔴는 진짜 기술적 막힘(ClC-1 SMOKE BLOCKED)에만 유지. 범례에 '🌊 레드오션=실패 아님' 명시.
 
 - **🦶 proposal/CMT.easy.md → 후보 10종 전체 설계판 + AI-에이전트 갱신 마커** — easy.md를 살아있는 설계판(LIVING-DOC)으로 전환: hxq-cmt-* 10종(gjb1·hd6·sar1·mfn2·clc1·pmp22-001/002·nrg1·fig4·nano) 전부 + 아형/표적/모달리티/이번세션 status/신규성 표. 상단에 `@agent-directive`(AGENT-UPDATE-DIRECTIVE) 박제 — AI 에이전트가 'ABFE 결과·신규성·status 변경 시 갱신' 인식·SSOT 포인터(ARCHITECTURE flagship_CMT·roadmap·exports/CMT). GJB1=lead(PARTIAL 유일 열린축), 나머지 레드오션/N-A 정직 표기. roadmap SSOT서 후보 끌어와 날조 0.
