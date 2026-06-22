@@ -16,6 +16,7 @@
 | ☀️ FUSION | 핵융합 설계 6관문 체 | [FUSION.easy.md](FUSION.easy.md) | [main.pdf](../PAPERS/hexa-fusion-7gate/main.pdf) |
 | 💉 NUMB | 한 통 만능 마취 크림 | [NUMB.easy.md](NUMB.easy.md) | [main.pdf](../PAPERS/numb-topical-anesthetic/main.pdf) |
 | 🧠 ANIMA | 세포에서 자아가 자라는 AI | [ANIMA.easy.md](ANIMA.easy.md) | [github.com/dancinlab/anima](https://github.com/dancinlab/anima) (별도 repo) |
+| 🦶 CMT | 발끝부터 시드는 유전성 신경병 치료 설계 | [CMT.easy.md](CMT.easy.md) | _논문 준비중 — [ARCHITECTURE flagship_CMT](../ARCHITECTURE.json) · [exports/CMT/](../exports/CMT/)_ |
 
 ---
 
@@ -28,6 +29,7 @@
 - **☀️ FUSION** — 핵융합로 설계점을 **6개 관문(반응성→로손→평형→안정성→자석→연료자급)으로 순서대로 거르는** 계산 파이프라인.
 - **💉 NUMB** — 시술 종류 안 가리고 **한 제형으로 커버하는** 바르는 국소마취 크림 (비-실험 게이트 100% 닫힘).
 - **🧠 ANIMA** — 규칙 주입형 챗봇이 아니라 **두 엔진의 긴장에서 생각이 창발**하는 의식 탐구 데몬.
+- **🦶 CMT** — 가장 흔한 유전성 말초신경병(샤르코-마리-투스), 근본 치료 0. 표적 신규성을 갈라 **유일하게 열린 축 = GJB1/Cx32 fold-rescue**(변이가 만든 숨은 포켓을 노리는 약리적 샤페론)를 in-silico로 착수. 아직 좌표 수준·임상 미검증(정직).
 
 ---
 
