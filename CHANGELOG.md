@@ -17,6 +17,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-22
 
+- **🔬 GJB1 신규성 심층재검 (arxiv+web 독립패스) → PARTIAL 확정·새 충돌 0** — exports/CMT/gjb1/NOVELTY_v2.md. 방어가능 NOVEL = Cx32 L143P가 여는 TM1/TM4 inter-helical cryptic 공동의 mutation-selective 약리샤페론 표적 최초 식별(2026 현재 Cx32-결합 소분자 corrector 논문/특허 0). CLOSED = mutation-selective connexin 샤페론 기전은 Cx26 소유(VRT-534·near-pore·non-cryptic·청력, PMID37470015). caveat 유지: L143=TM3·4-PBA=method앵커. discovery 주장엔 막ABFE mutant-vs-WT 선택성 falsifier 필요(미통과). flagship_CMT 신규성 노드 갱신. wet-lab·임상 제외 남은 2게이트 중 '신규성 방어가능 확정' 완료 — '실분자(scaffold 탈피)' 에이전트 병행중.
+
 - **🧬 SARM1 ABFE 완료 → dG_bind=−7.05 kcal/mol (교정 ARM-allosteric 7NAL 포켓)** — summer free, hxq-cmt-sar1-001, 20-window(cplx 235.67·solv 228.28·ssc 0.34). 교정포켓(TIR 촉매부위→ARM allosteric, subinhibitory-activation liability 회피) 검증. MFN2(교정 HR1-HR2) production 진행중. 정직 d6: scaffold SMILES·K=1·red-ocean(SARM1↔ASHA-624) → method-grade·발견 아님. flagship_CMT/free_abfe_campaign + CMT.easy.md 갱신. aiden GJB1 막ABFE 클린런(NaN-free) 별도 진행중(ΔG ETA 6~12h).
 
 - **🧱 GJB1 막ABFE 빌드벽 근본 돌파 (addMembrane 폐기 → packmol-memgen 오프라인막)** — OpenMM `addMembrane`가 기울어진 다중-TM Cx32 다발서 작은 padding 전부 NaN·안정빌드 214k atoms는 30GB RAM OOM이던 벽을, packmol-memgen 오프라인 POPC 막(L143P monomer 51,860 atoms·RAM 적합·tleap Errors=0·sander 충돌배수)으로 대체. 분리-λ(elec 선형→LJ softcore·exact PME·per-state minimize)로 SMOKE end-to-end NaN 0 PASS(dG_bind 37.41±24.78=머신러리 검증값). production clean in-flight(naphthoate→4-PBA)·실ΔG 멀티시간 대기. 재사용 deck-guard=exports/CMT/gjb1/membrane_abfe/RESULT.md(addMembrane 다중TM 비신뢰→packmol+sander 표준). 정직 d6: scaffold·monomer·신규성 PARTIAL → method-grade·발견 아님. flagship_CMT/gjb1 + CMT.easy.md 갱신. summer SARM1/MFN2 production 별도 가동중.
