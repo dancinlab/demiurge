@@ -1502,7 +1502,7 @@
         },
         {
          "type": "prose",
-         "text": "**다음(d6 정직)**: L143P + TM1/TM4 소수성공동 + flat-lipophilic-aromatic/4-PBA류 → **막(POPC) ABFE**(abfe_cmt.py·HDAC6 클리어 후 summer GPU free). 4-PBA=method 앵커만. 사전등록 falsifier: L143P 공동을 채우는 분자가 변이체 선택결합(+27 fold penalty 상쇄)+표면 trafficking 복구해야 — 아니면 포켓 closed-negative."
+         "text": "**막(POPC) ABFE 머신러리 작동(aiden free GPU)**: 3개 치명벽 돌파 — ① CHARMM 테이블-LJ를 표준 NonbondedForce로 폴드머지(CHARMM막+OpenFF리간드 1-4 충돌 회피, alchemy 호환) ② addMembrane 비결정 NaN 12-retry 가드 ③ alchemy warmup NaN 단계가드. 빌드 -2.67M kJ 유한·SMOKE PASS(머신러리 검증, ΔG 아님). production(L143P+2-naphthoate→4-PBA) in-flight·실ΔG 멀티시간 REMD 대기. FF-fix=재사용 deck-guard(exports/CMT/gjb1/membrane_abfe/). 4-PBA=method 앵커만. 사전등록 falsifier: L143P 공동을 채우는 분자가 변이체 선택결합(+27 fold penalty 상쇄)+표면 trafficking 복구해야 — 아니면 포켓 closed-negative."
         },
         {
          "type": "prose",
