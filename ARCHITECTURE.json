@@ -1475,6 +1475,40 @@
          "text": "**신규성 판정 PARTIAL (d_novel_only·정직)**: 표적별 전부 PUBLISHED/red-ocean 직접충돌 — HDAC6↔AGT-100216(Ph1)·ClC-1↔NMD670(Ph2a SYNAPSE-CMT, 우리보다 앞섬)·SARM1↔ASHA-624·MFN2↔MiM111·PMP22-siRNA↔DTx-1252/Novartis·PMP22-ASO↔Ionis. 통합 multi-target 포트폴리오는 '프로그램 조직'으로만 novel(발견 아님). ★유일 진짜-열린 축 = **GJB1/Cx32 소분자 fold-rescue**(경쟁=유전자치환뿐) + 투기적 NRG1-III Fc-fusion·CMT-SORD(govorestat 실패로 재오픈). 어떤 hxq-cmt-*도 단독 '발견'으로 보고 금지."
         }
        ]
+      },
+      {
+       "type": "subsection",
+       "title": "gjb1_fold_rescue",
+       "blocks": [
+        {
+         "type": "prose",
+         "text": "**role**: GJB1/Cx32 약리적 샤페론 fold-rescue — d_novel_only 통과 **유일 열린 축**(경쟁=유전자치환뿐). FREE in-silico 라운드1 완료(exports/CMT/gjb1/, 40파일). 신규성=PENDING(coordinates지 discovery 아님·정직 d6)."
+        },
+        {
+         "type": "prose",
+         "text": "**구조**: PDB 7ZXM = 실제 인간 Cx32 cryo-EM 2.14Å(호몰로지 불필요). 변이 동반구조 7ZXP/7ZXQ(R22G)·7ZXT(W3S) 존재. 작업수용체=chain-A 단량체(16-217, 내부 loop 103→129 결손)."
+        },
+        {
+         "type": "prose",
+         "text": "**최강 불안정화 변이**: L143P ΔΔG=**+27.2 kcal/mol**(EvoEF2 free)로 압도적(R183S +5.1·T55I +2.8·N175D +0.5·R75W −0.1). TM나선 내 Pro가 패킹 붕괴 → 출판된 Golgi-retention LOF과 합치. 5변이 모두 문헌검증 trafficking-defective CMT1X missense(Vavlitou HMG 2017)."
+        },
+        {
+         "type": "prose",
+         "text": "**숨은 포켓(약리샤페론 표적)**: L143P에서 열리고 WT엔 사실상 없는(12ų) **434ų 소수성 공동**(hydrophobicity 0.87). TM1/TM4 나선간 계면(I20/V23/W24/V27/I28/I30/F31/M34 + V192/F193/A196-A207/V210/Y211), 변이서 14.6Å. 교과서적 mutation-induced cryptic pocket."
+        },
+        {
+         "type": "prose",
+         "text": "**도킹**: 2-naphthoate Vina **−5.98** 최상 · 임상 화학샤페론 4-PBA −5.49 · 삼투물질 양성대조(glycerol/TMAO/sorbitol) 최약(−2.7~−4.5) = **소수성 포켓 올바른 판별**(method 정합 신호). AutoDock Vina 1.2.7 summer CPU(GPU 무접촉)."
+        },
+        {
+         "type": "prose",
+         "text": "**다음(d6 정직)**: L143P + TM1/TM4 소수성공동 + flat-lipophilic-aromatic/4-PBA류 → **막(POPC) ABFE**(abfe_cmt.py·HDAC6 클리어 후 summer GPU free). 4-PBA=method 앵커만. 사전등록 falsifier: L143P 공동을 채우는 분자가 변이체 선택결합(+27 fold penalty 상쇄)+표면 trafficking 복구해야 — 아니면 포켓 closed-negative."
+        },
+        {
+         "type": "prose",
+         "text": "**caveats**: 전구간 scaffold-level(경험적 FF+기하 휴리스틱+rigid no-membrane 도킹). placeholder SMILES=pharmacophore 좌표지 약물후보 아님. 단량체라 oligomer 누락(dominant-negative R75W/N175D가 단량체서 near-neutral인 이유). 재사용 레시피: meeko 막단백 prep 벽 → pdbfixer+AutoDockTools prepare_receptor4로 돌파."
+        }
+       ]
       }
      ]
     },

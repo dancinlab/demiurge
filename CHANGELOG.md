@@ -17,6 +17,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-22
 
+- **🧬 GJB1/Cx32 fold-rescue FREE in-silico 라운드1 → flagship_CMT/gjb1_fold_rescue** — d_novel_only 통과 유일 열린 축(경쟁=유전자치환뿐). 구조=실제 인간 Cx32 7ZXM 2.14Å(호몰로지 불필요). 최강 불안정화 L143P ΔΔG=+27.2 kcal/mol(EvoEF2). L143P서 열리는 434ų 소수성 cryptic pocket(TM1/TM4, WT엔 12ų) 발견. 도킹: 2-naphthoate −5.98·4-PBA −5.49, 삼투물질 양성대조 최약(올바른 판별). 다음=L143P+공동 막(POPC) ABFE(HDAC6 후 summer free). scaffold-level·신규성 PENDING(coordinates지 discovery 아님·d6). 40파일 exports/CMT/gjb1/.
+
 - **🔬 CMT arxiv+web 리서치 그라운딩 → flagship_CMT/research_grounding** — 병렬 리서치 에이전트(실인용). 캠페인 방향 교정: ⚠️ SARM1 포켓 오식별(7NAK 1QD=TIR 촉매부위지 ARM allosteric 아님·activation-paradox liability→7NAL/7LCZ 재표적)·⚠️ MFN2 포켓 오류(6JFK엔 HR2 없음·진짜 agonist는 HR1-HR2 interface→HR2 모델링)·ClC-1 unblock 레시피(POPC 이중층+K231/R421 포켓 도킹). 신규성 PARTIAL/red-ocean(표적별 경쟁약 직접충돌: HDAC6↔AGT-100216·ClC-1↔NMD670·SARM1↔ASHA-624·MFN2↔MiM111·PMP22↔DTx-1252/Ionis); 유일 진짜-열린축=GJB1/Cx32 소분자 fold-rescue. 어떤 hxq-cmt-*도 단독 발견 보고 금지(d_novel_only). REPORT=exports/CMT/research/.
 
 - **🧠 CMT FREE ABFE 1차 패스 완료 (summer free·실데이터)** — 구조 4/4 해결(HDAC6 5EDU·SARM1 7NAK·MFN2 6JFK·ClC-1 6COY) + trim_receptor 436k→16-33k atoms(d12). SMOKE 3/4 PASS(HDAC6·SARM1·MFN2), ClC-1 🔴 BLOCKED(minimize NaN·막 없음·돌파경로 명시 d2). HDAC6 production summer 가동중(GPU 83%)→실ΔG 대기, SARM1·MFN2 순차 큐. 비소분자 3종 ABFE N/A→모달리티별 free검증 문서화. 결과 SSOT=exports/CMT/(raw·abfe_cmt.py·trim_receptor.py). flagship_CMT/free_abfe_campaign + ING #108 갱신. scaffold-placeholder honesty(d6).
