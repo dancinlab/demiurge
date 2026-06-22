@@ -17,6 +17,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-22
 
+- **🦶 proposal/CMT.easy.md → 후보 10종 전체 설계판 + AI-에이전트 갱신 마커** — easy.md를 살아있는 설계판(LIVING-DOC)으로 전환: hxq-cmt-* 10종(gjb1·hd6·sar1·mfn2·clc1·pmp22-001/002·nrg1·fig4·nano) 전부 + 아형/표적/모달리티/이번세션 status/신규성 표. 상단에 `@agent-directive`(AGENT-UPDATE-DIRECTIVE) 박제 — AI 에이전트가 'ABFE 결과·신규성·status 변경 시 갱신' 인식·SSOT 포인터(ARCHITECTURE flagship_CMT·roadmap·exports/CMT). GJB1=lead(PARTIAL 유일 열린축), 나머지 레드오션/N-A 정직 표기. roadmap SSOT서 후보 끌어와 날조 0.
+
 - **🧬 GJB1 신규성 PARTIAL 판정 + SARM1/MFN2 re-pocket 실행 → flagship_CMT** — (1) GJB1 cryptic-pocket fold-rescue 신규성 게이트(arxiv+web·exports/CMT/gjb1/NOVELTY.md): **PARTIAL**(d_novel_only 통과). 핵심기전은 형제 Cx26서 출판(VRT-534·Wang ACSPTS2023·Harre FrontMed2025) → 방어가능 novel = Cx32 L143P TM1/TM4 cryptic pocket 최초식별(Cx26→Cx32 확장). 과대주장 금지(L143=TM3·4-PBA는 anchor만·'최초 connexin 샤페론' 아님). flagship_CMT/gjb1_fold_rescue/novelty_verdict 박제. (2) SARM1/MFN2 re-pocket(exports/CMT/RESULT_repocket.md): SARM1 7NAK(TIR)→**7NAL ARM allosteric NMN site**, MFN2 6JFK(HR2없음)→**AlphaFold HR1-HR2 interface**, 둘 다 SMOKE PASS, 교정포켓 production은 HDAC6 뒤 summer 큐. (3) 2-GPU 분산: aiden(무료 RTX5070)서 GJB1 막 ABFE 병렬 발사.
 
 - **🧬 GJB1/Cx32 fold-rescue FREE in-silico 라운드1 → flagship_CMT/gjb1_fold_rescue** — d_novel_only 통과 유일 열린 축(경쟁=유전자치환뿐). 구조=실제 인간 Cx32 7ZXM 2.14Å(호몰로지 불필요). 최강 불안정화 L143P ΔΔG=+27.2 kcal/mol(EvoEF2). L143P서 열리는 434ų 소수성 cryptic pocket(TM1/TM4, WT엔 12ų) 발견. 도킹: 2-naphthoate −5.98·4-PBA −5.49, 삼투물질 양성대조 최약(올바른 판별). 다음=L143P+공동 막(POPC) ABFE(HDAC6 후 summer free). scaffold-level·신규성 PENDING(coordinates지 discovery 아님·d6). 40파일 exports/CMT/gjb1/.
