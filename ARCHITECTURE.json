@@ -1434,15 +1434,23 @@
        "blocks": [
         {
          "type": "prose",
-         "text": "**role**: 2026-06-22 착수 — FREE(summer RTX5070 fep env, vast 미사용) 결합력 검증 캠페인. 하네스=exports/SENOLYX/round13-abfe-allcand 재사용. summer 단일 GPU → 순차 큐. 결과 SSOT=exports/CMT/RESULT.md (raw 보존). 모든 ΔG는 scaffold-placeholder 수준(최종분자 아님·d6)."
+         "text": "**role**: 2026-06-22 FREE 결합검증 캠페인 1차 패스 완료 (summer RTX5070 fep env·vast 미사용·SENOLYX round13 하네스→abfe_cmt.py). SSOT=exports/CMT/RESULT.md(raw 보존). 모든 ΔG=scaffold-placeholder·pocket-approx(최종분자 아님·d6)."
         },
         {
          "type": "prose",
-         "text": "**ABFE 적용(소분자 4)**: HDAC6 hd6-001(✅ PDB 5EDU/6THV류)·SARM1 sar1-001(✅ 7NAK류)·ClC-1 clc1-001(🟠 cryo-EM 6COY, 포켓 정의 후)·MFN2 mfn2-001(🟠 6JFK, 포켓 정의 후). 파이프라인: PDB fetch→포켓→rdkit SDF→abfe_cand.py SMOKE→순차 production."
+         "text": "**구조 해결(4/4)**: HDAC6 5EDU(CD2+TSN+촉매Zn)·SARM1 7NAK(1QD site)·MFN2 6JFK(MFN1 GDP G-site)·ClC-1 6COY(TM 도메인, 억제제 없음). 핵심 fix: trim_receptor.py 가 단일체인 22Å 포켓구로 carve → 436k→16-33k atoms(d12 cluster-model 정신)."
         },
         {
          "type": "prose",
-         "text": "**ABFE N/A(모달리티 불일치)**: PMP22 siRNA/ASO·GJB1 fold-rescue·NRG1 Fc-fusion = 소분자 결합 아님 → 다른 free 검증 필요(siRNA=seed 상보성+off-target 전사체 스캔, fold-rescue=connexin cryo-EM 인터페이스 ΔΔG, Fc-fusion=ErbB 인터페이스 모델). ABFE 발사 안 함."
+         "text": "**SMOKE 3/4 PASS**: HDAC6·SARM1·MFN2 deck build+양다리+MBAR+ENS_RESULT ✅(SMOKE ΔG는 5-window 아티팩트·비예측). ClC-1 🔴 BLOCKED(minimize NaN — 좁은 protopore clash-free 포즈 부재 + 막 없음=bulk-water ABFE 부적합). 돌파경로: dock-first 포즈·membrane-embedded FEP·restrained warm-up."
+        },
+        {
+         "type": "prose",
+         "text": "**production**: HDAC6 rep0 20-window/1000-iter summer 가동중(GPU 83%·9GB)→실ΔG 수시간 후; SARM1·MFN2 SMOKE-검증·순차 대기(단일 GPU). 완료시 verification_status 갱신(설계→결합력 게이트, K≥3 ensemble 필요)."
+        },
+        {
+         "type": "prose",
+         "text": "**ABFE N/A 모달리티(문서화)**: PMP22 siRNA/-001=seed 상보성+off-target 전사체 스캔+TLR motif; ASO/-002=splice/RNase-H window; GJB1 fold-rescue=connexin cryo-EM ΔΔG(FoldX/Rosetta·Cx26 안전); NRG1 Fc-fusion=ErbB2/3 인터페이스(AF-Multimer/HADDOCK·partial+ErbB1/4 off-target). ABFE 미발사."
         }
        ]
       }

@@ -17,6 +17,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-22
 
+- **🧠 CMT FREE ABFE 1차 패스 완료 (summer free·실데이터)** — 구조 4/4 해결(HDAC6 5EDU·SARM1 7NAK·MFN2 6JFK·ClC-1 6COY) + trim_receptor 436k→16-33k atoms(d12). SMOKE 3/4 PASS(HDAC6·SARM1·MFN2), ClC-1 🔴 BLOCKED(minimize NaN·막 없음·돌파경로 명시 d2). HDAC6 production summer 가동중(GPU 83%)→실ΔG 대기, SARM1·MFN2 순차 큐. 비소분자 3종 ABFE N/A→모달리티별 free검증 문서화. 결과 SSOT=exports/CMT/(raw·abfe_cmt.py·trim_receptor.py). flagship_CMT/free_abfe_campaign + ING #108 갱신. scaffold-placeholder honesty(d6).
+
 - **🧠 CMT(삼성가 희귀병) 검증상태 + FREE ABFE 캠페인 ARCHITECTURE.json 정리** — flagship_CMT 노드에 `verification_status`(TIER-L in-silico 상단: VQE 2e/2o 5/5 chem-acc·falsifier 14/14·라이브러리 랭킹 done / 실제결합력·선택성·BBB·IP·임상 미착수 · 후보 10종 status=DESIGN · scaffold-placeholder honesty d6) + `free_abfe_campaign`(summer RTX5070 free, vast 미사용, round13 하네스 재사용) 박제. 소분자 4종(HDAC6·SARM1·ClC-1·MFN2) ABFE 큐, 비-소분자 3종(PMP22 siRNA/ASO·GJB1 fold-rescue·NRG1 Fc-fusion)은 ABFE N/A→모달리티별 free 검증 명시. 컴퓨트는 백그라운드 오케스트레이터가 summer 순차 실행 중, 결과 SSOT=exports/CMT/.
 
 - **📚 루트 레거시 설계문서 16종 검토→흡수→은퇴 → archive/legacy-root-docs/ (단일 SSOT)** — 병렬 에이전트 3대로 16개 전수 감사. 고유내용 7건만 ARCHITECTURE.json 신규 섹션 `legacy-root-docs-absorbed`로 흡수: CHARTER 비목표·ARCH §5 external-mapping·AlphaFold 포지셔닝·PROVIDERS hpc7a tier·CLI+COCKPIT 3-surface/XPRIZE·MAIN Li2MgH16 활성태스크·LATTICE_POLICY(commons SSOT 포인터). 나머지는 이미 커버/스테일(DEMIURGE 빈스텁·INDEX[NEXUS.tape 은퇴]·DOMAINS/DOMAIN_AUDIT[domains.entries 대체]·MIGRATION_PLAN·temp·QFORGEvsQE[engines 커버]·EASY). 16개 전부 `archive/legacy-root-docs/`로 `git mv`(자료유실 0). README 9곳 repoint(CHARTER→CLAUDE·DESIGN/ARCH→ARCHITECTURE.json, 깨짐 0). 루트 .md = canonical 3개(CLAUDE/README/CHANGELOG)만 잔존. 라이브 코드(web/cli/serve) 참조 0 확인.
