@@ -37,20 +37,21 @@ honesty: 전 ΔG scaffold-placeholder SMILES 기반(약물후보 아님)·임상
 
 ## 후보 10종 전체 (hxq-cmt-*) — 설계판
 
-> 상태 범례: 🟢 lead(진행 가치 최고) · 🟡 진행/큐 · 🔴 막힘 · ⚪ ABFE N/A(모달리티) · 신규성: PARTIAL/레드오션/N-A
+> 상태 범례: 🟢 lead(진행 가치 최고) · 🟡 진행/큐 · 🔴 막힘(기술적 fail) · ⚪ ABFE N/A(모달리티)
+> 신규성 범례: **PARTIAL**(일부 novel) · 🌊 **레드오션**(경쟁약 존재·신규성 낮음 — *실패 아님*, 과학은 정상) · 🟠 투기적/플랫폼
 > ABFE = "약이 표적에 얼마나 붙나" 무료 계산(OpenMM). 소분자만 해당.
 
 | # | 후보 id | CMT 아형 | 표적·전략 | 모달리티 | 이번 세션 status | 신규성(d_novel_only) |
 |---|---------|---------|-----------|---------|----------------|--------------------|
 | 1 | `hxq-cmt-gjb1-001` | CMT1X | Cx32 변이-선택 fold 샤페론 | 소분자(척수강내) | 🟢 **lead** · L143P TM1/TM4 cryptic pocket 발견 · aiden 막ABFE 진행 | **PARTIAL(유일 열린축)** — Cx32 직접샤페론 미보고, 기전은 Cx26 기출판 |
-| 2 | `hxq-cmt-hd6-001` | CMT1·2·2F | HDAC6 말초한정 non-hydroxamate | 경구 소분자 | 🟡 포켓 정확(5EDU) · summer ABFE production 가동중 | 🔴 레드오션 (AGT-100216 Ph1) |
-| 3 | `hxq-cmt-sar1-001` | CMT2 축삭 | SARM1 reversible 억제 | 경구 소분자 | 🟡 포켓 교정(TIR→**ARM allosteric 7NAL**)·SMOKE PASS·prod 큐 | 🔴 레드오션 (ASHA-624 등) |
-| 4 | `hxq-cmt-mfn2-001` | CMT2A R94Q | MFN2 corrector(dominant-neg 안정화 해제) | 경구 소분자 | 🟡 포켓 교정(G-site→**HR1-HR2 interface**)·SMOKE PASS·prod 큐 | 🔴 레드오션 (MiM111/MASM7) |
-| 5 | `hxq-cmt-clc1-001` | 증상(근력) | 골격근 ClC-1 state-dep partial blocker | 경구 소분자 | 🔴 SMOKE BLOCKED(막 없음→NaN) · 막FEP 필요 | 🔴 레드오션 (NMD670 Ph2a) |
-| 6 | `hxq-cmt-pmp22-001` | CMT1A(중복) | PMP22 3'UTR allele-선택 knockdown | siRNA(지방산/SQ conjugate) | ⚪ ABFE N/A · design-audit PASS | 🔴 레드오션 (DTx-1252/Novartis) |
-| 7 | `hxq-cmt-pmp22-002` | CMT1A·1E·HNPP | PMP22 splice-조절 ASO | gapmer ASO | ⚪ ABFE N/A · design-audit PASS | 🔴 레드오션 (Ionis-Svaren PoC) |
+| 2 | `hxq-cmt-hd6-001` | CMT1·2·2F | HDAC6 말초한정 non-hydroxamate | 경구 소분자 | 🟡 포켓 정확(5EDU) · summer ABFE production 가동중 | 🌊 레드오션 (AGT-100216 Ph1) |
+| 3 | `hxq-cmt-sar1-001` | CMT2 축삭 | SARM1 reversible 억제 | 경구 소분자 | 🟡 포켓 교정(TIR→**ARM allosteric 7NAL**)·SMOKE PASS·prod 큐 | 🌊 레드오션 (ASHA-624 등) |
+| 4 | `hxq-cmt-mfn2-001` | CMT2A R94Q | MFN2 corrector(dominant-neg 안정화 해제) | 경구 소분자 | 🟡 포켓 교정(G-site→**HR1-HR2 interface**)·SMOKE PASS·prod 큐 | 🌊 레드오션 (MiM111/MASM7) |
+| 5 | `hxq-cmt-clc1-001` | 증상(근력) | 골격근 ClC-1 state-dep partial blocker | 경구 소분자 | 🔴 SMOKE BLOCKED(막 없음→NaN) · 막FEP 필요 | 🌊 레드오션 (NMD670 Ph2a) |
+| 6 | `hxq-cmt-pmp22-001` | CMT1A(중복) | PMP22 3'UTR allele-선택 knockdown | siRNA(지방산/SQ conjugate) | ⚪ ABFE N/A · design-audit PASS | 🌊 레드오션 (DTx-1252/Novartis) |
+| 7 | `hxq-cmt-pmp22-002` | CMT1A·1E·HNPP | PMP22 splice-조절 ASO | gapmer ASO | ⚪ ABFE N/A · design-audit PASS | 🌊 레드오션 (Ionis-Svaren PoC) |
 | 8 | `hxq-cmt-nrg1-001` | CMT1A(미엘린) | NRG1-III/ErbB partial agonist | Fc-fusion(WEAVE) | ⚪ ABFE N/A · design-audit PASS(ErbB1/4 cross 감사) | 🟠 투기적(미보고이나 미검증) |
-| 9 | `hxq-cmt-fig4-001` | CMT4J(FIG4 LoF) | AAV9 FIG4 유전자 치환 | 유전자치료(VIROCAPSID) | ⚪ ABFE N/A · design-audit PASS | 🔴 레드오션 (ELP-02) |
+| 9 | `hxq-cmt-fig4-001` | CMT4J(FIG4 LoF) | AAV9 FIG4 유전자 치환 | 유전자치료(VIROCAPSID) | ⚪ ABFE N/A · design-audit PASS | 🌊 레드오션 (ELP-02) |
 | 10 | `hxq-cmt-nano-001` | CMT1·2(modular) | Schwann-perineurium 나노전달체 | PLGA-PEG 나노(NANOBOT) | ⚪ ABFE N/A · design-audit PASS | 🟠 플랫폼(전달체) |
 
 > (+ `hxq-cmt-mfn2-002` = MFN2 R94Q ADAR 편집 가이드RNA, DESIGN 후속) · HNPP overshoot·심독성·난청 등 **부작용 회피 가드**는 각 후보 설계에 박혀 있음(roadmap §2).
