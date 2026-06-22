@@ -1453,6 +1453,28 @@
          "text": "**ABFE N/A 모달리티(문서화)**: PMP22 siRNA/-001=seed 상보성+off-target 전사체 스캔+TLR motif; ASO/-002=splice/RNase-H window; GJB1 fold-rescue=connexin cryo-EM ΔΔG(FoldX/Rosetta·Cx26 안전); NRG1 Fc-fusion=ErbB2/3 인터페이스(AF-Multimer/HADDOCK·partial+ErbB1/4 off-target). ABFE 미발사."
         }
        ]
+      },
+      {
+       "type": "subsection",
+       "title": "research_grounding",
+       "blocks": [
+        {
+         "type": "prose",
+         "text": "**role**: 2026-06-22 arxiv+web 리서치 그라운딩(실인용·exports/CMT/research/REPORT.md). 캠페인 방향 교정 2건 + 신규성 판정."
+        },
+        {
+         "type": "prose",
+         "text": "**포켓 교정(ABFE 재포켓 필요)**: ⚠️ SARM1 — 7NAK 1QD는 **TIR 촉매부위**(공유 1AD adduct)지 ARM allosteric 아님 + subinhibitory가 SARM1을 오히려 **활성화**하는 published liability(Mani/Green 2025) → ARM allosteric(7NAL/7LCZ·Cys311)로 재표적. ⚠️ MFN2 — 6JFK는 HR2 없음(22-400 G+HD1만); 진짜 agonist(MASM7→MiM111·Franco Nature2016·Rocha Science2018)는 **HR1-HR2 interface**(HR2가 HR1 모방)에 결합·R94Q를 allosteric 우회 → HR2 모델링 후 도킹. HDAC6는 포켓 정확(5EDU CD2 촉매-Zn·d'Ydewalle NatMed2011)."
+        },
+        {
+         "type": "prose",
+         "text": "**ClC-1 unblock 레시피**: POPC 이중층 먼저(CHARMM-GUI·결정 Cl⁻ 유지·TM만) → K231/R421/S537/F484/F488 포켓에 Vina/smina 도킹(flex sidechain)→lig_CL1_bound.sdf→soft-core/restrained minimize 후 alchemy. 9-AC/NFA는 method 검증용 앵커만."
+        },
+        {
+         "type": "prose",
+         "text": "**신규성 판정 PARTIAL (d_novel_only·정직)**: 표적별 전부 PUBLISHED/red-ocean 직접충돌 — HDAC6↔AGT-100216(Ph1)·ClC-1↔NMD670(Ph2a SYNAPSE-CMT, 우리보다 앞섬)·SARM1↔ASHA-624·MFN2↔MiM111·PMP22-siRNA↔DTx-1252/Novartis·PMP22-ASO↔Ionis. 통합 multi-target 포트폴리오는 '프로그램 조직'으로만 novel(발견 아님). ★유일 진짜-열린 축 = **GJB1/Cx32 소분자 fold-rescue**(경쟁=유전자치환뿐) + 투기적 NRG1-III Fc-fusion·CMT-SORD(govorestat 실패로 재오픈). 어떤 hxq-cmt-*도 단독 '발견'으로 보고 금지."
+        }
+       ]
       }
      ]
     },
