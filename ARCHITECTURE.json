@@ -1388,11 +1388,11 @@
     },
     {
      "type": "subsection",
-     "title": "flagship_삼성가_희귀병_CMT",
+     "title": "flagship_CMT",
      "blocks": [
       {
        "type": "prose",
-       "text": "**role**: ⭐ 샤르코-마리-투스병(CMT · Charcot-Marie-Tooth · 유전성 운동·감각 말초신경병증 HMSN) — 삼성가가 보유한 것으로 알려진 대표 희귀병. SSOT=`hexa-bio-archive/.roadmap.disease_cmt_specific` (2026-05-10 v2 · de novo 신약-우선 + 부작용최소 7축 design)."
+       "text": "**role**: ⭐ 샤르코-마리-투스병(CMT · Charcot-Marie-Tooth · 유전성 운동·감각 말초신경병증 HMSN) — 가장 흔한 유전성 말초신경병(2,500명당 1명)이나 승인 질병변형치료 0. SSOT=`hexa-bio-archive/.roadmap.disease_cmt_specific` (2026-05-10 v2 · de novo 신약-우선 + 부작용최소 7축 design)."
       },
       {
        "type": "prose",
