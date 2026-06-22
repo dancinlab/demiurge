@@ -1,5 +1,9 @@
 ## 2026-06-23
 
+- **🧪 GJB1 첫 실분자 ABFE ΔG — CX32L8_diaryl_ether_F rep0 = −79.00±0.76 kcal/mol** — summer(cplx 111.54·solv 32.44·ssc 0.11). placeholder anchor −48.82 대비 절대 ~30 kcal/mol 강함(NaN-pose 벽 자가복구로 rep0 완주, rep1 NaN0 클린진행). NaN 진실 규명: 자가복구되면 생존(CX32L8 9restart)·restart 소진돼야 치명(CX32L14 크래시 HELD). 정직 d6: 단일 rep 무의미 — rep0/1/2 평균±SEM + anchor 대비 ΔΔG 수렴 후에만 해석, 선택성(mutant-vs-WT)·신규성 별도 게이트, 아직 발견 아님. CX32L1 rep0 진행중. flagship_CMT/gjb1 갱신. SSOT=exports/CMT/gjb1/real_ligands/RESULT.md §7.
+
+## 2026-06-23
+
 - **🩺 GJB1 실분자 막ABFE NaN-pose 벽 (정직 d6·d_deck_always 인계)** — 실분자 3종(CX32L8/L14/L1) docked centroid이 434ų 얕은 소수성 공동 입구/가장자리 → sampler.run 첫 적분서 막/단백질 clash→persistent NaN. CX32L14 restart 소진 크래시(HELD·맹재발사 안 함)·CX32L8 9restart 자가복구중·CX32L1 minimize 단계. placeholder naphthoate는 동일 offline-membrane 박스서 성공(−48.82) = 막/method 정상, 리간드 pose-stability 버그(결합결론 아님). deck-guard 수정안 ING 인계: sampler.run 전 restrained warm-up + 초기 dt 0.25fs + NaN-guard auto-.nc-purge + flex-sidechain re-dock(더 깊은 seat). flagship_CMT/gjb1 갱신. SSOT=exports/CMT/gjb1/real_ligands/RESULT.md §7.
 
 ## 2026-06-23
