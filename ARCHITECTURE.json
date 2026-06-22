@@ -913,7 +913,7 @@
     },
     {
      "type": "subsection",
-     "title": "proposals",
+     "title": "archive/proposals",
      "blocks": [
       {
        "type": "subsection",
@@ -921,7 +921,7 @@
        "blocks": [
         {
          "type": "prose",
-         "text": "**role**: proposals"
+         "text": "**role**: archive/proposals"
         }
        ]
       },
@@ -931,7 +931,7 @@
        "blocks": [
         {
          "type": "prose",
-         "text": "**role**: proposals/"
+         "text": "**role**: archive/proposals/"
         }
        ]
       },
@@ -941,7 +941,7 @@
        "blocks": [
         {
          "type": "prose",
-         "text": "**role**: Absorption / seam / cockpit design RFCs (rfc_001..012)."
+         "text": "**role**: (retired) Absorption / seam / cockpit design RFCs (rfc_001..013). Moved under archive/."
         }
        ]
       },
@@ -1037,7 +1037,7 @@
     },
     {
      "type": "subsection",
-     "title": "PAPER",
+     "title": "PAPERS",
      "blocks": [
       {
        "type": "subsection",
@@ -1045,7 +1045,7 @@
        "blocks": [
         {
          "type": "prose",
-         "text": "**role**: PAPER"
+         "text": "**role**: PAPERS"
         }
        ]
       },
@@ -1055,7 +1055,7 @@
        "blocks": [
         {
          "type": "prose",
-         "text": "**role**: PAPER/ · PAPERS/"
+         "text": "**role**: PAPERS/ (canonical; former PAPER/ merged in)"
         }
        ]
       },

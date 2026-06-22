@@ -15,6 +15,10 @@ For the full audit trail, see `git log`.
 
 ---
 
+## 2026-06-22
+
+- **📂 proposal/ 신설 + PAPER→PAPERS canonical 통합 + proposals→archive 은퇴** — `dancinlife/contribution`(private)의 easy-요약 7건(SENOLYX-AG·HERPES·CARDIO+·CERN·FUSION·NUMB·ANIMA)을 `proposal/`에 복사하고, 각 정식 논문(`PAPERS/<slug>/main.pdf`) 링크 색인 README 작성. 논문 폴더 2개(`PAPER` 6슬러그 + `PAPERS` 21슬러그)를 canonical `PAPERS/`(27슬러그)로 통합(슬러그 충돌 0·`git mv` rename 보존). 기존 `proposals/`(RFC rfc_001..013)는 `archive/proposals/`로 은퇴. CLAUDE.md 구조도 + ARCHITECTURE.json 노드 lockstep 갱신(JSON valid).
+
 ## 2026-06-20
 
 - **🔴 문헌-완료 캠페인 일괄 종료 (d_novel_only 집행 · 유저 '문헌완료 모두종료')** — 출판값 재현 캠페인을 SSOT서 종결하고 compute 중단. 종료: AcBeH8/CaB3C3/LaB3C3(vast·출판 클라스레이트 예측 재현)·LaRu3Si2/LaOs3Si2(출판 SC Tc 매칭→method-anchor만 보존)·FeCo bct K1+base SmFe12 K1(leverb 출판 자석·summer 가동 pw.x 종료 시도). ARCHITECTURE 5노드 🔴 CLOSED-LITERATURE + Sm112 스코어보드 compute-종료 박제 + ING #30. 유지=novel만(LiBeB·Sm112 Ga/Al 삼원계). 근거: d_novel_only 하드규칙(문헌 재현 compute 절대금지)+세션메모리(FeCo '종결이 정답'). summer load 57 주범이 이 재현잡이라 종료 시 novel LiBeB 발사 가능.
