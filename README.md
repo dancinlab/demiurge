@@ -13,7 +13,7 @@
 > LANDED (NUCLEAR.md spec + N6 HFBTHO + N7 WKB α-decay + Phase 4 #1
 > microkernel port 31/31 parity bit-exact). g3 honest — see
 > `archive/legacy-domain-era/PLAN.log.md` for measured distance (κ-phase archive, PLAN.md 2026-05-22
-> 흡수), `CHARTER.md` for mission/scope (HANDOFF.md 2026-05-22 흡수 —
+> 흡수), `CLAUDE.md` for mission/scope (HANDOFF.md 2026-05-22 흡수 —
 >
 > RTSC frontier (2026-06-16): no-cooling flat-band track — **LaRu3Si2 🟢 GATE
 > PASS** (campaign-first: measured ΔE=−0.055 eV AND m=0.00 μB, beats all 3
@@ -37,7 +37,7 @@
 > assembler end-to-end on real QE (YH6).
 >
 > 상온 분기(2026-06-16): 패밀리=ω_log천장으로 λ-레퍼런스 완주 / 상온=별도 레버(경량 ω_log↑ · flat-band 전자상관). **무압 초수소화물 lane**(QE+QFORGE from-scratch 병행): Li2CuH6·Mg2IrH6 🔴 ambient-dynamically-unstable, AcBeH8(293K@1atm)·B-C클라스레이트 ⏳. **QFORGE ENGINE STATUS 확인**: from-scratch 전구간(SCF→DFPT→el-ph→Tc) 구현·검증(al/nb/pb xval), bare-vertex ~5.5% rough-screening 작동. **ARCHITECTURE 단일문서 마이그레이션**: ARCHITECTURE.md 은퇴 → ARCHITECTURE.json(SSOT)+ARCHITECTURE.html(뷰어·`python3 serve.py`). **전 캠페인 결과 통합(2026-06-16)**: ARCHITECTURE.json = 항해가능 단일 SSOT(c4) — RTSC 4분기(flat-band 패밀리·DFPT λ/Tc in-flight·무압 초수소화물·전략) + MATH-SPECTRA 1D 완전차트 + QFORGE fleet(perf-gpu 🟢🏁 1.34–18.6× · magmom 🧱 k-Stoner벽 · pbe-scf 🧱) + `results_index`(발견→raw 기록 포인터). raw 기록은 보존(c5), 정직 in-flight=pending(c9). **2026-06-17**: LaRu3Si2 DFPT λ/Tc 착륙(physical λ=1.64·Tc≈7K 실측일치 / 단 2×2×2 거친-q soft모드 🔴 → 4×4×4 필요) · 무압 클라스레이트 3종 🟠 stability-INCONCLUSIVE(vc-relax 미수렴·포드down·deferred) · 설계는 항상 `hexa demi` 7-verb(d_demi_always). **QFORGE 갭 fleet 라운드 완결(2026-06-17)**: 3-lane 종결 — perf-gpu 🟢🏁 닫힘 / magmom 🧱(k-Stoner벽·레버 GPU-davidson) / pbe-scf 🧱(from-scratch gate-grade 확정벽: 축퇴다양체 SIGSEGV + gate-grade ecut OOM); production=하이브리드 1.65e-7·migration_gate HELD. **산출물 통합(2026-06-18)**: 흩어진 `.verdicts/`·`scripts/scratch/` 를 단일 git-tracked `state/` 루트로 병합(commons c5 · `git mv` 보존) — 머신 마커(`state/markers/`)·재생성 venv(`state/mathvenv/`)만 gitignore; `exports/` 는 hexa builtin convention(c12) 미변경. See CHANGELOG.md.
-> historical at `archive/legacy-domain-era/HANDOFF.log.md`), `DESIGN.md` for the decision audit trail.
+> historical at `archive/legacy-domain-era/HANDOFF.log.md`), `ARCHITECTURE.json` for the decision audit trail.
 > Family: **typed-interface consumer** (not absorber) of `hexa-lang`,
 > the **sole SSOT** for reusable stdlib / tools / absorbed modules
 > (D15 / D17 + 2026-05-19 user directive); demiurge is the consumer-
@@ -45,7 +45,7 @@
 > This one = **모든 기술설계의 아키텍쳐** — chip is one domain,
 > `component` (FEM/EM/thermal, D21) the chain's 3rd-pass domain,
 > plus 13 shallow public-surface maps.
-> Self-contained pickup entry point: `CHARTER.md` (HANDOFF.md 2026-05-22
+> Self-contained pickup entry point: `CLAUDE.md` (HANDOFF.md 2026-05-22
 > 흡수 — historical at `archive/legacy-domain-era/HANDOFF.log.md`).
 
 ---
@@ -101,15 +101,15 @@ vs 기존: hexa-matter = 물질을 계산, hexa-bio = 분자를 계산, **demiur
 
 ## Files (SSOTs)
 
-- `CHARTER.md` — **자기완결 인수인계** + mission · scope · 비목표 ·
+- `CLAUDE.md` — **자기완결 인수인계** + mission · scope · 비목표 ·
   도메인 모델 (HANDOFF.md 2026-05-22 흡수 — historical at
   `archive/legacy-domain-era/HANDOFF.log.md`). 0-context pickup 진입점, 먼저 읽을 것.
 - `GOAL.md` — 한 문장 north-star + 무엇이 아닌가/무엇인가 + 정직한
   현 위치(g3)
-- `DESIGN.md` — **결정 감사추적** (gated picks SSOT — D-번호 SSOT)
+- `ARCHITECTURE.json` — **결정 감사추적** (gated picks SSOT — D-번호 SSOT)
 - `archive/legacy-domain-era/PLAN.log.md` — 진행 / 측정 거리, append-only `## 진행 로그` ·
   cockpit κ-phase build log archive (수치·phase SSOT, PLAN.md 2026-05-22
-  흡수 — forward Roadmap → CHARTER.md)
+  흡수 — forward Roadmap → CLAUDE.md)
 - `AGENTS.tape` — 강제 거버넌스 (`g_stdlib_ownership` ·
   `g_ssot_single_source` · `g_cockpit_isolation` ·
   `g_swift_native` · `g_cockpit_reinstall` · `g_ai_agent_*` · g3 · `@F`)
@@ -137,7 +137,7 @@ vs 기존: hexa-matter = 물질을 계산, hexa-bio = 분자를 계산, **demiur
   stdlib home is `hexa-lang/<domain>` (booksim / matter pattern).
 
 ## Current state (snapshot, g3 — *카테고리* only; 수치·phase 는
-archive/legacy-domain-era/PLAN.log.md / DESIGN.md SSOT)
+archive/legacy-domain-era/PLAN.log.md / ARCHITECTURE.json SSOT)
 
 **Design-complete (4-Phase 로드맵):**
 
@@ -180,6 +180,6 @@ archive/legacy-domain-era/PLAN.log.md / DESIGN.md SSOT)
 - 3D real USDZ 0 (component producer 부재; NEXT_SESSIONS P-⑨).
 - 어떤 도메인도 `absorbed=true` 아님.
 
-외부 매핑 = `ARCH.md` §5 (HANDOFF.md §5 흡수); 측정 거리 = `archive/legacy-domain-era/PLAN.log.md`
-(archive); 결정 = `DESIGN.md`; cross-repo / post-completion 핸드오프 =
+외부 매핑 = `ARCHITECTURE.json` §5 (HANDOFF.md §5 흡수); 측정 거리 = `archive/legacy-domain-era/PLAN.log.md`
+(archive); 결정 = `ARCHITECTURE.json`; cross-repo / post-completion 핸드오프 =
 `NEXT_SESSIONS.md`.

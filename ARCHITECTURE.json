@@ -1453,6 +1453,86 @@
    ]
   },
   {
+   "id": "legacy-root-docs-absorbed",
+   "title": "legacy-root-docs-absorbed",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "**role**: 루트 레거시 설계문서 16종 검토→고유내용 흡수→은퇴(2026-06-22 · archive/legacy-root-docs/). 옛 SSOT(ARCHITECTURE.md·NEXUS.tape·DESIGN.log.md·GOAL.md·HANDOFF.log.md·AGENTS.tape)는 전부 폐기된 regime의 dead pointer였음. 본문은 git history + archive/legacy-root-docs/ 보존. 아래는 아직 유효한 고유내용만 발췌 흡수."
+    },
+    {
+     "type": "subsection",
+     "title": "non_goals",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: (CHARTER.md 흡수) 비목표 — no-fab(습식/팹 없음) · no-closed-binary-RE(공개표면 clean-room only) · hexa-native-only(stdlib는 hexa-lang이 소유, demiurge는 소비자 d3) · 외부랩/펀딩/다년 trailer 제외(d1/d5/d19)."
+      }
+     ]
+    },
+    {
+     "type": "subsection",
+     "title": "external_mapping",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: (ARCH.md §5 흡수, 원래 HANDOFF.md §5) projects = 도메인 그래프 위의 포인터(외부 매핑). 프로젝트는 그래프 노드를 가리키는 view일 뿐 별도 코드홈 아님(d3/d4 일관)."
+      }
+     ]
+    },
+    {
+     "type": "subsection",
+     "title": "alphafold_positioning",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: (AlphaFoldvsHexaBio.md 흡수) hexa-bio = 5-axis in-silico 설계 substrate로 AlphaFold PDB를 입력으로 소비. AF3는 구조예측 정확도(wet-lab 검증) 우위, hexa-bio는 in-silico 범위 넓이 + 정량 ABFE 우위. 모든 5-axis verdict은 simulator-consistency이지 임상 아님(g8 fence)."
+      }
+     ]
+    },
+    {
+     "type": "subsection",
+     "title": "compute_provider_tiers",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: (PROVIDERS.easy.md 흡수) 에스컬레이션 tier — vast.ai 기본(<12h·<80c) · AWS hpc7a spot(>12h or 大 q-grid; 22h잡 2.4× 빠름·~19× 저렴) · RunPod H100(GPU-DFT) · NSF ACCESS/KISTI(6개월+ 캠페인). 세부는 `hexa cloud providers list|fit|recommend`(~/.hx/cloud/providers.json)가 SSOT, 사이징은 d7/d11/d17."
+      }
+     ]
+    },
+    {
+     "type": "subsection",
+     "title": "cli_cockpit_surfaces",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: (CLI+COCKPIT.md 흡수) 7-verb 파이프라인 × 3-surface(hexa CLI · Swift cockpit · Next.js Web GUI)는 동일 generic dispatch 공유. XPRIZE 2026 엔트리용 M8–M17+M_submit 마일스톤 로스터는 forward roadmap(상세는 git history); 진행상태는 ING/campaigns로 추적."
+      }
+     ]
+    },
+    {
+     "type": "subsection",
+     "title": "open_task_li2mgh16",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: (MAIN.md 흡수 · 활성 태스크) RTSC Li2MgH16 dense-mesh(4×4×4 q) QE el-ph 재실행 → λ≈3.3/Tc≈473K 수렴 + 제3 독립 QE-λ cross-val vertex 승격. 8-q assembled = λ5.79/Tc_AD164K. campaigns/ING에서 진행."
+      }
+     ]
+    },
+    {
+     "type": "subsection",
+     "title": "lattice_policy",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: (LATTICE_POLICY.md) n=6 격자는 도구지 천장 아님 — 실제 수학/물리/공학 한계로만 검증. canonical SSOT는 commons(sidecar/hooks/commons/LATTICE_POLICY.md, g25/g26); demiurge 루트 사본은 중복(d3)이라 은퇴."
+      }
+     ]
+    }
+   ]
+  },
+  {
    "id": "governance",
    "title": "governance",
    "blocks": [
