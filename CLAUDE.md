@@ -25,9 +25,10 @@ demiurge/
 ├─ sim/                — simulation drivers / readout watchers (.hexa)
 ├─ QFORGE/             — quantum-forge DFT electron-phonon compute campaign workspace
 ├─ tool/               — 발견법칙 검증·예측 계산기 (FREE 로컬). `tool/rtsc/fbgeom_predictor.py` = flat-band 양자기하 SC 법칙(L24-L38) 구현: master 변수 ∫tr g(Q_geom) → BKT Tc(L25)·λ-기하분율(L36)·room-T 갭. VERIFY(앵커 재현) + PREDICT(격자별 Tc). SSOT 법칙 = ARCHITECTURE.json LAWS[] (MATH-SPECTRA/LAWS)
-├─ proposals/          — absorption / seam / cockpit design RFCs (rfc_001..012)
+├─ proposal/           — contribution easy-요약 + 정식 논문(PAPERS) 링크 색인 (SENOLYX·HERPES·CARDIO+·CERN·FUSION·NUMB·ANIMA)
+├─ archive/proposals/  — (은퇴) absorption / seam / cockpit design RFCs (rfc_001..013)
 ├─ exports/            — pipeline output records (chip NoC f1/f2, chain seams, per-domain)
-├─ PAPER/ · PAPERS/    — generated papers (atlas-atom-gated, one slug per terminal discovery)
+├─ PAPERS/             — generated papers (atlas-atom-gated, one slug per terminal discovery)
 ├─ .discoveries/       — /kick · /gap discovery log tapes (<slug>.tape)
 ├─ state/              — single git-tracked artifact root (commons c5): verdict records, scratch, experiment logs (flat `state/<id>`) — absorbed `.verdicts/` + `scripts/scratch/` 2026-06-18; machine markers `state/markers/` + venvs `state/mathvenv/` gitignored
 ├─ .harness/           — repo-local harness rule configs (enforcement / keywords / severity)
@@ -153,10 +154,10 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - ✅ before building a domain primitive, grep the atlas + sibling DOMAIN.md for a verified one
 - ✅ inherit it — e.g. ANTIMATTER trap reuses RTSC current_loop_offaxis
 - ✅ stamp each record with reused[] / provides[] cross-domain edges
-- ✅ keep repo-root NEXUS.tape (cross-domain reuse graph) current
+- ✅ keep the cross-domain reuse graph current in `ARCHITECTURE.json` (단일 SSOT — NEXUS.tape 은퇴 2026-06-21)
 - ⛔ trailer wet-lab / external-lab / funding / paid / multi-year as 'excluded'
 - ⛔ repeat 'absorbed=false PERMANENTLY' trailer — d1/d5/d19 already covers it
-- ⛔ rebuild a sibling domain's verified primitive · leave a reuse edge off NEXUS.tape
+- ⛔ rebuild a sibling domain's verified primitive · leave a reuse edge off the ARCHITECTURE.json reuse-graph
 - ⛔ link domains across repos — intra-project only
 
 ### d_deploy — web GUI surface ONLY — local hot-reload work mode · deploy gated on user approval
