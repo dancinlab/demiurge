@@ -1446,7 +1446,7 @@
         },
         {
          "type": "prose",
-         "text": "**production**: ✅ HDAC6 rep0 20-window ABFE **완료** — `dG_bind=−4.13 kcal/mol`(dG_complex 106.75·dG_solvent 102.19·ssc 0.43, summer free). 첫 해석가능 실ΔG이나 **scaffold-placeholder SMILES·rep1개(K=1, stderr 없음)·red-ocean(HDAC6↔AGT-100216)** → method-grade일 뿐 '발견' 아님(d6). SARM1·MFN2(교정포켓) summer 순차 재발화(repocket SMOKE-검증분). 결합력 게이트 승격엔 K≥3 ensemble + 실분자(scaffold 탈피) 필요."
+         "text": "**production**: ✅ 20-window ABFE 완료 (summer free, rep0) — **HDAC6 dG_bind=−4.13**(cplx 106.75·solv 102.19·ssc 0.43) · **SARM1 dG_bind=−7.05**(교정 ARM-allosteric 7NAL 포켓·cplx 235.67·solv 228.28·ssc 0.34) · MFN2(교정 HR1-HR2) 진행중. 전부 **scaffold-placeholder SMILES·rep1개(K=1, stderr 없음)·red-ocean(HDAC6↔AGT-100216·SARM1↔ASHA-624)** → method-grade일 뿐 '발견' 아님(d6). 결합력 게이트 승격엔 K≥3 ensemble + 실분자(scaffold 탈피) 필요."
         },
         {
          "type": "prose",
