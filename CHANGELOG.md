@@ -17,6 +17,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-22
 
+- **🧪 GJB1 실분자화 (scaffold-placeholder 탈피) — drug-like 15종 디자인+도킹** — exports/CMT/gjb1/real_ligands/ (RDKit 2026.3.3+smina, 무료 로컬·GPU 무접촉). placeholder 2-naphthoate 대체 후보 15종(Lipinski Ro5+CNS/blood-nerve·5 scaffold family·VRT-534/4-PBA서 의도적 이탈 d_novel_only). 도킹 상위3: CX32L8 diaryl-ether −6.4(placeholder −6.1 추월)·CX32L14 difluoro-benzimidazole −6.1·CX32L1 benzofuran-2-carboxamide −5.9. 정직 d6: 도킹 변별력 낮음(얕은 소수성 공동·폭 −4.9~−6.4)→진짜 랭킹은 ABFE·점수는 가이드. K≥3(rep0/1/2) ABFE QUEUE.md+bound-pose SDF 준비(GPU 비면 FIRE). flagship_CMT/gjb1 갱신. wet-lab·임상 제외 남은 2게이트(신규성 확정+실분자화) 모두 in-silico 완료.
+
 - **🔬 GJB1 신규성 심층재검 (arxiv+web 독립패스) → PARTIAL 확정·새 충돌 0** — exports/CMT/gjb1/NOVELTY_v2.md. 방어가능 NOVEL = Cx32 L143P가 여는 TM1/TM4 inter-helical cryptic 공동의 mutation-selective 약리샤페론 표적 최초 식별(2026 현재 Cx32-결합 소분자 corrector 논문/특허 0). CLOSED = mutation-selective connexin 샤페론 기전은 Cx26 소유(VRT-534·near-pore·non-cryptic·청력, PMID37470015). caveat 유지: L143=TM3·4-PBA=method앵커. discovery 주장엔 막ABFE mutant-vs-WT 선택성 falsifier 필요(미통과). flagship_CMT 신규성 노드 갱신. wet-lab·임상 제외 남은 2게이트 중 '신규성 방어가능 확정' 완료 — '실분자(scaffold 탈피)' 에이전트 병행중.
 
 - **🧬 SARM1 ABFE 완료 → dG_bind=−7.05 kcal/mol (교정 ARM-allosteric 7NAL 포켓)** — summer free, hxq-cmt-sar1-001, 20-window(cplx 235.67·solv 228.28·ssc 0.34). 교정포켓(TIR 촉매부위→ARM allosteric, subinhibitory-activation liability 회피) 검증. MFN2(교정 HR1-HR2) production 진행중. 정직 d6: scaffold SMILES·K=1·red-ocean(SARM1↔ASHA-624) → method-grade·발견 아님. flagship_CMT/free_abfe_campaign + CMT.easy.md 갱신. aiden GJB1 막ABFE 클린런(NaN-free) 별도 진행중(ΔG ETA 6~12h).
