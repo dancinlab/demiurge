@@ -1371,6 +1371,88 @@
    ]
   },
   {
+   "id": "hexa-bio-archive",
+   "title": "hexa-bio-archive",
+   "blocks": [
+    {
+     "type": "prose",
+     "text": "**role**: 🧬 hexa-bio 신약발견 아카이브 (orphan trove → SSOT 편입 2026-06-22). 5-axis 양자 신약발견 framework (QUANTUM·WEAVE·VIROCAPSID·RIBOZYME·NANOBOT) × 질환별 로드맵 207종 + 플랫폼/메타 로드맵 28종 + 56 서브모듈. 디렉토리 전체가 git-tracked (1041 files, HEAD 커밋 완료 — 자료유실 위험 0). 상세 SSOT = `hexa-bio-archive/.roadmap.disease_<slug>` 각 파일(본 노드는 색인). 명명규칙 = 신약후보 `hxq-<disease>-<target>-<NNN>`."
+    },
+    {
+     "type": "prose",
+     "text": "**detail_ssot**: `hexa-bio-archive/` (각 `.roadmap.*` 파일이 본문 SSOT; 본 노드는 손실방지 색인)"
+    },
+    {
+     "type": "prose",
+     "text": "**axes**: QUANTUM(.roadmap.quantum · VQE/QPE) · WEAVE(.roadmap.weave · 다중표적 텐서망) · VIROCAPSID(.roadmap.virocapsid · AAV/phage 전달) · RIBOZYME(.roadmap.ribozyme · 촉매RNA/RNA편집) · NANOBOT(.roadmap.nanobot · DNA折り紙/LNP). axis lock=5 (확장 0, axis_expansion_decision_2026_05_08)."
+    },
+    {
+     "type": "subsection",
+     "title": "flagship_삼성가_희귀병_CMT",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: ⭐ 샤르코-마리-투스병(CMT · Charcot-Marie-Tooth · 유전성 운동·감각 말초신경병증 HMSN) — 삼성가가 보유한 것으로 알려진 대표 희귀병. SSOT=`hexa-bio-archive/.roadmap.disease_cmt_specific` (2026-05-10 v2 · de novo 신약-우선 + 부작용최소 7축 design)."
+      },
+      {
+       "type": "prose",
+       "text": "**candidates**: 신약 10종 hxq-cmt-* — pmp22-001(CMT1A siRNA·HNPP overshoot 회피)·pmp22-002(splice ASO)·hd6-001(말초한정 non-hydroxamate HDAC6)·clc1-001(ClC-1 partial blocker)·sar1-001(SARM1 reversible)·mfn2-001(CMT2A MFN2 corrector)·gjb1-001(CMT1X Cx32 fold-rescue)·nrg1-001(Schwann-restricted NRG1/ErbB)·외."
+      },
+      {
+       "type": "prose",
+       "text": "**targets**: PMP22 중복(CMT1A ~50-60%)·GJB1/Cx32(CMT1X)·MFN2(CMT2A)·HDAC6·ClC-1·SARM1 NAD+·GDAP1·SH3TC2 등 >100 유전자. 핵심 독성 가드 = HNPP(PMP22 결손) — silencing overshoot 회피."
+      },
+      {
+       "type": "prose",
+       "text": "**korea_framework**: 최병옥(삼성서울병원) 세계적 K-CMT 코호트 + ENCell EN001 + 산정특례 + 식약처 희귀의약품."
+      }
+     ]
+    },
+    {
+     "type": "subsection",
+     "title": "disease_roadmaps_207",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: 질환별 로드맵 전체 색인 (slug = `hexa-bio-archive/.roadmap.disease_<slug>`). 손실방지 전수 열거."
+      },
+      {
+       "type": "prose",
+       "text": "**slugs**: acne_specific · acromegaly_specific · acute_pain_specific · adc · adhd_specific · adolescent · aerospace_microgravity · aesthetic_dermatology · aging · aging_specific · ai_drug_discovery · ai_imaging_radiology · allergy_immunodef · alopecia · alopecia_areata_specific · als_specific · aml_specific · anaphylaxis_specific · anesthesiology · asd_specific · asthma_specific · atopic_dermatitis_specific · atrial_fibrillation_specific · autoimmune · bcc_specific · behavioral_addiction · behcet_specific · bioethics · bipolar_disorder_specific · bladder_cancer_specific · bone_marrow_failure · brain_organoid · breast_cancer_specific · cancer · cardiac_amyloidosis_specific · cardiac_arrhythmia_extended · cardiology · cell_therapy_platform · cervical_uterine_cancer_specific · cgm_artificial_pancreas · chronic_cough_specific · chronic_fatigue · chronic_kidney_disease_specific · chronic_neuropathic_pain_specific · chronotherapy · cidp_specific · climate_health · climate_pediatric · cll_specific · cml_specific · cmt_specific · colorectal_cancer_specific · copd_specific · critical_care · cscc_specific · cystic_fibrosis_specific · dementia_specific · dental_oral · digital_therapeutics · eating_disorders · eb_specific · emergency_medicine · endocrine · endocrine_thyroid_pituitary · endometriosis_specific · environmental · epilepsy · esophageal_gastric_cancer_specific · essential_tremor_specific · familial_hypercholesterolemia_specific · forensic_psychiatry · gastrointestinal · gastroparesis_specific · gbs_specific · gene_therapy_platform · gerd_pud_specific · geriatric · glioma_glioblastoma_specific · hae_angioedema_specific · hai_nosocomial · hcc_liver_cancer_specific · head_neck_cancer_specific · heart_failure_specific · hematology · hematology_specific · hemophilia_extended · hepatology · hereditary_ataxia_specific · hidradenitis_suppurativa · hsct_gvhd_specific · huntington_specific · hypertension_specific · ibd_specific · ibs_specific · iga_nephropathy_specific · immunometabolism · infectious · inflammatory_arthritis · inherited_adult · inherited_metabolic_specific · insomnia_specific · ipf_specific · itp_specific · k_pharma_industry · lipidology_specific · liquid_biopsy · lung_cancer_specific · lung_normalization · lymphoma_specific · mash_nafld_specific · mass_spec_proteomics · mds_specific · melanoma_specific · menopause_specific · mens_health · mesothelioma_specific · meta_synthesis_100 · meta_synthesis_200 · metabolic · mi · microbiome · microrna_therapeutics · migraine_headache · mitochondrial · multiple_myeloma_specific · multiple_sclerosis_specific · muscular_dystrophy_specific · musculoskeletal · myasthenia_specific · myelofibrosis_specific · myocarditis_specific · myotonic_dystrophy_specific · n_of_1 · narcolepsy_specific · nephrotic_syndrome_specific · neural_interface_specific · neurodegen · neurodevelopmental · newborn_perinatal · nutrigenomics · nutrition · nutritional_pharmacology · obesity · ocd_specific · oncology_supportive_care · one_health · ophthalmology · orphan_drug_policy · osteoporosis_specific · otolaryngology · ovarian_cancer_specific · pah_specific · pain · palliative_care · pancreatic_cancer_specific · parkinson_specific · pcos_specific · pediatric_oncology_specific · pediatric_rare · pharmacogenomics · precision_radiation_onc · preventive · prolactinoma_specific · prostate_cancer_specific · protein_degradation_tpd · psoriasis_specific · psychedelic_specific · psychiatric · ptsd_anxiety_specific · pulmonology · pv_et_specific · rcc_specific · regenerative · rehabilitation · renal · reproductive · rls_specific · sarcoma_specific · schizophrenia_specific · sci · sclc_specific · sensory · sickle_cell_disease_extended · sjogren_specific · sle_lupus_specific · sleep · sleep_apnea_specific · sports_medicine · stroke_acute · substance_use · systemic_sclerosis_specific · thalassemia_specific · theranostic · thymoma_thymic_specific · thyroid_eye_disease_specific · toxicology · traditional_korean_medicine · transplant · tropical_ntd · urological · uveitis_specific · vaccinology · venous_thromboembolism_specific · veterinary · vitiligo_specific · women_obgyn_extension · womens_health"
+      }
+     ]
+    },
+    {
+     "type": "subsection",
+     "title": "platform_meta_roadmaps",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: 플랫폼·메타·인프라 로드맵 (slug = `hexa-bio-archive/.roadmap.<slug>`)."
+      },
+      {
+       "type": "prose",
+       "text": "**slugs**: ai_ml_integration · axis_expansion_decision_2026_05_08 · bioethics_framework · clinical_translation_pathway · fda_drug_verification · hexa_bio · k_platform_consolidation · knowledge_graph · lean4_formal · meta_novel_drugs · nanobot · next_100_disease_cycle_plan · novel_drugs · paradigm_shift_top10 · platform_covalent · platform_index · platform_molecular_glue · platform_peptide_macrocycle · platform_ppi · platform_theranostic · quantum · quantum_hw_adoption_ladder · review_cron_schedule · ribozyme · session_2026_05_08_summary · virocapsid · visualization_spec · weave"
+      }
+     ]
+    },
+    {
+     "type": "subsection",
+     "title": "submodules",
+     "blocks": [
+      {
+       "type": "prose",
+       "text": "**role**: 아카이브 서브모듈 디렉토리 (모달리티·브리지·셀프테스트 등)."
+      },
+      {
+       "type": "prose",
+       "text": "**dirs**: AXIS · LVAD · _absorption_bridge · _hexa_bridge · _python_bridge · _qiskit_bridge · allosteric · aptamer · autac · bifunctional · bio-pharma · biology · biology-medical · breakthroughs · capsid_assembly_modulator · case_studies · cli · covalent · covalent_degrader · crispr-cas13-poc-diagnostic · crispr-gene-editing · cryptic_pocket · design · docs · drylab · examples · genetics · hexa-nanobot · hexa-ribozyme · hexa-virocapsid · hexa-weave · incoming · lytac · macrocycle · medical-device · metallodrug · molecular_glue · nanobot · oligonucleotide · papers · peptide · ppi · proposals · protac · quantum · reversible_covalent · ribotac · ribozyme · rna_targeting_small_molecule · selftest · sessions · synbio · tests · virocapsid · weave · wetlab"
+      }
+     ]
+    }
+   ]
+  },
+  {
    "id": "governance",
    "title": "governance",
    "blocks": [
@@ -9244,7 +9326,7 @@
            "blocks": [
             {
              "type": "prose",
-             "text": "**role**: 결정맵 input(allele/phenotype freq) = verify-rigorous(🟢/🔵 도달 가능), output(M3 switch tree·M7 cube·M8 ICER) = RCT-bound 영구 🟡; 단일 blocker = atlas promoter bug + 'P' kind 확장 (inbox patch 2건 upstream)"
+             "text": "**role**: 결정맵 input(allele/phenotype freq) = verify-rigorous(🟢/🔵 도달 가능), output(M3 switch tree·M7 cube·M8 ICER) = RCT-bound 영구 🟡; 단일 blocker = atlas promoter bug + 'P' kind 확장 (ING 핸드오프 2건 upstream)"
             }
            ]
           }
@@ -11648,7 +11730,7 @@
            "blocks": [
             {
              "type": "prose",
-             "text": "**role**: wall: hexa verify --expr bio kernel 부재(6 도메인×5-15 identity ≈50-90 🔵 lock) → bio-verify-kernel-extension inbox patch; absorbed=true는 사람-임상 measured-oracle(FDA/MFDS/guideline) PASS시만"
+             "text": "**role**: wall: hexa verify --expr bio kernel 부재(6 도메인×5-15 identity ≈50-90 🔵 lock) → bio-verify-kernel-extension ING 핸드오프; absorbed=true는 사람-임상 measured-oracle(FDA/MFDS/guideline) PASS시만"
             }
            ]
           }
@@ -15751,7 +15833,7 @@
              "blocks": [
               {
                "type": "prose",
-               "text": "**role**: V2 5/5 ⚪ fence (hexa verify CLI NT-only · inbox patch 필요)"
+               "text": "**role**: V2 5/5 ⚪ fence (hexa verify CLI NT-only · ING 핸드오프 필요)"
               }
              ]
             },
