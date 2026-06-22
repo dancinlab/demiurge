@@ -1,5 +1,9 @@
 ## 2026-06-23
 
+- **🧬 GJB1 placeholder 막ABFE 완료 (anchor) + 실분자 K≥3 동시발사** — aiden offline-membrane 클린런 완주: 2-naphthoate **dG_bind=−48.82±0.57**(cplx 83.49·solv 34.43·ssc 0.24·4.97h). 정직 d6: 절대 double-decoupling 크기=머신러리 method anchor(결합세기 아님·−4~−7 스케일 ABFE와 직접비교 불가). watcher가 두 카드 빈 즉시 실분자 동시발사 — summer CX32L8_diaryl_ether_F(PID14629)+aiden CX32L14_difluoro_benzimidazole(PID450951) 둘 다 NaN-0 clean, CX32L1 대기. 실ΔG는 anchor 대비 Δ(K≥3 수렴 MBAR)로만 의미·pending. flagship_CMT/gjb1 + CMT.easy.md 갱신. 소분자 placeholder ABFE 5종(HDAC6·SARM1·MFN2·GJB1막 + ClC-1 BLOCKED) 라운드 종료, 실분자·discovery(mutant-vs-WT) 단계로 이행.
+
+## 2026-06-23
+
 - **🧬 MFN2 ABFE 완료 → dG_bind=+2.11 kcal/mol (교정 HR1-HR2 포켓) → 소분자 placeholder ABFE 4종 완결** — summer free, hxq-cmt-mfn2-001 20-window(cplx 152.88·solv 155.47·ssc −0.47). 양수=약결합, 4종 중 최약(SARM1 −7.05·HDAC6 −4.13·MFN2 +2.11·GJB1 막ABFE 진행중). 교정포켓(G-site→HR1-HR2 R94Q allosteric) 검증. 정직 d6: scaffold·K=1·red-ocean(MiM111) → method-grade·발견 아님. **실분자 K≥3 ABFE 자동발사 watcher**가 summer 빈 즉시 CX32L8_diaryl_ether_F rep0 발사(NaN-free 진입). flagship_CMT/free_abfe_campaign + CMT.easy.md 갱신. aiden GJB1 placeholder 클린런 4h44m 진행중.
 
 # CHANGELOG
