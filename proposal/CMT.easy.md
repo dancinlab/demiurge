@@ -45,7 +45,7 @@ honesty: 전 ΔG scaffold-placeholder SMILES 기반(약물후보 아님)·임상
 |---|---------|---------|-----------|---------|----------------|--------------------|
 | 1 | `hxq-cmt-gjb1-001` | CMT1X | Cx32 변이-선택 fold 샤페론 | 소분자(척수강내) | 🟢 **lead** · L143P TM1/TM4 cryptic pocket · aiden 막ABFE **빌드벽 돌파**(addMembrane 폐기→packmol 오프라인막 51,860 atoms·분리-λ SMOKE NaN 0 PASS)·production clean in-flight(ΔG 대기·method-grade) | **PARTIAL(유일 열린축)** — Cx32 직접샤페론 미보고, 기전은 Cx26 기출판 |
 | 2 | `hxq-cmt-hd6-001` | CMT1·2·2F | HDAC6 말초한정 non-hydroxamate | 경구 소분자 | ✅ ABFE **완료 dG_bind=−4.13** kcal/mol(scaffold·K=1·method-grade) | 🌊 레드오션 (AGT-100216 Ph1) |
-| 3 | `hxq-cmt-sar1-001` | CMT2 축삭 | SARM1 reversible 억제 | 경구 소분자 | 🟡 포켓 교정(TIR→**ARM allosteric 7NAL**)·SMOKE PASS·prod 큐 | 🌊 레드오션 (ASHA-624 등) |
+| 3 | `hxq-cmt-sar1-001` | CMT2 축삭 | SARM1 reversible 억제 | 경구 소분자 | ✅ ABFE **완료 dG_bind=−7.05** kcal/mol(교정 ARM-allosteric 7NAL·scaffold·K=1·method-grade) | 🌊 레드오션 (ASHA-624 등) |
 | 4 | `hxq-cmt-mfn2-001` | CMT2A R94Q | MFN2 corrector(dominant-neg 안정화 해제) | 경구 소분자 | 🟡 포켓 교정(G-site→**HR1-HR2 interface**)·SMOKE PASS·prod 큐 | 🌊 레드오션 (MiM111/MASM7) |
 | 5 | `hxq-cmt-clc1-001` | 증상(근력) | 골격근 ClC-1 state-dep partial blocker | 경구 소분자 | 🔴 SMOKE BLOCKED(막 없음→NaN) · 막FEP 필요 | 🌊 레드오션 (NMD670 Ph2a) |
 | 6 | `hxq-cmt-pmp22-001` | CMT1A(중복) | PMP22 3'UTR allele-선택 knockdown | siRNA(지방산/SQ conjugate) | ⚪ ABFE N/A · design-audit PASS | 🌊 레드오션 (DTx-1252/Novartis) |
