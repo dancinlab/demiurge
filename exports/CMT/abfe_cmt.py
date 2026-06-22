@@ -48,11 +48,19 @@ TARGET = os.environ.get("TARGET", "MCL1")      # BCLXL | CRBN | MCL1
 REP = int(os.environ.get("REP", "0"))          # replica index 0..K-1 (distinct seed)
 T = 298.15 * unit.kelvin
 P = 1.0 * unit.atmosphere
-PLATFORM = mm.Platform.getPlatformByName("CUDA")
-PLATFORM_PROPS = {"Precision": "mixed"}
+# PLATFORM env override: a CPU SMOKE can validate the build/minimize/MBAR path of a
+# re-pocket WITHOUT contending with an in-flight CUDA production on the single shared GPU.
+# Defaults to CUDA (production). CPU SMOKE = pocket-correctness check, not a perf run.
+_PLATFORM = os.environ.get("PLATFORM", "CUDA")
+PLATFORM = mm.Platform.getPlatformByName(_PLATFORM)
+PLATFORM_PROPS = {"Precision": "mixed"} if _PLATFORM == "CUDA" else {}
 HERE = os.path.dirname(os.path.abspath(__file__))
 import json
-_T = json.load(open(os.path.join(HERE, "pockets.json")))[TARGET]
+# POCKETS env override lets a re-pocket pass (corrected SARM1/MFN2 entries) run from an
+# alternate pockets file WITHOUT clobbering the committed pockets.json that an in-flight
+# production run is reading. Defaults to the canonical file.
+_POCKETS_FILE = os.environ.get("POCKETS", "pockets.json")
+_T = json.load(open(os.path.join(HERE, _POCKETS_FILE)))[TARGET]
 REC_PDB = os.path.join(HERE, f"{_T['pdb']}.pdb")
 # prefer a CLASH-FREE bound pose (extract_pose.py) over the ideal conformer — the
 # ideal conformer overlaid by centroid clashes in tight/buried pockets (NaN at eq).

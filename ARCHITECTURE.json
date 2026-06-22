@@ -1482,7 +1482,7 @@
        "blocks": [
         {
          "type": "prose",
-         "text": "**role**: GJB1/Cx32 약리적 샤페론 fold-rescue — d_novel_only 통과 **유일 열린 축**(경쟁=유전자치환뿐). FREE in-silico 라운드1 완료(exports/CMT/gjb1/, 40파일). 신규성=PENDING(coordinates지 discovery 아님·정직 d6)."
+         "text": "**role**: GJB1/Cx32 약리적 샤페론 fold-rescue — d_novel_only 통과 **유일 열린 축**(경쟁=유전자치환뿐). FREE in-silico 라운드1 완료(exports/CMT/gjb1/, 40파일+NOVELTY.md)."
         },
         {
          "type": "prose",
@@ -1507,6 +1507,24 @@
         {
          "type": "prose",
          "text": "**caveats**: 전구간 scaffold-level(경험적 FF+기하 휴리스틱+rigid no-membrane 도킹). placeholder SMILES=pharmacophore 좌표지 약물후보 아님. 단량체라 oligomer 누락(dominant-negative R75W/N175D가 단량체서 near-neutral인 이유). 재사용 레시피: meeko 막단백 prep 벽 → pdbfixer+AutoDockTools prepare_receptor4로 돌파."
+        },
+        {
+         "type": "subsection",
+         "title": "novelty_verdict",
+         "blocks": [
+          {
+           "type": "prose",
+           "text": "**판정 = PARTIAL** (arxiv+web 신규성 게이트·exports/CMT/gjb1/NOVELTY.md): 완전 NOVEL 아니나 레드오션 재현도 아님 → d_novel_only 통과(진행 가능). 보고는 항상 'PARTIAL-novel'로 — 핵심 기전(접힘결손 connexin 변이체가 고친화 소분자 부위 획득 → 화학샤페론이 변이체 선택 구제)은 **형제 단백질 Cx26에서 이미 출판**(VRT-534; Wang ACS Pharmacol Transl Sci 2023 6:997 PMID37470015 · Harre Front Med 2025 'mutants create or expose binding pockets')."
+          },
+          {
+           "type": "prose",
+           "text": "**방어가능 novel 주장(딱 이것만)**: CMTX1 변이유발(L143P) 정의부피 소수성 cryptic pocket을 **Cx32 TM1/TM4 계면**에서 최초 식별 = connexin 화학샤페론 전략을 Cx26/난청→Cx32/CMTX1의 새 구조 위치로 확장(Cx26 near-pore allosteric·WT Cx32 N말단 sterol pocket과 구별). Cx32 직접 소분자 샤페론 미보고(기존=유전자치료·HSP inducer cemdomespib[Cx32 미결합]·항-Cx32 항체)·L143P TM1/TM4 cryptic pocket NOT-FOUND."
+          },
+          {
+           "type": "prose",
+           "text": "**과대주장 금지(d6)**: ⛔'최초 mutation-selective connexin 샤페론'(Cx26 소유) ⛔'4-PBA가 Cx32 구제'(4-PBA는 타 connexin서 실패 — method-anchor만) ⛔문구정정: **L143은 TM3 잔기**, 그로 인해 열리는 공동이 TM1/TM4 계면. 결정 ref: Vavlitou HMG 2017 26:1622 PMID28334782(L143P 기지생물학+유전자치료가 incumbent)."
+          }
+         ]
         }
        ]
       }
