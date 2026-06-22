@@ -1,0 +1,16 @@
+{
+  "lane": "B — TB strain->t_perp->Tc design-law (nickelate bilayer/trilayer)",
+  "date": "2026-06-22",
+  "tools": ["tool/rtsc/lane_b_strain_tperp.py (full TB)", "tool/rtsc/lane_b_strain_law.py (sign-correct law)"],
+  "free": true,
+  "harrison": "t_perp(eps)=0.635*(1+0.55*eps)^-4.0 eV ; t_x(eps)=0.483*(1+eps)^-3.5",
+  "sign_correct_law": "Tc = 84.3 K/eV * J_perp ; J_perp=4 t_perp^2/U (U=3eV) ; calibrated LAO(eps=-1.30%)->48K",
+  "d_ln_Tc_d_eps": "-4.4 per unit strain (~+4.4% Tc per 1% compression, near eps=0)",
+  "optimum": "max compression before structural instability (~-3 to -4%); a_sub ~3.69-3.71 A (YAlO3)",
+  "substrate_ranking_K": {"YAlO3_3.71A":52.7,"strongComp_3.74A":50.9,"SLAO_3.756A":49.9,"LAO_3.79A":48.0,"NGO_3.86A":44.3,"LSAT_3.868A":43.9,"STO_3.905A":42.1},
+  "trilayer_R4Ni3O10": {"anchor_30K":true,"opt_eps_-4pct":33.8,"trend":"compression favored, ~1.3x apical multiplicity, lower Tc than bilayer"},
+  "DOS_variant_caveat": "the d_z2-N(EF)-driven BCS proxy INVERTS the sign (predicts tensile wins) because compression pushes d_z2 AWAY from E_F (arXiv 2502.01624). Pairing is t_perp/J_perp-driven, NOT d_z2 DOS-driven. d6 honest.",
+  "novelty": "PARTIAL/PUBLISHED: strain->electronic-structure mapping & substrate->Tc are published (arXiv 2502.01624 TB params; 2510.27613/2603.11235; Nature 2024; Comm Phys 2025 s42005-025-02154-6). Our closed-form Harrison t_perp(eps)->J_perp->Tc ranking calculator is a derived trend tool, not a new physics law.",
+  "ambient_Tc_implication": "yes raises ambient Tc via compression; ceiling ~50-55K (this model) / ~60K (experiment LAO). NOT room-T (293K). cuprate-class 80-130K not reached by strain alone.",
+  "uncertainty": "TB+Harrison trend model; absolute Tc anchored not predicted; exponents N_AP=4,k_ap=0.55 are estimates; ~+/-30-50% on absolute scale; SHAPE & ranking are the robust outputs."
+}

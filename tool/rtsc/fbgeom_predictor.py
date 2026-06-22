@@ -46,6 +46,26 @@ def flat_band(Hfun, nk, *p):
     Uf = U[:, :, :, b].reshape(-1, nb)
     return q_geom(Uf), float(widths[b])
 
+def chern_flat(Hfun, nk, *p):
+    """Fukui-Hatsugai-Suzuki Chern number of the FLATTEST band (topology gate L26/L37).
+    |C|>=1 -> topological flat band (geometric stiffness trustworthy);
+    C~0 with high Q_geom -> trivial localized CLS (e.g. dice) -> Tc row is SPURIOUS."""
+    bz = 2*np.pi*np.arange(nk)/nk
+    nb = Hfun((0.0, 0.0), *p).shape[0]
+    V = np.empty((nk, nk, nb, nb), complex); E = np.empty((nk, nk, nb))
+    for i, kx in enumerate(bz):
+        for j, ky in enumerate(bz):
+            w, v = np.linalg.eigh(Hfun((kx, ky), *p)); E[i, j] = w; V[i, j] = v
+    b = int(np.argmin(E.max(axis=(0, 1)) - E.min(axis=(0, 1))))
+    F = 0.0
+    for i in range(nk):
+        for j in range(nk):
+            ip, jp = (i+1) % nk, (j+1) % nk
+            u1 = V[i, j, :, b];  u2 = V[ip, j, :, b]; u3 = V[ip, jp, :, b]; u4 = V[i, jp, :, b]
+            U1 = np.vdot(u1, u2); U2 = np.vdot(u2, u3); U3 = np.vdot(u3, u4); U4 = np.vdot(u4, u1)
+            F += np.angle(U1*U2*U3*U4)
+    return F/(2*np.pi)
+
 # ---------- lattices ----------
 def H_kagome_soc(k, t, lam):
     a1 = np.array([1.0, 0.0]); a2 = np.array([0.5, np.sqrt(3)/2]); a3 = a2 - a1
@@ -65,6 +85,18 @@ def H_dice(k, t):
     d1 = np.array([1.0, 0]); d2 = np.array([-0.5, np.sqrt(3)/2]); d3 = np.array([-0.5, -np.sqrt(3)/2])
     f = -t*(np.exp(1j*np.dot(k, d1)) + np.exp(1j*np.dot(k, d2)) + np.exp(1j*np.dot(k, d3)))
     return np.array([[0, f, 0], [np.conj(f), 0, np.conj(f)], [0, f, 0]], complex)
+
+def H_checkerboard(k, t, tp):
+    """Checkerboard (planar pyrochlore) 2-band: crossed-diagonal flat-band host.
+    A-chain along x, B-chain along y, NN coupling -> flat lower band near tp~t."""
+    kx, ky = k
+    H11 = -2*tp*np.cos(kx); H22 = -2*tp*np.cos(ky)
+    H12 = -4*t*np.cos(kx/2)*np.cos(ky/2)
+    return np.array([[H11, H12], [np.conj(H12), H22]], complex)
+
+def H_kagome_cmplx(k, t, lam):
+    """kagome with stronger intrinsic SOC (Haldane-on-kagome) -> isolated Chern flat band."""
+    return H_kagome_soc(k, t, lam)
 
 # ---------- law relations ----------
 def tc_bkt(g, Omega_meV, UOm, nu=0.5):
@@ -105,6 +137,38 @@ def omega_for_roomT(g, UOm, target=293.15, deflate=True):
     """Minimal Omega(meV) to reach target Tc; if deflate, fold in the anchor over-prediction (honest)."""
     factor = anchor_calibration()[0] if deflate else 1.0
     return target*factor / (TCOM_REF*(g/G_REF)*(UOm/UOM_REF)*meV2K)
+
+# ---------- answer-key top-down lever: nickelate interlayer-superexchange strain law ----------
+# Bilayer/trilayer nickelate AMBIENT compressive-strain -> apical Ni-O-Ni angle toward 180deg ->
+# interlayer d_z2 hopping t_perp -> interlayer AFM superexchange J_perp = 4 t_perp^2 / U -> Tc.
+# This is a DIFFERENT mechanism from the flat-band <g> law above (dimer superexchange, NOT quantum
+# geometry). The design-law itself is PUBLISHED (arXiv:2603.14519 v4, 2026-05-18) -> a CLOSED/known
+# lever under d_novel_only; kept here only as a reusable cross-host strain->Tc predictor. Honest (d6):
+# sign-correct (compression RAISES Tc via t_perp, opposite of the naive d_z2-DOS proxy); ambient
+# ceiling ~50-70K (Tc<293K, NOT room-T). Harrison t_perp(eps)=t0*(1+k*eps)^-n; LAO->48K calibration.
+NICK_TPERP0, NICK_KAP, NICK_NAP, NICK_A0, NICK_U = 0.635, 0.55, 4.0, 3.84, 3.0
+NICK_SUBSTRATES = [("LaAlO3", 3.79), ("SrLaAlO4", 3.756), ("LSAT", 3.868),
+                   ("SrTiO3", 3.905), ("NdGaO3", 3.86), ("YAlO3", 3.71)]
+def nick_tperp(eps):
+    """Interlayer d_z2 hopping under biaxial strain eps (Harrison apical-bond scaling)."""
+    return NICK_TPERP0*(1 + NICK_KAP*eps)**(-NICK_NAP)
+def nick_eps_of_a(a):
+    """Biaxial strain for substrate in-plane lattice param a (Angstrom) vs film a0=3.84."""
+    return a/NICK_A0 - 1.0
+def nick_jperp(eps):
+    """Interlayer AFM superexchange J_perp = 4 t_perp^2 / U (the pairing-relevant scale)."""
+    return 4*nick_tperp(eps)**2/NICK_U
+def nick_tc(eps, cal=None):
+    """Sign-correct nickelate strain-Tc design-law: Tc = cal * J_perp(eps). cal -> LAO 48K if None."""
+    if cal is None:
+        cal = 48.0/nick_jperp(nick_eps_of_a(3.79))
+    return cal*nick_jperp(eps)
+def nick_best_substrate():
+    """Rank substrates by predicted ambient Tc (max compression wins). Returns (name,a,eps,Tc) desc."""
+    cal = 48.0/nick_jperp(nick_eps_of_a(3.79))
+    rows = [(n, a, nick_eps_of_a(a), nick_tc(nick_eps_of_a(a), cal)) for n, a in NICK_SUBSTRATES]
+    rows.sort(key=lambda r: -r[3])
+    return rows
 
 if __name__ == "__main__":
     print("="*84)
@@ -153,6 +217,42 @@ if __name__ == "__main__":
         verdict = "room-T" if tc >= 293.15 else f"need x{gap:.0f} more <g>*U"
         print(f"  {nm:<12}{g:>7.3f}{tc:>12.0f}{gap:>11.1f}   {verdict}")
 
+    # ---- SCREEN: topology-gated material ranking (L26/L37 obstruction gate wired in) ----
+    # Each host: compute <g>, flat-band width, AND Chern of the flattest band. Trust the Tc ranking
+    # ONLY for TOPOLOGICAL bands (|C|>=0.5); flag trivial localized CLS (dice) as SPURIOUS, auto-excluded.
+    print("\n[SCREEN] topology-gated host ranking (Tc trusted only for |C|>=1 flat bands)")
+    zoo = [
+        ("kagome SOC.02", H_kagome_soc, (0.075, 0.020)),
+        ("kagome SOC.06", H_kagome_soc, (0.075, 0.060)),
+        ("kagome SOC.10", H_kagome_cmplx, (0.075, 0.100)),
+        ("Lieb",          H_lieb,        (1.0,)),
+        ("dice/T3",       H_dice,        (1.0,)),
+        ("checkerboard",  H_checkerboard,(1.0, 1.0)),
+    ]
+    scr = []
+    for nm, Hf, pp in zoo:
+        g, w = flat_band(Hf, nk, *pp)
+        C = chern_flat(Hf, nk, *pp)
+        tc, lo, hi = tc_band(g, Om, UOm)
+        topo = abs(C) >= 0.5
+        scr.append((nm, g, w, C, tc, lo, hi, topo))
+    print(f"  {'host':<14}{'<g>':>6}{'width':>8}{'Chern':>7}{'Tc_band(K)':>16}  gate")
+    for nm, g, w, C, tc, lo, hi, topo in scr:
+        gate = "TOPO ✓" if topo else "trivial ✗ (spurious Tc)"
+        print(f"  {nm:<14}{g:>6.3f}{w:>8.4f}{C:>+7.2f}   {tc:>6.0f}[{lo:.0f}-{hi:.0f}]   {gate}")
+    topo_only = [s for s in scr if s[7]]
+    topo_only.sort(key=lambda s: -s[4])
+    print("  --- topology-gated ranking (room-T target 293K, deflated band) ---")
+    for nm, g, w, C, tc, lo, hi, topo in topo_only:
+        need = 293.15/tc if tc > 0 else float('inf')
+        print(f"  {nm:<14} Tc~{tc:.0f}K (band {lo:.0f}-{hi:.0f}) → x{need:.1f} to 293K  |C|={abs(C):.0f}")
+    if topo_only:
+        best = topo_only[0]
+        print(f"  [BEST topological host] {best[0]}: <g>={best[1]:.3f} |C|={abs(best[3]):.0f} "
+              f"Tc~{best[4]:.0f}K → needs x{293.15/best[4]:.1f} more <g>*U for room-T")
+    print("  [d6] Tc=calibrated 2D-BKT estimate (not QMC); ranking valid AMONG topological hosts only;"
+          " absolute room-T unproven. trivial(dice) auto-excluded by Chern gate.")
+
     # ---- L36 geometric-lambda anchors (cited, not recomputed) + L38 reality ----
     print("\n[CAVEAT d6] Q_geom (overlap/Welch) is the campaign-calibrated proxy but is NOT monotonic")
     print("  with stiffness for TRIVIAL localized flat bands: dice/T3 has Q_geom=1.0 (a MAXIMALLY-")
@@ -166,6 +266,15 @@ if __name__ == "__main__":
     print("      => same <g> that sets D_s above also boosts the phonon lambda (Eliashberg-capped ~120K, L22)")
     print("\n[L38] experimental reality: best real flat-band/kagome SC Tc ~ 6 K (CsCr3Sb5 6.4K, CsV3Sb5 5.3K)")
     print("      => the ~50-100x gap from the prediction column is REAL and competing-order-limited (L15/L20).")
+
+    # ---- answer-key top-down lever: nickelate ambient-strain superexchange Tc (PUBLISHED law, closed) ----
+    print("\n[ANSWER-KEY] nickelate ambient compressive-strain -> t_perp -> J_perp -> Tc (top-down lever)")
+    print("  mechanism: interlayer AFM superexchange (NOT flat-band <g>); design-law PUBLISHED arXiv:2603.14519")
+    print(f"  {'substrate':<12}{'a(A)':>7}{'eps%':>8}{'t_perp':>9}{'Tc(K)':>8}")
+    for n, a, e, tc in nick_best_substrate():
+        print(f"  {n:<12}{a:>7.3f}{e*100:>8.2f}{nick_tperp(e):>9.4f}{tc:>8.1f}")
+    print("  [d6] sign-correct Tc=cal*4 t_perp^2/U (compression RAISES Tc), LAO->48K; ambient ceiling ~50-70K (NOT room-T).")
+    print("  [d_novel_only] design-law PUBLISHED (arXiv:2603.14519 v4) -> CLOSED lever; kept as reusable cross-host predictor only.")
 
     print("\nHONEST (d6): <g> exact (TB eigenvectors); Tc = calibrated 2D-BKT ESTIMATE (not QMC);")
     print("lambda_geom fractions cited. Predictions rank hosts + size the gap; absolute room-T needs")

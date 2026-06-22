@@ -1,0 +1,72 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Peotta and T{\"o}rm{\"a}(2015)]{peotta2015}
+Sebastiano Peotta and P{\"a}ivi T{\"o}rm{\"a}.
+\newblock Superfluidity in topologically nontrivial flat bands.
+\newblock \emph{Nature Communications}, 6:\penalty0 8944, 2015.
+\newblock \url{https://arxiv.org/abs/1506.02815}.
+
+\bibitem[Herzog-Arbeitman et~al.(2022)Herzog-Arbeitman, Peri, Schindler, Huber,
+  and Bernevig]{herzog2022}
+Jonah Herzog-Arbeitman, Valerio Peri, Frank Schindler, Sebastian~D. Huber, and
+  B.~Andrei Bernevig.
+\newblock Superfluid weight bounds from symmetry and quantum geometry in flat
+  bands.
+\newblock \emph{Physical Review Letters}, 128:\penalty0 087002, 2022.
+\newblock \url{https://arxiv.org/abs/2110.14663}.
+
+\bibitem[Huhtinen et~al.(2022)Huhtinen, Herzog-Arbeitman, Chew, Bernevig, and
+  Peotta]{huhtinen2022}
+Kukka-Emilia Huhtinen, Jonah Herzog-Arbeitman, Aaron Chew, B.~Andrei Bernevig,
+  and Sebastiano Peotta.
+\newblock Revisiting flat band superconductivity: dependence on minimal quantum
+  metric and band touchings.
+\newblock \emph{Physical Review B}, 106:\penalty0 014518, 2022.
+\newblock \url{https://arxiv.org/abs/2203.11133}.
+
+\bibitem[Tam and Peotta(2024)]{tam2024}
+Kukka-Emilia Tam and Sebastiano Peotta.
+\newblock Geometry-independent superfluid weight bound beyond mean field via
+  generalized random-phase approximation.
+\newblock \emph{Physical Review B}, 109:\penalty0 064502, 2024.
+\newblock \url{https://arxiv.org/abs/2308.10780}.
+
+\bibitem[Zhou(2026)]{nogo2026}
+Jian Zhou.
+\newblock A two-channel allen--dynes framework and a quantum-metric no-go
+  result.
+\newblock \emph{arXiv preprint}, 2026.
+\newblock \url{https://arxiv.org/abs/2604.04719}.
+
+\bibitem[{XPd5 authors}(2025)]{xpd5}
+{XPd5 authors}.
+\newblock Flat-band-derived superconductivity and topology in the ambient
+  xpd$_5$ family.
+\newblock \emph{npj Quantum Materials}, 2025.
+\newblock \url{https://arxiv.org/abs/2505.14223}.
+
+\bibitem[{La3Ni2O7 strain-law authors}(2026)]{nickelate2026}
+{La3Ni2O7 strain-law authors}.
+\newblock A unified understanding of the experimental controlling of the $t_c$
+  of la$_3$ni$_2$o$_7$.
+\newblock \emph{arXiv preprint}, 2026.
+\newblock \url{https://arxiv.org/abs/2603.14519}.
+
+\bibitem[Bergman et~al.(2008)Bergman, Wu, and Balents]{bergman2008}
+Doron~L. Bergman, Congjun Wu, and Leon Balents.
+\newblock Band touching from real-space topology in frustrated hopping models.
+\newblock \emph{Physical Review B}, 78:\penalty0 125104, 2008.
+
+\bibitem[Jiang et~al.(2025)Jiang, T{\"o}rm{\"a}, and Barlas]{jiang2024}
+Kun Jiang, P{\"a}ivi T{\"o}rm{\"a}, and Yafis Barlas.
+\newblock Geometric contribution to the superfluid weight of singular flat
+  bands.
+\newblock \emph{PNAS}, 2025.
+\newblock \url{https://arxiv.org/abs/2407.14919}.
+
+\end{thebibliography}
