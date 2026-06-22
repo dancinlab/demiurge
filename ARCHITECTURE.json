@@ -6650,7 +6650,7 @@
      "blocks": [
       {
        "type": "prose",
-       "text": "**role**: 126 logical domains folded from domains/**/*.md (576 files / 131k lines) on 2026-06-17. Per-domain .md snapshot files RETIRED and .log.md logs DISCARDED; full bodies preserved in git history at each entry's source_paths. This structured-summary block is now the domain SSOT (replaces the domains/*.md snapshots). Active campaigns keep their richer detail under `campaigns`/`results_index`."
+       "text": "**role**: 144 logical domains folded from domains/**/*.md on 2026-06-17. Per-domain .md snapshots RETIRED + .log.md logs DISCARDED (full bodies in git history at each entry's source_paths). THIS `domains.entries` block is the SINGLE domain SSOT. Legacy staging RETIRED 2026-06-22 → archive/legacy-domain-era/ (state/domsum/batch1-8.json migration staging + domain_logmd_to_delete.txt completed-list + 6 root *.log.md dev logs); all redundant (content here + git history). Active campaigns keep richer detail under `campaigns`/`results_index`."
       }
      ]
     },

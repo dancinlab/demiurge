@@ -17,6 +17,8 @@ For the full audit trail, see `git log`.
 
 ## 2026-06-22
 
+- **🧹 per-domain 시대 유산 정리 → archive/legacy-domain-era/ (단일 ARCHITECTURE.json SSOT 확정)** — 도메인별 별도 진행 시절 레거시 은퇴: ① `state/domsum/batch1-8.json`(도메인 요약 144 migration staging — ARCHITECTURE.json `domains.entries`에 이미 전수 폴드, 검증 144/144 ⊆) ② `state/domain_logmd_to_delete.txt`(완료된 삭제목록) ③ 루트 `*.log.md` 6개(ARCH·CLI+COCKPIT·DEMIURGE·DESIGN·HANDOFF·PLAN). 전부 `archive/legacy-domain-era/`로 `git mv`(자료유실 0·git 보존). README 링크 8곳 archive 경로로 정정(깨짐 0). domains.entries(144)=단일 도메인 SSOT임을 note+CLAUDE.md 박제. domains/ 폴더 자체(web/cli 런타임 .demi/.hexa)는 불변.
+
 - **🧬 hexa-bio-archive 신약발견 트로브 → ARCHITECTURE.json 색인 편입 (자료유실 방지)** — orphan 상태였던 `hexa-bio-archive/`(질환 로드맵 207 + 플랫폼/메타 28 + 서브모듈 56 · 1041 git-tracked 파일)를 ARCHITECTURE.json 신규 섹션 `hexa-bio-archive`로 전수 색인. 5-axis(QUANTUM·WEAVE·VIROCAPSID·RIBOZYME·NANOBOT) framework + 207 질환 slug 전수 열거 + 28 플랫폼 + 56 서브모듈. ⭐ flagship = **삼성가 희귀병 CMT(샤르코-마리-투스병)** — `disease_cmt_specific`(신약 10종 hxq-cmt-*·PMP22/MFN2/Cx32/HDAC6/SARM1 표적·HNPP 독성가드·최병옥 삼성서울병원 K-CMT 코호트). 본문 SSOT는 각 `.roadmap.*` 파일(git 보존), 본 노드는 손실방지 색인(c4). 85추가/3삭제 국소 diff·JSON valid.
 
 - **📂 proposal/ 신설 + PAPER→PAPERS canonical 통합 + proposals→archive 은퇴** — `dancinlife/contribution`(private)의 easy-요약 7건(SENOLYX-AG·HERPES·CARDIO+·CERN·FUSION·NUMB·ANIMA)을 `proposal/`에 복사하고, 각 정식 논문(`PAPERS/<slug>/main.pdf`) 링크 색인 README 작성. 논문 폴더 2개(`PAPER` 6슬러그 + `PAPERS` 21슬러그)를 canonical `PAPERS/`(27슬러그)로 통합(슬러그 충돌 0·`git mv` rename 보존). 기존 `proposals/`(RFC rfc_001..013)는 `archive/proposals/`로 은퇴. CLAUDE.md 구조도 + ARCHITECTURE.json 노드 lockstep 갱신(JSON valid).

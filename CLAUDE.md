@@ -20,7 +20,7 @@ demiurge/
 ├─ web/                — Next.js web GUI (human surface, deployed to Cloud Run)
 ├─ cockpit/            — Swift DemiurgeCLI + DemiurgeCore library + transient exports/references
 ├─ stdlib/             — local discover shims (canonical reusable code lives in hexa-lang, d3)
-├─ domains/            — `.demi` compute decks + sim/tape rosters (도메인 요약 .md/.log.md 은퇴 2026-06-17 → ARCHITECTURE.json `domains[]` SSOT, 원본은 git history)
+├─ domains/            — `.demi` compute decks + sim/tape rosters (도메인 요약 .md/.log.md 은퇴 2026-06-17 → ARCHITECTURE.json `domains.entries` 단일 SSOT; per-domain 시대 유산[domsum staging·삭제목록·루트 *.log.md] 은퇴 2026-06-22 → archive/legacy-domain-era/)
 ├─ decks/              — concrete compute input decks (DFT / QE el-ph cells)
 ├─ sim/                — simulation drivers / readout watchers (.hexa)
 ├─ QFORGE/             — quantum-forge DFT electron-phonon compute campaign workspace
@@ -77,9 +77,9 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - ✅ small cells (4-7 atoms) → pool ubu-1/2 free · batch → Vast.ai CPU · ≥20 atoms / dense k → GPU pod
 - ⛔ RunPod CPU pods (8-vCPU ceiling) · Vast.ai CPU-only rentals (use GPU offers) · GPU on small cells
 
-### d8 — Vast.ai trouble → hexa-lang inbox
+### d8 — Vast.ai trouble → ING 핸드오프 (inbox 은퇴 2026-06-22)
 
-- ✅ Vast finding → `hexa-lang/inbox/patches/<slug>.md` so `hexa cloud` absorbs upstream
+- ✅ Vast/upstream finding → `harness ing add` 로 ING.jsonl 핸드오프에 기록해 `hexa cloud` 가 upstream absorb (구 `hexa-lang/inbox/patches/` 은퇴 → ING 단일화)
 - ⛔ paper-over a Vast-discovered `hexa cloud` gap inside the campaign
 
 ### d9 — worktree concurrent agent index isolation
