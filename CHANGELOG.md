@@ -1,5 +1,7 @@
 ## 2026-06-23
 
+- **refactor(claudemd): CLAUDE.md = 진입 포인터 (트리 → ARCHITECTURE.json) + 작업규칙 do/dont** — `## Structure` 디렉토리/모듈 트리 펜스 블록을 제거하고 SSOT 포인터 블록쿼트로 교체(구조·설계 → ARCHITECTURE.json 단일 SSOT · 거버넌스 → 이 파일 `## 거버넌스` + commons · 이력 → CHANGELOG). 프로젝트 blurb 유지, `@D d*` 거버넌스/워크플로우 디렉토리 전부 보존하며 ✅/⛔ → `- do:`/`- dont:` 로 톤 통일(harness commons 일치). harness repo 동일 리팩터와 한 쌍.
+
 - **🧪 GJB1 2번째 실분자 ΔG — CX32L1_benzofuran2carboxamide rep0 = −24.31±0.65 kcal/mol** — aiden(cplx 60.83·solv 36.62·ssc −0.10), NaN-restart 생존. rep0 예비순위(K≥3 미수렴): CX32L8 −79.00 > anchor −48.82 > CX32L1 −24.31. 정직 d6: ABFE rep 산포 수 kcal/mol → 단일rep 순위 신뢰불가, rep0/1/2 평균±SEM + anchor 대비 ΔΔG 수렴 후에만 해석·선택성(mutant-vs-WT)·신규성 별도·발견 아님. 둘 다 rep1 진행중·CX32L14 HELD(deck-guard). flagship_CMT/gjb1 갱신.
 
 ## 2026-06-23
