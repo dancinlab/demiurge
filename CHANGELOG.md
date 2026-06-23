@@ -1,5 +1,9 @@
 ## 2026-06-23
 
+- **🧪 GJB1 2번째 실분자 ΔG — CX32L1_benzofuran2carboxamide rep0 = −24.31±0.65 kcal/mol** — aiden(cplx 60.83·solv 36.62·ssc −0.10), NaN-restart 생존. rep0 예비순위(K≥3 미수렴): CX32L8 −79.00 > anchor −48.82 > CX32L1 −24.31. 정직 d6: ABFE rep 산포 수 kcal/mol → 단일rep 순위 신뢰불가, rep0/1/2 평균±SEM + anchor 대비 ΔΔG 수렴 후에만 해석·선택성(mutant-vs-WT)·신규성 별도·발견 아님. 둘 다 rep1 진행중·CX32L14 HELD(deck-guard). flagship_CMT/gjb1 갱신.
+
+## 2026-06-23
+
 - **🧪 GJB1 첫 실분자 ABFE ΔG — CX32L8_diaryl_ether_F rep0 = −79.00±0.76 kcal/mol** — summer(cplx 111.54·solv 32.44·ssc 0.11). placeholder anchor −48.82 대비 절대 ~30 kcal/mol 강함(NaN-pose 벽 자가복구로 rep0 완주, rep1 NaN0 클린진행). NaN 진실 규명: 자가복구되면 생존(CX32L8 9restart)·restart 소진돼야 치명(CX32L14 크래시 HELD). 정직 d6: 단일 rep 무의미 — rep0/1/2 평균±SEM + anchor 대비 ΔΔG 수렴 후에만 해석, 선택성(mutant-vs-WT)·신규성 별도 게이트, 아직 발견 아님. CX32L1 rep0 진행중. flagship_CMT/gjb1 갱신. SSOT=exports/CMT/gjb1/real_ligands/RESULT.md §7.
 
 ## 2026-06-23
