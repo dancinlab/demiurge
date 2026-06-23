@@ -61,10 +61,17 @@ if SMOKE:
     STER = [1.0, 1.0, 1.0, 0.5, 0.0]
     N_ITER, N_STEPS = 30, 100
 else:
+    # electrostatics OFF FIRST (windows 0-8, sterics fully ON), THEN sterics decoupled
+    # (windows 8-25). STAB-FIX (2026-06-22): the near-coupled sterics window (1.0->0.7) is
+    # where dU/dlambda is steepest (full LJ + softcore just turning on) and where the iter8
+    # NaN occurred -> DENSIFY the 1.00..0.60 sterics region (steps of ~0.05) so dU/dlambda
+    # per window stays small; coarser past 0.6 where softcore has smoothed the singularity.
     ELEC = [1.000, 0.875, 0.750, 0.625, 0.500, 0.375, 0.250, 0.125, 0.000,
-            0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000]
+            0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000,
+            0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000]
     STER = [1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000,
-            0.900, 0.800, 0.700, 0.600, 0.500, 0.400, 0.300, 0.200, 0.120, 0.050, 0.000]
+            0.950, 0.900, 0.850, 0.800, 0.750, 0.700, 0.650, 0.600,
+            0.500, 0.400, 0.300, 0.225, 0.150, 0.090, 0.040, 0.000]
     N_ITER, N_STEPS = 1000, 1000
 N_STATES = len(ELEC)
 assert len(STER) == N_STATES
@@ -280,156 +287,90 @@ def _merge_ligand_system(env_system, lig_system, lig_n):
     return env_system
 
 
+def _kabsch(P, Q):
+    """Return (R, t) mapping P onto Q (rows = points): Q ~= P @ R + t (rigid)."""
+    Pc = P - P.mean(axis=0); Qc = Q - Q.mean(axis=0)
+    H = Pc.T @ Qc
+    U, S, Vt = np.linalg.svd(H)
+    d = np.sign(np.linalg.det(Vt.T @ U.T))
+    D = np.diag([1.0, 1.0, d])
+    R = U @ D @ Vt           # rotation s.t. Pc @ R ~= Qc
+    t = Q.mean(axis=0) - P.mean(axis=0) @ R
+    return R, t
+
+
 def build_complex(lig, sysgen):
-    """L143P monomer + docked ligand, embedded in an explicit POPC bilayer + water + ions."""
-    modeller = _prep_receptor()
+    """L143P monomer + docked ligand in an explicit POPC bilayer + water + ions.
 
-    # DECK-GUARD (2026-06-22): addMembrane internally calls forcefield.createSystem on the
-    # WHOLE modeller topology. Two failures must be avoided here:
-    #   (1) if the ligand is already in the modeller, createSystem needs a ligand template
-    #       -> pass the OpenFF SystemGenerator FF; but that FF also carries an OpenFF ffxml
-    #       whose NonbondedForce 1-4 scale (0.833) conflicts with CHARMM36's (1.0)
-    #       -> "multiple NonbondedForce tags with different 1-4 scales".
-    # FIX: build the membrane around the PROTEIN ONLY using a CLEAN charmm36 ForceField (no
-    # OpenFF generator, no 1-4 clash, no ligand template needed). THEN re-insert the docked
-    # ligand and build the real System with the OpenFF-aware SystemGenerator.
-    clean_ff = app.ForceField("charmm36.xml", "charmm36/water.xml")
-
-    # DECK-GUARD (2026-06-22): addMembrane places the bilayer at membraneCenterZ=0 and packs
-    # lipids around the protein's TM span ASSUMING the protein is centered on the origin with
-    # its membrane normal along z. The cryo-EM/EvoEF monomer here sits at center ~[13.8,14.8,
-    # 16.1] nm (z-span 7.6 nm = the 4-TM bundle long axis). Left un-centered, addMembrane lays
-    # the bilayer ~16 nm away from the protein -> lipids pack into empty space / overlap ->
-    # internal-MD "Particle coordinate is NaN". FIX: translate the protein centroid to the
-    # origin (and keep the ligand pose in the same frame) so the TM span straddles z=0.
-    # DECK-GUARD (2026-06-22): addMembrane lays the bilayer in xy and assumes the TM bundle's
-    # long axis IS the z (membrane-normal) axis. A tilted 4-TM bundle makes lipids clash the
-    # protein during addMembrane's internal MD -> NaN that later poisons addSolvent's cell
-    # list ("cannot convert float NaN to integer"). FIX: PCA-align the protein so its principal
-    # (longest) axis -> z, THEN center on the origin. The docked ligand pose is carried through
-    # the SAME rigid transform (rotation R about centroid, then translate) so it stays in pocket.
-    _ppos = np.array(modeller.positions.value_in_unit(unit.nanometer))
-    _shift0 = _ppos.mean(axis=0)
-    _centered = _ppos - _shift0
-    _cov = np.cov(_centered.T)
-    _evals, _evecs = np.linalg.eigh(_cov)            # ascending eigenvalues
-    R = _evecs[:, ::-1]                               # cols = principal axes, largest first
-    if np.linalg.det(R) < 0:                          # keep a proper rotation
-        R[:, 0] = -R[:, 0]
-    # map principal axis (col 0, largest variance) -> z: rotate so axis order = (x,y,z) with
-    # the LONGEST variance on z. Reorder columns to (mid, small, large) -> (x,y,z).
-    R = R[:, [1, 2, 0]]
-    _rot = _centered @ R                              # rows rotated into principal frame
-    modeller.positions = _rot * unit.nanometer
-    _lig_frame_shift = _shift0                        # subtract centroid from ligand first ...
-    _lig_frame_rot = R                                # ... then rotate by R (applied in insert)
-    print(f"[build] PCA-aligned long axis->z + centered (shift {_shift0} nm); "
-          f"z-span now {(_rot[:,2].max()-_rot[:,2].min()):.2f} nm", flush=True)
-
-    # DECK-GUARD (2026-06-22): addMembrane runs an internal minimize + 20-step MD that throws
-    # "Particle coordinate is NaN" when the input protein has steric strain (the EvoEF L143P
-    # mutant build + PDBFixer H placement leave clashes). Pre-minimize the bare protein with
-    # the CHARMM36 FF (no cutoff, vacuum) so addMembrane starts from a relaxed, clash-free
-    # geometry. This is the membrane analogue of the soluble-deck pre-min that fixed eq-NaN.
-    # DECK-GUARD (2026-06-22): addMembrane's INTERNAL relax is weak (LocalEnergyMinimizer
-    # tol=10 kJ, only 30 iters, then 20-step MD at T=10K dt=1fs while it grows the scaled-down
-    # protein back into the lipid cavity). Any residual hot contact in the EvoEF-mutant +
-    # PDBFixer-H protein makes that internal MD blow up -> "Particle coordinate is NaN". FIX:
-    # hand addMembrane a THOROUGHLY relaxed protein — deep minimize THEN a short low-T NVT
-    # equilibration (GPU) to drain hot contacts, so addMembrane's weak internal relax suffices.
-    print("[build] pre-minimizing + short NVT equilibrating bare protein ...", flush=True)
-    pre_sys = clean_ff.createSystem(modeller.topology,
-                                    nonbondedMethod=app.NoCutoff,
-                                    constraints=app.HBonds, hydrogenMass=3.0 * unit.amu)
-    pre_int = mm.LangevinMiddleIntegrator(T, 1.0 / unit.picosecond,
-                                          2.0 * unit.femtoseconds)
-    try:
-        pre_plat = mm.Platform.getPlatformByName("CUDA"); pre_props = {"Precision": "mixed"}
-    except Exception:
-        pre_plat = mm.Platform.getPlatformByName("CPU"); pre_props = {}
-    pre_ctx = mm.Context(pre_sys, pre_int, pre_plat, pre_props)
-    pre_ctx.setPositions(modeller.positions)
-    mm.LocalEnergyMinimizer.minimize(pre_ctx, maxIterations=10000)
-    pre_ctx.setVelocitiesToTemperature(T, 12345)
-    pre_int.step(10000)                              # 20 ps NVT to drain hot contacts
-    mm.LocalEnergyMinimizer.minimize(pre_ctx, maxIterations=2000)
-    modeller.positions = pre_ctx.getState(getPositions=True).getPositions()
-    del pre_ctx, pre_int, pre_sys
-    print("[build] pre-min + NVT done", flush=True)
-
-    # DECK-GUARD (2026-06-22): addMembrane's internal relax (weak 30-iter minimize + 20-step
-    # growback MD + extra-water cell list) is BORDERLINE-stable for this protein footprint and
-    # NaNs non-deterministically (the bare-protein relax seed shifts geometry just enough to
-    # tip it over; padding 1.0=always-NaN, 1.5=usually-OK). Robust fix = RETRY on a freshly
-    # relaxed protein copy with escalating padding until it succeeds (verified addMembrane CAN
-    # build this system, 45434 atoms). Each attempt re-relaxes from the same minimized start
-    # with a different velocity seed so a bad lipid singularity is reshuffled.
-    relaxed_min = modeller.positions
-    membrane_ok = False
-    for attempt, pad in enumerate([1.5, 2.0, 2.0, 2.5, 2.5]):
-        seed = 9000 + attempt
-        m_try = app.Modeller(modeller.topology, relaxed_min)
-        if attempt > 0:                              # jitter via a fresh short NVT each retry
-            js = clean_ff.createSystem(m_try.topology, nonbondedMethod=app.NoCutoff,
-                                       constraints=app.HBonds, hydrogenMass=3.0 * unit.amu)
-            ji = mm.LangevinMiddleIntegrator(T, 1.0 / unit.picosecond, 2.0 * unit.femtoseconds)
-            try:
-                jp = mm.Platform.getPlatformByName("CUDA"); jpr = {"Precision": "mixed"}
-            except Exception:
-                jp = mm.Platform.getPlatformByName("CPU"); jpr = {}
-            jc = mm.Context(js, ji, jp, jpr); jc.setPositions(relaxed_min)
-            jc.setVelocitiesToTemperature(T, seed); ji.step(5000)
-            mm.LocalEnergyMinimizer.minimize(jc, maxIterations=2000)
-            m_try.positions = jc.getState(getPositions=True).getPositions()
-            del jc, ji, js
-        try:
-            print(f"[build] addMembrane(POPC) attempt {attempt} pad={pad} ...", flush=True)
-            m_try.addMembrane(clean_ff, lipidType="POPC",
-                              membraneCenterZ=0 * unit.nanometer,
-                              minimumPadding=pad * unit.nanometer,
-                              neutralize=True, ionicStrength=0.15 * unit.molar)
-            modeller = m_try
-            membrane_ok = True
-            break
-        except (ValueError, Exception) as e:
-            print(f"[build] attempt {attempt} failed ({type(e).__name__}: "
-                  f"{str(e)[:60]}); retrying", flush=True)
-    if not membrane_ok:
-        raise RuntimeError("addMembrane failed after all retries")
-    print(f"[build] membrane (protein+POPC+water+ions): "
-          f"{modeller.topology.getNumAtoms()} atoms", flush=True)
-
-    # docked (bound) pose: ligand coords already in the receptor frame, inside the TM1/TM4
-    # pocket — keep as-is (clash-free). No centroid re-overlay (that is the clash route).
-    # Insert AFTER the membrane build so addMembrane never needs a ligand template.
-    lig_pos = np.array(lig.conformers[0].to_openmm().value_in_unit(unit.nanometer))
-    # same rigid transform as the protein: subtract centroid, then PCA rotation R
-    lig_pos = (lig_pos - _lig_frame_shift) @ _lig_frame_rot
-    lig_top = lig.to_topology().to_openmm()
-    modeller.add(lig_top, lig_pos * unit.nanometer)
-    n_after_lig = modeller.topology.getNumAtoms()
-    lig_n = lig_top.getNumAtoms()
-    lig_atoms = list(range(n_after_lig - lig_n, n_after_lig))
-    print(f"[build] + docked ligand -> {modeller.topology.getNumAtoms()} atoms, "
-          f"lig {lig_n} atoms", flush=True)
-
-    # DECK-GUARD (2026-06-22): CHARMM36 (1-4 scale 1.0) and OpenFF (0.833) CANNOT coexist in
-    # one ForceField.createSystem -> "multiple NonbondedForce tags with different 1-4 scales".
-    # So we build TWO systems and MERGE: the environment (protein+POPC+water+ions) on CHARMM36,
-    # the ligand alone on OpenFF, then splice the ligand's particles + bonded/nonbonded params
-    # into the environment system. The ligand is the LAST residue (highest indices), which
-    # makes the splice a clean append. Periodic box + barostat come from the environment system.
-    env_top, env_pos, lig_only_top, lig_only_pos = _split_topology(
-        modeller, lig_atoms)
-    print("[build] env system (charmm36) ...", flush=True)
-    env_system = clean_ff.createSystem(
-        env_top, nonbondedMethod=app.PME, nonbondedCutoff=1.0 * unit.nanometer,
+    ROOT-CAUSE BYPASS (2026-06-22, aiden): OpenMM Modeller.addMembrane runs a stochastic
+    internal growback-MD that NaNs run-to-run on this tilted 4-TM bundle at every small
+    padding (1.0-1.4 nm); the only padding that built (2.5 nm => 215k atoms) OOMs the REMD on
+    30 GB RAM. FIX: the bilayer is built OFFLINE with packmol-memgen (AmberTools) into a
+    pre-equilibrated, RAM-sized box (protein + POPC + TIP3P + 0.15 M NaCl, ff19SB/lipid21/
+    tip3p), parametrized by tleap into an Amber prmtop/inpcrd. We LOAD that prmtop directly
+    (no addMembrane, no internal relax MD => no build NaN), then splice in the OpenFF ligand.
+    REUSABLE DECK-GUARD: never trust OpenMM addMembrane for a multi-TM bundle; use a pre-built
+    packmol-memgen / CHARMM-GUI box.
+    """
+    prmtop_path = os.environ.get("MEM_PRMTOP",
+                                 os.path.join(HERE, "offline_amber", "gjb1_popc_box_lipid.top"))
+    inpcrd_path = os.environ.get("MEM_INPCRD",
+                                 os.path.join(HERE, "offline_amber", "gjb1_popc_box_min.rst7"))
+    if not (os.path.exists(prmtop_path) and os.path.exists(inpcrd_path)):
+        raise RuntimeError(f"offline membrane box missing: {prmtop_path} / {inpcrd_path} "
+                           f"(build it with packmol-memgen first)")
+    print(f"[build] loading OFFLINE membrane box {os.path.basename(prmtop_path)} "
+          f"(packmol-memgen, no addMembrane)", flush=True)
+    # tleap writes a NetCDF .crd (not ASCII inpcrd), so load coords/box via ParmEd which
+    # handles both formats and exposes the prmtop topology + periodic box uniformly.
+    import parmed as pmd
+    parm = pmd.load_file(prmtop_path, xyz=inpcrd_path)
+    env_top = parm.topology
+    if parm.box is not None:
+        env_top.setPeriodicBoxVectors(parm.box_vectors)
+    env_pos = np.array(parm.positions.value_in_unit(unit.nanometer))
+    env_system = parm.createSystem(
+        nonbondedMethod=app.PME, nonbondedCutoff=1.0 * unit.nanometer,
         constraints=app.HBonds, rigidWater=True, hydrogenMass=3.0 * unit.amu)
+    n_env = env_system.getNumParticles()
+    print(f"[build] env (protein+POPC+water+ions) = {n_env} atoms", flush=True)
+
+    # --- place the docked ligand pose into the box frame -----------------------------------
+    # The docked pose (LIG_SDF) lives in the ORIGINAL receptor_L143P.pdb frame. packmol-memgen
+    # rigidly moved the protein (MEMEMBED orient + xy-recenter). Recover that single rigid
+    # transform by superposing the ORIGINAL receptor CA atoms onto the box protein CA atoms
+    # (same residues, same order), then apply it to the ligand coordinates so it stays in pocket.
+    orig = app.PDBFile(REC_PDB)
+    orig_pos = np.array(orig.getPositions().value_in_unit(unit.nanometer))
+    orig_ca = np.array([orig_pos[a.index] for a in orig.topology.atoms() if a.name == "CA"])
+    box_ca = np.array([env_pos[a.index] for a in env_top.atoms()
+                       if a.name == "CA" and a.residue.chain.index == 0])
+    nca = min(len(orig_ca), len(box_ca))
+    R, t = _kabsch(orig_ca[:nca], box_ca[:nca])
+    rmsd = float(np.sqrt(((orig_ca[:nca] @ R + t - box_ca[:nca]) ** 2).sum(axis=1).mean()))
+    print(f"[build] CA superpose {nca} atoms, RMSD={rmsd:.3f} nm", flush=True)
+
+    lig_pos0 = np.array(lig.conformers[0].to_openmm().value_in_unit(unit.nanometer))
+    lig_pos = lig_pos0 @ R + t
+    lig_top = lig.to_topology().to_openmm()
+    lig_n = lig_top.getNumAtoms()
+
+    # combined topology + positions (env first, ligand appended last)
+    modeller = app.Modeller(env_top, env_pos * unit.nanometer)
+    modeller.add(lig_top, lig_pos * unit.nanometer)
+    n_after = modeller.topology.getNumAtoms()
+    lig_atoms = list(range(n_after - lig_n, n_after))
+    print(f"[build] + docked ligand -> {n_after} atoms, lig {lig_n} atoms", flush=True)
+
+    # ligand parametrized alone on OpenFF; merge into the Amber env System. The env System is
+    # pure-Amber (LJ already in the standard NonbondedForce), so _merge_ligand_system skips the
+    # CHARMM table-fold branch and simply appends the OpenFF ligand to the standard NB (correct
+    # Lorentz-Berthelot cross-LJ + per-pair 1-4 exceptions) -> ready for AbsoluteAlchemicalFactory.
+    lig_only_top = lig.to_topology().to_openmm()
     print("[build] ligand system (openff) ...", flush=True)
     lig_system = sysgen.create_system(lig_only_top)
-    print("[build] merging ligand into environment system ...", flush=True)
+    print("[build] merging ligand into Amber env system ...", flush=True)
     system = _merge_ligand_system(env_system, lig_system, lig_n)
-    # membrane barostat: anisotropic, constant surface tension 0 (free area) along z.
     system.addForce(MonteCarloMembraneBarostat(
         P, 0.0 * unit.bar * unit.nanometer, T,
         MonteCarloMembraneBarostat.XYIsotropic,
@@ -456,9 +397,25 @@ def build_solvent(lig, sysgen):
 
 
 def alchemify(system, lig_atoms):
+    # STAB-FIX (2026-06-22): the iter8/replica8/state1 NaN crash diagnostic showed
+    # softcore_beta=0 (electrostatics NOT softcored). With annihilate_electrostatics=True the
+    # ligand charges are linearly scaled, so at a near-coupled elec window a close ligand<->host
+    # contact gives an unbounded 1/r Coulomb spike -> velocity blowup -> NaN. Turn ON the
+    # electrostatics softcore (softcore_beta=0.5, matching softcore_alpha) so the Coulomb term
+    # is reaction-field/softcore-smoothed as lambda_electrostatics is annihilated. LJ softcore
+    # (softcore_alpha=0.5, the openmmtools standard) is kept explicit for clarity.
+    # DECK-GUARD (2026-06-22, aiden): openmmtools FORBIDS softcore electrostatics
+    # (softcore_beta>0) together with alchemical_pme_treatment="exact" -> ValueError
+    # "Softcore electrostatics is not supported with exact treatment of Ewald electrostatics".
+    # Exact-PME alchemy requires the Coulomb term to be LINEARLY scaled (softcore_beta=0); the
+    # electrostatics are annihilated by lambda_electrostatics turning OFF charges BEFORE the LJ
+    # is decoupled (the schedule does elec-first, then sterics), which avoids the r->0 Coulomb
+    # singularity without needing softcore on Coulomb. LJ softcore (softcore_alpha=0.5) is kept.
+    # This is the exact alchemy config that the SMOKE run passed with.
     region = alchemy.AlchemicalRegion(alchemical_atoms=lig_atoms,
                                       annihilate_electrostatics=True,
-                                      annihilate_sterics=False)
+                                      annihilate_sterics=False,
+                                      softcore_alpha=0.5, softcore_beta=0.0)
     factory = alchemy.AbsoluteAlchemicalFactory(alchemical_pme_treatment="exact")
     return factory.create_alchemical_system(system, region)
 
@@ -600,9 +557,22 @@ def run_leg(name, system, topology, positions, lig_atoms, anchor=None):
     print(f"[{name} rep{REP}] equilibration done", flush=True)
 
     sampler_state = SamplerState(positions, box_vectors=box)
+    # DECK-GUARD (2026-06-22): the 4 fs HMR REMD sampling move is marginally unstable for this
+    # POPC-membrane alchemical system and NaNs at replica 0 / state 0 even after openmmtools'
+    # 4 internal restart attempts (it survived by luck on a smaller build, failed on a larger
+    # one — not reliable). Drop the production sampling timestep to 2 fs: ~2x slower but stable.
+    # (HMR @ 3 amu nominally permits 4 fs, but the lipid bilayer's fast tail modes need 2 fs.)
+    # DECK-GUARD (2026-06-22, aiden): the REMD move NaN-loops at the VERY FIRST sampling
+    # iteration (iter 0, multiple replicas: "Potential energy is NaN after 0 attempts ...
+    # Attempting a restart") even at 2 fs after a clean equilibration, then the run dies.
+    # Cause: reassign_velocities=True draws a FRESH Maxwell-Boltzmann velocity set at the start
+    # of EVERY move; on a tight POPC bilayer + constrained HMR those hot random velocities + the
+    # first constrained step spike a NaN before the thermostat settles. FIX (verified live to
+    # take the run cleanly into sampling, NaN count 0): reassign_velocities=False — carry the
+    # equilibrated velocities into sampling; the LangevinMiddle thermostat re-thermalizes anyway.
     move = mcmc.LangevinDynamicsMove(
-        timestep=4.0 * unit.femtoseconds, collision_rate=1.0 / unit.picosecond,
-        n_steps=N_STEPS, reassign_velocities=True)
+        timestep=2.0 * unit.femtoseconds, collision_rate=1.0 / unit.picosecond,
+        n_steps=N_STEPS, reassign_velocities=False)
     try:
         move.integrator_options = {"random_number_seed": seed}
     except Exception:
@@ -611,7 +581,31 @@ def run_leg(name, system, topology, positions, lig_atoms, anchor=None):
         mcmc_moves=move, number_of_iterations=N_ITER, online_analysis_interval=None)
     reporter = multistate.MultiStateReporter(out_nc, checkpoint_interval=max(1, N_ITER // 10))
 
-    if os.path.exists(out_nc):
+    # STAB-FIX (2026-06-22): RESUME-TRAP. A previously-written .nc serializes the OLD mcmc move
+    # (the crash .nc carried a 4 fs move; from_storage rebuilds THAT, so the 2 fs fix never took
+    # effect on resume -> it NaN'd again at iter8/state1). Only auto-resume when RESUME=1 AND the
+    # stored move timestep matches the current 2 fs; otherwise ARCHIVE the stale .nc and start
+    # fresh with the corrected (2 fs + softcore_beta + dense schedule) protocol.
+    resume_ok = False
+    if os.path.exists(out_nc) and os.environ.get("RESUME", "0") == "1":
+        try:
+            probe = multistate.MultiStateReporter(out_nc, open_mode="r")
+            stored = probe.read_mcmc_moves()[0]
+            ts = stored.timestep.value_in_unit(unit.femtoseconds)
+            probe.close()
+            resume_ok = abs(ts - 2.0) < 1e-6
+            print(f"[{name} rep{REP}] stored move timestep={ts} fs; resume_ok={resume_ok}",
+                  flush=True)
+        except Exception as e:
+            print(f"[{name} rep{REP}] resume probe failed ({str(e)[:50]}); fresh start",
+                  flush=True)
+    if os.path.exists(out_nc) and not resume_ok:
+        import shutil
+        for f in (out_nc, out_nc.replace(".nc", "_checkpoint.nc")):
+            if os.path.exists(f):
+                shutil.move(f, f + ".stale_" + time.strftime("%H%M%S"))
+        print(f"[{name} rep{REP}] archived stale/incompatible .nc -> fresh start", flush=True)
+    if os.path.exists(out_nc) and resume_ok:
         print(f"[{name} rep{REP}] resuming from {out_nc}", flush=True)
         sampler = multistate.ReplicaExchangeSampler.from_storage(reporter)
         sampler.extend(n_iterations=max(0, N_ITER - sampler.iteration))
@@ -619,9 +613,45 @@ def run_leg(name, system, topology, positions, lig_atoms, anchor=None):
         print(f"[{name} rep{REP}] sampler.create...", flush=True)
         sampler.create(thermodynamic_states=thermo_states,
                        sampler_states=sampler_state, storage=reporter)
-        print(f"[{name} rep{REP}] sampler.minimize...", flush=True)
-        sampler.minimize()
-        print(f"[{name} rep{REP}] sampler.run ({N_ITER} iters)...", flush=True)
+        # STAB-FIX (2026-06-22): the coupled-state-eq geometry is broadcast to EVERY lambda
+        # window, so a near-decoupled window inherits a config with full-strength contacts that
+        # its softened potential never relaxed -> the iter0 hot contact that seeded the iter8
+        # blowup. Minimize EACH state hard (tight tolerance, generous iters) so every replica
+        # starts at its own local minimum, not the coupled-state minimum.
+        print(f"[{name} rep{REP}] per-state minimize (tol=1 kJ/mol/nm, 5000 iters)...",
+              flush=True)
+        sampler.minimize(tolerance=1.0 * unit.kilojoule_per_mole / unit.nanometer,
+                         max_iterations=5000)
+        # DECK-GUARD (2026-06-23, aiden — the iteration-1/replica15/state12 NaN wall, CX32L1
+        # rep2 ×4 reproducible). ROOT CAUSE proven by replay (diag_state12.py / replay_*.py):
+        # the openmmtools nan-error dump for that move is energetically PERFECT — it re-runs
+        # 12000 steps on CUDA-mixed / CPU-double / with-barostat / cold-start with NO NaN. So
+        # the saved dump is openmmtools' *post-restart reinitialized* state; the configuration
+        # that actually diverged came from iteration-0 propagation+exchange and was destroyed
+        # by the 4-restart loop. The real defect: ALL 25 replicas are seeded from ONE
+        # equilibrated *fully-coupled* (λ=1,1) config, then only ENERGY-MINIMIZED per state —
+        # there is NO per-state THERMALIZATION before production. So iteration-0 fires a full
+        # 1000-step 2 fs *production* move from a cold, minimized-but-unequilibrated config at
+        # an alchemical Hamiltonian it was never relaxed under; at a near-coupled sterics window
+        # (state12: sterics=0.8) the residual strain + replica-exchange velocity handling spikes
+        # a transient force that rounds to NaN on CUDA mixed precision. (Minimize alone removes
+        # the *potential* strain but leaves the system cold/0-velocity and out of the window's
+        # thermal ensemble — the first full production move is where it blows up.)
+        # FIX (root-cause, openmmtools-standard): run a PER-STATE EQUILIBRATION phase before
+        # production using a GENTLE move (1 fs, strong 5/ps thermostat, reassign_velocities=True)
+        # so EACH replica thermalizes AT ITS OWN window's Hamiltonian and drains the broadcast
+        # coupled-state strain. `sampler.equilibrate()` moves are NOT counted in the production
+        # MBAR estimate (free energy unbiased). This is the membrane analogue of the standard
+        # "minimize → short NVT equilibrate → production" protocol that the bare minimize skipped.
+        n_equil = 5 if SMOKE else 50
+        equil_move = mcmc.LangevinDynamicsMove(
+            timestep=1.0 * unit.femtoseconds, collision_rate=5.0 / unit.picosecond,
+            n_steps=max(1, N_STEPS // 2), reassign_velocities=True)
+        print(f"[{name} rep{REP}] per-state EQUILIBRATE ({n_equil} iters, gentle 1 fs / "
+              f"5/ps thermostat / reassign-v) — drains broadcast coupled-state strain...",
+              flush=True)
+        sampler.equilibrate(n_equil, mcmc_moves=equil_move)
+        print(f"[{name} rep{REP}] equilibrate done; sampler.run ({N_ITER} iters)...", flush=True)
         sampler.run()
     print(f"[{name} rep{REP}] sampling complete, analyzing...", flush=True)
 
