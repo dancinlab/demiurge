@@ -1,4 +1,6 @@
-## 2026-06-23
+## 2026-06-24
+
+- **🧪 GJB1 실분자 K=2 잠정 ΔΔG 종합 — CX32L8 > anchor > CX32L1 (외부 GPU 블록서 종착·method-grade)** — K≥3 미도달, 무료 GPU 0(호스트주인 `xiuren_label` 샤딩이 summer+aiden 양쪽 점유=하드 외부블록)으로 K=2 잠정 산출 박제. CX32L8 −74.90±4.10(rep0 −79.00·rep1 −70.80)·CX32L1 −27.78±3.47(rep0 −24.31·rep1 −31.25)·anchor naphthoate −48.82(K=1). **ΔΔG=실분자 mean−anchor**: CX32L8 **−26.1**(placeholder보다 ~26 강결합·2rep 일관)·CX32L1 **+21.0**(~21 약결합) → 잠정순위 CX32L8 > anchor > CX32L1. CX32L8 rep2는 equilfix(PR#766)에도 replica3/state0 NaN(L1 state12와 다른 더 깊은 창=equilibrate 만능 아님)→K=2 고정. 정직 d6: anchor K=1이라 ΔΔG 분모 오차막대 없음·전부 method-grade(발견·약효 아님)·선택성(mutant-vs-WT)·신규성 별도게이트 미실시 → '잠정 결합 순위'까지. watcher가 무료카드 비면 K=3 자동승격(update-in-place). SSOT=flagship_CMT/gjb1 + exports/CMT/gjb1/real_ligands/RESULT.md.
 
 - **refactor(claudemd): CLAUDE.md = 진입 포인터 (트리 → ARCHITECTURE.json) + 작업규칙 do/dont** — `## Structure` 디렉토리/모듈 트리 펜스 블록을 제거하고 SSOT 포인터 블록쿼트로 교체(구조·설계 → ARCHITECTURE.json 단일 SSOT · 거버넌스 → 이 파일 `## 거버넌스` + commons · 이력 → CHANGELOG). 프로젝트 blurb 유지, `@D d*` 거버넌스/워크플로우 디렉토리 전부 보존하며 ✅/⛔ → `- do:`/`- dont:` 로 톤 통일(harness commons 일치). harness repo 동일 리팩터와 한 쌍.
 
