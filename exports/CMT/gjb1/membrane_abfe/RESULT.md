@@ -1,3 +1,40 @@
+# GJB1/Cx32 L143P — Membrane ABFE (POPC) — ★ SOLVENT-LEG CPU-FALLBACK WALL BROKEN (2026-06-24)
+
+> **Deck-guard added 2026-06-24 (aiden) — the solvent leg silently ran on CPU (GPU 0% / CPU ~560%).**
+>
+> **Symptom:** a rep that should take ~5 h stalled to 14 h+; live probe showed the *complex* leg
+> finished on GPU but the *solvent* leg (small ligand-in-water box) ran with **GPU 0% / CPU ~560%**,
+> its `.nc` growing ~10–50× slower than the complex leg.
+>
+> **Root cause:** the standalone warmup context (`eq_ctx`) is built with an explicit
+> `mm.Context(..., PLATFORM, PLATFORM_PROPS)` so it runs on CUDA — **but** the production
+> `ReplicaExchangeSampler` creates its Contexts through openmmtools' **global context cache**,
+> which was **never pinned**. With an unpinned cache, openmmtools' default platform selection can
+> drop the small solvent leg onto the CPU platform while the heavy complex leg lands on CUDA.
+>
+> **Fix (root-cause, openmmtools-standard):** pin the global context cache to the same CUDA+mixed
+> platform at module import (before any `sampler.create()`), so **every** leg's sampler runs on GPU:
+> ```python
+> from openmmtools import cache
+> if _PLATFORM == "CUDA":
+>     cache.global_context_cache.set_platform(PLATFORM, PLATFORM_PROPS)
+> ```
+> Signature verified live on summer fep env: `ContextCache.set_platform(self, new_platform,
+> platform_properties=None)`. No-op when already on CUDA; cache is empty at import so it cannot
+> raise on a live cache.
+>
+> **HONEST STATUS (d6):** fix is **applied + py_compile-clean + API-signature-verified**, but
+> **SMOKE-UNVERIFIED end-to-end** — both GPUs hold jobs (summer = anchor rep1 detached, aiden =
+> owner xiuren), so no free card to run the CUDA-pin SMOKE yet. The next rep on a freed card picks
+> up the fixed driver; first such rep's GPU-utilization (solvent leg > 0%) is the live confirmation.
+>
+> **REUSABLE DECK-GUARD (d_deck_always — `hexa deck` standard, openmmtools REMD):** the explicit
+> `mm.Context(platform=…)` path only covers contexts you build by hand; openmmtools samplers use
+> the **global context cache** — pin it (`cache.global_context_cache.set_platform`) or a small leg
+> silently falls to CPU. GPU 0% on a multi-leg ABFE = unpinned-cache smell, not a dead job.
+
+---
+
 # GJB1/Cx32 L143P — Membrane ABFE (POPC) — ★ ALCHEMICAL iter-1 NaN WALL BROKEN (2026-06-23)
 
 > **Deck-guard added 2026-06-23 (aiden) — the CX32L1 rep2 `replica15/state12` reproducible NaN.**

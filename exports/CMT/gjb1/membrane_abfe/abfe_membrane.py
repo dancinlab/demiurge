@@ -29,7 +29,7 @@ from openff.toolkit import Molecule
 from openff.toolkit.utils.nagl_wrapper import NAGLToolkitWrapper
 from openmmforcefields.generators import SystemGenerator
 from pdbfixer import PDBFixer
-from openmmtools import alchemy, states, mcmc, multistate
+from openmmtools import alchemy, states, mcmc, multistate, cache
 from openmmtools.states import (ThermodynamicState, SamplerState,
                                 CompoundThermodynamicState)
 
@@ -42,6 +42,19 @@ P = 1.0 * unit.atmosphere
 _PLATFORM = os.environ.get("PLATFORM", "CUDA")
 PLATFORM = mm.Platform.getPlatformByName(_PLATFORM)
 PLATFORM_PROPS = {"Precision": "mixed"} if _PLATFORM == "CUDA" else {}
+
+# DECK-GUARD (2026-06-24, aiden — the solvent-leg CPU-fallback wall): the standalone warmup
+# context (eq_ctx) is built with an explicit `mm.Context(..., PLATFORM, PLATFORM_PROPS)` so it
+# runs on CUDA, BUT the production ReplicaExchangeSampler creates its Contexts through
+# openmmtools' GLOBAL CONTEXT CACHE, which is never pinned. With an unpinned cache openmmtools'
+# default platform selection can drop the small ligand-in-water SOLVENT leg onto the CPU
+# platform (observed: GPU 0% / CPU ~560% / .nc growing ~10-50x slower than the complex leg,
+# turning a ~5 h rep into 14 h+). FIX (openmmtools-standard, root cause = unpinned sampler
+# cache): pin the global context cache to the SAME CUDA+mixed platform so EVERY leg's sampler
+# runs on the GPU. No-op when already on CUDA; must run once, before any sampler.create()
+# (cache is empty at module import, so set_platform here cannot raise on a live cache).
+if _PLATFORM == "CUDA":
+    cache.global_context_cache.set_platform(PLATFORM, PLATFORM_PROPS)
 
 # ---- target definition (L143P mutant monomer + TM1/TM4 cryptic pocket) -------
 REC_PDB = os.path.join(HERE, "receptor_L143P.pdb")   # transferred from ddg/mut_L143P.pdb (cleaned)
