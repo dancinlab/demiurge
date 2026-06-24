@@ -4,12 +4,12 @@
 
 | ligand | reps | mean dG_bind (kcal/mol) | ΔΔG = mean − anchor | 비고 |
 |---|---|---|---|---|
-| CX32L8 (diaryl-ether) | rep0 −79.00, rep1 −70.80 | **−74.90 ± 4.10** | **−26.1** (강결합) | rep2 = equilfix에도 replica3/state0 NaN → K=2 고정 |
-| anchor (2-naphthoate) | rep0 −48.82 | −48.82 (K=1) | 0 (기준) | placeholder method anchor |
-| CX32L1 (benzofuran) | rep0 −24.31, rep1 −31.25 | **−27.78 ± 3.47** | **+21.0** (약결합) | rep2 equilfix 준비됨·카드 대기 |
+| CX32L8 (diaryl-ether) | rep0 −79.00, rep1 −70.80 | **−74.90 ± 4.10** | **−26.0** (강결합) | rep2 = equilfix에도 replica3/state0 NaN → K=2 고정 |
+| anchor (2-naphthoate) | rep0 −48.82, rep1 −48.92 | **−48.87 ± 0.05** (K=2) | 0 (기준) | placeholder method anchor · 산포 0.07 = baseline 재현성 높음 |
+| CX32L1 (benzofuran) | rep0 −24.31, rep1 −31.25 | **−27.78 ± 3.47** | **+21.1** (약결합) | rep2 equilfix 준비됨·카드 대기 |
 | CX32L14 (benzimidazole) | — | HELD | — | pose 구조적 실패 |
 
-**잠정순위: CX32L8 > anchor > CX32L1** (2rep 일관). **정직(d6)**: anchor K=1 → ΔΔG 분모 오차막대 없음 · 전부 **method-grade**(발견·약효 아님) · 선택성(mutant-vs-WT)·신규성 **별도 게이트 미실시** → "잠정 결합 순위"까지. 무료 GPU 0(호스트주인 xiuren 샤딩 summer+aiden 점유)으로 K≥3 하드 외부블록 → watcher가 카드 비면 K=3 자동승격(update-in-place).
+**잠정순위: CX32L8 > anchor > CX32L1** (2rep 일관). **정직(d6)**: anchor 이제 **K=2**(±0.05 — ΔΔG 분모에 오차막대 확보, baseline 재현성 입증) · 전부 **method-grade**(발견·약효 아님) · 선택성(mutant-vs-WT)·신규성 **별도 게이트 미실시** → "잠정 결합 순위"까지. anchor rep2·CX32L1 rep2(GPU-pin 새 드라이버) summer 직렬 진행 중 → K=3 자동승격(update-in-place·watcher a64f19921).
 
 **Date:** 2026-06-22 · **Host:** mini (FREE local CPU, miniforge3 env `fea`) · **GPU 무접촉**
 (summer/aiden running ABFE — untouched) · **Goal:** escape the scaffold-placeholder
