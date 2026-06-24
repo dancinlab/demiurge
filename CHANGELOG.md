@@ -1,4 +1,6 @@
-## 2026-06-24
+## 2026-06-25
+
+- **📚 검증-지식 전수수집 census (state/knowledge-census-2026-06-25.md · additive)** — demiurge 검증-지식 레지스트리 전수 harvest: 임베디드 atlas/HYPOTHESES.jsonl 부재 확인, SSOT=RTSC_LEDGER(92 material rows)+발견tape(.discoveries 4)+state R-verdict(12)+g51 논문(24)+material_discovery verdict(36). 측정 TOTALS: 레지스트리 ~184 엔트리 · VERIFIED(🟢/🔵/SUPPORTED/gate) ~64 · CLOSED-NEGATIVE ~51 · PENDING/deferred ~53. 헤드라인 VERIFIED: CaH6/H3S textbook-proof(245.1K/184.3K)·H3X novel 9종·LaRu3Si2 flat-band GATE GREEN·FB-GEOM R5 Welch-bound 🔵 closed-form·SENOLYX 선택성 종결식+AG ~19× SUPPORTED·분리가능성 메타법칙(12/12). CMT/GJB1 ABFE 는 작성자 d6 명시대로 method-grade(발견 아님)→VERIFIED 제외. read-only collection task.
 
 - **🧪 GJB1 anchor 막ABFE K=1→K=2 — naphthoate rep1 −48.92 (baseline 재현성 입증)** — anchor(2-naphthoate placeholder) rep1 ENS 수확: `dG_bind=−48.92±0.68`(cplx 86.75·solv 37.59·ssc 0.24·wall 14.95h, 옛 GPU-pin-전 드라이버라 느림). anchor K=2: rep0 −48.82·rep1 −48.92 → mean **−48.87±0.05**(산포 0.07 kcal=baseline 재현성 매우 높음). ΔΔG 분모에 오차막대 확보 → 잠정 ΔΔG 재계산: CX32L8 **−26.0**(강결합·2rep 일관)·CX32L1 **+21.1**(약결합), 순위 **CX32L8 > anchor > CX32L1** 더 단단해짐. anchor rep2·CX32L1 rep2(GPU-pin 새 드라이버 PR#768)는 summer 직렬 진행 중(watcher a64f19921)→K=3 자동승격(update-in-place). 정직 d6: method-grade(발견·약효 아님)·선택성·신규성 별도게이트 미실시. SSOT=flagship_CMT/gjb1 + exports/CMT/gjb1/real_ligands/RESULT.md.
 
