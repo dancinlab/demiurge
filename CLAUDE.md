@@ -116,9 +116,13 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - do: 모든 캠페인·라운드의 목표는 **NOVEL(미발견) 발견** — 문헌·임상에 이미 알려진 결과를 똑같이 다시 내는 일에 compute/시간을 쓰지 않는다
 - do: 표적·후보 착수 **전** arxiv+web으로 신규성을 먼저 확인(d18 lit grounding) — 이미 알려졌으면(예: MCL1 = S63845·AMG-176·AZD5991 임상 레드오션) 그 표적은 **재현 대상이 아니라 회피 대상**, 즉시 NOVEL 각도로 피벗
 - do: 기지값과의 대조가 필요하면 그건 **방법 검증용 1회 앵커**로만(파이프라인 정합성 확인) — 그 자체를 캠페인 산출/성과로 박제 금지. 진짜 결과는 항상 미지 영역의 Δ(새 표적·새 기전·새 물질·closed-negative)
-- do: **문헌 재현 compute 절대금지 (하드 규칙)** — 이미 출판된 값(예: FeCo bct K1 0.7-1.0·Fe16N2 ~1.0·known 강결합 λ)을 우리 도구(DFT·QE·ABFE·계산)로 **다시 산출하는 것 자체가 재현** — *closed-negative 확정·method-anchor·"실측으로 박제" 목적이라도 금지*. axis가 문헌 anchor로 이미 닫혔으면 **그 문헌(DOI)으로 종결**하고 verdict에 인용 박제, compute는 오직 미지 영역(Δ)에만 발사한다. 어떤 셀/물성을 계산 큐에 올리기 **전**, "이게 새 Δ인가, 출판값 재현인가"를 자문해 재현이면 발사 취소(compute·디스크·시간 낭비 0). 이번 세션 슬립: leverb-mae-production이 문헌이 이미 FAIL을 사전등록한 FeCo/Fe16N2 K1을 summer disk 99%에서 재계산하려 함 → 종결이 정답이었음
-- do: **신규성 게이트는 자동·필수·선행 (재발방지 핵심)** — 어떤 후보/표적/물질이라도 그 이름이 처음 등장하는 **그 라운드 안에서** arxiv+web 신규성 프로브를 **함께(인라인) 발사**하고, 판정(`PUBLISHED`/`PARTIAL`/`NOVEL` + 경쟁 논문 id)을 받기 **전에는** 그 후보를 "후보 성공·발견·돌파"로 보고하지 않는다. 신규성 확인은 **유저가 "arxiv 조사해봐"라고 시켜서 뒤늦게 도는 단계가 아니라**, 후보를 계산·명명하는 파이프라인의 1단계(fleet round-1 = d18). 이 세션 반복 슬립: Mg2PtH6·CoSn·경원소 kagome 를 **계산→성공 보고 후에야** 신규성 확인 → 순서 역전 금지
-- dont: 이미 알려진 강결합/물성을 ABFE·DFT 등으로 "맞췄다"를 발견·성과로 보고 · 신규성 확인 없이 레드오션 표적에 풀 캠페인 발사 · NOVEL을 다음 라운드로 미루고 재현부터 하기 · **후보를 먼저 "성공/발견"으로 박제·보고하고 신규성 프로브를 나중에(혹은 유저 지시 후) 돌리기** — 신규성 미확정 후보의 성과 보고는 항상 `신규성 PENDING` 꼬리표를 달고, 판정 후 등급 확정 (d2·d6·d18·d_discovery·d_paper_significance와 한 묶음 — 발견 아니면 의미 없음)
+- do: **문헌 재현 compute 절대금지 (하드 규칙)** — 이미 출판된 값(예: FeCo bct K1 0.7-1.0·Fe16N2 ~1.0·known 강결합 λ)을 우리 도구(DFT·QE·ABFE·계산)로 **다시 산출하는 것 자체가 재현** — *closed-negative 확정·method-anchor·"실측으로 박제" 목적이라도 금지*
+- do: axis가 문헌 anchor로 이미 닫혔으면 **그 문헌(DOI)으로 종결**하고 verdict에 인용 박제, compute는 오직 미지 영역(Δ)에만 발사한다. 어떤 셀/물성을 계산 큐에 올리기 **전**, "이게 새 Δ인가, 출판값 재현인가"를 자문해 재현이면 발사 취소(compute·디스크·시간 낭비 0)
+- do: 이번 세션 슬립: leverb-mae-production이 문헌이 이미 FAIL을 사전등록한 FeCo/Fe16N2 K1을 summer disk 99%에서 재계산하려 함 → 종결이 정답이었음
+- do: **신규성 게이트는 자동·필수·선행 (재발방지 핵심)** — 어떤 후보/표적/물질이라도 그 이름이 처음 등장하는 **그 라운드 안에서** arxiv+web 신규성 프로브를 **함께(인라인) 발사**하고, 판정(`PUBLISHED`/`PARTIAL`/`NOVEL` + 경쟁 논문 id)을 받기 **전에는** 그 후보를 "후보 성공·발견·돌파"로 보고하지 않는다
+- do: 신규성 확인은 **유저가 "arxiv 조사해봐"라고 시켜서 뒤늦게 도는 단계가 아니라**, 후보를 계산·명명하는 파이프라인의 1단계(fleet round-1 = d18). 이 세션 반복 슬립: Mg2PtH6·CoSn·경원소 kagome 를 **계산→성공 보고 후에야** 신규성 확인 → 순서 역전 금지
+- dont: 이미 알려진 강결합/물성을 ABFE·DFT 등으로 "맞췄다"를 발견·성과로 보고 · 신규성 확인 없이 레드오션 표적에 풀 캠페인 발사 · NOVEL을 다음 라운드로 미루고 재현부터 하기 · **후보를 먼저 "성공/발견"으로 박제·보고하고 신규성 프로브를 나중에(혹은 유저 지시 후) 돌리기**
+- dont: 신규성 미확정 후보의 성과 보고는 항상 `신규성 PENDING` 꼬리표를 달고, 판정 후 등급 확정 (d2·d6·d18·d_discovery·d_paper_significance와 한 묶음 — 발견 아니면 의미 없음)
 
 ### d19 — MATLAB-grade in-silico 100% closure · intra-domain reuse lattice
 
@@ -179,15 +183,19 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 
 ### d_qforge_default — 컴퓨트 기본 엔진 = QFORGE (QE 대신) · 미전환 조각만 QE fallback
 
-- do: el-ph/DFT 컴퓨트의 **기본 엔진은 QFORGE-native** — gate-통과(≤1% vs QE) 조각은 항상 QFORGE 경로로 실행: L0-L5 λ/Tc 어셈블리·PW-SCF bricks·Sternheimer·**GPU block davidson**(RTX5070 실측·davidson/SCF/el-ph hot path 배선·c24). production = mode-(b) hybrid(QE |g|² → QFORGE assembler)도 QFORGE-native 산출을 기본으로 본다
-- do: **QE는 두 용도로만**: (a) 아직 gate-미통과 조각(from-scratch front-end |g|²·포논·nspin=2 moment)의 reference/fallback — d_qforge_migration_routing의 HELD 목록 (b) gate anchor 1회(정직한 production reference). 그 외 새 컴퓨트는 QFORGE 먼저 시도
+- do: el-ph/DFT 컴퓨트의 **기본 엔진은 QFORGE-native** — gate-통과(≤1% vs QE) 조각은 항상 QFORGE 경로로 실행: L0-L5 λ/Tc 어셈블리·PW-SCF bricks·Sternheimer·**GPU block davidson**(RTX5070 실측·davidson/SCF/el-ph hot path 배선·c24)
+- do: production = mode-(b) hybrid(QE |g|² → QFORGE assembler)도 QFORGE-native 산출을 기본으로 본다
+- do: **QE는 두 용도로만**: (a) 아직 gate-미통과 조각(from-scratch front-end |g|²·포논·nspin=2 moment)의 reference/fallback — d_qforge_migration_routing의 HELD 목록 (b) gate anchor 1회(정직한 production reference)
+- do: 그 외 새 컴퓨트는 QFORGE 먼저 시도
 - do: 페이오프 = **summer RTX5070 무료 QFORGE-native el-ph → 유료 vast GPU 회피**. QFORGE가 막히면 즉시 QE 병행(d_qforge_fix)하되 QFORGE-native 전환을 함께 추진(미루지 않음)
 - dont: gate-통과 조각을 습관적으로 QE로 돌리기(QFORGE 기본 무시) · "QE가 익숙하니 QE로" 디폴트 · QFORGE를 실험취급하고 QE를 production취급(역전) · 미전환 조각을 QFORGE-native로 강제해 게이트 미달분 absorbed 박제(d6·migration_gate 위반)
 
 ### d_deck_always — 모든 컴퓨트 입력덱은 `hexa deck`(빌더+검증)을 통과 (필수)
 
-- do: DFT/QE el-ph 컴퓨트 입력덱(scf · ph · vc-relax · bands · matdyn 등)은 **항상 `hexa deck`(빌드+검증)** 으로 생성/검증 — 손수 `.in` 작성 금지(이번 세션 손작성 버그 다발: bands verbosity='high' 누락[#k≥100]·원자질량 오기[Os 190.23]·vc-relax 미수렴·d15 SCF aids 누락)
-- do: `hexa deck` 은 hard-won 덱규율을 코드로 박제: 정확한 원자질량/의사퍼텐셜(d13 element 커버 grep) · bands verbosity='high'(#k≥100) · 금속/소갭 SCF aids(d15: smear+damp+lshift) · **d16 1-iter dry-run 검증 FREE on pool 후 발사** · DFPT el-ph 전 **d6 동적안정 사전체크**(matdyn 허수모드 0)
+- do: DFT/QE el-ph 컴퓨트 입력덱(scf · ph · vc-relax · bands · matdyn 등)은 **항상 `hexa deck`(빌드+검증)** 으로 생성/검증
+- do: 손수 `.in` 작성 금지(이번 세션 손작성 버그 다발: bands verbosity='high' 누락[#k≥100]·원자질량 오기[Os 190.23]·vc-relax 미수렴·d15 SCF aids 누락)
+- do: `hexa deck` 은 hard-won 덱규율을 코드로 박제: 정확한 원자질량/의사퍼텐셜(d13 element 커버 grep) · bands verbosity='high'(#k≥100) · 금속/소갭 SCF aids(d15: smear+damp+lshift) · **d16 1-iter dry-run 검증 FREE on pool 후 발사**
+- do: DFPT el-ph 전 **d6 동적안정 사전체크**(matdyn 허수모드 0)
 - do: 덱은 `decks/`(루트 입력덱) · `exports/rtsc/decks/` 에 박제(c5 보존) · raw curl/애드혹 손작성 대신 `hexa deck` 우선(commons c12 harness-first 일관)
 - do: **트러블슈팅 발생 시 → 그 예방처리(가드/체크/기본값)를 `hexa deck`에 즉시 박제** — 덱 관련 버그·실패를 한 번 겪으면 그 재발방지 규칙을 도구에 코드로 넣어 **같은 버그 재발 0** (hexa deck = self-improving 덱규율 SSOT; 매 트러블슈팅이 새 가드를 낳는다)
 - dont: 검증 안 된 손작성 덱을 billing 포드에 발사(d16 위반) · 원자질량/pseudo/verbosity/SCF-aid 누락된 덱 · 동적불안정 셀에 el-ph 발사(FLEET-DIAGNOSTIC 낭비) · **덱 버그를 일회성으로 고치고 `hexa deck`에 가드 안 박기**(재발 방치)
@@ -197,8 +205,10 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 > SSOT = `ARCHITECTURE.json` LAWS/ROOMT-AMBIENT-PASS-CRITERIA · 상세 `state/fb-geom-lambda/ROOMT_AMBIENT_PASS_CRITERIA.md`. "상온/상압 초전도" 주장은 이 게이트를 명시적으로 통과해야만 박제.
 
 - do: **하드 임계**: Tc ≥ **293.15K**(여유 측정 300K 권장) · P = **1 atm**(≈0 GPa — **GPa-급 수소화물[LaH10 등]은 상압 아님, 제외**) · **벌크**(박막/계면 SC는 별도 라벨)
-- do: **TIER-1 in-silico 사전게이트(g5, 전부 PASS여야 wet-lab 추천·🟡 GATED)**: (1) 상압 열역학 안정(convex-hull/ΔH_f<0) (2) **상압 동적안정**(matdyn 허수모드 0 — *고압 안정 ≠ 상압 안정*) (3) 캐리어 채널(E_F 금속/도달가능 도핑·N(E_F)>0; 매장/wide-gap=FAIL) (4) **Tc≥293K**(conventional=DFPT λ+Allen-Dynes/Eliashberg; unconv=order-parameter Tc + calibrated estimator) (5) 자성/CDW 비-선점(U-scan) (6) 신규성(d_novel_only)
-- do: **TIER-2 wet-lab 확정게이트(d1/d5 downstream, absorbed=true 조건 ALL)**: A zero-R(ρ→0 @≥293K) · B **★Meissner 차폐분율(zero-R 단독 불충분 — 세션교훈)** · C 비열점프 ΔC+Hc1/Hc2 · D 동위원소/갭(기전) · E **재현 ≥2 독립 배치/랩(단일배치 preprint 불충분)**
+- do: **TIER-1 in-silico 사전게이트(g5, 전부 PASS여야 wet-lab 추천·🟡 GATED)**: (1) 상압 열역학 안정(convex-hull/ΔH_f<0) (2) **상압 동적안정**(matdyn 허수모드 0 — *고압 안정 ≠ 상압 안정*) (3) 캐리어 채널(E_F 금속/도달가능 도핑·N(E_F)>0; 매장/wide-gap=FAIL)
+- do: (4) **Tc≥293K**(conventional=DFPT λ+Allen-Dynes/Eliashberg; unconv=order-parameter Tc + calibrated estimator) (5) 자성/CDW 비-선점(U-scan) (6) 신규성(d_novel_only)
+- do: **TIER-2 wet-lab 확정게이트(d1/d5 downstream, absorbed=true 조건 ALL)**: A zero-R(ρ→0 @≥293K) · B **★Meissner 차폐분율(zero-R 단독 불충분 — 세션교훈)** · C 비열점프 ΔC+Hc1/Hc2 · D 동위원소/갭(기전)
+- do: E **재현 ≥2 독립 배치/랩(단일배치 preprint 불충분)**
 - do: 정직 채점(d6): 후보 Tc가 임계 미달이면 "상온 후보"라 부르지 말 것 — 예) Ge:GaNb4S8 ~50K·MgB2 39K·LiBC ~45K 모두 #4(Tc≥293K) **FAIL** → "상압이나 상온 미달". 병목=#4(경원소 강결합+상압 동적안정 동시 OR 비-phonon 기전 — 미해결 벽)
 - dont: zero-R 단독·단일배치 preprint·투영(모델)값을 "상온 초전도 통과"로 보고 · GPa 고압 Tc를 "상압"으로 보고 · TIER-1 미통과 후보를 상온후보로 박제 · Tc<293K를 "상온"으로 호칭(d6 위반·d_novel_only·d_paper_significance와 한 묶음)
 
@@ -206,9 +216,13 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 
 > SSOT = `ARCHITECTURE.json` 각 캠페인의 PRODUCTION-CRITERIA 노드. 어떤 신소재/대체후보를 "실제로 양산·상용화 가능"이라 주장할 땐 이 게이트를 명시 통과해야만 박제. 세션교훈(Gd→Mn²⁺ MRI): Phase2 임상 도달(원리검증)이 ≠ Gd 시장 대체 — relaxivity(spin 7vs5)·Mn 독성·확립된 시장 마찰로 미상용.
 
-- do: **2-tier 구분 필수**: **TIER-L(lab/in-silico)** = 원리검증(성능 패리티 게이트 PASS + 신규성) — "작동 증명"일 뿐. **TIER-P(production 상용화, ALL PASS여야 'production-ready')**: P1 **성능 패리티**(기존 벤치 대비 정량 ±허용 — 자석 BHmax·MRI relaxivity·CMP 제거율·Ga 캐리어이동도) · P2 **안정성/안전/신뢰성**(독성·분해·수명·환경 — manganism·MnAl metastability) · P3 **제조 확장성**(벌크/연속/수율, 박막·분말·단일배치 only 아님 — tetrataenite G6·반도체 fab 통합) · P4 **비용 경쟁력**(≤ 기존 또는 명확한 가치 — FePt Pt 비용 실패) · P5 **인증/규제/시장 진입**(FDA·반도체 qual·고객 인증·기존 시장 진입장벽) · P6 **공급망 회복력**(대체의 목적 — 중국-의존 임계소재[Ga·Ge·Sb·중희토류·CMP] 회피, ★새 단일소스 의존 안 만들기)
+- do: **2-tier 구분 필수**: **TIER-L(lab/in-silico)** = 원리검증(성능 패리티 게이트 PASS + 신규성) — "작동 증명"일 뿐
+- do: **TIER-P(production 상용화, ALL PASS여야 'production-ready')**: P1 **성능 패리티**(기존 벤치 대비 정량 ±허용 — 자석 BHmax·MRI relaxivity·CMP 제거율·Ga 캐리어이동도) · P2 **안정성/안전/신뢰성**(독성·분해·수명·환경 — manganism·MnAl metastability)
+- do: P3 **제조 확장성**(벌크/연속/수율, 박막·분말·단일배치 only 아님 — tetrataenite G6·반도체 fab 통합) · P4 **비용 경쟁력**(≤ 기존 또는 명확한 가치 — FePt Pt 비용 실패) · P5 **인증/규제/시장 진입**(FDA·반도체 qual·고객 인증·기존 시장 진입장벽)
+- do: P6 **공급망 회복력**(대체의 목적 — 중국-의존 임계소재[Ga·Ge·Sb·중희토류·CMP] 회피, ★새 단일소스 의존 안 만들기)
 - do: 정직 채점(d6): TIER-L 통과(원리검증)는 "상용화 가능"이 아니라 "원리 작동"으로만 보고. TIER-P 미통과 후보는 `production-ready`라 부르지 말 것 — 어느 P-게이트에서 막혔는지 명시(예: Gd→Mn=P1 relaxivity+P2 독성+P5 시장).
-- dont: lab/in-silico 패리티만으로 "상용화 가능·production 낼 수 있다" 보고 · 단일배치/박막/임상초기 결과를 벌크 production으로 일반화 · **새 임계소재(다른 중국-의존 원소) 의존을 만드는 대체를 "공급망 해결"로 박제**(P6 위반) · TIER-P 게이트 없이 "대체 성공"을 상용 성공으로 호칭(d_novel_only·d_roomt_ambient와 한 묶음)
+- dont: lab/in-silico 패리티만으로 "상용화 가능·production 낼 수 있다" 보고 · 단일배치/박막/임상초기 결과를 벌크 production으로 일반화 · **새 임계소재(다른 중국-의존 원소) 의존을 만드는 대체를 "공급망 해결"로 박제**(P6 위반)
+- dont: TIER-P 게이트 없이 "대체 성공"을 상용 성공으로 호칭(d_novel_only·d_roomt_ambient와 한 묶음)
 
 ## 워크플로우 (workflow)
 
@@ -273,7 +287,8 @@ PAPER auto-generation flow — atlas-as-audit-SSOT lineage (`research result →
 
 ### Single-doc discipline
 
-- do: architecture goes in `ARCHITECTURE.json` (JSON-tree SSOT · AI/tool-parse; 사람은 `ARCHITECTURE.html` via `python3 serve.py`); history in `CHANGELOG.md` (append-only); all work artifacts under `state/` (commons c5 · single artifact root) — `ARCHITECTURE.md` 은퇴(2026-06-16 · c4 JSON-트리 채택)
+- do: architecture goes in `ARCHITECTURE.json` (JSON-tree SSOT · AI/tool-parse; 사람은 `ARCHITECTURE.html` via `python3 serve.py`); history in `CHANGELOG.md` (append-only)
+- do: all work artifacts under `state/` (commons c5 · single artifact root) — `ARCHITECTURE.md` 은퇴(2026-06-16 · c4 JSON-트리 채택)
 
 ## Harness
 
