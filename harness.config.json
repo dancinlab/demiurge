@@ -20,7 +20,7 @@
   "lint": {
     "freshnessFiles": [],
     "changelog": {
-      "file": "CHANGELOG.md",
+      "file": "CHANGELOG.jsonl",
       "triggerPattern": "\\.(ts|tsx|js|jsx|py|rb|go|rs|java|kt|c|h|cpp|cc|hpp|m|mm|swift|hexa)$",
       "ignore": [
         "(^|/)(tests?|__tests__|spec)/",
@@ -41,14 +41,14 @@
   "docs": {
     "enforce": "warn",
     "architecture": "ARCHITECTURE.json",
-    "log": "CHANGELOG.md",
+    "log": "CHANGELOG.jsonl",
     "scratchDir": "state",
     "scopeDirs": [
       ""
     ],
     "allow": [
       "README.md",
-      "CHANGELOG.md",
+      "CHANGELOG.jsonl",
       "ARCHITECTURE.json",
       "ARCHITECTURE.html",
       "CLAUDE.md",

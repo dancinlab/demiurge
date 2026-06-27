@@ -5,7 +5,7 @@ demiurge is a universal, hexa-native technical-design architecture program: it d
 > 📍 SSOT 포인터 (이 파일 = 진입점 + 거버넌스/워크플로우/작업규칙):
 > · **구조·설계 → [ARCHITECTURE.json](ARCHITECTURE.json)** — 디렉토리·모듈 트리 + LAWS + reuse-graph 는 **여기 단일 SSOT** (JSON-트리 · AI/tool-parse; 사람은 `python3 serve.py` → [ARCHITECTURE.html](ARCHITECTURE.html) 뷰어 · ARCHITECTURE.md 은퇴 2026-06-16 c4)
 > · 거버넌스 → **이 파일** `## 거버넌스` (`@D d*` directive family · project.tape 은퇴 2026-06-15 md 단일화) + cross-project [commons](.harness-engine/config/commons.md)
-> · 이력 → [CHANGELOG.md](CHANGELOG.md) (append) · 개요 → [README.md](README.md)
+> · 이력 → [CHANGELOG.jsonl](CHANGELOG.jsonl) (append) · 개요 → [README.md](README.md)
 
 > 🛠️ **트러블슈팅 재발방지 = 도구(hexa cloud · hexa deck) 개선으로 박제 (최상위 원칙)**
 > 컴퓨트/포드/덱에서 트러블슈팅을 한 번 겪으면 — 그 자리에서 손으로 우회하지 말고 **그 예방 가드를
@@ -287,7 +287,7 @@ PAPER auto-generation flow — atlas-as-audit-SSOT lineage (`research result →
 
 ### Single-doc discipline
 
-- do: architecture goes in `ARCHITECTURE.json` (JSON-tree SSOT · AI/tool-parse; 사람은 `ARCHITECTURE.html` via `python3 serve.py`); history in `CHANGELOG.md` (append-only)
+- do: architecture goes in `ARCHITECTURE.json` (JSON-tree SSOT · AI/tool-parse; 사람은 `ARCHITECTURE.html` via `python3 serve.py`); history in `CHANGELOG.jsonl` (append-only)
 - do: all work artifacts under `state/` (commons c5 · single artifact root) — `ARCHITECTURE.md` 은퇴(2026-06-16 · c4 JSON-트리 채택)
 
 ## Harness
@@ -304,7 +304,7 @@ Run any harness command via the bundled wrapper:
 
 ```bash
 bash .harness-engine/bin/harness <cmd>
-#   docs check     single-doc discipline (ARCHITECTURE.json SSOT + CHANGELOG.md log + quickref)
+#   docs check     single-doc discipline (ARCHITECTURE.json SSOT + CHANGELOG.jsonl log + quickref)
 #   docs status    CLAUDE-MD discipline + scatter/quickref counts
 #   lint           staged-L0 + freshness + changelog convergence
 #   audit          6-axis self-scorecard
@@ -312,9 +312,9 @@ bash .harness-engine/bin/harness <cmd>
 
 Config lives in **`harness.config.json`** (profile `hardcore`):
 - `lockdown.files` — core source files that emit an L0-edit reminder on change.
-- `lint.changelog` — staged code changes require `CHANGELOG.md` to be staged too.
+- `lint.changelog` — staged code changes require `CHANGELOG.jsonl` to be staged too.
 - `lint.protectedBranches` — `main` / `master` (no direct commits).
-- `docs` — `architecture=ARCHITECTURE.json`, `log=CHANGELOG.md`, `scratchDir=state`, and `scopeDirs:[""]` (scatter/quickref discipline applies to repo-root `.md` only, so the large research / domain document corpus under subdirectories is exempt).
+- `docs` — `architecture=ARCHITECTURE.json`, `log=CHANGELOG.jsonl`, `scratchDir=state`, and `scopeDirs:[""]` (scatter/quickref discipline applies to repo-root `.md` only, so the large research / domain document corpus under subdirectories is exempt).
 
 The harness hooks are wired into `.claude/settings.json` (PreToolUse / PostToolUse / UserPromptSubmit / SessionStart), each guarded with `[ -x .harness-engine/bin/harness ] && … || true` so the repo stays usable when the submodule is uninitialized.
 
@@ -323,4 +323,4 @@ The harness hooks are wired into `.claude/settings.json` (PreToolUse / PostToolU
 - Architecture SSOT — [ARCHITECTURE.json](ARCHITECTURE.json) (JSON 트리 · 사람은 [ARCHITECTURE.html](ARCHITECTURE.html) 뷰어로 — `python3 serve.py`)
 - Governance SSOT — this file (`## 거버넌스 (governance)` · `## 워크플로우 (workflow)`)
 - Project overview — [README.md](README.md)
-- Change log — [CHANGELOG.md](CHANGELOG.md)
+- Change log — [CHANGELOG.jsonl](CHANGELOG.jsonl)
