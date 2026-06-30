@@ -2,19 +2,19 @@
 
 demiurge is a universal, hexa-native technical-design architecture program: it drives any engineering system through one 7-verb pipeline (spec → structure → design → analyze ⟲ → synthesize → verify → handoff), with each field plugged in as a manifest-only domain. It exposes a Next.js web GUI (the human surface) and a hexa-native CLI (the AI-agent surface) over the same generic dispatch, and consumes reusable implementation from the sibling `hexa-lang` repo (it never owns stdlib itself).
 
-> 📍 SSOT 포인터 (이 파일 = 진입점 + 거버넌스/워크플로우/작업규칙):
-> · **구조·설계 → [ARCHITECTURE.json](ARCHITECTURE.json)** — 디렉토리·모듈 트리 + LAWS + reuse-graph 는 **여기 단일 SSOT** (JSON-트리 · AI/tool-parse; 사람은 `python3 serve.py` → [ARCHITECTURE.html](ARCHITECTURE.html) 뷰어 · ARCHITECTURE.md 은퇴 2026-06-16 c4)
-> · 거버넌스 → **이 파일** `## 거버넌스` (`@D d*` directive family · project.tape 은퇴 2026-06-15 md 단일화) + cross-project [commons](.harness-engine/config/commons.md)
-> · 이력 → [CHANGELOG.jsonl](CHANGELOG.jsonl) (append) · 개요 → [README.md](README.md)
+> 📍 SSOT pointer (this file = entry point + governance/workflow/work-rules):
+> · **Structure·Design → [ARCHITECTURE.json](ARCHITECTURE.json)** — the directory·module tree + LAWS + reuse-graph is the **single SSOT here** (JSON-tree · AI/tool-parse; humans use `python3 serve.py` → [ARCHITECTURE.html](ARCHITECTURE.html) viewer · ARCHITECTURE.md retired 2026-06-16 c4)
+> · Governance → **this file** `## Governance` (`@D d*` directive family · project.tape retired 2026-06-15, unified into md) + cross-project [commons](.harness-engine/config/commons.md)
+> · History → [CHANGELOG.jsonl](CHANGELOG.jsonl) (append) · Overview → [README.md](README.md)
 
-> 🛠️ **트러블슈팅 재발방지 = 도구(hexa cloud · hexa deck) 개선으로 박제 (최상위 원칙)**
-> 컴퓨트/포드/덱에서 트러블슈팅을 한 번 겪으면 — 그 자리에서 손으로 우회하지 말고 **그 예방 가드를
-> `hexa cloud`(포드·클라우드 레이어) 또는 `hexa deck`(입력덱·런스크립트 레이어)에 코드로 박아** 같은
-> 버그 재발을 0으로 만든다(self-improving 도구 = 규율 SSOT). c17대로 응용층(cloud·deck)은 **격리
-> worktree서 직접 fix → `harness pr-cycle`**, 컴파일/런타임 코어는 ING 인계. d_deck_always(덱)·이 원칙
-> (cloud)이 한 쌍. 매 트러블슈팅이 새 가드를 낳는다.
+> 🛠️ **Troubleshooting recurrence-prevention = harden it into the tools (hexa cloud · hexa deck) (top principle)**
+> Once you hit a troubleshooting issue in compute/pod/deck — don't hand-patch around it on the spot; instead **bake the prevention
+> guard as code into `hexa cloud` (pod·cloud layer) or `hexa deck` (input-deck·run-script layer)** to drive the same
+> bug's recurrence to 0 (self-improving tools = discipline SSOT). Per c17, the application layer (cloud·deck) is **fixed directly in an isolated
+> worktree → `harness pr-cycle`**, while the compile/runtime core is handed off to ING. d_deck_always (deck) and this principle
+> (cloud) are a pair. Every troubleshooting begets a new guard.
 
-## 거버넌스 (governance)
+## Governance
 
 The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each directive is faithful to the tape, in `do` / `dont` form.
 
@@ -53,9 +53,9 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - do: small cells (4-7 atoms) → pool ubu-1/2 free · batch → Vast.ai CPU · ≥20 atoms / dense k → GPU pod
 - dont: RunPod CPU pods (8-vCPU ceiling) · Vast.ai CPU-only rentals (use GPU offers) · GPU on small cells
 
-### d8 — Vast.ai trouble → ING 핸드오프 (inbox 은퇴 2026-06-22)
+### d8 — Vast.ai trouble → ING handoff (inbox retired 2026-06-22)
 
-- do: Vast/upstream finding → `harness ing add` 로 ING.jsonl 핸드오프에 기록해 `hexa cloud` 가 upstream absorb (구 `hexa-lang/inbox/patches/` 은퇴 → ING 단일화)
+- do: Vast/upstream finding → record it into the ING.jsonl handoff via `harness ing add` so `hexa cloud` upstream-absorbs (old `hexa-lang/inbox/patches/` retired → unified into ING)
 - dont: paper-over a Vast-discovered `hexa cloud` gap inside the campaign
 
 ### d9 — worktree concurrent agent index isolation
@@ -111,18 +111,18 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - do: round-1 fan-out includes >=1 NOVEL probe and >=1 arxiv+web deep-research search
 - dont: round-1 with only incremental milestones · skip lit grounding · defer NOVEL to later round
 
-### d_novel_only — 이미 알려진 것의 재현·검증 절대금지 · 목표는 NOVEL 발견
+### d_novel_only — never reproduce·re-verify what's already known · the goal is NOVEL discovery
 
-- do: 모든 캠페인·라운드의 목표는 **NOVEL(미발견) 발견** — 문헌·임상에 이미 알려진 결과를 똑같이 다시 내는 일에 compute/시간을 쓰지 않는다
-- do: 표적·후보 착수 **전** arxiv+web으로 신규성을 먼저 확인(d18 lit grounding) — 이미 알려졌으면(예: MCL1 = S63845·AMG-176·AZD5991 임상 레드오션) 그 표적은 **재현 대상이 아니라 회피 대상**, 즉시 NOVEL 각도로 피벗
-- do: 기지값과의 대조가 필요하면 그건 **방법 검증용 1회 앵커**로만(파이프라인 정합성 확인) — 그 자체를 캠페인 산출/성과로 박제 금지. 진짜 결과는 항상 미지 영역의 Δ(새 표적·새 기전·새 물질·closed-negative)
-- do: **문헌 재현 compute 절대금지 (하드 규칙)** — 이미 출판된 값(예: FeCo bct K1 0.7-1.0·Fe16N2 ~1.0·known 강결합 λ)을 우리 도구(DFT·QE·ABFE·계산)로 **다시 산출하는 것 자체가 재현** — *closed-negative 확정·method-anchor·"실측으로 박제" 목적이라도 금지*
-- do: axis가 문헌 anchor로 이미 닫혔으면 **그 문헌(DOI)으로 종결**하고 verdict에 인용 박제, compute는 오직 미지 영역(Δ)에만 발사한다. 어떤 셀/물성을 계산 큐에 올리기 **전**, "이게 새 Δ인가, 출판값 재현인가"를 자문해 재현이면 발사 취소(compute·디스크·시간 낭비 0)
-- do: 이번 세션 슬립: leverb-mae-production이 문헌이 이미 FAIL을 사전등록한 FeCo/Fe16N2 K1을 summer disk 99%에서 재계산하려 함 → 종결이 정답이었음
-- do: **신규성 게이트는 자동·필수·선행 (재발방지 핵심)** — 어떤 후보/표적/물질이라도 그 이름이 처음 등장하는 **그 라운드 안에서** arxiv+web 신규성 프로브를 **함께(인라인) 발사**하고, 판정(`PUBLISHED`/`PARTIAL`/`NOVEL` + 경쟁 논문 id)을 받기 **전에는** 그 후보를 "후보 성공·발견·돌파"로 보고하지 않는다
-- do: 신규성 확인은 **유저가 "arxiv 조사해봐"라고 시켜서 뒤늦게 도는 단계가 아니라**, 후보를 계산·명명하는 파이프라인의 1단계(fleet round-1 = d18). 이 세션 반복 슬립: Mg2PtH6·CoSn·경원소 kagome 를 **계산→성공 보고 후에야** 신규성 확인 → 순서 역전 금지
-- dont: 이미 알려진 강결합/물성을 ABFE·DFT 등으로 "맞췄다"를 발견·성과로 보고 · 신규성 확인 없이 레드오션 표적에 풀 캠페인 발사 · NOVEL을 다음 라운드로 미루고 재현부터 하기 · **후보를 먼저 "성공/발견"으로 박제·보고하고 신규성 프로브를 나중에(혹은 유저 지시 후) 돌리기**
-- dont: 신규성 미확정 후보의 성과 보고는 항상 `신규성 PENDING` 꼬리표를 달고, 판정 후 등급 확정 (d2·d6·d18·d_discovery·d_paper_significance와 한 묶음 — 발견 아니면 의미 없음)
+- do: every campaign·round targets **NOVEL (undiscovered) findings** — don't spend compute/time re-producing results already known in the literature·clinic
+- do: before a target·candidate, check novelty via arxiv+web (d18 lit grounding); if known (e.g., MCL1 = S63845·AMG-176·AZD5991 clinical red-ocean) it's to avoid not reproduce — pivot to NOVEL
+- do: known-value comparison = a one-shot method-validation anchor only — never bank it as campaign output; real results are a Δ in unknown territory (new target·mechanism·material·closed-negative)
+- do: never compute-reproduce the literature (hard rule): re-deriving a published value (FeCo bct K1 0.7-1.0·Fe16N2 ~1.0·known λ) via DFT·QE·ABFE IS reproduction — banned for method-anchor/closed-neg
+- do: axis closed by a literature anchor → close with that paper (DOI), cite in verdict; compute only unknown Δ. Before queueing a cell/property ask "new Δ or reproduction?" — cancel if reproduction
+- do: this-session slip: leverb-mae-production tried to recompute FeCo/Fe16N2 K1 (literature already pre-registered FAIL) at summer disk 99% → closing it was the right call
+- do: novelty gate auto·mandatory·upfront — fire arxiv+web probe inline when a candidate first appears; before its verdict (`PUBLISHED`/`PARTIAL`/`NOVEL` + rival id) never report "success/discovery"
+- do: novelty check is step-1 of the candidate pipeline (fleet round-1 = d18), not a late user step. Slip: Mg2PtH6·CoSn·light-element kagome novelty-checked only after compute→success → never invert
+- dont: report "matched a known coupling/property" (ABFE·DFT) as discovery · full-campaign a red-ocean w/o novelty check · defer NOVEL+reproduce first · bank "success/discovery" then novelty-probe
+- dont: a novelty-undetermined report always carries the `신규성 PENDING` tag, grade finalized after the verdict (w/ d2·d6·d18·d_discovery·d_paper_significance — meaningless unless a discovery)
 
 ### d19 — MATLAB-grade in-silico 100% closure · intra-domain reuse lattice
 
@@ -134,7 +134,7 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - do: before building a domain primitive, grep the atlas + sibling DOMAIN.md for a verified one
 - do: inherit it — e.g. ANTIMATTER trap reuses RTSC current_loop_offaxis
 - do: stamp each record with reused[] / provides[] cross-domain edges
-- do: keep the cross-domain reuse graph current in `ARCHITECTURE.json` (단일 SSOT — NEXUS.tape 은퇴 2026-06-21)
+- do: keep the cross-domain reuse graph current in `ARCHITECTURE.json` (single SSOT — NEXUS.tape retired 2026-06-21)
 - dont: trailer wet-lab / external-lab / funding / paid / multi-year as 'excluded'
 - dont: repeat 'absorbed=false PERMANENTLY' trailer — d1/d5/d19 already covers it
 - dont: rebuild a sibling domain's verified primitive · leave a reuse edge off the ARCHITECTURE.json reuse-graph
@@ -164,67 +164,67 @@ The `@D d*` directive family (formerly `project.tape`, retired 2026-06-15). Each
 - dont: run an 8-q el-ph serially on one pod when q×irr GRID finishes in hours · leave walltime on table
 - dont: add shards below the floor (SCF/transfer/collect dominates) — report the floor honestly (d6)
 
-### d_qforge_fix — QFORGE upstream fix·개선 — 즉시해결 우선 · 장기지연 시 QE 병행(동시)
+### d_qforge_fix — QFORGE upstream fix·improvement — fix-now first · run QE in parallel (concurrent) on long delays
 
-- do: QFORGE upstream fix/개선이 **바로 해결 가능**하면 즉시 고치고 진행(우회·미루기 금지)
-- do: fix가 **오래 걸리는(장기)** 경우 → QE로 대체해 캠페인을 **계속 전진**시키되, QFORGE fix도 **바로 함께(병행)** 진행 — 둘을 동시에 굴린다(QE production + QFORGE fix in-flight)
-- do: QE 대체는 임시 우회가 아니라 정직한 production reference (d_qforge_parallel·migration gate와 일관) — 결과는 QE-grade로 박제, QFORGE는 게이트 후 absorb
-- dont: QFORGE fix가 길다고 캠페인을 멈춰 세우기 · QE 대체만 하고 QFORGE fix를 뒤로 미뤄 잊기 · 바로 고칠 수 있는 걸 우회로 덮기
+- do: if a QFORGE upstream fix/improvement is **immediately solvable**, fix it now and proceed (no workaround·deferral)
+- do: if the fix takes long → substitute QE to keep the campaign moving forward, but pursue the QFORGE fix concurrently right away — run both at once (QE production + QFORGE fix in-flight)
+- do: QE substitution is not a temporary workaround but an honest production reference (consistent with d_qforge_parallel·migration gate) — record results as QE-grade; QFORGE absorbs after the gate
+- dont: halt the campaign because the QFORGE fix is long · substitute QE only and defer/forget the QFORGE fix · cover an immediately-fixable thing with a workaround
 
-### d_qforge_migration_routing — QE→QFORGE 전환은 piece-by-piece, 게이트(≤1% vs QE) 통과분만 absorb
+### d_qforge_migration_routing — QE→QFORGE migration is piece-by-piece; absorb only what passes the gate (≤1% vs QE)
 
-> 마이그레이션 SSOT = `ARCHITECTURE.json` QFORGE.migration_gate. 사람은 `QFORGE/QFORGE.md §⭐ ENGINE STATUS`.
+> Migration SSOT = `ARCHITECTURE.json` QFORGE.migration_gate. Humans use `QFORGE/QFORGE.md §⭐ ENGINE STATUS`.
 
-- do: 전환은 **조각 단위**(per-layer/per-piece) — 각 조각이 QE 대비 **≤1%** 통과(g5 검증)한 뒤에만 QFORGE가 absorb (d5)
-- do: **이미 전환됨**: λ/Tc **어셈블리 전체**(L0-L5: Allen-Dynes·Eliashberg·a2F·α²F·DFPT-solver·PW-SCF bricks) = native QFORGE gate-grade(CaH6 1.65e-7) → production = mode-(b) hybrid(QE |g|² → QFORGE assembler)
-- do: **QE 잔존(아직)**: DFPT **front-end |g|²** + 포논 + nspin=2 모먼트 — from-scratch 차폐정점(mode a/c)이 게이트 미달이라 HELD
-- do: gate anchor는 QE로 마감(정직한 production reference) · 벽은 **분류 후 named 레버로 돌파 시도**(c15·d2) — degenerate-subspace Sternheimer · 고RAM 포드(OOM=substrate)
-- dont: from-scratch λ를 4.376으로 강제(tune-to-green·d6) · 게이트 미통과분을 absorbed로 박제 · 벽을 천장으로 조기 확정(단일렌즈 1회 막힘=미완) · 마이그레이션 상태를 흩어진 노드로 방치(SSOT=migration_gate 1곳)
+- do: migration is **piece-by-piece** (per-layer/per-piece) — QFORGE absorbs a piece only after it passes **≤1%** vs QE (g5 verified) (d5)
+- do: already migrated: full λ/Tc assembly (L0-L5: Allen-Dynes·Eliashberg·a2F·α²F·DFPT-solver·PW-SCF) = QFORGE gate-grade (CaH6 1.65e-7) → production = mode-(b) hybrid (QE |g|² → QFORGE assembler)
+- do: **QE remains (for now)**: DFPT **front-end |g|²** + phonons + nspin=2 moment — from-scratch screened-vertex (mode a/c) is below gate, so HELD
+- do: close the gate anchor with QE (honest production ref) · for a wall, classify then breakthrough via named levers (c15·d2) — degenerate-subspace Sternheimer · high-RAM pod (OOM=substrate)
+- dont: force from-scratch λ to 4.376 (tune-to-green·d6) · bank gate-failing as absorbed · call a wall a ceiling early (single-lens block=incomplete) · scatter migration state (SSOT=migration_gate)
 
-### d_qforge_default — 컴퓨트 기본 엔진 = QFORGE (QE 대신) · 미전환 조각만 QE fallback
+### d_qforge_default — default compute engine = QFORGE (instead of QE) · QE fallback only for unmigrated pieces
 
-- do: el-ph/DFT 컴퓨트의 **기본 엔진은 QFORGE-native** — gate-통과(≤1% vs QE) 조각은 항상 QFORGE 경로로 실행: L0-L5 λ/Tc 어셈블리·PW-SCF bricks·Sternheimer·**GPU block davidson**(RTX5070 실측·davidson/SCF/el-ph hot path 배선·c24)
-- do: production = mode-(b) hybrid(QE |g|² → QFORGE assembler)도 QFORGE-native 산출을 기본으로 본다
-- do: **QE는 두 용도로만**: (a) 아직 gate-미통과 조각(from-scratch front-end |g|²·포논·nspin=2 moment)의 reference/fallback — d_qforge_migration_routing의 HELD 목록 (b) gate anchor 1회(정직한 production reference)
-- do: 그 외 새 컴퓨트는 QFORGE 먼저 시도
-- do: 페이오프 = **summer RTX5070 무료 QFORGE-native el-ph → 유료 vast GPU 회피**. QFORGE가 막히면 즉시 QE 병행(d_qforge_fix)하되 QFORGE-native 전환을 함께 추진(미루지 않음)
-- dont: gate-통과 조각을 습관적으로 QE로 돌리기(QFORGE 기본 무시) · "QE가 익숙하니 QE로" 디폴트 · QFORGE를 실험취급하고 QE를 production취급(역전) · 미전환 조각을 QFORGE-native로 강제해 게이트 미달분 absorbed 박제(d6·migration_gate 위반)
+- do: el-ph/DFT default engine = QFORGE-native — gate-passing (≤1% vs QE) pieces run QFORGE: L0-L5 λ/Tc assembly·PW-SCF·Sternheimer·GPU block davidson (RTX5070 · davidson/SCF/el-ph hot-path · c24)
+- do: production = mode-(b) hybrid (QE |g|² → QFORGE assembler) also treats QFORGE-native output as the default
+- do: QE for two uses only: (a) ref for gate-failing pieces (from-scratch front-end |g|²·phonons·nspin=2 moment) = HELD list in d_qforge_migration_routing (b) gate anchor once (production ref)
+- do: for any other new compute, try QFORGE first
+- do: payoff = free summer RTX5070 QFORGE-native el-ph → avoid paid vast GPU. If QFORGE blocks, run QE in parallel at once (d_qforge_fix) while pushing the QFORGE-native migration (no deferral)
+- dont: run gate-passing on QE by habit · "QE, familiar" default · QFORGE=experimental/QE=production (inverted) · force unmigrated to QFORGE-native, bank gate-failing absorbed (d6·migration_gate)
 
-### d_deck_always — 모든 컴퓨트 입력덱은 `hexa deck`(빌더+검증)을 통과 (필수)
+### d_deck_always — every compute input-deck passes through `hexa deck` (builder+validation) (mandatory)
 
-- do: DFT/QE el-ph 컴퓨트 입력덱(scf · ph · vc-relax · bands · matdyn 등)은 **항상 `hexa deck`(빌드+검증)** 으로 생성/검증
-- do: 손수 `.in` 작성 금지(이번 세션 손작성 버그 다발: bands verbosity='high' 누락[#k≥100]·원자질량 오기[Os 190.23]·vc-relax 미수렴·d15 SCF aids 누락)
-- do: `hexa deck` 은 hard-won 덱규율을 코드로 박제: 정확한 원자질량/의사퍼텐셜(d13 element 커버 grep) · bands verbosity='high'(#k≥100) · 금속/소갭 SCF aids(d15: smear+damp+lshift) · **d16 1-iter dry-run 검증 FREE on pool 후 발사**
-- do: DFPT el-ph 전 **d6 동적안정 사전체크**(matdyn 허수모드 0)
-- do: 덱은 `decks/`(루트 입력덱) · `exports/rtsc/decks/` 에 박제(c5 보존) · raw curl/애드혹 손작성 대신 `hexa deck` 우선(commons c12 harness-first 일관)
-- do: **트러블슈팅 발생 시 → 그 예방처리(가드/체크/기본값)를 `hexa deck`에 즉시 박제** — 덱 관련 버그·실패를 한 번 겪으면 그 재발방지 규칙을 도구에 코드로 넣어 **같은 버그 재발 0** (hexa deck = self-improving 덱규율 SSOT; 매 트러블슈팅이 새 가드를 낳는다)
-- dont: 검증 안 된 손작성 덱을 billing 포드에 발사(d16 위반) · 원자질량/pseudo/verbosity/SCF-aid 누락된 덱 · 동적불안정 셀에 el-ph 발사(FLEET-DIAGNOSTIC 낭비) · **덱 버그를 일회성으로 고치고 `hexa deck`에 가드 안 박기**(재발 방치)
+- do: DFT/QE el-ph compute input-decks (scf · ph · vc-relax · bands · matdyn, etc.) are **always built/validated with `hexa deck` (build+validate)**
+- do: no hand-writing `.in` files (this session's hand-write bugs: missing bands verbosity='high' [#k≥100]·wrong atomic mass [Os 190.23]·vc-relax non-convergence·missing d15 SCF aids)
+- do: `hexa deck` bakes deck-discipline: mass/pseudopotential (d13 grep) · bands verbosity='high' (#k≥100) · metal/small-gap SCF aids (d15: smear+damp+lshift) · fire after FREE d16 dry-run on pool
+- do: before DFPT el-ph, a **d6 dynamic-stability pre-check** (matdyn imaginary modes 0)
+- do: decks are recorded in `decks/` (root input-decks) · `exports/rtsc/decks/` (c5 preserve) · prefer `hexa deck` over raw curl/ad-hoc hand-writing (consistent with commons c12 harness-first)
+- do: on troubleshooting → bake the prevention (guard/check/default) into `hexa deck` — once you hit a deck bug·failure, code its prevention for 0 recurrence (hexa deck = self-improving deck SSOT)
+- dont: unvalidated deck at a billing pod (d16) · deck missing mass/pseudo/verbosity/SCF-aid · el-ph on dyn-unstable cell (FLEET-DIAGNOSTIC waste) · one-off deck-fix w/o `hexa deck` guard (recur open)
 
-### d_roomt_ambient — 상압·상온 초전도 통과기준 (ROOMT-AMBIENT-PASS-CRITERIA · 하드 게이트)
+### d_roomt_ambient — ambient-pressure·room-temperature superconductivity pass-criteria (ROOMT-AMBIENT-PASS-CRITERIA · hard gate)
 
-> SSOT = `ARCHITECTURE.json` LAWS/ROOMT-AMBIENT-PASS-CRITERIA · 상세 `state/fb-geom-lambda/ROOMT_AMBIENT_PASS_CRITERIA.md`. "상온/상압 초전도" 주장은 이 게이트를 명시적으로 통과해야만 박제.
+> SSOT = `ARCHITECTURE.json` LAWS/ROOMT-AMBIENT-PASS-CRITERIA · detail `state/fb-geom-lambda/ROOMT_AMBIENT_PASS_CRITERIA.md`. A "room-temperature/ambient-pressure superconductivity" claim is recorded only if it explicitly passes this gate.
 
-- do: **하드 임계**: Tc ≥ **293.15K**(여유 측정 300K 권장) · P = **1 atm**(≈0 GPa — **GPa-급 수소화물[LaH10 등]은 상압 아님, 제외**) · **벌크**(박막/계면 SC는 별도 라벨)
-- do: **TIER-1 in-silico 사전게이트(g5, 전부 PASS여야 wet-lab 추천·🟡 GATED)**: (1) 상압 열역학 안정(convex-hull/ΔH_f<0) (2) **상압 동적안정**(matdyn 허수모드 0 — *고압 안정 ≠ 상압 안정*) (3) 캐리어 채널(E_F 금속/도달가능 도핑·N(E_F)>0; 매장/wide-gap=FAIL)
-- do: (4) **Tc≥293K**(conventional=DFPT λ+Allen-Dynes/Eliashberg; unconv=order-parameter Tc + calibrated estimator) (5) 자성/CDW 비-선점(U-scan) (6) 신규성(d_novel_only)
-- do: **TIER-2 wet-lab 확정게이트(d1/d5 downstream, absorbed=true 조건 ALL)**: A zero-R(ρ→0 @≥293K) · B **★Meissner 차폐분율(zero-R 단독 불충분 — 세션교훈)** · C 비열점프 ΔC+Hc1/Hc2 · D 동위원소/갭(기전)
-- do: E **재현 ≥2 독립 배치/랩(단일배치 preprint 불충분)**
-- do: 정직 채점(d6): 후보 Tc가 임계 미달이면 "상온 후보"라 부르지 말 것 — 예) Ge:GaNb4S8 ~50K·MgB2 39K·LiBC ~45K 모두 #4(Tc≥293K) **FAIL** → "상압이나 상온 미달". 병목=#4(경원소 강결합+상압 동적안정 동시 OR 비-phonon 기전 — 미해결 벽)
-- dont: zero-R 단독·단일배치 preprint·투영(모델)값을 "상온 초전도 통과"로 보고 · GPa 고압 Tc를 "상압"으로 보고 · TIER-1 미통과 후보를 상온후보로 박제 · Tc<293K를 "상온"으로 호칭(d6 위반·d_novel_only·d_paper_significance와 한 묶음)
+- do: hard thresholds: Tc ≥ 293.15K (margin, 300K recommended) · P = 1 atm (≈0 GPa — GPa-class hydrides [LaH10 etc.] not ambient, excluded) · bulk (thin-film/interface SC = separate label)
+- do: TIER-1 pre-gate (g5; all PASS→wet-lab rec): (1) ambient thermo (convex-hull/ΔH_f<0) (2) ambient dyn (matdyn imag 0; high-P≠ambient) (3) carrier (E_F metal/dopable·N(E_F)>0; gap=FAIL)
+- do: (4) **Tc≥293K** (conventional=DFPT λ+Allen-Dynes/Eliashberg; unconv=order-parameter Tc + calibrated estimator) (5) magnetism/CDW non-preemption (U-scan) (6) novelty (d_novel_only)
+- do: TIER-2 wet-lab confirm gate (d1/d5, ALL→absorbed=true): A zero-R (ρ→0 @≥293K) · B ★Meissner shielding-frac (zero-R alone insufficient) · C spec-heat jump ΔC+Hc1/Hc2 · D isotope/gap (mechanism)
+- do: E **reproduction ≥2 independent batches/labs (a single-batch preprint is insufficient)**
+- do: scoring (d6): Tc<threshold → not "room-temp" — Ge:GaNb4S8 ~50K·MgB2 39K·LiBC ~45K all FAIL #4 (Tc≥293K). Bottleneck #4 = light-element coupling + ambient dyn-stability OR non-phonon (wall)
+- dont: claim zero-R alone·1-batch preprint·projected as "room-temp pass" · a GPa high-P Tc as "ambient" · TIER-1-fail as room-temp · Tc<293K as "room-temp" (d6; w/ d_novel_only·d_paper_significance)
 
-### d_production_grade — 실제 프로덕션(상용화) 통과기준 (lab 검증 ≠ production · 하드 게이트)
+### d_production_grade — real-production (commercialization) pass-criteria (lab validation ≠ production · hard gate)
 
-> SSOT = `ARCHITECTURE.json` 각 캠페인의 PRODUCTION-CRITERIA 노드. 어떤 신소재/대체후보를 "실제로 양산·상용화 가능"이라 주장할 땐 이 게이트를 명시 통과해야만 박제. 세션교훈(Gd→Mn²⁺ MRI): Phase2 임상 도달(원리검증)이 ≠ Gd 시장 대체 — relaxivity(spin 7vs5)·Mn 독성·확립된 시장 마찰로 미상용.
+> SSOT = the PRODUCTION-CRITERIA node of each campaign in `ARCHITECTURE.json`. Any claim that a new material/replacement candidate is "actually mass-producible·commercializable" is recorded only if it explicitly passes this gate. Session lesson (Gd→Mn²⁺ MRI): reaching Phase-2 clinical (principle proof) ≠ replacing the Gd market — relaxivity (spin 7 vs 5)·Mn toxicity·established-market friction keep it uncommercialized.
 
-- do: **2-tier 구분 필수**: **TIER-L(lab/in-silico)** = 원리검증(성능 패리티 게이트 PASS + 신규성) — "작동 증명"일 뿐
-- do: **TIER-P(production 상용화, ALL PASS여야 'production-ready')**: P1 **성능 패리티**(기존 벤치 대비 정량 ±허용 — 자석 BHmax·MRI relaxivity·CMP 제거율·Ga 캐리어이동도) · P2 **안정성/안전/신뢰성**(독성·분해·수명·환경 — manganism·MnAl metastability)
-- do: P3 **제조 확장성**(벌크/연속/수율, 박막·분말·단일배치 only 아님 — tetrataenite G6·반도체 fab 통합) · P4 **비용 경쟁력**(≤ 기존 또는 명확한 가치 — FePt Pt 비용 실패) · P5 **인증/규제/시장 진입**(FDA·반도체 qual·고객 인증·기존 시장 진입장벽)
-- do: P6 **공급망 회복력**(대체의 목적 — 중국-의존 임계소재[Ga·Ge·Sb·중희토류·CMP] 회피, ★새 단일소스 의존 안 만들기)
-- do: 정직 채점(d6): TIER-L 통과(원리검증)는 "상용화 가능"이 아니라 "원리 작동"으로만 보고. TIER-P 미통과 후보는 `production-ready`라 부르지 말 것 — 어느 P-게이트에서 막혔는지 명시(예: Gd→Mn=P1 relaxivity+P2 독성+P5 시장).
-- dont: lab/in-silico 패리티만으로 "상용화 가능·production 낼 수 있다" 보고 · 단일배치/박막/임상초기 결과를 벌크 production으로 일반화 · **새 임계소재(다른 중국-의존 원소) 의존을 만드는 대체를 "공급망 해결"로 박제**(P6 위반)
-- dont: TIER-P 게이트 없이 "대체 성공"을 상용 성공으로 호칭(d_novel_only·d_roomt_ambient와 한 묶음)
+- do: **2-tier distinction mandatory**: **TIER-L (lab/in-silico)** = principle proof (performance-parity gate PASS + novelty) — only "proof it works"
+- do: TIER-P (production; ALL PASS='production-ready'): P1 perf parity (± vs bench — BHmax·MRI relaxivity·CMP removal·Ga mobility) · P2 safety (toxicity·degradation·lifetime — manganism·MnAl)
+- do: P3 mfg scale (bulk/continuous/yield, not film·powder·1-batch — tetrataenite G6·semi fab) · P4 cost (≤existing/clear — FePt Pt-cost fail) · P5 cert/reg/market (FDA·semi qual·customer·incumbent)
+- do: P6 **supply-chain resilience** (the point of replacement — avoid China-dependent critical materials [Ga·Ge·Sb·heavy-REE·CMP], ★don't create a new single-source dependence)
+- do: scoring (d6): a TIER-L pass = "principle works", not "commercializable". Don't call a TIER-P-failing `production-ready` — name the P-gate (e.g., Gd→Mn = P1 relaxivity+P2 toxicity+P5 market)
+- dont: claim "commercializable" from in-silico parity alone · generalize 1-batch/film/clinical to bulk · bank a replacement adding new China-dependent critical-mat dep as "supply-chain solved" (P6)
+- dont: call a "replacement success" a commercial success without the TIER-P gate (bundled with d_novel_only·d_roomt_ambient)
 
-## 워크플로우 (workflow)
+## Workflow
 
 PAPER auto-generation flow — atlas-as-audit-SSOT lineage (`research result → hexa verify pass → atlas atom direct fold → /paper`).
 
@@ -287,8 +287,8 @@ PAPER auto-generation flow — atlas-as-audit-SSOT lineage (`research result →
 
 ### Single-doc discipline
 
-- do: architecture goes in `ARCHITECTURE.json` (JSON-tree SSOT · AI/tool-parse; 사람은 `ARCHITECTURE.html` via `python3 serve.py`); history in `CHANGELOG.jsonl` (append-only)
-- do: all work artifacts under `state/` (commons c5 · single artifact root) — `ARCHITECTURE.md` 은퇴(2026-06-16 · c4 JSON-트리 채택)
+- do: architecture goes in `ARCHITECTURE.json` (JSON-tree SSOT · AI/tool-parse; humans use `ARCHITECTURE.html` via `python3 serve.py`); history in `CHANGELOG.jsonl` (append-only)
+- do: all work artifacts under `state/` (commons c5 · single artifact root) — `ARCHITECTURE.md` retired (2026-06-16 · c4 JSON-tree adopted)
 
 ## Harness
 
@@ -320,7 +320,7 @@ The harness hooks are wired into `.claude/settings.json` (PreToolUse / PostToolU
 
 ## Quick reference
 
-- Architecture SSOT — [ARCHITECTURE.json](ARCHITECTURE.json) (JSON 트리 · 사람은 [ARCHITECTURE.html](ARCHITECTURE.html) 뷰어로 — `python3 serve.py`)
-- Governance SSOT — this file (`## 거버넌스 (governance)` · `## 워크플로우 (workflow)`)
+- Architecture SSOT — [ARCHITECTURE.json](ARCHITECTURE.json) (JSON tree · humans use the [ARCHITECTURE.html](ARCHITECTURE.html) viewer — `python3 serve.py`)
+- Governance SSOT — this file (`## Governance` · `## Workflow`)
 - Project overview — [README.md](README.md)
 - Change log — [CHANGELOG.jsonl](CHANGELOG.jsonl)
