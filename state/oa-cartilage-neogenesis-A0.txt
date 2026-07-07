@@ -1,0 +1,20 @@
+# verdict oa-cartilage-neogenesis-A0
+# cmd: python3 state/senolyx-oa-cartilage/neogenesis/neogenesis_A0_migration.py
+# tier: PASS  exit=0  at 2026-07-07T11:32:31.552Z
+# ── captured stdout+stderr (verbatim) ──
+== SENOLYX OA-cartilage :: Step 2b endogenous A_endo(v,q) ==
+A_endo = mu_transport * q ;  gate needs A_endo >= 0.690
+
+ v(um/d)  T(d)   mu_t | q=0.30 q=0.60 q=0.90
+       5   180  0.606 |  0.182   0.363   0.545
+      20    90  0.671 |  0.201   0.403   0.604
+      20   180  0.687 |  0.206   0.412   0.618
+
+max A_endo at fibro quality (q<=0.30) over all v: 0.206
+H3 (self-owned closure at fibro q, no diff driver): FALSE -> external node IRREDUCIBLE
+
+Credited self-owned A floor  = 0.206
+Residual external A_ext req   = 0.484  (was 0.690 with zero self-credit)
+=> ownership = PARTIAL: we supply delta+phi+A_endo(~0.27); ONE external hyaline-
+   differentiation node must supply the residual A_ext. (d6 honest closed-negative)
+

@@ -1,0 +1,6 @@
+# verdict oa-cartilage-kgn-delta
+# cmd: python3 -c "import sys; sys.path.insert(0,'state/senolyx-oa-cartilage/pk-delivery'); from pk_delta import simulate; print('KGN-carrier delta', round(simulate(2e-6,4*3600.0,3.5),3))"
+# tier: PASS  exit=0  at 2026-07-07T11:59:44.697Z
+# ── captured stdout+stderr (verbatim) ──
+KGN-carrier delta 1.44
+
