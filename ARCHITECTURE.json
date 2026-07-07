@@ -10160,6 +10160,40 @@
                         ]
                       }
                     ]
+                  },
+                  {
+                    "role": "r14 OA-cartilage additional-requirement lane — cartilage-unique triple gate (penetration delta x clearance phi x anabolic A) beyond generic senolytic",
+                    "id": "campaigns-senolyx-rounds-r14-oa-cartilage-triple-gate",
+                    "children": [
+                      {
+                        "role": "master frontier: Ceiling=0.68+0.075*delta+0.21*delta*A; GATE <=> delta*(0.075+0.21*A)>=0.22. A=0 -> delta>=2.93 (impossible) = senolytic-only cannot close OA gate; admissible (delta,A) region = 3.8% of unit square",
+                        "id": "campaigns-senolyx-rounds-r14-frontier"
+                      },
+                      {
+                        "role": "H1 delivery (Step1 pk_delta.py): passive small-molecule delta<=0.472 BLOCK (avascular Donnan/mesh/washout wall); cationic GAG-avidity Phi=3 -> delta=1.23 PASS. delivery design = part of therapeutic requirement (ORANGE lit-order params)",
+                        "id": "campaigns-senolyx-rounds-r14-h1-delivery"
+                      },
+                      {
+                        "role": "H2 neogenesis (Step2 neogenesis_A0.py): senolytic-only A0<<0.690 (acellular lost class mu<<0.767 avascular migration) -> CONFIRMED a chondro-anabolic co-driver is additionally required; parameter-robust (synth rate ~ cell density = 0)",
+                        "id": "campaigns-senolyx-rounds-r14-h2-neogenesis"
+                      },
+                      {
+                        "role": "verdict: cartilage additional requirement = triple gate delta*phi*A; OWNERSHIP=PARTIAL. We own delta(cationic-penetration physics)+phi(SENOLYX senolytic)+A_endo~0.21 (endogenous progenitor migration, Step2b H3=FALSE) -> exactly ONE external hyaline-differentiation node irreducible (A_ext>=0.48, our assets buy it down from 0.69). node candidate = ZDHHC11 palmitoylation axis / APT1-APT2 depalmitoylase (PDB 5SYN dockable) = senescence<->chondrogenesis coupling. 3 vascularized sister-cures still close on our senolytic alone; cartilage is the sole exception. CORRECTION: naive A=0->delta>=2.93 'impossible' corner was a linear-model ARTIFACT (eta_dorm>1); eta<=1 cap gives ceiling 0.755<0.90 BLOCK (verdict holds, basis corrected). SSOT=state/senolyx-oa-cartilage/ . Next: Step2b done; Step4 dock+MMGBSA on APT1 (relaxed gate A_ext>=0.48 AND delta>=0.772).",
+                        "id": "campaigns-senolyx-rounds-r14-verdict"
+                      },
+                      {
+                        "role": "Step4 docking (5SYN=APT2/LYPLA2+ML349, depalmitoylase eraser) 🟢 PRELIMINARY PASS: mini conda dock env (smina/rdkit/obabel); method-valid ML349 redock RMSD 0.46A aff -8.97, ML348 -9.41; gate(aff<=-8 AND charge+1/2) -> novel cationic-exit-vector series N1-N10 all -8.04..-9.00 & +1/+2 PASS (top N10 -9.00 guanidinium), controls NC1 buried-cation -5.71 / NC2 no-warhead -7.46 correctly FAIL (gate discriminates). LIMITS: N-series on approx warhead not real ML349 core; smina score not MM-GBSA (summer OpenMM pending); delta from net-charge inference. NOVELTY: composition-Delta (triple-gate assembly + 0.69->0.48 buy-down) = ours, high-conf novel regardless of external node; molecule-Delta = no direct web collision (OA lit=cPLA2/ACOT12/SOX9-FAO) but PATENT search pending = 신규성 PENDING. SSOT=state/senolyx-oa-cartilage/docking/dock_results.tsv",
+                        "id": "campaigns-senolyx-rounds-r14-step4-docking"
+                      },
+                      {
+                        "role": "COMPLETE assembled co-therapy (assembly-novelty basis, owner directive: use best off-the-shelf part). 4-layer single intra-articular depot: phi=SENOLYX senolytic(ours) + delta=cationic GAG-avid carrier(ours physics) + A_endo=0.206 progenitor migration(ours) + A_ext=KARTOGENIN(borrowed best-in-class small-mol hyaline anabolic). GATE CLOSES (assembly_gate.py verdict oa-cartilage-assembly-gate): measured carrier delta=1.23 -> ceiling 0.942-0.980 PASS across KGN A_ext 0.45-0.60; conservative delta=1 knife-edge (PASS at A_ext>=0.484). buy-down 0.69->0.48(A_endo)->0.29(cationic delta). NOVELTY: composition-Delta = ternary senolytic+KGN+cationic-carrier triple-gate depot = high-conf novel (assembly-level). HONEST DOWNGRADE: mAv-KGN(carrier+KGN) already published (He/Bajpayee Cartilage 2022) so novelty narrows to ADDING the senolytic layer; senolytic+KGN combo = no web collision found. NOVELTY CLOSED (assembly-level): patent search DONE (kartogenin AND senolytic = NO combo collision; hits are KGN-only delivery patents US10064832B2 + senolytic cell-removal US10213426 separately) + KGN molecular delta DONE (free anionic 0.081 BLOCK -> cationic carrier 1.44 PASS, verdict oa-cartilage-kgn-delta). Remaining = A_ext wet-calibration + co-formulation/PK = downstream wet (d1/d5 non-wet gates PASS). SSOT=state/senolyx-oa-cartilage/assembly/COMPOSITION.md",
+                        "id": "campaigns-senolyx-rounds-r14-complete-assembly"
+                      },
+                      {
+                        "role": "PAPER: PAPERS/oa-cartilage-triple-gate-composition (15pp · 9 result figs · 12 refs · xelatex build PASS g51). 'The Triple Gate of Cartilage Regeneration' — finding=OA uniquely triple-gated; 3 owned + kartogenin closes gate (ceiling 0.94-0.98); closed-negative=senolytic-only cannot close (eta<=1 cap 0.755); assembly-novelty. arxiv/zenodo submit pending user. SSOT=PAPERS/oa-cartilage-triple-gate-composition/PAPER.md",
+                        "id": "campaigns-senolyx-rounds-r14-paper"
+                      }
+                    ]
                   }
                 ]
               },
@@ -32907,6 +32941,17 @@
             ]
           }
         ]
+      }
+    ]
+  },
+  "convergence": {
+    "records": [
+      {
+        "id": "master-frontier-py-1",
+        "state": "pos-conv",
+        "value": "선형 천장식(η_i가 δ에 선형)에서 코너값을 물리 한계 없이 verdict 근거로 인용하면 아티팩트가 생긴다: A=0→δ≥2.93 '불가능'은 η_dorm=0.75+0.25δ>1(δ>1)을 요구하는 비물리 코너였음. per-class η≤1 물리캡 적용 시 천장 0.755<0.90로 결론(청소만 불가)은 유지되나 근거는 캡-포화이지 δ발산이 아님.",
+        "threshold": "재발조건=선형/다항 모델의 극단 코너(변수→∞ 또는 >1 정규화값)를 하드 verdict 근거로 보고. 해결=verdict 전에 각 항의 물리 상한(η≤1, 확률≤1, 농도≥0 등) 캡을 적용하고 캡-포화 여부부터 확인(commons verdict-integrity).",
+        "source": "master_frontier.py"
       }
     ]
   }

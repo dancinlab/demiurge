@@ -1,0 +1,26 @@
+# verdict oa-cartilage-assembly-gate
+# cmd: python3 state/senolyx-oa-cartilage/assembly/assembly_gate.py
+# tier: PASS  exit=0  at 2026-07-07T11:57:04.733Z
+# ── captured stdout+stderr (verbatim) ──
+== Assembled OA-cartilage co-therapy — gate closure ==
+A_endo(ours,Step2b)=0.206  KGN A_ext bracket=(0.45, 0.5, 0.6)
+
+Buy-down chain (external anabolic burden):
+  no credit            -> A_ext >= 0.690
+  +A_endo credit (d=1) -> A_ext >= 0.484
+  +cationic d=1.23     -> A_ext >= 0.289
+
+                    delta scenario  A_ext  A_tot  ceiling  verdict
+         conservative cationic cap   0.45  0.656    0.893  FAIL
+         conservative cationic cap   0.50  0.706    0.903  PASS
+         conservative cationic cap   0.60  0.806    0.924  PASS
+measured mAv carrier (4.3x uptake)   0.45  0.656    0.942  PASS
+measured mAv carrier (4.3x uptake)   0.50  0.706    0.955  PASS
+measured mAv carrier (4.3x uptake)   0.60  0.806    0.980  PASS
+
+Honest read (d6):
+ - conservative delta=1 is knife-edge: needs A_ext>=0.484 (KGN optimistic edge).
+ - real margin from carrier delta=1.23: needs only A_ext>=0.289, KGN (~0.50) clears comfortably.
+ - GATE CLOSES for the assembled therapy at the measured-carrier operating point.
+ - NOT banked: D+Q senolytic upregulates FGF18/IGF1/TGFb2 (would lift A_endo); mAv 10-day residence (would lift delta).
+

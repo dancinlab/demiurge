@@ -1,0 +1,13 @@
+CCOC(=O)c1ccsc1NC(=O)Cc1ccccc1	W0_warhead
+CCOC(=O)c1ccsc1NC(=O)Cc1ccc(OCC[NH+](C)C)cc1	N1
+CCOC(=O)c1ccsc1NC(=O)Cc1ccc(OCCC[NH+](C)C)cc1	N2
+CCOC(=O)c1ccsc1NC(=O)Cc1ccc(C[NH+]2CCCC2)cc1	N3
+CCOC(=O)c1ccsc1NC(=O)Cc1ccc(OCC[NH+]2CCCC2)cc1	N4
+CCOC(=O)c1ccsc1NC(=O)Cc1ccc(OCC[NH+]2CCOCC2)cc1	N5
+CCOC(=O)c1ccsc1NC(=O)Cc1ccc(OCCNC(=[NH2+])N)cc1	N6
+CCOC(=O)c1ccsc1NC(=O)Cc1ccc(OCCN2CC[NH+](C)CC2)cc1	N7
+CCOC(=O)c1ccsc1NC(=O)Cc1ccc(OCC[NH2+]CCC[NH3+])cc1	N8
+CCOC(=O)c1ccsc1NC(=O)Cc1ccc(OCC[NH+]2CC[NH2+]CC2)cc1	N9
+CCOC(=O)c1ccsc1NC(=O)Cc1ccc(OCCCNC(=[NH2+])N)cc1	N10
+CCOC(=O)c1ccsc1NC(=O)C[N+](C)(C)C	NC1_buried
+[NH+](C)(C)CCOc1ccc(CC(=O)O)cc1	NC2_nowarhead
