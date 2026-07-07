@@ -54,7 +54,7 @@ fn _verb_registry() -> [VerbSpec] {
     VerbSpec { name: "compose",         summary: "도메인 → 구성 스택 해소",                ported: true },
     VerbSpec { name: "verify",          summary: "provenance/claim-gate · hexa verify",    ported: true },
     VerbSpec { name: "atlas",           summary: "hexa atlas SSOT 읽기/owner-write",       ported: true },
-    VerbSpec { name: "owner",           summary: "owner-mode (사장실) 상태",               ported: true },
+    VerbSpec { name: "owner",           summary: "owner-mode 상태",                       ported: true },
     VerbSpec { name: "llm",             summary: "AI 연결 (Claude/Codex/Gemini)",          ported: false },
     VerbSpec { name: "emit-component",  summary: "BIPV 컴포넌트 아티팩트 emit",            ported: false },
     VerbSpec { name: "export-component",summary: "번들 geometry export (usda|stl)",        ported: true }
@@ -1203,7 +1203,7 @@ fn _op_registry() -> [OpRow] {
 }
 
 // `operate [list|audit]` (main.swift §579). --owner 플래그 또는 DEMIURGE_OWNER
-// 면 사장실 op 노출. 첫 비-플래그 토큰이 subcommand (기본 list).
+// 면 owner op 노출. 첫 비-플래그 토큰이 subcommand (기본 list).
 fn _cmd_operate(rest: array) -> int {
   let sub = _operate_first_nonflag(rest)        // firstWhere !hasPrefix "--" ?? "list"
   let want_owner = _backend_owner_flag(rest)    // --owner || DEMIURGE_OWNER
@@ -1224,7 +1224,7 @@ fn _cmd_operate(rest: array) -> int {
         k = k + 1
       }
       if len(rows) == 0 { continue }
-      let label = if tier == "product" { "🛒 진열대 (external)" } else { "🔒 사장실 (owner)" }
+      let label = if tier == "product" { "🛒 진열대 (external)" } else { "🔒 owner" }
       println(label + " — " + to_string(len(rows)) + ":")
       let mut r = 0
       while r < len(rows) {
@@ -2332,7 +2332,7 @@ fn _cmd_discover(rest: array) -> int {
 
 // `atlas <verb> [args]` — hexa atlas SSOT 읽기. READ verb (lookup/stats/hash/
 // dump) 는 `hexa atlas` 로 VERBATIM forward. WRITE verb (register/append-
-// witness/pr) 은 owner op (사장실 · M20) — DEMIURGE_OWNER 없으면 거부.
+// witness/pr) 은 owner op (M20) — DEMIURGE_OWNER 없으면 거부.
 fn _cmd_atlas(rest: array) -> int {
   let verb = if len(rest) >= 1 { to_string(rest[0]) } else { "stats" }
   let is_read = verb == "lookup" || verb == "stats" || verb == "hash" || verb == "dump"
@@ -2340,7 +2340,7 @@ fn _cmd_atlas(rest: array) -> int {
   if is_write {
     let owner = env("DEMIURGE_OWNER")
     if owner.len() == 0 {
-      eprintln("atlas: '" + verb + "' = owner op (사장실 · M20). Set DEMIURGE_OWNER to unlock. External read-only: lookup/stats/hash/dump.")
+      eprintln("atlas: '" + verb + "' = owner op (M20). Set DEMIURGE_OWNER to unlock. External read-only: lookup/stats/hash/dump.")
       return 2
     }
   } else if !is_read {
@@ -2482,15 +2482,15 @@ fn _cmd_verify(rest: array) -> int {
   return _verify_record(sub)
 }
 
-// `owner` — 사장실 status surface (M20). DEMIURGE_OWNER 설정 여부 + gate 되는
+// `owner` — owner-mode status surface (M20). DEMIURGE_OWNER 설정 여부 + gate 되는
 // owner-only op 목록. (스위프트는 OperationRegistry manifest 에서 op 목록을
 // 읽는다 — 그 manifest 는 DemiurgeCore 포팅 단계로 연기; 여기선 status 만.)
 fn _cmd_owner() -> int {
   let on = env("DEMIURGE_OWNER").len() > 0
   if on {
-    println("owner-mode (사장실): ✅ unlocked (DEMIURGE_OWNER)")
+    println("owner-mode: ✅ unlocked (DEMIURGE_OWNER)")
   } else {
-    println("owner-mode (사장실): 🔒 locked")
+    println("owner-mode: 🔒 locked")
     println("  → unlock: DEMIURGE_OWNER=1 demiurge <cmd>  (외부 사용자에겐 비노출)")
   }
   return 0
