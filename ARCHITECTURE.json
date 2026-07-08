@@ -1137,9 +1137,9 @@
       },
       {
         "id": "hexa-bio-separated",
-        "name": "hexa-bio (분리됨 → dancinlab/hexa-bio)",
+        "name": "bio (분리됨 → dancinlab/bio)",
         "role": "pointer",
-        "detail": "🧬 bio 신약발견 콘텐츠 전량(구 hexa-bio-archive · flagship_CMT · 질환 로드맵 · 5-axis + 바이오 PAPERS 11 + 바이오 proposal)는 2026-07-08 별도 public 리포 dancinlab/hexa-bio(github.com/dancinlab/hexa-bio)로 분리·통합됨. demiurge는 더 이상 bio 콘텐츠를 보유하지 않으며 typed-interface 소비자 관계만 유지(d3). 이력은 demiurge git history + hexa-bio 리포에 보존."
+        "detail": "🧬 bio 신약발견 콘텐츠 전량(구 hexa-bio-archive · flagship_CMT · 질환 로드맵 · 5-axis + 바이오 PAPERS 11 + 바이오 proposal)는 2026-07-08 별도 public 리포 dancinlab/bio(github.com/dancinlab/bio)로 분리·통합됨. demiurge는 더 이상 bio 콘텐츠를 보유하지 않으며 typed-interface 소비자 관계만 유지(d3). 이력은 demiurge git history + hexa-bio 리포에 보존. 추가 이관: CMT ABFE compute exports(exports/CMT · 142파일). 리포명 hexa-bio→bio 개명(2026-07-08)."
       },
       {
         "name": "legacy-root-docs-absorbed",
