@@ -1,1 +1,0 @@
-../../hexa-weave/hexa-weave.md

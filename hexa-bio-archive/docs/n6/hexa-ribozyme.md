@@ -1,1 +1,0 @@
-../../hexa-ribozyme/hexa-ribozyme.md
